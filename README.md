@@ -2,7 +2,6 @@
 <!-- COMING_SOON.md -->
 
 <p align="center">
-  <img src="./logoLight.svg" width="120" alt="NAVI CV logo" />
 </p>
 
 <h1 align="center">NAVI CV — “Hey! Listen!” 🎮💼</h1>
