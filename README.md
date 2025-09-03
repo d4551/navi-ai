@@ -4,7 +4,8 @@
 <p align="center">
 </p>
 
-<h1 align="center">NAVI CV — “Hey! Listen!” 🎮💼</h1>
+<h1 align="center">NAVI CV - THE ONLY AI GAMES INDUSTRY JOB SUPPORT TOOL YOU'LL EVER NEED!
+                  “Hey! Listen!”</h1>
 
 <p align="center">
   The <em>world’s first</em> <strong>open-source, multimodal, gamified</strong> job platform built <em>specifically</em> for the video-game industry.
