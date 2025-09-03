@@ -4,7 +4,7 @@
 <p align="center">
 </p>
 
-<h1 align="center">HEY!.. LISTEN!”</h1>
+<h1 align="center">HEY! LISTEN!”</h1>
 
 <p align="center">
   The <em>world’s first</em> <strong>open-source, multimodal, gamified</strong> job platform built <em>specifically</em> for the video-game industry.
