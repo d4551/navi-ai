@@ -8,12 +8,12 @@
 
 <p align="center">
   The <em>world's first</em> <strong>source-available (noncommercial), multimodal, gamified</strong> job platform built <em>specifically</em> for the video-game industry.<br/>
-  Free. No strings. No gacha. Only jobs.
+  <strong>Version 0.0.1 - Alpha Release</strong> | Free. No strings. No gacha. Only jobs.
 </p>
 
 <p align="center">
   <a href="https://github.com/d4551/navi-ai/releases">
-    <img alt="GitHub release" src="https://img.shields.io/github/release/d4551/navi-ai.svg">
+    <img alt="Version 0.0.1" src="https://img.shields.io/badge/version-0.0.1-orange">
   </a>
   <a href="https://github.com/d4551/navi-ai/blob/main/LICENSE">
     <img alt="License: NaviAI-NCPL-1.1" src="https://img.shields.io/badge/License-NaviAI--NCPL--1.1-blue">
@@ -22,6 +22,9 @@
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/d4551/navi-ai.svg?style=social">
   </a>
   <br/>
+  <a href="#">
+    <img alt="Status: Alpha" src="https://img.shields.io/badge/status-alpha-red">
+  </a>
   <a href="#">
     <img alt="Multimodal AI" src="https://img.shields.io/badge/AI-Multimodal%20(voice%2Fvideo%2Fvision)-purple">
   </a>
@@ -78,40 +81,67 @@ npm run electron-dev
 
 ## 🧭 TL;DR
 
-**NAVI** helps you **find game-industry jobs**, **tailor ATS-ready resumes/CVs**, **run mock interviews with studio personas**, **get career coaching**, **peek studio intel**, and **ship a slick portfolio**—all with **real-time, multimodal Gemini** smarts. It's source-available (noncommercial), local-first, and delightfully opinionated about games. You've never been quite so *Hyrule-hirable*.
+**NAVI v0.0.1** is an early alpha release of the world's first source-available (noncommercial), multimodal, gamified job platform built specifically for the video-game industry. It helps you **find game-industry jobs**, **tailor ATS-ready resumes/CVs**, **run mock interviews with studio personas**, **get career coaching**, **peek studio intel**, and **ship a slick portfolio**—all with **real-time, multimodal Gemini** smarts.
+
+> **⚠️ Alpha Software**: This is an early development version. Expect bugs, incomplete features, and rapid changes. Use at your own risk!
 
 ---
 
-## 🎯 Features
+## ⚠️ Known Issues & Limitations (v0.0.1)
 
-### 🎮 Gaming Career Dashboard with Full AI Integration
+### Current Limitations
+- **AI Features**: Require Google Gemini API key (not included)
+- **Job Data**: Limited to basic job sources and search capabilities
+- **UI Polish**: Interface may have rough edges and inconsistencies
+- **Performance**: May be slow on lower-end hardware
+- **Stability**: Occasional crashes or unexpected behavior possible
 
-**NEW v1.3.0**: Complete gamification system with XP progression, daily missions, and achievement unlocks. Track your career progress with a comprehensive dashboard featuring real-time job matching, AI-powered insights, and personalized recommendations designed specifically for game industry professionals.
+### Missing Features (Coming Soon)
+- Advanced job filtering and search options
+- Complete portfolio builder with media support
+- Mock interview system
+- Gamification and achievements
+- Advanced AI capabilities (voice/video analysis)
 
-### 🤖 AI-Powered Interview Preparation System
+### Recommended Setup
+- Use a modern web browser for best compatibility
+- Ensure stable internet connection for AI features
+- Have Google Gemini API key ready for enhanced functionality
+- Back up important data regularly
 
-**NEW**: Master gaming industry interviews with our comprehensive preparation system featuring AI-generated questions, mock interview simulations, real-time feedback, and performance analytics. Practice with studio-specific personas and get detailed insights on your readiness for different roles.
+---
 
-### 🧠 AI Modal System - Unified Intelligence Interface
+## 📦 Installation
 
-**NEW**: Revolutionary AI assistance system providing context-aware suggestions, real-time analysis, and interactive chat support. The floating AI assistant adapts to your current activity and provides intelligent recommendations throughout your career journey.
+## 🎯 Features (v0.0.1 Alpha)
 
-### 📄 Resume Builder with Real-Time AI Optimization
+> **🚧 Work in Progress**: This alpha release includes core functionality but many features are incomplete or experimental.
 
-**ENHANCED**: Create ATS-optimized resumes with live AI feedback, gaming industry-specific templates, and intelligent content suggestions. Real-time scoring and improvement recommendations ensure your resume stands out to gaming industry recruiters.
+### 🎮 Basic Job Search
+- **Game Industry Focus**: Search for jobs in gaming studios and companies
+- **Basic Filtering**: Filter by location, keywords, and job types
+- **Job Details**: View job descriptions and requirements
 
-### 📊 Provider Health Dashboard
+### � AI Integration (Experimental)
+- **Google Gemini API**: Basic AI chat and assistance
+- **Resume Analysis**: Simple AI-powered resume feedback
+- **Job Matching**: Basic compatibility scoring
 
-**NEW**: Real-time monitoring of all job sources with comprehensive health metrics and automatic failover. Track provider performance, response times, and reliability with visual status indicators.
+### 📄 Document Builder (Basic)
+- **Resume Templates**: Simple resume creation tools
+- **Cover Letter Builder**: Basic cover letter generation
+- **PDF Export**: Generate PDF documents
 
-**Latest Features:**
-- 🟢 **Health Status**: Visual indicators for provider health (healthy/degraded/failed)
-- 📈 **Performance Metrics**: Response times, success rates, and failure tracking
-- 🔄 **Auto-Recovery**: Automatic provider disabling/re-enabling based on health
-- ⚙️ **Provider Management**: Manual reset and enable/disable controls
-- 📊 **System Overview**: Real-time summary of overall system health
+### 🎨 Portfolio (Prototype)
+- **Project Showcase**: Add and display your game development projects
+- **Basic Organization**: Group projects by type and technology
 
-### 🎮 Job Search & Industry Focus
+### ⚙️ Settings & Profile
+- **User Profile**: Basic profile management
+- **AI Configuration**: API key setup for Google Gemini
+- **Preferences**: Basic app settings
+
+> **📋 Roadmap**: See below for planned features in future versions.
 
 **IMPROVED**: Search gaming industry roles with specialized filters for engines (Unity, Unreal, Godot), platforms, and role types. Real-time job aggregation from multiple sources with enhanced error handling and visual feedback.
 
@@ -155,18 +185,31 @@ npm run electron-dev
 
 ---
 
-## 🚀 What's Coming (and why you'll care)
+## 🚀 Roadmap (v0.0.1 → v0.1.0)
 
-- **Game-specific Job Search + Studio Intel**: Target roles across QA, Design, Engineering, Art, Audio, Production, Community, Live Ops—plus studio stacks, engines, and pipelines.
-- **Resume/CV Customizer (ATS-friendly)**: Convert jams, mods, raids, and shipped content into quantified impact bullets for actual hiring humans (and their bots).
-- **Mock Interviews with Studio Personas**: Producer screen? Systems design? Tools engineer? Practice in **real time** with role-aware prompts that already know your resume.
-- **Portfolio Creator (clips, screenshots, write-ups)**: Ship a clean, clickable portfolio for Unity/Unreal/Godot projects, art reels, audio demos, and tech breakdowns.
-- **Coach Mode**: "What should I improve for a gameplay programmer role at Studio X?" Get step-by-step, game-aware guidance.
-- **Multimodal, Real-Time**: Voice in, voice out; video & screen analysis for reviews, whiteboards, and design docs.
-- **Gamified Everything**: XP, streaks, achievements, daily challenges—because the grind should at least be fun.
-- **Free, No Strings**: Bring your own **Google AI Studio** key; generous free tier for personal use. Your data stays on your device. No accounts, no upsells, no loot boxes.
+**Current Status**: NAVI v0.0.1 is a functional alpha with basic job search, AI integration, and document building capabilities.
 
-> **Zelda check:** Hookshot to hired. Boomerang your rejections. Triforce those keywords. Master Sword your bullets. (We contain multitudes.)
+### 🔄 v0.0.2 (Next Release - Bug Fixes & Polish)
+- Fix known bugs and crashes
+- Improve UI/UX consistency
+- Add basic error handling
+- Enhance performance and stability
+
+### 🚀 v0.1.0 (Major Feature Release)
+- **Enhanced Job Search**: Advanced filters, saved searches, job alerts
+- **AI Interview Prep**: Mock interviews with gaming industry scenarios
+- **Portfolio Builder**: Complete project showcase with media support
+- **Gamification**: XP system, achievements, progress tracking
+- **Studio Intelligence**: Company research and culture insights
+
+### 🎯 Future Versions (0.2.0+)
+- **Multimodal AI**: Voice/video/screen analysis capabilities
+- **Advanced Analytics**: Career insights and success metrics
+- **Community Features**: Templates, shared resources
+- **Mobile Support**: Cross-platform compatibility
+- **Integration APIs**: LinkedIn, GitHub, and other platforms
+
+> **🐛 Help Us Improve**: This alpha release needs your feedback! Report bugs and suggest features to help shape NAVI's future.
 
 ---
 
@@ -402,21 +445,23 @@ Want better signal and happier candidates? Open an issue to add your **personas*
 
 ---
 
-## 📈 Recent Updates
+## 📈 Release History
 
-### v1.3.0 - Latest Release
-- ✅ **Complete AI Integration**: Unified AI modal system with context-aware suggestions
-- ✅ **Advanced Gamification**: XP progression, daily missions, and achievement system
-- ✅ **Professional Interview Prep**: AI-powered mock interviews with studio personas
-- ✅ **Smart Resume Builder**: Real-time AI optimization and ATS scoring
-- ✅ **Provider Health Dashboard**: Real-time monitoring of job sources
-- ✅ **Enhanced UI**: Glass-morphism design with consistent theming
+### v0.0.1 - Initial Alpha Release (Current)
+- ✅ **Basic Job Search**: Core job searching functionality for gaming industry
+- ✅ **AI Integration**: Google Gemini API integration for basic assistance
+- ✅ **Document Builder**: Simple resume and cover letter creation
+- ✅ **Portfolio Prototype**: Basic project showcase capabilities
+- ✅ **User Interface**: Functional Vue.js/Electron application
+- ✅ **Local Data Storage**: SQLite database for user data
+- ✅ **Settings Management**: Basic configuration and API key setup
 
-### Previous Updates
-- 🔄 **Job Platform Consolidation**: Unified job search implementation
-- 🎨 **UI Standardization**: Consistent button sizing and design system
-- 📊 **Analytics Integration**: Career progress tracking and insights
-- 🔧 **Performance Improvements**: Optimized loading and rendering
+### Upcoming Releases
+- 🔄 **v0.0.2**: Bug fixes, UI improvements, and stability enhancements
+- 🚀 **v0.1.0**: Major feature additions including gamification, advanced AI, and portfolio builder
+- 🎯 **v0.2.0+**: Multimodal AI, analytics, and community features
+
+> **📝 Development Notes**: This project is in active early development. Features may change rapidly and some functionality may be incomplete or experimental.
 
 ---
 

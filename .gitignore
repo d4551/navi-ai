@@ -63,6 +63,8 @@ playwright-report/
 *.db
 *.sqlite
 *.sqlite3
+*.db-shm
+*.db-wal
 
 # API keys and secrets (additional safety)
 *.key
