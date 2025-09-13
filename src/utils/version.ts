@@ -1,5 +1,6 @@
 import pkg from "../../package.json";
 
+export function getAppVersion(): string {
   const envVersion =
     (typeof process !== "undefined" && process.env.APP_VERSION) ||
     // @ts-ignore - import.meta may not have env in some contexts

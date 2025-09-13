@@ -7,7 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const API_KEY = 'AIzaSyCwnBgU9egOHZ6qcTvK6jaEitPgjpsNso4';
+const API_KEY = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
 // Create a configuration that matches our app's localStorage structure
 const appSettings = {

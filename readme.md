@@ -132,47 +132,6 @@ npm run electron-dev
 - **Cover Letter Builder**: Basic cover letter generation
 - **PDF Export**: Generate PDF documents
 
-### 🎨 Portfolio (Prototype)
-- **Project Showcase**: Add and display your game development projects
-- **Basic Organization**: Group projects by type and technology
-
-### ⚙️ Settings & Profile
-- **User Profile**: Basic profile management
-- **AI Configuration**: API key setup for Google Gemini
-- **Preferences**: Basic app settings
-
-> **📋 Roadmap**: See below for planned features in future versions.
-
-**IMPROVED**: Search gaming industry roles with specialized filters for engines (Unity, Unreal, Godot), platforms, and role types. Real-time job aggregation from multiple sources with enhanced error handling and visual feedback.
-
-**New Features:**
-- 🔍 **Smart Search**: Enhanced fuzzy matching with gaming industry keywords
-- 🤖 **AI Job Matching**: Advanced compatibility algorithm with confidence scoring and detailed reasoning
-- 📊 **Live Data Verification**: Real-time source health monitoring with automatic failover
-- 🎨 **Consistent UI**: Standardized components across all pages with gaming-inspired design
-
-### 📄 AI-Powered Document Builder
-
-**ENHANCED**: Create ATS-optimized resumes and cover letters with comprehensive AI assistance, real-time feedback, gaming industry templates, and intelligent content optimization.
-
-**New AI Features:**
-- 🤖 **Real-time Analysis**: Live content scoring and improvement suggestions
-- 📊 **ATS Optimization**: Automatic keyword analysis and formatting improvements
-- 🎯 **Job Targeting**: Tailor documents to specific job requirements
-- 📈 **Progress Tracking**: Monitor completion status and quality metrics
-
-### 🎨 Portfolio Showcase
-
-**ENHANCED**: Showcase your game projects, contributions, and achievements with multimedia support, AI-powered descriptions, and technology-based organization.
-
-**New Features:**
-- 🤖 **AI Content Enhancement**: Automated project descriptions and achievement highlighting
-- 🎮 **Gaming Project Templates**: Specialized layouts for different types of game development work
-- 📊 **Impact Quantification**: AI-assisted metrics and achievement measurement
-- 🔗 **Smart Linking**: Automatic integration with job applications and resume content
-
-### ⚙️ Settings & AI Configuration
-
 **ENHANCED**: Configure AI features, manage your profile, and customize the experience with comprehensive settings, advanced AI model selection, and privacy controls.
 
 **New AI Features:**

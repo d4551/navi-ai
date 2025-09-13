@@ -6,7 +6,7 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const API_KEY = 'AIzaSyCwnBgU9egOHZ6qcTvK6jaEitPgjpsNso4';
+const API_KEY = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
 async function testGeminiAPI() {
   console.log('🤖 Testing Gemini AI API Key...');
