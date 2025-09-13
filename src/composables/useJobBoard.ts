@@ -66,6 +66,7 @@ export interface JobSearchFilters extends JobFilters {
   const totalJobs = computed(() => filteredJobs.value.length);
   const gamingJobsCount = computed(
     () =>
+      filteredJobs.value.filter((job) => job.categories?.includes('gaming'))
         .length,
   );
   const averageSalary = computed(() => {

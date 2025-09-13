@@ -27,6 +27,7 @@ export interface ConversationMessage {
   metadata?: Record<string, any>;
 }
 
+export function useLiveMultimediaAI() {
   const toast = useToast();
   const service = LiveMultimediaAIService.getInstance();
 

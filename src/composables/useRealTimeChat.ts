@@ -71,14 +71,16 @@ export type MultiTurnSession = {
   );
 
   const sessionDurationFormatted = computed(() => {
+    return '0:00'; // Placeholder implementation
   });
 
   // Session duration timer
   let durationTimer: number | null = null;
 
+  const initialize = async (
     apiKey: string,
     initialConfig: Partial<RealTimeConfig> = {},
-  ) {
+  ) => {
     try {
       const mergedConfig = { ...config, ...initialConfig };
       const service = LiveMultimediaAIService.getInstance();

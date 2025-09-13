@@ -1,9 +1,10 @@
 
-import { refcomputed } from "vue";
+import { ref, computed } from "vue";
 import { aiJobMatchingService } from "@/services/AIJobMatchingService";
 import { useToast } from "@/composables/useToast";
 import { logger } from "@/shared/utils/logger";
 
+export function useAIJobSearch() {
   // Reactive state
   const isSearching = ref(false);
   const searchResults = ref([]);

@@ -399,10 +399,8 @@ Demonstrates the complete live job board implementation with:
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue';
-
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import AppIcon from "@/components/ui/AppIcon.vue";
-import { ref, computedonUnmounted, nextTick } from "vue";
 import { useJobBoard } from "@/composables/useJobBoard";
 import { useUnifiedProfile } from "@/composables/useUnifiedProfile";
 import { realTimeJobService } from "@/services/RealTimeJobService";

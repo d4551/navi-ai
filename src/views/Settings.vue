@@ -1310,10 +1310,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, reactive } from 'vue';
-import { useRouter } from 'vue-router';
-
-import { ref, computed, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from "@/stores/app";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 

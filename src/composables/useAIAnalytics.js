@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { useAIService } from "./useAIService";
 
+export function useAIAnalytics() {
   const { analyzeWithAI } = useAIService();
   const isLoading = ref(false);
   const _error = ref(null);

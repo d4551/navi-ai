@@ -217,7 +217,6 @@ import AppIcon from "@/components/ui/AppIcon.vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-import { refcomputed, watch } from "vue";
 import { useRealTimeSupport } from "@/composables/useRealTimeChat";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import RealTimeChat from "@/components/RealTimeChat.vue";

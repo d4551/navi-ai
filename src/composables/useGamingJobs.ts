@@ -130,6 +130,7 @@ export interface UseGamingJobsOptions {
   });
 
   const topRecommendations = computed(() =>
+    searchResults.value.slice(0, 5)
   );
 
   const marketInsights = computed(() => ({

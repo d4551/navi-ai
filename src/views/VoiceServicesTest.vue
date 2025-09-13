@@ -288,7 +288,6 @@ import AppIcon from "@/components/ui/AppIcon.vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import UiChip from "@/components/ui/UiChip.vue";
-import { ref} from "vue";
 import { useToast } from "@/composables/useToast";
 import { useLiveMultimediaAI } from "@/composables/useLiveMultimediaAI";
 import {

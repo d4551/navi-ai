@@ -64,9 +64,8 @@ import type {
       ([category, skills]) => ({
         category,
         count: skills.length,
-        avgConfidence:
-        score:
-              skills.length)) /
+        avgConfidence: skills.reduce((sum, skill) => sum + skill.confidence, 0) / skills.length,
+        score: skills.reduce((sum, skill) => sum + skill.confidence, 0) / skills.length
       }),
     );
     return categoryScores.sort((a, b) => b.score - a.score);

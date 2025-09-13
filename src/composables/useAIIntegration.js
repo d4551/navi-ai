@@ -1,11 +1,12 @@
 
-import { refgetCurrentInstance, computed, watch } from "vue";
+import { ref, getCurrentInstance, computed, watch } from "vue";
 import { useAppStore } from "@/stores/app";
 import { useRouter, useRoute } from "vue-router";
 import { aiService } from "@/shared/services/AIService";
 import { logger } from "@/shared/utils/logger";
 import { useToast } from "@/composables/useToast";
 
+export function useAIIntegration() {
   const store = useAppStore();
   // Safely resolve router/route only when inside a component instance
   const vm = getCurrentInstance();
