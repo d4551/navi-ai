@@ -119,10 +119,12 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { ref, computed, watch } from 'vue';
+
+import { computedwatch } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-const props = defineProps({
+const _props = defineProps({
   currentPage: {
     type: Number,
     default: 1,
@@ -149,7 +151,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:currentPage", "update:itemsPerPage"]);
+const _emit = defineEmits(["update:currentPage", "update:itemsPerPage"]);
 
 // Jump page input
 const jumpPage = ref(props.currentPage);

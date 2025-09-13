@@ -168,7 +168,7 @@ export class DatabaseJobService {
         `Database job import completed: ${result.imported}/${result.total} successful in ${result.duration}ms`,
       );
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Database job import failed:", error);
       result.errors.push(`System error: ${error.message}`);
       result.duration = Date.now() - startTime;
@@ -278,7 +278,7 @@ export class DatabaseJobService {
           lastImport: stats.lastUpdated,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Health check failed:", error);
       return {
         status: "error",

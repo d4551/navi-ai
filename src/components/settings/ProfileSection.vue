@@ -557,6 +557,8 @@
 </template>
 
 <script setup>
+import { ref, computed, watch } from 'vue';
+
 import { computed, ref, watch } from "vue";
 import { useAppStore } from "@/stores/app";
 import { useToast } from "@/composables/useToast";
@@ -564,7 +566,7 @@ import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   userProfile: {
     type: Object,
     default: () => ({
@@ -582,7 +584,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits(["save", "profile-preview", "profile-update", "profile-reset"]);
+const _emit = defineEmits(["save", "profile-preview", "profile-update", "profile-reset"]);
 
 // Store
 const store = useAppStore();
@@ -687,7 +689,7 @@ const autoFillSuggestions = async () => {
       emit("profile-update", suggestions);
       toast.success("Profile suggestions applied");
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Auto-fill failed:", error);
     toast.error("Failed to generate profile suggestions");
   }

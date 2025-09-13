@@ -294,9 +294,9 @@ export function validateData<T>(
   errors?: z.ZodIssue[];
 } {
   try {
-    const result = schema.parse(data);
+    const result = schema.parse(_data);
     return { success: true, data: result };
-  } catch (error) {
+  } catch (_error) {
     if (error instanceof z.ZodError) {
       return {
         success: false,

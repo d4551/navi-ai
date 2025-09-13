@@ -108,7 +108,7 @@ export class CanonicalAIService {
       return { success: true, content: text, timestamp: new Date() };
     } catch (e: any) {
       logger.error("AI text generation failed:", e);
-      return { success: false, error: e?.message || String(e), timestamp: new Date() };
+      return { success: false, error: e?.message || String(_e), timestamp: new Date() };
     }
   }
 
@@ -125,7 +125,7 @@ export class CanonicalAIService {
       return { success: true, content: text, timestamp: new Date() };
     } catch (e: any) {
       logger.error("AI multimodal generation failed:", e);
-      return { success: false, error: e?.message || String(e), timestamp: new Date() };
+      return { success: false, error: e?.message || String(_e), timestamp: new Date() };
     }
   }
 
@@ -142,7 +142,7 @@ export class CanonicalAIService {
                 controller.enqueue(chunk.text());
               }
               controller.close();
-            } catch (err) {
+            } catch (_err) {
               controller.error(err);
             }
           })();
@@ -151,7 +151,7 @@ export class CanonicalAIService {
       return { success: true, stream };
     } catch (e: any) {
       logger.error("AI streaming failed:", e);
-      return { success: false, error: e?.message || String(e) };
+      return { success: false, error: e?.message || String(_e) };
     }
   }
 
@@ -160,10 +160,10 @@ export class CanonicalAIService {
     this.conversationHistory.set(sessionId, []);
     try {
       if (options.enableAudio || options.enableVideo) {
-        await this.initializeMediaCapabilities(options);
+        await this.initializeMediaCapabilities(_options);
       }
       options.onConnect?.();
-    } catch (e) {
+    } catch (_e) {
       logger.warn('Media capabilities init failed', e as any);
     }
     return { success: true, sessionId };

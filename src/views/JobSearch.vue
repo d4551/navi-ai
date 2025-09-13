@@ -1288,7 +1288,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import type { NormalizedStudio } from '@/types/studio';
+import { JobRepository } from '@/services/JobRepository';
+import { GAMING_STUDIOS } from '@/data/gaming-studios';
+import { normalizeStudio } from '@/utils/studio-utils';
+import { fuzzyMatchStudios } from '@/utils/search-utils';
+import { buildNormalizedStudios } from '@/utils/studio-utils';
+import { buildTokenIndex } from '@/utils/search-utils';
+import { seedStudiosIfEmpty } from '@/utils/studio-utils';
+// currentJobs should be defined as reactive data
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref, computed, watch } from "vue";
 import { useAppStore } from "@/stores/app";
 import { formatRelativeDate } from "@/utils/date";
 import { useToast } from "@/composables/useToast";
@@ -1333,7 +1345,7 @@ import type {
 } from "@/shared/types/jobs";
 
 // Reactive state
-const router = useRouter();
+const _router = useRouter();
 const store = useAppStore();
 const gService = new (GamificationService as any)(store);
 const { toast } = useToast();
@@ -1798,7 +1810,7 @@ const toggleSaveJob = async (job: Job): Promise<void> => {
     // Remove from database
     try {
       await JobRepository.unsaveJob(job.id);
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to unsave job in database:", error);
     }
   } else {
@@ -1811,7 +1823,7 @@ const toggleSaveJob = async (job: Job): Promise<void> => {
       await JobRepository.saveJob(job.id);
       // Also ensure the job exists in the repository
       await JobRepository.create(job);
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to save job in database:", error);
     }
   }
@@ -2012,7 +2024,7 @@ const aiRecommendJobs = async () => {
     });
 
     showAIRecommendations.value = true;
-  } catch (error) {
+  } catch (_error) {
     console.error("AI recommendation failed:", error);
     toast({
       title: "AI Recommendation Failed",
@@ -2052,7 +2064,7 @@ const analyzeJobWithAI = async (
     }
 
     showAIModal.value = true;
-  } catch (error) {
+  } catch (_error) {
     console.error("AI analysis failed:", error);
     toast({
       title: "AI Analysis Failed",
@@ -2087,7 +2099,7 @@ const performSmartSearch = async (query: string) => {
       description: `Found ${result.jobs.length} jobs with AI-powered matching`,
       type: "success",
     });
-  } catch (error) {
+  } catch (_error) {
     console.error("Smart search failed:", error);
     toast({
       title: "Smart Search Failed",
@@ -2118,11 +2130,11 @@ const parseNaturalLanguageQuery = async (
 
   // Extract experience level
   if (queryLower.includes("senior")) {
-    filters.experienceLevel = "senior";
+    filters.experience = "senior";
   } else if (queryLower.includes("junior") || queryLower.includes("entry")) {
-    filters.experienceLevel = "entry";
+    filters.experience = "entry";
   } else if (queryLower.includes("lead") || queryLower.includes("principal")) {
-    filters.experienceLevel = "lead";
+    filters.experience = "lead";
   }
 
   // Extract job type
@@ -2195,7 +2207,7 @@ const refreshJobs = async () => {
     const result = await refactoredJobAPIService.searchJobs(filters);
     jobResults.value = result.jobs;
     toast.success(`Found ${result.totalFound} jobs`);
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to refresh jobs:", error);
     toast.error("Failed to refresh jobs");
   } finally {
@@ -2215,7 +2227,7 @@ const refreshJobs = async () => {
       location: filters.location || '',
       remote: filters.remote,
       jobType: filters.type || filters.jobType,
-      experienceLevel: filters.experience || filters.experienceLevel,
+      experienceLevel: filters.experience || filters.experience,
       salaryRange: filters.salaryMin || filters.salaryMax ? {
         min: filters.salaryMin,
         max: filters.salaryMax
@@ -2235,7 +2247,7 @@ const refreshJobs = async () => {
             cached: true,
             cachedAt: new Date().toISOString()
           }))
-        } catch (error) {
+        } catch (_error) {
           console.debug('Job storage failed:', job.id, error)
         }
       }
@@ -2248,7 +2260,7 @@ const refreshJobs = async () => {
       errors: result.errors,
       processingTime: result.processingTime
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Job search failed:', error)
     // Fallback to mock results if API fails
     return await getMockJobResults(filters)
@@ -2261,7 +2273,7 @@ const refreshJobs = async () => {
       company: 'Epic Games',
       location: filters.location === 'remote' ? 'Remote' : 'Cary, NC',
       type: filters.roleType || 'full-time',
-      experience: filters.experienceLevel || 'mid',
+      experience: filters.experience || 'mid',
       description: 'Join our team building the next generation of gaming experiences.',
       posted: new Date().toISOString(),
       source: 'mock'
@@ -2281,7 +2293,7 @@ const refreshJobs = async () => {
       company: 'Blizzard Entertainment', 
       location: filters.location === 'remote' ? 'Remote' : 'Irvine, CA',
       type: filters.roleType || 'full-time',
-      experience: filters.experienceLevel || 'mid',
+      experience: filters.experience || 'mid',
       description: 'Bridge the gap between art and technology in game development.',
       posted: new Date().toISOString(),
       source: 'mock'
@@ -2293,7 +2305,7 @@ const refreshJobs = async () => {
     if (filters.query && !job.title.toLowerCase().includes(filters.query.toLowerCase())) {
       return false
     }
-    if (filters.experienceLevel && job.experience !== filters.experienceLevel) {
+    if (filters.experience && job.experience !== filters.experience) {
       return false
     }
     if (filters.roleType && job.type !== filters.roleType) {
@@ -2425,7 +2437,7 @@ const performSearch = async (searchData: {
     toast.success(
       `AI analysis complete! Found ${topMatchesCount} high-match opportunities`,
     );
-  } catch (error) {
+  } catch (_error) {
     console.error("AI recommendation failed:", error);
     toast.error("AI recommendation temporarily unavailable");
   } finally {
@@ -2455,7 +2467,7 @@ const saveSearch = (searchData: {
     });
     localStorage.setItem(LS_KEYS.savedSearches, JSON.stringify(saved));
     toast.success("Search saved");
-  } catch (e) {
+  } catch (_e) {
     console.warn("Failed saving search", e);
   }
 };
@@ -2606,7 +2618,7 @@ const initializeJobSources = async () => {
         (s) => `${s.name} (${s.enabled ? "enabled" : "disabled"})`,
       ),
     });
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load job sources:", error);
   }
 };
@@ -2691,14 +2703,14 @@ const LS_KEYS = {
     if (saved) {
       savedJobs.value = JSON.parse(saved);
     }
-  } catch (e) {
+  } catch (_e) {
     console.warn("Failed to load persisted job search data", e);
   }
 }
 
   try {
     localStorage.setItem(key, JSON.stringify(value));
-  } catch (e) {
+  } catch (_e) {
     console.debug("Persist failed for", key, e);
   }
 }
@@ -2719,7 +2731,7 @@ const loadSavedJobsFromDB = async () => {
     // Load recent jobs from repository to populate jobResults
     const recentJobs = await JobRepository.getAll();
     }
-  } catch (error) {
+  } catch (_error) {
     console.warn("Failed to load jobs from database:", error);
     // Fallback to localStorage-based loading
     loadSavedJobs();
@@ -2761,7 +2773,7 @@ onMounted(async () => {
       studioTokenIndex.value = buildTokenIndex(normalized);
       normalizedStudioList.value = normalized;
     } catch {}
-  } catch (e) {
+  } catch (_e) {
     console.warn("Studio normalization/import failed", e);
   }
 });

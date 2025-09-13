@@ -389,6 +389,9 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
@@ -410,7 +413,7 @@ import CompactGamifyHUD from "@/components/CompactGamifyHUD.vue";
 import aiInterviewService from "@/services/AIInterviewService";
 
 const route = useRoute();
-const router = useRouter();
+const _router = useRouter();
 const { isDark: _isDark } = useUnifiedTheme();
 const store = useAppStore();
 const { setPageContext, clearPageContext } = usePageAssistantContext();
@@ -500,7 +503,7 @@ async function loadSession() {
     // Restore draft for this question if saved
     restoreDraft();
     startTimers();
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load session:", error);
     router.push("/interview-prep");
   }
@@ -570,7 +573,7 @@ async function endSession() {
   try {
     await aiInterviewService.endSession(session.value.id);
     router.push("/interview-prep");
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to end session:", error);
   }
 }
@@ -602,7 +605,7 @@ async function submitResponse() {
     setTimeout(() => {
       nextQuestion();
     }, 2000);
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to submit response:", error);
   } finally {
     isSubmitting.value = false;
@@ -637,7 +640,7 @@ watch(currentQuestionIndex, () => {
 });
 
 // Keyboard shortcuts
-function onKeydown(e) {
+function onKeydown(_e) {
   const tag =
     e.target && e.target.tagName ? String(e.target.tagName).toLowerCase() : "";
   const typing = tag === "input" || tag === "textarea";
@@ -698,7 +701,7 @@ async function nextQuestion() {
     responseText.value = "";
     responseTime.value = 0;
     currentFeedback.value = null;
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to get next question:", error);
   }
 }
@@ -722,7 +725,7 @@ function onRecordingStop() {
   isRecording.value = false;
 }
 
-function onRecordingError(error) {
+function onRecordingError(_error) {
   console.error("Recording error:", error);
   isRecording.value = false;
 }

@@ -344,6 +344,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import { ref, computed, watch } from "vue";
 import { useToast } from "@/composables/useToast";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -378,14 +380,14 @@ interface PerformanceTip {
   action: string;
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   documentContent: any;
   jobDescription?: string;
   aiEnabled?: boolean;
   isFloating?: boolean;
 }>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "apply-suggestion": [suggestion: ContentSuggestion];
   "apply-writing-fix": [suggestion: WritingSuggestion];
   "apply-tip": [tip: PerformanceTip];
@@ -566,7 +568,7 @@ async function generateSuggestions() {
 
     // In real implementation, this would call your AI service
     toast.success("Content analysis complete");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to generate suggestions");
   } finally {
     isGeneratingSuggestions.value = false;

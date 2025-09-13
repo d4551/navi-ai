@@ -112,12 +112,12 @@
 </template>
 
 <script lang="ts">
+import { ref, onMounted } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 import {
-  ref,
-  onMounted,
-  onUnmounted,
+  refonUnmounted,
   defineEmits,
   withDefaults,
   defineProps,
@@ -131,13 +131,13 @@ interface Props {
   enableVisualEffects?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   enableSounds: true,
   enableVisualEffects: true,
 });
 
 // Emits
-const emit = defineEmits(["easter-egg-found", "achievement-unlocked"]);
+const _emit = defineEmits(["easter-egg-found", "achievement-unlocked"]);
 
 // Reactive state
 const showSecretMenu = ref(false);

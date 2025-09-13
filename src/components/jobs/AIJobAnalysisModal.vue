@@ -634,6 +634,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import { ref, computed, watch } from 'vue'
 import type { Job } from '@/shared/types/jobs'
 import type { AIJobMatch, SalaryPrediction, AIJobInsights } from '@/services/AIJobService'
@@ -671,12 +673,12 @@ interface MarketInsightData {
   }>
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   show: false,
   mode: 'match'
 })
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   'update:show': [value: boolean]
   'analyze': [job: Job, mode: 'match' | 'salary' | 'insights']
   'close': []
@@ -793,7 +795,7 @@ const generateMarketInsights = async () => {
 
     // Generate realistic market data based on job requirements
     marketData.value = generateMarketData(props.job)
-  } catch (error) {
+  } catch (_error) {
     console.error('Failed to fetch market data:', error)
     // Fallback data in case of error
     marketData.value = getDefaultMarketData()

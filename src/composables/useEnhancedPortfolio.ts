@@ -107,7 +107,7 @@ export interface AIPortfolioSuggestion {
   const shareables = ref<ShareablePortfolio[]>([]);
   const aiSuggestions = ref<AIPortfolioSuggestion[]>([]);
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const _error = ref<string | null>(null);
 
   // Persistence
   const savedTemplates = useStorage(
@@ -199,7 +199,7 @@ export interface AIPortfolioSuggestion {
       if (userPreferences.value.aiAssistance && isAIConfigured.value) {
         await generateAISuggestions();
       }
-    } catch (err) {
+    } catch (_err) {
       error.value =
         err instanceof Error ? err.message : "Failed to load portfolio";
       logger.error("Failed to load portfolio:", err);
@@ -434,7 +434,7 @@ export interface AIPortfolioSuggestion {
       }
 
       throw new Error("Failed to generate template with AI");
-    } catch (err) {
+    } catch (_err) {
       logger.error("AI template generation failed:", err);
       throw err;
     }
@@ -457,7 +457,7 @@ export interface AIPortfolioSuggestion {
 
       logger.info("Project created:", project.title);
       return project;
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to create project:", err);
       throw err;
     }
@@ -477,7 +477,7 @@ export interface AIPortfolioSuggestion {
       }
 
       return project;
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to update project:", err);
       throw err;
     }
@@ -493,7 +493,7 @@ export interface AIPortfolioSuggestion {
       );
 
       logger.info("Project deleted:", projectId);
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to delete project:", err);
       throw err;
     }
@@ -527,7 +527,7 @@ export interface AIPortfolioSuggestion {
       if (response?.suggestions) {
         aiSuggestions.value = response.suggestions;
       }
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to generate AI suggestions:", err);
     }
   }
@@ -555,7 +555,7 @@ export interface AIPortfolioSuggestion {
       );
 
       return response?.text || response?.data?.description || "";
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to generate project description:", err);
       throw err;
     }
@@ -645,7 +645,7 @@ export interface AIPortfolioSuggestion {
       if (userPreferences.value.autoSave && newPortfolio) {
         try {
           await PortfolioRepository.update(newPortfolio);
-        } catch (err) {
+        } catch (_err) {
           logger.error("Auto-save failed:", err);
         }
       }

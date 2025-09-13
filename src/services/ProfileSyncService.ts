@@ -76,7 +76,7 @@ export class ProfileSyncService extends EventEmitter {
         const event = this.syncQueue.shift()!;
         await this.processSyncEvent(event);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error processing sync queue:", error);
     } finally {
       this.isProcessing = false;
@@ -98,7 +98,7 @@ export class ProfileSyncService extends EventEmitter {
 
       try {
         await this.processSingleTarget(target, event);
-      } catch (error) {
+      } catch (_error) {
         logger.error(`Sync failed for target ${target.name}:`, error);
         this.emit("sync-error", { target: target.id, event, error });
       }
@@ -124,7 +124,7 @@ export class ProfileSyncService extends EventEmitter {
         event: event.type,
         duration,
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to sync ${target.name}:`, error);
       throw error;
     }
@@ -207,7 +207,7 @@ export class ProfileSyncService extends EventEmitter {
 
           // Trigger re-matching for saved jobs
           this.emit("jobs-profile-updated", { preferences: jobPrefs });
-        } catch (error) {
+        } catch (_error) {
           logger.error("Job system sync failed:", error);
           throw error;
         }
@@ -235,7 +235,7 @@ export class ProfileSyncService extends EventEmitter {
           }
 
           this.emit("ai-profile-updated", { context: aiContext });
-        } catch (error) {
+        } catch (_error) {
           logger.error("AI system sync failed:", error);
           throw error;
         }
@@ -262,7 +262,7 @@ export class ProfileSyncService extends EventEmitter {
           }
 
           this.emit("studios-profile-updated", { preferences: studioPrefs });
-        } catch (error) {
+        } catch (_error) {
           logger.error("Studio system sync failed:", error);
           throw error;
         }
@@ -284,7 +284,7 @@ export class ProfileSyncService extends EventEmitter {
           await unifiedStorage.setItem("portfolio-needs-regeneration", true);
 
           this.emit("portfolio-profile-updated", { data: portfolioData });
-        } catch (error) {
+        } catch (_error) {
           logger.error("Portfolio system sync failed:", error);
           throw error;
         }
@@ -306,7 +306,7 @@ export class ProfileSyncService extends EventEmitter {
           await unifiedStorage.setItem("resume-templates-outdated", true);
 
           this.emit("resume-profile-updated", { data: resumeData });
-        } catch (error) {
+        } catch (_error) {
           logger.error("Resume system sync failed:", error);
           throw error;
         }
@@ -325,7 +325,7 @@ export class ProfileSyncService extends EventEmitter {
           await unifiedStorage.setItem("user-preferences", preferences);
 
           this.emit("settings-profile-updated", { preferences });
-        } catch (error) {
+        } catch (_error) {
           logger.error("Settings system sync failed:", error);
           throw error;
         }

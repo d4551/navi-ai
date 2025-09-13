@@ -194,6 +194,8 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+
 import { ref, computed, defineEmits, defineProps } from "vue";
 import { useToast } from "@/composables/useToast";
 import { useAppStore } from "@/stores/app";
@@ -206,7 +208,7 @@ const _props = defineProps({
   },
 });
 
-const emit = defineEmits(["model-selected", "models-loaded"]);
+const _emit = defineEmits(["model-selected", "models-loaded"]);
 
 const _toast = useToast();
 const activeCategory = ref("recommended");

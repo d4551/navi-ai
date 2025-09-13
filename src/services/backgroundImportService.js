@@ -28,7 +28,7 @@ const NORMALIZATION_SCHEMAS = {
       "education",
       "skills",
     ],
-    transform: (data) => ({
+    transform: (_data) => ({
       ...data,
       id: data.id || generateId(),
       updatedAt: new Date().toISOString(),
@@ -44,18 +44,18 @@ const NORMALIZATION_SCHEMAS = {
       "description",
       "requirements",
     ],
-    transform: (data) => ({
+    transform: (_data) => ({
       ...data,
       id: data.id || generateId(),
       normalized: true,
       importedAt: new Date().toISOString(),
-      matchScore: calculateJobMatchScore(data),
+      matchScore: calculateJobMatchScore(_data),
     }),
   },
   portfolio: {
     requiredFields: ["name", "type"],
     optionalFields: ["description", "technologies", "images", "url", "github"],
-    transform: (data) => ({
+    transform: (_data) => ({
       ...data,
       id: data.id || generateId(),
       featured: data.featured || false,
@@ -65,7 +65,7 @@ const NORMALIZATION_SCHEMAS = {
   interviews: {
     requiredFields: ["date", "company"],
     optionalFields: ["position", "interviewer", "feedback", "outcome", "notes"],
-    transform: (data) => ({
+    transform: (_data) => ({
       ...data,
       id: data.id || generateId(),
       status: data.status || "completed",
@@ -83,9 +83,9 @@ const NORMALIZATION_SCHEMAS = {
       "contact",
       "socialMedia",
     ],
-    transform: async (data) => {
+    transform: async (_data) => {
       // Use studio data cleaner for comprehensive processing
-      const cleanedData = cleanAndStructureStudioData(data);
+      const cleanedData = cleanAndStructureStudioData(_data);
       const enrichedData = await enrichStudioData(cleanedData);
       const validatedData = validateStudioData(enrichedData);
 
@@ -129,7 +129,7 @@ const NORMALIZATION_SCHEMAS = {
     if (typeof rawData === "string") {
       try {
         parsedData = JSON.parse(rawData);
-      } catch (e) {
+      } catch (_e) {
         // Try CSV parsing for job data
         if (dataType === "jobs") {
           parsedData = parseCSV(rawData);
@@ -167,7 +167,7 @@ const NORMALIZATION_SCHEMAS = {
       success: true,
       data: result,
     };
-  } catch (error) {
+  } catch (_error) {
     logger.error("Import error:", error, "BackgroundImportService");
     importStatus.errors.push({
       timestamp: new Date().toISOString(),
@@ -240,7 +240,7 @@ export class BackgroundRefreshService {
       await this.updateLocalCache();
 
       // Background refresh completed
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "Background refresh failed:",
         error,
@@ -261,7 +261,7 @@ export class BackgroundRefreshService {
         try {
           const jobs = await fetchJobsFromSource(source);
           freshJobs.push(...jobs);
-        } catch (error) {
+        } catch (_error) {
           logger.warn(
             `Failed to refresh jobs from ${source}:`,
             error,
@@ -278,7 +278,7 @@ export class BackgroundRefreshService {
 
         // Job listings refreshed
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Job refresh error:", error, "BackgroundRefreshService");
     }
   }
@@ -305,7 +305,7 @@ export class BackgroundRefreshService {
 
         // Analytics updated
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "Portfolio analytics refresh error:",
         error,
@@ -326,7 +326,7 @@ export class BackgroundRefreshService {
             // Re-enrich with fresh data (social media metrics, job postings, etc.)
             const enrichedStudio = await enrichStudioData(studio);
             refreshedStudios.push(enrichedStudio);
-          } catch (error) {
+          } catch (_error) {
             logger.warn(
               `Failed to refresh studio data for ${studio.name}:`,
               error,
@@ -344,7 +344,7 @@ export class BackgroundRefreshService {
           // Studio data refreshed
         }
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Studio data refresh error:", error);
     }
   }
@@ -360,7 +360,7 @@ export class BackgroundRefreshService {
       };
 
       localStorage.setItem("gemini-cv-cache", JSON.stringify(cacheData));
-    } catch (error) {
+    } catch (_error) {
       console.error("Cache update error:", error);
     }
   }
@@ -393,22 +393,22 @@ export const backgroundRefreshService = new BackgroundRefreshService();
 
   // Handle async transformations (like studios)
   if (dataType === "studios") {
-    if (Array.isArray(data)) {
+    if (Array.isArray(_data)) {
       const results = [];
       for (const item of data) {
         results.push(await schema.transform(item));
       }
       return results;
     } else {
-      return await schema.transform(data);
+      return await schema.transform(_data);
     }
   }
 
   // Standard synchronous transformations
-  if (Array.isArray(data)) {
+  if (Array.isArray(_data)) {
     return data.map((item) => schema.transform(item));
   } else {
-    return schema.transform(data);
+    return schema.transform(_data);
   }
 }
 
@@ -427,10 +427,10 @@ export const backgroundRefreshService = new BackgroundRefreshService();
     return item;
   };
 
-  if (Array.isArray(data)) {
+  if (Array.isArray(_data)) {
     return data.map(validate);
   } else {
-    return validate(data);
+    return validate(_data);
   }
 }
 
@@ -438,7 +438,7 @@ export const backgroundRefreshService = new BackgroundRefreshService();
   while (attempts < maxAttempts) {
     try {
       // Use IPC to store data
-      const result = await window.electronAPI?.portfolio?.import?.(data);
+      const result = await window.electronAPI?.portfolio?.import?.(_data);
 
       if (!result?.success) {
         const errorDetails = result?.error || "Unknown error";
@@ -450,7 +450,7 @@ export const backgroundRefreshService = new BackgroundRefreshService();
       logger.info(
       );
       return result.data;
-    } catch (error) {
+    } catch (_error) {
       attempts++;
 
       if (attempts >= maxAttempts) {
@@ -479,10 +479,10 @@ export const backgroundRefreshService = new BackgroundRefreshService();
           if (options.merge && Array.isArray(existingData)) {
             finalData = mergeData(
               existingData,
-              Array.isArray(data) ? data : [data],
+              Array.isArray(_data) ? data : [data],
             );
           } else {
-            finalData = Array.isArray(data) ? data : [data];
+            finalData = Array.isArray(_data) ? data : [data];
           }
 
           // Validate data size before storing
@@ -530,16 +530,16 @@ export const backgroundRefreshService = new BackgroundRefreshService();
     // Try multiple matching strategies for better deduplication
 
     if (item.id) {
-      existingIndex = merged.findIndex((e) => e.id === item.id);
+      existingIndex = merged.findIndex((_e) => e.id === item.id);
     }
 
-      existingIndex = merged.findIndex((e) => e.email === item.email);
+      existingIndex = merged.findIndex((_e) => e.email === item.email);
     }
 
-      existingIndex = merged.findIndex((e) => e.name === item.name);
+      existingIndex = merged.findIndex((_e) => e.name === item.name);
     }
 
-      existingIndex = merged.findIndex((e) => e.url === item.url);
+      existingIndex = merged.findIndex((_e) => e.url === item.url);
     }
 
       // Update existing with merge strategy
@@ -609,7 +609,7 @@ export const backgroundRefreshService = new BackgroundRefreshService();
       );
       const data = await response.json();
     }
-  } catch (error) {
+  } catch (_error) {
     logger.warn(
       "Failed to fetch GitHub stars:",
       error,

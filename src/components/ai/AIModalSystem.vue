@@ -413,7 +413,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+
+import { ref, computed, watch, nextTick} from "vue";
 import { useAIContext } from "@/composables/useAIContext";
 import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { logger } from "@/shared/utils/logger";
@@ -427,11 +429,11 @@ interface Props {
   targetJob?: any;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   contextType: "resume",
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   suggestionApplied: [suggestion: any];
   suggestionDismissed: [suggestionId: string];
   analysisGenerated: [analysis: any];
@@ -493,7 +495,7 @@ const initializeContext = async () => {
         props.contextId,
         props.targetJob,
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize AI context:", error);
     }
   }
@@ -507,7 +509,7 @@ const applySuggestion = async (suggestionId: string) => {
       "suggestionApplied",
       activeSuggestions.value.find((s) => s.id === suggestionId),
     );
-  } catch (error) {
+  } catch (_error) {
     logger.error("Failed to apply suggestion:", error);
   } finally {
     processingAction.value = null;
@@ -524,7 +526,7 @@ const generateAnalysis = async () => {
 
   try {
     await aiContext.generateContextActions(currentContext.value);
-  } catch (error) {
+  } catch (_error) {
     logger.error("Failed to generate analysis:", error);
   }
 };
@@ -534,7 +536,7 @@ const refreshSuggestions = async () => {
 
   try {
     await aiContext.generateContextActions(currentContext.value);
-  } catch (error) {
+  } catch (_error) {
     logger.error("Failed to refresh suggestions:", error);
   }
 };
@@ -584,7 +586,7 @@ const sendMessage = async () => {
         }
       });
     }, 2000);
-  } catch (error) {
+  } catch (_error) {
     logger.error("Failed to send message:", error);
     isTyping.value = false;
     isSendingMessage.value = false;

@@ -380,7 +380,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed } from 'vue';
+
+import { refwatch } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import UiChip from "@/components/ui/UiChip.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -393,14 +395,14 @@ interface Props {
   similarJobs?: Array<any>;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   show: false,
   job: null,
   similarJobs: () => [],
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "update:show",
   "job-applied",
   "job-saved",
@@ -433,7 +435,7 @@ const handleApply = async () => {
     emit("job-applied", props.job);
     toastService.success(`Application submitted for ${props.job.title}!`);
     closeModal();
-  } catch (error) {
+  } catch (_error) {
     toastService.error("Application failed: " + error.message);
   } finally {
     applying.value = false;

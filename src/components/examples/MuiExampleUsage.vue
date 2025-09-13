@@ -138,7 +138,9 @@
 </template>
 
 <script>
-import { ref, onMounted, reactive, computed } from "vue";
+import { ref, computed, onMounted, reactive } from 'vue';
+
+import { refreactive} from "vue";
 import {
   UnifiedButton,
   Card,
@@ -211,7 +213,7 @@ export default {
           (_data) => {
             console.log("Primary action completed successfully");
           },
-          (error) => {
+          (_error) => {
             console.error("Primary action failed:", error);
           },
         );
@@ -247,7 +249,7 @@ export default {
         serviceStatus.value = `Connected (${availableServices.value.length} services)`;
 
         console.log("Services refreshed:", availableServices.value);
-      } catch (error) {
+      } catch (_error) {
         serviceStatus.value = "Connection failed";
         console.error("Service refresh failed:", error);
       } finally {
@@ -273,7 +275,7 @@ export default {
 
 
         setTimeout(() => clearInterval(progressInterval), 10000);
-      } catch (error) {
+      } catch (_error) {
         console.error("Initialization failed:", error);
       } finally {
         isLoading.value = false;

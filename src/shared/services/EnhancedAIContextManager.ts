@@ -179,7 +179,7 @@ class EnhancedAIContextManager {
         // Update system message
         const systemMsg = context.messages.find((m) => m.role === "system");
         if (systemMsg) {
-          systemMsg.content = this.buildSystemPrompt(context);
+          systemMsg.content = this.buildSystemPrompt(_context);
         }
       }
     }
@@ -205,7 +205,7 @@ class EnhancedAIContextManager {
     try {
       // Prepare enhanced prompt with context
       const enhancedPrompt = this.buildEnhancedPrompt(
-        context,
+        _context,
         message,
         options,
       );
@@ -216,7 +216,7 @@ class EnhancedAIContextManager {
 
       const response = await ai.streamCompletion({
         message: enhancedPrompt,
-        context: this.getContextSummary(context),
+        context: this.getContextSummary(_context),
         metadata: {
           domain: context.domain,
           topic: context.topic,
@@ -241,7 +241,7 @@ class EnhancedAIContextManager {
       });
 
       return enhancedResponse;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error generating contextual response:", error);
 
       // Fallback response
@@ -350,10 +350,10 @@ ACTIONS:
     }
 
     // Generate follow-up questions based on domain
-    const followUpQuestions = this.generateFollowUpQuestions(context);
+    const followUpQuestions = this.generateFollowUpQuestions(_context);
 
     // Generate related topics
-    const relatedTopics = this.generateRelatedTopics(context, aiResponse);
+    const relatedTopics = this.generateRelatedTopics(_context, aiResponse);
 
     // Clean response (remove action markers)
     const cleanContent = aiResponse
@@ -519,7 +519,7 @@ ACTIONS:
         );
         this.contexts.value = validContexts;
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to load stored contexts:", error);
     }
   }
@@ -530,7 +530,7 @@ ACTIONS:
         "navi_ai_contexts",
         JSON.stringify(this.contexts.value),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to save contexts:", error);
     }
   }
@@ -561,7 +561,7 @@ ACTIONS:
 
   switchToContext(id: string): boolean {
     const context = this.getContextById(id);
-    if (context) {
+    if (_context) {
       this.activeContext.value = context;
       context.lastActivity = Date.now();
       return true;

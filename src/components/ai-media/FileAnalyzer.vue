@@ -27,7 +27,7 @@
           accept="image/*,video/*"
           @change="onFileChange"
         />
-        <div v-if="error" class="error">{{ error }}</div>
+        <div v-if="error" class="error">{{ _error }}</div>
       </div>
 
       <div v-if="previewUrl" class="preview glass-surface">
@@ -112,6 +112,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { ref, onUnmounted } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -125,13 +127,13 @@ interface AIResponseItem {
   confidence?: number;
 }
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "ai-response": [response: AIResponseItem];
   "frame-captured": [dataUrl: string];
   error: [message: string];
 }>();
 
-const props = withDefaults(
+const _props = withDefaults(
   defineProps<{
     modePrompt?: string;
   }>(),
@@ -144,7 +146,7 @@ const isVideo = ref(false);
 const videoEl = ref<HTMLVideoElement | null>(null);
 const imgEl = ref<HTMLImageElement | null>(null);
 const busy = ref(false);
-const error = ref("");
+const _error = ref("");
 const responses = ref<AIResponseItem[]>([]);
 const autoAnalyze = ref(false);
 const intervalSec = ref(3);

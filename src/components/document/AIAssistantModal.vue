@@ -227,26 +227,30 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick, onMounted } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+
+import { ref, computed, watch, nextTick} from "vue";
 import { useToast } from "@/composables/useToast";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { aiService } from "@/shared/services/AIService";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   show: {
     type: Boolean,
     default: false,
   },
   context: {
     type: Object,
-    default: () => ({}),
+    default: () => ({,
+    default: () => ({})
+  }),
   },
 });
 
 // Emits
-const emit = defineEmits(["close", "apply"]);
+const _emit = defineEmits(["close", "apply"]);
 
 // State
 const userInput = ref("");
@@ -361,7 +365,7 @@ const processAIResponse = async (userMessage) => {
       context: sys,
       type: "chat",
       sessionId,
-      onChunk: async (chunk) => {
+      onChunk: async (_chunk) => {
         messages.value[idx].text += chunk;
         await nextTick();
         scrollToBottom();
@@ -375,7 +379,7 @@ const processAIResponse = async (userMessage) => {
         toast.error("AI error: " + (err?.message || err));
       },
     });
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to process AI request: " + error.message);
   } finally {
     isProcessing.value = false;
@@ -449,7 +453,7 @@ onMounted(async () => {
   try {
     // Pre-initialize AI service to check configuration
     await aiService.initialize();
-  } catch (error) {
+  } catch (_error) {
     console.warn("AI service initialization failed on mount:", error.message);
   }
 });

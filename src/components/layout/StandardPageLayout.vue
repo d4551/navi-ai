@@ -46,6 +46,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {
@@ -95,7 +98,7 @@ interface Props {
   headerContext?: Record<string, any>;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   pageType: "default",
   hideHeader: false,
   headerAlignment: "left",
@@ -108,7 +111,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const route = useRoute();
-const router = useRouter();
+const _router = useRouter();
 
 // Resolve header config either by explicit configKey or by current route
 const resolvedHeader = computed(() => {

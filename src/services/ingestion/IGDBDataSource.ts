@@ -88,7 +88,7 @@ export class IGDBDataSource {
 
       logger.info(`Fetched ${studioData.length} studios from IGDB`);
       return studioData.filter((studio) => studio !== null) as RawStudioData[];
-    } catch (error) {
+    } catch (_error) {
       logger.error("IGDB data fetch failed:", error);
 
       // Fallback to mock data
@@ -118,7 +118,7 @@ export class IGDBDataSource {
     try {
       const response = await this.makeIGDBRequest("games", query);
       return response as IGDBGame[];
-    } catch (error) {
+    } catch (_error) {
       logger.warn(`Failed to fetch games for company ${companyId}:`, error);
       return [];
     }
@@ -184,7 +184,7 @@ export class IGDBDataSource {
       };
 
       return studio;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to convert company ${company.name}:`, error);
       return null;
     }

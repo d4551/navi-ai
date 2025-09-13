@@ -119,7 +119,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, nextTick } from "vue";
+import { computed, onMounted, nextTick } from 'vue';
+
+import { computednextTick } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 export interface HeaderStat {
@@ -179,7 +181,7 @@ interface Props {
   enableParallax?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   variant: "default",
   size: "md",
   centered: false,
@@ -197,7 +199,7 @@ const props = withDefaults(defineProps<Props>(), {
   enableParallax: true,
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   actionClick: [action: HeaderAction, index: number];
 }>();
 
@@ -288,7 +290,7 @@ onMounted(async () => {
 
   // Add parallax effect to background animation
   if (typeof window !== "undefined" && props.enableParallax) {
-    document.addEventListener("mousemove", (e) => {
+    document.addEventListener("mousemove", (_e) => {
       const header = document.querySelector(".unified-page-header");
       if (header) {
         const x = e.clientX / window.innerWidth;

@@ -125,7 +125,7 @@ class JobSourceManager {
         message: "Connection successful",
         jobCount: testJobs.length,
       };
-    } catch (error) {
+    } catch (_error) {
       this.updateSourceStatus(sourceId, "down");
       return {
         success: false,
@@ -147,7 +147,7 @@ class JobSourceManager {
         undefined,
         "JobSourceManager",
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to refresh job sources:", error, "JobSourceManager");
     }
   }

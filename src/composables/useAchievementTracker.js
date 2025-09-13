@@ -112,7 +112,7 @@ const loadAchievements = () => {
         achievements.value.set(key, value);
       });
     }
-  } catch (error) {
+  } catch (_error) {
     logger.debug("Failed to load achievements:", error);
   }
 };
@@ -125,8 +125,8 @@ const saveAchievements = () => {
       progress: Object.fromEntries(achievements.value),
       lastUpdated: new Date().toISOString(),
     };
-    localStorage.setItem("navi_achievements", JSON.stringify(data));
-  } catch (error) {
+    localStorage.setItem("navi_achievements", JSON.stringify(_data));
+  } catch (_error) {
     logger.debug("Failed to save achievements:", error);
   }
 };

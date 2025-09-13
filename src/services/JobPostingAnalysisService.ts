@@ -83,7 +83,7 @@ class JobPostingAnalysisService {
         this.initialized = true;
         logger.info("JobPostingAnalysisService initialized");
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize JobPostingAnalysisService:", error);
       throw error;
     }
@@ -114,7 +114,7 @@ class JobPostingAnalysisService {
       }
 
       return analysisResult;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Job posting URL analysis failed:", error);
       return {
         success: false,
@@ -234,7 +234,7 @@ Return only valid JSON.`;
         analysis,
         rawText: jobPostingText,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Job posting text analysis failed:", error);
 
       // Return fallback analysis
@@ -347,7 +347,7 @@ Return only valid JSON.`;
             : [],
         },
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate tailoring recommendations:", error);
       return this.createFallbackRecommendations(jobAnalysis);
     }
@@ -379,7 +379,7 @@ Return only valid JSON.`;
         success: true,
         content: textContent,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to extract from URL ${url}:`, error);
       return {
         success: false,

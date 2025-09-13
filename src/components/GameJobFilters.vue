@@ -407,6 +407,8 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, reactive } from 'vue';
+
 import { ref, reactive, computed, watch } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -419,7 +421,7 @@ import {
 } from "@/shared/constants/gaming-studios";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   totalJobs: {
     type: Number,
     default: 0,
@@ -431,7 +433,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits(["filters-changed"]);
+const _emit = defineEmits(["filters-changed"]);
 
 // State
 const isExpanded = ref(false);

@@ -195,12 +195,14 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue';
+
 import { ref, watch, defineEmits, defineProps } from "vue";
 import { useSystemStore } from "@/stores/system";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const props = defineProps({ open: { type: Boolean, default: false } });
-const emit = defineEmits(["close"]);
+const _props = defineProps({ open: { type: Boolean, default: false } });
+const _emit = defineEmits(["close"]);
 
 const store = useSystemStore();
 const step = ref(0);

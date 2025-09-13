@@ -379,6 +379,8 @@
 </template>
 
 <script>
+import { computed, watch, reactive } from 'vue';
+
 import { computed, reactive, watch } from "vue";
 import { useAppStore } from "@/stores/app";
 
@@ -418,7 +420,7 @@ export default {
     "load-models",
     "save-settings",
   ],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const store = useAppStore();
 
     const localSettings = reactive({

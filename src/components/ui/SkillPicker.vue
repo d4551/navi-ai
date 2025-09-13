@@ -105,7 +105,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, nextTick } from 'vue';
+
+import { ref, computed, nextTickonUnmounted } from "vue";
 import Icon from "./Icon.vue";
 
 interface Props {
@@ -117,7 +119,7 @@ interface Props {
   popularSkills?: string[];
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   availableSkills: () => [],
   placeholder: "Type to add skills...",
   maxSelections: undefined,
@@ -136,7 +138,7 @@ const props = withDefaults(defineProps<Props>(), {
   ],
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update:modelValue": [value: string[]];
 }>();
 

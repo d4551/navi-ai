@@ -510,7 +510,7 @@ export class JobAlertsService {
     const intervalId = setInterval(async () => {
       try {
         await this.checkForNewJobs(alert);
-      } catch (error) {
+      } catch (_error) {
         logger.error(
           `Error running alert ${alert.name}:`,
           error,
@@ -580,7 +580,7 @@ export class JobAlertsService {
             await this.sendSlackNotification(notification, channel.config);
             break;
         }
-      } catch (error) {
+      } catch (_error) {
         console.error(`Failed to send ${channel.type} notification:`, error);
         allOk = false;
         this.enqueuePending(notification, [channel]);
@@ -614,7 +614,7 @@ export class JobAlertsService {
           tag: notification.id,
         },
       );
-    } catch (err) {
+    } catch (_err) {
       logger.error(
         "Failed to display push notification",
         err,
@@ -664,7 +664,7 @@ export class JobAlertsService {
       }
 
       logger.info("Email notification sent", notification, "JobAlertsService");
-    } catch (err) {
+    } catch (_err) {
       logger.error(
         "Failed to send email notification",
         err,
@@ -891,7 +891,7 @@ export class JobAlertsService {
           this.pendingNotifications = [];
         }
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "Error loading alerts data from storage:",
         error,
@@ -918,7 +918,7 @@ export class JobAlertsService {
         this.STORAGE_KEYS.PENDING,
         JSON.stringify(this.pendingNotifications),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "Error saving alerts data to storage:",
         error,
@@ -944,7 +944,7 @@ export class JobAlertsService {
     for (const item of next) {
       try {
         await this.dispatchNotification(item.notification, item.channels);
-      } catch (e) {
+      } catch (_e) {
         logger.warn(
           "Retry failed, re-queueing notification",
           e,

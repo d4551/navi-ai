@@ -89,7 +89,7 @@ export interface ConversationMessage {
           );
         },
 
-        onError: (error) => {
+        onError: (_error) => {
           state.lastError = error.message;
           logger.error("Multimedia AI error:", error);
           toast.error(`AI Error: ${error.message}`);
@@ -97,12 +97,12 @@ export interface ConversationMessage {
       };
 
       service.setCallbacks(callbacks);
-      await service.initialize(config);
+      await service.initialize(_config);
 
       isInitialized.value = true;
       state.isProcessing = false;
       return true;
-    } catch (error) {
+    } catch (_error) {
       state.lastError =
         error instanceof Error ? error.message : "Unknown error";
       state.isProcessing = false;
@@ -121,7 +121,7 @@ export interface ConversationMessage {
       await service.startAudioStreaming();
       state.isAudioStreaming = true;
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start audio streaming:", error);
       toast.error("Failed to start voice input. Check microphone permissions.");
       return false;
@@ -151,10 +151,10 @@ export interface ConversationMessage {
     }
 
     try {
-      await service.startVideoStreaming(options);
+      await service.startVideoStreaming(_options);
       state.isVideoStreaming = true;
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start video streaming:", error);
       toast.error("Failed to start camera. Check camera permissions.");
       return false;
@@ -188,7 +188,7 @@ export interface ConversationMessage {
       state.isProcessing = false;
 
       return result;
-    } catch (error) {
+    } catch (_error) {
       state.isProcessing = false;
       logger.error("Failed to capture screenshot:", error);
       toast.error(
@@ -211,7 +211,7 @@ export interface ConversationMessage {
       state.isProcessing = false;
 
       // Response is automatically added via callback
-    } catch (error) {
+    } catch (_error) {
       state.isProcessing = false;
       logger.error("Failed to send message:", error);
       toast.error("Failed to send message to AI");
@@ -279,7 +279,7 @@ export interface ConversationMessage {
 
     try {
       await service.cleanup();
-    } catch (error) {
+    } catch (_error) {
       logger.error("Cleanup error:", error);
     }
   }

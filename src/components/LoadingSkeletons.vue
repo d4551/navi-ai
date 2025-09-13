@@ -120,10 +120,12 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, computed, ref } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import {onUnmountedref } from "vue";
 import { ContentLoader } from "vue-content-loader";
 
-const props = defineProps({
+const _props = defineProps({
   show: {
     type: Boolean,
     default: true,
@@ -178,7 +180,7 @@ let onChange;
 onMounted(() => {
   mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   prefersReducedMotion.value = mediaQuery.matches;
-  onChange = (e) => {
+  onChange = (_e) => {
     prefersReducedMotion.value = e.matches;
   };
   try {

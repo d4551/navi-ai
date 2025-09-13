@@ -195,6 +195,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import {
   InfoIconComponent,

@@ -1,4 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+
+const router = createRouter({
+  // router config
+});
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
@@ -597,7 +601,7 @@ const routes = [
   },
 ];
 
-const router = createRouter({
+const _router = createRouter({
   history: createWebHashHistory(),
   routes,
   // Ensure the window scrolls to top on navigation and
@@ -620,7 +624,7 @@ let routeNPStarted = false;
 router.beforeEach(async (to, from, next) => {
   try {
     performanceMonitor.markStart(`route-${to.name}`);
-  } catch (e) {
+  } catch (_e) {
     logger.debug("Route performance tracking failed:", e);
   }
   // Lightweight AI auto-initialization for AI powered routes (idempotent)
@@ -638,7 +642,7 @@ router.beforeEach(async (to, from, next) => {
           enableRealTime: !!store.settings.enableRealtimeFeatures,
         });
       }
-    } catch (e) {
+    } catch (_e) {
       logger.debug("AI auto-init skipped (non-critical):", e);
     }
   }
@@ -661,7 +665,7 @@ router.beforeEach(async (to, from, next) => {
       // Apply MUI-specific body classes
       document.body.classList.add("mui-route");
       document.body.classList.remove("standard-route");
-    } catch (e) {
+    } catch (_e) {
       logger.debug("MUI theme setup failed:", e);
     }
   } else {
@@ -676,7 +680,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       NProgress.start();
       routeNPStarted = true;
-    } catch (e) {
+    } catch (_e) {
       logger.debug("NProgress start failed:", e);
     }
   }, 120);
@@ -700,7 +704,7 @@ router.afterEach((to, from) => {
           el.scrollLeft = 0;
         }
       });
-    } catch (e) {
+    } catch (_e) {
       logger.debug("Scroll-to-top failed:", e);
     }
     try {
@@ -708,7 +712,7 @@ router.afterEach((to, from) => {
         fromRoute: from.name,
         toRoute: to.name,
       });
-    } catch (e) {
+    } catch (_e) {
       logger.debug("Route performance end tracking failed:", e);
     }
     // Optional gentle effects (if anime.js is available)
@@ -719,7 +723,7 @@ router.afterEach((to, from) => {
       if (container) {
         staggerFadeIn(container);
       }
-    } catch (e) {
+    } catch (_e) {
       logger.warn("Route animation failed:", e);
     }
     if (routeNPDelayTimer) {
@@ -729,7 +733,7 @@ router.afterEach((to, from) => {
     if (routeNPStarted) {
       try {
         NProgress.done();
-      } catch (e) {
+      } catch (_e) {
         logger.debug("NProgress done failed:", e);
       }
       routeNPStarted = false;
@@ -746,7 +750,7 @@ router.afterEach((to, from) => {
       const sr = document.getElementById("sr-announcer");
       if (sr)
         sr.textContent = `Navigated to ${to.meta?.title || to.name || "page"}`;
-    } catch (e) {
+    } catch (_e) {
       logger.debug("Route ARIA announce failed:", e);
     }
   }, 100);

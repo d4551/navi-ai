@@ -28,7 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, onBeforeUnmount } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { refcomputed, watch, onBeforeUnmount } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 interface Props {
@@ -38,8 +40,8 @@ interface Props {
   autoCloseOnComplete?: boolean;
 }
 
-const props = defineProps<Props>();
-const emit = defineEmits<{ (_e: "close"): void }>();
+const _props = defineProps<Props>();
+const _emit = defineEmits<{ (_e: "close"): void }>();
 
 const modalEl = ref<HTMLElement | null>(null);
 

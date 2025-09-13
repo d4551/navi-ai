@@ -111,7 +111,7 @@ class UnifiedService {
       await this.initializeStudioServices();
 
       this.initialized = true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize UnifiedService:", error);
       throw error;
     }
@@ -121,7 +121,7 @@ class UnifiedService {
     try {
       await databaseManager.init();
       this.dbConnected = true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Database initialization failed:", error);
       throw new Error("Database initialization failed");
     }
@@ -137,7 +137,7 @@ class UnifiedService {
         logger.warn(
         );
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("AI initialization failed:", error);
       // Don't throw - AI is optional
     }
@@ -147,7 +147,7 @@ class UnifiedService {
     try {
       // Job services use the database manager, so just verify it's working
       const stats = await databaseManager.getStats();
-    } catch (error) {
+    } catch (_error) {
       logger.error("Job services initialization failed:", error);
       throw error;
     }
@@ -159,7 +159,7 @@ class UnifiedService {
       const stats = await databaseManager.getStats();
       logger.info(
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Studio services initialization failed:", error);
       throw error;
     }
@@ -191,7 +191,7 @@ class UnifiedService {
 
       // Convert to unified format
       return jobs.map((job) => this.convertToUnifiedJob(job));
-    } catch (error) {
+    } catch (_error) {
       logger.error("Job search failed:", error);
       throw error;
     }
@@ -223,7 +223,7 @@ class UnifiedService {
 
       // Convert to unified format
       return studios.map((studio) => this.convertToUnifiedStudio(studio));
-    } catch (error) {
+    } catch (_error) {
       logger.error("Studio search failed:", error);
       throw error;
     }
@@ -255,7 +255,7 @@ class UnifiedService {
         remote: aiCriteria.remote,
         userProfile,
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("AI job recommendations failed:", error);
       // Fallback to basic search
       return this.searchJobs({ userProfile });
@@ -282,7 +282,7 @@ class UnifiedService {
 
       // Get all studios and let AI score them
       const allStudios = await this.searchStudios({ userProfile });
-    } catch (error) {
+    } catch (_error) {
       logger.error("AI studio recommendations failed:", error);
       // Fallback to basic search
       return this.searchStudios({ userProfile });
@@ -313,7 +313,7 @@ class UnifiedService {
           studios: dbStats.studios,
           size: dbStats.dbSize,
         };
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to get database stats:", error);
       }
     }
@@ -359,7 +359,7 @@ class UnifiedService {
       );
 
       // Sort by AI score if available
-    } catch (error) {
+    } catch (_error) {
       logger.error("AI job scoring failed:", error);
       return jobs.map((job) => this.convertToUnifiedJob(job));
     }
@@ -389,7 +389,7 @@ class UnifiedService {
       );
 
       return studioInsights;
-    } catch (error) {
+    } catch (_error) {
       logger.error("AI studio insights failed:", error);
       return studios.map((studio) => this.convertToUnifiedStudio(studio));
     }

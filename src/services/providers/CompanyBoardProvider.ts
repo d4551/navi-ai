@@ -61,7 +61,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     const params = this.buildParams(filters);
     try {
-      const response = await this.makeRequest(params);
+      const response = await this.makeRequest(_params);
       return this.parseResponse(response.data);
     } catch (error: any) {
       const status = error?.response?.status;
@@ -124,21 +124,21 @@ export class CompanyBoardProvider extends BaseJobProvider {
   parseResponse(data: any): Job[] {
     switch (this.config.type) {
       case "greenhouse":
-        return this.parseGreenhouseJobs(data);
+        return this.parseGreenhouseJobs(_data);
       case "lever":
-        return this.parseLeverJobs(data);
+        return this.parseLeverJobs(_data);
       case "recruitee":
-        return this.parseRecruiteeJobs(data);
+        return this.parseRecruiteeJobs(_data);
       case "workable":
-        return this.parseWorkableJobs(data);
+        return this.parseWorkableJobs(_data);
       case "ashby":
-        return this.parseAshbyJobs(data);
+        return this.parseAshbyJobs(_data);
       case "smartrecruiters":
-        return this.parseSmartRecruitersJobs(data);
+        return this.parseSmartRecruitersJobs(_data);
       case "teamtailor":
-        return this.parseTeamtailorJobs(data);
+        return this.parseTeamtailorJobs(_data);
       case "workday":
-        return this.parseWorkdayJobs(data);
+        return this.parseWorkdayJobs(_data);
       default:
         return [];
     }
@@ -155,7 +155,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
       }
       return this.httpClient.get(this.baseUrl, { params, headers });
     }
-    return super.makeRequest(params);
+    return super.makeRequest(_params);
   }
 
   private parseGreenhouseJobs(data: any): Job[] {
@@ -180,7 +180,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
   }
 
   private parseLeverJobs(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
 
     return data.map((job: any) => ({
       id: `lever-${job.id}`,
@@ -274,7 +274,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
     // SmartRecruiters responses typically include a 'content' array
     const items = Array.isArray(data?.content)
       ? data.content
-      : Array.isArray(data)
+      : Array.isArray(_data)
         ? data
         : [];
     return items.map((item: any) => {

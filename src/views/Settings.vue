@@ -1309,6 +1309,9 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { ref, computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAppStore } from "@/stores/app";
@@ -1348,7 +1351,7 @@ import TipsRecommendationsCard from "@/components/settings/TipsRecommendationsCa
 // Store and Theme
 const route = useRoute();
 const store = useAppStore();
-const theme = useUnifiedTheme();
+const _theme = useUnifiedTheme();
 
 // Reactive State - Support URL parameters for direct navigation
 const activeTab = ref(route.query.tab || "profile");
@@ -1622,7 +1625,7 @@ const saveAllSettings = async () => {
     originalUserProfile.value = JSON.parse(JSON.stringify(userProfile.value));
 
     // Show success notification
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to save settings:", error);
     // Show error notification
   } finally {
@@ -1654,7 +1657,7 @@ const updateSetting = async (key, value) => {
   // Auto-save individual setting changes
   try {
     await store.updateSettings({ [key]: value });
-  } catch (error) {
+  } catch (_error) {
     console.error(`Failed to update setting ${key}:`, error);
   }
 };
@@ -1680,7 +1683,7 @@ const exportSettings = () => {
     exportDate: new Date().toISOString(),
   };
 
-  const blob = new Blob([JSON.stringify(data, null, 2)], {
+  const blob = new Blob([JSON.stringify(_data, null, 2)], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
@@ -1848,7 +1851,7 @@ const importUserData = () => {
           alert("User data imported successfully");
         }
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to import user data:", error);
 
       // Show error notification
@@ -1928,7 +1931,7 @@ const clearAppCache = () => {
       } else {
         alert("Application cache cleared successfully");
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to clear cache:", error);
 
       // Show error notification
@@ -2356,7 +2359,7 @@ const testApiKey = async () => {
         result.message ||
         (result.success ? "API key is valid" : "API key test failed"),
     };
-  } catch (error) {
+  } catch (_error) {
     apiTestResult.value = {
       success: false,
       message: error.message || "Failed to test API key",
@@ -2373,7 +2376,7 @@ const connectApiKey = async () => {
     await store.connectGeminiApi();
     // Load available models after connection
     await loadModels();
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to connect API key:", error);
   } finally {
     connecting.value = false;
@@ -2385,7 +2388,7 @@ const loadModels = async () => {
   try {
     // Load available models from the store
     await store.loadAvailableModels();
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load models:", error);
   } finally {
     loadingModels.value = false;
@@ -2437,7 +2440,7 @@ const clearApplicationLogs = () => {
       } else {
         alert("Application logs cleared successfully");
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to clear logs:", error);
 
       if (store.showNotification) {
@@ -2480,7 +2483,7 @@ const exportChatHistory = () => {
     a.download = `navi-chat-history-${new Date().toISOString().split("T")[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to export chat history:", error);
     alert("Failed to export chat history");
   }
@@ -2548,7 +2551,7 @@ const loadAudioDevices = async () => {
 
     // Load available voices for TTS
     loadVoices();
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load audio devices:", error);
 
     // Provide user-friendly error messages

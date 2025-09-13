@@ -32,7 +32,7 @@ export const isFontLoaded = (fontFamily) => {
 
   try {
     return window.document.fonts.check(`16px "${fontFamily}"`);
-  } catch (e) {
+  } catch (_e) {
     console.warn(`Font check failed for ${fontFamily}:`, e);
     return false;
   }
@@ -90,7 +90,7 @@ export const loadFont = async (fontFamily, fontUrl) => {
     }
 
     return false;
-  } catch (error) {
+  } catch (_error) {
     console.warn(`Error loading font ${fontFamily}:`, error);
     return false;
   }
@@ -157,7 +157,7 @@ export const initializeGamingFonts = async () => {
       ),
     );
     const allLoaded = results.every(
-      (result) => result.status === "fulfilled" && result.value === true,
+      (_result) => result.status === "fulfilled" && result.value === true,
     );
 
     // Set up CSS custom properties for all font stacks
@@ -211,7 +211,7 @@ export const initializeGamingFonts = async () => {
     );
 
     return allLoaded;
-  } catch (error) {
+  } catch (_error) {
     console.warn("Error initializing gaming fonts:", error);
     return false;
   }
@@ -343,6 +343,7 @@ if (typeof window !== "undefined") {
           setTimeout(() => {
             generateFontClasses();
             initializeElectrolizeFont();
+          }, 100);
         });
     } else {
       // Fallback for browsers without document.fonts.ready
@@ -352,6 +353,7 @@ if (typeof window !== "undefined") {
           setTimeout(() => {
             generateFontClasses();
             initializeElectrolizeFont();
+          }, 100);
         });
       } else {
         setTimeout(() => {

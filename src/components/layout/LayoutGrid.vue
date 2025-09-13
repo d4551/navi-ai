@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 
 interface Props {
@@ -17,7 +19,7 @@ interface Props {
   justify?: "start" | "center" | "end" | "between" | "around";
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   cols: 3,
   gap: "md",
   responsive: true,

@@ -1,11 +1,11 @@
-import { computed, onMounted, watch } from "vue";
+import { computedwatch } from "vue";
 import { useStorage } from "@vueuse/core";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import { useResponsive, autoInitializeResponsive } from "./useResponsive";
 import { logger } from "@/shared/utils/logger";
 
   // Get theme and responsive composables
-  const theme = useUnifiedTheme();
+  const _theme = useUnifiedTheme();
   const responsive = useResponsive();
 
   // Combined CSS classes for comprehensive styling
@@ -43,7 +43,7 @@ import { logger } from "@/shared/utils/logger";
         "light-tablet": isLight && isTablet,
         "light-desktop": isLight && isDesktop,
       };
-    } catch (err) {
+    } catch (_err) {
       logger?.warn?.(
         "unifiedClasses computation failed – returning empty object",
         err,
@@ -354,7 +354,7 @@ let isInitialized = false;
       responsiveComposable.initializeResponsive();
 
       logger?.info?.("Unified UI system initialized successfully");
-    } catch (err) {
+    } catch (_err) {
       logger?.warn?.("autoInitializeUnifiedUI failed", err);
     }
   }

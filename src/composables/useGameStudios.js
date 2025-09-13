@@ -5,7 +5,7 @@ import { logger } from "@/shared/utils/logger";
 
   const studios = ref([]);
   const loading = ref(false);
-  const error = ref(null);
+  const _error = ref(null);
   const facets = ref(null);
   const favorites = ref([]);
   const isInitialized = ref(false);
@@ -23,7 +23,7 @@ import { logger } from "@/shared/utils/logger";
       logger.info(
         `Loaded ${result.studios.length} studios of ${result.total} total`,
       );
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message || "Failed to load studios";
       logger.error("Failed to load studios:", err);
     } finally {
@@ -41,7 +41,7 @@ import { logger } from "@/shared/utils/logger";
       logger.info(
         `Found ${suggestions.length} studio suggestions for query: ${query}`,
       );
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message || "Failed to search studios";
       logger.error("Failed to search studios:", err);
     } finally {
@@ -53,7 +53,7 @@ import { logger } from "@/shared/utils/logger";
     try {
       favorites.value = await gameStudioService.getFavoriteStudios();
       logger.info(`Loaded ${favorites.value.length} favorite studios`);
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to load favorite studios:", err);
     }
   };
@@ -74,7 +74,7 @@ import { logger } from "@/shared/utils/logger";
       }
 
       return isNowFavorite;
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to toggle favorite:", err);
       throw err;
     }
@@ -83,7 +83,7 @@ import { logger } from "@/shared/utils/logger";
   const isStudioFavorite = async (studioId) => {
     try {
       return await gameStudioService.isStudioFavorite(studioId);
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to check favorite status:", err);
       return false;
     }
@@ -96,7 +96,7 @@ import { logger } from "@/shared/utils/logger";
 
       const studio = await gameStudioService.findByCompanyName(companyName);
       return studio;
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message || "Failed to find studio";
       logger.error("Failed to find studio by company name:", err);
       return null;
@@ -112,7 +112,7 @@ import { logger } from "@/shared/utils/logger";
 
       const result = await gameStudioService.getStudiosByCategory(category);
       return result;
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message || "Failed to load studios by category";
       logger.error("Failed to load studios by category:", err);
       return [];
@@ -127,7 +127,7 @@ import { logger } from "@/shared/utils/logger";
 
       const result = await gameStudioService.getPopularStudios(limit);
       return result;
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message || "Failed to load popular studios";
       logger.error("Failed to load popular studios:", err);
       return [];
@@ -148,7 +148,7 @@ import { logger } from "@/shared/utils/logger";
       facets.value = result.facets;
 
       return result;
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message || "Failed to perform advanced search";
       logger.error("Failed to perform advanced search:", err);
       return {
@@ -206,7 +206,7 @@ import { logger } from "@/shared/utils/logger";
     try {
       await loadFavorites();
       isInitialized.value = true;
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to initialize game studios:", err);
     }
   };
@@ -242,7 +242,7 @@ import { logger } from "@/shared/utils/logger";
     // Data
     studios: readonly(studios),
     loading: readonly(loading),
-    error: readonly(error),
+    error: readonly(_error),
     total: readonly(total),
     facets: readonly(facets),
     favorites: readonly(favorites),

@@ -103,7 +103,7 @@ class IndexedDBStorage {
 
       logger.info("IndexedDB initialized successfully");
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize IndexedDB:", error);
       return false;
     }
@@ -123,7 +123,7 @@ class IndexedDBStorage {
       await tx.done;
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to save to ${storeName}:`, error);
       return false;
     }
@@ -138,7 +138,7 @@ class IndexedDBStorage {
       const tx = this.db.transaction(storeName, "readonly");
       const result = await tx.objectStore(storeName).get(id);
       return result || null;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to get from ${storeName}:`, error);
       return null;
     }
@@ -159,7 +159,7 @@ class IndexedDBStorage {
       } else {
         return await store.getAll();
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to get all from ${storeName}:`, error);
       return [];
     }
@@ -176,7 +176,7 @@ class IndexedDBStorage {
       await tx.done;
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to delete from ${storeName}:`, error);
       return false;
     }
@@ -193,7 +193,7 @@ class IndexedDBStorage {
       await tx.done;
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to clear ${storeName}:`, error);
       return false;
     }
@@ -236,7 +236,7 @@ class IndexedDBStorage {
 
       const tx = this.db.transaction(storeName, "readonly");
       return await tx.objectStore(storeName).count();
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to count ${storeName}:`, error);
       return 0;
     }
@@ -263,7 +263,7 @@ class IndexedDBStorage {
       }
 
       return results;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to search ${storeName}:`, error);
       return [];
     }
@@ -314,10 +314,10 @@ class SecureStorage {
         expires: options.expires ? Date.now() + options.expires : null,
       };
 
-      const serialized = JSON.stringify(data);
+      const serialized = JSON.stringify(_data);
       localStorage.setItem(this.prefix + key, serialized);
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("SecureStorage set error:", error);
       return false;
     }
@@ -343,7 +343,7 @@ class SecureStorage {
       }
 
       return data.value;
-    } catch (error) {
+    } catch (_error) {
       logger.error("SecureStorage get error:", error);
       return null;
     }
@@ -357,7 +357,7 @@ class SecureStorage {
     try {
       localStorage.removeItem(this.prefix + key);
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("SecureStorage remove error:", error);
       return false;
     }
@@ -384,7 +384,7 @@ class SecureStorage {
       }
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("SecureStorage clear error:", error);
       return false;
     }
@@ -534,10 +534,10 @@ export class UnifiedStorage {
     return data;
   }
 
-  async importData(data) {
+  async importData(_data) {
     try {
       // Import to IndexedDB
-      for (const [key, items] of Object.entries(data)) {
+      for (const [key, items] of Object.entries(_data)) {
         if (key === "localStorage") {
           continue;
         }
@@ -558,7 +558,7 @@ export class UnifiedStorage {
       }
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to import data:", error);
       return false;
     }

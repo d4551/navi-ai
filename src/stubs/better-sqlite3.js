@@ -32,22 +32,22 @@ class MockDatabase {
     console.debug(`MockDatabase.prepare(): ${sql}`);
 
     return {
-      get: (params) => {
+      get: (_params) => {
         console.debug("MockDatabase.get() called with params:", params);
         return null;
       },
-      all: (params) => {
+      all: (_params) => {
         console.debug("MockDatabase.all() called with params:", params);
         return [];
       },
-      run: (params) => {
+      run: (_params) => {
         console.debug("MockDatabase.run() called with params:", params);
         return {
           changes: 0,
           lastInsertRowid: 0
         };
       },
-      iterate: (params) => {
+      iterate: (_params) => {
         console.debug("MockDatabase.iterate() called with params:", params);
         return [];
       },

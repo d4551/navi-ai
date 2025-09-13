@@ -45,14 +45,14 @@ export class APIClient {
   static async post<T = any>(endpoint: string, data?: any): Promise<T> {
     return this.request<T>(endpoint, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(_data),
     });
   }
 
   static async put<T = any>(endpoint: string, data?: any): Promise<T> {
     return this.request<T>(endpoint, {
       method: "PUT",
-      body: JSON.stringify(data),
+      body: JSON.stringify(_data),
     });
   }
 

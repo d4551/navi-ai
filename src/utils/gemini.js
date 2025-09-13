@@ -49,7 +49,7 @@ export default class GeminiService {
         this._cache.set(key, text);
       }
       return text;
-    } catch (err) {
+    } catch (_err) {
       // metrics
       // normalize error messages to match tests
       if (err?.response?.data?.error?.message) {

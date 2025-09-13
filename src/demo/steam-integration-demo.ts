@@ -38,8 +38,8 @@ import { getDataSourceStats } from "@/config/data-sources";
       console.log(`   Estimated studios: ${sourceInfo.estimatedStudioCount}`);
       console.log(`   Data quality: ${sourceInfo.dataQuality}`);
     }
-  } catch (error) {
-    console.log(`   Steam API test failed: ${error}`);
+  } catch (_error) {
+    console.log(`   Steam API test failed: ${_error}`);
   }
   console.log();
 
@@ -67,8 +67,8 @@ import { getDataSourceStats } from "@/config/data-sources";
         console.log(`     - ${error.studio}: ${error.error}`);
       });
     }
-  } catch (error) {
-    console.log(`   Import failed: ${error}`);
+  } catch (_error) {
+    console.log(`   Import failed: ${_error}`);
   }
   console.log();
 

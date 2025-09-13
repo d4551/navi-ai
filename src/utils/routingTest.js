@@ -38,7 +38,7 @@ class RoutingTestSuite {
 
       this.generateTestReport();
       return this.testResults;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Routing test suite failed:", error);
       throw error;
     }
@@ -69,7 +69,7 @@ class RoutingTestSuite {
             `✗ Route ${route} -> ${componentKey} [FAILED: No component]`,
           );
         }
-      } catch (error) {
+      } catch (_error) {
         testResult.status = "error";
         testResult.error = error.message;
         logger.error(
@@ -104,7 +104,7 @@ class RoutingTestSuite {
     // Process invalid components
     validation.invalid.forEach((componentKey) => {
       const errorInfo = validation.errors.find(
-        (e) => e.pageKey === componentKey,
+        (_e) => e.pageKey === componentKey,
       );
       this.testResults.componentTests.push({
         componentKey,
@@ -146,7 +146,7 @@ class RoutingTestSuite {
         status: initialized ? "success" : "failed",
         error: initialized ? null : "Service failed to initialize",
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: "initialization",
         status: "error",
@@ -163,7 +163,7 @@ class RoutingTestSuite {
           studios && Object.keys(studios).length > 0 ? "success" : "failed",
         error: studios ? null : "No studios returned",
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: "getAllStudios",
         status: "error",
@@ -183,7 +183,7 @@ class RoutingTestSuite {
           ? null
           : "Search did not return array",
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: "searchStudios",
         status: "error",
@@ -222,7 +222,7 @@ class RoutingTestSuite {
           ? null
           : "Service list not returned as array",
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: "listServices",
         status: "error",
@@ -241,7 +241,7 @@ class RoutingTestSuite {
             ? null
             : "hasService did not return boolean",
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: "hasService",
         status: "error",
@@ -288,7 +288,7 @@ class RoutingTestSuite {
                 `✗ Service '${serviceName}' required by ${componentKey} is not available`,
               );
             }
-          } catch (error) {
+          } catch (_error) {
             logger.warn(
               `✗ Failed to verify service '${serviceName}' for ${componentKey}:`,
               error.message,
@@ -358,7 +358,7 @@ class RoutingTestSuite {
         try {
           await pagePointerManager.getComponentByRoute(route);
           healthyRoutes++;
-        } catch (error) {
+        } catch (_error) {
           logger.warn(`Health check failed for route ${route}:`, error.message);
         }
       }
@@ -368,7 +368,7 @@ class RoutingTestSuite {
       try {
         await gamingStudioService.initialize();
         serviceHealthy = true;
-      } catch (error) {
+      } catch (_error) {
         logger.warn(
           "Gaming studio service health check failed:",
           error.message,
@@ -388,7 +388,7 @@ class RoutingTestSuite {
         servicesHealthy: serviceHealthy ? 1 : 0,
         totalServices: 1,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Health check failed:", error);
       return {
         healthy: false,
@@ -420,7 +420,7 @@ if (typeof window !== "undefined" && import.meta.env.DEV) {
           `✗ Routing system health check failed (${health.score.toFixed(1)}%)`,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       logger.debug("Routing health check failed (non-critical):", error);
     }
   }, 3000);

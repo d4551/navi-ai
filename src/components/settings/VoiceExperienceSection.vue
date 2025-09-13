@@ -309,7 +309,9 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { computed, refonUnmounted } from "vue";
 import {
   SoundwaveIconComponent,
   SettingsIconComponent,
@@ -337,7 +339,7 @@ export default {
     },
   },
   emits: ["save", "update:voiceSettings"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const voiceService = getVoiceService();
 
     // Create a computed property that handles v-model properly
@@ -412,8 +414,8 @@ export default {
           timestamp: Date.now(),
         };
 
-        testResults.value.push(result);
-      } catch (error) {
+        testResults.value.push(_result);
+      } catch (_error) {
         const result = {
           id: Date.now(),
           provider,
@@ -422,7 +424,7 @@ export default {
           timestamp: Date.now(),
         };
 
-        testResults.value.push(result);
+        testResults.value.push(_result);
       } finally {
         isTesting.value = false;
         updateProviderHealth();

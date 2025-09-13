@@ -749,7 +749,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref, computed} from "vue";
 // import { useRouter } from "vue-router";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -930,7 +933,7 @@ const getInterviewContext = () => ({
   userProfile: userProfile.value,
 });
 
-const handleInterviewPreparationComplete = (result) => {
+const handleInterviewPreparationComplete = (_result) => {
   logger.info("Interview preparation completed:", result);
   // Update UI with preparation results
 };
@@ -942,7 +945,7 @@ const handlePlanGenerated = (plan) => {
   }
 };
 
-const handleQuestionsGenerated = (result) => {
+const handleQuestionsGenerated = (_result) => {
   if (result.questions) {
     generatedQuestions.value = result.questions.map((q: any, index: number) => ({
       id: `q_${Date.now()}_${index}`,

@@ -75,7 +75,10 @@
 </template>
 
 <script>
-import { ref, onErrorCaptured, computed as _computed } from "vue";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref, onErrorCapturedas _computed } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { buildSupportMailto } from "@/utils/config";
@@ -106,6 +109,8 @@ export default {
   },
   setup(_props) {
     const router = useRouter();
+
+    const _router = useRouter();
     const route = useRoute();
 
     const hasError = ref(false);
@@ -117,7 +122,7 @@ export default {
     const recoveryStrategies = ref([]);
 
     // Categorize error for better user experience
-    const categorizeError = (error, info) => {
+    const categorizeError = (_error, info) => {
       const errorMessage = error?.message?.toLowerCase() || "";
       const _errorStack = error?.stack?.toLowerCase() || "";
       const componentInfo = info?.toLowerCase() || "";
@@ -184,7 +189,7 @@ export default {
       }
     };
 
-    onErrorCaptured((error, instance, info) => {
+    onErrorCaptured((_error, instance, info) => {
       // Performance tracking
       performanceMonitor.recordMetric("error", 1, {
         message: error.message,
@@ -205,14 +210,14 @@ export default {
       });
 
       // Categorize the error
-      categorizeError(error, info);
+      categorizeError(_error, info);
 
       hasError.value = true;
       errorDetails.value = `${error.message}\n\nStack trace:\n${error.stack}\n\nComponent info: ${info}`;
 
       // Enhanced error logging with context
       if (window.errorTracker) {
-        window.errorTracker.captureException(error, {
+        window.errorTracker.captureException(_error, {
           extra: {
             info,
             component: instance?.$options?.name,

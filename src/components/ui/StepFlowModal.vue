@@ -33,6 +33,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import StepFlow, { type StepFlowStep } from "@/components/ui/StepFlow.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -51,7 +53,7 @@ interface Props {
   primaryVariant?: "primary" | "gaming" | "outline";
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   modelValue: 0,
   maxReachable: 0,
   busy: false,
@@ -60,7 +62,7 @@ const props = withDefaults(defineProps<Props>(), {
   primaryVariant: "primary",
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   (e: "update:show", v: boolean): void;
   (e: "update:modelValue", v: number): void;
   (e: "finish"): void;

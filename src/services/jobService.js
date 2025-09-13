@@ -51,7 +51,7 @@ export async function testJobSource(sourceId) {
     }
     await provider.fetchJobs({ query: "game", location: "", remote: true });
     return { success: true, jobCount: 1, message: "OK" };
-  } catch (e) {
+  } catch (_e) {
     return { success: false, error: e?.message || "Failed" };
   }
 }
@@ -69,7 +69,7 @@ export function getAllCategories() {
 export function updateJobSourceConfig(sourceId, config = {}) {
   try {
     return refactoredJobAPIService.updateProviderConfig(sourceId, config);
-  } catch (e) {
+  } catch (_e) {
     console.warn("Failed to update job source config:", e?.message || e);
     return false;
   }

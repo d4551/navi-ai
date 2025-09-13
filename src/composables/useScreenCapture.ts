@@ -54,7 +54,7 @@ export function useScreenCapture(): UseMediaStreamResult {
       stream.value = mediaStream;
       isStreaming.value = true;
       return mediaStream;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to capture screen:", error);
       // Provide user-friendly error messages
       if (error instanceof Error) {

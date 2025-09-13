@@ -256,7 +256,7 @@
           <AppIcon name="mdi-alert-circle-outline" class="icon-error" />
           <span class="error-title">Integration Error</span>
         </div>
-        <p class="error-message">{{ error }}</p>
+        <p class="error-message">{{ _error }}</p>
         <div class="error-actions">
           <UnifiedButton
             variant="glass"
@@ -273,7 +273,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted, onUnmounted } from "vue";
+import { ref, watch, onMounted, nextTick } from 'vue';
+
+import { ref, watch, nextTickonUnmounted } from "vue";
 import MediaControls from "./MediaControls.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -284,12 +286,12 @@ import { useToast } from "@/composables/useToast";
 // import type { ConversationMessage } from '@/shared/services/GoogleAIStreamingService' // Unused
 
 // Emits & Props
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "ai-response": [response: AIResponse];
   "integration-error": [message: string];
 }>();
 
-const props = withDefaults(
+const _props = withDefaults(
   defineProps<{
     // Optional mode prompt to steer AI behavior (e.g., OCR, Safety, UI QA)
     modePrompt?: string;
@@ -312,7 +314,7 @@ const mediaControls = ref<InstanceType<typeof MediaControls>>();
 const mediaStream = ref<MediaStream | null>(null);
 const isAIConnected = ref(false);
 const isProcessingAI = ref(false);
-const error = ref<string | null>(null);
+const _error = ref<string | null>(null);
 const streamStatus = ref({
   isStreaming: false,
   isCameraActive: false,
@@ -385,10 +387,10 @@ const checkAIConnection = async () => {
         const s2 = googleAIStreamingService.getStatus?.();
         if (s2) streamStatus.value = s2;
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn("GoogleAIStreamingService init skipped:", error);
     }
-  } catch (err) {
+  } catch (_err) {
     console.error("AI connection failed:", err);
     isAIConnected.value = false;
     error.value =
@@ -461,7 +463,7 @@ const sendAIPrompt = async () => {
       content: response.content || response,
       confidence: response.confidence,
     });
-  } catch (err) {
+  } catch (_err) {
     console.error("AI prompt error:", err);
     error.value = `AI Error: ${err instanceof Error ? err.message : "Unknown error"}`;
   } finally {
@@ -566,7 +568,7 @@ const startRealtimeAnalysis = () => {
           confidence: response.confidence,
         });
       }
-    } catch (err) {
+    } catch (_err) {
       console.warn("Realtime analysis error:", err);
     }
   }, intervalMs);
@@ -632,7 +634,7 @@ const addAIResponse = (responseData: Omit<AIResponse, "id" | "timestamp">) => {
     ...responseData,
   };
 
-  aiResponses.value.push(response);
+  aiResponses.value.push(_response);
 
   // Emit for parent listeners (e.g., analytics/timeline)
   try {
@@ -670,7 +672,7 @@ function toggleRecording() {
       mediaRecorder = new MediaRecorder(mediaStream.value, options as any);
       mediaRecorder.ondataavailable = (e: any) => {
         const data = e?.data as Blob;
-        if (data && (data as Blob).size > 0) recordedChunks.push(data);
+        if (data && (data as Blob).size > 0) recordedChunks.push(_data);
       };
       mediaRecorder.onstop = () => {
         const blob = new Blob(recordedChunks, { type: "video/webm" });
@@ -715,7 +717,7 @@ async function copyTranscript() {
   try {
     await navigator.clipboard.writeText(getTranscript());
     toastSuccess("Transcript copied");
-  } catch (e) {
+  } catch (_e) {
     console.warn("Copy failed", e);
     toastError("Copy failed");
   }
@@ -734,7 +736,7 @@ function getSessionData(): any {
 function exportLocalSession() {
   try {
     const data = getSessionData();
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
+    const blob = new Blob([JSON.stringify(_data, null, 2)], {
       type: "application/json",
     });
     const url = URL.createObjectURL(blob);
@@ -743,7 +745,7 @@ function exportLocalSession() {
     a.download = "ai-media-session.json";
     a.click();
     URL.revokeObjectURL(url);
-  } catch (e) {
+  } catch (_e) {
     console.error("Export failed", e);
   }
 }
@@ -818,7 +820,7 @@ function exportHtmlReport() {
     a.download = "ai-media-report.html";
     a.click();
     URL.revokeObjectURL(url);
-  } catch (e) {
+  } catch (_e) {
     console.error("HTML export failed", e);
   }
 }

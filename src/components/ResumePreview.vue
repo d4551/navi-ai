@@ -213,7 +213,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
+
+import { ref} from "vue";
 import { formatMonthYear } from "@/utils/date";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { useToast } from "@/composables/useToast";
@@ -257,7 +259,7 @@ interface Props {
   template?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   resumeData: () => ({}),
   template: "classic",
 });
@@ -294,7 +296,7 @@ const downloadResume = async () => {
     } else {
       throw new Error("PDF generation failed");
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("PDF download error:", error);
     toast.error("Failed to download resume. Please try again.");
   }

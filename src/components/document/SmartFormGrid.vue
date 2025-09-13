@@ -278,6 +278,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch, nextTick, reactive } from 'vue';
+
 import { ref, computed, watch, nextTick } from "vue";
 import { useAppStore } from "@/stores/app";
 import { debounce } from "lodash-es";
@@ -296,14 +298,14 @@ interface SmartFormData {
   summary: string;
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   modelValue: SmartFormData;
   section: "personal" | "summary";
   aiEnabled?: boolean;
   showProfileImport?: boolean;
 }>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update:modelValue": [value: SmartFormData];
   "import-profile": [];
   "ai-generate": [type: string, data: any];
@@ -470,7 +472,7 @@ const generateTitleSuggestions = async () => {
       "Frontend Engineer",
       "Software Development Manager",
     ];
-  } catch (error) {
+  } catch (_error) {
     console.warn("Failed to generate title suggestions:", error);
   }
 };

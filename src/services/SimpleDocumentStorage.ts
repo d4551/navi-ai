@@ -55,7 +55,7 @@ class SimpleDocumentStorage {
       }
 
       localStorage.setItem(this.documentsKey, JSON.stringify(documents));
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to save document:", error);
       throw error;
     }
@@ -71,7 +71,7 @@ class SimpleDocumentStorage {
         (doc) => doc.type === type && (id ? doc.id === id : true),
       );
       return document?.data || null;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to get document:", error);
       return null;
     }
@@ -85,7 +85,7 @@ class SimpleDocumentStorage {
       }
 
       localStorage.setItem(this.versionsKey, JSON.stringify(versions));
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to save version:", error);
       throw error;
     }
@@ -94,7 +94,7 @@ class SimpleDocumentStorage {
   async getVersions(): Promise<VersionStorageItem[]> {
     try {
       return this.loadVersions();
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to get versions:", error);
       return [];
     }
@@ -105,7 +105,7 @@ class SimpleDocumentStorage {
       const versions = this.loadVersions();
       const filteredVersions = versions.filter((v) => v.id !== versionId);
       localStorage.setItem(this.versionsKey, JSON.stringify(filteredVersions));
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to delete version:", error);
       throw error;
     }
@@ -114,8 +114,8 @@ class SimpleDocumentStorage {
   private loadDocuments(): DocumentStorageItem[] {
     try {
       const data = localStorage.getItem(this.documentsKey);
-      return data ? JSON.parse(data) : [];
-    } catch (error) {
+      return data ? JSON.parse(_data) : [];
+    } catch (_error) {
       console.error("Failed to load documents:", error);
       return [];
     }
@@ -124,8 +124,8 @@ class SimpleDocumentStorage {
   private loadVersions(): VersionStorageItem[] {
     try {
       const data = localStorage.getItem(this.versionsKey);
-      return data ? JSON.parse(data) : [];
-    } catch (error) {
+      return data ? JSON.parse(_data) : [];
+    } catch (_error) {
       console.error("Failed to load versions:", error);
       return [];
     }

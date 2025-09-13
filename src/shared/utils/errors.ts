@@ -52,7 +52,7 @@ export class RateLimitError extends BaseError {
   if (error instanceof Error) {
     return error.message;
   }
-  return String(error);
+  return String(_error);
 }
 
   if (error instanceof BaseError) {

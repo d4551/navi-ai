@@ -492,7 +492,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { refonUnmounted, computed } from "vue";
 import Chart from "chart.js/auto";
 import type { Chart as ChartJS } from "chart.js";
 import { getChartTheme } from "@/utils/charts.js";
@@ -503,7 +505,7 @@ import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import StudioSubNav from "@/components/studio/StudioSubNav.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const theme = (() => {
+const _theme = (() => {
   try {
     return useUnifiedTheme();
   } catch {
@@ -838,7 +840,7 @@ const refreshData = async () => {
       analytics.value.openJobs,
       (val) => (animatedJobs.value = val),
     );
-  } catch (error) {
+  } catch (_error) {
     console.warn("Failed to refresh data:", error);
   } finally {
     isRefreshing.value = false;
@@ -856,7 +858,7 @@ const exportAnalytics = () => {
     exportedAt: new Date().toISOString(),
   };
 
-  const blob = new Blob([JSON.stringify(data, null, 2)], {
+  const blob = new Blob([JSON.stringify(_data, null, 2)], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
@@ -911,7 +913,7 @@ onMounted(async () => {
       ),
       openJobs: stats.totalOpenPositions || analytics.value.openJobs,
     };
-  } catch (error) {
+  } catch (_error) {
     console.warn("Failed to load analytics data:", error);
   }
 

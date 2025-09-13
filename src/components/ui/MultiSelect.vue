@@ -65,7 +65,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { ref, computedonUnmounted } from "vue";
 import Icon from "./Icon.vue";
 
 interface Option {
@@ -81,13 +83,13 @@ interface Props {
   maxDisplay?: number;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   placeholder: "Select options...",
   searchable: true,
   maxDisplay: 3,
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update:modelValue": [value: (string | number)[]];
 }>();
 

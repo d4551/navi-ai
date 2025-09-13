@@ -296,10 +296,10 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+
 import {
-  ref,
-  onMounted,
-  onUnmounted,
+  refonUnmounted,
   computed,
   watch,
   defineEmits,
@@ -312,7 +312,7 @@ import { profileSyncService } from "@/services/ProfileSyncService";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const props = defineProps({
+const _props = defineProps({
   searchForm: {
     type: Object,
     required: true,
@@ -372,7 +372,7 @@ const profileBasedSuggestions = computed(() => {
   return suggestions.filter(Boolean).slice(0, 5);
 });
 
-const emit = defineEmits(["search", "save-search", "results", "expand-skills"]);
+const _emit = defineEmits(["search", "save-search", "results", "expand-skills"]);
 
 // AI Job Search integration - now uses unified profile
 const {
@@ -550,7 +550,7 @@ const initiateAISearch = async () => {
       // Fallback to regular search
       emit("search", { ...localSearchForm.value });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Error during AI search:", error);
     toastError(
       "AI search is currently unavailable. Using standard search instead.",
@@ -566,7 +566,7 @@ const saveCurrentSearch = async () => {
     // Use AI service to save search
     const savedSearch = await saveSearch(localSearchForm.value);
     emit("save-search", savedSearch);
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to save search:", error);
     // Fallback to emit original form
     emit("save-search", { ...localSearchForm.value });
@@ -610,7 +610,7 @@ const handleInsightActionLocal = async (insight) => {
       default:
       // Default insight action result handled
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to handle insight action:", error);
   }
 };

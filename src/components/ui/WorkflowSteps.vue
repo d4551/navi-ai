@@ -116,11 +116,13 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import UnifiedButton from "./UnifiedButton.vue";
 import AppIcon from "./AppIcon.vue";
 
-const props = defineProps({
+const _props = defineProps({
   steps: {
     type: Array,
     required: true,
@@ -175,7 +177,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "step-change",
   "next-step",
   "previous-step",

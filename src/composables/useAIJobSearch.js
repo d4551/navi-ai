@@ -1,5 +1,5 @@
 
-import { ref, onMounted, computed } from "vue";
+import { refcomputed } from "vue";
 import { aiJobMatchingService } from "@/services/AIJobMatchingService";
 import { useToast } from "@/composables/useToast";
 import { logger } from "@/shared/utils/logger";
@@ -39,9 +39,11 @@ import { logger } from "@/shared/utils/logger";
 
   const searchProgress = computed(() => {
     // Simulate progress based on search duration
+    return searchResults.value.length > 0 ? 100 : (isSearching.value ? 50 : 0);
   });
 
   const topMatches = computed(() =>
+    searchResults.value.filter(job => (job.score || 0) > 0.7).slice(0, 5)
   );
 
   const searchStats = computed(() => {
@@ -150,7 +152,7 @@ import { logger } from "@/shared/utils/logger";
         insights: searchInsights.value,
         analysis: searchAnalysis.value,
       };
-    } catch (error) {
+    } catch (_error) {
       searchError.value = error.message;
       logger.error("AI job search failed:", error);
       toast.error("Search failed. Please try again.");
@@ -189,7 +191,7 @@ import { logger } from "@/shared/utils/logger";
       return [
         ...filtered,
       ];
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to get search suggestions:", error);
       return quickSuggestions.value;
     }
@@ -214,7 +216,7 @@ import { logger } from "@/shared/utils/logger";
       }
 
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Salary analysis failed:", error);
       return { success: false, error: error.message };
     }
@@ -239,7 +241,7 @@ import { logger } from "@/shared/utils/logger";
       }
 
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to get personalized recommendations:", error);
       return { success: false, error: error.message };
     }
@@ -306,7 +308,7 @@ import { logger } from "@/shared/utils/logger";
         JSON.stringify(savedSearches.value),
       );
       toast.success("Search saved successfully");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to save search:", error);
       toast.error("Failed to save search");
     }
@@ -334,7 +336,7 @@ import { logger } from "@/shared/utils/logger";
           JSON.stringify(savedSearches.value),
         );
         toast.success("Search deleted");
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to delete search:", error);
       }
     }
@@ -401,7 +403,7 @@ import { logger } from "@/shared/utils/logger";
       if (saved) {
         savedSearches.value = JSON.parse(saved);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to load saved searches:", error);
     }
   }

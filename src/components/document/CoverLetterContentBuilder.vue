@@ -448,20 +448,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch } from 'vue';
+
+import {watch } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import type { CoverLetterData } from "@/composables/useDocumentManager";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   documentData: CoverLetterData;
   currentStep: number;
   aiEnabled: boolean;
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update-data": [data: CoverLetterData];
   "step-change": [step: number];
   "ai-request": [payload: any];

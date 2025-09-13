@@ -42,12 +42,14 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+
 import { computed, ref } from "vue";
 import EnhancedJobCard from "./EnhancedJobCard.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
 
-const props = defineProps({
+const _props = defineProps({
   jobs: {
     type: Array,
     default: () => [],
@@ -70,7 +72,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "job-selected",
   "job-applied",
   "job-saved",
@@ -151,7 +153,7 @@ const handleJobApply = (job) => {
   emit("job-applied", job);
 };
 
-const handleJobSave = (data) => {
+const handleJobSave = (_data) => {
   emit("job-saved", data);
 };
 

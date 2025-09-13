@@ -365,20 +365,22 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
+
 import { ref, computed } from "vue";
 import { useToast } from "@/composables/useToast";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   show: boolean;
   versions: any[];
   currentDocument: string;
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: [];
   revert: [any];
 }>();
@@ -548,7 +550,7 @@ const previewVersion = (version: any) => {
     } else {
       toast.warning("No preview data available for this version");
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Version preview failed:", error);
     toast.error("Failed to preview version");
   }
@@ -645,7 +647,7 @@ const exportVersionHistory = () => {
     versions: allVersions.value,
   };
 
-  const blob = new Blob([JSON.stringify(data, null, 2)], {
+  const blob = new Blob([JSON.stringify(_data, null, 2)], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
@@ -671,7 +673,7 @@ const loadAutoSavedVersions = () => {
     }
 
     return [];
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load auto-saved versions:", error);
     return [];
   }
@@ -699,7 +701,7 @@ const confirmCleanup = () => {
 
       const removedCount = existingVersions.length - filteredVersions.length;
       toast.success(`Cleaned up ${removedCount} old versions`);
-    } catch (error) {
+    } catch (_error) {
       console.error("Cleanup failed:", error);
       toast.error("Failed to cleanup old versions");
     }

@@ -87,16 +87,16 @@ export class StudioDataManager {
       await this.updateImportMetadata();
 
       // Generate import report
-      await this.generateImportReport(result);
+      await this.generateImportReport(_result);
 
       logger.info(
         `Studio import completed: ${result.summary.totalSuccessful}/${result.summary.totalAttempted} successful`,
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Studio import failed:", error);
       result.errors.push({
         studio: "SYSTEM",
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? error.message : String(_error),
       });
     }
 
@@ -161,7 +161,7 @@ export class StudioDataManager {
       });
 
       await this.addExternalStudioData(consolidated);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error consolidating studio data:", error);
     }
 
@@ -229,7 +229,7 @@ export class StudioDataManager {
           }
         });
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to load external studio data:", error);
     }
   }
@@ -299,10 +299,10 @@ export class StudioDataManager {
           });
           result.imported++;
         }
-      } catch (error) {
+      } catch (_error) {
         result.errors.push({
           studio: studioData.name || studioData.id || "Unknown",
-          error: error instanceof Error ? error.message : String(error),
+          error: error instanceof Error ? error.message : String(_error),
         });
         logger.error(`Failed to process studio ${studioData.name}:`, error);
       }
@@ -528,7 +528,7 @@ export class StudioDataManager {
         importedAt: new Date().toISOString(),
         source: "StudioDataManager",
       });
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to update import metadata:", error);
     }
   }
@@ -550,7 +550,7 @@ export class StudioDataManager {
       const reports = (await unifiedStorage.get("studio_import_reports")) || [];
       reports.unshift(report);
       await unifiedStorage.set("studio_import_reports", reports);
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to save import report:", error);
     }
   }
@@ -598,7 +598,7 @@ export class StudioDataManager {
         byCategory,
         lastImport,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to get studio statistics:", error);
       return {
         bySize: {},
@@ -728,10 +728,10 @@ export class StudioDataManager {
           `Found ${result.missingData.length} studios with missing data`,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       result.valid = false;
       result.issues.push(
-        `Database validation failed: ${error instanceof Error ? error.message : String(error)}`,
+        `Database validation failed: ${error instanceof Error ? error.message : String(_error)}`,
       );
     }
 
@@ -757,7 +757,7 @@ export class StudioDataManager {
           count: studioArray.length,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to export database:", error);
       throw error;
     }

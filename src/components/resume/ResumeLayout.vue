@@ -130,7 +130,9 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { refcomputed } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 export default {
@@ -158,7 +160,7 @@ export default {
     "add-item",
     "reorder-items",
   ],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const activeSection = ref("personal");
 
     const sections = ref([

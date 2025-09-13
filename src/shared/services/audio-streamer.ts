@@ -35,7 +35,7 @@ export class AudioStreamer {
       workletNode.connect(this.audioContext.destination);
 
       logger.debug(`Audio worklet ${name} added to streamer`);
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to add audio worklet ${name}:`, error);
     }
   }
@@ -56,7 +56,7 @@ export class AudioStreamer {
       source.start();
 
       logger.debug(`Added PCM audio chunk: ${audioData.length} bytes`);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to add PCM audio data:", error);
     }
   }
@@ -77,7 +77,7 @@ export class AudioStreamer {
 
       this.isStreaming = true;
       logger.info("Audio streamer started");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start audio streamer:", error);
       throw error;
     }
@@ -124,7 +124,7 @@ export class AudioStreamer {
       try {
         await this.audioContext.close();
         this.audioContext = null;
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to close audio context:", error);
       }
     }

@@ -1,10 +1,10 @@
 
-import { ref, computed, watch, onMounted, onUnmounted } from "vue";
+import { ref, computed, watchonUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useLocalStorage } from "@vueuse/core";
 
   // Core state
-  const router = useRouter();
+  const _router = useRouter();
   const route = useRoute();
 
   // Navigation state
@@ -160,6 +160,7 @@ import { useLocalStorage } from "@vueuse/core";
       crumbs.push({
         text:
           matchingPage?.title ||
+          segment.charAt(0).toUpperCase() + segment.slice(1),
         path: currentPath,
         icon: matchingPage?.icon || "mdi-folder",
       });
@@ -211,7 +212,7 @@ import { useLocalStorage } from "@vueuse/core";
     searchLoading.value = false;
   };
 
-  const navigateToResult = (result) => {
+  const navigateToResult = (_result) => {
     router.push(result.path);
     addToRecentPages(result.path);
     closeSearch();

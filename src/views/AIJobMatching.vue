@@ -83,7 +83,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from 'vue';
+
+import { ref} from "vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import PageHeader from "@/components/ui/PageHeader.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -239,7 +241,7 @@ const handleJobApplied = (job) => {
   showActionModal.value = true;
 };
 
-const handleJobSaved = (data) => {
+const handleJobSaved = (_data) => {
   lastAction.value = data.saved ? "Job Saved" : "Job Unsaved";
   selectedJob.value = data.job;
   showActionModal.value = true;

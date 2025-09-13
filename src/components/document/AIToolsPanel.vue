@@ -532,6 +532,8 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+
 import { ref, computed } from "vue";
 import * as pdfjsLib from "pdfjs-dist";
 // Load the PDF.js worker as a URL for use in the main thread
@@ -544,7 +546,7 @@ import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   resumeData: {
     type: Object,
     required: true,
@@ -560,7 +562,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "update:jobDescription",
   "apply-suggestions",
   "parse-resume",
@@ -611,7 +613,7 @@ const aiReady = computed(() => {
       localStorage.getItem("openai_api_key")
     );
     return Boolean(status.initialized && hasApiKey);
-  } catch (error) {
+  } catch (_error) {
     console.warn("AI status check failed in AIToolsPanel:", error);
     return false;
   }
@@ -653,7 +655,7 @@ const analyzeJobDescription = async () => {
     };
 
     toast.success("Job description analyzed successfully");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Analysis failed: " + error.message);
   } finally {
     analyzing.value = false;
@@ -690,7 +692,7 @@ const parseResume = async () => {
       experience: [],
     };
     toast.success("Sent resume to AI for parsing");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Parsing failed: " + error.message);
   } finally {
     parsing.value = false;
@@ -703,7 +705,7 @@ const tailorDocuments = async () => {
     // Emit only job description upward; parent will tailor
     emit("tailor-documents", props.jobDescription);
     toast.success("Tailoring requested");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Tailoring failed: " + error.message);
   } finally {
     tailoring.value = false;
@@ -713,14 +715,14 @@ const tailorDocuments = async () => {
 // File handling and extraction
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
 
-const onFileChange = async (e) => {
+const onFileChange = async (_e) => {
   const file = e?.target?.files?.[0];
   if (!file) return;
   try {
     const text = await extractTextFromFile(file);
     resumeText.value = text;
     toast.success(`Loaded ${file.name}`);
-  } catch (err) {
+  } catch (_err) {
     toast.error("Failed to read file: " + (err?.message || err));
   } finally {
     if (fileInput.value) fileInput.value.value = "";
@@ -737,7 +739,7 @@ async function extractTextFromFile(file) {
 
 async function extractTextFromPdf(file) {
   const data = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data }).promise;
+  const pdf = await pdfjsLib.getDocument({ _data }).promise;
   let out = "";
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
@@ -750,7 +752,7 @@ async function extractTextFromPdf(file) {
 
 async function extractTextFromDocx(file) {
   const data = await file.arrayBuffer();
-  const zip = await JSZip.loadAsync(data);
+  const zip = await JSZip.loadAsync(_data);
   const entry = zip.file("word/document.xml");
   if (!entry) throw new Error("Invalid DOCX file");
   const xml = await entry.async("string");
@@ -790,7 +792,7 @@ const suggestSkills = async () => {
     ];
 
     toast.success("Skill suggestions generated");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Skill suggestion failed: " + error.message);
   } finally {
     suggesting.value = false;
@@ -815,7 +817,7 @@ const improveText = async () => {
     improvedText.value =
       "This is an improved version of your text with better clarity and impact.";
     toast.success("Text improved successfully");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Text improvement failed: " + error.message);
   } finally {
     improving.value = false;
@@ -860,7 +862,7 @@ const generateSuggestions = async () => {
     ];
 
     toast.success("Suggestions generated");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to generate suggestions: " + error.message);
   } finally {
     generating.value = false;

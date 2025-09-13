@@ -216,7 +216,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref} from "vue";
 import { useRouter } from "vue-router";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -225,7 +228,7 @@ import { useAIStatus } from "@/composables/useAIStatus";
 import { useToast } from "@/composables/useToast";
 import { logger } from "@/shared/utils/logger";
 
-const router = useRouter();
+const _router = useRouter();
 const toast = useToast();
 const aiIntegration = useAIIntegration();
 const aiStatus = useAIStatus();
@@ -269,7 +272,7 @@ async function initializeAI() {
     if (success) {
       toast.success("AI services initialized successfully!");
     }
-  } catch (error) {
+  } catch (_error) {
     toast.error(`Failed to initialize AI: ${error.message}`);
   }
 }
@@ -292,7 +295,7 @@ async function executeQuickAction(action) {
             prompt: "Generate a brief sample text to test AI functionality",
           },
         );
-        if (result) {
+        if (_result) {
           toast.success("Sample content generated successfully");
           logger.info("Sample generation result:", result);
         }
@@ -316,7 +319,7 @@ async function executeQuickAction(action) {
         break;
       }
     }
-  } catch (error) {
+  } catch (_error) {
     toast.error(`Action failed: ${error.message}`);
     logger.error(`Quick action ${action.id} failed:`, error);
   } finally {
@@ -355,7 +358,7 @@ function testFeature(featureName) {
     } else {
       toast.warning(`No test available for ${formatFeatureName(featureName)}`);
     }
-  } catch (error) {
+  } catch (_error) {
     toast.error(`Feature test failed: ${error.message}`);
   }
 }
@@ -446,7 +449,7 @@ function formatTime(date) {
   }
 }
 
-function getTroubleshootingSteps(error) {
+function getTroubleshootingSteps(_error) {
   const errorLower = (error || "").toLowerCase();
 
   if (errorLower.includes("api key")) {

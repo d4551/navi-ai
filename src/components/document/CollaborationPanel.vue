@@ -412,6 +412,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, nextTick } from 'vue';
+
 import { ref, computed, nextTick } from "vue";
 import { useToast } from "@/composables/useToast";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -460,12 +462,12 @@ interface Version {
   changes: string[];
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   documentId: string;
   userRole: "owner" | "editor" | "viewer";
 }>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "restore-version": [versionId: string];
   "compare-version": [versionId: string];
   "apply-changes": [changes: any];
@@ -672,7 +674,7 @@ async function copyShareLink() {
   try {
     await navigator.clipboard.writeText(shareLink.value);
     toast.success("Link copied to clipboard");
-  } catch (error) {
+  } catch (_error) {
     // Fallback for older browsers
     if (shareLinkInput.value) {
       shareLinkInput.value.select();

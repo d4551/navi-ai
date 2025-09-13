@@ -273,7 +273,9 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
+
+import {} from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
@@ -299,7 +301,7 @@ export default {
     "smart-template",
     "close-panel",
   ],
-  setup(props) {
+  setup(_props) {
     const showAdvanced = ref(false);
 
     const isCompact = computed(() => props.compact);

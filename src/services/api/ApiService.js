@@ -77,7 +77,7 @@ const apiClient = {
         );
         const result = await studioService.searchStudios(params || {});
         return { data: result };
-      } catch (e) {
+      } catch (_e) {
         logger.warn(
           "[API] /studios/search failed, returning empty result",
           e,
@@ -106,7 +106,7 @@ export const getDashboardData = async () => {
   try {
     const response = await apiClient.get("/dashboard/main");
     return response.data;
-  } catch (error) {
+  } catch (_error) {
     logger.error("Error fetching dashboard data:", error, "ApiService");
     throw error;
   }
@@ -116,7 +116,7 @@ export const getFeaturedStudios = async () => {
   try {
     const response = await apiClient.get("/gaming/studios");
     return response.data;
-  } catch (error) {
+  } catch (_error) {
     logger.error("Error fetching featured studios:", error, "ApiService");
     throw error;
   }
@@ -126,7 +126,7 @@ export const getDailyChallenges = async () => {
   try {
     const response = await apiClient.get("/challenges/daily");
     return response.data;
-  } catch (error) {
+  } catch (_error) {
     logger.error("Error fetching daily challenges:", error, "ApiService");
     throw error;
   }
@@ -136,7 +136,7 @@ export const performAIAnalysis = async () => {
   try {
     const response = await apiClient.post("/ai/analyze-profile");
     return response.data;
-  } catch (error) {
+  } catch (_error) {
     logger.error("Error performing AI analysis:", error, "ApiService");
     throw error;
   }

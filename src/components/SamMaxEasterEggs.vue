@@ -290,11 +290,14 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, nextTick, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { logger } from "@/shared/utils/logger";
 
 // @ts-nocheck
-import { ref, onMounted, reactive, onUnmounted, nextTick } from "vue";
+import { refreactive, onUnmounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -678,7 +681,7 @@ const executeConsoleCommand = () => {
 
   if (consoleCommands[command]) {
     const result = consoleCommands[command]();
-    if (result) {
+    if (_result) {
       consoleOutput.value.push({
         id: Date.now() + 1,
         type: "output",

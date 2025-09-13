@@ -13,7 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs } from "vue";
+import { computed } from 'vue';
+
+import {useAttrs } from "vue";
 import UnifiedButton from "./UnifiedButton.vue";
 
 interface Props {
@@ -36,7 +38,7 @@ interface Props {
   ripple?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   variant: "glass",
   size: "md",
   ariaLabel: "",

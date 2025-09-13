@@ -70,6 +70,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import AppIcon from "./AppIcon.vue";
 import UnifiedButton from "./UnifiedButton.vue";
@@ -104,7 +106,7 @@ interface Props {
   centered?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   icon: "mdi-inbox",
   iconSize: "64",
   variant: "default",

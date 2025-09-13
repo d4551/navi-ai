@@ -836,7 +836,7 @@ export const useAppStore = defineStore("app", {
           }
 
           // Validate data structure before patching
-          if (data && typeof data === "object" && !Array.isArray(data)) {
+          if (data && typeof data === "object" && !Array.isArray(_data)) {
             try {
               // Validate and normalize data structure
               if (data.user && typeof data.user === "object") {
@@ -968,7 +968,7 @@ export const useAppStore = defineStore("app", {
                     : true;
               }
 
-              this.$patch(data);
+              this.$patch(_data);
               this.meta.lastSave = new Date(data.meta?.lastSave || Date.now());
               logger.debug("App state loaded from storage successfully");
               try {
@@ -1296,7 +1296,7 @@ export const useAppStore = defineStore("app", {
             } else {
               localStorage.removeItem("gemini_api_key");
             }
-          } catch (e) {
+          } catch (_e) {
             console.warn("Failed to save API key to localStorage:", e);
           }
         }
@@ -1334,7 +1334,7 @@ export const useAppStore = defineStore("app", {
         if (typeof window !== "undefined") {
           try {
             localStorage.removeItem("gemini_api_key");
-          } catch (e) {
+          } catch (_e) {
             console.warn("Failed to clear API key from localStorage:", e);
           }
         }

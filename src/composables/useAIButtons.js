@@ -1,5 +1,5 @@
 
-import { ref, computed } from "vue";
+import {computed } from "vue";
 import { useAppStore } from "@/stores/app";
 import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { useToast } from "@/composables/useToast";
@@ -280,7 +280,7 @@ import { useToast } from "@/composables/useToast";
 
       const result = await ai.triggerAIAction(action, context);
 
-      if (result) {
+      if (_result) {
         toast.success(
           `AI ${action.replace(/_/g, " ")} completed successfully!`,
         );
@@ -288,7 +288,7 @@ import { useToast } from "@/composables/useToast";
       } else {
         throw new Error("AI action returned no result");
       }
-    } catch (error) {
+    } catch (_error) {
       console.error(`AI action failed (${action}):`, error);
       toast.error(`AI ${action.replace(/_/g, " ")} failed: ${error.message}`);
       return null;
@@ -327,7 +327,7 @@ import { useToast } from "@/composables/useToast";
   }));
 
   // Create button props for components
-  const createButtonProps = (config, additionalContext = {}) => ({
+  const createButtonProps = (_config, additionalContext = {}) => ({
     action: config.action,
     variant: config.variant || "primary",
     size: config.size || "md",
@@ -339,11 +339,11 @@ import { useToast } from "@/composables/useToast";
       ...(config.context ? config.context() : {}),
       ...additionalContext,
     },
-    onSuccess: (result) => {
+    onSuccess: (_result) => {
       // AI action completed successfully
       return result;
     },
-    onError: (error) => {
+    onError: (_error) => {
       console.error(`AI ${config.action} failed:`, error);
     },
   });

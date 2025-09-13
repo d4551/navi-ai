@@ -15,7 +15,7 @@ export function useResumeAI({ store, toast }) {
         enableRealTime: false,
       });
       aiInitialized.value = true;
-    } catch (error) {
+    } catch (_error) {
       console.warn("AI service initialization failed:", error);
       if (toast) {
         toast(
@@ -77,7 +77,7 @@ export function useResumeAI({ store, toast }) {
               "Communication",
               "Project Management",
             ];
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to get skill suggestions:", error);
       if (toast) {
         toast(
@@ -131,7 +131,7 @@ export function useResumeAI({ store, toast }) {
           "Improve formatting consistency",
         ],
       };
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to score resume:", error);
       if (toast) {
         toast("Failed to analyze resume. Please try again.", "error");
@@ -168,7 +168,7 @@ Please provide improved, ATS-friendly content that highlights relevant experienc
       });
 
       return response.content;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to optimize section:", error);
       if (toast) {
         toast("Failed to optimize section. Please try again.", "error");
@@ -207,7 +207,7 @@ Generate 3-5 professional suggestions for this resume field that would improve t
         autoFillSuggestions.value[fieldType] = Array.isArray(parsed)
           ? parsed
           : [parsed];
-      } catch (parseError) {
+      } catch (_parseError) {
         // Fallback: extract suggestions from text
         const lines = response.content
           .split("\n")
@@ -226,7 +226,7 @@ Generate 3-5 professional suggestions for this resume field that would improve t
                 "Quantified experience with metrics and results",
               ];
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to generate auto-fill suggestions:", error);
       if (toast) {
         toast("Failed to generate suggestions. Please try again.", "error");

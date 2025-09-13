@@ -161,17 +161,19 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 import { ref, defineEmits, defineProps } from "vue";
 import { formatDateShort } from "@/utils/date";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-const props = defineProps({
+const _props = defineProps({
   item: { type: Object, required: true },
   layout: { type: String, default: "grid" },
   showAnalytics: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(["edit", "delete", "toggle-featured", "share"]);
+const _emit = defineEmits(["edit", "delete", "toggle-featured", "share"]);
 
 // Local state
 const showActions = ref(false);

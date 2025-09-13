@@ -170,7 +170,7 @@
         <AppIcon name="mdi-alert-circle-outline" class="me-2 mt-1" />
         <div>
           <div class="fw-semibold">Audio Device Error</div>
-          <p class="mb-0">{{ error }}</p>
+          <p class="mb-0">{{ _error }}</p>
         </div>
       </div>
     </div>
@@ -178,10 +178,10 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+
 import {
-  ref,
-  onMounted,
-  readonly,
+  refreadonly,
   computed,
   watch,
   onBeforeUnmount,
@@ -195,7 +195,7 @@ import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import { useMediaLock } from "@/composables/useMediaLock";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   disabled: { type: Boolean, default: false },
   autoRefresh: { type: Boolean, default: true },
   showTestControls: { type: Boolean, default: true },
@@ -214,13 +214,13 @@ const onDeviceChange = async () => {
     if (permissionsGranted.value) {
       await refreshDevices();
     }
-  } catch (e) {
+  } catch (_e) {
     logger.warn("Device change refresh failed:", e);
   }
 };
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "microphoneSelected",
   "speakerSelected",
   "permissionsChanged",
@@ -238,7 +238,7 @@ const speakerDevices = ref([]);
 const selectedMicrophoneId = ref("");
 const selectedSpeakerId = ref("");
 const microphoneLevel = ref(0);
-const error = ref("");
+const _error = ref("");
 
 // Audio monitoring via AudioService
 
@@ -275,7 +275,7 @@ onMounted(async () => {
       navigator.mediaDevices.addEventListener("devicechange", onDeviceChange);
       deviceChangeListenerAttached = true;
     }
-  } catch (e) {
+  } catch (_e) {
     logger.warn("Unable to attach devicechange listener:", e);
   }
 
@@ -326,7 +326,7 @@ async function checkPermissions() {
     }
     permissionsGranted.value = granted;
     emit("permissionsChanged", granted);
-  } catch (err) {
+  } catch (_err) {
     logger.error("Permission check failed:", err);
     setError(`Permission check failed: ${err.message}`);
   }
@@ -349,7 +349,7 @@ async function requestPermissions() {
       await refreshDevices();
       logger.info("Microphone permissions granted");
     }
-  } catch (err) {
+  } catch (_err) {
     logger.error("Permission request failed:", err);
     setError(`Permission denied: ${err.message}`);
     permissionsGranted.value = false;
@@ -381,7 +381,7 @@ async function requestPermissions() {
     logger.info(
       `Found ${microphoneDevices.value.length} microphones, ${speakerDevices.value.length} speakers`,
     );
-  } catch (err) {
+  } catch (_err) {
     logger.error("Device enumeration failed:", err);
     setError(`Failed to get audio devices: ${err.message}`);
   } finally {
@@ -429,7 +429,7 @@ async function requestPermissions() {
     await audioService.startMonitoring(selectedMicrophoneId.value, (lvl) => {
     });
     logger.info("Microphone monitoring started");
-  } catch (err) {
+  } catch (_err) {
     logger.error("Failed to start microphone monitoring:", err);
     setError(`Microphone monitoring failed: ${err.message}`);
   }
@@ -470,7 +470,7 @@ async function requestPermissions() {
       try {
         await audioContext.destination.setSinkId(selectedSpeakerId.value);
         logger.info(`Test audio routed to speaker: ${selectedSpeakerId.value}`);
-      } catch (err) {
+      } catch (_err) {
         logger.warn("Failed to route to selected speaker:", err);
         // Continue with default speaker
       }
@@ -482,7 +482,7 @@ async function requestPermissions() {
       audioContext.close();
 
     logger.info("Speaker test completed");
-  } catch (err) {
+  } catch (_err) {
     logger.error("Speaker test failed:", err);
     setError(`Speaker test failed: ${err.message}`);
     isTestingAudio.value = false;

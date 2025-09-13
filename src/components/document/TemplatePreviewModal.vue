@@ -102,14 +102,14 @@ import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   show: boolean;
   template: any;
   documentType: "resume" | "cover-letter";
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: [];
   select: [string];
 }>();

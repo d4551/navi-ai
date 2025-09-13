@@ -1,10 +1,10 @@
 // Keyboard navigation helpers for the vertical menubar in the sidebar
-import { ref } from "vue";
+import {} from "vue";
 
 export function useSidebarNavigation() {
   const menuRef = ref(null);
 
-  const onMenuKeydown = (e) => {
+  const onMenuKeydown = (_e) => {
     const items = menuRef.value?.querySelectorAll("a.nav-link") || [];
     if (!items.length) {
       return;

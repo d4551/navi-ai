@@ -282,11 +282,13 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import UiChip from "@/components/ui/UiChip.vue";
-import { ref, onMounted } from "vue";
+import { ref} from "vue";
 import { useToast } from "@/composables/useToast";
 import { useLiveMultimediaAI } from "@/composables/useLiveMultimediaAI";
 import {
@@ -384,7 +386,7 @@ export default {
         }
 
         toast.success("Diagnostics completed");
-      } catch (error) {
+      } catch (_error) {
         addToConsole("error", `Diagnostics failed: ${error.message}`);
         toast.error("Diagnostics failed");
       } finally {
@@ -430,7 +432,7 @@ export default {
           addToConsole("error", "AI services initialization failed");
           toast.error("AI services initialization failed");
         }
-      } catch (error) {
+      } catch (_error) {
         aiStatus.value = { success: false, message: error.message };
         addToConsole("error", `AI initialization error: ${error.message}`);
         toast.error(`AI initialization error: ${error.message}`);
@@ -459,7 +461,7 @@ export default {
         toast.info(
           `Voice streaming: ${multimediaState.isAudioStreaming ? "ON" : "OFF"}`,
         );
-      } catch (error) {
+      } catch (_error) {
         addToConsole("error", `Voice test error: ${error.message}`);
         toast.error(`Voice test error: ${error.message}`);
       } finally {
@@ -486,7 +488,7 @@ export default {
         toast.info(
           `Video streaming: ${multimediaState.isVideoStreaming ? "ON" : "OFF"}`,
         );
-      } catch (error) {
+      } catch (_error) {
         addToConsole("error", `Video test error: ${error.message}`);
         toast.error(`Video test error: ${error.message}`);
       } finally {
@@ -506,7 +508,7 @@ export default {
         }
 
         const result = await captureScreenshot("Test screenshot analysis");
-        if (result) {
+        if (_result) {
           addToConsole(
             "info",
             `Screen capture successful: ${result.content.substring(0, 100)}...`,
@@ -516,7 +518,7 @@ export default {
           addToConsole("error", "Screen capture failed");
           toast.error("Screen capture failed");
         }
-      } catch (error) {
+      } catch (_error) {
         addToConsole("error", `Screen capture error: ${error.message}`);
         toast.error(`Screen capture error: ${error.message}`);
       } finally {

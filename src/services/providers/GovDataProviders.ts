@@ -130,7 +130,7 @@ export class NYCJobsProvider extends BaseJobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
 
     return data.map((job: any) => ({
       id: `nyc-${job.job_id}`,

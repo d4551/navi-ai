@@ -504,7 +504,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref, watch } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { computedonBeforeUnmount, ref, watch } from "vue";
 
 // Fix for 'IntersectionObserver is not defined' in some build environments
 
@@ -518,7 +521,7 @@ import PortfolioViewModal from "@/components/portfolio/PortfolioViewModal.vue";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import { usePerformantPortfolio } from "@/composables/usePerformantPortfolio";
 
-const router = useRouter();
+const _router = useRouter();
 const portfolio = usePerformantPortfolio();
 
 // Modal states
@@ -528,7 +531,7 @@ const showViewModal = ref(false);
 const showPortfolioManager = ref(false);
 const selectedViewItem = ref(null);
 
-const theme = (() => {
+const _theme = (() => {
   try {
     return useUnifiedTheme();
   } catch {
@@ -662,7 +665,7 @@ const visibleItems = computed(() => {
           "Professional gaming industry portfolio showcasing projects and skills",
       },
     });
-  } catch (error) {
+  } catch (_error) {
     console.error("Portfolio export failed:", error);
     // Fallback to basic JSON export
     try {
@@ -720,7 +723,7 @@ const visibleItems = computed(() => {
     for (const item of items) {
       await portfolio.suggestSkills(item);
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Error suggesting skills:", error);
   }
 }

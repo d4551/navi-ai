@@ -133,7 +133,7 @@ import type {
       }
 
       return role;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to load role requirements:", error);
       throw error;
     }
@@ -419,7 +419,7 @@ import type {
       // Unknown format
       document.body.removeChild(container);
       return false;
-    } catch (error) {
+    } catch (_error) {
       console.error("Export failed:", error);
       throw error;
     }

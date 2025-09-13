@@ -61,16 +61,16 @@ export const useSystemStore = defineStore("system", {
         }
         const data = JSON.parse(raw);
         if (data && typeof data === "object") {
-          this.$patch(data);
+          this.$patch(_data);
         }
-      } catch (e) {
+      } catch (_e) {
         logger.warn("System store load failed", e);
       }
     },
     save() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.$state));
-      } catch (e) {
+      } catch (_e) {
         logger.warn("System store save failed", e);
       }
     },
@@ -200,7 +200,7 @@ export const useSystemStore = defineStore("system", {
             `Calibration completed with ${onlineCount}/${serviceCount} services online`,
           );
         }
-      } catch (error) {
+      } catch (_error) {
         this.calibration.status = "error";
         this.calibration.progress = 0;
         this.calibration.accuracy = null;
@@ -309,7 +309,7 @@ export const useSystemStore = defineStore("system", {
         this.save();
 
         logger.debug("Service connectivity check completed", results);
-      } catch (e) {
+      } catch (_e) {
         logger.error("pingAll failed:", e.message);
         // Set all services to offline on error
         Object.keys(this.services).forEach((service) => {

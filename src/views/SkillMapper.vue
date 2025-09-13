@@ -550,7 +550,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, reactive } from 'vue';
+
+import { ref, computed} from "vue";
 import GlassNavTabs from "@/components/GlassNavTabs.vue";
 import { useEnhancedSkillMapping } from "@/composables/useEnhancedSkillMapping";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
@@ -729,7 +731,7 @@ const handleExport = async (format: string) => {
     // Simple export logic - would need to match the expected interface
     console.log("Exporting skills in format:", format);
     showExportModal.value = false;
-  } catch (error) {
+  } catch (_error) {
     console.error("Export failed:", error);
   }
 };
@@ -768,7 +770,7 @@ const onImportSnapshots = (event: any) => {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = (e) => {
+  reader.onload = (_e) => {
     try {
       const importedSnapshots = JSON.parse(e.target?.result as string);
       if (replaceSnapshots.value) {
@@ -776,7 +778,7 @@ const onImportSnapshots = (event: any) => {
       } else {
         snapshots.value.push(...importedSnapshots);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Import failed:", error);
     }
   };

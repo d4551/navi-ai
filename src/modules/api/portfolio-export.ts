@@ -76,7 +76,7 @@ export class PortfolioExportService {
         default:
           throw new Error(`Unsupported export format: ${request.format}`);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Portfolio export failed:", error);
       return {
         success: false,
@@ -104,8 +104,8 @@ export class PortfolioExportService {
             margin: {
             },
             displayHeaderFooter: true,
-            headerTemplate: this.generatePDFHeader(options),
-            footerTemplate: this.generatePDFFooter(options),
+            headerTemplate: this.generatePDFHeader(_options),
+            footerTemplate: this.generatePDFFooter(_options),
             printBackground: true,
           },
         });
@@ -129,7 +129,7 @@ export class PortfolioExportService {
 
       // Fallback to browser PDF generation
       return await this.generatePDFInBrowser(htmlTemplate, projects, options);
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `PDF export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -156,7 +156,7 @@ export class PortfolioExportService {
           template: options?.template,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `HTML export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -186,7 +186,7 @@ export class PortfolioExportService {
           template: options?.template,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `Website export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -236,7 +236,7 @@ export class PortfolioExportService {
           generatedAt: new Date().toISOString(),
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `JSON export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -265,7 +265,7 @@ export class PortfolioExportService {
       );
 
       // Add JavaScript if needed
-      files["assets/portfolio.js"] = this.generatePortfolioJS(options);
+      files["assets/portfolio.js"] = this.generatePortfolioJS(_options);
 
       // Add README
       if (options?.includeReadme !== false) {
@@ -291,7 +291,7 @@ export class PortfolioExportService {
           template: options?.template,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `ZIP export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -304,7 +304,7 @@ export class PortfolioExportService {
     standalone = false,
   ): string {
     const template = options?.template || "modern";
-    const theme = options?.theme || "light";
+    const _theme = options?.theme || "light";
     const metadata = options?.metadata || {};
 
     const cssContent = standalone
@@ -312,7 +312,7 @@ export class PortfolioExportService {
       : `${mdiLink}<link rel="stylesheet" href="assets/styles.css">`;
 
     const jsContent = standalone
-      ? `<script>${this.generatePortfolioJS(options)}</script>`
+      ? `<script>${this.generatePortfolioJS(_options)}</script>`
       : `<script src="assets/portfolio.js"></script>`;
 
     return `
@@ -340,7 +340,7 @@ export class PortfolioExportService {
     options?: PortfolioExportOptions,
   ): string {
     const template = options?.template || "modern";
-    const theme = options?.theme || "light";
+    const _theme = options?.theme || "light";
 
     return `
 <!DOCTYPE html>
@@ -707,7 +707,7 @@ export class PortfolioExportService {
       options?.template,
       options?.theme,
     );
-    files["assets/portfolio.js"] = this.generatePortfolioJS(options);
+    files["assets/portfolio.js"] = this.generatePortfolioJS(_options);
 
     // Config files
     files["package.json"] = JSON.stringify(

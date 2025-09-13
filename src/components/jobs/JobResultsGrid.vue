@@ -42,13 +42,15 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+
 import { ref, computed, defineEmits, defineProps } from "vue";
 import EnhancedJobCard from "./EnhancedJobCard.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const props = defineProps({
+const _props = defineProps({
   jobs: { type: Array, default: () => [] },
   loading: { type: Boolean, default: false },
   filters: { type: Object, default: () => ({}) },
@@ -57,7 +59,7 @@ const props = defineProps({
   enableAIInsights: { type: Boolean, default: true },
 });
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "apply",
   "save",
   "filter",
@@ -142,7 +144,7 @@ function handleApply(job) {
   emit("apply", job);
 }
 
-function handleJobSave(data) {
+function handleJobSave(_data) {
   emit("save", data.job);
 }
 

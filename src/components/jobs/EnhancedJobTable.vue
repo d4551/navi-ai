@@ -37,8 +37,8 @@ import LoadingSkeletons from '@/components/LoadingSkeletons.vue'
 
 interface JobItem { id?: string; title?: string; company?: string; location?: string; [k: string]: any }
 
-const props = defineProps<{ jobs: JobItem[]; loading?: boolean; selectedJobs?: any[]; gamingFocus?: boolean }>()
-const emit = defineEmits<{
+const _props = defineProps<{ jobs: JobItem[]; loading?: boolean; selectedJobs?: any[]; gamingFocus?: boolean }>()
+const _emit = defineEmits<{
   (e: 'job-selected', job: JobItem): void
   (e: 'job-applied', job: JobItem): void
   (e: 'job-saved', job: JobItem): void

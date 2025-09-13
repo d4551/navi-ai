@@ -139,7 +139,7 @@ export function useAIContext(options: AIContextOptions = {}) {
 
       // Generate initial suggestions if auto-enabled
       if (autoGenerate) {
-        await generateInitialSuggestions(context);
+        await generateInitialSuggestions(_context);
       }
 
       // Start real-time updates if enabled
@@ -148,8 +148,8 @@ export function useAIContext(options: AIContextOptions = {}) {
       }
 
       logger.info("AI Context initialized:", context);
-    } catch (error) {
-      state.error = error instanceof Error ? error.message : String(error);
+    } catch (_error) {
+      state.error = error instanceof Error ? error.message : String(_error);
       logger.error("Failed to initialize AI context:", error);
       throw error;
     }
@@ -166,7 +166,7 @@ export function useAIContext(options: AIContextOptions = {}) {
 
     const targetEntityId = entityId || state.currentContext.entityId;
     const targetEntity = state.currentContext.entities.find(
-      (e) => e.id === targetEntityId,
+      (_e) => e.id === targetEntityId,
     );
 
     if (targetEntity) {
@@ -193,22 +193,22 @@ export function useAIContext(options: AIContextOptions = {}) {
 
       // Resume-specific suggestions
       if (context.entityType === "resume") {
-        newActions.push(...(await generateResumeSuggestions(context)));
+        newActions.push(...(await generateResumeSuggestions(_context)));
       }
 
       // Cover letter suggestions
       else if (context.entityType === "cover-letter") {
-        newActions.push(...(await generateCoverLetterSuggestions(context)));
+        newActions.push(...(await generateCoverLetterSuggestions(_context)));
       }
 
       // Job-specific suggestions
       else if (context.entityType === "job") {
-        newActions.push(...(await generateJobSuggestions(context)));
+        newActions.push(...(await generateJobSuggestions(_context)));
       }
 
       // Interview preparation suggestions
       else if (context.entityType === "interview") {
-        newActions.push(...(await generateInterviewSuggestions(context)));
+        newActions.push(...(await generateInterviewSuggestions(_context)));
       }
 
       // Add to state and calculate response time
@@ -228,7 +228,7 @@ export function useAIContext(options: AIContextOptions = {}) {
       }
 
       return filteredActions;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate context actions:", error);
       throw error;
     } finally {
@@ -241,7 +241,7 @@ export function useAIContext(options: AIContextOptions = {}) {
     context: AIProcessingContext,
   ): Promise<AIContextAction[]> => {
     const actions: AIContextAction[] = [];
-    const resumeData = context.entities.find((e) => e.type === "resume")?.data;
+    const resumeData = context.entities.find((_e) => e.type === "resume")?.data;
 
     if (!resumeData) return actions;
 
@@ -321,7 +321,7 @@ export function useAIContext(options: AIContextOptions = {}) {
   ): Promise<AIContextAction[]> => {
     const actions: AIContextAction[] = [];
     const coverLetterData = context.entities.find(
-      (e) => e.type === "cover-letter",
+      (_e) => e.type === "cover-letter",
     )?.data;
 
     if (!coverLetterData || !context.targetJob) return actions;
@@ -368,7 +368,7 @@ export function useAIContext(options: AIContextOptions = {}) {
     context: AIProcessingContext,
   ): Promise<AIContextAction[]> => {
     const actions: AIContextAction[] = [];
-    const jobData = context.entities.find((e) => e.type === "job")?.data;
+    const jobData = context.entities.find((_e) => e.type === "job")?.data;
 
     if (!jobData) return actions;
 
@@ -411,9 +411,9 @@ export function useAIContext(options: AIContextOptions = {}) {
   ): Promise<AIContextAction[]> => {
     const actions: AIContextAction[] = [];
     const interviewData = context.entities.find(
-      (e) => e.type === "interview",
+      (_e) => e.type === "interview",
     )?.data;
-    const jobData = context.entities.find((e) => e.type === "job")?.data;
+    const jobData = context.entities.find((_e) => e.type === "job")?.data;
 
     if (!interviewData || !jobData) return actions;
 
@@ -445,9 +445,9 @@ export function useAIContext(options: AIContextOptions = {}) {
     context: AIProcessingContext,
   ): Promise<void> => {
     try {
-      const initialActions = await generateContextActions(context);
+      const initialActions = await generateContextActions(_context);
       state.suggestions = initialActions.filter((action) => action.suggested);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate initial suggestions:", error);
     }
   };
@@ -490,7 +490,7 @@ export function useAIContext(options: AIContextOptions = {}) {
       if (state.currentContext && autoGenerate) {
         await generateContextActions(state.currentContext);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to apply suggestion:", error);
       throw error;
     } finally {
@@ -725,7 +725,7 @@ export function useAIContext(options: AIContextOptions = {}) {
 
         state.currentContext.timestamp = now;
         if (autoGenerate) {
-          generateContextActions(state.currentContext).catch((error) =>
+          generateContextActions(state.currentContext).catch((_error) =>
             logger.error("Context polling error:", error),
           );
         }

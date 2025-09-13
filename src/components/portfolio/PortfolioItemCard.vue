@@ -228,7 +228,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { ref, computedonUnmounted } from "vue";
 import { formatMonthYear } from "@/utils/date";
 import Icon from "@/components/ui/Icon.vue";
 
@@ -260,13 +262,13 @@ interface Props {
   selected?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   viewMode: "grid",
   selectionMode: false,
   selected: false,
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   edit: [item: PortfolioItem];
   delete: [item: PortfolioItem];
   "toggle-featured": [item: PortfolioItem];

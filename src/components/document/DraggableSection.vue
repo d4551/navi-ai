@@ -125,7 +125,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
+
+import { ref} from "vue";
 import { useToast } from "@/composables/useToast";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -138,7 +140,7 @@ interface SectionData {
   order: number;
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   sectionData: SectionData;
   sectionTitle: string;
   sectionIcon: string;
@@ -153,7 +155,7 @@ const props = defineProps<{
   emptyStateText?: string;
 }>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "drag-start": [sectionId: string, data: SectionData];
   "drag-end": [];
   drop: [targetSectionId: string, sourceData: SectionData];
@@ -251,7 +253,7 @@ function handleDrop(event: DragEvent) {
       emit("drop", sectionId.value, draggedData);
       toast.success("Section reordered successfully");
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to parse drag data:", error);
   }
 }

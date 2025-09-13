@@ -1,5 +1,5 @@
 
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computedonUnmounted } from "vue";
 import { useAppStore } from "@/stores/app";
 import { aiService } from "@/shared/services/AIService";
 import { logger } from "@/shared/utils/logger";
@@ -63,7 +63,7 @@ import { logger } from "@/shared/utils/logger";
         responseTime: responseTime.value,
         provider: providerStatus.value,
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("AI health check failed:", error);
       lastError.value = error.message || "Health check failed";
       isOnline.value = false;

@@ -432,6 +432,8 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+
 import {
   Teleport,
   computed,
@@ -447,12 +449,12 @@ import IconButton from "@/components/ui/IconButton.vue";
 import { useUnifiedUI } from "@/composables/useUnifiedUI";
 import { useToast } from "@/composables/useToast";
 
-const props = defineProps({
+const _props = defineProps({
   open: { type: Boolean, default: false },
   messages: { type: Array, default: () => [] },
   size: { type: String, default: "lg" }, // 'md' | 'lg' | 'xl'
 });
-const emit = defineEmits(["update:open", "send"]);
+const _emit = defineEmits(["update:open", "send"]);
 
 const ttsEnabled = ref(false);
 const listening = ref(false);
@@ -629,7 +631,7 @@ function toggleListening() {
     try {
       recognition.value.start();
       toastInfo("Voice input activated - speak now");
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to start speech recognition:", error);
       listening.value = false;
       toastError("Failed to start voice input");
@@ -638,7 +640,7 @@ function toggleListening() {
     try {
       recognition.value.stop();
       toastInfo("Voice input deactivated");
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to stop speech recognition:", error);
     }
   }
@@ -674,7 +676,7 @@ async function startVideoStream() {
 
     // Note: In a real implementation, you would send this stream to your AI service
 
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to start video stream:", error);
     video.value = false;
 
@@ -736,7 +738,7 @@ async function captureScreenshot() {
         URL.revokeObjectURL(url);
         toastSuccess("Screenshot captured and saved");
       }, "image/png");
-    } catch (error) {
+    } catch (_error) {
       console.error("Screenshot capture failed:", error);
       toastError("Failed to capture screenshot");
     }
@@ -773,7 +775,7 @@ async function captureScreenshot() {
 
       // Stop the screen capture stream
       stream.getTracks().forEach((track) => track.stop());
-    } catch (error) {
+    } catch (_error) {
       console.error("Screen capture failed:", error);
       toastError("Screen capture not available or denied");
     }
@@ -803,7 +805,7 @@ function uploadFile() {
       // For images, show preview and analyze
       if (file.type.startsWith("image/")) {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = (_e) => {
           const imageData = e.target.result;
           // In a real implementation, you would send this to your AI service for analysis
           emit("send", `[Uploaded image: ${file.name}]`);
@@ -819,7 +821,7 @@ function uploadFile() {
         file.name.endsWith(".txt")
       ) {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = (_e) => {
           const content = e.target.result;
           // Truncate long content for display
           const truncatedContent =
@@ -838,7 +840,7 @@ function uploadFile() {
         emit("send", `[Uploaded file: ${file.name} (${file.type})]`);
         toastSuccess(`File uploaded: ${file.name}`);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("File upload failed:", error);
       toastError(`Failed to upload ${file.name}`);
     }
@@ -1061,7 +1063,7 @@ watch(
 onMounted(() => nextTick(scrollToBottom));
 // Close on Escape
 onMounted(() => {
-  const onKey = (e) => {
+  const onKey = (_e) => {
     if (e.key === "Escape") close();
   };
   window.addEventListener("keydown", onKey);

@@ -322,10 +322,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-import { ref, computed, watch } from "vue";
+import {computed, watch } from "vue";
 import { debounce } from "lodash-es";
 
 // Props
@@ -347,7 +349,7 @@ interface ReviewResults {
   suggestions?: string[];
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   content: CoverLetterContent;
   reviewResults?: ReviewResults;
   canUseAI: boolean;
@@ -360,7 +362,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update:content": [content: CoverLetterContent];
   "generate-content": [];
   "review-content": [];

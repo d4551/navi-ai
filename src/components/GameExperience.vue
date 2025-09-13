@@ -123,15 +123,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted, nextTick, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 import {
   ref,
   reactive,
   computed,
-  nextTick,
-  onMounted,
-  onUnmounted,
+  nextTickonUnmounted,
   defineEmits,
 } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -151,7 +152,7 @@ interface Props {
   enhanceNavigation?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   userId: "default-user",
   enableSounds: true,
   enableVisualEffects: true,
@@ -159,7 +160,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "theme-changed",
   "easter-egg-activated",
   "command-executed",
@@ -330,11 +331,11 @@ const executeCommand = () => {
 
   if (consoleCommands[command]) {
     try {
-      const result = consoleCommands[command](args);
-      if (result) {
-        addToConsoleHistory(result, "output");
+      const result = consoleCommands[command](_args);
+      if (_result) {
+        addToConsoleHistory(_result, "output");
       }
-    } catch (error) {
+    } catch (_error) {
       addToConsoleHistory(`Error: ${error.message}`, "error");
     }
   } else {

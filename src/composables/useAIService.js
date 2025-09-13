@@ -3,7 +3,7 @@ import { ai } from "@/shared/ai/canonical";
 import { generateContent } from "@/utils/aiClient";
 
   const isLoading = ref(false);
-  const error = ref(null);
+  const _error = ref(null);
 
   const analyzeWithAI = async (prompt, options = {}) => {
     try {
@@ -30,7 +30,7 @@ import { generateContent } from "@/utils/aiClient";
           );
         }
       }
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message;
       console.error("AI analysis error:", err);
       return null;

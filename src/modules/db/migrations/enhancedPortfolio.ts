@@ -51,7 +51,7 @@ export interface PortfolioMigrationState {
 
     await unifiedStorage.set("portfolio-migration-state", newMigrationState);
     logger.info("Enhanced portfolio system migration completed successfully");
-  } catch (error) {
+  } catch (_error) {
     logger.error("Enhanced portfolio migration failed:", error);
     throw error;
   }
@@ -243,7 +243,7 @@ export interface PortfolioMigrationState {
     } else {
       logger.info("No existing portfolio data found to migrate");
     }
-  } catch (error) {
+  } catch (_error) {
     logger.error("Portfolio data migration failed:", error);
     throw error;
   }

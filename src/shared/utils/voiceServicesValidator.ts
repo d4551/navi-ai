@@ -108,7 +108,7 @@ export interface VoiceServicesErrors {
     }
 
     return { success: true };
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       error:
@@ -132,7 +132,7 @@ export interface VoiceServicesErrors {
     stream.getTracks().forEach((track) => track.stop());
 
     return { success: true };
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       error:
@@ -152,7 +152,7 @@ export interface VoiceServicesErrors {
     stream.getTracks().forEach((track) => track.stop());
 
     return { success: true };
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Camera access denied",
@@ -172,7 +172,7 @@ export interface VoiceServicesErrors {
     stream.getTracks().forEach((track) => track.stop());
 
     return { success: true };
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       error:

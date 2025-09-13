@@ -249,7 +249,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { refcomputed } from "vue";
 import cytoscape from "cytoscape";
 import { useUnifiedUI } from "@/composables/useUnifiedUI";
 import { useResponsive } from "@/composables/useResponsive";
@@ -488,7 +490,7 @@ onMounted(() => {
     container: networkGraphEl.value,
     elements: [
       ...contacts.value.map((c) => ({ data: { id: c.id, label: c.name } })),
-      ...connections.value.map((e) => ({ data: e })),
+      ...connections.value.map((_e) => ({ data: e })),
     ],
     style: [
       {

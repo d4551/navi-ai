@@ -169,7 +169,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from 'vue';
+
+import { refwatch } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import { useToast } from "@/composables/useToast";
@@ -190,9 +192,9 @@ interface Props {
   visible: boolean;
 }
 
-const props = defineProps<Props>();
+const _props = defineProps<Props>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: [];
   submit: [project: any];
 }>();
@@ -231,7 +233,7 @@ watch(
         if (metadata.description) {
           formData.value.description = metadata.description;
         }
-      } catch (error) {
+      } catch (_error) {
         // Silently fail - user can enter description manually
       }
     }
@@ -282,7 +284,7 @@ const handleSubmit = async () => {
     emit("submit", project);
     toast.success("Project added successfully!");
     closeModal();
-  } catch (error) {
+  } catch (_error) {
     console.error("Error adding project:", error);
     toast.error("Failed to add project");
   } finally {

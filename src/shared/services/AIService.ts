@@ -155,7 +155,7 @@ export class AIService {
       };
     }
 
-    if (config) {
+    if (_config) {
       this.config = { ...this.config, ...config };
     }
 
@@ -175,7 +175,7 @@ export class AIService {
       try {
         // Initialize canonical AI client with resolved API key
         await canonicalAIClient.initialize(key, model);
-      } catch (e) {
+      } catch (_e) {
         console.error("Canonical AI client initialization failed:", e);
         throw new Error(
           `API key validation failed: ${e instanceof Error ? e.message : "Invalid API key"}`,
@@ -197,7 +197,7 @@ export class AIService {
           },
         },
       };
-    } catch (error) {
+    } catch (_error) {
       // Log initialization failures as they are critical for service operation
       console.error("AI service initialization failed:", error);
 
@@ -261,7 +261,7 @@ export class AIService {
       }
 
       return response;
-    } catch (error) {
+    } catch (_error) {
       lastError = error as Error;
       // Log provider failures for debugging fallback behavior
       console.warn(
@@ -285,7 +285,7 @@ export class AIService {
         }
 
         return response;
-      } catch (error) {
+      } catch (_error) {
         lastError = error as Error;
         // Log fallback failures for debugging
         console.warn(`Fallback provider ${provider} failed:`, error);
@@ -469,7 +469,7 @@ export class AIService {
         content: "Failed to get salary insights",
         provider: this.config.primaryProvider,
         timestamp: new Date(),
-        metadata: { error: error?.message || String(error) },
+        metadata: { error: error?.message || String(_error) },
       };
     }
   }
@@ -548,9 +548,9 @@ export class AIService {
           context,
           sessionId,
           type: "chat",
-          onChunk: (chunk) => {
+          onChunk: (_chunk) => {
             full += chunk;
-            onChunk?.(chunk);
+            onChunk?.(_chunk);
           },
         });
         return {
@@ -614,16 +614,16 @@ export class AIService {
         },
         {
           onChunk: (chunk: string) => {
-            chunks.push(chunk);
+            chunks.push(_chunk);
             fullContent += chunk;
-            request.onChunk?.(chunk);
+            request.onChunk?.(_chunk);
           },
           onComplete: (complete: any) => {
             fullContent = complete;
             request.onComplete?.(complete);
           },
           onError: (error: Error) => {
-            request.onError?.(error);
+            request.onError?.(_error);
           },
         },
       );
@@ -647,7 +647,7 @@ export class AIService {
       }
 
       return streamResponse;
-    } catch (error) {
+    } catch (_error) {
       // Log streaming failures as they affect user experience
       console.error("Streaming failed:", error);
       throw new Error(`AI streaming failed: ${(error as Error).message}`);
@@ -685,7 +685,7 @@ export class AIService {
       }
 
       return sessionId;
-    } catch (error) {
+    } catch (_error) {
       // Log real-time session failures as they are critical
       console.error("Real-time session failed:", error);
       throw new Error(`Real-time session failed: ${(error as Error).message}`);
@@ -695,7 +695,7 @@ export class AIService {
   async stopRealTimeSession(_sessionId: string): Promise<void> {
     try {
       await this.realTimeService.stopSession();
-    } catch (error) {
+    } catch (_error) {
       // Log cleanup failures for debugging
       console.error("Failed to stop real-time session:", error);
     }
@@ -1083,7 +1083,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
             tokensUsed: this.estimateTokens(request.message + response),
             conversationId: request.sessionId,
           };
-        } catch (error) {
+        } catch (_error) {
           throw new Error(`Google AI failed: ${(error as Error).message}`);
         }
 
@@ -1125,7 +1125,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       }
 
       return contextMessages;
-    } catch (error) {
+    } catch (_error) {
       // Log context loading failures for debugging
       console.warn("Failed to load conversation context:", error);
       return [];
@@ -1192,7 +1192,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       };
 
       await databaseService.saveChatHistory(chatHistory);
-    } catch (error) {
+    } catch (_error) {
       // Log history saving failures for debugging
       console.warn("Failed to save conversation history:", error);
     }
@@ -1248,7 +1248,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
         metadata: {
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(`OpenAI provider failed: ${(error as Error).message}`);
     }
   }
@@ -1295,7 +1295,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
           stopReason: data.stop_reason,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(`Anthropic provider failed: ${(error as Error).message}`);
     }
   }
@@ -1309,7 +1309,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
         type: "chat",
       });
 
-    } catch (error) {
+    } catch (_error) {
       // Log health check failures for debugging
       console.error("AI service health check failed:", error);
       return false;
@@ -1330,7 +1330,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       await this.realTimeService.stopSession();
       this.initialized = false;
       // AI service shut down successfully
-    } catch (error) {
+    } catch (_error) {
       // Log shutdown errors for debugging
       console.error("Error shutting down AI service:", error);
     }
@@ -1347,7 +1347,7 @@ export const aiService = AIService.getInstance();
   model?: any;
   provider?: string;
 }> {
-  return aiService.initialize(config);
+  return aiService.initialize(_config);
 }
 
   return aiService.chat(request);

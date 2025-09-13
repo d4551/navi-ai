@@ -24,7 +24,7 @@ export class LiveAPIMetaProvider implements JobProvider {
 
   parseResponse(data: any): Job[] {
     // Not directly used; fetchJobs returns normalized jobs already
-    return Array.isArray(data) ? (data as Job[]) : [];
+    return Array.isArray(_data) ? (data as Job[]) : [];
   }
 
   async fetchJobs(filters: JobFilters): Promise<Job[]> {

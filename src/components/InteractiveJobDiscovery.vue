@@ -498,15 +498,18 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UiChip from "@/components/ui/UiChip.vue";
 
-import { ref, onMounted, reactive, computed } from "vue";
+import { refreactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import JobDiscoveryCard from "@/components/ui/JobDiscoveryCard.vue";
 
-const router = useRouter();
+const _router = useRouter();
 
 // Reactive state
 const isAnalyzing = ref(false);

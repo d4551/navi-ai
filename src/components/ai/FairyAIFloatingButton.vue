@@ -40,18 +40,18 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 import {
-  ref,
-  onMounted,
-  computed,
+  refcomputed,
   onUnmounted,
   defineEmits,
   defineProps,
 } from "vue";
 
-const props = defineProps({
+const _props = defineProps({
   active: {
     type: Boolean,
     default: false,
@@ -62,7 +62,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["activate"]);
+const _emit = defineEmits(["activate"]);
 
 const showTooltip = ref(false);
 const tooltipTimeout = ref(null);

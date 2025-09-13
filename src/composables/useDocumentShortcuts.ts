@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { onMounted, onUnmounted } from "vue";
+import {onUnmounted } from "vue";
 import { useToast } from "@/composables/useToast";
 
 export function useDocumentShortcuts(options: {

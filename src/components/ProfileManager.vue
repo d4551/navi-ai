@@ -388,7 +388,9 @@ It shows how profile data entered once is automatically synchronized across:
 </template>
 
 <script setup>
-import { computed, ref, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { computed, ref, watch} from "vue";
 import { useUnifiedProfile } from "@/composables/useUnifiedProfile";
 import { profileSyncService } from "@/services/ProfileSyncService";
 import { useAppStore } from "@/stores/app";

@@ -110,11 +110,11 @@ class EventEmitter {
     if (!listeners || listeners.length === 0) {
       // Special handling for 'error' events
       if (event === "error") {
-        const error = args[0];
+        const _error = args[0];
         if (error instanceof Error) {
           throw error;
         } else {
-          throw new Error(`Unhandled 'error' event: ${error}`);
+          throw new Error(`Unhandled 'error' event: ${_error}`);
         }
       }
       return false;
@@ -123,7 +123,7 @@ class EventEmitter {
     for (const listener of listeners.slice()) {
       try {
         listener.apply(this, args);
-      } catch (error) {
+      } catch (_error) {
         if (this._captureRejections) {
           this.emit("error", error);
         } else {
@@ -178,14 +178,14 @@ class EventEmitter {
 
   static once(emitter, name) {
     return new Promise((resolve, reject) => {
-      const errorListener = (error) => {
+      const errorListener = (_error) => {
         emitter.removeListener(name, resolver);
-        reject(error);
+        reject(_error);
       };
 
       const resolver = (...args) => {
         emitter.removeListener("error", errorListener);
-        resolve(args);
+        resolve(_args);
       };
 
       emitter.once(name, resolver);
@@ -206,7 +206,7 @@ class EventEmitter {
         resolve({ value: args, done: false });
         resolve = null;
       } else {
-        events.push(args);
+        events.push(_args);
       }
     };
 

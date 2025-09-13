@@ -353,7 +353,7 @@ Return as array of suggestion strings.`;
   // Response parsers
   const parseResumeResponse = (response: string): any => {
     try {
-      return JSON.parse(response);
+      return JSON.parse(_response);
     } catch {
       // Fallback parsing for non-JSON responses
       return { raw: response };
@@ -362,7 +362,7 @@ Return as array of suggestion strings.`;
 
   const parseCoverLetterResponse = (response: string): any => {
     try {
-      return JSON.parse(response);
+      return JSON.parse(_response);
     } catch {
       return { raw: response };
     }
@@ -370,7 +370,7 @@ Return as array of suggestion strings.`;
 
   const parseCompatibilityResponse = (response: string): any => {
     try {
-      return JSON.parse(response);
+      return JSON.parse(_response);
     } catch {
       return { analysis: response };
     }
@@ -378,7 +378,7 @@ Return as array of suggestion strings.`;
 
   const parseSuggestionsResponse = (response: string): string[] => {
     try {
-      const parsed = JSON.parse(response);
+      const parsed = JSON.parse(_response);
       return Array.isArray(parsed) ? parsed : [response];
     } catch {
       return response.split("\n").filter((line) => line.trim());

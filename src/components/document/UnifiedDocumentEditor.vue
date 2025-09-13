@@ -422,6 +422,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import { ref, computed, watch, withDefaults } from "vue";
 import { useToast } from "@/composables/useToast";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -435,12 +437,12 @@ interface Props {
   profileData?: any;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   aiReady: false,
 });
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update-resume": [data: any];
   "update-cover-letter": [data: any];
   "template-change": [template: string];
@@ -585,7 +587,7 @@ const getAISuggestions = async () => {
     // Real AI suggestions will be populated via the ai-request emit
     // The parent component handles the actual AI service call
     toast.success("AI suggestions requested successfully");
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to get AI suggestions:", error);
     toast.error("Failed to get AI suggestions");
   }

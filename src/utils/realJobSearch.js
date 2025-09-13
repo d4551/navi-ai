@@ -480,7 +480,7 @@ export class RealJobSearchService {
       const allJobs = [];
       const sourcePerformance = {};
 
-      results.forEach((result, index) => {
+      results.forEach((_result, index) => {
         const sourceName = sourceMap[index];
         const responseTime = Date.now() - startTime;
 
@@ -608,7 +608,7 @@ export class RealJobSearchService {
       });
 
       return filteredJobs;
-    } catch (error) {
+    } catch (_error) {
       console.error("Job search error:", error);
       this.updateSearchMetadata(searchId, {
         status: "error",
@@ -680,7 +680,7 @@ export class RealJobSearchService {
           rawData: job,
         }),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Arbeitnow Jobs search failed:", error);
       // Provide a minimal but usable fallback instead of empty array
       return this.getFallbackJobs(query, location);
@@ -710,7 +710,7 @@ export class RealJobSearchService {
               allJobs.push(...jobs.slice(1)); // Remove first item (metadata)
             }
           }
-        } catch (e) {
+        } catch (_e) {
           console.warn(`RemoteOK endpoint failed: ${endpoint}`, e);
         }
 
@@ -763,7 +763,7 @@ export class RealJobSearchService {
           rawData: job,
         }),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.warn("RemoteOK search failed:", error);
       return this.getFallbackJobs(query, location);
     }
@@ -800,7 +800,7 @@ export class RealJobSearchService {
           rawData: job,
         }),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Indeed search failed:", error);
       return this.getFallbackJobs(query, location);
     }
@@ -837,7 +837,7 @@ export class RealJobSearchService {
           rawData: job,
         }),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Dice search failed:", error);
       return this.getFallbackJobs(query, location);
     }
@@ -870,7 +870,7 @@ export class RealJobSearchService {
           rawData: job,
         }),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.warn("GameDev Jobs search failed:", error);
       return this.getFallbackJobs(query, location);
     }
@@ -903,7 +903,7 @@ export class RealJobSearchService {
           rawData: job,
         }),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Hitmarker search failed:", error);
       return this.getFallbackJobs(query, location);
     }
@@ -915,7 +915,7 @@ export class RealJobSearchService {
       // AngelList doesn't have a public API, so we'll simulate startup job data
       const startupJobs = this.generateStartupJobs(query, location);
       return startupJobs;
-    } catch (error) {
+    } catch (_error) {
       console.warn("AngelList search failed:", error);
       return this.getFallbackJobs(query, location);
     }
@@ -926,7 +926,7 @@ export class RealJobSearchService {
     try {
       // Stack Overflow Jobs has been discontinued, but we can simulate tech-focused jobs
       return this.generateTechJobs(query, location);
-    } catch (error) {
+    } catch (_error) {
       console.warn("Stack Overflow search failed:", error);
       return this.getFallbackJobs(query, location);
     }
@@ -936,7 +936,7 @@ export class RealJobSearchService {
   async searchWellFound(query, location) {
     try {
       return this.generateStartupJobs(query, location, "Wellfound");
-    } catch (error) {
+    } catch (_error) {
       console.warn("Wellfound search failed:", error);
       return this.getFallbackJobs(query, location);
     }
@@ -1971,7 +1971,7 @@ export class RealJobSearchService {
       try {
         const jobs = await this.searchJobs(query, { remote: true });
         allRecommendations.push(...jobs.slice(0, 2));
-      } catch (error) {
+      } catch (_error) {
         logger.warn(`Failed to get recommendations for ${query}:`, error);
       }
     }
@@ -2642,7 +2642,7 @@ export class RealJobSearchService {
       // Simulate LinkedIn job data
       const linkedInJobs = this.generateLinkedInJobs(query, location);
       return linkedInJobs;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("LinkedIn search failed:", error);
       return [];
     }
@@ -2659,7 +2659,7 @@ export class RealJobSearchService {
       // Simulate Glassdoor job data with company insights
       const glassdoorJobs = this.generateGlassdoorJobs(query, location);
       return glassdoorJobs;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Glassdoor search failed:", error);
       return [];
     }
@@ -3407,11 +3407,11 @@ export class RealJobSearchService {
           version: "1.0",
         };
         return aiInsights;
-      } catch (parseError) {
+      } catch (_parseError) {
         logger.warn("Failed to parse AI documentation", parseError);
         return null;
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("AI documentation generation failed", error);
       return null;
     }
@@ -3456,11 +3456,11 @@ export class RealJobSearchService {
       try {
         const suggestions = JSON.parse(content);
         return Array.isArray(suggestions) ? suggestions.slice(0, 8) : [];
-      } catch (parseError) {
+      } catch (_parseError) {
         logger.warn("Failed to parse AI search suggestions", parseError);
         return [];
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("AI search suggestions failed", error);
       return [];
     }
@@ -3514,7 +3514,7 @@ export class RealJobSearchService {
       } catch {
         return job;
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Job enhancement failed", error);
       return job;
     }
@@ -3560,7 +3560,7 @@ export class RealJobSearchService {
       }
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to save job:", error);
       return false;
     }
@@ -3581,7 +3581,7 @@ export class RealJobSearchService {
       }
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to unsave job:", error);
       return false;
     }
@@ -3622,7 +3622,7 @@ export class RealJobSearchService {
       this.applicationTracker.savedJobs.delete(jobId);
 
       return application;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to track application:", error);
       return null;
     }
@@ -3697,7 +3697,7 @@ export class RealJobSearchService {
       this.updateSuccessRate();
 
       return updatedApplication;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update application status:", error);
       return null;
     }
@@ -4737,7 +4737,7 @@ export class RealJobSearchService {
             this.alertsSystem.alerts.set(alert.id, alert);
           }
         }
-      } catch (error) {
+      } catch (_error) {
         console.error(`Error checking alert ${alert.id}:`, error);
         // Create error notification
         newNotifications.push(this.createErrorNotification(alert, error));
@@ -5170,7 +5170,7 @@ export class RealJobSearchService {
       async () => {
         try {
           await this.checkJobAlerts();
-        } catch (error) {
+        } catch (_error) {
           console.error("Error during automatic alert check:", error);
         }
       },
@@ -5203,7 +5203,7 @@ export class RealJobSearchService {
   }
 
   // Import alert configuration
-  importAlertConfig(config) {
+  importAlertConfig(_config) {
     this.initializeAlertsSystem();
 
     if (config.alerts && Array.isArray(config.alerts)) {
@@ -5239,7 +5239,7 @@ export class RealJobSearchService {
     const fuse = new Fuse(jobs, fuseOptions);
 
     const results = fuse.search(query);
-    return results.map((result) => ({
+    return results.map((_result) => ({
       ...result.item,
       fuzzyScore: Math.round((1 - result.score) * 100),
       searchRelevance:
@@ -5453,7 +5453,7 @@ export class RealJobSearchService {
           enhancedWithNLP: true,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       console.error("AI recommendation error:", error);
       return { recommendations: [], error: error.message };
     }
@@ -5859,9 +5859,9 @@ export const JobBoardAPI = {
   },
 
   // Notification endpoints
-  async getNotifications(options) {
+  async getNotifications(_options) {
     const service = createJobSearchAPI();
-    return service.getNotifications(options);
+    return service.getNotifications(_options);
   },
 
   async markNotificationAsRead(notificationId) {
@@ -5951,7 +5951,7 @@ export const JobBoardAPI = {
           results: searchResults,
           count: searchResults.length,
         });
-      } catch (error) {
+      } catch (_error) {
         results.push({
           query,
           success: false,

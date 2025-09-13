@@ -21,7 +21,7 @@ export async function seedStudiosIfEmpty() {
       await unifiedStorage.upsertStudio(r);
     }
     logger.info("StudioPersistenceService seeded", records.length);
-  } catch (e) {
+  } catch (_e) {
     logger.warn("Failed to seed studios", e);
   }
 }

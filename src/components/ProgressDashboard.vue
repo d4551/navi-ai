@@ -192,6 +192,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 export default {

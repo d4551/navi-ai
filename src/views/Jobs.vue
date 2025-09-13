@@ -611,7 +611,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref, computedwatch, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import HeaderActions from "@/components/ui/HeaderActions.vue";
@@ -644,7 +647,7 @@ import {
 } from "@/services/IngestionVerifier";
 import { toastService } from "@/shared/services/toastService";
 
-const router = useRouter();
+const _router = useRouter();
 const route = useRoute();
 const appStore = useAppStore();
 
@@ -918,7 +921,7 @@ const performSearch = async () => {
     jobs.value = results;
     jobResults.value = results;
     currentPage.value = 1;
-  } catch (error) {
+  } catch (_error) {
     toastService.error("Search failed: " + error.message);
   } finally {
     loading.value = false;
@@ -965,7 +968,7 @@ const refreshJobs = async () => {
     await refreshJobsData();
     jobs.value = composableJobs.value;
     toastService.success("Jobs refreshed successfully");
-  } catch (error) {
+  } catch (_error) {
     toastService.error("Failed to refresh jobs: " + error.message);
   } finally {
     refreshing.value = false;
@@ -997,7 +1000,7 @@ const aiRecommendJobs = async () => {
     toastService.success(
       `Found ${recommendations.length} AI-matched positions (${highMatches.length} high matches)`,
     );
-  } catch (error) {
+  } catch (_error) {
     toastService.error("AI recommendations failed: " + error.message);
   } finally {
     aiLoading.value = false;
@@ -1012,7 +1015,7 @@ const handleAISearch = async (searchData) => {
     jobResults.value = results;
     showSearchModal.value = false;
     toastService.success(`Found ${results.length} AI-matched positions`);
-  } catch (error) {
+  } catch (_error) {
     toastService.error("AI search failed: " + error.message);
   } finally {
     loading.value = false;
@@ -1140,7 +1143,7 @@ const runDataVerification = async () => {
     }));
 
     toastService.success("Data sources verified");
-  } catch (error) {
+  } catch (_error) {
     toastService.error("Verification failed: " + error.message);
   } finally {
     verifying.value = false;
@@ -1202,7 +1205,7 @@ const handleAlertDeleted = (alertId) => {
         savedJobs.value = data.savedJobs || [];
         jobAlerts.value = data.jobAlerts || [];
       }
-    } catch (error) {
+    } catch (_error) {
       toastService.error("Failed to load jobs: " + (error?.message || error));
     } finally {
       loading.value = false;

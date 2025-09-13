@@ -150,7 +150,7 @@ export class StudioDataIntegrator {
               newCount++;
             }
           }
-        } catch (error) {
+        } catch (_error) {
           logger.warn(`Failed to process studio ${studio.name}:`, error);
         }
       }
@@ -161,7 +161,7 @@ export class StudioDataIntegrator {
       );
 
       return { total, new: newCount, updated: updatedCount };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to fetch and store studio data:", error);
       throw error;
     }
@@ -308,7 +308,7 @@ export class StudioDataIntegrator {
     integrator.close();
 
     return result;
-  } catch (error) {
+  } catch (_error) {
     logger.error("Studio data integration failed:", error);
     integrator.close();
     throw error;
@@ -322,7 +322,7 @@ if (typeof globalThis !== "undefined" && (globalThis as any).require) {
   runStudioDataIntegration(dbPath, githubToken, maxStudios)
     .then((_result) => {
     })
-    .catch((error) => {
+    .catch((_error) => {
     });
 }
 

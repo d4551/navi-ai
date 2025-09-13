@@ -68,12 +68,14 @@
 </template>
 
 <script setup>
-import { computed, toRefs, ref, watch, defineEmits, defineProps } from "vue";
+import { ref, computed, watch } from 'vue';
+
+import { computed, toRefswatch, defineEmits, defineProps } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import GlassNavTabs from "@/components/GlassNavTabs.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const props = defineProps({
+const _props = defineProps({
   tabs: {
     type: Array,
     required: true,
@@ -103,9 +105,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:activeTab", "next", "prev", "change"]);
+const _emit = defineEmits(["update:activeTab", "next", "prev", "change"]);
 
-const { tabs, activeTab } = toRefs(props);
+const { tabs, activeTab } = toRefs(_props);
 const activeTabLocal = ref(activeTab.value);
 
 watch(activeTab, (v) => {

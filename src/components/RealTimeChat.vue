@@ -499,7 +499,7 @@
     <div v-if="error" class="enhanced-error-display">
       <div class="error-content">
         <AppIcon name="mdi-alert-circle" class="error-icon" />
-        <div class="error-message">{{ error }}</div>
+        <div class="error-message">{{ _error }}</div>
         <button class="error-close" @click="error = null">
           <AppIcon name="mdi-close" />
         </button>
@@ -526,6 +526,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch, onMounted, nextTick, reactive } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import { ref, onMounted, reactive, watch, nextTick, computed } from "vue";
@@ -555,14 +557,14 @@ interface Props {
   config?: Partial<RealTimeConfig> | null;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   apiKey: "",
   initialSessionType: "audio",
   persona: "navi",
   config: null,
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "session-start": [];
   "session-end": [];
   message: [message: RealTimeMessage];
@@ -751,7 +753,7 @@ async function initializeService() {
       throw new Error("API key is required");
     }
     await initialize(key, chatConfig);
-  } catch (e) {
+  } catch (_e) {
     emit("error", e);
   }
 }
@@ -816,7 +818,7 @@ async function enumerateDevices() {
     }
     await startSession(selectedSessionType.value);
     emit("session-start");
-  } catch (e) {
+  } catch (_e) {
     emit("error", e);
   }
 }
@@ -824,7 +826,7 @@ async function enumerateDevices() {
   try {
     await stopSession();
     emit("session-end");
-  } catch (e) {
+  } catch (_e) {
     emit("error", e);
   }
 }
@@ -833,7 +835,7 @@ async function enumerateDevices() {
   try {
     await sendMessage(textInput.value);
     textInput.value = "";
-  } catch (e) {
+  } catch (_e) {
     emit("error", e);
   }
 }

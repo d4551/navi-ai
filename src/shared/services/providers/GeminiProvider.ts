@@ -23,7 +23,7 @@ export default class GeminiProvider extends BaseAIProvider {
   }
 
   async initialize(config: any): Promise<void> {
-    await super.initialize(config);
+    await super.initialize(_config);
 
     if (!config.apiKey) {
       throw new Error("Gemini API key is required");
@@ -35,7 +35,7 @@ export default class GeminiProvider extends BaseAIProvider {
         model: this.currentModel || "gemini-2.0-flash-exp",
       });
       logger.info("Gemini provider initialized successfully");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize Gemini provider:", error);
       throw error;
     }
@@ -113,7 +113,7 @@ export default class GeminiProvider extends BaseAIProvider {
           processingTime: Date.now() - start,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Gemini execution error:", error);
       return {
         id,
@@ -153,8 +153,8 @@ export default class GeminiProvider extends BaseAIProvider {
 
     callbacks.onStart?.(session);
     if (!this.genAI || !this.model) {
-      const error = new Error("Gemini provider not initialized");
-      callbacks.onError?.(error);
+      const _error = new Error("Gemini provider not initialized");
+      callbacks.onError?.(_error);
       return null;
     }
 
@@ -239,10 +239,10 @@ export default class GeminiProvider extends BaseAIProvider {
             processingTime: Date.now() - session.startTime,
           },
         });
-      } catch (error) {
+      } catch (_error) {
         logger.error("Gemini streaming error:", error);
         callbacks.onError?.(
-          error instanceof Error ? error : new Error(String(error)),
+          error instanceof Error ? error : new Error(String(_error)),
         );
       }
     })();

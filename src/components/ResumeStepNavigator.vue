@@ -58,7 +58,7 @@ interface Props {
 
 defineProps<Props>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   (e: "updateActiveSection", value: string): void;
   (e: "update:active-section", value: string): void;
 }>();

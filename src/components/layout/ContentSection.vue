@@ -35,6 +35,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 
 interface Props {
@@ -57,7 +59,7 @@ interface Props {
   fullWidth?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   type: "default",
   spacing: "normal",
   background: "none",

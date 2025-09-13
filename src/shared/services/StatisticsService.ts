@@ -74,7 +74,7 @@ export class StatisticsService {
         }
         return { ...this.getDefaultStatistics(), ...parsed };
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to load statistics:", error);
     }
     return this.getDefaultStatistics();
@@ -89,7 +89,7 @@ export class StatisticsService {
   private saveStatistics(stats: UserStatistics): void {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(stats));
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to save statistics:", error);
     }
   }

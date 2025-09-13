@@ -50,7 +50,7 @@ export const ai = {
 
       isInitialized = true;
       return aiService;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize AI service", error);
       throw error;
     }
@@ -72,7 +72,7 @@ export const ai = {
         systemInstructions: options.systemInstructions,
         ...options,
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("Text generation failed", error);
       throw error;
     }
@@ -101,9 +101,9 @@ export const ai = {
         onError: handlers.onError,
         ...options,
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("Streaming failed", error);
-      handlers.onError?.(error);
+      handlers.onError?.(_error);
       throw error;
     }
   },
@@ -125,7 +125,7 @@ export const ai = {
         provider: options.provider || currentProvider,
         ...options,
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("Image analysis failed", error);
       throw error;
     }
@@ -148,7 +148,7 @@ export const ai = {
         provider: options.provider || currentProvider,
         ...options,
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("Audio processing failed", error);
       throw error;
     }
@@ -178,7 +178,7 @@ export const ai = {
 
       currentSessions.set(sessionId, sessionKey);
       return sessionId;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start real-time session", error);
       throw error;
     }
@@ -199,7 +199,7 @@ export const ai = {
         return true;
       }
       return false;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to stop real-time session", error);
       return false;
     }
@@ -213,7 +213,7 @@ export const ai = {
       currentProvider = provider;
       await this.init({ provider, ...config });
       logger.info(`Switched to provider: ${provider}`);
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to switch to provider: ${provider}`, error);
       throw error;
     }
@@ -223,7 +223,7 @@ export const ai = {
     const targetProvider = provider || currentProvider;
     try {
       return await aiService.getModels(targetProvider);
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         `Failed to get models for provider: ${targetProvider}`,
         error,

@@ -69,8 +69,10 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+
 /// <reference lib="dom" />
-import { onMounted, onBeforeUnmount, ref } from "vue";
+import {onBeforeUnmount, ref } from "vue";
 
 // Props
 interface Tab {
@@ -81,14 +83,14 @@ interface Tab {
   badge?: number;
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   activeTab: string;
   tabs: Tab[];
   completionData?: Record<string, number>;
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update:activeTab": [tabId: string];
 }>();
 

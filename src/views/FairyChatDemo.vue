@@ -139,6 +139,8 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 import { ref } from "vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import FairyChatModal from "@/components/FairyChatModal.vue";

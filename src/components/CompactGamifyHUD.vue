@@ -43,6 +43,9 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
@@ -50,7 +53,7 @@ import GamificationService from "@/utils/gamification";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-const router = useRouter();
+const _router = useRouter();
 const store = useAppStore();
 const g = new GamificationService(store);
 

@@ -44,7 +44,7 @@ export function speak(text, { voice, rate = 1 } = {}) {
       window.speechSynthesis.speak(utter);
       return true;
     }
-  } catch (e) {
+  } catch (_e) {
     logger.warn("speak() failed", e);
   }
   return false;

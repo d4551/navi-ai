@@ -265,20 +265,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, onMounted } from "vue";
+import { ref, computed, onMounted, nextTick } from 'vue';
+
+import { ref, computed, nextTick} from "vue";
 import { useToast } from "@/composables/useToast";
 import { ai } from "@/shared/ai/canonical";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   show: boolean;
   context: any;
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: [];
   apply: [any];
 }>();
@@ -421,7 +423,7 @@ const sendChatMessage = async () => {
       timestamp: new Date(),
     };
     chatMessages.value.push(aiMessage);
-  } catch (error) {
+  } catch (_error) {
     // Remove typing indicator
     const typingIndex = chatMessages.value.findIndex((m) => m.id === "typing");
     if (typingIndex !== -1) {
@@ -477,7 +479,7 @@ const improveContent = async () => {
     });
 
     toast.success("Content improvement suggestions generated");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to generate improvements");
   } finally {
     aiProcessing.value = false;
@@ -500,7 +502,7 @@ const optimizeForJob = async () => {
     });
 
     toast.success("Job optimization suggestions generated");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to generate job optimization");
   } finally {
     aiProcessing.value = false;
@@ -522,7 +524,7 @@ const enhanceWriting = async () => {
     });
 
     toast.success("Writing enhancement suggestions generated");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to generate writing enhancements");
   } finally {
     aiProcessing.value = false;
@@ -572,7 +574,7 @@ const analyzeDocument = async () => {
     ];
 
     toast.success("Document analysis complete");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to analyze document");
   } finally {
     aiProcessing.value = false;

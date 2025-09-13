@@ -200,7 +200,7 @@
         <AppIcon name="mdi-alert-circle" class="error-icon" />
         <div class="error-message">
           <strong>Error</strong>
-          <p>{{ error }}</p>
+          <p>{{ _error }}</p>
         </div>
         <button class="close-btn" @click="error = null">
           <AppIcon name="mdi-close" />
@@ -211,11 +211,13 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-import { ref, onMounted, computed, watch } from "vue";
+import { refcomputed, watch } from "vue";
 import { useRealTimeSupport } from "@/composables/useRealTimeChat";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import RealTimeChat from "@/components/RealTimeChat.vue";
@@ -226,7 +228,7 @@ const tempApiKey = ref("");
 const apiKey = ref("");
 const selectedMode = ref(null);
 const selectedPersona = ref("navi");
-const error = ref(null);
+const _error = ref(null);
 const sessionStats = ref(null);
 const sidebarCollapsed = ref(false);
 

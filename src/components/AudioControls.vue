@@ -193,7 +193,9 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, onUnmounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { refcomputed, onUnmounted } from "vue";
 import { audioService as _audioService } from "@/shared/services/AudioService";
 import { logger } from "@/shared/utils/logger";
 import PushToTalkButton from "@/components/PushToTalkButton.vue";
@@ -240,7 +242,7 @@ export default {
     "permissionChanged",
     "modeChanged",
   ],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     // Device management
     const audioInputs = ref([]);
     const audioOutputs = ref([]);
@@ -317,7 +319,7 @@ export default {
           selectedMicId.value = settings.selectedMicId || "";
           selectedSpeakerId.value = settings.selectedSpeakerId || "";
         }
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to get audio devices:", error);
       }
     }
@@ -347,7 +349,7 @@ export default {
 
         hasPermission.value = granted;
         emit("permissionChanged", granted);
-      } catch (error) {
+      } catch (_error) {
         logger.error("Permission check failed:", error);
         hasPermission.value = false;
       }
@@ -368,7 +370,7 @@ export default {
         if (window.api?.media) {
           await window.api.media.requestPermissions({ audio: true });
         }
-      } catch (error) {
+      } catch (_error) {
         logger.error("Permission request failed:", error);
         hasPermission.value = false;
         emit("permissionChanged", false);
@@ -492,7 +494,7 @@ export default {
         // Reset timers/state maintained by legacy code
         isRecording.value = false;
         recordingStatus.value = "";
-      } catch (e) {
+      } catch (_e) {
         logger.error("handlePTTStop failed:", e);
       }
     };
@@ -535,7 +537,7 @@ export default {
         await currentAudio.play();
         isPlaying.value = true;
         emit("playbackStart");
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to play audio:", error);
       }
     };

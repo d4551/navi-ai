@@ -288,13 +288,15 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+
 import { computed, ref } from "vue";
 import { useToast } from "@/composables/useToast";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   show: {
     type: Boolean,
     default: false,
@@ -315,7 +317,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits(["close", "export"]);
+const _emit = defineEmits(["close", "export"]);
 
 // State
 const viewMode = ref("formatted");
@@ -490,7 +492,7 @@ const copyToClipboard = async () => {
   try {
     await navigator.clipboard.writeText(rawText.value);
     toast.success("Text copied to clipboard");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to copy text");
   }
 };

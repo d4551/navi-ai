@@ -153,7 +153,7 @@ export class GoogleAIStreamingService {
           );
           initialized = true;
           break;
-        } catch (err) {
+        } catch (_err) {
           lastError = err;
           // Continue trying other models unless it's clearly an API key issue
           const msg = (err as Error)?.message || "";
@@ -176,10 +176,10 @@ export class GoogleAIStreamingService {
       logger.info(
         "Google AI Streaming Service initialized and tested successfully",
       );
-    } catch (error) {
+    } catch (_error) {
       this.genAI = null;
       this.apiKey = null;
-      const rawMessage = error instanceof Error ? error.message : String(error);
+      const rawMessage = error instanceof Error ? error.message : String(_error);
       let helpfulMessage = rawMessage;
       if (
         rawMessage.includes("API_KEY_INVALID") ||
@@ -298,9 +298,9 @@ export class GoogleAIStreamingService {
             type: "text",
           });
 
-          callbacks.onResponse?.(response);
+          callbacks.onResponse?.(_response);
           callbacks.onConversationUpdate?.(this.conversationHistory);
-        } catch (error) {
+        } catch (_error) {
           const errorMessage =
             error instanceof Error
               ? error.message
@@ -318,7 +318,7 @@ export class GoogleAIStreamingService {
       }, fps);
 
       logger.info(`Video streaming started with ${model} at ${fps} FPS`);
-    } catch (error) {
+    } catch (_error) {
       this.isStreaming = false;
       logger.error("Failed to start video streaming:", error);
       callbacks.onError?.(error as Error);
@@ -426,9 +426,9 @@ export class GoogleAIStreamingService {
             type: "text",
           });
 
-          callbacks.onResponse?.(response);
+          callbacks.onResponse?.(_response);
           callbacks.onConversationUpdate?.(this.conversationHistory);
-        } catch (error) {
+        } catch (_error) {
           const errorMessage =
             error instanceof Error
               ? error.message
@@ -446,7 +446,7 @@ export class GoogleAIStreamingService {
       }, fps);
 
       logger.info(`Screen streaming started with ${model} at ${fps} FPS`);
-    } catch (error) {
+    } catch (_error) {
       this.isStreaming = false;
       logger.error("Failed to start screen streaming:", error);
       callbacks.onError?.(error as Error);
@@ -465,7 +465,7 @@ export class GoogleAIStreamingService {
         this.isStreaming = false;
         logger.info("Streaming session stopped");
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error stopping streaming session:", error);
       // Force cleanup even if there were errors
       this.currentSession = null;
@@ -509,11 +509,11 @@ export class GoogleAIStreamingService {
       });
 
       // Notify callbacks if provided
-      callbacks?.onResponse?.(response);
+      callbacks?.onResponse?.(_response);
       callbacks?.onConversationUpdate?.(this.conversationHistory);
 
       return response;
-    } catch (error) {
+    } catch (_error) {
       const errorMessage =
         error instanceof Error
           ? error.message
@@ -621,8 +621,8 @@ export class GoogleAIStreamingService {
       ]);
       const text = result?.response?.text?.() || "";
       return { content: text };
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
+    } catch (_error) {
+      const msg = error instanceof Error ? error.message : String(_error);
       logger.error("processVideoFrame failed:", msg);
       throw error;
     }

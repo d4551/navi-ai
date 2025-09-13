@@ -131,7 +131,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { ref, computedwatch } from "vue";
 import { useToast } from "@/composables/useToast";
 
 // Components
@@ -226,7 +228,7 @@ const handleAIModalResult = (result: any) => {
       toast.success("Document optimized with AI");
     }
     showAIModal.value = false;
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to apply AI modal result:", error);
     toast.error("Failed to apply AI changes");
   }
@@ -275,7 +277,7 @@ const importFromProfile = async () => {
     }
 
     toast.success("Profile data imported successfully");
-  } catch (error) {
+  } catch (_error) {
     console.error("Profile import failed:", error);
     toast.error("Failed to import profile data");
   } finally {
@@ -346,7 +348,7 @@ const handleExport = async (format: string = "pdf") => {
     toast.success(
       `${documentType} exported successfully as ${format.toUpperCase()}`,
     );
-  } catch (error) {
+  } catch (_error) {
     console.error("Export failed:", error);
     toast.error("Failed to export document");
   }
@@ -505,7 +507,7 @@ onMounted(async () => {
       },
       { deep: true },
     );
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load document versions:", error);
   }
 });

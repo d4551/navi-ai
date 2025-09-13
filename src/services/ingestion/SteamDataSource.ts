@@ -58,7 +58,7 @@ export class SteamDataSource {
             if (details?.success && details.data?.developers) {
               this.processAppForStudios(details.data, studioData);
             }
-          } catch (error) {
+          } catch (_error) {
             logger.warn(`Failed to fetch details for app ${app.appid}:`, error);
           }
 
@@ -77,7 +77,7 @@ export class SteamDataSource {
       }
 
       return Array.from(studioData.values());
-    } catch (error) {
+    } catch (_error) {
       logger.error("Steam data ingestion failed:", error);
       throw error;
     }
@@ -115,7 +115,7 @@ export class SteamDataSource {
           // Sort by appid to get older, more established games first (they're more likely to have proper data)
           .sort((a: SteamApp, b: SteamApp) => a.appid - b.appid)
       ); // Scale up to get thousands of apps
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to fetch Steam app list:", error);
       throw error;
     }
@@ -140,7 +140,7 @@ export class SteamDataSource {
 
       const data = await response.json();
       return data[appid] || null;
-    } catch (error) {
+    } catch (_error) {
       logger.warn(`Failed to fetch Steam app details for ${appid}:`, error);
       return null;
     }

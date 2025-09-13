@@ -150,6 +150,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { ref, watch } from "vue";
 
@@ -167,9 +169,9 @@ interface Props {
   loading: boolean;
 }
 
-const props = defineProps<Props>();
+const _props = defineProps<Props>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   update: [value: JobTarget];
   "ai-analyze": [];
 }>();

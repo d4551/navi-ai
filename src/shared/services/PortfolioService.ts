@@ -727,7 +727,7 @@ Analyze the user's gaming background and current portfolio to suggest improvemen
 
       // Parse AI response into structured recommendations
       return this.parseAIRecommendations(response.content);
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to generate AI portfolio recommendations:", error);
       return this.getFallbackRecommendations(currentPortfolio, targetRole);
     }
@@ -885,7 +885,7 @@ Enhance this portfolio item description to better showcase transferable skills a
       });
 
       return response.content || item.description || "";
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to enhance item description:", error);
       return item.description || "";
     }

@@ -150,6 +150,9 @@
 </template>
 
 <script>
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
@@ -186,13 +189,15 @@ export default {
     VoiceFeedbackOverlay,
   },
   setup() {
+    const router = useRouter();
+
     const store = useAppStore();
     const route = useRoute();
-    const router = useRouter();
+    const _router = useRouter();
     const appVersion = computed(() => store.meta?.version || "2.0.0");
 
     // Initialize unified theme system
-    const theme = useUnifiedTheme();
+    const _theme = useUnifiedTheme();
     const unifiedUI = useUnifiedUI();
     const responsive = useResponsive();
 
@@ -222,7 +227,7 @@ export default {
     onMounted(() => {
       responsive.initializeResponsive();
       try {
-        gamificationEvents.on("xp_awarded", (e) => {
+        gamificationEvents.on("xp_awarded", (_e) => {
           gfx.value?.triggerXPGain?.(
             e.amount,
             e.reason || "Action",
@@ -262,7 +267,7 @@ export default {
     const isMobile = computed(() => responsive.isMobile.value);
 
     // Keyboard shortcuts for quick navigation
-    const onKeydown = (e) => {
+    const onKeydown = (_e) => {
       try {
         // Ctrl+, => Settings
         if ((e.ctrlKey || e.metaKey) && e.key === ",") {

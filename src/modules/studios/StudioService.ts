@@ -124,7 +124,7 @@ class CanonicalStudioService {
         this.cache.set(cacheKey, { data, timestamp: Date.now() });
         return data;
       }
-    } catch (e) {
+    } catch (_e) {
       logger.warn("[StudioService] IPC search failed; falling back", e);
     }
 

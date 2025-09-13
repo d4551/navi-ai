@@ -52,7 +52,7 @@ class EventEmitter {
   emit(event: string, data: any) {
     const listeners = this.listeners.get(event);
     if (listeners) {
-      listeners.forEach((callback) => callback(data));
+      listeners.forEach((callback) => callback(_data));
     }
   }
 }
@@ -83,13 +83,13 @@ class MultiModalAIManager {
 
   static getInstance(config?: Partial<AIManagerConfig>): MultiModalAIManager {
     if (!MultiModalAIManager.instance) {
-      MultiModalAIManager.instance = new MultiModalAIManager(config);
+      MultiModalAIManager.instance = new MultiModalAIManager(_config);
     }
     return MultiModalAIManager.instance;
   }
 
   private constructor(config?: Partial<AIManagerConfig>) {
-    if (config) {
+    if (_config) {
       this.config = { ...this.config, ...config };
     }
     this.initializeProviders();
@@ -145,7 +145,7 @@ class MultiModalAIManager {
     try {
       logger.info("Initializing MultiModal AI Manager...");
 
-      if (config) {
+      if (_config) {
         this.config.providers = config;
       }
 
@@ -160,7 +160,7 @@ class MultiModalAIManager {
               health: "healthy",
             });
             logger.info(`Initialized provider: ${providerConfig.provider}`);
-          } catch (error) {
+          } catch (_error) {
             logger.error(
               `Failed to initialize provider ${providerConfig.provider}:`,
               error,
@@ -194,7 +194,7 @@ class MultiModalAIManager {
         success: true,
         message: `Successfully initialized ${healthyProviders.length} AI providers`,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize MultiModal AI Manager:", error);
       return {
         success: false,
@@ -218,7 +218,7 @@ class MultiModalAIManager {
       // Determine execution strategy
       } else {
       }
-    } catch (error) {
+    } catch (_error) {
       const errorResponse = this.createErrorResponse(request, error);
       this.updateMetrics(request, startTime, errorResponse);
       return errorResponse;
@@ -280,7 +280,7 @@ class MultiModalAIManager {
 
         this.decrementProviderRequests(process.provider);
         return result;
-      } catch (error) {
+      } catch (_error) {
         process.status = "failed";
         process.timing.completedAt = Date.now();
         process.timing.totalTime =
@@ -294,10 +294,10 @@ class MultiModalAIManager {
     try {
       const firstResult = await Promise.race(promises);
       return firstResult;
-    } catch (error) {
+    } catch (_error) {
       if (error instanceof AggregateError) {
         throw new Error(
-          `All concurrent executions failed: ${error.errors.map((e) => e.message).join(", ")}`,
+          `All concurrent executions failed: ${error.errors.map((_e) => e.message).join(", ")}`,
         );
       }
       throw error;
@@ -352,7 +352,7 @@ class MultiModalAIManager {
         ...callbacks,
         onError: (error: Error) => {
           this.decrementProviderRequests(provider);
-          callbacks.onError?.(error);
+          callbacks.onError?.(_error);
         },
       });
     } else {
@@ -409,7 +409,7 @@ class MultiModalAIManager {
         try {
           const health = await impl.checkHealth();
           this.updateProviderHealth(provider, health);
-        } catch (error) {
+        } catch (_error) {
           this.updateProviderHealth(provider, {
             status: "down",
           });
@@ -494,7 +494,7 @@ class MultiModalAIManager {
       timing: {
         completedAt: Date.now(),
       },
-      error: error instanceof Error ? error.message : String(error),
+      error: error instanceof Error ? error.message : String(_error),
     };
   }
 
@@ -562,7 +562,7 @@ export const multiModalAIManager = MultiModalAIManager.getInstance();
     off: (event: string, callback: any) =>
       multiModalAIManager.off(event, callback),
     initialize: (config: ProviderConfig[]) =>
-      multiModalAIManager.initialize(config),
+      multiModalAIManager.initialize(_config),
     performanceMetrics: multiModalAIManager.performanceMetrics,
     destroy: () => multiModalAIManager.destroy(),
   };

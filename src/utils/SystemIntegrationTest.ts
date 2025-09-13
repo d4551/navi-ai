@@ -89,12 +89,12 @@ export class SystemIntegrationTest {
           startTime,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(
         "Storage",
         "Basic CRUD operations",
         "failed",
-        `Storage test failed: ${error}`,
+        `Storage test failed: ${_error}`,
         startTime,
       );
     }
@@ -156,12 +156,12 @@ export class SystemIntegrationTest {
           startTime,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(
         "Database",
         "Connectivity test",
         "failed",
-        `Database test failed: ${error}`,
+        `Database test failed: ${_error}`,
         startTime,
       );
     }
@@ -234,12 +234,12 @@ export class SystemIntegrationTest {
           startTime,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(
         "AI Service",
         "Integration test",
         "failed",
-        `AI service test failed: ${error}`,
+        `AI service test failed: ${_error}`,
         startTime,
       );
     }
@@ -288,12 +288,12 @@ export class SystemIntegrationTest {
           startTime,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(
         "Gaming Studios",
         "Service test",
         "failed",
-        `Gaming studio service test failed: ${error}`,
+        `Gaming studio service test failed: ${_error}`,
         startTime,
       );
     }
@@ -348,12 +348,12 @@ export class SystemIntegrationTest {
           startTime,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(
         "Media Streaming",
         "Capability test",
         "failed",
-        `Media streaming test failed: ${error}`,
+        `Media streaming test failed: ${_error}`,
         startTime,
       );
     }
@@ -405,12 +405,12 @@ export class SystemIntegrationTest {
           startTime,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(
         "Theme System",
         "System test",
         "failed",
-        `Theme system test failed: ${error}`,
+        `Theme system test failed: ${_error}`,
         startTime,
       );
     }
@@ -463,12 +463,12 @@ export class SystemIntegrationTest {
           startTime,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(
         "Gamification",
         "System test",
         "failed",
-        `Gamification system test failed: ${error}`,
+        `Gamification system test failed: ${_error}`,
         startTime,
       );
     }
@@ -578,10 +578,10 @@ export class SystemIntegrationTest {
           message: `Critical issues detected: ${criticalIssues.join(", ")} (${duration}ms)`,
         };
       }
-    } catch (error) {
+    } catch (_error) {
       return {
         status: "critical",
-        message: `Health check failed: ${error}`,
+        message: `Health check failed: ${_error}`,
       };
     }
   }

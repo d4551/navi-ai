@@ -244,13 +244,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { ref, computed, watch} from "vue";
 import { formatMonthYear } from "@/utils/date";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   documentData: any;
   documentType: "resume" | "cover-letter";
   template: string;

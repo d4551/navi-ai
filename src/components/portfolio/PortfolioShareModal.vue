@@ -254,6 +254,8 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import IconButton from "@/components/ui/IconButton.vue";
@@ -261,12 +263,13 @@ import { ref, computed, defineEmits, defineProps } from "vue";
 import { useAppStore } from "@/stores/app";
 import { useToast } from "@/composables/useToast";
 
-const props = defineProps({
-  show: { type: Boolean, default: false },
+const _props = defineProps({
+  show: { type: Boolean, default: false,
+    required: false },
   portfolio: { type: Array, default: () => [] },
 });
 
-const emit = defineEmits(["close", "export"]);
+const _emit = defineEmits(["close", "export"]);
 
 const store = useAppStore();
 const toast = useToast();
@@ -315,7 +318,7 @@ async function copyToClipboard(text) {
     }, 2000);
 
     toast.success("Link copied to clipboard!");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to copy link");
   }
 }

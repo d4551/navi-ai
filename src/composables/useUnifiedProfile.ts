@@ -197,7 +197,7 @@ export interface UnifiedProfileState {
 
       logger.info(`Profile section '${section}' updated successfully`);
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       state.syncStatus = "error";
       logger.error(`Failed to update profile section '${section}':`, error);
       return { success: false, error: error.message };
@@ -226,7 +226,7 @@ export interface UnifiedProfileState {
 
       // Update context data
       updateContextData(section, data);
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Some cross-system syncs failed:", error);
     }
   };
@@ -356,7 +356,7 @@ export interface UnifiedProfileState {
       state.lastSync = new Date();
 
       return { success: true, results };
-    } catch (error) {
+    } catch (_error) {
       state.syncStatus = "error";
       return { success: false, error: error.message, results };
     } finally {
@@ -383,7 +383,7 @@ export interface UnifiedProfileState {
     // Apply sub-context filtering if specified
     if (subContext && data) {
       return userProfileService.extractForContext(
-        data,
+        _data,
         `${context}-${subContext}`,
       );
     }
@@ -425,7 +425,7 @@ export interface UnifiedProfileState {
         imported: importResult.data,
         message: `Profile imported from ${source}`,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Profile import from ${source} failed:`, error);
       return { success: false, error: error.message };
     } finally {
@@ -503,7 +503,7 @@ export interface UnifiedProfileState {
       state.lastSync = new Date();
 
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       state.syncStatus = "error";
       return { success: false, error: error.message };
     }

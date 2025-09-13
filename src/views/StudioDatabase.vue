@@ -613,7 +613,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref, computedonUnmounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
 // import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
@@ -639,7 +642,7 @@ import StudioSubNav from "@/components/studio/StudioSubNav.vue";
 // const TabStudioAnalytics = defineAsyncComponent(() => import('@/views/StudioAnalytics.vue'))
 // const TabStudioNetworking = defineAsyncComponent(() => import('@/views/StudioNetworking.vue'))
 
-const router = useRouter();
+const _router = useRouter();
 const store = useAppStore();
 // const theme = useUnifiedTheme() // not currently used
 const {
@@ -930,7 +933,7 @@ async function loadStudios() {
     filteredStudios.value = [...allStudios.value];
     applyFilters();
     await loadFavorites();
-  } catch (e) {
+  } catch (_e) {
     toastError("Failed to load studio database");
     console.error("Studio loading error:", e);
   } finally {
@@ -942,7 +945,7 @@ async function loadFavorites() {
   try {
     const favorites = await studioService.getFavoriteStudios();
     favoriteStudios.value = favorites.map((f) => f.id);
-  } catch (e) {
+  } catch (_e) {
     console.error("Failed to load favorites:", e);
   }
 }
@@ -1218,7 +1221,7 @@ function handleToggleChange(metricKey: string, event: Event) {
       "studio-metric-settings",
       JSON.stringify(metricSettings.value),
     );
-  } catch (e) {
+  } catch (_e) {
     console.warn("Failed to save metric settings:", e);
   }
 }
@@ -1464,7 +1467,7 @@ async function runAIAnalysis() {
         if (scoreMatch) {
           aiScores.value[studio.id] = parseInt(scoreMatch[1]);
         }
-      } catch (error) {
+      } catch (_error) {
         console.warn(`AI scoring failed for ${studio.name}:`, error);
       }
     }
@@ -1550,8 +1553,8 @@ function exportDedupedCSV() {
     URL.revokeObjectURL(url);
     showExportDropdown.value = false;
     toastSuccess("CSV exported");
-  } catch (e) {
-    console.error(e);
+  } catch (_e) {
+    console.error(_e);
     toastError("CSV export failed");
   }
 }
@@ -1574,7 +1577,7 @@ async function runOpenDataScan() {
       `Open data merged: ${ingest.created} new • ${ingest.updated} updated`,
     );
   } catch (e: any) {
-    console.error(e);
+    console.error(_e);
     toastError("Open data scan failed");
   } finally {
     openDataLoading.value = false;
@@ -1623,7 +1626,7 @@ async function runFullImport() {
       enrichment = await studioService.ingestOpenData(result.studios);
       progressStages.value.open.countText = `${enrichment.created} new • ${enrichment.updated} updated`;
       markStageDone("open");
-    } catch (e) {
+    } catch (_e) {
       console.warn("[Studios] Open knowledge enrichment failed", e);
       markStageError("open");
     }
@@ -1636,8 +1639,8 @@ async function runFullImport() {
     toastSuccess(
       `Import complete${staticImported?.imported ? ` • ${staticImported.imported} base` : ""}${enrichment ? ` • +${enrichment.created}/${enrichment.updated} enriched` : ""}`,
     );
-  } catch (e) {
-    console.error(e);
+  } catch (_e) {
+    console.error(_e);
     toastError("Full import failed");
   } finally {
     importing.value = false;
@@ -1672,11 +1675,11 @@ async function dedupeAndPersist() {
         progressStages.value.persist.countText = `${persistResult} persisted`;
       }
       markStageDone("persist");
-    } catch (e) {
+    } catch (_e) {
       console.warn("[Studios] Persistence skipped/unavailable", e);
       markStageError("persist");
     }
-  } catch (e) {
+  } catch (_e) {
     console.error("Deduplication failed", e);
     markStageError("dedupe");
   }
@@ -1704,7 +1707,7 @@ async function runIncrementalSteamSync() {
     await dedupeAndPersist();
     markStageDone("dedupe");
     toastSuccess("Incremental Steam sync complete");
-  } catch (e) {
+  } catch (_e) {
     console.error("Incremental Steam sync failed", e);
     markStageError("static");
     toastError("Steam sync failed");

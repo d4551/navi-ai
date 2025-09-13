@@ -221,7 +221,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineEmits } from "vue";
+import { ref, computed } from 'vue';
+
+import { refdefineEmits } from "vue";
 import UnifiedButton from "./UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
@@ -255,12 +257,12 @@ interface Props {
   userSkills?: string[];
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   userSkills: () => [],
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "apply",
   "save",
   "view-details",

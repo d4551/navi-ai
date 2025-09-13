@@ -71,7 +71,7 @@ class AIResumeTargetingService {
         this.initialized = true;
         logger.info("AIResumeTargetingService initialized");
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize AIResumeTargetingService:", error);
       throw error;
     }
@@ -144,7 +144,7 @@ class AIResumeTargetingService {
         matchAnalysis,
         recommendations,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Resume tailoring failed:", error);
       return {
         success: false,
@@ -193,7 +193,7 @@ Be specific about gaps and strengths. Return only valid JSON.`;
             : [],
         };
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to analyze resume-job match:", error);
     }
 
@@ -254,7 +254,7 @@ Be specific about gaps and strengths. Return only valid JSON.`;
         );
         sections.push(projectsSection);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to tailor resume sections:", error);
     }
 
@@ -303,7 +303,7 @@ Return only the optimized summary text, no additional commentary.`;
         changes: this.identifyChanges(originalSummary, tailoredContent),
         keywordMatches,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to tailor summary section:", error);
       return this.createFallbackSection(
         "summary",
@@ -367,7 +367,7 @@ Instructions:
         changes: this.identifyArrayChanges(skillsArray, tailoredSkills),
         keywordMatches,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to tailor skills section:", error);
       return this.createFallbackSection("skills", originalSkills, jobAnalysis);
     }
@@ -439,7 +439,7 @@ Return JSON format:
         ],
         keywordMatches,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to tailor experience section:", error);
       return this.createFallbackSection(
         "experience",
@@ -529,7 +529,7 @@ Be specific and actionable. Return only valid JSON.`;
             : [],
         };
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to generate recommendations:", error);
     }
 

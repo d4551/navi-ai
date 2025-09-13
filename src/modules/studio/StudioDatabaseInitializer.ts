@@ -59,9 +59,9 @@ export class StudioDatabaseInitializer {
       }
 
       // Try to load additional studio data from other sources
-      await this.loadAdditionalStudioData(result);
-    } catch (error) {
-      const errorMsg = `Failed to initialize studios: ${error}`;
+      await this.loadAdditionalStudioData(_result);
+    } catch (_error) {
+      const errorMsg = `Failed to initialize studios: ${_error}`;
       result.errors.push(errorMsg);
       result.message = errorMsg;
       logger.error(errorMsg, error);
@@ -82,9 +82,9 @@ export class StudioDatabaseInitializer {
         logger.info(
         );
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Could not load additional studio data:", error);
-      result.errors.push(`Additional data load warning: ${error}`);
+      result.errors.push(`Additional data load warning: ${_error}`);
     }
   }
 
@@ -155,9 +155,9 @@ export class StudioDatabaseInitializer {
       logger.info(
         `[STATS] Studio validation: ${studioArray.length} studios, ${validation.issues.length} issues found`,
       );
-    } catch (error) {
+    } catch (_error) {
       validation.valid = false;
-      validation.issues.push(`Validation failed: ${error}`);
+      validation.issues.push(`Validation failed: ${_error}`);
       logger.error("Studio validation failed:", error);
     }
 
@@ -211,7 +211,7 @@ export class StudioDatabaseInitializer {
 
       logger.info(
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate studio statistics:", error);
     }
 
@@ -282,7 +282,7 @@ export class StudioDatabaseInitializer {
       }
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to ensure studio database:", error);
       return false;
     }
@@ -348,7 +348,7 @@ export class StudioDatabaseInitializer {
       suggestions.sort((a, b) => {
         return order[a.matchType] - order[b.matchType];
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to get studio suggestions:", error);
     }
 

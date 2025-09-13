@@ -50,7 +50,7 @@ export async function verifyDirectOpenEndpoints(
     const r = await fetch("https://remoteok.io/api");
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const data = await r.json();
-    const arr = Array.isArray(data) ? data.slice(1) : [];
+    const arr = Array.isArray(_data) ? data.slice(1) : [];
     const filtered = arr.filter((j: any) =>
       `${j.position} ${j.description}`.toLowerCase().includes(query),
     );

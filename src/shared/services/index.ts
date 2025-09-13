@@ -34,7 +34,7 @@ export const createLazyServiceRegistry = () => {
         try {
           const module = await import(importPath);
           services[name] = module.default || module[name] || module;
-        } catch (error) {
+        } catch (_error) {
           const loggerModule = await import("@/shared/utils/logger");
           loggerModule.logger.error(`Failed to load service ${name}:`, error);
           throw error;

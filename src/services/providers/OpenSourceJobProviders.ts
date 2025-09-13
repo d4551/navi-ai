@@ -27,7 +27,7 @@ export class RemoteOKProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
 
     // RemoteOK returns array with first item being metadata
 
@@ -49,7 +49,7 @@ export class RemoteOKProvider implements JobProvider {
       return jobs
         .filter((job) => this.matchesFilters(job, filters))
         .map((job) => this.normalizeJob(job));
-    } catch (error) {
+    } catch (_error) {
       logger.error("RemoteOK fetch failed:", error, "OpenSourceJobProviders");
       return [];
     }
@@ -143,7 +143,7 @@ export class RemotiveProvider implements JobProvider {
         .filter((job: any) => this.matchesFilters(job, filters))
         .map((job: any) => this.normalizeJob(job));
       return jobs;
-    } catch (e) {
+    } catch (_e) {
       logger.error("Remotive fetch failed:", e, "OpenSourceJobProviders");
       return [];
     }
@@ -252,7 +252,7 @@ export class WeWorkRemotelyProvider implements JobProvider {
         );
       }
 
-    } catch (e) {
+    } catch (_e) {
       logger.error("WWR fetch failed:", e, "OpenSourceJobProviders");
       return [];
     }
@@ -354,7 +354,7 @@ export class WellfoundProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -363,7 +363,7 @@ export class WellfoundProvider implements JobProvider {
       // Use a mock implementation since AngelList requires complex authentication
       // In production, this would integrate with their actual API
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Wellfound fetch failed:", error, "OpenSourceJobProviders");
       return [];
     }
@@ -442,7 +442,7 @@ export class GitHubJobsProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -450,7 +450,7 @@ export class GitHubJobsProvider implements JobProvider {
     try {
       // Mock implementation since GitHub Jobs is discontinued
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "GitHub Jobs fetch failed:",
         error,
@@ -527,7 +527,7 @@ export class ArbeitsNowProvider implements JobProvider {
       params.append("search", filters.query || filters.title || "");
     }
 
-    return Object.fromEntries(params);
+    return Object.fromEntries(_params);
   }
 
   parseResponse(data: any): Job[] {
@@ -557,7 +557,7 @@ export class ArbeitsNowProvider implements JobProvider {
       return (data.data || [])
         .filter((job: any) => job && typeof job === "object")
         .map((job: any) => this.normalizeJob(job));
-    } catch (error) {
+    } catch (_error) {
       logger.error("ArbeitsNow fetch failed:", error, "OpenSourceJobProviders");
       return [];
     }
@@ -610,7 +610,7 @@ export class DiceProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -618,7 +618,7 @@ export class DiceProvider implements JobProvider {
     try {
       // Mock implementation - would integrate with Dice API in production
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Dice fetch failed:", error, "OpenSourceJobProviders");
       return [];
     }
@@ -694,7 +694,7 @@ export class StackOverflowJobsProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -702,7 +702,7 @@ export class StackOverflowJobsProvider implements JobProvider {
     try {
       // Mock implementation since Stack Overflow Jobs is discontinued
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "Stack Overflow Jobs fetch failed:",
         error,
@@ -770,7 +770,7 @@ export class FlexJobsProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -778,7 +778,7 @@ export class FlexJobsProvider implements JobProvider {
     try {
       // Mock implementation - would integrate with FlexJobs API in production
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       console.error("FlexJobs fetch failed:", error);
       return [];
     }
@@ -854,7 +854,7 @@ export class ZipRecruiterProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -862,7 +862,7 @@ export class ZipRecruiterProvider implements JobProvider {
     try {
       // Mock implementation - would integrate with ZipRecruiter API in production
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       console.error("ZipRecruiter fetch failed:", error);
       return [];
     }
@@ -938,7 +938,7 @@ export class SimplyHiredProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -946,7 +946,7 @@ export class SimplyHiredProvider implements JobProvider {
     try {
       // Mock implementation - would integrate with SimplyHired API in production
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       console.error("SimplyHired fetch failed:", error);
       return [];
     }
@@ -1010,7 +1010,7 @@ export class MonsterProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -1018,7 +1018,7 @@ export class MonsterProvider implements JobProvider {
     try {
       // Mock implementation - would integrate with Monster API in production
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       console.error("Monster fetch failed:", error);
       return [];
     }

@@ -86,7 +86,7 @@ export const useNotificationStore = defineStore("notifications", () => {
     });
   };
 
-  const error = (
+  const _error = (
     title: string,
     message: string,
     options?: Partial<Notification>,

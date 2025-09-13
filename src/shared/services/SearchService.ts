@@ -274,7 +274,7 @@ export class SearchService {
             options.push(suggestion);
           }
         });
-      } catch (error) {
+      } catch (_error) {
         console.warn(
           "Semantic search failed, falling back to keyword search:",
           error,
@@ -404,7 +404,7 @@ export class SearchService {
       const role = await roleDataService.getRole(roleName);
       if (role) this.roleCache.set(key, role);
       return role;
-    } catch (error) {
+    } catch (_error) {
       console.warn("Role data fetch failed:", error);
       return this.roleCache.get(key) || null;
     }
@@ -468,14 +468,14 @@ export class SearchService {
         boostFactors: options.boostFactors,
       });
 
-      return results.map((result) => ({
+      return results.map((_result) => ({
         ...result.item.metadata,
         type: result.item.type,
         similarity: result.similarity,
         relevanceBoost: result.relevanceBoost,
         matchedTerms: result.matchedTerms,
       }));
-    } catch (error) {
+    } catch (_error) {
       console.warn("Semantic search failed:", error);
       return [];
     }
@@ -492,12 +492,12 @@ export class SearchService {
         maxResults,
       );
 
-      return results.map((result) => ({
+      return results.map((_result) => ({
         ...result.item.metadata,
         type: result.item.type,
         similarity: result.similarity,
       }));
-    } catch (error) {
+    } catch (_error) {
       console.warn("Find similar failed:", error);
       return [];
     }
@@ -529,7 +529,7 @@ export class SearchService {
           },
         );
 
-        semanticResults.forEach((result) => {
+        semanticResults.forEach((_result) => {
           const { item } = result;
           let label = "";
           let description = "";
@@ -551,7 +551,7 @@ export class SearchService {
           });
         });
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn("Intelligent suggestions failed:", error);
     }
 

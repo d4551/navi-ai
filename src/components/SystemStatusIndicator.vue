@@ -149,7 +149,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { refcomputed } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { systemIntegrationTest } from "@/utils/SystemIntegrationTest";
 import type { SystemHealthReport } from "@/utils/SystemIntegrationTest";
@@ -266,9 +268,9 @@ const runHealthCheck = async () => {
 
     // Update performance metrics
     performanceMetrics.value = systemIntegrationTest.getPerformanceMetrics();
-  } catch (error) {
+  } catch (_error) {
     status.value = "critical";
-    statusMessage.value = `Health check failed: ${error}`;
+    statusMessage.value = `Health check failed: ${_error}`;
   } finally {
     isChecking.value = false;
   }
@@ -285,9 +287,9 @@ const runFullTest = async () => {
 
     // Update performance metrics
     performanceMetrics.value = systemIntegrationTest.getPerformanceMetrics();
-  } catch (error) {
+  } catch (_error) {
     status.value = "critical";
-    statusMessage.value = `Full test failed: ${error}`;
+    statusMessage.value = `Full test failed: ${_error}`;
   } finally {
     isRunningFullTest.value = false;
   }

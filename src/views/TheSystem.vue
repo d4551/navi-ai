@@ -605,9 +605,12 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-import { ref, reactive, onMounted, onUnmounted } from "vue";
+import { ref, reactiveonUnmounted } from "vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import { useRouter } from "vue-router";
 import { useResponsive } from "@/composables/useResponsive";

@@ -1,5 +1,5 @@
 
-import { ref, onMounted, readonly, computed, watch } from "vue";
+import { refreadonly, computed, watch } from "vue";
 import { useStorage } from "@vueuse/core";
 import { logger } from "@/shared/utils/logger";
 import { useDynamicScaling } from "./useDynamicScaling";
@@ -180,7 +180,7 @@ const systemPreference = ref<ColorScheme>("light");
   });
 
   // Current theme tokens
-  const theme = computed<ThemeDesignTokens>(() => ({
+  const _theme = computed<ThemeDesignTokens>(() => ({
     colors: GAMING_COLORS[colorScheme.value],
     ...DESIGN_TOKENS,
   }));

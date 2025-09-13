@@ -57,13 +57,13 @@ export class DatabaseStudioService {
               "gaming-studios",
             );
             studiosToImport.push(converted);
-          } catch (error) {
-            const msg = (error as any)?.message || String(error);
+          } catch (_error) {
+            const msg = (error as any)?.message || String(_error);
             result.errors.push(`Gaming studio ${studio.name}: ${msg}`);
           }
         }
-      } catch (error) {
-        const msg = (error as any)?.message || String(error);
+      } catch (_error) {
+        const msg = (error as any)?.message || String(_error);
         result.errors.push(`Failed to load gaming studios: ${msg}`);
       }
 
@@ -73,12 +73,12 @@ export class DatabaseStudioService {
 
           try {
             studiosToImport.push(converted);
-          } catch (error) {
-            const msg = (error as any)?.message || String(error);
+          } catch (_error) {
+            const msg = (error as any)?.message || String(_error);
           }
         }
-      } catch (error) {
-        const msg = (error as any)?.message || String(error);
+      } catch (_error) {
+        const msg = (error as any)?.message || String(_error);
       }
 
       try {
@@ -94,13 +94,13 @@ export class DatabaseStudioService {
               "expanded-gaming",
             );
             studiosToImport.push(converted);
-          } catch (error) {
-            const msg = (error as any)?.message || String(error);
+          } catch (_error) {
+            const msg = (error as any)?.message || String(_error);
             result.errors.push(`Expanded studio ${studio.name}: ${msg}`);
           }
         }
-      } catch (error) {
-        const msg = (error as any)?.message || String(error);
+      } catch (_error) {
+        const msg = (error as any)?.message || String(_error);
         result.errors.push(`Failed to load expanded gaming studios: ${msg}`);
       }
 
@@ -109,8 +109,8 @@ export class DatabaseStudioService {
           const steamStudios = await this.fetchSteamStudios();
           studiosToImport.push(...steamStudios);
           logger.info(`Added ${steamStudios.length} studios from Steam API`);
-        } catch (error) {
-          const msg = (error as any)?.message || String(error);
+        } catch (_error) {
+          const msg = (error as any)?.message || String(_error);
           result.errors.push(`Steam integration failed: ${msg}`);
           logger.warn("Steam integration failed:", error);
         }
@@ -129,9 +129,9 @@ export class DatabaseStudioService {
         `Database studio import completed: ${result.imported}/${result.total} successful in ${result.duration}ms`,
       );
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Database studio import failed:", error);
-      const msg = (error as any)?.message || String(error);
+      const msg = (error as any)?.message || String(_error);
       result.errors.push(`System error: ${msg}`);
       result.duration = Date.now() - startTime;
       return result;
@@ -237,7 +237,7 @@ export class DatabaseStudioService {
       const imported = converted.length
         ? await studioRepository.bulkUpsert(converted)
       return { imported, totalRaw: raw.length, duration: Date.now() - start };
-    } catch (e) {
+    } catch (_e) {
       logger.warn("Incremental Steam sync failed", e);
     }
   }
@@ -449,7 +449,7 @@ export class DatabaseStudioService {
       }
 
       return studios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Steam fetch failed:", error);
       return [];
     }
@@ -474,7 +474,7 @@ export class DatabaseStudioService {
           lastImport: stats.lastUpdated,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Health check failed:", error);
       return {
         status: "error",

@@ -140,7 +140,9 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from 'vue';
+
+import { ref} from "vue";
 import { unifiedService } from "@/shared/services/UnifiedService";
 import type {
   UnifiedJob,
@@ -201,7 +203,7 @@ const initializeService = async () => {
       enableBackgroundSync: false, // Disable for demo
     });
     await updateServiceStats();
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to initialize NAVI service:", error);
   }
 };
@@ -210,7 +212,7 @@ const updateServiceStats = async () => {
   try {
     const stats = await unifiedService.getServiceStats();
     serviceStats.value = stats;
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to get service stats:", error);
   }
 };
@@ -226,7 +228,7 @@ const searchJobs = async () => {
       userProfile: demoUserProfile,
     });
     jobResults.value = results;
-  } catch (error) {
+  } catch (_error) {
     console.error("Job search failed:", error);
     jobResults.value = [];
   } finally {
@@ -244,7 +246,7 @@ const searchStudios = async () => {
       userProfile: demoUserProfile,
     });
     studioResults.value = results;
-  } catch (error) {
+  } catch (_error) {
     console.error("Studio search failed:", error);
     studioResults.value = [];
   } finally {
@@ -266,7 +268,7 @@ const getRecommendations = async () => {
       jobs: jobRecs,
       studios: studioRecs,
     };
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to get recommendations:", error);
   } finally {
     isGettingRecs.value = false;

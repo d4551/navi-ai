@@ -356,6 +356,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
+
 import { computed, ref } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { formatDateLong } from "@/utils/date";
@@ -379,7 +381,7 @@ interface Content {
   body: string;
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   personalInfo: PersonalInfo;
   jobInfo: JobInfo;
   content: Content;
@@ -394,7 +396,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update:selectedTemplate": [template: string];
   "generate-smart-template": [];
   "generate-content": [];

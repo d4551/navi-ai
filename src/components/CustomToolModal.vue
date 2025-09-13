@@ -59,7 +59,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from 'vue';
+
+import { ref} from "vue";
 import { useToast } from "@/composables/useToast";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
@@ -69,7 +71,7 @@ interface ToolForm {
   description: string;
 }
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   (e: "save", tool: ToolForm): void;
   (e: "close"): void;
 }>();

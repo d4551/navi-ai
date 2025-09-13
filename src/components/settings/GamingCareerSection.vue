@@ -372,6 +372,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import { GameIconComponent } from "./SettingsIcons.js";
 
 export default {

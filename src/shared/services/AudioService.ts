@@ -107,7 +107,7 @@ export class AudioService {
         }));
 
       return this.availableDevices;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to enumerate audio devices:", error);
       return [];
     }
@@ -155,7 +155,7 @@ export class AudioService {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach((track) => track.stop());
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Microphone permission denied:", error);
       return false;
     }
@@ -211,7 +211,7 @@ export class AudioService {
 
       logger.info("Audio recording started");
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start recording:", error);
       this.cleanup();
       return false;
@@ -330,7 +330,7 @@ export class AudioService {
         const rms = Math.sqrt(sum / dataArray.length);
         if (onLevel) onLevel(level);
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to start input monitoring:", error);
       this.stopMonitoring();
       throw error;
@@ -367,7 +367,7 @@ export class AudioService {
       source.connect(this.analyser);
 
       this.startVolumeMonitoring();
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to setup audio analysis:", error);
     }
   }
@@ -468,16 +468,16 @@ export class AudioService {
             resolve();
             return;
           }
-          const error = new Error(
+          const _error = new Error(
             `Speech synthesis failed: ${err || "Unknown error"}`,
           );
           error.name = "SpeechSynthesisError";
-          reject(error);
+          reject(_error);
         };
 
         this.synthesis.speak(utterance);
-      } catch (error) {
-        reject(error);
+      } catch (_error) {
+        reject(_error);
       }
     });
   }
@@ -577,7 +577,7 @@ export const audioService = AudioService.getInstance();
 // Convenience exports for backward compatibility
 export const getAudioService = () => audioService;
 export const startRecording = (options?: AudioRecordingOptions) =>
-  audioService.startRecording(options);
+  audioService.startRecording(_options);
 export const stopRecording = () => audioService.stopRecording();
 export const speak = (text: string, settings?: VoiceSettings) =>
   audioService.speak(text, settings);

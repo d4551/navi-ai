@@ -464,7 +464,7 @@ export class GamificationService {
         ...challenge,
         completed: completedToday.includes(challenge.id),
       }));
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to get today's challenges:", error);
       return DAILY_CHALLENGES.map((challenge) => ({
         ...challenge,
@@ -565,7 +565,7 @@ export class GamificationService {
         }
       }
 
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to calculate weekly progress:", error);
     }
   }
@@ -637,8 +637,8 @@ export class GamificationService {
     const awarded = [];
     for (const achievement of newAchievements) {
       const result = this.awardAchievement(achievement.id);
-      if (result) {
-        awarded.push(result);
+      if (_result) {
+        awarded.push(_result);
       }
     }
 
@@ -666,7 +666,7 @@ export class GamificationService {
       return {
         current: streak,
       };
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to calculate streak:", error);
       return {
         isNewRecord: false,

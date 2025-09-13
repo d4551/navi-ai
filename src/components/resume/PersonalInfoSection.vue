@@ -209,6 +209,8 @@
 </template>
 
 <script>
+import { ref, watch, reactive } from 'vue';
+
 import { ref, reactive, watch } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -226,7 +228,7 @@ export default {
     },
   },
   emits: ["update:modelValue", "continue", "save-draft", "ai-enhance"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const photoInput = ref(null);
 
     const formData = reactive({
@@ -241,7 +243,7 @@ export default {
       github: "",
       other: "",
       photo: null,
-      ...props.modelValue,
+      ...modelValue,
     });
 
     const errors = reactive({});
@@ -291,7 +293,7 @@ export default {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = (_e) => {
           formData.photo = e.target.result;
         };
         reader.readAsDataURL(file);

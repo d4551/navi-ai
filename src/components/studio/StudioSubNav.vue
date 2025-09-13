@@ -10,17 +10,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from "vue";
+import { computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { computedwatch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import GlassNavTabs from "@/components/GlassNavTabs.vue";
 
-const props = defineProps<{
+const _props = defineProps<{
   databaseCount?: number;
   analyticsCount?: number;
   networkCount?: number;
 }>();
 
-const router = useRouter();
+const _router = useRouter();
 const route = useRoute();
 
 const tabs = computed(() => [

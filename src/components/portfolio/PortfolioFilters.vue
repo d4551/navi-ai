@@ -170,10 +170,12 @@
 </template>
 
 <script setup>
+import { ref, computed, reactive } from 'vue';
+
 import { computed, ref, defineEmits, defineProps } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-const props = defineProps({
+const _props = defineProps({
   searchQuery: {
     type: String,
     default: "",
@@ -204,7 +206,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "update:searchQuery",
   "update:filterType",
   "update:sortMode",

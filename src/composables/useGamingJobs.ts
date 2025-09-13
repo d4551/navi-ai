@@ -3,9 +3,7 @@ import {
   ref,
   reactive,
   computed,
-  watch,
-  onMounted,
-  getCurrentInstance,
+  watchgetCurrentInstance,
   readonly,
 } from "vue";
 import type { Job } from "@/shared/types/jobs";
@@ -162,7 +160,7 @@ export interface UseGamingJobsOptions {
       } else {
         logger.info(`Found ${result.totalResults} gaming jobs`);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Gaming job search failed:", error);
       searchError.value = error.message || "Search failed";
       showToast("Failed to search jobs", "error");
@@ -261,7 +259,7 @@ export interface UseGamingJobsOptions {
       gamingJobsService.saveJob(job);
       savedJobs.value = gamingJobsService.getSavedJobs();
       showToast(`${job.title} saved!`, "success");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to save job:", error);
       showToast("Failed to save job", "error");
     }
@@ -272,7 +270,7 @@ export interface UseGamingJobsOptions {
       gamingJobsService.unsaveJob(job.id);
       savedJobs.value = gamingJobsService.getSavedJobs();
       showToast(`${job.title} removed from saved jobs`, "info");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to unsave job:", error);
       showToast("Failed to unsave job", "error");
     }
@@ -314,7 +312,7 @@ export interface UseGamingJobsOptions {
       jobAlerts.value = gamingJobsService.getJobAlerts();
       showToast(`Job alert "${name}" created!`, "success");
       return alert;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to create job alert:", error);
       showToast("Failed to create job alert", "error");
       throw error;
@@ -326,7 +324,7 @@ export interface UseGamingJobsOptions {
       await gamingJobsService.deleteJobAlert(alertId);
       jobAlerts.value = gamingJobsService.getJobAlerts();
       showToast("Job alert deleted", "info");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to delete job alert:", error);
       showToast("Failed to delete job alert", "error");
     }
@@ -360,7 +358,7 @@ export interface UseGamingJobsOptions {
       document.body.removeChild(link);
 
       showToast(`Exported ${jobsToExport.length} jobs to CSV`, "success");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to export jobs:", error);
       showToast("Failed to export jobs", "error");
     }

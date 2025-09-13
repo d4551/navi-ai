@@ -233,7 +233,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, reactive } from 'vue';
+
+import { ref, reactive, computedonUnmounted, nextTick } from "vue";
 import { useAIUI } from "@/shared/services/AIUIIntegrationService";
 import { logger } from "@/shared/utils/logger";
 
@@ -319,13 +321,13 @@ const initializeServices = async () => {
       onVideoAnalysis: (analysis) => {
         addChatMessage("assistant", `Video Analysis: ${analysis}`);
       },
-      onResponse: (response) => {
+      onResponse: (_response) => {
         logger.debug("AI Response:", response);
       },
     });
 
     updateHealthStatus();
-  } catch (error) {
+  } catch (_error) {
     console.error("Service initialization failed:", error);
   }
 };
@@ -334,7 +336,7 @@ const updateHealthStatus = async () => {
   try {
     const status = await getHealthStatus();
     healthStatus.value = status;
-  } catch (error) {
+  } catch (_error) {
     console.error("Health status update failed:", error);
   }
 };
@@ -343,7 +345,7 @@ const reconnectServices = async () => {
   try {
     await cleanup();
     await initializeServices();
-  } catch (error) {
+  } catch (_error) {
     console.error("Reconnection failed:", error);
   }
 };
@@ -359,7 +361,7 @@ const toggleAudio = async () => {
     } else {
       await startAudioStreaming();
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Audio toggle failed:", error);
   }
 };
@@ -371,7 +373,7 @@ const toggleVideo = async () => {
     } else {
       await startVideoStreaming();
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Video toggle failed:", error);
   }
 };
@@ -394,11 +396,11 @@ const sendMessage = async () => {
 
       await streamingChat(userMessage, {
         sessionId: "demo-session",
-        onChunk: (chunk) => {
+        onChunk: (_chunk) => {
           assistantMessage += chunk;
           updateLastAssistantMessage(assistantMessage);
         },
-        onComplete: (response) => {
+        onComplete: (_response) => {
           isTyping.value = false;
           addResult("chat", response, Date.now());
         },
@@ -415,7 +417,7 @@ const sendMessage = async () => {
       addChatMessage("assistant", response.content);
       addResult("chat", response.content, 0);
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Message sending failed:", error);
     addChatMessage(
       "assistant",

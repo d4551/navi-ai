@@ -20,14 +20,14 @@ export const useToolStore = defineStore("tools", {
         if (raw) {
           this.customTools = JSON.parse(raw);
         }
-      } catch (e) {
+      } catch (_e) {
         console.warn("Failed to load custom tools", e);
       }
     },
     save() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.customTools));
-      } catch (e) {
+      } catch (_e) {
         console.warn("Failed to save custom tools", e);
       }
     },

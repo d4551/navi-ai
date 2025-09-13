@@ -193,7 +193,7 @@ export class JobProviderRegistry {
     const jobs: Job[] = [];
     const sources: string[] = [];
 
-    results.forEach((result, index) => {
+    results.forEach((_result, index) => {
       const provider = providers[index];
         jobs.push(...result.value);
         sources.push(provider.name);
@@ -229,14 +229,14 @@ export abstract class BaseJobProvider implements JobProvider {
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     try {
       const params = this.buildParams(filters);
-      const response = await this.makeRequest(params).catch(
+      const response = await this.makeRequest(_params).catch(
         () => undefined as any,
       );
       const data =
         response && typeof response === "object"
           ? (response as any).data
           : undefined;
-      return this.parseResponse(data);
+      return this.parseResponse(_data);
     } catch {
       // As a defensive fallback, return empty array so the registry can proceed.
       return [];

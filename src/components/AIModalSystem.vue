@@ -509,6 +509,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+
 import { ref, onMounted, computed, watch, onUnmounted, nextTick } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -525,7 +527,7 @@ interface Props {
   showFloatingButton?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   entityType: undefined,
   entityId: undefined,
   entityData: () => ({}),
@@ -535,7 +537,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   modalToggled: [show: boolean];
   suggestionApplied: [suggestionId: string, success: boolean];
   analysisCompleted: [results: any];
@@ -656,7 +658,7 @@ const applySuggestion = async (suggestionId: string): Promise<void> => {
     processingSuggestion.value = suggestionId;
     await aiContext.applySuggestion(suggestionId);
     emit("suggestionApplied", suggestionId, true);
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to apply suggestion:", error);
     emit("suggestionApplied", suggestionId, false);
   } finally {
@@ -675,7 +677,7 @@ const requestAnalysis = async (): Promise<void> => {
     analysisResults.value = results;
     lastAnalysisTime.value = new Date();
     emit("analysisCompleted", results);
-  } catch (error) {
+  } catch (_error) {
     console.error("Analysis failed:", error);
     analysisResults.value = { error: "Analysis failed. Please try again." };
   }
@@ -690,7 +692,7 @@ const runATSCalculations = async (): Promise<void> => {
       atsIssues: atsResults.issues,
       atsSuggestions: atsResults.suggestions,
     };
-  } catch (error) {
+  } catch (_error) {
     console.error("ATS analysis failed:", error);
   }
 };
@@ -762,7 +764,7 @@ const sendChatMessage = async (): Promise<void> => {
     await nextTick(() => {
       scrollToBottom();
     });
-  } catch (error) {
+  } catch (_error) {
     console.error("Chat message failed:", error);
     isProcessing.value = false;
   }

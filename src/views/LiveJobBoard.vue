@@ -399,8 +399,10 @@ Demonstrates the complete live job board implementation with:
 </template>
 
 <script setup>
+import { ref, computed, onMounted, nextTick } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
-import { ref, computed, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, computedonUnmounted, nextTick } from "vue";
 import { useJobBoard } from "@/composables/useJobBoard";
 import { useUnifiedProfile } from "@/composables/useUnifiedProfile";
 import { realTimeJobService } from "@/services/RealTimeJobService";
@@ -493,7 +495,7 @@ const testGameDeveloperSearch = async () => {
         responseTime,
       },
     );
-  } catch (error) {
+  } catch (_error) {
     addConsoleEntry("error", "Game Developer search failed", error);
   }
 };
@@ -528,7 +530,7 @@ const testUnityDeveloperSearch = async () => {
       "success",
       `Found ${totalJobs} Unity jobs from ${sources.length} sources`,
     );
-  } catch (error) {
+  } catch (_error) {
     addConsoleEntry("error", "Unity Developer search failed", error);
   }
 };
@@ -564,7 +566,7 @@ const testRemoteJobsSearch = async () => {
       "success",
       `Found ${totalJobs} remote jobs from ${sources.length} sources`,
     );
-  } catch (error) {
+  } catch (_error) {
     addConsoleEntry("error", "Remote Jobs search failed", error);
   }
 };
@@ -600,7 +602,7 @@ const testProfileBasedSearch = async () => {
         results: { totalJobs, gamingJobs, topMatches },
       },
     );
-  } catch (error) {
+  } catch (_error) {
     addConsoleEntry("error", "Profile-based search failed", error);
   }
 };
@@ -617,7 +619,7 @@ const clearApiCache = () => {
   try {
     refactoredJobAPIService.clearCache();
     addConsoleEntry("success", "API cache cleared (canonical)");
-  } catch (e) {
+  } catch (_e) {
     addConsoleEntry(
       "warning",
       "Failed to clear canonical cache; continuing",
@@ -655,7 +657,7 @@ const createDemoAlert = async () => {
 
     addConsoleEntry("success", "Demo job alert created", alert);
     updateRealTimeStats();
-  } catch (error) {
+  } catch (_error) {
     addConsoleEntry("error", "Failed to create demo alert", error);
   }
 };

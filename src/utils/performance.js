@@ -109,10 +109,10 @@ class PerformanceMonitor {
           ) {
             logger.warn("No supported performance entry types found");
           }
-        } catch (error) {
+        } catch (_error) {
           logger.warn("Performance Observer not fully supported:", error);
         }
-      } catch (error) {
+      } catch (_error) {
         console.warn("Failed to setup performance monitoring:", error);
       }
     } else {
@@ -202,7 +202,7 @@ class PerformanceMonitor {
       performance.clearMeasures(operationName);
 
       return measure.duration;
-    } catch (error) {
+    } catch (_error) {
       // Only log actual unexpected errors, not missing marks
       if (!error.message.includes("does not exist")) {
         logger.warn("Failed to measure operation:", operationName, error);
@@ -274,7 +274,7 @@ class PerformanceMonitor {
     this.observers.forEach((observer) => {
       try {
         observer.disconnect();
-      } catch (error) {
+      } catch (_error) {
         logger.warn("Failed to disconnect observer:", error);
       }
     });

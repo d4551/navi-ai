@@ -1,5 +1,5 @@
 
-import { ref, computed, onMounted, readonly } from "vue";
+import { ref, computedreadonly } from "vue";
 import { logger } from "@/shared/utils/logger";
 import { GameStudioRepository } from "@/modules/db/repositories/gaming-studios";
 import { studioDatabaseInitializer } from "@/modules/studio/StudioDatabaseInitializer";
@@ -34,7 +34,7 @@ export interface StudioStats {
   const studios = ref<Record<string, Studio>>({});
   const filteredStudios = ref<Studio[]>([]);
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const _error = ref<string | null>(null);
   const initialized = ref(false);
   const searchQuery = ref("");
   const activeFilters = ref<StudioSearchFilters>({});
@@ -90,7 +90,7 @@ export interface StudioStats {
       );
 
       return true;
-    } catch (err) {
+    } catch (_err) {
       const errorMsg = `Failed to initialize studios: ${err}`;
       error.value = errorMsg;
       logger.error(errorMsg, err);
@@ -107,7 +107,7 @@ export interface StudioStats {
 
       // Apply any active filters
       applyFilters();
-    } catch (err) {
+    } catch (_err) {
       const errorMsg = `Failed to load studios: ${err}`;
       error.value = errorMsg;
       logger.error(errorMsg, err);
@@ -136,7 +136,7 @@ export interface StudioStats {
         size: studio.size,
         games: studio.games,
       }));
-    } catch (err) {
+    } catch (_err) {
       logger.error("Studio search failed:", err);
       return [];
     }
@@ -157,7 +157,7 @@ export interface StudioStats {
         size: studio.size,
         games: studio.games,
       };
-    } catch (err) {
+    } catch (_err) {
       logger.error(`Failed to get studio ${id}:`, err);
       return null;
     }
@@ -176,7 +176,7 @@ export interface StudioStats {
   > => {
     try {
       return await studioDatabaseInitializer.getStudioSuggestions(query, limit);
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to get studio suggestions:", err);
       return [];
     }
@@ -240,7 +240,7 @@ export interface StudioStats {
   const getStudioStatistics = async (): Promise<StudioStats> => {
     try {
       return await studioDatabaseInitializer.getStudioStatistics();
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to get studio statistics:", err);
       return {
         bySize: {},
@@ -262,7 +262,7 @@ export interface StudioStats {
         issues: validation.issues,
         recommendations: validation.recommendations,
       };
-    } catch (err) {
+    } catch (_err) {
       logger.error("Database validation failed:", err);
       return {
         valid: false,
@@ -348,7 +348,7 @@ export interface StudioStats {
         await GameStudioRepository.addFavorite(studioId);
         return true;
       }
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to toggle studio favorite:", err);
       return false;
     }
@@ -367,7 +367,7 @@ export interface StudioStats {
       }
 
       return favorites;
-    } catch (err) {
+    } catch (_err) {
       logger.error("Failed to get favorite studios:", err);
       return [];
     }
@@ -385,7 +385,7 @@ export interface StudioStats {
     studios: readonly(studios),
     filteredStudios: readonly(filteredStudios),
     loading: readonly(loading),
-    error: readonly(error),
+    error: readonly(_error),
     initialized: readonly(initialized),
     searchQuery: readonly(searchQuery),
     activeFilters: readonly(activeFilters),

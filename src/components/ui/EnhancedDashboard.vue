@@ -355,15 +355,23 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { ref, computed} from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import UiChip from "@/components/ui/UiChip.vue";
 
 // Props
-const props = defineProps({
-  title: { type: String, default: "Dashboard" },
+const _props = defineProps({
+  title: { type: String, default: "Dashboard",
+    default: ''
+   },
   subtitle: String,
-  titleIcon: { type: String, default: "mdi-view-dashboard" },
+  titleIcon: { type: String, default: "mdi-view-dashboard",
+    default: '',
+    default: ''
+  
+   },
   variant: {
     type: String,
     default: "default",
@@ -375,13 +383,15 @@ const props = defineProps({
     default: "grid",
     validator: (v) => ["grid", "masonry", "list", "compact"].includes(v),
   },
-  showStats: { type: Boolean, default: true },
+  showStats: { type: Boolean, default: true,
+    default: () => ({})
+   },
   showSidebar: { type: Boolean, default: true },
   showFooter: { type: Boolean, default: true },
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "refresh",
   "export",
   "actionClick",

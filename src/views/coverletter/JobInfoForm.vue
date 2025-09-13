@@ -424,7 +424,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from 'vue';
+
+import { refwatch } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import { debounce } from "lodash-es";
@@ -447,7 +449,7 @@ interface CompanyResearch {
   talkingPoints?: string[];
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   jobInfo: JobInfo;
   companyResearch?: CompanyResearch;
   canUseAI: boolean;
@@ -459,7 +461,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update:jobInfo": [jobInfo: JobInfo];
   "research-company": [];
   "generate-cover-letter": [];
@@ -523,7 +525,7 @@ const analyzeJobText = async () => {
     } else {
       jobAnalysisError.value = result.error || "Failed to analyze job posting";
     }
-  } catch (error) {
+  } catch (_error) {
     jobAnalysisError.value = error.message || "Analysis failed";
   }
 };
@@ -539,7 +541,7 @@ const analyzeJobUrl = async () => {
       jobAnalysisError.value =
         result.error || "Failed to extract and analyze job posting";
     }
-  } catch (error) {
+  } catch (_error) {
     jobAnalysisError.value = error.message || "Analysis failed";
   }
 };

@@ -61,6 +61,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import { ref, computed, watch } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -70,9 +72,9 @@ interface Props {
   visible: boolean;
 }
 
-const props = defineProps<Props>();
+const _props = defineProps<Props>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: [];
   submit: [githubUrl: string];
 }>();
@@ -124,7 +126,7 @@ const handleSubmit = async () => {
     emit("submit", githubUrl.value);
     toast.success("GitHub repository imported successfully!");
     closeModal();
-  } catch (error) {
+  } catch (_error) {
     console.error("Error importing GitHub repository:", error);
     toast.error("Failed to import repository");
   } finally {

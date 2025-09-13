@@ -97,10 +97,12 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 import { computed, useId } from "vue";
 import AppIcon from "./AppIcon.vue";
 
-const props = defineProps({
+const _props = defineProps({
   modelValue: {
     type: [String, Number],
     default: "",
@@ -115,7 +117,9 @@ const props = defineProps({
   },
   icon: {
     type: String,
-    default: "",
+    default: "",,
+    default: ''
+  
   },
   placeholder: {
     type: String,

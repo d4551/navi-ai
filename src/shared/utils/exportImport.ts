@@ -245,7 +245,7 @@ export class NaviExporter {
       metadata: {
         appVersion: getAppVersion(),
         platform: typeof window !== "undefined" ? "web" : "electron",
-        totalItems: this.countItems(data),
+        totalItems: this.countItems(_data),
         ...data.metadata,
       },
     };
@@ -259,9 +259,9 @@ export class NaviExporter {
     errors?: string[];
   } {
     try {
-      const validated = NaviExportSchema.parse(data);
+      const validated = NaviExportSchema.parse(_data);
       return { valid: true, data: validated };
-    } catch (error) {
+    } catch (_error) {
       if (error instanceof z.ZodError) {
         const errors = error.errors.map(
           (err) => `${err.path.join(".")}: ${err.message}`,
@@ -285,7 +285,7 @@ export class NaviExporter {
   }
 
   static downloadExport(data: NaviExportData, filename?: string): void {
-    const { blob, filename: finalFilename } = this.exportToBlob(data, filename);
+    const { blob, filename: finalFilename } = this.exportToBlob(_data, filename);
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -338,7 +338,7 @@ export class NaviImporter {
 
       logger.info("Import file validated successfully");
       return { success: true, data: validation.data };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Import failed:", error);
       return {
         success: false,
@@ -362,7 +362,7 @@ export class NaviImporter {
       }
 
       return { success: true, data: validation.data };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: error instanceof Error ? error.message : "Invalid JSON format",
@@ -373,7 +373,7 @@ export class NaviImporter {
   private static readFileAsText(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target?.result as string);
+      reader.onload = (_e) => resolve(e.target?.result as string);
       reader.onerror = () => reject(new Error("Failed to read file"));
       reader.readAsText(file);
     });

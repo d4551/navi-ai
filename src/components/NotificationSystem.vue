@@ -132,9 +132,11 @@ Sam & Max inspired messaging and achievement notifications
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-import { ref, onMounted, computed, onUnmounted } from "vue";
+import { refcomputed, onUnmounted } from "vue";
 import { useNotificationStore } from "@/stores/notifications";
 import { easterEggs } from "@/utils/easterEggs";
 

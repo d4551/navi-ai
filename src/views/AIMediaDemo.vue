@@ -260,7 +260,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, computed, onMounted, nextTick, reactive } from 'vue';
+
+import { ref, computedonUnmounted, nextTick } from "vue";
 import { useToast } from "@/composables/useToast";
 import { canonicalAI } from "@/modules/ai/CanonicalAIService";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
@@ -416,7 +418,7 @@ const toggleCamera = async () => {
     } else {
       await startCamera();
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Camera toggle failed:", error);
     toast.error("Camera operation failed");
   }
@@ -440,7 +442,7 @@ const startCamera = async () => {
 
       toast.success("Camera started");
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to start camera:", error);
     toast.error("Failed to access camera");
   }
@@ -467,7 +469,7 @@ const toggleScreenShare = async () => {
     } else {
       await startScreenShare();
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Screen share toggle failed:", error);
     toast.error("Screen share operation failed");
   }
@@ -491,7 +493,7 @@ const startScreenShare = async () => {
 
       toast.success("Screen sharing started");
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to start screen share:", error);
     toast.error("Failed to start screen sharing");
   }
@@ -620,7 +622,7 @@ onMounted(async () => {
     animateStatsOnLoad();
 
     toast.success("AI Media Studio initialized");
-  } catch (error) {
+  } catch (_error) {
     console.error("Initialization failed:", error);
     toast.error("Failed to initialize AI services");
   }

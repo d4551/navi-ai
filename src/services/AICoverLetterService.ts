@@ -182,7 +182,7 @@ Please create a compelling cover letter that highlights relevant skills and expe
 
         logger.info("Cover letter generated successfully");
         return response;
-      } catch (parseError) {
+      } catch (_parseError) {
         logger.warn(
           "Failed to parse AI response, using fallback format:",
           parseError,
@@ -284,7 +284,7 @@ Focus on gaming industry relevance, company culture, recent projects, and inform
 
           logger.info("Company research completed successfully");
           return response;
-        } catch (parseError) {
+        } catch (_parseError) {
           logger.warn("Failed to parse company research response:", parseError);
 
           return {
@@ -373,7 +373,7 @@ Provide detailed review and scoring.`;
 
           logger.info("Cover letter review completed");
           return response;
-        } catch (parseError) {
+        } catch (_parseError) {
           logger.warn("Failed to parse review response:", parseError);
 
           return {
@@ -462,7 +462,7 @@ Improve this cover letter while maintaining authenticity.`;
 
           logger.info("Cover letter improvement completed");
           return response;
-        } catch (parseError) {
+        } catch (_parseError) {
           logger.warn("Failed to parse improvement response:", parseError);
 
           return {
@@ -546,7 +546,7 @@ Generate ${count} variations with different approaches and tones.`;
             `Generated ${response.variations.length} cover letter variations`,
           );
           return response;
-        } catch (parseError) {
+        } catch (_parseError) {
           logger.warn("Failed to parse variations response:", parseError);
 
           return {

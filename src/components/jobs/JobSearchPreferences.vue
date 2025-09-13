@@ -318,19 +318,21 @@
 </template>
 
 <script>
+import { ref, watch } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 import { ref, watch, defineEmits, defineProps } from "vue";
 
-const props = defineProps({
+const _props = defineProps({
   preferences: {
     type: Object,
     required: true,
   },
 });
 
-const emit = defineEmits(["update:preferences"]);
+const _emit = defineEmits(["update:preferences"]);
 
 // Local state
 const localPreferences = ref({ ...props.preferences });

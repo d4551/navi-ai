@@ -4,6 +4,7 @@ import { logger } from "@/shared/utils/logger";
 // Keep track of created AudioContexts so we can resume them after a user gesture
 const __audioContexts: AudioContext[] = [];
 
+export async function getAudioContext(options?: {
   id?: string;
 }): Promise<AudioContext | undefined> {
   try {
@@ -24,18 +25,19 @@ const __audioContexts: AudioContext[] = [];
       logger.warn("AudioContext not supported in this environment");
       return undefined;
     }
-  } catch (error) {
+  } catch (_error) {
     logger.error("Failed to create audio context:", error);
     return undefined;
   }
 }
 
+export async function resumeAllAudioContexts(): Promise<void> {
   try {
     const tasks: Promise<any>[] = [];
     for (const ctx of __audioContexts) {
       if (
         ctx &&
-        ctx.state === "suspended" &&
+        ctx.state === "suspended"
       ) {
         tasks.push(ctx.resume().catch(() => undefined));
       }
@@ -51,6 +53,7 @@ const __audioContexts: AudioContext[] = [];
   }
 }
 
+export async function readBlobAsJSON(blob: Blob): Promise<any> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -60,8 +63,8 @@ const __audioContexts: AudioContext[] = [];
         } else {
           reject(new Error("Failed to read blob as text"));
         }
-      } catch (error) {
-        reject(error);
+      } catch (_error) {
+        reject(_error);
       }
     };
     reader.onerror = () => reject(new Error("Failed to read blob"));

@@ -1,5 +1,5 @@
 
-import { ref, onMounted, getCurrentInstance, computed, watch } from "vue";
+import { refgetCurrentInstance, computed, watch } from "vue";
 import { useAppStore } from "@/stores/app";
 import { useRouter, useRoute } from "vue-router";
 import { aiService } from "@/shared/services/AIService";
@@ -9,7 +9,7 @@ import { useToast } from "@/composables/useToast";
   const store = useAppStore();
   // Safely resolve router/route only when inside a component instance
   const vm = getCurrentInstance();
-  const router = ctx.router || (vm ? useRouter() : null);
+  const _router = ctx.router || (vm ? useRouter() : null);
   const routeRef = ctx.routeRef || null;
   const route = ctx.route || (vm ? useRoute() : null);
   const toast = useToast();
@@ -133,7 +133,7 @@ import { useToast } from "@/composables/useToast";
           result.message || result.error || "AI initialization failed",
         );
       }
-    } catch (error) {
+    } catch (_error) {
       aiError.value = error.message || "Unknown initialization error";
       isAIInitialized.value = false;
       logger.error("AI initialization failed:", error);
@@ -154,6 +154,7 @@ import { useToast } from "@/composables/useToast";
     }
   }
 
+  function updateAIFeatureAvailability() {
     const baseAvailability = isAIInitialized.value && hasAIKey.value;
 
     aiFeatures.value = {
@@ -219,48 +220,48 @@ import { useToast } from "@/composables/useToast";
 
       switch (actionType) {
         case "generate_resume_content":
-          result = await aiService.generateResumeContent(context);
+          result = await aiService.generateResumeContent(_context);
           break;
 
         case "analyze_job_match":
-          result = await aiService.analyzeJobMatch(context);
+          result = await aiService.analyzeJobMatch(_context);
           break;
 
         case "generate_cover_letter":
-          result = await aiService.generateCoverLetter(context);
+          result = await aiService.generateCoverLetter(_context);
           break;
 
         case "extract_skills":
-          result = await aiService.extractSkills(context);
+          result = await aiService.extractSkills(_context);
           break;
 
         case "analyze_resume":
-          result = await aiService.analyzeResumeQuick(context);
+          result = await aiService.analyzeResumeQuick(_context);
           break;
 
         case "optimize_portfolio":
-          result = await aiService.optimizePortfolio(context);
+          result = await aiService.optimizePortfolio(_context);
           break;
 
         case "search_jobs":
-          result = await aiService.searchJobs(context);
+          result = await aiService.searchJobs(_context);
           break;
 
         case "map_skills":
-          result = await aiService.mapSkills(context);
+          result = await aiService.mapSkills(_context);
           break;
 
         case "conduct_interview":
         case "mock_interview":
-          result = await aiService.conductMockInterview(context);
+          result = await aiService.conductMockInterview(_context);
           break;
 
         case "realtime_chat":
-          result = await aiService.realtimeChat(context);
+          result = await aiService.realtimeChat(_context);
           break;
 
         case "salary_insights":
-          result = await aiService.salaryInsights(context);
+          result = await aiService.salaryInsights(_context);
           break;
 
         case "enhance_content":
@@ -275,22 +276,22 @@ import { useToast } from "@/composables/useToast";
 
         case "analyze_studio_fit":
           // Analyze how well user profile fits with studio culture and requirements
-          result = await aiService.analyzeStudioFit(context);
+          result = await aiService.analyzeStudioFit(_context);
           break;
 
         case "recommend_studios":
           // Get AI recommendations for studios based on user preferences
-          result = await aiService.recommendStudios(context);
+          result = await aiService.recommendStudios(_context);
           break;
 
         case "semantic_job_search":
           // Perform AI-powered semantic job search
-          result = await aiService.performSemanticJobSearch(context);
+          result = await aiService.performSemanticJobSearch(_context);
           break;
 
         case "enhance_job_matching":
           // Enhance job matching with AI insights
-          result = await aiService.enhanceJobMatching(context);
+          result = await aiService.enhanceJobMatching(_context);
           break;
 
         case "ai_optimize":
@@ -309,7 +310,7 @@ import { useToast } from "@/composables/useToast";
           throw new Error(`Unknown AI action: ${actionType}`);
       }
 
-      if (result) {
+      if (_result) {
         logger.info(`AI action completed: ${actionType}`, result);
 
         // Emit success event for other components
@@ -323,7 +324,7 @@ import { useToast } from "@/composables/useToast";
       } else {
         throw new Error("AI action returned no result");
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error(`AI action failed (${actionType}):`, error);
 
       // Emit error event

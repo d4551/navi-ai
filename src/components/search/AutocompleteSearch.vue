@@ -97,7 +97,7 @@
 
               <div class="section-results">
                 <div
-                  v-for="(result, index) in categoryResults"
+                  v-for="(_result, index) in categoryResults"
                   :id="`option-${getGlobalIndex(category, index)}`"
                   :key="`${category}-${result.value}`"
                   class="result-item"
@@ -108,7 +108,7 @@
                   :aria-selected="
                     selectedIndex === getGlobalIndex(category, index)
                   "
-                  @click="selectOption(result)"
+                  @click="selectOption(_result)"
                   @mouseenter="selectedIndex = getGlobalIndex(category, index)"
                 >
                   <div class="result-content">
@@ -155,7 +155,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, onUnmounted, nextTick } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+
+import { refcomputed, watch, onUnmounted, nextTick } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { searchService } from "@/shared/services/SearchService";
 import type { AutocompleteOption } from "@/shared/types/interview";
@@ -177,7 +179,7 @@ interface Emits {
   (e: "clear"): void;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   placeholder: "Search studios, roles, or technologies...",
   ariaLabel: "Search gaming industry data",
   disabled: false,
@@ -187,7 +189,7 @@ const props = withDefaults(defineProps<Props>(), {
   modelValue: "",
 });
 
-const emit = defineEmits<Emits>();
+const _emit = defineEmits<Emits>();
 
 // Reactive state
 const searchInput = ref<HTMLInputElement>();
@@ -220,12 +222,12 @@ const hasResults = computed(
 const groupedResults = computed(() => {
   const groups: Record<string, AutocompleteOption[]> = {};
 
-  results.value.forEach((result) => {
+  results.value.forEach((_result) => {
     const category = result.category;
     if (!groups[category]) {
       groups[category] = [];
     }
-    groups[category].push(result);
+    groups[category].push(_result);
   });
 
   return groups;
@@ -297,7 +299,7 @@ async function performSearch(query: string) {
     // Apply active filters
     let filteredResults = searchResults;
     if (activeFilters.value.length > 0) {
-      filteredResults = searchResults.filter((result) => {
+      filteredResults = searchResults.filter((_result) => {
         if (
           activeFilters.value.includes("studios") &&
           result.category === "studio"
@@ -321,7 +323,7 @@ async function performSearch(query: string) {
 
     await nextTick();
     updateDropdownPosition();
-  } catch (error) {
+  } catch (_error) {
     console.error("Search failed:", error);
     results.value = [];
   } finally {

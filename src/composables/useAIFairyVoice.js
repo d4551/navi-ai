@@ -30,7 +30,7 @@ import { useLogger } from "./useLogger.js";
 
       // Initialize the voice system
       const result = await voiceSystem.init();
-      if (result) {
+      if (_result) {
         isInitialized.value = true;
 
         // Set up event listeners
@@ -44,7 +44,7 @@ import { useLogger } from "./useLogger.js";
       }
 
       return false;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize AI Fairy voice system:", error);
       return false;
     }
@@ -71,7 +71,7 @@ import { useLogger } from "./useLogger.js";
       isSpeaking.value = false;
     });
 
-    voiceSystem.on("speech-error", (data) => {
+    voiceSystem.on("speech-error", (_data) => {
       isSpeaking.value = false;
       logger.error("Speech error:", data.error);
     });
@@ -84,12 +84,12 @@ import { useLogger } from "./useLogger.js";
       isListening.value = false;
     });
 
-    voiceSystem.on("listen-result", (data) => {
+    voiceSystem.on("listen-result", (_data) => {
       isListening.value = false;
       handleVoiceInput(data.result);
     });
 
-    voiceSystem.on("voice-command", (data) => {
+    voiceSystem.on("voice-command", (_data) => {
       handleVoiceCommand(data.command);
     });
   };
@@ -106,7 +106,7 @@ import { useLogger } from "./useLogger.js";
       if (voiceSystem) {
         voiceSystem.config = { ...voiceSystem.config, ...voiceConfig.value };
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to load voice config:", error);
     }
   };
@@ -122,7 +122,7 @@ import { useLogger } from "./useLogger.js";
       if (voiceSystem) {
         voiceSystem.config = { ...voiceSystem.config, ...voiceConfig.value };
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to save voice config:", error);
     }
   };
@@ -145,7 +145,7 @@ import { useLogger } from "./useLogger.js";
       });
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to speak as fairy:", error);
       return false;
     }
@@ -179,7 +179,7 @@ import { useLogger } from "./useLogger.js";
     try {
       const result = await voiceSystem.listen();
       return result.transcript;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to listen for voice:", error);
       return null;
     }
@@ -197,7 +197,7 @@ import { useLogger } from "./useLogger.js";
     }
   };
 
-  const handleVoiceInput = (result) => {
+  const handleVoiceInput = (_result) => {
     if (result && result.transcript) {
       logger.info("Voice input received:", result.transcript);
 
@@ -335,7 +335,7 @@ import { useLogger } from "./useLogger.js";
     if (isVoiceEnabled.value && voiceConfig.value.autoSpeak) {
       try {
         await speakAsFairy(message);
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to speak fairy message:", error);
       }
     }

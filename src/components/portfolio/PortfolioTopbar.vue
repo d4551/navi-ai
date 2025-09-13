@@ -255,13 +255,15 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { ref, computed, watch} from "vue";
 import { useAppStore } from "@/stores/app";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   projects: {
     type: Array,
     default: () => [],
@@ -281,7 +283,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "update:search",
   "update:filters",
   "update:sort",

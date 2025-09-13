@@ -40,7 +40,7 @@ export async function initEffects() {
         logger.debug("Anime.js loaded successfully");
       }
       return animeLib;
-    } catch (e) {
+    } catch (_e) {
       // Degrade to CSS-only animations but log once to aid diagnostics
       logger.once(
         "effects:init",
@@ -98,7 +98,7 @@ export async function pulseOnFocus(
     return;
   }
 
-  document.addEventListener("focusin", (e) => {
+  document.addEventListener("focusin", (_e) => {
     if (!e.target.matches(selector)) {
       return;
     }
@@ -196,7 +196,7 @@ export async function ensureAnimeLoaded() {
       animeLib = window.anime;
     }
     return animeLib;
-  } catch (e) {
+  } catch (_e) {
     logger.debug("Failed to ensure anime loaded", e);
     return null;
   }
@@ -215,7 +215,7 @@ export function createAnimationFallback() {
 
   // Create a mock anime object for graceful degradation
   if (!window.anime) {
-    window.anime = function (options) {
+    window.anime = function (_options) {
       // Simple fallback: just call complete callback if provided
       if (options && typeof options.complete === "function") {
         setTimeout(options.complete, options.duration || TIMEOUTS.SHORT);

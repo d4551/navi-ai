@@ -3,10 +3,12 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, reactive } from 'vue';
+
+import {} from "vue";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 
-const props = defineProps({
+const _props = defineProps({
   altText: {
     type: String,
     default: "NAVI Logo",

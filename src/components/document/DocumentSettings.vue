@@ -467,19 +467,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { refwatch} from "vue";
 import { useToast } from "@/composables/useToast";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   aiConfig: any;
   preferences: any;
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update-config": [any];
   "update-preferences": [any];
 }>();
@@ -572,7 +574,7 @@ const saveSettings = async () => {
     }, 2000);
 
     toast.success("Settings saved successfully");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to save settings");
   } finally {
     isSaving.value = false;
@@ -618,7 +620,7 @@ const exportUserData = () => {
     exportedAt: new Date().toISOString(),
   };
 
-  const blob = new Blob([JSON.stringify(data, null, 2)], {
+  const blob = new Blob([JSON.stringify(_data, null, 2)], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);

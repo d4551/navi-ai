@@ -25,14 +25,14 @@ export class AngelListProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     try {
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error("AngelList fetch failed:", error, "AdditionalJobBoards");
       return [];
     }
@@ -106,14 +106,14 @@ export class CrunchBoardProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     try {
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error("CrunchBoard fetch failed:", error, "AdditionalJobBoards");
       return [];
     }
@@ -174,14 +174,14 @@ export class HackerNewsProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     try {
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error("HackerNews fetch failed:", error, "AdditionalJobBoards");
       return [];
     }
@@ -255,7 +255,7 @@ export class LinkedInJobsProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -263,7 +263,7 @@ export class LinkedInJobsProvider implements JobProvider {
     try {
       // Note: Real LinkedIn API requires OAuth and company approval
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error("LinkedIn fetch failed:", error, "AdditionalJobBoards");
       return [];
     }
@@ -347,14 +347,14 @@ export class TechJobsForGoodProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     try {
       return this.generateMockJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "TechJobsForGood fetch failed:",
         error,

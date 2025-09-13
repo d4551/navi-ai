@@ -307,13 +307,15 @@
 </template>
 
 <script setup>
+import { ref, computed, watch } from 'vue';
+
 import { ref, computed, watch, defineEmits, defineProps } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import IconButton from "@/components/ui/IconButton.vue";
 import { jobSourceManager } from "@/services/JobSourceManager";
 
-const props = defineProps({
+const _props = defineProps({
   sources: {
     type: Array,
     required: true,
@@ -324,7 +326,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:selected"]);
+const _emit = defineEmits(["update:selected"]);
 
 // Local state
 const localSelectedSources = ref([...props.selectedSources]);
@@ -422,7 +424,7 @@ const testConnection = async (sourceId) => {
       message: result.message,
       jobCount: result.jobCount,
     };
-  } catch (error) {
+  } catch (_error) {
     testResults.value[sourceId] = {
       success: false,
       message: `Connection failed: ${error?.message || "Unknown error"}`,

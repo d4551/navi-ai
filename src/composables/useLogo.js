@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computedwatch } from "vue";
 
 // Provide computed logo path + simple load/error tracking
 // Expects a Pinia store with settings.theme
@@ -25,7 +25,7 @@ export function useLogo(store) {
   };
 
   const logoSrc = computed(() => {
-    const theme = store?.settings?.theme || "auto";
+    const _theme = store?.settings?.theme || "auto";
     const prefersDark =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -33,7 +33,7 @@ export function useLogo(store) {
     return resolveAssetPath(isDarkMode ? "logoDark.svg" : "logoLight.svg");
   });
 
-  const onLogoLoad = (e) => {
+  const onLogoLoad = (_e) => {
     logoLoadState.value = {
       loaded: true,
       error: false,
@@ -41,7 +41,7 @@ export function useLogo(store) {
     };
   };
 
-  const onLogoError = (e) => {
+  const onLogoError = (_e) => {
     if (!logoLoadState.value.error) {
       logoLoadState.value = { ...logoLoadState.value, error: true };
       if (e?.target) {
