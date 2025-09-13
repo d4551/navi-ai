@@ -16,6 +16,8 @@ class EventEmitter {
   }
 
   addListener(event, listener) {
+    if (typeof listener !== 'function') {
+      throw new TypeError('listener must be a function');
     }
 
     if (!this._events.has(event)) {
@@ -25,8 +27,8 @@ class EventEmitter {
     const listeners = this._events.get(event);
 
     // Check max listeners warning
-      console.warn(
-      );
+    if (listeners.length >= this.getMaxListeners()) {
+      console.warn(`Possible EventEmitter memory leak detected. ${listeners.length + 1} ${event} listeners added.`);
     }
 
     listeners.push(listener);
@@ -251,6 +253,5 @@ export class AbortError extends Error {
 
 // Browser-specific enhancements
 if (typeof window !== "undefined") {
-  console.info(
-  );
+  console.info("Enhanced EventEmitter available in browser environment with full Node.js compatibility");
 }

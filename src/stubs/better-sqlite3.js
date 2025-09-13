@@ -1,6 +1,5 @@
 
-console.warn(
-);
+console.warn('Using better-sqlite3 browser stub - SQLite operations will be mocked');
 
 // Environment detection and helpful guidance
 const isBrowser = typeof window !== "undefined";
@@ -25,8 +24,7 @@ class MockDatabase {
 
     // Provide helpful guidance for developers
     if (typeof window !== "undefined") {
-      console.info(
-      );
+      console.info("Consider using IndexedDB or localStorage for browser data persistence");
     }
   }
 
@@ -45,8 +43,11 @@ class MockDatabase {
       run: (params) => {
         console.debug("MockDatabase.run() called with params:", params);
         return {
+          changes: 0,
+          lastInsertRowid: 0
         };
       },
+      iterate: (params) => {
         console.debug("MockDatabase.iterate() called with params:", params);
         return [];
       },
