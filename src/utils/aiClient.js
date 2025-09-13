@@ -8,6 +8,8 @@ import {
 } from "@/shared/services/CanonicalAIClient";
 
 import { aiService } from "@/shared/services/AIService";
+import { logger } from "@/shared/utils/logger";
+import { productionSecurity, validateApiKey } from "@/utils/productionSecurity";
 import GeminiService from "@/utils/gemini";
 
 // Lazy fallback instance for non-canonical environments
@@ -43,7 +45,7 @@ let __geminiFallback = null;
 
     if (typeof client?.initialized !== "undefined") return !!client.initialized;
   } catch (error) {
-    console.warn("Error checking AI client ready state:", error);
+    logger.warn("Error checking AI client ready state", error);
   }
   return false;
 }
@@ -63,7 +65,7 @@ let __geminiFallback = null;
     );
     const apiKey =
       appSettings.geminiApiKey ||
-      localStorage.getItem("gemini_api_key") ||
+      productionSecurity.secureRetrieve("gemini_api_key", { validateOnRetrieve: true }) ||
       import.meta.env.VITE_GEMINI_API_KEY ||
       null;
 
@@ -71,6 +73,12 @@ let __geminiFallback = null;
       throw new Error(
         "AI service not initialized. Please configure your API key first.",
       );
+    }
+
+    // Validate API key format in production
+    const validation = validateApiKey(apiKey);
+    if (!validation.valid) {
+      throw new Error(`Invalid API key: ${validation.reason}`);
     }
 
     const result = await aiService.initialize({
@@ -83,7 +91,7 @@ let __geminiFallback = null;
     }
     return true;
   } catch (initError) {
-    console.warn("Failed to auto-initialize AI service:", initError);
+    logger.warn("Failed to auto-initialize AI service", initError);
 
     // Minimal web fallback for non-canonical environments
     try {
@@ -121,7 +129,7 @@ let __geminiFallback = null;
 
     return response.content;
   } catch (error) {
-    console.error("generateContent failed:", error);
+    logger.error("generateContent failed", error);
 
     // Fallback to direct client if canonical service fails
     const client = getBestAIClient() || __geminiFallback;
@@ -134,10 +142,15 @@ let __geminiFallback = null;
         );
         const apiKey =
           appSettings.geminiApiKey ||
+          productionSecurity.secureRetrieve("gemini_api_key", { validateOnRetrieve: true }) ||
           import.meta.env.VITE_GEMINI_API_KEY ||
           null;
 
         if (apiKey) {
+          const validation = validateApiKey(apiKey);
+          if (!validation.valid) {
+            throw new Error(`Invalid API key: ${validation.reason}`);
+          }
           await client.initialize(apiKey);
         } else {
           throw new Error(
@@ -145,7 +158,7 @@ let __geminiFallback = null;
           );
         }
       } catch (initError) {
-        console.warn("Failed to auto-initialize AI client:", initError);
+        logger.warn("Failed to auto-initialize AI client", initError);
         throw new Error(
           "AI service not initialized. Please configure your API key first.",
         );
@@ -163,7 +176,7 @@ let __geminiFallback = null;
       }
       throw new Error("No compatible AI generation method available");
     } catch (fallbackError) {
-      console.error("Fallback client also failed:", fallbackError);
+      logger.error("Fallback client also failed", fallbackError);
       throw new Error(
         "AI service not initialized. Please configure your API key first.",
       );
@@ -190,7 +203,7 @@ let __geminiFallback = null;
 
     return response.content;
   } catch (error) {
-    console.error("generateSmartContent failed with canonical service:", error);
+    logger.error("generateSmartContent failed with canonical service", error);
 
     // Fallback to direct client
     const client = getBestAIClient();
@@ -202,7 +215,7 @@ let __geminiFallback = null;
         options,
       );
     } catch (fallbackError) {
-      console.error("Fallback client also failed:", fallbackError);
+      logger.error("Fallback client also failed", fallbackError);
       throw new Error(
         "AI service not initialized. Please configure your API key first.",
       );
@@ -224,7 +237,7 @@ let __geminiFallback = null;
       options,
     );
   } catch (error) {
-    console.error("getContextualSuggestions failed:", error);
+    logger.error("getContextualSuggestions failed", error);
     if (error.message.includes("not initialized")) {
       throw new Error(
         "AI service not initialized. Please configure your API key first.",
@@ -313,7 +326,7 @@ let __geminiFallback = null;
       },
     };
   } catch (error) {
-    console.error("streamText failed:", error);
+    logger.error("streamText failed", error);
     if (error?.message?.includes("not initialized")) {
       throw new Error(
         "AI service not initialized. Please configure your API key first.",
@@ -361,7 +374,7 @@ let __aiInitPromise = null;
       return result;
     } catch (error) {
       __aiInitPromise = null;
-      console.error("Modern AI client initialization failed:", error);
+      logger.error("Modern AI client initialization failed", error);
       throw new Error(
         "AI service not initialized. Please configure your API key first.",
       );
@@ -384,7 +397,7 @@ let __aiInitPromise = null;
       return result;
     } catch (error) {
       __aiInitPromise = null;
-      console.error("Canonical AI client initialization failed:", error);
+      logger.error("Canonical AI client initialization failed", error);
       throw new Error(
         "AI service not initialized. Please configure your API key first.",
       );
@@ -400,7 +413,7 @@ let __aiInitPromise = null;
     return res;
   } catch (error) {
     __aiInitPromise = null;
-    console.error("AI client fallback initialization failed:", error);
+    logger.error("AI client fallback initialization failed", error);
     throw new Error(
       "AI service not initialized. Please configure your API key first.",
     );

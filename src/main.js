@@ -5,6 +5,8 @@ import App from "./App.vue";
 // Add ripple utility import (auto-inits)
 import "./utils/ripple.js";
 
+// Import production configuration
+import { productionConfig, shouldEnableDebugFeatures, isDevelopment } from "./utils/productionConfig";
 
 import "./utils/ai-systems-check.js";
 
@@ -63,6 +65,7 @@ try {
 import { performanceMonitor, memoryMonitor } from "./utils/performance";
 import { resumeAllAudioContexts } from "@/shared/services/utils";
 import { logger } from "./shared/utils/logger";
+import { errorHandler } from "./utils/errorHandler";
 import { TIMEOUTS } from "./utils/config";
 import NProgress from "nprogress";
 // Material MUI CSS replaced by master-theme.css
@@ -89,12 +92,16 @@ app.use(i18n);
 // Initialize runtime MDI aliasing to handle legacy classes
 try {
   initMdiAliasRuntime();
-} catch {}
+} catch (error) {
+  logger.warn("Failed to initialize MDI alias runtime (non-critical)", error);
+}
 
 // Register global directives
 try {
   app.directive("glass-scroll", glassScrollNav);
-} catch {}
+} catch (error) {
+  logger.warn("Failed to register glass-scroll directive (non-critical)", error);
+}
 
 // AI Integration Plugin
 import { createAIIntegrationPlugin } from "./composables/aiIntegration.js";
@@ -108,8 +115,8 @@ setActivePinia(pinia);
 const store = useAppStore();
 try {
   store.loadFromStorage();
-} catch (e) {
-  logger.warn("Failed to load saved state:", e);
+} catch (error) {
+  logger.error("Failed to load saved state", error);
 }
 
 // Browser compatibility check
@@ -140,7 +147,7 @@ try {
   }
 
   // Log full compatibility info in development
-  if (import.meta.env.DEV) {
+  if (shouldEnableDebugFeatures()) {
     logBrowserCompatibility();
   }
 } catch (e) {
@@ -163,7 +170,9 @@ try {
   if (lang) {
     setLanguage(lang);
   }
-} catch {}
+} catch (error) {
+  logger.warn("Failed to set language from settings (non-critical)", error);
+}
 
 // Initialize AI service if API key is available
 try {
@@ -275,7 +284,9 @@ try {
   ) {
     root.classList.add("density-comfortable");
   }
-} catch {}
+} catch (error) {
+  logger.warn("Failed to set density class (non-critical)", error);
+}
 
 // Theme change handling is now managed by the unified theme system
 // The unified system automatically handles theme persistence and system preference changes
@@ -328,7 +339,9 @@ try {
 // Initialize any externally injected status panels (safe, noop if none)
 try {
   setTimeout(() => initStatusPanels(document), TIMEOUTS.QUICK);
-} catch {}
+} catch (error) {
+  logger.warn("Failed to initialize status panels (non-critical)", error);
+}
 
 // React to settings changes
 store.$subscribe((_mutation, state) => {
@@ -344,14 +357,17 @@ store.$subscribe((_mutation, state) => {
         lang: state.settings?.voiceLang,
       }),
     );
-  } catch {}
-
+  } catch (error) {
+    logger.debug("Failed to sync voice routing preferences (non-critical)", error);
+  }
 
   try {
     if (state.settings?.language) {
       setLanguage(state.settings.language);
     }
-  } catch {}
+  } catch (error) {
+    logger.debug("Failed to set language from updated settings (non-critical)", error);
+  }
 
   // Re-initialize AI service when API key or model changes (dedup identical calls)
   try {
@@ -391,22 +407,24 @@ store.$subscribe((_mutation, state) => {
 });
 
 // Global error handler
-app.config.errorHandler = (error, _instance, info) => {
-  logger.error("Global error:", error);
-  logger.error("Component info:", info);
-
-  // Record error for performance monitoring
-  performanceMonitor.recordMetric("error", 1, {
-    message: error.message,
-    stack: error.stack,
-    componentInfo: info,
-    route: router.currentRoute.value.name,
+app.config.errorHandler = (error, instance, info) => {
+  // Use production error handler
+  errorHandler.handleCriticalError(error, {
+    component: instance?.$options.name || instance?.$?.type?.name || 'Unknown',
+    action: 'vue-error',
+    metadata: {
+      componentInfo: info,
+      route: router.currentRoute.value.name,
+    },
   });
 
-  // Log to external service if available
-  if (window.errorTracker) {
-    window.errorTracker.captureException(error, {
-      extra: { info, route: router.currentRoute.value.name },
+  // Record error for performance monitoring
+  if (performanceMonitor.recordMetric) {
+    performanceMonitor.recordMetric("error", 1, {
+      message: error.message,
+      stack: error.stack,
+      componentInfo: info,
+      route: router.currentRoute.value.name,
     });
   }
 };
@@ -421,7 +439,9 @@ try {
   const resume = async () => {
     try {
       await resumeAllAudioContexts();
-    } catch {}
+    } catch (error) {
+      logger.debug("Failed to resume audio context (non-critical)", error);
+    }
     window.removeEventListener("pointerdown", resume);
     window.removeEventListener("keydown", resume);
     window.removeEventListener("touchstart", resume);
@@ -429,20 +449,24 @@ try {
   window.addEventListener("pointerdown", resume, { once: true });
   window.addEventListener("keydown", resume, { once: true });
   window.addEventListener("touchstart", resume, { once: true });
-} catch {}
+} catch (error) {
+  logger.warn("Failed to set up audio context resume handlers (non-critical)", error);
+}
 
 
 setTimeout(() => {
-  try {
-    if (samMaxEasterEggs && !samMaxEasterEggs.initialized) {
-      samMaxEasterEggs.initialize();
-      logger.debug("Sam & Max easter eggs initialized successfully");
+  if (productionConfig.shouldEnableEasterEggs()) {
+    try {
+      if (samMaxEasterEggs && !samMaxEasterEggs.initialized) {
+        samMaxEasterEggs.initialize();
+        logger.debug("Sam & Max easter eggs initialized successfully");
+      }
+    } catch (e) {
+      logger.debug(
+        "Sam & Max easter eggs initialization failed (non-critical)",
+        e,
+      );
     }
-  } catch (e) {
-    logger.debug(
-      "Sam & Max easter eggs initialization failed (non-critical):",
-      e,
-    );
   }
 }, 1500);
 
@@ -451,14 +475,14 @@ performanceMonitor.markEnd("app-initialization");
 
 // Log initial performance metrics after a delay
 setTimeout(() => {
-  if (import.meta.env.DEV) {
+  if (shouldEnableDebugFeatures()) {
     const pm = performanceMonitor.getSummary?.() || null;
     if (pm) {
-      logger.debug("Perf summary:", pm);
+      logger.debug("Performance summary", pm);
     }
     const status = memoryMonitor.getStatus();
     if (status) {
-      logger.debug("Memory status:", status);
+      logger.debug("Memory status", status);
     }
   }
 }, TIMEOUTS.XLONG);
