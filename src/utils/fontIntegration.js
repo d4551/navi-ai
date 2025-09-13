@@ -1,3 +1,6 @@
+import { logger } from "@/shared/utils/logger";
+import { productionConfig } from "./productionConfig";
+
 // Font Integration Utility - Ensures Electrolize font loads properly across all components
 // Provides fallback mechanisms and font loading verification
 
@@ -33,7 +36,7 @@ export const isFontLoaded = (fontFamily) => {
   try {
     return window.document.fonts.check(`16px "${fontFamily}"`);
   } catch (e) {
-    console.warn(`Font check failed for ${fontFamily}:`, e);
+    logger.warn(`Font check failed for ${fontFamily}`, e);
     return false;
   }
 };
@@ -69,31 +72,51 @@ export const loadFont = async (fontFamily, fontUrl) => {
       link.rel = "stylesheet";
       link.crossOrigin = "anonymous"; // Add crossorigin for CORS compliance
       // Font loaded successfully (could emit event if needed)
-      link.onerror = () => console.warn(`Failed to load font ${fontFamily}`);
+      link.onerror = () => logger.warn(`Failed to load font ${fontFamily}`);
       document.head.appendChild(link);
 
-      // Wait for font to be available
+      // Wait for font to be available using Font Loading API or fallback to polling
       return new Promise((resolve) => {
-        const checkFont = setInterval(() => {
-          if (isFontLoaded(fontFamily)) {
-            clearInterval(checkFont);
-            resolve(true);
-          }
-        }, 100);
-
-
-        setTimeout(() => {
-          clearInterval(checkFont);
-          resolve(false);
-        }, 5000);
+        // Try using modern Font Loading API first
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => {
+            if (isFontLoaded(fontFamily)) {
+              resolve(true);
+            } else {
+              // Fallback to polling with production-optimized intervals
+              pollForFont(fontFamily, resolve);
+            }
+          });
+        } else {
+          // Fallback to polling for older browsers
+          pollForFont(fontFamily, resolve);
+        }
       });
     }
 
     return false;
   } catch (error) {
-    console.warn(`Error loading font ${fontFamily}:`, error);
+    logger.warn(`Error loading font ${fontFamily}`, error);
     return false;
   }
+};
+
+// Helper method for efficient font polling
+const pollForFont = (fontFamily, resolve) => {
+  let attempts = 0;
+  const maxAttempts = productionConfig.isProduction() ? 25 : 50; // 2.5s or 5s max
+  const interval = productionConfig.isProduction() ? 200 : 100; // Less frequent in production
+
+  const checkFont = () => {
+    if (isFontLoaded(fontFamily) || attempts >= maxAttempts) {
+      resolve(isFontLoaded(fontFamily));
+      return;
+    }
+    attempts++;
+    setTimeout(checkFont, interval);
+  };
+
+  checkFont();
 };
 
 // Initialize all gaming fonts
@@ -117,28 +140,19 @@ export const initializeGamingFonts = async () => {
   fontsToLoad.forEach((fontName) => {
     if (!isFontLoaded(fontName)) {
       const promise = new Promise((resolve) => {
-        let attempts = 0;
-        const maxAttempts = 20;
-
-        const checkFont = setInterval(() => {
-          attempts++;
-          if (isFontLoaded(fontName)) {
-            clearInterval(checkFont);
-            // Font loaded successfully
-            resolve(true);
-          } else if (attempts >= maxAttempts) {
-            clearInterval(checkFont);
-            console.warn(
-              `${fontName} font failed to load within timeout, using fallback`,
-            );
-            resolve(false);
+        // Use the efficient polling helper instead of setInterval
+        pollForFont(fontName, (loaded) => {
+          if (!loaded) {
+            logger.warn(`${fontName} font failed to load within timeout, using fallback`);
           }
-        }, 100);
+          resolve(loaded);
+        });
 
         // Also try to preload the font if not available
         if (document.fonts && document.fonts.load) {
           document.fonts.load(`16px "${fontName}"`).catch(() => {
-            // Font failed to preload, but we'll continue with the interval check
+            // Font failed to preload, but we'll continue with the polling check
+            logger.debug(`Font preload failed for ${fontName}, continuing with fallback`);
           });
         }
       });
@@ -339,24 +353,40 @@ if (typeof window !== "undefined") {
           initializeElectrolizeFont();
         })
         .catch(() => {
-          // Fallback if fonts.ready fails
-          setTimeout(() => {
+          // Fallback if fonts.ready fails - use requestAnimationFrame for better timing
+          const initializeFonts = () => {
             generateFontClasses();
             initializeElectrolizeFont();
+          };
+          
+          if (typeof requestAnimationFrame !== 'undefined') {
+            requestAnimationFrame(initializeFonts);
+          } else {
+            setTimeout(initializeFonts, 0);
+          }
         });
     } else {
       // Fallback for browsers without document.fonts.ready
       // Listen for DOM ready to ensure proper initialization
+      const initializeFonts = () => {
+        generateFontClasses();
+        initializeElectrolizeFont();
+      };
+
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", () => {
-          setTimeout(() => {
-            generateFontClasses();
-            initializeElectrolizeFont();
+          if (typeof requestAnimationFrame !== 'undefined') {
+            requestAnimationFrame(initializeFonts);
+          } else {
+            setTimeout(initializeFonts, 0);
+          }
         });
       } else {
-        setTimeout(() => {
-          generateFontClasses();
-          initializeElectrolizeFont();
+        if (typeof requestAnimationFrame !== 'undefined') {
+          requestAnimationFrame(initializeFonts);
+        } else {
+          setTimeout(initializeFonts, 0);
+        }
       }
     }
   }
