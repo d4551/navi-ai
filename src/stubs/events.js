@@ -38,6 +38,8 @@ class EventEmitter {
   }
 
   once(event, listener) {
+    if (typeof listener !== 'function') {
+      throw new TypeError('listener must be a function');
     }
 
     const wrapper = (...args) => {
@@ -61,17 +63,20 @@ class EventEmitter {
     }
 
     // Find the listener or its wrapper
+    for (let i = listeners.length - 1; i >= 0; i--) {
       const currentListener = listeners[i];
       if (
         currentListener === listener ||
         currentListener.listener === listener
       ) {
+        listeners.splice(i, 1);
         this.emit("removeListener", event, listener);
         break;
       }
     }
 
     // Clean up empty event arrays
+    if (listeners.length === 0) {
       this._events.delete(event);
     }
 
@@ -102,8 +107,10 @@ class EventEmitter {
 
   emit(event, ...args) {
     const listeners = this._events.get(event);
+    if (!listeners || listeners.length === 0) {
       // Special handling for 'error' events
       if (event === "error") {
+        const error = args[0];
         if (error instanceof Error) {
           throw error;
         } else {
@@ -123,6 +130,7 @@ class EventEmitter {
           // Defer error to next tick to prevent sync errors
           setTimeout(() => {
             throw error;
+          }, 0);
         }
       }
     }
@@ -133,6 +141,7 @@ class EventEmitter {
   // EventEmitter utility methods
   listenerCount(event) {
     const listeners = this._events.get(event);
+    return listeners ? listeners.length : 0;
   }
 
   listeners(event) {
@@ -149,6 +158,7 @@ class EventEmitter {
   }
 
   setMaxListeners(n) {
+    if (typeof n !== 'number' || n < 0 || !Number.isInteger(n)) {
       throw new RangeError(
         'The value of "n" is out of range. It must be a non-negative number.',
       );
@@ -158,7 +168,7 @@ class EventEmitter {
   }
 
   getMaxListeners() {
-    return this._maxListeners;
+    return this._maxListeners ?? EventEmitter.defaultMaxListeners;
   }
 
   // Static methods
@@ -207,6 +217,7 @@ class EventEmitter {
         return this;
       },
       async next() {
+        if (events.length > 0) {
           return { value: events.shift(), done: false };
         }
         if (finished) {
@@ -225,7 +236,11 @@ class EventEmitter {
   }
 
   // Default max listeners
+  static defaultMaxListeners = 10;
 }
+
+// Default max listeners
+EventEmitter.defaultMaxListeners = 10;
 
 // Export for ES modules
 export { EventEmitter };
@@ -243,9 +258,11 @@ export class AbortError extends Error {
   }
 }
 
+export function getEventListeners(emitter, name) {
   return emitter.listeners(name);
 }
 
+export function setMaxListeners(n, ...eventTargets) {
   for (const target of eventTargets) {
     target.setMaxListeners(n);
   }
