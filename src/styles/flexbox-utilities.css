@@ -1,0 +1,566 @@
+/* =========================================
+   FLEXBOX UTILITIES FOR HEADERS & LAYOUTS
+   ========================================= */
+
+/* === Base Flexbox Classes === */
+.d-flex {
+  display: flex !important;
+}
+
+.d-inline-flex {
+  display: inline-flex !important;
+}
+
+/* === Flex Direction === */
+.flex-row {
+  flex-direction: row !important;
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.flex-column-reverse {
+  flex-direction: column-reverse !important;
+}
+
+/* === Flex Wrap === */
+.flex-nowrap {
+  flex-wrap: nowrap !important;
+}
+
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.flex-wrap-reverse {
+  flex-wrap: wrap-reverse !important;
+}
+
+/* === Justify Content === */
+.justify-content-start {
+  justify-content: flex-start !important;
+}
+
+.justify-content-end {
+  justify-content: flex-end !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.justify-content-around {
+  justify-content: space-around !important;
+}
+
+.justify-content-evenly {
+  justify-content: space-evenly !important;
+}
+
+/* === Align Items === */
+.align-items-start {
+  align-items: flex-start !important;
+}
+
+.align-items-end {
+  align-items: flex-end !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.align-items-baseline {
+  align-items: baseline !important;
+}
+
+.align-items-stretch {
+  align-items: stretch !important;
+}
+
+/* === Align Self === */
+.align-self-start {
+  align-self: flex-start !important;
+}
+
+.align-self-end {
+  align-self: flex-end !important;
+}
+
+.align-self-center {
+  align-self: center !important;
+}
+
+.align-self-baseline {
+  align-self: baseline !important;
+}
+
+.align-self-stretch {
+  align-self: stretch !important;
+}
+
+/* === Align Content === */
+.align-content-start {
+  align-content: flex-start !important;
+}
+
+.align-content-end {
+  align-content: flex-end !important;
+}
+
+.align-content-center {
+  align-content: center !important;
+}
+
+.align-content-between {
+  align-content: space-between !important;
+}
+
+.align-content-around {
+  align-content: space-around !important;
+}
+
+.align-content-stretch {
+  align-content: stretch !important;
+}
+
+/* === Flex Grow & Shrink === */
+.flex-fill {
+  flex: 1 1 auto !important;
+}
+
+.flex-grow-0 {
+  flex-grow: 0 !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+.flex-shrink-1 {
+  flex-shrink: 1 !important;
+}
+
+/* === Gap Utilities === */
+.gap-0 {
+  gap: 0 !important;
+}
+
+.gap-1 {
+  gap: var(--spacing-1) !important;
+}
+
+.gap-2 {
+  gap: var(--spacing-2) !important;
+}
+
+.gap-3 {
+  gap: var(--spacing-3) !important;
+}
+
+.gap-4 {
+  gap: var(--spacing-4) !important;
+}
+
+.gap-5 {
+  gap: var(--spacing-5) !important;
+}
+
+.gap-xs {
+  gap: var(--spacing-1) !important;
+}
+
+.gap-sm {
+  gap: var(--spacing-2) !important;
+}
+
+.gap-md {
+  gap: var(--spacing-3) !important;
+}
+
+.gap-lg {
+  gap: var(--spacing-4) !important;
+}
+
+.gap-xl {
+  gap: var(--spacing-5) !important;
+}
+
+/* === Row Gap === */
+.row-gap-0 {
+  row-gap: 0 !important;
+}
+
+.row-gap-1 {
+  row-gap: var(--spacing-1) !important;
+}
+
+.row-gap-2 {
+  row-gap: var(--spacing-2) !important;
+}
+
+.row-gap-3 {
+  row-gap: var(--spacing-3) !important;
+}
+
+.row-gap-4 {
+  row-gap: var(--spacing-4) !important;
+}
+
+.row-gap-5 {
+  row-gap: var(--spacing-5) !important;
+}
+
+/* === Column Gap === */
+.column-gap-0 {
+  column-gap: 0 !important;
+}
+
+.column-gap-1 {
+  column-gap: var(--spacing-1) !important;
+}
+
+.column-gap-2 {
+  column-gap: var(--spacing-2) !important;
+}
+
+.column-gap-3 {
+  column-gap: var(--spacing-3) !important;
+}
+
+.column-gap-4 {
+  column-gap: var(--spacing-4) !important;
+}
+
+.column-gap-5 {
+  column-gap: var(--spacing-5) !important;
+}
+
+/* === HEADER-SPECIFIC FLEXBOX PATTERNS === */
+
+/* Standard header layout */
+.header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+/* Header title section */
+.header-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  flex: 1;
+  min-width: 0;
+}
+
+/* Header actions section */
+.header-actions-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-shrink: 0;
+}
+
+/* Inline header elements */
+.header-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+/* Header with icon */
+.header-with-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.header-with-icon .header-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Status indicators */
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+}
+
+/* Button groups in headers */
+.header-button-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.header-button-group.grouped {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  gap: 0;
+}
+
+.header-button-group.grouped > * {
+  border-radius: 0;
+  border-right: 1px solid var(--glass-border);
+}
+
+.header-button-group.grouped > *:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.header-button-group.grouped > *:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  border-right: none;
+}
+
+/* === RESPONSIVE FLEXBOX === */
+
+/* Mobile-first responsive flexbox */
+@media (max-width: 768px) {
+  .header-flex {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-2);
+  }
+
+  .header-actions-section {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Mobile flex utilities */
+  .flex-md-row {
+    flex-direction: row !important;
+  }
+
+  .flex-md-column {
+    flex-direction: column !important;
+  }
+
+  .justify-content-md-start {
+    justify-content: flex-start !important;
+  }
+
+  .justify-content-md-end {
+    justify-content: flex-end !important;
+  }
+
+  .justify-content-md-center {
+    justify-content: center !important;
+  }
+
+  .justify-content-md-between {
+    justify-content: space-between !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-flex {
+    gap: var(--spacing-1-5);
+  }
+
+  .header-actions-section {
+    gap: var(--spacing-1-5);
+  }
+
+  .header-button-group {
+    gap: var(--spacing-1);
+  }
+
+  /* Small screen flex utilities */
+  .flex-sm-row {
+    flex-direction: row !important;
+  }
+
+  .flex-sm-column {
+    flex-direction: column !important;
+  }
+
+  .justify-content-sm-start {
+    justify-content: flex-start !important;
+  }
+
+  .justify-content-sm-end {
+    justify-content: flex-end !important;
+  }
+
+  .justify-content-sm-center {
+    justify-content: center !important;
+  }
+}
+
+/* === LEGACY BOOTSTRAP COMPATIBILITY === */
+
+/* Map common Bootstrap classes to our system */
+.d-flex.align-items-center {
+  align-items: center;
+}
+
+.d-flex.justify-content-end {
+  justify-content: flex-end;
+}
+
+.d-flex.justify-content-center {
+  justify-content: center;
+}
+
+.d-flex.justify-content-between {
+  justify-content: space-between;
+}
+
+/* Common Bootstrap spacing patterns */
+.me-auto {
+  margin-right: auto !important;
+}
+
+.ms-auto {
+  margin-left: auto !important;
+}
+
+.mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* === SPECIALIZED HEADER LAYOUTS === */
+
+/* Page header layout */
+.page-header-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.page-header-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+.page-header-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.page-header-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  flex-shrink: 0;
+}
+
+/* Section header layout */
+.section-header-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) 0;
+  border-bottom: 1px solid var(--border-base);
+}
+
+.section-header-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.section-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-shrink: 0;
+}
+
+/* Card header layout */
+.card-header-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--border-base);
+}
+
+.card-header-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  flex-shrink: 0;
+}
+
+/* === ACCESSIBILITY === */
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable any flex-based animations if added */
+  .header-flex,
+  .header-actions-section,
+  .header-button-group {
+    transition: none !important;
+  }
+}
+
+/* High contrast */
+@media (prefers-contrast: high) {
+  .header-status {
+    border: 2px solid currentColor;
+  }
+
+  .header-button-group.grouped {
+    border-width: 2px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .header-actions-section,
+  .page-header-actions,
+  .section-header-actions,
+  .card-header-actions {
+    display: none !important;
+  }
+
+  .header-flex,
+  .page-header-main {
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+}

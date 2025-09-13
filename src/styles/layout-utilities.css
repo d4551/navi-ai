@@ -1,0 +1,936 @@
+/*
+ * NAVI Layout Utilities - Enhanced Layout System
+ * Unified layout primitives using design system variables
+ * Updated to work seamlessly with the unified theme system
+ */
+
+/* Enhanced layout primitives with responsive scaling */
+.layout-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--spacing-sm), 3vw, var(--spacing-lg));
+  align-items: stretch;
+}
+
+.layout-stack--xs {
+  gap: var(--spacing-1);
+}
+.layout-stack--sm {
+  gap: clamp(var(--spacing-xs), 2vw, var(--spacing-sm));
+}
+.layout-stack--lg {
+  gap: clamp(var(--spacing-md), 4vw, var(--spacing-xl));
+}
+.layout-stack--xl {
+  gap: clamp(var(--spacing-lg), 5vw, var(--spacing-2xl));
+}
+.layout-stack--2xl {
+  gap: clamp(var(--spacing-xl), 6vw, var(--spacing-3xl));
+}
+
+/* Enhanced inline layout with responsive behavior */
+.layout-inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md));
+  flex-wrap: wrap;
+}
+
+.layout-inline--xs {
+  gap: var(--spacing-1);
+}
+.layout-inline--sm {
+  gap: clamp(var(--spacing-xs), 1.5vw, var(--spacing-sm));
+}
+.layout-inline--md {
+  gap: clamp(var(--spacing-sm), 2.5vw, var(--spacing-md));
+}
+.layout-inline--lg {
+  gap: clamp(var(--spacing-md), 3.5vw, var(--spacing-lg));
+}
+
+/* Enhanced stack alignment variants */
+.layout-stack--center {
+  align-items: center;
+}
+.layout-stack--start {
+  align-items: flex-start;
+}
+.layout-stack--end {
+  align-items: flex-end;
+}
+
+.layout-inline--wrap {
+  flex-wrap: wrap;
+}
+.layout-inline--nowrap {
+  flex-wrap: nowrap;
+}
+
+/* Justify content variants */
+.layout-inline--start {
+  justify-content: flex-start;
+}
+.layout-inline--center {
+  justify-content: center;
+}
+.layout-inline--end {
+  justify-content: flex-end;
+}
+.layout-inline--between {
+  justify-content: space-between;
+}
+.layout-inline--around {
+  justify-content: space-around;
+}
+
+/* Enhanced grid system with improved responsive scaling */
+.layout-grid {
+  display: grid;
+  gap: clamp(var(--spacing-sm), 2.5vw, var(--spacing-lg));
+}
+
+.layout-grid--xs {
+  gap: var(--spacing-xs);
+}
+.layout-grid--sm {
+  gap: clamp(var(--spacing-xs), 1.5vw, var(--spacing-sm));
+}
+.layout-grid--lg {
+  gap: clamp(var(--spacing-md), 3vw, var(--spacing-xl));
+}
+.layout-grid--xl {
+  gap: clamp(var(--spacing-lg), 4vw, var(--spacing-2xl));
+}
+
+/* Responsive column layouts */
+.layout-grid--1col {
+  grid-template-columns: 1fr;
+}
+.layout-grid--2col {
+  grid-template-columns: repeat(2, 1fr);
+}
+.layout-grid--3col {
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+}
+.layout-grid--4col {
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+}
+.layout-grid--6col {
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+}
+
+/* Enhanced responsive grid variants */
+.layout-grid--auto {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(clamp(200px, 20vw, 280px), 1fr)
+  );
+}
+.layout-grid--auto-sm {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(clamp(160px, 18vw, 220px), 1fr)
+  );
+}
+.layout-grid--auto-lg {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(clamp(280px, 25vw, 350px), 1fr)
+  );
+}
+
+/* Grid item utilities */
+.grid-span-2 {
+  grid-column: span 2;
+}
+.grid-span-3 {
+  grid-column: span 3;
+}
+.grid-span-4 {
+  grid-column: span 4;
+}
+.grid-span-full {
+  grid-column: 1 / -1;
+}
+
+/* === ENHANCED CONTAINER UTILITIES === */
+
+/* Fluid responsive containers with improved scaling */
+.container-fluid {
+  width: 100%;
+  padding-left: clamp(var(--spacing-sm), 3vw, var(--spacing-lg));
+  padding-right: clamp(var(--spacing-sm), 3vw, var(--spacing-lg));
+}
+
+/* Standard page container - improved responsive scaling */
+.container-standard {
+  max-width: var(--page-content-max-width);
+  margin: 0 auto;
+  padding-left: clamp(var(--spacing-md), 4vw, var(--spacing-xl));
+  padding-right: clamp(var(--spacing-md), 4vw, var(--spacing-xl));
+  width: 100%;
+}
+
+/* Extended container for wider layouts */
+.container-extended {
+  max-width: var(--page-container-max-width);
+  margin: 0 auto;
+  padding-left: clamp(var(--spacing-md), 4vw, var(--spacing-xl));
+  padding-right: clamp(var(--spacing-md), 4vw, var(--spacing-xl));
+  width: 100%;
+}
+
+/* Responsive page container with improved mobile scaling */
+.container-page {
+  max-width: var(--page-content-max-width);
+  margin: 0 auto;
+  padding: clamp(var(--spacing-md), 3vh, var(--spacing-xl))
+    clamp(var(--spacing-md), 4vw, var(--spacing-xl));
+  width: 100%;
+}
+
+/* Enhanced section container with better vertical spacing */
+.container-section {
+  padding: clamp(var(--spacing-lg), 5vh, var(--spacing-2xl)) 0;
+}
+
+/* Improved unified container with fluid scaling */
+.unified-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding-left: clamp(var(--spacing-sm), 3vw, var(--spacing-lg));
+  padding-right: clamp(var(--spacing-sm), 3vw, var(--spacing-lg));
+}
+
+/* Content width containers */
+.container-narrow {
+  max-width: 65ch;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.container-wide {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.container-full {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+/* Main content rail for pages */
+.main-content {
+  max-width: var(--page-content-max-width);
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Unified container helper used by headers and sections */
+.unified-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+/* Ultra-wide content rails that still respect safe gutters */
+.ultra-wide-content {
+  max-width: min(1600px, 100%);
+  margin: 0 auto;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+/* Container spacing helpers for sections that stack content */
+.section-container {
+  padding-top: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
+}
+.section-container--sm {
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+}
+.section-container--xl {
+  padding-top: var(--spacing-2xl);
+  padding-bottom: var(--spacing-2xl);
+}
+
+/* Padding variants */
+.container--no-padding {
+  padding: 0;
+}
+.container--sm-padding {
+  padding: var(--spacing-sm);
+}
+.container--lg-padding {
+  padding: var(--spacing-lg);
+}
+.container--xl-padding {
+  padding: var(--spacing-xl);
+}
+
+/* === POSITIONING UTILITIES === */
+.position-sticky {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.position-relative {
+  position: relative;
+}
+
+/* Only for overlays */
+.overlay-absolute {
+  position: absolute;
+  z-index: var(--z-overlay);
+}
+
+.overlay-fixed {
+  position: fixed;
+  z-index: var(--z-modal);
+}
+
+/* === FLEXBOX UTILITIES === */
+.flex-1 {
+  flex: 1;
+}
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.justify-around {
+  justify-content: space-around;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+.align-end {
+  align-items: flex-end;
+}
+.align-center {
+  align-items: center;
+}
+.align-stretch {
+  align-items: stretch;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+
+/* === SPACING UTILITIES === */
+.gap-xs {
+  gap: var(--spacing-xs);
+}
+.gap-sm {
+  gap: var(--spacing-sm);
+}
+.gap-md {
+  gap: var(--spacing-md);
+}
+.gap-lg {
+  gap: var(--spacing-lg);
+}
+.gap-xl {
+  gap: var(--spacing-xl);
+}
+
+.p-xs {
+  padding: var(--spacing-xs);
+}
+.p-sm {
+  padding: var(--spacing-sm);
+}
+.p-md {
+  padding: var(--spacing-md);
+}
+.p-lg {
+  padding: var(--spacing-lg);
+}
+.p-xl {
+  padding: var(--spacing-xl);
+}
+
+.px-xs {
+  padding-left: var(--spacing-xs);
+  padding-right: var(--spacing-xs);
+}
+.px-sm {
+  padding-left: var(--spacing-sm);
+  padding-right: var(--spacing-sm);
+}
+.px-md {
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+.px-lg {
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+}
+.px-xl {
+  padding-left: var(--spacing-xl);
+  padding-right: var(--spacing-xl);
+}
+
+.py-xs {
+  padding-top: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
+}
+.py-sm {
+  padding-top: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+}
+.py-md {
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+}
+.py-lg {
+  padding-top: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
+}
+.py-xl {
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
+}
+
+.m-xs {
+  margin: var(--spacing-xs);
+}
+.m-sm {
+  margin: var(--spacing-sm);
+}
+.m-md {
+  margin: var(--spacing-md);
+}
+.m-lg {
+  margin: var(--spacing-lg);
+}
+.m-xl {
+  margin: var(--spacing-xl);
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-auto {
+  margin-right: auto;
+}
+
+/* Width utilities */
+.max-w-text-600 {
+  max-width: 600px;
+}
+
+/* Enhanced glass morphism components with responsive scaling */
+.glass-panel {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: clamp(var(--radius-md), 2vw, var(--radius-xl));
+  backdrop-filter: var(--glass-backdrop-blur);
+  box-shadow: var(--glass-shadow);
+  padding: clamp(var(--spacing-md), 4vw, var(--spacing-xl));
+  transition: all var(--duration-normal) var(--easing-ease-out);
+}
+
+.glass-panel--compact {
+  padding: clamp(var(--spacing-sm), 3vw, var(--spacing-lg));
+  border-radius: clamp(var(--radius-sm), 1.5vw, var(--radius-lg));
+}
+
+.glass-card {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: clamp(var(--radius-sm), 1.5vw, var(--radius-lg));
+  backdrop-filter: var(--glass-backdrop-blur);
+  box-shadow: var(--glass-shadow);
+  padding: clamp(var(--spacing-sm), 3vw, var(--spacing-lg));
+  transition: all var(--duration-normal) var(--easing-ease-out);
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-elevated);
+}
+
+/* Enhanced glass surface with responsive scaling */
+.glass-surface {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-backdrop-blur);
+  border-radius: clamp(var(--radius-lg), 2.5vw, var(--radius-2xl));
+  padding: clamp(var(--spacing-lg), 5vw, var(--spacing-2xl));
+  transition: all var(--duration-normal) var(--easing-ease-out);
+}
+
+/* Enhanced page glass container */
+.page-glass-container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--spacing-lg), 4vh, var(--spacing-2xl));
+  padding: clamp(var(--spacing-md), 4vw, var(--spacing-xl));
+}
+
+/* === ENHANCED RESPONSIVE UTILITIES === */
+
+/* Mobile First Breakpoints - Enhanced for better scaling */
+/* xs: 0-479px (mobile) */
+/* sm: 480-639px (large mobile) */
+/* md: 640-767px (tablet portrait) */
+/* lg: 768-1023px (tablet landscape/small desktop) */
+/* xl: 1024-1279px (desktop) */
+/* 2xl: 1280px+ (large desktop) */
+
+/* Enhanced mobile styles (xs: 0-479px) */
+@media (max-width: 479px) {
+  .layout-grid--2col,
+  .layout-grid--3col,
+  .layout-grid--4col,
+  .layout-grid--6col {
+    grid-template-columns: 1fr;
+  }
+
+  .layout-inline--mobile-stack {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+
+  .container-fluid,
+  .container-page,
+  .container-narrow,
+  .container-wide {
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+  }
+
+  .container-page {
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+  }
+
+  /* Enhanced mobile typography scaling */
+  .layout-stack--xl,
+  .layout-stack--2xl {
+    gap: var(--spacing-md);
+  }
+
+  .layout-inline--lg {
+    gap: var(--spacing-sm);
+  }
+
+  /* Mobile-specific glass surface scaling */
+  .glass-surface,
+  .glass-panel {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+  }
+}
+
+/* Enhanced large mobile (sm: 480-639px) */
+@media (min-width: 480px) and (max-width: 639px) {
+  .layout-grid--3col,
+  .layout-grid--4col,
+  .layout-grid--6col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .layout-grid--sm-1col {
+    grid-template-columns: 1fr;
+  }
+  .layout-grid--sm-2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .glass-surface {
+    padding: clamp(var(--spacing-md), 4vw, var(--spacing-lg));
+  }
+}
+
+/* Enhanced tablet portrait (md: 640-767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+  .layout-grid--4col,
+  .layout-grid--6col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .layout-grid--md-1col {
+    grid-template-columns: 1fr;
+  }
+  .layout-grid--md-2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .layout-grid--md-3col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Enhanced tablet spacing */
+  .container-page {
+    padding: clamp(var(--spacing-lg), 4vh, var(--spacing-xl))
+      clamp(var(--spacing-lg), 5vw, var(--spacing-xl));
+  }
+
+  .glass-surface {
+    padding: clamp(var(--spacing-lg), 5vw, var(--spacing-xl));
+  }
+}
+
+/* Enhanced tablet landscape/small desktop (lg: 768-1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .layout-grid--6col {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .layout-grid--lg-1col {
+    grid-template-columns: 1fr;
+  }
+  .layout-grid--lg-2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .layout-grid--lg-3col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .layout-grid--lg-4col {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Enhanced desktop-like spacing for tablets */
+  .container-section {
+    padding: clamp(var(--spacing-xl), 6vh, var(--spacing-2xl)) 0;
+  }
+
+  .glass-surface {
+    padding: clamp(var(--spacing-lg), 4vw, var(--spacing-2xl));
+  }
+}
+
+/* Enhanced desktop (xl: 1024-1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .layout-grid--xl-6col {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  /* Optimized desktop spacing */
+  .container-page {
+    padding: clamp(var(--spacing-xl), 5vh, var(--spacing-2xl))
+      clamp(var(--spacing-xl), 3vw, var(--spacing-2xl));
+  }
+
+  .glass-surface {
+    padding: clamp(var(--spacing-xl), 3vw, var(--spacing-2xl));
+    border-radius: var(--radius-xl);
+  }
+}
+
+/* Enhanced large desktop (2xl: 1280px+) */
+@media (min-width: 1280px) {
+  .layout-grid--2xl-6col {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .layout-grid--2xl-8col {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  /* Large desktop optimizations */
+  .container-page {
+    padding: clamp(var(--spacing-xl), 4vh, var(--spacing-2xl))
+      clamp(var(--spacing-xl), 2vw, var(--spacing-2xl));
+  }
+
+  .glass-surface {
+    padding: clamp(var(--spacing-xl), 2.5vw, var(--spacing-2xl));
+    border-radius: var(--radius-2xl);
+  }
+}
+
+/* Responsive visibility utilities */
+.hide-mobile {
+  display: block;
+}
+.show-mobile-only {
+  display: none;
+}
+.hide-tablet {
+  display: block;
+}
+.show-tablet-only {
+  display: none;
+}
+.hide-desktop {
+  display: block;
+}
+.show-desktop-only {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none;
+  }
+  .show-mobile-only {
+    display: block;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hide-tablet {
+    display: none;
+  }
+  .show-tablet-only {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hide-desktop {
+    display: none;
+  }
+  .show-desktop-only {
+    display: block;
+  }
+}
+
+/* Responsive text alignment */
+@media (max-width: 767px) {
+  .text-mobile-center {
+    text-align: center;
+  }
+  .text-mobile-left {
+    text-align: left;
+  }
+  .text-mobile-right {
+    text-align: right;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-desktop-center {
+    text-align: center;
+  }
+  .text-desktop-left {
+    text-align: left;
+  }
+  .text-desktop-right {
+    text-align: right;
+  }
+}
+
+/* Enhanced responsive spacing with fluid scaling */
+@media (max-width: 767px) {
+  .p-mobile-sm {
+    padding: clamp(var(--spacing-xs), 2vw, var(--spacing-sm));
+  }
+  .p-mobile-md {
+    padding: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+  }
+  .py-mobile-sm {
+    padding-top: clamp(var(--spacing-xs), 2vh, var(--spacing-sm));
+    padding-bottom: clamp(var(--spacing-xs), 2vh, var(--spacing-sm));
+  }
+  .py-mobile-md {
+    padding-top: clamp(var(--spacing-sm), 3vh, var(--spacing-md));
+    padding-bottom: clamp(var(--spacing-sm), 3vh, var(--spacing-md));
+  }
+  .px-mobile-sm {
+    padding-left: clamp(var(--spacing-xs), 2vw, var(--spacing-sm));
+    padding-right: clamp(var(--spacing-xs), 2vw, var(--spacing-sm));
+  }
+  .px-mobile-md {
+    padding-left: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+    padding-right: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+  }
+
+  .m-mobile-sm {
+    margin: clamp(var(--spacing-xs), 2vw, var(--spacing-sm));
+  }
+  .m-mobile-md {
+    margin: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+  }
+  .my-mobile-sm {
+    margin-top: clamp(var(--spacing-xs), 2vh, var(--spacing-sm));
+    margin-bottom: clamp(var(--spacing-xs), 2vh, var(--spacing-sm));
+  }
+  .my-mobile-md {
+    margin-top: clamp(var(--spacing-sm), 3vh, var(--spacing-md));
+    margin-bottom: clamp(var(--spacing-sm), 3vh, var(--spacing-md));
+  }
+  .mx-mobile-sm {
+    margin-left: clamp(var(--spacing-xs), 2vw, var(--spacing-sm));
+    margin-right: clamp(var(--spacing-xs), 2vw, var(--spacing-sm));
+  }
+  .mx-mobile-md {
+    margin-left: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+    margin-right: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+  }
+}
+
+/* Enhanced tablet spacing (md and lg breakpoints) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .p-tablet-lg {
+    padding: clamp(var(--spacing-md), 4vw, var(--spacing-lg));
+  }
+  .p-tablet-xl {
+    padding: clamp(var(--spacing-lg), 5vw, var(--spacing-xl));
+  }
+  .py-tablet-lg {
+    padding-top: clamp(var(--spacing-md), 4vh, var(--spacing-lg));
+    padding-bottom: clamp(var(--spacing-md), 4vh, var(--spacing-lg));
+  }
+  .py-tablet-xl {
+    padding-top: clamp(var(--spacing-lg), 5vh, var(--spacing-xl));
+    padding-bottom: clamp(var(--spacing-lg), 5vh, var(--spacing-xl));
+  }
+  .px-tablet-lg {
+    padding-left: clamp(var(--spacing-md), 4vw, var(--spacing-lg));
+    padding-right: clamp(var(--spacing-md), 4vw, var(--spacing-lg));
+  }
+  .px-tablet-xl {
+    padding-left: clamp(var(--spacing-lg), 5vw, var(--spacing-xl));
+    padding-right: clamp(var(--spacing-lg), 5vw, var(--spacing-xl));
+  }
+}
+
+/* Enhanced desktop spacing */
+@media (min-width: 768px) {
+  .p-desktop-lg {
+    padding: clamp(var(--spacing-lg), 3vw, var(--spacing-xl));
+  }
+  .p-desktop-xl {
+    padding: clamp(var(--spacing-xl), 4vw, var(--spacing-2xl));
+  }
+  .py-desktop-lg {
+    padding-top: clamp(var(--spacing-lg), 3vh, var(--spacing-xl));
+    padding-bottom: clamp(var(--spacing-lg), 3vh, var(--spacing-xl));
+  }
+  .py-desktop-xl {
+    padding-top: clamp(var(--spacing-xl), 4vh, var(--spacing-2xl));
+    padding-bottom: clamp(var(--spacing-xl), 4vh, var(--spacing-2xl));
+  }
+  .px-desktop-lg {
+    padding-left: clamp(var(--spacing-lg), 3vw, var(--spacing-xl));
+    padding-right: clamp(var(--spacing-lg), 3vw, var(--spacing-xl));
+  }
+  .px-desktop-xl {
+    padding-left: clamp(var(--spacing-xl), 4vw, var(--spacing-2xl));
+    padding-right: clamp(var(--spacing-xl), 4vw, var(--spacing-2xl));
+  }
+
+  .m-desktop-lg {
+    margin: clamp(var(--spacing-lg), 3vw, var(--spacing-xl));
+  }
+  .m-desktop-xl {
+    margin: clamp(var(--spacing-xl), 4vw, var(--spacing-2xl));
+  }
+  .my-desktop-lg {
+    margin-top: clamp(var(--spacing-lg), 3vh, var(--spacing-xl));
+    margin-bottom: clamp(var(--spacing-lg), 3vh, var(--spacing-xl));
+  }
+  .my-desktop-xl {
+    margin-top: clamp(var(--spacing-xl), 4vh, var(--spacing-2xl));
+    margin-bottom: clamp(var(--spacing-xl), 4vh, var(--spacing-2xl));
+  }
+  .mx-desktop-lg {
+    margin-left: clamp(var(--spacing-lg), 3vw, var(--spacing-xl));
+    margin-right: clamp(var(--spacing-lg), 3vw, var(--spacing-xl));
+  }
+  .mx-desktop-xl {
+    margin-left: clamp(var(--spacing-xl), 4vw, var(--spacing-2xl));
+    margin-right: clamp(var(--spacing-xl), 4vw, var(--spacing-2xl));
+  }
+}
+
+/* === THEME RESPONSIVE === */
+[data-theme="dark"] .glass-panel,
+[data-theme="dark"] .glass-card {
+  background: var(--glass-surface);
+  border-color: var(--glass-border);
+}
+
+.theme-gaming .glass-panel,
+.theme-gaming .glass-card {
+  border-color: var(--border-gaming);
+  background: linear-gradient(
+    135deg,
+    var(--glass-surface),
+    rgba(0, 255, 136, 0.02)
+  );
+}
+
+/* Common page wrapper used by many views */
+.page-glass-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg);
+}
+
+/* Enhanced responsive page container */
+@media (max-width: 768px) {
+  .glass-surface {
+    padding: clamp(var(--spacing-sm), 4vw, var(--spacing-lg));
+    border-radius: var(--radius-md);
+  }
+  .page-glass-container {
+    padding: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+    gap: clamp(var(--spacing-md), 3vh, var(--spacing-lg));
+  }
+
+  /* Enhanced mobile container scaling */
+  .container-standard,
+  .container-extended {
+    padding-left: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+    padding-right: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
+  }
+}
+
+/* Enhanced tablet scaling */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .glass-surface {
+    padding: clamp(var(--spacing-lg), 4vw, var(--spacing-xl));
+    border-radius: clamp(var(--radius-lg), 2vw, var(--radius-xl));
+  }
+  .page-glass-container {
+    padding: clamp(var(--spacing-md), 4vw, var(--spacing-lg));
+    gap: clamp(var(--spacing-lg), 4vh, var(--spacing-xl));
+  }
+}
+
+/* Enhanced large desktop scaling */
+@media (min-width: 1280px) {
+  .glass-surface {
+    padding: clamp(var(--spacing-xl), 3vw, var(--spacing-2xl));
+    border-radius: clamp(var(--radius-xl), 1.5vw, var(--radius-2xl));
+  }
+  .page-glass-container {
+    padding: clamp(var(--spacing-lg), 2vw, var(--spacing-xl));
+    gap: clamp(var(--spacing-xl), 3vh, var(--spacing-2xl));
+  }
+}

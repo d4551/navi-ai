@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Default Studio Logo">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6C63FF"/>
+      <stop offset="100%" stop-color="#3F8CFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="16" fill="url(#g)"/>
+  <g fill="#ffffff" opacity="0.95">
+    <circle cx="64" cy="50" r="20"/>
+    <path d="M28 98c0-19.33 15.67-35 35-35s37 15.67 37 35v6H28v-6z"/>
+  </g>
+</svg>

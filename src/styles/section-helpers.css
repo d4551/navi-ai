@@ -1,0 +1,72 @@
+/*
+ * Section Helpers
+ * Small shared helpers for cards, headers, and list blocks
+ */
+
+.section-card {
+  /* Alias for glass-card with consistent inner spacing */
+  border-radius: var(--radius-lg);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.section-body {
+  padding: var(--spacing-4);
+}
+
+/* Reusable list blocks */
+.glass-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.glass-list--compact {
+  gap: var(--spacing-3);
+}
+
+.glass-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-fast) var(--easing-ease-out);
+}
+
+.glass-list-item:hover {
+  background: var(--glass-hover-bg);
+  border-color: var(--border-strong);
+}
+
+/* Compatibility: map existing card headers/bodies to section helpers when used with glass cards */
+.glass-card .card-header,
+.section-card .card-header,
+.enhanced-card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.glass-card .card-body,
+.section-card .card-body,
+.enhanced-card .card-body {
+  padding: var(--spacing-4);
+}
+
+/* Keep dense body variant compact */
+.glass-card .card-body.card-body--dense,
+.section-card .card-body.card-body--dense,
+.enhanced-card .card-body.card-body--dense {
+  padding: var(--spacing-3);
+}

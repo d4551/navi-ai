@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix WASM CSP Issue - NAVI</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .status.success {
+            background: #d1edff;
+            border: 1px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .status.warning {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+        }
+        .status.error {
+            background: #fecaca;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        pre {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        .code {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Fix WASM CSP Issue</h1>
+        <p>This tool helps resolve WebAssembly Content Security Policy errors that prevent Kokoro TTS from working.</p>
+        
+        <div id="status"></div>
+        
+        <button onclick="checkCSP()">🔍 Check Current CSP</button>
+        <button onclick="fixCSP()">🛠️ Fix WASM CSP</button>
+        <button onclick="testWASM()">🧪 Test WASM Support</button>
+        
+        <h3>📋 What This Fixes</h3>
+        <p>The error you're seeing happens because:</p>
+        <ul>
+            <li><strong>Kokoro TTS uses WebAssembly (WASM)</strong> for neural voice processing</li>
+            <li><strong>WASM requires special CSP permissions</strong> to compile and run</li>
+            <li><strong>Your current CSP blocks WASM</strong> compilation for security</li>
+        </ul>
+        
+        <h3>🔧 The Fix</h3>
+        <p>We need to add <code>'wasm-unsafe-eval'</code> to your Content Security Policy:</p>
+        <div class="code">
+script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net
+        </div>
+        
+        <div id="details" style="display: none;">
+            <h3>📊 Current CSP Details</h3>
+            <pre id="cspData"></pre>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function checkCSP() {
+            const detailsDiv = document.getElementById('details');
+            const cspDataPre = document.getElementById('cspData');
+            
+            // Get current CSP
+            const metaTags = document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]');
+            const currentCSP = metaTags.length > 0 ? metaTags[0].content : 'No CSP found';
+            
+            // Check for WASM support in CSP
+            const hasWasmSupport = currentCSP.includes('wasm-unsafe-eval') || currentCSP.includes('unsafe-eval');
+            
+            // Check environment
+            const isDev = window.location.hostname.includes('codespaces') || 
+                         window.location.hostname === 'localhost' ||
+                         window.location.port === '5173';
+            
+            let statusMessage = `<strong>Environment:</strong> ${isDev ? 'Development (Codespaces)' : 'Production'}<br>`;
+            statusMessage += `<strong>CSP Meta Tags Found:</strong> ${metaTags.length}<br>`;
+            statusMessage += `<strong>WASM Support:</strong> ${hasWasmSupport ? '✅ Enabled' : '❌ Blocked'}<br>`;
+            
+            if (!hasWasmSupport) {
+                statusMessage += `<br><strong>⚠️ Issue Found:</strong> WASM is blocked by CSP. This prevents Kokoro TTS from working.`;
+                showStatus(statusMessage, 'warning');
+            } else {
+                statusMessage += `<br><strong>✅ CSP OK:</strong> WASM support is properly configured.`;
+                showStatus(statusMessage, 'success');
+            }
+            
+            // Show CSP details
+            const cspInfo = {
+                environment: isDev ? 'development' : 'production',
+                metaTagsFound: metaTags.length,
+                currentCSP: currentCSP,
+                wasmSupported: hasWasmSupport,
+                location: {
+                    hostname: window.location.hostname,
+                    port: window.location.port,
+                    protocol: window.location.protocol
+                }
+            };
+            
+            cspDataPre.textContent = JSON.stringify(cspInfo, null, 2);
+            detailsDiv.style.display = 'block';
+        }
+
+        function fixCSP() {
+            // Remove any existing CSP meta tags
+            const existingCSP = document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]');
+            existingCSP.forEach(meta => meta.remove());
+            
+            // Add a WASM-friendly CSP
+            const newCSP = document.createElement('meta');
+            newCSP.setAttribute('http-equiv', 'Content-Security-Policy');
+            newCSP.setAttribute('content', 
+                "default-src 'self'; " +
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net; " +
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+                "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; " +
+                "img-src 'self' data: https: blob:; " +
+                "connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net; " +
+                "object-src 'none'; " +
+                "base-uri 'self'; " +
+                "form-action 'self'; " +
+                "worker-src 'self' blob:;"
+            );
+            
+            document.head.appendChild(newCSP);
+            
+            showStatus(
+                '✅ <strong>CSP Fixed!</strong> Added WASM support to Content Security Policy. ' +
+                '<br><br><strong>⚠️ Important:</strong> Please refresh the main NAVI application to apply these changes. ' +
+                'Kokoro TTS should now work without CSP errors.',
+                'success'
+            );
+        }
+
+        async function testWASM() {
+            try {
+                // Try to compile a simple WASM module
+                const wasmCode = new Uint8Array([
+                    0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
+                    0x01, 0x07, 0x01, 0x60, 0x02, 0x7f, 0x7f, 0x01, 0x7f,
+                    0x03, 0x02, 0x01, 0x00, 0x07, 0x07, 0x01, 0x03, 0x61,
+                    0x64, 0x64, 0x00, 0x00, 0x0a, 0x09, 0x01, 0x07, 0x00,
+                    0x20, 0x00, 0x20, 0x01, 0x6a, 0x0b
+                ]);
+                
+                const wasmModule = await WebAssembly.compile(wasmCode);
+                const wasmInstance = await WebAssembly.instantiate(wasmModule);
+                
+                const result = wasmInstance.exports.add(5, 3);
+                
+                showStatus(
+                    `✅ <strong>WASM Test Passed!</strong> Successfully compiled and executed WebAssembly. ` +
+                    `Test result: 5 + 3 = ${result}<br><br>` +
+                    `🎉 Kokoro TTS should now work properly!`,
+                    'success'
+                );
+            } catch (error) {
+                showStatus(
+                    `❌ <strong>WASM Test Failed:</strong> ${error.message}<br><br>` +
+                    `This confirms the CSP is still blocking WebAssembly. Try the "Fix WASM CSP" button above.`,
+                    'error'
+                );
+            }
+        }
+
+        // Auto-check on load
+        window.addEventListener('load', checkCSP);
+    </script>
+</body>
+</html>

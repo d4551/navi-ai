@@ -1,0 +1,414 @@
+    1 <template>
+    2   <div class="mui-example-container">
+    3     <!-- Loading Overlay -->
+    4     <MuiLoadingIndicator
+    5       v-if="isLoading"
+    6       type="circular"
+    7       :overlay="true"
+    8       color="primary"
+    9       text="Loading content..."
+   10     />
+   11 
+   12     <!-- Main Content Card -->
+   13     <Card class="pa-4" variant="elevated">
+   14       <div class="mui-example-header">
+   15         <h1 class="electrolize-font">MUI Components with Electrolize Font</h1>
+   16         <p>
+   17           Demonstrating integrated MUI-style components with proper service
+   18           routing
+   19         </p>
+   20       </div>
+   21 
+   22       <!-- Button Examples -->
+   23       <div class="component-section">
+   24         <h2>Buttons</h2>
+   25         <div class="button-group">
+   26           <UnifiedButton
+   27             appearance="contained"
+   28             color="primary"
+   29             :loading="actionLoading"
+   30             @click="handlePrimaryAction"
+   31           >
+   32             Primary Action
+   33           </UnifiedButton>
+   34 
+   35           <UnifiedButton
+   36             appearance="outlined"
+   37             color="secondary"
+   38             start-icon="mdi-heart"
+   39             @click="handleSecondaryAction"
+   40           >
+   41             Secondary Action
+   42           </UnifiedButton>
+   43 
+   44           <UnifiedButton
+   45             appearance="text"
+   46             color="success"
+   47             size="small"
+   48             @click="handleTextAction"
+   49           >
+   50             Text Button
+   51           </UnifiedButton>
+   52         </div>
+   53       </div>
+   54 
+   55       <!-- Input Examples -->
+   56       <div class="component-section">
+   57         <h2>Text Fields</h2>
+   58         <div class="input-group">
+   59           <MuiTextField
+   60             v-model="formData.name"
+   61             label="Full Name"
+   62             placeholder="Enter your full name"
+   63             :required="true"
+   64             start-adornment="mdi-account"
+   65           />
+   66 
+   67           <MuiTextField
+   68             v-model="formData.email"
+   69             label="Email Address"
+   70             type="email"
+   71             :error="emailError"
+   72             helper-text="We'll never share your email"
+   73             start-adornment="mdi-email"
+   74           />
+   75 
+   76           <MuiTextField
+   77             v-model="formData.message"
+   78             label="Message"
+   79             placeholder="Type your message here..."
+   80             variant="filled"
+   81             :full-width="true"
+   82           />
+   83         </div>
+   84       </div>
+   85 
+   86       <!-- Loading States Examples -->
+   87       <div class="component-section">
+   88         <h2>Loading States</h2>
+   89         <div class="loading-examples">
+   90           <div class="loading-item">
+   91             <h3>Circular Progress</h3>
+   92             <MuiLoadingIndicator type="circular" color="primary" />
+   93           </div>
+   94 
+   95           <div class="loading-item">
+   96             <h3>Linear Progress</h3>
+   97             <MuiLoadingIndicator
+   98               type="linear"
+   99               color="success"
+  100               :progress="progressValue"
+  101               :determinate="true"
+  102             />
+  103           </div>
+  104 
+  105           <div class="loading-item">
+  106             <h3>Skeleton Loading</h3>
+  107             <MuiLoadingIndicator type="skeleton" variant="text" />
+  108             <MuiLoadingIndicator type="skeleton" variant="rectangular" />
+  109           </div>
+  110 
+  111           <div class="loading-item">
+  112             <h3>Dots Loading</h3>
+  113             <MuiLoadingIndicator type="dots" />
+  114           </div>
+  115         </div>
+  116       </div>
+  117 
+  118       <!-- Service Integration Example -->
+  119       <div class="component-section">
+  120         <h2>Service Integration</h2>
+  121         <Card class="pa-3" variant="default">
+  122           <p>
+  123             Service Status: <strong>{{ serviceStatus }}</strong>
+  124           </p>
+  125           <p>Available Services: {{ availableServices.join(", ") }}</p>
+  126           <UnifiedButton
+  127             appearance="contained"
+  128             color="info"
+  129             :loading="servicesLoading"
+  130             @click="refreshServices"
+  131           >
+  132             Refresh Services
+  133           </UnifiedButton>
+  134         </Card>
+  135       </div>
+  136     </Card>
+  137   </div>
+  138 </template>
+  139 
+  140 <script>
+  141 import { ref, onMounted, reactive, computed } from "vue";
+  142 import {
+  143   UnifiedButton,
+  144   Card,
+  145   MuiTextField,
+  146   MuiLoadingIndicator,
+  147   createLoadingState,
+  148   withLoadingState,
+  149 } from "../ui";
+  150 import { serviceRegistry } from "@/shared/services";
+  151 import { useElectrolizeFont } from "@/utils/fontIntegration";
+  152 
+  153 export default {
+  154   name: "MuiExampleUsage",
+  155   components: {
+  156     UnifiedButton,
+  157     Card,
+  158     MuiTextField,
+  159     MuiLoadingIndicator,
+  160   },
+  161   setup() {
+  162     // Font integration
+  163     const fontInfo = useElectrolizeFont();
+  164 
+  165     // Loading states
+  166     const isLoading = ref(false);
+  167     const actionLoading = ref(false);
+  168     const servicesLoading = ref(false);
+  169 
+  170     // Form data
+  171     const formData = reactive({
+  172       name: "",
+  173       email: "",
+  174       message: "",
+  175     });
+  176 
+  177     // Progress for demo
+  178     const progressValue = ref(65);
+  179 
+  180     // Email validation
+  181     const emailError = computed(() => {
+  182       if (formData.email && !isValidEmail(formData.email)) {
+  183         return "Please enter a valid email address";
+  184       }
+  185       return "";
+  186     });
+  187 
+  188     // Service integration
+  189     const serviceStatus = ref("Initializing...");
+  190     const availableServices = ref([]);
+  191 
+  192 
+  193     const isValidEmail = (email) => {
+  194       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  195       return emailRegex.test(email);
+  196     };
+  197 
+  198     const simulateAsyncAction = (duration = 2000) => {
+  199       return new Promise((resolve) => setTimeout(resolve, duration));
+  200     };
+  201 
+  202     // Event handlers
+  203     const handlePrimaryAction = async () => {
+  204       const loadingState = createLoadingState();
+  205       actionLoading.value = true;
+  206 
+  207       try {
+  208         await withLoadingState(
+  209           () => simulateAsyncAction(1500),
+  210           loadingState,
+  211           (data) => {
+  212             console.log("Primary action completed successfully");
+  213           },
+  214           (error) => {
+  215             console.error("Primary action failed:", error);
+  216           },
+  217         );
+  218       } finally {
+  219         actionLoading.value = false;
+  220       }
+  221     };
+  222 
+  223     const handleSecondaryAction = () => {
+  224       console.log("Secondary action triggered");
+  225       console.log("Font loaded:", fontInfo.isLoaded);
+  226       console.log("Font family:", fontInfo.fontFamily);
+  227     };
+  228 
+  229     const handleTextAction = () => {
+  230       console.log("Text action triggered");
+  231       console.log("Form data:", formData);
+  232     };
+  233 
+  234     const refreshServices = async () => {
+  235       servicesLoading.value = true;
+  236       serviceStatus.value = "Loading services...";
+  237 
+  238       try {
+  239         await simulateAsyncAction(1000);
+  240 
+  241         // Mock service discovery
+  242         availableServices.value = serviceRegistry.listServices?.() || [
+  243           "ai",
+  244           "logger",
+  245           "userProfile",
+  246         ];
+  247         serviceStatus.value = `Connected (${availableServices.value.length} services)`;
+  248 
+  249         console.log("Services refreshed:", availableServices.value);
+  250       } catch (error) {
+  251         serviceStatus.value = "Connection failed";
+  252         console.error("Service refresh failed:", error);
+  253       } finally {
+  254         servicesLoading.value = false;
+  255       }
+  256     };
+  257 
+  258     // Lifecycle
+  259     onMounted(async () => {
+  260       isLoading.value = true;
+  261 
+  262       try {
+  263         // Simulate initial load
+  264         await simulateAsyncAction(1500);
+  265 
+  266         // Initialize services
+  267         await refreshServices();
+  268 
+  269         // Start progress animation
+  270         const progressInterval = setInterval(() => {
+  271           progressValue.value = (progressValue.value + 1) % 101;
+  272         }, 100);
+  273 
+  274 
+  275         setTimeout(() => clearInterval(progressInterval), 10000);
+  276       } catch (error) {
+  277         console.error("Initialization failed:", error);
+  278       } finally {
+  279         isLoading.value = false;
+  280       }
+  281     });
+  282 
+  283     return {
+  284       // State
+  285       isLoading,
+  286       actionLoading,
+  287       servicesLoading,
+  288       formData,
+  289       progressValue,
+  290       emailError,
+  291       serviceStatus,
+  292       availableServices,
+  293 
+  294       // Methods
+  295       handlePrimaryAction,
+  296       handleSecondaryAction,
+  297       handleTextAction,
+  298       refreshServices,
+  299 
+  300       // Computed
+  301       fontInfo,
+  302     };
+  303   },
+  304 };
+  305 </script>
+  306 
+  307 <style scoped>
+  308 .mui-example-container {
+  309   min-height: 100vh;
+  310   padding: 24px;
+  311   background: var(--surface-elevated);
+  312   font-family: "Electrolize", "Roboto", sans-serif;
+  313 }
+  314 
+  315 .mui-example-header {
+  316   text-align: center;
+  317   margin-bottom: 32px;
+  318 }
+  319 
+  320 .mui-example-header h1 {
+  321   font-size: 2.5rem;
+  322   font-weight: 700;
+  323   color: var(--color-primary-500);
+  324   margin-bottom: 8px;
+  325   letter-spacing: -0.025em;
+  326 }
+  327 
+  328 .mui-example-header p {
+  329   font-size: 1.125rem;
+  330   color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+  331   margin: 0;
+  332 }
+  333 
+  334 .component-section {
+  335   margin-bottom: 40px;
+  336 }
+  337 
+  338 .component-section h2 {
+  339   font-size: 1.75rem;
+  340   font-weight: 600;
+  341   color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  342   margin-bottom: 16px;
+  343   border-bottom: 2px solid var(--color-primary-500);
+  344   padding-bottom: 8px;
+  345 }
+  346 
+  347 .button-group {
+  348   display: flex;
+  349   gap: 16px;
+  350   flex-wrap: wrap;
+  351   align-items: center;
+  352 }
+  353 
+  354 .input-group {
+  355   display: grid;
+  356   gap: 20px;
+  357   max-width: 600px;
+  358 }
+  359 
+  360 .loading-examples {
+  361   display: grid;
+  362   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  363   gap: 24px;
+  364 }
+  365 
+  366 .loading-item {
+  367   padding: 20px;
+  368   border: 1px solid var(--glass-border, rgba(0, 0, 0, 0.12));
+  369   border-radius: 8px;
+  370   background: var(--surface-base);
+  371   text-align: center;
+  372 }
+  373 
+  374 .loading-item h3 {
+  375   font-size: 1rem;
+  376   font-weight: 500;
+  377   margin-bottom: 16px;
+  378   color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  379 }
+  380 
+  381 [data-theme="dark"] .mui-example-container {
+  382 }
+  383 
+  384 }
+  385 
+  386 [data-theme="dark"] .mui-example-header p {
+  387 }
+  388 
+  389 }
+  390 
+  391 [data-theme="dark"] .loading-item {
+  392 }
+  393 
+  394 }
+  395 
+  396   .mui-example-container {
+  397   }
+  398 
+  399   }
+  400 
+  401   .button-group {
+  402     flex-direction: column;
+  403     align-items: stretch;
+  404   }
+  405 
+  406   .loading-examples {
+  407   }
+  408 }
+  409 
+  410 .electrolize-font,
+  411   font-family: "Electrolize", "Roboto", sans-serif;
+  412 }
+  413 </style>
+

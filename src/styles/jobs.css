@@ -1,0 +1,188 @@
+/* Global Job Board styles (scoped by container) */
+
+.unified-job-board-container .filter-card {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-surface), 0.95) 0%,
+    rgba(var(--v-theme-surface-bright), 0.8) 100%
+  );
+}
+
+.unified-job-board-container .top-matches-card {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-surface), 0.9) 0%,
+    rgba(var(--v-theme-warning), 0.05) 100%
+  );
+  border: 1px solid rgba(var(--v-theme-warning), 0.2);
+}
+
+.unified-job-board-container .top-match-job-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.unified-job-board-container .top-match-job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(var(--v-theme-primary), 0.15);
+}
+
+.unified-job-board-container .ai-cta-card {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-primary), 0.05) 0%,
+    rgba(var(--v-theme-secondary), 0.08) 50%,
+    rgba(var(--v-theme-info), 0.05) 100%
+  );
+  border: 2px solid rgba(var(--v-theme-primary), 0.2);
+}
+
+.unified-job-board-container .jobs-results-card {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-surface), 0.95) 0%,
+    rgba(var(--v-theme-surface-container), 0.8) 100%
+  );
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-backdrop-blur);
+}
+
+/* Table uses transparent background by default via utilities */
+
+.unified-job-board-container .job-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(var(--v-theme-surface), 0.8);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(var(--v-theme-outline), 0.1);
+}
+
+.unified-job-board-container .job-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(var(--v-theme-primary), 0.12);
+  border-color: rgba(var(--v-theme-primary), 0.3);
+}
+
+.unified-job-board-container .selected-job-card {
+  border-color: rgb(var(--v-theme-primary));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-primary), 0.08) 0%,
+    rgba(var(--v-theme-surface), 0.9) 100%
+  );
+}
+
+.unified-job-board-container .studio-logo {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-primary), 0.1) 0%,
+    rgba(var(--v-theme-secondary), 0.1) 100%
+  );
+  border: 2px solid rgba(var(--v-theme-primary), 0.2);
+}
+
+/* Empty state spacing/opacity handled by utility classes in markup */
+
+/* Studio modal quick layout helpers */
+.unified-job-board-container .games-tech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .unified-job-board-container .games-tech-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* === Table row hover + focus accents === */
+.unified-job-board-container
+  :where(.v-table, .v-data-table)
+  .v-data-table__tr:hover {
+  background: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  transition: background 160ms ease;
+}
+.unified-job-board-container
+  :where(.v-table, .v-data-table)
+  .v-data-table__tr:focus-within {
+  outline: none;
+  box-shadow: inset 0 0 0 2px
+    color-mix(in srgb, var(--neon-focus-ring) 60%, transparent);
+}
+
+/* === Header chip spacing and readability on glass === */
+.unified-job-board-container .v-chip {
+  backdrop-filter: var(--glass-backdrop-blur);
+  -webkit-backdrop-filter: var(--glass-backdrop-blur);
+}
+
+/* === Neon toggle accents === */
+.unified-job-board-container .v-btn-toggle .v-btn--active {
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--neon-cyber) 25%, transparent);
+}
+
+/* === Top matches card polish === */
+.unified-job-board-container .top-matches-card {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+}
+
+/* === Section spacing normalization === */
+.unified-job-board-container .content-section {
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+}
+.unified-job-board-container .search-filter-section {
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-lg);
+}
+
+/* === Vuetify field glasmorphic restyle within jobs context === */
+.unified-job-board-container
+  :where(.v-input, .v-text-field, .v-select)
+  .v-field {
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.55);
+  backdrop-filter: blur(10px) saturate(1.15);
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+}
+
+.unified-job-board-container
+  :where(.v-input, .v-text-field, .v-select).v-input--dirty
+  .v-field,
+.unified-job-board-container
+  :where(.v-input, .v-text-field, .v-select).v-input--focused
+  .v-field {
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+}
+
+.unified-job-board-container .v-field__input {
+  color: var(--text-primary);
+}
+
+.unified-job-board-container .v-field__outline {
+  display: none;
+}
+
+/* Label and helper text alignment for clean layout */
+.unified-job-board-container .v-label,
+.unified-job-board-container .v-messages__message {
+  color: var(--text-secondary);
+}
+
+/* Dropdown chip/background alignment */
+.unified-job-board-container .v-select .v-chip {
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.45);
+  border: 1px solid var(--glass-border);
+}
+
+/* Consistent vertical spacing for form rows */
+.unified-job-board-container .v-row {
+  row-gap: var(--spacing-3);
+}

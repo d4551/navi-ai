@@ -1,0 +1,96 @@
+/*
+ * Neon Accents and Focus Rings
+ * - RGB neon accents for hover/active/focus states
+ * - Works with black/white glassmorphic base
+ * - Desktop-first with sensible mobile fallbacks
+ */
+
+:root {
+  --neon-primary: var(--color-gaming-500, #00ff88);
+  --neon-cyber: var(--color-cyber-500, #00d9ff);
+  --neon-magenta: #ff00cc;
+  --focus-ring-width: 2px;
+  --focus-ring-radius: 10px;
+}
+
+/* Unified focus ring */
+.focus-ring,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.interactive-element:focus-visible,
+.unified-button:focus-visible,
+.v-btn:focus-visible {
+  outline: var(--focus-ring-width) solid var(--neon-cyber);
+  outline-offset: 2px;
+  border-radius: var(--focus-ring-radius);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--neon-cyber) 35%, transparent);
+}
+
+/* Neon hover halos */
+.neon-hover,
+.interactive-element:hover,
+.unified-button:hover,
+.v-btn:hover {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--neon-primary) 35%, transparent),
+    0 10px 24px color-mix(in srgb, var(--neon-primary) 10%, transparent);
+}
+
+/* Active press feedback */
+.neon-active:active,
+.interactive-element:active,
+.unified-button:active,
+.v-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--neon-magenta) 35%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--neon-magenta) 25%, transparent);
+}
+
+/* Accent borders for glass cards when interactive */
+.glass-card.is-interactive:hover,
+.unified-card.is-interactive:hover {
+  border-color: color-mix(in srgb, var(--neon-cyber) 25%, var(--glass-border));
+}
+
+/* Subtle animated underline for links */
+a.neon-link {
+  position: relative;
+  text-decoration: none;
+}
+a.neon-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-primary), var(--neon-cyber));
+  transition: right 180ms ease;
+}
+a.neon-link:hover::after,
+a.neon-link:focus-visible::after {
+  right: 0;
+}
+
+/* Tag/badge neon variants */
+.badge.bg-gaming {
+  background: color-mix(in srgb, var(--neon-primary) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--neon-primary) 30%, transparent);
+}
+.badge.bg-cyber {
+  background: color-mix(in srgb, var(--neon-cyber) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--neon-cyber) 30%, transparent);
+}
+
+/* Minimal motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .unified-button,
+  .interactive-element,
+  .v-btn {
+    transition: none !important;
+  }
+}

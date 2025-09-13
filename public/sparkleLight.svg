@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<defs>
+<radialGradient id="gold" cx="50%" cy="50%" r="60%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity="1.0"/>
+<stop offset="35%" stop-color="#ffe89a" stop-opacity="0.95"/>
+<stop offset="65%" stop-color="#ffc34d" stop-opacity="0.95"/>
+<stop offset="100%" stop-color="#ff9b00" stop-opacity="0.9"/>
+</radialGradient>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+</defs>
+<g filter="url(#glow)" fill="url(#gold)">
+<path d="M 260.00,140.00 L 288.00,192.00 L 340.00,220.00 L 288.00,248.00 L 260.00,300.00 L 232.00,248.00 L 180.00,220.00 L 232.00,192.00 Z"/>
+<path d="M 172.31,286.17 L 175.38,312.83 L 193.83,332.31 L 167.17,335.38 L 147.69,353.83 L 144.62,327.17 L 126.17,307.69 L 152.83,304.62 Z"/>
+<path d="M 341.66,292.73 L 362.98,321.46 L 397.27,331.66 L 368.54,352.98 L 358.34,387.27 L 337.02,358.54 L 302.73,348.34 L 331.46,327.02 Z"/>
+<path d="M 103.27,154.89 L 116.36,168.98 L 135.11,173.27 L 121.02,186.36 L 116.73,205.11 L 103.64,191.02 L 84.89,186.73 L 98.98,173.64 Z"/>
+<path d="M 412.68,142.81 L 413.29,165.16 L 427.19,182.68 L 404.84,183.29 L 387.32,197.19 L 386.71,174.84 L 372.81,157.32 L 395.16,156.71 Z"/>
+<path d="M 275.56,364.44 L 271.31,380.00 L 275.56,395.56 L 260.00,391.31 L 244.44,395.56 L 248.69,380.00 L 244.44,364.44 L 260.00,368.69 Z"/>
+<path d="M 70.00,342.00 L 76.00,354.00 L 88.00,360.00 L 76.00,366.00 L 70.00,378.00 L 64.00,366.00 L 52.00,360.00 L 64.00,354.00 Z"/>
+</g>
+</svg>

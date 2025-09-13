@@ -1,0 +1,256 @@
+/**
+ * TYPOGRAPHY OPTIMIZATION - GLOBAL SPACE EFFICIENCY
+ * ================================================
+ * Systematic replacement of hardcoded font sizes with optimized design system variables
+ * This file ensures consistent, space-efficient typography across all components
+ */
+
+/* Override common hardcoded font sizes with space-optimized equivalents */
+
+/* Small text replacements (0.75rem, 0.8rem, 0.85rem -> --font-size-sm) */
+:where(
+  .badge,
+  .chip,
+  .tag,
+  .pill,
+  .label,
+  .meta,
+  .caption,
+  .hint,
+  .help-text,
+  .secondary-text,
+  .muted-text,
+  .stats-label,
+  .metric-label,
+  .nav-secondary,
+  .tab-secondary
+) {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-caption) !important;
+}
+
+/* Extra small text (0.65rem, 0.7rem -> --font-size-xs) */
+:where(
+  .badge-sm,
+  .chip-sm,
+  .pill-sm,
+  .timestamp,
+  .date-text,
+  .time-text,
+  .footnote,
+  .fine-print,
+  .status-indicator,
+  .count-badge,
+  .tooltip-content
+) {
+  font-size: var(--font-size-xs) !important;
+  line-height: var(--line-height-tight) !important;
+}
+
+/* Ultra compact text (0.6rem, 0.625rem -> --font-size-2xs) */
+:where(
+  .micro-text,
+  .ultra-compact,
+  .badge-xs,
+  .chip-xs,
+  .overlay-text,
+  .watermark,
+  .version-info,
+  .build-info
+) {
+  font-size: var(--font-size-2xs) !important;
+  line-height: var(--line-height-tight) !important;
+}
+
+/* Medium text replacements (0.9rem, 0.95rem, 1rem -> --font-size-base) */
+:where(
+  .body-text,
+  .content-text,
+  .description-text,
+  .form-text,
+  .input-text,
+  .list-item,
+  .menu-item-text,
+  .card-body,
+  .panel-body
+) {
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-body) !important;
+}
+
+/* Large text replacements (1.1rem, 1.125rem, 1.2rem -> --font-size-lg) */
+:where(
+  .subtitle,
+  .subheading,
+  .card-title,
+  .panel-title,
+  .section-title,
+  .group-title,
+  .primary-text,
+  .emphasis-text
+) {
+  font-size: var(--font-size-lg) !important;
+  line-height: var(--line-height-heading) !important;
+}
+
+/* Button text optimization */
+:where(
+  .btn,
+  .button,
+  .action-btn,
+  .cta,
+  .call-to-action,
+  .nav-button,
+  .tab-button
+) {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-ui) !important;
+  font-weight: var(--font-weight-medium) !important;
+}
+
+/* Navigation and UI elements */
+:where(
+  .nav-link,
+  .menu-link,
+  .breadcrumb-item,
+  .tab-item,
+  .dropdown-item,
+  .context-menu-item
+) {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-ui) !important;
+}
+
+/* Form elements optimization */
+:where(
+  .form-label,
+  .field-label,
+  .form-help,
+  .field-help,
+  .validation-message,
+  .error-message
+) {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-caption) !important;
+}
+
+/* Card and component specific optimizations */
+:where(
+  .card-meta,
+  .card-info,
+  .stats-value,
+  .metric-value,
+  .progress-label,
+  .status-label
+) {
+  font-size: var(--font-size-xs) !important;
+  line-height: var(--line-height-caption) !important;
+}
+
+/* Modal and overlay text */
+:where(
+  .modal-title,
+  .dialog-title,
+  .modal-body,
+  .dialog-body,
+  .alert-title,
+  .notification-title
+) {
+  font-size: var(--font-size-lg) !important;
+  line-height: var(--line-height-heading) !important;
+}
+
+/* Table and data display */
+:where(
+  .table-cell,
+  .data-cell,
+  .table-header,
+  .data-header,
+  .table-caption,
+  .data-caption
+) {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-ui) !important;
+}
+
+/* Gaming and specialized UI elements */
+:where(
+  .hud-text,
+  .overlay-hud,
+  .gaming-ui,
+  .game-text,
+  .score-text,
+  .level-text,
+  .achievement-text,
+  .progress-text
+) {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-ui) !important;
+  font-family: var(--font-gaming) !important;
+}
+
+/* Override Vue/component specific hardcoded sizes */
+:where(.v-btn) {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-ui) !important;
+}
+
+:where(.v-chip) {
+  font-size: var(--font-size-xs) !important;
+  line-height: var(--line-height-tight) !important;
+}
+
+:where(.v-badge) {
+  font-size: var(--font-size-2xs) !important;
+  line-height: var(--line-height-tight) !important;
+}
+
+/* Responsive adjustments for ultra-compact displays */
+@media (max-width: 480px) {
+  :where(.badge, .chip, .tag) {
+    font-size: var(--font-size-xs) !important;
+  }
+
+  :where(.nav-link, .menu-link, .tab-item) {
+    font-size: var(--font-size-xs) !important;
+  }
+
+  :where(.btn, .button) {
+    font-size: var(--font-size-xs) !important;
+  }
+}
+
+/* High density mode overrides */
+.density-compact {
+  --local-font-scale: 0.9;
+}
+
+.density-compact :where(.card-title, .section-title) {
+  font-size: calc(var(--font-size-md) * var(--local-font-scale, 1)) !important;
+}
+
+.density-compact :where(.body-text, .content-text) {
+  font-size: calc(var(--font-size-sm) * var(--local-font-scale, 1)) !important;
+}
+
+.density-compact :where(.badge, .chip, .meta) {
+  font-size: calc(var(--font-size-xs) * var(--local-font-scale, 1)) !important;
+}
+
+/* Gaming mode typography enhancements */
+.theme-gaming :where(.card-title, .section-title, .heading) {
+  font-family: var(--font-gaming) !important;
+  letter-spacing: var(--letter-spacing-wide) !important;
+}
+
+/* Print media optimizations */
+@media print {
+  * {
+    font-size: smaller !important;
+    line-height: var(--line-height-tight) !important;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    line-height: var(--line-height-tight) !important;
+  }
+}

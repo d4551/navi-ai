@@ -1,0 +1,457 @@
+openapi: 3.0.3
+info:
+  title: NAVI Desktop API (IPC Surface)
+  version: 1.0.0
+  description: |
+    Logical API surface of the Electron IPC methods exposed to the renderer.
+    Routes model operations available via `window.api.*` and service layer methods.
+    Note: Transport is IPC, not HTTP. This spec documents request/response shapes.
+servers:
+  - url: electron-ipc://main
+    description: Electron main process (IPC)
+tags:
+  - name: ai
+    description: AI operations and model selection
+  - name: jobs
+    description: Job aggregation and search
+  - name: export
+    description: Export resume and portfolio
+  - name: interview
+    description: Mock interview lifecycle
+  - name: settings
+    description: Application settings
+paths:
+  /ai/init:
+    post:
+      tags: [ai]
+      summary: Initialize AI service
+      operationId: aiInit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apiKey: { type: string }
+                model: { type: string, default: gemini-1.5-flash }
+              required: [apiKey]
+      responses:
+        '200':
+          description: Initialized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIInitResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /ai/generate:
+    post:
+      tags: [ai]
+      summary: Generate text
+      operationId: aiGenerateText
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AITextRequest' }
+      responses:
+        '200':
+          description: Generated text
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AITextResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /ai/models:
+    get:
+      tags: [ai]
+      summary: List available models
+      operationId: aiListModels
+      responses:
+        '200':
+          description: List of models
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Model' }
+  /jobs:
+    get:
+      tags: [jobs]
+      summary: Search aggregated jobs
+      operationId: jobsSearch
+      parameters:
+        - in: query
+          name: query
+          schema: { type: string }
+        - in: query
+          name: location
+          schema: { type: string }
+        - in: query
+          name: remoteOnly
+          schema: { type: boolean }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 100 }
+      responses:
+        '200':
+          description: Aggregated job results
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/JobAggregationResult' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /jobs/match:
+    post:
+      tags: [jobs]
+      summary: Compute match scores for jobs
+      operationId: jobsMatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profile: { $ref: '#/components/schemas/UserProfile' }
+                jobs:
+                  type: array
+                  items: { $ref: '#/components/schemas/Job' }
+      responses:
+        '200':
+          description: Match results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/MatchResult' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /jobs/recommend:
+    post:
+      tags: [jobs]
+      summary: Recommend top jobs for profile
+      operationId: jobsRecommend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profile: { $ref: '#/components/schemas/UserProfile' }
+                jobs:
+                  type: array
+                  items: { $ref: '#/components/schemas/Job' }
+                limit: { type: integer, default: 10 }
+      responses:
+        '200':
+          description: Top matches
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/MatchResult' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /export/resume:
+    post:
+      tags: [export]
+      summary: Export resume
+      operationId: exportResume
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ResumeExportRequest' }
+      responses:
+        '200':
+          description: Exported file (as base64 if via IPC)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  format: { type: string, enum: [pdf, json, markdown, html, docx] }
+                  data: { type: string, description: base64 payload or JSON string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /export/portfolio:
+    post:
+      tags: [export]
+      summary: Export portfolio
+      operationId: exportPortfolio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PortfolioExportRequest' }
+      responses:
+        '200':
+          description: Exported file (as base64)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  format: { type: string, enum: [pdf, image, zip] }
+                  data: { type: string }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /interview/start:
+    post:
+      tags: [interview]
+      summary: Start interview session
+      operationId: interviewStart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/InterviewConfig' }
+      responses:
+        '200':
+          description: Session started
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/InterviewSession' }
+  /interview/{sessionId}/next:
+    post:
+      tags: [interview]
+      summary: Get next question
+      operationId: interviewNext
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Next question
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/InterviewQuestion' }
+  /interview/{sessionId}/submit:
+    post:
+      tags: [interview]
+      summary: Submit response
+      operationId: interviewSubmit
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                response: { type: string }
+      responses:
+        '200':
+          description: Acknowledged
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/InterviewEvaluation' }
+  /settings:
+    get:
+      tags: [settings]
+      summary: Get settings
+      operationId: settingsGet
+      responses:
+        '200':
+          description: Current settings
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Settings' }
+    patch:
+      tags: [settings]
+      summary: Update settings
+      operationId: settingsPatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Settings' }
+
+components:
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error: { type: string }
+  schemas:
+    AIInitResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        model: { type: string }
+        timestamp: { type: integer, format: int64 }
+        error: { type: string, nullable: true }
+    Model:
+      type: object
+      properties:
+        id: { type: string }
+        description: { type: string }
+    AITextRequest:
+      type: object
+      required: [prompt]
+      properties:
+        prompt: { type: string }
+        systemInstructions: { type: string }
+        options:
+          type: object
+          properties:
+            temperature: { type: number }
+            topK: { type: integer }
+            topP: { type: number }
+            maxTokens: { type: integer }
+            model: { type: string }
+    AITextResponse:
+      type: object
+      properties:
+        text: { type: string }
+        latencyMs: { type: integer }
+    Job:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        company: { type: string }
+        location: { type: string }
+        remote: { type: boolean }
+        salary:
+          type: object
+          properties:
+            min: { type: number }
+            max: { type: number }
+            currency: { type: string }
+        description: { type: string }
+        postedDate: { type: string, format: date-time }
+        source: { type: string }
+    JobAggregationResult:
+      type: object
+      properties:
+        jobs:
+          type: array
+          items: { $ref: '#/components/schemas/Job' }
+        sources:
+          type: array
+          items: { type: string }
+        totalFound: { type: integer }
+        errors:
+          type: array
+          items: { type: string }
+        processingTime: { type: integer }
+    ResumeExportRequest:
+      type: object
+      properties:
+        data: { type: object, description: Resume data object }
+        formats:
+          type: array
+          items: { type: string, enum: [pdf, json, markdown, html, docx] }
+        options: { type: object }
+    PortfolioExportRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { type: object }
+        format: { type: string, enum: [pdf, image, zip] }
+        options: { type: object }
+    Settings:
+      type: object
+      additionalProperties: true
+    InterviewConfig:
+      type: object
+      properties:
+        role: { type: string }
+        difficulty: { type: string, enum: [easy, medium, hard] }
+        language: { type: string }
+    InterviewSession:
+      type: object
+      properties:
+        id: { type: string }
+        startedAt: { type: string, format: date-time }
+        stats: { type: object }
+    InterviewQuestion:
+      type: object
+      properties:
+        id: { type: string }
+        text: { type: string }
+        type: { type: string }
+    InterviewEvaluation:
+      type: object
+      properties:
+        score: { type: number }
+        feedback: { type: string }
+
+    UserProfile:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        skills:
+          type: array
+          items: { type: string }
+        experience: { type: number, description: years }
+        interests:
+          type: array
+          items: { type: string }
+        location: { type: string }
+        salaryExpectation:
+          type: object
+          properties:
+            min: { type: number }
+            max: { type: number }
+        workStyle: { type: string, enum: [remote, hybrid, onsite] }
+        rolePreferences:
+          type: array
+          items: { type: string }
+        companySize: { type: string }
+        technologies:
+          type: array
+          items: { type: string }
+
+    MatchResult:
+      type: object
+      properties:
+        jobId: { type: string }
+        matchScore: { type: integer, minimum: 0, maximum: 100 }
+        matchBreakdown:
+          type: object
+          properties:
+            skillsMatch: { type: number }
+            experienceMatch: { type: number }
+            locationMatch: { type: number }
+            salaryMatch: { type: number }
+            cultureMatch: { type: number }
+            technologyMatch: { type: number }
+        missingSkills:
+          type: array
+          items: { type: string }
+        recommendedSkills:
+          type: array
+          items: { type: string }
+        strengths:
+          type: array
+          items: { type: string }
+        improvementAreas:
+          type: array
+          items: { type: string }

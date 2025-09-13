@@ -1,0 +1,3423 @@
+<template>
+  <StandardPageLayout>
+    <!-- Page Header -->
+    <template #header>
+      <PageHeader
+        title="Document Builder"
+        subtitle="Create professional resumes and cover letters with AI assistance"
+        :breadcrumbs="[
+          { label: 'Home', to: '/' },
+          { label: 'Document Builder', to: '/document-builder' }
+        ]"
+      >
+        <template #actions>
+          <!-- Auto-save Status -->
+          <div class="save-status" :class="autoSaveState">
+            <AppIcon 
+              :name="autoSaveState === 'saving' ? 'mdi-loading' : autoSaveState === 'saved' ? 'mdi-check' : autoSaveState === 'error' ? 'mdi-alert' : 'mdi-content-save-outline'"
+              :class="{ 'spinning': autoSaveState === 'saving' }"
+            />
+            <span class="save-text">
+              {{ autoSaveState === 'saving' ? 'Saving...' : 
+                autoSaveState === 'saved' ? 'Saved' : 
+                autoSaveState === 'error' ? 'Error' : 
+                hasUnsavedChanges ? 'Unsaved' : 'All saved' }}
+            </span>
+          </div>
+          
+          <UnifiedButton
+            v-if="canPreview"
+            variant="outline"
+            leading-icon="mdi-eye"
+            @click="showPreview = true"
+          >
+            Preview
+          </UnifiedButton>
+          <UnifiedButton
+            v-if="canExport"
+            variant="primary"
+            leading-icon="mdi-download"
+            @click="handleExport('pdf')"
+          >
+            Export PDF
+          </UnifiedButton>
+          
+          <!-- Keyboard Shortcuts Help -->
+          <UnifiedButton
+            variant="ghost"
+            leading-icon="mdi-keyboard-outline"
+            @click="showShortcutsHelp"
+          >
+            Shortcuts
+          </UnifiedButton>
+        </template>
+      </PageHeader>
+    </template>
+    
+    <!-- Unified Workflow Progress -->
+    <div class="glass-surface p-lg mb-lg rounded-lg border border-glass-border shadow-md">
+      <div class="layout-inline layout-inline--between">
+        <div class="layout-inline layout-inline--sm">
+          <button
+            v-for="(step, index) in workflowSteps"
+            :key="step.key"
+            class="btn-base workflow-step"
+            :class="{ 
+              'btn-primary': currentWorkflowStep === index,
+              'btn-success': step.completed,
+              'btn-disabled': !step.available || index > maxAvailableStep
+            }"
+            :disabled="!step.available || index > maxAvailableStep"
+            @click="goToWorkflowStep(index)"
+          >
+            <div class="step-indicator layout-inline layout-inline--center">
+              <span v-if="!step.completed" class="step-number font-semibold text-sm">{{ index + 1 }}</span>
+              <AppIcon v-else name="mdi-check" class="text-white" />
+            </div>
+            <div class="layout-stack layout-stack--xs">
+              <div class="font-semibold text-sm">{{ step.label }}</div>
+              <div class="text-xs opacity-80">{{ step.subtitle }}</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="layout-inline layout-inline--md">
+          <!-- Overall Progress -->
+          <div class="layout-inline layout-inline--sm min-w-30">
+            <div class="progress-bar h-2 bg-gray-200 rounded-full flex-1">
+              <div 
+                class="progress-fill h-full bg-primary rounded-full transition-all duration-300" 
+                :style="{ width: overallProgress + '%' }"
+              ></div>
+            </div>
+            <span class="text-xs font-semibold text-primary whitespace-nowrap">{{ Math.round(overallProgress) }}% Complete</span>
+          </div>
+
+          <!-- AI Status -->
+          <div v-if="!aiStatus.isReady" class="layout-inline layout-inline--sm text-warning-600 text-xs">
+            <AppIcon name="mdi-alert-circle-outline" size="14" />
+            <span>AI Offline</span>
+          </div>
+
+          <!-- Quick Preview -->
+          <UnifiedButton
+            variant="outline"
+            size="sm"
+            leading-icon="mdi-eye"
+            @click="showPreview = true"
+          >
+            Preview
+          </UnifiedButton>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Builder Layout -->
+    <div class="builder-layout">
+      <!-- Left Sidebar - Progress Steps -->
+      <aside class="steps-sidebar glass-surface">
+        <h3 class="sidebar-title">
+          <AppIcon name="mdi-format-list-checks" />
+          {{ activeTab === 'resume' ? 'Resume Steps' : activeTab === 'cover-letter' ? 'Cover Letter Steps' : 'AI Tools' }}
+        </h3>
+        <div v-if="activeTab !== 'ai-tools'" class="steps-list">
+          <div
+            v-for="(step, index) in currentStepList"
+            :key="step.id"
+            class="step-item"
+            :class="{
+              active: currentStep === step.id,
+              completed: isStepCompleted(step.id),
+              available: isStepAvailable(step.id)
+            }"
+            @click="isStepAvailable(step.id) && navigateToStep(step.id)"
+          >
+            <div class="step-indicator">
+              <AppIcon v-if="isStepCompleted(step.id)" name="mdi-check" />
+              <span v-else>{{ index + 1 }}</span>
+            </div>
+            <div class="step-content">
+              <div class="step-name">{{ step.title }}</div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="ai-tools-info">
+          <div class="ai-status" :class="{ ready: aiStatus.isReady, loading: aiBusy }">
+            <AppIcon :name="aiBusy ? 'mdi-loading' : aiStatus.isReady ? 'mdi-check-circle' : 'mdi-alert-circle'" :class="{ spinning: aiBusy }" />
+            <span>{{ aiBusy ? 'Processing...' : aiStatus.isReady ? 'AI Ready' : 'Configure API Key' }}</span>
+          </div>
+          <p class="text-muted mt-2 text-sm">Use AI to analyze and enhance your documents</p>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="glass-surface rounded-lg p-xl overflow-hidden">
+        <!-- Step 0: Job Target - What do you want? -->
+        <div v-if="currentWorkflowStep === 0" class="layout-stack layout-stack--xl max-w-4xl mx-auto">
+          <div class="text-center layout-stack layout-stack--lg">
+            <div class="flex justify-center text-primary mb-lg">
+              <AppIcon name="mdi-target" size="48" />
+            </div>
+            <h2 class="text-3xl font-bold text-primary mb-md font-display">What job are you targeting?</h2>
+            <p class="text-lg text-secondary max-w-2xl mx-auto leading-relaxed">
+              Help us understand your career goals so we can tailor your documents perfectly. 
+              Paste a job description or tell us about your dream role.
+            </p>
+          </div>
+
+          <div class="layout-stack layout-stack--lg max-w-3xl mx-auto">
+            <!-- Job Description Input with AI parsing -->
+            <div class="layout-stack layout-stack--sm">
+              <label class="layout-inline layout-inline--sm font-semibold text-primary text-base">
+                <AppIcon name="mdi-briefcase-search" />
+                Job Description or Company Info
+              </label>
+              <textarea
+                v-model="jobDescription"
+                class="w-full p-md border-2 border-base rounded-md bg-surface-base text-primary font-primary text-base leading-normal resize-vertical transition-all duration-150 focus:outline-none focus:border-primary focus:ring-3 focus:ring-primary/10"
+                rows="8"
+                placeholder="Paste the full job description here, or describe the role you're targeting..."
+                @input="handleJobDescriptionChange"
+              />
+              <div class="text-sm text-secondary mt-sm">
+                💡 The more details you provide, the better we can tailor your documents to match!
+              </div>
+            </div>
+
+            <!-- AI-powered job insights -->
+            <div v-if="jobDescription.trim() && aiStatus.isReady" class="glass-surface-elevated border border-base rounded-lg p-lg">
+              <div class="layout-inline layout-inline--sm mb-md font-semibold text-primary">
+                <AppIcon name="mdi-brain" />
+                <span>AI Insights</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+                <div class="glass-surface-container border border-base rounded-md p-md">
+                  <div class="text-xs font-semibold text-secondary uppercase tracking-wide mb-xs">Key Skills Required</div>
+                  <div class="text-sm text-primary font-medium">{{ extractedJobInfo.skills?.join(', ') || 'Analyzing...' }}</div>
+                </div>
+                <div class="glass-surface-container border border-base rounded-md p-md">
+                  <div class="text-xs font-semibold text-secondary uppercase tracking-wide mb-xs">Company</div>
+                  <div class="text-sm text-primary font-medium">{{ extractedJobInfo.company || 'Not specified' }}</div>
+                </div>
+                <div class="glass-surface-container border border-base rounded-md p-md">
+                  <div class="text-xs font-semibold text-secondary uppercase tracking-wide mb-xs">Role Level</div>
+                  <div class="text-sm text-primary font-medium">{{ extractedJobInfo.level || 'Analyzing...' }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick start options -->
+            <div class="layout-stack layout-stack--md">
+              <div class="text-center">
+                <h3 class="text-lg text-primary mb-lg">Or choose a quick start:</h3>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+                <button class="btn-base glass-surface-elevated border-2 border-base rounded-lg p-lg layout-stack layout-stack--sm items-center text-primary font-medium cursor-pointer transition-all duration-150 hover:border-primary hover:transform hover:-translate-y-1 hover:shadow-lg hover:bg-surface-base" @click="selectQuickStart('software-engineer')">
+                  <AppIcon name="mdi-code-tags" />
+                  <span>Software Engineer</span>
+                </button>
+                <button class="btn-base glass-surface-elevated border-2 border-base rounded-lg p-lg layout-stack layout-stack--sm items-center text-primary font-medium cursor-pointer transition-all duration-150 hover:border-primary hover:transform hover:-translate-y-1 hover:shadow-lg hover:bg-surface-base" @click="selectQuickStart('product-manager')">
+                  <AppIcon name="mdi-chart-line" />
+                  <span>Product Manager</span>
+                </button>
+                <button class="btn-base glass-surface-elevated border-2 border-base rounded-lg p-lg layout-stack layout-stack--sm items-center text-primary font-medium cursor-pointer transition-all duration-150 hover:border-primary hover:transform hover:-translate-y-1 hover:shadow-lg hover:bg-surface-base" @click="selectQuickStart('designer')">
+                  <AppIcon name="mdi-palette" />
+                  <span>Designer</span>
+                </button>
+                <button class="btn-base glass-surface-elevated border-2 border-base rounded-lg p-lg layout-stack layout-stack--sm items-center text-primary font-medium cursor-pointer transition-all duration-150 hover:border-primary hover:transform hover:-translate-y-1 hover:shadow-lg hover:bg-surface-base" @click="selectQuickStart('marketing')">
+                  <AppIcon name="mdi-megaphone" />
+                  <span>Marketing</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 1: Resume Building -->
+        <div v-else-if="currentWorkflowStep === 1" class="guided-step">
+          <div class="step-header">
+            <div class="step-icon">
+              <AppIcon name="mdi-file-document-edit" size="48" />
+            </div>
+            <h2 class="step-title">Let's build your resume</h2>
+            <p class="step-description">
+              We'll create a professional resume tailored for {{ extractedJobInfo.company || 'your target role' }}.
+              <span v-if="!hasProfileData">First, let's import your existing information to save time!</span>
+            </p>
+          </div>
+
+          <div class="step-content">
+            <!-- Profile Import Option -->
+            <div v-if="!hasProfileData" class="profile-import-card">
+              <div class="import-header">
+                <AppIcon name="mdi-account-plus" />
+                <h3>Import Your Profile</h3>
+                <p>Save time by importing your existing information</p>
+              </div>
+              <div class="import-actions">
+                <UnifiedButton
+                  variant="primary"
+                  leading-icon="mdi-account"
+                  @click="importFromProfile"
+                >
+                  Import from User Profile
+                </UnifiedButton>
+                <UnifiedButton
+                  variant="outline"
+                  leading-icon="mdi-file-upload"
+                  @click="handleResumeUpload"
+                >
+                  Upload Existing Resume
+                </UnifiedButton>
+                <UnifiedButton
+                  variant="ghost"
+                  @click="skipProfileImport"
+                >
+                  Start from scratch
+                </UnifiedButton>
+              </div>
+            </div>
+
+            <!-- Resume Building Form -->
+            <SmartFormGrid
+              v-if="resumeStep <= 2"
+              :model-value="smartFormData"
+              :section="resumeStep === 1 ? 'personal' : 'summary'"
+              :ai-enabled="aiStatus.isReady"
+              :show-profile-import="resumeStep === 1 && !hasProfileData"
+              @update:model-value="updateSmartFormData"
+              @import-profile="importFromProfile"
+              @ai-generate="handleSmartAIGenerate"
+            />
+            <ResumeWorkflow
+              v-else
+              v-model:resume-data="resumeData"
+              v-model:current-step="resumeStep"
+              :ai-enabled="aiStatus.isReady"
+              :use-role-in-summary="useRoleInSummary"
+              @toggle-role-summary="toggleUseRoleSummary"
+              @request-ai-assistance="handleAIRequest"
+              @export="handleExport"
+            />
+          </div>
+        </div>
+
+        <!-- Step 2: Cover Letter -->
+        <div v-else-if="currentWorkflowStep === 2" class="guided-step">
+          <div class="step-header">
+            <div class="step-icon">
+              <AppIcon name="mdi-email-edit" size="48" />
+            </div>
+            <h2 class="step-title">Write your cover letter</h2>
+            <p class="step-description">
+              Now let's create a compelling cover letter that complements your resume and shows your passion for {{ extractedJobInfo.company || 'the role' }}.
+            </p>
+          </div>
+
+          <div class="step-content">
+            <CoverLetterWorkflow
+              v-model:cover-letter-data="coverLetterData"
+              v-model:current-step="coverLetterStep"
+              v-model:job-description="jobDescription"
+              :ai-enabled="aiStatus.isReady"
+              :linked-resume="resumeData"
+              @request-ai-assistance="handleAIRequest"
+              @export="handleExport"
+            />
+          </div>
+        </div>
+
+        <!-- Step 3: AI Enhancement -->
+        <div v-else-if="currentWorkflowStep === 3" class="guided-step">
+          <div class="step-header">
+            <div class="step-icon">
+              <AppIcon name="mdi-brain" size="48" />
+            </div>
+            <h2 class="step-title">AI Enhancement & Optimization</h2>
+            <p class="step-description">
+              Let's use AI to optimize your documents for maximum impact and ATS compatibility.
+            </p>
+          </div>
+
+          <div class="step-content">
+            <AIToolsPanel
+              v-model:job-description="jobDescription"
+              :resume-data="resumeData"
+              :cover-letter-data="coverLetterData"
+              @apply-suggestions="handleAISuggestions"
+              @parse-resume="handleResumeparse"
+              @tailor-documents="handleDocumentTailoring"
+            />
+          </div>
+        </div>
+
+        <!-- Step 4: Export & Templates -->
+        <div v-else-if="currentWorkflowStep === 4" class="guided-step">
+          <div class="step-header">
+            <div class="step-icon">
+              <AppIcon name="mdi-download" size="48" />
+            </div>
+            <h2 class="step-title">Choose your template & export</h2>
+            <p class="step-description">
+              Your documents are ready! Choose a professional template and download your tailored resume and cover letter.
+            </p>
+          </div>
+
+          <div class="step-content">
+            <!-- Template selection and export options would go here -->
+            <div class="export-section">
+              <div class="export-grid">
+                <UnifiedButton
+                  variant="primary"
+                  size="lg"
+                  leading-icon="mdi-download"
+                  @click="handleExport('pdf')"
+                >
+                  Download PDF
+                </UnifiedButton>
+                <UnifiedButton
+                  variant="outline"
+                  leading-icon="mdi-file-word"
+                  @click="handleExport('docx')"
+                >
+                  Download Word
+                </UnifiedButton>
+                <UnifiedButton
+                  variant="ghost"
+                  leading-icon="mdi-eye"
+                  @click="showPreview = true"
+                >
+                  Preview Documents
+                </UnifiedButton>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-footer">
+          <div class="progress-info">
+            <div class="progress-bar-container">
+              <div class="progress-bar">
+                <div class="progress-fill" :style="{ width: currentProgress + '%' }"></div>
+              </div>
+            </div>
+            <span class="progress-text">{{ getProgressText() }}</span>
+          </div>
+          <div class="nav-buttons">
+            <UnifiedButton
+              variant="glass"
+              size="sm"
+              leading-icon="mdi-arrow-left"
+              :disabled="!canGoPrev"
+              @click="goPrevStep"
+            >
+              Previous
+            </UnifiedButton>
+            <UnifiedButton
+              v-if="activeTab !== 'ai-tools'"
+              variant="primary"
+              size="sm"
+              trailing-icon="mdi-arrow-right"
+              :disabled="!canGoNext"
+              @click="goNextStep"
+            >
+              Continue to {{ getNextStepName() }}
+            </UnifiedButton>
+          </div>
+        </div>
+      </main>
+      
+      <!-- Right Sidebar -->
+      <aside class="right-sidebar">
+        <!-- Collaboration Panel -->
+        <CollaborationPanel
+          :document-id="documentId"
+          :user-role="userRole"
+          @restore-version="restoreVersion"
+          @compare-version="compareVersion"
+          @apply-changes="applyCollaborationChanges"
+        />
+        
+        <!-- Live Preview Panel -->
+        <LivePreviewPanel
+          :resume-data="previewResumeData"
+          :cover-letter-data="coverLetterData"
+          :document-type="documentType"
+          :selected-template="selectedTemplate"
+          :job-description="jobDescription"
+          :is-sticky="true"
+          @template-change="selectTemplate"
+          @toggle-floating="toggleFloatingPreview"
+        />
+        
+        <!-- Template Selector -->
+        <div class="sidebar-card glass-surface">
+          <h4 class="sidebar-card-title">
+            <AppIcon name="mdi-palette-outline" />
+            Templates
+          </h4>
+          <div class="template-grid">
+            <div
+              v-for="tpl in templates"
+              :key="tpl.id"
+              class="template-item"
+              :class="{ selected: selectedTemplate === tpl.id }"
+              @click="selectTemplate(tpl.id)"
+            >
+              <div class="template-preview" :class="`preview-${tpl.id}`"></div>
+              <div class="template-name">{{ tpl.name }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Settings -->
+        <div class="sidebar-card glass-surface">
+          <h4 class="sidebar-card-title">
+            <AppIcon name="mdi-tune-vertical-variant" />
+            AI Settings
+          </h4>
+          <div class="ai-setting">
+            <div class="setting-label">Tone</div>
+            <select v-model="aiConfig.tone" class="setting-select glass-input">
+              <option value="professional">Professional</option>
+              <option value="friendly">Friendly</option>
+              <option value="impactful">Confident</option>
+            </select>
+          </div>
+          <div class="ai-setting">
+            <div class="setting-label">Creativity</div>
+            <select v-model="aiConfig.level" class="setting-select glass-input">
+              <option value="conservative">Conservative</option>
+              <option value="balanced">Balanced</option>
+              <option value="creative">Creative</option>
+            </select>
+          </div>
+          <div class="ai-setting">
+            <div class="setting-label">Focus</div>
+            <select v-model="aiConfig.focus" class="setting-select glass-input">
+              <option value="ats">ATS Optimized</option>
+              <option value="recruiter">Recruiter Friendly</option>
+              <option value="balanced">Balanced</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Document Stats -->
+        <div class="sidebar-card glass-surface">
+          <h4 class="sidebar-card-title">
+            <AppIcon name="mdi-chart-line" />
+            Document Stats
+          </h4>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-value">{{ resumeWordCount }}</div>
+              <div class="stat-label">Words</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">{{ skillsCount }}</div>
+              <div class="stat-label">Skills</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">{{ Math.round(currentProgress) }}%</div>
+              <div class="stat-label">Complete</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">{{ experienceCount }}</div>
+              <div class="stat-label">Sections</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Keep existing modals and overlays -->
+
+
+    <!-- Modals and Overlays -->
+    <DocumentPreviewModal
+      v-if="showPreview"
+      :show="showPreview"
+      :document-type="activeTab"
+      :resume-data="resumeData"
+      :cover-letter-data="coverLetterData"
+      @close="showPreview = false"
+      @export="handleExport"
+    />
+
+    <AIAssistantModal
+      v-if="showAIModal"
+      :show="showAIModal"
+      :context="aiModalContext"
+      @close="showAIModal = false"
+      @apply="handleAIModalResult"
+    />
+
+    <!-- Removed floating quick action bar: redundant with header actions and global fairy chat -->
+
+    <!-- Mobile bottom step navigation -->
+    <div v-if="activeTab === 'resume'" class="mobile-step-nav d-md-none">
+      <button class="nav-btn" :disabled="resumeStep <= 1" @click="resumeStep = Math.max(1, resumeStep - 1)">
+        <AppIcon name="mdi-chevron-left" />
+        <span>Prev</span>
+      </button>
+      <div class="step-center">
+        <div class="step-title">{{ currentStepTitle }}</div>
+      </div>
+      <button class="nav-btn" :disabled="resumeStep >= RESUME_MAX" @click="resumeStep = Math.min(RESUME_MAX, resumeStep + 1)">
+        <span>Next</span>
+        <AppIcon name="mdi-chevron-right" />
+      </button>
+    </div>
+
+    <!-- AI Change Review Modal with inline diff -->
+    <v-dialog v-model="showChangeReview" max-width="900">
+      <v-card>
+        <v-card-title class="d-flex align-center">
+          <AppIcon name="mdi-compare" class="me-2" />
+          Review AI Change
+        </v-card-title>
+        <v-card-text>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <h6 class="text-muted">Current</h6>
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <div class="diff-box" v-html="currentDiffHtml"></div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-muted">Proposed</h6>
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <div class="diff-box" v-html="proposedDiffHtml"></div>
+            </div>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="rejectPendingChange">Cancel</v-btn>
+          <v-btn color="primary" @click="acceptPendingChange">Apply Changes</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    
+    <!-- Initial Choice Modal -->
+    <v-dialog v-model="showDocChoice" max-width="540">
+      <v-card>
+        <v-card-title class="d-flex align-center">
+          <AppIcon name="mdi-playlist-check" class="me-2" />
+          What would you like to build?
+        </v-card-title>
+        <v-card-text>
+          <p class="text-muted mb-3">Pick a starting point. You can switch tabs anytime.</p>
+          <div class="d-flex flex-column gap-2">
+            <v-btn color="primary" variant="tonal" @click="chooseDocument('resume')">
+              <AppIcon name="mdi-file-document-edit-outline" class="me-2" />
+              Build a Resume
+            </v-btn>
+            <v-btn color="secondary" variant="tonal" @click="chooseDocument('cover-letter')">
+              <AppIcon name="mdi-email-edit" class="me-2" />
+              Build a Cover Letter
+            </v-btn>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="showDocChoice = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Template Preview Modal -->
+    <v-dialog v-model="showTemplatePreview" max-width="720">
+      <v-card>
+        <v-card-title class="d-flex align-center">
+          <AppIcon name="mdi-palette-outline" class="me-2" />
+          Template Preview — {{ (templates.find(t => t.id === selectedTemplate) || {}).name || selectedTemplate }}
+        </v-card-title>
+        <v-card-text>
+          <div class="thumb-canvas large" :class="`preview-${selectedTemplate}`" style="width: 100%;"></div>
+          <p class="text-muted mt-3">This is a visual preview. Final output depends on content length and printer/PDF styles.</p>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="showTemplatePreview = false">Close</v-btn>
+          <v-btn color="primary" @click="showTemplatePreview = false">Use This Template</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </StandardPageLayout>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, watch, onMounted, onUnmounted, reactive, nextTick } from 'vue'
+import { debounce } from 'lodash-es'
+import { useAppStore } from '@/stores/app'
+import { useToast } from '@/composables/useToast'
+import { aiService } from '@/shared/services/AIService'
+import { aiJobService } from '@/services/AIJobService'
+import { aiResumeTargetingService } from '@/services/AIResumeTargetingService'
+import { enhancedSkillExtractor } from '@/shared/services/EnhancedSkillExtractor'
+import { logger } from '@/shared/utils/logger'
+import DOMPurify from 'dompurify'
+import { usePageAssistantContext } from '@/composables/usePageAssistantContext'
+import { useDocumentShortcuts } from '@/composables/useDocumentShortcuts'
+
+// Components
+import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
+import PageHeader from '@/components/ui/PageHeader.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import ResumeWorkflow from '@/components/document/ResumeWorkflow.vue'
+import CoverLetterWorkflow from '@/components/document/CoverLetterWorkflow.vue'
+import AIToolsPanel from '@/components/document/AIToolsPanel.vue'
+import DocumentPreviewModal from '@/components/document/DocumentPreviewModal.vue'
+import AIAssistantModal from '@/components/document/AIAssistantModal.vue'
+import SmartFormGrid from '@/components/document/SmartFormGrid.vue'
+import LivePreviewPanel from '@/components/document/LivePreviewPanel.vue'
+import CollaborationPanel from '@/components/document/CollaborationPanel.vue'
+
+// Types
+type Experience = { 
+  title?: string; 
+  company?: string; 
+  description?: string; 
+  __proposal?: string;
+  startDate?: string;
+  endDate?: string;
+  current?: boolean;
+}
+type Education = { institution?: string; degree?: string; description?: string }
+type Skill = { name: string }
+type Project = { description?: string }
+type Achievement = { description?: string }
+type Suggestion = { id?: string; text: string; category?: string; field?: string }
+type ResumeData = {
+  personalInfo: {
+    name: string
+    email: string
+    phone: string
+    location: string
+    website: string
+    linkedin: string
+    github: string
+  }
+  summary: string
+  experience: Experience[]
+  education: Education[]
+  skills: Skill[]
+  projects: Project[]
+  achievements: Achievement[]
+  certifications: string[]
+}
+type CoverLetterData = {
+  jobInfo: { company: string; position: string; hiringManager: string }
+  content: { opening: string; body: string; closing: string }
+  tone: string
+  focus: string
+}
+type PendingChange = {
+  type: 'summary' | 'experience' | 'cover'
+  proposed: string
+  current?: string
+  index?: number
+}
+type GenerateSummaryPayload = { type: 'generate-summary' }
+type EnhanceExperiencePayload = { type: 'enhance-experience'; data: Experience; index?: number }
+type SuggestSkillsPayload = { type: 'suggest-skills' }
+type AIRequestPayload = GenerateSummaryPayload | EnhanceExperiencePayload | SuggestSkillsPayload
+const store = useAppStore()
+// Theme is globally applied; no per-page theme binding needed
+const toast = useToast()
+
+// Use store's existing gamification instance
+const gamificationService = computed(() => (store as any)._gamify?.())
+
+// State
+const activeTab = ref('resume')
+const showDocChoice = ref(false)
+const resumeStep = ref(1)
+const coverLetterStep = ref(1)
+const showPreview = ref(false)
+  const showAIModal = ref(false)
+  const aiModalContext = ref<any>(null)
+const jobDescription = ref('')
+// Preference: include current role/company in previewed summary
+const useRoleInSummary = ref(true)
+try {
+  const savedPref = localStorage.getItem('navi-resume-use-role-summary')
+  if (savedPref !== null) useRoleInSummary.value = savedPref === 'true'
+} catch {}
+const aiBusy = ref(false)
+const pendingChange = ref<PendingChange | null>(null)
+const showChangeReview = ref(false)
+const showLivePreview = ref(false)
+const leftPaneWidth = ref(58) // percent
+  const splitViewRef = ref<HTMLElement | null>(null)
+let isResizing = false
+const saving = ref(false)
+const lastSavedTs = ref<number | null>(null)
+const selectedTemplate = ref<string>('classic')
+const showTemplatePreview = ref(false)
+const templates = [
+  { id: 'classic', name: 'Classic' },
+  { id: 'modern', name: 'Modern' },
+  { id: 'elegant', name: 'Elegant' },
+  { id: 'compact', name: 'Compact' }
+]
+// Export preferences
+const selectedExportFormat = ref<'pdf' | 'docx' | 'json' | 'html' | 'markdown'>('pdf')
+const lastExportFormat = ref<string>('PDF')
+const documentType = computed<"resume" | "cover-letter">(() =>
+  activeTab.value === 'cover-letter' ? 'cover-letter' : 'resume'
+)
+const useTokenPreview = ref<boolean>(true)
+const uploading = ref(false)
+// Assistant page context
+const { setPageContext, clearPageContext } = usePageAssistantContext()
+
+function pushAssistantContext() {
+  const resumeStepTitle = (resumeStepList.find(s => s.id === resumeStep.value)?.title) || ''
+  const coverStepTitle = (coverLetterStepList.find(s => s.id === coverLetterStep.value)?.title) || ''
+  setPageContext({
+    page: 'documents',
+    activeTab: activeTab.value,
+    resumeStep: resumeStep.value,
+    resumeStepTitle,
+    coverLetterStep: coverLetterStep.value,
+    coverLetterStepTitle: coverStepTitle,
+    selectedTemplate: selectedTemplate.value,
+    jobDescription: jobDescription.value,
+    progress: {
+      resume: Math.round(resumeProgress.value),
+      coverLetter: Math.round(coverLetterProgress.value),
+      atsMatch: Math.round(atsMatchScore.value),
+    },
+  })
+}
+
+onMounted(pushAssistantContext)
+watch([activeTab, resumeStep, coverLetterStep, selectedTemplate, jobDescription], pushAssistantContext)
+onUnmounted(() => { clearPageContext() })
+type VersionSnap = { id: string; ts: number; label: string; jobHash?: number; resume: any; cover: any }
+const versions = ref<VersionSnap[]>([])
+// (Removed unused versionFilter ref – add back when version filtering UI returns)
+
+// Document Data
+let resumeData = reactive<ResumeData>({
+  personalInfo: {
+    name: '',
+    email: '',
+    phone: '',
+    location: '',
+    website: '',
+    linkedin: '',
+    github: ''
+  },
+  summary: '',
+  experience: [],
+  education: [],
+  skills: [],
+  projects: [],
+  achievements: [],
+  certifications: []
+})
+
+let coverLetterData = reactive<CoverLetterData>({
+  jobInfo: {
+    company: '',
+    position: '',
+    hiringManager: ''
+  },
+  content: {
+    opening: '',
+    body: '',
+    closing: ''
+  },
+  tone: 'professional',
+  focus: 'experience'
+})
+
+// AI Features
+const aiStatus = computed(() => ({
+  isReady: !!(store.settings?.geminiApiKey || store.settings?.openaiApiKey),
+  model: store.settings?.selectedModel || 'gemini-2.5-flash'
+}))
+
+const aiSuggestions = ref<Array<{ id: string; text: string; category?: string; field?: string }>>([])
+const aiConfig = reactive({ tone: 'professional', level: 'balanced', focus: 'ats' })
+
+// Step index lists (mirrors child workflows for navigation)
+const resumeStepList = [
+  { id: 1, title: 'Personal Info' },
+  { id: 2, title: 'Summary' },
+  { id: 3, title: 'Experience' },
+  { id: 4, title: 'Education' },
+  { id: 5, title: 'Skills' },
+  { id: 6, title: 'Review & Export' },
+]
+const coverLetterStepList = [
+  { id: 1, title: 'Job Info' },
+  { id: 2, title: 'Style' },
+  { id: 3, title: 'Opening' },
+  { id: 4, title: 'Body' },
+  { id: 5, title: 'Closing' },
+  { id: 6, title: 'Review & Export' },
+]
+
+// Unified Workflow State
+
+// Unified Steps Configuration
+const unifiedSteps = computed(() => [
+  {
+    id: 'personal',
+    title: 'Personal Information',
+    description: 'Add your contact details and basic information',
+    icon: 'mdi-account',
+    completed: !!(resumeData.personalInfo.name && resumeData.personalInfo.email),
+    available: true,
+    type: 'resume'
+  },
+  {
+    id: 'summary',
+    title: 'Professional Summary',
+    description: 'Write a compelling professional summary',
+    icon: 'mdi-text-box',
+    completed: !!resumeData.summary,
+    available: !!(resumeData.personalInfo.name && resumeData.personalInfo.email),
+    type: 'resume'
+  },
+  {
+    id: 'experience',
+    title: 'Work Experience',
+    description: 'Add your professional work experience',
+    icon: 'mdi-briefcase',
+    completed: resumeData.experience.length > 0,
+    available: !!resumeData.summary,
+    type: 'resume'
+  },
+  {
+    id: 'education',
+    title: 'Education',
+    description: 'Add your educational background',
+    icon: 'mdi-school',
+    completed: resumeData.education.length > 0,
+    available: resumeData.experience.length > 0,
+    type: 'resume'
+  },
+  {
+    id: 'skills',
+    title: 'Skills & Technologies',
+    description: 'List your technical and professional skills',
+    icon: 'mdi-tools',
+    completed: resumeData.skills.length > 0,
+    available: resumeData.education.length > 0,
+    type: 'resume'
+  },
+  {
+    id: 'projects',
+    title: 'Projects & Portfolio',
+    description: 'Showcase your projects and achievements',
+    icon: 'mdi-folder-multiple',
+    completed: resumeData.projects.length > 0,
+    available: resumeData.skills.length > 0,
+    type: 'resume'
+  },
+  {
+    id: 'job-info',
+    title: 'Target Job Information',
+    description: 'Specify the job and company you\'re applying to',
+    icon: 'mdi-target',
+    completed: !!(coverLetterData.jobInfo.company && coverLetterData.jobInfo.position),
+    available: resumeData.projects.length > 0,
+    type: 'cover-letter'
+  },
+  {
+    id: 'cover-letter',
+    title: 'Cover Letter Content',
+    description: 'Write your personalized cover letter',
+    icon: 'mdi-email-edit',
+    completed: !!(coverLetterData.content.opening && coverLetterData.content.body && coverLetterData.content.closing),
+    available: !!(coverLetterData.jobInfo.company && coverLetterData.jobInfo.position),
+    type: 'cover-letter'
+  },
+  {
+    id: 'ai-enhance',
+    title: 'AI Enhancement',
+    description: 'Use AI to optimize and tailor your documents',
+    icon: 'mdi-brain',
+    completed: false,
+    available: !!(coverLetterData.content.opening && coverLetterData.content.body),
+    type: 'ai-tools'
+  }
+])
+
+// Unified Workflow Computed Properties
+const canPreview = computed(() => resumeData.personalInfo.name && resumeData.summary)
+const canExport = computed(() => unifiedSteps.value.filter(step => step.type !== 'ai-tools').every(step => step.completed))
+
+// Track document completion for achievements
+
+
+// ===== ATS: expanded signals =====
+// (Removed STOPWORDS constant – no longer needed without tokenization logic)
+// (Removed unused tokenize helper – reintroduce for future keyword analytics)
+
+// (Removed unused resumeAllTokens computed – can be reintroduced when keyword analytics UI is added)
+
+const atsMatchScore = computed(() => {
+  if (!jobDescription.value) return 0
+  const jd = jobDescription.value.toLowerCase()
+  const skills = ((resumeData.skills || []) as Skill[]).map((s: Skill) => (s.name || '').toLowerCase()).filter(Boolean)
+  if (!skills.length) return 0
+  const hits = skills.reduce((acc, s) => acc + (jd.includes(s) ? 1 : 0), 0)
+  return Math.min(100, Math.round((hits / skills.length) * 100))
+})
+
+// Document Tabs Configuration
+const workflowSteps = computed(() => [
+  {
+    key: 'job-target',
+    label: 'Job Target',
+    subtitle: 'Define your goal',
+    icon: 'mdi-target',
+    completed: !!jobDescription.value?.trim(),
+    available: true
+  },
+  {
+    key: 'resume',
+    label: 'Resume',
+    subtitle: 'Build your resume',
+    icon: 'mdi-file-document-edit-outline',
+    completed: resumeProgress.value >= 80,
+    available: true
+  },
+  {
+    key: 'cover-letter',
+    label: 'Cover Letter', 
+    subtitle: 'Write your letter',
+    icon: 'mdi-email-edit-outline',
+    completed: coverLetterProgress.value >= 80,
+    available: resumeProgress.value >= 50
+  },
+  {
+    key: 'ai-enhance',
+    label: 'AI Enhancement',
+    subtitle: 'Optimize with AI',
+    icon: 'mdi-brain',
+    completed: false, // Could track AI optimization completion
+    available: resumeProgress.value >= 50 && coverLetterProgress.value >= 50
+  },
+  {
+    key: 'export',
+    label: 'Export',
+    subtitle: 'Download documents',
+    icon: 'mdi-download',
+    completed: false,
+    available: resumeProgress.value >= 80 || coverLetterProgress.value >= 80
+  }
+])
+
+const currentWorkflowStep = ref(0)
+const maxAvailableStep = computed(() => {
+  for (let i = 0; i < workflowSteps.value.length; i++) {
+    if (!workflowSteps.value[i].available) {
+      return Math.max(0, i - 1)
+    }
+  }
+  return workflowSteps.value.length - 1
+})
+
+const overallProgress = computed(() => {
+  const completedSteps = workflowSteps.value.filter(step => step.completed).length
+  return (completedSteps / workflowSteps.value.length) * 100
+})
+
+// Enhanced job analysis and AI integration
+const extractedJobInfo = ref({
+  company: '',
+  role: '',
+  skills: [],
+  level: '',
+  requirements: []
+})
+
+// Simple debounce helper
+function debounce(func: Function, wait: number) {
+  let timeout: NodeJS.Timeout
+  return function executedFunction(...args: any[]) {
+    const later = () => {
+      clearTimeout(timeout)
+      func(...args)
+    }
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+  }
+}
+
+// Real AI job parsing using existing services
+async function parseJobDescriptionWithAI(jobText: string) {
+  try {
+    // Use the existing AIJobService for job analysis
+    const jobAnalysis = await aiJobService.analyzeJobPosting({
+      jobDescription: jobText,
+      includeSkillExtraction: true,
+      includeCompanyResearch: true,
+      includeSalaryAnalysis: false // Don't need salary for document builder
+    })
+
+    // Also use the enhanced skill extractor
+    const extractedSkills = await enhancedSkillExtractor.extractSkills(jobText)
+
+    // Combine results from both services
+    return {
+      company: jobAnalysis.company || extractCompanyName(jobText),
+      role: jobAnalysis.title || jobAnalysis.role || extractRoleName(jobText),
+      skills: extractedSkills.skills?.slice(0, 8) || extractSkills(jobText),
+      level: jobAnalysis.level || extractLevel(jobText),
+      requirements: jobAnalysis.requirements || [],
+      matchScore: jobAnalysis.matchScore || 0,
+      keySkills: extractedSkills.keySkills || [],
+      technicalSkills: extractedSkills.technicalSkills || [],
+      softSkills: extractedSkills.softSkills || []
+    }
+  } catch (error) {
+    logger.warn('AI job analysis failed, falling back to text parsing:', error)
+    
+    // Fallback to text parsing if AI fails
+    return {
+      company: extractCompanyName(jobText),
+      role: extractRoleName(jobText),
+      skills: extractSkills(jobText),
+      level: extractLevel(jobText),
+      requirements: extractRequirements(jobText),
+      matchScore: 0,
+      keySkills: [],
+      technicalSkills: [],
+      softSkills: []
+    }
+  }
+}
+
+// Fallback text extraction helpers
+function extractCompanyName(text: string): string {
+  const companyPatterns = [
+    /(?:at|@)\s+([A-Z][a-zA-Z\s&,.]+?)(?:\s|$|,|\.|!)/,
+    /([A-Z][a-zA-Z\s&,.]+?)\s+is\s+(?:looking|seeking|hiring)/,
+    /join\s+(?:the\s+)?([A-Z][a-zA-Z\s&,.]+?)(?:\s+team|\s|$)/i
+  ]
+  
+  for (const pattern of companyPatterns) {
+    const match = text.match(pattern)
+    if (match && match[1]) {
+      return match[1].trim()
+    }
+  }
+  return 'Company'
+}
+
+function extractRoleName(text: string): string {
+  const rolePatterns = [
+    /(?:position|role|job):\s*([^.\n]+)/i,
+    /hiring\s+(?:a\s+)?([^.\n,]+)/i,
+    /seeking\s+(?:a\s+)?([^.\n,]+)/i
+  ]
+  
+  for (const pattern of rolePatterns) {
+    const match = text.match(pattern)
+    if (match && match[1]) {
+      return match[1].trim()
+    }
+  }
+  return 'Software Engineer'
+}
+
+function extractSkills(text: string): string[] {
+  const commonSkills = [
+    'JavaScript', 'Python', 'React', 'Node.js', 'SQL', 'AWS', 'Docker', 'Git',
+    'TypeScript', 'Vue', 'Angular', 'MongoDB', 'PostgreSQL', 'Redis', 'GraphQL',
+    'REST API', 'Microservices', 'Kubernetes', 'Jenkins', 'CI/CD', 'Agile', 'Scrum'
+  ]
+  
+  return commonSkills.filter(skill => 
+    text.toLowerCase().includes(skill.toLowerCase())
+  ).slice(0, 8)
+}
+
+function extractLevel(text: string): string {
+  const levelKeywords = {
+    'Senior': ['senior', '5+ years', '6+ years', '7+ years', 'lead', 'principal'],
+    'Mid-level': ['3-5 years', '4+ years', 'mid-level', 'intermediate'],
+    'Junior': ['junior', 'entry', '1-2 years', '0-2 years', 'new grad', 'recent graduate'],
+    'Staff': ['staff', 'principal', 'architect', '8+ years', '10+ years']
+  }
+  
+  const textLower = text.toLowerCase()
+  
+  for (const [level, keywords] of Object.entries(levelKeywords)) {
+    if (keywords.some(keyword => textLower.includes(keyword))) {
+      return level
+    }
+  }
+  
+  return 'Mid-level'
+}
+
+function extractRequirements(text: string): string[] {
+  const requirementSections = text.match(/(?:requirements?|qualifications?|skills?):[\s\S]*?(?=\n\n|\n[A-Z]|$)/gi)
+  if (requirementSections && requirementSections[0]) {
+    return requirementSections[0]
+      .split(/\n/)
+      .filter(line => line.trim().length > 10)
+      .slice(1, 6)
+      .map(req => req.replace(/^[-•*]\s*/, '').trim())
+  }
+  return []
+}
+
+const handleJobDescriptionChange = debounce(async () => {
+  if (jobDescription.value.trim() && aiStatus.value.isReady) {
+    try {
+      const insights = await parseJobDescriptionWithAI(jobDescription.value)
+      extractedJobInfo.value = insights
+    } catch (error) {
+      console.error('Job analysis failed:', error)
+    }
+  }
+}, 500)
+
+// AI Resume Enhancement
+const enhanceResumeWithAI = async () => {
+  if (!aiStatus.value.isReady) return
+
+  try {
+    const result = await aiResumeTargetingService.tailorResumeToJob({
+      resume: resumeData,
+      jobDescription: jobDescription.value,
+      targetSkills: extractedJobInfo.value.skills || [],
+      optimizationLevel: 'comprehensive'
+    })
+
+    if (result.success && result.tailoredResume) {
+      // Apply AI suggestions to resume
+      result.tailoredResume.sections.forEach(section => {
+        if (section.type === 'summary' && section.tailoredContent) {
+          resumeData.summary = section.tailoredContent
+        }
+        // Apply other section improvements
+      })
+      
+      toast.success('Resume enhanced with AI suggestions!')
+    }
+  } catch (error) {
+    console.error('AI resume enhancement failed:', error)
+    toast.error('Failed to enhance resume with AI')
+  }
+}
+
+const selectQuickStart = (type: string) => {
+  const templates = {
+    'software-engineer': {
+      company: 'Tech Company',
+      role: 'Software Engineer',
+      skills: ['JavaScript', 'React', 'Node.js', 'Python', 'SQL'],
+      level: 'Mid-level',
+      jobDescription: 'We are looking for a passionate Software Engineer to join our growing team...'
+    },
+    'product-manager': {
+      company: 'Product Company',
+      role: 'Product Manager',
+      skills: ['Product Strategy', 'Analytics', 'Agile', 'Leadership', 'SQL'],
+      level: 'Senior',
+      jobDescription: 'Seeking an experienced Product Manager to drive product strategy and execution...'
+    },
+    'designer': {
+      company: 'Design Studio',
+      role: 'UX/UI Designer',
+      skills: ['Figma', 'User Research', 'Prototyping', 'Design Systems', 'Adobe Creative Suite'],
+      level: 'Mid-level',
+      jobDescription: 'Looking for a creative UX/UI Designer to craft amazing user experiences...'
+    },
+    'marketing': {
+      company: 'Marketing Agency',
+      role: 'Marketing Manager',
+      skills: ['Digital Marketing', 'Analytics', 'Content Strategy', 'SEO', 'Social Media'],
+      level: 'Mid-level',
+      jobDescription: 'We need a Marketing Manager to develop and execute marketing strategies...'
+    }
+  }
+
+  const template = templates[type]
+  if (template) {
+    extractedJobInfo.value = template
+    jobDescription.value = template.jobDescription
+    // Auto-advance to next step
+    setTimeout(() => goToWorkflowStep(1), 500)
+  }
+}
+
+const skipProfileImport = () => {
+  hasProfileData.value = true // Mark as completed to hide the import card
+}
+
+const handleResumeUpload = () => {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = '.pdf,.doc,.docx'
+  input.style.display = 'none'
+  
+  input.onchange = async (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0]
+    if (!file) return
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('File size must be less than 5MB')
+      return
+    }
+    
+    // Validate file type
+    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Please upload a PDF or Word document')
+      return
+    }
+    
+    try {
+      uploading.value = true
+      
+      // Create FormData for file upload
+      const formData = new FormData()
+      formData.append('resume', file)
+      
+      // Simulate file parsing (in real app, would send to backend)
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // Mock parsed data - in real app this would come from OCR/parsing service
+      const parsedData = {
+        personalInfo: {
+          name: 'John Doe',
+          email: 'john.doe@example.com',
+          phone: '+1 (555) 123-4567',
+          location: 'San Francisco, CA',
+          website: 'https://johndoe.dev',
+          linkedin: 'https://linkedin.com/in/johndoe',
+          github: 'https://github.com/johndoe'
+        },
+        summary: 'Experienced software engineer with expertise in full-stack development and team leadership.',
+        experience: [
+          {
+            id: crypto.randomUUID(),
+            company: 'Tech Corp',
+            position: 'Senior Software Engineer',
+            startDate: '2020-01',
+            endDate: 'present',
+            description: 'Led development of scalable web applications serving millions of users.',
+            achievements: ['Improved performance by 40%', 'Mentored 5 junior developers']
+          }
+        ],
+        education: [
+          {
+            id: crypto.randomUUID(),
+            institution: 'University of Technology',
+            degree: 'Bachelor of Science in Computer Science',
+            startDate: '2016-09',
+            endDate: '2020-05',
+            gpa: '3.8',
+            honors: 'Magna Cum Laude'
+          }
+        ],
+        skills: ['JavaScript', 'Python', 'React', 'Node.js', 'AWS', 'Docker']
+      }
+      
+      // Update resume data
+      Object.assign(resumeData, parsedData)
+      
+      toast.success(`Resume "${file.name}" uploaded and parsed successfully!`)
+      
+      // Move to next step if we're on the first step
+      if (activeTab.value === 'resume' && resumeStep.value === 1) {
+        resumeStep.value = Math.min(RESUME_MAX, resumeStep.value + 1)
+      } else if (activeTab.value === 'cover-letter' && coverLetterStep.value === 1) {
+        coverLetterStep.value = Math.min(COVER_MAX, coverLetterStep.value + 1)
+      }
+      
+    } catch (error) {
+      console.error('Resume upload failed:', error)
+      toast.error('Failed to parse resume. Please try again or enter information manually.')
+    } finally {
+      uploading.value = false
+    }
+  }
+  
+  // Trigger file picker
+  document.body.appendChild(input)
+  input.click()
+  document.body.removeChild(input)
+}
+
+// Progress Calculations
+const resumeProgress = computed(() => {
+  let completed = 0
+  let total = 7
+
+  if (resumeData.personalInfo.name) completed++
+  if (resumeData.personalInfo.email) completed++
+  if (resumeData.summary) completed++
+  if (resumeData.experience.length > 0) completed++
+  if (resumeData.education.length > 0) completed++
+  if (resumeData.skills.length > 0) completed++
+  if (resumeData.projects.length > 0) completed++
+
+  return (completed / total) * 100
+})
+
+const coverLetterProgress = computed(() => {
+  let completed = 0
+  let total = 5
+
+  if (coverLetterData.jobInfo.company) completed++
+  if (coverLetterData.jobInfo.position) completed++
+  if (coverLetterData.content.opening) completed++
+  if (coverLetterData.content.body) completed++
+  if (coverLetterData.content.closing) completed++
+
+  return (completed / total) * 100
+})
+
+// Stats
+const resumeWordCount = computed(() => {
+  const text = [
+    resumeData.summary,
+  ...((resumeData.experience as Experience[]).map((exp) => exp.description || '')),
+  ...((resumeData.projects as Project[]).map((proj) => proj.description || '')),
+  ...((resumeData.achievements as Achievement[]).map((ach) => ach.description || ''))
+  ].join(' ')
+  return text.trim().split(/\s+/).length
+})
+
+const skillsCount = computed(() => (resumeData.skills as Skill[]).length)
+const experienceCount = computed(() => (resumeData.experience as Experience[]).length)
+
+// Methods
+// Workflow navigation
+const goToWorkflowStep = (stepIndex: number) => {
+  if (stepIndex <= maxAvailableStep.value && workflowSteps.value[stepIndex]?.available) {
+    currentWorkflowStep.value = stepIndex
+    
+    // Update activeTab based on workflow step
+    const step = workflowSteps.value[stepIndex]
+    if (step.key === 'job-target' || step.key === 'ai-enhance') {
+      activeTab.value = 'ai-tools'
+    } else if (step.key === 'resume') {
+      activeTab.value = 'resume'
+    } else if (step.key === 'cover-letter') {
+      activeTab.value = 'cover-letter'
+    } else if (step.key === 'export') {
+      // Could show a dedicated export view or default to resume
+      activeTab.value = 'resume'
+    }
+  }
+}
+
+const switchTab = (tabKey: string) => {
+  if (tabKey === 'resume' || tabKey === 'cover-letter' || tabKey === 'ai-tools') {
+    activeTab.value = tabKey as 'resume' | 'cover-letter' | 'ai-tools'
+    
+    // Update workflow step based on active tab
+    if (tabKey === 'resume') currentWorkflowStep.value = 1
+    else if (tabKey === 'cover-letter') currentWorkflowStep.value = 2
+    else if (tabKey === 'ai-tools') currentWorkflowStep.value = 0 // Job target or AI enhance
+  }
+}
+
+// Unified Profile Import - Enhanced to populate both resume and cover letter
+const importFromProfile = () => {
+  try {
+    const profile = store.userProfile || {}
+    const personalInfo = profile.personalInfo || {}
+    
+    // Import personal information to resume
+    resumeData.personalInfo = {
+      ...resumeData.personalInfo,
+      name: personalInfo.name || resumeData.personalInfo.name || '',
+      email: personalInfo.email || resumeData.personalInfo.email || '',
+      phone: personalInfo.phone || resumeData.personalInfo.phone || '',
+      location: personalInfo.location || resumeData.personalInfo.location || '',
+      website: personalInfo.website || resumeData.personalInfo.website || '',
+      linkedin: personalInfo.linkedIn || resumeData.personalInfo.linkedin || '',
+      github: personalInfo.github || resumeData.personalInfo.github || ''
+    }
+    
+    // Import professional summary to resume
+    if (personalInfo.summary && !resumeData.summary) {
+      resumeData.summary = personalInfo.summary
+    }
+    
+    // Create experience entry from current role if available
+    if (personalInfo.currentRole && personalInfo.currentCompany && resumeData.experience.length === 0) {
+      resumeData.experience.push({
+        title: personalInfo.currentRole,
+        company: personalInfo.currentCompany,
+        startDate: '',
+        endDate: personalInfo.yearsExperience ? `Present (${personalInfo.yearsExperience} years experience)` : 'Present',
+        description: 'Added from profile information. Please update with specific achievements and responsibilities.',
+        current: true
+      })
+    }
+    
+    // Import skills if available in profile
+    const profileSkills = profile.skills || []
+    if (profileSkills.length > 0 && resumeData.skills.length === 0) {
+      resumeData.skills = profileSkills.map((skill: string) => ({ name: skill }))
+    }
+    
+    // Import professional information to cover letter context
+    if (personalInfo.currentRole && !coverLetterData.jobInfo.position) {
+      coverLetterData.jobInfo.position = personalInfo.currentRole
+    }
+    
+    if (personalInfo.currentCompany && !coverLetterData.jobInfo.company) {
+      coverLetterData.jobInfo.company = personalInfo.currentCompany
+    }
+    
+    // Set default tone and focus based on profile if not set
+    if (!coverLetterData.tone) {
+      coverLetterData.tone = 'professional'
+    }
+    
+    if (!coverLetterData.focus) {
+      coverLetterData.focus = 'experience'
+    }
+    
+    toast.success('Imported comprehensive profile data to both documents')
+    
+    // Track achievement for unified profile import
+    // Use gamification service to track achievement
+    try {
+      gamificationService.value.awardAchievement('unified_profile_import')
+    } catch (e) {
+      console.warn('Failed to track achievement:', e)
+    }
+    
+  } catch (e) {
+    console.error('Unified profile import error:', e)
+    toast.error('Failed to import profile details')
+  }
+}
+
+// Step navigation helpers (max steps synced with child workflows)
+const RESUME_MAX = 6
+const COVER_MAX = 6
+const canGoPrev = computed(() => (activeTab.value === 'resume' && resumeStep.value > 1) || (activeTab.value === 'cover-letter' && coverLetterStep.value > 1))
+const canGoNext = computed(() => (activeTab.value === 'resume' && resumeStep.value < RESUME_MAX) || (activeTab.value === 'cover-letter' && coverLetterStep.value < COVER_MAX))
+function goPrevStep() {
+  if (activeTab.value === 'resume') resumeStep.value = Math.max(1, resumeStep.value - 1)
+  else if (activeTab.value === 'cover-letter') coverLetterStep.value = Math.max(1, coverLetterStep.value - 1)
+}
+function goNextStep() {
+  if (activeTab.value === 'resume') resumeStep.value = Math.min(RESUME_MAX, resumeStep.value + 1)
+  else if (activeTab.value === 'cover-letter') coverLetterStep.value = Math.min(COVER_MAX, coverLetterStep.value + 1)
+}
+
+const toggleLivePreview = () => {
+  showLivePreview.value = !showLivePreview.value
+}
+
+function toggleUseRoleSummary() {
+  useRoleInSummary.value = !useRoleInSummary.value
+  try { localStorage.setItem('navi-resume-use-role-summary', String(useRoleInSummary.value)) } catch {}
+}
+
+// Resizable split view handlers
+function onMouseMove(e: MouseEvent) {
+  if (!isResizing || !splitViewRef.value) return
+  const rect = splitViewRef.value.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const pct = Math.max(35, Math.min(75, (x / rect.width) * 100))
+  leftPaneWidth.value = Math.round(pct)
+}
+
+function stopResizing() {
+  isResizing = false
+  document.body.classList.remove('resizing')
+  window.removeEventListener('mousemove', onMouseMove)
+  window.removeEventListener('mouseup', stopResizing)
+  try { localStorage.setItem('navi-doc-split-width', String(leftPaneWidth.value)) } catch {}
+}
+
+// Local helper to download blobs
+function downloadBlob(data: Blob, filename: string) {
+  const url = URL.createObjectURL(data)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+async function exportBothZip() {
+  // Minimal placeholder; implement zipped resume+cover export if needed
+  throw new Error('ZIP export not yet supported')
+}
+
+const handleExport = async (
+  option: 'resume' | 'cover-letter' | 'pdf' | 'docx' | 'json' | 'html' | 'markdown' | 'zip' = 'pdf'
+) => {
+  try {
+    if (option === 'zip') {
+      await exportBothZip()
+      return
+    }
+
+    // Separate document target vs format
+    let docType: 'resume' | 'cover-letter' | 'both' = 'both'
+    let exportFormat: 'pdf' | 'docx' | 'json' | 'html' | 'markdown' = 'pdf'
+
+    if (option === 'resume') {
+      docType = 'resume'
+      exportFormat = selectedExportFormat.value
+    } else if (option === 'cover-letter') {
+      docType = 'cover-letter'
+      exportFormat = selectedExportFormat.value
+    } else {
+      exportFormat = option
+      if (documentType.value === 'resume') docType = 'resume'
+      else if (documentType.value === 'cover-letter') docType = 'cover-letter'
+    }
+
+    if (docType === 'resume' || docType === 'both') {
+      const svc = (await import('@/modules/api/resume-export')).ResumeExportService.getInstance()
+      const res = await svc.exportResume({
+        resumeData: previewResumeData.value as any,
+        format: exportFormat as any,
+        // Cast template to any to allow additional template ids not in original union
+        options: { template: selectedTemplate.value as any, theme: 'light' as const }
+      })
+      if (!res.success) throw new Error(res.error || 'Resume export failed')
+      if (res.blob) downloadBlob(res.blob, res.filename || `resume.${exportFormat}`)
+      if (res.url) window.open(res.url, '_blank')
+    }
+
+    if (docType === 'cover-letter' || docType === 'both') {
+      const resolved = resolvedCoverLetter.value
+      const raw = coverLetterData.content
+      const content = useTokenPreview.value ? resolved : raw
+      if (exportFormat === 'pdf') {
+        await nextTick()
+        const { ExportService } = await import('@/utils/export')
+        if (useTokenPreview.value) {
+          const previewEl = document.querySelector('.cover-preview') as HTMLElement | null
+          if (previewEl) {
+            const ok = await ExportService.exportElementToPDF(previewEl, 'cover-letter.pdf', {})
+            if (!ok) throw new Error('Cover letter PDF export failed')
+          } else {
+            const tmp = document.createElement('div')
+            tmp.style.position = 'fixed'; tmp.style.left = '-9999px'
+            tmp.className = 'cover-preview'
+            tmp.innerHTML = `<h3>${coverLetterData.jobInfo.position || 'Position'}</h3>
+              <div>${coverLetterData.jobInfo.company || 'Company'}</div>
+              <p>${(content.opening || '').replace(/\n/g, '<br/>')}</p>
+              <p>${(content.body || '').replace(/\n/g, '<br/>')}</p>
+              <p>${(content.closing || '').replace(/\n/g, '<br/>')}</p>`
+            document.body.appendChild(tmp)
+            await ExportService.exportElementToPDF(tmp, 'cover-letter.pdf', {})
+            document.body.removeChild(tmp)
+          }
+        } else {
+          const tmp = document.createElement('div')
+          tmp.style.position = 'fixed'; tmp.style.left = '-9999px'
+          tmp.className = 'cover-preview'
+          tmp.innerHTML = `<h3>${coverLetterData.jobInfo.position || 'Position'}</h3>
+            <div>${coverLetterData.jobInfo.company || 'Company'}</div>
+            <p>${(content.opening || '').replace(/\n/g, '<br/>')}</p>
+            <p>${(content.body || '').replace(/\n/g, '<br/>')}</p>
+            <p>${(content.closing || '').replace(/\n/g, '<br/>')}</p>`
+          document.body.appendChild(tmp)
+          await ExportService.exportElementToPDF(tmp, 'cover-letter.pdf', {})
+          document.body.removeChild(tmp)
+        }
+      } else if (exportFormat === 'html') {
+        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>Cover Letter</title></head><body>
+          <h3>${coverLetterData.jobInfo.position || 'Position'}</h3>
+          <div>${coverLetterData.jobInfo.company || 'Company'}</div>
+          <p>${(content.opening || '').replace(/\n/g, '<br/>')}</p>
+          <p>${(content.body || '').replace(/\n/g, '<br/>')}</p>
+          <p>${(content.closing || '').replace(/\n/g, '<br/>')}</p>
+        </body></html>`
+        const blob = new Blob([html], { type: 'text/html' })
+        downloadBlob(blob, 'cover-letter.html')
+      } else if (exportFormat === 'json') {
+        const data = { jobInfo: coverLetterData.jobInfo, content, exportedAt: new Date().toISOString() }
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+        downloadBlob(blob, 'cover-letter.json')
+      } else if (exportFormat === 'docx') {
+        const { ExportService } = await import('@/utils/export')
+        const paras = [] as string[]
+        if (content.opening) paras.push(content.opening as string)
+        if (content.body) paras.push(content.body as string)
+        if (content.closing) paras.push(content.closing as string)
+        const title = `${coverLetterData.jobInfo.position || 'Cover Letter'}${coverLetterData.jobInfo.company ? ' - ' + coverLetterData.jobInfo.company : ''}`
+        const blob = await ExportService.exportPlainTextDocx(title, paras as any)
+        downloadBlob(blob, 'cover-letter.docx')
+      }
+    }
+
+    const label = docType === 'both' ? 'Documents' : (docType === 'resume' ? 'Resume' : 'Cover Letter')
+    toast.success(`${label} exported as ${exportFormat.toUpperCase()}`)
+    try {
+      localStorage.setItem('navi-doc-last-export-format', exportFormat.toUpperCase())
+      lastExportFormat.value = exportFormat.toUpperCase()
+    } catch {}
+
+    // Gamification: count export
+    try {
+      const g = (store as any)._gamify?.()
+      const current = (store.user?.resumesGenerated || 0) + 1
+      store.updateUser({ resumesGenerated: current } as any)
+      g?.awardXP?.(35, 'document_export')
+      g?.completeDailyChallenge?.('document_export')
+      g?.processAchievements?.()
+      g?.updateStreak?.()
+    } catch {}
+  } catch (error: any) {
+    const msg = error?.message || String(error) || 'Unknown error'
+    toast.error('Export failed: ' + msg)
+  }
+}
+
+// ===== Inline diff rendering (word-level) =====
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c] as string))
+}
+
+function tokenizeForDiff(s: string): string[] {
+  // Put '-' at end of the character class to avoid escaping; quotes don't need escaping in a regex literal
+  return (s || '').split(/(\s+|[.,!?;:()"'-]+)/).filter((t) => t !== '')
+}
+
+function buildDiffHtml(current: string, proposed: string): { htmlA: string; htmlB: string } {
+  const a = tokenizeForDiff(current)
+  const b = tokenizeForDiff(proposed)
+  const n = a.length,
+    m = b.length
+  const dp: number[][] = Array(n + 1)
+    .fill(null)
+    .map(() => Array(m + 1).fill(0))
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= m; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1])
+    }
+  }
+  const matchA: boolean[] = Array(n).fill(false)
+  const matchB: boolean[] = Array(m).fill(false)
+  let i = n,
+    j = m
+  while (i > 0 && j > 0) {
+    if (a[i - 1] === b[j - 1]) {
+      matchA[i - 1] = true
+      matchB[j - 1] = true
+      i--
+      j--
+    } else if (dp[i - 1][j] >= dp[i][j - 1]) i--
+    else j--
+  }
+  let htmlA = ''
+  for (let k = 0; k < n; k++) {
+    const t = a[k]
+    if (!t.trim()) {
+      htmlA += escapeHtml(t)
+      continue
+    }
+    htmlA += matchA[k] ? escapeHtml(t) : `<span class="diff-removed">${escapeHtml(t)}</span>`
+  }
+  let htmlB = ''
+  for (let k = 0; k < m; k++) {
+    const t = b[k]
+    if (!t.trim()) {
+      htmlB += escapeHtml(t)
+      continue
+    }
+  htmlB += matchB[k] ? escapeHtml(t) : `<span class="diff-added">${escapeHtml(t)}</span>`
+  }
+  return { htmlA, htmlB }
+}
+
+function sanitizeHtml(s: string): string {
+  return DOMPurify.sanitize(s, { ALLOWED_TAGS: ['span'], ALLOWED_ATTR: ['class'] })
+}
+
+const currentDiffHtml = computed(() => {
+  const pc = pendingChange.value
+  if (!pc) return ''
+  const current = pc.type === 'summary' ? (resumeData.summary || '') : (pc.current || '')
+  return sanitizeHtml(buildDiffHtml(current, pc.proposed || '').htmlA)
+})
+const proposedDiffHtml = computed(() => {
+  const pc = pendingChange.value
+  if (!pc) return ''
+  const current = pc.type === 'summary' ? (resumeData.summary || '') : (pc.current || '')
+  return sanitizeHtml(buildDiffHtml(current, pc.proposed || '').htmlB)
+})
+
+function errorMessage(e: unknown): string {
+  if (e instanceof Error) return e.message
+  if (typeof e === 'string') return e
+  try { return JSON.stringify(e) } catch { return String(e) }
+}
+
+async function handleAIRequest(payload: AIRequestPayload) {
+  if (!aiStatus.value.isReady) {
+    toast.warning('Please configure an AI API key in Settings')
+    return
+  }
+  try {
+    aiBusy.value = true
+    const sys = buildSystemContext(jobDescription.value ? `Job Description: ${jobDescription.value}` : '')
+    if (payload.type === 'generate-summary') {
+      const message = `Create a 2-3 sentence professional summary for this resume JSON. Focus on most relevant strengths. Resume: ${JSON.stringify(resumeData)}`
+      // Initialize AI service - now uses centralized API key resolver
+      await aiService.initialize()
+      const resp = await aiService.chat({ message, context: sys, type: 'generation' })
+      if (resp?.content) {
+        pendingChange.value = { type: 'summary', proposed: resp.content.trim() }
+        showChangeReview.value = true
+      }
+    } else if (payload.type === 'enhance-experience') {
+      const exp = payload.data
+      const message = `Rewrite the following experience description into 3-5 bullet points with strong action verbs and metrics. Keep it ATS-friendly. Experience JSON: ${JSON.stringify(exp)}`
+      // Initialize AI service - now uses centralized API key resolver
+      await aiService.initialize()
+      const resp = await aiService.chat({ message, context: sys, type: 'generation' })
+      if (resp?.content) {
+        const idx = typeof payload.index === 'number' ? payload.index : -1
+        if (idx >= 0 && resumeData.experience[idx]) {
+          // Inline diff on the card: store proposal on the entry
+          resumeData.experience[idx].__proposal = resp.content.trim()
+          toast.info('AI proposal ready. Review inline on the experience card.')
+        }
+      }
+    } else if (payload.type === 'suggest-skills') {
+      const message = `Suggest up to 10 concise skills to add to this resume given the job description (if any). Return a comma-separated list. Resume: ${JSON.stringify(resumeData)}`
+      // Initialize AI service - now uses centralized API key resolver
+      await aiService.initialize()
+      const resp = await aiService.chat({ message, context: sys, type: 'analysis' })
+      const text = (resp?.content || '').trim()
+  const parts = text.split(/[ ,\n]+/).map(s => s.trim()).filter(Boolean)
+      aiSuggestions.value = parts.slice(0, 10).map((t, i) => ({ id: `sk-${Date.now()}-${i}`, text: t, category: 'skill' }))
+      toast.info('AI suggested skills available in sidebar')
+    }
+  } catch (error) {
+    toast.error('AI request failed: ' + errorMessage(error))
+  } finally {
+    aiBusy.value = false
+  }
+}
+
+//
+
+function handleAISuggestions(suggestions: Suggestion[]) {
+  if (Array.isArray(suggestions)) {
+    aiSuggestions.value = suggestions.map((s, i) => ({ id: s.id || `sug-${i}`, text: s.text || String(s), category: s.category || 'general', field: s.field }))
+  }
+}
+
+function applySuggestion(suggestion: Suggestion) {
+  if (!suggestion) return
+  if (suggestion.category === 'skill') {
+    const name = suggestion.text
+    if (!resumeData.skills.find(s => (s.name || '').toLowerCase() === name.toLowerCase())) {
+      resumeData.skills.push({ name })
+    }
+  } else if (suggestion.field === 'summary') {
+    resumeData.summary = suggestion.text
+  }
+  toast.success('Suggestion applied')
+}
+
+function handleResumeparse(input: string) {
+  try {
+    if (typeof input === 'string') {
+      const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean)
+      if (lines.length > 0) {
+        resumeData.summary = lines.slice(0, 3).join(' ')
+      }
+    }
+  } catch {
+    console.warn('Resume parse not applied')
+  }
+}
+
+async function handleDocumentTailoring() {
+  try {
+    if (!jobDescription.value) { toast.error('Add a job description in AI Tools'); return }
+    snapshot('Before tailoring')
+    // Initialize AI service - now uses centralized API key resolver
+    await aiService.initialize()
+    const result = await aiService.tailorDocuments(resumeData, coverLetterData, jobDescription.value)
+    if (result?.resume) Object.assign(resumeData, result.resume)
+    if (result?.coverLetter?.content?.body) {
+      pendingChange.value = {
+        type: 'cover',
+        current: coverLetterData?.content?.body || '',
+        proposed: (result.coverLetter.content.body || '').trim()
+      }
+      showChangeReview.value = true
+    } else if (result?.coverLetter) {
+      Object.assign(coverLetterData, result.coverLetter)
+    }
+    toast.success('Documents tailored successfully')
+    snapshot('After tailoring')
+    // Gamification: AI interaction
+    try {
+      const g: any = (store as any)._gamify?.()
+      g?.awardXP?.(20, 'ai_tailor_documents')
+      g?.completeDailyChallenge?.('ai_interaction')
+      g?.processAchievements?.()
+      g?.updateStreak?.()
+    } catch {}
+  } catch (error) {
+    toast.error('Document tailoring failed: ' + errorMessage(error))
+  }
+}
+
+// Load saved data on mount
+onMounted(async () => {
+  try {
+    const savedResume = store.user?.resumeData
+    const savedCoverLetter = store.user?.coverLetterData
+    
+    if (savedResume) {
+      Object.assign(resumeData, savedResume)
+    }
+    
+    if (savedCoverLetter) {
+      Object.assign(coverLetterData, savedCoverLetter)
+    }
+
+    // Ask initial preference on first visit
+    try {
+      const asked = localStorage.getItem('navi-doc-choice-asked')
+      if (!asked) showDocChoice.value = true
+    } catch {}
+    // Load versions
+    loadVersions()
+  } catch (error) {
+    console.warn('Failed to load saved documents:', error)
+  }
+})
+
+// Auto-save functionality with debounce + inline indicator
+let saveTimer: number | undefined
+watch([resumeData, coverLetterData], () => {
+  if (saveTimer) clearTimeout(saveTimer)
+  saving.value = true
+  saveTimer = window.setTimeout(async () => {
+    try {
+      await store.saveDocumentData({
+        resumeData: { ...resumeData },
+        coverLetterData: { ...coverLetterData }
+      })
+      lastSavedTs.value = Date.now()
+      saving.value = false
+    } catch (error) {
+      console.warn('Auto-save failed:', error)
+      saving.value = false
+    }
+  }, 2000)
+}, { deep: true })
+
+function chooseDocument(type: 'resume' | 'cover-letter') {
+  activeTab.value = type
+  showDocChoice.value = false
+  try { localStorage.setItem('navi-doc-choice-asked', '1') } catch {}
+}
+
+// ===== AI helper =====
+function buildSystemContext(extra = '') {
+  return [
+    `You are assisting with resume and cover letter writing. Tone: ${aiConfig.tone}. Creativity: ${aiConfig.level}. Focus: ${aiConfig.focus}.`,
+    'Prefer concise, ATS-friendly language. Use measurable outcomes where possible.',
+    extra
+  ].filter(Boolean).join('\n')
+}
+
+// ===== Change review modal actions =====
+function acceptPendingChange() {
+  if (!pendingChange.value) return
+  const c = pendingChange.value as PendingChange
+  if (c.type === 'summary') {
+    resumeData.summary = c.proposed
+  } else if (c.type === 'experience' && typeof c.index === 'number' && (resumeData.experience as Experience[])[c.index]) {
+    (resumeData.experience as Experience[])[c.index].description = c.proposed
+  } else if (c.type === 'cover') {
+    if (!coverLetterData.content) coverLetterData.content = { opening: '', body: '', closing: '' }
+    coverLetterData.content.body = c.proposed
+  }
+  toast.success('AI changes applied')
+  snapshot(`Applied AI change: ${c.type}`)
+  pendingChange.value = null
+  showChangeReview.value = false
+}
+
+function rejectPendingChange() {
+  pendingChange.value = null
+  showChangeReview.value = false
+}
+
+// ===== Version snapshots =====
+function snapshot(label: string) {
+  try {
+    const snap = {
+      id: `ver-${Date.now()}`,
+      ts: Date.now(),
+      label,
+      jobHash: hashString(jobDescription.value || '') || undefined,
+      resume: JSON.parse(JSON.stringify(resumeData)),
+      cover: JSON.parse(JSON.stringify(coverLetterData))
+    }
+    versions.value.push(snap)
+    persistVersions()
+  } catch {}
+}
+
+function persistVersions() {
+  try { localStorage.setItem('navi-resume-versions', JSON.stringify(versions.value.slice(-30))) } catch {}
+}
+
+function loadVersions() {
+  try { const raw = localStorage.getItem('navi-resume-versions'); if (raw) versions.value = JSON.parse(raw) } catch {}
+}
+
+function hashString(s: string) {
+  let h = 0; for (let i=0;i<s.length;i++){ h = (h<<5) - h + s.charCodeAt(i); h|=0 } return h
+}
+
+// (Removed unused formatTs helper)
+
+// Filtered versions by current JD hash
+// (Removed unused currentJobHash computed)
+// (Removed unused filteredVersions computed – re-add when version filtering UI is implemented)
+
+function handleAIModalResult(suggestion: { id: string; text: string; category?: string; field?: string }) {
+  applySuggestion(suggestion)
+  showAIModal.value = false
+}
+
+// (Removed unused exportDocument helper – handleExport covers this behaviour)
+
+// Keyboard shortcuts for quick navigation
+function handleKeydown(e: KeyboardEvent) {
+  // Tab switching
+  if (e.altKey && ['1', '2', '3'].includes(e.key)) {
+    e.preventDefault()
+    const map: Record<string, 'resume' | 'cover-letter' | 'ai-tools'> = {
+      '1': 'resume', '2': 'cover-letter', '3': 'ai-tools'
+    }
+    switchTab(map[e.key])
+  }
+  // Toggle live preview
+  if (e.altKey && (e.key === 'p' || e.key === 'P')) {
+    e.preventDefault()
+    toggleLivePreview()
+  }
+  // Step navigation within resume
+  if (activeTab.value === 'resume' && (e.altKey && (e.key === 'ArrowRight' || e.key === 'ArrowLeft'))) {
+    e.preventDefault()
+    // ResumeWorkflow currently defines 5 steps
+    if (e.key === 'ArrowRight') resumeStep.value = Math.min(resumeStep.value + 1, RESUME_MAX)
+    if (e.key === 'ArrowLeft')  resumeStep.value = Math.max(resumeStep.value - 1, 1)
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+  // Load persisted split width
+  try {
+    const saved = parseInt(localStorage.getItem('navi-doc-split-width') || '')
+    if (!Number.isNaN(saved) && saved >= 35 && saved <= 75) leftPaneWidth.value = saved
+  } catch {}
+  // Load selected template
+  try {
+    const tpl = localStorage.getItem('navi-resume-template')
+    if (tpl) selectedTemplate.value = tpl
+  } catch {}
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+  stopResizing()
+})
+
+// Map internal resumeData to preview component shape
+// Token resolution helpers
+function buildTokenMap() {
+  const pi: any = store.user?.personalInfo || {}
+  return {
+    '{{name}}': String(resumeData.personalInfo.name || pi.name || ''),
+    '{{email}}': String(resumeData.personalInfo.email || pi.email || ''),
+    '{{phone}}': String(resumeData.personalInfo.phone || pi.phone || ''),
+    '{{location}}': String(resumeData.personalInfo.location || pi.location || ''),
+    '{{website}}': String((resumeData.personalInfo as any).website || pi.website || ''),
+    '{{linkedin}}': String((resumeData.personalInfo as any).linkedin || pi.linkedIn || ''),
+    '{{github}}': String((resumeData as any).personalInfo.github || pi.github || ''),
+    '{{portfolio}}': String((resumeData as any).personalInfo.portfolio || pi.portfolio || ''),
+    '{{currentRole}}': String(pi.currentRole || ''),
+    '{{currentCompany}}': String(pi.currentCompany || ''),
+    '{{yearsExperience}}': String(pi.yearsExperience ?? '')
+  } as Record<string, string>
+}
+
+function resolveTokens(text: string): string {
+  try {
+    const map = buildTokenMap()
+    let out = text || ''
+    Object.entries(map).forEach(([k, v]) => {
+      // Avoid String.replaceAll for broader TypeScript lib compatibility
+      if (out && out.indexOf(k) !== -1) {
+        out = out.split(k).join(v)
+      }
+    })
+    return out
+  } catch { return text || '' }
+}
+
+const previewResumeData = computed(() => {
+  const pi: any = store.user?.personalInfo || {}
+  const [firstName, ...rest] = (resumeData.personalInfo.name || '').split(/\s+/)
+  const lastName = rest.join(' ')
+  let resolvedSummary = resolveTokens(resumeData.summary || '')
+  // Optionally inject role/company sentence if enabled and not already present
+  if (useRoleInSummary.value) {
+    const role = String(pi.currentRole || '').trim()
+    const comp = String(pi.currentCompany || '').trim()
+    const yrs = pi.yearsExperience
+    const hasTokens = /\{\{\s*(currentRole|currentCompany|yearsExperience)\s*\}\}/.test(resumeData.summary || '')
+    if ((role || comp) && !hasTokens) {
+      const parts: string[] = []
+      if (role) parts.push(role)
+      if (comp) parts.push(`at ${comp}`)
+      const head = parts.join(' ')
+      const yrsText = typeof yrs === 'number' && yrs > 0 ? ` with ${yrs} years of experience` : ''
+      const sentence = head ? `${head}${yrsText}. ` : ''
+      resolvedSummary = sentence + resolvedSummary
+    }
+  }
+  return {
+    personal: {
+      firstName: firstName || '',
+      lastName: lastName || '',
+      email: resumeData.personalInfo.email || '',
+      phone: resumeData.personalInfo.phone || '',
+      location: resumeData.personalInfo.location || '',
+      website: (resumeData.personalInfo as any).website || (store.user?.personalInfo?.website || ''),
+      linkedin: (resumeData.personalInfo as any).linkedin || (store.user?.personalInfo?.linkedIn || ''),
+      github: (resumeData.personalInfo as any).github || (store.user?.personalInfo?.github || ''),
+      summary: resolvedSummary
+    },
+    experience: (resumeData.experience as any[]).map((e) => ({
+      title: e.title, company: e.company, startDate: e.startDate, endDate: e.endDate, current: e.current, location: e.location, description: resolveTokens(e.description || ''), achievements: e.achievements
+    })),
+    skills: (resumeData.skills as any[]).map((s) => s?.name || s).filter(Boolean),
+    education: (resumeData.education as any[]).map((ed) => ({
+      degree: ed.degree, school: ed.institution || ed.school, endDate: ed.year || ed.endDate, startDate: ed.startDate, location: ed.location, gpa: ed.gpa
+    }))
+  }
+})
+
+// Resolved cover letter content with token support
+const resolvedCoverLetter = computed(() => ({
+  opening: resolveTokens(coverLetterData.content.opening || ''),
+  body: resolveTokens(coverLetterData.content.body || ''),
+  closing: resolveTokens(coverLetterData.content.closing || '')
+}))
+
+// Template selection actions
+function selectTemplate(id: string) {
+  selectedTemplate.value = id
+  try { localStorage.setItem('navi-resume-template', id) } catch {}
+}
+
+const currentStepTitle = computed(() => {
+  const map: Record<number, string> = { 1: 'Personal Info', 2: 'Summary', 3: 'Experience', 4: 'Education', 5: 'Skills', 6: 'Review & Export' }
+  return map[resumeStep.value] || 'Resume'
+})
+
+// New computed properties for the updated template
+const currentProgress = computed(() => {
+  if (activeTab.value === 'resume') return resumeProgress.value
+  if (activeTab.value === 'cover-letter') return coverLetterProgress.value
+  return 0
+})
+
+function getProgressText() {
+  const total = activeTab.value === 'resume' ? 6 : activeTab.value === 'cover-letter' ? 6 : 0
+  const current = activeTab.value === 'resume' ? resumeStep.value : activeTab.value === 'cover-letter' ? coverLetterStep.value : 0
+  if (total === 0) return 'AI Tools'
+  return `Step ${current} of ${total}`
+}
+
+function getNextStepName() {
+  if (activeTab.value === 'resume') {
+    const nextStep = resumeStepList.find(s => s.id === resumeStep.value + 1)
+    return nextStep?.title || 'Review'
+  }
+  if (activeTab.value === 'cover-letter') {
+    const nextStep = coverLetterStepList.find(s => s.id === coverLetterStep.value + 1)
+    return nextStep?.title || 'Review'
+  }
+  return 'Next'
+}
+
+// Enhanced Step Navigation System
+const currentStepList = computed(() => {
+  if (activeTab.value === 'resume') return resumeStepList
+  if (activeTab.value === 'cover-letter') return coverLetterStepList
+  return []
+})
+
+const currentStep = computed(() => {
+  if (activeTab.value === 'resume') return resumeStep.value
+  if (activeTab.value === 'cover-letter') return coverLetterStep.value
+  return 1
+})
+
+function isStepCompleted(stepId: number): boolean {
+  if (activeTab.value === 'resume') {
+    switch (stepId) {
+      case 1: return !!(resumeData.personalInfo.name && resumeData.personalInfo.email)
+      case 2: return !!resumeData.summary
+      case 3: return resumeData.experience.length > 0
+      case 4: return resumeData.education.length > 0
+      case 5: return resumeData.skills.length > 0
+      case 6: return resumeData.projects.length > 0
+      default: return false
+    }
+  } else if (activeTab.value === 'cover-letter') {
+    switch (stepId) {
+      case 1: return !!(coverLetterData.jobInfo.company && coverLetterData.jobInfo.position)
+      case 2: return !!(coverLetterData.tone && coverLetterData.focus)
+      case 3: return !!coverLetterData.content.opening
+      case 4: return !!coverLetterData.content.body
+      case 5: return !!coverLetterData.content.closing
+      case 6: return !!(coverLetterData.content.opening && coverLetterData.content.body && coverLetterData.content.closing)
+      default: return false
+    }
+  }
+  return false
+}
+
+function isStepAvailable(stepId: number): boolean {
+  if (activeTab.value === 'resume') {
+    if (stepId === 1) return true
+    if (stepId === 2) return isStepCompleted(1)
+    if (stepId === 3) return isStepCompleted(2)
+    if (stepId === 4) return isStepCompleted(3)
+    if (stepId === 5) return isStepCompleted(4)
+    if (stepId === 6) return isStepCompleted(5)
+  } else if (activeTab.value === 'cover-letter') {
+    if (stepId === 1) return true
+    if (stepId === 2) return isStepCompleted(1)
+    if (stepId === 3) return isStepCompleted(2)
+    if (stepId === 4) return isStepCompleted(3)
+    if (stepId === 5) return isStepCompleted(4)
+    if (stepId === 6) return isStepCompleted(5)
+  }
+  return false
+}
+
+function navigateToStep(stepId: number): void {
+  if (activeTab.value === 'resume') {
+    resumeStep.value = stepId
+  } else if (activeTab.value === 'cover-letter') {
+    coverLetterStep.value = stepId
+  }
+}
+
+// Smart Form Integration
+const smartFormData = computed(() => ({
+  name: resumeData.personalInfo.name || '',
+  title: (resumeData.personalInfo as any).title || '',
+  email: resumeData.personalInfo.email || '',
+  phone: resumeData.personalInfo.phone || '',
+  location: resumeData.personalInfo.location || '',
+  linkedin: resumeData.personalInfo.linkedin || '',
+  github: resumeData.personalInfo.github || '',
+  website: resumeData.personalInfo.website || '',
+  summary: resumeData.summary || ''
+}))
+
+const hasProfileData = computed(() => {
+  const profile = store.userProfile?.personalInfo || {}
+  return !!(profile.name || profile.email || profile.currentRole)
+})
+
+function updateSmartFormData(data: any) {
+  // Update personal info
+  resumeData.personalInfo.name = data.name
+  resumeData.personalInfo.email = data.email
+  resumeData.personalInfo.phone = data.phone
+  resumeData.personalInfo.location = data.location
+  resumeData.personalInfo.linkedin = data.linkedin
+  resumeData.personalInfo.github = data.github
+  resumeData.personalInfo.website = data.website
+  
+  // Update summary
+  resumeData.summary = data.summary
+}
+
+function handleSmartAIGenerate(type: string, _data: any) {
+  if (type === 'summary') {
+    handleAIRequest({ type: 'generate-summary' })
+  }
+}
+
+// Live Preview Integration
+function toggleFloatingPreview() {
+  // This would toggle the preview panel to floating mode
+  toast.info('Floating preview toggled')
+}
+
+// Enhanced Auto-save System
+const autoSaveState = ref<'idle' | 'saving' | 'saved' | 'error'>('idle')
+const lastAutoSave = ref<Date | null>(null)
+const hasUnsavedChanges = ref(false)
+
+// Debounced auto-save
+const debouncedAutoSave = debounce(async () => {
+  if (!hasUnsavedChanges.value) return
+  
+  autoSaveState.value = 'saving'
+  try {
+    await store.saveDocumentData({
+      resumeData: { ...resumeData },
+      coverLetterData: { ...coverLetterData }
+    })
+    autoSaveState.value = 'saved'
+    lastAutoSave.value = new Date()
+    hasUnsavedChanges.value = false
+    
+    // Create version snapshot on significant changes
+    const changeScore = calculateChangeScore()
+    if (changeScore > 0.3) {
+      snapshot(`Auto-save: ${new Date().toLocaleTimeString()}`)
+    }
+  } catch (error) {
+    autoSaveState.value = 'error'
+    console.warn('Auto-save failed:', error)
+  } finally {
+    setTimeout(() => {
+      if (autoSaveState.value === 'saved') {
+        autoSaveState.value = 'idle'
+      }
+    }, 2000)
+  }
+}, 3000)
+
+function calculateChangeScore(): number {
+  // Simple heuristic to determine if changes are significant enough for versioning
+  const textLength = (resumeData.summary || '').length + 
+    (resumeData.experience || []).reduce((acc, exp) => acc + (exp.description || '').length, 0)
+  
+  return Math.min(1, textLength / 500) // Score based on content length
+}
+
+// Watch for changes to trigger auto-save
+watch([resumeData, coverLetterData], () => {
+  hasUnsavedChanges.value = true
+  debouncedAutoSave()
+}, { deep: true })
+
+// Manual save function
+async function saveDocument() {
+  autoSaveState.value = 'saving'
+  try {
+    await store.saveDocumentData({
+      resumeData: { ...resumeData },
+      coverLetterData: { ...coverLetterData }
+    })
+    autoSaveState.value = 'saved'
+    lastAutoSave.value = new Date()
+    hasUnsavedChanges.value = false
+    toast.success('Document saved successfully')
+    snapshot(`Manual save: ${new Date().toLocaleTimeString()}`)
+  } catch (error) {
+    autoSaveState.value = 'error'
+    toast.error('Failed to save document')
+    console.error('Save failed:', error)
+  }
+}
+
+// Collaboration System
+const documentId = computed(() => 'doc_' + Date.now().toString())
+const userRole = ref<'owner' | 'editor' | 'viewer'>('owner')
+
+// (Removed unused currentDocumentContent computed)
+
+// Remove duplicate - these are already defined above
+
+// Collaboration Methods
+function restoreVersion(versionId: string) {
+  toast.info(`Restoring version: ${versionId}`)
+}
+
+function compareVersion(versionId: string) {
+  toast.info(`Comparing with version: ${versionId}`)
+}
+
+function applyCollaborationChanges(changes: any) {
+  toast.info('Applying collaboration changes')
+  console.log('Changes:', changes)
+}
+
+// AI Optimization Methods
+// (Removed unused AI optimization placeholder functions: applyAISuggestion/applyWritingFix/applyPerformanceTip/toggleAIOptimizerFloating)
+
+// Keyboard Shortcuts Integration
+const { showShortcutsHelp } = useDocumentShortcuts({
+  onSave: saveDocument,
+  onExport: () => handleExport('pdf'),
+  onPreview: () => showPreview.value = !showPreview.value,
+  onNextStep: goNextStep,
+  onPrevStep: goPrevStep,
+  onSwitchTab: (tab: string) => switchTab(tab),
+  onTogglePreview: toggleFloatingPreview,
+  onAIGenerate: () => {
+    if (activeTab.value === 'resume' && resumeStep.value === 2) {
+      handleAIRequest({ type: 'generate-summary' })
+    }
+  }
+})
+</script>
+
+<style scoped>
+/* Professional Document Builder - Glassmorphic Design */
+
+/* Document Tabs - Enhanced */
+.document-tabs {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2);
+  margin-bottom: var(--spacing-6);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+}
+
+.tabs-nav {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: var(--spacing-3-5) var(--spacing-5);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-btn:hover {
+  background: rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.05);
+  color: var(--color-primary-500);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.3);
+}
+
+.tab-icon {
+  font-size: 20px;
+}
+
+.tab-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+}
+
+.tab-progress-fill {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  transition: width 0.5s ease;
+}
+
+/* Main Builder Layout - Three Column Grid */
+.builder-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  gap: var(--spacing-6);
+  max-width: var(--page-container-max-width);
+  margin: 0 auto;
+}
+
+/* Left Sidebar - Progress Steps */
+.steps-sidebar {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-6);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  height: fit-content;
+  position: sticky;
+  top: var(--spacing-6);
+}
+
+.sidebar-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-6);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+  position: relative;
+}
+
+.step-item:hover {
+  background: rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.05);
+}
+
+.step-item.active {
+  background: rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.1);
+}
+
+.step-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: var(--spacing-6);
+  background: var(--color-primary-500);
+  border-radius: var(--radius-sm);
+}
+
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(var(--text-secondary-rgb, 100, 116, 139), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  transition: all var(--duration-normal);
+}
+
+.step-item.active .step-indicator {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  color: white;
+}
+
+.step-item.completed .step-indicator {
+  background: var(--color-success-500);
+  color: white;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.step-item.active .step-name {
+  color: var(--color-primary-500);
+  font-weight: var(--font-weight-semibold);
+}
+
+.step-item:not(.available) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* AI Tools Info */
+.ai-tools-info {
+  text-align: center;
+  padding: var(--spacing-6) var(--spacing-4);
+}
+
+.ai-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-4);
+}
+
+.ai-status.ready {
+  background: rgba(var(--color-success-rgb), 0.1);
+  color: var(--color-success-600);
+}
+
+.ai-status.loading {
+  background: rgba(var(--color-warning-rgb), 0.1);
+  color: var(--color-warning-600);
+}
+
+.ai-status:not(.ready):not(.loading) {
+  background: rgba(var(--color-error-rgb), 0.1);
+  color: var(--color-error-600);
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* Main Content Area */
+.main-content {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+}
+
+.content-header {
+  background: linear-gradient(135deg, 
+    rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.05) 0%, 
+    rgba(var(--color-gaming-500-rgb, 118, 75, 162), 0.05) 100%);
+  padding: var(--spacing-6) var(--spacing-8);
+  border-bottom: 1px solid rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.1);
+}
+
+.content-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.content-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Form Section */
+.form-section {
+  padding: var(--spacing-8);
+}
+
+/* Navigation Footer */
+.content-footer {
+  padding: var(--spacing-6) var(--spacing-8);
+  background: rgba(var(--surface-base-rgb, 248, 250, 252), 0.5);
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.progress-bar-container {
+  width: 200px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(var(--text-secondary-rgb, 226, 232, 240), 0.3);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  border-radius: var(--radius-sm);
+  transition: width var(--duration-normal) ease;
+}
+
+.progress-text {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.nav-buttons {
+  display: flex;
+  gap: var(--spacing-3);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Right Sidebar */
+.right-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.sidebar-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-5);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+}
+
+.sidebar-card-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-4);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+/* Template Grid */
+.template-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3);
+}
+
+.template-item {
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+  text-align: center;
+}
+
+.template-item:hover {
+  border-color: rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.3);
+  transform: translateY(-2px);
+}
+
+.template-item.selected {
+  border-color: var(--color-primary-500);
+  background: rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.05);
+}
+
+.template-preview {
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(var(--surface-base-rgb, 248, 250, 252), 0.8) 0%, rgba(var(--text-secondary-rgb, 226, 232, 240), 0.4) 100%);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-2);
+}
+
+.template-name {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* AI Settings */
+.ai-setting {
+  margin-bottom: var(--spacing-4);
+}
+
+.ai-setting:last-child {
+  margin-bottom: 0;
+}
+
+.setting-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-1-5);
+  font-weight: var(--font-weight-medium);
+}
+
+.setting-select {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  background: rgba(var(--surface-base-rgb, 255, 255, 255), 0.8);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+  color: var(--text-primary);
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-500-rgb, 102, 126, 234), 0.1);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3);
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--spacing-3);
+  background: rgba(var(--surface-base-rgb, 248, 250, 252), 0.5);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(var(--glass-border-rgb, 0, 0, 0), 0.05);
+}
+
+.stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-500);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: var(--font-size-2xs);
+  color: var(--text-tertiary);
+  margin-top: var(--spacing-1);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .builder-layout {
+    grid-template-columns: 1fr 320px;
+  }
+  
+  .steps-sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .builder-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .right-sidebar {
+    display: none;
+  }
+  
+  .document-tabs {
+    padding: 6px;
+    margin-bottom: 16px;
+  }
+  
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .content-header {
+    padding: 16px 20px;
+  }
+  
+  .form-section {
+    padding: 20px;
+  }
+  
+  .content-footer {
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .progress-info {
+    order: 2;
+    justify-content: center;
+  }
+  
+  .nav-buttons {
+    order: 1;
+    justify-content: space-between;
+  }
+  
+  .progress-bar-container {
+    width: 150px;
+  }
+}
+
+/* Save Status Indicator */
+.save-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(var(--surface-base-rgb), 0.8);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+.save-status.saving {
+  background: rgba(var(--color-warning-rgb), 0.1);
+  color: var(--color-warning-600);
+  border-color: rgba(var(--color-warning-rgb), 0.2);
+}
+
+.save-status.saved {
+  background: rgba(var(--color-success-rgb), 0.1);
+  color: var(--color-success-600);
+  border-color: rgba(var(--color-success-rgb), 0.2);
+}
+
+.save-status.error {
+  background: rgba(var(--color-error-rgb), 0.1);
+  color: var(--color-error-600);
+  border-color: rgba(var(--color-error-rgb), 0.2);
+}
+
+.save-text {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .template-preview {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+}
+
+[data-theme="dark"] .stat-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .setting-select {
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+}
+
+/* Document Builder - Professional Glassmorphic Design (Legacy) */
+.document-builder-container {
+  max-width: var(--page-container-max-width);
+  margin: 0 auto;
+  padding: var(--spacing-6);
+  min-height: 100vh;
+}
+
+/* Document Tabs */
+.document-tabs {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2);
+  margin-bottom: var(--spacing-6);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+}
+
+.tabs-nav {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: var(--spacing-3-5) var(--spacing-5);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+}
+
+.tab-btn:hover {
+  background: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05);
+  color: var(--color-primary-500);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  color: white;
+  box-shadow: var(--shadow-glow-primary);
+}
+
+/* Main Layout Grid */
+.builder-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  gap: var(--spacing-6);
+}
+
+/* Progress Steps Sidebar */
+.steps-sidebar {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-6);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  height: fit-content;
+  position: sticky;
+  top: var(--spacing-6);
+}
+
+.sidebar-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-6);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.sidebar-title svg {
+  color: var(--color-primary-500);
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+  position: relative;
+}
+
+.step-item:hover {
+  background: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05);
+}
+
+.step-item.active {
+  background: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.1);
+}
+
+.step-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: var(--spacing-6);
+  background: var(--color-primary-500);
+  border-radius: var(--radius-sm);
+}
+
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  transition: all var(--duration-normal);
+}
+
+.step-item.active .step-indicator {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  color: white;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.step-item.active .step-name {
+  color: var(--color-primary-500);
+  font-weight: var(--font-weight-semibold);
+}
+
+.ai-tools-info {
+  padding: var(--spacing-4);
+  background: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.1);
+}
+
+/* Main Content Area */
+.main-content {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+}
+
+.content-header {
+  background: linear-gradient(135deg, 
+    rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05) 0%, 
+    rgba(var(--color-gaming-500-rgb, 168, 85, 247), 0.05) 100%);
+  padding: var(--spacing-6) var(--spacing-8);
+  border-bottom: 1px solid rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.1);
+}
+
+.content-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.content-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Form Section */
+.form-section {
+  padding: var(--spacing-8);
+}
+
+/* Navigation Footer */
+.content-footer {
+  padding: var(--spacing-6) var(--spacing-8);
+  background: var(--surface-secondary);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.progress-bar-container {
+  width: 200px;
+  height: 6px;
+  background: var(--surface-tertiary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  background: var(--surface-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  border-radius: var(--radius-sm);
+  transition: width var(--duration-slow) ease;
+}
+
+.progress-text {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.nav-buttons {
+  display: flex;
+  gap: var(--spacing-3);
+}
+
+/* Right Sidebar */
+.right-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.sidebar-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-5);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+}
+
+.sidebar-card-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-4);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.sidebar-card-title svg {
+  color: var(--color-primary-500);
+  font-size: var(--font-size-lg);
+}
+
+/* Template Grid */
+.template-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3);
+}
+
+.template-item {
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+  text-align: center;
+}
+
+.template-item:hover {
+  border-color: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.3);
+  transform: translateY(-2px);
+}
+
+.template-item.selected {
+  border-color: var(--color-primary-500);
+  background: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05);
+}
+
+.template-preview {
+  height: 80px;
+  background: linear-gradient(to bottom, var(--surface-secondary) 0%, var(--surface-tertiary) 100%);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-2);
+}
+
+.template-name {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* AI Settings */
+.ai-setting {
+  margin-bottom: var(--spacing-4);
+}
+
+.setting-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-1-5);
+}
+
+.setting-select {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.1);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3);
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--spacing-3);
+  background: var(--surface-secondary);
+  border-radius: var(--radius-md);
+}
+
+.stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-500);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: var(--font-size-2xs);
+  color: var(--text-tertiary);
+  margin-top: var(--spacing-1);
+}
+
+/* Template Previews */
+.template-preview.preview-modern { 
+  background: linear-gradient(135deg, var(--color-accent-50), var(--color-accent-100)); 
+}
+.template-preview.preview-elegant { 
+  background: linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100)); 
+}
+.template-preview.preview-compact { 
+  background: linear-gradient(135deg, var(--surface-subtle), var(--surface-muted)); 
+}
+.template-preview.preview-classic { 
+  background: linear-gradient(135deg, var(--color-warning-50), var(--color-warning-100)); 
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .builder-layout {
+    grid-template-columns: 1fr 320px;
+  }
+  
+  .steps-sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .document-builder-container {
+    padding: var(--spacing-4);
+  }
+
+  .builder-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .right-sidebar {
+    display: none;
+  }
+  
+  .tab-btn {
+    padding: var(--spacing-2-5) var(--spacing-3);
+    font-size: var(--font-size-xs);
+  }
+  
+  .content-header {
+    padding: var(--spacing-4) var(--spacing-5);
+  }
+  
+  .form-section {
+    padding: var(--spacing-5);
+  }
+  
+  .content-footer {
+    padding: var(--spacing-4) var(--spacing-5);
+    flex-direction: column;
+    gap: var(--spacing-4);
+    align-items: stretch;
+  }
+  
+  .progress-info {
+    order: 2;
+    justify-content: center;
+  }
+  
+  .nav-buttons {
+    order: 1;
+    justify-content: space-between;
+  }
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .document-builder-container {
+  background: transparent;
+}
+
+[data-theme="dark"] .template-preview {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+}
+
+[data-theme="dark"] .template-preview.preview-modern { 
+  background: linear-gradient(135deg, rgba(224, 242, 254, 0.1), rgba(240, 249, 255, 0.05)); 
+}
+[data-theme="dark"] .template-preview.preview-elegant { 
+  background: linear-gradient(135deg, rgba(237, 233, 254, 0.1), rgba(245, 243, 255, 0.05)); 
+}
+[data-theme="dark"] .template-preview.preview-compact { 
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.1), rgba(241, 245, 249, 0.05)); 
+}
+[data-theme="dark"] .template-preview.preview-classic { 
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.1), rgba(254, 247, 205, 0.05)); 
+}
+
+/* Minimal custom styles - most styling is now handled by global utilities */
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  flex-shrink: 0;
+}
+
+/* Remove custom CSS since we're now using global utility classes */
+</style>

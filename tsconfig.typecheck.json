@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/stores/**/*.ts",
+    "src/shared/services/GamificationEvents.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "dist-electron",
+    "test",
+    "src/test",
+    "src/test/**",
+    "src/tests",
+    "src/tests/**",
+    "src/composables/**",
+    "src/shared/**",
+    "src/utils/**",
+    "src/data/**",
+    "src/modules/**",
+    "src/**/*.vue",
+    "src/**/*.js"
+  ]
+}

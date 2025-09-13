@@ -1,0 +1,347 @@
+/*
+ * Legacy Utility Bridge
+ * Maps common Bootstrap-like utility classes to design-system tokens so
+ * legacy markup remains visually consistent with our glasmorphic master theme
+ * across light/dark modes.
+ */
+
+/* Backgrounds */
+.bg-light {
+  background: var(--glass-bg) !important;
+}
+.bg-dark {
+  background: var(--surface-elevated) !important;
+}
+.bg-transparent {
+  background: transparent !important;
+}
+.bg-primary {
+  background: var(--color-primary-500) !important;
+  color: #fff !important;
+  border-color: var(--color-primary-500) !important;
+}
+.bg-secondary {
+  background: var(--glass-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--glass-border) !important;
+}
+.bg-success {
+  background: var(--color-success-500) !important;
+  color: #fff !important;
+}
+.bg-warning {
+  background: var(--color-warning-500) !important;
+  color: #111 !important;
+}
+.bg-danger {
+  background: var(--color-error-500, var(--color-danger-500)) !important;
+  color: #fff !important;
+}
+.bg-info {
+  background: var(--color-info-500, #3b82f6) !important;
+  color: #fff !important;
+}
+
+/* Text */
+.text-muted {
+  color: var(--text-secondary) !important;
+}
+.text-primary {
+  color: var(--color-primary-600, var(--color-primary-500)) !important;
+}
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+.text-success {
+  color: var(--color-success-600, var(--color-success-500)) !important;
+}
+.text-warning {
+  color: var(--color-warning-600, var(--color-warning-500)) !important;
+}
+.text-danger {
+  color: var(--color-error-600, var(--color-danger-600)) !important;
+}
+.text-info {
+  color: var(--color-info-600, #2563eb) !important;
+}
+.text-light {
+  color: #f9fafb !important;
+}
+.text-dark {
+  color: #111827 !important;
+}
+
+/* Borders */
+.border {
+  border: 1px solid var(--glass-border) !important;
+}
+.border-0 {
+  border: 0 !important;
+}
+.border-top {
+  border-top: 1px solid var(--glass-border) !important;
+}
+.border-bottom {
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+.border-start,
+.border-left {
+  border-left: 1px solid var(--glass-border) !important;
+}
+.border-end,
+.border-right {
+  border-right: 1px solid var(--glass-border) !important;
+}
+
+/* Buttons */
+.btn-outline-secondary {
+  /* Leverage unified button variables defined by master theme */
+  --btn-border: var(--border-base);
+  --btn-color: var(--text-secondary);
+}
+.btn-outline-secondary:hover {
+  --btn-hover-bg: color-mix(
+    in srgb,
+    var(--text-secondary) 10%,
+    var(--glass-bg)
+  );
+  --btn-hover-color: var(--text-primary);
+}
+
+.btn-outline-primary {
+  --btn-border: var(--color-primary-400);
+  --btn-color: var(--color-primary-700);
+}
+.btn-outline-primary:hover {
+  --btn-hover-bg: color-mix(
+    in srgb,
+    var(--color-primary-500) 14%,
+    var(--glass-bg)
+  );
+  --btn-hover-color: var(--text-primary);
+}
+
+.btn-outline-success {
+  --btn-border: var(--color-success-400);
+  --btn-color: var(--color-success-700);
+}
+.btn-outline-success:hover {
+  --btn-hover-bg: color-mix(
+    in srgb,
+    var(--color-success-500) 14%,
+    var(--glass-bg)
+  );
+  --btn-hover-color: var(--text-primary);
+}
+
+.btn-outline-warning {
+  --btn-border: var(--color-warning-400);
+  --btn-color: var(--color-warning-700);
+}
+.btn-outline-warning:hover {
+  --btn-hover-bg: color-mix(
+    in srgb,
+    var(--color-warning-500) 18%,
+    var(--glass-bg)
+  );
+  --btn-hover-color: var(--text-primary);
+}
+
+.btn-outline-danger {
+  --btn-border: var(--color-error-400, var(--color-danger-400));
+  --btn-color: var(--color-error-700, var(--color-danger-700));
+}
+.btn-outline-danger:hover {
+  --btn-hover-bg: color-mix(
+    in srgb,
+    var(--color-error-500, var(--color-danger-500)) 14%,
+    var(--glass-bg)
+  );
+  --btn-hover-color: var(--text-primary);
+}
+
+.btn-outline-info {
+  --btn-border: var(--color-info-400, #60a5fa);
+  --btn-color: var(--color-info-700, #1d4ed8);
+}
+.btn-outline-info:hover {
+  --btn-hover-bg: color-mix(
+    in srgb,
+    var(--color-info-500, #3b82f6) 14%,
+    var(--glass-bg)
+  );
+  --btn-hover-color: var(--text-primary);
+}
+
+.btn-outline-light {
+  --btn-border: var(--glass-border);
+  --btn-color: var(--text-primary);
+}
+.btn-outline-light:hover {
+  --btn-hover-bg: color-mix(in srgb, #ffffff 10%, var(--glass-bg));
+  --btn-hover-color: var(--text-primary);
+}
+
+/* Chips/Pills (fallback if present) */
+.badge {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+}
+.badge.bg-primary {
+  background: var(--color-primary-500) !important;
+  color: #fff;
+  border-color: var(--color-primary-500);
+}
+
+/* Flex + alignment helpers */
+.d-flex {
+  display: flex !important;
+}
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+.justify-content-start {
+  justify-content: flex-start !important;
+}
+.justify-content-end {
+  justify-content: flex-end !important;
+}
+.justify-content-center {
+  justify-content: center !important;
+}
+.justify-content-between {
+  justify-content: space-between !important;
+}
+.align-items-start {
+  align-items: flex-start !important;
+}
+.align-items-center {
+  align-items: center !important;
+}
+.align-items-end {
+  align-items: flex-end !important;
+}
+
+/* Gap utilities */
+.gap-0 {
+  gap: 0 !important;
+}
+.gap-1 {
+  gap: var(--spacing-1) !important;
+}
+.gap-2 {
+  gap: var(--spacing-2) !important;
+}
+.gap-3 {
+  gap: var(--spacing-3) !important;
+}
+.gap-4 {
+  gap: var(--spacing-4) !important;
+}
+.gap-5 {
+  gap: var(--spacing-5) !important;
+}
+
+/* Row/Col minimal grid bridge (responsive approximations) */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+}
+.col {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+.col-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+.col-4 {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+}
+.col-3 {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+@media (min-width: 576px) {
+  .col-sm-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .col-sm-4 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+  .col-sm-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .col-sm-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .col-md-4 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+  .col-md-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .col-md-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .col-lg-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .col-lg-4 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+  .col-lg-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .col-lg-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .col-xl-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .col-xl-4 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+  .col-xl-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .col-xl-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}

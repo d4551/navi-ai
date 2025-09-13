@@ -1,0 +1,413 @@
+/*
+ * ENHANCED THEME INTEGRATION
+ * Master import file for all enhanced styles
+ * Ensures proper loading order and integration
+ */
+
+/* Base Design System (must load first) */
+@import "./design-system.css";
+
+/* Enhanced Layout System */
+@import "./layout-utilities.css";
+
+/* Enhanced Component Systems */
+@import "./enhanced-navigation.css";
+@import "./enhanced-buttons.css";
+@import "./enhanced-fairy-interface.css";
+
+/* Global Enhancements (must load last) */
+@import "./enhanced-global-improvements.css";
+
+/*
+ * INTEGRATION OVERRIDES
+ * Ensure enhanced styles work seamlessly with existing components
+ */
+
+/* === NAVIGATION INTEGRATION === */
+/* Apply enhanced navigation to existing navigation component */
+.navigation-menu {
+  /* Enhanced styles will be applied automatically */
+}
+
+/* === FAIRY INTEGRATION === */
+/* Apply enhanced fairy styles to existing fairy component */
+.ai-fairy-container {
+  /* Enhanced styles will be applied automatically */
+}
+
+.fairy-bubble.enhanced-gaming-card {
+  /* Inherit enhanced bubble styles */
+}
+
+.fairy-chat-interface {
+  /* Inherit enhanced chat interface styles */
+}
+
+/* === BUTTON INTEGRATION === */
+/* Apply enhanced button styles to existing button components */
+.unified-button {
+  @extend .btn-base;
+}
+
+.glass-button {
+  @extend .btn-glass;
+}
+
+/* Enhanced glass button variants for existing components */
+.glass-btn {
+  @extend .btn-glass;
+
+  /* Additional gaming enhancements */
+  &.ai-powered {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+      );
+      transition: left var(--duration-slow) var(--easing-ease-out);
+    }
+
+    &:hover::before {
+      left: 100%;
+    }
+  }
+}
+
+/* === CARD INTEGRATION === */
+/* Apply enhanced glass styles to existing card components */
+.enhanced-gaming-card {
+  @extend .glass-card;
+
+  /* Additional gaming-specific enhancements */
+  background: linear-gradient(
+    135deg,
+    rgba(var(--surface-glass-rgb), 0.12) 0%,
+    rgba(0, 255, 136, 0.03) 50%,
+    rgba(var(--surface-glass-rgb), 0.08) 100%
+  );
+
+  border: 1px solid rgba(0, 255, 136, 0.15);
+
+  &:hover {
+    border-color: rgba(0, 255, 136, 0.25);
+    box-shadow:
+      var(--glass-shadow-elevated),
+      0 0 20px rgba(0, 255, 136, 0.1);
+  }
+}
+
+.ultra-glass-card {
+  @extend .glass-strong;
+
+  /* Ultra-enhanced glass effect */
+  backdrop-filter: blur(32px) saturate(2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.15),
+    0 10px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* === INPUT INTEGRATION === */
+/* Apply enhanced input styles to existing form components */
+.noir-input,
+.fairy-input {
+  /* Inherit enhanced input styles */
+  background: rgba(var(--surface-elevated-rgb), 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+
+  transition: all var(--duration-fast) var(--easing-ease-out);
+
+  &:focus {
+    background: rgba(var(--surface-elevated-rgb), 0.95);
+    border-color: var(--color-primary-500);
+    box-shadow:
+      0 0 0 3px rgba(var(--color-primary-500-rgb), 0.1),
+      0 4px 12px rgba(var(--color-primary-500-rgb), 0.15);
+  }
+
+  &::placeholder {
+    color: var(--text-tertiary);
+    opacity: 0.8;
+  }
+}
+
+/* === SCROLLBAR INTEGRATION === */
+/* Apply custom scrollbars to specific containers */
+.nav-content,
+.chat-messages,
+.modal-content,
+.sidebar-content {
+  @extend .custom-scrollbar;
+}
+
+/* Glass-morphism aligned chat container */
+.chat-messages {
+  background: var(--glass-surface);
+  backdrop-filter: blur(var(--glass-backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--glass-backdrop-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3);
+}
+
+/* Allow components to opt-out and let parent surface show through */
+.chat-messages.is-transparent {
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+}
+
+/* Thin scrollbars for compact areas */
+.compact-scroll,
+.tooltip-content,
+.dropdown-content {
+  @extend .thin-scrollbar;
+}
+
+/* === ANIMATION INTEGRATION === */
+/* Apply enhanced animations to existing transition classes */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all var(--duration-normal) var(--easing-ease-out);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all var(--duration-normal) var(--easing-ease-out);
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.scale-enter-active,
+.scale-leave-active {
+  transition: all var(--duration-fast) var(--easing-spring);
+}
+
+.scale-enter-from,
+.scale-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* === THEME-SPECIFIC INTEGRATIONS === */
+/* Gaming theme specific enhancements */
+.theme-gaming {
+  /* Enhanced gaming color palette */
+  --gaming-primary: #00ff88;
+  --gaming-secondary: #00ffff;
+  --gaming-accent: #ff00ff;
+
+  /* Enhanced gaming gradients */
+  --gaming-gradient-primary: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
+  --gaming-gradient-secondary: linear-gradient(
+    135deg,
+    #ff00ff 0%,
+    #00ff88 100%
+  );
+  --gaming-gradient-accent: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+
+  /* Gaming-specific component enhancements */
+  .glass-panel,
+  .glass-card {
+    border-color: rgba(0, 255, 136, 0.2);
+    background: linear-gradient(
+      135deg,
+      rgba(0, 255, 136, 0.05) 0%,
+      rgba(var(--surface-glass-rgb), 0.08) 50%,
+      rgba(0, 255, 255, 0.03) 100%
+    );
+  }
+
+  .btn-primary {
+    background: var(--gaming-gradient-primary);
+    border-color: #00cc6a;
+    color: #000;
+
+    &:hover {
+      background: var(--gaming-gradient-primary);
+      filter: brightness(1.1);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+    }
+  }
+
+  .fairy-avatar {
+    border-color: rgba(0, 255, 136, 0.4);
+    box-shadow:
+      0 8px 32px rgba(0, 255, 136, 0.2),
+      0 0 0 1px rgba(0, 255, 136, 0.1);
+  }
+}
+
+/* Dark theme specific enhancements */
+[data-theme="dark"] {
+  /* Enhanced dark mode integration */
+  .glass-panel,
+  .glass-card {
+    background: rgba(var(--surface-glass-rgb), 0.8);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .enhanced-gaming-card {
+    background: linear-gradient(
+      135deg,
+      rgba(15, 23, 42, 0.9) 0%,
+      rgba(0, 255, 136, 0.05) 50%,
+      rgba(15, 23, 42, 0.8) 100%
+    );
+  }
+
+  .fairy-bubble {
+    background: linear-gradient(
+      135deg,
+      rgba(15, 23, 42, 0.95) 0%,
+      rgba(15, 23, 42, 0.85) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* === RESPONSIVE INTEGRATION === */
+/* Enhanced mobile-specific adaptations */
+@media (max-width: 768px) {
+  /* Mobile-optimized glass effects */
+  .glass-panel,
+  .glass-card,
+  .enhanced-gaming-card,
+  .ultra-glass-card {
+    backdrop-filter: blur(12px) saturate(1.5);
+    border-width: 1px;
+  }
+
+  /* Mobile-optimized fairy interface */
+  .ai-fairy-container {
+    bottom: var(--spacing-4);
+    right: var(--spacing-4);
+    left: var(--spacing-4);
+  }
+
+  .fairy-bubble {
+    max-width: none;
+    margin: 0;
+  }
+
+  /* Mobile-optimized navigation */
+  .navigation-menu {
+    width: calc(100vw - var(--spacing-8));
+    max-width: 320px;
+  }
+
+  /* Mobile-optimized buttons */
+  .btn-base {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* === ACCESSIBILITY INTEGRATION === */
+/* Enhanced accessibility features */
+@media (prefers-reduced-motion: reduce) {
+  .fairy-avatar,
+  .particle,
+  .selection-ring,
+  .fairy-glow,
+  .fairy-aura,
+  .wing,
+  .notification-pulse,
+  .glass-btn.ai-powered::before {
+    animation: none;
+  }
+
+  .glass-card:hover,
+  .fairy-bubble.bubble-interactive:hover,
+  .btn-base:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .glass-panel,
+  .glass-card,
+  .enhanced-gaming-card,
+  .ultra-glass-card,
+  .fairy-bubble {
+    background: var(--surface-base);
+    border-width: 2px;
+    border-color: var(--border-strong);
+    backdrop-filter: none;
+  }
+
+  .fairy-avatar {
+    border-width: 2px;
+    background: var(--surface-elevated);
+  }
+}
+
+/* === PERFORMANCE INTEGRATION === */
+/* GPU acceleration for key animated elements */
+.fairy-avatar,
+.fairy-bubble,
+.glass-card,
+.btn-base,
+.navigation-menu {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Optimize repaints for frequently changing elements */
+.particle,
+.fairy-glow,
+.fairy-aura,
+.selection-ring,
+.notification-pulse {
+  contain: layout style paint;
+}
+
+/* === PRINT INTEGRATION === */
+@media print {
+  .glass-panel,
+  .glass-card,
+  .enhanced-gaming-card,
+  .ultra-glass-card,
+  .fairy-bubble {
+    background: white !important;
+    border: 1px solid #ccc !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+
+  .ai-fairy-container,
+  .navigation-menu {
+    display: none !important;
+  }
+
+  .fairy-bubble::before {
+    display: none !important;
+  }
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test AI Orchestration Service</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .container { max-width: 800px; margin: 0 auto; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    h2 { border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    pre { background-color: #f4f4f4; padding: 10px; border-radius: 4px; white-space: pre-wrap; }
+    button { padding: 8px 12px; border-radius: 4px; border: none; background-color: #007bff; color: white; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>AI Orchestration Service Test Page</h1>
+
+    <div class="card">
+      <h2>User Profile Analysis</h2>
+      <button id="analyze-profile-btn">Analyze Default User Profile</button>
+      <pre id="profile-analysis-result"></pre>
+    </div>
+
+    <div class="card">
+      <h2>Job Matching</h2>
+      <button id="find-jobs-btn">Find Matching Jobs for Default User</button>
+      <pre id="job-matching-result"></pre>
+    </div>
+
+    <div class="card">
+      <h2>Studio Enrichment</h2>
+      <button id="enrich-studio-btn">Enrich Sample Studio Data</button>
+      <pre id="studio-enrichment-result"></pre>
+    </div>
+  </div>
+
+  <script type="module" src="./test-ai-orchestration.js"></script>
+</body>
+</html>

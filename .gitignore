@@ -1,0 +1,31 @@
+node_modules
+.env
+.env.local
+
+# Build output
+dist/
+dist-electron/
+
+# Cache
+.vite/
+.cache/
+
+# Local development
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Screenshots and temporary images
+docs/screenshots/*.png
+/tmp/playwright-logs/

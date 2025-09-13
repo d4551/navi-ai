@@ -1,0 +1,32 @@
+{
+  "Software Engineer": {
+    "description": "Develops and maintains game systems and features",
+    "requiredSkills": ["C++", "Problem Solving", "Game Programming", "Version Control"],
+    "demandLevel": "high"
+  },
+  "Game Designer": {
+    "description": "Creates game mechanics, systems, and player experiences",
+    "requiredSkills": ["Game Design", "Documentation", "User Experience", "Creative Thinking"],
+    "demandLevel": "high"
+  },
+  "Technical Artist": {
+    "description": "Bridges art and programming to optimize game assets",
+    "requiredSkills": ["3D Graphics", "Scripting", "Optimization", "Art Pipeline"],
+    "demandLevel": "high"
+  },
+  "Producer": {
+    "description": "Manages game development timeline, resources, and team coordination",
+    "requiredSkills": ["Project Management", "Communication", "Budgeting", "Team Leadership"],
+    "demandLevel": "medium"
+  },
+  "QA Engineer": {
+    "description": "Tests games to ensure quality and identify bugs",
+    "requiredSkills": ["Testing", "Attention to Detail", "Bug Tracking", "Scripting"],
+    "demandLevel": "medium"
+  },
+  "Sound Designer": {
+    "description": "Creates immersive audio experiences and sound effects",
+    "requiredSkills": ["Audio Engineering", "Sound Editing", "Field Recording", "Middleware"],
+    "demandLevel": "low"
+  }
+}

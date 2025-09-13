@@ -1,0 +1,4200 @@
+﻿{
+  "summary": {
+    "files": 22,
+    "tokens": 472,
+    "duplicates": 171
+  },
+  "duplicates": [
+    {
+      "name": "--btn-border",
+      "count": 17,
+      "distinctValues": [
+        "var(--border-base)",
+        "var(--color-primary-400)",
+        "var(--color-success-400)",
+        "var(--color-warning-400)",
+        "var(--color-error-400, var(--color-danger-400))",
+        "var(--color-info-400, #60a5fa)",
+        "var(--glass-border)",
+        "color-mix(in srgb, var(--color-gaming-500) 35%, transparent)",
+        "color-mix(in srgb, var(--color-primary-500) 40%, transparent)",
+        "color-mix(in srgb, var(--text-secondary) 24%, transparent)",
+        "color-mix(in srgb, var(--color-info) 28%, transparent)",
+        "color-mix(in srgb, var(--color-success) 28%, transparent)",
+        "color-mix(in srgb, var(--color-warning) 28%, transparent)",
+        "color-mix(in srgb, var(--color-error) 32%, transparent)",
+        "color-mix(in srgb, var(--text-secondary) 25%, transparent)",
+        "transparent"
+      ],
+      "definitions": [
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--border-base)",
+          "line": 99
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-primary-400)",
+          "line": 112
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-success-400)",
+          "line": 125
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-warning-400)",
+          "line": 138
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-error-400, var(--color-danger-400))",
+          "line": 151
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-info-400, #60a5fa)",
+          "line": 164
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--glass-border)",
+          "line": 177
+        },
+        {
+          "file": "master-theme.css",
+          "value": "var(--glass-border)",
+          "line": 580
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-gaming-500) 35%, transparent)",
+          "line": 640
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-primary-500) 40%, transparent)",
+          "line": 679
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--text-secondary) 24%, transparent)",
+          "line": 684
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-info) 28%, transparent)",
+          "line": 688
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-success) 28%, transparent)",
+          "line": 692
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-warning) 28%, transparent)",
+          "line": 696
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-error) 32%, transparent)",
+          "line": 700
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--text-secondary) 25%, transparent)",
+          "line": 708
+        },
+        {
+          "file": "master-theme.css",
+          "value": "transparent",
+          "line": 713
+        }
+      ]
+    },
+    {
+      "name": "--btn-color",
+      "count": 11,
+      "distinctValues": [
+        "var(--text-secondary)",
+        "var(--color-primary-700)",
+        "var(--color-success-700)",
+        "var(--color-warning-700)",
+        "var(--color-error-700, var(--color-danger-700))",
+        "var(--color-info-700, #1d4ed8)",
+        "var(--text-primary)",
+        "var(--text-on-primary, #fff)",
+        "#fff"
+      ],
+      "definitions": [
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-secondary)",
+          "line": 100
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-primary-700)",
+          "line": 113
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-success-700)",
+          "line": 126
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-warning-700)",
+          "line": 139
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-error-700, var(--color-danger-700))",
+          "line": 152
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--color-info-700, #1d4ed8)",
+          "line": 165
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-primary)",
+          "line": 178
+        },
+        {
+          "file": "master-theme.css",
+          "value": "var(--text-primary)",
+          "line": 581
+        },
+        {
+          "file": "master-theme.css",
+          "value": "var(--text-primary)",
+          "line": 641
+        },
+        {
+          "file": "master-theme.css",
+          "value": "var(--text-on-primary, #fff)",
+          "line": 680
+        },
+        {
+          "file": "master-theme.css",
+          "value": "#fff",
+          "line": 701
+        }
+      ]
+    },
+    {
+      "name": "--surface-glass-rgb",
+      "count": 9,
+      "distinctValues": [
+        "255, 255, 255",
+        "17, 17, 17",
+        "0, 0, 0",
+        "15, 23, 42"
+      ],
+      "definitions": [
+        {
+          "file": "canonical-theme.css",
+          "value": "255, 255, 255",
+          "line": 8
+        },
+        {
+          "file": "canonical-theme.css",
+          "value": "17, 17, 17",
+          "line": 18
+        },
+        {
+          "file": "design-system.css",
+          "value": "255, 255, 255",
+          "line": 775
+        },
+        {
+          "file": "design-system.css",
+          "value": "0, 0, 0",
+          "line": 825
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "15, 23, 42",
+          "line": 40
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "255, 255, 255",
+          "line": 70
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "0, 0, 0",
+          "line": 86
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "255, 255, 255",
+          "line": 194
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0, 0, 0",
+          "line": 239
+        }
+      ]
+    },
+    {
+      "name": "--glass-border",
+      "count": 9,
+      "distinctValues": [
+        "rgba(0, 0, 0, 0.06)",
+        "rgba(255, 255, 255, 0.08)",
+        "rgba(255, 255, 255, 0.3)",
+        "rgba(255, 255, 255, 0.1)",
+        "rgba(0, 0, 0, 0.08)",
+        "rgba(255, 255, 255, 0.12)"
+      ],
+      "definitions": [
+        {
+          "file": "canonical-theme.css",
+          "value": "rgba(0, 0, 0, 0.06)",
+          "line": 10
+        },
+        {
+          "file": "canonical-theme.css",
+          "value": "rgba(255, 255, 255, 0.08)",
+          "line": 20
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.3)",
+          "line": 766
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.08)",
+          "line": 818
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "rgba(255, 255, 255, 0.1)",
+          "line": 45
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(0, 0, 0, 0.08)",
+          "line": 74
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(255, 255, 255, 0.12)",
+          "line": 90
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.08)",
+          "line": 199
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.12)",
+          "line": 244
+        }
+      ]
+    },
+    {
+      "name": "--btn-hover-color",
+      "count": 9,
+      "distinctValues": [
+        "var(--text-primary)"
+      ],
+      "definitions": [
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-primary)",
+          "line": 108
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-primary)",
+          "line": 121
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-primary)",
+          "line": 134
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-primary)",
+          "line": 147
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-primary)",
+          "line": 160
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-primary)",
+          "line": 173
+        },
+        {
+          "file": "legacy-bridge.css",
+          "value": "var(--text-primary)",
+          "line": 182
+        },
+        {
+          "file": "master-theme.css",
+          "value": "var(--text-primary)",
+          "line": 589
+        },
+        {
+          "file": "master-theme.css",
+          "value": "var(--text-primary)",
+          "line": 654
+        }
+      ]
+    },
+    {
+      "name": "--text-primary",
+      "count": 7,
+      "distinctValues": [
+        "var(--color-gray-900)",
+        "var(--color-gray-50)",
+        "#00ff88",
+        "#000000",
+        "#ffffff",
+        "#111827",
+        "#f9fafb"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-900)",
+          "line": 747
+        },
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-50)",
+          "line": 799
+        },
+        {
+          "file": "design-system.css",
+          "value": "#00ff88",
+          "line": 835
+        },
+        {
+          "file": "design-system.css",
+          "value": "#000000",
+          "line": 1540
+        },
+        {
+          "file": "design-system.css",
+          "value": "#ffffff",
+          "line": 1548
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#111827",
+          "line": 182
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#f9fafb",
+          "line": 227
+        }
+      ]
+    },
+    {
+      "name": "--glass-bg",
+      "count": 7,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.8)",
+        "rgba(0, 0, 0, 0.8)",
+        "rgba(0, 255, 136, 0.1)",
+        "rgba(255, 255, 255, 0.75)",
+        "rgba(0, 0, 0, 0.65)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.8)",
+          "line": 765
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 0, 0, 0.8)",
+          "line": 817
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 255, 136, 0.1)",
+          "line": 836
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(255, 255, 255, 0.75)",
+          "line": 71
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(0, 0, 0, 0.65)",
+          "line": 87
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.75)",
+          "line": 195
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.65)",
+          "line": 240
+        }
+      ]
+    },
+    {
+      "name": "--glass-surface",
+      "count": 7,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.8)",
+        "rgba(0, 0, 0, 0.8)",
+        "rgba(var(--surface-glass-rgb), 0.6)",
+        "rgba(255, 255, 255, 0.85)",
+        "rgba(0, 0, 0, 0.75)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.8)",
+          "line": 768
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 0, 0, 0.8)",
+          "line": 820
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "rgba(var(--surface-glass-rgb), 0.6)",
+          "line": 43
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(255, 255, 255, 0.85)",
+          "line": 72
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(0, 0, 0, 0.75)",
+          "line": 88
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.85)",
+          "line": 196
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.75)",
+          "line": 241
+        }
+      ]
+    },
+    {
+      "name": "--surface-base",
+      "count": 6,
+      "distinctValues": [
+        "#ffffff",
+        "#000000",
+        "#0b0b0c"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#ffffff",
+          "line": 736
+        },
+        {
+          "file": "design-system.css",
+          "value": "#000000",
+          "line": 785
+        },
+        {
+          "file": "design-system.css",
+          "value": "#ffffff",
+          "line": 1542
+        },
+        {
+          "file": "design-system.css",
+          "value": "#000000",
+          "line": 1550
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#ffffff",
+          "line": 176
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#0b0b0c",
+          "line": 221
+        }
+      ]
+    },
+    {
+      "name": "--glass-surface-strong",
+      "count": 6,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.92)",
+        "rgba(15, 15, 15, 0.92)",
+        "rgba(0, 0, 0, 0.85)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.92)",
+          "line": 744
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(15, 15, 15, 0.92)",
+          "line": 796
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(255, 255, 255, 0.92)",
+          "line": 73
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(0, 0, 0, 0.85)",
+          "line": 89
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.92)",
+          "line": 197
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.85)",
+          "line": 242
+        }
+      ]
+    },
+    {
+      "name": "--text-secondary",
+      "count": 6,
+      "distinctValues": [
+        "var(--color-gray-700)",
+        "var(--color-gray-300)",
+        "#1a1a1a",
+        "#e5e5e5",
+        "#374151",
+        "#d1d5db"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-700)",
+          "line": 748
+        },
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-300)",
+          "line": 800
+        },
+        {
+          "file": "design-system.css",
+          "value": "#1a1a1a",
+          "line": 1541
+        },
+        {
+          "file": "design-system.css",
+          "value": "#e5e5e5",
+          "line": 1549
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#374151",
+          "line": 183
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#d1d5db",
+          "line": 228
+        }
+      ]
+    },
+    {
+      "name": "--border-base",
+      "count": 6,
+      "distinctValues": [
+        "var(--color-gray-200)",
+        "var(--color-gray-700)",
+        "#000000",
+        "#ffffff",
+        "rgba(17, 24, 39, 0.08)",
+        "rgba(255, 255, 255, 0.08)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-200)",
+          "line": 758
+        },
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-700)",
+          "line": 810
+        },
+        {
+          "file": "design-system.css",
+          "value": "#000000",
+          "line": 1538
+        },
+        {
+          "file": "design-system.css",
+          "value": "#ffffff",
+          "line": 1546
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(17, 24, 39, 0.08)",
+          "line": 189
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.08)",
+          "line": 234
+        }
+      ]
+    },
+    {
+      "name": "--border-strong",
+      "count": 6,
+      "distinctValues": [
+        "var(--color-gray-300)",
+        "var(--color-gray-600)",
+        "#000000",
+        "#ffffff",
+        "rgba(17, 24, 39, 0.16)",
+        "rgba(255, 255, 255, 0.16)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-300)",
+          "line": 759
+        },
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-600)",
+          "line": 811
+        },
+        {
+          "file": "design-system.css",
+          "value": "#000000",
+          "line": 1539
+        },
+        {
+          "file": "design-system.css",
+          "value": "#ffffff",
+          "line": 1547
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(17, 24, 39, 0.16)",
+          "line": 190
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.16)",
+          "line": 235
+        }
+      ]
+    },
+    {
+      "name": "--surface-elevated-rgb",
+      "count": 5,
+      "distinctValues": [
+        "245, 245, 245",
+        "24, 24, 24",
+        "255, 255, 255",
+        "0, 0, 0",
+        "30, 41, 59"
+      ],
+      "definitions": [
+        {
+          "file": "canonical-theme.css",
+          "value": "245, 245, 245",
+          "line": 9
+        },
+        {
+          "file": "canonical-theme.css",
+          "value": "24, 24, 24",
+          "line": 19
+        },
+        {
+          "file": "design-system.css",
+          "value": "255, 255, 255",
+          "line": 776
+        },
+        {
+          "file": "design-system.css",
+          "value": "0, 0, 0",
+          "line": 826
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "30, 41, 59",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "name": "--glass-backdrop-blur",
+      "count": 5,
+      "distinctValues": [
+        "blur(20px)",
+        "blur(20px) saturate(1.2)",
+        "blur(24px) saturate(1.1)",
+        "blur(24px)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "blur(20px)",
+          "line": 335
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "blur(20px) saturate(1.2)",
+          "line": 75
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "blur(24px) saturate(1.1)",
+          "line": 91
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "blur(20px)",
+          "line": 202
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "blur(24px)",
+          "line": 247
+        }
+      ]
+    },
+    {
+      "name": "--glass-shadow",
+      "count": 5,
+      "distinctValues": [
+        "0 8px 32px rgba(0, 0, 0, 0.1)",
+        "0 8px 32px rgba(0, 0, 0, 0.35)",
+        "0 8px 32px rgba(0, 0, 0, 0.4)",
+        "0 8px 32px rgba(0, 0, 0, 0.12)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0 8px 32px rgba(0, 0, 0, 0.1)",
+          "line": 767
+        },
+        {
+          "file": "design-system.css",
+          "value": "0 8px 32px rgba(0, 0, 0, 0.35)",
+          "line": 819
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "0 8px 32px rgba(0, 0, 0, 0.4)",
+          "line": 47
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0 8px 32px rgba(0, 0, 0, 0.12)",
+          "line": 200
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0 8px 32px rgba(0, 0, 0, 0.4)",
+          "line": 245
+        }
+      ]
+    },
+    {
+      "name": "--glass-hover-bg",
+      "count": 5,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.9)",
+        "rgba(22, 22, 22, 0.9)",
+        "rgba(255, 255, 255, 0.06)",
+        "rgba(0, 0, 0, 0.03)",
+        "rgba(255, 255, 255, 0.05)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.9)",
+          "line": 770
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(22, 22, 22, 0.9)",
+          "line": 790
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.06)",
+          "line": 822
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.03)",
+          "line": 198
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.05)",
+          "line": 243
+        }
+      ]
+    },
+    {
+      "name": "--glass-gaming-bg",
+      "count": 5,
+      "distinctValues": [
+        "rgba(var(--surface-glass-rgb), 0.08)",
+        "rgba(255, 255, 255, 0.12)",
+        "rgba(0, 0, 0, 0.15)"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(var(--surface-glass-rgb), 0.08)",
+          "line": 32
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(255, 255, 255, 0.12)",
+          "line": 78
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(0, 0, 0, 0.15)",
+          "line": 94
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.12)",
+          "line": 205
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.15)",
+          "line": 250
+        }
+      ]
+    },
+    {
+      "name": "--glass-gaming-border",
+      "count": 5,
+      "distinctValues": [
+        "rgba(var(--color-gaming-500-rgb), 0.15)",
+        "rgba(var(--color-gaming-500-rgb), 0.12)",
+        "rgba(var(--color-gaming-500-rgb), 0.18)"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.15)",
+          "line": 33
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.12)",
+          "line": 79
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.18)",
+          "line": 95
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.12)",
+          "line": 206
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.18)",
+          "line": 251
+        }
+      ]
+    },
+    {
+      "name": "--btn-bg",
+      "count": 5,
+      "distinctValues": [
+        "color-mix(in srgb, var(--text-secondary) 12%, var(--glass-bg))",
+        "color-mix(in srgb, var(--color-info) 14%, var(--glass-bg))",
+        "color-mix(in srgb, var(--color-success) 14%, var(--glass-bg))",
+        "color-mix(in srgb, var(--color-warning) 14%, var(--glass-bg))",
+        "color-mix(in srgb, var(--color-error) 14%, var(--glass-bg))"
+      ],
+      "definitions": [
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--text-secondary) 12%, var(--glass-bg))",
+          "line": 683
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-info) 14%, var(--glass-bg))",
+          "line": 687
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-success) 14%, var(--glass-bg))",
+          "line": 691
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-warning) 14%, var(--glass-bg))",
+          "line": 695
+        },
+        {
+          "file": "master-theme.css",
+          "value": "color-mix(in srgb, var(--color-error) 14%, var(--glass-bg))",
+          "line": 699
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-500",
+      "count": 4,
+      "distinctValues": [
+        "#6366f1",
+        "#00ff88",
+        "#4f46e5",
+        "var(--color-gaming-500)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#6366f1",
+          "line": 248
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "#00ff88",
+          "line": 787
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "#4f46e5",
+          "line": 805
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-500)",
+          "line": 143
+        }
+      ]
+    },
+    {
+      "name": "--surface-elevated",
+      "count": 4,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.95)",
+        "rgba(0, 0, 0, 0.95)",
+        "#ffffff",
+        "#12141a"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.95)",
+          "line": 737
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 0, 0, 0.95)",
+          "line": 786
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#ffffff",
+          "line": 178
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#12141a",
+          "line": 223
+        }
+      ]
+    },
+    {
+      "name": "--surface-overlay",
+      "count": 4,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.95)",
+        "rgba(0, 0, 0, 0.95)",
+        "rgba(0, 0, 0, 0.5)",
+        "rgba(0, 0, 0, 0.8)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.95)",
+          "line": 739
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 0, 0, 0.95)",
+          "line": 788
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.5)",
+          "line": 179
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.8)",
+          "line": 224
+        }
+      ]
+    },
+    {
+      "name": "--surface-container",
+      "count": 4,
+      "distinctValues": [
+        "#f9fafb",
+        "#000000",
+        "#f7f8fa",
+        "#0f1115"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#f9fafb",
+          "line": 740
+        },
+        {
+          "file": "design-system.css",
+          "value": "#000000",
+          "line": 789
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#f7f8fa",
+          "line": 177
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#0f1115",
+          "line": 222
+        }
+      ]
+    },
+    {
+      "name": "--text-tertiary",
+      "count": 4,
+      "distinctValues": [
+        "var(--color-gray-600)",
+        "var(--color-gray-400)",
+        "#4b5563",
+        "#9ca3af"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-600)",
+          "line": 749
+        },
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-400)",
+          "line": 801
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#4b5563",
+          "line": 184
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#9ca3af",
+          "line": 229
+        }
+      ]
+    },
+    {
+      "name": "--text-muted",
+      "count": 4,
+      "distinctValues": [
+        "var(--color-gray-500)",
+        "#6b7280"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-500)",
+          "line": 750
+        },
+        {
+          "file": "design-system.css",
+          "value": "var(--color-gray-500)",
+          "line": 802
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#6b7280",
+          "line": 185
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#6b7280",
+          "line": 230
+        }
+      ]
+    },
+    {
+      "name": "--z-base",
+      "count": 3,
+      "distinctValues": [
+        "0",
+        "1"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0",
+          "line": 177
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "1",
+          "line": 25
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1",
+          "line": 92
+        }
+      ]
+    },
+    {
+      "name": "--z-sticky",
+      "count": 3,
+      "distinctValues": [
+        "20",
+        "100"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "20",
+          "line": 179
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "100",
+          "line": 27
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "100",
+          "line": 94
+        }
+      ]
+    },
+    {
+      "name": "--z-navigation",
+      "count": 3,
+      "distinctValues": [
+        "30",
+        "1100"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "30",
+          "line": 180
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "1100",
+          "line": 29
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1100",
+          "line": 96
+        }
+      ]
+    },
+    {
+      "name": "--z-overlay",
+      "count": 3,
+      "distinctValues": [
+        "40",
+        "1200"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "40",
+          "line": 182
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "1200",
+          "line": 30
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1200",
+          "line": 97
+        }
+      ]
+    },
+    {
+      "name": "--z-modal",
+      "count": 3,
+      "distinctValues": [
+        "50",
+        "1300"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "50",
+          "line": 183
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "1300",
+          "line": 31
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1300",
+          "line": 98
+        }
+      ]
+    },
+    {
+      "name": "--z-popover",
+      "count": 3,
+      "distinctValues": [
+        "60",
+        "1400"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "60",
+          "line": 184
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "1400",
+          "line": 32
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1400",
+          "line": 99
+        }
+      ]
+    },
+    {
+      "name": "--z-tooltip",
+      "count": 3,
+      "distinctValues": [
+        "70",
+        "1500"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "70",
+          "line": 185
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "1500",
+          "line": 33
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1500",
+          "line": 100
+        }
+      ]
+    },
+    {
+      "name": "--z-toast",
+      "count": 3,
+      "distinctValues": [
+        "80",
+        "1600"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "80",
+          "line": 186
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "1600",
+          "line": 34
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1600",
+          "line": 101
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-400",
+      "count": 3,
+      "distinctValues": [
+        "#818cf8",
+        "#33ffaa",
+        "var(--color-gaming-400)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#818cf8",
+          "line": 247
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "#33ffaa",
+          "line": 788
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-400)",
+          "line": 142
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-600",
+      "count": 3,
+      "distinctValues": [
+        "#4f46e5",
+        "#00cc6a",
+        "var(--color-gaming-600)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#4f46e5",
+          "line": 249
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "#00cc6a",
+          "line": 789
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-600)",
+          "line": 144
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-50",
+      "count": 3,
+      "distinctValues": [
+        "#ecfdf5",
+        "#f0fff8"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#ecfdf5",
+          "line": 255
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#f0fff8",
+          "line": 16
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#f0fff8",
+          "line": 126
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-100",
+      "count": 3,
+      "distinctValues": [
+        "#d1fae5",
+        "#ccfff0"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#d1fae5",
+          "line": 256
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#ccfff0",
+          "line": 17
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#ccfff0",
+          "line": 127
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-200",
+      "count": 3,
+      "distinctValues": [
+        "#a7f3d0",
+        "#99ffe0"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#a7f3d0",
+          "line": 257
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#99ffe0",
+          "line": 18
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#99ffe0",
+          "line": 128
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-300",
+      "count": 3,
+      "distinctValues": [
+        "#6ee7b7",
+        "#66ffd1"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#6ee7b7",
+          "line": 258
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#66ffd1",
+          "line": 19
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#66ffd1",
+          "line": 129
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-400",
+      "count": 3,
+      "distinctValues": [
+        "#34d399",
+        "#33ffc1"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#34d399",
+          "line": 259
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#33ffc1",
+          "line": 20
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#33ffc1",
+          "line": 130
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-500",
+      "count": 3,
+      "distinctValues": [
+        "#00ff88"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#00ff88",
+          "line": 260
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#00ff88",
+          "line": 21
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#00ff88",
+          "line": 131
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-600",
+      "count": 3,
+      "distinctValues": [
+        "#059669",
+        "#00cc6b"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#059669",
+          "line": 261
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#00cc6b",
+          "line": 22
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#00cc6b",
+          "line": 132
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-700",
+      "count": 3,
+      "distinctValues": [
+        "#047857",
+        "#009950"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#047857",
+          "line": 262
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#009950",
+          "line": 23
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#009950",
+          "line": 133
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-800",
+      "count": 3,
+      "distinctValues": [
+        "#065f46",
+        "#006636"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#065f46",
+          "line": 263
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#006636",
+          "line": 24
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#006636",
+          "line": 134
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-900",
+      "count": 3,
+      "distinctValues": [
+        "#064e3b",
+        "#00331b"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#064e3b",
+          "line": 264
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "#00331b",
+          "line": 25
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#00331b",
+          "line": 135
+        }
+      ]
+    },
+    {
+      "name": "--duration-instant",
+      "count": 3,
+      "distinctValues": [
+        "0ms",
+        "50ms"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0ms",
+          "line": 298
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "50ms",
+          "line": 10
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "50ms",
+          "line": 77
+        }
+      ]
+    },
+    {
+      "name": "--duration-fast",
+      "count": 3,
+      "distinctValues": [
+        "150ms"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "150ms",
+          "line": 299
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "150ms",
+          "line": 11
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "150ms",
+          "line": 78
+        }
+      ]
+    },
+    {
+      "name": "--duration-normal",
+      "count": 3,
+      "distinctValues": [
+        "300ms",
+        "250ms"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "300ms",
+          "line": 300
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "250ms",
+          "line": 12
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "250ms",
+          "line": 79
+        }
+      ]
+    },
+    {
+      "name": "--duration-slow",
+      "count": 3,
+      "distinctValues": [
+        "500ms",
+        "350ms"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "500ms",
+          "line": 301
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "350ms",
+          "line": 13
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "350ms",
+          "line": 80
+        }
+      ]
+    },
+    {
+      "name": "--duration-slower",
+      "count": 3,
+      "distinctValues": [
+        "700ms",
+        "500ms"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "700ms",
+          "line": 302
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "500ms",
+          "line": 14
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "500ms",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "name": "--easing-linear",
+      "count": 3,
+      "distinctValues": [
+        "linear"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "linear",
+          "line": 304
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "linear",
+          "line": 16
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "linear",
+          "line": 83
+        }
+      ]
+    },
+    {
+      "name": "--easing-ease",
+      "count": 3,
+      "distinctValues": [
+        "ease"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "ease",
+          "line": 305
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "ease",
+          "line": 17
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "ease",
+          "line": 84
+        }
+      ]
+    },
+    {
+      "name": "--easing-ease-in",
+      "count": 3,
+      "distinctValues": [
+        "ease-in",
+        "cubic-bezier(0.4, 0, 1, 1)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "ease-in",
+          "line": 306
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "cubic-bezier(0.4, 0, 1, 1)",
+          "line": 18
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "cubic-bezier(0.4, 0, 1, 1)",
+          "line": 85
+        }
+      ]
+    },
+    {
+      "name": "--easing-ease-out",
+      "count": 3,
+      "distinctValues": [
+        "ease-out",
+        "cubic-bezier(0, 0, 0.2, 1)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "ease-out",
+          "line": 307
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "cubic-bezier(0, 0, 0.2, 1)",
+          "line": 19
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "cubic-bezier(0, 0, 0.2, 1)",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "name": "--easing-ease-in-out",
+      "count": 3,
+      "distinctValues": [
+        "ease-in-out",
+        "cubic-bezier(0.4, 0, 0.2, 1)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "ease-in-out",
+          "line": 308
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "line": 20
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "line": 87
+        }
+      ]
+    },
+    {
+      "name": "--easing-bounce",
+      "count": 3,
+      "distinctValues": [
+        "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+          "line": 309
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+          "line": 21
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+          "line": 88
+        }
+      ]
+    },
+    {
+      "name": "--border-subtle",
+      "count": 3,
+      "distinctValues": [
+        "var(--border-base)",
+        "rgba(17, 24, 39, 0.04)",
+        "rgba(255, 255, 255, 0.04)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--border-base)",
+          "line": 372
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(17, 24, 39, 0.04)",
+          "line": 191
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.04)",
+          "line": 236
+        }
+      ]
+    },
+    {
+      "name": "--z-floating",
+      "count": 3,
+      "distinctValues": [
+        "var(--z-popover)",
+        "1000"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--z-popover)",
+          "line": 662
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "1000",
+          "line": 28
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1000",
+          "line": 95
+        }
+      ]
+    },
+    {
+      "name": "--border-glass",
+      "count": 3,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.2)",
+        "rgba(255, 255, 255, 0.1)",
+        "rgba(0, 255, 136, 0.15)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.2)",
+          "line": 760
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.1)",
+          "line": 812
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 255, 136, 0.15)",
+          "line": 834
+        }
+      ]
+    },
+    {
+      "name": "--glass-gaming-hover",
+      "count": 3,
+      "distinctValues": [
+        "rgba(var(--color-gaming-500-rgb), 0.05)",
+        "rgba(var(--color-gaming-500-rgb), 0.08)"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.05)",
+          "line": 34
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.05)",
+          "line": 207
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.08)",
+          "line": 252
+        }
+      ]
+    },
+    {
+      "name": "--glass-gaming-active",
+      "count": 3,
+      "distinctValues": [
+        "rgba(var(--color-gaming-500-rgb), 0.12)",
+        "rgba(var(--color-gaming-500-rgb), 0.15)"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.12)",
+          "line": 35
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.12)",
+          "line": 208
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-gaming-500-rgb), 0.15)",
+          "line": 253
+        }
+      ]
+    },
+    {
+      "name": "--app-bg",
+      "count": 2,
+      "distinctValues": [
+        "#ffffff",
+        "#000000"
+      ],
+      "definitions": [
+        {
+          "file": "canonical-theme.css",
+          "value": "#ffffff",
+          "line": 6
+        },
+        {
+          "file": "canonical-theme.css",
+          "value": "#000000",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "name": "--app-fg",
+      "count": 2,
+      "distinctValues": [
+        "#000000",
+        "#ffffff"
+      ],
+      "definitions": [
+        {
+          "file": "canonical-theme.css",
+          "value": "#000000",
+          "line": 7
+        },
+        {
+          "file": "canonical-theme.css",
+          "value": "#ffffff",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "name": "--glass-text",
+      "count": 2,
+      "distinctValues": [
+        "rgba(0, 0, 0, 0.78)",
+        "rgba(255, 255, 255, 0.88)"
+      ],
+      "definitions": [
+        {
+          "file": "canonical-theme.css",
+          "value": "rgba(0, 0, 0, 0.78)",
+          "line": 11
+        },
+        {
+          "file": "canonical-theme.css",
+          "value": "rgba(255, 255, 255, 0.88)",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "name": "--font-family-gaming",
+      "count": 2,
+      "distinctValues": [
+        "var(--font-gaming)",
+        "\"Orbitron\", \"Exo 2\", sans-serif"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--font-gaming)",
+          "line": 28
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "\"Orbitron\", \"Exo 2\", sans-serif",
+          "line": 36
+        }
+      ]
+    },
+    {
+      "name": "--font-family-ui",
+      "count": 2,
+      "distinctValues": [
+        "var(--font-primary)",
+        "var(--font-family-sans)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--font-primary)",
+          "line": 30
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--font-family-sans)",
+          "line": 37
+        }
+      ]
+    },
+    {
+      "name": "--font-weight-light",
+      "count": 2,
+      "distinctValues": [
+        "300"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "300",
+          "line": 33
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "300",
+          "line": 51
+        }
+      ]
+    },
+    {
+      "name": "--font-weight-medium",
+      "count": 2,
+      "distinctValues": [
+        "500"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "500",
+          "line": 35
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "500",
+          "line": 53
+        }
+      ]
+    },
+    {
+      "name": "--font-weight-semibold",
+      "count": 2,
+      "distinctValues": [
+        "600"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "600",
+          "line": 36
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "600",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "name": "--font-weight-bold",
+      "count": 2,
+      "distinctValues": [
+        "700"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "700",
+          "line": 37
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "700",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "name": "--font-weight-extrabold",
+      "count": 2,
+      "distinctValues": [
+        "800"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "800",
+          "line": 38
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "800",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "name": "--font-weight-black",
+      "count": 2,
+      "distinctValues": [
+        "900"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "900",
+          "line": 39
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "900",
+          "line": 57
+        }
+      ]
+    },
+    {
+      "name": "--line-height-tight",
+      "count": 2,
+      "distinctValues": [
+        "1.15",
+        "1.25"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.15",
+          "line": 95
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1.25",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "name": "--line-height-snug",
+      "count": 2,
+      "distinctValues": [
+        "1.25",
+        "1.375"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.25",
+          "line": 96
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1.375",
+          "line": 60
+        }
+      ]
+    },
+    {
+      "name": "--line-height-normal",
+      "count": 2,
+      "distinctValues": [
+        "1.4",
+        "1.5"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.4",
+          "line": 97
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1.5",
+          "line": 61
+        }
+      ]
+    },
+    {
+      "name": "--line-height-relaxed",
+      "count": 2,
+      "distinctValues": [
+        "1.5",
+        "1.625"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.5",
+          "line": 98
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1.625",
+          "line": 62
+        }
+      ]
+    },
+    {
+      "name": "--line-height-loose",
+      "count": 2,
+      "distinctValues": [
+        "1.75",
+        "2"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.75",
+          "line": 99
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "2",
+          "line": 63
+        }
+      ]
+    },
+    {
+      "name": "--spacing-0",
+      "count": 2,
+      "distinctValues": [
+        "0"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0",
+          "line": 116
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "name": "--spacing-0-5",
+      "count": 2,
+      "distinctValues": [
+        "0.125rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.125rem",
+          "line": 118
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.125rem",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "name": "--spacing-1",
+      "count": 2,
+      "distinctValues": [
+        "0.25rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.25rem",
+          "line": 119
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.25rem",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "name": "--spacing-1-5",
+      "count": 2,
+      "distinctValues": [
+        "0.375rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.375rem",
+          "line": 120
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.375rem",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "name": "--spacing-2",
+      "count": 2,
+      "distinctValues": [
+        "0.5rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.5rem",
+          "line": 121
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.5rem",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "name": "--spacing-2-5",
+      "count": 2,
+      "distinctValues": [
+        "0.625rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.625rem",
+          "line": 122
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.625rem",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "name": "--spacing-3",
+      "count": 2,
+      "distinctValues": [
+        "0.75rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.75rem",
+          "line": 123
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.75rem",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "name": "--spacing-3-5",
+      "count": 2,
+      "distinctValues": [
+        "0.875rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.875rem",
+          "line": 124
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.875rem",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "name": "--spacing-4",
+      "count": 2,
+      "distinctValues": [
+        "1rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1rem",
+          "line": 125
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1rem",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "name": "--spacing-5",
+      "count": 2,
+      "distinctValues": [
+        "1.25rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.25rem",
+          "line": 126
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1.25rem",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "name": "--spacing-6",
+      "count": 2,
+      "distinctValues": [
+        "1.5rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.5rem",
+          "line": 127
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1.5rem",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "name": "--spacing-7",
+      "count": 2,
+      "distinctValues": [
+        "1.75rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.75rem",
+          "line": 128
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1.75rem",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "name": "--spacing-8",
+      "count": 2,
+      "distinctValues": [
+        "2rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "2rem",
+          "line": 129
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "2rem",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "name": "--spacing-9",
+      "count": 2,
+      "distinctValues": [
+        "2.25rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "2.25rem",
+          "line": 130
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "2.25rem",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "name": "--spacing-10",
+      "count": 2,
+      "distinctValues": [
+        "2.5rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "2.5rem",
+          "line": 131
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "2.5rem",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "name": "--spacing-12",
+      "count": 2,
+      "distinctValues": [
+        "3rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "3rem",
+          "line": 133
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "3rem",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "name": "--spacing-16",
+      "count": 2,
+      "distinctValues": [
+        "4rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "4rem",
+          "line": 135
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "4rem",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "name": "--spacing-20",
+      "count": 2,
+      "distinctValues": [
+        "5rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "5rem",
+          "line": 136
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "5rem",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "name": "--spacing-24",
+      "count": 2,
+      "distinctValues": [
+        "6rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "6rem",
+          "line": 137
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "6rem",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "name": "--spacing-32",
+      "count": 2,
+      "distinctValues": [
+        "8rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "8rem",
+          "line": 139
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "8rem",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "name": "--neon-primary",
+      "count": 2,
+      "distinctValues": [
+        "#00ff88",
+        "var(--color-gaming-500, #00ff88)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#00ff88",
+          "line": 192
+        },
+        {
+          "file": "neon-accents.css",
+          "value": "var(--color-gaming-500, #00ff88)",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "name": "--neon-cyber",
+      "count": 2,
+      "distinctValues": [
+        "#00d9ff",
+        "var(--color-cyber-500, #00d9ff)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#00d9ff",
+          "line": 193
+        },
+        {
+          "file": "neon-accents.css",
+          "value": "var(--color-cyber-500, #00d9ff)",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "name": "--neon-magenta",
+      "count": 2,
+      "distinctValues": [
+        "#ff00cc"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#ff00cc",
+          "line": 194
+        },
+        {
+          "file": "neon-accents.css",
+          "value": "#ff00cc",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "name": "--focus-ring-width",
+      "count": 2,
+      "distinctValues": [
+        "2px"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "2px",
+          "line": 198
+        },
+        {
+          "file": "neon-accents.css",
+          "value": "2px",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "name": "--focus-ring-radius",
+      "count": 2,
+      "distinctValues": [
+        "10px"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "10px",
+          "line": 199
+        },
+        {
+          "file": "neon-accents.css",
+          "value": "10px",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "name": "--page-content-max-width",
+      "count": 2,
+      "distinctValues": [
+        "1200px"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1200px",
+          "line": 203
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1200px",
+          "line": 157
+        }
+      ]
+    },
+    {
+      "name": "--page-sidebar-width",
+      "count": 2,
+      "distinctValues": [
+        "280px"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "280px",
+          "line": 204
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "280px",
+          "line": 161
+        }
+      ]
+    },
+    {
+      "name": "--radius-none",
+      "count": 2,
+      "distinctValues": [
+        "0"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0",
+          "line": 225
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0",
+          "line": 66
+        }
+      ]
+    },
+    {
+      "name": "--radius-sm",
+      "count": 2,
+      "distinctValues": [
+        "0.25rem",
+        "0.125rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.25rem",
+          "line": 227
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.125rem",
+          "line": 67
+        }
+      ]
+    },
+    {
+      "name": "--radius-base",
+      "count": 2,
+      "distinctValues": [
+        "0.375rem",
+        "0.25rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.375rem",
+          "line": 228
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.25rem",
+          "line": 68
+        }
+      ]
+    },
+    {
+      "name": "--radius-md",
+      "count": 2,
+      "distinctValues": [
+        "0.5rem",
+        "0.375rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.5rem",
+          "line": 229
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.375rem",
+          "line": 69
+        }
+      ]
+    },
+    {
+      "name": "--radius-lg",
+      "count": 2,
+      "distinctValues": [
+        "0.75rem",
+        "0.5rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0.75rem",
+          "line": 230
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.5rem",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "name": "--radius-xl",
+      "count": 2,
+      "distinctValues": [
+        "1rem",
+        "0.75rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1rem",
+          "line": 231
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0.75rem",
+          "line": 71
+        }
+      ]
+    },
+    {
+      "name": "--radius-2xl",
+      "count": 2,
+      "distinctValues": [
+        "1.5rem",
+        "1rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "1.5rem",
+          "line": 232
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1rem",
+          "line": 72
+        }
+      ]
+    },
+    {
+      "name": "--radius-3xl",
+      "count": 2,
+      "distinctValues": [
+        "2rem",
+        "1.5rem"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "2rem",
+          "line": 233
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "1.5rem",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "name": "--radius-full",
+      "count": 2,
+      "distinctValues": [
+        "9999px"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "9999px",
+          "line": 234
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "9999px",
+          "line": 74
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-50",
+      "count": 2,
+      "distinctValues": [
+        "#eef2ff",
+        "var(--color-gaming-50)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#eef2ff",
+          "line": 243
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-50)",
+          "line": 138
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-100",
+      "count": 2,
+      "distinctValues": [
+        "#e0e7ff",
+        "var(--color-gaming-100)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#e0e7ff",
+          "line": 244
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-100)",
+          "line": 139
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-200",
+      "count": 2,
+      "distinctValues": [
+        "#c7d2fe",
+        "var(--color-gaming-200)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#c7d2fe",
+          "line": 245
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-200)",
+          "line": 140
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-300",
+      "count": 2,
+      "distinctValues": [
+        "#a5b4fc",
+        "var(--color-gaming-300)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#a5b4fc",
+          "line": 246
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-300)",
+          "line": 141
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-700",
+      "count": 2,
+      "distinctValues": [
+        "#4338ca",
+        "var(--color-gaming-700)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#4338ca",
+          "line": 250
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-700)",
+          "line": 145
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-800",
+      "count": 2,
+      "distinctValues": [
+        "#3730a3",
+        "var(--color-gaming-800)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#3730a3",
+          "line": 251
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-800)",
+          "line": 146
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-900",
+      "count": 2,
+      "distinctValues": [
+        "#312e81",
+        "var(--color-gaming-900)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#312e81",
+          "line": 252
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-900)",
+          "line": 147
+        }
+      ]
+    },
+    {
+      "name": "--shadow-xs",
+      "count": 2,
+      "distinctValues": [
+        "0 1px 2px rgba(0, 0, 0, 0.05)",
+        "0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0 1px 2px rgba(0, 0, 0, 0.05)",
+          "line": 313
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+          "line": 105
+        }
+      ]
+    },
+    {
+      "name": "--shadow-sm",
+      "count": 2,
+      "distinctValues": [
+        "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
+        "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
+          "line": 314
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+          "line": 106
+        }
+      ]
+    },
+    {
+      "name": "--shadow-2xl",
+      "count": 2,
+      "distinctValues": [
+        "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+          "line": 322
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+          "line": 115
+        }
+      ]
+    },
+    {
+      "name": "--shadow-inner",
+      "count": 2,
+      "distinctValues": [
+        "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
+          "line": 323
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
+          "line": 116
+        }
+      ]
+    },
+    {
+      "name": "--glass-surface-elevated",
+      "count": 2,
+      "distinctValues": [
+        "var(--glass-elevated)",
+        "rgba(var(--surface-glass-rgb), 0.8)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--glass-elevated)",
+          "line": 396
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "rgba(var(--surface-glass-rgb), 0.8)",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "name": "--glass-shadow-elevated",
+      "count": 2,
+      "distinctValues": [
+        "0 12px 32px rgba(0, 0, 0, 0.25)",
+        "0 20px 60px rgba(0, 0, 0, 0.6)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0 12px 32px rgba(0, 0, 0, 0.25)",
+          "line": 397
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "0 20px 60px rgba(0, 0, 0, 0.6)",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "name": "--color-primary-500-rgb",
+      "count": 2,
+      "distinctValues": [
+        "99, 102, 241",
+        "0, 255, 136"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "99, 102, 241",
+          "line": 503
+        },
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "0, 255, 136",
+          "line": 790
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-500-rgb",
+      "count": 2,
+      "distinctValues": [
+        "0, 255, 136",
+        "var(--color-gaming-neon-rgb)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0, 255, 136",
+          "line": 504
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "var(--color-gaming-neon-rgb)",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "name": "--color-cyber-500-rgb",
+      "count": 2,
+      "distinctValues": [
+        "0, 217, 255",
+        "var(--color-cyber-neon-rgb)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "0, 217, 255",
+          "line": 506
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "var(--color-cyber-neon-rgb)",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "name": "--color-success-500",
+      "count": 2,
+      "distinctValues": [
+        "var(--color-success)",
+        "var(--color-gaming-500)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-success)",
+          "line": 512
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "var(--color-gaming-500)",
+          "line": 150
+        }
+      ]
+    },
+    {
+      "name": "--color-warning-500",
+      "count": 2,
+      "distinctValues": [
+        "var(--color-warning)",
+        "#fff300"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-warning)",
+          "line": 514
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#fff300",
+          "line": 152
+        }
+      ]
+    },
+    {
+      "name": "--color-error-500",
+      "count": 2,
+      "distinctValues": [
+        "var(--color-error)",
+        "#ff3b30"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-error)",
+          "line": 516
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#ff3b30",
+          "line": 153
+        }
+      ]
+    },
+    {
+      "name": "--color-info-500",
+      "count": 2,
+      "distinctValues": [
+        "var(--color-info)",
+        "#00d9ff"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "var(--color-info)",
+          "line": 518
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#00d9ff",
+          "line": 151
+        }
+      ]
+    },
+    {
+      "name": "--surface-glass",
+      "count": 2,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.8)",
+        "rgba(0, 0, 0, 0.8)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.8)",
+          "line": 738
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 0, 0, 0.8)",
+          "line": 787
+        }
+      ]
+    },
+    {
+      "name": "--surface-strong",
+      "count": 2,
+      "distinctValues": [
+        "#f3f4f6",
+        "#0f1115"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#f3f4f6",
+          "line": 742
+        },
+        {
+          "file": "design-system.css",
+          "value": "#0f1115",
+          "line": 794
+        }
+      ]
+    },
+    {
+      "name": "--text-on-primary",
+      "count": 2,
+      "distinctValues": [
+        "#ffffff"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#ffffff",
+          "line": 751
+        },
+        {
+          "file": "design-system.css",
+          "value": "#ffffff",
+          "line": 803
+        }
+      ]
+    },
+    {
+      "name": "--text-success",
+      "count": 2,
+      "distinctValues": [
+        "#166534",
+        "#22c55e"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#166534",
+          "line": 752
+        },
+        {
+          "file": "design-system.css",
+          "value": "#22c55e",
+          "line": 804
+        }
+      ]
+    },
+    {
+      "name": "--text-warning",
+      "count": 2,
+      "distinctValues": [
+        "#92400e",
+        "#fbbf24"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#92400e",
+          "line": 753
+        },
+        {
+          "file": "design-system.css",
+          "value": "#fbbf24",
+          "line": 805
+        }
+      ]
+    },
+    {
+      "name": "--text-error",
+      "count": 2,
+      "distinctValues": [
+        "#991b1b",
+        "#f87171"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#991b1b",
+          "line": 754
+        },
+        {
+          "file": "design-system.css",
+          "value": "#f87171",
+          "line": 806
+        }
+      ]
+    },
+    {
+      "name": "--text-info",
+      "count": 2,
+      "distinctValues": [
+        "#1e40af",
+        "#60a5fa"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "#1e40af",
+          "line": 755
+        },
+        {
+          "file": "design-system.css",
+          "value": "#60a5fa",
+          "line": 807
+        }
+      ]
+    },
+    {
+      "name": "--border-gaming",
+      "count": 2,
+      "distinctValues": [
+        "rgba(0, 255, 136, 0.3)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 255, 136, 0.3)",
+          "line": 761
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 255, 136, 0.3)",
+          "line": 813
+        }
+      ]
+    },
+    {
+      "name": "--border-cyber",
+      "count": 2,
+      "distinctValues": [
+        "rgba(0, 217, 255, 0.3)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 217, 255, 0.3)",
+          "line": 762
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 217, 255, 0.3)",
+          "line": 814
+        }
+      ]
+    },
+    {
+      "name": "--glass-elevated",
+      "count": 2,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.9)",
+        "rgba(0, 0, 0, 0.9)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.9)",
+          "line": 769
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(0, 0, 0, 0.9)",
+          "line": 821
+        }
+      ]
+    },
+    {
+      "name": "--glass-active-bg",
+      "count": 2,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.85)",
+        "rgba(18, 18, 18, 0.85)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.85)",
+          "line": 771
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(18, 18, 18, 0.85)",
+          "line": 791
+        }
+      ]
+    },
+    {
+      "name": "--glass-disabled-bg",
+      "count": 2,
+      "distinctValues": [
+        "rgba(255, 255, 255, 0.6)",
+        "rgba(18, 18, 18, 0.6)"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "rgba(255, 255, 255, 0.6)",
+          "line": 772
+        },
+        {
+          "file": "design-system.css",
+          "value": "rgba(18, 18, 18, 0.6)",
+          "line": 792
+        }
+      ]
+    },
+    {
+      "name": "--surface-base-rgb",
+      "count": 2,
+      "distinctValues": [
+        "255, 255, 255",
+        "0, 0, 0"
+      ],
+      "definitions": [
+        {
+          "file": "design-system.css",
+          "value": "255, 255, 255",
+          "line": 777
+        },
+        {
+          "file": "design-system.css",
+          "value": "0, 0, 0",
+          "line": 827
+        }
+      ]
+    },
+    {
+      "name": "--fairy-chat-max-width",
+      "count": 2,
+      "distinctValues": [
+        "900px",
+        "1000px"
+      ],
+      "definitions": [
+        {
+          "file": "enhanced-fairy-interface.css",
+          "value": "900px",
+          "line": 566
+        },
+        {
+          "file": "enhanced-fairy-interface.css",
+          "value": "1000px",
+          "line": 572
+        }
+      ]
+    },
+    {
+      "name": "--fairy-chat-height",
+      "count": 2,
+      "distinctValues": [
+        "80vh",
+        "85vh"
+      ],
+      "definitions": [
+        {
+          "file": "enhanced-fairy-interface.css",
+          "value": "80vh",
+          "line": 567
+        },
+        {
+          "file": "enhanced-fairy-interface.css",
+          "value": "85vh",
+          "line": 573
+        }
+      ]
+    },
+    {
+      "name": "--easing-spring",
+      "count": 2,
+      "distinctValues": [
+        "cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+      ],
+      "definitions": [
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+          "line": 22
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+          "line": 89
+        }
+      ]
+    },
+    {
+      "name": "--z-elevated",
+      "count": 2,
+      "distinctValues": [
+        "10"
+      ],
+      "definitions": [
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "10",
+          "line": 26
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "10",
+          "line": 93
+        }
+      ]
+    },
+    {
+      "name": "--z-max",
+      "count": 2,
+      "distinctValues": [
+        "2147483647"
+      ],
+      "definitions": [
+        {
+          "file": "enhanced-global-improvements.css",
+          "value": "2147483647",
+          "line": 35
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "2147483647",
+          "line": 102
+        }
+      ]
+    },
+    {
+      "name": "--color-gaming-neon-rgb",
+      "count": 2,
+      "distinctValues": [
+        "0, 255, 136"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "0, 255, 136",
+          "line": 9
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0, 255, 136",
+          "line": 119
+        }
+      ]
+    },
+    {
+      "name": "--color-cyber-neon-rgb",
+      "count": 2,
+      "distinctValues": [
+        "0, 217, 255"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "0, 217, 255",
+          "line": 10
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "0, 217, 255",
+          "line": 120
+        }
+      ]
+    },
+    {
+      "name": "--color-magenta-neon-rgb",
+      "count": 2,
+      "distinctValues": [
+        "255, 0, 204"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "255, 0, 204",
+          "line": 11
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "255, 0, 204",
+          "line": 121
+        }
+      ]
+    },
+    {
+      "name": "--color-yellow-neon-rgb",
+      "count": 2,
+      "distinctValues": [
+        "255, 243, 0"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "255, 243, 0",
+          "line": 12
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "255, 243, 0",
+          "line": 122
+        }
+      ]
+    },
+    {
+      "name": "--color-purple-neon-rgb",
+      "count": 2,
+      "distinctValues": [
+        "147, 51, 234"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "147, 51, 234",
+          "line": 13
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "147, 51, 234",
+          "line": 123
+        }
+      ]
+    },
+    {
+      "name": "--glass-gaming-backdrop",
+      "count": 2,
+      "distinctValues": [
+        "blur(20px) saturate(1.3) brightness(1.05)",
+        "blur(16px) saturate(1.1)"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "blur(20px) saturate(1.3) brightness(1.05)",
+          "line": 43
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "blur(16px) saturate(1.1)",
+          "line": 420
+        }
+      ]
+    },
+    {
+      "name": "--glass-cyber-backdrop",
+      "count": 2,
+      "distinctValues": [
+        "blur(24px) saturate(1.4) brightness(0.95)",
+        "blur(18px) saturate(1.2)"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "blur(24px) saturate(1.4) brightness(0.95)",
+          "line": 44
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "blur(18px) saturate(1.2)",
+          "line": 421
+        }
+      ]
+    },
+    {
+      "name": "--transition-gaming",
+      "count": 2,
+      "distinctValues": [
+        "all 200ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "all 150ms ease"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "all 200ms cubic-bezier(0.4, 0, 0.2, 1)",
+          "line": 58
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "all 150ms ease",
+          "line": 422
+        }
+      ]
+    },
+    {
+      "name": "--transition-cyber",
+      "count": 2,
+      "distinctValues": [
+        "all 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "all 120ms ease"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "all 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          "line": 59
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "all 120ms ease",
+          "line": 423
+        }
+      ]
+    },
+    {
+      "name": "--text-on-glass",
+      "count": 2,
+      "distinctValues": [
+        "var(--text-primary)"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "var(--text-primary)",
+          "line": 80
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "var(--text-primary)",
+          "line": 96
+        }
+      ]
+    },
+    {
+      "name": "--text-on-glass-muted",
+      "count": 2,
+      "distinctValues": [
+        "var(--text-secondary)"
+      ],
+      "definitions": [
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "var(--text-secondary)",
+          "line": 81
+        },
+        {
+          "file": "gaming-glassmorphism-theme.css",
+          "value": "var(--text-secondary)",
+          "line": 97
+        }
+      ]
+    },
+    {
+      "name": "--btn-active-color",
+      "count": 2,
+      "distinctValues": [
+        "var(--text-primary)"
+      ],
+      "definitions": [
+        {
+          "file": "master-theme.css",
+          "value": "var(--text-primary)",
+          "line": 595
+        },
+        {
+          "file": "master-theme.css",
+          "value": "var(--text-primary)",
+          "line": 667
+        }
+      ]
+    },
+    {
+      "name": "--text-inverse",
+      "count": 2,
+      "distinctValues": [
+        "#ffffff",
+        "#111827"
+      ],
+      "definitions": [
+        {
+          "file": "unified-design-system.css",
+          "value": "#ffffff",
+          "line": 186
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "#111827",
+          "line": 231
+        }
+      ]
+    },
+    {
+      "name": "--glass-backdrop-filter",
+      "count": 2,
+      "distinctValues": [
+        "blur(20px) saturate(1.2)",
+        "blur(24px) saturate(1.1)"
+      ],
+      "definitions": [
+        {
+          "file": "unified-design-system.css",
+          "value": "blur(20px) saturate(1.2)",
+          "line": 201
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "blur(24px) saturate(1.1)",
+          "line": 246
+        }
+      ]
+    },
+    {
+      "name": "--state-hover",
+      "count": 2,
+      "distinctValues": [
+        "rgba(0, 0, 0, 0.04)",
+        "rgba(255, 255, 255, 0.05)"
+      ],
+      "definitions": [
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.04)",
+          "line": 211
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.05)",
+          "line": 256
+        }
+      ]
+    },
+    {
+      "name": "--state-active",
+      "count": 2,
+      "distinctValues": [
+        "rgba(0, 0, 0, 0.08)",
+        "rgba(255, 255, 255, 0.08)"
+      ],
+      "definitions": [
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.08)",
+          "line": 212
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.08)",
+          "line": 257
+        }
+      ]
+    },
+    {
+      "name": "--state-focus",
+      "count": 2,
+      "distinctValues": [
+        "rgba(var(--color-primary-500-rgb), 0.12)",
+        "rgba(var(--color-primary-500-rgb), 0.15)"
+      ],
+      "definitions": [
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-primary-500-rgb), 0.12)",
+          "line": 213
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-primary-500-rgb), 0.15)",
+          "line": 258
+        }
+      ]
+    },
+    {
+      "name": "--state-selected",
+      "count": 2,
+      "distinctValues": [
+        "rgba(var(--color-primary-500-rgb), 0.08)",
+        "rgba(var(--color-primary-500-rgb), 0.12)"
+      ],
+      "definitions": [
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-primary-500-rgb), 0.08)",
+          "line": 214
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(var(--color-primary-500-rgb), 0.12)",
+          "line": 259
+        }
+      ]
+    },
+    {
+      "name": "--state-disabled",
+      "count": 2,
+      "distinctValues": [
+        "rgba(0, 0, 0, 0.04)",
+        "rgba(255, 255, 255, 0.04)"
+      ],
+      "definitions": [
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(0, 0, 0, 0.04)",
+          "line": 215
+        },
+        {
+          "file": "unified-design-system.css",
+          "value": "rgba(255, 255, 255, 0.04)",
+          "line": 260
+        }
+      ]
+    }
+  ]
+}

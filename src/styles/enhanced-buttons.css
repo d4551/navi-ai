@@ -1,0 +1,1269 @@
+/*
+ * ENHANCED GLASSMORPHIC BUTTON SYSTEM
+ * Modern button components with unified glassmorphic design and improved accessibility
+ * Based on design-system.css glass tokens and unified theme system
+ */
+
+/* === BASE BUTTON STYLES === */
+.btn,
+.btn-base {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  position: relative;
+
+  /* Typography */
+  font-family: var(--font-family-ui);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1.2;
+
+  /* Glassmorphic foundation */
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-blur);
+  -webkit-backdrop-filter: var(--glass-backdrop-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+
+  /* Interaction */
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+
+  /* Transitions */
+  transition: all var(--duration-fast) var(--easing-ease-out);
+
+  /* Minimum accessibility target size */
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.btn:disabled,
+.btn-base:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background: var(--glass-disabled-bg);
+  transform: none !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:focus-visible,
+.btn-base:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  background: var(--glass-elevated);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:hover:not(:disabled),
+.btn-base:hover:not(:disabled) {
+  background: var(--glass-hover-bg);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.btn:active:not(:disabled),
+.btn-base:active:not(:disabled) {
+  background: var(--glass-active-bg);
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* === BUTTON SIZES === */
+.btn-xs,
+.btn.btn-xs {
+  padding: var(--spacing-1-5) var(--spacing-3);
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.btn-sm,
+.btn.btn-sm {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-md);
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.btn-md,
+.btn.btn-md {
+  padding: var(--spacing-3) var(--spacing-5);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-md);
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.btn-lg,
+.btn.btn-lg {
+  padding: var(--spacing-4) var(--spacing-6);
+  font-size: var(--font-size-lg);
+  border-radius: var(--radius-lg);
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
+}
+
+.btn-xl,
+.btn.btn-xl {
+  padding: var(--spacing-5) var(--spacing-8);
+  font-size: var(--font-size-xl);
+  border-radius: var(--radius-lg);
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
+}
+
+/* Icon-only variants */
+.btn-icon-xs,
+.btn.btn-icon-xs {
+  width: 32px;
+  padding: 0;
+  justify-content: center;
+}
+.btn-icon-sm,
+.btn.btn-icon-sm {
+  width: 36px;
+  padding: 0;
+  justify-content: center;
+}
+.btn-icon-md,
+.btn.btn-icon-md {
+  width: 44px;
+  padding: 0;
+  justify-content: center;
+}
+.btn-icon-lg,
+.btn.btn-icon-lg {
+  width: 52px;
+  padding: 0;
+  justify-content: center;
+}
+.btn-icon-xl,
+.btn.btn-icon-xl {
+  width: 60px;
+  padding: 0;
+  justify-content: center;
+}
+
+/* === GLASSMORPHIC BUTTON VARIANTS === */
+
+/* Primary Button - Enhanced glassmorphic with gaming accent */
+.btn-primary,
+.btn.btn-primary {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 20%, var(--glass-bg)),
+    color-mix(in srgb, var(--color-primary-600) 15%, var(--glass-bg))
+  );
+  color: var(--color-primary-500);
+  border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  font-weight: var(--font-weight-semibold);
+}
+
+.btn-primary:hover:not(:disabled),
+.btn.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 30%, var(--glass-elevated)),
+    color-mix(in srgb, var(--color-primary-600) 25%, var(--glass-elevated))
+  );
+  border-color: color-mix(in srgb, var(--color-primary-500) 60%, transparent);
+  box-shadow: var(--shadow-glow-primary), var(--shadow-md);
+  color: var(--color-primary-600);
+}
+
+/* Gaming Button - Neon green gaming aesthetic */
+.btn-gaming,
+.btn.btn-gaming {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-gaming-500) 18%, var(--glass-bg)),
+    color-mix(in srgb, var(--color-gaming-600) 12%, var(--glass-bg))
+  );
+  color: var(--color-gaming-500);
+  border-color: color-mix(in srgb, var(--color-gaming-500) 35%, transparent);
+  font-weight: var(--font-weight-semibold);
+}
+
+.btn-gaming:hover:not(:disabled),
+.btn.btn-gaming:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-gaming-500) 28%, var(--glass-elevated)),
+    color-mix(in srgb, var(--color-gaming-600) 22%, var(--glass-elevated))
+  );
+  border-color: color-mix(in srgb, var(--color-gaming-500) 55%, transparent);
+  box-shadow: var(--shadow-glow-gaming), var(--shadow-md);
+  color: var(--color-gaming-600);
+}
+
+/* Cyber Button - Electric blue cyber aesthetic */
+.btn-cyber,
+.btn.btn-cyber {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-cyber-500) 18%, var(--glass-bg)),
+    color-mix(in srgb, var(--color-cyber-600) 12%, var(--glass-bg))
+  );
+  color: var(--color-cyber-500);
+  border-color: color-mix(in srgb, var(--color-cyber-500) 35%, transparent);
+  font-weight: var(--font-weight-semibold);
+}
+
+.btn-cyber:hover:not(:disabled),
+.btn.btn-cyber:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-cyber-500) 28%, var(--glass-elevated)),
+    color-mix(in srgb, var(--color-cyber-600) 22%, var(--glass-elevated))
+  );
+  border-color: color-mix(in srgb, var(--color-cyber-500) 55%, transparent);
+  box-shadow: var(--shadow-glow-cyber), var(--shadow-md);
+  color: var(--color-cyber-600);
+}
+
+/* Glass Button - Pure glassmorphic */
+.btn-glass,
+.btn.btn-glass {
+  background: var(--glass-surface);
+  color: var(--text-primary);
+  border-color: var(--glass-border);
+}
+
+.btn-glass:hover:not(:disabled),
+.btn.btn-glass:hover:not(:disabled) {
+  background: var(--glass-elevated);
+  border-color: color-mix(
+    in srgb,
+    var(--glass-border) 60%,
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+/* Secondary Button */
+.btn-secondary,
+.btn.btn-secondary {
+  background: color-mix(
+    in srgb,
+    var(--color-secondary-500) 15%,
+    var(--glass-bg)
+  );
+  color: var(--color-secondary-500);
+  border-color: color-mix(in srgb, var(--color-secondary-500) 30%, transparent);
+}
+
+.btn-secondary:hover:not(:disabled),
+.btn.btn-secondary:hover:not(:disabled) {
+  background: color-mix(
+    in srgb,
+    var(--color-secondary-500) 25%,
+    var(--glass-elevated)
+  );
+  border-color: color-mix(in srgb, var(--color-secondary-500) 50%, transparent);
+  color: var(--color-secondary-600);
+}
+
+/* Ghost Button - Minimal glassmorphic */
+.btn-ghost,
+.btn.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.btn-ghost:hover:not(:disabled),
+.btn.btn-ghost:hover:not(:disabled) {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: var(--glass-backdrop-blur);
+  -webkit-backdrop-filter: var(--glass-backdrop-blur);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Success Button */
+.btn-success,
+.btn.btn-success {
+  background: color-mix(in srgb, var(--color-success) 15%, var(--glass-bg));
+  color: var(--color-success);
+  border-color: color-mix(in srgb, var(--color-success) 30%, transparent);
+}
+
+.btn-success:hover:not(:disabled),
+.btn.btn-success:hover:not(:disabled) {
+  background: color-mix(
+    in srgb,
+    var(--color-success) 25%,
+    var(--glass-elevated)
+  );
+  border-color: color-mix(in srgb, var(--color-success) 50%, transparent);
+  box-shadow: var(--shadow-glow-success), var(--shadow-md);
+}
+
+/* Warning Button */
+.btn-warning,
+.btn.btn-warning {
+  background: color-mix(in srgb, var(--color-warning) 15%, var(--glass-bg));
+  color: var(--color-warning);
+  border-color: color-mix(in srgb, var(--color-warning) 30%, transparent);
+}
+
+.btn-warning:hover:not(:disabled),
+.btn.btn-warning:hover:not(:disabled) {
+  background: color-mix(
+    in srgb,
+    var(--color-warning) 25%,
+    var(--glass-elevated)
+  );
+  border-color: color-mix(in srgb, var(--color-warning) 50%, transparent);
+  box-shadow: var(--shadow-glow-warning), var(--shadow-md);
+}
+
+/* Danger Button */
+.btn-danger,
+.btn.btn-danger {
+  background: color-mix(in srgb, var(--color-error) 15%, var(--glass-bg));
+  color: var(--color-error);
+  border-color: color-mix(in srgb, var(--color-error) 30%, transparent);
+}
+
+.btn-danger:hover:not(:disabled),
+.btn.btn-danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-error) 25%, var(--glass-elevated));
+  border-color: color-mix(in srgb, var(--color-error) 50%, transparent);
+  box-shadow: var(--shadow-glow-error), var(--shadow-md);
+}
+
+/* Info Button */
+.btn-info,
+.btn.btn-info {
+  background: color-mix(in srgb, var(--color-info) 15%, var(--glass-bg));
+  color: var(--color-info);
+  border-color: color-mix(in srgb, var(--color-info) 30%, transparent);
+}
+
+.btn-info:hover:not(:disabled),
+.btn.btn-info:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-info) 25%, var(--glass-elevated));
+  border-color: color-mix(in srgb, var(--color-info) 50%, transparent);
+}
+
+/* === ENHANCED BUTTON FEATURES === */
+
+/* Loading State */
+.btn-loading,
+.btn.btn-loading {
+  pointer-events: none;
+  position: relative;
+  color: transparent !important;
+}
+
+.btn-loading::after,
+.btn.btn-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: btn-spin 0.8s linear infinite;
+  color: var(--text-secondary);
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Icon Spacing */
+.btn .btn-icon,
+.btn.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn .btn-icon + span,
+.btn .btn-text {
+  margin-left: var(--spacing-2);
+}
+
+.btn span + .btn-icon {
+  margin-left: var(--spacing-2);
+}
+
+/* Badge on Button */
+.btn .btn-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+  background: var(--color-error);
+  color: white;
+  border-radius: 9px;
+  border: 2px solid var(--surface-base);
+}
+
+/* Block Button */
+.btn-block,
+.btn.btn-block {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Floating Button */
+.btn-floating,
+.btn.btn-floating {
+  position: fixed;
+  z-index: var(--z-floating);
+  border-radius: 50%;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--duration-normal) var(--easing-ease-out);
+}
+
+.btn-floating:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Button Group */
+.btn-group {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-blur);
+  -webkit-backdrop-filter: var(--glass-backdrop-blur);
+  border: 1px solid var(--glass-border);
+  padding: var(--spacing-1);
+  gap: var(--spacing-1);
+}
+
+.btn-group .btn {
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  margin: 0;
+}
+
+.btn-group .btn:hover:not(:disabled) {
+  background: var(--glass-hover-bg);
+  backdrop-filter: var(--glass-backdrop-blur);
+  -webkit-backdrop-filter: var(--glass-backdrop-blur);
+}
+
+.btn-group .btn.active {
+  background: var(--glass-elevated);
+  color: var(--color-primary-500);
+  border-color: var(--color-primary-500);
+}
+
+/* === DARK MODE ADJUSTMENTS === */
+[data-theme="dark"] .btn,
+[data-theme="dark"] .btn-base {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn:hover:not(:disabled),
+[data-theme="dark"] .btn-base:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .btn-primary {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-400) 25%, rgba(255, 255, 255, 0.08)),
+    color-mix(in srgb, var(--color-primary-500) 20%, rgba(255, 255, 255, 0.08))
+  );
+  color: var(--color-primary-400);
+  border-color: color-mix(in srgb, var(--color-primary-400) 40%, transparent);
+}
+
+[data-theme="dark"] .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-400) 35%, rgba(255, 255, 255, 0.12)),
+    color-mix(in srgb, var(--color-primary-500) 30%, rgba(255, 255, 255, 0.12))
+  );
+  border-color: color-mix(in srgb, var(--color-primary-400) 60%, transparent);
+  color: var(--color-primary-300);
+}
+
+/* === ACCESSIBILITY ENHANCEMENTS === */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn-base {
+    transition: none;
+  }
+
+  .btn-loading::after,
+  .btn.btn-loading::after {
+    animation: none;
+  }
+
+  .btn-floating:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .btn,
+  .btn-base {
+    border-width: 2px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .btn:focus-visible,
+  .btn-base:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .btn,
+  .btn-base {
+    background: transparent !important;
+    color: black !important;
+    border: 1px solid black !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+.btn-primary:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-600) 0%,
+    var(--color-primary-700) 100%
+  );
+  border-color: var(--color-primary-700);
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 12px rgba(var(--color-primary-500-rgb), 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    0 1px 4px rgba(var(--color-primary-500-rgb), 0.3),
+    inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-base);
+
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+}
+
+.btn-ghost:hover {
+  background: var(--surface-glass);
+  border-color: var(--border-base);
+  transform: translateY(-1px);
+}
+
+.btn-ghost:active {
+  background: var(--surface-elevated);
+  transform: translateY(0);
+}
+
+/* Outline Button */
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary-500);
+  border: 2px solid var(--color-primary-500);
+}
+
+.btn-outline:hover {
+  background: var(--color-primary-500);
+  color: var(--text-on-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(var(--color-primary-500-rgb), 0.25);
+}
+
+/* Destructive Button */
+.btn-destructive {
+  background: linear-gradient(
+    135deg,
+    var(--color-error-500) 0%,
+    var(--color-error-600) 100%
+  );
+  color: var(--text-on-error);
+  border: 1px solid var(--color-error-600);
+
+  box-shadow:
+    0 2px 8px rgba(var(--color-error-500-rgb), 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-destructive:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-error-600) 0%,
+    var(--color-error-700) 100%
+  );
+  border-color: var(--color-error-700);
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 12px rgba(var(--color-error-500-rgb), 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* === GLASS BUTTON VARIANTS === */
+.btn-glass {
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-backdrop-blur);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+
+  box-shadow: var(--glass-shadow);
+}
+
+.btn-glass:hover {
+  background: var(--glass-surface-elevated);
+  border-color: var(--glass-border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-elevated);
+}
+
+.btn-glass-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-primary-500-rgb), 0.2) 0%,
+    rgba(var(--color-primary-600-rgb), 0.15) 100%
+  );
+  backdrop-filter: var(--glass-backdrop-blur);
+  border: 1px solid rgba(var(--color-primary-500-rgb), 0.3);
+  color: var(--color-primary-600);
+
+  box-shadow:
+    var(--glass-shadow),
+    0 0 20px rgba(var(--color-primary-500-rgb), 0.1);
+}
+
+.btn-glass-primary:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-primary-500-rgb), 0.3) 0%,
+    rgba(var(--color-primary-600-rgb), 0.25) 100%
+  );
+  border-color: rgba(var(--color-primary-500-rgb), 0.5);
+  transform: translateY(-2px);
+  box-shadow:
+    var(--glass-shadow-elevated),
+    0 0 30px rgba(var(--color-primary-500-rgb), 0.2);
+}
+
+/* === SPECIAL BUTTON TYPES === */
+
+/* Gaming Button */
+.btn-gaming {
+  background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+  color: var(--text-on-primary);
+  border: 1px solid #00cc6a;
+  font-family: var(--font-gaming);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  box-shadow:
+    0 0 20px rgba(0, 255, 136, 0.3),
+    0 2px 8px rgba(0, 255, 136, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-gaming:hover {
+  background: linear-gradient(135deg, #00ff88 0%, #00ff88 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 30px rgba(0, 255, 136, 0.5),
+    0 4px 12px rgba(0, 255, 136, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* AI Button */
+.btn-ai {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-500) 0%,
+    var(--color-accent-600) 100%
+  );
+  color: var(--text-on-accent);
+  border: 1px solid var(--color-accent-600);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ai::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg) translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.btn-ai:hover::before {
+  transform: rotate(45deg) translateX(100%);
+}
+
+.btn-ai:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 20px rgba(var(--color-accent-500-rgb), 0.4),
+    0 4px 12px rgba(var(--color-accent-500-rgb), 0.25);
+}
+
+/* === BUTTON GROUPS === */
+.btn-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-group .btn-base {
+  border-radius: 0;
+  border-right-width: 0;
+}
+
+.btn-group .btn-base:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.btn-group .btn-base:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  border-right-width: 1px;
+}
+
+.btn-group .btn-base:not(:last-child):hover {
+  z-index: 1;
+  border-right-width: 1px;
+  margin-right: -1px;
+}
+
+/* === LOADING STATES === */
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.btn-loading .btn-content {
+  opacity: 0.6;
+}
+
+.spinner-gaming {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === ACCESSIBILITY === */
+.btn-base:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-destructive {
+    border-width: 2px;
+  }
+
+  .btn-ghost:hover {
+    border-width: 2px;
+  }
+
+  .btn-glass,
+  .btn-glass-primary {
+    background: var(--surface-base);
+    border-width: 2px;
+    backdrop-filter: none;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn-base,
+  .btn-ai::before {
+    transition: none;
+  }
+
+  .spinner-gaming {
+    animation: none;
+  }
+
+  .btn-base:hover {
+    transform: none;
+  }
+}
+
+/* === THEME VARIANTS === */
+[data-theme="dark"] .btn-secondary {
+  background: var(--surface-elevated);
+  border-color: var(--border-elevated);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+}
+
+/* Gaming theme */
+.theme-gaming .btn-primary {
+  background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+  color: var(--text-on-primary);
+  border-color: var(--color-success-500);
+}
+
+.theme-gaming .btn-primary:hover {
+  background: linear-gradient(135deg, #00ff88 0%, #00ff88 100%);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+/* === UTILITY CLASSES === */
+.btn-full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-minimal-padding {
+  padding-left: var(--spacing-2);
+  padding-right: var(--spacing-2);
+}
+
+.btn-no-transform:hover {
+  transform: none;
+}
+
+.btn-subtle-shadow {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-no-shadow {
+  box-shadow: none;
+}
+
+.btn-rounded {
+  border-radius: var(--radius-full);
+}
+
+.btn-square {
+  border-radius: 0;
+}
+
+/* === RESPONSIVE ADAPTATIONS === */
+@media (max-width: 768px) {
+  .btn-md {
+    padding: var(--spacing-3) var(--spacing-4);
+    font-size: var(--font-size-sm);
+    height: 40px;
+  }
+
+  .btn-lg {
+    padding: var(--spacing-4) var(--spacing-5);
+    font-size: var(--font-size-base);
+    height: 48px;
+  }
+
+  .btn-xl {
+    padding: var(--spacing-4) var(--spacing-6);
+    font-size: var(--font-size-lg);
+    height: 52px;
+  }
+
+  .btn-group {
+    flex-wrap: wrap;
+    gap: var(--spacing-1);
+  }
+
+  .btn-group .btn-base {
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    margin: 0;
+  }
+
+  .btn-mobile-full {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ============================================
+   COMPATIBILITY MAPPINGS (GLOBAL)
+   Allow using .btn-unified outside component
+   ============================================ */
+.btn-unified {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--easing-ease-out);
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--spacing-3) var(--spacing-6);
+  background: var(--glass-surface);
+  color: var(--text-primary);
+  backdrop-filter: var(--glass-backdrop-blur);
+}
+
+.btn-unified.primary {
+  background: var(--color-primary-500);
+  color: var(--text-on-primary);
+  border-color: var(--color-primary-600);
+}
+.btn-unified.primary:hover {
+  background: var(--color-primary-600);
+  box-shadow: var(--shadow-glow-primary);
+  transform: translateY(-1px);
+}
+.btn-unified.secondary {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-base);
+}
+.btn-unified.secondary:hover {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+.btn-unified.glass {
+  background: var(--glass-surface);
+  border-color: var(--glass-border);
+}
+.btn-unified.glass:hover {
+  background: var(--glass-hover-bg);
+  border-color: var(--glass-border-strong);
+  transform: translateY(-1px);
+}
+.btn-unified.gaming {
+  background: var(--glass-bg-gaming);
+  color: var(--color-gaming-500);
+  border-color: var(--glass-border-gaming);
+}
+.btn-unified.cyber {
+  background: var(--glass-bg-cyber);
+  color: var(--color-cyber-500);
+  border-color: var(--glass-border-cyber);
+}
+.btn-unified.ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: transparent;
+}
+.btn-unified.ghost:hover {
+  background: var(--glass-bg-light);
+}
+.btn-unified.outline {
+  background: transparent;
+  border-color: var(--border-base);
+}
+
+.btn-unified.btn-sm {
+  padding: var(--spacing-2) var(--spacing-4);
+  min-height: 36px;
+  min-width: 36px;
+  font-size: var(--font-size-sm);
+}
+.btn-unified.btn-md {
+  padding: var(--spacing-3) var(--spacing-6);
+  min-height: 44px;
+  min-width: 44px;
+  font-size: var(--font-size-base);
+}
+.btn-unified.btn-lg {
+  padding: var(--spacing-4) var(--spacing-8);
+  min-height: 52px;
+  min-width: 52px;
+  font-size: var(--font-size-md);
+}
+.btn-unified.block {
+  width: 100%;
+}
+
+/* ============================================
+   LEGACY BUTTONS (.btn, .btn-*) → Glassmorphic
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--easing-ease-out);
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--spacing-3) var(--spacing-6);
+  background: var(--glass-surface);
+  color: var(--text-primary);
+  backdrop-filter: var(--glass-backdrop-blur);
+}
+.btn:hover {
+  background: var(--glass-hover-bg);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-xs);
+}
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Solid variants */
+.btn-primary {
+  background: var(--color-primary-500);
+  color: var(--text-on-primary);
+  border-color: var(--color-primary-600);
+}
+.btn-primary:hover {
+  background: var(--color-primary-600);
+  box-shadow: var(--shadow-glow-primary);
+}
+.btn-success {
+  background: var(--color-success-500);
+  color: var(--text-on-primary);
+  border-color: var(--color-success-600);
+}
+.btn-warning {
+  background: var(--color-warning-500);
+  color: var(--text-on-primary);
+  border-color: var(--color-warning-600);
+}
+.btn-danger,
+.btn-error {
+  background: var(--color-error-500);
+  color: var(--text-on-primary);
+  border-color: var(--color-error-600);
+}
+.btn-info {
+  background: var(--color-info, #06b6d4);
+  color: var(--text-on-primary);
+  border-color: color-mix(in srgb, var(--color-info, #06b6d4) 80%, black);
+}
+
+/* Outline variants */
+.btn-outline,
+.btn-outline-primary {
+  background: transparent;
+  color: var(--color-primary-500);
+  border-color: var(--color-primary-500);
+}
+.btn-outline:hover,
+.btn-outline-primary:hover {
+  background: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+}
+.btn-outline-success {
+  background: transparent;
+  color: var(--color-success-500);
+  border-color: var(--color-success-500);
+}
+.btn-outline-success:hover {
+  background: color-mix(in srgb, var(--color-success-500) 10%, transparent);
+}
+.btn-outline-warning {
+  background: transparent;
+  color: var(--color-warning-500);
+  border-color: var(--color-warning-500);
+}
+.btn-outline-warning:hover {
+  background: color-mix(in srgb, var(--color-warning-500) 10%, transparent);
+}
+.btn-outline-danger {
+  background: transparent;
+  color: var(--color-error-500);
+  border-color: var(--color-error-500);
+}
+.btn-outline-danger:hover {
+  background: color-mix(in srgb, var(--color-error-500) 10%, transparent);
+}
+.btn-outline-info {
+  background: transparent;
+  color: var(--color-info, #06b6d4);
+  border-color: var(--color-info, #06b6d4);
+}
+.btn-outline-info:hover {
+  background: color-mix(in srgb, var(--color-info, #06b6d4) 10%, transparent);
+}
+
+/* Ghost */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: transparent;
+}
+.btn-ghost:hover {
+  background: var(--glass-bg-light);
+}
+
+/* Size helpers */
+.btn-sm {
+  padding: var(--spacing-2) var(--spacing-4);
+  min-height: 36px;
+  min-width: 36px;
+  font-size: var(--font-size-sm);
+}
+.btn-md {
+  padding: var(--spacing-3) var(--spacing-6);
+  min-height: 44px;
+  min-width: 44px;
+  font-size: var(--font-size-base);
+}
+.btn-lg {
+  padding: var(--spacing-4) var(--spacing-8);
+  min-height: 52px;
+  min-width: 52px;
+  font-size: var(--font-size-md);
+}
+
+/* ============================================
+   Vuetify v-btn normalization → glassmorphic
+   ============================================ */
+.v-btn {
+  border-radius: var(--radius-md) !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass-surface) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: var(--glass-backdrop-blur) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.v-btn:hover {
+  background: var(--glass-hover-bg) !important;
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-1px);
+}
+.v-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm) !important;
+}
+.v-btn--disabled {
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none !important;
+}
+
+/* Common color classes for v-btn (approximate) */
+.v-btn.v-btn--variant-elevated.v-theme--light .v-btn__content,
+.v-btn.v-btn--variant-elevated.v-theme--dark .v-btn__content {
+  color: inherit;
+}
+.v-btn.text-primary,
+.v-btn.bg-primary {
+  background: var(--color-primary-500) !important;
+  color: var(--text-on-primary) !important;
+  border-color: var(--color-primary-600) !important;
+}
+.v-btn.text-success,
+.v-btn.bg-success {
+  background: var(--color-success-500) !important;
+  color: var(--text-on-primary) !important;
+  border-color: var(--color-success-600) !important;
+}
+.v-btn.text-error,
+.v-btn.bg-error {
+  background: var(--color-error-500) !important;
+  color: var(--text-on-primary) !important;
+  border-color: var(--color-error-600) !important;
+}
+.v-btn.text-warning,
+.v-btn.bg-warning {
+  background: var(--color-warning-500) !important;
+  color: var(--text-on-primary) !important;
+  border-color: var(--color-warning-600) !important;
+}

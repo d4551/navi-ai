@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧚 AI Fairy TTS Key Detection Test</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            line-height: 1.6;
+            background: #0a0a0a;
+            color: #e5e5e5;
+        }
+        .status { 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            margin: 12px 0; 
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        .success { background: #1a4d3a; border-left: 4px solid #22c55e; }
+        .error { background: #4d1a1a; border-left: 4px solid #ef4444; }
+        .warning { background: #4d3a1a; border-left: 4px solid #f59e0b; }
+        .info { background: #1a3a4d; border-left: 4px solid #3b82f6; }
+        button { 
+            background: #2563eb; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            margin: 8px 4px;
+        }
+        button:hover { background: #1d4ed8; }
+        button:disabled { background: #374151; cursor: not-allowed; }
+        .code { 
+            background: #1f2937; 
+            padding: 8px 12px; 
+            border-radius: 4px; 
+            font-family: monospace; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🧚 AI Fairy TTS Key Detection Test</h1>
+    <p>This page diagnoses and fixes TTS key detection issues in the AI Fairy chat.</p>
+    
+    <div id="results"></div>
+    
+    <div>
+        <button onclick="runDiagnostics()">🔍 Run Diagnostics</button>
+        <button onclick="fixKeyDetection()">🛠️ Fix Key Detection</button>
+        <button onclick="testTTSFunction()">🎤 Test TTS Function</button>
+        <button onclick="openMainApp()">📱 Open Main App</button>
+    </div>
+
+    <script type="module">
+        window.results = document.getElementById('results');
+        
+        function addResult(type, message) {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+        
+        window.runDiagnostics = async function() {
+            results.innerHTML = '';
+            addResult('info', '🔍 Starting TTS Key Detection Diagnostics...');
+            
+            // Test 1: Environment variable
+            const envKey = import.meta.env.VITE_GEMINI_API_KEY;
+            if (envKey) {
+                addResult('success', `✅ Environment Variable: SET (${envKey.substring(0,8)}...)`);
+            } else {
+                addResult('error', '❌ Environment Variable: NOT SET');
+            }
+            
+            // Test 2: localStorage
+            let localKey = null;
+            try {
+                const appSettings = localStorage.getItem('app-settings');
+                if (appSettings) {
+                    const settings = JSON.parse(appSettings);
+                    localKey = settings.geminiApiKey;
+                    if (localKey) {
+                        addResult('success', `✅ localStorage: SET (${localKey.substring(0,8)}...)`);
+                    } else {
+                        addResult('warning', '⚠️ localStorage: app-settings exists but no geminiApiKey');
+                    }
+                } else {
+                    addResult('warning', '⚠️ localStorage: app-settings not found');
+                }
+            } catch (error) {
+                addResult('error', `❌ localStorage Error: ${error.message}`);
+            }
+            
+            // Test 3: API key resolution
+            try {
+                const { resolveGeminiApiKey } = await import('/src/shared/utils/apiKeys.ts');
+                const resolvedKey = await resolveGeminiApiKey();
+                
+                if (resolvedKey) {
+                    addResult('success', `✅ API Key Resolution: WORKING (${resolvedKey.substring(0,8)}...)`);
+                } else {
+                    addResult('error', '❌ API Key Resolution: RETURNED NULL');
+                }
+            } catch (error) {
+                addResult('error', `❌ API Key Resolution Error: ${error.message}`);
+            }
+            
+            // Test 4: Summary
+            const hasAnyKey = envKey || localKey;
+            if (hasAnyKey) {
+                addResult('success', '🎯 Diagnosis: API key is available, TTS should work');
+            } else {
+                addResult('error', '🚨 Diagnosis: No API key found anywhere, TTS will fail');
+            }
+        }
+        
+        window.fixKeyDetection = function() {
+            const envKey = import.meta.env.VITE_GEMINI_API_KEY;
+            
+            if (!envKey) {
+                addResult('error', '❌ Cannot fix: No environment variable set');
+                addResult('info', '💡 Solution: Set VITE_GEMINI_API_KEY environment variable');
+                return;
+            }
+            
+            // Fix by setting in localStorage
+            try {
+                const existingSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
+                existingSettings.geminiApiKey = envKey;
+                localStorage.setItem('app-settings', JSON.stringify(existingSettings));
+                
+                addResult('success', '✅ Fixed: API key stored in localStorage');
+                addResult('info', '🔄 Please refresh the main app to see changes');
+            } catch (error) {
+                addResult('error', `❌ Fix failed: ${error.message}`);
+            }
+        }
+        
+        window.testTTSFunction = async function() {
+            try {
+                addResult('info', '🎤 Testing TTS function...');
+                
+                // Test browser TTS first
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance('Testing browser text to speech');
+                    speechSynthesis.speak(utterance);
+                    addResult('success', '✅ Browser TTS: Working');
+                } else {
+                    addResult('error', '❌ Browser TTS: Not supported');
+                }
+                
+                // Test API key resolution for Gemini TTS
+                const { resolveGeminiApiKey } = await import('/src/shared/utils/apiKeys.ts');
+                const key = await resolveGeminiApiKey();
+                
+                if (key) {
+                    addResult('success', '✅ Gemini TTS: API key available');
+                    addResult('info', '🧚 AI Fairy should detect the key and offer Gemini TTS');
+                } else {
+                    addResult('warning', '⚠️ Gemini TTS: No API key, will use browser TTS');
+                }
+                
+            } catch (error) {
+                addResult('error', `❌ TTS Test Error: ${error.message}`);
+            }
+        }
+        
+        window.openMainApp = function() {
+            window.open('/', '_blank');
+        }
+        
+        // Auto-run diagnostics
+        runDiagnostics();
+    </script>
+</body>
+</html>

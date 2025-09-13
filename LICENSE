@@ -1,0 +1,99 @@
+Navi AI NonCommercial Public License v1.1
+
+Short identifier (SPDX custom): LicenseRef-NaviAI-NCPL-1.1
+Copyright  2025 Dr. Brandon Donnelly.
+
+Notice (nonbinding): This is a sourceavailable noncommercial license (not an OSIapproved open source license).
+
+1. Definitions
+
+Licensor means Dr. Brandon Donnelly.
+Software means the Navi AI code, binaries, and associated materials distributed by the Licensor.
+You (or Your) means the individual or entity exercising rights under this License.
+Distribute means to make the Software or Derivative Works available to any third party by any means, including hosting as a network service.
+Derivative Work means any work that is based on or incorporates the Software or any portion of it, with or without modification.
+Network Use means use of the Software to interact remotely with users (e.g., SaaS, web, API, or shared service).
+NonCommercial Use means use by a natural person in a personal capacity, or by a nonprofit or accredited academic institution for education or research without (a) fees, (b) advertising, sponsorship, or affiliate revenue, or (c) other direct or indirect monetization. NonCommercial Use excludes: use by or for a forprofit entity; use to provide, support, or operate any paid, adsupported, or leadgenerating product or service; or use by an individual when performed for compensation or within the scope of employment/contract for a forprofit entity.
+Commercial Use means any use that is not NonCommercial Use.
+Contribution means any original work of authorship intentionally submitted to the Licensor for inclusion in the Software.
+
+Interpretation. Examples in this License are illustrative and nonexhaustive.
+
+2. Grants (NonCommercial Only)
+
+Subject to the terms below, the Licensor grants You a worldwide, royaltyfree, nonexclusive, nontransferable, nonsublicensable license solely for NonCommercial Use to:
+
+Use and run the Software, including for personal demos and classwork.
+
+Reproduce and Distribute the Software, in source or object form.
+
+Modify the Software, create Derivative Works, and Distribute those.
+
+Patent Grant (NonCommercial). Each contributor grants You a nonexclusive, worldwide, royaltyfree patent license, limited to NonCommercial Use, to make, use, and Distribute their Contributions as part of the Software or a Derivative Work, to the extent their patent claims are necessarily infringed by their Contributions.
+
+Trademarks. No rights to the names Navi AI, Navi, or Dr. Brandon Donnelly, logos, or other marks are granted.
+
+3. Conditions
+
+Your rights above are conditioned on all of the following:
+
+3.1 Notices & Attribution.
+(a) Preserve all copyright, license, and attribution notices in copies and substantial portions.
+(b) In userfacing outputs (app About, CLI --version, docs, or site footer for Network Use), include:
+Includes Navi AI by Dr. Brandon Donnelly  licensed for noncommercial use (Navi AI NonCommercial Public License v1.1).
+If space is limited, Navi AI (NCPL1.1) is acceptable with a link to the LICENSE.
+
+3.2 Source Availability on Distribution and Network Use (Afferostyle).
+If You Distribute the Software or a Derivative Work, including by Network Use, You must make the Corresponding Source (the complete source, build scripts, and installation instructions for the version actually provided) available to each user at no charge under this License, via (i) a public git repository; or (ii) a durable URL offered prominently in the interface or documentation, for at least three (3) years from last availability.
+
+3.3 Same License; No Additional Restrictions.
+Distributions and Derivative Works must be licensed only under this License. You may not impose terms that (a) permit Commercial Use; or (b) restrict recipients rights granted here.
+
+3.4 Clear Change History.
+Mark Your changes (dates and descriptions) in a CHANGELOG or equivalent and in prominent file headers.
+
+4. Prohibited Commercial Use
+
+Commercial Use is prohibited without a separate, written commercial license from the Licensor. Prohibited uses include, without limitation:
+
+Use by or for any forprofit entity (including internal tooling, operations, research, or evaluation tied to revenue, cost reduction, or competitive advantage).
+
+Providing a product or service (paid or free) that is adsupported, sponsorsupported, affiliatemonetized, paywalled, donationgated for features, or used for lead generation or marketing.
+
+Use by an individual when performed for compensation, consulting, or within employment/contract for a forprofit entity.
+
+Incorporation into any offering that is sold, licensed, or otherwise monetized, or that conditions access on agreement to commercial terms.
+
+Commercial licensing inquiries: contact the Licensor via the project repository or the contact information published by Dr. Brandon Donnelly.
+
+5. ThirdParty Components
+
+Thirdparty code included in or linked by the Software remains under its own licenses. You must comply with those licenses in addition to this License.
+
+6. Term & Termination
+
+This License is effective upon Your first exercise of any licensed right and continues until terminated. It terminates automatically if You breach it.
+Cure. For a first breach only, Your license is reinstated automatically if You cure within 30 days after receiving notice. Willful or repeat breaches are not subject to cure.
+Upon termination, You must cease use and Distribution and destroy or return copies under Your control. Sections 3.23.4 (as to copies already provided), 710 survive.
+
+7. Disclaimer of Warranty
+
+THE SOFTWARE IS PROVIDED AS IS AND AS AVAILABLE, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT. You are solely responsible for determining the appropriateness of using or redistributing the Software and for compliance with laws (e.g., privacy, data protection, and export).
+
+8. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT WILL THE LICENSOR OR CONTRIBUTORS BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES; OR FOR LOSS OF PROFITS, REVENUE, GOODWILL, DATA, OR USE; EVEN IF ADVISED OF THE POSSIBILITY. THE AGGREGATE LIABILITY OF THE LICENSOR AND CONTRIBUTORS FOR ALL CLAIMS RELATING TO THE SOFTWARE SHALL NOT EXCEED US$100 OR THE AMOUNT YOU PAID (IF ANY) FOR THE LICENSE, WHICHEVER IS GREATER.
+
+9. Contributions
+
+By submitting a Contribution, You (i) license it under this License, (ii) represent that You have the right to do so, and (iii) grant the patent rights described in Section 2 for that Contribution.
+
+10. Miscellaneous
+
+No waiver of any term is effective unless in writing and signed by the waiving party. Severability: If any term is unenforceable, the remainder remains in effect. No agency/partnership. This License is the entire agreement concerning the Software between You and the Licensor. The Licensor may publish new versions of this License; unless You expressly accept a new version, the version applied to Your copy governs.
+
+Version: 1.1  September 13, 2025
+
+How to apply (concise)
+
+Put the full text above in LICENSE.

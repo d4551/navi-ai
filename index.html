@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Hint browsers to render native UI in the active theme -->
+    <meta name="color-scheme" content="light dark" />
+    <!-- DEV CSP (permissive for development with Vite, WASM, and blob support) -->
+    <meta id="csp-dev" http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' http://localhost:* http://127.0.0.1:* https://*.codespaces.githubusercontent.com https://*.github.dev https://*.gitpod.io ws://localhost:* ws://127.0.0.1:* wss://localhost:* wss://127.0.0.1:* wss://*.codespaces.githubusercontent.com wss://*.github.dev wss://*.gitpod.io webpack: webpack://* webpack-dev-server: https://texttospeech.googleapis.com https://gemini.googleapis.com https://generativelanguage.googleapis.com http: https: ws: wss: blob: https://cdn.jsdelivr.net data: 'unsafe-inline' 'unsafe-eval'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;" />
+    <!-- PROD CSP (strict for production) -->
+    <meta id="csp-prod" http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' https: wss: https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:;" />
+    <title>NAVI - AI Career Assistant</title>
+    <!-- Theme color for browser UI -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#2563eb" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1f2937" />
+    <!-- Google Fonts - Complete gaming font stack with optimized loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Single consolidated font import to prevent CORB issues -->
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Electrolize:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Orbitron:wght@300;400;500;600;700;800;900&display=swap" 
+      rel="stylesheet"
+      crossorigin="anonymous"
+    >
+    <style>
+      /* Unified font loading and WCAG 2.2 compliance */
+      .font-loading { font-display: swap; }
+      
+      /* Global focus indication - unified across all components */
+      :focus-visible {
+        outline: 3px solid var(--color-primary-500); /* Use design system variable */
+        outline-offset: 2px; /* Use design system variable */
+        border-radius: var(--radius-xs); /* Use design system variable */
+      }
+    </style>
+    <script>
+      // Apply persisted/system theme ASAP to prevent flicker
+      // Runs before app/css load; keeps Vuetify/native controls consistent via color-scheme
+      (function() {
+        try {
+          var mode = localStorage.getItem('navi-theme-mode') || 'system';
+          var prefersDark = false;
+          try { prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; } catch {}
+          var scheme = mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
+          var root = document.documentElement;
+          root.setAttribute('data-theme', scheme);
+          root.setAttribute('data-color-scheme', scheme);
+          root.style.setProperty('color-scheme', scheme);
+          try { document.body && document.body.setAttribute('data-theme', scheme); } catch {}
+        } catch (e) {
+          // Non-fatal; the app will initialize theme later
+          console && console.debug && console.debug('Early theme init skipped', e);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <script>
+      // Ensure the correct CSP meta applies depending on environment
+      // Use regular script (not module) to run immediately
+      try {
+        // Check if we're in development by looking for vite dev indicators
+        const isDev = window.location.hostname === 'localhost' || 
+                     window.location.hostname === '127.0.0.1' || 
+                     window.location.hostname.includes('localhost') ||
+                     window.location.hostname.includes('gitpod.io') ||
+                     window.location.hostname.includes('github.dev') ||
+                     window.location.hostname.includes('codespaces') ||
+                     window.location.port === '5173' ||
+                     window.location.port === '3000' ||
+                     window.location.port === '8080';
+        
+        console.log('CSP Environment check:', { isDev, hostname: window.location.hostname, port: window.location.port });
+        
+        if (isDev) {
+          // Remove ALL production CSP tags
+          document.querySelectorAll('#csp-prod').forEach(el => {
+            console.log('Removing production CSP for development');
+            el.remove();
+          });
+          
+          // Ensure development CSP is permissive enough for Vite
+          const devCSP = document.getElementById('csp-dev');
+          if (devCSP) {
+            const currentContent = devCSP.getAttribute('content');
+            // Make sure connect-src includes all necessary sources for Vite dev server
+            const updatedContent = currentContent.replace(
+              /connect-src[^;]+;/,
+              "connect-src 'self' http://localhost:* http://127.0.0.1:* https://*.codespaces.githubusercontent.com https://*.github.dev https://*.gitpod.io ws://localhost:* ws://127.0.0.1:* wss://localhost:* wss://127.0.0.1:* wss://*.codespaces.githubusercontent.com wss://*.github.dev wss://*.gitpod.io webpack: webpack://* webpack-dev-server: https://texttospeech.googleapis.com https://gemini.googleapis.com https://generativelanguage.googleapis.com http: https: ws: wss: blob: https://cdn.jsdelivr.net data: 'unsafe-inline' 'unsafe-eval';"
+            );
+            devCSP.setAttribute('content', updatedContent);
+          }
+          console.log('✅ Development CSP active - Vite dev server should work');
+        } else {
+          // Remove development CSP
+          const devCSP = document.getElementById('csp-dev');
+          if (devCSP) {
+            console.log('Removing development CSP for production');
+            devCSP.remove();
+          }
+        }
+      } catch (error) {
+        console.warn('CSP management error:', error);
+      }
+    </script>
+    <div id="app"></div>
+    <!-- HMR fallback for Codespaces environment -->
+    <script src="/hmr-fallback.js"></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

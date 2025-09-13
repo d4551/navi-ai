@@ -1,0 +1,1785 @@
+/*
+ * NAVI MASTER THEME
+ * Central entry for all global styles, tokens, layout utilities,
+ * light/dark themes, and glassmorphic effects.
+ *
+ * Updated: Now using unified design system for better maintainability
+ */
+
+/* 1) Unified Design System (replaces fragmented CSS files) */
+@import "./unified-design-system.css";
+
+/* 2) Legacy components (kept for compatibility during transition) */
+@import "./jobs.css";
+@import "./studios.css";
+
+/* 3) Specialized components that haven't been consolidated yet */
+@import "./enhanced-fairy-interface.css";
+@import "./unified-document-theme.css";
+
+/* 4) Legacy bridge for backwards compatibility */
+@import "./legacy-bridge.css";
+
+/*
+ * TRANSITION NOTES:
+ * - design-system.css → replaced by unified-design-system.css
+ * - enhanced-global-improvements.css → consolidated into unified-design-system.css
+ * - enhanced-buttons.css → consolidated into unified-design-system.css
+ * - gaming-glassmorphism-theme.css → consolidated into unified-design-system.css
+ * - layout-utilities.css → consolidated into unified-design-system.css
+ * - enhanced-navigation.css → will be consolidated in next phase
+ * - enhanced-theme-integration.css → will be consolidated in next phase
+ *
+ * Next phase will consolidate remaining specialized CSS files
+ */
+
+/* 
+ * NOTE: All design tokens, variables, and utility classes are now 
+ * defined in unified-design-system.css. This file only imports
+ * the necessary modules for the complete theme system.
+ */
+
+/* Global typography improvements for space efficiency */
+h1,
+.h1 {
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+  font-weight: var(--font-weight-bold);
+}
+
+h2,
+.h2 {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+  font-weight: var(--font-weight-semibold);
+}
+
+h3,
+.h3 {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+h4,
+.h4 {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-medium);
+}
+
+h5,
+.h5 {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-medium);
+}
+
+h6,
+.h6 {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+p,
+.text-body {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+}
+
+.text-sm,
+small {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-caption);
+}
+
+.text-xs {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-caption);
+}
+
+.text-2xs {
+  font-size: var(--font-size-2xs);
+  line-height: var(--line-height-tight);
+}
+
+/* Space-optimized badge and chip sizing */
+.badge,
+.chip,
+.tag {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-medium);
+}
+
+.badge-sm,
+.chip-sm {
+  font-size: var(--font-size-2xs);
+  line-height: var(--line-height-tight);
+}
+
+.badge-lg,
+.chip-lg {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-ui);
+}
+
+/* Compact navigation and UI elements */
+.nav-item,
+.menu-item,
+.tab-item {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-ui);
+}
+
+/* Card and component text optimization */
+.card-title {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.card-subtitle {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-medium);
+}
+
+.card-text,
+.card-description {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+}
+
+.card-meta,
+.meta-text {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Tooltip and helper text sizing */
+.tooltip-text,
+.help-text,
+.hint-text {
+  font-size: var(--font-size-2xs);
+  line-height: var(--line-height-caption);
+}
+
+/* Standardized container and layout helpers */
+.page-content-container,
+.unified-container {
+  max-width: var(--page-content-max-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-6);
+}
+
+/* Container width variants */
+.container-sm {
+  max-width: var(--page-narrow-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-6);
+}
+
+.container-md {
+  max-width: var(--page-content-max-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-6);
+}
+
+.container-lg {
+  max-width: var(--page-container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-6);
+}
+
+.container-xl {
+  max-width: var(--page-full-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-6);
+}
+
+.container-full {
+  width: 100%;
+  padding-inline: var(--spacing-6);
+}
+
+/* Legacy container classes - redirect to standardized widths */
+.page-glass-container {
+  max-width: var(--page-content-max-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-6);
+}
+
+/* Responsive Grid Utilities */
+.responsive-grid {
+  display: grid;
+  gap: var(--spacing-6);
+  width: 100%;
+}
+
+/* Card grids with responsive breakpoints */
+.responsive-grid--cards-sm {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-sm), 1fr)
+  );
+}
+
+.responsive-grid--cards-md {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-md), 1fr)
+  );
+}
+
+.responsive-grid--cards-lg {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-lg), 1fr)
+  );
+}
+
+.responsive-grid--compact-fill {
+  grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
+}
+
+/* Fixed column layouts with responsive behavior */
+.responsive-grid--cols-1 {
+  grid-template-columns: 1fr;
+}
+.responsive-grid--cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.responsive-grid--cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.responsive-grid--cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Responsive column adjustments */
+@media (max-width: 480px) {
+  .responsive-grid--cards-sm {
+    grid-template-columns: 1fr;
+  }
+  .responsive-grid--cards-md {
+    grid-template-columns: 1fr;
+  }
+  .responsive-grid--cards-lg {
+    grid-template-columns: 1fr;
+  }
+  .responsive-grid--cols-2 {
+    grid-template-columns: 1fr;
+  }
+  .responsive-grid--cols-3 {
+    grid-template-columns: 1fr;
+  }
+  .responsive-grid--cols-4 {
+    grid-template-columns: 1fr;
+  }
+  .responsive-grid {
+    gap: var(--spacing-4);
+  }
+}
+
+@media (max-width: 640px) {
+  .responsive-grid--cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .responsive-grid--cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-grid--cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .responsive-grid--cards-lg {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(var(--grid-card-min-md), 1fr)
+    );
+  }
+}
+
+/* Dashboard-specific grids */
+.dashboard-grid {
+  display: grid;
+  gap: var(--spacing-6);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-sm), 1fr));
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid--2-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard-grid--3-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid--4-col {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .dashboard-grid--sidebar {
+    grid-template-columns: minmax(0, 2fr) minmax(var(--grid-card-min-md), 1fr);
+  }
+}
+
+/* Form grids */
+.form-grid {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .form-grid--2-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .form-grid--3-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Component-specific grids commonly used across app */
+.portfolio-grid {
+  display: grid;
+  gap: var(--spacing-5);
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-lg), 1fr)
+  );
+}
+
+.job-grid {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-lg), 1fr)
+  );
+}
+
+.settings-grid {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-sm), 1fr));
+}
+
+.tool-grid {
+  display: grid;
+  gap: var(--spacing-3);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-xs), 1fr));
+}
+
+.media-grid {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-sm), 1fr));
+}
+
+/* Compact grids for smaller items */
+.compact-grid {
+  display: grid;
+  gap: var(--spacing-2);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.stats-grid {
+  display: grid;
+  gap: var(--spacing-3);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-xs), 1fr));
+}
+
+/* Two-column layout patterns */
+.split-layout {
+  display: grid;
+  gap: var(--spacing-6);
+  grid-template-columns: 1fr 1fr;
+}
+
+.split-layout--sidebar {
+  grid-template-columns: var(--grid-card-min-sm) 1fr;
+}
+
+.split-layout--main-sidebar {
+  grid-template-columns: minmax(0, 2fr) minmax(var(--grid-card-min-md), 1fr);
+}
+
+/* Responsive breakdowns for component grids */
+@media (max-width: 480px) {
+  .portfolio-grid,
+  .job-grid,
+  .settings-grid,
+  .media-grid,
+  .split-layout,
+  .split-layout--sidebar,
+  .split-layout--main-sidebar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .portfolio-grid,
+  .job-grid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(var(--grid-card-min-sm), 1fr)
+    );
+  }
+}
+
+.page-main-content.spacing-none {
+  padding-block: 0;
+}
+.page-main-content.spacing-compact {
+  padding-block: var(--spacing-4);
+}
+.page-main-content.spacing-normal {
+  padding-block: var(--spacing-8);
+}
+.page-main-content.spacing-comfortable {
+  padding-block: var(--spacing-12);
+}
+
+/* Glass primitives used across the app */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Glasmorphic header/footer helpers */
+.glass-header {
+  background: var(--glass-surface);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-backdrop-blur);
+}
+
+.glass-footer {
+  background: var(--glass-surface);
+  border-top: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-backdrop-blur);
+}
+
+/* ===== Control Button (theme-aware base) ===== */
+/* Tokens (override per-scope if needed) */
+:root {
+  --control-bg: var(--glass-bg);
+  --control-fg: var(--text-secondary);
+  --control-border: var(--glass-border);
+  --control-hover-bg: var(--glass-hover-bg);
+  --control-hover-fg: var(--text-primary);
+  --control-active-bg: color-mix(
+    in srgb,
+    var(--color-primary-500) 18%,
+    var(--glass-bg)
+  );
+  --control-active-fg: var(--text-on-primary, #fff);
+  --control-ring: color-mix(in srgb, var(--color-primary-500) 35%, transparent);
+}
+
+/* Base visuals for small icon control buttons */
+:where(.control-btn) {
+  background: var(--control-bg);
+  color: var(--control-fg);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-md);
+  backdrop-filter: var(--glass-backdrop-blur);
+  -webkit-backdrop-filter: var(--glass-backdrop-blur);
+  transition: all var(--duration-fast) var(--easing-ease-out);
+}
+
+:where(.control-btn):hover {
+  background: var(--control-hover-bg);
+  color: var(--control-hover-fg);
+  border-color: var(--control-border);
+  filter: drop-shadow(
+    0 2px 8px color-mix(in srgb, var(--color-primary-500) 18%, transparent)
+  );
+}
+
+:where(.control-btn).active,
+:where(.control-btn)[aria-pressed="true"] {
+  background: var(--control-active-bg);
+  color: var(--control-active-fg);
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 40%,
+    var(--control-border)
+  );
+  box-shadow: 0 6px 18px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+}
+
+:where(.control-btn):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--control-ring);
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 50%,
+    var(--control-border)
+  );
+}
+
+:where(.control-btn):disabled,
+:where(.control-btn)[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Chat input footer polish (scoped to chat input containers using glass-footer) */
+.chat-input-container.glass-footer {
+  position: relative;
+  /* Respect iOS/Android safe-area on devices with gesture bars */
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--spacing-2));
+}
+.chat-input-container.glass-footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -8px;
+  height: 8px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08), transparent);
+}
+[data-theme="dark"] .chat-input-container.glass-footer::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+}
+
+/* ===== Unified Button Styling (global) ===== */
+/* Applies to native buttons, Vuetify .v-btn, unified and legacy .btn/.modern-button */
+:where(button, .btn, .v-btn, .unified-button, .btn-unified, .modern-button) {
+  --btn-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--glass-bg) 90%, transparent),
+    color-mix(in srgb, var(--glass-bg) 70%, transparent)
+  );
+  --btn-border: var(--glass-border);
+  --btn-color: var(--text-primary);
+  --btn-radius: var(--radius-md);
+  --btn-shadow: var(--glass-shadow);
+  --btn-hover-bg: color-mix(
+    in srgb,
+    var(--color-primary-500) 10%,
+    var(--glass-bg)
+  );
+  --btn-hover-color: var(--text-primary);
+  --btn-active-bg: color-mix(
+    in srgb,
+    var(--color-primary-600) 12%,
+    var(--glass-bg)
+  );
+  --btn-active-color: var(--text-primary);
+  min-height: var(--btn-min-h);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  color: var(--btn-color);
+  border-radius: var(--btn-radius);
+  box-shadow: var(--btn-shadow);
+  transition: all var(--duration-fast) var(--easing-ease-out);
+}
+
+:where(
+  button,
+  .btn,
+  .v-btn,
+  .unified-button,
+  .btn-unified,
+  .modern-button
+):hover {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-color);
+  transform: translateY(-1px);
+}
+:where(
+  button,
+  .btn,
+  .v-btn,
+  .unified-button,
+  .btn-unified,
+  .modern-button
+):active {
+  background: var(--btn-active-bg);
+  color: var(--btn-active-color);
+  transform: translateY(0);
+}
+
+/* Gaming variant (unify legacy and modern classes under master tokens) */
+.btn-gaming,
+:where(.unified-button)[data-variant="gaming"],
+.modern-button--gaming {
+  --btn-bg: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-gaming-500) 18%, var(--glass-bg)),
+    color-mix(in srgb, var(--color-gaming-500) 10%, var(--glass-bg))
+  );
+  --btn-border: color-mix(in srgb, var(--color-gaming-500) 35%, transparent);
+  --btn-color: var(--text-primary);
+}
+
+:where(
+  .btn-gaming,
+  .modern-button--gaming,
+  .unified-button[data-variant="gaming"]
+):hover {
+  --btn-hover-bg: color-mix(
+    in srgb,
+    var(--color-gaming-500) 26%,
+    var(--glass-bg)
+  );
+  --btn-hover-color: var(--text-primary);
+}
+
+:where(
+  .btn-gaming,
+  .modern-button--gaming,
+  .unified-button[data-variant="gaming"]
+):active {
+  --btn-active-bg: color-mix(
+    in srgb,
+    var(--color-gaming-500) 36%,
+    var(--glass-bg)
+  );
+  --btn-active-color: var(--text-primary);
+}
+
+/* Primary/Secondary/Info/Success/Warning/Danger variants */
+.btn-primary,
+:where(.unified-button)[data-variant="primary"],
+:where(.v-btn).variant-contained.primary {
+  --btn-bg: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 28%, var(--glass-bg)),
+    color-mix(in srgb, var(--color-primary-400) 20%, var(--glass-bg))
+  );
+  --btn-border: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  --btn-color: var(--text-on-primary, #fff);
+}
+.btn-secondary {
+  --btn-bg: color-mix(in srgb, var(--text-secondary) 12%, var(--glass-bg));
+  --btn-border: color-mix(in srgb, var(--text-secondary) 24%, transparent);
+}
+.btn-info {
+  --btn-bg: color-mix(in srgb, var(--color-info) 14%, var(--glass-bg));
+  --btn-border: color-mix(in srgb, var(--color-info) 28%, transparent);
+}
+.btn-success {
+  --btn-bg: color-mix(in srgb, var(--color-success) 14%, var(--glass-bg));
+  --btn-border: color-mix(in srgb, var(--color-success) 28%, transparent);
+}
+.btn-warning {
+  --btn-bg: color-mix(in srgb, var(--color-warning) 14%, var(--glass-bg));
+  --btn-border: color-mix(in srgb, var(--color-warning) 28%, transparent);
+}
+.btn-danger {
+  --btn-bg: color-mix(in srgb, var(--color-error) 14%, var(--glass-bg));
+  --btn-border: color-mix(in srgb, var(--color-error) 32%, transparent);
+  --btn-color: #fff;
+}
+
+/* Outline/Ghost */
+.btn-outline,
+.variant-outlined {
+  background: transparent;
+  --btn-border: color-mix(in srgb, var(--text-secondary) 25%, transparent);
+}
+.btn-ghost,
+.variant-ghost {
+  background: transparent;
+  --btn-border: transparent;
+  box-shadow: none;
+}
+
+/* Button sizes with optimized typography */
+.btn-sm,
+:where(.unified-button)[data-size="sm"],
+:where(.v-btn).size-sm {
+  min-height: calc(var(--btn-min-h) - 8px);
+  padding: calc(var(--btn-padding-y) - 4px) calc(var(--btn-padding-x) - 8px);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-ui);
+}
+.btn-lg,
+:where(.unified-button)[data-size="lg"],
+:where(.v-btn).size-lg {
+  min-height: calc(var(--btn-min-h) + 8px);
+  padding: calc(var(--btn-padding-y) + 4px) calc(var(--btn-padding-x) + 8px);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-ui);
+}
+
+/* Icon-only */
+.btn-icon-only,
+.icon-only,
+:where(.v-btn).icon,
+:where(.unified-button)[data-icon-only="true"] {
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-sm.btn-icon-only {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+}
+
+/* Ripple affordance */
+.ripple-enabled {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Enhanced Glass Inputs (matching personal info section) */
+.glass-input {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter, blur(16px));
+  -webkit-backdrop-filter: var(--glass-backdrop-filter, blur(16px));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3) var(--spacing-4);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  width: 100%;
+  transition: all var(--duration-normal);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-input::placeholder {
+  color: var(--text-muted);
+  transition: color var(--duration-normal);
+}
+
+.glass-input:hover {
+  border-color: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.3);
+  background: var(--glass-hover-bg);
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  background: var(--glass-hover-bg);
+  box-shadow:
+    var(--glass-shadow),
+    0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
+}
+
+.glass-input.has-value {
+  border-color: rgba(var(--color-success-500-rgb, 34, 197, 94), 0.5);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.1);
+}
+
+.glass-input.is-invalid {
+  border-color: var(--color-error-500);
+  background: color-mix(in srgb, var(--color-error-500) 5%, var(--glass-bg));
+}
+
+/* Enhanced Form Field Structure (matching personal info section) */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+}
+
+.form-field.required .required-asterisk {
+  color: var(--color-error-400);
+  margin-left: var(--spacing-1);
+}
+
+.form-label {
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  margin-bottom: var(--spacing-1);
+  transition: color var(--duration-normal);
+}
+
+.label-icon {
+  font-size: var(--font-size-base);
+  color: var(--text-tertiary);
+  transition: color var(--duration-normal);
+}
+
+/* Input wrapper with status indicator */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-status {
+  position: absolute;
+  right: var(--spacing-3);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.success-icon {
+  color: var(--color-success-500);
+  font-size: var(--font-size-lg);
+  transition: color var(--duration-normal);
+  filter: drop-shadow(
+    0 0 4px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.3)
+  );
+}
+
+/* Enhanced textarea */
+.textarea-wrapper {
+  position: relative;
+}
+
+.enhanced-textarea {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  width: 100%;
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+  transition: all var(--duration-normal);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  box-shadow: var(--glass-shadow);
+}
+
+.enhanced-textarea::placeholder {
+  color: var(--text-muted);
+  transition: color var(--duration-normal);
+}
+
+.enhanced-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  background: var(--glass-hover-bg);
+  box-shadow:
+    var(--glass-shadow),
+    0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
+}
+
+.enhanced-textarea.has-value {
+  border-color: var(--color-success-400);
+}
+
+.character-count {
+  position: absolute;
+  bottom: var(--spacing-2);
+  right: var(--spacing-3);
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--glass-shadow);
+  transition: all var(--duration-normal);
+}
+
+/* Form Messages */
+.form-error {
+  color: var(--color-error-500);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  margin-top: var(--spacing-1);
+  transition: color var(--duration-normal);
+}
+
+.form-hint {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  margin-top: var(--spacing-1);
+  box-shadow: var(--glass-shadow);
+  transition: all var(--duration-normal);
+}
+
+/* Textarea improvements */
+:where(textarea).glass-input {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Alias common field classes to master glass style */
+:where(
+  input.unified-input,
+  input.ui-input,
+  input.form-control,
+  select.unified-input,
+  select.ui-input,
+  select.form-select,
+  textarea.unified-input,
+  textarea.ui-input,
+  textarea.form-control,
+  textarea.summary-textarea,
+  textarea.field,
+  .ai-textarea
+) {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  border-radius: 12px;
+  padding: var(--input-padding-y) var(--input-padding-x);
+  backdrop-filter: var(--glass-backdrop-filter);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  transition:
+    background-color var(--duration-fast) var(--easing-ease-out),
+    border-color var(--duration-fast) var(--easing-ease-out),
+    box-shadow var(--duration-fast) var(--easing-ease-out);
+}
+
+:where(
+  input.unified-input,
+  input.ui-input,
+  input.form-control,
+  select.unified-input,
+  select.ui-input,
+  select.form-select,
+  textarea.unified-input,
+  textarea.ui-input,
+  textarea.form-control,
+  textarea.summary-textarea,
+  textarea.field,
+  .ai-textarea
+)::placeholder {
+  color: var(--text-muted);
+}
+
+:where(
+  input.unified-input,
+  input.ui-input,
+  input.form-control,
+  select.unified-input,
+  select.ui-input,
+  select.form-select,
+  textarea.unified-input,
+  textarea.ui-input,
+  textarea.form-control,
+  textarea.summary-textarea,
+  textarea.field,
+  .ai-textarea
+):hover {
+  border-color: color-mix(in srgb, var(--text-secondary) 18%, transparent);
+}
+
+:where(
+  input.unified-input,
+  input.ui-input,
+  input.form-control,
+  select.unified-input,
+  select.ui-input,
+  select.form-select,
+  textarea.unified-input,
+  textarea.ui-input,
+  textarea.form-control,
+  textarea.summary-textarea,
+  textarea.field,
+  .ai-textarea
+):focus {
+  outline: none;
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500, #6366f1) 60%,
+    transparent
+  );
+  box-shadow:
+    0 0 0 3px
+      color-mix(in srgb, var(--color-primary-500, #6366f1) 20%, transparent),
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* Summary textarea semantic state */
+.summary-textarea.valid {
+  border-color: var(--color-success-500);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-success-500) 20%, transparent);
+}
+
+/* Common ad-hoc action classes → glass baseline */
+:where(
+  .action-btn,
+  .chip-btn,
+  .toolbar-btn,
+  .quick-action-btn,
+  .section-action,
+  .favorite-btn-enhanced,
+  .change-job-btn,
+  .upload-tab,
+  .filter-btn
+) {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  transition:
+    background-color var(--duration-fast) var(--easing-ease-out),
+    border-color var(--duration-fast) var(--easing-ease-out),
+    box-shadow var(--duration-fast) var(--easing-ease-out),
+    transform var(--duration-fast) var(--easing-ease-out);
+}
+
+:where(
+  .action-btn,
+  .chip-btn,
+  .toolbar-btn,
+  .quick-action-btn,
+  .section-action,
+  .favorite-btn-enhanced,
+  .change-job-btn,
+  .upload-tab,
+  .filter-btn
+):hover {
+  background: var(--glass-hover-bg);
+  border-color: color-mix(in srgb, var(--text-secondary) 20%, transparent);
+  box-shadow: var(--glass-shadow);
+  transform: translateY(-1px);
+}
+
+/* Iconic close/clear buttons */
+:where(.close-btn, .btn-close, .search-clear) {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  backdrop-filter: var(--glass-backdrop-filter);
+}
+:where(.close-btn, .btn-close, .search-clear):hover {
+  background: var(--glass-hover-bg);
+  border-color: color-mix(in srgb, var(--text-secondary) 20%, transparent);
+}
+
+/* Size variants for inputs/selects/textareas with optimized typography */
+:where(input, select, textarea).form-control-sm,
+:where(.unified-input)[data-size="sm"],
+:where(.ui-input).ui-size-sm {
+  padding: calc(var(--input-padding-y) - 0.2rem)
+    calc(var(--input-padding-x) - 0.15rem);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-ui);
+}
+
+:where(input, select, textarea).form-control-lg,
+:where(.unified-input)[data-size="lg"],
+:where(.ui-input).ui-size-lg {
+  padding: calc(var(--input-padding-y) + 0.15rem)
+    calc(var(--input-padding-x) + 0.15rem);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-ui);
+}
+
+/* Default input typography */
+:where(input, select, textarea) {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-ui);
+}
+
+/* Apply optimized button typography globally */
+:where(button, .btn, .v-btn, .unified-button, .btn-unified, .modern-button) {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-medium);
+}
+
+.glass-button {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--glass-bg) 80%, transparent),
+    color-mix(in srgb, var(--glass-bg) 60%, transparent)
+  );
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-ui);
+}
+.glass-button:hover {
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--neon-cyber, #00d9ff) 20%, transparent) inset;
+}
+
+/* Neon focus ring shared utility */
+.focus-ring,
+.neon-focus {
+  outline: none;
+}
+.focus-ring:focus-visible,
+.neon-focus:focus-visible {
+  outline: 2px solid var(--neon-focus-ring, #00d9ff);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* Normalize cards used in dashboard and page templates */
+.stat-card,
+.actions-card,
+.applications-card,
+.weekly-quests-card,
+.trends-card,
+.resume-score-card,
+.portfolio-card,
+.gamification-card,
+.studios-card,
+.progress-card {
+  padding: var(--card-padding);
+}
+
+/* Scrollbar unification (thin, subtle) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 30%, transparent)
+    transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text-muted) 35%, transparent);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--text-muted) 60%, transparent);
+}
+
+/* Density overrides for unified buttons (kept here to avoid touching component CSS) */
+.btn-unified {
+  min-height: var(--btn-min-h);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+}
+
+.btn-unified.btn-sm {
+  min-height: calc(var(--btn-min-h) - 8px);
+  padding: calc(var(--btn-padding-y) - 4px) calc(var(--btn-padding-x) - 8px);
+}
+
+.btn-unified.btn-lg {
+  min-height: calc(var(--btn-min-h) + 8px);
+  padding: calc(var(--btn-padding-y) + 4px) calc(var(--btn-padding-x) + 8px);
+}
+
+/* Removed duplicate global input defaults (see earlier section for canonical rules) */
+
+/* ===== Vuetify field integration (glass variant) ===== */
+:where(.unified-container, .page-glass-container) :where(.v-field) {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 12px !important;
+  backdrop-filter: var(--glass-backdrop-blur) !important;
+  -webkit-backdrop-filter: var(--glass-backdrop-blur) !important;
+}
+
+:where(.unified-container, .page-glass-container) :where(.v-field__outline) {
+  /* Let our border define the look; keep outline subtle */
+  --v-field-border-width: 0px;
+  border-color: transparent !important;
+}
+
+:where(.unified-container, .page-glass-container) :where(.v-field--focused) {
+  border-color: var(
+    --glass-border-strong,
+    color-mix(in srgb, var(--glass-border) 60%, rgba(0, 0, 0, 0.2))
+  ) !important;
+  box-shadow: var(
+    --glass-glow-primary,
+    0 0 0 3px color-mix(in srgb, var(--color-primary-500) 18%, transparent)
+  ) !important;
+  background: var(--glass-hover-bg) !important;
+}
+
+:where(.unified-container, .page-glass-container)
+  :where(.v-field__input, .v-text-field input, .v-textarea textarea) {
+  color: var(--text-primary) !important;
+}
+
+:where(.unified-container, .page-glass-container) :where(.v-label) {
+  color: var(--text-secondary) !important;
+}
+
+:where(.unified-container, .page-glass-container) :where(.v-field--disabled) {
+  opacity: 0.65;
+  background: var(--glass-disabled-bg) !important;
+  color: var(--text-disabled) !important;
+}
+
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-select .v-field__append-inner .v-icon,
+    .v-text-field .v-field__append-inner .v-icon
+  ) {
+  color: var(--text-secondary) !important;
+}
+
+:where(.unified-container, .page-glass-container)
+  :where(.v-selection-control--dirty .v-icon) {
+  color: var(--color-primary-500) !important;
+}
+
+/* ===== Density-specific input adjustments ===== */
+.density-compact
+  :where(.unified-container, .page-glass-container)
+  :where(
+    input:not([type]),
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="number"],
+    input[type="url"],
+    input[type="tel"],
+    textarea,
+    select
+  ):not([data-unstyled="true"]) {
+  padding: calc(var(--input-padding-y) - 4px) calc(var(--input-padding-x) - 4px);
+  border-radius: 10px;
+}
+
+.density-comfortable
+  :where(.unified-container, .page-glass-container)
+  :where(
+    input:not([type]),
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="number"],
+    input[type="url"],
+    input[type="tel"],
+    textarea,
+    select
+  ):not([data-unstyled="true"]) {
+  padding: calc(var(--input-padding-y) + 2px) calc(var(--input-padding-x) + 2px);
+  border-radius: 14px;
+}
+
+/* ===== Vuetify chips (selected items / tags) ===== */
+:where(.unified-container, .page-glass-container) :where(.v-chip) {
+  background: var(--glass-elevated) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: var(--glass-backdrop-blur) !important;
+  -webkit-backdrop-filter: var(--glass-backdrop-blur) !important;
+}
+:where(.unified-container, .page-glass-container) :where(.v-chip:hover) {
+  background: var(--glass-hover-bg) !important;
+  border-color: var(--glass-border-strong) !important;
+}
+
+/* Chips within inputs (autocomplete/combobox/select) */
+:where(.unified-container, .page-glass-container) :where(.v-input .v-chip) {
+  margin: 2px !important;
+}
+
+/* ===== Vuetify menus / dropdowns / lists ===== */
+:where(.unified-container, .page-glass-container) :where(.v-overlay__content) {
+  backdrop-filter: none; /* container for popover; style the inner sheet/list */
+}
+
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-list,
+    .v-overlay__content .v-sheet,
+    .v-overlay__content .v-card
+  ) {
+  background: var(--glass-surface) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: var(--glass-backdrop-blur) !important;
+  -webkit-backdrop-filter: var(--glass-backdrop-blur) !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+
+:where(.unified-container, .page-glass-container) :where(.v-list-item) {
+  transition: background-color var(--duration-fast) var(--easing-ease-out);
+}
+
+:where(.unified-container, .page-glass-container) :where(.v-list-item:hover) {
+  background: var(--glass-hover-bg) !important;
+}
+
+:where(.unified-container, .page-glass-container) :where(.v-list-item--active) {
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 12%,
+    transparent
+  ) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ===== Vuetify chips in fields (combobox/autocomplete tags) ===== */
+:where(.unified-container, .page-glass-container)
+  :where(.v-field__input .v-chip) {
+  background: var(--glass-elevated) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 10px !important;
+  color: var(--text-primary) !important;
+  height: 26px;
+  padding: 2px 8px;
+  gap: 6px;
+}
+
+/* Chip close icon contrast + sizing */
+:where(.unified-container, .page-glass-container)
+  :where(.v-field__input .v-chip .v-icon),
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-list-item .v-chip .v-icon) {
+  font-size: 16px !important;
+  opacity: 0.9;
+  color: var(--text-secondary) !important;
+  transition:
+    color var(--duration-fast) var(--easing-ease-out),
+    opacity var(--duration-fast) var(--easing-ease-out);
+}
+
+:where(.unified-container, .page-glass-container)
+  :where(.v-field__input .v-chip:hover .v-icon),
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-list-item .v-chip:hover .v-icon) {
+  color: var(--text-primary) !important;
+  opacity: 1;
+}
+
+.density-compact
+  :where(.unified-container, .page-glass-container)
+  :where(.v-field__input .v-chip) {
+  height: 22px;
+  padding: 1px 6px;
+  border-radius: 9px !important;
+  font-size: 0.9rem;
+}
+.density-comfortable
+  :where(.unified-container, .page-glass-container)
+  :where(.v-field__input .v-chip) {
+  height: 28px;
+  padding: 2px 10px;
+  border-radius: 12px !important;
+}
+
+/* Chips within dropdown results */
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-list-item .v-chip) {
+  background: var(--glass-elevated) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ===== Density-specific Vuetify field sizing ===== */
+.density-compact
+  :where(.unified-container, .page-glass-container)
+  :where(.v-field) {
+  min-height: 36px !important;
+}
+.density-compact
+  :where(.unified-container, .page-glass-container)
+  :where(.v-field__input) {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+.density-comfortable
+  :where(.unified-container, .page-glass-container)
+  :where(.v-field) {
+  min-height: 52px !important;
+}
+.density-comfortable
+  :where(.unified-container, .page-glass-container)
+  :where(.v-field__input) {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+/* ===== Chip close icon hit-area (better usability) ===== */
+:where(.unified-container, .page-glass-container) :where(.v-chip .v-icon) {
+  padding: 4px !important;
+  border-radius: 8px !important;
+  margin-inline: -2px !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(.v-chip:hover .v-icon) {
+  background: var(--glass-hover-bg) !important;
+}
+
+/* ===== Multiple v-select chip overflow handling (density-aware) ===== */
+/* Compact: keep single line, horizontal scroll for chips */
+.density-compact
+  :where(.unified-container, .page-glass-container)
+  :where(.v-select .v-field__input) {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  gap: 6px !important;
+}
+/* Comfortable: allow wrapping to multiple lines */
+.density-comfortable
+  :where(.unified-container, .page-glass-container)
+  :where(.v-select .v-field__input) {
+  flex-wrap: wrap !important;
+  overflow: visible !important;
+  gap: 8px !important;
+}
+
+/* ===== Tooltip glass styling for helper hovers ===== */
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content[role="tooltip"]) {
+  background: var(--glass-surface) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: var(--glass-backdrop-blur) !important;
+  -webkit-backdrop-filter: var(--glass-backdrop-blur) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: 10px !important;
+  padding: 6px 10px !important;
+}
+
+/* Tooltip arrow tuned to glass */
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content[role="tooltip"] .v-overlay__arrow),
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content[role="tooltip"] .v-overlay__arrow::before) {
+  background: var(--glass-surface) !important;
+  border: 1px solid var(--glass-border) !important;
+}
+
+/* ===== Vuetify autocomplete empty/loading states ===== */
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-list .v-list-item--disabled) {
+  background: var(--glass-surface) !important;
+  color: var(--text-secondary) !important;
+  opacity: 0.9 !important;
+}
+
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-progress-circular) {
+  color: var(--color-primary-500) !important;
+}
+
+/* Helper text spacing (density aware) */
+.density-compact
+  :where(.unified-container, .page-glass-container)
+  :where(.v-field__details, .v-messages) {
+  margin-top: 2px !important;
+  line-height: 1.25;
+}
+.density-comfortable
+  :where(.unified-container, .page-glass-container)
+  :where(.v-field__details, .v-messages) {
+  margin-top: 6px !important;
+}
+
+/* ===== Date & Time pickers (glass overlay) ===== */
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-date-picker,
+    .v-overlay__content .v-time-picker
+  ) {
+  background: var(--glass-surface) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: var(--glass-backdrop-blur) !important;
+  -webkit-backdrop-filter: var(--glass-backdrop-blur) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: 14px !important;
+}
+
+/* Date range hover/selection states */
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content
+      .v-date-picker
+      .v-date-picker-month__day--in-range
+      .v-btn,
+    .v-overlay__content .v-date-picker .v-date-picker-month__day--range .v-btn
+  ) {
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 12%,
+    transparent
+  ) !important;
+  border-radius: 8px !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-date-picker .v-date-picker-month__day--start .v-btn,
+    .v-overlay__content .v-date-picker .v-date-picker-month__day--end .v-btn
+  ) {
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 18%,
+    transparent
+  ) !important;
+  border-radius: 10px !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-date-picker .v-date-picker-month__day--start .v-btn
+  ) {
+  border-top-left-radius: 12px !important;
+  border-bottom-left-radius: 12px !important;
+  border-top-right-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-date-picker .v-date-picker-month__day--end .v-btn
+  ) {
+  border-top-right-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+  border-top-left-radius: 6px !important;
+  border-bottom-left-radius: 6px !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-date-picker .v-date-picker-month__day .v-btn:hover
+  ) {
+  background: var(--glass-hover-bg) !important;
+}
+
+/* Focus-visible ring for day/time buttons (accessibility) */
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-date-picker .v-btn:focus-visible,
+    .v-overlay__content .v-time-picker .v-btn:focus-visible,
+    .v-calendar .v-btn:focus-visible
+  ) {
+  outline: none !important;
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 25%, transparent) !important;
+}
+
+/* Active buttons inside pickers */
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-date-picker .v-btn--active,
+    .v-overlay__content .v-time-picker .v-btn--active
+  ) {
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 20%,
+    transparent
+  ) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Time picker clock refinements */
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-time-picker .v-btn:hover) {
+  background: var(--glass-hover-bg) !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-time-picker .v-time-picker-clock__hand) {
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 55%,
+    transparent
+  ) !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-time-picker .v-time-picker-clock__item .v-btn) {
+  transition: background-color var(--duration-fast) var(--easing-ease-out);
+}
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-time-picker .v-time-picker-clock__item .v-btn:hover
+  ) {
+  background: var(--glass-hover-bg) !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(
+    .v-overlay__content .v-time-picker .v-time-picker-clock__item--active .v-btn
+  ) {
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 22%,
+    transparent
+  ) !important;
+}
+
+/* ===== Calendar (inline or overlay) ===== */
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content .v-calendar, .v-calendar) {
+  background: var(--glass-surface) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: var(--glass-backdrop-blur) !important;
+  -webkit-backdrop-filter: var(--glass-backdrop-blur) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: 14px !important;
+}
+:where(.unified-container, .page-glass-container)
+  :where(.v-calendar .v-btn--active) {
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 20%,
+    transparent
+  ) !important;
+}
+
+/* Tooltip density tweaks */
+.density-compact
+  :where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content[role="tooltip"]) {
+  padding: 4px 8px !important;
+  font-size: 0.9rem !important;
+}
+.density-comfortable
+  :where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content[role="tooltip"]) {
+  padding: 8px 12px !important;
+  font-size: 1rem !important;
+}
+
+/* ===== Overlay scrollbars (menus/dialogs) to match glass style ===== */
+:where(.unified-container, .page-glass-container) :where(.v-overlay__content) {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 35%, transparent)
+    transparent;
+}
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content::-webkit-scrollbar) {
+  width: 10px;
+  height: 10px;
+}
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content::-webkit-scrollbar-track) {
+  background: transparent;
+}
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content::-webkit-scrollbar-thumb) {
+  background: color-mix(in srgb, var(--text-muted) 40%, transparent);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+:where(.unified-container, .page-glass-container)
+  :where(.v-overlay__content::-webkit-scrollbar-thumb:hover) {
+  background: color-mix(in srgb, var(--text-muted) 60%, transparent);
+}
+/* ===== Global default for plain HTML inputs within app containers ===== */
+:where(.unified-container, .page-glass-container)
+  :where(
+    input:not([type]),
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="number"],
+    input[type="url"],
+    input[type="tel"],
+    textarea,
+    select
+  ):not([class]):not([data-unstyled="true"]) {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  border-radius: 12px;
+  padding: var(--input-padding-y) var(--input-padding-x);
+  backdrop-filter: var(--glass-backdrop-blur);
+  -webkit-backdrop-filter: var(--glass-backdrop-blur);
+  transition:
+    background-color var(--duration-fast) var(--easing-ease-out),
+    border-color var(--duration-fast) var(--easing-ease-out),
+    box-shadow var(--duration-fast) var(--easing-ease-out);
+}
+
+:where(.unified-container, .page-glass-container)
+  :where(
+    input:not([type]),
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="number"],
+    input[type="url"],
+    input[type="tel"],
+    textarea,
+    select
+  ):not([class]):not([data-unstyled="true"]):focus {
+  outline: none;
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500, #6366f1) 55%,
+    transparent
+  );
+  box-shadow: var(
+    --glass-glow-primary,
+    0 0 0 3px color-mix(in srgb, var(--color-primary-500) 18%, transparent)
+  );
+  background: var(--glass-hover-bg);
+}
+
+:where(.unified-container, .page-glass-container) input[type="checkbox"],
+:where(.unified-container, .page-glass-container) input[type="radio"] {
+  accent-color: var(--color-primary-500);
+}
+
+/* Profile actions styling consistency */
+.profile-actions {
+  display: flex;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.profile-actions .btn-unified {
+  min-height: 44px;
+  min-width: auto;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-md);
+}

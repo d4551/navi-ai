@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced AI Integration Test - NAVI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .demo-header {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .demo-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .demo-title h1 {
+            color: #00d4ff;
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        .icon {
+            width: 32px;
+            height: 32px;
+            fill: #00d4ff;
+        }
+        
+        .demo-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .test-section h2 {
+            color: #00d4ff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-item label {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .status-success {
+            color: #00ff88;
+            font-weight: 600;
+        }
+        
+        .status-error {
+            color: #ff4757;
+            font-weight: 600;
+        }
+        
+        .status-warning {
+            color: #ffa502;
+            font-weight: 600;
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #00d4ff 0%, #5b73ff 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+        
+        .btn.btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .btn.btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00d4ff;
+        }
+        
+        .btn.btn-gaming {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+        }
+        
+        .btn.btn-secondary {
+            background: linear-gradient(135deg, #06ffa5 0%, #3d8bff 100%);
+        }
+        
+        .health-result {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .health-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .health-healthy {
+            color: #00ff88;
+            font-weight: 600;
+        }
+        
+        .test-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .test-result-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .test-result-item.test-passed {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+        }
+        
+        .log-container {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 16px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .log-entry {
+            display: flex;
+            gap: 16px;
+            padding: 8px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+        
+        .log-time {
+            color: rgba(255, 255, 255, 0.6);
+            min-width: 80px;
+        }
+        
+        .log-type {
+            min-width: 80px;
+            font-weight: 600;
+        }
+        
+        .log-success .log-type {
+            color: #00ff88;
+        }
+        
+        .log-info .log-type {
+            color: #00d4ff;
+        }
+        
+        .log-message {
+            flex: 1;
+        }
+        
+        .realtime-controls {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        
+        .realtime-status {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .realtime-status h4 {
+            margin: 0 0 8px 0;
+            color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Test Header -->
+        <div class="demo-header">
+            <div class="demo-title">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M7,2V4H8V18A4,4 0 0,0 12,22A4,4 0 0,0 16,18V4H17V2H7M11,16C10.4,16 10,15.6 10,15C10,14.4 10.4,14 11,14C11.6,14 12,14.4 12,15C12,15.6 11.6,16 11,16M13,12C12.4,12 12,11.6 12,11C12,10.4 12.4,10 13,10C13.6,10 14,10.4 14,11C14,11.6 13.6,12 13,12M14,7H10V9H14V7Z" />
+                </svg>
+                <h1>Enhanced AI Integration Test</h1>
+            </div>
+            <div class="demo-description">
+                Test and verify enhanced AI service connectivity, real-time capabilities, and comprehensive functionality.
+            </div>
+        </div>
+
+        <!-- AI Status Display -->
+        <div class="test-section">
+            <h2>AI Service Status</h2>
+            
+            <div class="status-grid">
+                <div class="status-item">
+                    <label>AI Initialized:</label>
+                    <span class="status-success">Yes</span>
+                </div>
+                
+                <div class="status-item">
+                    <label>Initializing:</label>
+                    <span class="status-success">No</span>
+                </div>
+                
+                <div class="status-item">
+                    <label>Error:</label>
+                    <span class="status-success">None</span>
+                </div>
+                
+                <div class="status-item">
+                    <label>Has API Key:</label>
+                    <span class="status-success">Yes</span>
+                </div>
+            </div>
+            
+            <div class="actions-grid">
+                <button class="btn">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                    </svg>
+                    Initialize Enhanced AI
+                </button>
+                
+                <button class="btn btn-outline">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
+                    </svg>
+                    Test Connection
+                </button>
+            </div>
+        </div>
+
+        <!-- AI Actions Test -->
+        <div class="test-section">
+            <h2>AI Actions Test</h2>
+            
+            <div class="actions-grid">
+                <button class="btn">Generate Text</button>
+                <button class="btn btn-outline">Analyze Resume</button>
+                <button class="btn btn-outline">Search Jobs</button>
+                <button class="btn btn-gaming">Realtime Chat</button>
+                <button class="btn btn-secondary">Multimodal Test</button>
+                <button class="btn btn-outline">Audio Processing</button>
+            </div>
+        </div>
+
+        <!-- Real-time Features Test -->
+        <div class="test-section">
+            <h2>Real-time Features</h2>
+            
+            <div class="realtime-controls">
+                <button class="btn">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z" />
+                    </svg>
+                    Start Audio Test
+                </button>
+                
+                <button class="btn btn-secondary">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" />
+                    </svg>
+                    Start Video Test
+                </button>
+                
+                <button class="btn btn-outline">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21,16V4H3V16H21M21,2A2,2 0 0,1 23,4V16A2,2 0 0,1 21,18H14L16,21V22H8V21L10,18H3C1.89,18 1,17.1 1,16V4C1,2.89 1.89,2 3,2H21Z" />
+                    </svg>
+                    Capture Screen
+                </button>
+            </div>
+            
+            <div class="realtime-status">
+                <h4>Real-time Status:</h4>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <label>Session Active:</label>
+                        <span class="status-success">Yes</span>
+                    </div>
+                    <div class="status-item">
+                        <label>Audio Streaming:</label>
+                        <span class="status-success">Active</span>
+                    </div>
+                    <div class="status-item">
+                        <label>Video Streaming:</label>
+                        <span class="status-success">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Check Results -->
+        <div class="test-section">
+            <h2>AI Health Check</h2>
+            
+            <button class="btn btn-outline">
+                <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
+                </svg>
+                Run Health Check
+            </button>
+            
+            <div class="health-result">
+                <div class="health-header">
+                    <span class="health-healthy">HEALTHY</span>
+                    <span style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">4:32:15 PM</span>
+                </div>
+                
+                <div class="test-results-grid">
+                    <div class="test-result-item test-passed">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
+                        </svg>
+                        <span>Basic Generation</span>
+                    </div>
+                    <div class="test-result-item test-passed">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
+                        </svg>
+                        <span>Streaming Capability</span>
+                    </div>
+                    <div class="test-result-item test-passed">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
+                        </svg>
+                        <span>Multimodal Capability</span>
+                    </div>
+                    <div class="test-result-item test-passed">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
+                        </svg>
+                        <span>Context Persistence</span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 16px; padding: 12px; background: rgba(0, 212, 255, 0.1); border-radius: 4px; color: #00d4ff;">
+                    <strong>4/4 tests passed</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Log -->
+        <div class="test-section">
+            <h2>Event Log</h2>
+            
+            <div class="log-container">
+                <div class="log-entry log-success">
+                    <span class="log-time">4:32:15</span>
+                    <span class="log-type">SUCCESS</span>
+                    <span class="log-message">All AI services are healthy!</span>
+                </div>
+                <div class="log-entry log-success">
+                    <span class="log-time">4:32:14</span>
+                    <span class="log-type">SUCCESS</span>
+                    <span class="log-message">Health check completed: HEALTHY</span>
+                </div>
+                <div class="log-entry log-info">
+                    <span class="log-time">4:32:12</span>
+                    <span class="log-type">INFO</span>
+                    <span class="log-message">Running comprehensive health check...</span>
+                </div>
+                <div class="log-entry log-success">
+                    <span class="log-time">4:32:08</span>
+                    <span class="log-type">SUCCESS</span>
+                    <span class="log-message">Audio recording started</span>
+                </div>
+                <div class="log-entry log-success">
+                    <span class="log-time">4:32:05</span>
+                    <span class="log-type">SUCCESS</span>
+                    <span class="log-message">Enhanced AI services initialized successfully</span>
+                </div>
+                <div class="log-entry log-info">
+                    <span class="log-time">4:32:02</span>
+                    <span class="log-type">INFO</span>
+                    <span class="log-message">Enhanced AI Integration Test page loaded</span>
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end;">
+                <button class="btn btn-outline" style="padding: 8px 16px;">Clear Log</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

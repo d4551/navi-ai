@@ -1,0 +1,3903 @@
+.input-fields/input-field-a {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/with-button/input-field-wbutton-a {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/with-button/glass-input-field-wbutton-r-a {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/glass-input-field-r-a {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/input-field-error {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/glass-input-field-r-error {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/input-field-error-a {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/glass-input-field-error-r-a {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/glass-input-field-r-correct {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/input-field-correct {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/input-field {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/with-button/input-field-wbutton {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/with-button/glass-input-field-wbutton-r {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/glass-input-field-r {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/input-field-filled {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/with-button/input-field-wbutton-filled {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/with-button/glass-input-field-wbutton-r-filled {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/glass-input-field-r-filled {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/input-field-ina {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields/with-button/input-field-wbutton-ina {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/with-button/glass-input-field-wbutton-r-ina {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.input-fields-glass/glass-input-field-r-ina {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/standard/button {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/standard/glass-button-r {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/standard/button-a {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/standard/button-a-pressed {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/standard/glass-button-r-a {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/standard/glass-button-r-a-pressed {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/standard/button-ina {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/standard/glass-button-r-ina {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/standard/button-pressed {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/standard/glass-button-r-pressed {
+  width: 308px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/small/glass-small-button {
+  width: 180px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/small/glass-small-button-ina {
+  width: 180px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/small/glass-small-button-pressed {
+  width: 180px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/small/glass-small-button-a {
+  width: 180px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/small/glass-small-button-a-pressed {
+  width: 180px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/grey-icon/grey-small-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/grey-icon/grey-small-button-pressed {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/grey-icon/grey-small-button-ina {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/grey-icon/grey-small-button-a {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/grey-icon/grey-small-button-a-pressed {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/label/label {
+  width: 68px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  border-radius: 0px;
+}
+
+.complex-parts/label/rounded/light-label {
+  width: 50px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/label/label-error {
+  width: 68px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/label/rounded/light-label-error {
+  width: 50px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/light-indicators/red-mark {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/light-indicator/light-red-mark {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/light-indicators/green-mark {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/light-indicator/light-green-mark {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/light-indicator/light-white-mark {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon/icon-button {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon-resizable/resize-icon-button {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon/glass-icon-button-r {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-resizable/glass-resize-icon-button-r {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-resizable/glass-resize-icon-button-r-ina {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon/icon-button-pressed {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon-resizable/resize-icon-button-pressed {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon/glass-icon-button-r-pressed {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-resizable/glass-resize-icon-button-r-pressed {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon/icon-button-a {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon-resizable/resize-icon-button-a {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon/glass-icon-button-r-a {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon/icon-button-a-presed {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon-resizable/resize-icon-button-a-presed {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon/glass-icon-button-r-a-presed {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon/icon-button-ina {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/square-with-icon-resizable/resize-icon-button-ina {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon/glass-icon-button-r-ina {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-resizable/glass-resize-icon-button-r-a {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-resizable/glass-resize-icon-button-r-a-pressed {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card-pic {
+  width: 194px;
+  height: 227px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card-pic {
+  width: 194px;
+  height: 227px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card {
+  width: 212px;
+  height: 297px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card {
+  width: 212px;
+  height: 297px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/switch/switch-on {
+  width: 65px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/switch/vertical/switch-v-on {
+  width: 35px;
+  height: 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/switch/vertical/glass-switch-v-r-on {
+  width: 35px;
+  height: 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/switch/glass-switch-r-on {
+  width: 65px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/switch/switch-off {
+  width: 65px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/switch/vertical/switch-v-off {
+  width: 35px;
+  height: 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/switch/vertical/glass-switch-v-r-off {
+  width: 35px;
+  height: 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/switch/glass-switch-r-off {
+  width: 65px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/knobs/knob-on {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/knobs/knob-v-on {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/knobs/glass-knob-r-on {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/knobs/glass-knob-v-r-on {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/knobs/knob-off {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/knobs/knob-v-off {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/knobs/glass-knob-r-off {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/knobs/glass-knob-v-r-off {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-value/display-small {
+  width: 78px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-value/display-small-white-w-bg {
+  width: 88px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/small-value/glass-display-small-r {
+  width: 78px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/small-value/glass-display-small-white-r-2 {
+  width: 78px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-value/display-white-small {
+  width: 96px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-value/display-white-small-off {
+  width: 96px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-value/display-small-off {
+  width: 78px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-value/display-small-white-w-bg-off {
+  width: 88px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/small-value/glass-display-small-r-off {
+  width: 78px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/control-cards/item-off {
+  width: 180px;
+  height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/control-cards/glass-item-off {
+  width: 180px;
+  height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/control-cards/item {
+  width: 180px;
+  height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/control-cards/glass-item {
+  width: 180px;
+  height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/knobs/slider-knob {
+  width: 38px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/knobs/glass-slider-knob {
+  width: 38px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/slider {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/analog-load {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/analog-load-simple {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/slider-simple {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/sliders/glass-slider {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/glass-load {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/slider-range {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/slider-range-simple {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/sliders/glass-slider-range {
+  width: 316px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/vertical/slider-v {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/vertical/analog-load-v {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/vertical/analog-load-v-simple {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/vertical/slider-v-simple {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/sliders/vertical/glass-slider-v {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/vertical/glass-load-v {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/vertical/slider-range-v {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/vertical/slider-range-v-simple {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/sliders/vertical/glass-slider-range-v {
+  width: 38px;
+  height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/control-cards/item-slider {
+  width: 372px;
+  height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/control-cards/glass-item-slider {
+  width: 372px;
+  height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/control-cards/item-slider-off {
+  width: 372px;
+  height: 59px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/control-cards/glass-item-slider-off {
+  width: 372px;
+  height: 59px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/tabs/tab-a {
+  width: 85px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/tabs/tab-a-pressed {
+  width: 117px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/tabs/glass-tab-r-a {
+  width: 91px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/tabs/glass-tab-r-a-pressed {
+  width: 123px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/tabs/tab {
+  width: 93px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/tabs/tab-pressed {
+  width: 97px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/tabs/tab-pressed-ina {
+  width: 97px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/tabs/glass-tab-r {
+  width: 99px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/tabs/glass-tab-r-pressed {
+  width: 103px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/tabs/glass-tab-r-ina {
+  width: 103px;
+  height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/round/round-display {
+  width: 116px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/round/glass-round-display-1 {
+  width: 116px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/round/round-display-off {
+  width: 116px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/round/glass-round-display-off {
+  width: 116px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/round/round-display-white {
+  width: 116px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/round/glass-round-display-2 {
+  width: 116px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/round/round-display-white-off {
+  width: 116px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/switch/symmetric-switch-right {
+  width: 244px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/switch/vertical/symmetric-switch-down {
+  width: 35px;
+  height: 244px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/switch/vertical/glass-symmetric-switch-r-down {
+  width: 35px;
+  height: 244px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/switch/glass-symmetric-switch-r-right {
+  width: 244px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/switch/symmetric-switch-left {
+  width: 244px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/switch/vertical/symmetric-switch-up {
+  width: 35px;
+  height: 244px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/switch/vertical/glass-symmetric-switch-r-up {
+  width: 35px;
+  height: 244px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/switch/glass-symmetric-switch-r-left {
+  width: 244px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/knobs/slider-knob-v {
+  width: 38px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/knobs/glass-slider-knob-v {
+  width: 38px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/slider-with-steps-4 {
+  width: 318px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/sliders/glass-slider-with-steps-4 {
+  width: 318px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/sliders/vertical/slider-with-steps-4-v {
+  width: 38px;
+  height: 318px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/sliders/vertical/glass-slider-with-steps-4-v {
+  width: 38px;
+  height: 318px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/slider-dots/trigger {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/slider-dots/glass-trigger {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/slider-dots/trigger-a-light {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/slider-dots/trigger-a-light-2 {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/slider-dots/trigger-a {
+  width: 12px;
+  height: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/round-icon-with-text/round-button-with-icon {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-with-text/glass-round-button-with-icon {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/round-icon-with-text/round-button-with-icon-pressed {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-with-text/glass-round-button-with-icon-pressed {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/round-icon-with-text/round-button-with-icon-ina {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-with-text/glass-round-button-with-icon-ina {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/round-icon-with-text/round-button-with-icon-a {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-with-text/glass-round-button-with-icon-a {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-icon/round-icon-with-text/round-button-with-icon-a-pressed {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-icon/round-icon-with-text/glass-round-button-with-icon-a-pressed {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/wheel/wheel-v {
+  width: 38px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/wheel/glass-wheel-v {
+  width: 38px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/wheel/wheel-h {
+  width: 210px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/wheel/glass-wheel-h {
+  width: 210px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card-with-dispaly {
+  width: 180px;
+  height: 257px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card-with-dispaly {
+  width: 180px;
+  height: 257px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card-with-display-and-mark {
+  width: 148px;
+  height: 254px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card-with-display-and-mark {
+  width: 148px;
+  height: 254px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card-with-switch-and-mark {
+  width: 180px;
+  height: 264px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card-with-switch-and-mark {
+  width: 180px;
+  height: 264px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-text/text-display {
+  width: 116px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-text/text-display-white-w-bg {
+  width: 116px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/small-text/glass-text-display-white-w-bg {
+  width: 116px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/small-text/text-display-white {
+  width: 116px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/small-text/glass-text-display-white {
+  width: 116px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card-small {
+  width: 148px;
+  height: 142px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card-small {
+  width: 148px;
+  height: 142px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/medium-with-icon/med-button-with-icon {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/medium-with-icon/glass-med-button-with-icon-r {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/med-button {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/glass-med-button-r {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/medium-with-icon/med-button-with-icon-a {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/medium-with-icon/med-button-with-icon-a-pressed {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/medium-with-icon/glass-med-button-with-icon-r-a {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/medium-with-icon/glass-med-button-with-icon-r-a-pressed {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/med-button-a {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/med-button-a-pressed {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/glass-med-button-r-a {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/glass-med-button-r-a-pressed {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/medium-with-icon/med-button-with-icon-pressed {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/medium-with-icon/glass-med-button-with-icon-r-pressed {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/med-button-pressed {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/glass-med-button-r-pressed {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/medium-with-icon/med-button-with-icon-ina {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/medium-with-icon/glass-med-button-with-icon-r-ina {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/medium/med-button-ina {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/medium/glass-med-button-r-ina {
+  width: 308px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/round-pic/round-pic {
+  width: 62px;
+  height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/round-pic/glass-round-pic {
+  width: 62px;
+  height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/time-set/roll-time-display {
+  width: 142px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/time-set/glass-roll-time-display {
+  width: 142px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/time-set/roll-time-display-r {
+  width: 142px;
+  height: 142px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/time-set/glass-roll-time-display-r {
+  width: 142px;
+  height: 142px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/time-set/wheel-time-setting {
+  width: 242px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/time-set/glass-wheel-time-setting {
+  width: 242px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/chat-bubble/outcoming-message {
+  width: 308px;
+  height: 149px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/chat-bubble/glass-outcoming-message {
+  width: 308px;
+  height: 149px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/chat-bubble/incoming-message {
+  width: 308px;
+  height: 149px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/chat-bubble/glass-incoming-message {
+  width: 308px;
+  height: 149px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/charts/chart-value/value {
+  width: 34px;
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/charts/chart-value/glass-value-r {
+  width: 34px;
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/notification/notification-button {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/notification/notification-button-pressed {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/notification/glass-notification-button-r {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/notification/glass-notification-button-r-pressed {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/display-backgrounds/display-bg-med {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/display-backgrounds/display-bg-small {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/display-backgrounds/display-bg-min {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/display-backgrounds/display-bg-big {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/round-pic/round-icon-frame {
+  width: 62px;
+  height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/round-pic/glass-round-icon-frame {
+  width: 62px;
+  height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/item-lists/item-1 {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/item-list/glass-item-1 {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/item-lists/item-1.1 {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/item-list/glass-item-1.1 {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/graph-bg/digital-graph-bg {
+  width: 403px;
+  height: 403px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/graph-bg/glass-digital-graph-bg {
+  width: 403px;
+  height: 403px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/graph-bg/analog-graph-bg {
+  width: 403px;
+  height: 403px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-menu {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/social/icon-facebook {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-option {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/social/icon-twitter {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-back {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/social/icon-google {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-forward {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-arrow-down {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-arrow-up {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-x {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-send {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-wi-fi {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-electricity {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-drops {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-pencil {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-chat-bubble {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-chart {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-exit {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-settings-cog {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-person-money {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-arrow-up-2 {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-clock {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-filter {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-battery {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-plus {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-plus-small {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-home {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-family {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-shield {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-waterdrop {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-leaf {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-snowflake {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-mastercard {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+  box-shadow: 4px 3px 9px rgba(255, 255, 255, 0.3);
+  box-shadow: -3px -2px 12px rgba(0, 0, 0, 0.11);
+}
+
+.icons/icon-fan {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-sun {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-3bar {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-full-screen {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-check {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-radio {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-thief {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-fire {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-phone {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-search {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-person {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.icons/icon-lock {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/control-disk/control-disk {
+  width: 268px;
+  height: 268px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/control-disk/glass-control-disk {
+  width: 268px;
+  height: 268px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements/control-disk/control-disk-with-limit {
+  width: 268px;
+  height: 297px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.control-elements-glass/control-disk/glass-control-disk-with-limit {
+  width: 268px;
+  height: 297px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-right {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-right {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-right-pressed {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-right-pressed {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-right-a {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-right-a {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-right-a-pressed {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-right-a-pressed {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-right-ina {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-right-ina {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-left {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-left {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-left-pressed {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-left-pressed {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-left-a {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-left-a {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-left-a-pressed {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-left-a-pressed {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/semicircle/glass-semicircle-button-r-left-ina {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/semicircle/semicircle-button-left-ina {
+  width: 41px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/timeline-disks/timeline-disc {
+  width: 534px;
+  height: 534px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/timeline-disk/glass-timeline-disc {
+  width: 534px;
+  height: 534px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/side-sliding-bg {
+  width: 309px;
+  height: 896px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/glass-side-sliding-bg {
+  width: 309px;
+  height: 896px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card-2-icons-v {
+  width: 50px;
+  height: 84px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card-2-icons-v {
+  width: 50px;
+  height: 84px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/item-lists/item-2 {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/checkbox\radio-list/checkbox\radio-list-ina {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/checkbox\radio-list/glass-checkbox\radio-list-ina {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/checkbox\radio-list/checkbox\radio-list-a-pressed {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/checkbox\radio-list/glass-checkbox\radio-list-a-pressed {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/checkbox\radio-list/checkbox\radio-list-a {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/checkbox\radio-list/glass-checkbox\radio-list-a {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/checkbox\radio-list/checkbox\radio-list-pressed {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/checkbox\radio-list/glass-checkbox\radio-list-pressed {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/checkbox\radio-list/checkbox\radio-list {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/checkbox\radio-list/glass-checkbox\radio-list {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/item-list/glass-item-2 {
+  width: 372px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/picker/glass-roll-display-3-r-h {
+  width: 188px;
+  height: 49px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/picker/roll-display-3-h {
+  width: 188px;
+  height: 49px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/picker/glass-roll-display-5-r-h {
+  width: 188px;
+  height: 49px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/picker/roll-display-5-h {
+  width: 188px;
+  height: 49px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/picker/glass-roll-display-5-r-v {
+  width: 49px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/picker/roll-display-5-v {
+  width: 49px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/picker/glass-roll-display-3-r-v {
+  width: 49px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/picker/roll-display-3-v {
+  width: 49px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/picker/pointer {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #ffffff;
+  border-radius: 0px;
+}
+
+.complex-parts/timeline-disks/timeline-disc-2 {
+  width: 534px;
+  height: 534px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/timeline-disk/glass-timeline-disc-2 {
+  width: 534px;
+  height: 534px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card-icon-text {
+  width: 148px;
+  height: 126px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card-icon-text {
+  width: 148px;
+  height: 126px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/charts/progress-circle {
+  width: 308px;
+  height: 308px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/charts/glass-progress-circle {
+  width: 308px;
+  height: 308px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/card-w-graph {
+  width: 224px;
+  height: 291px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-card-w-graph {
+  width: 224px;
+  height: 291px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/cards/credit-card {
+  width: 308px;
+  height: 179px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/cards/glass-credit-card {
+  width: 308px;
+  height: 179px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/value/glass-display-usd-r-40 {
+  width: 204px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/value/glass-display-usd-r-40-2 {
+  width: 204px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/value/display-usd-40 {
+  width: 204px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/value/display-usd-40-white-w-bg {
+  width: 204px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/value/display-usd-40-white {
+  width: 104px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/value/glass-display-usd-r-50 {
+  width: 290px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/value/glass-display-usd-r-50-2 {
+  width: 290px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/value/display-usd-50 {
+  width: 290px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/value/display-usd-50-white-w-bg {
+  width: 290px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/value/display-usd-50-white {
+  width: 114px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/charts/pie-chart-3 {
+  width: 310px;
+  height: 308px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/charts/glass-pie-chart-3 {
+  width: 310px;
+  height: 308px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/display-load-1 {
+  width: 52px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/vertical/display-load-v {
+  width: 24px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/vertical/glass-display-load-v {
+  width: 24px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/glass-display-load-1 {
+  width: 52px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/display-load-3 {
+  width: 246px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/vertical/display-load-v-3 {
+  width: 24px;
+  height: 246px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/vertical/glass-display-load-v-3 {
+  width: 24px;
+  height: 246px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/glass-display-load-3 {
+  width: 246px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/display-load-4 {
+  width: 372px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/vertical/display-load-v-4 {
+  width: 24px;
+  height: 372px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/vertical/glass-display-load-v-4 {
+  width: 24px;
+  height: 372px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/glass-display-load-4 {
+  width: 372px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/display-load-2 {
+  width: 116px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display/load/vertical/display-load-v-2 {
+  width: 24px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/vertical/glass-display-load-v-2 {
+  width: 24px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.display-glass/load/glass-display-load-2 {
+  width: 116px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-pic/round-pic-button-a {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-pic/glass-round-pic-button-a {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-pic/round-pic-button {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-pic/glass-round-pic-button {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-pic/round-pic-button-pressed {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-pic/glass-round-pic-button-pressed {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-pic/round-pic-button-ina {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-pic/glass-round-pic-button-ina {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons/round-with-pic/round-pic-button-a-pressed {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.buttons-glass/round-with-pic/glass-round-pic-button-a-pressed {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/buttons/glass-dual-icon-button {
+  width: 244px;
+  height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/buttons/dual-icon-button {
+  width: 221px;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts-glass/buttons/glass-2-icons-switch-button {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
+
+.complex-parts/buttons/2-icons-switch-button {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+}
