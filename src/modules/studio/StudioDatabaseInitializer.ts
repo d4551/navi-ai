@@ -108,6 +108,7 @@ export class StudioDatabaseInitializer {
       const studioArray = Object.values(studios);
       validation.totalStudios = studioArray.length;
 
+      if (studioArray.length === 0) {
         validation.valid = false;
         validation.issues.push("No studios found in database");
         validation.recommendations.push(
@@ -117,8 +118,12 @@ export class StudioDatabaseInitializer {
       }
 
       // Check for data quality
+      let studiosWithoutGames = 0;
+      let studiosWithoutLocation = 0;
+      let studiosWithoutDescription = 0;
 
       studioArray.forEach((studio) => {
+        if (!studio.games || studio.games.length === 0) {
           studiosWithoutGames++;
         }
         if (!studio.location) {

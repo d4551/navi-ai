@@ -60,9 +60,7 @@ export default {
           "error",
           "info",
         ];
-        return validContexts.includes(value);,
-    default: () => ({})
-  
+        return validContexts.includes(value);
       },
     },
 

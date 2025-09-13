@@ -272,6 +272,7 @@ const systemPreference = ref<ColorScheme>("light");
     // Inject transition variables (adjust for performance)
     Object.entries(tokens.transitions).forEach(([key, value]) => {
       const adjustedTransition = scaling.shouldOptimizeAnimations.value
+        ? "none"
         : value;
       root.style.setProperty(`--transition-${key}`, adjustedTransition);
     });
@@ -284,7 +285,7 @@ const systemPreference = ref<ColorScheme>("light");
     root.classList.add("theme-transitioning");
     setTimeout(() => {
       root.classList.remove("theme-transitioning");
-  };
+    }, 150);
 
   const getColor = (colorPath: string): string => {
     const keys = colorPath.split(".");

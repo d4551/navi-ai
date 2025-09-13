@@ -305,6 +305,7 @@ export class AIService {
     const ctx =
       typeof resumeData === "string"
         ? resumeData
+        : JSON.stringify(resumeData);
     return this.chat({ message, context: ctx, type: "generation" });
   }
 
@@ -482,7 +483,7 @@ export class AIService {
       "Analyze this resume and provide strengths, gaps, and top improvements as bullet points.";
     return this.chat({
       message,
-      context:
+      context: JSON.stringify(context),
       type: "analysis",
     });
   }

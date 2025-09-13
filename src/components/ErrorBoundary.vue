@@ -76,12 +76,11 @@
 
 <script>
 import { ref, onErrorCaptured, computed } from "vue";
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { buildSupportMailto } from "@/utils/config";
 import { logger } from "@/shared/utils/logger";
-import { useRouter, useRoute } from "vue-router";
 import { performanceMonitor } from "@/utils/performance";
 
 export default {
