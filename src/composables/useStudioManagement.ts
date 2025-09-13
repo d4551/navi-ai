@@ -1,5 +1,5 @@
 
-import { ref, computedreadonly } from "vue";
+import { ref, computed, readonly } from "vue";
 import { logger } from "@/shared/utils/logger";
 import { GameStudioRepository } from "@/modules/db/repositories/gaming-studios";
 import { studioDatabaseInitializer } from "@/modules/studio/StudioDatabaseInitializer";
@@ -30,6 +30,7 @@ export interface StudioStats {
   topGenres: Array<{ genre: string; count: number }>;
 }
 
+export function useStudioManagement() {
   // Reactive state
   const studios = ref<Record<string, Studio>>({});
   const filteredStudios = ref<Studio[]>([]);

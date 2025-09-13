@@ -432,8 +432,6 @@ import { GAMING_STUDIOS } from '@/data/gaming-studios';
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { computedref } from 'vue'
-import { useRouter } from 'vue-router'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import HeaderActions from '@/components/ui/HeaderActions.vue'
 import Card from '@/components/Card.vue'

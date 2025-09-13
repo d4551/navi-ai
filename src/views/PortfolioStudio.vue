@@ -1123,11 +1123,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-
-import { ref, computed, watch, onUnmounted, onMounted } from "vue";
-import { useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";

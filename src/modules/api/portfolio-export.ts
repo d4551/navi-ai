@@ -748,9 +748,9 @@ export class PortfolioExportService {
   ): string {
     const metadata = options?.metadata || {};
 
+    return `# Portfolio
 
 ${metadata.description ? `${metadata.description}\n\n` : ""}
-
 
 This portfolio contains ${projects.length} projects showcasing gaming industry expertise:
 

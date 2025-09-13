@@ -22,6 +22,7 @@ export interface UnifiedProfileState {
   autoSyncEnabled: boolean;
 }
 
+export function useUnifiedProfile() {
   const store = useAppStore();
   const userProfile = useUserProfile();
 

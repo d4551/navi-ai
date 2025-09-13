@@ -33,6 +33,7 @@ interface LegacyPortfolioItem {
   tags?: string[];
 }
 
+export function usePortfolio() {
   const store = useAppStore();
 
   // Ephemeral UI state
