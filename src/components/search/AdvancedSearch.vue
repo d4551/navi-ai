@@ -894,7 +894,7 @@ watch(searchMode, async () => {
 
 .no-results {
   text-align: center;
-  padding: var(--spacing-xxl);
+  padding: var(--spacing-20);
 }
 
 .no-results-content {
@@ -1063,7 +1063,7 @@ watch(searchMode, async () => {
 }
 
 .recommendations {
-  margin-top: var(--spacing-xxl);
+  margin-top: var(--spacing-20);
 }
 
 .recommendations-title {

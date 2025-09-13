@@ -43,7 +43,8 @@
   "exclude": [
     "node_modules",
     "dist",
-    "dist-electron"
+    "dist-electron",
+    "src/composables/useAIIntegration.ts"
   ],
   "vueCompilerOptions": {
     "strictTemplates": false

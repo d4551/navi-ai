@@ -415,7 +415,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, onMounted } from "vue";
 import { useAIContext } from "@/composables/useAIContext";
-import { useAIIntegration } from "@/composables/useAIIntegration";
+import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { logger } from "@/shared/utils/logger";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";

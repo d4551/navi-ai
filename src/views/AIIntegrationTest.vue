@@ -331,7 +331,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import { useAIIntegration } from "@/composables/useAIIntegration";
+import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { useToast } from "@/composables/useToast";
 import { logger } from "@/shared/utils/logger";
 import { canonicalAI } from "@/modules/ai/CanonicalAIService";

@@ -155,9 +155,17 @@ export class CanonicalAIService {
     }
   }
 
-  async startRealTimeSession(sessionId: string): Promise<{ success: boolean; sessionId?: string; error?: string }> {
+  async startRealTimeSession(sessionId: string, options: { enableAudio?: boolean; enableVideo?: boolean; onConnect?: () => void } = {}): Promise<{ success: boolean; sessionId?: string; error?: string }> {
     if (!this.config?.enableRealTime) return { success: false, error: "Real-time features not enabled" };
     this.conversationHistory.set(sessionId, []);
+    try {
+      if (options.enableAudio || options.enableVideo) {
+        await this.initializeMediaCapabilities(options);
+      }
+      options.onConnect?.();
+    } catch (e) {
+      logger.warn('Media capabilities init failed', e as any);
+    }
     return { success: true, sessionId };
   }
 
@@ -177,3 +185,5 @@ export class CanonicalAIService {
 }
 
 export const canonicalAI = new CanonicalAIService();
+
+

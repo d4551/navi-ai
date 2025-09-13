@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { useAIIntegration } from "@/composables/useAIIntegration";
+import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { useAIContext } from "@/composables/useAIContext";
 import { logger } from "@/shared/utils/logger";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";

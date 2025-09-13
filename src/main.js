@@ -97,7 +97,7 @@ try {
 } catch {}
 
 // AI Integration Plugin
-import { createAIIntegrationPlugin } from "./composables/useAIIntegration";
+import { createAIIntegrationPlugin } from "./composables/aiIntegration.js";
 app.use(createAIIntegrationPlugin({ router }));
 
 // Make UI config globally available

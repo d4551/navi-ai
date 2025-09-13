@@ -508,7 +508,7 @@ defineExpose({
 }
 
 .status-indicator.active .status-dot {
-  background: var(--rgb-green);
+  background: rgba(var(--color-gaming-neon-rgb), 1);
 }
 
 .status-text {
@@ -516,7 +516,7 @@ defineExpose({
 }
 
 .status-indicator.active .status-text {
-  color: var(--rgb-green);
+  color: rgb(var(--color-gaming-neon-rgb));
 }
 
 .controls-grid {
@@ -556,7 +556,7 @@ defineExpose({
 }
 
 .control-badge.active {
-  background: var(--rgb-green);
+  background: rgba(var(--color-gaming-neon-rgb), 1);
   color: var(--rgb-white);
   box-shadow: var(--rgb-green-glow);
 }
@@ -751,3 +751,4 @@ defineExpose({
   }
 }
 </style>
+
