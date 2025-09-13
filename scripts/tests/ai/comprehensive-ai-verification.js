@@ -13,8 +13,7 @@ import path from 'path';
 
 // Test API key from multiple sources
 const API_KEY = process.env.VITE_GEMINI_API_KEY || 
-                process.env.GEMINI_API_KEY || 
-                'AIzaSyCwnBgU9egOHZ6qcTvK6jaEitPgjpsNso4'; // Test key
+                process.env.GEMINI_API_KEY;
 
 console.log('🔍 COMPREHENSIVE AI VERIFICATION SUITE');
 console.log('=====================================\n');

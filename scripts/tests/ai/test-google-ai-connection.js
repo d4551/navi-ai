@@ -8,8 +8,8 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Test API key (from test-api-key.js)
-const API_KEY = 'AIzaSyCwnBgU9egOHZ6qcTvK6jaEitPgjpsNso4';
+// Get API key from environment variables
+const API_KEY = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
 /**
  * Test Google AI connection and configuration
