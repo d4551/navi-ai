@@ -23,12 +23,14 @@ export function usePageAssistantContext() {
     }
   }
 
+  function clearPageContext() {
     try {
       state.extra.value = {};
     } catch {
     }
   }
 
+  const buildContextString = (extra = {}) => {
     const ctx = {
       routeName: route.name || "",
       path: (route as any).fullPath || route.path,

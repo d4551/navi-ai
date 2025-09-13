@@ -183,7 +183,9 @@ import { logger } from "@/shared/utils/logger";
     if (
       theme.isDark.value &&
       (responsive?.isMobile?.value || false) &&
+      columns > 2
     ) {
+      columns = Math.max(1, columns - 1);
     }
 
     return columns;

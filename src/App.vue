@@ -504,11 +504,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-  .app-sidebar {
-    position: sticky;
-  }
+  position: sticky;
 }
 
 .app-sidebar.sidebar-collapsed {
@@ -517,33 +513,39 @@ export default {
 
 .app-sidebar.sidebar-collapsed.sidebar-hovered,
 .app-sidebar.sidebar-expanded {
-  z-index: var(
-    --z-navigation-hover
+  z-index: var(--z-navigation-hover);
 }
 
 .app-sidebar.sidebar-animating {
+  transition: width var(--transition-duration-sidebar);
 }
 
 .app-sidebar.sidebar-collapsed:not(.sidebar-hovered) .navigation-menu {
+  opacity: 0;
 }
 
 .app-sidebar.sidebar-collapsed.sidebar-hovered .navigation-menu {
+  opacity: 1;
 }
 
 @keyframes contentSlideIn {
   from {
-    transform: translateX(
+    transform: translateX(-100%);
   }
   to {
+    transform: translateX(0);
   }
 }
 
+@media (max-width: 768px) {
   .app-sidebar {
     position: fixed;
   }
 
   .app-sidebar.sidebar-visible {
+    transform: translateX(0);
   }
+}
 
   .app-sidebar.sidebar-collapsed.sidebar-hovered {
     width: var(--page-sidebar-collapsed-width);
