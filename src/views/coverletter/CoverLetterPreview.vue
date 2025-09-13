@@ -534,7 +534,7 @@ const onTemplateChange = (e: Event) => {
   -webkit-backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
   border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-lg);
-  padding: var(--spacing-xxl);
+  padding: var(--spacing-20);
   min-height: 600px;
   box-shadow: var(--glass-shadow);
   transition: all var(--transition-smooth);

@@ -926,7 +926,7 @@ onUnmounted(() => {
   position: fixed;
   bottom: var(--spacing-xl);
   right: var(--spacing-xl);
-  z-index: var(--z-floating);
+  z-index: var(--z-popover);
 }
 
   border-radius: var(--radius-full);

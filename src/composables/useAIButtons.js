@@ -1,7 +1,7 @@
 
 import { ref, computed } from "vue";
 import { useAppStore } from "@/stores/app";
-import { useAIIntegration } from "@/composables/useAIIntegration";
+import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { useToast } from "@/composables/useToast";
 
   const store = useAppStore();

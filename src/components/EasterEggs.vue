@@ -564,7 +564,7 @@ defineExpose({
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: var(--z-notification);
+  z-index: var(--z-toast);
 }
 
 .secret-menu {

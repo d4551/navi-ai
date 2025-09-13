@@ -12,12 +12,16 @@
 </p>
 
 <p align="center">
-  <a href="https://img.shields.io/badge/Source--Available-Noncommercial-%23A3E635">
-    <img alt="Source-Available (Noncommercial)" src="https://img.shields.io/badge/Source--Available-Noncommercial-%23A3E635">
+  <a href="https://github.com/d4551/navi-ai/releases">
+    <img alt="GitHub release" src="https://img.shields.io/github/release/d4551/navi-ai.svg">
   </a>
-  <a href="https://img.shields.io/badge/License-NaviAI--NCPL--1.1-blue">
+  <a href="https://github.com/d4551/navi-ai/blob/main/LICENSE">
     <img alt="License: NaviAI-NCPL-1.1" src="https://img.shields.io/badge/License-NaviAI--NCPL--1.1-blue">
   </a>
+  <a href="https://github.com/d4551/navi-ai/stargazers">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/d4551/navi-ai.svg?style=social">
+  </a>
+  <br/>
   <a href="#">
     <img alt="Multimodal AI" src="https://img.shields.io/badge/AI-Multimodal%20(voice%2Fvideo%2Fvision)-purple">
   </a>
@@ -27,20 +31,48 @@
   <a href="#">
     <img alt="Free" src="https://img.shields.io/badge/Pricing-Free-%23A3E635">
   </a>
+  <a href="https://github.com/d4551/navi-ai/actions">
+    <img alt="CI Status" src="https://img.shields.io/github/actions/workflow/status/d4551/navi-ai/ci.yml">
+  </a>
 </p>
 
 ---
 
 ## 📖 Table of Contents
 
-- [TL;DR](#-tldr)
-- [Features](#-features)
-- [What's Coming](#-whats-coming)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Credits](#-credits)
+- [🚀 Quick Start](#-quick-start)
+- [🧭 TL;DR](#-tldr)
+- [🎯 Features](#-features)
+- [🔮 What's Coming](#-whats-coming)
+- [📦 Installation](#-installation)
+- [🚀 Usage](#-usage)
+- [🛠️ Development](#️-development)
+- [🤝 Contributing](#-contributing)
+- [📚 Documentation](#-documentation)
+- [📜 License](#-license)
+- [🙏 Credits](#-credits)
+- [📈 Recent Updates](#-recent-updates)
+
+---
+
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/d4551/navi-ai.git
+cd navi-ai
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Or run the Electron app
+npm run electron-dev
+```
+
+**That's it!** NAVI works immediately with no account required. Add your Google AI Studio API key in Settings for enhanced AI features.
 
 ---
 
@@ -209,21 +241,158 @@
 
 ---
 
-## 🗺️ Roadmap to Launch
+## �️ Development
 
-- **Alpha**: Job search + resume/CV customizer + interview personas + portfolio builder
-- **Beta**: Studio intel expansions, saved searches, pipelines, and portfolio themes
-- **1.0**: Alerts, exports, integrations (LinkedIn/Lever/Greenhouse), community templates
-- **Nice-to-Have But We'll Probably Ship Anyway**: Boss-rush interview mode, "Producer Panic" time trials, and a Sheikah-sleek UI theme
+### Prerequisites
+
+- **Node.js** >= 18 (20 LTS recommended)
+- **npm** 9+ (bundled with Node installs)
+- **Git** for version control
+- For native modules on Windows:
+  - Python 3 (added to PATH)
+  - Visual Studio Build Tools (C++ Desktop workload)
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/d4551/navi-ai.git
+cd navi-ai
+
+# Install dependencies
+npm install
+
+# Start development server (hot reload)
+npm run dev
+
+# Or run Electron app in development
+npm run electron-dev
+
+# Run tests
+npm test
+
+# Lint code
+npm run lint
+
+# Format code
+npm run format
+```
+
+### Project Structure
+
+```
+src/
+├── components/          # Vue components
+├── composables/         # Vue composables
+├── services/           # API services
+├── views/              # Page components
+├── modules/            # Business logic modules
+├── styles/             # CSS and styling
+└── utils/              # Utility functions
+
+electron/               # Electron main process
+public/                 # Static assets
+scripts/                # Build and utility scripts
+docs/                   # Documentation
+```
+
+### Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite development server |
+| `npm run build` | Build for production |
+| `npm run electron-dev` | Start Electron in development mode |
+| `npm run electron-build` | Build Electron installers |
+| `npm test` | Run test suite |
+| `npm run lint` | Lint and fix code |
+| `npm run clean` | Clean build artifacts |
+
+### Architecture
+
+- **Frontend**: Vue 3 + Vite + Vuetify
+- **Backend**: Electron + Node.js
+- **Database**: SQLite with better-sqlite3
+- **AI**: Google Gemini API integration
+- **Security**: Keytar for secure credential storage
 
 ---
 
-## 💖 How to Help (or just vibe)
+## 🤝 Contributing
 
-- ⭐ Star the repo and watch for drops
+We welcome contributions! Here's how to get started:
+
+### Ways to Contribute
+
+- 🐛 **Bug Reports**: Use GitHub Issues with detailed reproduction steps
+- ✨ **Feature Requests**: Open issues with "enhancement" label
+- 🛠️ **Code Contributions**: Submit pull requests
+- 📚 **Documentation**: Improve docs, add examples, fix typos
+- 🎨 **UI/UX**: Design improvements and accessibility enhancements
+- 🧪 **Testing**: Add tests, improve test coverage
+
+### Development Workflow
+
+1. **Fork** the repository
+2. **Clone** your fork: `git clone https://github.com/your-username/navi-ai.git`
+3. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+4. **Make** your changes
+5. **Test** thoroughly: `npm test`
+6. **Commit** with clear messages: `git commit -m "Add amazing feature"`
+7. **Push** to your branch: `git push origin feature/amazing-feature`
+8. **Open** a Pull Request
+
+### Code Standards
+
+- Follow Vue 3 Composition API patterns
+- Use TypeScript for type safety
+- Follow ESLint configuration
+- Write meaningful commit messages
+- Add tests for new features
+- Update documentation as needed
+
+### Testing
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run specific test file
+npm test -- path/to/test.js
+```
+
+### Reporting Issues
+
+When reporting bugs, please include:
+- NAVI version
+- Operating system and version
+- Steps to reproduce
+- Expected vs actual behavior
+- Screenshots if applicable
+- Console errors/logs
+
+---
+
+## � Documentation
+
+- **[Feature List](featurelist.md)** - Complete feature overview with screenshots
+- **[API Documentation](docs/api.html)** - Technical API reference
+- **[Directory Structure](DIRECTORY.md)** - Project organization guide
+- **[Component Standards](COMPONENT_NAMING_STANDARDS.md)** - Component naming conventions
+- **[Container Standards](CONTAINER_STANDARDS.md)** - Container component guidelines
+
+---
+
+## 💖 Community
+
+- ⭐ Star the repo and watch for updates
 - 🐛 File issues, request features, or submit PRs
 - 🎨 Share templates (resumes, portfolios, interview banks)
 - 🎥 Post "from jam to job" success stories
+- 💬 Join our [Discord](https://discord.gg/6p52QZ2sAm)
 
 ---
 
@@ -233,16 +402,30 @@ Want better signal and happier candidates? Open an issue to add your **personas*
 
 ---
 
+## 📈 Recent Updates
+
+### v1.3.0 - Latest Release
+- ✅ **Complete AI Integration**: Unified AI modal system with context-aware suggestions
+- ✅ **Advanced Gamification**: XP progression, daily missions, and achievement system
+- ✅ **Professional Interview Prep**: AI-powered mock interviews with studio personas
+- ✅ **Smart Resume Builder**: Real-time AI optimization and ATS scoring
+- ✅ **Provider Health Dashboard**: Real-time monitoring of job sources
+- ✅ **Enhanced UI**: Glass-morphism design with consistent theming
+
+### Previous Updates
+- 🔄 **Job Platform Consolidation**: Unified job search implementation
+- 🎨 **UI Standardization**: Consistent button sizing and design system
+- 📊 **Analytics Integration**: Career progress tracking and insights
+- 🔧 **Performance Improvements**: Optimized loading and rendering
+
+---
+
 ## 🧾 License & Credits
 
 - **Dr. Brandon Donnelly (Happy Mask Salesman)** — LinkedIn: [https://www.linkedin.com/in/stracos](https://www.linkedin.com/in/stracos)
 - **License**: Navi AI NonCommercial Public License v1.1 (SPDX: LicenseRef-NaviAI-NCPL-1.1). Source-available, noncommercial; not an OSI-approved source-available (noncommercial) license.
 - **AI**: Uses your **Google AI Studio** key; real-time conversations powered by Gemini (free tier available).
 - **Name**: NAVI CV — because sometimes you really do need a tiny glowing helper yelling "Hey! Listen!"
-
-### Community
-
-- Discord: [https://discord.gg/6p52QZ2sAm](https://discord.gg/6p52QZ2sAm)
 
 <p align="center"><em>"You've never been quite so Breath-of-the-Hired."</em></p>
 

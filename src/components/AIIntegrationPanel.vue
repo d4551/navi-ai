@@ -220,7 +220,7 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import { useAIIntegration } from "@/composables/useAIIntegration";
+import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { useAIStatus } from "@/composables/useAIStatus";
 import { useToast } from "@/composables/useToast";
 import { logger } from "@/shared/utils/logger";

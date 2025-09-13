@@ -631,32 +631,10 @@
   /* Shadow fallbacks */
   --shadow-sm-dark: var(--shadow-sm);
   --shadow-lg-dark: var(--shadow-lg);
-
-  /* Additional spacing aliases used in legacy styles */
-  --spacing-15: 3.75rem; /* 60px */
-  --spacing-2xs: 0.125rem; /* 2px */
-  --spacing-xxl: var(--spacing-20); /* 80px */
-  --spacing-mobile-xs: var(--spacing-xs);
-  --spacing-mobile-sm: var(--spacing-sm);
-  --spacing-mobile-md: var(--spacing-md);
-  --spacing-mobile-lg: var(--spacing-lg);
-  --spacing-tablet-sm: var(--spacing-sm);
-  --spacing-tablet-md: var(--spacing-md);
-  --spacing-tablet-lg: var(--spacing-lg);
-  --spacing-tablet-xl: var(--spacing-xl);
-  --spacing-desktop-sm: var(--spacing-md);
-  --spacing-desktop-md: var(--spacing-lg);
-  --spacing-desktop-lg: var(--spacing-xl);
+  /* Removed legacy spacing aliases; use --spacing-* canonical tokens */
   --spacing-desktop-xl: var(--spacing-2xl);
-
-  /* Z-index aliases */
-  --z-docked: var(--z-sticky);
-  --z-floating: var(--z-popover);
-  --z-notification: var(--z-toast);
-  --z-mobile-overlay: var(--z-overlay);
-  --z-hide: -1;
-
-  /* Misc */
+  /* Removed legacy z-index aliases; use canonical --z-* tokens */
+/* Misc */
   --animation-normal: 0.3s ease-out;
   --angle: 135deg;
   --rgb-green: rgba(0, 255, 136, 1);
@@ -3235,3 +3213,5 @@
   gap: var(--spacing-2);
   flex-wrap: wrap;
 }
+
+

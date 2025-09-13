@@ -442,7 +442,7 @@
 .btn-floating,
 .btn.btn-floating {
   position: fixed;
-  z-index: var(--z-floating);
+  z-index: var(--z-popover);
   border-radius: 50%;
   box-shadow: var(--shadow-lg);
   transition: all var(--duration-normal) var(--easing-ease-out);

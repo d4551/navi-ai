@@ -146,7 +146,7 @@ import VersionHistoryPanel from "@/components/document/VersionHistoryPanel.vue";
 
 // Composables
 import { useDocumentManager } from "@/composables/useDocumentManager";
-import { useAIIntegration } from "@/composables/useAIIntegration";
+import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { useUnifiedProfile } from "@/composables/useUnifiedProfile";
 import { useAppStore } from "@/stores/app";
 
