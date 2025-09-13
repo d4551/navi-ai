@@ -150,9 +150,6 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";

@@ -75,10 +75,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onErrorCaptured, computed } from "vue";
 import { useRouter } from 'vue-router';
-
-import { ref, onErrorCapturedas _computed } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { buildSupportMailto } from "@/utils/config";

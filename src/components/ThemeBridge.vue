@@ -2,7 +2,6 @@
 import { watch, onMounted } from 'vue';
 
 // Keeps Vuetify theme in sync with the unified theme system
-import { watch} from "vue";
 import { useTheme as useVuetifyTheme } from "vuetify";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 

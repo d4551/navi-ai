@@ -10,8 +10,6 @@
 
 <script>
 import { computed } from 'vue';
-
-import { computed } from "vue";
 import { getMdiAlias } from "@/utils/iconAliases";
 
 export default {

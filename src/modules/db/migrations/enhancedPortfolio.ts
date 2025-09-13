@@ -21,6 +21,7 @@ export interface PortfolioMigrationState {
     const migrationState = await unifiedStorage.get(
       "portfolio-migration-state",
     );
+    if (migrationState?.completed) {
       logger.info("Enhanced portfolio migration already completed");
       return;
     }
@@ -57,6 +58,7 @@ export interface PortfolioMigrationState {
   }
 }
 
+async function initializePortfolioTables() {
   logger.info("Initializing enhanced portfolio database tables...");
 
   // Enhanced portfolio structure

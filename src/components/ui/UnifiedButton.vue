@@ -93,8 +93,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-
-import { computed, ref} from "vue";
 import { useAppStore } from "@/stores/app";
 import { useToast } from "@/composables/useToast";
 import { aiService } from "@/shared/services/AIService";

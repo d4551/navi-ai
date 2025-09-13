@@ -376,11 +376,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-
-import { computedonUnmounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useAppStore } from "@/stores/app";
 // import { useEnhancedNavigation } from '@/composables/useEnhancedNavigation' // Temporarily removed
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";

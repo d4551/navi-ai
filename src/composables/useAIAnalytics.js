@@ -55,7 +55,7 @@ import { useAIService } from "./useAIService";
           "UI/UX",
           "Multiplayer",
         ],
-        salaryInsights:
+        salaryInsights: "Senior game developers earn $80K-$150K+ depending on experience and location",
         growthOpportunities:
           "Mobile, AR/VR, and cloud gaming are expanding rapidly",
         recommendation:

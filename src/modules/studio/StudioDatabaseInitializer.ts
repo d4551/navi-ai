@@ -39,6 +39,7 @@ export class StudioDatabaseInitializer {
       const existingStudios = await GameStudioRepository.getAll();
       const studioCount = Object.keys(existingStudios).length;
 
+      if (studioCount > 0) {
         result.success = true;
         result.loaded = studioCount;
         result.message = `Gaming studios already initialized (${studioCount} studios available)`;
@@ -78,8 +79,10 @@ export class StudioDatabaseInitializer {
       const gamingStudiosModule = await import("@/data/gaming-studios.js");
       const studiosData = gamingStudiosModule.default || [];
 
+      if (studiosData.length > 0) {
         result.loaded += studiosData.length;
         logger.info(
+          `Loaded ${studiosData.length} additional studios from data file`
         );
       }
     } catch (_error) {
