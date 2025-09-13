@@ -72,6 +72,9 @@ export async function readBlobAsJSON(blob: Blob): Promise<any> {
   });
 }
 
+export function binaryStringToArrayBuffer(binaryString: string): ArrayBuffer {
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
     bytes[i] = binaryString.charCodeAt(i);
   }
   return bytes.buffer;
