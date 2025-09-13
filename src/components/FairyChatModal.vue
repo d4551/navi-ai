@@ -432,17 +432,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
-
-import {
-  Teleport,
-  computed,
-  nextTick,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-} from "vue";
+import { ref, computed, watch, onMounted, nextTick, onUnmounted, Teleport } from 'vue';
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import IconButton from "@/components/ui/IconButton.vue";

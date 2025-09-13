@@ -71,6 +71,7 @@ let checkResults = {
   }
 }
 
+export function checkEnvironment() {
   logger.debug("[SEARCH] Checking environment...");
   const start = performance.now();
 

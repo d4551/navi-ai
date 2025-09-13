@@ -518,21 +518,10 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, watch, onMounted, nextTick, inject, onUnmounted, getCurrentInstance } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 import AppIcon from "@/components/ui/AppIcon.vue";
-
-import {
-  ref,
-  computed,
-  watch,
-  nextTick,
-  injectonUnmounted,
-  getCurrentInstance,
-} from "vue";
-
-import { useRoute } from "vue-router";
 import { useToast } from "@/composables/useToast";
 import { useUnifiedUI } from "@/composables/useUnifiedUI";
 import { useIconReplacement } from "@/composables/useIconReplacement";
