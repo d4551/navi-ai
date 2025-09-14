@@ -1,6 +1,6 @@
-# NAVI - AI-Powered Gaming Career Assistant
+# NAVI - AI-Powered Gaming Career Assistant</center>
 
-<video src="./navi_s.mp4" width="832" height="432" controls></video>
+<video src='https://github.com/d4551/navi-ai/blob/6df1f0c2b41f93b2785c7fd90c5fa1d252560444/navi_s.mp4' width=400/>
 
 <p align="center">
   <h1 align="center">HEY! LISTEN!</h1>
@@ -463,6 +463,7 @@ If you run into anything weird, ping issues — we’ll squish it.
 See [DIRECTORY.md](DIRECTORY.md) for the full repo structure, where scripts/tests/demos live, and how to run them after the reorganization.
 
 ![NAVI Fox Loves Helping!](heyLISTEN.jpg)
+
 
 
 
