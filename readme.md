@@ -1,6 +1,6 @@
 # NAVI - AI-Powered Gaming Career Assistant
 
-![NAVI Fox Loves Helping!](heyLISTEN.jpg)
+<video src="/navi_s.mp4" width="832" height="432" controls></video>
 
 <p align="center">
   <h1 align="center">HEY! LISTEN!</h1>
@@ -461,3 +461,7 @@ If you run into anything weird, ping issues — we’ll squish it.
 ## Repository Layout
 
 See [DIRECTORY.md](DIRECTORY.md) for the full repo structure, where scripts/tests/demos live, and how to run them after the reorganization.
+
+![NAVI Fox Loves Helping!](heyLISTEN.jpg)
+
+
