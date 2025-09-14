@@ -315,7 +315,7 @@ import {
   PulseIconComponent
 } from './SettingsIcons.js'
 
-const props = defineProps({
+const _props = defineProps({
   settings: {
     type: Object,
     required: true

@@ -203,7 +203,7 @@
       <div class="card-body section-body">
         <div class="errors-list">
           <div
-            v-for="(error, index) in importStatus.errors.slice(0, 5)"
+            v-for="(_error, index) in importStatus.errors.slice(0, 5)"
             :key="index"
             class="error-item"
           >

@@ -511,7 +511,7 @@
       closable
       @click:close="error = null"
     >
-      {{ error }}
+      {{ _error }}
     </v-alert>
   </div>
 </template>

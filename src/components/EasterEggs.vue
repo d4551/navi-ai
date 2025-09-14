@@ -97,7 +97,7 @@ interface Props {
   enableVisualEffects?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   enableSounds: true,
   enableVisualEffects: true
 })

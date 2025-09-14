@@ -152,7 +152,7 @@ export default {
     modelValue: { type: Array, default: () => [] },
   },
   emits: ["update:modelValue"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const localItems = reactive([...(props.modelValue || [])]);
     watch(
       () => props.modelValue,

@@ -150,7 +150,7 @@ export class StudioDataIntegrator {
               newCount++;
             }
           }
-        } catch (error) {
+        } catch (_error) {
           logger.warn(`Failed to process studio ${studio.name}:`, error);
         }
       }

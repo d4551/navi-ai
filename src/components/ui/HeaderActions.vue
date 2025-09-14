@@ -45,7 +45,7 @@ interface Props {
   priority?: 'primary' | 'secondary' | 'tertiary'
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   actions: () => [],
   layout: 'horizontal',
   alignment: 'end',

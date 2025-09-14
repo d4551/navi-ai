@@ -351,7 +351,7 @@ import WorkflowSteps from '@/components/ui/WorkflowSteps.vue'
 import { useAchievementTracker } from '@/composables/useAchievementTracker'
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   coverLetterData: {
     type: Object,
     required: true

@@ -43,7 +43,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import LoadingIndicator from '@/components/LoadingIndicator.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
-const props = defineProps({
+const _props = defineProps({
   jobs: { type: Array, default: () => [] },
   loading: { type: Boolean, default: false },
   filters: { type: Object, default: () => ({}) },

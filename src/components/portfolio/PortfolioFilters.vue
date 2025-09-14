@@ -152,7 +152,7 @@
 import { computed, ref, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
-const props = defineProps({
+const _props = defineProps({
   searchQuery: {
     type: String,
     default: ''

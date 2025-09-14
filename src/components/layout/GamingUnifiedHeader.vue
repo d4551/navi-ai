@@ -309,7 +309,7 @@ interface Props {
   totalStudios?: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   showGamingContext: true,
   showGamingProfile: true,
   showSecondaryNav: false,
@@ -321,7 +321,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Store and router
 const appStore = useAppStore()
-const router = useRouter()
+const _router = useRouter()
 const route = useRoute()
 
 // Reactive state
@@ -502,7 +502,7 @@ onMounted(() => {
   document.addEventListener('click', handleClickOutside)
   
   // Keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', (_e) => {
     if (e.ctrlKey && e.key === 'm') {
       e.preventDefault()
       toggleVoiceCommands()

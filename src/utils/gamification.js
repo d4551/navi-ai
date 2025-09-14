@@ -658,8 +658,8 @@ export class GamificationService {
     const awarded = [];
     for (const achievement of newAchievements) {
       const result = this.awardAchievement(achievement.id);
-      if (result) {
-        awarded.push(result);
+      if (_result) {
+        awarded.push(_result);
       }
     }
 

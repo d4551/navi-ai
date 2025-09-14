@@ -34,7 +34,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 
 import { ref, onMounted, computed, onUnmounted, defineEmits, defineProps } from 'vue'
 
-const props = defineProps({
+const _props = defineProps({
   active: {
     type: Boolean,
     default: false

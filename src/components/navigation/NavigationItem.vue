@@ -72,7 +72,7 @@ import { getMdiAlias } from '@/utils/iconAliases'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   item: {
     type: Object,
     required: true

@@ -223,7 +223,7 @@ export default {
     'permissionChanged',
     'modeChanged'
   ],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     // Device management
     const audioInputs = ref([]);
     const audioOutputs = ref([]);

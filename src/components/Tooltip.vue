@@ -25,7 +25,7 @@ import { ref, computed, defineProps } from 'vue'
 
 defineOptions({ name: "AppTooltip" });
 
-const props = defineProps({
+const _props = defineProps({
   text: {
     type: String,
     required: true,

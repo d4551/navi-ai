@@ -204,7 +204,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import { aiService } from '@/shared/services/AIService'
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   show: {
     type: Boolean,
     default: false

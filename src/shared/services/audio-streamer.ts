@@ -40,7 +40,7 @@ export class AudioStreamer {
       workletNode.connect(this.audioContext.destination);
 
       logger.debug(`Audio worklet ${name} added to streamer`);
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to add audio worklet ${name}:`, error);
     }
   }

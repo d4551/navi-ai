@@ -177,7 +177,7 @@ interface Props {
   loadingMore?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   loading: false,
   viewMode: 'grid',
   selectionMode: false,

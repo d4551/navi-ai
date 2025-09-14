@@ -477,7 +477,7 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   resumeData: {
     type: Object,
     required: true

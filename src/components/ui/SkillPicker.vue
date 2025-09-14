@@ -107,7 +107,7 @@ interface Props {
   popularSkills?: string[]
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   availableSkills: () => [],
   placeholder: 'Type to add skills...',
   maxSelections: undefined,

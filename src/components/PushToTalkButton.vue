@@ -87,7 +87,7 @@
     <!-- Error Display -->
     <div v-if="error" class="error-display mt-2" role="alert">
       <AppIcon name="mdi-alert-circle-outline" class="me-2" />
-      {{ error }}
+      {{ _error }}
     </div>
 
     <!-- Optional Device Selector (slot-first, prop fallback) -->
@@ -135,7 +135,7 @@ import { canonicalAIClient } from '@/shared/services/CanonicalAIClient';
 import { speak as speakViaService } from '@/utils/voice';
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   maxRecordingTime: {
     type: Number,
     default: 30 // seconds
@@ -518,7 +518,7 @@ async function processTranscript(text) {
       // Process stream chunks
       for await (const chunk of stream.textStream) {
         aiResponse.value += chunk;
-        typeWriterEffect(chunk);
+        typeWriterEffect(_chunk);
       }
 
       isStreaming.value = false;
@@ -543,7 +543,7 @@ async function processTranscript(text) {
 
     // Store controller for potential cancellation
     // controller.cancel() if needed
-  } catch (err) {
+  } catch (_err) {
     isStreaming.value = false;
     logger.error('Failed to process transcript:', err);
     setError(`Failed to process speech: ${err.message}`);
@@ -577,7 +577,7 @@ async function speakResponse() {
     isSpeaking.value = true;
     await speakViaService(aiResponse.value, { rate: 0.9, pitch: 1.0, volume: 0.8 });
     isSpeaking.value = false;
-  } catch (err) {
+  } catch (_err) {
     isSpeaking.value = false;
     logger.error('Failed to start speech synthesis:', err);
     setError(`Failed to speak response: ${err.message}`);

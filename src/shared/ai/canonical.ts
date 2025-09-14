@@ -208,7 +208,7 @@ export const ai = {
       currentProvider = provider;
       await this.init({ provider, ...config });
       logger.info(`Switched to provider: ${provider}`);
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to switch to provider: ${provider}`, error);
       throw error;
     }

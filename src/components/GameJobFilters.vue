@@ -387,7 +387,7 @@ import {
 } from '@/shared/constants/gaming-studios';
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   totalJobs: {
     type: Number,
     default: 0

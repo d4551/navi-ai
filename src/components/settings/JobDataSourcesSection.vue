@@ -371,7 +371,7 @@ import {
   testJobSource
 } from '@/services/jobService'
 
-const props = defineProps({
+const _props = defineProps({
   settings: {
     type: Object,
     default: () => ({})

@@ -90,7 +90,7 @@
               
               <div class="section-results">
                 <div
-                  v-for="(result, index) in categoryResults"
+                  v-for="(_result, index) in categoryResults"
                   :id="`option-${getGlobalIndex(category, index)}`"
                   :key="`${category}-${result.value}`"
                   class="result-item"
@@ -173,7 +173,7 @@ const props = withDefaults(defineProps<Props>(), {
   modelValue: ''
 });
 
-const emit = defineEmits<Emits>();
+const _emit = defineEmits<Emits>();
 
 // Reactive state
 const searchInput = ref<HTMLInputElement>();
@@ -209,7 +209,7 @@ const groupedResults = computed(() => {
     if (!groups[category]) {
       groups[category] = [];
     }
-    groups[category].push(result);
+    groups[category].push(_result);
   });
   
   return groups;

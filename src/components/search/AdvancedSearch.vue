@@ -240,7 +240,7 @@
             :key="`${result.type}-${result.id}`"
             class="result-card"
             :class="`result-${result.type}`"
-            @click="selectResult(result)"
+            @click="selectResult(_result)"
           >
             <div class="result-header">
               <div class="result-icon">
@@ -305,7 +305,7 @@
               <button
                 class="btn btn-sm btn-outline-primary ui-btn ui-size-md"
                 type="button"
-                @click.stop="viewDetails(result)"
+                @click.stop="viewDetails(_result)"
               >
                 View Details
               </button>
@@ -313,7 +313,7 @@
                 v-if="result.type === 'studio'"
                 class="btn btn-sm btn-primary ui-btn ui-size-md"
                 type="button"
-                @click.stop="startInterview(result)"
+                @click.stop="startInterview(_result)"
               >
                 Practice Interview
               </button>
@@ -355,7 +355,7 @@ import { searchService } from '@/shared/services/SearchService';
 import { ROLE_CATEGORIES, STUDIO_CATEGORIES, COMPANY_SIZES } from '@/shared/constants/gaming-studios';
 import type { AutocompleteOption } from '@/shared/types/interview';
 
-const router = useRouter();
+const _router = useRouter();
 const store = useAppStore();
 
 // Search state

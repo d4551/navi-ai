@@ -136,7 +136,7 @@ interface Props {
   template?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   coverLetterData: () => ({}),
   template: 'classic'
 })

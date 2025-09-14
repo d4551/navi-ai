@@ -288,7 +288,7 @@ import { ref, computed, watch, defineEmits, defineProps } from 'vue'
 import FormControls from '@/components/ui/FormControls.vue';
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
-const props = defineProps({
+const _props = defineProps({
   visible: {
     type: Boolean,
     default: false

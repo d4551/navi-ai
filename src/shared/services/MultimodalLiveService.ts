@@ -112,7 +112,7 @@ export class MultimodalLiveService {
       if (this.audioStreamer && this.isStreaming) {
         this.audioStreamer.addPCM16(new Uint8Array(data));
       }
-      this.callbacks.onAudio?.(data);
+      this.callbacks.onAudio?.(_data);
     });
 
     // Content events
@@ -154,7 +154,7 @@ export class MultimodalLiveService {
 
     try {
       // Update config if provided
-      if (config) {
+      if (_config) {
         this.currentConfig = { ...this.currentConfig, ...config };
       }
 
@@ -465,7 +465,7 @@ export class MultimodalLiveService {
         
         logger.info('Reconnected successfully');
         return;
-      } catch (error) {
+      } catch (_error) {
         attempts++;
         delay *= 2; // Exponential backoff
         

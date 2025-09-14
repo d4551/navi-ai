@@ -43,7 +43,7 @@ export class GameJobService {
       if (!config) {
         throw new Error('GameJobService requires configuration on first initialization');
       }
-      GameJobService.instance = new GameJobService(config);
+      GameJobService.instance = new GameJobService(_config);
     }
     return GameJobService.instance;
   }
@@ -418,7 +418,7 @@ export class GameJobService {
     trends?: { period: string; value: number }[];
   } | null> {
     try {
-      const cacheKey = `salary-insights-${JSON.stringify(params)}`;
+      const cacheKey = `salary-insights-${JSON.stringify(_params)}`;
       const cached = this.getFromCache<any>(cacheKey);
       
       if (cached) {

@@ -132,7 +132,7 @@ class RoutingTestSuite {
         status: initialized ? 'success' : 'failed',
         error: initialized ? null : 'Service failed to initialize'
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: 'initialization',
         status: 'error',
@@ -148,7 +148,7 @@ class RoutingTestSuite {
         status: studios && Object.keys(studios).length > 0 ? 'success' : 'failed',
         error: studios ? null : 'No studios returned'
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: 'getAllStudios',
         status: 'error',
@@ -164,7 +164,7 @@ class RoutingTestSuite {
         status: Array.isArray(searchResults) ? 'success' : 'failed',
         error: Array.isArray(searchResults) ? null : 'Search did not return array'
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: 'searchStudios',
         status: 'error',
@@ -197,7 +197,7 @@ class RoutingTestSuite {
         status: Array.isArray(services) ? 'success' : 'failed',
         error: Array.isArray(services) ? null : 'Service list not returned as array'
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: 'listServices',
         status: 'error',
@@ -213,7 +213,7 @@ class RoutingTestSuite {
         status: typeof hasLogger === 'boolean' ? 'success' : 'failed',
         error: typeof hasLogger === 'boolean' ? null : 'hasService did not return boolean'
       });
-    } catch (error) {
+    } catch (_error) {
       testResult.tests.push({
         test: 'hasService',
         status: 'error',
@@ -305,7 +305,7 @@ class RoutingTestSuite {
         try {
           await pagePointerManager.getComponentByRoute(route);
           healthyRoutes++;
-        } catch (error) {
+        } catch (_error) {
           logger.warn(`Health check failed for route ${route}:`, error.message);
         }
       }

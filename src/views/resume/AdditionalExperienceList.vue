@@ -181,7 +181,7 @@ export default {
     typeSelection: { type: String, default: "projects" },
   },
   emits: ["update:modelValue", "update:typeSelection"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const localItems = reactive([...(props.modelValue || [])]);
 
     watch(

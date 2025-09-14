@@ -38,7 +38,7 @@ export function useUserProfile() {
   const profileErrors = computed(() => profileValidation.value.errors)
 
   // Update methods
-  const updatePersonalInfo = async (data) => {
+  const updatePersonalInfo = async (_data) => {
     try {
       const ok = store.updatePersonalInfo(data)
       if (!ok) throw new Error('Validation failed')

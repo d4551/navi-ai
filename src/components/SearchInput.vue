@@ -120,7 +120,7 @@
 import { ref, onMounted, computed, onBeforeUnmount, nextTick, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
-const props = defineProps({
+const _props = defineProps({
   modelValue: {
     type: [String, Number],
     default: ''

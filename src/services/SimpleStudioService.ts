@@ -51,7 +51,7 @@ export class SimpleStudioService {
           const simple = this.convertToSimpleStudio(studio as any, 'gaming-studios');
           await this.storeStudio(simple);
           result.imported++;
-        } catch (error) {
+        } catch (_error) {
           result.errors.push(`Gaming studio ${studio.name}: ${error.message}`);
         }
       }
@@ -79,7 +79,7 @@ export class SimpleStudioService {
               result.errors.push(`Steam studio ${studio.name}: ${error.message}`);
             }
           }
-        } catch (error) {
+        } catch (_error) {
           result.errors.push(`Steam fetch failed: ${error.message}`);
         }
       }

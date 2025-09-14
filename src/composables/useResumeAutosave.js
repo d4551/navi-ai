@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import {} from "vue";
 import { useAppStore } from "@/stores/app";
 
 export function useResumeAutosave() {
@@ -6,9 +6,9 @@ export function useResumeAutosave() {
   const saveMeta = ref({ lastSaved: null, status: "idle" });
   let timer = null;
 
-  const triggerSave = (data) => {
+  const triggerSave = (_data) => {
     saveMeta.value.status = "saving";
-    store.updateResumeData(data);
+    store.updateResumeData(_data);
     if (timer) {
       clearTimeout(timer);
     }

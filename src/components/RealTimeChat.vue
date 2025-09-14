@@ -374,7 +374,7 @@
     <div v-if="error" class="enhanced-error-display">
       <div class="error-content">
         <AppIcon name="mdi-alert-circle" class="error-icon" />
-        <div class="error-message">{{ error }}</div>
+        <div class="error-message">{{ _error }}</div>
         <button class="error-close" @click="error = null">
           <AppIcon name="mdi-close" />
         </button>

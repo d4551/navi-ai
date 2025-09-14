@@ -324,7 +324,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
     const response = await this.generateText(prompt, '', options);
 
     try {
-      return JSON.parse(response);
+      return JSON.parse(_response);
     } catch {
       // Fallback: parse as text and split by lines
       return response.split('\n').filter(line => line.trim()).slice(0, 5);

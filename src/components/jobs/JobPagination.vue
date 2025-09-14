@@ -79,7 +79,7 @@
 import { computed, ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
-const props = defineProps({
+const _props = defineProps({
   currentPage: {
     type: Number,
     default: 1

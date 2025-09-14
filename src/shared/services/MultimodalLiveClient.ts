@@ -203,7 +203,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalClientEvents> {
    */
   private handleMessage(data: string): void {
     try {
-      const message: LiveIncomingMessage = JSON.parse(data);
+      const message: LiveIncomingMessage = JSON.parse(_data);
       // Debug logging handled by logger when debug mode is enabled
 
       // Handle different message types

@@ -93,7 +93,7 @@ Search Parameters:
 Provide comprehensive semantic analysis and recommendations for optimal job matching.`
 
       const contextInfo = `USER PROFILE: ${JSON.stringify(userProfile)}
-SEARCH OPTIONS: ${JSON.stringify(options)}
+SEARCH OPTIONS: ${JSON.stringify(_options)}
 
 Analyze this gaming industry job search query and provide comprehensive semantic analysis and recommendations for optimal job matching.`
 

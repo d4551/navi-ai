@@ -78,7 +78,7 @@ export function buildURL(route: string, params?: RouteParams): string {
   
   if (params) {
     // Replace path parameters (like :id)
-    Object.entries(params).forEach(([key, value]) => {
+    Object.entries(_params).forEach(([key, value]) => {
       url = url.replace(`:${key}`, String(value));
     });
     

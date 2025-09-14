@@ -782,7 +782,7 @@ export default {
         const content =
           document.getElementById("resume-preview")?.innerHTML || "";
         await navigator.clipboard.writeText(content);
-      } catch (e) {
+      } catch (_e) {
         console.warn("Copy failed", e);
       }
     };

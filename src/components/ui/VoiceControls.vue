@@ -131,7 +131,7 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
       <template #prepend>
         <v-icon icon="mdi-microphone-off" />
       </template>
-      <span>{{ error }}</span>
+      <span>{{ _error }}</span>
       <template #append>
         <UnifiedButton
           variant="ghost"
@@ -175,7 +175,7 @@ interface Props {
   showInstructions?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   isRecording: false,
   isProcessing: false,
   canRecord: true,

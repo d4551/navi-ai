@@ -239,7 +239,7 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import IconButton from '@/components/ui/IconButton.vue'
 import { jobSourceManager } from '@/services/JobSourceManager'
 
-const props = defineProps({
+const _props = defineProps({
   sources: {
     type: Array,
     required: true

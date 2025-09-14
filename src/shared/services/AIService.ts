@@ -174,7 +174,7 @@ export class AIService {
       };
     }
 
-    if (config) {
+    if (_config) {
       this.config = { ...this.config, ...config };
     }
 
@@ -213,7 +213,7 @@ export class AIService {
           }
         }
       };
-    } catch (error) {
+    } catch (_error) {
       // Log initialization failures as they are critical for service operation
       console.error('AI service initialization failed:', error);
       
@@ -271,7 +271,7 @@ export class AIService {
       }
 
       return response;
-    } catch (error) {
+    } catch (_error) {
       lastError = error as Error;
       // Log provider failures for debugging fallback behavior
       console.warn(`Primary provider ${this.config.primaryProvider} failed:`, error);
@@ -288,7 +288,7 @@ export class AIService {
         }
 
         return response;
-      } catch (error) {
+      } catch (_error) {
         lastError = error as Error;
         // Log fallback failures for debugging
         console.warn(`Fallback provider ${provider} failed:`, error);
@@ -576,9 +576,9 @@ export class AIService {
         },
         {
           onChunk: (chunk: string) => {
-            chunks.push(chunk);
+            chunks.push(_chunk);
             fullContent += chunk;
-            request.onChunk?.(chunk);
+            request.onChunk?.(_chunk);
           },
           onComplete: (complete: any) => {
             fullContent = complete;
@@ -664,7 +664,7 @@ export class AIService {
   async stopRealTimeSession(_sessionId: string): Promise<void> {
     try {
       await this.realTimeService.stopSession();
-    } catch (error) {
+    } catch (_error) {
       // Log cleanup failures for debugging
       console.error('Failed to stop real-time session:', error);
     }
@@ -1089,7 +1089,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
             tokensUsed: this.estimateTokens(request.message + response),
             conversationId: request.sessionId
           };
-        } catch (error) {
+        } catch (_error) {
           throw new Error(`Google AI failed: ${(error as Error).message}`);
         }
 
@@ -1130,7 +1130,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       }
 
       return contextMessages;
-    } catch (error) {
+    } catch (_error) {
       // Log context loading failures for debugging
       console.warn('Failed to load conversation context:', error);
       return [];
@@ -1254,7 +1254,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
           finishReason: data.choices[0].finish_reason
         }
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(`OpenAI provider failed: ${(error as Error).message}`);
     }
   }
@@ -1306,7 +1306,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
           stopReason: data.stop_reason
         }
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(`Anthropic provider failed: ${(error as Error).message}`);
     }
   }
@@ -1352,7 +1352,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       await this.realTimeService.stopSession();
       this.initialized = false;
       // AI service shut down successfully
-    } catch (error) {
+    } catch (_error) {
       // Log shutdown errors for debugging
       console.error('Error shutting down AI service:', error);
     }

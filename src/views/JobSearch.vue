@@ -1929,7 +1929,7 @@ const refreshJobs = async () => {
       location: filters.location || '',
       remote: filters.remote,
       jobType: filters.type || filters.jobType,
-      experienceLevel: filters.experience || filters.experienceLevel,
+      experienceLevel: filters.experience || filters.experience,
       salaryRange: filters.salaryMin || filters.salaryMax ? {
         min: filters.salaryMin,
         max: filters.salaryMax
@@ -1951,7 +1951,7 @@ const refreshJobs = async () => {
             cached: true,
             cachedAt: new Date().toISOString()
           }))
-        } catch (error) {
+        } catch (_error) {
           console.debug('Job storage failed:', job.id, error)
         }
       }
@@ -1965,7 +1965,7 @@ const refreshJobs = async () => {
       errors: result.errors,
       processingTime: result.processingTime
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Job search failed:', error)
     // Fallback to mock results if API fails
     return await getMockJobResults(filters)
@@ -2024,7 +2024,7 @@ const refreshJobs = async () => {
     if (filters.query && !job.title.toLowerCase().includes(filters.query.toLowerCase())) {
       return false
     }
-    if (filters.experienceLevel && job.experience !== filters.experienceLevel) {
+    if (filters.experience && job.experience !== filters.experience) {
       return false
     }
     if (filters.roleType && job.type !== filters.roleType) {

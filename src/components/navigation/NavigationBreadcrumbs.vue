@@ -142,7 +142,7 @@ import IconButton from '@/components/ui/IconButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   compact: {
     type: Boolean,
     default: false

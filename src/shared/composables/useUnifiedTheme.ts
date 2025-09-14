@@ -379,7 +379,7 @@ export function useUnifiedTheme() {
   })
 
   // Current theme tokens
-  const theme = computed<ThemeDesignTokens>(() => ({
+  const _theme = computed<ThemeDesignTokens>(() => ({
     colors: GAMING_COLORS[colorScheme.value],
     ...DESIGN_TOKENS
   }))

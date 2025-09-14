@@ -378,7 +378,7 @@ const props = withDefaults(defineProps<Props>(), {
   contextType: 'resume',
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   suggestionApplied: [suggestion: any];
   suggestionDismissed: [suggestionId: string];
   analysisGenerated: [analysis: any];

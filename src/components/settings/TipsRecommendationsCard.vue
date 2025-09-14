@@ -126,6 +126,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import {
   LightbulbIconComponent,
   ChevronLeftIconComponent,

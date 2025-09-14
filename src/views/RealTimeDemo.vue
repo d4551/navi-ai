@@ -174,7 +174,7 @@
         <AppIcon name="mdi-alert-circle" class="error-icon" />
         <div class="error-message">
           <strong>Error</strong>
-          <p>{{ error }}</p>
+          <p>{{ _error }}</p>
         </div>
         <button class="close-btn" @click="error = null">
           <AppIcon name="mdi-close" />

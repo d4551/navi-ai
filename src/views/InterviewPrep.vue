@@ -1311,7 +1311,7 @@ async function aiRecommendStudios() {
       recommendedStudios.value = matched.slice(0, 6)
       cacheStudios(cacheKey, matched.map(m => m.name))
     }
-  } catch (e) {
+  } catch (_e) {
     // keep previous recommendations
     console.warn('AI studio recommendations failed', e)
   } finally {

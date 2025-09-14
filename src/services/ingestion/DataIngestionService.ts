@@ -84,7 +84,7 @@ export class DataIngestionService {
     const { getEnabledDataSources } = await import("@/config/data-sources");
     const enabledSources = getEnabledDataSources();
 
-    enabledSources.forEach((config) => {
+    enabledSources.forEach((_config) => {
       const source: DataSource = {
         id: config.id,
         name: config.name,
@@ -163,7 +163,7 @@ export class DataIngestionService {
 
       for (const data of rawData) {
         try {
-          await this.processRawData(data);
+          await this.processRawData(_data);
           job.processedItems++;
           job.progress = Math.floor(
             (job.processedItems / job.totalItems) * 100,

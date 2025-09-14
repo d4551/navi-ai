@@ -138,6 +138,9 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
 // Provide a multi-word component name for lint/devtools
 // Requires Vue 3.3+ defineOptions macro
 // If not available, we can switch to <script> with export default { name: 'AppHeader' }
@@ -156,7 +159,7 @@ import GamificationService from '@/utils/gamification'
 const emit = defineEmits(['detail-click'])
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   title: {
     type: String,
     required: true
@@ -366,7 +369,7 @@ function handleActionClick(action, evt) {
     if (typeof fn === 'function') {
       fn(evt);
     }
-  } catch (e) {
+  } catch (_e) {
     // Swallow; layout component should not throw
     console.debug('Header action handler error:', e);
   }

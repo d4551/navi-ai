@@ -384,7 +384,7 @@ export class SystemIntegrationTest {
           message: `Critical issues detected: ${criticalIssues.join(', ')} (${duration}ms)`
         }
       }
-    } catch (error) {
+    } catch (_error) {
       return {
         status: 'critical',
         message: `Health check failed: ${error}`

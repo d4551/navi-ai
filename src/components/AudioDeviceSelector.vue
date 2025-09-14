@@ -138,7 +138,7 @@
         <AppIcon name="mdi-alert-circle-outline" class="me-2 mt-1" />
         <div>
           <div class="fw-semibold">Audio Device Error</div>
-          <p class="mb-0">{{ error }}</p>
+          <p class="mb-0">{{ _error }}</p>
         </div>
       </div>
     </div>
@@ -154,7 +154,7 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue';
 import { useMediaLock } from '@/composables/useMediaLock';
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   disabled: { type: Boolean, default: false },
   autoRefresh: { type: Boolean, default: true },
   showTestControls: { type: Boolean, default: true },

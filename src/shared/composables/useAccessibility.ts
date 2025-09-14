@@ -253,7 +253,7 @@ export function useAccessibility() {
       document.querySelector(element) as HTMLElement : element;
 
     if (target) {
-      target.focus(options);
+      target.focus(_options);
       return true;
     }
     return false;

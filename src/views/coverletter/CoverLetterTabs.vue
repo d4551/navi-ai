@@ -73,6 +73,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+
 /// <reference lib="dom" />
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 

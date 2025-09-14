@@ -95,7 +95,7 @@ export default {
     const runAction = (toast, action) => {
       try {
         action?.handler?.();
-      } catch (e) {
+      } catch (_e) {
         reportError("toast.action", e, { level: "warn" });
       }
       if (action?.dismiss !== false) {

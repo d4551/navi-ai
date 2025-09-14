@@ -83,31 +83,31 @@ export const ResumeSchema = z.object({
 
 // Validation utilities
 export class ValidationService {
-  static validatePersonalInfo(data) {
+  static validatePersonalInfo(_data) {
     return this.validate(PersonalInfoSchema, data);
   }
 
-  static validateExperience(data) {
+  static validateExperience(_data) {
     return this.validate(ExperienceSchema, data);
   }
 
-  static validateEducation(data) {
+  static validateEducation(_data) {
     return this.validate(EducationSchema, data);
   }
 
-  static validateSkill(data) {
+  static validateSkill(_data) {
     return this.validate(SkillSchema, data);
   }
 
-  static validateResume(data) {
+  static validateResume(_data) {
     return this.validate(ResumeSchema, data);
   }
 
   static validate(schema, data) {
     try {
-      const result = schema.parse(data);
+      const result = schema.parse(_data);
       return { success: true, data: result, errors: [] };
-    } catch (error) {
+    } catch (_error) {
       if (error instanceof z.ZodError) {
         return {
           success: false,

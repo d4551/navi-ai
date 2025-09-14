@@ -61,8 +61,8 @@ export async function blobToJSON(blob: Blob): Promise<any> {
         } else {
           reject(new Error('Failed to read blob as text'));
         }
-      } catch (error) {
-        reject(error);
+      } catch (_error) {
+        reject(_error);
       }
     };
     reader.onerror = () => reject(new Error('Failed to read blob'));

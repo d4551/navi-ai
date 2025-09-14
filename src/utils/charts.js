@@ -142,7 +142,7 @@ export class ChartConfigGenerator {
           },
           tooltip: {
             callbacks: {
-              label: function (context) {
+              label: function (_context) {
                 const label = context.label || "";
                 const value = context.parsed;
                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
@@ -215,7 +215,7 @@ export class ChartConfigGenerator {
           },
           tooltip: {
             callbacks: {
-              label: function (context) {
+              label: function (_context) {
                 const exp = timelineData[context.dataIndex];
                 return `${exp.startYear} - ${exp.endYear}: ${context.parsed.x} years`;
               },
@@ -340,7 +340,7 @@ export class ChartConfigGenerator {
           },
           tooltip: {
             callbacks: {
-              label: function (context) {
+              label: function (_context) {
                 return `Market Demand: ${context.parsed.y}%`;
               },
             },
@@ -390,7 +390,7 @@ export class ChartConfigGenerator {
           },
           tooltip: {
             callbacks: {
-              label: function (context) {
+              label: function (_context) {
                 if (context.dataIndex === 0) {
                   return `Resume Score: ${context.parsed}%`;
                 }
@@ -448,7 +448,7 @@ export const chartUtils = {
   },
 
   // Format dates for timeline charts
-  formatTimelineData(data, dateField, valueField) {
+  formatTimelineData(_data, dateField, valueField) {
     return data
       .sort((a, b) => new Date(a[dateField]) - new Date(b[dateField]))
       .map((item) => ({
@@ -458,7 +458,7 @@ export const chartUtils = {
   },
 
   // Calculate moving average
-  calculateMovingAverage(data, windowSize = 3) {
+  calculateMovingAverage(_data, windowSize = 3) {
     const result = [];
 
     for (let i = 0; i < data.length; i++) {

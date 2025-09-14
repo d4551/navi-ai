@@ -23,7 +23,7 @@ export const isFontLoaded = (fontFamily) => {
   
   try {
     return window.document.fonts.check(`16px "${fontFamily}"`);
-  } catch (e) {
+  } catch (_e) {
     console.warn(`Font check failed for ${fontFamily}:`, e);
     return false;
   }
@@ -77,7 +77,7 @@ export const loadFont = async (fontFamily, fontUrl) => {
     }
 
     return false;
-  } catch (error) {
+  } catch (_error) {
     console.warn(`Error loading font ${fontFamily}:`, error);
     return false;
   }

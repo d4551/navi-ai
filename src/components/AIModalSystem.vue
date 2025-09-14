@@ -356,7 +356,7 @@ interface Props {
   showFloatingButton?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   entityType: undefined,
   entityId: undefined,
   entityData: () => ({}),

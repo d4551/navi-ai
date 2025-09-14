@@ -231,7 +231,7 @@ export class RealTimeMultiTurnService {
       logger.info(`Started ${type} session:`, this.currentSession.id);
       
       return this.currentSession;
-    } catch (error) {
+    } catch (_error) {
       this.currentSession.isActive = false;
       logger.error('Failed to start session:', error);
       this.callbacks.onError?.(error as Error);
@@ -313,7 +313,7 @@ export class RealTimeMultiTurnService {
       
       // Handle audio output if enabled
       if (this.config.enableAudioOutput && response) {
-        await this.generateAudioResponse(response);
+        await this.generateAudioResponse(_response);
       }
 
     } catch (error) {
@@ -430,7 +430,7 @@ export class RealTimeMultiTurnService {
         
         // Generate audio response if enabled
         if (this.config.enableAudioOutput) {
-          await this.generateAudioResponse(response);
+          await this.generateAudioResponse(_response);
         }
       }
 

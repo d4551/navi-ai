@@ -153,7 +153,7 @@ class AIUIIntegrationService {
         this.showSuccessNotification(options.successMessage);
       }
 
-      options.onSuccess?.(result);
+      options.onSuccess?.(_result);
       return result;
 
     } catch (error) {
@@ -263,7 +263,7 @@ class AIUIIntegrationService {
         
         onResponse: (response) => {
           this.realTimeState.lastResponse = new Date();
-          options.onResponse?.(response);
+          options.onResponse?.(_response);
         },
         
         onError: (error) => {
@@ -400,7 +400,7 @@ class AIUIIntegrationService {
           sessionId: options.sessionId || this.realTimeState.sessionId || 'default',
           onChunk: (chunk: string) => {
             fullResponse += chunk;
-            options.onChunk?.(chunk);
+            options.onChunk?.(_chunk);
           },
         });
 

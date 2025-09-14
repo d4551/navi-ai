@@ -60,8 +60,8 @@ export type ResumeData = z.infer<typeof ResumeSchema>;
 
 export function validateResumeData(data: unknown): ResumeData {
   try {
-    return ResumeSchema.parse(data);
-  } catch (e) {
+    return ResumeSchema.parse(_data);
+  } catch (_e) {
     // non-fatal; return a shallow-safe object for exporters to handle
     return (data || {}) as ResumeData;
   }

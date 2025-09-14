@@ -292,7 +292,7 @@ import { version } from 'vue'
 import { getAppVersion } from '@/utils/version'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
-const props = defineProps({
+const _props = defineProps({
   settings: {
     type: Object,
     required: true

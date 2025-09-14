@@ -98,7 +98,7 @@ export function useLiveMultimediaAI() {
           addAssistantMessage(result.content, result.type as any, result.metadata);
         },
 
-        onError: (error) => {
+        onError: (_error) => {
           state.lastError = error.message;
           logger.error('Multimedia AI error:', error);
           toast.error(`AI Error: ${error.message}`);
@@ -106,7 +106,7 @@ export function useLiveMultimediaAI() {
       };
 
       service.setCallbacks(callbacks);
-      await service.initialize(config);
+      await service.initialize(_config);
 
       isInitialized.value = true;
       state.isProcessing = false;
@@ -179,7 +179,7 @@ export function useLiveMultimediaAI() {
     }
 
     try {
-      await service.startVideoStreaming(options);
+      await service.startVideoStreaming(_options);
       state.isVideoStreaming = true;
       toast.info('📹 Video AI analysis activated');
       addSystemMessage('📹 Camera activated. AI is analyzing your video...');
@@ -230,7 +230,7 @@ export function useLiveMultimediaAI() {
       state.isProcessing = false;
       
       return result;
-    } catch (error) {
+    } catch (_error) {
       state.isProcessing = false;
       logger.error('Failed to capture screenshot:', error);
       toast.error('Screenshot capture failed. Check screen sharing permissions.');
@@ -255,7 +255,7 @@ export function useLiveMultimediaAI() {
       state.isProcessing = false;
       
       // Response is automatically added via callback
-    } catch (error) {
+    } catch (_error) {
       state.isProcessing = false;
       logger.error('Failed to send message:', error);
       toast.error('Failed to send message to AI');

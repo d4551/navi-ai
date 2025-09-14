@@ -299,7 +299,7 @@ export default {
           addToConsole('error', 'AI services initialization failed');
           toast.error('AI services initialization failed');
         }
-      } catch (error) {
+      } catch (_error) {
         aiStatus.value = { success: false, message: error.message };
         addToConsole('error', `AI initialization error: ${error.message}`);
         toast.error(`AI initialization error: ${error.message}`);

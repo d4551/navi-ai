@@ -95,7 +95,7 @@ class Logger {
       try {
         const seen = new WeakSet();
         formattedData = JSON.stringify(
-          data,
+          _data,
           (key, value) => {
             if (value instanceof Error) {
               return { name: value.name, message: value.message, stack: value.stack };
@@ -108,8 +108,8 @@ class Logger {
           },
           2,
         );
-      } catch (e) {
-        formattedData = String(data);
+      } catch (_e) {
+        formattedData = String(_data);
       }
     }
 
@@ -150,7 +150,7 @@ class Logger {
         if (entry.data) scope.setContext('data', entry.data);
         const error =
           entry.data instanceof Error ? entry.data : new Error(entry.message);
-        Sentry.captureException(error);
+        Sentry.captureException(_error);
       });
       if (typeof window !== 'undefined' && window.api?.app?.reportError) {
         window.api.app.reportError(entry);

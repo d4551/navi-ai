@@ -175,7 +175,7 @@ export default {
     copyingIndex: { type: Number, default: null },
   },
   emits: ["update:modelValue", "copy-experience"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const { experience, updateExperience } = useUserProfile();
 
     // Prioritize the user profile as the source of truth.

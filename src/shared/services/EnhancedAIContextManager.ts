@@ -213,7 +213,7 @@ class EnhancedAIContextManager {
       
       const response = await ai.streamCompletion({
         message: enhancedPrompt,
-        context: this.getContextSummary(context),
+        context: this.getContextSummary(_context),
         metadata: {
           domain: context.domain,
           topic: context.topic,

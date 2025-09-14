@@ -875,7 +875,7 @@ export class MockInterviewService {
       try {
         const aiAnalysis = await this.generateAIFeedback(interview);
         return aiAnalysis;
-      } catch (error) {
+      } catch (_error) {
         logger.warn("AI feedback failed, using fallback analysis:", error);
         // Fall through to basic analysis
       }
@@ -1029,7 +1029,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
         ],
         aiGenerated: true,
       };
-    } catch (error) {
+    } catch (_error) {
       console.error("AI feedback generation failed:", error);
       throw error;
     }
@@ -1092,7 +1092,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
   analyzeCommucation(responses) {
     let score = INTERVIEW_CONFIG.scores.base; // Base score
 
-    responses.forEach((response) => {
+    responses.forEach((_response) => {
       // Word count analysis
       if (response.wordCount > 150 && response.wordCount < 300) {
         score += 5;
@@ -1154,7 +1154,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
       "balance",
     ];
 
-    responses.forEach((response) => {
+    responses.forEach((_response) => {
       const text = response.response.toLowerCase();
 
       // Count technical terms
@@ -1180,7 +1180,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
   analyzeCulturalFit(responses, studio) {
     let score = 50; // Base score
 
-    responses.forEach((response) => {
+    responses.forEach((_response) => {
       const text = response.response.toLowerCase();
 
       // Check for studio values mentions
@@ -1226,7 +1226,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
   analyzeGamingKnowledge(responses, studio) {
     let score = 50; // Base score
 
-    responses.forEach((response) => {
+    responses.forEach((_response) => {
       const text = response.response.toLowerCase();
 
       // Check for studio games mentions
@@ -1272,7 +1272,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
   analyzeProblemSolving(responses) {
     let score = 50; // Base score
 
-    responses.forEach((response) => {
+    responses.forEach((_response) => {
       const text = response.response.toLowerCase();
 
       // Check for problem-solving indicators
@@ -1437,7 +1437,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
   generateDetailedFeedback(responses, _studio) {
     const feedback = [];
 
-    responses.forEach((response, index) => {
+    responses.forEach((_response, index) => {
       const analysis = {
         questionNumber: index + 1,
         category: response.question.includes("yourself")
@@ -1541,7 +1541,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
     const categoryScores = {};
     completed.forEach((interview) => {
       if (interview.responses) {
-        interview.responses.forEach((response) => {
+        interview.responses.forEach((_response) => {
           const category = response.category || "General";
           if (!categoryScores[category]) {
             categoryScores[category] = { total: 0, count: 0 };

@@ -36,7 +36,7 @@ async function fetchJson<T = any>(url: string): Promise<T | null> {
         throw new Error('invalid content-type');
       }
       return (await res.json()) as T;
-    } catch (e) {
+    } catch (_e) {
       attempt++;
       if (attempt > MAX_RETRIES) {
         logger.warn('StudioStatsService fetch failed', url, (e as Error).message);

@@ -367,7 +367,7 @@ export default {
               emit('stream-started');
               showStatus('AI streaming started', 'success');
             },
-            onResponse: (response) => {
+            onResponse: (_response) => {
               aiResponse.value = response;
               emit('ai-response', response);
             },

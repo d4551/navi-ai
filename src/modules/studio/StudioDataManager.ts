@@ -101,7 +101,7 @@ export class StudioDataManager {
       await this.updateImportMetadata();
 
       // Generate import report
-      await this.generateImportReport(result);
+      await this.generateImportReport(_result);
 
       logger.info(`Studio import completed: ${result.summary.totalSuccessful}/${result.summary.totalAttempted} successful`);
 

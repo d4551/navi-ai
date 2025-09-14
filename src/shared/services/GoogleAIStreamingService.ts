@@ -174,7 +174,7 @@ export class GoogleAIStreamingService {
           logger.info(`Google AI Streaming Service initialized with test model: ${m}`);
           initialized = true;
           break;
-        } catch (err) {
+        } catch (_err) {
           lastError = err;
           // Continue trying other models unless it's clearly an API key issue
           const msg = (err as Error)?.message || '';
@@ -191,7 +191,7 @@ export class GoogleAIStreamingService {
     } catch (error) {
       this.genAI = null;
       this.apiKey = null;
-      const rawMessage = error instanceof Error ? error.message : String(error);
+      const rawMessage = error instanceof Error ? error.message : String(_error);
       let helpfulMessage = rawMessage;
       if (rawMessage.includes('API_KEY_INVALID') || rawMessage.toLowerCase().includes('expired')) {
         helpfulMessage = 'Gemini API key is invalid or expired. Generate a new key at https://aistudio.google.com/app/apikey and update it in Settings or set VITE_GEMINI_API_KEY in your .env.local file.';
@@ -311,7 +311,7 @@ export class GoogleAIStreamingService {
             type: 'text'
           });
 
-          callbacks.onResponse?.(response);
+          callbacks.onResponse?.(_response);
           callbacks.onConversationUpdate?.(this.conversationHistory);
 
         } catch (error) {
@@ -442,7 +442,7 @@ export class GoogleAIStreamingService {
             type: 'text'
           });
 
-          callbacks.onResponse?.(response);
+          callbacks.onResponse?.(_response);
           callbacks.onConversationUpdate?.(this.conversationHistory);
 
         } catch (error) {
@@ -522,7 +522,7 @@ export class GoogleAIStreamingService {
       });
 
       // Notify callbacks if provided
-      callbacks?.onResponse?.(response);
+      callbacks?.onResponse?.(_response);
       callbacks?.onConversationUpdate?.(this.conversationHistory);
       
       return response;

@@ -353,7 +353,7 @@ import IconButton from '@/components/ui/IconButton.vue'
 import { useUnifiedUI } from '@/composables/useUnifiedUI'
 import { useToast } from '@/composables/useToast'
 
-const props = defineProps({
+const _props = defineProps({
   open: { type: Boolean, default: false },
   messages: { type: Array, default: () => [] },
   size: { type: String, default: 'lg' }, // 'md' | 'lg' | 'xl'

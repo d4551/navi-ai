@@ -65,7 +65,7 @@ export class SteamDataSource {
             if (details?.success && details.data?.developers) {
               this.processAppForStudios(details.data, studioData);
             }
-          } catch (error) {
+          } catch (_error) {
             logger.warn(`Failed to fetch details for app ${app.appid}:`, error);
           }
 
@@ -84,7 +84,7 @@ export class SteamDataSource {
       }
 
       return Array.from(studioData.values());
-    } catch (error) {
+    } catch (_error) {
       logger.error("Steam data ingestion failed:", error);
       throw error;
     }
@@ -149,7 +149,7 @@ export class SteamDataSource {
 
       const data = await response.json();
       return data[appid] || null;
-    } catch (error) {
+    } catch (_error) {
       logger.warn(`Failed to fetch Steam app details for ${appid}:`, error);
       return null;
     }

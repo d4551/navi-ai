@@ -174,7 +174,7 @@
           <AppIcon name="mdi-alert-circle-outline" class="icon-error" />
           <span class="error-title">Integration Error</span>
         </div>
-        <p class="error-message">{{ error }}</p>
+        <p class="error-message">{{ _error }}</p>
         <div class="error-actions">
           <UnifiedButton variant="glass" size="sm" leading-icon="mdi-close" @click="clearError">Dismiss</UnifiedButton>
         </div>

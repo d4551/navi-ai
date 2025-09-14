@@ -325,6 +325,8 @@
 </template>
 
 <script>
+import { watch } from 'vue';
+
 // Removed unused icon components
 import { audioService } from '@/shared/services/AudioService'
 import { speak, stopSpeaking } from '@/utils/voice'

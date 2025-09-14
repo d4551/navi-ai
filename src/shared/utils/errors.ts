@@ -56,7 +56,7 @@ export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
   }
-  return String(error);
+  return String(_error);
 }
 
 export function getErrorCode(error: unknown): string | undefined {

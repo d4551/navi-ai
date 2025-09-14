@@ -215,7 +215,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
 
       ws.addEventListener("open", () => {
         if (!this.config) {
-          reject(new Error("Invalid config sent to `connect(config)`"));
+          reject(new Error("Invalid config sent to `connect(_config)`"));
           return;
         }
         this.log({type: `client.open`, message: `connected to socket`, date: new Date()});

@@ -126,7 +126,7 @@ export class IGDBDataSource {
     try {
       const response = await this.makeIGDBRequest("games", query);
       return response as IGDBGame[];
-    } catch (error) {
+    } catch (_error) {
       logger.warn(`Failed to fetch games for company ${companyId}:`, error);
       return [];
     }

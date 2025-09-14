@@ -248,7 +248,7 @@ import { ref, watch, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
-const props = defineProps({
+const _props = defineProps({
   job: {
     type: Object,
     default: null

@@ -477,7 +477,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   userProfile: {
     type: Object,
     default: () => ({

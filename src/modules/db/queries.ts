@@ -62,7 +62,7 @@ export function buildUpdateQuery<T extends DatabaseModel>(
   id: string, 
   data: Partial<T>
 ): string {
-  const setClause = Object.entries(data)
+  const setClause = Object.entries(_data)
     .map(([key, value]) => `${key} = '${value}'`)
     .join(', ');
   return `UPDATE ${table} SET ${setClause} WHERE id = '${id}'`;

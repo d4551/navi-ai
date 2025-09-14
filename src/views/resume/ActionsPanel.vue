@@ -269,7 +269,7 @@ export default {
     "smart-template",
     "close-panel",
   ],
-  setup(props) {
+  setup(_props) {
     const showAdvanced = ref(false);
 
     const isCompact = computed(() => props.compact);

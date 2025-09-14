@@ -787,7 +787,7 @@ const handlePlanGenerated = (plan) => {
   }
 };
 
-const handleQuestionsGenerated = (result) => {
+const handleQuestionsGenerated = (_result) => {
   if (result.questions) {
     generatedQuestions.value = result.questions.map((q, index) => ({
       id: `q_${Date.now()}_${index}`,

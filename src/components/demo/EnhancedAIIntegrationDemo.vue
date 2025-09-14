@@ -364,7 +364,7 @@ const sendMessage = async () => {
           assistantMessage += chunk;
           updateLastAssistantMessage(assistantMessage);
         },
-        onComplete: (response) => {
+        onComplete: (_response) => {
           isTyping.value = false;
           addResult('chat', response, Date.now());
         },

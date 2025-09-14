@@ -289,6 +289,8 @@
 </template>
 
 <script>
+import { watch } from 'vue';
+
 import {
   SoundwaveIconComponent,
   MicIconComponent,

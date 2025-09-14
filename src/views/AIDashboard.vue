@@ -397,7 +397,7 @@ import AIButton from '@/components/ai/AIButton.vue';
 import AIModalSystem from '@/components/ai/AIModalSystem.vue';
 import { logger } from '@/shared/utils/logger';
 
-const router = useRouter();
+const _router = useRouter();
 
 // User gamification data
 const playerName = ref('Alex Developer');

@@ -361,7 +361,7 @@ interface Props {
   similarJobs?: Array<any>
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   show: false,
   job: null,
   similarJobs: () => []

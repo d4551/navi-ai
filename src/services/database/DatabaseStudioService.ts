@@ -70,13 +70,13 @@ export class DatabaseStudioService {
           try {
             const converted = this.convertToStudio(studio as any, 'gaming-studios');
             studiosToImport.push(converted);
-          } catch (error) {
-            const msg = (error as any)?.message || String(error);
+          } catch (_error) {
+            const msg = (error as any)?.message || String(_error);
             result.errors.push(`Gaming studio ${studio.name}: ${msg}`);
           }
         }
-      } catch (error) {
-        const msg = (error as any)?.message || String(error);
+      } catch (_error) {
+        const msg = (error as any)?.message || String(_error);
         result.errors.push(`Failed to load gaming studios: ${msg}`);
       }
 
@@ -107,13 +107,13 @@ export class DatabaseStudioService {
           try {
             const converted = this.convertExpandedStudio(studio as any, 'expanded-gaming');
             studiosToImport.push(converted);
-          } catch (error) {
-            const msg = (error as any)?.message || String(error);
+          } catch (_error) {
+            const msg = (error as any)?.message || String(_error);
             result.errors.push(`Expanded studio ${studio.name}: ${msg}`);
           }
         }
-      } catch (error) {
-        const msg = (error as any)?.message || String(error);
+      } catch (_error) {
+        const msg = (error as any)?.message || String(_error);
         result.errors.push(`Failed to load expanded gaming studios: ${msg}`);
       }
 
@@ -123,8 +123,8 @@ export class DatabaseStudioService {
           const steamStudios = await this.fetchSteamStudios();
           studiosToImport.push(...steamStudios);
           logger.info(`Added ${steamStudios.length} studios from Steam API`);
-        } catch (error) {
-          const msg = (error as any)?.message || String(error);
+        } catch (_error) {
+          const msg = (error as any)?.message || String(_error);
           result.errors.push(`Steam integration failed: ${msg}`);
           logger.warn('Steam integration failed:', error);
         }

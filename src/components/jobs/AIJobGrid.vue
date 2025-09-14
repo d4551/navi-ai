@@ -42,7 +42,7 @@ import EnhancedJobCard from './EnhancedJobCard.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import LoadingIndicator from '@/components/LoadingIndicator.vue'
 
-const props = defineProps({
+const _props = defineProps({
   jobs: {
     type: Array,
     default: () => []

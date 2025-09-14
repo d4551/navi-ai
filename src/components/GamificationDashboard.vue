@@ -374,7 +374,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
 import { useToast } from "@/composables/useToast";
 import { useAppStore } from "@/stores/app";
 import AppIcon from '@/components/ui/AppIcon.vue';
@@ -387,7 +387,7 @@ export default {
     AppIcon
   },
   emits: ["start-challenge", "achievement-earned", "level-up", "navigate"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const store = useAppStore();
     const gamificationService = new GamificationService(store);
     const { success: toastSuccess } = useToast();
@@ -491,7 +491,7 @@ export default {
             timestamp: Date.now(),
           };
         }
-      } catch (error) {
+      } catch (_error) {
         console.warn("AI suggestion generation failed:", error);
         // Fallback to basic suggestion
         const incompleteChallenge = dailyChallenges.value.find(
@@ -533,7 +533,7 @@ export default {
 
         const prompt = `Generate 2-3 personalized daily challenges for a gaming career transition app user with this profile:
         
-${JSON.stringify(context)}
+${JSON.stringify(_context)}
         
 Challenges should be:
 - Specific and actionable
@@ -555,7 +555,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
         );
 
         try {
-          const challenges = JSON.parse(result);
+          const challenges = JSON.parse(_result);
           if (Array.isArray(challenges)) {
             dynamicChallenges.value = challenges.map((challenge, index) => ({
               ...challenge,
@@ -564,10 +564,10 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
               dynamic: true,
             }));
           }
-        } catch (parseError) {
+        } catch (_parseError) {
           console.warn("Failed to parse dynamic challenges:", parseError);
         }
-      } catch (error) {
+      } catch (_error) {
         console.warn("Dynamic challenge generation failed:", error);
       }
     };
@@ -638,7 +638,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
             timestamp: Date.now(),
           };
         }
-      } catch (error) {
+      } catch (_error) {
         console.warn("Achievement insights generation failed:", error);
       }
     };
@@ -711,7 +711,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
             timestamp: Date.now(),
           };
         }
-      } catch (error) {
+      } catch (_error) {
         console.warn("Activity insights generation failed:", error);
       }
     };
@@ -738,7 +738,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
               duration: 4000,
             });
         }
-      } catch (error) {
+      } catch (_error) {
         console.warn("Activity action handling failed:", error);
         toastSuccess('Action noted! Keep up the great work.', { duration: 3000 });
       }
@@ -911,7 +911,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
         // Clear suggestion after action
         aiChallengeSuggestion.value = null;
-      } catch (error) {
+      } catch (_error) {
         console.warn("AI suggestion handling failed:", error);
         toastSuccess(
           "Action noted! Continue working on your career development.",

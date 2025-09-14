@@ -161,7 +161,7 @@
         <div v-if="lastReport.errors.length > 0" class="errors-section">
           <h4><AppIcon name="mdi-close-circle-outline" color="error" context="error" aria-hidden="true" /> Errors</h4>
           <ul class="error-list">
-            <li v-for="(error, index) in lastReport.errors" :key="index">
+            <li v-for="(_error, index) in lastReport.errors" :key="index">
               <strong>{{ error.element }}:</strong> {{ error.error }}
             </li>
           </ul>

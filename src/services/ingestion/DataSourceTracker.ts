@@ -108,7 +108,7 @@ export class DataSourceTracker {
         sourceMetadata.lastSeen = new Date();
         sourceMetadata.confidence = confidence;
         sourceMetadata.version++;
-        sourceMetadata.checksum = this.generateChecksum(data);
+        sourceMetadata.checksum = this.generateChecksum(_data);
       }
 
       // Track individual fields
@@ -123,7 +123,7 @@ export class DataSourceTracker {
       logger.debug(
         `Updated provenance for studio ${studioId} from source ${sourceId}`,
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to track studio data for ${studioId}:`, error);
     }
   }
@@ -157,7 +157,7 @@ export class DataSourceTracker {
       const allProvenance =
         (await unifiedStorage.get(this.PROVENANCE_KEY)) || {};
       return allProvenance[studioId] || null;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to get provenance for ${studioId}:`, error);
       return null;
     }
@@ -166,7 +166,7 @@ export class DataSourceTracker {
   async getAllProvenance(): Promise<Record<string, DataProvenance>> {
     try {
       return (await unifiedStorage.get(this.PROVENANCE_KEY)) || {};
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to get all provenance:", error);
       return {};
     }
@@ -176,7 +176,7 @@ export class DataSourceTracker {
     try {
       const allLineage = (await unifiedStorage.get(this.LINEAGE_KEY)) || {};
       return allLineage[studioId] || null;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to get lineage for ${studioId}:`, error);
       return null;
     }
@@ -331,7 +331,7 @@ export class DataSourceTracker {
   ): Promise<void> {
     const fields: FieldProvenance[] = [];
 
-    Object.entries(data).forEach(([fieldName, value]) => {
+    Object.entries(_data).forEach(([fieldName, value]) => {
       if (value !== undefined && value !== null && value !== "") {
         fields.push({
           fieldName,

@@ -208,9 +208,9 @@ export class NaviExporter {
 
   static validateExport(data: unknown): { valid: boolean; data?: NaviExportData; errors?: string[] } {
     try {
-      const validated = NaviExportSchema.parse(data);
+      const validated = NaviExportSchema.parse(_data);
       return { valid: true, data: validated };
-    } catch (error) {
+    } catch (_error) {
       if (error instanceof z.ZodError) {
         const errors = error.errors.map(err => `${err.path.join('.')}: ${err.message}`);
         return { valid: false, errors };

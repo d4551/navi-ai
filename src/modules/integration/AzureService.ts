@@ -413,7 +413,7 @@ class AzureService {
       
       return { success: true, data: { status: 200, payload: {} } };
 
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }

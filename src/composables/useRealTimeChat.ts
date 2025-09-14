@@ -123,8 +123,8 @@ export function useRealTimeChat(config: Partial<RealTimeConfig> = {}) {
           sessionStats.messageCount++;
           sessionStats.lastActivity = res.timestamp;
         },
-        onError: (e) => {
-          const em = e instanceof Error ? e.message : String(e);
+        onError: (_e) => {
+          const em = e instanceof Error ? e.message : String(_e);
           error.value = em;
           logger.error('Live multimedia error:', e);
         }
@@ -345,7 +345,7 @@ export function useRealTimeChat(config: Partial<RealTimeConfig> = {}) {
     isProcessing: readonly(isProcessing),
     volumeLevel: readonly(volumeLevel),
     transcription: readonly(transcription),
-    error: readonly(error),
+    error: readonly(_error),
     sessionStats: readonly(sessionStats),
     
     // Computed

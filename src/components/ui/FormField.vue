@@ -94,7 +94,7 @@
 import { computed, useId } from 'vue'
 import AppIcon from './AppIcon.vue'
 
-const props = defineProps({
+const _props = defineProps({
   modelValue: {
     type: [String, Number],
     default: ''

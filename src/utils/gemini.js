@@ -55,7 +55,7 @@ export default class GeminiService {
 
       if (key) {this._cache.set(key, text);}
       return text;
-    } catch (err) {
+    } catch (_err) {
       // metrics
       this._metrics.errorCount += 1;
       // normalize error messages to match tests

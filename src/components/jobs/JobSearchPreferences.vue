@@ -286,7 +286,7 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue';
 
 import { ref, watch, defineEmits, defineProps } from 'vue'
 
-const props = defineProps({
+const _props = defineProps({
   preferences: {
     type: Object,
     required: true

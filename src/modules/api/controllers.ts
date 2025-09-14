@@ -59,7 +59,7 @@ export class JobSearchController {
           searchTime: Date.now() - startTime
         }
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -143,7 +143,7 @@ export class ResumeController {
         success: true,
         data: exportData
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -191,7 +191,7 @@ export class PortfolioController {
         success: true,
         data: exportData
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -237,7 +237,7 @@ export class AIController {
           processingTime: Date.now() - startTime
         }
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -257,7 +257,7 @@ export class AIController {
         success: true,
         data: response
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -281,7 +281,7 @@ export class AIController {
         success: true,
         data: response
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -307,7 +307,7 @@ export class AIController {
         success: true,
         data: response
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -332,7 +332,7 @@ export class AIController {
         success: true,
         data: response
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -376,7 +376,7 @@ export class ProviderHealthController {
         success: true,
         data: healthResults
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {

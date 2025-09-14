@@ -74,7 +74,7 @@ const props = withDefaults(defineProps<Props>(), {
   errorText: 'Error',
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   success: [result: any];
   error: [error: string];
   start: [];

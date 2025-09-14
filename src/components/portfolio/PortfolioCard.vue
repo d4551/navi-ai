@@ -159,7 +159,7 @@
 import { ref, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
-const props = defineProps({
+const _props = defineProps({
   item: { type: Object, required: true },
   layout: { type: String, default: 'grid' },
   showAnalytics: { type: Boolean, default: false }

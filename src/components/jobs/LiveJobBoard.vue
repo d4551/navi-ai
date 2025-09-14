@@ -417,7 +417,7 @@ Displays live jobs from multiple API sources with:
     <!-- Error State -->
     <div v-if="error" class="alert alert-danger">
       <AppIcon name="mdi-alert-circle-outline" class="me-2" />
-      {{ error }}
+      {{ _error }}
       <button class="btn btn-sm btn-outline-danger ms-2" @click="searchJobs">
         Retry
       </button>

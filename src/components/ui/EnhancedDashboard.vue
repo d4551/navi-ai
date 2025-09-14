@@ -313,7 +313,9 @@ const props = defineProps({
     default: 'grid',
     validator: v => ['grid', 'masonry', 'list', 'compact'].includes(v)
   },
-  showStats: { type: Boolean, default: true },
+  showStats: { type: Boolean, default: true,
+    default: () => ({})
+   },
   showSidebar: { type: Boolean, default: true },
   showFooter: { type: Boolean, default: true }
 })

@@ -36,7 +36,7 @@ export class AngelListProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -128,7 +128,7 @@ export class CrunchBoardProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -207,7 +207,7 @@ export class HackerNewsProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -300,7 +300,7 @@ export class LinkedInJobsProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 
@@ -406,7 +406,7 @@ export class TechJobsForGoodProvider implements JobProvider {
   }
 
   parseResponse(data: any): Job[] {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(_data)) return [];
     return data.map((job) => this.normalizeJob(job));
   }
 

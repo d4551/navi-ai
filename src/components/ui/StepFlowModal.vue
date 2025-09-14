@@ -51,7 +51,7 @@ interface Props {
   primaryVariant?: 'primary' | 'gaming' | 'outline'
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   modelValue: 0,
   maxReachable: 0,
   busy: false,

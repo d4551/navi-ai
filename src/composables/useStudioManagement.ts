@@ -39,7 +39,7 @@ export function useStudioManagement() {
   const studios = ref<Record<string, Studio>>({});
   const filteredStudios = ref<Studio[]>([]);
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const _error = ref<string | null>(null);
   const initialized = ref(false);
   const searchQuery = ref('');
   const activeFilters = ref<StudioSearchFilters>({});
@@ -168,7 +168,7 @@ export function useStudioManagement() {
         size: studio.size,
         games: studio.games
       };
-    } catch (err) {
+    } catch (_err) {
       logger.error(`Failed to get studio ${id}:`, err);
       return null;
     }
@@ -378,7 +378,7 @@ export function useStudioManagement() {
     studios: readonly(studios),
     filteredStudios: readonly(filteredStudios),
     loading: readonly(loading),
-    error: readonly(error),
+    error: readonly(_error),
     initialized: readonly(initialized),
     searchQuery: readonly(searchQuery),
     activeFilters: readonly(activeFilters),

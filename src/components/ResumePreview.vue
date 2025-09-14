@@ -197,7 +197,7 @@ interface Props {
   template?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   resumeData: () => ({}),
   template: 'classic'
 })

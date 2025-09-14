@@ -227,7 +227,7 @@ export class EnhancedPublicAPIDataSource {
         gamesData,
         publishers 
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch comprehensive Wikidata:", error);
       return { studios: [], gamesData: [], publishers: [] };
     }
@@ -303,7 +303,7 @@ export class EnhancedPublicAPIDataSource {
       }
 
       return detailedStudios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch detailed Wikipedia data:", error);
       return [];
     }
@@ -321,7 +321,7 @@ export class EnhancedPublicAPIDataSource {
       const processedStudios = this.processDBpediaStudios(developers, limit);
 
       return { developers: processedStudios, games };
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch comprehensive DBpedia data:", error);
       return { developers: [], games: [] };
     }
@@ -488,7 +488,7 @@ export class EnhancedPublicAPIDataSource {
         lastUpdated: new Date(),
         confidence: gameProjects > 0 ? 0.8 : 0.5, // Higher confidence if has game projects
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn(`Error fetching enhanced GitHub org ${orgName}:`, error);
       return null;
     }
@@ -554,7 +554,7 @@ export class EnhancedPublicAPIDataSource {
         lastUpdated: new Date(),
         confidence: 0.6, // Medium confidence for Wikipedia
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn(`Error fetching enhanced Wikipedia page ${title}:`, error);
       return null;
     }

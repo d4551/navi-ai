@@ -167,13 +167,15 @@ export default {
     VoiceFeedbackOverlay,
   },
   setup() {
+    const router = useRouter();
+
     const store = useAppStore();
     const route = useRoute();
-    const router = useRouter();
+    const _router = useRouter();
     const appVersion = computed(() => store.meta?.version || "2.0.0");
     
     // Initialize unified theme system
-    const theme = useUnifiedTheme();
+    const _theme = useUnifiedTheme();
     const unifiedUI = useUnifiedUI();
     const responsive = useResponsive();
     
@@ -235,7 +237,7 @@ export default {
     const isMobile = computed(() => responsive.isMobile.value);
     
     // Keyboard shortcuts for quick navigation
-    const onKeydown = (e) => {
+    const onKeydown = (_e) => {
       try {
         // Ctrl+, => Settings
         if ((e.ctrlKey || e.metaKey) && e.key === ',') {

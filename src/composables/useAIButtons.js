@@ -339,7 +339,7 @@ export function useAIButtons(pageName = '') {
   }))
 
   // Create button props for components
-  const createButtonProps = (config, additionalContext = {}) => ({
+  const createButtonProps = (_config, additionalContext = {}) => ({
     action: config.action,
     variant: config.variant || 'primary',
     size: config.size || 'md',
@@ -351,7 +351,7 @@ export function useAIButtons(pageName = '') {
       ...(config.context ? config.context() : {}),
       ...additionalContext
     },
-    onSuccess: (result) => {
+    onSuccess: (_result) => {
       // AI action completed successfully
       return result
     },

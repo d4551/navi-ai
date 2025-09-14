@@ -43,7 +43,7 @@ export class ExportService {
       }
 
       return results;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Export failed:", error);
       throw error;
     }
@@ -293,7 +293,7 @@ export class ExportService {
 
       const blob = await zip.generateAsync({ type: "blob" });
       return blob;
-    } catch (error) {
+    } catch (_error) {
       logger.error("DOCX export failed:", error);
       throw new Error("Failed to export to DOCX");
     }
@@ -402,7 +402,7 @@ export class ExportService {
 
       const blob = await zip.generateAsync({ type: "blob" });
       return blob;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Plain DOCX export failed:", error);
       throw new Error("Failed to export to DOCX");
     }
@@ -419,7 +419,7 @@ export class ExportService {
       return formatted
         ? JSON.stringify(exportData, null, 2)
         : JSON.stringify(exportData);
-    } catch (error) {
+    } catch (_error) {
       logger.error("JSON export failed:", error);
       throw new Error("Failed to export to JSON");
     }
@@ -548,7 +548,7 @@ export class ExportService {
       }
 
       return markdown;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Markdown export failed:", error);
       throw new Error("Failed to export to Markdown");
     }
@@ -585,7 +585,7 @@ export class ExportService {
 </html>`;
 
       return html;
-    } catch (error) {
+    } catch (_error) {
       logger.error("HTML export failed:", error);
       throw new Error("Failed to export to HTML");
     }
@@ -688,7 +688,7 @@ export class ExportService {
         blob: zipContent,
         filename: `${folderName}.zip`,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Package creation failed:", error);
       throw new Error("Failed to create resume package");
     }
@@ -710,7 +710,7 @@ export class ExportService {
       };
 
       return await QRCode.toDataURL(url, qrOptions);
-    } catch (error) {
+    } catch (_error) {
       logger.error("QR code generation failed:", error);
       throw new Error("Failed to generate QR code");
     }
@@ -733,7 +733,7 @@ export class ExportService {
       const filename = `navi_backup_${format(new Date(), "yyyy-MM-dd_HH-mm-ss")}.json`;
 
       return { blob, filename };
-    } catch (error) {
+    } catch (_error) {
       logger.error("User data export failed:", error);
       throw new Error("Failed to export user data");
     }
@@ -756,7 +756,7 @@ export class ExportService {
 
       saveAs(blob, filename);
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Download failed:", error);
       return false;
     }
@@ -768,7 +768,7 @@ export class ExportService {
       const packageData = await this.createResumePackage(resumeData, formats);
       this.downloadFile(packageData.blob, packageData.filename);
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Package download failed:", error);
       return false;
     }
@@ -778,7 +778,7 @@ export class ExportService {
 // Quick export functions
 export const exportToJSON = (data, filename = "export.json") => {
   return ExportService.downloadFile(
-    ExportService.exportToJSON(data),
+    ExportService.exportToJSON(_data),
     filename,
     "application/json",
   );
