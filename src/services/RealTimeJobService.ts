@@ -32,7 +32,7 @@ class SimpleEmitter {
     return this
   }
 }
-import { canonicalJobService as refactoredJobAPIService } from './CanonicalJobService'
+import { canonicalJobService as refactoredJobAPIService } from './jobs'
 import type { Job, JobFilters } from '@/shared/types/jobs'
 import { logger } from '@/shared/utils/logger'
 import { unifiedStorage } from '@/utils/storage'
@@ -68,7 +68,7 @@ export interface RealTimeJobStats {
 export class RealTimeJobService extends SimpleEmitter {
   private static instance: RealTimeJobService
   private isRunning = false
-  private updateInterval: NodeJS.Timeout | null = null
+  private updateInterval: ReturnType<typeof setInterval> | null = null
   private jobAlerts: Map<string, JobAlert> = new Map()
   private lastSeenJobs: Map<string, Set<string>> = new Map() // alertId -> Set of job IDs
   private readonly UPDATE_INTERVAL = 30 * 60 * 1000 // 30 minutes

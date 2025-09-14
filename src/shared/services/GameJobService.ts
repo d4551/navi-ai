@@ -43,7 +43,7 @@ export class GameJobService {
       if (!config) {
         throw new Error('GameJobService requires configuration on first initialization');
       }
-      GameJobService.instance = new GameJobService(_config);
+      GameJobService.instance = new GameJobService(config);
     }
     return GameJobService.instance;
   }
@@ -79,9 +79,9 @@ export class GameJobService {
 
       return result;
 
-    } catch (error) {
+    } catch (error: any) {
       logger.error('[GameJobService] Failed to search jobs:', error);
-      throw new Error(`Job search failed: ${error.message}`);
+      throw new Error(`Job search failed: ${error?.message || 'Unknown error'}`);
     }
   }
 
@@ -178,9 +178,9 @@ export class GameJobService {
 
       return application;
 
-    } catch (error) {
+    } catch (error: any) {
       logger.error('[GameJobService] Failed to apply to job:', error);
-      throw new Error(`Job application failed: ${error.message}`);
+      throw new Error(`Job application failed: ${error?.message || 'Unknown error'}`);
     }
   }
 
@@ -418,7 +418,7 @@ export class GameJobService {
     trends?: { period: string; value: number }[];
   } | null> {
     try {
-      const cacheKey = `salary-insights-${JSON.stringify(_params)}`;
+      const cacheKey = `salary-insights-${JSON.stringify(params)}`;
       const cached = this.getFromCache<any>(cacheKey);
       
       if (cached) {

@@ -361,7 +361,7 @@ import { ref, onMounted, watch, computed, onUnmounted, defineEmits, defineProps 
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import { jobSourceManager } from '@/services/JobSourceManager'
-import { canonicalJobService as refactoredJobAPIService } from '@/services/CanonicalJobService'
+import { canonicalJobService as refactoredJobAPIService } from '@/services/jobs'
 import { COMPANY_BOARDS } from '@/services/providers/companyBoards'
 import {
   getJobSources,

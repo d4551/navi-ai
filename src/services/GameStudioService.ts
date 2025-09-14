@@ -5,6 +5,7 @@
 
 import { StudioRepository } from '@/modules/db/repositories/studios';
 import type { GameStudio, GameGenre, StudioType, Platform } from '@/shared/types/jobs';
+import type { StudioData } from '@/modules/db/repositories/studios';
 import { logger } from '@/shared/utils/logger';
 
 export interface GameStudioFilters {
@@ -31,9 +32,6 @@ export interface StudioSearchResult {
 }
 
 export class GameStudioService {
-  searchStudios(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
   private static instance: GameStudioService;
 
   private constructor() {}
@@ -45,6 +43,26 @@ export class GameStudioService {
     return GameStudioService.instance;
   }
 
+  // Back-compat simple search by name/description/technologies
+  async searchStudios(query: string): Promise<GameStudio[]> {
+    try {
+      const q = (query || '').trim().toLowerCase()
+      if (!q) {
+        return (Object.values(await StudioRepository.getAll()) as StudioData[]).map(s => this.toGameStudio(s))
+      }
+      const all = Object.values(await StudioRepository.getAll()) as StudioData[]
+      return all.filter(studio =>
+        studio.name.toLowerCase().includes(q) ||
+        (studio.description || '').toLowerCase().includes(q) ||
+        (studio.technologies || []).some(t => t.toLowerCase().includes(q)) ||
+        (studio.games || []).some(g => g.toLowerCase().includes(q))
+      ).map(s => this.toGameStudio(s))
+    } catch (error) {
+      logger.error('Error searching studios:', error)
+      return []
+    }
+  }
+
   // Get all studios with optional filtering and pagination
   async getStudios(
     filters?: GameStudioFilters,
@@ -52,7 +70,7 @@ export class GameStudioService {
     limit: number = 20
   ): Promise<StudioSearchResult> {
     try {
-      let studios = Object.values(await StudioRepository.getAll());
+      let studios = Object.values(await StudioRepository.getAll()) as StudioData[];
 
       // Apply filters
       if (filters) {
@@ -65,7 +83,7 @@ export class GameStudioService {
       // Pagination
       const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
-      const paginatedStudios = studios.slice(startIndex, endIndex);
+      const paginatedStudios = studios.slice(startIndex, endIndex).map(s => this.toGameStudio(s));
 
       return {
         studios: paginatedStudios,
@@ -92,7 +110,8 @@ export class GameStudioService {
   // Get a single studio by ID
   async getStudioById(id: string): Promise<GameStudio | null> {
     try {
-      return await StudioRepository.getById(id);
+      const s = await StudioRepository.getById(id);
+      return s ? this.toGameStudio(s as StudioData) : null;
     } catch (error) {
       logger.error('Error getting studio by ID:', error);
       return null;
@@ -106,11 +125,12 @@ export class GameStudioService {
 
       if (!studio) {
         // Try fuzzy matching for better UX
-        const allStudios = Object.values(await StudioRepository.getAll());
-        return this.fuzzyMatchStudio(companyName, allStudios);
+        const allStudios = Object.values(await StudioRepository.getAll()) as StudioData[];
+        const match = this.fuzzyMatchStudio(companyName, allStudios);
+        return match ? this.toGameStudio(match) : null;
       }
 
-      return studio;
+      return studio ? this.toGameStudio(studio as StudioData) : null;
     } catch (error) {
       logger.error('Error finding studio by company name:', error);
       return null;
@@ -126,7 +146,7 @@ export class GameStudioService {
       for (const id of favoriteIds) {
         const studio = await StudioRepository.getById(id);
         if (studio) {
-          favorites.push(studio);
+          favorites.push(this.toGameStudio(studio as StudioData));
         }
       }
 
@@ -173,7 +193,8 @@ export class GameStudioService {
         return await this.getPopularStudios(limit);
       }
 
-      return await StudioRepository.getSuggestions(query, limit);
+      const suggestions = await StudioRepository.getSuggestions(query, limit);
+      return suggestions.map(s => this.toGameStudio(s as StudioData));
     } catch (error) {
       logger.error('Error getting suggestions:', error);
       return [];
@@ -200,15 +221,15 @@ export class GameStudioService {
       } = criteria;
 
       // Get initial results
-      let results = Object.values(await StudioRepository.getAll());
+      let results = Object.values(await StudioRepository.getAll()) as StudioData[];
 
       // Apply text search
       if (query) {
         results = results.filter(studio =>
           studio.name.toLowerCase().includes(query.toLowerCase()) ||
           (studio.description && studio.description.toLowerCase().includes(query.toLowerCase())) ||
-          studio.technologies.some(tech => tech.toLowerCase().includes(query.toLowerCase())) ||
-          studio.games.some(game => game.toLowerCase().includes(query.toLowerCase()))
+          (studio.technologies || []).some(tech => tech.toLowerCase().includes(query.toLowerCase())) ||
+          (studio.games || []).some(game => game.toLowerCase().includes(query.toLowerCase()))
         );
       }
 
@@ -224,7 +245,7 @@ export class GameStudioService {
       // Pagination
       const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
-      const paginatedResults = results.slice(startIndex, endIndex);
+      const paginatedResults = results.slice(startIndex, endIndex).map(s => this.toGameStudio(s));
 
       return {
         studios: paginatedResults,
@@ -241,7 +262,8 @@ export class GameStudioService {
   // Get studios by category (enterprise, large, medium, small, indie)
   async getStudiosByCategory(category: string): Promise<GameStudio[]> {
     try {
-      return await StudioRepository.getByCategory(category);
+      const res = await StudioRepository.getByCategory(category);
+      return res.map(s => this.toGameStudio(s as StudioData));
     } catch (error) {
       logger.error('Error getting studios by category:', error);
       return [];
@@ -251,7 +273,8 @@ export class GameStudioService {
   // Get studios by region
   async getStudiosByRegion(region: string): Promise<GameStudio[]> {
     try {
-      return await StudioRepository.getByRegion(region);
+      const res = await StudioRepository.getByRegion(region);
+      return res.map(s => this.toGameStudio(s as StudioData));
     } catch (error) {
       logger.error('Error getting studios by region:', error);
       return [];
@@ -261,7 +284,7 @@ export class GameStudioService {
   // Get popular/recommended studios
   async getPopularStudios(limit: number = 10): Promise<GameStudio[]> {
     try {
-      const allStudios = Object.values(await StudioRepository.getAll());
+      const allStudios = Object.values(await StudioRepository.getAll()) as StudioData[];
 
       // Sort by size and founded date (established large studios tend to be more popular)
       return allStudios
@@ -274,7 +297,8 @@ export class GameStudioService {
           // Secondary sort: older/more established first
           return (a.founded || 2025) - (b.founded || 2025);
         })
-        .slice(0, limit);
+        .slice(0, limit)
+        .map(s => this.toGameStudio(s));
     } catch (error) {
       logger.error('Error getting popular studios:', error);
       return [];
@@ -284,12 +308,13 @@ export class GameStudioService {
   // Get recently founded studios (trending)
   async getRecentStudios(limit: number = 10): Promise<GameStudio[]> {
     try {
-      const allStudios = Object.values(await StudioRepository.getAll());
+      const allStudios = Object.values(await StudioRepository.getAll()) as StudioData[];
 
       return allStudios
         .filter(studio => studio.founded && studio.founded >= 2015)
         .sort((a, b) => (b.founded || 0) - (a.founded || 0))
-        .slice(0, limit);
+        .slice(0, limit)
+        .map(s => this.toGameStudio(s));
     } catch (error) {
       logger.error('Error getting recent studios:', error);
       return [];
@@ -308,25 +333,25 @@ export class GameStudioService {
     growthRate: number;
   }> {
     try {
-      const studios = Object.values(await StudioRepository.getAll());
+      const studios = Object.values(await StudioRepository.getAll()) as StudioData[];
 
       // Count by type
       const byType: Record<string, number> = {};
-      studios.forEach(studio => {
+      studios.forEach((studio: any) => {
         byType[studio.type] = (byType[studio.type] || 0) + 1;
       });
 
       // Count by region
       const byRegion: Record<string, number> = {};
-      studios.forEach(studio => {
-        const region = this.categorizeRegion(studio.location);
+      studios.forEach((studio: any) => {
+        const region = this.categorizeRegion(studio.location || studio.headquarters || '');
         byRegion[region] = (byRegion[region] || 0) + 1;
       });
 
       // Most common technologies
       const techCounts: Record<string, number> = {};
       studios.forEach(studio => {
-        studio.technologies.forEach(tech => {
+        (studio.technologies || []).forEach(tech => {
           techCounts[tech] = (techCounts[tech] || 0) + 1;
         });
       });
@@ -343,13 +368,13 @@ export class GameStudioService {
 
       // Aggregate additional analytics
       const totalOpenPositions = studios.reduce(
-        (sum, studio) => sum + (studio.openPositions || 0),
+        (sum, studio: any) => sum + (studio.openPositions || studio.hiringData?.openPositions || 0),
         0
       );
 
       const salarySamples = studios
-        .filter(s => s.averageSalary)
-        .map(s => (s.averageSalary!.min + s.averageSalary!.max) / 2);
+        .filter((s: any) => s.averageSalary)
+        .map((s: any) => ((s.averageSalary!.min + s.averageSalary!.max) / 2));
       const averageSalary =
         salarySamples.length > 0
           ? salarySamples.reduce((a, b) => a + b, 0) / salarySamples.length
@@ -390,28 +415,29 @@ export class GameStudioService {
 
   // Private helper methods
 
-  private async applyFilters(studios: GameStudio[], filters: GameStudioFilters): Promise<GameStudio[]> {
-    let filtered = [...studios];
+  private async applyFilters(studios: StudioData[], filters: GameStudioFilters): Promise<StudioData[]> {
+    let filtered: StudioData[] = [...studios];
 
     if (filters.type) {
-      filtered = filtered.filter(studio => studio.type === filters.type);
+      filtered = filtered.filter(studio => (studio as any).type === filters.type);
     }
 
     if (filters.location) {
       const locationQuery = filters.location.toLowerCase();
       filtered = filtered.filter(studio =>
-        studio.location.toLowerCase().includes(locationQuery)
+        (studio as any).location?.toLowerCase().includes(locationQuery) ||
+        (studio as any).headquarters?.toLowerCase().includes(locationQuery)
       );
     }
 
     if (filters.size) {
-      filtered = filtered.filter(studio => studio.size === filters.size);
+      filtered = filtered.filter(studio => (studio as any).size === filters.size);
     }
 
     if (filters.technologies && filters.technologies.length > 0) {
       filtered = filtered.filter(studio =>
         filters.technologies!.every(tech =>
-          studio.technologies.some(studioTech =>
+          (studio.technologies || []).some(studioTech =>
             studioTech.toLowerCase().includes(tech.toLowerCase())
           )
         )
@@ -419,11 +445,11 @@ export class GameStudioService {
     }
 
     if (filters.remoteWork !== undefined) {
-      filtered = filtered.filter(studio => !!studio.culture.remoteFirst === filters.remoteWork);
+      filtered = filtered.filter(studio => !!(studio as any).culture?.remoteFirst === filters.remoteWork);
     }
 
     if (filters.hasGames) {
-      filtered = filtered.filter(studio => studio.games.length > 0);
+      filtered = filtered.filter(studio => (studio.games || []).length > 0);
     }
 
     if (filters.genres && filters.genres.length > 0) {
@@ -436,7 +462,7 @@ export class GameStudioService {
     return filtered;
   }
 
-  private sortStudios(studios: GameStudio[], sortBy: string, sortOrder: 'asc' | 'desc'): GameStudio[] {
+  private sortStudios(studios: StudioData[], sortBy: string, sortOrder: 'asc' | 'desc'): StudioData[] {
     return studios.sort((a, b) => {
       let comparison = 0;
 
@@ -448,10 +474,10 @@ export class GameStudioService {
           comparison = this.extractStudioSize(a) - this.extractStudioSize(b);
           break;
         case 'founded':
-          comparison = (a.founded || 2025) - (b.founded || 2025);
+          comparison = ((a as any).founded || 2025) - ((b as any).founded || 2025);
           break;
         case 'rating':
-          comparison = (a.rating || 0) - (b.rating || 0);
+          comparison = ((a as any).rating || 0) - ((b as any).rating || 0);
           break;
         default:
           return 0;
@@ -461,7 +487,7 @@ export class GameStudioService {
     });
   }
 
-  private async calculateFacets(studios: GameStudio[]): Promise<StudioSearchResult['facets']> {
+  private async calculateFacets(studios: StudioData[]): Promise<StudioSearchResult['facets']> {
     const types: Array<{ type: StudioType; count: number }> = [];
     const locations: Array<{ location: string; count: number }> = [];
     const sizes: Array<{ size: string; count: number }> = [];
@@ -469,7 +495,7 @@ export class GameStudioService {
 
     // Count types
     const typeCounts: Record<string, number> = {};
-    studios.forEach(studio => {
+    studios.forEach((studio: any) => {
       typeCounts[studio.type] = (typeCounts[studio.type] || 0) + 1;
     });
     Object.entries(typeCounts).forEach(([type, count]) => {
@@ -478,8 +504,9 @@ export class GameStudioService {
 
     // Count locations
     const locationCounts: Record<string, number> = {};
-    studios.forEach(studio => {
-      locationCounts[studio.location] = (locationCounts[studio.location] || 0) + 1;
+    studios.forEach((studio: any) => {
+      const loc = studio.location || studio.headquarters || 'Unknown'
+      locationCounts[loc] = (locationCounts[loc] || 0) + 1;
     });
     Object.entries(locationCounts).forEach(([location, count]) => {
       locations.push({ location, count });
@@ -487,7 +514,7 @@ export class GameStudioService {
 
     // Count sizes
     const sizeCounts: Record<string, number> = {};
-    studios.forEach(studio => {
+    studios.forEach((studio: any) => {
       sizeCounts[studio.size] = (sizeCounts[studio.size] || 0) + 1;
     });
     Object.entries(sizeCounts).forEach(([size, count]) => {
@@ -497,7 +524,7 @@ export class GameStudioService {
     // Count technologies
     const techCounts: Record<string, number> = {};
     studios.forEach(studio => {
-      studio.technologies.forEach(tech => {
+      (studio.technologies || []).forEach(tech => {
         techCounts[tech] = (techCounts[tech] || 0) + 1;
       });
     });
@@ -511,7 +538,7 @@ export class GameStudioService {
     return { types, locations, sizes, technologies };
   }
 
-  private fuzzyMatchStudio(companyName: string, studios: GameStudio[]): GameStudio | null {
+  private fuzzyMatchStudio(companyName: string, studios: StudioData[]): StudioData | null {
     // Simple fuzzy matching for company names
     const normalized = companyName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -547,10 +574,10 @@ export class GameStudioService {
     return false;
   }
 
-  private extractStudioGenres(studio: GameStudio): string[] {
+  private extractStudioGenres(studio: StudioData): string[] {
     const genres: string[] = [];
     const desc = (studio.description || '').toLowerCase();
-    const games = studio.games.join(' ').toLowerCase();
+    const games = (studio.games || []).join(' ').toLowerCase();
 
     if (desc.includes('rpg') || games.includes('rpg')) genres.push('RPG');
     if (desc.includes('action') || games.includes('action')) genres.push('Action');
@@ -564,8 +591,8 @@ export class GameStudioService {
     return genres;
   }
 
-  private extractStudioSize(studio: GameStudio): number {
-    const sizeStr = studio.size.toLowerCase();
+  private extractStudioSize(studio: StudioData): number {
+    const sizeStr = String((studio as any).size || '').toLowerCase();
     const match = sizeStr.match(/(\d+)/);
     if (match) return parseInt(match[1]);
     if (sizeStr.includes('enterprise')) return 5000;
@@ -598,6 +625,27 @@ export class GameStudioService {
     }
 
     return 'Other';
+  }
+
+  private toGameStudio(s: StudioData): GameStudio {
+    return {
+      id: (s as any).id,
+      name: (s as any).name,
+      logo: (s as any).logo,
+      website: (s as any).website,
+      location: (s as any).location || (s as any).headquarters || 'Unknown',
+      size: (s as any).size || 'Unknown',
+      type: (s as any).type || 'Unknown',
+      founded: (s as any).founded,
+      description: (s as any).description || '',
+      games: (s as any).games || [],
+      technologies: (s as any).technologies || [],
+      culture: (s as any).culture || { workStyle: '', values: [], benefits: [], diversity: false, remoteFirst: false },
+      openPositions: (s as any).hiringData?.openPositions || (s as any).openPositions || 0,
+      averageSalary: (s as any).averageSalary,
+      rating: (s as any).rating,
+      benefits: (s as any).benefits || []
+    }
   }
 }
 

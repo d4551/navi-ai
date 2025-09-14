@@ -260,7 +260,7 @@ export function useGameStudios() {
     // Data
     studios: readonly(studios),
     loading: readonly(loading),
-    error: readonly(_error),
+    error: readonly(error),
     total: readonly(total),
     facets: readonly(facets),
     favorites: readonly(favorites),
