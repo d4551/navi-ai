@@ -102,7 +102,7 @@ export interface SharedPortfolioLink {
   });
 
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const _error = ref<string | null>(null);
 
   // Computed
   const activeShares = computed(() =>
@@ -180,7 +180,7 @@ export interface SharedPortfolioLink {
 
       logger.info("Portfolio share created:", shareUrl);
       return shareLink;
-    } catch (err) {
+    } catch (_err) {
       error.value =
         err instanceof Error ? err.message : "Failed to create share";
       logger.error("Failed to create portfolio share:", err);

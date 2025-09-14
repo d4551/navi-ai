@@ -163,7 +163,7 @@ export function useDocumentActions(kind, ctx) {
           });
         }
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error generating document actions:", error);
       // Return minimal fallback actions
       return [

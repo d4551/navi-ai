@@ -299,7 +299,7 @@ export class AIInterviewPreparationService {
           if (application) {
             context += `. The role involves: ${application.requirements?.join(", ") || "game development"}`;
           }
-        } catch (error) {
+        } catch (_error) {
           console.warn("Could not load application context:", error);
         }
       }
@@ -320,7 +320,7 @@ Return only the questions, one per line.`;
       return response
         .split("\n")
         .filter((line: string) => line.trim())
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to generate contextual questions:", error);
       return [];
     }
@@ -414,7 +414,7 @@ Provide feedback in JSON format:
             missedKeyPoints: feedbackData.missedKeyPoints || [],
             responseTime: feedbackData.responseTime || "appropriate",
           });
-        } catch (parseError) {
+        } catch (_parseError) {
           // Fallback to basic feedback if JSON parsing fails
           questionFeedbacks.push({
             questionId: response.questionId,
@@ -424,7 +424,7 @@ Provide feedback in JSON format:
             responseTime: "appropriate",
           });
         }
-      } catch (error) {
+      } catch (_error) {
         console.error("Failed to generate feedback for question:", error);
         questionFeedbacks.push({
           questionId: response.questionId,
@@ -598,7 +598,7 @@ Provide feedback in JSON format:
       const transaction = this.db!.transaction(["analytics"], "readwrite");
       const store = transaction.objectStore("analytics");
       store.put(analyticsData);
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to update analytics:", error);
     }
   }

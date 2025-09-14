@@ -189,18 +189,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
+
+import {} from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   show: boolean;
   template: any;
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: [];
   select: [string];
 }>();

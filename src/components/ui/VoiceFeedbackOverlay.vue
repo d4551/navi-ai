@@ -66,7 +66,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, computed, watch } from 'vue';
+
+import { computedwatch } from "vue";
 import { enhancedAudioService } from "@/shared/services/EnhancedAudioService";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
@@ -82,7 +84,7 @@ interface Props {
   compact?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   showVoiceHints: false,
   enableVisualFeedback: true,
   position: "top-right",

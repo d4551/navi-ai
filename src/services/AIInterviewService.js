@@ -9,7 +9,7 @@ class AIInterviewService {
     this.responseHistory = [];
   }
 
-  async startInterviewSession(config) {
+  async startInterviewSession(_config) {
     try {
       // Initialize AI service if not already initialized
       try {
@@ -18,7 +18,7 @@ class AIInterviewService {
           enableContextPersistence: true,
           enableRealTime: false,
         });
-      } catch (error) {
+      } catch (_error) {
         throw new Error(
           "AI service not initialized. Please configure your API key in settings.",
         );
@@ -51,7 +51,7 @@ class AIInterviewService {
       };
 
       // Generate initial question set with AI
-      const initialQuestions = await this.generateQuestionSet(config);
+      const initialQuestions = await this.generateQuestionSet(_config);
       sessionData.questions = initialQuestions;
 
       this.activeSession = sessionData;
@@ -61,7 +61,7 @@ class AIInterviewService {
         success: true,
         session: sessionData,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start AI interview session:", error);
       return {
         success: false,
@@ -70,7 +70,7 @@ class AIInterviewService {
     }
   }
 
-  async generateQuestionSet(config) {
+  async generateQuestionSet(_config) {
     const systemInstructions = `You are an expert gaming industry interviewer conducting interviews for ${config.roleType} positions. Generate a comprehensive interview question set that follows industry best practices.
 
 CONTEXT:
@@ -141,10 +141,10 @@ Return JSON in this exact format:
       }
 
         ? questions
-        : this.getFallbackQuestions(config);
-    } catch (error) {
+        : this.getFallbackQuestions(_config);
+    } catch (_error) {
       logger.error("Failed to generate question set:", error);
-      return this.getFallbackQuestions(config);
+      return this.getFallbackQuestions(_config);
     }
   }
 
@@ -204,7 +204,7 @@ Return JSON:
           isFollowUp: true,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate follow-up question:", error);
       return { success: false, error: error.message };
     }
@@ -272,7 +272,7 @@ Actual Duration: ${responseData.duration}s
         success: true,
         analysis,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to analyze response:", error);
       return {
         success: false,
@@ -377,7 +377,7 @@ Return JSON:
       });
 
       return JSON.parse(response.content || response);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate interview summary:", error);
       return this.getFallbackSummary(session);
     }
@@ -407,7 +407,7 @@ Return JSON:
       });
 
       return JSON.parse(response.content || response);
-    } catch (error) {
+    } catch (_error) {
       logger.debug("Real-time coaching failed:", error);
       return null;
     }
@@ -430,7 +430,7 @@ Return JSON:
     return { success: false, error: "Session not found" };
   }
 
-  getFallbackQuestions(config) {
+  getFallbackQuestions(_config) {
     const gamingQuestionSets = {
       intro: [
         {
@@ -682,7 +682,7 @@ Return JSON:
       return { success: false, error: "Invalid session" };
     }
     const result = await this.analyzeResponse(
-      response,
+      _response,
       this.activeSession.currentQuestion,
       this.activeSession.config,
     );
@@ -733,7 +733,7 @@ Return JSON:
           };
         }
       }
-    } catch (e) {
+    } catch (_e) {
       console.warn(
         "[Interview] getInterviewStats failed, using fallback:",
         e?.message || e,
@@ -774,7 +774,7 @@ Return JSON:
           }));
         }
       }
-    } catch (e) {
+    } catch (_e) {
       console.warn(
         "[Interview] getInterviewHistory failed, using fallback:",
         e?.message || e,

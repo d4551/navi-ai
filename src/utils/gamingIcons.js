@@ -106,7 +106,7 @@ export const ICON_SEQUENCES = {
 };
 
 // Dynamic icon getter with context awareness
-  switch (context) {
+  switch (_context) {
     case "navigation":
       return (
         GAMING_ICONS[item.toUpperCase().replace("-", "_")] || "mdi-gamepad"

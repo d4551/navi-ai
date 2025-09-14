@@ -78,7 +78,7 @@ export const DATA_SOURCE_CONFIGS: Record<string, DataSourceConfig> = {
 }
 
   return Object.values(DATA_SOURCE_CONFIGS)
-    .filter((config) => config.enabled)
+    .filter((_config) => config.enabled)
     .sort((a, b) => b.priority - a.priority);
 }
 

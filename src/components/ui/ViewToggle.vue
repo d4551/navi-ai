@@ -14,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
@@ -23,7 +25,7 @@ interface ToggleOption {
   label?: string;
 }
 
-const props = withDefaults(
+const _props = withDefaults(
   defineProps<{
     modelValue: string;
     options?: ToggleOption[];
@@ -53,7 +55,7 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update:modelValue": [value: string];
 }>();
 

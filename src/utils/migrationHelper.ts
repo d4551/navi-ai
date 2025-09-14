@@ -63,7 +63,7 @@ export class MigrationHelper {
             await unifiedDataService.set(namespace, key, parsedValue);
             result.migratedItems++;
           }
-        } catch (error) {
+        } catch (_error) {
           const errorMsg = `Failed to migrate ${key}: ${error instanceof Error ? error.message : "Unknown error"}`;
           result.errors.push(errorMsg);
           logger.warn(errorMsg);
@@ -72,7 +72,7 @@ export class MigrationHelper {
 
       result.message = `Successfully migrated ${result.migratedItems} items to UnifiedDataService`;
       logger.info(result.message);
-    } catch (error) {
+    } catch (_error) {
       result.success = false;
       result.message = `Migration failed: ${error instanceof Error ? error.message : "Unknown error"}`;
       result.errors.push(result.message);
@@ -126,7 +126,7 @@ export class MigrationHelper {
               newApplication,
             );
             result.migratedItems++;
-          } catch (error) {
+          } catch (_error) {
             const errorMsg = `Failed to migrate application for ${oldApp.company}: ${error instanceof Error ? error.message : "Unknown error"}`;
             result.errors.push(errorMsg);
             logger.warn(errorMsg);
@@ -136,7 +136,7 @@ export class MigrationHelper {
 
       result.message = `Successfully migrated ${result.migratedItems} job applications`;
       logger.info(result.message);
-    } catch (error) {
+    } catch (_error) {
       result.success = false;
       result.message = `Job application migration failed: ${error instanceof Error ? error.message : "Unknown error"}`;
       result.errors.push(result.message);
@@ -176,12 +176,12 @@ export class MigrationHelper {
           result.message = "AI service returned an empty response";
           result.errors.push("Empty AI response");
         }
-      } catch (error) {
+      } catch (_error) {
         result.success = false;
         result.message = `AI service test error: ${error instanceof Error ? error.message : "Unknown error"}`;
         result.errors.push(result.message);
       }
-    } catch (error) {
+    } catch (_error) {
       result.success = false;
       result.message = `AI service migration test failed: ${error instanceof Error ? error.message : "Unknown error"}`;
       result.errors.push(result.message);
@@ -240,7 +240,7 @@ export class MigrationHelper {
 
       result.message = `Cleaned up ${result.migratedItems} legacy data items`;
       logger.info(result.message);
-    } catch (error) {
+    } catch (_error) {
       result.success = false;
       result.message = `Cleanup failed: ${error instanceof Error ? error.message : "Unknown error"}`;
       result.errors.push(result.message);
@@ -292,7 +292,7 @@ export class MigrationHelper {
           "Configure AI service API key for enhanced features",
         );
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Error checking migration status:", error);
       status.recommendations.push("Check system configuration for any issues");
     }
@@ -364,7 +364,7 @@ export class MigrationHelper {
       } else {
         result.message = `All ${result.migratedItems} services validated successfully`;
       }
-    } catch (error) {
+    } catch (_error) {
       result.success = false;
       result.message = `Validation failed: ${error instanceof Error ? error.message : "Unknown error"}`;
       result.errors.push(result.message);

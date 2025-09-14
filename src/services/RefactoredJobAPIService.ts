@@ -221,7 +221,7 @@ export class RefactoredJobAPIService {
             );
           }
         }
-      } catch (error) {
+      } catch (_error) {
         const responseTime = Date.now() - startTime;
         logger.error(`Provider verification failed for ${p.name}:`, error);
 
@@ -305,7 +305,7 @@ export class RefactoredJobAPIService {
       this.setCache(cacheKey, result);
 
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error in job search:", error, "RefactoredJobAPIService");
       return {
         jobs: [],

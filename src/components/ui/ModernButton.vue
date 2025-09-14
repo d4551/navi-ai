@@ -22,6 +22,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed, useSlots, useAttrs } from "vue";
 import UnifiedButton from "./UnifiedButton.vue";
 
@@ -44,7 +46,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   variant: "primary",
   size: "md",
   icon: undefined,

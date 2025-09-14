@@ -93,11 +93,13 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 import { ref, defineEmits } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-const emit = defineEmits(["close", "apply"]);
+const _emit = defineEmits(["close", "apply"]);
 
 const selectedTemplate = ref(null);
 

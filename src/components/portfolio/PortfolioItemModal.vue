@@ -364,13 +364,15 @@
 </template>
 
 <script>
+import { ref, computed, watch } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 import { ref, computed, watch, defineEmits, defineProps } from "vue";
 import FormControls from "@/components/ui/FormControls.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const props = defineProps({
+const _props = defineProps({
   visible: {
     type: Boolean,
     default: false,
@@ -385,7 +387,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["close", "save"]);
+const _emit = defineEmits(["close", "save"]);
 
 const skillInput = ref("");
 const uploadMode = ref("file");

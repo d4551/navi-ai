@@ -6,7 +6,7 @@ import { logger } from "@/shared/utils/logger";
 
 export function useJobs(initial: Partial<JobFilters> = {}) {
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const _error = ref<string | null>(null);
   const jobs = ref<Job[]>([]);
   const sources = ref<string[]>([]);
   const total = ref(0);

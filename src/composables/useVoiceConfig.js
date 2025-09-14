@@ -1,4 +1,4 @@
-import { ref, computed, watch } from "vue";
+import {computed, watch } from "vue";
 import { logger } from "@/shared/utils/logger";
 
 // Reactive voice settings store
@@ -74,7 +74,7 @@ const APP_SETTINGS_KEY = "app-settings";
 
     logger.debug("Voice settings loaded:", voiceSettings.value);
     return true;
-  } catch (error) {
+  } catch (_error) {
     logger.error("Failed to load voice settings:", error);
     return false;
   }
@@ -128,7 +128,7 @@ const APP_SETTINGS_KEY = "app-settings";
 
     logger.debug("Voice settings saved");
     return true;
-  } catch (error) {
+  } catch (_error) {
     logger.error("Failed to save voice settings:", error);
     return false;
   }

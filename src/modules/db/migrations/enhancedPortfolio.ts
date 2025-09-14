@@ -21,6 +21,7 @@ export interface PortfolioMigrationState {
     const migrationState = await unifiedStorage.get(
       "portfolio-migration-state",
     );
+    if (migrationState?.completed) {
       logger.info("Enhanced portfolio migration already completed");
       return;
     }
@@ -51,12 +52,13 @@ export interface PortfolioMigrationState {
 
     await unifiedStorage.set("portfolio-migration-state", newMigrationState);
     logger.info("Enhanced portfolio system migration completed successfully");
-  } catch (error) {
+  } catch (_error) {
     logger.error("Enhanced portfolio migration failed:", error);
     throw error;
   }
 }
 
+async function initializePortfolioTables() {
   logger.info("Initializing enhanced portfolio database tables...");
 
   // Enhanced portfolio structure
@@ -243,7 +245,7 @@ export interface PortfolioMigrationState {
     } else {
       logger.info("No existing portfolio data found to migrate");
     }
-  } catch (error) {
+  } catch (_error) {
     logger.error("Portfolio data migration failed:", error);
     throw error;
   }

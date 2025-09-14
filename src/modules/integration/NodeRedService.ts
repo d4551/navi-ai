@@ -139,12 +139,12 @@ class NodeRedService {
 
       this.ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        this.handleWebSocketMessage(data);
+        this.handleWebSocketMessage(_data);
       };
 
-      this.ws.onerror = (error) => {
+      this.ws.onerror = (_error) => {
         logger.error("Node-RED WebSocket error:", error);
-        reject(error);
+        reject(_error);
       };
 
       this.ws.onclose = () => {
@@ -423,7 +423,7 @@ class NodeRedService {
         this.customNodes.set(node.name, node);
         console.log(`[✓] Custom node registered: ${node.name}`);
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn(
         `[WARNING] Failed to register custom node ${node.name}:`,
         error,
@@ -449,7 +449,7 @@ class NodeRedService {
                 msg.payload = result.error;
                 node.send([null, msg]);
               }
-            } catch (error) {
+            } catch (_error) {
               msg.payload = error.message;
               node.send([null, msg]);
             }
@@ -481,7 +481,7 @@ class NodeRedService {
               };
               
               node.send(msg);
-            } catch (error) {
+            } catch (_error) {
               msg.payload = error.message;
               node.error(error.message, msg);
             }

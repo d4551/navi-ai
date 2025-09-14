@@ -52,11 +52,11 @@ const glassScrollNav: Directive<HTMLElement, void> = {
       setTimeout(update, 50);
     };
 
-    left.addEventListener("click", (e) => {
+    left.addEventListener("click", (_e) => {
       e.stopPropagation();
       scrollByDir(-1);
     });
-    right.addEventListener("click", (e) => {
+    right.addEventListener("click", (_e) => {
       e.stopPropagation();
       scrollByDir(1);
     });
@@ -89,7 +89,7 @@ const glassScrollNav: Directive<HTMLElement, void> = {
       dragging = false;
       el.classList.remove("is-dragging");
       try {
-        if (e) el.releasePointerCapture((e as any).pointerId);
+        if (_e) el.releasePointerCapture((e as any).pointerId);
       } catch {}
     };
 

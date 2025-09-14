@@ -236,7 +236,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { ref, computed} from "vue";
 import { useAppStore } from "@/stores/app";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -245,7 +247,7 @@ import AppIcon from "@/components/ui/AppIcon.vue";
 
 // Initialize composables
 const store = useAppStore();
-const theme = (() => {
+const _theme = (() => {
   try {
     return useUnifiedTheme();
   } catch {

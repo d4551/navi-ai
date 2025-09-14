@@ -31,7 +31,7 @@ export class WorkingStudioDatabase {
         const stored = localStorage.getItem(this.STORAGE_KEY);
         if (stored) {
           const data = JSON.parse(stored);
-          for (const [id, studio] of Object.entries(data)) {
+          for (const [id, studio] of Object.entries(_data)) {
             this.studios.set(id, studio as WorkingStudio);
           }
           logger.info(`Loaded ${this.studios.size} studios from localStorage`);
@@ -39,7 +39,7 @@ export class WorkingStudioDatabase {
       }
 
       this.initialized = true;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to load from localStorage, starting fresh:", error);
       this.initialized = true;
     }
@@ -49,9 +49,9 @@ export class WorkingStudioDatabase {
     try {
       if (typeof localStorage !== "undefined") {
         const data = Object.fromEntries(this.studios.entries());
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(_data));
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to persist to localStorage:", error);
     }
   }
@@ -84,7 +84,7 @@ export class WorkingStudioDatabase {
           );
           this.studios.set(working.id, working);
           result.imported++;
-        } catch (error) {
+        } catch (_error) {
           result.errors.push(`Gaming studio ${studio.name}: ${error.message}`);
         }
       }
@@ -94,7 +94,7 @@ export class WorkingStudioDatabase {
         try {
           this.studios.set(working.id, working);
           result.imported++;
-        } catch (error) {
+        } catch (_error) {
         }
       }
 
@@ -108,7 +108,7 @@ export class WorkingStudioDatabase {
             result.imported++;
           }
           logger.info(`Added ${steamStudios.length} studios from Steam`);
-        } catch (error) {
+        } catch (_error) {
           result.errors.push(`Steam integration failed: ${error.message}`);
           logger.warn("Steam integration failed:", error);
         }
@@ -123,7 +123,7 @@ export class WorkingStudioDatabase {
         `Working studio import completed: ${result.imported} successful, ${result.errors.length} errors`,
       );
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Studio import failed:", error);
       result.errors.push(`System error: ${error.message}`);
       return result;
@@ -198,7 +198,7 @@ export class WorkingStudioDatabase {
       }
 
       return workingStudios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Steam fetch failed in WorkingStudioDatabase:", error);
       return [];
     }

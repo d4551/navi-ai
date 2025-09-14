@@ -518,20 +518,10 @@
 </template>
 
 <script>
+import { ref, computed, watch, onMounted, nextTick, inject, onUnmounted, getCurrentInstance } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
-
-import {
-  ref,
-  computed,
-  watch,
-  nextTick,
-  inject,
-  onMounted,
-  onUnmounted,
-  getCurrentInstance,
-} from "vue";
-
-import { useRoute } from "vue-router";
 import { useToast } from "@/composables/useToast";
 import { useUnifiedUI } from "@/composables/useUnifiedUI";
 import { useIconReplacement } from "@/composables/useIconReplacement";
@@ -554,6 +544,8 @@ export default {
   name: "AIFairyAssistant",
   components: { AppIcon },
   setup() {
+    const router = useRouter();
+
     const route = useRoute();
     const store = useAppStore();
     const vmInstance = getCurrentInstance();
@@ -674,7 +666,7 @@ export default {
       } catch {}
     }
 
-    function onInputEnter(e) {
+    function onInputEnter(_e) {
       // Shift+Enter inserts newline, Enter alone sends
       if (e.shiftKey) {
         return; // default prevented by handler signature
@@ -885,7 +877,7 @@ export default {
         }
 
         return success;
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to initialize AI services:", error);
         toast.error("Failed to initialize AI services. Check your API key.");
         return false;
@@ -912,7 +904,7 @@ export default {
         await captureScreenshot(
           "Analyze this screenshot and provide insights. What do you see that might be relevant for career development or gaming industry work?",
         );
-      } catch (error) {
+      } catch (_error) {
         logger.error("Screenshot capture failed:", error);
         toast.error(
           "Screenshot capture failed. Check screen sharing permissions.",
@@ -1128,7 +1120,7 @@ export default {
             await speakMessage(fallbackMessage.content, fallbackMessage.id);
           }
         }
-      } catch (error) {
+      } catch (_error) {
         logger.error("Fairy chat error:", error);
 
         // Enhanced error handling with specific error messages
@@ -1190,7 +1182,7 @@ export default {
 
     // Listen for settings updates (e.g., API key added in settings panel)
     try {
-      window.addEventListener("app-settings-updated", async (e) => {
+      window.addEventListener("app-settings-updated", async (_e) => {
         try {
           const detail = e?.detail || {};
           const newKey = detail.geminiApiKey || (await resolveGeminiApiKey());
@@ -1222,7 +1214,7 @@ export default {
         if (currentTranscription.value) {
           userInput.value = currentTranscription.value;
         }
-      } catch (error) {
+      } catch (_error) {
         logger.error("Voice input error:", error);
         isListening.value = false;
         toast.error("Voice input failed. Please check microphone permissions.");
@@ -1251,7 +1243,7 @@ export default {
         if (cameraVideo.value) {
           cameraVideo.value.srcObject = stream;
         }
-      } catch (error) {
+      } catch (_error) {
         logger.error("Camera error:", error);
         toast.error("Camera access denied or not available");
         closeCameraModal();
@@ -1284,7 +1276,7 @@ export default {
           closeCameraModal();
           await nextTick();
           scrollToBottomIfNear();
-        } catch (error) {
+        } catch (_error) {
           logger.error("Image analysis error:", error);
           toast.error("Failed to analyze image");
         }
@@ -1299,7 +1291,7 @@ export default {
       }
     }
 
-    function onCameraModalKeydown(e) {
+    function onCameraModalKeydown(_e) {
       // Trap focus within the camera modal when open
       if (!cameraModalOpen.value) return;
       if (e.key !== "Tab") return;
@@ -1332,7 +1324,7 @@ export default {
       const input = document.createElement("input");
       input.type = "file";
       input.accept = "image/*,.pdf,.doc,.docx";
-      input.onchange = async (e) => {
+      input.onchange = async (_e) => {
         const file = e?.target?.files?.[0];
         if (file) {
           chatMessages.value.push({
@@ -1377,7 +1369,7 @@ export default {
             context: route.path,
             action: action.id,
           });
-          if (result) {
+          if (_result) {
             toast.success(`${action.label} completed!`);
             logger.debug?.("Fairy action result:", result);
           }
@@ -1440,7 +1432,7 @@ export default {
           timestamp: Date.now(),
           type: "user",
         });
-      } catch (error) {
+      } catch (_error) {
         logger.error("Quick AI message error:", error);
         toast.error("Failed to send AI message");
       } finally {
@@ -1519,7 +1511,7 @@ export default {
         // Voice routing preferences debug removed due to import issue
 
         await speak(cleanText, voiceSettings);
-      } catch (error) {
+      } catch (_error) {
         logger.error("TTS error:", error);
         toast.warning("Failed to speak message");
       } finally {
@@ -1643,7 +1635,7 @@ export default {
           speakerDeviceId: appSettings.selectedSpeakerId || "",
           micDeviceId: appSettings.selectedMicId || "",
         });
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to load TTS preferences:", error);
       }
     }
@@ -1692,7 +1684,7 @@ export default {
         toast.success(
           `TTS provider updated to ${ttsSettings.value.provider === "gemini" ? "Google AI (Gemini)" : "System TTS"}`,
         );
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to save TTS settings:", error);
         toast.error("Failed to save TTS settings");
       }
@@ -1707,7 +1699,7 @@ export default {
         localStorage.setItem("app-settings", JSON.stringify(appSettings));
         compactUI.value = Boolean(compact);
         toast.info(`Compact UI ${compactUI.value ? "enabled" : "disabled"}`);
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to save UI settings:", error);
       }
     }
@@ -1808,7 +1800,7 @@ export default {
             lang: appSettings.voiceLang || appSettings.language || "en-US",
           });
         }
-      } catch (error) {
+      } catch (_error) {
         logger.debug("App settings watcher error:", error);
       }
     };
@@ -1917,9 +1909,9 @@ export default {
               segments.push({ type: "strong", text: s.slice(2, -2) });
             } else {
               const emSplit = s.split(/(\*[^*]+\*)/g);
-              emSplit.forEach((e) => {
+              emSplit.forEach((_e) => {
                 if (!e) return;
-                if (/^\*[^*]+\*$/.test(e)) {
+                if (/^\*[^*]+\*$/.test(_e)) {
                   segments.push({ type: "em", text: e.slice(1, -1) });
                 } else {
                   segments.push({ type: "text", text: e });
@@ -1990,7 +1982,7 @@ export default {
 
     // Push-to-talk (hold Space to talk)
     const pttActive = ref(false);
-    async function handleKeydown(e) {
+    async function handleKeydown(_e) {
       try {
         // Ignore typing in inputs/textarea or with modifiers
         const tag =
@@ -2025,7 +2017,7 @@ export default {
       } catch {}
     }
 
-    async function handleKeyup(e) {
+    async function handleKeyup(_e) {
       try {
         if (e.code === "Space" || e.key === " " || e.key === "Spacebar") {
           if (pttActive.value) {
@@ -2061,7 +2053,7 @@ export default {
             );
             appSettingsWatcher(); // Force immediate update
           }
-        } catch (error) {
+        } catch (_error) {
           logger.debug("Error parsing storage change:", error);
         }
       }

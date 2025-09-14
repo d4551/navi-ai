@@ -44,7 +44,7 @@ export function useWebcam(): UseMediaStreamResult {
       stream.value = mediaStream;
       isStreaming.value = true;
       return mediaStream;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to access webcam:", error);
 
       // Handle specific constraint errors and try fallback constraints

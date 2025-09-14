@@ -1,5 +1,5 @@
 
-import { ref, computed, watch, onMounted, onUnmounted } from "vue";
+import { ref, computed, watchonUnmounted } from "vue";
 import { useUnifiedProfile } from "@/composables/useUnifiedProfile";
 import { canonicalJobService } from "@/services/jobs";
 import type { Job, JobFilters } from "@/shared/types/jobs";
@@ -66,6 +66,7 @@ export interface JobSearchFilters extends JobFilters {
   const totalJobs = computed(() => filteredJobs.value.length);
   const gamingJobsCount = computed(
     () =>
+      filteredJobs.value.filter((job) => job.categories?.includes('gaming'))
         .length,
   );
   const averageSalary = computed(() => {
@@ -119,7 +120,7 @@ export interface JobSearchFilters extends JobFilters {
       logger.info(
         `Job search completed: ${allJobs.length} total jobs, ${filteredJobs.value.length} after filtering`,
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Job search failed:", error);
       state.value.error =
         error instanceof Error ? error.message : "Job search failed";
@@ -131,7 +132,7 @@ export interface JobSearchFilters extends JobFilters {
   const searchRefactoredJobs = async (filters: JobSearchFilters) => {
     try {
       return await refactoredJobService.searchJobs(filters);
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Refactored service search failed:", error);
       return {
         jobs: [],
@@ -334,7 +335,7 @@ export interface JobSearchFilters extends JobFilters {
       if (saved && Array.isArray(saved)) {
         savedJobs.value = saved;
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to load saved jobs:", error);
     }
   };
@@ -342,7 +343,7 @@ export interface JobSearchFilters extends JobFilters {
   const persistSavedJobs = async () => {
     try {
       await unifiedStorage.setItem("saved-jobs", savedJobs.value);
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to persist saved jobs:", error);
     }
   };
@@ -351,7 +352,7 @@ export interface JobSearchFilters extends JobFilters {
   const getProviderStatus = async () => {
     try {
       return refactoredJobService.getProviderStatus();
-    } catch (e) {
+    } catch (_e) {
       logger.warn("Provider status unavailable:", e);
       return [];
     }
@@ -360,7 +361,7 @@ export interface JobSearchFilters extends JobFilters {
   const refreshProviders = () => {
     try {
       refactoredJobService.clearCache();
-    } catch (e) {
+    } catch (_e) {
       logger.warn("Provider cache clear failed (non-critical):", e);
     }
   };

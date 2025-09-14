@@ -22,11 +22,11 @@ export interface ExportData {
 export class JobExportService {
   async exportJobs(data: ExportData, opts: ExportOptions) {
     const name = opts.filename || this.fileName(opts.format);
-    if (opts.format === "csv") return this.toCSV(data, name, opts);
-    if (opts.format === "excel") return this.toExcel(data, name, opts);
-    if (opts.format === "pdf") return this.toPDF(data, name, opts);
-    if (opts.format === "json") return this.toJSON(data, name, opts);
-    if (opts.format === "ics") return this.toICS(data, name, opts);
+    if (opts.format === "csv") return this.toCSV(_data, name, opts);
+    if (opts.format === "excel") return this.toExcel(_data, name, opts);
+    if (opts.format === "pdf") return this.toPDF(_data, name, opts);
+    if (opts.format === "json") return this.toJSON(_data, name, opts);
+    if (opts.format === "ics") return this.toICS(_data, name, opts);
   }
 
   private toCSV(data: ExportData, filename: string, o: ExportOptions) {

@@ -224,7 +224,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref, computedonUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
@@ -247,7 +250,7 @@ interface Props {
   showUserMenu?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   variant: "default",
   pageTitle: undefined,
   pageSubtitle: undefined,
@@ -259,7 +262,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   search: [query: string];
   voiceCommand: [];
   aiAssistant: [];

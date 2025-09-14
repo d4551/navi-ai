@@ -28,13 +28,16 @@ class PerformanceMonitor {
     if (typeof PerformanceObserver !== "undefined") {
       try {
         // Largest Contentful Paint (LCP)
+        let pendingLcp = 0;
         const finalizeLcp = () => {
+          if (pendingLcp > 0) {
             this.recordMetric("lcp", Math.round(pendingLcp));
           }
         };
 
         const lcpObserver = new PerformanceObserver((entryList) => {
           const entries = entryList.getEntries();
+          const lastEntry = entries[entries.length - 1];
           if (lastEntry && typeof lastEntry.startTime === "number") {
             pendingLcp = lastEntry.startTime;
           }
@@ -54,6 +57,7 @@ class PerformanceMonitor {
           entries.forEach((entry) => {
             if (!entry.hadRecentInput) {
               // Log detailed CLS information for debugging
+              if (entry.value > 0.1) {
                 console.debug("CLS Entry details:", {
                   value: entry.value,
                   startTime: entry.startTime,
@@ -109,10 +113,10 @@ class PerformanceMonitor {
           ) {
             logger.warn("No supported performance entry types found");
           }
-        } catch (error) {
+        } catch (_error) {
           logger.warn("Performance Observer not fully supported:", error);
         }
-      } catch (error) {
+      } catch (_error) {
         console.warn("Failed to setup performance monitoring:", error);
       }
     } else {
@@ -139,6 +143,8 @@ class PerformanceMonitor {
     this.metrics[type].push(metric);
 
     // Limit stored metrics to prevent memory issues
+    if (this.metrics[type].length > 100) {
+      this.metrics[type] = this.metrics[type].slice(-50);
     }
 
     // Log significant performance issues
@@ -148,11 +154,16 @@ class PerformanceMonitor {
   // Check performance thresholds and warn
   checkThresholds(type, value) {
     const thresholds = {
+      lcp: 2500, // 2.5 seconds
+      fid: 100,  // 100 milliseconds
+      cls: 0.1   // 0.1 cumulative layout shift
     };
 
     // Add debouncing for CLS to avoid excessive warnings
     if (type === "cls") {
       const now = Date.now();
+      if (this.lastClsWarning && now - this.lastClsWarning < 1000) {
+        return;
       }
       this.lastClsWarning = now;
     }
@@ -202,7 +213,7 @@ class PerformanceMonitor {
       performance.clearMeasures(operationName);
 
       return measure.duration;
-    } catch (error) {
+    } catch (_error) {
       // Only log actual unexpected errors, not missing marks
       if (!error.message.includes("does not exist")) {
         logger.warn("Failed to measure operation:", operationName, error);
@@ -274,7 +285,7 @@ class PerformanceMonitor {
     this.observers.forEach((observer) => {
       try {
         observer.disconnect();
-      } catch (error) {
+      } catch (_error) {
         logger.warn("Failed to disconnect observer:", error);
       }
     });

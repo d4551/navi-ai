@@ -162,7 +162,7 @@
         <AppIcon name="mdi-alert-circle-outline" class="rgb-text-red" />
         <span>Error</span>
       </div>
-      <p class="error-message">{{ error }}</p>
+      <p class="error-message">{{ _error }}</p>
       <UnifiedButton
         variant="glass"
         size="sm"
@@ -176,14 +176,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted, onUnmounted } from "vue";
+import { ref, watch, onMounted, nextTick } from 'vue';
+
+import { ref, watch, nextTickonUnmounted } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { useMediaStreamMux } from "@/composables/useMediaStreamMux";
 import { useAppStore } from "@/stores/app";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Define emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "stream-started": [stream: MediaStream, type?: "webcam" | "screen"];
   "stream-stopped": [];
   error: [message: string];
@@ -202,7 +204,7 @@ const {
 
 const loading = ref(false);
 const loadingType = ref<"webcam" | "screen" | null>(null);
-const error = ref<string | null>(null);
+const _error = ref<string | null>(null);
 const webcamPreview = ref<HTMLVideoElement>();
 const screenPreview = ref<HTMLVideoElement>();
 
@@ -251,7 +253,7 @@ async function enumerateDevices() {
       selectedCameraId.value = videoInputs.value[0].deviceId;
     if (!selectedMicId.value && audioInputs.value[0])
       selectedMicId.value = audioInputs.value[0].deviceId;
-  } catch (e) {
+  } catch (_e) {
     // ignore
   }
 }
@@ -283,7 +285,7 @@ const toggleWebcam = async () => {
         emit("stream-started", webcam.stream.value as any, "webcam");
       }
     }
-  } catch (err) {
+  } catch (_err) {
     const errorMessage =
       err instanceof Error ? err.message : "Failed to access webcam";
     error.value = errorMessage;
@@ -310,7 +312,7 @@ const toggleScreenCapture = async () => {
         emit("stream-started", screenCapture.stream.value as any, "screen");
       }
     }
-  } catch (err) {
+  } catch (_err) {
     const errorMessage =
       err instanceof Error ? err.message : "Failed to capture screen";
     error.value = errorMessage;

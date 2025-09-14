@@ -157,7 +157,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import {computedonUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { useEnhancedNavigation } from "@/composables/useEnhancedNavigation";
 import { useToast } from "@/composables/useToast";
@@ -165,14 +168,16 @@ import IconButton from "@/components/ui/IconButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   compact: {
     type: Boolean,
     default: false,
   },
   showActions: {
     type: Boolean,
-    default: true,
+    default: true,,
+    default: () => []
+  
   },
   showShare: {
     type: Boolean,
@@ -184,7 +189,9 @@ const props = defineProps({
   },
   homeIcon: {
     type: String,
-    default: "mdi-home",
+    default: "mdi-home",,
+    default: ''
+  
   },
   homeText: {
     type: String,
@@ -196,7 +203,9 @@ const props = defineProps({
   },
   separatorIcon: {
     type: String,
-    default: "mdi-chevron-right",
+    default: "mdi-chevron-right",,
+    default: ''
+  
   },
   maxMobileItems: {
     type: Number,
@@ -231,7 +240,7 @@ const shareCurrentPage = async () => {
         title: document.title,
         url: window.location.href,
       });
-    } catch (error) {
+    } catch (_error) {
       if (error.name !== "AbortError") {
         copyCurrentUrl();
       }
@@ -245,7 +254,7 @@ const copyCurrentUrl = async () => {
   try {
     await navigator.clipboard.writeText(window.location.href);
     toast.success("URL copied to clipboard");
-  } catch (error) {
+  } catch (_error) {
     // Fallback for older browsers
     const textArea = document.createElement("textarea");
     textArea.value = window.location.href;
@@ -254,7 +263,7 @@ const copyCurrentUrl = async () => {
     try {
       document.execCommand("copy");
       toast.success("URL copied to clipboard");
-    } catch (err) {
+    } catch (_err) {
       toast.error("Failed to copy URL");
     } finally {
       document.body.removeChild(textArea);

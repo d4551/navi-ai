@@ -5,7 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue';
+
+import {} from "vue";
 
 interface Props {
   gap?: "xs" | "sm" | "md" | "lg";
@@ -18,7 +20,7 @@ interface Props {
   stackOnMobile?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   gap: "sm",
   align: "center",
   justify: "start",

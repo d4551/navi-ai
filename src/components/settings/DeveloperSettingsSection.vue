@@ -300,7 +300,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch, defineEmits, defineProps } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { refcomputed, watch, defineEmits, defineProps } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { useToast } from "@/composables/useToast";
 import ThemeToggle from "@/components/ThemeToggle.vue";
@@ -308,7 +310,7 @@ import { version } from "vue";
 import { getAppVersion } from "@/utils/version";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const props = defineProps({
+const _props = defineProps({
   settings: {
     type: Object,
     required: true,
@@ -319,7 +321,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "save",
   "reset-all",
   "export-debug",
@@ -397,7 +399,7 @@ const saveSettings = async () => {
   try {
     emit("save");
     toast.success("Developer settings saved successfully!");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to save developer settings");
     console.error("Save settings error:", error);
   } finally {

@@ -143,7 +143,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { ref, computedwatch } from "vue";
 import { useToast } from "@/composables/useToast";
 
 // Components
@@ -264,7 +266,7 @@ const _handleProfileEnhancedSuggestion = async (suggestion: any) => {
       default:
         console.log("Unknown profile suggestion type:", suggestion.type);
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to handle profile enhanced suggestion:", error);
     toast.error("Failed to process AI suggestion");
   }
@@ -313,7 +315,7 @@ const importFromProfile = async () => {
     }
 
     toast.success("Profile data imported successfully");
-  } catch (error) {
+  } catch (_error) {
     console.error("Profile import failed:", error);
     toast.error("Failed to import profile data");
   } finally {
@@ -326,7 +328,7 @@ const syncProfileData = async () => {
     profileImporting.value = true;
     await unifiedProfile.forceSync();
     toast.success("Profile synced successfully");
-  } catch (error) {
+  } catch (_error) {
     console.error("Profile sync failed:", error);
     toast.error("Failed to sync profile data");
   } finally {
@@ -393,7 +395,7 @@ const _aiEnhanceFromProfile = async () => {
       console.log("AI Suggestions:", suggestionsResult.suggestions);
       // You could show these in a modal or sidebar
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("AI profile enhancement failed:", error);
     toast.error("AI enhancement failed");
   }
@@ -492,7 +494,7 @@ onMounted(async () => {
 
     // Set up auto-save watchers
     setupAutoSave();
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to initialize document manager:", error);
     toast.error("Failed to load document data");
   }
@@ -512,7 +514,7 @@ const loadDocumentDrafts = async () => {
       const parsed = JSON.parse(coverLetterDraft);
       updateDocumentData("cover-letter", parsed);
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load drafts:", error);
   }
 };
@@ -524,7 +526,7 @@ const initializeAIFeatures = async () => {
       type: "initialize",
       documentType: activeDocumentType.value,
     });
-  } catch (error) {
+  } catch (_error) {
     console.error("AI initialization failed:", error);
   }
 };

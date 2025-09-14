@@ -775,6 +775,8 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+
 import { ref, computed } from "vue";
 import { useAppStore } from "@/stores/app";
 import { useToast } from "@/composables/useToast";
@@ -786,7 +788,7 @@ import WorkflowSteps from "@/components/ui/WorkflowSteps.vue";
 import { useAchievementTracker } from "@/composables/useAchievementTracker";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   resumeData: {
     type: Object,
     required: true,
@@ -806,7 +808,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "update:resumeData",
   "update:currentStep",
   "request-ai-assistance",
@@ -1077,7 +1079,7 @@ const importFromProfile = () => {
 
     // Track achievement for profile import
     trackDocumentAchievement("profile_import");
-  } catch (e) {
+  } catch (_e) {
     console.error("Profile import error:", e);
     toast.error("Failed to import profile details");
   }

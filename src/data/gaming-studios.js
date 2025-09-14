@@ -298,7 +298,7 @@ export const GAMING_STUDIOS = [
   {
     id: "cd-projekt-red",
     name: "CD Projekt RED",
-    description:
+    description: "Polish video game developer known for The Witcher series and Cyberpunk 2077",
     location: "Warsaw, Poland",
     headquarters: "Warsaw, Poland",
     logoPath: "cd-projekt-red-logo.svg",

@@ -1,4 +1,4 @@
-import { ref, nextTick, onMounted, onUnmounted } from "vue";
+import { ref, nextTickonUnmounted } from "vue";
 
 export function useAnimations() {
   const prefersReducedMotion = ref(false);
@@ -9,7 +9,7 @@ export function useAnimations() {
     if (typeof window === "undefined") return;
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     prefersReducedMotion.value = !!mediaQuery.matches;
-    const handleChange = (e) => (prefersReducedMotion.value = !!e.matches);
+    const handleChange = (_e) => (prefersReducedMotion.value = !!e.matches);
     mediaQuery.addEventListener?.("change", handleChange);
     onUnmounted(() => mediaQuery.removeEventListener?.("change", handleChange));
   });
@@ -231,7 +231,7 @@ export function useAnimations() {
     const fn = animationQueue.value.shift();
     try {
       await fn();
-    } catch (e) {
+    } catch (_e) {
       console.warn("Animation error:", e);
     }
     await nextTick();

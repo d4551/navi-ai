@@ -179,7 +179,7 @@ interface UseAICoverLetterReturn {
   const keyPoints = ref<string[]>([]);
   const personalizations = ref<string[]>([]);
   const suggestions = ref<Record<string, any>>({});
-  const error = ref<string | null>(null);
+  const _error = ref<string | null>(null);
 
   // Generation history for comparison
   const generationHistory = ref<GenerationHistoryEntry[]>([]);

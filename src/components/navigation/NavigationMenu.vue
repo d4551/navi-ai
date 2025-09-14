@@ -376,8 +376,8 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useAppStore } from "@/stores/app";
 // import { useEnhancedNavigation } from '@/composables/useEnhancedNavigation' // Temporarily removed
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
@@ -400,13 +400,13 @@ defineProps({
 
 // Emits
 // Include 'show-help' to allow parent listeners without Vue extraneous-event warnings
-const emit = defineEmits(["toggle-collapse", "navigate", "show-help"]);
+const _emit = defineEmits(["toggle-collapse", "navigate", "show-help"]);
 
 // Composables
 const route = useRoute();
-const router = useRouter();
+const _router = useRouter();
 const store = useAppStore();
-const theme = useUnifiedTheme();
+const _theme = useUnifiedTheme();
 
 // Defensive computed wrappers so template never crashes if theme is unavailable
 const themeIcon = computed(() => {

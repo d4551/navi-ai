@@ -10,7 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue';
+
+import {} from "vue";
 import { useUnifiedUI } from "@/composables/useUnifiedUI";
 
 interface Props {
@@ -19,7 +21,7 @@ interface Props {
   interactive?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   variant: "default",
   size: "md",
   interactive: false,

@@ -198,7 +198,9 @@ export default {
         portfolioItems: 0,
         profileCompletion: 0,
         skillsAssessment: 0,
-        interviewReadiness: 0,
+        interviewReadiness: 0,,
+    default: () => ({})
+  
       }),
     },
   },

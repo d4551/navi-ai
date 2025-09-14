@@ -43,8 +43,8 @@ export interface QueryResult<T> {
   table: string,
   data: Partial<T>,
 ): string {
-  const columns = Object.keys(data).join(", ");
-  const values = Object.values(data)
+  const columns = Object.keys(_data).join(", ");
+  const values = Object.values(_data)
     .map((v) => `'${v}'`)
     .join(", ");
   return `INSERT INTO ${table} (${columns}) VALUES (${values})`;
@@ -54,7 +54,7 @@ export interface QueryResult<T> {
   id: string,
   data: Partial<T>,
 ): string {
-  const setClause = Object.entries(data)
+  const setClause = Object.entries(_data)
     .map(([key, value]) => `${key} = '${value}'`)
     .join(", ");
   return `UPDATE ${table} SET ${setClause} WHERE id = '${id}'`;

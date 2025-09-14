@@ -58,7 +58,7 @@ export type MultiTurnSession = {
   const isListening = ref(false);
   const isProcessing = ref(false);
   const transcription = ref("");
-  const error = ref<string | null>(null);
+  const _error = ref<string | null>(null);
 
   // Session stats
   const sessionStats = reactive({
@@ -71,14 +71,16 @@ export type MultiTurnSession = {
   );
 
   const sessionDurationFormatted = computed(() => {
+    return '0:00'; // Placeholder implementation
   });
 
   // Session duration timer
   let durationTimer: number | null = null;
 
+  const initialize = async (
     apiKey: string,
     initialConfig: Partial<RealTimeConfig> = {},
-  ) {
+  ) => {
     try {
       const mergedConfig = { ...config, ...initialConfig };
       const service = LiveMultimediaAIService.getInstance();
@@ -117,8 +119,8 @@ export type MultiTurnSession = {
           sessionStats.messageCount++;
           sessionStats.lastActivity = res.timestamp;
         },
-        onError: (e) => {
-          const em = e instanceof Error ? e.message : String(e);
+        onError: (_e) => {
+          const em = e instanceof Error ? e.message : String(_e);
           error.value = em;
           logger.error("Live multimedia error:", e);
         },
@@ -134,7 +136,7 @@ export type MultiTurnSession = {
       isInitialized.value = true;
       error.value = null;
       logger.info("Real-time chat initialized (LiveMultimedia backend)");
-    } catch (err) {
+    } catch (_err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to initialize";
       error.value = errorMessage;
@@ -186,7 +188,7 @@ export type MultiTurnSession = {
       startDurationTimer();
       error.value = null;
       logger.info("Session started:", session.id);
-    } catch (err) {
+    } catch (_err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to start session";
       error.value = errorMessage;
@@ -216,7 +218,7 @@ export type MultiTurnSession = {
         durationTimer = null;
       }
       logger.info("Session stopped");
-    } catch (err) {
+    } catch (_err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to stop session";
       error.value = errorMessage;
@@ -243,7 +245,7 @@ export type MultiTurnSession = {
       const res = await service.sendMessage(text.trim());
       // assistant response is added via callback; ensure stats update if needed
       sessionStats.lastActivity = res.timestamp;
-    } catch (err) {
+    } catch (_err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to send message";
       error.value = errorMessage;
@@ -314,7 +316,7 @@ export type MultiTurnSession = {
     isProcessing: readonly(isProcessing),
     volumeLevel: readonly(volumeLevel),
     transcription: readonly(transcription),
-    error: readonly(error),
+    error: readonly(_error),
     sessionStats: readonly(sessionStats),
 
     // Computed

@@ -16,7 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue';
+
+import {} from "vue";
 
 interface HeaderAction {
   key?: string;
@@ -45,7 +47,7 @@ interface Props {
   priority?: "primary" | "secondary" | "tertiary";
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   actions: () => [],
   layout: "horizontal",
   alignment: "end",
@@ -55,7 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
   priority: "secondary",
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   actionClick: [action: HeaderAction, index: number];
 }>();
 

@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import { computed } from "vue";
 
 export default {
@@ -157,7 +159,7 @@ export default {
     },
   },
   emits: ["backdrop-click"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const loadingClasses = computed(() => [
       "mui-loading",
       {

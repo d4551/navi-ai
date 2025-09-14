@@ -301,6 +301,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import { ref, computed, watch } from "vue";
 import { formatDateRange } from "@/utils/date";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -347,7 +349,7 @@ interface CoverLetterData {
   };
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   resumeData: ResumeData;
   coverLetterData?: CoverLetterData;
   documentType: "resume" | "cover-letter";
@@ -356,7 +358,7 @@ const props = defineProps<{
   jobDescription?: string;
 }>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "template-change": [templateId: string];
   "toggle-floating": [];
 }>();

@@ -160,6 +160,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
@@ -169,9 +172,9 @@ import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 const route = useRoute();
-const router = useRouter();
+const _router = useRouter();
 const store = useAppStore();
-const theme = (() => {
+const _theme = (() => {
   try {
     return useUnifiedTheme();
   } catch {

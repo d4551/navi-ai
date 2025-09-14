@@ -236,9 +236,9 @@ interface Props {
   analysisResults: AnalysisResults | null;
 }
 
-const props = defineProps<Props>();
+const _props = defineProps<Props>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "request-analysis": [];
   "apply-suggestion": [suggestion: any];
 }>();

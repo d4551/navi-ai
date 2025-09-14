@@ -137,6 +137,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 import { computed, defineEmits, defineProps } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
@@ -173,15 +175,21 @@ const _props = defineProps({
   },
   errorText: {
     type: String,
-    default: "",
+    default: "",,
+    default: ''
+  
   },
   helpIcon: {
     type: String,
-    default: "",
+    default: "",,
+    default: ''
+  
   },
   labelIcon: {
     type: String,
-    default: "",
+    default: "",,
+    default: ''
+  
   },
   required: {
     type: Boolean,

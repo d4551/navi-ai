@@ -54,7 +54,7 @@ import { logger } from "@/shared/utils/logger";
     }
 
     return subscription;
-  } catch (err) {
+  } catch (_err) {
     logger.error("Failed to establish push subscription", err, "PushService");
     return null;
   }

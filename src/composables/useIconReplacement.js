@@ -5,6 +5,7 @@ import {
   hasReplaceableEmojis,
 } from "@/utils/iconMapping";
 
+export function useIconReplacement() {
   const getIcon = (emoji, fallback = "mdi-help-circle") => {
     return getIconForEmoji(emoji, fallback);
   };

@@ -34,7 +34,7 @@ export const studioDataMigration: Migration = {
           `[WARNING] Studio data validation issues: ${validation.issues.join(", ")}`,
         );
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Studio data migration failed:", error);
       throw error;
     }

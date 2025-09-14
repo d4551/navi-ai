@@ -186,13 +186,15 @@ export default {
     VoiceFeedbackOverlay,
   },
   setup() {
+    const router = useRouter();
+
     const store = useAppStore();
     const route = useRoute();
-    const router = useRouter();
+    const _router = useRouter();
     const appVersion = computed(() => store.meta?.version || "2.0.0");
 
     // Initialize unified theme system
-    const theme = useUnifiedTheme();
+    const _theme = useUnifiedTheme();
     const unifiedUI = useUnifiedUI();
     const responsive = useResponsive();
 
@@ -222,7 +224,7 @@ export default {
     onMounted(() => {
       responsive.initializeResponsive();
       try {
-        gamificationEvents.on("xp_awarded", (e) => {
+        gamificationEvents.on("xp_awarded", (_e) => {
           gfx.value?.triggerXPGain?.(
             e.amount,
             e.reason || "Action",
@@ -262,7 +264,7 @@ export default {
     const isMobile = computed(() => responsive.isMobile.value);
 
     // Keyboard shortcuts for quick navigation
-    const onKeydown = (e) => {
+    const onKeydown = (_e) => {
       try {
         // Ctrl+, => Settings
         if ((e.ctrlKey || e.metaKey) && e.key === ",") {
@@ -502,11 +504,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-  .app-sidebar {
-    position: sticky;
-  }
+  position: sticky;
 }
 
 .app-sidebar.sidebar-collapsed {
@@ -515,33 +513,39 @@ export default {
 
 .app-sidebar.sidebar-collapsed.sidebar-hovered,
 .app-sidebar.sidebar-expanded {
-  z-index: var(
-    --z-navigation-hover
+  z-index: var(--z-navigation-hover);
 }
 
 .app-sidebar.sidebar-animating {
+  transition: width var(--transition-duration-sidebar);
 }
 
 .app-sidebar.sidebar-collapsed:not(.sidebar-hovered) .navigation-menu {
+  opacity: 0;
 }
 
 .app-sidebar.sidebar-collapsed.sidebar-hovered .navigation-menu {
+  opacity: 1;
 }
 
 @keyframes contentSlideIn {
   from {
-    transform: translateX(
+    transform: translateX(-100%);
   }
   to {
+    transform: translateX(0);
   }
 }
 
+@media (max-width: 768px) {
   .app-sidebar {
     position: fixed;
   }
 
   .app-sidebar.sidebar-visible {
+    transform: translateX(0);
   }
+}
 
   .app-sidebar.sidebar-collapsed.sidebar-hovered {
     width: var(--page-sidebar-collapsed-width);

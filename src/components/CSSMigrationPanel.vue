@@ -178,7 +178,7 @@
             Errors
           </h4>
           <ul class="error-list">
-            <li v-for="(error, index) in lastReport.errors" :key="index">
+            <li v-for="(_error, index) in lastReport.errors" :key="index">
               <strong>{{ error.element }}:</strong> {{ error.error }}
             </li>
           </ul>
@@ -231,9 +231,11 @@
 </template>
 
 <script>
+import { ref, onMounted, reactive } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-import { ref, reactive, onMounted, defineExpose } from "vue";
+import { ref, reactivedefineExpose } from "vue";
 import { useToast } from "@/composables/useToast";
 import CSSMigrationTool, { quickMigrations } from "@/utils/css-migration-tool";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -271,7 +273,7 @@ const runMigration = async (migrationFn, message) => {
   loadingMessage.value = message;
 
   try {
-    const report = await migrationFn(options);
+    const report = await migrationFn(_options);
     lastReport.value = report;
 
     if (options.dryRun) {
@@ -283,7 +285,7 @@ const runMigration = async (migrationFn, message) => {
         `Migration complete: ${report.stylesConverted} styles converted`,
       );
     }
-  } catch (error) {
+  } catch (_error) {
     toastError(`Migration failed: ${error.message}`);
     console.error("Migration error:", error);
   } finally {

@@ -32,14 +32,14 @@ export class ProfileSyncTester {
       for (const test of tests) {
         try {
           await test.call(this);
-        } catch (error) {
+        } catch (_error) {
           this.addTestResult(test.name, false, error.message);
         }
       }
 
       this.printTestResults();
       return this.getTestSummary();
-    } catch (error) {
+    } catch (_error) {
       logger.error("Profile sync tests failed to initialize:", error);
       return { success: false, error: error.message };
     }
@@ -90,7 +90,7 @@ export class ProfileSyncTester {
         true,
         "Personal info successfully synced across all contexts",
       );
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -137,7 +137,7 @@ export class ProfileSyncTester {
         true,
         "Skills successfully synced to jobs board system",
       );
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -187,7 +187,7 @@ export class ProfileSyncTester {
         true,
         "Career goals successfully synced to AI system",
       );
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -231,7 +231,7 @@ export class ProfileSyncTester {
         true,
         "Gaming experience successfully synced to studio matching",
       );
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -272,7 +272,7 @@ export class ProfileSyncTester {
       }
 
       this.addTestResult(testName, true, "Portfolio items successfully synced");
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -317,7 +317,7 @@ export class ProfileSyncTester {
         true,
         "Education successfully synced to resume builder",
       );
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -357,7 +357,7 @@ export class ProfileSyncTester {
         true,
         "Settings preferences successfully synced",
       );
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -391,7 +391,7 @@ export class ProfileSyncTester {
         true,
         `Received ${eventsReceived} sync events`,
       );
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -435,7 +435,7 @@ export class ProfileSyncTester {
         true,
         "Batch updates successfully processed",
       );
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -465,7 +465,7 @@ export class ProfileSyncTester {
       }
 
       this.addTestResult(testName, true, "Error handling working correctly");
-    } catch (error) {
+    } catch (_error) {
       this.addTestResult(testName, false, error.message);
     }
   }
@@ -503,7 +503,7 @@ export class ProfileSyncTester {
 
     console.log(`Results: ${passed}/${total} tests passed\n`);
 
-    this.testResults.forEach((result) => {
+    this.testResults.forEach((_result) => {
       console.log(`${status} ${result.test}`);
       console.log(`   ${result.message}`);
       console.log("");

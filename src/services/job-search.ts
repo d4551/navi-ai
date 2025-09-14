@@ -96,7 +96,7 @@ export interface SearchResult {
         studioTypes: [],
       },
     };
-  } catch (error) {
+  } catch (_error) {
     logger.error("Job search failed:", error, "JobSearchService");
     return {
       jobs: [],

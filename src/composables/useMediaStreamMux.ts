@@ -71,7 +71,7 @@ export function useMediaStreamMux(): UseMediaStreamMuxResult {
     if (webcam.isStreaming) {
       webcam.stop();
     }
-    return await screenCapture.start(options);
+    return await screenCapture.start(_options);
   };
 
   const stopAll = () => {

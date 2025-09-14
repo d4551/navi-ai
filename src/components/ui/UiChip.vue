@@ -14,13 +14,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-const props = withDefaults(
+import { computed } from 'vue';
+
+import {} from "vue";
+const _props = withDefaults(
   defineProps<{ classes?: string; closable?: boolean }>(),
   { classes: "", closable: false },
 );
 const closable = props.closable;
-const emit = defineEmits<{ close: [] }>();
+const _emit = defineEmits<{ close: [] }>();
 const mappedClasses = computed(() => {
   const cls = props.classes || "";
   return cls

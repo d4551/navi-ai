@@ -159,6 +159,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import { computed, getCurrentInstance } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
@@ -228,7 +230,7 @@ export default {
     },
   },
   emits: ["update:modelValue", "change", "focus", "blur"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const instance = getCurrentInstance();
 
     const inputId = computed(() =>

@@ -30,6 +30,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { Radar } from "vue-chartjs";
@@ -56,7 +58,7 @@ type SkillInput =
   | string
   | { label?: string; name?: string; skill?: string; value?: number };
 
-const props = withDefaults(defineProps<{ skills?: SkillInput[] }>(), {
+const _props = withDefaults(defineProps<{ skills?: SkillInput[] }>(), {
   skills: () => [],
 });
 

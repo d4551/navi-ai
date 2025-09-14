@@ -21,6 +21,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import { ref, computed, watch } from "vue";
 import { useAIIntegration } from "@/composables/aiIntegration.js";
 import { useAIContext } from "@/composables/useAIContext";
@@ -64,7 +66,7 @@ interface Props {
   targetJob?: any;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   variant: "primary",
   size: "md",
   icon: "mdi-robot-happy",
@@ -78,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
   errorText: "Error",
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   success: [result: any];
   error: [error: string];
   start: [];
@@ -200,8 +202,8 @@ const executeAction = async () => {
         lastResult.value = null;
       }
     }, 3000);
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+  } catch (_error) {
+    const errorMessage = error instanceof Error ? error.message : String(_error);
     lastError.value = errorMessage;
     emit("error", errorMessage);
     logger.error("AI action failed:", error);

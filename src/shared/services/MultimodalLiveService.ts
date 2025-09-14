@@ -64,7 +64,7 @@ export class MultimodalLiveService {
       // Defer audio streamer initialization until playback or streaming starts
 
       logger.info("Multimodal Live Service initialized successfully");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize Multimodal Live Service:", error);
       throw error;
     }
@@ -76,7 +76,7 @@ export class MultimodalLiveService {
         const audioCtx = await audioContext({ id: "multimodal-audio-out" });
         this.audioStreamer = new AudioStreamer(audioCtx);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize audio streamer:", error);
     }
   }
@@ -102,7 +102,7 @@ export class MultimodalLiveService {
     this.client.on("audio", (data: ArrayBuffer) => {
       if (this.audioStreamer && this.isStreaming) {
       }
-      this.callbacks.onAudio?.(data);
+      this.callbacks.onAudio?.(_data);
     });
 
     // Content events
@@ -125,9 +125,9 @@ export class MultimodalLiveService {
     // Error events
     this.client.on("log", (log) => {
       if (log.type.includes("error")) {
-        const error = new Error(log.message);
+        const _error = new Error(log.message);
         logger.error("Multimodal client error:", error);
-        this.callbacks.onError?.(error);
+        this.callbacks.onError?.(_error);
       }
     });
   }
@@ -146,14 +146,14 @@ export class MultimodalLiveService {
 
     try {
       // Update config if provided
-      if (config) {
+      if (_config) {
         this.currentConfig = { ...this.currentConfig, ...config };
       }
 
       await this.client.connect(this.currentConfig);
       this.isConnected = true;
       logger.info("Connected to Multimodal Live API");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to connect to Multimodal Live API:", error);
       throw error;
     }
@@ -169,7 +169,7 @@ export class MultimodalLiveService {
       this.isConnected = false;
       this.isStreaming = false;
       logger.info("Disconnected from Multimodal Live API");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error disconnecting from Multimodal Live API:", error);
       throw error;
     }
@@ -195,7 +195,7 @@ export class MultimodalLiveService {
 
       this.client.send(clientContentMessage);
       logger.debug("Message sent to Multimodal Live API:", message);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to send message:", error);
       throw error;
     }
@@ -231,7 +231,7 @@ export class MultimodalLiveService {
 
       this.isStreaming = true;
       logger.info("Audio stream connected to Multimodal Live API");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to send audio stream:", error);
       throw error;
     }
@@ -252,7 +252,7 @@ export class MultimodalLiveService {
       }
       this.isStreaming = true;
       logger.info("Audio streaming started");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start audio stream:", error);
       throw error;
     }
@@ -297,7 +297,7 @@ export class MultimodalLiveService {
       this.client = null;
       this.callbacks = {};
       logger.info("Multimodal Live Service cleaned up");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error during Multimodal Live Service cleanup:", error);
     }
   }
@@ -330,7 +330,7 @@ export class MultimodalLiveService {
 
       this.client.send(message);
       logger.debug("Image sent to Multimodal Live API");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to send image:", error);
       throw error;
     }
@@ -354,7 +354,7 @@ export class MultimodalLiveService {
         this.stopStream();
         logger.info("Push-to-talk stopped");
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Push-to-talk error:", error);
       throw error;
     }
@@ -392,7 +392,7 @@ export class MultimodalLiveService {
           lastResponse: new Date(),
         },
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Health check failed:", error);
       return {
         status: "degraded",
@@ -415,7 +415,7 @@ export class MultimodalLiveService {
 
         logger.info("Reconnected successfully");
         return;
-      } catch (error) {
+      } catch (_error) {
         attempts++;
 
         if (attempts >= maxAttempts) {

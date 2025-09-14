@@ -133,9 +133,9 @@ class AIUIIntegrationService {
         this.showSuccessNotification(options.successMessage);
       }
 
-      options.onSuccess?.(result);
+      options.onSuccess?.(_result);
       return result;
-    } catch (error) {
+    } catch (_error) {
       const errorObj = error as Error;
 
       // Handle operation cancellation
@@ -239,12 +239,12 @@ class AIUIIntegrationService {
           options.onVideoAnalysis?.(analysis);
         },
 
-        onResponse: (response) => {
+        onResponse: (_response) => {
           this.realTimeState.lastResponse = new Date();
-          options.onResponse?.(response);
+          options.onResponse?.(_response);
         },
 
-        onError: (error) => {
+        onError: (_error) => {
           this.operationState.error = error.message;
           logger.error("Real-time AI error:", error);
 
@@ -266,7 +266,7 @@ class AIUIIntegrationService {
       this.operationState.isLoading = false;
 
       logger.info("Real-time AI initialized successfully");
-    } catch (error) {
+    } catch (_error) {
       this.operationState.error = `Failed to initialize real-time AI: ${(error as Error).message}`;
       this.operationState.isLoading = false;
       throw error;
@@ -282,7 +282,7 @@ class AIUIIntegrationService {
       this.startAudioLevelMonitoring();
 
       this.showSuccessNotification("Audio streaming started");
-    } catch (error) {
+    } catch (_error) {
       this.showErrorNotification(
         `Failed to start audio: ${(error as Error).message}`,
       );
@@ -306,7 +306,7 @@ class AIUIIntegrationService {
 
       this.realTimeState.videoActive = true;
       this.showSuccessNotification("Video streaming started");
-    } catch (error) {
+    } catch (_error) {
       this.showErrorNotification(
         `Failed to start video: ${(error as Error).message}`,
       );
@@ -361,7 +361,7 @@ class AIUIIntegrationService {
             options.sessionId || this.realTimeState.sessionId || "default",
           onChunk: (chunk: string) => {
             fullResponse += chunk;
-            options.onChunk?.(chunk);
+            options.onChunk?.(_chunk);
           },
         });
 
@@ -404,16 +404,16 @@ class AIUIIntegrationService {
         this.operationState.operation = `Processing: ${name}`;
 
         const result = await operation();
-        results.push(result);
+        results.push(_result);
 
         this.operationState.progress = progress;
 
-        options.onOperationComplete?.(result, name);
+        options.onOperationComplete?.(_result, name);
       }
 
       this.operationState.isLoading = false;
       return results;
-    } catch (error) {
+    } catch (_error) {
       this.operationState.isLoading = false;
       this.operationState.error = `Batch operation failed: ${(error as Error).message}`;
       throw error;
@@ -475,7 +475,7 @@ class AIUIIntegrationService {
           results.multimodalService && "Multimodal Service",
         ].filter(Boolean),
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Health check failed:", error);
       results.details.error = (error as Error).message;
     }
@@ -542,7 +542,7 @@ class AIUIIntegrationService {
         await service.cleanup();
         // Re-initialization would need to be handled by the component
         this.showInfoNotification("Attempting to reconnect...");
-      } catch (error) {
+      } catch (_error) {
         logger.error("Auto-reconnect failed:", error);
       }
   }

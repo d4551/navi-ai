@@ -173,7 +173,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive, onUnmounted } from "vue";
+import { ref, onMounted, reactive } from 'vue';
+
+import { refreactive, onUnmounted } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
@@ -186,7 +188,7 @@ withDefaults(defineProps<Props>(), {
 });
 
 // Emits
-const emit = defineEmits(["achievement-unlocked", "level-up", "xp-gained"]);
+const _emit = defineEmits(["achievement-unlocked", "level-up", "xp-gained"]);
 
 // Reactive data
 const showXPGain = ref(false);

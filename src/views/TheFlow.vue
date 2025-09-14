@@ -597,7 +597,10 @@ RGB accents with ultra-wide layout and AI-powered job automation
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { refcomputed, watch } from "vue";
 import { useToast } from "@/composables/useToast";
 import { useRouter } from "vue-router";
 import { useResponsive } from "@/composables/useResponsive";
@@ -796,7 +799,7 @@ const initializeNodeRed = async () => {
       ? "connected"
       : "disconnected";
     await loadFlows();
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to initialize Node-RED:", error);
     nodeRedStatus.value = "error";
   } finally {
@@ -817,7 +820,7 @@ const loadFlows = async () => {
     }
     // Fallback mock
     flows.value = [];
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load flows:", error);
     toast.error("Failed to load flows");
   }
@@ -854,7 +857,7 @@ const createFromTemplate = async (template: any) => {
         toast.success(`Created “${uiFlow.name}” from template`);
         showTemplates.value = false;
         return;
-      } catch (e) {
+      } catch (_e) {
         console.info("Failed to create template in Node-RED, falling back:", e);
       }
     }
@@ -864,7 +867,7 @@ const createFromTemplate = async (template: any) => {
     flows.value = [uiFlow, ...flows.value];
     toast.success(`Created “${uiFlow.name}” (local)`);
     showTemplates.value = false;
-  } catch (e) {
+  } catch (_e) {
     console.error("Template creation failed:", e);
     toast.error("Failed to create flow from template");
   }
@@ -1025,7 +1028,7 @@ const toggleFlow = async (flow: any) => {
     }
     flow.status = stopping ? "stopped" : "running";
     toast.success(stopping ? "Flow stopped" : "Flow started");
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to toggle flow:", error);
     toast.error("Failed to toggle flow");
   }
@@ -1052,7 +1055,7 @@ const runFlow = async (flow: any) => {
         toast.info("No inject node found on this flow");
       }
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to run flow:", error);
     toast.error("Failed to run flow");
   }
@@ -1118,7 +1121,7 @@ const duplicateFlow = async (flow: any, asDraft = false) => {
     };
     flows.value = [copy, ...flows.value];
     toast.success("Flow duplicated (local)");
-  } catch (e) {
+  } catch (_e) {
     console.error("Failed to duplicate flow:", e);
     toast.error("Failed to duplicate flow");
   }
@@ -1189,7 +1192,7 @@ const submitCreateFlow = async () => {
       category: "automation",
       scheduleCron: "",
     };
-  } catch (e) {
+  } catch (_e) {
     console.info("Create in Node-RED failed; adding locally:", e);
     const id = "local-" + Date.now();
     flows.value = [

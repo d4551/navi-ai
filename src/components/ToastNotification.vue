@@ -64,7 +64,9 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref } from 'vue';
+
+import {} from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { reportError } from "@/utils/error";
 import { useToast } from "@/composables/useToast";
@@ -96,7 +98,7 @@ export default {
     const runAction = (toast, action) => {
       try {
         action?.handler?.();
-      } catch (e) {
+      } catch (_e) {
         reportError("toast.action", e, { level: "warn" });
       }
       if (action?.dismiss !== false) {

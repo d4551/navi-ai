@@ -44,8 +44,8 @@ export default abstract class BaseAIProvider {
     const id = `${this.provider}_${Date.now()}`;
 
     if (!this.config?.apiKey) {
-      const error = `${this.provider} API key missing`;
-      logger.error(error, { request }, this.provider);
+      const _error = `${this.provider} API key missing`;
+      logger.error(_error, { request }, this.provider);
       return {
         id,
         requestId: request.id,
@@ -71,7 +71,7 @@ export default abstract class BaseAIProvider {
       if (this.provider === AIProvider.OPENAI) {
       }
 
-      logger.error(error);
+      logger.error(_error);
       return {
         id,
         requestId: request.id,
@@ -89,8 +89,8 @@ export default abstract class BaseAIProvider {
         },
         error,
       };
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
+    } catch (_err) {
+      const _error = err instanceof Error ? err : new Error(String(err));
       return {
         id,
         requestId: request.id,
@@ -177,11 +177,11 @@ export default abstract class BaseAIProvider {
     }
 
     // This should not happen if providers properly override stream()
-    const error = new Error(
+    const _error = new Error(
       `Provider ${this.provider} must override the stream() method`,
     );
     logger.error(`[${this.provider}] ${error.message}`);
-    callbacks.onError?.(error);
+    callbacks.onError?.(_error);
     return null;
   }
 
@@ -234,13 +234,13 @@ export default abstract class BaseAIProvider {
               break;
             }
             try {
-              const json = JSON.parse(data);
-              if (chunk) {
+              const json = JSON.parse(_data);
+              if (_chunk) {
                 fullText += chunk;
                 session.chunkCount++;
-                callbacks.onChunk?.(chunk);
+                callbacks.onChunk?.(_chunk);
               }
-            } catch (e) {
+            } catch (_e) {
               logger.debug("Failed to parse stream chunk", e);
             }
           }
@@ -262,10 +262,10 @@ export default abstract class BaseAIProvider {
             processingTime: Date.now() - session.startTime,
           },
         });
-      } catch (err) {
-        const error = err instanceof Error ? err : new Error(String(err));
+      } catch (_err) {
+        const _error = err instanceof Error ? err : new Error(String(err));
         logger.error(`[${this.provider}] stream error`, error);
-        callbacks.onError?.(error);
+        callbacks.onError?.(_error);
       }
     })();
 

@@ -37,7 +37,7 @@ export class GameJobService {
           "GameJobService requires configuration on first initialization",
         );
       }
-      GameJobService.instance = new GameJobService(config);
+      GameJobService.instance = new GameJobService(_config);
     }
     return GameJobService.instance;
   }
@@ -69,7 +69,7 @@ export class GameJobService {
       }
 
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to search jobs:", error);
       throw new Error(`Job search failed: ${error.message}`);
     }
@@ -93,7 +93,7 @@ export class GameJobService {
       this.setCache(cacheKey, job);
 
       return job;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to get job:", error);
       return null;
     }
@@ -130,7 +130,7 @@ export class GameJobService {
       // Cache for shorter time due to personalization
 
       return recommendations;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to get recommendations:", error);
       return [];
     }
@@ -159,7 +159,7 @@ export class GameJobService {
       this.clearCachePattern(`job-${jobId}`);
 
       return application;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to apply to job:", error);
       throw new Error(`Job application failed: ${error.message}`);
     }
@@ -190,7 +190,7 @@ export class GameJobService {
       this.setCache(cacheKey, applications);
 
       return applications;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to get user applications:", error);
       return [];
     }
@@ -222,7 +222,7 @@ export class GameJobService {
       this.clearCachePattern(`application-${applicationId}`);
 
       return application;
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "[GameJobService] Failed to update application status:",
         error,
@@ -251,7 +251,7 @@ export class GameJobService {
 
       // Clear saved jobs cache
       this.clearCachePattern(`saved-jobs-${userId}`);
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to toggle job save:", error);
       throw error;
     }
@@ -271,7 +271,7 @@ export class GameJobService {
 
       this.setCache(cacheKey, savedJobs);
       return savedJobs;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to get saved jobs:", error);
       return [];
     }
@@ -302,7 +302,7 @@ export class GameJobService {
       // Cache for longer time as trends don't change frequently
 
       return trendingSkills;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to get trending skills:", error);
       return [];
     }
@@ -327,7 +327,7 @@ export class GameJobService {
       // Cache company data for longer time
 
       return company;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to get company:", error);
       return null;
     }
@@ -358,7 +358,7 @@ export class GameJobService {
       this.setCache(cacheKey, companies);
 
       return companies;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to search companies:", error);
       return [];
     }
@@ -376,7 +376,7 @@ export class GameJobService {
     trends?: { period: string; value: number }[];
   } | null> {
     try {
-      const cacheKey = `salary-insights-${JSON.stringify(params)}`;
+      const cacheKey = `salary-insights-${JSON.stringify(_params)}`;
       const cached = this.getFromCache<any>(cacheKey);
 
       if (cached) {
@@ -396,7 +396,7 @@ export class GameJobService {
       // Cache salary data for moderate time
 
       return insights;
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to get salary insights:", error);
       return null;
     }
@@ -414,7 +414,7 @@ export class GameJobService {
       });
 
       logger.info("[GameJobService] Job reported", { jobId, reason });
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to report job:", error);
       throw error;
     }
@@ -445,7 +445,7 @@ export class GameJobService {
       // Cache analytics for moderate time
 
       return analytics;
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "[GameJobService] Failed to get application analytics:",
         error,
@@ -540,7 +540,7 @@ export class GameJobService {
 
       // In a real implementation, send to analytics service
       logger.debug("[GameJobService] Search analytics", analyticsData);
-    } catch (error) {
+    } catch (_error) {
       logger.error("[GameJobService] Failed to track search analytics:", error);
     }
   }

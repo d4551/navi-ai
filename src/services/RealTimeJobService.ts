@@ -230,7 +230,7 @@ export class RealTimeJobService extends SimpleEmitter {
         await this.checkAlert(alert.id);
 
         // Small delay between checks to avoid rate limiting
-      } catch (error) {
+      } catch (_error) {
         logger.error(`Failed to check alert ${alert.name}:`, error);
       }
     }
@@ -293,7 +293,7 @@ export class RealTimeJobService extends SimpleEmitter {
       }
 
       await this.saveAlerts();
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Error checking alert ${alert.name}:`, error);
     }
   }
@@ -388,7 +388,7 @@ export class RealTimeJobService extends SimpleEmitter {
 
       await unifiedStorage.setItem("job-alerts", alertsData);
       await unifiedStorage.setItem("job-alerts-seen", seenJobsData);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to save job alerts:", error);
     }
   }
@@ -417,7 +417,7 @@ export class RealTimeJobService extends SimpleEmitter {
       }
 
       logger.info(`Loaded ${this.jobAlerts.size} job alerts`);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to load job alerts:", error);
     }
   }

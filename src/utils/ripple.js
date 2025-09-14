@@ -1,10 +1,12 @@
 let _initialized = false;
 
+function initializeRipples(options = {}) {
   if (_initialized) return;
   _initialized = true;
   const selector = options.selector || ".ripple-enabled, .gaming-button, .btn";
   const activeClass = options.activeClass || "is-rippling";
 
+  function createRipple(e) {
     const target = e.currentTarget;
     if (!target) return;
 
@@ -42,14 +44,17 @@ let _initialized = false;
         wave.remove();
         target.classList.remove(activeClass);
       }
+    }, 600);
   }
 
+  function bind(el) {
     if (el.__rippleBound) return;
     el.addEventListener("pointerdown", createRipple, { passive: true });
     el.__rippleBound = true;
     el.classList.add("ripple-enabled");
   }
 
+  function scan() {
     document.querySelectorAll(selector).forEach(bind);
   }
 

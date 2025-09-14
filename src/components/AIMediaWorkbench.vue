@@ -302,6 +302,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch, onMounted } from 'vue';
+
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { usePageAssistantContext } from "@/composables/usePageAssistantContext";
 import AIMediaIntegration from "@/components/AIMediaIntegration.vue";
@@ -386,7 +388,7 @@ const modePrompt = computed(() => {
   return [extraPrompt.value.trim(), preset].filter(Boolean).join(" ");
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "session-updated": [
     payload: { responses: number; frames: number; avgConfidence: number },
   ];

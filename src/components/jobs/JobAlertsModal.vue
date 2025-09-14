@@ -370,6 +370,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+
 import { ref, computed, watch } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import UiChip from "@/components/ui/UiChip.vue";
@@ -382,13 +384,13 @@ interface Props {
   alerts: Array<any>;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   show: false,
   alerts: () => [],
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "update:show",
   "alert-created",
   "alert-updated",
@@ -473,7 +475,7 @@ const createAlert = async () => {
     emit("alert-created", alert);
     toastService.success(`Job alert "${alert.name}" created successfully!`);
     resetCreateForm();
-  } catch (error) {
+  } catch (_error) {
     toastService.error("Failed to create alert: " + error.message);
   } finally {
     creating.value = false;

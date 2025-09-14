@@ -246,6 +246,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -277,9 +279,9 @@ interface Props {
   item: PortfolioItem | null;
 }
 
-const props = defineProps<Props>();
+const _props = defineProps<Props>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: [];
   edit: [item: PortfolioItem];
   duplicate: [item: PortfolioItem];
@@ -376,7 +378,7 @@ const shareItem = async () => {
       const text = `${props.item?.title || "Portfolio Item"}: ${props.item?.description || ""}`;
       await navigator.clipboard?.writeText(text);
     }
-  } catch (error) {
+  } catch (_error) {
     console.warn("Share failed:", error);
   }
 };

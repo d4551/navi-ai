@@ -61,7 +61,7 @@ export class JobSearchController {
           searchTime: Date.now() - startTime,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -125,7 +125,7 @@ export class JobSearchController {
           userProfile: (await db.profile?.get()) || {},
         });
         job.matchScore = matchResult.score;
-      } catch (error) {
+      } catch (_error) {
         console.warn("AI matching failed for job:", job.id, error);
         job.matchScore = 0;
       }
@@ -153,7 +153,7 @@ export class ResumeController {
         success: true,
         data: exportData,
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -207,7 +207,7 @@ export class PortfolioController {
         success: true,
         data: exportData,
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -259,7 +259,7 @@ export class AIController {
           processingTime: Date.now() - startTime,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -281,7 +281,7 @@ export class AIController {
         success: true,
         data: response,
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -308,7 +308,7 @@ export class AIController {
         success: true,
         data: response,
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -337,7 +337,7 @@ export class AIController {
         success: true,
         data: response,
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -367,7 +367,7 @@ export class AIController {
         success: true,
         data: response,
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {
@@ -409,7 +409,7 @@ export class ProviderHealthController {
               responseTime: Date.now() - startTime,
               lastChecked: new Date(),
             };
-          } catch (error) {
+          } catch (_error) {
             healthResults[provider] = {
               healthy: false,
               error: error instanceof Error ? error.message : "Unknown error",
@@ -423,7 +423,7 @@ export class ProviderHealthController {
         success: true,
         data: healthResults,
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: {

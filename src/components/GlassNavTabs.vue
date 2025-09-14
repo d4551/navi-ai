@@ -83,9 +83,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref } from "vue";
+import { ref, onMounted } from 'vue';
+
+import {onBeforeUnmount, ref } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
-const props = defineProps({
+const _props = defineProps({
   tabs: {
     type: Array,
     required: true,
@@ -109,7 +111,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:activeTab"]);
+const _emit = defineEmits(["update:activeTab"]);
 
 // Scroll/drag state
 const navRef = ref<HTMLElement | null>(null);

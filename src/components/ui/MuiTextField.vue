@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import { ref, computed, nextTick } from 'vue';
+
 import { computed, ref, nextTick } from "vue";
 import { createId } from "@paralleldrive/cuid2";
 
@@ -89,7 +91,7 @@ export default {
     ariaDescribedby: { type: String, default: "" },
   },
   emits: ["update:modelValue", "blur", "focus", "keydown"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const inputRef = ref(null);
     const isFocused = ref(false);
     const inputId = `mui-input-${createId()}`;

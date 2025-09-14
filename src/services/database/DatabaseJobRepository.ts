@@ -172,7 +172,7 @@ export class DatabaseJobRepository {
               now,
             );
             insertedCount++;
-          } catch (error) {
+          } catch (_error) {
             logger.warn(`Failed to upsert job ${job.title}:`, error);
           }
         }

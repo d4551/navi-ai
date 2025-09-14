@@ -464,20 +464,22 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 import { ref, watch } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import type { ResumeData } from "@/composables/useDocumentManager";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   documentData: ResumeData;
   currentStep: number;
   aiEnabled: boolean;
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update-data": [data: ResumeData];
   "step-change": [step: number];
   "ai-request": [payload: any];

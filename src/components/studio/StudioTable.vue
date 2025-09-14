@@ -128,17 +128,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue';
+
+import {} from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-const props = defineProps<{
+const _props = defineProps<{
   studios: any[];
   favoriteStudios: string[];
   aiScores?: Record<string, number>;
   selectedStudios: string[];
 }>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "toggle-favorite": [studioId: string];
   "toggle-selection": [studioId: string];
   "view-details": [studio: any];

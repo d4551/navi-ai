@@ -26,14 +26,14 @@ interface Props {
   context?: Record<string, any>
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   size: 'sm',
   variant: 'primary',
   disabled: false,
   loading: false,
 })
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   (e: 'click'): void
   (e: 'success', payload: any): void
   (e: 'error', err: any): void
@@ -48,7 +48,7 @@ async function handleClick() {
       context: props.context || {},
       at: new Date().toISOString(),
     })
-  } catch (e) {
+  } catch (_e) {
     emit('error', e)
   }
 }

@@ -225,6 +225,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
+
 import { ref, computed } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import UiChip from "@/components/ui/UiChip.vue";
@@ -237,13 +239,13 @@ interface Props {
   gamingFocus?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   loading: false,
   gamingFocus: true,
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "job-selected",
   "job-applied",
   "job-saved",

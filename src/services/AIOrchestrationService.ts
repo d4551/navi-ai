@@ -35,7 +35,7 @@ class AIOrchestrationService {
         systemInstructions: "You are a helpful career assistant for the gaming industry.",
       });
       return JSON.parse(result.text);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error analyzing user profile with AI:", error);
       return null;
     }

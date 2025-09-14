@@ -1,5 +1,5 @@
 
-import { ref, computed, onMounted, onUnmounted, watch, readonly } from "vue";
+import {computedonUnmounted, watch, readonly } from "vue";
 import { useThrottleFn } from "@vueuse/core";
 import { logger } from "@/shared/utils/logger";
 
@@ -299,7 +299,7 @@ const DEFAULT_CONFIG: ScalingConfig = {
 let globalScalingInstance: ReturnType<typeof useDynamicScaling> | null = null;
 
   if (!globalScalingInstance) {
-    globalScalingInstance = useDynamicScaling(config);
+    globalScalingInstance = useDynamicScaling(_config);
   }
   return globalScalingInstance;
 }

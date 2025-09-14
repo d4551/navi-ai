@@ -655,6 +655,8 @@
   </div>
 </template>
 <script>
+import { ref, computed, watch, nextTick } from 'vue';
+
 import { computed, watch, nextTick, ref } from "vue";
 import { UserRepository } from "@/modules/db/repositories/user";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -686,7 +688,7 @@ export default {
     "ai-suggest-skills",
     "apply-quantified",
   ],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     let theme;
     try {
       theme = useUnifiedTheme();
@@ -828,7 +830,7 @@ export default {
         : [];
       const companies = Array.isArray(props.resume?.experience)
         ? props.resume.experience
-            .map((e) => e.company)
+            .map((_e) => e.company)
             .filter(Boolean)
             .slice(0, 3)
         : [];
@@ -914,7 +916,7 @@ export default {
         a.download = `${props.resume?.personalInfo?.name || getFullName.value || "Resume"}.pdf`;
         a.click();
         URL.revokeObjectURL(url);
-      } catch (e) {
+      } catch (_e) {
         console.warn("Export failed", e);
       } finally {
         element.classList.remove("exporting");
@@ -943,7 +945,7 @@ export default {
         const content =
           document.getElementById("resume-preview")?.innerHTML || "";
         await navigator.clipboard.writeText(content);
-      } catch (e) {
+      } catch (_e) {
         console.warn("Copy failed", e);
       }
     };

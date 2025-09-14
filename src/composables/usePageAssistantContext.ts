@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import {} from "vue";
 import { useRoute } from "vue-router";
 
 export function usePageAssistantContext() {
@@ -23,12 +23,14 @@ export function usePageAssistantContext() {
     }
   }
 
+  function clearPageContext() {
     try {
       state.extra.value = {};
     } catch {
     }
   }
 
+  const buildContextString = (extra = {}) => {
     const ctx = {
       routeName: route.name || "",
       path: (route as any).fullPath || route.path,

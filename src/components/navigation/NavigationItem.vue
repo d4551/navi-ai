@@ -77,12 +77,15 @@
 </template>
 
 <script setup>
+import { ref, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { ref, nextTick } from "vue";
 import { getMdiAlias } from "@/utils/iconAliases";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   item: {
     type: Object,
     required: true,
@@ -94,7 +97,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits(["navigate", "focus", "blur"]);
+const _emit = defineEmits(["navigate", "focus", "blur"]);
 
 // Enhanced interaction state
 const showTooltip = ref(false);

@@ -9,7 +9,7 @@ import { logger } from "@/shared/utils/logger";
   const currentQuestion = ref(null);
   const currentAnalysis = ref(null);
   const isLoading = ref(false);
-  const error = ref(null);
+  const _error = ref(null);
   const realTimeCoaching = ref(null);
 
   // Session tracking
@@ -65,7 +65,7 @@ import { logger } from "@/shared/utils/logger";
 
       logger.info("Starting AI interview with config:", config);
 
-      const result = await aiInterviewService.startInterviewSession(config);
+      const result = await aiInterviewService.startInterviewSession(_config);
 
       if (result.success) {
         currentSession.value = result.session;
@@ -83,7 +83,7 @@ import { logger } from "@/shared/utils/logger";
         toast.error(`Failed to start interview: ${result.error}`);
         return { success: false, error: result.error };
       }
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message;
       logger.error("Error starting AI interview:", err);
       toast.error("Failed to start AI interview");
@@ -131,7 +131,7 @@ import { logger } from "@/shared/utils/logger";
         error.value = analysisResult.error;
         return { success: false, error: analysisResult.error };
       }
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message;
       logger.error("Error analyzing response:", err);
       return { success: false, error: err.message };
@@ -185,7 +185,7 @@ import { logger } from "@/shared/utils/logger";
         error.value = result.error;
         return { success: false, error: result.error };
       }
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message;
       logger.error("Error getting next question:", err);
       return { success: false, error: err.message };
@@ -219,7 +219,7 @@ import { logger } from "@/shared/utils/logger";
             }
         }
       }
-    } catch (err) {
+    } catch (_err) {
       logger.debug("Real-time coaching failed:", err);
       // Don't show errors for optional coaching feature
     }

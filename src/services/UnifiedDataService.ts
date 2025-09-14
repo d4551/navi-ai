@@ -74,7 +74,7 @@ export class UnifiedDataService {
 
   static getInstance(config?: Partial<DataServiceConfig>): UnifiedDataService {
     if (!UnifiedDataService.instance) {
-      UnifiedDataService.instance = new UnifiedDataService(config);
+      UnifiedDataService.instance = new UnifiedDataService(_config);
     }
     return UnifiedDataService.instance;
   }
@@ -296,7 +296,7 @@ export class UnifiedDataService {
     );
 
     let filteredResults: Entry<T>[] = results.filter(
-      (result): result is Entry<T> => result !== null,
+      (_result): result is Entry<T> => result !== null,
     );
 
     // Apply filter
@@ -496,7 +496,7 @@ export class UnifiedDataService {
       }
 
       return storedData;
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         `Failed to parse stored data for ${fullKey}:`,
         error,
@@ -576,7 +576,7 @@ export class UnifiedDataService {
           true,
           ["encrypt", "decrypt"],
         );
-      } catch (error) {
+      } catch (_error) {
         logger.warn(
           "Failed to initialize encryption:",
           error,
@@ -596,7 +596,7 @@ export class UnifiedDataService {
         this.compressionEnabled = true;
         console.log("Using fallback compression algorithm");
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn(
         "Compression setup failed, data will be stored uncompressed:",
         error,
@@ -617,7 +617,7 @@ export class UnifiedDataService {
         const writer = stream.writable.getWriter();
         const reader = stream.readable.getReader();
 
-        writer.write(new (globalThis as any).TextEncoder().encode(data));
+        writer.write(new (globalThis as any).TextEncoder().encode(_data));
         writer.close();
 
         let done = false;
@@ -629,17 +629,17 @@ export class UnifiedDataService {
         }
 
         );
-        chunks.forEach((chunk) => {
-          compressed.set(chunk, offset);
+        chunks.forEach((_chunk) => {
+          compressed.set(_chunk, offset);
           offset += chunk.length;
         });
 
         return btoa(String.fromCharCode(...compressed));
       } else {
         // Fallback simple compression
-        return this.simpleCompress(data);
+        return this.simpleCompress(_data);
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn("Compression failed, storing uncompressed:", error);
       return data;
     }
@@ -667,8 +667,8 @@ export class UnifiedDataService {
         }
 
         );
-        chunks.forEach((chunk) => {
-          decompressed.set(chunk, offset);
+        chunks.forEach((_chunk) => {
+          decompressed.set(_chunk, offset);
           offset += chunk.length;
         });
 
@@ -676,7 +676,7 @@ export class UnifiedDataService {
       } else {
         return this.simpleDecompress(compressedData);
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn("Decompression failed, returning as-is:", error);
       return compressedData;
     }
@@ -718,7 +718,7 @@ export class UnifiedDataService {
     // Run cleanup every hour
     setInterval(
       () => {
-        this.cleanupExpired().catch((error) =>
+        this.cleanupExpired().catch((_error) =>
           logger.error("Cleanup failed:", error, "UnifiedDataService"),
         );
       },
@@ -743,7 +743,7 @@ export class UnifiedDataService {
       const writer = stream.writable.getWriter();
       const reader = stream.readable.getReader();
 
-      writer.write(new (globalThis as any).TextEncoder().encode(data));
+      writer.write(new (globalThis as any).TextEncoder().encode(_data));
       writer.close();
 
       let done = false;
@@ -756,7 +756,7 @@ export class UnifiedDataService {
 
       );
       for (const chunk of chunks) {
-        compressed.set(chunk, offset);
+        compressed.set(_chunk, offset);
         offset += chunk.length;
       }
 
@@ -789,7 +789,7 @@ export class UnifiedDataService {
 
       );
       for (const chunk of chunks) {
-        decompressed.set(chunk, offset);
+        decompressed.set(_chunk, offset);
         offset += chunk.length;
       }
 
@@ -802,7 +802,7 @@ export class UnifiedDataService {
   private async encrypt(data: string): Promise<string> {
     if (!this.encryptionKey) return data;
 
-    const encodedData = new (globalThis as any).TextEncoder().encode(data);
+    const encodedData = new (globalThis as any).TextEncoder().encode(_data);
 
     const encrypted = await crypto.subtle.encrypt(
       { name: "AES-GCM", iv },
@@ -853,7 +853,7 @@ export class UnifiedDataService {
     if (!l) return;
     try {
       l.setItem(key, value);
-    } catch (error) {
+    } catch (_error) {
       if (
         (error as any) instanceof (globalThis as any).DOMException &&
         (error as any).code === (globalThis as any).DOMException.QUOTA_EXCEEDED_ERR

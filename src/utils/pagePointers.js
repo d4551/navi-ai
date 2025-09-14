@@ -229,7 +229,7 @@ export class PagePointerManager {
       this.cache.set(pageKey, component);
       this.loadingPromises.delete(pageKey);
       return component;
-    } catch (error) {
+    } catch (_error) {
       this.loadingPromises.delete(pageKey);
       throw error;
     }
@@ -251,7 +251,7 @@ export class PagePointerManager {
 
       logger.debug(`Successfully loaded page component: ${pageKey}`);
       return module.default;
-    } catch (error) {
+    } catch (_error) {
       logger.error(`Failed to load page component '${pageKey}':`, error);
       throw error;
     }
@@ -292,7 +292,7 @@ export class PagePointerManager {
       try {
         await this.getPageComponent(key);
         logger.debug(`Preloaded component: ${key}`);
-      } catch (error) {
+      } catch (_error) {
         logger.warn(`Failed to preload component '${key}':`, error);
       }
     });
@@ -313,7 +313,7 @@ export class PagePointerManager {
       try {
         await loader();
         results.valid.push(pageKey);
-      } catch (error) {
+      } catch (_error) {
         results.invalid.push(pageKey);
         results.errors.push({ pageKey, error: error.message });
       }
@@ -345,7 +345,7 @@ export class PagePointerManager {
           );
           return true;
         }
-      } catch (error) {
+      } catch (_error) {
         logger.warn(
           `Failed to initialize service '${serviceName}' for page '${pageKey}':`,
           error,
@@ -405,7 +405,7 @@ export const validateAllPointers = () =>
 if (typeof window !== "undefined") {
   // Delay preloading to avoid blocking initial render
   setTimeout(() => {
-    pagePointerManager.preloadComponents().catch((error) => {
+    pagePointerManager.preloadComponents().catch((_error) => {
       logger.debug("Component preloading failed (non-critical):", error);
     });
   }, 2000);

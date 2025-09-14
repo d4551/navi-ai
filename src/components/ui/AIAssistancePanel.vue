@@ -131,19 +131,29 @@ import AppIcon from "./AppIcon.vue";
 defineProps({
   title: {
     type: String,
-    default: "AI Writing Assistant",
+    default: "AI Writing Assistant",,
+    default: ''
+  
   },
   subtitle: {
     type: String,
-    default: "Let AI help improve your content",
+    default: "Let AI help improve your content",,
+    default: '',
+    default: ''
+  
+  
   },
   primaryAction: {
     type: Object,
-    default: () => ({ label: "Generate", icon: "mdi-magic-staff" }),
+    default: () => ({ label: "Generate", icon: "mdi-magic-staff",
+    default: ''
+   }),
   },
   secondaryActions: {
     type: Array,
-    default: () => [],
+    default: () => [],,
+    default: () => []
+  
   },
   suggestions: {
     type: Array,
@@ -151,7 +161,9 @@ defineProps({
   },
   suggestionsTitle: {
     type: String,
-    default: "",
+    default: "",,
+    default: ''
+  
   },
   loading: {
     type: Boolean,

@@ -122,7 +122,7 @@ interface UseAIState {
       await ai.stream(message, {
         onChunk: (chunk: string) => {
           state.currentResponse += chunk;
-          onChunk?.(chunk);
+          onChunk?.(_chunk);
         },
         onError: (error: Error) => {
           state.error = error.message;

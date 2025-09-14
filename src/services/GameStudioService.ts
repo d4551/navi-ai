@@ -70,7 +70,7 @@ export class GameStudioService {
         filters: filters || {},
         facets,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error getting studios:", error);
       return {
         studios: [],
@@ -89,7 +89,7 @@ export class GameStudioService {
   async getStudioById(id: string): Promise<GameStudio | null> {
     try {
       return await StudioRepository.getById(id);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error getting studio by ID:", error);
       return null;
     }
@@ -107,7 +107,7 @@ export class GameStudioService {
       }
 
       return studio;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error finding studio by company name:", error);
       return null;
     }
@@ -127,7 +127,7 @@ export class GameStudioService {
       }
 
       return favorites;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error getting favorite studios:", error);
       return [];
     }
@@ -145,7 +145,7 @@ export class GameStudioService {
         await StudioRepository.addFavorite(studioId);
         return true;
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error toggling favorite:", error);
       throw error;
     }
@@ -155,7 +155,7 @@ export class GameStudioService {
   async isStudioFavorite(studioId: string): Promise<boolean> {
     try {
       return await StudioRepository.isFavorite(studioId);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error checking favorite status:", error);
       return false;
     }
@@ -172,7 +172,7 @@ export class GameStudioService {
       }
 
       return await StudioRepository.getSuggestions(query, limit);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error getting suggestions:", error);
       return [];
     }
@@ -233,7 +233,7 @@ export class GameStudioService {
         filters,
         facets,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error in advanced search:", error);
       throw error;
     }
@@ -243,7 +243,7 @@ export class GameStudioService {
   async getStudiosByCategory(category: string): Promise<GameStudio[]> {
     try {
       return await StudioRepository.getByCategory(category);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error getting studios by category:", error);
       return [];
     }
@@ -253,7 +253,7 @@ export class GameStudioService {
   async getStudiosByRegion(region: string): Promise<GameStudio[]> {
     try {
       return await StudioRepository.getByRegion(region);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error getting studios by region:", error);
       return [];
     }
@@ -273,7 +273,7 @@ export class GameStudioService {
 
           // Secondary sort: older/more established first
         })
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error getting popular studios:", error);
       return [];
     }
@@ -284,7 +284,7 @@ export class GameStudioService {
       const allStudios = Object.values(await StudioRepository.getAll());
 
       return allStudios
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error getting recent studios:", error);
       return [];
     }
@@ -351,7 +351,7 @@ export class GameStudioService {
         averageSalary,
         growthRate,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error calculating studio stats:", error);
       return {
         byType: {},

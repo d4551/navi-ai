@@ -268,7 +268,7 @@
       <div class="card-body section-body">
         <div class="errors-list">
           <div
-            v-for="(error, index) in importStatus.errors.slice(0, 5)"
+            v-for="(_error, index) in importStatus.errors.slice(0, 5)"
             :key="index"
             class="error-item"
           >
@@ -301,7 +301,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, reactive } from 'vue';
+
+import { ref, reactive, computedonBeforeUnmount } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import {
@@ -377,7 +379,7 @@ const toggleRefreshService = () => {
       refreshService.start();
       console.info("Auto-refresh started");
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to toggle auto-refresh:", error);
   }
 };
@@ -387,7 +389,7 @@ const performManualRefresh = async () => {
     await refreshService.performBackgroundRefresh();
     await updateStats();
     console.info("Manual refresh complete");
-  } catch (error) {
+  } catch (_error) {
     console.error("Manual refresh failed:", error);
   }
 };
@@ -423,7 +425,7 @@ const handleFileSelect = async (event) => {
     } else {
       console.error(`Import ${selectedImportType.value} failed:`, result.error);
     }
-  } catch (error) {
+  } catch (_error) {
     console.error(`File import error for ${selectedImportType.value}:`, error);
   } finally {
     event.target.value = "";
@@ -435,7 +437,7 @@ const configureImportSource = async (importType) => {
   try {
     refreshService.configure({ enabledSources: [importType] });
     console.info(`Configured import source: ${importType}`);
-  } catch (error) {
+  } catch (_error) {
     console.error(`Failed to configure import source ${importType}:`, error);
   }
 };
@@ -479,7 +481,7 @@ const updateStats = async () => {
     stats.portfolioLastUpdate = cache.portfolioLastUpdate || null;
     stats.interviewsLastUpdate = cache.interviewsLastUpdate || null;
     stats.studiosLastUpdate = cache.studiosLastUpdate || null;
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to update stats:", error);
   }
 };

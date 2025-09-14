@@ -57,7 +57,7 @@ export default {
   components: { AppIcon },
   props: { data: { type: Object, required: true } },
   emits: ["navigate"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const navigate = () => emit("navigate", { route: props.data.route });
     return { navigate };
   },

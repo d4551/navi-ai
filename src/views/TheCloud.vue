@@ -729,9 +729,11 @@ Modern cloud intelligence and data syndication with unified design
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, reactive } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive} from "vue";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
@@ -851,7 +853,7 @@ const initializeAzure = async () => {
     // await azureService.initialize()
     cloudStatus.connected = true;
     console.log("Azure services initialized");
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to initialize Azure services:", error);
     cloudStatus.connected = false;
   } finally {
@@ -875,7 +877,7 @@ const toggleService = async (serviceName: string) => {
     // } else {
     //   await azureService.disableService(serviceName)
     // }
-  } catch (error) {
+  } catch (_error) {
     console.error(`Failed to toggle ${serviceName}:`, error);
     // Revert the toggle on error
     if (services[serviceName]) {
@@ -914,7 +916,7 @@ const configureService = (serviceName: string) => {
         deploymentName: "",
       };
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Error configuring service:", error);
   }
 };
@@ -944,7 +946,7 @@ const saveConfiguration = async () => {
 
     services[configModal.service].configured = true;
     closeConfigModal();
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to save configuration:", error);
   }
 };
@@ -975,9 +977,9 @@ const testService = async (serviceName: string) => {
     // console.log('Service test result:', result)
 
     alert(`${formatServiceName(serviceName)} service is working correctly!`);
-  } catch (error) {
+  } catch (_error) {
     console.error("Service test failed:", error);
-    alert(`${formatServiceName(serviceName)} service test failed: ${error}`);
+    alert(`${formatServiceName(serviceName)} service test failed: ${_error}`);
   }
 };
 

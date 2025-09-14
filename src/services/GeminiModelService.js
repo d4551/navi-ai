@@ -74,7 +74,7 @@ class GeminiModelService {
       });
 
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to fetch Gemini models from API:", error);
 
       // If API key is invalid, don't fall back to cached data
@@ -109,7 +109,7 @@ class GeminiModelService {
               message: `API key valid (tested with ${m})`,
             };
           }
-        } catch (err) {
+        } catch (_err) {
           lastError = err;
           const msg = err?.message || "";
           if (
@@ -126,7 +126,7 @@ class GeminiModelService {
           lastError || new Error("API key test failed - no response received")
         );
       }
-    } catch (error) {
+    } catch (_error) {
       const errorMessage = error.message?.includes("API_KEY_INVALID")
         ? "Invalid API key. Please check your Google AI Studio API key."
         : error.message?.includes("PERMISSION_DENIED")

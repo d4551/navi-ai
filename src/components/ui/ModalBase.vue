@@ -112,6 +112,8 @@
 </template>
 
 <script>
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+
 import { computed, onMounted, ref, watch, onUnmounted, nextTick } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -129,7 +131,9 @@ export default {
     },
     title: {
       type: String,
-      default: null,
+      default: null,,
+    default: ''
+  
     },
     description: {
       type: String,
@@ -137,7 +141,9 @@ export default {
     },
     icon: {
       type: String,
-      default: null,
+      default: null,,
+    default: ''
+  
     },
     size: {
       type: String,
@@ -210,7 +216,7 @@ export default {
     "opened",
     "closed",
   ],
-  setup(props, { emit, slots }) {
+  setup(_props, { emit, slots }) {
     const modalRef = ref(null);
     let previousActiveElement = null;
 

@@ -428,8 +428,10 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { GAMING_STUDIOS } from '@/data/gaming-studios';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import HeaderActions from '@/components/ui/HeaderActions.vue'
 import Card from '@/components/Card.vue'
@@ -448,7 +450,7 @@ import { useAIAnalytics } from '@/composables/useAIAnalytics'
 
 defineOptions({ name: 'Dashboard' })
 
-const router = useRouter()
+const _router = useRouter()
 const { getCareerInsights } = useAIAnalytics()
 
 // Gamification system state
@@ -590,7 +592,7 @@ const fetchLiveData = async () => {
     // Simulate new jobs today (in real app, this would come from API)
     stats.value.newJobsToday = Math.floor(Math.random() * 50) + 10
     
-  } catch (error) {
+  } catch (_error) {
     console.error('Failed to fetch live data:', error)
   } finally {
     isLoading.value = false

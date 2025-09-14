@@ -195,16 +195,18 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 import { ref, defineEmits, defineProps } from "vue";
 import { formatDateBasic } from "@/utils/date";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const props = defineProps({
+const _props = defineProps({
   applications: { type: Array, default: () => [] },
 });
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "update-status",
   "add-note",
   "view-details",
@@ -248,7 +250,7 @@ function viewDetails(app) {
       location: app.location,
       description: app.description,
     });
-  } catch (error) {
+  } catch (_error) {
     console.error(
       "ApplicationTracker: Failed to view application details",
       error,
@@ -275,7 +277,7 @@ function remove(app) {
         company: app.company,
       });
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("ApplicationTracker: Failed to remove application", error);
   }
 }

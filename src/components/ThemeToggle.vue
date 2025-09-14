@@ -46,6 +46,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import { useResponsive } from "@/composables/useResponsive";
@@ -62,7 +64,7 @@ interface Props {
 const { showDeviceInfo = false, showDensity = false } = defineProps<Props>();
 
 // Use the unified theme system
-const theme = useUnifiedTheme();
+const _theme = useUnifiedTheme();
 const responsive = useResponsive();
 const ui = useUnifiedUI();
 

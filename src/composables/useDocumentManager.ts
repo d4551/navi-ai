@@ -1,4 +1,4 @@
-import { ref, reactive, computed, watch, onMounted } from "vue";
+import { ref, reactivewatch} from "vue";
 import { databaseService } from "@/services/SimpleDocumentStorage";
 import { useToast } from "@/composables/useToast";
 
@@ -212,7 +212,7 @@ export function useDocumentManager() {
       await createVersionSnapshot(type, documentData);
 
       return documentData;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to save document to database:", error);
       throw error;
     }
@@ -232,7 +232,7 @@ export function useDocumentManager() {
         }
       }
       return document;
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to load document from database:", error);
       return null;
     }
@@ -269,7 +269,7 @@ export function useDocumentManager() {
         }
         documentVersions.value = documentVersions.value.slice(0, 50);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to create version snapshot:", error);
     }
   };
@@ -280,7 +280,7 @@ export function useDocumentManager() {
       documentVersions.value = versions.sort(
         (a, b) => b.timestamp - a.timestamp,
       );
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to load version history:", error);
     }
   };
@@ -300,7 +300,7 @@ export function useDocumentManager() {
       if (userPreferences.autoSave) {
         await saveToStorage();
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to update document data:", error);
       toast?.error("Failed to update document");
     }
@@ -344,7 +344,7 @@ export function useDocumentManager() {
 
       await saveToStorage();
       toast?.success("Document reverted to selected version");
-    } catch (error) {
+    } catch (_error) {
       console.error("Failed to revert to version:", error);
       toast?.error("Failed to revert document");
     }
@@ -671,7 +671,7 @@ export function useDocumentManager() {
       if (savedPreferences) {
         Object.assign(userPreferences, JSON.parse(savedPreferences));
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to load document data from storage:", error);
     } finally {
       isLoading.value = false;
@@ -695,7 +695,7 @@ export function useDocumentManager() {
       localStorage.setItem("navi-job-description", jobDescription.value);
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to save document data to storage:", error);
       return false;
     } finally {

@@ -590,13 +590,15 @@
       closable
       @click:close="error = null"
     >
-      {{ error }}
+      {{ _error }}
     </v-alert>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { ref, computed} from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { useAppStore } from "@/stores/app";
 import { useJobTailoredResume } from "@/composables/useJobTailoredResume";
@@ -726,7 +728,7 @@ async function copyCoverLetter() {
         coverLetterComposable.generatedContent.value,
       );
       toast.success("Cover letter copied to clipboard!");
-    } catch (err) {
+    } catch (_err) {
       toast.error("Failed to copy to clipboard");
     }
   }

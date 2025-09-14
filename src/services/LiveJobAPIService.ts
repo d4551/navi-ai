@@ -136,7 +136,7 @@ export class LiveJobAPIService {
           );
           return result;
         }
-      } catch (error) {
+      } catch (_error) {
         logger.error(`Failed to fetch from ${provider.name}:`, error);
         continue;
       }

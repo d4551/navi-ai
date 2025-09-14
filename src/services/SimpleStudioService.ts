@@ -42,7 +42,7 @@ export class SimpleStudioService {
           );
           await this.storeStudio(simple);
           result.imported++;
-        } catch (error) {
+        } catch (_error) {
           result.errors.push(`Gaming studio ${studio.name}: ${error.message}`);
         }
       }
@@ -50,7 +50,7 @@ export class SimpleStudioService {
         try {
           await this.storeStudio(simple);
           result.imported++;
-        } catch (error) {
+        } catch (_error) {
         }
       }
 
@@ -61,13 +61,13 @@ export class SimpleStudioService {
             try {
               await this.storeStudio(studio);
               result.imported++;
-            } catch (error) {
+            } catch (_error) {
               result.errors.push(
                 `Steam studio ${studio.name}: ${error.message}`,
               );
             }
           }
-        } catch (error) {
+        } catch (_error) {
           result.errors.push(`Steam fetch failed: ${error.message}`);
         }
       }
@@ -78,7 +78,7 @@ export class SimpleStudioService {
         `Simple studio import completed: ${result.imported}/${result.total} successful`,
       );
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Studio import failed:", error);
       result.errors.push(`System error: ${error.message}`);
       return result;
@@ -172,7 +172,7 @@ export class SimpleStudioService {
 
       logger.info(`Converted ${simpleStudios.length} studios from Steam`);
       return simpleStudios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Steam fetch failed:", error);
       return [];
     }
@@ -181,7 +181,7 @@ export class SimpleStudioService {
   async getAllStudios(): Promise<SimpleStudio[]> {
     try {
       return (await unifiedStorage.getAllStudios()) || [];
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to get all studios:", error);
       return [];
     }
@@ -221,7 +221,7 @@ export class SimpleStudioService {
     try {
       await unifiedStorage.clear();
       logger.info("All studios cleared");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to clear studios:", error);
     }
   }

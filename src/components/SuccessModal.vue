@@ -26,7 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted } from 'vue';
+
+import { refonBeforeUnmount } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
@@ -36,8 +38,8 @@ interface Props {
   autoCloseMs?: number;
 }
 
-const props = defineProps<Props>();
-const emit = defineEmits<{ (_e: "close"): void }>();
+const _props = defineProps<Props>();
+const _emit = defineEmits<{ (_e: "close"): void }>();
 
 const modalEl = ref<HTMLElement | null>(null);
 let timeoutId: number | null = null;

@@ -174,7 +174,7 @@ export async function importStudios(
   // Update store
   try {
     store.upsertNormalizedStudios(Object.values(upserts));
-  } catch (e) {
+  } catch (_e) {
     logger.warn("Failed to update store normalized studios", e);
   }
   result.normalized = Object.keys(upserts).length;
@@ -198,7 +198,7 @@ export async function importStudiosFromJSON(
       normalized: 0,
     };
   }
-  if (!Array.isArray(data))
+  if (!Array.isArray(_data))
     return {
       total: 0,
       created: 0,
@@ -207,7 +207,7 @@ export async function importStudiosFromJSON(
       errors: [{ error: "Root JSON must be an array" }],
       normalized: 0,
     };
-  return importStudios(data);
+  return importStudios(_data);
 }
 
 export default { importStudios, importStudiosFromJSON };

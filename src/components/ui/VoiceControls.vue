@@ -130,7 +130,7 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
       <template #prepend>
         <v-icon icon="mdi-microphone-off" />
       </template>
-      <span>{{ error }}</span>
+      <span>{{ _error }}</span>
       <template #append>
         <UnifiedButton
           variant="ghost"
@@ -153,7 +153,9 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { refcomputed, watch, onUnmounted } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import UiChip from "@/components/ui/UiChip.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -174,7 +176,7 @@ interface Props {
   showInstructions?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   isRecording: false,
   isProcessing: false,
   canRecord: true,
@@ -190,7 +192,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "start-recording": [];
   "stop-recording": [];
   "device-change": [deviceId: string];

@@ -62,7 +62,7 @@ export class SemanticSearchService {
       logger.info(
         `SemanticSearchService initialized with ${this.vectors.length} vectors`,
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize SemanticSearchService:", error);
     }
   }

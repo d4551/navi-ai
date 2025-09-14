@@ -185,7 +185,7 @@ export class EnhancedPublicAPIDataSource {
         `Enhanced API ingestion completed: ${mergedStudios.length} unique studios found`,
       );
       return mergedStudios;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Enhanced API data ingestion failed:", error);
       throw error;
     }
@@ -212,7 +212,7 @@ export class EnhancedPublicAPIDataSource {
         gamesData,
         publishers,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch comprehensive Wikidata:", error);
       return { studios: [], gamesData: [], publishers: [] };
     }
@@ -259,7 +259,7 @@ export class EnhancedPublicAPIDataSource {
         }
 
         // Rate limiting between queries
-      } catch (error) {
+      } catch (_error) {
         logger.warn(`GitHub search error for query "${query}":`, error);
       }
     }
@@ -290,7 +290,7 @@ export class EnhancedPublicAPIDataSource {
       }
 
       return detailedStudios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch detailed Wikipedia data:", error);
       return [];
     }
@@ -308,7 +308,7 @@ export class EnhancedPublicAPIDataSource {
       const processedStudios = this.processDBpediaStudios(developers, limit);
 
       return { developers: processedStudios, games };
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch comprehensive DBpedia data:", error);
       return { developers: [], games: [] };
     }
@@ -329,7 +329,7 @@ export class EnhancedPublicAPIDataSource {
 
       const data = await response.json();
       return data.results?.bindings || [];
-    } catch (error) {
+    } catch (_error) {
       logger.error("Wikidata query error:", error);
       return [];
     }
@@ -357,7 +357,7 @@ export class EnhancedPublicAPIDataSource {
 
       const data = await response.json();
       return data.results?.bindings || [];
-    } catch (error) {
+    } catch (_error) {
       logger.error("DBpedia query error:", error);
       return [];
     }
@@ -501,7 +501,7 @@ export class EnhancedPublicAPIDataSource {
         },
         lastUpdated: new Date(),
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn(`Error fetching enhanced GitHub org ${orgName}:`, error);
       return null;
     }
@@ -520,7 +520,7 @@ export class EnhancedPublicAPIDataSource {
       const response = await fetch(`${this.wikipediaEndpoint}?${params}`);
       const data = await response.json();
       return data.query?.categorymembers || [];
-    } catch (error) {
+    } catch (_error) {
       logger.error("Wikipedia category fetch error:", error);
       return [];
     }
@@ -577,7 +577,7 @@ export class EnhancedPublicAPIDataSource {
         },
         lastUpdated: new Date(),
       };
-    } catch (error) {
+    } catch (_error) {
       logger.warn(`Error fetching enhanced Wikipedia page ${title}:`, error);
       return null;
     }

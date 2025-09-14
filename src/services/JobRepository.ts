@@ -19,7 +19,7 @@ export class JobRepository {
           JSON.stringify(savedJobs),
         );
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to save job:", error, "JobRepository");
       throw new Error("Failed to save job");
     }
@@ -33,7 +33,7 @@ export class JobRepository {
         this.STORAGE_KEYS.SAVED_JOBS,
         JSON.stringify(filtered),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to unsave job:", error, "JobRepository");
       throw new Error("Failed to unsave job");
     }
@@ -59,7 +59,7 @@ export class JobRepository {
 
       localStorage.setItem(this.STORAGE_KEYS.JOBS, JSON.stringify(jobs));
       return job;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to create job:", error, "JobRepository");
       throw new Error("Failed to create job");
     }
@@ -104,7 +104,7 @@ export class JobRepository {
       }
 
       return jobs;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to search jobs:", error, "JobRepository");
       return [];
     }
@@ -129,7 +129,7 @@ export class JobRepository {
         this.STORAGE_KEYS.APPLICATIONS,
         JSON.stringify(applications),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to save application:", error, "JobRepository");
       throw new Error("Failed to save application");
     }

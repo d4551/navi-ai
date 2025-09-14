@@ -68,9 +68,9 @@ function delay(ms: number) {
       }
 
       return images;
-    } catch (error) {
+    } catch (_error) {
       logger.error("callImageGenerator error", error);
-        throw error instanceof Error ? error : new Error(String(error));
+        throw error instanceof Error ? error : new Error(String(_error));
       }
     }
   }

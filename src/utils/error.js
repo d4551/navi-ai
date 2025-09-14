@@ -19,9 +19,9 @@ export function normalizeError(err) {
 
 // Report an error with context; optionally update app error state
 // opts: { level: 'warn'|'error'|'info'|'debug', storeKey?: 'api'|'network'|'validation', toast?: (msg)=>void }
-export async function reportError(context, err, opts = {}) {
+export async function reportError(_context, err, opts = {}) {
   const { level = "warn", storeKey } = opts;
-  const error = normalizeError(err);
+  const _error = normalizeError(err);
   const msg = `[${context}] ${error.message}`;
 
   if (logger[level]) {

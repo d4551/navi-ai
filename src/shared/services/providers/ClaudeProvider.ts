@@ -17,7 +17,7 @@ export default class ClaudeProvider extends BaseAIProvider {
   }
 
   async initialize(config: any): Promise<void> {
-    await super.initialize(config);
+    await super.initialize(_config);
 
     if (!config.apiKey) {
       throw new Error("Claude API key is required");
@@ -95,7 +95,7 @@ export default class ClaudeProvider extends BaseAIProvider {
           processingTime: Date.now() - start,
         },
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Claude execution error:", error);
       return {
         id,
@@ -135,8 +135,8 @@ export default class ClaudeProvider extends BaseAIProvider {
 
     callbacks.onStart?.(session);
     if (!this.apiKey) {
-      const error = new Error("Claude provider not initialized");
-      callbacks.onError?.(error);
+      const _error = new Error("Claude provider not initialized");
+      callbacks.onError?.(_error);
       return null;
     }
 
@@ -206,14 +206,14 @@ export default class ClaudeProvider extends BaseAIProvider {
             }
 
             try {
-              const json = JSON.parse(data);
+              const json = JSON.parse(_data);
               if (json.type === "content_block_delta" && json.delta?.text) {
                 const chunk = json.delta.text;
                 fullText += chunk;
                 session.chunkCount++;
-                callbacks.onChunk?.(chunk);
+                callbacks.onChunk?.(_chunk);
               }
-            } catch (e) {
+            } catch (_e) {
               logger.debug("Failed to parse Claude stream chunk", e);
             }
           }
@@ -241,10 +241,10 @@ export default class ClaudeProvider extends BaseAIProvider {
             processingTime: Date.now() - session.startTime,
           },
         });
-      } catch (error) {
+      } catch (_error) {
         logger.error("Claude streaming error:", error);
         callbacks.onError?.(
-          error instanceof Error ? error : new Error(String(error)),
+          error instanceof Error ? error : new Error(String(_error)),
         );
       }
     })();

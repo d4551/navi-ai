@@ -493,7 +493,9 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, watch, onMounted, reactive } from 'vue';
+
+import { refcomputed, watch } from "vue";
 import { useAppStore } from "@/stores/app";
 import { DEFAULT_SETTINGS } from "@/shared/schemas/settingsSchema";
 import { videoService } from "@/shared/services/VideoService";
@@ -522,7 +524,7 @@ export default {
     },
   },
   emits: ["update:settings", "save"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const store = useAppStore();
     // Local reactive copy of settings
     const localSettings = ref({ ...props.settings });
@@ -537,7 +539,7 @@ export default {
       try {
         await videoService.initialize();
         videoDevices.value = await videoService.enumerateDevices();
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to initialize video devices:", error);
       }
     });

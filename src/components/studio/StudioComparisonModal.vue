@@ -222,11 +222,11 @@ import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import { useToast } from "@/composables/useToast";
 
-const props = defineProps<{
+const _props = defineProps<{
   studios: any[];
 }>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   close: [];
 }>();
 

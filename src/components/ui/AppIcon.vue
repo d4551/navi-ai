@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed } from 'vue';
 import { getMdiAlias } from "@/utils/iconAliases";
 
 export default {
@@ -85,7 +85,7 @@ export default {
     },
   },
 
-  setup(props) {
+  setup(_props) {
     // Emoji/alias mapping to MDI icons
     const EMOJI_ALIASES = {
       "✓": "mdi-check",

@@ -43,7 +43,7 @@ export class GameStudioAPIDemo {
           },
         });
       }
-    } catch (error) {
+    } catch (_error) {
     }
   }
 
@@ -71,7 +71,7 @@ export class GameStudioAPIDemo {
           followers: sample.metadata?.followers,
         });
       }
-    } catch (error) {
+    } catch (_error) {
     }
   }
 
@@ -99,7 +99,7 @@ export class GameStudioAPIDemo {
           hasThumbnail: !!sample.metadata?.thumbnail,
         });
       }
-    } catch (error) {
+    } catch (_error) {
     }
   }
 
@@ -122,7 +122,7 @@ export class GameStudioAPIDemo {
           foundedDate: sample.metadata?.foundedDate,
         });
       }
-    } catch (error) {
+    } catch (_error) {
     }
   }
 
@@ -170,7 +170,7 @@ export class GameStudioAPIDemo {
         console.log(`      Sources: ${sample.metadata?.sources?.join(", ")}`);
         console.log(`      Confidence: ${sample.confidence}`);
       }
-    } catch (error) {
+    } catch (_error) {
     }
   }
 
@@ -202,7 +202,7 @@ export class GameStudioAPIDemo {
       );
 
       }
-    } catch (error) {
+    } catch (_error) {
     } finally {
       this.integrator.close();
     }
@@ -239,7 +239,7 @@ export class GameStudioAPIDemo {
       await this.demonstrateDatabaseIntegration();
 
       console.log("\n[SUCCESS] Demo completed successfully!");
-    } catch (error) {
+    } catch (_error) {
       throw error;
     }
   }
@@ -262,7 +262,7 @@ if (typeof globalThis !== "undefined" && (globalThis as any).process?.argv) {
     .then(() => {
       logger.info("Enhanced API demo completed");
     })
-    .catch((error) => {
+    .catch((_error) => {
       logger.error("Enhanced API demo failed:", error);
     });
 }

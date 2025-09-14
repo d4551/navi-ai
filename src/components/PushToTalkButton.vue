@@ -86,7 +86,7 @@
     <!-- Error Display -->
     <div v-if="error" class="error-display mt-2" role="alert">
       <AppIcon name="mdi-alert-circle-outline" class="me-2" />
-      {{ error }}
+      {{ _error }}
     </div>
 
     <!-- Optional Device Selector (slot-first, prop fallback) -->
@@ -124,11 +124,11 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+
 import AppIcon from "@/components/ui/AppIcon.vue";
 import {
-  ref,
-  onMounted,
-  readonly,
+  refreadonly,
   computed,
   onBeforeUnmount,
   defineEmits,
@@ -144,7 +144,7 @@ import { canonicalAIClient } from "@/shared/services/CanonicalAIClient";
 import { speak as speakViaService } from "@/utils/voice";
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   maxRecordingTime: {
     type: Number,
     default: 30, // seconds
@@ -177,7 +177,7 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "recordingStart",
   "recordingStop",
   "transcript",
@@ -190,7 +190,7 @@ const isRecording = ref(false);
 const isSpeaking = ref(false);
 const isStreaming = ref(false);
 const hasError = ref(false);
-const error = ref("");
+const _error = ref("");
 const transcript = ref("");
 const interimTranscript = ref("");
 const aiResponse = ref("");
@@ -295,7 +295,7 @@ async function initializeAudio() {
     }
     isAvailable.value = true;
     logger.info("Audio recording capabilities available");
-  } catch (err) {
+  } catch (_err) {
     logger.error("Audio initialization failed:", err);
     setError(`Microphone not available: ${err.message}`);
   }
@@ -348,7 +348,7 @@ function initializeSpeechRecognition() {
     };
 
     logger.info("Speech recognition initialized");
-  } catch (err) {
+  } catch (_err) {
     logger.error("Speech recognition initialization failed:", err);
   }
 }
@@ -414,7 +414,7 @@ async function startRecording() {
 
     emit("recordingStart");
     logger.info("Recording started");
-  } catch (err) {
+  } catch (_err) {
     logger.error("Failed to start recording:", err);
     setError(`Failed to start recording: ${err.message}`);
   }
@@ -492,7 +492,7 @@ async function stopRecording() {
             processTranscript(text);
           }
         }
-      } catch (e) {
+      } catch (_e) {
         logger.error("Gemini STT failed", e);
       }
     }
@@ -500,7 +500,7 @@ async function stopRecording() {
 
     emit("recordingStop", blob || null);
     logger.info("Recording stopped");
-  } catch (err) {
+  } catch (_err) {
     logger.error("Failed to stop recording:", err);
     setError(`Failed to stop recording: ${err.message}`);
   }
@@ -559,7 +559,7 @@ async function stopRecording() {
       // Process stream chunks
       for await (const chunk of stream.textStream) {
         aiResponse.value += chunk;
-        typeWriterEffect(chunk);
+        typeWriterEffect(_chunk);
       }
 
       isStreaming.value = false;
@@ -584,7 +584,7 @@ async function stopRecording() {
 
     // Store controller for potential cancellation
     // controller.cancel() if needed
-  } catch (err) {
+  } catch (_err) {
     isStreaming.value = false;
     logger.error("Failed to process transcript:", err);
     setError(`Failed to process speech: ${err.message}`);
@@ -616,7 +616,7 @@ async function stopRecording() {
     await speakViaService(aiResponse.value, {
     });
     isSpeaking.value = false;
-  } catch (err) {
+  } catch (_err) {
     isSpeaking.value = false;
     logger.error("Failed to start speech synthesis:", err);
     setError(`Failed to speak response: ${err.message}`);

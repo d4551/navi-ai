@@ -19,7 +19,7 @@ class AIJobMatchingService {
           enableContextPersistence: true,
           enableRealTime: false,
         });
-      } catch (error) {
+      } catch (_error) {
         throw new Error(
           "AI service not initialized. Please configure your API key in settings.",
         );
@@ -66,7 +66,7 @@ Search Parameters:
 Provide comprehensive semantic analysis and recommendations for optimal job matching.`;
 
       const contextInfo = `USER PROFILE: ${JSON.stringify(userProfile)}
-SEARCH OPTIONS: ${JSON.stringify(options)}
+SEARCH OPTIONS: ${JSON.stringify(_options)}
 
 Analyze this gaming industry job search query and provide comprehensive semantic analysis and recommendations for optimal job matching.`;
 
@@ -108,7 +108,7 @@ Search Parameters:
         suggestions: this.generateSearchSuggestions(analysis),
         insights: this.generateJobInsights(analysis),
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Semantic search analysis failed:", error);
       return {
         success: false,
@@ -194,7 +194,7 @@ Provide detailed matching scores and explanations for optimal job recommendation
         summary: matchResults.summary,
         recommendations: this.generateMatchingRecommendations(matchResults),
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("AI job matching failed:", error);
       return {
         success: false,
@@ -279,7 +279,7 @@ Provide strategic insights to optimize their job search success.`;
         marketSummary: insights.marketSummary,
         recommendations: insights.recommendations,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate job search insights:", error);
       return {
         success: false,
@@ -346,7 +346,7 @@ Provide comprehensive salary analysis and negotiation guidance.`;
         negotiationTips: analysis.negotiationTips,
         benchmarkData: analysis.benchmarkData,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Salary analysis failed:", error);
       return {
         success: false,
@@ -411,7 +411,7 @@ Focus on gaming industry career advancement and optimization strategies.`;
         skillGaps: recommendations.skillGaps,
         trends: recommendations.opportunityTrends,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate personalized recommendations:", error);
       return {
         success: false,
@@ -576,7 +576,7 @@ Focus on gaming industry career advancement and optimization strategies.`;
             query: companyName,
           });
             : null;
-        } catch (error) {
+        } catch (_error) {
           logger.debug(
             `Could not fetch studio data for ${companyName}:`,
             error,
@@ -626,7 +626,7 @@ Focus on gaming industry career advancement and optimization strategies.`;
         `Enriched ${enrichedJobs.filter((j) => j.studioData).length}/${jobs.length} jobs with studio data`,
       );
       return enrichedJobs;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to enrich jobs with studio data:", error);
       return jobs;
     }

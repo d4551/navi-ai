@@ -59,7 +59,7 @@ let checkResults = {
     displayResults();
 
     return checkResults;
-  } catch (error) {
+  } catch (_error) {
     checkResults.overall = {
       status: "failed",
       error: error.message,
@@ -71,6 +71,7 @@ let checkResults = {
   }
 }
 
+export function checkEnvironment() {
   logger.debug("[SEARCH] Checking environment...");
   const start = performance.now();
 
@@ -88,7 +89,7 @@ let checkResults = {
       const testInstance = new GoogleGenerativeAI("test");
       env.googleAIVersion = testInstance.constructor.name;
       env.sdkStatus = "loaded";
-    } catch (error) {
+    } catch (_error) {
       env.sdkStatus = "error";
       env.sdkError = error.message;
     }
@@ -108,7 +109,7 @@ let checkResults = {
 
     logger.info(
     );
-  } catch (error) {
+  } catch (_error) {
     checkResults.environment = {
       status: "error",
       error: error.message,
@@ -145,7 +146,7 @@ let checkResults = {
 
     logger.info(
     );
-  } catch (error) {
+  } catch (_error) {
     checkResults.apiKey = {
       status: "error",
       error: error.message,
@@ -213,7 +214,7 @@ let checkResults = {
     console.log(
       checkResults.connectivity.status,
     );
-  } catch (error) {
+  } catch (_error) {
     checkResults.connectivity = {
       status: "error",
       error: error.message,
@@ -272,7 +273,7 @@ let checkResults = {
     console.log(
       checkResults.models.status,
     );
-  } catch (error) {
+  } catch (_error) {
     checkResults.models = {
       status: "error",
       error: error.message,
@@ -298,7 +299,7 @@ let checkResults = {
           Object.getPrototypeOf(geminiModelService),
         ),
       };
-    } catch (error) {
+    } catch (_error) {
       services.geminiModelService = {
         status: "error",
         error: error.message,
@@ -312,7 +313,7 @@ let checkResults = {
         status: "imported",
         exports: Object.keys(aiClient),
       };
-    } catch (error) {
+    } catch (_error) {
       services.aiClient = {
         status: "error",
         error: error.message,
@@ -326,7 +327,7 @@ let checkResults = {
         status: "imported",
         hasDefaultExport: !!GeminiService.default,
       };
-    } catch (error) {
+    } catch (_error) {
       services.geminiService = {
         status: "error",
         error: error.message,
@@ -342,7 +343,7 @@ let checkResults = {
         hasSettings: !!store.settings,
         hasGeminiKey: !!store.settings?.geminiApiKey,
       };
-    } catch (error) {
+    } catch (_error) {
       services.appStore = {
         status: "error",
         error: error.message,
@@ -363,7 +364,7 @@ let checkResults = {
     console.log(
       checkResults.services.status,
     );
-  } catch (error) {
+  } catch (_error) {
     checkResults.services = {
       status: "error",
       error: error.message,
@@ -389,7 +390,7 @@ let checkResults = {
           status: "success",
           responseLength: text.length,
         });
-      } catch (error) {
+      } catch (_error) {
         tests.push({
           duration: performance.now() - testStart,
           status: "error",
@@ -416,7 +417,7 @@ let checkResults = {
     console.log(
       checkResults.performance.status,
     );
-  } catch (error) {
+  } catch (_error) {
     checkResults.performance = {
       status: "error",
       error: error.message,
@@ -547,7 +548,7 @@ let checkResults = {
       response: text,
       duration: Math.round(duration),
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       status: "error",
       error: error.message,
@@ -586,7 +587,7 @@ if (typeof window !== "undefined") {
       };
 
       return result_obj;
-    } catch (error) {
+    } catch (_error) {
       return {
         success: false,
         error: error.message,
@@ -608,7 +609,7 @@ if (typeof window !== "undefined") {
         );
         return { reachable: true, status: response.status };
       }
-    } catch (error) {
+    } catch (_error) {
       return { reachable: false, error: error.message };
     }
   };

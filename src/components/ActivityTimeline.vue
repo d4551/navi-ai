@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import AppIcon from "@/components/ui/AppIcon.vue";
-const props = withDefaults(defineProps<{ activities?: any[] }>(), {
+const _props = withDefaults(defineProps<{ activities?: any[] }>(), {
   activities: () => [],
 });
 const items = props.activities || [];

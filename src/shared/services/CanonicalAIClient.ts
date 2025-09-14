@@ -114,7 +114,7 @@ export class CanonicalAIClient {
     } catch (error: any) {
       this.genAI = null;
       this.initialized = false;
-      const readableError = this.parseError(error);
+      const readableError = this.parseError(_error);
       logger.error("Failed to initialize CanonicalAIClient:", readableError);
       throw new Error(`AI initialization failed: ${readableError.message}`);
     }
@@ -174,7 +174,7 @@ export class CanonicalAIClient {
 
       return text;
     } catch (error: any) {
-      const readableError = this.parseError(error);
+      const readableError = this.parseError(_error);
       logger.error("Text generation failed:", readableError);
       throw new Error(`AI generation failed: ${readableError.message}`);
     }
@@ -229,7 +229,7 @@ export class CanonicalAIClient {
 
       return fullResponse;
     } catch (error: any) {
-      const readableError = this.parseError(error);
+      const readableError = this.parseError(_error);
       logger.error("Streaming failed:", readableError);
       callbacks?.onError?.(readableError);
       request.onError?.(readableError);
@@ -258,7 +258,7 @@ export class CanonicalAIClient {
       logger.info("Chat session started");
       return this.currentSession;
     } catch (error: any) {
-      const readableError = this.parseError(error);
+      const readableError = this.parseError(_error);
       logger.error("Failed to start chat session:", readableError);
       throw readableError;
     }
@@ -275,7 +275,7 @@ export class CanonicalAIClient {
       logger.debug("Chat message sent and responded");
       return response;
     } catch (error: any) {
-      const readableError = this.parseError(error);
+      const readableError = this.parseError(_error);
       logger.error("Chat message failed:", readableError);
       throw readableError;
     }
@@ -304,7 +304,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
     const response = await this.generateText(prompt, "", options);
 
     try {
-      return JSON.parse(response);
+      return JSON.parse(_response);
     } catch {
       // Fallback: parse as text and split by lines
       return response
@@ -342,7 +342,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
         text: transcript,
       };
     } catch (error: any) {
-      const readableError = this.parseError(error);
+      const readableError = this.parseError(_error);
       logger.error("Audio transcription failed:", readableError);
       throw readableError;
     }
@@ -373,7 +373,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
 
       return result.response.text();
     } catch (error: any) {
-      const readableError = this.parseError(error);
+      const readableError = this.parseError(_error);
       logger.error("Image analysis failed:", readableError);
       throw readableError;
     }
@@ -421,7 +421,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
     },
   ): Promise<boolean> {
     // Initialize core client
-    const success = await this.initialize(config);
+    const success = await this.initialize(_config);
 
     if (!success || !config.enableRealTime) {
       return success;
@@ -449,7 +449,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
       logger.info("Real-time capabilities initialized successfully");
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize real-time capabilities:", error);
       return success;
     }
@@ -514,10 +514,10 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
             ? `chat-${Date.now()}`
             : undefined,
         };
-      } catch (error) {
+      } catch (_error) {
         lastError = error as Error;
         logger.warn(
-          error,
+          _error,
         );
 
         if (attempt < retries) {
@@ -584,7 +584,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
           await realTimeService.sendAudioData(input.audio);
           processedInputs.push("audio");
           capabilities.push("audio");
-        } catch (error) {
+        } catch (_error) {
           logger.warn(
             "Audio processing failed, continuing without audio:",
             error,
@@ -599,7 +599,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
           // This would need additional implementation for video frame capture
           processedInputs.push("video");
           capabilities.push("video");
-        } catch (error) {
+        } catch (_error) {
           logger.warn(
             "Video processing failed, continuing without video:",
             error,
@@ -622,7 +622,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
         processedInputs,
         capabilities,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Multimodal processing failed:", error);
       throw error;
     }
@@ -672,7 +672,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
           onError: callbacks.onError,
         });
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Enhanced streaming failed:", error);
       callbacks.onError?.(error as Error);
       throw error;
@@ -734,7 +734,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
       this.currentConfig = null;
 
       logger.info("Enhanced cleanup completed");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Enhanced cleanup error:", error);
       // Continue with basic cleanup even if enhanced cleanup fails
       this.cleanup();
@@ -747,7 +747,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
     }
 
     if (typeof error === "string") {
-      return new Error(error);
+      return new Error(_error);
     }
 
     // Handle Google AI API specific errors
@@ -786,7 +786,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
 
     const basePrompt = basePrompts[contentType] || basePrompts.general;
 
-      const contextStr = Object.entries(context)
+      const contextStr = Object.entries(_context)
         .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
         .join("\n");
       return `${basePrompt}\n\nContext:\n${contextStr}`;
@@ -812,7 +812,7 @@ export const canonicalAIClient = CanonicalAIClient.getInstance();
   try {
     await canonicalAIClient.initialize(apiKey);
     return { success: true };
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",

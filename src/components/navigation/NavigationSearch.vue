@@ -55,11 +55,11 @@
 
             <div v-if="searchResults.length" class="search-results">
               <div
-                v-for="(result, index) in searchResults"
+                v-for="(_result, index) in searchResults"
                 :key="result.id"
                 class="search-result-item"
                 :class="{ 'result-highlighted': index === selectedResultIndex }"
-                @click="navigateToResult(result)"
+                @click="navigateToResult(_result)"
                 @mouseenter="selectedResultIndex = index"
               >
                 <div class="result-icon">
@@ -244,7 +244,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from "vue";
+import { ref, computed, watch, nextTick } from 'vue';
+
+import { refonMounted, watch, nextTick } from "vue";
 import { useEnhancedNavigation } from "@/composables/useEnhancedNavigation";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";

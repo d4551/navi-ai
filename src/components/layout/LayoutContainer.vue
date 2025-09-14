@@ -5,7 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue';
+
+import {} from "vue";
 
 interface Props {
   variant?: "fluid" | "page" | "section" | "narrow" | "wide" | "full";
@@ -14,7 +16,7 @@ interface Props {
   center?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   variant: "page",
   padding: "md",
   responsive: true,

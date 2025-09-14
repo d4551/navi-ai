@@ -37,7 +37,7 @@ import { searchJobs as legacySearchJobs } from "./jobService";
 
   params: LegacySearchParams = {},
 ): Promise<JobSearchResult> {
-  const res = await legacySearchJobs(params);
+  const res = await legacySearchJobs(_params);
   // Normalize error shape for consistency
   const errors = Array.isArray(res.errors) ? res.errors : [];
   return {

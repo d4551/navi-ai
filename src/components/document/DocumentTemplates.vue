@@ -456,7 +456,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { ref} from "vue";
 import { useToast } from "@/composables/useToast";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -464,13 +466,13 @@ import TemplatePreviewModal from "./TemplatePreviewModal.vue";
 import TemplateDetailsModal from "./TemplateDetailsModal.vue";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   documentType: "resume" | "cover-letter";
   selectedTemplate: string;
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "template-select": [string];
 }>();
 

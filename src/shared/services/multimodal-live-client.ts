@@ -266,7 +266,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
 
       ws.addEventListener("open", () => {
         if (!this.config) {
-          reject(new Error("Invalid config sent to `connect(config)`"));
+          reject(new Error("Invalid config sent to `connect(_config)`"));
           return;
         }
         this.log({
@@ -340,10 +340,10 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
               } else if (isToolCallCancellationMessage(message)) {
                 this.emit("toolcallcancellation", message.toolCallCancellation);
               }
-            } catch (error) {
+            } catch (_error) {
               this.log({
                 type: "server.error",
-                message: `Failed to parse message: ${error}`,
+                message: `Failed to parse message: ${_error}`,
                 date: new Date(),
               });
             }
@@ -387,7 +387,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
         mediaChunks: chunks,
       },
     };
-    this._sendDirect(data);
+    this._sendDirect(_data);
     this.log({
       type: `client.realtimeInput`,
       message: `media chunks: ${chunks.length}`,

@@ -83,7 +83,7 @@ export class AudioStreamingService extends EventEmitter<AudioStreamEvents> {
       await this.updateDeviceList();
 
       logger.info("[AudioStreamingService] Initialized successfully");
-    } catch (error) {
+    } catch (_error) {
       logger.error("[AudioStreamingService] Initialization failed:", error);
 
       if (
@@ -97,7 +97,7 @@ export class AudioStreamingService extends EventEmitter<AudioStreamEvents> {
       }
 
       const errorMessage =
-        error instanceof Error ? error.message : String(error);
+        error instanceof Error ? error.message : String(_error);
       throw new Error(`Audio initialization failed: ${errorMessage}`);
     }
   }
@@ -174,7 +174,7 @@ export class AudioStreamingService extends EventEmitter<AudioStreamEvents> {
 
       this.emit("recording-start");
       logger.info("[AudioStreamingService] Recording started");
-    } catch (error) {
+    } catch (_error) {
       logger.error("[AudioStreamingService] Failed to start recording:", error);
       this.emit("error", error as Error);
       throw error;
@@ -222,7 +222,7 @@ export class AudioStreamingService extends EventEmitter<AudioStreamEvents> {
 
       this.emit("recording-stop");
       logger.info("[AudioStreamingService] Recording stopped");
-    } catch (error) {
+    } catch (_error) {
       logger.error("[AudioStreamingService] Failed to stop recording:", error);
       this.emit("error", error as Error);
     }
@@ -254,7 +254,7 @@ export class AudioStreamingService extends EventEmitter<AudioStreamEvents> {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
       return devices.filter((device) => device.kind === "audioinput");
-    } catch (error) {
+    } catch (_error) {
       logger.error("[AudioStreamingService] Failed to get devices:", error);
       return [];
     }
@@ -277,8 +277,8 @@ export class AudioStreamingService extends EventEmitter<AudioStreamEvents> {
       (sum, chunk) => sum + chunk.length,
     );
 
-    this.audioBuffer.forEach((chunk) => {
-      combinedBuffer.set(chunk, offset);
+    this.audioBuffer.forEach((_chunk) => {
+      combinedBuffer.set(_chunk, offset);
       offset += chunk.length;
     });
 
@@ -351,7 +351,7 @@ export class AudioStreamingService extends EventEmitter<AudioStreamEvents> {
 
       URL.revokeObjectURL(workletUrl);
       logger.info("[AudioStreamingService] Audio worklet loaded");
-    } catch (error) {
+    } catch (_error) {
       logger.warn(
         "[AudioStreamingService] Failed to load worklet, using fallback:",
         error,
@@ -417,7 +417,7 @@ export class AudioStreamingService extends EventEmitter<AudioStreamEvents> {
     try {
       this.state.devices = await this.getDevices();
       this.emit("device-change", this.state.devices);
-    } catch (error) {
+    } catch (_error) {
       logger.error(
         "[AudioStreamingService] Failed to update device list:",
         error,

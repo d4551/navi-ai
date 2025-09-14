@@ -94,6 +94,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch } from 'vue';
+
 import { computed, watch, toRef } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -115,7 +117,7 @@ interface Props {
   primaryVariant?: "primary" | "gaming" | "outline";
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   modelValue: 0,
   maxReachable: 0,
   compact: false,
@@ -124,7 +126,7 @@ const props = withDefaults(defineProps<Props>(), {
   primaryVariant: "primary",
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   (e: "update:modelValue", v: number): void;
   (e: "finish"): void;
   (e: "next", idx: number): void;
@@ -136,7 +138,7 @@ const currentIndex = computed({
   set: (v: number) => emit("update:modelValue", v),
 });
 
-const steps = toRef(props, "steps");
+const steps = toRef(_props, "steps");
 const maxIndex = computed(() =>
   Math.max(props.maxReachable, currentIndex.value),
 );

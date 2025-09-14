@@ -423,7 +423,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref, computed} from "vue";
 import { useRouter } from "vue-router";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -434,7 +437,7 @@ import AIButton from "@/components/ai/AIButton.vue";
 import AIModalSystem from "@/components/ai/AIModalSystem.vue";
 import { logger } from "@/shared/utils/logger";
 
-const router = useRouter();
+const _router = useRouter();
 
 // User gamification data
 const playerName = ref("Alex Developer");

@@ -100,7 +100,7 @@ export interface UseJobTailoredResumeReturn {
   const recommendations = ref<any>(null);
   const isAnalyzingJob = ref(false);
   const isTailoringResume = ref(false);
-  const error = ref<string | null>(null);
+  const _error = ref<string | null>(null);
 
   const coverLetterComposable = useAICoverLetter();
   const { toast } = useToast();

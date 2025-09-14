@@ -91,7 +91,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAppStore } from "@/stores/app";
 import { useToast } from "@/composables/useToast";
 import { aiService } from "@/shared/services/AIService";
@@ -184,7 +185,7 @@ interface Props {
   // Removed elevation as it will be handled by design system shadows
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   variant: "primary",
   appearance: "contained",
   size: "md",
@@ -213,7 +214,7 @@ const props = withDefaults(defineProps<Props>(), {
   badge: "",
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   click: [event: Event];
   focus: [event: FocusEvent];
   blur: [event: FocusEvent];
@@ -409,7 +410,7 @@ const handleAIAction = async () => {
         showSuccessState.value = false;
       }, 2000);
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("AI action failed:", error);
     lastError.value = error.message || "Unknown error";
     showErrorState.value = true;

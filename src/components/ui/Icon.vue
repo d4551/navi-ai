@@ -3,6 +3,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 
 interface Props {
@@ -12,7 +14,7 @@ interface Props {
   className?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   size: "16",
   color: "currentColor",
   className: "",

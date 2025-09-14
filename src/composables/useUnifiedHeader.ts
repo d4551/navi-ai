@@ -22,7 +22,7 @@ export interface HeaderActionGroup {
 }
 
 export function useUnifiedHeader() {
-  const router = useRouter();
+  const _router = useRouter();
   const store = useAppStore();
 
   // Global state

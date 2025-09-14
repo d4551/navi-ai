@@ -145,7 +145,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineProps } from "vue";
+import { ref, computed } from 'vue';
+
+import { refdefineProps } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { formatDateLong } from "@/utils/date";
@@ -176,7 +178,7 @@ interface Props {
   template?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   coverLetterData: () => ({}),
   template: "classic",
 });

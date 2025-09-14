@@ -33,6 +33,7 @@ interface LegacyPortfolioItem {
   tags?: string[];
 }
 
+export function usePortfolio() {
   const store = useAppStore();
 
   // Ephemeral UI state
@@ -170,7 +171,7 @@ interface LegacyPortfolioItem {
   // Enhanced item management
     data: Partial<PortfolioProject | LegacyPortfolioItem>,
   ) {
-    const newItem = createPortfolioItem(data);
+    const newItem = createPortfolioItem(_data);
     const validation = validateItem(newItem);
 
     if (!validation.valid) {

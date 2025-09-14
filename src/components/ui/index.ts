@@ -123,16 +123,16 @@ export const withLoadingState = <T>(
   state.error = null;
 
   return asyncFn()
-    .then((data) => {
+    .then((_data) => {
       state.data = data;
       state.loading = false;
-      onSuccess?.(data);
+      onSuccess?.(_data);
       return data;
     })
-    .catch((error) => {
+    .catch((_error) => {
       state.error = error.message || "An error occurred";
       state.loading = false;
-      onError?.(error);
+      onError?.(_error);
       throw error;
     });
 };

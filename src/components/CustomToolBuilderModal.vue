@@ -24,13 +24,15 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue';
+
 import { ref, watch, defineEmits, defineProps } from "vue";
 import ModalBase from "@/components/ui/ModalBase.vue";
 
-const props = defineProps({
+const _props = defineProps({
   modelValue: { type: Boolean, default: false },
 });
-const emit = defineEmits(["update:modelValue", "save"]);
+const _emit = defineEmits(["update:modelValue", "save"]);
 
 const internalOpen = ref(props.modelValue);
 const toolName = ref("");

@@ -1123,8 +1123,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onUnmounted, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAppStore } from "@/stores/app";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
@@ -1144,8 +1144,8 @@ import usePortfolio from "@/composables/usePortfolio";
 import { PortfolioService } from "@/shared/services/PortfolioService";
 
 const store = useAppStore();
-const router = useRouter();
-const theme = (() => {
+const _router = useRouter();
+const _theme = (() => {
   try {
     return useUnifiedTheme();
   } catch {
@@ -1656,7 +1656,7 @@ async function handlePortfolioExport(
     );
 
     toastSuccess(`${format.toUpperCase()} export completed successfully!`);
-  } catch (error) {
+  } catch (_error) {
     console.error("Export failed:", error);
     toastError(`Export failed: ${error.message || "Unknown error"}`);
   }
@@ -1740,7 +1740,7 @@ function loadLastSessionFilters() {
     const parsed: PortfolioFilterState = JSON.parse(raw);
     if (!parsed) return;
     applyFilterState(parsed);
-  } catch (e) {
+  } catch (_e) {
     console.warn("Failed to load last session filters", e);
   }
 }
@@ -1762,7 +1762,7 @@ watch(
     _persistTimer = setTimeout(() => {
       try {
         const data = snapshotCurrentFilters();
-        localStorage.setItem(lastFiltersKey, JSON.stringify(data));
+        localStorage.setItem(lastFiltersKey, JSON.stringify(_data));
       } catch {}
     }, 250);
   },
@@ -1900,7 +1900,7 @@ function loadSavedPresets() {
         createdAt: new Date(p.createdAt),
       }));
     }
-  } catch (error) {
+  } catch (_error) {
     console.warn("Failed to load filter presets:", error);
   }
 }

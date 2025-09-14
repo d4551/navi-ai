@@ -126,7 +126,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { ref, computed, reactive } from 'vue';
+
+import {reactive, ref } from "vue";
 import StepFlow from "@/components/ui/StepFlow.vue";
 import {
   PortfolioRepository,
@@ -134,7 +136,7 @@ import {
 } from "@/modules/db/repositories/portfolio";
 import { useToast } from "@/composables/useToast";
 
-const emit = defineEmits<{ (e: "created", project: PortfolioProject): void }>();
+const _emit = defineEmits<{ (e: "created", project: PortfolioProject): void }>();
 const { success, error } = useToast();
 
 const idx = ref(0);
@@ -198,7 +200,7 @@ async function create() {
     const project = await PortfolioRepository.addProject(form);
     success("Project created");
     emit("created", project);
-  } catch (e) {
+  } catch (_e) {
     error("Failed to create project");
   } finally {
     busy.value = false;

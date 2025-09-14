@@ -87,7 +87,7 @@ export class PublicAPIDataSource {
         `Public API ingestion completed: ${allStudios.size} studios found`,
       );
       return Array.from(allStudios.values());
-    } catch (error) {
+    } catch (_error) {
       logger.error("Public API data ingestion failed:", error);
       throw error;
     }
@@ -136,7 +136,7 @@ export class PublicAPIDataSource {
 
       logger.info(`Fetched ${studios.length} studios from Wikidata`);
       return studios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch from Wikidata:", error);
       return [];
     }
@@ -200,7 +200,7 @@ export class PublicAPIDataSource {
               studios.push(studio);
             }
 
-          } catch (error) {
+          } catch (_error) {
             logger.warn(`Failed to fetch GitHub org ${org.login}:`, error);
           }
         }
@@ -210,7 +210,7 @@ export class PublicAPIDataSource {
 
       logger.info(`Fetched ${studios.length} studios from GitHub`);
       return studios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch from GitHub:", error);
       return [];
     }
@@ -276,7 +276,7 @@ export class PublicAPIDataSource {
               }
             }
 
-          } catch (error) {
+          } catch (_error) {
             logger.warn(`Failed to fetch Wikipedia page ${page.title}:`, error);
           }
         }
@@ -286,7 +286,7 @@ export class PublicAPIDataSource {
 
       logger.info(`Fetched ${studios.length} studios from Wikipedia`);
       return studios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch from Wikipedia:", error);
       return [];
     }
@@ -337,7 +337,7 @@ export class PublicAPIDataSource {
 
       logger.info(`Fetched ${studios.length} studios from DBpedia`);
       return studios;
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to fetch from DBpedia:", error);
       return [];
     }

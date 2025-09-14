@@ -49,10 +49,10 @@ Return JSON array with format:
       );
 
       // Clean the response to handle markdown-formatted JSON
-      const cleanedResult = this.cleanJsonResponse(result);
+      const cleanedResult = this.cleanJsonResponse(_result);
       const mappings = JSON.parse(cleanedResult) as SkillMapping[];
       return this.enrichSkillMappings(mappings);
-    } catch (error) {
+    } catch (_error) {
       console.error("Gaming experience analysis failed:", error);
       throw error;
     }
@@ -92,7 +92,7 @@ Return JSON format:
       // Clean the response to handle markdown-formatted JSON
       const cleanedResult = this.cleanJsonResponse(result || "[]");
       return JSON.parse(cleanedResult) as TrendingSkill[];
-    } catch (error) {
+    } catch (_error) {
       console.error("Trending skills fetch failed:", error);
       return this.getFallbackTrendingSkills();
     }
@@ -138,9 +138,9 @@ Return JSON format:
       );
 
       // Clean the response to handle markdown-formatted JSON
-      const cleanedResult = this.cleanJsonResponse(result);
+      const cleanedResult = this.cleanJsonResponse(_result);
       return JSON.parse(cleanedResult) as IndustryRole;
-    } catch (error) {
+    } catch (_error) {
       console.error("Role requirements fetch failed:", error);
       throw error;
     }

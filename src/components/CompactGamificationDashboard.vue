@@ -191,6 +191,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import { useAppStore } from "@/stores/app";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -208,7 +210,7 @@ export default {
     UiChip,
   },
   emits: ["start-challenge", "view-all-achievements", "achievement-clicked"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const store = useAppStore();
     const gamificationService = new GamificationService(store);
     const { getIcon, getIconSize, getIconColor } = useIconReplacement();

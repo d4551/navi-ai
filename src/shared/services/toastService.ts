@@ -19,7 +19,7 @@ export function toastSuccess(
 }
 
 export function toastError(message: string, options: ToastOptions = {}): void {
-  const { error } = useToast();
+  const { _error } = useToast();
   error(message, options);
 }
 
@@ -65,7 +65,7 @@ export function toastHandleApiResponse(
   errorMessage = "Operation failed",
 ) {
   const { handleApiResponse } = useToast();
-  return handleApiResponse(response, successMessage, errorMessage);
+  return handleApiResponse(_response, successMessage, errorMessage);
 }
 
 export function toastHandlePromise<T>(

@@ -310,9 +310,9 @@ export class DatabaseService {
         try {
           this.createStores(db);
           logger.info("Database stores created/updated successfully");
-        } catch (error) {
+        } catch (_error) {
           logger.error("Failed to create database stores:", error);
-          reject(error);
+          reject(_error);
         }
       };
 
@@ -643,7 +643,7 @@ export class DatabaseService {
       // Try to perform a simple operation
       await this.count("users");
       return true;
-    } catch (error) {
+    } catch (_error) {
       console.error("Database health check failed:", error);
       return false;
     }

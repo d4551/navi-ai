@@ -32,13 +32,13 @@ import { logger } from "@/shared/utils/logger";
   const profileErrors = computed(() => profileValidation.value.errors);
 
   // Update methods
-  const updatePersonalInfo = async (data) => {
+  const updatePersonalInfo = async (_data) => {
     try {
-      const ok = store.updatePersonalInfo(data);
+      const ok = store.updatePersonalInfo(_data);
       if (!ok) throw new Error("Validation failed");
       logger.info("Personal info updated successfully");
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update personal info:", error);
       return { success: false, error: error.message };
     }
@@ -50,7 +50,7 @@ import { logger } from "@/shared/utils/logger";
       if (!ok) throw new Error("Validation failed");
       logger.info("Professional experience updated successfully");
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update experience:", error);
       return { success: false, error: error.message };
     }
@@ -62,7 +62,7 @@ import { logger } from "@/shared/utils/logger";
       if (!ok) throw new Error("Validation failed");
       logger.info("Education updated successfully");
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update education:", error);
       return { success: false, error: error.message };
     }
@@ -74,7 +74,7 @@ import { logger } from "@/shared/utils/logger";
       if (!ok) throw new Error("Validation failed");
       logger.info("Skills updated successfully");
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update skills:", error);
       return { success: false, error: error.message };
     }
@@ -86,7 +86,7 @@ import { logger } from "@/shared/utils/logger";
       if (!ok) throw new Error("Validation failed");
       logger.info("Gaming experience updated successfully");
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update gaming experience:", error);
       return { success: false, error: error.message };
     }
@@ -98,7 +98,7 @@ import { logger } from "@/shared/utils/logger";
       if (!ok) throw new Error("Validation failed");
       logger.info("Career goals updated successfully");
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update career goals:", error);
       return { success: false, error: error.message };
     }
@@ -110,7 +110,7 @@ import { logger } from "@/shared/utils/logger";
       if (!ok) throw new Error("Validation failed");
       logger.info("Portfolio updated successfully");
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update portfolio:", error);
       return { success: false, error: error.message };
     }
@@ -127,7 +127,7 @@ import { logger } from "@/shared/utils/logger";
         return { success: true, message: `Profile imported from ${source}` };
       }
       return { success: false, error: result.error };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to import profile:", error);
       return { success: false, error: error.message };
     }
@@ -145,7 +145,7 @@ import { logger } from "@/shared/utils/logger";
         format,
       );
       return result;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to export profile:", error);
       return { success: false, error: error.message };
     }
@@ -157,14 +157,14 @@ import { logger } from "@/shared/utils/logger";
       // Best-effort: persist latest state and reload preferences
       await store.saveToStorage?.();
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to sync profile:", error);
       return { success: false, error: error.message };
     }
   };
 
   // Profile context extraction for specific use cases
-  const getProfileForContext = (context) => {
+  const getProfileForContext = (_context) => {
     const currentProfile = profile.value;
     if (!currentProfile) return null;
     return userProfileService.extractForContext(currentProfile, context);
@@ -187,7 +187,7 @@ import { logger } from "@/shared/utils/logger";
       return { success: false, error: `Unknown profile section: ${section}` };
     }
 
-    return await updateMethod(data);
+    return await updateMethod(_data);
   };
 
   // Profile completeness calculation
@@ -207,7 +207,7 @@ import { logger } from "@/shared/utils/logger";
           try {
             // Pinia: mutate state directly or via an action
             store.user.meta.profileCompleteness = completeness;
-          } catch (e) {
+          } catch (_e) {
             logger.warn("Failed to update profile completeness in store", e);
           }
         }

@@ -54,7 +54,7 @@ export class VideoService {
       // Enumerate devices without prompting (labels may be empty until granted)
       await this.enumerateDevices();
       logger.info("Video service initialized (non-invasive)");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize video service:", error);
       throw error;
     }
@@ -72,7 +72,7 @@ export class VideoService {
 
       logger.debug(`Found ${this.availableCameras.length} video devices`);
       return this.availableCameras;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to enumerate video devices:", error);
       return [];
     }
@@ -97,7 +97,7 @@ export class VideoService {
 
       logger.info("Camera started successfully");
       return this.videoStream;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start camera:", error);
       throw error;
     }
@@ -124,7 +124,7 @@ export class VideoService {
 
       logger.info("Screen sharing started successfully");
       return this.screenStream;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start screen sharing:", error);
       throw error;
     }

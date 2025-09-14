@@ -423,7 +423,9 @@
 </template>
 
 <script setup>
-import { ref, computed, defineEmits, defineProps } from "vue";
+import { ref, computed } from 'vue';
+
+import {computed, defineEmits, defineProps } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import {
@@ -440,7 +442,7 @@ import {
   PulseIconComponent,
 } from "./SettingsIcons.js";
 
-const props = defineProps({
+const _props = defineProps({
   settings: {
     type: Object,
     required: true,
@@ -452,12 +454,14 @@ const props = defineProps({
       portfolioSize: 0,
       cacheSize: 0,
       settingsSize: 0,
-      totalSize: 0,
+      totalSize: 0,,
+    default: () => ({})
+  
     }),
   },
 });
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "export-resume",
   "export-portfolio",
   "export-chat-history",

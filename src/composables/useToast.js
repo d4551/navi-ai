@@ -30,7 +30,7 @@ export function useToast() {
   };
 
   // Error toast
-  const error = (message, options = {}) => {
+  const _error = (message, options = {}) => {
     logger.error("Toast error:", message);
     return toast.error(message, {
       ...defaultOptions,
@@ -137,7 +137,7 @@ export function useToast() {
 
   // API response handlers
   const handleApiResponse = (
-    response,
+    _response,
     successMessage,
     errorMessage = "Operation failed",
   ) => {
@@ -162,11 +162,11 @@ export function useToast() {
     const loadingToast = loading(loadingMsg);
 
     return promise
-      .then((result) => {
+      .then((_result) => {
         loadingToast.success(successMsg);
         return result;
       })
-      .catch((error) => {
+      .catch((_error) => {
         const message = error?.message || error?.error || errorMsg;
         loadingToast.error(message);
         throw error;
@@ -195,7 +195,7 @@ export function useToast() {
           progressToast.update((completed / total) * 100);
           results.push({ index, result });
           return result;
-        } catch (error) {
+        } catch (_error) {
           completed++;
           progressToast.update((completed / total) * 100);
           errors.push({ index, error });

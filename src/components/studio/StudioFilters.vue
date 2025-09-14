@@ -201,7 +201,7 @@ interface Chip {
   type: string;
 }
 
-const props = defineProps<{
+const _props = defineProps<{
   modelValue: string;
   filters: Record<string, any>;
   showAdvanced: boolean;
@@ -214,7 +214,7 @@ const props = defineProps<{
   hideTextInput?: boolean;
 }>();
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "update:modelValue",
   "update:filters",
   "update:showAdvanced",

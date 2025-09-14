@@ -196,7 +196,9 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, onMounted } from 'vue';
+
+import { refcomputed } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
 export default {
@@ -229,7 +231,7 @@ export default {
     "preview-toggle",
     "check-tone",
   ],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const editorMode = ref("write");
     const previewMode = ref("letter");
     const canUndo = ref(false);

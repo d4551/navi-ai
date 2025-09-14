@@ -61,7 +61,7 @@ class AzureService {
       await this.validateConfiguration();
 
       this.isInitialized = true;
-    } catch (error) {
+    } catch (_error) {
       console.error("[✗] Azure initialization failed:", error);
       throw error;
     }
@@ -111,7 +111,7 @@ class AzureService {
       }
 
       logger.info("[✓] Azure Cognitive Services connected");
-    } catch (error) {
+    } catch (_error) {
       console.warn("[WARNING] Cognitive Services test failed:", error);
     }
   }
@@ -137,7 +137,7 @@ class AzureService {
       }
 
       logger.info("[✓] Azure OpenAI connected");
-    } catch (error) {
+    } catch (_error) {
       console.warn("[WARNING] OpenAI test failed:", error);
     }
   }
@@ -184,7 +184,7 @@ class AzureService {
       }
 
       return { success: true, data: results };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }
@@ -327,7 +327,7 @@ class AzureService {
       return {
         success: true,
       };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }
@@ -350,7 +350,7 @@ class AzureService {
         success: true,
         data: `https://${this.config.storageAccountName}.blob.core.windows.net/${containerName}/${blobName}`,
       };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }
@@ -368,7 +368,7 @@ class AzureService {
       logger.debug(`Downloading ${blobName} from container ${containerName}`);
 
       return { success: true, data: new Blob() };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }
@@ -387,7 +387,7 @@ class AzureService {
       logger.debug("Sending event to Event Hub:", eventData);
 
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }
@@ -406,7 +406,7 @@ class AzureService {
       logger.debug(`Sending telemetry from device ${deviceId}:`, telemetryData);
 
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }
@@ -427,7 +427,7 @@ class AzureService {
         payload,
       );
 
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }
@@ -443,7 +443,7 @@ class AzureService {
       logger.debug(`Retrieving secret: ${secretName}`);
 
       return { success: true, data: "[SECRET_VALUE]" };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }
@@ -461,7 +461,7 @@ class AzureService {
       logger.debug(`Setting secret: ${secretName}`);
 
       return { success: true };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, error: error.message };
     }
   }

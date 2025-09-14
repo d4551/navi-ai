@@ -305,13 +305,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from 'vue';
+
+import { refwatch } from "vue";
 import { useToast } from "@/composables/useToast";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   resumeData: any;
   coverLetterData: any;
   jobDescription: string;
@@ -321,7 +323,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update-job-description": [string];
   "apply-suggestions": [any[]];
   "tailor-documents": [];
@@ -404,7 +406,7 @@ const analyzeJobDescription = async () => {
     };
 
     toast.success("Job description analyzed successfully");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to analyze job description");
   } finally {
     analyzing.value = false;
@@ -424,7 +426,7 @@ const analyzeDocuments = async () => {
     };
 
     toast.success("Documents analyzed successfully");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to analyze documents");
   } finally {
     analyzing.value = false;
@@ -460,7 +462,7 @@ const enhanceContent = async () => {
     ];
 
     toast.success("Content enhancement suggestions generated");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to generate suggestions");
   } finally {
     enhancing.value = false;
@@ -481,7 +483,7 @@ const handleTailorDocuments = async () => {
     };
 
     toast.success("Documents tailored successfully");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to tailor documents");
   } finally {
     tailoring.value = false;
@@ -504,7 +506,7 @@ const optimizeSkills = async () => {
     ];
 
     toast.success("Skill optimization complete");
-  } catch (error) {
+  } catch (_error) {
     toast.error("Failed to optimize skills");
   } finally {
     optimizingSkills.value = false;
@@ -578,7 +580,7 @@ const aiMatchJobToProfile = async () => {
     });
 
     toast.success("AI profile matching complete!");
-  } catch (error) {
+  } catch (_error) {
     console.error("Profile matching failed:", error);
     toast.error("Profile matching analysis failed");
   } finally {

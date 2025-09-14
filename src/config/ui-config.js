@@ -107,6 +107,7 @@ export const getTypography = (category, size) =>
 export const getComponentConfig = (component, variant) =>
   UI_CONFIG.components[component]?.[variant] || {};
 export const getAnimation = (type, name) =>
+  UI_CONFIG.animations[type]?.[name] || {};
 export const getIconSize = (size) =>
   UI_CONFIG.icons.sizes[size] || UI_CONFIG.icons.sizes.sm;
 export const getLayoutMaxWidth = (width) =>

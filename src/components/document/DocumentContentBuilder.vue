@@ -36,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import ResumeContentBuilder from "./ResumeContentBuilder.vue";
@@ -46,7 +48,7 @@ import type {
 } from "@/composables/useDocumentManager";
 
 // Props
-const props = defineProps<{
+const _props = defineProps<{
   documentData: ResumeData | CoverLetterData;
   documentType: "resume" | "cover-letter";
   currentStep: number;
@@ -54,7 +56,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "update-data": [data: ResumeData | CoverLetterData];
   "step-change": [step: number];
   "ai-request": [payload: any];

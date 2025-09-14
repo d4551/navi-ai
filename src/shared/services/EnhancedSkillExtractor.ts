@@ -203,7 +203,7 @@ class EnhancedSkillExtractor {
           esports: "GamingConcept",
         },
       });
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to extend NLP lexicon:", error);
     }
   }
@@ -246,7 +246,7 @@ class EnhancedSkillExtractor {
         confidence,
         totalSkillsFound,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Skill extraction failed:", error);
       return {
         skills: [],
@@ -311,7 +311,7 @@ class EnhancedSkillExtractor {
           });
         }
       }
-    } catch (error) {
+    } catch (_error) {
       logger.debug("NLP skill extraction failed:", error);
     }
   }

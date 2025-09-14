@@ -65,14 +65,14 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalClientEvents> {
           this.handleMessage(event.data);
         };
 
-        this.ws.onerror = (error) => {
-          this.log("error", `WebSocket error: ${error}`);
+        this.ws.onerror = (_error) => {
+          this.log("error", `WebSocket error: ${_error}`);
           this.emit("error", new Error(`WebSocket connection failed`));
           reject(new Error("WebSocket connection failed"));
         };
-      } catch (error) {
-        this.log("error", `Connection error: ${error}`);
-        reject(error);
+      } catch (_error) {
+        this.log("error", `Connection error: ${_error}`);
+        reject(_error);
       }
     });
   }
@@ -151,7 +151,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalClientEvents> {
     try {
       this.ws.send(JSON.stringify(message));
       // Debug logging handled by logger when debug mode is enabled
-    } catch (error) {
+    } catch (_error) {
       this.log("error", "Failed to send message", error);
       throw error;
     }
@@ -159,7 +159,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalClientEvents> {
 
   private handleMessage(data: string): void {
     try {
-      const message: LiveIncomingMessage = JSON.parse(data);
+      const message: LiveIncomingMessage = JSON.parse(_data);
       // Debug logging handled by logger when debug mode is enabled
 
       // Handle different message types
@@ -180,11 +180,11 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalClientEvents> {
         );
         this.emit("toolcallcancellation", message.toolCallCancellation);
       }
-    } catch (error) {
+    } catch (_error) {
       this.log("error", "Failed to parse message", { error, data });
       this.emit(
         "error",
-        new Error(`Failed to parse incoming message: ${error}`),
+        new Error(`Failed to parse incoming message: ${_error}`),
       );
     }
   }

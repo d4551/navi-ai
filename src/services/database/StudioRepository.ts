@@ -170,7 +170,7 @@ export class StudioRepository {
               now,
             );
             insertedCount++;
-          } catch (error) {
+          } catch (_error) {
             logger.warn(`Failed to upsert studio ${studio.name}:`, error);
           }
         }

@@ -164,7 +164,7 @@ export class RealTimeMultiTurnService {
 
       this.isInitialized = true;
       logger.info("Real-Time Multi-Turn Service initialized");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize Real-Time Multi-Turn Service:", error);
       throw error;
     }
@@ -219,7 +219,7 @@ export class RealTimeMultiTurnService {
       logger.info(`Started ${type} session:`, this.currentSession.id);
 
       return this.currentSession;
-    } catch (error) {
+    } catch (_error) {
       this.currentSession.isActive = false;
       logger.error("Failed to start session:", error);
       this.callbacks.onError?.(error as Error);
@@ -255,7 +255,7 @@ export class RealTimeMultiTurnService {
 
       this.callbacks.onSessionEnd?.(stoppedSession);
       logger.info(`Session ${stoppedSession.id} ended`);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error stopping session:", error);
       this.callbacks.onError?.(error as Error);
     }
@@ -297,9 +297,9 @@ export class RealTimeMultiTurnService {
 
       // Handle audio output if enabled
       if (this.config.enableAudioOutput && response) {
-        await this.generateAudioResponse(response);
+        await this.generateAudioResponse(_response);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error sending message:", error);
       this.callbacks.onError?.(error as Error);
     }
@@ -363,7 +363,7 @@ export class RealTimeMultiTurnService {
           }
         }
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error processing audio data:", error);
       this.callbacks.onError?.(error as Error);
     }
@@ -404,10 +404,10 @@ export class RealTimeMultiTurnService {
 
         // Generate audio response if enabled
         if (this.config.enableAudioOutput) {
-          await this.generateAudioResponse(response);
+          await this.generateAudioResponse(_response);
         }
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error processing image data:", error);
       this.callbacks.onError?.(error as Error);
     }
@@ -442,7 +442,7 @@ export class RealTimeMultiTurnService {
 
       await this.setupAudioProcessing(stream);
       logger.info("Audio session started");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start audio session:", error);
       throw error;
     }
@@ -461,7 +461,7 @@ export class RealTimeMultiTurnService {
       this.setupVideoProcessing(stream);
       this.videoStreamActive = true;
       logger.info("Video session started");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start video session:", error);
       throw error;
     }
@@ -478,7 +478,7 @@ export class RealTimeMultiTurnService {
       this.setupScreenProcessing(stream);
       this.screenStreamActive = true;
       logger.info("Screen session started");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to start screen session:", error);
       throw error;
     }
@@ -553,7 +553,7 @@ export class RealTimeMultiTurnService {
         await this.sendImageData(
           "What do you see in this video frame?",
         );
-      } catch (error) {
+      } catch (_error) {
         logger.debug("Frame processing error:", error);
       }
     }, frameInterval);
@@ -576,7 +576,7 @@ export class RealTimeMultiTurnService {
         await this.sendImageData(
           "Analyze what's on the screen and provide insights:",
         );
-      } catch (error) {
+      } catch (_error) {
         logger.debug("Screen processing error:", error);
       }
   }
@@ -704,7 +704,7 @@ export class RealTimeMultiTurnService {
 
       const result = await model.generateContent(prompt);
       return result.response.text();
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error generating response:", error);
       return "I apologize, but I encountered an error processing your request.";
     }
@@ -724,7 +724,7 @@ export class RealTimeMultiTurnService {
 
         window.speechSynthesis.speak(utterance);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Error generating audio response:", error);
     }
   }

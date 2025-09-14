@@ -382,7 +382,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { ref, computed} from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "@/composables/useToast";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -438,7 +441,7 @@ interface Achievement {
   unlocked: boolean;
 }
 
-const router = useRouter();
+const _router = useRouter();
 const toast = useToast();
 
 // Reactive data
@@ -703,7 +706,7 @@ async function sendMessage() {
     // Add XP for using AI assistant
     currentXP.value += 10;
     toast.success("+10 XP for using AI Assistant!");
-  } catch (error) {
+  } catch (_error) {
     console.error("AI conversation error:", error);
     toast.error(
       error instanceof Error
@@ -797,7 +800,7 @@ onMounted(() => {
     try {
       const result = await initializeAI();
       aiInitialized.value = !!result?.success;
-    } catch (e) {
+    } catch (_e) {
       // Non-fatal: user can still use rest of dashboard
       console.warn("AI pre-initialization failed:", e);
     }

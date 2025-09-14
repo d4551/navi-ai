@@ -111,11 +111,12 @@ import { defineEmits, defineProps } from 'vue'
 <script setup>
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-const props = defineProps({
-  show: { type: Boolean, default: false },
+const _props = defineProps({
+  show: { type: Boolean, default: false,
+    required: false },
   portfolio: { type: Array, default: () => [] },
 });
-const emit = defineEmits(["export", "close"]);
+const _emit = defineEmits(["export", "close"]);
 
 function emitExport(fmt) {
   emit("export", fmt);

@@ -42,7 +42,7 @@ let __geminiFallback = null;
     }
 
     if (typeof client?.initialized !== "undefined") return !!client.initialized;
-  } catch (error) {
+  } catch (_error) {
     console.warn("Error checking AI client ready state:", error);
   }
   return false;
@@ -120,7 +120,7 @@ let __geminiFallback = null;
     });
 
     return response.content;
-  } catch (error) {
+  } catch (_error) {
     console.error("generateContent failed:", error);
 
     // Fallback to direct client if canonical service fails
@@ -183,13 +183,13 @@ let __geminiFallback = null;
     // Use canonical AI service for smart content generation
     const response = await aiService.chat({
       message: userInput,
-      context: `Content type: ${contentType}. Additional context: ${JSON.stringify(context)}`,
+      context: `Content type: ${contentType}. Additional context: ${JSON.stringify(_context)}`,
       type: "generation",
       options,
     });
 
     return response.content;
-  } catch (error) {
+  } catch (_error) {
     console.error("generateSmartContent failed with canonical service:", error);
 
     // Fallback to direct client
@@ -223,7 +223,7 @@ let __geminiFallback = null;
       userProfile,
       options,
     );
-  } catch (error) {
+  } catch (_error) {
     console.error("getContextualSuggestions failed:", error);
     if (error.message.includes("not initialized")) {
       throw new Error(
@@ -312,7 +312,7 @@ let __geminiFallback = null;
         yield result?.text || result;
       },
     };
-  } catch (error) {
+  } catch (_error) {
     console.error("streamText failed:", error);
     if (error?.message?.includes("not initialized")) {
       throw new Error(
@@ -359,7 +359,7 @@ let __aiInitPromise = null;
         );
       }
       return result;
-    } catch (error) {
+    } catch (_error) {
       __aiInitPromise = null;
       console.error("Modern AI client initialization failed:", error);
       throw new Error(
@@ -382,7 +382,7 @@ let __aiInitPromise = null;
         );
       }
       return result;
-    } catch (error) {
+    } catch (_error) {
       __aiInitPromise = null;
       console.error("Canonical AI client initialization failed:", error);
       throw new Error(
@@ -398,7 +398,7 @@ let __aiInitPromise = null;
     const res = await __aiInitPromise;
     __aiInitPromise = null;
     return res;
-  } catch (error) {
+  } catch (_error) {
     __aiInitPromise = null;
     console.error("AI client fallback initialization failed:", error);
     throw new Error(

@@ -114,6 +114,9 @@
   </header>
 </template>
 <script setup>
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { computed, defineEmits, defineProps } from "vue";
 import { useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
@@ -122,21 +125,31 @@ import { logger } from "@/shared/utils/logger";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import IconButton from "@/components/ui/IconButton.vue";
 
-const props = defineProps({
-  title: { type: String, required: true },
-  subtitle: { type: String, default: "" },
+const _props = defineProps({
+  title: { type: String, required: true,
+    default: ''
+   },
+  subtitle: { type: String, default: "",
+    default: '',
+    default: ''
+  
+   },
   stationId: { type: String, default: "GS-001" },
   online: { type: Boolean, default: false },
-  actions: { type: Array, default: () => [] },
-  icon: { type: String, default: "mdi-cog" },
+  actions: { type: Array, default: () => [],
+    default: () => []
+   },
+  icon: { type: String, default: "mdi-cog",
+    default: ''
+   },
   providerHealth: { type: Object, default: null }, // Provider health status from JobSearch
 });
 
 // Define emits for parent communication
-const emit = defineEmits(["refresh", "settings-open"]);
+const _emit = defineEmits(["refresh", "settings-open"]);
 
 // Setup router and store
-const router = useRouter();
+const _router = useRouter();
 const store = useAppStore();
 
 // Computed properties
@@ -215,7 +228,7 @@ const refreshSystem = async () => {
     }
 
     // Force page reload can be handled by parent if needed
-  } catch (error) {
+  } catch (_error) {
     logger.error("SystemHeader: Failed to refresh system", error);
   }
 };
@@ -232,7 +245,7 @@ const openSettings = () => {
       // Open settings modal or trigger parent handler
       emit("settings-open");
     }
-  } catch (error) {
+  } catch (_error) {
     logger.error("SystemHeader: Failed to open settings", error);
   }
 };

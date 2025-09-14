@@ -76,9 +76,9 @@ export type RouteParams = {
 export function buildURL(route: string, params?: RouteParams): string {
   let url = route;
 
-  if (params) {
+  if (_params) {
     // Replace path parameters (like :id)
-    Object.entries(params).forEach(([key, value]) => {
+    Object.entries(_params).forEach(([key, value]) => {
       url = url.replace(`:${key}`, String(value));
     });
 
@@ -86,7 +86,7 @@ export function buildURL(route: string, params?: RouteParams): string {
     const pathParamKeys = (route.match(/:(\w+)/g) || []).map((p) =>
       p.substring(1),
     );
-    const queryParams = Object.entries(params)
+    const queryParams = Object.entries(_params)
       .filter(([key]) => !pathParamKeys.includes(key))
       .map(([key, value]) => `${key}=${encodeURIComponent(String(value))}`)
       .join("&");

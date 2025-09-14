@@ -29,7 +29,7 @@ export async function runMigrations(): Promise<void> {
       logger.info(
         `[✓] Migration ${migration.version}: ${migration.description}`,
       );
-    } catch (error) {
+    } catch (_error) {
       console.error(`[✗] Migration ${migration.version} failed:`, error);
       throw error;
     }

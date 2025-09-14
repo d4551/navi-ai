@@ -57,6 +57,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { computed, useSlots } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
@@ -81,7 +83,7 @@ export interface CardProps {
   // Removed elevation as it will be handled by design system shadows
 }
 
-const props = withDefaults(defineProps<CardProps>(), {
+const _props = withDefaults(defineProps<CardProps>(), {
   variant: "default",
   size: "md",
   interactive: false,
@@ -92,7 +94,7 @@ const props = withDefaults(defineProps<CardProps>(), {
   ariaLabel: "",
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   click: [event: Event];
   focus: [event: Event];
   blur: [event: Event];

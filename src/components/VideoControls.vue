@@ -213,7 +213,9 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+
+import { refcomputed, watch, onUnmounted } from "vue";
 import { videoService } from "@/shared/services/VideoService";
 import { googleAIStreamingService } from "@/shared/services/GoogleAIStreamingService";
 import { useAppStore } from "@/stores/app";
@@ -247,7 +249,7 @@ export default {
     },
   },
   emits: ["stream-started", "stream-stopped", "ai-response", "error"],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const store = useAppStore();
 
     // Reactive state
@@ -296,7 +298,7 @@ export default {
         if (props.autoStart) {
           await toggleCamera();
         }
-      } catch (error) {
+      } catch (_error) {
         handleError("Failed to initialize video controls", error);
       }
     });
@@ -315,7 +317,7 @@ export default {
           try {
             await googleAIStreamingService.initialize(newKey);
             showStatus("AI service initialized", "success");
-          } catch (error) {
+          } catch (_error) {
             handleError("Failed to initialize AI service", error);
           }
         }
@@ -337,7 +339,7 @@ export default {
     const refreshDevices = async () => {
       try {
         availableCameras.value = await videoService.enumerateDevices();
-      } catch (error) {
+      } catch (_error) {
         logger.error("Failed to refresh devices:", error);
       }
     };
@@ -364,7 +366,7 @@ export default {
           showStatus("Camera started", "success");
           lockVideo("Active session");
         }
-      } catch (error) {
+      } catch (_error) {
         handleError("Failed to toggle camera", error);
       }
     };
@@ -385,7 +387,7 @@ export default {
           showStatus("Screen sharing started", "success");
           lockScreen("Active sharing");
         }
-      } catch (error) {
+      } catch (_error) {
         handleError("Failed to toggle screen sharing", error);
       }
     };
@@ -402,11 +404,11 @@ export default {
               emit("stream-started");
               showStatus("AI streaming started", "success");
             },
-            onResponse: (response) => {
+            onResponse: (_response) => {
               aiResponse.value = response;
               emit("ai-response", response);
             },
-            onError: (error) => {
+            onError: (_error) => {
               handleError("AI streaming error", error);
             },
             onEnd: () => {
@@ -423,7 +425,7 @@ export default {
             throw new Error("No video source active");
           }
         }
-      } catch (error) {
+      } catch (_error) {
         handleError("Failed to toggle AI streaming", error);
       }
     };

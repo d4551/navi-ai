@@ -100,7 +100,7 @@ export class DatabaseManager {
       await fs.promises.writeFile(
         metaPath,
       );
-    } catch (e) {
+    } catch (_e) {
       logger.warn("Failed to write backup meta:", e);
     }
   }
@@ -121,7 +121,7 @@ export class DatabaseManager {
           };
         }
       }
-    } catch (e) {
+    } catch (_e) {
       logger.warn("Failed to read backup meta:", e);
     }
     return { lastBackup: "Never" };
@@ -204,7 +204,7 @@ export class DatabaseManager {
       await this.runMigrations();
 
       logger.info("Database initialized successfully");
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to initialize database:", error);
       throw error;
     }
@@ -322,7 +322,7 @@ export class DatabaseManager {
           this.db
             .prepare("INSERT INTO migrations (name) VALUES (?)")
             .run(migration.name);
-        } catch (error) {
+        } catch (_error) {
           // Some migrations might fail if columns already exist, that's ok
           logger.warn(`Migration ${migration.name} failed:`, error);
         }
@@ -363,7 +363,7 @@ export class DatabaseManager {
       try {
         const fs = await import("fs");
         const stats = fs.statSync(this.dbPath as string);
-      } catch (error) {
+      } catch (_error) {
         logger.warn("Could not get database size:", error);
       }
     } else {

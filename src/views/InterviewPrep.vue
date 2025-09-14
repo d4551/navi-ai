@@ -929,6 +929,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { usePageAssistantContext } from "@/composables/usePageAssistantContext";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
@@ -947,7 +950,7 @@ import { aiService } from "@/shared/services/AIService";
 import { unifiedStorage } from "@/utils/storage";
 import { useToast } from "@/composables/useToast";
 
-const router = useRouter();
+const _router = useRouter();
 const route = useRoute();
 const store = useAppStore();
 const { info: toastInfo, error: _toastError } = useToast();
@@ -1505,13 +1508,13 @@ async function beginInterview() {
         : null,
     };
 
-    const result = await aiInterviewService.startInterviewSession(config);
+    const result = await aiInterviewService.startInterviewSession(_config);
     if (result.success) {
       try {
-        saveRecentPreset(config);
+        saveRecentPreset(_config);
       } catch {}
       try {
-        saveLastUsed(config);
+        saveLastUsed(_config);
         lastUsedPersonaId.value = config.persona?.id || null;
       } catch {}
       router.push(`/interview-session/${result.session.id}`);
@@ -1545,7 +1548,7 @@ onMounted(async () => {
       // Clear the stored context after loading
       localStorage.removeItem("interviewPrepContext");
     }
-  } catch (error) {
+  } catch (_error) {
     console.warn("Failed to load job context:", error);
   }
   try {
@@ -1678,7 +1681,7 @@ function getFocusable(el: HTMLElement | null): HTMLElement[] {
   const sel =
     'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
   return Array.from(el.querySelectorAll<HTMLElement>(sel)).filter(
-    (e) => !e.hasAttribute("disabled"),
+    (_e) => !e.hasAttribute("disabled"),
   );
 }
 
@@ -1748,7 +1751,7 @@ async function loadAllStudios() {
     // Load all studios for the filterable list
     const result = await studioService.searchStudios({});
     allStudios.value = result.studios || [];
-  } catch (error) {
+  } catch (_error) {
     console.warn("Failed to load all studios:", error);
     allStudios.value = [];
   }
@@ -1841,11 +1844,11 @@ async function aiRecommendStudios() {
         primaryProvider: "google",
         enableContextPersistence: false,
       });
-    } catch (error) {
+    } catch (_error) {
       const msg =
         error && typeof error === "object" && "message" in error
           ? (error as any).message
-          : String(error);
+          : String(_error);
       console.warn("AI service initialization failed:", msg);
     }
     // Build context
@@ -1917,7 +1920,7 @@ async function aiRecommendStudios() {
         matched.map((m) => m.name),
       );
     }
-  } catch (e) {
+  } catch (_e) {
     // keep previous recommendations
     console.warn("AI studio recommendations failed", e);
   } finally {
@@ -2054,7 +2057,7 @@ async function recomputeFallbackRecommendations() {
 async function loadLastUsed() {
   const key = "interview.last." + userKey.value;
   const data = unifiedStorage.get(key);
-  if (data) {
+  if (_data) {
     lastUsedConfig.value = data;
     if (data.personaId) {
       const p = (personas.value as any[]).find((x) => x.id === data.personaId);
@@ -2157,11 +2160,11 @@ async function aiRecommendPersona() {
         primaryProvider: "google",
         enableContextPersistence: false,
       });
-    } catch (error) {
+    } catch (_error) {
       const msg =
         error && typeof error === "object" && "message" in error
           ? (error as any).message
-          : String(error);
+          : String(_error);
       console.warn("AI service initialization failed:", msg);
     }
     const studio = selectedStudio.value;
@@ -2240,7 +2243,7 @@ Return JSON with this structure:
       pendingPersonaSuggestion.value = sug;
       showPersonaPreview.value = true;
     }
-  } catch (e) {
+  } catch (_e) {
     console.warn("AI persona recommendation failed", e);
   } finally {
     aiPersonaLoading.value = false;

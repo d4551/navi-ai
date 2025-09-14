@@ -68,7 +68,7 @@ export class ResumeExportService {
         default:
           throw new Error(`Unsupported export format: ${request.format}`);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("Resume export failed:", error);
       return {
         success: false,
@@ -130,7 +130,7 @@ export class ResumeExportService {
           generatedAt: new Date().toISOString(),
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `PDF export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -182,7 +182,7 @@ export class ResumeExportService {
           generatedAt: new Date().toISOString(),
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `DOCX export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -207,7 +207,7 @@ export class ResumeExportService {
           generatedAt: new Date().toISOString(),
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `HTML export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -242,7 +242,7 @@ export class ResumeExportService {
           generatedAt: new Date().toISOString(),
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `JSON export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -267,7 +267,7 @@ export class ResumeExportService {
           generatedAt: new Date().toISOString(),
         },
       };
-    } catch (error) {
+    } catch (_error) {
       throw new Error(
         `Markdown export failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
@@ -279,7 +279,7 @@ export class ResumeExportService {
     options?: ExportOptions,
   ): string {
     const template = options?.template || "modern";
-    const theme = options?.theme || "light";
+    const _theme = options?.theme || "light";
 
     return `
 <!DOCTYPE html>

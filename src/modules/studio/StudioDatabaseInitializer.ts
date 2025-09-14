@@ -39,6 +39,7 @@ export class StudioDatabaseInitializer {
       const existingStudios = await GameStudioRepository.getAll();
       const studioCount = Object.keys(existingStudios).length;
 
+      if (studioCount > 0) {
         result.success = true;
         result.loaded = studioCount;
         result.message = `Gaming studios already initialized (${studioCount} studios available)`;
@@ -59,9 +60,9 @@ export class StudioDatabaseInitializer {
       }
 
       // Try to load additional studio data from other sources
-      await this.loadAdditionalStudioData(result);
-    } catch (error) {
-      const errorMsg = `Failed to initialize studios: ${error}`;
+      await this.loadAdditionalStudioData(_result);
+    } catch (_error) {
+      const errorMsg = `Failed to initialize studios: ${_error}`;
       result.errors.push(errorMsg);
       result.message = errorMsg;
       logger.error(errorMsg, error);
@@ -78,13 +79,15 @@ export class StudioDatabaseInitializer {
       const gamingStudiosModule = await import("@/data/gaming-studios.js");
       const studiosData = gamingStudiosModule.default || [];
 
+      if (studiosData.length > 0) {
         result.loaded += studiosData.length;
         logger.info(
+          `Loaded ${studiosData.length} additional studios from data file`
         );
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Could not load additional studio data:", error);
-      result.errors.push(`Additional data load warning: ${error}`);
+      result.errors.push(`Additional data load warning: ${_error}`);
     }
   }
 
@@ -105,6 +108,7 @@ export class StudioDatabaseInitializer {
       const studioArray = Object.values(studios);
       validation.totalStudios = studioArray.length;
 
+      if (studioArray.length === 0) {
         validation.valid = false;
         validation.issues.push("No studios found in database");
         validation.recommendations.push(
@@ -114,8 +118,12 @@ export class StudioDatabaseInitializer {
       }
 
       // Check for data quality
+      let studiosWithoutGames = 0;
+      let studiosWithoutLocation = 0;
+      let studiosWithoutDescription = 0;
 
       studioArray.forEach((studio) => {
+        if (!studio.games || studio.games.length === 0) {
           studiosWithoutGames++;
         }
         if (!studio.location) {
@@ -155,9 +163,9 @@ export class StudioDatabaseInitializer {
       logger.info(
         `[STATS] Studio validation: ${studioArray.length} studios, ${validation.issues.length} issues found`,
       );
-    } catch (error) {
+    } catch (_error) {
       validation.valid = false;
-      validation.issues.push(`Validation failed: ${error}`);
+      validation.issues.push(`Validation failed: ${_error}`);
       logger.error("Studio validation failed:", error);
     }
 
@@ -211,7 +219,7 @@ export class StudioDatabaseInitializer {
 
       logger.info(
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate studio statistics:", error);
     }
 
@@ -282,7 +290,7 @@ export class StudioDatabaseInitializer {
       }
 
       return true;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to ensure studio database:", error);
       return false;
     }
@@ -348,7 +356,7 @@ export class StudioDatabaseInitializer {
       suggestions.sort((a, b) => {
         return order[a.matchType] - order[b.matchType];
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to get studio suggestions:", error);
     }
 

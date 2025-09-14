@@ -27,7 +27,7 @@ export const STUDIO_DATA_SCHEMA = {
           "Africa",
           "Oceania",
         ],
-        derive: (data) => deriveRegionFromCountry(data.country),
+        derive: (_data) => deriveRegionFromCountry(data.country),
       },
       coordinates: {
         type: "object",
@@ -338,10 +338,10 @@ export const STUDIO_DATA_SCHEMA = {
 
         results.cleaned.push(final);
         results.statistics.successful++;
-      } catch (error) {
+      } catch (_error) {
         // Log processing failures for debugging
         logger.error(
-          error,
+          _error,
           "StudioDataCleaner",
         );
         results.errors.push({
@@ -356,7 +356,7 @@ export const STUDIO_DATA_SCHEMA = {
     // Studio cleaning completed successfully
 
     return results;
-  } catch (error) {
+  } catch (_error) {
     // Log critical failures
     logger.error("Studio data cleaning failed:", error, "StudioDataCleaner");
     throw new Error(`Studio data cleaning failed: ${error.message}`);
@@ -445,11 +445,11 @@ export const STUDIO_DATA_SCHEMA = {
       // Type validation and conversion
       cleanedValue = await validateFieldType(cleanedValue, fieldSchema, field);
 
-        cleanedValue = fieldSchema.derive(data);
+        cleanedValue = fieldSchema.derive(_data);
       }
 
       result[field] = cleanedValue;
-    } catch (error) {
+    } catch (_error) {
       errors.push(`Field '${field}': ${error.message}`);
       if (options.strict) {
         throw new Error(
@@ -492,7 +492,7 @@ export const STUDIO_DATA_SCHEMA = {
     // Add market tier classification
     enrichments.marketTier = classifyMarketTier(studioData);
     enrichments.metadata.enrichments.push("market_tier");
-  } catch (error) {
+  } catch (_error) {
     console.warn("Data enrichment partially failed:", error);
   }
 
@@ -765,7 +765,7 @@ export const STUDIO_DATA_SCHEMA = {
       if (enumValues && !enumValues.includes(value)) {
         // Try to find closest match
         const closest = enumValues.find(
-          (e) => e.toLowerCase() === value.toLowerCase(),
+          (_e) => e.toLowerCase() === value.toLowerCase(),
         );
         if (closest) {
           value = closest;
@@ -1036,7 +1036,7 @@ export const STUDIO_DATA_SCHEMA = {
       errors,
       warnings,
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       isValid: false,
       errors: [`Validation failed with error: ${error.message}`],

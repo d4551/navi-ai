@@ -1,5 +1,5 @@
 
-import { ref, computed } from "vue";
+import {computed } from "vue";
 import type { Job, JobFilters } from "@/shared/types/jobs";
 import { useAppStore } from "@/stores/app";
 import { getActivePinia } from "pinia";
@@ -65,7 +65,7 @@ export class AIJobService {
         workStyle: (store.user as any)?.workStyle || "hybrid",
         careerGoals: (store.user as any)?.careerGoals || [],
       };
-    } catch (e) {
+    } catch (_e) {
     }
   }
 
@@ -82,7 +82,7 @@ export class AIJobService {
 
       // Sort by match score and return
       return matches.sort((a, b) => b.matchScore - a.matchScore);
-    } catch (error) {
+    } catch (_error) {
       logger.error("AI job matching failed:", error);
       return jobs.map((job) => ({
         job,
@@ -266,7 +266,7 @@ export class AIJobService {
       const alignmentScore =
         userPreferences.reduce((acc: number, pref: string) => {
 
-    } catch (error) {
+    } catch (_error) {
     }
   }
 
@@ -292,7 +292,7 @@ export class AIJobService {
 
       this.setCachedResult(cacheKey, prediction);
       return prediction;
-    } catch (error) {
+    } catch (_error) {
       logger.error("Salary prediction failed:", error);
       return {
         factors: ["Limited data available"],
@@ -318,7 +318,7 @@ export class AIJobService {
         burnoutRisk: this.analyzeBurnoutRisk(description, job.type),
         learningCurve: this.analyzeLearningCurve(technologies, requirements),
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Job insights analysis failed:", error);
       return {
         jobComplexity: "intermediate",
@@ -346,7 +346,7 @@ export class AIJobService {
       }
 
       return insights.sort((a, b) => b.averageSalary - a.averageSalary);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Market insights failed:", error);
       return [];
     }

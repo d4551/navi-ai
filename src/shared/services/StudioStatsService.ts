@@ -40,7 +40,7 @@ async function fetchJson<T = any>(url: string): Promise<T | null> {
         throw new Error("invalid content-type");
       }
       return (await res.json()) as T;
-    } catch (e) {
+    } catch (_e) {
       attempt++;
       if (attempt > MAX_RETRIES) {
         logger.warn(
@@ -84,7 +84,7 @@ export class StudioStatsService {
           return persisted.data;
         }
       }
-    } catch (e) {
+    } catch (_e) {
       logger.warn(
         "StudioStatsService persisted get failed",
         (e as Error).message,
@@ -117,7 +117,7 @@ export class StudioStatsService {
           }
         }
       }
-    } catch (e) {
+    } catch (_e) {
       logger.warn("CheapShark stats failed", studio.id, (e as Error).message);
     }
 
@@ -135,7 +135,7 @@ export class StudioStatsService {
           stats.sources!.push("rawg");
         }
       }
-    } catch (e) {
+    } catch (_e) {
       logger.warn("RAWG stats failed", studio.id, (e as Error).message);
     }
 
@@ -160,7 +160,7 @@ export class StudioStatsService {
         (stats as any).steamAppSample = details;
         (stats.sources as string[]).push("steam");
       }
-    } catch (e) {
+    } catch (_e) {
       logger.warn("Steam lookup failed", studio.id, (e as Error).message);
     }
 
@@ -170,7 +170,7 @@ export class StudioStatsService {
     try {
       // @ts-ignore
       window.electronAPI?.studios?.setStats(studio.id, stats);
-    } catch (e) {
+    } catch (_e) {
       logger.warn(
         "StudioStatsService persisted set failed",
         (e as Error).message,
@@ -193,7 +193,7 @@ export async function ensureStudioStats(studio: GameStudio) {
         studio.externalStats = fresh;
       });
     }
-  } catch (e) {
+  } catch (_e) {
     logger.warn("ensureStudioStats failed", studio.id, (e as Error).message);
   }
   return studio.externalStats;

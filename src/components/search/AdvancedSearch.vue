@@ -263,7 +263,7 @@
             :key="`${result.type}-${result.id}`"
             class="result-card"
             :class="`result-${result.type}`"
-            @click="selectResult(result)"
+            @click="selectResult(_result)"
           >
             <div class="result-header">
               <div class="result-icon">
@@ -290,9 +290,9 @@
             </div>
 
             <div class="result-content">
-              <h3 class="result-title">{{ getResultTitle(result) }}</h3>
+              <h3 class="result-title">{{ getResultTitle(_result) }}</h3>
               <p class="result-description">
-                {{ getResultDescription(result) }}
+                {{ getResultDescription(_result) }}
               </p>
 
               <!-- Studio-specific info -->
@@ -342,7 +342,7 @@
               <button
                 class="btn btn-sm btn-outline-primary ui-btn ui-size-md"
                 type="button"
-                @click.stop="viewDetails(result)"
+                @click.stop="viewDetails(_result)"
               >
                 View Details
               </button>
@@ -350,7 +350,7 @@
                 v-if="result.type === 'studio'"
                 class="btn btn-sm btn-primary ui-btn ui-size-md"
                 type="button"
-                @click.stop="startInterview(result)"
+                @click.stop="startInterview(_result)"
               >
                 Practice Interview
               </button>
@@ -390,7 +390,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { refwatch, computed } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { useRouter } from "vue-router";
 import { useAppStore } from "@/stores/app";
@@ -403,7 +406,7 @@ import {
 } from "@/shared/constants/gaming-studios";
 import type { AutocompleteOption } from "@/shared/types/interview";
 
-const router = useRouter();
+const _router = useRouter();
 const store = useAppStore();
 
 // Search state
@@ -494,7 +497,7 @@ async function handleSearch(query: string, filters: string[]) {
         })),
       ];
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Search failed:", error);
     searchResults.value = [];
   } finally {
@@ -639,7 +642,7 @@ onMounted(async () => {
 
     recommendations.value =
       await searchService.getIntelligentSuggestions(userContext);
-  } catch (error) {
+  } catch (_error) {
     console.warn("Failed to load recommendations:", error);
   }
 });

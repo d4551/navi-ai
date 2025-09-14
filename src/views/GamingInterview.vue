@@ -336,6 +336,10 @@
 </template>
 
 <script setup>
+import { GAMING_STUDIOS } from '@/data/gaming-studios';
+import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 
@@ -343,7 +347,7 @@ import { useRouter } from "vue-router";
 import { GAMING_STUDIOS } from "@/shared/constants/gaming-studios";
 import aiInterviewService from "@/services/AIInterviewService";
 
-const router = useRouter();
+const _router = useRouter();
 
 // State
 const activeTab = ref("prep");
@@ -683,7 +687,7 @@ async function startInterview() {
         sessionResult.error || "Failed to start interview session",
       );
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to start interview:", error);
     loadingMessage.value = "Error: " + error.message;
     setTimeout(() => {

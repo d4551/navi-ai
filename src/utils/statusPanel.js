@@ -38,7 +38,7 @@ export function initStatusPanels(root = document) {
       };
 
       header.addEventListener("click", toggle, { passive: true });
-      header.addEventListener("keydown", (e) => {
+      header.addEventListener("keydown", (_e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           toggle();

@@ -503,10 +503,10 @@
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+
 import {
-  ref,
-  onMounted,
-  watch,
+  refwatch,
   computed,
   onUnmounted,
   defineEmits,
@@ -525,7 +525,7 @@ import {
   testJobSource,
 } from "@/services/jobService";
 
-const props = defineProps({
+const _props = defineProps({
   settings: {
     type: Object,
     default: () => ({}),
@@ -537,7 +537,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:settings", "test-source"]);
+const _emit = defineEmits(["update:settings", "test-source"]);
 
 // Reactive state
 const isExpanded = ref(false); // Default closed
@@ -639,7 +639,7 @@ async function testSource(sourceId) {
       result,
     );
     emit("test-source", { sourceId, result });
-  } catch (error) {
+  } catch (_error) {
     console.error(`[✗] Test failed for ${source.name}:`, error);
     testResults.value[sourceId] = {
       success: false,
@@ -728,7 +728,7 @@ function refreshJobSources() {
 
     updateSettings();
     console.log(`🔄 Refreshed ${jobSources.value.length} job sources`);
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to refresh job sources:", error);
   }
 }
@@ -760,7 +760,7 @@ async function checkProviderHealth() {
   try {
     checkingHealth.value = true;
     providerHealth.value = await refactoredJobAPIService.checkProviderHealth();
-  } catch (e) {
+  } catch (_e) {
     console.error("Failed to check provider health:", e);
     providerHealth.value = null;
   } finally {
@@ -826,7 +826,7 @@ function addCompanyBoard() {
     jobSources.value = jobSourceManager.getAllSources();
     updateSettings();
     alert(`Added ${name} (${type})`);
-  } catch (e) {
+  } catch (_e) {
     console.error("Failed to add company board:", e);
     alert("Failed to add board; see console");
   }
@@ -840,7 +840,7 @@ onMounted(() => {
     console.log(
       `[TARGET] Loaded ${jobSources.value.length} job sources from manager`,
     );
-  } catch (error) {
+  } catch (_error) {
     console.error("Failed to load job sources from manager:", error);
     // Fallback to legacy method
     jobSources.value = getJobSources();
@@ -950,7 +950,7 @@ async function reenableAllBoards() {
     refactoredJobAPIService.reloadCompanyProviders(merged);
     refreshJobSources();
     await checkProviderHealth();
-  } catch (e) {
+  } catch (_e) {
     console.error("Failed to re-enable boards:", e);
   }
 }
@@ -963,7 +963,7 @@ async function reverifyCompanyBoards() {
     ];
     refactoredJobAPIService.reloadCompanyProviders(merged);
     loadDisabledBoards();
-  } catch (e) {
+  } catch (_e) {
     console.error("Failed to re-verify boards:", e);
   }
 }
@@ -1006,7 +1006,7 @@ async function enableDisabledBoard(type, token) {
     refactoredJobAPIService.reloadCompanyProviders(merged);
     refreshJobSources();
     await checkProviderHealth();
-  } catch (e) {
+  } catch (_e) {
     console.error("Failed to enable board:", e);
   }
 }

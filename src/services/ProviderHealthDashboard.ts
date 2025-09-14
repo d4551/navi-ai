@@ -57,7 +57,7 @@ export class ProviderHealthDashboard {
         if (b.metrics.status === "failed" && a.metrics.status !== "failed")
         return b.metrics.lastCheck - a.metrics.lastCheck;
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to generate provider health report:", error);
       return [];
     }
@@ -94,7 +94,7 @@ export class ProviderHealthDashboard {
 
       healthData[providerKey] = current;
       this.saveHealthData(healthData);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to update provider health:", error);
     }
   }
@@ -140,7 +140,7 @@ export class ProviderHealthDashboard {
         this.saveHealthData(healthData);
         logger.info("Cleaned up old provider health data");
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to cleanup old health data:", error);
     }
   }
@@ -151,7 +151,7 @@ export class ProviderHealthDashboard {
       healthData[providerKey] = this.createEmptyMetric();
       this.saveHealthData(healthData);
       logger.info(`Reset health metrics for provider: ${providerKey}`);
-    } catch (error) {
+    } catch (_error) {
       logger.error("Failed to reset provider health:", error);
     }
   }
@@ -160,11 +160,11 @@ export class ProviderHealthDashboard {
     try {
       if (typeof window !== "undefined" && window.localStorage) {
         const data = window.localStorage.getItem(this.HEALTH_STORAGE_KEY);
-        if (data) {
-          return JSON.parse(data);
+        if (_data) {
+          return JSON.parse(_data);
         }
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to load health data:", error);
     }
     return {};
@@ -175,10 +175,10 @@ export class ProviderHealthDashboard {
       if (typeof window !== "undefined" && window.localStorage) {
         window.localStorage.setItem(
           this.HEALTH_STORAGE_KEY,
-          JSON.stringify(data),
+          JSON.stringify(_data),
         );
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to save health data:", error);
     }
   }
@@ -197,7 +197,7 @@ export class ProviderHealthDashboard {
           );
         }
       }
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Failed to check provider enabled status:", error);
     }
     return true;

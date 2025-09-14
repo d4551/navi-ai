@@ -246,7 +246,7 @@
             <h4>Test Results:</h4>
             <div class="test-results-grid">
               <div
-                v-for="(result, testName) in healthCheckResult.details.tests"
+                v-for="(_result, testName) in healthCheckResult.details.tests"
                 :key="testName"
                 class="test-result-item"
                 :class="{
@@ -278,7 +278,7 @@
                 v-for="error in healthCheckResult.details.tests.errors"
                 :key="error"
               >
-                {{ error }}
+                {{ _error }}
               </li>
             </ul>
           </div>
@@ -313,7 +313,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { refonUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -324,7 +327,7 @@ import { useAppStore } from "@/stores/app";
 import { canonicalAI } from "@/modules/ai/CanonicalAIService";
 import LiveMultimediaAIService from "@/shared/services/LiveMultimediaAIService";
 
-const router = useRouter();
+const _router = useRouter();
 const aiIntegration = useAIIntegration();
 const toast = useToast();
 const store = useAppStore();
@@ -411,7 +414,7 @@ async function initializeAI() {
 
     // Update real-time status
     updateRealTimeStatus();
-  } catch (error) {
+  } catch (_error) {
     addLog("error", `Enhanced AI initialization error: ${error.message}`);
     toast.error(`Initialization failed: ${error.message}`);
   }
@@ -439,7 +442,7 @@ async function testConnection() {
       addLog("error", `Connection test failed: ${result.error}`);
       toast.error("Connection test failed");
     }
-  } catch (error) {
+  } catch (_error) {
     addLog("error", `Connection test error: ${error.message}`);
     toast.error(`Connection test failed: ${error.message}`);
   } finally {
@@ -487,7 +490,7 @@ async function testAction(action) {
         const sessionId = `test-session-${Date.now()}`;
         result = await canonicalAI.startRealTimeSession(sessionId, {
           onConnect: () => addLog("info", "Real-time session connected"),
-          onError: (error) =>
+          onError: (_error) =>
             addLog("error", `Real-time error: ${error.message}`),
         });
 
@@ -535,7 +538,7 @@ async function testAction(action) {
       );
       toast.error(`${action.label} failed`);
     }
-  } catch (error) {
+  } catch (_error) {
     addLog("error", `${action.label} error: ${error.message}`);
     toast.error(`${action.label} failed: ${error.message}`);
   } finally {
@@ -556,7 +559,7 @@ async function toggleAudioRecording() {
       await multimediaService.startAudioStreaming();
       isRecording.value = true;
       addLog("success", "Audio recording started");
-    } catch (error) {
+    } catch (_error) {
       addLog("error", `Audio recording failed: ${error.message}`);
       toast.error("Audio recording failed");
     }
@@ -576,7 +579,7 @@ async function toggleVideoStreaming() {
       await multimediaService.startVideoStreaming();
       isVideoStreaming.value = true;
       addLog("success", "Video streaming started");
-    } catch (error) {
+    } catch (_error) {
       addLog("error", `Video streaming failed: ${error.message}`);
       toast.error("Video streaming failed");
     }
@@ -597,7 +600,7 @@ async function captureScreen() {
       testType: "screen_capture",
     };
     toast.success("Screen capture completed!");
-  } catch (error) {
+  } catch (_error) {
     addLog("error", `Screen capture failed: ${error.message}`);
     toast.error("Screen capture failed");
   } finally {
@@ -624,7 +627,7 @@ async function runHealthCheck() {
     } else {
       toast.warning(`AI services status: ${health.status}`);
     }
-  } catch (error) {
+  } catch (_error) {
     addLog("error", `Health check failed: ${error.message}`);
     toast.error("Health check failed");
   } finally {

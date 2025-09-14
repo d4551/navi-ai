@@ -175,7 +175,7 @@ class GamingJobsService {
         processingTime: Date.now() - startTime,
         errors: result.errors,
       };
-    } catch (error) {
+    } catch (_error) {
       logger.error("Gaming job search failed:", error);
       return {
         jobs: [],

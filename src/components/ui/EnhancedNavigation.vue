@@ -478,6 +478,9 @@
 </template>
 
 <script setup>
+import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
@@ -506,16 +509,24 @@ const _props = defineProps({
   showProgress: { type: Boolean, default: false },
 
   // Brand/Logo
-  brandIcon: { type: String, default: "mdi-gamepad-variant" },
+  brandIcon: { type: String, default: "mdi-gamepad-variant",
+    default: ''
+   },
   brandText: { type: String, default: "NAVI" },
-  brandSubtitle: { type: String, default: "Career Assistant" },
+  brandSubtitle: { type: String, default: "Career Assistant",
+    default: '',
+    default: ''
+  
+   },
   brandLogo: { type: String, default: "" },
   glassHeader: { type: Boolean, default: false },
   brandLabel: { type: String, default: "Go to homepage" },
 
   // User data
   userName: { type: String, default: "User" },
-  userAvatar: { type: String, default: "" },
+  userAvatar: { type: String, default: "",
+    default: ''
+   },
 
   // Configuration
   ariaLabel: { type: String, default: "Main navigation" },
@@ -525,7 +536,7 @@ const _props = defineProps({
 });
 
 // Emits
-const emit = defineEmits([
+const _emit = defineEmits([
   "search",
   "searchInput",
   "toggleNotifications",
@@ -536,7 +547,7 @@ const emit = defineEmits([
 ]);
 
 // Composables
-const router = useRouter();
+const _router = useRouter();
 const route = useRoute();
 const { isDark, toggleTheme } = useUnifiedTheme();
 

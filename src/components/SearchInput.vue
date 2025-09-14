@@ -141,6 +141,8 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted, nextTick } from 'vue';
+
 import {
   ref,
   onMounted,
@@ -152,7 +154,7 @@ import {
 } from "vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
 
-const props = defineProps({
+const _props = defineProps({
   modelValue: {
     type: [String, Number],
     default: "",
@@ -171,7 +173,9 @@ const props = defineProps({
   },
   icon: {
     type: String,
-    default: "mdi mdi-magnify",
+    default: "mdi mdi-magnify",,
+    default: ''
+  
   },
   iconClass: {
     type: String,
@@ -216,7 +220,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([
+const _emit = defineEmits([
   "update:modelValue",
   "enter",
   "focus",

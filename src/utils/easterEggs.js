@@ -320,7 +320,7 @@ export class EasterEggManager {
             osc.start(audioContext.currentTime);
         });
       }
-    } catch (error) {
+    } catch (_error) {
       logger.debug("Web Audio API not available", error);
     }
   }

@@ -282,12 +282,14 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue';
+
 import { ref, watch, defineEmits, defineProps } from "vue";
 import { formatRelativeDate } from "@/utils/date";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 
-const props = defineProps({
+const _props = defineProps({
   job: {
     type: Object,
     default: null,
@@ -302,7 +304,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["select-job", "save-job", "apply-job"]);
+const _emit = defineEmits(["select-job", "save-job", "apply-job"]);
 
 // Reactive state
 const isSaved = ref(false);

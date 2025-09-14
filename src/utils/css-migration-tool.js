@@ -156,7 +156,7 @@ export class CSSMigrationTool {
       try {
         await this.migrateElement(element, config);
         this.migrationReport.elementsProcessed++;
-      } catch (error) {
+      } catch (_error) {
         this.migrationReport.errors.push({
           element: element.tagName,
           error: error.message,
@@ -537,7 +537,7 @@ export class CSSMigrationTool {
       });
     }
 
-      this.migrationReport.errors.forEach((error, i) => {
+      this.migrationReport.errors.forEach((_error, i) => {
       });
     }
 
@@ -550,31 +550,31 @@ export class CSSMigrationTool {
 export const quickMigrations = {
   // Migrate all buttons
   migrateButtons: async (options = {}) => {
-    const tool = new CSSMigrationTool(options);
+    const tool = new CSSMigrationTool(_options);
     return await tool.migrateStyles('button, .btn, [role="button"]');
   },
 
   // Migrate all cards
   migrateCards: async (options = {}) => {
-    const tool = new CSSMigrationTool(options);
+    const tool = new CSSMigrationTool(_options);
     return await tool.migrateStyles(".card, .panel, .box");
   },
 
   // Migrate all inputs
   migrateInputs: async (options = {}) => {
-    const tool = new CSSMigrationTool(options);
+    const tool = new CSSMigrationTool(_options);
     return await tool.migrateStyles("input, textarea, select");
   },
 
   // Migrate entire page
   migratePage: async (options = {}) => {
-    const tool = new CSSMigrationTool(options);
+    const tool = new CSSMigrationTool(_options);
     tool.injectDesignSystemCSS();
   },
 
   // Migrate specific component
   migrateComponent: async (selector, options = {}) => {
-    const tool = new CSSMigrationTool(options);
+    const tool = new CSSMigrationTool(_options);
     return await tool.migrateStyles(selector);
   },
 };

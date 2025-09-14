@@ -152,11 +152,14 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
 // Provide a multi-word component name for lint/devtools
 
 // If not available, we can switch to <script> with export default { name: 'AppHeader' }
 defineOptions({ name: "AppHeader" });
-import { ref, computed, useSlots, defineEmits, defineProps } from "vue";
+import {computed, useSlots, defineEmits, defineProps } from "vue";
 import { useRoute } from "vue-router";
 import { useAppStore } from "@/stores/app";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -167,21 +170,29 @@ import Tooltip from "@/components/Tooltip.vue";
 import GamificationService from "@/utils/gamification";
 
 // Emits
-const emit = defineEmits(["detail-click"]);
+const _emit = defineEmits(["detail-click"]);
 
 // Props
-const props = defineProps({
+const _props = defineProps({
   title: {
     type: String,
-    required: true,
+    required: true,,
+    default: ''
+  
   },
   subtitle: {
     type: String,
-    default: null,
+    default: null,,
+    default: '',
+    default: ''
+  
+  
   },
   icon: {
     type: String,
-    default: null,
+    default: null,,
+    default: ''
+  
   },
   variant: {
     type: String,
@@ -196,7 +207,9 @@ const props = defineProps({
   },
   actions: {
     type: Array,
-    default: () => [],
+    default: () => [],,
+    default: () => []
+  
   },
   actionsAlign: {
     type: String,
@@ -236,7 +249,7 @@ const props = defineProps({
 // Store access and composables
 const store = useAppStore();
 const route = useRoute();
-const theme = useUnifiedTheme();
+const _theme = useUnifiedTheme();
 
 // Local UI state
 const showGamifyModal = ref(false);
@@ -403,7 +416,7 @@ function handleActionClick(action, evt) {
     if (typeof fn === "function") {
       fn(evt);
     }
-  } catch (e) {
+  } catch (_e) {
     // Swallow; layout component should not throw
     console.debug("Header action handler error:", e);
   }

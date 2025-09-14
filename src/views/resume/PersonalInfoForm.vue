@@ -140,6 +140,8 @@
 </template>
 
 <script>
+import { computed, watch, reactive } from 'vue';
+
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import UiChip from "@/components/ui/UiChip.vue";
 import AppIcon from "@/components/ui/AppIcon.vue";
@@ -164,9 +166,9 @@ export default {
     "apply-summary-suggestion",
     "copy-summary",
   ],
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const { personalInfo, updatePersonalInfo } = useUserProfile();
-    const theme = useUnifiedTheme();
+    const _theme = useUnifiedTheme();
     // Initialize with safe defaults to avoid setup crashes
     const local = reactive({
       personalInfo: {

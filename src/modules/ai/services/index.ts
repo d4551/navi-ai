@@ -41,7 +41,7 @@ export class AIService {
   async isReady(): Promise<boolean> {
     try {
       return await isAIClientReady();
-    } catch (error) {
+    } catch (_error) {
       console.error("AI readiness check failed:", error);
       return false;
     }
@@ -72,7 +72,7 @@ export class AIService {
             model: "auto",
           },
         };
-      } catch (error) {
+      } catch (_error) {
         console.warn(`AI generation attempt ${attempt} failed:`, error);
 
         if (attempt === this.retryAttempts) {

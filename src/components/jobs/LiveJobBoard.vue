@@ -631,7 +631,7 @@ Displays live jobs from multiple API sources with:
     <!-- Error State -->
     <div v-if="error" class="alert alert-danger">
       <AppIcon name="mdi-alert-circle-outline" class="me-2" />
-      {{ error }}
+      {{ _error }}
       <button class="btn btn-sm btn-outline-danger ms-2" @click="searchJobs">
         Retry
       </button>
@@ -677,7 +677,7 @@ Displays live jobs from multiple API sources with:
       <div v-else-if="error" class="glass-card section-card mb-3">
         <div class="alert alert-danger mb-0" role="alert">
           <AppIcon name="mdi-alert-circle" class="me-2" />
-          Error loading jobs: {{ error }}
+          Error loading jobs: {{ _error }}
           <UnifiedButton
             variant="outline"
             size="sm"
@@ -845,6 +845,9 @@ Displays live jobs from multiple API sources with:
 </template>
 
 <script setup>
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { computed, ref, onMounted, onUnmounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useDebounceFn } from "@vueuse/core";
@@ -872,7 +875,7 @@ const refreshing = ref(false);
 const showProviderStatus = ref(false);
 
 // Router for navigation
-const router = useRouter();
+const _router = useRouter();
 
 // Enhanced state for new features
 const expandedInsights = ref(null);
@@ -1528,7 +1531,7 @@ const bulkExportJobs = () => {
   selectedJobIds.value.clear();
 };
 
-const convertToCSV = (data) => {
+const convertToCSV = (_data) => {
   if (data.length === 0) return "";
 
   const headers = Object.keys(data[0]);
@@ -1629,7 +1632,7 @@ const shareJob = async (job) => {
         jobNotifications.value.delete(job.id);
       }, 3000);
     }
-  } catch (error) {
+  } catch (_error) {
     console.error("Share failed:", error);
   }
 };
@@ -2308,7 +2311,7 @@ const analyzeSelectedJob = async (mode = "match") => {
     );
 
     showAIAnalysis.value = true;
-  } catch (e) {
+  } catch (_e) {
     console.warn("AI analysis failed:", e);
     alert("AI analysis failed. Please try again later.");
   } finally {

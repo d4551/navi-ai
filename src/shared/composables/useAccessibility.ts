@@ -85,7 +85,7 @@ type FocusableElement = HTMLElement | null;
         const preferences = JSON.parse(saved);
         Object.assign(state.value, preferences);
       }
-    } catch (error) {
+    } catch (_error) {
       logger.error("[Accessibility] Failed to load preferences:", error);
     }
   };
@@ -96,7 +96,7 @@ type FocusableElement = HTMLElement | null;
         "accessibility-preferences",
         JSON.stringify(state.value),
       );
-    } catch (error) {
+    } catch (_error) {
       logger.error("[Accessibility] Failed to save preferences:", error);
     }
   };
@@ -225,7 +225,7 @@ type FocusableElement = HTMLElement | null;
         : element;
 
     if (target) {
-      target.focus(options);
+      target.focus(_options);
       return true;
     }
     return false;

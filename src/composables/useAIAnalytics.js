@@ -1,9 +1,10 @@
 import { ref } from "vue";
 import { useAIService } from "./useAIService";
 
+export function useAIAnalytics() {
   const { analyzeWithAI } = useAIService();
   const isLoading = ref(false);
-  const error = ref(null);
+  const _error = ref(null);
 
   const getCareerInsights = async () => {
     try {
@@ -33,14 +34,14 @@ import { useAIService } from "./useAIService";
             "Game Design",
             "Multiplayer Networking",
           ],
-          salaryInsights:
-          growthOpportunities:
-          recommendation:
+          salaryInsights: "Salaries for this role typically range from $65k-120k depending on experience and location",
+          growthOpportunities: "Strong growth potential in indie and mobile gaming sectors",
+          recommendation: "Focus on building a strong portfolio with Unity projects"
         };
       }
 
       return response;
-    } catch (err) {
+    } catch (_err) {
       error.value = err.message;
       console.error("AI Analytics error:", err);
 
@@ -55,7 +56,7 @@ import { useAIService } from "./useAIService";
           "UI/UX",
           "Multiplayer",
         ],
-        salaryInsights:
+        salaryInsights: "Senior game developers earn $80K-$150K+ depending on experience and location",
         growthOpportunities:
           "Mobile, AR/VR, and cloud gaming are expanding rapidly",
         recommendation:
@@ -85,7 +86,7 @@ import { useAIService } from "./useAIService";
       }
 
       return response;
-    } catch (err) {
+    } catch (_err) {
       console.error("Skill analysis error:", err);
       return skills.map((skill) => ({
         skill,
@@ -132,7 +133,7 @@ import { useAIService } from "./useAIService";
       }
 
       return response;
-    } catch (err) {
+    } catch (_err) {
       console.error("Career recommendations error:", err);
       return {
         learningPaths: [

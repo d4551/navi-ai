@@ -185,7 +185,7 @@ export function applyTemplateToDocument(
         message: "DocumentApp not available in this environment",
       };
     }
-  } catch (error) {
+  } catch (_error) {
     return {
       error: true,
       message: `Failed to apply template: ${(error as Error).message}`,

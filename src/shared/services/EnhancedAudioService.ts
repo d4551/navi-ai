@@ -84,7 +84,7 @@ class EnhancedAudioService {
         }, options.timeout);
       }
 
-    } catch (error) {
+    } catch (_error) {
       this.handleAudioError(error as Error, "Failed to start listening");
       options.onError?.(
         error instanceof Error ? error.message : "Unknown error",
@@ -108,7 +108,7 @@ class EnhancedAudioService {
         message: reason || "Listening stopped",
         timestamp: Date.now(),
       });
-    } catch (error) {
+    } catch (_error) {
       this.handleAudioError(error as Error, "Failed to stop listening");
     }
   }
@@ -150,7 +150,7 @@ class EnhancedAudioService {
         message: "Speech completed",
         timestamp: Date.now(),
       });
-    } catch (error) {
+    } catch (_error) {
       this.activity.value.isSpeaking = false;
       this.handleAudioError(error as Error, "Failed to speak text");
     }
@@ -170,7 +170,7 @@ class EnhancedAudioService {
           mic.label.toLowerCase().includes("professional"),
       );
 
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Could not get best microphone:", error);
       return undefined;
     }
@@ -200,7 +200,7 @@ class EnhancedAudioService {
       return (
         voices.find((v) => v.lang.startsWith("en"))?.name
       );
-    } catch (error) {
+    } catch (_error) {
       logger.warn("Could not select best voice:", error);
       return undefined;
     }

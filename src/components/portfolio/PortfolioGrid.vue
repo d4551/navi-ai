@@ -149,7 +149,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+
+import { ref, computed, watchonUnmounted, nextTick } from "vue";
 import PortfolioItemCard from "./PortfolioItemCard.vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
 import Icon from "@/components/ui/Icon.vue";
@@ -182,7 +184,7 @@ interface Props {
   loadingMore?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   loading: false,
   viewMode: "grid",
   selectionMode: false,
@@ -201,7 +203,7 @@ const props = withDefaults(defineProps<Props>(), {
   loadingMore: false,
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   "load-more": [];
   select: [id: string];
   "clear-selection": [];

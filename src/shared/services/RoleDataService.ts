@@ -20,7 +20,7 @@ class RoleDataService {
           value,
         ]),
       );
-    } catch (error) {
+    } catch (_error) {
       console.warn("Failed to load role data:", error);
       this.cache = {};
     }
