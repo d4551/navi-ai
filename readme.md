@@ -1,6 +1,7 @@
 # NAVI - AI-Powered Gaming Career Assistant</center>
 
-<video src='https://github.com/d4551/navi-ai/blob/6df1f0c2b41f93b2785c7fd90c5fa1d252560444/navi_s.mp4' width=400/>
+https://private-user-images.githubusercontent.com/78459116/489319498-4a4cd685-c97d-44c2-97a9-c653638590a3.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTc4ODQ1MDQsIm5iZiI6MTc1Nzg4NDIwNCwicGF0aCI6Ii83ODQ1OTExNi80ODkzMTk0OTgtNGE0Y2Q2ODUtYzk3ZC00NGMyLTk3YTktYzY1MzYzODU5MGEzLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA5MTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwOTE0VDIxMTAwNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWU5MzRmMGUyYWNlM2YyNjFmNDEyYzY2NTJhZjIyM2EzMWNkZTkzYzBmNTBmYmE1MjA0Mjg0NDc2MGJkMmFjYzAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.JXhDAp118NBDB0dgXb2Aua8HY5c9txCUvlo1ZyJtVj0
+
 
 <p align="center">
   <h1 align="center">HEY! LISTEN!</h1>
@@ -463,6 +464,7 @@ If you run into anything weird, ping issues — we’ll squish it.
 See [DIRECTORY.md](DIRECTORY.md) for the full repo structure, where scripts/tests/demos live, and how to run them after the reorganization.
 
 ![NAVI Fox Loves Helping!](heyLISTEN.jpg)
+
 
 
 
