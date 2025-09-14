@@ -14,25 +14,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-const props = withDefaults(
-  defineProps<{ classes?: string; closable?: boolean }>(),
-  { classes: "", closable: false },
-);
-const closable = props.closable;
-const emit = defineEmits<{ close: [] }>();
+import { computed } from 'vue'
+const props = withDefaults(defineProps<{ classes?: string; closable?: boolean }>(), { classes: '', closable: false })
+const closable = props.closable
+const emit = defineEmits<{ close: [] }>()
 const mappedClasses = computed(() => {
-  const cls = props.classes || "";
+  const cls = (props.classes || '')
   return cls
-    .replace(/\bchip-compact\b/g, "glass-badge-compact")
-    .replace(/\bchip-primary\b/g, "glass-badge-primary")
-    .replace(/\bchip-success\b/g, "glass-badge-success")
-    .replace(/\bchip-info\b/g, "glass-badge-info")
-    .replace(/\bchip-warning\b/g, "glass-badge-warning")
-    .replace(/\bchip-danger\b/g, "glass-badge-danger")
-    .replace(/\bchip\b/g, "")
-    .trim();
-});
+    .replace(/\bchip-compact\b/g, 'glass-badge-compact')
+    .replace(/\bchip-primary\b/g, 'glass-badge-primary')
+    .replace(/\bchip-success\b/g, 'glass-badge-success')
+    .replace(/\bchip-info\b/g, 'glass-badge-info')
+    .replace(/\bchip-warning\b/g, 'glass-badge-warning')
+    .replace(/\bchip-danger\b/g, 'glass-badge-danger')
+    .replace(/\bchip\b/g, '')
+    .trim()
+})
 </script>
 
 <style scoped>
@@ -44,7 +41,5 @@ const mappedClasses = computed(() => {
   cursor: pointer;
   line-height: 1;
 }
-.chip-close:hover {
-  opacity: 0.75;
-}
+.chip-close:hover { opacity: 0.75; }
 </style>

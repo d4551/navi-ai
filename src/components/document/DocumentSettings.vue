@@ -26,20 +26,15 @@
             AI Configuration
           </h4>
           <div class="ai-status" :class="{ active: aiActive }">
-            <AppIcon
-              :name="aiActive ? 'mdi-check-circle' : 'mdi-alert-circle'"
-            />
-            <span>{{ aiActive ? "AI Active" : "AI Offline" }}</span>
+            <AppIcon :name="aiActive ? 'mdi-check-circle' : 'mdi-alert-circle'" />
+            <span>{{ aiActive ? 'AI Active' : 'AI Offline' }}</span>
           </div>
         </div>
 
         <div class="settings-grid">
           <div class="setting-item">
             <label class="setting-label">Writing Tone</label>
-            <select
-              v-model="localAIConfig.tone"
-              class="setting-select glass-input"
-            >
+            <select v-model="localAIConfig.tone" class="setting-select glass-input">
               <option value="professional">Professional & Formal</option>
               <option value="friendly">Friendly & Approachable</option>
               <option value="impactful">Confident & Impactful</option>
@@ -60,7 +55,7 @@
                 step="1"
                 class="setting-slider"
                 @input="updateCreativityLevel"
-              />
+              >
               <div class="slider-labels">
                 <span class="label" :class="{ active: creativityLevel == 0 }">Conservative</span>
                 <span class="label" :class="{ active: creativityLevel == 1 }">Balanced</span>
@@ -76,7 +71,11 @@
             <label class="setting-label">Optimization Focus</label>
             <div class="radio-group">
               <label class="radio-option">
-                <input v-model="localAIConfig.focus" type="radio" value="ats" />
+                <input
+                  v-model="localAIConfig.focus"
+                  type="radio"
+                  value="ats"
+                >
                 <span class="radio-custom"></span>
                 <div class="radio-content">
                   <span class="radio-title">ATS Optimized</span>
@@ -88,7 +87,7 @@
                   v-model="localAIConfig.focus"
                   type="radio"
                   value="recruiter"
-                />
+                >
                 <span class="radio-custom"></span>
                 <div class="radio-content">
                   <span class="radio-title">Recruiter Friendly</span>
@@ -117,7 +116,7 @@
                   v-model="localPreferences.autoSave"
                   type="checkbox"
                   class="toggle-input"
-                />
+                >
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Auto Save</span>
@@ -134,7 +133,7 @@
                   v-model="localPreferences.showTokens"
                   type="checkbox"
                   class="toggle-input"
-                />
+                >
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Show Placeholder Tokens</span>
@@ -146,10 +145,7 @@
 
           <div class="setting-item">
             <label class="setting-label">Default Template</label>
-            <select
-              v-model="localPreferences.defaultTemplate"
-              class="setting-select glass-input"
-            >
+            <select v-model="localPreferences.defaultTemplate" class="setting-select glass-input">
               <option value="modern">Modern</option>
               <option value="classic">Classic</option>
               <option value="creative">Creative</option>
@@ -164,10 +160,7 @@
 
           <div class="setting-item">
             <label class="setting-label">Language</label>
-            <select
-              v-model="localPreferences.language"
-              class="setting-select glass-input"
-            >
+            <select v-model="localPreferences.language" class="setting-select glass-input">
               <option value="en">English (US)</option>
               <option value="en-gb">English (UK)</option>
               <option value="es">Español</option>
@@ -201,22 +194,18 @@
                 v-for="format in exportFormats"
                 :key="format.value"
                 class="format-option"
-                :class="{
-                  selected: exportSettings.defaultFormat === format.value,
-                }"
+                :class="{ selected: exportSettings.defaultFormat === format.value }"
               >
                 <input
                   v-model="exportSettings.defaultFormat"
                   type="radio"
                   :value="format.value"
                   class="format-input"
-                />
+                >
                 <div class="format-content">
                   <AppIcon :name="format.icon" size="24" />
                   <span class="format-name">{{ format.name }}</span>
-                  <span class="format-description">{{
-                    format.description
-                  }}</span>
+                  <span class="format-description">{{ format.description }}</span>
                 </div>
               </label>
             </div>
@@ -224,10 +213,7 @@
 
           <div class="setting-item">
             <label class="setting-label">PDF Quality</label>
-            <select
-              v-model="exportSettings.pdfQuality"
-              class="setting-select glass-input"
-            >
+            <select v-model="exportSettings.pdfQuality" class="setting-select glass-input">
               <option value="draft">Draft (Fast)</option>
               <option value="standard">Standard</option>
               <option value="high">High Quality</option>
@@ -245,7 +231,7 @@
                   v-model="exportSettings.includeMetadata"
                   type="checkbox"
                   class="toggle-input"
-                />
+                >
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Include Metadata</span>
@@ -274,7 +260,7 @@
                   v-model="privacySettings.localDataOnly"
                   type="checkbox"
                   class="toggle-input"
-                />
+                >
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Local Data Only</span>
@@ -291,7 +277,7 @@
                   v-model="privacySettings.encryptData"
                   type="checkbox"
                   class="toggle-input"
-                />
+                >
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Encrypt Saved Data</span>
@@ -303,10 +289,7 @@
 
           <div class="setting-item">
             <label class="setting-label">Data Retention</label>
-            <select
-              v-model="privacySettings.dataRetention"
-              class="setting-select glass-input"
-            >
+            <select v-model="privacySettings.dataRetention" class="setting-select glass-input">
               <option value="session">Session Only</option>
               <option value="30days">30 Days</option>
               <option value="90days">90 Days</option>
@@ -337,7 +320,7 @@
                   v-model="advancedSettings.debugMode"
                   type="checkbox"
                   class="toggle-input"
-                />
+                >
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Debug Mode</span>
@@ -355,7 +338,7 @@
               min="5"
               max="60"
               class="setting-input glass-input"
-            />
+            >
             <p class="setting-description">
               Maximum wait time for AI responses
             </p>
@@ -370,7 +353,7 @@
               max="4000"
               step="100"
               class="setting-input glass-input"
-            />
+            >
             <p class="setting-description">
               Limit AI response length (affects cost and speed)
             </p>
@@ -426,30 +409,17 @@
     <!-- Settings Actions -->
     <div class="settings-footer">
       <div class="footer-info">
-        <span
-          class="save-indicator"
-          :class="{ saving: isSaving, saved: recentlySaved }"
-        >
-          <AppIcon
-            :name="
-              isSaving
-                ? 'mdi-loading'
-                : recentlySaved
-                  ? 'mdi-check'
-                  : 'mdi-content-save'
-            "
-          />
-          {{
-            isSaving
-              ? "Saving..."
-              : recentlySaved
-                ? "Saved"
-                : "Auto-save enabled"
-          }}
+        <span class="save-indicator" :class="{ saving: isSaving, saved: recentlySaved }">
+          <AppIcon :name="isSaving ? 'mdi-loading' : recentlySaved ? 'mdi-check' : 'mdi-content-save'" />
+          {{ isSaving ? 'Saving...' : recentlySaved ? 'Saved' : 'Auto-save enabled' }}
         </span>
       </div>
       <div class="footer-actions">
-        <UnifiedButton variant="outline" size="sm" @click="cancelChanges">
+        <UnifiedButton
+          variant="outline"
+          size="sm"
+          @click="cancelChanges"
+        >
           Cancel
         </UnifiedButton>
         <UnifiedButton
@@ -467,145 +437,139 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
-import { useToast } from "@/composables/useToast";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, computed, watch, onMounted } from 'vue'
+import { useToast } from '@/composables/useToast'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
 const props = defineProps<{
-  aiConfig: any;
-  preferences: any;
-}>();
+  aiConfig: any
+  preferences: any
+}>()
 
 // Emits
 const emit = defineEmits<{
-  "update-config": [any];
-  "update-preferences": [any];
-}>();
+  'update-config': [any]
+  'update-preferences': [any]
+}>()
 
-const toast = useToast();
+const toast = useToast()
 
 // Local state
-const localAIConfig = ref({ ...props.aiConfig });
-const localPreferences = ref({ ...props.preferences });
-const creativityLevel = ref(1);
-const isSaving = ref(false);
-const recentlySaved = ref(false);
+const localAIConfig = ref({ ...props.aiConfig })
+const localPreferences = ref({ ...props.preferences })
+const creativityLevel = ref(1)
+const isSaving = ref(false)
+const recentlySaved = ref(false)
 
 // Additional settings
 const exportSettings = ref({
-  defaultFormat: "pdf",
-  pdfQuality: "standard",
-  includeMetadata: true,
-});
+  defaultFormat: 'pdf',
+  pdfQuality: 'standard',
+  includeMetadata: true
+})
 
 const privacySettings = ref({
   localDataOnly: true,
   encryptData: false,
-  dataRetention: "90days",
-});
+  dataRetention: '90days'
+})
 
 const advancedSettings = ref({
   debugMode: false,
   apiTimeout: 30,
-  maxTokens: 2000,
-});
+  maxTokens: 2000
+})
 
 const storageInfo = ref({
   documentsCount: 12,
-  storageUsed: "2.3 MB",
-  lastBackup: "Never",
-});
+  storageUsed: '2.3 MB',
+  lastBackup: 'Never'
+})
 
 // Export format options
 const exportFormats = [
   {
-    value: "pdf",
-    name: "PDF",
-    description: "Best for sharing and printing",
-    icon: "mdi-file-pdf-box",
+    value: 'pdf',
+    name: 'PDF',
+    description: 'Best for sharing and printing',
+    icon: 'mdi-file-pdf-box'
   },
   {
-    value: "docx",
-    name: "Word",
-    description: "Editable document format",
-    icon: "mdi-file-word-box",
+    value: 'docx',
+    name: 'Word',
+    description: 'Editable document format',
+    icon: 'mdi-file-word-box'
   },
   {
-    value: "html",
-    name: "HTML",
-    description: "Web-friendly format",
-    icon: "mdi-language-html5",
+    value: 'html',
+    name: 'HTML',
+    description: 'Web-friendly format',
+    icon: 'mdi-language-html5'
   },
   {
-    value: "json",
-    name: "JSON",
-    description: "Data export for backup",
-    icon: "mdi-code-braces",
-  },
-];
+    value: 'json',
+    name: 'JSON',
+    description: 'Data export for backup',
+    icon: 'mdi-code-braces'
+  }
+]
 
 // Computed
 const aiActive = computed(() => {
   // This would check actual AI service status
-  return true;
-});
+  return true
+})
 
 // Methods
 const updateCreativityLevel = () => {
-  const levels = ["conservative", "balanced", "creative"];
-  localAIConfig.value.level = levels[creativityLevel.value];
-};
+  const levels = ['conservative', 'balanced', 'creative']
+  localAIConfig.value.level = levels[creativityLevel.value]
+}
 
 const saveSettings = async () => {
-  isSaving.value = true;
+  isSaving.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-
-    emit("update-config", localAIConfig.value);
-    emit("update-preferences", localPreferences.value);
-
-    recentlySaved.value = true;
-    setTimeout(() => {
-      recentlySaved.value = false;
-    }, 2000);
-
-    toast.success("Settings saved successfully");
+    await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+    
+    emit('update-config', localAIConfig.value)
+    emit('update-preferences', localPreferences.value)
+    
+    recentlySaved.value = true
+    setTimeout(() => { recentlySaved.value = false }, 2000)
+    
+    toast.success('Settings saved successfully')
   } catch (error) {
-    toast.error("Failed to save settings");
+    toast.error('Failed to save settings')
   } finally {
-    isSaving.value = false;
+    isSaving.value = false
   }
-};
+}
 
 const cancelChanges = () => {
-  localAIConfig.value = { ...props.aiConfig };
-  localPreferences.value = { ...props.preferences };
-  toast.info("Changes cancelled");
-};
+  localAIConfig.value = { ...props.aiConfig }
+  localPreferences.value = { ...props.preferences }
+  toast.info('Changes cancelled')
+}
 
 const resetToDefaults = () => {
-  if (
-    confirm(
-      "Reset all settings to default values? This action cannot be undone.",
-    )
-  ) {
+  if (confirm('Reset all settings to default values? This action cannot be undone.')) {
     localAIConfig.value = {
-      tone: "professional",
-      level: "balanced",
-      focus: "ats",
-    };
+      tone: 'professional',
+      level: 'balanced',
+      focus: 'ats'
+    }
     localPreferences.value = {
       autoSave: true,
       showTokens: false,
-      defaultTemplate: "modern",
-      language: "en",
-    };
-    creativityLevel.value = 1;
-    toast.success("Settings reset to defaults");
+      defaultTemplate: 'modern',
+      language: 'en'
+    }
+    creativityLevel.value = 1
+    toast.success('Settings reset to defaults')
   }
-};
+}
 
 const exportUserData = () => {
   // Simulate data export
@@ -615,55 +579,43 @@ const exportUserData = () => {
     exportSettings: exportSettings.value,
     privacySettings: privacySettings.value,
     advancedSettings: advancedSettings.value,
-    exportedAt: new Date().toISOString(),
-  };
-
-  const blob = new Blob([JSON.stringify(data, null, 2)], {
-    type: "application/json",
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `navi-settings-${new Date().toISOString().split("T")[0]}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  toast.success("Settings exported successfully");
-};
+    exportedAt: new Date().toISOString()
+  }
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `navi-settings-${new Date().toISOString().split('T')[0]}.json`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+  
+  toast.success('Settings exported successfully')
+}
 
 const clearAllData = () => {
-  if (
-    confirm("Delete all documents and settings? This action cannot be undone.")
-  ) {
-    if (
-      confirm(
-        "Are you absolutely sure? This will remove everything including saved documents.",
-      )
-    ) {
+  if (confirm('Delete all documents and settings? This action cannot be undone.')) {
+    if (confirm('Are you absolutely sure? This will remove everything including saved documents.')) {
       // Clear data logic would go here
-      toast.success("All data cleared");
+      toast.success('All data cleared')
     }
   }
-};
+}
 
 // Auto-save settings changes
-watch(
-  [localAIConfig, localPreferences],
-  () => {
-    if (localPreferences.value.autoSave) {
-      saveSettings();
-    }
-  },
-  { deep: true },
-);
+watch([localAIConfig, localPreferences], () => {
+  if (localPreferences.value.autoSave) {
+    saveSettings()
+  }
+}, { deep: true })
 
 // Initialize creativity level from config
 onMounted(() => {
-  const levels = ["conservative", "balanced", "creative"];
-  creativityLevel.value = levels.indexOf(localAIConfig.value.level) || 1;
-});
+  const levels = ['conservative', 'balanced', 'creative']
+  creativityLevel.value = levels.indexOf(localAIConfig.value.level) || 1
+})
 </script>
 
 <style scoped>
@@ -770,12 +722,16 @@ onMounted(() => {
   margin: 0;
 }
 
+/* Slider Styles */
 .slider-container {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-2);
 }
 
 .setting-slider {
+  width: 100%;
+  height: 6px;
   border-radius: var(--radius-sm);
   background: var(--surface-tertiary);
   outline: none;
@@ -785,16 +741,29 @@ onMounted(() => {
 .setting-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary-500);
   cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .setting-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary-500);
   cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .slider-labels {
   display: flex;
   justify-content: space-between;
+  padding: 0 var(--spacing-2);
 }
 
 .slider-labels .label {
@@ -804,23 +773,31 @@ onMounted(() => {
 }
 
 .slider-labels .label.active {
+  color: var(--color-primary-600);
   font-weight: var(--font-weight-medium);
 }
 
+/* Radio Group Styles */
 .radio-group {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-3);
 }
 
 .radio-option {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--duration-fast);
 }
 
 .radio-option:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
 }
 
 .radio-option input[type="radio"] {
@@ -828,21 +805,34 @@ onMounted(() => {
 }
 
 .radio-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--glass-border);
+  border-radius: 50%;
   position: relative;
   transition: all var(--duration-fast);
 }
 
 .radio-option input[type="radio"]:checked + .radio-custom {
+  border-color: var(--color-primary-500);
 }
 
 .radio-option input[type="radio"]:checked + .radio-custom::after {
-  content: "";
+  content: '';
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: var(--color-primary-500);
+  border-radius: 50%;
 }
 
 .radio-content {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-0-5);
 }
 
 .radio-title {
@@ -855,6 +845,7 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
+/* Toggle Styles */
 .setting-toggle {
   display: flex;
   align-items: center;
@@ -863,7 +854,9 @@ onMounted(() => {
 .toggle-label {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
   cursor: pointer;
+  width: 100%;
 }
 
 .toggle-input {
@@ -871,6 +864,8 @@ onMounted(() => {
 }
 
 .toggle-slider {
+  width: 44px;
+  height: 24px;
   background: var(--surface-tertiary);
   border-radius: var(--radius-full);
   position: relative;
@@ -878,21 +873,30 @@ onMounted(() => {
 }
 
 .toggle-slider::after {
-  content: "";
+  content: '';
   position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
   background: white;
+  border-radius: 50%;
   transition: transform var(--duration-fast);
 }
 
 .toggle-input:checked + .toggle-slider {
+  background: var(--color-primary-500);
 }
 
 .toggle-input:checked + .toggle-slider::after {
+  transform: translateX(20px);
 }
 
 .toggle-content {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-0-5);
+  flex: 1;
 }
 
 .toggle-title {
@@ -905,14 +909,19 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
+/* Format Options */
 .format-options {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-3);
 }
 
 .format-option {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: var(--spacing-4);
+  border: 2px solid var(--glass-border);
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all var(--duration-fast);
@@ -920,9 +929,12 @@ onMounted(() => {
 }
 
 .format-option:hover {
+  border-color: var(--color-primary-300);
 }
 
 .format-option.selected {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-50);
 }
 
 .format-input {
@@ -933,6 +945,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: var(--spacing-2);
 }
 
 .format-name {
@@ -945,15 +958,22 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
+/* Storage Info */
 .storage-info {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
 }
 
 .storage-item {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-1);
+  padding: var(--spacing-3);
   background: var(--surface-base);
   border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
 }
 
 .storage-label {
@@ -970,65 +990,82 @@ onMounted(() => {
 
 .storage-actions {
   display: flex;
+  gap: var(--spacing-3);
   justify-content: center;
 }
 
+/* Settings Footer */
 .settings-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: var(--spacing-4);
   background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   position: sticky;
+  bottom: var(--spacing-4);
 }
 
 .footer-info {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
 }
 
 .save-indicator {
   display: flex;
   align-items: center;
+  gap: var(--spacing-1-5);
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
 }
 
 .save-indicator.saving {
+  color: var(--color-warning-600);
 }
 
 .save-indicator.saved {
+  color: var(--color-success-600);
 }
 
 .footer-actions {
   display: flex;
+  gap: var(--spacing-3);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .settings-header {
     flex-direction: column;
+    gap: var(--spacing-3);
     align-items: stretch;
   }
-
+  
   .section-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--spacing-2);
   }
-
+  
   .format-options {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
-
+  
   .storage-info {
+    grid-template-columns: 1fr;
   }
-
+  
   .storage-actions {
     flex-direction: column;
   }
-
+  
   .settings-footer {
     flex-direction: column;
+    gap: var(--spacing-3);
     align-items: stretch;
   }
-
+  
   .footer-actions {
     justify-content: space-between;
   }

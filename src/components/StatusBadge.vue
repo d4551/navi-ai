@@ -1,11 +1,10 @@
 import { defineProps } from 'vue'
 <template>
   <span
-    :class="[
-      'status-badge',
-      `status-badge-${variant}`,
-      `status-badge-${size}`,
-      { 'status-badge-pill': pill },
+    :class="[ 'status-badge',
+              `status-badge-${variant}`,
+              `status-badge-${size}`,
+              { 'status-badge-pill': pill }
     ]"
     :role="role"
     :aria-label="ariaLabel || $slots.default?.[0]?.text || ''"
@@ -18,37 +17,27 @@ import { defineProps } from 'vue'
 defineProps({
   variant: {
     type: String,
-    default: "secondary",
-    validator: (value) =>
-      [
-        "primary",
-        "secondary",
-        "success",
-        "danger",
-        "warning",
-        "info",
-        "light",
-        "dark",
-      ].includes(value),
+    default: 'secondary',
+    validator: value => ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'].includes(value)
   },
   size: {
     type: String,
-    default: "md",
-    validator: (value) => ["sm", "md", "lg"].includes(value),
+    default: 'md',
+    validator: value => ['sm', 'md', 'lg'].includes(value)
   },
   pill: {
     type: Boolean,
-    default: false,
+    default: false
   },
   role: {
     type: String,
-    default: null,
+    default: null
   },
   ariaLabel: {
     type: String,
-    default: null,
-  },
-});
+    default: null
+  }
+})
 </script>
 
 <style scoped>
@@ -66,6 +55,7 @@ defineProps({
   transition: all 0.15s ease-in-out;
 }
 
+/* Variants */
 .status-badge-primary {
   background: var(--color-primary);
   color: white;
@@ -114,18 +104,28 @@ defineProps({
   border-color: var(--text-primary);
 }
 
+/* Sizes */
 .status-badge-sm {
+  padding: 0.25em 0.5em;
+  font-size: 0.65rem;
 }
 
 .status-badge-md {
+  padding: 0.35em 0.65em;
+  font-size: 0.75rem;
 }
 
 .status-badge-lg {
+  padding: 0.5em 0.8em;
+  font-size: 0.875rem;
 }
 
+/* Pill style */
 .status-badge-pill {
+  border-radius: 10rem;
 }
 
+/* Dark theme support */
 [data-theme="dark"] .status-badge-secondary {
   background: var(--dark-glass-elevated);
   border-color: var(--dark-glass-border);
@@ -137,11 +137,16 @@ defineProps({
   color: var(--dark-text-primary);
 }
 
+/* Focus and hover states for accessibility */
 .status-badge:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
 }
 
+/* High contrast mode support */
 @media (prefers-contrast: high) {
   .status-badge {
+    border-width: 2px;
   }
 
   .status-badge-primary,
@@ -180,15 +185,18 @@ defineProps({
   }
 }
 
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .status-badge {
     transition: none;
   }
 }
 
+/* Print styles */
 @media print {
   .status-badge {
     background: transparent !important;
+    border: 1px solid var(--text-primary) !important;
     color: var(--text-primary) !important;
   }
 }

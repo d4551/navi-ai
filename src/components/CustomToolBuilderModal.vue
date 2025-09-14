@@ -24,45 +24,42 @@
 </template>
 
 <script setup>
-import { ref, watch, defineEmits, defineProps } from "vue";
-import ModalBase from "@/components/ui/ModalBase.vue";
+import { ref, watch, defineEmits, defineProps } from 'vue'
+import ModalBase from '@/components/ui/ModalBase.vue'
 
 const props = defineProps({
-  modelValue: { type: Boolean, default: false },
-});
-const emit = defineEmits(["update:modelValue", "save"]);
+  modelValue: { type: Boolean, default: false }
+})
+const emit = defineEmits(['update:modelValue', 'save'])
 
-const internalOpen = ref(props.modelValue);
-const toolName = ref("");
-const firstInput = ref(null);
+const internalOpen = ref(props.modelValue)
+const toolName = ref('')
+const firstInput = ref(null)
 
-watch(
-  () => props.modelValue,
-  (val) => {
-    internalOpen.value = val;
-  },
-);
+watch(() => props.modelValue, (val) => {
+  internalOpen.value = val
+})
 
 watch(
   internalOpen,
   (val) => {
-    emit("update:modelValue", val);
+    emit('update:modelValue', val)
     if (val) {
       requestAnimationFrame(() => {
-        firstInput.value?.focus();
-      });
+        firstInput.value?.focus()
+      })
     }
   },
-  { immediate: true },
-);
+  { immediate: true }
+)
 
 function close() {
-  internalOpen.value = false;
+  internalOpen.value = false
 }
 
 function handleSave() {
-  emit("save", { name: toolName.value });
-  close();
+  emit('save', { name: toolName.value })
+  close()
 }
 </script>
 
@@ -77,3 +74,4 @@ function handleSave() {
   flex-direction: column;
 }
 </style>
+

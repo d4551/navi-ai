@@ -1,13 +1,17 @@
+/**
+ * Enhanced Studio Data Integration Script
+ * Demonstrates how to use the EnhancedPublicAPIDataSource with SQLite database
+ * NOTE: This is a Node.js-only module and should not run in browsers
+ */
 
 // Guard against browser environment
-if (typeof window !== "undefined") {
-  throw new Error(
-    "StudioDataIntegrator is not supported in browser environments",
-  );
+if (typeof window !== 'undefined') {
+  throw new Error('StudioDataIntegrator is not supported in browser environments');
 }
 
-import { EnhancedPublicAPIDataSource } from "../services/ingestion/EnhancedPublicAPIDataSource";
-import { logger } from "../shared/utils/logger";
+import * as Database from 'better-sqlite3';
+import { EnhancedPublicAPIDataSource } from '../services/ingestion/EnhancedPublicAPIDataSource';
+import { logger } from '../shared/utils/logger';
 
 interface StudioRecord {
   id?: number;
@@ -46,6 +50,7 @@ export class StudioDataIntegrator {
         source_id TEXT NOT NULL,
         source_entity_id TEXT NOT NULL,
         metadata TEXT, -- JSON object
+        confidence REAL DEFAULT 0.5,
         last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(source_id, source_entity_id)
@@ -55,37 +60,31 @@ export class StudioDataIntegrator {
     this.db.exec(createTable);
 
     // Create indexes for better performance
-    this.db.exec(
-      "CREATE INDEX IF NOT EXISTS idx_studios_name ON studios(name)",
-    );
-    this.db.exec(
-      "CREATE INDEX IF NOT EXISTS idx_studios_source ON studios(source_id)",
-    );
-    this.db.exec(
-      "CREATE INDEX IF NOT EXISTS idx_studios_confidence ON studios(confidence)",
-    );
+    this.db.exec('CREATE INDEX IF NOT EXISTS idx_studios_name ON studios(name)');
+    this.db.exec('CREATE INDEX IF NOT EXISTS idx_studios_source ON studios(source_id)');
+    this.db.exec('CREATE INDEX IF NOT EXISTS idx_studios_confidence ON studios(confidence)');
 
-    logger.info("Studio database initialized");
+    logger.info('Studio database initialized');
   }
 
-  async fetchAndStoreStudios(
-  ): Promise<{ total: number; new: number; updated: number }> {
-    logger.info("Starting enhanced studio data fetch and storage...");
-
+  async fetchAndStoreStudios(maxStudios: number = 200): Promise<{ total: number; new: number; updated: number }> {
+    logger.info('Starting enhanced studio data fetch and storage...');
+    
     try {
       // Create a mock job for the API source
       const job = {
-        id: "enhanced-fetch-" + Date.now(),
-        sourceId: "enhanced-public-apis",
-        type: "full_sync" as const,
-        status: "running" as const,
+        id: 'enhanced-fetch-' + Date.now(),
+        sourceId: 'enhanced-public-apis',
+        type: 'full_sync' as const,
+        status: 'running' as const,
+        progress: 0,
         errors: [],
-        metadata: { maxStudios },
+        metadata: { maxStudios }
       };
 
       // Fetch data from enhanced API sources
       const studiosData = await this.apiSource.fetchData(job);
-
+      
       logger.info(`Fetched ${studiosData.length} studios from enhanced APIs`);
 
       // Prepare SQL statements
@@ -107,6 +106,8 @@ export class StudioDataIntegrator {
         SELECT id FROM studios WHERE source_id = ? AND source_entity_id = ?
       `);
 
+      let newCount = 0;
+      let updatedCount = 0;
 
       // Process each studio
       for (const studio of studiosData) {
@@ -115,10 +116,7 @@ export class StudioDataIntegrator {
           const metadata = JSON.stringify(studio.metadata || {});
 
           // Check if studio already exists
-          const existing = selectStmt.get(
-            studio.sourceId,
-            studio.sourceEntityId,
-          );
+          const existing = selectStmt.get(studio.sourceId, studio.sourceEntityId);
 
           if (existing) {
             // Update existing record
@@ -129,9 +127,10 @@ export class StudioDataIntegrator {
               metadata,
               studio.confidence,
               studio.sourceId,
-              studio.sourceEntityId,
+              studio.sourceEntityId
             );
-
+            
+            if (result.changes > 0) {
               updatedCount++;
             }
           } else {
@@ -144,9 +143,10 @@ export class StudioDataIntegrator {
               studio.sourceId,
               studio.sourceEntityId,
               metadata,
-              studio.confidence,
+              studio.confidence
             );
-
+            
+            if (result.changes > 0) {
               newCount++;
             }
           }
@@ -156,29 +156,29 @@ export class StudioDataIntegrator {
       }
 
       const total = studiosData.length;
-      logger.info(
-        `Studio data processing completed: ${total} total, ${newCount} new, ${updatedCount} updated`,
-      );
+      logger.info(`Studio data processing completed: ${total} total, ${newCount} new, ${updatedCount} updated`);
 
       return { total, new: newCount, updated: updatedCount };
+
     } catch (error) {
-      logger.error("Failed to fetch and store studio data:", error);
+      logger.error('Failed to fetch and store studio data:', error);
       throw error;
     }
   }
 
-  getStudios(
-    filters: {
-      limit?: number;
-      offset?: number;
-      source?: string;
-      minConfidence?: number;
-      searchTerm?: string;
-    } = {},
-  ): StudioRecord[] {
+  getStudios(filters: {
+    limit?: number;
+    offset?: number;
+    source?: string;
+    minConfidence?: number;
+    searchTerm?: string;
+  } = {}): StudioRecord[] {
     const {
+      limit = 50,
+      offset = 0,
       source,
-      searchTerm,
+      minConfidence = 0,
+      searchTerm
     } = filters;
 
     let query = `
@@ -187,7 +187,7 @@ export class StudioDataIntegrator {
       FROM studios
       WHERE confidence >= ?
     `;
-
+    
     const params: any[] = [minConfidence];
 
     if (source) {
@@ -213,9 +213,11 @@ export class StudioDataIntegrator {
     avgConfidence: number;
     highConfidence: number;
   } {
+    const totalStmt = this.db.prepare('SELECT COUNT(*) as count FROM studios');
     const total = (totalStmt.get() as any).count;
 
     const sourceStmt = this.db.prepare(`
+      SELECT source_id, COUNT(*) as count 
       FROM studios 
       GROUP BY source_id
     `);
@@ -225,22 +227,21 @@ export class StudioDataIntegrator {
       return acc;
     }, {});
 
-    const avgStmt = this.db.prepare(
-      "SELECT AVG(confidence) as avg FROM studios",
-    );
+    const avgStmt = this.db.prepare('SELECT AVG(confidence) as avg FROM studios');
+    const avgConfidence = Math.round((avgStmt.get() as any).avg * 100) / 100;
 
-    const highConfStmt = this.db.prepare(
-    );
+    const highConfStmt = this.db.prepare('SELECT COUNT(*) as count FROM studios WHERE confidence >= 0.8');
     const highConfidence = (highConfStmt.get() as any).count;
 
     return {
       total,
       bySource,
       avgConfidence,
-      highConfidence,
+      highConfidence
     };
   }
 
+  searchStudios(query: string, limit: number = 20): StudioRecord[] {
     const stmt = this.db.prepare(`
       SELECT id, name, description, location, websites, source_id, 
              source_entity_id, metadata, confidence, last_updated, created_at
@@ -249,7 +250,7 @@ export class StudioDataIntegrator {
       ORDER BY confidence DESC, name ASC
       LIMIT ?
     `);
-
+    
     const searchPattern = `%${query}%`;
     return stmt.all(searchPattern, searchPattern, limit) as StudioRecord[];
   }
@@ -263,7 +264,7 @@ export class StudioDataIntegrator {
       AND metadata LIKE ?
       ORDER BY confidence DESC
     `);
-
+    
     return stmt.all(`%${gameName}%`) as StudioRecord[];
   }
 
@@ -273,56 +274,71 @@ export class StudioDataIntegrator {
 }
 
 // Usage example and CLI interface
-  dbPath: string = "./data/navi.db",
+export async function runStudioDataIntegration(
+  dbPath: string = './data/navi.db',
   githubToken?: string,
+  maxStudios: number = 200
 ) {
   const integrator = new StudioDataIntegrator(dbPath, githubToken);
-
+  
   try {
-    logger.info("Starting enhanced studio data integration...");
-
+    logger.info('Starting enhanced studio data integration...');
+    
     // Fetch and store data
     const result = await integrator.fetchAndStoreStudios(maxStudios);
-
-    console.log("\n[GAME] Enhanced Studio Data Integration Results:");
+    
+    console.log('\n[GAME] Enhanced Studio Data Integration Results:');
     console.log(`   [STATS] Total processed: ${result.total}`);
     console.log(`   [MAGIC] New studios: ${result.new}`);
-
+    console.log(`   🔄 Updated studios: ${result.updated}`);
+    
     // Show some statistics
     const stats = integrator.getStudioStats();
-
+    console.log('\n📈 Database Statistics:');
+    console.log(`   🏢 Total studios: ${stats.total}`);
+    console.log(`   ⭐ Average confidence: ${stats.avgConfidence}`);
+    console.log(`   [TARGET] High confidence (≥0.8): ${stats.highConfidence}`);
+    
+    console.log('\n📋 By Source:');
     Object.entries(stats.bySource).forEach(([source, count]) => {
       console.log(`   ${source}: ${count} studios`);
     });
-
+    
     // Show some sample high-quality studios
-    console.log("\n[STAR] Sample High-Quality Studios:");
-    samples.forEach((studio) => {
+    console.log('\n[STAR] Sample High-Quality Studios:');
+    const samples = integrator.getStudios({ limit: 5, minConfidence: 0.8 });
+    samples.forEach(studio => {
       const metadata = JSON.parse(studio.metadata);
-      const sources = metadata.sources?.join(", ") || studio.source_id;
-      console.log(
-        `   ${studio.name} (${sources}) - Confidence: ${studio.confidence}`,
-      );
+      const sources = metadata.sources?.join(', ') || studio.source_id;
+      console.log(`   ${studio.name} (${sources}) - Confidence: ${studio.confidence}`);
     });
-
+    
     integrator.close();
-
+    
     return result;
+    
   } catch (error) {
-    logger.error("Studio data integration failed:", error);
+    logger.error('Studio data integration failed:', error);
     integrator.close();
     throw error;
   }
 }
 
 // CLI interface
-if (typeof globalThis !== "undefined" && (globalThis as any).require) {
+if (typeof globalThis !== 'undefined' && (globalThis as any).require) {
+  const args = process.argv.slice(2);
+  const dbPath = args[0] || './data/navi.db';
   const githubToken = process.env.GITHUB_TOKEN;
-
+  const maxStudios = parseInt(args[1]) || 200;
+  
   runStudioDataIntegration(dbPath, githubToken, maxStudios)
-    .then((_result) => {
+    .then(_result => {
+      console.log('\n✅ Integration completed successfully!');
+      process.exit(0);
     })
-    .catch((error) => {
+    .catch(error => {
+      console.error('\n❌ Integration failed:', error.message);
+      process.exit(1);
     });
 }
 

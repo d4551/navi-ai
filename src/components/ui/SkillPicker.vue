@@ -11,7 +11,7 @@
         @keydown="handleKeydown"
         @focus="showSuggestions = true"
       />
-      <button
+      <button 
         v-if="inputValue"
         :aria-label="'Clear input'"
         class="clear-input-btn"
@@ -23,7 +23,11 @@
 
     <!-- Selected Skills -->
     <div v-if="selectedSkills.length > 0" class="selected-skills">
-      <span v-for="skill in selectedSkills" :key="skill" class="skill-tag">
+      <span
+        v-for="skill in selectedSkills"
+        :key="skill"
+        class="skill-tag"
+      >
         {{ skill }}
         <button
           :aria-label="`Remove ${skill}`"
@@ -36,7 +40,7 @@
     </div>
 
     <!-- Suggestions Dropdown -->
-    <div
+    <div 
       v-if="showSuggestions && (filteredSuggestions.length > 0 || canAddCustom)"
       class="suggestions-dropdown"
     >
@@ -46,10 +50,7 @@
           v-for="skill in filteredSuggestions"
           :key="skill"
           class="suggestion-item"
-          :class="{
-            highlighted:
-              highlightedIndex === filteredSuggestions.indexOf(skill),
-          }"
+          :class="{ highlighted: highlightedIndex === filteredSuggestions.indexOf(skill) }"
           @click="selectSkill(skill)"
         >
           <Icon name="tag" size="14" />
@@ -61,9 +62,7 @@
         <button
           v-if="canAddCustom"
           class="suggestion-item custom-skill"
-          :class="{
-            highlighted: highlightedIndex === filteredSuggestions.length,
-          }"
+          :class="{ highlighted: highlightedIndex === filteredSuggestions.length }"
           @click="selectSkill(inputValue.trim())"
         >
           <Icon name="plus" size="14" />
@@ -72,28 +71,19 @@
         </button>
       </div>
 
-      <div
-        v-if="maxSelections && selectedSkills.length >= maxSelections"
-        class="max-reached"
-      >
+      <div v-if="maxSelections && selectedSkills.length >= maxSelections" class="max-reached">
         Maximum {{ maxSelections }} skills allowed
       </div>
     </div>
 
     <!-- Popular Skills (when no input) -->
-    <div
-      v-if="!inputValue && !showSuggestions && popularSkills.length > 0"
-      class="popular-skills"
-    >
+    <div v-if="!inputValue && !showSuggestions && popularSkills.length > 0" class="popular-skills">
       <div class="popular-skills-label">Popular skills:</div>
       <div class="popular-skills-list">
         <button
           v-for="skill in popularSkills.slice(0, 8)"
           :key="skill"
-          :disabled="
-            selectedSkills.includes(skill) ||
-              Boolean(maxSelections && selectedSkills.length >= maxSelections)
-          "
+          :disabled="selectedSkills.includes(skill) || Boolean(maxSelections && selectedSkills.length >= maxSelections)"
           class="popular-skill-btn"
           @click="selectSkill(skill)"
         >
@@ -105,160 +95,145 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, onMounted, onUnmounted } from "vue";
-import Icon from "./Icon.vue";
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
+import Icon from './Icon.vue'
 
 interface Props {
-  modelValue: string[];
-  availableSkills?: string[];
-  placeholder?: string;
-  maxSelections?: number;
-  allowCustom?: boolean;
-  popularSkills?: string[];
+  modelValue: string[]
+  availableSkills?: string[]
+  placeholder?: string
+  maxSelections?: number
+  allowCustom?: boolean
+  popularSkills?: string[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
   availableSkills: () => [],
-  placeholder: "Type to add skills...",
+  placeholder: 'Type to add skills...',
   maxSelections: undefined,
   allowCustom: true,
   popularSkills: () => [
-    "JavaScript",
-    "TypeScript",
-    "Python",
-    "React",
-    "Vue.js",
-    "Node.js",
-    "Unity",
-    "C#",
-    "Game Design",
-    "UI/UX",
-  ],
-});
+    'JavaScript', 'TypeScript', 'Python', 'React', 'Vue.js', 
+    'Node.js', 'Unity', 'C#', 'Game Design', 'UI/UX'
+  ]
+})
 
 const emit = defineEmits<{
-  "update:modelValue": [value: string[]];
-}>();
+  'update:modelValue': [value: string[]]
+}>()
 
-const inputRef = ref<HTMLInputElement>();
-const inputValue = ref("");
-const showSuggestions = ref(false);
-const highlightedIndex = ref(-1);
+const inputRef = ref<HTMLInputElement>()
+const inputValue = ref('')
+const showSuggestions = ref(false)
+const highlightedIndex = ref(-1)
 
-const selectedSkills = computed(() => props.modelValue);
+const selectedSkills = computed(() => props.modelValue)
 
 const filteredSuggestions = computed(() => {
-  if (!inputValue.value.trim()) return [];
-
-  const query = inputValue.value.toLowerCase().trim();
+  if (!inputValue.value.trim()) return []
+  
+  const query = inputValue.value.toLowerCase().trim()
   return props.availableSkills
-    .filter(
-      (skill) =>
-        skill.toLowerCase().includes(query) &&
-        !selectedSkills.value.includes(skill),
+    .filter(skill => 
+      skill.toLowerCase().includes(query) && 
+      !selectedSkills.value.includes(skill)
     )
-    .slice(0, 5);
-});
+    .slice(0, 5)
+})
 
 const canAddCustom = computed(() => {
-  if (!props.allowCustom || !inputValue.value.trim()) return false;
-
-  const trimmedValue = inputValue.value.trim();
-  return (
-    !selectedSkills.value.includes(trimmedValue) &&
-    !props.availableSkills.includes(trimmedValue) &&
-    (!props.maxSelections || selectedSkills.value.length < props.maxSelections)
-  );
-});
+  if (!props.allowCustom || !inputValue.value.trim()) return false
+  
+  const trimmedValue = inputValue.value.trim()
+  return !selectedSkills.value.includes(trimmedValue) && 
+         !props.availableSkills.includes(trimmedValue) &&
+         (!props.maxSelections || selectedSkills.value.length < props.maxSelections)
+})
 
 const totalSuggestions = computed(() => {
-  return filteredSuggestions.value.length + (canAddCustom.value ? 1 : 0);
-});
+  return filteredSuggestions.value.length + (canAddCustom.value ? 1 : 0)
+})
 
 const handleInput = () => {
-  highlightedIndex.value = -1;
-  showSuggestions.value = true;
-};
+  highlightedIndex.value = -1
+  showSuggestions.value = true
+}
 
 const handleKeydown = (event: KeyboardEvent) => {
   switch (event.key) {
-    case "ArrowDown":
-      event.preventDefault();
-      highlightedIndex.value = Math.min(
-        highlightedIndex.value + 1,
-        totalSuggestions.value - 1,
-      );
-      break;
-    case "ArrowUp":
-      event.preventDefault();
-      highlightedIndex.value = Math.max(highlightedIndex.value - 1, -1);
-      break;
-    case "Enter":
-      event.preventDefault();
+    case 'ArrowDown':
+      event.preventDefault()
+      highlightedIndex.value = Math.min(highlightedIndex.value + 1, totalSuggestions.value - 1)
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      highlightedIndex.value = Math.max(highlightedIndex.value - 1, -1)
+      break
+    case 'Enter':
+      event.preventDefault()
       if (highlightedIndex.value >= 0) {
         if (highlightedIndex.value < filteredSuggestions.value.length) {
-          selectSkill(filteredSuggestions.value[highlightedIndex.value]);
+          selectSkill(filteredSuggestions.value[highlightedIndex.value])
         } else if (canAddCustom.value) {
-          selectSkill(inputValue.value.trim());
+          selectSkill(inputValue.value.trim())
         }
       } else if (canAddCustom.value) {
-        selectSkill(inputValue.value.trim());
+        selectSkill(inputValue.value.trim())
       }
-      break;
-    case "Escape":
-      showSuggestions.value = false;
-      highlightedIndex.value = -1;
-      break;
-    case "Backspace":
+      break
+    case 'Escape':
+      showSuggestions.value = false
+      highlightedIndex.value = -1
+      break
+    case 'Backspace':
       if (!inputValue.value && selectedSkills.value.length > 0) {
-        removeSkill(selectedSkills.value[selectedSkills.value.length - 1]);
+        removeSkill(selectedSkills.value[selectedSkills.value.length - 1])
       }
-      break;
+      break
   }
-};
+}
 
 const selectSkill = (skill: string) => {
-  if (!skill || selectedSkills.value.includes(skill)) return;
-  if (props.maxSelections && selectedSkills.value.length >= props.maxSelections)
-    return;
-
-  const newSkills = [...selectedSkills.value, skill];
-  emit("update:modelValue", newSkills);
-
-  inputValue.value = "";
-  showSuggestions.value = false;
-  highlightedIndex.value = -1;
-
+  if (!skill || selectedSkills.value.includes(skill)) return
+  if (props.maxSelections && selectedSkills.value.length >= props.maxSelections) return
+  
+  const newSkills = [...selectedSkills.value, skill]
+  emit('update:modelValue', newSkills)
+  
+  inputValue.value = ''
+  showSuggestions.value = false
+  highlightedIndex.value = -1
+  
   nextTick(() => {
-    inputRef.value?.focus();
-  });
-};
+    inputRef.value?.focus()
+  })
+}
 
 const removeSkill = (skill: string) => {
-  const newSkills = selectedSkills.value.filter((s) => s !== skill);
-  emit("update:modelValue", newSkills);
-};
+  const newSkills = selectedSkills.value.filter(s => s !== skill)
+  emit('update:modelValue', newSkills)
+}
 
 const clearInput = () => {
-  inputValue.value = "";
-  showSuggestions.value = false;
-  inputRef.value?.focus();
-};
+  inputValue.value = ''
+  showSuggestions.value = false
+  inputRef.value?.focus()
+}
 
 const handleClickOutside = (event: Event) => {
-  const target = event.target as HTMLElement;
-  if (!target.closest(".skill-picker")) {
-    showSuggestions.value = false;
+  const target = event.target as HTMLElement
+  if (!target.closest('.skill-picker')) {
+    showSuggestions.value = false
   }
-};
+}
 
 onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
+  document.addEventListener('click', handleClickOutside)
+})
 
 onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>

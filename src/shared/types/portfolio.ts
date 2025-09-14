@@ -1,14 +1,18 @@
+/**
+ * Shared Portfolio Types
+ * Canonical interfaces for portfolio data used across exports, views, and services.
+ */
 
 export type PortfolioLinkType =
-  | "live"
-  | "source"
-  | "video"
-  | "article"
-  | "store"
-  | "itch"
-  | "steam"
-  | "docs"
-  | "other";
+  | 'live'
+  | 'source'
+  | 'video'
+  | 'article'
+  | 'store'
+  | 'itch'
+  | 'steam'
+  | 'docs'
+  | 'other';
 
 export interface PortfolioLink {
   label?: string;
@@ -16,7 +20,7 @@ export interface PortfolioLink {
   type?: PortfolioLinkType;
 }
 
-export type PortfolioMediaType = "image" | "video" | "gif";
+export type PortfolioMediaType = 'image' | 'video' | 'gif';
 
 export interface PortfolioMedia {
   url: string;
@@ -61,11 +65,11 @@ export interface PortfolioData {
   metadata?: PortfolioMetadata;
 }
 
-export type PortfolioExportFormat = "pdf" | "zip" | "html" | "json" | "website";
+export type PortfolioExportFormat = 'pdf' | 'zip' | 'html' | 'json' | 'website';
 
 export interface PortfolioExportOptions {
-  template?: "modern" | "gaming" | "minimal" | "showcase";
-  theme?: "light" | "dark" | "gaming" | "neon";
+  template?: 'modern' | 'gaming' | 'minimal' | 'showcase';
+  theme?: 'light' | 'dark' | 'gaming' | 'neon';
   includeImages?: boolean;
   includeSource?: boolean;
   includeReadme?: boolean;
@@ -75,14 +79,7 @@ export interface PortfolioExportOptions {
   includeFeaturedOnly?: boolean;
 }
 
-export type PortfolioItemType =
-  | "project"
-  | "game"
-  | "tool"
-  | "demo"
-  | "achievement"
-  | "clip"
-  | "other";
+export type PortfolioItemType = 'project' | 'game' | 'tool' | 'demo' | 'achievement' | 'clip' | 'other';
 
 export interface PortfolioStats {
   totalItems: number;

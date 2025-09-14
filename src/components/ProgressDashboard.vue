@@ -20,10 +20,7 @@
           <div class="card-content">
             <div class="xp-progress">
               <div class="progress progress-sm">
-                <div
-                  class="progress-bar bg-gradient-primary"
-                  :style="{ width: xpProgress + '%' }"
-                ></div>
+                <div class="progress-bar bg-gradient-primary" :style="{ width: xpProgress + '%' }"></div>
               </div>
               <span class="progress-label">{{ xpNeeded }} XP to Level {{ (userLevel || 1) + 1 }}</span>
             </div>
@@ -46,27 +43,17 @@
           </div>
           <div class="card-content">
             <div class="challenge-list">
-              <div
-                v-for="challenge in challenges.slice(0, 3)"
-                :key="challenge.id"
-                class="challenge-item"
-              >
+              <div v-for="challenge in challenges.slice(0, 3)" :key="challenge.id" class="challenge-item">
                 <span class="challenge-name">{{ challenge.name }}</span>
                 <div class="challenge-reward">
                   <span class="xp-badge">{{ challenge.xp }} XP</span>
-                  <AppIcon
-                    name="mdi-check-circle-outline"
-                    class="text-success"
-                  />
+                  <AppIcon name="mdi-check-circle-outline" class="text-success" />
                 </div>
               </div>
             </div>
             <div class="progress-summary">
               <div class="progress progress-sm">
-                <div
-                  class="progress-bar bg-gradient-success"
-                  :style="{ width: challengeProgress + '%' }"
-                ></div>
+                <div class="progress-bar bg-gradient-success" :style="{ width: challengeProgress + '%' }"></div>
               </div>
               <span class="progress-label">{{ Math.round(challengeProgress) }}% Complete</span>
             </div>
@@ -90,25 +77,11 @@
             <div class="readiness-visual">
               <div class="circular-progress">
                 <svg width="50" height="50">
+                  <circle cx="25" cy="25" r="20" stroke="#e5e7eb" stroke-width="3" fill="none" />
                   <circle
-                    cx="25"
-                    cy="25"
-                    r="20"
-                    stroke="#e5e7eb"
-                    stroke-width="3"
-                    fill="none"
-                  />
-                  <circle
-                    cx="25"
-                    cy="25"
-                    r="20"
-                    stroke="#22c55e"
-                    stroke-width="3"
-                    fill="none"
-                    stroke-dasharray="126"
-                    :stroke-dashoffset="
-                      126 - (126 * careerReadinessPercent) / 100
-                    "
+                    cx="25" cy="25" r="20" stroke="#22c55e" stroke-width="3" fill="none" 
+                    stroke-dasharray="126" 
+                    :stroke-dashoffset="126 - (126 * careerReadinessPercent / 100)" 
                     class="progress-circle"
                   />
                 </svg>
@@ -121,10 +94,7 @@
                   <span class="factor-name">Profile</span>
                   <div class="factor-progress">
                     <div class="progress progress-xs">
-                      <div
-                        class="progress-bar bg-primary"
-                        style="width: 75%"
-                      ></div>
+                      <div class="progress-bar bg-primary" style="width: 75%"></div>
                     </div>
                   </div>
                 </div>
@@ -132,10 +102,7 @@
                   <span class="factor-name">Skills</span>
                   <div class="factor-progress">
                     <div class="progress progress-xs">
-                      <div
-                        class="progress-bar bg-warning"
-                        style="width: 60%"
-                      ></div>
+                      <div class="progress-bar bg-warning" style="width: 60%"></div>
                     </div>
                   </div>
                 </div>
@@ -143,10 +110,7 @@
                   <span class="factor-name">Portfolio</span>
                   <div class="factor-progress">
                     <div class="progress progress-xs">
-                      <div
-                        class="progress-bar bg-success"
-                        style="width: 80%"
-                      ></div>
+                      <div class="progress-bar bg-success" style="width: 80%"></div>
                     </div>
                   </div>
                 </div>
@@ -171,14 +135,7 @@
           <div class="card-content">
             <p class="ai-recommendation">{{ aiRecommendation }}</p>
             <div class="ai-actions">
-              <UnifiedButton
-                variant="primary"
-                size="sm"
-                leading-icon="mdi-play"
-                @click="$emit('takeAction')"
-              >
-                Take Action
-              </UnifiedButton>
+              <UnifiedButton variant="primary" size="sm" leading-icon="mdi-play" @click="$emit('takeAction')">Take Action</UnifiedButton>
               <span class="ai-powered">
                 <AppIcon name="mdi-sparkles" />
                 Powered by AI
@@ -192,13 +149,13 @@
 </template>
 
 <script>
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 export default {
-  name: "ProgressDashboard",
+  name: 'ProgressDashboard',
   components: {
     AppIcon,
-    UnifiedButton,
+    UnifiedButton
   },
   props: {
     userLevel: { type: Number, default: 1 },
@@ -209,24 +166,18 @@ export default {
     totalChallenges: { type: Number, default: 5 },
     challenges: { type: Array, default: () => [] },
     careerReadinessPercent: { type: Number, default: 25 },
-    aiRecommendation: {
-      type: String,
-      default:
-        'Continue your progress with "Profile Polish" to advance your career development.',
-    },
+    aiRecommendation: { type: String, default: 'Continue your progress with "Profile Polish" to advance your career development.' }
   },
-  emits: ["takeAction"],
+  emits: ['takeAction'],
   computed: {
     xpProgress() {
-      return Math.min(100, (this.userXP || 25) % 100);
+      return Math.min(100, ((this.userXP || 25) % 100))
     },
     challengeProgress() {
-      return this.totalChallenges > 0
-        ? (this.completedChallenges / this.totalChallenges) * 100
-        : 0;
-    },
-  },
-};
+      return this.totalChallenges > 0 ? (this.completedChallenges / this.totalChallenges) * 100 : 0
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -321,8 +272,7 @@ export default {
   color: #9ca3af;
 }
 
-.streak-badge,
-.confidence-badge {
+.streak-badge, .confidence-badge {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -480,43 +430,61 @@ export default {
   border-radius: 6px;
 }
 
+/* Dark theme support */
 [data-bs-theme="dark"] .compact-card {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(71, 85, 105, 0.3);
 }
 
 [data-bs-theme="dark"] .card-title {
+  color: #f8fafc;
 }
 
 [data-bs-theme="dark"] .card-subtitle,
 [data-bs-theme="dark"] .progress-label,
 [data-bs-theme="dark"] .factor-name {
+  color: #94a3b8;
 }
 
 [data-bs-theme="dark"] .ai-recommendation,
 [data-bs-theme="dark"] .challenge-name {
+  color: #e2e8f0;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
   .progress-row {
+    grid-template-columns: 1fr;
   }
-
+  
   .compact-card {
+    min-height: 100px;
+    padding: 0.75rem;
   }
-
+  
   .readiness-visual {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.5rem;
   }
-
+  
   .ai-actions {
     flex-direction: column;
+    gap: 0.25rem;
     align-items: flex-start;
   }
 }
 
+@media (max-width: 480px) {
   .card-header {
     flex-wrap: wrap;
+    gap: 0.5rem;
   }
-
+  
   .icon-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
   }
 }
 </style>

@@ -1,14 +1,11 @@
 <template>
-  <div
-    class="unified-form-field"
-    :class="{ required, valid: isValid, error: hasError }"
-  >
+  <div class="unified-form-field" :class="{ required, valid: isValid, error: hasError }">
     <label v-if="label" class="field-label">
       <AppIcon v-if="icon" :name="icon" size="16" class="field-icon" />
       {{ label }}
       <span v-if="required" class="required-indicator">*</span>
     </label>
-
+    
     <div class="field-container">
       <!-- Input Field -->
       <input
@@ -24,7 +21,7 @@
         @blur="$emit('blur', $event)"
         @focus="$emit('focus', $event)"
       />
-
+      
       <!-- Textarea Field -->
       <textarea
         v-else-if="type === 'textarea'"
@@ -39,7 +36,7 @@
         @blur="$emit('blur', $event)"
         @focus="$emit('focus', $event)"
       ></textarea>
-
+      
       <!-- Select Field -->
       <select
         v-else-if="type === 'select'"
@@ -59,21 +56,18 @@
           {{ option.label }}
         </option>
       </select>
-
+      
       <!-- Field Actions (optional) -->
       <div v-if="$slots.actions" class="field-actions">
         <slot name="actions"></slot>
       </div>
     </div>
-
+    
     <!-- Helper Text / Validation -->
-    <div
-      v-if="helperText || validationMessage || hasError"
-      class="field-feedback"
-    >
+    <div v-if="helperText || validationMessage || hasError" class="field-feedback">
       <div v-if="hasError" class="field-error">
         <AppIcon name="mdi-alert-circle-outline" size="14" />
-        <span>{{ validationMessage || "This field has an error" }}</span>
+        <span>{{ validationMessage || 'This field has an error' }}</span>
       </div>
       <div v-else-if="validationMessage && isValid" class="field-success">
         <AppIcon name="mdi-check-circle-outline" size="14" />
@@ -83,11 +77,11 @@
         {{ helperText }}
       </div>
     </div>
-
+    
     <!-- Word/Character Counter -->
     <div v-if="showCounter && type === 'textarea'" class="field-counter">
       <span :class="{ 'counter-ideal': isCounterIdeal }">
-        {{ wordCount }} {{ counterType === "words" ? "words" : "characters" }}
+        {{ wordCount }} {{ counterType === 'words' ? 'words' : 'characters' }}
       </span>
       <span v-if="counterRange" class="counter-range">
         • {{ counterRange }}
@@ -97,115 +91,115 @@
 </template>
 
 <script setup>
-import { computed, useId } from "vue";
-import AppIcon from "./AppIcon.vue";
+import { computed, useId } from 'vue'
+import AppIcon from './AppIcon.vue'
 
 const props = defineProps({
   modelValue: {
     type: [String, Number],
-    default: "",
+    default: ''
   },
   type: {
     type: String,
-    default: "text",
+    default: 'text'
   },
   label: {
     type: String,
-    default: "",
+    default: ''
   },
   icon: {
     type: String,
-    default: "",
+    default: ''
   },
   placeholder: {
     type: String,
-    default: "",
+    default: ''
   },
   helperText: {
     type: String,
-    default: "",
+    default: ''
   },
   required: {
     type: Boolean,
-    default: false,
+    default: false
   },
   disabled: {
     type: Boolean,
-    default: false,
+    default: false
   },
   validationMessage: {
     type: String,
-    default: "",
+    default: ''
   },
   hasError: {
     type: Boolean,
-    default: false,
+    default: false
   },
   rows: {
     type: Number,
-    default: 4,
+    default: 4
   },
   options: {
     type: Array,
-    default: () => [],
+    default: () => []
   },
   showCounter: {
     type: Boolean,
-    default: false,
+    default: false
   },
   counterType: {
     type: String,
-    default: "words",
-    validator: (value) => ["words", "characters"].includes(value),
+    default: 'words',
+    validator: value => ['words', 'characters'].includes(value)
   },
   counterRange: {
     type: String,
-    default: "",
+    default: ''
   },
   size: {
     type: String,
-    default: "md",
-    validator: (value) => ["sm", "md", "lg"].includes(value),
-  },
-});
+    default: 'md',
+    validator: value => ['sm', 'md', 'lg'].includes(value)
+  }
+})
 
-defineEmits(["update:modelValue", "blur", "focus"]);
+defineEmits(['update:modelValue', 'blur', 'focus'])
 
-const fieldId = useId();
+const fieldId = useId()
 
 const isValid = computed(() => {
-  if (!props.required) return true;
-  return props.modelValue && String(props.modelValue).trim().length > 0;
-});
+  if (!props.required) return true
+  return props.modelValue && String(props.modelValue).trim().length > 0
+})
 
 const wordCount = computed(() => {
-  const text = String(props.modelValue || "");
-  if (props.counterType === "words") {
-    return text.trim() ? text.trim().split(/\s+/).length : 0;
+  const text = String(props.modelValue || '')
+  if (props.counterType === 'words') {
+    return text.trim() ? text.trim().split(/\s+/).length : 0
   }
-  return text.length;
-});
+  return text.length
+})
 
 const isCounterIdeal = computed(() => {
-  if (!props.counterRange) return false;
-  const range = props.counterRange.match(/(\d+)-(\d+)/);
+  if (!props.counterRange) return false
+  const range = props.counterRange.match(/(\d+)-(\d+)/)
   if (range) {
-    const min = parseInt(range[1]);
-    const max = parseInt(range[2]);
-    return wordCount.value >= min && wordCount.value <= max;
+    const min = parseInt(range[1])
+    const max = parseInt(range[2])
+    return wordCount.value >= min && wordCount.value <= max
   }
-  return false;
-});
+  return false
+})
 
 const fieldClasses = computed(() => [
-  "field-input",
+  'field-input',
   `field-input--${props.size}`,
   {
-    "field-input--valid": isValid.value && props.modelValue,
-    "field-input--error": props.hasError,
-    "field-input--disabled": props.disabled,
-  },
-]);
+    'field-input--valid': isValid.value && props.modelValue,
+    'field-input--error': props.hasError,
+    'field-input--disabled': props.disabled
+  }
+])
 </script>
 
 <style scoped>
@@ -340,22 +334,31 @@ const fieldClasses = computed(() => [
   opacity: 0.8;
 }
 
+/* Form field validation states */
 .unified-form-field.required .field-label::after {
-  content: "";
+  content: '';
 }
 
 .unified-form-field.valid .field-input {
+  border-color: var(--color-success-400);
 }
 
 .unified-form-field.error .field-input {
+  border-color: var(--color-error-400);
 }
 
-[data-theme="dark"] .field-input {
+/* Dark theme adjustments */
+[data-theme='dark'] .field-input {
+  background: rgba(var(--surface-glass-rgb), 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .field-input:focus {
+[data-theme='dark'] .field-input:focus {
+  border-color: var(--color-primary-400);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 59, 130, 246), 0.2);
 }
 
-[data-theme="dark"] .field-input:hover:not(:focus):not(:disabled) {
+[data-theme='dark'] .field-input:hover:not(:focus):not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.2);
 }
 </style>

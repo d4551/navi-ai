@@ -1,10 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div
-    class="settings-card glass-card section-card mb-4"
-    role="region"
-    aria-labelledby="ai-config-title"
-  >
+  <div class="settings-card glass-card section-card mb-4" role="region" aria-labelledby="ai-config-title">
     <div class="card-header section-header card-header--dense">
       <h5 id="ai-config-title" class="mb-0">
         <KeyIconComponent class="me-2 icon-sm" />API Configuration
@@ -24,14 +20,13 @@
             <div class="input-group">
               <input
                 id="gemini-api-key"
-                v-model="settings.geminiApiKey"
+                :value="settings.geminiApiKey"
                 :type="showApiKey ? 'text' : 'password'"
                 class="form-control glass-input"
                 placeholder="Enter your Gemini API key"
                 autocomplete="off"
-                :aria-describedby="
-                  showApiKey ? 'api-key-help api-key-visible' : 'api-key-help'
-                "
+                :aria-describedby="showApiKey ? 'api-key-help api-key-visible' : 'api-key-help'"
+                @input="updateSetting('geminiApiKey', $event.target.value)"
               />
               <IconButton
                 :aria-label="showApiKey ? 'Hide API key' : 'Show API key'"
@@ -68,13 +63,8 @@
               leading-icon="mdi-flask"
               @click="$emit('test-api-key')"
             >
-              <span
-                v-if="testing"
-                class="spinner-border spinner-border-sm me-2"
-                role="status"
-                aria-hidden="true"
-              />
-              {{ testing ? "Testing..." : "Test API Key" }}
+              <span v-if="testing" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+              {{ testing ? 'Testing...' : 'Test API Key' }}
             </UnifiedButton>
             <UnifiedButton
               type="button"
@@ -84,20 +74,12 @@
               leading-icon="mdi-connection"
               @click="$emit('connect-api-key')"
             >
-              <span
-                v-if="connecting"
-                class="spinner-border spinner-border-sm me-2"
-                role="status"
-                aria-hidden="true"
-              />
-              {{ connecting ? "Connecting..." : "Connect" }}
+              <span v-if="connecting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+              {{ connecting ? 'Connecting...' : 'Connect' }}
             </UnifiedButton>
             <div
               v-if="apiTestResult"
-              :class="[
-                'alert mb-0 ms-2 flex-grow-1',
-                apiTestResult.success ? 'alert-success' : 'alert-danger',
-              ]"
+              :class="['alert mb-0 ms-2 flex-grow-1', apiTestResult.success ? 'alert-success' : 'alert-danger']"
               role="alert"
             >
               <small>{{ safeMessage(apiTestResult.message) }}</small>
@@ -117,10 +99,11 @@
             <div class="d-flex align-items-center gap-2">
               <select
                 id="ai-model"
-                v-model="settings.selectedModel"
+                :value="settings.selectedModel"
                 class="form-select glass-input"
                 :disabled="loadingModels || !settings.geminiApiKey"
                 aria-describedby="model-help"
+                @change="updateSetting('selectedModel', $event.target.value)"
               >
                 <optgroup
                   v-if="availableModels.some((m) => m.isRecommended)"
@@ -140,7 +123,9 @@
                 </optgroup>
                 <optgroup
                   v-if="
-                    availableModels.some((m) => m.category === 'experimental')
+                    availableModels.some(
+                      (m) => m.category === 'experimental',
+                    )
                   "
                   label="🧪 Experimental"
                 >
@@ -159,7 +144,8 @@
                 <optgroup
                   v-if="
                     availableModels.some(
-                      (m) => !m.isRecommended && m.category !== 'experimental',
+                      (m) =>
+                        !m.isRecommended && m.category !== 'experimental',
                     )
                   "
                   label="📝 Other Models"
@@ -214,18 +200,11 @@
                 <span
                   v-if="selectedModelInfo.isRecommended"
                   class="badge bg-success rounded-pill"
-                ><AppIcon
-                  name="mdi-star"
-                  color="warning"
-                  context="achievement"
-                  aria-hidden="true"
-                />
-                  Recommended</span>
+                ><AppIcon name="mdi-star" color="warning" context="achievement" aria-hidden="true" /> Recommended</span>
                 <span
                   v-if="selectedModelInfo.category === 'experimental'"
                   class="badge bg-warning rounded-pill"
-                ><AppIcon name="mdi-test-tube" size="small" />
-                  Experimental</span>
+                ><AppIcon name="mdi-test-tube" size="small" /> Experimental</span>
               </div>
               <p class="card-text small mb-2">
                 {{ safeMessage(selectedModelInfo.description) }}
@@ -233,22 +212,18 @@
               <div class="row g-2 small text-muted">
                 <div class="col-6">
                   <strong>Input:</strong>
-                  {{ safeTokenLimit(selectedModelInfo.inputTokenLimit) }}K
-                  tokens
+                  {{ safeTokenLimit(selectedModelInfo.inputTokenLimit) }}K tokens
                 </div>
                 <div class="col-6">
                   <strong>Output:</strong>
-                  {{ safeTokenLimit(selectedModelInfo.outputTokenLimit) }}K
-                  tokens
+                  {{ safeTokenLimit(selectedModelInfo.outputTokenLimit) }}K tokens
                 </div>
                 <div v-if="selectedModelInfo.capabilities" class="col-6">
                   <strong>Score:</strong>
                   {{ safeMessage(selectedModelInfo.capabilities.score) }}/100
                 </div>
                 <div v-if="selectedModelInfo.pricing" class="col-6">
-                  <strong>Cost:</strong> ${{
-                    safeMessage(selectedModelInfo.pricing.input)
-                  }}/1M in
+                  <strong>Cost:</strong> ${{ safeMessage(selectedModelInfo.pricing.input) }}/1M in
                 </div>
               </div>
               <div
@@ -256,7 +231,8 @@
                 class="mt-2"
               >
                 <span
-                  v-for="feature in selectedModelInfo.capabilities.features"
+                  v-for="feature in selectedModelInfo.capabilities
+                    .features"
                   :key="feature"
                   class="badge bg-light text-dark me-1 mb-1"
                 >
@@ -412,7 +388,11 @@
                   @click="$emit('load-audio-devices')"
                 />
               </div>
-              <div id="microphone-help" class="form-text hint-chip" role="note">
+              <div
+                id="microphone-help"
+                class="form-text hint-chip"
+                role="note"
+              >
                 <MicIconComponent />
                 <span>Select your preferred microphone for voice input and
                   interview recordings.</span>
@@ -438,18 +418,11 @@
             </div>
 
             <div
-              v-show="
-                settings.ttsProvider === 'system' ||
-                  settings.ttsProvider === 'kokoro'
-              "
+              v-show="settings.ttsProvider === 'system' || settings.ttsProvider === 'kokoro'"
               class="col-12"
             >
               <label for="tts-voice" class="form-label fw-medium">
-                {{
-                  settings.ttsProvider === "kokoro"
-                    ? "Kokoro Voice"
-                    : "System Voice"
-                }}
+                {{ settings.ttsProvider === 'kokoro' ? 'Kokoro Voice' : 'System Voice' }}
               </label>
               <select
                 id="tts-voice"
@@ -468,12 +441,7 @@
                 </option>
               </select>
               <div id="voice-tts-help" class="form-text">
-                Used for spoken responses.
-                {{
-                  settings.ttsProvider === "kokoro"
-                    ? "Kokoro uses system voices for speech synthesis."
-                    : "Populated from your system voices."
-                }}
+                Used for spoken responses. {{ settings.ttsProvider === 'kokoro' ? 'Kokoro uses system voices for speech synthesis.' : 'Populated from your system voices.' }}
               </div>
             </div>
           </div>
@@ -494,8 +462,8 @@
                   </label>
                 </div>
                 <div class="form-text">
-                  When enabled, chat will re‑arm the mic after NAVI finishes
-                  speaking.
+                  When enabled, chat will re‑arm the mic after NAVI
+                  finishes speaking.
                 </div>
               </div>
 
@@ -526,7 +494,7 @@
 </template>
 
 <script>
-import AppIcon from "@/components/ui/AppIcon.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
 import {
   KeyIconComponent,
   VisibilityIconComponent,
@@ -538,163 +506,199 @@ import {
   CpuIconComponent,
   PlugIconComponent,
   CheckCircleIconComponent,
-  CloseIconComponent,
-} from "./SettingsIcons.js";
+  CloseIconComponent
+} from './SettingsIcons.js'
 
-export default {
-  name: "ApiConfigurationSection",
-  components: {
-    KeyIconComponent,
-    VisibilityIconComponent,
-    VisibilityOffIconComponent,
-    SoundwaveIconComponent,
-    MicIconComponent,
-    RefreshIconComponent,
-    SlashIconComponent,
-    CpuIconComponent,
-    PlugIconComponent,
-    CheckCircleIconComponent,
-    CloseIconComponent,
-    AppIcon,
-    UnifiedButton: () => import("@/components/ui/UnifiedButton.vue"),
-    IconButton: () => import("@/components/ui/IconButton.vue"),
-  },
-  props: {
-    settings: {
-      type: Object,
-      required: true,
+  export default {
+    name: 'ApiConfigurationSection',
+    components: {
+      KeyIconComponent,
+      VisibilityIconComponent,
+      VisibilityOffIconComponent,
+      SoundwaveIconComponent,
+      MicIconComponent,
+      RefreshIconComponent,
+      SlashIconComponent,
+      CpuIconComponent,
+      PlugIconComponent,
+      CheckCircleIconComponent,
+      CloseIconComponent,
+      AppIcon,
+      UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
+      IconButton: () => import('@/components/ui/IconButton.vue')
     },
-    showApiKey: {
-      type: Boolean,
-      default: false,
+    props: {
+      settings: {
+        type: Object,
+        required: true
+      },
+      showApiKey: {
+        type: Boolean,
+        default: false
+      },
+      testing: {
+        type: Boolean,
+        default: false
+      },
+      apiTestResult: {
+        type: Object,
+        default: null
+      },
+      availableModels: {
+        type: Array,
+        default: () => []
+      },
+      selectedModelInfo: {
+        type: Object,
+        default: null
+      },
+      loadingModels: {
+        type: Boolean,
+        default: false
+      },
+      connecting: {
+        type: Boolean,
+        default: false
+      },
+      voices: {
+        type: Array,
+        default: () => []
+      },
+      audioDevices: {
+        type: Array,
+        default: () => []
+      },
+      loadingDevices: {
+        type: Boolean,
+        default: false
+      }
     },
-    testing: {
-      type: Boolean,
-      default: false,
-    },
-    apiTestResult: {
-      type: Object,
-      default: null,
-    },
-    availableModels: {
-      type: Array,
-      default: () => [],
-    },
-    selectedModelInfo: {
-      type: Object,
-      default: null,
-    },
-    loadingModels: {
-      type: Boolean,
-      default: false,
-    },
-    connecting: {
-      type: Boolean,
-      default: false,
-    },
-    voices: {
-      type: Array,
-      default: () => [],
-    },
-    audioDevices: {
-      type: Array,
-      default: () => [],
-    },
-    loadingDevices: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: [
-    "toggle-api-key-visibility",
-    "test-api-key",
-    "connect-api-key",
-    "load-models",
-    "load-audio-devices",
-    "save-settings",
-  ],
-  methods: {
-    safeDisplayName(name) {
-      if (typeof name === "string") return name;
-      if (name && typeof name.then === "function") return "Loading...";
-      return String(name);
-    },
-    safeTokenLimit(limit) {
-      if (typeof limit === "number") return (limit / 1000).toFixed(0);
-      return "?";
-    },
-    safeMessage(msg) {
-      if (typeof msg === "string") return msg;
-      if (msg && typeof msg.then === "function") return "Loading...";
-      return String(msg);
-    },
-  },
-};
+    emits: [
+      'toggle-api-key-visibility',
+      'test-api-key',
+      'connect-api-key',
+      'load-models',
+      'load-audio-devices',
+      'save-settings',
+      'update:settings'
+    ],
+    methods: {
+      updateSetting(key, value) {
+        const updatedSettings = { ...this.settings, [key]: value }
+        this.$emit('update:settings', updatedSettings)
+        this.$emit('save-settings')
+      },
+      safeDisplayName(name) {
+        if (typeof name === 'string') return name
+        if (name && typeof name.then === 'function') return 'Loading...'
+        return String(name)
+      },
+      safeTokenLimit(limit) {
+        if (typeof limit === 'number') return (limit / 1000).toFixed(0)
+        return '?'
+      },
+      safeMessage(msg) {
+        if (typeof msg === 'string') return msg
+        if (msg && typeof msg.then === 'function') return 'Loading...'
+        return String(msg)
+      }
+    }
+  }
 </script>
 
 <style scoped>
+/* Section styling */
 .api-key-section,
 .ai-model-section,
 .voice-audio-section {
+  background: var(--glass-bg, rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  transition: all 0.3s ease;
 }
 
 .api-key-section:hover,
 .ai-model-section:hover,
 .voice-audio-section:hover {
+  background: var(--glass-bg-hover, rgba(255, 255, 255, 0.08));
+  border-color: var(--glass-border-hover, rgba(255, 255, 255, 0.2));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Model info card styling */
 .model-info-card {
   background: var(--studio-card-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--studio-card-border);
+  margin-top: 1rem;
 }
 
 .model-info-card.card {
   background: var(--studio-card-bg);
+  border: 1px solid var(--studio-card-border);
   border-radius: var(--studio-card-radius);
 }
 
 .model-info-card .card-body {
+  padding: 1rem;
 }
 
+/* Form control improvements */
 .glass-input {
+  background: var(--input-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--input-border, rgba(255, 255, 255, 0.1));
   color: var(--text-primary);
 }
 
 .glass-input:focus {
+  background: var(--input-bg-focus, rgba(255, 255, 255, 0.08));
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--color-primary-500) 25%, transparent);
 }
 
+/* Remove custom button styling - let UnifiedButton handle glassmorphic design */
 
+/* Use unified badge; keep default sizing from design system */
 
+/* Responsive improvements */
+@media (max-width: 768px) {
   .api-key-section,
   .ai-model-section,
   .voice-audio-section {
+    margin-bottom: 1rem;
+    padding: 1rem;
   }
 
+  .d-flex.gap-2 {
     flex-direction: column;
     align-items: stretch !important;
   }
 
+  .d-flex.gap-2 .btn {
+    margin-bottom: 0.5rem;
   }
 }
 
-.hint-chip {
-  display: inline-flex;
-  align-items: center;
-  border-radius: var(--radius-full);
-  background: var(--glass-bg);
-  color: var(--text-secondary);
-  font-size: var(--badge-font-size);
-  font-weight: var(--badge-font-weight);
-}
-.hint-chip svg {
-}
+/* Hint chip styling */
+.hint-chip { display:inline-flex; align-items:center; gap: var(--spacing-1-5); padding: var(--spacing-1) var(--spacing-2); border-radius: var(--radius-full); border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-secondary); font-size: var(--badge-font-size); font-weight: var(--badge-font-weight); margin-top: var(--spacing-1); }
+.hint-chip svg { width: 1rem; height: 1rem; opacity: 0.7; }
 
+/* Form text improvements */
 .form-text {
   color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
+/* Icon improvements */
 .icon-sm {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .icon-xs {
+  width: 1rem;
+  height: 1rem;
 }
 </style>

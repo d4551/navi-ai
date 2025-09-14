@@ -1,26 +1,24 @@
-/* Unified stylesheet entrypoint
- * - Centralizes theme, tokens, utilities, and helpers
- * - Keep import order stable: tokens -> theme -> utilities -> helpers -> enhancements
+/* =====================================================
+ * NAVI UNIFIED STYLESHEET - SINGLE SOURCE OF TRUTH
+ * =====================================================
+ * Pure black/white glassmorphic theme with RGB neon highlights
+ * Consistent layouts, spacing, and component patterns
  */
 
-/* Tokens and design system */
-/* Import legacy design-system first so unified tokens take precedence */
-@import './design-system.css';
-@import './unified-design-system.css';
+/* 1. CORE UNIFIED THEME (Single source of truth) */
+@import './navi-unified-theme.css';
 
-/* Canonical theme (colors, surfaces, typography) */
-@import './master-theme.css';
-/* Document-specific theme (kept for document builder styling) */
-@import './unified-document-theme.css';
+/* 2. LAYOUT COMPONENTS (Pre-built patterns) */
+@import './navi-layout-components.css';
 
-/* Utilities */
-@import './flexbox-utilities.css';
-@import './layout-utilities.css';
-@import './section-helpers.css';
+/* 3. BUTTON SYSTEM (Comprehensive button components) */
+@import './navi-button-system.css';
+
+/* 4. TAILWIND BASE (For additional utilities) */
+@import './tailwind.css';
+
+/* 5. LEGACY COMPATIBILITY (Minimal, will be phased out) */
 @import './legacy-bridge.css';
-
-/* Enhancements / visual accents */
-@import './typography-optimization.css';
 @import './neon-accents.css';
 @import './enhanced-global-improvements.css';
 @import './enhanced-navigation.css';

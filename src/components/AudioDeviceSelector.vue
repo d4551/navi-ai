@@ -9,10 +9,7 @@
       <div class="row g-3">
         <!-- Microphone Selection -->
         <div class="col-md-6">
-          <label
-            for="microphone-select"
-            class="form-label d-flex align-items-center"
-          >
+          <label for="microphone-select" class="form-label d-flex align-items-center">
             <AppIcon name="mdi-microphone" />
             Microphone
           </label>
@@ -24,28 +21,19 @@
             @change="onMicrophoneChange"
           >
             <option value="">
-              {{
-                microphoneDevices.length > 0
-                  ? "Default Microphone"
-                  : "No microphones found"
-              }}
+              {{ microphoneDevices.length > 0 ? 'Default Microphone' : 'No microphones found' }}
             </option>
             <option
               v-for="device in microphoneDevices"
               :key="device.deviceId"
               :value="device.deviceId"
             >
-              {{
-                device.label || `Microphone ${device.deviceId.slice(0, 8)}...`
-              }}
+              {{ device.label || `Microphone ${device.deviceId.slice(0, 8)}...` }}
             </option>
           </select>
 
           <!-- Microphone Level Indicator -->
-          <div
-            v-if="selectedMicrophoneId && microphoneLevel > 0"
-            class="mic-level-container mt-2"
-          >
+          <div v-if="selectedMicrophoneId && microphoneLevel > 0" class="mic-level-container mt-2">
             <div class="mic-level-label">Input Level:</div>
             <div class="mic-level-bar">
               <div
@@ -54,18 +42,13 @@
                 :class="{ 'level-high': microphoneLevel > 80 }"
               ></div>
             </div>
-            <div class="mic-level-value">
-              {{ Math.round(microphoneLevel) }}%
-            </div>
+            <div class="mic-level-value">{{ Math.round(microphoneLevel) }}%</div>
           </div>
         </div>
 
         <!-- Speaker Selection -->
         <div class="col-md-6">
-          <label
-            for="speaker-select"
-            class="form-label d-flex align-items-center"
-          >
+          <label for="speaker-select" class="form-label d-flex align-items-center">
             <AppIcon name="mdi-volume-high" />
             Speaker
           </label>
@@ -77,9 +60,7 @@
             @change="onSpeakerChange"
           >
             <option value="">
-              {{
-                speakerDevices.length > 0 ? "Default Speaker" : "System default"
-              }}
+              {{ speakerDevices.length > 0 ? 'Default Speaker' : 'System default' }}
             </option>
             <option
               v-for="device in speakerDevices"
@@ -96,14 +77,10 @@
               size="sm"
               variant="outline-secondary"
               :disabled="!permissionsGranted || isTestingAudio || disabled"
-              :icon="
-                isTestingAudio
-                  ? 'mdi mdi-loading mdi-spin'
-                  : 'mdi mdi-volume-source'
-              "
+              :icon="isTestingAudio ? 'mdi mdi-loading mdi-spin' : 'mdi mdi-volume-source'"
               @click="testSpeaker"
             >
-              {{ isTestingAudio ? "Testing..." : "Test Speaker" }}
+              {{ isTestingAudio ? 'Testing...' : 'Test Speaker' }}
             </UnifiedButton>
           </div>
         </div>
@@ -123,16 +100,10 @@
             size="sm"
             variant="primary"
             :disabled="isRequestingPermissions"
-            :icon="
-              isRequestingPermissions
-                ? 'mdi mdi-loading mdi-spin'
-                : 'mdi mdi-microphone'
-            "
+            :icon="isRequestingPermissions ? 'mdi mdi-loading mdi-spin' : 'mdi mdi-microphone'"
             @click="requestPermissions"
           >
-            {{
-              isRequestingPermissions ? "Requesting..." : "Grant Permissions"
-            }}
+            {{ isRequestingPermissions ? 'Requesting...' : 'Grant Permissions' }}
           </UnifiedButton>
         </div>
       </div>
@@ -156,12 +127,9 @@
         :icon="isLocked ? 'mdi mdi-lock' : 'mdi mdi-lock-open-outline'"
         @click="isLocked ? unlockAudio() : lockAudio('Active session')"
       >
-        {{ isLocked ? "Unlock Audio Devices" : "Lock Audio Devices" }}
+        {{ isLocked ? 'Unlock Audio Devices' : 'Lock Audio Devices' }}
       </UnifiedButton>
-      <span
-        v-if="isLocked"
-        class="badge bg-warning-subtle text-warning-emphasis small"
-      >Locked</span>
+      <span v-if="isLocked" class="badge bg-warning-subtle text-warning-emphasis small">Locked</span>
     </div>
 
     <!-- Error Display -->
@@ -178,28 +146,19 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  onMounted,
-  readonly,
-  computed,
-  watch,
-  onBeforeUnmount,
-  defineEmits,
-  defineProps,
-} from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import { logger } from "@/shared/utils/logger";
-import { audioService } from "@/shared/services/AudioService";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import { useMediaLock } from "@/composables/useMediaLock";
+import { ref, onMounted, readonly, computed, watch, onBeforeUnmount, defineEmits, defineProps } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { logger } from '@/shared/utils/logger';
+import { audioService } from '@/shared/services/AudioService';
+import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import { useMediaLock } from '@/composables/useMediaLock';
 
 // Props
 const props = defineProps({
   disabled: { type: Boolean, default: false },
   autoRefresh: { type: Boolean, default: true },
   showTestControls: { type: Boolean, default: true },
-  lockable: { type: Boolean, default: true },
+  lockable: { type: Boolean, default: true }
 });
 // Media lock integration
 const { audioLocked, lockAudio, unlockAudio } = useMediaLock();
@@ -215,17 +174,17 @@ const onDeviceChange = async () => {
       await refreshDevices();
     }
   } catch (e) {
-    logger.warn("Device change refresh failed:", e);
+    logger.warn('Device change refresh failed:', e);
   }
 };
 
 // Emits
 const emit = defineEmits([
-  "microphoneSelected",
-  "speakerSelected",
-  "permissionsChanged",
-  "devicesChanged",
-  "error",
+  'microphoneSelected',
+  'speakerSelected',
+  'permissionsChanged',
+  'devicesChanged',
+  'error'
 ]);
 
 // State
@@ -235,10 +194,10 @@ const isRefreshing = ref(false);
 const isTestingAudio = ref(false);
 const microphoneDevices = ref([]);
 const speakerDevices = ref([]);
-const selectedMicrophoneId = ref("");
-const selectedSpeakerId = ref("");
+const selectedMicrophoneId = ref('');
+const selectedSpeakerId = ref('');
 const microphoneLevel = ref(0);
-const error = ref("");
+const error = ref('');
 
 // Audio monitoring via AudioService
 
@@ -247,19 +206,14 @@ const speakerSelectionSupported = computed(() => {
   // Speaker selection is limited in browsers
   // Chrome supports it, Firefox and Safari have limited support
   try {
-    const AudioCtor =
-      typeof window !== "undefined" ? window.HTMLAudioElement : undefined;
-    return !!(
-      AudioCtor &&
-      AudioCtor.prototype &&
-      "setSinkId" in AudioCtor.prototype
-    );
+    const AudioCtor = typeof window !== 'undefined' ? window.HTMLAudioElement : undefined;
+    return !!(AudioCtor && AudioCtor.prototype && 'setSinkId' in AudioCtor.prototype);
   } catch (_error) {
     return false;
   }
 });
 
-// Initialize on mount
+ // Initialize on mount
 onMounted(async () => {
   await checkPermissions();
   if (permissionsGranted.value) {
@@ -268,15 +222,12 @@ onMounted(async () => {
 
   // Listen for device hotplug events
   try {
-    if (
-      typeof navigator !== "undefined" &&
-      navigator.mediaDevices?.addEventListener
-    ) {
-      navigator.mediaDevices.addEventListener("devicechange", onDeviceChange);
+    if (typeof navigator !== 'undefined' && navigator.mediaDevices?.addEventListener) {
+      navigator.mediaDevices.addEventListener('devicechange', onDeviceChange);
       deviceChangeListenerAttached = true;
     }
   } catch (e) {
-    logger.warn("Unable to attach devicechange listener:", e);
+    logger.warn('Unable to attach devicechange listener:', e);
   }
 
   // Auto-refresh devices periodically (fallback)
@@ -285,7 +236,7 @@ onMounted(async () => {
       if (permissionsGranted.value) {
         refreshDevices();
       }
-    }, 30000);
+    }, 30000); // Every 30 seconds
   }
 });
 
@@ -308,35 +259,26 @@ async function checkPermissions() {
     // Non-invasive check: do not prompt on mount
     let granted = false;
     const permAPI = navigator.permissions;
-    if (permAPI && typeof permAPI.query === "function") {
+    if (permAPI && typeof permAPI.query === 'function') {
       try {
-        const status = await permAPI.query({ name: "microphone" });
-        granted = status.state === "granted";
-      } catch {
-      }
+        const status = await permAPI.query({ name: 'microphone' });
+        granted = status.state === 'granted';
+      } catch {/* ignore unsupported */}
     }
     if (!granted && navigator.mediaDevices?.enumerateDevices) {
       const devices = await navigator.mediaDevices.enumerateDevices();
-      granted = devices.some(
-        (d) =>
-          d.kind === "audioinput" &&
-          typeof d.label === "string" &&
-          d.label.length > 0
-      );
+      granted = devices.some(d => d.kind === 'audioinput' && typeof d.label === 'string' && d.label.trim().length > 0);
     }
     permissionsGranted.value = granted;
-    emit("permissionsChanged", granted);
+    emit('permissionsChanged', granted);
   } catch (err) {
-    logger.error("Permission check failed:", err);
+    logger.error('Permission check failed:', err);
     setError(`Permission check failed: ${err.message}`);
   }
 }
 
-// Permission request function
 async function requestPermissions() {
-  if (isRequestingPermissions.value) {
-    return;
-  }
+  if (isRequestingPermissions.value) {return;}
 
   isRequestingPermissions.value = true;
   clearError();
@@ -344,45 +286,42 @@ async function requestPermissions() {
   try {
     const granted = await audioService.requestMicrophonePermission();
     permissionsGranted.value = granted;
-    emit("permissionsChanged", granted);
+    emit('permissionsChanged', granted);
     if (granted) {
       await refreshDevices();
-      logger.info("Microphone permissions granted");
+      logger.info('Microphone permissions granted');
     }
   } catch (err) {
-    logger.error("Permission request failed:", err);
+    logger.error('Permission request failed:', err);
     setError(`Permission denied: ${err.message}`);
     permissionsGranted.value = false;
-    emit("permissionsChanged", false);
+    emit('permissionsChanged', false);
   } finally {
     isRequestingPermissions.value = false;
   }
 }
 
 // Device enumeration
-  if (isRefreshing.value || !permissionsGranted.value) {
-    return;
-  }
+async function refreshDevices() {
+  if (isRefreshing.value || !permissionsGranted.value) {return;}
 
   isRefreshing.value = true;
   clearError();
 
   try {
     const devices = await audioService.getAvailableDevices();
-    microphoneDevices.value = devices.filter((d) => d.kind === "audioinput");
-    speakerDevices.value = devices.filter((d) => d.kind === "audiooutput");
+    microphoneDevices.value = devices.filter(d => d.kind === 'audioinput');
+    speakerDevices.value = devices.filter(d => d.kind === 'audiooutput');
 
     // Emit devices changed event
-    emit("devicesChanged", {
+    emit('devicesChanged', {
       microphones: microphoneDevices.value,
-      speakers: speakerDevices.value,
+      speakers: speakerDevices.value
     });
 
-    logger.info(
-      `Found ${microphoneDevices.value.length} microphones, ${speakerDevices.value.length} speakers`,
-    );
+    logger.info(`Found ${microphoneDevices.value.length} microphones, ${speakerDevices.value.length} speakers`);
   } catch (err) {
-    logger.error("Device enumeration failed:", err);
+    logger.error('Device enumeration failed:', err);
     setError(`Failed to get audio devices: ${err.message}`);
   } finally {
     isRefreshing.value = false;
@@ -390,17 +329,12 @@ async function requestPermissions() {
 }
 
 // Device selection handlers
-  emit("microphoneSelected", {
+function onMicrophoneChange() {
+  emit('microphoneSelected', {
     deviceId: selectedMicrophoneId.value,
-    device: microphoneDevices.value.find(
-      (d) => d.deviceId === selectedMicrophoneId.value,
-    ),
+    device: microphoneDevices.value.find(d => d.deviceId === selectedMicrophoneId.value)
   });
-  try {
-    audioService.setPreferredInputDevice(
-      selectedMicrophoneId.value || undefined,
-    );
-  } catch {}
+  try { audioService.setPreferredInputDevice(selectedMicrophoneId.value || undefined); } catch {}
 
   if (selectedMicrophoneId.value) {
     startMicrophoneMonitoring();
@@ -409,49 +343,43 @@ async function requestPermissions() {
   }
 }
 
-  emit("speakerSelected", {
+function onSpeakerChange() {
+  emit('speakerSelected', {
     deviceId: selectedSpeakerId.value,
-    device: speakerDevices.value.find(
-      (d) => d.deviceId === selectedSpeakerId.value,
-    ),
+    device: speakerDevices.value.find(d => d.deviceId === selectedSpeakerId.value)
   });
-  try {
-    audioService.setPreferredOutputDevice(selectedSpeakerId.value || undefined);
-  } catch {
-  }
+  try { audioService.setPreferredOutputDevice(selectedSpeakerId.value || undefined); } catch { /* noop */ }
 }
 
 // Microphone monitoring
-  if (!selectedMicrophoneId.value || !permissionsGranted.value) {
-    return;
-  }
+async function startMicrophoneMonitoring() {
+  if (!selectedMicrophoneId.value || !permissionsGranted.value) {return;}
   try {
     await audioService.startMonitoring(selectedMicrophoneId.value, (lvl) => {
+      microphoneLevel.value = Math.round(lvl * 100);
     });
-    logger.info("Microphone monitoring started");
+    logger.info('Microphone monitoring started');
   } catch (err) {
-    logger.error("Failed to start microphone monitoring:", err);
+    logger.error('Failed to start microphone monitoring:', err);
     setError(`Microphone monitoring failed: ${err.message}`);
   }
 }
 
-  try {
-    audioService.stopMonitoring();
-  } catch {}
+function stopMicrophoneMonitoring() {
+  try { audioService.stopMonitoring(); } catch {}
+  microphoneLevel.value = 0;
 }
 
 // Speaker testing
-  if (isTestingAudio.value) {
-    return;
-  }
+async function testSpeaker() {
+  if (isTestingAudio.value) {return;}
 
   isTestingAudio.value = true;
   clearError();
 
   try {
     // Generate a simple test tone
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
 
@@ -459,11 +387,17 @@ async function requestPermissions() {
     gainNode.connect(audioContext.destination);
 
     // Configure test tone
-    oscillator.type = "sine";
+    oscillator.frequency.value = 440; // A4 note
+    oscillator.type = 'sine';
 
     // Fade in and out
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.1);
+    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.4);
 
+    // Play for 0.5 seconds
     oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
 
     // If speaker selection is supported, try to use selected speaker
     if (speakerSelectionSupported.value && selectedSpeakerId.value) {
@@ -471,7 +405,7 @@ async function requestPermissions() {
         await audioContext.destination.setSinkId(selectedSpeakerId.value);
         logger.info(`Test audio routed to speaker: ${selectedSpeakerId.value}`);
       } catch (err) {
-        logger.warn("Failed to route to selected speaker:", err);
+        logger.warn('Failed to route to selected speaker:', err);
         // Continue with default speaker
       }
     }
@@ -480,22 +414,27 @@ async function requestPermissions() {
     setTimeout(() => {
       isTestingAudio.value = false;
       audioContext.close();
+    }, 600);
 
-    logger.info("Speaker test completed");
+    logger.info('Speaker test completed');
   } catch (err) {
-    logger.error("Speaker test failed:", err);
+    logger.error('Speaker test failed:', err);
     setError(`Speaker test failed: ${err.message}`);
     isTestingAudio.value = false;
   }
 }
 
+// Utility functions
+function setError(message) {
   error.value = message;
-  emit("error", message);
+  emit('error', message);
 }
 
-  error.value = "";
+function clearError() {
+  error.value = '';
 }
 
+function cleanup() {
   stopMicrophoneMonitoring();
   try {
     if (refreshTimerId) {
@@ -504,15 +443,8 @@ async function requestPermissions() {
     }
   } catch {}
   try {
-    if (
-      deviceChangeListenerAttached &&
-      typeof navigator !== "undefined" &&
-      navigator.mediaDevices?.removeEventListener
-    ) {
-      navigator.mediaDevices.removeEventListener(
-        "devicechange",
-        onDeviceChange,
-      );
+    if (deviceChangeListenerAttached && typeof navigator !== 'undefined' && navigator.mediaDevices?.removeEventListener) {
+      navigator.mediaDevices.removeEventListener('devicechange', onDeviceChange);
       deviceChangeListenerAttached = false;
     }
   } catch {}
@@ -528,72 +460,103 @@ defineExpose({
   permissionsGranted: readonly(permissionsGranted),
   selectedMicrophoneId,
   selectedSpeakerId,
-  isLocked,
+  isLocked
 });
 </script>
 
 <style scoped>
 .audio-device-selector {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
 }
 
 .device-controls .form-label {
+  font-weight: 500;
+  font-size: 0.9rem;
   color: var(--text-primary);
 }
 
 .mic-level-container {
   display: flex;
   align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
 }
 
 .mic-level-label {
+  flex-shrink: 0;
   color: var(--text-secondary);
+  font-size: 0.8rem;
 }
 
 .mic-level-bar {
+  flex: 1;
+  height: 4px;
+  background: #e9ecef;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
 }
 
 .mic-level-fill {
-  background: linear-gradient(
-  );
+  height: 100%;
+  background: linear-gradient(90deg, #28a745 0%, #ffc107 50%, #fd7e14 85%, #dc3545 100%);
+  border-radius: 2px;
+  transition: width 0.15s ease;
 }
 
 .mic-level-fill.level-high {
+  background: #dc3545;
+  animation: level-warning 0.5s ease-in-out infinite alternate;
 }
 
 @keyframes level-warning {
-  from {
-  }
-  to {
-  }
+  from { opacity: 0.7; }
+  to { opacity: 1; }
 }
 
 .mic-level-value {
+  flex-shrink: 0;
+  min-width: 35px;
   text-align: right;
   font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+  color: #6c757d;
 }
 
 .permission-controls .alert {
+  margin-bottom: 0;
 }
 
 .device-refresh {
+  padding-top: 1rem;
+  border-top: 1px solid #dee2e6;
   text-align: left;
 }
 
-.badge.small {
-}
+.badge.small { font-size: 0.65rem; }
 
 .error-display .alert {
+  margin-bottom: 0;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .device-controls .row > .col-md-6 {
+    margin-bottom: 1rem;
   }
 
+  .device-controls .row > .col-md-6:last-child {
+    margin-bottom: 0;
   }
 }
 
+/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .audio-device-selector {
+    background: #343a40;
     border-color: var(--border-base);
     color: var(--text-on-primary);
   }
@@ -608,6 +571,7 @@ defineExpose({
   }
 
   .mic-level-bar {
+    background: #495057;
   }
 
   .device-refresh {

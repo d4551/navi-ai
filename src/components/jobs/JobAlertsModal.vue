@@ -1,7 +1,7 @@
 <template>
-  <v-dialog
-    v-model="internalShow"
-    max-width="700"
+  <v-dialog 
+    v-model="internalShow" 
+    max-width="700" 
     scrollable
     persistent
     class="job-alerts-modal"
@@ -14,13 +14,13 @@
             <AppIcon name="mdi-bell" class="title-icon" />
             <h2>Gaming Job Alerts</h2>
           </div>
-
+          
           <div class="header-stats">
             <UiChip classes="alert-count-chip" variant="gaming">
               {{ alerts.length }} Active Alerts
             </UiChip>
           </div>
-
+          
           <UnifiedButton
             variant="ghost"
             size="sm"
@@ -46,7 +46,7 @@
               :loading="creating"
               @click="showCreateForm = !showCreateForm"
             >
-              {{ showCreateForm ? "Cancel" : "New Alert" }}
+              {{ showCreateForm ? 'Cancel' : 'New Alert' }}
             </UnifiedButton>
           </div>
 
@@ -180,10 +180,13 @@
             </div>
 
             <div class="form-actions">
-              <UnifiedButton variant="secondary" @click="resetCreateForm">
+              <UnifiedButton
+                variant="secondary"
+                @click="resetCreateForm"
+              >
                 Reset
               </UnifiedButton>
-
+              
               <UnifiedButton
                 variant="primary"
                 leading-icon="mdi-bell-plus"
@@ -210,10 +213,7 @@
             <div class="empty-content">
               <AppIcon name="mdi-bell-sleep" class="empty-icon" />
               <h4>No Job Alerts Yet</h4>
-              <p>
-                Create your first alert to get notified about gaming jobs that
-                match your criteria.
-              </p>
+              <p>Create your first alert to get notified about gaming jobs that match your criteria.</p>
             </div>
           </div>
 
@@ -237,7 +237,7 @@
                       🎮 Gaming
                     </UiChip>
                   </h4>
-
+                  
                   <div class="alert-meta">
                     <div class="alert-criteria">
                       <span v-if="alert.keywords" class="criteria-item">
@@ -249,14 +249,8 @@
                       <span v-if="alert.level" class="criteria-item">
                         📊 {{ alert.level }}
                       </span>
-                      <span
-                        v-if="alert.salaryMin || alert.salaryMax"
-                        class="criteria-item"
-                      >
-                        💰
-                        {{
-                          formatSalaryRange(alert.salaryMin, alert.salaryMax)
-                        }}
+                      <span v-if="alert.salaryMin || alert.salaryMax" class="criteria-item">
+                        💰 {{ formatSalaryRange(alert.salaryMin, alert.salaryMax) }}
                       </span>
                     </div>
                   </div>
@@ -269,14 +263,14 @@
                     :leading-icon="alert.active ? 'mdi-pause' : 'mdi-play'"
                     @click="toggleAlert(alert)"
                   />
-
+                  
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
                     leading-icon="mdi-pencil"
                     @click="editAlert(alert)"
                   />
-
+                  
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
@@ -290,30 +284,23 @@
               <div class="alert-stats">
                 <div class="stat-item">
                   <span class="stat-label">Frequency:</span>
-                  <span class="stat-value">{{
-                    formatFrequency(alert.frequency)
-                  }}</span>
+                  <span class="stat-value">{{ formatFrequency(alert.frequency) }}</span>
                 </div>
-
+                
                 <div class="stat-item">
                   <span class="stat-label">Matches Found:</span>
                   <span class="stat-value">{{ alert.matchCount || 0 }}</span>
                 </div>
-
+                
                 <div class="stat-item">
                   <span class="stat-label">Last Triggered:</span>
-                  <span class="stat-value">{{
-                    formatLastTriggered(alert.lastTriggered)
-                  }}</span>
+                  <span class="stat-value">{{ formatLastTriggered(alert.lastTriggered) }}</span>
                 </div>
-
+                
                 <div class="stat-item">
                   <span class="stat-label">Status:</span>
-                  <span
-                    class="stat-value"
-                    :class="alert.active ? 'status-active' : 'status-paused'"
-                  >
-                    {{ alert.active ? "Active" : "Paused" }}
+                  <span class="stat-value" :class="alert.active ? 'status-active' : 'status-paused'">
+                    {{ alert.active ? 'Active' : 'Paused' }}
                   </span>
                 </div>
               </div>
@@ -328,7 +315,7 @@
                   >
                     Genre: {{ alert.gameGenre }}
                   </UiChip>
-
+                  
                   <UiChip
                     v-if="alert.studioSize"
                     classes="filter-chip"
@@ -336,8 +323,12 @@
                   >
                     Studio: {{ alert.studioSize }}
                   </UiChip>
-
-                  <UiChip v-if="alert.platform" classes="filter-chip" size="sm">
+                  
+                  <UiChip
+                    v-if="alert.platform"
+                    classes="filter-chip"
+                    size="sm"
+                  >
                     Platform: {{ alert.platform }}
                   </UiChip>
                 </div>
@@ -360,7 +351,10 @@
         </div>
 
         <div class="actions-right">
-          <UnifiedButton variant="secondary" @click="closeModal">
+          <UnifiedButton
+            variant="secondary"
+            @click="closeModal"
+          >
             Done
           </UnifiedButton>
         </div>
@@ -370,181 +364,178 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import UiChip from "@/components/ui/UiChip.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import { toastService } from "@/shared/services/toastService";
+import { ref, computed, watch } from 'vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import UiChip from '@/components/ui/UiChip.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { toastService } from '@/shared/services/toastService'
 
 // Props
 interface Props {
-  show: boolean;
-  alerts: Array<any>;
+  show: boolean
+  alerts: Array<any>
 }
 
 const props = withDefaults(defineProps<Props>(), {
   show: false,
-  alerts: () => [],
-});
+  alerts: () => []
+})
 
 // Emits
 const emit = defineEmits([
-  "update:show",
-  "alert-created",
-  "alert-updated",
-  "alert-deleted",
-  "alert-toggled",
-]);
+  'update:show',
+  'alert-created',
+  'alert-updated',
+  'alert-deleted',
+  'alert-toggled'
+])
 
 // State
-const creating = ref(false);
-const showCreateForm = ref(false);
-const showSettings = ref(false);
+const creating = ref(false)
+const showCreateForm = ref(false)
+const showSettings = ref(false)
 
 const newAlert = ref({
-  name: "",
-  keywords: "",
-  location: "",
-  level: "",
+  name: '',
+  keywords: '',
+  location: '',
+  level: '',
   salaryMin: null,
   salaryMax: null,
-  frequency: "daily",
+  frequency: 'daily',
   gamingOnly: true,
-  gameGenre: "",
-  studioSize: "",
-  platform: "",
-  active: true,
-});
+  gameGenre: '',
+  studioSize: '',
+  platform: '',
+  active: true
+})
 
 // Computed
 const internalShow = computed({
   get: () => props.show,
-  set: (value) => emit("update:show", value),
-});
+  set: (value) => emit('update:show', value)
+})
 
 const canCreateAlert = computed(() => {
-  return (
-    newAlert.value.name.trim().length > 0 &&
-    (newAlert.value.keywords.trim().length > 0 ||
-      newAlert.value.location.trim().length > 0)
-  );
-});
+  return newAlert.value.name.trim().length > 0 && 
+         (newAlert.value.keywords.trim().length > 0 || newAlert.value.location.trim().length > 0)
+})
 
 // Methods
 const closeModal = () => {
-  internalShow.value = false;
-  resetCreateForm();
-};
+  internalShow.value = false
+  resetCreateForm()
+}
 
 const resetCreateForm = () => {
   newAlert.value = {
-    name: "",
-    keywords: "",
-    location: "",
-    level: "",
+    name: '',
+    keywords: '',
+    location: '',
+    level: '',
     salaryMin: null,
     salaryMax: null,
-    frequency: "daily",
+    frequency: 'daily',
     gamingOnly: true,
-    gameGenre: "",
-    studioSize: "",
-    platform: "",
-    active: true,
-  };
-  showCreateForm.value = false;
-};
+    gameGenre: '',
+    studioSize: '',
+    platform: '',
+    active: true
+  }
+  showCreateForm.value = false
+}
 
 const createAlert = async () => {
-  if (!canCreateAlert.value) return;
+  if (!canCreateAlert.value) return
 
-  creating.value = true;
+  creating.value = true
   try {
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
     const alert = {
       id: Date.now().toString(),
       ...newAlert.value,
       createdAt: new Date(),
       matchCount: 0,
-      lastTriggered: null,
-    };
+      lastTriggered: null
+    }
 
-    emit("alert-created", alert);
-    toastService.success(`Job alert "${alert.name}" created successfully!`);
-    resetCreateForm();
+    emit('alert-created', alert)
+    toastService.success(`Job alert "${alert.name}" created successfully!`)
+    resetCreateForm()
   } catch (error) {
-    toastService.error("Failed to create alert: " + error.message);
+    toastService.error('Failed to create alert: ' + error.message)
   } finally {
-    creating.value = false;
+    creating.value = false
   }
-};
+}
 
 const toggleAlert = (alert) => {
-  const updatedAlert = { ...alert, active: !alert.active };
-  emit("alert-updated", updatedAlert);
-
-  const status = updatedAlert.active ? "activated" : "paused";
-  toastService.success(`Alert "${alert.name}" ${status}`);
-};
+  const updatedAlert = { ...alert, active: !alert.active }
+  emit('alert-updated', updatedAlert)
+  
+  const status = updatedAlert.active ? 'activated' : 'paused'
+  toastService.success(`Alert "${alert.name}" ${status}`)
+}
 
 const editAlert = (alert) => {
   // Fill form with existing alert data
-  newAlert.value = { ...alert };
-  showCreateForm.value = true;
-  toastService.info("Edit mode activated - modify and save changes");
-};
+  newAlert.value = { ...alert }
+  showCreateForm.value = true
+  toastService.info('Edit mode activated - modify and save changes')
+}
 
 const deleteAlert = (alertId) => {
-  if (confirm("Are you sure you want to delete this job alert?")) {
-    emit("alert-deleted", alertId);
-    toastService.success("Job alert deleted");
+  if (confirm('Are you sure you want to delete this job alert?')) {
+    emit('alert-deleted', alertId)
+    toastService.success('Job alert deleted')
   }
-};
+}
 
-
+// Formatting functions
 const formatSalaryRange = (min, max) => {
   if (min && max) {
-    return `$${formatNumber(min)} - $${formatNumber(max)}`;
+    return `$${formatNumber(min)} - $${formatNumber(max)}`
   }
   if (min) {
-    return `$${formatNumber(min)}+`;
+    return `$${formatNumber(min)}+`
   }
   if (max) {
-    return `Up to $${formatNumber(max)}`;
+    return `Up to $${formatNumber(max)}`
   }
-  return "Any salary";
-};
+  return 'Any salary'
+}
 
 const formatNumber = (num) => {
-  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-  if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
-  return num.toString();
-};
+  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
+  if (num >= 1000) return `${(num / 1000).toFixed(0)}K`
+  return num.toString()
+}
 
 const formatFrequency = (frequency) => {
   const map = {
-    instant: "Instant notifications",
-    daily: "Daily digest",
-    weekly: "Weekly summary",
-  };
-  return map[frequency] || frequency;
-};
+    'instant': 'Instant notifications',
+    'daily': 'Daily digest',
+    'weekly': 'Weekly summary'
+  }
+  return map[frequency] || frequency
+}
 
 const formatLastTriggered = (date) => {
-  if (!date) return "Never";
-
-  const now = new Date();
-  const triggered = new Date(date);
-  const diffTime = Math.abs(now - triggered);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) return "Today";
-  if (diffDays === 1) return "Yesterday";
-  if (diffDays < 7) return `${diffDays} days ago`;
-  if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
-  return `${Math.ceil(diffDays / 30)} months ago`;
-};
+  if (!date) return 'Never'
+  
+  const now = new Date()
+  const triggered = new Date(date)
+  const diffTime = Math.abs(now - triggered)
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  
+  if (diffDays === 0) return 'Today'
+  if (diffDays === 1) return 'Yesterday'
+  if (diffDays < 7) return `${diffDays} days ago`
+  if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
+  return `${Math.ceil(diffDays / 30)} months ago`
+}
 </script>
 
 <style scoped>
@@ -595,8 +586,7 @@ const formatLastTriggered = (date) => {
   overflow-y: auto;
 }
 
-.create-alert-section,
-.alerts-list-section {
+.create-alert-section, .alerts-list-section {
   margin-bottom: var(--spacing-6);
 }
 
@@ -604,11 +594,9 @@ const formatLastTriggered = (date) => {
   padding: var(--spacing-5);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(var(--color-gaming-500-rgb), 0.2);
-  background: linear-gradient(
-    135deg,
+  background: linear-gradient(135deg, 
     rgba(var(--color-gaming-500-rgb), 0.03) 0%,
-    transparent 100%
-  );
+    transparent 100%);
 }
 
 .section-header {
@@ -651,8 +639,7 @@ const formatLastTriggered = (date) => {
   color: var(--text-primary);
 }
 
-.form-input,
-.form-select {
+.form-input, .form-select {
   padding: var(--spacing-3);
   border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
@@ -662,8 +649,7 @@ const formatLastTriggered = (date) => {
   transition: all 0.2s ease;
 }
 
-.form-input:focus,
-.form-select:focus {
+.form-input:focus, .form-select:focus {
   outline: none;
   border-color: var(--color-gaming-400);
   box-shadow: 0 0 0 3px rgba(var(--color-gaming-500-rgb), 0.15);
@@ -735,7 +721,7 @@ const formatLastTriggered = (date) => {
 }
 
 .gaming-checkbox:checked + .checkmark::after {
-  content: "✓";
+  content: '✓';
   color: white;
   font-size: 0.875rem;
   font-weight: 700;
@@ -908,38 +894,53 @@ const formatLastTriggered = (date) => {
   align-items: center;
 }
 
-.actions-left,
-.actions-right {
+.actions-left, .actions-right {
   display: flex;
   gap: var(--spacing-3);
 }
 
+/* Theme enhancements */
 :deep(.alert-count-chip) {
+  background: rgba(var(--color-gaming-500-rgb), 0.15);
+  color: var(--color-gaming-400);
+  border: 1px solid rgba(var(--color-gaming-500-rgb), 0.3);
 }
 
 :deep(.gaming-chip) {
+  background: rgba(var(--color-gaming-500-rgb), 0.15);
+  color: var(--color-gaming-400);
+  border: 1px solid rgba(var(--color-gaming-500-rgb), 0.3);
 }
 
 :deep(.filter-chip) {
+  background: rgba(var(--surface-rgb), 0.8);
   color: var(--text-secondary);
+  border: 1px solid var(--border-light);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .header-content {
     flex-direction: column;
+    gap: var(--spacing-3);
     align-items: flex-start;
   }
-
+  
   .form-grid {
+    grid-template-columns: 1fr;
   }
-
+  
   .gaming-sub-filters .form-grid {
+    grid-template-columns: 1fr;
   }
-
+  
   .alert-header {
     flex-direction: column;
+    gap: var(--spacing-3);
   }
-
+  
   .alert-stats {
+    grid-template-columns: 1fr 1fr;
   }
 }
 </style>

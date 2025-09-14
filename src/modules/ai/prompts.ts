@@ -1,13 +1,12 @@
 // AI Prompts Module
 // Centralized prompt templates for AI interactions
 
-export const PROMPT_SYSTEM_PREFIX =
-  "You are an AI career advisor specializing in gaming industry careers.";
+export const PROMPT_SYSTEM_PREFIX = 'You are an AI career advisor specializing in gaming industry careers.';
 
 export const DEFAULT_RESPONSE_FORMAT = {
   temperature: 0.7,
   maxTokens: 300,
-  format: "text",
+  format: 'text'
 };
 
 // Resume Enhancement Prompts
@@ -51,7 +50,7 @@ Context: {jobContext}
 Provide 3 variations that include specific metrics, percentages, or measurable impacts relevant to gaming industry roles.`,
 };
 
-// Cover Letter Prompts
+// Cover Letter Prompts  
 export const COVER_LETTER_PROMPTS = {
   generate: `Write a compelling cover letter for this gaming industry position:
 
@@ -235,20 +234,15 @@ Rate each skill's relevance to the target role (High/Medium/Low).`,
 
 // System Prompts for Different Contexts
 export const SYSTEM_PROMPTS = {
-  resume:
-    "You are an expert gaming industry career coach specializing in resume optimization. You understand gaming terminology, industry standards, and what recruiters look for in gaming candidates.",
-
-  interview:
-    "You are a seasoned gaming industry professional conducting interviews. You understand different studio cultures, technical requirements, and team dynamics in game development.",
-
-  portfolio:
-    "You are a gaming industry creative director and technical lead reviewing portfolios. You evaluate technical skill, creativity, problem-solving, and industry fit.",
-
-  career:
-    "You are a gaming industry career strategist with deep knowledge of career paths, industry trends, skill requirements, and market dynamics across all gaming disciplines.",
-
-  general:
-    "You are an AI assistant specializing in gaming industry careers. You provide practical, actionable advice while maintaining enthusiasm for games and game development.",
+  resume: 'You are an expert gaming industry career coach specializing in resume optimization. You understand gaming terminology, industry standards, and what recruiters look for in gaming candidates.',
+  
+  interview: 'You are a seasoned gaming industry professional conducting interviews. You understand different studio cultures, technical requirements, and team dynamics in game development.',
+  
+  portfolio: 'You are a gaming industry creative director and technical lead reviewing portfolios. You evaluate technical skill, creativity, problem-solving, and industry fit.',
+  
+  career: 'You are a gaming industry career strategist with deep knowledge of career paths, industry trends, skill requirements, and market dynamics across all gaming disciplines.',
+  
+  general: 'You are an AI assistant specializing in gaming industry careers. You provide practical, actionable advice while maintaining enthusiasm for games and game development.',
 };
 
 // Response Format Templates
@@ -256,69 +250,34 @@ export const RESPONSE_FORMATS = {
   analysis: {
     temperature: 0.3,
     maxTokens: 800,
-    format: "json",
+    format: 'json',
   },
-
+  
   creative: {
     temperature: 0.8,
     maxTokens: 600,
-    format: "text",
+    format: 'text',
   },
-
+  
   technical: {
     temperature: 0.2,
     maxTokens: 500,
-    format: "structured",
+    format: 'structured',
   },
-
+  
   conversational: {
     temperature: 0.7,
     maxTokens: 300,
-    format: "text",
+    format: 'text',
   },
 };
 
 // Gaming Industry Specific Constants
 export const GAMING_INDUSTRY_CONTEXT = {
-  engines: [
-    "Unity",
-    "Unreal Engine",
-    "Godot",
-    "GameMaker",
-    "Construct",
-    "RPG Maker",
-  ],
-  platforms: ["PC", "Console", "Mobile", "VR/AR", "Web", "Streaming"],
-  genres: [
-    "Action",
-    "RPG",
-    "Strategy",
-    "Simulation",
-    "Puzzle",
-    "Casual",
-    "Indie",
-  ],
-  roles: [
-    "Game Designer",
-    "Programmer",
-    "Artist",
-    "Producer",
-    "QA Tester",
-    "Audio Designer",
-  ],
-  companies: [
-    "AAA Studio",
-    "Indie Studio",
-    "Mobile Games",
-    "Publisher",
-    "Platform Holder",
-  ],
-  skills: [
-    "Game Design",
-    "Programming",
-    "3D Modeling",
-    "Animation",
-    "UI/UX",
-    "Audio",
-  ],
+  engines: ['Unity', 'Unreal Engine', 'Godot', 'GameMaker', 'Construct', 'RPG Maker'],
+  platforms: ['PC', 'Console', 'Mobile', 'VR/AR', 'Web', 'Streaming'],
+  genres: ['Action', 'RPG', 'Strategy', 'Simulation', 'Puzzle', 'Casual', 'Indie'],
+  roles: ['Game Designer', 'Programmer', 'Artist', 'Producer', 'QA Tester', 'Audio Designer'],
+  companies: ['AAA Studio', 'Indie Studio', 'Mobile Games', 'Publisher', 'Platform Holder'],
+  skills: ['Game Design', 'Programming', '3D Modeling', 'Animation', 'UI/UX', 'Audio'],
 };

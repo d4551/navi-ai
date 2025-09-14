@@ -1,3 +1,10 @@
+/**
+ * MULTIMODAL LIVE API TYPES
+ * =========================
+ * 
+ * Complete TypeScript definitions for Google's Multimodal Live API
+ * Ported from React implementation and optimized for Vue 3 + Electron
+ */
 
 import { Content, GenerativeContentBlob, Part } from "@google/generative-ai";
 
@@ -59,6 +66,7 @@ export interface RealtimeInputMessage {
   realtimeInput: {
     mediaChunks: {
       mimeType: string;
+      data: string; // Base64-encoded
     }[];
   };
 }
@@ -80,6 +88,7 @@ export interface ServerContentMessage {
 
 export interface ToolCallMessage {
   toolCall: {
+    functionCalls: Array<{
       name: string;
       id: string;
       args: any;
@@ -136,10 +145,8 @@ export interface MultimodalClientEvents {
   open: () => void;
   close: (code: number, reason: string) => void;
   content: (content: ServerContent) => void;
-  toolcall: (toolCall: ToolCallMessage["toolCall"]) => void;
-  toolcallcancellation: (
-    cancellation: ToolCallCancellationMessage["toolCallCancellation"],
-  ) => void;
+  toolcall: (toolCall: ToolCallMessage['toolCall']) => void;
+  toolcallcancellation: (cancellation: ToolCallCancellationMessage['toolCallCancellation']) => void;
   interrupted: () => void;
   setupcomplete: () => void;
   turncomplete: () => void;
@@ -150,6 +157,8 @@ export interface MultimodalClientEvents {
   connected: () => void;
   disconnect: () => void;
   textContent: (content: ServerContent) => void;
+  audioinput: (data: Float32Array) => void;
+  audiooutput: (data: Float32Array) => void;
   volumechange: (volume: number) => void;
 }
 

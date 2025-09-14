@@ -9,29 +9,26 @@ import { defineProps } from 'vue'
     <div class="d-flex align-items-center justify-content-between mb-2">
       <span
         v-if="lastSaved"
-        :class="{
-          'text-success': saveStatus === 'saved',
-          'text-warning': saveStatus === 'saving',
-          'text-info': saveStatus === 'auto-saved',
+        :class="{ 'text-success': saveStatus === 'saved',
+                  'text-warning': saveStatus === 'saving',
+                  'text-info': saveStatus === 'auto-saved'
         }"
         class="small"
       >
-        <AppIcon
-          name="mdi-cloud-upload'"
-          class="saveStatus === 'saving' ? 'mdi : 'mdi mdi-check-circle-outline' me-1"
-        />
+        <AppIcon name="mdi-cloud-upload'" class="saveStatus === 'saving' ? 'mdi : 'mdi mdi-check-circle-outline' me-1" />
         <span class="visually-hidden">{{
-          saveStatus === "saving" ? "Currently saving your work" : "Work saved"
+          saveStatus === "saving"
+            ? "Currently saving your work"
+            : "Work saved"
         }}</span>
         {{ saveStatus === "saving" ? "Auto-saving..." : "Auto-saved" }}
         {{ timeSince(lastSaved) }} ago
       </span>
       <span
         class="badge badge-compact"
-        :class="{
-          'bg-success': completionPercent >= 80,
-          'bg-warning': completionPercent >= 50 && completionPercent < 80,
-          'bg-info': completionPercent < 50,
+        :class="{ 'bg-success': completionPercent >= 80,
+                  'bg-warning': completionPercent >= 50 && completionPercent < 80,
+                  'bg-info': completionPercent < 50
         }"
         :aria-label="`${documentType} completion: ${completionPercent}%`"
       >{{ completionPercent }}% complete</span>
@@ -49,44 +46,29 @@ import { defineProps } from 'vue'
       >
         <div
           class="progress-bar progress-bar-animated"
-          :class="{
-            'bg-success': completionPercent >= 80,
-            'bg-warning': completionPercent >= 50 && completionPercent < 80,
-            'bg-info': completionPercent < 50,
+          :class="{ 'bg-success': completionPercent >= 80,
+                    'bg-warning': completionPercent >= 50 && completionPercent < 80,
+                    'bg-info': completionPercent < 50
           }"
           :style="`width:${completionPercent}%`"
         ></div>
       </div>
 
       <!-- Smart suggestions based on completion -->
-      <div
-        v-if="completionPercent < 100 && showSuggestions && hasApiKey"
-        class="mt-2"
-      >
+      <div v-if="completionPercent < 100 && showSuggestions && hasApiKey" class="mt-2">
         <small class="text-muted">
           <AppIcon name="mdi-lightbulb" aria-hidden="true" />
           <span v-if="completionPercent < 30">
-            {{
-              suggestions.low ||
-                `Add your ${documentType.toLowerCase()} content to get started`
-            }}
+            {{ suggestions.low || `Add your ${documentType.toLowerCase()} content to get started` }}
           </span>
           <span v-else-if="completionPercent < 60">
-            {{
-              suggestions.medium ||
-                "Try the AI Enhance feature to polish your content"
-            }}
+            {{ suggestions.medium || "Try the AI Enhance feature to polish your content" }}
           </span>
           <span v-else-if="completionPercent < 80">
-            {{
-              suggestions.high || "Get AI suggestions to improve your content"
-            }}
+            {{ suggestions.high || "Get AI suggestions to improve your content" }}
           </span>
           <span v-else>
-            {{
-              suggestions.complete ||
-                `Almost done! Consider refining your ${documentType.toLowerCase()}`
-            }}
+            {{ suggestions.complete || `Almost done! Consider refining your ${documentType.toLowerCase()}` }}
           </span>
         </small>
       </div>
@@ -95,67 +77,62 @@ import { defineProps } from 'vue'
 </template>
 
 <script setup>
-import AppIcon from "@/components/ui/AppIcon.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
 const _props = defineProps({
   completionPercent: {
     type: Number,
-    default: 0,
+    default: 0
   },
   lastSaved: {
     type: [Date, Number, String],
-    default: null,
+    default: null
   },
   saveStatus: {
     type: String,
-    default: "saved",
-    validator: (value) =>
-      ["saved", "saving", "auto-saved", "idle"].includes(value),
+    default: 'saved',
+    validator: (value) => ['saved', 'saving', 'auto-saved', 'idle'].includes(value)
   },
   documentType: {
     type: String,
-    default: "Document",
+    default: 'Document'
   },
   showSuggestions: {
     type: Boolean,
-    default: true,
+    default: true
   },
   hasApiKey: {
     type: Boolean,
-    default: false,
+    default: false
   },
   suggestions: {
     type: Object,
-    default: () => ({}),
-  },
-});
+    default: () => ({})
+  }
+})
 
 // Time formatting utility
 const timeSince = (date) => {
-  if (!date) {
-    return "";
-  }
-  const d = date instanceof Date ? date : new Date(date);
-  if (Number.isNaN(d.getTime())) {
-    return "";
-  }
+  if (!date) {return ''}
+  const d = date instanceof Date ? date : new Date(date)
+  if (Number.isNaN(d.getTime())) {return ''}
 
-  const now = new Date();
-  const diffMs = now - d;
-  const diffSec = Math.floor(diffMs / 1000);
-  const diffMin = Math.floor(diffSec / 60);
-  const diffHour = Math.floor(diffMin / 60);
+  const now = new Date()
+  const diffMs = now - d
+  const diffSec = Math.floor(diffMs / 1000)
+  const diffMin = Math.floor(diffSec / 60)
+  const diffHour = Math.floor(diffMin / 60)
 
   if (diffSec < 60) {
-    return "just now";
+    return 'just now'
   }
   if (diffMin < 60) {
-    return `${diffMin}m`;
+    return `${diffMin}m`
   }
   if (diffHour < 24) {
-    return `${diffHour}h`;
+    return `${diffHour}h`
   }
-  return `${Math.floor(diffHour / 24)}d`;
-};
+  return `${Math.floor(diffHour / 24)}d`
+}
 </script>
 
 <style scoped>
@@ -184,13 +161,18 @@ const timeSince = (date) => {
   position: relative;
 }
 
+/* badge-compact utility used in template; no local override needed */
 
 .text-muted {
+  color: var(--text-muted, #6b7280) !important;
 }
 
 .small {
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
+/* Animation preferences support */
 @media (prefers-reduced-motion: reduce) {
   .progress-bar-animated {
     animation: none !important;

@@ -1,12 +1,11 @@
+/**
+ * GameStudioService - Business logic layer for gaming company operations
+ * Interfaces between UI components and StudioRepository
+ */
 
-import { StudioRepository } from "@/modules/db/repositories/studios";
-import type {
-  GameStudio,
-  GameGenre,
-  StudioType,
-  Platform,
-} from "@/shared/types/jobs";
-import { logger } from "@/shared/utils/logger";
+import { StudioRepository } from '@/modules/db/repositories/studios';
+import type { GameStudio, GameGenre, StudioType, Platform } from '@/shared/types/jobs';
+import { logger } from '@/shared/utils/logger';
 
 export interface GameStudioFilters {
   type?: StudioType;
@@ -32,7 +31,8 @@ export interface StudioSearchResult {
 }
 
 export class GameStudioService {
-    throw new Error("Method not implemented.");
+  searchStudios(arg0: string) {
+    throw new Error('Method not implemented.');
   }
   private static instance: GameStudioService;
 
@@ -48,6 +48,8 @@ export class GameStudioService {
   // Get all studios with optional filtering and pagination
   async getStudios(
     filters?: GameStudioFilters,
+    page: number = 1,
+    limit: number = 20
   ): Promise<StudioSearchResult> {
     try {
       let studios = Object.values(await StudioRepository.getAll());
@@ -61,6 +63,7 @@ export class GameStudioService {
       const facets = await this.calculateFacets(studios);
 
       // Pagination
+      const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
       const paginatedStudios = studios.slice(startIndex, endIndex);
 
@@ -68,19 +71,20 @@ export class GameStudioService {
         studios: paginatedStudios,
         total: studios.length,
         filters: filters || {},
-        facets,
+        facets
       };
     } catch (error) {
-      logger.error("Error getting studios:", error);
+      logger.error('Error getting studios:', error);
       return {
         studios: [],
+        total: 0,
         filters: filters || {},
         facets: {
           types: [],
           locations: [],
           sizes: [],
-          technologies: [],
-        },
+          technologies: []
+        }
       };
     }
   }
@@ -90,7 +94,7 @@ export class GameStudioService {
     try {
       return await StudioRepository.getById(id);
     } catch (error) {
-      logger.error("Error getting studio by ID:", error);
+      logger.error('Error getting studio by ID:', error);
       return null;
     }
   }
@@ -108,7 +112,7 @@ export class GameStudioService {
 
       return studio;
     } catch (error) {
-      logger.error("Error finding studio by company name:", error);
+      logger.error('Error finding studio by company name:', error);
       return null;
     }
   }
@@ -128,7 +132,7 @@ export class GameStudioService {
 
       return favorites;
     } catch (error) {
-      logger.error("Error getting favorite studios:", error);
+      logger.error('Error getting favorite studios:', error);
       return [];
     }
   }
@@ -146,7 +150,7 @@ export class GameStudioService {
         return true;
       }
     } catch (error) {
-      logger.error("Error toggling favorite:", error);
+      logger.error('Error toggling favorite:', error);
       throw error;
     }
   }
@@ -156,15 +160,13 @@ export class GameStudioService {
     try {
       return await StudioRepository.isFavorite(studioId);
     } catch (error) {
-      logger.error("Error checking favorite status:", error);
+      logger.error('Error checking favorite status:', error);
       return false;
     }
   }
 
   // Get studio suggestions for autocomplete
-  async getSuggestions(
-    query: string,
-  ): Promise<GameStudio[]> {
+  async getSuggestions(query: string, limit: number = 10): Promise<GameStudio[]> {
     try {
       if (!query.trim()) {
         // Return recently viewed or popular studios if no query
@@ -173,7 +175,7 @@ export class GameStudioService {
 
       return await StudioRepository.getSuggestions(query, limit);
     } catch (error) {
-      logger.error("Error getting suggestions:", error);
+      logger.error('Error getting suggestions:', error);
       return [];
     }
   }
@@ -182,17 +184,19 @@ export class GameStudioService {
   async advancedSearch(criteria: {
     query?: string;
     filters?: GameStudioFilters;
-    sortBy?: "name" | "size" | "founded" | "rating";
-    sortOrder?: "asc" | "desc";
+    sortBy?: 'name' | 'size' | 'founded' | 'rating';
+    sortOrder?: 'asc' | 'desc';
     page?: number;
     limit?: number;
   }): Promise<StudioSearchResult> {
     try {
       const {
-        query = "",
+        query = '',
         filters = {},
-        sortBy = "name",
-        sortOrder = "asc",
+        sortBy = 'name',
+        sortOrder = 'asc',
+        page = 1,
+        limit = 20
       } = criteria;
 
       // Get initial results
@@ -200,17 +204,11 @@ export class GameStudioService {
 
       // Apply text search
       if (query) {
-        results = results.filter(
-          (studio) =>
-            studio.name.toLowerCase().includes(query.toLowerCase()) ||
-            (studio.description &&
-              studio.description.toLowerCase().includes(query.toLowerCase())) ||
-            studio.technologies.some((tech) =>
-              tech.toLowerCase().includes(query.toLowerCase()),
-            ) ||
-            studio.games.some((game) =>
-              game.toLowerCase().includes(query.toLowerCase()),
-            ),
+        results = results.filter(studio =>
+          studio.name.toLowerCase().includes(query.toLowerCase()) ||
+          (studio.description && studio.description.toLowerCase().includes(query.toLowerCase())) ||
+          studio.technologies.some(tech => tech.toLowerCase().includes(query.toLowerCase())) ||
+          studio.games.some(game => game.toLowerCase().includes(query.toLowerCase()))
         );
       }
 
@@ -224,6 +222,7 @@ export class GameStudioService {
       const facets = await this.calculateFacets(results);
 
       // Pagination
+      const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
       const paginatedResults = results.slice(startIndex, endIndex);
 
@@ -231,10 +230,10 @@ export class GameStudioService {
         studios: paginatedResults,
         total: results.length,
         filters,
-        facets,
+        facets
       };
     } catch (error) {
-      logger.error("Error in advanced search:", error);
+      logger.error('Error in advanced search:', error);
       throw error;
     }
   }
@@ -244,7 +243,7 @@ export class GameStudioService {
     try {
       return await StudioRepository.getByCategory(category);
     } catch (error) {
-      logger.error("Error getting studios by category:", error);
+      logger.error('Error getting studios by category:', error);
       return [];
     }
   }
@@ -254,12 +253,13 @@ export class GameStudioService {
     try {
       return await StudioRepository.getByRegion(region);
     } catch (error) {
-      logger.error("Error getting studios by region:", error);
+      logger.error('Error getting studios by region:', error);
       return [];
     }
   }
 
   // Get popular/recommended studios
+  async getPopularStudios(limit: number = 10): Promise<GameStudio[]> {
     try {
       const allStudios = Object.values(await StudioRepository.getAll());
 
@@ -272,20 +272,26 @@ export class GameStudioService {
           if (sizeA !== sizeB) return sizeB - sizeA;
 
           // Secondary sort: older/more established first
+          return (a.founded || 2025) - (b.founded || 2025);
         })
+        .slice(0, limit);
     } catch (error) {
-      logger.error("Error getting popular studios:", error);
+      logger.error('Error getting popular studios:', error);
       return [];
     }
   }
 
   // Get recently founded studios (trending)
+  async getRecentStudios(limit: number = 10): Promise<GameStudio[]> {
     try {
       const allStudios = Object.values(await StudioRepository.getAll());
 
       return allStudios
+        .filter(studio => studio.founded && studio.founded >= 2015)
+        .sort((a, b) => (b.founded || 0) - (a.founded || 0))
+        .slice(0, limit);
     } catch (error) {
-      logger.error("Error getting recent studios:", error);
+      logger.error('Error getting recent studios:', error);
       return [];
     }
   }
@@ -306,40 +312,56 @@ export class GameStudioService {
 
       // Count by type
       const byType: Record<string, number> = {};
-      studios.forEach((studio) => {
+      studios.forEach(studio => {
+        byType[studio.type] = (byType[studio.type] || 0) + 1;
       });
 
       // Count by region
       const byRegion: Record<string, number> = {};
-      studios.forEach((studio) => {
+      studios.forEach(studio => {
         const region = this.categorizeRegion(studio.location);
+        byRegion[region] = (byRegion[region] || 0) + 1;
       });
 
       // Most common technologies
       const techCounts: Record<string, number> = {};
-      studios.forEach((studio) => {
-        studio.technologies.forEach((tech) => {
+      studios.forEach(studio => {
+        studio.technologies.forEach(tech => {
+          techCounts[tech] = (techCounts[tech] || 0) + 1;
         });
       });
 
       const mostCommonTechnologies = Object.entries(techCounts)
         .map(([tech, count]) => ({ tech, count }))
         .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
 
       const avgStudiosPerTechnology =
+        mostCommonTechnologies.length > 0
+          ? studios.length / Math.max(1, mostCommonTechnologies[0].count)
+          : 0;
 
       // Aggregate additional analytics
       const totalOpenPositions = studios.reduce(
+        (sum, studio) => sum + (studio.openPositions || 0),
+        0
       );
 
       const salarySamples = studios
-        .filter((s) => s.averageSalary)
+        .filter(s => s.averageSalary)
+        .map(s => (s.averageSalary!.min + s.averageSalary!.max) / 2);
       const averageSalary =
+        salarySamples.length > 0
+          ? salarySamples.reduce((a, b) => a + b, 0) / salarySamples.length
+          : 0;
 
       const currentYear = new Date().getFullYear();
       const recentStudios = studios.filter(
+        s => s.founded && s.founded >= currentYear - 1
       ).length;
       const growthRate = studios.length
+        ? (recentStudios / studios.length) * 100
+        : 0;
 
       return {
         totalStudios: studios.length,
@@ -349,96 +371,97 @@ export class GameStudioService {
         mostCommonTechnologies,
         totalOpenPositions,
         averageSalary,
-        growthRate,
+        growthRate
       };
     } catch (error) {
-      logger.error("Error calculating studio stats:", error);
+      logger.error('Error calculating studio stats:', error);
       return {
+        totalStudios: 0,
         byType: {},
         byRegion: {},
+        avgStudiosPerTechnology: 0,
         mostCommonTechnologies: [],
+        totalOpenPositions: 0,
+        averageSalary: 0,
+        growthRate: 0
       };
     }
   }
 
   // Private helper methods
 
-  private async applyFilters(
-    studios: GameStudio[],
-    filters: GameStudioFilters,
-  ): Promise<GameStudio[]> {
+  private async applyFilters(studios: GameStudio[], filters: GameStudioFilters): Promise<GameStudio[]> {
     let filtered = [...studios];
 
     if (filters.type) {
-      filtered = filtered.filter((studio) => studio.type === filters.type);
+      filtered = filtered.filter(studio => studio.type === filters.type);
     }
 
     if (filters.location) {
       const locationQuery = filters.location.toLowerCase();
-      filtered = filtered.filter((studio) =>
-        studio.location.toLowerCase().includes(locationQuery),
+      filtered = filtered.filter(studio =>
+        studio.location.toLowerCase().includes(locationQuery)
       );
     }
 
     if (filters.size) {
-      filtered = filtered.filter((studio) => studio.size === filters.size);
+      filtered = filtered.filter(studio => studio.size === filters.size);
     }
 
-      filtered = filtered.filter((studio) =>
-        filters.technologies!.every((tech) =>
-          studio.technologies.some((studioTech) =>
-            studioTech.toLowerCase().includes(tech.toLowerCase()),
-          ),
-        ),
+    if (filters.technologies && filters.technologies.length > 0) {
+      filtered = filtered.filter(studio =>
+        filters.technologies!.every(tech =>
+          studio.technologies.some(studioTech =>
+            studioTech.toLowerCase().includes(tech.toLowerCase())
+          )
+        )
       );
     }
 
     if (filters.remoteWork !== undefined) {
-      filtered = filtered.filter(
-        (studio) => !!studio.culture.remoteFirst === filters.remoteWork,
-      );
+      filtered = filtered.filter(studio => !!studio.culture.remoteFirst === filters.remoteWork);
     }
 
     if (filters.hasGames) {
+      filtered = filtered.filter(studio => studio.games.length > 0);
     }
 
-      filtered = filtered.filter((studio) => {
+    if (filters.genres && filters.genres.length > 0) {
+      filtered = filtered.filter(studio => {
         const studioGenres = this.extractStudioGenres(studio);
-        return filters.genres!.some((genre) => studioGenres.includes(genre));
+        return filters.genres!.some(genre => studioGenres.includes(genre));
       });
     }
 
     return filtered;
   }
 
-  private sortStudios(
-    studios: GameStudio[],
-    sortBy: string,
-    sortOrder: "asc" | "desc",
-  ): GameStudio[] {
+  private sortStudios(studios: GameStudio[], sortBy: string, sortOrder: 'asc' | 'desc'): GameStudio[] {
     return studios.sort((a, b) => {
+      let comparison = 0;
 
       switch (sortBy) {
-        case "name":
+        case 'name':
           comparison = a.name.localeCompare(b.name);
           break;
-        case "size":
+        case 'size':
           comparison = this.extractStudioSize(a) - this.extractStudioSize(b);
           break;
-        case "founded":
+        case 'founded':
+          comparison = (a.founded || 2025) - (b.founded || 2025);
           break;
-        case "rating":
+        case 'rating':
+          comparison = (a.rating || 0) - (b.rating || 0);
           break;
         default:
+          return 0;
       }
 
-      return sortOrder === "desc" ? -comparison : comparison;
+      return sortOrder === 'desc' ? -comparison : comparison;
     });
   }
 
-  private async calculateFacets(
-    studios: GameStudio[],
-  ): Promise<StudioSearchResult["facets"]> {
+  private async calculateFacets(studios: GameStudio[]): Promise<StudioSearchResult['facets']> {
     const types: Array<{ type: StudioType; count: number }> = [];
     const locations: Array<{ location: string; count: number }> = [];
     const sizes: Array<{ size: string; count: number }> = [];
@@ -446,7 +469,8 @@ export class GameStudioService {
 
     // Count types
     const typeCounts: Record<string, number> = {};
-    studios.forEach((studio) => {
+    studios.forEach(studio => {
+      typeCounts[studio.type] = (typeCounts[studio.type] || 0) + 1;
     });
     Object.entries(typeCounts).forEach(([type, count]) => {
       types.push({ type: type as StudioType, count });
@@ -454,8 +478,8 @@ export class GameStudioService {
 
     // Count locations
     const locationCounts: Record<string, number> = {};
-    studios.forEach((studio) => {
-      locationCounts[studio.location] =
+    studios.forEach(studio => {
+      locationCounts[studio.location] = (locationCounts[studio.location] || 0) + 1;
     });
     Object.entries(locationCounts).forEach(([location, count]) => {
       locations.push({ location, count });
@@ -463,7 +487,8 @@ export class GameStudioService {
 
     // Count sizes
     const sizeCounts: Record<string, number> = {};
-    studios.forEach((studio) => {
+    studios.forEach(studio => {
+      sizeCounts[studio.size] = (sizeCounts[studio.size] || 0) + 1;
     });
     Object.entries(sizeCounts).forEach(([size, count]) => {
       sizes.push({ size, count });
@@ -471,12 +496,14 @@ export class GameStudioService {
 
     // Count technologies
     const techCounts: Record<string, number> = {};
-    studios.forEach((studio) => {
-      studio.technologies.forEach((tech) => {
+    studios.forEach(studio => {
+      studio.technologies.forEach(tech => {
+        techCounts[tech] = (techCounts[tech] || 0) + 1;
       });
     });
     Object.entries(techCounts)
       .sort(([, a], [, b]) => b - a)
+      .slice(0, 20) // Top 20 technologies
       .forEach(([technology, count]) => {
         technologies.push({ technology, count });
       });
@@ -484,21 +511,15 @@ export class GameStudioService {
     return { types, locations, sizes, technologies };
   }
 
-  private fuzzyMatchStudio(
-    companyName: string,
-    studios: GameStudio[],
-  ): GameStudio | null {
+  private fuzzyMatchStudio(companyName: string, studios: GameStudio[]): GameStudio | null {
     // Simple fuzzy matching for company names
+    const normalized = companyName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
     for (const studio of studios) {
-      const studioNormalized = studio.name
-        .toLowerCase()
+      const studioNormalized = studio.name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
       // Check if company name contains studio name or vice versa
-      if (
-        normalized.includes(studioNormalized) ||
-        studioNormalized.includes(normalized)
-      ) {
+      if (normalized.includes(studioNormalized) || studioNormalized.includes(normalized)) {
         return studio;
       }
 
@@ -511,9 +532,15 @@ export class GameStudioService {
     return null;
   }
 
+  private isAbbreviationMatch(name1: string, name2: string): boolean {
     // Common abbreviations like "AC" for "Activision", "BBB" for "Blizzard" etc.
+    const words1 = name1.split(/\s+/).filter(word => word.length > 0);
+    const words2 = name2.split(/\s+/).filter(word => word.length > 0);
 
     // If one is very short and the other contains similar letters, might be abbreviation
+    if (words1.length === 1 && words2.length > 1 && words1[0].length <= 3) {
+      const abbreviation = words1[0].toLowerCase();
+      const fullName = words2.slice(0, 3).join('').toLowerCase();
       return fullName.includes(abbreviation);
     }
 
@@ -522,24 +549,17 @@ export class GameStudioService {
 
   private extractStudioGenres(studio: GameStudio): string[] {
     const genres: string[] = [];
-    const desc = (studio.description || "").toLowerCase();
-    const games = studio.games.join(" ").toLowerCase();
+    const desc = (studio.description || '').toLowerCase();
+    const games = studio.games.join(' ').toLowerCase();
 
-    if (desc.includes("rpg") || games.includes("rpg")) genres.push("RPG");
-    if (desc.includes("action") || games.includes("action"))
-      genres.push("Action");
-    if (desc.includes("strategy") || games.includes("strategy"))
-      genres.push("Strategy");
-    if (desc.includes("shooter") || games.includes("shooter"))
-      genres.push("Shooter");
-    if (desc.includes("simulation") || games.includes("simulation"))
-      genres.push("Simulation");
-    if (desc.includes("puzzle") || games.includes("puzzle"))
-      genres.push("Puzzle");
-    if (desc.includes("racing") || games.includes("racing"))
-      genres.push("Racing");
-    if (desc.includes("sports") || games.includes("sports"))
-      genres.push("Sports");
+    if (desc.includes('rpg') || games.includes('rpg')) genres.push('RPG');
+    if (desc.includes('action') || games.includes('action')) genres.push('Action');
+    if (desc.includes('strategy') || games.includes('strategy')) genres.push('Strategy');
+    if (desc.includes('shooter') || games.includes('shooter')) genres.push('Shooter');
+    if (desc.includes('simulation') || games.includes('simulation')) genres.push('Simulation');
+    if (desc.includes('puzzle') || games.includes('puzzle')) genres.push('Puzzle');
+    if (desc.includes('racing') || games.includes('racing')) genres.push('Racing');
+    if (desc.includes('sports') || games.includes('sports')) genres.push('Sports');
 
     return genres;
   }
@@ -547,51 +567,37 @@ export class GameStudioService {
   private extractStudioSize(studio: GameStudio): number {
     const sizeStr = studio.size.toLowerCase();
     const match = sizeStr.match(/(\d+)/);
+    if (match) return parseInt(match[1]);
+    if (sizeStr.includes('enterprise')) return 5000;
+    if (sizeStr.includes('large')) return 2000;
+    if (sizeStr.includes('medium')) return 200;
+    if (sizeStr.includes('small')) return 50;
+    if (sizeStr.includes('indie')) return 10;
+    return 0;
   }
 
   private categorizeRegion(location: string): string {
     // Simple region categorization - could be enhanced with better location data
     const loc = location.toLowerCase();
 
-    if (
-      loc.includes("california") ||
-      loc.includes("san francisco") ||
-      loc.includes("los angeles") ||
-      loc.includes("new york") ||
-      loc.includes("seattle") ||
-      loc.includes("boston")
-    ) {
-      return "North America";
+    if (loc.includes('california') || loc.includes('san francisco') || loc.includes('los angeles') ||
+        loc.includes('new york') || loc.includes('seattle') || loc.includes('boston')) {
+      return 'North America';
     }
 
-    if (
-      loc.includes("london") ||
-      loc.includes("uk") ||
-      loc.includes("manchester") ||
-      loc.includes("germany") ||
-      loc.includes("berlin") ||
-      loc.includes("paris") ||
-      loc.includes("france") ||
-      loc.includes("amsterdam") ||
-      loc.includes("helsinki") ||
-      loc.includes("stockholm") ||
-      loc.includes("warsaw")
-    ) {
-      return "Europe";
+    if (loc.includes('london') || loc.includes('uk') || loc.includes('manchester') ||
+        loc.includes('germany') || loc.includes('berlin') || loc.includes('paris') ||
+        loc.includes('france') || loc.includes('amsterdam') || loc.includes('helsinki') ||
+        loc.includes('stockholm') || loc.includes('warsaw')) {
+      return 'Europe';
     }
 
-    if (
-      loc.includes("tokyo") ||
-      loc.includes("japan") ||
-      loc.includes("shanghai") ||
-      loc.includes("china") ||
-      loc.includes("korea") ||
-      loc.includes("seoul")
-    ) {
-      return "Asia-Pacific";
+    if (loc.includes('tokyo') || loc.includes('japan') || loc.includes('shanghai') ||
+        loc.includes('china') || loc.includes('korea') || loc.includes('seoul')) {
+      return 'Asia-Pacific';
     }
 
-    return "Other";
+    return 'Other';
   }
 }
 

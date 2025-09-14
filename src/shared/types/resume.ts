@@ -1,5 +1,9 @@
+/**
+ * Shared Resume Types
+ * Canonical interfaces used across resume builder, exports, and AI services.
+ */
 
-export type ExportFormat = "pdf" | "docx" | "html" | "json" | "markdown";
+export type ExportFormat = 'pdf' | 'docx' | 'html' | 'json' | 'markdown';
 
 export interface PageMargins {
   top?: string | number;
@@ -9,8 +13,9 @@ export interface PageMargins {
 }
 
 export interface ExportOptions {
-  template?: "modern" | "classic" | "gaming";
-  theme?: "light" | "dark";
+  template?: 'modern' | 'classic' | 'gaming';
+  theme?: 'light' | 'dark';
+  pageFormat?: 'A4' | 'Letter' | 'Legal' | string;
   margins?: PageMargins;
   // Optional toggles for sections
   includeSummary?: boolean;
@@ -20,6 +25,9 @@ export interface ExportOptions {
   customCSS?: string;
 }
 
+/**
+ * Core resume data shape
+ */
 export interface ResumePersonalInfo {
   name?: string;
   email?: string;
@@ -61,8 +69,9 @@ export interface ResumeProject {
 
 export interface GamingExperience {
   gameEngines?: string; // e.g., "Unity, Unreal"
-  platforms?: string; // e.g., "PC, Console, Mobile"
-  genres?: string; // e.g., "RPG, FPS"
+  platforms?: string;   // e.g., "PC, Console, Mobile"
+  genres?: string;      // e.g., "RPG, FPS"
+  shippedTitles?: string; // e.g., "Title1 (2022), Title2 (2023)"
 }
 
 export interface ResumeData {

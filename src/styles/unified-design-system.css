@@ -167,6 +167,12 @@
   --breakpoint-lg: 1024px; /* Desktop */
   --breakpoint-xl: 1280px; /* Large desktop */
   --breakpoint-2xl: 1536px; /* Ultra-wide */
+
+  /* Grid Card Minimum Sizes (fallbacks) */
+  --grid-card-min-xs: 140px;
+  --grid-card-min-sm: 220px;
+  --grid-card-min-md: 260px;
+  --grid-card-min-lg: 320px;
 }
 
 /* === LIGHT THEME === */
@@ -190,14 +196,14 @@
   --border-strong: rgba(17, 24, 39, 0.16);
   --border-subtle: rgba(17, 24, 39, 0.04);
 
-  /* Glass Morphism - Light */
+  /* Glass Morphism - Light (Pure White Base) */
   --surface-glass-rgb: 255, 255, 255;
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-surface: rgba(255, 255, 255, 0.85);
-  --glass-surface-strong: rgba(255, 255, 255, 0.92);
-  --glass-hover-bg: rgba(0, 0, 0, 0.03);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.95);
+  --glass-surface: rgba(255, 255, 255, 0.98);
+  --glass-surface-strong: rgba(255, 255, 255, 0.99);
+  --glass-hover-bg: rgba(0, 0, 0, 0.05);
+  --glass-border: rgba(0, 0, 0, 0.12);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   --glass-backdrop-filter: blur(20px) saturate(1.2);
   --glass-backdrop-blur: blur(20px);
 
@@ -217,11 +223,11 @@
 
 /* === DARK THEME === */
 :root[data-theme="dark"] {
-  /* Surface System */
-  --surface-base: #0b0b0c;
-  --surface-container: #0f1115;
-  --surface-elevated: #12141a;
-  --surface-overlay: rgba(0, 0, 0, 0.8);
+  /* Surface System (Pure black base) */
+  --surface-base: #000000;
+  --surface-container: #000000;
+  --surface-elevated: #000000;
+  --surface-overlay: rgba(0, 0, 0, 0.85);
 
   /* Text System */
   --text-primary: #f9fafb;
@@ -235,15 +241,15 @@
   --border-strong: rgba(255, 255, 255, 0.16);
   --border-subtle: rgba(255, 255, 255, 0.04);
 
-  /* Glass Morphism - Dark */
+  /* Glass Morphism - Dark (Pure Black Base) */
   --surface-glass-rgb: 0, 0, 0;
-  --glass-bg: rgba(0, 0, 0, 0.65);
-  --glass-surface: rgba(0, 0, 0, 0.75);
-  --glass-surface-strong: rgba(0, 0, 0, 0.85);
-  --glass-hover-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --glass-backdrop-filter: blur(24px) saturate(1.1);
+  --glass-bg: rgba(0, 0, 0, 0.88);
+  --glass-surface: rgba(0, 0, 0, 0.94);
+  --glass-surface-strong: rgba(0, 0, 0, 0.98);
+  --glass-hover-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --glass-backdrop-filter: blur(24px) saturate(1.08);
   --glass-backdrop-blur: blur(24px);
 
   /* Gaming Glass - Dark */

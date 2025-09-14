@@ -23,68 +23,52 @@
           <div class="feature-card">
             <AppIcon name="mdi-animation" class="feature-icon" />
             <h3>Animated Backgrounds</h3>
-            <p>
-              Dynamic rotating gradients with floating particles and parallax
-              effects
-            </p>
+            <p>Dynamic rotating gradients with floating particles and parallax effects</p>
           </div>
-
+          
           <div class="feature-card">
             <AppIcon name="mdi-counter" class="feature-icon" />
             <h3>Count-up Animations</h3>
-            <p>
-              Stats animate from 0 to their final values with smooth transitions
-            </p>
+            <p>Stats animate from 0 to their final values with smooth transitions</p>
           </div>
-
+          
           <div class="feature-card">
             <AppIcon name="mdi-gesture-tap-button" class="feature-icon" />
             <h3>Interactive Effects</h3>
             <p>Hover effects, ripple animations, and responsive interactions</p>
           </div>
-
+          
           <div class="feature-card">
             <AppIcon name="mdi-responsive" class="feature-icon" />
             <h3>Responsive Design</h3>
-            <p>
-              Adapts perfectly to all screen sizes with mobile-first approach
-            </p>
+            <p>Adapts perfectly to all screen sizes with mobile-first approach</p>
           </div>
         </div>
       </div>
 
       <div class="demo-section">
         <h2>Header Variants</h2>
-        <p>
-          The header system supports multiple variants and configurations for
-          different page types.
-        </p>
-
+        <p>The header system supports multiple variants and configurations for different page types.</p>
+        
         <div class="variants-grid">
           <div class="variant-card">
             <h4>Gaming Dashboard</h4>
-            <p>
-              Gaming-themed headers with achievement stats and level indicators
-            </p>
+            <p>Gaming-themed headers with achievement stats and level indicators</p>
           </div>
-
+          
           <div class="variant-card">
             <h4>Portfolio Showcase</h4>
-            <p>
-              Project-focused headers with portfolio metrics and social actions
-            </p>
+            <p>Project-focused headers with portfolio metrics and social actions</p>
           </div>
-
+          
           <div class="variant-card">
             <h4>Settings & Config</h4>
             <p>Technical headers showing integrations and security status</p>
           </div>
-
+          
           <div class="variant-card">
             <h4>AI Media Studio</h4>
-            <p>
-              Media-focused headers with processing capabilities and model info
-            </p>
+            <p>Media-focused headers with processing capabilities and model info</p>
           </div>
         </div>
       </div>
@@ -93,9 +77,9 @@
 </template>
 
 <script setup lang="ts">
-import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 </script>
 
 <style scoped>
@@ -195,11 +179,11 @@ import AppIcon from "@/components/ui/AppIcon.vue";
   .header-demo-content {
     padding: 1rem;
   }
-
+  
   .features-grid {
     grid-template-columns: 1fr;
   }
-
+  
   .variants-grid {
     grid-template-columns: 1fr;
   }

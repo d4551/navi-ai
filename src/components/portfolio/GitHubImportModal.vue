@@ -26,9 +26,8 @@
               placeholder="https://github.com/username/repository"
               required
               autofocus
-            />
-            <small class="form-hint">Enter the full GitHub repository URL to import project
-              details</small>
+            >
+            <small class="form-hint">Enter the full GitHub repository URL to import project details</small>
           </div>
 
           <div v-if="isValidUrl" class="preview-info">
@@ -43,7 +42,10 @@
       </div>
 
       <div class="modal-footer">
-        <UnifiedButton variant="ghost" @click="closeModal">
+        <UnifiedButton
+          variant="ghost"
+          @click="closeModal"
+        >
           Cancel
         </UnifiedButton>
         <UnifiedButton
@@ -61,87 +63,84 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import { useToast } from "@/composables/useToast";
+import { ref, computed, watch } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import { useToast } from '@/composables/useToast'
 
 interface Props {
-  visible: boolean;
+  visible: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  close: [];
-  submit: [githubUrl: string];
-}>();
+  close: []
+  submit: [githubUrl: string]
+}>()
 
-const { toast } = useToast();
+const { toast } = useToast()
 
-const githubUrl = ref("");
-const isSubmitting = ref(false);
+const githubUrl = ref('')
+const isSubmitting = ref(false)
 
 const isValidUrl = computed(() => {
   try {
-    const url = new URL(githubUrl.value);
-    return url.hostname === "github.com" && url.pathname.split("/").length >= 3;
+    const url = new URL(githubUrl.value)
+    return url.hostname === 'github.com' && url.pathname.split('/').length >= 3
   } catch {
-    return false;
+    return false
   }
-});
+})
 
 const repoInfo = computed(() => {
-  if (!isValidUrl.value) return { name: "", owner: "" };
-
+  if (!isValidUrl.value) return { name: '', owner: '' }
+  
   try {
-    const url = new URL(githubUrl.value);
-    const pathParts = url.pathname.split("/").filter(Boolean);
+    const url = new URL(githubUrl.value)
+    const pathParts = url.pathname.split('/').filter(Boolean)
     return {
       owner: pathParts[0],
-      name: pathParts[1],
-    };
+      name: pathParts[1]
+    }
   } catch {
-    return { name: "", owner: "" };
+    return { name: '', owner: '' }
   }
-});
+})
 
 const closeModal = () => {
-  emit("close");
-  githubUrl.value = "";
-  isSubmitting.value = false;
-};
+  emit('close')
+  githubUrl.value = ''
+  isSubmitting.value = false
+}
 
 const handleSubmit = async () => {
   if (!isValidUrl.value) {
-    toast.error("Please enter a valid GitHub repository URL");
-    return;
+    toast.error('Please enter a valid GitHub repository URL')
+    return
   }
 
-  isSubmitting.value = true;
+  isSubmitting.value = true
 
   try {
-    emit("submit", githubUrl.value);
-    toast.success("GitHub repository imported successfully!");
-    closeModal();
+    emit('submit', githubUrl.value)
+    toast.success('GitHub repository imported successfully!')
+    closeModal()
   } catch (error) {
-    console.error("Error importing GitHub repository:", error);
-    toast.error("Failed to import repository");
+    console.error('Error importing GitHub repository:', error)
+    toast.error('Failed to import repository')
   } finally {
-    isSubmitting.value = false;
+    isSubmitting.value = false
   }
-};
+}
 
 // Reset form when modal closes
-watch(
-  () => props.visible,
-  (visible) => {
-    if (!visible) {
-      githubUrl.value = "";
-      isSubmitting.value = false;
-    }
-  },
-);
+watch(() => props.visible, (visible) => {
+  if (!visible) {
+    githubUrl.value = ''
+    isSubmitting.value = false
+  }
+})
 </script>
 
 <style scoped>
@@ -213,7 +212,7 @@ watch(
 }
 
 .form-label.required::after {
-  content: " *";
+  content: ' *';
   color: var(--color-error);
 }
 
@@ -232,8 +231,7 @@ watch(
 .form-control:focus {
   outline: none;
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px
-    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   background: var(--glass-elevated);
 }
 
@@ -266,12 +264,16 @@ watch(
   margin-bottom: 0;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 640px) {
   .modal-overlay {
+    padding: var(--spacing-2);
   }
-
+  
   .modal-header,
   .modal-body,
   .modal-footer {
+    padding: var(--spacing-4);
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <StandardPageLayout
+  <StandardPageLayout 
     title="Gaming Job Central"
     subtitle="Discover video game industry roles with AI‑powered matching and studio intelligence"
     title-icon="mdi-gamepad-variant"
@@ -9,12 +9,7 @@
     :hero-stats="jobBoardStats"
   >
     <template #header-actions>
-      <HeaderActions
-        layout="horizontal"
-        alignment="end"
-        gap="md"
-        priority="primary"
-      >
+      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
         <!-- Primary Action Buttons -->
         <UnifiedButton
           variant="primary"
@@ -24,7 +19,7 @@
         >
           Advanced Search
         </UnifiedButton>
-
+        
         <UnifiedButton
           variant="gaming"
           size="md"
@@ -63,22 +58,20 @@
     </template>
 
     <!-- AI-Powered Search Hub -->
-    <div class="content-section">
-      <div class="search-hub-card glass-surface">
-        <div class="search-hub-header">
-          <div class="hub-title">
-            <AppIcon name="mdi-brain" class="hub-icon" />
-            <h3>AI Game Career Intelligence</h3>
+    <section class="mb-6">
+      <div class="glass-strong p-6 rounded-xl">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <AppIcon name="mdi-brain" class="text-2xl text-neon-blue" />
+            <h2 class="text-xl font-bold text-glass-enhanced">AI Game Career Intelligence</h2>
           </div>
-          <div class="hub-stats">
-            <div class="stat-badge gaming-stat">
-              {{ totalJobs }} Active Positions
-            </div>
-            <div class="stat-badge studio-stat">{{ studioCount }}+ Studios</div>
+          <div class="flex items-center gap-4">
+            <div class="glass px-3 py-1 rounded-lg text-sm text-glass-enhanced">{{ totalJobs }} Active Positions</div>
+            <div class="glass px-3 py-1 rounded-lg text-sm text-glass-enhanced">{{ studioCount }}+ Studios</div>
           </div>
         </div>
 
-        <div class="search-actions-grid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <UnifiedButton
             variant="primary"
             size="lg"
@@ -91,7 +84,7 @@
               <span class="action-subtitle">Search with filters</span>
             </div>
           </UnifiedButton>
-
+          
           <UnifiedButton
             variant="cyber"
             size="lg"
@@ -105,7 +98,7 @@
               <span class="action-subtitle">Personalized recommendations</span>
             </div>
           </UnifiedButton>
-
+          
           <UnifiedButton
             variant="glass"
             size="lg"
@@ -133,28 +126,26 @@
           </UnifiedButton>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Advanced Search and Filter Section -->
-    <div class="content-section">
-      <div class="search-filter-card glass-surface">
-        <div class="filter-card-header">
-          <div class="filter-title">
-            <AppIcon name="mdi-filter-variant" class="filter-icon" />
-            <h3>Search & Filter Gaming Jobs</h3>
+    <section class="mb-6">
+      <div class="glass p-6 rounded-lg">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <AppIcon name="mdi-filter-variant" class="text-xl text-neon-green" />
+            <h2 class="text-lg font-semibold text-glass-enhanced">Search & Filter Gaming Jobs</h2>
           </div>
           <UnifiedButton
             variant="ghost"
             size="sm"
-            :leading-icon="
-              showAdvancedFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'
-            "
+            :leading-icon="showAdvancedFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'"
             @click="showAdvancedFilters = !showAdvancedFilters"
           >
-            {{ showAdvancedFilters ? "Hide" : "Show" }} Advanced
+            {{ showAdvancedFilters ? 'Hide' : 'Show' }} Advanced
           </UnifiedButton>
         </div>
-
+        
         <div class="search-form">
           <!-- Primary Search Row -->
           <div class="search-row">
@@ -178,10 +169,7 @@
             </div>
 
             <div class="quick-filters">
-              <select
-                v-model="searchFilters.location"
-                class="filter-select glass-select"
-              >
+              <select v-model="searchFilters.location" class="filter-select glass-select">
                 <option value="">All Locations</option>
                 <option value="remote">Remote</option>
                 <option value="us">United States</option>
@@ -190,10 +178,7 @@
                 <option value="asia">Asia</option>
               </select>
 
-              <select
-                v-model="searchFilters.jobType"
-                class="filter-select glass-select"
-              >
+              <select v-model="searchFilters.jobType" class="filter-select glass-select">
                 <option value="">All Types</option>
                 <option value="full-time">Full Time</option>
                 <option value="part-time">Part Time</option>
@@ -201,10 +186,7 @@
                 <option value="internship">Internship</option>
               </select>
 
-              <select
-                v-model="searchFilters.posted"
-                class="filter-select glass-select"
-              >
+              <select v-model="searchFilters.posted" class="filter-select glass-select">
                 <option value="">All Time</option>
                 <option value="24h">Last 24 hours</option>
                 <option value="7d">Last 7 days</option>
@@ -238,71 +220,39 @@
                 <AppIcon name="mdi-gamepad-variant" />
                 Gaming Industry Filters
               </h4>
-
+              
               <div class="filter-grid">
                 <div class="filter-group">
                   <label>Game Engines</label>
-                  <select
-                    v-model="gamingFilters.gameEngines"
-                    multiple
-                    class="filter-select glass-select"
-                  >
-                    <option
-                      v-for="engine in gameEngineOptions"
-                      :key="engine"
-                      :value="engine"
-                    >
+                  <select v-model="gamingFilters.gameEngines" multiple class="filter-select glass-select">
+                    <option v-for="engine in gameEngineOptions" :key="engine" :value="engine">
                       {{ engine }}
                     </option>
                   </select>
                 </div>
-
+                
                 <div class="filter-group">
                   <label>Studio Types</label>
-                  <select
-                    v-model="gamingFilters.studioTypes"
-                    multiple
-                    class="filter-select glass-select"
-                  >
-                    <option
-                      v-for="type in studioTypeOptions"
-                      :key="type"
-                      :value="type"
-                    >
+                  <select v-model="gamingFilters.studioTypes" multiple class="filter-select glass-select">
+                    <option v-for="type in studioTypeOptions" :key="type" :value="type">
                       {{ type }}
                     </option>
                   </select>
                 </div>
-
+                
                 <div class="filter-group">
                   <label>Platforms</label>
-                  <select
-                    v-model="gamingFilters.platforms"
-                    multiple
-                    class="filter-select glass-select"
-                  >
-                    <option
-                      v-for="platform in platformOptions"
-                      :key="platform"
-                      :value="platform"
-                    >
+                  <select v-model="gamingFilters.platforms" multiple class="filter-select glass-select">
+                    <option v-for="platform in platformOptions" :key="platform" :value="platform">
                       {{ platform }}
                     </option>
                   </select>
                 </div>
-
+                
                 <div class="filter-group">
                   <label>Role Categories</label>
-                  <select
-                    v-model="gamingFilters.roleCategories"
-                    multiple
-                    class="filter-select glass-select"
-                  >
-                    <option
-                      v-for="category in roleCategoryOptions"
-                      :key="category"
-                      :value="category"
-                    >
+                  <select v-model="gamingFilters.roleCategories" multiple class="filter-select glass-select">
+                    <option v-for="category in roleCategoryOptions" :key="category" :value="category">
                       {{ category }}
                     </option>
                   </select>
@@ -312,21 +262,18 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- AI-Powered Top Matches Section -->
     <div v-if="topMatches.length > 0" class="content-section">
-      <div class="top-matches-card glass-surface">
+      <div class="top-matches-card glass p-4 gap-4 m-4 rounded-lg">
         <div class="matches-header">
           <div class="matches-info">
             <div class="matches-icon-group">
               <AppIcon name="mdi-star" class="matches-icon" />
               <div class="matches-text">
                 <h3>Top AI Matches for You</h3>
-                <p>
-                  {{ topMatches.length }} high-match opportunities (60%+
-                  compatibility)
-                </p>
+                <p>{{ topMatches.length }} high-match opportunities (60%+ compatibility)</p>
               </div>
             </div>
           </div>
@@ -341,31 +288,22 @@
             Refresh Analysis
           </UnifiedButton>
         </div>
-
+        
         <div class="top-matches-grid">
-          <div
-            v-for="job in topMatches.slice(0, 6)"
-            :key="job.id"
-            class="top-match-card"
-          >
+          <div v-for="job in topMatches.slice(0, 6)" :key="job.id" class="top-match-card">
             <div class="match-card-header">
               <div class="job-info">
                 <h4>{{ job.title }}</h4>
                 <p>{{ job.company }} • {{ job.location }}</p>
               </div>
-              <div
-                class="match-score"
-                :class="`match-${getMatchScoreLevel(job.matchScore)}`"
-              >
+              <div class="match-score" :class="`match-${getMatchScoreLevel(job.matchScore)}`">
                 {{ job.matchScore }}%
               </div>
             </div>
             <div class="match-card-meta">
               <div class="job-tags">
                 <span class="job-tag">{{ formatJobType(job.type) }}</span>
-                <span v-if="job.salary" class="job-tag salary-tag">{{
-                  formatSalary(job.salary)
-                }}</span>
+                <span v-if="job.salary" class="job-tag salary-tag">{{ formatSalary(job.salary) }}</span>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -377,9 +315,13 @@
             </div>
           </div>
         </div>
-
+        
         <div v-if="topMatches.length > 6" class="view-all-matches">
-          <UnifiedButton variant="outline" size="md" @click="scrollToJobsTable">
+          <UnifiedButton
+            variant="outline"
+            size="md"
+            @click="scrollToJobsTable"
+          >
             View All {{ topMatches.length }} Top Matches
           </UnifiedButton>
         </div>
@@ -387,19 +329,12 @@
     </div>
 
     <!-- AI Analysis CTA (when no analysis has been run) -->
-    <div
-      v-else-if="filteredJobs.length > 0 && !hasRunAIAnalysis"
-      class="content-section"
-    >
-      <div class="ai-cta-card glass-surface">
+    <div v-else-if="filteredJobs.length > 0 && !hasRunAIAnalysis" class="content-section">
+      <div class="ai-cta-card glass p-4 gap-4 m-4 rounded-lg">
         <div class="ai-cta-content">
           <AppIcon name="mdi-robot-excited" class="ai-cta-icon" />
           <h2>Get AI-Powered Job Recommendations</h2>
-          <p>
-            Let our advanced AI analyze {{ filteredJobs.length }} jobs and find
-            your best matches based on your skills, experience, and gaming
-            industry preferences.
-          </p>
+          <p>Let our advanced AI analyze {{ filteredJobs.length }} jobs and find your best matches based on your skills, experience, and gaming industry preferences.</p>
           <UnifiedButton
             variant="gaming"
             size="xl"
@@ -426,14 +361,16 @@
 
     <!-- Enhanced Job Results Section -->
     <div class="content-section">
-      <div class="results-card glass-surface">
+      <div class="results-card glass p-4 gap-4 m-4 rounded-lg">
         <div class="results-header">
           <div class="results-info">
             <h2>Gaming Job Opportunities</h2>
             <p>Curated from multiple gaming industry sources</p>
           </div>
           <div class="results-controls">
-            <div class="results-count">{{ filteredJobs.length }} Results</div>
+            <div class="results-count">
+              {{ filteredJobs.length }} Results
+            </div>
             <ViewToggle
               v-model="viewMode"
               :options="[
@@ -448,11 +385,7 @@
         <div class="sort-bar">
           <div class="sort-controls">
             <label>Sort by:</label>
-            <select
-              v-model="sortBy"
-              class="sort-select glass-select"
-              @change="applySorting"
-            >
+            <select v-model="sortBy" class="sort-select glass-select" @change="applySorting">
               <option value="relevance">Relevance</option>
               <option value="date">Date Posted</option>
               <option value="salary">Salary</option>
@@ -476,32 +409,24 @@
         <div class="job-display-container">
           <!-- Table View -->
           <div v-if="viewMode === 'table'" class="jobs-table-container">
-            <EnhancedJobTable
+            <JobResultsList
               :jobs="paginatedJobs"
               :loading="loading"
               :selected-jobs="selectedJobs"
-              :gaming-focus="true"
               @job-selected="handleJobSelected"
               @job-applied="handleJobApplied"
               @job-saved="handleJobSaved"
-              @view-details="showJobDetails"
-              @open-studio-modal="openStudioModal"
             />
           </div>
-
+          
           <!-- Cards View -->
           <div v-else class="job-cards-container">
             <JobResultsGrid
               :jobs="paginatedJobs"
               :loading="loading"
-              :show-metrics="true"
-              :enable-ai-insights="true"
-              :gaming-focus="true"
               @job-selected="handleJobSelected"
               @job-applied="handleJobApplied"
               @job-saved="handleJobSaved"
-              @job-details="showJobDetails"
-              @add-to-compare="handleAddToCompare"
             />
           </div>
 
@@ -509,12 +434,13 @@
           <div v-if="!loading && filteredJobs.length === 0" class="empty-state">
             <AppIcon name="mdi-magnify" class="empty-icon" />
             <h3>No gaming jobs found</h3>
-            <p>
-              Try adjusting your filters or check out our studio database for
-              more opportunities.
-            </p>
+            <p>Try adjusting your filters or check out our studio database for more opportunities.</p>
             <div class="empty-actions">
-              <UnifiedButton variant="primary" size="md" @click="clearFilters">
+              <UnifiedButton
+                variant="primary"
+                size="md"
+                @click="clearFilters"
+              >
                 Clear Filters
               </UnifiedButton>
               <UnifiedButton
@@ -541,7 +467,7 @@
 
     <!-- Live Data Sources Status -->
     <div class="content-section">
-      <div class="data-sources-card glass-surface">
+      <div class="data-sources-card glass p-4 gap-4 m-4 rounded-lg">
         <div class="sources-header">
           <h5>Live Gaming Job Sources</h5>
           <UnifiedButton
@@ -551,30 +477,24 @@
             leading-icon="mdi-connection"
             @click="runDataVerification"
           >
-            {{ verifying ? "Checking..." : "Verify Sources" }}
+            {{ verifying ? 'Checking...' : 'Verify Sources' }}
           </UnifiedButton>
         </div>
 
         <div v-if="dataSourcesStatus" class="sources-grid">
-          <div
-            v-for="source in dataSourcesStatus"
-            :key="source.name"
-            class="source-card"
-          >
+          <div v-for="source in dataSourcesStatus" :key="source.name" class="source-card">
             <div class="source-header">
               <div class="source-info">
                 <AppIcon :name="source.icon" class="source-icon" />
                 <span class="source-name">{{ source.name }}</span>
               </div>
               <div class="source-status" :class="source.status">
-                {{ source.status === "active" ? "🟢" : "🔴" }}
+                {{ source.status === 'active' ? '🟢' : '🔴' }}
               </div>
             </div>
             <div class="source-stats">
               <span class="job-count">{{ source.jobCount }} jobs</span>
-              <span class="last-updated">{{
-                formatLastUpdated(source.lastUpdated)
-              }}</span>
+              <span class="last-updated">{{ formatLastUpdated(source.lastUpdated) }}</span>
             </div>
           </div>
         </div>
@@ -586,7 +506,7 @@
       v-model:show="showSearchModal"
       @search-submitted="handleAISearch"
     />
-
+    
     <JobDetailsModal
       v-model:show="showJobDetailsModal"
       :job="selectedJob"
@@ -611,299 +531,257 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
-import HeaderActions from "@/components/ui/HeaderActions.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import ViewToggle from "@/components/ui/ViewToggle.vue";
-import CompactGamifyHUD from "@/components/CompactGamifyHUD.vue";
-import GameJobFilters from "@/components/GameJobFilters.vue";
-import JobResultsGrid from "@/components/jobs/JobResultsGrid.vue";
-import EnhancedJobTable from "@/components/jobs/EnhancedJobTable.vue";
-import JobResultsList from "@/components/jobs/JobResultsList.vue";
-import JobPagination from "@/components/jobs/JobPagination.vue";
-import AIJobSearchInterface from "@/components/jobs/AIJobSearchInterface.vue";
-import JobDetailsModal from "@/components/jobs/JobDetailsModal.vue";
-import JobAlertsModal from "@/components/jobs/JobAlertsModal.vue";
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
+import HeaderActions from '@/components/ui/HeaderActions.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import ViewToggle from '@/components/ui/ViewToggle.vue'
+import CompactGamifyHUD from '@/components/CompactGamifyHUD.vue'
+import GameJobFilters from '@/components/GameJobFilters.vue'
+import JobResultsGrid from '@/components/jobs/JobResultsGrid.vue'
+import JobResultsList from '@/components/jobs/JobResultsList.vue'
+import JobPagination from '@/components/jobs/JobPagination.vue'
+import AIJobSearchInterface from '@/components/jobs/AIJobSearchInterface.vue'
+import JobDetailsModal from '@/components/jobs/JobDetailsModal.vue'
+import JobAlertsModal from '@/components/jobs/JobAlertsModal.vue'
 
 // Composables
-import { useJobs } from "@/composables/useJobs";
-import { useGamingJobs } from "@/composables/useGamingJobs";
-import { useStudioManagement } from "@/composables/useStudioManagement";
-import { useJobBoard } from "@/composables/useJobBoard";
-import { useAIJobSearch } from "@/composables/useAIJobSearch.js";
-import { useAppStore } from "@/stores/app";
+import { useJobs } from '@/composables/useJobs'
+import { useGamingJobs } from '@/composables/useGamingJobs'
+import { useJobBoard } from '@/composables/useJobBoard'
+import { useAIJobSearch } from '@/composables/useAIJobSearch.js'
+import { useAppStore } from '@/stores/app'
 
 // Services
-import { canonicalJobService } from "@/services/CanonicalJobService";
-import {
-  verifyAggregation,
-  verifyDirectOpenEndpoints,
-} from "@/services/IngestionVerifier";
-import { toastService } from "@/shared/services/toastService";
+import { CanonicalJobService } from '@/services/CanonicalJobService'
+import { verifyAggregation, verifyDirectOpenEndpoints } from '@/services/IngestionVerifier'
+import { toastService } from '@/shared/services/toastService'
 
-const router = useRouter();
-const route = useRoute();
-const appStore = useAppStore();
+const router = useRouter()
+const route = useRoute()
+const appStore = useAppStore()
 
 // Core state
-const loading = ref(false);
-const refreshing = ref(false);
-const verifying = ref(false);
-const aiLoading = ref(false);
+const loading = ref(false)
+const refreshing = ref(false)
+const verifying = ref(false)
+const aiLoading = ref(false)
 
 // Search & Filters
-const searchQuery = ref("");
+const searchQuery = ref('')
 const searchFilters = ref({
-  keywords: "",
-  location: "",
-  jobType: "",
-  posted: "",
-});
+  keywords: '',
+  location: '',
+  jobType: '',
+  posted: '',
+})
 const gamingFilters = ref({
   gameEngines: [],
   studioTypes: [],
   platforms: [],
-  roleCategories: [],
-});
+  roleCategories: []
+})
 const filters = ref({
-  gamingOnly: route.query.filter === "gaming",
-  location: "",
-  level: "",
-  salary: "",
+  gamingOnly: route.query.filter === 'gaming' || true,
+  location: '',
+  level: '',
+  salary: '',
   skills: [],
-  company: "",
-  jobType: "",
-  remote: false,
-});
-const showAdvancedFilters = ref(false);
-const sortBy = ref("relevance");
-const viewMode = ref("cards");
+  company: '',
+  jobType: '',
+  remote: false
+})
+const showAdvancedFilters = ref(false)
+const sortBy = ref('relevance')
+const viewMode = ref('cards')
 
 // Jobs data
-const jobs = ref([]);
-const jobResults = ref([]);
-const topMatches = ref([]);
-const savedJobs = ref([]);
-const jobAlerts = ref([]);
-const selectedJob = ref(null);
-const selectedJobs = ref([]);
-const hasRunAIAnalysis = ref(false);
+const jobs = ref([])
+const jobResults = ref([])
+const topMatches = ref([])
+const savedJobs = ref([])
+const jobAlerts = ref([])
+const selectedJob = ref(null)
+const selectedJobs = ref([])
+const hasRunAIAnalysis = ref(false)
 
 // Gaming industry filter options
 const gameEngineOptions = ref([
-  "Unity",
-  "Unreal Engine",
-  "Godot",
-  "GameMaker Studio",
-  "Construct 3",
-  "RPG Maker",
-  "CryEngine",
-  "Source Engine",
-  "Frostbite",
-  "id Tech",
-  "Custom Engine",
-]);
+  'Unity', 'Unreal Engine', 'Godot', 'GameMaker Studio', 
+  'Construct 3', 'RPG Maker', 'CryEngine', 'Source Engine',
+  'Frostbite', 'id Tech', 'Custom Engine'
+])
 
 const studioTypeOptions = ref([
-  "AAA Studio",
-  "Indie Developer",
-  "Mobile Games",
-  "VR/AR Studio",
-  "Publishing House",
-  "Platform Holder",
-  "Middleware Provider",
-  "Game Services",
-  "Esports",
-]);
+  'AAA Studio', 'Indie Developer', 'Mobile Games', 
+  'VR/AR Studio', 'Publishing House', 'Platform Holder',
+  'Middleware Provider', 'Game Services', 'Esports'
+])
 
 const platformOptions = ref([
-  "PC",
-  "PlayStation",
-  "Xbox",
-  "Nintendo Switch",
-  "Mobile (iOS)",
-  "Mobile (Android)",
-  "VR",
-  "AR",
-  "Web/Browser",
-  "Cloud Gaming",
-]);
+  'PC', 'PlayStation', 'Xbox', 'Nintendo Switch',
+  'Mobile (iOS)', 'Mobile (Android)', 'VR', 'AR',
+  'Web/Browser', 'Cloud Gaming'
+])
 
 const roleCategoryOptions = ref([
-  "Engineering",
-  "Design",
-  "Art & Animation",
-  "Production",
-  "Audio",
-  "QA & Testing",
-  "Data & Analytics",
-  "Marketing",
-  "Community Management",
-  "Business Development",
-]);
+  'Engineering', 'Design', 'Art & Animation', 'Production',
+  'Audio', 'QA & Testing', 'Data & Analytics', 'Marketing',
+  'Community Management', 'Business Development'
+])
 
 // Pagination
-const currentPage = ref(1);
-const itemsPerPage = ref(20);
+const currentPage = ref(1)
+const itemsPerPage = ref(20)
 
 // Modals
-const showSearchModal = ref(false);
-const showJobDetailsModal = ref(false);
-const showAdvancedSearch = ref(false);
-const showJobAlertsModal = ref(false);
-const showSavedJobs = ref(false);
+const showSearchModal = ref(false)
+const showJobDetailsModal = ref(false)
+const showAdvancedSearch = ref(false)
+const showJobAlertsModal = ref(false)
+const showSavedJobs = ref(false)
 
 // Data sources status
-const dataSourcesStatus = ref([]);
+const dataSourcesStatus = ref([])
 
 // Composables initialization
 const {
   jobs: composableJobs,
   loading: jobsLoading,
   searchJobs,
-  refreshJobs: refreshJobsData,
-} = useJobs();
+  refreshJobs: refreshJobsData
+} = useJobs()
 
-// Use gaming jobs composable for searches, and studio management for studio stats
-const { searchJobs: searchGamingJobs, searchResults: gamingSearchResults } = useGamingJobs();
-const { studioCount: studioCountRef } = useStudioManagement();
-// Standardized numeric studio count
-const studioCount = computed(() =>
-  typeof studioCountRef?.value === "number" ? studioCountRef.value : 0,
-);
+const {
+  gamingJobs,
+  studioCount,
+  searchGamingJobs
+} = useGamingJobs()
 
-const { performAISearch, getAIRecommendations } = useAIJobSearch();
+const {
+  performAISearch,
+  getAIRecommendations
+} = useAIJobSearch()
 
 // Computed
-const totalJobs = computed(() => jobs.value.length);
+const totalJobs = computed(() => jobs.value.length)
 
 const jobBoardStats = computed(() => [
-  { label: "Active Jobs", value: totalJobs.value, icon: "mdi-briefcase" },
-  {
-    label: "Gaming Studios",
-    value: studioCount.value,
-    icon: "mdi-office-building",
-  },
-  { label: "Saved Jobs", value: savedJobs.value.length, icon: "mdi-bookmark" },
-  { label: "Job Alerts", value: jobAlerts.value.length, icon: "mdi-bell" },
-]);
+  { label: 'Active Jobs', value: totalJobs.value, icon: 'mdi-briefcase' },
+  { label: 'Gaming Studios', value: studioCount.value, icon: 'mdi-office-building' },
+  { label: 'Saved Jobs', value: savedJobs.value.length, icon: 'mdi-bookmark' },
+  { label: 'Job Alerts', value: jobAlerts.value.length, icon: 'mdi-bell' }
+])
 
 const filteredJobs = computed(() => {
-  let result = [...jobs.value];
+  let result = [...jobs.value]
 
   // Apply search filters
   if (searchFilters.value.keywords.trim()) {
-    const query = searchFilters.value.keywords.toLowerCase();
-    result = result.filter(
-      (job) =>
-        job.title.toLowerCase().includes(query) ||
-        job.company?.name?.toLowerCase().includes(query) ||
-        job.description?.toLowerCase().includes(query) ||
-        job.skills?.some((skill) => skill.toLowerCase().includes(query)),
-    );
+    const query = searchFilters.value.keywords.toLowerCase()
+    result = result.filter(job => 
+      job.title.toLowerCase().includes(query) ||
+      job.company?.name?.toLowerCase().includes(query) ||
+      job.description?.toLowerCase().includes(query) ||
+      job.skills?.some(skill => skill.toLowerCase().includes(query))
+    )
   }
 
   // Apply location filter
   if (searchFilters.value.location) {
-    result = result.filter((job) => {
-      if (searchFilters.value.location === "remote") {
-        return job.remote || job.location?.toLowerCase().includes("remote");
+    result = result.filter(job => {
+      if (searchFilters.value.location === 'remote') {
+        return job.remote || job.location?.toLowerCase().includes('remote')
       }
-      return job.location
-        ?.toLowerCase()
-        .includes(searchFilters.value.location.toLowerCase());
-    });
+      return job.location?.toLowerCase().includes(searchFilters.value.location.toLowerCase())
+    })
   }
 
   // Apply job type filter
   if (searchFilters.value.jobType) {
-    result = result.filter(
-      (job) =>
-        job.type?.toLowerCase() === searchFilters.value.jobType.toLowerCase(),
-    );
+    result = result.filter(job => 
+      job.type?.toLowerCase() === searchFilters.value.jobType.toLowerCase()
+    )
   }
 
   // Apply posted date filter
   if (searchFilters.value.posted) {
-    const now = new Date();
-    const cutoffDate = new Date();
-
+    const now = new Date()
+    const cutoffDate = new Date()
+    
     switch (searchFilters.value.posted) {
-      case "24h":
-        cutoffDate.setDate(now.getDate() - 1);
-        break;
-      case "7d":
-        cutoffDate.setDate(now.getDate() - 7);
-        break;
-      case "30d":
-        cutoffDate.setDate(now.getDate() - 30);
-        break;
+      case '24h':
+        cutoffDate.setDate(now.getDate() - 1)
+        break
+      case '7d':
+        cutoffDate.setDate(now.getDate() - 7)
+        break
+      case '30d':
+        cutoffDate.setDate(now.getDate() - 30)
+        break
     }
-
-    result = result.filter((job) => new Date(job.datePosted) >= cutoffDate);
+    
+    result = result.filter(job => 
+      new Date(job.datePosted) >= cutoffDate
+    )
   }
 
   // Apply gaming-specific filters
   if (gamingFilters.value.gameEngines.length > 0) {
-    result = result.filter((job) =>
-      gamingFilters.value.gameEngines.some(
-        (engine) =>
-          job.requirements?.toLowerCase().includes(engine.toLowerCase()) ||
-          job.description?.toLowerCase().includes(engine.toLowerCase()),
-      ),
-    );
+    result = result.filter(job =>
+      gamingFilters.value.gameEngines.some(engine =>
+        job.requirements?.toLowerCase().includes(engine.toLowerCase()) ||
+        job.description?.toLowerCase().includes(engine.toLowerCase())
+      )
+    )
   }
 
   if (gamingFilters.value.studioTypes.length > 0) {
-    result = result.filter((job) =>
-      gamingFilters.value.studioTypes.some(
-        (type) => job.company?.type?.includes(type) || job.tags?.includes(type),
-      ),
-    );
+    result = result.filter(job =>
+      gamingFilters.value.studioTypes.some(type =>
+        job.company?.type?.includes(type) ||
+        job.tags?.includes(type)
+      )
+    )
   }
 
   // Always prioritize gaming jobs
   if (filters.value.gamingOnly) {
-    result = result.filter((job) => job.isGaming || job.category === "gaming");
+    result = result.filter(job => job.isGaming || job.category === 'gaming')
   }
 
   // Apply sorting
   result.sort((a, b) => {
     switch (sortBy.value) {
-      case "date":
-        return new Date(b.datePosted) - new Date(a.datePosted);
-      case "salary":
-        return (b.salaryMax || 0) - (a.salaryMax || 0);
-      case "company":
-        return (a.company?.name || "").localeCompare(b.company?.name || "");
-      case "aiScore":
-        return (
-          (b.aiScore || b.matchScore || 0) - (a.aiScore || a.matchScore || 0)
-        );
+      case 'date':
+        return new Date(b.datePosted) - new Date(a.datePosted)
+      case 'salary':
+        return (b.salaryMax || 0) - (a.salaryMax || 0)
+      case 'company':
+        return (a.company?.name || '').localeCompare(b.company?.name || '')
+      case 'aiScore':
+        return (b.aiScore || b.matchScore || 0) - (a.aiScore || a.matchScore || 0)
       default:
-        return (b.relevanceScore || 0) - (a.relevanceScore || 0);
+        return (b.relevanceScore || 0) - (a.relevanceScore || 0)
     }
-  });
+  })
 
-  return result;
-});
+  return result
+})
 
-const totalPages = computed(() =>
-  Math.ceil(filteredJobs.value.length / itemsPerPage.value),
-);
+const totalPages = computed(() => Math.ceil(filteredJobs.value.length / itemsPerPage.value))
 
 const paginatedJobs = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  const end = start + itemsPerPage.value;
-  return filteredJobs.value.slice(start, end);
-});
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return filteredJobs.value.slice(start, end)
+})
 
 // Methods
 const performSearch = async () => {
-  loading.value = true;
+  loading.value = true
   try {
     const searchParams = {
       query: searchFilters.value.keywords,
@@ -911,416 +789,440 @@ const performSearch = async () => {
       jobType: searchFilters.value.jobType,
       posted: searchFilters.value.posted,
       gamingFilters: gamingFilters.value,
-      gamingFocus: true,
-    };
-
-    const results = await searchJobs(searchParams);
-    jobs.value = results;
-    jobResults.value = results;
-    currentPage.value = 1;
+      gamingFocus: true
+    }
+    
+    const results = await searchJobs(searchParams)
+    jobs.value = results
+    jobResults.value = results
+    currentPage.value = 1
   } catch (error) {
-    toastService.error("Search failed: " + error.message);
+    toastService.error('Search failed: ' + error.message)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
 const applyFilters = async () => {
-  await performSearch();
-};
+  await performSearch()
+}
 
 const clearFilters = () => {
   searchFilters.value = {
-    keywords: "",
-    location: "",
-    jobType: "",
-    posted: "",
-  };
+    keywords: '',
+    location: '',
+    jobType: '',
+    posted: '',
+  }
   gamingFilters.value = {
     gameEngines: [],
     studioTypes: [],
     platforms: [],
-    roleCategories: [],
-  };
-  performSearch();
-};
+    roleCategories: []
+  }
+  performSearch()
+}
 
 const clearSearch = () => {
-  searchQuery.value = "";
-  performSearch();
-};
+  searchQuery.value = ''
+  performSearch()
+}
 
 const toggleGamingFilter = () => {
-  filters.value.gamingOnly = !filters.value.gamingOnly;
-  applyFilters();
-};
+  filters.value.gamingOnly = !filters.value.gamingOnly
+  applyFilters()
+}
 
 const applySorting = () => {
   // Sorting is handled by computed property
-};
+}
 
 const refreshJobs = async () => {
-  refreshing.value = true;
+  refreshing.value = true
   try {
-    await refreshJobsData();
-    jobs.value = composableJobs.value;
-    toastService.success("Jobs refreshed successfully");
+    await refreshJobsData()
+    jobs.value = composableJobs.value
+    toastService.success('Jobs refreshed successfully')
   } catch (error) {
-    toastService.error("Failed to refresh jobs: " + error.message);
+    toastService.error('Failed to refresh jobs: ' + error.message)
   } finally {
-    refreshing.value = false;
+    refreshing.value = false
   }
-};
+}
 
 const aiRecommendJobs = async () => {
-  aiLoading.value = true;
+  aiLoading.value = true
   try {
     const recommendations = await getAIRecommendations({
       profile: appStore.profile,
       preferences: { ...filters.value, ...searchFilters.value },
       gamingFilters: gamingFilters.value,
-      gamingFocus: true,
-    });
-
-
-    const highMatches = recommendations.filter(
-      (job) => (job.matchScore || job.aiScore || 0) >= 60,
-    );
-    topMatches.value = highMatches.sort(
-      (a, b) =>
-        (b.matchScore || b.aiScore || 0) - (a.matchScore || a.aiScore || 0),
-    );
-
-    jobs.value = recommendations;
-    jobResults.value = recommendations;
-    hasRunAIAnalysis.value = true;
-    toastService.success(
-      `Found ${recommendations.length} AI-matched positions (${highMatches.length} high matches)`,
-    );
+      gamingFocus: true
+    })
+    
+    // Separate high-match jobs (60%+) from regular results
+    const highMatches = recommendations.filter(job => (job.matchScore || job.aiScore || 0) >= 60)
+    topMatches.value = highMatches.sort((a, b) => (b.matchScore || b.aiScore || 0) - (a.matchScore || a.aiScore || 0))
+    
+    jobs.value = recommendations
+    jobResults.value = recommendations
+    hasRunAIAnalysis.value = true
+    toastService.success(`Found ${recommendations.length} AI-matched positions (${highMatches.length} high matches)`)
   } catch (error) {
-    toastService.error("AI recommendations failed: " + error.message);
+    toastService.error('AI recommendations failed: ' + error.message)
   } finally {
-    aiLoading.value = false;
+    aiLoading.value = false
   }
-};
+}
 
 const handleAISearch = async (searchData) => {
-  loading.value = true;
+  loading.value = true
   try {
-    const results = await performAISearch(searchData);
-    jobs.value = results;
-    jobResults.value = results;
-    showSearchModal.value = false;
-    toastService.success(`Found ${results.length} AI-matched positions`);
+    const results = await performAISearch(searchData)
+    jobs.value = results
+    jobResults.value = results
+    showSearchModal.value = false
+    toastService.success(`Found ${results.length} AI-matched positions`)
   } catch (error) {
-    toastService.error("AI search failed: " + error.message);
+    toastService.error('AI search failed: ' + error.message)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
 const showJobDetails = (job) => {
-  selectedJob.value = job;
-  showJobDetailsModal.value = true;
-};
+  selectedJob.value = job
+  showJobDetailsModal.value = true
+}
 
 const viewJobDetails = (job) => {
-  showJobDetails(job);
-};
+  showJobDetails(job)
+}
 
 const handleJobSelected = (job) => {
-  showJobDetails(job);
-};
+  showJobDetails(job)
+}
 
 const handleJobApplied = (job) => {
-  toastService.success(`Application started for ${job.title}`);
+  toastService.success(`Application started for ${job.title}`)
   // Track application in analytics
-};
+}
 
 const handleJobSaved = (job) => {
-  const index = savedJobs.value.findIndex((saved) => saved.id === job.id);
+  const index = savedJobs.value.findIndex(saved => saved.id === job.id)
   if (index === -1) {
-    savedJobs.value.push(job);
-    toastService.success("Job saved!");
+    savedJobs.value.push(job)
+    toastService.success('Job saved!')
   } else {
-    savedJobs.value.splice(index, 1);
-    toastService.info("Job removed from saved");
+    savedJobs.value.splice(index, 1)
+    toastService.info('Job removed from saved')
   }
-};
+}
 
 const handleAddToCompare = (job) => {
-  toastService.info("Job added to comparison (feature coming soon)");
-};
+  toastService.info('Job added to comparison (feature coming soon)')
+}
 
 const handlePageChange = (page) => {
-  currentPage.value = page;
+  currentPage.value = page
   nextTick(() => {
-    document.querySelector(".job-display-container")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  });
-};
+    document.querySelector('.job-display-container')?.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start' 
+    })
+  })
+}
 
 const scrollToJobsTable = () => {
   nextTick(() => {
-    document.querySelector(".results-card")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  });
-};
+    document.querySelector('.results-card')?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    })
+  })
+}
 
 const openStudioExplorer = () => {
-  router.push("/studios");
-};
+  router.push('/studios')
+}
 
 const openStudioModal = (job) => {
   // Open studio details modal for the job's company
-  const studioInfo = getMatchingStudio(job.company);
+  const studioInfo = getMatchingStudio(job.company)
   if (studioInfo) {
     // Implement studio modal logic
-    toastService.info(`Studio info for ${job.company} (feature coming soon)`);
+    toastService.info(`Studio info for ${job.company} (feature coming soon)`)
   }
-};
+}
 
 const getMatchingStudio = (companyName) => {
   // This would integrate with the gaming studios database
-  return null; // Placeholder
-};
+  return null // Placeholder
+}
 
 // Utility methods
 const formatJobType = (type) => {
-  if (!type) return "Not specified";
-  return type.charAt(0).toUpperCase() + type.slice(1).replace("-", " ");
-};
+  if (!type) return 'Not specified'
+  return type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')
+}
 
 const formatSalary = (salary) => {
-  if (!salary) return null;
-  if (typeof salary === "number") {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  if (!salary) return null
+  if (typeof salary === 'number') {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(salary);
+      maximumFractionDigits: 0
+    }).format(salary)
   }
-  return salary;
-};
+  return salary
+}
 
 const getMatchScoreLevel = (score) => {
-  if (score >= 90) return "excellent";
-  if (score >= 75) return "good";
-  if (score >= 60) return "fair";
-  return "low";
-};
+  if (score >= 90) return 'excellent'
+  if (score >= 75) return 'good'
+  if (score >= 60) return 'fair'
+  return 'low'
+}
 
 const getMatchChipColor = (score) => {
-  if (score >= 90) return "success";
-  if (score >= 75) return "primary";
-  if (score >= 60) return "warning";
-  return "secondary";
-};
+  if (score >= 90) return 'success'
+  if (score >= 75) return 'primary'
+  if (score >= 60) return 'warning'
+  return 'secondary'
+}
 
 const runDataVerification = async () => {
-  verifying.value = true;
+  verifying.value = true
   try {
     const [sources, endpoints] = await Promise.all([
-      verifyAggregation("game"),
-      verifyDirectOpenEndpoints("game"),
-    ]);
-
+      verifyAggregation('game'),
+      verifyDirectOpenEndpoints('game')
+    ])
+    
     // Transform verification results into status objects
-    dataSourcesStatus.value = endpoints.map((endpoint) => ({
+    dataSourcesStatus.value = endpoints.map(endpoint => ({
       name: endpoint.provider,
       icon: getProviderIcon(endpoint.provider),
-      status: endpoint.ok ? "active" : "inactive",
+      status: endpoint.ok ? 'active' : 'inactive',
       jobCount: endpoint.count || 0,
-      lastUpdated: new Date(),
-    }));
-
-    toastService.success("Data sources verified");
+      lastUpdated: new Date()
+    }))
+    
+    toastService.success('Data sources verified')
   } catch (error) {
-    toastService.error("Verification failed: " + error.message);
+    toastService.error('Verification failed: ' + error.message)
   } finally {
-    verifying.value = false;
+    verifying.value = false
   }
-};
+}
 
 const getProviderIcon = (provider) => {
   const iconMap = {
-    Greenhouse: "mdi-leaf",
-    Lever: "mdi-office-building",
-    SmartRecruiters: "mdi-brain",
-    Workday: "mdi-calendar",
-    GitHub: "mdi-github",
-    AngelList: "mdi-rocket",
-  };
-  return iconMap[provider] || "mdi-briefcase";
-};
+    'Greenhouse': 'mdi-leaf',
+    'Lever': 'mdi-office-building',
+    'SmartRecruiters': 'mdi-brain',
+    'Workday': 'mdi-calendar',
+    'GitHub': 'mdi-github',
+    'AngelList': 'mdi-rocket'
+  }
+  return iconMap[provider] || 'mdi-briefcase'
+}
 
 const formatLastUpdated = (date) => {
-  const now = new Date();
-  const diff = now - new Date(date);
-  const minutes = Math.floor(diff / 60000);
-
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  if (minutes < 1440) return `${Math.floor(minutes / 60)}h ago`;
-  return `${Math.floor(minutes / 1440)}d ago`;
-};
+  const now = new Date()
+  const diff = now - new Date(date)
+  const minutes = Math.floor(diff / 60000)
+  
+  if (minutes < 1) return 'Just now'
+  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 1440) return `${Math.floor(minutes / 60)}h ago`
+  return `${Math.floor(minutes / 1440)}d ago`
+}
 
 const handleAlertCreated = (alert) => {
-  jobAlerts.value.push(alert);
-  toastService.success("Job alert created");
-};
+  jobAlerts.value.push(alert)
+  toastService.success('Job alert created')
+}
 
 const handleAlertDeleted = (alertId) => {
-  const index = jobAlerts.value.findIndex((alert) => alert.id === alertId);
+  const index = jobAlerts.value.findIndex(alert => alert.id === alertId)
   if (index !== -1) {
-    jobAlerts.value.splice(index, 1);
-    toastService.info("Job alert deleted");
+    jobAlerts.value.splice(index, 1)
+    toastService.info('Job alert deleted')
   }
-};
+}
 
-  // Lifecycle
-  onMounted(async () => {
-    loading.value = true;
-    try {
-      // Initialize with gaming jobs if filter is active
-      if (filters.value.gamingOnly) {
-        await searchGamingJobs();
-        jobs.value = gamingSearchResults.value.jobs || [];
-      } else {
-        jobs.value = composableJobs.value;
-      }
-
-      // Load saved jobs and alerts from storage
-      const stored = localStorage.getItem("navi-job-data");
-      if (stored) {
-        const data = JSON.parse(stored);
-        savedJobs.value = data.savedJobs || [];
-        jobAlerts.value = data.jobAlerts || [];
-      }
-    } catch (error) {
-      toastService.error("Failed to load jobs: " + (error?.message || error));
-    } finally {
-      loading.value = false;
+// Lifecycle
+onMounted(async () => {
+  loading.value = true
+  try {
+    // Initialize with gaming jobs if filter is active
+    if (filters.value.gamingOnly) {
+      jobs.value = await searchGamingJobs()
+    } else {
+      jobs.value = composableJobs.value
     }
-  });
+    
+    // Load saved jobs and alerts from storage
+    const stored = localStorage.getItem('navi-job-data')
+    if (stored) {
+      const data = JSON.parse(stored)
+      savedJobs.value = data.savedJobs || []
+      jobAlerts.value = data.jobAlerts || []
+    }
+  } catch (error) {
+    toastService.error('Failed to load jobs: ' + error.message)
+  } finally {
+    loading.value = false
+  }
+})
 
 // Watch for route changes
-watch(
-  () => route.query.filter,
-  (newFilter) => {
-    if (newFilter === "gaming") {
-      filters.value.gamingOnly = true;
-      applyFilters();
-    }
-  },
-);
+watch(() => route.query.filter, (newFilter) => {
+  if (newFilter === 'gaming') {
+    filters.value.gamingOnly = true
+    applyFilters()
+  }
+})
 
 // Save data on changes
-watch(
-  [savedJobs, jobAlerts],
-  () => {
-    localStorage.setItem(
-      "navi-job-data",
-      JSON.stringify({
-        savedJobs: savedJobs.value,
-        jobAlerts: jobAlerts.value,
-      }),
-    );
-  },
-  { deep: true },
-);
+watch([savedJobs, jobAlerts], () => {
+  localStorage.setItem('navi-job-data', JSON.stringify({
+    savedJobs: savedJobs.value,
+    jobAlerts: jobAlerts.value
+  }))
+}, { deep: true })
 </script>
 
 <style scoped>
+/* Gaming-focused glassmorphic styling */
 .search-hub-card {
+  padding: var(--spacing-6);
   border-radius: var(--radius-xl);
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, 
+    rgba(var(--color-primary-500-rgb), 0.05) 0%,
+    rgba(var(--color-gaming-500-rgb), 0.05) 100%);
+  border: 1px solid rgba(var(--color-gaming-400-rgb), 0.2);
+  backdrop-filter: blur(20px);
 }
 
 .search-hub-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--spacing-6);
 }
 
 .hub-title {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
 }
 
-  background: linear-gradient(
-  );
+.hub-title h3 {
+  margin: 0;
+  background: linear-gradient(45deg, var(--color-gaming-400), var(--color-primary-400));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-weight: 700;
 }
 
 .hub-icon {
+  font-size: 1.5rem;
+  color: var(--color-gaming-400);
 }
 
 .hub-stats {
   display: flex;
+  gap: var(--spacing-3);
 }
 
 .stat-badge {
+  padding: var(--spacing-2) var(--spacing-4);
   border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid transparent;
 }
 
 .gaming-stat {
+  background: rgba(var(--color-gaming-500-rgb), 0.15);
+  color: var(--color-gaming-300);
+  border-color: rgba(var(--color-gaming-500-rgb), 0.3);
 }
 
 .studio-stat {
+  background: rgba(var(--color-primary-500-rgb), 0.15);
+  color: var(--color-primary-300);
+  border-color: rgba(var(--color-primary-500-rgb), 0.3);
 }
 
 .search-actions-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-4);
 }
 
 .search-action-btn {
   height: auto !important;
+  padding: var(--spacing-4) var(--spacing-5);
 }
 
 .action-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: var(--spacing-1);
 }
 
 .action-title {
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .action-subtitle {
+  font-size: 0.875rem;
+  opacity: 0.7;
 }
 
 .search-filter-bar {
+  padding: var(--spacing-4);
   border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-4);
 }
 
 .search-input-container {
   position: relative;
   display: flex;
   align-items: center;
+  background: rgba(var(--surface-rgb), 0.8);
+  border: 1px solid var(--border-base);
   border-radius: var(--radius-lg);
+  padding: 0 var(--spacing-3);
+  transition: all 0.2s ease;
 }
 
 .search-input-container:focus-within {
+  border-color: var(--color-gaming-400);
+  box-shadow: 0 0 0 3px rgba(var(--color-gaming-500-rgb), 0.15);
 }
 
 .search-icon {
   color: var(--text-muted);
+  margin-right: var(--spacing-3);
 }
 
 .search-input {
+  flex: 1;
   border: none;
   background: transparent;
+  padding: var(--spacing-3) 0;
+  font-size: 1rem;
   color: var(--text-primary);
 }
 
@@ -1329,30 +1231,36 @@ watch(
 }
 
 .clear-search-btn {
+  margin-left: var(--spacing-2);
 }
 
 .filter-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-4);
 }
 
 .view-controls {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
 }
 
 .view-toggle {
   display: flex;
+  border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
   overflow: hidden;
 }
 
 .view-toggle :deep(.unified-button) {
+  border-radius: 0;
   border: none;
 }
 
 .view-toggle :deep(.unified-button.active) {
+  background: var(--color-gaming-500);
   color: white;
 }
 
@@ -1360,40 +1268,55 @@ watch(
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-bottom: var(--spacing-6);
+  gap: var(--spacing-4);
 }
 
+.results-info h4 {
+  margin: 0 0 var(--spacing-2) 0;
   color: var(--text-primary);
 }
 
 .results-meta {
   display: flex;
+  gap: var(--spacing-3);
+  font-size: 0.875rem;
   color: var(--text-secondary);
 }
 
 .results-actions {
   display: flex;
   align-items: center;
+  gap: var(--spacing-4);
 }
 
 .sort-controls {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  font-size: 0.875rem;
 }
 
 .sort-controls label {
   color: var(--text-secondary);
+  margin: 0;
 }
 
 .sort-select {
-  background: var(--glass-surface);
+  background: var(--glass p-4 gap-4 m-4 rounded-lg);
+  border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
+  padding: var(--spacing-2) var(--spacing-3);
   color: var(--text-primary);
+  font-size: 0.875rem;
 }
 
 .job-results-container {
+  min-height: 400px;
 }
 
 .data-sources-card {
+  padding: var(--spacing-5);
   border-radius: var(--radius-lg);
 }
 
@@ -1401,102 +1324,138 @@ watch(
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--spacing-4);
 }
 
+.sources-header h5 {
+  margin: 0;
   color: var(--text-primary);
 }
 
 .sources-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-3);
 }
 
 .source-card {
+  background: rgba(var(--surface-rgb), 0.6);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
+  padding: var(--spacing-3);
+  transition: all 0.2s ease;
 }
 
 .source-card:hover {
+  border-color: var(--color-gaming-400);
+  transform: translateY(-1px);
 }
 
 .source-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--spacing-2);
 }
 
 .source-info {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
 }
 
 .source-icon {
+  font-size: 1rem;
+  color: var(--color-gaming-400);
 }
 
 .source-name {
+  font-weight: 600;
+  font-size: 0.875rem;
 }
 
 .source-status {
+  font-size: 0.75rem;
 }
 
 .source-stats {
   display: flex;
   justify-content: space-between;
+  font-size: 0.75rem;
   color: var(--text-secondary);
 }
 
 .job-count {
+  font-weight: 600;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .search-actions-grid {
+    grid-template-columns: 1fr;
   }
-
+  
   .filter-controls {
     flex-direction: column;
     align-items: stretch;
   }
-
+  
   .results-header {
     flex-direction: column;
     align-items: stretch;
   }
-
+  
   .results-actions {
     justify-content: space-between;
   }
-
+  
   .sources-grid {
+    grid-template-columns: 1fr;
   }
 }
 
+/* Gaming theme enhancements with RGB neon accents */
 :deep(.unified-button.active) {
   background: var(--neon-primary);
   color: var(--surface-base);
+  box-shadow: 0 0 20px rgba(var(--neon-primary-rgb), 0.4);
 }
 
-:deep(.glass-surface) {
+:deep(.glass p-4 gap-4 m-4 rounded-lg) {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-blur);
+  border: 1px solid var(--glass-border);
 }
 
+/* Enhanced hover effects with RGB neon accents */
 .search-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(var(--neon-primary-rgb), 0.2);
 }
 
 .top-match-card:hover {
+  box-shadow: 0 8px 25px rgba(var(--neon-primary-rgb), 0.15);
 }
 
 .source-card.active {
+  border-color: var(--color-success-400);
+  background: rgba(var(--color-success-500-rgb), 0.05);
 }
 
+/* Focus states with RGB neon */
 .search-input:focus,
 .filter-select:focus,
 .sort-select:focus {
+  box-shadow: 0 0 0 2px rgba(var(--neon-primary-rgb), 0.2);
 }
 
+/* Animation for active elements */
 @keyframes pulse-glow {
-  }
-    box-shadow:
-  }
+  0%, 100% { box-shadow: 0 0 5px rgba(var(--neon-primary-rgb), 0.3); }
+  50% { box-shadow: 0 0 20px rgba(var(--neon-primary-rgb), 0.6), 0 0 30px rgba(var(--neon-primary-rgb), 0.3); }
 }
 
 .ai-analyze-btn:hover {
+  animation: pulse-glow 2s infinite;
 }
 </style>

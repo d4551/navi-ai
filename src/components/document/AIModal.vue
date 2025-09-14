@@ -36,21 +36,18 @@
             <AppIcon name="mdi-chart-line" />
             Analysis Results
           </h4>
-
+          
           <div class="results-grid">
             <div class="result-card">
               <div class="result-header">
                 <AppIcon name="mdi-target" />
                 <span>ATS Compatibility</span>
               </div>
-              <div
-                class="result-score"
-                :class="getScoreClass(analysisResults.atsScore)"
-              >
+              <div class="result-score" :class="getScoreClass(analysisResults.atsScore)">
                 {{ analysisResults.atsScore }}%
               </div>
               <div class="result-description">
-                {{ getScoreDescription(analysisResults.atsScore, "ats") }}
+                {{ getScoreDescription(analysisResults.atsScore, 'ats') }}
               </div>
             </div>
 
@@ -59,16 +56,11 @@
                 <AppIcon name="mdi-key-variant" />
                 <span>Keyword Match</span>
               </div>
-              <div
-                class="result-score"
-                :class="getScoreClass(analysisResults.keywordMatch)"
-              >
+              <div class="result-score" :class="getScoreClass(analysisResults.keywordMatch)">
                 {{ analysisResults.keywordMatch }}%
               </div>
               <div class="result-description">
-                {{
-                  getScoreDescription(analysisResults.keywordMatch, "keywords")
-                }}
+                {{ getScoreDescription(analysisResults.keywordMatch, 'keywords') }}
               </div>
             </div>
 
@@ -77,16 +69,11 @@
                 <AppIcon name="mdi-format-text" />
                 <span>Content Quality</span>
               </div>
-              <div
-                class="result-score"
-                :class="getScoreClass(analysisResults.contentQuality)"
-              >
+              <div class="result-score" :class="getScoreClass(analysisResults.contentQuality)">
                 {{ analysisResults.contentQuality }}%
               </div>
               <div class="result-description">
-                {{
-                  getScoreDescription(analysisResults.contentQuality, "content")
-                }}
+                {{ getScoreDescription(analysisResults.contentQuality, 'content') }}
               </div>
             </div>
           </div>
@@ -98,7 +85,7 @@
             <AppIcon name="mdi-lightbulb-outline" />
             AI Suggestions
           </h4>
-
+          
           <div class="suggestions-list">
             <div
               v-for="suggestion in suggestions"
@@ -110,10 +97,7 @@
                 <div class="suggestion-meta">
                   <AppIcon :name="getSuggestionIcon(suggestion.type)" />
                   <span class="suggestion-type">{{ suggestion.type }}</span>
-                  <span
-                    class="suggestion-priority"
-                    :class="suggestion.priority"
-                  >
+                  <span class="suggestion-priority" :class="suggestion.priority">
                     {{ suggestion.priority }}
                   </span>
                 </div>
@@ -148,7 +132,7 @@
             <AppIcon name="mdi-message-text-outline" />
             Ask AI Assistant
           </h4>
-
+          
           <div ref="chatMessagesRef" class="chat-messages">
             <div
               v-for="message in chatMessages"
@@ -157,23 +141,18 @@
               :class="message.role"
             >
               <div class="message-avatar">
-                <AppIcon
-                  :name="message.role === 'user' ? 'mdi-account' : 'mdi-brain'"
+                <AppIcon 
+                  :name="message.role === 'user' ? 'mdi-account' : 'mdi-brain'" 
                   size="16"
                 />
               </div>
               <div class="message-content">
-                <div
-                  class="message-text"
-                  v-html="formatMessage(message.text)"
-                ></div>
-                <div class="message-timestamp">
-                  {{ formatTimestamp(message.timestamp) }}
-                </div>
+                <div class="message-text" v-html="formatMessage(message.text)"></div>
+                <div class="message-timestamp">{{ formatTimestamp(message.timestamp) }}</div>
               </div>
             </div>
           </div>
-
+          
           <div class="chat-input">
             <textarea
               v-model="chatInput"
@@ -202,7 +181,7 @@
             <AppIcon name="mdi-lightning-bolt" />
             Quick Actions
           </h4>
-
+          
           <div class="actions-grid">
             <UnifiedButton
               variant="outline"
@@ -252,10 +231,18 @@
           </span>
         </div>
         <div class="footer-actions">
-          <UnifiedButton variant="ghost" size="sm" @click="toggleChat">
-            {{ showChat ? "Hide Chat" : "Show Chat" }}
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            @click="toggleChat"
+          >
+            {{ showChat ? 'Hide Chat' : 'Show Chat' }}
           </UnifiedButton>
-          <UnifiedButton variant="outline" size="sm" @click="$emit('close')">
+          <UnifiedButton
+            variant="outline"
+            size="sm"
+            @click="$emit('close')"
+          >
             Close
           </UnifiedButton>
         </div>
@@ -265,332 +252,325 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, onMounted } from "vue";
-import { useToast } from "@/composables/useToast";
-import { ai } from "@/shared/ai/canonical";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, computed, nextTick, onMounted } from 'vue'
+import { useToast } from '@/composables/useToast'
+import { ai } from '@/shared/ai/canonical'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
 const props = defineProps<{
-  show: boolean;
-  context: any;
-}>();
+  show: boolean
+  context: any
+}>()
 
 // Emits
 const emit = defineEmits<{
-  close: [];
-  apply: [any];
-}>();
+  'close': []
+  'apply': [any]
+}>()
 
-const toast = useToast();
+const toast = useToast()
 
 // State
-const aiProcessing = ref(false);
-const analysisResults = ref<any>(null);
-const suggestions = ref<any[]>([]);
-const showChat = ref(false);
-const chatMessages = ref<any[]>([]);
-const chatInput = ref("");
-const chatMessagesRef = ref<HTMLElement>();
-const isAnalyzing = ref(false);
+const aiProcessing = ref(false)
+const analysisResults = ref<any>(null)
+const suggestions = ref<any[]>([])
+const showChat = ref(false)
+const chatMessages = ref<any[]>([])
+const chatInput = ref('')
+const chatMessagesRef = ref<HTMLElement>()
+const isAnalyzing = ref(false)
 
 // Computed
 const contextTypeLabel = computed(() => {
-  if (!props.context) return "";
-  return props.context.type === "resume" ? "Resume" : "Cover Letter";
-});
+  if (!props.context) return ''
+  return props.context.type === 'resume' ? 'Resume' : 'Cover Letter'
+})
 
 const contextPreview = computed(() => {
-  if (!props.context) return "";
-  if (props.context.type === "resume") {
-    return `${props.context.data?.personalInfo?.name || "Resume"} - ${props.context.data?.experience?.length || 0} positions`;
+  if (!props.context) return ''
+  if (props.context.type === 'resume') {
+    return `${props.context.data?.personalInfo?.name || 'Resume'} - ${props.context.data?.experience?.length || 0} positions`
   }
-  return `Cover letter for ${props.context.data?.jobInfo?.company || "position"}`;
-});
+  return `Cover letter for ${props.context.data?.jobInfo?.company || 'position'}`
+})
 
 // Methods
 const handleOverlayClick = (event: Event) => {
   if (event.target === event.currentTarget) {
-    emit("close");
+    emit('close')
   }
-};
+}
 
 const getScoreClass = (score: number) => {
-  if (score >= 80) return "excellent";
-  if (score >= 60) return "good";
-  if (score >= 40) return "fair";
-  return "poor";
-};
+  if (score >= 80) return 'excellent'
+  if (score >= 60) return 'good'
+  if (score >= 40) return 'fair'
+  return 'poor'
+}
 
 const getScoreDescription = (score: number, type: string) => {
   const descriptions = {
     ats: {
-      excellent: "Excellent ATS compatibility",
-      good: "Good ATS compatibility with minor improvements needed",
-      fair: "Moderate ATS compatibility, several improvements needed",
-      poor: "Poor ATS compatibility, major improvements required",
+      excellent: 'Excellent ATS compatibility',
+      good: 'Good ATS compatibility with minor improvements needed',
+      fair: 'Moderate ATS compatibility, several improvements needed',
+      poor: 'Poor ATS compatibility, major improvements required'
     },
     keywords: {
-      excellent: "Excellent keyword optimization",
-      good: "Good keyword coverage with room for improvement",
-      fair: "Moderate keyword usage, add more relevant terms",
-      poor: "Poor keyword coverage, significant improvements needed",
+      excellent: 'Excellent keyword optimization',
+      good: 'Good keyword coverage with room for improvement',
+      fair: 'Moderate keyword usage, add more relevant terms',
+      poor: 'Poor keyword coverage, significant improvements needed'
     },
     content: {
-      excellent: "Excellent content quality and structure",
-      good: "Good content with minor enhancements possible",
-      fair: "Content needs improvement in clarity and impact",
-      poor: "Content requires significant rewriting and restructuring",
-    },
-  };
-
-  const scoreClass = getScoreClass(score);
-  return descriptions[type as keyof typeof descriptions][
-    scoreClass as keyof typeof descriptions.ats
-  ];
-};
+      excellent: 'Excellent content quality and structure',
+      good: 'Good content with minor enhancements possible',
+      fair: 'Content needs improvement in clarity and impact',
+      poor: 'Content requires significant rewriting and restructuring'
+    }
+  }
+  
+  const scoreClass = getScoreClass(score)
+  return descriptions[type as keyof typeof descriptions][scoreClass as keyof typeof descriptions.ats]
+}
 
 const getSuggestionIcon = (type: string) => {
   const icons = {
-    summary: "mdi-text-box-outline",
-    experience: "mdi-briefcase-outline",
-    skills: "mdi-cog-outline",
-    format: "mdi-format-text",
-    keywords: "mdi-key-variant",
-    general: "mdi-lightbulb-outline",
-  };
-  return icons[type as keyof typeof icons] || "mdi-lightbulb-outline";
-};
+    'summary': 'mdi-text-box-outline',
+    'experience': 'mdi-briefcase-outline',
+    'skills': 'mdi-cog-outline',
+    'format': 'mdi-format-text',
+    'keywords': 'mdi-key-variant',
+    'general': 'mdi-lightbulb-outline'
+  }
+  return icons[type as keyof typeof icons] || 'mdi-lightbulb-outline'
+}
 
 const applySuggestion = (suggestion: any) => {
-  suggestion.applied = true;
-  emit("apply", suggestion);
-  toast.success("Suggestion applied successfully");
-};
+  suggestion.applied = true
+  emit('apply', suggestion)
+  toast.success('Suggestion applied successfully')
+}
 
 const sendChatMessage = async () => {
-  if (!chatInput.value.trim() || aiProcessing.value) return;
-
+  if (!chatInput.value.trim() || aiProcessing.value) return
+  
   const message = {
     id: Date.now().toString(),
-    role: "user",
+    role: 'user',
     text: chatInput.value,
-    timestamp: new Date(),
-  };
-
-  chatMessages.value.push(message);
-  const userMessage = chatInput.value;
-  chatInput.value = "";
-
-  aiProcessing.value = true;
-
+    timestamp: new Date()
+  }
+  
+  chatMessages.value.push(message)
+  const userMessage = chatInput.value
+  chatInput.value = ''
+  
+  aiProcessing.value = true
+  
   try {
     // Add typing indicator
     const typingMessage = {
-      id: "typing",
-      role: "assistant",
-      text: "Thinking...",
+      id: 'typing',
+      role: 'assistant',
+      text: 'Thinking...',
       timestamp: new Date(),
-      isTyping: true,
-    };
-    chatMessages.value.push(typingMessage);
-
-    await nextTick();
-    scrollToBottom();
-
+      isTyping: true
+    }
+    chatMessages.value.push(typingMessage)
+    
+    await nextTick()
+    scrollToBottom()
+    
     // Use canonical AI service
     const response = await ai.generateText(
       `Context: ${JSON.stringify(props.context)}\n\nUser question: ${userMessage}`,
-      { temperature: 0.7 },
-    );
-
+      { temperature: 0.7 }
+    )
+    
     // Remove typing indicator
-    const typingIndex = chatMessages.value.findIndex((m) => m.id === "typing");
+    const typingIndex = chatMessages.value.findIndex(m => m.id === 'typing')
     if (typingIndex !== -1) {
-      chatMessages.value.splice(typingIndex, 1);
+      chatMessages.value.splice(typingIndex, 1)
     }
-
+    
     // Add AI response
     const aiMessage = {
       id: Date.now().toString(),
-      role: "assistant",
-      text:
-        response.content ||
-        "I apologize, but I encountered an issue processing your request.",
-      timestamp: new Date(),
-    };
-    chatMessages.value.push(aiMessage);
+      role: 'assistant',
+      text: response.content || 'I apologize, but I encountered an issue processing your request.',
+      timestamp: new Date()
+    }
+    chatMessages.value.push(aiMessage)
+    
   } catch (error) {
     // Remove typing indicator
-    const typingIndex = chatMessages.value.findIndex((m) => m.id === "typing");
+    const typingIndex = chatMessages.value.findIndex(m => m.id === 'typing')
     if (typingIndex !== -1) {
-      chatMessages.value.splice(typingIndex, 1);
+      chatMessages.value.splice(typingIndex, 1)
     }
-
-    toast.error("Failed to get AI response");
-    console.error("AI chat error:", error);
+    
+    toast.error('Failed to get AI response')
+    console.error('AI chat error:', error)
   } finally {
-    aiProcessing.value = false;
-    await nextTick();
-    scrollToBottom();
+    aiProcessing.value = false
+    await nextTick()
+    scrollToBottom()
   }
-};
+}
 
 const formatMessage = (text: string) => {
-  return text
-    .replace(/\n/g, "<br>")
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-};
+  return text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+}
 
 const formatTimestamp = (timestamp: Date) => {
-  return timestamp.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
+  return timestamp.toLocaleTimeString('en-US', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  })
+}
 
 const scrollToBottom = () => {
   if (chatMessagesRef.value) {
-    chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight;
+    chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight
   }
-};
+}
 
 const toggleChat = () => {
-  showChat.value = !showChat.value;
-};
+  showChat.value = !showChat.value
+}
 
 const improveContent = async () => {
-  aiProcessing.value = true;
+  aiProcessing.value = true
   try {
     const response = await ai.generateText(
       `Please provide suggestions to improve this document content: ${JSON.stringify(props.context)}`,
-      { temperature: 0.5 },
-    );
-
+      { temperature: 0.5 }
+    )
+    
     suggestions.value.push({
       id: Date.now().toString(),
-      type: "general",
-      priority: "medium",
-      text: response.content || "Content improvement suggestions generated.",
-      applied: false,
-    });
-
-    toast.success("Content improvement suggestions generated");
+      type: 'general',
+      priority: 'medium',
+      text: response.content || 'Content improvement suggestions generated.',
+      applied: false
+    })
+    
+    toast.success('Content improvement suggestions generated')
   } catch (error) {
-    toast.error("Failed to generate improvements");
+    toast.error('Failed to generate improvements')
   } finally {
-    aiProcessing.value = false;
+    aiProcessing.value = false
   }
-};
+}
 
 const optimizeForJob = async () => {
-  aiProcessing.value = true;
+  aiProcessing.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
     suggestions.value.push({
       id: Date.now().toString(),
-      type: "keywords",
-      priority: "high",
-      text: "Add more job-relevant keywords to improve ATS matching.",
-      example:
-        "Include specific technologies and skills mentioned in the job description.",
-      applied: false,
-    });
-
-    toast.success("Job optimization suggestions generated");
+      type: 'keywords',
+      priority: 'high',
+      text: 'Add more job-relevant keywords to improve ATS matching.',
+      example: 'Include specific technologies and skills mentioned in the job description.',
+      applied: false
+    })
+    
+    toast.success('Job optimization suggestions generated')
   } catch (error) {
-    toast.error("Failed to generate job optimization");
+    toast.error('Failed to generate job optimization')
   } finally {
-    aiProcessing.value = false;
+    aiProcessing.value = false
   }
-};
+}
 
 const enhanceWriting = async () => {
-  aiProcessing.value = true;
+  aiProcessing.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    
     suggestions.value.push({
       id: Date.now().toString(),
-      type: "format",
-      priority: "medium",
-      text: "Improve sentence structure and use stronger action verbs.",
+      type: 'format',
+      priority: 'medium',
+      text: 'Improve sentence structure and use stronger action verbs.',
       example: 'Replace "Worked on" with "Developed", "Led", or "Implemented".',
-      applied: false,
-    });
-
-    toast.success("Writing enhancement suggestions generated");
+      applied: false
+    })
+    
+    toast.success('Writing enhancement suggestions generated')
   } catch (error) {
-    toast.error("Failed to generate writing enhancements");
+    toast.error('Failed to generate writing enhancements')
   } finally {
-    aiProcessing.value = false;
+    aiProcessing.value = false
   }
-};
+}
 
 const analyzeDocument = async () => {
-  aiProcessing.value = true;
-  isAnalyzing.value = true;
-
+  aiProcessing.value = true
+  isAnalyzing.value = true
+  
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    
     analysisResults.value = {
       atsScore: Math.floor(Math.random() * 30) + 70,
       keywordMatch: Math.floor(Math.random() * 25) + 65,
-      contentQuality: Math.floor(Math.random() * 20) + 75,
-    };
-
+      contentQuality: Math.floor(Math.random() * 20) + 75
+    }
+    
     // Generate comprehensive suggestions
     suggestions.value = [
       {
-        id: "1",
-        type: "summary",
-        priority: "high",
-        text: "Strengthen your professional summary with quantifiable achievements.",
-        example:
-          "Led a team of 5 developers to deliver project 2 weeks ahead of schedule.",
-        applied: false,
+        id: '1',
+        type: 'summary',
+        priority: 'high',
+        text: 'Strengthen your professional summary with quantifiable achievements.',
+        example: 'Led a team of 5 developers to deliver project 2 weeks ahead of schedule.',
+        applied: false
       },
       {
-        id: "2",
-        type: "experience",
-        priority: "medium",
-        text: "Add more specific metrics to your experience descriptions.",
-        example: "Increased user engagement by 35% through UI/UX improvements.",
-        applied: false,
+        id: '2',
+        type: 'experience',
+        priority: 'medium',
+        text: 'Add more specific metrics to your experience descriptions.',
+        example: 'Increased user engagement by 35% through UI/UX improvements.',
+        applied: false
       },
       {
-        id: "3",
-        type: "skills",
-        priority: "low",
-        text: "Include trending technologies relevant to your target role.",
-        example: "Add TypeScript, Docker, or cloud technologies if applicable.",
-        applied: false,
-      },
-    ];
-
-    toast.success("Document analysis complete");
+        id: '3',
+        type: 'skills',
+        priority: 'low',
+        text: 'Include trending technologies relevant to your target role.',
+        example: 'Add TypeScript, Docker, or cloud technologies if applicable.',
+        applied: false
+      }
+    ]
+    
+    toast.success('Document analysis complete')
   } catch (error) {
-    toast.error("Failed to analyze document");
+    toast.error('Failed to analyze document')
   } finally {
-    aiProcessing.value = false;
-    isAnalyzing.value = false;
+    aiProcessing.value = false
+    isAnalyzing.value = false
   }
-};
+}
 
 // Initialize with welcome message
 onMounted(() => {
   if (props.context) {
     chatMessages.value.push({
-      id: "welcome",
-      role: "assistant",
+      id: 'welcome',
+      role: 'assistant',
       text: `Hello! I'm here to help you improve your ${contextTypeLabel.value.toLowerCase()}. I can analyze your content, suggest improvements, and answer questions about best practices. How can I assist you today?`,
-      timestamp: new Date(),
-    });
+      timestamp: new Date()
+    })
   }
-});
+})
 </script>
 
 <style scoped>
@@ -632,11 +612,7 @@ onMounted(() => {
   justify-content: space-between;
   padding: var(--spacing-5);
   border-bottom: 1px solid var(--glass-border);
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-50) 0%,
-    var(--color-gaming-50) 100%
-  );
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-gaming-50) 100%);
 }
 
 .header-content {
@@ -993,36 +969,40 @@ onMounted(() => {
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .ai-modal-overlay {
+    padding: var(--spacing-2);
   }
-
+  
   .ai-modal {
+    max-height: 95vh;
   }
-
+  
   .results-grid {
+    grid-template-columns: 1fr;
   }
-
+  
   .actions-grid {
+    grid-template-columns: 1fr;
   }
-
+  
   .modal-footer {
     flex-direction: column;
+    gap: var(--spacing-3);
     align-items: stretch;
   }
-
+  
   .footer-actions {
     justify-content: space-between;
   }
-
+  
   .message-content {
+    max-width: 85%;
   }
 }
 </style>

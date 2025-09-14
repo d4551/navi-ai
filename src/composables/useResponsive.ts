@@ -1,107 +1,104 @@
-import { ref, readonly, computed } from "vue";
+/**
+ * Centralized Responsive Breakpoint Management Composable
+ * Handles mobile/tablet/desktop detection and responsive state management
+ */
+import { ref, readonly, computed } from 'vue'
 
-export type DeviceType = "mobile" | "tablet" | "desktop";
-export type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
+export type DeviceType = 'mobile' | 'tablet' | 'desktop'
+export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl'
 
 // Enhanced breakpoint definitions (matching modern device standards)
 const BREAKPOINTS = {
-} as const;
+  xs: 0,       // Extra small devices (very small phones)
+  mobile: 480, // Small mobile phones  
+  sm: 576,     // Small devices (larger phones/landscape)
+  md: 768,     // Medium devices (tablets)
+  lg: 992,     // Large devices (small desktops/large tablets)
+  xl: 1200,    // Extra large devices (desktops)
+  xxl: 1400,   // Ultra-wide desktop displays
+  xxxl: 1600   // Very large desktop displays
+} as const
 
 // Global reactive state
+const windowWidth = ref(0)
+const windowHeight = ref(0)
 
+export function useResponsive() {
   // Enhanced current breakpoint detection
   const currentBreakpoint = computed<Breakpoint>(() => {
-    const width = windowWidth.value;
-    if (width >= BREAKPOINTS.xxxl) return "xxxl";
-    if (width >= BREAKPOINTS.xxl) return "xxl";
-    if (width >= BREAKPOINTS.xl) return "xl";
-    if (width >= BREAKPOINTS.lg) return "lg";
-    if (width >= BREAKPOINTS.md) return "md";
-    if (width >= BREAKPOINTS.sm) return "sm";
-    return "xs";
-  });
+    const width = windowWidth.value
+    if (width >= BREAKPOINTS.xxxl) return 'xxxl'
+    if (width >= BREAKPOINTS.xxl) return 'xxl'
+    if (width >= BREAKPOINTS.xl) return 'xl'  
+    if (width >= BREAKPOINTS.lg) return 'lg'
+    if (width >= BREAKPOINTS.md) return 'md'
+    if (width >= BREAKPOINTS.sm) return 'sm'
+    return 'xs'
+  })
 
   // Device type detection
   const deviceType = computed<DeviceType>(() => {
-    const width = windowWidth.value;
-    if (width < BREAKPOINTS.md) return "mobile";
-    if (width < BREAKPOINTS.lg) return "tablet";
-    return "desktop";
-  });
+    const width = windowWidth.value
+    if (width < BREAKPOINTS.md) return 'mobile'
+    if (width < BREAKPOINTS.lg) return 'tablet'
+    return 'desktop'
+  })
 
   // Specific device checks
-  const isMobile = computed(() => deviceType.value === "mobile");
-  const isTablet = computed(() => deviceType.value === "tablet");
-  const isDesktop = computed(() => deviceType.value === "desktop");
+  const isMobile = computed(() => deviceType.value === 'mobile')
+  const isTablet = computed(() => deviceType.value === 'tablet')
+  const isDesktop = computed(() => deviceType.value === 'desktop')
 
   // Enhanced granular breakpoint checks
-  const isXs = computed(() => windowWidth.value < BREAKPOINTS.sm);
-  const isSm = computed(
-    () =>
-      windowWidth.value >= BREAKPOINTS.sm && windowWidth.value < BREAKPOINTS.md,
-  );
-  const isMd = computed(
-    () =>
-      windowWidth.value >= BREAKPOINTS.md && windowWidth.value < BREAKPOINTS.lg,
-  );
-  const isLg = computed(
-    () =>
-      windowWidth.value >= BREAKPOINTS.lg && windowWidth.value < BREAKPOINTS.xl,
-  );
-  const isXl = computed(
-    () =>
-      windowWidth.value >= BREAKPOINTS.xl &&
-      windowWidth.value < BREAKPOINTS.xxl,
-  );
-  const isXxl = computed(
-    () =>
-      windowWidth.value >= BREAKPOINTS.xxl &&
-      windowWidth.value < BREAKPOINTS.xxxl,
-  );
-  const isXxxl = computed(() => windowWidth.value >= BREAKPOINTS.xxxl);
-
+  const isXs = computed(() => windowWidth.value < BREAKPOINTS.sm)
+  const isSm = computed(() => windowWidth.value >= BREAKPOINTS.sm && windowWidth.value < BREAKPOINTS.md)
+  const isMd = computed(() => windowWidth.value >= BREAKPOINTS.md && windowWidth.value < BREAKPOINTS.lg)
+  const isLg = computed(() => windowWidth.value >= BREAKPOINTS.lg && windowWidth.value < BREAKPOINTS.xl)
+  const isXl = computed(() => windowWidth.value >= BREAKPOINTS.xl && windowWidth.value < BREAKPOINTS.xxl)
+  const isXxl = computed(() => windowWidth.value >= BREAKPOINTS.xxl && windowWidth.value < BREAKPOINTS.xxxl)
+  const isXxxl = computed(() => windowWidth.value >= BREAKPOINTS.xxxl)
+  
   // Ultra-wide display detection
-  const isUltraWide = computed(
-    () =>
-  );
+  const isUltraWide = computed(() => windowWidth.value >= 1600 && (windowWidth.value / windowHeight.value) > 2.0)
 
   // Responsive range checks
-  const isSmallMobile = computed(() => windowWidth.value < BREAKPOINTS.mobile);
-  const isMobileUp = computed(() => windowWidth.value >= BREAKPOINTS.mobile);
-  const isTabletUp = computed(() => windowWidth.value >= BREAKPOINTS.md);
-  const isDesktopUp = computed(() => windowWidth.value >= BREAKPOINTS.lg);
+  const isSmallMobile = computed(() => windowWidth.value < BREAKPOINTS.mobile)
+  const isMobileUp = computed(() => windowWidth.value >= BREAKPOINTS.mobile)
+  const isTabletUp = computed(() => windowWidth.value >= BREAKPOINTS.md)
+  const isDesktopUp = computed(() => windowWidth.value >= BREAKPOINTS.lg)
 
   // Enhanced responsive classes for components
   const deviceClasses = computed(() => ({
     // Device type classes
-    "device-mobile": isMobile.value,
-    "device-tablet": isTablet.value,
-    "device-desktop": isDesktop.value,
+    'device-mobile': isMobile.value,
+    'device-tablet': isTablet.value,
+    'device-desktop': isDesktop.value,
     [`device-${deviceType.value}`]: true,
-
+    
     // Breakpoint classes
     [`breakpoint-${currentBreakpoint.value}`]: true,
-    "breakpoint-xs": isXs.value,
-    "breakpoint-sm": isSm.value,
-    "breakpoint-md": isMd.value,
-    "breakpoint-lg": isLg.value,
-    "breakpoint-xl": isXl.value,
-    "breakpoint-xxl": isXxl.value,
-    "breakpoint-xxxl": isXxxl.value,
-
+    'breakpoint-xs': isXs.value,
+    'breakpoint-sm': isSm.value,
+    'breakpoint-md': isMd.value,
+    'breakpoint-lg': isLg.value,
+    'breakpoint-xl': isXl.value,
+    'breakpoint-xxl': isXxl.value,
+    'breakpoint-xxxl': isXxxl.value,
+    
     // Range classes
-    "small-mobile": isSmallMobile.value,
-    "mobile-up": isMobileUp.value,
-    "tablet-up": isTabletUp.value,
-    "desktop-up": isDesktopUp.value,
-
+    'small-mobile': isSmallMobile.value,
+    'mobile-up': isMobileUp.value,
+    'tablet-up': isTabletUp.value,
+    'desktop-up': isDesktopUp.value,
+    
     // Special display classes
-    "ultra-wide": isUltraWide.value,
-
+    'ultra-wide': isUltraWide.value,
+    
     // Screen ratio classes
-    landscape: screenInfo.value.isLandscape,
-    portrait: screenInfo.value.isPortrait,
-  }));
+    'landscape': screenInfo.value.isLandscape,
+    'portrait': screenInfo.value.isPortrait,
+    'square-ish': Math.abs(screenInfo.value.aspectRatio - 1) < 0.2
+  }))
 
   // Screen size helpers
   const screenInfo = computed(() => ({
@@ -111,116 +108,116 @@ const BREAKPOINTS = {
     isLandscape: windowWidth.value > windowHeight.value,
     isPortrait: windowWidth.value <= windowHeight.value,
     deviceType: deviceType.value,
-    breakpoint: currentBreakpoint.value,
-  }));
+    breakpoint: currentBreakpoint.value
+  }))
 
   // Responsive grid columns calculation
   const getGridColumns = (config: {
-    mobile?: number;
-    tablet?: number;
-    desktop?: number;
+    mobile?: number
+    tablet?: number
+    desktop?: number
   }) => {
-  };
+    if (isMobile.value) return config.mobile || 1
+    if (isTablet.value) return config.tablet || 2
+    return config.desktop || 4
+  }
 
   // Responsive spacing calculation
   const getResponsiveSpacing = (config: {
-    mobile?: string;
-    tablet?: string;
-    desktop?: string;
+    mobile?: string
+    tablet?: string
+    desktop?: string
   }) => {
-  };
+    if (isMobile.value) return config.mobile || '0.75rem'
+    if (isTablet.value) return config.tablet || '1rem'
+    return config.desktop || '1.5rem'
+  }
 
   // Responsive font size calculation
   const getResponsiveFontSize = (config: {
-    mobile?: string;
-    tablet?: string;
-    desktop?: string;
+    mobile?: string
+    tablet?: string
+    desktop?: string
   }) => {
-  };
+    if (isMobile.value) return config.mobile || '0.875rem'
+    if (isTablet.value) return config.tablet || '1rem'
+    return config.desktop || '1.125rem'
+  }
 
   // Check if screen matches breakpoint
-  const matchesBreakpoint = (breakpoint: Breakpoint | "mobile"): boolean => {
-    if (breakpoint === "mobile") return windowWidth.value < BREAKPOINTS.md;
-    return currentBreakpoint.value === breakpoint;
-  };
+  const matchesBreakpoint = (breakpoint: Breakpoint | 'mobile'): boolean => {
+    if (breakpoint === 'mobile') return windowWidth.value < BREAKPOINTS.md
+    return currentBreakpoint.value === breakpoint
+  }
 
   // Check if screen is at least breakpoint
-  const isBreakpointUp = (breakpoint: Breakpoint | "mobile"): boolean => {
-    if (breakpoint === "mobile") return windowWidth.value >= BREAKPOINTS.mobile;
-    return windowWidth.value >= BREAKPOINTS[breakpoint];
-  };
+  const isBreakpointUp = (breakpoint: Breakpoint | 'mobile'): boolean => {
+    if (breakpoint === 'mobile') return windowWidth.value >= BREAKPOINTS.mobile
+    return windowWidth.value >= BREAKPOINTS[breakpoint]
+  }
 
   // Check if screen is below breakpoint
-  const isBreakpointDown = (breakpoint: Breakpoint | "mobile"): boolean => {
-    if (breakpoint === "mobile") return windowWidth.value < BREAKPOINTS.mobile;
-    return windowWidth.value < BREAKPOINTS[breakpoint];
-  };
+  const isBreakpointDown = (breakpoint: Breakpoint | 'mobile'): boolean => {
+    if (breakpoint === 'mobile') return windowWidth.value < BREAKPOINTS.mobile
+    return windowWidth.value < BREAKPOINTS[breakpoint]
+  }
 
   // Update window dimensions
   const updateDimensions = () => {
-    windowWidth.value = window.innerWidth;
-    windowHeight.value = window.innerHeight;
-  };
+    windowWidth.value = window.innerWidth
+    windowHeight.value = window.innerHeight
+  }
 
   // Debounced resize handler
-  let resizeTimeout: ReturnType<typeof setTimeout>;
+  let resizeTimeout: ReturnType<typeof setTimeout>
   const handleResize = () => {
-    clearTimeout(resizeTimeout);
-  };
+    clearTimeout(resizeTimeout)
+    resizeTimeout = setTimeout(updateDimensions, 16) // ~60fps
+  }
 
   // Initialize responsive system
   const initializeResponsive = () => {
-    if (typeof window !== "undefined") {
-      updateDimensions();
-      window.addEventListener("resize", handleResize);
+    if (typeof window !== 'undefined') {
+      updateDimensions()
+      window.addEventListener('resize', handleResize)
     }
-  };
+  }
 
   // Cleanup
   const cleanup = () => {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("resize", handleResize);
-      clearTimeout(resizeTimeout);
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(resizeTimeout)
     }
-  };
+  }
 
   // Responsive CSS helpers
   const getResponsiveCSS = () => ({
-    containerPadding: getResponsiveSpacing({
-    }),
-    fontSize: getResponsiveFontSize({
-    }),
-  });
+    gridColumns: `repeat(${getGridColumns({ mobile: 1, tablet: 2, desktop: 4 })}, 1fr)`,
+    containerPadding: getResponsiveSpacing({ mobile: '0.75rem', tablet: '1rem', desktop: '1.5rem' }),
+    fontSize: getResponsiveFontSize({ mobile: '0.875rem', tablet: '1rem', desktop: '1.125rem' })
+  })
 
   // Media query helpers for programmatic use
   const createMediaQuery = (query: string) => {
-    if (typeof window === "undefined")
-      return {
-        matches: false,
-        addEventListener: () => {},
-        removeEventListener: () => {},
-      };
-    return window.matchMedia(query);
-  };
+    if (typeof window === 'undefined') return { matches: false, addEventListener: () => {}, removeEventListener: () => {} }
+    return window.matchMedia(query)
+  }
 
-  const watchBreakpoint = (
-    breakpoint: Breakpoint | "mobile",
-    callback: (matches: boolean) => void,
-  ) => {
-    const query =
-      breakpoint === "mobile"
-        : `(min-width: ${BREAKPOINTS[breakpoint]}px)`;
-
-    const mediaQuery = createMediaQuery(query);
-    const handler = (e: Event) => callback((e as MediaQueryListEvent).matches);
+  const watchBreakpoint = (breakpoint: Breakpoint | 'mobile', callback: (matches: boolean) => void) => {
+    const query = breakpoint === 'mobile' 
+      ? `(max-width: ${BREAKPOINTS.md - 1}px)`
+      : `(min-width: ${BREAKPOINTS[breakpoint]}px)`
+    
+    const mediaQuery = createMediaQuery(query)
+    const handler = (e: Event) => callback((e as MediaQueryListEvent).matches)
 
     // MediaQueryList in modern browsers supports addEventListener
-    mediaQuery.addEventListener("change", handler as EventListener);
-    callback(mediaQuery.matches); // Initial call
+    mediaQuery.addEventListener('change', handler as EventListener)
+    callback(mediaQuery.matches) // Initial call
 
-    return () =>
-      mediaQuery.removeEventListener("change", handler as EventListener);
-  };
+    return () => mediaQuery.removeEventListener('change', handler as EventListener)
+  }
 
   return {
     // State
@@ -229,12 +226,12 @@ const BREAKPOINTS = {
     currentBreakpoint,
     deviceType,
     screenInfo,
-
+    
     // Device checks
     isMobile,
-    isTablet,
+    isTablet, 
     isDesktop,
-
+    
     // Breakpoint checks
     isXs,
     isSm,
@@ -242,16 +239,16 @@ const BREAKPOINTS = {
     isLg,
     isXl,
     isXxl,
-
+    
     // Range checks
     isSmallMobile,
     isMobileUp,
     isTabletUp,
     isDesktopUp,
-
+    
     // CSS classes
     deviceClasses,
-
+    
     // Utilities
     getGridColumns,
     getResponsiveSpacing,
@@ -261,18 +258,19 @@ const BREAKPOINTS = {
     isBreakpointUp,
     isBreakpointDown,
     watchBreakpoint,
-
+    
     // Lifecycle
     initializeResponsive,
-    cleanup,
-  };
+    cleanup
+  }
 }
 
 // Auto-initialize responsive system
-let isInitialized = false;
-  if (!isInitialized && typeof window !== "undefined") {
-    isInitialized = true;
-    const { initializeResponsive } = useResponsive();
-    initializeResponsive();
+let isInitialized = false
+export function autoInitializeResponsive() {
+  if (!isInitialized && typeof window !== 'undefined') {
+    isInitialized = true
+    const { initializeResponsive } = useResponsive()
+    initializeResponsive()
   }
 }

@@ -4,9 +4,7 @@
 -->
 <template>
   <div class="game-job-filters">
-    <div
-      class="filters-header d-flex align-items-center justify-content-between mb-3"
-    >
+    <div class="filters-header d-flex align-items-center justify-content-between mb-3">
       <h5 class="filters-title mb-0">
         <AppIcon name="mdi-filter-variant" class="me-2" />
         Filter Gaming Jobs
@@ -27,7 +25,7 @@
           :leading-icon="isExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"
           @click="toggleExpanded"
         >
-          {{ isExpanded ? "Less" : "More" }}
+          {{ isExpanded ? 'Less' : 'More' }}
         </UnifiedButton>
       </div>
     </div>
@@ -61,11 +59,7 @@
           @change="updateFilters"
         >
           <option value="">All Categories</option>
-          <option
-            v-for="category in roleCategories"
-            :key="category"
-            :value="category"
-          >
+          <option v-for="category in roleCategories" :key="category" :value="category">
             {{ category }} ({{ getRoleCategoryCount(category) }} roles)
           </option>
         </select>
@@ -97,11 +91,7 @@
         <div class="col-md-4">
           <label class="form-label">Studio Type</label>
           <div class="filter-checkboxes">
-            <div
-              v-for="type in studioTypes"
-              :key="type.value"
-              class="form-check"
-            >
+            <div v-for="type in studioTypes" :key="type.value" class="form-check">
               <input
                 :id="`studio-type-${type.value}`"
                 v-model="filters.studioTypes"
@@ -110,12 +100,8 @@
                 :value="type.value"
                 @change="updateFilters"
               />
-              <label
-                :for="`studio-type-${type.value}`"
-                class="form-check-label"
-              >
-                {{ type.label }}
-                <span class="text-muted">({{ type.count }})</span>
+              <label :for="`studio-type-${type.value}`" class="form-check-label">
+                {{ type.label }} <span class="text-muted">({{ type.count }})</span>
               </label>
             </div>
           </div>
@@ -125,11 +111,7 @@
         <div class="col-md-4">
           <label class="form-label">Company Size</label>
           <div class="filter-checkboxes">
-            <div
-              v-for="size in companySizes"
-              :key="size.value"
-              class="form-check"
-            >
+            <div v-for="size in companySizes" :key="size.value" class="form-check">
               <input
                 :id="`company-size-${size.value}`"
                 v-model="filters.companySizes"
@@ -138,10 +120,7 @@
                 :value="size.value"
                 @change="updateFilters"
               />
-              <label
-                :for="`company-size-${size.value}`"
-                class="form-check-label"
-              >
+              <label :for="`company-size-${size.value}`" class="form-check-label">
                 {{ size.label }}
               </label>
             </div>
@@ -206,11 +185,7 @@
             />
             <div class="tech-tags-container">
               <div class="tech-categories">
-                <div
-                  v-for="(techs, category) in filteredTechnologies"
-                  :key="category"
-                  class="tech-category mb-2"
-                >
+                <div v-for="(techs, category) in filteredTechnologies" :key="category" class="tech-category mb-2">
                   <h6 class="tech-category-title">{{ category }}</h6>
                   <div class="tech-tags d-flex flex-wrap gap-1">
                     <label
@@ -286,10 +261,7 @@
                 :value="region"
                 @change="updateFilters"
               />
-              <label
-                :for="`region-${region.toLowerCase().replace(/\s+/g, '-')}`"
-                class="form-check-label"
-              >
+              <label :for="`region-${region.toLowerCase().replace(/\s+/g, '-')}`" class="form-check-label">
                 {{ region }}
               </label>
             </div>
@@ -323,11 +295,7 @@
                 @change="updateFilters"
               />
               <label for="featured-only" class="form-check-label">
-                <AppIcon
-                  name="mdi-star"
-                  color="warning"
-                  context="achievement"
-                />
+                <AppIcon name="mdi-star" color="warning" context="achievement" />
                 Featured Jobs Only
               </label>
             </div>
@@ -407,39 +375,39 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, reactive, computed, watch, defineEmits, defineProps } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import {
   ROLE_CATEGORIES,
   STUDIO_CATEGORIES,
   TECHNOLOGY_TAGS,
   COMPANY_SIZES,
-  REGIONS,
-} from "@/shared/constants/gaming-studios";
+  REGIONS
+} from '@/shared/constants/gaming-studios';
 
 // Props
 const props = defineProps({
   totalJobs: {
     type: Number,
-    default: 0,
+    default: 0
   },
   resultsCount: {
     type: Number,
-    default: 0,
-  },
+    default: 0
+  }
 });
 
 // Emits
-const emit = defineEmits(["filters-changed"]);
+const emit = defineEmits(['filters-changed']);
 
 // State
 const isExpanded = ref(false);
-const technologySearch = ref("");
+const technologySearch = ref('');
 
 const filters = reactive({
-  roleCategory: "",
-  experienceLevel: "",
+  roleCategory: '',
+  experienceLevel: '',
   studioTypes: [],
   companySizes: [],
   remoteWork: false,
@@ -449,118 +417,51 @@ const filters = reactive({
   minSalary: null,
   maxSalary: null,
   regions: [],
-  specificLocation: "",
+  specificLocation: '',
   featuredOnly: false,
   newGradFriendly: false,
   visaSponsorship: false,
   diversityFocused: false,
-  sortBy: "relevance",
+  sortBy: 'relevance'
 });
 
 // Computed
 const roleCategories = computed(() => Object.keys(ROLE_CATEGORIES));
 
 const studioTypes = computed(() => [
-  { value: "AAA", label: "AAA Studios", count: STUDIO_CATEGORIES.AAA.length },
-  {
-    value: "Indie",
-    label: "Indie Studios",
-    count: STUDIO_CATEGORIES.Indie.length,
-  },
-  {
-    value: "Mobile",
-    label: "Mobile Games",
-    count: STUDIO_CATEGORIES.Mobile.length,
-  },
-  {
-    value: "VR/AR",
-    label: "VR/AR Studios",
-    count: STUDIO_CATEGORIES["VR/AR"].length,
-  },
-  {
-    value: "Platform",
-    label: "Platform Companies",
-    count: STUDIO_CATEGORIES.Platform.length,
-  },
-  {
-    value: "Esports",
-    label: "Esports Organizations",
-    count: STUDIO_CATEGORIES.Esports.length,
-  },
+  { value: 'AAA', label: 'AAA Studios', count: STUDIO_CATEGORIES.AAA.length },
+  { value: 'Indie', label: 'Indie Studios', count: STUDIO_CATEGORIES.Indie.length },
+  { value: 'Mobile', label: 'Mobile Games', count: STUDIO_CATEGORIES.Mobile.length },
+  { value: 'VR/AR', label: 'VR/AR Studios', count: STUDIO_CATEGORIES['VR/AR'].length },
+  { value: 'Platform', label: 'Platform Companies', count: STUDIO_CATEGORIES.Platform.length },
+  { value: 'Esports', label: 'Esports Organizations', count: STUDIO_CATEGORIES.Esports.length }
 ]);
 
-const companySizes = computed(() =>
-  COMPANY_SIZES.map((size) => ({
-    value: size.toLowerCase().replace(/[^a-z0-9]/g, "-"),
-    label: size,
-  })),
-);
+const companySizes = computed(() => COMPANY_SIZES.map(size => ({
+  value: size.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+  label: size
+})));
 
 const regions = computed(() => REGIONS);
 
 const technologyCategories = computed(() => ({
-  "Programming Languages": [
-    "C++",
-    "C#",
-    "Python",
-    "JavaScript",
-    "TypeScript",
-    "Go",
-    "Rust",
-    "Java",
-    "Swift",
-    "Kotlin",
-    "Lua",
-  ],
-  "Game Engines": [
-    "Unity",
-    "Unreal Engine",
-    "Godot",
-    "Custom Engine",
-    "Source Engine",
-  ],
-  "Graphics APIs": ["DirectX", "Vulkan", "OpenGL", "Metal", "WebGL"],
-  Platforms: [
-    "PC",
-    "Console",
-    "Mobile",
-    "VR",
-    "AR",
-    "Web",
-    "Switch",
-    "PlayStation",
-    "Xbox",
-    "Steam",
-  ],
-  "Cloud & DevOps": [
-    "AWS",
-    "Azure",
-    "Google Cloud",
-    "Kubernetes",
-    "Docker",
-    "Git",
-  ],
-  Specializations: [
-    "Networking",
-    "Multiplayer",
-    "Live Services",
-    "AI",
-    "Machine Learning",
-    "Analytics",
-  ],
+  'Programming Languages': ['C++', 'C#', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust', 'Java', 'Swift', 'Kotlin', 'Lua'],
+  'Game Engines': ['Unity', 'Unreal Engine', 'Godot', 'Custom Engine', 'Source Engine'],
+  'Graphics APIs': ['DirectX', 'Vulkan', 'OpenGL', 'Metal', 'WebGL'],
+  'Platforms': ['PC', 'Console', 'Mobile', 'VR', 'AR', 'Web', 'Switch', 'PlayStation', 'Xbox', 'Steam'],
+  'Cloud & DevOps': ['AWS', 'Azure', 'Google Cloud', 'Kubernetes', 'Docker', 'Git'],
+  'Specializations': ['Networking', 'Multiplayer', 'Live Services', 'AI', 'Machine Learning', 'Analytics']
 }));
 
 const filteredTechnologies = computed(() => {
-  if (!technologySearch.value) {
-    return technologyCategories.value;
-  }
+  if (!technologySearch.value) {return technologyCategories.value;}
 
   const search = technologySearch.value.toLowerCase();
   const filtered = {};
 
   for (const [category, techs] of Object.entries(technologyCategories.value)) {
-    const matchingTechs = techs.filter((tech) =>
-      tech.toLowerCase().includes(search),
+    const matchingTechs = techs.filter(tech =>
+      tech.toLowerCase().includes(search)
     );
     if (matchingTechs.length > 0) {
       filtered[category] = matchingTechs;
@@ -595,47 +496,43 @@ const activeFilters = computed(() => {
   const active = [];
 
   if (filters.roleCategory) {
-    active.push({
-      key: "roleCategory",
-      value: filters.roleCategory,
-      label: filters.roleCategory,
-    });
+    active.push({ key: 'roleCategory', value: filters.roleCategory, label: filters.roleCategory });
   }
 
   if (filters.experienceLevel) {
     const levelLabels = {
-      entry: "Entry Level",
-      junior: "Junior",
-      mid: "Mid-Level",
-      senior: "Senior",
-      principal: "Principal",
-      director: "Director",
+      entry: 'Entry Level',
+      junior: 'Junior',
+      mid: 'Mid-Level',
+      senior: 'Senior',
+      principal: 'Principal',
+      director: 'Director'
     };
     active.push({
-      key: "experienceLevel",
+      key: 'experienceLevel',
       value: filters.experienceLevel,
-      label: levelLabels[filters.experienceLevel],
+      label: levelLabels[filters.experienceLevel]
     });
   }
 
-  filters.studioTypes.forEach((type) => {
-    active.push({ key: "studioTypes", value: type, label: `${type} Studios` });
+  filters.studioTypes.forEach(type => {
+    active.push({ key: 'studioTypes', value: type, label: `${type} Studios` });
   });
 
-  filters.technologies.forEach((tech) => {
-    active.push({ key: "technologies", value: tech, label: tech });
+  filters.technologies.forEach(tech => {
+    active.push({ key: 'technologies', value: tech, label: tech });
   });
 
-  filters.regions.forEach((region) => {
-    active.push({ key: "regions", value: region, label: region });
+  filters.regions.forEach(region => {
+    active.push({ key: 'regions', value: region, label: region });
   });
 
   if (filters.remoteWork) {
-    active.push({ key: "remoteWork", value: true, label: "Remote Work" });
+    active.push({ key: 'remoteWork', value: true, label: 'Remote Work' });
   }
 
   if (filters.featuredOnly) {
-    active.push({ key: "featuredOnly", value: true, label: "Featured Jobs" });
+    active.push({ key: 'featuredOnly', value: true, label: 'Featured Jobs' });
   }
 
   return active;
@@ -643,13 +540,13 @@ const activeFilters = computed(() => {
 
 // Methods
 function updateFilters() {
-  emit("filters-changed", { ...filters });
+  emit('filters-changed', { ...filters });
 }
 
 function resetFilters() {
   Object.assign(filters, {
-    roleCategory: "",
-    experienceLevel: "",
+    roleCategory: '',
+    experienceLevel: '',
     studioTypes: [],
     companySizes: [],
     remoteWork: false,
@@ -659,12 +556,12 @@ function resetFilters() {
     minSalary: null,
     maxSalary: null,
     regions: [],
-    specificLocation: "",
+    specificLocation: '',
     featuredOnly: false,
     newGradFriendly: false,
     visaSponsorship: false,
     diversityFocused: false,
-    sortBy: "relevance",
+    sortBy: 'relevance'
   });
   updateFilters();
 }
@@ -675,10 +572,10 @@ function removeFilter(key, value) {
     if (index > -1) {
       filters[key].splice(index, 1);
     }
-  } else if (typeof filters[key] === "boolean") {
+  } else if (typeof filters[key] === 'boolean') {
     filters[key] = false;
   } else {
-    filters[key] = "";
+    filters[key] = '';
   }
   updateFilters();
 }
@@ -829,18 +726,22 @@ watch(technologySearch, (newVal) => {
   font-size: 1.1rem;
 }
 
+/* Scrollbar styling for filter checkboxes */
 .filter-checkboxes::-webkit-scrollbar,
 .tech-categories::-webkit-scrollbar {
+  width: 6px;
 }
 
 .filter-checkboxes::-webkit-scrollbar-track,
 .tech-categories::-webkit-scrollbar-track {
   background: var(--glass-surface);
+  border-radius: 3px;
 }
 
 .filter-checkboxes::-webkit-scrollbar-thumb,
 .tech-categories::-webkit-scrollbar-thumb {
   background: var(--glass-surface);
+  border-radius: 3px;
 }
 
 .filter-checkboxes::-webkit-scrollbar-thumb:hover,
@@ -848,12 +749,16 @@ watch(technologySearch, (newVal) => {
   background: var(--glass-surface);
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .game-job-filters {
+    padding: 1rem;
   }
 
   .filters-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
 
   .filter-actions {
@@ -862,18 +767,22 @@ watch(technologySearch, (newVal) => {
 
   .special-filters {
     flex-direction: column;
+    gap: 1rem !important;
   }
 
   .filters-footer {
     flex-direction: column;
+    gap: 1rem;
   }
 
   .filters-footer .d-flex {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
 }
 
+/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .game-job-filters {
     background: var(--surface-elevated);
@@ -909,9 +818,11 @@ watch(technologySearch, (newVal) => {
   }
 
   .tech-tag-label:hover .tech-tag {
+    background: #4b5563;
   }
 
   .filters-footer {
+    background: rgba(17, 24, 39, 0.8);
     border-top-color: var(--border-base);
   }
 }

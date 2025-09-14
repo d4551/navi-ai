@@ -46,76 +46,67 @@
       </div>
       <footer class="modal__footer d-flex justify-content-end gap-2">
         <UnifiedButton variant="ghost" @click="emitClose">Cancel</UnifiedButton>
-        <UnifiedButton
-          variant="primary"
-          leading-icon="mdi-content-save"
-          @click="submit"
-        >
-          Save
-        </UnifiedButton>
+        <UnifiedButton variant="primary" leading-icon="mdi-content-save" @click="submit">Save</UnifiedButton>
       </footer>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useToast } from "@/composables/useToast";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, onMounted } from 'vue'
+import { useToast } from '@/composables/useToast'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 interface ToolForm {
-  name: string;
-  url: string;
-  description: string;
+  name: string
+  url: string
+  description: string
 }
 
-const emit = defineEmits<{
-  (e: "save", tool: ToolForm): void;
-  (e: "close"): void;
-}>();
+const emit = defineEmits<{ 
+  (e: 'save', tool: ToolForm): void; 
+  (e: 'close'): void 
+}>()
 
-const name = ref("");
-const url = ref("");
-const description = ref("");
-const modalEl = ref<HTMLElement | null>(null);
+const name = ref('')
+const url = ref('')
+const description = ref('')
+const modalEl = ref<HTMLElement | null>(null)
 
-const { error: toastError } = useToast();
+const { error: toastError } = useToast()
 
 const reset = () => {
-  name.value = "";
-  url.value = "";
-  description.value = "";
-};
+  name.value = ''
+  url.value = ''
+  description.value = ''
+}
 
 const emitClose = () => {
-  reset();
-  emit("close");
-};
+  reset()
+  emit('close')
+}
 
 const submit = () => {
   if (!name.value.trim() || !url.value.trim()) {
-    toastError("Name and URL are required");
-    return;
+    toastError('Name and URL are required')
+    return
   }
-  const urlPattern = /^https?:\/\//i;
+  const urlPattern = /^https?:\/\//i
   if (!urlPattern.test(url.value)) {
-    toastError("URL must start with http:// or https://");
-    return;
+    toastError('URL must start with http:// or https://')
+    return
   }
-  emit("save", {
+  emit('save', {
     name: name.value.trim(),
     url: url.value.trim(),
     description: description.value.trim(),
-  });
-  reset();
-};
+  })
+  reset()
+}
 
 onMounted(() => {
-  setTimeout(
-    () => modalEl.value?.querySelector<HTMLInputElement>("input")?.focus(),
-    0,
-  );
-});
+  setTimeout(() => modalEl.value?.querySelector<HTMLInputElement>('input')?.focus(), 0)
+})
 </script>
 
 <style scoped>
@@ -163,10 +154,12 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
+/* Inputs adopt global glass-input styling via master-theme */
 
 .modal__footer {
   display: flex;
   justify-content: flex-end;
+  margin-top: var(--spacing-4);
 }
 
 .btn {

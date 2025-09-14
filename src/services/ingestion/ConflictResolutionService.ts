@@ -1,3 +1,7 @@
+/**
+ * Conflict Resolution Service
+ * Handles deduplication and merging of studio data from multiple sources
+ */
 
 import { logger } from "@/shared/utils/logger";
 import type { GameStudio } from "@/shared/types/jobs";
@@ -36,6 +40,12 @@ export type MatchType =
 
 export class ConflictResolutionService {
   private readonly matchThresholds = {
+    exact_name: 0.95,
+    fuzzy_name: 0.85,
+    website_match: 0.9,
+    game_overlap: 0.7,
+    location_match: 0.6,
+    overall_minimum: 0.75,
   };
 
   async findPotentialMatches(
@@ -84,12 +94,16 @@ export class ConflictResolutionService {
     candidate: GameStudio,
     existing: GameStudio,
   ): number {
+    let totalScore = 0;
+    let totalWeight = 0;
 
     // Name matching (highest weight)
     const nameScore = this.calculateNameSimilarity(
       candidate.name,
       existing.name,
     );
+    totalScore += nameScore * 0.4;
+    totalWeight += 0.4;
 
     // Website matching
     if (candidate.website && existing.website) {
@@ -97,6 +111,8 @@ export class ConflictResolutionService {
         candidate.website,
         existing.website,
       );
+      totalScore += websiteScore * 0.2;
+      totalWeight += 0.2;
     }
 
     // Game portfolio overlap
@@ -104,6 +120,8 @@ export class ConflictResolutionService {
       candidate.games || [],
       existing.games || [],
     );
+    totalScore += gameScore * 0.25;
+    totalWeight += 0.25;
 
     // Location matching
     if (candidate.location && existing.location) {
@@ -111,48 +129,90 @@ export class ConflictResolutionService {
         candidate.location,
         existing.location,
       );
+      totalScore += locationScore * 0.1;
+      totalWeight += 0.1;
     }
 
     // Founded year proximity
     if (candidate.founded && existing.founded) {
       const yearDiff = Math.abs(candidate.founded - existing.founded);
+      const yearScore = Math.max(0, 1 - yearDiff / 10); // 10 year tolerance
+      totalScore += yearScore * 0.05;
+      totalWeight += 0.05;
     }
 
+    return totalWeight > 0 ? totalScore / totalWeight : 0;
   }
 
+  private calculateNameSimilarity(name1: string, name2: string): number {
+    const clean1 = this.cleanStudioName(name1);
+    const clean2 = this.cleanStudioName(name2);
 
     // Exact match
+    if (clean1.toLowerCase() === clean2.toLowerCase()) {
+      return 1.0;
     }
 
     // Check for common variations
+    const variations1 = this.generateNameVariations(clean1);
+    const variations2 = this.generateNameVariations(clean2);
 
+    for (const var1 of variations1) {
+      for (const var2 of variations2) {
+        if (var1.toLowerCase() === var2.toLowerCase()) {
+          return 0.95;
         }
       }
     }
 
     // Fuzzy matching using Levenshtein distance
     const distance = this.levenshteinDistance(
+      clean1.toLowerCase(),
+      clean2.toLowerCase(),
     );
+    const maxLength = Math.max(clean1.length, clean2.length);
+    return Math.max(0, 1 - distance / maxLength);
   }
 
+  private calculateWebsiteSimilarity(url1: string, url2: string): number {
     try {
+      const domain1 = new URL(url1).hostname.replace("www.", "");
+      const domain2 = new URL(url2).hostname.replace("www.", "");
+      return domain1 === domain2 ? 1.0 : 0.0;
     } catch {
+      return url1.toLowerCase() === url2.toLowerCase() ? 1.0 : 0.0;
     }
   }
 
+  private calculateGameOverlap(games1: string[], games2: string[]): number {
+    if (games1.length === 0 && games2.length === 0) return 1.0;
+    if (games1.length === 0 || games2.length === 0) return 0.0;
 
+    const cleanGames1 = games1.map((g) => g.toLowerCase().trim());
+    const cleanGames2 = games2.map((g) => g.toLowerCase().trim());
 
+    const intersection = cleanGames1.filter((g) => cleanGames2.includes(g));
+    const union = new Set([...cleanGames1, ...cleanGames2]);
 
     return intersection.length / union.size;
   }
 
+  private calculateLocationSimilarity(loc1: string, loc2: string): number {
+    const clean1 = loc1.toLowerCase().trim();
+    const clean2 = loc2.toLowerCase().trim();
 
+    if (clean1 === clean2) return 1.0;
 
     // Check if one location contains the other (e.g., "San Francisco, CA" vs "San Francisco")
+    if (clean1.includes(clean2) || clean2.includes(clean1)) {
+      return 0.8;
     }
 
     // Extract cities and compare
+    const city1 = clean1.split(",")[0].trim();
+    const city2 = clean2.split(",")[0].trim();
 
+    return city1 === city2 ? 0.7 : 0.0;
   }
 
   private identifyMatchTypes(
@@ -260,10 +320,16 @@ export class ConflictResolutionService {
     const existingSource = (existing as any).sourceId || "manual";
 
     const sourcePriority = {
+      manual: 10,
+      igdb: 9,
+      steam: 8,
+      mobygames: 7,
     };
 
     const candidatePriority =
+      sourcePriority[candidateSource as keyof typeof sourcePriority] || 5;
     const existingPriority =
+      sourcePriority[existingSource as keyof typeof sourcePriority] || 5;
 
     if (candidatePriority > existingPriority) {
       return "use_candidate";
@@ -315,25 +381,32 @@ export class ConflictResolutionService {
     const reasoning: string[] = [];
 
     // Very high confidence match
+    if (matchScore >= 0.95) {
       const criticalConflicts = conflicts.filter(
+        (c) => ["name", "website"].includes(c.field) && c.confidence < 0.7,
       );
 
+      if (criticalConflicts.length === 0) {
         reasoning.push("Very high match score with no critical conflicts");
         return {
           action: "merge",
+          confidence: 0.95,
           reasoning,
         };
       }
     }
 
     // High confidence match
+    if (matchScore >= 0.85) {
       const manualReviewConflicts = conflicts.filter(
         (c) => c.resolution === "manual_review",
       );
 
+      if (manualReviewConflicts.length === 0) {
         reasoning.push("High match score with resolvable conflicts");
         return {
           action: "merge",
+          confidence: 0.85,
           reasoning,
         };
       } else {
@@ -342,15 +415,18 @@ export class ConflictResolutionService {
         );
         return {
           action: "manual_review",
+          confidence: 0.75,
           reasoning,
         };
       }
     }
 
     // Medium confidence
+    if (matchScore >= 0.75) {
       reasoning.push("Medium match score requires manual validation");
       return {
         action: "manual_review",
+        confidence: 0.6,
         reasoning,
       };
     }
@@ -359,6 +435,7 @@ export class ConflictResolutionService {
     reasoning.push("Low match score - treat as separate studio");
     return {
       action: "create_new",
+      confidence: 0.8,
       reasoning,
     };
   }
@@ -370,8 +447,14 @@ export class ConflictResolutionService {
   ): number {
     // Base confidence based on field importance
     const fieldWeights: Record<string, number> = {
+      name: 0.9,
+      website: 0.8,
+      location: 0.7,
+      founded: 0.6,
+      description: 0.5,
     };
 
+    return fieldWeights[field] || 0.5;
   }
 
   // Utility methods
@@ -402,16 +485,29 @@ export class ConflictResolutionService {
     return [...new Set(variations)];
   }
 
+  private levenshteinDistance(str1: string, str2: string): number {
+    const matrix = Array(str2.length + 1)
       .fill(null)
+      .map(() => Array(str1.length + 1).fill(null));
 
+    for (let i = 0; i <= str1.length; i++) matrix[0][i] = i;
+    for (let j = 0; j <= str2.length; j++) matrix[j][0] = j;
 
+    for (let j = 1; j <= str2.length; j++) {
+      for (let i = 1; i <= str1.length; i++) {
+        const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
         matrix[j][i] = Math.min(
+          matrix[j][i - 1] + 1,
+          matrix[j - 1][i] + 1,
+          matrix[j - 1][i - 1] + indicator,
         );
       }
     }
 
+    return matrix[str2.length][str1.length];
   }
 
+  async executeMergeStrategy(match: StudioMatch): Promise<GameStudio> {
     const { existingStudio, candidateStudio, conflicts } = match;
     const mergedStudio = { ...existingStudio };
 

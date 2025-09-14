@@ -1,14 +1,7 @@
 <template>
-  <div
-    class="video-controls glass-surface p-4 rounded-lg"
-    role="region"
-    aria-label="Video and Screen Sharing Controls"
-  >
+  <div class="video-controls glass-surface p-4 rounded-lg" role="region" aria-label="Video and Screen Sharing Controls">
     <!-- Video Preview -->
-    <div
-      v-if="showPreview && (isCameraActive || isScreenActive)"
-      class="video-preview mb-4"
-    >
+    <div v-if="showPreview && (isCameraActive || isScreenActive)" class="video-preview mb-4">
       <div class="video-container position-relative">
         <video
           ref="videoElement"
@@ -43,20 +36,18 @@
 
             <button
               class="control-btn-rgb ui-icon-btn"
-              :class="{ muted: isMuted }"
+              :class="{ 'muted': isMuted }"
               :title="isMuted ? 'Unmute' : 'Mute'"
               @click="toggleMute"
             >
-              <AppIcon
-                :name="isMuted ? 'mdi-microphone-off' : 'mdi-microphone'"
-              />
+              <AppIcon :name="isMuted ? 'mdi-microphone-off' : 'mdi-microphone'" />
               <div class="btn-glow"></div>
             </button>
 
             <button
               v-if="isCameraActive || isScreenActive"
               class="control-btn-rgb ai-control ui-icon-btn"
-              :class="{ active: isStreaming }"
+              :class="{ 'active': isStreaming }"
               :disabled="!apiKey"
               :title="isStreaming ? 'Stop AI Analysis' : 'Start AI Analysis'"
               @click="toggleAIStreaming"
@@ -116,17 +107,11 @@
           size="sm"
           :disabled="isStreaming || isVideoLocked"
           :aria-pressed="isCameraActive.toString()"
-          :title="
-            isCameraActive
-              ? isVideoLocked
-                ? 'Camera Locked'
-                : 'Stop Camera'
-              : 'Start Camera'
-          "
+          :title="isCameraActive ? (isVideoLocked ? 'Camera Locked' : 'Stop Camera') : 'Start Camera'"
           :leading-icon="isCameraActive ? 'mdi-video-off' : 'mdi-video'"
           @click="toggleCamera"
         >
-          {{ isCameraActive ? "Stop Camera" : "Start Camera" }}
+          {{ isCameraActive ? 'Stop Camera' : 'Start Camera' }}
         </UnifiedButton>
 
         <!-- Screen Share Toggle -->
@@ -135,17 +120,11 @@
           size="sm"
           :disabled="isStreaming || isScreenLocked"
           :aria-pressed="isScreenActive.toString()"
-          :title="
-            isScreenActive
-              ? isScreenLocked
-                ? 'Screen Share Locked'
-                : 'Stop Screen Share'
-              : 'Start Screen Share'
-          "
+          :title="isScreenActive ? (isScreenLocked ? 'Screen Share Locked' : 'Stop Screen Share') : 'Start Screen Share'"
           :leading-icon="isScreenActive ? 'mdi-monitor-off' : 'mdi-monitor'"
           @click="toggleScreenShare"
         >
-          {{ isScreenActive ? "Stop Sharing" : "Share Screen" }}
+          {{ isScreenActive ? 'Stop Sharing' : 'Share Screen' }}
         </UnifiedButton>
 
         <!-- AI Streaming Toggle -->
@@ -159,7 +138,7 @@
           leading-icon="mdi-brain"
           @click="toggleAIStreaming"
         >
-          {{ isStreaming ? "Stop AI" : "Start AI" }}
+          {{ isStreaming ? 'Stop AI' : 'Start AI' }}
         </UnifiedButton>
 
         <!-- Settings Toggle -->
@@ -213,53 +192,53 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, watch, onUnmounted } from "vue";
-import { videoService } from "@/shared/services/VideoService";
-import { googleAIStreamingService } from "@/shared/services/GoogleAIStreamingService";
-import { useAppStore } from "@/stores/app";
-import { logger } from "@/shared/utils/logger";
-import { useMediaLock } from "@/composables/useMediaLock";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import IconButton from "@/components/ui/IconButton.vue";
+import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
+import { videoService } from '@/shared/services/VideoService';
+import { googleAIStreamingService } from '@/shared/services/GoogleAIStreamingService';
+import { useAppStore } from '@/stores/app';
+import { logger } from '@/shared/utils/logger';
+import { useMediaLock } from '@/composables/useMediaLock';
+import AppIcon from '@/components/ui/AppIcon.vue';
+import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import IconButton from '@/components/ui/IconButton.vue';
 
 export default {
-  name: "VideoControls",
+  name: 'VideoControls',
   components: {
-    AppIcon,
+    AppIcon
   },
   props: {
     apiKey: {
       type: String,
-      default: null,
+      default: null
     },
     showPreview: {
       type: Boolean,
-      default: true,
+      default: true
     },
     autoStart: {
       type: Boolean,
-      default: false,
+      default: false
     },
     streamingSettings: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
-  emits: ["stream-started", "stream-stopped", "ai-response", "error"],
+  emits: ['stream-started', 'stream-stopped', 'ai-response', 'error'],
   setup(props, { emit }) {
     const store = useAppStore();
 
     // Reactive state
     const videoElement = ref(null);
     const showDeviceSelection = ref(false);
-    const selectedCameraId = ref("");
+    const selectedCameraId = ref('');
     const availableCameras = ref([]);
     const isMuted = ref(false);
-    const statusMessage = ref("");
-    const statusType = ref("alert-info");
-    const statusIcon = ref("mdi-information");
-    const aiResponse = ref("");
+    const statusMessage = ref('');
+    const statusType = ref('alert-info');
+    const statusIcon = ref('mdi-information');
+    const aiResponse = ref('');
 
     // Computed properties
     const isCameraActive = computed(() => videoService.isCameraActive());
@@ -272,14 +251,7 @@ export default {
     });
 
     // Media lock state
-    const {
-      videoLocked,
-      screenLocked,
-      lockVideo,
-      unlockVideo,
-      lockScreen,
-      unlockScreen,
-    } = useMediaLock();
+    const { videoLocked, screenLocked, lockVideo, unlockVideo, lockScreen, unlockScreen } = useMediaLock();
     const isVideoLocked = computed(() => videoLocked.value);
     const isScreenLocked = computed(() => screenLocked.value);
 
@@ -297,7 +269,7 @@ export default {
           await toggleCamera();
         }
       } catch (error) {
-        handleError("Failed to initialize video controls", error);
+        handleError('Failed to initialize video controls', error);
       }
     });
 
@@ -308,37 +280,30 @@ export default {
     });
 
     // Watch for API key changes
-    watch(
-      () => props.apiKey,
-      async (newKey) => {
-        if (newKey) {
-          try {
-            await googleAIStreamingService.initialize(newKey);
-            showStatus("AI service initialized", "success");
-          } catch (error) {
-            handleError("Failed to initialize AI service", error);
-          }
+    watch(() => props.apiKey, async (newKey) => {
+      if (newKey) {
+        try {
+          await googleAIStreamingService.initialize(newKey);
+          showStatus('AI service initialized', 'success');
+        } catch (error) {
+          handleError('Failed to initialize AI service', error);
         }
-      },
-    );
+      }
+    });
 
     // Watch for streaming settings changes
-    watch(
-      () => props.streamingSettings,
-      (newSettings) => {
-        if (newSettings) {
-          googleAIStreamingService.updateSettings(newSettings);
-        }
-      },
-      { deep: true, immediate: true },
-    );
+    watch(() => props.streamingSettings, (newSettings) => {
+      if (newSettings) {
+        googleAIStreamingService.updateSettings(newSettings);
+      }
+    }, { deep: true, immediate: true });
 
     // Methods
     const refreshDevices = async () => {
       try {
         availableCameras.value = await videoService.enumerateDevices();
       } catch (error) {
-        logger.error("Failed to refresh devices:", error);
+        logger.error('Failed to refresh devices:', error);
       }
     };
 
@@ -346,35 +311,35 @@ export default {
       videoService.setSelectedCamera(selectedCameraId.value);
     };
 
-    const toggleCamera = async () => {
+  const toggleCamera = async () => {
       try {
         if (isCameraActive.value) {
           videoService.stopCamera();
-          showStatus("Camera stopped", "info");
-          unlockVideo();
+          showStatus('Camera stopped', 'info');
+      unlockVideo();
         } else {
           const stream = await videoService.startCamera({
-            deviceId: selectedCameraId.value || undefined,
+            deviceId: selectedCameraId.value || undefined
           });
 
           if (videoElement.value) {
             videoElement.value.srcObject = stream;
           }
 
-          showStatus("Camera started", "success");
-          lockVideo("Active session");
+          showStatus('Camera started', 'success');
+      lockVideo('Active session');
         }
       } catch (error) {
-        handleError("Failed to toggle camera", error);
+        handleError('Failed to toggle camera', error);
       }
     };
 
-    const toggleScreenShare = async () => {
+  const toggleScreenShare = async () => {
       try {
         if (isScreenActive.value) {
           videoService.stopScreenShare();
-          showStatus("Screen sharing stopped", "info");
-          unlockScreen();
+          showStatus('Screen sharing stopped', 'info');
+      unlockScreen();
         } else {
           const stream = await videoService.startScreenShare();
 
@@ -382,11 +347,11 @@ export default {
             videoElement.value.srcObject = stream;
           }
 
-          showStatus("Screen sharing started", "success");
-          lockScreen("Active sharing");
+          showStatus('Screen sharing started', 'success');
+      lockScreen('Active sharing');
         }
       } catch (error) {
-        handleError("Failed to toggle screen sharing", error);
+        handleError('Failed to toggle screen sharing', error);
       }
     };
 
@@ -394,25 +359,25 @@ export default {
       try {
         if (isStreaming.value) {
           googleAIStreamingService.stopStreaming();
-          emit("stream-stopped");
-          showStatus("AI streaming stopped", "info");
+          emit('stream-stopped');
+          showStatus('AI streaming stopped', 'info');
         } else {
           const callbacks = {
             onStart: () => {
-              emit("stream-started");
-              showStatus("AI streaming started", "success");
+              emit('stream-started');
+              showStatus('AI streaming started', 'success');
             },
             onResponse: (response) => {
               aiResponse.value = response;
-              emit("ai-response", response);
+              emit('ai-response', response);
             },
             onError: (error) => {
-              handleError("AI streaming error", error);
+              handleError('AI streaming error', error);
             },
             onEnd: () => {
-              emit("stream-stopped");
-              showStatus("AI streaming ended", "info");
-            },
+              emit('stream-stopped');
+              showStatus('AI streaming ended', 'info');
+            }
           };
 
           if (isScreenActive.value) {
@@ -420,18 +385,18 @@ export default {
           } else if (isCameraActive.value) {
             await googleAIStreamingService.startVideoStreaming({}, callbacks);
           } else {
-            throw new Error("No video source active");
+            throw new Error('No video source active');
           }
         }
       } catch (error) {
-        handleError("Failed to toggle AI streaming", error);
+        handleError('Failed to toggle AI streaming', error);
       }
     };
 
     const switchCamera = async () => {
       // Find next camera
       const currentIndex = availableCameras.value.findIndex(
-        (camera) => camera.deviceId === selectedCameraId.value,
+        camera => camera.deviceId === selectedCameraId.value
       );
       const nextIndex = (currentIndex + 1) % availableCameras.value.length;
       const nextCamera = availableCameras.value[nextIndex];
@@ -449,7 +414,7 @@ export default {
     const toggleMute = () => {
       if (currentStream.value) {
         const audioTracks = currentStream.value.getAudioTracks();
-        audioTracks.forEach((track) => {
+        audioTracks.forEach(track => {
           track.enabled = isMuted.value;
         });
         isMuted.value = !isMuted.value;
@@ -462,34 +427,30 @@ export default {
       videoService.stopScreenShare();
     };
 
-    const showStatus = (message, type = "info") => {
+    const showStatus = (message, type = 'info') => {
       statusMessage.value = message;
       statusType.value = `alert-${type}`;
       statusIcon.value = getStatusIcon(type);
 
-
+      // Auto-clear status after 5 seconds
       setTimeout(() => {
-        statusMessage.value = "";
+        statusMessage.value = '';
       }, 5000);
     };
 
     const getStatusIcon = (type) => {
       switch (type) {
-        case "success":
-          return "mdi mdi-check-circle-outline";
-        case "warning":
-          return "mdi mdi-alert-circle-outline";
-        case "error":
-          return "mdi mdi-alert-circle-outline";
-        default:
-          return "mdi mdi-information";
+        case 'success': return 'mdi mdi-check-circle-outline';
+        case 'warning': return 'mdi mdi-alert-circle-outline';
+        case 'error': return 'mdi mdi-alert-circle-outline';
+        default: return 'mdi mdi-information';
       }
     };
 
     const handleError = (message, error) => {
       logger.error(message, error);
-      showStatus(`${message}: ${error.message}`, "error");
-      emit("error", error);
+      showStatus(`${message}: ${error.message}`, 'error');
+      emit('error', error);
     };
 
     return {
@@ -517,9 +478,9 @@ export default {
       lockVideo,
       unlockVideo,
       lockScreen,
-      unlockScreen,
+      unlockScreen
     };
-  },
+  }
 };
 </script>
 
@@ -530,17 +491,9 @@ export default {
   object-fit: cover;
   border: 2px solid transparent;
   border-radius: 20px;
-  background:
-    linear-gradient(145deg, var(--surface-elevated), var(--surface-base))
-      padding-box,
-    linear-gradient(
-        45deg,
-        var(--color-success-400),
-        var(--color-info-400),
-        var(--color-primary-400)
-      )
-      border-box;
-  box-shadow:
+  background: linear-gradient(145deg, var(--surface-elevated), var(--surface-base)) padding-box,
+              linear-gradient(45deg, var(--color-success-400), var(--color-info-400), var(--color-primary-400)) border-box;
+  box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -549,133 +502,248 @@ export default {
   max-height: 400px;
 }
 
+/* Enhanced RGB Streaming Indicator */
 .streaming-indicator-rgb {
   position: absolute;
+  top: 16px;
+  right: 16px;
   background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 100%
   );
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 25px;
   display: flex;
   align-items: center;
-  box-shadow:
+  gap: 10px;
+  box-shadow: 
+    0 8px 25px rgba(0, 255, 136, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .recording-dot-rgb {
-  background: linear-gradient(
-  );
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(45deg, var(--color-danger-500), var(--color-danger-400));
+  border-radius: 50%;
+  animation: rgbPulse 1.5s infinite;
+  box-shadow: 0 0 10px rgba(255, 0, 110, 0.6);
 }
 
 .streaming-text {
   color: var(--text-on-primary);
+  font-size: 12px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
 }
 
 .streaming-wave {
+  width: 20px;
+  height: 12px;
   background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 255, 136, 0.6) 25%,
+    rgba(0, 217, 255, 0.6) 50%,
+    rgba(184, 71, 255, 0.6) 75%,
+    transparent 100%
   );
+  border-radius: 2px;
+  animation: streamWave 2s infinite;
 }
 
 @keyframes rgbPulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(255, 0, 110, 0.6);
   }
+  50% { 
+    opacity: 0.7; 
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.8);
   }
 }
 
 @keyframes streamWave {
-  }
-  }
-  }
+  0% { transform: scaleX(0.5); opacity: 0.5; }
+  50% { transform: scaleX(1.2); opacity: 1; }
+  100% { transform: scaleX(0.5); opacity: 0.5; }
 }
 
+/* Enhanced Glassmorphic Controls Overlay */
 .video-controls-overlay-rgb {
   position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform: translateY(10px);
 }
 
 .controls-container {
   background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 100%
   );
+  backdrop-filter: blur(25px) saturate(1.8);
+  -webkit-backdrop-filter: blur(25px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 12px 16px;
   display: flex;
   justify-content: center;
-  box-shadow:
+  gap: 12px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .control-btn-rgb {
   position: relative;
+  width: 48px;
+  height: 48px;
   border: none;
+  border-radius: 16px;
   background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.1) 100%
   );
   color: var(--text-on-primary);
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   cursor: pointer;
   overflow: hidden;
-  box-shadow:
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .control-btn-rgb:hover {
+  transform: translateY(-2px) scale(1.05);
   background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.3) 0%,
+    rgba(0, 217, 255, 0.2) 100%
   );
-  box-shadow:
+  box-shadow: 
+    0 8px 25px rgba(0, 255, 136, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .control-btn-rgb:active {
+  transform: translateY(-1px) scale(1.02);
 }
 
 .control-btn-rgb.muted {
   background: linear-gradient(
+    135deg,
+    rgba(255, 71, 87, 0.3) 0%,
+    rgba(255, 0, 110, 0.2) 100%
   );
-  box-shadow:
+  box-shadow: 
+    0 4px 15px rgba(255, 0, 110, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .control-btn-rgb.ai-control.active {
   background: linear-gradient(
+    135deg,
+    rgba(184, 71, 255, 0.4) 0%,
+    rgba(99, 102, 241, 0.3) 100%
   );
-  box-shadow:
+  animation: aiPulse 2s infinite;
+  box-shadow: 
+    0 4px 20px rgba(184, 71, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .btn-glow {
   position: absolute;
+  inset: -2px;
   background: linear-gradient(
+    45deg,
+    rgba(0, 255, 136, 0.3),
+    rgba(0, 217, 255, 0.3),
+    rgba(184, 71, 255, 0.3)
   );
   border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .control-btn-rgb:hover .btn-glow {
+  opacity: 1;
+  animation: rgbRotate 3s linear infinite;
 }
 
 .ai-glow {
   background: linear-gradient(
+    45deg,
+    rgba(184, 71, 255, 0.5),
+    rgba(99, 102, 241, 0.5),
+    rgba(59, 130, 246, 0.5)
   );
 }
 
 @keyframes aiPulse {
-    box-shadow:
+  0%, 100% { 
+    box-shadow: 
+      0 4px 20px rgba(184, 71, 255, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
-    box-shadow:
+  50% { 
+    box-shadow: 
+      0 4px 30px rgba(184, 71, 255, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 }
 
 @keyframes rgbRotate {
-  }
-  }
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
-.btn .mdi-lock {
-}
-.btn .mdi-monitor-lock {
-}
+.btn .mdi-lock { color: var(--color-warning-600); }
+.btn .mdi-monitor-lock { color: var(--color-warning-600); }
 
 .video-container:hover .video-controls-overlay-rgb {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .ai-response-card {
   background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
 }
 
+/* Responsive adjustments */
+@media (max-width: 576px) {
   .video-preview-element {
+    max-height: 200px;
   }
 
   .video-preview-element.screen-share {
+    max-height: 250px;
   }
 
   .main-controls .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
   }
 
   .main-controls .btn span {

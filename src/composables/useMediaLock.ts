@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue'
 
 // Global (per app instance) reactive state for media device locking
 const audioLocked = ref(false);
@@ -49,7 +49,7 @@ export function useMediaLock() {
     lockVideo,
     unlockVideo,
     lockScreen,
-    unlockScreen,
+    unlockScreen
   };
 }
 

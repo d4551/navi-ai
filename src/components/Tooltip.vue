@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps } from "vue";
+import { ref, computed, defineProps } from 'vue'
 
 defineOptions({ name: "AppTooltip" });
 
@@ -189,25 +189,20 @@ const hideTooltip = () => {
   border-right-color: var(--glass-surface-dark);
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .tooltip-content {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    max-width: 200px;
     white-space: normal;
   }
 }
 
-.tooltip-content .rich {
-  white-space: normal;
-}
-.tooltip-content .tooltip-title {
-  display: block;
-}
-.tooltip-content .badges {
-  display: flex;
-  flex-wrap: wrap;
-}
-.tooltip-content .cap-badge {
-}
-.tooltip-content .tooltip-footer {
-  display: flex;
-  align-items: center;
-}
+/* Rich content helpers */
+.tooltip-content .rich { white-space: normal; max-width: 320px; }
+.tooltip-content .tooltip-title { font-weight: 700; margin-bottom: 6px; display: block; }
+.tooltip-content .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.tooltip-content .cap-badge { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); border-radius: 999px; padding: 2px 8px; font-size: 0.75rem; font-weight: 600; }
+.tooltip-content .tooltip-footer { display:flex; align-items:center; gap:6px; margin-top: 8px; opacity: 0.9; font-size: 0.75rem; }
 </style>

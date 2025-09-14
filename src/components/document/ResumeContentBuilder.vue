@@ -7,10 +7,7 @@
           v-for="(step, index) in resumeSteps"
           :key="step.id"
           class="step-item"
-          :class="{
-            active: currentStep === step.id,
-            completed: currentStep > step.id,
-          }"
+          :class="{ active: currentStep === step.id, completed: currentStep > step.id }"
           @click="$emit('step-change', step.id)"
         >
           <div class="step-number">{{ index + 1 }}</div>
@@ -28,9 +25,7 @@
             <AppIcon name="mdi-account-outline" class="me-2" />
             Personal Information
           </h3>
-          <p class="section-description">
-            Tell us about yourself to get started
-          </p>
+          <p class="section-description">Tell us about yourself to get started</p>
         </div>
 
         <div class="form-grid personal-info-grid">
@@ -119,9 +114,7 @@
             <AppIcon name="mdi-card-text-outline" class="me-2" />
             Professional Summary
           </h3>
-          <p class="section-description">
-            Write a compelling summary of your professional background
-          </p>
+          <p class="section-description">Write a compelling summary of your professional background</p>
         </div>
 
         <div class="form-field">
@@ -169,9 +162,7 @@
             <AppIcon name="mdi-briefcase-outline" class="me-2" />
             Professional Experience
           </h3>
-          <p class="section-description">
-            Add your work experience and achievements
-          </p>
+          <p class="section-description">Add your work experience and achievements</p>
         </div>
 
         <div class="experience-list">
@@ -181,9 +172,7 @@
             class="experience-item"
           >
             <div class="experience-header">
-              <h4 class="experience-title">
-                {{ exp.title }} at {{ exp.company }}
-              </h4>
+              <h4 class="experience-title">{{ exp.title }} at {{ exp.company }}</h4>
               <div class="experience-actions">
                 <UnifiedButton
                   variant="ghost"
@@ -266,7 +255,10 @@
               class="skill-tag"
             >
               {{ skill.name }}
-              <button class="skill-remove" @click="removeSkill(index)">
+              <button
+                class="skill-remove"
+                @click="removeSkill(index)"
+              >
                 <AppIcon name="mdi-close" size="14" />
               </button>
             </span>
@@ -306,9 +298,7 @@
             <AppIcon name="mdi-check-circle-outline" class="me-2" />
             Review & Finalize
           </h3>
-          <p class="section-description">
-            Review your resume and make final adjustments
-          </p>
+          <p class="section-description">Review your resume and make final adjustments</p>
         </div>
 
         <div class="review-content">
@@ -316,14 +306,12 @@
             <h4>Personal Information</h4>
             <p><strong>Name:</strong> {{ localData.personalInfo.name }}</p>
             <p><strong>Email:</strong> {{ localData.personalInfo.email }}</p>
-            <p>
-              <strong>Location:</strong> {{ localData.personalInfo.location }}
-            </p>
+            <p><strong>Location:</strong> {{ localData.personalInfo.location }}</p>
           </div>
 
           <div class="review-section">
             <h4>Professional Summary</h4>
-            <p>{{ localData.summary || "No summary provided" }}</p>
+            <p>{{ localData.summary || 'No summary provided' }}</p>
           </div>
 
           <div class="review-section">
@@ -363,20 +351,10 @@
     </div>
 
     <!-- Experience Modal -->
-    <div
-      v-if="showExperienceModal"
-      class="modal-overlay"
-      @click="closeExperienceModal"
-    >
+    <div v-if="showExperienceModal" class="modal-overlay" @click="closeExperienceModal">
       <div class="modal-content" @click.stop>
         <div class="modal-header">
-          <h3>
-            {{
-              editingExperienceIndex !== null
-                ? "Edit Experience"
-                : "Add Experience"
-            }}
-          </h3>
+          <h3>{{ editingExperienceIndex !== null ? 'Edit Experience' : 'Add Experience' }}</h3>
           <button class="modal-close" @click="closeExperienceModal">
             <AppIcon name="mdi-close" />
           </button>
@@ -455,7 +433,7 @@
             :disabled="!experienceForm.title || !experienceForm.company"
             @click="saveExperience"
           >
-            {{ editingExperienceIndex !== null ? "Update" : "Add" }} Experience
+            {{ editingExperienceIndex !== null ? 'Update' : 'Add' }} Experience
           </UnifiedButton>
         </div>
       </div>
@@ -464,129 +442,119 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import type { ResumeData } from "@/composables/useDocumentManager";
+import { ref, watch } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import type { ResumeData } from '@/composables/useDocumentManager'
 
 // Props
 const props = defineProps<{
-  documentData: ResumeData;
-  currentStep: number;
-  aiEnabled: boolean;
-}>();
+  documentData: ResumeData
+  currentStep: number
+  aiEnabled: boolean
+}>()
 
 // Emits
 const emit = defineEmits<{
-  "update-data": [data: ResumeData];
-  "step-change": [step: number];
-  "ai-request": [payload: any];
-}>();
+  'update-data': [data: ResumeData]
+  'step-change': [step: number]
+  'ai-request': [payload: any]
+}>()
 
 // State
-const newSkill = ref("");
-const showExperienceModal = ref(false);
-const editingExperienceIndex = ref<number | null>(null);
+const newSkill = ref('')
+const showExperienceModal = ref(false)
+const editingExperienceIndex = ref<number | null>(null)
 const experienceForm = ref({
-  title: "",
-  company: "",
-  location: "",
-  startDate: "",
-  endDate: "",
+  title: '',
+  company: '',
+  location: '',
+  startDate: '',
+  endDate: '',
   current: false,
-  description: "",
-});
+  description: ''
+})
 
 // Local data copy to avoid prop mutation
-const localData = ref(JSON.parse(JSON.stringify(props.documentData)));
+const localData = ref(JSON.parse(JSON.stringify(props.documentData)))
 
 // Watch for prop changes
-watch(
-  () => props.documentData,
-  (newData: ResumeData) => {
-    localData.value = JSON.parse(JSON.stringify(newData));
-  },
-  { deep: true },
-);
+watch(() => props.documentData, (newData: ResumeData) => {
+  localData.value = JSON.parse(JSON.stringify(newData))
+}, { deep: true })
 
 // Resume steps
 const resumeSteps = [
-  { id: 1, label: "Personal Info" },
-  { id: 2, label: "Summary" },
-  { id: 3, label: "Experience" },
-  { id: 4, label: "Skills" },
-  { id: 5, label: "Review" },
-];
+  { id: 1, label: 'Personal Info' },
+  { id: 2, label: 'Summary' },
+  { id: 3, label: 'Experience' },
+  { id: 4, label: 'Skills' },
+  { id: 5, label: 'Review' }
+]
 
 // Methods
 const addSkill = () => {
   if (newSkill.value.trim()) {
-    localData.value.skills.push({ name: newSkill.value.trim() });
-    newSkill.value = "";
-    emitDataUpdate();
+    localData.value.skills.push({ name: newSkill.value.trim() })
+    newSkill.value = ''
+    emitDataUpdate()
   }
-};
+}
 
 const removeSkill = (index: number) => {
-  localData.value.skills.splice(index, 1);
-  emitDataUpdate();
-};
+  localData.value.skills.splice(index, 1)
+  emitDataUpdate()
+}
 
 const addExperience = () => {
   experienceForm.value = {
-    title: "",
-    company: "",
-    location: "",
-    startDate: "",
-    endDate: "",
+    title: '',
+    company: '',
+    location: '',
+    startDate: '',
+    endDate: '',
     current: false,
-    description: "",
-  };
-  editingExperienceIndex.value = null;
-  showExperienceModal.value = true;
-};
+    description: ''
+  }
+  editingExperienceIndex.value = null
+  showExperienceModal.value = true
+}
 
 const editExperience = (index: number) => {
-  const exp = localData.value.experience[index];
-  experienceForm.value = { ...exp };
-  editingExperienceIndex.value = index;
-  showExperienceModal.value = true;
-};
+  const exp = localData.value.experience[index]
+  experienceForm.value = { ...exp }
+  editingExperienceIndex.value = index
+  showExperienceModal.value = true
+}
 
 const removeExperience = (index: number) => {
-  localData.value.experience.splice(index, 1);
-  emitDataUpdate();
-};
+  localData.value.experience.splice(index, 1)
+  emitDataUpdate()
+}
 
 const saveExperience = () => {
   if (editingExperienceIndex.value !== null) {
-    localData.value.experience[editingExperienceIndex.value] = {
-      ...experienceForm.value,
-    };
+    localData.value.experience[editingExperienceIndex.value] = { ...experienceForm.value }
   } else {
-    localData.value.experience.push({ ...experienceForm.value });
+    localData.value.experience.push({ ...experienceForm.value })
   }
-  emitDataUpdate();
-  closeExperienceModal();
-};
+  emitDataUpdate()
+  closeExperienceModal()
+}
 
 const closeExperienceModal = () => {
-  showExperienceModal.value = false;
-  editingExperienceIndex.value = null;
-};
+  showExperienceModal.value = false
+  editingExperienceIndex.value = null
+}
 
 const emitDataUpdate = () => {
-  emit("update-data", JSON.parse(JSON.stringify(localData.value)));
-};
+  emit('update-data', JSON.parse(JSON.stringify(localData.value)))
+}
 
 // Auto-save on data changes
-watch(
-  localData,
-  () => {
-    emitDataUpdate();
-  },
-  { deep: true },
-);
+watch(localData, () => {
+  emitDataUpdate()
+}, { deep: true })
 </script>
 
 <style scoped>
@@ -698,7 +666,7 @@ watch(
 }
 
 .form-field.required .field-label::after {
-  content: " *";
+  content: ' *';
   color: var(--color-error-500);
 }
 
@@ -923,22 +891,29 @@ watch(
   border-top: 1px solid var(--glass-border);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .step-progress {
     flex-wrap: wrap;
+    gap: var(--spacing-2);
   }
 
   .step-item {
+    min-width: 60px;
   }
 
   .form-grid {
+    grid-template-columns: 1fr;
   }
 
   .step-actions {
     flex-direction: column;
+    gap: var(--spacing-2);
   }
 
   .experience-header {
     flex-direction: column;
+    gap: var(--spacing-2);
     align-items: flex-start;
   }
 
@@ -947,6 +922,8 @@ watch(
   }
 
   .modal-content {
+    width: 95%;
+    margin: var(--spacing-2);
   }
 }
 </style>

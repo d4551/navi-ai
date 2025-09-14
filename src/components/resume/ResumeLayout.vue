@@ -5,9 +5,7 @@
       <div class="header-content">
         <div class="title-section">
           <h1 class="resume-title">Resume Builder</h1>
-          <p class="resume-subtitle">
-            Build your professional resume with AI assistance
-          </p>
+          <p class="resume-subtitle">Build your professional resume with AI assistance</p>
         </div>
         <div class="header-actions">
           <button class="action-btn secondary" @click="saveAsDraft">
@@ -24,14 +22,11 @@
           </button>
         </div>
       </div>
-
+      
       <!-- Progress Indicator -->
       <div class="progress-section">
         <div class="progress-bar">
-          <div
-            class="progress-fill"
-            :style="{ width: completionPercentage + '%' }"
-          ></div>
+          <div class="progress-fill" :style="{ width: completionPercentage + '%' }"></div>
         </div>
         <span class="progress-text">{{ completionPercentage }}% Complete</span>
       </div>
@@ -44,8 +39,8 @@
         <div class="nav-section">
           <h3 class="nav-title">Resume Sections</h3>
           <ul class="nav-list">
-            <li
-              v-for="section in sections"
+            <li 
+              v-for="section in sections" 
               :key="section.id"
               class="nav-item"
               :class="{ active: activeSection === section.id }"
@@ -53,11 +48,7 @@
             >
               <AppIcon class="nav-icon" :name="section.icon" />
               <span class="nav-text">{{ section.title }}</span>
-              <AppIcon
-                v-if="section.completed"
-                class="nav-indicator"
-                name="mdi-check-circle-outline"
-              />
+              <AppIcon v-if="section.completed" class="nav-indicator" name="mdi-check-circle-outline" />
             </li>
           </ul>
         </div>
@@ -68,9 +59,7 @@
             <AppIcon name="mdi-robot" />
             <h4>AI Assistant</h4>
           </div>
-          <p class="assistant-description">
-            Get personalized suggestions for your resume content
-          </p>
+          <p class="assistant-description">Get personalized suggestions for your resume content</p>
           <button class="assistant-btn" @click="openAIAssistant">
             Get AI Help
           </button>
@@ -84,29 +73,18 @@
           <div class="editor-header">
             <h2 class="section-title">{{ currentSection?.title }}</h2>
             <div class="section-actions">
-              <button
-                v-if="currentSection?.allowMultiple"
-                class="icon-btn"
-                @click="addItem"
-              >
+              <button v-if="currentSection?.allowMultiple" class="icon-btn" @click="addItem">
                 <AppIcon name="mdi-plus" />
               </button>
-              <button
-                v-if="currentSection?.allowReorder"
-                class="icon-btn"
-                @click="reorderItems"
-              >
+              <button v-if="currentSection?.allowReorder" class="icon-btn" @click="reorderItems">
                 <AppIcon name="mdi-sort" />
               </button>
             </div>
           </div>
-
+          
           <!-- Dynamic Section Content -->
           <div class="section-content">
-            <slot
-              :section="currentSection"
-              :data="resumeData[activeSection]"
-            ></slot>
+            <slot :section="currentSection" :data="resumeData[activeSection]"></slot>
           </div>
         </div>
 
@@ -130,162 +108,151 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { ref, onMounted, computed } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 export default {
-  name: "ResumeLayout",
+  name: 'ResumeLayout',
   components: {
-    AppIcon,
+    AppIcon
   },
   props: {
     resumeData: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     showPreview: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  emits: [
-    "save-draft",
-    "preview",
-    "export",
-    "section-change",
-    "ai-assist",
-    "preview-toggle",
-    "add-item",
-    "reorder-items",
-  ],
+  emits: ['save-draft', 'preview', 'export', 'section-change', 'ai-assist', 'preview-toggle', 'add-item', 'reorder-items'],
   setup(props, { emit }) {
-    const activeSection = ref("personal");
-
+    const activeSection = ref('personal')
+    
     const sections = ref([
       {
-        id: "personal",
-        title: "Personal Information",
-        icon: "mdi-account",
+        id: 'personal',
+        title: 'Personal Information',
+        icon: 'mdi-account',
         completed: false,
-        required: true,
+        required: true
       },
       {
-        id: "summary",
-        title: "Professional Summary",
-        icon: "mdi-text-box",
+        id: 'summary',
+        title: 'Professional Summary',
+        icon: 'mdi-text-box',
         completed: false,
-        required: true,
+        required: true
       },
       {
-        id: "experience",
-        title: "Work Experience",
-        icon: "mdi-briefcase",
-        completed: false,
-        required: true,
-        allowMultiple: true,
-        allowReorder: true,
-      },
-      {
-        id: "education",
-        title: "Education",
-        icon: "mdi-school",
+        id: 'experience',
+        title: 'Work Experience',
+        icon: 'mdi-briefcase',
         completed: false,
         required: true,
         allowMultiple: true,
+        allowReorder: true
       },
       {
-        id: "skills",
-        title: "Skills",
-        icon: "mdi-cog",
+        id: 'education',
+        title: 'Education',
+        icon: 'mdi-school',
         completed: false,
         required: true,
+        allowMultiple: true
       },
       {
-        id: "projects",
-        title: "Projects",
-        icon: "mdi-folder-multiple-outline",
+        id: 'skills',
+        title: 'Skills',
+        icon: 'mdi-cog',
+        completed: false,
+        required: true
+      },
+      {
+        id: 'projects',
+        title: 'Projects',
+        icon: 'mdi-folder-multiple-outline',
         completed: false,
         required: false,
-        allowMultiple: true,
+        allowMultiple: true
       },
       {
-        id: "certifications",
-        title: "Certifications",
-        icon: "mdi-certificate",
+        id: 'certifications',
+        title: 'Certifications',
+        icon: 'mdi-certificate',
         completed: false,
         required: false,
-        allowMultiple: true,
+        allowMultiple: true
       },
       {
-        id: "additional",
-        title: "Additional Information",
-        icon: "mdi-plus-circle",
+        id: 'additional',
+        title: 'Additional Information',
+        icon: 'mdi-plus-circle',
         completed: false,
-        required: false,
-      },
-    ]);
+        required: false
+      }
+    ])
 
     const currentSection = computed(() => {
-      return sections.value.find((s) => s.id === activeSection.value);
-    });
+      return sections.value.find(s => s.id === activeSection.value)
+    })
 
     const completionPercentage = computed(() => {
-      const completed = sections.value.filter((s) => s.completed).length;
-      return Math.round((completed / sections.value.length) * 100);
-    });
+      const completed = sections.value.filter(s => s.completed).length
+      return Math.round((completed / sections.value.length) * 100)
+    })
 
     const setActiveSection = (sectionId) => {
-      activeSection.value = sectionId;
-      emit("section-change", sectionId);
-    };
+      activeSection.value = sectionId
+      emit('section-change', sectionId)
+    }
 
     const saveAsDraft = () => {
-      emit("save-draft", props.resumeData);
-    };
+      emit('save-draft', props.resumeData)
+    }
 
     const previewResume = () => {
-      emit("preview", props.resumeData);
-    };
+      emit('preview', props.resumeData)
+    }
 
     const exportResume = () => {
-      emit("export", props.resumeData);
-    };
+      emit('export', props.resumeData)
+    }
 
     const togglePreview = () => {
-      emit("preview-toggle");
-    };
+      emit('preview-toggle')
+    }
 
     const openAIAssistant = () => {
-      emit("ai-assist", {
+      emit('ai-assist', {
         section: activeSection.value,
-        data: props.resumeData[activeSection.value],
-      });
-    };
+        data: props.resumeData[activeSection.value]
+      })
+    }
 
     const addItem = () => {
-      emit("add-item", activeSection.value);
-    };
+      emit('add-item', activeSection.value)
+    }
 
     const reorderItems = () => {
-      emit("reorder-items", activeSection.value);
-    };
+      emit('reorder-items', activeSection.value)
+    }
 
     // Update section completion status
     const updateSectionCompletion = () => {
-      sections.value.forEach((section) => {
-        const sectionData = props.resumeData[section.id];
+      sections.value.forEach(section => {
+        const sectionData = props.resumeData[section.id]
         if (sectionData) {
           // Basic completion check - can be enhanced based on section requirements
-          section.completed = Boolean(
-            sectionData && Object.keys(sectionData).length > 0,
-          );
+          section.completed = Boolean(sectionData && Object.keys(sectionData).length > 0)
         }
-      });
-    };
+      })
+    }
 
     onMounted(() => {
-      updateSectionCompletion();
-    });
+      updateSectionCompletion()
+    })
 
     return {
       activeSection,
@@ -299,10 +266,10 @@ export default {
       togglePreview,
       openAIAssistant,
       addItem,
-      reorderItems,
-    };
-  },
-};
+      reorderItems
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -367,7 +334,7 @@ export default {
 
 .action-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .progress-section {
@@ -507,7 +474,7 @@ export default {
 
 .assistant-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .resume-content {
@@ -556,14 +523,14 @@ export default {
 
 .icon-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .section-content {
   background-color: var(--md-sys-color-surface);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
 .preview-panel {
@@ -597,35 +564,44 @@ export default {
 .resume-preview {
   background: white;
   min-height: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
 }
 
+/* Responsive Design */
+@media (max-width: 1024px) {
   .resume-nav {
+    width: 240px;
   }
-
+  
   .preview-panel {
+    width: 350px;
   }
 }
 
+@media (max-width: 768px) {
   .header-content {
     flex-direction: column;
+    gap: 16px;
     align-items: stretch;
   }
-
+  
   .header-actions {
     justify-content: center;
   }
-
+  
   .resume-main {
     flex-direction: column;
   }
-
+  
   .resume-nav {
+    width: 100%;
     height: auto;
+    max-height: 200px;
   }
-
+  
   .preview-panel {
+    display: none; /* Hide preview on mobile by default */
   }
 }
 </style>

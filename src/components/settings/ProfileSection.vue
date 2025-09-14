@@ -1,11 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div
-    role="region"
-    aria-labelledby="profile-heading"
-    class="profile-section enhanced-glass-section"
-    :class="{ 'is-tabbed': isTabbed }"
-  >
+  <div role="region" aria-labelledby="profile-heading" class="profile-section enhanced-glass-section" :class="{ 'is-tabbed': isTabbed }">
     <!-- Enhanced Header -->
     <div v-if="!isTabbed" class="section-header">
       <div class="header-content">
@@ -14,15 +9,10 @@
             <AppIcon name="mdi-account-card-details" />
             Personal Profile
           </h3>
-          <p class="section-subtitle">
-            Essential information for your gaming career profile
-          </p>
+          <p class="section-subtitle">Essential information for your gaming career profile</p>
         </div>
         <div class="profile-completion-badge">
-          <div
-            class="completion-ring"
-            :style="{ '--completion': completionPercentage + '%' }"
-          >
+          <div class="completion-ring" :style="{ '--completion': completionPercentage + '%' }">
             <span class="completion-text">{{ completionPercentage }}%</span>
           </div>
           <span class="completion-label">Complete</span>
@@ -55,28 +45,17 @@
                   class="enhanced-input glass-input-field"
                   placeholder="Your full name"
                   autocomplete="name"
-                  :class="{
-                    'is-invalid': store.errors.validation?.name,
-                    'has-value': userProfile.personalInfo.name,
-                  }"
+                  :class="{ 'is-invalid': store.errors.validation?.name, 'has-value': userProfile.personalInfo.name }"
                   aria-describedby="profile-name-error"
                   required
                   @focus="focusedField = 'name'"
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon
-                    v-if="userProfile.personalInfo.name"
-                    name="mdi-check"
-                    class="success-icon"
-                  />
+                  <AppIcon v-if="userProfile.personalInfo.name" name="mdi-check" class="success-icon" />
                 </div>
               </div>
-              <div
-                v-if="store.errors.validation?.name"
-                id="profile-name-error"
-                class="form-error"
-              >
+              <div v-if="store.errors.validation?.name" id="profile-name-error" class="form-error">
                 <AppIcon name="mdi-alert-circle" />
                 {{ store.errors.validation?.name }}
               </div>
@@ -85,7 +64,7 @@
                 Used across NAVI and in your resume
               </div>
             </div>
-
+            
             <div class="form-field required">
               <label for="profile-email" class="form-label">
                 <AppIcon name="mdi-email" class="label-icon" />
@@ -100,31 +79,17 @@
                   class="enhanced-input glass-input-field"
                   placeholder="you@example.com"
                   autocomplete="email"
-                  :class="{
-                    'is-invalid': store.errors.validation?.email,
-                    'has-value': userProfile.personalInfo.email,
-                  }"
+                  :class="{ 'is-invalid': store.errors.validation?.email, 'has-value': userProfile.personalInfo.email }"
                   aria-describedby="profile-email-error"
                   required
                   @focus="focusedField = 'email'"
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon
-                    v-if="
-                      userProfile.personalInfo.email &&
-                        isValidEmail(userProfile.personalInfo.email)
-                    "
-                    name="mdi-check"
-                    class="success-icon"
-                  />
+                  <AppIcon v-if="userProfile.personalInfo.email && isValidEmail(userProfile.personalInfo.email)" name="mdi-check" class="success-icon" />
                 </div>
               </div>
-              <div
-                v-if="store.errors.validation?.email"
-                id="profile-email-error"
-                class="form-error"
-              >
+              <div v-if="store.errors.validation?.email" id="profile-email-error" class="form-error">
                 <AppIcon name="mdi-alert-circle" />
                 {{ store.errors.validation?.email }}
               </div>
@@ -133,7 +98,7 @@
                 Primary contact for job opportunities
               </div>
             </div>
-
+            
             <div class="form-field">
               <label for="profile-phone" class="form-label">
                 <AppIcon name="mdi-phone" class="label-icon" />
@@ -152,11 +117,7 @@
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon
-                    v-if="userProfile.personalInfo.phone"
-                    name="mdi-check"
-                    class="success-icon"
-                  />
+                  <AppIcon v-if="userProfile.personalInfo.phone" name="mdi-check" class="success-icon" />
                 </div>
               </div>
               <div v-if="focusedField === 'phone'" class="form-hint">
@@ -164,7 +125,7 @@
                 Optional - for recruiters to contact you
               </div>
             </div>
-
+            
             <div class="form-field">
               <label for="profile-location" class="form-label">
                 <AppIcon name="mdi-map-marker" class="label-icon" />
@@ -183,11 +144,7 @@
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon
-                    v-if="userProfile.personalInfo.location"
-                    name="mdi-check"
-                    class="success-icon"
-                  />
+                  <AppIcon v-if="userProfile.personalInfo.location" name="mdi-check" class="success-icon" />
                 </div>
               </div>
               <div v-if="focusedField === 'location'" class="form-hint">
@@ -196,7 +153,7 @@
               </div>
             </div>
           </div>
-
+        
           <!-- Professional Information Section -->
           <div class="form-section">
             <div class="section-divider">
@@ -218,18 +175,12 @@
                     class="enhanced-input"
                     placeholder="e.g., Senior Gameplay Engineer"
                     autocomplete="organization-title"
-                    :class="{
-                      'has-value': userProfile.personalInfo.currentRole,
-                    }"
+                    :class="{ 'has-value': userProfile.personalInfo.currentRole }"
                     @focus="focusedField = 'role'"
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon
-                      v-if="userProfile.personalInfo.currentRole"
-                      name="mdi-check"
-                      class="success-icon"
-                    />
+                    <AppIcon v-if="userProfile.personalInfo.currentRole" name="mdi-check" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'role'" class="form-hint">
@@ -237,7 +188,7 @@
                   Your current or most recent job title
                 </div>
               </div>
-
+            
               <div class="form-field">
                 <label for="profile-company" class="form-label">
                   <AppIcon name="mdi-domain" class="label-icon" />
@@ -251,18 +202,12 @@
                     class="enhanced-input"
                     placeholder="e.g., Epic Games"
                     autocomplete="organization"
-                    :class="{
-                      'has-value': userProfile.personalInfo.currentCompany,
-                    }"
+                    :class="{ 'has-value': userProfile.personalInfo.currentCompany }"
                     @focus="focusedField = 'company'"
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon
-                      v-if="userProfile.personalInfo.currentCompany"
-                      name="mdi-check"
-                      class="success-icon"
-                    />
+                    <AppIcon v-if="userProfile.personalInfo.currentCompany" name="mdi-check" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'company'" class="form-hint">
@@ -270,7 +215,7 @@
                   Studio or company you work for
                 </div>
               </div>
-
+            
               <div class="form-field">
                 <label for="profile-years" class="form-label">
                   <AppIcon name="mdi-calendar-clock" class="label-icon" />
@@ -286,18 +231,12 @@
                     class="enhanced-input"
                     placeholder="e.g., 5"
                     inputmode="decimal"
-                    :class="{
-                      'has-value': userProfile.personalInfo.yearsExperience,
-                    }"
+                    :class="{ 'has-value': userProfile.personalInfo.yearsExperience }"
                     @focus="focusedField = 'years'"
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon
-                      v-if="userProfile.personalInfo.yearsExperience"
-                      name="mdi-check"
-                      class="success-icon"
-                    />
+                    <AppIcon v-if="userProfile.personalInfo.yearsExperience" name="mdi-check" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'years'" class="form-hint">
@@ -307,7 +246,7 @@
               </div>
             </div>
           </div>
-
+        
           <!-- Online Presence Section -->
           <div class="form-section">
             <div class="section-divider">
@@ -334,11 +273,7 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon
-                      v-if="userProfile.personalInfo.website"
-                      name="mdi-check"
-                      class="success-icon"
-                    />
+                    <AppIcon v-if="userProfile.personalInfo.website" name="mdi-check" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'website'" class="form-hint">
@@ -346,7 +281,7 @@
                   Your personal or professional website
                 </div>
               </div>
-
+            
               <div class="form-field">
                 <label for="profile-linkedin" class="form-label">
                   <AppIcon name="mdi-linkedin" class="label-icon" />
@@ -364,11 +299,7 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon
-                      v-if="userProfile.personalInfo.linkedIn"
-                      name="mdi-check"
-                      class="success-icon"
-                    />
+                    <AppIcon v-if="userProfile.personalInfo.linkedIn" name="mdi-check" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'linkedin'" class="form-hint">
@@ -376,7 +307,7 @@
                   Professional networking profile
                 </div>
               </div>
-
+            
               <div class="form-field">
                 <label for="profile-github" class="form-label">
                   <AppIcon name="mdi-github" class="label-icon" />
@@ -394,11 +325,7 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon
-                      v-if="userProfile.personalInfo.github"
-                      name="mdi-check"
-                      class="success-icon"
-                    />
+                    <AppIcon v-if="userProfile.personalInfo.github" name="mdi-check" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'github'" class="form-hint">
@@ -406,7 +333,7 @@
                   Code portfolio and open source contributions
                 </div>
               </div>
-
+            
               <div class="form-field">
                 <label for="profile-portfolio" class="form-label">
                   <AppIcon name="mdi-folder-image" class="label-icon" />
@@ -424,11 +351,7 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon
-                      v-if="userProfile.personalInfo.portfolio"
-                      name="mdi-check"
-                      class="success-icon"
-                    />
+                    <AppIcon v-if="userProfile.personalInfo.portfolio" name="mdi-check" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'portfolio'" class="form-hint">
@@ -438,7 +361,7 @@
               </div>
             </div>
           </div>
-
+        
           <!-- Professional Summary Section -->
           <div class="form-section">
             <div class="section-divider">
@@ -463,17 +386,16 @@
                   @blur="focusedField = null"
                 />
                 <div class="character-count">
-                  {{ (userProfile.personalInfo.summary || "").length }}/500
+                  {{ (userProfile.personalInfo.summary || '').length }}/500
                 </div>
               </div>
               <div v-if="focusedField === 'summary'" class="form-hint">
                 <AppIcon name="mdi-information" />
-                <span>This appears on your resume and helps match you with relevant
-                  opportunities. Aim for 2-3 sentences.</span>
+                <span>This appears on your resume and helps match you with relevant opportunities. Aim for 2-3 sentences.</span>
               </div>
             </div>
           </div>
-
+        
           <!-- Form Actions -->
           <div class="form-actions-section">
             <div class="actions-content">
@@ -514,23 +436,19 @@
                   :leading-icon="saving ? 'mdi-loading' : 'mdi-content-save'"
                   :class="{ 'is-loading': saving }"
                 >
-                  {{ saving ? "Saving Profile..." : "Save Profile" }}
+                  {{ saving ? 'Saving Profile...' : 'Save Profile' }}
                 </UnifiedButton>
               </div>
             </div>
-
+          
             <!-- Success/Error Messages -->
             <Transition name="message-fade">
-              <div
-                v-if="profileSaved"
-                class="success-message"
-                aria-live="polite"
-              >
+              <div v-if="profileSaved" class="success-message" aria-live="polite">
                 <AppIcon name="mdi-check-circle" />
                 <span>Profile saved successfully! Your changes are now live.</span>
               </div>
             </Transition>
-
+          
             <!-- Profile Completion Tips -->
             <div v-if="!isProfileComplete" class="completion-tips">
               <div class="tip-header">
@@ -538,12 +456,7 @@
                 <span>Complete your profile to improve job matching</span>
               </div>
               <div class="tip-list">
-                <div
-                  v-for="tip in incompleteTips"
-                  :key="tip.field"
-                  class="tip-item"
-                  @click="focusField(tip.field)"
-                >
+                <div v-for="tip in incompleteTips" :key="tip.field" class="tip-item" @click="focusField(tip.field)">
                   <AppIcon name="mdi-plus-circle-outline" />
                   <span>{{ tip.message }}</span>
                 </div>
@@ -557,216 +470,197 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
-import { useAppStore } from "@/stores/app";
-import { useToast } from "@/composables/useToast";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { computed, ref, watch } from 'vue'
+import { useAppStore } from '@/stores/app'
+import { useToast } from '@/composables/useToast'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
 const props = defineProps({
   userProfile: {
     type: Object,
     default: () => ({
-      personalInfo: {},
-    }),
+      personalInfo: {}
+    })
   },
   saving: {
     type: Boolean,
-    default: false,
+    default: false
   },
   isTabbed: {
     type: Boolean,
-    default: false,
-  },
-});
+    default: false
+  }
+})
 
 // Emits
-const emit = defineEmits(["save", "profile-preview", "profile-update", "profile-reset"]);
+const emit = defineEmits(['save', 'profile-preview'])
 
 // Store
-const store = useAppStore();
-const toast = useToast();
+const store = useAppStore()
+const toast = useToast()
 
 // Local state
-const profileSaved = ref(false);
-const focusedField = ref(null);
+const profileSaved = ref(false)
+const focusedField = ref(null)
 
 // Computed properties
 const completionPercentage = computed(() => {
   const fields = [
-    "name",
-    "email",
-    "location",
-    "currentRole",
-    "currentCompany",
-    "yearsExperience",
-    "summary",
-  ];
-  const completed = fields.filter((field) => {
-    const value = props.userProfile.personalInfo?.[field];
-    return value && String(value).trim().length > 0;
-  });
-  return Math.round((completed.length / fields.length) * 100);
-});
+    'name', 'email', 'location', 'currentRole', 
+    'currentCompany', 'yearsExperience', 'summary'
+  ]
+  const completed = fields.filter(field => {
+    const value = props.userProfile.personalInfo?.[field]
+    return value && String(value).trim().length > 0
+  })
+  return Math.round((completed.length / fields.length) * 100)
+})
 
-const isProfileComplete = computed(() => completionPercentage.value >= 80);
+const isProfileComplete = computed(() => completionPercentage.value >= 80)
 
 const hasRequiredFields = computed(() => {
-  const name = props.userProfile.personalInfo?.name;
-  const email = props.userProfile.personalInfo?.email;
-  return name && email && name.trim().length > 0 && email.trim().length > 0;
-});
+  const name = props.userProfile.personalInfo?.name
+  const email = props.userProfile.personalInfo?.email
+  return name && email && name.trim().length > 0 && email.trim().length > 0
+})
 
 const incompleteTips = computed(() => {
-  const tips = [];
-  const info = props.userProfile.personalInfo || {};
-
+  const tips = []
+  const info = props.userProfile.personalInfo || {}
+  
   if (!info.currentRole) {
-    tips.push({
-      field: "role",
-      message: "Add your current role to improve job matching",
-    });
+    tips.push({ field: 'role', message: 'Add your current role to improve job matching' })
   }
   if (!info.summary) {
-    tips.push({
-      field: "summary",
-      message: "Write a professional summary to stand out",
-    });
+    tips.push({ field: 'summary', message: 'Write a professional summary to stand out' })
   }
   if (!info.linkedIn && !info.github && !info.portfolio) {
-    tips.push({
-      field: "linkedin",
-      message: "Add your LinkedIn or GitHub to showcase experience",
-    });
+    tips.push({ field: 'linkedin', message: 'Add your LinkedIn or GitHub to showcase experience' })
   }
   if (!info.location) {
-    tips.push({
-      field: "location",
-      message: "Add location for better job opportunities",
-    });
+    tips.push({ field: 'location', message: 'Add location for better job opportunities' })
   }
-
-  return tips.slice(0, 3);
-});
+  
+  return tips.slice(0, 3) // Show max 3 tips
+})
 
 // Methods
 const isValidEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
 
 const focusField = (fieldName) => {
-  const fieldId = `profile-${fieldName}`;
-  const element = document.getElementById(fieldId);
+  const fieldId = `profile-${fieldName}`
+  const element = document.getElementById(fieldId)
   if (element) {
-    element.focus();
-    element.scrollIntoView({ behavior: "smooth", block: "center" });
+    element.focus()
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
-};
+}
 
 const autoFillSuggestions = async () => {
   try {
-    const { useAIService } = await import("@/composables/useAIService");
-    const aiService = useAIService();
-
+    const { useAIService } = await import('@/composables/useAIService')
+    const aiService = useAIService()
+    
     if (!aiService.isReady.value) {
-      toast.error(
-        "AI service not available. Please configure your API key in settings.",
-      );
-      return;
+      toast.error('AI service not available. Please configure your API key in settings.')
+      return
     }
-
+    
     const suggestions = await aiService.generateProfileSuggestions({
-      currentData: props.userProfile,
-      context: "gaming_industry",
-    });
-
+      currentData: profile.value,
+      context: 'gaming_industry'
+    })
+    
     if (suggestions) {
-      // Emit event to parent to update profile with suggestions
-      emit("profile-update", suggestions);
-      toast.success("Profile suggestions applied");
+      // Apply suggestions to profile fields
+      Object.keys(suggestions).forEach(key => {
+        if (profile.value[key] && !profile.value[key].trim()) {
+          profile.value[key] = suggestions[key]
+        }
+      })
+      toast.success('Profile suggestions applied')
     }
   } catch (error) {
-    console.error("Auto-fill failed:", error);
-    toast.error("Failed to generate profile suggestions");
+    console.error('Auto-fill failed:', error)
+    toast.error('Failed to generate profile suggestions')
   }
-};
+}
 
 const previewProfile = () => {
   // Create a preview modal or dialog showing formatted profile data
   const formattedProfile = {
-    ...props.userProfile,
-    skills: Array.isArray(props.userProfile.skills)
-      ? props.userProfile.skills
-      : props.userProfile.skills
-          ?.split(",")
-          .map((s) => s.trim())
-          .filter(Boolean) || [],
-  };
-
+    ...profile.value,
+    skills: Array.isArray(profile.value.skills) ? profile.value.skills : profile.value.skills?.split(',').map(s => s.trim()).filter(Boolean) || []
+  }
+  
   // Emit event to parent or show modal
-  emit("profile-preview", formattedProfile);
-
+  emit('profile-preview', formattedProfile)
+  
   // Alternative: Show in-place preview
-  toast.info("Profile preview - check console for formatted data");
-  console.info("Profile Preview:", JSON.stringify(formattedProfile, null, 2));
-};
+  toast.info('Profile preview - check console for formatted data')
+  console.info('Profile Preview:', JSON.stringify(formattedProfile, null, 2))
+}
 
 const resetForm = () => {
-  if (
-    confirm(
-      "Are you sure you want to reset all fields? This will clear any unsaved changes.",
-    )
-  ) {
-    // Emit event to parent to reset profile
-    emit("profile-reset");
+  if (confirm('Are you sure you want to reset all fields? This will clear any unsaved changes.')) {
+    // Reset to empty state
+    Object.keys(props.userProfile.personalInfo).forEach(key => {
+      props.userProfile.personalInfo[key] = ''
+    })
   }
-};
+}
 
 // Watch for successful save
-watch(
-  () => props.saving,
-  (newSaving, oldSaving) => {
-    if (oldSaving && !newSaving) {
-      profileSaved.value = true;
-      setTimeout(() => {
-        profileSaved.value = false;
-      }, 4000);
-    }
-  },
-);
+watch(() => props.saving, (newSaving, oldSaving) => {
+  if (oldSaving && !newSaving) {
+    profileSaved.value = true
+    setTimeout(() => {
+      profileSaved.value = false
+    }, 4000)
+  }
+})
 
 // Watch for completion changes
 watch(completionPercentage, (newPercentage) => {
   if (newPercentage === 100 && !profileSaved.value) {
     // Show profile completion celebration
-    profileSaved.value = true;
+    profileSaved.value = true
     // Could add achievement notification here in the future
   }
-});
+})
 </script>
 
 <style scoped>
+/* Enhanced Profile Section Styles with Master Theme Integration */
 .profile-section {
+  --field-spacing: var(--spacing-5);
+  --section-spacing: var(--spacing-8);
   background: var(--glass-bg);
   color: var(--text-primary);
-  transition:
-    background-color var(--duration-normal),
-    color var(--duration-normal);
+  transition: background-color var(--duration-normal), color var(--duration-normal);
 }
 
 .profile-section:not(.is-tabbed) {
   padding: var(--card-padding);
 }
 
+/* Enhanced Header */
 .section-header {
+  margin-bottom: var(--spacing-6);
+  padding-bottom: var(--spacing-4);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--spacing-4);
 }
 
 .section-title {
@@ -775,24 +669,36 @@ watch(completionPercentage, (newPercentage) => {
   color: var(--text-primary);
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  margin: 0;
   transition: color var(--duration-normal);
 }
 
 .section-subtitle {
   color: var(--text-secondary);
   font-size: var(--font-size-sm);
+  margin: var(--spacing-1) 0 0;
   transition: color var(--duration-normal);
 }
 
+/* Profile Completion Badge */
 .profile-completion-badge {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: var(--spacing-1);
 }
 
 .completion-ring {
   position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   background: conic-gradient(
+    var(--color-primary-500) 0deg, 
+    var(--color-primary-500) calc(var(--completion) * 3.6deg),
+    var(--glass-border) calc(var(--completion) * 3.6deg),
+    var(--glass-border) 360deg
   );
   display: flex;
   align-items: center;
@@ -800,8 +706,11 @@ watch(completionPercentage, (newPercentage) => {
 }
 
 .completion-ring::before {
-  content: "";
+  content: '';
   position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   background: var(--background-secondary);
 }
 
@@ -820,6 +729,7 @@ watch(completionPercentage, (newPercentage) => {
   transition: color var(--duration-normal);
 }
 
+/* Form Sections */
 .form-section {
   margin-bottom: var(--section-spacing);
 }
@@ -827,9 +737,12 @@ watch(completionPercentage, (newPercentage) => {
 .section-divider {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-5);
 }
 
 .section-icon {
+  color: var(--color-primary-500);
   font-size: var(--font-size-lg);
 }
 
@@ -842,31 +755,43 @@ watch(completionPercentage, (newPercentage) => {
 }
 
 .divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--glass-border), transparent);
 }
 
+/* Form Grids */
 .form-grid {
   display: grid;
   gap: var(--field-spacing);
 }
 
 .essential-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .professional-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .online-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
+/* Enhanced Form Fields */
 .form-field {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-2);
 }
 
 .form-field.full-width {
+  grid-column: 1 / -1;
 }
 
 .form-field.required .required-asterisk {
+  color: var(--color-error-400);
+  margin-left: var(--spacing-1);
 }
 
 .form-label {
@@ -875,6 +800,8 @@ watch(completionPercentage, (newPercentage) => {
   font-size: var(--font-size-sm);
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
+  margin-bottom: var(--spacing-1);
   transition: color var(--duration-normal);
 }
 
@@ -884,6 +811,7 @@ watch(completionPercentage, (newPercentage) => {
   transition: color var(--duration-normal);
 }
 
+/* Enhanced Inputs */
 .input-wrapper {
   position: relative;
   display: flex;
@@ -893,9 +821,14 @@ watch(completionPercentage, (newPercentage) => {
 .enhanced-input,
 .glass-input-field {
   background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter, blur(16px));
+  -webkit-backdrop-filter: var(--glass-backdrop-filter, blur(16px));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-3) var(--spacing-4);
   color: var(--text-primary);
   font-size: var(--font-size-base);
+  width: 100%;
   transition: all var(--duration-normal);
   box-shadow: var(--glass-shadow);
 }
@@ -909,43 +842,57 @@ watch(completionPercentage, (newPercentage) => {
 .enhanced-input:focus,
 .glass-input-field:focus {
   outline: none;
+  border-color: var(--color-primary-500);
   background: var(--glass-hover-bg);
-  box-shadow:
+  box-shadow: 
     var(--glass-shadow),
+    0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
 }
 
 .enhanced-input.has-value,
 .glass-input-field.has-value {
-  box-shadow:
+  border-color: rgba(var(--color-success-500-rgb, 34, 197, 94), 0.5);
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.1);
 }
 
 .enhanced-input.is-invalid {
+  border-color: var(--color-error-500);
+  background: color-mix(in srgb, var(--color-error-500) 5%, var(--glass-bg));
 }
 
 .input-status {
   position: absolute;
+  right: var(--spacing-3);
   display: flex;
   align-items: center;
   pointer-events: none;
 }
 
 .success-icon {
+  color: var(--color-success-500);
   font-size: var(--font-size-lg);
   transition: color var(--duration-normal);
-  filter: drop-shadow(
-  );
+  filter: drop-shadow(0 0 4px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.3));
 }
 
+/* Enhanced Textarea */
 .textarea-wrapper {
   position: relative;
 }
 
 .enhanced-textarea {
   background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
   color: var(--text-primary);
   font-size: var(--font-size-base);
+  width: 100%;
   resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
   transition: all var(--duration-normal);
   backdrop-filter: var(--glass-backdrop-filter);
   -webkit-backdrop-filter: var(--glass-backdrop-filter);
@@ -959,30 +906,41 @@ watch(completionPercentage, (newPercentage) => {
 
 .enhanced-textarea:focus {
   outline: none;
+  border-color: var(--color-primary-500);
   background: var(--glass-hover-bg);
-  box-shadow:
+  box-shadow: 
     var(--glass-shadow),
+    0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
 }
 
 .enhanced-textarea.has-value {
+  border-color: var(--color-success-400);
 }
 
 .character-count {
   position: absolute;
+  bottom: var(--spacing-2);
+  right: var(--spacing-3);
   font-size: var(--font-size-xs);
   color: var(--text-tertiary);
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-filter);
   -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  padding: var(--spacing-1) var(--spacing-2);
   border-radius: var(--radius-sm);
   box-shadow: var(--glass-shadow);
   transition: all var(--duration-normal);
 }
 
+/* Form Messages */
 .form-error {
+  color: var(--color-error-500);
   font-size: var(--font-size-sm);
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
+  margin-top: var(--spacing-1);
   transition: color var(--duration-normal);
 }
 
@@ -991,70 +949,95 @@ watch(completionPercentage, (newPercentage) => {
   font-size: var(--font-size-sm);
   display: flex;
   align-items: flex-start;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-filter);
   -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
+  margin-top: var(--spacing-1);
   box-shadow: var(--glass-shadow);
   transition: all var(--duration-normal);
 }
 
+/* Form Actions */
 .form-actions-section {
   margin-top: var(--section-spacing);
+  padding-top: var(--spacing-5);
+  border-top: 1px solid var(--glass-border);
 }
 
 .actions-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
 }
 
 .quick-actions,
 .primary-actions {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
 }
 
 .success-message {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  color: var(--color-success-500);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
+  padding: var(--spacing-3) var(--spacing-4);
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-filter);
   -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--color-success-500);
   border-radius: var(--radius-lg);
-  box-shadow:
+  box-shadow: 
     var(--glass-shadow),
+    0 0 12px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.15);
   transition: all var(--duration-normal);
 }
 
+/* Profile Completion Tips */
 .completion-tips {
   background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  margin-top: var(--spacing-4);
 }
 
 .tip-header {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
   color: var(--text-primary);
   font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-3);
   transition: color var(--duration-normal);
 }
 
 .tip-list {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-2);
 }
 
 .tip-item {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   font-size: var(--font-size-sm);
   cursor: pointer;
   transition: all var(--duration-normal);
+  border: 1px solid transparent;
 }
 
 .tip-item:hover {
@@ -1066,13 +1049,16 @@ watch(completionPercentage, (newPercentage) => {
   box-shadow: var(--glass-shadow);
 }
 
+/* Loading States */
 .is-loading {
   cursor: wait;
 }
 
 .is-loading .mdi-loading {
+  animation: spin 1s linear infinite;
 }
 
+/* Transitions */
 .message-fade-enter-active,
 .message-fade-leave-active {
   transition: all var(--duration-normal) var(--easing-ease-out);
@@ -1080,41 +1066,61 @@ watch(completionPercentage, (newPercentage) => {
 
 .message-fade-enter-from,
 .message-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
+/* Enhanced Glass Section Styling with Master Theme */
 .enhanced-glass-section {
   background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter, blur(16px));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
   box-shadow: var(--glass-shadow);
   transition: all var(--duration-normal);
 }
 
 .enhanced-glass-section:hover {
-  box-shadow:
+  border-color: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.2);
+  box-shadow: 
     var(--glass-shadow),
+    0 8px 25px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05);
 }
 
 .enhanced-glass-section .section-divider {
+  background: rgba(var(--glass-border-rgb, 255, 255, 255), 0.02);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-3);
+  border: 1px solid rgba(var(--glass-border-rgb, 255, 255, 255), 0.05);
 }
 
 .enhanced-glass-section .input-status {
   background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter, blur(8px));
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
   justify-content: center;
+  border: 1px solid var(--glass-border);
   transition: all var(--duration-fast);
 }
 
 .enhanced-glass-section .success-icon {
   font-size: var(--font-size-sm);
-  filter: drop-shadow(
-  );
+  filter: drop-shadow(0 0 4px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.3));
 }
 
+/* Enhanced completion tips with glass theme */
 .enhanced-glass-section .completion-tips {
   background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter, blur(12px));
+  border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
+/* Enhanced Light/Dark Mode Integration for Profile Settings */
 
+/* Dark Theme Enhancements */
 [data-theme="dark"] .enhanced-glass-section {
   background: var(--glass-bg);
   border-color: var(--glass-border);
@@ -1129,11 +1135,16 @@ watch(completionPercentage, (newPercentage) => {
 
 [data-theme="dark"] .glass-input-field:focus {
   background: var(--glass-hover-bg);
-  box-shadow:
+  border-color: var(--color-primary-500);
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15),
     var(--glass-shadow);
 }
 
 [data-theme="dark"] .enhanced-glass-section .section-divider {
+  background: rgba(var(--glass-border-rgb, 255, 255, 255), 0.02);
+  border-color: rgba(var(--glass-border-rgb, 255, 255, 255), 0.05);
 }
 
 [data-theme="dark"] .enhanced-glass-section .input-status {
@@ -1147,6 +1158,7 @@ watch(completionPercentage, (newPercentage) => {
   box-shadow: var(--glass-shadow);
 }
 
+/* Light Theme Enhancements */
 [data-theme="light"] .enhanced-glass-section {
   background: var(--glass-bg);
   border-color: var(--glass-border);
@@ -1160,16 +1172,20 @@ watch(completionPercentage, (newPercentage) => {
 
 [data-theme="light"] .glass-input-field:focus {
   background: var(--glass-hover-bg);
-  box-shadow:
+  border-color: var(--color-primary-500);
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15),
     var(--glass-shadow);
 }
 
+/* Smooth Theme Transitions */
 .enhanced-glass-section,
 .glass-input-field,
 .enhanced-glass-section .section-divider,
 .enhanced-glass-section .input-status,
 .enhanced-glass-section .completion-tips {
-  transition:
+  transition: 
     background-color var(--duration-normal),
     border-color var(--duration-normal),
     color var(--duration-normal),
@@ -1177,12 +1193,13 @@ watch(completionPercentage, (newPercentage) => {
     backdrop-filter var(--duration-normal);
 }
 
+/* Accessibility Improvements */
 @media (prefers-reduced-motion: reduce) {
   .enhanced-glass-section,
   .glass-input-field {
     transition: none;
   }
-
+  
   .enhanced-glass-section:hover {
     transform: none;
   }
@@ -1191,43 +1208,51 @@ watch(completionPercentage, (newPercentage) => {
 @media (prefers-contrast: high) {
   .enhanced-glass-section,
   .glass-input-field {
+    border-width: 2px;
     backdrop-filter: none;
   }
-
+  
   .enhanced-glass-section .completion-tips {
+    border-width: 2px;
     backdrop-filter: none;
   }
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .header-content {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--spacing-3);
   }
-
+  
   .completion-ring {
+    width: 50px;
+    height: 50px;
   }
-
+  
   .completion-ring::before {
+    width: 36px;
+    height: 36px;
   }
-
+  
   .actions-content {
     flex-direction: column;
     align-items: stretch;
   }
-
+  
   .quick-actions,
   .primary-actions {
     justify-content: center;
   }
-
+  
   .form-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @keyframes spin {
-  from {
-  }
-  to {
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 </style>

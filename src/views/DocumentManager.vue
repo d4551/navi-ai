@@ -1,16 +1,7 @@
 <template>
-  <StandardPageLayout
-    page-type="gaming"
-    content-spacing="normal"
-    max-width="xl"
-  >
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
     <template #header-actions>
-      <HeaderActions
-        layout="horizontal"
-        alignment="end"
-        gap="md"
-        priority="primary"
-      >
+      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
         <!-- AI Enhancement -->
         <UnifiedButton
           v-if="aiReady"
@@ -22,7 +13,7 @@
         >
           AI Enhance
         </UnifiedButton>
-
+        
         <!-- AI Status (only show if offline) -->
         <div v-else class="ai-status-warning">
           <AppIcon name="mdi-alert-circle-outline" size="14" />
@@ -52,22 +43,18 @@
     <!-- Document Type Selector -->
     <div class="document-type-selector">
       <div class="document-tabs">
-        <button
-          v-for="docType in ['resume', 'cover-letter']"
+        <button 
+          v-for="docType in ['resume', 'cover-letter']" 
           :key="docType"
           :class="{ active: activeDocumentType === docType }"
           class="doc-tab"
           @click="activeDocumentType = docType"
         >
-          <AppIcon
-            :name="
-              docType === 'resume' ? 'mdi-account-box' : 'mdi-email-outline'
-            "
-          />
-          {{ docType === "resume" ? "Resume" : "Cover Letter" }}
+          <AppIcon :name="docType === 'resume' ? 'mdi-account-box' : 'mdi-email-outline'" />
+          {{ docType === 'resume' ? 'Resume' : 'Cover Letter' }}
         </button>
       </div>
-
+      
       <UnifiedButton
         variant="outline"
         size="sm"
@@ -86,11 +73,7 @@
       <div v-if="jobDescription" class="job-context-banner">
         <div class="job-info">
           <AppIcon name="mdi-briefcase-outline" />
-          <span>{{
-            jobInfo.company
-              ? `${jobInfo.company} - ${jobInfo.position}`
-              : "Job Context Active"
-          }}</span>
+          <span>{{ jobInfo.company ? `${jobInfo.company} - ${jobInfo.position}` : 'Job Context Active' }}</span>
           <div v-if="atsScore > 0" class="ats-score">
             {{ atsScore }}% ATS Match
           </div>
@@ -110,6 +93,7 @@
         @ai-request="handleAIRequest"
       />
     </div>
+    
 
     <!-- Modals -->
     <DocumentPreviewModal
@@ -143,33 +127,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
-import { useToast } from "@/composables/useToast";
+import { ref, computed, onMounted, watch } from 'vue'
+import { useToast } from '@/composables/useToast'
 
 // Components
-import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import HeaderActions from "@/components/ui/HeaderActions.vue";
-import UnifiedDocumentEditor from "@/components/document/UnifiedDocumentEditor.vue";
-import DocumentPreviewModal from "@/components/document/DocumentPreviewModal.vue";
-import AIModal from "@/components/document/AIModal.vue";
-import VersionHistoryPanel from "@/components/document/VersionHistoryPanel.vue";
+import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import HeaderActions from '@/components/ui/HeaderActions.vue'
+import UnifiedDocumentEditor from '@/components/document/UnifiedDocumentEditor.vue'
+import DocumentPreviewModal from '@/components/document/DocumentPreviewModal.vue'
+import AIModal from '@/components/document/AIModal.vue'
+import VersionHistoryPanel from '@/components/document/VersionHistoryPanel.vue'
 
 // Composables
-import { useDocumentManager } from "@/composables/useDocumentManager";
-import { useAIIntegration } from "@/composables/aiIntegration.js";
-import { useUnifiedProfile } from "@/composables/useUnifiedProfile";
-import { useProfileAI } from "@/composables/useProfileAI";
+import { useDocumentManager } from '@/composables/useDocumentManager'
+import { useAIIntegration } from '@/composables/useAIIntegration'
+import { useUnifiedProfile } from '@/composables/useUnifiedProfile'
+import { useProfileAI } from '@/composables/useProfileAI'
 
 // Types
-type DocumentType = "resume" | "cover-letter";
+type DocumentType = 'resume' | 'cover-letter'
 
-const toast = useToast();
+const toast = useToast()
 
 // Profile Integration
-const unifiedProfile = useUnifiedProfile();
-const profileAI = useProfileAI();
+const unifiedProfile = useUnifiedProfile()
+const profileAI = useProfileAI()
 
 // Document Manager
 const {
@@ -183,8 +167,8 @@ const {
   updateDocumentData,
   _updateJobDescription,
   selectTemplate,
-  revertToVersion,
-} = useDocumentManager();
+  revertToVersion
+} = useDocumentManager()
 
 // AI Integration
 const {
@@ -195,239 +179,233 @@ const {
   _handleTailoring,
   _handleAISuggestions,
   _optimizeContent,
-  _showAISuggestions,
-} = useAIIntegration(resumeData, coverLetterData, jobDescription.value);
+  _showAISuggestions
+} = useAIIntegration(resumeData, coverLetterData, jobDescription.value)
 
 // Version Control - Implemented via useDocumentManager composable
 
 // State
-const showPreviewModal = ref(false);
-const showAIModal = ref(false);
-const showVersionHistory = ref(false);
-const aiModalContext = ref(null);
-const profileImporting = ref(false);
+const showPreviewModal = ref(false)
+const showAIModal = ref(false)
+const showVersionHistory = ref(false)
+const aiModalContext = ref(null)
+const profileImporting = ref(false)
 // Active document context
-const activeDocumentType = ref<DocumentType>("resume");
+const activeDocumentType = ref<DocumentType>('resume')
 const currentDocumentData = computed(() =>
-  activeDocumentType.value === "resume" ? resumeData : coverLetterData,
-);
+  activeDocumentType.value === 'resume' ? resumeData : coverLetterData
+)
 
 // Profile Integration
-const profileData = computed(() => unifiedProfile.profile.value);
+const profileData = computed(() => unifiedProfile.profile.value)
 
 const togglePreview = () => {
-  showPreviewModal.value = true;
-};
+  showPreviewModal.value = true
+}
 
 const enhanceWithAI = () => {
   if (!aiReady) {
-    toast.error("AI service is not available");
-    return;
+    toast.error('AI service is not available')
+    return
   }
   // Open AI modal for document enhancement
-  showAIModal.value = true;
+  showAIModal.value = true
   aiModalContext.value = {
-    type: "enhance",
+    type: 'enhance',
     documentType: activeDocumentType.value,
-    data: currentDocumentData.value,
-  };
-};
+    data: currentDocumentData.value
+  }
+}
 
 const _handleStepChange = (step: number) => {
-  currentStep.value = step;
-};
+  currentStep.value = step
+}
 
 const handleAIModalResult = (_result: any) => {
   // Handle AI modal result
-};
+}
 
 const _handleProfileEnhancedSuggestion = async (suggestion: any) => {
   try {
     switch (suggestion.type) {
-      case "refresh-profile":
-        await syncProfileData();
-        break;
-
-      case "job-profile-match":
+      case 'refresh-profile':
+        await syncProfileData()
+        break
+        
+      case 'job-profile-match':
         // Handle job-profile match analysis
         if (suggestion.data) {
           // Update ATS score or other relevant metrics
-          toast.success(
-            `Profile match: ${suggestion.data.skillMatch}% skill compatibility`,
-          );
-
+          toast.success(`Profile match: ${suggestion.data.skillMatch}% skill compatibility`)
+          
           // You could store this data for display in the sidebar
           // atsScore.value = suggestion.data.skillMatch
         }
-        break;
-
+        break
+        
       default:
-        console.log("Unknown profile suggestion type:", suggestion.type);
+        console.log('Unknown profile suggestion type:', suggestion.type)
     }
   } catch (error) {
-    console.error("Failed to handle profile enhanced suggestion:", error);
-    toast.error("Failed to process AI suggestion");
+    console.error('Failed to handle profile enhanced suggestion:', error)
+    toast.error('Failed to process AI suggestion')
   }
-};
+}
 
 const handleResumeUpdate = (data: any) => {
-  updateDocumentData("resume", data);
-};
+  updateDocumentData('resume', data)
+}
 
 const handleCoverLetterUpdate = (data: any) => {
-  updateDocumentData("cover-letter", data);
-};
+  updateDocumentData('cover-letter', data)
+}
 
 // Profile Integration Methods
 const importFromProfile = async () => {
   if (!profileData.value) {
-    toast.error("No profile data available to import");
-    return;
+    toast.error('No profile data available to import')
+    return
   }
 
   try {
-    profileImporting.value = true;
-
+    profileImporting.value = true
+    
     // Import data for both resume and cover letter
-    const resumeProfileData = unifiedProfile.getContextualProfile("resume");
-    const coverLetterProfileData = unifiedProfile.getContextualProfile("jobs");
-
+    const resumeProfileData = unifiedProfile.getContextualProfile('resume')
+    const coverLetterProfileData = unifiedProfile.getContextualProfile('jobs')
+    
     if (resumeProfileData) {
       // Map profile data to resume format
-      updateDocumentData("resume", {
+      updateDocumentData('resume', {
         personalInfo: resumeProfileData.personalInfo || {},
         experience: resumeProfileData.experience || [],
         education: resumeProfileData.education || [],
         skills: resumeProfileData.skills || { technical: [], soft: [] },
-        achievements: resumeProfileData.achievements || [],
-      });
+        achievements: resumeProfileData.achievements || []
+      })
     }
-
+    
     if (coverLetterProfileData) {
       // Map profile data to cover letter format - basic structure
-      updateDocumentData("cover-letter", {
+      updateDocumentData('cover-letter', {
         ...coverLetterData,
-        personalInfo:
-          resumeProfileData?.personalInfo || coverLetterData.personalInfo,
-      });
+        personalInfo: resumeProfileData?.personalInfo || coverLetterData.personalInfo
+      })
     }
-
-    toast.success("Profile data imported successfully");
+    
+    toast.success('Profile data imported successfully')
+    
   } catch (error) {
-    console.error("Profile import failed:", error);
-    toast.error("Failed to import profile data");
+    console.error('Profile import failed:', error)
+    toast.error('Failed to import profile data')
   } finally {
-    profileImporting.value = false;
+    profileImporting.value = false
   }
-};
+}
 
 const syncProfileData = async () => {
   try {
-    profileImporting.value = true;
-    await unifiedProfile.forceSync();
-    toast.success("Profile synced successfully");
+    profileImporting.value = true
+    await unifiedProfile.forceSync()
+    toast.success('Profile synced successfully')
   } catch (error) {
-    console.error("Profile sync failed:", error);
-    toast.error("Failed to sync profile data");
+    console.error('Profile sync failed:', error)
+    toast.error('Failed to sync profile data')
   } finally {
-    profileImporting.value = false;
+    profileImporting.value = false
   }
-};
+}
 
 const _aiEnhanceFromProfile = async () => {
   if (!profileAI.isReady.value) {
-    toast.error("AI service or profile data not available");
-    return;
+    toast.error('AI service or profile data not available')
+    return
   }
-
+  
   try {
-    const documentType = activeDocumentType.value;
-    const currentData = currentDocumentData.value;
-
-    if (documentType === "resume") {
+    const documentType = activeDocumentType.value
+    const currentData = currentDocumentData.value
+    
+    if (documentType === 'resume') {
       const result = await profileAI.generateResumeWithProfile(
         jobDescription.value,
         {
           includeGamingExperience: true,
           optimizeForATS: true,
-          focusOnTargetRole: true,
-        },
-      );
-
+          focusOnTargetRole: true
+        }
+      )
+      
       if (result.success && result.data) {
         // Apply the AI-generated improvements
-        updateDocumentData("resume", result.data);
-        toast.success(
-          `AI enhancement complete (${result.confidence}% confidence)`,
-        );
+        updateDocumentData('resume', result.data)
+        toast.success(`AI enhancement complete (${result.confidence}% confidence)`)
       } else {
-        toast.error(result.error || "AI enhancement failed");
+        toast.error(result.error || 'AI enhancement failed')
       }
-    } else if (documentType === "cover-letter") {
+    } else if (documentType === 'cover-letter') {
       const result = await profileAI.generateCoverLetterWithProfile(
         jobDescription.value,
         jobInfo.value,
         {
           includeGamingExperience: true,
-          usePersonalityInsights: true,
-        },
-      );
-
+          usePersonalityInsights: true
+        }
+      )
+      
       if (result.success && result.data) {
-        updateDocumentData("cover-letter", result.data);
-        toast.success(
-          `AI enhancement complete (${result.confidence}% confidence)`,
-        );
+        updateDocumentData('cover-letter', result.data)
+        toast.success(`AI enhancement complete (${result.confidence}% confidence)`)
       } else {
-        toast.error(result.error || "AI enhancement failed");
+        toast.error(result.error || 'AI enhancement failed')
       }
     }
-
+    
     // Also get personalized suggestions
     const suggestionsResult = await profileAI.getPersonalizedSuggestions(
       documentType,
-      currentData,
-    );
-
+      currentData
+    )
+    
     if (suggestionsResult.success && suggestionsResult.suggestions) {
-      console.log("AI Suggestions:", suggestionsResult.suggestions);
+      console.log('AI Suggestions:', suggestionsResult.suggestions)
       // You could show these in a modal or sidebar
     }
+    
   } catch (error) {
-    console.error("AI profile enhancement failed:", error);
-    toast.error("AI enhancement failed");
+    console.error('AI profile enhancement failed:', error)
+    toast.error('AI enhancement failed')
   }
-};
+}
 
 const handleExport = async (_format?: string) => {
   // Export logic
-  toast.success("Document exported successfully");
-};
+  toast.success('Document exported successfully')
+}
 
 // Event handler for UnifiedButton to fix type error
 const onExportClick = (event: Event) => {
-  event.preventDefault?.();
-  handleExport();
-};
+  event.preventDefault?.()
+  handleExport()
+}
 
 // const getProgressClass = (progress: number) => {
-
-
+//   if (progress >= 80) return 'complete'
+//   if (progress >= 50) return 'partial'
 //   return 'incomplete'
 // }
 
 const _getATSScoreClass = (score: number) => {
-  if (score >= 80) return "high";
-  if (score >= 60) return "medium";
-  return "low";
-};
+  if (score >= 80) return 'high'
+  if (score >= 60) return 'medium'
+  return 'low'
+}
 
 const _getATSScoreDescription = (score: number) => {
-  if (score >= 80)
-    return "Excellent! Your documents are well-optimized for ATS systems.";
-  if (score >= 60) return "Good compatibility. Consider minor optimizations.";
-  return "Needs improvement. AI can help optimize your documents.";
-};
+  if (score >= 80) return 'Excellent! Your documents are well-optimized for ATS systems.'
+  if (score >= 60) return 'Good compatibility. Consider minor optimizations.'
+  return 'Needs improvement. AI can help optimize your documents.'
+}
 
 // const handleResetDocument = () => {
 //   if (confirm('Are you sure you want to reset all documents? This action cannot be undone.')) {
@@ -450,7 +428,7 @@ const _getATSScoreDescription = (score: number) => {
 //       achievements: [],
 //       certifications: []
 //     })
-//
+//     
 //     // Reset cover letter data
 //     Object.assign(coverLetterData, {
 //       jobInfo: {
@@ -466,10 +444,10 @@ const _getATSScoreDescription = (score: number) => {
 //       tone: 'professional',
 //       focus: 'experience'
 //     })
-//
+//     
 //     // Reset workflow
-
-
+//     currentWorkflowStep.value = 0
+//     currentStep.value = 1
 //     toast.success('All documents reset successfully')
 //   }
 // }
@@ -478,83 +456,70 @@ const _getATSScoreDescription = (score: number) => {
 onMounted(async () => {
   try {
     // Load saved document drafts and restore user session
-    await loadDocumentDrafts();
-
+    await loadDocumentDrafts()
+    
     // Initialize AI service if available
     if (aiReady.value) {
-      await initializeAIFeatures();
+      await initializeAIFeatures()
     }
-
+    
     // Load profile data if available
     if (unifiedProfile.profile.value) {
-      await syncProfileData();
+      await syncProfileData()
     }
-
+    
     // Set up auto-save watchers
-    setupAutoSave();
+    setupAutoSave()
+    
   } catch (error) {
-    console.error("Failed to initialize document manager:", error);
-    toast.error("Failed to load document data");
+    console.error('Failed to initialize document manager:', error)
+    toast.error('Failed to load document data')
   }
-});
+})
 
 const loadDocumentDrafts = async () => {
   try {
-    const resumeDraft = localStorage.getItem("navi-resume-draft");
-    const coverLetterDraft = localStorage.getItem("navi-cover-letter-draft");
-
+    const resumeDraft = localStorage.getItem('navi-resume-draft')
+    const coverLetterDraft = localStorage.getItem('navi-cover-letter-draft')
+    
     if (resumeDraft) {
-      const parsed = JSON.parse(resumeDraft);
-      updateDocumentData("resume", parsed);
+      const parsed = JSON.parse(resumeDraft)
+      updateDocumentData('resume', parsed)
     }
-
+    
     if (coverLetterDraft) {
-      const parsed = JSON.parse(coverLetterDraft);
-      updateDocumentData("cover-letter", parsed);
+      const parsed = JSON.parse(coverLetterDraft)
+      updateDocumentData('cover-letter', parsed)
     }
   } catch (error) {
-    console.error("Failed to load drafts:", error);
+    console.error('Failed to load drafts:', error)
   }
-};
+}
 
 const initializeAIFeatures = async () => {
   try {
     // Pre-warm AI service for faster response times
-    await handleAIRequest({
-      type: "initialize",
-      documentType: activeDocumentType.value,
-    });
+    await handleAIRequest({ type: 'initialize', documentType: activeDocumentType.value })
   } catch (error) {
-    console.error("AI initialization failed:", error);
+    console.error('AI initialization failed:', error)
   }
-};
+}
 
 const setupAutoSave = () => {
   // Auto-save resume changes
-  watch(
-    resumeData,
-    (newData) => {
-      if (newData && Object.keys(newData).length > 0) {
-        localStorage.setItem("navi-resume-draft", JSON.stringify(newData));
-      }
-    },
-    { deep: true },
-  );
-
-  // Auto-save cover letter changes
-  watch(
-    coverLetterData,
-    (newData) => {
-      if (newData && Object.keys(newData).length > 0) {
-        localStorage.setItem(
-          "navi-cover-letter-draft",
-          JSON.stringify(newData),
-        );
-      }
-    },
-    { deep: true },
-  );
-};
+  watch(resumeData, (newData) => {
+    if (newData && Object.keys(newData).length > 0) {
+      localStorage.setItem('navi-resume-draft', JSON.stringify(newData))
+    }
+  }, { deep: true })
+  
+  // Auto-save cover letter changes  
+  watch(coverLetterData, (newData) => {
+    if (newData && Object.keys(newData).length > 0) {
+      localStorage.setItem('navi-cover-letter-draft', JSON.stringify(newData))
+    }
+  }, { deep: true })
+}
 </script>
 
 <style scoped>
@@ -621,11 +586,7 @@ const setupAutoSave = () => {
 }
 
 .job-context-banner {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-50),
-    var(--color-success-50)
-  );
+  background: linear-gradient(135deg, var(--color-primary-50), var(--color-success-50));
   border: 1px solid var(--color-primary-200);
   border-radius: var(--radius-lg);
   padding: var(--spacing-3) var(--spacing-4);
@@ -649,8 +610,12 @@ const setupAutoSave = () => {
   font-weight: 600;
 }
 
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .document-type-selector {
     flex-direction: column;
+    gap: var(--spacing-3);
     align-items: stretch;
   }
 
@@ -659,6 +624,7 @@ const setupAutoSave = () => {
   }
 
   .doc-tab {
+    flex: 1;
     justify-content: center;
   }
 
@@ -669,9 +635,11 @@ const setupAutoSave = () => {
   .job-info {
     flex-direction: column;
     text-align: center;
+    gap: var(--spacing-2);
   }
 
   .ats-score {
+    margin-left: 0;
     align-self: center;
   }
 }

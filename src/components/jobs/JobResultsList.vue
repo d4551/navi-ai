@@ -24,10 +24,7 @@
         <div class="empty-content">
           <AppIcon name="mdi-briefcase-search-outline" class="empty-icon" />
           <h3>No Gaming Positions Found</h3>
-          <p>
-            Try adjusting your search criteria or browse our studio database for
-            more opportunities.
-          </p>
+          <p>Try adjusting your search criteria or browse our studio database for more opportunities.</p>
           <UnifiedButton
             variant="primary"
             leading-icon="mdi-office-building"
@@ -45,8 +42,8 @@
           class="job-list-item glass-surface"
           :class="{
             'gaming-highlight': gamingFocus && job.isGaming,
-            featured: job.featured,
-            saved: job.saved,
+            'featured': job.featured,
+            'saved': job.saved
           }"
           @click="$emit('job-selected', job)"
         >
@@ -63,10 +60,8 @@
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    :leading-icon="
-                      job.saved ? 'mdi-bookmark' : 'mdi-bookmark-outline'
-                    "
-                    :class="{ saved: job.saved }"
+                    :leading-icon="job.saved ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                    :class="{ 'saved': job.saved }"
                     @click.stop="$emit('job-saved', job)"
                   />
                   <UnifiedButton
@@ -93,13 +88,11 @@
                     class="company-logo"
                   />
                   <div class="company-details">
-                    <span class="company-name">{{
-                      job.company?.name || "Unknown Company"
-                    }}</span>
-                    <span class="job-location">📍 {{ job.location || "Remote" }}</span>
+                    <span class="company-name">{{ job.company?.name || 'Unknown Company' }}</span>
+                    <span class="job-location">📍 {{ job.location || 'Remote' }}</span>
                   </div>
                 </div>
-
+                
                 <div class="job-meta">
                   <div v-if="job.salary" class="salary-info">
                     💰 {{ formatSalary(job.salary) }}
@@ -115,11 +108,7 @@
           <!-- Job Tags & Skills -->
           <div class="job-tags-section">
             <div class="job-tags">
-              <UiChip
-                v-if="job.level"
-                classes="level-chip"
-                :variant="getLevelVariant(job.level)"
-              >
+              <UiChip v-if="job.level" classes="level-chip" :variant="getLevelVariant(job.level)">
                 {{ job.level }}
               </UiChip>
               <UiChip v-if="job.jobType" classes="type-chip">
@@ -128,11 +117,7 @@
               <UiChip v-if="job.remote" classes="remote-chip" variant="success">
                 Remote OK
               </UiChip>
-              <UiChip
-                v-if="gamingFocus && job.gameGenre"
-                classes="genre-chip"
-                variant="gaming"
-              >
+              <UiChip v-if="gamingFocus && job.gameGenre" classes="genre-chip" variant="gaming">
                 {{ job.gameGenre }}
               </UiChip>
             </div>
@@ -186,7 +171,7 @@
               >
                 Quick Apply
               </UnifiedButton>
-
+              
               <UnifiedButton
                 variant="outline"
                 size="md"
@@ -225,99 +210,99 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import UiChip from "@/components/ui/UiChip.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { ref, computed } from 'vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import UiChip from '@/components/ui/UiChip.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Props
 interface Props {
-  jobs: Array<any>;
-  loading?: boolean;
-  gamingFocus?: boolean;
+  jobs: Array<any>
+  loading?: boolean
+  gamingFocus?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
-  gamingFocus: true,
-});
+  gamingFocus: true
+})
 
 // Emits
 const emit = defineEmits([
-  "job-selected",
-  "job-applied",
-  "job-saved",
-  "job-details",
-  "job-shared",
-  "add-to-compare",
-  "browse-studios",
-]);
+  'job-selected',
+  'job-applied',
+  'job-saved',
+  'job-details',
+  'job-shared',
+  'add-to-compare',
+  'browse-studios'
+])
 
 // Methods
 const formatSalary = (salary) => {
-  if (typeof salary === "object" && salary.min && salary.max) {
-    return `$${formatNumber(salary.min)} - $${formatNumber(salary.max)}`;
+  if (typeof salary === 'object' && salary.min && salary.max) {
+    return `$${formatNumber(salary.min)} - $${formatNumber(salary.max)}`
   }
-  if (typeof salary === "number") {
-    return `$${formatNumber(salary)}`;
+  if (typeof salary === 'number') {
+    return `$${formatNumber(salary)}`
   }
-  return salary || "Not specified";
-};
+  return salary || 'Not specified'
+}
 
 const formatNumber = (num) => {
-  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-  if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
-  return num.toString();
-};
+  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
+  if (num >= 1000) return `${(num / 1000).toFixed(0)}K`
+  return num.toString()
+}
 
 const formatPostedDate = (date) => {
-  if (!date) return "Recently";
-
-  const now = new Date();
-  const posted = new Date(date);
-  const diffTime = Math.abs(now - posted);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 1) return "1 day ago";
-  if (diffDays < 7) return `${diffDays} days ago`;
-  if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
-  return `${Math.ceil(diffDays / 30)} months ago`;
-};
+  if (!date) return 'Recently'
+  
+  const now = new Date()
+  const posted = new Date(date)
+  const diffTime = Math.abs(now - posted)
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  
+  if (diffDays === 1) return '1 day ago'
+  if (diffDays < 7) return `${diffDays} days ago`
+  if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
+  return `${Math.ceil(diffDays / 30)} months ago`
+}
 
 const truncateDescription = (description) => {
-  if (!description) return "No description available.";
-  return description.length > 200
-    ? description.substring(0, 200) + "..."
-    : description;
-};
+  if (!description) return 'No description available.'
+  return description.length > 200 
+    ? description.substring(0, 200) + '...'
+    : description
+}
 
 const getLevelVariant = (level) => {
   const levelMap = {
-    Entry: "success",
-    Mid: "primary",
-    Senior: "warning",
-    Lead: "error",
-    Principal: "gaming",
-  };
-  return levelMap[level] || "outline";
-};
+    'Entry': 'success',
+    'Mid': 'primary',
+    'Senior': 'warning',
+    'Lead': 'error',
+    'Principal': 'gaming'
+  }
+  return levelMap[level] || 'outline'
+}
 
 const getScoreClass = (score) => {
-  if (score >= 90) return "score-excellent";
-  if (score >= 75) return "score-good";
-  if (score >= 60) return "score-fair";
-  return "score-low";
-};
+  if (score >= 90) return 'score-excellent'
+  if (score >= 75) return 'score-good'
+  if (score >= 60) return 'score-fair'
+  return 'score-low'
+}
 
 const viewStudio = (company) => {
   // Navigate to studio page
-  emit("studio-selected", company);
-};
+  emit('studio-selected', company)
+}
 
 const showJobMenu = (job, event) => {
   // Show context menu
-  console.log("Show job menu for:", job.title);
-};
+  console.log('Show job menu for:', job.title)
+}
 </script>
 
 <style scoped>
@@ -380,12 +365,8 @@ const showJobMenu = (job, event) => {
 }
 
 @keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.4;
-  }
+  0% { opacity: 1; }
+  100% { opacity: 0.4; }
 }
 
 .empty-state {
@@ -432,20 +413,16 @@ const showJobMenu = (job, event) => {
 
 .job-list-item.gaming-highlight {
   border-color: rgba(var(--color-gaming-500-rgb), 0.3);
-  background: linear-gradient(
-    135deg,
+  background: linear-gradient(135deg, 
     rgba(var(--color-gaming-500-rgb), 0.03) 0%,
-    transparent 100%
-  );
+    transparent 100%);
 }
 
 .job-list-item.featured {
   border-color: var(--color-warning-400);
-  background: linear-gradient(
-    135deg,
+  background: linear-gradient(135deg, 
     rgba(var(--color-warning-500-rgb), 0.05) 0%,
-    transparent 100%
-  );
+    transparent 100%);
 }
 
 .job-list-item.saved {
@@ -473,8 +450,7 @@ const showJobMenu = (job, event) => {
   gap: var(--spacing-2);
 }
 
-.featured-badge,
-.gaming-badge {
+.featured-badge, .gaming-badge {
   font-size: 1rem;
 }
 
@@ -635,15 +611,17 @@ const showJobMenu = (job, event) => {
   gap: var(--spacing-4);
 }
 
-.primary-actions,
-.secondary-actions {
+.primary-actions, .secondary-actions {
   display: flex;
   gap: var(--spacing-2);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .job-company-row {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--spacing-2);
   }
 
   .job-meta {
@@ -653,9 +631,11 @@ const showJobMenu = (job, event) => {
   .job-tags-section {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--spacing-2);
   }
 
   .ai-score-container {
+    margin-left: 0;
   }
 
   .job-actions-row {
@@ -663,27 +643,38 @@ const showJobMenu = (job, event) => {
     align-items: stretch;
   }
 
-  .primary-actions,
-  .secondary-actions {
+  .primary-actions, .secondary-actions {
     justify-content: center;
   }
 }
 
+/* Gaming theme enhancements */
 :deep(.level-chip) {
+  font-weight: 600;
 }
 
 :deep(.remote-chip) {
+  background: rgba(var(--color-success-500-rgb), 0.15);
+  color: var(--color-success-600);
+  border: 1px solid rgba(var(--color-success-500-rgb), 0.3);
 }
 
 :deep(.genre-chip) {
+  background: rgba(var(--color-gaming-500-rgb), 0.15);
+  color: var(--color-gaming-400);
+  border: 1px solid rgba(var(--color-gaming-500-rgb), 0.3);
 }
 
 :deep(.skill-chip) {
+  background: rgba(var(--surface-rgb), 0.8);
   color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+  font-size: 0.75rem;
 }
 
 :deep(.more-skills-chip) {
   background: transparent;
   color: var(--text-muted);
+  border: 1px dashed var(--border-base);
 }
 </style>

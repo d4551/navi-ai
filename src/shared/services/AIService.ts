@@ -1,18 +1,38 @@
+/**
+ * CANONICAL AI SERVICE - SINGLE SOURCE OF TRUTH
+ * =============================================
+ * 
+ * Consolidates ALL AI functionality into one service:
+ * - AIService.ts ✓ (conversation context, multi-provider)
+ * - UnifiedAIService.ts → MERGED
+ * - CentralizedAIService.ts → MERGED  
+ * - CanonicalAIClient.ts → INTEGRATED
+ * - MultiModalAIManager.ts → INTEGRATED
+ * 
+ * Features:
+ * - Multi-provider support (Google, OpenAI, Anthropic)
+ * - Streaming responses with chunked data
+ * - Real-time audio/video multimodal
+ * - Conversation context persistence
+ * - Gaming industry specialized prompts
+ * - Secure Electron IPC integration
+ * - Performance monitoring & fallback
+ */
 
-import { realTimeMultiTurnService } from "./RealTimeMultiTurnService";
-import { databaseService, ChatHistory, ChatMessage } from "./DatabaseService";
-import { canonicalAIClient } from "./CanonicalAIClient";
-import { jobPostingAnalysisService } from "@/services/JobPostingAnalysisService";
-import { aiResumeTargetingService } from "@/services/AIResumeTargetingService";
-import { enhancedSkillExtractor } from "@/shared/services/EnhancedSkillExtractor";
-import { aiJobService } from "@/services/AIJobService";
-import { semanticSearchService } from "@/shared/services/SemanticSearchService";
-import { resolveGeminiApiKey } from "@/shared/utils/apiKeys";
+import { realTimeMultiTurnService } from './RealTimeMultiTurnService';
+import { databaseService, ChatHistory, ChatMessage } from './DatabaseService';
+import { canonicalAIClient } from './CanonicalAIClient';
+import { jobPostingAnalysisService } from '@/services/JobPostingAnalysisService'
+import { aiResumeTargetingService } from '@/services/AIResumeTargetingService'
+import { enhancedSkillExtractor } from '@/shared/services/EnhancedSkillExtractor'
+import { aiJobService } from '@/services/AIJobService'
+import { semanticSearchService } from '@/shared/services/SemanticSearchService'
+import { resolveGeminiApiKey } from '@/shared/utils/apiKeys'
 
 // AI Service Configuration
 export interface AIServiceConfig {
-  primaryProvider: "google" | "openai" | "anthropic";
-  fallbackProviders: Array<"google" | "openai" | "anthropic">;
+  primaryProvider: 'google' | 'openai' | 'anthropic';
+  fallbackProviders: Array<'google' | 'openai' | 'anthropic'>;
   maxRetries: number;
   timeoutMs: number;
   enableContextPersistence: boolean;
@@ -29,7 +49,7 @@ export interface AIRequest {
   context?: string;
   userId?: string;
   sessionId?: string;
-  type?: "chat" | "completion" | "analysis" | "generation";
+  type?: 'chat' | 'completion' | 'analysis' | 'generation';
   metadata?: Record<string, any>;
 }
 
@@ -40,7 +60,7 @@ export interface AIStreamRequest extends AIRequest {
 }
 
 export interface RealTimeRequest extends AIRequest {
-  mode: "audio" | "video" | "screen" | "multimodal";
+  mode: 'audio' | 'video' | 'screen' | 'multimodal';
   mediaStream?: MediaStream;
   onResponse?: (response: string) => void;
   onMediaData?: (data: any) => void;
@@ -63,13 +83,13 @@ export interface AIStreamResponse extends AIResponse {
 }
 
 // Button configuration for UI components
-export type AIButtonType = "chat" | "completion" | "analysis" | "generation";
+export type AIButtonType = 'chat' | 'completion' | 'analysis' | 'generation';
 
 export interface AIButtonConfig {
   label: string;
   icon: string;
-  variant: "primary" | "secondary" | "outline" | "ghost";
-  size: "xs" | "sm" | "md" | "lg";
+  variant: 'primary' | 'secondary' | 'outline' | 'ghost';
+  size: 'xs' | 'sm' | 'md' | 'lg';
   loadingText: string;
   tooltip?: string;
   requiresAuth?: boolean;
@@ -88,45 +108,48 @@ export class AIService {
   // Predefined button configurations for UI components
   private readonly BUTTON_CONFIGS: Record<AIButtonType, AIButtonConfig> = {
     chat: {
-      label: "Ask AI",
-      icon: "mdi-robot",
-      variant: "primary",
-      size: "md",
-      loadingText: "Thinking...",
-      requiresAuth: false,
+      label: 'Ask AI',
+      icon: 'mdi-robot',
+      variant: 'primary',
+      size: 'md',
+      loadingText: 'Thinking...',
+      requiresAuth: false
     },
     completion: {
-      label: "Complete",
-      icon: "mdi-auto-fix",
-      variant: "secondary",
-      size: "md",
-      loadingText: "Completing...",
-      requiresAuth: false,
+      label: 'Complete',
+      icon: 'mdi-auto-fix',
+      variant: 'secondary',
+      size: 'md',
+      loadingText: 'Completing...',
+      requiresAuth: false
     },
     analysis: {
-      label: "Analyze",
-      icon: "mdi-chart-bar",
-      variant: "outline",
-      size: "md",
-      loadingText: "Analyzing...",
-      requiresAuth: false,
+      label: 'Analyze',
+      icon: 'mdi-chart-bar',
+      variant: 'outline',
+      size: 'md',
+      loadingText: 'Analyzing...',
+      requiresAuth: false
     },
     generation: {
-      label: "Generate",
-      icon: "mdi-auto-fix",
-      variant: "primary",
-      size: "md",
-      loadingText: "Generating...",
-      requiresAuth: false,
-    },
+      label: 'Generate',
+      icon: 'mdi-auto-fix',
+      variant: 'primary',
+      size: 'md',
+      loadingText: 'Generating...',
+      requiresAuth: false
+    }
   };
 
   private constructor() {
     this.config = {
-      primaryProvider: "google",
-      fallbackProviders: ["openai", "anthropic"],
+      primaryProvider: 'google',
+      fallbackProviders: ['openai', 'anthropic'],
+      maxRetries: 3,
+      timeoutMs: 30000,
       enableContextPersistence: true,
-      enableRealTime: true,
+      maxContextLength: 10000,
+      enableRealTime: true
     };
 
     this.realTimeService = realTimeMultiTurnService;
@@ -139,19 +162,15 @@ export class AIService {
     return AIService.instance;
   }
 
-  async initialize(
-    config?: Partial<AIServiceConfig>,
-  ): Promise<{
-    success: boolean;
-    message?: string;
-    model?: any;
-    provider?: string;
-  }> {
+  /**
+   * Initialize AI service with all providers
+   */
+  async initialize(config?: Partial<AIServiceConfig>): Promise<{success: boolean, message?: string, model?: any, provider?: string}> {
     if (this.initialized) {
       return {
         success: true,
-        message: "AI service already initialized",
-        provider: this.config.primaryProvider,
+        message: 'AI service already initialized',
+        provider: this.config.primaryProvider
       };
     }
 
@@ -162,71 +181,69 @@ export class AIService {
     try {
       // Use the centralized API key resolver for better reliability
       const resolvedKey = await resolveGeminiApiKey();
-
+      
       // Allow config to override resolved key
       const key = (config as any)?.apiKey || resolvedKey;
-
+      const model = (config as any)?.model || 'gemini-2.5-flash';
+      
       if (!key) {
-        throw new Error(
-          "No Gemini API key found. Please configure your API key in Settings.",
-        );
+        throw new Error('No Gemini API key found. Please configure your API key in Settings.');
       }
-
+      
       try {
         // Initialize canonical AI client with resolved API key
         await canonicalAIClient.initialize(key, model);
       } catch (e) {
-        console.error("Canonical AI client initialization failed:", e);
-        throw new Error(
-          `API key validation failed: ${e instanceof Error ? e.message : "Invalid API key"}`,
-        );
+        console.error('Canonical AI client initialization failed:', e);
+        throw new Error(`API key validation failed: ${e instanceof Error ? e.message : 'Invalid API key'}`);
       }
 
       this.initialized = true;
-
+      
       return {
         success: true,
-        message: "AI services initialized successfully",
+        message: 'AI services initialized successfully',
         provider: this.config.primaryProvider,
         model: {
           capabilities: {
             imageInput: true,
             audioInput: this.config.enableRealTime,
             realtimeChat: this.config.enableRealTime,
-            textGeneration: true,
-          },
-        },
+            textGeneration: true
+          }
+        }
       };
     } catch (error) {
       // Log initialization failures as they are critical for service operation
-      console.error("AI service initialization failed:", error);
-
+      console.error('AI service initialization failed:', error);
+      
       // Enhanced error handling with specific error types
-      let errorMessage = "AI service initialization failed";
+      let errorMessage = 'AI service initialization failed';
       if (error instanceof Error) {
-        if (error.message.includes("API key")) {
-          errorMessage =
-            "Invalid or missing API key. Please check your configuration.";
-        } else if (error.message.includes("network")) {
-          errorMessage =
-            "Network error during AI service initialization. Please check your connection.";
-        } else if (error.message.includes("rate limit")) {
-          errorMessage = "Rate limit exceeded. Please wait and try again.";
+        if (error.message.includes('API key')) {
+          errorMessage = 'Invalid or missing API key. Please check your configuration.';
+        } else if (error.message.includes('network')) {
+          errorMessage = 'Network error during AI service initialization. Please check your connection.';
+        } else if (error.message.includes('rate limit')) {
+          errorMessage = 'Rate limit exceeded. Please wait and try again.';
         } else {
           errorMessage = `AI service initialization failed: ${error.message}`;
         }
       }
-
+      
       return {
         success: false,
-        message: errorMessage,
+        message: errorMessage
       };
     }
   }
 
+  /**
+   * Main chat interface - automatically selects best provider
+   */
   async chat(request: AIRequest): Promise<AIResponse> {
     if (!this.initialized) {
-      throw new Error("AI service not initialized. Call initialize() first.");
+      throw new Error('AI service not initialized. Call initialize() first.');
     }
 
     let lastError: Error | null = null;
@@ -241,22 +258,15 @@ export class AIService {
     const fullContext = this.buildContext(contextMessages, request.context);
     const contextualRequest = {
       ...request,
-      message: fullContext + "\n\nUser: " + request.message,
+      message: fullContext + '\n\nUser: ' + request.message
     };
 
     // Try primary provider first
     try {
-      const response = await this.callProvider(
-        this.config.primaryProvider,
-        contextualRequest,
-      );
-
+      const response = await this.callProvider(this.config.primaryProvider, contextualRequest);
+      
       // Save to conversation history
-      if (
-        this.config.enableContextPersistence &&
-        request.userId &&
-        request.sessionId
-      ) {
+      if (this.config.enableContextPersistence && request.userId && request.sessionId) {
         await this.saveToHistory(request, response);
       }
 
@@ -264,23 +274,16 @@ export class AIService {
     } catch (error) {
       lastError = error as Error;
       // Log provider failures for debugging fallback behavior
-      console.warn(
-        `Primary provider ${this.config.primaryProvider} failed:`,
-        error,
-      );
+      console.warn(`Primary provider ${this.config.primaryProvider} failed:`, error);
     }
 
     // Try fallback providers
     for (const provider of this.config.fallbackProviders) {
       try {
         const response = await this.callProvider(provider, contextualRequest);
-
+        
         // Save to conversation history
-        if (
-          this.config.enableContextPersistence &&
-          request.userId &&
-          request.sessionId
-        ) {
+        if (this.config.enableContextPersistence && request.userId && request.sessionId) {
           await this.saveToHistory(request, response);
         }
 
@@ -293,298 +296,255 @@ export class AIService {
     }
 
     // All providers failed
-    throw new Error(
-      `All AI providers failed. Last error: ${lastError?.message || "Unknown error"}`,
-    );
+    throw new Error(`All AI providers failed. Last error: ${lastError?.message || 'Unknown error'}`);
   }
 
+  /**
+   * ACTION WRAPPERS used by useAIIntegration.triggerAIAction
+   * These provide stable method names expected by the UI
+   */
   async generateResumeContent(context: any): Promise<AIResponse> {
-    const resumeData =
-      context?.resumeContent || context?.resume || context?.userInfo || "";
-    const message = `Generate professional, concise resume content. Focus on measurable achievements and game industry relevance.`;
-    const ctx =
-      typeof resumeData === "string"
-        ? resumeData
-    return this.chat({ message, context: ctx, type: "generation" });
+    const resumeData = context?.resumeContent || context?.resume || context?.userInfo || ''
+    const message = `Generate professional, concise resume content. Focus on measurable achievements and game industry relevance.`
+    const ctx = typeof resumeData === 'string' ? resumeData : JSON.stringify(resumeData, null, 2)
+    return this.chat({ message, context: ctx, type: 'generation' })
   }
 
   async analyzeJobMatch(context: any): Promise<AIResponse> {
     // If array of jobs provided, run structured matching
-    if (Array.isArray(context && (context.jobs || context.jobList))) {
-      const jobs = context.jobs || context.jobList;
-      const matches = await aiJobService.analyzeJobMatches(jobs);
+    if (Array.isArray((context && (context.jobs || context.jobList)))) {
+      const jobs = context.jobs || context.jobList
+      const matches = await aiJobService.analyzeJobMatches(jobs)
       return {
-        content: "Job matches computed",
+        content: 'Job matches computed',
         provider: this.config.primaryProvider,
         timestamp: new Date(),
-        metadata: { matches },
-      };
+        metadata: { matches }
+      }
     }
 
     // If single job object provided
     if (context?.job) {
-      const matches = await aiJobService.analyzeJobMatches([context.job]);
+      const matches = await aiJobService.analyzeJobMatches([context.job])
       return {
-        content: "Job match analysis completed",
+        content: 'Job match analysis completed',
         provider: this.config.primaryProvider,
         timestamp: new Date(),
-      };
+        metadata: { match: matches[0] }
+      }
     }
 
     // If description or url provided, use posting analysis
     if (context?.url) {
-      const result = await jobPostingAnalysisService.analyzeFromUrl(
-        context.url,
-      );
+      const result = await jobPostingAnalysisService.analyzeFromUrl(context.url)
       return {
-        content: result.analysis
-          ? `Analysis for ${result.analysis.jobTitle} at ${result.analysis.company}`
-          : result.error || "Analysis failed",
+        content: result.analysis ? `Analysis for ${result.analysis.jobTitle} at ${result.analysis.company}` : (result.error || 'Analysis failed'),
         provider: this.config.primaryProvider,
         timestamp: new Date(),
-        metadata: result as any,
-      };
+        metadata: result as any
+      }
     }
     if (context?.jobDescription || context?.jobText || context?.description) {
-      const text =
-        context.jobDescription || context.jobText || context.description;
-      const result =
-        await jobPostingAnalysisService.analyzeJobPostingText(text);
+      const text = context.jobDescription || context.jobText || context.description
+      const result = await jobPostingAnalysisService.analyzeJobPostingText(text)
       return {
-        content: result.analysis
-          ? `Analysis for ${result.analysis.jobTitle} at ${result.analysis.company}`
-          : result.error || "Analysis failed",
+        content: result.analysis ? `Analysis for ${result.analysis.jobTitle} at ${result.analysis.company}` : (result.error || 'Analysis failed'),
         provider: this.config.primaryProvider,
         timestamp: new Date(),
-        metadata: result as any,
-      };
+        metadata: result as any
+      }
     }
 
     // Fallback to generic chat
-    return this.chat({
-      message: "Analyze this job match",
-      context: JSON.stringify(context ?? {}),
-      type: "analysis",
-    });
+    return this.chat({ message: 'Analyze this job match', context: JSON.stringify(context ?? {}), type: 'analysis' })
   }
 
   async extractSkills(context: any): Promise<AIResponse> {
-    const text =
-      context?.content || context?.text || context?.experienceText || "";
-    const result = await enhancedSkillExtractor.extractSkills(String(text));
+    const text = context?.content || context?.text || context?.experienceText || ''
+    const result = await enhancedSkillExtractor.extractSkills(String(text))
     return {
       content: `Found ${result.totalSkillsFound} skills`,
       provider: this.config.primaryProvider,
       timestamp: new Date(),
-      metadata: { result },
-    } as any;
+      metadata: { result }
+    } as any
   }
 
   async conductMockInterview(context: any): Promise<AIResponse> {
-    const jobDescription =
-      context?.jobDescription || context?.description || "";
-    const difficulty = context?.difficulty || "mid";
-    return this.generateInterviewQuestions(jobDescription, difficulty);
+    const jobDescription = context?.jobDescription || context?.description || ''
+    const difficulty = context?.difficulty || 'mid'
+    return this.generateInterviewQuestions(jobDescription, difficulty)
   }
 
   async analyzeStudioFit(context: any): Promise<AIResponse> {
-    const studioName =
-      context?.studioName ||
-      context?.studio ||
-      context?.company ||
-      "Unknown Studio";
-    const games = context?.games || [];
-    const role = context?.targetRole || context?.role || "Game Developer";
-    return this.analyzeGamingStudio(studioName, games, role);
+    const studioName = context?.studioName || context?.studio || context?.company || 'Unknown Studio'
+    const games = context?.games || []
+    const role = context?.targetRole || context?.role || 'Game Developer'
+    return this.analyzeGamingStudio(studioName, games, role)
   }
 
   async recommendStudios(context: any): Promise<AIResponse> {
-    const skills = context?.skills || [];
-    const experience = context?.gamingExperience || {};
-    const preferences = context?.preferences || {};
-    return this.getGamingJobRecommendations(skills, experience, preferences);
+    const skills = context?.skills || []
+    const experience = context?.gamingExperience || {}
+    const preferences = context?.preferences || {}
+    return this.getGamingJobRecommendations(skills, experience, preferences)
   }
 
   async performSemanticJobSearch(context: any): Promise<AIResponse> {
-    const query = context?.query || context?.keywords || "";
-    const results = await semanticSearchService.semanticSearch(
-      String(query || ""),
-    );
+    const query = context?.query || context?.keywords || ''
+    const results = await semanticSearchService.semanticSearch(String(query || ''), { threshold: 0.05, maxResults: 20 })
     return {
       content: `Found ${results.length} relevant results`,
       provider: this.config.primaryProvider,
       timestamp: new Date(),
-      metadata: { results },
-    } as any;
+      metadata: { results }
+    } as any
   }
 
   async enhanceJobMatching(context: any): Promise<AIResponse> {
     // If job and resume provided, use resume targeting service pipeline
     if (context?.jobAnalysis) {
-      const tailored = await aiResumeTargetingService.tailorResumeToJob(
-        context?.currentResume || {},
-        context.jobAnalysis,
-      );
+      const tailored = await aiResumeTargetingService.tailorResumeToJob(context?.currentResume || {}, context.jobAnalysis)
       return {
-        content: tailored.success
-          ? "Resume tailoring completed"
-          : tailored.error || "Resume tailoring failed",
+        content: tailored.success ? 'Resume tailoring completed' : (tailored.error || 'Resume tailoring failed'),
         provider: this.config.primaryProvider,
         timestamp: new Date(),
-        metadata: tailored as any,
-      };
+        metadata: tailored as any
+      }
     }
 
     // Otherwise respond with generic guidance
     return this.chat({
-      message:
-        "Provide specific recommendations to enhance job matching for this user profile and preferences.",
+      message: 'Provide specific recommendations to enhance job matching for this user profile and preferences.',
       context: JSON.stringify(context ?? {}),
-      type: "analysis",
-    });
+      type: 'analysis'
+    })
   }
 
   async salaryInsights(context: any): Promise<AIResponse> {
     try {
-      const job = context?.job || context?.posting || null;
+      const job = context?.job || context?.posting || null
       if (!job) {
         return {
-          content: "No job provided for salary insights",
+          content: 'No job provided for salary insights',
           provider: this.config.primaryProvider,
           timestamp: new Date(),
-          metadata: {},
-        };
+          metadata: {}
+        }
       }
-      const prediction = await aiJobService.predictSalary(job);
-      const { min, max, currency } = prediction.estimatedSalary;
-      const content = `Estimated salary: ${currency} ${min.toLocaleString()} - ${max.toLocaleString()} (confidence ${Math.round(prediction.confidence)}%)`;
+      const prediction = await aiJobService.predictSalary(job)
+      const { min, max, currency } = prediction.estimatedSalary
+      const content = `Estimated salary: ${currency} ${min.toLocaleString()} - ${max.toLocaleString()} (confidence ${Math.round(prediction.confidence)}%)`
       return {
         content,
         provider: this.config.primaryProvider,
         timestamp: new Date(),
-        metadata: { prediction },
-      };
+        metadata: { prediction }
+      }
     } catch (error: any) {
       return {
-        content: "Failed to get salary insights",
+        content: 'Failed to get salary insights',
         provider: this.config.primaryProvider,
         timestamp: new Date(),
-        metadata: { error: error?.message || String(error) },
-      };
+        metadata: { error: error?.message || String(error) }
+      }
     }
   }
 
   // Additional helpers to support UI actions
   async analyzeResumeQuick(context: any): Promise<AIResponse> {
-    const resume =
-      context?.resume || context?.resumeContent || context?.text || "";
-    const message =
-      "Analyze this resume and provide strengths, gaps, and top improvements as bullet points.";
-    return this.chat({
-      message,
-      context:
-      type: "analysis",
-    });
+    const resume = context?.resume || context?.resumeContent || context?.text || ''
+    const message = 'Analyze this resume and provide strengths, gaps, and top improvements as bullet points.'
+    return this.chat({ message, context: typeof resume === 'string' ? resume : JSON.stringify(resume, null, 2), type: 'analysis' })
   }
 
   async optimizePortfolio(context: any): Promise<AIResponse> {
-    const portfolio = context?.portfolio || context?.items || [];
-    const message =
-      "Provide concrete suggestions to improve this game portfolio for hiring managers.";
-    return this.chat({
-      message,
-      type: "analysis",
-    });
+    const portfolio = context?.portfolio || context?.items || []
+    const message = 'Provide concrete suggestions to improve this game portfolio for hiring managers.'
+    return this.chat({ message, context: JSON.stringify(portfolio, null, 2), type: 'analysis' })
   }
 
   async searchJobs(context: any): Promise<AIResponse> {
-    const query =
-      context?.query ||
-      context?.keywords ||
-      (Array.isArray(context?.skills) ? context.skills.join(" ") : "");
-    const studiosFirst = await semanticSearchService.semanticSearch(
-      String(query || ""),
-    );
+    const query = context?.query || context?.keywords || (Array.isArray(context?.skills) ? context.skills.join(' ') : '')
+    const studiosFirst = await semanticSearchService.semanticSearch(String(query || ''), { threshold: 0.05, maxResults: 25 })
     return {
-      content: studiosFirst.length
-        ? `Found ${studiosFirst.length} potential matches`
-        : "No matches found",
+      content: studiosFirst.length ? `Found ${studiosFirst.length} potential matches` : 'No matches found',
       provider: this.config.primaryProvider,
       timestamp: new Date(),
-      metadata: { results: studiosFirst },
-    };
+      metadata: { results: studiosFirst }
+    }
   }
 
   async mapSkills(context: any): Promise<AIResponse> {
-    const text = context?.content || context?.text || "";
-    const result = await enhancedSkillExtractor.extractSkills(String(text));
+    const text = context?.content || context?.text || ''
+    const result = await enhancedSkillExtractor.extractSkills(String(text))
     return {
       content: `Identified ${result.totalSkillsFound} skills`,
       provider: this.config.primaryProvider,
       timestamp: new Date(),
-      metadata: { result },
-    };
+      metadata: { result }
+    }
   }
 
-  async realtimeChat(params: {
-    message: string;
-    context?: string;
-    sessionId?: string;
-    onChunk?: (c: string) => void;
-  }): Promise<AIResponse> {
+  /**
+   * Simple realtime chat wrapper for UI integrations
+   * Uses streaming when possible, falls back to non-streaming
+   */
+  async realtimeChat(params: { message: string; context?: string; sessionId?: string; onChunk?: (c: string) => void }): Promise<AIResponse> {
     if (!this.initialized) {
-      throw new Error("AI service not initialized. Call initialize() first.");
+      throw new Error('AI service not initialized. Call initialize() first.');
     }
-    const { message, context, sessionId, onChunk } = params || ({} as any);
+    const { message, context, sessionId, onChunk } = params || {} as any;
     if (!message || !message.trim()) {
-      throw new Error("No message provided for realtimeChat");
+      throw new Error('No message provided for realtimeChat');
     }
     try {
       if (onChunk) {
         // Streamed response
-        let full = "";
+        let full = '';
         await this.chatStream({
           message,
           context,
           sessionId,
-          type: "chat",
-          onChunk: (chunk) => {
-            full += chunk;
-            onChunk?.(chunk);
-          },
+          type: 'chat',
+          onChunk: (chunk) => { full += chunk; onChunk?.(chunk); }
         });
         return {
           content: full,
           provider: this.config.primaryProvider,
           timestamp: new Date(),
-          conversationId: sessionId,
+          conversationId: sessionId
         };
       }
       // Non-streaming
-      const res = await this.chat({
-        message,
-        context,
-        sessionId,
-        type: "chat",
-      });
+      const res = await this.chat({ message, context, sessionId, type: 'chat' });
       return res;
     } catch (error: any) {
-      console.error("realtimeChat failed:", error);
-      throw new Error(error?.message || "realtimeChat failed");
+      console.error('realtimeChat failed:', error);
+      throw new Error(error?.message || 'realtimeChat failed');
     }
   }
 
+  /**
+   * Check if the service is initialized and ready
+   */
   async isReady(): Promise<boolean> {
     return this.initialized;
   }
 
+  /**
+   * Get UI button configuration for a request type
+   */
   getButtonConfig(type: AIButtonType): AIButtonConfig {
     return { ...this.BUTTON_CONFIGS[type] };
   }
 
+  /**
+   * Streaming chat interface
+   */
   async chatStream(request: AIStreamRequest): Promise<AIStreamResponse> {
     if (!this.initialized) {
-      throw new Error("AI service not initialized. Call initialize() first.");
+      throw new Error('AI service not initialized. Call initialize() first.');
     }
 
     // Load conversation context if enabled
@@ -597,20 +557,22 @@ export class AIService {
     const fullContext = this.buildContext(contextMessages, request.context);
     const contextualRequest = {
       ...request,
-      message: fullContext + "\n\nUser: " + request.message,
+      message: fullContext + '\n\nUser: ' + request.message
     };
 
     try {
       // Use canonicalAIClient for streaming text generation
       const chunks: string[] = [];
-      let fullContent = "";
+      let fullContent = '';
 
       await canonicalAIClient.streamText(
         {
           prompt: contextualRequest.message,
-          systemInstructions: contextualRequest.context || "",
+          systemInstructions: contextualRequest.context || '',
           options: {
-          },
+            temperature: 0.7,
+            maxTokens: 4000
+          }
         },
         {
           onChunk: (chunk: string) => {
@@ -624,58 +586,61 @@ export class AIService {
           },
           onError: (error: Error) => {
             request.onError?.(error);
-          },
-        },
+          }
+        }
       );
 
       const streamResponse: AIStreamResponse = {
         content: fullContent,
-        provider: "google",
+        provider: 'google',
         timestamp: new Date(),
         isStreaming: true,
         chunks,
-        conversationId: request.sessionId,
+        conversationId: request.sessionId
       };
 
       // Save to conversation history
-      if (
-        this.config.enableContextPersistence &&
-        request.userId &&
-        request.sessionId
-      ) {
+      if (this.config.enableContextPersistence && request.userId && request.sessionId) {
         await this.saveToHistory(request, streamResponse);
       }
 
       return streamResponse;
+
     } catch (error) {
       // Log streaming failures as they affect user experience
-      console.error("Streaming failed:", error);
+      console.error('Streaming failed:', error);
       throw new Error(`AI streaming failed: ${(error as Error).message}`);
     }
   }
 
+  /**
+   * Real-time multimodal interface
+   */
   async startRealTimeSession(request: RealTimeRequest): Promise<string> {
     if (!this.initialized) {
-      throw new Error("AI service not initialized. Call initialize() first.");
+      throw new Error('AI service not initialized. Call initialize() first.');
     }
 
     if (!this.config.enableRealTime) {
-      throw new Error("Real-time features are disabled");
+      throw new Error('Real-time features are disabled');
     }
 
     try {
-      const session = await this.realTimeService.startSession(request.mode, {
-        onMessage: (message: any) => {
-          request.onResponse?.(message.content);
-        },
-        onError: (error: Error) => {
-          // Log real-time session errors as they affect user experience
-          console.error("Real-time session error:", error);
-        },
-        onAudioResponse: (audioData: ArrayBuffer) => {
-          request.onMediaData?.(audioData);
-        },
-      });
+      const session = await this.realTimeService.startSession(
+        request.mode,
+        {
+          onMessage: (message: any) => {
+            request.onResponse?.(message.content);
+          },
+          onError: (error: Error) => {
+            // Log real-time session errors as they affect user experience
+            console.error('Real-time session error:', error);
+          },
+          onAudioResponse: (audioData: ArrayBuffer) => {
+            request.onMediaData?.(audioData);
+          }
+        }
+      );
 
       const sessionId = session.id;
 
@@ -685,41 +650,51 @@ export class AIService {
       }
 
       return sessionId;
+
     } catch (error) {
       // Log real-time session failures as they are critical
-      console.error("Real-time session failed:", error);
+      console.error('Real-time session failed:', error);
       throw new Error(`Real-time session failed: ${(error as Error).message}`);
     }
   }
 
+  /**
+   * Stop real-time session
+   */
   async stopRealTimeSession(_sessionId: string): Promise<void> {
     try {
       await this.realTimeService.stopSession();
     } catch (error) {
       // Log cleanup failures for debugging
-      console.error("Failed to stop real-time session:", error);
+      console.error('Failed to stop real-time session:', error);
     }
   }
 
+  /**
+   * Specialized AI functions for platform features
+   */
 
-  async analyzeResume(
-    resumeContent: string,
-    jobDescription?: string,
-  ): Promise<AIResponse> {
-    const context = jobDescription
+  /**
+   * Analyze resume content
+   */
+  async analyzeResume(resumeContent: string, jobDescription?: string): Promise<AIResponse> {
+    const context = jobDescription 
       ? `Analyze this resume against the job description: ${jobDescription}`
-      : "Analyze this resume and provide feedback on strengths, weaknesses, and suggestions for improvement.";
+      : 'Analyze this resume and provide feedback on strengths, weaknesses, and suggestions for improvement.';
 
     return this.chat({
       message: resumeContent,
       context,
-      type: "analysis",
+      type: 'analysis'
     });
   }
 
+  /**
+   * Parse an uploaded or pasted resume (text) into structured data
+   */
   async parseResume(resumeText: string): Promise<any> {
-    if (!resumeText || typeof resumeText !== "string") {
-      throw new Error("Invalid resume text");
+    if (!resumeText || typeof resumeText !== 'string') {
+      throw new Error('Invalid resume text')
     }
 
     const prompt = `Parse the following resume text into a clean JSON object.
@@ -748,37 +723,37 @@ Return JSON with this structure:
   "projects": [],
   "achievements": [],
   "certifications": []
-}`;
+}`
 
     const response = await this.chat({
       message: prompt,
-      type: "analysis",
-    });
+      type: 'analysis'
+    })
 
+    const jsonMatch = response.content.match(/\{[\s\S]*\}/)
     if (!jsonMatch) {
-      throw new Error("Failed to parse resume: no JSON returned");
+      throw new Error('Failed to parse resume: no JSON returned')
     }
+    const parsed = JSON.parse(jsonMatch[0])
     // Normalize a bit to match UI expectations
     parsed.skills = Array.isArray(parsed.skills)
-      ? parsed.skills.map((s: any) => (typeof s === "string" ? { name: s } : s))
-      : [];
-    return parsed;
+      ? parsed.skills.map((s: any) => (typeof s === 'string' ? { name: s } : s))
+      : []
+    return parsed
   }
 
-  async tailorDocuments(
-    resumeData: any,
-    coverLetterData: any,
-    jobDescription: string,
-  ): Promise<{ resume: any; coverLetter: any }> {
+  /**
+   * Tailor resume and (optionally) cover letter to a job description
+   */
+  async tailorDocuments(resumeData: any, coverLetterData: any, jobDescription: string): Promise<{ resume: any; coverLetter: any }> {
     if (!jobDescription?.trim()) {
-      throw new Error("Job description is required");
+      throw new Error('Job description is required')
     }
 
     // Analyze job
-    const analysis =
-      await jobPostingAnalysisService.analyzeJobPostingText(jobDescription);
+    const analysis = await jobPostingAnalysisService.analyzeJobPostingText(jobDescription)
     if (!analysis.success || !analysis.analysis) {
-      throw new Error(analysis.error || "Failed to analyze job description");
+      throw new Error(analysis.error || 'Failed to analyze job description')
     }
 
     // Tailor resume
@@ -786,226 +761,244 @@ Return JSON with this structure:
       resumeData,
       analysis.analysis,
       {
-        focusAreas: [
-          "ats_optimization",
-          "keyword_density",
-          "skill_highlighting",
-        ],
-        aggressiveness: "moderate",
-      },
-    );
+        focusAreas: ['ats_optimization', 'keyword_density', 'skill_highlighting'],
+        aggressiveness: 'moderate',
+        targetScore: 85
+      }
+    )
 
-    const tailoredResume =
-      tailoring.success && tailoring.tailoredResume
-        ? this.applyTailoredSectionsToResume(
-            resumeData,
-            tailoring.tailoredResume.sections,
-          )
-        : resumeData;
+    const tailoredResume = tailoring.success && tailoring.tailoredResume
+      ? this.applyTailoredSectionsToResume(resumeData, tailoring.tailoredResume.sections)
+      : resumeData
 
     // Generate a fresh cover letter body from tailored resume and job
-    const resumeText = JSON.stringify(tailoredResume);
-    const clResp = await this.generateCoverLetter(resumeText, jobDescription);
+    const resumeText = JSON.stringify(tailoredResume)
+    const clResp = await this.generateCoverLetter(resumeText, jobDescription)
     const updatedCover = {
       ...coverLetterData,
       content: {
         ...(coverLetterData?.content || {}),
-        body: clResp.content || (coverLetterData?.content?.body ?? ""),
-      },
-    };
+        body: clResp.content || (coverLetterData?.content?.body ?? '')
+      }
+    }
 
-    return { resume: tailoredResume, coverLetter: updatedCover };
+    return { resume: tailoredResume, coverLetter: updatedCover }
   }
 
   // Helper: merge tailored sections back into our simple resumeData shape
   private applyTailoredSectionsToResume(current: any, sections: any[]): any {
-    const next = { ...current };
+    const next = { ...current }
     for (const sec of sections || []) {
       switch (sec.type) {
-        case "summary":
-          next.summary =
-            sec.tailoredContent?.text || sec.tailoredContent || next.summary;
-          break;
-        case "skills":
+        case 'summary':
+          next.summary = sec.tailoredContent?.text || sec.tailoredContent || next.summary
+          break
+        case 'skills':
           if (Array.isArray(sec.tailoredContent)) {
-            next.skills = sec.tailoredContent.map((s: any) =>
-              typeof s === "string" ? { name: s } : s,
-            );
+            next.skills = sec.tailoredContent.map((s: any) => (typeof s === 'string' ? { name: s } : s))
           }
-          break;
-        case "experience":
+          break
+        case 'experience':
           if (Array.isArray(sec.tailoredContent)) {
-            next.experience = sec.tailoredContent;
+            next.experience = sec.tailoredContent
           }
-          break;
+          break
         default:
-          break;
+          break
       }
     }
-    return next;
+    return next
   }
 
+
+  /**
+   * Generate cover letter
+   */
   async generateCoverLetter(
     resumeOrContext: any,
     maybeJobDescription?: string,
-    maybeCompanyInfo?: string,
+    maybeCompanyInfo?: string
   ): Promise<AIResponse> {
-    let resumeContent: string;
-    let jobDescription: string;
-    let companyInfo: string | undefined;
+    let resumeContent: string
+    let jobDescription: string
+    let companyInfo: string | undefined
 
-    if (
-      typeof resumeOrContext === "object" &&
-      resumeOrContext !== null &&
-      typeof maybeJobDescription === "undefined"
-    ) {
-      resumeContent = String(
-        resumeOrContext?.resumeContent || resumeOrContext?.resume || "",
-      );
-      jobDescription = String(
-        resumeOrContext?.jobDescription || resumeOrContext?.job || "",
-      );
-      companyInfo = resumeOrContext?.companyInfo || resumeOrContext?.company;
+    if (typeof resumeOrContext === 'object' && resumeOrContext !== null && typeof maybeJobDescription === 'undefined') {
+      resumeContent = String(resumeOrContext?.resumeContent || resumeOrContext?.resume || '')
+      jobDescription = String(resumeOrContext?.jobDescription || resumeOrContext?.job || '')
+      companyInfo = resumeOrContext?.companyInfo || resumeOrContext?.company
     } else {
-      resumeContent = String(resumeOrContext ?? "");
-      jobDescription = String(maybeJobDescription ?? "");
-      companyInfo = maybeCompanyInfo;
+      resumeContent = String(resumeOrContext ?? '')
+      jobDescription = String(maybeJobDescription ?? '')
+      companyInfo = maybeCompanyInfo
     }
 
     // Pull personal info snapshot if available
-    let personalInfo = "";
+    let personalInfo = ''
     try {
       // dynamic import to avoid circulars in some build targets
-      const { useAppStore } = await import("@/stores/app");
-      const store = useAppStore();
-      const pi = store?.user?.personalInfo || {};
+      const { useAppStore } = await import('@/stores/app')
+      const store = useAppStore()
+      const pi = (store?.user?.personalInfo) || {}
       personalInfo = `\nCandidate Info: ${JSON.stringify({
         name: pi.name,
         location: pi.location,
         currentRole: pi.currentRole,
         currentCompany: pi.currentCompany,
         yearsExperience: pi.yearsExperience,
-        links: {
-          linkedIn: pi.linkedIn,
-          github: pi.github,
-          portfolio: pi.portfolio,
-        },
-      })}`;
+        links: { linkedIn: pi.linkedIn, github: pi.github, portfolio: pi.portfolio }
+      })}`
     } catch {}
 
     const context = `Generate a professional cover letter based on:
 Resume: ${resumeContent}
 Job Description: ${jobDescription}
-${companyInfo ? `Company Info: ${companyInfo}` : ""}${personalInfo}
+${companyInfo ? `Company Info: ${companyInfo}` : ''}${personalInfo}
 
-Make it personalized, professional, and highlight relevant skills.`;
+Make it personalized, professional, and highlight relevant skills.`
 
     return this.chat({
-      message: "Generate a cover letter",
+      message: 'Generate a cover letter',
       context,
-      type: "generation",
-    });
+      type: 'generation'
+    })
   }
 
+  /**
+   * Practice interview questions
+   */
   async generateInterviewQuestions(
     jobDescription: string,
-    difficulty: "junior" | "mid" | "senior" = "mid",
+    difficulty: 'junior' | 'mid' | 'senior' = 'mid'
   ): Promise<AIResponse> {
     const context = `Generate ${difficulty}-level interview questions for this job:
 ${jobDescription}
 
+Provide 5-10 relevant questions covering technical skills, behavioral aspects, and role-specific scenarios.`;
 
     return this.chat({
-      message: "Generate interview questions",
+      message: 'Generate interview questions',
       context,
-      type: "generation",
+      type: 'generation'
     });
   }
 
+  /**
+   * Analyze gaming skills for job relevance
+   */
   async analyzeGamingSkills(
     gameTitle: string,
     gameAchievements: string[],
-    targetJobRole: string,
+    targetJobRole: string
   ): Promise<AIResponse> {
     const context = `Analyze how gaming skills from "${gameTitle}" relate to "${targetJobRole}":
-Achievements: ${gameAchievements.join(", ")}
+Achievements: ${gameAchievements.join(', ')}
 
 Identify transferable skills, leadership qualities, problem-solving abilities, and professional relevance.`;
 
     return this.chat({
-      message: "Analyze gaming skills for job relevance",
+      message: 'Analyze gaming skills for job relevance',
       context,
-      type: "analysis",
+      type: 'analysis'
     });
   }
 
+  /**
+   * GAMING INDUSTRY SPECIALIZED METHODS
+   * ==================================
+   */
 
+  /**
+   * Gaming job matching with studio culture alignment
+   */
   async getGamingJobRecommendations(
     userSkills: string[],
     gamingExperience: Record<string, any>,
-    preferences: Record<string, any>,
+    preferences: Record<string, any>
   ): Promise<AIResponse> {
     const context = `Gaming Professional Profile:
-Skills: ${userSkills.join(", ")}
+Skills: ${userSkills.join(', ')}
 Gaming Experience: ${JSON.stringify(gamingExperience)}
 Studio Preferences: ${JSON.stringify(preferences)}
 
 You are NAVI, an AI career assistant for gaming professionals. Analyze this profile and recommend:
+1. Ideal gaming studios that match their culture and tech stack
+2. Specific roles that align with their skills (Game Designer, Developer, Artist, etc.)
+3. Career growth paths in the gaming industry
+4. Skills to develop for advancement
 
 Focus on gaming industry insights, studio culture fit, and career progression.`;
 
     return this.chat({
-      message: "Recommend gaming career opportunities and growth paths",
+      message: 'Recommend gaming career opportunities and growth paths',
       context,
-      type: "analysis",
+      type: 'analysis'
     });
   }
 
+  /**
+   * Gaming studio analysis for career mapping
+   */
   async analyzeGamingStudio(
     studioName: string,
     games: string[],
-    targetRole: string,
+    targetRole: string
   ): Promise<AIResponse> {
     const context = `Gaming Studio Analysis:
 Studio: ${studioName}
-Notable Games: ${games.join(", ")}
+Notable Games: ${games.join(', ')}
 Target Role: ${targetRole}
 
 Analyze the gaming studio's culture, tech stack, and provide insights for someone applying to this role. Include:
+1. Studio culture and working style
+2. Technologies and tools they likely use
+3. Skills most valued for this role
+4. Interview tips specific to this studio
+5. Notable projects that show relevant experience`;
 
     return this.chat({
-      message: "Analyze this gaming studio and provide career insights",
+      message: 'Analyze this gaming studio and provide career insights',
       context,
-      type: "analysis",
+      type: 'analysis'
     });
   }
 
+  /**
+   * Gaming portfolio/resume analysis
+   */
   async analyzeGamingResume(
     resumeContent: string,
-    targetStudio?: string,
+    targetStudio?: string
   ): Promise<AIResponse> {
     const context = `Gaming Resume Analysis:
-${targetStudio ? `Target Studio: ${targetStudio}` : ""}
+${targetStudio ? `Target Studio: ${targetStudio}` : ''}
 
 Resume Content:
 ${resumeContent}
 
 As NAVI, an AI career assistant for gaming professionals, provide:
+1. Strengths that align with gaming industry needs
+2. Areas to improve for gaming roles
+3. Missing gaming-specific elements
+4. Suggestions for gaming portfolio enhancement
+5. Keywords to include for ATS systems
 
 Focus on gaming industry standards and what gaming studios look for.`;
 
     return this.chat({
-      message:
-        "Analyze this gaming resume and provide improvement recommendations",
+      message: 'Analyze this gaming resume and provide improvement recommendations',
       context,
-      type: "analysis",
+      type: 'analysis'
     });
   }
 
+  /**
+   * Gaming interview preparation
+   */
   async prepareGamingInterview(
     studioName: string,
     role: string,
-    userBackground: Record<string, any>,
+    userBackground: Record<string, any>
   ): Promise<AIResponse> {
     const context = `Gaming Interview Preparation:
 Studio: ${studioName}
@@ -1013,84 +1006,97 @@ Role: ${role}
 Candidate Background: ${JSON.stringify(userBackground)}
 
 As NAVI, prepare this gaming professional for their interview. Include:
+1. Studio-specific questions they might ask
+2. Technical questions for this gaming role
+3. Portfolio pieces to highlight
+4. Questions to ask the interviewer
+5. Red flags to watch for
+6. Gaming industry trends to discuss
 
 Make it specific to gaming industry interviews and this particular studio.`;
 
     return this.chat({
-      message: "Help me prepare for this gaming industry interview",
+      message: 'Help me prepare for this gaming industry interview',
       context,
-      type: "analysis",
+      type: 'analysis'
     });
   }
 
+  /**
+   * Gaming cover letter generation
+   */
   async generateGamingCoverLetter(
     jobDescription: string,
     userProfile: Record<string, any>,
-    studioInfo?: Record<string, any>,
+    studioInfo?: Record<string, any>
   ): Promise<AIResponse> {
     const context = `Gaming Cover Letter Generation:
 Job Description: ${jobDescription}
 User Profile: ${JSON.stringify(userProfile)}
-${studioInfo ? `Studio Info: ${JSON.stringify(studioInfo)}` : ""}
+${studioInfo ? `Studio Info: ${JSON.stringify(studioInfo)}` : ''}
 
 Create a compelling cover letter for this gaming industry position. Include:
+1. Gaming passion and industry knowledge
+2. Relevant gaming projects and experience
+3. Technical skills alignment
+4. Studio culture fit
+5. Specific games/projects that demonstrate abilities
 
 Keep it professional but show gaming enthusiasm and industry understanding.`;
 
     return this.chat({
-      message: "Generate a gaming industry cover letter",
+      message: 'Generate a gaming industry cover letter',
       context,
-      type: "generation",
+      type: 'generation'
     });
   }
 
+  /**
+   * General job recommendations (legacy compatibility)
+   */
   async getJobRecommendations(
     userSkills: string[],
-    preferences: Record<string, any>,
+    preferences: Record<string, any>
   ): Promise<AIResponse> {
     // Redirect to gaming-focused method for consistency
     return this.getGamingJobRecommendations(userSkills, {}, preferences);
   }
 
+  /**
+   * Private helper methods
+   */
 
-  private async callProvider(
-    provider: string,
-    request: AIRequest,
-  ): Promise<AIResponse> {
+  private async callProvider(provider: string, request: AIRequest): Promise<AIResponse> {
+
     switch (provider) {
-      case "google":
+      case 'google':
         try {
           const response = await Promise.race([
-            canonicalAIClient.generateText(
-              request.message,
-              request.context || "",
-              {
-                timeout: this.config.timeoutMs,
-              },
-            ),
+            canonicalAIClient.generateText(request.message, request.context || '', {
+              temperature: 0.7,
+              maxTokens: 4000,
+              timeout: this.config.timeoutMs
+            }),
             new Promise<never>((_, reject) =>
-              setTimeout(
-                () => reject(new Error("Request timeout")),
-                this.config.timeoutMs,
-              ),
-            ),
+              setTimeout(() => reject(new Error('Request timeout')), this.config.timeoutMs)
+            )
           ]);
 
           return {
             content: response,
-            provider: "google",
+            provider: 'google',
             timestamp: new Date(),
             tokensUsed: this.estimateTokens(request.message + response),
-            conversationId: request.sessionId,
+            conversationId: request.sessionId
           };
         } catch (error) {
           throw new Error(`Google AI failed: ${(error as Error).message}`);
         }
 
-      case "openai":
+      case 'openai':
         return await this.callOpenAIProvider(request);
 
-      case "anthropic":
+      case 'anthropic':
         return await this.callAnthropicProvider(request);
 
       default:
@@ -1098,24 +1104,23 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
     }
   }
 
-  private async loadConversationContext(
-    sessionId: string,
-  ): Promise<ChatMessage[]> {
+  private async loadConversationContext(sessionId: string): Promise<ChatMessage[]> {
     try {
-      const chatHistory =
-        await databaseService.findChatHistoryBySession(sessionId);
+      const chatHistory = await databaseService.findChatHistoryBySession(sessionId);
       const allMessages: ChatMessage[] = [];
 
-      chatHistory.forEach((session) => {
+      chatHistory.forEach(session => {
         allMessages.push(...session.messages);
       });
 
       // Sort by timestamp and limit to max context length
       allMessages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
-
+      
       // Estimate token usage and trim if necessary
+      let totalTokens = 0;
       const contextMessages: ChatMessage[] = [];
 
+      for (let i = allMessages.length - 1; i >= 0; i--) {
         const messageTokens = this.estimateTokens(allMessages[i].content);
         if (totalTokens + messageTokens > this.config.maxContextLength) {
           break;
@@ -1127,204 +1132,221 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       return contextMessages;
     } catch (error) {
       // Log context loading failures for debugging
-      console.warn("Failed to load conversation context:", error);
+      console.warn('Failed to load conversation context:', error);
       return [];
     }
   }
 
-  private buildContext(
-    messages: ChatMessage[],
-    additionalContext?: string,
-  ): string {
-    let context = "";
+  private buildContext(messages: ChatMessage[], additionalContext?: string): string {
+    let context = '';
 
     if (additionalContext) {
       context += `Context: ${additionalContext}\n\n`;
     }
 
-      context += "Previous conversation:\n";
-      messages.forEach((message) => {
+    if (messages.length > 0) {
+      context += 'Previous conversation:\n';
+      messages.forEach(message => {
         context += `${message.role}: ${message.content}\n`;
       });
-      context += "\n";
+      context += '\n';
     }
 
     return context;
   }
 
-  private async saveToHistory(
-    request: AIRequest,
-    response: AIResponse,
-  ): Promise<void> {
+  private async saveToHistory(request: AIRequest, response: AIResponse): Promise<void> {
     try {
       if (!request.userId || !request.sessionId) return;
 
       const userMessage: ChatMessage = {
         id: this.generateId(),
-        role: "user",
+        role: 'user',
         content: request.message,
         timestamp: new Date(),
-        metadata: request.metadata,
+        metadata: request.metadata
       };
 
       const assistantMessage: ChatMessage = {
         id: this.generateId(),
-        role: "assistant",
+        role: 'assistant',
         content: response.content,
         timestamp: response.timestamp,
         metadata: {
           provider: response.provider,
           tokensUsed: response.tokensUsed,
           confidence: response.confidence,
-          ...response.metadata,
-        },
+          ...response.metadata
+        }
       };
 
       const chatHistory: ChatHistory = {
         id: this.generateId(),
         userId: request.userId,
         sessionId: request.sessionId,
-        type: request.type === "chat" ? "text" : "text", // Default to text for now
+        type: request.type === 'chat' ? 'text' : 'text', // Default to text for now
         messages: [userMessage, assistantMessage],
         context: request.context,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
       };
 
       await databaseService.saveChatHistory(chatHistory);
     } catch (error) {
-      // Log history saving failures for debugging
-      console.warn("Failed to save conversation history:", error);
+      // Log history saving failures for debugging  
+      console.warn('Failed to save conversation history:', error);
     }
   }
 
   private estimateTokens(text: string): number {
+    // Rough estimation: ~4 characters per token
+    return Math.ceil(text.length / 4);
   }
 
   private generateId(): string {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
   }
 
+  /**
+   * OpenAI provider implementation
+   */
   private async callOpenAIProvider(request: AIRequest): Promise<AIResponse> {
     try {
       // Check for OpenAI API key
-      const apiKey =
-        (typeof process !== "undefined" && process.env?.OPENAI_API_KEY) ||
-        localStorage.getItem("openai_api_key");
+      const apiKey = (typeof process !== 'undefined' && process.env?.OPENAI_API_KEY) || localStorage.getItem('openai_api_key');
       if (!apiKey) {
-        throw new Error("OpenAI API key not configured");
+        throw new Error('OpenAI API key not configured');
       }
 
-      const response = await fetch(
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify({
-            messages: [
-              {
-                role: "user",
-                content: request.message,
-              },
-            ],
-          }),
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
         },
-      );
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            {
+              role: 'user',
+              content: request.message
+            }
+          ],
+          max_tokens: 4000,
+          temperature: 0.7
+        })
+      });
 
       if (!response.ok) {
-        throw new Error(
-          `OpenAI API responded with ${response.status}: ${response.statusText}`,
-        );
+        throw new Error(`OpenAI API responded with ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
-
+      
       return {
-        provider: "openai",
+        content: data.choices[0].message.content,
+        provider: 'openai',
         timestamp: new Date(),
         tokensUsed: data.usage?.total_tokens,
         conversationId: request.sessionId,
         metadata: {
-        },
+          model: 'gpt-4o-mini',
+          finishReason: data.choices[0].finish_reason
+        }
       };
     } catch (error) {
       throw new Error(`OpenAI provider failed: ${(error as Error).message}`);
     }
   }
 
+  /**
+   * Anthropic provider implementation
+   */
   private async callAnthropicProvider(request: AIRequest): Promise<AIResponse> {
     try {
       // Check for Anthropic API key
-      const apiKey =
-        (typeof process !== "undefined" && process.env?.ANTHROPIC_API_KEY) ||
-        localStorage.getItem("anthropic_api_key");
+      const apiKey = (typeof process !== 'undefined' && process.env?.ANTHROPIC_API_KEY) || localStorage.getItem('anthropic_api_key');
       if (!apiKey) {
-        throw new Error("Anthropic API key not configured");
+        throw new Error('Anthropic API key not configured');
       }
 
-        method: "POST",
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
+          model: 'claude-3-5-sonnet-20241022',
+          max_tokens: 4000,
           messages: [
             {
-              role: "user",
-              content: request.message,
-            },
-          ],
-        }),
+              role: 'user',
+              content: request.message
+            }
+          ]
+        })
       });
 
       if (!response.ok) {
-        throw new Error(
-          `Anthropic API responded with ${response.status}: ${response.statusText}`,
-        );
+        throw new Error(`Anthropic API responded with ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
-
+      
       return {
-        provider: "anthropic",
+        content: data.content[0].text,
+        provider: 'anthropic',
         timestamp: new Date(),
         tokensUsed: data.usage?.input_tokens + data.usage?.output_tokens,
         conversationId: request.sessionId,
         metadata: {
-          stopReason: data.stop_reason,
-        },
+          model: 'claude-3-5-sonnet-20241022',
+          stopReason: data.stop_reason
+        }
       };
     } catch (error) {
       throw new Error(`Anthropic provider failed: ${(error as Error).message}`);
     }
   }
 
+  /**
+   * Health check for AI service
+   */
   async healthCheck(): Promise<boolean> {
     try {
       if (!this.initialized) return false;
 
+      // Test basic AI functionality
       const testResponse = await this.chat({
-        message: "Hello, this is a health check.",
-        type: "chat",
+        message: 'Hello, this is a health check.',
+        type: 'chat'
       });
 
+      return testResponse.content.length > 0;
     } catch (error) {
       // Log health check failures for debugging
-      console.error("AI service health check failed:", error);
+      console.error('AI service health check failed:', error);
       return false;
     }
   }
 
+  /**
+   * Get service statistics
+   */
   getStats(): Record<string, any> {
     return {
       initialized: this.initialized,
       primaryProvider: this.config.primaryProvider,
       realTimeEnabled: this.config.enableRealTime,
-      contextPersistenceEnabled: this.config.enableContextPersistence,
+      contextPersistenceEnabled: this.config.enableContextPersistence
     };
   }
 
+  /**
+   * Shutdown AI service
+   */
   async shutdown(): Promise<void> {
     try {
       await this.realTimeService.stopSession();
@@ -1332,7 +1354,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       // AI service shut down successfully
     } catch (error) {
       // Log shutdown errors for debugging
-      console.error("Error shutting down AI service:", error);
+      console.error('Error shutting down AI service:', error);
     }
   }
 }
@@ -1340,36 +1362,27 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
 // Export singleton instance
 export const aiService = AIService.getInstance();
 
-  config?: Partial<AIServiceConfig>,
-): Promise<{
-  success: boolean;
-  message?: string;
-  model?: any;
-  provider?: string;
-}> {
+// Convenience functions
+export async function initializeAI(config?: Partial<AIServiceConfig>): Promise<{success: boolean, message?: string, model?: any, provider?: string}> {
   return aiService.initialize(config);
 }
 
+export async function chatWithAI(request: AIRequest): Promise<AIResponse> {
   return aiService.chat(request);
 }
 
-  request: AIStreamRequest,
-): Promise<AIStreamResponse> {
+export async function streamChatWithAI(request: AIStreamRequest): Promise<AIStreamResponse> {
   return aiService.chatStream(request);
 }
 
-  request: RealTimeRequest,
-): Promise<string> {
+export async function startRealTimeAI(request: RealTimeRequest): Promise<string> {
   return aiService.startRealTimeSession(request);
 }
 
+export async function stopRealTimeAI(sessionId: string): Promise<void> {
   return aiService.stopRealTimeSession(sessionId);
 }
 
-  message: string;
-  context?: string;
-  sessionId?: string;
-  onChunk?: (c: string) => void;
-}) {
+export async function realtimeChat(params: { message: string; context?: string; sessionId?: string; onChunk?: (c: string) => void }) {
   return aiService.realtimeChat(params as any);
 }

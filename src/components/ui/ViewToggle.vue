@@ -14,57 +14,45 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { computed } from 'vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 interface ToggleOption {
-  value: string;
-  icon: string;
-  label?: string;
+  value: string
+  icon: string
+  label?: string
 }
 
-const props = withDefaults(
-  defineProps<{
-    modelValue: string;
-    options?: ToggleOption[];
-    size?: "xs" | "sm" | "md";
-    activeVariant?:
-      | "primary"
-      | "secondary"
-      | "gaming"
-      | "cyber"
-      | "glass"
-      | "success"
-      | "warning"
-      | "danger"
-      | "info";
-    inactiveVariant?: "outline" | "ghost";
-    ariaLabel?: string;
-  }>(),
-  {
-    options: () => [
-      { value: "table", icon: "mdi-table", label: "Table view" },
-      { value: "cards", icon: "mdi-view-grid", label: "Cards view" },
-    ],
-    size: "sm",
-    activeVariant: "primary",
-    inactiveVariant: "outline",
-    ariaLabel: "View mode",
-  },
-);
+const props = withDefaults(defineProps<{
+  modelValue: string
+  options?: ToggleOption[]
+  size?: 'xs' | 'sm' | 'md'
+  activeVariant?: 'primary' | 'secondary' | 'gaming' | 'cyber' | 'glass' | 'success' | 'warning' | 'danger' | 'info'
+  inactiveVariant?: 'outline' | 'ghost'
+  ariaLabel?: string
+}>(), {
+  options: () => ([
+    { value: 'table', icon: 'mdi-table', label: 'Table view' },
+    { value: 'cards', icon: 'mdi-view-grid', label: 'Cards view' },
+  ]),
+  size: 'sm',
+  activeVariant: 'primary',
+  inactiveVariant: 'outline',
+  ariaLabel: 'View mode'
+})
 
 const emit = defineEmits<{
-  "update:modelValue": [value: string];
-}>();
+  'update:modelValue': [value: string]
+}>()
 
-const modelValue = computed(() => props.modelValue);
-const activeVariant = computed(() => props.activeVariant);
-const inactiveVariant = computed(() => props.inactiveVariant);
-const size = computed(() => props.size);
-const resolvedOptions = computed(() => props.options || []);
+const modelValue = computed(() => props.modelValue)
+const activeVariant = computed(() => props.activeVariant)
+const inactiveVariant = computed(() => props.inactiveVariant)
+const size = computed(() => props.size)
+const resolvedOptions = computed(() => props.options || [])
 
 function onSelect(val: string) {
-  emit("update:modelValue", val);
+  emit('update:modelValue', val)
 }
 </script>
 
@@ -74,3 +62,4 @@ function onSelect(val: string) {
   gap: var(--spacing-1);
 }
 </style>
+

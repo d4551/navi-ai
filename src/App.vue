@@ -1,16 +1,8 @@
 <template>
-  <div
-    id="app-root"
-    class="d-flex flex-col min-h-screen unified-app"
-    :class="unifiedUI.unifiedClasses.value"
-  >
-    <!-- Accessibility: screen reader announcer -->
-    <div
-      id="sr-announcer"
-      class="sr-only"
-      aria-live="polite"
-      aria-atomic="true"
-    ></div>
+  <div id="app-root" class="d-flex flex-col min-h-screen unified-app" :class="unifiedUI.unifiedClasses.value">
+    <!-- Accessibility: Skip to content link and screen reader announcer -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
     <ErrorBoundary>
       <!-- Keep Vuetify theme synced with unified theme -->
       <ThemeBridge />
@@ -44,8 +36,8 @@
         <!-- Main Content Area -->
         <div class="d-flex flex-col flex-1 w-full">
           <!-- Header -->
-          <header class="app-header glass-header">
-            <div class="unified-container header-inner">
+          <header class="app-header glass-strong">
+            <div class="container-xl px-4 py-3 header-inner flex items-center justify-between gap-4">
               <!-- Mobile menu toggle -->
               <button
                 v-if="isMobile"
@@ -66,30 +58,23 @@
               <!-- Global AI Status Banner -->
               <div
                 v-if="!store.settings?.geminiApiKey"
-                class="ai-status-banner p-sm m-sm"
+                class="ai-status-banner glass p-3 rounded-lg neon-blue"
                 role="status"
               >
-                <div class="banner-content d-flex align-items-center gap-md">
-                  <AppIcon name="mdi-key" />
+                <div class="banner-content flex items-center gap-3">
+                  <AppIcon name="mdi-key" class="text-neon-blue" />
                   <div class="banner-text">
-                    <strong>AI Features Inactive</strong>
-                    <p class="text-sm m-0">
-                      Add your API key in
-                      <router-link to="/settings">Settings</router-link> to
-                      enable AI features
-                    </p>
+                    <strong class="text-glass-enhanced">AI Features Inactive</strong>
+                    <p class="text-sm m-0 text-glass-enhanced">Add your API key in <router-link to="/settings" class="neon-interactive text-neon-blue">Settings</router-link> to enable AI features</p>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- Quick Access removed by request -->
           </header>
 
           <!-- Page Content -->
-          <main
-            id="main"
-            class="flex-1 overflow-y-auto p-lg main-content page-glass-container"
-            role="main"
-          >
+          <main id="main" class="flex-1 overflow-y-auto p-6 main-content" role="main">
             <router-view v-slot="{ Component }">
               <transition name="page-transition" mode="out-in">
                 <component :is="Component" v-if="Component" />
@@ -98,16 +83,12 @@
           </main>
 
           <!-- Footer (env-toggle: VITE_HIDE_FOOTER) -->
-          <footer v-if="!hideFooter" class="app-footer glass-footer p-md">
-            <div
-              class="footer-content unified-container d-flex justify-content-between align-items-center text-sm text-secondary"
-            >
-              <div class="footer-brand d-flex align-items-center gap-xs">
+          <footer v-if="!hideFooter" class="app-footer glass p-4">
+            <div class="footer-content container-xl flex justify-between items-center text-sm text-glass-enhanced">
+              <div class="footer-brand flex items-center gap-2">
                 <AppLogo alt-text="NAVI - AI Career Assistant" />
               </div>
-              <div
-                class="footer-version font-mono bg-primary text-on-primary p-xs rounded-sm font-medium"
-              >
+              <div class="footer-version font-mono glass-strong px-3 py-1 rounded-md font-medium text-glass-enhanced">
                 v{{ appVersion }}
               </div>
             </div>
@@ -121,12 +102,12 @@
         class="mobile-overlay"
         @click="closeSidebar"
       ></div>
-
+      
       <!-- AI Fairy Assistant: globally mounted so it's available on every page -->
       <AIFairyAssistant />
 
       <!-- Voice Feedback Overlay -->
-      <VoiceFeedbackOverlay
+      <VoiceFeedbackOverlay 
         :show-voice-hints="store.settings?.voiceHints || false"
         :enable-visual-feedback="store.settings?.voiceVisualFeedback !== false"
         position="top-right"
@@ -142,7 +123,7 @@
 
       <!-- Global Gamification Effects -->
       <GamificationEffects ref="gfx" />
-
+      
       <!-- Toast Notifications -->
       <ToastNotification />
     </ErrorBoundary>
@@ -168,7 +149,7 @@ import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
 import { useUnifiedUI } from "@/composables/useUnifiedUI";
 import { useResponsive } from "@/composables/useResponsive";
 import AppIcon from "@/components/ui/AppIcon.vue";
-import { usePageAssistantContext } from "@/composables/usePageAssistantContext";
+import { usePageAssistantContext } from '@/composables/usePageAssistantContext'
 
 export default {
   name: "App",
@@ -190,127 +171,103 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const appVersion = computed(() => store.meta?.version || "2.0.0");
-
+    
     // Initialize unified theme system
     const theme = useUnifiedTheme();
     const unifiedUI = useUnifiedUI();
     const responsive = useResponsive();
-
+    
     // Fairy assistant now handles its own visibility via fairyBubbleSize setting
 
     // Gamification effects binding
-    const gfx = ref(null);
-
+    const gfx = ref(null)
+    
     // Env-based UI toggles
     const hideFooter = computed(() => {
       try {
-        const raw = import.meta.env?.VITE_HIDE_FOOTER;
+        const raw = import.meta.env?.VITE_HIDE_FOOTER
         // Default: hide the footer until explicitly disabled
-        if (raw == null) return true;
-        const val = String(raw).trim().toLowerCase();
-        if (val === "0" || val === "false" || val === "no" || val === "off")
-          return false;
-        if (val === "1" || val === "true" || val === "yes" || val === "on")
-          return true;
-        return Boolean(val);
+        if (raw == null) return true
+        const val = String(raw).trim().toLowerCase()
+        if (val === '0' || val === 'false' || val === 'no' || val === 'off') return false
+        if (val === '1' || val === 'true' || val === 'yes' || val === 'on') return true
+        return Boolean(val)
       } catch {
-        return true;
+        return true
       }
-    });
-
+    })
+    
     // Initialize responsive system
     onMounted(() => {
       responsive.initializeResponsive();
       try {
-        gamificationEvents.on("xp_awarded", (e) => {
-          gfx.value?.triggerXPGain?.(
-            e.amount,
-            e.reason || "Action",
-            e.amount >= 100 ? "critical" : e.amount >= 50 ? "bonus" : "normal",
-          );
-        });
-        gamificationEvents.on("achievement_unlocked", (a) => {
+        gamificationEvents.on('xp_awarded', (e) => {
+          gfx.value?.triggerXPGain?.(e.amount, e.reason || 'Action', e.amount >= 100 ? 'critical' : e.amount >= 50 ? 'bonus' : 'normal')
+        })
+        gamificationEvents.on('achievement_unlocked', (a) => {
           gfx.value?.triggerAchievement?.({
             name: a.name,
-            description: a.description || "",
-            icon: a.icon || "mdi mdi-trophy-variant",
-            color: "#FFD700",
+            description: a.description || '',
+            icon: a.icon || 'mdi mdi-trophy-variant',
+            color: '#FFD700',
             xpReward: a.xp || 0,
-          });
-        });
-        gamificationEvents.on("level_up", (l) => {
-          gfx.value?.triggerLevelUp?.(l.newLevel, []);
-        });
+          })
+        })
+        gamificationEvents.on('level_up', (l) => {
+          gfx.value?.triggerLevelUp?.(l.newLevel, [])
+        })
       } catch {}
     });
-
+    
     // Sidebar state management
     const sidebarVisible = ref(false);
     const sidebarCollapsed = ref(false);
     const autoCollapsed = ref(false);
     const sidebarAnimating = ref(false);
     const sidebarHovered = ref(false);
-
+    
     // Enhanced sidebar behavior
     const sidebarExpanded = computed(() => {
-      return (
-        sidebarHovered.value && (sidebarCollapsed.value || autoCollapsed.value)
-      );
+      return sidebarHovered.value && (sidebarCollapsed.value || autoCollapsed.value);
     });
-
+    
     // Mobile detection
     const isMobile = computed(() => responsive.isMobile.value);
-
+    
     // Keyboard shortcuts for quick navigation
     const onKeydown = (e) => {
       try {
         // Ctrl+, => Settings
-        if ((e.ctrlKey || e.metaKey) && e.key === ",") {
+        if ((e.ctrlKey || e.metaKey) && e.key === ',') {
           e.preventDefault();
-          router.push("/settings");
+          router.push('/settings');
           return;
         }
         // Ctrl+Shift+D => Documents
-        if (
-          (e.ctrlKey || e.metaKey) &&
-          e.shiftKey &&
-          (e.key === "D" || e.key === "d")
-        ) {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
           e.preventDefault();
-          router.push("/documents");
+          router.push('/documents');
           return;
         }
         // Ctrl+Shift+J => Jobs
-        if (
-          (e.ctrlKey || e.metaKey) &&
-          e.shiftKey &&
-          (e.key === "J" || e.key === "j")
-        ) {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j')) {
           e.preventDefault();
-          router.push("/jobs");
+          router.push('/jobs');
           return;
         }
         // Ctrl+Shift+P => Portfolio
-        if (
-          (e.ctrlKey || e.metaKey) &&
-          e.shiftKey &&
-          (e.key === "P" || e.key === "p")
-        ) {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
           e.preventDefault();
-          router.push("/portfolio");
+          router.push('/portfolio');
         }
         // Ctrl+/ => Open Assistant
-        if ((e.ctrlKey || e.metaKey) && (e.key === "/" || e.key === "?")) {
+        if ((e.ctrlKey || e.metaKey) && (e.key === '/' || e.key === '?')) {
           e.preventDefault();
           openAssistantFromNav();
           return;
         }
         // Ctrl+Shift+F => Cycle Fairy Assistant size
-        if (
-          (e.ctrlKey || e.metaKey) &&
-          e.shiftKey &&
-          (e.key === "F" || e.key === "f")
-        ) {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'F' || e.key === 'f')) {
           e.preventDefault();
           cycleFairyBubbleSize();
           return;
@@ -319,87 +276,59 @@ export default {
     };
 
     onMounted(() => {
-      window.addEventListener("keydown", onKeydown);
+      window.addEventListener('keydown', onKeydown);
     });
     onUnmounted(() => {
-      window.removeEventListener("keydown", onKeydown);
+      window.removeEventListener('keydown', onKeydown);
     });
 
     // ===== Page-aware Assistant Integration =====
-    const assistantOpen = ref(false);
-    const assistantMessages = ref([]);
-    const { buildContextString } = usePageAssistantContext();
+    const assistantOpen = ref(false)
+    const assistantMessages = ref([])
+    const { buildContextString } = usePageAssistantContext()
 
-    function buildPageContextMessage() {
-      return buildContextString();
-    }
+    function buildPageContextMessage() { return buildContextString() }
 
     function seedAssistantMessages() {
-      const now = Date.now();
+      const now = Date.now()
       assistantMessages.value = [
-        {
-          id: "ai-greet-" + now,
-          type: "ai",
-          content:
-            "Hi! I'm NAVI. I can help with this page — what do you need?",
-          timestamp: now,
-        },
-        {
-          id: "sys-ctx-" + (now + 1),
-          type: "system",
-          content: buildPageContextMessage(),
-          timestamp: now + 1,
-        },
-      ];
+        { id: 'ai-greet-' + now, type: 'ai', content: "Hi! I'm NAVI. I can help with this page — what do you need?", timestamp: now },
+        { id: 'sys-ctx-' + (now + 1), type: 'system', content: buildPageContextMessage(), timestamp: now + 1 },
+      ]
     }
 
     function openAssistantFromNav() {
-      if (!assistantMessages.value.length) seedAssistantMessages();
-      assistantOpen.value = true;
+      if (!assistantMessages.value.length) seedAssistantMessages()
+      assistantOpen.value = true
     }
-
+    
     // Cycle fairy assistant bubble size
     function cycleFairyBubbleSize() {
-      const currentSize = store.settings?.fairyBubbleSize || "full";
+      const currentSize = store.settings?.fairyBubbleSize || 'full';
       let nextSize;
-
-      if (currentSize === "full") {
-        nextSize = "small";
-      } else if (currentSize === "small") {
-        nextSize = "hidden";
+      
+      if (currentSize === 'full') {
+        nextSize = 'small';
+      } else if (currentSize === 'small') {
+        nextSize = 'hidden';
       } else {
-        nextSize = "full";
+        nextSize = 'full';
       }
-
+      
       store.updateSettings({ fairyBubbleSize: nextSize });
       console.log(`Fairy bubble size changed: ${currentSize} → ${nextSize}`);
     }
 
     function handleAssistantSend(text) {
-      const now = Date.now();
-      assistantMessages.value.push({
-        id: "u-" + now,
-        type: "user",
-        content: text,
-        timestamp: now,
-      });
+      const now = Date.now()
+      assistantMessages.value.push({ id: 'u-' + now, type: 'user', content: text, timestamp: now })
       setTimeout(() => {
-        assistantMessages.value.push({
-          id: "a-" + (now + 1),
-          type: "ai",
-          content: "Thanks! I will use the current page context to help.",
-          timestamp: now + 1,
-        });
-      }, 400);
+        assistantMessages.value.push({ id: 'a-' + (now + 1), type: 'ai', content: 'Thanks! I will use the current page context to help.', timestamp: now + 1 })
+      }, 400)
     }
 
     // Reset context cache when route changes (reseed on next open)
-    watch(
-      () => route.fullPath,
-      () => {
-        assistantMessages.value = [];
-      },
-    );
+    watch(() => route.fullPath, () => { assistantMessages.value = [] })
 
     // Sidebar controls
     const toggleSidebar = () => {
@@ -407,57 +336,50 @@ export default {
         sidebarVisible.value = !sidebarVisible.value;
       }
     };
-
+    
     const closeSidebar = () => {
       if (isMobile.value) {
         sidebarVisible.value = false;
       }
     };
-
+    
     const toggleSidebarCollapse = () => {
       sidebarAnimating.value = true;
       sidebarCollapsed.value = !sidebarCollapsed.value;
-
+      
       // Reset animation flag after transition
       setTimeout(() => {
         sidebarAnimating.value = false;
       }, 300);
     };
-
+    
     // Enhanced hover handlers for collapsed sidebar
     const handleSidebarMouseEnter = () => {
       if (!isMobile.value && (sidebarCollapsed.value || autoCollapsed.value)) {
         sidebarHovered.value = true;
       }
     };
-
+    
     const handleSidebarMouseLeave = () => {
       sidebarHovered.value = false;
     };
-
+    
     // Auto-collapse on resize with better logic
-    watch(
-      () => responsive.windowWidth.value,
-      (width, oldWidth) => {
-        if (width < 1200 && oldWidth >= 1200 && !sidebarCollapsed.value) {
-          autoCollapsed.value = true;
-        } else if (width >= 1200 && oldWidth < 1200) {
-          autoCollapsed.value = false;
-        }
-      },
-      { immediate: true },
-    );
-
+    watch(() => responsive.windowWidth.value, (width, oldWidth) => {
+      if (width < 1200 && oldWidth >= 1200 && !sidebarCollapsed.value) {
+        autoCollapsed.value = true;
+      } else if (width >= 1200 && oldWidth < 1200) {
+        autoCollapsed.value = false;
+      }
+    }, { immediate: true });
+    
     // Close sidebar on route change for mobile
-    watch(
-      () => route.path,
-      () => {
-        if (isMobile.value) {
-          closeSidebar();
-        }
-      },
-    );
-
+    watch(() => route.path, () => {
+      if (isMobile.value) {
+        closeSidebar();
+      }
+    });
+    
     return {
       store,
       appVersion,
@@ -490,81 +412,140 @@ export default {
 </script>
 
 <style scoped>
+/* ===== UNIFIED APP LAYOUT STYLES ===== */
 .unified-app {
   font-family: var(--font-primary);
+  height: 100vh;
+  /* Allow vertical scrolling for the main content area */
   overflow-y: auto;
   overflow-x: hidden;
+  background: var(--surface-base); /* Use design system variable */
   color: var(--text-primary);
 }
 
+/* Skip Link for Accessibility - Use design system utility class */
+/* .skip-link utility class is already defined in design-system.css */
 
+/* ===== SIDEBAR STYLES ===== */
 .app-sidebar {
+  width: var(--page-sidebar-width); /* Use design system variable */
+  height: 100vh;
+  background: var(--glass-surface-elevated); /* Use design system variable */
+  border-right: none; /* Remove sidebar border */
+  backdrop-filter: var(--glass-backdrop-blur); /* Use design system variable */
+  transition: all var(--duration-normal) var(--easing-ease-out); /* Use design system variables */
+  z-index: var(--z-navigation); /* Use design system variable */
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: none; /* Remove sidebar shadow */
+  margin-right: var(--spacing-2); /* Add breathing room since divider is gone */
+  /* Use .position-relative utility class from design system */
 }
 
+/* Keep sidebar sticky on desktop so the left menubar stays fixed while content scrolls */
+@media (min-width: 769px) {
   .app-sidebar {
     position: sticky;
+    top: 0;
+    align-self: flex-start; /* ensure sticky works inside flex container */
   }
 }
 
-.app-sidebar.sidebar-collapsed {
+  .app-sidebar.sidebar-collapsed {
   width: var(--page-sidebar-collapsed-width);
-}
+  }
 
+/* Enhanced hover expansion for collapsed sidebar */
 .app-sidebar.sidebar-collapsed.sidebar-hovered,
 .app-sidebar.sidebar-expanded {
-  z-index: var(
-    --z-navigation-hover
+  width: var(--page-sidebar-width); /* Use design system variable */
+  box-shadow: none; /* Remove hover/expanded shadow */
+  z-index: var(--z-navigation-hover); /* Define a new z-index for hovered sidebar if needed */
 }
 
+/* Smooth animation states */
 .app-sidebar.sidebar-animating {
+  transition: all var(--duration-fast) var(--easing-ease-out); /* Use design system variables */
 }
 
+/* Content reveal during hover expansion */
 .app-sidebar.sidebar-collapsed:not(.sidebar-hovered) .navigation-menu {
+  opacity: 0.95;
 }
 
 .app-sidebar.sidebar-collapsed.sidebar-hovered .navigation-menu {
+  opacity: 1;
+  animation: contentSlideIn var(--duration-fast) var(--easing-ease-out); /* Use design system variables */
 }
 
 @keyframes contentSlideIn {
   from {
-    transform: translateX(
+    opacity: 0.8;
+    transform: translateX(calc(-1 * var(--spacing-1))); /* Use design system variable */
   }
   to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
+/* Enhanced Mobile Sidebar with Fluid Scaling */
+@media (max-width: 768px) {
   .app-sidebar {
     position: fixed;
+    left: -280px; /* Keep hardcoded for specific collapsed width */
+    top: 0;
+    z-index: var(--z-mobile-overlay); /* Use design system variable */
+    box-shadow: none; /* Remove mobile shadow */
+    margin-right: 0; /* No outer spacing when overlaid */
+    width: clamp(260px, 75vw, 320px); /* Fluid sidebar width for mobile */
   }
-
+  
   .app-sidebar.sidebar-visible {
+    left: 0;
   }
-
+  
+  /* Disable hover expansion on mobile */
   .app-sidebar.sidebar-collapsed.sidebar-hovered {
     width: var(--page-sidebar-collapsed-width);
+    box-shadow: none; /* Remove mobile hover shadow */
   }
-
+  
+  /* Enhanced mobile content spacing */
   .main-content {
+    padding: clamp(var(--spacing-sm), 3vw, var(--spacing-md));
   }
 }
 
+/* ===== HEADER STYLES ===== */
 .app-header {
+  background: var(--glass-surface-elevated); /* Use design system variable */
+  border-bottom: 1px solid var(--border-base); /* Use design system variable */
   position: sticky;
+  top: 0;
+  z-index: var(--z-sticky); /* Use design system variable */
+  backdrop-filter: var(--glass-backdrop-blur); /* Use design system variable */
+  box-shadow: var(--shadow-sm); /* Default shadow from design system */
 }
 
+/* Mobile Menu Toggle */
 .mobile-menu-toggle {
   display: none;
   background: none;
   border: none;
+  padding: var(--spacing-sm); /* Use design system variable */
   cursor: pointer;
+  border-radius: var(--radius-md); /* Use design system variable */
+  transition: background-color var(--duration-fast) var(--easing-ease-out); /* Use design system variables */
 }
 
 .mobile-menu-toggle:hover {
+  background: var(--glass-hover-bg); /* Use design system variable */
 }
 
+@media (max-width: 768px) {
   .mobile-menu-toggle {
     display: flex;
     align-items: center;
@@ -572,111 +553,158 @@ export default {
   }
 }
 
+/* Hamburger Icon */
 .hamburger-icon {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-1); /* Use design system variable */
+  width: 20px;
+  height: 16px;
 }
 
 .hamburger-icon span {
   display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--text-primary); /* Use design system variable */
+  transition: all var(--duration-fast) var(--easing-ease-out); /* Use design system variables */
   transform-origin: center;
 }
 
+.hamburger-icon.active span:nth-child(1) {
+  transform: rotate(45deg) translate(var(--spacing-0-5), var(--spacing-0-5)); /* Use design system variables */
 }
 
+.hamburger-icon.active span:nth-child(2) {
+  opacity: 0;
 }
 
+.hamburger-icon.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(var(--spacing-0-5), calc(-1 * var(--spacing-0-5))); /* Use design system variables */
 }
 
+/* AI Status Banner */
 .ai-status-banner {
+  background: var(--color-warning-50); /* Use design system variable */
+  border: 1px solid var(--color-warning-200); /* Use design system variable */
+  border-radius: var(--radius-md); /* Use design system variable */
+  margin: var(--spacing-sm) 0; /* Use design system variable */
 }
 
 .banner-content i {
+  color: var(--color-warning-500); /* Use design system variable */
+  font-size: var(--font-size-lg); /* Use design system variable */
+  flex-shrink: 0;
 }
 
 .banner-text strong {
+  color: var(--text-primary); /* Use design system variable */
+  font-weight: var(--font-weight-semibold); /* Use design system variable */
 }
 
 .banner-text p {
+  color: var(--text-secondary); /* Use design system variable */
 }
 
 .banner-text a {
+  color: var(--color-primary-700); /* Stronger contrast for accessibility */
   text-decoration: none;
+  font-weight: var(--font-weight-semibold); /* Increase weight for small text */
 }
 
 .banner-text a:hover {
   text-decoration: underline;
 }
 
+/* ===== PAGE CONTENT ===== */
 .page-content {
+  background: var(--surface-base); /* Use design system variable */
 }
 
+/* Page Transition */
 .page-transition-enter-active,
 .page-transition-leave-active {
+  transition: all var(--duration-normal) var(--easing-ease-out); /* Use design system variables */
 }
 
 .page-transition-enter-from {
+  opacity: 0;
+  transform: translateY(var(--spacing-2-5)); /* Use design system variable */
 }
 
 .page-transition-leave-to {
-  transform: translateY(
+  opacity: 0;
+  transform: translateY(calc(-1 * var(--spacing-2-5))); /* Use design system variable */
 }
 
+/* ===== FOOTER STYLES ===== */
 .app-footer {
+  background: var(--glass-surface-elevated); /* Use design system variable */
+  border-top: 1px solid var(--border-base); /* Use design system variable */
+  box-shadow: var(--shadow-sm); /* Default shadow from design system */
 }
 
 .footer-brand {
+  gap: var(--spacing-xs); /* Use design system variable */
 }
 
 .footer-brand i {
+  color: var(--color-primary-500); /* Use design system variable */
 }
 
 .footer-version {
+  /* Ensure AAA contrast for small text */
+  background: var(--color-primary-600); /* stronger background */
   color: var(--text-on-primary);
 }
 
+/* ===== MOBILE OVERLAY ===== */
 .mobile-overlay {
   display: none;
 }
 
+@media (max-width: 768px) {
   .mobile-overlay {
     display: block;
     position: fixed;
-    backdrop-filter: var(
-      --glass-backdrop-blur-light
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: var(--z-overlay); /* Use design system variable */
+    backdrop-filter: var(--glass-backdrop-blur-light); /* Use design system variable */
   }
 }
 
+/* ===== ENHANCED RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 1200px) {
   .app-sidebar:not(.sidebar-visible) {
     width: var(--page-sidebar-collapsed-width);
   }
 }
 
+/* Enhanced tablet and mobile responsive design */
+@media (max-width: 768px) {
   .app-header {
-    padding: clamp(
-      var(--spacing-xs),
-      var(--spacing-sm)
+    padding: clamp(var(--spacing-xs), 2vw, var(--spacing-sm)); /* Fluid header padding */
   }
-
+  
   .page-content {
-    padding: clamp(
-      var(--spacing-sm),
-      var(--spacing-md)
+    padding: clamp(var(--spacing-sm), 3vw, var(--spacing-md)); /* Fluid content padding */
   }
-
+  
   .footer-content {
     flex-direction: column;
-    gap: clamp(
-      var(--spacing-xs),
-      var(--spacing-sm)
+    gap: clamp(var(--spacing-xs), 2vw, var(--spacing-sm)); /* Fluid footer gaps */
     text-align: center;
   }
 }
 
+/* ===== THEME SUPPORT ===== */
+/* Dark theme overrides - support data-theme on this element or on ancestors */
 .unified-app[data-theme="dark"],
 :root[data-theme="dark"] .unified-app,
 html[data-theme="dark"] .unified-app,
 body[data-theme="dark"] .unified-app {
+  background: var(--surface-base); /* Use design system variable */
 }
 
 .unified-app[data-theme="dark"] .app-sidebar,
@@ -691,29 +719,37 @@ html[data-theme="dark"] .app-footer,
 body[data-theme="dark"] .app-sidebar,
 body[data-theme="dark"] .app-header,
 body[data-theme="dark"] .app-footer {
+  background: var(--glass-surface-elevated); /* Use design system variable */
+  border-color: var(--border-base); /* Use design system variable */
 }
 
 .unified-app[data-theme="dark"] .page-content,
 :root[data-theme="dark"] .page-content,
 html[data-theme="dark"] .page-content,
 body[data-theme="dark"] .page-content {
+  background: var(--surface-base); /* Use design system variable */
 }
 
 .unified-app[data-theme="dark"] .hamburger-icon span,
 :root[data-theme="dark"] .hamburger-icon span,
 html[data-theme="dark"] .hamburger-icon span,
 body[data-theme="dark"] .hamburger-icon span {
+  background: var(--text-primary); /* Use design system variable */
 }
 
+/* Gaming theme enhancements */
 .theme-gaming .app-sidebar {
-  background:
-  border-right-color: var(
-    --glass-border-gaming
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.02), transparent),
+              var(--glass-surface-elevated); /* Use design system variable */
+  border-right-color: var(--glass-border-gaming); /* Use design system variable */
 }
 
 .theme-gaming .footer-brand i {
+  color: var(--color-gaming-500); /* Use design system variable */
+  filter: drop-shadow(0 0 4px rgba(0, 255, 136, 0.3));
 }
 
+/* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   .app-sidebar,
   .hamburger-icon span,
@@ -723,19 +759,25 @@ body[data-theme="dark"] .hamburger-icon span {
   }
 }
 
+/* High contrast support */
 @media (prefers-contrast: high) {
   .app-sidebar,
   .app-header,
   .app-footer {
+    border-width: 2px;
   }
   .skip-link {
+    border: 2px solid var(--text-primary);
   }
 }
 
+/* Header inner layout */
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: clamp(var(--spacing-sm), 2vw, var(--spacing-lg)); /* Fluid gap */
+  min-height: clamp(52px, 8vh, 64px); /* Fluid header height */
 }
 
 .mobile-menu-toggle {
@@ -743,22 +785,32 @@ body[data-theme="dark"] .hamburger-icon span {
 }
 
 .mobile-menu-toggle:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
 }
 
+/* Enhanced breakpoints for larger screens */
+@media (min-width: 640px) and (max-width: 1023px) {
   .app-sidebar {
+    width: clamp(240px, 20vw, 280px); /* Fluid sidebar width for tablets */
   }
-
+  
   .page-content {
+    padding: clamp(var(--spacing-md), 4vw, var(--spacing-lg));
   }
 }
 
+@media (min-width: 1280px) {
   .page-content {
+    padding: clamp(var(--spacing-lg), 3vw, var(--spacing-xl));
   }
-
+  
   .header-inner {
+    gap: clamp(var(--spacing-lg), 2vw, var(--spacing-xl));
   }
-
+  
   .footer-content {
+    gap: clamp(var(--spacing-lg), 2vw, var(--spacing-xl));
   }
 }
 </style>

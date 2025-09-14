@@ -1,11 +1,15 @@
 <template>
-  <div v-if="show && item" class="modal-overlay" @click="handleOverlayClick">
+  <div
+    v-if="show && item"
+    class="modal-overlay"
+    @click="handleOverlayClick"
+  >
     <div class="portfolio-modal" @click.stop>
       <!-- Header -->
       <div class="modal-header">
         <div class="header-content">
           <div class="title-section">
-            <h2 class="modal-title">{{ item.title || "Portfolio Item" }}</h2>
+            <h2 class="modal-title">{{ item.title || 'Portfolio Item' }}</h2>
             <div class="item-meta">
               <span class="item-type" :class="`type-${item.type}`">
                 <AppIcon :name="getTypeIcon(item.type)" size="16" />
@@ -66,10 +70,7 @@
               controls
             ></video>
             <div v-else class="hero-placeholder">
-              <AppIcon
-                :name="getTypeIcon(item.type)"
-                class="placeholder-icon"
-              />
+              <AppIcon :name="getTypeIcon(item.type)" class="placeholder-icon" />
             </div>
           </div>
         </section>
@@ -99,7 +100,7 @@
             <section v-if="skillsOrTech?.length" class="content-section">
               <h3 class="section-title">
                 <AppIcon name="mdi-code-tags" />
-                {{ item.type === "project" ? "Technologies" : "Skills" }}
+                {{ item.type === 'project' ? 'Technologies' : 'Skills' }}
               </h3>
               <div class="tech-tags">
                 <span
@@ -113,13 +114,7 @@
             </section>
 
             <!-- Achievement Details -->
-            <section
-              v-if="
-                item.type === 'achievement' &&
-                  (item.achievement?.rank || item.achievement?.event)
-              "
-              class="content-section"
-            >
+            <section v-if="item.type === 'achievement' && (item.achievement?.rank || item.achievement?.event)" class="content-section">
               <h3 class="section-title">
                 <AppIcon name="mdi-trophy" />
                 Achievement Details
@@ -169,11 +164,7 @@
                 >
                   <AppIcon :name="getLinkIcon(link.type)" />
                   {{ link.label || formatLinkType(link.type) }}
-                  <AppIcon
-                    name="mdi-open-in-new"
-                    size="14"
-                    class="external-icon"
-                  />
+                  <AppIcon name="mdi-open-in-new" size="14" class="external-icon" />
                 </a>
               </div>
             </section>
@@ -198,7 +189,7 @@
                 </template>
                 <template v-if="item.platforms?.length">
                   <dt>Platforms</dt>
-                  <dd>{{ item.platforms.join(", ") }}</dd>
+                  <dd>{{ item.platforms.join(', ') }}</dd>
                 </template>
               </dl>
             </div>
@@ -246,217 +237,211 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { computed } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 interface PortfolioItem {
-  id: string;
-  title?: string;
-  description?: string;
-  type?: string;
-  image?: string;
-  media?: { url: string; type?: string };
-  technologies?: string[];
-  skills?: string[];
-  date?: string;
-  game?: string;
-  featured?: boolean;
-  liveUrl?: string;
-  githubUrl?: string;
-  links?: Array<{ url: string; type?: string; label?: string }>;
-  metrics?: Record<string, any>;
-  stats?: Array<{ label: string; value: string }>;
-  role?: string;
-  platforms?: string[];
-  achievement?: { rank?: string; event?: string };
+  id: string
+  title?: string
+  description?: string
+  type?: string
+  image?: string
+  media?: { url: string; type?: string }
+  technologies?: string[]
+  skills?: string[]
+  date?: string
+  game?: string
+  featured?: boolean
+  liveUrl?: string
+  githubUrl?: string
+  links?: Array<{ url: string; type?: string; label?: string }>
+  metrics?: Record<string, any>
+  stats?: Array<{ label: string; value: string }>
+  role?: string
+  platforms?: string[]
+  achievement?: { rank?: string; event?: string }
 }
 
 interface Props {
-  show: boolean;
-  item: PortfolioItem | null;
+  show: boolean
+  item: PortfolioItem | null
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  close: [];
-  edit: [item: PortfolioItem];
-  duplicate: [item: PortfolioItem];
-}>();
+  close: []
+  edit: [item: PortfolioItem]
+  duplicate: [item: PortfolioItem]
+}>()
 
 // Computed properties
 const mediaUrl = computed(() => {
-  if (!props.item) return null;
-  if (props.item.image) return props.item.image;
-  if (props.item.media?.url) return props.item.media.url;
-  return null;
-});
+  if (!props.item) return null
+  if (props.item.image) return props.item.image
+  if (props.item.media?.url) return props.item.media.url
+  return null
+})
 
 const isImage = computed(() => {
-  if (!mediaUrl.value) return false;
-  if (props.item?.media?.type === "image") return true;
-  if (props.item?.image) return true;
-  return /\.(jpg|jpeg|png|gif|webp)$/i.test(mediaUrl.value);
-});
+  if (!mediaUrl.value) return false
+  if (props.item?.media?.type === 'image') return true
+  if (props.item?.image) return true
+  return /\.(jpg|jpeg|png|gif|webp)$/i.test(mediaUrl.value)
+})
 
 const isVideo = computed(() => {
-  if (!mediaUrl.value) return false;
-  if (props.item?.media?.type === "video") return true;
-  return (
-    /\.(mp4|webm|mov|avi)$/i.test(mediaUrl.value) ||
-    mediaUrl.value.includes("youtube.com") ||
-    mediaUrl.value.includes("youtu.be")
-  );
-});
+  if (!mediaUrl.value) return false
+  if (props.item?.media?.type === 'video') return true
+  return /\.(mp4|webm|mov|avi)$/i.test(mediaUrl.value) || 
+         mediaUrl.value.includes('youtube.com') || 
+         mediaUrl.value.includes('youtu.be')
+})
 
 const displayDate = computed(() => {
-  if (!props.item?.date) return null;
-  return props.item.date;
-});
+  if (!props.item?.date) return null
+  return props.item.date
+})
 
 const skillsOrTech = computed(() => {
-  return props.item?.technologies || props.item?.skills || [];
-});
+  return props.item?.technologies || props.item?.skills || []
+})
 
 const statsData = computed(() => {
-  const item = props.item;
-  if (!item) return [];
-
-  if (item.stats) return item.stats;
-
+  const item = props.item
+  if (!item) return []
+  
+  if (item.stats) return item.stats
+  
   if (item.metrics) {
     return Object.entries(item.metrics).map(([key, value]) => ({
       label: formatMetricLabel(key),
-      value: formatMetricValue(value),
-    }));
+      value: formatMetricValue(value)
+    }))
   }
-
-  return [];
-});
+  
+  return []
+})
 
 const links = computed(() => {
-  const item = props.item;
-  if (!item) return [];
+  const item = props.item
+  if (!item) return []
+  
+  const arr: any[] = Array.isArray(item.links) ? item.links : []
+  const extras: any[] = []
+  
+  if (item.liveUrl) extras.push({ url: item.liveUrl, label: 'Live Demo', type: 'live' })
+  if (item.githubUrl) extras.push({ url: item.githubUrl, label: 'Source Code', type: 'source' })
+  if (item.url) extras.push({ url: item.url, label: 'View Project', type: 'external' })
+  
+  return [...extras, ...arr.filter(l => l?.url)]
+})
 
-  const arr: any[] = Array.isArray(item.links) ? item.links : [];
-  const extras: any[] = [];
-
-  if (item.liveUrl)
-    extras.push({ url: item.liveUrl, label: "Live Demo", type: "live" });
-  if (item.githubUrl)
-    extras.push({ url: item.githubUrl, label: "Source Code", type: "source" });
-  if (item.url)
-    extras.push({ url: item.url, label: "View Project", type: "external" });
-
-  return [...extras, ...arr.filter((l) => l?.url)];
-});
-
-const primaryLink = computed(() => links.value[0]?.url || "");
+const primaryLink = computed(() => links.value[0]?.url || '')
 
 const hasActions = computed(() => {
-  return primaryLink.value || true; // Always show edit/duplicate
-});
+  return primaryLink.value || true // Always show edit/duplicate
+})
 
 // Methods
 const handleOverlayClick = () => {
-  emit("close");
-};
+  emit('close')
+}
 
 const shareItem = async () => {
   try {
     if (navigator.share) {
       await navigator.share({
-        title: props.item?.title || "Portfolio Item",
-        text: props.item?.description || "",
-        url: window.location.href,
-      });
+        title: props.item?.title || 'Portfolio Item',
+        text: props.item?.description || '',
+        url: window.location.href
+      })
     } else {
       // Fallback: copy to clipboard
-      const text = `${props.item?.title || "Portfolio Item"}: ${props.item?.description || ""}`;
-      await navigator.clipboard?.writeText(text);
+      const text = `${props.item?.title || 'Portfolio Item'}: ${props.item?.description || ''}`
+      await navigator.clipboard?.writeText(text)
     }
   } catch (error) {
-    console.warn("Share failed:", error);
+    console.warn('Share failed:', error)
   }
-};
+}
 
 const formatMetricLabel = (key: string): string => {
-  return key
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (str) => str.toUpperCase())
-    .replace(/_/g, " ");
-};
+  return key.replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
+    .replace(/_/g, ' ')
+}
 
 const formatMetricValue = (value: any): string => {
-  if (typeof value === "number") {
-    return value.toLocaleString();
+  if (typeof value === 'number') {
+    return value.toLocaleString()
   }
-  return String(value);
-};
+  return String(value)
+}
 
 const formatLinkType = (type?: string): string => {
   const types: Record<string, string> = {
-    live: "Live Demo",
-    source: "Source Code",
-    video: "Video",
-    article: "Article",
-    store: "Store Page",
-    docs: "Documentation",
-    external: "View Project",
-  };
-  return types[type || ""] || "Link";
-};
+    live: 'Live Demo',
+    source: 'Source Code',
+    video: 'Video',
+    article: 'Article',
+    store: 'Store Page',
+    docs: 'Documentation',
+    external: 'View Project'
+  }
+  return types[type || ''] || 'Link'
+}
 
 const getTypeIcon = (type?: string): string => {
   const icons: Record<string, string> = {
-    achievement: "mdi-trophy",
-    tournament: "mdi-sword-cross",
-    project: "mdi-code-braces",
-    content: "mdi-video",
-    leadership: "mdi-account-group",
-    clip: "mdi-play-circle",
-    competition: "mdi-target",
-    game: "mdi-gamepad-variant",
-    web: "mdi-web",
-    mobile: "mdi-cellphone",
-    tool: "mdi-wrench",
-    demo: "mdi-monitor",
-    app: "mdi-application",
-    website: "mdi-earth",
-  };
-  return icons[type || ""] || "mdi-folder";
-};
+    achievement: 'mdi-trophy',
+    tournament: 'mdi-sword-cross',
+    project: 'mdi-code-braces',
+    content: 'mdi-video',
+    leadership: 'mdi-account-group',
+    clip: 'mdi-play-circle',
+    competition: 'mdi-target',
+    game: 'mdi-gamepad-variant',
+    web: 'mdi-web',
+    mobile: 'mdi-cellphone',
+    tool: 'mdi-wrench',
+    demo: 'mdi-monitor',
+    app: 'mdi-application',
+    website: 'mdi-earth'
+  }
+  return icons[type || ''] || 'mdi-folder'
+}
 
 const getTypeLabel = (type?: string): string => {
   const labels: Record<string, string> = {
-    achievement: "Achievement",
-    tournament: "Tournament",
-    project: "Project",
-    content: "Content",
-    leadership: "Leadership",
-    clip: "Highlight",
-    competition: "Competition",
-    game: "Game",
-    web: "Web App",
-    mobile: "Mobile App",
-    tool: "Tool",
-  };
-  return labels[type || ""] || "Portfolio Item";
-};
+    achievement: 'Achievement',
+    tournament: 'Tournament',
+    project: 'Project',
+    content: 'Content',
+    leadership: 'Leadership',
+    clip: 'Highlight',
+    competition: 'Competition',
+    game: 'Game',
+    web: 'Web App',
+    mobile: 'Mobile App',
+    tool: 'Tool'
+  }
+  return labels[type || ''] || 'Portfolio Item'
+}
 
 const getLinkIcon = (type?: string): string => {
   const icons: Record<string, string> = {
-    live: "mdi-open-in-new",
-    source: "mdi-github",
-    video: "mdi-play",
-    article: "mdi-file-document",
-    store: "mdi-shopping",
-    docs: "mdi-book",
-    external: "mdi-open-in-new",
-  };
-  return icons[type || ""] || "mdi-link";
-};
+    live: 'mdi-open-in-new',
+    source: 'mdi-github',
+    video: 'mdi-play',
+    article: 'mdi-file-document',
+    store: 'mdi-shopping',
+    docs: 'mdi-book',
+    external: 'mdi-open-in-new'
+  }
+  return icons[type || ''] || 'mdi-link'
+}
 </script>
 
 <style scoped>
@@ -776,75 +761,107 @@ const getLinkIcon = (type?: string): string => {
   justify-content: flex-start;
 }
 
+/* Animations */
 @keyframes fadeIn {
   from {
+    opacity: 0;
   }
   to {
+    opacity: 1;
   }
 }
 
 @keyframes slideInUp {
   from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
   }
   to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
+/* Scrollbar */
 .modal-content::-webkit-scrollbar {
+  width: 8px;
 }
 
 .modal-content::-webkit-scrollbar-track {
   background: var(--glass-bg);
+  border-radius: 4px;
 }
 
 .modal-content::-webkit-scrollbar-thumb {
   background: var(--glass-border);
+  border-radius: 4px;
 }
 
 .modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-300);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .modal-overlay {
+    padding: 1rem;
   }
 
   .portfolio-modal {
+    max-height: 95vh;
   }
 
   .modal-header {
+    padding: 1.5rem 1.5rem 1rem;
   }
 
   .header-content {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
 
   .header-actions {
+    width: 100%;
     justify-content: space-between;
   }
 
   .modal-title {
+    font-size: 1.5rem;
   }
 
   .content-grid {
+    padding: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .content-section,
   .sidebar-section {
+    padding: 1rem;
   }
 
   .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   }
 }
 
+/* Dark theme adjustments */
 [data-theme="dark"] .portfolio-modal {
+  box-shadow: 0 25px 100px rgba(0, 0, 0, 0.6);
 }
 
 [data-theme="dark"] .hero-placeholder {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 [data-theme="dark"] .tech-tag {
+  background: rgba(124, 58, 237, 0.15);
+  border-color: rgba(124, 58, 237, 0.3);
+  color: rgba(124, 58, 237, 0.9);
 }
 
 [data-theme="dark"] .tech-tag:hover {
+  background: rgba(124, 58, 237, 0.25);
 }
 </style>

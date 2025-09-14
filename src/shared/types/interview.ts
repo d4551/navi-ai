@@ -1,8 +1,12 @@
+/**
+ * Shared TypeScript interfaces for Mock Interview system
+ * Used across main process, renderer, and preload scripts
+ */
 
-import type { AudioDevice } from "./ai";
+import type { AudioDevice } from './ai'
 
 // Re-export AudioDevice for backward compatibility
-export type { AudioDevice };
+export type { AudioDevice }
 
 export interface GameStudio {
   id: string;
@@ -22,17 +26,10 @@ export interface GameStudio {
   size: string;
   founded: number;
   publiclyTraded: boolean;
-  category?:
-    | "AAA"
-    | "Indie"
-    | "Mobile"
-    | "VR/AR"
-    | "Platform"
-    | "Esports"
-    | "International";
+  category?: 'AAA' | 'Indie' | 'Mobile' | 'VR/AR' | 'Platform' | 'Esports' | 'International';
   region?: string;
   remoteWork?: boolean;
-  companySize?: "Startup" | "Small" | "Medium" | "Large" | "Enterprise";
+  companySize?: 'Startup' | 'Small' | 'Medium' | 'Large' | 'Enterprise';
   // Enhanced details for modals
   history?: string;
   recentNews?: string[];
@@ -75,11 +72,11 @@ export interface InterviewConfig {
 
 export interface InterviewQuestion {
   id: string;
-  type: "behavioral" | "technical" | "studio-specific" | "intro" | "closing";
+  type: 'behavioral' | 'technical' | 'studio-specific' | 'intro' | 'closing';
   question: string;
   followUps: string[];
   expectedDuration: number;
-  difficulty: "easy" | "medium" | "hard";
+  difficulty: 'easy' | 'medium' | 'hard';
   tags: string[];
   studioSpecific?: boolean;
   roleSpecific?: string[];
@@ -105,7 +102,7 @@ export interface InterviewSession {
   totalQuestions: number;
   startTime: number;
   endTime?: number;
-  status: "preparing" | "active" | "paused" | "completed" | "cancelled";
+  status: 'preparing' | 'active' | 'paused' | 'completed' | 'cancelled';
   responses: InterviewResponse[];
   finalAnalysis?: InterviewAnalysis;
   interviewerPersona?: InterviewerPersona;
@@ -167,22 +164,23 @@ export interface InterviewStats {
 
 // IPC Event types for secure communication
 export interface IPCEvents {
-  "interview-start": { config: InterviewConfig; studioId: string };
-  "interview-pause": { sessionId: string };
-  "interview-resume": { sessionId: string };
-  "interview-complete": { sessionId: string };
-  "interview-cancel": { sessionId: string };
-  "question-next": { sessionId: string };
-  "response-submit": { sessionId: string; response: InterviewResponse };
-  "ai-analyze": AIAnalysisRequest;
-  "stats-get": void;
-  "history-get": { limit?: number };
-  "audio-start-recording": { deviceId?: string };
-  "audio-stop-recording": void;
-  "audio-play": { audioData: ArrayBuffer };
-  "audio-stop": void;
+  'interview-start': { config: InterviewConfig; studioId: string };
+  'interview-pause': { sessionId: string };
+  'interview-resume': { sessionId: string };
+  'interview-complete': { sessionId: string };
+  'interview-cancel': { sessionId: string };
+  'question-next': { sessionId: string };
+  'response-submit': { sessionId: string; response: InterviewResponse };
+  'ai-analyze': AIAnalysisRequest;
+  'stats-get': void;
+  'history-get': { limit?: number };
+  'audio-start-recording': { deviceId?: string };
+  'audio-stop-recording': void;
+  'audio-play': { audioData: ArrayBuffer };
+  'audio-stop': void;
 }
 
+// New interfaces for enhanced search functionality
 export interface SearchFilters {
   roleCategories?: string[];
   technologies?: string[];
@@ -198,8 +196,8 @@ export interface SearchFilters {
 export interface SearchQuery {
   query?: string;
   filters: SearchFilters;
-  sortBy?: "name" | "founded" | "size" | "relevance";
-  sortOrder?: "asc" | "desc";
+  sortBy?: 'name' | 'founded' | 'size' | 'relevance';
+  sortOrder?: 'asc' | 'desc';
 }
 
 export interface SearchResult {
@@ -212,7 +210,7 @@ export interface SearchResult {
 export interface AutocompleteOption {
   value: string;
   label: string;
-  category: "studio" | "role" | "technology" | "location" | "skill";
+  category: 'studio' | 'role' | 'technology' | 'location' | 'skill';
   description?: string;
 }
 
@@ -224,7 +222,7 @@ export interface RoleInfo {
   requiredSkills: string[];
   preferredSkills: string[];
   averageSalary?: { min: number; max: number; currency: string };
-  demandLevel?: "low" | "medium" | "high";
+  demandLevel?: 'low' | 'medium' | 'high';
   careerPath: string[];
 }
 

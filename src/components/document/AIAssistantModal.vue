@@ -9,9 +9,7 @@
           </div>
           <div class="ms-3">
             <h5 class="mb-0">AI Assistant</h5>
-            <small class="text-muted">{{
-              assistantContext.title || "AI-powered document enhancement"
-            }}</small>
+            <small class="text-muted">{{ assistantContext.title || 'AI-powered document enhancement' }}</small>
           </div>
         </div>
         <div class="d-flex align-items-center gap-2">
@@ -30,10 +28,7 @@
         <div v-if="assistantContext.description" class="context-section">
           <div class="context-card">
             <h6 class="fw-semibold mb-2">
-              <AppIcon
-                :name="assistantContext.icon || 'mdi-lightbulb'"
-                class="me-2"
-              />
+              <AppIcon :name="assistantContext.icon || 'mdi-lightbulb'" class="me-2" />
               {{ assistantContext.title }}
             </h6>
             <p class="text-muted mb-0">{{ assistantContext.description }}</p>
@@ -61,22 +56,14 @@
               v-for="(message, index) in messages"
               :key="index"
               class="message"
-              :class="{
-                'user-message': message.type === 'user',
-                'ai-message': message.type === 'ai',
-              }"
+              :class="{ 'user-message': message.type === 'user', 'ai-message': message.type === 'ai' }"
             >
               <div class="message-avatar">
-                <AppIcon
-                  :name="message.type === 'user' ? 'mdi-account' : 'mdi-robot'"
-                />
+                <AppIcon :name="message.type === 'user' ? 'mdi-account' : 'mdi-robot'" />
               </div>
               <div class="message-content">
                 <div class="message-bubble">
-                  <div
-                    v-if="message.type === 'ai' && message.suggestions"
-                    class="suggestions-list"
-                  >
+                  <div v-if="message.type === 'ai' && message.suggestions" class="suggestions-list">
                     <h6 class="fw-semibold mb-2">AI Suggestions:</h6>
                     <div
                       v-for="(suggestion, i) in message.suggestions"
@@ -95,10 +82,7 @@
                       </div>
                     </div>
                   </div>
-                  <div
-                    v-else-if="message.type === 'ai' && message.analysis"
-                    class="analysis-result"
-                  >
+                  <div v-else-if="message.type === 'ai' && message.analysis" class="analysis-result">
                     <h6 class="fw-semibold mb-2">Analysis Results:</h6>
                     <div class="analysis-score">
                       <div class="score-display">
@@ -106,30 +90,18 @@
                         <span class="score-label">Overall Score</span>
                       </div>
                     </div>
-                    <div
-                      v-if="message.analysis.strengths"
-                      class="analysis-section"
-                    >
+                    <div v-if="message.analysis.strengths" class="analysis-section">
                       <h6 class="text-success">Strengths:</h6>
                       <ul>
-                        <li
-                          v-for="strength in message.analysis.strengths"
-                          :key="strength"
-                        >
+                        <li v-for="strength in message.analysis.strengths" :key="strength">
                           {{ strength }}
                         </li>
                       </ul>
                     </div>
-                    <div
-                      v-if="message.analysis.improvements"
-                      class="analysis-section"
-                    >
+                    <div v-if="message.analysis.improvements" class="analysis-section">
                       <h6 class="text-warning">Areas for Improvement:</h6>
                       <ul>
-                        <li
-                          v-for="improvement in message.analysis.improvements"
-                          :key="improvement"
-                        >
+                        <li v-for="improvement in message.analysis.improvements" :key="improvement">
                           {{ improvement }}
                         </li>
                       </ul>
@@ -137,9 +109,7 @@
                   </div>
                   <p v-else class="mb-0">{{ message.text }}</p>
                 </div>
-                <small class="text-muted">{{
-                  message.type === "user" ? "You" : "AI Assistant"
-                }}</small>
+                <small class="text-muted">{{ message.type === 'user' ? 'You' : 'AI Assistant' }}</small>
               </div>
             </div>
 
@@ -192,12 +162,12 @@
             :disabled="isProcessing"
             @keydown.ctrl.enter="sendMessage"
           ></textarea>
-
+          
           <div class="input-actions">
             <div class="input-hint">
               <small class="text-muted">Ctrl + Enter to send</small>
             </div>
-
+            
             <div class="d-flex gap-2">
               <UnifiedButton
                 variant="ghost"
@@ -207,7 +177,7 @@
               >
                 Clear
               </UnifiedButton>
-
+              
               <UnifiedButton
                 variant="primary"
                 size="sm"
@@ -227,232 +197,216 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick, onMounted } from "vue";
-import { useToast } from "@/composables/useToast";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import { aiService } from "@/shared/services/AIService";
+import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { useToast } from '@/composables/useToast'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { aiService } from '@/shared/services/AIService'
 
 // Props
 const props = defineProps({
   show: {
     type: Boolean,
-    default: false,
+    default: false
   },
   context: {
     type: Object,
-    default: () => ({}),
-  },
-});
+    default: () => ({})
+  }
+})
 
 // Emits
-const emit = defineEmits(["close", "apply"]);
+const emit = defineEmits(['close', 'apply'])
 
 // State
-const userInput = ref("");
-const messages = ref([]);
-const isProcessing = ref(false);
-const toast = useToast();
-const sessionId = `resume-ai-${Date.now()}`;
+const userInput = ref('')
+const messages = ref([])
+const isProcessing = ref(false)
+const toast = useToast()
+const sessionId = `resume-ai-${Date.now()}`
 
 // Computed
 const assistantContext = computed(() => ({
-  title: "Document Enhancement",
-  description:
-    "Get AI-powered suggestions to improve your resume or cover letter",
-  icon: "mdi-target",
-  ...props.context,
-}));
+  title: 'Document Enhancement',
+  description: 'Get AI-powered suggestions to improve your resume or cover letter',
+  icon: 'mdi-target',
+  ...props.context
+}))
 
 const welcomeMessage = computed(() => {
   const contextMessages = {
-    "resume-analysis":
-      "Hi! I'm here to help analyze your resume and provide actionable feedback.",
-    "cover-letter-review":
-      "Hello! I can help you review and improve your cover letter.",
-    "job-tailoring":
-      "Hi there! I can help tailor your documents to match the job requirements.",
-    general:
-      "Hello! I'm your AI assistant. How can I help you improve your documents today?",
-  };
-
-  return contextMessages[props.context.type] || contextMessages.general;
-});
+    'resume-analysis': 'Hi! I\'m here to help analyze your resume and provide actionable feedback.',
+    'cover-letter-review': 'Hello! I can help you review and improve your cover letter.',
+    'job-tailoring': 'Hi there! I can help tailor your documents to match the job requirements.',
+    'general': 'Hello! I\'m your AI assistant. How can I help you improve your documents today?'
+  }
+  
+  return contextMessages[props.context.type] || contextMessages.general
+})
 
 const quickActions = computed(() => {
   const baseActions = [
     {
-      key: "analyze",
-      label: "Analyze Document",
-      icon: "mdi-brain",
-      variant: "primary",
-      action: "analyze",
+      key: 'analyze',
+      label: 'Analyze Document',
+      icon: 'mdi-brain',
+      variant: 'primary',
+      action: 'analyze'
     },
     {
-      key: "improve",
-      label: "Suggest Improvements",
-      icon: "mdi-star-outline",
-      variant: "outline",
-      action: "improve",
+      key: 'improve',
+      label: 'Suggest Improvements',
+      icon: 'mdi-star-outline',
+      variant: 'outline',
+      action: 'improve'
     },
     {
-      key: "tailor",
-      label: "Tailor to Job",
-      icon: "mdi-target",
-      variant: "outline",
-      action: "tailor",
+      key: 'tailor',
+      label: 'Tailor to Job',
+      icon: 'mdi-target',
+      variant: 'outline',
+      action: 'tailor'
     },
     {
-      key: "optimize",
-      label: "Optimize Keywords",
-      icon: "mdi-key-variant",
-      variant: "outline",
-      action: "optimize",
-    },
-  ];
+      key: 'optimize',
+      label: 'Optimize Keywords',
+      icon: 'mdi-key-variant',
+      variant: 'outline',
+      action: 'optimize'
+    }
+  ]
 
   // Filter actions based on context
-  if (props.context.type === "resume-analysis") {
-    return baseActions.filter((a) =>
-      ["analyze", "improve", "optimize"].includes(a.action),
-    );
-  } else if (props.context.type === "cover-letter-review") {
-    return baseActions.filter((a) =>
-      ["analyze", "improve", "tailor"].includes(a.action),
-    );
+  if (props.context.type === 'resume-analysis') {
+    return baseActions.filter(a => ['analyze', 'improve', 'optimize'].includes(a.action))
+  } else if (props.context.type === 'cover-letter-review') {
+    return baseActions.filter(a => ['analyze', 'improve', 'tailor'].includes(a.action))
   }
 
-  return baseActions;
-});
+  return baseActions
+})
 
 // Methods
 const handleOverlayClick = () => {
-  emit("close");
-};
+  emit('close')
+}
 
 const sendMessage = async () => {
-  if (!userInput.value.trim() || isProcessing.value) return;
+  if (!userInput.value.trim() || isProcessing.value) return
 
-  const message = userInput.value.trim();
-  userInput.value = "";
+  const message = userInput.value.trim()
+  userInput.value = ''
 
   // Add user message
   messages.value.push({
-    type: "user",
+    type: 'user',
     text: message,
-    timestamp: new Date(),
-  });
+    timestamp: new Date()
+  })
 
   // Process AI response
-  await processAIResponse(message);
-};
+  await processAIResponse(message)
+}
 
 const processAIResponse = async (userMessage) => {
-  isProcessing.value = true;
+  isProcessing.value = true
   try {
     // Initialize AI service - now uses centralized API key resolver
-    await aiService.initialize();
-    const aiMsg = { type: "ai", text: "", timestamp: new Date() };
-    messages.value.push(aiMsg);
-    const idx = messages.value.length - 1;
-    const sys = buildSystemContext();
+    await aiService.initialize()
+    const aiMsg = { type: 'ai', text: '', timestamp: new Date() }
+    messages.value.push(aiMsg)
+    const idx = messages.value.length - 1
+    const sys = buildSystemContext()
     await aiService.chatStream({
       message: userMessage,
       context: sys,
-      type: "chat",
+      type: 'chat',
       sessionId,
       onChunk: async (chunk) => {
-        messages.value[idx].text += chunk;
-        await nextTick();
-        scrollToBottom();
+        messages.value[idx].text += chunk
+        await nextTick(); scrollToBottom()
       },
       onComplete: async (full) => {
-        messages.value[idx].text = full;
-        await nextTick();
-        scrollToBottom();
+        messages.value[idx].text = full
+        await nextTick(); scrollToBottom()
       },
       onError: (err) => {
-        toast.error("AI error: " + (err?.message || err));
-      },
-    });
+        toast.error('AI error: ' + (err?.message || err))
+      }
+    })
   } catch (error) {
-    toast.error("Failed to process AI request: " + error.message);
+    toast.error('Failed to process AI request: ' + error.message)
   } finally {
-    isProcessing.value = false;
+    isProcessing.value = false
   }
-};
+}
 
 function buildSystemContext() {
-  const ctx = assistantContext.value;
+  const ctx = assistantContext.value
   return [
-    ctx?.title ? `Context: ${ctx.title}` : "",
-    ctx?.description ? `Description: ${ctx.description}` : "",
-    "You are an expert resume/cover letter assistant. Provide concise, ATS-friendly suggestions with strong action verbs and measurable outcomes where possible.",
-  ]
-    .filter(Boolean)
-    .join("\n");
+    ctx?.title ? `Context: ${ctx.title}` : '',
+    ctx?.description ? `Description: ${ctx.description}` : '',
+    'You are an expert resume/cover letter assistant. Provide concise, ATS-friendly suggestions with strong action verbs and measurable outcomes where possible.'
+  ].filter(Boolean).join('\n')
 }
 
 const handleQuickAction = async (action) => {
   const actionMessages = {
-    analyze: "Please analyze my document and provide detailed feedback",
-    improve: "What are the main areas I should improve in my document?",
-    tailor: "How can I tailor this document for a specific job?",
-    optimize: "Help me optimize keywords for ATS systems",
-  };
+    analyze: 'Please analyze my document and provide detailed feedback',
+    improve: 'What are the main areas I should improve in my document?',
+    tailor: 'How can I tailor this document for a specific job?',
+    optimize: 'Help me optimize keywords for ATS systems'
+  }
 
-  const message = actionMessages[action.action] || action.label;
-
+  const message = actionMessages[action.action] || action.label
+  
   // Add user message
   messages.value.push({
-    type: "user",
+    type: 'user',
     text: message,
-    timestamp: new Date(),
-  });
+    timestamp: new Date()
+  })
 
   // Process AI response
-  await processAIResponse(message);
-};
+  await processAIResponse(message)
+}
 
 const applySuggestion = (suggestion) => {
-  emit("apply", suggestion);
-  toast.success("Suggestion applied successfully");
-};
+  emit('apply', suggestion)
+  toast.success('Suggestion applied successfully')
+}
 
 const clearConversation = () => {
-  messages.value = [];
-  toast.info("Conversation cleared");
-};
+  messages.value = []
+  toast.info('Conversation cleared')
+}
 
 const scrollToBottom = () => {
-  const container = document.querySelector(".messages-container");
+  const container = document.querySelector('.messages-container')
   if (container) {
-    container.scrollTop = container.scrollHeight;
+    container.scrollTop = container.scrollHeight
   }
-};
+}
 
 // Watchers
-watch(
-  () => props.show,
-  (newShow) => {
-    if (newShow) {
-      // Focus on input when modal opens
-      nextTick(() => {
-        const input = document.querySelector(".modal-footer textarea");
-        if (input) input.focus();
-      });
-    }
-  },
-);
+watch(() => props.show, (newShow) => {
+  if (newShow) {
+    // Focus on input when modal opens
+    nextTick(() => {
+      const input = document.querySelector('.modal-footer textarea')
+      if (input) input.focus()
+    })
+  }
+})
 
 onMounted(async () => {
-  try {
+  try { 
     // Pre-initialize AI service to check configuration
-    await aiService.initialize();
+    await aiService.initialize()
   } catch (error) {
-    console.warn("AI service initialization failed on mount:", error.message);
+    console.warn('AI service initialization failed on mount:', error.message)
   }
-});
+})
 </script>
 
 <style scoped>
@@ -496,11 +450,7 @@ onMounted(async () => {
   justify-content: center;
   width: 56px;
   height: 56px;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-100),
-    var(--color-primary-200)
-  );
+  background: linear-gradient(135deg, var(--color-primary-100), var(--color-primary-200));
   border: 2px solid var(--color-primary-300);
   border-radius: 50%;
   font-size: 1.75rem;
@@ -745,107 +695,161 @@ onMounted(async () => {
   transform: translateY(-1px);
 }
 
+/* Animations */
 @keyframes messageSlideIn {
   from {
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
   }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
   }
 }
 
+/* Scrollbar Styling */
 .messages-container::-webkit-scrollbar {
+  width: 6px;
 }
 
 .messages-container::-webkit-scrollbar-track {
   background: var(--glass-bg-light);
+  border-radius: 3px;
 }
 
 .messages-container::-webkit-scrollbar-thumb {
   background: var(--glass-border);
+  border-radius: 3px;
 }
 
 .messages-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-300);
 }
 
+/* Enhanced Visual Effects */
 .ai-modal {
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .modal-header::before {
-  content: "";
+  content: '';
   position: absolute;
-  background: linear-gradient(
-    transparent,
-    transparent
-  );
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-primary-300), transparent);
 }
 
+/* Improved Animation Timing */
 @keyframes messageSlideIn {
   from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
   }
   to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .modal-overlay {
+    padding: 0.75rem;
   }
-
+  
   .ai-modal {
+    max-height: 97vh;
     border-radius: var(--radius-md);
   }
-
+  
   .modal-header {
+    padding: 1.25rem 1.5rem 1rem;
   }
-
+  
   .modal-footer {
+    padding: 1rem 1.5rem 1.25rem;
   }
-
+  
   .messages-container {
+    padding: 1rem 1.5rem 1.5rem;
+    gap: 1.25rem;
   }
-
+  
   .message-content {
+    max-width: 88%;
   }
-
+  
   .message-bubble {
+    padding: 1rem 1.25rem;
   }
-
+  
   .suggestion-item {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.75rem;
+    padding: 1rem;
   }
-
+  
   .actions-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
-
+  
   .input-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.75rem;
   }
-
+  
   .context-section,
   .quick-actions {
+    padding: 1rem 1.5rem;
   }
-
+  
   .ai-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
   }
 }
 
+@media (max-width: 480px) {
   .modal-overlay {
+    padding: 0.5rem;
   }
-
+  
   .message {
+    gap: 0.75rem;
   }
-
+  
   .message-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
   }
-
+  
   .form-control {
+    min-height: 80px;
+    padding: 0.875rem 1rem;
   }
 }
 
+/* Dark theme adjustments */
 [data-theme="dark"] .message-bubble {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);

@@ -14,7 +14,7 @@ import { logger } from "@/shared/utils/logger";
     console.log(`[TARGET] Total Successful: ${result.summary.totalSuccessful}`);
 
       console.log("\n[WARNING]  Errors encountered:");
-      result.errors.forEach((error, index) => {
+      result.errors.forEach((_error, index) => {
       });
     }
 
@@ -25,7 +25,7 @@ import { logger } from "@/shared/utils/logger";
     console.log("By Size:", stats.bySize);
     console.log("By Region:", stats.byRegion);
     console.log("By Category:", stats.byCategory);
-  } catch (error) {
+  } catch (_error) {
   }
 }
 
@@ -34,5 +34,5 @@ importStudios()
   .then(() => {
     console.log("[SUCCESS] Studio import completed!");
   })
-  .catch((error) => {
+  .catch((_error) => {
   });

@@ -3,51 +3,55 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
 // Views - Lazy loaded for better performance with MUI integration
-const Dashboard = () => import("@/views/Dashboard.vue");
-const GamingDashboard = () => import("@/views/GamingDashboard.vue");
-// Document builder - unified resume and cover letter
-const DocumentBuilder = () => import("@/views/DocumentBuilder.vue");
-const ModernPortfolio = () => import("@/views/ModernPortfolio.vue");
-const PortfolioStudio = () => import("@/views/PortfolioStudio.vue");
-const PortfolioProjectView = () => import("@/views/PortfolioProjectView.vue");
-// Canonical jobs route points to consolidated Jobs view
-const JobSearch = () => import("@/views/Jobs.vue");
-const SkillMapper = () => import("@/views/SkillMapper.vue");
-const SkillMapperNew = () => import("@/views/AISkillMapper.vue");
-const InterviewPrep = () => import("@/views/InterviewPrep.vue");
-const InterviewSession = () => import("@/views/InterviewSession.vue");
-const GamingInterview = () => import("@/views/GamingInterview.vue");
-const Settings = () => import("@/views/Settings.vue");
-const GamificationHub = () => import("@/views/GamificationHub.vue");
-const RealTimeDemo = () => import("@/views/RealTimeDemo.vue");
-// Production-Ready AI Components (renamed from demo/enhanced versions)
-const LiveJobBoard = () => import("@/views/LiveJobBoard.vue");
-const AIJobMatching = () => import("@/views/AIJobMatching.vue");
-const AIDashboard = () => import("@/views/AIDashboard.vue");
-const AIInterviewPrep = () => import("@/views/AIInterviewPrep.vue");
-const Pathology = () => import("@/views/Pathology.vue"); // Dev/diagnostics
+const Dashboard                = () => import("@/views/Dashboard.vue");
+const GamingDashboard          = () => import("@/views/GamingDashboard.vue");
 
-// Additional apps - Now wired for enhanced user experience
-const AIMediaDemo = () => import("@/views/AIMediaDemo.vue");
-// AI Integration & Testing - Production ready components
-const AIIntegration = () => import("@/views/AIIntegration.vue");
-const VoiceServicesTest = () => import("@/views/VoiceServicesTest.vue");
-const FairyChatDemo = () => import("@/views/FairyChatDemo.vue");
+// Document builder - unified resume and cover letter
+const DocumentBuilder          = () => import("@/views/DocumentBuilder.vue");
+const ModernPortfolio          = () => import("@/views/ModernPortfolio.vue");
+const PortfolioStudio          = () => import("@/views/PortfolioStudio.vue");
+const PortfolioProjectView     = () => import("@/views/PortfolioProjectView.vue");
+
+// Job search and career tools
+const JobSearch                = () => import("@/views/Jobs.vue");
+const SkillMapper              = () => import("@/views/SkillMapper.vue");
+const SkillMapperNew           = () => import("@/views/AISkillMapper.vue");
+const InterviewPrep            = () => import("@/views/InterviewPrep.vue");
+const InterviewSession         = () => import("@/views/InterviewSession.vue");
+const GamingInterview          = () => import("@/views/GamingInterview.vue");
+const JobTailoredResumeView    = () => import("@/views/JobTailoredResumeView.vue");
+
+// System and settings
+const Settings                 = () => import("@/views/Settings.vue");
+const GamificationHub          = () => import("@/views/GamificationHub.vue");
+
+// Production-Ready AI Components
+const LiveJobBoard             = () => import("@/views/LiveJobBoard.vue");
+const AIJobMatching            = () => import("@/views/AIJobMatching.vue");
+const AIDashboard              = () => import("@/views/AIDashboard.vue");
+const AIInterviewPrep          = () => import("@/views/AIInterviewPrep.vue");
+const AIMediaDemo              = () => import("@/views/AIMediaDemo.vue");
+const AIIntegration            = () => import("@/views/AIIntegration.vue");
+
+// Demo and testing components
+const RealTimeDemo             = () => import("@/views/RealTimeDemo.vue");
+const VoiceServicesTest        = () => import("@/views/VoiceServicesTest.vue");
+const FairyChatDemo            = () => import("@/views/FairyChatDemo.vue");
+const HeaderDemo               = () => import("@/views/HeaderDemo.vue");
 
 // Studio-related views
-const TheStudios = () => import("@/views/TheStudios.vue");
-const StudioDatabase = () => import("@/views/StudioDatabase.vue");
-const StudioAnalytics = () => import("@/views/StudioAnalytics.vue");
-const StudioNetworking = () => import("@/views/StudioNetworking.vue");
+const TheStudios               = () => import("@/views/TheStudio.vue");
+const StudioDatabase           = () => import("@/views/StudioDatabase.vue");
+const StudioAnalytics          = () => import("@/views/StudioAnalytics.vue");
+const StudioNetworking         = () => import("@/views/StudioNetworking.vue");
 
-// System & Studios - Gaming Industry Focus
-const JobTailoredResumeView = () => import("@/views/JobTailoredResumeView.vue");
-const TheFlow = () => import("@/views/TheFlow.vue");
-const TheCloud = () => import("@/views/TheCloud.vue");
-const TheSystem = () => import("@/views/TheSystem.vue");
+// System views
+const TheFlow                  = () => import("@/views/TheFlow.vue");
+const TheCloud                 = () => import("@/views/TheCloud.vue");
+const TheSystem                = () => import("@/views/TheSystem.vue");
 
-// Header Demo
-const HeaderDemo = () => import("@/views/HeaderDemo.vue");
+// Dev/diagnostics
+const Pathology                = () => import("@/views/Pathology.vue");
 
 // Optional effects + perf utilities
 import { initEffects, staggerFadeIn, pulseOnFocus } from "@/utils/effects";
@@ -55,6 +59,7 @@ import { performanceMonitor } from "@/utils/performance";
 import { logger } from "@/shared/utils/logger";
 
 const routes = [
+  // Root redirect
   {
     path: "/",
     redirect: "/dashboard",
@@ -66,6 +71,8 @@ const routes = [
       samMaxStyle: true,
     },
   },
+
+  // Main dashboards
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -123,7 +130,8 @@ const routes = [
       samMaxStyle: true,
     },
   },
-  // Legacy routes (redirect to unified builder)
+
+  // Legacy document routes (redirect to unified builder)
   {
     path: "/resume-builder",
     redirect: "/documents",
@@ -133,6 +141,7 @@ const routes = [
     redirect: "/documents",
   },
 
+  // Portfolio section
   {
     path: "/portfolio",
     name: "ModernPortfolio",
@@ -167,8 +176,14 @@ const routes = [
     path: "/portfolio/project/:slug",
     name: "PortfolioProjectView",
     component: PortfolioProjectView,
-    meta: { title: "Project", icon: "mdi-briefcase-outline", muiTheme: true },
+    meta: {
+      title: "Project",
+      icon: "mdi-briefcase-outline",
+      muiTheme: true,
+    },
   },
+
+  // Skills section
   {
     path: "/skills",
     name: "SkillMapper",
@@ -182,7 +197,7 @@ const routes = [
     },
   },
 
-
+  // Jobs section
   {
     path: "/jobs",
     name: "JobSearch",
@@ -205,10 +220,10 @@ const routes = [
       hidden: true,
     },
   },
-  // Additional legacy redirects consolidated to canonical /jobs
+
+  // Legacy job routes (redirect to unified jobs)
   { path: "/gaming/jobs", redirect: "/jobs?filter=gaming" },
   { path: "/jobs/gaming", redirect: "/jobs?filter=gaming" },
-  // Consolidate legacy routes to canonical /jobs
   { path: "/job-search", redirect: "/jobs" },
   { path: "/jobboard", redirect: "/jobs" },
   { path: "/job-board", redirect: "/jobs" },
@@ -216,8 +231,13 @@ const routes = [
   {
     path: "/gaming-jobs",
     redirect: "/jobs?filter=gaming",
-    meta: { title: "Gaming Jobs (Redirected)", icon: "mdi-gamepad-variant" },
+    meta: {
+      title: "Gaming Jobs (Redirected)",
+      icon: "mdi-gamepad-variant",
+    },
   },
+
+  // Interview section
   {
     path: "/interview-prep",
     name: "InterviewPrep",
@@ -234,6 +254,7 @@ const routes = [
     path: "/interview",
     redirect: "/interview-prep",
   },
+  // Interview sessions
   {
     path: "/interview-session/:sessionId",
     name: "InterviewSession",
@@ -321,7 +342,7 @@ const routes = [
   {
     path: "/interview-review/:reviewId",
     name: "InterviewReview",
-    component: InterviewSession, // Can reuse same component with different props
+    component: InterviewSession,
     meta: {
       title: "Interview Review",
       icon: "mdi-clipboard-text",
@@ -333,7 +354,7 @@ const routes = [
   {
     path: "/interview-history",
     name: "InterviewHistory",
-    component: InterviewPrep, // Can reuse same component with different view mode
+    component: InterviewPrep,
     meta: {
       title: "Interview History",
       icon: "mdi-history",
@@ -355,7 +376,7 @@ const routes = [
     },
   },
 
-
+  // Demo routes
   {
     path: "/demo/realtime",
     name: "RealTimeDemo",
@@ -405,7 +426,8 @@ const routes = [
       samMaxStyle: true,
     },
   },
-  // Production-ready AI-powered features (formerly demo/enhanced)
+
+  // Production-ready AI features
   {
     path: "/ai/job-board",
     name: "LiveJobBoard",
@@ -479,6 +501,7 @@ const routes = [
     },
   },
 
+  // Studios section
   {
     path: "/studios",
     component: TheStudios,
@@ -522,13 +545,8 @@ const routes = [
       },
     ],
   },
-  // Dev/diagnostics routes
-  {
-    path: "/dev/pathology",
-    name: "Pathology",
-    component: Pathology,
-    meta: { title: "Diagnostics", icon: "mdi-stethoscope", hidden: true },
-  },
+
+  // System views
   {
     path: "/flow",
     name: "TheFlow",
@@ -565,6 +583,8 @@ const routes = [
       samMaxStyle: true,
     },
   },
+
+  // Settings and configuration
   {
     path: "/settings",
     name: "Settings",
@@ -575,6 +595,18 @@ const routes = [
       muiTheme: true,
       aiPowered: true,
       samMaxStyle: true,
+    },
+  },
+
+  // Development and testing routes
+  {
+    path: "/dev/pathology",
+    name: "Pathology",
+    component: Pathology,
+    meta: {
+      title: "Diagnostics",
+      icon: "mdi-stethoscope",
+      hidden: true,
     },
   },
   {
@@ -591,6 +623,7 @@ const routes = [
     },
   },
 
+  // Catch-all redirect
   {
     path: "/:pathMatch(.*)*",
     redirect: "/dashboard",
@@ -620,7 +653,7 @@ let routeNPStarted = false;
 router.beforeEach(async (to, from, next) => {
   try {
     performanceMonitor.markStart(`route-${to.name}`);
-  } catch (e) {
+  } catch (_e) {
     logger.debug("Route performance tracking failed:", e);
   }
   // Lightweight AI auto-initialization for AI powered routes (idempotent)
@@ -638,7 +671,7 @@ router.beforeEach(async (to, from, next) => {
           enableRealTime: !!store.settings.enableRealtimeFeatures,
         });
       }
-    } catch (e) {
+    } catch (_e) {
       logger.debug("AI auto-init skipped (non-critical):", e);
     }
   }
@@ -661,7 +694,7 @@ router.beforeEach(async (to, from, next) => {
       // Apply MUI-specific body classes
       document.body.classList.add("mui-route");
       document.body.classList.remove("standard-route");
-    } catch (e) {
+    } catch (_e) {
       logger.debug("MUI theme setup failed:", e);
     }
   } else {
@@ -676,7 +709,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       NProgress.start();
       routeNPStarted = true;
-    } catch (e) {
+    } catch (_e) {
       logger.debug("NProgress start failed:", e);
     }
   }, 120);
@@ -700,7 +733,7 @@ router.afterEach((to, from) => {
           el.scrollLeft = 0;
         }
       });
-    } catch (e) {
+    } catch (_e) {
       logger.debug("Scroll-to-top failed:", e);
     }
     try {
@@ -708,7 +741,7 @@ router.afterEach((to, from) => {
         fromRoute: from.name,
         toRoute: to.name,
       });
-    } catch (e) {
+    } catch (_e) {
       logger.debug("Route performance end tracking failed:", e);
     }
     // Optional gentle effects (if anime.js is available)
@@ -719,7 +752,7 @@ router.afterEach((to, from) => {
       if (container) {
         staggerFadeIn(container);
       }
-    } catch (e) {
+    } catch (_e) {
       logger.warn("Route animation failed:", e);
     }
     if (routeNPDelayTimer) {
@@ -729,7 +762,7 @@ router.afterEach((to, from) => {
     if (routeNPStarted) {
       try {
         NProgress.done();
-      } catch (e) {
+      } catch (_e) {
         logger.debug("NProgress done failed:", e);
       }
       routeNPStarted = false;
@@ -746,7 +779,7 @@ router.afterEach((to, from) => {
       const sr = document.getElementById("sr-announcer");
       if (sr)
         sr.textContent = `Navigated to ${to.meta?.title || to.name || "page"}`;
-    } catch (e) {
+    } catch (_e) {
       logger.debug("Route ARIA announce failed:", e);
     }
   }, 100);

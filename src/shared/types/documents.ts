@@ -1,7 +1,7 @@
 // Canonical document editing shared types (resume & cover letter)
 export interface DocumentSaveMeta {
   lastSaved: string | null;
-  status: "idle" | "saving" | "error" | "dirty";
+  status: 'idle' | 'saving' | 'error' | 'dirty';
   error?: string;
 }
 
@@ -25,11 +25,11 @@ export interface CoverLetterData {
   jobInfo: Record<string, any>;
   personalInfo: Record<string, any>;
   companyResearch?: Record<string, any>;
-  sections: Record<string, string>;
+  sections: Record<string,string>;
   template?: string;
 }
 
-export type DocumentKind = "resume" | "coverLetter";
+export type DocumentKind = 'resume' | 'coverLetter';
 
 export interface DocumentAction {
   key: string;

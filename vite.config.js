@@ -8,9 +8,9 @@ export default defineConfig(({ command }) => ({
     vue(),
     // Improve vendor chunk splitting to reduce main bundle size
     splitVendorChunkPlugin(),
-    // Dev-only middleware to ensure proper Content-Type for transformed Vue modules
+    // Dev-only middleware to ensure proper Content-Type for all module types
     {
-      name: 'fix-vue-content-type',
+      name: 'fix-mime-types',
       apply: 'serve',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
@@ -19,11 +19,27 @@ export default defineConfig(({ command }) => ({
           res.writeHead = function patchedWriteHead(...args) {
             try {
               const path = (url.split('?')[0]) || ''
+
+              // Fix MIME types for various file extensions
               if (path.endsWith('.vue') || path.includes('.vue?')) {
-                // Ensure .vue responses are delivered as JS for browsers like Firefox
                 const existing = res.getHeader('Content-Type')
                 if (!existing) {
-                  res.setHeader('Content-Type', 'text/javascript')
+                  res.setHeader('Content-Type', 'text/javascript; charset=utf-8')
+                }
+              } else if (path.endsWith('.ts') || path.includes('.ts?')) {
+                const existing = res.getHeader('Content-Type')
+                if (!existing) {
+                  res.setHeader('Content-Type', 'text/javascript; charset=utf-8')
+                }
+              } else if (path.endsWith('.js') || path.includes('.js?')) {
+                const existing = res.getHeader('Content-Type')
+                if (!existing || existing === '') {
+                  res.setHeader('Content-Type', 'text/javascript; charset=utf-8')
+                }
+              } else if (path.endsWith('.css') || path.includes('.css?')) {
+                const existing = res.getHeader('Content-Type')
+                if (!existing) {
+                  res.setHeader('Content-Type', 'text/css; charset=utf-8')
                 }
               }
             } catch {}

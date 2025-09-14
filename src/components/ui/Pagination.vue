@@ -106,7 +106,7 @@
         :max="totalPages"
         class="form-control quick-jump-input"
         @keyup.enter="goToPage(jumpPage)"
-      />
+      >
       <button
         class="btn btn-sm btn-outline-primary quick-jump-btn"
         :disabled="!isValidJumpPage"
@@ -119,136 +119,126 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { computed, ref, watch } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 const props = defineProps({
   currentPage: {
     type: Number,
-    default: 1,
+    default: 1
   },
   totalItems: {
     type: Number,
-    default: 0,
+    default: 0
   },
   itemsPerPage: {
     type: Number,
-    default: 25,
+    default: 25
   },
   perPageOptions: {
     type: Array,
-    default: () => [10, 25, 50, 100],
+    default: () => [10, 25, 50, 100]
   },
   maxVisiblePages: {
     type: Number,
-    default: 5,
+    default: 5
   },
   showQuickJump: {
     type: Boolean,
-    default: true,
-  },
-});
+    default: true
+  }
+})
 
-const emit = defineEmits(["update:currentPage", "update:itemsPerPage"]);
+const emit = defineEmits(['update:currentPage', 'update:itemsPerPage'])
 
 // Jump page input
-const jumpPage = ref(props.currentPage);
+const jumpPage = ref(props.currentPage)
 
 // Watch current page changes to update jump input
-watch(
-  () => props.currentPage,
-  (newPage) => {
-    jumpPage.value = newPage;
-  },
-);
+watch(() => props.currentPage, (newPage) => {
+  jumpPage.value = newPage
+})
 
 // Computed properties
-const totalPages = computed(() =>
-  Math.ceil(props.totalItems / props.itemsPerPage),
-);
+const totalPages = computed(() => Math.ceil(props.totalItems / props.itemsPerPage))
 
 const startItem = computed(() => {
-  if (props.totalItems === 0) return 0;
-  return (props.currentPage - 1) * props.itemsPerPage + 1;
-});
+  if (props.totalItems === 0) return 0
+  return (props.currentPage - 1) * props.itemsPerPage + 1
+})
 
 const endItem = computed(() => {
-  const end = props.currentPage * props.itemsPerPage;
-  return Math.min(end, props.totalItems);
-});
+  const end = props.currentPage * props.itemsPerPage
+  return Math.min(end, props.totalItems)
+})
 
 const isValidJumpPage = computed(() => {
-  return jumpPage.value >= 1 && jumpPage.value <= totalPages.value;
-});
+  return jumpPage.value >= 1 && jumpPage.value <= totalPages.value
+})
 
 // Calculate visible page numbers
 const visiblePages = computed(() => {
-  const max = props.maxVisiblePages;
-  const total = totalPages.value;
-  const current = props.currentPage;
-
+  const max = props.maxVisiblePages
+  const total = totalPages.value
+  const current = props.currentPage
+  
   if (total <= max) {
-    return Array.from({ length: total }, (_, i) => i + 1);
+    return Array.from({ length: total }, (_, i) => i + 1)
   }
-
-  const half = Math.floor(max / 2);
-  let start = Math.max(current - half, 1);
-  let end = Math.min(start + max - 1, total);
-
+  
+  const half = Math.floor(max / 2)
+  let start = Math.max(current - half, 1)
+  let end = Math.min(start + max - 1, total)
+  
   // Adjust start if we're near the end
   if (end - start + 1 < max) {
-    start = Math.max(end - max + 1, 1);
+    start = Math.max(end - max + 1, 1)
   }
-
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-});
+  
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+})
 
 const showFirstPage = computed(() => {
-  return !visiblePages.value.includes(1);
-});
+  return !visiblePages.value.includes(1)
+})
 
 const showLastPage = computed(() => {
-  return !visiblePages.value.includes(totalPages.value);
-});
+  return !visiblePages.value.includes(totalPages.value)
+})
 
 const showFirstEllipsis = computed(() => {
-  return showFirstPage.value && visiblePages.value[0] > 2;
-});
+  return showFirstPage.value && visiblePages.value[0] > 2
+})
 
 const showLastEllipsis = computed(() => {
-  return (
-    showLastPage.value &&
-    visiblePages.value[visiblePages.value.length - 1] < totalPages.value - 1
-  );
-});
+  return showLastPage.value && visiblePages.value[visiblePages.value.length - 1] < totalPages.value - 1
+})
 
 // Methods
 const goToPage = (page) => {
-  const validPage = Math.max(1, Math.min(page, totalPages.value));
+  const validPage = Math.max(1, Math.min(page, totalPages.value))
   if (validPage !== props.currentPage) {
-    emit("update:currentPage", validPage);
+    emit('update:currentPage', validPage)
     // Scroll to top of results
     setTimeout(() => {
-      const jobsContainer = document.querySelector(
-        ".job-results, .jobs-container",
-      );
+      const jobsContainer = document.querySelector('.job-results, .jobs-container')
       if (jobsContainer) {
-        jobsContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+        jobsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
-    }, 100);
+    }, 100)
   }
-};
+}
 
 const updateItemsPerPage = (newSize) => {
-  const size = parseInt(newSize, 10);
+  const size = parseInt(newSize, 10)
   if (size !== props.itemsPerPage) {
-    emit("update:itemsPerPage", size);
+    emit('update:itemsPerPage', size)
     // Reset to first page when changing page size
     if (props.currentPage > 1) {
-      emit("update:currentPage", 1);
+      emit('update:currentPage', 1)
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -396,81 +386,116 @@ const updateItemsPerPage = (newSize) => {
   font-size: var(--font-size-sm);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .pagination-wrapper {
     gap: var(--spacing-sm);
   }
-
+  
   .pagination-info {
     flex-direction: column;
     gap: var(--spacing-sm);
     align-items: center;
   }
-
+  
   .pagination-controls {
     flex-wrap: wrap;
     justify-content: center;
   }
-
+  
   .pagination-btn {
+    min-width: 36px;
+    height: 36px;
     font-size: var(--font-size-xs);
   }
-
+  
   .btn-text {
     display: none;
   }
-
+  
   .quick-jump {
     flex-direction: column;
     text-align: center;
   }
 }
 
+@media (max-width: 480px) {
   .page-numbers {
+    gap: 2px;
   }
-
+  
   .pagination-btn {
+    min-width: 32px;
+    height: 32px;
     padding: var(--spacing-xs);
   }
-
+  
   .per-page-select {
+    min-width: 100px;
     font-size: var(--font-size-xs);
   }
 }
 
+/* Loading state */
 .pagination-wrapper.loading {
+  opacity: 0.6;
   pointer-events: none;
 }
 
+/* Dark theme support */
 @media (prefers-color-scheme: dark) {
   .pagination-btn {
+    border-color: var(--border-base-dark, #374151);
+    background: var(--surface-base-dark, #1f2937);
+    color: var(--text-primary-dark, #f9fafb);
   }
-
+  
   .pagination-btn:hover:not(.disabled) {
+    background: var(--surface-hover-dark, #374151);
+    border-color: var(--border-hover-dark, #4b5563);
   }
-
+  
   .per-page-select,
   .quick-jump-input {
+    border-color: var(--border-base-dark, #374151);
+    background: var(--surface-base-dark, #1f2937);
+    color: var(--text-primary-dark, #f9fafb);
   }
 }
 
+/* Focus styles for accessibility */
 .pagination-btn:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
 }
 
 .per-page-select:focus-visible,
 .quick-jump-input:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
 }
 
+/* Animation for page transitions */
 .pagination-btn {
   position: relative;
   overflow: hidden;
 }
 
 .pagination-btn::after {
-  content: "";
+  content: '';
   position: absolute;
-  transition:
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(var(--color-primary-500-rgb, 59, 130, 246), 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
 }
 
 .pagination-btn:active::after {
+  width: 120%;
+  height: 120%;
 }
 </style>

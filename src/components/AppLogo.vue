@@ -3,13 +3,13 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
+import { computed } from 'vue';
+import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme';
 
 const props = defineProps({
   altText: {
     type: String,
-    default: "NAVI Logo",
+    default: 'NAVI Logo',
   },
   // Explicit src overrides theme switching when provided
   src: {
@@ -19,11 +19,11 @@ const props = defineProps({
   // Customizable light/dark sources with sensible defaults
   lightSrc: {
     type: String,
-    default: "/logoLight.svg",
+    default: '/logoLight.svg',
   },
   darkSrc: {
     type: String,
-    default: "/logoDark.svg",
+    default: '/logoDark.svg',
   },
 });
 
@@ -34,7 +34,7 @@ const logoSrc = computed(() => {
   // If a specific src is provided, always use it
   if (props.src) return props.src;
   // Otherwise, switch by theme using provided light/dark sources
-  return colorScheme.value === "dark" ? props.darkSrc : props.lightSrc;
+  return colorScheme.value === 'dark' ? props.darkSrc : props.lightSrc;
 });
 </script>
 
@@ -45,7 +45,8 @@ const logoSrc = computed(() => {
   transition: filter 0.3s ease-in-out;
 }
 
+/* Optional: Add specific styling for different themes if needed */
 [data-theme="dark"] .app-logo {
-  filter: brightness(
+  filter: brightness(1.2); /* Example: make logo slightly brighter in dark mode */
 }
 </style>

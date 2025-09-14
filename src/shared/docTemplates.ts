@@ -16,8 +16,7 @@ export interface ResumeTemplate {
 export const RESUME_TEMPLATES: Record<string, ResumeTemplate> = {
   "google-xyz": {
     name: "Google XYZ Format",
-    description:
-      "Clean, minimal single-page resume format popularized by Google",
+    description: "Clean, minimal single-page resume format popularized by Google",
     margins: { top: 36, bottom: 36, left: 54, right: 54 },
     fonts: {
       heading: "Roboto",
@@ -31,8 +30,7 @@ export const RESUME_TEMPLATES: Record<string, ResumeTemplate> = {
   },
   "modern-professional": {
     name: "Modern Professional",
-    description:
-      "Contemporary resume design with clean layout and subtle accents",
+    description: "Contemporary resume design with clean layout and subtle accents",
     margins: { top: 36, bottom: 36, left: 72, right: 72 },
     fonts: {
       heading: "Arial",
@@ -58,7 +56,7 @@ export const RESUME_TEMPLATES: Record<string, ResumeTemplate> = {
       },
     },
   },
-  creative: {
+  "creative": {
     name: "Creative Professional",
     description: "Stylish format for creative fields with more visual appeal",
     margins: { top: 36, bottom: 36, left: 54, right: 54 },
@@ -72,7 +70,7 @@ export const RESUME_TEMPLATES: Record<string, ResumeTemplate> = {
       },
     },
   },
-  executive: {
+  "executive": {
     name: "Executive",
     description: "Sophisticated format for senior professionals and executives",
     margins: { top: 36, bottom: 36, left: 72, right: 72 },
@@ -91,12 +89,10 @@ export const RESUME_TEMPLATES: Record<string, ResumeTemplate> = {
 export function getAllTemplates(): Record<string, ResumeTemplate> {
   const builtInTemplates = RESUME_TEMPLATES;
   // Only available in Google Apps Script environment
-  if (typeof window !== "undefined" && (window as any).PropertiesService) {
+  if (typeof window !== 'undefined' && (window as any).PropertiesService) {
     const PropertiesService = (window as any).PropertiesService;
     const userProps = PropertiesService.getUserProperties();
-    const customStyles =
-      JSON.parse(userProps.getProperty("userSettings") || "{}").customStyles ||
-      {};
+    const customStyles = JSON.parse(userProps.getProperty('userSettings') || '{}').customStyles || {};
     return { ...builtInTemplates, ...customStyles };
   }
   return builtInTemplates;
@@ -108,7 +104,7 @@ export function applyTemplateToDocument(
 ): { success?: true; error?: true; message?: string } {
   try {
     // Check if we're in a Google Apps Script environment
-    if (typeof window !== "undefined" && (window as any).DocumentApp) {
+    if (typeof window !== 'undefined' && (window as any).DocumentApp) {
       const DocumentApp = (window as any).DocumentApp;
       const document = DocumentApp.openById(documentId);
       const template = RESUME_TEMPLATES[templateId];
@@ -118,7 +114,7 @@ export function applyTemplateToDocument(
       }
 
       const body = document.getBody();
-
+      
       // Apply document-level styles
       const style = {};
       style[DocumentApp.Attribute.MARGIN_TOP] = template.margins.top;
@@ -138,33 +134,26 @@ export function applyTemplateToDocument(
       for (let i = 0; i < paragraphs.length; i++) {
         const paragraph = paragraphs[i];
         const text = paragraph.getText().trim();
-
+        
         // Detect and style headings based on content patterns
-        if (
-          text &&
-          (text.match(/^[A-Z\s]+$/) || // All caps section headers
-            text.match(
-              /^(EXPERIENCE|EDUCATION|SKILLS|SUMMARY|OBJECTIVE|PROJECTS|CERTIFICATIONS)/,
-            ) ||
-            text.endsWith(":") ||
-            paragraph.getHeading() !== DocumentApp.ParagraphHeading.NORMAL)
-        ) {
+        if (text && (
+          text.match(/^[A-Z\s]+$/) || // All caps section headers
+          text.match(/^(EXPERIENCE|EDUCATION|SKILLS|SUMMARY|OBJECTIVE|PROJECTS|CERTIFICATIONS)/) ||
+          text.endsWith(':') ||
+          paragraph.getHeading() !== DocumentApp.ParagraphHeading.NORMAL
+        )) {
           const headingStyle = {};
-          headingStyle[DocumentApp.Attribute.FONT_FAMILY] =
-            template.fonts.heading;
-          headingStyle[DocumentApp.Attribute.FONT_SIZE] =
-            template.fonts.size.heading1;
+          headingStyle[DocumentApp.Attribute.FONT_FAMILY] = template.fonts.heading;
+          headingStyle[DocumentApp.Attribute.FONT_SIZE] = template.fonts.size.heading1;
           headingStyle[DocumentApp.Attribute.BOLD] = true;
           paragraph.setAttributes(headingStyle);
         }
-
+        
         // Style job titles and company names (lines that follow name patterns)
         if (text.match(/^\w+\s+\w+(\s+\w+)*\s*(-|–|—|\|)\s*\w+/)) {
           const subheadingStyle = {};
-          subheadingStyle[DocumentApp.Attribute.FONT_FAMILY] =
-            template.fonts.heading;
-          subheadingStyle[DocumentApp.Attribute.FONT_SIZE] =
-            template.fonts.size.heading2;
+          subheadingStyle[DocumentApp.Attribute.FONT_FAMILY] = template.fonts.heading;
+          subheadingStyle[DocumentApp.Attribute.FONT_SIZE] = template.fonts.size.heading2;
           subheadingStyle[DocumentApp.Attribute.BOLD] = true;
           paragraph.setAttributes(subheadingStyle);
         }
@@ -175,20 +164,12 @@ export function applyTemplateToDocument(
       bodyStyle[DocumentApp.Attribute.LINE_SPACING] = 1.15;
       body.setAttributes(bodyStyle);
 
-      return {
-        success: true,
-        message: `Template "${template.name}" applied successfully`,
-      };
+      return { success: true, message: `Template "${template.name}" applied successfully` };
     } else {
-      return {
-        error: true,
-        message: "DocumentApp not available in this environment",
-      };
+      return { error: true, message: "DocumentApp not available in this environment" };
     }
   } catch (error) {
-    return {
-      error: true,
-      message: `Failed to apply template: ${(error as Error).message}`,
-    };
+    return { error: true, message: `Failed to apply template: ${(error as Error).message}` };
   }
 }
+

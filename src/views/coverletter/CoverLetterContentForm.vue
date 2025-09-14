@@ -3,14 +3,10 @@
   Matches the design pattern of resume form components
 -->
 <template>
-  <section class="section-card section-card unified-card p-md">
+  <section class="glass p-4 gap-4 rounded-lg unified-card">
     <div class="d-flex align-items-center justify-content-between mb-2">
       <h2 class="h6 mb-0 d-flex align-items-center gap-2 text-primary">
-        <AppIcon
-          name="mdi-text-box-outline"
-          class="icon-md"
-          aria-hidden="true"
-        />
+        <AppIcon name="mdi-text-box-outline" class="icon-md" aria-hidden="true" />
         <span>Cover Letter Content</span>
       </h2>
       <div class="header-actions d-flex align-items-center gap-2">
@@ -109,12 +105,8 @@
         </UnifiedButton>
       </div>
 
-      <div
-        v-if="localContent.keyPoints.length === 0"
-        class="text-muted small mb-3"
-      >
-        Add specific achievements or skills you want to emphasize in your cover
-        letter.
+      <div v-if="localContent.keyPoints.length === 0" class="text-muted small mb-3">
+        Add specific achievements or skills you want to emphasize in your cover letter.
       </div>
 
       <div class="key-points-list">
@@ -161,11 +153,7 @@
         <label for="cover-letter-body" class="form-label">Cover Letter Body</label>
       </div>
 
-      <div
-        id="cover-body-help"
-        class="form-text d-flex align-items-center justify-content-between"
-        aria-live="polite"
-      >
+      <div id="cover-body-help" class="form-text d-flex align-items-center justify-content-between" aria-live="polite">
         <div class="d-flex align-items-center gap-3">
           <span>
             <AppIcon name="mdi-information-outline" class="me-1" />
@@ -193,19 +181,16 @@
           <i :class="getReviewIcon()" class="icon-lg" aria-hidden="true"></i>
           <div class="flex-grow-1">
             <h3 id="review-results-title" class="h6 mb-2">AI Review Results</h3>
-
+            
             <!-- Overall Score -->
             <div v-if="reviewResults.score" class="mb-3">
               <div class="d-flex align-items-center gap-2 mb-1">
                 <strong>Overall Score:</strong>
-                <span
-                  class="badge"
-                  :class="getScoreBadgeClass(reviewResults.score)"
-                >
+                <span class="badge" :class="getScoreBadgeClass(reviewResults.score)">
                   {{ reviewResults.score }}/100
                 </span>
               </div>
-              <div class="progress" style="height: 6px">
+              <div class="progress" style="height: 6px;">
                 <div
                   class="progress-bar"
                   :class="getScoreProgressClass(reviewResults.score)"
@@ -223,10 +208,7 @@
                   :key="`issue-${issue.message}`"
                   class="mb-1"
                 >
-                  <span
-                    class="badge me-1"
-                    :class="getIssueBadgeClass(issue.type)"
-                  >
+                  <span class="badge me-1" :class="getIssueBadgeClass(issue.type)">
                     {{ formatIssueType(issue.type) }}
                   </span>
                   {{ issue.message }}
@@ -243,11 +225,7 @@
                   :key="`suggestion-${suggestion}`"
                   class="mb-1"
                 >
-                  <AppIcon
-                    name="mdi-lightbulb"
-                    color="warning"
-                    aria-hidden="true"
-                  />
+                  <AppIcon name="mdi-lightbulb" color="warning" aria-hidden="true" />
                   {{ suggestion }}
                 </li>
               </ul>
@@ -282,10 +260,7 @@
     </div>
 
     <!-- Template Suggestions -->
-    <div
-      v-if="!localContent.body && !loading.generation"
-      class="template-suggestions mt-3"
-    >
+    <div v-if="!localContent.body && !loading.generation" class="template-suggestions mt-3">
       <div class="card glass-elevated">
         <div class="card-body section-body">
           <h3 class="h6 mb-3">
@@ -295,24 +270,15 @@
           <div class="row g-3">
             <div class="col-md-4">
               <h4 class="h7 text-muted mb-2">Opening Paragraph</h4>
-              <p class="small">
-                State the position, how you found it, and a compelling reason
-                why you're interested.
-              </p>
+              <p class="small">State the position, how you found it, and a compelling reason why you're interested.</p>
             </div>
             <div class="col-md-4">
               <h4 class="h7 text-muted mb-2">Body Paragraphs</h4>
-              <p class="small">
-                Highlight 2-3 relevant achievements with specific examples and
-                metrics.
-              </p>
+              <p class="small">Highlight 2-3 relevant achievements with specific examples and metrics.</p>
             </div>
             <div class="col-md-4">
               <h4 class="h7 text-muted mb-2">Closing Paragraph</h4>
-              <p class="small">
-                Express enthusiasm, request an interview, and provide your
-                contact information.
-              </p>
+              <p class="small">Express enthusiasm, request an interview, and provide your contact information.</p>
             </div>
           </div>
         </div>
@@ -322,181 +288,168 @@
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
-import { ref, computed, watch } from "vue";
-import { debounce } from "lodash-es";
+import { ref, computed, watch } from 'vue'
+import { debounce } from 'lodash-es'
 
 // Props
 interface KeyPoint {
-  text: string;
+  text: string
 }
 
 interface CoverLetterContent {
-  tone: string;
-  length: string;
-  experienceTemplate: string;
-  keyPoints: KeyPoint[];
-  body: string;
+  tone: string
+  length: string
+  experienceTemplate: string
+  keyPoints: KeyPoint[]
+  body: string
 }
 
 interface ReviewResults {
-  score?: number;
-  issues?: Array<{ type: string; message: string }>;
-  suggestions?: string[];
+  score?: number
+  issues?: Array<{ type: string; message: string }>
+  suggestions?: string[]
 }
 
 const props = defineProps<{
-  content: CoverLetterContent;
-  reviewResults?: ReviewResults;
-  canUseAI: boolean;
-  hasJobInfo: boolean;
+  content: CoverLetterContent
+  reviewResults?: ReviewResults
+  canUseAI: boolean
+  hasJobInfo: boolean
   loading: {
-    generation?: boolean;
-    review?: boolean;
-    improvement?: boolean;
-  };
-}>();
+    generation?: boolean
+    review?: boolean
+    improvement?: boolean
+  }
+}>()
 
 // Emits
 const emit = defineEmits<{
-  "update:content": [content: CoverLetterContent];
-  "generate-content": [];
-  "review-content": [];
-  "improve-content": [];
-  "dismiss-review": [];
-}>();
+  'update:content': [content: CoverLetterContent]
+  'generate-content': []
+  'review-content': []
+  'improve-content': []
+  'dismiss-review': []
+}>()
 
 // Local state
-const localContent = ref<CoverLetterContent>({ ...props.content });
+const localContent = ref<CoverLetterContent>({ ...props.content })
 
 // Computed
 const wordCount = computed(() => {
-  if (!localContent.value.body) return 0;
-  return localContent.value.body
-    .trim()
-    .split(/\s+/)
-    .filter((word) => word.length > 0).length;
-});
+  if (!localContent.value.body) return 0
+  return localContent.value.body.trim().split(/\s+/).filter(word => word.length > 0).length
+})
 
 const characterCount = computed(() => {
-  return localContent.value.body?.length || 0;
-});
+  return localContent.value.body?.length || 0
+})
 
 const readingTime = computed(() => {
-  const words = wordCount.value;
-  if (words === 0) return null;
-  return Math.max(1, Math.round(words / 200));
-});
+  const words = wordCount.value
+  if (words === 0) return null
+  return Math.max(1, Math.round(words / 200)) // 200 words per minute average
+})
 
 // Watch for external changes
 watch(
   () => props.content,
   (newContent) => {
-    localContent.value = { ...newContent };
+    localContent.value = { ...newContent }
   },
-  { deep: true },
-);
+  { deep: true }
+)
 
 // Methods
 const commitChanges = () => {
-  emit("update:content", { ...localContent.value });
-};
+  emit('update:content', { ...localContent.value })
+}
 
 const addKeyPoint = () => {
-  localContent.value.keyPoints.push({ text: "" });
-  commitChanges();
-};
+  localContent.value.keyPoints.push({ text: '' })
+  commitChanges()
+}
 
 const removeKeyPoint = (index: number) => {
   if (localContent.value.keyPoints.length > 0) {
-    localContent.value.keyPoints.splice(index, 1);
-    commitChanges();
+    localContent.value.keyPoints.splice(index, 1)
+    commitChanges()
   }
-};
+}
 
 const generateContent = () => {
-  emit("generate-content");
-};
+  emit('generate-content')
+}
 
 const reviewContent = () => {
-  emit("review-content");
-};
+  emit('review-content')
+}
 
 const improveContent = () => {
-  emit("improve-content");
-};
+  emit('improve-content')
+}
 
 const dismissReview = () => {
-  emit("dismiss-review");
-};
+  emit('dismiss-review')
+}
 
 // Review result helpers
 const getReviewAlertClass = () => {
-  if (!props.reviewResults?.score) return "alert-info";
-  const score = props.reviewResults.score;
-
-  if (score >= 85) return "alert-success";
-  if (score >= 70) return "alert-warning";
-  return "alert-danger";
-};
+  if (!props.reviewResults?.score) return 'alert-info'
+  const score = props.reviewResults.score
+  
+  if (score >= 85) return 'alert-success'
+  if (score >= 70) return 'alert-warning'
+  return 'alert-danger'
+}
 
 const getReviewIcon = () => {
-  if (!props.reviewResults?.score) return "mdi mdi-information text-info";
-  const score = props.reviewResults.score;
-
-  if (score >= 85) return "mdi mdi-check-circle-outline text-success";
-  if (score >= 70) return "mdi mdi-alert text-warning";
-  return "mdi mdi-alert-circle-outline text-danger";
-};
+  if (!props.reviewResults?.score) return 'mdi mdi-information text-info'
+  const score = props.reviewResults.score
+  
+  if (score >= 85) return 'mdi mdi-check-circle-outline text-success'
+  if (score >= 70) return 'mdi mdi-alert text-warning'
+  return 'mdi mdi-alert-circle-outline text-danger'
+}
 
 const getScoreBadgeClass = (score: number) => {
-  if (score >= 85) return "bg-success";
-  if (score >= 70) return "bg-warning";
-  return "bg-danger";
-};
+  if (score >= 85) return 'bg-success'
+  if (score >= 70) return 'bg-warning'
+  return 'bg-danger'
+}
 
 const getScoreProgressClass = (score: number) => {
-  if (score >= 85) return "bg-success";
-  if (score >= 70) return "bg-warning";
-  return "bg-danger";
-};
+  if (score >= 85) return 'bg-success'
+  if (score >= 70) return 'bg-warning'
+  return 'bg-danger'
+}
 
 const getIssueBadgeClass = (type: string) => {
   switch (type) {
-    case "cliche":
-      return "bg-warning text-dark";
-    case "redundancy":
-      return "bg-info";
-    case "misalignment":
-      return "bg-danger";
-    case "clarity":
-      return "bg-secondary";
-    default:
-      return "bg-light text-dark";
+    case 'cliche': return 'bg-warning text-dark'
+    case 'redundancy': return 'bg-info'
+    case 'misalignment': return 'bg-danger'
+    case 'clarity': return 'bg-secondary'
+    default: return 'bg-light text-dark'
   }
-};
+}
 
 const formatIssueType = (type: string) => {
   switch (type) {
-    case "cliche":
-      return "Cliché";
-    case "redundancy":
-      return "Redundant";
-    case "misalignment":
-      return "Misaligned";
-    case "clarity":
-      return "Unclear";
-    default:
-      return type;
+    case 'cliche': return 'Cliché'
+    case 'redundancy': return 'Redundant'
+    case 'misalignment': return 'Misaligned'
+    case 'clarity': return 'Unclear'
+    default: return type
   }
-};
+}
 
 // Debounced content change handler
 const onContentChange = debounce(() => {
-  commitChanges();
-}, 1000);
+  commitChanges()
+}, 1000)
 </script>
 
 <style scoped lang="scss">
@@ -513,13 +466,13 @@ const onContentChange = debounce(() => {
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-
+  
   .key-point-item {
     .input-group {
       .form-control {
         border-right: none;
       }
-
+      
       .btn {
         border-left: none;
         border-color: var(--glass-border);
@@ -541,61 +494,41 @@ const onContentChange = debounce(() => {
     background: var(--glass-surface);
     backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
     -webkit-backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
-
+    
     &.alert-success {
       border-color: var(--color-success);
-      background: linear-gradient(
-        135deg,
-        rgba(var(--success-rgb), 0.1) 0%,
-        var(--glass-surface) 100%
-      );
+      background: linear-gradient(135deg, rgba(var(--success-rgb), 0.1) 0%, var(--glass-surface) 100%);
     }
-
+    
     &.alert-warning {
       border-color: var(--color-warning);
-      background: linear-gradient(
-        135deg,
-        rgba(var(--warning-rgb), 0.1) 0%,
-        var(--glass-surface) 100%
-      );
+      background: linear-gradient(135deg, rgba(var(--warning-rgb), 0.1) 0%, var(--glass-surface) 100%);
     }
-
+    
     &.alert-danger {
       border-color: var(--color-danger);
-      background: linear-gradient(
-        135deg,
-        rgba(var(--danger-rgb), 0.1) 0%,
-        var(--glass-surface) 100%
-      );
+      background: linear-gradient(135deg, rgba(var(--danger-rgb), 0.1) 0%, var(--glass-surface) 100%);
     }
-
+    
     &.alert-info {
       border-color: var(--color-info);
-      background: linear-gradient(
-        135deg,
-        rgba(var(--info-rgb), 0.1) 0%,
-        var(--glass-surface) 100%
-      );
+      background: linear-gradient(135deg, rgba(var(--info-rgb), 0.1) 0%, var(--glass-surface) 100%);
     }
   }
-
+  
   .h7 {
     font-size: var(--font-size-sm);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-
+  
   .progress {
     border-radius: var(--border-radius-sm);
     background: var(--glass-border);
   }
-
-  .badge {
-    font-size: var(--font-size-xs);
-    padding: var(--spacing-1-5) var(--spacing-2-5);
-    font-weight: 500;
-  }
+  
+  .badge { font-size: var(--font-size-xs); padding: var(--spacing-1-5) var(--spacing-2-5); font-weight: 500; }
 }
 
 .template-suggestions {
@@ -605,7 +538,7 @@ const onContentChange = debounce(() => {
     backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
     -webkit-backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
   }
-
+  
   .h7 {
     font-size: var(--font-size-sm);
     font-weight: 600;
@@ -620,37 +553,21 @@ const onContentChange = debounce(() => {
   .template-suggestions .card {
     background: var(--glass-surface-dark);
     border-color: var(--glass-border-dark);
-
+    
     &.alert-success {
-      background: linear-gradient(
-        135deg,
-        rgba(var(--success-rgb), 0.15) 0%,
-        var(--glass-surface-dark) 100%
-      );
+      background: linear-gradient(135deg, rgba(var(--success-rgb), 0.15) 0%, var(--glass-surface-dark) 100%);
     }
-
+    
     &.alert-warning {
-      background: linear-gradient(
-        135deg,
-        rgba(var(--warning-rgb), 0.15) 0%,
-        var(--glass-surface-dark) 100%
-      );
+      background: linear-gradient(135deg, rgba(var(--warning-rgb), 0.15) 0%, var(--glass-surface-dark) 100%);
     }
-
+    
     &.alert-danger {
-      background: linear-gradient(
-        135deg,
-        rgba(var(--danger-rgb), 0.15) 0%,
-        var(--glass-surface-dark) 100%
-      );
+      background: linear-gradient(135deg, rgba(var(--danger-rgb), 0.15) 0%, var(--glass-surface-dark) 100%);
     }
-
+    
     &.alert-info {
-      background: linear-gradient(
-        135deg,
-        rgba(var(--info-rgb), 0.15) 0%,
-        var(--glass-surface-dark) 100%
-      );
+      background: linear-gradient(135deg, rgba(var(--info-rgb), 0.15) 0%, var(--glass-surface-dark) 100%);
     }
   }
 }
@@ -660,25 +577,25 @@ const onContentChange = debounce(() => {
   .cover-letter-settings .row {
     flex-direction: column;
   }
-
+  
   .header-actions {
     flex-direction: column;
     align-items: stretch;
-
+    
     .btn {
       width: 100%;
     }
   }
-
+  
   .review-results .d-flex {
     flex-direction: column;
     align-items: flex-start;
-
+    
     .btn {
       width: 100%;
     }
   }
-
+  
   .template-suggestions .row {
     flex-direction: column;
   }

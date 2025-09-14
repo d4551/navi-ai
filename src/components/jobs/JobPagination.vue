@@ -63,7 +63,7 @@
         :max="totalPages"
         class="jump-input"
         @keyup.enter="jumpToPageAction"
-      />
+      >
       <button
         class="jump-btn"
         :disabled="!isValidJumpPage"
@@ -76,75 +76,73 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { computed, ref } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 const props = defineProps({
   currentPage: {
     type: Number,
-    default: 1,
+    default: 1
   },
   totalItems: {
     type: Number,
-    default: 0,
+    default: 0
   },
   itemsPerPage: {
     type: Number,
-    default: 25,
+    default: 25
   },
   perPageOptions: {
     type: Array,
-    default: () => [10, 25, 50, 100],
-  },
-});
+    default: () => [10, 25, 50, 100]
+  }
+})
 
-const emit = defineEmits(["update:currentPage", "update:itemsPerPage"]);
+const emit = defineEmits(['update:currentPage', 'update:itemsPerPage'])
 
-const jumpToPage = ref(props.currentPage);
+const jumpToPage = ref(props.currentPage)
 
-const totalPages = computed(() =>
-  Math.ceil(props.totalItems / props.itemsPerPage),
-);
+const totalPages = computed(() => Math.ceil(props.totalItems / props.itemsPerPage))
 
 const startItem = computed(() => {
-  if (props.totalItems === 0) return 0;
-  return (props.currentPage - 1) * props.itemsPerPage + 1;
-});
+  if (props.totalItems === 0) return 0
+  return (props.currentPage - 1) * props.itemsPerPage + 1
+})
 
 const endItem = computed(() => {
-  const end = props.currentPage * props.itemsPerPage;
-  return Math.min(end, props.totalItems);
-});
+  const end = props.currentPage * props.itemsPerPage
+  return Math.min(end, props.totalItems)
+})
 
 const visiblePages = computed(() => {
-  const total = totalPages.value;
-  const current = props.currentPage;
-  const maxVisible = 5;
+  const total = totalPages.value
+  const current = props.currentPage
+  const maxVisible = 5
 
   if (total <= maxVisible) {
-    return Array.from({ length: total }, (_, i) => i + 1);
+    return Array.from({ length: total }, (_, i) => i + 1)
   }
 
-  const half = Math.floor(maxVisible / 2);
-  let start = Math.max(current - half, 1);
-  let end = Math.min(start + maxVisible - 1, total);
+  const half = Math.floor(maxVisible / 2)
+  let start = Math.max(current - half, 1)
+  let end = Math.min(start + maxVisible - 1, total)
 
   if (end - start + 1 < maxVisible) {
-    start = Math.max(end - maxVisible + 1, 1);
+    start = Math.max(end - maxVisible + 1, 1)
   }
 
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-});
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+})
 
 const isValidJumpPage = computed(() => {
-  return jumpToPage.value >= 1 && jumpToPage.value <= totalPages.value;
-});
+  return jumpToPage.value >= 1 && jumpToPage.value <= totalPages.value
+})
 
 const jumpToPageAction = () => {
   if (isValidJumpPage.value) {
-    emit("update:currentPage", jumpToPage.value);
+    emit('update:currentPage', jumpToPage.value)
   }
-};
+}
 </script>
 
 <style scoped>
@@ -293,38 +291,46 @@ const jumpToPageAction = () => {
   cursor: not-allowed;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .job-pagination {
     gap: var(--spacing-sm);
   }
-
+  
   .pagination-info {
     flex-direction: column;
     gap: var(--spacing-sm);
     text-align: center;
   }
-
+  
   .pagination-nav {
     flex-wrap: wrap;
   }
-
+  
   .nav-btn span {
     display: none;
   }
-
+  
   .page-btn {
+    min-width: 32px;
+    height: 32px;
     font-size: var(--font-size-xs);
   }
-
+  
   .quick-jump {
     flex-direction: column;
     text-align: center;
   }
 }
 
+@media (max-width: 480px) {
   .page-numbers {
+    gap: 2px;
   }
-
+  
   .page-btn {
+    min-width: 28px;
+    height: 28px;
   }
 }
 </style>

@@ -49,8 +49,7 @@
         ).toString()
       "
       draggable="true"
-      :class="{
-        'drag-over': dragOver.type === 'additional' && dragOver.index === index,
+      :class="{ 'drag-over': dragOver.type === 'additional' && dragOver.index === index,
       }"
       @dragstart="startDrag('additional', index)"
       @dragover.prevent="onDragOver($event, 'additional', index)"
@@ -160,10 +159,7 @@
     </div>
 
     <div v-if="localItems.length === 0" class="text-center py-4">
-      <AppIcon
-        name="mdi-folder-outline"
-        class="display-4 mb-3 opacity-50 text-muted"
-      />
+      <AppIcon name="mdi-folder-outline" class="display-4 mb-3 opacity-50 text-muted" />
       <p class="text-muted mb-2">No additional experience added yet</p>
       <small class="text-muted">Click "Add" to showcase your projects, certifications, and more</small>
     </div>
@@ -171,14 +167,14 @@
 </template>
 
 <script>
-import { reactive, watch } from "vue";
+import { reactive, watch } from 'vue'
 import { useDragReorderList } from "@/composables/useDragReorderList";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 export default {
   name: "AdditionalExperienceList",
   components: {
-    AppIcon,
+    AppIcon
   },
   props: {
     modelValue: { type: Array, default: () => [] },

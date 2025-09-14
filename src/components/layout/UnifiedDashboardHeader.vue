@@ -7,26 +7,15 @@
         <div class="nav-left">
           <router-link to="/" class="brand-link" aria-label="Go to Dashboard">
             <div class="brand-content">
-              <AppIcon
-                name="mdi-gamepad-variant"
-                size="24"
-                class="brand-icon"
-              />
+              <AppIcon name="mdi-gamepad-variant" size="24" class="brand-icon" />
               <span class="brand-text">NAVI</span>
               <span class="brand-subtitle">Career Assistant</span>
             </div>
           </router-link>
-
+          
           <!-- AI Model Status -->
-          <div
-            v-if="aiModelInfo"
-            class="ai-model-chip"
-            :class="{ 'ai-offline': !aiReady }"
-          >
-            <AppIcon
-              :name="aiReady ? 'mdi-chip' : 'mdi-alert-circle-outline'"
-              size="16"
-            />
+          <div v-if="aiModelInfo" class="ai-model-chip" :class="{ 'ai-offline': !aiReady }">
+            <AppIcon :name="aiReady ? 'mdi-chip' : 'mdi-alert-circle-outline'" size="16" />
             <span class="model-text">{{ aiModelInfo }}</span>
           </div>
         </div>
@@ -37,27 +26,16 @@
           <div v-if="breadcrumbs.length > 0" class="breadcrumbs">
             <nav aria-label="Breadcrumb">
               <ol class="breadcrumb-list">
-                <li
-                  v-for="(crumb, index) in breadcrumbs"
-                  :key="index"
-                  class="breadcrumb-item"
-                >
-                  <router-link
-                    v-if="crumb.to && index < breadcrumbs.length - 1"
-                    :to="crumb.to"
+                <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item">
+                  <router-link 
+                    v-if="crumb.to && index < breadcrumbs.length - 1" 
+                    :to="crumb.to" 
                     class="breadcrumb-link"
                   >
                     {{ crumb.label }}
                   </router-link>
-                  <span v-else class="breadcrumb-current">{{
-                    crumb.label
-                  }}</span>
-                  <AppIcon
-                    v-if="index < breadcrumbs.length - 1"
-                    name="mdi-chevron-right"
-                    size="16"
-                    class="breadcrumb-separator"
-                  />
+                  <span v-else class="breadcrumb-current">{{ crumb.label }}</span>
+                  <AppIcon v-if="index < breadcrumbs.length - 1" name="mdi-chevron-right" size="16" class="breadcrumb-separator" />
                 </li>
               </ol>
             </nav>
@@ -67,10 +45,7 @@
         <!-- Right: Global Actions -->
         <div class="nav-right">
           <!-- Search -->
-          <div
-            class="search-container"
-            :class="{ 'search-active': searchActive }"
-          >
+          <div class="search-container" :class="{ 'search-active': searchActive }">
             <input
               v-model="searchQuery"
               type="search"
@@ -94,7 +69,7 @@
               tooltip="Voice Commands (Ctrl+M)"
               @click="toggleVoiceCommands"
             />
-
+            
             <!-- AI Assistant -->
             <UnifiedButton
               variant="ghost"
@@ -104,23 +79,21 @@
               :disabled="!aiReady"
               @click="openAIAssistant"
             />
-
+            
             <!-- Notifications -->
             <UnifiedButton
               variant="ghost"
               icon-only
               icon="mdi-bell"
               tooltip="Notifications"
-              :badge="
-                notificationCount > 0 ? notificationCount.toString() : undefined
-              "
+              :badge="notificationCount > 0 ? notificationCount.toString() : undefined"
               @click="toggleNotifications"
             />
           </div>
 
           <!-- User Menu -->
           <div ref="userMenuRef" class="user-menu">
-            <button
+            <button 
               class="user-button"
               :class="{ 'user-menu-active': userMenuOpen }"
               :aria-expanded="userMenuOpen"
@@ -134,13 +107,9 @@
                 <span class="user-name">{{ userName }}</span>
                 <span class="user-level">Level {{ userLevel }}</span>
               </div>
-              <AppIcon
-                name="mdi-chevron-down"
-                size="16"
-                class="dropdown-icon"
-              />
+              <AppIcon name="mdi-chevron-down" size="16" class="dropdown-icon" />
             </button>
-
+            
             <!-- User Dropdown -->
             <div v-if="userMenuOpen" class="user-dropdown glass-surface">
               <div class="user-dropdown-header">
@@ -150,42 +119,28 @@
                 <div class="user-details">
                   <div class="user-name">{{ userName }}</div>
                   <div class="user-email">{{ userEmail }}</div>
-                  <div class="user-stats">
-                    Level {{ userLevel }} • {{ currentXP }} XP
-                  </div>
+                  <div class="user-stats">Level {{ userLevel }} • {{ currentXP }} XP</div>
                 </div>
               </div>
-
+              
               <div class="dropdown-divider"></div>
-
+              
               <nav class="user-menu-nav">
-                <router-link
-                  to="/profile"
-                  class="menu-item"
-                  @click="userMenuOpen = false"
-                >
+                <router-link to="/profile" class="menu-item" @click="userMenuOpen = false">
                   <AppIcon name="mdi-account" />
                   <span>Profile</span>
                 </router-link>
-                <router-link
-                  to="/settings"
-                  class="menu-item"
-                  @click="userMenuOpen = false"
-                >
+                <router-link to="/settings" class="menu-item" @click="userMenuOpen = false">
                   <AppIcon name="mdi-cog" />
                   <span>Settings</span>
                 </router-link>
                 <button class="menu-item" @click="toggleTheme">
-                  <AppIcon
-                    :name="
-                      isDark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'
-                    "
-                  />
-                  <span>{{ isDark ? "Light Mode" : "Dark Mode" }}</span>
+                  <AppIcon :name="isDark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'" />
+                  <span>{{ isDark ? 'Light Mode' : 'Dark Mode' }}</span>
                 </button>
-
+                
                 <div class="dropdown-divider"></div>
-
+                
                 <button class="menu-item danger" @click="logout">
                   <AppIcon name="mdi-logout" />
                   <span>Logout</span>
@@ -207,12 +162,10 @@
             </div>
             <div class="page-text">
               <h1 v-if="pageTitle" class="page-title">{{ pageTitle }}</h1>
-              <p v-if="pageSubtitle" class="page-subtitle">
-                {{ pageSubtitle }}
-              </p>
+              <p v-if="pageSubtitle" class="page-subtitle">{{ pageSubtitle }}</p>
             </div>
           </div>
-
+          
           <!-- Page Actions -->
           <div v-if="$slots.pageActions" class="page-actions">
             <slot name="pageActions" />
@@ -224,122 +177,114 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useAppStore } from "@/stores/app";
-import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAppStore } from '@/stores/app'
+import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 interface Breadcrumb {
-  label: string;
-  to?: string;
+  label: string
+  to?: string
 }
 
 interface Props {
-  variant?: "default" | "gaming" | "compact";
-  pageTitle?: string;
-  pageSubtitle?: string;
-  pageIcon?: string;
-  breadcrumbs?: Breadcrumb[];
-  showSearch?: boolean;
-  showNotifications?: boolean;
-  showUserMenu?: boolean;
+  variant?: 'default' | 'gaming' | 'compact'
+  pageTitle?: string
+  pageSubtitle?: string
+  pageIcon?: string
+  breadcrumbs?: Breadcrumb[]
+  showSearch?: boolean
+  showNotifications?: boolean
+  showUserMenu?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: "default",
-  pageTitle: undefined,
-  pageSubtitle: undefined,
-  pageIcon: undefined,
+  variant: 'default',
   breadcrumbs: () => [],
   showSearch: true,
   showNotifications: true,
-  showUserMenu: true,
-});
+  showUserMenu: true
+})
 
 // Emits
 const emit = defineEmits<{
-  search: [query: string];
-  voiceCommand: [];
-  aiAssistant: [];
-  notifications: [];
-  logout: [];
-}>();
+  search: [query: string]
+  voiceCommand: []
+  aiAssistant: []
+  notifications: []
+  logout: []
+}>()
 
 // Composables
-const _route = useRoute();
-const _router = useRouter();
-const store = useAppStore();
-const { isDark, toggleTheme } = useUnifiedTheme();
+const route = useRoute()
+const router = useRouter()
+const store = useAppStore()
+const { isDark, toggleTheme } = useUnifiedTheme()
 
 // Reactive state
-const searchQuery = ref("");
-const searchActive = ref(false);
-const userMenuOpen = ref(false);
-const userMenuRef = ref<HTMLElement>();
+const searchQuery = ref('')
+const searchActive = ref(false)
+const userMenuOpen = ref(false)
+const userMenuRef = ref<HTMLElement>()
 
 // Computed properties
 const headerClasses = computed(() => [
   `header-variant-${props.variant}`,
-  { "search-active": searchActive.value },
-]);
+  { 'search-active': searchActive.value }
+])
 
-const aiReady = computed(() => store?.aiStatus?.initialized || false);
-const aiModelInfo = computed(
-  () =>
-    store?.selectedModelInfo?.displayName ||
-    store?.settings?.selectedModel ||
-    "AI Offline",
-);
-const notificationCount = computed(() => store?.notifications?.unread || 0);
-const userName = computed(() => store?.profile?.name || "User");
-const userEmail = computed(() => store?.profile?.email || "");
-const userLevel = computed(() => store?.gamification?.level || 1);
-const currentXP = computed(() => store?.gamification?.currentXP || 0);
+const aiReady = computed(() => store?.aiStatus?.initialized || false)
+const aiModelInfo = computed(() => store?.selectedModelInfo?.displayName || store?.settings?.selectedModel || 'AI Offline')
+const notificationCount = computed(() => store?.notifications?.unread || 0)
+const userName = computed(() => store?.profile?.name || 'User')
+const userEmail = computed(() => store?.profile?.email || '')
+const userLevel = computed(() => store?.gamification?.level || 1)
+const currentXP = computed(() => store?.gamification?.currentXP || 0)
 
 // Methods
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
-    emit("search", searchQuery.value);
+    emit('search', searchQuery.value)
   }
-};
+}
 
 const toggleVoiceCommands = () => {
-  emit("voiceCommand");
-};
+  emit('voiceCommand')
+}
 
 const openAIAssistant = () => {
-  emit("aiAssistant");
-};
+  emit('aiAssistant')
+}
 
 const toggleNotifications = () => {
-  emit("notifications");
-};
+  emit('notifications')
+}
 
 const toggleUserMenu = () => {
-  userMenuOpen.value = !userMenuOpen.value;
-};
+  userMenuOpen.value = !userMenuOpen.value
+}
 
 const logout = () => {
-  userMenuOpen.value = false;
-  emit("logout");
-};
+  userMenuOpen.value = false
+  emit('logout')
+}
 
 // Click outside handler for user menu
 const handleClickOutside = (event: MouseEvent) => {
-  if (userMenuRef.value && !userMenuRef.value.contains(event.target as any)) {
-    userMenuOpen.value = false;
+  if (userMenuRef.value && !userMenuRef.value.contains(event.target as Node)) {
+    userMenuOpen.value = false
   }
-};
+}
 
 onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
+  document.addEventListener('click', handleClickOutside)
+})
 
 onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>
@@ -700,67 +645,82 @@ onUnmounted(() => {
   gap: 0.75rem;
 }
 
+/* Gaming variant styles */
 .header-variant-gaming {
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, 
+    rgba(var(--color-primary-rgb), 0.1) 0%, 
+    rgba(var(--color-surface-rgb), 0.95) 100%);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.2);
 }
 
 .header-variant-gaming .brand-text {
-  background: linear-gradient(
-    rgb(var(--color-primary-rgb)),
-    rgb(var(--color-secondary-rgb))
-  );
+  background: linear-gradient(45deg, rgb(var(--color-primary-rgb)), rgb(var(--color-secondary-rgb)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+/* Compact variant styles */
 .header-variant-compact .header-nav {
+  padding: 0.5rem 1rem;
 }
 
 .header-variant-compact .brand-content {
+  gap: 0.375rem;
 }
 
 .header-variant-compact .brand-text {
+  font-size: 1.125rem;
 }
 
 .header-variant-compact .search-input {
+  width: 180px;
+  height: 32px;
 }
 
+/* Responsive design */
+@media (max-width: 768px) {
   .nav-container {
+    gap: 1rem;
   }
-
+  
   .nav-center {
     display: none;
   }
-
+  
   .search-input {
+    width: 150px;
   }
-
+  
   .search-input.search-expanded {
+    width: 200px;
   }
-
+  
   .user-info {
     display: none;
   }
-
+  
   .page-header-content {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
-
+  
   .page-actions {
+    width: 100%;
     justify-content: flex-end;
   }
 }
 
+@media (max-width: 480px) {
   .brand-subtitle {
     display: none;
   }
-
+  
   .quick-actions {
+    gap: 0.25rem;
   }
-
+  
   .search-container {
     display: none;
   }

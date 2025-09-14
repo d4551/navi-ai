@@ -1,9 +1,7 @@
 <template>
   <div class="job-target-form">
     <div class="unified-card glass-card section-card">
-      <div
-        class="card-header section-header card-header--dense bg-gradient text-white"
-      >
+      <div class="card-header section-header card-header--dense bg-gradient text-white">
         <h4 class="h5 mb-0">
           <AppIcon name="mdi-target" size="default" />
           Target Position Information
@@ -42,8 +40,7 @@
             ></textarea>
             <small class="text-muted mt-1 d-block">
               <AppIcon name="mdi-information-outline" class="me-1" />
-              AI will analyze this to suggest relevant skills and tailor your
-              resume
+              AI will analyze this to suggest relevant skills and tailor your resume
             </small>
           </div>
           <div class="col-12">
@@ -150,102 +147,107 @@
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/components/ui/AppIcon.vue";
-import { ref, watch } from "vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { ref, watch } from 'vue'
 
 interface JobTarget {
-  title: string;
-  company: string;
-  description: string;
-  requirements: string[];
-  keywords: string[];
+  title: string
+  company: string
+  description: string
+  requirements: string[]
+  keywords: string[]
 }
 
 interface Props {
-  modelValue: JobTarget;
-  canUseAi: boolean;
-  loading: boolean;
+  modelValue: JobTarget
+  canUseAi: boolean
+  loading: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  update: [value: JobTarget];
-  "ai-analyze": [];
-}>();
+  update: [value: JobTarget]
+  'ai-analyze': []
+}>()
 
-const jobTarget = ref<JobTarget>({ ...props.modelValue });
-const newRequirement = ref("");
-const newKeyword = ref("");
+const jobTarget = ref<JobTarget>({ ...props.modelValue })
+const newRequirement = ref('')
+const newKeyword = ref('')
 
 // Watch for external changes
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    jobTarget.value = { ...newValue };
-  },
-  { deep: true },
-);
+watch(() => props.modelValue, (newValue) => {
+  jobTarget.value = { ...newValue }
+}, { deep: true })
 
 const addRequirement = () => {
   if (newRequirement.value.trim()) {
-    jobTarget.value.requirements.push(newRequirement.value.trim());
-    newRequirement.value = "";
-    emit("update", jobTarget.value);
+    jobTarget.value.requirements.push(newRequirement.value.trim())
+    newRequirement.value = ''
+    emit('update', jobTarget.value)
   }
-};
+}
 
 const removeRequirement = (index: number) => {
-  jobTarget.value.requirements.splice(index, 1);
-  emit("update", jobTarget.value);
-};
+  jobTarget.value.requirements.splice(index, 1)
+  emit('update', jobTarget.value)
+}
 
 const addKeyword = () => {
   if (newKeyword.value.trim()) {
-    jobTarget.value.keywords.push(newKeyword.value.trim());
-    newKeyword.value = "";
-    emit("update", jobTarget.value);
+    jobTarget.value.keywords.push(newKeyword.value.trim())
+    newKeyword.value = ''
+    emit('update', jobTarget.value)
   }
-};
+}
 
 const removeKeyword = (index: number) => {
-  jobTarget.value.keywords.splice(index, 1);
-  emit("update", jobTarget.value);
-};
+  jobTarget.value.keywords.splice(index, 1)
+  emit('update', jobTarget.value)
+}
 </script>
 
 <style scoped>
 .job-target-form {
+  /* Component styles */
 }
 
 .requirements-list,
 .keywords-list {
+  min-height: 2rem;
 }
 
 .badge {
+  transition: all 0.2s ease;
 }
 
 .badge:hover {
+  transform: translateY(-1px);
 }
 
 .btn-close {
+  font-size: 0.5rem;
 }
 
+/* Spin animation for loading icon */
 @keyframes spin {
-  from {
-  }
-  to {
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .spin {
+  animation: spin 1s linear infinite;
 }
 
+/* Responsive adjustments */
+@media (max-width: 576px) {
   .requirements-list,
   .keywords-list .badge {
+    font-size: 0.75rem;
   }
 }
 
+/* Dark theme support */
 [data-theme="dark"] .badge.bg-light {
   background-color: var(--glass-surface) !important;
   border-color: var(--glass-border) !important;

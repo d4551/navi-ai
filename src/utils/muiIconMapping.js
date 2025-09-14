@@ -1,3 +1,7 @@
+/**
+ * Emoji to MUI Icons mapping utility
+ * This provides consistent MUI icon replacement throughout the application
+ */
 
 // Import commonly used MUI icons
 import {
@@ -69,119 +73,215 @@ import {
   BugReport as BugIcon,
   Science as TestTubeIcon,
   Egg as EggEasterIcon,
-  LocalCafe as CupIcon,
-} from "@mui/icons-material";
+  LocalCafe as CupIcon
+} from '@mui/icons-material'
 
 export const EMOJI_TO_MUI_ICON_MAP = {
   // Gaming & Career
-
+  '🎮': GamepadIcon,
+  '🎯': TargetIcon,
+  '🏆': TrophyIcon,
+  '📊': ChartIcon,
+  '💎': DiamondIcon,
+  '⭐': StarIcon,
+  '🚀': RocketIcon,
+  '💼': BriefcaseIcon,
+  '📝': DocumentEditIcon,
+  '🎨': PaletteIcon,
+  
   // Technical & System
-
+  '🔧': WrenchIcon,
+  '⚙️': CogIcon,
+  '📱': CellphoneIcon,
+  '💻': LaptopIcon,
+  '🌟': StarOutlineIcon,
+  '✨': ShimmerIcon,
+  '🎉': PartyIcon,
+  '💡': LightbulbIcon,
+  '⚡': LightningIcon,
+  '🌈': PaletteIcon,
+  '🔥': FireIcon,
+  
   // Communication & Media
-
+  '🎤': MicrophoneIcon,
+  '🔊': VolumeHighIcon,
+  '📞': PhoneIcon,
+  '💬': ChatIcon,
+  '📸': CameraIcon,
+  '🎥': VideoIcon,
+  '📹': VideoBoxIcon,
+  '📺': TelevisionIcon,
+  '🗣️': AccountVoiceIcon,
+  '💭': ThoughtBubbleIcon,
+  
   // Files & Documents
-
+  '📄': DocumentIcon,
+  '📁': FolderIcon,
+  '📋': ClipboardIcon,
+  '📖': BookIcon,
+  '📍': MapMarkerIcon,
+  
   // People & Users
-
+  '👤': AccountIcon,
+  '👥': AccountGroupIcon,
+  '👩‍💻': AccountEditIcon,
+  '👨‍💻': AccountEditIcon,
+  '🧙‍♂️': WizardIcon,
+  '🧚‍♀️': FaceWomanShimmerIcon,
+  
   // Status & Actions
-  "✓": CheckIcon,
-
+  '✅': CheckCircleIcon,
+  '❌': CloseCircleIcon,
+  '✓': CheckIcon,
+  '🔒': LockIcon,
+  '🔍': MagnifyIcon,
+  '🤖': RobotIcon,
+  
   // Theme & UI
-
+  '🌙': WeatherNightIcon,
+  '☀️': WeatherSunnyIcon,
+  '🎪': TentIcon,
+  '🎭': DramaMasksIcon,
+  '🎲': DiceIcon,
+  '🃏': CardsPlayingIcon,
+  
   // Gaming Specific
-
+  '🐕‍🦺': DogServiceIcon, // Sam
+  '🐰': RabbitIcon, // Max
+  '🏴‍☠️': PirateIcon,
+  '🐙': OctopusIcon,
+  '🏍️': MotorbikeIcon,
+  '🚔': CarEmergencyIcon,
+  '🏠': HomeIcon,
+  
   // Achievements & Progress
-
+  '🏅': MedalIcon,
+  '📈': ChartIcon,
+  '📉': TrendingDownIcon,
+  '💰': CashIcon,
+  '💸': CashMinusIcon,
+  '🎈': BalloonIcon,
+  '🎁': GiftIcon,
+  
   // Bugs & Development
-
-};
+  '🐛': BugIcon,
+  '🧪': TestTubeIcon,
+  
+  // Easter Eggs
+  '🥚': EggEasterIcon,
+  '🥤': CupIcon
+}
 
 // MDI to MUI Icon mapping for existing codebase
 export const MDI_TO_MUI_ICON_MAP = {
-  "mdi-gamepad-variant": GamepadIcon,
-  "mdi-target": TargetIcon,
-  "mdi-trophy": TrophyIcon,
-  "mdi-chart-line": ChartIcon,
-  "mdi-diamond-stone": DiamondIcon,
-  "mdi-star": StarIcon,
-  "mdi-rocket": RocketIcon,
-  "mdi-briefcase": BriefcaseIcon,
-  "mdi-file-document-outline-edit": DocumentEditIcon,
-  "mdi-palette": PaletteIcon,
-  "mdi-wrench": WrenchIcon,
-  "mdi-cog": CogIcon,
-  "mdi-cellphone": CellphoneIcon,
-  "mdi-laptop": LaptopIcon,
-  "mdi-star-outline": StarOutlineIcon,
-  "mdi-shimmer": ShimmerIcon,
-  "mdi-party-popper": PartyIcon,
-  "mdi-lightbulb": LightbulbIcon,
-  "mdi-lightning-bolt": LightningIcon,
-  "mdi-fire": FireIcon,
-  "mdi-microphone": MicrophoneIcon,
-  "mdi-volume-high": VolumeHighIcon,
-  "mdi-phone": PhoneIcon,
-  "mdi-chat": ChatIcon,
-  "mdi-camera": CameraIcon,
-  "mdi-video": VideoIcon,
-  "mdi-video-box": VideoBoxIcon,
-  "mdi-television": TelevisionIcon,
-  "mdi-account-voice": AccountVoiceIcon,
-  "mdi-thought-bubble": ThoughtBubbleIcon,
-  "mdi-file-document-outline": DocumentIcon,
-  "mdi-folder": FolderIcon,
-  "mdi-clipboard-text": ClipboardIcon,
-  "mdi-book": BookIcon,
-  "mdi-map-marker": MapMarkerIcon,
-  "mdi-account": AccountIcon,
-  "mdi-account-group": AccountGroupIcon,
-  "mdi-account-edit": AccountEditIcon,
-  "mdi-wizard-hat": WizardIcon,
-  "mdi-face-woman-shimmer": FaceWomanShimmerIcon,
-  "mdi-check-circle-outline": CheckCircleIcon,
-  "mdi-close-circle-outline": CloseCircleIcon,
-  "mdi-check": CheckIcon,
-  "mdi-lock": LockIcon,
-  "mdi-magnify": MagnifyIcon,
-  "mdi-robot": RobotIcon,
-  "mdi-weather-night": WeatherNightIcon,
-  "mdi-weather-sunny": WeatherSunnyIcon,
-  "mdi-tent": TentIcon,
-  "mdi-drama-masks": DramaMasksIcon,
-  "mdi-cards-playing-outline": CardsPlayingIcon,
-  "mdi-dog-service": DogServiceIcon,
-  "mdi-rabbit": RabbitIcon,
-  "mdi-pirate": PirateIcon,
-  "mdi-octopus": OctopusIcon,
-  "mdi-motorbike": MotorbikeIcon,
-  "mdi-car-emergency": CarEmergencyIcon,
-  "mdi-home": HomeIcon,
-  "mdi-medal": MedalIcon,
-  "mdi-trending-up": ChartIcon,
-  "mdi-trending-down": TrendingDownIcon,
-  "mdi-cash": CashIcon,
-  "mdi-cash-minus": CashMinusIcon,
-  "mdi-balloon": BalloonIcon,
-  "mdi-gift": GiftIcon,
-  "mdi-bug": BugIcon,
-  "mdi-test-tube": TestTubeIcon,
-  "mdi-egg-easter": EggEasterIcon,
-  "mdi-cup": CupIcon,
-  "mdi-help-circle": StarIcon, // Default fallback
-};
-
-  return EMOJI_TO_MUI_ICON_MAP[emoji] || fallback;
+  'mdi-gamepad-variant': GamepadIcon,
+  'mdi-target': TargetIcon,
+  'mdi-trophy': TrophyIcon,
+  'mdi-chart-line': ChartIcon,
+  'mdi-diamond-stone': DiamondIcon,
+  'mdi-star': StarIcon,
+  'mdi-rocket': RocketIcon,
+  'mdi-briefcase': BriefcaseIcon,
+  'mdi-file-document-outline-edit': DocumentEditIcon,
+  'mdi-palette': PaletteIcon,
+  'mdi-wrench': WrenchIcon,
+  'mdi-cog': CogIcon,
+  'mdi-cellphone': CellphoneIcon,
+  'mdi-laptop': LaptopIcon,
+  'mdi-star-outline': StarOutlineIcon,
+  'mdi-shimmer': ShimmerIcon,
+  'mdi-party-popper': PartyIcon,
+  'mdi-lightbulb': LightbulbIcon,
+  'mdi-lightning-bolt': LightningIcon,
+  'mdi-fire': FireIcon,
+  'mdi-microphone': MicrophoneIcon,
+  'mdi-volume-high': VolumeHighIcon,
+  'mdi-phone': PhoneIcon,
+  'mdi-chat': ChatIcon,
+  'mdi-camera': CameraIcon,
+  'mdi-video': VideoIcon,
+  'mdi-video-box': VideoBoxIcon,
+  'mdi-television': TelevisionIcon,
+  'mdi-account-voice': AccountVoiceIcon,
+  'mdi-thought-bubble': ThoughtBubbleIcon,
+  'mdi-file-document-outline': DocumentIcon,
+  'mdi-folder': FolderIcon,
+  'mdi-clipboard-text': ClipboardIcon,
+  'mdi-book': BookIcon,
+  'mdi-map-marker': MapMarkerIcon,
+  'mdi-account': AccountIcon,
+  'mdi-account-group': AccountGroupIcon,
+  'mdi-account-edit': AccountEditIcon,
+  'mdi-wizard-hat': WizardIcon,
+  'mdi-face-woman-shimmer': FaceWomanShimmerIcon,
+  'mdi-check-circle-outline': CheckCircleIcon,
+  'mdi-close-circle-outline': CloseCircleIcon,
+  'mdi-check': CheckIcon,
+  'mdi-lock': LockIcon,
+  'mdi-magnify': MagnifyIcon,
+  'mdi-robot': RobotIcon,
+  'mdi-weather-night': WeatherNightIcon,
+  'mdi-weather-sunny': WeatherSunnyIcon,
+  'mdi-tent': TentIcon,
+  'mdi-drama-masks': DramaMasksIcon,
+  'mdi-dice-6': DiceIcon,
+  'mdi-cards-playing-outline': CardsPlayingIcon,
+  'mdi-dog-service': DogServiceIcon,
+  'mdi-rabbit': RabbitIcon,
+  'mdi-pirate': PirateIcon,
+  'mdi-octopus': OctopusIcon,
+  'mdi-motorbike': MotorbikeIcon,
+  'mdi-car-emergency': CarEmergencyIcon,
+  'mdi-home': HomeIcon,
+  'mdi-medal': MedalIcon,
+  'mdi-trending-up': ChartIcon,
+  'mdi-trending-down': TrendingDownIcon,
+  'mdi-cash': CashIcon,
+  'mdi-cash-minus': CashMinusIcon,
+  'mdi-balloon': BalloonIcon,
+  'mdi-gift': GiftIcon,
+  'mdi-bug': BugIcon,
+  'mdi-test-tube': TestTubeIcon,
+  'mdi-egg-easter': EggEasterIcon,
+  'mdi-cup': CupIcon,
+  'mdi-help-circle': StarIcon // Default fallback
 }
 
-  return MDI_TO_MUI_ICON_MAP[mdiIcon] || fallback;
+/**
+ * Get MUI Icon component for emoji
+ * @param {string} emoji - The emoji to convert
+ * @param {Component} fallback - Fallback icon component if emoji not found
+ * @returns {Component} MUI Icon component
+ */
+export function getMuiIconForEmoji(emoji, fallback = StarIcon) {
+  return EMOJI_TO_MUI_ICON_MAP[emoji] || fallback
 }
 
-  const { fallback = StarIcon } = options;
+/**
+ * Get MUI Icon component for MDI icon name
+ * @param {string} mdiIcon - The MDI icon name to convert
+ * @param {Component} fallback - Fallback icon component if icon not found
+ * @returns {Component} MUI Icon component
+ */
+export function getMuiIconForMdi(mdiIcon, fallback = StarIcon) {
+  return MDI_TO_MUI_ICON_MAP[mdiIcon] || fallback
+}
+
+/**
+ * Replace emoji with MUI icon component
+ * @param {string} emoji - The emoji to replace
+ * @param {Object} options - Additional options
+ * @returns {Object} Component and props
+ */
+export function createMuiIconComponent(emoji, options = {}) {
+  const {
+    fallback = StarIcon
+  } = options
 
   return {
     component: getMuiIconForEmoji(emoji, fallback),
-    props: {},
-  };
+    props: {}
+  }
 }
 
 export default {
@@ -189,5 +289,5 @@ export default {
   MDI_TO_MUI_ICON_MAP,
   getMuiIconForEmoji,
   getMuiIconForMdi,
-  createMuiIconComponent,
-};
+  createMuiIconComponent
+}

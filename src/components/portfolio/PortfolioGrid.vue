@@ -2,8 +2,8 @@
   <div class="portfolio-grid" :class="gridClass">
     <!-- Loading State -->
     <div v-if="loading" class="loading-grid portfolio-grid">
-      <div
-        v-for="i in loadingCount"
+      <div 
+        v-for="i in loadingCount" 
         :key="`loading-${i}`"
         class="portfolio-skeleton"
       >
@@ -43,29 +43,26 @@
       <div v-if="selectedItems.length > 0" class="selection-header">
         <div class="selection-info">
           <Icon name="check-square" />
-          <span>{{ selectedItems.length }} item{{
-            selectedItems.length !== 1 ? "s" : ""
-          }}
-            selected</span>
+          <span>{{ selectedItems.length }} item{{ selectedItems.length !== 1 ? 's' : '' }} selected</span>
         </div>
         <div class="selection-actions">
-          <UnifiedButton
-            size="sm"
+          <UnifiedButton 
+            size="sm" 
             variant="outline"
             @click="$emit('clear-selection')"
           >
             Clear
           </UnifiedButton>
-          <UnifiedButton
-            size="sm"
+          <UnifiedButton 
+            size="sm" 
             variant="outline"
             @click="$emit('bulk-edit', selectedItems)"
           >
             <Icon name="edit" />
             Edit
           </UnifiedButton>
-          <UnifiedButton
-            size="sm"
+          <UnifiedButton 
+            size="sm" 
             variant="outline"
             @click="$emit('bulk-delete', selectedItems)"
           >
@@ -80,9 +77,7 @@
         name="portfolio-grid"
         tag="div"
         class="grid-items"
-        :class="{
-          'portfolio-grid': viewMode === 'grid' || viewMode === 'masonry',
-        }"
+        :class="{ 'portfolio-grid': viewMode === 'grid' || viewMode === 'masonry' }"
         appear
       >
         <PortfolioItemCard
@@ -92,10 +87,10 @@
           :view-mode="viewMode"
           :selection-mode="selectionMode"
           :selected="selectedItems.includes(item.id)"
-          :style="{
+          :style="{ 
             '--animation-delay': `${index * animationDelay}ms`,
             '--grid-column': getGridColumn(index),
-            '--grid-row': getGridRow(index),
+            '--grid-row': getGridRow(index)
           }"
           @select="handleItemSelect"
           @edit="$emit('edit', $event)"
@@ -121,7 +116,7 @@
       </div>
 
       <!-- Infinite Scroll Trigger -->
-      <div
+      <div 
         v-if="infiniteScroll && hasMore"
         ref="infiniteScrollTrigger"
         class="infinite-scroll-trigger"
@@ -130,7 +125,7 @@
 
     <!-- Floating Action Button -->
     <Teleport to="body">
-      <div
+      <div 
         v-if="showFab && !loading"
         class="floating-action-button"
         :class="{ 'fab--hidden': selectedItems.length > 0 }"
@@ -149,42 +144,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from "vue";
-import PortfolioItemCard from "./PortfolioItemCard.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import Icon from "@/components/ui/Icon.vue";
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import PortfolioItemCard from './PortfolioItemCard.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import Icon from '@/components/ui/Icon.vue'
 
 interface PortfolioItem {
-  id: string;
-  title?: string;
-  description?: string;
-  type?: string;
-  featured?: boolean;
-  [key: string]: any;
+  id: string
+  title?: string
+  description?: string
+  type?: string
+  featured?: boolean
+  [key: string]: any
 }
 
 interface Props {
-  items: PortfolioItem[];
-  loading?: boolean;
-  viewMode?: "grid" | "list" | "masonry" | "timeline";
-  selectionMode?: boolean;
-  selectedItems?: string[];
-  itemsPerPage?: number;
-  infiniteScroll?: boolean;
-  animationDelay?: number;
-  showFab?: boolean;
-  showCreateButton?: boolean;
-  emptyTitle?: string;
-  emptyDescription?: string;
-  emptyIcon?: string;
-  columns?: number;
-  gap?: number;
-  loadingMore?: boolean;
+  items: PortfolioItem[]
+  loading?: boolean
+  viewMode?: 'grid' | 'list' | 'masonry' | 'timeline'
+  selectionMode?: boolean
+  selectedItems?: string[]
+  itemsPerPage?: number
+  infiniteScroll?: boolean
+  animationDelay?: number
+  showFab?: boolean
+  showCreateButton?: boolean
+  emptyTitle?: string
+  emptyDescription?: string
+  emptyIcon?: string
+  columns?: number
+  gap?: number
+  loadingMore?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
-  viewMode: "grid",
+  viewMode: 'grid',
   selectionMode: false,
   selectedItems: () => [],
   itemsPerPage: 12,
@@ -192,177 +187,170 @@ const props = withDefaults(defineProps<Props>(), {
   animationDelay: 50,
   showFab: true,
   showCreateButton: true,
-  emptyTitle: "No Portfolio Items",
-  emptyDescription:
-    "Start building your portfolio by creating your first item.",
-  emptyIcon: "folder",
-  columns: 0,
+  emptyTitle: 'No Portfolio Items',
+  emptyDescription: 'Start building your portfolio by creating your first item.',
+  emptyIcon: 'folder',
+  columns: 0, // 0 = auto
   gap: 24,
-  loadingMore: false,
-});
+  loadingMore: false
+})
 
 const emit = defineEmits<{
-  "load-more": [];
-  select: [id: string];
-  "clear-selection": [];
-  "bulk-edit": [items: string[]];
-  "bulk-delete": [items: string[]];
-  edit: [item: PortfolioItem];
-  delete: [item: PortfolioItem];
-  "toggle-featured": [item: PortfolioItem];
-  "export-onepager": [item: PortfolioItem];
-  duplicate: [item: PortfolioItem];
-  view: [item: PortfolioItem];
-  create: [];
-}>();
+  'load-more': []
+  select: [id: string]
+  'clear-selection': []
+  'bulk-edit': [items: string[]]
+  'bulk-delete': [items: string[]]
+  edit: [item: PortfolioItem]
+  delete: [item: PortfolioItem]
+  'toggle-featured': [item: PortfolioItem]
+  'export-onepager': [item: PortfolioItem]
+  duplicate: [item: PortfolioItem]
+  view: [item: PortfolioItem]
+  create: []
+}>()
 
 // Local state
-const currentPage = ref(1);
-const infiniteScrollTrigger = ref<HTMLElement>();
-const intersectionObserver = ref<any>(null);
+const currentPage = ref(1)
+const infiniteScrollTrigger = ref<HTMLElement>()
+const intersectionObserver = ref<any>(null)
 
 // Computed properties
 const loadingCount = computed(() => {
   switch (props.viewMode) {
-    case "list":
-      return 6;
-    case "timeline":
-      return 4;
-    default:
-      return 8;
+    case 'list': return 6
+    case 'timeline': return 4
+    default: return 8
   }
-});
+})
 
 const gridClass = computed(() => [
   `portfolio-grid--${props.viewMode}`,
   {
-    "portfolio-grid--loading": props.loading,
-    "portfolio-grid--selection": props.selectionMode,
-    "portfolio-grid--empty": !props.items.length && !props.loading,
-  },
-]);
+    'portfolio-grid--loading': props.loading,
+    'portfolio-grid--selection': props.selectionMode,
+    'portfolio-grid--empty': !props.items.length && !props.loading
+  }
+])
 
 const gridStyles = computed(() => {
   const styles: Record<string, string> = {
-    "--gap": `${props.gap}px`,
-  };
-
-  if (props.columns > 0 && props.viewMode === "grid") {
-    styles["--columns"] = String(props.columns);
+    '--gap': `${props.gap}px`
   }
 
-  return styles;
-});
+  if (props.columns > 0 && props.viewMode === 'grid') {
+    styles['--columns'] = String(props.columns)
+  }
+
+  return styles
+})
 
 const paginatedItems = computed(() => {
   if (props.infiniteScroll) {
-    return props.items.slice(0, currentPage.value * props.itemsPerPage);
+    return props.items.slice(0, currentPage.value * props.itemsPerPage)
   }
-  return props.items;
-});
+  return props.items
+})
 
 const hasMore = computed(() => {
-  return props.items.length > currentPage.value * props.itemsPerPage;
-});
+  return props.items.length > currentPage.value * props.itemsPerPage
+})
 
 const remainingCount = computed(() => {
-  return Math.max(
-    0,
-    props.items.length - currentPage.value * props.itemsPerPage,
-  );
-});
+  return Math.max(0, props.items.length - currentPage.value * props.itemsPerPage)
+})
 
 // Methods
 const handleItemSelect = (id: string) => {
-  emit("select", id);
-};
+  emit('select', id)
+}
 
 const loadMore = () => {
   if (props.infiniteScroll) {
-    currentPage.value++;
+    currentPage.value++
   } else {
-    emit("load-more");
+    emit('load-more')
   }
-};
+}
 
 const getGridColumn = (_index: number): string => {
-  if (props.viewMode === "masonry") {
+  if (props.viewMode === 'masonry') {
     // Masonry layout will use CSS Grid auto-placement
-    return "auto";
+    return 'auto'
   }
-  return "auto";
-};
+  return 'auto'
+}
 
 const getGridRow = (_index: number): string => {
-  return "auto";
-};
+  return 'auto'
+}
 
 // Intersection Observer for infinite scroll
 const setupInfiniteScroll = () => {
-  if (!props.infiniteScroll || !infiniteScrollTrigger.value) return;
+  if (!props.infiniteScroll || !infiniteScrollTrigger.value) return
 
   intersectionObserver.value = new (window as any).IntersectionObserver(
     (entries: any[]) => {
       entries.forEach((entry: any) => {
         if (entry.isIntersecting && hasMore.value && !props.loading) {
-          loadMore();
+          loadMore()
         }
-      });
+      })
     },
     {
-      rootMargin: "100px",
-      threshold: 0.1,
-    },
-  );
+      rootMargin: '100px',
+      threshold: 0.1
+    }
+  )
 
-  intersectionObserver.value.observe(infiniteScrollTrigger.value);
-};
+  intersectionObserver.value.observe(infiniteScrollTrigger.value)
+}
 
 const cleanupInfiniteScroll = () => {
   if (intersectionObserver.value) {
-    intersectionObserver.value.disconnect();
+    intersectionObserver.value.disconnect()
   }
-};
+}
 
 // Watchers
 watch(
   () => props.infiniteScroll,
   (enabled) => {
     if (enabled) {
-      nextTick(() => setupInfiniteScroll());
+      nextTick(() => setupInfiniteScroll())
     } else {
-      cleanupInfiniteScroll();
+      cleanupInfiniteScroll()
     }
-  },
-);
+  }
+)
 
 watch(
   () => infiniteScrollTrigger.value,
   () => {
     if (props.infiniteScroll) {
-      nextTick(() => setupInfiniteScroll());
+      nextTick(() => setupInfiniteScroll())
     }
-  },
-);
+  }
+)
 
 // Lifecycle
 onMounted(() => {
   if (props.infiniteScroll) {
-    nextTick(() => setupInfiniteScroll());
+    nextTick(() => setupInfiniteScroll())
   }
-});
+})
 
 onUnmounted(() => {
-  cleanupInfiniteScroll();
-});
+  cleanupInfiniteScroll()
+})
 
 // Reset pagination when items change
 watch(
   () => props.items.length,
   () => {
-    currentPage.value = 1;
-  },
-);
+    currentPage.value = 1
+  }
+)
 </script>
 
 <style scoped>
@@ -371,220 +359,358 @@ watch(
   width: 100%;
 }
 
+/* Enhanced Grid Classes */
 .portfolio-grid--grid .grid-items {
   display: grid;
+  gap: var(--gap, 24px);
   align-items: start;
 }
 
 .portfolio-grid--list .grid-items {
   display: flex;
   flex-direction: column;
+  gap: var(--gap, 20px);
 }
 
 .portfolio-grid--masonry .grid-items {
   display: grid;
   grid-auto-rows: max-content;
+  gap: var(--gap, 24px);
   align-items: start;
 }
 
 .portfolio-grid--timeline .grid-items {
   display: flex;
   flex-direction: column;
+  gap: calc(var(--gap, 24px) * 1.5);
   position: relative;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .portfolio-grid--timeline .grid-items::before {
-  content: "";
+  content: '';
   position: absolute;
+  left: -1.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #7c3aed, #ec4899);
+  opacity: 0.3;
 }
 
+/* Custom columns override */
+.portfolio-grid--grid .grid-items[style*="--columns"] {
+  grid-template-columns: repeat(var(--columns), 1fr);
 }
 
+/* Loading Grid */
 .loading-grid {
   display: grid;
+  gap: var(--gap, 24px);
 }
 
 .portfolio-skeleton {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
   overflow: hidden;
+  animation: pulse 2s infinite;
 }
 
 .skeleton-media {
+  height: 200px;
   background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 100%
   );
+  animation: shimmer 2s infinite;
 }
 
 .skeleton-content {
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
 .skeleton-title {
+  height: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  width: 70%;
 }
 
 .skeleton-text {
+  height: 4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
 }
 
 .skeleton-tags {
   display: flex;
+  gap: 0.5rem;
 }
 
 .skeleton-tag {
+  height: 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  width: 4rem;
 }
 
+/* Enhanced Empty State */
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(
-  );
+  padding: 6rem 2rem;
+  min-height: 500px;
+  background: linear-gradient(135deg, 
+    rgba(124, 58, 237, 0.05) 0%, 
+    rgba(236, 72, 153, 0.05) 100%);
+  border-radius: 2rem;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  margin: 2rem 0;
 }
 
 .empty-icon {
+  color: rgba(124, 58, 237, 0.4);
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 4px 12px rgba(124, 58, 237, 0.2));
 }
 
 .empty-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  margin: 0 0 1rem 0;
+  background: linear-gradient(45deg, #ffffff, rgba(124, 58, 237, 0.8));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .empty-description {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 2rem 0;
+  max-width: 500px;
+  line-height: 1.6;
 }
 
+/* Enhanced Selection Header */
 .selection-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, 
+    rgba(124, 58, 237, 0.15) 0%, 
+    rgba(236, 72, 153, 0.1) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  border-radius: 1.25rem;
+  padding: 1.25rem 2rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
 }
 
 .selection-info {
   display: flex;
   align-items: center;
+  gap: 1rem;
+  color: var(--text-primary, #ffffff);
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .selection-actions {
   display: flex;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
+/* Grid Items */
 .grid-items {
   position: relative;
 }
 
+/* Load More Section */
 .load-more-section {
   display: flex;
   justify-content: center;
+  padding: 3rem 0 2rem;
 }
 
 .infinite-scroll-trigger {
+  height: 1px;
+  margin-top: 2rem;
 }
 
+/* Enhanced Floating Action Button */
 .floating-action-button {
   position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .floating-action-button.fab--hidden {
+  transform: translateY(120px) scale(0.8);
+  opacity: 0;
 }
 
 .fab-button {
-  box-shadow:
-  background: linear-gradient(
-  );
+  border-radius: 50%;
+  width: 4.5rem;
+  height: 4.5rem;
+  box-shadow: 
+    0 8px 32px rgba(124, 58, 237, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, 
+    rgba(124, 58, 237, 1) 0%, 
+    rgba(236, 72, 153, 1) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
 }
 
 .fab-button::before {
-  content: "";
+  content: '';
   position: absolute;
-  background: radial-gradient(
-    circle at center,
-  );
+  inset: 0;
+  background: radial-gradient(circle at center, 
+    rgba(255, 255, 255, 0.3) 0%, 
+    transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .fab-button:hover {
-  box-shadow:
+  transform: scale(1.15);
+  box-shadow: 
+    0 16px 64px rgba(124, 58, 237, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .fab-button:hover::before {
+  opacity: 1;
 }
 
+/* Animations */
 @keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
   }
+  50% {
+    opacity: 0.8;
   }
 }
 
 @keyframes shimmer {
+  0% {
+    background-position: -468px 0;
   }
+  100% {
+    background-position: 468px 0;
   }
 }
 
+/* Portfolio Grid Transitions */
 .portfolio-grid-enter-active,
 .portfolio-grid-leave-active {
+  transition: all 0.3s ease;
+  transition-delay: var(--animation-delay, 0ms);
 }
 
 .portfolio-grid-enter-from {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
 }
 
 .portfolio-grid-leave-to {
+  opacity: 0;
+  transform: translateY(-30px) scale(0.95);
 }
 
 .portfolio-grid-move {
+  transition: transform 0.5s ease;
 }
 
+/* Enhanced Responsive Design */
+@media (max-width: 1200px) {
   .empty-state {
+    padding: 4rem 1.5rem;
+    min-height: 400px;
   }
 }
 
+@media (max-width: 768px) {
   .portfolio-grid--grid .grid-items,
   .loading-grid {
+    gap: 1rem;
   }
-
+  
   .selection-header {
     flex-direction: column;
+    gap: 1rem;
     text-align: center;
   }
-
+  
   .selection-actions {
     justify-content: center;
   }
-
+  
   .empty-state {
+    padding: 2rem 1rem;
+    min-height: 300px;
   }
-
+  
   .floating-action-button {
+    bottom: 1rem;
+    right: 1rem;
   }
-
+  
   .fab-button {
+    width: 3.5rem;
+    height: 3.5rem;
   }
 }
 
+@media (max-width: 480px) {
   .selection-actions {
     flex-direction: column;
+    width: 100%;
   }
-
+  
   .empty-title {
+    font-size: 1.25rem;
   }
-
+  
   .empty-description {
+    font-size: 0.875rem;
   }
 }
 
+/* Print Styles */
 @media print {
   .floating-action-button,
   .selection-header,
   .load-more-section {
     display: none;
   }
-
+  
   .portfolio-grid--grid .grid-items {
+    gap: 1rem;
   }
 }
 
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   .portfolio-grid-enter-active,
   .portfolio-grid-leave-active,
@@ -593,32 +719,42 @@ watch(
   .fab-button {
     transition: none;
   }
-
+  
   .portfolio-skeleton {
     animation: none;
   }
-
+  
   .skeleton-media {
     animation: none;
   }
 }
 
+/* Dark mode adjustments */
 @media (prefers-color-scheme: light) {
   .portfolio-skeleton {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
   }
-
+  
   .skeleton-media {
     background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0.05) 100%
     );
   }
-
+  
   .skeleton-title {
+    background: rgba(0, 0, 0, 0.1);
   }
-
+  
   .skeleton-text {
+    background: rgba(0, 0, 0, 0.05);
   }
-
+  
   .skeleton-tag {
+    background: rgba(0, 0, 0, 0.08);
   }
 }
 </style>

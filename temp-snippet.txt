@@ -1,0 +1,4 @@
+:class="['message', message.role]"
+            >
+              <div class="message-avatar">
+     

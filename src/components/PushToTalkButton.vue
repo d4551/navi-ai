@@ -5,7 +5,10 @@
 <template>
   <div
     class="push-to-talk-container"
-    :class="{ recording: isRecording, speaking: isSpeaking, error: hasError }"
+    :class="{ 'recording': isRecording,
+              'speaking': isSpeaking,
+              'error': hasError
+    }"
   >
     <!-- Main Push-to-Talk Button -->
     <button
@@ -62,9 +65,7 @@
 
     <!-- AI Response Display -->
     <div v-if="aiResponse && showResponse" class="ai-response mt-3">
-      <div
-        class="response-header d-flex align-items-center justify-content-between"
-      >
+      <div class="response-header d-flex align-items-center justify-content-between">
         <span class="response-label">AI Response:</span>
         <button
           v-if="!isSpeaking && aiResponse"
@@ -77,7 +78,7 @@
         </button>
       </div>
       <div class="response-content p-3 border rounded">
-        <div class="streaming-text" :class="{ typing: isStreaming }">
+        <div class="streaming-text" :class="{ 'typing': isStreaming }">
           {{ displayedResponse }}
         </div>
       </div>
@@ -124,65 +125,54 @@
 </template>
 
 <script setup>
-import AppIcon from "@/components/ui/AppIcon.vue";
-import {
-  ref,
-  onMounted,
-  readonly,
-  computed,
-  onBeforeUnmount,
-  defineEmits,
-  defineProps,
-  defineExpose,
-  watch,
-} from "vue";
-import { useAppStore } from "@/stores/app";
-import { audioService } from "@/shared/services/AudioService";
-import { getBestAIClient, initializeAI } from "@/modules/ai";
-import { logger } from "@/shared/utils/logger";
-import { canonicalAIClient } from "@/shared/services/CanonicalAIClient";
-import { speak as speakViaService } from "@/utils/voice";
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { ref, onMounted, readonly, computed, onBeforeUnmount, defineEmits, defineProps, defineExpose, watch } from 'vue'
+import { useAppStore } from '@/stores/app';
+import { audioService } from '@/shared/services/AudioService';
+import { getBestAIClient, initializeAI } from '@/modules/ai';
+import { logger } from '@/shared/utils/logger';
+import { canonicalAIClient } from '@/shared/services/CanonicalAIClient';
+import { speak as speakViaService } from '@/utils/voice';
 
 // Props
 const props = defineProps({
   maxRecordingTime: {
     type: Number,
-    default: 30, // seconds
+    default: 30 // seconds
   },
   showTranscript: {
     type: Boolean,
-    default: true,
+    default: true
   },
   showResponse: {
     type: Boolean,
-    default: true,
+    default: true
   },
   showDeviceSelector: {
     type: Boolean,
-    default: false,
+    default: false
   },
   autoSend: {
     type: Boolean,
-    default: true,
+    default: true
   },
   systemPrompt: {
     type: String,
-    default:
-      "You are NAVI, a helpful AI career assistant. Provide concise, practical responses.",
+    default: 'You are NAVI, a helpful AI career assistant. Provide concise, practical responses.'
   },
   disabled: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 });
 
 // Emits
 const emit = defineEmits([
-  "recordingStart",
-  "recordingStop",
-  "transcript",
-  "response",
-  "error",
+  'recordingStart',
+  'recordingStop',
+  'transcript',
+  'response',
+  'error'
 ]);
 
 // State
@@ -190,11 +180,11 @@ const isRecording = ref(false);
 const isSpeaking = ref(false);
 const isStreaming = ref(false);
 const hasError = ref(false);
-const error = ref("");
-const transcript = ref("");
-const interimTranscript = ref("");
-const aiResponse = ref("");
-const displayedResponse = ref("");
+const error = ref('');
+const transcript = ref('');
+const interimTranscript = ref('');
+const aiResponse = ref('');
+const displayedResponse = ref('');
 const voiceLevel = ref(0);
 const recordingTime = ref(0);
 const isAvailable = ref(false);
@@ -203,7 +193,7 @@ const store = useAppStore();
 
 // Optional device selection state (only used when showDeviceSelector is true)
 const microphoneDevices = ref([]);
-const selectedMicId = ref("");
+const selectedMicId = ref('');
 
 // Media references
 let mediaRecorder = null;
@@ -218,40 +208,28 @@ let speechSynthesis = null;
 
 // Computed properties
 const buttonClasses = computed(() => ({
-  "btn-danger": isRecording.value,
-  "btn-outline-primary": !isRecording.value && !hasError.value,
-  "btn-outline-danger": hasError.value && !isRecording.value,
-  disabled: !isAvailable.value || isSpeaking.value || props.disabled,
+  'btn-danger': isRecording.value,
+  'btn-outline-primary': !isRecording.value && !hasError.value,
+  'btn-outline-danger': hasError.value && !isRecording.value,
+  'disabled': !isAvailable.value || isSpeaking.value || props.disabled
 }));
 
 const iconClass = computed(() => {
-  if (hasError.value) {
-    return "mdi-microphone-off";
-  }
-  if (isRecording.value) {
-    return "mdi-stop-circle";
-  }
-  return "mdi-microphone";
+  if (hasError.value) {return 'mdi-microphone-off';}
+  if (isRecording.value) {return 'mdi-stop-circle';}
+  return 'mdi-microphone';
 });
 
 const buttonText = computed(() => {
-  if (!isAvailable.value) {
-    return "Not Available";
-  }
-  if (hasError.value) {
-    return "Microphone Error";
-  }
-  if (isRecording.value) {
-    return "Recording...";
-  }
-  return "Push to Talk";
+  if (!isAvailable.value) {return 'Not Available';}
+  if (hasError.value) {return 'Microphone Error';}
+  if (isRecording.value) {return 'Recording...';}
+  return 'Push to Talk';
 });
 
 const ariaLabel = computed(() => {
-  if (isRecording.value) {
-    return "Stop recording (release to stop)";
-  }
-  return "Start recording (hold to record)";
+  if (isRecording.value) {return 'Stop recording (release to stop)';}
+  return 'Start recording (hold to record)';
 });
 
 // Initialize component
@@ -261,11 +239,11 @@ onMounted(async () => {
   initializeSpeechSynthesis();
   if (props.showDeviceSelector) {
     try {
-      const svc = await import("@/shared/services/AudioService");
+      const svc = await import('@/shared/services/AudioService');
       const devices = await svc.audioService.getAvailableDevices();
-      microphoneDevices.value = devices.filter((d) => d.kind === "audioinput");
-      const preferred = svc.audioService.getPreferredDevices?.().input || "";
-      selectedMicId.value = typeof preferred === "string" ? preferred : "";
+      microphoneDevices.value = devices.filter(d => d.kind === 'audioinput');
+      const preferred = svc.audioService.getPreferredDevices?.().input || '';
+      selectedMicId.value = typeof preferred === 'string' ? preferred : '';
     } catch {}
   }
 });
@@ -275,28 +253,25 @@ onBeforeUnmount(() => {
 });
 
 // React to language changes in settings
-watch(
-  () => store.settings?.voiceLang,
-  (lang) => {
-    try {
-      if (speechRecognition) {
-        speechRecognition.lang = lang || "en-US";
-      }
-    } catch {}
-  },
-);
+watch(() => store.settings?.voiceLang, (lang) => {
+  try {
+    if (speechRecognition) {
+      speechRecognition.lang = lang || 'en-US';
+    }
+  } catch {}
+});
 
 // Audio initialization
 async function initializeAudio() {
   try {
     // Non-invasive availability check; do not prompt for permissions on mount
     if (!navigator.mediaDevices || !window.MediaRecorder) {
-      throw new Error("Media recording not supported");
+      throw new Error('Media recording not supported');
     }
     isAvailable.value = true;
-    logger.info("Audio recording capabilities available");
+    logger.info('Audio recording capabilities available');
   } catch (err) {
-    logger.error("Audio initialization failed:", err);
+    logger.error('Audio initialization failed:', err);
     setError(`Microphone not available: ${err.message}`);
   }
 }
@@ -304,10 +279,9 @@ async function initializeAudio() {
 // Speech recognition initialization
 function initializeSpeechRecognition() {
   try {
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      logger.warn("Speech recognition not supported");
+      logger.warn('Speech recognition not supported');
       return;
     }
 
@@ -315,11 +289,11 @@ function initializeSpeechRecognition() {
     speechRecognition.continuous = true;
     speechRecognition.interimResults = true;
     // Use settings-driven language, fallback to en-US
-    speechRecognition.lang = store.settings?.voiceLang || "en-US";
+    speechRecognition.lang = store.settings?.voiceLang || 'en-US';
 
     speechRecognition.onresult = (event) => {
-      let finalTranscript = "";
-      let interimTranscriptText = "";
+      let finalTranscript = '';
+      let interimTranscriptText = '';
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcriptSegment = event.results[i][0].transcript;
@@ -332,7 +306,7 @@ function initializeSpeechRecognition() {
 
       if (finalTranscript) {
         transcript.value = finalTranscript;
-        emit("transcript", finalTranscript);
+        emit('transcript', finalTranscript);
 
         if (props.autoSend && finalTranscript.trim()) {
           processTranscript(finalTranscript);
@@ -343,59 +317,47 @@ function initializeSpeechRecognition() {
     };
 
     speechRecognition.onerror = (event) => {
-      logger.error("Speech recognition error:", event.error);
+      logger.error('Speech recognition error:', event.error);
       setError(`Speech recognition error: ${event.error}`);
     };
 
-    logger.info("Speech recognition initialized");
+    logger.info('Speech recognition initialized');
   } catch (err) {
-    logger.error("Speech recognition initialization failed:", err);
+    logger.error('Speech recognition initialization failed:', err);
   }
 }
 
 // Speech synthesis initialization
 function initializeSpeechSynthesis() {
-  if ("speechSynthesis" in window) {
+  if ('speechSynthesis' in window) {
     speechSynthesis = window.speechSynthesis;
     speechSynthesisAvailable.value = true;
-    logger.info("Speech synthesis initialized");
+    logger.info('Speech synthesis initialized');
   } else {
-    logger.warn("Speech synthesis not supported");
+    logger.warn('Speech synthesis not supported');
   }
 }
 
-
+// Recording functions
 async function startRecording() {
-  if (
-    !isAvailable.value ||
-    isRecording.value ||
-    isSpeaking.value ||
-    props.disabled
-  ) {
+  if (!isAvailable.value || isRecording.value || isSpeaking.value || props.disabled) {
     return;
   }
 
   try {
     // Clear previous state
     clearError();
-    transcript.value = "";
-    interimTranscript.value = "";
-    aiResponse.value = "";
-    displayedResponse.value = "";
+    transcript.value = '';
+    interimTranscript.value = '';
+    aiResponse.value = '';
+    displayedResponse.value = '';
 
     // Use canonical AudioService for recording & volume
-    audioService.setVolumeCallback((v) => {
-      voiceLevel.value = Math.round(v * 100);
-    });
-    await audioService.startRecording({
-      deviceId: selectedMicId.value || undefined,
-    });
+    audioService.setVolumeCallback((v) => { voiceLevel.value = Math.round(v * 100); });
+    await audioService.startRecording({ deviceId: selectedMicId.value || undefined });
 
     // Start system speech recognition only if provider is system
-    if (
-      speechRecognition &&
-      (store.settings?.sttProvider || "system") === "system"
-    ) {
+    if (speechRecognition && (store.settings?.sttProvider || 'system') === 'system') {
       speechRecognition.start();
     }
 
@@ -412,18 +374,16 @@ async function startRecording() {
       }
     }, 100);
 
-    emit("recordingStart");
-    logger.info("Recording started");
+    emit('recordingStart');
+    logger.info('Recording started');
   } catch (err) {
-    logger.error("Failed to start recording:", err);
+    logger.error('Failed to start recording:', err);
     setError(`Failed to start recording: ${err.message}`);
   }
 }
 
 async function stopRecording() {
-  if (!isRecording.value) {
-    return;
-  }
+  if (!isRecording.value) {return;}
 
   try {
     isRecording.value = false;
@@ -435,10 +395,7 @@ async function stopRecording() {
     }
 
     // Stop system speech recognition
-    if (
-      speechRecognition &&
-      (store.settings?.sttProvider || "system") === "system"
-    ) {
+    if (speechRecognition && (store.settings?.sttProvider || 'system') === 'system') {
       speechRecognition.stop();
     }
 
@@ -446,17 +403,17 @@ async function stopRecording() {
     const blob = await audioService.stopRecording();
 
     // If Gemini STT selected, transcribe via IPC when available, otherwise fallback to CanonicalAIClient
-    if ((store.settings?.sttProvider || "system") === "gemini" && blob) {
+    if ((store.settings?.sttProvider || 'system') === 'gemini' && blob) {
       try {
         const base64 = await blobToBase64(blob);
-        const mimeType = blob.type || "audio/webm;codecs=opus";
-        const language = store.settings?.voiceLang || "en-US";
-        let text = "";
+        const mimeType = blob.type || 'audio/webm;codecs=opus';
+        const language = store.settings?.voiceLang || 'en-US';
+        let text = '';
 
         // Prefer Electron IPC when available
         try {
           const result = await window.api?.audio?.sttTranscribe?.({
-            provider: "gemini",
+            provider: 'gemini',
             language,
             mimeType,
             audioData: base64,
@@ -464,70 +421,71 @@ async function stopRecording() {
           if (result?.success && result.transcript) {
             text = result.transcript;
           }
-        } catch {
-        }
+        } catch {/* fall through to SDK */}
 
         // Fallback: use SDK via CanonicalAIClient
         if (!text) {
           try {
             // Ensure client is initialized
-            const key = store.settings?.geminiApiKey || "";
+            const key = store.settings?.geminiApiKey || '';
             if (key && !canonicalAIClient.isReady()) {
               await canonicalAIClient.initialize(key);
             }
-            const res = await canonicalAIClient.transcribeAudio({
-              mimeType,
-              language,
-            });
-            text = res?.text || "";
+            const res = await canonicalAIClient.transcribeAudio({ base64, mimeType, language });
+            text = res?.text || '';
           } catch (sdkErr) {
-            logger.error("CanonicalAIClient.transcribeAudio failed", sdkErr);
+            logger.error('CanonicalAIClient.transcribeAudio failed', sdkErr);
           }
         }
 
         if (text) {
           transcript.value = text;
-          emit("transcript", text);
+          emit('transcript', text);
           if (props.autoSend) {
             processTranscript(text);
           }
         }
       } catch (e) {
-        logger.error("Gemini STT failed", e);
+        logger.error('Gemini STT failed', e);
       }
     }
 
+    recordingTime.value = 0;
+    voiceLevel.value = 0;
 
-    emit("recordingStop", blob || null);
-    logger.info("Recording stopped");
+    emit('recordingStop', blob || null);
+    logger.info('Recording stopped');
   } catch (err) {
-    logger.error("Failed to stop recording:", err);
+    logger.error('Failed to stop recording:', err);
     setError(`Failed to stop recording: ${err.message}`);
   }
 }
 
 // MediaRecorder setup (kept local for future use; not registered globally)
 // Internal (currently unused) — keep minimal for future use
+function setupMediaRecorder() {
   const options = {
-    mimeType: "audio/webm;codecs=opus",
+    mimeType: 'audio/webm;codecs=opus',
+    audioBitsPerSecond: 128000
   };
 
   // Fallback for Safari
-  if (!window.MediaRecorder?.isTypeSupported?.(options.mimeType)) {
+  if (!(window.MediaRecorder?.isTypeSupported?.(options.mimeType))) {
+    options.mimeType = 'audio/mp4';
   }
 
-  mediaRecorder = new (window.MediaRecorder ||
-      return {};
-    })(audioStream, options);
+  mediaRecorder = new (window.MediaRecorder || function(){ return {}; })(audioStream, options);
 
   const audioChunks = [];
 
   mediaRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
       audioChunks.push(event.data);
     }
   };
 
   mediaRecorder.onstop = async () => {
+    if (audioChunks.length > 0) {
       const audioBlob = new Blob(audioChunks, { type: options.mimeType });
       logger.info(`Recorded audio blob: ${audioBlob.size} bytes`);
       // Could send to main process for STT processing if needed
@@ -536,9 +494,8 @@ async function stopRecording() {
 }
 
 // AI Processing
-  if (!text.trim()) {
-    return;
-  }
+async function processTranscript(text) {
+  if (!text.trim()) {return;}
 
   try {
     isStreaming.value = true;
@@ -554,6 +511,8 @@ async function stopRecording() {
     if (aiClient.streamText) {
       const stream = await aiClient.streamText(text, {
         systemPrompt: props.systemPrompt,
+        temperature: 0.7,
+        maxTokens: 512
       });
 
       // Process stream chunks
@@ -563,44 +522,48 @@ async function stopRecording() {
       }
 
       isStreaming.value = false;
-      emit("response", aiResponse.value);
-      logger.info("AI streaming response completed");
+      emit('response', aiResponse.value);
+      logger.info('AI streaming response completed');
 
       // Cleanup stream
-      if (stream.cleanup) {
-        stream.cleanup();
-      }
+      if (stream.cleanup) {stream.cleanup();}
     } else {
       // Fallback to non-streaming
       const result = await aiClient.generateText(text, props.systemPrompt, {
+        temperature: 0.7,
+        maxTokens: 512
       });
 
       aiResponse.value = result.text || result;
       typeWriterEffect(aiResponse.value);
       isStreaming.value = false;
-      emit("response", aiResponse.value);
-      logger.info("AI response completed");
+      emit('response', aiResponse.value);
+      logger.info('AI response completed');
     }
 
     // Store controller for potential cancellation
     // controller.cancel() if needed
   } catch (err) {
     isStreaming.value = false;
-    logger.error("Failed to process transcript:", err);
+    logger.error('Failed to process transcript:', err);
     setError(`Failed to process speech: ${err.message}`);
   }
 }
 
 // Typewriter effect for AI response
+function typeWriterEffect(newText) {
   // Simple immediate display for now, could add typing animation
   displayedResponse.value = aiResponse.value;
 }
 
 // Helpers
+function blobToBase64(blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = () => {
       const dataUrl = reader.result;
+      const base64 = String(dataUrl).split(',')[1] || '';
+      resolve(base64);
     };
     reader.onerror = reject;
     reader.readAsDataURL(blob);
@@ -608,47 +571,55 @@ async function stopRecording() {
 }
 
 // Text-to-speech
-  if (!aiResponse.value || isSpeaking.value) {
-    return;
-  }
+async function speakResponse() {
+  if (!aiResponse.value || isSpeaking.value) {return;}
   try {
     isSpeaking.value = true;
-    await speakViaService(aiResponse.value, {
-    });
+    await speakViaService(aiResponse.value, { rate: 0.9, pitch: 1.0, volume: 0.8 });
     isSpeaking.value = false;
   } catch (err) {
     isSpeaking.value = false;
-    logger.error("Failed to start speech synthesis:", err);
+    logger.error('Failed to start speech synthesis:', err);
     setError(`Failed to speak response: ${err.message}`);
   }
 }
 
 // Keyboard event handlers
+function handleSpaceKey(event) {
   if (!event.repeat) {
     startRecording();
   }
 }
 
+function handleSpaceKeyUp() {
   stopRecording();
 }
 
+// Utility functions
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
+function setError(message) {
   error.value = message;
   hasError.value = true;
-  emit("error", message);
+  emit('error', message);
 }
 
-  error.value = "";
+function clearError() {
+  error.value = '';
   hasError.value = false;
 }
 
+function cleanup() {
   if (recordingTimer) {
     clearInterval(recordingTimer);
   }
 
   if (audioStream) {
-    audioStream.getTracks().forEach((track) => track.stop());
+    audioStream.getTracks().forEach(track => track.stop());
   }
 
   if (audioContext) {
@@ -659,15 +630,12 @@ async function stopRecording() {
     speechRecognition.stop();
   }
 
-  try {
-    window.speechSynthesis?.cancel?.();
-  } catch {}
+  try { window.speechSynthesis?.cancel?.(); } catch {}
 }
 
-  selectedMicId.value = id || "";
-  try {
-    audioService.setPreferredInputDevice(id || undefined);
-  } catch {}
+function setSelectedMic(id) {
+  selectedMicId.value = id || '';
+  try { audioService.setPreferredInputDevice(id || undefined); } catch {}
 }
 
 // Expose methods for parent components
@@ -681,7 +649,7 @@ defineExpose({
   aiResponse: readonly(aiResponse),
   setSelectedMic,
   selectedMicId,
-  microphoneDevices,
+  microphoneDevices
 });
 </script>
 
@@ -692,103 +660,144 @@ defineExpose({
 
 .push-to-talk-btn {
   position: relative;
+  min-width: 150px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .push-to-talk-btn:not(.disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .push-to-talk-btn:not(.disabled):active {
+  transform: translateY(0);
 }
 
 .push-to-talk-btn.disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .recording-pulse {
   position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border-radius: inherit;
+  background: color-mix(in srgb, var(--color-danger) 30%, transparent);
+  animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-  }
-  }
-  }
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.05); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.7; }
 }
 
 .voice-meter-container {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .voice-meter {
+  flex: 1;
+  height: 6px;
   background: var(--glass-surface);
+  border-radius: 3px;
   overflow: hidden;
 }
 
 .voice-level-fill {
-  background: linear-gradient(
-  );
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-success) 0%, var(--color-warning) 70%, var(--color-danger) 100%);
+  transition: width 0.1s ease;
+  border-radius: 3px;
 }
 
 .recording-time {
   font-variant-numeric: tabular-nums;
+  font-weight: 600;
   color: var(--color-danger);
 }
 
 .max-time {
+  font-size: 0.875em;
 }
 
 .transcript-display {
   background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-sm);
 }
 
 .final-transcript {
   color: var(--text-primary);
+  font-weight: 500;
 }
 
 .interim-transcript {
   color: var(--text-secondary);
   font-style: italic;
+  margin-top: 4px;
 }
 
 .cursor-blink {
+  animation: blink 1s infinite;
 }
 
 @keyframes blink {
-  }
-  }
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .ai-response {
   background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-md);
 }
 
 .response-header {
   padding: var(--spacing-xs) var(--spacing-sm);
   background: var(--glass-elevated);
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+  font-weight: 600;
+  font-size: 0.875em;
 }
 
 .response-content {
   background: var(--glass-surface);
+  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+  margin: 0;
 }
 
 .streaming-text.typing::after {
-  content: "|";
+  content: '|';
+  animation: blink 1s infinite;
+  margin-left: 2px;
 }
 
 .error-display {
   padding: var(--spacing-xs) var(--spacing-sm);
+  background: color-mix(in srgb, var(--color-danger) 15%, transparent);
   color: var(--color-danger);
+  border: 1px solid var(--color-danger);
   border-radius: var(--border-radius-sm);
+  font-size: 0.875em;
 }
 
 .ptt-device-select {
+  max-width: 360px;
 }
 
+/* Responsive adjustments */
+@media (max-width: 576px) {
   .push-to-talk-btn {
+    min-width: 120px;
   }
 
   .btn-text {
@@ -796,8 +805,10 @@ defineExpose({
   }
 }
 
+/* Focus styles for accessibility */
 .push-to-talk-btn:focus {
   outline: var(--focus-ring-size) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
 }
+
 </style>

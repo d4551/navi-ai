@@ -13,8 +13,7 @@
           Discover Gaming Opportunities
         </h2>
         <p class="search-description">
-          Find your perfect role in the gaming industry with intelligent search
-          and personalized recommendations
+          Find your perfect role in the gaming industry with intelligent search and personalized recommendations
         </p>
       </div>
     </div>
@@ -33,7 +32,7 @@
           @search="handleSearch"
           @clear="handleSearchClear"
         />
-
+        
         <!-- Search Mode Toggle -->
         <div class="search-mode-toggle">
           <div class="toggle-group">
@@ -55,11 +54,7 @@
             </button>
           </div>
           <small class="toggle-help">
-            {{
-              searchMode === "semantic"
-                ? "AI-powered contextual search"
-                : "Traditional keyword matching"
-            }}
+            {{ searchMode === 'semantic' ? 'AI-powered contextual search' : 'Traditional keyword matching' }}
           </small>
         </div>
       </div>
@@ -75,12 +70,9 @@
           >
             <AppIcon name="mdi-tune-vertical" aria-hidden="true" />
             Advanced Filters
-            <AppIcon
-              :name="showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-              aria-hidden="true"
-            />
+            <AppIcon :name="showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'" aria-hidden="true" />
           </button>
-
+          
           <div v-if="activeFilterCount > 0" class="active-filters-count">
             {{ activeFilterCount }} active
           </div>
@@ -96,16 +88,14 @@
                   v-for="category in roleCategories"
                   :key="category"
                   class="filter-chip"
-                  :class="{
-                    active: selectedFilters.roleCategories?.includes(category),
-                  }"
+                  :class="{ active: selectedFilters.roleCategories?.includes(category) }"
                 >
                   <input
                     v-model="selectedFilters.roleCategories"
                     type="checkbox"
                     :value="category"
                     class="filter-checkbox"
-                  />
+                  >
                   <span class="filter-label">{{ category }}</span>
                   <span class="filter-count">({{ getRoleCategoryCount(category) }})</span>
                 </label>
@@ -120,17 +110,14 @@
                   v-for="category in studioCategories"
                   :key="category"
                   class="filter-chip"
-                  :class="{
-                    active:
-                      selectedFilters.studioCategories?.includes(category),
-                  }"
+                  :class="{ active: selectedFilters.studioCategories?.includes(category) }"
                 >
                   <input
                     v-model="selectedFilters.studioCategories"
                     type="checkbox"
                     :value="category"
                     class="filter-checkbox"
-                  />
+                  >
                   <span class="filter-label">{{ category }}</span>
                   <span class="filter-count">({{ getStudioCategoryCount(category) }})</span>
                 </label>
@@ -145,16 +132,14 @@
                   v-for="size in companySizes"
                   :key="size"
                   class="filter-chip"
-                  :class="{
-                    active: selectedFilters.companySizes?.includes(size),
-                  }"
+                  :class="{ active: selectedFilters.companySizes?.includes(size) }"
                 >
                   <input
                     v-model="selectedFilters.companySizes"
                     type="checkbox"
                     :value="size"
                     class="filter-checkbox"
-                  />
+                  >
                   <span class="filter-label">{{ size }}</span>
                 </label>
               </div>
@@ -164,28 +149,22 @@
             <div class="filter-group">
               <h4 class="filter-title">Work Style</h4>
               <div class="filter-chips">
-                <label
-                  class="filter-chip"
-                  :class="{ active: selectedFilters.remoteWork === true }"
-                >
+                <label class="filter-chip" :class="{ active: selectedFilters.remoteWork === true }">
                   <input
                     v-model="selectedFilters.remoteWork"
                     type="radio"
                     :value="true"
                     class="filter-checkbox"
-                  />
+                  >
                   <span class="filter-label">Remote</span>
                 </label>
-                <label
-                  class="filter-chip"
-                  :class="{ active: selectedFilters.remoteWork === false }"
-                >
+                <label class="filter-chip" :class="{ active: selectedFilters.remoteWork === false }">
                   <input
                     v-model="selectedFilters.remoteWork"
                     type="radio"
                     :value="false"
                     class="filter-checkbox"
-                  />
+                  >
                   <span class="filter-label">On-site</span>
                 </label>
               </div>
@@ -224,7 +203,7 @@
               Semantic Search
             </span>
           </div>
-
+          
           <div class="results-sort">
             <select v-model="sortBy" class="sort-select" @change="sortResults">
               <option value="relevance">Best Match</option>
@@ -247,9 +226,7 @@
                 <li>Check spelling of search terms</li>
                 <li>Try broader keywords</li>
                 <li>Remove some filters</li>
-                <li v-if="searchMode === 'keyword'">
-                  Switch to semantic search for better matching
-                </li>
+                <li v-if="searchMode === 'keyword'">Switch to semantic search for better matching</li>
               </ul>
             </div>
           </div>
@@ -267,21 +244,16 @@
           >
             <div class="result-header">
               <div class="result-icon">
-                <AppIcon
-                  :name="getResultIcon(result.type)"
-                  aria-hidden="true"
-                />
+                <AppIcon :name="getResultIcon(result.type)" aria-hidden="true" />
               </div>
               <div class="result-meta">
-                <span class="result-type">{{
-                  formatResultType(result.type)
-                }}</span>
+                <span class="result-type">{{ formatResultType(result.type) }}</span>
                 <div v-if="result.similarity" class="result-score">
                   <span class="score-label">Match:</span>
                   <div class="score-bar">
-                    <div
-                      class="score-fill"
-                      :style="{ width: `${result.similarity * 100}%` }"
+                    <div 
+                      class="score-fill" 
+                      :style="{ width: `${(result.similarity * 100)}%` }"
                     ></div>
                   </div>
                   <span class="score-value">{{ Math.round(result.similarity * 100) }}%</span>
@@ -291,22 +263,17 @@
 
             <div class="result-content">
               <h3 class="result-title">{{ getResultTitle(result) }}</h3>
-              <p class="result-description">
-                {{ getResultDescription(result) }}
-              </p>
-
+              <p class="result-description">{{ getResultDescription(result) }}</p>
+              
               <!-- Studio-specific info -->
               <div v-if="result.type === 'studio'" class="result-details">
                 <div class="detail-tags">
                   <span class="detail-tag">{{ result.size }}</span>
                   <span class="detail-tag">{{ result.headquarters }}</span>
-                  <span v-if="result.category" class="detail-tag category">{{
-                    result.category
-                  }}</span>
+                  <span v-if="result.category" class="detail-tag category">{{ result.category }}</span>
                 </div>
                 <div v-if="result.games" class="result-games">
-                  <strong>Games:</strong>
-                  {{ result.games.slice(0, 3).join(", ") }}
+                  <strong>Games:</strong> {{ result.games.slice(0, 3).join(', ') }}
                   <span v-if="result.games.length > 3">...</span>
                 </div>
               </div>
@@ -315,11 +282,7 @@
               <div v-if="result.type === 'role'" class="result-details">
                 <div class="detail-tags">
                   <span class="detail-tag category">{{ result.category }}</span>
-                  <span
-                    v-if="result.demandLevel"
-                    class="detail-tag"
-                    :class="`demand-${result.demandLevel}`"
-                  >
+                  <span v-if="result.demandLevel" class="detail-tag" :class="`demand-${result.demandLevel}`">
                     {{ result.demandLevel }} demand
                   </span>
                 </div>
@@ -360,10 +323,7 @@
       </div>
 
       <!-- Recommendations -->
-      <div
-        v-if="!hasSearched && recommendations.length > 0"
-        class="recommendations"
-      >
+      <div v-if="!hasSearched && recommendations.length > 0" class="recommendations">
         <h3 class="recommendations-title">
           <AppIcon name="mdi-star" />
           Recommended for You
@@ -375,11 +335,7 @@
             class="recommendation-card"
             @click="selectRecommendation(rec)"
           >
-            <AppIcon
-              :name="getResultIcon(rec.category)"
-              class="recommendation-icon"
-              aria-hidden="true"
-            />
+            <AppIcon :name="getResultIcon(rec.category)" class="recommendation-icon" aria-hidden="true" />
             <h4 class="recommendation-title">{{ rec.label }}</h4>
             <p class="recommendation-description">{{ rec.description }}</p>
           </div>
@@ -390,25 +346,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import { useRouter } from "vue-router";
-import { useAppStore } from "@/stores/app";
-import AutocompleteSearch from "./AutocompleteSearch.vue";
-import { searchService } from "@/shared/services/SearchService";
-import {
-  ROLE_CATEGORIES,
-  STUDIO_CATEGORIES,
-  COMPANY_SIZES,
-} from "@/shared/constants/gaming-studios";
-import type { AutocompleteOption } from "@/shared/types/interview";
+import { ref, onMounted, watch, computed } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { useRouter } from 'vue-router';
+import { useAppStore } from '@/stores/app';
+import AutocompleteSearch from './AutocompleteSearch.vue';
+import { searchService } from '@/shared/services/SearchService';
+import { ROLE_CATEGORIES, STUDIO_CATEGORIES, COMPANY_SIZES } from '@/shared/constants/gaming-studios';
+import type { AutocompleteOption } from '@/shared/types/interview';
 
 const router = useRouter();
 const store = useAppStore();
 
 // Search state
-const searchQuery = ref("");
-const searchMode = ref<"keyword" | "semantic">("semantic");
+const searchQuery = ref('');
+const searchMode = ref<'keyword' | 'semantic'>('semantic');
 const searchResults = ref<any[]>([]);
 const hasSearched = ref(false);
 const isSearching = ref(false);
@@ -419,9 +371,9 @@ const selectedFilters = ref<any>({
   roleCategories: [],
   studioCategories: [],
   companySizes: [],
-  remoteWork: null,
+  remoteWork: null
 });
-const sortBy = ref("relevance");
+const sortBy = ref('relevance');
 
 // Recommendations
 const recommendations = ref<AutocompleteOption[]>([]);
@@ -433,12 +385,9 @@ const companySizes = computed(() => COMPANY_SIZES);
 
 const activeFilterCount = computed(() => {
   let count = 0;
-  if (selectedFilters.value.roleCategories?.length)
-    count += selectedFilters.value.roleCategories.length;
-  if (selectedFilters.value.studioCategories?.length)
-    count += selectedFilters.value.studioCategories.length;
-  if (selectedFilters.value.companySizes?.length)
-    count += selectedFilters.value.companySizes.length;
+  if (selectedFilters.value.roleCategories?.length) count += selectedFilters.value.roleCategories.length;
+  if (selectedFilters.value.studioCategories?.length) count += selectedFilters.value.studioCategories.length;
+  if (selectedFilters.value.companySizes?.length) count += selectedFilters.value.companySizes.length;
   if (selectedFilters.value.remoteWork !== null) count += 1;
   return count;
 });
@@ -453,7 +402,7 @@ function clearFilters() {
     roleCategories: [],
     studioCategories: [],
     companySizes: [],
-    remoteWork: null,
+    remoteWork: null
   };
   if (hasSearched.value) {
     applyFilters();
@@ -462,19 +411,19 @@ function clearFilters() {
 
 async function handleSearch(query: string, filters: string[]) {
   if (!query.trim()) return;
-
+  
   isSearching.value = true;
   hasSearched.value = true;
-
+  
   try {
-    if (searchMode.value === "semantic") {
+    if (searchMode.value === 'semantic') {
       searchResults.value = await searchService.semanticSearch(query, {
         threshold: 0.05,
         maxResults: 50,
         filters: {
-          types: filters.length ? (filters as any) : undefined,
-          ...selectedFilters.value,
-        },
+          types: filters.length ? filters as any : undefined,
+          ...selectedFilters.value
+        }
       });
     } else {
       // Traditional search
@@ -482,20 +431,20 @@ async function handleSearch(query: string, filters: string[]) {
         query,
         filters: selectedFilters.value,
         sortBy: sortBy.value as any,
-        sortOrder: "desc",
+        sortOrder: 'desc'
       });
-
+      
       searchResults.value = [
-        ...result.studios.map((studio) => ({ ...studio, type: "studio" })),
-        ...result.roles.map((role) => ({
-          name: role,
-          type: "role",
-          category: searchService.getRoleCategory?.(role) || "Other",
-        })),
+        ...result.studios.map(studio => ({ ...studio, type: 'studio' })),
+        ...result.roles.map(role => ({ 
+          name: role, 
+          type: 'role', 
+          category: searchService.getRoleCategory?.(role) || 'Other'
+        }))
       ];
     }
   } catch (error) {
-    console.error("Search failed:", error);
+    console.error('Search failed:', error);
     searchResults.value = [];
   } finally {
     isSearching.value = false;
@@ -508,7 +457,7 @@ async function handleSearchSelect(option: AutocompleteOption) {
 }
 
 function handleSearchClear() {
-  searchQuery.value = "";
+  searchQuery.value = '';
   searchResults.value = [];
   hasSearched.value = false;
 }
@@ -522,65 +471,58 @@ async function applyFilters() {
 function sortResults() {
   // Implement sorting logic based on sortBy
   const results = [...searchResults.value];
-
+  
   switch (sortBy.value) {
-    case "name":
-      results.sort((a, b) =>
-        getResultTitle(a).localeCompare(getResultTitle(b)),
-      );
+    case 'name':
+      results.sort((a, b) => getResultTitle(a).localeCompare(getResultTitle(b)));
       break;
-    case "founded":
+    case 'founded':
       results.sort((a, b) => (b.founded || 0) - (a.founded || 0));
       break;
-    case "size":
+    case 'size':
       results.sort((a, b) => {
-        const sizeA = extractNumberFromSize(a.size || "");
-        const sizeB = extractNumberFromSize(b.size || "");
+        const sizeA = extractNumberFromSize(a.size || '');
+        const sizeB = extractNumberFromSize(b.size || '');
         return sizeB - sizeA;
       });
       break;
     default: // relevance
-      if (searchMode.value === "semantic") {
-        results.sort(
-          (a, b) =>
-            b.similarity * (b.relevanceBoost || 1) -
-            a.similarity * (a.relevanceBoost || 1),
-        );
+      if (searchMode.value === 'semantic') {
+        results.sort((a, b) => (b.similarity * (b.relevanceBoost || 1)) - (a.similarity * (a.relevanceBoost || 1)));
       }
       break;
   }
-
+  
   searchResults.value = results;
 }
 
 // Helper methods
 function getResultIcon(type: string): string {
   const icons: Record<string, string> = {
-    studio: "mdi mdi-domain",
-    role: "mdi mdi-account-tie",
-    technology: "mdi mdi-code-tags",
+    studio: 'mdi mdi-domain',
+    role: 'mdi mdi-account-tie',
+    technology: 'mdi mdi-code-tags'
   };
-  return icons[type] || "mdi mdi-circle";
+  return icons[type] || 'mdi mdi-circle';
 }
 
 function formatResultType(type: string): string {
   const types: Record<string, string> = {
-    studio: "Studio",
-    role: "Role",
-    technology: "Technology",
+    studio: 'Studio',
+    role: 'Role',
+    technology: 'Technology'
   };
   return types[type] || type;
 }
 
 function getResultTitle(result: any): string {
-  return result.name || result.title || result.label || "Untitled";
+  return result.name || result.title || result.label || 'Untitled';
 }
 
 function getResultDescription(result: any): string {
   if (result.description) return result.description;
-  if (result.type === "role")
-    return `${result.category || "Professional"} role in gaming industry`;
-  return "No description available";
+  if (result.type === 'role') return `${result.category || 'Professional'} role in gaming industry`;
+  return 'No description available';
 }
 
 function getRoleCategoryCount(category: string): number {
@@ -588,9 +530,7 @@ function getRoleCategoryCount(category: string): number {
 }
 
 function getStudioCategoryCount(category: string): number {
-  return (
-    STUDIO_CATEGORIES[category as keyof typeof STUDIO_CATEGORIES]?.length || 0
-  );
+  return STUDIO_CATEGORIES[category as keyof typeof STUDIO_CATEGORIES]?.length || 0;
 }
 
 function extractNumberFromSize(size: string): number {
@@ -610,10 +550,10 @@ function selectRecommendation(rec: AutocompleteOption) {
 
 function viewDetails(result: any) {
   // Navigate to details view
-  if (result.type === "studio") {
+  if (result.type === 'studio') {
     // router.push(`/studios/${result.id}`);
     // Navigate to studio details when routing is implemented
-  } else if (result.type === "role") {
+  } else if (result.type === 'role') {
     // router.push(`/roles/${result.name}`);
     // Navigate to role details when routing is implemented
   }
@@ -621,8 +561,8 @@ function viewDetails(result: any) {
 
 function startInterview(studio: any) {
   router.push({
-    name: "GamingInterview",
-    query: { studioId: studio.id },
+    name: 'GamingInterview',
+    query: { studioId: studio.id }
   });
 }
 
@@ -634,13 +574,12 @@ onMounted(async () => {
       userRole: store.user?.profile?.desiredRole,
       userSkills: store.user?.profile?.skills || [],
       userLocation: store.user?.profile?.location,
-      preferredStudioTypes: store.user?.preferences?.studioTypes || [],
+      preferredStudioTypes: store.user?.preferences?.studioTypes || []
     };
-
-    recommendations.value =
-      await searchService.getIntelligentSuggestions(userContext);
+    
+    recommendations.value = await searchService.getIntelligentSuggestions(userContext);
   } catch (error) {
-    console.warn("Failed to load recommendations:", error);
+    console.warn('Failed to load recommendations:', error);
   }
 });
 
@@ -655,9 +594,8 @@ watch(searchMode, async () => {
 <style scoped>
 .advanced-search {
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    var(--glass-bg-start) 0%,
+  background: linear-gradient(135deg, 
+    var(--glass-bg-start) 0%, 
     var(--glass-bg-end) 100%
   );
 }
@@ -757,9 +695,11 @@ watch(searchMode, async () => {
   font-size: var(--font-size-sm);
 }
 
+/* Filters Section */
 .filters-section {
   background: var(--glass-surface-light);
   backdrop-filter: blur(var(--glass-backdrop-blur));
+  border: 1px solid var(--glass-border-light);
   border-radius: var(--border-radius-lg);
   margin-bottom: var(--spacing-xl);
   overflow: hidden;
@@ -770,6 +710,7 @@ watch(searchMode, async () => {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .filters-toggle {
@@ -780,6 +721,7 @@ watch(searchMode, async () => {
   border: none;
   color: var(--text-primary);
   font-size: var(--font-size-md);
+  font-weight: 600;
   cursor: pointer;
   transition: color var(--transition-normal);
 }
@@ -791,8 +733,10 @@ watch(searchMode, async () => {
 .active-filters-count {
   background: var(--color-primary);
   color: var(--text-on-primary);
+  padding: 4px 8px;
   border-radius: var(--border-radius-full);
   font-size: var(--font-size-xs);
+  font-weight: 600;
 }
 
 .filters-content {
@@ -805,8 +749,10 @@ watch(searchMode, async () => {
   margin-bottom: var(--spacing-lg);
 }
 
+.filter-group h4 {
   color: var(--text-primary);
   font-size: var(--font-size-md);
+  font-weight: 600;
   margin-bottom: var(--spacing-md);
 }
 
@@ -820,8 +766,10 @@ watch(searchMode, async () => {
   position: relative;
   display: flex;
   align-items: center;
+  gap: var(--spacing-2xs);
   padding: var(--spacing-xs) var(--spacing-sm);
   background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius-full);
   font-size: var(--font-size-sm);
   cursor: pointer;
@@ -841,6 +789,7 @@ watch(searchMode, async () => {
 
 .filter-checkbox {
   position: absolute;
+  opacity: 0;
   pointer-events: none;
 }
 
@@ -854,14 +803,17 @@ watch(searchMode, async () => {
   justify-content: flex-end;
   gap: var(--spacing-sm);
   padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
 }
 
+/* Results Section */
 .results-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .results-info {
@@ -871,6 +823,7 @@ watch(searchMode, async () => {
 }
 
 .results-count {
+  font-weight: 600;
   color: var(--text-primary);
 }
 
@@ -881,12 +834,15 @@ watch(searchMode, async () => {
 .results-mode {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2xs);
   color: var(--color-primary);
   font-size: var(--font-size-sm);
+  font-weight: 500;
 }
 
 .sort-select {
   padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -894,17 +850,21 @@ watch(searchMode, async () => {
 
 .no-results {
   text-align: center;
-  padding: var(--spacing-20);
+  padding: var(--spacing-xxl);
 }
 
 .no-results-content {
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .no-results i {
+  font-size: 4rem;
   color: var(--text-tertiary);
   margin-bottom: var(--spacing-lg);
 }
 
+.no-results h3 {
   color: var(--text-primary);
   margin-bottom: var(--spacing-md);
 }
@@ -922,6 +882,7 @@ watch(searchMode, async () => {
 .result-card {
   background: var(--glass-surface-light);
   backdrop-filter: blur(var(--glass-backdrop-blur));
+  border: 1px solid var(--glass-border-light);
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-lg);
   cursor: pointer;
@@ -931,6 +892,7 @@ watch(searchMode, async () => {
 .result-card:hover {
   background: var(--glass-elevated-light);
   border-color: var(--color-primary);
+  transform: translateY(-2px);
   box-shadow: var(--glass-shadow-elevated);
 }
 
@@ -943,17 +905,21 @@ watch(searchMode, async () => {
 
 .result-icon {
   color: var(--color-primary);
+  font-size: 1.5rem;
 }
 
 .result-meta {
+  flex: 1;
   margin-left: var(--spacing-sm);
 }
 
 .result-type {
   background: var(--color-primary-bg);
   color: var(--color-primary);
+  padding: 2px 6px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -970,31 +936,35 @@ watch(searchMode, async () => {
 }
 
 .score-bar {
+  flex: 1;
+  height: 4px;
   background: var(--bg-tertiary);
+  border-radius: 2px;
   overflow: hidden;
 }
 
 .score-fill {
-  background: linear-gradient(
-    var(--color-success),
-    var(--color-primary)
-  );
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-success), var(--color-primary));
   transition: width var(--transition-normal);
 }
 
 .score-value {
   font-size: var(--font-size-xs);
+  font-weight: 600;
   color: var(--color-primary);
 }
 
 .result-title {
   font-size: var(--font-size-lg);
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: var(--spacing-xs);
 }
 
 .result-description {
   color: var(--text-secondary);
+  line-height: 1.5;
   margin-bottom: var(--spacing-md);
 }
 
@@ -1012,6 +982,7 @@ watch(searchMode, async () => {
 .detail-tag {
   background: var(--bg-tertiary);
   color: var(--text-secondary);
+  padding: 2px 6px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
 }
@@ -1047,11 +1018,13 @@ watch(searchMode, async () => {
 .matched-label {
   font-size: var(--font-size-xs);
   color: var(--text-tertiary);
+  font-weight: 500;
 }
 
 .matched-term {
   background: var(--color-info-bg);
   color: var(--color-info);
+  padding: 2px 4px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
 }
@@ -1060,10 +1033,12 @@ watch(searchMode, async () => {
   display: flex;
   gap: var(--spacing-sm);
   padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
 }
 
+/* Recommendations */
 .recommendations {
-  margin-top: var(--spacing-20);
+  margin-top: var(--spacing-xxl);
 }
 
 .recommendations-title {
@@ -1086,6 +1061,7 @@ watch(searchMode, async () => {
 .recommendation-card {
   background: var(--glass-surface-light);
   backdrop-filter: blur(var(--glass-backdrop-blur));
+  border: 1px solid var(--glass-border-light);
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-lg);
   text-align: center;
@@ -1095,10 +1071,12 @@ watch(searchMode, async () => {
 
 .recommendation-card:hover {
   background: var(--glass-elevated-light);
+  transform: translateY(-2px);
   box-shadow: var(--glass-shadow-elevated);
 }
 
 .recommendation-icon {
+  font-size: 2rem;
   color: var(--color-primary);
   margin-bottom: var(--spacing-md);
 }
@@ -1113,26 +1091,32 @@ watch(searchMode, async () => {
   font-size: var(--font-size-sm);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .search-container {
     padding: var(--spacing-md);
   }
-
+  
   .filters-grid {
+    /* Responsive grid handled by utility classes */
   }
-
+  
   .results-grid {
+    /* Responsive grid handled by utility classes */
   }
-
+  
   .results-header {
     flex-direction: column;
     gap: var(--spacing-md);
     align-items: flex-start;
   }
-
+  
   .recommendations-grid {
+    /* Responsive grid handled by utility classes */
   }
 }
 
+/* Dark theme adaptations */
 [data-theme="dark"] .search-header {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);

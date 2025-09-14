@@ -1,4 +1,5 @@
 /* eslint-env node */
+/* global process, console, module */
 /**
  * CommonJS Logger for Electron Main Process
  * Simplified version of the unified logger for main process compatibility
@@ -47,7 +48,7 @@ class Logger {
     if (data && typeof data === 'object') {
       try {
         formattedData = JSON.stringify(data, null, 2);
-      } catch {
+      } catch (e) {
         formattedData = String(data);
       }
     }

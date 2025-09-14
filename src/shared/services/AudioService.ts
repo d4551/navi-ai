@@ -1,7 +1,11 @@
+/**
+ * Consolidated Audio Service - Single source of truth for all audio operations
+ * Replaces scattered getUserMedia and speechSynthesis calls
+ * Designed for Electron security with main process delegation
+ */
 
-/// <reference types="vite/client" />
-import { logger } from "@/shared/utils/logger";
-import type { AudioDevice, VoiceSettings } from "../types/interview";
+import { logger } from '@/shared/utils/logger';
+import type { AudioDevice, VoiceSettings } from '../types/interview';
 
 export interface AudioRecordingOptions {
   deviceId?: string;
@@ -19,7 +23,7 @@ export interface PushToTalkOptions {
 
 export class AudioService {
   private static instance: AudioService;
-
+  
   private mediaStream: MediaStream | null = null;
   private mediaRecorder: MediaRecorder | null = null;
   private audioContext: AudioContext | null = null;
@@ -27,11 +31,11 @@ export class AudioService {
   private isRecording = false;
   private isPushToTalkMode = false;
   private pushToTalkKeys = new Set<string>();
-
+  
   // Audio level monitoring
-  private volumeCallback: ((_volume: number) => void) | null = null;
+  private volumeCallback: ((volume: number) => void) | null = null;
   private volumeCheckInterval: number | null = null;
-
+  
   // Speech synthesis (consolidated)
   private synthesis: SpeechSynthesis;
   private voices: SpeechSynthesisVoice[] = [];
@@ -49,9 +53,8 @@ export class AudioService {
 
   private constructor() {
     // Provide a safe fallback for non-browser/test environments
-    const hasSynthesis =
-      typeof window !== "undefined" && "speechSynthesis" in window;
-    this.synthesis = hasSynthesis
+    const hasSynthesis = typeof window !== 'undefined' && 'speechSynthesis' in window;
+    this.synthesis = (hasSynthesis
       ? window.speechSynthesis
       : ({
           speak: () => undefined,
@@ -59,26 +62,24 @@ export class AudioService {
           getVoices: () => [],
           speaking: false,
           onvoiceschanged: null as any,
-        } as unknown as SpeechSynthesis);
+        } as unknown as SpeechSynthesis)
+    );
     this.initializeVoices();
     this.setupPushToTalkListeners();
 
     // Attempt to hydrate preferred devices from app settings (non-blocking)
     try {
       const getSettings = (window as any)?.api?.app?.getSettings;
-        getSettings()
-          .then((res: any) => {
-            const data = res?.data || res; // handler may return { success, data }
-            const micId = data?.selectedMicId || data?.microphoneId;
-            const spkId = data?.selectedSpeakerId || data?.speakerId;
-            if (micId) this.selectedInputDevice = micId;
-            if (spkId) this.selectedOutputDevice = spkId;
-          })
-          .catch(() => {
-          });
+      if (typeof getSettings === 'function') {
+        getSettings().then((res: any) => {
+          const data = res?.data || res; // handler may return { success, data }
+          const micId = data?.selectedMicId || data?.microphoneId;
+          const spkId = data?.selectedSpeakerId || data?.speakerId;
+          if (micId) this.selectedInputDevice = micId;
+          if (spkId) this.selectedOutputDevice = spkId;
+        }).catch(() => {/* ignore */});
       }
-    } catch {
-    }
+    } catch {/* ignore */}
   }
 
   static getInstance(): AudioService {
@@ -94,21 +95,17 @@ export class AudioService {
       // Non-invasive device enumeration: do not request permission here
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.availableDevices = devices
-        .filter(
-          (device) =>
-            device.kind === "audioinput" || device.kind === "audiooutput",
-        )
-        .map((device) => ({
+        .filter(device => device.kind === 'audioinput' || device.kind === 'audiooutput')
+        .map(device => ({
           deviceId: device.deviceId,
-          label:
-            device.label ||
-          kind: device.kind as "audioinput" | "audiooutput",
-          groupId: device.groupId,
+          label: device.label || `${device.kind === 'audioinput' ? 'Microphone' : 'Speaker'} ${device.deviceId.slice(0, 8)}`,
+          kind: device.kind as 'audioinput' | 'audiooutput',
+          groupId: device.groupId
         }));
-
+      
       return this.availableDevices;
     } catch (error) {
-      logger.error("Failed to enumerate audio devices:", error);
+      logger.error('Failed to enumerate audio devices:', error);
       return [];
     }
   }
@@ -116,103 +113,96 @@ export class AudioService {
   // Preferred device setters/getters
   setPreferredInputDevice(deviceId?: string): void {
     this.selectedInputDevice = deviceId || null;
-    try {
-      (window as any)?.api?.app?.updateSettings?.({
-        selectedMicId: deviceId || "",
-      });
-    } catch {}
+    try { (window as any)?.api?.app?.updateSettings?.({ selectedMicId: deviceId || '' }); } catch {}
   }
 
   async setPreferredOutputDevice(deviceId?: string): Promise<boolean> {
     this.selectedOutputDevice = deviceId || null;
-    try {
-      (window as any)?.api?.app?.updateSettings?.({
-        selectedSpeakerId: deviceId || "",
-      });
-    } catch {}
+    try { (window as any)?.api?.app?.updateSettings?.({ selectedSpeakerId: deviceId || '' }); } catch {}
 
     // Best-effort capability check using a temporary element
     try {
       if (!deviceId) return true;
       const audio = new window.Audio();
+      if (typeof (audio as any).setSinkId === 'function') {
         await (audio as any).setSinkId(deviceId);
         return true;
       }
-    } catch {
-    }
+    } catch {/* ignore */}
     return false;
   }
 
   getPreferredDevices(): { input?: string | null; output?: string | null } {
-    return {
-      input: this.selectedInputDevice,
-      output: this.selectedOutputDevice,
-    };
+    return { input: this.selectedInputDevice, output: this.selectedOutputDevice };
   }
 
   async requestMicrophonePermission(): Promise<boolean> {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((track) => track.stop());
+      stream.getTracks().forEach(track => track.stop());
       return true;
     } catch (error) {
-      logger.warn("Microphone permission denied:", error);
+      logger.warn('Microphone permission denied:', error);
       return false;
     }
   }
 
+  // Recording functionality with push-to-talk support
   async startRecording(options: AudioRecordingOptions = {}): Promise<boolean> {
     try {
       if (this.isRecording) {
-        logger.warn("Already recording");
+        logger.warn('Already recording');
         return false;
       }
 
       const constraints: MediaStreamConstraints = {
         audio: {
           deviceId: options.deviceId ? { exact: options.deviceId } : undefined,
+          sampleRate: options.sampleRate || 44100,
+          channelCount: options.channelCount || 1,
           echoCancellation: options.echoCancellation ?? true,
           noiseSuppression: options.noiseSuppression ?? true,
-          autoGainControl: true,
-        },
+          autoGainControl: true
+        }
       };
 
       // fallback to preferred input if not specified
-      const preferred =
-        this.selectedInputDevice && !options.deviceId
-          ? { deviceId: { exact: this.selectedInputDevice } as any }
-          : undefined;
+      const preferred = this.selectedInputDevice && !options.deviceId
+        ? { deviceId: { exact: this.selectedInputDevice } as any }
+        : undefined;
       this.mediaStream = await navigator.mediaDevices.getUserMedia({
-        audio: { ...(constraints.audio as any), ...(preferred || {}) },
+        audio: { ...constraints.audio as any, ...(preferred || {}) }
       });
-
+      
       // Set up audio context for volume monitoring
       this.setupAudioAnalysis();
 
       // Set up MediaRecorder
       this.mediaRecorder = new MediaRecorder(this.mediaStream, {
-        mimeType: "audio/webm;codecs=opus",
+        mimeType: 'audio/webm;codecs=opus'
       });
 
       const chunks: Blob[] = [];
-
+      
       this.mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
           chunks.push(event.data);
         }
       };
 
       this.mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(chunks, { type: "audio/webm" });
+        const audioBlob = new Blob(chunks, { type: 'audio/webm' });
         this.onRecordingComplete?.(audioBlob);
       };
 
       this.mediaRecorder.start();
       this.isRecording = true;
-
-      logger.info("Audio recording started");
+      
+      logger.info('Audio recording started');
       return true;
+      
     } catch (error) {
-      logger.error("Failed to start recording:", error);
+      logger.error('Failed to start recording:', error);
       this.cleanup();
       return false;
     }
@@ -235,12 +225,13 @@ export class AudioService {
     });
   }
 
+  // Push-to-talk functionality
   enablePushToTalk(options: PushToTalkOptions = {}): void {
     this.isPushToTalkMode = true;
     this.pushToTalkOptions = {
-      key: options.key || "Space",
+      key: options.key || 'Space',
       requireCtrl: options.requireCtrl || false,
-      requireAlt: options.requireAlt || false,
+      requireAlt: options.requireAlt || false
     };
   }
 
@@ -252,20 +243,19 @@ export class AudioService {
   }
 
   private setupPushToTalkListeners(): void {
-    document.addEventListener("keydown", this.handleKeyDown.bind(this));
-    document.addEventListener("keyup", this.handleKeyUp.bind(this));
+    document.addEventListener('keydown', this.handleKeyDown.bind(this));
+    document.addEventListener('keyup', this.handleKeyUp.bind(this));
   }
 
   private handleKeyDown(event: KeyboardEvent): void {
     if (!this.isPushToTalkMode) return;
 
-    const options = this.pushToTalkOptions || { key: "Space" };
-
-    if (
-      event.code === options.key &&
-      (!options.requireCtrl || event.ctrlKey) &&
-      (!options.requireAlt || event.altKey)
-    ) {
+    const options = this.pushToTalkOptions || { key: 'Space' };
+    
+    if (event.code === options.key &&
+        (!options.requireCtrl || event.ctrlKey) &&
+        (!options.requireAlt || event.altKey)) {
+      
       if (!this.pushToTalkKeys.has(event.code)) {
         this.pushToTalkKeys.add(event.code);
         this.resumeRecording();
@@ -279,6 +269,7 @@ export class AudioService {
 
     if (this.pushToTalkKeys.has(event.code)) {
       this.pushToTalkKeys.delete(event.code);
+      if (this.pushToTalkKeys.size === 0) {
         this.pauseRecording();
       }
       event.preventDefault();
@@ -286,13 +277,13 @@ export class AudioService {
   }
 
   private pauseRecording(): void {
-    if (this.mediaRecorder && this.mediaRecorder.state === "recording") {
+    if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
       this.mediaRecorder.pause();
     }
   }
 
   private resumeRecording(): void {
-    if (this.mediaRecorder && this.mediaRecorder.state === "paused") {
+    if (this.mediaRecorder && this.mediaRecorder.state === 'paused') {
       this.mediaRecorder.resume();
     } else if (!this.isRecording) {
       this.startRecording({ deviceId: this.selectedInputDevice || undefined });
@@ -300,9 +291,7 @@ export class AudioService {
   }
 
   // Lightweight input monitoring without recording
-  async startMonitoring(
-    deviceId?: string,
-  ): Promise<void> {
+  async startMonitoring(deviceId?: string, onLevel?: (level01: number) => void): Promise<void> {
     try {
       this.stopMonitoring();
       const constraints: MediaStreamConstraints = {
@@ -311,27 +300,28 @@ export class AudioService {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
-        },
+        }
       };
-      this.monitorStream =
-        await navigator.mediaDevices.getUserMedia(constraints);
+      this.monitorStream = await navigator.mediaDevices.getUserMedia(constraints);
       this.monitorContext = new AudioContext();
       this.monitorAnalyser = this.monitorContext.createAnalyser();
-      const source = this.monitorContext.createMediaStreamSource(
-        this.monitorStream,
-      );
+      this.monitorAnalyser.fftSize = 256;
+      const source = this.monitorContext.createMediaStreamSource(this.monitorStream);
       source.connect(this.monitorAnalyser);
 
+      const dataArray = new Uint8Array(this.monitorAnalyser.frequencyBinCount);
       const tick = () => {
-        if (!this.monitorAnalyser) {
-          return;
-        }
+        if (!this.monitorAnalyser) { return; }
         this.monitorAnalyser.getByteFrequencyData(dataArray);
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) sum += dataArray[i] * dataArray[i];
         const rms = Math.sqrt(sum / dataArray.length);
+        const level = Math.min(1, rms / 128);
         if (onLevel) onLevel(level);
       };
+      this.monitorInterval = window.setInterval(tick, 50);
     } catch (error) {
-      logger.warn("Failed to start input monitoring:", error);
+      logger.warn('Failed to start input monitoring:', error);
       this.stopMonitoring();
       throw error;
     }
@@ -342,13 +332,13 @@ export class AudioService {
       clearInterval(this.monitorInterval);
       this.monitorInterval = null;
     }
-    if (this.monitorContext && this.monitorContext.state !== "closed") {
+    if (this.monitorContext && this.monitorContext.state !== 'closed') {
       this.monitorContext.close();
     }
     this.monitorContext = null;
     this.monitorAnalyser = null;
     if (this.monitorStream) {
-      this.monitorStream.getTracks().forEach((t) => t.stop());
+      this.monitorStream.getTracks().forEach(t => t.stop());
       this.monitorStream = null;
     }
   }
@@ -359,38 +349,43 @@ export class AudioService {
 
     try {
       this.audioContext = new AudioContext();
-      const source = this.audioContext.createMediaStreamSource(
-        this.mediaStream,
-      );
+      const source = this.audioContext.createMediaStreamSource(this.mediaStream);
       this.analyser = this.audioContext.createAnalyser();
-
+      
+      this.analyser.fftSize = 256;
       source.connect(this.analyser);
 
       this.startVolumeMonitoring();
     } catch (error) {
-      logger.error("Failed to setup audio analysis:", error);
+      logger.error('Failed to setup audio analysis:', error);
     }
   }
 
   private startVolumeMonitoring(): void {
     if (!this.analyser) return;
 
-
+    const dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+    
     const checkVolume = () => {
       if (!this.analyser || !this.isRecording) return;
-
+      
       this.analyser.getByteFrequencyData(dataArray);
-
+      
       // Calculate RMS volume
+      let sum = 0;
+      for (let i = 0; i < dataArray.length; i++) {
+        sum += dataArray[i] * dataArray[i];
       }
       const rms = Math.sqrt(sum / dataArray.length);
-
+      const volume = Math.min(1, rms / 128); // Normalize to 0-1
+      
       this.volumeCallback?.(volume);
     };
 
+    this.volumeCheckInterval = window.setInterval(checkVolume, 50); // 20 FPS
   }
 
-  setVolumeCallback(callback: (_volume: number) => void): void {
+  setVolumeCallback(callback: (volume: number) => void): void {
     this.volumeCallback = callback;
   }
 
@@ -398,6 +393,7 @@ export class AudioService {
   private initializeVoices(): void {
     const loadVoices = () => {
       try {
+        if (this.synthesis && typeof this.synthesis.getVoices === 'function') {
           this.voices = this.synthesis.getVoices() || [];
         } else {
           this.voices = [];
@@ -410,10 +406,11 @@ export class AudioService {
     loadVoices();
     // Guard assignment when onvoiceschanged is supported
     try {
-      if ("onvoiceschanged" in this.synthesis) {
+      if ('onvoiceschanged' in this.synthesis) {
         (this.synthesis as any).onvoiceschanged = loadVoices;
       }
     } catch {
+      /* noop for test env */
     }
   }
 
@@ -421,37 +418,32 @@ export class AudioService {
     return this.voices;
   }
 
-  async speak(
-    text: string,
-    settings: VoiceSettings = {
-      language: "en-US",
-    },
-  ): Promise<void> {
+  async speak(text: string, settings: VoiceSettings = {
+    rate: 1,
+    pitch: 1,
+    volume: 1,
+    language: 'en-US'
+  }): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
         // Stop current speech
         this.stopSpeaking();
 
         const utterance = new SpeechSynthesisUtterance(text);
-
+        
         // Apply settings
         const rate = (settings as any).rate;
         const pitch = (settings as any).pitch;
         const volume = (settings as any).volume;
-        const language =
-          (settings as any).language ?? (settings as any).lang ?? "en-US";
-        utterance.rate = Math.max(
-        );
-        utterance.pitch = Math.max(
-        );
-        utterance.volume = Math.max(
-        );
-        utterance.lang =
-          typeof language === "string" && language ? language : "en-US";
+        const language = (settings as any).language ?? (settings as any).lang ?? 'en-US';
+        utterance.rate = Math.max(0.1, Math.min(10, typeof rate === 'number' ? rate : 1));
+        utterance.pitch = Math.max(0, Math.min(2, typeof pitch === 'number' ? pitch : 1));
+        utterance.volume = Math.max(0, Math.min(1, typeof volume === 'number' ? volume : 1));
+        utterance.lang = typeof language === 'string' && language ? language : 'en-US';
 
         // Find and set voice
         if (settings.voiceId) {
-          const voice = this.voices.find((v) => v.name === settings.voiceId);
+          const voice = this.voices.find(v => v.name === settings.voiceId);
           if (voice) {
             utterance.voice = voice;
           }
@@ -461,21 +453,20 @@ export class AudioService {
           resolve();
         };
 
-        utterance.onerror = (event: Event) => {
-          const err = (event && (event as any).error) || "";
+        utterance.onerror = (event: SpeechSynthesisErrorEvent) => {
+          const err = (event && (event as any).error) || '';
           // Treat common non-fatal endings as resolved to avoid noisy UX
-          if (err === "interrupted" || err === "canceled") {
+          if (err === 'interrupted' || err === 'canceled') {
             resolve();
             return;
           }
-          const error = new Error(
-            `Speech synthesis failed: ${err || "Unknown error"}`,
-          );
-          error.name = "SpeechSynthesisError";
+          const error = new Error(`Speech synthesis failed: ${err || 'Unknown error'}`);
+          error.name = 'SpeechSynthesisError';
           reject(error);
         };
 
         this.synthesis.speak(utterance);
+        
       } catch (error) {
         reject(error);
       }
@@ -509,14 +500,14 @@ export class AudioService {
     }
 
     // Clean up audio context
-    if (this.audioContext && this.audioContext.state !== "closed") {
+    if (this.audioContext && this.audioContext.state !== 'closed') {
       this.audioContext.close();
       this.audioContext = null;
     }
 
     // Stop media stream
     if (this.mediaStream) {
-      this.mediaStream.getTracks().forEach((track) => track.stop());
+      this.mediaStream.getTracks().forEach(track => track.stop());
       this.mediaStream = null;
     }
 
@@ -534,10 +525,10 @@ export class AudioService {
     try {
       if (!this.selectedOutputDevice) return;
       const sinkIdFn = (el as any).setSinkId;
+      if (typeof sinkIdFn === 'function') {
         await sinkIdFn.call(el, this.selectedOutputDevice);
       }
-    } catch {
-    }
+    } catch {/* ignore */}
   }
 
   // Getters
@@ -556,18 +547,15 @@ export class AudioService {
     pushToTalk: boolean;
   } {
     return {
-      recording:
-        "mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices,
-      synthesis: "speechSynthesis" in window,
-      deviceSelection:
-        "mediaDevices" in navigator &&
-        "enumerateDevices" in navigator.mediaDevices,
-      pushToTalk: true, // Always available
+      recording: 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices,
+      synthesis: 'speechSynthesis' in window,
+      deviceSelection: 'mediaDevices' in navigator && 'enumerateDevices' in navigator.mediaDevices,
+      pushToTalk: true // Always available
     };
   }
 
   // Private properties
-  private onRecordingComplete: ((_blob: Blob) => void) | null = null;
+  private onRecordingComplete: ((blob: Blob) => void) | null = null;
   private pushToTalkOptions: PushToTalkOptions | null = null;
 }
 
@@ -576,19 +564,12 @@ export const audioService = AudioService.getInstance();
 
 // Convenience exports for backward compatibility
 export const getAudioService = () => audioService;
-export const startRecording = (options?: AudioRecordingOptions) =>
-  audioService.startRecording(options);
+export const startRecording = (options?: AudioRecordingOptions) => audioService.startRecording(options);
 export const stopRecording = () => audioService.stopRecording();
-export const speak = (text: string, settings?: VoiceSettings) =>
-  audioService.speak(text, settings);
+export const speak = (text: string, settings?: VoiceSettings) => audioService.speak(text, settings);
 export const stopSpeaking = () => audioService.stopSpeaking();
-export const startMonitoring = (
-  deviceId?: string,
-) => audioService.startMonitoring(deviceId, onLevel);
+export const startMonitoring = (deviceId?: string, onLevel?: (level01: number) => void) => audioService.startMonitoring(deviceId, onLevel);
 export const stopMonitoring = () => audioService.stopMonitoring();
-export const setPreferredInputDevice = (deviceId?: string) =>
-  audioService.setPreferredInputDevice(deviceId);
-export const setPreferredOutputDevice = (deviceId?: string) =>
-  audioService.setPreferredOutputDevice(deviceId);
-export const applyOutputDevice = (el: HTMLMediaElement) =>
-  audioService.applyOutputDevice(el);
+export const setPreferredInputDevice = (deviceId?: string) => audioService.setPreferredInputDevice(deviceId);
+export const setPreferredOutputDevice = (deviceId?: string) => audioService.setPreferredOutputDevice(deviceId);
+export const applyOutputDevice = (el: HTMLMediaElement) => audioService.applyOutputDevice(el);

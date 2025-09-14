@@ -61,16 +61,16 @@ export type ToolResponseMessage = {
 };
 
 export type LiveOutgoingMessage =
-  | SetupMessage
-  | ClientContentMessage
-  | RealtimeInputMessage
-  | ToolResponseMessage;
+    | SetupMessage
+    | ClientContentMessage
+    | RealtimeInputMessage
+    | ToolResponseMessage;
 
 export type LiveIncomingMessage =
-  | ServerContentMessage
-  | ToolCallMessage
-  | ToolCallCancellationMessage
-  | SetupCompleteMessage;
+    | ServerContentMessage
+    | ToolCallMessage
+    | ToolCallCancellationMessage
+    | SetupCompleteMessage;
 
 export type ServerContent = Interrupted | TurnComplete | ModelTurn;
 
@@ -82,10 +82,10 @@ export interface TurnComplete {
   turnComplete: {};
 }
 
-export interface ModelTurn {
+export interface ModelTurn{
   modelTurn: {
-    parts: Part[];
-  };
+    parts: Part[]
+  }
 }
 
 export interface ServerContentMessage {
@@ -96,7 +96,7 @@ export interface ToolCallMessage {
   toolCall: ToolCall;
 }
 
-export interface ToolCallCancellationMessage {
+export interface ToolCallCancellationMessage{
   toolCallCancellation: ToolCallCancellation;
 }
 
@@ -108,96 +108,47 @@ export type FunctionCall = {
   id: string;
   name: string;
   args: string;
-};
+}
 
-export interface ToolCallCancellation {
-  ids: string[];
+export interface ToolCallCancellation{
+  ids: string[]
 }
 
 // Type Guards
 export function isSetupCompleteMessage(msg: any): msg is SetupCompleteMessage {
-  return (
-    typeof msg === "object" &&
-    msg !== null &&
-    typeof msg.setupComplete === "object" &&
-    msg.setupComplete !== null
-  );
+  return typeof msg === 'object' && msg !== null && typeof msg.setupComplete === 'object' && msg.setupComplete !== null;
 }
 
 export function isServerContentMessage(msg: any): msg is ServerContentMessage {
-  return (
-    typeof msg === "object" &&
-    msg !== null &&
-    typeof msg.serverContent === "object" &&
-    msg.serverContent !== null
-  );
+  return typeof msg === 'object' && msg !== null && typeof msg.serverContent === 'object' && msg.serverContent !==null;
 }
 
 export function isClientContentMessage(msg: any): msg is ClientContentMessage {
-  return (
-    typeof msg === "object" &&
-    msg !== null &&
-    typeof msg.clientContent === "object" &&
-    msg.clientContent !== null
-  );
+  return typeof msg === 'object' && msg !== null && typeof msg.clientContent === 'object' && msg.clientContent !== null;
 }
 
 export function isToolResponseMessage(msg: any): msg is ToolResponseMessage {
-  return (
-    typeof msg === "object" &&
-    msg !== null &&
-    typeof msg.toolResponse === "object" &&
-    msg.toolResponse !== null
-  );
+  return typeof msg === 'object' && msg !== null && typeof msg.toolResponse === 'object' && msg.toolResponse !== null;
 }
 
 export function isToolCallMessage(msg: any): msg is ToolCallMessage {
-  return (
-    typeof msg === "object" &&
-    msg !== null &&
-    typeof msg.toolCall === "object" &&
-    msg.toolCall !== null
-  );
+  return typeof msg === 'object' && msg !== null && typeof msg.toolCall === 'object' && msg.toolCall !== null;
 }
 
-export function isToolCallCancellationMessage(
-  msg: any,
-): msg is ToolCallCancellationMessage {
-  return (
-    typeof msg === "object" &&
-    msg !== null &&
-    typeof msg.toolCallCancellation === "object" &&
-    msg.toolCallCancellation !== null
-  );
+export function isToolCallCancellationMessage(msg: any): msg is ToolCallCancellationMessage {
+  return typeof msg === 'object' && msg !== null && typeof msg.toolCallCancellation === 'object' && msg.toolCallCancellation !==null;
 }
 
 export function isInterrupted(content: ServerContent): content is Interrupted {
-  return (
-    typeof content === "object" &&
-    content !== null &&
-    typeof (content as any).interrupted === "object" &&
-    (content as any).interrupted !== null
-  );
+  return typeof content === 'object' && content !== null && typeof (content as any).interrupted === 'object' && (content as any).interrupted !== null;
 }
 
-export function isTurnComplete(
-  content: ServerContent,
-): content is TurnComplete {
-  return (
-    typeof content === "object" &&
-    content !== null &&
-    typeof (content as any).turnComplete === "object" &&
-    (content as any).turnComplete !== null
-  );
+export function isTurnComplete(content: ServerContent): content is TurnComplete {
+  return typeof content === 'object' && content !== null &&  typeof (content as any).turnComplete === 'object'  && (content as any).turnComplete !== null;
 }
 
 export function isModelTurn(content: ServerContent): content is ModelTurn {
-  return (
-    typeof content === "object" &&
-    content !== null &&
-    typeof (content as any).modelTurn === "object" &&
-    (content as any).modelTurn !== null
-  );
+  return typeof content === 'object' && content !== null && typeof (content as any).modelTurn === 'object' && (content as any).modelTurn !== null;
 }
 
 // Event Types
@@ -227,8 +178,8 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
   constructor({ url, apiKey }: MultimodalLiveAPIClientConnection) {
     super();
     url =
-      url ||
-      `wss:
+        url ||
+        `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent`;
     url += `?key=${apiKey}`;
     this.url = url;
   }
@@ -246,9 +197,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
     if (!config.generationConfig.responseModalities) {
       config.generationConfig.responseModalities = ["TEXT", "AUDIO"];
     } else if (!Array.isArray(config.generationConfig.responseModalities)) {
-      config.generationConfig.responseModalities = [
-        config.generationConfig.responseModalities,
-      ];
+      config.generationConfig.responseModalities = [config.generationConfig.responseModalities];
     }
 
     this.config = config;
@@ -259,7 +208,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
       const onError = (_ev: Event) => {
         this.disconnect();
         const message = `Could not connect to "${this.url}"`;
-        this.log({ type: `server.error`, message, date: new Date() });
+        this.log({type: `server.error`, message, date: new Date()});
         reject(new Error(message));
       };
       ws.addEventListener("error", onError);
@@ -269,18 +218,14 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
           reject(new Error("Invalid config sent to `connect(config)`"));
           return;
         }
-        this.log({
-          type: `client.open`,
-          message: `connected to socket`,
-          date: new Date(),
-        });
+        this.log({type: `client.open`, message: `connected to socket`, date: new Date()});
         this.emit("open");
 
         const setupMessage: SetupMessage = {
           setup: this.config,
         };
         this._sendDirect(setupMessage);
-        this.log({ type: "client.send", message: "setup", date: new Date() });
+        this.log({type: "client.send", message: "setup", date: new Date()});
 
         ws.removeEventListener("error", onError);
 
@@ -289,7 +234,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
             try {
               const raw = ev?.data ?? ev;
               let message: any = null;
-              if (typeof raw === "string") {
+              if (typeof raw === 'string') {
                 message = JSON.parse(raw);
               } else if (raw instanceof Blob) {
                 const text = await raw.text();
@@ -297,55 +242,44 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
               } else if (raw instanceof ArrayBuffer) {
                 const text = new TextDecoder().decode(new Uint8Array(raw));
                 message = JSON.parse(text);
-              } else if (typeof raw === "object") {
+              } else if (typeof raw === 'object') {
                 // Some environments may already deliver parsed objects
                 message = raw;
               }
-              this.log({
-                type: "server.message",
-                message: message,
-                date: new Date(),
-              });
-
-              // Handle different message types
-              if (isSetupCompleteMessage(message)) {
-                this.emit("setupcomplete");
-              } else if (isServerContentMessage(message)) {
-                const serverContent = message.serverContent;
-                this.emit("content", serverContent);
-
-                if (isInterrupted(serverContent)) {
-                  this.emit("interrupted");
-                } else if (isTurnComplete(serverContent)) {
-                  this.emit("turncomplete");
-                } else if (isModelTurn(serverContent)) {
-                  // Check for audio data in model turn
-                  for (const part of serverContent.modelTurn.parts) {
-                    if (
-                      part.inlineData &&
-                      part.inlineData.mimeType === "audio/pcm"
-                    ) {
-
-                      const binaryString = atob(part.inlineData.data);
-                      const bytes = new Uint8Array(binaryString.length);
-                      for (let i = 0; i < binaryString.length; i++) {
-                        bytes[i] = binaryString.charCodeAt(i);
-                      }
-                      this.emit("audio", bytes.buffer);
+              this.log({type: "server.message", message: message, date: new Date()});
+            
+            // Handle different message types
+            if (isSetupCompleteMessage(message)) {
+              this.emit("setupcomplete");
+            } else if (isServerContentMessage(message)) {
+              const serverContent = message.serverContent;
+              this.emit("content", serverContent);
+              
+              if (isInterrupted(serverContent)) {
+                this.emit("interrupted");
+              } else if (isTurnComplete(serverContent)) {
+                this.emit("turncomplete");
+              } else if (isModelTurn(serverContent)) {
+                // Check for audio data in model turn
+                for (const part of serverContent.modelTurn.parts) {
+                  if (part.inlineData && part.inlineData.mimeType === 'audio/pcm') {
+                    // Convert base64 audio data to ArrayBuffer
+                    const binaryString = atob(part.inlineData.data);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                      bytes[i] = binaryString.charCodeAt(i);
                     }
+                    this.emit("audio", bytes.buffer);
                   }
                 }
+              }
               } else if (isToolCallMessage(message)) {
                 this.emit("toolcall", message.toolCall);
               } else if (isToolCallCancellationMessage(message)) {
                 this.emit("toolcallcancellation", message.toolCallCancellation);
               }
             } catch (error) {
-              this.log({
-                type: "server.error",
-                message: `Failed to parse message: ${error}`,
-                date: new Date(),
-              });
+              this.log({type: "server.error", message: `Failed to parse message: ${error}`, date: new Date()});
             }
           };
           // Fire and forget; errors are logged internally
@@ -355,11 +289,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
         ws.addEventListener("close", (ev: any) => {
           this.disconnect();
           let reason = ev.reason || "No reason provided";
-          this.log({
-            type: `server.close`,
-            message: `disconnected ${reason ? `with reason: ${reason}` : ``}`,
-            date: new Date(),
-          });
+          this.log({type: `server.close`, message: `disconnected ${reason ? `with reason: ${reason}` : ``}`,date: new Date()});
           this.emit("close", ev);
         });
         resolve(true);
@@ -371,11 +301,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
     if ((!ws || this.ws === ws) && this.ws) {
       this.ws.close();
       this.ws = null;
-      this.log({
-        type: "client.close",
-        message: `Disconnected`,
-        date: new Date(),
-      });
+      this.log({type: "client.close", message: `Disconnected`, date: new Date()});
       return true;
     }
     return false;
@@ -384,24 +310,16 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
   sendRealtimeInput(chunks: GenerativeContentBlob[]) {
     const data: RealtimeInputMessage = {
       realtimeInput: {
-        mediaChunks: chunks,
-      },
+        mediaChunks: chunks
+      }
     };
     this._sendDirect(data);
-    this.log({
-      type: `client.realtimeInput`,
-      message: `media chunks: ${chunks.length}`,
-      date: new Date(),
-    });
+    this.log({type: `client.realtimeInput`, message: `media chunks: ${chunks.length}`, date: new Date()});
   }
 
   send(clientContentMessage: ClientContentMessage) {
     this._sendDirect(clientContentMessage);
-    this.log({
-      type: `client.send`,
-      message: clientContentMessage,
-      date: new Date(),
-    });
+    this.log({type: `client.send`, message: clientContentMessage, date: new Date()});
   }
 
   _sendDirect(request: object) {

@@ -1,0 +1,477 @@
+/**
+ * =====================================================
+ * NAVI BUTTON SYSTEM
+ * =====================================================
+ * Comprehensive button components using unified theme
+ * Glassmorphic design with RGB neon highlights
+ */
+
+/* ===== BASE BUTTON STYLES ===== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: inherit;
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  white-space: nowrap;
+  outline: none;
+}
+
+.btn:focus-visible {
+  @apply focus\:ring-neon;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ===== BUTTON SIZES ===== */
+
+.btn-xs {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+  min-height: 24px;
+}
+
+.btn-sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+  min-height: 32px;
+}
+
+.btn-md {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-md);
+  min-height: 40px;
+}
+
+.btn-lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-lg);
+  border-radius: var(--radius-lg);
+  min-height: 48px;
+}
+
+.btn-xl {
+  padding: var(--space-5) var(--space-8);
+  font-size: var(--font-size-xl);
+  border-radius: var(--radius-lg);
+  min-height: 56px;
+}
+
+/* ===== BUTTON VARIANTS ===== */
+
+/* Primary Button - Glass with neon blue highlights */
+.btn-primary {
+  @apply glass neon-blue;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-primary:hover {
+  background: var(--glass-bg-hover);
+  border-color: rgb(var(--neon-blue));
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  background: var(--glass-bg-active);
+  transform: translateY(0);
+}
+
+/* Secondary Button - Subtle glass effect */
+.btn-secondary {
+  @apply glass;
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover {
+  background: var(--glass-bg-hover);
+  color: var(--text-primary);
+  border-color: var(--glass-border-hover);
+}
+
+/* Success Button - Green neon */
+.btn-success {
+  @apply glass neon-green;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-green));
+}
+
+.btn-success:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px);
+}
+
+/* Danger Button - Red neon */
+.btn-danger {
+  @apply glass neon-red;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-red));
+}
+
+.btn-danger:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px);
+}
+
+/* Warning Button - Orange neon */
+.btn-warning {
+  @apply glass neon;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-orange));
+}
+
+.btn-warning:hover {
+  background: var(--glass-bg-hover);
+  box-shadow: 0 0 20px rgba(var(--neon-orange), 0.4);
+  transform: translateY(-2px);
+}
+
+/* Info Button - Cyan neon */
+.btn-info {
+  @apply glass neon-cyan;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-cyan));
+}
+
+.btn-info:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px);
+}
+
+/* Ghost Button - Transparent with border */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-ghost:hover {
+  @apply neon-blue;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border-color: rgb(var(--neon-blue));
+}
+
+/* Outline Button - Just border, no background */
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--glass-border);
+}
+
+.btn-outline:hover {
+  @apply neon-blue;
+  background: var(--glass-bg);
+  border-color: rgb(var(--neon-blue));
+}
+
+/* Solid Button - Opaque background */
+.btn-solid {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: none;
+}
+
+.btn-solid:hover {
+  @apply neon-blue;
+  background: var(--bg-tertiary);
+  border-color: rgb(var(--neon-blue));
+}
+
+/* Link Button - No background, just text */
+.btn-link {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.btn-link:hover {
+  color: rgb(var(--neon-blue));
+  text-decoration-color: rgb(var(--neon-blue));
+}
+
+/* ===== NEON VARIANT BUTTONS ===== */
+
+.btn-neon-red {
+  @apply btn-primary neon-red;
+  border-color: rgb(var(--neon-red));
+}
+
+.btn-neon-blue {
+  @apply btn-primary neon-blue;
+  border-color: rgb(var(--neon-blue));
+}
+
+.btn-neon-green {
+  @apply btn-primary neon-green;
+  border-color: rgb(var(--neon-green));
+}
+
+.btn-neon-purple {
+  @apply btn-primary neon-purple;
+  border-color: rgb(var(--neon-purple));
+}
+
+.btn-neon-pink {
+  @apply btn-primary neon-pink;
+  border-color: rgb(var(--neon-pink));
+}
+
+.btn-neon-cyan {
+  @apply btn-primary neon-cyan;
+  border-color: rgb(var(--neon-cyan));
+}
+
+/* ===== BUTTON GROUPS ===== */
+
+.btn-group {
+  display: inline-flex;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.btn-group .btn {
+  border-radius: 0;
+  border-right-width: 0;
+  position: relative;
+}
+
+.btn-group .btn:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+}
+
+.btn-group .btn:last-child {
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  border-right-width: 1px;
+}
+
+.btn-group .btn:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+/* ===== ICON BUTTONS ===== */
+
+.btn-icon {
+  padding: var(--space-2);
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+}
+
+.btn-icon-sm {
+  padding: var(--space-1);
+  min-height: 28px;
+  width: 28px;
+}
+
+.btn-icon-md {
+  padding: var(--space-2);
+  min-height: 36px;
+  width: 36px;
+}
+
+.btn-icon-lg {
+  padding: var(--space-3);
+  min-height: 44px;
+  width: 44px;
+}
+
+/* ===== FLOATING ACTION BUTTON ===== */
+
+.btn-fab {
+  @apply btn-primary btn-icon-lg neon-blue;
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  z-index: var(--z-50);
+  box-shadow: var(--glass-shadow-xl);
+}
+
+.btn-fab:hover {
+  transform: scale(1.1);
+  box-shadow: var(--glass-shadow-xl), 0 0 30px rgba(var(--neon-blue), 0.4);
+}
+
+/* ===== LOADING STATE ===== */
+
+.btn-loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: inherit;
+  border-radius: inherit;
+}
+
+.btn-loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ===== RESPONSIVE BUTTONS ===== */
+
+@media (max-width: 768px) {
+  .btn-responsive {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-lg,
+  .btn-xl {
+    font-size: var(--font-size-base);
+    padding: var(--space-3) var(--space-4);
+    min-height: 44px;
+  }
+
+  .btn-fab {
+    bottom: var(--space-4);
+    right: var(--space-4);
+  }
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+
+.btn:focus-visible {
+  outline: 2px solid rgb(var(--neon-blue));
+  outline-offset: 2px;
+}
+
+.btn[aria-pressed="true"] {
+  background: var(--glass-bg-active);
+  border-color: rgb(var(--neon-blue));
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+    animation: none;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+
+  .btn-fab:hover {
+    transform: none;
+  }
+}
+
+/* ===== BUTTON COMPOSITIONS ===== */
+
+/* Call-to-action button with pulse effect */
+.btn-cta {
+  @apply btn-primary btn-lg neon-blue animate-pulse-neon;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Subtle action button */
+.btn-subtle {
+  @apply btn-ghost btn-sm;
+  color: var(--text-muted);
+}
+
+.btn-subtle:hover {
+  color: var(--text-primary);
+  background: var(--glass-bg);
+}
+
+/* Navigation button */
+.btn-nav {
+  @apply btn-ghost;
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-4);
+}
+
+.btn-nav.active {
+  @apply neon-blue;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border-color: rgb(var(--neon-blue));
+}
+
+/* Menu button */
+.btn-menu {
+  @apply btn-ghost btn-icon-md;
+  border-radius: var(--radius-md);
+}
+
+/* Close button */
+.btn-close {
+  @apply btn-ghost btn-icon-sm neon-red;
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+}
+
+/* Dropdown toggle */
+.btn-dropdown {
+  @apply btn-secondary;
+  position: relative;
+}
+
+.btn-dropdown::after {
+  content: '';
+  margin-left: var(--space-2);
+  border: 4px solid transparent;
+  border-top-color: currentColor;
+  border-bottom: none;
+}
+
+.btn-dropdown[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}

@@ -1,17 +1,19 @@
 <template>
   <div class="resume-step-navigator">
     <div class="unified-grid g-2">
-      <div v-for="section in sections" :key="section.key" class="col">
+      <div
+        v-for="section in sections"
+        :key="section.key"
+        class="col"
+      >
         <button
-          :class="[
-            'step-nav-item',
-            'unified-btn btn-sm w-100',
-            {
-              'btn-primary': activeSection === section.key,
-              'btn-outline-secondary': activeSection !== section.key,
-              completed:
-                completionStatus[section.key as keyof typeof completionStatus],
-            },
+          :class="[ 'step-nav-item',
+                    'unified-btn btn-sm w-100',
+                    {
+                      'btn-primary': activeSection === section.key,
+                      'btn-outline-secondary': activeSection !== section.key,
+                      'completed': completionStatus[section.key as keyof typeof completionStatus]
+                    }
           ]"
           :aria-label="`Navigate to ${section.label}`"
           @click="handleClick(section.key)"
@@ -19,15 +21,8 @@
           <div class="d-flex align-items-center gap-2">
             <AppIcon :name="section.icon" class="mdi-18px" />
             <div class="step-content">
-              <div class="step-title">
-                {{ section.shortLabel || section.label }}
-              </div>
-              <div
-                v-if="
-                  completionStatus[section.key as keyof typeof completionStatus]
-                "
-                class="step-status"
-              >
+              <div class="step-title">{{ section.shortLabel || section.label }}</div>
+              <div v-if="completionStatus[section.key as keyof typeof completionStatus]" class="step-status">
                 <AppIcon name="mdi-check-circle-outline" color="success" />
               </div>
             </div>
@@ -39,34 +34,34 @@
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/components/ui/AppIcon.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
 interface Section {
-  key: string;
-  label: string;
-  icon: string;
-  shortLabel?: string;
-  description?: string;
+  key: string
+  label: string
+  icon: string
+  shortLabel?: string
+  description?: string
 }
 
 interface Props {
-  activeSection: string;
-  sections: Section[];
-  completionStatus: Record<string, boolean>;
-  canUseAi?: boolean;
-  showAiIndicator?: boolean;
+  activeSection: string
+  sections: Section[]
+  completionStatus: Record<string, boolean>
+  canUseAi?: boolean
+  showAiIndicator?: boolean
 }
 
-defineProps<Props>();
+defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: "updateActiveSection", value: string): void;
-  (e: "update:active-section", value: string): void;
-}>();
+  (e: 'updateActiveSection', value: string): void
+  (e: 'update:active-section', value: string): void
+}>()
 
 const handleClick = (value: string) => {
-  emit("updateActiveSection", value);
-  emit("update:active-section", value);
-};
+  emit('updateActiveSection', value)
+  emit('update:active-section', value)
+}
 </script>
 
 <style scoped>
@@ -123,10 +118,14 @@ const handleClick = (value: string) => {
   }
 }
 
+/* Theme support */
 [data-theme="dark"] .step-nav-item.completed {
   border-color: var(--color-success);
 }
 
 .scoping-fix {
+  font-size: 0.75rem;
+  width: 0.75rem;
+  height: 0.75rem;
 }
 </style>

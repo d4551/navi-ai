@@ -27,16 +27,15 @@
                   john.doe@email.com | (555) 123-4567 | City, State
                 </div>
               </div>
-
+              
               <div class="preview-section">
                 <h2 class="section-title">Professional Summary</h2>
                 <p class="preview-text">
-                  Dynamic software engineer with 5+ years of experience
-                  developing scalable web applications. Proven track record of
-                  delivering high-quality solutions using modern technologies.
+                  Dynamic software engineer with 5+ years of experience developing scalable web applications.
+                  Proven track record of delivering high-quality solutions using modern technologies.
                 </p>
               </div>
-
+              
               <div class="preview-section">
                 <h2 class="section-title">Experience</h2>
                 <div class="preview-experience">
@@ -46,17 +45,12 @@
                   </div>
                   <div class="experience-company">Tech Company Inc.</div>
                   <ul class="experience-bullets">
-                    <li>
-                      Developed and maintained web applications using React and
-                      Node.js
-                    </li>
-                    <li>
-                      Led team of 3 developers on critical product features
-                    </li>
+                    <li>Developed and maintained web applications using React and Node.js</li>
+                    <li>Led team of 3 developers on critical product features</li>
                   </ul>
                 </div>
               </div>
-
+              
               <div class="preview-section">
                 <h2 class="section-title">Skills</h2>
                 <div class="preview-skills">
@@ -80,15 +74,23 @@
             </span>
             <span class="meta-item">
               <AppIcon name="mdi-download" size="14" />
-              {{ template?.downloads || "1.2k" }} downloads
+              {{ template?.downloads || '1.2k' }} downloads
             </span>
           </div>
         </div>
         <div class="footer-actions">
-          <UnifiedButton variant="outline" size="sm" @click="$emit('close')">
+          <UnifiedButton
+            variant="outline"
+            size="sm"
+            @click="$emit('close')"
+          >
             Cancel
           </UnifiedButton>
-          <UnifiedButton variant="primary" size="sm" @click="selectTemplate">
+          <UnifiedButton
+            variant="primary"
+            size="sm"
+            @click="selectTemplate"
+          >
             Use This Template
           </UnifiedButton>
         </div>
@@ -98,32 +100,32 @@
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
 const props = defineProps<{
-  show: boolean;
-  template: any;
-  documentType: "resume" | "cover-letter";
-}>();
+  show: boolean
+  template: any
+  documentType: 'resume' | 'cover-letter'
+}>()
 
 // Emits
 const emit = defineEmits<{
-  close: [];
-  select: [string];
-}>();
+  'close': []
+  'select': [string]
+}>()
 
 // Methods
 const handleOverlayClick = (event: Event) => {
   if (event.target === event.currentTarget) {
-    emit("close");
+    emit('close')
   }
-};
+}
 
 const selectTemplate = () => {
-  emit("select", props.template?.id || "default");
-};
+  emit('select', props.template?.id || 'default')
+}
 </script>
 
 <style scoped>
@@ -161,11 +163,7 @@ const selectTemplate = () => {
   justify-content: space-between;
   padding: var(--spacing-5);
   border-bottom: 1px solid var(--glass-border);
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-50) 0%,
-    var(--surface-base) 100%
-  );
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--surface-base) 100%);
 }
 
 .header-content {
@@ -308,10 +306,14 @@ const selectTemplate = () => {
   border: 1px solid #ddd;
 }
 
+/* Template-specific styles */
 .template-gaming-pro .preview-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  padding: var(--spacing-4);
   border-radius: var(--radius-md);
   border-bottom: none;
+  margin-bottom: var(--spacing-6);
 }
 
 .template-gaming-pro .preview-name {
@@ -319,13 +321,18 @@ const selectTemplate = () => {
 }
 
 .template-gaming-pro .preview-contact {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .template-gaming-pro .section-title {
+  color: #667eea;
+  border-bottom: 2px solid #667eea;
 }
 
 .template-creative-showcase .preview-header {
+  background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
   color: white;
+  padding: var(--spacing-4);
   border-radius: var(--radius-md);
   border-bottom: none;
 }
@@ -335,56 +342,73 @@ const selectTemplate = () => {
 }
 
 .template-creative-showcase .section-title {
+  color: #ff6b6b;
 }
 
 .template-tech-minimal .section-title {
+  color: #2d3748;
+  font-weight: 600;
 }
 
 .template-executive-classic .section-title {
+  color: #2d3748;
+  letter-spacing: 1px;
 }
 
 .modal-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: var(--spacing-4) var(--spacing-5);
+  border-top: 1px solid var(--glass-border);
   background: var(--surface-base);
 }
 
 .footer-info {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
 }
 
 .template-meta {
   display: flex;
   align-items: center;
+  gap: var(--spacing-4);
 }
 
 .meta-item {
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
 }
 
 .footer-actions {
   display: flex;
+  gap: var(--spacing-2);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .modal-overlay {
+    padding: var(--spacing-2);
   }
-
+  
   .preview-modal {
+    max-height: 95vh;
   }
-
+  
   .document-preview {
+    padding: var(--spacing-4);
   }
-
+  
   .modal-footer {
     flex-direction: column;
+    gap: var(--spacing-3);
     align-items: stretch;
   }
-
+  
   .footer-actions {
     justify-content: space-between;
   }

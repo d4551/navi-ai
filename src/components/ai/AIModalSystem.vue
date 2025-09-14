@@ -2,7 +2,7 @@
   <div class="ai-modal-system">
     <!-- Floating AI Assistant Button -->
     <Teleport to="body">
-      <div
+      <div 
         v-if="!isModalVisible"
         class="ai-float-button"
         :class="{ 'has-suggestions': hasPendingSuggestions }"
@@ -12,17 +12,18 @@
           size="lg"
           icon-only
           :icon="aiStatus.isProcessing ? 'mdi-loading' : 'mdi-robot-happy'"
-          :class="{ spinning: aiStatus.isProcessing }"
-          :tooltip="
-            hasPendingSuggestions
-              ? `AI Assistant - ${activeSuggestions.length} suggestions available`
-              : 'AI Assistant'
-          "
+          :class="{ 'spinning': aiStatus.isProcessing }"
+          :tooltip="hasPendingSuggestions ? 
+            `AI Assistant - ${activeSuggestions.length} suggestions available` : 
+            'AI Assistant'"
           @click="toggleModal"
         />
-
+        
         <!-- Suggestion Badge -->
-        <div v-if="hasPendingSuggestions" class="suggestion-badge">
+        <div 
+          v-if="hasPendingSuggestions" 
+          class="suggestion-badge"
+        >
           {{ activeSuggestions.length }}
         </div>
       </div>
@@ -39,28 +40,28 @@
         <!-- Modal Header -->
         <v-card-title class="d-flex align-center justify-space-between pa-4">
           <div class="d-flex align-center ga-2">
-            <AppIcon
+            <AppIcon 
               :name="aiStatus.isProcessing ? 'mdi-loading' : 'mdi-robot-happy'"
-              :class="{ spinning: aiStatus.isProcessing }"
+              :class="{ 'spinning': aiStatus.isProcessing }"
               size="small"
               color="primary"
             />
             <span class="text-h6">AI Career Assistant</span>
-            <UiChip
+            <UiChip 
               v-if="currentContext"
               :label="getContextDisplayName(currentContext.entityType)"
               variant="secondary"
               size="small"
             />
           </div>
-
+          
           <div class="d-flex align-center ga-2">
             <!-- AI Status Indicator -->
             <div class="ai-status-indicator" :class="getStatusClass()">
               <div class="status-dot"></div>
               <span class="status-text">{{ getStatusText() }}</span>
             </div>
-
+            
             <UnifiedButton
               variant="ghost"
               icon-only
@@ -80,7 +81,7 @@
           <v-tab value="suggestions">
             <AppIcon name="mdi-lightbulb" size="small" class="mr-2" />
             Suggestions
-            <UiChip
+            <UiChip 
               v-if="activeSuggestions.length > 0"
               :label="activeSuggestions.length.toString()"
               variant="primary"
@@ -104,24 +105,11 @@
             <!-- Suggestions Tab -->
             <v-window-item value="suggestions">
               <div class="suggestions-panel pa-4">
-                <div
-                  v-if="activeSuggestions.length === 0"
-                  class="empty-state text-center pa-8"
-                >
-                  <AppIcon
-                    name="mdi-lightbulb-outline"
-                    size="xl"
-                    color="muted"
-                  />
+                <div v-if="activeSuggestions.length === 0" class="empty-state text-center pa-8">
+                  <AppIcon name="mdi-lightbulb-outline" size="xl" color="muted" />
                   <h3 class="text-h6 mt-4 mb-2">No Suggestions Available</h3>
                   <p class="text-body-2 text-medium-emphasis">
-                    Start working on your
-                    {{
-                      getContextDisplayName(
-                        currentContext?.entityType || "resume",
-                      )
-                    }}
-                    to get AI-powered suggestions.
+                    Start working on your {{ getContextDisplayName(currentContext?.entityType || 'resume') }} to get AI-powered suggestions.
                   </p>
                 </div>
 
@@ -132,24 +120,17 @@
                     class="suggestion-card mb-3"
                     :class="getPriorityClass(suggestion.priority)"
                   >
-                    <div
-                      class="suggestion-header d-flex align-center justify-space-between mb-2"
-                    >
+                    <div class="suggestion-header d-flex align-center justify-space-between mb-2">
                       <div class="d-flex align-center ga-2">
-                        <AppIcon
-                          :name="getSuggestionIcon(suggestion.type)"
-                          size="small"
-                        />
-                        <span class="text-subtitle-1 font-weight-medium">{{
-                          suggestion.title
-                        }}</span>
-                        <UiChip
+                        <AppIcon :name="getSuggestionIcon(suggestion.type)" size="small" />
+                        <span class="text-subtitle-1 font-weight-medium">{{ suggestion.title }}</span>
+                        <UiChip 
                           :label="suggestion.priority"
                           :variant="getPriorityVariant(suggestion.priority)"
                           size="xs"
                         />
                       </div>
-
+                      
                       <div class="suggestion-actions d-flex ga-1">
                         <UnifiedButton
                           variant="primary"
@@ -167,30 +148,21 @@
                         />
                       </div>
                     </div>
-
+                    
                     <p class="text-body-2 mb-2">{{ suggestion.description }}</p>
-
-                    <div
-                      v-if="suggestion.originalText && suggestion.suggestedText"
-                      class="suggestion-comparison"
-                    >
+                    
+                    <div v-if="suggestion.originalText && suggestion.suggestedText" class="suggestion-comparison">
                       <div class="comparison-section mb-2">
                         <span class="text-caption text-medium-emphasis">Original:</span>
-                        <div class="original-text pa-2 rounded">
-                          {{ suggestion.originalText }}
-                        </div>
+                        <div class="original-text pa-2 rounded">{{ suggestion.originalText }}</div>
                       </div>
                       <div class="comparison-section">
                         <span class="text-caption text-medium-emphasis">Suggested:</span>
-                        <div class="suggested-text pa-2 rounded">
-                          {{ suggestion.suggestedText }}
-                        </div>
+                        <div class="suggested-text pa-2 rounded">{{ suggestion.suggestedText }}</div>
                       </div>
                     </div>
-
-                    <div
-                      class="reasoning text-caption mt-2 pa-2 rounded bg-surface-variant"
-                    >
+                    
+                    <div class="reasoning text-caption mt-2 pa-2 rounded bg-surface-variant">
                       <strong>Why:</strong> {{ suggestion.reasoning }}
                     </div>
                   </div>
@@ -205,12 +177,7 @@
                   <AppIcon name="mdi-chart-line" size="xl" color="muted" />
                   <h3 class="text-h6 mt-4 mb-2">No Analysis Available</h3>
                   <p class="text-body-2 text-medium-emphasis mb-4">
-                    Generate an analysis of your
-                    {{
-                      getContextDisplayName(
-                        currentContext?.entityType || "resume",
-                      )
-                    }}.
+                    Generate an analysis of your {{ getContextDisplayName(currentContext?.entityType || 'resume') }}.
                   </p>
                   <UnifiedButton
                     variant="primary"
@@ -226,10 +193,7 @@
                   <div class="score-card mb-4 pa-4 rounded glass-elevated">
                     <div class="d-flex align-center justify-space-between mb-2">
                       <h3 class="text-h6">Overall Score</h3>
-                      <div
-                        class="score-circle"
-                        :class="getScoreClass(lastAnalysis.score)"
-                      >
+                      <div class="score-circle" :class="getScoreClass(lastAnalysis.score)">
                         {{ lastAnalysis.score }}/100
                       </div>
                     </div>
@@ -277,10 +241,7 @@
                   </div>
 
                   <!-- Keywords -->
-                  <div
-                    v-if="lastAnalysis.keywords?.length"
-                    class="keywords-section mt-4"
-                  >
+                  <div v-if="lastAnalysis.keywords?.length" class="keywords-section mt-4">
                     <h4 class="text-subtitle-1 mb-3">Relevant Keywords</h4>
                     <div class="keywords-list d-flex flex-wrap ga-2">
                       <UiChip
@@ -299,20 +260,12 @@
             <!-- Chat Tab -->
             <v-window-item value="chat">
               <div class="chat-panel">
-                <div
-                  ref="chatContainer"
-                  class="chat-messages pa-4"
-                  style="height: 400px; overflow-y: auto"
-                >
-                  <div
-                    v-if="chatHistory.length === 0"
-                    class="empty-chat text-center pa-8"
-                  >
+                <div ref="chatContainer" class="chat-messages pa-4" style="height: 400px; overflow-y: auto;">
+                  <div v-if="chatHistory.length === 0" class="empty-chat text-center pa-8">
                     <AppIcon name="mdi-chat-outline" size="xl" color="muted" />
                     <h3 class="text-h6 mt-4 mb-2">Start a Conversation</h3>
                     <p class="text-body-2 text-medium-emphasis">
-                      Ask me anything about your career, resume, or job search
-                      strategy.
+                      Ask me anything about your career, resume, or job search strategy.
                     </p>
                   </div>
 
@@ -320,29 +273,21 @@
                     v-for="message in chatHistory"
                     :key="message.id"
                     class="chat-message mb-4"
-                    :class="{
-                      'user-message': message.role === 'user',
-                      'ai-message': message.role === 'assistant',
-                    }"
+                    :class="{ 'user-message': message.role === 'user', 'ai-message': message.role === 'assistant' }"
                   >
                     <div class="message-header d-flex align-center ga-2 mb-2">
-                      <AppIcon
-                        :name="
-                          message.role === 'user' ? 'mdi-account' : 'mdi-robot'
-                        "
+                      <AppIcon 
+                        :name="message.role === 'user' ? 'mdi-account' : 'mdi-robot'"
                         size="small"
                       />
                       <span class="text-caption">
-                        {{ message.role === "user" ? "You" : "AI Assistant" }}
+                        {{ message.role === 'user' ? 'You' : 'AI Assistant' }}
                       </span>
                       <span class="text-caption text-medium-emphasis">
                         {{ formatMessageTime(message.timestamp) }}
                       </span>
                     </div>
-                    <div
-                      class="message-content pa-3 rounded"
-                      v-html="formatMessage(message.content)"
-                    ></div>
+                    <div class="message-content pa-3 rounded" v-html="formatMessage(message.content)"></div>
                   </div>
 
                   <div v-if="isTyping" class="typing-indicator mb-4">
@@ -389,8 +334,7 @@
           <div class="d-flex align-center justify-space-between w-100">
             <div class="session-stats">
               <span class="text-caption text-medium-emphasis">
-                Session: {{ contextStats.appliedActions }} applied,
-                {{ contextStats.dismissedActions }} dismissed
+                Session: {{ contextStats.appliedActions }} applied, {{ contextStats.dismissedActions }} dismissed
               </span>
             </div>
             <div class="modal-actions d-flex ga-2">
@@ -401,7 +345,10 @@
               >
                 Refresh
               </UnifiedButton>
-              <UnifiedButton variant="ghost" @click="closeModal">
+              <UnifiedButton
+                variant="ghost"
+                @click="closeModal"
+              >
                 Close
               </UnifiedButton>
             </div>
@@ -413,22 +360,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted } from "vue";
-import { useAIContext } from "@/composables/useAIContext";
-import { useAIIntegration } from "@/composables/aiIntegration.js";
-import { logger } from "@/shared/utils/logger";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UiChip from "@/components/ui/UiChip.vue";
+import { ref, computed, watch, nextTick, onMounted } from 'vue';
+import { useAIContext } from '@/composables/useAIContext';
+import { useAIIntegration } from '@/composables/useAIIntegration';
+import { logger } from '@/shared/utils/logger';
+import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import AppIcon from '@/components/ui/AppIcon.vue';
+import UiChip from '@/components/ui/UiChip.vue';
 
 interface Props {
-  contextType?: "resume" | "cover-letter" | "job" | "interview" | "portfolio";
+  contextType?: 'resume' | 'cover-letter' | 'job' | 'interview' | 'portfolio';
   contextId?: string;
   targetJob?: any;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  contextType: "resume",
+  contextType: 'resume',
 });
 
 const emit = defineEmits<{
@@ -444,8 +391,8 @@ const aiIntegration = useAIIntegration();
 
 // State
 const isModalVisible = ref(false);
-const activeTab = ref("suggestions");
-const chatInput = ref("");
+const activeTab = ref('suggestions');
+const chatInput = ref('');
 const chatHistory = ref<any[]>([]);
 const isTyping = ref(false);
 const isSendingMessage = ref(false);
@@ -462,9 +409,7 @@ const aiStatus = computed(() => ({
   error: aiContext.state.error,
 }));
 
-const hasPendingSuggestions = computed(
-  () => activeSuggestions.value.length > 0,
-);
+const hasPendingSuggestions = computed(() => activeSuggestions.value.length > 0);
 
 const prioritizedSuggestions = computed(() => {
   return [...activeSuggestions.value].sort((a, b) => {
@@ -488,13 +433,9 @@ const closeModal = () => {
 const initializeContext = async () => {
   if (!currentContext.value && props.contextType && props.contextId) {
     try {
-      await aiContext.initializeContext(
-        props.contextType,
-        props.contextId,
-        props.targetJob,
-      );
+      await aiContext.initializeContext(props.contextType, props.contextId, props.targetJob);
     } catch (error) {
-      logger.error("Failed to initialize AI context:", error);
+      logger.error('Failed to initialize AI context:', error);
     }
   }
 };
@@ -503,12 +444,9 @@ const applySuggestion = async (suggestionId: string) => {
   try {
     processingAction.value = suggestionId;
     await aiContext.applySuggestion(suggestionId);
-    emit(
-      "suggestionApplied",
-      activeSuggestions.value.find((s) => s.id === suggestionId),
-    );
+    emit('suggestionApplied', activeSuggestions.value.find(s => s.id === suggestionId));
   } catch (error) {
-    logger.error("Failed to apply suggestion:", error);
+    logger.error('Failed to apply suggestion:', error);
   } finally {
     processingAction.value = null;
   }
@@ -516,26 +454,26 @@ const applySuggestion = async (suggestionId: string) => {
 
 const dismissSuggestion = (suggestionId: string) => {
   aiContext.dismissSuggestion(suggestionId);
-  emit("suggestionDismissed", suggestionId);
+  emit('suggestionDismissed', suggestionId);
 };
 
 const generateAnalysis = async () => {
   if (!currentContext.value) return;
-
+  
   try {
     await aiContext.generateContextActions(currentContext.value);
   } catch (error) {
-    logger.error("Failed to generate analysis:", error);
+    logger.error('Failed to generate analysis:', error);
   }
 };
 
 const refreshSuggestions = async () => {
   if (!currentContext.value) return;
-
+  
   try {
     await aiContext.generateContextActions(currentContext.value);
   } catch (error) {
-    logger.error("Failed to refresh suggestions:", error);
+    logger.error('Failed to refresh suggestions:', error);
   }
 };
 
@@ -544,15 +482,15 @@ const sendMessage = async () => {
 
   const userMessage = {
     id: Date.now().toString(),
-    role: "user",
+    role: 'user',
     content: chatInput.value.trim(),
     timestamp: new Date(),
   };
 
   chatHistory.value.push(userMessage);
   const messageContent = chatInput.value.trim();
-  chatInput.value = "";
-
+  chatInput.value = '';
+  
   // Scroll to bottom
   nextTick(() => {
     if (chatContainer.value) {
@@ -568,13 +506,13 @@ const sendMessage = async () => {
     setTimeout(() => {
       const aiMessage = {
         id: (Date.now() + 1).toString(),
-        role: "assistant",
+        role: 'assistant',
         content: `I understand you're asking about "${messageContent}". Based on your current context (${props.contextType}), here are some suggestions...`,
         timestamp: new Date(),
       };
 
       chatHistory.value.push(aiMessage);
-      emit("chatMessage", aiMessage);
+      emit('chatMessage', aiMessage);
       isTyping.value = false;
       isSendingMessage.value = false;
 
@@ -584,8 +522,9 @@ const sendMessage = async () => {
         }
       });
     }, 2000);
+
   } catch (error) {
-    logger.error("Failed to send message:", error);
+    logger.error('Failed to send message:', error);
     isTyping.value = false;
     isSendingMessage.value = false;
   }
@@ -594,24 +533,24 @@ const sendMessage = async () => {
 // Utility methods
 const getContextDisplayName = (type?: string) => {
   const names = {
-    resume: "Resume",
-    "cover-letter": "Cover Letter",
-    job: "Job Analysis",
-    interview: "Interview Prep",
-    portfolio: "Portfolio",
+    resume: 'Resume',
+    'cover-letter': 'Cover Letter',
+    job: 'Job Analysis',
+    interview: 'Interview Prep',
+    portfolio: 'Portfolio',
   };
-  return names[type] || "Document";
+  return names[type] || 'Document';
 };
 
 const getSuggestionIcon = (type: string) => {
   const icons = {
-    suggestion: "mdi-lightbulb",
-    correction: "mdi-pencil",
-    enhancement: "mdi-trending-up",
-    analysis: "mdi-chart-line",
-    generation: "mdi-auto-fix",
+    suggestion: 'mdi-lightbulb',
+    correction: 'mdi-pencil',
+    enhancement: 'mdi-trending-up',
+    analysis: 'mdi-chart-line',
+    generation: 'mdi-auto-fix',
   };
-  return icons[type] || "mdi-lightbulb";
+  return icons[type] || 'mdi-lightbulb';
 };
 
 const getPriorityClass = (priority: string) => {
@@ -620,49 +559,46 @@ const getPriorityClass = (priority: string) => {
 
 const getPriorityVariant = (priority: string) => {
   const variants = {
-    urgent: "error",
-    high: "warning",
-    medium: "primary",
-    low: "secondary",
+    urgent: 'error',
+    high: 'warning',
+    medium: 'primary',
+    low: 'secondary',
   };
-  return variants[priority] || "secondary";
+  return variants[priority] || 'secondary';
 };
 
 const getStatusClass = () => {
-  if (aiStatus.value.error) return "status-error";
-  if (aiStatus.value.isProcessing) return "status-processing";
-  return "status-ready";
+  if (aiStatus.value.error) return 'status-error';
+  if (aiStatus.value.isProcessing) return 'status-processing';
+  return 'status-ready';
 };
 
 const getStatusText = () => {
-  if (aiStatus.value.error) return "Error";
-  if (aiStatus.value.isProcessing) return "Processing";
-  return "Ready";
+  if (aiStatus.value.error) return 'Error';
+  if (aiStatus.value.isProcessing) return 'Processing';
+  return 'Ready';
 };
 
 const getScoreClass = (score: number) => {
-  if (score >= 80) return "score-excellent";
-  if (score >= 60) return "score-good";
-  if (score >= 40) return "score-fair";
-  return "score-poor";
+  if (score >= 80) return 'score-excellent';
+  if (score >= 60) return 'score-good';
+  if (score >= 40) return 'score-fair';
+  return 'score-poor';
 };
 
 const getScoreColor = (score: number) => {
-  if (score >= 80) return "success";
-  if (score >= 60) return "primary";
-  if (score >= 40) return "warning";
-  return "error";
+  if (score >= 80) return 'success';
+  if (score >= 60) return 'primary';
+  if (score >= 40) return 'warning';
+  return 'error';
 };
 
 const formatMessage = (content: string) => {
-  return content.replace(/\n/g, "<br>");
+  return content.replace(/\n/g, '<br>');
 };
 
 const formatMessageTime = (timestamp: Date) => {
-  return timestamp.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 };
 
 // Lifecycle
@@ -673,14 +609,11 @@ onMounted(() => {
 });
 
 // Watch for context changes
-watch(
-  () => props.contextType,
-  () => {
-    if (isModalVisible.value) {
-      initializeContext();
-    }
-  },
-);
+watch(() => props.contextType, () => {
+  if (isModalVisible.value) {
+    initializeContext();
+  }
+});
 </script>
 
 <style scoped>
@@ -834,12 +767,8 @@ watch(
   animation: typing 1.4s infinite ease-in-out;
 }
 
-.typing-dots span:nth-child(1) {
-  animation-delay: -0.32s;
-}
-.typing-dots span:nth-child(2) {
-  animation-delay: -0.16s;
-}
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
 
 .ai-status-indicator {
   display: flex;
@@ -875,35 +804,18 @@ watch(
 }
 
 @keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.8;
-  }
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
 }
 
 @keyframes typing {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
 }
 
 @keyframes spinning {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .spinning {

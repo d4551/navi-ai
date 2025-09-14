@@ -1,3 +1,7 @@
+/**
+ * IGDB Data Source - Integration with Internet Game Database
+ * Provides comprehensive gaming industry and studio data
+ */
 
 import { logger } from "@/shared/utils/logger";
 import type { RawStudioData, IngestionJob } from "./DataIngestionService";
@@ -35,6 +39,7 @@ export interface IGDBGame {
 }
 
 export class IGDBDataSource {
+  private baseUrl = "https://api.igdb.com/v4";
   private clientId: string;
   private accessToken: string;
 
@@ -49,7 +54,7 @@ export class IGDBDataSource {
     if (typeof process !== "undefined" && process.env?.[key]) {
       return process.env[key];
     }
-
+    
     if (typeof window !== "undefined") {
       const envVars = (window as any).__ENV__ || {};
       if (envVars[key]) {
@@ -80,23 +85,25 @@ export class IGDBDataSource {
 
       // Fetch companies (game studios) from IGDB
       const companies = await this.fetchCompanies();
-
+      
       // Convert to our format
       const studioData = await Promise.all(
-        companies.map((company) => this.convertCompanyToStudio(company)),
+        companies.map(company => this.convertCompanyToStudio(company))
       );
 
       logger.info(`Fetched ${studioData.length} studios from IGDB`);
-      return studioData.filter((studio) => studio !== null) as RawStudioData[];
+      return studioData.filter(studio => studio !== null) as RawStudioData[];
+
     } catch (error) {
       logger.error("IGDB data fetch failed:", error);
-
+      
       // Fallback to mock data
       logger.info("Falling back to mock IGDB data");
       return this.getMockData();
     }
   }
 
+  private async fetchCompanies(limit = 100): Promise<IGDBCompany[]> {
     const query = `
       fields id, name, description, country, logo.url, websites.category, websites.url, developed, published, created_at, updated_at;
       where developed != null | published != null;
@@ -112,6 +119,7 @@ export class IGDBDataSource {
     const query = `
       fields id, name, summary, genres.name, platforms.name, first_release_date, involved_companies.company, involved_companies.developer, involved_companies.publisher;
       where involved_companies.company = ${companyId};
+      limit 50;
       sort first_release_date desc;
     `;
 
@@ -126,43 +134,40 @@ export class IGDBDataSource {
 
   private async makeIGDBRequest(endpoint: string, query: string): Promise<any> {
     const url = `${this.baseUrl}/${endpoint}`;
-
+    
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Client-ID": this.clientId,
-        Authorization: `Bearer ${this.accessToken}`,
+        "Authorization": `Bearer ${this.accessToken}`,
         "Content-Type": "application/json",
       },
       body: query,
     });
 
     if (!response.ok) {
-      throw new Error(
-        `IGDB API error: ${response.status} ${response.statusText}`,
-      );
+      throw new Error(`IGDB API error: ${response.status} ${response.statusText}`);
     }
 
     return await response.json();
   }
 
-  private async convertCompanyToStudio(
-    company: IGDBCompany,
-  ): Promise<RawStudioData | null> {
+  private async convertCompanyToStudio(company: IGDBCompany): Promise<RawStudioData | null> {
     try {
       // Fetch games for this company to get more detailed information
       const games = await this.fetchGamesForCompany(company.id);
 
       // Extract website URL
-      const primaryWebsite =
+      const primaryWebsite = company.websites?.find(w => w.category === 1)?.url || // Official website
+                            company.websites?.[0]?.url;
 
       // Convert games to our format
-      const gameData = games.map((game) => ({
+      const gameData = games.map(game => ({
         name: game.name,
-        releaseDate: game.first_release_date
-          : undefined,
-        platforms: game.platforms?.map((p) => p.name) || [],
-        genres: game.genres?.map((g) => g.name) || [],
+        releaseDate: game.first_release_date ? 
+          new Date(game.first_release_date * 1000).toISOString() : undefined,
+        platforms: game.platforms?.map(p => p.name) || [],
+        genres: game.genres?.map(g => g.name) || []
       }));
 
       const studio: RawStudioData = {
@@ -176,6 +181,8 @@ export class IGDBDataSource {
         logo: company.logo?.url,
         metadata: {
           igdbId: company.id,
+          developedGames: company.developed?.length || 0,
+          publishedGames: company.published?.length || 0,
           createdAt: company.created_at,
           updatedAt: company.updated_at,
         },
@@ -184,6 +191,7 @@ export class IGDBDataSource {
       };
 
       return studio;
+
     } catch (error) {
       logger.error(`Failed to convert company ${company.name}:`, error);
       return null;
@@ -193,6 +201,16 @@ export class IGDBDataSource {
   private getCountryName(countryCode?: number): string {
     // IGDB country codes mapping (simplified)
     const countries: Record<number, string> = {
+      1: "United States",
+      2: "Canada", 
+      3: "United Kingdom",
+      4: "France",
+      5: "Germany",
+      6: "Japan",
+      7: "Australia",
+      8: "Sweden",
+      9: "Finland",
+      10: "Denmark",
       // Add more as needed
     };
 
@@ -200,9 +218,16 @@ export class IGDBDataSource {
   }
 
   private calculateConfidence(company: IGDBCompany, games: IGDBGame[]): number {
+    let confidence = 0.5; // Base confidence
 
     // Increase confidence based on available data
+    if (company.description) confidence += 0.1;
+    if (company.logo?.url) confidence += 0.1;
+    if (company.websites && company.websites.length > 0) confidence += 0.1;
+    if (games.length > 0) confidence += 0.2;
+    if (games.length > 5) confidence += 0.1;
 
+    return Math.min(confidence, 1.0);
   }
 
   private getMockData(): RawStudioData[] {
@@ -210,85 +235,112 @@ export class IGDBDataSource {
     return [
       {
         sourceId: "igdb",
+        sourceEntityId: "mock-1",
         name: "Supercell",
-        description:
-          "Mobile game developer known for Clash of Clans, Clash Royale, and Hay Day",
+        description: "Mobile game developer known for Clash of Clans, Clash Royale, and Hay Day",
         websites: ["https://supercell.com"],
         games: [
           {
             name: "Clash of Clans",
+            releaseDate: "2012-08-02T00:00:00.000Z",
             platforms: ["iOS", "Android"],
-            genres: ["Strategy", "Mobile"],
+            genres: ["Strategy", "Mobile"]
           },
           {
-            name: "Clash Royale",
+            name: "Clash Royale", 
+            releaseDate: "2016-03-02T00:00:00.000Z",
             platforms: ["iOS", "Android"],
-            genres: ["Strategy", "Card Game", "Mobile"],
+            genres: ["Strategy", "Card Game", "Mobile"]
           },
           {
             name: "Hay Day",
+            releaseDate: "2012-06-21T00:00:00.000Z", 
             platforms: ["iOS", "Android"],
-            genres: ["Simulation", "Mobile"],
-          },
+            genres: ["Simulation", "Mobile"]
+          }
         ],
         location: "Helsinki, Finland",
         logo: "https://supercell.com/images/logo.png",
         metadata: {
+          igdbId: 1,
+          developedGames: 5,
+          publishedGames: 5,
+          createdAt: 1234567890,
+          updatedAt: 1634567890
         },
         lastUpdated: new Date(),
+        confidence: 0.9
       },
       {
         sourceId: "igdb",
+        sourceEntityId: "mock-2", 
         name: "Mojang Studios",
-        description:
-          "Swedish video game developer best known for creating Minecraft",
+        description: "Swedish video game developer best known for creating Minecraft",
         websites: ["https://mojang.com"],
         games: [
           {
             name: "Minecraft",
+            releaseDate: "2011-11-18T00:00:00.000Z",
             platforms: ["PC", "Mobile", "Console", "Switch"],
-            genres: ["Sandbox", "Survival", "Creative"],
+            genres: ["Sandbox", "Survival", "Creative"]
           },
           {
             name: "Minecraft Dungeons",
+            releaseDate: "2020-05-26T00:00:00.000Z",
             platforms: ["PC", "Console", "Switch"],
-            genres: ["Action RPG", "Dungeon Crawler"],
-          },
+            genres: ["Action RPG", "Dungeon Crawler"]
+          }
         ],
         location: "Stockholm, Sweden",
         logo: "https://mojang.com/images/logo.png",
         metadata: {
+          igdbId: 2,
+          developedGames: 3,
+          publishedGames: 3,
+          createdAt: 1234567890,
+          updatedAt: 1634567890
         },
         lastUpdated: new Date(),
+        confidence: 0.95
       },
       {
         sourceId: "igdb",
-        name: "Respawn Entertainment",
-        description:
-          "American video game developer founded by former Infinity Ward employees",
+        sourceEntityId: "mock-3",
+        name: "Respawn Entertainment", 
+        description: "American video game developer founded by former Infinity Ward employees",
         websites: ["https://respawn.com"],
         games: [
           {
             name: "Titanfall",
+            releaseDate: "2014-03-11T00:00:00.000Z",
             platforms: ["PC", "Xbox"],
-            genres: ["FPS", "Mech", "Multiplayer"],
+            genres: ["FPS", "Mech", "Multiplayer"]
           },
           {
+            name: "Titanfall 2",
+            releaseDate: "2016-10-28T00:00:00.000Z", 
             platforms: ["PC", "Xbox", "PlayStation"],
-            genres: ["FPS", "Mech", "Campaign"],
+            genres: ["FPS", "Mech", "Campaign"]
           },
           {
             name: "Apex Legends",
+            releaseDate: "2019-02-04T00:00:00.000Z",
             platforms: ["PC", "Console", "Mobile"],
-            genres: ["Battle Royale", "FPS", "Free-to-Play"],
-          },
+            genres: ["Battle Royale", "FPS", "Free-to-Play"]
+          }
         ],
         location: "Los Angeles, California",
         logo: "https://respawn.com/images/logo.png",
         metadata: {
+          igdbId: 3,
+          developedGames: 4,
+          publishedGames: 4,
+          createdAt: 1234567890,
+          updatedAt: 1634567890
         },
         lastUpdated: new Date(),
-      },
+        confidence: 0.88
+      }
     ];
   }
 }

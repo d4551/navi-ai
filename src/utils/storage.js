@@ -93,9 +93,7 @@ class IndexedDBStorage {
 
           // Studios (normalized studios and metadata)
           if (!db.objectStoreNames.contains("studios")) {
-            const studioStore = db.createObjectStore("studios", {
-              keyPath: "id",
-            });
+            const studioStore = db.createObjectStore("studios", { keyPath: "id" });
             studioStore.createIndex("by_name", "name");
           }
         },
@@ -201,18 +199,16 @@ class IndexedDBStorage {
 
   // Preferences helpers
   async setPreferences(prefs) {
-    return await this.set(this.stores.preferences, { id: "app", ...prefs });
+    return await this.set(this.stores.preferences, { id: 'app', ...prefs });
   }
 
   async getPreferences() {
-    return await this.get(this.stores.preferences, "app");
+    return await this.get(this.stores.preferences, 'app');
   }
 
   // Studios helpers
   async upsertStudio(studio) {
-    if (!studio?.id) {
-      throw new Error("Studio must have an id");
-    }
+    if (!studio?.id) { throw new Error('Studio must have an id'); }
     return await this.set(this.stores.studios, studio);
   }
 

@@ -1,7 +1,7 @@
-import { ref } from "vue";
-import { useToast } from "@/composables/useToast";
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
+import { ref } from 'vue';
+import { useToast } from '@/composables/useToast';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 export function useHomePageFeatures() {
   const templatesModal = ref(false);
@@ -10,8 +10,8 @@ export function useHomePageFeatures() {
   const portfolioModal = ref(false);
   const businessCardModal = ref(false);
 
-  const analysisContent = ref("");
-  const designContent = ref("");
+  const analysisContent = ref('');
+  const designContent = ref('');
 
   const openTemplates = () => {
     templatesModal.value = true;
@@ -21,9 +21,9 @@ export function useHomePageFeatures() {
     const toast = useToast();
     try {
       JSON.parse(content);
-      toast.success("File imported");
+      toast.success('File imported');
     } catch {
-      toast.error("Invalid file format");
+      toast.error('Invalid file format');
     }
   };
 
@@ -33,7 +33,7 @@ export function useHomePageFeatures() {
   };
 
   const improveDesign = () => {
-    designContent.value = "Consider using consistent spacing and typography.";
+    designContent.value = 'Consider using consistent spacing and typography.';
     designModal.value = true;
   };
 
@@ -47,9 +47,9 @@ export function useHomePageFeatures() {
 
   const exportAll = async () => {
     const zip = new JSZip();
-    zip.file("readme.txt", "Bulk export placeholder");
-    const blob = await zip.generateAsync({ type: "blob" });
-    saveAs(blob, "presentations.zip");
+    zip.file('readme.txt', 'Bulk export placeholder');
+    const blob = await zip.generateAsync({ type: 'blob' });
+    saveAs(blob, 'presentations.zip');
   };
 
   return {

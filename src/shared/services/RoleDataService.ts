@@ -1,9 +1,13 @@
-import roleData from "@/shared/data/rolesData.json";
+/**
+ * RoleDataService - loads role details from dataset with caching and normalization
+ * Browser-friendly: uses bundled JSON import instead of fs/url/path
+ */
+import roleData from '@/shared/data/rolesData.json';
 
 export interface RoleDetail {
   description: string;
   requiredSkills: string[];
-  demandLevel: "low" | "medium" | "high";
+  demandLevel: 'low' | 'medium' | 'high';
 }
 
 class RoleDataService {
@@ -12,16 +16,13 @@ class RoleDataService {
   private async load(): Promise<Record<string, RoleDetail>> {
     if (this.cache) return this.cache;
     try {
-      const parsed = roleData as unknown as Record<string, RoleDetail>;
+      const parsed = (roleData as unknown) as Record<string, RoleDetail>;
       // normalize keys to lowercase for consistent lookups
       this.cache = Object.fromEntries(
-        Object.entries(parsed).map(([key, value]) => [
-          key.toLowerCase(),
-          value,
-        ]),
+        Object.entries(parsed).map(([key, value]) => [key.toLowerCase(), value])
       );
     } catch (error) {
-      console.warn("Failed to load role data:", error);
+      console.warn('Failed to load role data:', error);
       this.cache = {};
     }
     return this.cache;

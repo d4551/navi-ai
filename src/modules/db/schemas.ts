@@ -2,11 +2,11 @@
 // Centralized type definitions for database operations
 
 // Re-export all repository types for centralized access
-export type { Job, SalaryRange } from "../api/schemas";
-export type { Resume } from "./repositories/resume";
-export type { Portfolio, PortfolioProject } from "./repositories/portfolio";
-export type { UserProfile, UserSettings } from "./repositories/user";
-export type { StudioData } from "./repositories/studios";
+export type { Job, SalaryRange } from '../api/schemas';
+export type { Resume } from './repositories/resume';
+export type { Portfolio, PortfolioProject } from './repositories/portfolio';
+export type { UserProfile, UserSettings } from './repositories/user';
+export type { StudioData } from './repositories/studios';
 
 // Common database interfaces
 export interface BaseEntity {
@@ -41,7 +41,7 @@ export interface SearchCriteria {
   filters?: Record<string, any>;
   sort?: {
     field: string;
-    direction: "asc" | "desc";
+    direction: 'asc' | 'desc';
   };
   pagination?: {
     page: number;
@@ -53,7 +53,7 @@ export interface SearchCriteria {
 export interface ValidationRule {
   field: string;
   required?: boolean;
-  type?: "string" | "number" | "boolean" | "date" | "array" | "object";
+  type?: 'string' | 'number' | 'boolean' | 'date' | 'array' | 'object';
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;

@@ -27,7 +27,7 @@
               placeholder="e.g., Indie Puzzle Game, Portfolio Website"
               required
               autofocus
-            />
+            >
           </div>
 
           <!-- Project Description -->
@@ -71,7 +71,7 @@
               type="url"
               class="form-control glass-input"
               placeholder="https://..."
-            />
+            >
             <small class="form-hint">Link to live demo, Steam page, itch.io, etc.</small>
           </div>
 
@@ -83,7 +83,7 @@
               type="url"
               class="form-control glass-input"
               placeholder="https://github.com/username/repository"
-            />
+            >
           </div>
 
           <!-- Engine and Platform -->
@@ -136,14 +136,17 @@
               type="text"
               class="form-control glass-input"
               placeholder="e.g., puzzle, multiplayer, 2D (comma-separated)"
-            />
+            >
             <small class="form-hint">Separate tags with commas</small>
           </div>
 
           <!-- Featured Toggle -->
           <div class="form-group">
             <label class="form-checkbox">
-              <input v-model="formData.featured" type="checkbox" />
+              <input
+                v-model="formData.featured"
+                type="checkbox"
+              >
               <span class="checkmark"></span>
               Feature this project in my portfolio
             </label>
@@ -152,7 +155,10 @@
       </div>
 
       <div class="modal-footer">
-        <UnifiedButton variant="ghost" @click="closeModal">
+        <UnifiedButton
+          variant="ghost"
+          @click="closeModal"
+        >
           Cancel
         </UnifiedButton>
         <UnifiedButton
@@ -169,102 +175,99 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import { useToast } from "@/composables/useToast";
-import { PortfolioService } from "@/shared/services/PortfolioService";
+import { ref, computed, watch } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import { useToast } from '@/composables/useToast'
+import { PortfolioService } from '@/shared/services/PortfolioService'
 
 interface ProjectFormData {
-  title: string;
-  description: string;
-  type: string;
-  url: string;
-  githubUrl: string;
-  engine: string;
-  platform: string;
-  featured: boolean;
+  title: string
+  description: string
+  type: string
+  url: string
+  githubUrl: string
+  engine: string
+  platform: string
+  featured: boolean
 }
 
 interface Props {
-  visible: boolean;
+  visible: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  close: [];
-  submit: [project: any];
-}>();
+  close: []
+  submit: [project: any]
+}>()
 
-const { toast } = useToast();
+const { toast } = useToast()
 
 const formData = ref<ProjectFormData>({
-  title: "",
-  description: "",
-  type: "",
-  url: "",
-  githubUrl: "",
-  engine: "",
-  platform: "",
-  featured: false,
-});
+  title: '',
+  description: '',
+  type: '',
+  url: '',
+  githubUrl: '',
+  engine: '',
+  platform: '',
+  featured: false
+})
 
-const tagsInput = ref("");
-const isSubmitting = ref(false);
+const tagsInput = ref('')
+const isSubmitting = ref(false)
 
 // Parse tags from comma-separated input
 const tags = computed(() => {
   return tagsInput.value
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter((tag) => tag.length > 0);
-});
+    .split(',')
+    .map(tag => tag.trim())
+    .filter(tag => tag.length > 0)
+})
 
 // Auto-fetch metadata when URL changes
-watch(
-  () => formData.value.url,
-  async (newUrl) => {
-    if (newUrl && !formData.value.description) {
-      try {
-        const metadata = await PortfolioService.fetchLinkMetadata(newUrl);
-        if (metadata.description) {
-          formData.value.description = metadata.description;
-        }
-      } catch (error) {
-        // Silently fail - user can enter description manually
+watch(() => formData.value.url, async (newUrl) => {
+  if (newUrl && !formData.value.description) {
+    try {
+      const metadata = await PortfolioService.fetchLinkMetadata(newUrl)
+      if (metadata.description) {
+        formData.value.description = metadata.description
       }
+    } catch (error) {
+      // Silently fail - user can enter description manually
     }
-  },
-);
+  }
+})
 
 const closeModal = () => {
-  emit("close");
-  resetForm();
-};
+  emit('close')
+  resetForm()
+}
 
 const resetForm = () => {
   formData.value = {
-    title: "",
-    description: "",
-    type: "",
-    url: "",
-    githubUrl: "",
-    engine: "",
-    platform: "",
-    featured: false,
-  };
-  tagsInput.value = "";
-  isSubmitting.value = false;
-};
+    title: '',
+    description: '',
+    type: '',
+    url: '',
+    githubUrl: '',
+    engine: '',
+    platform: '',
+    featured: false
+  }
+  tagsInput.value = ''
+  isSubmitting.value = false
+}
 
 const handleSubmit = async () => {
   if (!formData.value.title.trim()) {
-    toast.error("Project title is required");
-    return;
+    toast.error('Project title is required')
+    return
   }
 
-  isSubmitting.value = true;
+  isSubmitting.value = true
 
   try {
     const project = {
@@ -274,31 +277,28 @@ const handleSubmit = async () => {
       tags: tags.value,
       engines: formData.value.engine ? [formData.value.engine] : [],
       platforms: formData.value.platform ? [formData.value.platform] : [],
-      date: new Date().toISOString().split("T")[0], // Current date as YYYY-MM-DD
+      date: new Date().toISOString().split('T')[0], // Current date as YYYY-MM-DD
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+      updatedAt: new Date().toISOString()
+    }
 
-    emit("submit", project);
-    toast.success("Project added successfully!");
-    closeModal();
+    emit('submit', project)
+    toast.success('Project added successfully!')
+    closeModal()
   } catch (error) {
-    console.error("Error adding project:", error);
-    toast.error("Failed to add project");
+    console.error('Error adding project:', error)
+    toast.error('Failed to add project')
   } finally {
-    isSubmitting.value = false;
+    isSubmitting.value = false
   }
-};
+}
 
 // Reset form when modal closes
-watch(
-  () => props.visible,
-  (visible) => {
-    if (!visible) {
-      resetForm();
-    }
-  },
-);
+watch(() => props.visible, (visible) => {
+  if (!visible) {
+    resetForm()
+  }
+})
 </script>
 
 <style scoped>
@@ -378,7 +378,7 @@ watch(
 }
 
 .form-label.required::after {
-  content: " *";
+  content: ' *';
   color: var(--color-error);
 }
 
@@ -397,8 +397,7 @@ watch(
 .form-control:focus {
   outline: none;
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px
-    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   background: var(--glass-elevated);
 }
 
@@ -429,18 +428,24 @@ watch(
   accent-color: var(--color-primary-500);
 }
 
+/* Mobile responsiveness */
+@media (max-width: 640px) {
   .modal-overlay {
+    padding: var(--spacing-2);
   }
-
+  
   .modal-dialog {
+    max-height: 95vh;
   }
-
+  
   .form-row {
+    grid-template-columns: 1fr;
   }
-
+  
   .modal-header,
   .modal-body,
   .modal-footer {
+    padding: var(--spacing-4);
   }
 }
 </style>

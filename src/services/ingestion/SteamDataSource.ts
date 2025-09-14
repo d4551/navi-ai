@@ -1,3 +1,7 @@
+/**
+ * Steam API Data Source
+ * Fetches gaming studio data from Steam's public APIs
+ */
 
 import { logger } from "@/shared/utils/logger";
 import type { RawStudioData, IngestionJob } from "./DataIngestionService";
@@ -47,9 +51,12 @@ export class SteamDataSource {
       const studioData = new Map<string, RawStudioData>();
 
       // Scale up to fetch thousands of studios - use much higher limits
-      const maxApps = job.metadata?.maxStudios
-
+      const maxApps = job.metadata?.maxStudios ? Math.min(job.metadata.maxStudios * 10, 5000) : 5000;
+      const limitedApps = apps.slice(0, maxApps);
+      
       // Process apps in smaller batches to handle rate limiting better
+      const batchSize = 20; // Smaller batches to reduce rate limiting
+      for (let i = 0; i < limitedApps.length; i += batchSize) {
         const batch = limitedApps.slice(i, i + batchSize);
 
         for (const app of batch) {
@@ -63,17 +70,17 @@ export class SteamDataSource {
           }
 
           // Longer delay to handle Steam rate limiting better
+          await new Promise((resolve) => setTimeout(resolve, 250));
         }
 
         // Update job progress
-        const progress = Math.floor(
-        );
+        const progress = Math.floor(((i + batchSize) / limitedApps.length) * 100);
+        job.progress = Math.min(progress, 100);
 
-        logger.info(
-          `Steam ingestion progress: ${job.progress}% (${studioData.size} studios found)`,
-        );
-
+        logger.info(`Steam ingestion progress: ${job.progress}% (${studioData.size} studios found)`);
+        
         // Longer delay between batches to avoid overwhelming Steam's API
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       return Array.from(studioData.values());
@@ -86,6 +93,7 @@ export class SteamDataSource {
   private async fetchAppList(): Promise<SteamApp[]> {
     try {
       const response = await fetch(
+        `${this.baseUrl}/ISteamApps/GetAppList/v0002/`,
       );
       if (!response.ok) {
         throw new Error(
@@ -97,24 +105,24 @@ export class SteamDataSource {
       const apps = data.applist?.apps || [];
 
       // Filter out non-game apps and focus on actual games with better filtering
-      return (
-        apps
-          .filter(
-            (app: SteamApp) =>
-              app.name &&
-              !app.name.toLowerCase().includes("demo") &&
-              !app.name.toLowerCase().includes("soundtrack") &&
-              !app.name.toLowerCase().includes("dlc") &&
-              !app.name.toLowerCase().includes("trailer") &&
-              !app.name.toLowerCase().includes("dedicated server") &&
-              !app.name.toLowerCase().includes("sdk") &&
-              !app.name.toLowerCase().includes("development kit") &&
-              // Focus on apps that are more likely to be actual games
-              !/^(steam|valve|source|dedicated|server|client)$/i.test(app.name),
-          )
-          // Sort by appid to get older, more established games first (they're more likely to have proper data)
-          .sort((a: SteamApp, b: SteamApp) => a.appid - b.appid)
-      ); // Scale up to get thousands of apps
+      return apps
+        .filter(
+          (app: SteamApp) =>
+            app.name &&
+            app.name.length > 2 && // Avoid single-character or very short names
+            !app.name.toLowerCase().includes("demo") &&
+            !app.name.toLowerCase().includes("soundtrack") &&
+            !app.name.toLowerCase().includes("dlc") &&
+            !app.name.toLowerCase().includes("trailer") &&
+            !app.name.toLowerCase().includes("dedicated server") &&
+            !app.name.toLowerCase().includes("sdk") &&
+            !app.name.toLowerCase().includes("development kit") &&
+            // Focus on apps that are more likely to be actual games
+            !/^(steam|valve|source|dedicated|server|client)$/i.test(app.name),
+        )
+        // Sort by appid to get older, more established games first (they're more likely to have proper data)
+        .sort((a: SteamApp, b: SteamApp) => a.appid - b.appid)
+        .slice(0, 10000); // Scale up to get thousands of apps
     } catch (error) {
       logger.error("Failed to fetch Steam app list:", error);
       throw error;
@@ -132,6 +140,7 @@ export class SteamDataSource {
 
       if (!response.ok) {
         // Handle rate limiting more gracefully
+        if (response.status === 429) {
           logger.warn(`Steam API rate limited for app ${appid}, skipping`);
           return null;
         }
@@ -162,6 +171,7 @@ export class SteamDataSource {
 
     developers.forEach((developerName) => {
       const cleanName = this.cleanStudioName(developerName);
+      if (!cleanName || cleanName.length < 2) return;
 
       const studioId = this.generateStudioId(cleanName);
       let studioData = studioMap.get(studioId);
@@ -226,16 +236,22 @@ export class SteamDataSource {
   private generateStudioId(name: string): string {
     return name
       .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
+      .slice(0, 100);
   }
 
   private calculateConfidence(
     studioName: string,
     games: Array<{ name: string }>,
   ): number {
+    let confidence = 0.5; // Base confidence for Steam data
 
     // Boost confidence based on number of games (more games = more likely to be real studio)
     const gameCount = games.length;
+    if (gameCount >= 10) confidence += 0.3;
+    else if (gameCount >= 5) confidence += 0.2;
+    else if (gameCount >= 2) confidence += 0.1;
 
     // Penalize very generic names
     const genericNames = [
@@ -247,20 +263,27 @@ export class SteamDataSource {
       "team",
     ];
     const nameWords = studioName.toLowerCase().split(/\s+/);
+    if (nameWords.length === 1 && genericNames.includes(nameWords[0])) {
+      confidence -= 0.3;
     }
 
     // Penalize single-character or very short names
+    if (studioName.length < 3) {
+      confidence -= 0.4;
     }
 
     // Boost confidence for well-known studio patterns
     if (/\b(games|studios?|entertainment|interactive)\b/i.test(studioName)) {
+      confidence += 0.1;
     }
 
+    return Math.max(0.1, Math.min(1.0, confidence));
   }
 
   async testConnection(): Promise<boolean> {
     try {
       const response = await fetch(
+        `${this.baseUrl}/ISteamApps/GetAppList/v0002/`,
       );
       return response.ok;
     } catch {
@@ -275,6 +298,7 @@ export class SteamDataSource {
       description: "Gaming platform data from Steam",
       requiresApiKey: false, // Public API endpoints
       supportsRealTimeSync: false,
+      estimatedStudioCount: "50,000+",
       dataQuality: "Medium", // Limited business info, good game data
     };
   }

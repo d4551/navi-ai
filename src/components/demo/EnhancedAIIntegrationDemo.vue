@@ -11,37 +11,25 @@
     <div class="status-dashboard">
       <h2>AI Services Status</h2>
       <div class="status-grid">
-        <div class="status-card" :class="{ healthy: healthStatus.aiService }">
+        <div class="status-card" :class="{ 'healthy': healthStatus.aiService }">
           <h3>Core AI Service</h3>
-          <span class="status-indicator">{{
-            healthStatus.aiService ? "✅" : "❌"
-          }}</span>
-          <p>{{ isAIReady ? "Ready" : "Disconnected" }}</p>
+          <span class="status-indicator">{{ healthStatus.aiService ? '✅' : '❌' }}</span>
+          <p>{{ isAIReady ? 'Ready' : 'Disconnected' }}</p>
         </div>
-
-        <div
-          class="status-card"
-          :class="{ healthy: healthStatus.realTimeService }"
-        >
+        
+        <div class="status-card" :class="{ 'healthy': healthStatus.realTimeService }">
           <h3>Real-time Service</h3>
-          <span class="status-indicator">{{
-            healthStatus.realTimeService ? "✅" : "❌"
-          }}</span>
-          <p>{{ isRealTimeActive ? "Active" : "Inactive" }}</p>
+          <span class="status-indicator">{{ healthStatus.realTimeService ? '✅' : '❌' }}</span>
+          <p>{{ isRealTimeActive ? 'Active' : 'Inactive' }}</p>
         </div>
-
-        <div
-          class="status-card"
-          :class="{ healthy: healthStatus.multimodalService }"
-        >
+        
+        <div class="status-card" :class="{ 'healthy': healthStatus.multimodalService }">
           <h3>Multimodal Service</h3>
-          <span class="status-indicator">{{
-            healthStatus.multimodalService ? "✅" : "❌"
-          }}</span>
-          <p>{{ realTimeState.isConnected ? "Connected" : "Disconnected" }}</p>
+          <span class="status-indicator">{{ healthStatus.multimodalService ? '✅' : '❌' }}</span>
+          <p>{{ realTimeState.isConnected ? 'Connected' : 'Disconnected' }}</p>
         </div>
       </div>
-
+      
       <div v-if="healthStatus.overall !== 'healthy'" class="health-warning">
         ⚠️ System Status: {{ healthStatus.overall }}
         <button class="reconnect-btn" @click="reconnectServices">
@@ -51,31 +39,23 @@
     </div>
 
     <!-- Operation Status -->
-    <div
-      v-if="operationState.isLoading || operationState.error"
-      class="operation-status"
-    >
+    <div v-if="operationState.isLoading || operationState.error" class="operation-status">
       <div v-if="operationState.isLoading" class="loading-container">
         <div class="progress-bar">
-          <div
-            class="progress-fill"
-            :style="{ width: `${operationState.progress}%` }"
-          ></div>
+          <div class="progress-fill" :style="{ width: `${operationState.progress}%` }"></div>
         </div>
         <p>{{ operationState.operation }}...</p>
-        <p class="progress-text">
-          {{ operationState.progress.toFixed(0) }}% complete
-        </p>
-
-        <button
-          v-if="operationState.canCancel"
+        <p class="progress-text">{{ operationState.progress.toFixed(0) }}% complete</p>
+        
+        <button 
+          v-if="operationState.canCancel" 
           class="cancel-btn"
           @click="cancelOperation"
         >
           Cancel
         </button>
       </div>
-
+      
       <div v-if="operationState.error" class="error-container">
         <h3>❌ Error</h3>
         <p>{{ operationState.error }}</p>
@@ -86,29 +66,29 @@
     <!-- Real-time Audio/Video Controls -->
     <div class="realtime-controls">
       <h2>Real-time AI Interaction</h2>
-
+      
       <div class="media-controls">
-        <button
-          :class="{ active: realTimeState.isStreaming }"
+        <button 
+          :class="{ 'active': realTimeState.isStreaming }"
           :disabled="!isRealTimeActive"
           class="media-btn audio-btn"
           @click="toggleAudio"
         >
           <span class="icon">🎤</span>
-          {{ realTimeState.isStreaming ? "Stop Audio" : "Start Audio" }}
+          {{ realTimeState.isStreaming ? 'Stop Audio' : 'Start Audio' }}
         </button>
-
-        <button
-          :class="{ active: realTimeState.videoActive }"
+        
+        <button 
+          :class="{ 'active': realTimeState.videoActive }"
           :disabled="!isRealTimeActive"
           class="media-btn video-btn"
           @click="toggleVideo"
         >
           <span class="icon">📹</span>
-          {{ realTimeState.videoActive ? "Stop Video" : "Start Video" }}
+          {{ realTimeState.videoActive ? 'Stop Video' : 'Start Video' }}
         </button>
-
-        <button
+        
+        <button 
           :disabled="!isRealTimeActive"
           class="media-btn screen-btn"
           @click="captureScreen"
@@ -122,30 +102,25 @@
       <div v-if="realTimeState.isStreaming" class="audio-level">
         <label>Audio Level:</label>
         <div class="level-bar">
-          <div
-            class="level-fill"
+          <div 
+            class="level-fill" 
             :style="{ width: `${realTimeState.audioLevel}%` }"
           ></div>
         </div>
       </div>
 
       <!-- Live Transcription -->
-      <div
-        v-if="realTimeState.transcription || realTimeState.interimTranscription"
-        class="transcription"
-      >
+      <div v-if="realTimeState.transcription || realTimeState.interimTranscription" class="transcription">
         <h3>Live Transcription</h3>
         <p class="final-transcript">{{ realTimeState.transcription }}</p>
-        <p class="interim-transcript">
-          {{ realTimeState.interimTranscription }}
-        </p>
+        <p class="interim-transcript">{{ realTimeState.interimTranscription }}</p>
       </div>
     </div>
 
     <!-- Enhanced Chat Interface -->
     <div class="chat-interface">
       <h2>Enhanced AI Chat</h2>
-
+      
       <div class="chat-options">
         <select v-model="selectedChatType" class="chat-type-select">
           <option value="general">General Chat</option>
@@ -155,21 +130,21 @@
           <option value="interview_prep">Interview Prep</option>
           <option value="portfolio">Portfolio Review</option>
         </select>
-
+        
         <label class="checkbox-label">
-          <input v-model="useSmartPrompting" type="checkbox" />
+          <input v-model="useSmartPrompting" type="checkbox">
           Smart Prompting
         </label>
-
+        
         <label class="checkbox-label">
-          <input v-model="enableStreaming" type="checkbox" />
+          <input v-model="enableStreaming" type="checkbox">
           Real-time Streaming
         </label>
       </div>
 
       <div ref="chatContainer" class="chat-messages">
-        <div
-          v-for="message in chatMessages"
+        <div 
+          v-for="message in chatMessages" 
           :key="message.id"
           :class="['message', message.role]"
         >
@@ -179,7 +154,7 @@
           </div>
           <div class="message-content">{{ message.content }}</div>
         </div>
-
+        
         <div v-if="isTyping" class="message assistant typing">
           <div class="typing-indicator">
             <span></span>
@@ -190,15 +165,15 @@
       </div>
 
       <div class="chat-input">
-        <textarea
+        <textarea 
           v-model="currentMessage"
           placeholder="Type your message or speak using the microphone..."
           class="message-input"
           :disabled="operationState.isLoading"
           @keydown.enter.prevent="sendMessage"
         ></textarea>
-
-        <button
+        
+        <button 
           :disabled="!currentMessage.trim() || operationState.isLoading"
           class="send-btn"
           @click="sendMessage"
@@ -211,17 +186,15 @@
     <!-- Results Display -->
     <div v-if="results.length > 0" class="results-display">
       <h2>Recent Results</h2>
-
+      
       <div class="results-grid">
-        <div
-          v-for="result in results.slice(-5)"
+        <div 
+          v-for="result in results.slice(-5)" 
           :key="result.id"
           class="result-card"
         >
           <h3>{{ result.type }}</h3>
-          <p class="result-content">
-            {{ result.content.substring(0, 200) }}...
-          </p>
+          <p class="result-content">{{ result.content.substring(0, 200) }}...</p>
           <div class="result-meta">
             <span>{{ formatTime(result.timestamp) }}</span>
             <span>{{ result.latency }}ms</span>
@@ -233,9 +206,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from "vue";
-import { useAIUI } from "@/shared/services/AIUIIntegrationService";
-import { logger } from "@/shared/utils/logger";
+import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue';
+import { useAIUI } from '@/shared/services/AIUIIntegrationService';
+import { logger } from '@/shared/utils/logger';
 
 // Reactive state from AI UI Integration Service
 const {
@@ -257,17 +230,10 @@ const {
 } = useAIUI();
 
 // Component state
-const selectedChatType = ref<
-  | "general"
-  | "resume"
-  | "cover_letter"
-  | "job_analysis"
-  | "interview_prep"
-  | "portfolio"
->("general");
+const selectedChatType = ref<'general' | 'resume' | 'cover_letter' | 'job_analysis' | 'interview_prep' | 'portfolio'>('general');
 const useSmartPrompting = ref(true);
 const enableStreaming = ref(true);
-const currentMessage = ref("");
+const currentMessage = ref('');
 const isTyping = ref(false);
 const chatContainer = ref<HTMLElement>();
 
@@ -276,13 +242,13 @@ const healthStatus = ref({
   aiService: false,
   realTimeService: false,
   multimodalService: false,
-  overall: "unhealthy" as "healthy" | "degraded" | "unhealthy",
+  overall: 'unhealthy' as 'healthy' | 'degraded' | 'unhealthy',
 });
 
 // Chat messages
 interface ChatMessage {
   id: string;
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
 }
@@ -304,12 +270,12 @@ const results = ref<AIResult[]>([]);
 const initializeServices = async () => {
   try {
     // Initialize with demo API key (in real app, get from settings)
-    await initializeRealTime("demo-api-key", {
+    await initializeRealTime('demo-api-key', {
       enableAudio: true,
       enableVideo: false,
       enableScreenshot: true,
       onConnectionChange: (connected) => {
-        logger.debug("Connection changed:", connected);
+        logger.debug('Connection changed:', connected);
       },
       onTranscription: (text, isFinal) => {
         if (isFinal && text.trim()) {
@@ -317,16 +283,16 @@ const initializeServices = async () => {
         }
       },
       onVideoAnalysis: (analysis) => {
-        addChatMessage("assistant", `Video Analysis: ${analysis}`);
+        addChatMessage('assistant', `Video Analysis: ${analysis}`);
       },
       onResponse: (response) => {
-        logger.debug("AI Response:", response);
-      },
+        logger.debug('AI Response:', response);
+      }
     });
 
     updateHealthStatus();
   } catch (error) {
-    console.error("Service initialization failed:", error);
+    console.error('Service initialization failed:', error);
   }
 };
 
@@ -335,7 +301,7 @@ const updateHealthStatus = async () => {
     const status = await getHealthStatus();
     healthStatus.value = status;
   } catch (error) {
-    console.error("Health status update failed:", error);
+    console.error('Health status update failed:', error);
   }
 };
 
@@ -344,7 +310,7 @@ const reconnectServices = async () => {
     await cleanup();
     await initializeServices();
   } catch (error) {
-    console.error("Reconnection failed:", error);
+    console.error('Reconnection failed:', error);
   }
 };
 
@@ -360,7 +326,7 @@ const toggleAudio = async () => {
       await startAudioStreaming();
     }
   } catch (error) {
-    console.error("Audio toggle failed:", error);
+    console.error('Audio toggle failed:', error);
   }
 };
 
@@ -372,7 +338,7 @@ const toggleVideo = async () => {
       await startVideoStreaming();
     }
   } catch (error) {
-    console.error("Video toggle failed:", error);
+    console.error('Video toggle failed:', error);
   }
 };
 
@@ -380,74 +346,71 @@ const sendMessage = async () => {
   if (!currentMessage.value.trim()) return;
 
   const userMessage = currentMessage.value.trim();
-
+  
   // Add user message to chat
-  addChatMessage("user", userMessage);
-  currentMessage.value = "";
-
+  addChatMessage('user', userMessage);
+  currentMessage.value = '';
+  
   try {
     isTyping.value = true;
-
+    
     if (enableStreaming.value) {
       // Use streaming chat with real-time updates
-      let assistantMessage = "";
-
+      let assistantMessage = '';
+      
       await streamingChat(userMessage, {
-        sessionId: "demo-session",
+        sessionId: 'demo-session',
         onChunk: (chunk) => {
           assistantMessage += chunk;
           updateLastAssistantMessage(assistantMessage);
         },
         onComplete: (response) => {
           isTyping.value = false;
-          addResult("chat", response, Date.now());
+          addResult('chat', response, Date.now());
         },
-        showTypingIndicator: true,
+        showTypingIndicator: true
       });
     } else {
       // Use regular AI operation
       const response = await performAIOperation(
-        "chat-response",
-        { message: userMessage, type: "chat" },
-        { showProgress: false },
+        'chat-response',
+        { message: userMessage, type: 'chat' },
+        { showProgress: false }
       );
-
-      addChatMessage("assistant", response.content);
-      addResult("chat", response.content, 0);
+      
+      addChatMessage('assistant', response.content);
+      addResult('chat', response.content, 0);
     }
   } catch (error) {
-    console.error("Message sending failed:", error);
-    addChatMessage(
-      "assistant",
-      `Sorry, I encountered an error: ${(error as Error).message}`,
-    );
+    console.error('Message sending failed:', error);
+    addChatMessage('assistant', `Sorry, I encountered an error: ${(error as Error).message}`);
   } finally {
     isTyping.value = false;
   }
 };
 
-const addChatMessage = (role: "user" | "assistant", content: string) => {
+const addChatMessage = (role: 'user' | 'assistant', content: string) => {
   chatMessages.value.push({
     id: `${role}-${Date.now()}`,
     role,
     content,
-    timestamp: new Date(),
+    timestamp: new Date()
   });
-
+  
   nextTick(() => {
     chatContainer.value?.scrollTo({
       top: chatContainer.value.scrollHeight,
-      behavior: "smooth",
+      behavior: 'smooth'
     });
   });
 };
 
 const updateLastAssistantMessage = (content: string) => {
   const lastMessage = chatMessages.value[chatMessages.value.length - 1];
-  if (lastMessage && lastMessage.role === "assistant") {
+  if (lastMessage && lastMessage.role === 'assistant') {
     lastMessage.content = content;
   } else {
-    addChatMessage("assistant", content);
+    addChatMessage('assistant', content);
   }
 };
 
@@ -457,25 +420,25 @@ const addResult = (type: string, content: string, latency: number) => {
     type,
     content,
     timestamp: new Date(),
-    latency,
+    latency
   });
 };
 
 const formatTime = (date: Date): string => {
-  return date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
   });
 };
 
 // Lifecycle
 onMounted(() => {
   initializeServices();
-
+  
   // Update health status periodically
   const healthCheckInterval = setInterval(updateHealthStatus, 30000);
-
+  
   onUnmounted(() => {
     clearInterval(healthCheckInterval);
     cleanup();
@@ -488,8 +451,7 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .status-dashboard {
@@ -547,9 +509,7 @@ onMounted(() => {
   align-items: center;
 }
 
-.reconnect-btn,
-.cancel-btn,
-.clear-error-btn {
+.reconnect-btn, .cancel-btn, .clear-error-btn {
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 6px;
@@ -588,9 +548,7 @@ onMounted(() => {
   color: #c62828;
 }
 
-.realtime-controls,
-.chat-interface,
-.results-display {
+.realtime-controls, .chat-interface, .results-display {
   background: white;
   border-radius: 12px;
   padding: 24px;
@@ -760,22 +718,12 @@ onMounted(() => {
   animation: typing 1.4s infinite ease-in-out;
 }
 
-.typing-indicator span:nth-child(1) {
-  animation-delay: -0.32s;
-}
-.typing-indicator span:nth-child(2) {
-  animation-delay: -0.16s;
-}
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
 
 @keyframes typing {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
 }
 
 .chat-input {
@@ -839,22 +787,27 @@ onMounted(() => {
   justify-content: space-between;
 }
 
+/* Responsive design */
+@media (max-width: 768px) {
   .ai-integration-demo {
+    padding: 12px;
   }
-
+  
   .status-grid {
+    grid-template-columns: 1fr;
   }
-
+  
   .media-controls {
     flex-direction: column;
   }
-
+  
   .chat-options {
     flex-direction: column;
     align-items: flex-start;
   }
-
+  
   .results-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

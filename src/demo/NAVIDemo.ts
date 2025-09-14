@@ -62,7 +62,7 @@ export class NAVIDemo {
       await this.demonstrateAIRecommendations();
       await this.showServiceStatistics();
 
-    } catch (error) {
+    } catch (_error) {
       throw error;
     }
   }
@@ -197,7 +197,7 @@ if (typeof window === "undefined" && require.main === module) {
   runNAVIDemo()
     .then(() => {
     })
-    .catch((error) => {
+    .catch((_error) => {
     });
 }
 

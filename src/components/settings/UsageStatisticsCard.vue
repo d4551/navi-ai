@@ -1,10 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div
-    class="card glass-card section-card h-100"
-    role="complementary"
-    aria-labelledby="usage-stats-title"
-  >
+  <div class="card glass-card section-card h-100" role="complementary" aria-labelledby="usage-stats-title">
     <div class="card-header section-header card-header--dense">
       <h6 id="usage-stats-title" class="mb-0">
         <BarChartIconComponent class="me-2 icon-sm" />Usage Statistics
@@ -169,11 +165,11 @@ import {
   BotIconComponent,
   ClockIconComponent,
   BriefcaseIconComponent,
-  RotateCcwIconComponent,
-} from "./SettingsIcons.js";
+  RotateCcwIconComponent
+} from './SettingsIcons.js'
 
 export default {
-  name: "UsageStatisticsCard",
+  name: 'UsageStatisticsCard',
   components: {
     BarChartIconComponent,
     CalendarIconComponent,
@@ -183,7 +179,7 @@ export default {
     ClockIconComponent,
     BriefcaseIconComponent,
     RotateCcwIconComponent,
-    UnifiedButton: () => import("@/components/ui/UnifiedButton.vue"),
+    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue')
   },
   props: {
     stats: {
@@ -198,21 +194,17 @@ export default {
         portfolioItems: 0,
         profileCompletion: 0,
         skillsAssessment: 0,
-        interviewReadiness: 0,
-      }),
-    },
+        interviewReadiness: 0
+      })
+    }
   },
-  emits: ["view-detailed-stats", "reset-stats"],
-};
+  emits: ['view-detailed-stats', 'reset-stats']
+}
 </script>
 
 <style scoped>
-.progress--md {
-  height: 8px;
-}
-.progress-bar--var {
-  width: var(--progress-width);
-}
+.progress--md { height: 8px; }
+.progress-bar--var { width: var(--progress-width); }
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

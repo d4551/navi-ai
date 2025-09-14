@@ -33,9 +33,7 @@
       </div>
 
       <!-- Tip Navigation -->
-      <div
-        class="tip-navigation d-flex justify-content-between align-items-center mb-4"
-      >
+      <div class="tip-navigation d-flex justify-content-between align-items-center mb-4">
         <IconButton
           type="button"
           :disabled="currentTipIndex === 0"
@@ -78,7 +76,7 @@
             v-for="(tip, index) in quickTips"
             :key="index"
             class="quick-tip-item"
-            @click="setCurrentTip(tips.findIndex((t) => t.id === tip.id))"
+            @click="setCurrentTip(tips.findIndex(t => t.id === tip.id))"
           >
             <div class="quick-tip-icon">
               <component :is="tip.icon" />
@@ -108,9 +106,7 @@
             </div>
             <div class="recommendation-content">
               <div class="recommendation-title">{{ rec.title }}</div>
-              <div class="recommendation-description">
-                {{ rec.description }}
-              </div>
+              <div class="recommendation-description">{{ rec.description }}</div>
             </div>
             <UnifiedButton
               v-if="!rec.completed"
@@ -135,63 +131,63 @@ import {
   ChevronLeftIconComponent,
   ChevronRightIconComponent,
   CheckCircleIconComponent,
-  CircleIconComponent,
-} from "./SettingsIcons.js";
+  CircleIconComponent
+} from './SettingsIcons.js'
 
 export default {
-  name: "TipsRecommendationsCard",
+  name: 'TipsRecommendationsCard',
   components: {
     LightbulbIconComponent,
     ChevronLeftIconComponent,
     ChevronRightIconComponent,
     CheckCircleIconComponent,
     CircleIconComponent,
-    UnifiedButton: () => import("@/components/ui/UnifiedButton.vue"),
-    IconButton: () => import("@/components/ui/IconButton.vue"),
+    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
+    IconButton: () => import('@/components/ui/IconButton.vue')
   },
   props: {
     tips: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     recommendations: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
-  emits: ["tip-action", "complete-recommendation"],
+  emits: ['tip-action', 'complete-recommendation'],
   data() {
     return {
-      currentTipIndex: 0,
-    };
+      currentTipIndex: 0
+    }
   },
   computed: {
     currentTip() {
-      return this.tips[this.currentTipIndex] || null;
+      return this.tips[this.currentTipIndex] || null
     },
     quickTips() {
-
-      return this.tips.slice(0, 3);
-    },
+      // Return first 3 tips as quick tips
+      return this.tips.slice(0, 3)
+    }
   },
   methods: {
     previousTip() {
       if (this.currentTipIndex > 0) {
-        this.currentTipIndex--;
+        this.currentTipIndex--
       }
     },
     nextTip() {
       if (this.currentTipIndex < this.tips.length - 1) {
-        this.currentTipIndex++;
+        this.currentTipIndex++
       }
     },
     setCurrentTip(index) {
       if (index >= 0 && index < this.tips.length) {
-        this.currentTipIndex = index;
+        this.currentTipIndex = index
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>

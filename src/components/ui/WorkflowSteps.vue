@@ -6,10 +6,10 @@
         :key="step.id"
         class="step-item"
         :class="{
-          active: currentStep === step.id,
-          completed: step.id < currentStep,
-          available: step.id <= maxAvailableStep,
-          disabled: step.id > maxAvailableStep,
+          'active': currentStep === step.id,
+          'completed': step.id < currentStep,
+          'available': step.id <= maxAvailableStep,
+          'disabled': step.id > maxAvailableStep
         }"
         @click="handleStepClick(step)"
       >
@@ -18,26 +18,23 @@
           <AppIcon v-else-if="step.icon" :name="step.icon" size="16" />
           <span v-else>{{ step.id }}</span>
         </div>
-
+        
         <div class="step-content">
           <div class="step-title">{{ step.title }}</div>
           <div v-if="step.description" class="step-description">
             {{ step.description }}
           </div>
-          <div
-            v-if="showProgress && step.progress !== undefined"
-            class="step-progress"
-          >
+          <div v-if="showProgress && step.progress !== undefined" class="step-progress">
             <div class="progress-bar">
-              <div
-                class="progress-fill"
+              <div 
+                class="progress-fill" 
                 :style="{ width: step.progress + '%' }"
               ></div>
             </div>
             <span class="progress-text">{{ step.progress }}%</span>
           </div>
         </div>
-
+        
         <div v-if="step.id === currentStep && allowEdit" class="step-actions">
           <UnifiedButton
             variant="ghost"
@@ -52,11 +49,9 @@
     <!-- Mobile Progress Bar -->
     <div v-if="showProgressBar" class="mobile-progress-bar">
       <div class="progress-track">
-        <div
-          class="progress-indicator"
-          :style="{
-            width: ((currentStep - 1) / (steps.length - 1)) * 100 + '%',
-          }"
+        <div 
+          class="progress-indicator" 
+          :style="{ width: ((currentStep - 1) / (steps.length - 1)) * 100 + '%' }"
         ></div>
       </div>
       <div class="progress-label">
@@ -73,7 +68,7 @@
             {{ currentStep }} / {{ steps.length }}
           </div>
         </div>
-
+        
         <div class="nav-actions">
           <UnifiedButton
             variant="ghost"
@@ -83,7 +78,7 @@
           >
             Previous
           </UnifiedButton>
-
+          
           <UnifiedButton
             v-if="currentStep < steps.length"
             variant="primary"
@@ -93,7 +88,7 @@
           >
             Next: {{ nextStepTitle }}
           </UnifiedButton>
-
+          
           <UnifiedButton
             v-else
             variant="success"
@@ -105,7 +100,7 @@
           </UnifiedButton>
         </div>
       </div>
-
+      
       <!-- Validation Message -->
       <div v-if="!canProceed && validationMessage" class="validation-hint">
         <AppIcon name="mdi-information-outline" size="16" />
@@ -116,98 +111,98 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import UnifiedButton from "./UnifiedButton.vue";
-import AppIcon from "./AppIcon.vue";
+import { computed } from 'vue'
+import UnifiedButton from './UnifiedButton.vue'
+import AppIcon from './AppIcon.vue'
 
 const props = defineProps({
   steps: {
     type: Array,
-    required: true,
+    required: true
   },
   currentStep: {
     type: Number,
-    required: true,
+    required: true
   },
   canProceed: {
     type: Boolean,
-    default: true,
+    default: true
   },
   maxAvailableStep: {
     type: Number,
-    default: null,
+    default: null
   },
   showProgress: {
     type: Boolean,
-    default: false,
+    default: false
   },
   showProgressBar: {
     type: Boolean,
-    default: false,
+    default: false
   },
   showNavigation: {
     type: Boolean,
-    default: true,
+    default: true
   },
   showStepCounter: {
     type: Boolean,
-    default: false,
+    default: false
   },
   allowEdit: {
     type: Boolean,
-    default: false,
+    default: false
   },
   allowStepJump: {
     type: Boolean,
-    default: true,
+    default: true
   },
   completeLabel: {
     type: String,
-    default: "Complete",
+    default: 'Complete'
   },
   validationMessage: {
     type: String,
-    default: "",
+    default: ''
   },
   isMobile: {
     type: Boolean,
-    default: false,
-  },
-});
+    default: false
+  }
+})
 
 const emit = defineEmits([
-  "step-change",
-  "next-step",
-  "previous-step",
-  "complete",
-  "edit-step",
-]);
+  'step-change',
+  'next-step', 
+  'previous-step',
+  'complete',
+  'edit-step'
+])
 
 const maxStep = computed(() => {
-  return props.maxAvailableStep !== null
-    ? props.maxAvailableStep
-    : Math.max(1, props.currentStep);
-});
+  return props.maxAvailableStep !== null 
+    ? props.maxAvailableStep 
+    : Math.max(1, props.currentStep)
+})
 
-const canGoBack = computed(() => props.currentStep > 1);
+const canGoBack = computed(() => props.currentStep > 1)
 
 const currentStepTitle = computed(() => {
-  const step = props.steps.find((s) => s.id === props.currentStep);
-  return step?.title || `Step ${props.currentStep}`;
-});
+  const step = props.steps.find(s => s.id === props.currentStep)
+  return step?.title || `Step ${props.currentStep}`
+})
 
 const nextStepTitle = computed(() => {
-  const nextStep = props.steps.find((s) => s.id === props.currentStep + 1);
-  return nextStep?.title || "Next";
-});
+  const nextStep = props.steps.find(s => s.id === props.currentStep + 1)
+  return nextStep?.title || 'Next'
+})
 
 const handleStepClick = (step) => {
-  if (!props.allowStepJump) return;
-  if (step.id > maxStep.value) return;
-  if (step.id === props.currentStep) return;
-
-  emit("step-change", step.id);
-};
+  if (!props.allowStepJump) return
+  if (step.id > maxStep.value) return
+  if (step.id === props.currentStep) return
+  
+  emit('step-change', step.id)
+}
 </script>
 
 <style scoped>
@@ -422,27 +417,36 @@ const handleStepClick = (step) => {
   font-size: 0.875rem;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .steps-container:not(.mobile) {
     flex-direction: column;
+    gap: var(--spacing-2);
   }
-
+  
   .steps-container:not(.mobile) .step-item {
     min-width: auto;
   }
-
+  
   .nav-content {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--spacing-3);
   }
-
+  
   .nav-actions {
     justify-content: space-between;
   }
 }
 
-[data-theme="dark"] .step-item.completed {
+/* Dark theme adjustments */
+[data-theme='dark'] .step-item.completed {
+  background: rgba(var(--color-success-rgb), 0.2);
+  color: var(--color-success-300);
 }
 
-[data-theme="dark"] .validation-hint {
+[data-theme='dark'] .validation-hint {
+  background: rgba(var(--color-warning-rgb), 0.2);
+  color: var(--color-warning-300);
 }
 </style>

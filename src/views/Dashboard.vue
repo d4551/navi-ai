@@ -27,11 +27,11 @@
     </template>
 
     <!-- Main Dashboard Content -->
-    <div class="dashboard-content">
+    <div class="container-xl space-y-8">
       <!-- Enhanced Gamification Section -->
-      <section class="dashboard-section gamification-section">
-        <div class="gamification-hud">
-          <div class="hud-content">
+      <section class="mb-8">
+        <div class="glass-strong p-6 rounded-lg">
+          <div class="flex items-center justify-between gap-6 flex-wrap">
             <div class="level-info">
               <div class="level-badge">🏆</div>
               <div class="level-text">
@@ -65,14 +65,14 @@
       </section>
 
       <!-- Quick Actions Grid -->
-      <section class="dashboard-section quick-actions-section">
-        <div class="section-header">
-          <h2 class="section-title">Quick Actions</h2>
-          <p class="section-subtitle">Jump into your gaming career tools</p>
+      <section>
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-glass-enhanced mb-2">Quick Actions</h2>
+          <p class="text-glass-enhanced opacity-80">Jump into your gaming career tools</p>
         </div>
-        
-        <div class="quick-actions-grid">
-          <Card variant="glass" class="action-card">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <UnifiedCard variant="glass" class="action-card neon-interactive">
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="mdi-file-document-edit" class="action-icon" />
@@ -90,9 +90,9 @@
                 Build Resume
               </UnifiedButton>
             </div>
-          </Card>
+          </UnifiedCard>
 
-          <Card variant="glass" class="action-card">
+          <UnifiedCard variant="glass" class="action-card neon-interactive">
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="mdi-briefcase-search" class="action-icon" />
@@ -110,12 +110,16 @@
                 Search Jobs
               </UnifiedButton>
             </div>
-          </Card>
+          </UnifiedCard>
 
-          <Card variant="glass" class="action-card">
+          <UnifiedCard variant="glass" class="action-card neon-interactive">
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="mdi-domain" class="action-icon" />
+              </div>
+              <div class="action-text">
+                <h3>Studios Explorer</h3>
+                <p>Discover gaming companies and their culture</p>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -126,9 +130,9 @@
                 Explore Studios
               </UnifiedButton>
             </div>
-          </Card>
+          </UnifiedCard>
 
-          <Card variant="glass" class="action-card">
+          <UnifiedCard variant="glass" class="action-card neon-interactive">
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="mdi-account-voice" class="action-icon" />
@@ -146,15 +150,15 @@
                 Start Practice
               </UnifiedButton>
             </div>
-          </Card>
+          </UnifiedCard>
         </div>
       </section>
 
       <!-- Content Dashboard Grid -->
-      <section class="dashboard-section content-section">
-        <div class="content-grid">
+      <section>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- Real-Time Chat Panel -->
-          <Card variant="glass" class="content-panel chat-panel">
+          <UnifiedCard variant="glass" class="content-panel chat-panel">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-message-text" class="panel-icon" />
@@ -174,10 +178,10 @@
             <div class="panel-content">
               <RealTimeChat />
             </div>
-          </Card>
+          </UnifiedCard>
 
           <!-- Skills Overview Panel -->
-          <Card variant="glass" class="content-panel skills-panel">
+          <UnifiedCard variant="glass" class="content-panel skills-panel">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-star-outline" class="panel-icon" />
@@ -213,10 +217,10 @@
                 Manage All Skills
               </UnifiedButton>
             </div>
-          </Card>
+          </UnifiedCard>
 
           <!-- Live Jobs Panel -->
-          <Card variant="glass" class="content-panel jobs-panel">
+          <UnifiedCard variant="glass" class="content-panel jobs-panel">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-briefcase-clock" class="panel-icon" />
@@ -273,10 +277,10 @@
                 View All Jobs
               </UnifiedButton>
             </div>
-          </Card>
+          </UnifiedCard>
 
           <!-- AI Insights Panel -->
-          <Card variant="glass" class="content-panel insights-panel">
+          <UnifiedCard variant="glass" class="content-panel insights-panel">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-brain" class="panel-icon" />
@@ -324,10 +328,10 @@
                 <p>Get AI-powered career insights</p>
               </div>
             </div>
-          </Card>
+          </UnifiedCard>
 
           <!-- Activity Timeline Panel -->
-          <Card variant="glass" class="content-panel activity-panel">
+          <UnifiedCard variant="glass" class="content-panel activity-panel">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-timeline-clock-outline" class="panel-icon" />
@@ -375,7 +379,7 @@
                 </div>
               </div>
             </div>
-          </Card>
+          </UnifiedCard>
         </div>
       </section>
     </div>
@@ -432,12 +436,13 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import HeaderActions from '@/components/ui/HeaderActions.vue'
-import Card from '@/components/Card.vue'
+import UnifiedCard from '@/components/UnifiedCard.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import PushToTalkButton from '@/components/PushToTalkButton.vue'
 import ToastNotification from '@/components/ToastNotification.vue'
 import RealTimeChat from '@/components/RealTimeChat.vue'
+import CompactGamifyHUD from '@/components/CompactGamifyHUD.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UiChip from '@/components/ui/UiChip.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
@@ -544,7 +549,7 @@ const topSkills = computed(() => [
 
 // Commented out for future use
 // const topStudios = computed(() => 
-
+//   GAMING_STUDIOS.slice(0, 4).map(studio => ({
 //     id: studio.id,
 //     name: studio.name,
 //     description: studio.description,
@@ -607,7 +612,7 @@ onMounted(() => {
   console.log('Dashboard mounted - Gaming Career Platform')
   fetchLiveData()
   
-
+  // Set up periodic refresh every 5 minutes
   const refreshInterval = setInterval(fetchLiveData, 5 * 60 * 1000)
   
   return () => clearInterval(refreshInterval)
@@ -615,47 +620,51 @@ onMounted(() => {
 </script>
 
   <style scoped>
+/* ===== GAMING CAREER DASHBOARD STYLES ===== */
 .dashboard-view {
+  min-height: 100vh;
   background: var(--background-primary);
   display: flex;
   flex-direction: column;
 }
 
 .dashboard-content {
+  flex: 1;
   padding: var(--spacing-lg);
   max-width: var(--page-container-max-width);
+  margin: 0 auto;
+  width: 100%;
 }
 
+/* Header Actions */
 .header-actions-group {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
 .header-search {
+  min-width: 320px;
 }
 
+/* Enhanced Gamification Section */
 .gamification-section {
+  margin-bottom: var(--spacing-8);
 }
 
-.gamification-hud {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-blur);
-  border-radius: var(--radius-lg);
-}
+/* Gamification HUD now uses .glass-strong utility class */
 
-.hud-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
+/* HUD content now uses utility classes */
 
 .level-info {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
 }
 
 .level-badge {
+  font-size: 2rem;
+  animation: pulse-glow 2s infinite alternate;
 }
 
 .level-text {
@@ -677,15 +686,26 @@ onMounted(() => {
 }
 
 .xp-bar {
+  flex: 1;
+  max-width: 200px;
+  min-width: 150px;
 }
 
 .xp-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(var(--surface-rgb), 0.3);
   border-radius: var(--radius-full);
   overflow: hidden;
+  margin-bottom: var(--spacing-1);
 }
 
 .xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-primary), var(--neon-cyber));
   border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(var(--neon-primary-rgb), 0.5);
 }
 
 .xp-text {
@@ -697,29 +717,47 @@ onMounted(() => {
 .streak-counter {
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: rgba(var(--neon-primary-rgb), 0.1);
+  border: 1px solid var(--neon-primary);
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
 }
 
 .streak-icon {
+  font-size: 1.2rem;
 }
 
 .hud-actions {
   display: flex;
+  gap: var(--spacing-2);
   flex-wrap: wrap;
 }
 
+/* Modal Styles */
 .modal-overlay {
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: var(--z-modal);
+  padding: var(--spacing-4);
 }
 
 .quest-modal,
 .achievements-modal {
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  padding: var(--spacing-6);
   border-radius: var(--radius-lg);
   overflow-y: auto;
 }
@@ -728,36 +766,50 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--spacing-5);
+  padding-bottom: var(--spacing-3);
+  border-bottom: 1px solid var(--border-light);
 }
 
+.modal-header h2 {
+  margin: 0;
   color: var(--text-primary);
   font-family: var(--font-gaming);
   font-size: var(--font-size-xl);
 }
 
+/* Quest Styles */
 .quest-list {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-4);
 }
 
 .quest-item {
+  background: rgba(var(--surface-rgb), 0.6);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
+  padding: var(--spacing-4);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-4);
 }
 
 .quest-info {
+  flex: 1;
 }
 
 .quest-title {
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
+  margin-bottom: var(--spacing-1);
 }
 
 .quest-description {
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
+  margin-bottom: var(--spacing-1);
 }
 
 .quest-reward {
@@ -770,16 +822,23 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: var(--spacing-1);
+  min-width: 80px;
 }
 
 .progress-bar {
+  width: 60px;
+  height: 4px;
+  background: rgba(var(--surface-rgb), 0.3);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
 
 .progress-fill {
+  height: 100%;
   background: var(--neon-primary);
   border-radius: var(--radius-full);
+  transition: width 0.3s ease;
 }
 
 .progress-text {
@@ -787,28 +846,40 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
+/* Achievement Styles */
 .achievements-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-4);
 }
 
 .achievement-item {
+  background: rgba(var(--surface-rgb), 0.6);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
+  padding: var(--spacing-4);
   text-align: center;
+  transition: all 0.3s ease;
 }
 
 .achievement-item.unlocked {
   border-color: var(--neon-primary);
+  background: rgba(var(--neon-primary-rgb), 0.1);
 }
 
 .achievement-item:not(.unlocked) {
+  opacity: 0.6;
 }
 
 .achievement-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-2);
 }
 
 .achievement-title {
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
+  margin-bottom: var(--spacing-1);
 }
 
 .achievement-description {
@@ -816,104 +887,152 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
+/* Dashboard Sections */
 .dashboard-section {
+  margin-bottom: 3rem;
 }
 
 .section-header {
+  margin-bottom: 1.5rem;
 }
 
 .section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--text-primary);
+  margin: 0;
 }
 
 .section-subtitle {
+  font-size: 0.875rem;
   color: var(--text-secondary);
+  margin: 0.5rem 0 0 0;
 }
 
+/* Quick Actions Grid */
 .quick-actions-grid {
   display: grid;
-  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
 .action-card {
   position: relative;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(var(--neon-primary-rgb), 0.2);
 }
 
 .action-content {
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  gap: 1rem;
 }
 
 .action-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--neon-primary), var(--neon-cyber));
+  margin-bottom: 0.5rem;
+  box-shadow: 0 0 20px rgba(var(--neon-primary-rgb), 0.3);
 }
 
 .action-icon {
+  font-size: 1.75rem;
   color: white;
 }
 
+.action-text h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
   color: var(--text-primary);
+  margin: 0;
 }
 
 .action-text p {
+  font-size: 0.875rem;
   color: var(--text-secondary);
+  margin: 0.5rem 0 0 0;
+  line-height: 1.4;
 }
 
 .action-button {
   margin-top: auto;
+  width: 100%;
 }
 
+/* Content Grid */
 .content-grid {
   display: grid;
-  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
 }
 
 .content-panel {
   display: flex;
   flex-direction: column;
+  height: fit-content;
+  min-height: 400px;
 }
 
+/* Panel Headers */
 .panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
   background: var(--surface-secondary);
 }
 
 .panel-title-wrapper {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
 }
 
 .panel-icon {
+  font-size: 1.25rem;
   color: var(--neon-cyber);
 }
 
 .panel-title {
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--text-primary);
+  margin: 0;
 }
 
 .panel-subtitle {
+  font-size: 0.75rem;
   color: var(--text-secondary);
+  margin: 0.25rem 0 0 0;
 }
 
 .panel-content {
+  flex: 1;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  overflow: auto;
 }
 
+/* Skills Panel */
 .skills-grid {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .view-all-button {
@@ -921,30 +1040,44 @@ onMounted(() => {
   align-self: flex-start;
 }
 
+/* Jobs Panel */
 .jobs-list {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex: 1;
 }
 
 .job-item {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  padding: 0.75rem;
   background: var(--surface-tertiary);
+  border-radius: 8px;
+  gap: 0.75rem;
 }
 
 .job-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .job-title {
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .job-company {
+  font-size: 0.75rem;
   color: var(--text-secondary);
+  margin: 0 0 0.5rem 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -952,6 +1085,7 @@ onMounted(() => {
 
 .job-meta {
   display: flex;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
@@ -960,61 +1094,91 @@ onMounted(() => {
   align-items: center;
 }
 
+/* Insights Panel */
 .insights-content {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+  flex: 1;
 }
 
 .insight-item {
   display: flex;
   align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
   background: var(--surface-tertiary);
+  border-radius: 8px;
 }
 
 .insight-icon {
+  font-size: 1.25rem;
   color: var(--neon-primary);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
 }
 
 .insight-details {
+  flex: 1;
 }
 
 .insight-text {
+  font-size: 0.875rem;
   color: var(--text-primary);
+  line-height: 1.4;
+  margin: 0;
 }
 
+/* Activity Timeline */
 .activity-timeline {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+  flex: 1;
 }
 
 .activity-item {
   display: flex;
   align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
   background: var(--surface-tertiary);
+  border-radius: 8px;
 }
 
 .activity-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   background: var(--surface-secondary);
+  flex-shrink: 0;
 }
 
 .activity-icon {
+  font-size: 1rem;
   color: var(--neon-cyber);
 }
 
 .activity-details {
+  flex: 1;
 }
 
 .activity-description {
+  font-size: 0.875rem;
   color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.4;
 }
 
 .activity-timestamp {
+  font-size: 0.75rem;
   color: var(--text-secondary);
 }
 
+/* Loading and Empty States */
 .loading-state,
 .empty-state {
   display: flex;
@@ -1022,37 +1186,65 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding: 2rem 1rem;
+  flex: 1;
 }
 
 .loading-icon,
 .empty-icon {
+  font-size: 2rem;
   color: var(--text-secondary);
+  margin-bottom: 0.75rem;
 }
 
 .loading-icon.spin {
+  animation: spin 1s linear infinite;
 }
 
 .loading-state p,
 .empty-state p {
+  font-size: 0.875rem;
   color: var(--text-secondary);
+  margin: 0;
 }
 
+/* Animations */
 @keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(var(--neon-primary-rgb), 0.3);
+    transform: scale(1);
   }
+  50% { 
+    box-shadow: 0 0 20px rgba(var(--neon-primary-rgb), 0.6);
+    transform: scale(1.05);
   }
 }
 
 @keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-
-    grid-auto-rows: auto;
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hud-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-4);
   }
+  
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
+@media (max-width: 768px) {
   .dashboard-content {
+    padding: var(--spacing-4);
   }
   
   .quick-actions-grid {
+    grid-template-columns: 1fr;
   }
   
   .action-content {
@@ -1061,20 +1253,27 @@ onMounted(() => {
   }
   
   .action-icon-wrapper {
+    width: 48px;
+    height: 48px;
   }
   
   .hud-content {
+    gap: var(--spacing-3);
   }
   
   .level-badge {
+    font-size: 1.5rem;
   }
 }
 
+/* Enhanced hover effects with RGB neon */
 .action-card:hover .action-icon-wrapper {
+  box-shadow: 0 0 30px rgba(var(--neon-primary-rgb), 0.5);
 }
 
 .quest-item:hover,
 .achievement-item.unlocked:hover {
   border-color: var(--neon-primary);
+  box-shadow: 0 0 15px rgba(var(--neon-primary-rgb), 0.2);
 }
 </style>

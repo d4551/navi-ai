@@ -7,16 +7,9 @@
     @click.self="$emit('close')"
     @keydown.esc.prevent="$emit('close')"
   >
-    <div
-      class="settings-modal ultra-glass-card section-card gamification-modal"
-      tabindex="-1"
-      @click.stop
-    >
+    <div class="settings-modal ultra-glass-card section-card gamification-modal" tabindex="-1" @click.stop>
       <div class="settings-modal-header">
-        <h3
-          id="gamification-modal-title"
-          class="d-flex align-items-center gap-2"
-        >
+        <h3 id="gamification-modal-title" class="d-flex align-items-center gap-2">
           <AppIcon name="mdi-trophy" />
           Achievements & Challenges
         </h3>
@@ -32,8 +25,8 @@
 </template>
 
 <script setup>
-import AppIcon from "@/components/ui/AppIcon.vue";
-import GamificationDashboard from "@/components/GamificationDashboard.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
+import GamificationDashboard from '@/components/GamificationDashboard.vue'
 </script>
 
 <style scoped>
@@ -57,19 +50,27 @@ import GamificationDashboard from "@/components/GamificationDashboard.vue";
   border-radius: 16px;
 }
 
+/* Expand width for gamification dashboard */
 .settings-modal.gamification-modal {
+  width: min(1100px, 96vw);
 }
 
 .settings-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .settings-modal-content {
+  padding: var(--spacing-4);
 }
 
 .gamification-modal {
+  max-width: min(1100px, 96vw);
+  width: 100%;
+  max-height: 90vh;
   overflow: auto;
 }
 </style>

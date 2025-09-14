@@ -1,38 +1,29 @@
 <template>
-  <div
+  <div 
     class="studio-list-item glass-card section-card interactive-hover"
-    :class="{
+    :class="{ 
       'item-selected': isSelected,
-      'item-favorite': isFavorite,
+      'item-favorite': isFavorite 
     }"
   >
     <div class="item-content">
       <!-- Studio Logo & Basic Info -->
       <div class="studio-identity">
         <div class="logo-container">
-          <img
-            v-if="studio.logo"
-            :src="studio.logo"
-            :alt="studio.name"
-            class="studio-logo"
-            @error="onLogoError"
-          />
+          <img v-if="studio.logo" :src="studio.logo" :alt="studio.name" class="studio-logo" @error="onLogoError" />
           <div v-else class="logo-placeholder">
-            {{ studio.name?.charAt(0) || "?" }}
+            {{ studio.name?.charAt(0) || '?' }}
           </div>
         </div>
-
+        
         <div class="studio-basic-info">
           <h3 class="studio-name">{{ studio.name }}</h3>
           <div class="studio-location">
             <AppIcon name="mdi-map-marker" />
-            {{ studio.headquarters || studio.location || "Location Unknown" }}
+            {{ studio.headquarters || studio.location || 'Location Unknown' }}
           </div>
           <div class="studio-meta">
-            <span
-              v-if="(studio as any).type || (studio as any).category"
-              class="meta-badge"
-            >
+            <span v-if="(studio as any).type || (studio as any).category" class="meta-badge">
               {{ (studio as any).type || (studio as any).category }}
             </span>
             <span v-if="studio.founded" class="meta-item">Est. {{ studio.founded }}</span>
@@ -46,7 +37,7 @@
         <p v-if="studio.description" class="studio-description">
           {{ truncateText(studio.description, 150) }}
         </p>
-
+        
         <div class="detail-sections">
           <!-- Games -->
           <div v-if="studio.games?.length" class="detail-section">
@@ -55,9 +46,9 @@
               Games ({{ studio.games.length }})
             </h4>
             <div class="tags-list">
-              <span
-                v-for="game in studio.games.slice(0, 3)"
-                :key="game"
+              <span 
+                v-for="game in studio.games.slice(0, 3)" 
+                :key="game" 
                 class="tag game-tag"
               >
                 {{ game }}
@@ -75,17 +66,14 @@
               Tech Stack
             </h4>
             <div class="tags-list">
-              <span
-                v-for="tech in studio.technologies.slice(0, 4)"
-                :key="tech"
+              <span 
+                v-for="tech in studio.technologies.slice(0, 4)" 
+                :key="tech" 
                 class="tag tech-tag"
               >
                 {{ tech }}
               </span>
-              <span
-                v-if="studio.technologies.length > 4"
-                class="more-indicator"
-              >
+              <span v-if="studio.technologies.length > 4" class="more-indicator">
                 +{{ studio.technologies.length - 4 }} more
               </span>
             </div>
@@ -98,9 +86,9 @@
               Common Roles
             </h4>
             <div class="tags-list">
-              <span
-                v-for="role in studio.commonRoles.slice(0, 3)"
-                :key="role"
+              <span 
+                v-for="role in studio.commonRoles.slice(0, 3)" 
+                :key="role" 
                 class="tag role-tag"
               >
                 {{ role }}
@@ -125,7 +113,7 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-          <button
+          <button 
             class="action-btn favorite-btn"
             :class="{ active: isFavorite }"
             :title="isFavorite ? 'Remove from watchlist' : 'Add to watchlist'"
@@ -133,8 +121,8 @@
           >
             <AppIcon name="mdi-heart" />
           </button>
-
-          <button
+          
+          <button 
             class="action-btn select-btn"
             :class="{ active: isSelected }"
             title="Select for comparison"
@@ -145,18 +133,18 @@
         </div>
 
         <div class="primary-actions">
-          <UnifiedButton
-            color="glass"
-            appearance="outlined"
+          <UnifiedButton 
+            color="glass" 
+            appearance="outlined" 
             size="sm"
             leading-icon="mdi-information-outline"
             @click="$emit('view-details', studio)"
           >
             Details
           </UnifiedButton>
-
-          <UnifiedButton
-            color="gaming"
+          
+          <UnifiedButton 
+            color="gaming" 
             size="sm"
             leading-icon="mdi-briefcase-outline"
             @click="$emit('view-jobs', studio)"
@@ -173,16 +161,16 @@
         <div v-if="studio.culture?.values?.length" class="info-section">
           <h5 class="info-title">Culture & Values</h5>
           <div class="values-list">
-            <span
-              v-for="value in studio.culture.values.slice(0, 4)"
-              :key="value"
+            <span 
+              v-for="value in studio.culture.values.slice(0, 4)" 
+              :key="value" 
               class="value-tag"
             >
               {{ value }}
             </span>
           </div>
         </div>
-
+        
         <div v-if="studio.interviewStyle" class="info-section">
           <h5 class="info-title">Interview Style</h5>
           <p class="info-text">{{ studio.interviewStyle }}</p>
@@ -193,41 +181,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 defineProps<{
-  studio: any;
-  isFavorite: boolean;
-  aiScore?: number;
-  isSelected: boolean;
-}>();
+  studio: any
+  isFavorite: boolean
+  aiScore?: number
+  isSelected: boolean
+}>()
 
 defineEmits<{
-  "toggle-favorite": [studioId: string];
-  "toggle-selection": [studioId: string];
-  "view-details": [studio: any];
-  "view-jobs": [studio: any];
-}>();
+  'toggle-favorite': [studioId: string]
+  'toggle-selection': [studioId: string]
+  'view-details': [studio: any]
+  'view-jobs': [studio: any]
+}>()
 
-const showQuickInfo = ref(false);
+const showQuickInfo = ref(false)
 
 function onLogoError(event: Event) {
-  const img = event.target as HTMLImageElement;
-  img.style.display = "none";
+  const img = event.target as HTMLImageElement
+  img.style.display = 'none'
 }
 
 function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + "...";
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength) + '...'
 }
 
 function getScoreClass(score: number): string {
-  if (score >= 80) return "score-excellent";
-  if (score >= 60) return "score-good";
-  if (score >= 40) return "score-fair";
-  return "score-poor";
+  if (score >= 80) return 'score-excellent'
+  if (score >= 60) return 'score-good'
+  if (score >= 40) return 'score-fair'
+  return 'score-poor'
 }
 </script>
 
@@ -242,21 +230,13 @@ function getScoreClass(score: number): string {
 
 .studio-list-item:hover {
   border-color: var(--color-primary-300);
-  background: color-mix(
-    in srgb,
-    var(--color-primary-500) 2%,
-    var(--glass-surface)
-  );
+  background: color-mix(in srgb, var(--color-primary-500) 2%, var(--glass-surface));
   transform: translateX(4px);
 }
 
 .studio-list-item.item-selected {
   border-color: var(--color-primary-500);
-  background: color-mix(
-    in srgb,
-    var(--color-primary-500) 5%,
-    var(--glass-surface)
-  );
+  background: color-mix(in srgb, var(--color-primary-500) 5%, var(--glass-surface));
 }
 
 .studio-list-item.item-favorite {
@@ -331,65 +311,85 @@ function getScoreClass(score: number): string {
   flex-wrap: wrap;
 }
 
+/* Local meta-badge replaced by unified alias */
 
 .meta-item {
   color: var(--text-secondary);
+  font-size: 0.875rem;
 }
 
 .studio-details {
+  flex: 1;
+  min-width: 0;
 }
 
 .studio-description {
   color: var(--text-primary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin: 0 0 var(--spacing-3) 0;
+  opacity: 0.9;
 }
 
 .detail-sections {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-3);
 }
 
 .detail-section {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-2);
 }
 
 .section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--text-primary);
+  margin: 0;
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
 }
 
 .tags-list {
   display: flex;
   flex-wrap: wrap;
+  gap: var(--spacing-1);
 }
 
 .tag {
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px solid;
 }
 
 .game-tag {
-  border-color: color-mix(
-    in srgb,
-    var(--glass-border)
-  );
+  background: color-mix(in srgb, var(--color-gaming-500) 10%, var(--glass-bg));
+  border-color: color-mix(in srgb, var(--color-gaming-500) 20%, var(--glass-border));
+  color: var(--color-gaming-600);
 }
 
 .tech-tag {
-  border-color: color-mix(
-    in srgb,
-    var(--glass-border)
-  );
+  background: color-mix(in srgb, var(--color-info-500) 10%, var(--glass-bg));
+  border-color: color-mix(in srgb, var(--color-info-500) 20%, var(--glass-border));
+  color: var(--color-info-600);
 }
 
 .role-tag {
-  border-color: color-mix(
-    in srgb,
-    var(--glass-border)
-  );
+  background: color-mix(in srgb, var(--color-success-500) 10%, var(--glass-bg));
+  border-color: color-mix(in srgb, var(--color-success-500) 20%, var(--glass-border));
+  color: var(--color-success-600);
 }
 
 .more-indicator {
+  padding: var(--spacing-1) var(--spacing-2);
   background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   font-style: italic;
 }
@@ -397,150 +397,200 @@ function getScoreClass(score: number): string {
 .item-actions {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-3);
   align-items: flex-end;
+  min-width: 200px;
 }
 
 .ai-score-compact {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
 }
 
 .score-indicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: 2px solid;
 }
 
 .score-excellent {
-  background: color-mix(
-    in srgb,
-    var(--glass-surface)
-  );
+  color: var(--color-success-600);
+  border-color: var(--color-success-500);
+  background: color-mix(in srgb, var(--color-success-500) 15%, var(--glass-surface));
 }
 
 .score-good {
-  background: color-mix(
-    in srgb,
-    var(--glass-surface)
-  );
+  color: var(--color-info-600);
+  border-color: var(--color-info-500);
+  background: color-mix(in srgb, var(--color-info-500) 15%, var(--glass-surface));
 }
 
 .score-fair {
-  background: color-mix(
-    in srgb,
-    var(--glass-surface)
-  );
+  color: var(--color-warning-600);
+  border-color: var(--color-warning-500);
+  background: color-mix(in srgb, var(--color-warning-500) 15%, var(--glass-surface));
 }
 
 .score-poor {
-  background: color-mix(
-    in srgb,
-    var(--glass-surface)
-  );
+  color: var(--color-error-600);
+  border-color: var(--color-error-500);
+  background: color-mix(in srgb, var(--color-error-500) 15%, var(--glass-surface));
 }
 
 .score-label {
+  font-size: 0.75rem;
   color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .action-buttons {
   display: flex;
+  gap: var(--spacing-2);
 }
 
 .action-btn {
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
   background: var(--glass-bg);
   color: var(--text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .action-btn:hover {
   background: var(--glass-surface);
   color: var(--text-primary);
+  border-color: var(--color-primary-300);
 }
 
 .favorite-btn.active {
+  background: var(--color-error-500);
   color: white;
+  border-color: var(--color-error-500);
 }
 
 .select-btn.active {
+  background: var(--color-success-500);
   color: white;
+  border-color: var(--color-success-500);
 }
 
 .primary-actions {
   display: flex;
+  gap: var(--spacing-2);
 }
 
 .quick-info-panel {
+  margin-top: var(--spacing-4);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--glass-border);
 }
 
 .info-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-4);
 }
 
 .info-section {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-2);
 }
 
 .info-title {
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--text-primary);
+  margin: 0;
 }
 
 .info-text {
+  font-size: 0.875rem;
   color: var(--text-primary);
+  margin: 0;
+  opacity: 0.9;
 }
 
 .values-list {
   display: flex;
   flex-wrap: wrap;
+  gap: var(--spacing-1);
 }
 
 .value-tag {
+  padding: var(--spacing-1) var(--spacing-2);
+  background: color-mix(in srgb, var(--color-warning-500) 10%, var(--glass-bg));
+  border: 1px solid color-mix(in srgb, var(--color-warning-500) 20%, var(--glass-border));
+  color: var(--color-warning-600);
+  border-radius: 999px;
+  font-size: 0.75rem;
 }
 
+/* Responsive Design */
+@media (max-width: 1024px) {
   .item-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3);
   }
-
+  
   .studio-identity {
     min-width: auto;
   }
-
+  
   .item-actions {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     min-width: auto;
   }
-
+  
   .ai-score-compact {
+    order: 1;
   }
-
+  
   .action-buttons {
+    order: 2;
   }
-
+  
   .primary-actions {
+    order: 3;
   }
 }
 
+@media (max-width: 768px) {
   .studio-identity {
     flex-direction: column;
     text-align: center;
+    gap: var(--spacing-2);
   }
-
+  
   .item-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--spacing-2);
   }
-
+  
   .primary-actions {
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2);
   }
 }
 
+/* Dark theme adjustments */
 [data-theme="dark"] .studio-list-item {
   background: var(--surface-elevated);
 }

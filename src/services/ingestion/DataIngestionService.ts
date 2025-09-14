@@ -1,3 +1,7 @@
+/**
+ * Data Ingestion Service - Central coordinator for multi-source studio data ingestion
+ * Handles Steam API, IGDB, and other gaming data sources with conflict resolution
+ */
 
 import { logger } from "@/shared/utils/logger";
 import type { GameStudio, TeamSize } from "@/shared/types/jobs";
@@ -52,6 +56,7 @@ export interface RawStudioData {
   // Additional fields may vary by source
   metadata: Record<string, any>;
   lastUpdated: Date;
+  confidence: number; // 0-1 score for data quality
 }
 
 export interface ConflictResolution {
@@ -72,13 +77,7 @@ export class DataIngestionService {
   private activeJobs: Map<string, IngestionJob> = new Map();
 
   constructor() {
-    this.initializeDataSources().catch((err) =>
-      logger.error(
-        "Failed to initialize data sources",
-        err,
-        "DataIngestionService",
-      ),
-    );
+    this.initializeDataSources().catch(err => logger.error('Failed to initialize data sources', err, 'DataIngestionService'));
   }
 
   private async initializeDataSources() {
@@ -126,6 +125,7 @@ export class DataIngestionService {
       sourceId,
       type,
       status: "pending",
+      progress: 0,
       errors: [],
       metadata: options.metadata || {},
     };
@@ -133,6 +133,7 @@ export class DataIngestionService {
     this.activeJobs.set(jobId, job);
 
     // Start job asynchronously
+    this.executeIngestionJob(job).catch((error) => {
       logger.error(`Ingestion job ${jobId} failed:`, error);
       job.status = "failed";
       job.errors.push({
@@ -140,6 +141,7 @@ export class DataIngestionService {
         message: error.message,
         severity: "critical",
         timestamp: new Date(),
+        retryCount: 0,
         resolved: false,
       });
     });
@@ -148,6 +150,7 @@ export class DataIngestionService {
     return jobId;
   }
 
+  private async executeIngestionJob(job: IngestionJob): Promise<void> {
     job.status = "running";
     job.startedAt = new Date();
 
@@ -156,12 +159,14 @@ export class DataIngestionService {
       const rawData = await sourceService.fetchData(job);
 
       job.totalItems = rawData.length;
+      job.processedItems = 0;
 
       for (const data of rawData) {
         try {
           await this.processRawData(data);
           job.processedItems++;
           job.progress = Math.floor(
+            (job.processedItems / job.totalItems) * 100,
           );
         } catch (error: any) {
           job.errors.push({
@@ -171,6 +176,7 @@ export class DataIngestionService {
             entityName: data.name,
             severity: "error",
             timestamp: new Date(),
+            retryCount: 0,
             resolved: false,
           });
         }
@@ -180,6 +186,7 @@ export class DataIngestionService {
       }
 
       job.status = "completed";
+      job.progress = 100;
     } catch (error: any) {
       job.status = "failed";
       job.errors.push({
@@ -187,6 +194,7 @@ export class DataIngestionService {
         message: `Job execution failed: ${error.message}`,
         severity: "critical",
         timestamp: new Date(),
+        retryCount: 0,
         resolved: false,
       });
     } finally {
@@ -201,6 +209,7 @@ export class DataIngestionService {
     // Check for existing studios (conflict detection)
     const conflicts = await this.detectConflicts(normalized);
 
+    if (conflicts.length > 0) {
       // Handle conflicts based on resolution strategy
       await this.handleConflicts(normalized, conflicts);
     } else {
@@ -228,7 +237,9 @@ export class DataIngestionService {
         diversity: true,
         remoteFirst: false,
       },
+      website: rawData.websites?.[0],
       logo: rawData.logo,
+      openPositions: 0,
       benefits: [],
     };
   }
@@ -255,23 +266,23 @@ export class DataIngestionService {
   private async importStudio(studio: GameStudio): Promise<void> {
     // Store the studio data where StudioDataManager can find it
     const { unifiedStorage } = await import("@/utils/storage");
-
+    
     // Get existing steam data
-    const existingSteamData =
-      (await unifiedStorage.get("steam_studio_data")) || [];
-
+    const existingSteamData = await unifiedStorage.get("steam_studio_data") || [];
+    
     // Add new studio to the collection
     const updatedSteamData = [...existingSteamData];
-    const existingIndex = updatedSteamData.findIndex((s) => s.id === studio.id);
-
+    const existingIndex = updatedSteamData.findIndex(s => s.id === studio.id);
+    
+    if (existingIndex >= 0) {
       updatedSteamData[existingIndex] = studio;
     } else {
       updatedSteamData.push(studio);
     }
-
+    
     // Store back to storage
     await unifiedStorage.set("steam_studio_data", updatedSteamData);
-
+    
     logger.info(`Successfully imported studio: ${studio.name}`);
   }
 
@@ -279,7 +290,9 @@ export class DataIngestionService {
   private generateStudioId(name: string): string {
     return name
       .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
+      .slice(0, 100);
   }
 
   private cleanStudioName(name: string): string {
@@ -290,9 +303,14 @@ export class DataIngestionService {
 
   private normalizeLocation(location: string): string {
     // Simple location normalization
+    return location.replace(/,\s*$/, "").trim();
   }
 
   private inferStudioSize(data: RawStudioData): TeamSize {
+    const gameCount = data.games?.length || 0;
+    if (gameCount > 10) return "Large (51-200)" as TeamSize;
+    if (gameCount > 3) return "Medium (11-50)" as TeamSize;
+    return "Small (2-10)" as TeamSize;
   }
 
   private inferStudioType(data: RawStudioData): GameStudio["type"] {
@@ -323,6 +341,7 @@ export class DataIngestionService {
       return "VR/AR";
     }
 
+    if (games.length > 5) return "AAA";
     return "Indie";
   }
 
@@ -348,6 +367,7 @@ export class DataIngestionService {
       techs.push("C++", "DirectX");
     }
     if (games.some((g) => g.platforms?.some((p) => p.includes("Mobile")))) {
+      techs.push("Unity", "C#");
     }
     if (games.some((g) => g.platforms?.some((p) => p.includes("Console")))) {
       techs.push("C++", "PlayStation SDK", "Xbox SDK");
@@ -414,8 +434,10 @@ class RateLimiter {
     );
 
     if (this.requests.length >= this.config.requests) {
+      const oldestRequest = this.requests[0];
       const waitTime = this.config.window - (now - oldestRequest.timestamp);
 
+      if (waitTime > 0) {
         await new Promise((resolve) => setTimeout(resolve, waitTime));
       }
     }

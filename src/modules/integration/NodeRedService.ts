@@ -1,3 +1,7 @@
+/**
+ * 🔄 NODE-RED INTEGRATION SERVICE
+ * Canonical service for Node-RED flow management and custom nodes
+ */
 
 interface NodeRedConfig {
   baseUrl: string;
@@ -30,18 +34,19 @@ interface NodeRedNode {
 
 interface CustomNode {
   name: string;
-  category: "ai" | "career" | "gaming" | "data";
+  category: 'ai' | 'career' | 'gaming' | 'data';
   inputs: number;
   outputs: number;
   icon: string;
   color: string;
   paletteLabel: string;
   defaults: Record<string, any>;
+  oneditprepare?: string; // JavaScript function as string
   oneditsave?: string;
   oneditdelete?: string;
 }
 
-import { logger } from "@/shared/utils/logger";
+import { logger } from '@/shared/utils/logger'
 
 class NodeRedService {
   private config: NodeRedConfig | null = null;
@@ -51,21 +56,18 @@ class NodeRedService {
 
   async initialize(config?: NodeRedConfig): Promise<void> {
     // Provide default configuration if none supplied
-    const envBase = (
-      typeof import.meta !== "undefined"
-        ? (import.meta as any)?.env?.VITE_NODE_RED_BASE_URL
-        : undefined
-    ) as string | undefined;
+    const envBase = (typeof import.meta !== 'undefined' ? (import.meta as any)?.env?.VITE_NODE_RED_BASE_URL : undefined) as string | undefined
     this.config = config || {
-      enableWebSockets: false,
+      baseUrl: envBase || 'http://localhost:1880',
+      enableWebSockets: false
     };
-
+    
     try {
       // Test connection
       const response = await fetch(`${this.config.baseUrl}/flows`, {
-        headers: this.getAuthHeaders(),
+        headers: this.getAuthHeaders()
       });
-
+      
       if (!response.ok) {
         throw new Error(`Node-RED connection failed: ${response.statusText}`);
       }
@@ -78,39 +80,25 @@ class NodeRedService {
       // Register custom nodes
       await this.registerCustomNodes();
 
+      logger.info('🔄 Node-RED service initialized');
     } catch (error: any) {
       // Check for CSP violations specifically
-      if (
-        error.message &&
-        (error.message.includes("Content Security Policy") ||
-          error.message.includes(
-            "violates the following Content Security Policy directive",
-          ))
-      ) {
-        logger.warn(
-          {
-            url: this.config?.baseUrl,
-            error: error.message,
-          },
-        );
+      if (error.message && (error.message.includes('Content Security Policy') || error.message.includes('violates the following Content Security Policy directive'))) {
+        logger.warn('🔒 Node-RED blocked by Content Security Policy. Check CSP settings for localhost connections.', {
+          url: this.config?.baseUrl,
+          error: error.message
+        });
         // Don't throw for CSP errors - graceful degradation
         return;
-      } else if (
-        error.message &&
-        (error.message.includes("Failed to fetch") ||
-          error.message.includes("ERR_CONNECTION_REFUSED") ||
-          error.name === "TypeError")
-      ) {
-        logger.info(
-          {
-            url: this.config?.baseUrl,
-            suggestion: "Run: npm install -g node-red && node-red",
-          },
-        );
+      } else if (error.message && (error.message.includes('Failed to fetch') || error.message.includes('ERR_CONNECTION_REFUSED') || error.name === 'TypeError')) {
+        logger.info('🔌 Node-RED not available. Install and start Node-RED to enable workflow automation features.', {
+          url: this.config?.baseUrl,
+          suggestion: 'Run: npm install -g node-red && node-red'
+        });
         // Don't throw for connection errors - graceful degradation
         return;
       } else {
-        logger.error("[✗] Node-RED initialization failed:", error);
+        logger.error('[✗] Node-RED initialization failed:', error);
         // Only throw for unexpected errors
         throw error;
       }
@@ -120,20 +108,19 @@ class NodeRedService {
   private async initializeWebSocket(): Promise<void> {
     if (!this.config) return;
 
-    const wsUrl = this.config.baseUrl.replace("http", "ws") + "/comms";
-
+    const wsUrl = this.config.baseUrl.replace('http', 'ws') + '/comms';
+    
     return new Promise((resolve, reject) => {
       this.ws = new WebSocket(wsUrl);
-
+      
       this.ws.onopen = () => {
-
+        logger.info('🔄 Node-RED WebSocket connected');
+        
         // Subscribe to flow events
-        this.ws?.send(
-          JSON.stringify({
-            subscribe: "flows",
-          }),
-        );
-
+        this.ws?.send(JSON.stringify({
+          subscribe: 'flows'
+        }));
+        
         resolve();
       };
 
@@ -143,26 +130,28 @@ class NodeRedService {
       };
 
       this.ws.onerror = (error) => {
-        logger.error("Node-RED WebSocket error:", error);
+        logger.error('Node-RED WebSocket error:', error);
         reject(error);
       };
 
       this.ws.onclose = () => {
-        logger.warn("Node-RED WebSocket disconnected");
+        logger.warn('Node-RED WebSocket disconnected');
+        // Auto-reconnect after 5 seconds
+        setTimeout(() => this.initializeWebSocket(), 5000);
       };
     });
   }
 
   private handleWebSocketMessage(data: any): void {
     switch (data.topic) {
-      case "flows":
+      case 'flows':
         this.handleFlowUpdate(data.data);
         break;
-      case "debug":
+      case 'debug':
         this.handleDebugMessage(data.data);
         break;
       default:
-        console.log("Node-RED message:", data);
+        console.log('Node-RED message:', data);
     }
   }
 
@@ -174,15 +163,15 @@ class NodeRedService {
 
   private handleDebugMessage(debugData: any): void {
     // Forward debug messages to app logger
-    console.debug("Node-RED Debug:", debugData);
+    console.debug('Node-RED Debug:', debugData);
   }
 
   async getFlows(): Promise<NodeRedFlow[]> {
-    if (!this.config) throw new Error("Service not initialized");
+    if (!this.config) throw new Error('Service not initialized');
 
     try {
       const response = await fetch(`${this.config.baseUrl}/flows`, {
-        headers: this.getAuthHeaders(),
+        headers: this.getAuthHeaders()
       });
 
       if (!response.ok) {
@@ -190,7 +179,7 @@ class NodeRedService {
       }
 
       const flows = await response.json();
-
+      
       // Update local cache
       flows.forEach((flow: NodeRedFlow) => {
         this.flows.set(flow.id, flow);
@@ -199,44 +188,36 @@ class NodeRedService {
       return flows;
     } catch (error: any) {
       // Handle CSP violations and connection errors gracefully
-      if (
-        error.message &&
-        (error.message.includes("Content Security Policy") ||
-          error.message.includes(
-            "violates the following Content Security Policy directive",
-          ) ||
-          error.message.includes("Failed to fetch"))
-      ) {
-        logger.warn(
-          "Node-RED connection blocked. Returning empty flows list.",
-          {
-            url: this.config?.baseUrl,
-            error: error.message,
-          },
-        );
+      if (error.message && (error.message.includes('Content Security Policy') || 
+                           error.message.includes('violates the following Content Security Policy directive') ||
+                           error.message.includes('Failed to fetch'))) {
+        logger.warn('Node-RED connection blocked. Returning empty flows list.', {
+          url: this.config?.baseUrl,
+          error: error.message
+        });
         return []; // Return empty array instead of throwing
       }
-
+      
       // Re-throw unexpected errors
       throw error;
     }
   }
 
-  async createFlow(flow: Omit<NodeRedFlow, "id">): Promise<string> {
-    if (!this.config) throw new Error("Service not initialized");
+  async createFlow(flow: Omit<NodeRedFlow, 'id'>): Promise<string> {
+    if (!this.config) throw new Error('Service not initialized');
 
     const flowWithId = {
       ...flow,
-      id: this.generateId(),
+      id: this.generateId()
     };
 
     const response = await fetch(`${this.config.baseUrl}/flow`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         ...this.getAuthHeaders(),
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(flowWithId),
+      body: JSON.stringify(flowWithId)
     });
 
     if (!response.ok) {
@@ -245,15 +226,12 @@ class NodeRedService {
 
     const __result = await response.json();
     this.flows.set(flowWithId.id, flowWithId);
-
+    
     return flowWithId.id;
   }
 
-  async updateFlow(
-    flowId: string,
-    updates: Partial<NodeRedFlow>,
-  ): Promise<void> {
-    if (!this.config) throw new Error("Service not initialized");
+  async updateFlow(flowId: string, updates: Partial<NodeRedFlow>): Promise<void> {
+    if (!this.config) throw new Error('Service not initialized');
 
     const existingFlow = this.flows.get(flowId);
     if (!existingFlow) {
@@ -263,12 +241,12 @@ class NodeRedService {
     const updatedFlow = { ...existingFlow, ...updates };
 
     const response = await fetch(`${this.config.baseUrl}/flow/${flowId}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
         ...this.getAuthHeaders(),
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(updatedFlow),
+      body: JSON.stringify(updatedFlow)
     });
 
     if (!response.ok) {
@@ -279,11 +257,11 @@ class NodeRedService {
   }
 
   async deleteFlow(flowId: string): Promise<void> {
-    if (!this.config) throw new Error("Service not initialized");
+    if (!this.config) throw new Error('Service not initialized');
 
     const response = await fetch(`${this.config.baseUrl}/flow/${flowId}`, {
-      method: "DELETE",
-      headers: this.getAuthHeaders(),
+      method: 'DELETE',
+      headers: this.getAuthHeaders()
     });
 
     if (!response.ok) {
@@ -294,36 +272,36 @@ class NodeRedService {
   }
 
   async deployFlows(): Promise<void> {
-    if (!this.config) throw new Error("Service not initialized");
+    if (!this.config) throw new Error('Service not initialized');
 
     const response = await fetch(`${this.config.baseUrl}/flows`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         ...this.getAuthHeaders(),
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        flows: Array.from(this.flows.values()),
-      }),
+        flows: Array.from(this.flows.values())
+      })
     });
 
     if (!response.ok) {
       throw new Error(`Failed to deploy flows: ${response.statusText}`);
     }
 
-    console.log("[✓] Node-RED flows deployed");
+    console.log('[✓] Node-RED flows deployed');
   }
 
   async triggerFlow(flowId: string, payload?: any): Promise<any> {
-    if (!this.config) throw new Error("Service not initialized");
+    if (!this.config) throw new Error('Service not initialized');
 
     const response = await fetch(`${this.config.baseUrl}/inject/${flowId}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         ...this.getAuthHeaders(),
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload || {}),
+      body: JSON.stringify(payload || {})
     });
 
     if (!response.ok) {
@@ -333,68 +311,92 @@ class NodeRedService {
     return response.json();
   }
 
-    return this.triggerFlow(flowId, payload);
+  /**
+   * Convenience alias used by UI. Executes a flow by ID with optional payload.
+   */
+  async executeFlow(flowId: string, payload?: any): Promise<any> {
+    return this.triggerFlow(flowId, payload)
   }
 
+  /**
+   * Mark a flow (tab) as enabled in Node-RED
+   */
   async startFlow(flowId: string): Promise<void> {
-    const flow = await this.getFlow(flowId);
-    if (!flow) throw new Error(`Flow ${flowId} not found`);
-    const updated: NodeRedFlow = { ...flow, disabled: false };
-    await this.updateFlow(flowId, updated);
+    const flow = await this.getFlow(flowId)
+    if (!flow) throw new Error(`Flow ${flowId} not found`)
+    const updated: NodeRedFlow = { ...flow, disabled: false }
+    await this.updateFlow(flowId, updated)
   }
 
+  /**
+   * Mark a flow (tab) as disabled in Node-RED
+   */
   async stopFlow(flowId: string): Promise<void> {
-    const flow = await this.getFlow(flowId);
-    if (!flow) throw new Error(`Flow ${flowId} not found`);
-    const updated: NodeRedFlow = { ...flow, disabled: true };
-    await this.updateFlow(flowId, updated);
+    const flow = await this.getFlow(flowId)
+    if (!flow) throw new Error(`Flow ${flowId} not found`)
+    const updated: NodeRedFlow = { ...flow, disabled: true }
+    await this.updateFlow(flowId, updated)
   }
 
+  /**
+   * Get a single flow from cache or refresh from server.
+   */
   private async getFlow(flowId: string): Promise<NodeRedFlow | null> {
-    if (this.flows.has(flowId)) return this.flows.get(flowId) as NodeRedFlow;
+    if (this.flows.has(flowId)) return this.flows.get(flowId) as NodeRedFlow
     try {
-      const all = await this.getFlows();
-      const found = all.find((f: any) => f.id === flowId) as
-        | NodeRedFlow
-        | undefined;
-      return found || null;
+      const all = await this.getFlows()
+      const found = all.find((f: any) => f.id === flowId) as NodeRedFlow | undefined
+      return found || null
     } catch {
-      return null;
+      return null
     }
   }
 
   private async registerCustomNodes(): Promise<void> {
+    // Define custom nodes for career/AI functionality
     const careerNodes: CustomNode[] = [
       {
-        name: "ai-resume-analyzer",
-        category: "ai",
-        icon: "file.png",
-        paletteLabel: "AI Resume",
+        name: 'ai-resume-analyzer',
+        category: 'ai',
+        inputs: 1,
+        outputs: 2,
+        icon: 'file.png',
+        color: '#00ff7f',
+        paletteLabel: 'AI Resume',
         defaults: {
-          name: { value: "" },
-          analysis_type: { value: "skills" },
-        },
+          name: { value: '' },
+          model: { value: 'gemini-1.5-pro' },
+          analysis_type: { value: 'skills' }
+        }
       },
       {
-        name: "job-matcher",
-        category: "career",
-        icon: "bridge.png",
-        paletteLabel: "Job Match",
+        name: 'job-matcher',
+        category: 'career',
+        inputs: 2,
+        outputs: 1,
+        icon: 'bridge.png',
+        color: '#00ffff',
+        paletteLabel: 'Job Match',
         defaults: {
-          name: { value: "" },
-        },
+          name: { value: '' },
+          threshold: { value: 0.7 },
+          max_results: { value: 10 }
+        }
       },
       {
-        name: "gaming-skill-mapper",
-        category: "gaming",
-        icon: "gamepad.png",
-        paletteLabel: "Skill Map",
+        name: 'gaming-skill-mapper',
+        category: 'gaming',
+        inputs: 1,
+        outputs: 1,
+        icon: 'gamepad.png',
+        color: '#ff00ff',
+        paletteLabel: 'Skill Map',
         defaults: {
-          name: { value: "" },
+          name: { value: '' },
           game_genres: { value: [] },
-          skill_categories: { value: ["technical", "soft"] },
-        },
-      },
+          skill_categories: { value: ['technical', 'soft'] }
+        }
+      }
     ];
 
     for (const node of careerNodes) {
@@ -407,16 +409,17 @@ class NodeRedService {
 
     const nodeDefinition = {
       ...node,
+      func: this.generateNodeFunction(node)
     };
 
     try {
       const response = await fetch(`${this.config.baseUrl}/nodes`, {
-        method: "POST",
+        method: 'POST',
         headers: {
           ...this.getAuthHeaders(),
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(nodeDefinition),
+        body: JSON.stringify(nodeDefinition)
       });
 
       if (response.ok) {
@@ -424,18 +427,18 @@ class NodeRedService {
         console.log(`[✓] Custom node registered: ${node.name}`);
       }
     } catch (error) {
-      console.warn(
-        `[WARNING] Failed to register custom node ${node.name}:`,
-        error,
-      );
+      console.warn(`[WARNING] Failed to register custom node ${node.name}:`, error);
     }
   }
 
+  private generateNodeFunction(node: CustomNode): string {
+    // Generate Node-RED function code based on node type
     switch (node.category) {
-      case "ai":
+      case 'ai':
         return `
           const { canonicalAI } = require('./modules/ai/CanonicalAIService');
           
+          node.on('input', async function(msg) {
             try {
               const __result = await canonicalAI.generateText(msg.payload, {
                 model: node.model,
@@ -455,11 +458,12 @@ class NodeRedService {
             }
           });
         `;
-
-      case "career":
+        
+      case 'career':
         return `
           const { searchJobsUnified } = require('./services/JobAPIService');
           
+          node.on('input', async function(msg) {
             try {
               const profile = msg.payload.profile || {};
               const jobs = msg.payload.jobs || [];
@@ -487,9 +491,10 @@ class NodeRedService {
             }
           });
         `;
-
+        
       default:
         return `
+          node.on('input', function(msg) {
             // Default pass-through
             node.send(msg);
           });
@@ -499,62 +504,77 @@ class NodeRedService {
 
   private getAuthHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
-      Accept: "application/json",
+      'Accept': 'application/json'
     };
 
     if (this.config?.adminAuth) {
-      const credentials = btoa(
-        `${this.config.adminAuth.username}:${this.config.adminAuth.password}`,
-      );
-      headers["Authorization"] = `Basic ${credentials}`;
+      const credentials = btoa(`${this.config.adminAuth.username}:${this.config.adminAuth.password}`);
+      headers['Authorization'] = `Basic ${credentials}`;
     }
 
     return headers;
   }
 
   private generateId(): string {
+    return Math.random().toString(36).substr(2, 9);
   }
 
   // Flow templates for common career workflows
   getCareerFlowTemplates(): Record<string, Partial<NodeRedFlow>> {
     return {
-      "resume-optimization": {
-        label: "Resume Optimization Pipeline",
-        type: "tab",
+      'resume-optimization': {
+        label: 'Resume Optimization Pipeline',
+        type: 'tab',
         nodes: [
           {
-            type: "inject",
-            name: "Trigger Resume Analysis",
+            id: 'input-1',
+            type: 'inject',
+            name: 'Trigger Resume Analysis',
+            x: 100,
+            y: 100,
+            z: 'flow-1',
+            wires: [['ai-analyzer-1']],
             properties: {
-              topic: "resume",
-              payload: "{}",
-            },
+              topic: 'resume',
+              payload: '{}'
+            }
           },
           {
-            type: "ai-resume-analyzer",
-            name: "AI Analysis",
-          },
-        ],
+            id: 'ai-analyzer-1',
+            type: 'ai-resume-analyzer',
+            name: 'AI Analysis',
+            x: 300,
+            y: 100,
+            z: 'flow-1',
+            wires: [['job-matcher-1'], ['debug-1']]
+          }
+        ]
       },
-
-      "job-application-tracker": {
-        label: "Job Application Tracking",
-        type: "tab",
+      
+      'job-application-tracker': {
+        label: 'Job Application Tracking',
+        type: 'tab',
         nodes: [
           {
-            type: "http in",
-            name: "Job Application Webhook",
+            id: 'webhook-1',
+            type: 'http in',
+            name: 'Job Application Webhook',
+            x: 100,
+            y: 100,
+            z: 'flow-2',
+            wires: [['processor-1']],
             properties: {
-              method: "post",
-              url: "/job-applied",
-            },
-          },
-        ],
-      },
+              method: 'post',
+              url: '/job-applied'
+            }
+          }
+        ]
+      }
     };
   }
 
   isHealthy(): boolean {
+    return this.config !== null && this.flows.size >= 0; // Service initialized but may not be connected
   }
 
   disconnect(): void {

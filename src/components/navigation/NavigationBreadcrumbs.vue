@@ -1,8 +1,8 @@
 <template>
-  <nav
+  <nav 
     class="navigation-breadcrumbs"
     :class="{ 'breadcrumbs-compact': compact }"
-    role="navigation"
+    role="navigation" 
     aria-label="Breadcrumb navigation"
   >
     <ol class="breadcrumb-list" role="list">
@@ -39,12 +39,7 @@
           class="breadcrumb-link"
           :title="crumb.text"
         >
-          <AppIcon
-            v-if="crumb.icon && !compact"
-            :name="crumb.icon"
-            size="14"
-            class="me-1"
-          />
+          <AppIcon v-if="crumb.icon && !compact" :name="crumb.icon" size="14" class="me-1" />
           <span class="breadcrumb-text">{{ crumb.text }}</span>
         </router-link>
 
@@ -53,12 +48,7 @@
           class="breadcrumb-current"
           :aria-current="crumb.isLast ? 'page' : undefined"
         >
-          <AppIcon
-            v-if="crumb.icon && !compact"
-            :name="crumb.icon"
-            size="14"
-            class="me-1"
-          />
+          <AppIcon v-if="crumb.icon && !compact" :name="crumb.icon" size="14" class="me-1" />
           <span class="breadcrumb-text">{{ crumb.text }}</span>
         </span>
       </li>
@@ -72,12 +62,8 @@
         :variant="'glass'"
         size="sm"
         :icon="isCurrentPageFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
-        :aria-label="
-          isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'
-        "
-        :title="
-          isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'
-        "
+        :aria-label="isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'"
+        :title="isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'"
         @click="toggleCurrentPageFavorite"
       />
 
@@ -106,10 +92,7 @@
       />
 
       <!-- Dropdown Menu for Mobile -->
-      <div
-        v-if="compact && breadcrumbs.length > maxMobileItems"
-        class="breadcrumb-dropdown"
-      >
+      <div v-if="compact && breadcrumbs.length > maxMobileItems" class="breadcrumb-dropdown">
         <IconButton
           class="breadcrumb-action-btn dropdown-btn"
           :variant="'glass'"
@@ -119,7 +102,11 @@
           @click="toggleDropdown"
         />
 
-        <div v-if="dropdownOpen" class="dropdown-menu" @click.stop>
+        <div
+          v-if="dropdownOpen"
+          class="dropdown-menu"
+          @click.stop
+        >
           <div class="dropdown-header">Navigation Path</div>
           <div
             v-for="(crumb, index) in breadcrumbs"
@@ -132,21 +119,11 @@
               class="dropdown-link"
               @click="closeDropdown"
             >
-              <AppIcon
-                v-if="crumb.icon"
-                :name="crumb.icon"
-                size="16"
-                class="me-2"
-              />
+              <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="me-2" />
               {{ crumb.text }}
             </router-link>
             <div v-else class="dropdown-current">
-              <AppIcon
-                v-if="crumb.icon"
-                :name="crumb.icon"
-                size="16"
-                class="me-2"
-              />
+              <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="me-2" />
               {{ crumb.text }}
             </div>
           </div>
@@ -157,133 +134,133 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { useRoute } from "vue-router";
-import { useEnhancedNavigation } from "@/composables/useEnhancedNavigation";
-import { useToast } from "@/composables/useToast";
-import IconButton from "@/components/ui/IconButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useEnhancedNavigation } from '@/composables/useEnhancedNavigation'
+import { useToast } from '@/composables/useToast'
+import IconButton from '@/components/ui/IconButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Props
 const props = defineProps({
   compact: {
     type: Boolean,
-    default: false,
+    default: false
   },
   showActions: {
     type: Boolean,
-    default: true,
+    default: true
   },
   showShare: {
     type: Boolean,
-    default: true,
+    default: true
   },
   showCopyUrl: {
     type: Boolean,
-    default: true,
+    default: true
   },
   homeIcon: {
     type: String,
-    default: "mdi-home",
+    default: 'mdi-home'
   },
   homeText: {
     type: String,
-    default: "Home",
+    default: 'Home'
   },
   homeLabel: {
     type: String,
-    default: "Go to homepage",
+    default: 'Go to homepage'
   },
   separatorIcon: {
     type: String,
-    default: "mdi-chevron-right",
+    default: 'mdi-chevron-right'
   },
   maxMobileItems: {
     type: Number,
-    default: 2,
-  },
-});
+    default: 2
+  }
+})
 
 // Composables
-const route = useRoute();
-const { breadcrumbs, isFavorite, toggleFavorite } = useEnhancedNavigation();
-const { toast } = useToast();
+const route = useRoute()
+const { breadcrumbs, isFavorite, toggleFavorite } = useEnhancedNavigation()
+const { toast } = useToast()
 
 // Component state
-const dropdownOpen = ref(false);
+const dropdownOpen = ref(false)
 
 // Computed properties
 const isCurrentPageFavorite = computed(() => {
-  return isFavorite(route.path);
-});
+  return isFavorite(route.path)
+})
 
 // Methods
 const toggleCurrentPageFavorite = () => {
-  toggleFavorite(route.path);
-  const action = isCurrentPageFavorite.value ? "Added to" : "Removed from";
-  toast.success(`${action} favorites`);
-};
+  toggleFavorite(route.path)
+  const action = isCurrentPageFavorite.value ? 'Added to' : 'Removed from'
+  toast.success(`${action} favorites`)
+}
 
 const shareCurrentPage = async () => {
   if (navigator.share) {
     try {
       await navigator.share({
         title: document.title,
-        url: window.location.href,
-      });
+        url: window.location.href
+      })
     } catch (error) {
-      if (error.name !== "AbortError") {
-        copyCurrentUrl();
+      if (error.name !== 'AbortError') {
+        copyCurrentUrl()
       }
     }
   } else {
-    copyCurrentUrl();
+    copyCurrentUrl()
   }
-};
+}
 
 const copyCurrentUrl = async () => {
   try {
-    await navigator.clipboard.writeText(window.location.href);
-    toast.success("URL copied to clipboard");
+    await navigator.clipboard.writeText(window.location.href)
+    toast.success('URL copied to clipboard')
   } catch (error) {
     // Fallback for older browsers
-    const textArea = document.createElement("textarea");
-    textArea.value = window.location.href;
-    document.body.appendChild(textArea);
-    textArea.select();
+    const textArea = document.createElement('textarea')
+    textArea.value = window.location.href
+    document.body.appendChild(textArea)
+    textArea.select()
     try {
-      document.execCommand("copy");
-      toast.success("URL copied to clipboard");
+      document.execCommand('copy')
+      toast.success('URL copied to clipboard')
     } catch (err) {
-      toast.error("Failed to copy URL");
+      toast.error('Failed to copy URL')
     } finally {
-      document.body.removeChild(textArea);
+      document.body.removeChild(textArea)
     }
   }
-};
+}
 
 const toggleDropdown = () => {
-  dropdownOpen.value = !dropdownOpen.value;
-};
+  dropdownOpen.value = !dropdownOpen.value
+}
 
 const closeDropdown = () => {
-  dropdownOpen.value = false;
-};
+  dropdownOpen.value = false
+}
 
 // Close dropdown when clicking outside
 const handleClickOutside = (event) => {
-  if (!event.target.closest(".breadcrumb-dropdown")) {
-    closeDropdown();
+  if (!event.target.closest('.breadcrumb-dropdown')) {
+    closeDropdown()
   }
-};
+}
 
 onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
+  document.addEventListener('click', handleClickOutside)
+})
 
 onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>
@@ -368,23 +345,31 @@ onUnmounted(() => {
   line-height: 1.2;
 }
 
+/* Compact Mode */
 .breadcrumbs-compact .breadcrumb-link,
 .breadcrumbs-compact .breadcrumb-current {
+  max-width: 120px;
+  padding: var(--spacing-0-5) var(--spacing-1);
 }
 
 .breadcrumbs-compact .breadcrumb-text {
   font-size: var(--font-size-xs);
 }
 
+/* Actions */
 .breadcrumb-actions {
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
+  flex-shrink: 0;
 }
 
 .breadcrumb-action-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
   border: none;
   background: transparent;
   color: var(--text-secondary);
@@ -396,6 +381,7 @@ onUnmounted(() => {
 .breadcrumb-action-btn:hover {
   color: var(--color-primary);
   background: var(--color-primary-bg);
+  transform: scale(1.05);
 }
 
 .favorite-btn.is-favorite {
@@ -407,21 +393,36 @@ onUnmounted(() => {
   background: var(--color-error-bg);
 }
 
+/* Dropdown */
 .breadcrumb-dropdown {
   position: relative;
 }
 
 .dropdown-menu {
   position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  min-width: 200px;
+  max-width: 300px;
   background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(20px);
+  padding: var(--spacing-2);
+  margin-top: var(--spacing-2);
+  animation: dropdownSlideIn 0.2s ease-out;
 }
 
 @keyframes dropdownSlideIn {
   from {
+    opacity: 0;
+    transform: translateY(-8px);
   }
   to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -430,17 +431,25 @@ onUnmounted(() => {
   font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--spacing-2) var(--spacing-3);
+  margin-bottom: var(--spacing-1);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .dropdown-item {
+  margin-bottom: var(--spacing-0-5);
 }
 
 .dropdown-item:last-child {
+  margin-bottom: 0;
 }
 
 .dropdown-link {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
   color: var(--text-secondary);
   text-decoration: none;
   border-radius: var(--radius-md);
@@ -456,6 +465,8 @@ onUnmounted(() => {
 .dropdown-current {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
   color: var(--text-primary);
   font-weight: var(--font-weight-medium);
   background: var(--color-primary-bg);
@@ -463,56 +474,76 @@ onUnmounted(() => {
   font-size: var(--font-size-sm);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .navigation-breadcrumbs {
+    gap: var(--spacing-2);
   }
-
+  
   .breadcrumb-link,
   .breadcrumb-current {
+    max-width: 100px;
     font-size: var(--font-size-xs);
   }
-
+  
   .breadcrumb-actions {
+    gap: var(--spacing-0-5);
   }
-
+  
   .breadcrumb-action-btn {
+    width: 28px;
+    height: 28px;
   }
 }
 
+@media (max-width: 480px) {
   .breadcrumb-list {
+    gap: 0;
   }
-
+  
   .breadcrumb-item:not(:last-child):not(:first-child) {
     display: none;
   }
-
+  
+  .breadcrumb-item:nth-last-child(2) {
     display: flex;
   }
-
-    content: "...";
+  
+  .breadcrumb-item:nth-last-child(2)::before {
+    content: '...';
     color: var(--text-muted);
+    margin-right: var(--spacing-1);
     font-weight: bold;
   }
 }
 
+/* Dark theme support */
 [data-theme="dark"] .dropdown-menu,
 .dark-theme .dropdown-menu {
+  background: rgba(15, 15, 15, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
 }
 
 [data-theme="dark"] .dropdown-link:hover,
 .dark-theme .dropdown-link:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 [data-theme="dark"] .dropdown-current,
 .dark-theme .dropdown-current {
+  background: rgba(99, 102, 241, 0.15);
 }
 
+/* Gaming theme enhancements */
 .theme-gaming .breadcrumb-link:hover {
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 217, 255, 0.05));
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  transform: translateY(-1px);
 }
 
 .theme-gaming .breadcrumb-action-btn:hover {
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 217, 255, 0.05));
+  border: 1px solid rgba(0, 255, 136, 0.2);
 }
 </style>

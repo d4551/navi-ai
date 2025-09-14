@@ -10,9 +10,7 @@
                 <AppIcon name="mdi-auto-fix" class="text-primary me-2" />
                 AI-Powered Job Discovery
               </h6>
-              <p class="text-muted small mb-0">
-                Describe your ideal role, and let AI find the perfect matches
-              </p>
+              <p class="text-muted small mb-0">Describe your ideal role, and let AI find the perfect matches</p>
             </div>
             <div v-if="!loading" class="ai-status">
               <span class="badge bg-success">
@@ -68,7 +66,7 @@
                 class="form-control form-control-sm glass-input"
                 placeholder="Remote, Los Angeles, CA, etc."
                 :disabled="loading || isSearching"
-              />
+              >
             </div>
             <div class="col-md-3">
               <label class="form-label small fw-medium">
@@ -124,7 +122,7 @@
                       min="0"
                       step="5000"
                       :disabled="loading || isSearching"
-                    />
+                    >
                   </div>
                 </div>
                 <div class="col-6">
@@ -138,7 +136,7 @@
                       min="0"
                       step="5000"
                       :disabled="loading || isSearching"
-                    />
+                    >
                   </div>
                 </div>
               </div>
@@ -155,7 +153,7 @@
                   class="form-check-input"
                   type="checkbox"
                   :disabled="loading || isSearching"
-                />
+                >
                 <label class="form-check-label" for="remote-work-toggle">
                   Include remote positions
                 </label>
@@ -167,19 +165,14 @@
     </div>
 
     <!-- AI Insights Panel -->
-    <div
-      v-if="aiInsights.length > 0 && !loading"
-      class="ai-insights-panel mb-4"
-    >
+    <div v-if="aiInsights.length > 0 && !loading" class="ai-insights-panel mb-4">
       <div class="glass-card section-card-subtle">
         <div class="insights-header mb-3">
           <h6 class="mb-1">
             <AppIcon name="mdi-lightbulb" color="warning" />
             AI Insights
           </h6>
-          <p class="text-muted small mb-0">
-            Smart recommendations based on your search
-          </p>
+          <p class="text-muted small mb-0">Smart recommendations based on your search</p>
         </div>
         <div class="insights-grid media-grid">
           <div
@@ -192,9 +185,7 @@
             </div>
             <div class="insight-content">
               <h6 class="insight-title">{{ insight.title }}</h6>
-              <p class="insight-description small text-muted">
-                {{ insight.description }}
-              </p>
+              <p class="insight-description small text-muted">{{ insight.description }}</p>
               <UnifiedButton
                 v-if="insight.action"
                 variant="outline"
@@ -255,7 +246,7 @@
             </div>
           </div>
 
-          <div class="progress mb-3" style="height: 8px">
+          <div class="progress mb-3" style="height: 8px;">
             <div
               class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
               :style="{ width: searchProgress + '%' }"
@@ -268,21 +259,13 @@
                 v-for="step in searchSteps"
                 :key="step.id"
                 class="status-step"
-                :class="{
-                  'step-active': step.id === currentStep,
-                  'step-completed': completedSteps.includes(step.id),
+                :class="{ 'step-active': step.id === currentStep,
+                          'step-completed': completedSteps.includes(step.id)
                 }"
               >
                 <div class="step-icon">
-                  <AppIcon
-                    v-if="completedSteps.includes(step.id)"
-                    name="mdi-check"
-                  />
-                  <AppIcon
-                    v-else-if="step.id === currentStep"
-                    name="mdi-loading"
-                    class="mdi-spin"
-                  />
+                  <AppIcon v-if="completedSteps.includes(step.id)" name="mdi-check" />
+                  <AppIcon v-else-if="step.id === currentStep" name="mdi-loading" class="mdi-spin" />
                   <i v-else :class="step.icon"></i>
                 </div>
                 <div class="step-label small">{{ step.label }}</div>
@@ -296,83 +279,74 @@
 </template>
 
 <script setup>
-import {
-  ref,
-  onMounted,
-  onUnmounted,
-  computed,
-  watch,
-  defineEmits,
-  defineProps,
-} from "vue";
-import { useAIJobSearch } from "@/composables/useAIJobSearch";
-import { useToast } from "@/composables/useToast";
-import { useUnifiedProfile } from "@/composables/useUnifiedProfile";
-import { profileSyncService } from "@/services/ProfileSyncService";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, onMounted, onUnmounted, computed, watch, defineEmits, defineProps } from 'vue'
+import { useAIJobSearch } from '@/composables/useAIJobSearch'
+import { useToast } from '@/composables/useToast'
+import { useUnifiedProfile } from '@/composables/useUnifiedProfile'
+import { profileSyncService } from '@/services/ProfileSyncService'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 const props = defineProps({
   searchForm: {
     type: Object,
-    required: true,
+    required: true
   },
   loading: {
     type: Boolean,
-    default: false,
+    default: false
   },
   userProfile: {
     type: Object,
-    default: () => ({}),
-  },
-});
+    default: () => ({})
+  }
+})
 
 // Use unified profile system
-const unifiedProfile = useUnifiedProfile();
+const unifiedProfile = useUnifiedProfile()
 
 // Get job search specific profile data
-const jobSearchProfile = computed(() => unifiedProfile.jobSearchProfile.value);
+const jobSearchProfile = computed(() => unifiedProfile.jobSearchProfile.value)
 
 // Use profile data for auto-filling search form
 const profileBasedSuggestions = computed(() => {
-  if (!jobSearchProfile.value) return [];
-
-  const suggestions = [];
-
+  if (!jobSearchProfile.value) return []
+  
+  const suggestions = []
+  
   // Add role-based suggestions
   if (jobSearchProfile.value.preferredRoles?.length) {
-    suggestions.push(...jobSearchProfile.value.preferredRoles.slice(0, 3));
+    suggestions.push(...jobSearchProfile.value.preferredRoles.slice(0, 3))
   }
-
+  
   // Add skill-based suggestions
   if (jobSearchProfile.value.skills?.technical?.length) {
-    const topSkills = jobSearchProfile.value.skills.technical.slice(0, 2);
-    suggestions.push(`roles using ${topSkills.join(" and ")}`);
+    const topSkills = jobSearchProfile.value.skills.technical.slice(0, 2)
+    suggestions.push(`roles using ${topSkills.join(' and ')}`)
   }
-
+  
   // Add experience level suggestions
   if (jobSearchProfile.value.experience?.length) {
     const totalYears = jobSearchProfile.value.experience.reduce((sum, exp) => {
-      const years = exp.endDate
-        ? (new Date(exp.endDate) - new Date(exp.startDate)) /
-          (1000 * 60 * 60 * 24 * 365)
-        : (new Date() - new Date(exp.startDate)) / (1000 * 60 * 60 * 24 * 365);
-      return sum + years;
-    }, 0);
-
+      const years = exp.endDate ? 
+        (new Date(exp.endDate) - new Date(exp.startDate)) / (1000 * 60 * 60 * 24 * 365) : 
+        (new Date() - new Date(exp.startDate)) / (1000 * 60 * 60 * 24 * 365)
+      return sum + years
+    }, 0)
+    
     if (totalYears > 5) {
-      suggestions.push("senior level positions");
+      suggestions.push('senior level positions')
     } else if (totalYears > 2) {
-      suggestions.push("mid level opportunities");
+      suggestions.push('mid level opportunities')  
     } else {
-      suggestions.push("entry level roles");
+      suggestions.push('entry level roles')
     }
   }
+  
+  return suggestions.filter(Boolean).slice(0, 5)
+})
 
-  return suggestions.filter(Boolean).slice(0, 5);
-});
-
-const emit = defineEmits(["search", "save-search", "results", "expand-skills"]);
+const emit = defineEmits(['search', 'save-search', 'results', 'expand-skills'])
 
 // AI Job Search integration - now uses unified profile
 const {
@@ -383,354 +357,319 @@ const {
   performAISearch,
   getSearchSuggestions,
   handleInsightAction,
-  saveSearch,
-} = useAIJobSearch(jobSearchProfile);
+  saveSearch
+} = useAIJobSearch(jobSearchProfile)
 
 // Toast notifications
-const {
-  success: toastSuccess,
-  error: toastError,
-  warning: toastWarning,
-} = useToast();
+const { success: toastSuccess, error: toastError, warning: toastWarning } = useToast()
 
 // Local state
-const localSearchForm = ref({ ...props.searchForm });
-const searchTimer = ref(0);
-const searchProgress = ref(0);
-const currentStep = ref(1);
-const completedSteps = ref([]);
+const localSearchForm = ref({ ...props.searchForm })
+const searchTimer = ref(0)
+const searchProgress = ref(0)
+const currentStep = ref(1)
+const completedSteps = ref([])
 
 // Search timer
-let searchInterval = null;
+let searchInterval = null
 
 // Use AI-powered suggestions and insights, enhanced with profile data
 const quickSuggestions = computed(() => {
-  const suggestions = [];
-
+  const suggestions = []
+  
   // Add AI suggestions
   if (searchSuggestions.value.length > 0) {
-    suggestions.push(...searchSuggestions.value);
+    suggestions.push(...searchSuggestions.value)
   } else if (aiQuickSuggestions.value.length > 0) {
-    suggestions.push(...aiQuickSuggestions.value);
+    suggestions.push(...aiQuickSuggestions.value)  
   }
-
-  // Add profile-based suggestions
-  suggestions.push(...profileBasedSuggestions.value);
-
+  
+  // Add profile-based suggestions  
+  suggestions.push(...profileBasedSuggestions.value)
+  
   // Remove duplicates and limit
-  return [...new Set(suggestions)].slice(0, 8);
-});
+  return [...new Set(suggestions)].slice(0, 8)
+})
 
-const aiInsights = computed(() => searchInsights.value);
+const aiInsights = computed(() => searchInsights.value)
 
 // Search steps
 const searchSteps = ref([
-  { id: 1, icon: "mdi-text-search", label: "Analyzing query" },
-  { id: 2, icon: "mdi-source-repository", label: "Searching sources" },
-  { id: 3, icon: "mdi-auto-fix", label: "AI matching" },
-  { id: 4, icon: "mdi-format-list-checks", label: "Ranking results" },
-]);
+  { id: 1, icon: 'mdi-text-search', label: 'Analyzing query' },
+  { id: 2, icon: 'mdi-source-repository', label: 'Searching sources' },
+  { id: 3, icon: 'mdi-auto-fix', label: 'AI matching' },
+  { id: 4, icon: 'mdi-format-list-checks', label: 'Ranking results' }
+])
 
 // Computed
-const hasValidSearch = computed(
-  () => localSearchForm.value.query && localSearchForm.value.query.length > 10,
-);
+const hasValidSearch = computed(() =>
+  localSearchForm.value.query && localSearchForm.value.query.length > 10
+)
 
 // Watch for external form changes
-watch(
-  () => props.searchForm,
-  (newForm) => {
-    localSearchForm.value = { ...newForm };
-  },
-  { deep: true },
-);
+watch(() => props.searchForm, (newForm) => {
+  localSearchForm.value = { ...newForm }
+}, { deep: true })
 
 // Auto-fill form fields from unified profile when available
-watch(
-  jobSearchProfile,
-  (profile) => {
-    if (!profile) return;
-
-    // Auto-fill location if not already set
-    if (!localSearchForm.value.location && profile.location) {
-      localSearchForm.value.location = profile.location;
-    }
-
-    // Auto-fill salary expectations if not set
-    if (!localSearchForm.value.salaryMin && profile.salaryExpectations?.min) {
-      localSearchForm.value.salaryMin = profile.salaryExpectations.min;
-    }
-    if (!localSearchForm.value.salaryMax && profile.salaryExpectations?.max) {
-      localSearchForm.value.salaryMax = profile.salaryExpectations.max;
-    }
-
-    // Auto-fill remote preference if not set
-    if (
-      localSearchForm.value.remote === undefined &&
-      profile.remotePreference !== undefined
-    ) {
-      localSearchForm.value.remote = profile.remotePreference;
-    }
-
-    // Auto-fill experience level based on profile data
-    if (!localSearchForm.value.experience && profile.experience?.length) {
-      const totalYears = profile.experience.reduce((sum, exp) => {
-        const years = exp.endDate
-          ? (new Date(exp.endDate) - new Date(exp.startDate)) /
-            (1000 * 60 * 60 * 24 * 365)
-          : (new Date() - new Date(exp.startDate)) /
-            (1000 * 60 * 60 * 24 * 365);
-        return sum + years;
-      }, 0);
-
-      if (totalYears > 7) {
-        localSearchForm.value.experience = "lead";
-      } else if (totalYears > 4) {
-        localSearchForm.value.experience = "senior";
-      } else if (totalYears > 1) {
-        localSearchForm.value.experience = "mid";
-      } else {
-        localSearchForm.value.experience = "entry";
-      }
-    }
-  },
-  { immediate: true },
-);
-
-// Watch loading state to manage search progress
-watch(
-  () => props.loading || isSearching.value,
-  (isLoading) => {
-    if (isLoading) {
-      startSearchProgress();
+watch(jobSearchProfile, (profile) => {
+  if (!profile) return
+  
+  // Auto-fill location if not already set
+  if (!localSearchForm.value.location && profile.location) {
+    localSearchForm.value.location = profile.location
+  }
+  
+  // Auto-fill salary expectations if not set
+  if (!localSearchForm.value.salaryMin && profile.salaryExpectations?.min) {
+    localSearchForm.value.salaryMin = profile.salaryExpectations.min
+  }
+  if (!localSearchForm.value.salaryMax && profile.salaryExpectations?.max) {
+    localSearchForm.value.salaryMax = profile.salaryExpectations.max
+  }
+  
+  // Auto-fill remote preference if not set
+  if (localSearchForm.value.remote === undefined && profile.remotePreference !== undefined) {
+    localSearchForm.value.remote = profile.remotePreference
+  }
+  
+  // Auto-fill experience level based on profile data
+  if (!localSearchForm.value.experience && profile.experience?.length) {
+    const totalYears = profile.experience.reduce((sum, exp) => {
+      const years = exp.endDate ? 
+        (new Date(exp.endDate) - new Date(exp.startDate)) / (1000 * 60 * 60 * 24 * 365) : 
+        (new Date() - new Date(exp.startDate)) / (1000 * 60 * 60 * 24 * 365)
+      return sum + years
+    }, 0)
+    
+    if (totalYears > 7) {
+      localSearchForm.value.experience = 'lead'
+    } else if (totalYears > 4) {
+      localSearchForm.value.experience = 'senior'
+    } else if (totalYears > 1) {
+      localSearchForm.value.experience = 'mid'
     } else {
-      stopSearchProgress();
+      localSearchForm.value.experience = 'entry'
     }
-  },
-);
+  }
+}, { immediate: true })
+
+// Watch loading state to manage search progress  
+watch(() => props.loading || isSearching.value, (isLoading) => {
+  if (isLoading) {
+    startSearchProgress()
+  } else {
+    stopSearchProgress()
+  }
+})
 
 // Methods
 const addSuggestion = (suggestion) => {
   if (localSearchForm.value.query) {
-    localSearchForm.value.query += ", " + suggestion;
+    localSearchForm.value.query += ', ' + suggestion
   } else {
-    localSearchForm.value.query = suggestion;
+    localSearchForm.value.query = suggestion
   }
-};
+}
 
 const initiateAISearch = async () => {
-  if (!hasValidSearch.value) return;
+  if (!hasValidSearch.value) return
 
   // Reset progress
-  searchProgress.value = 0;
-  currentStep.value = 1;
-  completedSteps.value = [];
-  searchTimer.value = 0;
+  searchProgress.value = 0
+  currentStep.value = 1
+  completedSteps.value = []
+  searchTimer.value = 0
 
   try {
     // Use AI-powered search
-    const result = await performAISearch(localSearchForm.value);
-
+    const result = await performAISearch(localSearchForm.value)
+    
     if (result && result.success) {
       // Emit results to parent component
-      emit("results", {
+      emit('results', {
         jobs: result.results,
         insights: result.insights,
-        analysis: result.analysis,
-      });
-
+        analysis: result.analysis
+      })
+      
       // Also emit traditional search event for compatibility
-      emit("search", { ...localSearchForm.value });
+      emit('search', { ...localSearchForm.value })
     } else {
-      console.error("AI search failed:", result?.error || "Unknown error");
-      toastWarning(
-        "AI search encountered an issue. Switching to standard search mode.",
-        "AI Search Warning",
-      );
+      console.error('AI search failed:', result?.error || 'Unknown error')
+      toastWarning('AI search encountered an issue. Switching to standard search mode.', 'AI Search Warning')
       // Fallback to regular search
-      emit("search", { ...localSearchForm.value });
+      emit('search', { ...localSearchForm.value })
     }
   } catch (error) {
-    console.error("Error during AI search:", error);
-    toastError(
-      "AI search is currently unavailable. Using standard search instead.",
-      "AI Search Error",
-    );
+    console.error('Error during AI search:', error)
+    toastError('AI search is currently unavailable. Using standard search instead.', 'AI Search Error')
     // Fallback to regular search
-    emit("search", { ...localSearchForm.value });
+    emit('search', { ...localSearchForm.value })
   }
-};
+}
 
 const saveCurrentSearch = async () => {
   try {
     // Use AI service to save search
-    const savedSearch = await saveSearch(localSearchForm.value);
-    emit("save-search", savedSearch);
+    const savedSearch = await saveSearch(localSearchForm.value)
+    emit('save-search', savedSearch)
   } catch (error) {
-    console.error("Failed to save search:", error);
+    console.error('Failed to save search:', error)
     // Fallback to emit original form
-    emit("save-search", { ...localSearchForm.value });
+    emit('save-search', { ...localSearchForm.value })
   }
-};
+}
 
 const handleInsightActionLocal = async (insight) => {
   try {
     // Use AI service to handle insight actions
-    const result = await handleInsightAction(insight);
-
+    const result = await handleInsightAction(insight)
+    
     switch (result.action) {
-      case "updateSearch":
+      case 'updateSearch':
         // Apply search updates from AI recommendations
         if (result.data) {
-          Object.assign(localSearchForm.value, result.data);
+          Object.assign(localSearchForm.value, result.data)
         }
-        break;
-      case "adjustSalary":
+        break
+      case 'adjustSalary':
         // Adjust salary range based on AI suggestions
         if (result.data?.salaryMax) {
-          localSearchForm.value.salaryMax = result.data.salaryMax;
+          localSearchForm.value.salaryMax = result.data.salaryMax
         }
         if (result.data?.salaryMin) {
-          localSearchForm.value.salaryMin = result.data.salaryMin;
+          localSearchForm.value.salaryMin = result.data.salaryMin
         }
-        break;
-      case "changeLocation":
+        break
+      case 'changeLocation':
         // Update location preferences
         if (result.data?.remote !== undefined) {
-          localSearchForm.value.remote = result.data.remote;
+          localSearchForm.value.remote = result.data.remote
         }
         if (result.data?.location) {
-          localSearchForm.value.location = result.data.location;
+          localSearchForm.value.location = result.data.location
         }
-        break;
-      case "expandSkills":
+        break
+      case 'expandSkills':
         // This would typically update user profile, emit to parent
-        emit("expand-skills", result.data);
-        break;
+        emit('expand-skills', result.data)
+        break
       default:
-      // Default insight action result handled
+        // Default insight action result handled
     }
   } catch (error) {
-    console.error("Failed to handle insight action:", error);
+    console.error('Failed to handle insight action:', error)
   }
-};
+}
 
 const startSearchProgress = () => {
   searchInterval = setInterval(() => {
-    searchTimer.value += 1;
+    searchTimer.value += 1
 
     // Update progress based on steps
     if (searchTimer.value <= 2) {
-      currentStep.value = 1;
-      searchProgress.value = 15;
+      currentStep.value = 1
+      searchProgress.value = 15
     } else if (searchTimer.value <= 4) {
-      completedSteps.value = [1];
-      currentStep.value = 2;
-      searchProgress.value = 40;
+      completedSteps.value = [1]
+      currentStep.value = 2
+      searchProgress.value = 40
     } else if (searchTimer.value <= 6) {
-      completedSteps.value = [1, 2];
-      currentStep.value = 3;
-      searchProgress.value = 70;
+      completedSteps.value = [1, 2]
+      currentStep.value = 3
+      searchProgress.value = 70
     } else if (searchTimer.value <= 8) {
-      completedSteps.value = [1, 2, 3];
-      currentStep.value = 4;
-      searchProgress.value = 90;
+      completedSteps.value = [1, 2, 3]
+      currentStep.value = 4
+      searchProgress.value = 90
     } else {
-      completedSteps.value = [1, 2, 3, 4];
-      searchProgress.value = 100;
+      completedSteps.value = [1, 2, 3, 4]
+      searchProgress.value = 100
     }
-  }, 1000);
-};
+  }, 1000)
+}
 
 const stopSearchProgress = () => {
   if (searchInterval) {
-    clearInterval(searchInterval);
-    searchInterval = null;
+    clearInterval(searchInterval)
+    searchInterval = null
   }
 
   // Reset progress after a brief delay
   setTimeout(() => {
-    searchProgress.value = 0;
-    currentStep.value = 1;
-    completedSteps.value = [];
-    searchTimer.value = 0;
-  }, 2000);
-};
+    searchProgress.value = 0
+    currentStep.value = 1
+    completedSteps.value = []
+    searchTimer.value = 0
+  }, 2000)
+}
 
 // Profile sync event handlers
 const handleProfileUpdate = (eventData) => {
   // Update search form with new profile preferences
-  const { preferences } = eventData;
-
+  const { preferences } = eventData
+  
   if (preferences.location && !localSearchForm.value.location) {
-    localSearchForm.value.location = preferences.location;
+    localSearchForm.value.location = preferences.location
   }
-
+  
   if (preferences.salaryExpectations) {
-    if (
-      !localSearchForm.value.salaryMin &&
-      preferences.salaryExpectations.min
-    ) {
-      localSearchForm.value.salaryMin = preferences.salaryExpectations.min;
+    if (!localSearchForm.value.salaryMin && preferences.salaryExpectations.min) {
+      localSearchForm.value.salaryMin = preferences.salaryExpectations.min
     }
-    if (
-      !localSearchForm.value.salaryMax &&
-      preferences.salaryExpectations.max
-    ) {
-      localSearchForm.value.salaryMax = preferences.salaryExpectations.max;
+    if (!localSearchForm.value.salaryMax && preferences.salaryExpectations.max) {
+      localSearchForm.value.salaryMax = preferences.salaryExpectations.max
     }
   }
-
-  if (
-    preferences.workPreferences?.remote !== undefined &&
-    localSearchForm.value.remote === undefined
-  ) {
-    localSearchForm.value.remote = preferences.workPreferences.remote;
+  
+  if (preferences.workPreferences?.remote !== undefined && localSearchForm.value.remote === undefined) {
+    localSearchForm.value.remote = preferences.workPreferences.remote
   }
-
+  
   // Re-generate AI suggestions with updated profile
   if (localSearchForm.value.query) {
-    getSearchSuggestions(localSearchForm.value.query);
+    getSearchSuggestions(localSearchForm.value.query)
   }
-};
+}
 
 const handleGlobalProfileUpdate = (event) => {
-  const { detail } = event;
-  if (detail && detail.systems?.includes("jobs")) {
+  const { detail } = event
+  if (detail && detail.systems?.includes('jobs')) {
     // Refresh search suggestions and insights
     if (localSearchForm.value.query) {
-      getSearchSuggestions(localSearchForm.value.query);
+      getSearchSuggestions(localSearchForm.value.query)
     }
   }
-};
+}
 
 // Lifecycle hooks
 onMounted(() => {
   // Initialize AI suggestions on mount if form has a query
   if (localSearchForm.value.query) {
-    getSearchSuggestions(localSearchForm.value.query);
+    getSearchSuggestions(localSearchForm.value.query)
   }
-
+  
   // Listen for profile sync events
-  profileSyncService.on("jobs-profile-updated", handleProfileUpdate);
-
+  profileSyncService.on('jobs-profile-updated', handleProfileUpdate)
+  
   // Listen for global profile updates
-  if (typeof window !== "undefined") {
-    window.addEventListener("profile-updated", handleGlobalProfileUpdate);
+  if (typeof window !== 'undefined') {
+    window.addEventListener('profile-updated', handleGlobalProfileUpdate)
   }
-});
+})
 
 // Cleanup
 onUnmounted(() => {
-  stopSearchProgress();
-
+  stopSearchProgress()
+  
   // Clean up profile sync listeners
-  profileSyncService.off("jobs-profile-updated", handleProfileUpdate);
-
-  if (typeof window !== "undefined") {
-    window.removeEventListener("profile-updated", handleGlobalProfileUpdate);
+  profileSyncService.off('jobs-profile-updated', handleProfileUpdate)
+  
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('profile-updated', handleGlobalProfileUpdate)
   }
-});
+})
 </script>
 
 <style scoped>
@@ -826,11 +765,7 @@ onUnmounted(() => {
 }
 
 .search-progress .glass-card-subtle {
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.1),
-    rgba(139, 92, 246, 0.1)
-  );
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
   border-color: rgba(99, 102, 241, 0.2);
 }
 
@@ -884,10 +819,7 @@ onUnmounted(() => {
   border-color: var(--color-primary);
 }
 
-.search-timer .badge {
-  font-size: 0.8rem;
-  padding: 0.5rem 0.75rem;
-}
+.search-timer .badge { font-size: 0.8rem; padding: 0.5rem 0.75rem; }
 
 .input-group-text {
   background: var(--glass-surface-light);
@@ -895,41 +827,54 @@ onUnmounted(() => {
   color: var(--text-secondary);
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .ai-job-search-interface .glass-card-subtle {
+    padding: 1rem;
   }
 
   .search-actions {
+    padding: 1rem;
   }
 
   .d-flex.align-items-center.justify-content-between {
     flex-direction: column;
+    gap: 1rem;
     align-items: flex-start !important;
   }
 
   .action-buttons {
+    width: 100%;
     justify-content: stretch;
   }
 
   .action-buttons .btn {
+    flex: 1;
   }
 
   .insights-grid {
+    grid-template-columns: 1fr;
   }
 
   .status-steps {
+    gap: 0.5rem;
   }
 
   .step-label {
+    font-size: 0.7rem !important;
     text-align: center;
   }
 }
 
+/* Dark theme support */
 [data-theme="dark"] .glass-card-subtle {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
 [data-theme="dark"] .insight-card {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.2);
 }
 
 [data-theme="dark"] .search-actions {
@@ -943,6 +888,7 @@ onUnmounted(() => {
   color: var(--text-secondary);
 }
 
+/* Animation preferences */
 @media (prefers-reduced-motion: reduce) {
   .chip-btn:hover {
     transform: none;

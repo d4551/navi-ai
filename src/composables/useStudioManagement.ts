@@ -1,8 +1,12 @@
+/**
+ * Gaming Studio Management Composable
+ * Provides comprehensive studio data management and search functionality
+ */
 
-import { ref, computed, onMounted, readonly } from "vue";
-import { logger } from "@/shared/utils/logger";
-import { GameStudioRepository } from "@/modules/db/repositories/gaming-studios";
-import { studioDatabaseInitializer } from "@/modules/studio/StudioDatabaseInitializer";
+import { ref, computed, onMounted, readonly } from 'vue';
+import { logger } from '@/shared/utils/logger';
+import { GameStudioRepository } from '@/modules/db/repositories/gaming-studios';
+import { studioDatabaseInitializer } from '@/modules/studio/StudioDatabaseInitializer';
 
 // Use a unified studio interface that works with the existing data
 export interface Studio {
@@ -30,23 +34,24 @@ export interface StudioStats {
   topGenres: Array<{ genre: string; count: number }>;
 }
 
+export function useStudioManagement() {
   // Reactive state
   const studios = ref<Record<string, Studio>>({});
   const filteredStudios = ref<Studio[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
   const initialized = ref(false);
-  const searchQuery = ref("");
+  const searchQuery = ref('');
   const activeFilters = ref<StudioSearchFilters>({});
 
   // Computed properties
   const studioCount = computed(() => Object.keys(studios.value).length);
   const studioList = computed(() => Object.values(studios.value));
-
+  
   const studiosBySize = computed(() => {
     const bySize: Record<string, Studio[]> = {};
-    studioList.value.forEach((studio) => {
-      const size = studio.size || "unknown";
+    studioList.value.forEach(studio => {
+      const size = studio.size || 'unknown';
       if (!bySize[size]) bySize[size] = [];
       bySize[size].push(studio);
     });
@@ -55,8 +60,8 @@ export interface StudioStats {
 
   const studiosByLocation = computed(() => {
     const byLocation: Record<string, Studio[]> = {};
-    studioList.value.forEach((studio) => {
-      const location = extractRegion(studio.location || "");
+    studioList.value.forEach(studio => {
+      const location = extractRegion(studio.location || '');
       if (!byLocation[location]) byLocation[location] = [];
       byLocation[location].push(studio);
     });
@@ -65,8 +70,12 @@ export interface StudioStats {
 
   const popularStudios = computed(() => {
     return studioList.value
+      .filter(studio => studio.games && studio.games.length > 0)
+      .sort((a, b) => (b.games?.length || 0) - (a.games?.length || 0))
+      .slice(0, 20);
   });
 
+  // Core functions
   const initializeStudios = async (): Promise<boolean> => {
     if (initialized.value) return true;
 
@@ -74,22 +83,22 @@ export interface StudioStats {
       loading.value = true;
       error.value = null;
 
-      logger.info("[GAME] Initializing studio management...");
+      logger.info('[GAME] Initializing studio management...');
 
       // Ensure database is ready
       const dbReady = await studioDatabaseInitializer.ensureStudioDatabase();
       if (!dbReady) {
-        throw new Error("Failed to initialize studio database");
+        throw new Error('Failed to initialize studio database');
       }
 
       // Load studios
       await loadStudios();
 
       initialized.value = true;
-      logger.info(
-      );
-
+      logger.info(`✅ Studio management initialized with ${studioCount.value} studios`);
+      
       return true;
+
     } catch (err) {
       const errorMsg = `Failed to initialize studios: ${err}`;
       error.value = errorMsg;
@@ -104,9 +113,10 @@ export interface StudioStats {
     try {
       const studioData = await GameStudioRepository.getAll();
       studios.value = studioData;
-
+      
       // Apply any active filters
       applyFilters();
+      
     } catch (err) {
       const errorMsg = `Failed to load studios: ${err}`;
       error.value = errorMsg;
@@ -116,28 +126,29 @@ export interface StudioStats {
   };
 
   const searchStudios = async (query: string): Promise<Studio[]> => {
+    if (!query || query.length < 2) {
       return [];
     }
 
     try {
       searchQuery.value = query;
-
+      
       const results = await GameStudioRepository.search({
-        name: query,
+        name: query
       });
 
       // Convert to our Studio interface
-      return results.map((studio) => ({
+      return results.map(studio => ({
         ...studio, // Spread studio properties first
         id: studio.id,
         name: studio.name,
         description: studio.description,
         location: studio.location,
         size: studio.size,
-        games: studio.games,
+        games: studio.games
       }));
     } catch (err) {
-      logger.error("Studio search failed:", err);
+      logger.error('Studio search failed:', err);
       return [];
     }
   };
@@ -146,7 +157,7 @@ export interface StudioStats {
     try {
       const studio = await GameStudioRepository.getById(id);
       if (!studio) return null;
-
+      
       // Convert to our Studio interface
       return {
         ...studio, // Spread studio properties first
@@ -155,7 +166,7 @@ export interface StudioStats {
         description: studio.description,
         location: studio.location,
         size: studio.size,
-        games: studio.games,
+        games: studio.games
       };
     } catch (err) {
       logger.error(`Failed to get studio ${id}:`, err);
@@ -163,21 +174,17 @@ export interface StudioStats {
     }
   };
 
-  const getStudioSuggestions = async (
-    query: string,
-  ): Promise<
-    Array<{
-      id: string;
-      name: string;
-      description: string;
-      location: string;
-      matchType: string;
-    }>
-  > => {
+  const getStudioSuggestions = async (query: string, limit = 10): Promise<Array<{
+    id: string;
+    name: string;
+    description: string;
+    location: string;
+    matchType: string;
+  }>> => {
     try {
       return await studioDatabaseInitializer.getStudioSuggestions(query, limit);
     } catch (err) {
-      logger.error("Failed to get studio suggestions:", err);
+      logger.error('Failed to get studio suggestions:', err);
       return [];
     }
   };
@@ -191,39 +198,34 @@ export interface StudioStats {
     // Apply search query
     if (currentFilters.query) {
       const query = currentFilters.query.toLowerCase();
-      filtered = filtered.filter(
-        (studio) =>
-          studio.name.toLowerCase().includes(query) ||
-          studio.description?.toLowerCase().includes(query) ||
-          studio.games?.some((game) => game.toLowerCase().includes(query)) ||
-          studio.location?.toLowerCase().includes(query),
+      filtered = filtered.filter(studio =>
+        studio.name.toLowerCase().includes(query) ||
+        studio.description?.toLowerCase().includes(query) ||
+        studio.games?.some(game => game.toLowerCase().includes(query)) ||
+        studio.location?.toLowerCase().includes(query)
       );
     }
 
     // Apply size filter
-    if (currentFilters.size && currentFilters.size !== "all") {
-      filtered = filtered.filter(
-        (studio) => studio.size === currentFilters.size,
-      );
+    if (currentFilters.size && currentFilters.size !== 'all') {
+      filtered = filtered.filter(studio => studio.size === currentFilters.size);
     }
 
     // Apply location filter
-    if (currentFilters.location && currentFilters.location !== "all") {
-      filtered = filtered.filter((studio) => {
-        const region = extractRegion(studio.location || "");
+    if (currentFilters.location && currentFilters.location !== 'all') {
+      filtered = filtered.filter(studio => {
+        const region = extractRegion(studio.location || '');
         return region === currentFilters.location;
       });
     }
 
     // Apply genre filter (simplified)
-    if (currentFilters.genre && currentFilters.genre !== "all") {
-      filtered = filtered.filter((studio) => {
+    if (currentFilters.genre && currentFilters.genre !== 'all') {
+      filtered = filtered.filter(studio => {
         const content = [
-          studio.description || "",
-          studio.games?.join(" ") || "",
-        ]
-          .join(" ")
-          .toLowerCase();
+          studio.description || '',
+          studio.games?.join(' ') || ''
+        ].join(' ').toLowerCase();
         return content.includes(currentFilters.genre!.toLowerCase());
       });
     }
@@ -233,7 +235,7 @@ export interface StudioStats {
 
   const clearFilters = (): void => {
     activeFilters.value = {};
-    searchQuery.value = "";
+    searchQuery.value = '';
     filteredStudios.value = studioList.value;
   };
 
@@ -241,11 +243,12 @@ export interface StudioStats {
     try {
       return await studioDatabaseInitializer.getStudioStatistics();
     } catch (err) {
-      logger.error("Failed to get studio statistics:", err);
+      logger.error('Failed to get studio statistics:', err);
       return {
+        total: 0,
         bySize: {},
         byLocation: {},
-        topGenres: [],
+        topGenres: []
       };
     }
   };
@@ -260,74 +263,64 @@ export interface StudioStats {
       return {
         valid: validation.valid,
         issues: validation.issues,
-        recommendations: validation.recommendations,
+        recommendations: validation.recommendations
       };
     } catch (err) {
-      logger.error("Database validation failed:", err);
+      logger.error('Database validation failed:', err);
       return {
         valid: false,
         issues: [`Validation error: ${err}`],
-        recommendations: ["Check database connection and data integrity"],
+        recommendations: ['Check database connection and data integrity']
       };
     }
   };
 
+  // Utility functions
   const extractRegion = (location: string): string => {
-    if (!location) return "Unknown";
-
+    if (!location) return 'Unknown';
+    
     const loc = location.toLowerCase();
-
-    if (
-      loc.includes("usa") ||
-      loc.includes("united states") ||
-      loc.includes(", ca") ||
-      loc.includes("california") ||
-      loc.includes("texas") ||
-      loc.includes("new york")
-    ) {
-      return "North America";
+    
+    if (loc.includes('usa') || loc.includes('united states') || loc.includes(', ca') || 
+        loc.includes('california') || loc.includes('texas') || loc.includes('new york')) {
+      return 'North America';
     }
-    if (loc.includes("canada")) return "North America";
-    if (
-      loc.includes("uk") ||
-      loc.includes("london") ||
-      loc.includes("france") ||
-      loc.includes("germany") ||
-      loc.includes("sweden") ||
-      loc.includes("finland")
-    ) {
-      return "Europe";
+    if (loc.includes('canada')) return 'North America';
+    if (loc.includes('uk') || loc.includes('london') || loc.includes('france') || 
+        loc.includes('germany') || loc.includes('sweden') || loc.includes('finland')) {
+      return 'Europe';
     }
-    if (
-      loc.includes("japan") ||
-      loc.includes("china") ||
-      loc.includes("korea")
-    ) {
-      return "Asia";
+    if (loc.includes('japan') || loc.includes('china') || loc.includes('korea')) {
+      return 'Asia';
     }
-    if (loc.includes("australia")) return "Oceania";
-
-    return "Other";
+    if (loc.includes('australia')) return 'Oceania';
+    
+    return 'Other';
   };
 
   const formatStudioSize = (size: string): string => {
     const sizeMap: Record<string, string> = {
-      unknown: "Unknown",
+      'indie': 'Indie (1-10)',
+      'small': 'Small (10-50)',
+      'medium': 'Medium (50-200)',
+      'large': 'Large (200-1000)',
+      'enterprise': 'Enterprise (1000+)',
+      'unknown': 'Unknown'
     };
     return sizeMap[size] || size;
   };
 
   const getStudioTypeIcon = (studio: Studio): string => {
-    const size = studio.size || "unknown";
+    const size = studio.size || 'unknown';
     const iconMap: Record<string, string> = {
-      indie: "mdi-gamepad-variant",
-      small: "mdi-gamepad-variant-outline",
-      medium: "mdi-controller-classic",
-      large: "mdi-domain",
-      enterprise: "mdi-office-building",
-      unknown: "mdi-help-circle",
+      'indie': 'mdi-gamepad-variant',
+      'small': 'mdi-gamepad-variant-outline',
+      'medium': 'mdi-controller-classic',
+      'large': 'mdi-domain',
+      'enterprise': 'mdi-office-building',
+      'unknown': 'mdi-help-circle'
     };
-    return iconMap[size] || "mdi-domain";
+    return iconMap[size] || 'mdi-domain';
   };
 
   const isStudioFavorite = async (studioId: string): Promise<boolean> => {
@@ -349,7 +342,7 @@ export interface StudioStats {
         return true;
       }
     } catch (err) {
-      logger.error("Failed to toggle studio favorite:", err);
+      logger.error('Failed to toggle studio favorite:', err);
       return false;
     }
   };
@@ -358,25 +351,25 @@ export interface StudioStats {
     try {
       const favoriteIds = await GameStudioRepository.getFavorites();
       const favorites: Studio[] = [];
-
+      
       for (const id of favoriteIds) {
         const studio = await getStudioById(id);
         if (studio) {
           favorites.push(studio);
         }
       }
-
+      
       return favorites;
     } catch (err) {
-      logger.error("Failed to get favorite studios:", err);
+      logger.error('Failed to get favorite studios:', err);
       return [];
     }
   };
 
   // Auto-initialize on mount
   onMounted(() => {
-    initializeStudios().catch((err) => {
-      logger.error("Auto-initialization failed:", err);
+    initializeStudios().catch(err => {
+      logger.error('Auto-initialization failed:', err);
     });
   });
 
@@ -397,6 +390,7 @@ export interface StudioStats {
     studiosByLocation,
     popularStudios,
 
+    // Functions
     initializeStudios,
     loadStudios,
     searchStudios,
@@ -415,7 +409,7 @@ export interface StudioStats {
     // Favorites
     isStudioFavorite,
     toggleStudioFavorite,
-    getFavoriteStudios,
+    getFavoriteStudios
   };
 }
 

@@ -31,8 +31,8 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
     <!-- Voice Control Panel -->
     <div class="voice-controls__panel">
       <!-- Volume Meter -->
-      <div
-        v-if="showVolumeMeter && isRecording"
+      <div 
+        v-if="showVolumeMeter && isRecording" 
         class="voice-controls__volume"
         :aria-label="`Audio level: ${Math.round(audioVolume)}%`"
         role="progressbar"
@@ -41,11 +41,11 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
         aria-valuemax="100"
       >
         <div class="volume-meter">
-          <div
+          <div 
             class="volume-meter__fill"
-            :style="{
+            :style="{ 
               width: `${Math.min(100, audioVolume)}%`,
-              backgroundColor: getVolumeMeterColor(audioVolume),
+              backgroundColor: getVolumeMeterColor(audioVolume)
             }"
           />
         </div>
@@ -57,13 +57,12 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
       <!-- Push-to-Talk Button -->
       <UnifiedButton
         ref="pushToTalkBtn"
-        :class="[
-          'voice-controls__ptt-btn',
-          {
-            'voice-controls__ptt-btn--recording': isRecording,
-            'voice-controls__ptt-btn--processing': isProcessing,
-            'voice-controls__ptt-btn--error': hasError,
-          },
+        :class="[ 'voice-controls__ptt-btn',
+                  {
+                    'voice-controls__ptt-btn--recording': isRecording,
+                    'voice-controls__ptt-btn--processing': isProcessing,
+                    'voice-controls__ptt-btn--error': hasError
+                  }
         ]"
         :disabled="!canRecord || isProcessing"
         :loading="isProcessing"
@@ -81,11 +80,14 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
         @keyup="handleKeyUp"
       >
         <!-- Button Icon -->
-        <AppIcon :name="getButtonIcon()" :class="{ rotating: isProcessing }" />
-
+        <AppIcon 
+          :name="getButtonIcon()" 
+          :class="{ 'rotating': isProcessing }"
+        />
+        
         <!-- Recording Indicator -->
-        <div
-          v-if="isRecording"
+        <div 
+          v-if="isRecording" 
           class="voice-controls__recording-indicator"
           aria-hidden="true"
         />
@@ -93,21 +95,20 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
 
       <!-- Status Text -->
       <div class="voice-controls__status">
-        <p
+        <p 
           class="status-text"
-          :class="{
-            'status-text--recording': isRecording,
-            'status-text--error': hasError,
-            'status-text--processing': isProcessing,
+          :class="{ 'status-text--recording': isRecording,
+                    'status-text--error': hasError,
+                    'status-text--processing': isProcessing
           }"
           role="status"
           aria-live="polite"
         >
           {{ getStatusText() }}
         </p>
-
+        
         <!-- Recording Duration -->
-        <p
+        <p 
           v-if="isRecording && recordingDuration > 0"
           class="recording-duration"
           aria-live="off"
@@ -153,10 +154,10 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, onUnmounted } from "vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import UiChip from "@/components/ui/UiChip.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import UiChip from '@/components/ui/UiChip.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Props
 interface Props {
@@ -182,20 +183,20 @@ const props = withDefaults(defineProps<Props>(), {
   error: null,
   audioVolume: 0,
   devices: () => [],
-  selectedDevice: "",
+  selectedDevice: '',
   recordingDuration: 0,
   showDeviceSelector: true,
   showVolumeMeter: true,
-  showInstructions: true,
+  showInstructions: true
 });
 
 // Emits
 const emit = defineEmits<{
-  "start-recording": [];
-  "stop-recording": [];
-  "device-change": [deviceId: string];
-  "clear-error": [];
-  "retry-permission": [];
+  'start-recording': [];
+  'stop-recording': [];
+  'device-change': [deviceId: string];
+  'clear-error': [];
+  'retry-permission': [];
 }>();
 
 // Refs
@@ -207,58 +208,60 @@ const isTouchDown = ref(false);
 const isKeyDown = ref(false);
 
 // Computed
-const isActive = computed(() => props.isRecording || props.isProcessing);
+const isActive = computed(() => 
+  props.isRecording || props.isProcessing
+);
 
-const deviceOptions = computed(() =>
-  props.devices.map((device) => ({
+const deviceOptions = computed(() => 
+  props.devices.map(device => ({
     deviceId: device.deviceId,
     label: device.label || `Microphone ${device.deviceId.slice(0, 8)}...`,
-    value: device.deviceId,
-  })),
+    value: device.deviceId
+  }))
 );
 
 // Methods
 const getButtonColor = () => {
-  if (props.hasError) return "error";
-  if (props.isRecording) return "success";
-  if (props.isProcessing) return "primary";
-  return "surface-variant";
+  if (props.hasError) return 'error';
+  if (props.isRecording) return 'success';
+  if (props.isProcessing) return 'primary';
+  return 'surface-variant';
 };
 
 const getButtonIcon = () => {
-  if (props.hasError) return "mdi-microphone-off";
-  if (props.isProcessing) return "mdi-loading";
-  if (props.isRecording) return "mdi-stop";
-  return "mdi-microphone";
+  if (props.hasError) return 'mdi-microphone-off';
+  if (props.isProcessing) return 'mdi-loading';
+  if (props.isRecording) return 'mdi-stop';
+  return 'mdi-microphone';
 };
 
 const getButtonAriaLabel = () => {
-  if (props.hasError) return "Microphone error - retry";
-  if (props.isProcessing) return "Processing audio...";
-  if (props.isRecording) return "Stop recording";
-  return "Start recording - hold to speak";
+  if (props.hasError) return 'Microphone error - retry';
+  if (props.isProcessing) return 'Processing audio...';
+  if (props.isRecording) return 'Stop recording';
+  return 'Start recording - hold to speak';
 };
 
 const getStatusText = () => {
-  if (props.hasError) return "Microphone access required";
-  if (props.isProcessing) return "Processing...";
-  if (props.isRecording) return "Listening...";
-  return "Hold to speak";
+  if (props.hasError) return 'Microphone access required';
+  if (props.isProcessing) return 'Processing...';
+  if (props.isRecording) return 'Listening...';
+  return 'Hold to speak';
 };
 
 const getVolumeMeterColor = (volume: number) => {
-  if (volume < 20) return "rgb(var(--v-theme-success))";
-  if (volume < 50) return "rgb(var(--v-theme-warning))";
-  return "rgb(var(--v-theme-error))";
+  if (volume < 20) return 'rgb(var(--v-theme-success))';
+  if (volume < 50) return 'rgb(var(--v-theme-warning))';
+  return 'rgb(var(--v-theme-error))';
 };
 
 const formatDuration = (ms: number) => {
   const seconds = Math.floor(ms / 1000);
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-
+  
   if (minutes > 0) {
-    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   }
   return `${remainingSeconds}s`;
 };
@@ -266,13 +269,13 @@ const formatDuration = (ms: number) => {
 // Event Handlers
 const startRecording = () => {
   if (props.canRecord && !props.isProcessing) {
-    emit("start-recording");
+    emit('start-recording');
   }
 };
 
 const stopRecording = () => {
   if (props.isRecording) {
-    emit("stop-recording");
+    emit('stop-recording');
   }
 };
 
@@ -309,7 +312,7 @@ const handleTouchEnd = (event: TouchEvent) => {
 
 // Keyboard Handlers
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.code === "Space" && !event.repeat) {
+  if (event.code === 'Space' && !event.repeat) {
     event.preventDefault();
     isKeyDown.value = true;
     startRecording();
@@ -317,7 +320,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
 };
 
 const handleKeyUp = (event: KeyboardEvent) => {
-  if (event.code === "Space") {
+  if (event.code === 'Space') {
     event.preventDefault();
     isKeyDown.value = false;
     stopRecording();
@@ -326,51 +329,43 @@ const handleKeyUp = (event: KeyboardEvent) => {
 
 // Global keyboard handler for space bar
 const handleGlobalKeyDown = (event: KeyboardEvent) => {
-  if (
-    event.code === "Space" &&
-    document.activeElement === pushToTalkBtn.value &&
-    !event.repeat
-  ) {
+  if (event.code === 'Space' && 
+      document.activeElement === pushToTalkBtn.value && 
+      !event.repeat) {
     handleKeyDown(event);
   }
 };
 
 const handleGlobalKeyUp = (event: KeyboardEvent) => {
-  if (
-    event.code === "Space" &&
-    document.activeElement === pushToTalkBtn.value
-  ) {
+  if (event.code === 'Space' && document.activeElement === pushToTalkBtn.value) {
     handleKeyUp(event);
   }
 };
 
 const handleDeviceChange = (deviceId: string) => {
-  emit("device-change", deviceId);
+  emit('device-change', deviceId);
 };
 
 // Lifecycle
 onMounted(() => {
-  document.addEventListener("keydown", handleGlobalKeyDown);
-  document.addEventListener("keyup", handleGlobalKeyUp);
+  document.addEventListener('keydown', handleGlobalKeyDown);
+  document.addEventListener('keyup', handleGlobalKeyUp);
 });
 
 onUnmounted(() => {
-  document.removeEventListener("keydown", handleGlobalKeyDown);
-  document.removeEventListener("keyup", handleGlobalKeyUp);
+  document.removeEventListener('keydown', handleGlobalKeyDown);
+  document.removeEventListener('keyup', handleGlobalKeyUp);
 });
 
 // Watch for recording state changes
-watch(
-  () => props.isRecording,
-  (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-      // Provide haptic feedback if available
-      if ("vibrate" in navigator && newVal) {
-        navigator.vibrate(50);
-      }
+watch(() => props.isRecording, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    // Provide haptic feedback if available
+    if ('vibrate' in navigator && newVal) {
+      navigator.vibrate(50);
     }
-  },
-);
+  }
+});
 </script>
 
 <style scoped>
@@ -431,13 +426,8 @@ watch(
 }
 
 @keyframes pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(var(--v-theme-success), 0.4);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(var(--v-theme-success), 0.6);
-  }
+  0%, 100% { box-shadow: 0 0 20px rgba(var(--v-theme-success), 0.4); }
+  50% { box-shadow: 0 0 30px rgba(var(--v-theme-success), 0.6); }
 }
 
 .voice-controls__recording-indicator {
@@ -446,14 +436,8 @@ watch(
 }
 
 @keyframes blink {
-  0%,
-  50% {
-    opacity: 1;
-  }
-  51%,
-  100% {
-    opacity: 0;
-  }
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .voice-controls__status {
@@ -495,25 +479,28 @@ watch(
 }
 
 @keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
+/* Screen reader only */
 .sr-only {
+  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  clip: rect(0, 0, 0, 0);
 }
 
+/* High contrast mode support */
 @media (prefers-contrast: high) {
   .voice-controls {
+    border-width: 2px;
   }
-
+  
   .voice-controls--active {
+    border-width: 3px;
   }
 }
 
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .voice-controls,
   .voice-controls__ptt-btn,
@@ -521,21 +508,24 @@ watch(
   .status-text {
     transition: none;
   }
-
+  
   .voice-controls__ptt-btn--recording {
     animation: none;
     transform: none;
   }
-
+  
   .voice-controls__recording-indicator {
     animation: none;
   }
-
+  
   .rotating {
     animation: none;
   }
 }
 
+/* Focus styles for accessibility */
 .voice-controls__ptt-btn:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  outline-offset: 2px;
 }
 </style>

@@ -39,6 +39,66 @@
  * the necessary modules for the complete theme system.
  */
 
+/* Enhanced text contrast for glass backgrounds */
+:root[data-theme="light"] {
+  --text-primary: #111827; /* Dark gray for better contrast on white glass */
+  --text-secondary: #374151;
+  --text-tertiary: #4b5563;
+  --text-muted: #6b7280;
+}
+
+:root[data-theme="dark"] {
+  --text-primary: #f9fafb; /* Light gray for better contrast on black glass */
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --text-muted: #6b7280;
+}
+
+/* Readable text on glass: unified helper */
+.text-on-glass,
+.on-glass {
+  color: var(--text-primary);
+}
+[data-theme="light"] .text-on-glass,
+[data-theme="light"] .on-glass {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
+}
+[data-theme="dark"] .text-on-glass,
+[data-theme="dark"] .on-glass {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+/* Glass header and footer styles */
+.glass-header {
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  padding: var(--spacing-4) 0;
+}
+
+.glass-footer {
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  padding: var(--spacing-4) 0;
+}
+
+.page-glass-container {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  padding: var(--spacing-6);
+  margin: var(--spacing-4) auto;
+  max-width: var(--page-content-max-width);
+}
+
 /* Global typography improvements for space efficiency */
 h1,
 .h1 {
@@ -419,6 +479,118 @@ small {
 
 .split-layout--main-sidebar {
   grid-template-columns: minmax(0, 2fr) minmax(var(--grid-card-min-md), 1fr);
+}
+
+/* Enhanced dense multi-column layouts for efficient data display */
+.dense-grid {
+  display: grid;
+  gap: var(--spacing-3);
+  width: 100%;
+}
+
+.dense-grid--cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dense-grid--cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dense-grid--cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dense-grid--cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.dense-grid--cols-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.dense-grid--auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.dense-grid--auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+
+/* Responsive dense grid adjustments */
+@media (max-width: 480px) {
+  .dense-grid--cols-2,
+  .dense-grid--cols-3,
+  .dense-grid--cols-4,
+  .dense-grid--cols-5,
+  .dense-grid--cols-6 {
+    grid-template-columns: 1fr;
+  }
+  
+  .dense-grid--auto-fit,
+  .dense-grid--auto-fill {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .dense-grid--cols-4,
+  .dense-grid--cols-5,
+  .dense-grid--cols-6 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .dense-grid--cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .dense-grid--cols-5,
+  .dense-grid--cols-6 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .dense-grid--cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Compact item spacing for dense layouts */
+.dense-item {
+  padding: var(--spacing-2);
+  margin: 0;
+}
+
+.dense-item--compact {
+  padding: var(--spacing-1);
+  margin: 0;
+}
+
+/* High-density data tables */
+.dense-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.dense-table th,
+.dense-table td {
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--glass-border);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-tight);
+}
+
+.dense-table th {
+  background: var(--glass-surface);
+  font-weight: var(--font-weight-semibold);
+}
+
+.dense-table tr:nth-child(even) {
+  background: var(--glass-bg);
+}
+
+.dense-table tr:hover {
+  background: var(--glass-hover-bg);
 }
 
 /* Responsive breakdowns for component grids */

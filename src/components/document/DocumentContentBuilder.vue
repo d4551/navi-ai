@@ -27,52 +27,47 @@
       <div class="error-message">
         <AppIcon name="mdi-alert-circle-outline" size="48" class="error-icon" />
         <h3>Unsupported Document Type</h3>
-        <p>
-          The document type "{{ documentType }}" is not currently supported.
-        </p>
+        <p>The document type "{{ documentType }}" is not currently supported.</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import ResumeContentBuilder from "./ResumeContentBuilder.vue";
-import CoverLetterContentBuilder from "./CoverLetterContentBuilder.vue";
-import type {
-  ResumeData,
-  CoverLetterData,
-} from "@/composables/useDocumentManager";
+import { computed } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import ResumeContentBuilder from './ResumeContentBuilder.vue'
+import CoverLetterContentBuilder from './CoverLetterContentBuilder.vue'
+import type { ResumeData, CoverLetterData } from '@/composables/useDocumentManager'
 
 // Props
 const props = defineProps<{
-  documentData: ResumeData | CoverLetterData;
-  documentType: "resume" | "cover-letter";
-  currentStep: number;
-  aiEnabled: boolean;
-}>();
+  documentData: ResumeData | CoverLetterData
+  documentType: 'resume' | 'cover-letter'
+  currentStep: number
+  aiEnabled: boolean
+}>()
 
 // Emits
 const emit = defineEmits<{
-  "update-data": [data: ResumeData | CoverLetterData];
-  "step-change": [step: number];
-  "ai-request": [payload: any];
-}>();
+  'update-data': [data: ResumeData | CoverLetterData]
+  'step-change': [step: number]
+  'ai-request': [payload: any]
+}>()
 
 // Computed properties for type-safe access
 const resumeData = computed((): ResumeData => {
-  return props.documentData as ResumeData;
-});
+  return props.documentData as ResumeData
+})
 
 const coverLetterData = computed((): CoverLetterData => {
-  return props.documentData as CoverLetterData;
-});
+  return props.documentData as CoverLetterData
+})
 
 // Methods
 const handleDataUpdate = (data: ResumeData | CoverLetterData) => {
-  emit("update-data", data);
-};
+  emit('update-data', data)
+}
 </script>
 
 <style scoped>

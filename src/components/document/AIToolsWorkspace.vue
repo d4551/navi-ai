@@ -6,11 +6,7 @@
         <AppIcon name="mdi-account-check-outline" class="banner-icon" />
         <div class="banner-text">
           <h4>Profile Integration Active</h4>
-          <p>
-            AI will use your profile data ({{
-              Math.round(profileCompleteness)
-            }}% complete) to provide personalized suggestions
-          </p>
+          <p>AI will use your profile data ({{ Math.round(profileCompleteness) }}% complete) to provide personalized suggestions</p>
         </div>
         <UnifiedButton
           variant="outline"
@@ -51,7 +47,7 @@
           </UnifiedButton>
         </div>
       </div>
-
+      
       <div class="job-input-container">
         <textarea
           v-model="localJobDescription"
@@ -60,16 +56,12 @@
           rows="8"
           :disabled="!aiReady"
         />
-
+        
         <div v-if="jobAnalysis" class="job-analysis">
           <div class="analysis-item">
             <span class="analysis-label">Key Requirements:</span>
             <div class="analysis-tags">
-              <span
-                v-for="req in jobAnalysis.requirements"
-                :key="req"
-                class="tag"
-              >
+              <span v-for="req in jobAnalysis.requirements" :key="req" class="tag">
                 {{ req }}
               </span>
             </div>
@@ -77,11 +69,7 @@
           <div class="analysis-item">
             <span class="analysis-label">Preferred Skills:</span>
             <div class="analysis-tags">
-              <span
-                v-for="skill in jobAnalysis.skills"
-                :key="skill"
-                class="tag skill-tag"
-              >
+              <span v-for="skill in jobAnalysis.skills" :key="skill" class="tag skill-tag">
                 {{ skill }}
               </span>
             </div>
@@ -99,8 +87,7 @@
           <h4>Document Analysis</h4>
         </div>
         <p class="tool-description">
-          Analyze your resume and cover letter for ATS compatibility, keyword
-          optimization, and overall strength.
+          Analyze your resume and cover letter for ATS compatibility, keyword optimization, and overall strength.
         </p>
         <div class="tool-actions">
           <UnifiedButton
@@ -118,8 +105,8 @@
           <div class="score-item">
             <span class="score-label">ATS Score:</span>
             <div class="score-bar">
-              <div
-                class="score-fill"
+              <div 
+                class="score-fill" 
                 :style="{ width: documentAnalysis.atsScore + '%' }"
                 :class="getScoreClass(documentAnalysis.atsScore)"
               ></div>
@@ -129,8 +116,8 @@
           <div class="score-item">
             <span class="score-label">Keyword Match:</span>
             <div class="score-bar">
-              <div
-                class="score-fill"
+              <div 
+                class="score-fill" 
                 :style="{ width: documentAnalysis.keywordMatch + '%' }"
                 :class="getScoreClass(documentAnalysis.keywordMatch)"
               ></div>
@@ -147,8 +134,7 @@
           <h4>Content Enhancement</h4>
         </div>
         <p class="tool-description">
-          Improve your document content with AI-powered suggestions for better
-          impact and clarity.
+          Improve your document content with AI-powered suggestions for better impact and clarity.
         </p>
         <div class="tool-actions">
           <UnifiedButton
@@ -163,11 +149,7 @@
           </UnifiedButton>
         </div>
         <div v-if="suggestions.length" class="suggestions-list">
-          <div
-            v-for="suggestion in suggestions"
-            :key="suggestion.id"
-            class="suggestion-item"
-          >
+          <div v-for="suggestion in suggestions" :key="suggestion.id" class="suggestion-item">
             <div class="suggestion-content">
               <div class="suggestion-text">{{ suggestion.text }}</div>
               <div class="suggestion-meta">{{ suggestion.category }}</div>
@@ -190,8 +172,7 @@
           <h4>Job Tailoring</h4>
         </div>
         <p class="tool-description">
-          Automatically tailor your documents to match the specific job
-          requirements and company culture.
+          Automatically tailor your documents to match the specific job requirements and company culture.
         </p>
         <div class="tool-actions">
           <UnifiedButton
@@ -208,15 +189,11 @@
         <div v-if="tailoringResults" class="tailoring-results">
           <div class="result-item">
             <span class="result-label">Resume Changes:</span>
-            <span class="result-value">{{
-              tailoringResults.resumeChanges
-            }}</span>
+            <span class="result-value">{{ tailoringResults.resumeChanges }}</span>
           </div>
           <div class="result-item">
             <span class="result-label">Cover Letter Changes:</span>
-            <span class="result-value">{{
-              tailoringResults.coverLetterChanges
-            }}</span>
+            <span class="result-value">{{ tailoringResults.coverLetterChanges }}</span>
           </div>
         </div>
       </div>
@@ -228,8 +205,7 @@
           <h4>Skills Optimization</h4>
         </div>
         <p class="tool-description">
-          Optimize your skills section based on industry trends and job
-          requirements.
+          Optimize your skills section based on industry trends and job requirements.
         </p>
         <div class="tool-actions">
           <UnifiedButton
@@ -247,8 +223,8 @@
           <div class="suggested-skills">
             <span class="suggestions-label">Suggested skills:</span>
             <div class="skill-tags">
-              <span
-                v-for="skill in skillSuggestions"
+              <span 
+                v-for="skill in skillSuggestions" 
                 :key="skill"
                 class="skill-tag clickable"
                 @click="addSkill(skill)"
@@ -278,15 +254,13 @@
           Refresh
         </UnifiedButton>
       </div>
-
+      
       <div class="insights-content">
         <div v-for="insight in insights" :key="insight.id" class="insight-item">
           <div class="insight-header">
             <AppIcon :name="insight.icon" />
             <span class="insight-type">{{ insight.type }}</span>
-            <span class="insight-priority" :class="insight.priority">{{
-              insight.priority
-            }}</span>
+            <span class="insight-priority" :class="insight.priority">{{ insight.priority }}</span>
           </div>
           <div class="insight-message">{{ insight.message }}</div>
           <div v-if="insight.action" class="insight-action">
@@ -305,290 +279,266 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useToast } from "@/composables/useToast";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, computed, watch } from 'vue'
+import { useToast } from '@/composables/useToast'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
 const props = defineProps<{
-  resumeData: any;
-  coverLetterData: any;
-  jobDescription: string;
-  aiReady: boolean;
-  profileData?: any;
-  profileCompleteness?: number;
-}>();
+  resumeData: any
+  coverLetterData: any
+  jobDescription: string
+  aiReady: boolean
+  profileData?: any
+  profileCompleteness?: number
+}>()
 
 // Emits
 const emit = defineEmits<{
-  "update-job-description": [string];
-  "apply-suggestions": [any[]];
-  "tailor-documents": [];
-  "profile-enhanced-suggestion": [any];
-}>();
+  'update-job-description': [string]
+  'apply-suggestions': [any[]]
+  'tailor-documents': []
+  'profile-enhanced-suggestion': [any]
+}>()
 
-const toast = useToast();
+const toast = useToast()
 
 // State
-const localJobDescription = ref(props.jobDescription);
-const analyzing = ref(false);
-const enhancing = ref(false);
-const tailoring = ref(false);
-const optimizingSkills = ref(false);
+const localJobDescription = ref(props.jobDescription)
+const analyzing = ref(false)
+const enhancing = ref(false)
+const tailoring = ref(false)
+const optimizingSkills = ref(false)
 
 const jobAnalysis = ref<{
-  requirements: string[];
-  skills: string[];
-} | null>(null);
+  requirements: string[]
+  skills: string[]
+} | null>(null)
 
 const documentAnalysis = ref<{
-  atsScore: number;
-  keywordMatch: number;
-} | null>(null);
+  atsScore: number
+  keywordMatch: number
+} | null>(null)
 
-const suggestions = ref<
-  Array<{
-    id: string;
-    text: string;
-    category: string;
-    field?: string;
-  }>
->([]);
+const suggestions = ref<Array<{
+  id: string
+  text: string
+  category: string
+  field?: string
+}>>([])
 
 const tailoringResults = ref<{
-  resumeChanges: number;
-  coverLetterChanges: number;
-} | null>(null);
+  resumeChanges: number
+  coverLetterChanges: number
+} | null>(null)
 
-const skillSuggestions = ref<string[]>([]);
+const skillSuggestions = ref<string[]>([])
 
-const insights = ref<
-  Array<{
-    id: string;
-    type: string;
-    priority: "high" | "medium" | "low";
-    icon: string;
-    message: string;
-    action?: string;
-  }>
->([]);
+const insights = ref<Array<{
+  id: string
+  type: string
+  priority: 'high' | 'medium' | 'low'
+  icon: string
+  message: string
+  action?: string
+}>>([])
 
 // Computed
-const hasInsights = computed(() => insights.value.length > 0);
+const hasInsights = computed(() => insights.value.length > 0)
 
 // Watchers
-watch(
-  () => localJobDescription.value,
-  (value) => {
-    emit("update-job-description", value);
-  },
-);
+watch(() => localJobDescription.value, (value) => {
+  emit('update-job-description', value)
+})
 
 // Methods
 const analyzeJobDescription = async () => {
-  if (!props.aiReady || !localJobDescription.value.trim()) return;
-
-  analyzing.value = true;
+  if (!props.aiReady || !localJobDescription.value.trim()) return
+  
+  analyzing.value = true
   try {
     // Simulate AI job analysis
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    
     jobAnalysis.value = {
-      requirements: [
-        "5+ years experience",
-        "Team leadership",
-        "Agile methodology",
-      ],
-      skills: ["JavaScript", "React", "Node.js", "TypeScript", "AWS"],
-    };
-
-    toast.success("Job description analyzed successfully");
+      requirements: ['5+ years experience', 'Team leadership', 'Agile methodology'],
+      skills: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'AWS']
+    }
+    
+    toast.success('Job description analyzed successfully')
   } catch (error) {
-    toast.error("Failed to analyze job description");
+    toast.error('Failed to analyze job description')
   } finally {
-    analyzing.value = false;
+    analyzing.value = false
   }
-};
+}
 
 const analyzeDocuments = async () => {
-  if (!props.aiReady) return;
-
-  analyzing.value = true;
+  if (!props.aiReady) return
+  
+  analyzing.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
     documentAnalysis.value = {
       atsScore: Math.floor(Math.random() * 30) + 70,
-      keywordMatch: Math.floor(Math.random() * 25) + 60,
-    };
-
-    toast.success("Documents analyzed successfully");
+      keywordMatch: Math.floor(Math.random() * 25) + 60
+    }
+    
+    toast.success('Documents analyzed successfully')
   } catch (error) {
-    toast.error("Failed to analyze documents");
+    toast.error('Failed to analyze documents')
   } finally {
-    analyzing.value = false;
+    analyzing.value = false
   }
-};
+}
 
 const enhanceContent = async () => {
-  if (!props.aiReady) return;
-
-  enhancing.value = true;
+  if (!props.aiReady) return
+  
+  enhancing.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1800));
-
+    await new Promise(resolve => setTimeout(resolve, 1800))
+    
     suggestions.value = [
       {
-        id: "1",
-        text: "Consider adding quantifiable metrics to your experience descriptions",
-        category: "Experience",
-        field: "experience",
+        id: '1',
+        text: 'Consider adding quantifiable metrics to your experience descriptions',
+        category: 'Experience',
+        field: 'experience'
       },
       {
-        id: "2",
-        text: "Your summary could be more impactful with specific achievements",
-        category: "Summary",
-        field: "summary",
+        id: '2',
+        text: 'Your summary could be more impactful with specific achievements',
+        category: 'Summary',
+        field: 'summary'
       },
       {
-        id: "3",
-        text: "Include more relevant keywords from the job description",
-        category: "Keywords",
-        field: "skills",
-      },
-    ];
-
-    toast.success("Content enhancement suggestions generated");
+        id: '3',
+        text: 'Include more relevant keywords from the job description',
+        category: 'Keywords',
+        field: 'skills'
+      }
+    ]
+    
+    toast.success('Content enhancement suggestions generated')
   } catch (error) {
-    toast.error("Failed to generate suggestions");
+    toast.error('Failed to generate suggestions')
   } finally {
-    enhancing.value = false;
+    enhancing.value = false
   }
-};
+}
 
 const handleTailorDocuments = async () => {
-  if (!props.aiReady || !localJobDescription.value.trim()) return;
-
-  tailoring.value = true;
+  if (!props.aiReady || !localJobDescription.value.trim()) return
+  
+  tailoring.value = true
   try {
-    emit("tailor-documents");
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-
+    emit('tailor-documents')
+    await new Promise(resolve => setTimeout(resolve, 2500))
+    
     tailoringResults.value = {
       resumeChanges: Math.floor(Math.random() * 8) + 3,
-      coverLetterChanges: Math.floor(Math.random() * 5) + 2,
-    };
-
-    toast.success("Documents tailored successfully");
+      coverLetterChanges: Math.floor(Math.random() * 5) + 2
+    }
+    
+    toast.success('Documents tailored successfully')
   } catch (error) {
-    toast.error("Failed to tailor documents");
+    toast.error('Failed to tailor documents')
   } finally {
-    tailoring.value = false;
+    tailoring.value = false
   }
-};
+}
 
 const optimizeSkills = async () => {
-  if (!props.aiReady) return;
-
-  optimizingSkills.value = true;
+  if (!props.aiReady) return
+  
+  optimizingSkills.value = true
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-
-    skillSuggestions.value = [
-      "Docker",
-      "Kubernetes",
-      "GraphQL",
-      "MongoDB",
-      "Jest",
-    ];
-
-    toast.success("Skill optimization complete");
+    await new Promise(resolve => setTimeout(resolve, 1200))
+    
+    skillSuggestions.value = ['Docker', 'Kubernetes', 'GraphQL', 'MongoDB', 'Jest']
+    
+    toast.success('Skill optimization complete')
   } catch (error) {
-    toast.error("Failed to optimize skills");
+    toast.error('Failed to optimize skills')
   } finally {
-    optimizingSkills.value = false;
+    optimizingSkills.value = false
   }
-};
+}
 
 const applySuggestion = (suggestion: any) => {
-  emit("apply-suggestions", [suggestion]);
-  suggestions.value = suggestions.value.filter((s) => s.id !== suggestion.id);
-  toast.success("Suggestion applied");
-};
+  emit('apply-suggestions', [suggestion])
+  suggestions.value = suggestions.value.filter(s => s.id !== suggestion.id)
+  toast.success('Suggestion applied')
+}
 
 const addSkill = (skill: string) => {
   // This would be handled by the parent component
-  toast.success(`Added skill: ${skill}`);
-  skillSuggestions.value = skillSuggestions.value.filter((s) => s !== skill);
-};
+  toast.success(`Added skill: ${skill}`)
+  skillSuggestions.value = skillSuggestions.value.filter(s => s !== skill)
+}
 
 const getScoreClass = (score: number) => {
-  if (score >= 80) return "high";
-  if (score >= 60) return "medium";
-  return "low";
-};
+  if (score >= 80) return 'high'
+  if (score >= 60) return 'medium'
+  return 'low'
+}
 
 const refreshInsights = () => {
   // Generate fresh insights
-  toast.info("Refreshing AI insights...");
-};
+  toast.info('Refreshing AI insights...')
+}
 
 const executeInsightAction = (insight: any) => {
-  toast.info(`Executing action: ${insight.action}`);
-};
+  toast.info(`Executing action: ${insight.action}`)
+}
 
 // Profile Integration Methods
 const refreshProfileData = () => {
-  emit("profile-enhanced-suggestion", { type: "refresh-profile" });
-  toast.info("Refreshing profile data...");
-};
+  emit('profile-enhanced-suggestion', { type: 'refresh-profile' })
+  toast.info('Refreshing profile data...')
+}
 
 const aiMatchJobToProfile = async () => {
-  if (!props.aiReady || !props.profileData || !localJobDescription.value.trim())
-    return;
-
-  analyzing.value = true;
+  if (!props.aiReady || !props.profileData || !localJobDescription.value.trim()) return
+  
+  analyzing.value = true
   try {
     // Simulate AI-powered job-to-profile matching
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-
+    await new Promise(resolve => setTimeout(resolve, 2500))
+    
     const matchAnalysis = {
-      skillMatch: Math.floor(Math.random() * 40 + 60),
-      experienceMatch: Math.floor(Math.random() * 30 + 70),
-      missingSkills: ["Docker", "Kubernetes", "GraphQL"].slice(
-        0,
-        Math.floor(Math.random() * 3),
-      ),
-      strengthAreas: [
-        "Gaming Industry Experience",
-        "Team Leadership",
-        "Technical Skills",
-      ],
+      skillMatch: Math.floor(Math.random() * 40 + 60), // 60-100%
+      experienceMatch: Math.floor(Math.random() * 30 + 70), // 70-100%
+      missingSkills: ['Docker', 'Kubernetes', 'GraphQL'].slice(0, Math.floor(Math.random() * 3)),
+      strengthAreas: ['Gaming Industry Experience', 'Team Leadership', 'Technical Skills'],
       recommendations: [
-        "Highlight your gaming project experience",
-        "Emphasize leadership roles in gaming teams",
-        "Add specific technical achievements",
-      ],
-    };
-
-    emit("profile-enhanced-suggestion", {
-      type: "job-profile-match",
-      data: matchAnalysis,
-    });
-
-    toast.success("AI profile matching complete!");
+        'Highlight your gaming project experience',
+        'Emphasize leadership roles in gaming teams',
+        'Add specific technical achievements'
+      ]
+    }
+    
+    emit('profile-enhanced-suggestion', {
+      type: 'job-profile-match',
+      data: matchAnalysis
+    })
+    
+    toast.success('AI profile matching complete!')
+    
   } catch (error) {
-    console.error("Profile matching failed:", error);
-    toast.error("Profile matching analysis failed");
+    console.error('Profile matching failed:', error)
+    toast.error('Profile matching analysis failed')
   } finally {
-    analyzing.value = false;
+    analyzing.value = false
   }
-};
+}
 
 // Initialize
 if (props.jobDescription.trim()) {
-  analyzeJobDescription();
+  analyzeJobDescription()
 }
 </script>
 
@@ -600,11 +550,7 @@ if (props.jobDescription.trim()) {
 }
 
 .profile-integration-banner {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-50),
-    var(--color-success-50)
-  );
+  background: linear-gradient(135deg, var(--color-primary-50), var(--color-success-50));
   border: 1px solid var(--color-primary-200);
   border-radius: var(--radius-lg);
   padding: var(--spacing-4);
@@ -979,14 +925,18 @@ if (props.jobDescription.trim()) {
   justify-content: flex-end;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .ai-tools-grid {
+    grid-template-columns: 1fr;
   }
-
+  
   .score-item {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--spacing-2);
   }
-
+  
   .score-label {
     min-width: auto;
   }

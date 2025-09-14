@@ -4,9 +4,9 @@
     <div class="unified-grid g-3 mb-4">
       <!-- Level Status -->
       <div class="col-md-6">
-        <Card
-          variant="glass"
-          size="medium"
+        <UnifiedCard 
+          variant="glass" 
+          size="medium" 
           elevated
           :title="`Level ${userLevel.level}`"
           :subtitle="userLevel.title"
@@ -19,15 +19,15 @@
             </div>
             <p class="text-muted small">{{ userLevel.currentXP }} XP</p>
             <div class="progress progress--sm mt-2">
-              <div
-                class="progress-bar bg-primary"
+              <div 
+                class="progress-bar bg-primary" 
                 :style="{ width: userLevel.progress + '%' }"
                 role="progressbar"
               />
             </div>
             <small class="text-muted mt-1 d-block">{{ userLevel.xpForNext }} XP to next level</small>
           </div>
-        </Card>
+        </UnifiedCard>
       </div>
 
       <!-- Quick Stats -->
@@ -44,14 +44,9 @@
                 <span class="stat-value">{{ earnedAchievements.length }}/{{ totalAchievements }}</span>
                 <div class="stat-progress">
                   <div class="progress progress--xs">
-                    <div
-                      class="progress-bar bg-success"
-                      :style="{
-                        width:
-                          (earnedAchievements.length / totalAchievements) *
-                          100 +
-                          '%',
-                      }"
+                    <div 
+                      class="progress-bar bg-success" 
+                      :style="{ width: (earnedAchievements.length / totalAchievements) * 100 + '%' }"
                     />
                   </div>
                 </div>
@@ -60,11 +55,7 @@
                 <span class="stat-label">Daily Streak</span>
                 <span class="stat-value">
                   {{ streak.current }}
-                  <AppIcon
-                    name="mdi-fire"
-                    :size="getIconSize('small')"
-                    :color="getIconColor('warning')"
-                  />
+                  <AppIcon name="mdi-fire" :size="getIconSize('small')" :color="getIconColor('warning')" />
                 </span>
               </div>
               <div class="stat-row">
@@ -72,8 +63,8 @@
                 <span class="stat-value">{{ completedChallenges }}/{{ dailyChallenges.length }}</span>
                 <div class="stat-progress">
                   <div class="progress progress--xs">
-                    <div
-                      class="progress-bar bg-warning"
+                    <div 
+                      class="progress-bar bg-warning" 
                       :style="{ width: challengeProgress + '%' }"
                     />
                   </div>
@@ -92,32 +83,20 @@
           <AppIcon name="mdi-calendar-check" class="me-2" />
           Daily Challenges
         </h6>
-        <UiChip classes="chip chip-primary chip-compact">
-          {{ completedChallenges }}/{{ dailyChallenges.length }}
-        </UiChip>
+        <UiChip classes="chip chip-primary chip-compact">{{ completedChallenges }}/{{ dailyChallenges.length }}</UiChip>
       </div>
       <div class="card-body section-body">
         <div class="challenges-grid">
-          <div
-            v-for="challenge in dailyChallenges.slice(0, 4)"
+          <div 
+            v-for="challenge in dailyChallenges.slice(0, 4)" 
             :key="challenge.id"
             class="challenge-item"
-            :class="{ completed: challenge.completed }"
+            :class="{ 'completed': challenge.completed }"
           >
             <div class="challenge-icon">
-              <AppIcon
-                :name="getIcon(challenge.icon, 'mdi-target')"
-                :size="getIconSize('small')"
-                :color="
-                  challenge.completed ? getIconColor('success') : undefined
-                "
-              />
+              <AppIcon :name="getIcon(challenge.icon, 'mdi-target')" :size="getIconSize('small')" :color="challenge.completed ? getIconColor('success') : undefined" />
               <div v-if="challenge.completed" class="completion-check">
-                <AppIcon
-                  name="mdi-check"
-                  :size="getIconSize('small')"
-                  color="white"
-                />
+                <AppIcon name="mdi-check" :size="getIconSize('small')" color="white" />
               </div>
             </div>
             <div class="challenge-content">
@@ -144,9 +123,9 @@
           <AppIcon name="mdi-trophy" class="me-2" />
           Recent Achievements
         </h6>
-        <UnifiedButton
-          size="sm"
-          variant="ghost"
+        <UnifiedButton 
+          size="sm" 
+          variant="ghost" 
           @click="$emit('view-all-achievements')"
         >
           View All
@@ -155,32 +134,21 @@
       <div class="card-body section-body">
         <div v-if="recentAchievements.length === 0" class="text-center py-4">
           <AppIcon name="mdi-trophy-outline" />
-          <p class="text-muted mt-2 mb-0">
-            Start completing challenges to earn achievements!
-          </p>
+          <p class="text-muted mt-2 mb-0">Start completing challenges to earn achievements!</p>
         </div>
         <div v-else class="achievements-list">
-          <div
+          <div 
             v-for="achievement in recentAchievements.slice(0, 3)"
             :key="achievement.id"
             class="achievement-item"
-            :class="{ earned: isAchievementEarned(achievement.id) }"
+            :class="{ 'earned': isAchievementEarned(achievement.id) }"
           >
             <div class="achievement-icon">
-              <AppIcon
-                :name="getIcon(achievement.icon, 'mdi-star')"
-                :color="
-                  isAchievementEarned(achievement.id)
-                    ? getIconColor('success')
-                    : undefined
-                "
-              />
+              <AppIcon :name="getIcon(achievement.icon, 'mdi-star')" :color="isAchievementEarned(achievement.id) ? getIconColor('success') : undefined" />
             </div>
             <div class="achievement-info">
               <div class="achievement-name">{{ achievement.name }}</div>
-              <div class="achievement-description">
-                {{ achievement.description }}
-              </div>
+              <div class="achievement-description">{{ achievement.description }}</div>
               <div class="achievement-xp">+{{ achievement.xp }} XP</div>
             </div>
           </div>
@@ -191,103 +159,100 @@
 </template>
 
 <script>
-import { computed } from "vue";
-import { useAppStore } from "@/stores/app";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import GamificationService, { ACHIEVEMENTS } from "@/utils/gamification";
-import Card from "@/components/Card.vue";
-import { useIconReplacement } from "@/composables/useIconReplacement";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import UiChip from "@/components/ui/UiChip.vue";
+import { computed } from 'vue'
+import { useAppStore } from '@/stores/app'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import GamificationService, { ACHIEVEMENTS } from '@/utils/gamification'
+import UnifiedCard from '@/components/UnifiedCard.vue'
+import { useIconReplacement } from '@/composables/useIconReplacement'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import UiChip from '@/components/ui/UiChip.vue'
 
 export default {
-  name: "CompactGamificationDashboard",
+  name: 'CompactGamificationDashboard',
   components: {
     AppIcon,
     UnifiedButton,
-    UiChip,
+    UiChip
   },
-  emits: ["start-challenge", "view-all-achievements", "achievement-clicked"],
+  emits: ['start-challenge', 'view-all-achievements', 'achievement-clicked'],
   setup(props, { emit }) {
-    const store = useAppStore();
-    const gamificationService = new GamificationService(store);
-    const { getIcon, getIconSize, getIconColor } = useIconReplacement();
+    const store = useAppStore()
+    const gamificationService = new GamificationService(store)
+    const { getIcon, getIconSize, getIconColor } = useIconReplacement()
 
     // Computed properties
     const userLevel = computed(() => {
-      const xp = store.user?.xp || 0;
-      return gamificationService.getLevelInfo(xp);
-    });
+      const xp = store.user?.xp || 0
+      return gamificationService.getLevelInfo(xp)
+    })
 
     const dailyChallenges = computed(() => {
-      return gamificationService.getTodaysChallenges();
-    });
+      return gamificationService.getTodaysChallenges()
+    })
 
     const completedChallenges = computed(() => {
-      return dailyChallenges.value.filter((c) => c.completed).length;
-    });
+      return dailyChallenges.value.filter(c => c.completed).length
+    })
 
     const challengeProgress = computed(() => {
-      return dailyChallenges.value.length > 0
-        ? (completedChallenges.value / dailyChallenges.value.length) * 100
-        : 0;
-    });
+      return dailyChallenges.value.length > 0 
+        ? (completedChallenges.value / dailyChallenges.value.length) * 100 
+        : 0
+    })
 
     const streak = computed(() => {
-      return gamificationService.getStreak();
-    });
+      return gamificationService.getStreak()
+    })
 
     const allAchievements = computed(() => {
-      return Object.values(ACHIEVEMENTS);
-    });
+      return Object.values(ACHIEVEMENTS)
+    })
 
     const earnedAchievements = computed(() => {
-      return store.user?.achievements || [];
-    });
+      return store.user?.achievements || []
+    })
 
     const totalAchievements = computed(() => {
-      return allAchievements.value.length;
-    });
+      return allAchievements.value.length
+    })
 
     const recentAchievements = computed(() => {
       return allAchievements.value
-        .filter((achievement) => {
-          const progress = getAchievementProgress(achievement);
-          return progress > 0; // Show achievements with any progress
+        .filter(achievement => {
+          const progress = getAchievementProgress(achievement)
+          return progress > 0 // Show achievements with any progress
         })
         .sort((a, b) => {
-          const aEarned = isAchievementEarned(a.id);
-          const bEarned = isAchievementEarned(b.id);
-          if (aEarned && !bEarned) return -1;
-          if (!aEarned && bEarned) return 1;
-          return getAchievementProgress(b) - getAchievementProgress(a);
+          const aEarned = isAchievementEarned(a.id)
+          const bEarned = isAchievementEarned(b.id)
+          if (aEarned && !bEarned) return -1
+          if (!aEarned && bEarned) return 1
+          return getAchievementProgress(b) - getAchievementProgress(a)
         })
-        .slice(0, 6);
-    });
+        .slice(0, 6)
+    })
 
     // Methods
     const isAchievementEarned = (achievementId) => {
-      return earnedAchievements.value.includes(achievementId);
-    };
+      return earnedAchievements.value.includes(achievementId)
+    }
 
     const getAchievementProgress = (achievement) => {
-      if (isAchievementEarned(achievement.id)) return 100;
-
-      const userStats = gamificationService.getUserStats();
-      const requirements = achievement.requirements || {};
-
-      const progressValues = Object.entries(requirements).map(
-        ([key, value]) => {
-          const current = userStats[key] || 0;
-          return Math.min((current / value) * 100, 100);
-        },
-      );
-
-      return progressValues.length > 0
-        ? progressValues.reduce((sum, val) => sum + val, 0) /
-            progressValues.length
-        : 0;
-    };
+      if (isAchievementEarned(achievement.id)) return 100
+      
+      const userStats = gamificationService.getUserStats()
+      const requirements = achievement.requirements || {}
+      
+      const progressValues = Object.entries(requirements).map(([key, value]) => {
+        const current = userStats[key] || 0
+        return Math.min((current / value) * 100, 100)
+      })
+      
+      return progressValues.length > 0 
+        ? progressValues.reduce((sum, val) => sum + val, 0) / progressValues.length 
+        : 0
+    }
 
     return {
       userLevel,
@@ -303,10 +268,10 @@ export default {
       getAchievementProgress,
       getIcon,
       getIconSize,
-      getIconColor,
-    };
-  },
-};
+      getIconColor
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -321,11 +286,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-500) 0%,
-    var(--color-primary-700) 100%
-  );
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-700) 100%);
   color: var(--text-on-primary);
   font-weight: var(--font-weight-bold);
   margin: 0 auto;
@@ -333,45 +294,20 @@ export default {
   box-shadow: var(--shadow-md);
 }
 
-.level-avatar.level-1,
-.level-avatar.level-2 {
-  background: linear-gradient(
-    135deg,
-    var(--color-gray-400) 0%,
-    var(--color-gray-600) 100%
-  );
+.level-avatar.level-1, .level-avatar.level-2 {
+  background: linear-gradient(135deg, var(--color-gray-400) 0%, var(--color-gray-600) 100%);
 }
-.level-avatar.level-3,
-.level-avatar.level-4 {
-  background: linear-gradient(
-    135deg,
-    var(--color-success-500) 0%,
-    var(--color-success-600) 100%
-  );
+.level-avatar.level-3, .level-avatar.level-4 {
+  background: linear-gradient(135deg, var(--color-success-500) 0%, var(--color-success-600) 100%);
 }
-.level-avatar.level-5,
-.level-avatar.level-6 {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-400) 0%,
-    var(--color-primary-700) 100%
-  );
+.level-avatar.level-5, .level-avatar.level-6 {
+  background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-700) 100%);
 }
-.level-avatar.level-7,
-.level-avatar.level-8 {
-  background: linear-gradient(
-    135deg,
-    var(--color-warning-500) 0%,
-    var(--color-warning-600) 100%
-  );
+.level-avatar.level-7, .level-avatar.level-8 {
+  background: linear-gradient(135deg, var(--color-warning-500) 0%, var(--color-warning-600) 100%);
 }
-.level-avatar.level-9,
-.level-avatar.level-10 {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-500) 0%,
-    var(--color-primary-800) 100%
-  );
+.level-avatar.level-9, .level-avatar.level-10 {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-800) 100%);
 }
 
 .stats-list {
@@ -534,6 +470,7 @@ export default {
   font-weight: var(--font-weight-semibold);
 }
 
+/* Dark theme support */
 [data-theme="dark"] .challenge-item,
 [data-theme="dark"] .achievement-item {
   background: var(--glass-surface);
@@ -550,15 +487,23 @@ export default {
   background: var(--glass-surface);
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
   .level-avatar {
+    width: 50px;
+    height: 50px;
   }
-
+  
   .challenge-item,
   .achievement-item {
+    padding: var(--spacing-2);
   }
-
+  
   .challenge-icon,
   .achievement-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 0.5rem;
   }
 }
 </style>

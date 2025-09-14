@@ -6,10 +6,7 @@
         Provider Health Dashboard
       </h3>
       <div class="health-summary">
-        <div
-          class="summary-stat"
-          :class="{ 'status-good': summary.failedProviders === 0 }"
-        >
+        <div class="summary-stat" :class="{ 'status-good': summary.failedProviders === 0 }">
           <span class="stat-value">{{ summary.healthyProviders }}/{{ summary.totalProviders }}</span>
           <span class="stat-label">Healthy</span>
         </div>
@@ -18,28 +15,23 @@
           <span class="stat-label">Avg Response</span>
         </div>
         <div class="summary-stat">
-          <span class="stat-value">{{
-            formatLastCheck(summary.lastCheckTime)
-          }}</span>
+          <span class="stat-value">{{ formatLastCheck(summary.lastCheckTime) }}</span>
           <span class="stat-label">Last Check</span>
         </div>
       </div>
     </div>
 
     <div class="provider-grid">
-      <div
-        v-for="provider in healthReports"
+      <div 
+        v-for="provider in healthReports" 
         :key="`${provider.providerType}:${provider.providerName}`"
         class="provider-card"
-        :class="[
-          `status-${provider.metrics.status}`,
-          { disabled: !provider.isEnabled },
-        ]"
+        :class="[`status-${provider.metrics.status}`, { 'disabled': !provider.isEnabled }]"
       >
         <div class="provider-header">
           <div class="provider-info">
-            <AppIcon
-              :name="getProviderIcon(provider.providerType)"
+            <AppIcon 
+              :name="getProviderIcon(provider.providerType)" 
               class="provider-icon"
             />
             <div>
@@ -47,10 +39,7 @@
               <span class="provider-type">{{ provider.providerType }}</span>
             </div>
           </div>
-          <div
-            class="status-indicator"
-            :class="`status-${provider.metrics.status}`"
-          >
+          <div class="status-indicator" :class="`status-${provider.metrics.status}`">
             <span class="status-dot"></span>
             <span class="status-text">{{ provider.metrics.status }}</span>
           </div>
@@ -64,32 +53,19 @@
           <div class="metric">
             <span class="metric-label">Success Rate</span>
             <span class="metric-value">
-              {{
-                provider.metrics.totalChecks > 0
-                  ? Math.round(
-                    (1 -
-                      provider.metrics.errorCount /
-                      provider.metrics.totalChecks) *
-                      100,
-                  )
-                  : 100
-              }}%
+              {{ provider.metrics.totalChecks > 0 ? 
+                Math.round((1 - provider.metrics.errorCount / provider.metrics.totalChecks) * 100) : 100 }}%
             </span>
           </div>
           <div class="metric">
             <span class="metric-label">Consecutive Failures</span>
-            <span
-              class="metric-value"
-              :class="{ error: provider.metrics.consecutiveFailures > 0 }"
-            >
+            <span class="metric-value" :class="{ 'error': provider.metrics.consecutiveFailures > 0 }">
               {{ provider.metrics.consecutiveFailures }}
             </span>
           </div>
           <div class="metric">
             <span class="metric-label">Last Check</span>
-            <span class="metric-value">{{
-              formatLastCheck(provider.metrics.lastCheck)
-            }}</span>
+            <span class="metric-value">{{ formatLastCheck(provider.metrics.lastCheck) }}</span>
           </div>
         </div>
 
@@ -114,7 +90,7 @@
             @click="toggleProvider(provider)"
           >
             <AppIcon :name="provider.isEnabled ? 'mdi-pause' : 'mdi-play'" />
-            {{ provider.isEnabled ? "Disable" : "Enable" }}
+            {{ provider.isEnabled ? 'Disable' : 'Enable' }}
           </UnifiedButton>
         </div>
       </div>
@@ -134,82 +110,82 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
-import { providerHealthDashboard } from "@/services/ProviderHealthDashboard";
-import { refactoredJobAPIService } from "@/services/RefactoredJobAPIService";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, onMounted, computed } from 'vue'
+import { providerHealthDashboard } from '@/services/ProviderHealthDashboard'
+import { refactoredJobAPIService } from '@/services/RefactoredJobAPIService'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
-const healthReports = ref([]);
-const loading = ref(false);
+const healthReports = ref([])
+const loading = ref(false)
 
-const summary = computed(() => providerHealthDashboard.getHealthSummary());
+const summary = computed(() => providerHealthDashboard.getHealthSummary())
 
 const getProviderIcon = (type) => {
   const icons = {
-    greenhouse: "mdi-greenhouse",
-    lever: "mdi-lever",
-    smartrecruiters: "mdi-brain",
-    workday: "mdi-calendar-today",
-    government: "mdi-bank",
-    gaming: "mdi-gamepad-variant",
-    opensource: "mdi-github",
-  };
-  return icons[type] || "mdi-web";
-};
+    greenhouse: 'mdi-greenhouse',
+    lever: 'mdi-lever',
+    smartrecruiters: 'mdi-brain',
+    workday: 'mdi-calendar-today',
+    government: 'mdi-bank',
+    gaming: 'mdi-gamepad-variant',
+    opensource: 'mdi-github'
+  }
+  return icons[type] || 'mdi-web'
+}
 
 const formatLastCheck = (timestamp) => {
-  if (!timestamp) return "Never";
-  const now = Date.now();
-  const diff = now - timestamp;
-  const minutes = Math.floor(diff / (1000 * 60));
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  if (hours < 24) return `${hours}h ago`;
-  return `${days}d ago`;
-};
+  if (!timestamp) return 'Never'
+  const now = Date.now()
+  const diff = now - timestamp
+  const minutes = Math.floor(diff / (1000 * 60))
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  
+  if (minutes < 1) return 'Just now'
+  if (minutes < 60) return `${minutes}m ago`
+  if (hours < 24) return `${hours}h ago`
+  return `${days}d ago`
+}
 
 const loadHealthData = () => {
-  healthReports.value = providerHealthDashboard.getProviderHealthReport();
-};
+  healthReports.value = providerHealthDashboard.getProviderHealthReport()
+}
 
 const resetProvider = (provider) => {
-  const key = `${provider.providerType}:${provider.providerName}`;
-  providerHealthDashboard.resetProviderHealth(key);
-  loadHealthData();
-};
+  const key = `${provider.providerType}:${provider.providerName}`
+  providerHealthDashboard.resetProviderHealth(key)
+  loadHealthData()
+}
 
 const toggleProvider = (provider) => {
   // This would integrate with the job service to enable/disable providers
-  console.log("Toggle provider:", provider.providerName);
+  console.log('Toggle provider:', provider.providerName)
   // Implementation depends on the specific provider management system
-};
+}
 
 const refreshHealth = async () => {
-  loading.value = true;
+  loading.value = true
   try {
     // This would trigger a health check on all providers
     // Implementation depends on the specific job service
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate check
-    loadHealthData();
+    await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate check
+    loadHealthData()
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
 const cleanupOldData = () => {
-  providerHealthDashboard.cleanupOldData();
-  loadHealthData();
-};
+  providerHealthDashboard.cleanupOldData()
+  loadHealthData()
+}
 
 onMounted(() => {
-  loadHealthData();
-
-  setInterval(loadHealthData, 30000);
-});
+  loadHealthData()
+  // Refresh data every 30 seconds
+  setInterval(loadHealthData, 30000)
+})
 </script>
 
 <style scoped>

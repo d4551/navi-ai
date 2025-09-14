@@ -10,7 +10,7 @@
           <p class="ai-subtitle">{{ subtitle }}</p>
         </div>
       </div>
-
+      
       <div class="ai-actions">
         <slot name="actions">
           <UnifiedButton
@@ -46,12 +46,10 @@
     <!-- Suggestions Display -->
     <div v-if="suggestions.length > 0" class="suggestions-container">
       <div class="suggestions-header">
-        <h6 class="suggestions-title">
-          {{ suggestionsTitle || "AI Suggestions" }}
-        </h6>
+        <h6 class="suggestions-title">{{ suggestionsTitle || 'AI Suggestions' }}</h6>
         <span class="suggestions-count">{{ suggestions.length }}</span>
       </div>
-
+      
       <div class="suggestions-list">
         <div
           v-for="suggestion in suggestions"
@@ -60,10 +58,7 @@
         >
           <div class="suggestion-content">
             <p class="suggestion-text">{{ suggestion.text }}</p>
-            <div
-              v-if="suggestion.category || suggestion.style"
-              class="suggestion-meta"
-            >
+            <div v-if="suggestion.category || suggestion.style" class="suggestion-meta">
               <span v-if="suggestion.category" class="suggestion-category">
                 {{ suggestion.category }}
               </span>
@@ -72,7 +67,7 @@
               </span>
             </div>
           </div>
-
+          
           <div class="suggestion-actions">
             <UnifiedButton
               variant="ghost"
@@ -125,64 +120,64 @@
 </template>
 
 <script setup>
-import UnifiedButton from "./UnifiedButton.vue";
-import AppIcon from "./AppIcon.vue";
+import UnifiedButton from './UnifiedButton.vue'
+import AppIcon from './AppIcon.vue'
 
 defineProps({
   title: {
     type: String,
-    default: "AI Writing Assistant",
+    default: 'AI Writing Assistant'
   },
   subtitle: {
     type: String,
-    default: "Let AI help improve your content",
+    default: 'Let AI help improve your content'
   },
   primaryAction: {
     type: Object,
-    default: () => ({ label: "Generate", icon: "mdi-magic-staff" }),
+    default: () => ({ label: 'Generate', icon: 'mdi-magic-staff' })
   },
   secondaryActions: {
     type: Array,
-    default: () => [],
+    default: () => []
   },
   suggestions: {
     type: Array,
-    default: () => [],
+    default: () => []
   },
   suggestionsTitle: {
     type: String,
-    default: "",
+    default: ''
   },
   loading: {
     type: Boolean,
-    default: false,
+    default: false
   },
   disabled: {
     type: Boolean,
-    default: false,
+    default: false
   },
   allowCustomization: {
     type: Boolean,
-    default: false,
+    default: false
   },
   showTokens: {
     type: Boolean,
-    default: false,
+    default: false
   },
   tokens: {
     type: Array,
-    default: () => [],
-  },
-});
+    default: () => []
+  }
+})
 
 defineEmits([
-  "primary-action",
-  "secondary-action",
-  "apply-suggestion",
-  "customize-suggestion",
-  "dismiss-suggestion",
-  "insert-token",
-]);
+  'primary-action',
+  'secondary-action', 
+  'apply-suggestion',
+  'customize-suggestion',
+  'dismiss-suggestion',
+  'insert-token'
+])
 </script>
 
 <style scoped>
@@ -386,18 +381,30 @@ defineEmits([
   border-top: 1px solid var(--glass-border);
 }
 
-[data-theme="dark"] .ai-icon {
+/* Dark theme adjustments */
+[data-theme='dark'] .ai-icon {
+  background: rgba(var(--color-primary-rgb), 0.2);
+  color: var(--color-primary-400);
 }
 
-[data-theme="dark"] .suggestion-card {
+[data-theme='dark'] .suggestion-card {
+  background: rgba(var(--surface-glass-rgb), 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .suggestion-card:hover {
+[data-theme='dark'] .suggestion-card:hover {
+  border-color: var(--color-primary-400);
+  background: rgba(var(--color-primary-rgb), 0.1);
 }
 
-[data-theme="dark"] .token-pill {
+[data-theme='dark'] .token-pill {
+  background: rgba(var(--color-primary-rgb), 0.2);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+  color: var(--color-primary-300);
 }
 
-[data-theme="dark"] .token-pill:hover {
+[data-theme='dark'] .token-pill:hover {
+  background: rgba(var(--color-primary-rgb), 0.3);
+  border-color: rgba(var(--color-primary-rgb), 0.4);
 }
 </style>

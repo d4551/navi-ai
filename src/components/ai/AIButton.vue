@@ -7,11 +7,14 @@
     @click="handleClick"
   >
     <template #leading-icon>
-      <AppIcon :name="currentIcon" :class="{ spinning: isProcessing }" />
+      <AppIcon 
+        :name="currentIcon"
+        :class="{ 'spinning': isProcessing }"
+      />
     </template>
-
+    
     <span>{{ currentText }}</span>
-
+    
     <template v-if="showStatus" #trailing-icon>
       <div class="ai-status-indicator" :class="statusClass">
         <div class="status-dot"></div>
@@ -21,61 +24,54 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useAIIntegration } from "@/composables/aiIntegration.js";
-import { useAIContext } from "@/composables/useAIContext";
-import { logger } from "@/shared/utils/logger";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { ref, computed, watch } from 'vue';
+import { useAIIntegration } from '@/composables/useAIIntegration';
+import { useAIContext } from '@/composables/useAIContext';
+import { logger } from '@/shared/utils/logger';
+import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import AppIcon from '@/components/ui/AppIcon.vue';
 
 interface Props {
   // Action configuration
   action: string;
   context?: Record<string, any>;
-
+  
   // Button appearance
-  variant?:
-    | "primary"
-    | "glass"
-    | "gaming"
-    | "cyber"
-    | "secondary"
-    | "ghost"
-    | "outline";
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  variant?: 'primary' | 'glass' | 'gaming' | 'cyber' | 'secondary' | 'ghost' | 'outline';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   icon?: string;
   text?: string;
   tooltip?: string;
-
+  
   // Behavior
   requiresAuth?: boolean;
   showProgress?: boolean;
   showStatus?: boolean;
   autoExecute?: boolean;
-
+  
   // Text variations
   loadingText?: string;
   successText?: string;
   errorText?: string;
-
+  
   // Context-aware behavior
-  contextType?: "resume" | "cover-letter" | "job" | "interview" | "portfolio";
+  contextType?: 'resume' | 'cover-letter' | 'job' | 'interview' | 'portfolio';
   contextId?: string;
   targetJob?: any;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: "primary",
-  size: "md",
-  icon: "mdi-robot-happy",
-  text: "AI Assist",
+  variant: 'primary',
+  size: 'md',
+  icon: 'mdi-robot-happy',
+  text: 'AI Assist',
   requiresAuth: true,
   showProgress: true,
   showStatus: true,
   autoExecute: false,
-  loadingText: "Processing...",
-  successText: "Complete",
-  errorText: "Error",
+  loadingText: 'Processing...',
+  successText: 'Complete',
+  errorText: 'Error',
 });
 
 const emit = defineEmits<{
@@ -94,14 +90,14 @@ const aiContext = useAIContext();
 const isProcessing = ref(false);
 const lastResult = ref<any>(null);
 const lastError = ref<string | null>(null);
-const processingStage = ref<string>("");
+const processingStage = ref<string>('');
 
 // Computed properties
 const canExecute = computed(() => {
   if (props.requiresAuth && !aiIntegration.isAIInitialized.value) {
     return false;
   }
-
+  
   return !isProcessing.value && aiIntegration.hasAIKey.value;
 });
 
@@ -110,10 +106,10 @@ const currentIcon = computed(() => {
     return getProcessingIcon();
   }
   if (lastError.value) {
-    return "mdi-alert-circle";
+    return 'mdi-alert-circle';
   }
   if (lastResult.value) {
-    return "mdi-check-circle";
+    return 'mdi-check-circle';
   }
   return props.icon;
 });
@@ -132,10 +128,10 @@ const currentText = computed(() => {
 });
 
 const statusClass = computed(() => {
-  if (lastError.value) return "status-error";
-  if (isProcessing.value) return "status-processing";
-  if (lastResult.value) return "status-success";
-  return "status-ready";
+  if (lastError.value) return 'status-error';
+  if (isProcessing.value) return 'status-processing';
+  if (lastResult.value) return 'status-success';
+  return 'status-ready';
 });
 
 const variantClass = computed(() => `variant-${props.variant}`);
@@ -144,7 +140,7 @@ const contextClass = computed(() => {
   if (props.contextType) {
     return `context-${props.contextType}`;
   }
-  return "";
+  return '';
 });
 
 const buttonProps = computed(() => {
@@ -153,15 +149,15 @@ const buttonProps = computed(() => {
     size: props.size,
     tooltip: getTooltipText(),
   };
-
+  
   // Pass through any additional props
   return baseProps;
 });
 
 // Methods
 const handleClick = async (event: MouseEvent) => {
-  emit("click", event);
-
+  emit('click', event);
+  
   if (canExecute.value && !isProcessing.value) {
     await executeAction();
   }
@@ -172,82 +168,76 @@ const executeAction = async () => {
     isProcessing.value = true;
     lastError.value = null;
     lastResult.value = null;
-    emit("start");
-
+    emit('start');
+    
     // Initialize AI context if needed
-    if (
-      props.contextType &&
-      props.contextId &&
-      !aiContext.state.currentContext
-    ) {
-      processingStage.value = "Initializing context...";
-      await aiContext.initializeContext(
-        props.contextType,
-        props.contextId,
-        props.targetJob,
-      );
+    if (props.contextType && props.contextId && !aiContext.state.currentContext) {
+      processingStage.value = 'Initializing context...';
+      await aiContext.initializeContext(props.contextType, props.contextId, props.targetJob);
     }
-
-
+    
+    // Execute the specific action
     const result = await executeSpecificAction();
-
+    
     lastResult.value = result;
-    emit("success", result);
-
-
+    emit('success', result);
+    
+    // Auto-reset success state after 3 seconds
     setTimeout(() => {
       if (lastResult.value === result) {
         lastResult.value = null;
       }
     }, 3000);
+    
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     lastError.value = errorMessage;
-    emit("error", errorMessage);
-    logger.error("AI action failed:", error);
-
-
+    emit('error', errorMessage);
+    logger.error('AI action failed:', error);
+    
+    // Auto-reset error state after 5 seconds
     setTimeout(() => {
       if (lastError.value === errorMessage) {
         lastError.value = null;
       }
     }, 5000);
+    
   } finally {
     isProcessing.value = false;
-    processingStage.value = "";
-    emit("complete");
+    processingStage.value = '';
+    emit('complete');
   }
 };
 
 const executeSpecificAction = async (): Promise<any> => {
   switch (props.action) {
-    case "analyze_resume":
+    case 'analyze_resume':
       return await analyzeResume();
-
-    case "enhance_content":
+      
+    case 'enhance_content':
       return await enhanceContent();
-
-    case "generate_suggestions":
+      
+    case 'generate_suggestions':
       return await generateSuggestions();
-
-    case "optimize_keywords":
+      
+    case 'optimize_keywords':
       return await optimizeKeywords();
-
-    case "improve_ats":
+      
+    case 'improve_ats':
       return await improveATS();
-
-    case "generate_cover_letter":
+      
+    case 'generate_cover_letter':
       return await generateCoverLetter();
-
-    case "analyze_job_match":
+      
+    case 'analyze_job_match':
       return await analyzeJobMatch();
-
-    case "prepare_interview":
+      
+    case 'prepare_interview':
       return await prepareInterview();
-
-    case "optimize_portfolio":
+      
+    case 'optimize_portfolio':
       return await optimizePortfolio();
-
+      
     default:
       return await genericAIAction();
   }
@@ -255,232 +245,219 @@ const executeSpecificAction = async (): Promise<any> => {
 
 // Specific action implementations
 const analyzeResume = async () => {
-  processingStage.value = "Analyzing resume...";
-
+  processingStage.value = 'Analyzing resume...';
+  
   if (!props.context?.resumeContent) {
-    throw new Error("Resume content is required for analysis");
+    throw new Error('Resume content is required for analysis');
   }
-
+  
   // Mock implementation - replace with actual AI service call
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
   const analysis = {
     score: Math.floor(Math.random() * 30) + 70,
     strengths: [
-      "Strong technical skills presentation",
-      "Clear career progression shown",
-      "Quantified achievements included",
+      'Strong technical skills presentation',
+      'Clear career progression shown',
+      'Quantified achievements included'
     ],
     improvements: [
-      "Add more gaming industry keywords",
-      "Include specific project metrics",
-      "Strengthen summary section",
+      'Add more gaming industry keywords',
+      'Include specific project metrics',
+      'Strengthen summary section'
     ],
-    keywords: ["Unity", "C#", "Game Development", "Agile", "Team Leadership"],
+    keywords: ['Unity', 'C#', 'Game Development', 'Agile', 'Team Leadership'],
     suggestions: [
       {
-        id: "keyword_opt_1",
-        type: "enhancement",
-        title: "Add Gaming Keywords",
-        description: "Include more gaming industry specific terms",
-        priority: "high",
-      },
-    ],
+        id: 'keyword_opt_1',
+        type: 'enhancement',
+        title: 'Add Gaming Keywords',
+        description: 'Include more gaming industry specific terms',
+        priority: 'high'
+      }
+    ]
   };
-
+  
   // Update AI context with analysis
   if (aiContext.state.currentContext) {
     aiContext.state.lastAnalysis = analysis;
   }
-
+  
   return analysis;
 };
 
 const enhanceContent = async () => {
-  processingStage.value = "Enhancing content...";
-
+  processingStage.value = 'Enhancing content...';
+  
   // Mock enhancement
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  
   return {
     enhanced: true,
     improvements: 3,
     changes: [
-      "Strengthened action verbs",
-      "Added quantifiable metrics",
-      "Improved readability",
-    ],
+      'Strengthened action verbs',
+      'Added quantifiable metrics',
+      'Improved readability'
+    ]
   };
 };
 
 const generateSuggestions = async () => {
-  processingStage.value = "Generating suggestions...";
-
+  processingStage.value = 'Generating suggestions...';
+  
   if (aiContext.state.currentContext) {
     await aiContext.generateContextActions(aiContext.state.currentContext);
     return { suggestions: aiContext.activeSuggestions.value.length };
   }
-
+  
   return { suggestions: 0 };
 };
 
 const optimizeKeywords = async () => {
-  processingStage.value = "Optimizing keywords...";
-
-  await new Promise((resolve) => setTimeout(resolve, 1800));
-
+  processingStage.value = 'Optimizing keywords...';
+  
+  await new Promise(resolve => setTimeout(resolve, 1800));
+  
   return {
     keywordsAdded: 5,
-    keywordsOptimized: ["Unity", "Game Design", "C#", "Agile", "Scrum"],
-    atsScore: 85,
+    keywordsOptimized: ['Unity', 'Game Design', 'C#', 'Agile', 'Scrum'],
+    atsScore: 85
   };
 };
 
 const improveATS = async () => {
-  processingStage.value = "Improving ATS compatibility...";
-
-  await new Promise((resolve) => setTimeout(resolve, 2200));
-
+  processingStage.value = 'Improving ATS compatibility...';
+  
+  await new Promise(resolve => setTimeout(resolve, 2200));
+  
   return {
     atsScore: 92,
     improvements: [
-      "Standardized section headers",
-      "Removed complex formatting",
-      "Added relevant keywords",
-    ],
+      'Standardized section headers',
+      'Removed complex formatting',
+      'Added relevant keywords'
+    ]
   };
 };
 
 const generateCoverLetter = async () => {
-  processingStage.value = "Generating cover letter...";
-
+  processingStage.value = 'Generating cover letter...';
+  
   if (!props.context?.jobDescription) {
-    throw new Error("Job description is required for cover letter generation");
+    throw new Error('Job description is required for cover letter generation');
   }
-
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
+  
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  
   return {
-    coverLetter: "Generated cover letter content...",
+    coverLetter: 'Generated cover letter content...',
     personalizedElements: 4,
-    keywordsMatched: 8,
+    keywordsMatched: 8
   };
 };
 
 const analyzeJobMatch = async () => {
-  processingStage.value = "Analyzing job compatibility...";
-
-  await new Promise((resolve) => setTimeout(resolve, 2500));
-
+  processingStage.value = 'Analyzing job compatibility...';
+  
+  await new Promise(resolve => setTimeout(resolve, 2500));
+  
   return {
     matchScore: 87,
-    strengths: ["Technical skills align well", "Experience level matches"],
-    gaps: [
-      "Need more Unity experience",
-      "Could improve team leadership skills",
-    ],
-    recommendations: [
-      "Highlight relevant projects",
-      "Emphasize collaborative work",
-    ],
+    strengths: ['Technical skills align well', 'Experience level matches'],
+    gaps: ['Need more Unity experience', 'Could improve team leadership skills'],
+    recommendations: ['Highlight relevant projects', 'Emphasize collaborative work']
   };
 };
 
 const prepareInterview = async () => {
-  processingStage.value = "Preparing interview materials...";
-
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
+  processingStage.value = 'Preparing interview materials...';
+  
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
   return {
     questions: 15,
-    categories: ["Technical", "Behavioral", "Cultural fit"],
-    preparationTime: "30 minutes recommended",
+    categories: ['Technical', 'Behavioral', 'Cultural fit'],
+    preparationTime: '30 minutes recommended'
   };
 };
 
 const optimizePortfolio = async () => {
-  processingStage.value = "Optimizing portfolio...";
-
-  await new Promise((resolve) => setTimeout(resolve, 2200));
-
+  processingStage.value = 'Optimizing portfolio...';
+  
+  await new Promise(resolve => setTimeout(resolve, 2200));
+  
   return {
     projectsOptimized: 3,
     improvementsSuggested: 7,
-    overallScore: 88,
+    overallScore: 88
   };
 };
 
 const genericAIAction = async () => {
-  processingStage.value = "Processing with AI...";
-
+  processingStage.value = 'Processing with AI...';
+  
   // Generic AI processing
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  
   return {
     action: props.action,
     success: true,
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toISOString()
   };
 };
 
 // Utility methods
 const getProcessingIcon = () => {
   const icons = {
-    analyze_resume: "mdi-chart-line",
-    enhance_content: "mdi-pencil-plus",
-    generate_suggestions: "mdi-lightbulb",
-    optimize_keywords: "mdi-key",
-    improve_ats: "mdi-robot",
-    generate_cover_letter: "mdi-file-document-edit",
-    analyze_job_match: "mdi-compare",
-    prepare_interview: "mdi-microphone",
-    optimize_portfolio: "mdi-briefcase",
+    'analyze_resume': 'mdi-chart-line',
+    'enhance_content': 'mdi-pencil-plus',
+    'generate_suggestions': 'mdi-lightbulb',
+    'optimize_keywords': 'mdi-key',
+    'improve_ats': 'mdi-robot',
+    'generate_cover_letter': 'mdi-file-document-edit',
+    'analyze_job_match': 'mdi-compare',
+    'prepare_interview': 'mdi-microphone',
+    'optimize_portfolio': 'mdi-briefcase',
   };
-
-  return icons[props.action] || "mdi-loading";
+  
+  return icons[props.action] || 'mdi-loading';
 };
 
 const getTooltipText = () => {
   if (!canExecute.value) {
     if (!aiIntegration.hasAIKey.value) {
-      return "AI key required - configure in Settings";
+      return 'AI key required - configure in Settings';
     }
     if (!aiIntegration.isAIInitialized.value) {
-      return "AI service initializing...";
+      return 'AI service initializing...';
     }
-    return "AI action not available";
+    return 'AI action not available';
   }
-
+  
   if (isProcessing.value) {
-    return processingStage.value || "Processing...";
+    return processingStage.value || 'Processing...';
   }
-
+  
   if (lastError.value) {
     return `Error: ${lastError.value}`;
   }
-
-  return props.tooltip || `AI-powered ${props.action.replace("_", " ")}`;
+  
+  return props.tooltip || `AI-powered ${props.action.replace('_', ' ')}`;
 };
 
-
-watch(
-  () => props.autoExecute,
-  (shouldExecute) => {
-    if (shouldExecute && canExecute.value) {
-      executeAction();
-    }
-  },
-  { immediate: true },
-);
+// Auto-execute if specified
+watch(() => props.autoExecute, (shouldExecute) => {
+  if (shouldExecute && canExecute.value) {
+    executeAction();
+  }
+}, { immediate: true });
 
 // Reset state when context changes
-watch(
-  () => props.context,
-  () => {
-    lastResult.value = null;
-    lastError.value = null;
-  },
-);
+watch(() => props.context, () => {
+  lastResult.value = null;
+  lastError.value = null;
+});
 </script>
 
 <style scoped>
@@ -490,11 +467,7 @@ watch(
 }
 
 .enhanced-ai-button.variant-gaming {
-  background: linear-gradient(
-    135deg,
-    rgb(var(--v-theme-primary)),
-    rgb(var(--v-theme-secondary))
-  );
+  background: linear-gradient(135deg, rgb(var(--v-theme-primary)), rgb(var(--v-theme-secondary)));
   border: 1px solid rgba(var(--v-theme-primary), 0.5);
 }
 
@@ -558,52 +531,31 @@ watch(
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.2);
-  }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
 }
 
 @keyframes success-pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.4);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
 }
 
 @keyframes error-shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-2px);
-  }
-  75% {
-    transform: translateX(2px);
-  }
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .enhanced-ai-button {
+    min-width: 44px; /* Ensure touch-friendly size */
   }
 }
 </style>

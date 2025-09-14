@@ -8,12 +8,7 @@
     max-width="xl"
   >
     <template #header-actions>
-      <HeaderActions
-        layout="horizontal"
-        alignment="end"
-        gap="md"
-        priority="primary"
-      >
+      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
         <AIButton
           action="career_insights"
           variant="gaming"
@@ -44,7 +39,7 @@
     <div class="dashboard-container">
       <!-- Gamification HUD -->
       <section class="gamification-section mb-6">
-        <Card variant="gaming" class="gamification-hud">
+        <UnifiedCard variant="gaming" class="gamification-hud">
           <div class="hud-content">
             <div class="player-stats">
               <div class="avatar-section">
@@ -84,7 +79,7 @@
                       <div class="stat-label">Applications</div>
                     </div>
                   </div>
-
+                  
                   <div class="stat-item">
                     <div class="stat-icon">
                       <AppIcon name="mdi-file-document" />
@@ -94,7 +89,7 @@
                       <div class="stat-label">Resume Score</div>
                     </div>
                   </div>
-
+                  
                   <div class="stat-item">
                     <div class="stat-icon">
                       <AppIcon name="mdi-microphone" />
@@ -104,7 +99,7 @@
                       <div class="stat-label">Mock Interviews</div>
                     </div>
                   </div>
-
+                  
                   <div class="stat-item">
                     <div class="stat-icon">
                       <AppIcon name="mdi-trophy" />
@@ -125,14 +120,10 @@
                 Daily Mission
               </h4>
               <div class="mission-content">
-                <div class="mission-description">
-                  {{ dailyMission.description }}
-                </div>
+                <div class="mission-description">{{ dailyMission.description }}</div>
                 <div class="mission-progress">
                   <v-progress-linear
-                    :model-value="
-                      (dailyMission.current / dailyMission.target) * 100
-                    "
+                    :model-value="(dailyMission.current / dailyMission.target) * 100"
                     color="warning"
                     height="8"
                     rounded
@@ -146,7 +137,7 @@
               </div>
             </div>
           </div>
-        </Card>
+        </UnifiedCard>
       </section>
 
       <!-- Quick Actions -->
@@ -155,9 +146,9 @@
           <h2 class="section-title">Quick Launch</h2>
           <p class="section-subtitle">Jump into your gaming career tools</p>
         </div>
-
+        
         <div class="quick-actions-grid">
-          <Card
+          <UnifiedCard
             v-for="action in quickActions"
             :key="action.id"
             :variant="action.variant || 'glass'"
@@ -185,20 +176,16 @@
                 </div>
               </div>
             </div>
-          </Card>
+          </UnifiedCard>
         </div>
       </section>
 
       <!-- Live Job Feed -->
       <section class="job-feed-section mb-6">
-        <div
-          class="section-header mb-4 d-flex align-center justify-space-between"
-        >
+        <div class="section-header mb-4 d-flex align-center justify-space-between">
           <div>
             <h2 class="section-title">Latest Gaming Opportunities</h2>
-            <p class="section-subtitle">
-              {{ liveJobsCount }} new jobs matching your profile
-            </p>
+            <p class="section-subtitle">{{ liveJobsCount }} new jobs matching your profile</p>
           </div>
           <div class="section-actions d-flex ga-2">
             <AIButton
@@ -220,7 +207,7 @@
         </div>
 
         <div class="job-feed-grid">
-          <Card
+          <UnifiedCard
             v-for="job in liveJobs"
             :key="job.id"
             variant="glass"
@@ -229,27 +216,20 @@
             @click="viewJobDetails(job)"
           >
             <div class="job-content">
-              <div
-                class="job-header d-flex align-center justify-space-between mb-3"
-              >
+              <div class="job-header d-flex align-center justify-space-between mb-3">
                 <div class="company-info d-flex align-center ga-2">
                   <div class="company-logo">
                     <AppIcon :name="job.companyIcon || 'mdi-domain'" />
                   </div>
                   <div>
                     <div class="company-name">{{ job.company }}</div>
-                    <div class="job-location text-caption">
-                      {{ job.location }}
-                    </div>
+                    <div class="job-location text-caption">{{ job.location }}</div>
                   </div>
                 </div>
-
+                
                 <div class="job-meta">
                   <UiChip :label="job.type" variant="secondary" size="sm" />
-                  <div
-                    class="match-score"
-                    :class="getMatchScoreClass(job.matchScore)"
-                  >
+                  <div class="match-score" :class="getMatchScoreClass(job.matchScore)">
                     {{ job.matchScore }}% match
                   </div>
                 </div>
@@ -258,7 +238,7 @@
               <div class="job-details">
                 <h4 class="job-title">{{ job.title }}</h4>
                 <p class="job-summary">{{ job.summary }}</p>
-
+                
                 <div class="job-technologies mt-3">
                   <UiChip
                     v-for="tech in job.technologies?.slice(0, 4)"
@@ -267,18 +247,13 @@
                     variant="primary"
                     size="xs"
                   />
-                  <span
-                    v-if="job.technologies?.length > 4"
-                    class="text-caption"
-                  >
+                  <span v-if="job.technologies?.length > 4" class="text-caption">
                     +{{ job.technologies.length - 4 }} more
                   </span>
                 </div>
               </div>
 
-              <div
-                class="job-footer mt-4 d-flex align-center justify-space-between"
-              >
+              <div class="job-footer mt-4 d-flex align-center justify-space-between">
                 <div v-if="job.salary" class="salary-range">
                   <AppIcon name="mdi-currency-usd" size="small" />
                   <span>{{ job.salary }}</span>
@@ -288,24 +263,18 @@
                 </div>
               </div>
             </div>
-          </Card>
+          </UnifiedCard>
 
           <!-- View More Card -->
-          <Card
-            variant="outline"
-            class="view-more-card"
-            clickable
-            @click="navigateTo('/jobs')"
-          >
+          <UnifiedCard variant="outline" class="view-more-card" clickable @click="navigateTo('/jobs')">
             <div class="view-more-content text-center">
               <AppIcon name="mdi-plus-circle" size="xl" color="primary" />
               <h4 class="mt-2">View More Jobs</h4>
               <p class="text-body-2 text-medium-emphasis">
-                {{ totalJobsCount - liveJobs.length }}+ more opportunities
-                waiting
+                {{ totalJobsCount - liveJobs.length }}+ more opportunities waiting
               </p>
             </div>
-          </Card>
+          </UnifiedCard>
         </div>
       </section>
 
@@ -313,14 +282,12 @@
       <section class="insights-section">
         <div class="section-header mb-4">
           <h2 class="section-title">AI Career Insights</h2>
-          <p class="section-subtitle">
-            Personalized recommendations to boost your career
-          </p>
+          <p class="section-subtitle">Personalized recommendations to boost your career</p>
         </div>
 
         <v-row>
           <v-col cols="12" md="8">
-            <Card variant="glass" class="insights-card">
+            <UnifiedCard variant="glass" class="insights-card">
               <div class="insights-content">
                 <div class="insight-header mb-4">
                   <AppIcon name="mdi-brain" color="primary" class="mr-2" />
@@ -333,17 +300,12 @@
                     :key="insight.id"
                     class="insight-item mb-3"
                   >
-                    <div
-                      class="insight-icon-wrapper"
-                      :class="`bg-${insight.type}`"
-                    >
+                    <div class="insight-icon-wrapper" :class="`bg-${insight.type}`">
                       <AppIcon :name="insight.icon" size="small" />
                     </div>
                     <div class="insight-content">
                       <h5 class="insight-title">{{ insight.title }}</h5>
-                      <p class="insight-description">
-                        {{ insight.description }}
-                      </p>
+                      <p class="insight-description">{{ insight.description }}</p>
                       <UnifiedButton
                         v-if="insight.action"
                         variant="text"
@@ -355,11 +317,11 @@
                   </div>
                 </div>
               </div>
-            </Card>
+            </UnifiedCard>
           </v-col>
 
           <v-col cols="12" md="4">
-            <Card variant="glass" class="skills-radar-card">
+            <UnifiedCard variant="glass" class="skills-radar-card">
               <div class="skills-header mb-4">
                 <h3 class="text-h6">Skill Assessment</h3>
                 <AIButton
@@ -407,7 +369,7 @@
                   Skill Development Plan
                 </UnifiedButton>
               </div>
-            </Card>
+            </UnifiedCard>
           </v-col>
         </v-row>
       </section>
@@ -423,22 +385,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import StandardPageLayout from "@/components/layout/StandardPageLayout.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import Card from "@/components/Card.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UiChip from "@/components/ui/UiChip.vue";
-import AIButton from "@/components/ai/AIButton.vue";
-import AIModalSystem from "@/components/ai/AIModalSystem.vue";
-import { logger } from "@/shared/utils/logger";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import StandardPageLayout from '@/components/layout/StandardPageLayout.vue';
+import HeaderActions from '@/components/ui/HeaderActions.vue';
+import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import UnifiedCard from '@/components/ui/StandardCard.vue';
+import AppIcon from '@/components/ui/AppIcon.vue';
+import UiChip from '@/components/ui/UiChip.vue';
+import AIButton from '@/components/ai/AIButton.vue';
+import AIModalSystem from '@/components/ai/AIModalSystem.vue';
+import { logger } from '@/shared/utils/logger';
 
 const router = useRouter();
 
 // User gamification data
-const playerName = ref("Alex Developer");
-const playerTitle = ref("Aspiring Game Developer");
+const playerName = ref('Alex Developer');
+const playerTitle = ref('Aspiring Game Developer');
 const userLevel = ref(8);
 const currentXP = ref(1250);
 const nextLevelXP = ref(1500);
@@ -447,7 +410,7 @@ const resumeScore = ref(85);
 const interviewsCompleted = ref(5);
 
 // Search
-const _searchQuery = ref("");
+const _searchQuery = ref('');
 
 // Computed properties
 const xpProgress = computed(() => (currentXP.value / nextLevelXP.value) * 100);
@@ -455,141 +418,136 @@ const xpProgress = computed(() => (currentXP.value / nextLevelXP.value) * 100);
 // User profile data
 const userProfile = ref({
   name: playerName.value,
-  role: "Game Developer",
-  experience: "Mid-level",
-  skills: ["Unity", "C#", "JavaScript", "Game Design"],
-  interests: ["Indie Games", "Mobile Development", "VR"],
+  role: 'Game Developer',
+  experience: 'Mid-level',
+  skills: ['Unity', 'C#', 'JavaScript', 'Game Design'],
+  interests: ['Indie Games', 'Mobile Development', 'VR']
 });
 
-const careerGoals = ref([
-  "Land first game dev job",
-  "Master Unity",
-  "Build portfolio",
-]);
+const careerGoals = ref(['Land first game dev job', 'Master Unity', 'Build portfolio']);
 
 // Daily mission
 const dailyMission = ref({
-  description: "Apply to 3 game development positions",
+  description: 'Apply to 3 game development positions',
   current: 1,
   target: 3,
-  reward: 150,
+  reward: 150
 });
 
 // Quick actions
 const quickActions = ref([
   {
-    id: "resume",
-    title: "Resume Builder",
-    description: "Create ATS-optimized gaming industry resume",
-    icon: "mdi-file-document-edit",
-    route: "/resume-builder",
-    color: "primary",
-    variant: "glass",
-    badge: "AI-Powered",
-    status: "85% Complete",
-    statusIcon: "mdi-check-circle",
+    id: 'resume',
+    title: 'Resume Builder',
+    description: 'Create ATS-optimized gaming industry resume',
+    icon: 'mdi-file-document-edit',
+    route: '/resume-builder',
+    color: 'primary',
+    variant: 'glass',
+    badge: 'AI-Powered',
+    status: '85% Complete',
+    statusIcon: 'mdi-check-circle'
   },
   {
-    id: "jobs",
-    title: "Job Search",
-    description: "Find gaming opportunities with AI matching",
-    icon: "mdi-magnify",
-    route: "/jobs",
-    color: "success",
-    variant: "glass",
-    badge: "12 New",
-    status: "Ready to Apply",
-    statusIcon: "mdi-rocket",
+    id: 'jobs',
+    title: 'Job Search',
+    description: 'Find gaming opportunities with AI matching',
+    icon: 'mdi-magnify',
+    route: '/jobs',
+    color: 'success',
+    variant: 'glass',
+    badge: '12 New',
+    status: 'Ready to Apply',
+    statusIcon: 'mdi-rocket'
   },
   {
-    id: "interview",
-    title: "Interview Prep",
-    description: "Practice with AI-powered mock interviews",
-    icon: "mdi-microphone-variant",
-    route: "/interview-prep",
-    color: "warning",
-    variant: "glass",
-    status: "Level Up Skills",
-    statusIcon: "mdi-trending-up",
+    id: 'interview',
+    title: 'Interview Prep',
+    description: 'Practice with AI-powered mock interviews',
+    icon: 'mdi-microphone-variant',
+    route: '/interview-prep',
+    color: 'warning',
+    variant: 'glass',
+    status: 'Level Up Skills',
+    statusIcon: 'mdi-trending-up'
   },
   {
-    id: "portfolio",
-    title: "Portfolio",
-    description: "Showcase your gaming projects and achievements",
-    icon: "mdi-briefcase-variant",
-    route: "/portfolio",
-    color: "info",
-    variant: "glass",
-    status: "3 Projects",
-    statusIcon: "mdi-star",
+    id: 'portfolio',
+    title: 'Portfolio',
+    description: 'Showcase your gaming projects and achievements',
+    icon: 'mdi-briefcase-variant',
+    route: '/portfolio',
+    color: 'info',
+    variant: 'glass',
+    status: '3 Projects',
+    statusIcon: 'mdi-star'
   },
   {
-    id: "cover-letter",
-    title: "Cover Letters",
-    description: "AI-generated personalized cover letters",
-    icon: "mdi-email-edit",
-    route: "/cover-letter",
-    color: "secondary",
-    variant: "glass",
-    badge: "Smart AI",
-    status: "Draft Ready",
-    statusIcon: "mdi-pen",
+    id: 'cover-letter',
+    title: 'Cover Letters',
+    description: 'AI-generated personalized cover letters',
+    icon: 'mdi-email-edit',
+    route: '/cover-letter',
+    color: 'secondary',
+    variant: 'glass',
+    badge: 'Smart AI',
+    status: 'Draft Ready',
+    statusIcon: 'mdi-pen'
   },
   {
-    id: "skills",
-    title: "Skill Mapper",
-    description: "Identify and develop key gaming skills",
-    icon: "mdi-brain",
-    route: "/skills",
-    color: "purple",
-    variant: "glass",
-    status: "Growth Path",
-    statusIcon: "mdi-chart-line",
-  },
+    id: 'skills',
+    title: 'Skill Mapper',
+    description: 'Identify and develop key gaming skills',
+    icon: 'mdi-brain',
+    route: '/skills',
+    color: 'purple',
+    variant: 'glass',
+    status: 'Growth Path',
+    statusIcon: 'mdi-chart-line'
+  }
 ]);
 
 // Live jobs data
 const liveJobs = ref([
   {
-    id: "1",
-    title: "Unity Game Developer",
-    company: "Indie Studios Inc.",
-    location: "Remote",
-    type: "Full-time",
-    salary: "$70k - $90k",
-    summary:
-      "Join our team to create innovative mobile games using Unity and C#...",
-    technologies: ["Unity", "C#", "Mobile", "Git", "Agile"],
+    id: '1',
+    title: 'Unity Game Developer',
+    company: 'Indie Studios Inc.',
+    location: 'Remote',
+    type: 'Full-time',
+    salary: '$70k - $90k',
+    summary: 'Join our team to create innovative mobile games using Unity and C#...',
+    technologies: ['Unity', 'C#', 'Mobile', 'Git', 'Agile'],
     matchScore: 89,
-    postedTime: "2 hours ago",
-    companyIcon: "mdi-gamepad-variant",
+    postedTime: '2 hours ago',
+    companyIcon: 'mdi-gamepad-variant'
   },
   {
-    id: "2",
-    title: "Frontend Developer - Gaming Platform",
-    company: "GameTech Solutions",
-    location: "San Francisco, CA",
-    type: "Full-time",
-    salary: "$80k - $110k",
-    summary: "Build cutting-edge web applications for our gaming platform...",
-    technologies: ["React", "TypeScript", "WebGL", "Node.js"],
+    id: '2',
+    title: 'Frontend Developer - Gaming Platform',
+    company: 'GameTech Solutions',
+    location: 'San Francisco, CA',
+    type: 'Full-time',
+    salary: '$80k - $110k',
+    summary: 'Build cutting-edge web applications for our gaming platform...',
+    technologies: ['React', 'TypeScript', 'WebGL', 'Node.js'],
     matchScore: 76,
-    postedTime: "5 hours ago",
-    companyIcon: "mdi-web",
+    postedTime: '5 hours ago',
+    companyIcon: 'mdi-web'
   },
   {
-    id: "3",
-    title: "Game Design Intern",
-    company: "Pixel Perfect Games",
-    location: "Remote",
-    type: "Internship",
-    salary: "$25/hour",
-    summary: "Learn game design fundamentals while working on real projects...",
-    technologies: ["Game Design", "Figma", "Unity", "Analytics"],
+    id: '3',
+    title: 'Game Design Intern',
+    company: 'Pixel Perfect Games',
+    location: 'Remote',
+    type: 'Internship',
+    salary: '$25/hour',
+    summary: 'Learn game design fundamentals while working on real projects...',
+    technologies: ['Game Design', 'Figma', 'Unity', 'Analytics'],
     matchScore: 62,
-    postedTime: "1 day ago",
-    companyIcon: "mdi-palette",
-  },
+    postedTime: '1 day ago',
+    companyIcon: 'mdi-palette'
+  }
 ]);
 
 const liveJobsCount = computed(() => liveJobs.value.length);
@@ -597,76 +555,67 @@ const totalJobsCount = ref(47);
 
 // Achievements
 const achievements = ref([
-  { id: "first_app", title: "First Application", unlocked: true },
-  { id: "resume_complete", title: "Resume Master", unlocked: true },
-  { id: "interview_ace", title: "Interview Ace", unlocked: false },
+  { id: 'first_app', title: 'First Application', unlocked: true },
+  { id: 'resume_complete', title: 'Resume Master', unlocked: true },
+  { id: 'interview_ace', title: 'Interview Ace', unlocked: false }
 ]);
 
 // Career insights
 const careerInsights = ref([
   {
-    id: "skill_gap",
-    type: "warning",
-    icon: "mdi-alert-circle",
-    title: "Skill Gap Identified",
-    description:
-      "Consider learning Unreal Engine to increase your job match rate by 23%",
-    action: { text: "Start Learning", route: "/skills/unreal-engine" },
+    id: 'skill_gap',
+    type: 'warning',
+    icon: 'mdi-alert-circle',
+    title: 'Skill Gap Identified',
+    description: 'Consider learning Unreal Engine to increase your job match rate by 23%',
+    action: { text: 'Start Learning', route: '/skills/unreal-engine' }
   },
   {
-    id: "market_trend",
-    type: "info",
-    icon: "mdi-trending-up",
-    title: "Market Opportunity",
-    description:
-      "VR game development roles increased by 45% this month in your area",
-    action: { text: "Explore VR Jobs", route: "/jobs?filter=vr" },
+    id: 'market_trend',
+    type: 'info',
+    icon: 'mdi-trending-up',
+    title: 'Market Opportunity',
+    description: 'VR game development roles increased by 45% this month in your area',
+    action: { text: 'Explore VR Jobs', route: '/jobs?filter=vr' }
   },
   {
-    id: "resume_boost",
-    type: "success",
-    icon: "mdi-rocket",
-    title: "Resume Optimization",
-    description:
-      "Your resume score improved by 15 points after recent AI suggestions",
-    action: { text: "View Changes", route: "/resume-builder" },
-  },
+    id: 'resume_boost',
+    type: 'success',
+    icon: 'mdi-rocket',
+    title: 'Resume Optimization',
+    description: 'Your resume score improved by 15 points after recent AI suggestions',
+    action: { text: 'View Changes', route: '/resume-builder' }
+  }
 ]);
 
 // Skills data
-const userSkills = ref([
-  "Unity",
-  "C#",
-  "JavaScript",
-  "Game Design",
-  "Mobile Dev",
-]);
+const userSkills = ref(['Unity', 'C#', 'JavaScript', 'Game Design', 'Mobile Dev']);
 
 const topSkills = ref([
   {
-    name: "Unity",
+    name: 'Unity',
     level: 85,
-    trend: "up",
-    trendText: "+5 this week",
+    trend: 'up',
+    trendText: '+5 this week'
   },
   {
-    name: "C# Programming",
+    name: 'C# Programming',
     level: 78,
-    trend: "up",
-    trendText: "+3 this week",
+    trend: 'up',
+    trendText: '+3 this week'
   },
   {
-    name: "Game Design",
+    name: 'Game Design',
     level: 65,
-    trend: "stable",
-    trendText: "Stable",
+    trend: 'stable',
+    trendText: 'Stable'
   },
   {
-    name: "Mobile Development",
+    name: 'Mobile Development',
     level: 58,
-    trend: "down",
-    trendText: "Needs focus",
-  },
+    trend: 'down',
+    trendText: 'Needs focus'
+  }
 ]);
 
 // Methods
@@ -675,22 +624,22 @@ const navigateTo = (route: string) => {
 };
 
 const _performSearch = (query: string) => {
-  logger.info("Searching for:", query);
+  logger.info('Searching for:', query);
   router.push(`/search?q=${encodeURIComponent(query)}`);
 };
 
 const _toggleVoiceCommands = () => {
-  logger.info("Voice commands toggled");
+  logger.info('Voice commands toggled');
 };
 
 const toggleGamingMode = () => {
-  logger.info("Gaming mode toggled");
+  logger.info('Gaming mode toggled');
   // Toggle gaming UI mode
 };
 
 const openQuickApply = () => {
-  logger.info("Quick apply opened");
-  router.push("/apply");
+  logger.info('Quick apply opened');
+  router.push('/apply');
 };
 
 const viewJobDetails = (job: any) => {
@@ -698,24 +647,24 @@ const viewJobDetails = (job: any) => {
 };
 
 const getMatchScoreClass = (score: number) => {
-  if (score >= 80) return "match-excellent";
-  if (score >= 60) return "match-good";
-  return "match-fair";
+  if (score >= 80) return 'match-excellent';
+  if (score >= 60) return 'match-good';
+  return 'match-fair';
 };
 
-const getTrendIcon = (trend: string) => {
+const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
   const icons = {
-    up: "mdi-trending-up",
-    down: "mdi-trending-down",
-    stable: "mdi-trending-neutral",
+    up: 'mdi-trending-up',
+    down: 'mdi-trending-down',
+    stable: 'mdi-trending-neutral'
   };
-  return icons[trend] || "mdi-trending-neutral";
+  return icons[trend];
 };
 
 const getSkillColor = (level: number) => {
-  if (level >= 80) return "success";
-  if (level >= 60) return "primary";
-  return "warning";
+  if (level >= 80) return 'success';
+  if (level >= 60) return 'primary';
+  return 'warning';
 };
 
 const executeInsightAction = (action: any) => {
@@ -725,19 +674,19 @@ const executeInsightAction = (action: any) => {
 };
 
 const handleCareerInsights = (insights: any) => {
-  logger.info("Career insights received:", insights);
+  logger.info('Career insights received:', insights);
 };
 
 const handleMarketAnalysis = (analysis: any) => {
-  logger.info("Market analysis received:", analysis);
+  logger.info('Market analysis received:', analysis);
 };
 
 const handleSkillsAnalysis = (analysis: any) => {
-  logger.info("Skills analysis received:", analysis);
+  logger.info('Skills analysis received:', analysis);
 };
 
 onMounted(() => {
-  logger.info("Enhanced Dashboard mounted - Loading user data");
+  logger.info('Enhanced Dashboard mounted - Loading user data');
 });
 </script>
 
@@ -747,24 +696,29 @@ onMounted(() => {
   margin: 0 auto;
 }
 
+/* Gamification HUD */
 .gamification-hud {
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, rgba(var(--v-theme-primary), 0.1), rgba(var(--v-theme-secondary), 0.1));
+  border: 1px solid rgba(var(--v-theme-primary), 0.3);
 }
 
 .hud-content {
   display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
   align-items: center;
 }
 
 .player-stats {
   display: flex;
   align-items: center;
+  gap: 2rem;
 }
 
 .avatar-section {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
 .player-avatar {
@@ -773,59 +727,94 @@ onMounted(() => {
 
 .level-badge {
   position: absolute;
+  top: -4px;
+  right: -4px;
   background: rgb(var(--v-theme-primary));
   color: rgb(var(--v-theme-on-primary));
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  border: 2px solid rgb(var(--v-theme-surface));
 }
 
 .player-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
 .player-title {
   color: rgb(var(--v-theme-primary));
+  margin: 0;
 }
 
 .progress-section {
+  min-width: 300px;
 }
 
 .stats-grid {
   display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(var(--v-theme-surface-variant), 0.3);
 }
 
 .stat-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(var(--v-theme-primary), 0.2);
 }
 
 .stat-value {
+  font-size: 1.125rem;
+  font-weight: 600;
   color: rgb(var(--v-theme-primary));
 }
 
 .stat-label {
+  font-size: 0.75rem;
   color: rgb(var(--v-theme-on-surface-variant));
 }
 
 .daily-mission {
+  background: rgba(var(--v-theme-warning), 0.1);
+  border: 1px solid rgba(var(--v-theme-warning), 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-width: 280px;
 }
 
 .mission-title {
   color: rgb(var(--v-theme-warning));
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .mission-content {
   display: flex;
   flex-direction: column;
+  gap: 0.75rem;
 }
 
 .mission-description {
+  font-weight: 500;
 }
 
 .mission-progress {
@@ -834,37 +823,54 @@ onMounted(() => {
 
 .progress-text {
   position: absolute;
+  right: 0;
+  top: -1.5rem;
+  font-size: 0.75rem;
   color: rgb(var(--v-theme-warning));
 }
 
 .mission-reward {
   color: rgb(var(--v-theme-warning));
+  font-weight: 600;
 }
 
+/* Rest of styles remain the same as previous implementation */
+/* (All the styles from the previous comprehensive dashboard component) */
 
+/* Responsive design */
+@media (max-width: 1200px) {
   .hud-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
+@media (max-width: 768px) {
   .header-actions {
     flex-direction: column;
+    gap: 0.5rem;
   }
 
   .header-search {
+    width: 100%;
   }
 
   .quick-actions-grid {
+    grid-template-columns: 1fr;
   }
 
   .player-stats {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
 
   .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .daily-mission {

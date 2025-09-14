@@ -1,0 +1,11 @@
+{
+  "azure": {
+    "openai": {
+      "enabled": false,
+      "resource": "",
+      "deployment": "",
+      "apiVersion": "2024-08-01-preview"
+    }
+  }
+}
+

@@ -26,21 +26,17 @@ ChartJS.register(
   RadialLinearScale,
 );
 
-import { getCssVar, colorToken, toRgba } from "@/shared/utils/designTokens";
+import { getCssVar, colorToken, toRgba } from '@/shared/utils/designTokens'
 
 export function getChartTheme(themeName = "light") {
-  const primary = colorToken("primary-500", "#667eea");
-  const secondary = getCssVar("--color-primary-alt", "#764ba2");
-  const success = colorToken("success-500", "#20c997");
-  const warning = colorToken("warning-500", "#f9c74f");
-  const info = colorToken("info-500", "#17a2b8");
-  const danger = colorToken("danger-500", "#dc3545");
-  const text = colorToken(
-    "text-primary",
-    themeName === "dark" ? "#ffffff" : "#333333",
-  );
-  const grid =
-    themeName === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)";
+  const primary = colorToken('primary-500', '#667eea');
+  const secondary = getCssVar('--color-primary-alt', '#764ba2');
+  const success = colorToken('success-500', '#20c997');
+  const warning = colorToken('warning-500', '#f9c74f');
+  const info = colorToken('info-500', '#17a2b8');
+  const danger = colorToken('danger-500', '#dc3545');
+  const text = colorToken('text-primary', themeName === 'dark' ? '#ffffff' : '#333333');
+  const grid = themeName === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)";
 
   const palette = [primary, secondary, success, warning, info, danger];
   return {
@@ -53,8 +49,8 @@ export function getChartTheme(themeName = "light") {
 
 // Precomputed reusable theme cache (light/dark) to reduce repeated token lookups
 export const CHART_THEMES = {
-  light: getChartTheme("light"),
-  dark: getChartTheme("dark"),
+  light: getChartTheme('light'),
+  dark: getChartTheme('dark')
 };
 
 // Chart configuration generator
@@ -70,27 +66,12 @@ export class ChartConfigGenerator {
           {
             label: "Skill Level",
             data: skillsData.map((skill) => skill.level || 0),
-            backgroundColor: toRgba(
-              getCssVar("--color-info-500", colorToken("info-500")),
-              0.2,
-            ),
-            borderColor: toRgba(
-              getCssVar("--color-info-500", colorToken("info-500")),
-              1,
-            ),
-            pointBackgroundColor: toRgba(
-              getCssVar("--color-info-500", colorToken("info-500")),
-              1,
-            ),
-            pointBorderColor: toRgba(colorToken("bg-primary", "#ffffff"), 1),
-            pointHoverBackgroundColor: toRgba(
-              colorToken("bg-primary", "#ffffff"),
-              1,
-            ),
-            pointHoverBorderColor: toRgba(
-              getCssVar("--color-info-500", colorToken("info-500")),
-              1,
-            ),
+            backgroundColor: toRgba(getCssVar("--color-info-500", colorToken('info-500')), 0.2),
+            borderColor: toRgba(getCssVar("--color-info-500", colorToken('info-500')), 1),
+            pointBackgroundColor: toRgba(getCssVar("--color-info-500", colorToken('info-500')), 1),
+            pointBorderColor: toRgba(colorToken('bg-primary', '#ffffff'), 1),
+            pointHoverBackgroundColor: toRgba(colorToken('bg-primary', '#ffffff'), 1),
+            pointHoverBorderColor: toRgba(getCssVar("--color-info-500", colorToken('info-500')), 1),
           },
         ],
       },
@@ -246,7 +227,7 @@ export class ChartConfigGenerator {
   }
 
   static getJobSearchProgressConfig(searchData, theme = "light") {
-    const themeColors = CHART_THEMES[theme] || getChartTheme(theme);
+  const themeColors = CHART_THEMES[theme] || getChartTheme(theme);
 
     return {
       type: "line",
@@ -311,7 +292,7 @@ export class ChartConfigGenerator {
   }
 
   static getSkillDemandConfig(skillDemandData, theme = "light") {
-    const themeColors = CHART_THEMES[theme] || getChartTheme(theme);
+  const themeColors = CHART_THEMES[theme] || getChartTheme(theme);
 
     return {
       type: "bar",
@@ -370,7 +351,7 @@ export class ChartConfigGenerator {
   }
 
   static getResumeScoreConfig(scoreData, theme = "light") {
-    const themeColors = CHART_THEMES[theme] || getChartTheme(theme);
+  const themeColors = CHART_THEMES[theme] || getChartTheme(theme);
 
     return {
       type: "doughnut",
@@ -381,19 +362,19 @@ export class ChartConfigGenerator {
             data: [scoreData.score, 100 - scoreData.score],
             backgroundColor: [
               scoreData.score >= 80
-                ? colorToken("success-500")
+                ? colorToken('success-500')
                 : scoreData.score >= 60
-                  ? colorToken("warning-500")
-                  : colorToken("danger-500"),
-              theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+                  ? colorToken('warning-500')
+                  : colorToken('danger-500'),
+              (theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'),
             ],
             borderColor: [
               scoreData.score >= 80
-                ? colorToken("success-500")
+                ? colorToken('success-500')
                 : scoreData.score >= 60
-                  ? colorToken("warning-500")
-                  : colorToken("danger-500"),
-              theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+                  ? colorToken('warning-500')
+                  : colorToken('danger-500'),
+              (theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'),
             ],
             borderWidth: 2,
           },
@@ -423,7 +404,7 @@ export class ChartConfigGenerator {
   }
 }
 
-
+// Utility functions for chart data processing
 export const chartUtils = {
   // Group skills by category
   groupSkillsByCategory(skills) {

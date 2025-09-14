@@ -8,7 +8,7 @@
           @click="$emit('request-analysis')"
         >
           <AppIcon name="mdi-brain" class="me-2" />
-          {{ loading ? "Analyzing..." : "Analyze Resume" }}
+          {{ loading ? 'Analyzing...' : 'Analyze Resume' }}
         </button>
         <button
           class="unified-btn btn-outline-info btn-sm v-btn variant-outlined ui-btn ui-size-md"
@@ -28,13 +28,8 @@
         <div class="col-md-4">
           <div class="unified-card glass-card section-card text-center">
             <div class="card-body section-body">
-              <div
-                class="score-circle"
-                :class="getScoreClass(analysisResults.overallScore)"
-              >
-                <div class="score-number">
-                  {{ analysisResults.overallScore }}
-                </div>
+              <div class="score-circle" :class="getScoreClass(analysisResults.overallScore)">
+                <div class="score-number">{{ analysisResults.overallScore }}</div>
                 <div class="score-label">Score</div>
               </div>
               <h6 class="mt-3 mb-3">Resume Quality</h6>
@@ -50,11 +45,7 @@
           <div class="unified-card glass-card section-card">
             <div class="card-header section-header card-header--dense">
               <h6 class="mb-0">
-                <AppIcon
-                  name="mdi-check-circle-outline"
-                  color="success"
-                  context="success"
-                />
+                <AppIcon name="mdi-check-circle-outline" color="success" context="success" />
                 Strengths ({{ analysisResults.strengths?.length || 0 }})
               </h6>
             </div>
@@ -69,10 +60,7 @@
                   <small>{{ strength }}</small>
                 </li>
               </ul>
-              <div
-                v-if="!analysisResults.strengths?.length"
-                class="text-muted small"
-              >
+              <div v-if="!analysisResults.strengths?.length" class="text-muted small">
                 <AppIcon name="mdi-information-outline" class="me-1" />
                 Analysis will identify key strengths
               </div>
@@ -101,22 +89,13 @@
                   <button
                     v-if="canUseAi"
                     class="btn btn-link btn-sm ms-2 p-0 ui-btn ui-size-md"
-                    @click="
-                      $emit('apply-suggestion', {
-                        type: 'improvement',
-                        data: improvement,
-                        index,
-                      })
-                    "
+                    @click="$emit('apply-suggestion', { type: 'improvement', data: improvement, index })"
                   >
                     <AppIcon name="mdi-auto-fix" class="text-primary" />
                   </button>
                 </li>
               </ul>
-              <div
-                v-if="!analysisResults.improvements?.length"
-                class="text-muted small"
-              >
+              <div v-if="!analysisResults.improvements?.length" class="text-muted small">
                 <AppIcon name="mdi-information-outline" class="me-1" />
                 No improvements suggested
               </div>
@@ -140,8 +119,7 @@
                 <h6 class="text-success mb-2">Missing Keywords</h6>
                 <div class="keyword-tags">
                   <span
-                    v-for="keyword in analysisResults.keywordOptimization
-                      .missing"
+                    v-for="keyword in analysisResults.keywordOptimization.missing"
                     :key="keyword"
                     class="badge bg-danger-subtle text-danger me-1 mb-1"
                   >
@@ -153,8 +131,7 @@
                 <h6 class="text-warning mb-2">Omitted Keywords</h6>
                 <div class="keyword-tags">
                   <span
-                    v-for="keyword in analysisResults.keywordOptimization
-                      .overused"
+                    v-for="keyword in analysisResults.keywordOptimization.overused"
                     :key="keyword"
                     class="badge bg-warning-subtle text-warning me-1 mb-1"
                   >
@@ -165,9 +142,7 @@
               <div class="col-md-4">
                 <h6 class="text-info mb-2">Recommended Density</h6>
                 <div class="text-center">
-                  <div class="h4 text-info mb-1">
-                    {{ analysisResults.keywordOptimization.recommendedDensity }}
-                  </div>
+                  <div class="h4 text-info mb-1">{{ analysisResults.keywordOptimization.recommendedDensity }}</div>
                   <small class="text-muted">Optimal keyword usage</small>
                 </div>
               </div>
@@ -181,9 +156,7 @@
     <div v-else-if="!loading" class="text-center text-muted py-5">
       <AppIcon name="mdi-brain" class="mdi-48px mb-3" />
       <h6 class="mb-2">Ready for AI Analysis</h6>
-      <p class="mb-3">
-        Click "Analyze Resume" to get AI-powered insights and recommendations
-      </p>
+      <p class="mb-3">Click "Analyze Resume" to get AI-powered insights and recommendations</p>
       <button
         class="unified-btn btn-primary v-btn ui-btn ui-size-md"
         :disabled="!resumeData"
@@ -198,31 +171,25 @@
     <div v-if="loading" class="text-center py-5">
       <AppIcon name="mdi-brain" class="mdi-48px mb-3 text-primary mdi-spin" />
       <h6 class="mb-2">Analyzing Your Resume</h6>
-      <p class="text-muted">
-        AI is evaluating your content and generating personalized
-        recommendations...
-      </p>
-      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto">
-        <div
-          class="progress-bar progress-bar-striped progress-bar-animated"
-          style="width: 75%"
-        ></div>
+      <p class="text-muted">AI is evaluating your content and generating personalized recommendations...</p>
+      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/components/ui/AppIcon.vue";
+import AppIcon from '@/components/ui/AppIcon.vue'
 interface AnalysisResults {
-  overallScore: number;
-  strengths: string[];
-  improvements: string[];
+  overallScore: number
+  strengths: string[]
+  improvements: string[]
   keywordOptimization?: {
-    missing: string[];
-    overused: string[];
-    recommendedDensity: string;
-  };
+    missing: string[]
+    overused: string[]
+    recommendedDensity: string
+  }
 }
 
 interface ResumeData {
@@ -230,154 +197,191 @@ interface ResumeData {
 }
 
 interface Props {
-  resumeData?: ResumeData;
-  canUseAi: boolean;
-  loading: boolean;
-  analysisResults: AnalysisResults | null;
+  resumeData?: ResumeData
+  canUseAi: boolean
+  loading: boolean
+  analysisResults: AnalysisResults | null
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  "request-analysis": [];
-  "apply-suggestion": [suggestion: any];
-}>();
+  'request-analysis': []
+  'apply-suggestion': [suggestion: any]
+}>()
 
 const getScoreClass = (score: number): string => {
-  if (score >= 90) return "score-excellent";
-  if (score >= 80) return "score-good";
-  if (score >= 70) return "score-average";
-  if (score >= 60) return "score-fair";
-  return "score-poor";
-};
+  if (score >= 90) return 'score-excellent'
+  if (score >= 80) return 'score-good'
+  if (score >= 70) return 'score-average'
+  if (score >= 60) return 'score-fair'
+  return 'score-poor'
+}
 
 const getScoreDescription = (score: number): string => {
-  if (score >= 90) return "Excellent - Ready for top positions!";
-  if (score >= 80) return "Good - Minor improvements needed";
-  if (score >= 70) return "Average - Significant improvements possible";
-  if (score >= 60) return "Fair - Major revisions recommended";
-  return "Needs extensive improvement";
-};
+  if (score >= 90) return 'Excellent - Ready for top positions!'
+  if (score >= 80) return 'Good - Minor improvements needed'
+  if (score >= 70) return 'Average - Significant improvements possible'
+  if (score >= 60) return 'Fair - Major revisions recommended'
+  return 'Needs extensive improvement'
+}
 
 const runATSCheck = async () => {
   if (!props.resumeData) {
-    console.warn("No resume data available for ATS check");
-    return;
+    console.warn('No resume data available for ATS check')
+    return
   }
 
   // Emit a custom analysis event for ATS checking
-  emit("apply-suggestion", {
-    type: "ats-check",
-    data: "Check ATS compatibility",
-    action: "run-ats-analysis",
-  });
-};
+  emit('apply-suggestion', {
+    type: 'ats-check',
+    data: 'Check ATS compatibility',
+    action: 'run-ats-analysis'
+  })
+}
 </script>
 
 <style scoped>
 .resume-ai-analysis {
+  /* Component styles */
 }
 
 .analysis-options {
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 1rem;
 }
 
+/* Score Circle */
 .score-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
   position: relative;
+  transition: all 0.3s ease;
 }
 
 .score-number {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .score-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 2px;
+  opacity: 0.8;
 }
 
 .score-description {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin-top: 0.5rem;
 }
 
+/* Score color classes */
 .score-excellent {
-  background: linear-gradient(
-    var(--color-success),
-    var(--color-success)
-  );
+  background: linear-gradient(135deg, var(--color-success), var(--color-success));
   color: white;
 }
 
 .score-good {
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, var(--color-success-500), var(--color-success-600));
   color: white;
 }
 
 .score-average {
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, var(--color-warning-500), var(--color-warning-600));
   color: white;
 }
 
 .score-fair {
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, var(--color-warning-400), var(--color-warning-500));
   color: white;
 }
 
 .score-poor {
-  background: linear-gradient(
-  );
+  background: linear-gradient(135deg, var(--color-error-500), var(--color-error-600));
   color: white;
 }
 
 .keyword-tags {
+  min-height: 40px;
 }
 
 .keyword-tags .badge {
+  margin-bottom: 0.25rem;
 }
 
 .keyword-tags .badge:hover {
+  transform: translateY(-1px);
 }
 
+/* Spin animation for loading icon */
 @keyframes spin {
-  from {
-  }
-  to {
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .spin {
+  animation: spin 1s linear infinite;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .score-circle {
+    width: 70px;
+    height: 70px;
   }
 
   .score-number {
+    font-size: 1.5rem;
   }
 
+  .analysis-results .col-md-4 {
+    order: -1;
   }
 }
 
+@media (max-width: 576px) {
   .score-circle {
+    width: 60px;
+    height: 60px;
   }
 
   .score-number {
+    font-size: 1.25rem;
   }
 
   .keyword-tags .badge {
+    font-size: 0.75rem;
   }
 }
 
+/* Dark theme support */
 [data-theme="dark"] .score-circle {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .badge.bg-danger-subtle,
 [data-theme="dark"] .badge.bg-warning-subtle {
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Accessibility improvements */
 .sr-only {
   position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: none;
 }

@@ -6,14 +6,8 @@
         <div class="selection-overview glass-card section-card-subtle p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <h6 class="mb-1">
-                Selected Sources: {{ selectedSources.length }}/{{
-                  sources.length
-                }}
-              </h6>
-              <p class="text-muted small mb-0">
-                Configure job board APIs to expand your search reach
-              </p>
+              <h6 class="mb-1">Selected Sources: {{ selectedSources.length }}/{{ sources.length }}</h6>
+              <p class="text-muted small mb-0">Configure job board APIs to expand your search reach</p>
             </div>
             <div class="source-status-indicators d-flex gap-2">
               <div
@@ -35,35 +29,20 @@
         v-for="source in sources"
         :key="source.id"
         class="source-card glass-card section-card"
-        :class="{
-          'source-selected': selectedSources.includes(source.id),
-          'source-disabled': !source.enabled,
-          'source-degraded': source.status === 'degraded',
+        :class="{ 'source-selected': selectedSources.includes(source.id),
+                  'source-disabled': !source.enabled,
+                  'source-degraded': source.status === 'degraded'
         }"
       >
         <!-- Header with toggle -->
-        <div
-          class="source-header d-flex align-items-start justify-content-between"
-        >
+        <div class="source-header d-flex align-items-start justify-content-between">
           <div class="source-info d-flex align-items-center">
-            <div
-              class="source-icon-wrapper"
-              :style="{
-                backgroundColor: source.color + '20',
-                borderColor: source.color,
-              }"
-            >
-              <AppIcon
-                :name="source.icon"
-                class="source-icon"
-                :style="{ color: source.color }"
-              />
+            <div class="source-icon-wrapper" :style="{ backgroundColor: source.color + '20', borderColor: source.color }">
+              <AppIcon :name="source.icon" class="source-icon" :style="{ color: source.color }" />
             </div>
             <div class="ms-3">
               <h6 class="source-name mb-1">{{ source.name }}</h6>
-              <p class="source-description text-muted small mb-0">
-                {{ source.description }}
-              </p>
+              <p class="source-description text-muted small mb-0">{{ source.description }}</p>
             </div>
           </div>
           <div class="source-toggle">
@@ -76,11 +55,8 @@
                 :value="source.id"
                 :disabled="!source.enabled"
                 @change="updateSelection"
-              />
-              <label
-                :for="`source-${source.id}`"
-                class="form-check-label visually-hidden"
               >
+              <label :for="`source-${source.id}`" class="form-check-label visually-hidden">
                 Toggle {{ source.name }}
               </label>
             </div>
@@ -88,11 +64,12 @@
         </div>
 
         <!-- Status and Rate Limit -->
-        <div
-          class="source-meta d-flex align-items-center justify-content-between mb-3"
-        >
+        <div class="source-meta d-flex align-items-center justify-content-between mb-3">
           <div class="status-badge">
-            <span class="badge" :class="getStatusBadgeClass(source.status)">
+            <span
+              class="badge"
+              :class="getStatusBadgeClass(source.status)"
+            >
               <AppIcon name="mdi-circle-small" class="me-1" />
               {{ source.status }}
             </span>
@@ -130,32 +107,19 @@
               :key="feature"
               class="feature-item d-flex align-items-center small text-muted mb-1"
             >
-              <AppIcon
-                name="mdi-check-circle-outline"
-                color="success"
-                context="success"
-              />
+              <AppIcon name="mdi-check-circle-outline" color="success" context="success" />
               {{ feature }}
             </div>
           </div>
         </div>
 
         <!-- API Configuration (shown when selected) -->
-        <div
-          v-if="selectedSources.includes(source.id) && source.enabled"
-          class="api-config"
-        >
+        <div v-if="selectedSources.includes(source.id) && source.enabled" class="api-config">
           <div class="config-divider mb-3"></div>
 
           <!-- API Key Section (only for APIs that require keys) -->
-          <div
-            v-if="source.apiKey !== 'Not required'"
-            class="api-key-field mb-3"
-          >
-            <label
-              :for="`api-key-${source.id}`"
-              class="form-label small fw-medium"
-            >
+          <div v-if="source.apiKey !== 'Not required'" class="api-key-field mb-3">
+            <label :for="`api-key-${source.id}`" class="form-label small fw-medium">
               <AppIcon name="mdi-key-variant" class="me-1" />
               API Key
             </label>
@@ -167,7 +131,7 @@
                 class="form-control"
                 :placeholder="`Enter ${source.name} API key`"
                 @input="updateApiKey(source.id, $event.target.value)"
-              />
+              >
               <IconButton
                 variant="outline"
                 size="sm"
@@ -177,11 +141,7 @@
               />
             </div>
             <div class="form-text">
-              <a
-                href="#"
-                class="text-decoration-none"
-                @click.prevent="openApiDocumentation(source.id)"
-              >
+              <a href="#" class="text-decoration-none" @click.prevent="openApiDocumentation(source.id)">
                 <AppIcon name="mdi-help-circle-outline" />
                 Get API key
               </a>
@@ -189,29 +149,20 @@
           </div>
 
           <!-- Public API Notice -->
-          <div
-            v-else
-            class="public-api-notice mb-3 p-2 bg-success-subtle text-success rounded"
-          >
+          <div v-else class="public-api-notice mb-3 p-2 bg-success-subtle text-success rounded">
             <AppIcon name="mdi-check-circle-outline" context="success" />
             <strong>Public API</strong> - No authentication required
           </div>
         </div>
 
         <!-- Action buttons for selected sources -->
-        <div
-          v-if="selectedSources.includes(source.id) && source.enabled"
-          class="source-actions mt-3"
-        >
+        <div v-if="selectedSources.includes(source.id) && source.enabled" class="source-actions mt-3">
           <div class="d-flex gap-2">
             <UnifiedButton
               variant="outline"
               size="sm"
               class="flex-fill"
-              :disabled="
-                (source.apiKey !== 'Not required' && !source.apiKey) ||
-                  testingConnections.includes(source.id)
-              "
+              :disabled="(source.apiKey !== 'Not required' && !source.apiKey) || testingConnections.includes(source.id)"
               leading-icon="mdi-lightning-bolt"
               @click="testConnection(source.id)"
             >
@@ -228,29 +179,12 @@
 
           <!-- Test Results -->
           <div
-            v-if="testResults[source.id]"
-            class="test-result mt-2 p-2 rounded small"
-            :class="
-              testResults[source.id].success
-                ? 'bg-success-subtle text-success'
-                : 'bg-danger-subtle text-danger'
-            "
+            v-if="testResults[source.id]" class="test-result mt-2 p-2 rounded small"
+            :class="testResults[source.id].success ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'"
           >
-            <AppIcon
-              :name="
-                testResults[source.id].success
-                  ? 'mdi-check-circle-outline'
-                  : 'mdi-alert-circle-outline'
-              "
-              class="me-1"
-            />
+            <AppIcon :name="testResults[source.id].success ? 'mdi-check-circle-outline' : 'mdi-alert-circle-outline'" class="me-1" />
             {{ testResults[source.id].message }}
-            <span
-              v-if="
-                testResults[source.id].success &&
-                  testResults[source.id].jobCount !== undefined
-              "
-            >
+            <span v-if="testResults[source.id].success && testResults[source.id].jobCount !== undefined">
               ({{ testResults[source.id].jobCount }} jobs available)
             </span>
           </div>
@@ -269,33 +203,25 @@
           <div class="summary-stats row g-3">
             <div class="col-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-primary">
-                  {{ selectedSources.length }}
-                </div>
+                <div class="stat-value h5 mb-1 text-primary">{{ selectedSources.length }}</div>
                 <div class="stat-label small text-muted">Active Sources</div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-success">
-                  {{ operationalSources }}
-                </div>
+                <div class="stat-value h5 mb-1 text-success">{{ operationalSources }}</div>
                 <div class="stat-label small text-muted">Operational</div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-info">
-                  {{ totalRateLimit }}
-                </div>
+                <div class="stat-value h5 mb-1 text-info">{{ totalRateLimit }}</div>
                 <div class="stat-label small text-muted">Total/Hour</div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-warning">
-                  {{ configuredSources }}
-                </div>
+                <div class="stat-value h5 mb-1 text-warning">{{ configuredSources }}</div>
                 <div class="stat-label small text-muted">Configured</div>
               </div>
             </div>
@@ -307,151 +233,131 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, defineEmits, defineProps } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import IconButton from "@/components/ui/IconButton.vue";
-import { jobSourceManager } from "@/services/JobSourceManager";
+import { ref, computed, watch, defineEmits, defineProps } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import IconButton from '@/components/ui/IconButton.vue'
+import { jobSourceManager } from '@/services/JobSourceManager'
 
 const props = defineProps({
   sources: {
     type: Array,
-    required: true,
+    required: true
   },
   selectedSources: {
     type: Array,
-    default: () => [],
-  },
-});
+    default: () => []
+  }
+})
 
-const emit = defineEmits(["update:selected"]);
+const emit = defineEmits(['update:selected'])
 
 // Local state
-const localSelectedSources = ref([...props.selectedSources]);
-const testingConnections = ref([]);
-const testResults = ref({});
+const localSelectedSources = ref([...props.selectedSources])
+const testingConnections = ref([])
+const testResults = ref({})
 
 // Computed properties
 const selectedSourceDetails = computed(() =>
-  props.sources.filter((source) =>
-    localSelectedSources.value.includes(source.id),
-  ),
-);
+  props.sources.filter(source => localSelectedSources.value.includes(source.id))
+)
 
-const operationalSources = computed(
-  () =>
-    selectedSourceDetails.value.filter(
-      (source) => source.status === "operational",
-    ).length,
-);
+const operationalSources = computed(() =>
+  selectedSourceDetails.value.filter(source => source.status === 'operational').length
+)
 
-const configuredSources = computed(
-  () =>
-    selectedSourceDetails.value.filter(
-      (source) => source.apiKey && source.apiKey.length > 0,
-    ).length,
-);
+const configuredSources = computed(() =>
+  selectedSourceDetails.value.filter(source => source.apiKey && source.apiKey.length > 0).length
+)
 
 const totalRateLimit = computed(() => {
   return selectedSourceDetails.value
-    .map((source) => parseInt(source.rateLimit.split("/")[0]) || 0)
-    .reduce((sum, limit) => sum + limit, 0);
-});
+    .map(source => parseInt(source.rateLimit.split('/')[0]) || 0)
+    .reduce((sum, limit) => sum + limit, 0)
+})
 
 // Watch for prop changes
-watch(
-  () => props.selectedSources,
-  (newVal) => {
-    localSelectedSources.value = [...newVal];
-  },
-  { deep: true },
-);
+watch(() => props.selectedSources, (newVal) => {
+  localSelectedSources.value = [...newVal]
+}, { deep: true })
 
 // Methods
 const updateSelection = () => {
-  emit("update:selected", [...localSelectedSources.value]);
-};
+  emit('update:selected', [...localSelectedSources.value])
+}
 
 const updateApiKey = (sourceId, apiKey) => {
-  const source = props.sources.find((s) => s.id === sourceId);
+  const source = props.sources.find(s => s.id === sourceId)
   if (source) {
-    source.apiKey = apiKey;
+    source.apiKey = apiKey
   }
-};
+}
 
 const getStatusClass = (status) => {
   return {
-    "status-operational": status === "operational",
-    "status-degraded": status === "degraded",
-    "status-down": status === "down",
-    "status-unknown": status === "unknown",
-  };
-};
+    'status-operational': status === 'operational',
+    'status-degraded': status === 'degraded',
+    'status-down': status === 'down',
+    'status-unknown': status === 'unknown'
+  }
+}
 
 const getStatusBadgeClass = (status) => {
   switch (status) {
-    case "operational":
-      return "badge-success";
-    case "degraded":
-      return "badge-warning";
-    case "down":
-      return "badge-danger";
-    default:
-      return "badge-secondary";
+    case 'operational': return 'badge-success'
+    case 'degraded': return 'badge-warning'
+    case 'down': return 'badge-danger'
+    default: return 'badge-secondary'
   }
-};
+}
 
 const testConnection = async (sourceId) => {
-  const source = props.sources.find((s) => s.id === sourceId);
-  if (!source) {
-    return;
-  }
+  const source = props.sources.find(s => s.id === sourceId)
+  if (!source) {return}
 
   // Testing connection for source
-  testingConnections.value.push(sourceId);
+  testingConnections.value.push(sourceId)
 
   // Clear previous test results
   if (testResults.value[sourceId]) {
-    delete testResults.value[sourceId];
+    delete testResults.value[sourceId]
   }
 
   try {
-    const result = await jobSourceManager.testSource(sourceId);
+    const result = await jobSourceManager.testSource(sourceId)
     testResults.value[sourceId] = {
       success: result.success,
       message: result.message,
-      jobCount: result.jobCount,
-    };
+      jobCount: result.jobCount
+    }
   } catch (error) {
     testResults.value[sourceId] = {
       success: false,
-      message: `Connection failed: ${error?.message || "Unknown error"}`,
-    };
+      message: `Connection failed: ${error?.message || 'Unknown error'}`
+    }
   } finally {
-    testingConnections.value = testingConnections.value.filter(
-      (id) => id !== sourceId,
-    );
+    testingConnections.value = testingConnections.value.filter(id => id !== sourceId)
   }
-};
+}
 
 const togglePasswordVisibility = (sourceId) => {
   // Toggle password visibility logic
-  const input = document.getElementById(`api-key-${sourceId}`);
+  const input = document.getElementById(`api-key-${sourceId}`)
   if (input) {
-    input.type = input.type === "password" ? "text" : "password";
+    input.type = input.type === 'password' ? 'text' : 'password'
   }
-};
+}
 
 const openApiDocumentation = (sourceId) => {
   // Open API documentation in new tab
-  const source = props.sources.find((s) => s.id === sourceId);
+  const source = props.sources.find(s => s.id === sourceId)
   // Opening API documentation
-};
+}
 
 const viewDocumentation = (sourceId) => {
   // View source documentation
-  openApiDocumentation(sourceId);
-};
+  openApiDocumentation(sourceId)
+}
 </script>
 
 <style scoped>
@@ -534,29 +440,14 @@ const viewDocumentation = (sourceId) => {
   display: inline-block;
 }
 
-.status-operational {
-  background-color: var(--color-success-500);
-}
-.status-degraded {
-  background-color: var(--color-warning-500);
-}
-.status-down {
-  background-color: var(--color-danger-500);
-}
-.status-unknown {
-  background-color: var(--color-muted-500);
-}
+.status-operational { background-color: var(--color-success-500); }
+.status-degraded { background-color: var(--color-warning-500); }
+.status-down { background-color: var(--color-danger-500); }
+.status-unknown { background-color: var(--color-muted-500); }
 
-.badge-success {
-  background-color: var(--color-success-500) !important;
-}
-.badge-warning {
-  background-color: var(--color-warning-500) !important;
-  color: var(--text-on-warning, #000) !important;
-}
-.badge-danger {
-  background-color: var(--color-danger-500) !important;
-}
+.badge-success { background-color: var(--color-success-500) !important; }
+.badge-warning { background-color: var(--color-warning-500) !important; color: var(--text-on-warning, #000) !important; }
+.badge-danger { background-color: var(--color-danger-500) !important; }
 
 .category-tag {
   font-size: 0.75rem;
@@ -569,12 +460,7 @@ const viewDocumentation = (sourceId) => {
 
 .config-divider {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--glass-border),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
 }
 
 .api-config {
@@ -601,12 +487,16 @@ const viewDocumentation = (sourceId) => {
   font-weight: 700;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .sources-grid {
+    gap: 1rem;
   }
 
   .source-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
 
   .source-toggle {
@@ -614,6 +504,7 @@ const viewDocumentation = (sourceId) => {
   }
 }
 
+/* Dark theme support */
 [data-theme="dark"] .glass-card-subtle,
 [data-theme="dark"] .api-config {
   background: var(--glass-surface-dark);
@@ -623,25 +514,29 @@ const viewDocumentation = (sourceId) => {
 [data-theme="dark"] .category-tag {
   background-color: var(--glass-surface-dark) !important;
   color: var(--text-primary) !important;
+  border: 1px solid var(--glass-border-dark);
 }
 
+/* Loading animation */
 @keyframes spin {
-  from {
-  }
-  to {
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .spin {
+  animation: spin 1s linear infinite;
 }
 
 .test-result {
+  border-left: 3px solid;
   border-left-color: inherit;
 }
 
 .public-api-notice {
+  font-weight: 500;
 }
 
+/* Animation preferences */
 @media (prefers-reduced-motion: reduce) {
   .source-card {
     transition: none;

@@ -1,4 +1,4 @@
-import gamificationEvents from "@/shared/services/GamificationEvents";
+import gamificationEvents from '@/shared/services/GamificationEvents'
 
 export const ACHIEVEMENTS = {
   FIRST_STEPS: {
@@ -115,7 +115,7 @@ export const ACHIEVEMENTS = {
     requirements: { interviewsCompleted: 5 },
   },
   SKILL_ASSESSOR: {
-    id: "skill_assessor",
+    id: "skill_assessor", 
     name: "Skill Assessor",
     description: "Complete 3 skill assessments",
     icon: "mdi-clipboard-check",
@@ -136,11 +136,11 @@ export const ACHIEVEMENTS = {
     description: "Spend 10+ hours using NAVI",
     icon: "mdi-clock-time-eight",
     xp: 300,
-    requirements: { totalTimeSpent: 600 },
+    requirements: { totalTimeSpent: 600 }, // 10 hours in minutes
   },
   FEATURE_EXPLORER: {
     id: "feature_explorer",
-    name: "Feature Explorer",
+    name: "Feature Explorer", 
     description: "Use 8 different features of NAVI",
     icon: "mdi-compass-outline",
     xp: 250,
@@ -255,26 +255,26 @@ export const DAILY_CHALLENGES = [
 // Weekly quests rotate each week to encourage broader engagement
 export const WEEKLY_QUESTS = [
   {
-    id: "weekly_profile_pro",
-    name: "Profile Pro",
-    description: "Reach 80% profile completion",
-    icon: "mdi-account-badge",
+    id: 'weekly_profile_pro',
+    name: 'Profile Pro',
+    description: 'Reach 80% profile completion',
+    icon: 'mdi-account-badge',
     xp: 150,
     requirements: { profileComplete: 80 },
   },
   {
-    id: "weekly_networker",
-    name: "Community Networker",
-    description: "Save 5 jobs and explore 5 studios",
-    icon: "mdi-account-group",
+    id: 'weekly_networker',
+    name: 'Community Networker',
+    description: 'Save 5 jobs and explore 5 studios',
+    icon: 'mdi-account-group',
     xp: 200,
     requirements: { savedJobs: 5, featuresUsed: 5 },
   },
   {
-    id: "weekly_interview_sprinter",
-    name: "Interview Sprinter",
-    description: "Complete 2 mock interview sessions",
-    icon: "mdi-microphone-variant",
+    id: 'weekly_interview_sprinter',
+    name: 'Interview Sprinter',
+    description: 'Complete 2 mock interview sessions',
+    icon: 'mdi-microphone-variant',
     xp: 200,
     requirements: { interviewsCompleted: 2 },
   },
@@ -284,7 +284,7 @@ export class GamificationService {
   constructor(store) {
     this.store = store;
     this._lastAchievementCheck = 0;
-    this._achievementCheckThrottle = 1000;
+    this._achievementCheckThrottle = 1000; // 1 second throttle
   }
 
   // Detailed info
@@ -370,7 +370,7 @@ export class GamificationService {
     this.store.updateUser({ xp: newXP });
 
     try {
-      gamificationEvents.emit("xp_awarded", {
+      gamificationEvents.emit('xp_awarded', {
         amount,
         reason: _action,
         newXP,
@@ -378,14 +378,13 @@ export class GamificationService {
         newLevel: newInfo.level,
       });
       if (newInfo.level > oldInfo.level) {
-        gamificationEvents.emit("level_up", {
+        gamificationEvents.emit('level_up', {
           oldLevel: oldInfo.level,
           newLevel: newInfo.level,
           title: newInfo.title,
         });
       }
-    } catch {
-    }
+    } catch { /* no-op */ }
 
     return {
       xpAwarded: amount,
@@ -438,18 +437,18 @@ export class GamificationService {
     // Add achievement and XP
     this.store.updateUser({
       achievements: [...userAchievements, achievementId],
+      xp: (this.store.user.xp || 0) + achievement.xp,
     });
 
     try {
-      gamificationEvents.emit("achievement_unlocked", {
+      gamificationEvents.emit('achievement_unlocked', {
         id: achievement.id,
         name: achievement.name,
         description: achievement.description,
         xp: achievement.xp,
         icon: achievement.icon,
       });
-    } catch {
-    }
+    } catch { /* no-op */ }
 
     return achievement;
   }
@@ -465,7 +464,7 @@ export class GamificationService {
         completed: completedToday.includes(challenge.id),
       }));
     } catch (error) {
-      console.warn("Failed to get today's challenges:", error);
+      console.warn('Failed to get today\'s challenges:', error);
       return DAILY_CHALLENGES.map((challenge) => ({
         ...challenge,
         completed: false,
@@ -499,13 +498,8 @@ export class GamificationService {
     // Award XP
     const result = this.awardXP(challenge.xp, `daily_challenge_${challengeId}`);
     try {
-      gamificationEvents.emit("challenge_completed", {
-        id: challengeId,
-        type: "daily",
-        xp: challenge.xp,
-      });
-    } catch {
-    }
+      gamificationEvents.emit('challenge_completed', { id: challengeId, type: 'daily', xp: challenge.xp });
+    } catch { /* no-op */ }
     return result;
   }
 
@@ -514,35 +508,67 @@ export class GamificationService {
     // Import StatisticsService to get consistent data
     let statisticsService;
     try {
-      statisticsService =
-        require("../shared/services/StatisticsService").statisticsService;
-    } catch {
+      statisticsService = require("../shared/services/StatisticsService").statisticsService;
+  } catch {
       // Enhanced fallback to direct store access with better data mapping
       const store = this.store;
       if (!store) {
         return this._getDefaultUserStats();
       }
-
+      
       return {
-        profileComplete:
+        profileComplete: Math.round((store.profileCompleteness || 0) * 100) / 100,
+        skillsMapped: store.mappedSkills?.length || 0,
+        portfolioItems: store.user?.portfolio?.length || 0,
+        jobApplications: store.jobSearchData?.applications?.length || 0,
+        chatSessions: store.chatHistory?.length || 0,
+        resumesGenerated: store.user?.resumesGenerated || 0,
+        savedJobs: store.jobSearchData?.savedJobs?.length || 0,
         // Enhanced metrics for modern gamification
+        totalTimeSpent: store.user?.totalTimeSpent || 0,
         featuresUsed: Object.keys(store.user?.featureUsage || {}).length,
         dailyStreak: this.getStreak().current,
         weeklyProgress: this.getWeeklyProgress(),
+        interviewsCompleted: store.user?.interviewsCompleted || 0,
+        skillAssessmentsCompleted: store.user?.skillAssessmentsCompleted || 0,
       };
     }
 
     const stats = statisticsService.getStatistics();
     return {
+      profileComplete: Math.round((stats.profileCompletion || 0) * 100) / 100,
+      skillsMapped: stats.skillsMapped || 0,
+      portfolioItems: stats.portfolioItems || 0,
+      jobApplications: stats.applicationsSubmitted || 0,
+      chatSessions: stats.messagesSent || 0, // Use chat messages as sessions proxy
+      resumesGenerated: stats.resumesCreated || 0,
+      savedJobs: stats.savedJobs || 0,
       // Enhanced metrics integration
+      totalTimeSpent: stats.totalTimeSpent || 0,
+      featuresUsed: stats.featuresUsed || 0,
       dailyStreak: this.getStreak().current,
       weeklyProgress: this.getWeeklyProgress(),
+      interviewsCompleted: stats.interviewsCompleted || 0,
+      skillAssessmentsCompleted: stats.skillAssessmentsCompleted || 0,
     };
   }
 
   // Default user stats when store is unavailable
   _getDefaultUserStats() {
     return {
+      profileComplete: 0,
+      skillsMapped: 0,
+      portfolioItems: 0,
+      jobApplications: 0,
+      chatSessions: 0,
+      resumesGenerated: 0,
+      savedJobs: 0,
+      totalTimeSpent: 0,
+      featuresUsed: 0,
+      dailyStreak: 0,
+      weeklyProgress: 0,
+      interviewsCompleted: 0,
+      skillAssessmentsCompleted: 0,
     };
   }
 
@@ -550,23 +576,24 @@ export class GamificationService {
   getWeeklyProgress() {
     try {
       const today = new Date();
-      const weekStart = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate() - today.getDay(),
-      );
+      const weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
       const dailyChallenges = this.store?.user?.dailyChallenges || {};
-
+      
+      let completedThisWeek = 0;
+      for (let i = 0; i < 7; i++) {
         const date = new Date(weekStart);
         date.setDate(weekStart.getDate() + i);
         const dateString = date.toDateString();
-
+        
+        if (dailyChallenges[dateString]?.length > 0) {
           completedThisWeek++;
         }
       }
-
+      
+      return Math.round((completedThisWeek / 7) * 100);
     } catch (error) {
-      console.warn("Failed to calculate weekly progress:", error);
+      console.warn('Failed to calculate weekly progress:', error);
+      return 0;
     }
   }
 
@@ -574,24 +601,24 @@ export class GamificationService {
   _getWeekKey() {
     const d = new Date();
     // ISO week number
-    const target = new Date(
-      Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()),
-    );
+    const target = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dayNum = target.getUTCDay() || 7;
+    target.setUTCDate(target.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(target.getUTCFullYear(),0,1));
+    const weekNo = Math.ceil((((target - yearStart) / 86400000) + 1)/7);
+    return `${target.getUTCFullYear()}-W${String(weekNo).padStart(2,'0')}`;
   }
 
   getWeeklyQuests() {
-    const completedForWeek =
-      this.store.user.weeklyQuests?.[this._getWeekKey()] || [];
+    const completedForWeek = this.store.user.weeklyQuests?.[this._getWeekKey()] || [];
     const stats = this.getUserStats();
-    return WEEKLY_QUESTS.map((q) => {
+    return WEEKLY_QUESTS.map(q => {
       const requirements = q.requirements || {};
-      const progressValues = Object.entries(requirements).map(
-        ([key, value]) => {
-        },
-      );
-      const progress =
-          ? Math.round(
-            )
+      const progressValues = Object.entries(requirements).map(([key, value]) => {
+        const current = stats[key] || 0;
+        return Math.min((current / value) * 100, 100);
+      });
+      const progress = progressValues.length > 0 ? Math.round(progressValues.reduce((a,b)=>a+b,0)/progressValues.length) : 0;
       return { ...q, progress, completed: completedForWeek.includes(q.id) };
     });
   }
@@ -599,10 +626,9 @@ export class GamificationService {
   completeWeeklyQuest(questId) {
     const weekKey = this._getWeekKey();
     const quests = this.getWeeklyQuests();
-    const quest = quests.find((q) => q.id === questId);
+    const quest = quests.find(q => q.id === questId);
     if (!quest) return false;
-    const wasCompleted =
-      this.store.user.weeklyQuests?.[weekKey]?.includes(questId);
+    const wasCompleted = this.store.user.weeklyQuests?.[weekKey]?.includes(questId);
     if (wasCompleted) return false;
     const weekly = { ...(this.store.user.weeklyQuests || {}) };
     const list = weekly[weekKey] || [];
@@ -610,27 +636,22 @@ export class GamificationService {
     this.store.updateUser({ weeklyQuests: weekly });
     const result = this.awardXP(quest.xp, `weekly_quest_${questId}`);
     try {
-      gamificationEvents.emit("challenge_completed", {
-        id: questId,
-        type: "weekly",
-        xp: quest.xp,
-      });
-    } catch {
-    }
+      gamificationEvents.emit('challenge_completed', { id: questId, type: 'weekly', xp: quest.xp });
+    } catch { /* no-op */ }
     return result;
   }
 
   // Check and award any new achievements
   processAchievements() {
     const now = Date.now();
-
+    
     // Throttle achievement checks to prevent spam
     if (now - this._lastAchievementCheck < this._achievementCheckThrottle) {
       return [];
     }
-
+    
     this._lastAchievementCheck = now;
-
+    
     const userStats = this.getUserStats();
     const newAchievements = this.checkAchievements(userStats);
 
@@ -650,6 +671,7 @@ export class GamificationService {
     try {
       const dailyChallenges = this.store?.user?.dailyChallenges || {};
       const today = new Date();
+      let streak = 0;
       const currentDate = new Date(today);
 
       // Count consecutive days with completed challenges
@@ -657,18 +679,24 @@ export class GamificationService {
         const dateString = currentDate.toDateString();
         const challengesForDay = dailyChallenges[dateString] || [];
 
+        if (challengesForDay.length === 0) {
           break;
         }
 
         streak++;
+        currentDate.setDate(currentDate.getDate() - 1);
       }
 
       return {
         current: streak,
+        longestStreak: this.store?.user?.longestStreak || 0,
+        isNewRecord: streak > (this.store?.user?.longestStreak || 0),
       };
     } catch (error) {
-      console.warn("Failed to calculate streak:", error);
+      console.warn('Failed to calculate streak:', error);
       return {
+        current: 0,
+        longestStreak: 0,
         isNewRecord: false,
       };
     }

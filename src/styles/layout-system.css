@@ -1,0 +1,297 @@
+/**
+ * NAVI Layout System - Standardized Component Layouts
+ * ==================================================
+ * Consistent layout patterns for all components
+ */
+
+/* ===== COMPONENT LAYOUT PATTERNS ===== */
+
+/* Standard Component Header */
+.component-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-glass);
+  margin-bottom: var(--space-4);
+}
+
+.component-header h1,
+.component-header h2,
+.component-header h3 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-on-glass);
+}
+
+.component-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Standard Component Body */
+.component-body {
+  padding: 0 var(--space-6) var(--space-6);
+  flex: 1;
+}
+
+/* Standard Component Footer */
+.component-footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border-glass);
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== SECTION LAYOUTS ===== */
+
+/* Dashboard Section */
+.dashboard-section {
+  margin-bottom: var(--space-8);
+}
+
+.dashboard-section .section-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-on-glass);
+  margin-bottom: var(--space-2);
+}
+
+.dashboard-section .section-subtitle {
+  font-size: var(--text-lg);
+  color: var(--text-on-glass);
+  opacity: 0.8;
+  margin-bottom: var(--space-6);
+}
+
+/* Content Section */
+.content-section {
+  margin-bottom: var(--space-6);
+}
+
+.content-section:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== GRID LAYOUTS ===== */
+
+/* Responsive Card Grid */
+.card-grid {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.card-grid-sm {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-4);
+}
+
+.card-grid-lg {
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--space-8);
+}
+
+/* Dense Grid for Data Display */
+.dense-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.dense-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.dense-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.dense-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.dense-grid-5 { grid-template-columns: repeat(5, 1fr); }
+
+/* Responsive Dense Grid */
+@media (max-width: 768px) {
+  .dense-grid-2,
+  .dense-grid-3,
+  .dense-grid-4,
+  .dense-grid-5 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dense-grid-3,
+  .dense-grid-4,
+  .dense-grid-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .dense-grid-4,
+  .dense-grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ===== FLEXBOX LAYOUTS ===== */
+
+/* Standard Flex Layouts */
+.flex-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+/* ===== CONTAINER LAYOUTS ===== */
+
+/* Gaming-specific containers */
+.container-gaming {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.container-dashboard {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.container-modal {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+.container-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-4);
+}
+
+/* ===== LAYOUT UTILITIES ===== */
+
+/* Stack Layout */
+.layout-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-stack--xs { gap: var(--space-1); }
+.layout-stack--sm { gap: var(--space-2); }
+.layout-stack--md { gap: var(--space-4); }
+.layout-stack--lg { gap: var(--space-6); }
+.layout-stack--xl { gap: var(--space-8); }
+
+/* Inline Layout */
+.layout-inline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.layout-inline--xs { gap: var(--space-1); }
+.layout-inline--sm { gap: var(--space-2); }
+.layout-inline--md { gap: var(--space-4); }
+.layout-inline--lg { gap: var(--space-6); }
+.layout-inline--xl { gap: var(--space-8); }
+
+/* Split Layout */
+.layout-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* Centered Layout */
+.layout-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.layout-centered--full {
+  min-height: 100vh;
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+
+/* Mobile-first responsive layout */
+.layout-responsive-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .layout-responsive-stack {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Responsive Grid Auto */
+.layout-auto-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* ===== GLASSMORPHIC LAYOUT INTEGRATION ===== */
+
+/* Glassmorphic Sections */
+.glass-section {
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.glass-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Glassmorphic Cards */
+.glass-card {
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+.glass-card .card-header {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.glass-card .card-body {
+  padding: 0;
+}
+
+.glass-card .card-footer {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-glass);
+}

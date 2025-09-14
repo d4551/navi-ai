@@ -1,10 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div
-    class="settings-card mb-4"
-    role="region"
-    aria-labelledby="gaming-career-title"
-  >
+  <div class="settings-card mb-4" role="region" aria-labelledby="gaming-career-title">
     <div class="card-header section-header card-header--dense">
       <h5 id="gaming-career-title" class="mb-0">
         <GameIconComponent class="me-2 icon-sm" />Gaming Career Focus
@@ -28,8 +24,7 @@
           <option value="executive">Executive/C-Suite</option>
         </select>
         <div id="career-level-help" class="form-text">
-          This helps tailor interview questions and career advice to your
-          experience level.
+          This helps tailor interview questions and career advice to your experience level.
         </div>
       </div>
 
@@ -222,9 +217,7 @@
         >
           <option value="minimal">Minimal (basic suggestions)</option>
           <option value="intermediate">Intermediate (balanced)</option>
-          <option value="comprehensive">
-            Comprehensive (detailed guidance)
-          </option>
+          <option value="comprehensive">Comprehensive (detailed guidance)</option>
         </select>
         <div id="ai-focus-level-help" class="form-text">
           How much AI assistance you want in your career development.
@@ -274,7 +267,9 @@
                 type="checkbox"
                 value="rpg"
               />
-              <label class="form-check-label" for="genre-rpg"> RPG </label>
+              <label class="form-check-label" for="genre-rpg">
+                RPG
+              </label>
             </div>
           </div>
           <div class="col-sm-6 col-md-4">
@@ -372,33 +367,33 @@
 </template>
 
 <script>
-import { GameIconComponent } from "./SettingsIcons.js";
+import { GameIconComponent } from './SettingsIcons.js'
 
 export default {
-  name: "GamingCareerSection",
+  name: 'GamingCareerSection',
   components: {
-    GameIconComponent,
+    GameIconComponent
   },
   props: {
     careerProfile: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     saving: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  emits: ["update:careerProfile", "save"],
+  emits: ['update:careerProfile', 'save'],
   computed: {
     settings: {
       get() {
-        return this.careerProfile || {};
+        return this.careerProfile || {}
       },
       set(value) {
-        this.$emit("update:careerProfile", value);
-      },
-    },
-  },
-};
+        this.$emit('update:careerProfile', value)
+      }
+    }
+  }
+}
 </script>

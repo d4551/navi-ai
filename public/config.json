@@ -1,0 +1,10 @@
+{
+  "name": "NAVI (dev)",
+  "version": "0.0.1-alpha",
+  "env": "development",
+  "features": {
+    "analytics": false,
+    "telemetry": false
+  }
+}
+

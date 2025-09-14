@@ -8,24 +8,21 @@
             <AppIcon name="mdi-radar" class="icon-cyber me-3" />
             AI Job Discovery
           </h2>
-          <p class="text-muted">
-            Intelligent job matching powered by your gaming profile and career
-            goals
-          </p>
+          <p class="text-muted">Intelligent job matching powered by your gaming profile and career goals</p>
         </div>
         <div class="discovery-actions">
-          <UnifiedButton
-            variant="gaming"
-            size="sm"
+          <UnifiedButton 
+            variant="gaming" 
+            size="sm" 
             leading-icon="mdi-brain"
             :loading="isAnalyzing"
             @click="runAIAnalysis"
           >
             Analyze Profile
           </UnifiedButton>
-          <UnifiedButton
-            variant="cyber"
-            size="sm"
+          <UnifiedButton 
+            variant="cyber" 
+            size="sm" 
             leading-icon="mdi-target"
             @click="startTargetedSearch"
           >
@@ -37,13 +34,9 @@
 
     <!-- AI Recommendations Dashboard -->
     <div class="recommendations-dashboard mb-6">
-      <div
-        class="recommendation-cards enhanced-recommendations-grid settings-grid ultra-dense-cards"
-      >
+      <div class="recommendation-cards enhanced-recommendations-grid settings-grid ultra-dense-cards">
         <!-- Skill Match Recommendation -->
-        <div
-          class="recommendation-card ultra-glass-card gaming-card ai-feature-card"
-        >
+        <div class="recommendation-card ultra-glass-card gaming-card ai-feature-card">
           <div class="recommendation-header">
             <div class="rec-icon-wrapper">
               <AppIcon name="mdi-account-star" class="rec-icon text-success" />
@@ -58,34 +51,21 @@
           </div>
           <div class="recommendation-content">
             <p class="rec-description">
-              Based on your Unity and C# expertise, we found
-              {{ aiRecommendations.skillBasedJobs }} positions that align with
-              your technical skills.
+              Based on your Unity and C# expertise, we found {{ aiRecommendations.skillBasedJobs }} positions that align with your technical skills.
             </p>
             <div class="rec-tags">
-              <span
-                v-for="skill in topSkills.slice(0, 3)"
-                :key="skill"
-                class="skill-badge blue"
-              >
+              <span v-for="skill in topSkills.slice(0, 3)" :key="skill" class="skill-badge blue">
                 {{ skill }}
               </span>
             </div>
-            <UnifiedButton
-              variant="success"
-              size="sm"
-              full-width
-              @click="viewSkillMatches"
-            >
+            <UnifiedButton variant="success" size="sm" full-width @click="viewSkillMatches">
               View {{ aiRecommendations.skillBasedJobs }} Matches
             </UnifiedButton>
           </div>
         </div>
 
         <!-- Career Growth Recommendation -->
-        <div
-          class="recommendation-card ultra-glass-card gaming-card ai-feature-card"
-        >
+        <div class="recommendation-card ultra-glass-card gaming-card ai-feature-card">
           <div class="recommendation-header">
             <div class="rec-icon-wrapper">
               <AppIcon name="mdi-trending-up" color="warning" />
@@ -100,80 +80,51 @@
           </div>
           <div class="recommendation-content">
             <p class="rec-description">
-              Senior roles at
-              {{ aiRecommendations.topStudios.join(", ") }} could increase your
-              earning potential significantly.
+              Senior roles at {{ aiRecommendations.topStudios.join(', ') }} could increase your earning potential significantly.
             </p>
             <div class="rec-progress">
               <div class="progress-label">Career Readiness</div>
               <div class="progress progress--xs">
-                <div
-                  class="progress-bar"
-                  :style="{ width: aiRecommendations.careerReadiness + '%' }"
-                ></div>
+                <div class="progress-bar" :style="{ width: aiRecommendations.careerReadiness + '%' }"></div>
               </div>
             </div>
-            <UnifiedButton
-              variant="warning"
-              size="sm"
-              full-width
-              @click="viewCareerPath"
-            >
+            <UnifiedButton variant="warning" size="sm" full-width @click="viewCareerPath">
               Explore Growth Path
             </UnifiedButton>
           </div>
         </div>
 
         <!-- Location-Based Recommendation -->
-        <div
-          class="recommendation-card ultra-glass-card gaming-card ai-feature-card"
-        >
+        <div class="recommendation-card ultra-glass-card gaming-card ai-feature-card">
           <div class="recommendation-header">
             <div class="rec-icon-wrapper">
-              <AppIcon
-                name="mdi-map-marker-radius"
-                class="rec-icon text-primary"
-              />
+              <AppIcon name="mdi-map-marker-radius" class="rec-icon text-primary" />
             </div>
             <div class="rec-meta">
               <h3 class="rec-title">Local Opportunities</h3>
               <div class="rec-stats">
-                <span class="match-percentage">{{
-                  aiRecommendations.localJobs
-                }}</span>
+                <span class="match-percentage">{{ aiRecommendations.localJobs }}</span>
                 <span class="match-label">nearby jobs</span>
               </div>
             </div>
           </div>
           <div class="recommendation-content">
             <p class="rec-description">
-              Discover gaming opportunities in your area, including
-              {{ aiRecommendations.remoteJobs }} remote positions.
+              Discover gaming opportunities in your area, including {{ aiRecommendations.remoteJobs }} remote positions.
             </p>
             <div class="location-chips">
-              <UiChip
-                v-for="location in nearbyLocations"
-                :key="location"
-                classes="chip chip-info chip-compact"
-              >
+              <UiChip v-for="location in nearbyLocations" :key="location" classes="chip chip-info chip-compact">
                 {{ location }}
               </UiChip>
             </div>
-            <UnifiedButton
-              variant="primary"
-              size="sm"
-              full-width
-              @click="viewLocationJobs"
-            >
+            <UnifiedButton variant="primary" size="sm" full-width @click="viewLocationJobs">
               Browse Local Jobs
             </UnifiedButton>
           </div>
         </div>
 
         <!-- AI-Powered Insights -->
-        <div
-          class="recommendation-card ultra-glass-card gaming-card ai-feature-card insight-card"
-        >
+        <div class="recommendation-card ultra-glass-card gaming-card ai-feature-card insight-card">
           <div class="recommendation-header">
             <div class="rec-icon-wrapper">
               <AppIcon name="mdi-lightbulb-on" class="rec-icon text-cyber" />
@@ -212,22 +163,15 @@
           <AppIcon name="mdi-filter-variant" class="icon-primary me-2" />
           Smart Job Filters
         </h3>
-        <p class="text-muted mb-0">
-          AI-enhanced filtering based on your profile and preferences
-        </p>
+        <p class="text-muted mb-0">AI-enhanced filtering based on your profile and preferences</p>
       </div>
 
-      <div
-        class="smart-filters-grid enhanced-filters-grid responsive-grid--cards-md ultra-dense-cards"
-      >
+      <div class="smart-filters-grid enhanced-filters-grid responsive-grid--cards-md ultra-dense-cards">
         <!-- Experience Level Filter -->
         <div class="filter-card ultra-glass-card gaming-card">
           <div class="filter-header">
             <h4 class="filter-title">Experience Level</h4>
-            <UiChip
-              v-if="suggestedFilters.experienceLevel"
-              classes="chip chip-success chip-compact"
-            >
+            <UiChip v-if="suggestedFilters.experienceLevel" classes="chip chip-success chip-compact">
               <AppIcon name="mdi-brain" class="text-xs me-1" />
               AI Suggested
             </UiChip>
@@ -239,10 +183,7 @@
                 :key="level.value"
                 :value="level.value"
                 :label="level.label"
-                :class="{
-                  'ai-recommended':
-                    suggestedFilters.experienceLevel === level.value,
-                }"
+                :class="{ 'ai-recommended': suggestedFilters.experienceLevel === level.value }"
               />
             </v-radio-group>
           </div>
@@ -252,11 +193,7 @@
         <div class="filter-card ultra-glass-card gaming-card">
           <div class="filter-header">
             <h4 class="filter-title">Role Type</h4>
-            <UnifiedButton
-              variant="ghost"
-              size="xs"
-              @click="analyzeRolePreferences"
-            >
+            <UnifiedButton variant="ghost" size="xs" @click="analyzeRolePreferences">
               <AppIcon name="mdi-brain" class="me-1" />
               Analyze
             </UnifiedButton>
@@ -267,26 +204,15 @@
                 v-for="role in gameRoles"
                 :key="role.value"
                 class="role-chip"
-                :class="{
-                  active: filters.roles.includes(role.value),
-                  'ai-recommended': suggestedFilters.roles.includes(role.value),
+                :class="{ active: filters.roles.includes(role.value),
+                          'ai-recommended': suggestedFilters.roles.includes(role.value)
                 }"
                 @click="toggleRole(role.value)"
               >
                 <AppIcon :name="role.icon" class="role-icon me-2" />
                 {{ role.label }}
-                <span
-                  v-if="role.demand === 'high'"
-                  class="demand-indicator high"
-                ><AppIcon name="mdi-fire" size="small" color="warning" /></span>
-                <span
-                  v-if="role.demand === 'growing'"
-                  class="demand-indicator growing"
-                ><AppIcon
-                  name="mdi-trending-up"
-                  color="success"
-                  aria-hidden="true"
-                /></span>
+                <span v-if="role.demand === 'high'" class="demand-indicator high"><AppIcon name="mdi-fire" size="small" color="warning" /></span>
+                <span v-if="role.demand === 'growing'" class="demand-indicator growing"><AppIcon name="mdi-trending-up" color="success" aria-hidden="true" /></span>
               </div>
             </div>
           </div>
@@ -296,39 +222,25 @@
         <div class="filter-card ultra-glass-card gaming-card">
           <div class="filter-header">
             <h4 class="filter-title">Tech Stack</h4>
-            <UiChip classes="chip chip-info chip-compact">
-              Match: {{ techStackMatch }}%
-            </UiChip>
+            <UiChip classes="chip chip-info chip-compact">Match: {{ techStackMatch }}%</UiChip>
           </div>
           <div class="filter-content">
             <div class="tech-categories">
-              <div
-                v-for="category in techCategories"
-                :key="category.name"
-                class="tech-category"
-              >
+              <div v-for="category in techCategories" :key="category.name" class="tech-category">
                 <h5 class="category-name">{{ category.name }}</h5>
                 <div class="tech-chips">
                   <div
                     v-for="tech in category.technologies"
                     :key="tech.name"
                     class="tech-chip"
-                    :class="{
-                      active: filters.technologies.includes(tech.name),
-                      'user-skill': userSkills.includes(tech.name),
+                    :class="{ active: filters.technologies.includes(tech.name),
+                              'user-skill': userSkills.includes(tech.name)
                     }"
                     @click="toggleTechnology(tech.name)"
                   >
-                    <AppIcon
-                      v-if="tech.icon"
-                      :name="tech.icon"
-                      class="tech-icon me-1"
-                    />
+                    <AppIcon v-if="tech.icon" :name="tech.icon" class="tech-icon me-1" />
                     {{ tech.name }}
-                    <span
-                      v-if="userSkills.includes(tech.name)"
-                      class="skill-match-indicator"
-                    ><AppIcon name="mdi-check" size="small" color="success" /></span>
+                    <span v-if="userSkills.includes(tech.name)" class="skill-match-indicator"><AppIcon name="mdi-check" size="small" color="success" /></span>
                   </div>
                 </div>
               </div>
@@ -355,9 +267,7 @@
                 </div>
                 <div class="culture-info">
                   <div class="culture-name">{{ culture.name }}</div>
-                  <div class="culture-description">
-                    {{ culture.description }}
-                  </div>
+                  <div class="culture-description">{{ culture.description }}</div>
                 </div>
               </div>
             </div>
@@ -377,17 +287,12 @@
             <p class="text-muted mb-0">Sorted by AI compatibility score</p>
           </div>
           <div class="view-options">
-            <UnifiedButton
-              variant="glass"
-              size="sm"
-              leading-icon="mdi-sort"
-              @click="showSortOptions = !showSortOptions"
-            >
+            <UnifiedButton variant="glass" size="sm" leading-icon="mdi-sort" @click="showSortOptions = !showSortOptions">
               Sort Options
             </UnifiedButton>
           </div>
         </div>
-
+        
         <Transition name="slide-down">
           <div v-if="showSortOptions" class="sort-options mt-3">
             <v-radio-group v-model="sortBy" inline density="compact">
@@ -416,8 +321,8 @@
 
       <!-- Load More Results -->
       <div v-if="hasMoreJobs" class="load-more-section text-center mt-6">
-        <UnifiedButton
-          variant="gaming"
+        <UnifiedButton 
+          variant="gaming" 
           size="lg"
           :loading="isLoadingMore"
           @click="loadMoreJobs"
@@ -433,13 +338,7 @@
       <div class="ai-chat-container">
         <div class="ai-chat-header">
           <h4>Job Discovery Assistant</h4>
-          <UnifiedButton
-            variant="ghost"
-            size="sm"
-            icon-only
-            icon="mdi-close"
-            @click="showAIChat = false"
-          />
+          <UnifiedButton variant="ghost" size="sm" icon-only icon="mdi-close" @click="showAIChat = false" />
         </div>
         <div class="ai-chat-content">
           <!-- AI Chat component would be integrated here -->
@@ -448,24 +347,10 @@
               v-for="message in chatMessages"
               :key="message.id"
               class="chat-message"
-              :class="[
-                message.type,
-                {
-                  'message-user': message.type === 'user',
-                  'message-ai': message.type === 'ai',
-                },
-              ]"
+              :class="[message.type, { 'message-user': message.type === 'user', 'message-ai': message.type === 'ai' }]"
             >
               <div class="message-avatar">
-                <AppIcon
-                  :name="
-                    message.type === 'user'
-                      ? 'mdi-account'
-                      : message.type === 'ai'
-                        ? 'mdi-robot'
-                        : 'mdi-information'
-                  "
-                />
+                <AppIcon :name="message.type === 'user' ? 'mdi-account' : message.type === 'ai' ? 'mdi-robot' : 'mdi-information'" />
               </div>
               <div class="message-content">
                 <div class="message-text">{{ message.content }}</div>
@@ -481,11 +366,7 @@
               @keyup.enter="sendChatMessage"
             >
               <template #append-inner>
-                <UnifiedButton
-                  variant="ghost"
-                  size="sm"
-                  @click="sendChatMessage"
-                >
+                <UnifiedButton variant="ghost" size="sm" @click="sendChatMessage">
                   <AppIcon name="mdi-send" />
                 </UnifiedButton>
               </template>
@@ -498,35 +379,35 @@
 </template>
 
 <script setup lang="ts">
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UiChip from "@/components/ui/UiChip.vue";
+import AppIcon from '@/components/ui/AppIcon.vue';
+import UiChip from '@/components/ui/UiChip.vue'
 
-import { ref, onMounted, reactive, computed } from "vue";
-import { useRouter } from "vue-router";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import JobDiscoveryCard from "@/components/ui/JobDiscoveryCard.vue";
+import { ref, onMounted, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import JobDiscoveryCard from '@/components/ui/JobDiscoveryCard.vue'
 
-const router = useRouter();
+const router = useRouter()
 
 // Reactive state
-const isAnalyzing = ref(false);
-const isLoadingMore = ref(false);
-const showSortOptions = ref(false);
-const showAIChat = ref(false);
-const sortBy = ref("ai-score");
-const chatInput = ref("");
-const currentInsightIndex = ref(0);
+const isAnalyzing = ref(false)
+const isLoadingMore = ref(false)
+const showSortOptions = ref(false)
+const showAIChat = ref(false)
+const sortBy = ref('ai-score')
+const chatInput = ref('')
+const currentInsightIndex = ref(0)
 
 // Filters
 const filters = reactive({
-  experienceLevel: "",
+  experienceLevel: '',
   roles: [] as string[],
   technologies: [] as string[],
   culture: [] as string[],
   salaryRange: [50000, 200000],
-  location: "",
-  remote: false,
-});
+  location: '',
+  remote: false
+})
 
 // AI Recommendations
 const aiRecommendations = reactive({
@@ -536,297 +417,260 @@ const aiRecommendations = reactive({
   careerReadiness: 78,
   localJobs: 12,
   remoteJobs: 156,
-  topStudios: ["Epic Games", "Riot Games", "Valve"],
-});
+  topStudios: ['Epic Games', 'Riot Games', 'Valve']
+})
 
 // Suggested filters based on AI analysis
 const suggestedFilters = reactive({
-  experienceLevel: "senior",
-  roles: ["game-developer", "technical-lead"],
-  technologies: ["Unity", "C#", "Unreal Engine"],
-});
+  experienceLevel: 'senior',
+  roles: ['game-developer', 'technical-lead'],
+  technologies: ['Unity', 'C#', 'Unreal Engine']
+})
 
 // Mock data
-const topSkills = ["Unity", "C#", "Unreal Engine", "JavaScript", "Python"];
-const userSkills = ["Unity", "C#", "Blender", "JavaScript", "Git"];
-const nearbyLocations = ["San Francisco", "Los Angeles", "Seattle"];
+const topSkills = ['Unity', 'C#', 'Unreal Engine', 'JavaScript', 'Python']
+const userSkills = ['Unity', 'C#', 'Blender', 'JavaScript', 'Git']
+const nearbyLocations = ['San Francisco', 'Los Angeles', 'Seattle']
 
 const experienceLevels = [
-  { label: "Entry Level (0-2 years)", value: "entry" },
-  { label: "Mid Level (2-5 years)", value: "mid" },
-  { label: "Senior (5+ years)", value: "senior" },
-  { label: "Lead/Principal", value: "lead" },
-];
+  { label: 'Entry Level (0-2 years)', value: 'entry' },
+  { label: 'Mid Level (2-5 years)', value: 'mid' },
+  { label: 'Senior (5+ years)', value: 'senior' },
+  { label: 'Lead/Principal', value: 'lead' }
+]
 
 const gameRoles = [
-  {
-    label: "Game Developer",
-    value: "game-developer",
-    icon: "mdi-code-braces",
-    demand: "high",
-  },
-  {
-    label: "Game Designer",
-    value: "game-designer",
-    icon: "mdi-palette",
-    demand: "growing",
-  },
-  {
-    label: "Technical Artist",
-    value: "technical-artist",
-    icon: "mdi-brush",
-    demand: "high",
-  },
-  {
-    label: "QA Engineer",
-    value: "qa-engineer",
-    icon: "mdi-bug",
-    demand: "growing",
-  },
-  {
-    label: "Producer",
-    value: "producer",
-    icon: "mdi-account-tie",
-    demand: "moderate",
-  },
-  {
-    label: "UI/UX Designer",
-    value: "ui-designer",
-    icon: "mdi-monitor-dashboard",
-    demand: "high",
-  },
-];
+  { label: 'Game Developer', value: 'game-developer', icon: 'mdi-code-braces', demand: 'high' },
+  { label: 'Game Designer', value: 'game-designer', icon: 'mdi-palette', demand: 'growing' },
+  { label: 'Technical Artist', value: 'technical-artist', icon: 'mdi-brush', demand: 'high' },
+  { label: 'QA Engineer', value: 'qa-engineer', icon: 'mdi-bug', demand: 'growing' },
+  { label: 'Producer', value: 'producer', icon: 'mdi-account-tie', demand: 'moderate' },
+  { label: 'UI/UX Designer', value: 'ui-designer', icon: 'mdi-monitor-dashboard', demand: 'high' }
+]
 
 const techCategories = [
   {
-    name: "Game Engines",
+    name: 'Game Engines',
     technologies: [
-      { name: "Unity", icon: "mdi-unity" },
-      { name: "Unreal Engine", icon: "mdi-unreal" },
-      { name: "Godot", icon: "mdi-gamepad-variant" },
-    ],
+      { name: 'Unity', icon: 'mdi-unity' },
+      { name: 'Unreal Engine', icon: 'mdi-unreal' },
+      { name: 'Godot', icon: 'mdi-gamepad-variant' }
+    ]
   },
   {
-    name: "Programming Languages",
+    name: 'Programming Languages',
     technologies: [
-      { name: "C#", icon: "mdi-language-csharp" },
-      { name: "C++", icon: "mdi-language-cpp" },
-      { name: "JavaScript", icon: "mdi-language-javascript" },
-      { name: "Python", icon: "mdi-language-python" },
-    ],
+      { name: 'C#', icon: 'mdi-language-csharp' },
+      { name: 'C++', icon: 'mdi-language-cpp' },
+      { name: 'JavaScript', icon: 'mdi-language-javascript' },
+      { name: 'Python', icon: 'mdi-language-python' }
+    ]
   },
   {
-    name: "Art & Design",
+    name: 'Art & Design',
     technologies: [
-      { name: "Blender", icon: "mdi-blender-software" },
-      { name: "Maya", icon: "mdi-cube-outline" },
-      { name: "Photoshop", icon: "mdi-image-edit" },
-    ],
-  },
-];
+      { name: 'Blender', icon: 'mdi-blender-software' },
+      { name: 'Maya', icon: 'mdi-cube-outline' },
+      { name: 'Photoshop', icon: 'mdi-image-edit' }
+    ]
+  }
+]
 
 const cultureTypes = [
   {
-    name: "Innovative",
-    value: "innovative",
-    icon: "mdi-lightbulb",
-    description: "Cutting-edge projects and creative freedom",
+    name: 'Innovative',
+    value: 'innovative',
+    icon: 'mdi-lightbulb',
+    description: 'Cutting-edge projects and creative freedom'
   },
   {
-    name: "Collaborative",
-    value: "collaborative",
-    icon: "mdi-account-group",
-    description: "Team-focused with open communication",
+    name: 'Collaborative',
+    value: 'collaborative',
+    icon: 'mdi-account-group',
+    description: 'Team-focused with open communication'
   },
   {
-    name: "Work-Life Balance",
-    value: "work-life-balance",
-    icon: "mdi-scale-balance",
-    description: "Flexible hours and remote work options",
+    name: 'Work-Life Balance',
+    value: 'work-life-balance',
+    icon: 'mdi-scale-balance',
+    description: 'Flexible hours and remote work options'
   },
   {
-    name: "Growth-Oriented",
-    value: "growth-oriented",
-    icon: "mdi-trending-up",
-    description: "Learning opportunities and career advancement",
-  },
-];
+    name: 'Growth-Oriented',
+    value: 'growth-oriented',
+    icon: 'mdi-trending-up',
+    description: 'Learning opportunities and career advancement'
+  }
+]
 
 const aiInsights = [
   {
     text: "Your Unity skills are in high demand. Consider highlighting your multiplayer game development experience.",
-    actionable: true,
+    actionable: true
   },
   {
     text: "Remote positions in game development have increased by 40% this year. Expand your search radius.",
-    actionable: true,
+    actionable: true
   },
   {
     text: "Companies are seeking developers with both technical and creative skills. Your art background is an advantage.",
-    actionable: false,
+    actionable: false
   },
   {
     text: "Consider learning Unreal Engine - it's featured in 60% of AAA studio job postings.",
-    actionable: true,
-  },
-];
+    actionable: true
+  }
+]
 
-const currentInsight = computed(() => aiInsights[currentInsightIndex.value]);
+const currentInsight = computed(() => aiInsights[currentInsightIndex.value])
 
 // Mock jobs data
 const filteredJobs = ref([
   {
-    id: "1",
-    title: "Senior Unity Developer",
-    company: "Epic Games",
-    location: "Remote",
-    description:
-      "Lead Unity development on high-profile titles and mentor junior engineers.",
-    experienceLevel: "Senior",
-    type: "Full-time",
+    id: '1',
+    title: 'Senior Unity Developer',
+    company: 'Epic Games',
+    location: 'Remote',
+    description: 'Lead Unity development on high-profile titles and mentor junior engineers.',
+    experienceLevel: 'Senior',
+    type: 'Full-time',
     postedDate: new Date().toISOString(),
     aiScore: 95,
-    matchReasons: ["Unity expertise", "C# proficiency", "AAA experience"],
-  },
+    matchReasons: ['Unity expertise', 'C# proficiency', 'AAA experience']
+  }
   // More job data would be here
-]);
+])
 
-const displayedJobs = computed(() => filteredJobs.value.slice(0, 20));
-const hasMoreJobs = computed(() => filteredJobs.value.length > 20);
+const displayedJobs = computed(() => filteredJobs.value.slice(0, 20))
+const hasMoreJobs = computed(() => filteredJobs.value.length > 20)
 
 const techStackMatch = computed(() => {
-  const matchingTechs = filters.technologies.filter((tech) =>
-    userSkills.includes(tech),
-  );
-  return Math.round(
-    (matchingTechs.length / Math.max(filters.technologies.length, 1)) * 100,
-  );
-});
+  const matchingTechs = filters.technologies.filter(tech => userSkills.includes(tech))
+  return Math.round((matchingTechs.length / Math.max(filters.technologies.length, 1)) * 100)
+})
 
 const chatMessages = ref([
   {
     id: 1,
-    type: "ai",
-    content:
-      "Hi! I can help you discover the perfect gaming job opportunities. What are you looking for?",
-  },
-]);
+    type: 'ai',
+    content: 'Hi! I can help you discover the perfect gaming job opportunities. What are you looking for?'
+  }
+])
 
 // Methods
 const runAIAnalysis = async () => {
-  isAnalyzing.value = true;
+  isAnalyzing.value = true
   // Simulate AI analysis
   setTimeout(() => {
-    isAnalyzing.value = false;
+    isAnalyzing.value = false
     // Update recommendations with fresh data
-  }, 2000);
-};
+  }, 2000)
+}
 
 const startTargetedSearch = () => {
-  showAIChat.value = true;
-};
+  showAIChat.value = true
+}
 
 const viewSkillMatches = () => {
-  router.push("/jobs?filter=skill-match");
-};
+  router.push('/jobs?filter=skill-match')
+}
 
 const viewCareerPath = () => {
-  router.push("/career-path");
-};
+  router.push('/career-path')
+}
 
 const viewLocationJobs = () => {
-  router.push("/jobs?filter=location");
-};
+  router.push('/jobs?filter=location')
+}
 
 const nextInsight = () => {
-  currentInsightIndex.value =
-    (currentInsightIndex.value + 1) % aiInsights.length;
-};
+  currentInsightIndex.value = (currentInsightIndex.value + 1) % aiInsights.length
+}
 
 const applyInsight = () => {
   if (currentInsight.value.actionable) {
     // Apply the insight as a filter or action
   }
-};
+}
 
 const toggleRole = (role: string) => {
-  const index = filters.roles.indexOf(role);
+  const index = filters.roles.indexOf(role)
   if (index > -1) {
-    filters.roles.splice(index, 1);
+    filters.roles.splice(index, 1)
   } else {
-    filters.roles.push(role);
+    filters.roles.push(role)
   }
-};
+}
 
 const toggleTechnology = (tech: string) => {
-  const index = filters.technologies.indexOf(tech);
+  const index = filters.technologies.indexOf(tech)
   if (index > -1) {
-    filters.technologies.splice(index, 1);
+    filters.technologies.splice(index, 1)
   } else {
-    filters.technologies.push(tech);
+    filters.technologies.push(tech)
   }
-};
+}
 
 const toggleCulture = (culture: string) => {
-  const index = filters.culture.indexOf(culture);
+  const index = filters.culture.indexOf(culture)
   if (index > -1) {
-    filters.culture.splice(index, 1);
+    filters.culture.splice(index, 1)
   } else {
-    filters.culture.push(culture);
+    filters.culture.push(culture)
   }
-};
+}
 
 const analyzeRolePreferences = () => {
   // AI analysis of user's role preferences based on profile
-};
+}
 
 const loadMoreJobs = () => {
-  isLoadingMore.value = true;
+  isLoadingMore.value = true
   setTimeout(() => {
-    isLoadingMore.value = false;
-  }, 1000);
-};
+    isLoadingMore.value = false
+  }, 1000)
+}
 
 const sendChatMessage = () => {
-  if (!chatInput.value.trim()) return;
-
+  if (!chatInput.value.trim()) return
+  
   chatMessages.value.push({
     id: Date.now(),
-    type: "user",
-    content: chatInput.value,
-  });
-
+    type: 'user',
+    content: chatInput.value
+  })
+  
   // Simulate AI response
   setTimeout(() => {
     chatMessages.value.push({
       id: Date.now(),
-      type: "ai",
-      content: "Let me analyze the job market for that specific requirement...",
-    });
-  }, 1000);
-
-  chatInput.value = "";
-};
+      type: 'ai',
+      content: 'Let me analyze the job market for that specific requirement...'
+    })
+  }, 1000)
+  
+  chatInput.value = ''
+}
 
 const handleJobApplication = (job: any) => {
-  router.push(`/jobs/${job.id}/apply`);
-};
+  router.push(`/jobs/${job.id}/apply`)
+}
 
 const handleJobSave = (_job: any) => {
   // Save job logic
-};
+}
 
 const handleJobDetails = (job: any) => {
-  router.push(`/jobs/${job.id}`);
-};
+  router.push(`/jobs/${job.id}`)
+}
 
 const handleInterviewPrep = (job: any) => {
-  router.push(`/interview-prep?job=${job.id}`);
-};
+  router.push(`/interview-prep?job=${job.id}`)
+}
 
 onMounted(() => {
-  runAIAnalysis();
-});
+  runAIAnalysis()
+})
 </script>
 
 <style scoped>
@@ -938,11 +782,7 @@ onMounted(() => {
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--clear-warning),
-    var(--clear-success)
-  );
+  background: linear-gradient(90deg, var(--clear-warning), var(--clear-success));
   border-radius: var(--radius-full);
   transition: width var(--duration-normal) ease;
 }
@@ -976,12 +816,7 @@ onMounted(() => {
   align-items: center;
   gap: var(--spacing-1-5);
   background: var(--glass-bg);
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--color-info-500, var(--color-info)) 60%,
-      transparent
-    );
+  border: 1px solid color-mix(in srgb, var(--color-info-500, var(--color-info)) 60%, transparent);
   color: var(--color-info-500, var(--color-info));
   padding: var(--spacing-1) var(--spacing-2);
   border-radius: var(--radius-full);
@@ -1027,12 +862,7 @@ onMounted(() => {
   align-items: center;
   gap: var(--spacing-1-5);
   background: var(--glass-bg);
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--color-success-500, var(--color-success)) 60%,
-      transparent
-    );
+  border: 1px solid color-mix(in srgb, var(--color-success-500, var(--color-success)) 60%, transparent);
   color: var(--color-success-500, var(--color-success));
   padding: 2px 6px;
   border-radius: var(--radius-full);
@@ -1074,7 +904,7 @@ onMounted(() => {
 }
 
 .role-chip.ai-recommended::after {
-  content: "✨";
+  content: '✨';
   position: absolute;
   top: -5px;
   right: -5px;
@@ -1137,12 +967,7 @@ onMounted(() => {
   align-items: center;
   gap: var(--spacing-1-5);
   background: var(--glass-bg);
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--color-info-500, var(--color-info)) 60%,
-      transparent
-    );
+  border: 1px solid color-mix(in srgb, var(--color-info-500, var(--color-info)) 60%, transparent);
   color: var(--color-info-500, var(--color-info));
   padding: 2px 8px;
   border-radius: var(--radius-full);
@@ -1260,32 +1085,44 @@ onMounted(() => {
   z-index: 2;
 }
 
+/* Subtle top glint line */
 .ai-chat-header::before {
-  content: "";
+  content: '';
   position: absolute;
-  background: linear-gradient(
-    transparent,
-    transparent
-  );
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary-500) 20%, transparent), transparent);
+  opacity: 0.28;
   pointer-events: none;
 }
 
 .ai-chat-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 400px;
 }
 
 .chat-messages {
+  flex: 1;
+  padding: var(--spacing-4);
   overflow-y: auto;
+  space-y: var(--spacing-3);
   background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(var(--glass-backdrop-blur));
   -webkit-backdrop-filter: blur(var(--glass-backdrop-blur));
 }
 
 .chat-message {
+  padding: var(--spacing-3) var(--spacing-4);
   border-radius: var(--radius-card);
+  max-width: 80%;
   display: flex;
+  gap: var(--spacing-3);
 }
 
 .chat-message.user,
@@ -1302,73 +1139,53 @@ onMounted(() => {
 }
 
 .message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-.message-content {
-  overflow-wrap: anywhere;
-}
-.message-text {
-  white-space: pre-wrap;
-}
-.message-text a {
-  text-decoration: underline;
-}
-.message-text code {
-  font-family: var(
-    --font-mono,
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    "Liberation Mono",
-    "Courier New",
-    monospace
-  );
-  background: var(--surface-elevated);
-}
-.message-text pre {
-  font-family: var(
-    --font-mono,
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    "Liberation Mono",
-    "Courier New",
-    monospace
-  );
-  background: var(--surface-elevated);
-  overflow: auto;
-  white-space: pre;
-}
+.message-content { flex: 1; overflow-wrap: anywhere; }
+.message-text { white-space: pre-wrap; }
+.message-text a { color: var(--color-primary-500); text-decoration: underline; }
+.message-text code { font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace); background: var(--surface-elevated); border: 1px solid var(--glass-border); border-radius: 4px; padding: 0 4px; }
+.message-text pre { font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace); background: var(--surface-elevated); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; overflow: auto; white-space: pre; }
 
 .chat-input {
+  padding: var(--spacing-4);
+  border-top: 1px solid var(--glass-border);
   background: linear-gradient(
     to top,
+    color-mix(in srgb, var(--glass-bg) 80%, transparent),
     var(--glass-bg)
   );
   backdrop-filter: var(--glass-backdrop-blur-md);
   -webkit-backdrop-filter: var(--glass-backdrop-blur-md);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .interactive-job-discovery {
+    padding: var(--spacing-4);
   }
 
   .discovery-actions {
     flex-direction: column;
+    gap: var(--spacing-2);
   }
 
   .enhanced-recommendations-grid,
   .enhanced-filters-grid {
+    /* Responsive grid handled by utility classes */
   }
 
   .enhanced-job-grid {
+    /* Responsive grid handled by utility classes */
   }
 
   .role-chips,
@@ -1377,6 +1194,8 @@ onMounted(() => {
   }
 
   .ai-chat-container {
+    width: 95vw;
+    max-height: 90vh;
   }
 }
 </style>

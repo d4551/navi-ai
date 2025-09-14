@@ -5,12 +5,11 @@
         v-for="toast in toasts"
         :key="toast.id"
         class="toast-item"
-        :class="[
-          `toast-${toast.type}`,
-          {
-            'toast-dismissible': toast.dismissible,
-            'toast-paused': toast.paused,
-          },
+        :class="[ `toast-${toast.type}`,
+                  {
+                    'toast-dismissible': toast.dismissible,
+                    'toast-paused': toast.paused,
+                  },
         ]"
         role="alert"
         :aria-live="toast.type === 'error' ? 'assertive' : 'polite'"
@@ -65,7 +64,7 @@
 
 <script>
 import { ref } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import AppIcon from '@/components/ui/AppIcon.vue';
 import { reportError } from "@/utils/error";
 import { useToast } from "@/composables/useToast";
 
@@ -257,6 +256,7 @@ export default {
   }
 }
 
+/* Toast type styles */
 .toast-success {
   color: var(--color-success);
   border-left-color: var(--color-success);
@@ -277,14 +277,17 @@ export default {
   border-left-color: var(--color-info);
 }
 
+/* Dark theme glass look */
 [data-theme="dark"] :deep(.toast-item),
 :root:not([data-theme]) :deep(.toast-item) {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
   box-shadow:
     var(--glass-shadow-elevated-dark),
+    0 0 0 1px var(--glass-border-dark);
 }
 
+/* WCAG 2.2 - Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   .toast-enter-active,
   .toast-leave-active {
@@ -297,6 +300,7 @@ export default {
   }
 }
 
+/* WCAG 2.2 - Reduced Transparency Support */
 @media (prefers-reduced-transparency: reduce) {
   .toast-item {
     background: var(--bg-primary) !important;
@@ -309,25 +313,39 @@ export default {
   }
 
   .toast-item::before {
+    opacity: 0 !important;
   }
 }
 
+/* Transition animations */
 .toast-enter-active {
+  transition: all 0.3s ease-out;
 }
 
 .toast-leave-active {
+  transition: all 0.3s ease-in;
 }
 
 .toast-enter-from {
+  opacity: 0;
+  transform: translateX(100%);
 }
 
 .toast-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
 }
 
 .toast-move {
+  transition: transform 0.3s ease;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
   .toast-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
     max-width: none;
   }
 
@@ -336,12 +354,15 @@ export default {
   }
 
   .toast-title {
+    font-size: 0.85rem;
   }
 
   .toast-text {
+    font-size: 0.8rem;
   }
 }
 
+/* Dark mode support (explicit and system) */
 [data-theme="dark"] .toast-item,
 :root:not([data-theme]) .toast-item {
   background: var(--bg-primary);
@@ -369,8 +390,10 @@ export default {
   color: var(--text-primary);
 }
 
+/* High contrast mode */
 @media (prefers-contrast: high) {
   .toast-item {
+    border-width: 3px;
     border-style: solid;
   }
 }

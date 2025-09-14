@@ -1,4 +1,4 @@
-// API Schemas Module
+// API Schemas Module  
 // Centralized schema definitions for all API endpoints
 
 // Job Search Schemas
@@ -6,8 +6,8 @@ export interface JobSearchRequest {
   query?: string;
   location?: string;
   remote?: boolean;
-  jobType?: "full-time" | "part-time" | "contract" | "internship";
-  experience?: "entry" | "mid" | "senior" | "lead";
+  jobType?: 'full-time' | 'part-time' | 'contract' | 'internship';
+  experience?: 'entry' | 'mid' | 'senior' | 'lead';
   salary?: {
     min?: number;
     max?: number;
@@ -35,7 +35,7 @@ export interface Job {
   location: string;
   remote: boolean;
   hybrid?: boolean;
-  jobType: "full-time" | "part-time" | "contract" | "internship";
+  jobType: 'full-time' | 'part-time' | 'contract' | 'internship';
   experience?: string;
   salary?: string | SalaryRange;
   description?: string;
@@ -55,12 +55,12 @@ export interface SalaryRange {
   min: number;
   max: number;
   currency?: string;
-  frequency?: "yearly" | "monthly" | "hourly";
+  frequency?: 'yearly' | 'monthly' | 'hourly';
 }
 
 // Resume Schemas
 export interface ResumeExportRequest {
-  format: "pdf" | "docx" | "html" | "json";
+  format: 'pdf' | 'docx' | 'html' | 'json';
   template?: string;
   sections?: string[];
 }
@@ -74,7 +74,7 @@ export interface ResumeExportResponse {
 
 // Portfolio Schemas
 export interface PortfolioExportRequest {
-  format: "pdf" | "html" | "json";
+  format: 'pdf' | 'html' | 'json';
   projects?: string[];
   includeImages?: boolean;
 }
@@ -88,7 +88,7 @@ export interface PortfolioExportResponse {
 
 // AI Model Schemas
 export interface AIModelRequest {
-  provider: "gemini" | "openai" | "anthropic";
+  provider: 'gemini' | 'openai' | 'anthropic';
   model: string;
   prompt: string;
   context?: Record<string, any>;
@@ -150,8 +150,8 @@ export interface ResumeScoreResponse {
 export interface CoverLetterRequest {
   job: Job;
   resume: Record<string, any>;
-  tone?: "professional" | "casual" | "enthusiastic";
-  length?: "short" | "medium" | "long";
+  tone?: 'professional' | 'casual' | 'enthusiastic';
+  length?: 'short' | 'medium' | 'long';
   customPoints?: string[];
 }
 
@@ -166,8 +166,8 @@ export interface CoverLetterResponse {
 export interface InterviewPrepRequest {
   job: Job;
   resume: Record<string, any>;
-  interviewType?: "phone" | "video" | "in-person" | "technical";
-  focus?: "behavioral" | "technical" | "mixed";
+  interviewType?: 'phone' | 'video' | 'in-person' | 'technical';
+  focus?: 'behavioral' | 'technical' | 'mixed';
 }
 
 export interface InterviewPrepResponse {

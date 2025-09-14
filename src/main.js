@@ -55,7 +55,7 @@ import { createAnimationFallback } from "./utils/effects";
 // Initialize animation fallbacks early to prevent errors
 try {
   createAnimationFallback();
-} catch (e) {
+} catch (_e) {
   logger.debug("Animation fallback init failed (non-critical)", e);
 }
 
@@ -97,7 +97,7 @@ try {
 } catch {}
 
 // AI Integration Plugin
-import { createAIIntegrationPlugin } from "./composables/aiIntegration.js";
+import { createAIIntegrationPlugin } from "./composables/useAIIntegration.js";
 app.use(createAIIntegrationPlugin({ router }));
 
 // Make UI config globally available
@@ -108,7 +108,7 @@ setActivePinia(pinia);
 const store = useAppStore();
 try {
   store.loadFromStorage();
-} catch (e) {
+} catch (_e) {
   logger.warn("Failed to load saved state:", e);
 }
 
@@ -143,7 +143,7 @@ try {
   if (import.meta.env.DEV) {
     logBrowserCompatibility();
   }
-} catch (e) {
+} catch (_e) {
   logger.debug("Browser compatibility check failed (non-critical):", e);
 }
 
@@ -152,7 +152,7 @@ try {
   try {
     await migrationManager.migrateToLatest();
     logger.info("Database migrations completed successfully");
-  } catch (e) {
+  } catch (_e) {
     logger.error("Database migration failed:", e);
   }
 })();
@@ -191,7 +191,7 @@ try {
             } else {
               throw new Error(result.message || "AI initialization failed");
             }
-          } catch (error) {
+          } catch (_error) {
             store.updateAiStatus({
               initialized: false,
               lastError: error.message,
@@ -200,7 +200,7 @@ try {
           }
         }
       })
-      .catch((e) => {
+      .catch((_e) => {
         logger.debug("AI service import failed (non-critical):", e);
       });
   } else {
@@ -223,19 +223,19 @@ try {
               });
               logger.info("AI service initialized with environment API key");
             }
-          } catch (error) {
+          } catch (_error) {
             logger.debug(
               "Environment API key initialization failed:",
               error.message,
             );
           }
         })
-        .catch((e) => {
+        .catch((_e) => {
           logger.debug("AI service import failed (non-critical):", e);
         });
     }
   }
-} catch (e) {
+} catch (_e) {
   logger.debug("AI service auto-initialization failed (non-critical):", e);
 }
 // Sync voice routing preferences from store (avoid top-level await for build targets)
@@ -250,10 +250,10 @@ try {
         lang: store.settings?.voiceLang,
       }),
     )
-    .catch((e) => {
+    .catch((_e) => {
       logger.debug("Failed to sync voice routing prefs (non-critical)", e);
     });
-} catch (e) {
+} catch (_e) {
   logger.debug("Voice routing import failed (non-critical)", e);
 }
 // Initialize unified theme system
@@ -262,7 +262,7 @@ import("./shared/composables/useUnifiedTheme")
     initializeUnifiedThemeGlobal();
     logger.info("🎨 Unified theme system initialized successfully");
   })
-  .catch((e) => {
+  .catch((_e) => {
     logger.debug("Unified theme initialization failed (non-critical):", e);
   });
 
@@ -298,7 +298,7 @@ try {
           try {
             NProgress.start();
             appNPStarted = true;
-          } catch (e) {
+          } catch (_e) {
             logger.debug("App NProgress start failed:", e);
           }
         }, TIMEOUTS.QUICK);
@@ -310,7 +310,7 @@ try {
         if (appNPStarted) {
           try {
             NProgress.done();
-          } catch (e) {
+          } catch (_e) {
             logger.debug("App NProgress done failed:", e);
           }
           appNPStarted = false;
@@ -319,7 +319,7 @@ try {
     },
     { immediate: false },
   );
-} catch (e) {
+} catch (_e) {
   logger.debug("NProgress watch setup failed:", e);
 }
 
@@ -372,7 +372,7 @@ store.$subscribe((_mutation, state) => {
                 lastError: null,
               });
               logger.debug("AI service re-initialized after settings change");
-            } catch (error) {
+            } catch (_error) {
               store.updateAiStatus?.({
                 initialized: false,
                 lastError: error.message,
@@ -381,17 +381,17 @@ store.$subscribe((_mutation, state) => {
             }
           }
         })
-        .catch((e) => {
+        .catch((_e) => {
           logger.debug("AI client re-initialization failed (non-critical):", e);
         });
     }
-  } catch (e) {
+  } catch (_e) {
     logger.debug("AI service re-initialization failed (non-critical):", e);
   }
 });
 
 // Global error handler
-app.config.errorHandler = (error, _instance, info) => {
+app.config.errorHandler = (_error, _instance, info) => {
   logger.error("Global error:", error);
   logger.error("Component info:", info);
 
@@ -405,7 +405,7 @@ app.config.errorHandler = (error, _instance, info) => {
 
   // Log to external service if available
   if (window.errorTracker) {
-    window.errorTracker.captureException(error, {
+    window.errorTracker.captureException(_error, {
       extra: { info, route: router.currentRoute.value.name },
     });
   }
@@ -438,7 +438,7 @@ setTimeout(() => {
       samMaxEasterEggs.initialize();
       logger.debug("Sam & Max easter eggs initialized successfully");
     }
-  } catch (e) {
+  } catch (_e) {
     logger.debug(
       "Sam & Max easter eggs initialization failed (non-critical):",
       e,

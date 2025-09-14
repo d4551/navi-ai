@@ -1,12 +1,12 @@
 <template>
   <div v-if="show" class="loading-overlay" :class="{ fullscreen: fullscreen }">
-    <div class="loading-content">
+    <div class="loading-content glass-strong p-6 rounded-xl text-center">
       <div class="spinner-container">
         <div class="spinner" :class="size" />
         <div class="spinner-glow" :class="size" />
       </div>
 
-      <div v-if="message" class="loading-message">
+      <div v-if="message" class="loading-message text-glass-enhanced font-medium mt-4">
         {{ message }}
       </div>
 
@@ -25,16 +25,14 @@
       </div>
 
       <div v-if="showCancel" class="mt-3">
-        <UnifiedButton variant="outline" size="sm" @click="$emit('cancel')">
-          Cancel
-        </UnifiedButton>
+        <UnifiedButton variant="outline" size="sm" @click="$emit('cancel')">Cancel</UnifiedButton>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 export default {
   name: "LoadingIndicator",
   components: { UnifiedButton },
@@ -202,11 +200,14 @@ export default {
   transition: width 0.3s ease;
 }
 
+/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .loading-overlay {
+    background-color: rgba(26, 26, 26, 0.9);
   }
 
   .loading-overlay.fullscreen {
+    background-color: rgba(26, 26, 26, 0.95);
   }
 
   .loading-message {
@@ -222,6 +223,7 @@ export default {
   }
 }
 
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .spinner {
     animation: none;
@@ -230,6 +232,7 @@ export default {
 
   .spinner-glow {
     animation: none;
+    opacity: 0.2;
   }
 
   .progress-bar {

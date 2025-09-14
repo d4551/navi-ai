@@ -1,36 +1,41 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+/**
+ * Web fallback Gemini service for non-Electron environments
+ * Minimal implementation to support aiClient.js fallbacks
+ */
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export default class GeminiService {
+  constructor(apiKey, model = 'gemini-2.5-flash') {
     this.apiKey = apiKey;
     this.model = model;
+    this.baseUrl = 'https://generativelanguage.googleapis.com/v1';
     this.client = new GoogleGenerativeAI(apiKey);
 
     // simple in-memory cache and metrics
     this._cache = new Map();
     this._metrics = {
+      requestCount: 0,
+      errorCount: 0,
+      averageLatency: 0,
+      lastLatency: 0,
     };
   }
 
   validateApiKey() {
     // Basic sanity check: Gemini keys are typically long; enforce min length and allowed chars
-    if (
-      !this.apiKey ||
-      typeof this.apiKey !== "string" ||
-    ) {
-      throw new Error("Invalid API key format");
+    if (!this.apiKey || typeof this.apiKey !== 'string' || this.apiKey.length < 15) {
+      throw new Error('Invalid API key format');
     }
     return true;
   }
 
   async generateContent(prompt, systemInstructions, options = {}) {
-    const key = options.useCache
-      ? JSON.stringify({ p: prompt, s: systemInstructions })
-      : null;
+    const key = options.useCache ? JSON.stringify({ p: prompt, s: systemInstructions }) : null;
     if (key && this._cache.has(key)) {
       return this._cache.get(key);
     }
 
-    const contents = systemInstructions
+    const contents = systemInstructions 
       ? `${systemInstructions}\n---\n${prompt}`
       : prompt;
 
@@ -38,19 +43,21 @@ export default class GeminiService {
     try {
       const model = this.client.getGenerativeModel({ model: this.model });
       const result = await model.generateContent(contents);
-      const text = result?.response?.text() ?? "";
+      const text = result?.response?.text() ?? '';
 
       // metrics
       const latency = Date.now() - start;
       this._metrics.lastLatency = latency;
       this._metrics.averageLatency =
+        (this._metrics.averageLatency * this._metrics.requestCount + latency) /
+        (this._metrics.requestCount + 1);
+      this._metrics.requestCount += 1;
 
-      if (key) {
-        this._cache.set(key, text);
-      }
+      if (key) {this._cache.set(key, text);}
       return text;
     } catch (err) {
       // metrics
+      this._metrics.errorCount += 1;
       // normalize error messages to match tests
       if (err?.response?.data?.error?.message) {
         throw new Error(err.response.data.error.message);
@@ -66,11 +73,7 @@ export default class GeminiService {
   }
 
   async generateStructuredContent(prompt, systemInstructions, options = {}) {
-    const text = await this.generateContent(
-      prompt,
-      systemInstructions,
-      options,
-    );
+    const text = await this.generateContent(prompt, systemInstructions, options);
     try {
       return JSON.parse(text);
     } catch {
@@ -92,12 +95,13 @@ export default class GeminiService {
     return { ...this._metrics };
   }
 
-    const contents = systemInstructions
+  async *streamGenerate(prompt, systemInstructions, _options = {}) {
+    const contents = systemInstructions 
       ? `${systemInstructions}\n---\n${prompt}`
       : prompt;
     const model = this.client.getGenerativeModel({ model: this.model });
     const result = await model.generateContentStream(contents);
-    let total = "";
+    let total = '';
 
     for await (const chunk of result.stream) {
       const chunkText = chunk.text();

@@ -296,7 +296,7 @@ function getBrowserLanguage() {
   return Object.keys(messages).includes(langCode) ? langCode : "en";
 }
 
-
+// Create i18n instance
 export const i18n = createI18n({
   legacy: false, // Use Composition API mode
   locale: getBrowserLanguage(),
@@ -305,12 +305,12 @@ export const i18n = createI18n({
   globalInjection: true,
 });
 
-
+// Composable for using i18n
 export function useI18n() {
   return i18n.global;
 }
 
-
+// Helper functions
 export const t = (key, ...args) => {
   return i18n.global.t(key, ...args);
 };
@@ -319,9 +319,7 @@ export const setLanguage = (locale) => {
   if (messages[locale]) {
     i18n.global.locale.value = locale;
     // Save using unified storage
-    try {
-      unifiedStorage.set("navi_language", locale);
-    } catch {}
+    try { unifiedStorage.set("navi_language", locale); } catch {}
     return true;
   }
   return false;

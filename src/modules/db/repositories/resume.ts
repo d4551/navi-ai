@@ -1,7 +1,7 @@
 // Resume Repository - Database operations for resume management
 // Centralized resume data persistence and versioning
 
-import { unifiedStorage } from "@/utils/storage";
+import { unifiedStorage } from '@/utils/storage';
 
 export interface Resume {
   id: string;
@@ -69,33 +69,29 @@ export interface Resume {
 }
 
 export class ResumeRepository {
-  private static readonly STORE_KEY = "resume";
-  private static readonly VERSIONS_KEY = "resumeVersions";
-  private static readonly TEMPLATES_KEY = "resumeTemplates";
+  private static readonly STORE_KEY = 'resume';
+  private static readonly VERSIONS_KEY = 'resumeVersions';
+  private static readonly TEMPLATES_KEY = 'resumeTemplates';
 
   static async get(): Promise<Resume | null> {
     const resume = await unifiedStorage.get(this.STORE_KEY);
     return resume || null;
   }
 
-  static async create(
-    resumeData: Omit<Resume, "id" | "version" | "createdAt" | "updatedAt">,
-  ): Promise<Resume> {
+  static async create(resumeData: Omit<Resume, 'id' | 'version' | 'createdAt' | 'updatedAt'>): Promise<Resume> {
     const resume: Resume = {
       ...resumeData,
-      id:
-        typeof globalThis !== "undefined" &&
-        (globalThis as any).crypto?.randomUUID
-          ? (globalThis as any).crypto.randomUUID()
-          : `resume_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+      id: ((typeof globalThis !== 'undefined' && (globalThis as any).crypto?.randomUUID)
+        ? (globalThis as any).crypto.randomUUID()
+        : `resume_${Date.now()}_${Math.random().toString(36).slice(2)}`),
       version: 1,
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     };
-
+    
     await unifiedStorage.set(this.STORE_KEY, resume);
     await this.saveVersion(resume);
-
+    
     return resume;
   }
 
@@ -107,12 +103,12 @@ export class ResumeRepository {
       ...current,
       ...updates,
       version: current.version + 1,
-      updatedAt: new Date(),
+      updatedAt: new Date()
     };
-
+    
     await unifiedStorage.set(this.STORE_KEY, updated);
     await this.saveVersion(updated);
-
+    
     return updated;
   }
 
@@ -130,15 +126,15 @@ export class ResumeRepository {
   static async saveVersion(resume: Resume): Promise<void> {
     const versions = await this.getVersions();
     versions.push(resume);
-
-
+    
+    // Keep only last 10 versions
     const recentVersions = versions.slice(-10);
     await unifiedStorage.set(this.VERSIONS_KEY, recentVersions);
   }
 
   static async getVersion(version: number): Promise<Resume | null> {
     const versions = await this.getVersions();
-    return versions.find((v) => v.version === version) || null;
+    return versions.find(v => v.version === version) || null;
   }
 
   static async restoreVersion(version: number): Promise<Resume | null> {
@@ -148,83 +144,71 @@ export class ResumeRepository {
     const restored: Resume = {
       ...versionData,
       version: ((await this.get())?.version ?? 0) + 1,
-      updatedAt: new Date(),
+      updatedAt: new Date()
     };
-
+    
     await unifiedStorage.set(this.STORE_KEY, restored);
     await this.saveVersion(restored);
-
+    
     return restored;
   }
 
   // Template management
-  static async getTemplates(): Promise<
-    Array<{ id: string; name: string; description: string }>
-  > {
+  static async getTemplates(): Promise<Array<{id: string, name: string, description: string}>> {
     const templates = await unifiedStorage.get(this.TEMPLATES_KEY);
-    return Array.isArray(templates)
-      ? templates
-      : [
-          {
-            id: "modern",
-            name: "Modern Professional",
-            description:
-              "Clean, modern design with emphasis on technical skills",
-          },
-          {
-            id: "creative",
-            name: "Creative Gaming",
-            description: "Vibrant design tailored for creative roles in gaming",
-          },
-          {
-            id: "technical",
-            name: "Technical Focus",
-            description: "Detailed technical sections for engineering roles",
-          },
-          {
-            id: "minimal",
-            name: "Minimal Classic",
-            description: "Simple, clean layout focusing on content",
-          },
-        ];
+    return Array.isArray(templates) ? templates : [
+      {
+        id: 'modern',
+        name: 'Modern Professional',
+        description: 'Clean, modern design with emphasis on technical skills'
+      },
+      {
+        id: 'creative',
+        name: 'Creative Gaming',
+        description: 'Vibrant design tailored for creative roles in gaming'
+      },
+      {
+        id: 'technical',
+        name: 'Technical Focus',
+        description: 'Detailed technical sections for engineering roles'
+      },
+      {
+        id: 'minimal',
+        name: 'Minimal Classic',
+        description: 'Simple, clean layout focusing on content'
+      }
+    ];
   }
 
-  static async saveTemplate(template: {
-    id: string;
-    name: string;
-    description: string;
-  }): Promise<void> {
+  static async saveTemplate(template: {id: string, name: string, description: string}): Promise<void> {
     const templates = await this.getTemplates();
-    const existing = templates.findIndex((t) => t.id === template.id);
-
+    const existing = templates.findIndex(t => t.id === template.id);
+    
     if (existing >= 0) {
       templates[existing] = template;
     } else {
       templates.push(template);
     }
-
+    
     await unifiedStorage.set(this.TEMPLATES_KEY, templates);
   }
 
-
-  static async export(
-    format: "pdf" | "docx" | "html" | "json",
-    _template?: string,
-  ): Promise<{
+  // Export functionality
+  static async export(format: 'pdf' | 'docx' | 'html' | 'json', _template?: string): Promise<{
     format: string;
     data: string;
     filename: string;
     contentType: string;
   }> {
     const resume = await this.get();
-    if (!resume) throw new Error("No resume found to export");
+    if (!resume) throw new Error('No resume found to export');
 
     const filename = `resume.${format}`;
     const contentTypes = {
-      pdf: "application/pdf",
-      docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      html: "text/html",
-      json: "application/json",
+      'pdf': 'application/pdf',
+      'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'html': 'text/html',
+      'json': 'application/json'
     };
 
     // For now, return JSON data - would integrate with actual export libraries
@@ -232,7 +216,7 @@ export class ResumeRepository {
       format,
       data: JSON.stringify(resume, null, 2),
       filename,
-      contentType: contentTypes[format],
+      contentType: contentTypes[format]
     };
   }
 }

@@ -7,7 +7,8 @@
 
 <script setup>
 // Thin wrapper to the unified DocumentBuilder to remove duplication
-import DocumentBuilder from "@/views/DocumentBuilder.vue";
+import DocumentBuilder from '@/views/DocumentBuilder.vue'
 </script>
 
 <style scoped></style>
+

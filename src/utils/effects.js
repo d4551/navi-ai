@@ -33,7 +33,7 @@ export async function initEffects() {
   loadPromise = (async () => {
     try {
       // Load anime.js from local package
-      const mod = await import("animejs");
+      const mod = await import('animejs');
       animeLib = mod.default || mod;
       if (typeof window !== "undefined") {
         window.anime = animeLib;
@@ -138,8 +138,7 @@ export async function confettiBurst({
 
   // Pull colors from unified tokens (no inline hex)
   const css = getComputedStyle(document.documentElement);
-  const token = (name, fallback) =>
-    (css.getPropertyValue(name) || fallback || "").trim();
+  const token = (name, fallback) => (css.getPropertyValue(name) || fallback || "").trim();
   const colors = [
     token("--color-primary"),
     token("--color-primary-alt", token("--color-info")),
@@ -179,7 +178,7 @@ export async function confettiBurst({
   });
 }
 
-
+// Helper function to ensure anime.js is loaded before use
 export async function ensureAnimeLoaded() {
   if (animeLib) {
     return animeLib;

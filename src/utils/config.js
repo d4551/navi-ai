@@ -3,12 +3,7 @@
 // Canonical support contact (update domain centrally when changed)
 export const SUPPORT_EMAIL = "support@geminicv.com";
 export const GEMINI_API_BASE = "https://generativelanguage.googleapis.com";
-export const FALLBACK_MODELS = [
-  "gemini-2.5-flash",
-  "gemini-2.5-pro",
-  "gemini-1.5-flash",
-  "gemini-1.5-pro",
-];
+export const FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-1.5-flash", "gemini-1.5-pro"];
 
 // Centralized timeouts to avoid magic numbers
 export const TIMEOUTS = {

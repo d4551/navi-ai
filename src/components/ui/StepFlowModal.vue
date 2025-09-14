@@ -33,22 +33,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import StepFlow, { type StepFlowStep } from "@/components/ui/StepFlow.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { computed } from 'vue'
+import StepFlow, { type StepFlowStep } from '@/components/ui/StepFlow.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 interface Props {
-  show: boolean;
-  title: string;
-  icon?: string;
-  steps: StepFlowStep[];
-  modelValue?: number;
-  maxReachable?: number;
-  busy?: boolean;
-  maxWidth?: number | string;
-  orientation?: "horizontal" | "vertical";
-  primaryVariant?: "primary" | "gaming" | "outline";
+  show: boolean
+  title: string
+  icon?: string
+  steps: StepFlowStep[]
+  modelValue?: number
+  maxReachable?: number
+  busy?: boolean
+  maxWidth?: number | string
+  orientation?: 'horizontal' | 'vertical'
+  primaryVariant?: 'primary' | 'gaming' | 'outline'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -56,29 +56,22 @@ const props = withDefaults(defineProps<Props>(), {
   maxReachable: 0,
   busy: false,
   maxWidth: 820,
-  orientation: "horizontal",
-  primaryVariant: "primary",
-});
+  orientation: 'horizontal',
+  primaryVariant: 'primary'
+})
 
 const emit = defineEmits<{
-  (e: "update:show", v: boolean): void;
-  (e: "update:modelValue", v: number): void;
-  (e: "finish"): void;
-}>();
+  (e: 'update:show', v: boolean): void
+  (e: 'update:modelValue', v: number): void
+  (e: 'finish'): void
+}>()
 
-const visible = computed({
-  get: () => props.show,
-  set: (v) => emit("update:show", v),
-});
-const idx = computed({
-  get: () => props.modelValue,
-  set: (v) => emit("update:modelValue", v),
-});
+const visible = computed({ get: () => props.show, set: (v) => emit('update:show', v) })
+const idx = computed({ get: () => props.modelValue, set: (v) => emit('update:modelValue', v) })
 
-function close() {
-  visible.value = false;
-}
+function close() { visible.value = false }
 </script>
 
 <style scoped>
+/* Minimal wrapper styles (uses Vuetify card/dialog) */
 </style>

@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{ classes?: string }>(), { classes: "" });
+withDefaults(defineProps<{classes?: string}>(), { classes: '' })
 </script>

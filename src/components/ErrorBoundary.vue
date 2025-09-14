@@ -1,27 +1,27 @@
 <template>
-  <div v-if="hasError" class="error-boundary">
-    <div class="container-fluid p-4">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card border-danger">
-            <div class="card-header section-header bg-danger text-white">
-              <h5 class="mb-0">
-                <AppIcon name="mdi-alert" class="me-2" />
-                Something went wrong
-              </h5>
+  <div v-if="hasError" class="error-boundary min-h-screen flex items-center justify-center p-4">
+    <div class="container-md">
+      <div class="flex justify-center">
+        <div class="w-full max-w-md">
+          <div class="glass-strong p-6 rounded-xl neon-red">
+            <div class="text-center mb-4">
+              <div class="flex items-center justify-center gap-2 mb-2">
+                <AppIcon name="mdi-alert" class="text-neon-red text-2xl" />
+                <h2 class="text-xl font-bold text-glass-enhanced">Something went wrong</h2>
+              </div>
             </div>
-            <div class="card-body section-body">
+            <div class="text-center text-glass-enhanced">
               <p class="mb-3">
                 We encountered an unexpected error. This has been logged and our
                 team will investigate.
               </p>
 
-              <div v-if="showDetails" class="alert alert-light">
-                <h6>Error Details:</h6>
-                <pre class="small mb-0">{{ errorDetails }}</pre>
+              <div v-if="showDetails" class="glass p-3 rounded-lg mt-4 text-left">
+                <h6 class="font-medium text-glass-enhanced mb-2">Error Details:</h6>
+                <pre class="text-sm font-mono text-glass-enhanced overflow-auto">{{ errorDetails }}</pre>
               </div>
 
-              <div class="d-flex gap-2 flex-wrap">
+              <div class="flex gap-3 flex-wrap justify-center mt-6">
                 <UnifiedButton
                   data-test="retry-button"
                   variant="primary"
@@ -43,14 +43,10 @@
                 <UnifiedButton
                   data-test="toggle-details-button"
                   variant="outline-info"
-                  :icon="
-                    showDetails
-                      ? 'mdi mdi-eye-off-outline'
-                      : 'mdi mdi-information-outline'
-                  "
+                  :icon="showDetails ? 'mdi mdi-eye-off-outline' : 'mdi mdi-information-outline'"
                   @click="showDetails = !showDetails"
                 >
-                  {{ showDetails ? "Hide" : "Show" }} Details
+                  {{ showDetails ? 'Hide' : 'Show' }} Details
                 </UnifiedButton>
 
                 <UnifiedButton
@@ -77,7 +73,7 @@
 <script>
 import { ref, onErrorCaptured, computed as _computed } from "vue";
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import AppIcon from '@/components/ui/AppIcon.vue';
 import { buildSupportMailto } from "@/utils/config";
 import { logger } from "@/shared/utils/logger";
 import { useRouter, useRoute } from "vue-router";
@@ -89,20 +85,20 @@ export default {
   props: {
     fallbackText: {
       type: String,
-      default: "Something went wrong",
+      default: "Something went wrong"
     },
     showRetry: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showReport: {
       type: Boolean,
-      default: true,
+      default: true
     },
     maxRetries: {
       type: Number,
-      default: 3,
-    },
+      default: 3
+    }
   },
   setup(_props) {
     const router = useRouter();
@@ -112,75 +108,56 @@ export default {
     const errorDetails = ref("");
     const showDetails = ref(false);
     const retryCount = ref(0);
-    const errorSeverity = ref("medium");
-    const errorCategory = ref("unknown");
+    const errorSeverity = ref('medium');
+    const errorCategory = ref('unknown');
     const recoveryStrategies = ref([]);
 
     // Categorize error for better user experience
     const categorizeError = (error, info) => {
-      const errorMessage = error?.message?.toLowerCase() || "";
-      const _errorStack = error?.stack?.toLowerCase() || "";
-      const componentInfo = info?.toLowerCase() || "";
+      const errorMessage = error?.message?.toLowerCase() || '';
+      const _errorStack = error?.stack?.toLowerCase() || '';
+      const componentInfo = info?.toLowerCase() || '';
 
       // Network/API errors
-      if (
-        errorMessage.includes("network") ||
-        errorMessage.includes("fetch") ||
-        errorMessage.includes("api") ||
-        errorMessage.includes("timeout")
-      ) {
-        errorCategory.value = "network";
-        recoveryStrategies.value = ["retry", "check-connection", "refresh"];
-        errorSeverity.value = "medium";
+      if (errorMessage.includes('network') || errorMessage.includes('fetch') ||
+          errorMessage.includes('api') || errorMessage.includes('timeout')) {
+        errorCategory.value = 'network';
+        recoveryStrategies.value = ['retry', 'check-connection', 'refresh'];
+        errorSeverity.value = 'medium';
       }
       // Authentication errors
-      else if (
-        errorMessage.includes("auth") ||
-        errorMessage.includes("unauthorized") ||
-        errorMessage.includes("forbidden") ||
-        errorMessage.includes("login")
-      ) {
-        errorCategory.value = "auth";
-        recoveryStrategies.value = ["login", "refresh-token"];
-        errorSeverity.value = "high";
+      else if (errorMessage.includes('auth') || errorMessage.includes('unauthorized') ||
+               errorMessage.includes('forbidden') || errorMessage.includes('login')) {
+        errorCategory.value = 'auth';
+        recoveryStrategies.value = ['login', 'refresh-token'];
+        errorSeverity.value = 'high';
       }
       // Resource errors
-      else if (
-        errorMessage.includes("chunk") ||
-        errorMessage.includes("module") ||
-        errorMessage.includes("import") ||
-        errorMessage.includes("script")
-      ) {
-        errorCategory.value = "resource";
-        recoveryStrategies.value = ["reload", "clear-cache"];
-        errorSeverity.value = "high";
+      else if (errorMessage.includes('chunk') || errorMessage.includes('module') ||
+               errorMessage.includes('import') || errorMessage.includes('script')) {
+        errorCategory.value = 'resource';
+        recoveryStrategies.value = ['reload', 'clear-cache'];
+        errorSeverity.value = 'high';
       }
       // Memory/performance errors
-      else if (
-        errorMessage.includes("memory") ||
-        errorMessage.includes("quota") ||
-        errorMessage.includes("performance")
-      ) {
-        errorCategory.value = "performance";
-        recoveryStrategies.value = ["reload", "clear-data"];
-        errorSeverity.value = "medium";
+      else if (errorMessage.includes('memory') || errorMessage.includes('quota') ||
+               errorMessage.includes('performance')) {
+        errorCategory.value = 'performance';
+        recoveryStrategies.value = ['reload', 'clear-data'];
+        errorSeverity.value = 'medium';
       }
       // Data validation errors
-      else if (
-        errorMessage.includes("validation") ||
-        errorMessage.includes("invalid") ||
-        errorMessage.includes("schema") ||
-        componentInfo.includes("form")
-      ) {
-        errorCategory.value = "validation";
-        recoveryStrategies.value = ["form-check", "reset-form"];
-        errorSeverity.value = "low";
+      else if (errorMessage.includes('validation') || errorMessage.includes('invalid') ||
+               errorMessage.includes('schema') || componentInfo.includes('form')) {
+        errorCategory.value = 'validation';
+        recoveryStrategies.value = ['form-check', 'reset-form'];
+        errorSeverity.value = 'low';
       }
       // Generic errors
       else {
-        errorCategory.value = "generic";
-        recoveryStrategies.value = ["retry", "reload"];
-        errorSeverity.value = "medium";
+        errorCategory.value = 'generic';
+        recoveryStrategies.value = ['retry', 'reload'];
+        errorSeverity.value = 'medium';
       }
     };
 
@@ -188,10 +165,10 @@ export default {
       // Performance tracking
       performanceMonitor.recordMetric("error", 1, {
         message: error.message,
-        component: instance?.$options?.name || "unknown",
+        component: instance?.$options?.name || 'unknown',
         route: route.name,
         severity: errorSeverity.value,
-        category: errorCategory.value,
+        category: errorCategory.value
       });
 
       logger.error("Error caught by boundary:", {
@@ -201,7 +178,7 @@ export default {
         info,
         route: route.name,
         userAgent: navigator.userAgent,
-        timestamp: new Date().toISOString(),
+        timestamp: new Date().toISOString()
       });
 
       // Categorize the error
@@ -219,14 +196,14 @@ export default {
             route: route.name,
             category: errorCategory.value,
             severity: errorSeverity.value,
-            retryCount: retryCount.value,
+            retryCount: retryCount.value
           },
           tags: {
             component: instance?.$options?.name,
             route: route.name,
             category: errorCategory.value,
-            severity: errorSeverity.value,
-          },
+            severity: errorSeverity.value
+          }
         });
       }
 

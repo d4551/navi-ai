@@ -58,7 +58,7 @@ export function useToast() {
     });
   };
 
-
+  // Loading toast (returns a function to update/dismiss)
   const loading = (message = "Loading...", options = {}) => {
     const id = toast.info(message, {
       ...defaultOptions,
@@ -234,7 +234,7 @@ export function useToast() {
       setTimeout(() => {
         toast.dismiss(id);
         resolve(false);
-      }, 10000);
+      }, 10000); // 10 seconds
     });
   };
 

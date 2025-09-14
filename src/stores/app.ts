@@ -706,6 +706,104 @@ export const useAppStore = defineStore("app", {
   },
 
   actions: {
+    // Wrapper for async Settings.vue calls; ensures Promise-based API
+    async saveSettings(settings: Partial<Settings>): Promise<boolean> {
+      try {
+        const ok = this.updateSettings(settings)
+        if (ok && this.settings.autoSave) {
+          await this.saveToStorage()
+        }
+        return ok
+      } catch (e: any) {
+        logger.error('saveSettings failed:', e)
+        this.setError('api', 'Failed to save settings')
+        return false
+      }
+    },
+
+    // Wrapper to save user profile data (Promise-based for UI flows)
+    async saveUserProfile(profile: Partial<User>): Promise<boolean> {
+      try {
+        const ok = this.updateUser(profile)
+        if (ok && this.settings.autoSave) {
+          await this.saveToStorage()
+        }
+        return ok
+      } catch (e: any) {
+        logger.error('saveUserProfile failed:', e)
+        this.setError('api', 'Failed to save profile')
+        return false
+      }
+    },
+
+    // Test current Gemini API key connectivity
+    async testGeminiApiKey(): Promise<{ success: boolean; message: string; details?: any }> {
+      try {
+        const { resolveGeminiApiKey, testApiKey } = await import('@/shared/utils/apiKeys')
+        const key = (this.settings?.geminiApiKey && this.settings.geminiApiKey.trim()) || (await resolveGeminiApiKey()) || ''
+        if (!key) return { success: false, message: 'API key is required' }
+        const res = await testApiKey(key, 'gemini')
+        this.updateAiStatus({ initialized: !!res.success, lastError: res.success ? null : res.message })
+        return res
+      } catch (e: any) {
+        const msg = e?.message || 'Unknown error'
+        this.updateAiStatus({ initialized: false, lastError: msg })
+        return { success: false, message: msg }
+      }
+    },
+
+    // Persist API key and initialize related caches/utilities
+    async connectGeminiApi(): Promise<boolean> {
+      try {
+        // Ensure key is stored in all expected locations for downstream utilities
+        const key = this.settings?.geminiApiKey?.trim()
+        if (key) {
+          try {
+            localStorage.setItem('gemini_api_key', key)
+          } catch {}
+          try {
+            // Some utilities check an aggregated 'app-settings' blob
+            const raw = localStorage.getItem('app-settings')
+            const parsed = raw ? JSON.parse(raw) : {}
+            parsed.geminiApiKey = key
+            localStorage.setItem('app-settings', JSON.stringify(parsed))
+          } catch {}
+        }
+        const result = await this.testGeminiApiKey()
+        if (result.success) {
+          this.updateAiStatus({ initialized: true, lastError: null })
+          // Optionally warm model cache
+          try { await this.loadAvailableModels() } catch {}
+          return true
+        }
+        return false
+      } catch (e: any) {
+        logger.error('connectGeminiApi failed:', e)
+        this.updateAiStatus({ initialized: false, lastError: e?.message || 'Failed to connect API' })
+        return false
+      }
+    },
+
+    // Fetch available Gemini models and cache them
+    async loadAvailableModels(): Promise<void> {
+      try {
+        // Use cache first
+        this.loadAvailableModelsFromCache()
+        const key = (this.settings?.geminiApiKey && this.settings.geminiApiKey.trim()) || null
+        if (!key) return
+        const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`
+        const resp = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+        if (!resp.ok) {
+          const txt = await resp.text().catch(() => '')
+          throw new Error(`Models request failed (${resp.status}): ${resp.statusText} ${txt}`)
+        }
+        const data = await resp.json().catch(() => ({}))
+        const models = Array.isArray(data?.models) ? data.models : []
+        this.setAvailableModels(models)
+      } catch (e: any) {
+        logger.warn('loadAvailableModels failed:', e?.message || e)
+      }
+    },
     // Cache and expose available models globally
     setAvailableModels(models: any[]): void {
       try {

@@ -1,3 +1,6 @@
+/**
+ * TypeScript declarations for AI Button Integration Composable
+ */
 
 export interface AIButtonConfig {
   action: string;
@@ -41,23 +44,22 @@ export interface AIButtonsComposable {
   // State
   loadingStates: ComputedRef<LoadingStates>;
   buttonStates: ComputedRef<ButtonStates>;
-
+  
   // Page configurations
   getButtonsForPage: (page: string) => AIButtonConfig[];
   getButtonsByPosition: (page: string, position: string) => AIButtonConfig[];
-
+  
   // Actions
-    actionConfig: AIButtonConfig,
-    customContext?: any,
-  ) => Promise<any>;
+  executeAIAction: (actionConfig: AIButtonConfig, customContext?: any) => Promise<any>;
   quickActions: QuickActions;
   ensureAIReady: () => Promise<boolean>;
-
+  
   // Utilities
   createButtonProps: (config: AIButtonConfig, additionalContext?: any) => any;
   addAIButtonToSection: (sectionRef: any, buttonConfig: AIButtonConfig) => any;
 }
 
+declare function useAIButtons(pageName?: string): AIButtonsComposable;
 
 export { useAIButtons };
 export default useAIButtons;

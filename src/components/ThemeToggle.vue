@@ -9,9 +9,7 @@
       :leading-icon="theme?.getThemeIcon?.() || 'mdi-monitor'"
       @click="theme?.cycleTheme?.()"
     >
-      <span class="theme-label">{{
-        theme?.getThemeDisplayName?.() || "System"
-      }}</span>
+      <span class="theme-label">{{ theme?.getThemeDisplayName?.() || 'System' }}</span>
     </UnifiedButton>
 
     <!-- Optional Density Toggle -->
@@ -29,10 +27,7 @@
 
     <!-- Device Info (dev mode only) -->
     <div v-if="showDeviceInfo" class="device-info">
-      <span
-        class="device-badge"
-        :class="`device-${responsive.deviceType.value}`"
-      >
+      <span class="device-badge" :class="`device-${responsive.deviceType.value}`">
         {{ responsive.deviceType.value }}
       </span>
       <span class="breakpoint-badge">
@@ -46,54 +41,44 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
-import { useResponsive } from "@/composables/useResponsive";
-import { useUnifiedUI } from "@/composables/useUnifiedUI";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { computed } from 'vue'
+import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
+import { useResponsive } from '@/composables/useResponsive'
+import { useUnifiedUI } from '@/composables/useUnifiedUI'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 interface Props {
-  showDeviceInfo?: boolean;
-  compact?: boolean;
-  showDensity?: boolean;
+  showDeviceInfo?: boolean
+  compact?: boolean
+  showDensity?: boolean
 }
 
-const { showDeviceInfo = false, showDensity = false } = defineProps<Props>();
+const { showDeviceInfo = false, showDensity = false } = defineProps<Props>()
 
 // Use the unified theme system
-const theme = useUnifiedTheme();
-const responsive = useResponsive();
-const ui = useUnifiedUI();
+const theme = useUnifiedTheme()
+const responsive = useResponsive()
+const ui = useUnifiedUI()
 
 const themeToggleLabel = computed(() => {
-  const current = theme?.getThemeDisplayName?.() || "System";
-  const mode = theme?.themeMode?.value || "system";
-  const next = mode === "light" ? "Dark" : mode === "dark" ? "System" : "Light";
-  return `Switch from ${current} to ${next} theme`;
-});
+  const current = theme?.getThemeDisplayName?.() || 'System'
+  const mode = theme?.themeMode?.value || 'system'
+  const next = mode === 'light' ? 'Dark' : mode === 'dark' ? 'System' : 'Light'
+  return `Switch from ${current} to ${next} theme`
+})
 
 const densityLabel = computed(() => {
-  const d = ui.density.value;
-  return d === "compact"
-    ? "Compact"
-    : d === "comfortable"
-      ? "Comfortable"
-      : "Normal";
-});
+  const d = ui.density.value
+  return d === 'compact' ? 'Compact' : d === 'comfortable' ? 'Comfortable' : 'Normal'
+})
 
-const densityToggleLabel = computed(
-  () => `Cycle density (current: ${densityLabel.value})`,
-);
+const densityToggleLabel = computed(() => `Cycle density (current: ${densityLabel.value})`)
 
 const densityIcon = computed(() => {
-  const d = ui.density.value;
-  return d === "compact"
-    ? "mdi-format-line-weight"
-    : d === "comfortable"
-      ? "mdi-format-line-spacing"
-      : "mdi-equal";
-});
+  const d = ui.density.value
+  return d === 'compact' ? 'mdi-format-line-weight' : d === 'comfortable' ? 'mdi-format-line-spacing' : 'mdi-equal'
+})
 </script>
 
 <style scoped>
@@ -163,13 +148,19 @@ const densityIcon = computed(() => {
   font-size: var(--font-size-xs);
 }
 
+/* Enhanced Dark Theme Support */
 [data-theme="dark"] .theme-toggle-container button,
 .dark-theme .theme-toggle-container button {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
 }
 
 [data-theme="dark"] .theme-toggle-container button:hover,
 .dark-theme .theme-toggle-container button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 [data-theme="dark"] .theme-label,
@@ -177,24 +168,30 @@ const densityIcon = computed(() => {
   color: var(--text-primary);
 }
 
+/* Gaming theme enhancement */
 .theme-gaming .theme-toggle-container button {
-  background: linear-gradient(
-  );
+  border: 1px solid var(--border-gaming);
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 217, 255, 0.03));
 }
 
 .theme-gaming .theme-toggle-container button:hover {
   box-shadow: var(--shadow-glow-gaming);
 }
 
+/* System theme support */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .theme-toggle-container button {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
   }
-
+  
   :root:not([data-theme="light"]) .theme-toggle-container button:hover {
+    background: rgba(255, 255, 255, 0.1);
   }
 }
 
+/* Theme transition animation */
 .theme-toggle-container button {
   transition: all var(--duration-normal) var(--easing-ease-out);
   position: relative;
@@ -202,21 +199,24 @@ const densityIcon = computed(() => {
 }
 
 .theme-toggle-container button::before {
-  content: "";
+  content: '';
   position: absolute;
-  background: linear-gradient(
-    transparent,
-    transparent
-  );
+  inset: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s var(--easing-ease-out);
 }
 
 .theme-toggle-container button:hover::before {
+  transform: translateX(100%);
 }
 
+/* Hide labels on very small screens */
+@media (max-width: 480px) {
   .theme-label {
     display: none;
   }
-
+  
   .device-info {
     display: none;
   }

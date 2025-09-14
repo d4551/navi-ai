@@ -19,10 +19,10 @@
             <AppIcon name="mdi-camera-plus" />
             <span>Add Photo</span>
           </div>
-          <input
-            ref="photoInput"
-            type="file"
-            accept="image/*"
+          <input 
+            ref="photoInput" 
+            type="file" 
+            accept="image/*" 
             style="display: none"
             @change="handlePhotoUpload"
           />
@@ -33,7 +33,7 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label required">First Name</label>
-          <input
+          <input 
             v-model="formData.firstName"
             type="text"
             class="form-input"
@@ -41,14 +41,12 @@
             placeholder="Enter your first name"
             required
           />
-          <div v-if="errors.firstName" class="error-message">
-            {{ errors.firstName }}
-          </div>
+          <div v-if="errors.firstName" class="error-message">{{ errors.firstName }}</div>
         </div>
-
+        
         <div class="form-group">
           <label class="form-label required">Last Name</label>
-          <input
+          <input 
             v-model="formData.lastName"
             type="text"
             class="form-input"
@@ -56,34 +54,30 @@
             placeholder="Enter your last name"
             required
           />
-          <div v-if="errors.lastName" class="error-message">
-            {{ errors.lastName }}
-          </div>
+          <div v-if="errors.lastName" class="error-message">{{ errors.lastName }}</div>
         </div>
       </div>
 
       <!-- Professional Title -->
       <div class="form-group">
         <label class="form-label">Professional Title</label>
-        <input
+        <input 
           v-model="formData.title"
           type="text"
           class="form-input"
           placeholder="e.g., Software Engineer, Marketing Manager"
         />
-        <div class="form-help">
-          This will appear below your name on the resume
-        </div>
+        <div class="form-help">This will appear below your name on the resume</div>
       </div>
 
       <!-- Contact Information -->
       <div class="form-section">
         <h3 class="section-title">Contact Information</h3>
-
+        
         <div class="form-row">
           <div class="form-group">
             <label class="form-label required">Email</label>
-            <input
+            <input 
               v-model="formData.email"
               type="email"
               class="form-input"
@@ -91,14 +85,12 @@
               placeholder="your.email@example.com"
               required
             />
-            <div v-if="errors.email" class="error-message">
-              {{ errors.email }}
-            </div>
+            <div v-if="errors.email" class="error-message">{{ errors.email }}</div>
           </div>
-
+          
           <div class="form-group">
             <label class="form-label required">Phone</label>
-            <input
+            <input 
               v-model="formData.phone"
               type="tel"
               class="form-input"
@@ -106,36 +98,32 @@
               placeholder="(555) 123-4567"
               required
             />
-            <div v-if="errors.phone" class="error-message">
-              {{ errors.phone }}
-            </div>
+            <div v-if="errors.phone" class="error-message">{{ errors.phone }}</div>
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Address</label>
-          <input
+          <input 
             v-model="formData.address"
             type="text"
             class="form-input"
             placeholder="City, State/Province, Country"
           />
-          <div class="form-help">
-            You can include just your city and country for privacy
-          </div>
+          <div class="form-help">You can include just your city and country for privacy</div>
         </div>
       </div>
 
       <!-- Online Presence -->
       <div class="form-section">
         <h3 class="section-title">Online Presence</h3>
-
+        
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">LinkedIn Profile</label>
             <div class="input-with-icon">
               <AppIcon name="mdi-linkedin" class="input-icon" />
-              <input
+              <input 
                 v-model="formData.linkedin"
                 type="url"
                 class="form-input with-icon"
@@ -143,12 +131,12 @@
               />
             </div>
           </div>
-
+          
           <div class="form-group">
             <label class="form-label">Portfolio/Website</label>
             <div class="input-with-icon">
               <AppIcon name="mdi-web" class="input-icon" />
-              <input
+              <input 
                 v-model="formData.website"
                 type="url"
                 class="form-input with-icon"
@@ -163,7 +151,7 @@
             <label class="form-label">GitHub Profile</label>
             <div class="input-with-icon">
               <AppIcon name="mdi-github" class="input-icon" />
-              <input
+              <input 
                 v-model="formData.github"
                 type="url"
                 class="form-input with-icon"
@@ -171,10 +159,10 @@
               />
             </div>
           </div>
-
+          
           <div class="form-group">
             <label class="form-label">Other Profile</label>
-            <input
+            <input 
               v-model="formData.other"
               type="url"
               class="form-input"
@@ -190,150 +178,132 @@
           <AppIcon name="mdi-robot" />
           Enhance with AI
         </button>
-        <p class="ai-description">
-          Get AI suggestions to optimize your professional title and summary
-        </p>
+        <p class="ai-description">Get AI suggestions to optimize your professional title and summary</p>
       </div>
 
       <!-- Action Buttons -->
       <div class="form-actions">
-        <UnifiedButton variant="glass" @click="saveDraft">
-          Save Draft
-        </UnifiedButton>
-        <UnifiedButton variant="primary" type="submit">
-          Continue to Summary
-        </UnifiedButton>
+        <UnifiedButton variant="glass" @click="saveDraft">Save Draft</UnifiedButton>
+        <UnifiedButton variant="primary" type="submit">Continue to Summary</UnifiedButton>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-import { ref, reactive, watch } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, reactive, watch } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 export default {
-  name: "PersonalInfoSection",
+  name: 'PersonalInfoSection',
   components: {
     AppIcon,
-    UnifiedButton,
+    UnifiedButton
   },
   props: {
     modelValue: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
-  emits: ["update:modelValue", "continue", "save-draft", "ai-enhance"],
+  emits: ['update:modelValue', 'continue', 'save-draft', 'ai-enhance'],
   setup(props, { emit }) {
-    const photoInput = ref(null);
-
+    const photoInput = ref(null)
+    
     const formData = reactive({
-      firstName: "",
-      lastName: "",
-      title: "",
-      email: "",
-      phone: "",
-      address: "",
-      linkedin: "",
-      website: "",
-      github: "",
-      other: "",
+      firstName: '',
+      lastName: '',
+      title: '',
+      email: '',
+      phone: '',
+      address: '',
+      linkedin: '',
+      website: '',
+      github: '',
+      other: '',
       photo: null,
-      ...props.modelValue,
-    });
+      ...props.modelValue
+    })
 
-    const errors = reactive({});
+    const errors = reactive({})
 
     const validateForm = () => {
-      const newErrors = {};
-
+      const newErrors = {}
+      
       if (!formData.firstName?.trim()) {
-        newErrors.firstName = "First name is required";
+        newErrors.firstName = 'First name is required'
       }
-
+      
       if (!formData.lastName?.trim()) {
-        newErrors.lastName = "Last name is required";
+        newErrors.lastName = 'Last name is required'
       }
-
+      
       if (!formData.email?.trim()) {
-        newErrors.email = "Email is required";
+        newErrors.email = 'Email is required'
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        newErrors.email = "Please enter a valid email address";
+        newErrors.email = 'Please enter a valid email address'
       }
-
+      
       if (!formData.phone?.trim()) {
-        newErrors.phone = "Phone number is required";
+        newErrors.phone = 'Phone number is required'
       }
-
-      Object.assign(errors, newErrors);
-      return Object.keys(newErrors).length === 0;
-    };
+      
+      Object.assign(errors, newErrors)
+      return Object.keys(newErrors).length === 0
+    }
 
     const handleSubmit = () => {
       if (validateForm()) {
-        emit("update:modelValue", { ...formData });
-        emit("continue", "summary");
+        emit('update:modelValue', { ...formData })
+        emit('continue', 'summary')
       }
-    };
+    }
 
     const saveDraft = () => {
-      emit("update:modelValue", { ...formData });
-      emit("save-draft");
-    };
+      emit('update:modelValue', { ...formData })
+      emit('save-draft')
+    }
 
     const triggerPhotoUpload = () => {
-      photoInput.value?.click();
-    };
+      photoInput.value?.click()
+    }
 
     const handlePhotoUpload = (event) => {
-      const file = event.target.files[0];
+      const file = event.target.files[0]
       if (file) {
-        const reader = new FileReader();
+        const reader = new FileReader()
         reader.onload = (e) => {
-          formData.photo = e.target.result;
-        };
-        reader.readAsDataURL(file);
+          formData.photo = e.target.result
+        }
+        reader.readAsDataURL(file)
       }
-    };
+    }
 
     const removePhoto = () => {
-      formData.photo = null;
+      formData.photo = null
       if (photoInput.value) {
-        photoInput.value.value = "";
+        photoInput.value.value = ''
       }
-    };
+    }
 
     const enhanceWithAI = () => {
-      emit("ai-enhance", {
-        section: "personal",
-        data: { ...formData },
-      });
-    };
+      emit('ai-enhance', {
+        section: 'personal',
+        data: { ...formData }
+      })
+    }
 
     // Watch for changes and emit updates
     watch(formData, (newData) => {
-      emit("update:modelValue", { ...newData });
-    });
+      emit('update:modelValue', { ...newData })
+    })
 
     // Clear errors when user starts typing
-    watch(
-      () => formData.firstName,
-      () => delete errors.firstName,
-    );
-    watch(
-      () => formData.lastName,
-      () => delete errors.lastName,
-    );
-    watch(
-      () => formData.email,
-      () => delete errors.email,
-    );
-    watch(
-      () => formData.phone,
-      () => delete errors.phone,
-    );
+    watch(() => formData.firstName, () => delete errors.firstName)
+    watch(() => formData.lastName, () => delete errors.lastName)
+    watch(() => formData.email, () => delete errors.email)
+    watch(() => formData.phone, () => delete errors.phone)
 
     return {
       formData,
@@ -344,10 +314,10 @@ export default {
       triggerPhotoUpload,
       handlePhotoUpload,
       removePhoto,
-      enhanceWithAI,
-    };
-  },
-};
+      enhanceWithAI
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -391,7 +361,7 @@ export default {
 }
 
 .form-label.required::after {
-  content: " *";
+  content: ' *';
   color: var(--md-sys-color-error);
 }
 
@@ -561,7 +531,7 @@ export default {
 
 .ai-enhance-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .ai-description {
@@ -577,15 +547,21 @@ export default {
   border-top: 1px solid var(--md-sys-color-outline-variant);
 }
 
+/* Buttons inherit global glass styling via UnifiedButton */
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .form-row {
+    grid-template-columns: 1fr;
   }
-
+  
   .form-actions {
     flex-direction: column;
+    gap: var(--spacing-3);
   }
-
+  
   .btn {
+    width: 100%;
   }
 }
 </style>

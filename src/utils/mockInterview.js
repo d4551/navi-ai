@@ -41,7 +41,7 @@ export class MockInterviewService {
       "riot-games": {
         id: "riot-games",
         name: "Riot Games",
-        logo: "https:
+        logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@v9/icons/riotgames.svg",
         logoFallback: "🎮",
         logoColor: "#D32936",
         website: "https://www.riotgames.com",
@@ -89,7 +89,7 @@ export class MockInterviewService {
       blizzard: {
         id: "blizzard",
         name: "Blizzard Entertainment",
-        logo: "https:
+        logo: "https://logos-world.net/wp-content/uploads/2021/02/Blizzard-Entertainment-Logo.png",
         logoFallback: "❄️",
         logoColor: "#00AEFF",
         website: "https://www.blizzard.com",
@@ -143,7 +143,7 @@ export class MockInterviewService {
       "epic-games": {
         id: "epic-games",
         name: "Epic Games",
-        logo: "https:
+        logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@v9/icons/epicgames.svg",
         logoFallback: "🏗️",
         logoColor: "#313131",
         website: "https://www.epicgames.com",
@@ -193,7 +193,7 @@ export class MockInterviewService {
       valve: {
         id: "valve",
         name: "Valve Corporation",
-        logo: "https:
+        logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@v9/icons/valve.svg",
         logoFallback: "🎯",
         logoColor: "#FF6B2B",
         website: "https://www.valvesoftware.com",
@@ -242,7 +242,7 @@ export class MockInterviewService {
       ubisoft: {
         id: "ubisoft",
         name: "Ubisoft",
-        logo: "https:
+        logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@v9/icons/ubisoft.svg",
         logoFallback: "🌀",
         logoColor: "#0099FF",
         website: "https://www.ubisoft.com",
@@ -287,7 +287,7 @@ export class MockInterviewService {
       "electronic-arts": {
         id: "electronic-arts",
         name: "Electronic Arts (EA)",
-        logo: "https:
+        logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@v9/icons/ea.svg",
         logoFallback: "🎲",
         logoColor: "#000000",
         website: "https://www.ea.com",
@@ -340,7 +340,7 @@ export class MockInterviewService {
       "naughty-dog": {
         id: "naughty-dog",
         name: "Naughty Dog",
-        logo: "https:
+        logo: "https://upload.wikimedia.org/wikipedia/en/6/67/Naughty_Dog_logo.png",
         logoFallback: "🐕",
         logoColor: "#FF6B35",
         website: "https://www.naughtydog.com",
@@ -353,10 +353,8 @@ export class MockInterviewService {
             "Team Collaboration",
             "Attention to Detail",
           ],
-          workStyle:
-            "Story-focused, high production value, cinematic experiences",
-          environment:
-            "Creative storytelling, cutting-edge technology, artistic excellence",
+          workStyle: "Story-focused, high production value, cinematic experiences",
+          environment: "Creative storytelling, cutting-edge technology, artistic excellence",
         },
         games: [
           "The Last of Us series",
@@ -379,8 +377,7 @@ export class MockInterviewService {
           "Narrative Designer",
           "Animation Programmer",
         ],
-        interviewStyle:
-          "portfolio showcase, storytelling passion, technical depth",
+        interviewStyle: "portfolio showcase, storytelling passion, technical depth",
         headquarters: "Santa Monica, CA",
         size: "400+ employees",
         founded: 1984,
@@ -389,12 +386,11 @@ export class MockInterviewService {
       nintendo: {
         id: "nintendo",
         name: "Nintendo",
-        logo: "https:
+        logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@v9/icons/nintendo.svg",
         logoFallback: "🍄",
         logoColor: "#E60012",
         website: "https://www.nintendo.com",
-        description:
-          "Iconic creator of Mario, Zelda, and innovative gaming hardware",
+        description: "Iconic creator of Mario, Zelda, and innovative gaming hardware",
         culture: {
           values: [
             "Entertainment is Our Business",
@@ -403,10 +399,8 @@ export class MockInterviewService {
             "Originality",
             "Fun for Everyone",
           ],
-          workStyle:
-            "Hardware-software integration, family-friendly focus, unique gameplay",
-          environment:
-            "Traditional Japanese company culture, innovation-driven, long-term vision",
+          workStyle: "Hardware-software integration, family-friendly focus, unique gameplay",
+          environment: "Traditional Japanese company culture, innovation-driven, long-term vision",
         },
         games: [
           "Super Mario series",
@@ -429,8 +423,7 @@ export class MockInterviewService {
           "System Developer",
           "Graphics Programmer",
         ],
-        interviewStyle:
-          "innovation focus, gameplay creativity, hardware understanding",
+        interviewStyle: "innovation focus, gameplay creativity, hardware understanding",
         headquarters: "Kyoto, Japan",
         size: "6500+ employees",
         founded: 1889,
@@ -584,7 +577,7 @@ export class MockInterviewService {
       tips: "Keep it concise (1-2 minutes), highlight gaming experience, show studio knowledge",
     });
 
-
+    // Add behavioral questions (40% of interview)
     const behavioralCount = Math.ceil(
       questionCount * INTERVIEW_CONFIG.ratios.behavioral,
     );
@@ -614,7 +607,7 @@ export class MockInterviewService {
       });
     }
 
-
+    // Add technical questions based on role (40% of interview)
     const technicalCount = Math.ceil(
       questionCount * INTERVIEW_CONFIG.ratios.technical,
     );
@@ -661,7 +654,7 @@ export class MockInterviewService {
       });
     }
 
-
+    // Add studio-specific questions (20% of interview)
     const studioCount =
       Math.floor(questionCount * INTERVIEW_CONFIG.ratios.studio) || 1;
     const studioQuestions = this.generateStudioSpecificQuestions(studio);
@@ -1476,7 +1469,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
     return feedback;
   }
 
-
+  // Voice functionality
   isVoiceSupported() {
     return this.voiceSupported;
   }
@@ -1515,7 +1508,7 @@ Format as JSON with these exact keys: overallScore, categoryScores, strengths, i
       ? this.getStudio(favoriteStudioId)
       : null;
 
-
+    // Calculate improvement trend (last 3 vs previous 3)
     let improvementTrend = 0;
     if (completed.length >= 6) {
       const recent =

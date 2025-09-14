@@ -16,20 +16,12 @@
     <div class="input-wrapper">
       <!-- Text Input -->
       <input
-        v-if="
-          type === 'text' ||
-            type === 'email' ||
-            type === 'tel' ||
-            type === 'number'
-        "
+        v-if="type === 'text' || type === 'email' || type === 'tel' || type === 'number'"
         :id="fieldId"
         :value="modelValue"
         :type="type"
         class="form-control glass-input"
-        :class="[
-          inputClass,
-          { 'has-value': hasValue, 'is-invalid': errorText },
-        ]"
+        :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :placeholder="placeholder"
         :required="required"
         :disabled="disabled"
@@ -45,10 +37,7 @@
         :id="fieldId"
         :value="modelValue"
         class="form-control glass-input enhanced-textarea"
-        :class="[
-          inputClass,
-          { 'has-value': hasValue, 'is-invalid': errorText },
-        ]"
+        :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :placeholder="placeholder"
         :required="required"
         :disabled="disabled"
@@ -65,10 +54,7 @@
         :id="fieldId"
         :value="modelValue"
         class="form-select glass-input"
-        :class="[
-          inputClass,
-          { 'has-value': hasValue, 'is-invalid': errorText },
-        ]"
+        :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :required="required"
         :disabled="disabled"
         :aria-describedby="helpId"
@@ -104,32 +90,32 @@
 
       <!-- Status Indicator -->
       <div v-if="showStatus" class="input-status">
-        <AppIcon
-          v-if="hasValue && !errorText"
-          name="mdi-check"
-          class="success-icon"
-        />
-        <AppIcon
-          v-else-if="errorText"
-          name="mdi-alert-circle"
-          class="error-icon"
-        />
+        <AppIcon v-if="hasValue && !errorText" name="mdi-check" class="success-icon" />
+        <AppIcon v-else-if="errorText" name="mdi-alert-circle" class="error-icon" />
       </div>
     </div>
 
     <!-- Character Count for Textarea -->
     <div v-if="type === 'textarea' && maxLength" class="character-count">
-      {{ (modelValue || "").length }}/{{ maxLength }}
+      {{ (modelValue || '').length }}/{{ maxLength }}
     </div>
 
     <!-- Help Text -->
-    <div v-if="helpText" :id="helpId" class="form-hint" :class="helpClass">
+    <div
+      v-if="helpText"
+      :id="helpId"
+      class="form-hint"
+      :class="helpClass"
+    >
       <AppIcon v-if="helpIcon" :name="helpIcon" class="me-1" />
       {{ helpText }}
     </div>
 
     <!-- Error Text -->
-    <div v-if="errorText" class="form-error">
+    <div
+      v-if="errorText"
+      class="form-error"
+    >
       <AppIcon name="mdi-alert-circle" class="me-1" />
       {{ errorText }}
     </div>
@@ -137,158 +123,149 @@
 </template>
 
 <script setup>
-import { computed, defineEmits, defineProps } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { computed, defineEmits, defineProps } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 const _props = defineProps({
   modelValue: {
     type: [String, Number],
-    default: "",
+    default: ''
   },
   type: {
     type: String,
-    default: "text",
-    validator: (value) =>
-      [
-        "text",
-        "email",
-        "tel",
-        "number",
-        "textarea",
-        "select",
-        "range",
-      ].includes(value),
+    default: 'text',
+    validator: (value) => ['text', 'email', 'tel', 'number', 'textarea', 'select', 'range'].includes(value)
   },
   label: {
     type: String,
-    default: "",
+    default: ''
   },
   placeholder: {
     type: String,
-    default: "",
+    default: ''
   },
   helpText: {
     type: String,
-    default: "",
+    default: ''
   },
   errorText: {
     type: String,
-    default: "",
+    default: ''
   },
   helpIcon: {
     type: String,
-    default: "",
+    default: ''
   },
   labelIcon: {
     type: String,
-    default: "",
+    default: ''
   },
   required: {
     type: Boolean,
-    default: false,
+    default: false
   },
   disabled: {
     type: Boolean,
-    default: false,
+    default: false
   },
   options: {
     type: Array,
-    default: () => [],
+    default: () => []
   },
   containerClass: {
     type: String,
-    default: "",
+    default: ''
   },
   inputClass: {
     type: String,
-    default: "",
+    default: ''
   },
   labelClass: {
     type: String,
-    default: "",
+    default: ''
   },
   helpClass: {
     type: String,
-    default: "",
+    default: ''
   },
   labelStyle: {
     type: String,
-    default: "",
+    default: ''
   },
   // Range-specific props
   min: {
     type: Number,
-    default: 0,
+    default: 0
   },
   max: {
     type: Number,
-    default: 100,
+    default: 100
   },
   step: {
     type: Number,
-    default: 1,
+    default: 1
   },
   // Textarea-specific props
   rows: {
     type: Number,
-    default: 3,
+    default: 3
   },
   maxLength: {
     type: Number,
-    default: 0,
+    default: 0
   },
   showStatus: {
     type: Boolean,
-    default: true,
-  },
-});
+    default: true
+  }
+})
 
-defineEmits(["update:modelValue", "focus", "blur"]);
+defineEmits(['update:modelValue', 'focus', 'blur'])
 
 // Generate unique field ID
-const fieldId = computed(
-  () => `field-${Math.random().toString(36).substr(2, 9)}`,
-);
-const helpId = computed(() => `${fieldId.value}-help`);
+const fieldId = computed(() => `field-${Math.random().toString(36).substr(2, 9)}`)
+const helpId = computed(() => `${fieldId.value}-help`)
 
 // Check if field has value for status indicator
 const hasValue = computed(() => {
-  const value = _props.modelValue;
-  return (
-    value !== null &&
-    value !== undefined &&
-    value !== "" &&
-    String(value).trim().length > 0
-  );
-});
+  const value = _props.modelValue
+  return value !== null && value !== undefined && value !== '' && String(value).trim().length > 0
+})
 
 // Option handling for select fields
 const getOptionValue = (option) => {
-  if (typeof option === "object" && option !== null) {
-    return option.value ?? option.id ?? option.key;
+  if (typeof option === 'object' && option !== null) {
+    return option.value ?? option.id ?? option.key
   }
-  return option;
-};
+  return option
+}
 
 const getOptionLabel = (option) => {
-  if (typeof option === "object" && option !== null) {
-    return option.label ?? option.name ?? option.text ?? option.value;
+  if (typeof option === 'object' && option !== null) {
+    return option.label ?? option.name ?? option.text ?? option.value
   }
-  return option;
-};
+  return option
+}
 </script>
 
 <style scoped>
+/* Remove local styles - use global enhanced styles from master-theme.css */
+/* Only keep component-specific styles if needed */
 
 .error-icon {
+  color: var(--color-error-500);
   font-size: var(--font-size-lg);
   transition: color var(--duration-normal);
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .form-field {
+    margin-bottom: var(--spacing-3);
   }
-
+  
   .input-status {
+    right: var(--spacing-2);
   }
 }
 </style>

@@ -7,15 +7,11 @@
       :class="{ active: current === idx, complete: isComplete(idx) }"
       type="button"
       :aria-current="current === idx ? 'step' : undefined"
-      :aria-label="
-        (s.label || s.shortLabel) + (isComplete(idx) ? ' (complete)' : '')
-      "
+      :aria-label="(s.label || s.shortLabel) + (isComplete(idx) ? ' (complete)' : '')"
       @click="$emit('update:current', idx)"
     >
       <span class="step-index">{{ idx + 1 }}</span>
-      <span class="step-label d-none d-sm-inline">{{
-        s.shortLabel || s.label
-      }}</span>
+      <span class="step-label d-none d-sm-inline">{{ s.shortLabel || s.label }}</span>
     </button>
   </nav>
   <div
@@ -36,29 +32,28 @@
 
 <script>
 export default {
-  name: "StepNav",
+  name: 'StepNav',
   props: {
     steps: { type: Array, required: true },
     current: { type: Number, default: 0 },
     completed: { type: Function, default: () => () => false },
     showProgress: { type: Boolean, default: true },
     progress: { type: Number, default: 0 },
-    ariaLabel: { type: String, default: "Step navigation" },
+    ariaLabel: { type: String, default: 'Step navigation' }
   },
-  emits: ["update:current"],
+  emits: ['update:current'],
   computed: {
-    progressAriaLabel() {
-      return `${this.ariaLabel} completion`;
-    },
+    progressAriaLabel(){return `${this.ariaLabel} completion`;},
   },
   methods: {
-    isComplete(idx) {
-      if (typeof this.completed === "function") return this.completed(idx);
-      return false;
-    },
-  },
-};
+    isComplete(idx){
+      if (typeof this.completed === 'function') return this.completed(idx)
+      return false
+    }
+  }
+}
 </script>
 
 <style scoped>
+/* Reuse existing styling expectations; rely on parent global styles for .resume-step-tabs/.step-tab if present */
 </style>

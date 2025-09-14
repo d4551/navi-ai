@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // Canonical resume export/import schema
 export const ResumeSchema = z.object({
@@ -66,3 +66,4 @@ export function validateResumeData(data: unknown): ResumeData {
     return (data || {}) as ResumeData;
   }
 }
+

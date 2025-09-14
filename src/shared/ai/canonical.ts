@@ -1,10 +1,15 @@
-import { aiService } from "@/shared/services/AIService";
-import { logger } from "@/shared/utils/logger";
-import type { AIProvider } from "@/shared/types/ai";
+/**
+ * Canonical AI Facade (Renderer Import Surface)
+ * Unified interface for all AI operations in the application.
+ * All renderer code should import from here going forward.
+ */
+import { aiService } from '@/shared/services/AIService';
+import { logger } from '@/shared/utils/logger';
+import type { AIProvider } from '@/shared/types/ai';
 
 // Track active real-time sessions and configuration
 let currentSessions: Map<string, string> = new Map();
-let currentProvider: AIProvider = "gemini" as AIProvider;
+let currentProvider: AIProvider = 'gemini' as AIProvider;
 let isInitialized = false;
 
 export interface AIConfiguration {
@@ -35,23 +40,23 @@ export interface StreamHandlers {
 export const ai = {
   async init(config: AIConfiguration = {}) {
     try {
-      logger.info("Initializing canonical AI service", config);
-
+      logger.info('Initializing canonical AI service', config);
+      
       await aiService.initialize({
         provider: config.provider || currentProvider,
         model: config.model,
         apiKey: config.apiKey,
-        ...config,
+        ...config
       });
-
+      
       if (config.provider) {
         currentProvider = config.provider;
       }
-
+      
       isInitialized = true;
       return aiService;
     } catch (error) {
-      logger.error("Failed to initialize AI service", error);
+      logger.error('Failed to initialize AI service', error);
       throw error;
     }
   },
@@ -60,20 +65,20 @@ export const ai = {
     if (!isInitialized) {
       await this.init({ provider: options.provider });
     }
-
+    
     try {
       return await aiService.chat({
         message,
-        type: "chat",
+        type: 'chat',
         provider: options.provider || currentProvider,
         model: options.model,
         temperature: options.temperature,
         maxTokens: options.maxTokens,
         systemInstructions: options.systemInstructions,
-        ...options,
+        ...options
       });
     } catch (error) {
-      logger.error("Text generation failed", error);
+      logger.error('Text generation failed', error);
       throw error;
     }
   },
@@ -81,7 +86,7 @@ export const ai = {
   async stream(
     message: string,
     handlers: StreamHandlers = {},
-    options: GenerationOptions = {},
+    options: GenerationOptions = {}
   ) {
     if (!isInitialized) {
       await this.init({ provider: options.provider });
@@ -90,7 +95,7 @@ export const ai = {
     try {
       return await aiService.chatStream({
         message,
-        type: "chat",
+        type: 'chat',
         provider: options.provider || currentProvider,
         model: options.model,
         temperature: options.temperature,
@@ -99,20 +104,16 @@ export const ai = {
         onChunk: handlers.onChunk,
         onComplete: handlers.onComplete,
         onError: handlers.onError,
-        ...options,
+        ...options
       });
     } catch (error) {
-      logger.error("Streaming failed", error);
+      logger.error('Streaming failed', error);
       handlers.onError?.(error);
       throw error;
     }
   },
 
-  async analyzeImage(
-    imageData: string | ArrayBuffer,
-    prompt: string,
-    options: GenerationOptions = {},
-  ) {
+  async analyzeImage(imageData: string | ArrayBuffer, prompt: string, options: GenerationOptions = {}) {
     if (!isInitialized) {
       await this.init({ provider: options.provider });
     }
@@ -120,22 +121,18 @@ export const ai = {
     try {
       return await aiService.chat({
         message: prompt,
-        type: "multimodal",
+        type: 'multimodal',
         imageData,
         provider: options.provider || currentProvider,
-        ...options,
+        ...options
       });
     } catch (error) {
-      logger.error("Image analysis failed", error);
+      logger.error('Image analysis failed', error);
       throw error;
     }
   },
 
-  async processAudio(
-    audioData: ArrayBuffer,
-    prompt: string,
-    options: GenerationOptions = {},
-  ) {
+  async processAudio(audioData: ArrayBuffer, prompt: string, options: GenerationOptions = {}) {
     if (!isInitialized) {
       await this.init({ provider: options.provider });
     }
@@ -143,13 +140,13 @@ export const ai = {
     try {
       return await aiService.chat({
         message: prompt,
-        type: "audio",
+        type: 'audio',
         audioData,
         provider: options.provider || currentProvider,
-        ...options,
+        ...options
       });
     } catch (error) {
-      logger.error("Audio processing failed", error);
+      logger.error('Audio processing failed', error);
       throw error;
     }
   },
@@ -159,7 +156,7 @@ export const ai = {
       initialized: isInitialized,
       provider: currentProvider,
       activeSessions: currentSessions.size,
-      availableProviders: ["gemini", "openai", "claude", "grok"],
+      availableProviders: ['gemini', 'openai', 'claude', 'grok']
     };
   },
 
@@ -173,13 +170,13 @@ export const ai = {
       const sessionKey = await aiService.startRealTimeSession({
         sessionId,
         provider: options.provider || currentProvider,
-        ...options,
+        ...options
       });
-
+      
       currentSessions.set(sessionId, sessionKey);
       return sessionId;
     } catch (error) {
-      logger.error("Failed to start real-time session", error);
+      logger.error('Failed to start real-time session', error);
       throw error;
     }
   },
@@ -191,6 +188,7 @@ export const ai = {
         await aiService.stopRealTimeSession(sessionKey);
         currentSessions.delete(sessionId);
         return true;
+      } else if (!sessionId && currentSessions.size > 0) {
         // Stop all sessions
         for (const [id, key] of currentSessions.entries()) {
           await aiService.stopRealTimeSession(key);
@@ -200,15 +198,12 @@ export const ai = {
       }
       return false;
     } catch (error) {
-      logger.error("Failed to stop real-time session", error);
+      logger.error('Failed to stop real-time session', error);
       return false;
     }
   },
 
-  async switchProvider(
-    provider: AIProvider,
-    config?: Partial<AIConfiguration>,
-  ) {
+  async switchProvider(provider: AIProvider, config?: Partial<AIConfiguration>) {
     try {
       currentProvider = provider;
       await this.init({ provider, ...config });
@@ -224,13 +219,10 @@ export const ai = {
     try {
       return await aiService.getModels(targetProvider);
     } catch (error) {
-      logger.error(
-        `Failed to get models for provider: ${targetProvider}`,
-        error,
-      );
+      logger.error(`Failed to get models for provider: ${targetProvider}`, error);
       throw error;
     }
-  },
+  }
 };
 
 export type CanonicalAI = typeof ai;

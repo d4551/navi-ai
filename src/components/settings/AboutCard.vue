@@ -1,10 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div
-    class="card glass-card section-card h-100"
-    role="complementary"
-    aria-labelledby="about-title"
-  >
+  <div class="card glass-card section-card h-100" role="complementary" aria-labelledby="about-title">
     <div class="card-header section-header card-header--dense">
       <h6 id="about-title" class="mb-0">
         <InfoIconComponent class="me-2 icon-sm" />About NAVI
@@ -14,15 +10,19 @@
       <!-- App Info -->
       <div class="app-info mb-4">
         <div class="app-logo mb-3">
-          <img :src="logoSrc" alt="NAVI Logo" class="img-fluid logo-max-60" />
+          <img
+            :src="logoSrc"
+            alt="NAVI Logo"
+            class="img-fluid logo-max-60"
+          />
         </div>
 
         <div class="app-details">
           <h6 class="app-name mb-1">NAVI - AI Career Assistant</h6>
           <p class="app-version mb-2">Version {{ appVersion }}</p>
           <p class="app-description mb-0">
-            Your intelligent companion for gaming career development, interview
-            preparation, and professional growth.
+            Your intelligent companion for gaming career development,
+            interview preparation, and professional growth.
           </p>
         </div>
       </div>
@@ -85,7 +85,7 @@
           </a>
 
           <a
-            href="https://discord.gg/navi"
+            href="https://github.com/donnellybrandon/NaviCV/discussions"
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-outline-secondary btn-sm d-flex align-items-center v-btn variant-outlined ui-btn ui-size-md"
@@ -95,25 +95,7 @@
             <ExternalLinkIconComponent class="ms-auto" />
           </a>
 
-          <a
-            href="https://www.linkedin.com/in/stracos"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-outline-secondary btn-sm d-flex align-items-center v-btn variant-outlined ui-btn ui-size-md"
-          >
-            <LinkedinIconComponent class="me-2" />
-            LinkedIn — Dr. Brandon Donnelly
-            <ExternalLinkIconComponent class="ms-auto" />
-          </a>
-
-          <UnifiedButton
-            variant="outline"
-            size="sm"
-            leading-icon="mdi-history"
-            @click="$emit('show-changelog')"
-          >
-            Changelog
-          </UnifiedButton>
+          <UnifiedButton variant="outline" size="sm" leading-icon="mdi-history" @click="$emit('show-changelog')">Changelog</UnifiedButton>
         </div>
       </div>
 
@@ -121,47 +103,18 @@
       <div class="support-feedback">
         <h6 class="section-title mb-3">Support & Feedback</h6>
         <div class="d-grid gap-2">
-          <UnifiedButton
-            type="button"
-            variant="outline"
-            size="sm"
-            leading-icon="mdi-alert"
-            @click="$emit('report-issue')"
-          >
-            Report Issue
-          </UnifiedButton>
+          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="mdi-alert" @click="$emit('report-issue')">Report Issue</UnifiedButton>
 
-          <UnifiedButton
-            type="button"
-            variant="outline"
-            size="sm"
-            leading-icon="mdi-lightbulb"
-            @click="$emit('request-feature')"
-          >
-            Request Feature
-          </UnifiedButton>
+          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="mdi-lightbulb" @click="$emit('request-feature')">Request Feature</UnifiedButton>
 
-          <UnifiedButton
-            type="button"
-            variant="outline"
-            size="sm"
-            leading-icon="mdi-email"
-            @click="$emit('contact-support')"
-          >
-            Contact Support
-          </UnifiedButton>
+          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="mdi-email" @click="$emit('contact-support')">Contact Support</UnifiedButton>
         </div>
       </div>
 
       <!-- Footer -->
       <div class="about-footer mt-4 pt-3 border-top">
         <div class="copyright text-center">
-          <small
-            :class="{
-              'text-muted': colorScheme === 'light',
-              'text-muted-dark': colorScheme === 'dark',
-            }"
-          >
+          <small :class="{ 'text-muted': colorScheme === 'light', 'text-muted-dark': colorScheme === 'dark' }">
             © {{ currentYear }} NAVI CV. All rights by
             <a
               href="https://www.linkedin.com/in/stracos"
@@ -169,23 +122,27 @@
               rel="noopener noreferrer"
               class="legal-link"
             >
-              <GraduationCapIconComponent
-                class="professor-icon me-1"
-                :class="{
-                  'text-warning': colorScheme === 'light',
-                  'text-warning-dark': colorScheme === 'dark',
-                }"
-              />
-              Dr. Brandon Donnelly </a>. Made with <HeartIconComponent class="heart-icon" /> for gamers.
+              <GraduationCapIconComponent class="professor-icon me-1" :class="{ 'text-warning': colorScheme === 'light', 'text-warning-dark': colorScheme === 'dark' }" />
+              Dr. Brandon Donnelly
+            </a>. Made with
+            <HeartIconComponent class="heart-icon" /> for gamers.
           </small>
         </div>
 
         <div class="legal-links mt-2 text-center">
-          <a href="#" class="legal-link" @click.prevent="$emit('show-privacy')">
+          <a
+            href="#"
+            class="legal-link"
+            @click.prevent="$emit('show-privacy')"
+          >
             Privacy Policy
           </a>
           <span class="mx-2 text-muted">•</span>
-          <a href="#" class="legal-link" @click.prevent="$emit('show-terms')">
+          <a
+            href="#"
+            class="legal-link"
+            @click.prevent="$emit('show-terms')"
+          >
             Terms of Service
           </a>
         </div>
@@ -195,7 +152,7 @@
 </template>
 
 <script>
-import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
+import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 import {
   InfoIconComponent,
   BotIconComponent,
@@ -208,18 +165,17 @@ import {
   ExternalLinkIconComponent,
   BookIconComponent,
   MessageCircleIconComponent,
-  LinkedinIconComponent,
   ClockIconComponent,
   AlertTriangleIconComponent,
   LightbulbIconComponent,
   MailIconComponent,
   HeartIconComponent,
-  GraduationCapIconComponent,
-} from "./UnifiedIcons.js";
-import { getAppVersion } from "@/utils/version";
+  GraduationCapIconComponent
+} from './UnifiedIcons.js'
+import { getAppVersion } from '@/utils/version'
 
 export default {
-  name: "AboutCard",
+  name: 'AboutCard',
   components: {
     InfoIconComponent,
     BotIconComponent,
@@ -229,7 +185,6 @@ export default {
     FileTextIconComponent,
     BarChartIconComponent,
     GithubIconComponent,
-    LinkedinIconComponent,
     ExternalLinkIconComponent,
     BookIconComponent,
     MessageCircleIconComponent,
@@ -239,44 +194,42 @@ export default {
     MailIconComponent,
     HeartIconComponent,
     GraduationCapIconComponent,
-    UnifiedButton: () => import("@/components/ui/UnifiedButton.vue"),
+    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue')
   },
   props: {
     appVersion: {
       type: String,
-      default: getAppVersion(),
+      default: getAppVersion()
     },
     logoSrc: {
       type: String,
-      default: "/logoDark.svg",
-    },
+      default: '/logoDark.svg'
+    }
   },
   emits: [
-    "show-changelog",
-    "report-issue",
-    "request-feature",
-    "contact-support",
-    "show-privacy",
-    "show-terms",
+    'show-changelog',
+    'report-issue',
+    'request-feature',
+    'contact-support',
+    'show-privacy',
+    'show-terms'
   ],
   setup() {
-    const { colorScheme } = useUnifiedTheme();
-    return {
-      colorScheme: colorScheme || "light", // Provide fallback
-    };
+    const { colorScheme } = useUnifiedTheme()
+    return { 
+      colorScheme: colorScheme || 'light' // Provide fallback
+    }
   },
   computed: {
     currentYear() {
-      return new Date().getFullYear();
-    },
-  },
-};
+      return new Date().getFullYear()
+    }
+  }
+}
 </script>
 
 <style scoped>
-.logo-max-60 {
-  max-height: 60px;
-}
+.logo-max-60 { max-height: 60px; }
 .app-info {
   text-align: center;
 }

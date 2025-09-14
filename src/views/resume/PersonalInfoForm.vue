@@ -1,10 +1,12 @@
 <template>
-  <v-card
-    variant="outlined"
+  <v-card 
+    variant="outlined" 
     class="mb-4 section-card section-card unified-card"
     :class="theme.getThemeClasses('personal-info-form')"
   >
-    <v-card-title class="d-flex align-center justify-space-between pa-4">
+    <v-card-title 
+      class="d-flex align-center justify-space-between pa-4"
+    >
       <div class="d-flex align-center ga-2">
         <AppIcon name="mdi-badge-account-outline" size="small" />
         <span class="text-h6">Personal Information</span>
@@ -20,7 +22,7 @@
         @click="$emit('request-summary-suggestions')"
       />
     </v-card-title>
-
+    
     <div class="card-content-sm">
       <v-row>
         <v-col cols="12" md="6">
@@ -74,13 +76,9 @@
 
         <v-col cols="12">
           <div class="d-flex justify-space-between align-center mb-2">
-            <v-label class="text-subtitle-1 font-weight-medium">
-              Professional Summary
-            </v-label>
+            <v-label class="text-subtitle-1 font-weight-medium">Professional Summary</v-label>
             <div class="d-flex align-center ga-2">
-              <UiChip
-                :classes="`chip chip-${getSummaryStatusColor()} chip-compact`"
-              >
+              <UiChip :classes="`chip chip-${getSummaryStatusColor()} chip-compact`">
                 {{ summaryWordCount }} words
               </UiChip>
               <UnifiedButton
@@ -125,11 +123,7 @@
                 :key="i"
                 @click="$emit('apply-summary-suggestion', suggestion)"
               >
-                <v-list-item-title class="text-wrap">
-                  {{
-                    suggestion
-                  }}
-                </v-list-item-title>
+                <v-list-item-title class="text-wrap">{{ suggestion }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -140,13 +134,13 @@
 </template>
 
 <script>
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import UiChip from "@/components/ui/UiChip.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import UiChip from '@/components/ui/UiChip.vue';
+import AppIcon from '@/components/ui/AppIcon.vue';
 
-import { computed, reactive, watch } from "vue";
-import { useUserProfile } from "@/composables/useUserProfile";
-import { useUnifiedTheme } from "@/shared/composables/useUnifiedTheme";
+import { computed, reactive, watch } from 'vue'
+import { useUserProfile } from "@/composables/useUserProfile"
+import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 
 export default {
   name: "PersonalInfoForm",
@@ -165,18 +159,18 @@ export default {
     "copy-summary",
   ],
   setup(props, { emit }) {
-    const { personalInfo, updatePersonalInfo } = useUserProfile();
-    const theme = useUnifiedTheme();
+    const { personalInfo, updatePersonalInfo } = useUserProfile()
+    const theme = useUnifiedTheme()
     // Initialize with safe defaults to avoid setup crashes
     const local = reactive({
       personalInfo: {
-        name: "",
-        email: "",
-        phone: "",
-        location: "",
-        summary: "",
-        ...(props.modelValue || {}),
-      },
+        name: '',
+        email: '',
+        phone: '',
+        location: '',
+        summary: '',
+        ...(props.modelValue || {})
+      }
     });
 
     // Initialize with profile data if available
@@ -187,7 +181,7 @@ export default {
     watch(
       () => props.modelValue,
       (v) => {
-        if (v && typeof v === "object") {
+        if (v && typeof v === 'object') {
           Object.assign(local.personalInfo, v);
         }
       },
@@ -201,7 +195,7 @@ export default {
           Object.assign(local.personalInfo, newPersonalInfo);
         }
       },
-      { deep: true },
+      { deep: true }
     );
 
     const commit = async () => {
@@ -232,25 +226,14 @@ export default {
     const getSummaryStatusColor = () => {
       const status = summaryStatus.value;
       switch (status) {
-        case "short":
-          return "warning";
-        case "long":
-          return "error";
-        case "ok":
-          return "success";
-        default:
-          return "default";
+        case 'short': return 'warning';
+        case 'long': return 'error';
+        case 'ok': return 'success';
+        default: return 'default';
       }
     };
 
-    return {
-      local,
-      commit,
-      summaryWordCount,
-      summaryStatus,
-      getSummaryStatusColor,
-      theme,
-    };
+    return { local, commit, summaryWordCount, summaryStatus, getSummaryStatusColor, theme };
   },
 };
 </script>

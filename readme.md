@@ -8,12 +8,12 @@
 
 <p align="center">
   The <em>world's first</em> <strong>source-available (noncommercial), multimodal, gamified</strong> job platform built <em>specifically</em> for the video-game industry.<br/>
-  <strong>Version 0.0.1 - Alpha Release</strong> | Free. No strings. No gacha. Only jobs.
+  <strong>Version 1.0.0 - Stable</strong> | Free. No strings. No gacha. Only jobs.
 </p>
 
 <p align="center">
   <a href="https://github.com/d4551/navi-ai/releases">
-    <img alt="Version 0.0.1" src="https://img.shields.io/badge/version-0.0.1-orange">
+    <img alt="Version 1.0.0" src="https://img.shields.io/badge/version-1.0.0-brightgreen">
   </a>
   <a href="https://github.com/d4551/navi-ai/blob/main/LICENSE">
     <img alt="License: NaviAI-NCPL-1.1" src="https://img.shields.io/badge/License-NaviAI--NCPL--1.1-blue">
@@ -23,7 +23,7 @@
   </a>
   <br/>
   <a href="#">
-    <img alt="Status: Alpha" src="https://img.shields.io/badge/status-alpha-red">
+    <img alt="Status: Stable" src="https://img.shields.io/badge/status-stable-brightgreen">
   </a>
   <a href="#">
     <img alt="Multimodal AI" src="https://img.shields.io/badge/AI-Multimodal%20(voice%2Fvideo%2Fvision)-purple">
@@ -77,98 +77,88 @@ npm run electron-dev
 
 **That's it!** NAVI works immediately with no account required. Add your Google AI Studio API key in Settings for enhanced AI features.
 
+Note (macOS): If `npm install` warns about engines for Redocly or hits a permission snag for `electron-builder`, see Troubleshooting below — it’s a quick fix.
+
 ---
 
 ## 🧭 TL;DR
 
-**NAVI v0.0.1** is an early alpha release of the world's first source-available (noncommercial), multimodal, gamified job platform built specifically for the video-game industry. It helps you **find game-industry jobs**, **tailor ATS-ready resumes/CVs**, **run mock interviews with studio personas**, **get career coaching**, **peek studio intel**, and **ship a slick portfolio**—all with **real-time, multimodal Gemini** smarts.
-
-> **⚠️ Alpha Software**: This is an early development version. Expect bugs, incomplete features, and rapid changes. Use at your own risk!
+**NAVI v1.0.0** is a polished, source-available (noncommercial), multimodal, gamified career platform built for the video‑game industry. It helps you **find verified game‑industry jobs**, **tailor ATS‑ready resumes/CVs**, **practice with mock interviews using studio‑style personas**, **get actionable coaching**, and **ship a clean portfolio**—all with **real‑time, multimodal Gemini** support. Local‑first, privacy‑aware, and fast.
 
 ---
 
-## ⚠️ Known Issues & Limitations (v0.0.1)
+## ✅ What’s Solid in 1.0
 
-### Current Limitations
-- **AI Features**: Require Google Gemini API key (not included)
-- **Job Data**: Limited to basic job sources and search capabilities
-- **UI Polish**: Interface may have rough edges and inconsistencies
-- **Performance**: May be slow on lower-end hardware
-- **Stability**: Occasional crashes or unexpected behavior possible
-
-### Missing Features (Coming Soon)
-- Advanced job filtering and search options
-- Complete portfolio builder with media support
-- Mock interview system
-- Gamification and achievements
-- Advanced AI capabilities (voice/video analysis)
-
-### Recommended Setup
-- Use a modern web browser for best compatibility
-- Ensure stable internet connection for AI features
-- Have Google Gemini API key ready for enhanced functionality
-- Back up important data regularly
+- **Unified Job Board**: Gaming‑focused aggregation with improved search, sorting, and de‑dupe.
+- **ATS‑Smart Documents**: Resume/CV + cover letter builder with export and templating.
+- **AI Workflows**: Context‑aware prompts for tailoring resumes and job matching.
+- **Mock Interviews**: Studio‑style question banks with timed sessions and feedback.
+- **Portfolio Basics**: Projects overview with exportable sections and PDF snapshots.
+- **Desktop + Web**: Electron app for local persistence and a Vite web dev workflow.
+- **Privacy First**: Keys stored locally; nothing sent unless you opt‑in.
 
 ---
 
-## 📦 Installation
+## 🎯 Features (v1.0.0)
 
-## 🎯 Features (v0.0.1 Alpha)
+### 🎮 Job Search (Gaming‑Focused)
 
-> **🚧 Work in Progress**: This alpha release includes core functionality but many features are incomplete or experimental.
+- **Providers**: Greenhouse/Lever studio boards with source‑aware parsing.
+- **Search & Filter**: Keywords, location, seniority; de‑duplication across sources.
+- **Details**: Clean descriptions, requirements, and outbound application links.
 
-### 🎮 Basic Job Search
-- **Game Industry Focus**: Search for jobs in gaming studios and companies
-- **Basic Filtering**: Filter by location, keywords, and job types
-- **Job Details**: View job descriptions and requirements
+### 🤖 AI Integration
 
-### � AI Integration (Experimental)
-- **Google Gemini API**: Basic AI chat and assistance
-- **Resume Analysis**: Simple AI-powered resume feedback
-- **Job Matching**: Basic compatibility scoring
+- **Gemini**: Tailored prompts for resume alignment and job matching.
+- **Review & Feedback**: Quick gap analysis and phrasing suggestions.
+- **Configurable**: Toggle models, context windows, and privacy levels.
 
-### 📄 Document Builder (Basic)
-- **Resume Templates**: Simple resume creation tools
-- **Cover Letter Builder**: Basic cover letter generation
-- **PDF Export**: Generate PDF documents
+### 📄 Document Builder
 
-**ENHANCED**: Configure AI features, manage your profile, and customize the experience with comprehensive settings, advanced AI model selection, and privacy controls.
+- **Templates**: ATS‑friendly resume and cover letter baselines.
+- **Export**: PDF and sharable outputs.
+- **Profiles**: Multiple role profiles for rapid tailoring.
 
-**New AI Features:**
-- 🤖 **AI Model Configuration**: Choose between different AI providers and models
-- 📊 **Usage Analytics**: Monitor AI interactions and optimization suggestions
-- 🎯 **Context Management**: Control how AI learns from your interactions
-- 🔒 **Privacy Controls**: Advanced data management and sharing preferences
+### 🧪 Interviews
+
+- **Personas**: Studio‑style interview sets and timed practice.
+- **Scoring**: Lightweight rubrics and improvement pointers.
+
+### 🖼️ Portfolio
+
+- **Projects**: Simple showcases and printable summaries.
+
+### ⚙️ Platform
+
+- **Vue 3 + Vite + Electron** with type‑safe IPC and hardened preload.
+- **Local‑first** settings and secure key storage (Electron).
 
 > 🎮 **[See the complete feature list with detailed screenshots →](featurelist.md)**
 
 ---
 
-## 🚀 Roadmap (v0.0.1 → v0.1.0)
+## 🚀 Roadmap (1.0.0 → 1.2.0)
 
-**Current Status**: NAVI v0.0.1 is a functional alpha with basic job search, AI integration, and document building capabilities.
+**Current Status**: v1.0.0 stable.
 
-### 🔄 v0.0.2 (Next Release - Bug Fixes & Polish)
-- Fix known bugs and crashes
-- Improve UI/UX consistency
-- Add basic error handling
-- Enhance performance and stability
+### 🔄 v1.1.0 (Quality + DX)
 
-### 🚀 v0.1.0 (Major Feature Release)
-- **Enhanced Job Search**: Advanced filters, saved searches, job alerts
-- **AI Interview Prep**: Mock interviews with gaming industry scenarios
-- **Portfolio Builder**: Complete project showcase with media support
-- **Gamification**: XP system, achievements, progress tracking
-- **Studio Intelligence**: Company research and culture insights
+- Saved searches and job alerts
+- Richer filtering and sorting
+- Better accessibility and keyboard flow
+- Expanded provider registry
 
-### 🎯 Future Versions (0.2.0+)
-- **Multimodal AI**: Voice/video/screen analysis capabilities
-- **Advanced Analytics**: Career insights and success metrics
-- **Community Features**: Templates, shared resources
-- **Mobile Support**: Cross-platform compatibility
-- **Integration APIs**: LinkedIn, GitHub, and other platforms
+### 🚀 v1.2.0 (Experience)
 
-> **🐛 Help Us Improve**: This alpha release needs your feedback! Report bugs and suggest features to help shape NAVI's future.
+- Portfolio media support and theming
+- Interview analytics and answer playback
+- Studio intelligence snapshots
+
+### 🎯 Later
+
+- Multimodal voice/video analysis
+- Community templates and sharing
+- Mobile tweaks and packaging improvements
 
 ---
 
@@ -185,8 +175,8 @@ npm run electron-dev
 
 ### Prerequisites
 
-- Node.js >= 18 (20 LTS recommended)
-- npm 9+ (bundled with Node installs)
+- Node.js >= 20.19.0 (or Node 22.12+) — 20 LTS recommended
+- npm 10+
 - For native modules on Windows (better-sqlite3, keytar):
   - Python 3 (added to PATH)
   - Visual Studio Build Tools (C++ Desktop workload)
@@ -203,7 +193,7 @@ npm run electron-dev
 - Dev server: `npm run dev` then open the shown URL
 - Preview a production build: `npm run build && npm run preview`
 
-### Notes
+### Notes (Usage)
 
 - To use a custom dev port for Electron: `VITE_PORT=5180 npm run electron-dev:port`
 - App settings persist locally; API keys are stored on your device and never committed.
@@ -215,6 +205,39 @@ npm run electron-dev
 - Clear caches on odd rebuild issues: `npm run clean` (or `clean:all` to remove `node_modules`).
 - Windows PowerShell users may prefer `electron-dev` over `electron-dev:port` due to shell env syntax differences.
 - Rebuild native modules for Electron if launch fails: `npm run rebuild:native`
+
+#### macOS: electron-builder permission denied (code 126)
+
+If you see `sh: node_modules/.bin/electron-builder: Permission denied` during install:
+
+```bash
+# Remove quarantine flags and add exec bits to local binaries
+xattr -dr com.apple.quarantine node_modules/.bin || true
+find node_modules/.bin -type f ! -name "*.cmd" ! -name "*.ps1" -exec chmod +x {} +
+
+# Re-run just the native deps step (optional)
+npx electron-builder install-app-deps
+```
+
+You can also skip the postinstall step entirely and run it later:
+
+```bash
+NAVI_SKIP_POSTINSTALL=1 npm install
+npx electron-builder install-app-deps
+```
+
+#### EBADENGINE warnings for Redocly
+
+Some dev-only docs tooling (`@redocly/*`) requires Node >= 20.19 or 22.12. If your Node is slightly older (e.g., 20.18.x), you may see harmless `npm WARN EBADENGINE` during install. Either:
+
+- Upgrade Node to 20.19+ (recommended), or
+- Ignore the warnings if you aren’t generating docs.
+
+To generate/update API docs later:
+
+```bash
+npm run api:docs   # builds docs/api.html from docs/openapi.yaml
+```
 
 ---
 
@@ -245,7 +268,7 @@ npm run electron-dev
 
 ## �️ Development
 
-### Prerequisites
+### Prerequisites (Development)
 
 - **Node.js** >= 18 (20 LTS recommended)
 - **npm** 9+ (bundled with Node installs)
@@ -282,7 +305,7 @@ npm run format
 
 ### Project Structure
 
-```
+```text
 src/
 ├── components/          # Vue components
 ├── composables/         # Vue composables
@@ -406,21 +429,13 @@ Want better signal and happier candidates? Open an issue to add your **personas*
 
 ## 📈 Release History
 
-### v0.0.1 - Initial Alpha Release (Current)
-- ✅ **Basic Job Search**: Core job searching functionality for gaming industry
-- ✅ **AI Integration**: Google Gemini API integration for basic assistance
-- ✅ **Document Builder**: Simple resume and cover letter creation
-- ✅ **Portfolio Prototype**: Basic project showcase capabilities
-- ✅ **User Interface**: Functional Vue.js/Electron application
-- ✅ **Local Data Storage**: SQLite database for user data
-- ✅ **Settings Management**: Basic configuration and API key setup
-
-### Upcoming Releases
-- 🔄 **v0.0.2**: Bug fixes, UI improvements, and stability enhancements
-- 🚀 **v0.1.0**: Major feature additions including gamification, advanced AI, and portfolio builder
-- 🎯 **v0.2.0+**: Multimodal AI, analytics, and community features
-
-> **📝 Development Notes**: This project is in active early development. Features may change rapidly and some functionality may be incomplete or experimental.
+### v1.0.0 — Stable
+- ✅ Unified gaming job board with improved search and de‑duplication
+- ✅ ATS‑friendly resume/CV and cover letter builder with export
+- ✅ Gemini‑powered tailoring, gap analysis, and job matching
+- ✅ Mock interviews with studio‑style question sets and feedback
+- ✅ Portfolio basics with exportable sections
+- ✅ Electron + Web dev flow, local‑first settings and key storage
 
 ---
 
@@ -434,6 +449,14 @@ Want better signal and happier candidates? Open an issue to add your **personas*
 <p align="center"><em>"You've never been quite so Breath-of-the-Hired."</em></p>
 
 ---
+
+## 📈 Recent Updates
+
+- Install: Clarified Node requirement (>= 20.19 or 22.12+) to satisfy docs tooling (`@redocly/*`). Older 20.x may see harmless `EBADENGINE` warnings.
+- macOS: Added a quick fix for `electron-builder` permission denied (code 126) during `npm install` — remove quarantine + set exec bits, or skip postinstall via `NAVI_SKIP_POSTINSTALL=1`.
+- Docs: Linked `npm run api:docs` for generating `docs/api.html` when Redocly is available.
+
+If you run into anything weird, ping issues — we’ll squish it.
 
 ## Repository Layout
 

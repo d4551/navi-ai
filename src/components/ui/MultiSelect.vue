@@ -6,13 +6,13 @@
           {{ placeholder }}
         </span>
         <div v-else class="selected-tags">
-          <span
-            v-for="item in selectedItems.slice(0, maxDisplay)"
-            :key="item.value"
+          <span 
+            v-for="item in selectedItems.slice(0, maxDisplay)" 
+            :key="item.value" 
             class="selected-tag"
           >
             {{ item.label }}
-            <button
+            <button 
               :aria-label="`Remove ${item.label}`"
               class="remove-btn"
               @click.stop="removeItem(item)"
@@ -58,103 +58,105 @@
         </div>
       </div>
       <div v-if="selectedItems.length > 0" class="dropdown-actions">
-        <button class="clear-all-btn" @click="clearAll">Clear All</button>
+        <button class="clear-all-btn" @click="clearAll">
+          Clear All
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import Icon from "./Icon.vue";
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import Icon from './Icon.vue'
 
 interface Option {
-  label: string;
-  value: string | number;
+  label: string
+  value: string | number
 }
 
 interface Props {
-  modelValue: (string | number)[];
-  options: Option[];
-  placeholder?: string;
-  searchable?: boolean;
-  maxDisplay?: number;
+  modelValue: (string | number)[]
+  options: Option[]
+  placeholder?: string
+  searchable?: boolean
+  maxDisplay?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: "Select options...",
+  placeholder: 'Select options...',
   searchable: true,
-  maxDisplay: 3,
-});
+  maxDisplay: 3
+})
 
 const emit = defineEmits<{
-  "update:modelValue": [value: (string | number)[]];
-}>();
+  'update:modelValue': [value: (string | number)[]]
+}>()
 
-const isOpen = ref(false);
-const searchQuery = ref("");
-const container = ref<HTMLElement>();
+const isOpen = ref(false)
+const searchQuery = ref('')
+const container = ref<HTMLElement>()
 
-const selectedItems = computed(() =>
-  props.options.filter((option) => props.modelValue.includes(option.value)),
-);
+const selectedItems = computed(() => 
+  props.options.filter(option => props.modelValue.includes(option.value))
+)
 
 const filteredOptions = computed(() => {
   if (!props.searchable || !searchQuery.value) {
-    return props.options;
+    return props.options
   }
-  return props.options.filter((option) =>
-    option.label.toLowerCase().includes(searchQuery.value.toLowerCase()),
-  );
-});
+  return props.options.filter(option =>
+    option.label.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
 
 const isSelected = (option: Option) => {
-  return props.modelValue.includes(option.value);
-};
+  return props.modelValue.includes(option.value)
+}
 
 const toggleDropdown = () => {
-  isOpen.value = !isOpen.value;
+  isOpen.value = !isOpen.value
   if (isOpen.value) {
-    searchQuery.value = "";
+    searchQuery.value = ''
   }
-};
+}
 
 const toggleOption = (option: Option) => {
-  const newValue = [...props.modelValue];
-  const index = newValue.indexOf(option.value);
-
+  const newValue = [...props.modelValue]
+  const index = newValue.indexOf(option.value)
+  
   if (index > -1) {
-    newValue.splice(index, 1);
+    newValue.splice(index, 1)
   } else {
-    newValue.push(option.value);
+    newValue.push(option.value)
   }
-
-  emit("update:modelValue", newValue);
-};
+  
+  emit('update:modelValue', newValue)
+}
 
 const removeItem = (option: Option) => {
-  const newValue = props.modelValue.filter((value) => value !== option.value);
-  emit("update:modelValue", newValue);
-};
+  const newValue = props.modelValue.filter(value => value !== option.value)
+  emit('update:modelValue', newValue)
+}
 
 const clearAll = () => {
-  emit("update:modelValue", []);
-};
+  emit('update:modelValue', [])
+}
 
 const handleClickOutside = (event: Event) => {
-  const target = event.target as HTMLElement;
+  const target = event.target as HTMLElement
   if (container.value && target && !container.value.contains(target)) {
-    isOpen.value = false;
+    isOpen.value = false
   }
-};
+}
 
 onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
+  document.addEventListener('click', handleClickOutside)
+})
 
 onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>

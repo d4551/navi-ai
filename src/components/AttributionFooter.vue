@@ -15,7 +15,7 @@
         </a>
       </div>
       <span class="attribution-note">
-        Some sources require attribution. See
+        Some sources require attribution. See 
         <router-link to="/settings#job-sources-section" class="sources-link">settings</router-link>
         for data source configuration.
       </span>
@@ -24,172 +24,168 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useAppStore } from "@/stores/app";
+import { computed } from 'vue'
+import { useAppStore } from '@/stores/app'
 
 interface SourceInfo {
-  name: string;
-  displayName: string;
-  url: string;
-  requiresAttribution: boolean;
+  name: string
+  displayName: string
+  url: string
+  requiresAttribution: boolean
 }
 
-const appStore = useAppStore();
+const appStore = useAppStore()
 
 // Comprehensive source attribution data
 const SOURCE_ATTRIBUTIONS: Record<string, SourceInfo> = {
   // Public feeds requiring attribution
-  Remotive: {
-    name: "Remotive",
-    displayName: "Remotive",
-    url: "https://remotive.com/",
-    requiresAttribution: true,
+  'Remotive': {
+    name: 'Remotive',
+    displayName: 'Remotive',
+    url: 'https://remotive.com/',
+    requiresAttribution: true
   },
-  "Remote OK": {
-    name: "Remote OK",
-    displayName: "Remote OK",
-    url: "https://remoteok.com/",
-    requiresAttribution: true,
+  'Remote OK': {
+    name: 'Remote OK',
+    displayName: 'Remote OK',
+    url: 'https://remoteok.com/',
+    requiresAttribution: true
   },
-  "We Work Remotely": {
-    name: "We Work Remotely",
-    displayName: "We Work Remotely",
-    url: "https://weworkremotely.com/",
-    requiresAttribution: true,
+  'We Work Remotely': {
+    name: 'We Work Remotely',
+    displayName: 'We Work Remotely',
+    url: 'https://weworkremotely.com/',
+    requiresAttribution: true
   },
 
   // Job boards
-  Indeed: {
-    name: "Indeed",
-    displayName: "Indeed",
-    url: "https://www.indeed.com/",
-    requiresAttribution: false,
+  'Indeed': {
+    name: 'Indeed',
+    displayName: 'Indeed',
+    url: 'https://www.indeed.com/',
+    requiresAttribution: false
   },
-  Monster: {
-    name: "Monster",
-    displayName: "Monster",
-    url: "https://www.monster.com/",
-    requiresAttribution: false,
+  'Monster': {
+    name: 'Monster',
+    displayName: 'Monster',
+    url: 'https://www.monster.com/',
+    requiresAttribution: false
   },
-  Dice: {
-    name: "Dice",
-    displayName: "Dice",
-    url: "https://www.dice.com/",
-    requiresAttribution: false,
+  'Dice': {
+    name: 'Dice',
+    displayName: 'Dice',
+    url: 'https://www.dice.com/',
+    requiresAttribution: false
   },
-  SimplyHired: {
-    name: "SimplyHired",
-    displayName: "SimplyHired",
-    url: "https://www.simplyhired.com/",
-    requiresAttribution: false,
+  'SimplyHired': {
+    name: 'SimplyHired',
+    displayName: 'SimplyHired',
+    url: 'https://www.simplyhired.com/',
+    requiresAttribution: false
   },
-  Glassdoor: {
-    name: "Glassdoor",
-    displayName: "Glassdoor",
-    url: "https://www.glassdoor.com/",
-    requiresAttribution: false,
+  'Glassdoor': {
+    name: 'Glassdoor',
+    displayName: 'Glassdoor',
+    url: 'https://www.glassdoor.com/',
+    requiresAttribution: false
   },
-  LinkedIn: {
-    name: "LinkedIn",
-    displayName: "LinkedIn",
-    url: "https://www.linkedin.com/jobs",
-    requiresAttribution: false,
+  'LinkedIn': {
+    name: 'LinkedIn',
+    displayName: 'LinkedIn',
+    url: 'https://www.linkedin.com/jobs',
+    requiresAttribution: false
   },
-  InfoJobs: {
-    name: "InfoJobs",
-    displayName: "InfoJobs",
-    url: "https://www.infojobs.net/",
-    requiresAttribution: false,
+  'InfoJobs': {
+    name: 'InfoJobs',
+    displayName: 'InfoJobs',
+    url: 'https://www.infojobs.net/',
+    requiresAttribution: false
   },
-  USAJOBS: {
-    name: "USAJOBS",
-    displayName: "USAJOBS",
-    url: "https://www.usajobs.gov/",
-    requiresAttribution: false,
+  'USAJOBS': {
+    name: 'USAJOBS',
+    displayName: 'USAJOBS',
+    url: 'https://www.usajobs.gov/',
+    requiresAttribution: false
   },
 
   // Government sources
-  CareerOneStop: {
-    name: "CareerOneStop",
-    displayName: "CareerOneStop",
-    url: "https://www.careeronestop.org/",
-    requiresAttribution: false,
+  'CareerOneStop': {
+    name: 'CareerOneStop',
+    displayName: 'CareerOneStop',
+    url: 'https://www.careeronestop.org/',
+    requiresAttribution: false
   },
-  "NHS Jobs": {
-    name: "NHS Jobs",
-    displayName: "NHS Jobs",
-    url: "https://www.jobs.nhs.uk/",
-    requiresAttribution: false,
+  'NHS Jobs': {
+    name: 'NHS Jobs',
+    displayName: 'NHS Jobs',
+    url: 'https://www.jobs.nhs.uk/',
+    requiresAttribution: false
   },
-  "UK Apprenticeships": {
-    name: "UK Apprenticeships",
-    displayName: "UK Apprenticeships",
-    url: "https://www.apprenticeships.gov.uk/",
-    requiresAttribution: false,
+  'UK Apprenticeships': {
+    name: 'UK Apprenticeships',
+    displayName: 'UK Apprenticeships',
+    url: 'https://www.apprenticeships.gov.uk/',
+    requiresAttribution: false
   },
-  "NYC Government Jobs": {
-    name: "NYC Government Jobs",
-    displayName: "NYC Open Data",
-    url: "https://opendata.cityofnewyork.us/",
-    requiresAttribution: false,
+  'NYC Government Jobs': {
+    name: 'NYC Government Jobs',
+    displayName: 'NYC Open Data',
+    url: 'https://opendata.cityofnewyork.us/',
+    requiresAttribution: false
   },
-  "DOL Seasonal Jobs": {
-    name: "DOL Seasonal Jobs",
-    displayName: "DOL Seasonal Jobs",
-    url: "https://seasonaljobs.dol.gov/",
-    requiresAttribution: false,
+  'DOL Seasonal Jobs': {
+    name: 'DOL Seasonal Jobs',
+    displayName: 'DOL Seasonal Jobs',
+    url: 'https://seasonaljobs.dol.gov/',
+    requiresAttribution: false
   },
-  "Bundesagentur für Arbeit": {
-    name: "Bundesagentur für Arbeit",
-    displayName: "Bundesagentur",
-    url: "https://www.arbeitsagentur.de/",
-    requiresAttribution: false,
+  'Bundesagentur für Arbeit': {
+    name: 'Bundesagentur für Arbeit',
+    displayName: 'Bundesagentur',
+    url: 'https://www.arbeitsagentur.de/',
+    requiresAttribution: false
   },
-  WorkNet: {
-    name: "WorkNet",
-    displayName: "WorkNet",
-    url: "https://www.work.go.kr/",
-    requiresAttribution: false,
+  'WorkNet': {
+    name: 'WorkNet',
+    displayName: 'WorkNet',
+    url: 'https://www.work.go.kr/',
+    requiresAttribution: false
   },
 
   // Additional sources
-  Careerjet: {
-    name: "Careerjet",
-    displayName: "Careerjet",
-    url: "https://www.careerjet.com/",
-    requiresAttribution: false,
+  'Careerjet': {
+    name: 'Careerjet',
+    displayName: 'Careerjet',
+    url: 'https://www.careerjet.com/',
+    requiresAttribution: false
   },
-  Jooble: {
-    name: "Jooble",
-    displayName: "Jooble",
-    url: "https://jooble.org/",
-    requiresAttribution: false,
+  'Jooble': {
+    name: 'Jooble',
+    displayName: 'Jooble',
+    url: 'https://jooble.org/',
+    requiresAttribution: false
   },
-  "Reed.co.uk": {
-    name: "Reed.co.uk",
-    displayName: "Reed.co.uk",
-    url: "https://www.reed.co.uk/",
-    requiresAttribution: false,
+  'Reed.co.uk': {
+    name: 'Reed.co.uk',
+    displayName: 'Reed.co.uk',
+    url: 'https://www.reed.co.uk/',
+    requiresAttribution: false
   },
-  Juju: {
-    name: "Juju",
-    displayName: "Juju",
-    url: "https://www.juju.com/",
-    requiresAttribution: false,
-  },
-};
+  'Juju': {
+    name: 'Juju',
+    displayName: 'Juju',
+    url: 'https://www.juju.com/',
+    requiresAttribution: false
+  }
+}
 
 const activeSources = computed(() => {
-  const sources = appStore.jobSearchData?.lastSearchSources || [];
+  const sources = appStore.jobSearchData?.lastSearchSources || []
   return sources
     .map((sourceName: string) => SOURCE_ATTRIBUTIONS[sourceName])
-    .filter((source: SourceInfo | undefined): source is SourceInfo =>
-      Boolean(source),
-    )
-    .sort((a: SourceInfo, b: SourceInfo) =>
-      a.displayName.localeCompare(b.displayName),
-    );
-});
+    .filter((source: SourceInfo | undefined): source is SourceInfo => Boolean(source))
+    .sort((a: SourceInfo, b: SourceInfo) => a.displayName.localeCompare(b.displayName))
+})
 </script>
 
 <style scoped>

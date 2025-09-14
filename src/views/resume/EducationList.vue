@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    variant="outlined"
-    class="mb-4 section-card section-card unified-card"
-  >
+  <v-card variant="outlined" class="mb-4 section-card section-card unified-card">
     <v-card-title class="d-flex align-center justify-space-between pa-4">
       <div class="d-flex align-center ga-2">
         <AppIcon name="mdi-school-outline" size="small" color="primary" />
@@ -18,7 +15,7 @@
         <span class="d-none d-sm-inline">Add Education</span>
       </UnifiedButton>
     </v-card-title>
-
+    
     <div class="card-content-sm">
       <v-card
         v-for="(edu, index) in localItems"
@@ -35,9 +32,7 @@
           ).toString()
         "
         draggable="true"
-        :class="{
-          'drag-over':
-            dragOver.type === 'education' && dragOver.index === index,
+        :class="{ 'drag-over': dragOver.type === 'education' && dragOver.index === index,
         }"
         @dragstart="startDrag('education', index)"
         @dragover.prevent="onDragOver($event, 'education', index)"
@@ -90,7 +85,7 @@
             />
           </div>
         </v-card-title>
-
+        
         <div class="pa-3-unified">
           <v-row>
             <v-col cols="12" md="6">
@@ -143,11 +138,11 @@
 </template>
 
 <script>
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import UiChip from "@/components/ui/UiChip.vue";
+import AppIcon from '@/components/ui/AppIcon.vue';
+import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import UiChip from '@/components/ui/UiChip.vue';
 
-import { reactive, watch } from "vue";
+import { reactive, watch } from 'vue'
 import { useDragReorderList } from "@/composables/useDragReorderList";
 
 export default {

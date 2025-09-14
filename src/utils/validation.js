@@ -182,7 +182,7 @@ export const VALIDATION_PATTERNS = {
   github: /^https?:\/\/(www\.)?github\.com\/.+/,
 };
 
-
+// Field validation functions
 export const validateField = {
   required: (value, fieldName) => {
     if (!value || value.toString().trim() === "") {
@@ -234,8 +234,7 @@ export const validateField = {
 };
 
 // Simple validation helpers (consolidated from store duplicates)
-export const validateEmail = (email) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+export const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 export const validateRequired = (value) => value && value.trim().length > 0;
 
 export default ValidationService;

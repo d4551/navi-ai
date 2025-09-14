@@ -1,12 +1,12 @@
-
 console.warn(
-  "Node.js events module - using enhanced browser-compatible implementation",
+  "Node.js events module - using enhanced browser-compatible implementation"
 );
 
 // Enhanced EventEmitter implementation
 class EventEmitter {
   constructor(options = {}) {
     this._events = new Map();
+    this._maxListeners = options.captureRejections ? 10 : 10;
     this._captureRejections = options.captureRejections || false;
   }
 
@@ -28,7 +28,11 @@ class EventEmitter {
 
     // Check max listeners warning
     if (listeners.length >= this.getMaxListeners()) {
-      console.warn(`Possible EventEmitter memory leak detected. ${listeners.length + 1} ${event} listeners added.`);
+      console.warn(
+        `Possible EventEmitter memory leak detected. ${
+          listeners.length + 1
+        } ${event} listeners added.`
+      );
     }
 
     listeners.push(listener);
@@ -38,6 +42,8 @@ class EventEmitter {
   }
 
   once(event, listener) {
+    if (typeof listener !== 'function') {
+      throw new TypeError('listener must be a function');
     }
 
     const wrapper = (...args) => {
@@ -61,17 +67,20 @@ class EventEmitter {
     }
 
     // Find the listener or its wrapper
+    for (let i = listeners.length - 1; i >= 0; i--) {
       const currentListener = listeners[i];
       if (
         currentListener === listener ||
         currentListener.listener === listener
       ) {
+        listeners.splice(i, 1);
         this.emit("removeListener", event, listener);
         break;
       }
     }
 
     // Clean up empty event arrays
+    if (listeners && listeners.length === 0) {
       this._events.delete(event);
     }
 
@@ -79,7 +88,7 @@ class EventEmitter {
   }
 
   removeAllListeners(event) {
-    if (event === undefined) {
+    if (typeof event === 'undefined') {
       // Remove all listeners for all events
       const events = Array.from(this._events.keys());
       for (const eventName of events) {
@@ -102,8 +111,11 @@ class EventEmitter {
 
   emit(event, ...args) {
     const listeners = this._events.get(event);
+
+    if (!listeners || listeners.length === 0) {
       // Special handling for 'error' events
       if (event === "error") {
+        const error = args[0];
         if (error instanceof Error) {
           throw error;
         } else {
@@ -123,6 +135,7 @@ class EventEmitter {
           // Defer error to next tick to prevent sync errors
           setTimeout(() => {
             throw error;
+          }, 0);
         }
       }
     }
@@ -133,6 +146,7 @@ class EventEmitter {
   // EventEmitter utility methods
   listenerCount(event) {
     const listeners = this._events.get(event);
+    return listeners ? listeners.length : 0;
   }
 
   listeners(event) {
@@ -149,8 +163,9 @@ class EventEmitter {
   }
 
   setMaxListeners(n) {
+    if (typeof n !== 'number' || n < 0 || Number.isNaN(n)) {
       throw new RangeError(
-        'The value of "n" is out of range. It must be a non-negative number.',
+        'The value of "n" is out of range. It must be a non-negative number.'
       );
     }
     this._maxListeners = n;
@@ -158,7 +173,7 @@ class EventEmitter {
   }
 
   getMaxListeners() {
-    return this._maxListeners;
+    return this._maxListeners !== undefined ? this._maxListeners : 10;
   }
 
   // Static methods
@@ -207,6 +222,7 @@ class EventEmitter {
         return this;
       },
       async next() {
+        if (events.length > 0) {
           return { value: events.shift(), done: false };
         }
         if (finished) {
@@ -223,9 +239,10 @@ class EventEmitter {
       },
     };
   }
-
-  // Default max listeners
 }
+
+// Default max listeners
+EventEmitter.defaultMaxListeners = 10;
 
 // Export for ES modules
 export { EventEmitter };
@@ -240,18 +257,40 @@ export class AbortError extends Error {
   constructor(message = "The operation was aborted") {
     super(message);
     this.name = "AbortError";
+    this.code = "ABORT_ERR";
   }
 }
 
-  return emitter.listeners(name);
+// Utility functions
+export function getEventListeners(emitterOrTarget, name) {
+  // Handle both EventEmitter and EventTarget
+  if (emitterOrTarget instanceof EventEmitter) {
+    return emitterOrTarget.listeners(name);
+  }
+  return [];
 }
 
-  for (const target of eventTargets) {
-    target.setMaxListeners(n);
+export function setMaxListeners(n, ...eventTargets) {
+  if (typeof n !== 'number' || n < 0 || Number.isNaN(n)) {
+    throw new RangeError(
+      'The value of "n" is out of range. It must be a non-negative number.'
+    );
+  }
+
+  if (eventTargets.length === 0) {
+    EventEmitter.defaultMaxListeners = n;
+  } else {
+    for (const target of eventTargets) {
+      if (target && typeof target.setMaxListeners === 'function') {
+        target.setMaxListeners(n);
+      }
+    }
   }
 }
 
 // Browser-specific enhancements
 if (typeof window !== "undefined") {
-  console.info("Enhanced EventEmitter available in browser environment with full Node.js compatibility");
+  console.info(
+    "Enhanced EventEmitter available in browser environment with full Node.js compatibility"
+  );
 }

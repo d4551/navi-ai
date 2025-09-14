@@ -36,9 +36,7 @@
         :disabled="!canUseAI"
         :loading="loading.ai"
         leading-icon="mdi-auto-fix"
-        :aria-label="
-          loading.ai ? 'Generating AI content...' : 'Generate AI content'
-        "
+        :aria-label="loading.ai ? 'Generating AI content...' : 'Generate AI content'"
         @click="$emit('ai-generate')"
       >
         <span class="action-text">
@@ -55,11 +53,7 @@
         :disabled="!canUseAI"
         :loading="loading.skillSuggestions"
         leading-icon="mdi-lightbulb"
-        :aria-label="
-          loading.skillSuggestions
-            ? 'Suggesting skills...'
-            : 'Get AI skill suggestions'
-        "
+        :aria-label="loading.skillSuggestions ? 'Suggesting skills...' : 'Get AI skill suggestions'"
         @click="$emit('suggest-skills')"
       >
         <span class="action-text">
@@ -76,9 +70,7 @@
         :disabled="!canUseAI || !hasContent"
         :loading="loading.scoring"
         leading-icon="mdi-chart-bar"
-        :aria-label="
-          loading.scoring ? 'Analyzing resume...' : 'Analyze resume score'
-        "
+        :aria-label="loading.scoring ? 'Analyzing resume...' : 'Analyze resume score'"
         @click="$emit('score-resume')"
       >
         <span class="action-text">
@@ -107,9 +99,7 @@
         :disabled="!canUseAI || !hasContent"
         :loading="loading.ai"
         leading-icon="mdi-text-short"
-        :aria-label="
-          loading.ai ? 'Creating summary...' : 'Create resume summary'
-        "
+        :aria-label="loading.ai ? 'Creating summary...' : 'Create resume summary'"
         @click="$emit('summarize-resume')"
       >
         <span>Summarize</span>
@@ -126,18 +116,10 @@
         @click="showAdvanced = !showAdvanced"
       >
         <div class="d-flex align-items-center">
-          <AppIcon
-            name="mdi-cog"
-            size="default"
-            color="primary"
-            aria-hidden="true"
-          />
+          <AppIcon name="mdi-cog" size="default" color="primary" aria-hidden="true" />
           <span class="fw-semibold">Advanced Tools</span>
         </div>
-        <AppIcon
-          :name="showAdvanced ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-          class="transition-icon"
-        />
+        <AppIcon :name="showAdvanced ? 'mdi-chevron-up' : 'mdi-chevron-down'" class="transition-icon" />
       </summary>
 
       <div id="advanced-actions" class="collapsible-content">
@@ -205,10 +187,7 @@
                   type="button"
                   @click="$emit('optimize-section', 'portfolio')"
                 >
-                  <AppIcon
-                    name="mdi-folder-multiple-image-outline"
-                    class="me-2"
-                  />
+                  <AppIcon name="mdi-folder-multiple-image-outline" class="me-2" />
                   Portfolio
                 </button>
               </li>
@@ -222,11 +201,7 @@
             :disabled="!canUseAI"
             :loading="loading.templateGeneration"
             leading-icon="mdi-auto-fix"
-            :aria-label="
-              loading.templateGeneration
-                ? 'Generating template...'
-                : 'Create AI-powered template'
-            "
+            :aria-label="loading.templateGeneration ? 'Generating template...' : 'Create AI-powered template'"
             @click="$emit('smart-template')"
           >
             AI Smart Template
@@ -260,12 +235,7 @@
         v-else
         class="d-flex align-items-center justify-content-center text-success"
       >
-        <AppIcon
-          name="mdi-check-circle-outline"
-          size="small"
-          aria-hidden="true"
-          context="success"
-        />
+        <AppIcon name="mdi-check-circle-outline" size="small" aria-hidden="true" context="success" />
         <small class="fw-medium">AI Tools Ready</small>
       </div>
     </div>
@@ -273,15 +243,15 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { ref, computed } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 export default {
   name: "ActionsPanel",
   components: {
     AppIcon,
-    UnifiedButton,
+    UnifiedButton
   },
   props: {
     canUseAI: { type: Boolean, default: false },
@@ -328,16 +298,22 @@ export default {
   transform: rotate(180deg);
 }
 
+/* Enhanced button styling for action panel */
 .btn.btn-elevated {
+  min-height: 56px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0.75rem 1rem;
   text-align: center;
 }
 
 .btn.btn-elevated.btn-lg {
+  min-height: 72px;
+  padding: 1rem 1.25rem;
 }
 
+@media (min-width: 768px) {
   .btn.btn-elevated {
     flex-direction: row;
     text-align: left;
@@ -348,7 +324,10 @@ export default {
   }
 }
 
+@media (max-width: 767.98px) {
   .btn.btn-elevated .icon-md {
+    margin-bottom: 0.25rem;
+    margin-right: 0 !important;
   }
 
   .action-text small {
@@ -356,7 +335,10 @@ export default {
   }
 }
 
+/* Dropdown menu glass effect */
 .dropdown-menu.glass-surface {
+  backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
+  border: 1px solid var(--glass-border-light);
   box-shadow: var(--shadow-lg);
 }
 

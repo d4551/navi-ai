@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    variant="outlined"
-    class="mb-4 section-card section-card unified-card"
-  >
+  <v-card variant="outlined" class="mb-4 section-card section-card unified-card">
     <v-card-title class="d-flex align-center justify-space-between pa-4">
       <div class="d-flex align-center ga-2">
         <AppIcon name="mdi-briefcase-outline" size="small" color="primary" />
@@ -18,7 +15,7 @@
         <span class="d-none d-sm-inline">Add Experience</span>
       </UnifiedButton>
     </v-card-title>
-
+    
     <div class="card-content-sm">
       <v-card
         v-for="(exp, index) in localItems"
@@ -35,9 +32,7 @@
           ).toString()
         "
         draggable="true"
-        :class="{
-          'drag-over':
-            dragOver.type === 'experience' && dragOver.index === index,
+        :class="{ 'drag-over': dragOver.type === 'experience' && dragOver.index === index,
         }"
         @dragstart="startDrag('experience', index)"
         @dragover.prevent="onDragOver($event, 'experience', index)"
@@ -90,7 +85,7 @@
             />
           </div>
         </v-card-title>
-
+        
         <div class="pa-3-unified">
           <v-row>
             <v-col cols="12" md="6">
@@ -142,11 +137,7 @@
                   color="secondary"
                   size="sm"
                   :loading="copyingIndex === index"
-                  :leading-icon="
-                    copyingIndex === index
-                      ? 'mdi-clipboard-check-outline'
-                      : 'mdi-clipboard-outline'
-                  "
+                  :leading-icon="copyingIndex === index ? 'mdi-clipboard-check-outline' : 'mdi-clipboard-outline'"
                   @click="$emit('copy-experience', index)"
                 >
                   {{ copyingIndex === index ? "Copied" : "Copy" }}
@@ -168,11 +159,11 @@
 </template>
 
 <script>
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UiChip from "@/components/ui/UiChip.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import AppIcon from '@/components/ui/AppIcon.vue';
+import UiChip from '@/components/ui/UiChip.vue';
+import UnifiedButton from '@/components/ui/UnifiedButton.vue';
 
-import { reactive, watch } from "vue";
+import { reactive, watch } from 'vue'
 import { useDragReorderList } from "@/composables/useDragReorderList";
 import { useUserProfile } from "@/composables/useUserProfile";
 
@@ -197,7 +188,7 @@ export default {
         const items = Array.isArray(newExperience) ? newExperience : [];
         localItems.splice(0, localItems.length, ...items);
       },
-      { deep: true, immediate: true }, // immediate: true runs the watcher on component load
+      { deep: true, immediate: true } // immediate: true runs the watcher on component load
     );
 
     const listResolver = () => localItems;

@@ -14,7 +14,7 @@
       <Radar :data="chartData" :options="chartOptions" />
     </div>
   </div>
-
+  
   <!-- Provide simple bars fallback for environments where canvas is blocked -->
   <noscript>
     <div class="bars">
@@ -30,128 +30,102 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import { Radar } from "vue-chartjs";
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { computed } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { Radar } from 'vue-chartjs'
+import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js'
 
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend)
 
-type SkillInput =
-  | string
-  | { label?: string; name?: string; skill?: string; value?: number };
+type SkillInput = string | { label?: string; name?: string; skill?: string; value?: number }
 
 const props = withDefaults(defineProps<{ skills?: SkillInput[] }>(), {
-  skills: () => [],
-});
+  skills: () => []
+})
 
-
+// Normalize input to { label, value } in [0..100]
 const normalizedSkills = computed(() => {
-  const source = Array.isArray(props.skills) ? props.skills : [];
+  const source = Array.isArray(props.skills) ? props.skills : []
   const mapped = source.map((s: SkillInput) => {
-    if (typeof s === "string") return { label: s, value: 100 };
-    const label = s.label || s.name || s.skill || "Skill";
-    let value = Number(s.value ?? 100);
-    if (Number.isNaN(value)) value = 100;
-    value = Math.max(0, Math.min(100, Math.round(value)));
-    return { label, value };
-  });
-  return mapped.sort((a, b) => b.value - a.value).slice(0, 12);
-});
+    if (typeof s === 'string') return { label: s, value: 100 }
+    const label = s.label || s.name || s.skill || 'Skill'
+    let value = Number(s.value ?? 100)
+    if (Number.isNaN(value)) value = 100
+    value = Math.max(0, Math.min(100, Math.round(value)))
+    return { label, value }
+  })
+  return mapped
+    .sort((a, b) => (b.value - a.value))
+    .slice(0, 12)
+})
 
 function cssVar(name: string, fallback: string): string {
-  if (typeof window === "undefined") return fallback;
-  const val = getComputedStyle(document.documentElement)
-    .getPropertyValue(name)
-    .trim();
-  return val || fallback;
+  if (typeof window === 'undefined') return fallback
+  const val = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  return val || fallback
 }
 
 const chartData = computed(() => {
-  const labels = normalizedSkills.value.map((s) => s.label);
-  const data = normalizedSkills.value.map((s) => s.value);
-  const primary = cssVar("--color-primary-500", "rgba(59,130,246,1)");
-  const primaryTrans = cssVar("--color-primary-500", "59,130,246"); // try to parse rgb if available
-  const bg = primary.includes(",")
-    ? `rgba(${primaryTrans},0.2)`
-    : "rgba(59,130,246,0.2)";
+  const labels = normalizedSkills.value.map(s => s.label)
+  const data = normalizedSkills.value.map(s => s.value)
+  const primary = cssVar('--color-primary-500', 'rgba(59,130,246,1)')
+  const primaryTrans = cssVar('--color-primary-500', '59,130,246') // try to parse rgb if available
+  const bg = primary.includes(',') ? `rgba(${primaryTrans},0.2)` : 'rgba(59,130,246,0.2)'
   return {
     labels,
     datasets: [
       {
-        label: "Skill Level",
+        label: 'Skill Level',
         data,
         backgroundColor: bg,
         borderColor: primary,
         borderWidth: 2,
         pointBackgroundColor: primary,
-        pointBorderColor: "#fff",
-        pointHoverBackgroundColor: "#fff",
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
         pointHoverBorderColor: primary,
         fill: true,
-        tension: 0.2,
-      },
-    ],
-  };
-});
+        tension: 0.2
+      }
+    ]
+  }
+})
 
 const chartOptions = computed(() => {
-  const text = cssVar("--text-primary", "#e5e7eb");
-  const grid = cssVar("--border-glass", "rgba(255,255,255,0.1)");
-  const ticks = cssVar("--text-secondary", "#9ca3af");
+  const text = cssVar('--text-primary', '#e5e7eb')
+  const grid = cssVar('--border-glass', 'rgba(255,255,255,0.1)')
+  const ticks = cssVar('--text-secondary', '#9ca3af')
   return {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        labels: { color: text, boxWidth: 12 },
+        labels: { color: text, boxWidth: 12 }
       },
       tooltip: {
         enabled: true,
         callbacks: {
-          label: (ctx: any) => `${ctx.parsed.r || ctx.parsed} %`,
-        },
-      },
+          label: (ctx: any) => `${ctx.parsed.r || ctx.parsed} %`
+        }
+      }
     },
     elements: {
-      line: { borderJoinStyle: "round" },
+      line: { borderJoinStyle: 'round' }
     },
     scales: {
       r: {
         angleLines: { color: grid },
         grid: { color: grid },
-        pointLabels: { color: text, font: { size: 12 } },
-        ticks: {
-          color: ticks,
-          backdropColor: "transparent",
-          showLabelBackdrop: false,
-          stepSize: 20,
-          max: 100,
-          beginAtZero: true,
-        },
-      },
+        pointLabels: { color: text, font: { size: 12 }},
+        ticks: { color: ticks, backdropColor: 'transparent', showLabelBackdrop: false, stepSize: 20, max: 100, beginAtZero: true }
+      }
     },
     animation: {
       duration: 1000,
-      easing: "easeOutQuart",
-    },
-  } as const;
-});
+      easing: 'easeOutQuart'
+    }
+  } as const
+})
 </script>
 
 <style scoped>
@@ -161,10 +135,7 @@ const chartOptions = computed(() => {
   border-radius: var(--radius-lg);
   padding: 1rem;
 }
-.chart-container {
-  position: relative;
-  height: 320px;
-}
+.chart-container { position: relative; height: 320px; }
 .chart-header {
   display: flex;
   align-items: center;

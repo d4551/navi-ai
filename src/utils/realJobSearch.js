@@ -1,4 +1,4 @@
-
+// Enhanced Job Search API with 2025 Modern Packages
 import Fuse from "fuse.js";
 import pLimit from "p-limit";
 import { logger } from "@/shared/utils/logger";
@@ -79,11 +79,11 @@ const natural = createNaturalFallback();
 export class RealJobSearchService {
   constructor() {
     this.cache = new Map();
-    this.cacheTimeout = 5 * 60 * 1000;
-    this.rateLimitDelay = 1000;
+    this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+    this.rateLimitDelay = 1000; // 1 second between requests
     this.lastRequestTime = 0;
 
-
+    // Enhanced caching system for 2025
     this.semanticCache = new Map(); // Semantic search cache
     this.embeddingCache = new Map(); // AI embeddings cache
     this.performanceCache = new Map(); // Performance metrics cache
@@ -103,10 +103,10 @@ export class RealJobSearchService {
       source: String,
       remote: Boolean,
       requirements: Array,
-      gamingRelevance: Number,
+      gamingRelevance: Number, // 0-100
       tags: Array,
       verified: Boolean, // Real vs simulated data
-      quality: Number,
+      quality: Number, // 0-100 data quality score
     };
 
     // Job source configurations with metadata
@@ -222,7 +222,7 @@ export class RealJobSearchService {
         ],
         cons: ["High competition", "Quality varies"],
       },
-      // Consolidated Dice configuration above to avoid duplicate keys
+      // Note: consolidated Dice configuration above to avoid duplicate keys
       stackoverflow: {
         name: "Stack Overflow Jobs",
         baseUrl: "https://stackoverflow.com/jobs",
@@ -323,7 +323,7 @@ export class RealJobSearchService {
       },
     };
 
-
+    // ================== 2025 MODERN AI & SEARCH ENHANCEMENTS ==================
 
     // Initialize Natural NLP components
     this.stemmer = natural.PorterStemmer;
@@ -442,7 +442,7 @@ export class RealJobSearchService {
     }
 
     try {
-
+      // Build search functions for enabled sources (execute with limited concurrency)
       const limit = pLimit(3);
       const searchFns = [];
       const sourceMap = [];
@@ -472,10 +472,8 @@ export class RealJobSearchService {
         sourceMap.push("glassdoor");
       }
 
-
-      const results = await Promise.allSettled(
-        searchFns.map((fn) => limit(fn)),
-      );
+      // Execute searches with concurrency limit and track performance
+      const results = await Promise.allSettled(searchFns.map(fn => limit(fn)));
 
       const allJobs = [];
       const sourcePerformance = {};
@@ -1369,7 +1367,7 @@ export class RealJobSearchService {
       "community",
       "player",
     ];
-    let relevance = Math.floor(Math.random() * 30) + 50;
+    let relevance = Math.floor(Math.random() * 30) + 50; // Base 50-80
 
     gamingTerms.forEach((term) => {
       if (text.toLowerCase().includes(term)) {
@@ -1464,7 +1462,7 @@ export class RealJobSearchService {
         return `${Math.floor(diffDays / 7)} weeks ago`;
       }
       return `${Math.floor(diffDays / 30)} months ago`;
-    } catch {
+    } catch (error) {
       return this.getRandomRecentDate();
     }
   }
@@ -1865,8 +1863,8 @@ export class RealJobSearchService {
 
   // Get fallback jobs when API calls fail
   getFallbackJobs(query, location) {
-    const role = (query && query.trim()) || "Game";
-    const baseLoc = location || "Remote";
+    const role = (query && query.trim()) || 'Game';
+    const baseLoc = location || 'Remote';
     const items = [
       {
         id: "fallback-1",
@@ -1889,9 +1887,8 @@ export class RealJobSearchService {
         company: "Indie Studio",
         location: baseLoc,
         type: "Full-time",
-        description:
-          "Engage and grow our player community across Discord, Twitch, and social platforms.",
-        salary: this.estimateSalary("manager", baseLoc, "tech"),
+        description: "Engage and grow our player community across Discord, Twitch, and social platforms.",
+        salary: this.estimateSalary('manager', baseLoc, 'tech'),
         applyUrl: "mailto:careers@indiestudio.dev",
         posted: "3 days ago",
         source: "Direct",
@@ -1905,9 +1902,8 @@ export class RealJobSearchService {
         company: "QA Works",
         location: baseLoc,
         type: "Contract",
-        description:
-          "Test gameplay, systems, and liveops features. Report defects and verify fixes.",
-        salary: this.estimateSalary("qa tester", baseLoc),
+        description: "Test gameplay, systems, and liveops features. Report defects and verify fixes.",
+        salary: this.estimateSalary('qa tester', baseLoc),
         applyUrl: "mailto:apply@qaworks.io",
         posted: "5 days ago",
         source: "Direct",
@@ -1921,9 +1917,8 @@ export class RealJobSearchService {
         company: "PixelForge",
         location: baseLoc,
         type: "Full-time",
-        description:
-          "Design and prototype levels, encounters, and pacing for action-adventure experiences.",
-        salary: this.estimateSalary("designer", baseLoc, "tech"),
+        description: "Design and prototype levels, encounters, and pacing for action-adventure experiences.",
+        salary: this.estimateSalary('designer', baseLoc, 'tech'),
         applyUrl: "mailto:hire@pixelforge.gg",
         posted: "1 week ago",
         source: "Direct",
@@ -1937,9 +1932,8 @@ export class RealJobSearchService {
         company: "ArenaOne",
         location: baseLoc,
         type: "Part-time",
-        description:
-          "Coordinate tournaments, manage player communications, and support broadcast production.",
-        salary: this.estimateSalary("coordinator", baseLoc),
+        description: "Coordinate tournaments, manage player communications, and support broadcast production.",
+        salary: this.estimateSalary('coordinator', baseLoc),
         applyUrl: "mailto:talent@arena.one",
         posted: "1 week ago",
         source: "Direct",
@@ -2704,19 +2698,14 @@ export class RealJobSearchService {
       location:
         location || (Math.random() > 0.3 ? "Remote" : "San Francisco, CA"),
       type: Math.random() > 0.8 ? "Contract" : "Full-time",
-      description:
-        "Join " +
-        companies[i % companies.length] +
-        " as a " +
-        jobTypes[i % jobTypes.length] +
-        ". We are looking for talented individuals who can bring their unique perspective and gaming experience to drive innovation.",
+      description: "Join " + companies[i % companies.length] + " as a " + jobTypes[i % jobTypes.length] + ". We are looking for talented individuals who can bring their unique perspective and gaming experience to drive innovation.",
       salary: this.estimateSalary(query, location, "tech"),
       applyUrl: `https://linkedin.com/jobs/${Date.now()}-${i}`,
       posted: this.getRandomRecentDate(),
       source: "LinkedIn Jobs",
       remote: location === "Remote" || Math.random() > 0.6,
       requirements: this.generateRequirements(query),
-      gamingRelevance: Math.floor(Math.random() * 40) + 30,
+      gamingRelevance: Math.floor(Math.random() * 40) + 30, // 30-70 for LinkedIn
       applicants: Math.floor(Math.random() * 200) + 50,
     }));
   }
@@ -2761,7 +2750,7 @@ export class RealJobSearchService {
         source: "Glassdoor",
         remote: Math.random() > 0.7,
         requirements: this.generateRequirements(query),
-        gamingRelevance: Math.floor(Math.random() * 30) + 20,
+        gamingRelevance: Math.floor(Math.random() * 30) + 20, // 20-50 for traditional companies
         companyRating: company.rating,
         companySize: Math.floor(Math.random() * 90000) + 10000,
         benefits: [
@@ -3281,7 +3270,7 @@ export class RealJobSearchService {
     const uptimeData = monitoring.uptime.get(source);
     uptimeData.push({ timestamp: Date.now(), success });
     if (uptimeData.length > 100) {
-
+      // Keep last 100 checks
       uptimeData.shift();
     }
 
@@ -3293,7 +3282,7 @@ export class RealJobSearchService {
       const responseTimeData = monitoring.responseTime.get(source);
       responseTimeData.push(responseTime);
       if (responseTimeData.length > 50) {
-
+        // Keep last 50 response times
         responseTimeData.shift();
       }
     }
@@ -3349,9 +3338,9 @@ export class RealJobSearchService {
   // Analyze gaming relevance distribution
   getGamingRelevanceDistribution() {
     const ranges = {
-      high: 0,
-      medium: 0,
-      low: 0,
+      high: 0, // 70-100
+      medium: 0, // 40-69
+      low: 0, // 0-39
     };
 
     // This would be populated from actual job data in real usage
@@ -3511,7 +3500,7 @@ export class RealJobSearchService {
             generatedAt: new Date().toISOString(),
           },
         };
-      } catch {
+      } catch (parseError) {
         return job;
       }
     } catch (error) {
@@ -3910,7 +3899,7 @@ export class RealJobSearchService {
         careerGoals: {
           targetRoles: new Set(),
           skillsToLearn: new Set(),
-          timeframe: "6months",
+          timeframe: "6months", // 3months, 6months, 1year, 2years
         },
         lastUpdated: Date.now(),
       };
@@ -3942,7 +3931,7 @@ export class RealJobSearchService {
     let matchScore = 0;
     const factors = [];
 
-
+    // Skill matching (30% weight)
     const skillMatch = this.calculateSkillMatch(job);
     matchScore += skillMatch.score * 0.3;
     factors.push({
@@ -3951,7 +3940,7 @@ export class RealJobSearchService {
       details: skillMatch.matches,
     });
 
-
+    // Experience level matching (25% weight)
     const experienceMatch = this.calculateExperienceMatch(job);
     matchScore += experienceMatch.score * 0.25;
     factors.push({
@@ -3960,7 +3949,7 @@ export class RealJobSearchService {
       details: experienceMatch.reason,
     });
 
-
+    // Salary matching (20% weight)
     const salaryMatch = this.calculateSalaryMatch(job);
     matchScore += salaryMatch.score * 0.2;
     factors.push({
@@ -3969,7 +3958,7 @@ export class RealJobSearchService {
       details: salaryMatch.reason,
     });
 
-
+    // Location preference (15% weight)
     const locationMatch = this.calculateLocationMatch(job);
     matchScore += locationMatch.score * 0.15;
     factors.push({
@@ -3978,7 +3967,7 @@ export class RealJobSearchService {
       details: locationMatch.reason,
     });
 
-
+    // Gaming relevance (10% weight)
     const gamingMatch = this.calculateGamingMatch(job);
     matchScore += gamingMatch.score * 0.1;
     factors.push({
@@ -4609,7 +4598,7 @@ export class RealJobSearchService {
         },
         history: [],
         lastCheck: Date.now(),
-        checkInterval: 15 * 60 * 1000,
+        checkInterval: 15 * 60 * 1000, // 15 minutes
       };
     }
     return this.alertsSystem;
@@ -4769,13 +4758,13 @@ export class RealJobSearchService {
 
     switch (alert.frequency) {
       case "instant":
-        return timeSinceLastCheck > 5 * 60 * 1000;
+        return timeSinceLastCheck > 5 * 60 * 1000; // 5 minutes
       case "hourly":
-        return timeSinceLastCheck > 60 * 60 * 1000;
+        return timeSinceLastCheck > 60 * 60 * 1000; // 1 hour
       case "daily":
-        return timeSinceLastCheck > 24 * 60 * 60 * 1000;
+        return timeSinceLastCheck > 24 * 60 * 60 * 1000; // 24 hours
       case "weekly":
-        return timeSinceLastCheck > 7 * 24 * 60 * 60 * 1000;
+        return timeSinceLastCheck > 7 * 24 * 60 * 60 * 1000; // 7 days
       default:
         return timeSinceLastCheck > 24 * 60 * 60 * 1000; // Default to daily
     }
@@ -4874,7 +4863,7 @@ export class RealJobSearchService {
     if (stored) {
       try {
         return new Set(JSON.parse(stored));
-      } catch {
+      } catch (e) {
         return new Set();
       }
     }
@@ -4886,14 +4875,14 @@ export class RealJobSearchService {
     const key = `notified_${alertId}`;
     const idsArray = Array.from(jobIds);
 
-
+    // Limit stored IDs to prevent storage bloat (keep last 1000)
     const limitedIds = idsArray.slice(-1000);
     UnifiedStorage.set(key, JSON.stringify(limitedIds));
   }
 
   // Create alert notification
   createAlertNotification(alert, jobs) {
-    const topJobs = jobs.slice(0, 5);
+    const topJobs = jobs.slice(0, 5); // Show top 5 jobs in notification
 
     return {
       id: `notification-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -5087,7 +5076,7 @@ export class RealJobSearchService {
     const day = 24 * 60 * 60 * 1000;
     const yesterday = now - day;
 
-
+    // Get notifications from the last 24 hours
     const recentNotifications = this.alertsSystem.notifications.filter(
       (n) => n.created > yesterday && n.type === "job_alert",
     );
@@ -5231,7 +5220,7 @@ export class RealJobSearchService {
     };
   }
 
-
+  // ================== 2025 MODERN AI & NLP ENHANCEMENT METHODS ==================
 
   // Advanced fuzzy search using Fuse.js
   async performFuzzySearch(jobs, query, options = {}) {
@@ -5653,7 +5642,7 @@ export class RealJobSearchService {
 }
 
 // =================== NEW ENHANCED PUBLIC API ENDPOINTS ===================
-
+// These endpoints expand the public job board API functionality
 
 // Create a comprehensive job search API instance
 const createJobSearchAPI = () => new RealJobSearchService();
@@ -5665,38 +5654,32 @@ export const JobBoardAPI = {
     const service = createJobSearchAPI();
     return await service.searchJobs(query, {
       location: options.location,
-      sources: options.sources || ["all"],
+      sources: options.sources || ['all'],
       maxResults: Math.min(options.maxResults || 50, 100),
-      sortBy: options.sortBy || "relevance",
+      sortBy: options.sortBy || 'relevance',
       salaryMin: options.salaryMin,
       salaryMax: options.salaryMax,
       experienceLevel: options.experienceLevel,
       remote: options.remote,
       gamingRelevance: options.gamingRelevance || 0,
       aiEnhanced: options.aiEnhanced !== false,
-      ...options,
+      ...options
     });
   },
 
   // Get trending job categories and skills
   async getTrendingJobs(options = {}) {
     const service = createJobSearchAPI();
-    const timeframe = options.timeframe || "7d";
-    const category = options.category || "all"; // gaming, tech, design, etc.
-
+    const timeframe = options.timeframe || '7d'; // 1d, 7d, 30d
+    const category = options.category || 'all'; // gaming, tech, design, etc.
+    
     // Simulate trending data - in real implementation, this would query aggregated data
     const trendingQueries = [
-      "Unity Developer",
-      "React Developer",
-      "Game Designer",
-      "UI/UX Designer",
-      "Backend Developer",
-      "DevOps Engineer",
-      "Machine Learning Engineer",
-      "Mobile Developer",
-      "QA Engineer",
+      'Unity Developer', 'React Developer', 'Game Designer', 
+      'UI/UX Designer', 'Backend Developer', 'DevOps Engineer',
+      'Machine Learning Engineer', 'Mobile Developer', 'QA Engineer'
     ];
-
+    
     const trendingJobs = [];
     for (const query of trendingQueries.slice(0, options.limit || 5)) {
       const results = await service.searchJobs(query, { maxResults: 3 });
@@ -5704,18 +5687,18 @@ export const JobBoardAPI = {
         category: query,
         jobs: results.slice(0, 3),
         totalCount: results.length,
-        growthRate: Math.round(Math.random() * 50) + 10, // Simulated growth
+        growthRate: Math.round(Math.random() * 50) + 10 // Simulated growth
       });
     }
-
+    
     return {
       timeframe,
       category,
       trending: trendingJobs,
       metadata: {
         lastUpdated: new Date().toISOString(),
-        totalCategories: trendingQueries.length,
-      },
+        totalCategories: trendingQueries.length
+      }
     };
   },
 
@@ -5723,18 +5706,14 @@ export const JobBoardAPI = {
   async getJobDetails(jobId, options = {}) {
     const service = createJobSearchAPI();
     const job = service.getJobMetadata(jobId);
-
+    
     if (!job) {
-      throw new Error("Job not found");
+      throw new Error('Job not found');
     }
 
     // Add AI enhancement if requested
     if (options.includeAI && options.geminiService) {
-      return await service.enhanceJobDescription(
-        options.geminiService,
-        job,
-        options.userProfile,
-      );
+      return await service.enhanceJobDescription(options.geminiService, job, options.userProfile);
     }
 
     return job;
@@ -5744,75 +5723,65 @@ export const JobBoardAPI = {
   async getRecommendations(userProfile, options = {}) {
     const service = createJobSearchAPI();
     service.updateUserProfile(userProfile);
-
+    
     // Search for jobs across multiple categories
     const searches = [
-      userProfile.skills?.slice(0, 3).join(" ") || "developer",
-      userProfile.careerGoals?.targetRoles?.[0] || "software engineer",
-      "remote " + (userProfile.preferences?.jobTypes?.[0] || "full-time"),
+      userProfile.skills?.slice(0, 3).join(' ') || 'developer',
+      userProfile.careerGoals?.targetRoles?.[0] || 'software engineer',
+      'remote ' + (userProfile.preferences?.jobTypes?.[0] || 'full-time')
     ];
-
+    
     const allJobs = [];
     for (const query of searches) {
       const jobs = await service.searchJobs(query, { maxResults: 20 });
       allJobs.push(...jobs);
     }
-
+    
     // Remove duplicates and get personalized recommendations
-    const uniqueJobs = allJobs.filter(
-      (job, index, self) => index === self.findIndex((j) => j.id === job.id),
+    const uniqueJobs = allJobs.filter((job, index, self) => 
+      index === self.findIndex(j => j.id === job.id)
     );
-
-    return service.getPersonalizedRecommendations(
-      uniqueJobs,
-      options.limit || 10,
-    );
+    
+    return service.getPersonalizedRecommendations(uniqueJobs, options.limit || 10);
   },
 
   // Get job market analytics
   async getMarketAnalytics(options = {}) {
     const _service = createJobSearchAPI();
-    const location = options.location || "Global";
-    const timeframe = options.timeframe || "30d";
-
+    const location = options.location || 'Global';
+    const timeframe = options.timeframe || '30d';
+    
     // Simulate market data - in real implementation, this would aggregate actual data
     return {
       location,
       timeframe,
       analytics: {
         totalJobs: Math.floor(Math.random() * 10000) + 5000,
-        averageSalary:
-          "$" + (Math.floor(Math.random() * 50000) + 70000).toLocaleString(),
+        averageSalary: '$' + (Math.floor(Math.random() * 50000) + 70000).toLocaleString(),
         topSkills: [
-          { skill: "JavaScript", demand: 85, growth: "+12%" },
-          { skill: "Python", demand: 78, growth: "+18%" },
-          { skill: "React", demand: 72, growth: "+15%" },
-          { skill: "Unity", demand: 65, growth: "+22%" },
-          { skill: "Node.js", demand: 58, growth: "+8%" },
+          { skill: 'JavaScript', demand: 85, growth: '+12%' },
+          { skill: 'Python', demand: 78, growth: '+18%' },
+          { skill: 'React', demand: 72, growth: '+15%' },
+          { skill: 'Unity', demand: 65, growth: '+22%' },
+          { skill: 'Node.js', demand: 58, growth: '+8%' }
         ],
         jobTypes: {
-          "Full-time": 68,
-          Contract: 22,
-          "Part-time": 7,
-          Internship: 3,
+          'Full-time': 68,
+          'Contract': 22,
+          'Part-time': 7,
+          'Internship': 3
         },
         remoteWork: {
           percentage: 45,
-          trend: "+5% from last month",
+          trend: '+5% from last month'
         },
         gamingIndustry: {
           jobCount: Math.floor(Math.random() * 1000) + 500,
-          avgSalary:
-            "$" + (Math.floor(Math.random() * 40000) + 80000).toLocaleString(),
-          topCompanies: [
-            "Epic Games",
-            "Unity Technologies",
-            "Blizzard",
-            "Riot Games",
-          ],
-        },
+          avgSalary: '$' + (Math.floor(Math.random() * 40000) + 80000).toLocaleString(),
+          topCompanies: ['Epic Games', 'Unity Technologies', 'Blizzard', 'Riot Games']
+        }
       },
-      generatedAt: new Date().toISOString(),
+      generatedAt: new Date().toISOString()
     };
   },
 
@@ -5873,11 +5842,11 @@ export const JobBoardAPI = {
   async getAPIHealth() {
     const service = createJobSearchAPI();
     const monitoring = service.getApiMonitoring();
-
+    
     return {
-      status: "operational",
-      version: "2.0.0",
-      uptime: "99.9%",
+      status: 'operational',
+      version: '2.0.0',
+      uptime: '99.9%',
       lastCheck: new Date().toISOString(),
       sources: monitoring,
       capabilities: {
@@ -5886,8 +5855,8 @@ export const JobBoardAPI = {
         semanticSearch: true,
         applicationTracking: true,
         jobAlerts: true,
-        marketAnalytics: true,
-      },
+        marketAnalytics: true
+      }
     };
   },
 
@@ -5899,37 +5868,31 @@ export const JobBoardAPI = {
   // Enhanced search with semantic analysis
   async semanticSearch(query, options = {}) {
     const service = createJobSearchAPI();
-
+    
     // Perform regular search first
     const results = await service.searchJobs(query, options);
-
+    
     // Add semantic analysis if AI service is available
     if (options.geminiService) {
       const enhancedResults = await Promise.all(
-        results
-          .slice(0, 10)
-          .map((job) =>
-            service.enhanceJobDescription(
-              options.geminiService,
-              job,
-              options.userProfile,
-            ),
-          ),
+        results.slice(0, 10).map(job => 
+          service.enhanceJobDescription(options.geminiService, job, options.userProfile)
+        )
       );
-
+      
       return {
         query,
         results: enhancedResults,
         semanticAnalysis: true,
-        processedAt: new Date().toISOString(),
+        processedAt: new Date().toISOString()
       };
     }
-
+    
     return {
       query,
       results,
       semanticAnalysis: false,
-      processedAt: new Date().toISOString(),
+      processedAt: new Date().toISOString()
     };
   },
 
@@ -5937,42 +5900,41 @@ export const JobBoardAPI = {
   async bulkJobSearch(queries, options = {}) {
     const service = createJobSearchAPI();
     const results = [];
-
-    for (const query of queries.slice(0, 10)) {
-      // Limit bulk operations
+    
+    for (const query of queries.slice(0, 10)) { // Limit bulk operations
       try {
         const searchResults = await service.searchJobs(query, {
           ...options,
-          maxResults: options.maxResults || 10,
+          maxResults: options.maxResults || 10
         });
         results.push({
           query,
           success: true,
           results: searchResults,
-          count: searchResults.length,
+          count: searchResults.length
         });
       } catch (error) {
         results.push({
           query,
           success: false,
           error: error.message,
-          count: 0,
+          count: 0
         });
       }
     }
-
+    
     return {
       bulkSearch: true,
       totalQueries: queries.length,
       processedQueries: results.length,
       results,
       summary: {
-        successful: results.filter((r) => r.success).length,
-        failed: results.filter((r) => !r.success).length,
-        totalJobs: results.reduce((sum, r) => sum + r.count, 0),
-      },
+        successful: results.filter(r => r.success).length,
+        failed: results.filter(r => !r.success).length,
+        totalJobs: results.reduce((sum, r) => sum + r.count, 0)
+      }
     };
-  },
+  }
 };
 
 // Export individual methods for direct use
@@ -5987,7 +5949,7 @@ export const {
   trackApplication,
   getAPIHealth,
   semanticSearch,
-  bulkJobSearch,
+  bulkJobSearch
 } = JobBoardAPI;
 
 export default RealJobSearchService;

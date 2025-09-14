@@ -1,8 +1,8 @@
-import { ref, onMounted, computed, onUnmounted } from "vue";
+import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { getVoiceService } from "@/utils/voice";
 
 // Encapsulates voice UI state + toggle logic
-
+// Pass in: { store, toast } where toast is a function(message)
 export function useVoiceControl({ store, toast } = {}) {
   const voiceService = getVoiceService();
   const isVoiceListening = ref(false);

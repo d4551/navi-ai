@@ -1,10 +1,10 @@
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch } from 'vue'
 
 // Provide computed logo path + simple load/error tracking
 // Expects a Pinia store with settings.theme
 export function useLogo(store) {
   const fallbackLogoDataUri =
-    'data:image/svg+xml;utf8,<svg xmlns="http:
+    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" rx="8" fill="%23667EEA"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="16" fill="white">N</text></svg>';
   const logoLoadState = ref({ loaded: false, error: false, path: "" });
 
   const resolveAssetPath = (filename) => {

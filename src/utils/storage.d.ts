@@ -1,4 +1,5 @@
-declare module "@/utils/storage" {
-  export const unifiedStorage: any;
-  export default unifiedStorage;
+declare module '@/utils/storage' {
+  export const unifiedStorage: any
+  export default unifiedStorage
 }
+

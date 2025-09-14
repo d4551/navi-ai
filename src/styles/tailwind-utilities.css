@@ -1,0 +1,204 @@
+/* Custom Tailwind utility classes that bridge master theme with Tailwind */
+@layer utilities {
+  /* Glass morphism utilities */
+  .glass-bg {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-backdrop-blur);
+    -webkit-backdrop-filter: var(--glass-backdrop-blur);
+  }
+
+  .glass-border {
+    border: 1px solid var(--glass-border);
+  }
+
+  .glass-shadow {
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-hover {
+    background: var(--glass-hover-bg);
+  }
+
+  .glass-card {
+    @apply glass-bg glass-border glass-shadow rounded-glass;
+    padding: var(--card-padding);
+  }
+
+  /* Text color utilities */
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-tertiary {
+    color: var(--text-tertiary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  /* Gaming theme colors */
+  .text-gaming {
+    color: var(--color-gaming-500);
+  }
+
+  .bg-gaming {
+    background: var(--color-gaming-500);
+  }
+
+  .border-gaming {
+    border-color: var(--color-gaming-500);
+  }
+
+  /* Spacing utilities aligned with design system */
+  .spacing-xs {
+    gap: var(--spacing-2);
+  }
+
+  .spacing-sm {
+    gap: var(--spacing-3);
+  }
+
+  .spacing-md {
+    gap: var(--spacing-4);
+  }
+
+  .spacing-lg {
+    gap: var(--spacing-6);
+  }
+
+  .spacing-xl {
+    gap: var(--spacing-8);
+  }
+
+  /* Container utilities */
+  .container-glass {
+    max-width: var(--page-content-max-width);
+    margin-inline: auto;
+    padding-inline: var(--spacing-6);
+    @apply glass-bg glass-border;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Button utilities */
+  .btn-glass {
+    @apply glass-bg glass-border;
+    border-radius: var(--radius-md);
+    padding: var(--btn-padding-y) var(--btn-padding-x);
+    min-height: var(--btn-min-h);
+    transition: all var(--duration-fast) var(--easing-ease-out);
+  }
+
+  .btn-glass:hover {
+    @apply glass-hover;
+    transform: translateY(-1px);
+  }
+
+  /* Gaming-specific animations */
+  .animate-neon-pulse {
+    animation: neon-pulse 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes neon-pulse {
+    from {
+      box-shadow: 0 0 5px var(--color-gaming-400), 0 0 10px var(--color-gaming-400);
+    }
+    to {
+      box-shadow: 0 0 10px var(--color-gaming-500), 0 0 20px var(--color-gaming-500);
+    }
+  }
+
+  /* Typography utilities */
+  .font-gaming {
+    font-family: 'Orbitron', 'Electrolize', 'Inter', system-ui, sans-serif;
+  }
+
+  .font-display {
+    font-family: 'Electrolize', 'Inter', system-ui, sans-serif;
+  }
+
+  /* Rounded utilities based on design system */
+  .rounded-glass {
+    border-radius: var(--radius-lg);
+  }
+
+  /* Grid utilities that match design system */
+  .grid-responsive-cards {
+    display: grid;
+    gap: var(--spacing-6);
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-md), 1fr));
+  }
+
+  .grid-dashboard {
+    display: grid;
+    gap: var(--spacing-6);
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-sm), 1fr));
+  }
+
+  /* Consolidated grid helpers used via @apply in components */
+  .stats-grid {
+    display: grid;
+    gap: var(--spacing-3);
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-xs, 140px), 1fr));
+  }
+
+  .compact-grid {
+    display: grid;
+    gap: var(--spacing-2);
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .settings-grid {
+    display: grid;
+    gap: var(--spacing-4);
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-sm, 220px), 1fr));
+  }
+
+  .tool-grid {
+    display: grid;
+    gap: var(--spacing-3);
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-xs, 140px), 1fr));
+  }
+
+  .media-grid {
+    display: grid;
+    gap: var(--spacing-4);
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-sm, 220px), 1fr));
+  }
+
+  .portfolio-grid {
+    display: grid;
+    gap: var(--spacing-5);
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg, 320px), 1fr));
+  }
+
+  /* Density-aware utilities */
+  .density-comfortable .spacing-comfortable {
+    gap: var(--spacing-8);
+  }
+
+  .density-compact .spacing-compact {
+    gap: var(--spacing-3);
+  }
+
+  /* Status colors */
+  .text-success {
+    color: var(--color-success-500);
+  }
+
+  .text-warning {
+    color: var(--color-warning-500);
+  }
+
+  .text-error {
+    color: var(--color-error-500);
+  }
+
+  .text-info {
+    color: var(--color-info-500);
+  }
+}

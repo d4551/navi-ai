@@ -5,18 +5,10 @@
       <div class="nav-container">
         <!-- Left Section: Brand & Context -->
         <div class="nav-left">
-          <router-link
-            to="/"
-            class="brand-link gaming-focus"
-            aria-label="Go to Gaming Career Dashboard"
-          >
+          <router-link to="/" class="brand-link gaming-focus" aria-label="Go to Gaming Career Dashboard">
             <div class="brand-content">
               <div class="brand-logo">
-                <AppIcon
-                  name="mdi-gamepad-variant"
-                  size="28"
-                  class="brand-icon gaming-pulse"
-                />
+                <AppIcon name="mdi-gamepad-variant" size="28" class="brand-icon gaming-pulse" />
                 <div class="logo-glow"></div>
               </div>
               <div class="brand-text-group">
@@ -25,13 +17,9 @@
               </div>
             </div>
           </router-link>
-
+          
           <!-- AI Model Status with Gaming Theme -->
-          <div
-            v-if="aiModelInfo"
-            class="ai-status-chip"
-            :class="getAIStatusClass()"
-          >
+          <div v-if="aiModelInfo" class="ai-status-chip" :class="getAIStatusClass()">
             <div class="ai-status-indicator">
               <AppIcon :name="getAIStatusIcon()" size="16" />
               <div v-if="aiReady" class="status-pulse gaming-pulse"></div>
@@ -47,38 +35,24 @@
           <div v-if="breadcrumbs.length > 0" class="gaming-breadcrumbs">
             <nav aria-label="Gaming Career Breadcrumb">
               <ol class="breadcrumb-list">
-                <li
-                  v-for="(crumb, index) in breadcrumbs"
-                  :key="index"
-                  class="breadcrumb-item"
-                >
-                  <router-link
-                    v-if="crumb.to && index < breadcrumbs.length - 1"
-                    :to="crumb.to"
+                <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item">
+                  <router-link 
+                    v-if="crumb.to && index < breadcrumbs.length - 1" 
+                    :to="crumb.to" 
                     class="breadcrumb-link gaming-interactive"
                   >
-                    <AppIcon
-                      v-if="crumb.icon"
-                      :name="crumb.icon"
-                      size="16"
-                      class="breadcrumb-icon"
-                    />
+                    <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="breadcrumb-icon" />
                     {{ crumb.label }}
                   </router-link>
                   <span v-else class="breadcrumb-current gaming-title">
-                    <AppIcon
-                      v-if="crumb.icon"
-                      :name="crumb.icon"
-                      size="16"
-                      class="breadcrumb-icon"
-                    />
+                    <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="breadcrumb-icon" />
                     {{ crumb.label }}
                   </span>
-                  <AppIcon
-                    v-if="index < breadcrumbs.length - 1"
-                    name="mdi-chevron-right"
-                    size="16"
-                    class="breadcrumb-separator"
+                  <AppIcon 
+                    v-if="index < breadcrumbs.length - 1" 
+                    name="mdi-chevron-right" 
+                    size="16" 
+                    class="breadcrumb-separator" 
                   />
                 </li>
               </ol>
@@ -103,10 +77,7 @@
         <!-- Right Section: Search & Actions -->
         <div class="nav-right">
           <!-- Enhanced Gaming Search -->
-          <div
-            class="gaming-search-container"
-            :class="{ 'search-active': searchActive }"
-          >
+          <div class="gaming-search-container" :class="{ 'search-active': searchActive }">
             <div class="search-wrapper glass-cyber">
               <input
                 v-model="searchQuery"
@@ -125,27 +96,18 @@
                 <AppIcon name="mdi-close" size="16" />
               </div>
             </div>
-
+            
             <!-- Search Suggestions for Gaming -->
-            <div
-              v-if="searchActive && searchSuggestions.length > 0"
-              class="search-suggestions glass-surface"
-            >
+            <div v-if="searchActive && searchSuggestions.length > 0" class="search-suggestions glass-surface">
               <div
                 v-for="suggestion in searchSuggestions"
                 :key="suggestion.id"
                 class="suggestion-item gaming-interactive"
                 @click="selectSuggestion(suggestion)"
               >
-                <AppIcon
-                  :name="suggestion.icon"
-                  size="16"
-                  class="suggestion-icon"
-                />
+                <AppIcon :name="suggestion.icon" size="16" class="suggestion-icon" />
                 <span class="suggestion-text">{{ suggestion.text }}</span>
-                <span class="suggestion-category">{{
-                  suggestion.category
-                }}</span>
+                <span class="suggestion-category">{{ suggestion.category }}</span>
               </div>
             </div>
           </div>
@@ -162,17 +124,14 @@
               :class="{ 'voice-active neon-gaming': voiceActive }"
               @click="toggleVoiceCommands"
             />
-
+            
             <!-- AI Gaming Assistant -->
             <UnifiedButton
               variant="cyber"
               size="sm"
               leading-icon="mdi-brain"
               class="ai-assistant-btn"
-              :tooltip="{
-                text: 'Gaming AI Assistant (Ctrl+J)',
-                position: 'bottom',
-              }"
+              :tooltip="{ text: 'Gaming AI Assistant (Ctrl+J)', position: 'bottom' }"
               :disabled="!aiReady"
               :class="{ 'ai-thinking': aiThinking }"
               @click="openGamingAIAssistant"
@@ -182,23 +141,16 @@
                 <span></span><span></span><span></span>
               </div>
             </UnifiedButton>
-
+            
             <!-- Gaming Notifications -->
             <UnifiedButton
               variant="ghost"
               size="sm"
               leading-icon="mdi-bell"
               class="notifications-btn gaming-interactive"
-              :tooltip="{
-                text: 'Gaming Job Alerts & Notifications',
-                position: 'bottom',
-              }"
-              :badge="
-                notificationCount > 0 ? notificationCount.toString() : undefined
-              "
-              :class="{
-                'has-notifications neon-gaming': notificationCount > 0,
-              }"
+              :tooltip="{ text: 'Gaming Job Alerts & Notifications', position: 'bottom' }"
+              :badge="notificationCount > 0 ? notificationCount.toString() : undefined"
+              :class="{ 'has-notifications neon-gaming': notificationCount > 0 }"
               @click="toggleNotifications"
             />
 
@@ -213,7 +165,7 @@
 
           <!-- Enhanced User Menu -->
           <div ref="userMenuRef" class="gaming-user-menu">
-            <button
+            <button 
               class="user-button glass-gaming gaming-interactive"
               :class="{ 'menu-active neon-gaming': userMenuOpen }"
               :aria-expanded="userMenuOpen"
@@ -230,14 +182,11 @@
                 <div v-else class="user-avatar-placeholder">
                   <AppIcon name="mdi-account" size="20" />
                 </div>
-                <div
-                  v-if="userOnlineStatus"
-                  class="online-indicator neon-gaming"
-                ></div>
+                <div v-if="userOnlineStatus" class="online-indicator neon-gaming"></div>
               </div>
               <div class="user-info">
-                <span class="user-name">{{ userName || "Gaming Dev" }}</span>
-                <span class="user-role">{{ userRole || "Job Seeker" }}</span>
+                <span class="user-name">{{ userName || 'Gaming Dev' }}</span>
+                <span class="user-role">{{ userRole || 'Job Seeker' }}</span>
               </div>
               <AppIcon name="mdi-chevron-down" size="16" class="menu-arrow" />
             </button>
@@ -247,38 +196,22 @@
               <div v-if="userMenuOpen" class="user-menu-dropdown glass-gaming">
                 <div class="menu-header">
                   <div class="user-profile-summary">
-                    <h4 class="profile-name gaming-title">
-                      {{ userName || "Gaming Developer" }}
-                    </h4>
-                    <p class="profile-subtitle">
-                      Level {{ userLevel }} • {{ userXP }} XP
-                    </p>
+                    <h4 class="profile-name gaming-title">{{ userName || 'Gaming Developer' }}</h4>
+                    <p class="profile-subtitle">Level {{ userLevel }} • {{ userXP }} XP</p>
                   </div>
                 </div>
 
                 <div class="menu-section">
                   <h5 class="section-title">Career Tools</h5>
-                  <router-link
-                    to="/profile"
-                    class="menu-item gaming-interactive"
-                    @click="closeUserMenu"
-                  >
+                  <router-link to="/profile" class="menu-item gaming-interactive" @click="closeUserMenu">
                     <AppIcon name="mdi-account-edit" size="18" />
                     <span>Gaming Profile</span>
                   </router-link>
-                  <router-link
-                    to="/portfolio"
-                    class="menu-item gaming-interactive"
-                    @click="closeUserMenu"
-                  >
+                  <router-link to="/portfolio" class="menu-item gaming-interactive" @click="closeUserMenu">
                     <AppIcon name="mdi-briefcase-variant" size="18" />
                     <span>Portfolio</span>
                   </router-link>
-                  <router-link
-                    to="/skills"
-                    class="menu-item gaming-interactive"
-                    @click="closeUserMenu"
-                  >
+                  <router-link to="/skills" class="menu-item gaming-interactive" @click="closeUserMenu">
                     <AppIcon name="mdi-star" size="18" />
                     <span>Skills Mapper</span>
                   </router-link>
@@ -286,19 +219,11 @@
 
                 <div class="menu-section">
                   <h5 class="section-title">Gaming Focus</h5>
-                  <router-link
-                    to="/studios"
-                    class="menu-item gaming-interactive"
-                    @click="closeUserMenu"
-                  >
+                  <router-link to="/studios" class="menu-item gaming-interactive" @click="closeUserMenu">
                     <AppIcon name="mdi-office-building" size="18" />
                     <span>Studio Database</span>
                   </router-link>
-                  <router-link
-                    to="/gaming-interview"
-                    class="menu-item gaming-interactive"
-                    @click="closeUserMenu"
-                  >
+                  <router-link to="/gaming-interview" class="menu-item gaming-interactive" @click="closeUserMenu">
                     <AppIcon name="mdi-gamepad-variant" size="18" />
                     <span>Gaming Interviews</span>
                   </router-link>
@@ -306,25 +231,13 @@
 
                 <div class="menu-section">
                   <h5 class="section-title">System</h5>
-                  <router-link
-                    to="/settings"
-                    class="menu-item gaming-interactive"
-                    @click="closeUserMenu"
-                  >
+                  <router-link to="/settings" class="menu-item gaming-interactive" @click="closeUserMenu">
                     <AppIcon name="mdi-cog" size="18" />
                     <span>Settings</span>
                   </router-link>
-                  <button
-                    class="menu-item gaming-interactive"
-                    @click="handleThemeToggle"
-                  >
-                    <AppIcon
-                      :name="
-                        isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'
-                      "
-                      size="18"
-                    />
-                    <span>{{ isDarkMode ? "Light Mode" : "Dark Mode" }}</span>
+                  <button class="menu-item gaming-interactive" @click="handleThemeToggle">
+                    <AppIcon :name="isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'" size="18" />
+                    <span>{{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}</span>
                   </button>
                 </div>
 
@@ -377,7 +290,7 @@
   </header>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -388,7 +301,7 @@ import { toastService } from '@/shared/services/toastService'
 // Props
 interface Props {
   showGamingContext?: boolean
-  showGamingProfile?: boolean
+  showGamingProfile?: boolean  
   showSecondaryNav?: boolean
   secondaryNavTabs?: Array<any>
   contextActions?: Array<any>
@@ -429,10 +342,10 @@ const headerClasses = computed(() => ({
 const breadcrumbs = computed(() => {
   const pathSegments = route.path.split('/').filter(Boolean)
   const crumbs = []
-
+  
   // Add home
   crumbs.push({ label: 'Gaming Hub', to: '/', icon: 'mdi-gamepad-variant' })
-
+  
   // Generate breadcrumbs based on route
   let currentPath = ''
   pathSegments.forEach((segment, index) => {
@@ -446,7 +359,7 @@ const breadcrumbs = computed(() => {
       })
     }
   })
-
+  
   return crumbs
 })
 
@@ -473,7 +386,7 @@ const getRouteInfo = (segment, path) => {
     'documents': { label: 'Documents', icon: 'mdi-text-box-edit-outline' },
     'settings': { label: 'Settings', icon: 'mdi-cog' }
   }
-
+  
   return routeMap[segment] || { label: segment.charAt(0).toUpperCase() + segment.slice(1), icon: 'mdi-folder' }
 }
 
@@ -587,7 +500,7 @@ const handleClickOutside = (event) => {
 // Lifecycle
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
-
+  
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'm') {
@@ -606,25 +519,36 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Gaming-focused header styling */
 .gaming-unified-header {
   position: sticky;
+  top: 0;
+  z-index: 100;
   backdrop-filter: var(--glass-gaming-backdrop);
+  border-bottom: 1px solid var(--glass-gaming-border);
   transition: var(--transition-gaming);
 }
 
 .header-nav {
+  padding: var(--spacing-3) 0;
 }
 
 .nav-container {
   max-width: var(--page-container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--spacing-6);
 }
 
+/* Brand Section */
 .nav-left {
   display: flex;
   align-items: center;
+  gap: var(--spacing-4);
+  flex-shrink: 0;
 }
 
 .brand-link {
@@ -635,6 +559,7 @@ onUnmounted(() => {
 .brand-content {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
 }
 
 .brand-logo {
@@ -645,38 +570,54 @@ onUnmounted(() => {
 }
 
 .brand-icon {
+  color: var(--color-gaming-400);
   transition: var(--transition-gaming);
 }
 
 .logo-glow {
   position: absolute;
-  background: radial-gradient(
-    circle,
-  );
+  inset: -4px;
+  background: radial-gradient(circle, rgba(var(--color-gaming-500-rgb), 0.3) 0%, transparent 70%);
+  opacity: 0;
   transition: var(--transition-gaming);
 }
 
 .brand-link:hover .logo-glow {
+  opacity: 1;
 }
 
 .brand-text-group {
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-0-5);
 }
 
 .brand-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .brand-subtitle {
+  font-size: 0.75rem;
   color: var(--text-muted);
+  font-weight: 500;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
+/* AI Status Chip */
 .ai-status-chip {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
   border-radius: var(--radius-full);
   background: var(--glass-cyber-bg);
+  border: 1px solid var(--glass-cyber-border);
+  font-size: 0.75rem;
+  font-weight: 600;
   transition: var(--transition-cyber);
   position: relative;
   overflow: hidden;
@@ -690,36 +631,54 @@ onUnmounted(() => {
 
 .status-pulse {
   position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  opacity: 0.6;
 }
 
 .ai-ready-glow {
   position: absolute;
+  inset: 0;
   border-radius: inherit;
+  opacity: 0.3;
 }
 
 .ai-offline {
+  background: rgba(var(--color-error-500-rgb), 0.1);
+  border-color: rgba(var(--color-error-500-rgb), 0.3);
+  color: var(--color-error-400);
 }
 
+/* Center Navigation */
 .nav-center {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--spacing-4);
 }
 
 .gaming-breadcrumbs {
   background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-2) var(--spacing-4);
 }
 
 .breadcrumb-list {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  margin: 0;
+  padding: 0;
   list-style: none;
+  font-size: 0.875rem;
 }
 
 .breadcrumb-item {
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
 }
 
 .breadcrumb-link {
@@ -728,16 +687,22 @@ onUnmounted(() => {
   transition: var(--transition-gaming);
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
   border-radius: var(--radius-md);
 }
 
 .breadcrumb-link:hover {
+  color: var(--color-gaming-400);
+  background: rgba(var(--color-gaming-500-rgb), 0.05);
 }
 
 .breadcrumb-current {
   color: var(--text-primary);
+  font-weight: 600;
   display: flex;
   align-items: center;
+  gap: var(--spacing-1);
 }
 
 .breadcrumb-separator {
@@ -746,23 +711,34 @@ onUnmounted(() => {
 
 .gaming-context {
   background: var(--glass-gaming-bg);
+  border: 1px solid var(--glass-gaming-border);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-2) var(--spacing-4);
 }
 
 .context-stats {
   display: flex;
+  gap: var(--spacing-4);
 }
 
 .stat-item {
   display: flex;
   align-items: center;
+  gap: var(--spacing-1-5);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-gaming-400);
 }
 
+/* Right Section */
 .nav-right {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
+  flex-shrink: 0;
 }
 
+/* Gaming Search */
 .gaming-search-container {
   position: relative;
 }
@@ -779,7 +755,10 @@ onUnmounted(() => {
   background: transparent;
   border: none;
   outline: none;
+  padding: var(--spacing-2-5) var(--spacing-10) var(--spacing-2-5) var(--spacing-4);
+  font-size: 0.875rem;
   color: var(--text-primary);
+  width: 250px;
   transition: var(--transition-cyber);
 }
 
@@ -788,63 +767,87 @@ onUnmounted(() => {
 }
 
 .search-expanded {
+  width: 320px;
 }
 
 .search-icon {
   position: absolute;
+  right: var(--spacing-3);
   color: var(--text-muted);
   pointer-events: none;
 }
 
 .search-clear {
   position: absolute;
+  right: var(--spacing-8);
   cursor: pointer;
   color: var(--text-muted);
   transition: var(--transition-cyber);
+  padding: var(--spacing-1);
   border-radius: var(--radius-sm);
 }
 
 .search-clear:hover {
   color: var(--text-primary);
+  background: rgba(var(--color-error-500-rgb), 0.1);
 }
 
 .search-suggestions {
   position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--spacing-2);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-2);
+  max-height: 300px;
   overflow-y: auto;
+  z-index: 200;
 }
 
 .suggestion-item {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2-5);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: var(--transition-gaming);
 }
 
 .suggestion-item:hover {
+  background: rgba(var(--color-gaming-500-rgb), 0.05);
 }
 
 .suggestion-text {
+  flex: 1;
+  font-weight: 500;
   color: var(--text-primary);
 }
 
 .suggestion-category {
+  font-size: 0.75rem;
   color: var(--text-muted);
   background: var(--surface-elevated);
+  padding: var(--spacing-0-5) var(--spacing-2);
   border-radius: var(--radius-sm);
 }
 
+/* Gaming Actions */
 .gaming-actions {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
 }
 
 .voice-active {
+  background: rgba(var(--color-gaming-500-rgb), 0.15);
+  border-color: rgba(var(--color-gaming-500-rgb), 0.3);
 }
 
 .ai-assistant-btn {
   position: relative;
+  min-width: 60px;
 }
 
 .ai-thinking {
@@ -853,16 +856,22 @@ onUnmounted(() => {
 
 .ai-thinking-dots {
   display: flex;
+  gap: var(--spacing-1);
 }
 
 .ai-thinking-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
   background: currentColor;
+  animation: pulse 1.4s ease-in-out infinite both;
 }
 
-}
-}
+.ai-thinking-dots span:nth-child(1) { animation-delay: -0.32s; }
+.ai-thinking-dots span:nth-child(2) { animation-delay: -0.16s; }
 
 .has-notifications {
+  animation: gamingPulse 2s infinite;
 }
 
 .gaming-profile-status {
@@ -873,12 +882,19 @@ onUnmounted(() => {
 .xp-indicator {
   display: flex;
   align-items: center;
+  gap: var(--spacing-1-5);
+  padding: var(--spacing-1-5) var(--spacing-3);
   border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-gaming-400);
 }
 
 .xp-icon {
+  color: var(--color-warning-500);
 }
 
+/* User Menu */
 .gaming-user-menu {
   position: relative;
 }
@@ -886,11 +902,14 @@ onUnmounted(() => {
 .user-button {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2);
   border: none;
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: var(--transition-gaming);
   color: var(--text-primary);
+  font-size: 0.875rem;
 }
 
 .user-avatar-container {
@@ -901,10 +920,16 @@ onUnmounted(() => {
 }
 
 .user-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
   object-fit: cover;
 }
 
 .user-avatar-placeholder {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
   background: var(--surface-elevated);
   display: flex;
   align-items: center;
@@ -914,6 +939,12 @@ onUnmounted(() => {
 
 .online-indicator {
   position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--surface-base);
 }
 
 .user-info {
@@ -923,10 +954,14 @@ onUnmounted(() => {
 }
 
 .user-name {
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .user-role {
+  font-size: 0.75rem;
   color: var(--text-muted);
+  line-height: 1.2;
 }
 
 .menu-arrow {
@@ -934,143 +969,215 @@ onUnmounted(() => {
 }
 
 .menu-active .menu-arrow {
+  transform: rotate(180deg);
 }
 
+/* User Menu Dropdown */
 .user-menu-dropdown {
   position: absolute;
+  top: 100%;
+  right: 0;
+  width: 280px;
+  margin-top: var(--spacing-2);
   border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  z-index: 200;
+  border: 1px solid var(--glass-border);
 }
 
 .menu-header {
+  padding-bottom: var(--spacing-3);
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: var(--spacing-3);
 }
 
 .profile-name {
+  margin: 0 0 var(--spacing-1) 0;
+  font-size: 1rem;
 }
 
 .profile-subtitle {
+  margin: 0;
+  font-size: 0.75rem;
   color: var(--text-secondary);
 }
 
 .menu-section {
+  margin-bottom: var(--spacing-4);
 }
 
 .section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--spacing-2) 0;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2-5);
   border-radius: var(--radius-md);
   color: var(--text-primary);
   text-decoration: none;
   border: none;
   background: transparent;
+  width: 100%;
+  font-size: 0.875rem;
   cursor: pointer;
   transition: var(--transition-gaming);
 }
 
 .menu-item:hover {
+  background: rgba(var(--color-gaming-500-rgb), 0.05);
+  color: var(--color-gaming-400);
 }
 
 .menu-footer {
+  border-top: 1px solid var(--border-light);
+  padding-top: var(--spacing-3);
 }
 
 .sign-out-btn:hover {
+  background: rgba(var(--color-error-500-rgb), 0.05);
+  color: var(--color-error-400);
 }
 
+/* Secondary Navigation */
 .secondary-nav {
+  border-top: 1px solid var(--border-light);
 }
 
 .secondary-nav-container {
   max-width: var(--page-container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 3rem;
 }
 
 .gaming-nav-tabs {
   display: flex;
+  gap: var(--spacing-1);
 }
 
 .nav-tab {
   display: flex;
   align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2-5) var(--spacing-4);
   border-radius: var(--radius-lg);
   text-decoration: none;
   color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
   transition: var(--transition-gaming);
   position: relative;
 }
 
 .nav-tab:hover {
+  background: rgba(var(--color-gaming-500-rgb), 0.05);
+  color: var(--color-gaming-400);
 }
 
 .tab-active {
+  background: rgba(var(--color-gaming-500-rgb), 0.1);
+  color: var(--color-gaming-400);
+  font-weight: 600;
 }
 
 .tab-badge {
+  background: var(--color-gaming-500);
   color: white;
+  padding: var(--spacing-0-5) var(--spacing-1-5);
   border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 1rem;
   text-align: center;
 }
 
 .context-actions {
   display: flex;
+  gap: var(--spacing-2);
 }
 
+/* Animations */
 .menu-slide-enter-active,
 .menu-slide-leave-active {
+  transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform-origin: top right;
 }
 
 .menu-slide-enter-from,
 .menu-slide-leave-to {
+  opacity: 0;
+  transform: scale(0.95) translateY(-10px);
 }
 
 @keyframes pulse {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
   }
+  40% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
+/* Responsive Design */
+@media (max-width: 1024px) {
   .gaming-search-input {
+    width: 200px;
   }
-
+  
   .search-expanded {
+    width: 250px;
   }
-
+  
   .brand-text-group {
     display: none;
   }
-
+  
   .gaming-context {
     display: none;
   }
 }
 
+@media (max-width: 768px) {
   .nav-container {
+    padding: 0 var(--spacing-3);
+    gap: var(--spacing-3);
   }
-
+  
   .gaming-breadcrumbs {
     display: none;
   }
-
+  
   .gaming-search-input {
+    width: 150px;
   }
-
+  
   .user-info {
     display: none;
   }
-
+  
   .gaming-actions {
+    gap: var(--spacing-1);
   }
 }
 
+@media (max-width: 640px) {
   .ai-status-chip {
     display: none;
   }
-
+  
   .gaming-profile-status {
     display: none;
   }

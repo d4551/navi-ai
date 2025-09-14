@@ -1,3 +1,7 @@
+/**
+ * Studio Utilities
+ * Helper functions for working with gaming studios data
+ */
 
 import { GAMING_STUDIOS } from "@/data/gaming-studios";
 
@@ -30,6 +34,10 @@ export interface NormalizedStudio {
   commonRoles?: string[];
 }
 
+/**
+ * Normalize a studio entry from the raw data
+ */
+export function normalizeStudio(studio: any): NormalizedStudio {
   return {
     id: studio.id || studio.name?.toLowerCase().replace(/\s+/g, "-"),
     name: studio.name || "",
@@ -62,6 +70,10 @@ export interface NormalizedStudio {
   };
 }
 
+/**
+ * Build normalized studios from raw data
+ */
+export function buildNormalizedStudios(): Record<string, NormalizedStudio> {
   const normalized: Record<string, NormalizedStudio> = {};
 
   GAMING_STUDIOS.forEach((studio) => {
@@ -72,9 +84,17 @@ export interface NormalizedStudio {
   return normalized;
 }
 
+/**
+ * Seed studios if empty
+ */
+export function seedStudiosIfEmpty(): Promise<void> {
   return Promise.resolve();
 }
 
+/**
+ * Get matching studio by name
+ */
+export function getMatchingStudio(
   name: string,
   studios: Record<string, NormalizedStudio> = {},
 ): NormalizedStudio | null {

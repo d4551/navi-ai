@@ -1,3 +1,10 @@
+/**
+ * DATABASE MODELS
+ * ===============
+ * 
+ * Centralized data models for all persistent entities
+ * These models are used by queries, repositories, and services
+ */
 
 // Core data models for database entities
 export interface BaseEntity {
@@ -81,7 +88,8 @@ export interface EducationItem {
 export interface SkillItem {
   id: string;
   name: string;
-  category: "technical" | "soft" | "gaming" | "leadership";
+  category: 'technical' | 'soft' | 'gaming' | 'leadership';
+  level: number; // 0-100
   verified: boolean;
   endorsements: number;
 }
@@ -101,7 +109,7 @@ export interface AchievementItem {
   title: string;
   description: string;
   date: string;
-  category: "gaming" | "professional" | "education" | "volunteer";
+  category: 'gaming' | 'professional' | 'education' | 'volunteer';
 }
 
 export interface CoverLetter extends BaseEntity {
@@ -129,7 +137,7 @@ export interface PortfolioItem {
   id: string;
   title: string;
   description: string;
-  type: "project" | "achievement" | "certification" | "publication";
+  type: 'project' | 'achievement' | 'certification' | 'publication';
   content: PortfolioItemContent;
   media?: string[];
   tags: string[];
@@ -185,8 +193,8 @@ export interface JobSearchResult {
 export interface InterviewSession extends BaseEntity {
   userId: string;
   jobId?: string;
-  type: "mock" | "practice" | "real";
-  status: "scheduled" | "in-progress" | "completed" | "cancelled";
+  type: 'mock' | 'practice' | 'real';
+  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
   questions: InterviewQuestion[];
   responses: InterviewResponse[];
   feedback?: InterviewFeedback;
@@ -197,8 +205,8 @@ export interface InterviewSession extends BaseEntity {
 export interface InterviewQuestion {
   id: string;
   question: string;
-  type: "technical" | "behavioral" | "gaming-specific";
-  difficulty: "easy" | "medium" | "hard";
+  type: 'technical' | 'behavioral' | 'gaming-specific';
+  difficulty: 'easy' | 'medium' | 'hard';
   expectedDuration: number; // in seconds
   hints?: string[];
 }
@@ -223,7 +231,7 @@ export interface InterviewFeedback {
 
 export interface UserPreferences extends BaseEntity {
   userId: string;
-  theme: "light" | "dark" | "auto";
+  theme: 'light' | 'dark' | 'auto';
   language: string;
   notifications: NotificationSettings;
   privacy: PrivacySettings;
@@ -239,7 +247,7 @@ export interface NotificationSettings {
 }
 
 export interface PrivacySettings {
-  profileVisibility: "public" | "private" | "connections";
+  profileVisibility: 'public' | 'private' | 'connections';
   dataSharing: boolean;
   analytics: boolean;
   allowAnalytics: boolean;
@@ -249,9 +257,10 @@ export interface AISettings {
   model: string;
   temperature: number;
   autoSave: boolean;
-  provider: "google" | "openai" | "anthropic";
+  provider: 'google' | 'openai' | 'anthropic';
 }
 
+// Utility functions for model validation
 export const validateUserProfile = (profile: Partial<UserProfile>): boolean => {
   return !!(profile.name && profile.email);
 };
@@ -261,13 +270,7 @@ export const validateResume = (resume: Partial<Resume>): boolean => {
 };
 
 export const validateCoverLetter = (letter: Partial<CoverLetter>): boolean => {
-  return !!(
-    letter.title &&
-    letter.content &&
-    letter.company &&
-    letter.jobTitle &&
-    letter.userId
-  );
+  return !!(letter.title && letter.content && letter.company && letter.jobTitle && letter.userId);
 };
 
 export const validatePortfolio = (portfolio: Partial<Portfolio>): boolean => {
@@ -278,16 +281,12 @@ export const validateJobSearch = (jobSearch: Partial<JobSearch>): boolean => {
   return !!(jobSearch.userId && jobSearch.criteria);
 };
 
-export const validateInterviewSession = (
-  session: Partial<InterviewSession>,
-): boolean => {
+export const validateInterviewSession = (session: Partial<InterviewSession>): boolean => {
   return !!(session.userId && session.type);
 };
 
-export const validateUserPreferences = (
-  preferences: Partial<UserPreferences>,
-): boolean => {
-  return !!preferences.userId;
+export const validateUserPreferences = (preferences: Partial<UserPreferences>): boolean => {
+  return !!(preferences.userId);
 };
 
 // Additional utility types
@@ -299,56 +298,64 @@ export type ValidationResult = {
 
 // Safe crypto implementation for both browser and Node.js
 const getCrypto = () => {
-  if (typeof crypto !== "undefined") {
+  if (typeof crypto !== 'undefined') {
     return crypto;
   }
-  if (typeof window !== "undefined" && window.crypto) {
+  if (typeof window !== 'undefined' && window.crypto) {
     return window.crypto;
   }
   // Fallback for environments without crypto
   return {
-    randomUUID: () =>
-      }),
+    randomUUID: () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    })
   };
 };
 
 // Model creation helpers
-export const createBaseEntity = (): Pick<
-  BaseEntity,
-  "id" | "createdAt" | "updatedAt" | "version"
-> => ({
+export const createBaseEntity = (): Pick<BaseEntity, 'id' | 'createdAt' | 'updatedAt' | 'version'> => ({
   id: getCrypto().randomUUID(),
   createdAt: new Date(),
   updatedAt: new Date(),
+  version: 1
 });
 
 // Default values for complex models
-export const createDefaultUserPreferences = (
-  userId: string,
-): UserPreferences => ({
+export const createDefaultUserPreferences = (userId: string): UserPreferences => ({
   ...createBaseEntity(),
   userId,
-  theme: "auto",
-  language: "en",
+  theme: 'auto',
+  language: 'en',
   notifications: {
     email: true,
     push: true,
     jobAlerts: true,
     interviewReminders: true,
-    achievements: true,
+    achievements: true
   },
   privacy: {
-    profileVisibility: "private",
+    profileVisibility: 'private',
     dataSharing: false,
     analytics: false,
-    allowAnalytics: false,
+    allowAnalytics: false
   },
   ai: {
+    model: 'gemini-1.5-flash',
+    temperature: 0.7,
     autoSave: true,
-    provider: "google",
-  },
+    provider: 'google'
+  }
 });
 
 export const createDefaultUserStats = (): UserStats => ({
-  lastActivity: new Date(),
+  level: 1,
+  experience: 0,
+  skillsAssessed: 0,
+  jobsApplied: 0,
+  interviewsCompleted: 0,
+  achievementsUnlocked: 0,
+  streakDays: 0,
+  lastActivity: new Date()
 });

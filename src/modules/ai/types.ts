@@ -2,7 +2,7 @@
 // TypeScript type definitions for AI module
 
 export interface AIContext {
-  type: "resume" | "cover_letter" | "job_search" | "interview" | "portfolio";
+  type: 'resume' | 'cover_letter' | 'job_search' | 'interview' | 'portfolio';
   content?: string;
   targetJob?: JobTarget;
   userProfile?: UserProfile;
@@ -16,7 +16,7 @@ export interface JobTarget {
   requirements?: string[];
   keywords?: string[];
   industry?: string;
-  level?: "entry" | "mid" | "senior" | "lead";
+  level?: 'entry' | 'mid' | 'senior' | 'lead';
 }
 
 export interface UserProfile {
@@ -60,7 +60,7 @@ export interface ProjectEntry {
   url?: string;
   images?: string[];
   achievements?: string[];
-  type: "personal" | "professional" | "academic" | "open_source";
+  type: 'personal' | 'professional' | 'academic' | 'open_source';
 }
 
 export interface UserPreferences {
@@ -83,8 +83,8 @@ export interface AIAnalysisResult {
 
 export interface AISuggestion {
   id: string;
-  type: "content" | "structure" | "keyword" | "formatting";
-  priority: "high" | "medium" | "low";
+  type: 'content' | 'structure' | 'keyword' | 'formatting';
+  priority: 'high' | 'medium' | 'low';
   title: string;
   description: string;
   originalText?: string;
@@ -94,15 +94,10 @@ export interface AISuggestion {
 }
 
 export interface AIInsight {
-  type:
-    | "keyword_gap"
-    | "ats_optimization"
-    | "content_quality"
-    | "structure"
-    | "market_fit";
+  type: 'keyword_gap' | 'ats_optimization' | 'content_quality' | 'structure' | 'market_fit';
   title: string;
   description: string;
-  impact: "high" | "medium" | "low";
+  impact: 'high' | 'medium' | 'low';
   actionable: boolean;
 }
 
@@ -111,15 +106,15 @@ export interface AIInterviewPrep {
   persona: StudioPersona;
   focusAreas: string[];
   duration: number;
-  difficulty: "beginner" | "intermediate" | "advanced";
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
 }
 
 export interface InterviewQuestion {
   id: string;
   question: string;
-  type: "behavioral" | "technical" | "situational" | "cultural";
+  type: 'behavioral' | 'technical' | 'situational' | 'cultural';
   category: string;
-  difficulty: "easy" | "medium" | "hard";
+  difficulty: 'easy' | 'medium' | 'hard';
   expectedAnswer?: string;
   keyPoints?: string[];
   followUpQuestions?: string[];
@@ -177,11 +172,11 @@ export interface AIResponse<T = any> {
   };
 }
 
-export type AIFeature =
-  | "resume_enhancement"
-  | "cover_letter_generation"
-  | "job_matching"
-  | "interview_preparation"
-  | "portfolio_optimization"
-  | "skill_analysis"
-  | "market_insights";
+export type AIFeature = 
+  | 'resume_enhancement'
+  | 'cover_letter_generation'
+  | 'job_matching'
+  | 'interview_preparation'
+  | 'portfolio_optimization'
+  | 'skill_analysis'
+  | 'market_insights';

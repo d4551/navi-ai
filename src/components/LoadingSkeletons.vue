@@ -1,18 +1,14 @@
 <template>
-  <div
-    v-if="show"
-    class="loading-skeletons"
-    role="status"
-    aria-live="polite"
-    aria-busy="true"
-    aria-label="Loading content"
-  >
+  <div v-if="show" class="loading-skeletons" role="status" aria-live="polite">
     <!-- Document Header Skeleton -->
     <ContentLoader
       v-if="variant === 'document' || variant === 'all'"
       :height="160"
       :width="1200"
-      v-bind="skeletonProps"
+      :speed="1.2"
+      primary-color="var(--skeleton-primary)"
+      secondary-color="var(--skeleton-secondary)"
+      :animate="!prefersReducedMotion"
       class="w-100 mb-3"
     >
       <rect x="16" y="14" rx="8" ry="8" width="65%" height="18" />
@@ -25,7 +21,10 @@
       v-if="variant === 'document' || variant === 'all'"
       :height="160"
       :width="1200"
-      v-bind="skeletonProps"
+      :speed="1.2"
+      primary-color="var(--skeleton-primary)"
+      secondary-color="var(--skeleton-secondary)"
+      :animate="!prefersReducedMotion"
       class="w-100 mb-3"
     >
       <rect x="16" y="14" rx="8" ry="8" width="55%" height="18" />
@@ -40,7 +39,10 @@
         :key="`form-${n}`"
         :height="80"
         :width="1200"
-        v-bind="skeletonProps"
+        :speed="1.2"
+        primary-color="var(--skeleton-primary)"
+        secondary-color="var(--skeleton-secondary)"
+        :animate="!prefersReducedMotion"
         class="w-100 mb-3"
       >
         <rect x="16" y="8" rx="4" ry="4" width="25%" height="14" />
@@ -58,44 +60,16 @@
         <ContentLoader
           :height="200"
           :width="400"
-          v-bind="skeletonProps"
+          :speed="1.2"
+          primary-color="var(--skeleton-primary)"
+          secondary-color="var(--skeleton-secondary)"
+          :animate="!prefersReducedMotion"
           class="w-100"
         >
           <rect x="16" y="16" rx="8" ry="8" width="80%" height="16" />
           <rect x="16" y="44" rx="6" ry="6" width="60%" height="12" />
           <rect x="16" y="72" rx="12" ry="12" width="95%" height="80" />
           <rect x="16" y="168" rx="6" ry="6" width="40%" height="12" />
-        </ContentLoader>
-      </div>
-    </div>
-
-    <!-- Compact Variant: smaller cards and rows -->
-    <div v-if="variant === 'compact'" class="mb-3">
-      <div class="row g-2 mb-2">
-        <div
-          v-for="n in Math.max(3, Math.ceil(gridItemCount / 2))"
-          :key="`compact-card-${n}`"
-          class="col-6 col-md-4 col-lg-3"
-        >
-          <ContentLoader :height="120" :width="320" v-bind="skeletonProps" class="w-100">
-            <rect x="12" y="12" rx="8" ry="8" width="70%" height="12" />
-            <rect x="12" y="32" rx="6" ry="6" width="50%" height="10" />
-            <rect x="12" y="52" rx="10" ry="10" width="92%" height="48" />
-          </ContentLoader>
-        </div>
-      </div>
-      <div>
-        <ContentLoader
-          v-for="n in Math.min(4, tableRowCount)"
-          :key="`compact-row-${n}`"
-          :height="44"
-          :width="800"
-          v-bind="skeletonProps"
-          class="w-100 mb-2"
-        >
-          <rect x="12" y="14" rx="6" ry="6" width="25%" height="12" />
-          <rect x="40%" y="14" rx="6" ry="6" width="20%" height="12" />
-          <rect x="70%" y="14" rx="6" ry="6" width="15%" height="12" />
         </ContentLoader>
       </div>
     </div>
@@ -107,7 +81,10 @@
         :key="`table-${n}`"
         :height="60"
         :width="1200"
-        v-bind="skeletonProps"
+        :speed="1.2"
+        primary-color="var(--skeleton-primary)"
+        secondary-color="var(--skeleton-secondary)"
+        :animate="!prefersReducedMotion"
         class="w-100 mb-2"
       >
         <rect x="16" y="16" rx="6" ry="6" width="20%" height="14" />
@@ -120,84 +97,44 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, computed, ref } from "vue";
-import { ContentLoader } from "vue-content-loader";
+import { onMounted, ref, defineProps } from 'vue'
+import { ContentLoader } from 'vue-content-loader'
 
-const props = defineProps({
+defineProps({
   show: {
     type: Boolean,
-    default: true,
+    default: true
   },
   variant: {
     type: String,
-    default: "document",
-    validator: (value) =>
-      ["document", "form", "grid", "table", "compact", "all"].includes(value),
-  },
-  tone: {
-    type: String,
-    default: "neutral",
-    validator: (value) => ["neutral", "accent"].includes(value),
+    default: 'document',
+    validator: (value) => ['document', 'form', 'grid', 'table', 'all'].includes(value)
   },
   formFieldCount: {
     type: Number,
-    default: 3,
+    default: 3
   },
   gridItemCount: {
     type: Number,
-    default: 6,
+    default: 6
   },
   tableRowCount: {
     type: Number,
-    default: 5,
-  },
-});
+    default: 5
+  }
+})
 
 // Respect user's motion preferences
-const prefersReducedMotion = ref(false);
-const skeletonProps = computed(() => {
-  const tone = props.tone || "neutral";
-  const neutral = {
-    primaryColor: "var(--surface-container, var(--skeleton-primary))",
-    secondaryColor: "var(--surface-elevated, var(--skeleton-secondary))",
-  };
-  const accent = {
-    primaryColor: "rgba(var(--color-gaming-neon-rgb), 0.08)",
-    secondaryColor: "rgba(var(--color-gaming-neon-rgb), 0.16)",
-  };
-  const colors = tone === "accent" ? accent : neutral;
-  return {
-    speed: 1.2,
-    animate: !prefersReducedMotion.value,
-    ...colors,
-  };
-});
+const prefersReducedMotion = ref(false)
 
-let mediaQuery;
-let onChange;
 onMounted(() => {
-  mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  prefersReducedMotion.value = mediaQuery.matches;
-  onChange = (e) => {
-    prefersReducedMotion.value = e.matches;
-  };
-  try {
-    mediaQuery.addEventListener("change", onChange);
-  } catch (_) {
-    // Safari fallback
-    mediaQuery.addListener(onChange);
-  }
-});
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  prefersReducedMotion.value = mediaQuery.matches
 
-onUnmounted(() => {
-  if (mediaQuery && onChange) {
-    try {
-      mediaQuery.removeEventListener("change", onChange);
-    } catch (_) {
-      mediaQuery.removeListener(onChange);
-    }
-  }
-});
+  mediaQuery.addEventListener('change', (e) => {
+    prefersReducedMotion.value = e.matches
+  })
+})
 </script>
 
 <style scoped>
@@ -205,9 +142,14 @@ onUnmounted(() => {
   min-height: 200px;
 }
 
+/* Ensure skeleton colors respect theme */
 :deep(.vue-content-loader) {
+  --skeleton-primary: var(--bg-tertiary, #e4e4e7);
+  --skeleton-secondary: var(--bg-secondary, #f4f4f5);
 }
 
 [data-theme="dark"] :deep(.vue-content-loader) {
+  --skeleton-primary: var(--bg-secondary);
+  --skeleton-secondary: var(--bg-tertiary);
 }
 </style>

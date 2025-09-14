@@ -10,7 +10,7 @@
             <small class="text-muted">{{ documentTitle }}</small>
           </div>
         </div>
-
+        
         <div class="header-actions d-flex align-items-center gap-2">
           <!-- View Options -->
           <div class="btn-group" role="group">
@@ -58,32 +58,17 @@
         <!-- Formatted View -->
         <div v-if="viewMode === 'formatted'" class="preview-container">
           <!-- Resume Preview -->
-          <div
-            v-if="documentType === 'resume'"
-            class="document-preview resume-preview"
-          >
+          <div v-if="documentType === 'resume'" class="document-preview resume-preview">
             <div class="document-page">
               <!-- Header Section -->
               <div class="doc-header">
-                <h1 class="doc-name">
-                  {{ resumeData.personalInfo?.name || "[Your Name]" }}
-                </h1>
+                <h1 class="doc-name">{{ resumeData.personalInfo?.name || '[Your Name]' }}</h1>
                 <div class="contact-info">
-                  <span v-if="resumeData.personalInfo?.email">{{
-                    resumeData.personalInfo.email
-                  }}</span>
-                  <span v-if="resumeData.personalInfo?.phone">{{
-                    resumeData.personalInfo.phone
-                  }}</span>
-                  <span v-if="resumeData.personalInfo?.location">{{
-                    resumeData.personalInfo.location
-                  }}</span>
-                  <span v-if="resumeData.personalInfo?.linkedin">{{
-                    resumeData.personalInfo.linkedin
-                  }}</span>
-                  <span v-if="resumeData.personalInfo?.website">{{
-                    resumeData.personalInfo.website
-                  }}</span>
+                  <span v-if="resumeData.personalInfo?.email">{{ resumeData.personalInfo.email }}</span>
+                  <span v-if="resumeData.personalInfo?.phone">{{ resumeData.personalInfo.phone }}</span>
+                  <span v-if="resumeData.personalInfo?.location">{{ resumeData.personalInfo.location }}</span>
+                  <span v-if="resumeData.personalInfo?.linkedin">{{ resumeData.personalInfo.linkedin }}</span>
+                  <span v-if="resumeData.personalInfo?.website">{{ resumeData.personalInfo.website }}</span>
                 </div>
               </div>
 
@@ -94,10 +79,7 @@
               </div>
 
               <!-- Experience -->
-              <div
-                v-if="resumeData.experience && resumeData.experience.length > 0"
-                class="doc-section"
-              >
+              <div v-if="resumeData.experience && resumeData.experience.length > 0" class="doc-section">
                 <h3 class="section-title">Professional Experience</h3>
                 <div
                   v-for="(exp, index) in resumeData.experience"
@@ -105,28 +87,20 @@
                   class="experience-item"
                 >
                   <div class="exp-header">
-                    <h4 class="exp-title">{{ exp.title || "[Job Title]" }}</h4>
+                    <h4 class="exp-title">{{ exp.title || '[Job Title]' }}</h4>
                     <div class="exp-meta">
-                      <span class="company">{{
-                        exp.company || "[Company Name]"
-                      }}</span>
-                      <span class="dates">{{ exp.startDate || "Start" }} -
-                        {{ exp.endDate || "End" }}</span>
+                      <span class="company">{{ exp.company || '[Company Name]' }}</span>
+                      <span class="dates">{{ exp.startDate || 'Start' }} - {{ exp.endDate || 'End' }}</span>
                     </div>
                   </div>
                   <div class="exp-description">
-                    <pre>{{
-                      exp.description || "[Job description and achievements]"
-                    }}</pre>
+                    <pre>{{ exp.description || '[Job description and achievements]' }}</pre>
                   </div>
                 </div>
               </div>
 
               <!-- Education -->
-              <div
-                v-if="resumeData.education && resumeData.education.length > 0"
-                class="doc-section"
-              >
+              <div v-if="resumeData.education && resumeData.education.length > 0" class="doc-section">
                 <h3 class="section-title">Education</h3>
                 <div
                   v-for="(edu, index) in resumeData.education"
@@ -134,12 +108,10 @@
                   class="education-item"
                 >
                   <div class="edu-header">
-                    <h4 class="edu-degree">{{ edu.degree || "[Degree]" }}</h4>
+                    <h4 class="edu-degree">{{ edu.degree || '[Degree]' }}</h4>
                     <div class="edu-meta">
-                      <span class="institution">{{
-                        edu.institution || "[Institution]"
-                      }}</span>
-                      <span class="year">{{ edu.year || "[Year]" }}</span>
+                      <span class="institution">{{ edu.institution || '[Institution]' }}</span>
+                      <span class="year">{{ edu.year || '[Year]' }}</span>
                     </div>
                   </div>
                   <div v-if="edu.gpa" class="edu-gpa">GPA: {{ edu.gpa }}</div>
@@ -147,10 +119,7 @@
               </div>
 
               <!-- Skills -->
-              <div
-                v-if="resumeData.skills && resumeData.skills.length > 0"
-                class="doc-section"
-              >
+              <div v-if="resumeData.skills && resumeData.skills.length > 0" class="doc-section">
                 <h3 class="section-title">Skills</h3>
                 <div class="skills-grid">
                   <span
@@ -167,69 +136,43 @@
           </div>
 
           <!-- Cover Letter Preview -->
-          <div
-            v-else-if="documentType === 'cover-letter'"
-            class="document-preview cover-letter-preview"
-          >
+          <div v-else-if="documentType === 'cover-letter'" class="document-preview cover-letter-preview">
             <div class="document-page">
               <!-- Letter Header -->
               <div class="doc-header">
                 <div class="sender-info">
-                  <div class="sender-name">
-                    {{ resumeData?.personalInfo?.name || "[Your Name]" }}
-                  </div>
+                  <div class="sender-name">{{ resumeData?.personalInfo?.name || '[Your Name]' }}</div>
                   <div class="sender-contact">
-                    <div v-if="resumeData?.personalInfo?.email">
-                      {{ resumeData.personalInfo.email }}
-                    </div>
-                    <div v-if="resumeData?.personalInfo?.phone">
-                      {{ resumeData.personalInfo.phone }}
-                    </div>
-                    <div v-if="resumeData?.personalInfo?.location">
-                      {{ resumeData.personalInfo.location }}
-                    </div>
+                    <div v-if="resumeData?.personalInfo?.email">{{ resumeData.personalInfo.email }}</div>
+                    <div v-if="resumeData?.personalInfo?.phone">{{ resumeData.personalInfo.phone }}</div>
+                    <div v-if="resumeData?.personalInfo?.location">{{ resumeData.personalInfo.location }}</div>
                   </div>
                 </div>
-
+                
                 <div class="letter-date">{{ currentDate }}</div>
               </div>
 
               <!-- Recipient Info -->
               <div class="recipient-info">
-                <div v-if="coverLetterData.jobInfo?.hiringManager">
-                  {{ coverLetterData.jobInfo.hiringManager }}
-                </div>
-                <div v-if="coverLetterData.jobInfo?.department">
-                  {{ coverLetterData.jobInfo.department }}
-                </div>
-                <div v-if="coverLetterData.jobInfo?.company">
-                  {{ coverLetterData.jobInfo.company }}
-                </div>
+                <div v-if="coverLetterData.jobInfo?.hiringManager">{{ coverLetterData.jobInfo.hiringManager }}</div>
+                <div v-if="coverLetterData.jobInfo?.department">{{ coverLetterData.jobInfo.department }}</div>
+                <div v-if="coverLetterData.jobInfo?.company">{{ coverLetterData.jobInfo.company }}</div>
               </div>
 
               <!-- Letter Content -->
               <div class="letter-content">
                 <!-- Opening -->
-                <div
-                  v-if="coverLetterData.content?.opening"
-                  class="letter-paragraph"
-                >
+                <div v-if="coverLetterData.content?.opening" class="letter-paragraph">
                   <pre>{{ coverLetterData.content.opening }}</pre>
                 </div>
 
                 <!-- Body -->
-                <div
-                  v-if="coverLetterData.content?.body"
-                  class="letter-paragraph"
-                >
+                <div v-if="coverLetterData.content?.body" class="letter-paragraph">
                   <pre>{{ coverLetterData.content.body }}</pre>
                 </div>
 
                 <!-- Closing -->
-                <div
-                  v-if="coverLetterData.content?.closing"
-                  class="letter-paragraph"
-                >
+                <div v-if="coverLetterData.content?.closing" class="letter-paragraph">
                   <pre>{{ coverLetterData.content.closing }}</pre>
                 </div>
               </div>
@@ -267,7 +210,7 @@
             <span>sections</span>
           </div>
         </div>
-
+        
         <div class="footer-actions">
           <UnifiedButton
             variant="outline"
@@ -277,8 +220,12 @@
           >
             Copy Text
           </UnifiedButton>
-
-          <UnifiedButton variant="ghost" size="sm" @click="$emit('close')">
+          
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            @click="$emit('close')"
+          >
             Close
           </UnifiedButton>
         </div>
@@ -288,212 +235,198 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { useToast } from "@/composables/useToast";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
-import AppIcon from "@/components/ui/AppIcon.vue";
+import { computed, ref } from 'vue'
+import { useToast } from '@/composables/useToast'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Props
 const props = defineProps({
   show: {
     type: Boolean,
-    default: false,
+    default: false
   },
   documentType: {
     type: String,
     required: true,
-    validator: (value) => ["resume", "cover-letter"].includes(value),
+    validator: (value) => ['resume', 'cover-letter'].includes(value)
   },
   resumeData: {
     type: Object,
-    default: () => ({}),
+    default: () => ({})
   },
   coverLetterData: {
     type: Object,
-    default: () => ({}),
-  },
-});
+    default: () => ({})
+  }
+})
 
 // Emits
-const emit = defineEmits(["close", "export"]);
+const emit = defineEmits(['close', 'export'])
 
 // State
-const viewMode = ref("formatted");
-const loading = ref(false);
-const toast = useToast();
+const viewMode = ref('formatted')
+const loading = ref(false)
+const toast = useToast()
 
 // Computed
 const documentTitle = computed(() => {
-  return props.documentType === "resume"
-    ? "Resume Preview"
-    : "Cover Letter Preview";
-});
+  return props.documentType === 'resume' ? 'Resume Preview' : 'Cover Letter Preview'
+})
 
 const currentDate = computed(() => {
-  return new Date().toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-});
+  return new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+})
 
 const rawText = computed(() => {
-  if (props.documentType === "resume") {
-    return generateResumeRawText();
+  if (props.documentType === 'resume') {
+    return generateResumeRawText()
   } else {
-    return generateCoverLetterRawText();
+    return generateCoverLetterRawText()
   }
-});
+})
 
 const wordCount = computed(() => {
-  return rawText.value.trim().split(/\s+/).length;
-});
+  return rawText.value.trim().split(/\s+/).length
+})
 
 const characterCount = computed(() => {
-  return rawText.value.length;
-});
+  return rawText.value.length
+})
 
 const sectionCount = computed(() => {
-  if (props.documentType !== "resume") return 0;
-
-  let count = 0;
-  if (props.resumeData.summary) count++;
-  if (props.resumeData.experience?.length > 0) count++;
-  if (props.resumeData.education?.length > 0) count++;
-  if (props.resumeData.skills?.length > 0) count++;
-  if (props.resumeData.projects?.length > 0) count++;
-
-  return count;
-});
+  if (props.documentType !== 'resume') return 0
+  
+  let count = 0
+  if (props.resumeData.summary) count++
+  if (props.resumeData.experience?.length > 0) count++
+  if (props.resumeData.education?.length > 0) count++
+  if (props.resumeData.skills?.length > 0) count++
+  if (props.resumeData.projects?.length > 0) count++
+  
+  return count
+})
 
 // Methods
 const handleOverlayClick = () => {
-  emit("close");
-};
+  emit('close')
+}
 
 const handleExport = (format) => {
-  emit("export", format);
-};
+  emit('export', format)
+}
 
 const generateResumeRawText = () => {
-  let text = [];
-
+  let text = []
+  
   // Personal Info
   if (props.resumeData.personalInfo) {
-    const info = props.resumeData.personalInfo;
-    if (info.name) text.push(info.name.toUpperCase());
-
-    const contactInfo = [
-      info.email,
-      info.phone,
-      info.location,
-      info.linkedin,
-      info.website,
-    ]
+    const info = props.resumeData.personalInfo
+    if (info.name) text.push(info.name.toUpperCase())
+    
+    const contactInfo = [info.email, info.phone, info.location, info.linkedin, info.website]
       .filter(Boolean)
-      .join(" | ");
-
-    if (contactInfo) text.push(contactInfo);
-    text.push("");
+      .join(' | ')
+    
+    if (contactInfo) text.push(contactInfo)
+    text.push('')
   }
-
+  
   // Summary
   if (props.resumeData.summary) {
-    text.push("PROFESSIONAL SUMMARY");
-    text.push(props.resumeData.summary);
-    text.push("");
+    text.push('PROFESSIONAL SUMMARY')
+    text.push(props.resumeData.summary)
+    text.push('')
   }
-
+  
   // Experience
   if (props.resumeData.experience?.length > 0) {
-    text.push("PROFESSIONAL EXPERIENCE");
-    props.resumeData.experience.forEach((exp) => {
-      text.push(
-        `${exp.title || "[Job Title]"} | ${exp.company || "[Company]"} | ${exp.startDate || "Start"} - ${exp.endDate || "End"}`,
-      );
-      if (exp.description) text.push(exp.description);
-      text.push("");
-    });
+    text.push('PROFESSIONAL EXPERIENCE')
+    props.resumeData.experience.forEach(exp => {
+      text.push(`${exp.title || '[Job Title]'} | ${exp.company || '[Company]'} | ${exp.startDate || 'Start'} - ${exp.endDate || 'End'}`)
+      if (exp.description) text.push(exp.description)
+      text.push('')
+    })
   }
-
+  
   // Education
   if (props.resumeData.education?.length > 0) {
-    text.push("EDUCATION");
-    props.resumeData.education.forEach((edu) => {
-      text.push(
-        `${edu.degree || "[Degree]"} | ${edu.institution || "[Institution]"} | ${edu.year || "[Year]"}`,
-      );
-      if (edu.gpa) text.push(`GPA: ${edu.gpa}`);
-      text.push("");
-    });
+    text.push('EDUCATION')
+    props.resumeData.education.forEach(edu => {
+      text.push(`${edu.degree || '[Degree]'} | ${edu.institution || '[Institution]'} | ${edu.year || '[Year]'}`)
+      if (edu.gpa) text.push(`GPA: ${edu.gpa}`)
+      text.push('')
+    })
   }
-
+  
   // Skills
   if (props.resumeData.skills?.length > 0) {
-    text.push("SKILLS");
-    text.push(
-      props.resumeData.skills
-        .filter((skill) => skill && (skill.name || skill))
-        .map((skill) => skill.name || skill)
-        .join(", "),
-    );
+    text.push('SKILLS')
+    text.push(props.resumeData.skills
+      .filter(skill => skill && (skill.name || skill))
+      .map(skill => skill.name || skill)
+      .join(', '))
   }
-
-  return text.join("\n");
-};
+  
+  return text.join('\n')
+}
 
 const generateCoverLetterRawText = () => {
-  let text = [];
-
+  let text = []
+  
   // Header
   if (props.resumeData?.personalInfo) {
-    const info = props.resumeData.personalInfo;
-    if (info.name) text.push(info.name);
-    if (info.email) text.push(info.email);
-    if (info.phone) text.push(info.phone);
-    if (info.location) text.push(info.location);
-    text.push("");
+    const info = props.resumeData.personalInfo
+    if (info.name) text.push(info.name)
+    if (info.email) text.push(info.email)
+    if (info.phone) text.push(info.phone)
+    if (info.location) text.push(info.location)
+    text.push('')
   }
-
+  
   // Date
-  text.push(currentDate.value);
-  text.push("");
-
+  text.push(currentDate.value)
+  text.push('')
+  
   // Recipient
   if (props.coverLetterData.jobInfo) {
-    const job = props.coverLetterData.jobInfo;
-    if (job.hiringManager) text.push(job.hiringManager);
-    if (job.department) text.push(job.department);
-    if (job.company) text.push(job.company);
-    text.push("");
+    const job = props.coverLetterData.jobInfo
+    if (job.hiringManager) text.push(job.hiringManager)
+    if (job.department) text.push(job.department)
+    if (job.company) text.push(job.company)
+    text.push('')
   }
-
+  
   // Content
   if (props.coverLetterData.content?.opening) {
-    text.push(props.coverLetterData.content.opening);
-    text.push("");
+    text.push(props.coverLetterData.content.opening)
+    text.push('')
   }
-
+  
   if (props.coverLetterData.content?.body) {
-    text.push(props.coverLetterData.content.body);
-    text.push("");
+    text.push(props.coverLetterData.content.body)
+    text.push('')
   }
-
+  
   if (props.coverLetterData.content?.closing) {
-    text.push(props.coverLetterData.content.closing);
+    text.push(props.coverLetterData.content.closing)
   }
-
-  return text.join("\n");
-};
+  
+  return text.join('\n')
+}
 
 const copyToClipboard = async () => {
   try {
-    await navigator.clipboard.writeText(rawText.value);
-    toast.success("Text copied to clipboard");
+    await navigator.clipboard.writeText(rawText.value)
+    toast.success('Text copied to clipboard')
   } catch (error) {
-    toast.error("Failed to copy text");
+    toast.error('Failed to copy text')
   }
-};
+}
 </script>
 
 <style scoped>
@@ -555,7 +488,7 @@ const copyToClipboard = async () => {
   padding: 2rem;
   box-shadow: var(--shadow-md);
   border-radius: var(--radius-md);
-  font-family: "Times New Roman", serif;
+  font-family: 'Times New Roman', serif;
   line-height: 1.6;
   min-height: 800px;
 }
@@ -582,7 +515,7 @@ const copyToClipboard = async () => {
 }
 
 .contact-info span:not(:last-child)::after {
-  content: " | ";
+  content: ' | ';
   margin-left: 1rem;
 }
 
@@ -669,6 +602,7 @@ const copyToClipboard = async () => {
   font-weight: 500;
 }
 
+/* Cover Letter Specific Styles */
 .cover-letter-preview .doc-header {
   text-align: left;
   display: flex;
@@ -677,56 +611,80 @@ const copyToClipboard = async () => {
 }
 
 .sender-info .sender-name {
+  font-size: 1.2rem;
   font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .sender-contact {
+  font-size: 0.9rem;
   color: var(--text-secondary);
 }
 
 .letter-date {
+  font-size: 0.9rem;
   color: var(--text-secondary);
 }
 
 .recipient-info {
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  color: #666;
 }
 
 .letter-content {
+  line-height: 1.8;
 }
 
 .letter-paragraph {
+  margin-bottom: 1.5rem;
 }
 
 .letter-paragraph pre {
   font-family: inherit;
   white-space: pre-wrap;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.8;
 }
 
+/* Raw View */
 .raw-preview {
+  flex: 1;
   overflow: auto;
+  padding: 1rem;
 }
 
 .raw-content {
   background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  font-family: "Courier New", monospace;
+  padding: 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
   color: var(--text-primary);
 }
 
 .raw-content pre {
+  margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
+/* Footer */
 .modal-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1.5rem;
+  border-top: 1px solid var(--glass-border);
   background: var(--glass-surface);
 }
 
 .preview-stats {
   display: flex;
+  gap: 2rem;
 }
 
 .stat-item {
@@ -735,72 +693,95 @@ const copyToClipboard = async () => {
 
 .stat-item strong {
   display: block;
+  font-size: 1.1rem;
+  color: var(--color-primary-500);
 }
 
 .stat-item span {
+  font-size: 0.8rem;
   color: var(--text-secondary);
 }
 
 .footer-actions {
   display: flex;
+  gap: 0.5rem;
 }
 
+/* Loading State */
 .preview-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 400px;
   color: var(--text-secondary);
 }
 
 .loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--glass-border);
+  border-top: 2px solid var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
 }
 
 @keyframes spin {
-  }
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
   .modal-overlay {
+    padding: 1rem;
   }
-
+  
   .preview-modal {
+    max-height: 95vh;
   }
-
+  
   .document-page {
+    padding: 1rem;
   }
-
+  
   .modal-header {
     flex-direction: column;
+    gap: 1rem;
     align-items: flex-start;
   }
-
+  
   .header-actions {
+    width: 100%;
     justify-content: space-between;
   }
-
+  
   .modal-footer {
     flex-direction: column;
+    gap: 1rem;
     align-items: stretch;
   }
-
+  
   .preview-stats {
     justify-content: space-around;
   }
-
+  
   .exp-header,
   .edu-header {
     flex-direction: column;
     align-items: flex-start;
   }
-
+  
   .exp-meta,
   .edu-meta {
     text-align: left;
+    margin-top: 0.25rem;
   }
-
+  
   .cover-letter-preview .doc-header {
     flex-direction: column;
+    gap: 1rem;
   }
 }
 </style>

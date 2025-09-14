@@ -1,10 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div
-    :class="isTabbed ? '' : 'glass-card section-card'"
-    role="region"
-    aria-labelledby="gaming-heading"
-  >
+  <div :class="isTabbed ? '' : 'glass-card section-card'" role="region" aria-labelledby="gaming-heading">
     <div v-if="!isTabbed" class="card-header section-header">
       <h5 id="gaming-heading" class="section-title">
         <AppIcon name="mdi-gamepad-variant" />
@@ -105,8 +101,7 @@
         <div class="form-help">
           <div class="hint-chip">
             <LightbulbIconComponent />
-            <span>This information helps tailor job recommendations and resume
-              optimization for gaming industry positions.</span>
+            <span>This information helps tailor job recommendations and resume optimization for gaming industry positions.</span>
           </div>
         </div>
 
@@ -118,7 +113,7 @@
             :disabled="saving"
             leading-icon="mdi-content-save"
           >
-            {{ saving ? "Saving..." : "Save Gaming Profile" }}
+            {{ saving ? 'Saving...' : 'Save Gaming Profile' }}
           </UnifiedButton>
           <div v-if="profileSaved" class="success-message" aria-live="polite">
             <CheckIconComponent />
@@ -131,50 +126,46 @@
 </template>
 
 <script>
-import { useAppStore } from "@/stores/app";
-import { useLogo } from "@/composables/useLogo";
-import {
-  SaveIconComponent,
-  CheckIconComponent,
-  LightbulbIconComponent,
-} from "./SettingsIcons.js";
-import AppIcon from "@/components/ui/AppIcon.vue";
-import UnifiedButton from "@/components/ui/UnifiedButton.vue";
+import { useAppStore } from '@/stores/app'
+import { useLogo } from '@/composables/useLogo'
+import { SaveIconComponent, CheckIconComponent, LightbulbIconComponent } from './SettingsIcons.js'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 export default {
-  name: "GamingProfileSection",
+  name: 'GamingProfileSection',
   components: {
     SaveIconComponent,
     CheckIconComponent,
     LightbulbIconComponent,
     AppIcon,
-    UnifiedButton,
+    UnifiedButton
   },
   props: {
     gamingProfile: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     saving: {
       type: Boolean,
-      default: false,
+      default: false
     },
     profileSaved: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isTabbed: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  emits: ["save"],
+  emits: ['save'],
   setup() {
-    const store = useAppStore();
-    const { logoSrc } = useLogo(store);
-    return { store, logoSrc };
-  },
-};
+    const store = useAppStore()
+    const { logoSrc } = useLogo(store)
+    return { store, logoSrc }
+  }
+}
 </script>
 
 <!-- Styles now handled by design-system.css -->

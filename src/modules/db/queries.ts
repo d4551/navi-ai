@@ -1,11 +1,15 @@
+/**
+ * Database Query Utilities
+ * Basic query helper functions
+ */
 
-import type { DatabaseModel } from "./models";
+import type { DatabaseModel } from './models';
 
 export interface QueryOptions {
   limit?: number;
   offset?: number;
   orderBy?: string;
-  orderDirection?: "asc" | "desc";
+  orderDirection?: 'asc' | 'desc';
 }
 
 export interface QueryResult<T> {
@@ -14,51 +18,56 @@ export interface QueryResult<T> {
   hasMore: boolean;
 }
 
+// Generic query builder functions
+export function buildSelectQuery(
   table: string,
   conditions?: Record<string, any>,
-  options?: QueryOptions,
+  options?: QueryOptions
 ): string {
-
+  let query = `SELECT * FROM ${table}`;
+  
+  if (conditions && Object.keys(conditions).length > 0) {
     const whereClause = Object.entries(conditions)
       .map(([key, value]) => `${key} = '${value}'`)
-      .join(" AND ");
+      .join(' AND ');
     query += ` WHERE ${whereClause}`;
   }
-
+  
   if (options?.orderBy) {
-    query += ` ORDER BY ${options.orderBy} ${options.orderDirection || "asc"}`;
+    query += ` ORDER BY ${options.orderBy} ${options.orderDirection || 'asc'}`;
   }
-
+  
   if (options?.limit) {
     query += ` LIMIT ${options.limit}`;
   }
-
+  
   if (options?.offset) {
     query += ` OFFSET ${options.offset}`;
   }
-
+  
   return query;
 }
 
-  table: string,
-  data: Partial<T>,
+export function buildInsertQuery<T extends DatabaseModel>(
+  table: string, 
+  data: Partial<T>
 ): string {
-  const columns = Object.keys(data).join(", ");
-  const values = Object.values(data)
-    .map((v) => `'${v}'`)
-    .join(", ");
+  const columns = Object.keys(data).join(', ');
+  const values = Object.values(data).map(v => `'${v}'`).join(', ');
   return `INSERT INTO ${table} (${columns}) VALUES (${values})`;
 }
 
-  table: string,
-  id: string,
-  data: Partial<T>,
+export function buildUpdateQuery<T extends DatabaseModel>(
+  table: string, 
+  id: string, 
+  data: Partial<T>
 ): string {
   const setClause = Object.entries(data)
     .map(([key, value]) => `${key} = '${value}'`)
-    .join(", ");
+    .join(', ');
   return `UPDATE ${table} SET ${setClause} WHERE id = '${id}'`;
 }
 
+export function buildDeleteQuery(table: string, id: string): string {
   return `DELETE FROM ${table} WHERE id = '${id}'`;
 }

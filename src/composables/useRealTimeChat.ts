@@ -1,26 +1,23 @@
+/**
+ * Vue Composable for Real-Time Multi-Turn Chat
+ * Provides reactive state and methods for real-time AI conversations
+ */
 
-import {
-  ref,
-  readonly,
-  reactive,
-  computed,
-  onUnmounted,
-  getCurrentInstance,
-} from "vue";
-import { logger } from "@/shared/utils/logger";
+import { ref, readonly, reactive, computed, onUnmounted, getCurrentInstance } from 'vue'
+import { logger } from '@/shared/utils/logger';
 import LiveMultimediaAIService, {
   type MultimediaAIConfig,
   type MediaAnalysisResult,
-} from "@/shared/services/LiveMultimediaAIService";
-import { audioService } from "@/shared/services/AudioService";
+} from '@/shared/services/LiveMultimediaAIService';
+import { audioService } from '@/shared/services/AudioService';
 
 // Local replicas to keep component imports stable while unifying backend
 export type RealTimeMessage = {
   id: string;
   timestamp: Date;
-  role: "user" | "assistant" | "system";
+  role: 'user' | 'assistant' | 'system';
   content: string;
-  type: "text" | "audio" | "video" | "screen";
+  type: 'text' | 'audio' | 'video' | 'screen';
   audioData?: ArrayBuffer;
   imageData?: string;
   duration?: number;
@@ -43,13 +40,14 @@ export type RealTimeConfig = {
 
 export type MultiTurnSession = {
   id: string;
-  type: "audio" | "video" | "screen" | "multimodal";
+  type: 'audio' | 'video' | 'screen' | 'multimodal';
   isActive: boolean;
   startTime: Date;
   messageCount: number;
   lastActivity: Date;
 };
 
+export function useRealTimeChat(config: Partial<RealTimeConfig> = {}) {
   // Reactive state
   const isInitialized = ref(false);
   const isSessionActive = ref(false);
@@ -57,28 +55,36 @@ export type MultiTurnSession = {
   const messages = ref<RealTimeMessage[]>([]);
   const isListening = ref(false);
   const isProcessing = ref(false);
-  const transcription = ref("");
+  const volumeLevel = ref(0);
+  const transcription = ref('');
   const error = ref<string | null>(null);
 
   // Session stats
   const sessionStats = reactive({
-    lastActivity: null as Date | null,
+    messageCount: 0,
+    sessionDuration: 0,
+    lastActivity: null as Date | null
   });
 
   // Computed properties
-  const canStartSession = computed(
-    () => isInitialized.value && !isSessionActive.value,
+  const canStartSession = computed(() => 
+    isInitialized.value && !isSessionActive.value
   );
 
   const sessionDurationFormatted = computed(() => {
+    if (!sessionStats.sessionDuration) return '00:00';
+    const minutes = Math.floor(sessionStats.sessionDuration / 60);
+    const seconds = sessionStats.sessionDuration % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   });
 
   // Session duration timer
   let durationTimer: number | null = null;
 
-    apiKey: string,
-    initialConfig: Partial<RealTimeConfig> = {},
-  ) {
+  /**
+   * Initialize the real-time service
+   */
+  async function initialize(apiKey: string, initialConfig: Partial<RealTimeConfig> = {}) {
     try {
       const mergedConfig = { ...config, ...initialConfig };
       const service = LiveMultimediaAIService.getInstance();
@@ -98,9 +104,9 @@ export type MultiTurnSession = {
             const msg: RealTimeMessage = {
               id: `user-${Date.now()}`,
               timestamp: new Date(),
-              role: "user",
+              role: 'user',
               content: text,
-              type: "audio",
+              type: 'audio'
             };
             messages.value.push(msg);
           }
@@ -109,9 +115,9 @@ export type MultiTurnSession = {
           const msg: RealTimeMessage = {
             id: res.id,
             timestamp: res.timestamp,
-            role: "assistant",
+            role: 'assistant',
             content: res.content,
-            type: (res.type as any) || "text",
+            type: (res.type as any) || 'text'
           };
           messages.value.push(msg);
           sessionStats.messageCount++;
@@ -120,31 +126,37 @@ export type MultiTurnSession = {
         onError: (e) => {
           const em = e instanceof Error ? e.message : String(e);
           error.value = em;
-          logger.error("Live multimedia error:", e);
-        },
+          logger.error('Live multimedia error:', e);
+        }
       });
 
       const mmConfig: MultimediaAIConfig = {
         apiKey,
+        model: mergedConfig.model || 'gemini-2.5-flash',
         enableAudio: mergedConfig.enableAudioInput !== false,
         enableVideo: !!mergedConfig.enableVideo,
         enableScreenshot: true,
+        maxTokens: 8192,
+        temperature: 0.7,
       };
       await service.initialize(mmConfig);
       isInitialized.value = true;
       error.value = null;
-      logger.info("Real-time chat initialized (LiveMultimedia backend)");
+      logger.info('Real-time chat initialized (LiveMultimedia backend)');
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to initialize";
+      const errorMessage = err instanceof Error ? err.message : 'Failed to initialize';
       error.value = errorMessage;
-      logger.error("Failed to initialize real-time chat:", err);
+      logger.error('Failed to initialize real-time chat:', err);
       throw err;
     }
   }
 
+  /**
+   * Start a new conversation session
+   */
+  async function startSession(type: MultiTurnSession['type'] = 'audio') {
     if (!isInitialized.value) {
-      throw new Error("Service not initialized");
+      throw new Error('Service not initialized');
     }
 
     try {
@@ -157,27 +169,24 @@ export type MultiTurnSession = {
         type,
         isActive: true,
         startTime: new Date(),
-        lastActivity: new Date(),
+        messageCount: 0,
+        lastActivity: new Date()
       };
 
       // Start streams based on type
-      if (type === "audio" || type === "multimodal") {
+      if (type === 'audio' || type === 'multimodal') {
         await service.startAudioStreaming();
         isListening.value = true;
         // Start mic level monitoring for volume meter
         try {
           const pref = audioService.getPreferredDevices?.();
           const inputId = (pref && pref.input) || undefined;
-          await audioService.startMonitoring(
-            typeof inputId === "string" ? inputId : undefined,
-            (lvl) => {
-              volumeLevel.value = lvl;
-            },
-          );
-        } catch {
-        }
+          await audioService.startMonitoring(typeof inputId === 'string' ? inputId : undefined, (lvl) => {
+            volumeLevel.value = lvl;
+          });
+        } catch {/* ignore monitoring errors */}
       }
-      if (type === "video" || type === "multimodal") {
+      if (type === 'video' || type === 'multimodal') {
         await service.startVideoStreaming();
       }
 
@@ -185,18 +194,21 @@ export type MultiTurnSession = {
       isSessionActive.value = true;
       startDurationTimer();
       error.value = null;
-      logger.info("Session started:", session.id);
+      logger.info('Session started:', session.id);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to start session";
+      const errorMessage = err instanceof Error ? err.message : 'Failed to start session';
       error.value = errorMessage;
-      logger.error("Failed to start session:", err);
+      logger.error('Failed to start session:', err);
       throw err;
     } finally {
       isProcessing.value = false;
     }
   }
 
+  /**
+   * Stop the current session
+   */
+  async function stopSession() {
     if (!isSessionActive.value) return;
 
     try {
@@ -204,9 +216,7 @@ export type MultiTurnSession = {
       const service = LiveMultimediaAIService.getInstance();
       service.stopAudioStreaming();
       service.stopVideoStreaming();
-      try {
-        audioService.stopMonitoring();
-      } catch {}
+      try { audioService.stopMonitoring(); } catch {}
       isSessionActive.value = false;
       isListening.value = false;
       currentSession.value = null;
@@ -215,17 +225,20 @@ export type MultiTurnSession = {
         clearInterval(durationTimer);
         durationTimer = null;
       }
-      logger.info("Session stopped");
+      logger.info('Session stopped');
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to stop session";
+      const errorMessage = err instanceof Error ? err.message : 'Failed to stop session';
       error.value = errorMessage;
-      logger.error("Failed to stop session:", err);
+      logger.error('Failed to stop session:', err);
     } finally {
       isProcessing.value = false;
     }
   }
 
+  /**
+   * Send a text message
+   */
+  async function sendMessage(text: string) {
     if (!isSessionActive.value || !text.trim()) return;
 
     try {
@@ -235,64 +248,82 @@ export type MultiTurnSession = {
       const userMsg: RealTimeMessage = {
         id: `user-${Date.now()}`,
         timestamp: new Date(),
-        role: "user",
+        role: 'user',
         content: text.trim(),
-        type: "text",
+        type: 'text'
       };
       messages.value.push(userMsg);
       const res = await service.sendMessage(text.trim());
       // assistant response is added via callback; ensure stats update if needed
       sessionStats.lastActivity = res.timestamp;
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to send message";
+      const errorMessage = err instanceof Error ? err.message : 'Failed to send message';
       error.value = errorMessage;
-      logger.error("Failed to send message:", err);
+      logger.error('Failed to send message:', err);
     } finally {
       isProcessing.value = false;
     }
   }
 
+  /**
+   * Clear conversation history
+   */
+  function clearMessages() {
     messages.value = [];
+    sessionStats.messageCount = 0;
   }
 
+  /**
+   * Update service configuration
+   */
+  function updateConfig(newConfig: Partial<RealTimeConfig>) {
     // No-op passthrough for now; LiveMultimedia service uses initialize-time config
     Object.assign({}, newConfig);
   }
 
+  /**
+   * Get current configuration
+   */
+  function getConfig() {
     // Return local config mirror (best effort)
     return { ...config } as any;
   }
 
   // Event handlers
+  function handleMessage(message: RealTimeMessage) {
     messages.value.push(message);
     sessionStats.messageCount++;
     sessionStats.lastActivity = message.timestamp;
   }
 
-  }
+  function handleTranscription(_text: string, _isFinal: boolean) { /* bridged via Live callbacks above */ }
 
-  }
-  }
+  function handleSessionStart(_session: MultiTurnSession) { /* unified session handled locally */ }
+  function handleSessionEnd(_session: MultiTurnSession) { /* unified session handled locally */ }
 
+  function handleError(err: Error) {
     error.value = err.message;
-    logger.error("Real-time chat error:", err);
+    logger.error('Real-time chat error:', err);
   }
 
+  function handleVolumeLevel(level: number) {
     volumeLevel.value = level;
   }
 
+  function startDurationTimer() {
     if (durationTimer) clearInterval(durationTimer);
-
+    
     durationTimer = window.setInterval(() => {
       if (isSessionActive.value && currentSession.value) {
         sessionStats.sessionDuration = Math.floor(
+          (Date.now() - currentSession.value.startTime.getTime()) / 1000
         );
       }
+    }, 1000);
   }
 
   // Cleanup on unmount - only register if we're in a component instance
-  const instance = getCurrentInstance();
+  const instance = getCurrentInstance()
   if (instance) {
     onUnmounted(() => {
       if (isSessionActive.value) {
@@ -316,11 +347,11 @@ export type MultiTurnSession = {
     transcription: readonly(transcription),
     error: readonly(error),
     sessionStats: readonly(sessionStats),
-
+    
     // Computed
     canStartSession,
     sessionDurationFormatted,
-
+    
     // Methods
     initialize,
     startSession,
@@ -328,41 +359,38 @@ export type MultiTurnSession = {
     sendMessage,
     clearMessages,
     updateConfig,
-    getConfig,
+    getConfig
   };
 }
 
-  const isAudioSupported = computed(
-    () =>
-      "mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices,
+// Helper function to check if real-time features are supported
+export function useRealTimeSupport() {
+  const isAudioSupported = computed(() => 
+    'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
+  );
+  
+  const isVideoSupported = computed(() => 
+    'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
+  );
+  
+  const isScreenShareSupported = computed(() => 
+    'mediaDevices' in navigator && 'getDisplayMedia' in navigator.mediaDevices
+  );
+  
+  const isSpeechRecognitionSupported = computed(() => 
+    'webkitSpeechRecognition' in window || 'SpeechRecognition' in window
+  );
+  
+  const isSpeechSynthesisSupported = computed(() => 
+    'speechSynthesis' in window
   );
 
-  const isVideoSupported = computed(
-    () =>
-      "mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices,
-  );
-
-  const isScreenShareSupported = computed(
-    () =>
-      "mediaDevices" in navigator &&
-      "getDisplayMedia" in navigator.mediaDevices,
-  );
-
-  const isSpeechRecognitionSupported = computed(
-    () => "webkitSpeechRecognition" in window || "SpeechRecognition" in window,
-  );
-
-  const isSpeechSynthesisSupported = computed(
-    () => "speechSynthesis" in window,
-  );
-
-  const allFeaturesSupported = computed(
-    () =>
-      isAudioSupported.value &&
-      isVideoSupported.value &&
-      isScreenShareSupported.value &&
-      isSpeechRecognitionSupported.value &&
-      isSpeechSynthesisSupported.value,
+  const allFeaturesSupported = computed(() => 
+    isAudioSupported.value && 
+    isVideoSupported.value && 
+    isScreenShareSupported.value && 
+    isSpeechRecognitionSupported.value && 
+    isSpeechSynthesisSupported.value
   );
 
   return {
@@ -371,6 +399,6 @@ export type MultiTurnSession = {
     isScreenShareSupported,
     isSpeechRecognitionSupported,
     isSpeechSynthesisSupported,
-    allFeaturesSupported,
+    allFeaturesSupported
   };
 }

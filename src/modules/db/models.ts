@@ -1,3 +1,7 @@
+/**
+ * Database Models
+ * Basic type definitions for database entities
+ */
 
 export interface DatabaseModel {
   id: string;
@@ -14,7 +18,7 @@ export interface UserModel extends DatabaseModel {
 export interface InterviewModel extends DatabaseModel {
   sessionId: string;
   studioId: string;
-  status: "preparing" | "active" | "paused" | "completed" | "cancelled";
+  status: 'preparing' | 'active' | 'paused' | 'completed' | 'cancelled';
   responses: any[];
   analysis?: Record<string, any>;
 }
