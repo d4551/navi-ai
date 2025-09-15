@@ -17,9 +17,11 @@
     </div>
 
     <!-- Header Content Container -->
-    <div class="container-xl p-6 flex items-start justify-between gap-6"
-         :class="{ 'flex-col items-center text-center': stacked }"
-      <!-- Main Title Section -->
+    <div
+      class="container-xl p-6 flex items-start justify-between gap-6"
+      :class="{ 'flex-col items-center text-center': stacked }"
+      <!-- Main Title Section --
+    >
       <div class="header-title-section flex-1">
         <!-- Icon above title when stacked layout is used -->
         <div v-if="icon && stacked" class="flex justify-center mb-4">

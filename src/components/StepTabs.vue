@@ -57,7 +57,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import GlassNavTabs from '@/components/GlassNavTabs.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
-const _props = defineProps({
+const props = defineProps({
   tabs: {
     type: Array,
     required: true,

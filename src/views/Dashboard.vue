@@ -19,22 +19,24 @@
     </template>
 
     <!-- Main Dashboard Content -->
-    <div class="dashboard-container bg-white dark:bg-gray-900">
+    <div class="content-wrapper">
       <!-- Enhanced Gamification Section -->
-      <section class="gamification-section">
-        <div class="gamification-card glass-strong bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-          <div class="gamification-header">
-            <div class="level-info">
-              <div class="level-badge">🏆</div>
-              <div class="level-text">
-                <div class="level-number text-gray-900 dark:text-gray-100">Level {{ userLevel }}</div>
-                <div class="level-title text-gray-600 dark:text-gray-400">{{ levelTitle }}</div>
+      <section class="section-glass">
+        <div class="card-gaming">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 border border-neon-blue/30">
+                <AppIcon name="trophy" size="large" class="text-neon" />
+              </div>
+              <div>
+                <h2 class="heading-3 text-neon mb-0">Level {{ userLevel }}</h2>
+                <p class="text-secondary mb-0">{{ levelTitle }}</p>
               </div>
             </div>
 
-            <div class="streak-counter">
-              <span class="streak-icon">🔥</span>
-              <span class="text-gray-900 dark:text-gray-100">{{ streakDays }} Day Streak</span>
+            <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-neon-orange/10 border border-neon-orange/20">
+              <AppIcon name="fire" class="text-neon-red" />
+              <span class="text-primary font-medium">{{ streakDays }} Day Streak</span>
             </div>
           </div>
 

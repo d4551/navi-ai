@@ -1,12 +1,159 @@
 <template>
   <span :class="[rootClasses, $attrs.class]" :style="[computedStyle, $attrs.style]" v-bind="$attrs">
-    <i :class="['mdi', resolvedMdi]" aria-hidden="true"></i>
+    <!-- Heroicons -->
+    <component
+      :is="heroiconComponent"
+      v-if="isHeroicon"
+      :class="heroiconClasses"
+      aria-hidden="true"
+    />
+    <!-- MDI Icons -->
+    <i v-else :class="['mdi', resolvedMdi]" aria-hidden="true"></i>
   </span>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { getMdiAlias } from '@/utils/iconAliases'
+
+// Heroicons imports - organized by category
+import {
+  // Navigation & Actions
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+  XMarkIcon,
+  PlusIcon,
+  MinusIcon,
+  CheckIcon,
+  EllipsisHorizontalIcon,
+  Bars3Icon,
+
+  // Communication & Media
+  ChatBubbleLeftRightIcon,
+  PhoneIcon,
+  EnvelopeIcon,
+  MicrophoneIcon,
+  SpeakerWaveIcon,
+  VideoCameraIcon,
+  CameraIcon,
+  PlayIcon,
+  PauseIcon,
+  StopIcon,
+
+  // Business & Work
+  BriefcaseIcon,
+  BuildingOfficeIcon,
+  UserIcon,
+  UsersIcon,
+  AcademicCapIcon,
+  DocumentIcon,
+  DocumentTextIcon,
+  ClipboardDocumentIcon,
+  FolderIcon,
+
+  // Tech & Gaming
+  ComputerDesktopIcon,
+  DevicePhoneMobileIcon,
+  CogIcon,
+  WrenchScrewdriverIcon,
+  BoltIcon,
+  LightBulbIcon,
+
+  // Status & Feedback
+  CheckCircleIcon,
+  XCircleIcon,
+  ExclamationTriangleIcon,
+  InformationCircleIcon,
+  HeartIcon,
+  StarIcon,
+  TrophyIcon,
+  FireIcon,
+
+  // Search & Discovery
+  MagnifyingGlassIcon,
+  EyeIcon,
+  FunnelIcon,
+  AdjustmentsHorizontalIcon,
+
+  // Social & Sharing
+  ShareIcon,
+  LinkIcon,
+  GlobeAltIcon,
+
+  // Data & Analytics
+  ChartBarIcon,
+  PresentationChartLineIcon,
+
+  // Location & Maps
+  MapPinIcon,
+  HomeIcon,
+
+  // UI Elements
+  PaintBrushIcon,
+  SwatchIcon,
+  RectangleStackIcon,
+  WindowIcon,
+
+  // Tools & Utilities
+  ClockIcon,
+  CalendarIcon,
+  TagIcon,
+  BookmarkIcon,
+  ArchiveBoxIcon,
+  TrashIcon,
+  PencilIcon,
+  WifiIcon,
+  ShieldCheckIcon,
+  KeyIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+
+  // Arrows & Directions
+  ArrowPathIcon,
+  ArrowUturnLeftIcon,
+  ArrowUturnRightIcon,
+
+  // Media Controls
+  ForwardIcon,
+  BackwardIcon,
+  SpeakerXMarkIcon,
+
+  // Financial
+  CurrencyDollarIcon,
+  CreditCardIcon,
+  BanknotesIcon,
+
+  // Educational
+  BookOpenIcon,
+  PuzzlePieceIcon,
+  BeakerIcon,
+
+  // Weather & Nature
+  SunIcon,
+  MoonIcon,
+  CloudIcon,
+
+} from '@heroicons/vue/24/outline'
+
+import {
+  // Solid variants for filled states
+  CheckCircleIcon as CheckCircleIconSolid,
+  XCircleIcon as XCircleIconSolid,
+  HeartIcon as HeartIconSolid,
+  StarIcon as StarIconSolid,
+  PlayIcon as PlayIconSolid,
+  PauseIcon as PauseIconSolid,
+  LightBulbIcon as LightBulbIconSolid,
+  HomeIcon as HomeIconSolid,
+  UserIcon as UserIconSolid,
+
+} from '@heroicons/vue/24/solid'
 
 export default {
   name: 'AppIcon',
@@ -78,50 +225,359 @@ export default {
   },
   
   setup(props) {
-    // Emoji/alias mapping to MDI icons
-    const EMOJI_ALIASES = {
-      '📄': 'mdi-file-document-outline',
-      '📞': 'mdi-phone',
-      '📍': 'mdi-map-marker',
-      '🤖': 'mdi-robot',
-      '💼': 'mdi-briefcase',
-      '🎓': 'mdi-school',
-      '⚡': 'mdi-flash',
-      '👁️': 'mdi-eye',
-      '🔍': 'mdi-magnify',
-      '✨': 'mdi-auto-fix',
-      '🔗': 'mdi-link-variant',
-      '🎯': 'mdi-target',
-      '💡': 'mdi-lightbulb',
-      '📈': 'mdi-chart-line',
-      '🔥': 'mdi-fire',
-      '✓': 'mdi-check',
-      '✅': 'mdi-check-circle-outline',
-      '❌': 'mdi-close-circle-outline',
-      '🧪': 'mdi-flask',
-      '📋': 'mdi-clipboard-text-outline',
-      '📸': 'mdi-camera',
-      '⚙️': 'mdi-cog-outline',
-      '🎨': 'mdi-palette',
-      '❓': 'mdi-help-circle-outline',
-      '👥': 'mdi-account-group',
-      '🏠': 'mdi-home',
-      '💻': 'mdi-laptop',
-      '📹': 'mdi-video',
-      '📁': 'mdi-folder',
-      '📺': 'mdi-television',
-      '🎥': 'mdi-video',
-      '📊': 'mdi-chart-bar',
-      '⭐': 'mdi-star',
-      '🏆': 'mdi-trophy',
-      '🗣️': 'mdi-account-voice',
-      '🎮': 'mdi-gamepad-variant',
-      '🔊': 'mdi-volume-high',
-      '🎤': 'mdi-microphone',
-      '🛠️': 'mdi-hammer-wrench',
-      '📱': 'mdi-cellphone',
-      '📣': 'mdi-bullhorn',
+    // Heroicons mapping - modern icon system
+    const HEROICON_MAP = {
+      // Navigation & Actions
+      'arrow-left': ArrowLeftIcon,
+      'arrow-right': ArrowRightIcon,
+      'arrow-up': ArrowUpIcon,
+      'arrow-down': ArrowDownIcon,
+      'chevron-left': ChevronLeftIcon,
+      'chevron-right': ChevronRightIcon,
+      'chevron-up': ChevronUpIcon,
+      'chevron-down': ChevronDownIcon,
+      'close': XMarkIcon,
+      'x': XMarkIcon,
+      'plus': PlusIcon,
+      'minus': MinusIcon,
+      'check': CheckIcon,
+      'dots-horizontal': EllipsisHorizontalIcon,
+      'menu': Bars3Icon,
+
+      // Communication & Media
+      'chat': ChatBubbleLeftRightIcon,
+      'phone': PhoneIcon,
+      'email': EnvelopeIcon,
+      'envelope': EnvelopeIcon,
+      'microphone': MicrophoneIcon,
+      'mic': MicrophoneIcon,
+      'speaker': SpeakerWaveIcon,
+      'volume': SpeakerWaveIcon,
+      'video': VideoCameraIcon,
+      'camera': CameraIcon,
+      'play': PlayIcon,
+      'pause': PauseIcon,
+      'stop': StopIcon,
+
+      // Business & Work
+      'briefcase': BriefcaseIcon,
+      'office': BuildingOfficeIcon,
+      'building': BuildingOfficeIcon,
+      'user': UserIcon,
+      'account': UserIcon,
+      'users': UsersIcon,
+      'group': UsersIcon,
+      'graduation': AcademicCapIcon,
+      'school': AcademicCapIcon,
+      'document': DocumentIcon,
+      'file': DocumentIcon,
+      'document-text': DocumentTextIcon,
+      'file-text': DocumentTextIcon,
+      'clipboard': ClipboardDocumentIcon,
+      'folder': FolderIcon,
+
+      // Tech & Gaming
+      'computer': ComputerDesktopIcon,
+      'desktop': ComputerDesktopIcon,
+      'laptop': ComputerDesktopIcon,
+      'phone-mobile': DevicePhoneMobileIcon,
+      'mobile': DevicePhoneMobileIcon,
+      'cellphone': DevicePhoneMobileIcon,
+      'settings': CogIcon,
+      'cog': CogIcon,
+      'tools': WrenchScrewdriverIcon,
+      'wrench': WrenchScrewdriverIcon,
+      'bolt': BoltIcon,
+      'flash': BoltIcon,
+      'lightning': BoltIcon,
+      'lightbulb': LightBulbIcon,
+      'idea': LightBulbIcon,
+
+      // Status & Feedback
+      'check-circle': CheckCircleIcon,
+      'success': CheckCircleIcon,
+      'x-circle': XCircleIcon,
+      'error': XCircleIcon,
+      'alert': ExclamationTriangleIcon,
+      'warning': ExclamationTriangleIcon,
+      'info': InformationCircleIcon,
+      'information': InformationCircleIcon,
+      'heart': HeartIcon,
+      'favorite': HeartIcon,
+      'star': StarIcon,
+      'trophy': TrophyIcon,
+      'achievement': TrophyIcon,
+      'fire': FireIcon,
+
+      // Search & Discovery
+      'search': MagnifyingGlassIcon,
+      'magnify': MagnifyingGlassIcon,
+      'eye': EyeIcon,
+      'view': EyeIcon,
+      'filter': FunnelIcon,
+      'adjustments': AdjustmentsHorizontalIcon,
+
+      // Social & Sharing
+      'share': ShareIcon,
+      'link': LinkIcon,
+      'web': GlobeAltIcon,
+      'globe': GlobeAltIcon,
+      'website': GlobeAltIcon,
+
+      // Data & Analytics
+      'chart-bar': ChartBarIcon,
+      'bar-chart': ChartBarIcon,
+      'chart-line': ChartBarIcon,
+      'line-chart': ChartBarIcon,
+      'analytics': PresentationChartLineIcon,
+      'presentation': PresentationChartLineIcon,
+
+      // Location & Maps
+      'map-pin': MapPinIcon,
+      'location': MapPinIcon,
+      'marker': MapPinIcon,
+      'home': HomeIcon,
+
+      // UI Elements
+      'paint': PaintBrushIcon,
+      'brush': PaintBrushIcon,
+      'palette': SwatchIcon,
+      'color': SwatchIcon,
+      'stack': RectangleStackIcon,
+      'layers': RectangleStackIcon,
+      'window': WindowIcon,
+
+      // Tools & Utilities
+      'clock': ClockIcon,
+      'time': ClockIcon,
+      'calendar': CalendarIcon,
+      'date': CalendarIcon,
+      'tag': TagIcon,
+      'bookmark': BookmarkIcon,
+      'archive': ArchiveBoxIcon,
+      'trash': TrashIcon,
+      'delete': TrashIcon,
+      'pencil': PencilIcon,
+      'edit': PencilIcon,
+      'wifi': WifiIcon,
+      'signal': WifiIcon,
+      'battery': ShieldCheckIcon,
+      'shield': ShieldCheckIcon,
+      'security': ShieldCheckIcon,
+      'key': KeyIcon,
+      'lock': LockClosedIcon,
+      'unlock': LockOpenIcon,
+
+      // Arrows & Directions
+      'refresh': ArrowPathIcon,
+      'reload': ArrowPathIcon,
+      'undo': ArrowUturnLeftIcon,
+      'redo': ArrowUturnRightIcon,
+
+      // Media Controls
+      'forward': ForwardIcon,
+      'next': ForwardIcon,
+      'backward': BackwardIcon,
+      'previous': BackwardIcon,
+      'mute': SpeakerXMarkIcon,
+
+      // Financial
+      'dollar': CurrencyDollarIcon,
+      'money': CurrencyDollarIcon,
+      'credit-card': CreditCardIcon,
+      'card': CreditCardIcon,
+      'cash': BanknotesIcon,
+
+      // Educational
+      'book': BookOpenIcon,
+      'read': BookOpenIcon,
+      'puzzle': PuzzlePieceIcon,
+      'experiment': BeakerIcon,
+      'lab': BeakerIcon,
+
+      // Weather & Nature
+      'sun': SunIcon,
+      'light-mode': SunIcon,
+      'moon': MoonIcon,
+      'dark-mode': MoonIcon,
+      'cloud': CloudIcon,
+
+      // Gaming & Entertainment (using robot as gamepad substitute)
+      'gamepad': ComputerDesktopIcon,
+      'gaming': ComputerDesktopIcon,
+      'robot': ComputerDesktopIcon,
     }
+
+    // MDI to Heroicon migration mapping
+    const MDI_TO_HEROICON = {
+      'mdi-close': 'close',
+      'mdi-check': 'check',
+      'mdi-alert-circle': 'alert',
+      'mdi-briefcase': 'briefcase',
+      'mdi-office-building': 'office',
+      'mdi-magnify': 'search',
+      'mdi-account': 'user',
+      'mdi-trophy': 'trophy',
+      'mdi-chevron-right': 'chevron-right',
+      'mdi-chevron-left': 'chevron-left',
+      'mdi-chevron-up': 'chevron-up',
+      'mdi-chevron-down': 'chevron-down',
+      'mdi-gamepad-variant': 'gaming',
+      'mdi-robot': 'robot',
+      'mdi-phone': 'phone',
+      'mdi-email': 'email',
+      'mdi-web': 'web',
+      'mdi-linkedin': 'link',
+      'mdi-github': 'link',
+      'mdi-camera-plus': 'camera',
+      'mdi-close-circle-outline': 'x-circle',
+      'mdi-home': 'home',
+      'mdi-cog': 'settings',
+      'mdi-lightbulb': 'lightbulb',
+      'mdi-star': 'star',
+      'mdi-heart': 'heart',
+      'mdi-fire': 'fire',
+      'mdi-flash': 'bolt',
+      'mdi-chart-line': 'chart-line',
+      'mdi-chart-bar': 'chart-bar',
+      'mdi-folder': 'folder',
+      'mdi-file-document-outline': 'document-text',
+      'mdi-clipboard-text-outline': 'clipboard',
+      'mdi-eye': 'eye',
+      'mdi-auto-fix': 'tools',
+      'mdi-link-variant': 'link',
+      'mdi-target': 'bullseye',
+      'mdi-school': 'graduation',
+      'mdi-laptop': 'laptop',
+      'mdi-cellphone': 'mobile',
+      'mdi-microphone': 'mic',
+      'mdi-volume-high': 'volume',
+      'mdi-video': 'video',
+      'mdi-television': 'video',
+      'mdi-hammer-wrench': 'tools',
+      'mdi-palette': 'palette',
+      'mdi-bullhorn': 'speaker',
+      'mdi-account-group': 'group',
+      'mdi-account-voice': 'mic',
+      'mdi-help-circle-outline': 'info',
+      'mdi-flask': 'experiment',
+      'mdi-camera': 'camera',
+      'mdi-cog-outline': 'settings',
+      'mdi-map-marker': 'location',
+      'mdi-plus': 'plus',
+      'mdi-minus': 'minus',
+      'mdi-play': 'play',
+      'mdi-pause': 'pause',
+      'mdi-stop': 'stop',
+    }
+
+    // Emoji/alias mapping to Heroicons (updated for modern icons)
+    const EMOJI_ALIASES = {
+      '📄': 'document',
+      '📞': 'phone',
+      '📍': 'location',
+      '🤖': 'robot',
+      '💼': 'briefcase',
+      '🎓': 'graduation',
+      '⚡': 'bolt',
+      '👁️': 'eye',
+      '🔍': 'search',
+      '✨': 'tools',
+      '🔗': 'link',
+      '🎯': 'target',
+      '💡': 'lightbulb',
+      '📈': 'chart-line',
+      '🔥': 'fire',
+      '✓': 'check',
+      '✅': 'check-circle',
+      '❌': 'x-circle',
+      '🧪': 'experiment',
+      '📋': 'clipboard',
+      '📸': 'camera',
+      '⚙️': 'settings',
+      '🎨': 'palette',
+      '❓': 'info',
+      '👥': 'group',
+      '🏠': 'home',
+      '💻': 'laptop',
+      '📹': 'video',
+      '📁': 'folder',
+      '📺': 'video',
+      '🎥': 'video',
+      '📊': 'chart-bar',
+      '⭐': 'star',
+      '🏆': 'trophy',
+      '🗣️': 'mic',
+      '🎮': 'gaming',
+      '🔊': 'volume',
+      '🎤': 'mic',
+      '🛠️': 'tools',
+      '📱': 'mobile',
+      '📣': 'speaker',
+    }
+
+    // Determine if the icon should use Heroicons or fallback to MDI
+    const isHeroicon = computed(() => {
+      const name = String(props.name || '').trim()
+
+      // Check if it's a direct Heroicon name
+      if (HEROICON_MAP[name]) return true
+
+      // Check if it's an MDI icon that maps to Heroicon
+      if (name.startsWith('mdi-') && MDI_TO_HEROICON[name]) return true
+
+      // Check if it's an emoji that maps to Heroicon
+      if (EMOJI_ALIASES[name]) return true
+
+      return false
+    })
+
+    const resolveIconName = (name) => {
+      if (!name) return null
+      const n = String(name).trim()
+
+      // Direct Heroicon name
+      if (HEROICON_MAP[n]) return n
+
+      // MDI to Heroicon mapping
+      if (n.startsWith('mdi-') && MDI_TO_HEROICON[n]) {
+        return MDI_TO_HEROICON[n]
+      }
+
+      // Emoji to Heroicon mapping
+      if (EMOJI_ALIASES[n]) return EMOJI_ALIASES[n]
+
+      return null
+    }
+
+    const heroiconComponent = computed(() => {
+      if (!isHeroicon.value) return null
+
+      const iconName = resolveIconName(props.name)
+      if (!iconName) return null
+
+      const component = HEROICON_MAP[iconName]
+      return component || null
+    })
+
+    const heroiconClasses = computed(() => {
+      const classes = []
+
+      // Apply context-based styling
+      if (props.context && props.context !== 'default') {
+        classes.push(`icon-context-${props.context}`)
+      }
+
+      if (props.variant) {
+        classes.push(`icon-${props.variant}`)
+      }
+
+      if (props.interactive) {
+        classes.push('icon-interactive')
+      }
+
+      return classes.join(' ')
+    })
 
     const resolveToMdi = (name) => {
       if (!name) return 'mdi-shape'
@@ -225,7 +681,10 @@ export default {
       computedSize,
       computedStyle,
       computedClasses,
-      rootClasses
+      rootClasses,
+      isHeroicon,
+      heroiconComponent,
+      heroiconClasses
     }
   }
 }

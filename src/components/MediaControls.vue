@@ -338,7 +338,8 @@ defineExpose({
 }
 
 .device-row {
-  @apply tool-grid;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-md);
 }

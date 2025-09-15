@@ -138,15 +138,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, useSlots, defineEmits, defineProps } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 // Provide a multi-word component name for lint/devtools
 // Requires Vue 3.3+ defineOptions macro
 // If not available, we can switch to <script> with export default { name: 'AppHeader' }
 defineOptions({ name: 'AppHeader' })
-import { ref, computed, useSlots, defineEmits, defineProps } from 'vue'
-import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/app'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'

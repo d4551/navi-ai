@@ -516,61 +516,41 @@ defineExpose({
   font-family: var(--font-primary);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
-  border: 1px solid var(--glass-border); /* Use design system variable */
+  border: 1px solid var(--glass-border);
   cursor: pointer;
   user-select: none;
-  transition: all var(--duration-normal) var(--easing-ease-out); /* Use design system variables */
+  transition: all 0.3s ease;
   outline: none;
   white-space: nowrap;
   vertical-align: middle;
   line-height: 1;
   min-height: 44px; /* WCAG 2.2 compliance */
   min-width: 44px; /* WCAG 2.2 compliance */
-  backdrop-filter: var(--glass-backdrop-filter); /* Use master theme variable */
-  -webkit-backdrop-filter: var(--glass-backdrop-filter); /* Use master theme variable */
-  background-color: var(--glass-bg); /* Use master theme glass background */
-  color: var(--text-primary); /* Use design system variable */
-  border-radius: var(--radius-md); /* Use design system variable */
-  box-shadow: var(--glass-shadow); /* Use master theme glass shadow */
-
-  /* Tailwind dark mode classes */
-  @apply bg-white/10 dark:bg-black/20;
-  @apply border-gray-200/30 dark:border-gray-700/50;
-  @apply text-gray-900 dark:text-gray-100;
-  @apply shadow-sm dark:shadow-black/20;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .btn-unified:hover:not(:disabled) {
-  box-shadow: var(--glass-shadow); /* Use master theme glass shadow */
-  background: var(--glass-hover-bg); /* Use master theme variable */
-  transform: translateY(-1px);
-
-  /* Tailwind dark mode hover classes */
-  @apply bg-white/20 dark:bg-black/30;
-  @apply border-gray-300/40 dark:border-gray-600/60;
-  @apply shadow-md dark:shadow-black/40;
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .btn-unified:active:not(:disabled) {
-  box-shadow: var(--glass-shadow); /* Use master theme glass shadow */
+  background: var(--glass-bg-active);
   transform: translateY(0);
-  background: var(--glass-hover-bg); /* Use master theme variable */
-
-  /* Tailwind dark mode active classes */
-  @apply bg-white/15 dark:bg-black/25;
-  @apply border-gray-400/50 dark:border-gray-500/70;
-  @apply shadow-sm dark:shadow-black/30;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-unified:focus-visible {
-  outline: 3px solid var(--color-primary-400); /* Use design system variable */
+  outline: 2px solid rgb(var(--neon-blue));
   outline-offset: 2px;
-  box-shadow: var(--shadow-md), 0 0 0 3px var(--color-primary-200); /* Enhanced focus shadow */
-
-  /* Tailwind dark mode focus classes */
-  @apply ring-2 ring-blue-500 dark:ring-blue-400;
-  @apply ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
-  @apply outline-blue-500 dark:outline-blue-400;
+  box-shadow: 0 0 20px rgba(var(--neon-blue), 0.3), 0 0 40px rgba(var(--neon-blue), 0.1);
 }
 
 /* Size Variants - Improved Touch Targets */
@@ -978,14 +958,9 @@ defineExpose({
 }
 
 .btn-unified:focus-visible {
-  outline: 3px solid var(--color-primary-400); /* Use design system variable */
+  outline: 2px solid rgb(var(--neon-blue));
   outline-offset: 2px;
-  box-shadow: var(--shadow-md), 0 0 0 3px var(--color-primary-200); /* Enhanced focus shadow */
-
-  /* Tailwind dark mode focus classes */
-  @apply ring-2 ring-blue-500 dark:ring-blue-400;
-  @apply ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
-  @apply outline-blue-500 dark:outline-blue-400;
+  box-shadow: 0 0 20px rgba(var(--neon-blue), 0.3), 0 0 40px rgba(var(--neon-blue), 0.1);
 }
 
 /* Badge */

@@ -576,7 +576,7 @@ export default {
       } catch {}
     }
 
-    function onInputEnter(_e) {
+    function onInputEnter(e) {
       // Shift+Enter inserts newline, Enter alone sends
       if (e.shiftKey) {
         return; // default prevented by handler signature
@@ -1082,7 +1082,7 @@ export default {
         if (currentTranscription.value) {
           userInput.value = currentTranscription.value;
         }
-      } catch (_error) {
+      } catch (error) {
         logger.error("Voice input error:", error);
         isListening.value = false;
         toast.error("Voice input failed. Please check microphone permissions.");
@@ -1157,7 +1157,7 @@ export default {
       }
     }
 
-    function onCameraModalKeydown(_e) {
+    function onCameraModalKeydown(e) {
       // Trap focus within the camera modal when open
       if (!cameraModalOpen.value) return;
       if (e.key !== 'Tab') return;
@@ -1190,7 +1190,7 @@ export default {
       const input = document.createElement("input");
       input.type = "file";
       input.accept = "image/*,.pdf,.doc,.docx";
-      input.onchange = async (_e) => {
+      input.onchange = async (e) => {
         const file = e?.target?.files?.[0];
         if (file) {
           chatMessages.value.push({
@@ -1301,7 +1301,7 @@ export default {
           timestamp: Date.now(),
           type: 'user'
         });
-      } catch (_error) {
+      } catch (error) {
         logger.error("Quick AI message error:", error);
         toast.error("Failed to send AI message");
       } finally {
@@ -1728,9 +1728,9 @@ export default {
               segments.push({ type: "strong", text: s.slice(2, -2) });
             } else {
               const emSplit = s.split(/(\*[^*]+\*)/g);
-              emSplit.forEach((_e) => {
+              emSplit.forEach((e) => {
                 if (!e) return;
-                if (/^\*[^*]+\*$/.test(_e)) {
+                if (/^\*[^*]+\*$/.test(e)) {
                   segments.push({ type: "em", text: e.slice(1, -1) });
                 } else {
                   segments.push({ type: "text", text: e });
@@ -1826,7 +1826,7 @@ export default {
       } catch {}
     }
 
-    async function handleKeyup(_e) {
+    async function handleKeyup(e) {
       try {
         if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar') {
           if (pttActive.value) {

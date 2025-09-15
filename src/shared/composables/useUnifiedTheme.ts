@@ -162,133 +162,133 @@ export interface ThemeDesignTokens {
   }
 }
 
-// Gaming-optimized color palettes
+// Pure white/black glassmorphic color palettes with RGB neon highlights
 const GAMING_COLORS: Record<ColorScheme, ThemeColors> = {
   light: {
     primary: {
-      50: '#eef2ff',
-      100: '#e0e7ff',
-      200: '#c7d2fe',
-      300: '#a5b4fc',
-      400: '#818cf8',
-      500: '#6366f1',
-      600: '#4f46e5',
-      700: '#4338ca',
-      800: '#3730a3',
-      900: '#312e81'
+      50: 'rgb(255, 255, 255)',
+      100: 'rgba(255, 255, 255, 0.95)',
+      200: 'rgba(255, 255, 255, 0.9)',
+      300: 'rgba(255, 255, 255, 0.8)',
+      400: 'rgba(255, 255, 255, 0.7)',
+      500: 'rgba(255, 255, 255, 0.6)',
+      600: 'rgba(255, 255, 255, 0.5)',
+      700: 'rgba(255, 255, 255, 0.4)',
+      800: 'rgba(255, 255, 255, 0.3)',
+      900: 'rgba(255, 255, 255, 0.2)'
     },
     secondary: {
-      50: '#f0f9ff',
-      100: '#e0f2fe',
-      200: '#bae6fd',
-      300: '#7dd3fc',
-      400: '#38bdf8',
-      500: '#0ea5e9',
-      600: '#0284c7',
-      700: '#0369a1',
-      800: '#075985',
-      900: '#0c4a6e'
+      50: 'rgba(0, 204, 255, 0.1)',
+      100: 'rgba(0, 204, 255, 0.15)',
+      200: 'rgba(0, 204, 255, 0.2)',
+      300: 'rgba(0, 204, 255, 0.3)',
+      400: 'rgba(0, 204, 255, 0.4)',
+      500: 'rgb(0, 204, 255)',
+      600: 'rgba(0, 204, 255, 0.8)',
+      700: 'rgba(0, 204, 255, 0.9)',
+      800: 'rgba(0, 204, 255, 0.95)',
+      900: 'rgb(0, 204, 255)'
     },
     success: {
-      50: '#f0fdf4',
-      500: '#22c55e',
-      600: '#16a34a',
-      700: '#15803d'
+      50: 'rgba(0, 255, 153, 0.1)',
+      500: 'rgb(0, 255, 153)',
+      600: 'rgba(0, 255, 153, 0.8)',
+      700: 'rgba(0, 255, 153, 0.9)'
     },
     warning: {
-      50: '#fffbeb',
-      500: '#f59e0b',
-      600: '#d97706',
-      700: '#b45309'
+      50: 'rgba(255, 165, 0, 0.1)',
+      500: 'rgb(255, 165, 0)',
+      600: 'rgba(255, 165, 0, 0.8)',
+      700: 'rgba(255, 165, 0, 0.9)'
     },
     error: {
-      50: '#fef2f2',
-      500: '#ef4444',
-      600: '#dc2626',
-      700: '#b91c1c'
+      50: 'rgba(255, 0, 102, 0.1)',
+      500: 'rgb(255, 0, 102)',
+      600: 'rgba(255, 0, 102, 0.8)',
+      700: 'rgba(255, 0, 102, 0.9)'
     },
     gray: {
-      50: '#f9fafb',
-      100: '#f3f4f6',
-      200: '#e5e7eb',
-      300: '#d1d5db',
-      400: '#9ca3af',
-      500: '#6b7280',
-      600: '#4b5563',
-      700: '#374151',
-      800: '#1f2937',
-      900: '#111827',
-      950: '#0a0a0b'
+      50: '#ffffff',
+      100: 'rgba(255, 255, 255, 0.95)',
+      200: 'rgba(255, 255, 255, 0.9)',
+      300: 'rgba(255, 255, 255, 0.8)',
+      400: 'rgba(255, 255, 255, 0.6)',
+      500: 'rgba(255, 255, 255, 0.5)',
+      600: 'rgba(255, 255, 255, 0.4)',
+      700: 'rgba(255, 255, 255, 0.3)',
+      800: 'rgba(255, 255, 255, 0.2)',
+      900: 'rgba(255, 255, 255, 0.1)',
+      950: 'rgba(255, 255, 255, 0.05)'
     },
     background: '#ffffff',
     surface: '#ffffff',
     'surface-variant': 'rgba(255, 255, 255, 0.85)',
-    'on-background': '#111827',
-    'on-surface': '#111827',
-    'on-surface-variant': '#4b5563'
+    'on-background': '#000000',
+    'on-surface': '#000000',
+    'on-surface-variant': 'rgba(0, 0, 0, 0.7)'
   },
   dark: {
     primary: {
-      50: '#1e1b4b',
-      100: '#312e81',
-      200: '#3730a3',
-      300: '#4338ca',
-      400: '#4f46e5',
-      500: '#6366f1',
-      600: '#818cf8',
-      700: '#a5b4fc',
-      800: '#c7d2fe',
-      900: '#e0e7ff'
+      50: 'rgba(0, 0, 0, 0.05)',
+      100: 'rgba(0, 0, 0, 0.1)',
+      200: 'rgba(0, 0, 0, 0.2)',
+      300: 'rgba(0, 0, 0, 0.3)',
+      400: 'rgba(0, 0, 0, 0.4)',
+      500: 'rgba(0, 0, 0, 0.5)',
+      600: 'rgba(0, 0, 0, 0.6)',
+      700: 'rgba(0, 0, 0, 0.7)',
+      800: 'rgba(0, 0, 0, 0.8)',
+      900: 'rgba(0, 0, 0, 0.9)'
     },
     secondary: {
-      50: '#0c1821',
-      100: '#0c4a6e',
-      200: '#075985',
-      300: '#0369a1',
-      400: '#0284c7',
-      500: '#0ea5e9',
-      600: '#38bdf8',
-      700: '#7dd3fc',
-      800: '#bae6fd',
-      900: '#e0f2fe'
+      50: 'rgba(0, 204, 255, 0.1)',
+      100: 'rgba(0, 204, 255, 0.15)',
+      200: 'rgba(0, 204, 255, 0.2)',
+      300: 'rgba(0, 204, 255, 0.3)',
+      400: 'rgba(0, 204, 255, 0.4)',
+      500: 'rgb(0, 204, 255)',
+      600: 'rgba(0, 204, 255, 0.8)',
+      700: 'rgba(0, 204, 255, 0.9)',
+      800: 'rgba(0, 204, 255, 0.95)',
+      900: 'rgb(0, 204, 255)'
     },
     success: {
-      50: '#14532d',
-      500: '#22c55e',
-      600: '#4ade80',
-      700: '#86efac'
+      50: 'rgba(0, 255, 153, 0.1)',
+      500: 'rgb(0, 255, 153)',
+      600: 'rgba(0, 255, 153, 0.8)',
+      700: 'rgba(0, 255, 153, 0.9)'
     },
     warning: {
-      50: '#451a03',
-      500: '#f59e0b',
-      600: '#fbbf24',
-      700: '#fcd34d'
+      50: 'rgba(255, 165, 0, 0.1)',
+      500: 'rgb(255, 165, 0)',
+      600: 'rgba(255, 165, 0, 0.8)',
+      700: 'rgba(255, 165, 0, 0.9)'
     },
     error: {
-      50: '#450a0a',
-      500: '#ef4444',
-      600: '#f87171',
-      700: '#fca5a5'
+      50: 'rgba(255, 0, 102, 0.1)',
+      500: 'rgb(255, 0, 102)',
+      600: 'rgba(255, 0, 102, 0.8)',
+      700: 'rgba(255, 0, 102, 0.9)'
     },
     gray: {
-      50: '#0a0a0b',
-      100: '#111827',
-      200: '#1f2937',
-      300: '#374151',
-      400: '#4b5563',
-      500: '#6b7280',
-      600: '#9ca3af',
-      700: '#d1d5db',
-      800: '#e5e7eb',
-      900: '#f3f4f6',
-      950: '#f9fafb'
+      50: 'rgba(0, 0, 0, 0.05)',
+      100: 'rgba(0, 0, 0, 0.1)',
+      200: 'rgba(0, 0, 0, 0.2)',
+      300: 'rgba(0, 0, 0, 0.3)',
+      400: 'rgba(0, 0, 0, 0.4)',
+      500: 'rgba(0, 0, 0, 0.5)',
+      600: 'rgba(0, 0, 0, 0.6)',
+      700: 'rgba(0, 0, 0, 0.7)',
+      800: 'rgba(0, 0, 0, 0.8)',
+      900: 'rgba(0, 0, 0, 0.9)',
+      950: '#000000'
     },
     background: '#000000',
     surface: '#000000',
     'surface-variant': 'rgba(0, 0, 0, 0.85)',
-    'on-background': '#f9fafb',
-    'on-surface': '#f9fafb',
-    'on-surface-variant': '#d1d5db'
+    'on-background': '#ffffff',
+    'on-surface': '#ffffff',
+    'on-surface-variant': 'rgba(255, 255, 255, 0.7)'
   }
 }
 
@@ -473,15 +473,35 @@ export function useUnifiedTheme() {
     })
 
     // Set glassmorphic theme variables
-    root.style.setProperty('--glass-bg', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.25)' : 'rgba(255, 255, 255, 0.25)')
-    root.style.setProperty('--glass-border', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)')
+    root.style.setProperty('--glass-bg', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.1)')
+    root.style.setProperty('--glass-bg-hover', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.15)')
+    root.style.setProperty('--glass-bg-active', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.2)')
+    root.style.setProperty('--glass-border', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.3)')
+    root.style.setProperty('--glass-border-hover', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.4)')
     root.style.setProperty('--glass-shadow', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.1)')
 
+    // RGB Neon color variables
+    root.style.setProperty('--neon-red', '255, 0, 102')
+    root.style.setProperty('--neon-blue', '0, 204, 255')
+    root.style.setProperty('--neon-green', '0, 255, 153')
+    root.style.setProperty('--neon-purple', '153, 0, 255')
+    root.style.setProperty('--neon-pink', '255, 51, 204')
+    root.style.setProperty('--neon-cyan', '51, 255, 255')
+    root.style.setProperty('--neon-orange', '255, 165, 0')
+    root.style.setProperty('--neon-yellow', '255, 255, 0')
+    root.style.setProperty('--neon-lime', '204, 255, 0')
+    root.style.setProperty('--neon-teal', '0, 255, 204')
+
     // Map semantic text colors for utility classes
-    root.style.setProperty('--text-primary', colors['on-background'] || (colorScheme.value === 'dark' ? '#f9fafb' : '#111827'))
-    root.style.setProperty('--text-secondary', colors['on-surface-variant'] || (colorScheme.value === 'dark' ? '#d1d5db' : '#4b5563'))
-    root.style.setProperty('--text-tertiary', colors.gray?.[colorScheme.value === 'dark' ? '400' : '500'] || (colorScheme.value === 'dark' ? '#9ca3af' : '#6b7280'))
-    root.style.setProperty('--text-muted', colors.gray?.[colorScheme.value === 'dark' ? '500' : '400'] || '#6b7280')
+    root.style.setProperty('--text-primary', colors['on-background'] || (colorScheme.value === 'dark' ? '#ffffff' : '#000000'))
+    root.style.setProperty('--text-secondary', colors['on-surface-variant'] || (colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.8)'))
+    root.style.setProperty('--text-tertiary', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)')
+    root.style.setProperty('--text-muted', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.4)')
+
+    // Background system
+    root.style.setProperty('--bg-primary', colorScheme.value === 'dark' ? '#000000' : '#ffffff')
+    root.style.setProperty('--bg-secondary', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)')
+    root.style.setProperty('--bg-tertiary', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)')
 
     // Set color scheme attributes for native styling
     root.setAttribute('data-theme', colorScheme.value)
@@ -497,7 +517,7 @@ export function useUnifiedTheme() {
   // Utility functions for component styling
   const getColor = (colorPath: string): string => {
     const keys = colorPath.split('.')
-    let value: any = theme.value.colors
+    let value: any = _theme.value.colors
 
     for (const key of keys) {
       value = value?.[key]

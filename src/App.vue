@@ -1,5 +1,5 @@
 <template>
-  <div id="app-root" class="d-flex flex-col min-h-screen unified-app bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100" :class="unifiedUI.unifiedClasses">
+  <div id="app-root" class="page-container text-system" :class="unifiedUI.unifiedClasses" data-theme-root>
     <!-- Accessibility: Skip to content link and screen reader announcer -->
     <a href="#main" class="skip-link">Skip to main content</a>
     <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
@@ -11,7 +11,7 @@
         <!-- Sidebar Navigation -->
         <aside
           id="app-sidebar"
-          class="app-sidebar bg-white/90 dark:bg-gray-800/90 border-r border-gray-200 dark:border-gray-700"
+          class="app-sidebar glass"
           :class="{
             'sidebar-visible': sidebarVisible,
             'sidebar-collapsed': sidebarCollapsed || autoCollapsed,
@@ -36,7 +36,7 @@
         <!-- Main Content Area -->
         <div class="d-flex flex-col flex-1 w-full">
           <!-- Header -->
-          <header class="app-header glass-strong bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700">
+          <header class="app-header glass-lg">
             <div class="header-inner">
               <!-- Left Section: Mobile toggle + AI Status -->
               <div class="header-left">
@@ -89,8 +89,8 @@
                       variant="ghost"
                       size="sm"
                       :aria-label="'Achievements'"
-                      @click="openGamificationModal"
                       class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
+                      @click="openGamificationModal"
                     >
                       <!-- Heroicon name: outline/trophy -->
                       <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -107,8 +107,8 @@
                       variant="outline"
                       size="sm"
                       :aria-label="'Settings'"
-                      @click="$router.push('/settings')"
                       class="inline-flex items-center px-3 py-2 border border-glass text-sm leading-4 font-medium rounded-md text-primary bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
+                      @click="$router.push('/settings')"
                     >
                       <!-- Heroicon name: outline/cog-6-tooth -->
                       <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

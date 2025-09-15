@@ -1,0 +1,296 @@
+/**
+ * Enhanced Typography System
+ * Modern, theme-aware text styling with improved readability
+ */
+
+/* Base typography settings */
+.text-system {
+  font-family: var(--font-family-ui);
+  line-height: var(--line-height-normal, 1.5);
+  letter-spacing: var(--letter-spacing-normal, 0);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading hierarchy with better spacing and contrast */
+.heading-display {
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-bold, 700);
+  line-height: var(--line-height-tight, 1.25);
+  letter-spacing: var(--letter-spacing-tight, -0.025em);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md, 1rem);
+}
+
+.heading-1 {
+  @apply heading-display;
+  font-size: var(--font-size-4xl, 2.5rem);
+  margin-bottom: var(--spacing-lg, 1.5rem);
+}
+
+.heading-2 {
+  @apply heading-display;
+  font-size: var(--font-size-3xl, 2rem);
+  margin-bottom: var(--spacing-md, 1rem);
+}
+
+.heading-3 {
+  @apply heading-display;
+  font-size: var(--font-size-2xl, 1.5rem);
+  margin-bottom: var(--spacing-sm, 0.5rem);
+}
+
+.heading-4 {
+  @apply heading-display;
+  font-size: var(--font-size-xl, 1.25rem);
+  margin-bottom: var(--spacing-sm, 0.5rem);
+}
+
+.heading-5 {
+  @apply heading-display;
+  font-size: var(--font-size-lg, 1.125rem);
+  margin-bottom: var(--spacing-xs, 0.25rem);
+}
+
+.heading-6 {
+  @apply heading-display;
+  font-size: var(--font-size-md, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  margin-bottom: var(--spacing-xs, 0.25rem);
+}
+
+/* Body text variants */
+.text-body-large {
+  font-size: var(--font-size-lg, 1.125rem);
+  line-height: var(--line-height-relaxed, 1.75);
+  color: var(--text-primary);
+}
+
+.text-body {
+  font-size: var(--font-size-md, 1rem);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-primary);
+}
+
+.text-body-small {
+  font-size: var(--font-size-sm, 0.875rem);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-secondary);
+}
+
+.text-caption {
+  font-size: var(--font-size-xs, 0.75rem);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+/* Semantic text colors */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-tertiary {
+  color: var(--text-tertiary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-inverse {
+  color: var(--text-inverse);
+}
+
+/* Status colors */
+.text-success {
+  color: var(--color-success-600);
+}
+
+.text-warning {
+  color: var(--color-warning-600);
+}
+
+.text-error {
+  color: var(--color-error-600);
+}
+
+.text-info {
+  color: var(--color-secondary-600);
+}
+
+/* Interactive text */
+.text-link {
+  color: var(--color-secondary-500);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.25em;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.text-link:hover {
+  color: var(--color-secondary-600);
+  text-decoration-color: currentColor;
+}
+
+.text-button {
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-secondary-500);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.text-button:hover {
+  color: var(--color-secondary-600);
+}
+
+/* Gaming-themed text effects */
+.text-gaming {
+  font-family: var(--font-family-gaming);
+  color: var(--color-secondary-500);
+  text-shadow: 0 0 10px rgba(var(--neon-blue), 0.3);
+}
+
+.text-neon {
+  color: rgb(var(--neon-blue));
+  text-shadow:
+    0 0 5px rgba(var(--neon-blue), 0.5),
+    0 0 10px rgba(var(--neon-blue), 0.3),
+    0 0 15px rgba(var(--neon-blue), 0.2);
+  animation: neon-pulse 2s ease-in-out infinite alternate;
+}
+
+.text-neon-green {
+  color: rgb(var(--neon-green));
+  text-shadow:
+    0 0 5px rgba(var(--neon-green), 0.5),
+    0 0 10px rgba(var(--neon-green), 0.3);
+}
+
+.text-neon-red {
+  color: rgb(var(--neon-red));
+  text-shadow:
+    0 0 5px rgba(var(--neon-red), 0.5),
+    0 0 10px rgba(var(--neon-red), 0.3);
+}
+
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    rgb(var(--neon-blue)),
+    rgb(var(--neon-purple))
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Enhanced readability for glass backgrounds */
+.text-glass-enhanced {
+  color: var(--text-primary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.text-glass-contrast {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: var(--text-primary);
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  .heading-1 { font-size: var(--font-size-3xl, 2rem); }
+  .heading-2 { font-size: var(--font-size-2xl, 1.5rem); }
+  .heading-3 { font-size: var(--font-size-xl, 1.25rem); }
+
+  .text-body-large { font-size: var(--font-size-md, 1rem); }
+}
+
+@media (max-width: 480px) {
+  .heading-1 { font-size: var(--font-size-2xl, 1.5rem); }
+  .heading-2 { font-size: var(--font-size-xl, 1.25rem); }
+  .heading-3 { font-size: var(--font-size-lg, 1.125rem); }
+}
+
+/* Dark mode enhancements */
+[data-theme="dark"] .text-glass-enhanced {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .text-glass-contrast {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Animation keyframes */
+@keyframes neon-pulse {
+  from {
+    text-shadow:
+      0 0 5px rgba(var(--neon-blue), 0.5),
+      0 0 10px rgba(var(--neon-blue), 0.3),
+      0 0 15px rgba(var(--neon-blue), 0.2);
+  }
+  to {
+    text-shadow:
+      0 0 10px rgba(var(--neon-blue), 0.8),
+      0 0 20px rgba(var(--neon-blue), 0.5),
+      0 0 30px rgba(var(--neon-blue), 0.3);
+  }
+}
+
+/* Utility classes for better text contrast */
+.text-high-contrast {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.text-medium-contrast {
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.text-low-contrast {
+  color: var(--text-tertiary);
+  font-weight: var(--font-weight-normal, 400);
+}
+
+/* Focus states for accessibility */
+.text-link:focus-visible,
+.text-button:focus-visible {
+  outline: 2px solid var(--color-secondary-500);
+  outline-offset: 2px;
+  border-radius: 0.125rem;
+}
+
+/* Code and monospace text */
+.text-code {
+  font-family: var(--font-family-mono);
+  font-size: 0.875em;
+  background: rgba(var(--text-muted), 0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  color: var(--text-primary);
+}
+
+.text-code-block {
+  font-family: var(--font-family-mono);
+  background: rgba(var(--text-muted), 0.05);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(var(--text-muted), 0.1);
+  color: var(--text-primary);
+  overflow-x: auto;
+}

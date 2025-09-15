@@ -63,6 +63,71 @@ export default defineConfig(({ command }) => ({
         })
       }
     },
+    // Dev API mock middleware (enabled when no API proxy target is configured)
+    {
+      name: 'dev-api-mock',
+      apply: 'serve',
+      configureServer(server) {
+        try {
+          const apiTarget = process.env.VITE_API_PROXY_TARGET || process.env.API_PROXY_TARGET
+          const enableMockEnv = String(process.env.VITE_ENABLE_API_MOCK || '').toLowerCase()
+          const enableMock = !apiTarget && (enableMockEnv === 'true' || enableMockEnv === '' )
+
+          if (!enableMock) return
+
+          server.middlewares.use((req, res, next) => {
+            const url = req.url || ''
+
+            // Only handle /api requests
+            if (!url.startsWith('/api')) return next()
+
+            const sendJSON = (obj, status = 200) => {
+              res.statusCode = status
+              res.setHeader('Content-Type', 'application/json; charset=utf-8')
+              res.end(JSON.stringify(obj))
+            }
+
+            // Simple routing
+            if (url === '/api/health' || url === '/api/v1/health') {
+              return sendJSON({ status: 'ok', env: 'mock', time: new Date().toISOString() })
+            }
+
+            if (url === '/api/system/status' || url === '/api/v1/system/status') {
+              return sendJSON({
+                uptime: process.uptime(),
+                version: 'dev-mock',
+                checks: { db: 'ok', cache: 'ok' },
+              })
+            }
+
+            if (url === '/api/models' || url === '/api/v1/models') {
+              return sendJSON({
+                models: [
+                  { id: 'gemini-2.0-flash-exp', provider: 'google', supports: ['text', 'vision', 'audio'] },
+                  { id: 'gpt-4o-mini', provider: 'openai', supports: ['text', 'vision'] },
+                  { id: 'claude-3-haiku', provider: 'anthropic', supports: ['text'] }
+                ]
+              })
+            }
+
+            // Tracking endpoints - no-op
+            if (url.startsWith('/api/track/')) {
+              res.statusCode = 204
+              return res.end()
+            }
+
+            // Known but unimplemented endpoints can return a helpful message
+            if (url.startsWith('/api/v1/')) {
+              return sendJSON({ ok: false, mock: true, hint: 'No backend configured. Set VITE_API_PROXY_TARGET to proxy /api to your server.' }, 501)
+            }
+
+            // Default: pass through
+            return next()
+          })
+          console.log('[vite] dev-api-mock enabled: serving mock responses for /api/*')
+        } catch {}
+      }
+    },
     {
       name: 'global-polyfill',
       config(config) {
@@ -228,7 +293,21 @@ export default defineConfig(({ command }) => ({
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path.replace(/^\/proxy\/remoteok/, '')
-      }
+      },
+      // Optional API proxy for local backend. Set VITE_API_PROXY_TARGET (or API_PROXY_TARGET)
+      // to something like "http://localhost:18422" to enable.
+      ...(process.env.VITE_API_PROXY_TARGET || process.env.API_PROXY_TARGET
+        ? {
+            '/api': {
+              target: process.env.VITE_API_PROXY_TARGET || process.env.API_PROXY_TARGET,
+              changeOrigin: true,
+              secure: false,
+              // Keep the /api prefix as-is; backend should serve under the same base path
+              // If your backend does not expect /api, uncomment the rewrite below.
+              // rewrite: (path) => path.replace(/^\/api/, '')
+            }
+          }
+        : {})
     },
     // Prevent webpack-related connection issues
     fs: {

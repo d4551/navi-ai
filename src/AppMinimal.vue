@@ -12,8 +12,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
-import { useRouter } from 'vue-router';
-
 // Minimal shell – no router, store, or plugins.
 </script>
 
