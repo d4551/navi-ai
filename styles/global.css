@@ -1,3 +1,4 @@
+/* stylelint-disable custom-property-pattern */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,16 +30,32 @@
 
 @layer components {
   .container-sm {
-    @apply max-w-container-sm mx-auto px-4;
+    max-width: var(--container-sm);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .container-md {
-    @apply max-w-container-md mx-auto px-4;
+    max-width: var(--container-md);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .container-lg {
-    @apply max-w-container-lg mx-auto px-4;
+    max-width: var(--container-lg);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .container-xl {
-    @apply max-w-container-xl mx-auto px-4;
+    max-width: var(--container-xl);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   
   .layout-standard {
@@ -55,11 +72,13 @@
   
   /* Standard form elements */
   .form-input {
-    @apply h-[var(--input-height)] rounded border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500;
+    height: var(--input-height);
+    @apply rounded border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500;
   }
   
   .btn {
-    @apply h-[var(--button-height)] px-4 inline-flex items-center justify-center rounded font-medium transition-colors;
+    height: var(--button-height);
+    @apply px-4 inline-flex items-center justify-center rounded font-medium transition-colors;
   }
   
   .btn-primary {

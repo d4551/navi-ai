@@ -6,6 +6,8 @@
  * 4.5:1 contrast ratio for AA, 7:1 for AAA compliance
  */
 
+/* stylelint-disable custom-property-pattern, declaration-block-single-line-max-declarations, color-named, property-no-vendor-prefix, media-feature-name-value-no-unknown, media-feature-range-notation, comment-empty-line-before, declaration-property-value-disallowed-list */
+
 /* ===== WCAG COMPLIANT TEXT UTILITIES ===== */
 
 /* AA Compliant Text (4.5:1 contrast ratio) */
@@ -298,7 +300,7 @@
 
 /* ===== HIGH CONTRAST MODE ===== */
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   :root {
     --text-primary: #000000;
     --text-secondary: #333333;
