@@ -132,7 +132,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import { ref, onMounted, readonly, computed, onBeforeUnmount, defineEmits, defineProps, defineExpose, watch } from 'vue'
 import { useAppStore } from '@/stores/app';
 import { audioService } from '@/shared/services/AudioService';
-import { getBestAIClient, initializeAI } from '@/modules/ai';
+import { getBestAIClient, initializeAI as initializeAIClient } from '@/modules/ai';
 import { logger } from '@/shared/utils/logger';
 import { canonicalAIClient } from '@/shared/services/CanonicalAIClient';
 import { speak as speakViaService } from '@/utils/voice';
@@ -507,7 +507,7 @@ async function processTranscript(text) {
     // Initialize AI if needed
     const apiKey = store.settings?.geminiApiKey;
     if (apiKey && (!aiClient.isReady || !aiClient.isReady.value)) {
-      await initializeAI(apiKey);
+      await initializeAIClient(apiKey);
     }
 
     // Use modern streaming if available
