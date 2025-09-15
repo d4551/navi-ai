@@ -7,6 +7,11 @@
 
 
 <p align="center">
+  <video src="navi_s.mp4" controls width="720" poster="docs/screenshots/enhanced-gaming-dashboard.png"></video>
+</p>
+
+
+<p align="center">
   <h1 align="center">HEY! LISTEN!</h1>
 </p>
 
