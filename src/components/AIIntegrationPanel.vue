@@ -20,7 +20,7 @@
         <UnifiedButton
           variant="ghost"
           size="sm"
-          icon="mdi-refresh"
+          icon="ArrowPathIcon"
           :loading="aiStatus.isConnecting"
           @click="aiStatus.checkHealth"
         >
@@ -31,7 +31,7 @@
           v-if="!aiIntegration.isAIInitialized"
           variant="primary"
           size="sm"
-          icon="mdi-power"
+          icon="PowerIcon"
           :loading="aiIntegration.aiInitializing"
           @click="initializeAI"
         >
@@ -53,7 +53,7 @@
           <AppIcon :name="getCapabilityIcon(capability)" />
           <span class="capability-name">{{ formatCapabilityName(capability) }}</span>
           <span class="capability-status">
-            <AppIcon :name="enabled ? 'mdi-check-circle' : 'mdi-close-circle'" size="sm" />
+            <AppIcon :name="enabled ? 'CheckIcon-circle' : 'XMarkIcon-circle'" size="sm" />
           </span>
         </div>
       </div>
@@ -100,7 +100,7 @@
               v-if="feature.enabled"
               variant="ghost"
               size="xs"
-              icon="mdi-test-tube"
+              icon="BeakerIcon"
               @click="testFeature(featureName)"
             >
               Test
@@ -139,7 +139,7 @@
           <UnifiedButton
             variant="ghost"
             size="xs"
-            icon="mdi-cog"
+            icon="CogIcon"
             @click="openSettings"
           >
             Configure
@@ -181,7 +181,7 @@
     <!-- Error Display -->
     <div v-if="aiStatus.lastError" class="error-display">
       <h4 class="error-title">
-        <AppIcon name="mdi-alert-circle" />
+        <AppIcon name="ExclamationCircleIcon" />
         Current Error
       </h4>
       <div class="error-content">
@@ -189,7 +189,7 @@
         <UnifiedButton
           variant="outline"
           size="sm"
-          icon="mdi-help-circle"
+          icon="QuestionMarkCircleIcon"
           @click="showTroubleshooting = !showTroubleshooting"
         >
           {{ showTroubleshooting ? 'Hide' : 'Show' }} Help
@@ -209,6 +209,8 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon, BeakerIcon, CogIcon, ExclamationCircleIcon, QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -350,12 +352,12 @@ function openSettings() {
 function getCapabilityIcon(capability) {
   const icons = {
     textGeneration: 'mdi-text',
-    imageAnalysis: 'mdi-image-search',
-    voiceInput: 'mdi-microphone',
+    imageAnalysis: 'PhotoIcon-search',
+    voiceInput: 'MicrophoneIcon',
     realtimeChat: 'mdi-chat',
-    documentAnalysis: 'mdi-file-document-outline'
+    documentAnalysis: 'DocumentIcon-document-outline'
   }
-  return icons[capability] || 'mdi-help-circle'
+  return icons[capability] || 'QuestionMarkCircleIcon-circle'
 }
 
 function formatCapabilityName(capability) {
@@ -364,13 +366,13 @@ function formatCapabilityName(capability) {
 
 function getFeatureIcon(featureName) {
   const icons = {
-    resumeBuilder: 'mdi-file-document-edit',
+    resumeBuilder: 'DocumentIcon-document-edit',
     coverLetterBuilder: 'mdi-email-edit',
-    portfolio: 'mdi-folder-multiple',
-    portfolioGenerator: 'mdi-folder-multiple',
+    portfolio: 'FolderIcon-multiple',
+    portfolioGenerator: 'FolderIcon-multiple',
     skillsMapper: 'mdi-map-marker',
     jobSearch: 'mdi-briefcase-search',
-    interviewPrep: 'mdi-account-voice',
+    interviewPrep: 'UserIcon-voice',
     realtimeChat: 'mdi-chat'
   }
   return icons[featureName] || 'mdi-cog'
@@ -520,7 +522,7 @@ onMounted(() => {
 .status-dot.status-secondary {
   background: var(--surface-muted);
   border: 1px solid var(--border-muted);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .status-info {
@@ -530,7 +532,7 @@ onMounted(() => {
 .status-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
@@ -556,7 +558,7 @@ onMounted(() => {
 .capabilities-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-3) 0;
 }
 
@@ -585,7 +587,7 @@ onMounted(() => {
 .capability-name {
   flex: 1;
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Features */
@@ -599,7 +601,7 @@ onMounted(() => {
 .features-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-3) 0;
 }
 
@@ -632,7 +634,7 @@ onMounted(() => {
 
 .feature-name {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .feature-status {
@@ -648,7 +650,7 @@ onMounted(() => {
 
 .status-badge.status-disabled {
   background: var(--surface-muted);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .status-badge.status-available {
@@ -677,7 +679,7 @@ onMounted(() => {
 .actions-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-3) 0;
 }
 
@@ -698,7 +700,7 @@ onMounted(() => {
 .config-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-3) 0;
 }
 
@@ -707,11 +709,11 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-2) 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
 }
 
 .config-item:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .config-label {
@@ -723,7 +725,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .health-score {
@@ -814,7 +816,7 @@ onMounted(() => {
 .troubleshooting h5 {
   margin: 0 0 var(--spacing-2) 0;
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .troubleshooting-list {

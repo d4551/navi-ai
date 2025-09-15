@@ -1,0 +1,531 @@
+/**
+ * ================================================
+ * ACCESSIBILITY SYSTEM - NAVI AI GAMING PLATFORM
+ * ================================================
+ * Comprehensive WCAG 2.1 AA/AAA compliance system
+ * Focus management, color contrast, and assistive technology support
+ */
+
+/* ===== SKIP NAVIGATION ===== */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+  z-index: var(--z-modal);
+  transition: top var(--transition-fast);
+  border: 2px solid var(--color-primary-500);
+  box-shadow: var(--shadow-lg);
+}
+
+.skip-link:focus {
+  top: 6px;
+  outline: none;
+}
+
+/* Multiple skip links container */
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--z-modal);
+}
+
+.skip-links .skip-link {
+  display: block;
+  margin-bottom: var(--space-1);
+}
+
+/* ===== FOCUS MANAGEMENT ===== */
+
+/* Enhanced focus visible states */
+*:focus-visible {
+  outline: 2px solid rgb(var(--neon-blue));
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Interactive elements focus styles */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[role="menuitem"]:focus-visible,
+[role="tab"]:focus-visible {
+  outline: 2px solid rgb(var(--neon-blue));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(var(--neon-blue), 0.2);
+}
+
+/* Card and container focus styles */
+.glass-card:focus-visible,
+.glass-interactive:focus-visible {
+  outline: 2px solid rgb(var(--neon-blue));
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 4px rgba(var(--neon-blue), 0.2),
+    var(--glass-shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Link focus styles */
+a:focus-visible {
+  outline: 2px solid rgb(var(--neon-blue));
+  outline-offset: 2px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* Focus within patterns for composite components */
+.focus-within-highlight:focus-within {
+  outline: 2px solid rgba(var(--neon-blue), 0.5);
+  outline-offset: 2px;
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --glass-border: #666666;
+    --glass-bg: rgba(255, 255, 255, 0.95);
+  }
+
+  [data-theme="dark"] {
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --glass-border: #999999;
+    --glass-bg: rgba(0, 0, 0, 0.95);
+  }
+
+  /* Enhanced borders */
+  .glass-card,
+  .glass-interactive,
+  button,
+  input,
+  select,
+  textarea {
+    border-width: 2px;
+  }
+
+  /* Remove transparency */
+  .glass-bg,
+  .glass-card,
+  .glass-interactive {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Stronger focus indicators */
+  *:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Remove glass blur effects which can cause motion sickness */
+  .glass-bg,
+  .glass-card,
+  .glass-interactive,
+  .modal-backdrop {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Remove transforms */
+  .glass-card:hover,
+  .glass-interactive:hover,
+  button:hover {
+    transform: none !important;
+  }
+}
+
+/* ===== COLOR CONTRAST UTILITIES ===== */
+
+/* WCAG AA compliant text on glass backgrounds */
+.text-accessible {
+  color: var(--text-primary);
+  background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border-safe);
+  font-weight: var(--font-weight-medium);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.text-high-contrast {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Safe glass text variants with guaranteed contrast */
+.glass-text-safe {
+  color: var(--text-primary);
+  background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border-safe);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ===== TOUCH TARGET SIZES ===== */
+
+/* Minimum 44px touch targets (WCAG 2.2) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Interactive elements spacing */
+.interactive-spacing > * + * {
+  margin-left: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+/* Ensure adequate spacing between interactive elements */
+.action-buttons {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.action-buttons > * {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* ===== SCREEN READER SUPPORT ===== */
+
+/* Visually hidden but accessible to screen readers */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Show on focus for debugging */
+.visually-hidden:focus {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: var(--space-2) !important;
+  margin: var(--space-1) !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border: 2px solid var(--color-primary-500) !important;
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: var(--space-2);
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ===== LANDMARK REGIONS ===== */
+
+/* Clear landmark styling */
+main,
+nav,
+aside,
+header,
+footer,
+section[aria-labelledby],
+[role="main"],
+[role="navigation"],
+[role="complementary"],
+[role="banner"],
+[role="contentinfo"] {
+  position: relative;
+}
+
+/* Optional landmark debugging (uncomment for development) */
+/*
+main::before,
+nav::before,
+aside::before,
+header::before,
+footer::before {
+  content: attr(aria-label) " landmark";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--color-primary-500);
+  color: white;
+  padding: 2px 4px;
+  font-size: 10px;
+  font-weight: bold;
+  z-index: 9999;
+  pointer-events: none;
+}
+*/
+
+/* ===== ARIA LIVE REGIONS ===== */
+
+.live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.live-region-polite {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.live-region-assertive {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ===== KEYBOARD NAVIGATION ===== */
+
+/* Focus trap container */
+.focus-trap {
+  position: relative;
+}
+
+.focus-trap::before,
+.focus-trap::after {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Tab order indicators for development */
+.tab-debug [tabindex]:not([tabindex="-1"])::after {
+  content: attr(tabindex);
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* ===== RESPONSIVE ACCESSIBILITY ===== */
+
+/* Larger touch targets on mobile */
+@media (max-width: 768px) {
+  .touch-target,
+  button,
+  input,
+  select,
+  [role="button"],
+  [role="link"] {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Increased spacing on mobile */
+  .interactive-spacing > * + * {
+    margin-left: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .action-buttons {
+    gap: var(--space-4);
+  }
+}
+
+/* ===== ERROR AND STATUS INDICATORS ===== */
+
+/* Error states */
+.error {
+  border-color: var(--color-error-500) !important;
+  box-shadow: 0 0 0 2px rgba(var(--color-error-500-rgb, 239, 68, 68), 0.2) !important;
+}
+
+.error:focus-visible {
+  outline-color: var(--color-error-500);
+  box-shadow: 0 0 0 4px rgba(var(--color-error-500-rgb, 239, 68, 68), 0.3);
+}
+
+/* Success states */
+.success {
+  border-color: var(--color-success-500) !important;
+  box-shadow: 0 0 0 2px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.2) !important;
+}
+
+/* Warning states */
+.warning {
+  border-color: var(--color-warning-500) !important;
+  box-shadow: 0 0 0 2px rgba(var(--color-warning-500-rgb, 245, 158, 11), 0.2) !important;
+}
+
+/* ===== SEMANTIC HEADINGS ===== */
+
+/* Ensure proper heading hierarchy */
+h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+h5 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+h6 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+/* ===== LOADING STATES ACCESSIBILITY ===== */
+
+.loading-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.loading-indicator::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--glass-border);
+  border-top: 2px solid var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Loading skeletons accessibility */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--glass-bg) 25%,
+    var(--glass-bg-hover) 50%,
+    var(--glass-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 2s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-indicator::before,
+  .skeleton {
+    animation: none;
+  }
+}

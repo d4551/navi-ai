@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="system-configuration" role="region" aria-labelledby="system-config-title">
+  <div class="system-configuration" role="region" aria-labelledby="system-config-title" class="font-sans">
     <!-- Header Section -->
     <div class="system-header glass-card section-card mb-6">
       <div class="system-header-content">
@@ -89,7 +89,7 @@
               </div>
             </div>
 
-            <div class="field-row">
+            <div class="field-flex flex-wrap">
               <div class="field-group">
                 <label for="azure-deployment" class="field-label">Deployment</label>
                 <input
@@ -255,7 +255,7 @@
         </div>
 
         <div class="section-content">
-          <div class="field-row">
+          <div class="field-flex flex-wrap">
             <div class="field-group">
               <label for="cache-size" class="field-label">Max Cache Size</label>
               <div class="field-input-with-unit">
@@ -300,7 +300,7 @@
             <UnifiedButton
               variant="outline-warning"
               size="sm"
-              leading-icon="mdi-delete-sweep"
+              leading-icon="TrashIcon-sweep"
               @click="$emit('clear-cache')"
             >
               Clear Cache
@@ -308,7 +308,7 @@
             <UnifiedButton
               variant="outline-danger"
               size="sm"
-              leading-icon="mdi-delete-outline"
+              leading-icon="TrashIcon-outline"
               @click="$emit('clear-logs')"
             >
               Clear Logs
@@ -373,7 +373,7 @@
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-export"
+              leading-icon="ArrowUpTrayIcon"
               @click="$emit('export-settings')"
             >
               Export Settings
@@ -381,7 +381,7 @@
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-import"
+              leading-icon="ArrowDownTrayIcon"
               @click="$emit('import-settings')"
             >
               Import Settings
@@ -394,6 +394,8 @@
 </template>
 
 <script>
+import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/vue/24/outline'
+
 import { computed } from 'vue';
 
 import {
@@ -513,7 +515,7 @@ export default {
   gap: var(--spacing-3);
   font-size: 1.75rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-2) 0;
 }
 
@@ -605,7 +607,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-5);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: linear-gradient(135deg, var(--glass-surface-elevated) 0%, var(--glass-surface) 100%);
 }
 
@@ -618,7 +620,7 @@ export default {
 .section-title h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -647,7 +649,7 @@ export default {
 
 .cache-size {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .cache-label {
@@ -684,14 +686,14 @@ export default {
   gap: var(--spacing-4);
 }
 
-.field-row {
+.field-flex flex-wrap {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-4);
 }
 
 @media (min-width: 640px) {
-  .field-row {
+  .field-flex flex-wrap {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -704,7 +706,7 @@ export default {
 
 .field-label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   margin: 0;
 }
@@ -714,7 +716,7 @@ export default {
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   transition: all var(--duration-fast) var(--easing-ease-out);
 }
@@ -766,7 +768,7 @@ export default {
 
 .field-action-btn:hover {
   background: var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .field-input-with-unit {
@@ -804,7 +806,7 @@ export default {
   color: var(--text-secondary);
   font-size: 0.875rem;
   font-weight: 500;
-  border-left: 1px solid var(--glass-border);
+  border-l: 1px solid var(--glass-border);
 }
 
 .field-help {
@@ -840,7 +842,7 @@ export default {
 
 .toggle-label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   margin: 0;
 }
@@ -953,7 +955,7 @@ export default {
     grid-template-columns: 1fr;
   }
   
-  .field-row {
+  .field-flex flex-wrap {
     grid-template-columns: 1fr;
   }
 }
@@ -998,7 +1000,7 @@ export default {
   padding: var(--spacing-2);
   background: color-mix(in srgb, var(--color-info-100) 50%, transparent);
   border-radius: var(--radius-sm);
-  border-left: 3px solid var(--color-info-400);
+  border-l: 3px solid var(--color-info-400);
 }
 
 .fairy-toggle .toggle-hint em {

@@ -9,10 +9,10 @@
     :header-context="{ sessions: completedInterviews, score: averageScore + '%', hours: practiceHours + 'h' }"
   >
     <template #header-actions>
-      <UnifiedButton variant="primary" leading-icon="mdi-play-circle" @click="startQuickInterview">
+      <UnifiedButton variant="primary" leading-icon="PlayIcon-circle" @click="startQuickInterview">
         Start Interview
       </UnifiedButton>
-      <UnifiedButton variant="glass" leading-icon="mdi-brain" @click="generateQuestions">
+      <UnifiedButton variant="glass" leading-icon="CpuChipIcon" @click="generateQuestions">
         Generate Questions
       </UnifiedButton>
     </template>
@@ -24,10 +24,10 @@
 
     <div class="prep-layout">
       <!-- Interview Prep Overview - Now First Step -->
-      <UnifiedCard v-show="activeStep === 'overview'" variant="glass" class="glass p-4 gap-4 rounded-lg">
+      <UnifiedCard v-show="activeStep === 'overview'" variant="glass" class="glass p-glass-md gap-glass-md rounded-lg">
         <div class="section-header">
           <h3 class="panel-title">
-            <AppIcon name="mdi-microphone-variant" /> 
+            <AppIcon name="MicrophoneIcon-variant" /> 
             Interview Preparation Hub
           </h3>
           <p class="section-description">
@@ -40,7 +40,7 @@
           <UnifiedCard variant="glass" class="overview-actions-card enhanced-actions">
             <div class="card-header">
               <div class="card-icon">
-                <AppIcon name="mdi-rocket-launch" />
+                <AppIcon name="RocketLaunchIcon-launch" />
               </div>
               <h4 class="card-title">Quick Start</h4>
             </div>
@@ -49,7 +49,7 @@
               <UnifiedButton
                 color="gaming"
                 size="lg"
-                leading-icon="mdi-play-circle"
+                leading-icon="PlayIcon-circle"
                 @click="startQuickInterview"
                 class="primary-action enhanced-btn"
               >
@@ -59,7 +59,7 @@
                 <UnifiedButton
                   color="glass"
                   appearance="outlined"
-                  leading-icon="mdi-brain"
+                  leading-icon="CpuChipIcon"
                   @click="generateQuestions"
                   class="enhanced-btn"
                 >
@@ -68,7 +68,7 @@
                 <UnifiedButton
                   color="glass"
                   appearance="outlined"
-                  leading-icon="mdi-account-tie"
+                  leading-icon="UserIcon-tie"
                   @click="activeStep = 'persona'"
                   class="enhanced-btn"
                 >
@@ -82,7 +82,7 @@
           <UnifiedCard variant="glass" class="prep-stats-card enhanced-stats">
             <div class="card-header">
               <div class="card-icon stats-icon">
-                <AppIcon name="mdi-chart-line" />
+                <AppIcon name="ChartBarIcon" />
               </div>
               <h4 class="card-title">Your Progress</h4>
             </div>
@@ -113,7 +113,7 @@
           <!-- Recent Context -->
           <UnifiedCard v-if="jobContext" variant="glass" class="context-card">
             <h4 class="card-title">
-              <AppIcon name="mdi-briefcase-search" />
+              <AppIcon name="MagnifyingGlassIcon" />
               Job Context Detected
             </h4>
             <div class="context-details">
@@ -129,7 +129,7 @@
               <UnifiedButton
                 color="gaming"
                 size="sm"
-                leading-icon="mdi-target"
+                leading-icon="EyeIcon"
                 @click="useJobContext"
               >
                 Prep for This Role
@@ -140,7 +140,7 @@
         
         <!-- Navigation Tip -->
         <div class="prep-flow-tip">
-          <AppIcon name="mdi-lightbulb" />
+          <AppIcon name="LightBulbIcon" />
           <span>
             <strong>Pro Tip:</strong> Use "Target Studio" to select your company, "Interview Persona" to customize the interviewer style, 
             and "Session Setup" to fine-tune difficulty and question types.
@@ -149,9 +149,9 @@
       </UnifiedCard>
 
       <!-- Studio selection -->
-      <UnifiedCard v-show="activeStep === 'studio'" variant="glass" class="glass p-4 gap-4 rounded-lg">
+      <UnifiedCard v-show="activeStep === 'studio'" variant="glass" class="glass p-glass-md gap-glass-md rounded-lg">
         <div class="section-header">
-          <h3 class="panel-title"><AppIcon name="mdi-office-building" /> Target Studio</h3>
+          <h3 class="panel-title"><AppIcon name="BuildingOffice2Icon" /> Target Studio</h3>
         </div>
         <div class="studio-search section-body">
           <MuiTextField
@@ -167,7 +167,7 @@
 
         <!-- Studio Filters -->
         <div v-if="!studioQuery.trim()" class="studio-filters section-body">
-          <div class="filter-row">
+          <div class="filter-flex flex-wrap">
             <select v-model="studioTypeFilter" class="form-select glass-input small-select" title="Studio type">
               <option value="">All Types</option>
               <option value="AAA">AAA Studios</option>
@@ -187,7 +187,7 @@
               color="glass" 
               appearance="outlined" 
               size="sm" 
-              leading-icon="mdi-sync" 
+              leading-icon="ArrowPathIcon" 
               @click="clearStudioFilters"
             >
               Clear
@@ -220,7 +220,7 @@
             <div 
               v-for="s in studioSuggestions" 
               :key="s.id" 
-              class="studio-suggestion-card glass p-4 gap-4 rounded-lg interactive-hover glass-list-item neon-interactive"
+              class="studio-suggestion-card glass p-glass-md gap-glass-md rounded-lg interactive-hover glass-list-item neon-interactive"
               :class="{ selected: selectedStudio?.id === s.id }"
               @click="selectStudio(s)"
             >
@@ -251,7 +251,7 @@
             <div 
               v-for="s in filteredAllStudios.slice(0, showAllStudios ? filteredAllStudios.length : 20)" 
               :key="s.id" 
-              class="studio-suggestion-card glass p-4 gap-4 rounded-lg interactive-hover glass-list-item neon-interactive"
+              class="studio-suggestion-card glass p-glass-md gap-glass-md rounded-lg interactive-hover glass-list-item neon-interactive"
               :class="{ selected: selectedStudio?.id === s.id }"
               @click="selectStudio(s)"
             >
@@ -300,7 +300,7 @@
       </UnifiedCard>
 
   <!-- Persona + config -->
-  <UnifiedCard v-show="activeStep !== 'studio'" variant="glass" class="glass p-4 gap-4 rounded-lg">
+  <UnifiedCard v-show="activeStep !== 'studio'" variant="glass" class="glass p-glass-md gap-glass-md rounded-lg">
         <!-- Overview (sticky) -->
         <div class="side-overview sticky">
           <div class="sr-only" role="status" aria-live="polite">
@@ -320,23 +320,23 @@
           </div>
 
           <div class="overview-grid">
-            <div class="ov-row">
+            <div class="ov-flex flex-wrap">
               <span class="ov-label">Studio</span>
               <span class="ov-value">{{ selectedStudio?.name || 'Any / Practice' }}</span>
             </div>
-            <div class="ov-row">
+            <div class="ov-flex flex-wrap">
               <span class="ov-label">Persona</span>
               <span class="ov-value">{{ selectedPersona?.name || 'Select a persona' }}</span>
             </div>
-            <div class="ov-row">
+            <div class="ov-flex flex-wrap">
               <span class="ov-label">Role</span>
               <span class="ov-value">{{ roleType || 'Choose role' }} ({{ experienceLevel }})</span>
             </div>
-            <div class="ov-row">
+            <div class="ov-flex flex-wrap">
               <span class="ov-label">Questions</span>
               <span class="ov-value">{{ questionCount }} • {{ duration }} min</span>
             </div>
-            <div class="ov-row">
+            <div class="ov-flex flex-wrap">
               <span class="ov-label">Focus</span>
               <span class="ov-value">
                 <span v-if="includeBehavioral">Behavioral</span>
@@ -347,27 +347,27 @@
           </div>
 
           <div class="overview-actions">
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-arrow-left" size="sm" :disabled="activeStep === 'overview'" @click="goBack">Back (←/B)</UnifiedButton>
+            <UnifiedButton color="glass" appearance="outlined" leading-icon="ArrowLeftIcon" size="sm" :disabled="activeStep === 'overview'" @click="goBack">Back (←/B)</UnifiedButton>
             <div class="spacer"></div>
             <template v-if="activeStep !== 'settings'">
-            <UnifiedButton color="gaming" trailing-icon="mdi-arrow-right" size="sm" @click="goNext">Next (→/N)</UnifiedButton>
+            <UnifiedButton color="gaming" trailing-icon="ArrowRightIcon" size="sm" @click="goNext">Next (→/N)</UnifiedButton>
             </template>
             <template v-else>
-            <UnifiedButton color="gaming" leading-icon="mdi-microphone" size="sm" :disabled="!selectedPersona || !roleType" :loading="starting" @click="beginInterview">Start (Enter)</UnifiedButton>
+            <UnifiedButton color="gaming" leading-icon="MicrophoneIcon" size="sm" :disabled="!selectedPersona || !roleType" :loading="starting" @click="beginInterview">Start (Enter)</UnifiedButton>
             </template>
           </div>
         </div>
-        <div class="panel-header d-flex align-center justify-between">
+        <div class="panel-header flex items-center justify-between">
           <h3 class="panel-title"><AppIcon name="mdi-tie" /> Interview Persona</h3>
-          <div class="d-flex gap-2">
+          <div class="flex gap-glass-sm">
             <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-dice-6" @click="randomizePersona">Surprise Me</UnifiedButton>
-            <UnifiedButton ref="aiPersonaBtn" color="gaming" :loading="aiPersonaLoading" leading-icon="mdi-robot" @click="aiRecommendPersona">AI Persona</UnifiedButton>
+            <UnifiedButton ref="aiPersonaBtn" color="gaming" :loading="aiPersonaLoading" leading-icon="CpuChipIcon" @click="aiRecommendPersona">AI Persona</UnifiedButton>
             <UnifiedButton 
               v-if="lastUsedConfig"
               color="glass" 
               appearance="outlined" 
               size="sm" 
-              leading-icon="🔄"
+              leading-icon="ArrowPathIcon"
               @click="restoreLastUsed"
             >
               Restore Last Used
@@ -396,12 +396,12 @@
           <div 
             v-for="p in personas" 
             :key="p.id" 
-            class="persona-card glass p-4 gap-4 rounded-lg interactive-hover neon-interactive"
+            class="persona-card glass p-glass-md gap-glass-md rounded-lg interactive-hover neon-interactive"
             :class="{ selected: selectedPersona?.id === p.id }"
             @click="selectPersona(p)"
           >
             <div class="persona-header">
-              <AppIcon :name="p.icon || '👤'" class="persona-icon" />
+              <AppIcon :name="p.icon || 'UserIcon'" class="persona-icon" />
               <div class="persona-name">{{ p.name }}</div>
             </div>
             <div v-if="recommendedPersonaId === p.id" class="persona-badge">AI Recommended</div>
@@ -471,23 +471,23 @@
   </UnifiedCard>
 
   <!-- Recommendations & Recents -->
-  <UnifiedCard v-show="activeStep !== 'studio'" variant="glass" class="glass p-4 gap-4 rounded-lg">
-        <div class="panel-header d-flex align-center justify-between">
-          <h3 class="panel-title"><AppIcon name="mdi-star" /> Recommended Studios</h3>
-          <div class="d-flex gap-2 align-center">
+  <UnifiedCard v-show="activeStep !== 'studio'" variant="glass" class="glass p-glass-md gap-glass-md rounded-lg">
+        <div class="panel-header flex items-center justify-between">
+          <h3 class="panel-title"><AppIcon name="StarIcon" /> Recommended Studios</h3>
+          <div class="flex gap-glass-sm items-center">
             <select v-model="recBias" class="form-select glass-input small-select" title="Bias">
               <option value="neutral">Neutral</option>
               <option value="AAA">AAA</option>
               <option value="Indie">Indie</option>
             </select>
-            <UnifiedButton color="gaming" :loading="aiRecLoading" leading-icon="mdi-robot" @click="aiRecommendStudios">AI Recommend</UnifiedButton>
+            <UnifiedButton color="gaming" :loading="aiRecLoading" leading-icon="CpuChipIcon" @click="aiRecommendStudios">AI Recommend</UnifiedButton>
           </div>
         </div>
         <div class="recommendations">
           <div 
             v-for="rec in recommendedStudios" 
             :key="rec.id"
-            class="studio-suggestion-card glass p-4 gap-4 rounded-lg interactive-hover neon-interactive"
+            class="studio-suggestion-card glass p-glass-md gap-glass-md rounded-lg interactive-hover neon-interactive"
             @click="selectStudio(rec)"
           >
             <div class="s-logo">
@@ -507,7 +507,7 @@
           </div>
         </div>
 
-        <h3 class="panel-title mt-lg"><AppIcon name="mdi-clock-time-nine-outline" /> Recent Presets</h3>
+        <h3 class="panel-title mt-lg"><AppIcon name="ClockIcon-time-nine-outline" /> Recent Presets</h3>
         <div v-if="recentPresets.length" class="recents">
           <button
             v-for="r in recentPresets"
@@ -522,13 +522,13 @@
 
   <!-- Step actions -->
   <div class="step-actions">
-        <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-arrow-left" :disabled="activeStep === 'overview'" @click="goBack">Back (←/B)</UnifiedButton>
+        <UnifiedButton color="glass" appearance="outlined" leading-icon="ArrowLeftIcon" :disabled="activeStep === 'overview'" @click="goBack">Back (←/B)</UnifiedButton>
         <div class="spacer"></div>
         <template v-if="activeStep !== 'settings'">
-          <UnifiedButton color="gaming" trailing-icon="mdi-arrow-right" @click="goNext">Next (→/N)</UnifiedButton>
+          <UnifiedButton color="gaming" trailing-icon="ArrowRightIcon" @click="goNext">Next (→/N)</UnifiedButton>
         </template>
         <template v-else>
-          <UnifiedButton color="gaming" leading-icon="mdi-microphone" :disabled="!selectedPersona || !roleType" :loading="starting" @click="beginInterview">Start Interview (Enter)</UnifiedButton>
+          <UnifiedButton color="gaming" leading-icon="MicrophoneIcon" :disabled="!selectedPersona || !roleType" :loading="starting" @click="beginInterview">Start Interview (Enter)</UnifiedButton>
         </template>
       </div>
     </div>
@@ -541,16 +541,16 @@
           <button class="close-btn" @click="dismissPersonaPreview">✕</button>
         </div>
         <div class="modal-body">
-          <div class="pv-row"><span class="pv-label">Name</span><span class="pv-value">{{ pendingPersonaSuggestion?.name }}</span></div>
-          <div class="pv-row"><span class="pv-label">Archetype</span><span class="pv-value">{{ pendingPersonaSuggestion?.archetype }}</span></div>
-          <div class="pv-row"><span class="pv-label">Tone</span><span class="pv-value">{{ pendingPersonaSuggestion?.tone }}</span></div>
-          <div class="pv-row"><span class="pv-label">Style</span><span class="pv-value">{{ pendingPersonaSuggestion?.interviewStyle }}</span></div>
-          <div class="pv-row"><span class="pv-label">Focus Areas</span><span class="pv-value">{{ (pendingPersonaSuggestion?.focusAreas || []).join(', ') }}</span></div>
-          <div v-if="pendingPersonaSuggestion?.studioName" class="pv-row"><span class="pv-label">Studio</span><span class="pv-value">{{ pendingPersonaSuggestion.studioName }}</span></div>
+          <div class="pv-flex flex-wrap"><span class="pv-label">Name</span><span class="pv-value">{{ pendingPersonaSuggestion?.name }}</span></div>
+          <div class="pv-flex flex-wrap"><span class="pv-label">Archetype</span><span class="pv-value">{{ pendingPersonaSuggestion?.archetype }}</span></div>
+          <div class="pv-flex flex-wrap"><span class="pv-label">Tone</span><span class="pv-value">{{ pendingPersonaSuggestion?.tone }}</span></div>
+          <div class="pv-flex flex-wrap"><span class="pv-label">Style</span><span class="pv-value">{{ pendingPersonaSuggestion?.interviewStyle }}</span></div>
+          <div class="pv-flex flex-wrap"><span class="pv-label">Focus Areas</span><span class="pv-value">{{ (pendingPersonaSuggestion?.focusAreas || []).join(', ') }}</span></div>
+          <div v-if="pendingPersonaSuggestion?.studioName" class="pv-flex flex-wrap"><span class="pv-label">Studio</span><span class="pv-value">{{ pendingPersonaSuggestion.studioName }}</span></div>
         </div>
         <div class="modal-actions">
-          <UnifiedButton color="gaming" leading-icon="mdi-check" @click="acceptPersonaPreview">Use This Persona</UnifiedButton>
-          <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-close" @click="dismissPersonaPreview">Dismiss</UnifiedButton>
+          <UnifiedButton color="gaming" leading-icon="CheckIcon" @click="acceptPersonaPreview">Use This Persona</UnifiedButton>
+          <UnifiedButton color="glass" appearance="outlined" leading-icon="XMarkIcon" @click="dismissPersonaPreview">Dismiss</UnifiedButton>
       </div>
       </div>
     </div>
@@ -558,6 +558,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowLeftIcon, ArrowPathIcon, ArrowRightIcon, BuildingOffice2Icon, ChartBarIcon, CheckIcon, CpuChipIcon, EyeIcon, LightBulbIcon, MagnifyingGlassIcon, MicrophoneIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import { usePageAssistantContext } from '@/composables/usePageAssistantContext'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -645,13 +648,13 @@ function clearStudioFilters() {
 
 // Base persona templates - will be dynamically enhanced based on studio selection
 const basePersonas: Persona[] = [
-  { id: 'aaa-gameplay', name: 'AAA Gameplay Engineer', icon: 'mdi-gamepad-variant', description: 'Focus on systems, performance, and cross-discipline collaboration at scale.', tone: 'direct and technical', focusAreas: ['systems', 'performance', 'C++', 'cross-team'], archetype: 'AAA Engineer', studioTypes: ['AAA'] },
+  { id: 'aaa-gameplay', name: 'AAA Gameplay Engineer', icon: 'DevicePhoneMobileIcon-variant', description: 'Focus on systems, performance, and cross-discipline collaboration at scale.', tone: 'direct and technical', focusAreas: ['systems', 'performance', 'C++', 'cross-team'], archetype: 'AAA Engineer', studioTypes: ['AAA'] },
   { id: 'indie-creator', name: 'Indie Studio Lead', icon: 'mdi-hammer-wrench', description: 'Explores creativity, rapid prototyping, and generalist skills.', tone: 'collaborative and creative', focusAreas: ['prototyping', 'design sensibility', 'wearing many hats'], archetype: 'Indie Lead', studioTypes: ['Indie'] },
   { id: 'publisher-pm', name: 'Publisher PM', icon: 'mdi-bullhorn', description: 'Product mindset with live ops, KPIs, and cross-studio coordination.', tone: 'data-informed and pragmatic', focusAreas: ['live ops', 'roadmaps', 'metrics'], archetype: 'Publisher PM', studioTypes: ['AAA', 'Platform'] },
   { id: 'mobile-f2p', name: 'Mobile F2P', icon: 'mdi-cellphone', description: 'Economy design, monetization, and UA for mobile games.', tone: 'user-centric and analytical', focusAreas: ['economy', 'A/B tests', 'monetization'], archetype: 'Mobile F2P', studioTypes: ['Mobile'] },
-  { id: 'esports-ops', name: 'Esports Ops', icon: 'mdi-trophy', description: 'Community, competitive ops, and broadcast production elements.', tone: 'community-forward', focusAreas: ['events', 'community', 'broadcast'], archetype: 'Esports Ops', studioTypes: ['Esports'] },
+  { id: 'esports-ops', name: 'Esports Ops', icon: 'TrophyIcon', description: 'Community, competitive ops, and broadcast production elements.', tone: 'community-forward', focusAreas: ['events', 'community', 'broadcast'], archetype: 'Esports Ops', studioTypes: ['Esports'] },
   { id: 'technical-lead', name: 'Technical Lead', icon: 'mdi-cog', description: 'Deep technical assessment with architecture and performance focus.', tone: 'analytical and thorough', focusAreas: ['architecture', 'scalability', 'team leadership'], archetype: 'Tech Lead', studioTypes: ['AAA', 'Platform'] },
-  { id: 'creative-director', name: 'Creative Director', icon: 'mdi-palette', description: 'Vision-focused interviewer assessing creative thinking and innovation.', tone: 'inspiring and visionary', focusAreas: ['creativity', 'vision', 'player experience'], archetype: 'Creative Director', studioTypes: ['AAA', 'Indie'] }
+  { id: 'creative-director', name: 'Creative Director', icon: 'SwatchIcon', description: 'Vision-focused interviewer assessing creative thinking and innovation.', tone: 'inspiring and visionary', focusAreas: ['creativity', 'vision', 'player experience'], archetype: 'Creative Director', studioTypes: ['AAA', 'Indie'] }
 ]
 
 // Dynamic personas list that updates based on studio selection
@@ -813,9 +816,9 @@ const filteredAllStudios = computed(() => {
 // Enhanced Step navigation - Interview Prep first
 type StepKey = 'overview' | 'studio' | 'persona' | 'settings'
 const stepTabs = [
-  { key: 'overview', label: 'Interview Prep', icon: 'mdi-microphone-variant', shortLabel: 'Prep' },
+  { key: 'overview', label: 'Interview Prep', icon: 'MicrophoneIcon-variant', shortLabel: 'Prep' },
   { key: 'studio', label: 'Target Studio', icon: 'mdi-office-building', shortLabel: 'Studio' },
-  { key: 'persona', label: 'Interview Persona', icon: 'mdi-account', shortLabel: 'Persona' },
+  { key: 'persona', label: 'Interview Persona', icon: 'UserIcon', shortLabel: 'Persona' },
   { key: 'settings', label: 'Session Setup', icon: 'mdi-tune-variant', shortLabel: 'Setup' },
 ]
 const activeStep = ref<StepKey>('overview')
@@ -2019,7 +2022,7 @@ function updateStudioRecommendations() {
 
 .studio-suggestion-card.selected {
   border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   background: color-mix(in srgb, var(--color-primary) 8%, var(--surface-elevated));
 }
 
@@ -2042,7 +2045,7 @@ function updateStudioRecommendations() {
 
 .s-logo-fallback {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
 }
 
@@ -2121,7 +2124,7 @@ function updateStudioRecommendations() {
 
 .persona-card.selected {
   border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   background: color-mix(in srgb, var(--color-primary) 8%, var(--surface-elevated));
 }
 
@@ -2223,7 +2226,7 @@ function updateStudioRecommendations() {
 .summary .value {
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .persona-inline-badge {
@@ -2269,7 +2272,7 @@ function updateStudioRecommendations() {
   margin-bottom: var(--spacing-4);
 }
 
-.filter-row {
+.filter-flex flex-wrap {
   display: flex;
   align-items: center;
   gap: var(--spacing-3);
@@ -2302,7 +2305,7 @@ function updateStudioRecommendations() {
 
 .chip-btn:hover {
   background: var(--surface-container);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-color: var(--border-strong);
 }
 
@@ -2355,7 +2358,7 @@ function updateStudioRecommendations() {
     gap: var(--spacing-2);
   }
   
-  .filter-row {
+  .filter-flex flex-wrap {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-2);
@@ -2423,7 +2426,7 @@ function updateStudioRecommendations() {
   margin-bottom: var(--spacing-3);
 }
 
-.ov-row {
+.ov-flex flex-wrap {
   display: flex;
   justify-content: space-between;
   gap: var(--spacing-3);
@@ -2436,7 +2439,7 @@ function updateStudioRecommendations() {
 
 .ov-value {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .overview-actions {
@@ -2485,7 +2488,7 @@ function updateStudioRecommendations() {
   background: color-mix(in srgb, var(--surface-elevated) 90%, transparent);
   backdrop-filter: blur(var(--blur-md));
   padding: var(--spacing-3) var(--spacing-6);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
   margin-top: var(--spacing-6);
 }
 
@@ -2550,7 +2553,7 @@ function updateStudioRecommendations() {
   background: var(--surface-elevated);
   border: 1px solid var(--border-base);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
   overflow: hidden;
 }
 
@@ -2559,7 +2562,7 @@ function updateStudioRecommendations() {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-3) var(--spacing-4);
-  border-bottom: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
 }
 
 .modal-body {
@@ -2573,7 +2576,7 @@ function updateStudioRecommendations() {
   display: flex;
   justify-content: flex-end;
   gap: var(--spacing-3);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
 }
 
 .close-btn {
@@ -2587,10 +2590,10 @@ function updateStudioRecommendations() {
 }
 
 .close-btn:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
-.pv-row {
+.pv-flex flex-wrap {
   display: flex;
   justify-content: space-between;
   gap: var(--spacing-3);
@@ -2603,7 +2606,7 @@ function updateStudioRecommendations() {
 
 .pv-value {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Interview Prep Overview Styles */
@@ -2638,7 +2641,7 @@ function updateStudioRecommendations() {
   gap: var(--spacing-2);
   margin-bottom: var(--spacing-4);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-lg);
 }
 
@@ -2717,7 +2720,7 @@ function updateStudioRecommendations() {
   border-radius: var(--radius-md);
   margin-top: var(--spacing-4);
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Additional mobile optimizations */

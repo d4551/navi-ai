@@ -2,6 +2,7 @@
   <div 
     class="fairy-floating-button"
     :class="{ 'fairy-active': active, 'fairy-pulsing': !active }"
+    class="font-sans"
   >
     <button
       class="fairy-btn btn-rgb ui-btn ui-size-md"
@@ -98,13 +99,13 @@ onUnmounted(() => {
   background: var(--glass-surface-elevated); /* Use design system variable */
   backdrop-filter: var(--glass-backdrop-blur-medium); /* Use design system variable */
   border: 2px solid var(--glass-border-accent); /* Use design system variable */
-  box-shadow: var(--glass-shadow-md), var(--glass-glow-primary); /* Use design system variables */
+  box-shadow: var(--glass-shadow-glass), var(--glass-glow-primary); /* Use design system variables */
   overflow: hidden;
 }
 
 .fairy-btn:hover {
   transform: scale(1.1);
-  box-shadow: var(--glass-shadow-lg), var(--glass-glow-primary); /* Use design system variables */
+  box-shadow: var(--glass-shadow-glass-lg), var(--glass-glow-primary); /* Use design system variables */
 }
 
 .fairy-btn:active {
@@ -144,7 +145,7 @@ onUnmounted(() => {
 .fairy-active .fairy-btn {
   border-color: var(--color-gaming-500); /* Use design system variable */
   box-shadow: 
-    var(--glass-shadow-md), 
+    var(--glass-shadow-glass), 
     var(--glass-glow-gaming),
     0 0 60px rgba(0, 255, 127, 0.3); /* Keep specific glow for gaming */
   background: radial-gradient(circle at center, 
@@ -209,7 +210,7 @@ onUnmounted(() => {
   pointer-events: none;
   background: var(--glass-surface); /* Use design system variable */
   border: 1px solid var(--glass-border); /* Use design system variable */
-  box-shadow: var(--glass-shadow-md); /* Use design system variable */
+  box-shadow: var(--glass-shadow-glass); /* Use design system variable */
   backdrop-filter: var(--glass-backdrop-blur-light); /* Use design system variable */
 }
 
@@ -222,7 +223,7 @@ onUnmounted(() => {
 .tooltip-text {
   margin: 0;
   font-size: var(--font-size-sm); /* Use design system variable */
-  color: var(--text-primary); /* Use design system variable */
+  color: var(--text-primary-600); /* Use design system variable */
   text-align: center;
 }
 
@@ -232,20 +233,20 @@ onUnmounted(() => {
   right: var(--spacing-5); /* Use design system variable */
   width: 0;
   height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid var(--glass-surface); /* Use design system variable */
+  border-l: 6px solid transparent;
+  border-r: 6px solid transparent;
+  border-t: 6px solid var(--glass-surface); /* Use design system variable */
 }
 
 /* Animations */
 @keyframes gentlePulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: var(--glass-shadow-md), var(--glass-glow-primary); /* Use design system variables */
+    box-shadow: var(--glass-shadow-glass), var(--glass-glow-primary); /* Use design system variables */
   }
   50% {
     transform: scale(1.05);
-    box-shadow: var(--glass-shadow-lg), var(--glass-glow-primary); /* Use design system variables */
+    box-shadow: var(--glass-shadow-glass-lg), var(--glass-glow-primary); /* Use design system variables */
   }
 }
 

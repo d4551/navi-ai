@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="success-modal-title" @click.self="emitClose" @keydown.esc.prevent.stop="emitClose">
+  <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="success-modal-title" class="font-sans" @click.self="emitClose" @keydown.esc.prevent.stop="emitClose">
     <div ref="modalEl" class="modal" role="document">
       <header class="modal__header">
         <h2 id="success-modal-title" class="modal__title">{{ title }}</h2>
@@ -7,7 +7,7 @@
       <div class="modal__body">
         <p class="modal__message">{{ message }}</p>
         <slot name="extra" />
-        <div class="icon-check" aria-hidden="true"><AppIcon name="mdi-check" size="small" color="success" /></div>
+        <div class="icon-check" aria-hidden="true"><AppIcon name="CheckIcon" size="small" color="success" /></div>
       </div>
       <footer class="modal__footer">
         <UnifiedButton variant="glass" @click="emitClose">Close</UnifiedButton>
@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+import { CheckIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -71,11 +73,11 @@ onBeforeUnmount(() => {
 
 .modal { 
   background: var(--modal-background); 
-  color: var(--text-primary); 
+  color: var(--text-primary-600); 
   border: 1px solid var(--modal-border);
   border-radius: var(--radius-modal); 
   width: min(420px, 92%); 
-  box-shadow: var(--shadow-xl); 
+  box-shadow: var(--shadow-glass-xl); 
   padding: var(--spacing-4) var(--spacing-5); 
   display: flex; 
   flex-direction: column; 
@@ -85,7 +87,7 @@ onBeforeUnmount(() => {
   margin: 0; 
   font-size: var(--font-size-lg); 
   font-weight: var(--font-weight-semibold); 
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal__body { 
@@ -113,7 +115,7 @@ onBeforeUnmount(() => {
   font-weight: var(--font-weight-semibold); 
   align-self: center; 
   color: var(--text-inverse); 
-  box-shadow: var(--shadow-lg); 
+  box-shadow: var(--shadow-glass-lg); 
 }
 
 .modal__footer { 

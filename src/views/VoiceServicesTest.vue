@@ -1,7 +1,7 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <!-- Diagnostics Section -->
-    <section class="glass p-4 gap-4 rounded-lg">
+    <section class="glass-card">
       <div class="section-header">
         <h2>Voice Services Diagnostics</h2>
         <div class="section-subtitle">Test voice and audio capabilities</div>
@@ -10,7 +10,7 @@
         <UnifiedButton 
           :loading="isRunningDiagnostics"
           variant="primary"
-          leading-icon="mdi-robot"
+          leading-icon="CpuChipIcon"
           @click="runDiagnostics"
         >
           Run Diagnostics
@@ -31,12 +31,12 @@
                 <v-expansion-panel-title>Capabilities</v-expansion-panel-title>
                 <v-expansion-panel-text>
                   <ul class="capability-list">
-                    <li>WebSocket: <AppIcon :name="diagnosticsResults.capabilities.webSocket ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>AudioContext: <AppIcon :name="diagnosticsResults.capabilities.audioContext ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>getUserMedia: <AppIcon :name="diagnosticsResults.capabilities.getUserMedia ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>getDisplayMedia: <AppIcon :name="diagnosticsResults.capabilities.getDisplayMedia ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>WebRTC: <AppIcon :name="diagnosticsResults.capabilities.webRTC ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>MediaRecorder: <AppIcon :name="diagnosticsResults.capabilities.mediaRecorder ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
+                    <li>WebSocket: <AppIcon :name="diagnosticsResults.capabilities.webSocket ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" /></li>
+                    <li>AudioContext: <AppIcon :name="diagnosticsResults.capabilities.audioContext ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" /></li>
+                    <li>getUserMedia: <AppIcon :name="diagnosticsResults.capabilities.getUserMedia ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" /></li>
+                    <li>getDisplayMedia: <AppIcon :name="diagnosticsResults.capabilities.getDisplayMedia ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" /></li>
+                    <li>WebRTC: <AppIcon :name="diagnosticsResults.capabilities.webRTC ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" /></li>
+                    <li>MediaRecorder: <AppIcon :name="diagnosticsResults.capabilities.mediaRecorder ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" /></li>
                   </ul>
                 </v-expansion-panel-text>
               </v-expansion-panel>
@@ -46,25 +46,25 @@
                 <v-expansion-panel-text>
                   <ul class="capability-list">
                     <li>
-                      Audio Context: <AppIcon :name="diagnosticsResults.tests.audioContext.success ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /> 
+                      Audio Context: <AppIcon :name="diagnosticsResults.tests.audioContext.success ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" /> 
                       <span v-if="diagnosticsResults.tests.audioContext.error" class="error-text">
                         - {{ diagnosticsResults.tests.audioContext.error }}
                       </span>
                     </li>
                     <li>
-                      Microphone: <AppIcon :name="diagnosticsResults.tests.microphone.success ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" />
+                      Microphone: <AppIcon :name="diagnosticsResults.tests.microphone.success ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" />
                       <span v-if="diagnosticsResults.tests.microphone.error" class="error-text">
                         - {{ diagnosticsResults.tests.microphone.error }}
                       </span>
                     </li>
                     <li>
-                      Camera: <AppIcon :name="diagnosticsResults.tests.camera.success ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" />
+                      Camera: <AppIcon :name="diagnosticsResults.tests.camera.success ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" />
                       <span v-if="diagnosticsResults.tests.camera.error" class="error-text">
                         - {{ diagnosticsResults.tests.camera.error }}
                       </span>
                     </li>
                     <li>
-                      Screen Share: <AppIcon :name="diagnosticsResults.tests.screenShare.success ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" />
+                      Screen Share: <AppIcon :name="diagnosticsResults.tests.screenShare.success ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'" />
                       <span v-if="diagnosticsResults.tests.screenShare.error" class="error-text">
                         - {{ diagnosticsResults.tests.screenShare.error }}
                       </span>
@@ -77,8 +77,8 @@
 
           <!-- AI Services Test Section -->
           <v-container>
-            <v-row>
-              <v-col cols="12">
+            <v-flex flex-wrap>
+              <v-flex-1 cols="12">
                 <v-card class="mb-4">
                   <v-card-title>AI Services Test</v-card-title>
                   <v-card-text>
@@ -100,12 +100,12 @@
                     </UiChip>
 
                     <div v-if="aiInitialized" class="mt-4">
-                      <h4>AI Services Initialized <AppIcon name="mdi-check-circle-outline" color="success" context="success" aria-hidden="true" /></h4>
+                      <h4>AI Services Initialized <AppIcon name="CheckCircleIcon" color="success" context="success" aria-hidden="true" /></h4>
                       <UnifiedButton 
                         :loading="isTestingVoice"
                         variant="info"
                         class="mr-2"
-                        leading-icon="mdi-microphone"
+                        leading-icon="MicrophoneIcon"
                         @click="testVoiceInput"
                       >
                         Test Voice Input
@@ -114,7 +114,7 @@
                         :loading="isTestingVideo"
                         variant="warning"
                         class="mr-2"
-                        leading-icon="mdi-video"
+                        leading-icon="VideoCameraIcon"
                         @click="testVideoStreaming"
                       >
                         Test Video Streaming
@@ -122,7 +122,7 @@
                       <UnifiedButton 
                         :loading="isTestingScreen"
                         variant="cyber"
-                        leading-icon="mdi-monitor"
+                        leading-icon="ComputerDesktopIcon"
                         @click="testScreenCapture"
                       >
                         Test Screen Capture
@@ -130,12 +130,12 @@
                     </div>
                   </v-card-text>
                 </v-card>
-              </v-col>
-            </v-row>
+              </v-flex-1>
+            </v-flex flex-wrap>
 
             <!-- Console Output -->
-            <v-row>
-              <v-col cols="12">
+            <v-flex flex-wrap>
+              <v-flex-1 cols="12">
                 <v-card>
                   <v-card-title>Console Output</v-card-title>
                   <v-card-text>
@@ -153,8 +153,8 @@
                     <UnifiedButton size="sm" variant="ghost" class="mt-2" @click="clearConsole">Clear Console</UnifiedButton>
                   </v-card-text>
                 </v-card>
-              </v-col>
-            </v-row>
+              </v-flex-1>
+            </v-flex flex-wrap>
           </v-container>
         </div>
       </div>
@@ -163,6 +163,8 @@
 </template>
 
 <script>
+import { CheckCircleIcon, ComputerDesktopIcon, CpuChipIcon, MicrophoneIcon, VideoCameraIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -299,7 +301,7 @@ export default {
           addToConsole('error', 'AI services initialization failed');
           toast.error('AI services initialization failed');
         }
-      } catch (_error) {
+      } catch (error) {
         aiStatus.value = { success: false, message: error.message };
         addToConsole('error', `AI initialization error: ${error.message}`);
         toast.error(`AI initialization error: ${error.message}`);
@@ -426,10 +428,10 @@ export default {
 
 .console-output {
   background-color: var(--surface-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: 15px;
   border-radius: 8px;
-  font-family: 'Courier New', monospace;
+  font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
   font-size: 12px;
   max-height: 300px;
   overflow-y: auto;
@@ -442,7 +444,7 @@ export default {
 }
 
 .timestamp {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   min-width: 80px;
 }
 

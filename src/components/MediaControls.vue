@@ -1,8 +1,8 @@
 <template>
-  <div class="media-controls glass-surface" :class="{ 'streaming': isStreaming }">
+  <div class="media-controls glass-surface" :class="{ 'streaming': isStreaming }" class="font-sans">
     <div class="controls-header">
       <h3 class="controls-title">
-        <AppIcon name="mdi-video-outline" class="rgb-icon" />
+        <AppIcon name="VideoCameraIcon-outline" class="rgb-icon" />
         Media Hub
       </h3>
       <div class="status-indicator" :class="{ 'active': isStreaming }">
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Device Selection / Quality Row -->
-    <div class="device-row glass-surface-sm">
+    <div class="device-flex flex-wrap glass-surface-sm">
       <div class="device-group">
         <label class="form-label">Camera</label>
         <select v-model="selectedCameraId" class="form-select glass-input">
@@ -41,7 +41,7 @@
       <div class="control-section glass-surface-sm">
         <div class="control-header">
           <div class="control-title">
-            <AppIcon name="mdi-camera" color="primary" />
+            <AppIcon name="CameraIcon" color="primary" />
             <span>Webcam</span>
           </div>
           <div class="control-badge" :class="{ 'active': webcam.isStreaming.value }">
@@ -51,7 +51,7 @@
         <UnifiedButton
           :variant="webcam.isStreaming.value ? 'danger' : 'gaming'"
           :loading="loading && loadingType === 'webcam'"
-          :leading-icon="webcam.isStreaming.value ? 'mdi-camera-off' : 'mdi-camera'"
+          :leading-icon="webcam.isStreaming.value ? 'CameraIcon-off' : 'CameraIcon'"
           @click="toggleWebcam"
         >
           {{ webcam.isStreaming.value ? 'Stop Webcam' : 'Start Webcam' }}
@@ -65,7 +65,7 @@
       <div class="control-section glass-surface-sm">
         <div class="control-header">
           <div class="control-title">
-            <AppIcon name="mdi-monitor-screenshot" class="rgb-text-accent" />
+            <AppIcon name="ComputerDesktopIcon" class="rgb-text-accent" />
             <span>Screen Share</span>
           </div>
           <div class="control-badge" :class="{ 'active': screenCapture.isStreaming.value }">
@@ -90,13 +90,13 @@
     <div class="audio-controls glass-surface-sm">
       <div class="audio-header">
         <div class="control-title">
-          <AppIcon name="mdi-microphone" />
+          <AppIcon name="MicrophoneIcon" />
           <span>Microphone</span>
         </div>
         <UnifiedButton
           :variant="isMicrophoneEnabled ? 'warning' : 'glass'"
           :disabled="!isStreaming"
-          :leading-icon="isMicrophoneEnabled ? 'mdi-microphone' : 'mdi-microphone-off'"
+          :leading-icon="isMicrophoneEnabled ? 'MicrophoneIcon' : 'MicrophoneIcon-off'"
           @click="toggleMicrophone"
         >
           {{ isMicrophoneEnabled ? 'Mute' : 'Unmute' }}
@@ -112,16 +112,18 @@
     <!-- Error Display -->
     <div v-if="error" class="error-section glass-surface-sm">
       <div class="error-header">
-        <AppIcon name="mdi-alert-circle-outline" class="rgb-text-red" />
+        <AppIcon name="ExclamationCircleIcon" class="rgb-text-red" />
         <span>Error</span>
       </div>
       <p class="error-message">{{ error }}</p>
-      <UnifiedButton variant="glass" size="sm" leading-icon="mdi-close" @click="clearError">Dismiss</UnifiedButton>
+      <UnifiedButton variant="glass" size="sm" leading-icon="XMarkIcon" @click="clearError">Dismiss</UnifiedButton>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { CameraIcon, ComputerDesktopIcon, ExclamationCircleIcon, MicrophoneIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { useMediaStreamMux } from '@/composables/useMediaStreamMux'
@@ -337,7 +339,7 @@ defineExpose({
   overflow: hidden;
 }
 
-.device-row {
+.device-flex flex-wrap {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--spacing-md);
@@ -366,13 +368,13 @@ defineExpose({
   text-align: center;
   margin-bottom: var(--grid-gap);
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .controls-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -454,7 +456,7 @@ defineExpose({
   align-items: center;
   gap: 0.75rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .control-badge {
@@ -513,7 +515,7 @@ defineExpose({
   width: 16px;
   height: 16px;
   border: 2px solid transparent;
-  border-top: 2px solid currentColor;
+  border-t: 2px solid currentColor;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-left: 0.5rem;
@@ -555,7 +557,7 @@ defineExpose({
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-normal);
@@ -613,7 +615,7 @@ defineExpose({
   padding: 1.5rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--glass-border);
-  border-left: 4px solid var(--rgb-red);
+  border-l: 4px solid var(--rgb-red);
   margin-top: var(--grid-gap);
   background: linear-gradient(135deg, transparent, rgba(var(--rgb-red-raw), 0.05));
 }
@@ -638,7 +640,7 @@ defineExpose({
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   transition: all var(--transition-normal);
   font-size: 0.875rem;

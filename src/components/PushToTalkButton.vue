@@ -9,6 +9,7 @@
               'speaking': isSpeaking,
               'error': hasError
     }"
+    class="font-sans"
   >
     <!-- Main Push-to-Talk Button -->
     <button
@@ -30,7 +31,7 @@
       <AppIcon :name="iconClass" aria-hidden="true" />
 
       <!-- Text -->
-      <span class="btn-text ms-2">{{ buttonText }}</span>
+      <span class="btn-text ml-2">{{ buttonText }}</span>
 
       <!-- Recording indicator -->
       <div v-if="isRecording" class="recording-pulse" aria-hidden="true"></div>
@@ -46,7 +47,7 @@
         ></div>
       </div>
       <span class="recording-time">{{ formatTime(recordingTime) }}</span>
-      <span class="max-time text-muted">/ {{ formatTime(maxRecordingTime) }}</span>
+      <span class="max-time text-secondary">/ {{ formatTime(maxRecordingTime) }}</span>
     </div>
 
     <!-- Transcript Display -->
@@ -65,7 +66,7 @@
 
     <!-- AI Response Display -->
     <div v-if="aiResponse && showResponse" class="ai-response mt-3">
-      <div class="response-header d-flex align-items-center justify-content-between">
+      <div class="response-header flex items-center justify-between">
         <span class="response-label">AI Response:</span>
         <button
           v-if="!isSpeaking && aiResponse"
@@ -73,11 +74,11 @@
           :disabled="!speechSynthesisAvailable"
           @click="speakResponse"
         >
-          <AppIcon name="mdi-volume-high" />
+          <AppIcon name="SpeakerWaveIcon" />
           Speak
         </button>
       </div>
-      <div class="response-content p-3 border rounded">
+      <div class="response-content p-glass-md border rounded">
         <div class="streaming-text" :class="{ 'typing': isStreaming }">
           {{ displayedResponse }}
         </div>
@@ -86,7 +87,7 @@
 
     <!-- Error Display -->
     <div v-if="error" class="error-display mt-2" role="alert">
-      <AppIcon name="mdi-alert-circle-outline" class="me-2" />
+      <AppIcon name="ExclamationCircleIcon" class="mr-2" />
       {{ _error }}
     </div>
 
@@ -100,7 +101,7 @@
     >
       <div class="ptt-device-select mt-2">
         <label class="form-label small mb-1" for="ptt-mic-select">
-          <AppIcon name="mdi-microphone" />
+          <AppIcon name="MicrophoneIcon" />
           Microphone
         </label>
         <select
@@ -125,6 +126,8 @@
 </template>
 
 <script setup>
+import { ExclamationCircleIcon, MicrophoneIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { ref, onMounted, readonly, computed, onBeforeUnmount, defineEmits, defineProps, defineExpose, watch } from 'vue'
 import { useAppStore } from '@/stores/app';
@@ -215,9 +218,9 @@ const buttonClasses = computed(() => ({
 }));
 
 const iconClass = computed(() => {
-  if (hasError.value) {return 'mdi-microphone-off';}
-  if (isRecording.value) {return 'mdi-stop-circle';}
-  return 'mdi-microphone';
+  if (hasError.value) {return 'MicrophoneIcon-off';}
+  if (isRecording.value) {return 'StopIcon-circle';}
+  return 'MicrophoneIcon';
 });
 
 const buttonText = computed(() => {
@@ -735,7 +738,7 @@ defineExpose({
 }
 
 .final-transcript {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 500;
 }
 
@@ -763,7 +766,7 @@ defineExpose({
 .response-header {
   padding: var(--spacing-xs) var(--spacing-sm);
   background: var(--glass-elevated);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
   font-weight: 600;
   font-size: 0.875em;

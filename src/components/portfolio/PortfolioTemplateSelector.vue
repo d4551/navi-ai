@@ -1,9 +1,9 @@
 <template>
-  <div class="template-selector">
+  <div class="template-selector" class="font-sans">
     <!-- Header -->
     <div class="template-header">
       <h5 class="mb-0">Choose a Template</h5>
-      <p class="text-muted mb-4">Select a professional template to get started quickly</p>
+      <p class="text-secondary mb-4">Select a professional template to get started quickly</p>
     </div>
 
     <!-- Template Grid -->
@@ -57,7 +57,7 @@
 
         <!-- Selection Indicator -->
         <div v-if="selectedTemplate?.id === template.id" class="selection-indicator">
-          <AppIcon name="mdi-check-circle-outline" />
+          <AppIcon name="CheckCircleIcon" />
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@
     <!-- Action Buttons -->
     <div class="template-actions">
       <UnifiedButton variant="outline" @click="$emit('close')">Cancel</UnifiedButton>
-      <UnifiedButton variant="primary" :disabled="!selectedTemplate" leading-icon="mdi-check" @click="applyTemplate">
+      <UnifiedButton variant="primary" :disabled="!selectedTemplate" leading-icon="CheckIcon" @click="applyTemplate">
         Apply Template
       </UnifiedButton>
     </div>
@@ -73,6 +73,8 @@
 </template>
 
 <script setup>
+import { CheckCircleIcon, CheckIcon } from '@heroicons/vue/24/outline'
+
 import { ref, defineEmits } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -378,7 +380,7 @@ function applyTemplate() {
 .template-name {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
@@ -427,7 +429,7 @@ function applyTemplate() {
   justify-content: flex-end;
   gap: 0.75rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 /* Responsive Design */

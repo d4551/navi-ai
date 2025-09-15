@@ -1,12 +1,12 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div role="region" aria-labelledby="profile-heading" class="profile-section enhanced-glass-section" :class="{ 'is-tabbed': isTabbed }">
+  <div role="region" aria-labelledby="profile-heading" class="profile-section enhanced-glass-section" :class="{ 'is-tabbed': isTabbed }" class="font-sans">
     <!-- Enhanced Header -->
     <div v-if="!isTabbed" class="section-header">
       <div class="header-content">
         <div class="header-info">
           <h3 id="profile-heading" class="section-title">
-            <AppIcon name="mdi-account-card-details" />
+            <AppIcon name="UserIcon-card-details" />
             Personal Profile
           </h3>
           <p class="section-subtitle">Essential information for your gaming career profile</p>
@@ -26,14 +26,14 @@
         <!-- Essential Information Section -->
         <div class="form-section">
           <div class="section-divider">
-            <AppIcon name="mdi-account-circle" class="section-icon" />
+            <AppIcon name="UserIcon-circle" class="section-icon" />
             <span class="section-title-small">Essential Information</span>
             <div class="divider-line"></div>
           </div>
           <div class="form-grid essential-grid">
             <div class="form-field required">
               <label for="profile-name" class="form-label">
-                <AppIcon name="mdi-account" class="label-icon" />
+                <AppIcon name="UserIcon" class="label-icon" />
                 Full Name
                 <span class="required-asterisk">*</span>
               </label>
@@ -52,22 +52,22 @@
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon v-if="userProfile.personalInfo.name" name="mdi-check" class="success-icon" />
+                  <AppIcon v-if="userProfile.personalInfo.name" name="CheckIcon" class="success-icon" />
                 </div>
               </div>
               <div v-if="store.errors?.validation?.name" id="profile-name-error" class="form-error">
-                <AppIcon name="mdi-alert-circle" />
+                <AppIcon name="ExclamationCircleIcon" />
                 {{ store.errors?.validation?.name }}
               </div>
               <div v-else-if="focusedField === 'name'" class="form-hint">
-                <AppIcon name="mdi-information" />
+                <AppIcon name="InformationCircleIcon" />
                 Used across NAVI and in your resume
               </div>
             </div>
             
             <div class="form-field required">
               <label for="profile-email" class="form-label">
-                <AppIcon name="mdi-email" class="label-icon" />
+                <AppIcon name="EnvelopeIcon" class="label-icon" />
                 Email Address
                 <span class="required-asterisk">*</span>
               </label>
@@ -86,22 +86,22 @@
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon v-if="userProfile.personalInfo.email && isValidEmail(userProfile.personalInfo.email)" name="mdi-check" class="success-icon" />
+                  <AppIcon v-if="userProfile.personalInfo.email && isValidEmail(userProfile.personalInfo.email)" name="CheckIcon" class="success-icon" />
                 </div>
               </div>
               <div v-if="store.errors?.validation?.email" id="profile-email-error" class="form-error">
-                <AppIcon name="mdi-alert-circle" />
+                <AppIcon name="ExclamationCircleIcon" />
                 {{ store.errors?.validation?.email }}
               </div>
               <div v-else-if="focusedField === 'email'" class="form-hint">
-                <AppIcon name="mdi-information" />
+                <AppIcon name="InformationCircleIcon" />
                 Primary contact for job opportunities
               </div>
             </div>
             
             <div class="form-field">
               <label for="profile-phone" class="form-label">
-                <AppIcon name="mdi-phone" class="label-icon" />
+                <AppIcon name="PhoneIcon" class="label-icon" />
                 Phone Number
               </label>
               <div class="input-wrapper">
@@ -117,18 +117,18 @@
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon v-if="userProfile.personalInfo.phone" name="mdi-check" class="success-icon" />
+                  <AppIcon v-if="userProfile.personalInfo.phone" name="CheckIcon" class="success-icon" />
                 </div>
               </div>
               <div v-if="focusedField === 'phone'" class="form-hint">
-                <AppIcon name="mdi-information" />
+                <AppIcon name="InformationCircleIcon" />
                 Optional - for recruiters to contact you
               </div>
             </div>
             
             <div class="form-field">
               <label for="profile-location" class="form-label">
-                <AppIcon name="mdi-map-marker" class="label-icon" />
+                <AppIcon name="MapPinIcon" class="label-icon" />
                 Location
               </label>
               <div class="input-wrapper">
@@ -144,11 +144,11 @@
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon v-if="userProfile.personalInfo.location" name="mdi-check" class="success-icon" />
+                  <AppIcon v-if="userProfile.personalInfo.location" name="CheckIcon" class="success-icon" />
                 </div>
               </div>
               <div v-if="focusedField === 'location'" class="form-hint">
-                <AppIcon name="mdi-information" />
+                <AppIcon name="InformationCircleIcon" />
                 Helps match you with local or remote opportunities
               </div>
             </div>
@@ -157,7 +157,7 @@
           <!-- Professional Information Section -->
           <div class="form-section">
             <div class="section-divider">
-              <AppIcon name="mdi-briefcase" class="section-icon" />
+              <AppIcon name="BriefcaseIcon" class="section-icon" />
               <span class="section-title-small">Professional Information</span>
               <div class="divider-line"></div>
             </div>
@@ -180,18 +180,18 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.currentRole" name="mdi-check" class="success-icon" />
+                    <AppIcon v-if="userProfile.personalInfo.currentRole" name="CheckIcon" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'role'" class="form-hint">
-                  <AppIcon name="mdi-information" />
+                  <AppIcon name="InformationCircleIcon" />
                   Your current or most recent job title
                 </div>
               </div>
             
               <div class="form-field">
                 <label for="profile-company" class="form-label">
-                  <AppIcon name="mdi-domain" class="label-icon" />
+                  <AppIcon name="BuildingOfficeIcon" class="label-icon" />
                   Current Company
                 </label>
                 <div class="input-wrapper">
@@ -207,18 +207,18 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.currentCompany" name="mdi-check" class="success-icon" />
+                    <AppIcon v-if="userProfile.personalInfo.currentCompany" name="CheckIcon" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'company'" class="form-hint">
-                  <AppIcon name="mdi-information" />
+                  <AppIcon name="InformationCircleIcon" />
                   Studio or company you work for
                 </div>
               </div>
             
               <div class="form-field">
                 <label for="profile-years" class="form-label">
-                  <AppIcon name="mdi-calendar-clock" class="label-icon" />
+                  <AppIcon name="CalendarIcon-clock" class="label-icon" />
                   Years of Experience
                 </label>
                 <div class="input-wrapper">
@@ -236,11 +236,11 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.yearsExperience" name="mdi-check" class="success-icon" />
+                    <AppIcon v-if="userProfile.personalInfo.yearsExperience" name="CheckIcon" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'years'" class="form-hint">
-                  <AppIcon name="mdi-information" />
+                  <AppIcon name="InformationCircleIcon" />
                   Total years in gaming industry
                 </div>
               </div>
@@ -250,14 +250,14 @@
           <!-- Online Presence Section -->
           <div class="form-section">
             <div class="section-divider">
-              <AppIcon name="mdi-web" class="section-icon" />
+              <AppIcon name="GlobeAltIcon" class="section-icon" />
               <span class="section-title-small">Online Presence</span>
               <div class="divider-line"></div>
             </div>
             <div class="form-grid online-grid">
               <div class="form-field">
                 <label for="profile-website" class="form-label">
-                  <AppIcon name="mdi-web" class="label-icon" />
+                  <AppIcon name="GlobeAltIcon" class="label-icon" />
                   Personal Website
                 </label>
                 <div class="input-wrapper">
@@ -273,18 +273,18 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.website" name="mdi-check" class="success-icon" />
+                    <AppIcon v-if="userProfile.personalInfo.website" name="CheckIcon" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'website'" class="form-hint">
-                  <AppIcon name="mdi-information" />
+                  <AppIcon name="InformationCircleIcon" />
                   Your personal or professional website
                 </div>
               </div>
             
               <div class="form-field">
                 <label for="profile-linkedin" class="form-label">
-                  <AppIcon name="mdi-linkedin" class="label-icon" />
+                  <AppIcon name="LinkIconedin" class="label-icon" />
                   LinkedIn Profile
                 </label>
                 <div class="input-wrapper">
@@ -299,11 +299,11 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.linkedIn" name="mdi-check" class="success-icon" />
+                    <AppIcon v-if="userProfile.personalInfo.linkedIn" name="CheckIcon" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'linkedin'" class="form-hint">
-                  <AppIcon name="mdi-information" />
+                  <AppIcon name="InformationCircleIcon" />
                   Professional networking profile
                 </div>
               </div>
@@ -325,18 +325,18 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.github" name="mdi-check" class="success-icon" />
+                    <AppIcon v-if="userProfile.personalInfo.github" name="CheckIcon" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'github'" class="form-hint">
-                  <AppIcon name="mdi-information" />
+                  <AppIcon name="InformationCircleIcon" />
                   Code portfolio and open source contributions
                 </div>
               </div>
             
               <div class="form-field">
                 <label for="profile-portfolio" class="form-label">
-                  <AppIcon name="mdi-folder-image" class="label-icon" />
+                  <AppIcon name="FolderIcon-image" class="label-icon" />
                   Portfolio
                 </label>
                 <div class="input-wrapper">
@@ -351,11 +351,11 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.portfolio" name="mdi-check" class="success-icon" />
+                    <AppIcon v-if="userProfile.personalInfo.portfolio" name="CheckIcon" class="success-icon" />
                   </div>
                 </div>
                 <div v-if="focusedField === 'portfolio'" class="form-hint">
-                  <AppIcon name="mdi-information" />
+                  <AppIcon name="InformationCircleIcon" />
                   Showcase of your games and projects
                 </div>
               </div>
@@ -390,7 +390,7 @@
                 </div>
               </div>
               <div v-if="focusedField === 'summary'" class="form-hint">
-                <AppIcon name="mdi-information" />
+                <AppIcon name="InformationCircleIcon" />
                 <span>This appears on your resume and helps match you with relevant opportunities. Aim for 2-3 sentences.</span>
               </div>
             </div>
@@ -403,7 +403,7 @@
                 <UnifiedButton
                   variant="glass"
                   size="sm"
-                  leading-icon="mdi-auto-fix"
+                  leading-icon="SparklesIcon"
                   :disabled="saving"
                   @click="autoFillSuggestions"
                 >
@@ -412,7 +412,7 @@
                 <UnifiedButton
                   variant="glass"
                   size="sm"
-                  leading-icon="mdi-eye-outline"
+                  leading-icon="EyeIcon-outline"
                   :disabled="saving"
                   @click="previewProfile"
                 >
@@ -433,7 +433,7 @@
                   type="submit"
                   variant="primary"
                   :disabled="saving || !hasRequiredFields"
-                  :leading-icon="saving ? 'mdi-loading' : 'mdi-content-save'"
+                  :leading-icon="saving ? 'ArrowPathIcon' : 'mdi-content-save'"
                   :class="{ 'is-loading': saving }"
                 >
                   {{ saving ? 'Saving Profile...' : 'Save Profile' }}
@@ -444,7 +444,7 @@
             <!-- Success/Error Messages -->
             <Transition name="message-fade">
               <div v-if="profileSaved" class="success-message" aria-live="polite">
-                <AppIcon name="mdi-check-circle" />
+                <AppIcon name="CheckCircleIcon" />
                 <span>Profile saved successfully! Your changes are now live.</span>
               </div>
             </Transition>
@@ -452,12 +452,12 @@
             <!-- Profile Completion Tips -->
             <div v-if="!isProfileComplete" class="completion-tips">
               <div class="tip-header">
-                <AppIcon name="mdi-lightbulb-outline" />
+                <AppIcon name="LightBulbIcon-outline" />
                 <span>Complete your profile to improve job matching</span>
               </div>
               <div class="tip-list">
                 <div v-for="tip in incompleteTips" :key="tip.field" class="tip-item" @click="focusField(tip.field)">
-                  <AppIcon name="mdi-plus-circle-outline" />
+                  <AppIcon name="PlusIcon-circle-outline" />
                   <span>{{ tip.message }}</span>
                 </div>
               </div>
@@ -470,6 +470,9 @@
 </template>
 
 <script setup>
+import { BriefcaseIcon, BuildingOfficeIcon, CheckIcon, EnvelopeIcon, ExclamationCircleIcon, GlobeAltIcon, InformationCircleIcon, PhoneIcon, SparklesIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { computed, ref, watch } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { useToast } from '@/composables/useToast'
@@ -641,7 +644,7 @@ watch(completionPercentage, (newPercentage) => {
   --field-spacing: var(--spacing-5);
   --section-spacing: var(--spacing-8);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: background-color var(--duration-normal), color var(--duration-normal);
 }
 
@@ -653,7 +656,7 @@ watch(completionPercentage, (newPercentage) => {
 .section-header {
   margin-bottom: var(--spacing-6);
   padding-bottom: var(--spacing-4);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .header-content {
@@ -666,7 +669,7 @@ watch(completionPercentage, (newPercentage) => {
 .section-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -718,7 +721,7 @@ watch(completionPercentage, (newPercentage) => {
   position: relative;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: color var(--duration-normal);
 }
 
@@ -747,7 +750,7 @@ watch(completionPercentage, (newPercentage) => {
 }
 
 .section-title-small {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-base);
   white-space: nowrap;
@@ -826,7 +829,7 @@ watch(completionPercentage, (newPercentage) => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-3) var(--spacing-4);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-base);
   width: 100%;
   transition: all var(--duration-normal);
@@ -835,7 +838,7 @@ watch(completionPercentage, (newPercentage) => {
 
 .enhanced-input::placeholder,
 .glass-input-field::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   transition: color var(--duration-normal);
 }
 
@@ -887,7 +890,7 @@ watch(completionPercentage, (newPercentage) => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-4);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-base);
   width: 100%;
   resize: vertical;
@@ -900,7 +903,7 @@ watch(completionPercentage, (newPercentage) => {
 }
 
 .enhanced-textarea::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   transition: color var(--duration-normal);
 }
 
@@ -965,7 +968,7 @@ watch(completionPercentage, (newPercentage) => {
 .form-actions-section {
   margin-top: var(--section-spacing);
   padding-top: var(--spacing-5);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .actions-content {
@@ -1015,7 +1018,7 @@ watch(completionPercentage, (newPercentage) => {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-medium);
   margin-bottom: var(--spacing-3);
   transition: color var(--duration-normal);
@@ -1042,7 +1045,7 @@ watch(completionPercentage, (newPercentage) => {
 
 .tip-item:hover {
   background: var(--glass-hover-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-color: var(--glass-border);
   backdrop-filter: var(--glass-backdrop-filter);
   -webkit-backdrop-filter: var(--glass-backdrop-filter);
@@ -1054,7 +1057,7 @@ watch(completionPercentage, (newPercentage) => {
   cursor: wait;
 }
 
-.is-loading .mdi-loading {
+.is-loading .ArrowPathIcon {
   animation: spin 1s linear infinite;
 }
 
@@ -1130,7 +1133,7 @@ watch(completionPercentage, (newPercentage) => {
 [data-theme="dark"] .glass-input-field {
   background: var(--glass-bg);
   border-color: var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .glass-input-field:focus {

@@ -1,13 +1,13 @@
 <template>
-  <div class="resume-ai-analysis">
+  <div class="resume-ai-analysis" class="font-sans">
     <div class="analysis-options mb-4">
-      <div class="d-flex gap-3 mb-3" role="group" aria-label="Analysis actions">
+      <div class="flex gap-glass-md mb-3" role="group" aria-label="Analysis actions">
         <button
           class="unified-btn btn-primary btn-sm v-btn ui-btn ui-size-md"
           :disabled="!resumeData || loading"
           @click="$emit('request-analysis')"
         >
-          <AppIcon name="mdi-brain" class="me-2" />
+          <AppIcon name="CpuChipIcon" class="mr-2" />
           {{ loading ? 'Analyzing...' : 'Analyze Resume' }}
         </button>
         <button
@@ -15,7 +15,7 @@
           :disabled="!resumeData || loading"
           @click="runATSCheck"
         >
-          <AppIcon name="mdi-check-circle-outline-outline" class="me-2" />
+          <AppIcon name="CheckIcon-circle-outline-outline" class="mr-2" />
           ATS Compatibility Check
         </button>
       </div>
@@ -25,7 +25,7 @@
     <div v-if="analysisResults" class="analysis-results">
       <div class="unified-grid g-3">
         <!-- Overall Score -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <div class="unified-card glass-card section-card text-center">
             <div class="card-body section-body">
               <div class="score-circle" :class="getScoreClass(analysisResults.overallScore)">
@@ -41,11 +41,11 @@
         </div>
 
         <!-- Strengths -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <div class="unified-card glass-card section-card">
             <div class="card-header section-header card-header--dense">
               <h6 class="mb-0">
-                <AppIcon name="mdi-check-circle-outline" color="success" context="success" />
+                <AppIcon name="CheckCircleIcon" color="success" context="success" />
                 Strengths ({{ analysisResults.strengths?.length || 0 }})
               </h6>
             </div>
@@ -56,12 +56,12 @@
                   :key="index"
                   class="mb-2"
                 >
-                  <AppIcon name="mdi-plus-circle" class="text-success me-1" />
+                  <AppIcon name="PlusCircleIcon" class="text-success-600 mr-1" />
                   <small>{{ strength }}</small>
                 </li>
               </ul>
-              <div v-if="!analysisResults.strengths?.length" class="text-muted small">
-                <AppIcon name="mdi-information-outline" class="me-1" />
+              <div v-if="!analysisResults.strengths?.length" class="text-secondary small">
+                <AppIcon name="InformationCircleIcon" class="mr-1" />
                 Analysis will identify key strengths
               </div>
             </div>
@@ -69,11 +69,11 @@
         </div>
 
         <!-- Improvements -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <div class="unified-card glass-card section-card">
             <div class="card-header section-header card-header--dense">
               <h6 class="mb-0">
-                <AppIcon name="mdi-lightbulb" color="warning" />
+                <AppIcon name="LightBulbIcon" color="warning" />
                 Improvements ({{ analysisResults.improvements?.length || 0 }})
               </h6>
             </div>
@@ -84,19 +84,19 @@
                   :key="index"
                   class="mb-2"
                 >
-                  <AppIcon name="mdi-lightbulb" color="warning" />
+                  <AppIcon name="LightBulbIcon" color="warning" />
                   <small>{{ improvement }}</small>
                   <button
                     v-if="canUseAi"
-                    class="btn btn-link btn-sm ms-2 p-0 ui-btn ui-size-md"
+                    class="btn btn-link btn-sm ml-2 p-0 ui-btn ui-size-md"
                     @click="$emit('apply-suggestion', { type: 'improvement', data: improvement, index })"
                   >
-                    <AppIcon name="mdi-auto-fix" class="text-primary" />
+                    <AppIcon name="SparklesIcon" class="text-primary-600" />
                   </button>
                 </li>
               </ul>
-              <div v-if="!analysisResults.improvements?.length" class="text-muted small">
-                <AppIcon name="mdi-information-outline" class="me-1" />
+              <div v-if="!analysisResults.improvements?.length" class="text-secondary small">
+                <AppIcon name="InformationCircleIcon" class="mr-1" />
                 No improvements suggested
               </div>
             </div>
@@ -109,41 +109,41 @@
         <div class="unified-card glass-card section-card">
           <div class="card-header section-header">
             <h6 class="mb-0">
-              <AppIcon name="mdi-tag-text-outline" class="me-2" />
+              <AppIcon name="TagIcon-text-outline" class="mr-2" />
               Keyword Optimization
             </h6>
           </div>
           <div class="card-body section-body card-body--dense">
             <div class="unified-grid g-3">
-              <div class="col-md-4">
-                <h6 class="text-success mb-2">Missing Keywords</h6>
+              <div class="flex-1-md-4">
+                <h6 class="text-success-600 mb-2">Missing Keywords</h6>
                 <div class="keyword-tags">
                   <span
                     v-for="keyword in analysisResults.keywordOptimization.missing"
                     :key="keyword"
-                    class="badge bg-danger-subtle text-danger me-1 mb-1"
+                    class="badge bg-error-500-subtle text-error-600 mr-1 mb-1"
                   >
                     {{ keyword }}
                   </span>
                 </div>
               </div>
-              <div class="col-md-4">
-                <h6 class="text-warning mb-2">Omitted Keywords</h6>
+              <div class="flex-1-md-4">
+                <h6 class="text-warning-600 mb-2">Omitted Keywords</h6>
                 <div class="keyword-tags">
                   <span
                     v-for="keyword in analysisResults.keywordOptimization.overused"
                     :key="keyword"
-                    class="badge bg-warning-subtle text-warning me-1 mb-1"
+                    class="badge bg-warning-500-subtle text-warning-600 mr-1 mb-1"
                   >
                     {{ keyword }}
                   </span>
                 </div>
               </div>
-              <div class="col-md-4">
-                <h6 class="text-info mb-2">Recommended Density</h6>
+              <div class="flex-1-md-4">
+                <h6 class="text-blue-600 mb-2">Recommended Density</h6>
                 <div class="text-center">
-                  <div class="h4 text-info mb-1">{{ analysisResults.keywordOptimization.recommendedDensity }}</div>
-                  <small class="text-muted">Optimal keyword usage</small>
+                  <div class="h4 text-blue-600 mb-1">{{ analysisResults.keywordOptimization.recommendedDensity }}</div>
+                  <small class="text-secondary">Optimal keyword usage</small>
                 </div>
               </div>
             </div>
@@ -153,8 +153,8 @@
     </div>
 
     <!-- No Analysis Message -->
-    <div v-else-if="!loading" class="text-center text-muted py-5">
-      <AppIcon name="mdi-brain" class="mdi-48px mb-3" />
+    <div v-else-if="!loading" class="text-center text-secondary py-5">
+      <AppIcon name="CpuChipIcon" class="mdi-48px mb-3" />
       <h6 class="mb-2">Ready for AI Analysis</h6>
       <p class="mb-3">Click "Analyze Resume" to get AI-powered insights and recommendations</p>
       <button
@@ -162,16 +162,16 @@
         :disabled="!resumeData"
         @click="$emit('request-analysis')"
       >
-        <AppIcon name="mdi-brain" class="me-2" />
+        <AppIcon name="CpuChipIcon" class="mr-2" />
         Start Analysis
       </button>
     </div>
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-5">
-      <AppIcon name="mdi-brain" class="mdi-48px mb-3 text-primary mdi-spin" />
+      <AppIcon name="CpuChipIcon" class="mdi-48px mb-3 text-primary-600 mdi-spin" />
       <h6 class="mb-2">Analyzing Your Resume</h6>
-      <p class="text-muted">AI is evaluating your content and generating personalized recommendations...</p>
+      <p class="text-secondary">AI is evaluating your content and generating personalized recommendations...</p>
       <div class="progress mt-3" style="max-width: 300px; margin: 0 auto;">
         <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
       </div>
@@ -180,6 +180,8 @@
 </template>
 
 <script setup lang="ts">
+import { CheckCircleIcon, CpuChipIcon, InformationCircleIcon, LightBulbIcon, PlusCircleIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 interface AnalysisResults {
   overallScore: number
@@ -247,7 +249,7 @@ const runATSCheck = async () => {
 }
 
 .analysis-options {
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   padding-bottom: 1rem;
 }
 
@@ -343,7 +345,7 @@ const runATSCheck = async () => {
     font-size: 1.5rem;
   }
 
-  .analysis-results .col-md-4 {
+  .analysis-results .flex-1-md-4 {
     order: -1;
   }
 }
@@ -368,8 +370,8 @@ const runATSCheck = async () => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] .badge.bg-danger-subtle,
-[data-theme="dark"] .badge.bg-warning-subtle {
+[data-theme="dark"] .badge.bg-error-500-subtle,
+[data-theme="dark"] .badge.bg-warning-500-subtle {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 

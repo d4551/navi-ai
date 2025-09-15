@@ -6,6 +6,7 @@
       'card-favorite': isFavorite,
       'card-ai-scored': aiScore !== undefined
     }"
+    class="font-sans"
   >
     <!-- Card Header -->
     <div class="card-header section-header glass-header">
@@ -18,11 +19,11 @@
         </div>
         
         <div class="studio-badges">
-          <span v-if="studio.publiclyTraded" class="badge bg-info-subtle">
-            <AppIcon name="mdi-chart-bar" color="info" />
+          <span v-if="studio.publiclyTraded" class="badge bg-blue-500-subtle">
+            <AppIcon name="ChartBarSquareIcon" color="info" />
             Public
           </span>
-          <span v-if="(studio as any).type || (studio as any).category" class="badge bg-info">
+          <span v-if="(studio as any).type || (studio as any).category" class="badge bg-blue-500">
             {{ (studio as any).type || (studio as any).category }}
           </span>
         </div>
@@ -35,7 +36,7 @@
           :title="isFavorite ? 'Remove from watchlist' : 'Add to watchlist'"
           @click.stop="$emit('toggle-favorite', studio.id)"
         >
-          <AppIcon name="mdi-heart" />
+          <AppIcon name="HeartIcon" />
         </button>
         
         <button 
@@ -44,7 +45,7 @@
           title="Select for comparison"
           @click.stop="$emit('toggle-selection', studio.id)"
         >
-          <AppIcon name="mdi-checkbox-marked-circle" />
+          <AppIcon name="CheckIconbox-marked-circle" />
         </button>
       </div>
     </div>
@@ -61,9 +62,9 @@
     <!-- Studio Info -->
     <div class="studio-info">
       <h3 class="studio-name" :title="studio.name">{{ studio.name }}</h3>
-      <div v-if="studio.dataSource || studio.confidence !== undefined" class="source-row">
+      <div v-if="studio.dataSource || studio.confidence !== undefined" class="source-flex flex-wrap">
         <span v-if="studio.dataSource?.length" class="source-badge" :title="`Sources: ${studio.dataSource.join(', ')}`">
-          <AppIcon name="mdi-database" />
+          <AppIcon name="CircleStackIcon" />
           {{ compactSources(studio.dataSource) }}
         </span>
         <span v-if="studio.confidence !== undefined" class="confidence-badge" :class="confidenceClass(studio.confidence)" :title="`Confidence ${(studio.confidence*100).toFixed(1)}%`">
@@ -72,7 +73,7 @@
       </div>
       
       <div class="studio-location enhanced-location">
-        <AppIcon name="mdi-map-marker" class="location-icon" />
+        <AppIcon name="MapPinIcon" class="location-icon" />
         <span class="location-text">{{ studio.headquarters || studio.location || 'Location Unknown' }}</span>
       </div>
 
@@ -84,19 +85,19 @@
       <div class="studio-metrics enhanced-metrics">
         <div v-if="studio.founded" class="metric metric-founded">
           <div class="metric-icon-wrapper">
-            <AppIcon name="mdi-calendar" class="metric-icon" />
+            <AppIcon name="CalendarIcon" class="metric-icon" />
           </div>
           <span class="metric-text">Est. {{ studio.founded }}</span>
         </div>
         <div v-if="studio.size" class="metric metric-size">
           <div class="metric-icon-wrapper">
-            <AppIcon name="mdi-account-group" class="metric-icon" />
+            <AppIcon name="UsersIcon" class="metric-icon" />
           </div>
           <span class="metric-text">{{ studio.size }}</span>
         </div>
         <div v-if="studio.games?.length" class="metric metric-games">
           <div class="metric-icon-wrapper">
-            <AppIcon name="mdi-gamepad-variant" context="gaming" class="metric-icon" />
+            <AppIcon name="PuzzlePieceIcon" context="gaming" class="metric-icon" />
           </div>
           <span class="metric-text">{{ studio.games.length }} games</span>
         </div>
@@ -143,7 +144,7 @@
         color="glass" 
         appearance="outlined" 
         size="sm"
-        leading-icon="mdi-information-outline"
+        leading-icon="InformationCircleIcon"
         @click="$emit('view-details', studio)"
       >
         Details
@@ -152,7 +153,7 @@
       <UnifiedButton 
         color="gaming" 
         size="sm"
-        leading-icon="mdi-briefcase-outline"
+        leading-icon="BriefcaseIcon"
         @click="$emit('view-jobs', studio)"
       >
         View Jobs
@@ -162,7 +163,7 @@
         color="cyber"
         appearance="outlined"
         size="sm"
-        leading-icon="mdi-microphone"
+        leading-icon="MicrophoneIcon"
         title="Practice interview for this studio"
         @click="$emit('quick-apply', studio)"
       >
@@ -175,7 +176,7 @@
       <div class="overlay-actions">
         <UnifiedButton 
           color="gaming"
-          leading-icon="mdi-target"
+          leading-icon="EyeIcon"
           @click="$emit('quick-apply', studio)"
         >
           Quick Interview Prep
@@ -186,6 +187,9 @@
 </template>
 
 <script setup lang="ts">
+import { BriefcaseIcon, CalendarIcon, ChartBarSquareIcon, CircleStackIcon, EyeIcon, InformationCircleIcon, MicrophoneIcon, PuzzlePieceIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
@@ -288,7 +292,7 @@ function confidenceClass(c: number) {
     var(--glass-bg) 0%, 
     color-mix(in srgb, var(--color-primary-500) 3%, var(--glass-bg)) 100%
   );
-  border-left: 3px solid color-mix(in srgb, var(--color-primary-500) 60%, transparent);
+  border-l: 3px solid color-mix(in srgb, var(--color-primary-500) 60%, transparent);
 }
 
 .card-header {
@@ -360,10 +364,10 @@ function confidenceClass(c: number) {
 
 .action-btn:hover {
   background: var(--glass-hover-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-color: color-mix(in srgb, var(--color-primary-500) 50%, transparent);
   box-shadow: 
-    var(--shadow-md),
+    var(--shadow-glass),
     0 0 12px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   transform: scale(1.05);
 }
@@ -484,12 +488,12 @@ function confidenceClass(c: number) {
 .studio-name {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   line-height: 1.2;
 }
 
-.source-row {
+.source-flex flex-wrap {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -508,10 +512,10 @@ function confidenceClass(c: number) {
 
 .enhanced-location {
   padding: var(--spacing-2);
-  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+  background: color-mix(in srgb, var(--text-primary-600) 3%, transparent);
   border-radius: var(--radius-md);
   transition: all var(--duration-fast);
-  border: 1px solid color-mix(in srgb, var(--text-primary) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-primary-600) 6%, transparent);
 }
 
 .enhanced-location:hover {
@@ -529,7 +533,7 @@ function confidenceClass(c: number) {
 }
 
 .studio-description {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   line-height: 1.4;
   margin: 0;
@@ -583,7 +587,7 @@ function confidenceClass(c: number) {
 .metric-text {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .metric {
@@ -597,7 +601,7 @@ function confidenceClass(c: number) {
 .section-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -622,7 +626,7 @@ function confidenceClass(c: number) {
   border: 1px solid var(--glass-border);
   border-radius: 999px;
   font-size: 0.75rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .game-tag {
@@ -656,7 +660,7 @@ function confidenceClass(c: number) {
   gap: var(--spacing-2);
   margin-top: var(--spacing-4);
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   position: relative;
   z-index: 3; /* Ensure footer actions remain above hover overlay */
 }

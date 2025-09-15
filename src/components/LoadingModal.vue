@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="loading-modal-title" @keydown.esc.prevent.stop="emitClose">
+  <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="loading-modal-title" class="font-sans" @keydown.esc.prevent.stop="emitClose">
     <div ref="modalEl" class="modal">
       <header class="modal__header">
         <h2 id="loading-modal-title" class="modal__title">{{ title }}</h2>
@@ -87,11 +87,11 @@ watch(() => computedProgress.value, (val) => {
 
 .modal { 
   background: var(--modal-background); 
-  color: var(--text-primary); 
+  color: var(--text-primary-600); 
   border: 1px solid var(--modal-border);
   border-radius: var(--radius-modal); 
   width: min(420px, 92%); 
-  box-shadow: var(--shadow-xl); 
+  box-shadow: var(--shadow-glass-xl); 
   display: flex; 
   flex-direction: column; 
   padding: var(--spacing-4) var(--spacing-5); 
@@ -101,7 +101,7 @@ watch(() => computedProgress.value, (val) => {
   font-size: var(--font-size-lg); 
   margin: 0; 
   font-weight: var(--font-weight-semibold); 
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal__body { 
@@ -133,7 +133,7 @@ watch(() => computedProgress.value, (val) => {
   width: 40px; 
   height: 40px; 
   border: 4px solid var(--border-base); 
-  border-top-color: var(--color-primary-500); 
+  border-t-color: var(--color-primary-500); 
   border-radius: var(--radius-full); 
   animation: spin 1s linear infinite; 
 }

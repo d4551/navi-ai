@@ -1095,18 +1095,47 @@ export const useAppStore = defineStore("app", {
             .catch(() => {});
         } catch {}
 
-        // Load theme from UnifiedStorage if not already set
+        // Load theme from UnifiedStorage if not already set, also check unified theme storage
         try {
-          const themeKey = "navicv-theme";
-          const storedTheme = unifiedStorage.get(themeKey);
-          if (storedTheme && storedTheme.value) {
-            this.settings.theme = storedTheme.value;
+          const legacyThemeKey = "navicv-theme";
+          const unifiedThemeKey = "navi-theme-mode";
+
+          let themeToLoad = null;
+
+          // First try to get from unified theme storage (newer format)
+          try {
+            const unifiedTheme = localStorage.getItem(unifiedThemeKey);
+            if (unifiedTheme) {
+              const parsed = JSON.parse(unifiedTheme);
+              // Convert legacy 'system' to 'auto'
+              themeToLoad = parsed === 'system' ? 'auto' : parsed;
+            }
+          } catch {}
+
+          // Fallback to legacy storage
+          if (!themeToLoad) {
+            const storedTheme = unifiedStorage.get(legacyThemeKey);
+            if (storedTheme && storedTheme.value) {
+              themeToLoad = storedTheme.value === 'system' ? 'auto' : storedTheme.value;
+            }
+          }
+
+          if (themeToLoad) {
+            this.settings.theme = themeToLoad;
+
+            // Sync with unified theme system after loading
+            try {
+              import('@/shared/composables/useUnifiedTheme').then(({ default: useUnifiedTheme }) => {
+                const theme = useUnifiedTheme();
+                theme.syncFromStore(themeToLoad as any);
+              }).catch(() => {});
+            } catch (e) {}
           }
         } catch {
           // Ignore theme loading errors
         }
       } catch (error: any) {
-        console.error("Failed to load data from storage:", error);
+        logger.error("Failed to load data from storage:", error);
         this.setError("network", "Failed to load saved data");
       }
     },
@@ -1380,6 +1409,21 @@ export const useAppStore = defineStore("app", {
 
         this.settings = mergeSettings(this.settings, settings);
 
+        // Sync theme changes with unified theme system
+        if (settings.theme !== undefined) {
+          try {
+            // Import and sync with unified theme composable
+            import('@/shared/composables/useUnifiedTheme').then(({ default: useUnifiedTheme }) => {
+              const theme = useUnifiedTheme();
+              theme.syncFromStore(settings.theme as any);
+            }).catch(() => {
+              // Silently ignore if theme composable is not available
+            });
+          } catch (e) {
+            // Silently ignore sync errors
+          }
+        }
+
         // Ensure geminiApiKey is also saved to localStorage for easy access by AI services
         if (
           settings.geminiApiKey !== undefined &&
@@ -1395,7 +1439,7 @@ export const useAppStore = defineStore("app", {
               localStorage.removeItem("gemini_api_key");
             }
           } catch (e) {
-            console.warn("Failed to save API key to localStorage:", e);
+            logger.warn("Failed to save API key to localStorage:", e);
           }
         }
 
@@ -1433,7 +1477,7 @@ export const useAppStore = defineStore("app", {
           try {
             localStorage.removeItem("gemini_api_key");
           } catch (e) {
-            console.warn("Failed to clear API key from localStorage:", e);
+            logger.warn("Failed to clear API key from localStorage:", e);
           }
         }
 
@@ -1491,7 +1535,7 @@ export const useAppStore = defineStore("app", {
               g.awardXP(5, "chat_message");
               g.updateStreak();
             } catch (e: any) {
-              console.warn("Gamification chat hooks failed:", e);
+              logger.warn("Gamification chat hooks failed:", e);
             }
           }
         }
@@ -1591,7 +1635,7 @@ export const useAppStore = defineStore("app", {
         try {
           statisticsService.recordSavedJob();
         } catch (e: any) {
-          console.warn("Statistics tracking failed for saved job:", e);
+          logger.warn("Statistics tracking failed for saved job:", e);
         }
 
         const g = this._gamify();

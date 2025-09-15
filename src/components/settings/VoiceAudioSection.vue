@@ -1,14 +1,14 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card mb-4" role="region" aria-labelledby="voice-audio-title">
+  <div class="settings-card mb-4" role="region" aria-labelledby="voice-audio-title" class="font-sans">
     <div class="card-header section-header card-header--dense">
       <h5 id="voice-audio-title" class="mb-0">
-        <SoundwaveIconComponent class="me-2 icon-sm" />Voice & Audio Settings
+        <SoundwaveIconComponent class="mr-2 icon-sm" />Voice & Audio Settings
       </h5>
     </div>
     <div class="card-body section-body card-body--dense">
       <!-- Voice Mode Toggle -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
         <div class="form-check form-switch mb-2">
           <input
             id="voice-mode"
@@ -16,7 +16,7 @@
             class="form-check-input"
             type="checkbox"
           />
-          <label class="form-check-label fw-medium" for="voice-mode">
+          <label class="form-check-label font-medium" for="voice-mode">
             Voice Mode (auto‑play assistant responses)
           </label>
         </div>
@@ -26,8 +26,8 @@
         </div>
       </div>
       <!-- Gemini / Google AI API Key -->
-      <div id="gemini-api-key-section" class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="gemini-api-key" class="form-label fw-medium mb-2">Google AI (Gemini) API Key</label>
+      <div id="gemini-api-key-section" class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="gemini-api-key" class="form-label font-medium mb-2">Google AI (Gemini) API Key</label>
         <div class="input-group">
           <input
             id="gemini-api-key"
@@ -47,7 +47,7 @@
             {{ revealApiKey ? 'Hide' : 'Show' }}
           </button>
         </div>
-        <div class="form-text api-key-hint" :class="settings.geminiApiKey ? 'text-success' : 'text-warning'">
+        <div class="form-text api-key-hint" :class="settings.geminiApiKey ? 'text-success-600' : 'text-warning-600'">
           <template v-if="settings.geminiApiKey">API key connected – Gemini real‑time features enabled.</template>
           <template v-else>
             Required to enable Navi AI real‑time voice (TTS / STT). Hot Tip: Get your FREE key at
@@ -57,10 +57,10 @@
       </div>
 
       <!-- TTS Mode Selection -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label class="form-label fw-medium mb-3">Text-to-Speech Engine</label>
-        <div class="row g-2">
-          <div class="col-sm-6">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label class="form-label font-medium mb-3">Text-to-Speech Engine</label>
+        <div class="flex flex-wrap g-2">
+          <div class="flex-1-sm-6">
             <div class="form-check">
               <input
                 id="tts-system"
@@ -71,11 +71,11 @@
               />
               <label class="form-check-label" for="tts-system">
                 <strong>System TTS</strong>
-                <br /><small class="text-muted">Fast, reliable browser voices</small>
+                <br /><small class="text-secondary">Fast, reliable browser voices</small>
               </label>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check">
               <input
                 id="tts-gemini"
@@ -87,7 +87,7 @@
               />
               <label class="form-check-label" for="tts-gemini">
                 <strong>Navi AI Real-time</strong>
-                <br /><small :class="settings.geminiApiKey ? 'text-success' : 'text-muted'">
+                <br /><small :class="settings.geminiApiKey ? 'text-success-600' : 'text-secondary'">
                   {{ settings.geminiApiKey ? (window.api?.audio?.ttsSpeak ? 'Natural AI voice (API key connected)' : 'Browser mode - falls back to system TTS') : 'Natural AI voice (requires API key)' }}
                 </small>
               </label>
@@ -97,10 +97,10 @@
       </div>
 
       <!-- STT Mode Selection -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label class="form-label fw-medium mb-3">Speech-to-Text Engine</label>
-        <div class="row g-2">
-          <div class="col-sm-6">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label class="form-label font-medium mb-3">Speech-to-Text Engine</label>
+        <div class="flex flex-wrap g-2">
+          <div class="flex-1-sm-6">
             <div class="form-check">
               <input
                 id="stt-system"
@@ -111,11 +111,11 @@
               />
               <label class="form-check-label" for="stt-system">
                 <strong>System STT</strong>
-                <br /><small class="text-muted">Built‑in browser recognition</small>
+                <br /><small class="text-secondary">Built‑in browser recognition</small>
               </label>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check">
               <input
                 id="stt-gemini"
@@ -127,7 +127,7 @@
               />
               <label class="form-check-label" for="stt-gemini">
                 <strong>Navi AI Realtime</strong>
-                <br /><small :class="settings.geminiApiKey ? 'text-success' : 'text-muted'">
+                <br /><small :class="settings.geminiApiKey ? 'text-success-600' : 'text-secondary'">
                   {{ settings.geminiApiKey ? (window.api?.audio?.sttTranscribe ? 'Cloud transcription (API key connected)' : 'Browser mode - using system STT') : 'Cloud transcription (requires API key)' }}
                 </small>
               </label>
@@ -137,9 +137,9 @@
       </div>
 
       <!-- Audio Device Configuration -->
-      <div class="row g-3">
-        <div class="col-lg-6">
-          <label for="microphone-device" class="form-label fw-medium">Microphone Device</label>
+      <div class="flex flex-wrap g-3">
+        <div class="flex-1-lg-6">
+          <label for="microphone-device" class="form-label font-medium">Microphone Device</label>
           <div class="input-group">
             <select
               id="microphone-device"
@@ -165,7 +165,7 @@
               aria-label="Refresh microphone list"
               variant="outline"
               size="sm"
-              icon="mdi-refresh"
+              icon="ArrowPathIcon"
               @click="$emit('load-audio-devices')"
             />
           </div>
@@ -180,8 +180,8 @@
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <label for="voice-lang" class="form-label fw-medium">Speech Recognition Language</label>
+        <div class="flex-1-lg-6">
+          <label for="voice-lang" class="form-label font-medium">Speech Recognition Language</label>
           <select
             id="voice-lang"
             v-model="settings.voiceLang"
@@ -200,9 +200,9 @@
 
         <div
           v-show="settings.ttsProvider === 'system'"
-          class="col-12"
+          class="flex-1-12"
         >
-          <label for="tts-voice" class="form-label fw-medium">System Voice</label>
+          <label for="tts-voice" class="form-label font-medium">System Voice</label>
           <select
             id="tts-voice"
             v-model="settings.ttsVoice"
@@ -228,8 +228,8 @@
 
       <!-- Advanced Voice Settings -->
       <div class="mt-3">
-        <div class="row g-3">
-          <div class="col-sm-6">
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="voice-ptt"
@@ -246,7 +246,7 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="voice-handsfree"
@@ -264,7 +264,7 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="chat-cues-muted-audio"
@@ -289,6 +289,8 @@
 </template>
 
 <script>
+import { ArrowPathIcon } from '@heroicons/vue/24/outline'
+
 import { watch } from 'vue';
 
 import {

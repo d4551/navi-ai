@@ -6,6 +6,7 @@
     :disabled="disabled"
     :tabindex="interactive && !disabled ? 0 : -1"
     role="group"
+    class="font-sans"
     @click="handleClick"
     @keydown="handleKeydown"
   >
@@ -34,7 +35,7 @@
     <!-- Loading Overlay -->
     <div v-if="loading" class="unified-card-loading">
       <div class="unified-card-spinner">
-        <AppIcon name="mdi-loading" class="spin" />
+        <AppIcon name="ArrowPathIcon" class="spin" />
       </div>
     </div>
 
@@ -47,6 +48,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon } from '@heroicons/vue/24/outline'
+
 import { computed, useSlots } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -179,11 +182,11 @@ const handleKeydown = (event: KeyboardEvent) => {
 }
 
 .unified-card--elevation-medium {
-  box-shadow: var(--shadow-md); /* Map to design system shadow */
+  box-shadow: var(--shadow-glass); /* Map to design system shadow */
 }
 
 .unified-card--elevation-high {
-  box-shadow: var(--shadow-lg); /* Map to design system shadow */
+  box-shadow: var(--shadow-glass-lg); /* Map to design system shadow */
 }
 
 /* Interactive States */
@@ -194,14 +197,14 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 .unified-card--interactive:hover:not(.unified-card--disabled) {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg); /* Use design system shadow */
+  box-shadow: var(--shadow-glass-lg); /* Use design system shadow */
   border-color: var(--glass-border-strong); /* Use design system variable */
 }
 
 .unified-card--interactive:focus-visible {
   outline: 3px solid var(--color-primary-400); /* Use design system variable */
   outline-offset: 2px;
-  box-shadow: var(--shadow-md), 0 0 0 3px var(--color-primary-200); /* Enhanced focus shadow */
+  box-shadow: var(--shadow-glass), 0 0 0 3px var(--color-primary-200); /* Enhanced focus shadow */
 }
 
 .unified-card--interactive:active:not(.unified-card--disabled) {
@@ -278,11 +281,11 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 /* Job Variant */
 .unified-card--job {
-  border-left: 4px solid var(--color-primary-500); /* Use design system variable */
+  border-l: 4px solid var(--color-primary-500); /* Use design system variable */
 }
 
 .unified-card--job:hover {
-  border-left-color: var(--color-primary-600); /* Use design system variable */
+  border-l-color: var(--color-primary-600); /* Use design system variable */
 }
 
 /* Dashboard Variant */
@@ -318,13 +321,13 @@ const handleKeydown = (event: KeyboardEvent) => {
   background: var(--glass-surface-elevated); /* Use design system variable */
   backdrop-filter: var(--glass-backdrop-blur-strong); /* Use design system variable */
   -webkit-backdrop-filter: var(--glass-backdrop-blur-strong); /* Use design system variable */
-  box-shadow: var(--glass-shadow-lg); /* Use design system variable */
+  box-shadow: var(--glass-shadow-glass-lg); /* Use design system variable */
 }
 
 /* Elevated Variant */
 .unified-card--elevated {
   background: var(--glass-surface-elevated); /* Use design system variable */
-  box-shadow: var(--glass-shadow-xl); /* Use design system variable */
+  box-shadow: var(--glass-shadow-glass-xl); /* Use design system variable */
 }
 
 /* ============================================
@@ -337,7 +340,7 @@ const handleKeydown = (event: KeyboardEvent) => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-md) var(--spacing-lg); /* Use design system variables */
-  border-bottom: 1px solid var(--glass-border); /* Use design system variable */
+  border-b: 1px solid var(--glass-border); /* Use design system variable */
   background: var(--glass-surface-elevated); /* Use design system variable */
   min-height: 60px;
 }
@@ -357,7 +360,7 @@ const handleKeydown = (event: KeyboardEvent) => {
   margin: 0;
   font-size: var(--font-size-lg); /* Use design system variable */
   font-weight: var(--font-weight-semibold); /* Use design system variable */
-  color: var(--text-primary); /* Use design system variable */
+  color: var(--text-primary-600); /* Use design system variable */
 }
 
 .unified-card-header-actions {
@@ -370,7 +373,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 .unified-card-content {
   flex: 1;
   padding: var(--spacing-lg); /* Use design system variable */
-  color: var(--text-primary); /* Use design system variable */
+  color: var(--text-primary-600); /* Use design system variable */
 }
 
 .unified-card-content--xs {
@@ -392,7 +395,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 /* Footer */
 .unified-card-footer {
   padding: var(--spacing-md) var(--spacing-lg); /* Use design system variables */
-  border-top: 1px solid var(--glass-border); /* Use design system variable */
+  border-t: 1px solid var(--glass-border); /* Use design system variable */
   background: var(--glass-surface-elevated); /* Use design system variable */
   display: flex;
   align-items: center;
@@ -406,7 +409,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 /* Gaming Header */
 .unified-card-header--gaming {
   background: linear-gradient(135deg, var(--color-gaming-500), var(--color-cyber-500)); /* Use design system variables */
-  border-bottom-color: var(--glass-border-gaming); /* Use design system variable */
+  border-b-color: var(--glass-border-gaming); /* Use design system variable */
   color: var(--text-on-primary); /* Use design system variable */
 }
 
@@ -429,7 +432,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 .unified-card-header--studio {
   background: var(--glass-bg-medium); /* Use design system variable */
   backdrop-filter: var(--glass-backdrop-blur-light); /* Use design system variable */
-  border-bottom-color: var(--glass-border-light); /* Use design system variable */
+  border-b-color: var(--glass-border-light); /* Use design system variable */
 }
 
 /* ============================================
@@ -471,22 +474,22 @@ const handleKeydown = (event: KeyboardEvent) => {
 [data-theme="dark"] .unified-card {
   background: var(--glass-surface); /* Use design system variable */
   border-color: var(--glass-border); /* Use design system variable */
-  box-shadow: var(--shadow-md); /* Use design system variable */
+  box-shadow: var(--shadow-glass); /* Use design system variable */
 }
 
 [data-theme="dark"] .unified-card--interactive:hover:not(.unified-card--disabled) {
-  box-shadow: var(--shadow-lg); /* Use design system variable */
+  box-shadow: var(--shadow-glass-lg); /* Use design system variable */
   border-color: var(--glass-border-strong); /* Use design system variable */
 }
 
 [data-theme="dark"] .unified-card-header {
   background: var(--glass-surface-elevated); /* Use design system variable */
-  border-bottom-color: var(--glass-border); /* Use design system variable */
+  border-b-color: var(--glass-border); /* Use design system variable */
 }
 
 [data-theme="dark"] .unified-card-footer {
   background: var(--glass-surface-elevated); /* Use design system variable */
-  border-top-color: var(--glass-border); /* Use design system variable */
+  border-t-color: var(--glass-border); /* Use design system variable */
 }
 
 /* ============================================

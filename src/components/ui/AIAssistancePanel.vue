@@ -1,9 +1,9 @@
 <template>
-  <div class="ai-assistance-panel section-card">
+  <div class="ai-assistance-panel section-card" class="font-sans">
     <div class="ai-panel-header">
       <div class="ai-title-group">
         <div class="ai-icon">
-          <AppIcon name="mdi-brain" size="20" />
+          <AppIcon name="CpuChipIcon" size="20" />
         </div>
         <div class="ai-content">
           <h4 class="ai-title">{{ title }}</h4>
@@ -86,7 +86,7 @@
             <UnifiedButton
               variant="ghost"
               size="xs"
-              icon="mdi-close"
+              icon="XMarkIcon"
               @click="$emit('dismiss-suggestion', suggestion)"
             />
           </div>
@@ -120,6 +120,8 @@
 </template>
 
 <script setup>
+import { CpuChipIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import UnifiedButton from './UnifiedButton.vue'
 import AppIcon from './AppIcon.vue'
 
@@ -134,7 +136,7 @@ defineProps({
   },
   primaryAction: {
     type: Object,
-    default: () => ({ label: 'Generate', icon: 'mdi-magic-staff' })
+    default: () => ({ label: 'Generate', icon: 'SparklesIcon-staff' })
   },
   secondaryActions: {
     type: Array,
@@ -225,13 +227,13 @@ defineEmits([
 .ai-title {
   font-weight: 600;
   font-size: 1rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
 .ai-subtitle {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin: 0;
   line-height: 1.4;
 }
@@ -261,13 +263,13 @@ defineEmits([
 .suggestions-title {
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
 .suggestions-count {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   background: var(--surface-container);
   padding: 2px 6px;
   border-radius: var(--radius-full);
@@ -304,7 +306,7 @@ defineEmits([
 .suggestion-text {
   font-size: 0.875rem;
   line-height: 1.5;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
@@ -313,7 +315,7 @@ defineEmits([
   align-items: center;
   gap: var(--spacing-2);
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .suggestion-category {
@@ -337,7 +339,7 @@ defineEmits([
 .token-helper {
   margin-top: var(--spacing-4);
   padding-top: var(--spacing-3);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .token-header {
@@ -346,7 +348,7 @@ defineEmits([
 
 .token-label {
   font-size: 0.8125rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -378,7 +380,7 @@ defineEmits([
 .ai-custom-content {
   margin-top: var(--spacing-4);
   padding-top: var(--spacing-3);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 /* Dark theme adjustments */
@@ -389,7 +391,7 @@ defineEmits([
 
 [data-theme='dark'] .suggestion-card {
   background: rgba(var(--surface-glass-rgb), 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--glass-border);
 }
 
 [data-theme='dark'] .suggestion-card:hover {

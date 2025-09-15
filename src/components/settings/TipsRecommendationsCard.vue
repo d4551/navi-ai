@@ -1,16 +1,16 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="card h-100" role="complementary" aria-labelledby="tips-title">
+  <div class="card h-100" role="complementary" aria-labelledby="tips-title" class="font-sans">
     <div class="card-header section-header card-header--dense">
       <h6 id="tips-title" class="mb-0">
-        <LightbulbIconComponent class="me-2 icon-sm" />Tips & Recommendations
+        <LightbulbIconComponent class="mr-2 icon-sm" />Tips & Recommendations
       </h6>
     </div>
     <div class="card-body section-body card-body--dense">
       <!-- Current Tip -->
       <div v-if="currentTip" class="current-tip mb-4">
-        <div class="tip-header d-flex align-items-start">
-          <div class="tip-icon me-3">
+        <div class="tip-header flex items-start">
+          <div class="tip-icon mr-3">
             <component :is="currentTip.icon" />
           </div>
           <div class="tip-content flex-grow-1">
@@ -33,12 +33,12 @@
       </div>
 
       <!-- Tip Navigation -->
-      <div class="tip-navigation d-flex justify-content-between align-items-center mb-4">
+      <div class="tip-navigation flex justify-between items-center mb-4">
         <IconButton
           type="button"
           :disabled="currentTipIndex === 0"
           aria-label="Previous tip"
-          icon="mdi-chevron-left"
+          icon="ChevronLeftIcon"
           variant="outline"
           size="sm"
           @click="previousTip"
@@ -61,7 +61,7 @@
           type="button"
           :disabled="currentTipIndex === tips.length - 1"
           aria-label="Next tip"
-          icon="mdi-chevron-right"
+          icon="ChevronRightIcon"
           variant="outline"
           size="sm"
           @click="nextTip"
@@ -91,7 +91,7 @@
       </div>
 
       <!-- Recommendations -->
-      <div class="recommendations mt-4 pt-3 border-top">
+      <div class="recommendations mt-4 pt-3 border-t">
         <h6 class="section-title mb-3">Recommendations</h6>
         <div class="recommendations-list">
           <div
@@ -126,6 +126,8 @@
 </template>
 
 <script>
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
+
 import { computed } from 'vue';
 
 import {
@@ -219,7 +221,7 @@ export default {
 .tip-title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.5rem;
 }
 
@@ -244,7 +246,7 @@ export default {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--text-muted);
+  background: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -257,7 +259,7 @@ export default {
 .section-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -305,7 +307,7 @@ export default {
 .quick-tip-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.125rem;
 }
 
@@ -317,7 +319,7 @@ export default {
 
 .quick-tip-arrow {
   flex-shrink: 0;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-left: 0.5rem;
 }
 
@@ -364,7 +366,7 @@ export default {
 .recommendation-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.125rem;
 }
 

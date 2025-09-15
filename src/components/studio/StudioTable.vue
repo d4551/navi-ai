@@ -1,39 +1,39 @@
 <template>
-  <div class="studio-table">
+  <div class="studio-table" class="font-sans">
     <table class="table-responsive">
       <thead>
         <tr>
-          <th class="col-select">
+          <th class="flex-1-select">
             <input 
               type="checkbox" 
               :checked="allSelected" 
               @change="toggleAllSelection"
             />
           </th>
-          <th class="col-studio" @click="$emit('sort', 'name')">
+          <th class="flex-1-studio" @click="$emit('sort', 'name')">
             Studio
-            <AppIcon name="mdi-sort" class="sort-icon" />
+            <AppIcon name="Bars3BottomLeftIcon" class="sort-icon" />
           </th>
-          <th class="col-location" @click="$emit('sort', 'location')">
+          <th class="flex-1-location" @click="$emit('sort', 'location')">
             Location
-            <AppIcon name="mdi-sort" class="sort-icon" />
+            <AppIcon name="Bars3BottomLeftIcon" class="sort-icon" />
           </th>
-          <th class="col-type" @click="$emit('sort', 'type')">
+          <th class="flex-1-type" @click="$emit('sort', 'type')">
             Type
           </th>
-          <th class="col-size" @click="$emit('sort', 'size')">
+          <th class="flex-1-size" @click="$emit('sort', 'size')">
             Size
           </th>
-          <th class="col-founded" @click="$emit('sort', 'founded')">
+          <th class="flex-1-founded" @click="$emit('sort', 'founded')">
             Founded
           </th>
-          <th class="col-games">
+          <th class="flex-1-games">
             Games
           </th>
-          <th class="col-ai-score" @click="$emit('sort', 'aiScore')">
+          <th class="flex-1-ai-score" @click="$emit('sort', 'aiScore')">
             AI Score
           </th>
-          <th class="col-actions">
+          <th class="flex-1-actions">
             Actions
           </th>
         </tr>
@@ -42,20 +42,20 @@
         <tr 
           v-for="studio in studios" 
           :key="studio.id"
-          class="studio-row"
+          class="studio-flex flex-wrap"
           :class="{ 
-            'row-selected': selectedStudios.includes(studio.id),
-            'row-favorite': favoriteStudios.includes(studio.id)
+            'flex flex-wrap-selected': selectedStudios.includes(studio.id),
+            'flex flex-wrap-favorite': favoriteStudios.includes(studio.id)
           }"
         >
-          <td class="col-select">
+          <td class="flex-1-select">
             <input 
               type="checkbox" 
               :checked="selectedStudios.includes(studio.id)"
               @change="$emit('toggle-selection', studio.id)"
             />
           </td>
-          <td class="col-studio">
+          <td class="flex-1-studio">
             <div class="studio-cell">
               <div class="studio-logo">
                 <img v-if="studio.logo" :src="studio.logo" :alt="studio.name" @error="onLogoError" />
@@ -69,21 +69,21 @@
               </div>
             </div>
           </td>
-          <td class="col-location">
+          <td class="flex-1-location">
             {{ studio.headquarters || studio.location || 'Unknown' }}
           </td>
-          <td class="col-type">
+          <td class="flex-1-type">
             <span v-if="(studio as any).type || (studio as any).category" class="type-badge">
               {{ (studio as any).type || (studio as any).category }}
             </span>
           </td>
-          <td class="col-size">
+          <td class="flex-1-size">
             {{ studio.size || 'Unknown' }}
           </td>
-          <td class="col-founded">
+          <td class="flex-1-founded">
             {{ studio.founded || 'Unknown' }}
           </td>
-          <td class="col-games">
+          <td class="flex-1-games">
             <div v-if="studio.games?.length" class="games-preview">
               {{ studio.games.slice(0, 2).join(', ') }}
               <span v-if="studio.games.length > 2" class="more-count">
@@ -91,27 +91,27 @@
               </span>
             </div>
           </td>
-          <td class="col-ai-score">
+          <td class="flex-1-ai-score">
             <div v-if="aiScores && aiScores[studio.id] !== undefined" class="ai-score-cell">
               <div class="score-indicator" :class="getScoreClass(aiScores[studio.id])">
                 {{ Math.round(aiScores[studio.id]) }}
               </div>
             </div>
           </td>
-          <td class="col-actions">
+          <td class="flex-1-actions">
             <div class="action-buttons">
               <button 
                 class="action-btn favorite-btn"
                 :class="{ active: favoriteStudios.includes(studio.id) }"
                 @click="$emit('toggle-favorite', studio.id)"
               >
-                <AppIcon name="mdi-heart" />
+                <AppIcon name="HeartIcon" />
               </button>
               <button 
                 class="action-btn details-btn"
                 @click="$emit('view-details', studio)"
               >
-                <AppIcon name="mdi-information-outline" />
+                <AppIcon name="InformationCircleIcon" />
               </button>
             </div>
           </td>
@@ -122,6 +122,9 @@
 </template>
 
 <script setup lang="ts">
+import { Bars3BottomLeftIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon } from '@heroicons/vue/24/solid'
+
 import { computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -190,9 +193,9 @@ function getScoreClass(score: number): string {
 th {
   padding: var(--spacing-4);
   background: var(--glass-bg);
-  border-bottom: 2px solid var(--glass-border);
+  border-b: 2px solid var(--glass-border);
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-align: left;
   cursor: pointer;
   user-select: none;
@@ -210,24 +213,24 @@ th:hover {
 
 td {
   padding: var(--spacing-3) var(--spacing-4);
-  border-bottom: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  border-b: 1px solid var(--glass-border);
+  color: var(--text-primary-600);
 }
 
-.studio-row {
+.studio-flex flex-wrap {
   transition: background-color 0.2s ease;
 }
 
-.studio-row:hover {
+.studio-flex flex-wrap:hover {
   background: color-mix(in srgb, var(--color-primary-500) 3%, var(--glass-surface));
 }
 
-.studio-row.row-selected {
+.studio-flex flex-wrap.flex flex-wrap-selected {
   background: color-mix(in srgb, var(--color-primary-500) 8%, var(--glass-surface));
 }
 
-.studio-row.row-favorite {
-  border-left: 4px solid var(--color-error-500);
+.studio-flex flex-wrap.flex flex-wrap-favorite {
+  border-l: 4px solid var(--color-error-500);
 }
 
 .studio-cell {
@@ -266,7 +269,7 @@ td {
 
 .studio-name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
@@ -348,7 +351,7 @@ td {
 
 .action-btn:hover {
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .favorite-btn.active {
@@ -358,15 +361,15 @@ td {
 }
 
 /* Column widths */
-.col-select { width: 50px; text-align: center; }
-.col-studio { min-width: 250px; }
-.col-location { min-width: 150px; }
-.col-type { width: 100px; }
-.col-size { width: 120px; }
-.col-founded { width: 100px; }
-.col-games { min-width: 200px; }
-.col-ai-score { width: 100px; text-align: center; }
-.col-actions { width: 100px; text-align: center; }
+.flex-1-select { width: 50px; text-align: center; }
+.flex-1-studio { min-width: 250px; }
+.flex-1-location { min-width: 150px; }
+.flex-1-type { width: 100px; }
+.flex-1-size { width: 120px; }
+.flex-1-founded { width: 100px; }
+.flex-1-games { min-width: 200px; }
+.flex-1-ai-score { width: 100px; text-align: center; }
+.flex-1-actions { width: 100px; text-align: center; }
 
 /* Dark theme adjustments */
 [data-theme="dark"] th {

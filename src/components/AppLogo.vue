@@ -1,5 +1,5 @@
 <template>
-  <img :src="logoSrc" :alt="altText" class="app-logo" />
+  <img :src="logoSrc" :alt="altText" class="app-logo font-sans">
 </template>
 
 <script setup>

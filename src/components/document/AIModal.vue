@@ -1,19 +1,19 @@
 <template>
-  <div v-if="show" class="ai-modal-overlay" @click="handleOverlayClick">
+  <div v-if="show" class="ai-modal-overlay" class="font-sans" @click="handleOverlayClick">
     <div class="ai-modal" :class="{ 'full-width': isAnalyzing }">
       <div class="modal-header">
         <div class="header-content">
-          <AppIcon name="mdi-brain" size="20" />
+          <AppIcon name="CpuChipIcon" size="20" />
           <h3 class="modal-title">AI Assistant</h3>
           <div v-if="aiProcessing" class="processing-indicator">
-            <AppIcon name="mdi-loading" size="16" class="spinning" />
+            <AppIcon name="ArrowPathIcon" size="16" class="spinning" />
             <span>Processing...</span>
           </div>
         </div>
         <UnifiedButton
           variant="ghost"
           size="sm"
-          leading-icon="mdi-close"
+          leading-icon="XMarkIcon"
           @click="$emit('close')"
         />
       </div>
@@ -22,7 +22,7 @@
         <!-- Context Display -->
         <div v-if="context" class="context-section">
           <div class="context-header">
-            <AppIcon name="mdi-information-outline" />
+            <AppIcon name="InformationCircleIcon" />
             <span>Context: {{ contextTypeLabel }}</span>
           </div>
           <div class="context-preview">
@@ -33,14 +33,14 @@
         <!-- AI Analysis Results -->
         <div v-if="analysisResults" class="analysis-section">
           <h4 class="section-title">
-            <AppIcon name="mdi-chart-line" />
+            <AppIcon name="ChartBarIcon" />
             Analysis Results
           </h4>
           
           <div class="results-grid">
             <div class="result-card">
               <div class="result-header">
-                <AppIcon name="mdi-target" />
+                <AppIcon name="EyeIcon" />
                 <span>ATS Compatibility</span>
               </div>
               <div class="result-score" :class="getScoreClass(analysisResults.atsScore)">
@@ -53,7 +53,7 @@
 
             <div class="result-card">
               <div class="result-header">
-                <AppIcon name="mdi-key-variant" />
+                <AppIcon name="KeyIcon-variant" />
                 <span>Keyword Match</span>
               </div>
               <div class="result-score" :class="getScoreClass(analysisResults.keywordMatch)">
@@ -82,7 +82,7 @@
         <!-- AI Suggestions -->
         <div v-if="suggestions.length" class="suggestions-section">
           <h4 class="section-title">
-            <AppIcon name="mdi-lightbulb-outline" />
+            <AppIcon name="LightBulbIcon-outline" />
             AI Suggestions
           </h4>
           
@@ -111,7 +111,7 @@
                     Apply
                   </UnifiedButton>
                   <span v-else class="applied-indicator">
-                    <AppIcon name="mdi-check" size="14" />
+                    <AppIcon name="CheckIcon" size="14" />
                     Applied
                   </span>
                 </div>
@@ -142,7 +142,7 @@
             >
               <div class="message-avatar">
                 <AppIcon 
-                  :name="message.role === 'user' ? 'mdi-account' : 'mdi-brain'" 
+                  :name="message.role === 'user' ? 'UserIcon' : 'mdi-brain'" 
                   size="16"
                 />
               </div>
@@ -165,7 +165,7 @@
             <UnifiedButton
               variant="primary"
               size="sm"
-              leading-icon="mdi-send"
+              leading-icon="PaperAirplaneIcon"
               :disabled="!chatInput.trim() || aiProcessing"
               :loading="aiProcessing"
               @click="sendChatMessage"
@@ -178,7 +178,7 @@
         <!-- Quick Actions -->
         <div class="quick-actions">
           <h4 class="section-title">
-            <AppIcon name="mdi-lightning-bolt" />
+            <AppIcon name="BoltIcon-bolt" />
             Quick Actions
           </h4>
           
@@ -186,7 +186,7 @@
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-auto-fix"
+              leading-icon="SparklesIcon"
               :disabled="aiProcessing"
               @click="improveContent"
             >
@@ -195,7 +195,7 @@
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-target"
+              leading-icon="EyeIcon"
               :disabled="aiProcessing"
               @click="optimizeForJob"
             >
@@ -213,7 +213,7 @@
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-chart-line"
+              leading-icon="ChartBarIcon"
               :disabled="aiProcessing"
               @click="analyzeDocument"
             >
@@ -252,6 +252,8 @@
 </template>
 
 <script setup lang="ts">
+import { ChartBarIcon, CheckIcon, CpuChipIcon, EyeIcon, InformationCircleIcon, PaperAirplaneIcon, SparklesIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { useToast } from '@/composables/useToast'
 import { ai } from '@/shared/ai/canonical'
@@ -342,10 +344,10 @@ const getSuggestionIcon = (type: string) => {
     'experience': 'mdi-briefcase-outline',
     'skills': 'mdi-cog-outline',
     'format': 'mdi-format-text',
-    'keywords': 'mdi-key-variant',
-    'general': 'mdi-lightbulb-outline'
+    'keywords': 'KeyIcon-variant',
+    'general': 'LightBulbIcon-outline'
   }
-  return icons[type as keyof typeof icons] || 'mdi-lightbulb-outline'
+  return icons[type as keyof typeof icons] || 'LightBulbIcon-outline'
 }
 
 const applySuggestion = (suggestion: any) => {
@@ -611,7 +613,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-5);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-gaming-50) 100%);
 }
 
@@ -624,7 +626,7 @@ onMounted(() => {
 .modal-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -686,7 +688,7 @@ onMounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
 }
 
@@ -782,7 +784,7 @@ onMounted(() => {
 
 .suggestion-type {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-transform: capitalize;
 }
 
@@ -831,7 +833,7 @@ onMounted(() => {
 }
 
 .suggestion-text {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
 }
 
@@ -864,11 +866,11 @@ onMounted(() => {
 }
 
 .chat-message.assistant {
-  flex-direction: row;
+  flex-direction: flex flex-wrap;
 }
 
 .chat-message.user {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 .message-avatar {
@@ -945,7 +947,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4) var(--spacing-5);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--surface-base);
 }
 

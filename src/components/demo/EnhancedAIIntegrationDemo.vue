@@ -6,32 +6,32 @@
 -->
 
 <template>
-  <div class="ai-integration-demo">
+  <div class="ai-integration-demo" class="font-sans">
     <!-- Service Status Dashboard -->
     <div class="status-dashboard">
       <h2>AI Services Status</h2>
       <div class="status-grid">
         <div class="status-card" :class="{ 'healthy': healthStatus.aiService }">
           <h3>Core AI Service</h3>
-          <span class="status-indicator">{{ healthStatus.aiService ? '✅' : '❌' }}</span>
+          <span class="status-indicator">{{ healthStatus.aiService ? 'CheckIcon' : 'XMarkIcon' }}</span>
           <p>{{ isAIReady ? 'Ready' : 'Disconnected' }}</p>
         </div>
         
         <div class="status-card" :class="{ 'healthy': healthStatus.realTimeService }">
           <h3>Real-time Service</h3>
-          <span class="status-indicator">{{ healthStatus.realTimeService ? '✅' : '❌' }}</span>
+          <span class="status-indicator">{{ healthStatus.realTimeService ? 'CheckIcon' : 'XMarkIcon' }}</span>
           <p>{{ isRealTimeActive ? 'Active' : 'Inactive' }}</p>
         </div>
         
         <div class="status-card" :class="{ 'healthy': healthStatus.multimodalService }">
           <h3>Multimodal Service</h3>
-          <span class="status-indicator">{{ healthStatus.multimodalService ? '✅' : '❌' }}</span>
+          <span class="status-indicator">{{ healthStatus.multimodalService ? 'CheckIcon' : 'XMarkIcon' }}</span>
           <p>{{ realTimeState.isConnected ? 'Connected' : 'Disconnected' }}</p>
         </div>
       </div>
       
       <div v-if="healthStatus.overall !== 'healthy'" class="health-warning">
-        ⚠️ System Status: {{ healthStatus.overall }}
+        ExclamationTriangleIcon System Status: {{ healthStatus.overall }}
         <button class="reconnect-btn" @click="reconnectServices">
           Reconnect Services
         </button>
@@ -57,7 +57,7 @@
       </div>
       
       <div v-if="operationState.error" class="error-container">
-        <h3>❌ Error</h3>
+        <h3>XMarkIcon Error</h3>
         <p>{{ operationState.error }}</p>
         <button class="clear-error-btn" @click="clearError">Clear</button>
       </div>
@@ -74,7 +74,7 @@
           class="media-btn audio-btn"
           @click="toggleAudio"
         >
-          <span class="icon">🎤</span>
+          <span class="icon">MicrophoneIcon</span>
           {{ realTimeState.isStreaming ? 'Stop Audio' : 'Start Audio' }}
         </button>
         
@@ -84,7 +84,7 @@
           class="media-btn video-btn"
           @click="toggleVideo"
         >
-          <span class="icon">📹</span>
+          <span class="icon">VideoCameraIcon</span>
           {{ realTimeState.videoActive ? 'Stop Video' : 'Start Video' }}
         </button>
         
@@ -206,6 +206,8 @@
 </template>
 
 <script setup lang="ts">
+import { XMarkIcon, CheckIcon, ExclamationTriangleIcon, MicrophoneIcon, VideoCameraIcon, CameraIcon } from '@heroicons/vue/24/outline'
+
 import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { useAIUI } from '@/shared/services/AIUIIntegrationService';
 import { logger } from '@/shared/utils/logger';

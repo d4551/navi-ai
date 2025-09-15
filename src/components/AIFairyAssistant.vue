@@ -105,7 +105,7 @@
           aria-hidden="true"
         >
           <div class="indicator-icon">
-            <AppIcon :name="getIcon('mdi-microphone','mdi-microphone')" :size="getIconSize()" :color="getIconColor()" />
+            <AppIcon :name="getIcon('MicrophoneIcon','MicrophoneIcon')" :size="getIconSize()" :color="getIconColor()" />
           </div>
           <div class="voice-waves">
             <div
@@ -184,7 +184,7 @@
       >
         <div class="message-text message-text--empty" role="status" aria-live="polite">
           Ready to help!
-          <span class="fairy-emoji"><AppIcon name="mdi-auto-fix" /></span>
+          <span class="fairy-emoji"><AppIcon name="SparklesIcon" /></span>
         </div>
       </div>
 
@@ -228,7 +228,7 @@
             <div class="message-avatar">🤖</div>
             <div class="message-content">
               <div class="message-bubble">
-                Hi! I'm NAVI, your AI career fairy! ✨ I can help with resumes, job searches, interviews, and more. What would you like to work on today?
+                Hi! I'm NAVI, your AI career fairy! SparklesIcon I can help with resumes, job searches, interviews, and more. What would you like to work on today?
               </div>
               <span class="message-time">Just now</span>
             </div>
@@ -236,7 +236,7 @@
 
           <!-- User Message Example -->
           <div class="message message-user">
-            <div class="message-avatar">👤</div>
+            <div class="message-avatar">UserIcon</div>
             <div class="message-content">
               <div class="message-bubble">
                 I need help preparing for a gaming industry interview
@@ -267,9 +267,9 @@
         <!-- Quick Replies -->
         <div class="quick-replies">
           <button class="quick-reply">📝 Build Resume</button>
-          <button class="quick-reply">🔍 Find Jobs</button>
+          <button class="quick-reply">MagnifyingGlassIcon Find Jobs</button>
           <button class="quick-reply">💼 Interview Tips</button>
-          <button class="quick-reply">🎮 Gaming Skills</button>
+          <button class="quick-reply">DevicePhoneMobileIcon Gaming Skills</button>
         </div>
 
         <!-- Input Container -->
@@ -278,7 +278,7 @@
           <div class="primary-input-area">
             <textarea class="text-input" placeholder="Ask NAVI anything..." rows="1"></textarea>
             <div class="input-actions">
-              <button class="control-btn" title="Upload file">📎</button>
+              <button class="control-btn" title="Upload file">PaperClipIcon</button>
               <button class="send-btn">➤</button>
             </div>
           </div>
@@ -286,13 +286,13 @@
           <!-- Secondary Controls -->
           <div class="secondary-controls">
             <div class="control-group media-controls">
-              <button class="control-btn active" title="Text-to-speech">🔊</button>
-              <button class="control-btn" title="Voice input">🎤</button>
-              <button class="control-btn" title="Video call">📹</button>
+              <button class="control-btn active" title="Text-to-speech">SpeakerWaveIcon</button>
+              <button class="control-btn" title="Voice input">MicrophoneIcon</button>
+              <button class="control-btn" title="Video call">VideoCameraIcon</button>
               <button class="control-btn" title="Screen capture">📸</button>
             </div>
             <div class="control-group ai-controls">
-              <button class="control-btn" title="AI suggestions">✨</button>
+              <button class="control-btn" title="AI suggestions">SparklesIcon</button>
             </div>
           </div>
         </div>
@@ -323,7 +323,7 @@
         <div class="camera-header">
           <h3 id="camera-modal-title">Camera Input</h3>
           <button class="glass-btn" @click="closeCameraModal">
-            <AppIcon :name="getIcon('mdi-close','mdi-close')" :size="getIconSize()" />
+            <AppIcon :name="getIcon('XMarkIcon','XMarkIcon')" :size="getIconSize()" />
           </button>
         </div>
         <div class="camera-content">
@@ -331,7 +331,7 @@
           <canvas ref="cameraCanvas" style="display: none"></canvas>
           <div class="camera-controls">
             <button class="glass-btn ai-powered" @click="captureImage">
-              <AppIcon :name="getIcon('mdi-camera','mdi-camera')" :size="getIconSize()" />
+              <AppIcon :name="getIcon('CameraIcon','CameraIcon')" :size="getIconSize()" />
               Capture & Analyze
             </button>
           </div>
@@ -358,11 +358,11 @@
             Voice & TTS Settings
           </h3>
           <button class="glass-btn" aria-label="Close settings" @click="showTTSModal = false">
-            <AppIcon :name="getIcon('mdi-close','mdi-close')" :size="getIconSize()" />
+            <AppIcon :name="getIcon('XMarkIcon','XMarkIcon')" :size="getIconSize()" />
           </button>
         </div>
         <div class="settings-modal-content tts-settings-content">
-          <div class="settings-row">
+          <div class="settings-flex flex-wrap">
             <label for="tts-provider-select">TTS Provider</label>
             <select 
               id="tts-provider-select"
@@ -377,7 +377,7 @@
             </select>
           </div>
 
-          <div class="settings-row">
+          <div class="settings-flex flex-wrap">
             <label>Speech Rate</label>
             <input 
               v-model.number="ttsSettings.rate" 
@@ -392,7 +392,7 @@
             <span class="setting-value">{{ ttsSettings.rate }}x</span>
           </div>
 
-          <div class="settings-row">
+          <div class="settings-flex flex-wrap">
             <label>Voice Volume</label>
             <input 
               v-model.number="ttsSettings.volume" 
@@ -407,7 +407,7 @@
             <span class="setting-value">{{ Math.round(ttsSettings.volume * 100) }}%</span>
           </div>
 
-          <div class="settings-row">
+          <div class="settings-flex flex-wrap">
             <label for="compact-ui-toggle">Compact UI</label>
             <input
               id="compact-ui-toggle"
@@ -417,16 +417,16 @@
             />
           </div>
 
-          <div class="settings-row">
+          <div class="settings-flex flex-wrap">
             <button class="test-tts-btn glass-btn" :disabled="isSpeaking" @click="testTTS">
-              <AppIcon :name="isSpeaking ? getIcon('mdi-stop','mdi-stop') : getIcon('mdi-play','mdi-play')" :size="getIconSize()" />
+              <AppIcon :name="isSpeaking ? getIcon('StopIcon','StopIcon') : getIcon('PlayIcon','PlayIcon')" :size="getIconSize()" />
               {{ isSpeaking ? 'Stop' : 'Test Voice' }}
             </button>
           </div>
 
           <div class="settings-info">
             <small class="provider-info">
-              <AppIcon :name="getIcon('mdi-information-outline','mdi-information-outline')" :size="getIconSize()" />
+              <AppIcon :name="getIcon('InformationCircleIconrmation-outline','InformationCircleIconrmation-outline')" :size="getIconSize()" />
               <span id="tts-provider-help">{{ getProviderInfo(ttsSettings.provider) }}</span>
             </small>
           </div>
@@ -437,6 +437,8 @@
 </template>
 
 <script>
+import { SparklesIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 
 import {
@@ -465,7 +467,7 @@ export default {
   name: "AIFairyAssistant",
   components: { AppIcon },
   setup() {
-    const router = useRouter?.() || null;
+    const _router = useRouter?.() || null;
 
     const route = useRoute?.() || null;
     const store = useAppStore();
@@ -637,12 +639,12 @@ export default {
     // Auto-messages for different contexts
     const contextMessages = {
       "/": {
-        text: "Welcome to NAVI! I'm your AI career fairy. Ready to find your dream gaming job? ✨",
+        text: "Welcome to NAVI! I'm your AI career fairy. Ready to find your dream gaming job? SparklesIcon",
         actions: [
           {
             id: "start_resume",
             label: "Build Resume",
-            icon: "mdi-file-document-outline-edit",
+            icon: "DocumentIcon-document-outline-edit",
           },
           { id: "find_jobs", label: "Find Jobs", icon: "mdi-magnify" },
         ],
@@ -654,14 +656,14 @@ export default {
           {
             id: "suggest_skills",
             label: "Suggest Skills",
-            icon: "mdi-lightbulb",
+            icon: "LightBulbIcon",
           },
         ],
       },
       "/jobs": {
         text: "Searching for jobs? I can analyze matches and help with applications! 🎯",
         actions: [
-          { id: "analyze_match", label: "Analyze Match", icon: "mdi-target" },
+          { id: "analyze_match", label: "Analyze Match", icon: "CursorArrowRaysIcon" },
           {
             id: "salary_insights",
             label: "Salary Tips",
@@ -670,12 +672,12 @@ export default {
         ],
       },
       "/interview": {
-        text: "Interview prep time! Let's practice with AI-powered mock interviews. 🎤",
+        text: "Interview prep time! Let's practice with AI-powered mock interviews. MicrophoneIcon",
         actions: [
           {
             id: "mock_interview",
             label: "Start Interview",
-            icon: "mdi-account-voice",
+            icon: "UserIcon-voice",
           },
           { id: "review_answers", label: "Review Tips", icon: "mdi-format-list-checks" },
         ],
@@ -721,8 +723,8 @@ export default {
 
     // Random fairy tips and easter eggs
     const fairyTips = [
-      "Did you know? Adding gaming achievements to your resume can show leadership skills! 🏆",
-      "Easter egg: Try typing 'konami code' for a surprise! 🎮",
+      "Did you know? Adding gaming achievements to your resume can show leadership skills! TrophyIcon",
+      "Easter egg: Try typing 'konami code' for a surprise! DevicePhoneMobileIcon",
       "Pro tip: Mention specific game engines you've worked with - Unity, Unreal, etc. 🛠️",
       "Fun fact: I'm powered by Google's latest AI models for the best career advice! 🤖",
       "Secret: I can analyze your voice tone during mock interviews! 🎯",
@@ -1012,7 +1014,7 @@ export default {
         } else if (error.message.includes('network')) {
           errorResponse = "I'm having trouble connecting. Please check your internet connection! 🌐";
         } else if (error.message.includes('quota') || error.message.includes('limit')) {
-          errorResponse = "I've reached my usage limit for now. Please try again later! ⏰";
+          errorResponse = "I've reached my usage limit for now. Please try again later! ClockIcon";
         }
         
         chatMessages.value.push({
@@ -1034,17 +1036,17 @@ export default {
       const lowerMessage = message.toLowerCase();
       
       if (lowerMessage.includes('resume') || lowerMessage.includes('cv')) {
-        return "I'd love to help with your resume! Try uploading it or ask me specific questions about resume building. ✨";
+        return "I'd love to help with your resume! Try uploading it or ask me specific questions about resume building. SparklesIcon";
       } else if (lowerMessage.includes('job') || lowerMessage.includes('career')) {
         return "Let's work on your career goals! I can help you find jobs, analyze matches, or prepare for interviews. 🎯";
       } else if (lowerMessage.includes('interview')) {
-        return "Interview prep is one of my specialties! Would you like to practice questions or get tips for a specific role? 🎤";
+        return "Interview prep is one of my specialties! Would you like to practice questions or get tips for a specific role? MicrophoneIcon";
       } else if (lowerMessage.includes('skill') || lowerMessage.includes('learn')) {
         return "Skill development is key to career growth! Tell me about your current skills or what you'd like to learn. 📚";
       } else if (lowerMessage.includes('portfolio')) {
-        return "A great portfolio showcases your best work! I can help you organize and present your projects effectively. 🎨";
+        return "A great portfolio showcases your best work! I can help you organize and present your projects effectively. SwatchIcon";
       } else {
-        return "I'm here to help with your gaming career! Try asking me about resumes, jobs, interviews, or skill development. ✨";
+        return "I'm here to help with your gaming career! Try asking me about resumes, jobs, interviews, or skill development. SparklesIcon";
       }
     }
 
@@ -1136,7 +1138,7 @@ export default {
             id: Date.now(),
             type: "ai",
             content:
-              "Great photo! I can see your setup. Here are some tips based on what I observed... 📸✨",
+              "Great photo! I can see your setup. Here are some tips based on what I observed... 📸SparklesIcon",
             timestamp: new Date(),
           });
 
@@ -1205,7 +1207,7 @@ export default {
             chatMessages.value.push({
               id: Date.now(),
               type: "ai",
-              content: `I've analyzed your ${file.type?.includes("image") ? "image" : "document"}. Here are my insights... 📄✨`,
+              content: `I've analyzed your ${file.type?.includes("image") ? "image" : "document"}. Here are my insights... DocumentIconSparklesIcon`,
               timestamp: new Date(),
             });
           }, 2000);
@@ -1257,7 +1259,7 @@ export default {
         id: Date.now(),
         type: "ai",
         content:
-          "[SUCCESS] KONAMI CODE ACTIVATED! You've unlocked Rainbow Mode! Your gaming knowledge is legendary! 🌈✨🎮",
+          "[SUCCESS] KONAMI CODE ACTIVATED! You've unlocked Rainbow Mode! Your gaming knowledge is legendary! 🌈SparklesIconDevicePhoneMobileIcon",
         timestamp: new Date(),
       });
 
@@ -1421,12 +1423,12 @@ export default {
         .replace(/\{.*?\}/g, '')          // Remove JSON objects
         .replace(/".*?"/g, '')           // Remove quoted strings
         // Replace emoji codes with words
-        .replace(/✨/g, 'sparkles')
-        .replace(/🎮/g, 'gaming')
+        .replace(/SparklesIcon/g, 'sparkles')
+        .replace(/DevicePhoneMobileIcon/g, 'gaming')
         .replace(/📝/g, 'note')
         .replace(/🎯/g, 'target')
-        .replace(/🎤/g, 'microphone')
-        .replace(/🏆/g, 'trophy')
+        .replace(/MicrophoneIcon/g, 'microphone')
+        .replace(/TrophyIcon/g, 'trophy')
         .replace(/🛠️/g, 'tools')
         .replace(/🤖/g, 'robot')
         .replace(/💬/g, 'chat')
@@ -1434,8 +1436,8 @@ export default {
         .replace(/🗣️/g, 'speaking')
         .replace(/🌈/g, 'rainbow')
         .replace(/🔧/g, 'wrench')
-        .replace(/🔊/g, 'sound on')
-        .replace(/🔇/g, 'sound off')
+        .replace(/SpeakerWaveIcon/g, 'sound on')
+        .replace(/SpeakerXMarkIcon/g, 'sound off')
         // Clean up extra spaces and newlines
         .replace(/\s+/g, ' ')
         .replace(/\n+/g, '. ')           // Replace newlines with periods
@@ -1801,7 +1803,7 @@ export default {
 
     // Push-to-talk (hold Space to talk)
     const pttActive = ref(false);
-    async function handleKeydown(_e) {
+    async function handleKeydown(e) {
       try {
         // Ignore typing in inputs/textarea or with modifiers
         const tag = (e.target && e.target.tagName) ? String(e.target.tagName).toLowerCase() : '';
@@ -2101,7 +2103,7 @@ export default {
 
   /* Clean Shadow System */
   box-shadow:
-    var(--glass-shadow-md),
+    var(--glass-shadow-glass),
     inset 0 var(--spacing-px) var(--spacing-1, 0.25rem) var(--glass-border);
 
   /* Optimized Transitions */
@@ -2165,7 +2167,7 @@ export default {
   position: relative;
 
   /* Subtle Background - Use Design System */
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 
   /* Clean Border - Use Design System */
   border: var(--spacing-px, 1px) solid var(--glass-border);
@@ -2193,7 +2195,7 @@ export default {
   box-shadow:
     0 var(--spacing-3) var(--spacing-10)
       color-mix(in srgb, var(--fairy-primary) 15%, transparent),
-    var(--shadow-xl),
+    var(--shadow-glass-xl),
     inset 0 var(--spacing-px) var(--spacing-1) rgba(255, 255, 255, 0.25);
 
   border-image: linear-gradient(
@@ -2675,7 +2677,7 @@ export default {
 
 /* Glasmorphic teaser bubble (light/dark via CSS variables) */
 .bubble-content--glass {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   backdrop-filter: var(--glass-backdrop-blur-md);
   -webkit-backdrop-filter: var(--glass-backdrop-blur-md);
   border: none;
@@ -2686,10 +2688,10 @@ export default {
 
 .bubble-content--glass .message-text {
   background: var(--glass-surface, #fff);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: 18px;
-  border-top-left-radius: 4px;
+  border-t-left-radius: 4px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
@@ -2781,7 +2783,7 @@ export default {
   padding: var(--spacing-3) var(--spacing-4);
   /* Apply master theme glass-header class styles */
   background: var(--glass-surface);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   position: sticky;
@@ -2807,7 +2809,7 @@ export default {
   align-items: center;
   gap: var(--spacing-2);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .chat-actions {
@@ -2822,7 +2824,7 @@ export default {
   border-radius: var(--radius-base);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2831,7 +2833,7 @@ export default {
 }
 
 .chat-gear-btn:hover {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-color: var(--glass-border-cyber);
   transform: translateY(-1px);
   box-shadow: var(--glass-glow-primary);
@@ -2937,7 +2939,7 @@ export default {
 .quick-reply-btn {
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-radius: 999px;
   padding: 6px 12px;
   font-size: var(--font-size-sm);
@@ -2946,7 +2948,7 @@ export default {
 }
 
 .quick-reply-btn:hover {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-color: var(--glass-border-cyber);
   box-shadow: var(--glass-glow-primary);
   transform: translateY(-1px);
@@ -2977,11 +2979,11 @@ export default {
 
 .tts-settings-content {
   padding: var(--spacing-3);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--glass-bg);
 }
 
-.settings-row {
+.settings-flex flex-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2989,12 +2991,12 @@ export default {
   margin-bottom: var(--spacing-3);
 }
 
-.settings-row:last-child {
+.settings-flex flex-wrap:last-child {
   margin-bottom: 0;
   justify-content: center;
 }
 
-.settings-row label {
+.settings-flex flex-wrap label {
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
@@ -3007,7 +3009,7 @@ export default {
   appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   outline: none;
   transition: background var(--duration-fast) ease;
 }
@@ -3026,7 +3028,7 @@ export default {
 .tts-slider::-webkit-slider-thumb:hover {
   background: var(--color-primary-600);
   transform: scale(1.1);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .tts-slider::-moz-range-thumb {
@@ -3043,7 +3045,7 @@ export default {
 .tts-slider::-moz-range-thumb:hover {
   background: var(--color-primary-600);
   transform: scale(1.1);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .setting-value {
@@ -3090,8 +3092,8 @@ export default {
   padding: var(--spacing-1) var(--spacing-2);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
-  background: var(--glass-bg-light);
-  color: var(--text-primary);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  color: var(--text-primary-600);
   font-size: var(--font-size-xs);
   cursor: pointer;
   transition: all var(--duration-fast) ease;
@@ -3111,7 +3113,7 @@ export default {
 .settings-info {
   margin-top: var(--spacing-2);
   padding-top: var(--spacing-2);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .provider-info {
@@ -3145,7 +3147,7 @@ export default {
 }
 
 .message-user {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 .message-user .message-content {
@@ -3167,7 +3169,7 @@ export default {
 }
 
 .message-system .message-content {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   backdrop-filter: var(--glass-backdrop-blur-md);
   -webkit-backdrop-filter: var(--glass-backdrop-blur-md);
   border: 1px solid var(--color-warning-400);
@@ -3193,9 +3195,9 @@ export default {
 }
 
 .message-avatar:hover {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   transform: scale(1.05);
-  box-shadow: var(--glass-shadow-md);
+  box-shadow: var(--glass-shadow-glass);
 }
 
 .message-content {
@@ -3214,10 +3216,10 @@ export default {
 /* Message bubble styling aligned to fairy design */
 .message-ai .message-text {
   background: var(--glass-surface, #fff);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: 18px;
-  border-top-left-radius: 4px;
+  border-t-left-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -3226,7 +3228,7 @@ export default {
   color: var(--text-inverse);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: 18px;
-  border-top-right-radius: 4px;
+  border-t-right-radius: 4px;
   margin-left: auto;
   box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
@@ -3239,7 +3241,7 @@ export default {
 .message-content .message-text code {
   font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
   background: var(--surface-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   padding: 0 4px;
@@ -3247,7 +3249,7 @@ export default {
 .message-content .message-text pre {
   font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
   background: var(--surface-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   padding: var(--spacing-3);
@@ -3271,7 +3273,7 @@ export default {
 
 /* Distinct AI message treatment for readability */
 .message-ai .message-content {
-  border-left: 3px solid color-mix(in srgb, var(--color-primary-500) 60%, transparent);
+  border-l: 3px solid color-mix(in srgb, var(--color-primary-500) 60%, transparent);
 }
 
 .compact-ui .message-content {
@@ -3308,7 +3310,7 @@ export default {
 }
 
 .copy-btn:hover {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   color: var(--color-primary-500);
 }
 
@@ -3323,7 +3325,7 @@ export default {
   width: 24px;
   height: 24px;
   border-radius: var(--radius-sm);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   color: var(--color-info-500);
   display: flex;
@@ -3374,7 +3376,7 @@ export default {
 .chat-input-container {
   /* expose input offset for message list */
   --chat-input-offset: calc(var(--spacing-4) * 2 + 56px + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   padding: var(--spacing-4) var(--spacing-4) calc(var(--spacing-4) + env(safe-area-inset-bottom, 0px));
   position: sticky;
   bottom: 0;
@@ -3384,7 +3386,7 @@ export default {
   z-index: 2;
 }
 .chat-input-container:focus-within {
-  border-top-color: color-mix(in srgb, var(--color-primary-500) 35%, var(--glass-border));
+  border-t-color: color-mix(in srgb, var(--color-primary-500) 35%, var(--glass-border));
   box-shadow: 0 -6px 20px color-mix(in srgb, var(--color-primary-500) 10%, transparent) inset;
 }
 .chat-input-container::before {
@@ -3562,7 +3564,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding-top: var(--spacing-2);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .control-group {
@@ -3589,7 +3591,7 @@ export default {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-family: var(--font-family-ui);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-normal);
@@ -3600,12 +3602,12 @@ export default {
 .text-input:focus {
   outline: none;
   border-color: var(--color-primary-500);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 }
 
 .text-input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   transition: color var(--duration-fast) ease;
 }
 
@@ -3617,7 +3619,7 @@ export default {
   background: var(--glass-surface);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all var(--duration-normal) var(--easing-ease-in-out);
   font-family: inherit;
   min-height: 44px; /* touch target */
@@ -3639,7 +3641,7 @@ export default {
 }
 
 .fairy-input:focus::placeholder {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .send-btn {
@@ -3653,7 +3655,7 @@ export default {
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all var(--duration-normal) var(--easing-ease-in-out);
   position: relative;
   overflow: hidden;
@@ -3783,7 +3785,7 @@ export default {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: var(--spacing-5) var(--spacing-6);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3815,7 +3817,7 @@ export default {
 .header-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .header-status {
@@ -3863,7 +3865,7 @@ export default {
 
 .header-btn:hover {
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transform: translateY(-1px);
 }
 
@@ -3906,7 +3908,7 @@ export default {
 .welcome-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-2);
 }
 
@@ -3966,10 +3968,10 @@ export default {
   border: 1px solid var(--glass-border);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: var(--radius-xl);
-  border-top-left-radius: var(--radius-sm);
+  border-t-left-radius: var(--radius-sm);
   font-size: var(--font-size-sm);
   line-height: 1.5;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   box-shadow: 0 1px 2px color-mix(in srgb, black 4%, transparent);
   max-width: 85%;
 }
@@ -3977,8 +3979,8 @@ export default {
 .message-bubble--user {
   background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
   color: var(--text-inverse);
-  border-top-left-radius: var(--radius-xl);
-  border-top-right-radius: var(--radius-sm);
+  border-t-left-radius: var(--radius-xl);
+  border-t-right-radius: var(--radius-sm);
   margin-left: auto;
   border: 1px solid var(--color-primary-400);
 }
@@ -4034,7 +4036,7 @@ export default {
   border: 1px solid var(--glass-border);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: var(--radius-xl);
-  border-top-left-radius: var(--radius-sm);
+  border-t-left-radius: var(--radius-sm);
   display: flex;
   gap: var(--spacing-1);
   align-items: center;
@@ -4073,7 +4075,7 @@ export default {
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   display: flex;
   gap: var(--spacing-2);
   overflow-x: auto;
@@ -4092,7 +4094,7 @@ export default {
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--radius-xl);
   font-size: var(--font-size-xs);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   transition: all var(--duration-fast);
   white-space: nowrap;
@@ -4112,7 +4114,7 @@ export default {
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .input-container {
@@ -4145,7 +4147,7 @@ export default {
   background: transparent;
   padding: var(--spacing-2-5) var(--spacing-1);
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   resize: none;
   outline: none;
   max-height: 120px;
@@ -4205,7 +4207,7 @@ export default {
   gap: var(--spacing-1);
   padding: var(--spacing-2) var(--spacing-4);
   background: color-mix(in srgb, var(--surface-base) 95%, var(--color-primary-500) 5%);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .control-btn {
@@ -4250,7 +4252,7 @@ export default {
     left: 0;
     right: 0;
     background: var(--glass-bg);
-    border-top: 1px solid var(--glass-border);
+    border-t: 1px solid var(--glass-border);
     box-shadow: 0 -2px 10px color-mix(in srgb, black 5%, transparent);
   }
 
@@ -4296,7 +4298,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .camera-content {
@@ -4344,7 +4346,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-3) var(--spacing-4);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .settings-modal-header h3 {
@@ -4410,7 +4412,7 @@ export default {
 }
 
 .chat-messages::-webkit-scrollbar-thumb:hover {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 /* Visually hidden but focusable skip link */
@@ -4456,14 +4458,14 @@ export default {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   z-index: 5;
 }
 
 .scroll-to-bottom-fab:hover {
-  background: var(--glass-bg-light);
-  box-shadow: var(--glass-shadow-md);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  box-shadow: var(--glass-shadow-glass);
   transform: translateY(-1px);
 }
 
@@ -4490,9 +4492,9 @@ export default {
   margin: 6px 0;
   border-radius: 6px;
   background: linear-gradient(90deg,
-    color-mix(in srgb, var(--glass-bg-light) 90%, transparent) 0%,
+    color-mix(in srgb, var(--glass-bg-glass-bg dark:bg-glass-bg-hover) 90%, transparent) 0%,
     color-mix(in srgb, var(--glass-bg) 90%, transparent) 50%,
-    color-mix(in srgb, var(--glass-bg-light) 90%, transparent) 100%);
+    color-mix(in srgb, var(--glass-bg-glass-bg dark:bg-glass-bg-hover) 90%, transparent) 100%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.4s ease-in-out infinite;
 }
@@ -4564,14 +4566,14 @@ export default {
   0%,
   100% {
     box-shadow:
-      var(--shadow-lg),
+      var(--shadow-glass-lg),
       inset 0 var(--spacing-px) var(--spacing-1) rgba(255, 255, 255, 0.2);
   }
   50% {
     box-shadow:
       0 var(--spacing-3) var(--spacing-10)
         color-mix(in srgb, var(--fairy-primary) 15%, transparent),
-      var(--shadow-xl),
+      var(--shadow-glass-xl),
       inset 0 var(--spacing-px) var(--spacing-1) rgba(255, 255, 255, 0.25);
   }
 }
@@ -4778,7 +4780,7 @@ export default {
   bottom: 120%;
   right: 0;
   background: var(--surface-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: var(--spacing-2) var(--spacing-3);
   border-radius: var(--radius-md);
   font-size: var(--font-size-xs);
@@ -4787,7 +4789,7 @@ export default {
   pointer-events: none;
   transition: opacity var(--duration-fast) ease;
   border: 1px solid var(--border-base);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   z-index: 10000;
 }
 
@@ -4802,7 +4804,7 @@ export default {
   bottom: 120%;
   right: 0;
   background: var(--surface-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: var(--spacing-2) var(--spacing-3);
   border-radius: var(--radius-md);
   font-size: var(--font-size-xs);
@@ -4811,7 +4813,7 @@ export default {
   pointer-events: none;
   transition: opacity var(--duration-fast) ease;
   border: 1px solid var(--border-base);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   z-index: 10000;
 }
 

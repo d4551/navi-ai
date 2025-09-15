@@ -3,7 +3,9 @@
 
 import { unifiedStorage } from '@/utils/storage';
 import { GAMING_STUDIOS } from '@/shared/constants/gaming-studios';
-import type { GameStudio, GameGenre, Platform, StudioType } from '../../../shared/types/jobs';
+import { cacheService } from '@/shared/services/CacheService';
+import { logger } from '@/shared/utils/logger';
+import type { GameStudio, GameGenre, Platform, StudioType } from '@/shared/types/jobs';
 
 interface GameStudioSearchCriteria {
   name?: string;
@@ -23,7 +25,10 @@ export class GameStudioRepository {
   private static readonly STORE_KEY = 'gamingStudios';
   private static readonly FAVORITES_KEY = 'favoriteStudios';
   private static readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+  private static readonly CACHE_TTL = 15 * 60 * 1000; // 15 minutes for queries
   private static initialized = false;
+  private static studiosIndex = new Map<string, GameStudio>();
+  private static nameIndex = new Map<string, GameStudio[]>();
 
   private static async ensureInitialized(): Promise<void> {
     if (this.initialized) return;
@@ -36,29 +41,91 @@ export class GameStudioRepository {
   }
 
   static async getAll(): Promise<Record<string, GameStudio>> {
-    const studios = await unifiedStorage.get(this.STORE_KEY);
-    return studios || {};
+    const cacheKey = `studios:all`;
+    const cached = await cacheService.get<Record<string, GameStudio>>(cacheKey);
+
+    if (cached) {
+      return cached;
+    }
+
+    await this.ensureInitialized();
+    const studios = await unifiedStorage.get(this.STORE_KEY) || {};
+
+    // Cache the result
+    await cacheService.set(cacheKey, studios, {
+      ttl: this.CACHE_TTL,
+      persistent: true,
+      tags: ['studios']
+    });
+
+    // Build indexes for faster queries
+    this.buildIndexes(studios);
+
+    return studios;
   }
 
   static async getById(id: string): Promise<GameStudio | null> {
+    const cacheKey = `studio:${id}`;
+    const cached = await cacheService.get<GameStudio | null>(cacheKey);
+
+    if (cached !== undefined) {
+      return cached;
+    }
+
+    // Check index first
+    if (this.studiosIndex.has(id)) {
+      const studio = this.studiosIndex.get(id)!;
+      await cacheService.set(cacheKey, studio, { ttl: this.CACHE_TTL });
+      return studio;
+    }
+
     const studios = await this.getAll();
-    return studios[id] || null;
+    const studio = studios[id] || null;
+
+    await cacheService.set(cacheKey, studio, { ttl: this.CACHE_TTL });
+    return studio;
   }
 
   static async findByCompanyName(companyName: string): Promise<GameStudio | null> {
-    const studios = await this.getAll();
+    const cacheKey = `studio:name:${companyName.toLowerCase()}`;
+    const cached = await cacheService.get<GameStudio | null>(cacheKey);
+
+    if (cached !== undefined) {
+      return cached;
+    }
+
     const normalizedName = companyName.toLowerCase().trim();
 
+    // Check name index first
+    if (this.nameIndex.has(normalizedName)) {
+      const matches = this.nameIndex.get(normalizedName)!;
+      const result = matches[0] || null;
+      await cacheService.set(cacheKey, result, { ttl: this.CACHE_TTL });
+      return result;
+    }
+
+    // Fallback to full search
+    const studios = await this.getAll();
     for (const studio of Object.values(studios)) {
       if (studio.name.toLowerCase().includes(normalizedName) ||
           normalizedName.includes(studio.name.toLowerCase().split(' ')[0])) {
+        await cacheService.set(cacheKey, studio, { ttl: this.CACHE_TTL });
         return studio;
       }
     }
+
+    await cacheService.set(cacheKey, null, { ttl: this.CACHE_TTL });
     return null;
   }
 
   static async search(criteria: GameStudioSearchCriteria): Promise<GameStudio[]> {
+    const cacheKey = `studios:search:${JSON.stringify(criteria)}`;
+    const cached = await cacheService.get<GameStudio[]>(cacheKey);
+
+    if (cached) {
+      return cached;
+    }
+
     const allStudios = Object.values(await this.getAll());
     let filtered = [...allStudios];
 
@@ -111,6 +178,12 @@ export class GameStudioRepository {
         )
       );
     }
+
+    // Cache search results for 5 minutes
+    await cacheService.set(cacheKey, filtered, {
+      ttl: 5 * 60 * 1000,
+      tags: ['studios', 'search']
+    });
 
     return filtered;
   }
@@ -173,14 +246,43 @@ export class GameStudioRepository {
     return favorites.includes(studioId);
   }
 
-  // Get studio suggestions for autocomplete
+  // Get studio suggestions for autocomplete with caching
   static async getSuggestions(query: string, limit: number = 10): Promise<GameStudio[]> {
+    const cacheKey = `studios:suggestions:${query}:${limit}`;
+    const cached = await cacheService.get<GameStudio[]>(cacheKey);
+
+    if (cached) {
+      return cached;
+    }
+
     const allStudios = Object.values(await this.getAll());
-    const matching = allStudios.filter(studio =>
-      studio.name.toLowerCase().includes(query.toLowerCase()) ||
-      studio.technologies.some(tech => tech.toLowerCase().includes(query.toLowerCase()))
-    );
-    return matching.slice(0, limit);
+    const queryLower = query.toLowerCase();
+
+    // Optimized search with scoring
+    const scored = allStudios.map(studio => {
+      let score = 0;
+      const name = studio.name.toLowerCase();
+
+      if (name.startsWith(queryLower)) score += 10;
+      else if (name.includes(queryLower)) score += 5;
+
+      if (studio.technologies.some(tech => tech.toLowerCase().includes(queryLower))) {
+        score += 2;
+      }
+
+      return { studio, score };
+    })
+    .filter(item => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(item => item.studio);
+
+    await cacheService.set(cacheKey, scored, {
+      ttl: 10 * 60 * 1000, // 10 minutes
+      tags: ['studios', 'suggestions']
+    });
+
+    return scored;
   }
 
   // Get studios by category
@@ -276,6 +378,34 @@ export class GameStudioRepository {
     if (sizeStr.includes('small')) return 50;
     if (sizeStr.includes('indie')) return 10;
     return 0;
+  }
+
+  // Build indexes for faster queries
+  private static buildIndexes(studios: Record<string, GameStudio>): void {
+    this.studiosIndex.clear();
+    this.nameIndex.clear();
+
+    for (const [id, studio] of Object.entries(studios)) {
+      // ID index
+      this.studiosIndex.set(id, studio);
+
+      // Name index
+      const nameKey = studio.name.toLowerCase();
+      if (!this.nameIndex.has(nameKey)) {
+        this.nameIndex.set(nameKey, []);
+      }
+      this.nameIndex.get(nameKey)!.push(studio);
+    }
+
+    logger.info(`Built indexes for ${this.studiosIndex.size} studios`);
+  }
+
+  // Clear all caches
+  static async clearCache(): Promise<void> {
+    await cacheService.invalidateByTags(['studios']);
+    this.studiosIndex.clear();
+    this.nameIndex.clear();
+    logger.info('Studio caches cleared');
   }
 
   // Export data for backup or migration

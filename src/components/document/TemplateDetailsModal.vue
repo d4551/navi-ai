@@ -1,15 +1,15 @@
 <template>
-  <div v-if="show" class="modal-overlay" @click="handleOverlayClick">
+  <div v-if="show" class="modal-overlay" class="font-sans" @click="handleOverlayClick">
     <div class="details-modal">
       <div class="modal-header">
         <div class="header-content">
-          <AppIcon name="mdi-information-outline" size="20" />
+          <AppIcon name="InformationCircleIcon" size="20" />
           <h3 class="modal-title">Template Details</h3>
         </div>
         <UnifiedButton
           variant="ghost"
           size="sm"
-          leading-icon="mdi-close"
+          leading-icon="XMarkIcon"
           @click="$emit('close')"
         />
       </div>
@@ -32,7 +32,7 @@
                     <AppIcon
                       v-for="star in 5"
                       :key="star"
-                      name="mdi-star"
+                      name="StarIcon"
                       :class="star <= (template?.rating || 5) ? 'filled' : 'empty'"
                       size="14"
                     />
@@ -85,7 +85,7 @@
             <div class="spec-item">
               <div class="spec-label">ATS Compatibility</div>
               <div class="spec-value">
-                <AppIcon name="mdi-check-circle" class="ats-check" />
+                <AppIcon name="CheckCircleIcon" class="ats-check" />
                 Optimized
               </div>
             </div>
@@ -146,7 +146,7 @@
           <UnifiedButton
             variant="outline"
             size="sm"
-            leading-icon="mdi-eye"
+            leading-icon="EyeIcon"
             @click="previewTemplate"
           >
             Preview
@@ -154,7 +154,7 @@
           <UnifiedButton
             variant="primary"
             size="sm"
-            leading-icon="mdi-check"
+            leading-icon="CheckIcon"
             @click="selectTemplate"
           >
             Use Template
@@ -166,6 +166,9 @@
 </template>
 
 <script setup lang="ts">
+import { CheckIcon, EyeIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -191,7 +194,7 @@ const templateFeatures = [
     id: 'ats',
     name: 'ATS Optimized',
     description: 'Designed to pass through applicant tracking systems',
-    icon: 'mdi-target'
+    icon: 'CursorArrowRaysIcon'
   },
   {
     id: 'responsive',
@@ -203,13 +206,13 @@ const templateFeatures = [
     id: 'customizable',
     name: 'Highly Customizable',
     description: 'Easy to modify colors, fonts, and layout',
-    icon: 'mdi-palette'
+    icon: 'SwatchIcon'
   },
   {
     id: 'professional',
     name: 'Professional Layout',
     description: 'Clean, modern design that impresses recruiters',
-    icon: 'mdi-medal'
+    icon: 'TrophyIcon'
   }
 ]
 
@@ -283,7 +286,7 @@ const previewTemplate = () => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-5);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--surface-base) 100%);
 }
 
@@ -296,7 +299,7 @@ const previewTemplate = () => {
 .modal-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -320,7 +323,7 @@ const previewTemplate = () => {
   height: 200px;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   flex-shrink: 0;
 }
 
@@ -359,7 +362,7 @@ const previewTemplate = () => {
 .template-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-3) 0;
 }
 
@@ -390,7 +393,7 @@ const previewTemplate = () => {
 
 .stat-value {
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -424,7 +427,7 @@ const previewTemplate = () => {
 .features-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
 }
 
@@ -447,7 +450,7 @@ const previewTemplate = () => {
 .feature-name {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
@@ -467,7 +470,7 @@ const previewTemplate = () => {
 .specs-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
 }
 
@@ -493,7 +496,7 @@ const previewTemplate = () => {
 
 .spec-value {
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: var(--spacing-1);
@@ -513,7 +516,7 @@ const previewTemplate = () => {
 .samples-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
 }
 
@@ -551,7 +554,7 @@ const previewTemplate = () => {
 .sample-section-title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-2) 0;
 }
 
@@ -601,7 +604,7 @@ const previewTemplate = () => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4) var(--spacing-5);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--surface-base);
 }
 

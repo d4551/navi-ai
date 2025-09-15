@@ -1,9 +1,9 @@
 <template>
-  <div class="ai-media-integration unified-container">
+  <div class="ai-media-integration unified-container" class="font-sans">
     <div class="glass-card section-card">
       <div class="integration-header">
-        <h3 class="section-title d-flex align-center gap-sm mb-3">
-          <AppIcon name="mdi-robot" />
+        <h3 class="section-title flex items-center gap-sm mb-3">
+          <AppIcon name="CpuChipIcon" />
           AI-Powered Media Hub
         </h3>
         <div class="connection-status" :class="{ 'connected': isAIConnected }">
@@ -11,17 +11,17 @@
           <div class="status-dot"></div>
           <span class="status-text">{{ isAIConnected ? 'AI Connected' : 'AI Disconnected' }}</span>
         </div>
-        <div class="status-badges d-flex justify-center gap-2 mt-2">
+        <div class="status-badges flex justify-center gap-glass-sm mt-2">
           <span class="badge" :class="streamStatus.isInitialized ? 'badge-success' : 'badge-warning'">
-            <AppIcon :name="streamStatus.isInitialized ? 'mdi-check-circle-outline' : 'mdi-alert-circle-outline'" />
+            <AppIcon :name="streamStatus.isInitialized ? 'CheckIcon-circle-outline' : 'mdi-alert-circle-outline'" />
             SDK {{ streamStatus.isInitialized ? 'Ready' : 'Not Ready' }}
           </span>
           <span class="badge" :class="streamStatus.hasApiKey ? 'badge-success' : 'badge-error'">
-            <AppIcon :name="streamStatus.hasApiKey ? 'mdi-key' : 'mdi-key-remove'" />
+            <AppIcon :name="streamStatus.hasApiKey ? 'KeyIcon' : 'KeyIcon-remove'" />
             {{ streamStatus.hasApiKey ? 'Key Loaded' : 'Key Missing' }}
           </span>
           <span class="badge" :class="streamStatus.isStreaming ? 'badge-info' : 'badge-secondary'">
-            <AppIcon :name="streamStatus.isStreaming ? 'mdi-video' : 'mdi-video-off'" />
+            <AppIcon :name="streamStatus.isStreaming ? 'VideoCameraIcon' : 'VideoCameraIcon-off'" />
             {{ streamStatus.isStreaming ? 'Streaming' : 'Idle' }}
           </span>
         </div>
@@ -32,8 +32,8 @@
         <!-- Left Column: Media Controls -->
         <div class="media-section glass-surface">
           <div class="section-header">
-            <h4 class="section-subtitle d-flex align-center gap-sm">
-              <AppIcon name="mdi-video" />
+            <h4 class="section-subtitle flex items-center gap-sm">
+              <AppIcon name="VideoCameraIcon" />
               Media Controls
             </h4>
           </div>
@@ -48,12 +48,12 @@
         <!-- Right Column: AI Interaction -->
         <div v-if="mediaStream" class="ai-section glass-surface">
           <div class="ai-controls-header">
-            <h4 class="section-subtitle d-flex align-center gap-sm">
-              <AppIcon name="mdi-brain" />
+            <h4 class="section-subtitle flex items-center gap-sm">
+              <AppIcon name="CpuChipIcon" />
               AI Analysis & Chat
             </h4>
             <div class="ai-status-badge" :class="{ 'processing': isProcessingAI }">
-              <AppIcon :name="isProcessingAI ? 'mdi-loading' : 'mdi-check-circle'" :class="{ 'mdi-spin': isProcessingAI }" />
+              <AppIcon :name="isProcessingAI ? 'ArrowPathIcon' : 'CheckIcon-circle'" :class="{ 'mdi-spin': isProcessingAI }" />
               {{ isProcessingAI ? 'Processing...' : 'Ready' }}
             </div>
           </div>
@@ -128,7 +128,7 @@
               <UnifiedButton
                 variant="primary"
                 :disabled="!aiPrompt.trim() || !isAIConnected || isProcessingAI"
-                leading-icon="mdi-send"
+                leading-icon="PaperAirplaneIcon"
                 @click="sendAIPrompt"
               >
                 Send
@@ -144,7 +144,7 @@
               class="ai-response-item"
             >
               <div class="response-header">
-                <AppIcon name="mdi-robot" />
+                <AppIcon name="CpuChipIcon" />
                 <span class="response-type">{{ response.type }}</span>
                 <span class="response-time">{{ formatTime(response.timestamp) }}</span>
               </div>
@@ -158,12 +158,12 @@
             </div>
           </div>
           <div class="transcript-actions">
-            <UnifiedButton variant="glass" leading-icon="mdi-content-copy" @click="copyTranscript">Copy Transcript</UnifiedButton>
+            <UnifiedButton variant="glass" leading-icon="DocumentDuplicateIcon" @click="copyTranscript">Copy Transcript</UnifiedButton>
             <UnifiedButton variant="primary" leading-icon="mdi-tray-arrow-down" @click="exportLocalSession">Export JSON</UnifiedButton>
-            <UnifiedButton :variant="isRecording ? 'danger' : 'gaming'" :leading-icon="isRecording ? 'mdi-stop' : 'mdi-record-rec'" @click="toggleRecording">
+            <UnifiedButton :variant="isRecording ? 'danger' : 'gaming'" :leading-icon="isRecording ? 'StopIcon' : 'mdi-record-rec'" @click="toggleRecording">
               {{ isRecording ? 'Stop Recording' : 'Start Recording' }}
             </UnifiedButton>
-            <UnifiedButton variant="outline" leading-icon="mdi-file-export-outline" @click="exportHtmlReport">Export HTML</UnifiedButton>
+            <UnifiedButton variant="outline" leading-icon="DocumentIcon-export-outline" @click="exportHtmlReport">Export HTML</UnifiedButton>
           </div>
         </div>
       </div>
@@ -171,12 +171,12 @@
       <!-- Error Display -->
       <div v-if="error" class="error-section glass-surface border-error">
         <div class="error-header">
-          <AppIcon name="mdi-alert-circle-outline" class="icon-error" />
+          <AppIcon name="ExclamationCircleIcon" class="icon-error" />
           <span class="error-title">Integration Error</span>
         </div>
         <p class="error-message">{{ _error }}</p>
         <div class="error-actions">
-          <UnifiedButton variant="glass" size="sm" leading-icon="mdi-close" @click="clearError">Dismiss</UnifiedButton>
+          <UnifiedButton variant="glass" size="sm" leading-icon="XMarkIcon" @click="clearError">Dismiss</UnifiedButton>
         </div>
       </div>
     </div>
@@ -184,6 +184,8 @@
 </template>
 
 <script setup lang="ts">
+import { CpuChipIcon, DocumentDuplicateIcon, ExclamationCircleIcon, PaperAirplaneIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import MediaControls from './MediaControls.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -626,8 +628,8 @@ function exportHtmlReport() {
       .stat{padding:6px 10px;border:1px solid #eee;border-radius:999px;font-size:12px}
       .grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
       .card{border:1px solid #eee;border-radius:12px;padding:16px}
-      .resp{border-bottom:1px solid #f0f0f0;padding:8px 0}
-      .resp:last-child{border-bottom:0}
+      .resp{border-b:1px solid #f0f0f0;padding:8px 0}
+      .resp:last-child{border-b:0}
       .resp .meta{color:#888;margin:0 0 4px 0}
       .frame{max-width:100%;border:1px solid #eee;border-radius:8px}
     </style></head>
@@ -793,7 +795,7 @@ defineExpose({
   justify-content: space-between;
   margin-bottom: var(--spacing-md);
   padding-bottom: var(--spacing-sm);
-  border-bottom: 1px solid var(--border-glass);
+  border-b: 1px solid var(--border-glass);
 }
 
 .media-section, .ai-section, .error-section {
@@ -895,7 +897,7 @@ defineExpose({
   gap: var(--spacing-2);
   margin-top: var(--spacing-md);
   padding-top: var(--spacing-md);
-  border-top: 1px solid var(--border-glass);
+  border-t: 1px solid var(--border-glass);
 }
 
 @media (max-width: 768px) {
@@ -929,7 +931,7 @@ defineExpose({
   padding: var(--spacing-md);
   background: var(--surface-base);
   border-radius: var(--radius-md);
-  border-left: 3px solid var(--color-primary-500);
+  border-l: 3px solid var(--color-primary-500);
 }
 
 .ai-response-item:last-child {
@@ -956,7 +958,7 @@ defineExpose({
 }
 
 .error-section {
-  border-left: 4px solid var(--color-error-500);
+  border-l: 4px solid var(--color-error-500);
 }
 
 .error-header {
@@ -996,7 +998,7 @@ defineExpose({
 
 [data-theme="dark"] .ai-response-item {
   background: var(--surface-elevated);
-  border-left-color: var(--color-primary-400);
+  border-l-color: var(--color-primary-400);
 }
 
 /* Responsive improvements */

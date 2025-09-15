@@ -1,5 +1,5 @@
 <template>
-  <div class="step-flow" :class="[orientationClass, compact ? 'is-compact' : '']">
+  <div class="step-flow" :class="[orientationClass, compact ? 'is-compact' : '']" class="font-sans">
     <!-- Header / Stepper -->
     <div class="sf-header">
       <div class="sf-progress-track" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
@@ -19,7 +19,7 @@
           @click="goTo(idx)"
         >
           <span class="sf-step-circle">
-            <AppIcon v-if="idx < currentIndex" name="mdi-check" size="14" />
+            <AppIcon v-if="idx < currentIndex" name="CheckIcon" size="14" />
             <span v-else>{{ idx + 1 }}</span>
           </span>
           <span class="sf-step-info">
@@ -47,7 +47,7 @@
         <UnifiedButton
           variant="ghost"
           size="sm"
-          leading-icon="mdi-arrow-left"
+          leading-icon="ArrowLeftIcon"
           :disabled="currentIndex === 0 || busy"
           @click="prev"
         >
@@ -57,7 +57,7 @@
           v-if="!isLast"
           :variant="primaryVariant"
           size="sm"
-          trailing-icon="mdi-arrow-right"
+          trailing-icon="ArrowRightIcon"
           :disabled="!canContinue || busy"
           :loading="busy"
           @click="next"
@@ -68,7 +68,7 @@
           v-else
           variant="primary"
           size="sm"
-          leading-icon="mdi-check-circle-outline"
+          leading-icon="CheckCircleIcon"
           :disabled="!canFinish || busy"
           :loading="busy"
           @click="finish"
@@ -81,6 +81,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, CheckIcon } from '@heroicons/vue/24/outline'
+
 import { computed, watch, toRef } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -176,20 +178,20 @@ watch(() => props.steps, () => {
 .sf-steps.is-vertical { flex-direction: column; }
 .sf-step { display: grid; grid-auto-flow: column; align-items: center; gap: var(--spacing-2); padding: var(--spacing-2) var(--spacing-3); border-radius: var(--radius-lg); border: 1px solid var(--glass-border); background: var(--surface-glass); color: var(--text-secondary); cursor: pointer; }
 .sf-step:hover { border-color: var(--color-primary-300); }
-.sf-step.active { background: var(--surface-elevated); color: var(--text-primary); border-color: var(--color-primary-300); }
+.sf-step.active { background: var(--surface-elevated); color: var(--text-primary-600); border-color: var(--color-primary-300); }
 .sf-step.completed { opacity: 0.9; }
 .sf-step.locked { opacity: 0.55; cursor: not-allowed; }
 .sf-step-circle { width: 28px; height: 28px; display: inline-grid; place-items: center; border-radius: 999px; background: var(--surface-base); border: 1px solid var(--glass-border); font-weight: 700; }
 .sf-step-info { display: grid; }
 .sf-step-title { font-weight: 600; font-size: 0.95rem; }
-.sf-step-subtitle { font-size: 0.8rem; color: var(--text-muted); }
+.sf-step-subtitle { font-size: 0.8rem; color: var(--text-secondary); }
 
 .sf-content { background: var(--surface-base); border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: var(--spacing-4); }
 
 .sf-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--spacing-2); }
 .sf-footer .right { justify-self: end; display: inline-flex; gap: var(--spacing-2); }
 .sf-footer .left { justify-self: start; }
-.sf-step-text { color: var(--text-muted); font-size: 0.9rem; }
+.sf-step-text { color: var(--text-secondary); font-size: 0.9rem; }
 
 @media (max-width: 640px) {
   .sf-step { padding: var(--spacing-1) var(--spacing-2); }

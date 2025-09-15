@@ -1,10 +1,10 @@
 <template>
-  <div class="gaming-dashboard">
+  <div class="gaming-dashboard font-sans">
     <!-- Animated Background -->
     <div class="background-animation"></div>
     
     <!-- Dashboard Container -->
-    <div class="container-xl p-4 gap-6">
+    <div class="container-xl p-glass-md gap-glass-lg">
       <!-- Dashboard Header -->
       <header class="dashboard-header">
         <h1 class="main-title">Gaming Career Hub</h1>
@@ -12,10 +12,10 @@
       </header>
 
       <!-- Gamification HUD -->
-      <section class="glass-strong p-6 rounded-lg mb-6">
-        <div class="flex items-center justify-between gap-6 flex-wrap">
+      <section class="glass-strong p-glass-lg rounded-lg mb-6">
+        <div class="flex items-center justify-between gap-glass-lg flex-wrap">
           <div class="level-info">
-            <div class="level-badge">🏆</div>
+            <div class="level-badge">TrophyIcon</div>
             <div class="level-text">
               <div class="level-number">Level {{ userLevel }}</div>
               <div class="level-title">{{ levelTitle }}</div>
@@ -30,15 +30,15 @@
           </div>
 
           <div class="streak-counter">
-            <span class="streak-icon">🔥</span>
+            <span class="streak-icon">FireIcon</span>
             <span>{{ streakDays }} Day Streak</span>
           </div>
 
           <div class="hud-actions">
-            <UnifiedButton variant="gaming" size="sm" leading-icon="mdi-target" @click="showQuests = true">
+            <UnifiedButton variant="gaming" size="sm" leading-icon="EyeIcon" @click="showQuests = true">
               Daily Quests
             </UnifiedButton>
-            <UnifiedButton variant="gaming" size="sm" leading-icon="mdi-trophy" @click="showAchievements = true">
+            <UnifiedButton variant="gaming" size="sm" leading-icon="TrophyIcon" @click="showAchievements = true">
               Achievements
             </UnifiedButton>
           </div>
@@ -50,7 +50,7 @@
         <div 
           v-for="action in quickActions" 
           :key="action.id"
-          class="glass p-6 rounded-lg neon-interactive"
+          class="glass p-glass-lg rounded-lg neon-interactive"
           @click="handleQuickAction(action)"
         >
           <div class="action-icon">{{ action.icon }}</div>
@@ -67,7 +67,7 @@
         <!-- Left Column -->
         <div class="left-column">
           <!-- AI Assistant Panel -->
-          <div class="glass-strong p-6 rounded-lg">
+          <div class="glass-strong p-glass-lg rounded-lg">
             <div class="panel-header">
               <div class="panel-title-group">
                 <div class="panel-icon">💬</div>
@@ -76,7 +76,7 @@
                   <div class="panel-subtitle">Get instant help and guidance</div>
                 </div>
               </div>
-              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-fullscreen" />
+              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="ArrowsPointingOutIcon" />
             </div>
             <div class="ai-assistant-content">
               <div class="ai-avatar">🤖</div>
@@ -88,16 +88,16 @@
           </div>
 
           <!-- Activity Timeline -->
-          <div class="glass p-6 rounded-lg mt-4">
+          <div class="glass p-glass-lg rounded-lg mt-4">
             <div class="panel-header">
               <div class="panel-title-group">
-                <div class="panel-icon">⏰</div>
+                <div class="panel-icon">ClockIcon</div>
                 <div class="panel-info">
                   <div class="panel-title">Recent Activity</div>
                   <div class="panel-subtitle">Your latest career actions</div>
                 </div>
               </div>
-              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-refresh" @click="refreshActivity" />
+              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="ArrowPathIcon" @click="refreshActivity" />
             </div>
             <div class="activity-list">
               <div 
@@ -124,13 +124,13 @@
           <div class="panel skills-panel">
             <div class="panel-header">
               <div class="panel-title-group">
-                <div class="panel-icon">⭐</div>
+                <div class="panel-icon">StarIcon</div>
                 <div class="panel-info">
                   <div class="panel-title">Gaming Skills</div>
                   <div class="panel-subtitle">Your technical expertise</div>
                 </div>
               </div>
-              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-plus" @click="addSkill" />
+              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="PlusIcon" @click="addSkill" />
             </div>
             <div class="skills-content">
               <div class="skills-grid">
@@ -161,7 +161,7 @@
                   <div class="panel-subtitle">Industry leaders to watch</div>
                 </div>
               </div>
-              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-heart" @click="toggleFavorites" />
+              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="HeartIcon" @click="toggleFavorites" />
             </div>
             <div class="studios-list">
               <div 
@@ -191,7 +191,7 @@
       <div class="quest-modal">
         <div class="modal-header">
           <h2>Daily Quests</h2>
-          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-close" @click="showQuests = false" />
+          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="XMarkIcon" @click="showQuests = false" />
         </div>
         <div class="quest-list">
           <div v-for="quest in dailyQuests" :key="quest.id" class="quest-item">
@@ -215,7 +215,7 @@
       <div class="achievements-modal">
         <div class="modal-header">
           <h2>Achievements</h2>
-          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-close" @click="showAchievements = false" />
+          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="XMarkIcon" @click="showAchievements = false" />
         </div>
         <div class="achievements-grid">
           <div v-for="achievement in achievements" :key="achievement.id" class="achievement-item" :class="{ unlocked: achievement.unlocked }">
@@ -234,7 +234,7 @@
       <div class="ai-conversation-modal">
         <div class="modal-header">
           <h2>AI Career Assistant</h2>
-          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-close" @click="showAIConversation = false" />
+          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="XMarkIcon" @click="showAIConversation = false" />
         </div>
         <div class="conversation-content">
           <div class="conversation-messages">
@@ -244,7 +244,7 @@
               :class="['message', message.role]"
             >
               <div class="message-avatar">
-                {{ message.role === 'user' ? '👤' : '🤖' }}
+                {{ message.role === 'user' ? 'UserIcon' : '🤖' }}
               </div>
               <div class="message-content">
                 <div class="message-text">{{ message.content }}</div>
@@ -273,7 +273,7 @@
             <UnifiedButton 
               variant="primary" 
               :disabled="!userInput.trim() || isLoading"
-              leading-icon="mdi-send"
+              leading-icon="PaperAirplaneIcon"
               @click="sendMessage"
             >
               Send
@@ -286,6 +286,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, ArrowsPointingOutIcon, EyeIcon, PaperAirplaneIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from '@/composables/useToast'
@@ -382,7 +385,7 @@ const quickActions: QuickAction[] = [
     id: 'jobs',
     title: 'Job Search',
     description: 'Find gaming opportunities worldwide',
-    icon: '🔍',
+    icon: 'MagnifyingGlassIcon',
     buttonText: 'Search Jobs',
     route: '/jobs'
   },
@@ -398,7 +401,7 @@ const quickActions: QuickAction[] = [
     id: 'interview',
     title: 'AI Interview',
     description: 'Practice with AI-powered scenarios',
-    icon: '🎤',
+    icon: 'MicrophoneIcon',
     buttonText: 'Start Practice',
     route: '/interview-prep'
   }
@@ -409,7 +412,7 @@ const recentActivity = ref<Activity[]>([
   {
     id: '1',
     description: 'Resume updated with Unity experience',
-    icon: 'mdi-file-document-edit',
+    icon: 'DocumentIcon-document-edit',
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000) // 2 hours ago
   },
   {
@@ -421,7 +424,7 @@ const recentActivity = ref<Activity[]>([
   {
     id: '3',
     description: 'Achievement unlocked: Portfolio Master',
-    icon: 'mdi-trophy',
+    icon: 'TrophyIcon',
     timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) // 3 days ago
   }
 ])
@@ -497,7 +500,7 @@ const achievements = ref<Achievement[]>([
     id: '1',
     title: 'First Steps',
     description: 'Created your first resume',
-    icon: '🚀',
+    icon: 'RocketLaunchIcon',
     unlocked: true
   },
   {
@@ -511,7 +514,7 @@ const achievements = ref<Achievement[]>([
     id: '3',
     title: 'Portfolio Master',
     description: 'Completed your portfolio',
-    icon: '🏆',
+    icon: 'TrophyIcon',
     unlocked: true
   },
   {
@@ -525,7 +528,7 @@ const achievements = ref<Achievement[]>([
     id: '5',
     title: 'Interview Ace',
     description: 'Completed 5 AI interview sessions',
-    icon: '⭐',
+    icon: 'StarIcon',
     unlocked: false
   }
 ])
@@ -620,7 +623,7 @@ function refreshActivity() {
   const newActivity: Activity = {
     id: Date.now().toString(),
     description: 'Refreshed activity feed',
-    icon: 'mdi-refresh',
+    icon: 'ArrowPathIcon',
     timestamp: new Date(),
     isNew: true
   }
@@ -712,7 +715,7 @@ onMounted(() => {
 .gaming-dashboard {
   min-height: 100vh;
   background: var(--dark);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   position: relative;
   overflow-x: hidden;
 }
@@ -867,7 +870,7 @@ onMounted(() => {
 .level-number {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .level-title {
@@ -1003,7 +1006,7 @@ onMounted(() => {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .action-description {
@@ -1043,7 +1046,7 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .panel-title-group {
@@ -1063,17 +1066,7 @@ onMounted(() => {
   font-size: 1.25rem;
 }
 
-.panel-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.panel-subtitle {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  margin-top: 0.25rem;
-}
+/* removed legacy panel-title/panel-subtitle to use Tailwind plugin mappings */
 
 /* AI Assistant */
 .ai-assistant-content {
@@ -1108,12 +1101,12 @@ onMounted(() => {
   display: flex;
   gap: 1rem;
   padding: 1rem 0;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   transition: all 0.3s ease;
 }
 
 .activity-item:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .activity-item.animate-in {
@@ -1147,13 +1140,13 @@ onMounted(() => {
 }
 
 .activity-description {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
 }
 
 .activity-timestamp {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.75rem;
 }
 
@@ -1176,7 +1169,7 @@ onMounted(() => {
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all 0.3s;
   cursor: pointer;
   display: flex;
@@ -1231,7 +1224,7 @@ onMounted(() => {
 
 .studio-name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.5rem;
 }
 
@@ -1290,13 +1283,13 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .modal-header h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1320,7 +1313,7 @@ onMounted(() => {
 
 .quest-title {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.5rem;
 }
 
@@ -1398,7 +1391,7 @@ onMounted(() => {
 
 .achievement-title {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
@@ -1455,7 +1448,7 @@ onMounted(() => {
 }
 
 .message.user {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 .message-avatar {
@@ -1494,7 +1487,7 @@ onMounted(() => {
 
 .message-time {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   opacity: 0.7;
 }
 
@@ -1534,7 +1527,7 @@ onMounted(() => {
   display: flex;
   gap: 0.75rem;
   padding: 1rem 1.5rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--dark-tertiary);
 }
 
@@ -1544,7 +1537,7 @@ onMounted(() => {
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   background: var(--dark);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 

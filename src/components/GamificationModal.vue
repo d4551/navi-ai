@@ -1,6 +1,6 @@
 <template>
   <div
-    class="settings-modal-overlay"
+    class="settings-modal-overlay font-sans"
     role="dialog"
     aria-modal="true"
     aria-labelledby="gamification-modal-title"
@@ -9,12 +9,12 @@
   >
     <div class="settings-modal ultra-glass-card section-card gamification-modal" tabindex="-1" @click.stop>
       <div class="settings-modal-header">
-        <h3 id="gamification-modal-title" class="d-flex align-items-center gap-2">
-          <AppIcon name="mdi-trophy" />
+        <h3 id="gamification-modal-title" class="flex items-center gap-glass-sm">
+          <AppIcon name="TrophyIcon" />
           Achievements & Challenges
         </h3>
         <button class="glass-btn" aria-label="Close" @click="$emit('close')">
-          <AppIcon name="mdi-close" />
+          <AppIcon name="XMarkIcon" />
         </button>
       </div>
       <div class="settings-modal-content">
@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+defineEmits(['close'])
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GamificationDashboard from '@/components/GamificationDashboard.vue'
 </script>

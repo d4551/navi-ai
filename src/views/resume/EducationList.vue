@@ -1,18 +1,18 @@
 <template>
-  <v-card variant="outlined" class="mb-4 section-card section-card unified-card">
-    <v-card-title class="d-flex align-center justify-space-between pa-4">
-      <div class="d-flex align-center ga-2">
-        <AppIcon name="mdi-school-outline" size="small" color="primary" />
-        <span class="text-h6">Education</span>
+  <v-card variant="outlined" class="mb-4 section-card section-card unified-card" class="font-sans">
+    <v-card-title class="flex items-center justify-space-between pa-4">
+      <div class="flex items-center gap-glass-sm">
+        <AppIcon name="AcademicCapIcon" size="small" color="primary" />
+        <span class="text-lg font-semibold">Education</span>
       </div>
       <UnifiedButton
         variant="primary"
         size="sm"
-        leading-icon="mdi-plus"
+        leading-icon="PlusIcon"
         @click="add"
       >
         <span class="d-sm-none">Add</span>
-        <span class="d-none d-sm-inline">Add Education</span>
+        <span class="hidden d-sm-inline">Add Education</span>
       </UnifiedButton>
     </v-card-title>
     
@@ -39,29 +39,29 @@
         @drop="onDrop('education', index)"
         @dragend="endDrag"
       >
-        <v-card-title class="d-flex justify-space-between align-start pa-3">
+        <v-card-title class="flex justify-space-between align-start pa-3">
           <UiChip
             :id="`education-${index}-title`"
             classes="chip chip-primary chip-compact"
           >
             Education #{{ index + 1 }}
           </UiChip>
-          <div class="d-flex align-center ga-1">
+          <div class="flex items-center ga-1">
             <UnifiedButton
               icon-only
               size="sm"
               variant="outline"
-              icon="mdi-drag-vertical"
+              icon="Bars3Icon"
               aria-label="Drag to reorder"
               class="drag-handle"
             />
-            <div class="d-inline-flex ga-1">
+            <div class="inline-flex ga-1">
               <UnifiedButton
                 :disabled="index === 0"
                 icon-only
                 size="sm"
                 variant="outline"
-                icon="mdi-arrow-up"
+                icon="ArrowUpIcon"
                 aria-label="Move up"
                 @click="move(index, index - 1)"
               />
@@ -70,7 +70,7 @@
                 icon-only
                 size="sm"
                 variant="outline"
-                icon="mdi-arrow-down"
+                icon="ArrowDownIcon"
                 aria-label="Move down"
                 @click="move(index, index + 1)"
               />
@@ -79,7 +79,7 @@
               icon-only
               size="sm"
               variant="outline"
-              icon="mdi-trash-can-outline"
+              icon="TrashIcon"
               :aria-label="`Remove education ${index + 1}`"
               @click="remove(index)"
             />
@@ -87,8 +87,8 @@
         </v-card-title>
         
         <div class="pa-3-unified">
-          <v-row>
-            <v-col cols="12" md="6">
+          <v-flex flex-wrap>
+            <v-flex-1 cols="12" md="6">
               <v-text-field
                 v-model="edu.degree"
                 label="Degree"
@@ -96,16 +96,16 @@
                 density="compact"
                 placeholder="e.g., Bachelor of Science"
               />
-            </v-col>
-            <v-col cols="12" md="6">
+            </v-flex-1>
+            <v-flex-1 cols="12" md="6">
               <v-text-field
                 v-model="edu.school"
                 label="School/Institution"
                 variant="outlined"
                 density="compact"
               />
-            </v-col>
-            <v-col cols="12" md="6">
+            </v-flex-1>
+            <v-flex-1 cols="12" md="6">
               <v-text-field
                 v-model="edu.year"
                 label="Year"
@@ -113,8 +113,8 @@
                 density="compact"
                 placeholder="e.g., 2020"
               />
-            </v-col>
-            <v-col cols="12" md="6">
+            </v-flex-1>
+            <v-flex-1 cols="12" md="6">
               <v-text-field
                 v-model="edu.gpa"
                 label="GPA (Optional)"
@@ -122,14 +122,14 @@
                 density="compact"
                 placeholder="e.g., 3.8"
               />
-            </v-col>
-          </v-row>
+            </v-flex-1>
+          </v-flex flex-wrap>
         </div>
       </v-card>
 
       <v-empty-state
         v-if="localItems.length === 0"
-        icon="mdi-school-outline"
+        icon="AcademicCapIcon"
         title="No education added yet"
         text="Click 'Add Education' to include your academic background"
       />
@@ -138,6 +138,8 @@
 </template>
 
 <script>
+import { AcademicCapIcon, ArrowDownIcon, ArrowUpIcon, Bars3Icon, PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 import UnifiedButton from '@/components/ui/UnifiedButton.vue';
 import UiChip from '@/components/ui/UiChip.vue';

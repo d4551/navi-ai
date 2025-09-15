@@ -2,19 +2,19 @@
   <div class="interactive-job-discovery">
     <!-- Discovery Header -->
     <div class="discovery-header ultra-glass-card gaming-card mb-6">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="flex items-center justify-between">
         <div class="discovery-title-section">
           <h2 class="heading-gaming mb-2">
-            <AppIcon name="mdi-radar" class="icon-cyber me-3" />
+            <AppIcon name="mdi-radar" class="icon-cyber mr-3" />
             AI Job Discovery
           </h2>
-          <p class="text-muted">Intelligent job matching powered by your gaming profile and career goals</p>
+          <p class="text-secondary">Intelligent job matching powered by your gaming profile and career goals</p>
         </div>
         <div class="discovery-actions">
           <UnifiedButton 
             variant="gaming" 
             size="sm" 
-            leading-icon="mdi-brain"
+            leading-icon="CpuChipIcon"
             :loading="isAnalyzing"
             @click="runAIAnalysis"
           >
@@ -23,7 +23,7 @@
           <UnifiedButton 
             variant="cyber" 
             size="sm" 
-            leading-icon="mdi-target"
+            leading-icon="EyeIcon"
             @click="startTargetedSearch"
           >
             Targeted Search
@@ -39,7 +39,7 @@
         <div class="recommendation-card ultra-glass-card gaming-card ai-feature-card">
           <div class="recommendation-header">
             <div class="rec-icon-wrapper">
-              <AppIcon name="mdi-account-star" class="rec-icon text-success" />
+              <AppIcon name="UserIcon-star" class="rec-icon text-success-600" />
             </div>
             <div class="rec-meta">
               <h3 class="rec-title">Perfect Skill Match</h3>
@@ -68,7 +68,7 @@
         <div class="recommendation-card ultra-glass-card gaming-card ai-feature-card">
           <div class="recommendation-header">
             <div class="rec-icon-wrapper">
-              <AppIcon name="mdi-trending-up" color="warning" />
+              <AppIcon name="ArrowTrendingUpIcon" color="warning" />
             </div>
             <div class="rec-meta">
               <h3 class="rec-title">Career Advancement</h3>
@@ -98,7 +98,7 @@
         <div class="recommendation-card ultra-glass-card gaming-card ai-feature-card">
           <div class="recommendation-header">
             <div class="rec-icon-wrapper">
-              <AppIcon name="mdi-map-marker-radius" class="rec-icon text-primary" />
+              <AppIcon name="mdi-map-marker-radius" class="rec-icon text-primary-600" />
             </div>
             <div class="rec-meta">
               <h3 class="rec-title">Local Opportunities</h3>
@@ -127,12 +127,12 @@
         <div class="recommendation-card ultra-glass-card gaming-card ai-feature-card insight-card">
           <div class="recommendation-header">
             <div class="rec-icon-wrapper">
-              <AppIcon name="mdi-lightbulb-on" class="rec-icon text-cyber" />
+              <AppIcon name="LightBulbIcon" class="rec-icon text-cyber" />
             </div>
             <div class="rec-meta">
               <h3 class="rec-title">AI Insights</h3>
               <UiChip classes="chip chip-info chip-compact">
-                <AppIcon name="mdi-brain" class="me-1" />
+                <AppIcon name="CpuChipIcon" class="mr-1" />
                 Powered by AI
               </UiChip>
             </div>
@@ -143,11 +143,11 @@
             </div>
             <div class="insight-actions">
               <UnifiedButton variant="ghost" size="sm" @click="nextInsight">
-                <AppIcon name="mdi-refresh" class="me-2" />
+                <AppIcon name="ArrowPathIcon" class="mr-2" />
                 Next Insight
               </UnifiedButton>
               <UnifiedButton variant="cyber" size="sm" @click="applyInsight">
-                <AppIcon name="mdi-check" />
+                <AppIcon name="CheckIcon" />
                 Apply
               </UnifiedButton>
             </div>
@@ -158,12 +158,12 @@
 
     <!-- Interactive Job Filters with AI Enhancement -->
     <div class="smart-filters-section mb-6">
-      <div class="filters-header ultra-glass-card gaming-card p-4 mb-4">
+      <div class="filters-header ultra-glass-card gaming-card p-glass-md mb-4">
         <h3 class="heading-unified mb-2">
-          <AppIcon name="mdi-filter-variant" class="icon-primary me-2" />
+          <AppIcon name="AdjustmentsHorizontalIcon" class="icon-primary mr-2" />
           Smart Job Filters
         </h3>
-        <p class="text-muted mb-0">AI-enhanced filtering based on your profile and preferences</p>
+        <p class="text-secondary mb-0">AI-enhanced filtering based on your profile and preferences</p>
       </div>
 
       <div class="smart-filters-grid enhanced-filters-grid responsive-grid--cards-md ultra-dense-cards">
@@ -172,7 +172,7 @@
           <div class="filter-header">
             <h4 class="filter-title">Experience Level</h4>
             <UiChip v-if="suggestedFilters.experienceLevel" classes="chip chip-success chip-compact">
-              <AppIcon name="mdi-brain" class="text-xs me-1" />
+              <AppIcon name="CpuChipIcon" class="text-xs mr-1" />
               AI Suggested
             </UiChip>
           </div>
@@ -194,7 +194,7 @@
           <div class="filter-header">
             <h4 class="filter-title">Role Type</h4>
             <UnifiedButton variant="ghost" size="xs" @click="analyzeRolePreferences">
-              <AppIcon name="mdi-brain" class="me-1" />
+              <AppIcon name="CpuChipIcon" class="mr-1" />
               Analyze
             </UnifiedButton>
           </div>
@@ -209,10 +209,10 @@
                 }"
                 @click="toggleRole(role.value)"
               >
-                <AppIcon :name="role.icon" class="role-icon me-2" />
+                <AppIcon :name="role.icon" class="role-icon mr-2" />
                 {{ role.label }}
-                <span v-if="role.demand === 'high'" class="demand-indicator high"><AppIcon name="mdi-fire" size="small" color="warning" /></span>
-                <span v-if="role.demand === 'growing'" class="demand-indicator growing"><AppIcon name="mdi-trending-up" color="success" aria-hidden="true" /></span>
+                <span v-if="role.demand === 'high'" class="demand-indicator high"><AppIcon name="FireIcon" size="small" color="warning" /></span>
+                <span v-if="role.demand === 'growing'" class="demand-indicator growing"><AppIcon name="ArrowTrendingUpIcon" color="success" aria-hidden="true" /></span>
               </div>
             </div>
           </div>
@@ -238,9 +238,9 @@
                     }"
                     @click="toggleTechnology(tech.name)"
                   >
-                    <AppIcon v-if="tech.icon" :name="tech.icon" class="tech-icon me-1" />
+                    <AppIcon v-if="tech.icon" :name="tech.icon" class="tech-icon mr-1" />
                     {{ tech.name }}
-                    <span v-if="userSkills.includes(tech.name)" class="skill-match-indicator"><AppIcon name="mdi-check" size="small" color="success" /></span>
+                    <span v-if="userSkills.includes(tech.name)" class="skill-match-indicator"><AppIcon name="CheckIcon" size="small" color="success" /></span>
                   </div>
                 </div>
               </div>
@@ -278,16 +278,16 @@
 
     <!-- Real-time Job Results with AI Scoring -->
     <div class="job-results-section">
-      <div class="results-header ultra-glass-card gaming-card p-4 mb-4">
-        <div class="d-flex align-items-center justify-content-between">
+      <div class="results-header ultra-glass-card gaming-card p-glass-md mb-4">
+        <div class="flex items-center justify-between">
           <div>
             <h3 class="heading-unified mb-1">
               {{ filteredJobs.length }} Matching Opportunities
             </h3>
-            <p class="text-muted mb-0">Sorted by AI compatibility score</p>
+            <p class="text-secondary mb-0">Sorted by AI compatibility score</p>
           </div>
           <div class="view-options">
-            <UnifiedButton variant="glass" size="sm" leading-icon="mdi-sort" @click="showSortOptions = !showSortOptions">
+            <UnifiedButton variant="glass" size="sm" leading-icon="Bars3BottomLeftIcon" @click="showSortOptions = !showSortOptions">
               Sort Options
             </UnifiedButton>
           </div>
@@ -327,7 +327,7 @@
           :loading="isLoadingMore"
           @click="loadMoreJobs"
         >
-          <AppIcon name="mdi-plus-circle" class="me-2" />
+          <AppIcon name="PlusCircleIcon" class="mr-2" />
           Load More Opportunities
         </UnifiedButton>
       </div>
@@ -338,7 +338,7 @@
       <div class="ai-chat-container">
         <div class="ai-chat-header">
           <h4>Job Discovery Assistant</h4>
-          <UnifiedButton variant="ghost" size="sm" icon-only icon="mdi-close" @click="showAIChat = false" />
+          <UnifiedButton variant="ghost" size="sm" icon-only icon="XMarkIcon" @click="showAIChat = false" />
         </div>
         <div class="ai-chat-content">
           <!-- AI Chat component would be integrated here -->
@@ -350,7 +350,7 @@
               :class="[message.type, { 'message-user': message.type === 'user', 'message-ai': message.type === 'ai' }]"
             >
               <div class="message-avatar">
-                <AppIcon :name="message.type === 'user' ? 'mdi-account' : message.type === 'ai' ? 'mdi-robot' : 'mdi-information'" />
+                <AppIcon :name="message.type === 'user' ? 'UserIcon' : message.type === 'ai' ? 'mdi-robot' : 'InformationCircleIconrmation'" />
               </div>
               <div class="message-content">
                 <div class="message-text">{{ message.content }}</div>
@@ -367,7 +367,7 @@
             >
               <template #append-inner>
                 <UnifiedButton variant="ghost" size="sm" @click="sendChatMessage">
-                  <AppIcon name="mdi-send" />
+                  <AppIcon name="PaperAirplaneIcon" />
                 </UnifiedButton>
               </template>
             </v-text-field>
@@ -379,6 +379,9 @@
 </template>
 
 <script setup lang="ts">
+import { AdjustmentsHorizontalIcon, ArrowPathIcon, ArrowTrendingUpIcon, Bars3BottomLeftIcon, CheckIcon, CpuChipIcon, EyeIcon, PaperAirplaneIcon, PlusCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { LightBulbIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 import UiChip from '@/components/ui/UiChip.vue'
 
@@ -441,10 +444,10 @@ const experienceLevels = [
 
 const gameRoles = [
   { label: 'Game Developer', value: 'game-developer', icon: 'mdi-code-braces', demand: 'high' },
-  { label: 'Game Designer', value: 'game-designer', icon: 'mdi-palette', demand: 'growing' },
-  { label: 'Technical Artist', value: 'technical-artist', icon: 'mdi-brush', demand: 'high' },
+  { label: 'Game Designer', value: 'game-designer', icon: 'SwatchIcon', demand: 'growing' },
+  { label: 'Technical Artist', value: 'technical-artist', icon: 'PaintBrushIcon', demand: 'high' },
   { label: 'QA Engineer', value: 'qa-engineer', icon: 'mdi-bug', demand: 'growing' },
-  { label: 'Producer', value: 'producer', icon: 'mdi-account-tie', demand: 'moderate' },
+  { label: 'Producer', value: 'producer', icon: 'UserIcon-tie', demand: 'moderate' },
   { label: 'UI/UX Designer', value: 'ui-designer', icon: 'mdi-monitor-dashboard', demand: 'high' }
 ]
 
@@ -454,7 +457,7 @@ const techCategories = [
     technologies: [
       { name: 'Unity', icon: 'mdi-unity' },
       { name: 'Unreal Engine', icon: 'mdi-unreal' },
-      { name: 'Godot', icon: 'mdi-gamepad-variant' }
+      { name: 'Godot', icon: 'DevicePhoneMobileIcon-variant' }
     ]
   },
   {
@@ -471,7 +474,7 @@ const techCategories = [
     technologies: [
       { name: 'Blender', icon: 'mdi-blender-software' },
       { name: 'Maya', icon: 'mdi-cube-outline' },
-      { name: 'Photoshop', icon: 'mdi-image-edit' }
+      { name: 'Photoshop', icon: 'PhotoIcon-edit' }
     ]
   }
 ]
@@ -480,13 +483,13 @@ const cultureTypes = [
   {
     name: 'Innovative',
     value: 'innovative',
-    icon: 'mdi-lightbulb',
+    icon: 'LightBulbIcon',
     description: 'Cutting-edge projects and creative freedom'
   },
   {
     name: 'Collaborative',
     value: 'collaborative',
-    icon: 'mdi-account-group',
+    icon: 'UserIcon-group',
     description: 'Team-focused with open communication'
   },
   {
@@ -808,7 +811,7 @@ onMounted(() => {
 }
 
 .insight-card {
-  border-left: 4px solid var(--clear-purple);
+  border-l: 4px solid var(--clear-purple);
 }
 
 .insight-badge {
@@ -894,7 +897,7 @@ onMounted(() => {
 
 .role-chip:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .role-chip.active {
@@ -904,7 +907,7 @@ onMounted(() => {
 }
 
 .role-chip.ai-recommended::after {
-  content: '✨';
+  content: 'SparklesIcon';
   position: absolute;
   top: -5px;
   right: -5px;
@@ -1077,7 +1080,7 @@ onMounted(() => {
   justify-content: space-between;
   padding: var(--spacing-3) var(--spacing-4);
   background: var(--glass-surface);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   position: sticky;
@@ -1158,7 +1161,7 @@ onMounted(() => {
 
 .chat-input {
   padding: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: linear-gradient(
     to top,
     color-mix(in srgb, var(--glass-bg) 80%, transparent),

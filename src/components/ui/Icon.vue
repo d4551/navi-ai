@@ -3,6 +3,7 @@
     :class="iconClasses"
     :style="iconStyles"
     :aria-label="ariaLabel"
+    class="font-sans"
   ></i>
 </template>
 

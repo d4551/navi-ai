@@ -1,5 +1,5 @@
 <template>
-  <div class="job-tailored-resume-generator">
+  <div class="job-tailored-resume-generator" class="font-sans">
     <!-- Header -->
     <div class="generator-header mb-6">
       <h2 class="h2 text-gradient-gaming mb-2">
@@ -12,15 +12,15 @@
 
     <!-- Step 1: Job Analysis -->
     <div class="surface-elevated border-subtle rounded-xl mb-6">
-      <div class="p-4 border-b border-subtle">
-        <div class="d-flex align-items-center gap-3">
+      <div class="p-glass-md border-b border-subtle">
+        <div class="flex items-center gap-glass-md">
           <div class="step-badge">1</div>
           <h3 class="heading-lg mb-0">Job Posting Analysis</h3>
-          <AppIcon v-if="hasJobAnalysis" name="mdi-check-circle-outline" color="success" size="small" />
+          <AppIcon v-if="hasJobAnalysis" name="CheckCircleIcon" color="success" size="small" />
         </div>
       </div>
       
-      <div class="p-4">
+      <div class="p-glass-md">
         <v-tabs v-model="jobInputTab" class="mb-4">
           <v-tab value="text">Paste Job Text</v-tab>
           <v-tab value="url">From URL</v-tab>
@@ -40,13 +40,13 @@
                 class="mb-3"
               />
               
-              <div class="d-flex gap-3 flex-wrap">
+              <div class="flex gap-glass-md flex-wrap">
                 <UnifiedButton
                   :loading="isAnalyzingJob"
                   :disabled="!jobPostingText?.trim()"
                   variant="primary"
                   size="md"
-                  leading-icon="mdi-brain"
+                  leading-icon="CpuChipIcon"
                   @click="analyzeJobText"
                 >
                   Analyze Job Posting
@@ -56,7 +56,7 @@
                   v-if="hasJobAnalysis"
                   variant="outline"
                   size="md"
-                  leading-icon="mdi-refresh"
+                  leading-icon="ArrowPathIcon"
                   @click="clearJobAnalysis"
                 >
                   Clear Analysis
@@ -82,7 +82,7 @@
                 :disabled="!jobPostingUrl?.trim()"
                 variant="primary"
                 size="md"
-                leading-icon="mdi-web"
+                leading-icon="GlobeAltIcon"
                 @click="analyzeJobUrl"
               >
                 Extract & Analyze
@@ -93,14 +93,14 @@
 
         <!-- Job Analysis Results -->
         <div v-if="hasJobAnalysis" class="job-analysis-results mt-4">
-          <div class="surface-success-subtle border-success-subtle rounded-lg p-4 mb-4">
-            <AppIcon name="mdi-check-circle-outline" color="success" class="me-2" />
-            <span class="text-success-emphasis">Job analysis completed! Ready to tailor your resume.</span>
+          <div class="surface-success-subtle border-success-subtle rounded-lg p-glass-md mb-4">
+            <AppIcon name="CheckCircleIcon" color="success" class="mr-2" />
+            <span class="text-success-600-emphasis">Job analysis completed! Ready to tailor your resume.</span>
           </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <div class="surface-elevated border-subtle rounded-lg p-4 h-100">
+          <div class="flex flex-wrap">
+            <div class="flex-1-md-6 mb-3">
+              <div class="surface-elevated border-subtle rounded-lg p-glass-md h-100">
                 <h4 class="heading-md mb-3">Position Details</h4>
                 <p><strong>Company:</strong> {{ jobAnalysis.company }}</p>
                 <p><strong>Role:</strong> {{ jobAnalysis.jobTitle }}</p>
@@ -109,10 +109,10 @@
               </div>
             </div>
             
-            <div class="col-md-6 mb-3">
-              <div class="surface-elevated border-subtle rounded-lg p-4 h-100">
+            <div class="flex-1-md-6 mb-3">
+              <div class="surface-elevated border-subtle rounded-lg p-glass-md h-100">
                 <h4 class="heading-md mb-3">Key Requirements</h4>
-                <div class="d-flex flex-wrap gap-2 mb-3">
+                <div class="flex flex-wrap gap-glass-sm mb-3">
                   <span 
                     v-for="skill in jobAnalysis.keySkills.slice(0, 6)" 
                     :key="skill"
@@ -132,7 +132,7 @@
           <v-expansion-panels class="mt-3">
             <v-expansion-panel>
               <v-expansion-panel-title>
-                <AppIcon name="mdi-format-list-bulleted" class="me-2" />
+                <AppIcon name="mdi-format-list-bulleted" class="mr-2" />
                 Detailed Requirements ({{ jobAnalysis.requirements.length }})
               </v-expansion-panel-title>
               <v-expansion-panel-text>
@@ -166,7 +166,7 @@
 
             <v-expansion-panel>
               <v-expansion-panel-title>
-                <AppIcon name="mdi-office-building" class="me-2" />
+                <AppIcon name="BuildingOffice2Icon" class="mr-2" />
                 Company Insights
               </v-expansion-panel-title>
               <v-expansion-panel-text>
@@ -211,25 +211,25 @@
 
     <!-- Step 2: Resume Tailoring -->
     <div class="surface-elevated border-subtle rounded-xl mb-6" :class="{ 'disabled': !hasJobAnalysis }">
-      <div class="p-4 border-b border-subtle">
-        <div class="d-flex align-items-center gap-3">
+      <div class="p-glass-md border-b border-subtle">
+        <div class="flex items-center gap-glass-md">
           <div class="step-badge" :class="{ 'active': hasJobAnalysis }">2</div>
           <h3 class="heading-lg mb-0">Resume Tailoring</h3>
-          <AppIcon v-if="hasTailoredResume" name="mdi-check-circle-outline" color="success" size="small" />
+          <AppIcon v-if="hasTailoredResume" name="CheckCircleIcon" color="success" size="small" />
         </div>
       </div>
       
-      <div class="p-4">
-        <div v-if="!hasJobAnalysis" class="text-center text-muted py-4">
-          <AppIcon name="mdi-arrow-up" size="48" class="mb-3" />
+      <div class="p-glass-md">
+        <div v-if="!hasJobAnalysis" class="text-center text-secondary py-4">
+          <AppIcon name="ArrowUpIcon" size="48" class="mb-3" />
           <p>Complete job analysis first to enable resume tailoring</p>
         </div>
 
         <div v-else>
           <!-- Tailoring Options -->
           <div class="tailoring-options mb-4">
-            <div class="row">
-              <div class="col-md-4">
+            <div class="flex flex-wrap">
+              <div class="flex-1-md-4">
                 <v-select
                   v-model="tailoringOptions.aggressiveness"
                   :items="aggressivenessOptions"
@@ -238,7 +238,7 @@
                   density="compact"
                 />
               </div>
-              <div class="col-md-4">
+              <div class="flex-1-md-4">
                 <v-select
                   v-model="tailoringOptions.targetScore"
                   :items="targetScoreOptions"
@@ -247,7 +247,7 @@
                   density="compact"
                 />
               </div>
-              <div class="col-md-4">
+              <div class="flex-1-md-4">
                 <v-select
                   v-model="tailoringOptions.focusAreas"
                   :items="focusAreaOptions"
@@ -260,13 +260,13 @@
             </div>
           </div>
 
-          <div class="d-flex gap-3 flex-wrap">
+          <div class="flex gap-glass-md flex-wrap">
             <UnifiedButton
               :loading="isTailoringResume"
               :disabled="!currentResume"
               variant="primary"
               size="md"
-              leading-icon="mdi-file-document-outline-edit"
+              leading-icon="DocumentIcon-document-outline-edit"
               @click="tailorResume"
             >
               Tailor Resume to Job
@@ -276,7 +276,7 @@
               v-if="hasTailoredResume"
               variant="secondary"
               size="md"
-              leading-icon="mdi-download"
+              leading-icon="ArrowDownTrayIcon"
               @click="exportTailoredResume"
             >
               Export Tailored Resume
@@ -286,8 +286,8 @@
           <!-- Tailoring Results -->
           <div v-if="hasTailoredResume" class="tailoring-results mt-4">
             <!-- Score Cards -->
-            <div class="row mb-4">
-              <div class="col-md-3 mb-2">
+            <div class="flex flex-wrap mb-4">
+              <div class="flex-1-md-3 mb-2">
                 <div class="score-card">
                   <div class="score-value" :class="getScoreColor(matchScore)">
                     {{ matchScore }}%
@@ -295,7 +295,7 @@
                   <div class="score-label">Match Score</div>
                 </div>
               </div>
-              <div class="col-md-3 mb-2">
+              <div class="flex-1-md-3 mb-2">
                 <div class="score-card">
                   <div class="score-value" :class="getScoreColor(keywordCoverage)">
                     {{ keywordCoverage }}%
@@ -303,7 +303,7 @@
                   <div class="score-label">Keyword Coverage</div>
                 </div>
               </div>
-              <div class="col-md-3 mb-2">
+              <div class="flex-1-md-3 mb-2">
                 <div class="score-card">
                   <div class="score-value" :class="getScoreColor(atsScore)">
                     {{ atsScore }}%
@@ -311,7 +311,7 @@
                   <div class="score-label">ATS Compliance</div>
                 </div>
               </div>
-              <div class="col-md-3 mb-2">
+              <div class="flex-1-md-3 mb-2">
                 <div class="score-card">
                   <div class="score-value" :class="getScoreColor(tailoredResume?.tailoredResume?.overallScore || 0)">
                     {{ tailoredResume?.tailoredResume?.overallScore || 0 }}%
@@ -331,9 +331,9 @@
                   :key="section.type"
                 >
                   <v-expansion-panel-title>
-                    <div class="d-flex align-items-center justify-content-between w-100">
+                    <div class="flex items-center justify-between w-100">
                       <span class="text-capitalize">{{ section.type }} Section</span>
-                      <div class="d-flex align-items-center gap-2">
+                      <div class="flex items-center gap-glass-sm">
                         <span class="score-badge" :class="getScoreColor(section.atsScore)">
                           {{ section.atsScore }}%
                         </span>
@@ -368,14 +368,14 @@
                       </div>
 
                       <div class="content-comparison">
-                        <div class="row">
-                          <div class="col-md-6">
+                        <div class="flex flex-wrap">
+                          <div class="flex-1-md-6">
                             <h5>Before:</h5>
                             <div class="content-preview original">
                               <pre>{{ formatContent(section.originalContent) }}</pre>
                             </div>
                           </div>
-                          <div class="col-md-6">
+                          <div class="flex-1-md-6">
                             <h5>After:</h5>
                             <div class="content-preview tailored">
                               <pre>{{ formatContent(section.tailoredContent) }}</pre>
@@ -393,8 +393,8 @@
             <div v-if="tailoredResume?.recommendations" class="recommendations">
               <h4 class="mb-3">Additional Recommendations</h4>
               
-              <div class="row">
-                <div v-if="tailoredResume.recommendations.criticalChanges.length" class="col-md-6">
+              <div class="flex flex-wrap">
+                <div v-if="tailoredResume.recommendations.criticalChanges.length" class="flex-1-md-6">
                   <div class="recommendation-card critical">
                     <h5>Critical Changes</h5>
                     <ul>
@@ -405,7 +405,7 @@
                   </div>
                 </div>
                 
-                <div v-if="tailoredResume.recommendations.suggestedImprovements.length" class="col-md-6">
+                <div v-if="tailoredResume.recommendations.suggestedImprovements.length" class="flex-1-md-6">
                   <div class="recommendation-card suggested">
                     <h5>Suggested Improvements</h5>
                     <ul>
@@ -438,15 +438,15 @@
     <!-- Step 3: Cover Letter Generation -->
     <div class="card-unified" :class="{ 'disabled': !hasJobAnalysis }">
       <div class="card-header section-header">
-        <div class="d-flex align-items-center gap-3">
+        <div class="flex items-center gap-glass-md">
           <div class="step-badge" :class="{ 'active': hasJobAnalysis }">3</div>
           <h3 class="card-title mb-0">Tailored Cover Letter</h3>
         </div>
       </div>
       
       <div class="card-body section-body">
-        <div v-if="!hasJobAnalysis" class="text-center text-muted py-4">
-          <AppIcon name="mdi-arrow-up" size="48" class="mb-3" />
+        <div v-if="!hasJobAnalysis" class="text-center text-secondary py-4">
+          <AppIcon name="ArrowUpIcon" size="48" class="mb-3" />
           <p>Complete job analysis first to enable cover letter generation</p>
         </div>
 
@@ -455,8 +455,8 @@
             :loading="coverLetterComposable.isGenerating.value"
             variant="primary"
             size="md"
-            icon="mdi-file-document-outline-plus"
-            class="me-3"
+            icon="DocumentIcon-document-outline-plus"
+            class="mr-3"
             @click="generateCoverLetter"
           >
             Generate Tailored Cover Letter
@@ -464,7 +464,7 @@
 
           <div v-if="coverLetterComposable.hasGeneratedContent.value" class="mt-4">
             <div class="alert alert-success mb-3">
-              <AppIcon name="mdi-check-circle-outline" color="success" class="me-2" />
+              <AppIcon name="CheckCircleIcon" color="success" class="mr-2" />
               Cover letter generated successfully!
             </div>
             
@@ -481,8 +481,8 @@
                 <UnifiedButton
                   variant="outline"
                   size="md"
-                  icon="mdi-content-copy"
-                  class="me-3"
+                  icon="DocumentDuplicateIcon"
+                  class="mr-3"
                   @click="copyCoverLetter"
                 >
                   Copy to Clipboard
@@ -491,7 +491,7 @@
                 <UnifiedButton
                   variant="secondary"
                   size="md"
-                  icon="mdi-download"
+                  icon="ArrowDownTrayIcon"
                   @click="exportCoverLetter"
                 >
                   Export Cover Letter
@@ -517,6 +517,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, ArrowPathIcon, ArrowUpIcon, BuildingOffice2Icon, CheckCircleIcon, CpuChipIcon, DocumentDuplicateIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { useAppStore } from '@/stores/app'
@@ -728,7 +730,7 @@ onMounted(async () => {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
   margin-bottom: var(--spacing-3);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .skills-tags {
@@ -753,19 +755,19 @@ onMounted(async () => {
   margin-bottom: var(--spacing-3);
   background: var(--surface-base);
   border-radius: var(--radius-md);
-  border-left: 4px solid var(--color-gray-300);
+  border-l: 4px solid var(--color-gray-300);
 }
 
 .requirement-item.priority-required {
-  border-left-color: var(--color-error);
+  border-l-color: var(--color-error);
 }
 
 .requirement-item.priority-preferred {
-  border-left-color: var(--color-warning);
+  border-l-color: var(--color-warning);
 }
 
 .requirement-item.priority-nice_to_have {
-  border-left-color: var(--color-info);
+  border-l-color: var(--color-info);
 }
 
 .requirement-header {
@@ -809,7 +811,7 @@ onMounted(async () => {
 
 .requirement-text {
   margin: var(--spacing-2) 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .keywords-list {
@@ -892,7 +894,7 @@ onMounted(async () => {
 
 .keyword-count {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .section-details {

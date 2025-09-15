@@ -9,13 +9,13 @@
               <h5 class="modal-title zelda-title">
                 <div class="title-decoration">
                   <AppIcon name="mdi-triforce" class="zelda-triforce-header" />
-                  <AppIcon name="mdi-brain" class="magical-brain me-2" />
+                  <AppIcon name="CpuChipIcon" class="magical-brain mr-2" />
                 </div>
                 <span class="title-text">{{ helperTitle || 'AI Assistant' }}</span>
                 <div class="title-subtitle">Your magical companion</div>
               </h5>
-              <div class="d-flex align-items-center gap-2">
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" class="zelda-close-btn" aria-label="Close" @click="closeModal" />
+              <div class="flex items-center gap-glass-sm">
+                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" class="zelda-close-btn" aria-label="Close" @click="closeModal" />
               </div>
             </div>
             <div class="modal-body">
@@ -28,9 +28,9 @@
                   :class="{ active: activeTab === tab.id }"
                   @click="activeTab = tab.id"
                 >
-                  <i :class="tab.icon" class="me-1"></i>
+                  <i :class="tab.icon" class="mr-1"></i>
                   {{ tab.label }}
-                  <span v-if="tab.count !== undefined" class="badge bg-info ms-1">{{ tab.count }}</span>
+                  <span v-if="tab.count !== undefined" class="badge bg-blue-500 ml-1">{{ tab.count }}</span>
                 </button>
               </div>
 
@@ -42,28 +42,28 @@
                     <div
                       v-for="suggestion in filteredSuggestions"
                       :key="suggestion.id"
-                      class="suggestion-card col-md-6"
+                      class="suggestion-card flex-1-md-6"
                       :class="getPriorityClass(suggestion.priority)"
                     >
                       <div class="card h-100" :class="getPriorityCardClass(suggestion.priority)">
                         <div class="card-body section-body card-body--dense">
-                          <div class="d-flex align-items-start">
+                          <div class="flex items-start">
                             <div class="flex-grow-1">
-                              <div class="d-flex align-items-center mb-2">
-                                <span :class="`badge me-2 ${getBadgeClass(suggestion.type)}`">{{ suggestion.type }}</span>
-                                <small class="text-muted">{{ getPriorityLabel(suggestion.priority) }}</small>
+                              <div class="flex items-center mb-2">
+                                <span :class="`badge mr-2 ${getBadgeClass(suggestion.type)}`">{{ suggestion.type }}</span>
+                                <small class="text-secondary">{{ getPriorityLabel(suggestion.priority) }}</small>
                               </div>
                               <h6 class="mb-2">{{ suggestion.title }}</h6>
-                              <p class="text-muted small mb-3">{{ suggestion.description }}</p>
+                              <p class="text-secondary small mb-3">{{ suggestion.description }}</p>
 
-                              <div v-if="!suggestion.appliedAt" class="d-flex gap-2">
+                              <div v-if="!suggestion.appliedAt" class="flex gap-glass-sm">
                                 <button
                                   class="unified-btn btn-sm ui-btn ui-size-md v-btn"
                                   :class="getActionButtonClass(suggestion)"
                                   :disabled="processingSuggestion === suggestion.id || isProcessing"
                                   @click="applySuggestion(suggestion.id)"
                                 >
-                                  <AppIcon name="mdi-auto-fix" class="me-1" />
+                                  <AppIcon name="SparklesIcon" class="mr-1" />
                                   {{ processingSuggestion === suggestion.id ? 'Applying...' : getActionText(suggestion) }}
                                 </button>
                                 <button
@@ -71,13 +71,13 @@
                                   :disabled="processingSuggestion === suggestion.id || isProcessing"
                                   @click="dismissSuggestion(suggestion.id)"
                                 >
-                                  <AppIcon name="mdi-close-circle-outline" />
+                                  <AppIcon name="XMarkIcon-circle-outline" />
                                   Dismiss
                                 </button>
                               </div>
 
-                              <small v-if="suggestion.appliedAt" class="text-success">
-                                <AppIcon name="mdi-check-circle-outline" />
+                              <small v-if="suggestion.appliedAt" class="text-success-600">
+                                <AppIcon name="CheckCircleIcon" />
                                 Applied {{ formatDate(suggestion.appliedAt) }}
                               </small>
                             </div>
@@ -87,8 +87,8 @@
                     </div>
                   </div>
 
-                  <div v-if="filteredSuggestions.length === 0" class="text-center text-muted py-4">
-                    <AppIcon name="mdi-lightbulb" />
+                  <div v-if="filteredSuggestions.length === 0" class="text-center text-secondary py-4">
+                    <AppIcon name="LightBulbIcon" />
                     <h6>No Suggestions Available</h6>
                     <p>AI assistant will provide suggestions when you make changes to your content.</p>
                   </div>
@@ -97,13 +97,13 @@
                 <!-- Analysis Tab -->
                 <div v-if="activeTab === 'analysis'" class="tab-pane fade show active">
                   <div class="analysis-section">
-                    <div class="d-flex gap-3 mb-3" role="group" aria-label="Analysis actions">
+                    <div class="flex gap-glass-md mb-3" role="group" aria-label="Analysis actions">
                       <button
                         class="unified-btn btn-primary btn-sm v-btn ui-btn ui-size-md"
                         :disabled="!currentEntity || isProcessing"
                         @click="requestAnalysis"
                       >
-                        <AppIcon name="mdi-brain" class="me-2" />
+                        <AppIcon name="CpuChipIcon" class="mr-2" />
                         {{ isProcessing ? 'Analyzing...' : 'Analyze Content' }}
                       </button>
                       <button
@@ -111,7 +111,7 @@
                         :disabled="!currentEntity || isProcessing"
                         @click="runATSCalculations"
                       >
-                        <AppIcon name="mdi-check-circle-outline-outline" class="me-2" />
+                        <AppIcon name="CheckIcon-circle-outline-outline" class="mr-2" />
                         ATS Compatibility Check
                       </button>
                     </div>
@@ -120,7 +120,7 @@
                     <div v-if="analysisResults">
                       <div class="unified-grid g-3">
                         <!-- Overall Score -->
-                        <div class="col-md-4">
+                        <div class="flex-1-md-4">
                           <div class="unified-card glass-card section-card text-center">
                             <div class="card-body section-body">
                               <div class="score-circle" :class="getScoreClass(analysisResults.overallScore)">
@@ -136,19 +136,19 @@
                         </div>
 
                         <!-- Analysis Metrics -->
-                        <div v-for="(metric, index) in analysisMetrics" :key="index" class="col-md-4">
+                        <div v-for="(metric, index) in analysisMetrics" :key="index" class="flex-1-md-4">
                           <div class="unified-card glass-card section-card">
                             <div class="card-header section-header card-header--dense">
                               <h6 class="mb-0">
-                                <i :class="metric.icon" class="me-2"></i>
+                                <i :class="metric.icon" class="mr-2"></i>
                                 {{ metric.title }}
                               </h6>
                             </div>
                             <div class="card-body section-body card-body--dense">
-                              <div class="d-flex align-items-center">
+                              <div class="flex items-center">
                                 <div class="flex-grow-1">
                                   <div class="metric-value">{{ metric.value }}</div>
-                                  <small class="text-muted">{{ metric.description }}</small>
+                                  <small class="text-secondary">{{ metric.description }}</small>
                                 </div>
                               </div>
                             </div>
@@ -156,11 +156,11 @@
                         </div>
 
                         <!-- Recommendations -->
-                        <div v-if="analysisResults.recommendations?.length" class="col-12">
+                        <div v-if="analysisResults.recommendations?.length" class="flex-1-12">
                           <div class="unified-card glass-card section-card">
                             <div class="card-header section-header">
                               <h6 class="mb-0">
-                                <AppIcon name="mdi-lightbulb" />
+                                <AppIcon name="LightBulbIcon" />
                                 Recommendations
                               </h6>
                             </div>
@@ -169,9 +169,9 @@
                                 <li
                                   v-for="(recommendation, index) in analysisResults.recommendations"
                                   :key="index"
-                                  class="mb-2 d-flex align-items-start"
+                                  class="mb-2 flex items-start"
                                 >
-                                  <AppIcon name="mdi-check-circle-outline" color="success" />
+                                  <AppIcon name="CheckCircleIcon" color="success" />
                                   <span class="small">{{ recommendation }}</span>
                                 </li>
                               </ul>
@@ -181,21 +181,21 @@
                       </div>
                     </div>
 
-                    <div v-else-if="!isProcessing" class="text-center text-muted py-4">
-                      <AppIcon name="mdi-brain" class="mdi-48px mb-3" />
+                    <div v-else-if="!isProcessing" class="text-center text-secondary py-4">
+                      <AppIcon name="CpuChipIcon" class="mdi-48px mb-3" />
                       <h6 class="mb-2">Ready for Analysis</h6>
                       <p class="mb-3">Click "Analyze Content" to get AI insights about your {{ currentEntityType }}</p>
-                      <small class="text-info">
-                        <AppIcon name="mdi-information-outline" class="me-1" />
+                      <small class="text-blue-600">
+                        <AppIcon name="InformationCircleIcon" class="mr-1" />
                         Analysis includes keyword optimization, ATS compatibility, and improvement suggestions
                       </small>
                     </div>
 
                     <!-- Loading State -->
                     <div v-if="isProcessing" class="text-center py-4">
-                      <AppIcon name="mdi-brain" class="spin mdi-48px mb-3 text-primary" />
+                      <AppIcon name="CpuChipIcon" class="spin mdi-48px mb-3 text-primary-600" />
                       <h6 class="mb-2">Analyzing Your Content</h6>
-                      <p class="text-muted">AI is evaluating your {{ currentEntityType }} and generating personalized recommendations...</p>
+                      <p class="text-secondary">AI is evaluating your {{ currentEntityType }} and generating personalized recommendations...</p>
                       <div class="progress mt-3" style="max-width: 300px; margin: 0 auto;">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
                       </div>
@@ -213,10 +213,10 @@
                         class="message mb-3"
                         :class="{ 'message-own': message.sender === 'user' }"
                       >
-                        <div class="d-flex" :class="{ 'justify-content-end': message.sender === 'user' }">
+                        <div class="flex" :class="{ 'justify-end': message.sender === 'user' }">
                           <!-- Left-side avatar for AI/System -->
-                          <div v-if="message.sender !== 'user'" class="message-avatar me-2">
-                            <AppIcon :name="message.sender === 'ai' ? 'mdi-robot' : 'mdi-information'" />
+                          <div v-if="message.sender !== 'user'" class="message-avatar mr-2">
+                            <AppIcon :name="message.sender === 'ai' ? 'mdi-robot' : 'InformationCircleIconrmation'" />
                           </div>
 
                           <div
@@ -225,18 +225,18 @@
                           >
                             <div class="message-content">
                               <p class="mb-0 message-text">{{ message.content }}</p>
-                              <small class="text-muted message-timestamp">{{ formatTime(message.timestamp) }}</small>
+                              <small class="text-secondary message-timestamp">{{ formatTime(message.timestamp) }}</small>
                             </div>
                           </div>
 
                           <!-- Right-side avatar for User -->
-                          <div v-if="message.sender === 'user'" class="message-avatar ms-2">
-                            <AppIcon name="mdi-account" />
+                          <div v-if="message.sender === 'user'" class="message-avatar ml-2">
+                            <AppIcon name="UserIcon" />
                           </div>
                         </div>
                       </div>
                       <div v-if="isProcessing" class="message">
-                        <div class="d-flex">
+                        <div class="flex">
                           <div class="message-bubble">
                             <div class="message-content">
                               <div class="typing-indicator">
@@ -265,7 +265,7 @@
                           class="unified-btn btn-primary v-btn ui-btn ui-size-md"
                           :disabled="!chatInput.trim() || isProcessing"
                         >
-                          <AppIcon name="mdi-send" />
+                          <AppIcon name="PaperAirplaneIcon" />
                         </button>
                       </div>
                     </form>
@@ -275,11 +275,11 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="unified-btn btn-secondary ui-btn ui-size-md v-btn" @click="closeModal">
-                <AppIcon name="mdi-close-circle-outline" />
+                <AppIcon name="XMarkIcon-circle-outline" />
                 Close
               </button>
               <div v-if="recentActions.length > 0" class="ms-auto">
-                <small class="text-muted">
+                <small class="text-secondary">
                   {{ recentActions.length }} actions taken
                 </small>
               </div>
@@ -306,7 +306,7 @@
         title="Hey! Listen! - AI Assistant"
         @click="openModal"
       >
-        <AppIcon name="mdi-brain" class="magical-icon" />
+        <AppIcon name="CpuChipIcon" class="magical-icon" />
         <span v-if="newSuggestionsAvailable" class="notification-badge magical-badge">{{ activeSuggestions.length }}</span>
         <!-- Magical particles -->
         <div class="magical-particles">
@@ -327,12 +327,12 @@
           </div>
           <ul class="zelda-suggestions mb-0 small">
             <li v-for="suggestion in activeSuggestions.slice(0, 3)" :key="suggestion.id" class="zelda-suggestion-item">
-              <AppIcon name="mdi-chevron-right" class="zelda-arrow-icon" />
+              <AppIcon name="ChevronRightIcon" class="zelda-arrow-icon" />
               {{ suggestion.title }}
             </li>
           </ul>
           <div class="zelda-footer">
-            <small class="text-muted">Click to open the assistant!</small>
+            <small class="text-secondary">Click to open the assistant!</small>
           </div>
         </div>
       </div>
@@ -341,6 +341,8 @@
 </template>
 
 <script setup lang="ts">
+import { CheckCircleIcon, ChevronRightIcon, CpuChipIcon, InformationCircleIcon, LightBulbIcon, PaperAirplaneIcon, SparklesIcon, UserIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed, watch, onUnmounted, nextTick } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -403,7 +405,7 @@ const contextTabs = computed(() => {
     {
       id: 'suggestions',
       label: 'Suggestions',
-      icon: 'mdi-lightbulb',
+      icon: 'LightBulbIcon',
       count: filteredSuggestions.value.length
     },
     {
@@ -422,7 +424,7 @@ const contextTabs = computed(() => {
 })
 
 const helperTitle = computed(() => {
-  const entityPrefix = props.entityType ? `${props.entityType.charAt(0).toUpperCase() + props.entityType.slice(1)} - ` : ''
+  const entityPrefix = _props.entityType ? `${_props.entityType.charAt(0).toUpperCase() + _props.entityType.slice(1)} - ` : ''
   return `${entityPrefix}AI Assistant`
 })
 
@@ -431,11 +433,11 @@ const newSuggestionsAvailable = computed(() =>
 )
 
 const currentEntity = computed(() =>
-  props.entityData || aiContext.state.currentContext?.entities?.[0]?.data
+  _props.entityData || aiContext.state.currentContext?.entities?.[0]?.data
 )
 
 const currentEntityType = computed(() =>
-  props.entityType || aiContext.state.currentContext?.entityType || 'content'
+  _props.entityType || aiContext.state.currentContext?.entityType || 'content'
 )
 
 const analysisMetrics = computed(() => {
@@ -445,13 +447,13 @@ const analysisMetrics = computed(() => {
     {
       title: 'Keywords Matched',
       value: analysisResults.value.keywordScore || '75%',
-      icon: 'mdi-tag-text',
+      icon: 'TagIcon-text',
       description: 'Resume keywords matching job requirements'
     },
     {
       title: 'ATS Score',
       value: analysisResults.value.atsScore || '82%',
-      icon: 'mdi-check-decagram',
+      icon: 'CheckIcon-decagram',
       description: 'Applicants Tracking System compatibility'
     },
     {
@@ -465,8 +467,8 @@ const analysisMetrics = computed(() => {
 
 // Methods
 const openModal = async (): Promise<void> => {
-  if (props.entityType && props.entityId) {
-    await aiContext.initializeContext(props.entityType, props.entityId, props.targetJob)
+  if (_props.entityType && _props.entityId) {
+    await aiContext.initializeContext(_props.entityType, _props.entityId, _props.targetJob)
   }
 
   showHelperModal.value = true
@@ -608,17 +610,17 @@ const getPriorityClass = (priority: string): string => {
 const getPriorityCardClass = (priority: string): string => {
   switch (priority) {
     case 'high': return 'border-warning'
-    case 'urgent': return 'border-danger bg-light-danger'
+    case 'urgent': return 'border-danger bg-glass-bg dark:bg-glass-bg-hover-danger'
     default: return 'border-secondary'
   }
 }
 
 const getBadgeClass = (type: string): string => {
   switch (type) {
-    case 'enhancement': return 'bg-primary'
-    case 'correction': return 'bg-danger'
-    case 'analysis': return 'bg-info'
-    default: return 'bg-secondary'
+    case 'enhancement': return 'bg-primary-500'
+    case 'correction': return 'bg-error-500'
+    case 'analysis': return 'bg-blue-500'
+    default: return 'bg-secondary-500'
   }
 }
 
@@ -678,12 +680,12 @@ const scrollToBottom = (): void => {
 
 // Lifecycle
 onMounted(async () => {
-  if (props.show) {
+  if (_props.show) {
     await openModal()
   }
 
   // Watch for prop changes
-  watch(() => props.show, async (newShow) => {
+  watch(() => _props.show, async (newShow) => {
     if (newShow && !showHelperModal.value) {
       await openModal()
     } else if (!newShow && showHelperModal.value) {
@@ -716,11 +718,11 @@ onUnmounted(() => {
 
 /* Modal Enhanced Styles */
 .suggestion-card.priority-high .card {
-  border-left: 4px solid var(--color-warning);
+  border-l: 4px solid var(--color-warning);
 }
 
 .suggestion-card.priority-urgent .card {
-  border-left: 4px solid var(--color-danger);
+  border-l: 4px solid var(--color-danger);
   animation: pulseWarn 2s infinite;
 }
 
@@ -741,7 +743,7 @@ onUnmounted(() => {
   width: 72px;
   height: 72px;
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-lg), var(--glass-shadow);
+  box-shadow: var(--shadow-glass-lg), var(--glass-shadow);
   transition: all var(--duration-smooth) var(--easing-bounce);
   position: relative;
   background: var(--gradient-primary);
@@ -751,7 +753,7 @@ onUnmounted(() => {
 
 .zelda-assistant-btn:hover {
   transform: scale(1.15) rotate(5deg);
-  box-shadow: var(--shadow-xl), var(--shadow-glow-primary);
+  box-shadow: var(--shadow-glass-xl), var(--shadow-glow-primary);
 }
 
 .zelda-assistant-btn.magical-glow {
@@ -896,7 +898,7 @@ onUnmounted(() => {
   top: 100%;
   right: 25px;
   border: 8px solid transparent;
-  border-top-color: rgba(255, 255, 255, 0.95);
+  border-t-color: rgba(255, 255, 255, 0.95);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
 }
 
@@ -934,7 +936,7 @@ onUnmounted(() => {
 
 .zelda-message {
   margin-bottom: 12px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.4;
   font-weight: 500;
 }
@@ -969,7 +971,7 @@ onUnmounted(() => {
   text-align: center;
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid rgba(26, 115, 232, 0.1);
+  border-t: 1px solid rgba(26, 115, 232, 0.1);
 }
 
 @keyframes dialogueEntrance {
@@ -1089,7 +1091,7 @@ onUnmounted(() => {
 }
 
 .message-own {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 .message-bubble {
@@ -1102,7 +1104,7 @@ onUnmounted(() => {
 }
 
 .message-bubble-ai {
-  border-left: 3px solid color-mix(in srgb, var(--color-primary-500) 55%, transparent);
+  border-l: 3px solid color-mix(in srgb, var(--color-primary-500) 55%, transparent);
 }
 
 .message-bubble-own {
@@ -1167,7 +1169,7 @@ onUnmounted(() => {
               rgba(251, 188, 4, 0.85) 100%);
   color: white;
   padding: 20px 24px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  border-b: 2px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(12px);
   position: relative;
   overflow: hidden;
@@ -1285,7 +1287,7 @@ onUnmounted(() => {
 [data-theme="dark"] .ai-tooltip .tooltip-content {
   background: var(--glass-surface);
   border-color: var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .message-bubble {
@@ -1306,7 +1308,7 @@ onUnmounted(() => {
 }
 
 [data-theme="dark"] .zelda-message {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* Enhanced Modal Content */
@@ -1331,7 +1333,7 @@ onUnmounted(() => {
 .zelda-modal-content .modal-footer {
   background: rgba(248, 250, 255, 0.8);
   backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(26, 115, 232, 0.15);
+  border-t: 1px solid rgba(26, 115, 232, 0.15);
   padding: 16px 24px;
 }
 
@@ -1406,7 +1408,7 @@ onUnmounted(() => {
 
 [data-theme="dark"] .zelda-modal-content .modal-footer {
   background: rgba(15, 15, 20, 0.8);
-  border-top-color: rgba(255, 255, 255, 0.15);
+  border-t-color: rgba(255, 255, 255, 0.15);
 }
 
 [data-theme="dark"] .zelda-modal-content .nav-tabs {

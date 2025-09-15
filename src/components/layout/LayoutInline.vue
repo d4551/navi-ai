@@ -1,5 +1,5 @@
 <template>
-  <div :class="inlineClasses" :data-layout="variant">
+  <div :class="inlineClasses" :data-layout="variant" class="font-sans">
     <slot />
   </div>
 </template>
@@ -79,14 +79,14 @@ const inlineClasses = computed(() => {
 <style scoped>
 /* Alignment utilities */
 .layout-inline--align-start { align-items: flex-start; }
-.layout-inline--align-center { align-items: center; }
+.layout-inline--items-center { align-items: center; }
 .layout-inline--align-end { align-items: flex-end; }
 .layout-inline--align-baseline { align-items: baseline; }
 .layout-inline--align-stretch { align-items: stretch; }
 
 /* Reverse order */
 .layout-inline--reverse {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 /* Variant styling */

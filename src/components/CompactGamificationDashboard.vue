@@ -1,70 +1,70 @@
 <template>
-  <div class="compact-gamification-dashboard">
+  <div class="compact-gamification-dashboard" class="font-sans">
     <!-- Achievements Overview -->
     <div class="unified-grid g-3 mb-4">
       <!-- Level Status -->
-      <div class="col-md-6">
+      <div class="flex-1-md-6">
         <UnifiedCard 
           variant="glass" 
           size="medium" 
           elevated
           :title="`Level ${userLevel.level}`"
           :subtitle="userLevel.title"
-          title-icon="mdi-star-circle"
+          title-icon="StarIcon-circle"
           icon-color="primary"
         >
           <div class="text-center">
             <div class="level-avatar mb-3" :class="`level-${userLevel.level}`">
               <span class="level-number">{{ userLevel.level }}</span>
             </div>
-            <p class="text-muted small">{{ userLevel.currentXP }} XP</p>
+            <p class="text-secondary small">{{ userLevel.currentXP }} XP</p>
             <div class="progress progress--sm mt-2">
               <div 
-                class="progress-bar bg-primary" 
+                class="progress-bar bg-primary-500" 
                 :style="{ width: userLevel.progress + '%' }"
                 role="progressbar"
               />
             </div>
-            <small class="text-muted mt-1 d-block">{{ userLevel.xpForNext }} XP to next level</small>
+            <small class="text-secondary mt-1 block">{{ userLevel.xpForNext }} XP to next level</small>
           </div>
         </UnifiedCard>
       </div>
 
       <!-- Quick Stats -->
-      <div class="col-md-6">
+      <div class="flex-1-md-6">
         <div class="unified-card glass-card section-card h-100">
           <div class="card-body section-body">
             <h6 class="card-title mb-3">
-              <AppIcon name="mdi-chart-bar" class="me-2" />
+              <AppIcon name="ChartBarSquareIcon" class="mr-2" />
               Progress Summary
             </h6>
             <div class="stats-list">
-              <div class="stat-row">
+              <div class="stat-flex flex-wrap">
                 <span class="stat-label">Achievements</span>
                 <span class="stat-value">{{ earnedAchievements.length }}/{{ totalAchievements }}</span>
                 <div class="stat-progress">
                   <div class="progress progress--xs">
                     <div 
-                      class="progress-bar bg-success" 
+                      class="progress-bar bg-success-500" 
                       :style="{ width: (earnedAchievements.length / totalAchievements) * 100 + '%' }"
                     />
                   </div>
                 </div>
               </div>
-              <div class="stat-row">
+              <div class="stat-flex flex-wrap">
                 <span class="stat-label">Daily Streak</span>
                 <span class="stat-value">
                   {{ streak.current }}
-                  <AppIcon name="mdi-fire" :size="getIconSize('small')" :color="getIconColor('warning')" />
+                  <AppIcon name="FireIcon" :size="getIconSize('small')" :color="getIconColor('warning')" />
                 </span>
               </div>
-              <div class="stat-row">
+              <div class="stat-flex flex-wrap">
                 <span class="stat-label">Challenges</span>
                 <span class="stat-value">{{ completedChallenges }}/{{ dailyChallenges.length }}</span>
                 <div class="stat-progress">
                   <div class="progress progress--xs">
                     <div 
-                      class="progress-bar bg-warning" 
+                      class="progress-bar bg-warning-500" 
                       :style="{ width: challengeProgress + '%' }"
                     />
                   </div>
@@ -80,7 +80,7 @@
     <div class="unified-card glass-card section-card mb-4">
       <div class="card-header section-header">
         <h6 class="card-title mb-0">
-          <AppIcon name="mdi-calendar-check" class="me-2" />
+          <AppIcon name="CalendarIcon-check" class="mr-2" />
           Daily Challenges
         </h6>
         <UiChip classes="chip chip-primary chip-compact">{{ completedChallenges }}/{{ dailyChallenges.length }}</UiChip>
@@ -94,9 +94,9 @@
             :class="{ 'completed': challenge.completed }"
           >
             <div class="challenge-icon">
-              <AppIcon :name="getIcon(challenge.icon, 'mdi-target')" :size="getIconSize('small')" :color="challenge.completed ? getIconColor('success') : undefined" />
+              <AppIcon :name="getIcon(challenge.icon, 'CursorArrowRaysIcon')" :size="getIconSize('small')" :color="challenge.completed ? getIconColor('success') : undefined" />
               <div v-if="challenge.completed" class="completion-check">
-                <AppIcon name="mdi-check" :size="getIconSize('small')" color="white" />
+                <AppIcon name="CheckIcon" :size="getIconSize('small')" color="white" />
               </div>
             </div>
             <div class="challenge-content">
@@ -120,7 +120,7 @@
     <div class="unified-card glass-card section-card">
       <div class="card-header section-header">
         <h6 class="card-title mb-0">
-          <AppIcon name="mdi-trophy" class="me-2" />
+          <AppIcon name="TrophyIcon" class="mr-2" />
           Recent Achievements
         </h6>
         <UnifiedButton 
@@ -133,8 +133,8 @@
       </div>
       <div class="card-body section-body">
         <div v-if="recentAchievements.length === 0" class="text-center py-4">
-          <AppIcon name="mdi-trophy-outline" />
-          <p class="text-muted mt-2 mb-0">Start completing challenges to earn achievements!</p>
+          <AppIcon name="TrophyIcon" />
+          <p class="text-secondary mt-2 mb-0">Start completing challenges to earn achievements!</p>
         </div>
         <div v-else class="achievements-list">
           <div 
@@ -144,7 +144,7 @@
             :class="{ 'earned': isAchievementEarned(achievement.id) }"
           >
             <div class="achievement-icon">
-              <AppIcon :name="getIcon(achievement.icon, 'mdi-star')" :color="isAchievementEarned(achievement.id) ? getIconColor('success') : undefined" />
+              <AppIcon :name="getIcon(achievement.icon, 'StarIcon')" :color="isAchievementEarned(achievement.id) ? getIconColor('success') : undefined" />
             </div>
             <div class="achievement-info">
               <div class="achievement-name">{{ achievement.name }}</div>
@@ -159,6 +159,9 @@
 </template>
 
 <script>
+import { ChartBarSquareIcon, CheckIcon, TrophyIcon } from '@heroicons/vue/24/outline'
+import { TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { computed } from 'vue'
 import { useAppStore } from '@/stores/app'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -291,7 +294,7 @@ export default {
   font-weight: var(--font-weight-bold);
   margin: 0 auto;
   position: relative;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .level-avatar.level-1, .level-avatar.level-2 {
@@ -316,7 +319,7 @@ export default {
   gap: 0.75rem;
 }
 
-.stat-row {
+.stat-flex flex-wrap {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -401,7 +404,7 @@ export default {
 .challenge-name {
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .challenge-xp {
@@ -454,7 +457,7 @@ export default {
 .achievement-name {
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 

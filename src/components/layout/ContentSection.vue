@@ -94,7 +94,7 @@ const contentClasses = computed(() => [
 .section-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-2);
   display: flex;
   align-items: center;
@@ -162,7 +162,7 @@ const contentClasses = computed(() => [
   background: var(--surface-elevated);
   border-radius: var(--radius-lg);
   padding: var(--spacing-4);
-  border-left: 4px solid var(--color-primary-500);
+  border-l: 4px solid var(--color-primary-500);
 }
 
 .section-type-stats .title-stats {
@@ -220,7 +220,7 @@ const contentClasses = computed(() => [
 
 .section-type-noir .title-noir {
   font-family: var(--font-primary);
-  color: #ffffff;
+  color: var(--text-inverse);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wider);
   text-shadow: 0 0 15px rgba(0,255,127,0.4);
@@ -240,12 +240,12 @@ const contentClasses = computed(() => [
   box-shadow: var(--shadow-base);
 }
 
-.section-bg-primary {
+.section-bg-primary-500 {
   background: var(--color-primary-50);
   border: 1px solid var(--color-primary-200);
 }
 
-.section-bg-secondary {
+.section-bg-secondary-500 {
   background: var(--color-gray-50);
   border: 1px solid var(--color-gray-200);
 }
@@ -326,7 +326,7 @@ const contentClasses = computed(() => [
 .section-footer {
   margin-top: var(--spacing-4);
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

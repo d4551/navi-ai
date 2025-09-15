@@ -1,9 +1,9 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="streaming-settings glass-card section-card">
+  <div class="streaming-settings glass-card section-card" class="font-sans">
     <div class="card-header section-header">
-      <h5 class="mb-0 d-flex align-items-center gap-2">
-        <AppIcon name="mdi-video-settings" class="text-primary" />
+      <h5 class="mb-0 flex items-center gap-glass-sm">
+        <AppIcon name="VideoCameraIcon-settings" class="text-primary-600" />
         Video & Screen Streaming Settings
       </h5>
     </div>
@@ -11,13 +11,13 @@
     <div class="card-body section-body">
       <!-- Video Settings Section -->
       <div class="settings-subsection mb-4">
-        <h6 class="text-primary mb-3 d-flex align-items-center gap-2">
-          <AppIcon name="mdi-camera" />
+        <h6 class="text-primary-600 mb-3 flex items-center gap-glass-sm">
+          <AppIcon name="CameraIcon" />
           Video Settings
         </h6>
         
-        <div class="row g-3">
-          <div class="col-12">
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-12">
             <div class="form-check form-switch">
               <input
                 id="video-enabled"
@@ -32,12 +32,12 @@
             </div>
           </div>
 
-          <div v-if="localSettings.streaming.video.enabled" class="col-12">
-            <div class="row g-3">
+          <div v-if="localSettings.streaming.video.enabled" class="flex-1-12">
+            <div class="flex flex-wrap g-3">
               <!-- Camera Selection -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <label class="form-label" for="camera-select">
-                  <AppIcon name="mdi-camera" />
+                  <AppIcon name="CameraIcon" />
                   Camera Device
                 </label>
                 <select
@@ -58,9 +58,9 @@
               </div>
 
               <!-- Resolution -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <label class="form-label" for="video-resolution">
-                  <AppIcon name="mdi-monitor" class="me-1" />
+                  <AppIcon name="ComputerDesktopIcon" class="mr-1" />
                   Video Resolution
                 </label>
                 <select
@@ -76,7 +76,7 @@
               </div>
 
               <!-- Frame Rate -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <label class="form-label" for="video-fps">
                   Frame Rate: {{ localSettings.streaming.video.frameRate }} FPS
                 </label>
@@ -90,14 +90,14 @@
                   step="5"
                   @input="updateSettings"
                 />
-                <div class="d-flex justify-content-between small text-muted">
+                <div class="flex justify-between small text-secondary">
                   <span>5 FPS</span>
                   <span>60 FPS</span>
                 </div>
               </div>
 
               <!-- Video Options -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <div class="form-check">
                   <input
                     id="video-auto-start"
@@ -131,13 +131,13 @@
 
       <!-- Screen Sharing Settings Section -->
       <div class="settings-subsection mb-4">
-        <h6 class="text-success mb-3 d-flex align-items-center gap-2">
-          <AppIcon name="mdi-monitor" />
+        <h6 class="text-success-600 mb-3 flex items-center gap-glass-sm">
+          <AppIcon name="ComputerDesktopIcon" />
           Screen Sharing Settings
         </h6>
         
-        <div class="row g-3">
-          <div class="col-12">
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-12">
             <div class="form-check form-switch">
               <input
                 id="screen-enabled"
@@ -152,10 +152,10 @@
             </div>
           </div>
 
-          <div v-if="localSettings.streaming.screen.enabled" class="col-12">
-            <div class="row g-3">
+          <div v-if="localSettings.streaming.screen.enabled" class="flex-1-12">
+            <div class="flex flex-wrap g-3">
               <!-- Screen Resolution -->
-              <div class="col-md-4">
+              <div class="flex-1-md-4">
                 <label class="form-label" for="screen-resolution">
                   Screen Resolution
                 </label>
@@ -172,7 +172,7 @@
               </div>
 
               <!-- Frame Rate -->
-              <div class="col-md-4">
+              <div class="flex-1-md-4">
                 <label class="form-label" for="screen-fps">
                   Frame Rate: {{ localSettings.streaming.screen.frameRate }} FPS
                 </label>
@@ -186,14 +186,14 @@
                   step="1"
                   @input="updateSettings"
                 />
-                <div class="d-flex justify-content-between small text-muted">
+                <div class="flex justify-between small text-secondary">
                   <span>5 FPS</span>
                   <span>30 FPS</span>
                 </div>
               </div>
 
               <!-- Cursor Setting -->
-              <div class="col-md-4">
+              <div class="flex-1-md-4">
                 <label class="form-label" for="cursor-setting">
                   Cursor Display
                 </label>
@@ -210,7 +210,7 @@
               </div>
 
               <!-- Screen Options -->
-              <div class="col-12">
+              <div class="flex-1-12">
                 <div class="form-check">
                   <input
                     id="screen-share-audio"
@@ -231,13 +231,13 @@
 
       <!-- AI Streaming Settings Section -->
       <div class="settings-subsection mb-4">
-        <h6 class="text-warning mb-3 d-flex align-items-center gap-2">
-          <AppIcon name="mdi-brain" />
+        <h6 class="text-warning-600 mb-3 flex items-center gap-glass-sm">
+          <AppIcon name="CpuChipIcon" />
           AI Streaming Settings
         </h6>
         
-        <div class="row g-3">
-          <div class="col-12">
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-12">
             <div class="form-check form-switch">
               <input
                 id="ai-enabled"
@@ -249,17 +249,17 @@
               />
               <label class="form-check-label" for="ai-enabled">
                 Enable AI Analysis
-                <small v-if="!apiKey" class="text-muted d-block">
+                <small v-if="!apiKey" class="text-secondary block">
                   (Configure AI API key in AI Settings first)
                 </small>
               </label>
             </div>
           </div>
 
-          <div v-if="localSettings.streaming.aiStreaming.enabled && apiKey" class="col-12">
-            <div class="row g-3">
+          <div v-if="localSettings.streaming.aiStreaming.enabled && apiKey" class="flex-1-12">
+            <div class="flex flex-wrap g-3">
               <!-- AI Model -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <label class="form-label" for="ai-model">
                   AI Model
                 </label>
@@ -280,7 +280,7 @@
               </div>
 
               <!-- Analysis Type -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <label class="form-label" for="analysis-type">
                   Analysis Type
                 </label>
@@ -297,7 +297,7 @@
               </div>
 
               <!-- Analysis FPS -->
-              <div class="col-md-4">
+              <div class="flex-1-md-4">
                 <label class="form-label" for="ai-fps">
                   Analysis Rate: {{ localSettings.streaming.aiStreaming.fps }} FPS
                 </label>
@@ -311,14 +311,14 @@
                   step="1"
                   @input="updateSettings"
                 />
-                <div class="d-flex justify-content-between small text-muted">
+                <div class="flex justify-between small text-secondary">
                   <span>1 FPS</span>
                   <span>30 FPS</span>
                 </div>
               </div>
 
               <!-- Analysis Interval (for interval mode) -->
-              <div v-if="localSettings.streaming.aiStreaming.analysisType === 'interval'" class="col-md-4">
+              <div v-if="localSettings.streaming.aiStreaming.analysisType === 'interval'" class="flex-1-md-4">
                 <label class="form-label" for="analysis-interval">
                   Interval: {{ localSettings.streaming.aiStreaming.analysisInterval }}s
                 </label>
@@ -332,14 +332,14 @@
                   step="5"
                   @input="updateSettings"
                 />
-                <div class="d-flex justify-content-between small text-muted">
+                <div class="flex justify-between small text-secondary">
                   <span>5s</span>
                   <span>5min</span>
                 </div>
               </div>
 
               <!-- AI Temperature -->
-              <div class="col-md-4">
+              <div class="flex-1-md-4">
                 <label class="form-label" for="ai-temperature">
                   Creativity: {{ localSettings.streaming.aiStreaming.temperature }}
                 </label>
@@ -353,14 +353,14 @@
                   step="0.1"
                   @input="updateSettings"
                 />
-                <div class="d-flex justify-content-between small text-muted">
+                <div class="flex justify-between small text-secondary">
                   <span>Focused</span>
                   <span>Creative</span>
                 </div>
               </div>
 
               <!-- Max Tokens -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <label class="form-label" for="max-tokens">
                   Max Response Length
                 </label>
@@ -379,7 +379,7 @@
               </div>
 
               <!-- Save Responses -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <div class="form-check mt-4">
                   <input
                     id="save-responses"
@@ -395,7 +395,7 @@
               </div>
 
               <!-- Start realtime on record start -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <div class="form-check mt-4">
                   <input
                     id="realtime-on-record"
@@ -411,7 +411,7 @@
               </div>
 
               <!-- Start realtime on screen start -->
-              <div class="col-md-6">
+              <div class="flex-1-md-6">
                 <div class="form-check mt-4">
                   <input
                     id="realtime-on-screen"
@@ -427,7 +427,7 @@
               </div>
 
               <!-- System Prompt -->
-              <div class="col-12">
+              <div class="flex-1-12">
                 <label class="form-label" for="system-prompt">
                   AI System Prompt
                 </label>
@@ -449,7 +449,7 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="d-flex gap-2 justify-content-end">
+      <div class="flex gap-glass-sm justify-end">
         <UnifiedButton variant="outline" leading-icon="mdi-restore" @click="resetToDefaults">
           Reset Defaults
         </UnifiedButton>
@@ -469,6 +469,8 @@
 </template>
 
 <script>
+import { CameraIcon, ComputerDesktopIcon, CpuChipIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed, watch } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { DEFAULT_SETTINGS } from '@/shared/schemas/settingsSchema';
@@ -565,11 +567,11 @@ export default {
 <style scoped>
 .settings-subsection {
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .settings-subsection:last-child {
-  border-bottom: none;
+  border-b: none;
   padding-bottom: 0;
 }
 
@@ -583,7 +585,7 @@ export default {
 }
 
 .card-header h5 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .settings-subsection h6 {
@@ -592,16 +594,16 @@ export default {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .col-md-4,
-  .col-md-6 {
+  .flex-1-md-4,
+  .flex-1-md-6 {
     margin-bottom: 1rem;
   }
   
-  .d-flex.gap-2.justify-content-end {
+  .flex.gap-glass-sm.justify-end {
     flex-direction: column;
   }
   
-  .d-flex.gap-2.justify-content-end .btn {
+  .flex.gap-glass-sm.justify-end .btn {
     width: 100%;
   }
 }

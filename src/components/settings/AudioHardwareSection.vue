@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div role="region" aria-labelledby="audio-hardware-title" class="enhanced-hardware-section">
+  <div role="region" aria-labelledby="audio-hardware-title" class="enhanced-hardware-section" class="font-sans">
     <!-- Section Header -->
     <div class="section-header glass-section-header">
       <div class="header-content">
@@ -18,18 +18,18 @@
           variant="glass"
           size="sm"
           :disabled="loadingDevices"
-          leading-icon="mdi-refresh"
+          leading-icon="ArrowPathIcon"
           @click="$emit('load-audio-devices')"
         >
-          <span v-if="loadingDevices" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+          <span v-if="loadingDevices" class="spinner-border spinner-border-sm mr-2" aria-hidden="true"></span>
           Refresh Devices
         </UnifiedButton>
       </div>
     </div>
     <div>
-      <div class="row g-4">
-        <div class="col-lg-6">
-          <label for="microphone-device" class="form-label fw-medium">Microphone</label>
+      <div class="flex flex-wrap g-4">
+        <div class="flex-1-lg-6">
+          <label for="microphone-device" class="form-label font-medium">Microphone</label>
           <select
             id="microphone-device"
             :value="settings.selectedMicId"
@@ -50,12 +50,12 @@
           <div id="microphone-help" class="form-text">
             Select preferred input device for interviews & real-time chat.
           </div>
-          <div class="d-flex align-items-center gap-2 mt-2">
+          <div class="flex items-center gap-glass-sm mt-2">
             <UnifiedButton
               type="button"
               size="sm"
               :variant="micTestActive ? 'outline-danger' : 'outline'"
-              leading-icon="mdi-microphone"
+              leading-icon="MicrophoneIcon"
               @click="toggleMicTest"
             >
               {{ micTestActive ? 'Stop Mic Test' : 'Test Mic' }}
@@ -66,8 +66,8 @@
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <label for="voice-lang" class="form-label fw-medium">Recognition Language</label>
+        <div class="flex-1-lg-6">
+          <label for="voice-lang" class="form-label font-medium">Recognition Language</label>
           <select
             id="voice-lang"
             :value="settings.voiceLang"
@@ -85,8 +85,8 @@
           </div>
         </div>
 
-        <div v-show="settings.ttsProvider === 'system'" class="col-12">
-          <label for="tts-voice" class="form-label fw-medium">System TTS Voice</label>
+        <div v-show="settings.ttsProvider === 'system'" class="flex-1-12">
+          <label for="tts-voice" class="form-label font-medium">System TTS Voice</label>
           <select
             id="tts-voice"
             :value="settings.ttsVoice"
@@ -107,11 +107,11 @@
           <div id="voice-tts-help" class="form-text">
             Voice used for spoken responses (System TTS provider).
           </div>
-          <div class="mt-2 d-flex align-items-center gap-2">
+          <div class="mt-2 flex items-center gap-glass-sm">
             <UnifiedButton
               type="button"
               size="sm"
-              leading-icon="mdi-volume-high"
+              leading-icon="SpeakerWaveIcon"
               :disabled="isSpeakingTest"
               @click="testVoice"
             >
@@ -122,7 +122,7 @@
               type="button"
               variant="outline-danger"
               size="sm"
-              leading-icon="mdi-stop"
+              leading-icon="StopIcon"
               @click="stopVoiceTest"
             >
               Stop
@@ -131,8 +131,8 @@
         </div>
 
         <!-- Enhanced Audio Hardware Settings -->
-        <div class="col-lg-6">
-          <label for="speaker-device" class="form-label fw-medium">Speaker/Headphones</label>
+        <div class="flex-1-lg-6">
+          <label for="speaker-device" class="form-label font-medium">Speaker/Headphones</label>
           <select
             id="speaker-device"
             :value="settings.selectedSpeakerId"
@@ -150,8 +150,8 @@
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <label for="audio-quality" class="form-label fw-medium">Audio Quality</label>
+        <div class="flex-1-lg-6">
+          <label for="audio-quality" class="form-label font-medium">Audio Quality</label>
           <select
             id="audio-quality"
             :value="settings.audioQuality"
@@ -170,17 +170,17 @@
         </div>
 
         <!-- Audio Processing Settings -->
-        <div class="col-12">
+        <div class="flex-1-12">
           <div class="enhanced-audio-processing glass-section">
             <h4 class="section-title">
-              <AppIcon name="mdi-tune-vertical" />
+              <AppIcon name="AdjustmentsVerticalIcon" />
               Audio Processing
             </h4>
             
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label for="noise-suppression" class="form-label fw-medium">Noise Suppression</label>
-                <div class="d-flex align-items-center gap-3">
+            <div class="flex flex-wrap g-3">
+              <div class="flex-1-md-6">
+                <label for="noise-suppression" class="form-label font-medium">Noise Suppression</label>
+                <div class="flex items-center gap-glass-md">
                   <input
                     id="noise-suppression"
                     type="checkbox"
@@ -194,9 +194,9 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <label for="echo-cancellation" class="form-label fw-medium">Echo Cancellation</label>
-                <div class="d-flex align-items-center gap-3">
+              <div class="flex-1-md-6">
+                <label for="echo-cancellation" class="form-label font-medium">Echo Cancellation</label>
+                <div class="flex items-center gap-glass-md">
                   <input
                     id="echo-cancellation"
                     type="checkbox"
@@ -210,9 +210,9 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <label for="auto-gain" class="form-label fw-medium">Auto Gain Control</label>
-                <div class="d-flex align-items-center gap-3">
+              <div class="flex-1-md-6">
+                <label for="auto-gain" class="form-label font-medium">Auto Gain Control</label>
+                <div class="flex items-center gap-glass-md">
                   <input
                     id="auto-gain"
                     type="checkbox"
@@ -226,9 +226,9 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <label for="push-to-talk" class="form-label fw-medium">Push-to-Talk Mode</label>
-                <div class="d-flex align-items-center gap-3">
+              <div class="flex-1-md-6">
+                <label for="push-to-talk" class="form-label font-medium">Push-to-Talk Mode</label>
+                <div class="flex items-center gap-glass-md">
                   <input
                     id="push-to-talk"
                     type="checkbox"
@@ -245,8 +245,8 @@
 
             <!-- Push-to-Talk Key Configuration -->
             <div v-if="settings.pushToTalkMode" class="push-to-talk-config mt-3">
-              <label for="ptt-key" class="form-label fw-medium">Push-to-Talk Key</label>
-              <div class="d-flex align-items-center gap-2">
+              <label for="ptt-key" class="form-label font-medium">Push-to-Talk Key</label>
+              <div class="flex items-center gap-glass-sm">
                 <input
                   id="ptt-key"
                   :value="settings.pushToTalkKey || 'Space'"
@@ -258,7 +258,7 @@
                 <UnifiedButton
                   variant="outline"
                   size="sm"
-                  leading-icon="mdi-keyboard"
+                  leading-icon="KeyIconboard"
                   @click="configurePTTKey"
                 >
                   {{ configuringPTT ? 'Press a key...' : 'Set Key' }}
@@ -271,8 +271,8 @@
           </div>
         </div>
 
-        <div v-show="settings.ttsProvider === 'gemini'" class="col-12">
-          <label for="gemini-voice" class="form-label fw-medium">Gemini Voice</label>
+        <div v-show="settings.ttsProvider === 'gemini'" class="flex-1-12">
+          <label for="gemini-voice" class="form-label font-medium">Gemini Voice</label>
           <input
             id="gemini-voice"
             :value="settings.geminiVoice"
@@ -285,8 +285,8 @@
           <div id="gemini-voice-help" class="form-text">
             Optional style or voice hint for Gemini TTS (not all voices available in all regions).
           </div>
-          <div class="mt-2 d-flex align-items-center gap-2">
-            <label for="gemini-voice-preset" class="form-label mb-0 small text-muted">Presets</label>
+          <div class="mt-2 flex items-center gap-glass-sm">
+            <label for="gemini-voice-preset" class="form-label mb-0 small text-secondary">Presets</label>
             <select
               id="gemini-voice-preset"
               :value="selectedGeminiPreset"
@@ -297,11 +297,11 @@
               <option v-for="p in geminiVoicePresets" :key="p" :value="p">{{ p }}</option>
             </select>
           </div>
-          <div class="mt-2 d-flex align-items-center gap-2">
+          <div class="mt-2 flex items-center gap-glass-sm">
             <UnifiedButton
               type="button"
               size="sm"
-              leading-icon="mdi-volume-high"
+              leading-icon="SpeakerWaveIcon"
               :disabled="isSpeakingTest"
               @click="testVoice"
             >
@@ -312,7 +312,7 @@
               type="button"
               variant="outline-danger"
               size="sm"
-              leading-icon="mdi-stop"
+              leading-icon="StopIcon"
               @click="stopVoiceTest"
             >
               Stop
@@ -325,6 +325,9 @@
 </template>
 
 <script>
+import { AdjustmentsVerticalIcon, ArrowPathIcon, MicrophoneIcon } from '@heroicons/vue/24/outline'
+import { StopIcon } from '@heroicons/vue/24/solid'
+
 import { watch } from 'vue';
 
 // Removed unused icon components
@@ -507,7 +510,7 @@ export default {
   justify-content: between;
   margin-bottom: var(--spacing-6);
   padding-bottom: var(--spacing-4);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .header-content {
@@ -540,7 +543,7 @@ export default {
 .header-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
@@ -566,7 +569,7 @@ export default {
 .section-title {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-4);
   display: flex;
   align-items: center;
@@ -610,7 +613,7 @@ export default {
 
 .toggle-label {
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   flex: 1;

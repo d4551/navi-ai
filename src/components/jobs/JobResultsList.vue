@@ -1,5 +1,5 @@
 <template>
-  <div class="job-results-list">
+  <div class="job-results-list" class="font-sans">
     <!-- Loading State -->
     <div v-if="loading" class="loading-container">
       <div class="loading-grid">
@@ -27,7 +27,7 @@
           <p>Try adjusting your search criteria or browse our studio database for more opportunities.</p>
           <UnifiedButton
             variant="primary"
-            leading-icon="mdi-office-building"
+            leading-icon="BuildingOffice2Icon"
             @click="$emit('browse-studios')"
           >
             Explore Studios
@@ -50,36 +50,36 @@
           <!-- Job Header -->
           <div class="job-header">
             <div class="job-main-info">
-              <div class="job-title-row">
+              <div class="job-title-flex flex-wrap">
                 <h4 class="job-title">
                   {{ job.title }}
-                  <span v-if="job.featured" class="featured-badge">⭐</span>
-                  <span v-if="job.isGaming" class="gaming-badge">🎮</span>
+                  <span v-if="job.featured" class="featured-badge">StarIcon</span>
+                  <span v-if="job.isGaming" class="gaming-badge">DevicePhoneMobileIcon</span>
                 </h4>
                 <div class="job-actions">
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    :leading-icon="job.saved ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                    :leading-icon="job.saved ? 'BookmarkIcon' : 'BookmarkIcon-outline'"
                     :class="{ 'saved': job.saved }"
                     @click.stop="$emit('job-saved', job)"
                   />
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    leading-icon="mdi-share-variant"
+                    leading-icon="ShareIcon"
                     @click.stop="$emit('job-shared', job)"
                   />
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    leading-icon="mdi-dots-horizontal"
+                    leading-icon="EllipsisHorizontalIcon"
                     @click.stop="showJobMenu(job, $event)"
                   />
                 </div>
               </div>
 
-              <div class="job-company-row">
+              <div class="job-company-flex flex-wrap">
                 <div class="company-info">
                   <img
                     v-if="job.company?.logo"
@@ -89,7 +89,7 @@
                   />
                   <div class="company-details">
                     <span class="company-name">{{ job.company?.name || 'Unknown Company' }}</span>
-                    <span class="job-location">📍 {{ job.location || 'Remote' }}</span>
+                    <span class="job-location">MapPinIcon {{ job.location || 'Remote' }}</span>
                   </div>
                 </div>
                 
@@ -125,7 +125,7 @@
             <!-- AI Match Score (Gaming Focus) -->
             <div v-if="gamingFocus && job.aiScore" class="ai-score-container">
               <div class="ai-score" :class="getScoreClass(job.aiScore)">
-                <AppIcon name="mdi-brain" class="ai-icon" />
+                <AppIcon name="CpuChipIcon" class="ai-icon" />
                 <span class="score-value">{{ job.aiScore }}%</span>
                 <span class="score-label">Match</span>
               </div>
@@ -161,12 +161,12 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="job-actions-row">
+          <div class="job-actions-flex flex-wrap">
             <div class="primary-actions">
               <UnifiedButton
                 variant="primary"
                 size="md"
-                leading-icon="mdi-send"
+                leading-icon="PaperAirplaneIcon"
                 @click.stop="$emit('job-applied', job)"
               >
                 Quick Apply
@@ -175,7 +175,7 @@
               <UnifiedButton
                 variant="outline"
                 size="md"
-                leading-icon="mdi-eye"
+                leading-icon="EyeIcon"
                 @click.stop="$emit('job-details', job)"
               >
                 View Details
@@ -187,7 +187,7 @@
                 v-if="gamingFocus"
                 variant="gaming"
                 size="sm"
-                leading-icon="mdi-office-building"
+                leading-icon="BuildingOffice2Icon"
                 @click.stop="viewStudio(job.company)"
               >
                 Studio Info
@@ -210,6 +210,8 @@
 </template>
 
 <script setup lang="ts">
+import { BuildingOffice2Icon, CpuChipIcon, EyeIcon, PaperAirplaneIcon, ShareIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import UiChip from '@/components/ui/UiChip.vue'
@@ -382,13 +384,13 @@ const showJobMenu = (job, event) => {
 
 .empty-icon {
   font-size: 4rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: var(--spacing-4);
 }
 
 .empty-content h3 {
   margin: 0 0 var(--spacing-3) 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .empty-content p {
@@ -433,7 +435,7 @@ const showJobMenu = (job, event) => {
   margin-bottom: var(--spacing-4);
 }
 
-.job-title-row {
+.job-title-flex flex-wrap {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -442,7 +444,7 @@ const showJobMenu = (job, event) => {
 
 .job-title {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 700;
   font-size: 1.25rem;
   display: flex;
@@ -463,7 +465,7 @@ const showJobMenu = (job, event) => {
   color: var(--color-warning-500);
 }
 
-.job-company-row {
+.job-company-flex flex-wrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -491,7 +493,7 @@ const showJobMenu = (job, event) => {
 
 .company-name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .job-location {
@@ -594,7 +596,7 @@ const showJobMenu = (job, event) => {
 .skills-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-2);
 }
 
@@ -604,7 +606,7 @@ const showJobMenu = (job, event) => {
   flex-wrap: wrap;
 }
 
-.job-actions-row {
+.job-actions-flex flex-wrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -618,7 +620,7 @@ const showJobMenu = (job, event) => {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .job-company-row {
+  .job-company-flex flex-wrap {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-2);
@@ -638,7 +640,7 @@ const showJobMenu = (job, event) => {
     margin-left: 0;
   }
 
-  .job-actions-row {
+  .job-actions-flex flex-wrap {
     flex-direction: column;
     align-items: stretch;
   }
@@ -674,7 +676,7 @@ const showJobMenu = (job, event) => {
 
 :deep(.more-skills-chip) {
   background: transparent;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   border: 1px dashed var(--border-base);
 }
 </style>

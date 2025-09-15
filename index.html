@@ -87,7 +87,7 @@
             // Make sure connect-src includes all necessary sources for Vite dev server
             const updatedContent = currentContent.replace(
               /connect-src[^;]+;/,
-              "connect-src 'self' http://localhost:* http://127.0.0.1:* https://*.codespaces.githubusercontent.com https://*.github.dev https://*.gitpod.io ws://localhost:* ws://127.0.0.1:* wss://localhost:* wss://127.0.0.1:* wss://*.codespaces.githubusercontent.com wss://*.github.dev wss://*.gitpod.io webpack: webpack://* webpack-dev-server: https://texttospeech.googleapis.com https://gemini.googleapis.com https://generativelanguage.googleapis.com http: https: ws: wss: blob: https://cdn.jsdelivr.net data: 'unsafe-inline' 'unsafe-eval';"
+              "connect-src 'self' http://localhost:* http://127.0.0.1:* https://*.codespaces.githubusercontent.com https://*.github.dev https://*.gitpod.io ws://localhost:* ws://127.0.0.1:* wss://localhost:* wss://127.0.0.1:* wss://*.codespaces.githubusercontent.com wss://*.github.dev wss://*.gitpod.io https://texttospeech.googleapis.com https://gemini.googleapis.com https://generativelanguage.googleapis.com http: https: ws: wss: blob: https://cdn.jsdelivr.net data: 'unsafe-inline' 'unsafe-eval';"
             );
             devCSP.setAttribute('content', updatedContent);
           }

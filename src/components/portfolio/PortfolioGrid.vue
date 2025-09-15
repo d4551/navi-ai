@@ -1,5 +1,5 @@
 <template>
-  <div class="portfolio-grid" :class="gridClass">
+  <div class="portfolio-grid" :class="gridClass" class="font-sans">
     <!-- Loading State -->
     <div v-if="loading" class="loading-grid portfolio-grid">
       <div 
@@ -90,7 +90,7 @@
           :style="{ 
             '--animation-delay': `${index * animationDelay}ms`,
             '--grid-column': getGridColumn(index),
-            '--grid-row': getGridRow(index)
+            '--grid-flex flex-wrap': getGridRow(index)
           }"
           @select="handleItemSelect"
           @edit="$emit('edit', $event)"
@@ -487,7 +487,7 @@ watch(
 .empty-title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
   margin: 0 0 1rem 0;
   background: linear-gradient(45deg, #ffffff, rgba(124, 58, 237, 0.8));
   -webkit-background-clip: text;
@@ -523,7 +523,7 @@ watch(
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
   font-weight: 600;
   font-size: 1.1rem;
 }

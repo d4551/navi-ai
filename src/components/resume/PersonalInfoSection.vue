@@ -1,5 +1,5 @@
 <template>
-  <div class="personal-info-section">
+  <div class="personal-info-section" class="font-sans">
     <div class="section-description">
       <p>Provide your basic contact information and professional details.</p>
     </div>
@@ -12,11 +12,11 @@
           <div v-if="formData.photo" class="photo-preview">
             <img :src="formData.photo" alt="Profile photo" />
             <button type="button" class="remove-photo" @click="removePhoto">
-              <AppIcon name="mdi-close-circle-outline" />
+              <AppIcon name="XMarkIcon-circle-outline" />
             </button>
           </div>
           <div v-else class="photo-placeholder" @click="triggerPhotoUpload">
-            <AppIcon name="mdi-camera-plus" />
+            <AppIcon name="CameraIcon-plus" />
             <span>Add Photo</span>
           </div>
           <input 
@@ -30,7 +30,7 @@
       </div>
 
       <!-- Name Fields -->
-      <div class="form-row">
+      <div class="form-flex flex-wrap">
         <div class="form-group">
           <label class="form-label required">First Name</label>
           <input 
@@ -74,7 +74,7 @@
       <div class="form-section">
         <h3 class="section-title">Contact Information</h3>
         
-        <div class="form-row">
+        <div class="form-flex flex-wrap">
           <div class="form-group">
             <label class="form-label required">Email</label>
             <input 
@@ -118,11 +118,11 @@
       <div class="form-section">
         <h3 class="section-title">Online Presence</h3>
         
-        <div class="form-row">
+        <div class="form-flex flex-wrap">
           <div class="form-group">
             <label class="form-label">LinkedIn Profile</label>
             <div class="input-with-icon">
-              <AppIcon name="mdi-linkedin" class="input-icon" />
+              <AppIcon name="LinkIconedin" class="input-icon" />
               <input 
                 v-model="formData.linkedin"
                 type="url"
@@ -135,7 +135,7 @@
           <div class="form-group">
             <label class="form-label">Portfolio/Website</label>
             <div class="input-with-icon">
-              <AppIcon name="mdi-web" class="input-icon" />
+              <AppIcon name="GlobeAltIcon" class="input-icon" />
               <input 
                 v-model="formData.website"
                 type="url"
@@ -146,7 +146,7 @@
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="form-flex flex-wrap">
           <div class="form-group">
             <label class="form-label">GitHub Profile</label>
             <div class="input-with-icon">
@@ -175,7 +175,7 @@
       <!-- AI Enhancement Button -->
       <div class="ai-section">
         <button type="button" class="ai-enhance-btn" @click="enhanceWithAI">
-          <AppIcon name="mdi-robot" />
+          <AppIcon name="CpuChipIcon" />
           Enhance with AI
         </button>
         <p class="ai-description">Get AI suggestions to optimize your professional title and summary</p>
@@ -191,6 +191,8 @@
 </template>
 
 <script>
+import { CpuChipIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
+
 import { ref, reactive, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -348,7 +350,7 @@ export default {
   gap: var(--spacing-2);
 }
 
-.form-row {
+.form-flex flex-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-4);
@@ -421,11 +423,11 @@ export default {
 
 .form-section {
   padding: var(--spacing-6) 0;
-  border-top: 1px solid var(--md-sys-color-outline-variant);
+  border-t: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .form-section:first-child {
-  border-top: none;
+  border-t: none;
   padding-top: 0;
 }
 
@@ -544,14 +546,14 @@ export default {
   display: flex;
   justify-content: space-between;
   padding-top: var(--spacing-6);
-  border-top: 1px solid var(--md-sys-color-outline-variant);
+  border-t: 1px solid var(--md-sys-color-outline-variant);
 }
 
 /* Buttons inherit global glass styling via UnifiedButton */
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .form-row {
+  .form-flex flex-wrap {
     grid-template-columns: 1fr;
   }
   

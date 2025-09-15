@@ -1,12 +1,12 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <template #header-actions>
       <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
         <!-- AI Intelligence -->
         <UnifiedButton 
           variant="gaming" 
           icon-only 
-          icon="mdi-robot" 
+          icon="CpuChipIcon" 
           tooltip="AI Studio Intelligence" 
           :loading="aiAnalyzing" 
           @click="runAIAnalysis" 
@@ -15,7 +15,7 @@
         <!-- Watchlist -->
         <UnifiedButton 
           variant="glass" 
-          leading-icon="mdi-heart" 
+          leading-icon="HeartIcon" 
           @click="viewFavorites"
         >
           Watchlist ({{ favoriteStudios.length }})
@@ -25,7 +25,7 @@
         <div class="action-group">
           <UnifiedButton 
             variant="outline" 
-            leading-icon="mdi-database-arrow-up" 
+            leading-icon="CircleStackIcon-arrow-up" 
             :loading="importing" 
             @click="runFullImport"
           >
@@ -34,7 +34,7 @@
           
           <UnifiedButton 
             variant="outline" 
-            leading-icon="mdi-sync" 
+            leading-icon="ArrowPathIcon" 
             :loading="syncingSteam" 
             @click="runIncrementalSteamSync"
           >
@@ -43,7 +43,7 @@
           
           <UnifiedButton 
             variant="cyber" 
-            leading-icon="mdi-database-search" 
+            leading-icon="CircleStackIcon-search" 
             :loading="openDataLoading" 
             @click="runOpenDataScan"
           >
@@ -55,19 +55,19 @@
         <div ref="exportDropdownRef" class="dropdown-container">
           <UnifiedButton 
             variant="outline" 
-            leading-icon="mdi-export" 
-            trailing-icon="mdi-chevron-down"
+            leading-icon="ArrowUpTrayIcon" 
+            trailing-icon="ChevronDownIcon"
             @click="toggleExportDropdown"
           >
             Export
           </UnifiedButton>
           <div v-if="showExportDropdown" class="export-dropdown glass-surface">
             <button class="export-option" @click="exportData">
-              <AppIcon name="mdi-file-code" />
+              <AppIcon name="DocumentIcon-code" />
               <span>Export JSON</span>
             </button>
             <button class="export-option" @click="exportDedupedCSV">
-              <AppIcon name="mdi-file-delimited" />
+              <AppIcon name="DocumentIcon-delimited" />
               <span>Export CSV</span>
             </button>
           </div>
@@ -81,7 +81,7 @@
         <div class="dashboard-header">
           <div class="header-title">
             <div class="header-icon">
-              <AppIcon name="mdi-database" />
+              <AppIcon name="CircleStackIcon" />
             </div>
             <div class="header-text">
               <h1>Studio Intelligence Overview</h1>
@@ -90,10 +90,10 @@
           </div>
           <div class="header-actions">
             <button class="action-btn" title="Refresh data" @click="refreshMetrics">
-              <AppIcon name="mdi-refresh" />
+              <AppIcon name="ArrowPathIcon" />
             </button>
             <button class="action-btn" title="Settings" @click="configureMetrics">
-              <AppIcon name="mdi-cog" />
+              <AppIcon name="CogIcon" />
             </button>
           </div>
         </div>
@@ -153,7 +153,7 @@
         <!-- Primary Search -->
         <div class="search-primary">
           <div class="search-input-container">
-            <AppIcon name="mdi-magnify" class="search-input-icon" />
+            <AppIcon name="MagnifyingGlassIcon" class="search-input-icon" />
             <input
               v-model="searchQuery"
               type="text"
@@ -163,10 +163,10 @@
             />
           </div>
           <div class="quick-actions">
-            <UnifiedButton variant="gaming" :loading="aiSearching" leading-icon="mdi-robot" @click="aiSearchSuggestion">
+            <UnifiedButton variant="gaming" :loading="aiSearching" leading-icon="CpuChipIcon" @click="aiSearchSuggestion">
               AI Suggest
             </UnifiedButton>
-            <UnifiedButton variant="cyber" leading-icon="mdi-filter-remove" @click="clearAllFilters">
+            <UnifiedButton variant="cyber" leading-icon="FunnelIcon" @click="clearAllFilters">
               Clear All
             </UnifiedButton>
           </div>
@@ -174,7 +174,7 @@
 
         <!-- Advanced Filters -->
         <div class="filter-matrix">
-          <div class="filter-row">
+          <div class="filter-flex flex-wrap">
             <div class="filter-group">
               <label class="filter-label">Studio Type</label>
               <select v-model="filters.type" class="filter-select glass-input" @change="applyFilters">
@@ -190,7 +190,7 @@
             <div class="filter-group">
               <label class="filter-label">Location</label>
               <div class="input-wrapper">
-                <AppIcon name="mdi-map-marker" class="input-icon" />
+                <AppIcon name="MapPinIcon" class="input-icon" />
                 <input
                   v-model="filters.location"
                   type="text"
@@ -298,7 +298,7 @@
               <option value="aiScore" :disabled="!aiScores || Object.keys(aiScores).length === 0">AI Match Score</option>
             </select>
             <button class="sort-direction" @click="toggleSortDirection">
-              <AppIcon :name="sortDirection === 'asc' ? 'mdi-arrow-up' : 'mdi-arrow-down'" />
+              <AppIcon :name="sortDirection === 'asc' ? 'ArrowUpIcon' : 'ArrowDownIcon'" />
             </button>
           </div>
         </div>
@@ -307,7 +307,7 @@
 
     <!-- Results Header -->
     <section v-if="activeTab === 'database'" class="unified-container">
-      <div class="glass p-4 gap-4 rounded-lg">
+      <div class="glass p-glass-md gap-glass-md rounded-lg">
         <div class="section-header">
           <div class="results-count">
             <strong>{{ filteredStudios.length }}</strong> studios found
@@ -325,7 +325,7 @@
               :options="[
                 { value: 'grid', icon: 'mdi-view-grid', label: 'Grid view' },
                 { value: 'list', icon: 'mdi-view-list', label: 'List view' },
-                { value: 'table', icon: 'mdi-table', label: 'Table view' }
+                { value: 'table', icon: 'TableCellsIcon', label: 'Table view' }
               ]"
             />
 
@@ -339,15 +339,15 @@
 
     <!-- Studio Results -->
     <section v-if="activeTab === 'database'" class="studio-results unified-container">
-      <div v-if="!paginatedStudios.length && filteredStudios.length === 0" class="empty-state glass p-6 gap-4 rounded-lg">
+      <div v-if="!paginatedStudios.length && filteredStudios.length === 0" class="empty-state glass p-glass-lg gap-glass-md rounded-lg">
         <div class="section-header">
           <div>No studios match your filters</div>
         </div>
-        <div class="section-body d-flex align-center gap-2">
-          <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-filter-remove" @click="clearAllFilters">
+        <div class="section-body flex items-center gap-glass-sm">
+          <UnifiedButton color="glass" appearance="outlined" leading-icon="FunnelIcon" @click="clearAllFilters">
             Clear Filters
           </UnifiedButton>
-          <UnifiedButton color="gaming" :loading="aiSearching" leading-icon="mdi-robot" @click="aiSearchSuggestion">
+          <UnifiedButton color="gaming" :loading="aiSearching" leading-icon="CpuChipIcon" @click="aiSearchSuggestion">
             AI Suggest
           </UnifiedButton>
         </div>
@@ -408,7 +408,7 @@
           :disabled="currentPage === 1"
           color="glass" 
           appearance="outlined"
-          leading-icon="mdi-chevron-left"
+          leading-icon="ChevronLeftIcon"
           @click="goToPage(currentPage - 1)"
         >
           Previous
@@ -430,7 +430,7 @@
           :disabled="currentPage === totalPages"
           color="glass" 
           appearance="outlined"
-          trailing-icon="mdi-chevron-right"
+          trailing-icon="ChevronRightIcon"
           @click="goToPage(currentPage + 1)"
         >
           Next
@@ -484,7 +484,7 @@
         </div>
         <footer class="progress-footer">
           <div class="elapsed">Elapsed: {{ formatMs(totalElapsedMs) }}</div>
-          <UnifiedButton variant="outline" :disabled="importing || syncingSteam" leading-icon="mdi-check" @click="closeProgressModal">
+          <UnifiedButton variant="outline" :disabled="importing || syncingSteam" leading-icon="CheckIcon" @click="closeProgressModal">
             Close
           </UnifiedButton>
         </footer>
@@ -494,6 +494,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, ArrowUpTrayIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleStackIcon, CogIcon, CpuChipIcon, FunnelIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
@@ -601,10 +604,10 @@ const popularTechnologies = [
 // Quick filter presets
 const quickFilters = [
   { key: 'aaa', label: 'AAA Studios', icon: 'mdi-office-building', filters: { type: 'AAA' } },
-  { key: 'indie', label: 'Indie Studios', icon: 'mdi-gamepad-variant', filters: { type: 'Indie' } },
+  { key: 'indie', label: 'Indie Studios', icon: 'DevicePhoneMobileIcon-variant', filters: { type: 'Indie' } },
   { key: 'remote', label: 'Remote-Friendly', icon: 'mdi-web', filters: { remoteWork: true } },
   { key: 'mobile', label: 'Mobile Games', icon: 'mdi-cellphone', filters: { type: 'Mobile' } },
-  { key: 'public', label: 'Public Companies', icon: 'mdi-chart-bar', filters: { publiclyTraded: true } },
+  { key: 'public', label: 'Public Companies', icon: 'ChartBarIcon-bar', filters: { publiclyTraded: true } },
   { key: 'california', label: 'California', icon: 'mdi-weather-sunny', filters: { location: 'California' } }
 ]
 
@@ -634,7 +637,7 @@ const enhancedMetrics = computed(() => [
     key: 'tracked',
     value: totalStudios.value,
     label: 'Tracked Studios',
-    icon: 'mdi-database',
+    icon: 'CircleStackIcon',
     statusClass: 'status-primary',
     clickable: true,
     highlighted: false,
@@ -648,12 +651,12 @@ const enhancedMetrics = computed(() => [
     key: 'visible',
     value: filteredStudios.value.length,
     label: 'Visible Results',
-    icon: 'mdi-eye',
+    icon: 'EyeIcon',
     statusClass: 'status-info',
     clickable: true,
     highlighted: filteredStudios.value.length !== totalStudios.value,
     changeText: `${Math.round((filteredStudios.value.length / totalStudios.value) * 100)}% of total`,
-    changeIcon: 'mdi-filter-variant',
+    changeIcon: 'FunnelIcon-variant',
     changeClass: 'neutral',
     toggle: true,
     enabled: metricSettings.value.visible.enabled
@@ -662,12 +665,12 @@ const enhancedMetrics = computed(() => [
     key: 'watchlist',
     value: favoriteStudios.value.length,
     label: 'Watchlist Items',
-    icon: 'mdi-heart',
+    icon: 'HeartIcon',
     statusClass: 'status-success',
     clickable: true,
     highlighted: favoriteStudios.value.length > 0,
     changeText: '+3 recently added',
-    changeIcon: 'mdi-plus',
+    changeIcon: 'PlusIcon',
     changeClass: 'positive',
     toggle: true,
     enabled: metricSettings.value.watchlist.enabled
@@ -676,12 +679,12 @@ const enhancedMetrics = computed(() => [
     key: 'selected',
     value: selectedStudios.value.length,
     label: 'Selected for Compare',
-    icon: 'mdi-checkbox-marked-circle',
+    icon: 'CheckIconbox-marked-circle',
     statusClass: selectedStudios.value.length > 0 ? 'status-warning' : 'status-muted',
     clickable: selectedStudios.value.length > 0,
     highlighted: selectedStudios.value.length >= 2,
     changeText: selectedStudios.value.length >= 2 ? 'Ready to compare' : 'Select 2+ to compare',
-    changeIcon: selectedStudios.value.length >= 2 ? 'mdi-check' : 'mdi-information',
+    changeIcon: selectedStudios.value.length >= 2 ? 'CheckIcon' : 'InformationCircleIconrmation',
     changeClass: selectedStudios.value.length >= 2 ? 'positive' : 'neutral',
     toggle: false,
     enabled: true
@@ -974,7 +977,7 @@ function handleToggleChange(metricKey: string, event: Event) {
 
 function refreshMetrics() {
   // Add refresh button animation
-  const refreshBtn = document.querySelector('.action-btn [name="mdi-refresh"]')
+  const refreshBtn = document.querySelector('.action-btn [name="ArrowPathIcon"]')
   if (refreshBtn) {
     refreshBtn.style.animation = 'spin 1s linear'
     setTimeout(() => {
@@ -1618,7 +1621,7 @@ watch(confidenceThreshold, () => applyFilters())
   gap: var(--spacing-4);
 }
 
-.filter-row {
+.filter-flex flex-wrap {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-xs), 1fr));
   gap: var(--spacing-4);
@@ -1632,7 +1635,7 @@ watch(confidenceThreshold, () => applyFilters())
 
 .filter-label {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -1641,7 +1644,7 @@ watch(confidenceThreshold, () => applyFilters())
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .tech-chips {
@@ -1655,7 +1658,7 @@ watch(confidenceThreshold, () => applyFilters())
   border: 1px solid var(--glass-border);
   border-radius: 999px;
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1737,7 +1740,7 @@ watch(confidenceThreshold, () => applyFilters())
   border: 1px solid var(--glass-border);
   border-radius: 999px;
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1770,7 +1773,7 @@ watch(confidenceThreshold, () => applyFilters())
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   min-width: 120px;
 }
 
@@ -1779,7 +1782,7 @@ watch(confidenceThreshold, () => applyFilters())
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1804,7 +1807,7 @@ watch(confidenceThreshold, () => applyFilters())
 
 .results-count {
   font-size: 1.125rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .results-actions {
@@ -1847,7 +1850,7 @@ watch(confidenceThreshold, () => applyFilters())
 
 .view-toggle:hover {
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .view-toggle.active {
@@ -1902,7 +1905,7 @@ watch(confidenceThreshold, () => applyFilters())
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1925,7 +1928,7 @@ watch(confidenceThreshold, () => applyFilters())
     align-items: stretch;
   }
 
-  .filter-row {
+  .filter-flex flex-wrap {
     grid-template-columns: 1fr;
   }
 
@@ -1993,7 +1996,7 @@ watch(confidenceThreshold, () => applyFilters())
   border-radius: var(--radius-lg);
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1rem;
   transition: all 0.2s ease;
 }
@@ -2024,7 +2027,7 @@ watch(confidenceThreshold, () => applyFilters())
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -2065,7 +2068,7 @@ watch(confidenceThreshold, () => applyFilters())
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .header-title {
@@ -2090,7 +2093,7 @@ watch(confidenceThreshold, () => applyFilters())
 .header-text h1 {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
@@ -2333,7 +2336,7 @@ watch(confidenceThreshold, () => applyFilters())
 .metric-value {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-2);
   line-height: 1;
   transition: all var(--duration-normal);
@@ -2749,7 +2752,7 @@ watch(confidenceThreshold, () => applyFilters())
   border: none;
   background: transparent;
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   cursor: pointer;
   transition: all var(--duration-fast);

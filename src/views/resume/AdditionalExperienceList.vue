@@ -1,13 +1,13 @@
 <template>
-  <section class="mb-4">
+  <section class="mb-4" class="font-sans">
     <div
-      class="section-header d-flex align-items-center justify-content-between mb-3"
+      class="section-header flex items-center justify-between mb-3"
     >
-      <div class="d-flex align-items-center">
-        <AppIcon name="mdi-star" color="primary" aria-hidden="true" />
-        <h2 class="h6 text-primary mb-0 fw-semibold">Additional Experience</h2>
+      <div class="flex items-center">
+        <AppIcon name="StarIcon" color="primary" aria-hidden="true" />
+        <h2 class="h6 text-primary-600 mb-0 font-semibold">Additional Experience</h2>
       </div>
-      <div class="d-flex gap-2 flex-wrap">
+      <div class="flex gap-glass-sm flex-wrap">
         <select
           class="form-select form-select-sm glass-input select-auto-width"
           :value="typeSelection"
@@ -25,20 +25,20 @@
           aria-label="Add new additional experience entry"
           @click="add()"
         >
-          <AppIcon name="mdi-plus" class="me-1" />
-          <span class="d-none d-sm-inline">Add</span>
+          <AppIcon name="PlusIcon" class="mr-1" />
+          <span class="hidden d-sm-inline">Add</span>
         </button>
       </div>
     </div>
 
     <div class="mb-3">
-      <small class="text-muted">Choose experience type above, then add relevant entries below</small>
+      <small class="text-secondary">Choose experience type above, then add relevant entries below</small>
     </div>
 
     <div
       v-for="(exp, index) in localItems"
       :key="index"
-      class="surface-glass border rounded p-3 mb-3"
+      class="surface-glass border rounded p-glass-md mb-3"
       role="listitem"
       :aria-labelledby="`additional-exp-${index}-title`"
       :aria-grabbed="
@@ -56,19 +56,19 @@
       @drop="onDrop('additional', index)"
       @dragend="endDrag"
     >
-      <div class="d-flex justify-content-between align-items-start mb-3">
+      <div class="flex justify-between items-start mb-3">
         <small
           :id="`additional-exp-${index}-title`"
           class="badge badge-secondary"
         >{{ exp.type || "Experience" }} #{{ index + 1 }}</small>
-        <div class="d-flex align-items-center gap-1">
+        <div class="flex items-center gap-glass-xs">
           <button
             class="btn btn-sm btn-outline-secondary drag-handle ui-btn ui-size-md"
             type="button"
             title="Drag to reorder"
             aria-label="Drag to reorder additional experience"
           >
-            <AppIcon name="mdi-drag-vertical" />
+            <AppIcon name="Bars3Icon" />
           </button>
           <div class="btn-group btn-group-sm" role="group">
             <button
@@ -78,7 +78,7 @@
               aria-label="Move up"
               @click="move(index, index - 1)"
             >
-              <AppIcon name="mdi-arrow-up" />
+              <AppIcon name="ArrowUpIcon" />
             </button>
             <button
               class="btn btn-outline-secondary"
@@ -87,7 +87,7 @@
               aria-label="Move down"
               @click="move(index, index + 1)"
             >
-              <AppIcon name="mdi-arrow-down" />
+              <AppIcon name="ArrowDownIcon" />
             </button>
           </div>
           <button
@@ -95,12 +95,12 @@
             :aria-label="`Remove additional experience ${index + 1}`"
             @click="remove(index)"
           >
-            <AppIcon name="mdi-trash-can-outline" />
+            <AppIcon name="TrashIcon" />
           </button>
         </div>
       </div>
-      <div class="row g-3">
-        <div class="col-md-6">
+      <div class="flex flex-wrap g-3">
+        <div class="flex-1-md-6">
           <div class="form-floating">
             <input
               v-model="exp.title"
@@ -111,7 +111,7 @@
             <label>Title</label>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="flex-1-md-6">
           <div class="form-floating">
             <input
               v-model="exp.organization"
@@ -122,7 +122,7 @@
             <label>Organization</label>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="flex-1-md-6">
           <div class="form-floating">
             <input
               v-model="exp.startDate"
@@ -133,7 +133,7 @@
             <label>Start Date</label>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="flex-1-md-6">
           <div class="form-floating">
             <input
               v-model="exp.endDate"
@@ -144,7 +144,7 @@
             <label>End Date</label>
           </div>
         </div>
-        <div class="col-12">
+        <div class="flex-1-12">
           <div class="form-floating">
             <textarea
               v-model="exp.description"
@@ -159,14 +159,17 @@
     </div>
 
     <div v-if="localItems.length === 0" class="text-center py-4">
-      <AppIcon name="mdi-folder-outline" class="display-4 mb-3 opacity-50 text-muted" />
-      <p class="text-muted mb-2">No additional experience added yet</p>
-      <small class="text-muted">Click "Add" to showcase your projects, certifications, and more</small>
+      <AppIcon name="FolderIcon" class="display-4 mb-3 opacity-50 text-secondary" />
+      <p class="text-secondary mb-2">No additional experience added yet</p>
+      <small class="text-secondary">Click "Add" to showcase your projects, certifications, and more</small>
     </div>
   </section>
 </template>
 
 <script>
+import { ArrowDownIcon, ArrowUpIcon, Bars3Icon, FolderIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import { reactive, watch } from 'vue'
 import { useDragReorderList } from "@/composables/useDragReorderList";
 import AppIcon from '@/components/ui/AppIcon.vue'

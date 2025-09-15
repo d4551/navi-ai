@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="modal-overlay" @click="closeModal">
+  <div v-if="visible" class="modal-overlay" class="font-sans" @click="closeModal">
     <div class="modal-dialog glass-card" @click.stop>
       <div class="modal-header">
         <h3 class="modal-title">
@@ -9,7 +9,7 @@
         <UnifiedButton
           variant="ghost"
           size="sm"
-          icon="mdi-close"
+          icon="XMarkIcon"
           @click="closeModal"
         />
       </div>
@@ -54,7 +54,7 @@
           :disabled="!isValidUrl"
           @click="handleSubmit"
         >
-          <AppIcon name="mdi-download" />
+          <AppIcon name="ArrowDownTrayIcon" />
           Import Repository
         </UnifiedButton>
       </div>
@@ -63,6 +63,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -166,7 +168,7 @@ watch(() => props.visible, (visible) => {
   backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
 }
 
 .modal-header {
@@ -174,7 +176,7 @@ watch(() => props.visible, (visible) => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .modal-title {
@@ -184,7 +186,7 @@ watch(() => props.visible, (visible) => {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-body {
@@ -197,7 +199,7 @@ watch(() => props.visible, (visible) => {
   justify-content: flex-end;
   gap: var(--spacing-3);
   padding: var(--spacing-6);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .form-group {
@@ -208,7 +210,7 @@ watch(() => props.visible, (visible) => {
   display: block;
   margin-bottom: var(--spacing-2);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .form-label.required::after {
@@ -223,7 +225,7 @@ watch(() => props.visible, (visible) => {
   border-radius: var(--radius-md);
   background: var(--glass-surface);
   backdrop-filter: var(--glass-backdrop-blur);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   transition: all var(--duration-fast);
 }

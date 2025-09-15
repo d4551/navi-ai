@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" @click.self="$emit('close')">
+  <div class="modal-overlay" class="font-sans" @click.self="$emit('close')">
     <div class="studio-detail-modal glass-card section-card">
       <!-- Modal Header -->
       <div class="modal-header">
@@ -12,7 +12,7 @@
             <div class="studio-title-info">
               <h2 class="studio-name">{{ studio.name }}</h2>
               <div class="studio-location">
-                <AppIcon name="mdi-map-marker" />
+                <AppIcon name="MapPinIcon" />
                 {{ studio.headquarters || studio.location }}
               </div>
             </div>
@@ -23,10 +23,10 @@
               :class="{ active: isFavorite }"
               @click="$emit('toggle-favorite', studio.id)"
             >
-              <AppIcon name="mdi-heart" />
+              <AppIcon name="HeartIcon" />
             </button>
             <button class="action-btn close-btn" @click="$emit('close')">
-              <AppIcon name="mdi-close" />
+              <AppIcon name="XMarkIcon" />
             </button>
           </div>
         </div>
@@ -42,22 +42,22 @@
             
             <div class="key-metrics">
               <div v-if="studio.founded" class="metric-item">
-                <AppIcon name="mdi-calendar" />
+                <AppIcon name="CalendarIcon" />
                 <span class="metric-label">Founded</span>
                 <span class="metric-value">{{ studio.founded }}</span>
               </div>
               <div v-if="studio.size" class="metric-item">
-                <AppIcon name="mdi-account-group" />
+                <AppIcon name="UsersIcon" />
                 <span class="metric-label">Size</span>
                 <span class="metric-value">{{ studio.size }}</span>
               </div>
               <div v-if="(studio as any).type || (studio as any).category" class="metric-item">
-                <AppIcon name="mdi-office-building" />
+                <AppIcon name="BuildingOffice2Icon" />
                 <span class="metric-label">Type</span>
                 <span class="metric-value">{{ (studio as any).type || (studio as any).category }}</span>
               </div>
               <div v-if="studio.publiclyTraded" class="metric-item">
-                <AppIcon name="mdi-chart-bar" color="info" />
+                <AppIcon name="ChartBarSquareIcon" color="info" />
                 <span class="metric-label">Public</span>
                 <span class="metric-value">Yes</span>
               </div>
@@ -131,7 +131,7 @@
         <UnifiedButton 
           color="glass" 
           appearance="outlined"
-          leading-icon="mdi-briefcase-outline"
+          leading-icon="BriefcaseIcon"
           @click="$emit('view-jobs', studio)"
         >
           View Open Positions
@@ -139,7 +139,7 @@
         
         <UnifiedButton 
           color="gaming"
-          leading-icon="mdi-microphone"
+          leading-icon="MicrophoneIcon"
           @click="$emit('start-interview', studio)"
         >
           Practice Interview
@@ -150,6 +150,9 @@
 </template>
 
 <script setup lang="ts">
+import { BriefcaseIcon, BuildingOffice2Icon, CalendarIcon, ChartBarSquareIcon, MicrophoneIcon, UsersIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
@@ -199,7 +202,7 @@ function onLogoError(event: Event) {
 
 .modal-header {
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: var(--glass-bg);
 }
 
@@ -248,7 +251,7 @@ function onLogoError(event: Event) {
 .studio-name {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -281,7 +284,7 @@ function onLogoError(event: Event) {
 
 .action-btn:hover {
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .favorite-btn.active {
@@ -303,14 +306,14 @@ function onLogoError(event: Event) {
 .section-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
-  border-bottom: 2px solid var(--color-primary-500);
+  border-b: 2px solid var(--color-primary-500);
   padding-bottom: var(--spacing-2);
 }
 
 .overview-section .description {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1.125rem;
   line-height: 1.6;
   margin-bottom: var(--spacing-4);
@@ -337,7 +340,7 @@ function onLogoError(event: Event) {
 }
 
 .metric-value {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
   margin-left: auto;
 }
@@ -379,7 +382,7 @@ function onLogoError(event: Event) {
 .subsection-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-2) 0;
 }
 
@@ -400,7 +403,7 @@ function onLogoError(event: Event) {
 }
 
 .culture-text {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.6;
   margin: 0;
 }
@@ -421,7 +424,7 @@ function onLogoError(event: Event) {
 }
 
 .interview-style {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1.125rem;
   line-height: 1.6;
   margin: 0;
@@ -433,7 +436,7 @@ function onLogoError(event: Event) {
 
 .modal-footer {
   padding: var(--spacing-6);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--glass-bg);
   display: flex;
   justify-content: flex-end;

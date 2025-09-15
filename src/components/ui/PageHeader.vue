@@ -10,6 +10,7 @@
         'header-with-gradient': useGradient
       }
     ]"
+    class="font-sans"
   >
     <!-- Simplified glassmorphic background -->
     <div v-if="showParticles || enableModernEffects" class="header-effects" aria-hidden="true">
@@ -18,8 +19,8 @@
 
     <!-- Header Content Container -->
     <div
-      class="container-xl p-6 flex items-start justify-between gap-6"
-      :class="{ 'flex-col items-center text-center': stacked }"
+      class="container-xl p-glass-lg flex items-start justify-between gap-glass-lg"
+      :class="{ 'flex-flex-1 items-center text-center': stacked }"
       <!-- Main Title Section --
     >
       <div class="header-title-section flex-1">
@@ -33,7 +34,7 @@
           <component
             :is="titleTag"
             :class="titleClasses"
-            class="text-glass-enhanced font-bold mb-2 flex items-center gap-3"
+            class="text-glass-enhanced font-bold mb-2 flex items-center gap-glass-md"
           >
             <!-- Inline icon when not stacked -->
             <AppIcon v-if="icon && !stacked" :name="icon" class="text-2xl" />
@@ -50,11 +51,11 @@
         </div>
 
         <!-- Enhanced Stats Section -->
-        <div v-if="stats && stats.length" class="header-stats flex flex-wrap gap-4 mt-6">
+        <div v-if="stats && stats.length" class="header-stats flex flex-wrap gap-glass-md mt-6">
           <div
             v-for="stat in stats"
             :key="stat.label || stat.key"
-            class="glass p-4 rounded-lg flex items-center gap-3 neon-interactive"
+            class="glass p-glass-md rounded-lg flex items-center gap-glass-md neon-interactive"
           >
             <div v-if="stat.icon" class="stat-icon-wrapper">
               <AppIcon :name="stat.icon" class="text-xl" :style="{ color: stat.color }" />
@@ -69,7 +70,7 @@
       </div>
       
       <!-- Actions Section -->
-      <div v-if="$slots.actions || actions?.length" class="header-actions flex items-center gap-3">
+      <div v-if="$slots.actions || actions?.length" class="header-actions flex items-center gap-glass-md">
         <slot name="actions">
           <component
             :is="action.component || 'UnifiedButton'"
@@ -298,7 +299,7 @@ onMounted(async () => {
   --dark-secondary: #1E293B;
   --dark-tertiary: #334155;
   --light: #F8FAFC;
-  --text-primary: #F1F5F9;
+  --text-primary-600: #F1F5F9;
   --text-secondary: #94A3B8;
   --glass: rgba(30, 41, 59, 0.7);
   --glass-light: rgba(148, 163, 184, 0.1);
@@ -311,15 +312,15 @@ onMounted(async () => {
   padding: 4rem 2rem 3rem;
   margin-bottom: var(--spacing-lg);
   border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   overflow: hidden;
   /* Modern gradient background */
   background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 50%, var(--dark) 100%);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--border-base);
-  color: var(--header-text-color, var(--text-primary));
+  border-b: 1px solid var(--border-base);
+  color: var(--header-text-color, var(--text-primary-600));
 }
 
 /* Size Variants */
@@ -769,7 +770,7 @@ onMounted(async () => {
 .stat-value {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1;
   position: relative;
 }
@@ -799,7 +800,7 @@ onMounted(async () => {
 }
 
 .stat-text {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   font-weight: 600;
 }
@@ -908,11 +909,11 @@ onMounted(async () => {
 .header-glass .stat-chip {
   background: var(--glass-elevated);
   border-color: var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .header-glass .stat-value {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .header-glass .stat-label {
@@ -1010,7 +1011,7 @@ onMounted(async () => {
 /* High Contrast Mode */
 @media (prefers-contrast: high) {
   .unified-page-header {
-    border: 2px solid var(--text-primary);
+    border: 2px solid var(--text-primary-600);
   }
   
   .stat-chip {

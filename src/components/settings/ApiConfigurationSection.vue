@@ -1,22 +1,22 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card glass-card section-card mb-4" role="region" aria-labelledby="ai-config-title">
+  <div class="settings-card glass-card section-card mb-4" role="region" aria-labelledby="ai-config-title" class="font-sans">
     <div class="card-header section-header card-header--dense">
       <h5 id="ai-config-title" class="mb-0">
-        <KeyIconComponent class="me-2 icon-sm" />API Configuration
+        <KeyIconComponent class="mr-2 icon-sm" />API Configuration
       </h5>
     </div>
     <div class="card-body section-body card-body--dense">
       <form novalidate @submit.prevent="$emit('save-settings')">
         <!-- API Key Section -->
-        <div class="api-key-section mb-4 p-3 border rounded-3 glass-input">
-          <div class="d-flex align-items-center mb-3">
-            <KeyIconComponent class="me-2 text-primary" />
-            <h6 class="mb-0 text-primary fw-bold">API Configuration</h6>
+        <div class="api-key-section mb-4 p-glass-md border rounded-3 glass-input">
+          <div class="flex items-center mb-3">
+            <KeyIconComponent class="mr-2 text-primary-600" />
+            <h6 class="mb-0 text-primary-600 font-bold">API Configuration</h6>
           </div>
 
           <div class="mb-3">
-            <label for="gemini-api-key" class="form-label fw-medium">Gemini API Key *</label>
+            <label for="gemini-api-key" class="form-label font-medium">Gemini API Key *</label>
             <div class="input-group">
               <input
                 id="gemini-api-key"
@@ -32,7 +32,7 @@
                 :aria-label="showApiKey ? 'Hide API key' : 'Show API key'"
                 variant="outline"
                 size="sm"
-                :icon="showApiKey ? 'mdi-eye-off' : 'mdi-eye'"
+                :icon="showApiKey ? 'EyeIcon-off' : 'EyeIcon'"
                 @click="$emit('toggle-api-key-visibility')"
               />
             </div>
@@ -40,7 +40,7 @@
               API key is currently visible
             </div>
             <div id="api-key-help" class="form-text api-key-hint">
-              <span class="hint-prefix" aria-hidden="true"><KeyIconComponent class="me-1 icon-xs" /></span>
+              <span class="hint-prefix" aria-hidden="true"><KeyIconComponent class="mr-1 icon-xs" /></span>
               <span class="hint-text">Get your API key from
                 <a
                   href="https://aistudio.google.com/apikey"
@@ -54,7 +54,7 @@
           </div>
 
           <!-- Test & Connect Actions -->
-          <div class="d-flex gap-2 flex-wrap align-items-center">
+          <div class="flex gap-glass-sm flex-wrap items-center">
             <UnifiedButton
               type="button"
               variant="glass"
@@ -63,7 +63,7 @@
               leading-icon="mdi-flask"
               @click="$emit('test-api-key')"
             >
-              <span v-if="testing" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+              <span v-if="testing" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" />
               {{ testing ? 'Testing...' : 'Test API Key' }}
             </UnifiedButton>
             <UnifiedButton
@@ -74,12 +74,12 @@
               leading-icon="mdi-connection"
               @click="$emit('connect-api-key')"
             >
-              <span v-if="connecting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+              <span v-if="connecting" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" />
               {{ connecting ? 'Connecting...' : 'Connect' }}
             </UnifiedButton>
             <div
               v-if="apiTestResult"
-              :class="['alert mb-0 ms-2 flex-grow-1', apiTestResult.success ? 'alert-success' : 'alert-danger']"
+              :class="['alert mb-0 ml-2 flex-grow-1', apiTestResult.success ? 'alert-success' : 'alert-danger']"
               role="alert"
             >
               <small>{{ safeMessage(apiTestResult.message) }}</small>
@@ -88,15 +88,15 @@
         </div>
 
         <!-- AI Model Section -->
-        <div class="ai-model-section mb-4 p-3 border rounded-3 glass-input">
-          <div class="d-flex align-items-center mb-3">
-            <CpuIconComponent class="me-2 text-primary" />
-            <h6 class="mb-0 text-primary fw-bold">AI Model Selection</h6>
+        <div class="ai-model-section mb-4 p-glass-md border rounded-3 glass-input">
+          <div class="flex items-center mb-3">
+            <CpuIconComponent class="mr-2 text-primary-600" />
+            <h6 class="mb-0 text-primary-600 font-bold">AI Model Selection</h6>
           </div>
 
           <div class="mb-3">
-            <label for="ai-model" class="form-label fw-medium">Select Model</label>
-            <div class="d-flex align-items-center gap-2">
+            <label for="ai-model" class="form-label font-medium">Select Model</label>
+            <div class="flex items-center gap-glass-sm">
               <select
                 id="ai-model"
                 :value="settings.selectedModel"
@@ -107,7 +107,7 @@
               >
                 <optgroup
                   v-if="availableModels.some((m) => m.isRecommended)"
-                  label="⭐ Recommended"
+                  label="StarIcon Recommended"
                 >
                   <option
                     v-for="m in availableModels.filter(
@@ -175,7 +175,7 @@
                 variant="glass"
                 size="sm"
                 :disabled="loadingModels || !settings.geminiApiKey"
-                leading-icon="mdi-refresh"
+                leading-icon="ArrowPathIcon"
                 @click="$emit('load-models')"
               >
                 Refresh
@@ -192,37 +192,37 @@
             v-if="selectedModelInfo"
             class="model-info-card card border-0 glass-subtle"
           >
-            <div class="card-body section-body p-3">
-              <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="badge bg-primary rounded-pill">{{
+            <div class="card-body section-body p-glass-md">
+              <div class="flex items-center gap-glass-sm mb-2">
+                <span class="badge bg-primary-500 rounded-pill">{{
                   safeDisplayName(selectedModelInfo.displayName)
                 }}</span>
                 <span
                   v-if="selectedModelInfo.isRecommended"
-                  class="badge bg-success rounded-pill"
-                ><AppIcon name="mdi-star" color="warning" context="achievement" aria-hidden="true" /> Recommended</span>
+                  class="badge bg-success-500 rounded-pill"
+                ><AppIcon name="StarIcon" color="warning" context="achievement" aria-hidden="true" /> Recommended</span>
                 <span
                   v-if="selectedModelInfo.category === 'experimental'"
-                  class="badge bg-warning rounded-pill"
-                ><AppIcon name="mdi-test-tube" size="small" /> Experimental</span>
+                  class="badge bg-warning-500 rounded-pill"
+                ><AppIcon name="BeakerIcon" size="small" /> Experimental</span>
               </div>
               <p class="card-text small mb-2">
                 {{ safeMessage(selectedModelInfo.description) }}
               </p>
-              <div class="row g-2 small text-muted">
-                <div class="col-6">
+              <div class="flex flex-wrap g-2 small text-secondary">
+                <div class="flex-1-6">
                   <strong>Input:</strong>
                   {{ safeTokenLimit(selectedModelInfo.inputTokenLimit) }}K tokens
                 </div>
-                <div class="col-6">
+                <div class="flex-1-6">
                   <strong>Output:</strong>
                   {{ safeTokenLimit(selectedModelInfo.outputTokenLimit) }}K tokens
                 </div>
-                <div v-if="selectedModelInfo.capabilities" class="col-6">
+                <div v-if="selectedModelInfo.capabilities" class="flex-1-6">
                   <strong>Score:</strong>
                   {{ safeMessage(selectedModelInfo.capabilities.score) }}/100
                 </div>
-                <div v-if="selectedModelInfo.pricing" class="col-6">
+                <div v-if="selectedModelInfo.pricing" class="flex-1-6">
                   <strong>Cost:</strong> ${{ safeMessage(selectedModelInfo.pricing.input) }}/1M in
                 </div>
               </div>
@@ -234,7 +234,7 @@
                   v-for="feature in selectedModelInfo.capabilities
                     .features"
                   :key="feature"
-                  class="badge bg-light text-dark me-1 mb-1"
+                  class="badge bg-glass-bg dark:bg-glass-bg-hover text-glass-primary mr-1 mb-1"
                 >
                   {{ safeMessage(feature.replace("-", " ")) }}
                 </span>
@@ -244,14 +244,14 @@
         </div>
 
         <!-- Voice & Audio Configuration -->
-        <div class="voice-audio-section mb-4 p-3 border rounded-3 glass-input">
-          <div class="d-flex align-items-center mb-3">
-            <SoundwaveIconComponent class="me-2 text-primary" />
-            <h6 class="mb-0 text-primary fw-bold">Voice & Audio Settings</h6>
+        <div class="voice-audio-section mb-4 p-glass-md border rounded-3 glass-input">
+          <div class="flex items-center mb-3">
+            <SoundwaveIconComponent class="mr-2 text-primary-600" />
+            <h6 class="mb-0 text-primary-600 font-bold">Voice & Audio Settings</h6>
           </div>
 
           <!-- Voice Mode Toggle -->
-          <div class="mb-3 p-3 border rounded-3 glass-subtle">
+          <div class="mb-3 p-glass-md border rounded-3 glass-subtle">
             <div class="form-check form-switch mb-2">
               <input
                 id="voice-mode"
@@ -259,7 +259,7 @@
                 class="form-check-input"
                 type="checkbox"
               />
-              <label class="form-check-label fw-medium" for="voice-mode">
+              <label class="form-check-label font-medium" for="voice-mode">
                 Voice Mode (auto‑play assistant responses)
               </label>
             </div>
@@ -270,11 +270,11 @@
           </div>
 
           <!-- TTS & STT Selection -->
-          <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <div class="p-3 border rounded-3 glass-subtle">
-                <label class="form-label fw-medium mb-2">Text-to-Speech Engine</label>
-                <div class="d-flex flex-column gap-2">
+          <div class="flex flex-wrap g-3 mb-3">
+            <div class="flex-1-md-6">
+              <div class="p-glass-md border rounded-3 glass-subtle">
+                <label class="form-label font-medium mb-2">Text-to-Speech Engine</label>
+                <div class="flex flex-flex-1 gap-glass-sm">
                   <div class="form-check">
                     <input
                       id="tts-system"
@@ -285,7 +285,7 @@
                     />
                     <label class="form-check-label" for="tts-system">
                       <strong>System TTS</strong>
-                      <br /><small class="text-muted">Fast, reliable browser voices</small>
+                      <br /><small class="text-secondary">Fast, reliable browser voices</small>
                     </label>
                   </div>
                   <div class="form-check">
@@ -299,7 +299,7 @@
                     />
                     <label class="form-check-label" for="tts-gemini">
                       <strong>Navi AI Real-time</strong>
-                      <br /><small class="text-muted">Natural AI voice (requires API key)</small>
+                      <br /><small class="text-secondary">Natural AI voice (requires API key)</small>
                     </label>
                   </div>
                   <div class="form-check">
@@ -312,17 +312,17 @@
                     />
                     <label class="form-check-label" for="tts-kokoro">
                       <strong>Kokoro TTS</strong>
-                      <br /><small class="text-muted">Local neural voice models (offline)</small>
+                      <br /><small class="text-secondary">Local neural voice models (offline)</small>
                     </label>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="p-3 border rounded-3 glass-subtle">
-                <label class="form-label fw-medium mb-2">Speech-to-Text Engine</label>
-                <div class="d-flex flex-column gap-2">
+            <div class="flex-1-md-6">
+              <div class="p-glass-md border rounded-3 glass-subtle">
+                <label class="form-label font-medium mb-2">Speech-to-Text Engine</label>
+                <div class="flex flex-flex-1 gap-glass-sm">
                   <div class="form-check">
                     <input
                       id="stt-system"
@@ -333,7 +333,7 @@
                     />
                     <label class="form-check-label" for="stt-system">
                       <strong>System STT</strong>
-                      <br /><small class="text-muted">Built‑in browser recognition</small>
+                      <br /><small class="text-secondary">Built‑in browser recognition</small>
                     </label>
                   </div>
                   <div class="form-check">
@@ -347,7 +347,7 @@
                     />
                     <label class="form-check-label" for="stt-gemini">
                       <strong>Navi AI Realtime</strong>
-                      <br /><small class="text-muted">Cloud transcription (requires API key)</small>
+                      <br /><small class="text-secondary">Cloud transcription (requires API key)</small>
                     </label>
                   </div>
                 </div>
@@ -356,9 +356,9 @@
           </div>
 
           <!-- Audio Device Configuration -->
-          <div class="row g-3">
-            <div class="col-lg-6">
-              <label for="microphone-device" class="form-label fw-medium">Microphone Device</label>
+          <div class="flex flex-wrap g-3">
+            <div class="flex-1-lg-6">
+              <label for="microphone-device" class="form-label font-medium">Microphone Device</label>
               <div class="input-group">
                 <select
                   id="microphone-device"
@@ -384,7 +384,7 @@
                   aria-label="Refresh microphone list"
                   variant="outline"
                   size="sm"
-                  icon="mdi-refresh"
+                  icon="ArrowPathIcon"
                   @click="$emit('load-audio-devices')"
                 />
               </div>
@@ -399,8 +399,8 @@
               </div>
             </div>
 
-            <div class="col-lg-6">
-              <label for="voice-lang" class="form-label fw-medium">Speech Recognition Language</label>
+            <div class="flex-1-lg-6">
+              <label for="voice-lang" class="form-label font-medium">Speech Recognition Language</label>
               <select
                 id="voice-lang"
                 v-model="settings.voiceLang"
@@ -419,9 +419,9 @@
 
             <div
               v-show="settings.ttsProvider === 'system' || settings.ttsProvider === 'kokoro'"
-              class="col-12"
+              class="flex-1-12"
             >
-              <label for="tts-voice" class="form-label fw-medium">
+              <label for="tts-voice" class="form-label font-medium">
                 {{ settings.ttsProvider === 'kokoro' ? 'Kokoro Voice' : 'System Voice' }}
               </label>
               <select
@@ -448,8 +448,8 @@
 
           <!-- Advanced Voice Settings -->
           <div class="mt-3">
-            <div class="row g-3">
-              <div class="col-sm-6">
+            <div class="flex flex-wrap g-3">
+              <div class="flex-1-sm-6">
                 <div class="form-check form-switch">
                   <input
                     id="voice-handsfree"
@@ -467,7 +467,7 @@
                 </div>
               </div>
 
-              <div class="col-sm-6">
+              <div class="flex-1-sm-6">
                 <div class="form-check form-switch">
                   <input
                     id="chat-cues-muted-audio"
@@ -494,6 +494,9 @@
 </template>
 
 <script>
+import { ArrowPathIcon, BeakerIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import {
   KeyIconComponent,
@@ -648,7 +651,7 @@ import {
 .glass-input {
   background: var(--input-bg, rgba(255, 255, 255, 0.05));
   border: 1px solid var(--input-border, rgba(255, 255, 255, 0.1));
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .glass-input:focus {
@@ -670,12 +673,12 @@ import {
     padding: 1rem;
   }
 
-  .d-flex.gap-2 {
+  .flex.gap-glass-sm {
     flex-direction: column;
     align-items: stretch !important;
   }
 
-  .d-flex.gap-2 .btn {
+  .flex.gap-glass-sm .btn {
     margin-bottom: 0.5rem;
   }
 }

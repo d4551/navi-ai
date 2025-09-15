@@ -1,9 +1,9 @@
 <template>
-  <div class="collaboration-panel" :class="{ 'is-expanded': isExpanded }">
+  <div class="collaboration-panel" :class="{ 'is-expanded': isExpanded }" class="font-sans">
     <!-- Collaboration Header -->
     <div class="panel-header">
       <div class="header-content">
-        <AppIcon name="mdi-account-multiple" class="panel-icon" />
+        <AppIcon name="UserIcon-multiple" class="panel-icon" />
         <div class="panel-info">
           <h3 class="panel-title">Collaboration</h3>
           <div class="collaborators-count">
@@ -16,7 +16,7 @@
         <UnifiedButton
           variant="ghost"
           size="xs"
-          leading-icon="mdi-share-variant"
+          leading-icon="ShareIcon"
           @click="shareDocument"
         >
           Share
@@ -63,7 +63,7 @@
                 v-if="collaborator.role !== 'owner' && userRole === 'owner'"
                 variant="ghost"
                 size="xs"
-                leading-icon="mdi-dots-vertical"
+                leading-icon="EllipsisVerticalIcon"
                 @click="showCollaboratorOptions(collaborator)"
               />
             </div>
@@ -93,7 +93,7 @@
               <UnifiedButton
                 variant="ghost"
                 size="xs"
-                leading-icon="mdi-eye"
+                leading-icon="EyeIcon"
                 @click="viewChanges(activity)"
               >
                 View
@@ -138,7 +138,7 @@
                     v-if="!comment.resolved"
                     variant="ghost"
                     size="xs"
-                    leading-icon="mdi-check"
+                    leading-icon="CheckIcon"
                     @click="resolveComment(comment.id)"
                   >
                     Resolve
@@ -155,7 +155,7 @@
               </div>
               <div class="comment-text">{{ comment.text }}</div>
               <div v-if="comment.target" class="comment-target">
-                <AppIcon name="mdi-target" />
+                <AppIcon name="EyeIcon" />
                 <span>{{ comment.target }}</span>
               </div>
               
@@ -232,7 +232,7 @@
           <UnifiedButton
             variant="ghost"
             size="xs"
-            leading-icon="mdi-close"
+            leading-icon="XMarkIcon"
             @click="closeShareModal"
           />
         </div>
@@ -250,7 +250,7 @@
               <UnifiedButton
                 variant="primary"
                 size="sm"
-                leading-icon="mdi-content-copy"
+                leading-icon="DocumentDuplicateIcon"
                 @click="copyShareLink"
               >
                 Copy
@@ -268,7 +268,7 @@
                   value="view"
                 />
                 <div class="option-content">
-                  <AppIcon name="mdi-eye" />
+                  <AppIcon name="EyeIcon" />
                   <div>
                     <div class="option-title">View Only</div>
                     <div class="option-description">Can view the document</div>
@@ -298,7 +298,7 @@
                   value="edit"
                 />
                 <div class="option-content">
-                  <AppIcon name="mdi-pencil" />
+                  <AppIcon name="PencilIcon" />
                   <div>
                     <div class="option-title">Can Edit</div>
                     <div class="option-description">Can edit the document</div>
@@ -344,7 +344,7 @@
           <UnifiedButton
             variant="ghost"
             size="xs"
-            leading-icon="mdi-close"
+            leading-icon="XMarkIcon"
             @click="closeCommentModal"
           />
         </div>
@@ -390,6 +390,8 @@
 </template>
 
 <script setup lang="ts">
+import { CheckIcon, DocumentDuplicateIcon, EyeIcon, PencilIcon, ShareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, nextTick } from 'vue'
 import { useToast } from '@/composables/useToast'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -772,7 +774,7 @@ function compareVersion(versionId: string) {
 .panel-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 2px 0;
 }
 
@@ -788,7 +790,7 @@ function compareVersion(versionId: string) {
 
 /* Panel Content */
 .panel-content {
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   padding: 20px;
 }
 
@@ -803,7 +805,7 @@ function compareVersion(versionId: string) {
 .section-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 12px 0;
 }
 
@@ -850,7 +852,7 @@ function compareVersion(versionId: string) {
 .collaborator-name {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -929,7 +931,7 @@ function compareVersion(versionId: string) {
 
 .activity-text {
   font-size: 13px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 2px;
 }
 
@@ -1001,7 +1003,7 @@ function compareVersion(versionId: string) {
 
 .comment-text {
   font-size: 13px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.4;
   margin-bottom: 8px;
 }
@@ -1021,7 +1023,7 @@ function compareVersion(versionId: string) {
 .comment-replies {
   margin-top: 12px;
   padding-left: 20px;
-  border-left: 2px solid var(--glass-border);
+  border-l: 2px solid var(--glass-border);
 }
 
 .reply-item {
@@ -1056,7 +1058,7 @@ function compareVersion(versionId: string) {
 
 .reply-text {
   font-size: 12px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.4;
 }
 
@@ -1089,7 +1091,7 @@ function compareVersion(versionId: string) {
 .version-name {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 2px;
 }
 
@@ -1138,14 +1140,14 @@ function compareVersion(versionId: string) {
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .modal-header h3 {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-content {
@@ -1159,7 +1161,7 @@ function compareVersion(versionId: string) {
   justify-content: flex-end;
   gap: 12px;
   padding: 16px 24px;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: rgba(var(--surface-base-rgb), 0.3);
 }
 
@@ -1172,7 +1174,7 @@ function compareVersion(versionId: string) {
   display: block;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 8px;
 }
 
@@ -1187,7 +1189,7 @@ function compareVersion(versionId: string) {
   border: 1px solid var(--glass-border);
   border-radius: 6px;
   background: rgba(var(--surface-base-rgb), 0.5);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 14px;
 }
 
@@ -1225,7 +1227,7 @@ function compareVersion(versionId: string) {
 
 .option-title {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 2px;
 }
 
@@ -1241,7 +1243,7 @@ function compareVersion(versionId: string) {
   border: 1px solid var(--glass-border);
   border-radius: 8px;
   background: rgba(var(--surface-base-rgb), 0.5);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-family: inherit;
   font-size: 14px;
   resize: vertical;
@@ -1254,7 +1256,7 @@ function compareVersion(versionId: string) {
   border: 1px solid var(--glass-border);
   border-radius: 6px;
   background: rgba(var(--surface-base-rgb), 0.5);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 14px;
 }
 

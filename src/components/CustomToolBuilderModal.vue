@@ -5,6 +5,7 @@
     icon="mdi-hammer-wrench"
     :confirmable="true"
     :cancelable="true"
+    class="font-sans "
     @cancel="close"
     @confirm="handleSave"
   >

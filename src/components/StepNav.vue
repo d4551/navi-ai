@@ -1,5 +1,5 @@
 <template>
-  <nav class="resume-step-tabs mb-3" :aria-label="ariaLabel">
+  <nav class="resume-step-tabs mb-3" :aria-label="ariaLabel" class="font-sans">
     <button
       v-for="(s, idx) in steps"
       :key="s.key || idx"
@@ -11,7 +11,7 @@
       @click="$emit('update:current', idx)"
     >
       <span class="step-index">{{ idx + 1 }}</span>
-      <span class="step-label d-none d-sm-inline">{{ s.shortLabel || s.label }}</span>
+      <span class="step-label hidden d-sm-inline">{{ s.shortLabel || s.label }}</span>
     </button>
   </nav>
   <div
@@ -23,7 +23,7 @@
     aria-valuemax="100"
     :aria-label="progressAriaLabel"
   >
-    <div class="progress-bar bg-primary" :style="`width:${progress}%`"></div>
+    <div class="progress-bar bg-primary-500" :style="`width:${progress}%`"></div>
   </div>
   <div class="visually-hidden" aria-live="polite">
     Step {{ current + 1 }} of {{ steps.length }}. {{ progress }}% complete.

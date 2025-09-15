@@ -3,7 +3,7 @@ THE CLOUD - Gaming Industry Intelligence Network
 Modern cloud intelligence and data syndication with unified design
 -->
 <template>
-  <div class="unified-container the-cloud">
+  <div class="unified-container the-cloud font-sans">
     <StandardPageLayout
       page-type="gaming"
       :title="'THE CLOUD'"
@@ -19,18 +19,18 @@ Modern cloud intelligence and data syndication with unified design
       <section class="services-section">
         <div class="section-header">
           <h2 class="section-title">
-            <AppIcon name="mdi-cloud" class="section-icon" />
+            <AppIcon name="CloudIcon" class="section-icon" />
             Azure Services
           </h2>
           <p class="section-description">Manage and monitor your cloud services</p>
         </div>
         <div class="responsive-grid responsive-grid--cards-lg">
           <!-- OpenAI Service -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.openai.enabled }">
+          <div class="service-card glass p-glass-md gap-glass-md rounded-lg neon-interactive" :class="{ active: services.openai.enabled }">
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
-                  <AppIcon name="mdi-robot" />
+                  <AppIcon name="CpuChipIcon" />
                 </div>
                 <div class="service-info">
                   <h3 class="card-title">Azure OpenAI</h3>
@@ -52,41 +52,41 @@ Modern cloud intelligence and data syndication with unified design
                     <span class="metric-label">Requests</span>
                     <span class="metric-value">{{ services.openai?.metrics?.requests || 0 }}</span>
                   </div>
-                  <AppIcon name="mdi-chart-line" class="metric-icon" />
+                  <AppIcon name="ChartBarIcon" class="metric-icon" />
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Tokens</span>
                     <span class="metric-value">{{ formatNumber(services.openai?.metrics?.tokens) }}</span>
                   </div>
-                  <AppIcon name="mdi-database" class="metric-icon" />
+                  <AppIcon name="CircleStackIcon" class="metric-icon" />
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Uptime</span>
                     <span class="metric-value">{{ services.openai?.metrics?.uptime || 0 }}%</span>
                   </div>
-                  <AppIcon name="mdi-check-circle" class="metric-icon" />
+                  <AppIcon name="CheckCircleIcon" class="metric-icon" />
                 </div>
               </div>
             </div>
           
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('openai')">
+              <UnifiedButton variant="outline" leading-icon="CogIcon" size="sm" @click="configureService('openai')">
                 Configure
               </UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.openai.enabled" @click="testService('openai')">
+              <UnifiedButton variant="gaming" leading-icon="PlayIcon" size="sm" :disabled="!services.openai.enabled" @click="testService('openai')">
                 Test API
               </UnifiedButton>
             </div>
           </div>
 
           <!-- Cognitive Services -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.cognitive.enabled }">
+          <div class="service-card glass p-glass-md gap-glass-md rounded-lg neon-interactive" :class="{ active: services.cognitive.enabled }">
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
-                  <AppIcon name="mdi-brain" />
+                  <AppIcon name="CpuChipIcon" />
                 </div>
                 <div class="service-info">
                   <h3 class="card-title">Cognitive Services</h3>
@@ -125,17 +125,17 @@ Modern cloud intelligence and data syndication with unified design
             </div>
           
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('cognitive')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.cognitive.enabled" @click="testService('cognitive')">Test API</UnifiedButton>
+              <UnifiedButton variant="outline" leading-icon="CogIcon" size="sm" @click="configureService('cognitive')">Configure</UnifiedButton>
+              <UnifiedButton variant="gaming" leading-icon="PlayIcon" size="sm" :disabled="!services.cognitive.enabled" @click="testService('cognitive')">Test API</UnifiedButton>
             </div>
           </div>
 
           <!-- Storage Account -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.storage.enabled }">
+          <div class="service-card glass p-glass-md gap-glass-md rounded-lg neon-interactive" :class="{ active: services.storage.enabled }">
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
-                  <AppIcon name="mdi-database" />
+                  <AppIcon name="CircleStackIcon" />
                 </div>
                 <div class="service-info">
                   <h3 class="card-title">Blob Storage</h3>
@@ -174,13 +174,13 @@ Modern cloud intelligence and data syndication with unified design
             </div>
           
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('storage')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.storage.enabled" @click="testService('storage')">Test API</UnifiedButton>
+              <UnifiedButton variant="outline" leading-icon="CogIcon" size="sm" @click="configureService('storage')">Configure</UnifiedButton>
+              <UnifiedButton variant="gaming" leading-icon="PlayIcon" size="sm" :disabled="!services.storage.enabled" @click="testService('storage')">Test API</UnifiedButton>
             </div>
           </div>
 
           <!-- Event Hub -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.eventhub.enabled }">
+          <div class="service-card glass p-glass-md gap-glass-md rounded-lg neon-interactive" :class="{ active: services.eventhub.enabled }">
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
@@ -223,17 +223,17 @@ Modern cloud intelligence and data syndication with unified design
             </div>
           
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('eventhub')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.eventhub.enabled" @click="testService('eventhub')">Test API</UnifiedButton>
+              <UnifiedButton variant="outline" leading-icon="CogIcon" size="sm" @click="configureService('eventhub')">Configure</UnifiedButton>
+              <UnifiedButton variant="gaming" leading-icon="PlayIcon" size="sm" :disabled="!services.eventhub.enabled" @click="testService('eventhub')">Test API</UnifiedButton>
             </div>
           </div>
 
           <!-- Key Vault -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.keyvault.enabled }">
+          <div class="service-card glass p-glass-md gap-glass-md rounded-lg neon-interactive" :class="{ active: services.keyvault.enabled }">
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
-                  <AppIcon name="mdi-lock" />
+                  <AppIcon name="LockClosedIcon" />
                 </div>
                 <div class="service-info">
                   <h3 class="card-title">Key Vault</h3>
@@ -272,13 +272,13 @@ Modern cloud intelligence and data syndication with unified design
             </div>
           
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('keyvault')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.keyvault.enabled" @click="testService('keyvault')">Test API</UnifiedButton>
+              <UnifiedButton variant="outline" leading-icon="CogIcon" size="sm" @click="configureService('keyvault')">Configure</UnifiedButton>
+              <UnifiedButton variant="gaming" leading-icon="PlayIcon" size="sm" :disabled="!services.keyvault.enabled" @click="testService('keyvault')">Test API</UnifiedButton>
             </div>
           </div>
 
           <!-- IoT Hub -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.iothub.enabled }">
+          <div class="service-card glass p-glass-md gap-glass-md rounded-lg neon-interactive" :class="{ active: services.iothub.enabled }">
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
@@ -321,8 +321,8 @@ Modern cloud intelligence and data syndication with unified design
             </div>
           
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('iothub')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.iothub.enabled" @click="testService('iothub')">Test API</UnifiedButton>
+              <UnifiedButton variant="outline" leading-icon="CogIcon" size="sm" @click="configureService('iothub')">Configure</UnifiedButton>
+              <UnifiedButton variant="gaming" leading-icon="PlayIcon" size="sm" :disabled="!services.iothub.enabled" @click="testService('iothub')">Test API</UnifiedButton>
             </div>
           </div>
         </div>
@@ -333,7 +333,7 @@ Modern cloud intelligence and data syndication with unified design
         <div class="section-header">
           <div class="header-content">
             <h2 class="section-title">
-              <AppIcon name="mdi-chart-line" class="section-icon" />
+              <AppIcon name="ChartBarIcon" class="section-icon" />
               Cloud Analytics
             </h2>
             <p class="section-description">Monitor performance and costs across your services</p>
@@ -347,7 +347,7 @@ Modern cloud intelligence and data syndication with unified design
                 <option value="30d">Last 30 Days</option>
               </select>
             </div>
-            <UnifiedButton variant="outline" leading-icon="mdi-refresh" size="sm" @click="updateAnalytics">
+            <UnifiedButton variant="outline" leading-icon="ArrowPathIcon" size="sm" @click="updateAnalytics">
               Refresh
             </UnifiedButton>
           </div>
@@ -355,7 +355,7 @@ Modern cloud intelligence and data syndication with unified design
       
         <div class="responsive-grid responsive-grid--cards-md">
           <!-- Cost Overview -->
-          <div class="analytics-card glass p-4 gap-4 rounded-lg">
+          <div class="analytics-card glass p-glass-md gap-glass-md rounded-lg">
             <div class="card-header">
               <h3 class="card-title">
                 <AppIcon name="mdi-currency-usd" />
@@ -387,14 +387,14 @@ Modern cloud intelligence and data syndication with unified design
           </div>
 
           <!-- Performance Metrics -->
-          <div class="analytics-card glass p-4 gap-4 rounded-lg">
+          <div class="analytics-card glass p-glass-md gap-glass-md rounded-lg">
             <div class="card-header">
               <h3 class="card-title">
-                <AppIcon name="mdi-chart-bar" />
+                <AppIcon name="ChartBarSquareIcon" />
                 Performance
               </h3>
               <div class="trend-indicator positive">
-                <AppIcon name="mdi-trending-up" />
+                <AppIcon name="ArrowTrendingUpIcon" />
                 +8%
               </div>
             </div>
@@ -410,46 +410,46 @@ Modern cloud intelligence and data syndication with unified design
                 <div class="perf-label">Success Rate</div>
                 <div class="perf-value">99.2%</div>
                 <div class="progress progress--xs">
-                  <div class="progress-bar bg-success" :style="{ width: '99%' }"></div>
+                  <div class="progress-bar bg-success-500" :style="{ width: '99%' }"></div>
                 </div>
               </div>
               <div class="perf-item">
                 <div class="perf-label">Availability</div>
                 <div class="perf-value">99.9%</div>
                 <div class="progress progress--xs">
-                  <div class="progress-bar bg-success" :style="{ width: '100%' }"></div>
+                  <div class="progress-bar bg-success-500" :style="{ width: '100%' }"></div>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Security Status -->
-          <div class="analytics-card glass p-4 gap-4 rounded-lg">
+          <div class="analytics-card glass p-glass-md gap-glass-md rounded-lg">
             <div class="card-header">
               <h3 class="card-title">
-                <AppIcon name="mdi-shield-check" />
+                <AppIcon name="ShieldCheckIcon" />
                 Security Status
               </h3>
               <div class="trend-indicator neutral">
-                <AppIcon name="mdi-shield" />
+                <AppIcon name="ShieldCheckIcon" />
                 Secure
               </div>
             </div>
             <div class="security-status">
               <div class="security-item">
-                <AppIcon name="mdi-check-circle-outline" />
+                <AppIcon name="CheckCircleIcon" />
                 <span>SSL/TLS Enabled</span>
               </div>
               <div class="security-item">
-                <AppIcon name="mdi-check-circle-outline" />
+                <AppIcon name="CheckCircleIcon" />
                 <span>Key Vault Configured</span>
               </div>
               <div class="security-item">
-                <AppIcon name="mdi-check-circle-outline" />
+                <AppIcon name="CheckCircleIcon" />
                 <span>Access Policies Active</span>
               </div>
               <div class="security-item">
-                <AppIcon name="mdi-alert-circle-outline" class="security-icon warning" />
+                <AppIcon name="ExclamationCircleIcon" class="security-icon warning" />
                 <span>MFA Recommended</span>
               </div>
             </div>
@@ -460,10 +460,10 @@ Modern cloud intelligence and data syndication with unified design
       <!-- Service Configuration Modal -->
       <Teleport to="body">
         <div v-if="configModal.show" class="config-modal-overlay" @click="closeConfigModal">
-          <div class="config-modal glass p-6 gap-4 rounded-xl" @click.stop>
+          <div class="config-modal glass p-glass-lg gap-glass-md rounded-xl" @click.stop>
             <div class="modal-header">
               <h2 class="card-title">Configure {{ configModal.serviceName }}</h2>
-              <UnifiedButton variant="ghost" icon-only icon="mdi-close" aria-label="Close" @click="closeConfigModal" />
+              <UnifiedButton variant="ghost" icon-only icon="XMarkIcon" aria-label="Close" @click="closeConfigModal" />
             </div>
           
             <div class="modal-content">
@@ -524,6 +524,9 @@ Modern cloud intelligence and data syndication with unified design
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, ArrowTrendingUpIcon, ChartBarIcon, ChartBarSquareIcon, CheckCircleIcon, CircleStackIcon, CogIcon, CpuChipIcon, ExclamationCircleIcon, LockClosedIcon, ShieldCheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, PlayIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 import { ref, reactive, onMounted } from 'vue'
@@ -828,7 +831,7 @@ onMounted(() => {
 
 @media (min-width: 768px) {
   .header-content {
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     justify-content: space-between;
     align-items: center;
   }
@@ -954,8 +957,8 @@ input:checked + .slider:before {
 /* Service Metrics */
 .service-metrics {
   padding: var(--spacing-4) 0;
-  border-top: 1px solid var(--border-base);
-  border-bottom: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
   margin: var(--spacing-4) 0;
 }
 
@@ -992,7 +995,7 @@ input:checked + .slider:before {
 .metric-value {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .metric-icon {
@@ -1088,7 +1091,7 @@ input:checked + .slider:before {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-3) 0;
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -1113,7 +1116,7 @@ input:checked + .slider:before {
 .perf-value {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Security Status */
@@ -1158,7 +1161,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
 }
 
 .modal-content {
@@ -1183,7 +1186,7 @@ input:checked + .slider:before {
   display: flex;
   gap: var(--spacing-3);
   padding: var(--spacing-6);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
 }
 
 /* Responsive Design */

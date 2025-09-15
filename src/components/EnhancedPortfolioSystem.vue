@@ -1,11 +1,11 @@
 <template>
-  <div class="enhanced-portfolio-system">
+  <div class="enhanced-portfolio-system" class="font-sans">
     <!-- Header with Stats -->
     <div class="portfolio-header glass-panel mb-6">
       <div class="flex justify-between items-start">
         <div>
-          <h1 class="text-3xl font-bold text-primary mb-2">Portfolio System</h1>
-          <p class="text-muted">Create, manage, and share your professional portfolio</p>
+          <h1 class="text-3xl font-bold text-primary-600 mb-2">Portfolio System</h1>
+          <p class="text-secondary">Create, manage, and share your professional portfolio</p>
         </div>
         <div class="stats-grid">
           <div class="stat-card">
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <!-- Navigation Tabs (master design, multi-row grid) -->
+    <!-- Navigation Tabs (master design, multi-flex flex-wrap grid) -->
     <GlassNavTabs
       v-model:active-tab="activeTab"
       :tabs="navTabs"
@@ -38,7 +38,7 @@
       <div v-if="activeTab === 'projects'" class="projects-tab">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-semibold">Your Projects</h2>
-          <div class="flex gap-3">
+          <div class="flex gap-glass-md">
             <button
               class="btn btn-outline"
               @click="showTemplateModal = true"
@@ -50,7 +50,7 @@
               class="btn btn-primary"
               @click="createNewProject"
             >
-              <AppIcon name="mdi-plus" />
+              <AppIcon name="PlusIcon" />
               New Project
             </button>
           </div>
@@ -134,14 +134,14 @@
                 class="btn btn-sm btn-outline"
                 @click.stop="toggleFeatured(project)"
               >
-                <AppIcon :name="project.featured ? 'mdi-star' : 'mdi-star-outline'" />
+                <AppIcon :name="project.featured ? 'StarIcon' : 'StarIcon-outline'" />
                 {{ project.featured ? 'Featured' : 'Feature' }}
               </button>
               <button
                 class="btn btn-sm btn-outline"
                 @click.stop="duplicateProject(project)"
               >
-                <AppIcon name="mdi-content-copy" />
+                <AppIcon name="DocumentDuplicateIcon" />
                 Duplicate
               </button>
             </div>
@@ -150,7 +150,7 @@
 
         <!-- Empty State -->
         <div v-if="filteredProjects.length === 0" class="empty-state">
-          <AppIcon name="mdi-folder-open-outline" />
+          <AppIcon name="FolderIcon-open-outline" />
           <h3>No projects found</h3>
           <p>Create your first project or adjust your filters</p>
           <UnifiedButton variant="primary" @click="createNewProject">Create Project</UnifiedButton>
@@ -161,7 +161,7 @@
       <div v-if="activeTab === 'templates'" class="templates-tab">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-semibold">Portfolio Templates</h2>
-          <UnifiedButton variant="primary" leading-icon="mdi-plus" @click="showCreateTemplateModal = true">Create Template</UnifiedButton>
+          <UnifiedButton variant="primary" leading-icon="PlusIcon" @click="showCreateTemplateModal = true">Create Template</UnifiedButton>
         </div>
 
         <!-- Template Categories -->
@@ -193,7 +193,7 @@
                 class="template-thumbnail"
               >
               <div v-else class="template-placeholder">
-                <AppIcon name="mdi-image-outline" />
+                <AppIcon name="PhotoIcon-outline" />
               </div>
             </div>
             
@@ -206,7 +206,7 @@
                   {{ template.difficulty }}
                 </span>
                 <span class="template-time">
-                  <AppIcon name="mdi-clock-outline" />
+                  <AppIcon name="ClockIcon" />
                   {{ template.estimatedTime }}min
                 </span>
               </div>
@@ -226,7 +226,7 @@
                   class="btn btn-primary w-full"
                   @click="useTemplate(template)"
                 >
-                  <AppIcon name="mdi-plus" />
+                  <AppIcon name="PlusIcon" />
                   Use Template
                 </button>
               </div>
@@ -243,7 +243,7 @@
             class="btn btn-primary"
             @click="showCreateShareModal = true"
           >
-            <AppIcon name="mdi-share-variant" />
+            <AppIcon name="ShareIcon" />
             Create Share Link
           </button>
         </div>
@@ -251,21 +251,21 @@
         <!-- Sharing Stats -->
         <div class="sharing-stats mb-6">
           <div class="stat-card">
-            <AppIcon name="mdi-eye" />
+            <AppIcon name="EyeIcon" />
             <div>
               <div class="stat-value">{{ totalViews }}</div>
               <div class="stat-label">Total Views</div>
             </div>
           </div>
           <div class="stat-card">
-            <AppIcon name="mdi-share" />
+            <AppIcon name="ShareIcon" />
             <div>
               <div class="stat-value">{{ activeShares.length }}</div>
               <div class="stat-label">Active Shares</div>
             </div>
           </div>
           <div class="stat-card">
-            <AppIcon name="mdi-download" />
+            <AppIcon name="ArrowDownTrayIcon" />
             <div>
               <div class="stat-value">{{ totalDownloads }}</div>
               <div class="stat-label">Downloads</div>
@@ -291,11 +291,11 @@
             
             <div class="share-stats">
               <div class="share-stat">
-                <AppIcon name="mdi-eye" />
+                <AppIcon name="EyeIcon" />
                 {{ share.analytics.views.total }} views
               </div>
               <div class="share-stat">
-                <AppIcon name="mdi-calendar" />
+                <AppIcon name="CalendarIcon" />
                 Created {{ formatDate(share.createdAt) }}
               </div>
             </div>
@@ -310,7 +310,7 @@
                 class="btn btn-outline"
                 @click="copyToClipboard(share.url)"
               >
-                <AppIcon name="mdi-content-copy" />
+                <AppIcon name="DocumentDuplicateIcon" />
                 Copy
               </button>
             </div>
@@ -320,21 +320,21 @@
                 class="btn btn-sm btn-outline"
                 @click="editShare(share)"
               >
-                <AppIcon name="mdi-pencil" />
+                <AppIcon name="PencilIcon" />
                 Edit
               </button>
               <button
                 class="btn btn-sm btn-outline"
                 @click="viewAnalytics(share)"
               >
-                <AppIcon name="mdi-chart-line" />
+                <AppIcon name="ChartBarIcon" />
                 Analytics
               </button>
               <button
                 class="btn btn-sm btn-danger"
                 @click="deleteShare(share)"
               >
-                <AppIcon name="mdi-delete" />
+                <AppIcon name="TrashIcon" />
                 Delete
               </button>
             </div>
@@ -416,6 +416,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, CalendarIcon, ChartBarIcon, ClockIcon, DocumentDuplicateIcon, EyeIcon, PencilIcon, PlusIcon, ShareIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted, defineAsyncComponent, watch, nextTick } from 'vue'
 import {
   Chart,
@@ -467,10 +469,10 @@ const editingProject = ref<PortfolioProject | null>(null)
 
 // Computed
 const portfolioTabs = computed(() => [
-  { key: 'projects', label: 'Projects', icon: 'mdi-folder-multiple-outline', badge: portfolio.projects.value.length },
+  { key: 'projects', label: 'Projects', icon: 'FolderIcon-multiple-outline', badge: portfolio.projects.value.length },
   { key: 'templates', label: 'Templates', icon: 'mdi-shape-outline', badge: templates.templates.value.length },
-  { key: 'sharing', label: 'Sharing', icon: 'mdi-share-variant', badge: sharing.activeShares.value.length },
-  { key: 'analytics', label: 'Analytics', icon: 'mdi-chart-line' }
+  { key: 'sharing', label: 'Sharing', icon: 'ShareIcon-variant', badge: sharing.activeShares.value.length },
+  { key: 'analytics', label: 'Analytics', icon: 'ChartBarIcon-line' }
 ])
 
 // Tabs mapped for GlassNavTabs (uses `count` for numeric badges)
@@ -547,11 +549,11 @@ const mostViewedProject = computed(() => {
 // Methods
 function getCategoryIcon(category: string): string {
   const icons = {
-    game: 'mdi mdi-gamepad-variant',
+    game: 'mdi DevicePhoneMobileIcon-variant',
     web: 'mdi mdi-web',
     mobile: 'mdi mdi-cellphone',
     tool: 'mdi mdi-tools',
-    other: 'mdi mdi-folder'
+    other: 'mdi FolderIcon'
   }
   return icons[category as keyof typeof icons] || icons.other
 }
@@ -754,14 +756,14 @@ const {
 
 .stat-label {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .portfolio-tabs {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 2rem;
-  border-bottom: 2px solid var(--border-base);
+  border-b: 2px solid var(--border-base);
 }
 
 .tab-button {
@@ -771,7 +773,7 @@ const {
   padding: 0.75rem 1.5rem;
   border: none;
   background: none;
-  border-bottom: 2px solid transparent;
+  border-b: 2px solid transparent;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -781,11 +783,11 @@ const {
 }
 
 .tab-button.active {
-  border-bottom-color: var(--color-primary-500);
+  border-b-color: var(--color-primary-500);
   color: var(--color-primary-600);
 }
 
-/* Local badge replaced by unified .badge; use .bg-primary as needed */
+/* Local badge replaced by unified .badge; use .bg-primary-500 as needed */
 
 .projects-grid {
   @apply portfolio-grid;
@@ -803,7 +805,7 @@ const {
 
 .project-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .project-header {
@@ -816,7 +818,7 @@ const {
 .project-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -855,7 +857,7 @@ const {
   align-items: center;
   margin-bottom: 1rem;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .project-category {
@@ -882,7 +884,7 @@ const {
 }
 
 .tech-more {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.75rem;
 }
 
@@ -925,7 +927,7 @@ const {
 
 .template-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .template-preview {
@@ -943,7 +945,7 @@ const {
 }
 
 .template-placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 2rem;
 }
 
@@ -996,7 +998,7 @@ const {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
@@ -1039,13 +1041,13 @@ const {
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .empty-state i {
   font-size: 4rem;
   margin-bottom: 1rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .empty-state h3 {
@@ -1104,7 +1106,7 @@ const {
   gap: 1rem;
   margin-bottom: 1rem;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .share-stat {
@@ -1166,7 +1168,7 @@ const {
 
 .analytics-detail {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .analytics-charts {
@@ -1194,7 +1196,7 @@ const {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   border: 2px dashed var(--border-base);
   border-radius: 0.5rem;
 }

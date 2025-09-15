@@ -1,5 +1,5 @@
 <template>
-  <div class="modern-portfolio" :data-theme="themeName">
+  <div class="modern-portfolio font-sans" :data-theme="themeName">
     <StandardPageLayout
       page-type="gaming"
       max-width="xl"
@@ -8,16 +8,16 @@
       <template #header-actions>
         <UnifiedButton 
           variant="gaming" 
-          leading-icon="mdi-cog" 
+          leading-icon="CogIcon" 
           title="Open Portfolio Studio"
           @click="showPortfolioManager = true"
         >
           Open Portfolio Studio
         </UnifiedButton>
-        <UnifiedButton variant="glass" leading-icon="mdi-share-variant" title="Share Portfolio" @click="sharePortfolio">
+        <UnifiedButton variant="glass" leading-icon="ShareIcon" title="Share Portfolio" @click="sharePortfolio">
           Share
         </UnifiedButton>
-        <UnifiedButton variant="outline" leading-icon="mdi-export" title="Export Portfolio" @click="showExportOptions = true">
+        <UnifiedButton variant="outline" leading-icon="ArrowUpTrayIcon" title="Export Portfolio" @click="showExportOptions = true">
           Export
         </UnifiedButton>
       </template>
@@ -46,7 +46,7 @@
             <UnifiedButton 
               v-if="stats.totalProjects === 0"
               variant="primary" 
-              leading-icon="mdi-plus" 
+              leading-icon="PlusIcon" 
               title="Add Your First Project"
               @click="showPortfolioManager = true"
             >
@@ -58,9 +58,9 @@
 
       <!-- Sticky Top Navigation Bar -->
       <nav class="portfolio-topbar unified-container unified-card is-interactive">
-        <div class="topbar-row">
+        <div class="topbar-flex flex-wrap">
           <div class="topbar-group search-group">
-            <AppIcon name="mdi-magnify" />
+            <AppIcon name="MagnifyingGlassIcon" />
             <input
               v-model="portfolio.searchQuery.value"
               class="form-control glass-input"
@@ -70,7 +70,7 @@
             />
           </div>
           <div class="topbar-group">
-            <AppIcon name="mdi-filter-variant" />
+            <AppIcon name="AdjustmentsHorizontalIcon" />
             <select v-model="portfolio.filterType.value" class="form-control" aria-label="Filter by type">
               <option value="">All</option>
               <option value="project">Project</option>
@@ -80,7 +80,7 @@
             </select>
           </div>
           <div class="topbar-group">
-            <AppIcon name="mdi-sort" />
+            <AppIcon name="Bars3BottomLeftIcon" />
             <select v-model="portfolio.sortMode.value" class="form-control" aria-label="Sort portfolio">
               <option value="recent">Recent</option>
               <option value="alphabetical">A–Z</option>
@@ -111,7 +111,7 @@
             />
           </div>
           <div class="topbar-group ai-tools">
-            <UnifiedButton variant="glass" icon-only leading-icon="mdi-robot" title="AI Tools" @click="showAITools = true" />
+            <UnifiedButton variant="glass" icon-only leading-icon="CpuChipIcon" title="AI Tools" @click="showAITools = true" />
           </div>
         </div>
         <div v-if="portfolio.topSkills.value.length" class="skill-chips">
@@ -127,7 +127,7 @@
             {{ s.skill }}
             <span class="count">{{ s.count }}</span>
           </UnifiedButton>
-          <UnifiedButton v-if="portfolio.skillFilters.value.length" size="sm" variant="ghost" leading-icon="mdi-filter-remove" title="Clear Skill Filters" @click="portfolio.clearFilters()">
+          <UnifiedButton v-if="portfolio.skillFilters.value.length" size="sm" variant="ghost" leading-icon="FunnelIcon" title="Clear Skill Filters" @click="portfolio.clearFilters()">
             Clear Filters
           </UnifiedButton>
         </div>
@@ -136,18 +136,18 @@
       <div v-if="showAITools" class="ai-tools-modal-overlay" @click.self="showAITools = false">
         <div class="ai-tools-modal unified-card">
           <div class="modal-header">
-            <AppIcon name="mdi-robot" class="me-2" />
+            <AppIcon name="CpuChipIcon" class="mr-2" />
             <span class="modal-title">AI Portfolio Tools</span>
-            <UnifiedButton variant="ghost" leading-icon="mdi-close" size="sm" title="Close" @click="showAITools = false" />
+            <UnifiedButton variant="ghost" leading-icon="XMarkIcon" size="sm" title="Close" @click="showAITools = false" />
           </div>
           <div class="modal-body">
-            <UnifiedButton variant="primary" leading-icon="mdi-lightbulb-on" @click="suggestSkillsForAll()">
+            <UnifiedButton variant="primary" leading-icon="LightBulbIcon" @click="suggestSkillsForAll()">
               Suggest Skills for Projects
             </UnifiedButton>
-            <UnifiedButton variant="glass" leading-icon="mdi-auto-fix" @click="portfolio.autoTagProjects()">
+            <UnifiedButton variant="glass" leading-icon="SparklesIcon" @click="portfolio.autoTagProjects()">
               Auto-Tag Projects
             </UnifiedButton>
-            <UnifiedButton variant="outline" leading-icon="mdi-text-box-search" @click="portfolio.generateSummaries()">
+            <UnifiedButton variant="outline" leading-icon="MagnifyingGlassIcon" @click="portfolio.generateSummaries()">
               Generate Project Summaries
             </UnifiedButton>
           </div>
@@ -158,82 +158,82 @@
       <div v-if="showPortfolioManager" class="portfolio-manager-modal-overlay" @click.self="showPortfolioManager = false">
         <div class="portfolio-manager-modal unified-card">
           <div class="modal-header">
-            <AppIcon name="mdi-tools" class="me-2" />
+            <AppIcon name="WrenchScrewdriverIcon" class="mr-2" />
             <span class="modal-title">Portfolio Studio</span>
-            <UnifiedButton variant="ghost" leading-icon="mdi-close" size="sm" title="Close" @click="showPortfolioManager = false" />
+            <UnifiedButton variant="ghost" leading-icon="XMarkIcon" size="sm" title="Close" @click="showPortfolioManager = false" />
           </div>
           <div class="modal-body">
             <div class="manager-options">
               <!-- Create New Project -->
               <div class="option-card" @click="createNewProject">
                 <div class="option-icon">
-                  <AppIcon name="mdi-plus-circle" />
+                  <AppIcon name="PlusCircleIcon" />
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Create New Project</h3>
                   <p class="option-description">Add a new project to your portfolio</p>
                 </div>
-                <AppIcon name="mdi-chevron-right" class="option-arrow" />
+                <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
 
               <!-- Manage Existing Projects -->
               <div class="option-card" @click="goToManagePage">
                 <div class="option-icon">
-                  <AppIcon name="mdi-folder-edit" />
+                  <AppIcon name="FolderIcon" />
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Manage Projects</h3>
                   <p class="option-description">Edit, organize, and update your projects</p>
                 </div>
-                <AppIcon name="mdi-chevron-right" class="option-arrow" />
+                <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
 
               <!-- Bulk Operations -->
               <div class="option-card" @click="showBulkOperations">
                 <div class="option-icon">
-                  <AppIcon name="mdi-checkbox-multiple-marked" />
+                  <AppIcon name="CheckIcon" />
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Bulk Operations</h3>
                   <p class="option-description">Update multiple projects at once</p>
                 </div>
-                <AppIcon name="mdi-chevron-right" class="option-arrow" />
+                <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
 
               <!-- Import Projects -->
               <div class="option-card" @click="importProjects">
                 <div class="option-icon">
-                  <AppIcon name="mdi-import" />
+                  <AppIcon name="ArrowDownTrayIcon" />
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Import Projects</h3>
                   <p class="option-description">Import from GitHub, LinkedIn, or files</p>
                 </div>
-                <AppIcon name="mdi-chevron-right" class="option-arrow" />
+                <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
 
               <!-- Portfolio Settings -->
               <div class="option-card" @click="portfolioSettings">
                 <div class="option-icon">
-                  <AppIcon name="mdi-cog" />
+                  <AppIcon name="CogIcon" />
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Portfolio Settings</h3>
                   <p class="option-description">Configure display options and privacy</p>
                 </div>
-                <AppIcon name="mdi-chevron-right" class="option-arrow" />
+                <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
 
               <!-- Analytics & Insights -->
               <div class="option-card" @click="viewAnalytics">
                 <div class="option-icon">
-                  <AppIcon name="mdi-chart-line" />
+                  <AppIcon name="ChartBarIcon" />
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Analytics & Insights</h3>
                   <p class="option-description">View portfolio performance and metrics</p>
                 </div>
-                <AppIcon name="mdi-chevron-right" class="option-arrow" />
+                <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
             </div>
           </div>
@@ -242,7 +242,15 @@
 
       <!-- Portfolio Grid/List -->
       <section class="unified-container">
-        <div :class="[portfolio.layout.value === 'grid' ? 'portfolio-grid' : 'items', portfolio.layout.value]">
+        <!-- Skeleton Loading for Portfolio Items -->
+        <LoadingSkeletons
+          v-if="portfolio.loading.value"
+          variant="grid"
+          :grid-item-count="9"
+          :show="true"
+        />
+
+        <div v-else :class="[portfolio.layout.value === 'grid' ? 'portfolio-grid' : 'items', portfolio.layout.value]">
           <article
             v-for="item in visibleItems"
             :key="item.id"
@@ -261,7 +269,7 @@
                 <AppIcon :name="getItemTypeIcon(item.type)" class="fallback-icon" />
               </div>
               <div class="badges">
-                <span v-if="item.featured" class="badge featured"><AppIcon name="mdi-star" /> Featured</span>
+                <span v-if="item.featured" class="badge featured"><AppIcon name="StarIcon" /> Featured</span>
               </div>
             </div>
             <div class="body">
@@ -270,7 +278,7 @@
                 <div v-if="item.description" class="desc">{{ (item.description||'').slice(0,140) }}</div>
                 <div class="meta">
                   <span v-if="item.type" class="pill">{{ item.type }}</span>
-                  <span v-if="displayDate(item.date)" class="pill"><AppIcon name="mdi-calendar" /> {{ displayDate(item.date) }}</span>
+                  <span v-if="displayDate(item.date)" class="pill"><AppIcon name="CalendarIcon" /> {{ displayDate(item.date) }}</span>
                 </div>
                 <div v-if="(item.skills||item.tags)?.length" class="tags">
                   <span v-for="t in (item.skills || item.tags || []).slice(0,6)" :key="t" class="tag">{{ t }}</span>
@@ -278,14 +286,14 @@
               </div>
               <div class="actions">
                 <div class="primary-actions">
-                  <UnifiedButton size="sm" variant="primary" leading-icon="mdi-eye" @click="viewItem(item)">
+                  <UnifiedButton size="sm" variant="primary" leading-icon="EyeIcon" @click="viewItem(item)">
                     View
                   </UnifiedButton>
                   <UnifiedButton 
                     v-if="primaryLink(item)" 
                     size="sm" 
                     variant="glass" 
-                    leading-icon="mdi-open-in-new" 
+                    leading-icon="ArrowTopRightOnSquareIcon" 
                     :href="primaryLink(item)" 
                     target="_blank"
                   >
@@ -296,7 +304,7 @@
                   <UnifiedButton 
                     size="sm" 
                     variant="ghost" 
-                    :leading-icon="item.featured ? 'mdi-star' : 'mdi-star-outline'" 
+                    :leading-icon="item.featured ? 'StarIcon' : 'StarIcon-outline'" 
                     :title="item.featured ? 'Remove from featured' : 'Add to featured'"
                     @click="toggleFeatured(item)"
                   >
@@ -315,7 +323,7 @@
         <div v-if="!portfolio.filtered.value.length && !portfolio.loading.value" class="empty unified-card text-center">
           <p>No portfolio items yet.</p>
           <div class="mt-sm">
-            <UnifiedButton variant="primary" leading-icon="mdi-plus" @click="showPortfolioManager = true">Add Project</UnifiedButton>
+            <UnifiedButton variant="primary" leading-icon="PlusIcon" @click="showPortfolioManager = true">Add Project</UnifiedButton>
           </div>
         </div>
       </section>
@@ -327,13 +335,13 @@
 
       <template #footer-actions>
         <div class="footer-actions">
-          <UnifiedButton variant="outline" leading-icon="mdi-cog" title="Open Portfolio Studio" @click="showPortfolioManager = true">
+          <UnifiedButton variant="outline" leading-icon="CogIcon" title="Open Portfolio Studio" @click="showPortfolioManager = true">
             Portfolio Studio
           </UnifiedButton>
           <UnifiedButton 
             v-if="portfolio.skillFilters.value.length || portfolio.searchQuery.value"
             variant="ghost" 
-            leading-icon="mdi-filter-remove" 
+            leading-icon="FunnelIcon" 
             title="Clear All Filters"
             @click="portfolio.clearFilters()"
           >
@@ -375,6 +383,7 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import ViewToggle from '@/components/ui/ViewToggle.vue'
 import PortfolioExportModal from '@/components/portfolio/PortfolioExportModal.vue'
 import PortfolioViewModal from '@/components/portfolio/PortfolioViewModal.vue'
+import LoadingSkeletons from '@/components/LoadingSkeletons.vue'
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 import { usePerformantPortfolio } from '@/composables/usePerformantPortfolio'
 
@@ -534,14 +543,14 @@ function getItemThumbnail(item: any): string | null {
 
 function getItemTypeIcon(type?: string): string {
   const icons: Record<string, string> = {
-    achievement: 'mdi-trophy',
-    tournament: 'mdi-sword-cross',
+    achievement: 'TrophyIcon',
+    tournament: 'BoltIcon-cross',
     project: 'mdi-code-braces',
-    content: 'mdi-video',
-    leadership: 'mdi-account-group',
-    clip: 'mdi-play-circle',
-    competition: 'mdi-target',
-    game: 'mdi-gamepad-variant',
+    content: 'VideoCameraIcon',
+    leadership: 'UserIcon-group',
+    clip: 'PlayIcon-circle',
+    competition: 'CursorArrowRaysIcon',
+    game: 'DevicePhoneMobileIcon-variant',
     web: 'mdi-web',
     mobile: 'mdi-cellphone',
     tool: 'mdi-wrench',
@@ -549,7 +558,7 @@ function getItemTypeIcon(type?: string): string {
     app: 'mdi-application',
     website: 'mdi-earth'
   }
-  return icons[type || ''] || 'mdi-folder'
+  return icons[type || ''] || 'FolderIcon'
 }
 
 function onThumbnailError(event: Event) {
@@ -580,7 +589,7 @@ let observer: any = null
 
 onMounted(() => {
   try {
-    observer = new (window as any).IntersectionObserver(async (entries) => {
+    observer = new (window as any).IntersectionObserver(async (entries: IntersectionObserverEntry[]) => {
       for (const e of entries) {
         if (e.isIntersecting) {
           // For virtualization, expand range; else load next page
@@ -623,7 +632,7 @@ const stats = computed(() => portfolio.stats.value)
   margin-bottom: var(--spacing-4);
   backdrop-filter: var(--glass-backdrop-blur);
 }
-.topbar-row {
+.topbar-flex flex-wrap {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-3);
@@ -654,7 +663,7 @@ const stats = computed(() => portfolio.stats.value)
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: var(--spacing-2) var(--spacing-3);
   font-size: var(--font-size-sm);
   backdrop-filter: var(--glass-backdrop-filter);
@@ -695,7 +704,7 @@ const stats = computed(() => portfolio.stats.value)
   max-width: calc(var(--page-narrow-width) * 0.6);
   padding: var(--spacing-4);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
   background: var(--glass-surface);
   border: 1px solid var(--glass-border);
   display: flex;
@@ -906,7 +915,7 @@ const stats = computed(() => portfolio.stats.value)
 .title { 
   font-weight: var(--font-weight-bold); 
   font-size: var(--font-size-lg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: var(--line-height-heading);
 }
 .desc { 
@@ -998,7 +1007,7 @@ const stats = computed(() => portfolio.stats.value)
 .val { 
   font-weight: var(--font-weight-bold); 
   font-size: var(--font-size-3xl);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 .lbl { 
   color: var(--text-secondary); 
@@ -1013,7 +1022,7 @@ const stats = computed(() => portfolio.stats.value)
 }
 
 @media (max-width: 640px) {
-  .topbar-row {
+  .topbar-flex flex-wrap {
     gap: var(--spacing-2);
   }
   .topbar-group {
@@ -1117,8 +1126,11 @@ const stats = computed(() => portfolio.stats.value)
 
 .modal-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-2);
   padding: var(--spacing-6) var(--spacing-6) var(--spacing-4);
   border-bottom: 1px solid var(--glass-border);
 }
@@ -1126,7 +1138,7 @@ const stats = computed(() => portfolio.stats.value)
 .modal-title {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1142,7 +1154,7 @@ const stats = computed(() => portfolio.stats.value)
 }
 
 .close-button:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: var(--glass-surface);
 }
 
@@ -1191,7 +1203,7 @@ const stats = computed(() => portfolio.stats.value)
 .option-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1204,7 +1216,7 @@ const stats = computed(() => portfolio.stats.value)
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
-  .topbar-row {
+  .topbar-flex flex-wrap {
     gap: var(--spacing-2);
   }
   
@@ -1234,7 +1246,7 @@ const stats = computed(() => portfolio.stats.value)
     justify-content: center;
   }
 
-  .topbar-row {
+  .topbar-flex flex-wrap {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-3);
@@ -1257,7 +1269,7 @@ const stats = computed(() => portfolio.stats.value)
   }
 
   .topbar-group.toggle {
-    flex-direction: row-reverse;
+    flex-direction: flex flex-wrap-reverse;
     justify-content: flex-end;
   }
   

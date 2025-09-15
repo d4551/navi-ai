@@ -1,8 +1,8 @@
 <template>
-  <div class="provider-health-dashboard">
+  <div class="provider-health-dashboard" class="font-sans">
     <div class="dashboard-header">
       <h3 class="dashboard-title">
-        <AppIcon name="mdi-heart-pulse" class="title-icon" />
+        <AppIcon name="HeartIcon" class="title-icon" />
         Provider Health Dashboard
       </h3>
       <div class="health-summary">
@@ -70,7 +70,7 @@
         </div>
 
         <div v-if="provider.lastError" class="error-details">
-          <AppIcon name="mdi-alert-circle" class="error-icon" />
+          <AppIcon name="ExclamationCircleIcon" class="error-icon" />
           <span class="error-text">{{ provider.lastError }}</span>
         </div>
 
@@ -81,7 +81,7 @@
             :disabled="!provider.isEnabled"
             @click="resetProvider(provider)"
           >
-            <AppIcon name="mdi-refresh" />
+            <AppIcon name="ArrowPathIcon" />
             Reset
           </UnifiedButton>
           <UnifiedButton
@@ -89,7 +89,7 @@
             :variant="provider.isEnabled ? 'ghost' : 'primary'"
             @click="toggleProvider(provider)"
           >
-            <AppIcon :name="provider.isEnabled ? 'mdi-pause' : 'mdi-play'" />
+            <AppIcon :name="provider.isEnabled ? 'PauseIcon' : 'PlayIcon'" />
             {{ provider.isEnabled ? 'Disable' : 'Enable' }}
           </UnifiedButton>
         </div>
@@ -98,7 +98,7 @@
 
     <div class="dashboard-actions">
       <UnifiedButton variant="ghost" @click="refreshHealth">
-        <AppIcon name="mdi-refresh" />
+        <AppIcon name="ArrowPathIcon" />
         Refresh All
       </UnifiedButton>
       <UnifiedButton variant="ghost" @click="cleanupOldData">
@@ -110,6 +110,9 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, computed } from 'vue'
 import { providerHealthDashboard } from '@/services/ProviderHealthDashboard'
 import { refactoredJobAPIService } from '@/services/RefactoredJobAPIService'
@@ -126,9 +129,9 @@ const getProviderIcon = (type) => {
     greenhouse: 'mdi-greenhouse',
     lever: 'mdi-lever',
     smartrecruiters: 'mdi-brain',
-    workday: 'mdi-calendar-today',
+    workday: 'CalendarIcon-today',
     government: 'mdi-bank',
-    gaming: 'mdi-gamepad-variant',
+    gaming: 'DevicePhoneMobileIcon-variant',
     opensource: 'mdi-github'
   }
   return icons[type] || 'mdi-web'
@@ -201,7 +204,7 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  border-b: 1px solid rgb(255 255 255 / 0.1);
 }
 
 .dashboard-title {
@@ -267,15 +270,15 @@ onMounted(() => {
 }
 
 .provider-card.status-healthy {
-  border-left: 4px solid rgb(34 197 94);
+  border-l: 4px solid rgb(34 197 94);
 }
 
 .provider-card.status-degraded {
-  border-left: 4px solid rgb(251 191 36);
+  border-l: 4px solid rgb(251 191 36);
 }
 
 .provider-card.status-failed {
-  border-left: 4px solid rgb(239 68 68);
+  border-l: 4px solid rgb(239 68 68);
 }
 
 .provider-card.disabled {
@@ -408,6 +411,6 @@ onMounted(() => {
   gap: 1rem;
   justify-content: center;
   padding-top: 2rem;
-  border-top: 1px solid rgb(75 85 99 / 0.3);
+  border-t: 1px solid rgb(75 85 99 / 0.3);
 }
 </style>

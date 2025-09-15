@@ -1,5 +1,5 @@
 <template>
-  <div class="empty-state-container" :class="stateClass">
+  <div class="empty-state-container" :class="stateClass" class="font-sans">
     <div class="empty-state-content glass-card" role="region" :aria-label="title">
       <!-- Icon Section -->
       <div class="empty-state-icon-wrapper">
@@ -50,7 +50,7 @@
 
       <!-- Gaming-specific features -->
       <div v-if="variant === 'gaming' && gamingHint" class="empty-state-gaming-hint">
-        <div class="gaming-hint-icon">🎮</div>
+        <div class="gaming-hint-icon">DevicePhoneMobileIcon</div>
         <span class="gaming-hint-text">{{ gamingHint }}</span>
       </div>
     </div>
@@ -58,6 +58,8 @@
 </template>
 
 <script setup lang="ts">
+import { DevicePhoneMobileIcon } from '@heroicons/vue/24/outline'
+
 import { computed } from 'vue'
 import AppIcon from './AppIcon.vue'
 import UnifiedButton from './UnifiedButton.vue'
@@ -181,7 +183,7 @@ const iconVariant = computed(() => ({
 .empty-state-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-3) 0;
   line-height: var(--line-height-tight);
 }
@@ -319,7 +321,7 @@ const iconVariant = computed(() => ({
 /* Hover effects */
 .empty-state-content:hover .empty-state-icon {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 /* High contrast mode */

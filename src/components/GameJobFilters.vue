@@ -3,18 +3,18 @@
   Advanced filtering specifically tailored for gaming industry job seekers
 -->
 <template>
-  <div class="game-job-filters">
-    <div class="filters-header d-flex align-items-center justify-content-between mb-3">
+  <div class="game-job-filters" class="font-sans">
+    <div class="filters-header flex items-center justify-between mb-3">
       <h5 class="filters-title mb-0">
-        <AppIcon name="mdi-filter-variant" class="me-2" />
+        <AppIcon name="AdjustmentsHorizontalIcon" class="mr-2" />
         Filter Gaming Jobs
       </h5>
-      <div class="filter-actions d-flex gap-2">
+      <div class="filter-actions flex gap-glass-sm">
         <UnifiedButton
           variant="outline"
           size="sm"
           :disabled="!hasActiveFilters"
-          leading-icon="mdi-filter-remove"
+          leading-icon="FunnelIcon"
           @click="resetFilters"
         >
           Clear All
@@ -32,15 +32,15 @@
 
     <!-- Active Filters Display -->
     <div v-if="hasActiveFilters" class="active-filters mb-3">
-      <div class="active-filters-list d-flex flex-wrap gap-1">
+      <div class="active-filters-list flex flex-wrap gap-glass-xs">
         <span
           v-for="filter in activeFilters"
           :key="filter.key"
-          class="active-filter-tag badge bg-primary"
+          class="active-filter-tag badge bg-primary-500"
         >
           {{ filter.label }}
           <button
-            class="btn-close btn-close-white ms-1 ui-btn ui-size-md"
+            class="btn-close btn-close-white ml-1 ui-btn ui-size-md"
             :aria-label="`Remove ${filter.label} filter`"
             @click="removeFilter(filter.key, filter.value)"
           ></button>
@@ -49,8 +49,8 @@
     </div>
 
     <!-- Quick Filters (Always Visible) -->
-    <div class="quick-filters row g-2 mb-3">
-      <div class="col-md-6">
+    <div class="quick-filters flex flex-wrap g-2 mb-3">
+      <div class="flex-1-md-6">
         <label for="role-category-select" class="form-label">Role Category</label>
         <select
           id="role-category-select"
@@ -65,7 +65,7 @@
         </select>
       </div>
 
-      <div class="col-md-6">
+      <div class="flex-1-md-6">
         <label for="experience-level-select" class="form-label">Experience Level</label>
         <select
           id="experience-level-select"
@@ -86,9 +86,9 @@
 
     <!-- Expanded Filters -->
     <div v-if="isExpanded" class="expanded-filters">
-      <div class="row g-3 mb-3">
+      <div class="flex flex-wrap g-3 mb-3">
         <!-- Studio Type -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <label class="form-label">Studio Type</label>
           <div class="filter-checkboxes">
             <div v-for="type in studioTypes" :key="type.value" class="form-check">
@@ -101,14 +101,14 @@
                 @change="updateFilters"
               />
               <label :for="`studio-type-${type.value}`" class="form-check-label">
-                {{ type.label }} <span class="text-muted">({{ type.count }})</span>
+                {{ type.label }} <span class="text-secondary">({{ type.count }})</span>
               </label>
             </div>
           </div>
         </div>
 
         <!-- Company Size -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <label class="form-label">Company Size</label>
           <div class="filter-checkboxes">
             <div v-for="size in companySizes" :key="size.value" class="form-check">
@@ -128,7 +128,7 @@
         </div>
 
         <!-- Remote Work -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <label class="form-label">Work Style</label>
           <div class="filter-checkboxes">
             <div class="form-check">
@@ -172,8 +172,8 @@
       </div>
 
       <!-- Technology & Skills -->
-      <div class="row g-3 mb-3">
-        <div class="col-12">
+      <div class="flex flex-wrap g-3 mb-3">
+        <div class="flex-1-12">
           <label class="form-label">Technologies & Skills</label>
           <div class="technology-filter">
             <input
@@ -187,7 +187,7 @@
               <div class="tech-categories">
                 <div v-for="(techs, category) in filteredTechnologies" :key="category" class="tech-category mb-2">
                   <h6 class="tech-category-title">{{ category }}</h6>
-                  <div class="tech-tags d-flex flex-wrap gap-1">
+                  <div class="tech-tags flex flex-wrap gap-glass-xs">
                     <label
                       v-for="tech in techs"
                       :key="tech"
@@ -198,7 +198,7 @@
                         v-model="filters.technologies"
                         type="checkbox"
                         :value="tech"
-                        class="d-none"
+                        class="hidden"
                         @change="updateFilters"
                       />
                       <span class="tech-tag">{{ tech }}</span>
@@ -212,8 +212,8 @@
       </div>
 
       <!-- Salary Range -->
-      <div class="row g-3 mb-3">
-        <div class="col-md-6">
+      <div class="flex flex-wrap g-3 mb-3">
+        <div class="flex-1-md-6">
           <label for="min-salary" class="form-label">Minimum Salary</label>
           <div class="input-group">
             <span class="input-group-text">$</span>
@@ -229,7 +229,7 @@
             />
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="flex-1-md-6">
           <label for="max-salary" class="form-label">Maximum Salary</label>
           <div class="input-group">
             <span class="input-group-text">$</span>
@@ -248,8 +248,8 @@
       </div>
 
       <!-- Location & Region -->
-      <div class="row g-3 mb-3">
-        <div class="col-md-6">
+      <div class="flex flex-wrap g-3 mb-3">
+        <div class="flex-1-md-6">
           <label class="form-label">Regions</label>
           <div class="filter-checkboxes">
             <div v-for="region in regions" :key="region" class="form-check">
@@ -268,7 +268,7 @@
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="flex-1-md-6">
           <label for="specific-location" class="form-label">Specific Location</label>
           <input
             id="specific-location"
@@ -282,10 +282,10 @@
       </div>
 
       <!-- Special Filters -->
-      <div class="row g-3">
-        <div class="col-12">
+      <div class="flex flex-wrap g-3">
+        <div class="flex-1-12">
           <label class="form-label">Special Preferences</label>
-          <div class="special-filters d-flex flex-wrap gap-3">
+          <div class="special-filters flex flex-wrap gap-glass-md">
             <div class="form-check">
               <input
                 id="featured-only"
@@ -295,7 +295,7 @@
                 @change="updateFilters"
               />
               <label for="featured-only" class="form-check-label">
-                <AppIcon name="mdi-star" color="warning" context="achievement" />
+                <AppIcon name="StarIcon" color="warning" context="achievement" />
                 Featured Jobs Only
               </label>
             </div>
@@ -309,7 +309,7 @@
                 @change="updateFilters"
               />
               <label for="new-grad-friendly" class="form-check-label">
-                <AppIcon name="mdi-school" class="text-info me-1" />
+                <AppIcon name="AcademicCapIcon" class="text-blue-600 mr-1" />
                 New Grad Friendly
               </label>
             </div>
@@ -323,7 +323,7 @@
                 @change="updateFilters"
               />
               <label for="visa-sponsorship" class="form-check-label">
-                <AppIcon name="mdi-airplane" class="text-primary me-1" />
+                <AppIcon name="mdi-airplane" class="text-primary-600 mr-1" />
                 Visa Sponsorship
               </label>
             </div>
@@ -337,7 +337,7 @@
                 @change="updateFilters"
               />
               <label for="diversity-focused" class="form-check-label">
-                <AppIcon name="mdi-account-group" color="success" />
+                <AppIcon name="UsersIcon" color="success" />
                 Diversity & Inclusion Focus
               </label>
             </div>
@@ -347,11 +347,11 @@
     </div>
 
     <!-- Results Summary -->
-    <div class="filters-footer mt-3 pt-3 border-top">
-      <div class="d-flex align-items-center justify-content-between">
+    <div class="filters-footer mt-3 pt-3 border-t">
+      <div class="flex items-center justify-between">
         <div class="results-count">
-          <span class="fw-semibold">{{ resultsCount }}</span>
-          <span class="text-muted">gaming jobs found</span>
+          <span class="font-semibold">{{ resultsCount }}</span>
+          <span class="text-secondary">gaming jobs found</span>
         </div>
         <div class="sort-options">
           <label for="sort-select" class="form-label visually-hidden">Sort by</label>
@@ -375,6 +375,9 @@
 </template>
 
 <script setup>
+import { AcademicCapIcon, AdjustmentsHorizontalIcon, FunnelIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, reactive, computed, watch, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -611,7 +614,7 @@ watch(technologySearch, (newVal) => {
 }
 
 .filters-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
 }
 
@@ -715,13 +718,13 @@ watch(technologySearch, (newVal) => {
 
 .filters-footer {
   background: rgba(255, 255, 255, 0.8);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
   margin: -0.5rem -1.5rem -1.5rem;
   padding: 1rem 1.5rem;
   border-radius: 0 0 12px 12px;
 }
 
-.results-count .fw-semibold {
+.results-count .font-semibold {
   color: var(--color-primary-500);
   font-size: 1.1rem;
 }
@@ -775,7 +778,7 @@ watch(technologySearch, (newVal) => {
     gap: 1rem;
   }
 
-  .filters-footer .d-flex {
+  .filters-footer .flex {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
@@ -787,11 +790,11 @@ watch(technologySearch, (newVal) => {
   .game-job-filters {
     background: var(--surface-elevated);
     border-color: var(--border-base);
-    color: var(--text-primary);
+    color: var(--text-primary-600);
   }
 
   .filters-title {
-    color: var(--text-primary);
+    color: var(--text-primary-600);
   }
 
   .active-filters {
@@ -823,7 +826,7 @@ watch(technologySearch, (newVal) => {
 
   .filters-footer {
     background: rgba(17, 24, 39, 0.8);
-    border-top-color: var(--border-base);
+    border-t-color: var(--border-base);
   }
 }
 </style>

@@ -5,6 +5,7 @@
     :subtitle="'Intelligence dashboard for gaming industry insights'"
     :hero-stats="headerStats"
     max-width="xl"
+    class="font-sans "
   >
     <!-- Enhanced Header Actions -->
     <template #header-actions>
@@ -12,7 +13,7 @@
         <UnifiedButton 
           variant="ghost" 
           size="sm" 
-          leading-icon="mdi-filter-variant" 
+          leading-icon="AdjustmentsHorizontalIcon" 
           :class="{ 'is-active': showFilters }"
           @click="showFilters = !showFilters"
         >
@@ -20,7 +21,7 @@
         </UnifiedButton>
         <UnifiedButton 
           variant="glass" 
-          leading-icon="mdi-refresh" 
+          leading-icon="ArrowPathIcon" 
           :loading="isRefreshing"
           @click="refreshData"
         >
@@ -28,7 +29,7 @@
         </UnifiedButton>
         <UnifiedButton 
           variant="gaming" 
-          leading-icon="mdi-download" 
+          leading-icon="ArrowDownTrayIcon" 
           @click="exportAnalytics"
         >
           Export
@@ -44,10 +45,10 @@
     <!-- Interactive Filters Panel -->
     <Transition name="filter-panel">
       <section v-if="showFilters" class="unified-container mt-4">
-        <div class="glass p-4 gap-4 rounded-lg filters-panel">
+        <div class="glass p-glass-md gap-glass-md rounded-lg filters-panel">
           <div class="filters-header">
             <h3 class="filters-title">
-              <AppIcon name="mdi-filter-variant" />
+              <AppIcon name="AdjustmentsHorizontalIcon" />
               Analytics Filters
             </h3>
             <UnifiedButton variant="ghost" size="sm" @click="resetFilters">Reset</UnifiedButton>
@@ -83,7 +84,7 @@
             <div class="filter-group">
               <label class="filter-label">Search Studios</label>
               <div class="search-input-wrapper">
-                <AppIcon name="mdi-magnify" class="search-icon" />
+                <AppIcon name="MagnifyingGlassIcon" class="search-icon" />
                 <input 
                   v-model="searchQuery" 
                   type="text" 
@@ -101,9 +102,9 @@
     <section class="unified-container">
       <div class="analytics-stats-section">
         <div class="stats-grid">
-          <div class="glass p-4 gap-4 rounded-lg stat-card neon-interactive" @click="focusMetric('studios')">
+          <div class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive" @click="focusMetric('studios')">
             <div class="stat-header">
-              <AppIcon name="mdi-domain" class="stat-icon rgb-text-primary" />
+              <AppIcon name="BuildingOfficeIcon" class="stat-icon rgb-text-primary-600" />
               <div class="stat-info">
                 <span class="stat-label">Total Studios</span>
                 <span class="stat-subtitle">Active worldwide</span>
@@ -112,7 +113,7 @@
             <div class="stat-value animated-counter">{{ animatedStudios.toLocaleString() }}</div>
             <div class="stat-change positive">
               <div class="change-indicator">
-                <AppIcon name="mdi-trending-up" />
+                <AppIcon name="ArrowTrendingUpIcon" />
                 <span>+{{ analytics.growthRate }}%</span>
               </div>
               <span class="change-period">this year</span>
@@ -122,9 +123,9 @@
             </div>
           </div>
 
-          <div class="glass p-4 gap-4 rounded-lg stat-card neon-interactive" @click="focusMetric('salary')">
+          <div class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive" @click="focusMetric('salary')">
             <div class="stat-header">
-              <AppIcon name="mdi-currency-usd" class="stat-icon rgb-text-success" />
+              <AppIcon name="mdi-currency-usd" class="stat-icon rgb-text-success-600" />
               <div class="stat-info">
                 <span class="stat-label">Avg Salary</span>
                 <span class="stat-subtitle">Industry median</span>
@@ -133,7 +134,7 @@
             <div class="stat-value animated-counter">${{ animatedSalary }}K</div>
             <div class="stat-change positive">
               <div class="change-indicator">
-                <AppIcon name="mdi-trending-up" />
+                <AppIcon name="ArrowTrendingUpIcon" />
                 <span>+12%</span>
               </div>
               <span class="change-period">vs last year</span>
@@ -145,9 +146,9 @@
             </div>
           </div>
 
-          <div class="glass p-4 gap-4 rounded-lg stat-card neon-interactive" @click="focusMetric('jobs')">
+          <div class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive" @click="focusMetric('jobs')">
             <div class="stat-header">
-              <AppIcon name="mdi-briefcase" class="stat-icon rgb-text-warning" />
+              <AppIcon name="BriefcaseIcon" class="stat-icon rgb-text-warning-600" />
               <div class="stat-info">
                 <span class="stat-label">Open Jobs</span>
                 <span class="stat-subtitle">Currently available</span>
@@ -169,9 +170,9 @@
             </div>
           </div>
 
-          <div class="glass p-4 gap-4 rounded-lg stat-card neon-interactive" @click="focusMetric('market')">
+          <div class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive" @click="focusMetric('market')">
             <div class="stat-header">
-              <AppIcon name="mdi-chart-line" class="stat-icon rgb-text-info" />
+              <AppIcon name="ChartBarIcon" class="stat-icon rgb-text-blue-600" />
               <div class="stat-info">
                 <span class="stat-label">Market Cap</span>
                 <span class="stat-subtitle">Gaming industry</span>
@@ -180,7 +181,7 @@
             <div class="stat-value animated-counter">$284B</div>
             <div class="stat-change positive">
               <div class="change-indicator">
-                <AppIcon name="mdi-trending-up" />
+                <AppIcon name="ArrowTrendingUpIcon" />
                 <span>+18%</span>
               </div>
               <span class="change-period">growth</span>
@@ -200,10 +201,10 @@
       <div class="dashboard-section">
         <div class="dashboard-grid">
           <!-- Market Intelligence -->
-          <div class="glass p-4 gap-4 rounded-lg analytics-panel">
+          <div class="glass p-glass-md gap-glass-md rounded-lg analytics-panel">
             <div class="section-header">
               <h3 class="section-title">
-                <AppIcon name="mdi-chart-box" />
+                <AppIcon name="ChartBarIcon" />
                 Market Intelligence
               </h3>
             </div>
@@ -215,7 +216,7 @@
           </div>
 
           <!-- Salary Intelligence -->
-          <div class="glass p-4 gap-4 rounded-lg analytics-panel">
+          <div class="glass p-glass-md gap-glass-md rounded-lg analytics-panel">
             <div class="section-header">
               <h3 class="section-title">
                 <AppIcon name="mdi-currency-usd" />
@@ -244,10 +245,10 @@
           </div>
 
           <!-- Enhanced Studio Rankings -->
-          <div class="glass p-4 gap-4 rounded-lg analytics-panel full-width">
+          <div class="glass p-glass-md gap-glass-md rounded-lg analytics-panel full-width">
             <div class="section-header">
               <h3 class="section-title">
-                <AppIcon name="mdi-trophy" />
+                <AppIcon name="TrophyIcon" />
                 Top Gaming Studios
                 <span class="results-count">({{ filteredStudios.length }} studios)</span>
               </h3>
@@ -261,7 +262,7 @@
                 <UnifiedButton 
                   variant="ghost" 
                   size="sm" 
-                  trailing-icon="mdi-arrow-right"
+                  trailing-icon="ArrowRightIcon"
                   @click="expandStudios = !expandStudios"
                 >
                   {{ expandStudios ? 'Show Less' : 'View All' }}
@@ -307,17 +308,17 @@
                         </div>
                         <div class="studio-metrics">
                           <div class="metric-item">
-                            <AppIcon name="mdi-account-group" />
+                            <AppIcon name="UsersIcon" />
                             <span class="metric-value">{{ studio.employeeCount.toLocaleString() }}+</span>
                             <span class="metric-label">employees</span>
                           </div>
                           <div class="metric-item">
-                            <AppIcon name="mdi-gamepad-variant" />
+                            <AppIcon name="PuzzlePieceIcon" />
                             <span class="metric-value">{{ studio.gameCount }}</span>
                             <span class="metric-label">games</span>
                           </div>
                           <div class="metric-item">
-                            <AppIcon name="mdi-briefcase" />
+                            <AppIcon name="BriefcaseIcon" />
                             <span class="metric-value">{{ studio.openJobs }}</span>
                             <span class="metric-label">positions</span>
                           </div>
@@ -338,7 +339,7 @@
                           {{ studio.threatLevel }}
                         </div>
                         <div class="studio-actions">
-                          <UnifiedButton variant="ghost" size="xs" leading-icon="mdi-eye">Details</UnifiedButton>
+                          <UnifiedButton variant="ghost" size="xs" leading-icon="EyeIcon">Details</UnifiedButton>
                         </div>
                       </div>
                     </div>
@@ -348,7 +349,7 @@
                   <div v-if="!expandStudios && filteredStudios.length > 5" class="show-more-section">
                     <UnifiedButton 
                       variant="glass" 
-                      trailing-icon="mdi-chevron-down"
+                      trailing-icon="ChevronDownIcon"
                       @click="expandStudios = true"
                     >
                       Show {{ filteredStudios.length - 5 }} More Studios
@@ -360,10 +361,10 @@
           </div>
 
           <!-- Technology Trends -->
-          <div class="glass p-4 gap-4 rounded-lg analytics-panel">
+          <div class="glass p-glass-md gap-glass-md rounded-lg analytics-panel">
             <div class="section-header">
               <h3 class="section-title">
-                <AppIcon name="mdi-code-tags" />
+                <AppIcon name="CommandLineIcon" />
                 Technology Trends
               </h3>
             </div>
@@ -388,10 +389,10 @@
           </div>
 
           <!-- Regional Intelligence -->
-          <div class="glass p-4 gap-4 rounded-lg analytics-panel">
+          <div class="glass p-glass-md gap-glass-md rounded-lg analytics-panel">
             <div class="section-header">
               <h3 class="section-title">
-                <AppIcon name="mdi-map-marker" />
+                <AppIcon name="MapPinIcon" />
                 Regional Distribution
               </h3>
             </div>
@@ -416,6 +417,9 @@
 </template>
 
 <script setup lang="ts">
+import { AdjustmentsHorizontalIcon, ArrowDownTrayIcon, ArrowPathIcon, ArrowRightIcon, ArrowTrendingUpIcon, BriefcaseIcon, BuildingOfficeIcon, ChartBarIcon, ChevronDownIcon, CommandLineIcon, EyeIcon, MagnifyingGlassIcon, PuzzlePieceIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon, TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import Chart from 'chart.js/auto'
 import type { Chart as ChartJS } from 'chart.js'
@@ -648,8 +652,8 @@ const getThreatIcon = (threatLevel: string) => {
   switch (threatLevel) {
     case 'HIGH': return 'mdi-alert-circle'
     case 'MEDIUM': return 'mdi-alert'
-    case 'LOW': return 'mdi-check-circle'
-    default: return 'mdi-help-circle'
+    case 'LOW': return 'CheckIcon-circle'
+    default: return 'QuestionMarkCircleIcon-circle'
   }
 }
 
@@ -774,7 +778,7 @@ onMounted(async () => {
     const chartTheme = theme ? getChartTheme(theme.colorScheme?.value || 'dark') : {
       backgroundColor: ['rgba(0, 255, 136, 0.2)'],
       borderColor: ['rgba(0, 255, 136, 0.8)'],
-      textColor: 'var(--text-primary)',
+      textColor: 'var(--text-primary-600)',
       gridColor: 'var(--glass-border)'
     }
 
@@ -887,7 +891,7 @@ onUnmounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -916,7 +920,7 @@ onUnmounted(() => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   padding: var(--spacing-3) var(--spacing-4);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-base);
   transition: all var(--duration-fast) var(--easing-ease-out);
   backdrop-filter: blur(8px);
@@ -1001,7 +1005,7 @@ onUnmounted(() => {
 .stat-value {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-black);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: var(--line-height-none);
   margin-bottom: var(--spacing-3);
   letter-spacing: -0.02em;
@@ -1049,7 +1053,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-6);
-  border-bottom: 2px solid var(--glass-border);
+  border-b: 2px solid var(--glass-border);
   background: linear-gradient(90deg, 
     color-mix(in srgb, var(--glass-bg) 95%, transparent) 0%,
     var(--glass-bg) 100%);
@@ -1076,7 +1080,7 @@ onUnmounted(() => {
   gap: var(--spacing-3);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   letter-spacing: -0.01em;
 }
@@ -1116,7 +1120,7 @@ onUnmounted(() => {
 
 .role-name {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .salary-range {
@@ -1224,7 +1228,7 @@ onUnmounted(() => {
 .studio-name {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   letter-spacing: -0.01em;
 }
 
@@ -1295,7 +1299,7 @@ onUnmounted(() => {
 
 .tech-name {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .tech-percentage {
@@ -1343,7 +1347,7 @@ onUnmounted(() => {
 
 .region-name {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .studio-count {
@@ -1621,7 +1625,7 @@ onUnmounted(() => {
 
 .metric-value {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .metric-label {
@@ -1657,7 +1661,7 @@ onUnmounted(() => {
   justify-content: center;
   margin-top: var(--spacing-4);
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 /* Counter animations */

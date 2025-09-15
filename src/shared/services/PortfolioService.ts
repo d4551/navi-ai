@@ -1,13 +1,14 @@
-import type { 
-  PortfolioItem, 
-  PortfolioFilters, 
-  PortfolioStats, 
-  PortfolioExportData, 
+import type {
+  PortfolioItem,
+  PortfolioFilters,
+  PortfolioStats,
+  PortfolioExportData,
   PortfolioExportOptions,
-  PortfolioItemType 
+  PortfolioItemType
 } from '../types/portfolio';
 import { aiService } from './AIService';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { logger } from '@/shared/utils/logger';
 
 /**
  * Centralized portfolio service for all portfolio-related business logic
@@ -692,7 +693,7 @@ Analyze the user's gaming background and current portfolio to suggest improvemen
       return this.parseAIRecommendations(response.content);
 
     } catch (error) {
-      console.error('Failed to generate AI portfolio recommendations:', error);
+      logger.error('Failed to generate AI portfolio recommendations:', error);
       return this.getFallbackRecommendations(currentPortfolio, targetRole);
     }
   }
@@ -837,7 +838,7 @@ Enhance this portfolio item description to better showcase transferable skills a
 
       return response.content || item.description || '';
     } catch (error) {
-      console.error('Failed to enhance item description:', error);
+      logger.error('Failed to enhance item description:', error);
       return item.description || '';
     }
   }

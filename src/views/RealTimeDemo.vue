@@ -6,6 +6,7 @@
     title="NAVI Live Chat"
     subtitle="Next-generation AI conversation experience"
     :header-context="{ sessionActive: isSessionActive, mode: selectedMode, persona: selectedPersona }"
+    class="font-sans "
   >
     <template #header-actions>
       <div class="status-indicator" :class="getStatusClass()">
@@ -17,7 +18,7 @@
     <div v-if="!hasApiKey" class="api-setup-modal">
       <div class="modal-content glass-surface">
         <div class="modal-header">
-          <AppIcon name="mdi-key" class="header-icon" />
+          <AppIcon name="KeyIcon" class="header-icon" />
           <h2>Connect Your AI</h2>
           <p>Enter your Google AI Studio API key to unlock NAVI's full potential</p>
         </div>
@@ -41,7 +42,7 @@
           </div>
           <div class="api-help">
             <a href="https://aistudio.google.com/app/apikey" target="_blank" class="help-link">
-              <AppIcon name="mdi-open-in-new" />
+              <AppIcon name="ArrowTopRightOnSquareIcon" />
               Get your free API key
             </a>
           </div>
@@ -54,7 +55,7 @@
       <!-- Mode Selection Sidebar -->
       <div class="mode-sidebar" :class="{ collapsed: sidebarCollapsed }">
         <button class="sidebar-toggle" @click="sidebarCollapsed = !sidebarCollapsed">
-          <AppIcon :name="sidebarCollapsed ? 'mdi-menu' : 'mdi-close'" />
+          <AppIcon :name="sidebarCollapsed ? 'Bars3Icon' : 'XMarkIcon'" />
         </button>
         
         <div class="sidebar-content">
@@ -75,7 +76,7 @@
                 <div class="mode-title">{{ mode.title }}</div>
                 <div class="mode-desc">{{ mode.description }}</div>
                 <div v-if="!mode.supported" class="mode-warning">
-                  <AppIcon name="mdi-alert" size="small" />
+                  <AppIcon name="ExclamationTriangleIcon" size="small" />
                   Not supported
                 </div>
               </div>
@@ -113,7 +114,7 @@
         <div v-else class="welcome-screen">
           <div class="welcome-content">
             <div class="welcome-icon">
-              <AppIcon name="mdi-robot" />
+              <AppIcon name="CpuChipIcon" />
             </div>
             <h2>Welcome to NAVI Live</h2>
             <p>Choose an experience mode from the sidebar to begin your AI conversation</p>
@@ -121,11 +122,11 @@
             <!-- Feature Highlights -->
             <div class="feature-highlights">
               <div class="feature" :class="{ supported: isAudioSupported }">
-                <AppIcon name="mdi-microphone" />
+                <AppIcon name="MicrophoneIcon" />
                 <span>Voice Chat</span>
               </div>
               <div class="feature" :class="{ supported: isVideoSupported }">
-                <AppIcon name="mdi-video" />
+                <AppIcon name="VideoCameraIcon" />
                 <span>Video Analysis</span>
               </div>
               <div class="feature" :class="{ supported: isScreenShareSupported }">
@@ -133,7 +134,7 @@
                 <span>Screen Sharing</span>
               </div>
               <div class="feature" :class="{ supported: allFeaturesSupported }">
-                <AppIcon name="mdi-brain" />
+                <AppIcon name="CpuChipIcon" />
                 <span>Multimodal AI</span>
               </div>
             </div>
@@ -146,15 +147,15 @@
     <div v-if="sessionStats" class="floating-stats">
       <div class="stats-content">
         <div class="stat">
-          <AppIcon name="mdi-clock" />
+          <AppIcon name="ClockIcon" />
           <span>{{ sessionStats.duration }}</span>
         </div>
         <div class="stat">
-          <AppIcon name="mdi-message" />
+          <AppIcon name="ChatBubbleLeftIcon" />
           <span>{{ sessionStats.messages }} msgs</span>
         </div>
         <div class="stat">
-          <AppIcon name="mdi-brain" />
+          <AppIcon name="CpuChipIcon" />
           <span>{{ sessionStats.mode }}</span>
         </div>
       </div>
@@ -163,13 +164,13 @@
     <!-- Error Toast -->
     <div v-if="error" class="error-toast">
       <div class="toast-content">
-        <AppIcon name="mdi-alert-circle" class="error-icon" />
+        <AppIcon name="ExclamationCircleIcon" class="error-icon" />
         <div class="error-message">
           <strong>Error</strong>
           <p>{{ _error }}</p>
         </div>
         <button class="close-btn" @click="error = null">
-          <AppIcon name="mdi-close" />
+          <AppIcon name="XMarkIcon" />
         </button>
       </div>
     </div>
@@ -177,6 +178,8 @@
 </template>
 
 <script setup>
+import { ArrowTopRightOnSquareIcon, ChatBubbleLeftIcon, ClockIcon, CpuChipIcon, ExclamationCircleIcon, ExclamationTriangleIcon, KeyIcon, MicrophoneIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -217,14 +220,14 @@ const demoModes = computed(() => [
     id: 'audio',
     title: 'Voice Chat',
     description: 'Natural voice conversation',
-    icon: 'mdi-microphone',
+    icon: 'MicrophoneIcon',
     supported: isAudioSupported.value && isSpeechRecognitionSupported.value
   },
   {
     id: 'video',
     title: 'Video Chat',
     description: 'AI can see and analyze you',
-    icon: 'mdi-video',
+    icon: 'VideoCameraIcon',
     supported: isVideoSupported.value && isAudioSupported.value
   },
   {
@@ -400,7 +403,7 @@ watch(apiKey, (newKey) => {
   background: var(--color-primary-50);
   color: var(--color-primary-600);
   border-color: var(--color-primary-500);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .status-active .status-dot {
@@ -486,7 +489,7 @@ watch(apiKey, (newKey) => {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   font-family: var(--font-family-gaming);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-sm) 0;
   letter-spacing: var(--letter-spacing-wide);
 }
@@ -510,7 +513,7 @@ watch(apiKey, (newKey) => {
   background: var(--surface-elevated);
   border: 1px solid var(--border-base);
   border-radius: var(--border-radius-lg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-md);
   font-family: var(--font-family-primary);
   transition: var(--transition-normal);
@@ -524,7 +527,7 @@ watch(apiKey, (newKey) => {
 }
 
 .modern-input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .api-help {
@@ -564,7 +567,7 @@ watch(apiKey, (newKey) => {
 .mode-sidebar {
   width: 320px;
   background: var(--surface-elevated);
-  border-right: 1px solid var(--border-base);
+  border-r: 1px solid var(--border-base);
   padding: var(--spacing-2xl);
   overflow-y: auto;
   transition: var(--transition-normal);
@@ -578,7 +581,7 @@ watch(apiKey, (newKey) => {
 .sidebar-toggle {
   background: none;
   border: none;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-xl);
   cursor: pointer;
   margin-bottom: var(--spacing-2xl);
@@ -607,7 +610,7 @@ watch(apiKey, (newKey) => {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   font-family: var(--font-family-gaming);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-xl) 0;
   letter-spacing: var(--letter-spacing-wide);
 }
@@ -650,7 +653,7 @@ watch(apiKey, (newKey) => {
   background: var(--color-primary-50);
   border-color: var(--color-primary-300);
   transform: translateX(4px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .mode-option:hover:not(.disabled)::before {
@@ -693,7 +696,7 @@ watch(apiKey, (newKey) => {
 
 .mode-title {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-xs);
   font-size: var(--font-size-md);
 }
@@ -716,7 +719,7 @@ watch(apiKey, (newKey) => {
 
 /* Persona Section */
 .persona-section {
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
   padding-top: var(--spacing-xl);
 }
 
@@ -724,7 +727,7 @@ watch(apiKey, (newKey) => {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
   font-family: var(--font-family-gaming);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-md) 0;
   letter-spacing: var(--letter-spacing-normal);
 }
@@ -735,7 +738,7 @@ watch(apiKey, (newKey) => {
   background: var(--surface-elevated);
   border: 1px solid var(--border-base);
   border-radius: var(--border-radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   font-family: var(--font-family-primary);
   transition: var(--transition-normal);
@@ -810,7 +813,7 @@ watch(apiKey, (newKey) => {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
   font-family: var(--font-family-gaming);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-md) 0;
   background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
   -webkit-background-clip: text;
@@ -868,7 +871,7 @@ watch(apiKey, (newKey) => {
 
 .feature:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
 }
 
 .feature:hover::before {
@@ -890,7 +893,7 @@ watch(apiKey, (newKey) => {
 
 .feature:not(.supported) {
   opacity: 0.6;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .feature:not(.supported):hover {
@@ -918,7 +921,7 @@ watch(apiKey, (newKey) => {
   border: 1px solid var(--border-base);
   border-radius: var(--border-radius-xl);
   padding: var(--spacing-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   transition: var(--transition-normal);
   min-width: 200px;
 }
@@ -968,7 +971,7 @@ watch(apiKey, (newKey) => {
   background: var(--color-error-500);
   color: white;
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
   border: 1px solid var(--color-error-400);
   position: relative;
   overflow: hidden;
@@ -1104,7 +1107,7 @@ watch(apiKey, (newKey) => {
   }
   
   .stats-content {
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     justify-content: space-around;
   }
 }
@@ -1121,8 +1124,8 @@ watch(apiKey, (newKey) => {
     width: 100%;
     order: -1;
     padding: var(--spacing-md);
-    border-right: none;
-    border-bottom: 1px solid var(--border-base);
+    border-r: none;
+    border-b: 1px solid var(--border-base);
     max-height: 200px;
     overflow-y: auto;
   }
@@ -1134,7 +1137,7 @@ watch(apiKey, (newKey) => {
   
   .sidebar-content {
     display: flex;
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     gap: var(--spacing-lg);
     align-items: center;
   }
@@ -1146,7 +1149,7 @@ watch(apiKey, (newKey) => {
   
   .mode-list {
     display: flex;
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     gap: var(--spacing-sm);
     margin: 0;
     flex-wrap: wrap;

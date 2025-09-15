@@ -51,7 +51,7 @@ watch(() => unified?.colorScheme?.value, () => applyTheme(), { immediate: true }
 </script>
 
 <template>
-  <span class="theme-bridge" style="display:none" aria-hidden="true"></span>
+  <span class="theme-bridge font-sans" style="display:none" aria-hidden="true"></span>
 </template>
 
 <style scoped>

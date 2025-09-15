@@ -4,10 +4,11 @@
     :class="[ `portfolio-card--${layout}`, 
               { 'portfolio-card--featured': item.featured }
     ]"
+    class="font-sans"
   >
     <!-- Featured Badge -->
     <div v-if="item.featured" class="featured-badge">
-      <AppIcon name="mdi-star" />
+      <AppIcon name="StarIcon" />
     </div>
 
     <!-- Media Section -->
@@ -39,7 +40,7 @@
           class="play-button"
           @click="togglePlay"
         >
-          <AppIcon :name="isPlaying ? 'mdi-pause' : 'mdi-play'" />
+          <AppIcon :name="isPlaying ? 'PauseIcon' : 'PlayIcon'" />
         </button>
       </div>
     </div>
@@ -60,22 +61,22 @@
             :aria-expanded="showActions"
             @click="showActions = !showActions"
           >
-            <AppIcon name="mdi-dots-vertical" />
+            <AppIcon name="EllipsisVerticalIcon" />
           </button>
           <div v-if="showActions" class="actions-dropdown">
             <button @click="$emit('edit', item)">
-              <AppIcon name="mdi-pencil" />Edit
+              <AppIcon name="PencilIcon" />Edit
             </button>
             <button @click="$emit('toggle-featured', item)">
-              <AppIcon :name="item.featured ? 'mdi-star' : 'mdi-star-outline'" />
+              <AppIcon :name="item.featured ? 'StarIcon' : 'StarIcon-outline'" />
               {{ item.featured ? 'Unfeature' : 'Feature' }}
             </button>
-            <button class="text-info" @click="shareItem">
-              <AppIcon name="mdi-share" />Share
+            <button class="text-blue-600" @click="shareItem">
+              <AppIcon name="ShareIcon" />Share
             </button>
             <hr class="dropdown-divider">
-            <button class="text-danger" @click="$emit('delete', item)">
-              <AppIcon name="mdi-delete" />Delete
+            <button class="text-error-600" @click="$emit('delete', item)">
+              <AppIcon name="TrashIcon" />Delete
             </button>
           </div>
         </div>
@@ -90,18 +91,18 @@
         
         <!-- Game Info -->
         <div v-if="item.game" class="game-info">
-          <AppIcon name="mdi-gamepad-variant" />
+          <AppIcon name="PuzzlePieceIcon" />
           <span>{{ item.game }}</span>
         </div>
 
         <!-- Achievement Details -->
         <div v-if="item.achievement" class="achievement-details">
           <div class="achievement-stat">
-            <AppIcon name="mdi-trophy" />
+            <AppIcon name="TrophyIcon" />
             <span>{{ item.achievement.rank || 'Achievement' }}</span>
           </div>
           <div v-if="item.achievement.date" class="achievement-date">
-            <AppIcon name="mdi-calendar" />
+            <AppIcon name="CalendarIcon" />
             <span>{{ formatDate(item.achievement.date) }}</span>
           </div>
         </div>
@@ -137,16 +138,16 @@
       <!-- Footer Info -->
       <div class="card-footer-section">
         <div class="timestamp">
-          <AppIcon name="mdi-clock-outline" />
+          <AppIcon name="ClockIcon" />
           <span>{{ formatDate(item.createdAt || item.date) }}</span>
         </div>
         <div v-if="showAnalytics" class="analytics-preview">
           <span class="view-count">
-            <AppIcon name="mdi-eye" />
+            <AppIcon name="EyeIcon" />
             {{ item.views || 0 }}
           </span>
           <span class="like-count">
-            <AppIcon name="mdi-heart" />
+            <AppIcon name="HeartIcon" />
             {{ item.likes || 0 }}
           </span>
         </div>
@@ -156,6 +157,9 @@
 </template>
 
 <script setup>
+import { CalendarIcon, ClockIcon, EyeIcon, PencilIcon, PuzzlePieceIcon, ShareIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, StarIcon, TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { ref, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -175,16 +179,16 @@ const mediaError = ref(false)
 // Methods
 function getTypeIcon(type) {
   const icons = {
-    achievement: 'mdi-trophy',
-    clip: 'mdi-play-circle',
+    achievement: 'TrophyIcon',
+    clip: 'PlayIcon-circle',
     tournament: 'mdi-tournament',
-    leadership: 'mdi-account-star',
-    content: 'mdi-video',
-    project: 'mdi-folder-multiple-outline',
+    leadership: 'UserIcon-star',
+    content: 'VideoCameraIcon',
+    project: 'FolderIcon-multiple-outline',
     stream: 'mdi-broadcast',
-    collaboration: 'mdi-account-group'
+    collaboration: 'UserIcon-group'
   }
-  return icons[type] || 'mdi-file'
+  return icons[type] || 'DocumentIcon'
 }
 
 function getTypeLabel(type) {
@@ -638,7 +642,7 @@ if (typeof document !== 'undefined') {
 
 .actions-toggle:hover {
   background: var(--glass-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-color: var(--color-primary-alpha);
 }
 
@@ -664,7 +668,7 @@ if (typeof document !== 'undefined') {
   border: none;
   padding: 0.5rem 1rem;
   text-align: left;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   cursor: pointer;
   display: flex;
@@ -680,7 +684,7 @@ if (typeof document !== 'undefined') {
 .dropdown-divider {
   margin: 0.5rem 0;
   border: 0;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 /* Body Section */
@@ -691,7 +695,7 @@ if (typeof document !== 'undefined') {
 .card-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 0.5rem 0;
   line-height: 1.3;
   display: -webkit-box;
@@ -780,7 +784,7 @@ if (typeof document !== 'undefined') {
 
 .skill-tag {
   background: var(--glass-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: 0.25rem 0.5rem;
   border-radius: var(--border-radius-sm);
   font-size: 0.75rem;
@@ -807,7 +811,7 @@ if (typeof document !== 'undefined') {
   justify-content: space-between;
   align-items: center;
   padding-top: 0.75rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   margin-top: auto;
 }
 
@@ -835,7 +839,7 @@ if (typeof document !== 'undefined') {
 
 /* Layout Variations */
 .portfolio-card--list {
-  flex-direction: row;
+  flex-direction: flex flex-wrap;
   height: auto;
   min-height: 120px;
 }
@@ -1163,7 +1167,7 @@ if (typeof document !== 'undefined') {
 /* Landscape mobile optimization */
 @media (max-width: 896px) and (orientation: landscape) {
   .portfolio-card--list {
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
   }
   
   .portfolio-card--list .card-media {

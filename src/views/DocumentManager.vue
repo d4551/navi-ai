@@ -1,5 +1,5 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <template #header-actions>
       <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
         <!-- Document Type Quick Switch -->
@@ -34,7 +34,7 @@
           v-if="aiReady"
           variant="gaming"
           size="md"
-          leading-icon="mdi-robot"
+          leading-icon="CpuChipIcon"
           :disabled="!aiReady || aiProcessing"
           :loading="aiProcessing"
           @click="enhanceWithAI"
@@ -44,7 +44,7 @@
 
         <!-- AI Status (only show if offline) -->
         <div v-else class="ai-status-warning">
-          <AppIcon name="mdi-alert-circle-outline" size="14" />
+          <AppIcon name="ExclamationCircleIcon" size="14" />
           <span>AI Offline</span>
         </div>
 
@@ -52,7 +52,7 @@
         <UnifiedButton
           variant="outline"
           size="md"
-          leading-icon="mdi-eye"
+          leading-icon="EyeIcon"
           @click="togglePreview"
         >
           Preview
@@ -61,7 +61,7 @@
         <UnifiedButton
           variant="primary"
           size="md"
-          leading-icon="mdi-download"
+          leading-icon="ArrowDownTrayIcon"
           @click="showExportModal = true"
         >
           Export
@@ -74,7 +74,7 @@
       <div class="dashboard-stats">
         <div class="stat-card">
           <div class="stat-icon">
-            <AppIcon name="mdi-file-document-outline" />
+            <AppIcon name="DocumentIcon" />
           </div>
           <div class="stat-content">
             <div class="stat-value">{{ documentCount }}</div>
@@ -84,7 +84,7 @@
 
         <div class="stat-card">
           <div class="stat-icon">
-            <AppIcon name="mdi-brain" />
+            <AppIcon name="CpuChipIcon" />
           </div>
           <div class="stat-content">
             <div class="stat-value">{{ atsScore }}%</div>
@@ -94,7 +94,7 @@
 
         <div class="stat-card">
           <div class="stat-icon">
-            <AppIcon name="mdi-clock-outline" />
+            <AppIcon name="ClockIcon" />
           </div>
           <div class="stat-content">
             <div class="stat-value">{{ lastModified }}</div>
@@ -104,7 +104,7 @@
 
         <div class="stat-card">
           <div class="stat-icon">
-            <AppIcon name="mdi-star-outline" />
+            <AppIcon name="StarIcon" />
           </div>
           <div class="stat-content">
             <div class="stat-value">{{ completionScore }}%</div>
@@ -117,7 +117,7 @@
         <UnifiedButton
           variant="outline"
           size="sm"
-          leading-icon="mdi-import"
+          leading-icon="ArrowDownTrayIcon"
           :disabled="profileImporting"
           :loading="profileImporting"
           @click="importFromProfile"
@@ -137,7 +137,7 @@
         <UnifiedButton
           variant="outline"
           size="sm"
-          leading-icon="mdi-palette"
+          leading-icon="SwatchIcon"
           @click="showThemeSelector = true"
         >
           Themes
@@ -167,7 +167,7 @@
       <!-- Job Context Banner -->
       <div v-if="jobDescription" class="job-context-banner">
         <div class="job-info">
-          <AppIcon name="mdi-briefcase-outline" />
+          <AppIcon name="BriefcaseIcon" />
           <div class="job-details">
             <div class="job-title">{{ jobInfo.company ? `${jobInfo.company} - ${jobInfo.position}` : 'Job Context Active' }}</div>
             <div class="job-meta">{{ jobInfo.location || 'Remote' }} • {{ jobInfo.type || 'Full-time' }}</div>
@@ -182,7 +182,7 @@
         <UnifiedButton
           variant="ghost"
           size="sm"
-          icon="mdi-close"
+          icon="XMarkIcon"
           @click="clearJobContext"
         />
       </div>
@@ -190,12 +190,12 @@
       <!-- AI Suggestions Panel -->
       <div v-if="aiSuggestions.length > 0" class="ai-suggestions-panel">
         <div class="suggestions-header">
-          <AppIcon name="mdi-lightbulb-outline" />
+          <AppIcon name="LightBulbIcon-outline" />
           <span>AI Suggestions</span>
           <UnifiedButton
             variant="ghost"
             size="xs"
-            icon="mdi-close"
+            icon="XMarkIcon"
             @click="dismissSuggestions"
           />
         </div>
@@ -274,7 +274,7 @@
               <UnifiedButton
                 variant="ghost"
                 size="sm"
-                leading-icon="mdi-refresh"
+                leading-icon="ArrowPathIcon"
                 @click="refreshPreview"
               >
                 Refresh
@@ -374,6 +374,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, ArrowPathIcon, BriefcaseIcon, ClockIcon, CpuChipIcon, DocumentIcon, ExclamationCircleIcon, EyeIcon, StarIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
 
@@ -477,7 +479,7 @@ const lastSavedTime = ref('Never')
 
 // Document Types Configuration
 const documentTypes = ref([
-  { value: 'resume', label: 'Resume', icon: 'mdi-account-box' },
+  { value: 'resume', label: 'Resume', icon: 'UserIcon-box' },
   { value: 'cover-letter', label: 'Cover Letter', icon: 'mdi-email-outline' },
   { value: 'portfolio', label: 'Portfolio', icon: 'mdi-briefcase-variant' },
   { value: 'transcript', label: 'Transcript', icon: 'mdi-school' }
@@ -978,7 +980,7 @@ const setupAutoSave = () => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   padding: var(--spacing-2) var(--spacing-3);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   min-width: 160px;
 }
@@ -986,7 +988,7 @@ const setupAutoSave = () => {
 .unified-select {
   background: var(--glass-surface);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all var(--duration-fast);
 }
 
@@ -1026,7 +1028,7 @@ const setupAutoSave = () => {
 .stat-card:hover {
   background: var(--glass-hover-bg);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
 }
 
 .stat-icon {
@@ -1047,7 +1049,7 @@ const setupAutoSave = () => {
 .stat-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.2;
 }
 
@@ -1094,13 +1096,13 @@ const setupAutoSave = () => {
 
 .doc-tab:hover {
   background: var(--glass-hover-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .doc-tab.active {
   background: var(--color-primary-500);
   color: white;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .tab-indicator {
@@ -1127,7 +1129,7 @@ const setupAutoSave = () => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -1253,7 +1255,7 @@ const setupAutoSave = () => {
 
 .suggestion-title {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .suggestion-description {
@@ -1294,7 +1296,7 @@ const setupAutoSave = () => {
 
 .preview-panel {
   flex: 0.4;
-  border-left: 1px solid var(--glass-border);
+  border-l: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
 }
@@ -1304,7 +1306,7 @@ const setupAutoSave = () => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4) var(--spacing-5);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: var(--glass-surface);
 }
 
@@ -1312,7 +1314,7 @@ const setupAutoSave = () => {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .editor-meta, .preview-meta {
@@ -1326,7 +1328,7 @@ const setupAutoSave = () => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   padding: var(--spacing-1) var(--spacing-2);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -1348,8 +1350,8 @@ const setupAutoSave = () => {
   }
 
   .preview-panel {
-    border-left: none;
-    border-top: 1px solid var(--glass-border);
+    border-l: none;
+    border-t: 1px solid var(--glass-border);
     max-height: 400px;
   }
 }

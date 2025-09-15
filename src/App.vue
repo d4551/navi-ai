@@ -7,7 +7,7 @@
       <!-- Keep Vuetify theme synced with unified theme -->
       <ThemeBridge />
       <!-- Main Layout Container -->
-      <div class="d-flex flex-1 w-full">
+      <div class="flex flex-1 w-full">
         <!-- Sidebar Navigation -->
         <aside
           id="app-sidebar"
@@ -34,7 +34,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="d-flex flex-col flex-1 w-full">
+        <div class="flex flex-flex-1 flex-1 w-full">
           <!-- Header -->
           <header class="app-header glass-lg">
             <div class="header-inner">
@@ -43,8 +43,8 @@
                 <!-- Mobile menu toggle -->
                 <button
                   v-if="isMobile"
-                  class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
-                  :class="{ 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100': sidebarVisible }"
+                  class="inline-flex items-center justify-center p-2 rounded-md text-glass-secondary hover:text-glass-primary glass-interactive focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neon transition-colors duration-200"
+                  :class="{ 'glass-bg-active text-glass-primary': sidebarVisible }"
                   type="button"
                   :aria-expanded="sidebarVisible.toString()"
                   aria-controls="app-sidebar"
@@ -89,7 +89,7 @@
                       variant="ghost"
                       size="sm"
                       :aria-label="'Achievements'"
-                      class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
+                      class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary-600 bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
                       @click="openGamificationModal"
                     >
                       <!-- Heroicon name: outline/trophy -->
@@ -107,7 +107,7 @@
                       variant="outline"
                       size="sm"
                       :aria-label="'Settings'"
-                      class="inline-flex items-center px-3 py-2 border border-glass text-sm leading-4 font-medium rounded-md text-primary bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
+                      class="inline-flex items-center px-3 py-2 border border-glass text-sm leading-4 font-medium rounded-md text-primary-600 bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
                       @click="$router.push('/settings')"
                     >
                       <!-- Heroicon name: outline/cog-6-tooth -->
@@ -124,7 +124,7 @@
           </header>
 
           <!-- Page Content -->
-          <main id="main" class="flex-1 overflow-y-auto p-6 main-content bg-gray-50 dark:bg-gray-900" role="main">
+          <main id="main" class="flex-1 overflow-y-auto p-6 main-content glass-bg-white dark:bg-gray-100" role="main">
             <router-view v-slot="{ Component }">
               <transition name="page-transition" mode="out-in">
                 <component :is="Component" v-if="Component" />
@@ -134,7 +134,7 @@
 
           <!-- Footer (env-toggle: VITE_HIDE_FOOTER) -->
           <footer v-if="!hideFooter" class="app-footer glass p-4 bg-white/95 dark:bg-gray-900/95 border-t border-gray-200 dark:border-gray-700">
-            <div class="footer-content container-xl flex justify-between items-center text-sm text-glass-enhanced text-gray-600 dark:text-gray-400">
+            <div class="footer-content container-xl flex justify-between items-center text-sm text-glass-enhanced text-glass-secondary">
               <div class="footer-brand flex items-center gap-2">
                 <AppLogo alt-text="NAVI - AI Career Assistant" />
               </div>
@@ -209,6 +209,7 @@ import AppIcon from "@/components/ui/AppIcon.vue";
 import { usePageAssistantContext } from '@/composables/usePageAssistantContext'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import GamificationModal from '@/components/GamificationModal.vue'
+import { logger } from "@/shared/utils/logger"
 
 export default {
   name: "App",
@@ -385,7 +386,7 @@ export default {
       }
       
       store.updateSettings({ fairyBubbleSize: nextSize });
-      console.log(`Fairy bubble size changed: ${currentSize} → ${nextSize}`);
+      logger.debug(`Fairy bubble size changed: ${currentSize} → ${nextSize}`);
     }
 
     function handleAssistantSend(text) {
@@ -491,7 +492,7 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--surface-base); /* Use design system variable */
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Skip Link for Accessibility - Use design system utility class */
@@ -502,7 +503,7 @@ export default {
   width: var(--page-sidebar-width); /* Use design system variable */
   height: 100vh;
   background: var(--glass-surface-elevated); /* Use design system variable */
-  border-right: none; /* Remove sidebar border */
+  border-r: none; /* Remove sidebar border */
   backdrop-filter: var(--glass-backdrop-blur); /* Use design system variable */
   transition: all var(--duration-normal) var(--easing-ease-out); /* Use design system variables */
   z-index: var(--z-navigation); /* Use design system variable */
@@ -593,7 +594,7 @@ export default {
 /* ===== HEADER STYLES ===== */
 .app-header {
   background: var(--glass-surface-elevated); /* Use design system variable */
-  border-bottom: 1px solid var(--border-base); /* Use design system variable */
+  border-b: 1px solid var(--border-base); /* Use design system variable */
   position: sticky;
   top: 0;
   z-index: var(--z-sticky); /* Use design system variable */
@@ -676,7 +677,7 @@ export default {
 }
 
 .banner-text strong {
-  color: var(--text-primary); /* Use design system variable */
+  color: var(--text-primary-600); /* Use design system variable */
   font-weight: var(--font-weight-semibold); /* Use design system variable */
 }
 
@@ -718,7 +719,7 @@ export default {
 /* ===== FOOTER STYLES ===== */
 .app-footer {
   background: var(--glass-surface-elevated); /* Use design system variable */
-  border-top: 1px solid var(--border-base); /* Use design system variable */
+  border-t: 1px solid var(--border-base); /* Use design system variable */
   box-shadow: var(--shadow-sm); /* Default shadow from design system */
 }
 
@@ -812,14 +813,14 @@ body[data-theme="dark"] .page-content {
 :root[data-theme="dark"] .hamburger-icon span,
 html[data-theme="dark"] .hamburger-icon span,
 body[data-theme="dark"] .hamburger-icon span {
-  background: var(--text-primary); /* Use design system variable */
+  background: var(--text-primary-600); /* Use design system variable */
 }
 
 /* Gaming theme enhancements */
 .theme-gaming .app-sidebar {
   background: linear-gradient(135deg, var(--color-gaming-500-10), transparent),
               var(--glass-surface-elevated); /* Use design system variable */
-  border-right-color: var(--glass-border-gaming); /* Use design system variable */
+  border-r-color: var(--glass-border-gaming); /* Use design system variable */
 }
 
 .theme-gaming .footer-brand i {
@@ -844,7 +845,7 @@ body[data-theme="dark"] .hamburger-icon span {
     border-width: 2px;
   }
   .skip-link {
-    border: 2px solid var(--text-primary);
+    border: 2px solid var(--text-primary-600);
   }
 }
 

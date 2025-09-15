@@ -4,7 +4,7 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
 -->
 
 <template>
-  <div class="navi-integration">
+  <div class="navi-integration" class="font-sans">
     <div class="service-status">
       <h3>NAVI Service Status</h3>
       <div class="status-grid">
@@ -50,8 +50,8 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
           <div v-for="job in jobResults.slice(0, 3)" :key="job.id" class="result-item">
             <strong>{{ job.title }}</strong> at {{ job.company }}
             <div class="job-details">
-              <span>📍 {{ job.location }}</span>
-              <span v-if="job.remote">🏠 Remote</span>
+              <span>MapPinIcon {{ job.location }}</span>
+              <span v-if="job.remote">HomeIcon Remote</span>
               <span v-if="job.aiScore">🤖 AI Score: {{ job.aiScore.toFixed(1) }}/100</span>
             </div>
           </div>
@@ -76,7 +76,7 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
           <div v-for="studio in studioResults.slice(0, 3)" :key="studio.id" class="result-item">
             <strong>{{ studio.name }}</strong>
             <div class="studio-details">
-              <span>📍 {{ studio.location }}</span>
+              <span>MapPinIcon {{ studio.location }}</span>
               <span>🏢 {{ studio.size }}</span>
               <span v-if="studio.aiInsights">🤖 Culture Fit: {{ studio.aiInsights.cultureFit }}/100</span>
             </div>
@@ -113,6 +113,8 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
 </template>
 
 <script setup lang="ts">
+import { HomeIcon, MapPinIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted } from 'vue';
 import { unifiedService } from '@/shared/services/UnifiedService';
 import type { UnifiedJob, UnifiedStudio } from '@/shared/services/UnifiedService';
@@ -278,7 +280,7 @@ onMounted(() => {
   padding: 10px;
   background: white;
   border-radius: 4px;
-  border-left: 4px solid #e9ecef;
+  border-l: 4px solid #e9ecef;
 }
 
 .status.success {
@@ -316,7 +318,7 @@ onMounted(() => {
 .demo-section h4 {
   margin: 0 0 15px 0;
   color: #495057;
-  border-bottom: 2px solid #e9ecef;
+  border-b: 2px solid #e9ecef;
   padding-bottom: 10px;
 }
 

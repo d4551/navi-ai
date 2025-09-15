@@ -1,15 +1,15 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card mb-4" role="region" aria-labelledby="gaming-career-title">
+  <div class="settings-card mb-4" role="region" aria-labelledby="gaming-career-title" class="font-sans">
     <div class="card-header section-header card-header--dense">
       <h5 id="gaming-career-title" class="mb-0">
-        <GameIconComponent class="me-2 icon-sm" />Gaming Career Focus
+        <GameIconComponent class="mr-2 icon-sm" />Gaming Career Focus
       </h5>
     </div>
     <div class="card-body section-body card-body--dense">
       <!-- Career Level -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="career-level" class="form-label fw-medium">Career Level</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="career-level" class="form-label font-medium">Career Level</label>
         <select
           id="career-level"
           v-model="settings.gamingExperienceLevel"
@@ -29,10 +29,10 @@
       </div>
 
       <!-- Primary Gaming Focus -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label class="form-label fw-medium mb-3">Primary Gaming Focus</label>
-        <div class="row g-2">
-          <div class="col-sm-6 col-md-4">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label class="form-label font-medium mb-3">Primary Gaming Focus</label>
+        <div class="flex flex-wrap g-2">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="focus-development"
@@ -43,11 +43,11 @@
               />
               <label class="form-check-label" for="focus-development">
                 <strong>Game Development</strong>
-                <br /><small class="text-muted">Programming, design, art</small>
+                <br /><small class="text-secondary">Programming, design, art</small>
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="focus-production"
@@ -58,11 +58,11 @@
               />
               <label class="form-check-label" for="focus-production">
                 <strong>Game Production</strong>
-                <br /><small class="text-muted">Project management, QA</small>
+                <br /><small class="text-secondary">Project management, QA</small>
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="focus-operations"
@@ -73,11 +73,11 @@
               />
               <label class="form-check-label" for="focus-operations">
                 <strong>Game Operations</strong>
-                <br /><small class="text-muted">Live ops, community</small>
+                <br /><small class="text-secondary">Live ops, community</small>
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="focus-marketing"
@@ -88,11 +88,11 @@
               />
               <label class="form-check-label" for="focus-marketing">
                 <strong>Game Marketing</strong>
-                <br /><small class="text-muted">Marketing, publishing</small>
+                <br /><small class="text-secondary">Marketing, publishing</small>
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="focus-esports"
@@ -103,11 +103,11 @@
               />
               <label class="form-check-label" for="focus-esports">
                 <strong>eSports</strong>
-                <br /><small class="text-muted">Competitive gaming</small>
+                <br /><small class="text-secondary">Competitive gaming</small>
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="focus-education"
@@ -118,7 +118,7 @@
               />
               <label class="form-check-label" for="focus-education">
                 <strong>Gaming Education</strong>
-                <br /><small class="text-muted">Teaching, training</small>
+                <br /><small class="text-secondary">Teaching, training</small>
               </label>
             </div>
           </div>
@@ -126,8 +126,8 @@
       </div>
 
       <!-- Target Industry -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="target-industry" class="form-label fw-medium">Target Industry</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="target-industry" class="form-label font-medium">Target Industry</label>
         <select
           id="target-industry"
           v-model="settings.targetIndustry"
@@ -150,8 +150,8 @@
       </div>
 
       <!-- Career Timeline -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="career-timeline" class="form-label fw-medium">Career Timeline</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="career-timeline" class="form-label font-medium">Career Timeline</label>
         <select
           id="career-timeline"
           v-model="settings.careerTimeline"
@@ -171,8 +171,8 @@
       </div>
 
       <!-- Skills to Emphasize -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="skills-emphasize" class="form-label fw-medium">Skills to Emphasize</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="skills-emphasize" class="form-label font-medium">Skills to Emphasize</label>
         <textarea
           id="skills-emphasize"
           v-model="settings.skillsToEmphasize"
@@ -187,8 +187,8 @@
       </div>
 
       <!-- Content Tone -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="content-tone" class="form-label fw-medium">Content Tone</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="content-tone" class="form-label font-medium">Content Tone</label>
         <select
           id="content-tone"
           v-model="settings.contentTone"
@@ -207,8 +207,8 @@
       </div>
 
       <!-- AI Focus Level -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="ai-focus-level" class="form-label fw-medium">AI Assistance Level</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="ai-focus-level" class="form-label font-medium">AI Assistance Level</label>
         <select
           id="ai-focus-level"
           v-model="settings.aiFocusLevel"
@@ -225,8 +225,8 @@
       </div>
 
       <!-- Technical Skills -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="technical-skills" class="form-label fw-medium">Technical Skills</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="technical-skills" class="form-label font-medium">Technical Skills</label>
         <textarea
           id="technical-skills"
           v-model="settings.technicalSkills"
@@ -241,10 +241,10 @@
       </div>
 
       <!-- Preferred Game Genres -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label class="form-label fw-medium mb-3">Preferred Game Genres</label>
-        <div class="row g-2">
-          <div class="col-sm-6 col-md-4">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label class="form-label font-medium mb-3">Preferred Game Genres</label>
+        <div class="flex flex-wrap g-2">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="genre-action"
@@ -258,7 +258,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="genre-rpg"
@@ -272,7 +272,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="genre-strategy"
@@ -286,7 +286,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="genre-simulation"
@@ -300,7 +300,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="genre-puzzle"
@@ -314,7 +314,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="flex-1-sm-6 flex-1-md-4">
             <div class="form-check">
               <input
                 id="genre-casual"
@@ -332,8 +332,8 @@
       </div>
 
       <!-- Career Goals -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="career-goals" class="form-label fw-medium">Career Goals</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="career-goals" class="form-label font-medium">Career Goals</label>
         <textarea
           id="career-goals"
           v-model="settings.careerGoals"
@@ -348,8 +348,8 @@
       </div>
 
       <!-- Portfolio/Projects -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="portfolio-links" class="form-label fw-medium">Portfolio & Projects</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="portfolio-links" class="form-label font-medium">Portfolio & Projects</label>
         <textarea
           id="portfolio-links"
           v-model="settings.portfolioLinks"

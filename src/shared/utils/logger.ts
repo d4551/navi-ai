@@ -148,8 +148,8 @@ class Logger {
           entry.data instanceof Error ? entry.data : new Error(entry.message);
         Sentry.captureException(error);
       });
-      if (typeof window !== 'undefined' && window.api?.app?.reportError) {
-        window.api.app.reportError(entry);
+      if (typeof window !== 'undefined' && (window as any).api?.app?.reportError) {
+        (window as any).api.app.reportError(entry);
       }
     } catch (error) {
       console.error('Failed to report error:', error);

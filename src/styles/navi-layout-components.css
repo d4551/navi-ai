@@ -1,5 +1,204 @@
-/**
+/* =====================================================
+ * NAVI LAYOUT COMPONENTS - PRE-BUILT PATTERNS
  * =====================================================
+ * Production-ready layout components using unified theme
+ * Pure black/white glassmorphic with RGB neon highlights
+ */
+
+/* ===== NAVIGATION COMPONENTS ===== */
+
+.navigation-item {
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.navigation-item.active .nav-item-link {
+  background: var(--glass-bg-hover);
+  border-color: rgba(var(--neon-blue), 0.4);
+  box-shadow:
+    0 0 15px rgba(var(--neon-blue), 0.2),
+    var(--glass-shadow-md);
+}
+
+.navigation-item.active .nav-item-title {
+  color: rgb(var(--neon-blue));
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 0 5px rgba(var(--neon-blue), 0.3);
+}
+
+.nav-item-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  width: 100%;
+  transition: all var(--transition-normal);
+}
+
+.nav-item-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-6);
+  height: var(--space-6);
+  flex-shrink: 0;
+}
+
+.nav-icon-glass {
+  position: absolute;
+  inset: 0;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-sm);
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.nav-item-link:hover .nav-icon-glass {
+  opacity: 1;
+}
+
+.nav-icon {
+  position: relative;
+  z-index: 1;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.nav-item-link:hover .nav-icon {
+  color: var(--text-primary);
+}
+
+.nav-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-item-title {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-tight);
+  transition: all var(--transition-fast);
+}
+
+.nav-item-description {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-tight);
+  opacity: 0.8;
+}
+
+.nav-item-badge {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.badge {
+  background: rgba(var(--neon-blue), 0.15);
+  color: rgb(var(--neon-blue));
+  border: 1px solid rgba(var(--neon-blue), 0.3);
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 0 2px rgba(var(--neon-blue), 0.5);
+}
+
+.badge-compact {
+  padding: 2px var(--space-1);
+  min-width: var(--space-4);
+  text-align: center;
+}
+
+/* Collapsed navigation state */
+.navigation-item.collapsed .nav-item-link {
+  justify-content: center;
+  padding: var(--space-3);
+}
+
+.nav-item-indicator {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  width: var(--space-2);
+  height: var(--space-2);
+}
+
+.indicator-dot {
+  width: 100%;
+  height: 100%;
+  background: rgb(var(--neon-red));
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 6px rgba(var(--neon-red), 0.6);
+  animation: pulseIndicator 2s ease-in-out infinite;
+}
+
+@keyframes pulseIndicator {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* ===== CARD COMPONENTS ===== */
+
+.dashboard-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--glass-shadow-md);
+  transition: all var(--transition-normal);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-card:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow:
+    var(--glass-shadow-lg),
+    0 0 20px rgba(var(--neon-blue), 0.1);
+  transform: translateY(-2px);
+}
+
+.dashboard-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.dashboard-card-title {
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-display);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .nav-item-link {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .dashboard-card {
+    padding: var(--space-4);
+  }
+}
+/* =====================================================
  * NAVI LAYOUT COMPONENTS
  * =====================================================
  * Pre-built layout patterns using the unified theme system

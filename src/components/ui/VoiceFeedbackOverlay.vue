@@ -51,7 +51,7 @@
           aria-label="Dismiss"
           @click="dismissFeedback"
         >
-          <AppIcon name="mdi-close" />
+          <AppIcon name="XMarkIcon" />
         </button>
       </div>
     </Transition>
@@ -76,6 +76,8 @@
 </template>
 
 <script setup lang="ts">
+import { XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { computed, ref, watch } from 'vue'
 import { enhancedAudioService } from '@/shared/services/EnhancedAudioService'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -125,9 +127,9 @@ const activityClasses = computed(() => ({
 }))
 
 const activityIcon = computed(() => {
-  if (enhancedAudio.activity.value.isListening) return 'mdi-microphone'
-  if (enhancedAudio.activity.value.isSpeaking) return 'mdi-volume-high'
-  return 'mdi-microphone-off'
+  if (enhancedAudio.activity.value.isListening) return 'MicrophoneIcon'
+  if (enhancedAudio.activity.value.isSpeaking) return 'SpeakerWaveIcon'
+  return 'MicrophoneIcon-off'
 })
 
 const statusText = computed(() => {
@@ -156,11 +158,11 @@ function getBarHeight(barIndex: number): string {
 
 function getFeedbackIcon(type: string): string {
   switch (type) {
-    case 'success': return 'mdi-check-circle'
+    case 'success': return 'CheckIcon-circle'
     case 'error': return 'mdi-alert-circle'
     case 'warning': return 'mdi-alert'
-    case 'info': return 'mdi-information'
-    default: return 'mdi-information'
+    case 'info': return 'InformationCircleIconrmation'
+    default: return 'InformationCircleIconrmation'
   }
 }
 
@@ -294,7 +296,7 @@ watch(() => enhancedAudio.activity.value, (activity) => {
 .status-text {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .confidence-indicator {

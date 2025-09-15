@@ -1,5 +1,5 @@
 <template>
-  <div class="skill-picker">
+  <div class="skill-picker" class="font-sans">
     <div class="skill-input-container">
       <input
         ref="inputRef"
@@ -255,7 +255,7 @@ onUnmounted(() => {
   border-radius: 0.5rem;
   padding: 0.75rem;
   padding-right: 2.5rem;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
   font-size: 0.875rem;
   transition: all 0.2s ease;
 }
@@ -285,7 +285,7 @@ onUnmounted(() => {
 }
 
 .clear-input-btn:hover {
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
 }
 
 .selected-skills {
@@ -304,7 +304,7 @@ onUnmounted(() => {
   border-radius: 1rem;
   padding: 0.375rem 0.75rem;
   font-size: 0.75rem;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
   animation: skillFadeIn 0.2s ease;
 }
 
@@ -321,7 +321,7 @@ onUnmounted(() => {
 }
 
 .remove-skill-btn:hover {
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
 }
 
 .suggestions-dropdown {
@@ -351,7 +351,7 @@ onUnmounted(() => {
   padding: 0.75rem;
   background: none;
   border: none;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
   text-align: left;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -363,7 +363,7 @@ onUnmounted(() => {
 }
 
 .suggestion-item.custom-skill {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-t: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(124, 58, 237, 1);
 }
 
@@ -380,7 +380,7 @@ onUnmounted(() => {
   text-align: center;
   color: rgba(255, 165, 0, 0.8);
   font-size: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-t: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .popular-skills {
@@ -415,7 +415,7 @@ onUnmounted(() => {
 .popular-skill-btn:hover:not(:disabled) {
   background: rgba(124, 58, 237, 0.2);
   border-color: rgba(124, 58, 237, 0.3);
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
 }
 
 .popular-skill-btn:disabled {

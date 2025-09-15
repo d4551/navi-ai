@@ -6,8 +6,6 @@
 /* Enhanced Card System */
 .card-base {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: 0.5rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
@@ -40,8 +38,6 @@
 
 .card-interactive {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: 0.5rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
@@ -64,8 +60,6 @@
     var(--glass-bg) 0%,
     rgba(var(--neon-blue), 0.05) 100%
   );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(var(--neon-blue), 0.2);
   border-radius: 0.5rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
@@ -111,7 +105,7 @@
     rgb(var(--neon-blue)),
     rgba(var(--neon-blue), 0.8)
   );
-  color: white;
+  color: var(--text-inverse);
   box-shadow: 0 4px 12px rgba(var(--neon-blue), 0.3);
 }
 
@@ -141,8 +135,6 @@
   min-height: 2.5rem;
   background: var(--glass-bg);
   color: var(--text-primary);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
@@ -166,8 +158,6 @@
   line-height: 1.25;
   min-height: 2.5rem;
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   color: var(--text-primary);
 }
 
@@ -184,8 +174,6 @@
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: all 0.2s ease;
   font-size: 0.875rem;
 }
@@ -210,8 +198,6 @@
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: all 0.2s ease;
   font-size: 0.875rem;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
@@ -229,8 +215,6 @@
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: all 0.2s ease;
   font-size: 0.875rem;
   min-height: 6rem;
@@ -285,9 +269,7 @@
   right: 0;
   bottom: 0;
   z-index: 50;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.6);
   animation: fade-in 0.2s ease;
 }
 
@@ -299,8 +281,6 @@
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 1rem;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   box-shadow:
     0 25px 50px -12px rgba(0, 0, 0, 0.25),
     0 0 0 1px rgba(var(--neon-blue), 0.1);
@@ -338,8 +318,6 @@
   border-radius: 0.5rem;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .table-base {
@@ -453,11 +431,9 @@
   z-index: 50;
   padding: 0.5rem 0.75rem;
   font-size: 0.75rem;
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
+  background: rgba(0, 0, 0, 0.95);
+  color: var(--text-inverse);
   border-radius: 0.375rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   animation: fade-in 0.2s ease;
@@ -467,7 +443,7 @@
 
 [data-theme="dark"] .tooltip-base {
   background: rgba(255, 255, 255, 0.9);
-  color: black;
+  color: var(--text-primary);
   border-color: rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
 }

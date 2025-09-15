@@ -1,5 +1,5 @@
 <template>
-  <div class="modern-ai-config" role="region" aria-labelledby="ai-config-title">
+  <div class="modern-ai-config" role="region" aria-labelledby="ai-config-title" class="font-sans">
     <!-- Main Header -->
     <div class="main-header">
       <h1>API Configuration</h1>
@@ -11,7 +11,7 @@
       <!-- API Key Section -->
       <div class="section">
         <div class="section-header">
-          <div class="section-icon">🔑</div>
+          <div class="section-icon">KeyIcon</div>
           <div class="section-title">
             <h3>API Configuration</h3>
             <p>Connect your Gemini API for AI-powered features</p>
@@ -40,11 +40,11 @@
               :aria-label="showApiKey ? 'Hide API key' : 'Show API key'"
               @click="toggleApiKeyVisibility"
             >
-              {{ showApiKey ? '🙈' : '👁️' }}
+              {{ showApiKey ? '🙈' : 'EyeIcon' }}
             </button>
           </div>
           <div class="help-text">
-            <span>🔑</span>
+            <span>KeyIcon</span>
             <span>Get your API key from <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a></span>
           </div>
         </div>
@@ -67,7 +67,7 @@
             @click="connectApiKey"
           >
             <span v-if="connecting" class="spinner">⟳</span>
-            <span v-else>🔄</span>
+            <span v-else>ArrowPathIcon</span>
             <span>{{ connecting ? 'Connecting...' : 'Refresh Models' }}</span>
           </button>
         </div>
@@ -139,11 +139,11 @@
           <div v-if="selectedModelInfo.capabilities" class="model-capabilities">
             <div class="capability-badges">
               <span v-if="selectedModelInfo.capabilities.multiTurn" class="capability-badge">💬 Chat</span>
-              <span v-if="selectedModelInfo.capabilities.imageInput" class="capability-badge">👁️ Vision</span>
+              <span v-if="selectedModelInfo.capabilities.imageInput" class="capability-badge">EyeIcon Vision</span>
               <span v-if="selectedModelInfo.capabilities.videoInput" class="capability-badge">🎥 Video</span>
-              <span v-if="selectedModelInfo.capabilities.audioInput" class="capability-badge">🎤 Audio In</span>
-              <span v-if="selectedModelInfo.capabilities.audioOutput" class="capability-badge">🔊 Audio Out</span>
-              <span v-if="selectedModelInfo.capabilities.realtimeChat" class="capability-badge">⚡ Real-time</span>
+              <span v-if="selectedModelInfo.capabilities.audioInput" class="capability-badge">MicrophoneIcon Audio In</span>
+              <span v-if="selectedModelInfo.capabilities.audioOutput" class="capability-badge">SpeakerWaveIcon Audio Out</span>
+              <span v-if="selectedModelInfo.capabilities.realtimeChat" class="capability-badge">BoltIcon Real-time</span>
               <span v-if="selectedModelInfo.capabilities.codeGeneration" class="capability-badge">👨‍💻 Code</span>
               <span v-if="selectedModelInfo.capabilities.streaming" class="capability-badge">🌊 Streaming</span>
             </div>
@@ -310,6 +310,8 @@
 </template>
 
 <script>
+import { EyeIcon, ArrowPathIcon, SpeakerWaveIcon, MicrophoneIcon, KeyIcon, BoltIcon } from '@heroicons/vue/24/outline'
+
 import { computed, reactive, watch } from 'vue'
 import { useAppStore } from '@/stores/app'
 
@@ -508,16 +510,16 @@ export default {
   --dark-secondary: #1E293B;
   --dark-tertiary: #334155;
   --light: #F8FAFC;
-  --text-primary: #F1F5F9;
+  --text-primary-600: #F1F5F9;
   --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  --text-secondary: #64748B;
   --glass: rgba(30, 41, 59, 0.9);
   --glass-light: rgba(148, 163, 184, 0.1);
   --border: rgba(148, 163, 184, 0.2);
   --glow: rgba(99, 102, 241, 0.3);
   
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   position: relative;
 }
 
@@ -606,12 +608,12 @@ export default {
 /* Section styling */
 .section {
   padding: 2rem;
-  border-bottom: 1px solid var(--border);
+  border-b: 1px solid var(--border);
   position: relative;
 }
 
 .section:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .section-header {
@@ -647,7 +649,7 @@ export default {
 .section-title h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
@@ -665,7 +667,7 @@ export default {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -676,7 +678,7 @@ export default {
   background: var(--dark-secondary);
   border: 1px solid var(--border);
   border-radius: 12px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-family: inherit;
   transition: all 0.3s;
 }
@@ -689,7 +691,7 @@ export default {
 }
 
 .form-input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* Input with button group */
@@ -794,7 +796,7 @@ export default {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--text-muted);
+  background: var(--text-secondary);
 }
 
 .status.connected .status-dot {
@@ -936,7 +938,7 @@ export default {
 }
 
 .toggle-label strong {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.9375rem;
 }
 
@@ -1040,7 +1042,7 @@ input:checked + .toggle-slider::before {
 
 .radio-content strong {
   display: block;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
@@ -1057,7 +1059,7 @@ input:checked + .toggle-slider::before {
   margin-top: 0.5rem;
   padding: 0.5rem 0.75rem;
   background: rgba(99, 102, 241, 0.1);
-  border-left: 3px solid var(--primary);
+  border-l: 3px solid var(--primary);
   border-radius: 0 8px 8px 0;
   font-size: 0.8125rem;
   color: var(--text-secondary);
@@ -1111,9 +1113,9 @@ input:checked + .toggle-slider::before {
 /* Dark theme compatibility */
 @media (prefers-color-scheme: dark) {
   .modern-ai-config {
-    --text-primary: #F1F5F9;
+    --text-primary-600: #F1F5F9;
     --text-secondary: #94A3B8;
-    --text-muted: #64748B;
+    --text-secondary: #64748B;
   }
 }
 </style>

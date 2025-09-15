@@ -1,5 +1,5 @@
 <template>
-  <div class="studios-grid enhanced-grid">
+  <div class="studios-grid enhanced-grid" class="font-sans">
     <div
       v-for="studio in studios"
       :key="studio.id"
@@ -20,7 +20,7 @@
             </div>
           </div>
           <div v-if="studio.publiclyTraded" class="logo-badge">
-            <AppIcon name="mdi-chart-bar" color="info" />
+            <AppIcon name="ChartBarSquareIcon" color="info" />
             <span class="badge-text">PUBLIC</span>
           </div>
         </div>
@@ -28,7 +28,7 @@
         <div class="studio-primary-info">
           <h3 class="studio-name-enhanced">{{ studio.name }}</h3>
           <p class="studio-location-enhanced">
-            <AppIcon name="mdi-map-marker" />
+            <AppIcon name="MapPinIcon" />
             {{ studio.headquarters || studio.location }}
           </p>
           <div class="studio-meta-badges">
@@ -40,14 +40,14 @@
 
         <div class="studio-actions-header">
           <button class="favorite-btn-enhanced" :class="{ active: favoriteIds.includes(studio.id) }" @click.stop="$emit('toggle-favorite', studio.id)">
-            <AppIcon name="mdi-heart" />
+            <AppIcon name="HeartIcon" />
           </button>
           <div v-if="aiScoreMap && aiScoreMap[studio.id] !== undefined" class="rating-indicator ai-score-chip" :title="'AI suitability score'">
-            <AppIcon name="mdi-target" />
+            <AppIcon name="EyeIcon" />
             <span>{{ Math.round(aiScoreMap[studio.id]) }}%</span>
           </div>
           <div v-if="studio.rating" class="rating-indicator">
-            <AppIcon name="mdi-star" context="achievement" />
+            <AppIcon name="StarIcon" context="achievement" />
             <span>{{ studio.rating }}/5</span>
           </div>
         </div>
@@ -56,15 +56,15 @@
       <div class="studio-kpis-section">
         <div class="kpi-grid">
           <div v-if="studio.employeeCount" class="kpi-item">
-            <div class="kpi-icon"><AppIcon name="mdi-account-group" /></div>
+            <div class="kpi-icon"><AppIcon name="UsersIcon" /></div>
             <div class="kpi-data"><div class="kpi-value">{{ studio.employeeCount }}</div><div class="kpi-label">Employees</div></div>
           </div>
           <div v-if="studio.games?.length" class="kpi-item">
-            <div class="kpi-icon"><AppIcon name="mdi-gamepad-variant" /></div>
+            <div class="kpi-icon"><AppIcon name="PuzzlePieceIcon" /></div>
             <div class="kpi-data"><div class="kpi-value">{{ studio.games.length }}</div><div class="kpi-label">Games</div></div>
           </div>
           <div v-if="studio.technologies?.length" class="kpi-item">
-            <div class="kpi-icon"><AppIcon name="mdi-code-tags" /></div>
+            <div class="kpi-icon"><AppIcon name="CommandLineIcon" /></div>
             <div class="kpi-data"><div class="kpi-value">{{ studio.technologies.length }}</div><div class="kpi-label">Tech Stack</div></div>
           </div>
         </div>
@@ -72,12 +72,12 @@
 
       <div class="studio-card-footer">
         <div class="footer-stats">
-          <div class="stat-item"><AppIcon name="mdi-calendar" /><span>Est. {{ studio.founded }}</span></div>
-          <div v-if="studio.website" class="stat-item"><AppIcon name="mdi-web" /><span>Website</span></div>
+          <div class="stat-item"><AppIcon name="CalendarIcon" /><span>Est. {{ studio.founded }}</span></div>
+          <div v-if="studio.website" class="stat-item"><AppIcon name="GlobeAltIcon" /><span>Website</span></div>
         </div>
         <div class="footer-actions">
-          <UnifiedButton color="gaming" leading-icon="mdi-briefcase-outline" @click.stop="$emit('view-jobs', studio)">View Jobs</UnifiedButton>
-          <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-information-outline" @click.stop="$emit('open-details', studio)">Details</UnifiedButton>
+          <UnifiedButton color="gaming" leading-icon="BriefcaseIcon" @click.stop="$emit('view-jobs', studio)">View Jobs</UnifiedButton>
+          <UnifiedButton color="glass" appearance="outlined" leading-icon="InformationCircleIcon" @click.stop="$emit('open-details', studio)">Details</UnifiedButton>
         </div>
       </div>
     </div>
@@ -85,6 +85,9 @@
 </template>
 
 <script setup lang="ts">
+import { BriefcaseIcon, CalendarIcon, ChartBarSquareIcon, CommandLineIcon, EyeIcon, GlobeAltIcon, InformationCircleIcon, PuzzlePieceIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, MapPinIcon, StarIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
@@ -216,7 +219,7 @@ function onImgErr(e: Event) {
 .studio-name-enhanced {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   line-height: var(--line-height-heading);
 }
@@ -237,13 +240,13 @@ function onImgErr(e: Event) {
 }
 
 .meta-badge {
-  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
-  color: var(--text-primary);
+  background: color-mix(in srgb, var(--text-primary-600) 8%, transparent);
+  color: var(--text-primary-600);
   padding: var(--spacing-0-5) var(--spacing-2);
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
-  border: 1px solid color-mix(in srgb, var(--text-primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-primary-600) 12%, transparent);
 }
 
 .studio-actions-header {
@@ -339,7 +342,7 @@ function onImgErr(e: Event) {
 .kpi-value {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1;
 }
 
@@ -358,7 +361,7 @@ function onImgErr(e: Event) {
   gap: var(--spacing-3);
   margin-top: auto;
   padding-top: var(--spacing-3);
-  border-top: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
+  border-t: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
 }
 
 .footer-stats {

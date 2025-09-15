@@ -4,6 +4,7 @@
     :steps="flowSteps"
     :busy="busy"
     primary-variant="gaming"
+    class="font-sans "
     @finish="create"
   >
     <template #default>
@@ -79,7 +80,7 @@
             <li><strong>Tech:</strong> {{ (form.technologies||[]).join(', ') }}</li>
             <li><strong>Status:</strong> {{ form.status }}</li>
           </ul>
-          <small class="text-muted">You can edit details later.</small>
+          <small class="text-secondary">You can edit details later.</small>
         </div>
       </div>
     </template>

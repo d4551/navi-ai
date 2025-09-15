@@ -44,32 +44,32 @@
             </div>
           </Tooltip>
           <div v-if="showBreadcrumbs && breadcrumbs.length > 0" class="nav-breadcrumbs">
-            <AppIcon name="mdi-chevron-right" size="16" class="breadcrumb-separator" />
+            <AppIcon name="ChevronRightIcon" size="16" class="breadcrumb-separator" />
             <ol class="breadcrumb-list" role="list">
               <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item" :class="{ 'breadcrumb-current': index === breadcrumbs.length - 1 }">
                 <router-link v-if="crumb.to && index !== breadcrumbs.length - 1" :to="crumb.to" class="breadcrumb-link" :aria-current="index === breadcrumbs.length - 1 ? 'page' : undefined">
-                  <AppIcon v-if="crumb.icon" :name="crumb.icon" size="14" class="me-1" />
+                  <AppIcon v-if="crumb.icon" :name="crumb.icon" size="14" class="mr-1" />
                   {{ crumb.text }}
                 </router-link>
                 <span v-else class="breadcrumb-current-text" :aria-current="index === breadcrumbs.length - 1 ? 'page' : undefined">
-                  <AppIcon v-if="crumb.icon" :name="crumb.icon" size="14" class="me-1" />
+                  <AppIcon v-if="crumb.icon" :name="crumb.icon" size="14" class="mr-1" />
                   {{ crumb.text }}
                 </span>
-                <AppIcon v-if="index < breadcrumbs.length - 1" name="mdi-chevron-right" size="14" class="breadcrumb-separator" />
+                <AppIcon v-if="index < breadcrumbs.length - 1" name="ChevronRightIcon" size="14" class="breadcrumb-separator" />
               </li>
             </ol>
           </div>
         </div>
 
-        <!-- Glass Header: 3-row layout inside brand container -->
+        <!-- Glass Header: 3-flex flex-wrap layout inside brand container -->
         <div v-else class="nav-left">
           <div class="nav-brand glass-header">
             <!-- Row 1: Brand and AI status -->
-            <div class="brand-row">
+            <div class="brand-flex flex-wrap">
               <router-link to="/" class="brand-link" :aria-label="brandLabel">
                 <img v-if="brandLogo" :src="brandLogo" alt="NAVI" class="app-logo brand-logo" />
                 <div v-else class="brand-logo brand-icon-fallback">
-                  <AppIcon :name="brandIcon || 'mdi-gamepad-variant'" size="28" />
+                  <AppIcon :name="brandIcon || 'DevicePhoneMobileIcon-variant'" size="28" />
                 </div>
                 <div class="brand-text">
                   <span class="brand-name">{{ brandText }}</span>
@@ -109,7 +109,7 @@
             <!-- Row 2: Control Buttons -->
             <div class="nav-control-buttons">
               <button class="modern-button" type="button" aria-label="Toggle search" title="Search (Ctrl+K)" @click="emit('search', searchQuery)">
-                <AppIcon name="mdi-magnify" />
+                <AppIcon name="MagnifyingGlassIcon" />
                 <div class="ripple-container"></div>
               </button>
               <button class="modern-button" type="button" aria-label="Toggle density" title="Density" @click="emit('toggleDensity')">
@@ -117,7 +117,7 @@
                 <div class="ripple-container"></div>
               </button>
               <button v-if="showThemeToggle" class="modern-button" type="button" aria-label="Switch theme" title="Switch theme" @click="toggleTheme()">
-                <AppIcon name="mdi-weather-night" />
+                <AppIcon name="MoonIcon" />
                 <div class="ripple-container"></div>
               </button>
               <button class="modern-button" type="button" aria-label="Collapse navigation" title="Collapse sidebar (Ctrl+B)" @click="emit('collapse')">
@@ -130,7 +130,7 @@
             <!-- Row 3: Quick Filter -->
             <div>
               <div class="quick-filter-field">
-                <AppIcon name="mdi-magnify" />
+                <AppIcon name="MagnifyingGlassIcon" />
                 <input v-model="quickFilter" type="text" placeholder="Filter navigation..." aria-label="Filter navigation" @input="onQuickFilterInput" />
               </div>
             </div>
@@ -147,7 +147,7 @@
                 density="compact"
                 hide-details
                 placeholder="Search..."
-                prepend-inner-icon="mdi-magnify"
+                prepend-inner-icon="MagnifyingGlassIcon"
                 class="nav-search"
                 @keydown.enter="handleSearch"
                 @input="handleSearchInput"
@@ -175,7 +175,7 @@
                   role="option"
                   @click="selectSuggestion(suggestion)"
                 >
-                  <AppIcon :name="suggestion.icon || 'mdi-file'" size="16" class="me-2" />
+                  <AppIcon :name="suggestion.icon || 'DocumentIcon'" size="16" class="mr-2" />
                   <span class="suggestion-text">{{ suggestion.text }}</span>
                   <span v-if="suggestion.category" class="suggestion-category">{{ suggestion.category }}</span>
                 </div>
@@ -222,7 +222,7 @@
                 icon-only
                 variant="ghost"
                 size="sm"
-                icon="mdi-bell"
+                icon="BellIcon"
                 :aria-label="`Notifications${notificationCount > 0 ? ` (${notificationCount})` : ''}`"
                 class="nav-notification-btn"
                 @click="toggleNotifications"
@@ -233,7 +233,7 @@
               icon-only
               variant="ghost"
               size="sm"
-              icon="mdi-bell"
+              icon="BellIcon"
               :aria-label="`Notifications`"
               class="nav-notification-btn"
               @click="toggleNotifications"
@@ -251,16 +251,16 @@
                   class="nav-user-btn"
                   :aria-label="userMenuLabel"
                 >
-                  <v-avatar size="28" class="me-2">
+                  <v-avatar size="28" class="mr-2">
                     <v-img 
                       v-if="userAvatar" 
                       :src="userAvatar" 
                       :alt="userName"
                     />
-                    <AppIcon v-else name="mdi-account" />
+                    <AppIcon v-else name="UserIcon" />
                   </v-avatar>
                   <span class="user-name">{{ userName }}</span>
-                  <AppIcon name="mdi-chevron-down" size="16" class="ms-1" />
+                  <AppIcon name="ChevronDownIcon" size="16" class="ml-1" />
                 </UnifiedButton>
               </template>
 
@@ -290,7 +290,7 @@
           <div v-if="showThemeToggle" class="nav-theme-toggle">
             <UnifiedButton
               icon-only
-              :icon="isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'"
+              :icon="isDarkMode ? 'mdi-weather-sunny' : 'MoonIcon'"
               variant="ghost"
               size="sm"
               :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
@@ -317,11 +317,11 @@
             :to="item.to"
             class="nav-secondary-tab"
           >
-            <AppIcon v-if="item.icon" :name="item.icon" size="16" class="me-2" />
+            <AppIcon v-if="item.icon" :name="item.icon" size="16" class="mr-2" />
             {{ item.text }}
             <UiChip 
               v-if="item.count !== undefined" 
-              classes="chip chip-info chip-compact ms-2"
+              classes="chip chip-info chip-compact ml-2"
             >
               {{ item.count }}
             </UiChip>
@@ -342,6 +342,8 @@
 </template>
 
 <script setup>
+import { BellIcon, ChevronDownIcon, ChevronRightIcon, MagnifyingGlassIcon, UserIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
@@ -369,7 +371,7 @@ const _props = defineProps({
   showProgress: { type: Boolean, default: false },
   
   // Brand/Logo
-  brandIcon: { type: String, default: 'mdi-gamepad-variant' },
+  brandIcon: { type: String, default: 'DevicePhoneMobileIcon-variant' },
   brandText: { type: String, default: 'NAVI' },
   brandSubtitle: { type: String, default: 'Career Assistant' },
   brandLogo: { type: String, default: '' },
@@ -469,12 +471,12 @@ const breadcrumbs = computed(() => {
     }
     
     const segmentIcons = {
-      'resume': 'mdi-file-document-outline-edit',
+      'resume': 'DocumentIcon-document-outline-edit',
       'jobs': 'mdi-briefcase-search',
       'portfolio': 'mdi-briefcase-variant',
       'skills': 'mdi-map',
       'settings': 'mdi-cog',
-      'gaming-jobs': 'mdi-gamepad-variant'
+      'gaming-jobs': 'DevicePhoneMobileIcon-variant'
     }
     
     crumbs.push({
@@ -490,25 +492,25 @@ const breadcrumbs = computed(() => {
 const quickActions = ref([
   {
     id: 'create',
-    icon: 'mdi-plus',
+    icon: 'PlusIcon',
     label: 'Create New',
     color: 'primary',
     onClick: () => router.push('/resume')
   },
   {
     id: 'help',
-    icon: 'mdi-help-circle',
+    icon: 'QuestionMarkCircleIcon-circle',
     label: 'Help',
     color: 'default'
   }
 ])
 
 const userMenuItems = ref([
-  { id: 'profile', icon: 'mdi-account', text: 'Profile', to: '/settings' },
+  { id: 'profile', icon: 'UserIcon', text: 'Profile', to: '/settings' },
   { id: 'preferences', icon: 'mdi-cog', text: 'Preferences', to: '/settings' },
   { id: 'billing', icon: 'mdi-credit-card', text: 'Billing', badge: 'Pro' },
   { id: 'divider', divider: true },
-  { id: 'logout', icon: 'mdi-logout', text: 'Sign Out', onClick: handleLogout }
+  { id: 'logout', icon: 'ArrowLeftOnRectangleIcon', text: 'Sign Out', onClick: handleLogout }
 ])
 
 const secondaryNavItems = ref([
@@ -531,9 +533,9 @@ const handleSearchInput = (event) => {
   // Mock search suggestions
   if (event.target.value.length > 1) {
     searchSuggestions.value = [
-      { text: 'Resume Templates', icon: 'mdi-file-document-outline', category: 'Templates' },
+      { text: 'Resume Templates', icon: 'DocumentIcon-document-outline', category: 'Templates' },
       { text: 'Job Search', icon: 'mdi-briefcase-search', category: 'Features' },
-      { text: 'Gaming Jobs', icon: 'mdi-gamepad-variant', category: 'Jobs' }
+      { text: 'Gaming Jobs', icon: 'DevicePhoneMobileIcon-variant', category: 'Jobs' }
     ].filter(item => 
       item.text.toLowerCase().includes(event.target.value.toLowerCase())
     )
@@ -572,7 +574,7 @@ watch(() => route.name, (newRouteName) => {
   top: 0;
   z-index: 1000;
   background: var(--surface-base);
-  border-bottom: 1px solid var(--border-color);
+  border-b: 1px solid var(--border-color);
   backdrop-filter: blur(12px);
   transition: all var(--duration-normal) var(--easing-ease);
 }
@@ -612,8 +614,8 @@ watch(() => route.name, (newRouteName) => {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas: "brand" "buttons" "search";
-  row-gap: var(--spacing-2);
-  justify-items: center; /* center each row */
+  flex flex-wrap-gap: var(--spacing-2);
+  justify-items: center; /* center each flex flex-wrap */
 }
 .nav-primary .nav-container.has-glass-header .nav-left { grid-area: brand; }
 .nav-primary .nav-container.has-glass-header .nav-right { grid-area: buttons; justify-self: center; }
@@ -673,7 +675,7 @@ watch(() => route.name, (newRouteName) => {
   color: var(--primary-color);
 }
 
-/* Glass header styles (three-row layout) */
+/* Glass header styles (three-flex flex-wrap layout) */
 .nav-brand.glass-header {
   background: var(--glass-surface);
   backdrop-filter: var(--glass-backdrop-blur);
@@ -688,7 +690,7 @@ watch(() => route.name, (newRouteName) => {
   margin: 0 auto;
 }
 
-.nav-brand.glass-header .brand-row { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-2); }
+.nav-brand.glass-header .brand-flex flex-wrap { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-2); }
 
 .nav-brand.glass-header .brand-link {
   display: flex;
@@ -719,19 +721,19 @@ watch(() => route.name, (newRouteName) => {
 .brand-status.status-connected { background: color-mix(in srgb, var(--color-success-500) 10%, transparent); }
 .brand-status .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-error-500); }
 .brand-status.status-connected .status-dot { background: var(--color-success-500); }
-.brand-status .status-text { font-size: var(--font-size-xs); font-weight: 600; color: var(--text-primary); }
+.brand-status .status-text { font-size: var(--font-size-xs); font-weight: 600; color: var(--text-primary-600); }
 
 .nav-control-buttons { display: flex; gap: var(--spacing-2); align-items: center; justify-content: center; }
 .modern-button { position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 8px; background: transparent; border: 1px solid transparent; border-radius: var(--radius-md); cursor: pointer; transition: all var(--duration-fast) var(--easing-ease); font-size: 20px; color: var(--text-secondary); min-width: 36px; height: 36px; overflow: hidden; }
-.modern-button:hover { background: var(--surface-hover); color: var(--text-primary); }
+.modern-button:hover { background: var(--surface-hover); color: var(--text-primary-600); }
 .modern-button:active { transform: scale(0.96); }
 .theme-mode-badge { padding: 4px 10px; background: color-mix(in srgb, var(--color-primary-500) 10%, transparent); color: var(--color-primary-600); border-radius: 12px; font-size: var(--font-size-xs); font-weight: 600; margin-left: auto; }
 
 .quick-filter-dock { width: 100%; }
 .quick-filter-field { display: flex; align-items: center; gap: var(--spacing-2); padding: 8px 12px; background: var(--surface-muted); border-radius: var(--radius-md); transition: all var(--duration-fast) var(--easing-ease); max-width: 720px; margin: 0 auto; }
 .quick-filter-field:focus-within { background: color-mix(in srgb, var(--surface-muted) 110%, var(--surface-base)); box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-cyber-500) 20%, transparent); }
-.quick-filter-field input { flex: 1; border: none; background: transparent; outline: none; font-size: var(--font-size-sm); color: var(--text-primary); }
-.quick-filter-field input::placeholder { color: var(--text-muted); }
+.quick-filter-field input { flex: 1; border: none; background: transparent; outline: none; font-size: var(--font-size-sm); color: var(--text-primary-600); }
+.quick-filter-field input::placeholder { color: var(--text-secondary); }
 .mui-icon { color: var(--text-secondary); display: flex; align-items: center; }
 .ripple-container { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
 
@@ -773,12 +775,12 @@ watch(() => route.name, (newRouteName) => {
 }
 
 .breadcrumb-current-text {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-medium);
 }
 
 .breadcrumb-separator {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   opacity: 0.5;
 }
 
@@ -796,7 +798,7 @@ watch(() => route.name, (newRouteName) => {
   background: var(--surface-elevated);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   z-index: 1000;
   max-height: 300px;
   overflow-y: auto;
@@ -820,7 +822,7 @@ watch(() => route.name, (newRouteName) => {
 
 .suggestion-category {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   background: var(--surface-muted);
   padding: var(--spacing-0-5) var(--spacing-2);
   border-radius: var(--radius-full);
@@ -854,7 +856,7 @@ watch(() => route.name, (newRouteName) => {
 
 /* Secondary Navigation */
 .nav-secondary {
-  border-top: 1px solid var(--border-color);
+  border-t: 1px solid var(--border-color);
   background: var(--surface-base);
 }
 
@@ -873,8 +875,8 @@ watch(() => route.name, (newRouteName) => {
 
 /* Variants */
 .nav-variant-gaming {
-  background: linear-gradient(135deg, var(--gaming-bg-primary), var(--gaming-bg-secondary));
-  border-bottom-color: var(--gaming-accent);
+  background: linear-gradient(135deg, var(--gaming-bg-primary-500), var(--gaming-bg-secondary-500));
+  border-b-color: var(--gaming-accent);
 }
 
 .nav-variant-gaming .brand-content {
@@ -884,7 +886,7 @@ watch(() => route.name, (newRouteName) => {
 
 .nav-variant-minimal {
   background: transparent;
-  border-bottom: none;
+  border-b: none;
 }
 
 .nav-variant-professional {

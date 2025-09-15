@@ -1,21 +1,23 @@
 import { defineProps } from 'vue'
 <template>
   <div
-    v-if="lastSaved || completionPercent > 0"
+    v-if="lastSaved || completionPercent  class="font-sans "
+  >
+    0"
     class="completion-indicator mb-3"
     role="status"
     aria-live="polite"
-  >
-    <div class="d-flex align-items-center justify-content-between mb-2">
+    >
+    <div class="flex items-center justify-between mb-2">
       <span
         v-if="lastSaved"
-        :class="{ 'text-success': saveStatus === 'saved',
-                  'text-warning': saveStatus === 'saving',
-                  'text-info': saveStatus === 'auto-saved'
+        :class="{ 'text-success-600': saveStatus === 'saved',
+                  'text-warning-600': saveStatus === 'saving',
+                  'text-blue-600': saveStatus === 'auto-saved'
         }"
         class="small"
       >
-        <AppIcon name="mdi-cloud-upload'" class="saveStatus === 'saving' ? 'mdi : 'mdi mdi-check-circle-outline' me-1" />
+        <AppIcon name="CloudIcon-upload'" class="saveStatus === 'saving' ? 'mdi : 'mdi CheckIcon-circle-outline' mr-1" />
         <span class="visually-hidden">{{
           saveStatus === "saving"
             ? "Currently saving your work"
@@ -26,9 +28,9 @@ import { defineProps } from 'vue'
       </span>
       <span
         class="badge badge-compact"
-        :class="{ 'bg-success': completionPercent >= 80,
-                  'bg-warning': completionPercent >= 50 && completionPercent < 80,
-                  'bg-info': completionPercent < 50
+        :class="{ 'bg-success-500': completionPercent >= 80,
+                  'bg-warning-500': completionPercent >= 50 && completionPercent < 80,
+                  'bg-blue-500': completionPercent < 50
         }"
         :aria-label="`${documentType} completion: ${completionPercent}%`"
       >{{ completionPercent }}% complete</span>
@@ -46,9 +48,9 @@ import { defineProps } from 'vue'
       >
         <div
           class="progress-bar progress-bar-animated"
-          :class="{ 'bg-success': completionPercent >= 80,
-                    'bg-warning': completionPercent >= 50 && completionPercent < 80,
-                    'bg-info': completionPercent < 50
+          :class="{ 'bg-success-500': completionPercent >= 80,
+                    'bg-warning-500': completionPercent >= 50 && completionPercent < 80,
+                    'bg-blue-500': completionPercent < 50
           }"
           :style="`width:${completionPercent}%`"
         ></div>
@@ -56,8 +58,8 @@ import { defineProps } from 'vue'
 
       <!-- Smart suggestions based on completion -->
       <div v-if="completionPercent < 100 && showSuggestions && hasApiKey" class="mt-2">
-        <small class="text-muted">
-          <AppIcon name="mdi-lightbulb" aria-hidden="true" />
+        <small class="text-secondary">
+          <AppIcon name="LightBulbIcon" aria-hidden="true" />
           <span v-if="completionPercent < 30">
             {{ suggestions.low || `Add your ${documentType.toLowerCase()} content to get started` }}
           </span>
@@ -77,6 +79,8 @@ import { defineProps } from 'vue'
 </template>
 
 <script setup>
+import { LightBulbIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 const _props = defineProps({
   completionPercent: {
@@ -163,8 +167,8 @@ const timeSince = (date) => {
 
 /* badge-compact utility used in template; no local override needed */
 
-.text-muted {
-  color: var(--text-muted, #6b7280) !important;
+.text-secondary {
+  color: var(--text-secondary, #6b7280) !important;
 }
 
 .small {

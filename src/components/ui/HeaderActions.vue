@@ -112,7 +112,7 @@ const handleActionClick = (action: HeaderAction, index: number) => {
 
 /* Layout Variants */
 .layout-horizontal {
-  flex-direction: row;
+  flex-direction: flex flex-wrap;
 }
 
 .layout-vertical {
@@ -120,7 +120,7 @@ const handleActionClick = (action: HeaderAction, index: number) => {
 }
 
 .layout-wrap {
-  flex-direction: row;
+  flex-direction: flex flex-wrap;
   flex-wrap: wrap;
 }
 
@@ -129,7 +129,7 @@ const handleActionClick = (action: HeaderAction, index: number) => {
   justify-content: flex-start;
 }
 
-.align-center {
+.items-center {
   justify-content: center;
 }
 
@@ -297,19 +297,19 @@ const handleActionClick = (action: HeaderAction, index: number) => {
 
 .header-actions-container :deep(.btn-group .btn-unified) {
   border-radius: 0;
-  border-right: 1px solid var(--glass-border);
+  border-r: 1px solid var(--glass-border);
   margin: 0;
 }
 
 .header-actions-container :deep(.btn-group .btn-unified:first-child) {
-  border-top-left-radius: var(--radius-md);
-  border-bottom-left-radius: var(--radius-md);
+  border-t-left-radius: var(--radius-md);
+  border-b-left-radius: var(--radius-md);
 }
 
 .header-actions-container :deep(.btn-group .btn-unified:last-child) {
-  border-top-right-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
-  border-right: none;
+  border-t-right-radius: var(--radius-md);
+  border-b-right-radius: var(--radius-md);
+  border-r: none;
 }
 
 /* Accessibility improvements */

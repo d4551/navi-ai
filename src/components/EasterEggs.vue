@@ -1,9 +1,9 @@
 <template>
-  <div class="easter-eggs-container">
+  <div class="easter-eggs-container" class="font-sans">
     <!-- Hidden Gaming References -->
     <div v-if="showSecretMenu" class="secret-menu">
       <div class="secret-menu-content">
-        <h3><AppIcon name="mdi-gamepad-variant" color="gaming" context="gaming" aria-hidden="true" /> Secret Developer Menu <AppIcon name="mdi-gamepad-variant" color="gaming" context="gaming" aria-hidden="true" /></h3>
+        <h3><AppIcon name="PuzzlePieceIcon" color="gaming" context="gaming" aria-hidden="true" /> Secret Developer Menu <AppIcon name="PuzzlePieceIcon" color="gaming" context="gaming" aria-hidden="true" /></h3>
         <div class="secret-options">
           <UnifiedButton variant="gaming" size="sm" @click="activateMatrixMode">
             Matrix Mode
@@ -86,6 +86,8 @@
 </template>
 
 <script lang="ts">
+import { PuzzlePieceIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 
 import { ref, onMounted, onUnmounted, defineEmits, withDefaults, defineProps, defineExpose } from 'vue'
@@ -148,7 +150,7 @@ const gamingQuotes = [
 
 const studioEggs = [
   { id: 1, hint: "🐍 Hiss... Solid advice", studio: "Kojima Productions", revealed: false },
-  { id: 2, hint: "⚡ Sparks fly in the city of Rapture", studio: "2K Boston", revealed: false },
+  { id: 2, hint: "BoltIcon Sparks fly in the city of Rapture", studio: "2K Boston", revealed: false },
   { id: 3, hint: "🧊 Winter is coming... for the undead", studio: "Naughty Dog", revealed: false },
   { id: 4, hint: "🔫 Remember, no Russian", studio: "Infinity Ward", revealed: false },
   { id: 5, hint: "🏰 A man chooses, a slave obeys", studio: "Irrational Games", revealed: false }
@@ -238,13 +240,13 @@ const handleChallengeClick = () => {
 const startFloatingIcons = () => {
   floatingIconsActive.value = true
   const icons = [
-    'mdi mdi-gamepad-variant',
-    'mdi mdi-controller-classic',
-    'mdi mdi-trophy-variant',
-    'mdi mdi-star',
-    'mdi mdi-heart',
-    'mdi mdi-lightning-bolt',
-    'mdi mdi-rocket',
+    'mdi DevicePhoneMobileIcon-variant',
+    'mdi DevicePhoneMobileIcon-classic',
+    'mdi TrophyIcon-variant',
+    'mdi StarIcon',
+    'mdi HeartIcon',
+    'mdi BoltIcon-bolt',
+    'mdi RocketLaunchIcon',
     'mdi mdi-diamond-stone'
   ]
   
@@ -546,7 +548,7 @@ defineExpose({
   padding: 1.5rem;
   pointer-events: auto;
   min-width: 250px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
 }
 
 .challenge-content h4 {
@@ -574,7 +576,7 @@ defineExpose({
 .challenge-stats {
   text-align: center;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-family: var(--font-primary);
 }
 
@@ -601,7 +603,7 @@ defineExpose({
 
 .studio-egg:hover {
   transform: translateX(5px);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-color: var(--clear-purple);
 }
 
@@ -617,7 +619,7 @@ defineExpose({
   backdrop-filter: var(--glass-mega-blur);
   padding: 1.5rem;
   pointer-events: auto;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .quote-container {
@@ -627,7 +629,7 @@ defineExpose({
 .gaming-quote {
   font-size: 1rem;
   font-style: italic;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 1rem 0;
   line-height: 1.6;
   position: relative;

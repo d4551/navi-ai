@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="version-history-overlay" @click="handleOverlayClick">
+  <div v-if="show" class="version-history-overlay" class="font-sans" @click="handleOverlayClick">
     <div class="version-history-panel">
       <div class="panel-header">
         <div class="header-content">
@@ -13,7 +13,7 @@
         <UnifiedButton
           variant="ghost"
           size="sm"
-          leading-icon="mdi-close"
+          leading-icon="XMarkIcon"
           @click="$emit('close')"
         />
       </div>
@@ -74,7 +74,7 @@
                     v-if="version.id !== 'current'"
                     variant="ghost"
                     size="xs"
-                    leading-icon="mdi-eye"
+                    leading-icon="EyeIcon"
                     @click.stop="previewVersion(version)"
                   >
                     Preview
@@ -94,15 +94,15 @@
               <div v-if="version.changes" class="version-changes">
                 <div class="changes-summary">
                   <span v-if="version.changes.additions" class="change-stat">
-                    <AppIcon name="mdi-plus" size="12" />
+                    <AppIcon name="PlusIcon" size="12" />
                     {{ version.changes.additions }} additions
                   </span>
                   <span v-if="version.changes.modifications" class="change-stat">
-                    <AppIcon name="mdi-pencil" size="12" />
+                    <AppIcon name="PencilIcon" size="12" />
                     {{ version.changes.modifications }} modifications
                   </span>
                   <span v-if="version.changes.deletions" class="change-stat">
-                    <AppIcon name="mdi-minus" size="12" />
+                    <AppIcon name="MinusIcon" size="12" />
                     {{ version.changes.deletions }} deletions
                   </span>
                 </div>
@@ -118,7 +118,7 @@
                   <UnifiedButton
                     variant="ghost"
                     size="xs"
-                    leading-icon="mdi-chevron-up"
+                    leading-icon="ChevronUpIcon"
                     @click="expandedVersion = null"
                   />
                 </div>
@@ -159,13 +159,13 @@
         <div v-if="selectedVersion && compareVersion" class="version-comparison">
           <div class="comparison-header">
             <h4 class="comparison-title">
-              <AppIcon name="mdi-compare" />
+              <AppIcon name="ScaleIcon" />
               Comparing Versions
             </h4>
             <UnifiedButton
               variant="ghost"
               size="xs"
-              leading-icon="mdi-close"
+              leading-icon="XMarkIcon"
               @click="clearComparison"
             >
               Close Comparison
@@ -237,7 +237,7 @@
       <div class="panel-footer">
         <div class="footer-info">
           <span class="storage-info">
-            <AppIcon name="mdi-database" size="14" />
+            <AppIcon name="CircleStackIcon" size="14" />
             {{ calculateStorageUsed() }} storage used
           </span>
         </div>
@@ -245,7 +245,7 @@
           <UnifiedButton
             variant="outline"
             size="sm"
-            leading-icon="mdi-download"
+            leading-icon="ArrowDownTrayIcon"
             @click="exportVersionHistory"
           >
             Export History
@@ -253,7 +253,7 @@
           <UnifiedButton
             variant="ghost"
             size="sm"
-            leading-icon="mdi-delete-sweep"
+            leading-icon="TrashIcon-sweep"
             @click="confirmCleanup"
           >
             Cleanup Old Versions
@@ -307,6 +307,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, ChevronUpIcon, CircleStackIcon, EyeIcon, MinusIcon, PencilIcon, PlusIcon, ScaleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed } from 'vue'
 import { useToast } from '@/composables/useToast'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -704,7 +706,7 @@ const comparison = computed(() => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-5);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--surface-base) 100%);
 }
 
@@ -717,7 +719,7 @@ const comparison = computed(() => {
 .panel-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -775,7 +777,7 @@ const comparison = computed(() => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
 }
 
@@ -872,7 +874,7 @@ const comparison = computed(() => {
 .version-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
@@ -1034,7 +1036,7 @@ const comparison = computed(() => {
 
 .empty-state h4 {
   margin: var(--spacing-3) 0 var(--spacing-2);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .version-comparison {
@@ -1058,7 +1060,7 @@ const comparison = computed(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1098,7 +1100,7 @@ const comparison = computed(() => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4) var(--spacing-5);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--surface-base);
 }
 
@@ -1153,7 +1155,7 @@ const comparison = computed(() => {
 .confirm-header h4 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1163,7 +1165,7 @@ const comparison = computed(() => {
 
 .confirm-content p {
   margin-bottom: var(--spacing-3);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .confirm-warning {

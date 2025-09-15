@@ -1,9 +1,9 @@
 <template>
   <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
     <!-- Test Header -->
-    <div class="demo-header glass p-6 gap-4 rounded-lg">
+    <div class="demo-header glass p-glass-lg gap-glass-md rounded-lg">
       <div class="demo-title">
-        <AppIcon name="mdi-test-tube" />
+        <AppIcon name="BeakerIcon" />
         <h1>AI Integration Test</h1>
       </div>
       <div class="demo-description">
@@ -12,7 +12,7 @@
     </div>
 
     <!-- AI Status Display -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass p-glass-md gap-glass-md rounded-lg">
       <h2>AI Service Status</h2>
       
       <div class="status-grid">
@@ -48,7 +48,7 @@
       <div class="status-actions">
         <UnifiedButton
           variant="primary"
-          icon="mdi-play"
+          icon="PlayIcon"
           :loading="aiIntegration.aiInitializing"
           @click="initializeAI"
         >
@@ -57,7 +57,7 @@
         
         <UnifiedButton
           variant="outline"
-          icon="mdi-refresh"
+          icon="ArrowPathIcon"
           :loading="testing"
           @click="testConnection"
         >
@@ -67,7 +67,7 @@
     </div>
 
     <!-- AI Capabilities Test -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass p-glass-md gap-glass-md rounded-lg">
       <h2>AI Capabilities</h2>
       
       <div class="capabilities-grid">
@@ -87,7 +87,7 @@
     </div>
 
     <!-- AI Actions Test -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass p-glass-md gap-glass-md rounded-lg">
       <h2>AI Actions Test</h2>
       
       <div class="actions-grid">
@@ -107,7 +107,7 @@
         <h3>Last Result:</h3>
         <div class="result-header">
           <span :class="lastResult.success ? 'status-success' : 'status-error'">
-            {{ lastResult.success ? '✅ SUCCESS' : '❌ FAILED' }}
+            {{ lastResult.success ? 'CheckIcon SUCCESS' : 'XMarkIcon FAILED' }}
           </span>
           <span class="result-timestamp">{{ formatTime(lastResult.timestamp) }}</span>
         </div>
@@ -116,13 +116,13 @@
     </div>
 
     <!-- Real-time Features Test -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass p-glass-md gap-glass-md rounded-lg">
       <h2>Real-time Features</h2>
       
       <div class="realtime-controls">
         <UnifiedButton
           variant="primary"
-          icon="mdi-microphone"
+          icon="MicrophoneIcon"
           :loading="isRecording"
           @click="toggleAudioRecording"
         >
@@ -131,7 +131,7 @@
         
         <UnifiedButton
           variant="secondary"
-          icon="mdi-video"
+          icon="VideoCameraIcon"
           :loading="isVideoStreaming"
           @click="toggleVideoStreaming"
         >
@@ -140,7 +140,7 @@
         
         <UnifiedButton
           variant="outline"
-          icon="mdi-monitor-screenshot"
+          icon="ComputerDesktopIcon"
           :loading="isScreenCapturing"
           @click="captureScreen"
         >
@@ -174,12 +174,12 @@
     </div>
 
     <!-- Health Check Results -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass p-glass-md gap-glass-md rounded-lg">
       <h2>AI Health Check</h2>
       
       <UnifiedButton
         variant="outline"
-        icon="mdi-heart-pulse"
+        icon="HeartIcon"
         :loading="runningHealthCheck"
         @click="runHealthCheck"
       >
@@ -204,7 +204,7 @@
                 class="test-result-item"
                 :class="{ 'test-passed': result === true, 'test-failed': result === false }"
               >
-                <AppIcon :name="result === true ? 'mdi-check-circle' : 'mdi-alert-circle'" />
+                <AppIcon :name="result === true ? 'CheckIcon-circle' : 'mdi-alert-circle'" />
                 <span>{{ formatTestName(testName) }}</span>
               </div>
             </div>
@@ -227,13 +227,13 @@
     </div>
 
     <!-- Fairy Chat Integration Test -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass p-glass-md gap-glass-md rounded-lg">
       <h2>Fairy Chat Integration</h2>
       
       <div class="fairy-test-controls">
         <UnifiedButton
           variant="gaming"
-          icon="mdi-robot"
+          icon="CpuChipIcon"
           @click="openFairyChat"
         >
           Open Fairy Chat
@@ -241,7 +241,7 @@
         
         <UnifiedButton
           variant="outline"
-          icon="mdi-message-text"
+          icon="ChatBubbleLeftRightIcon"
           @click="sendTestMessage"
         >
           Send Test Message
@@ -250,7 +250,7 @@
     </div>
 
     <!-- Event Log -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass p-glass-md gap-glass-md rounded-lg">
       <h2>Event Log</h2>
       
       <div class="log-container">
@@ -269,7 +269,7 @@
       <div class="log-actions">
         <UnifiedButton
           variant="ghost"
-          icon="mdi-delete"
+          icon="TrashIcon"
           @click="clearLog"
         >
           Clear Log
@@ -280,6 +280,9 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon, BeakerIcon, ChatBubbleLeftRightIcon, ComputerDesktopIcon, CpuChipIcon, MicrophoneIcon, TrashIcon, VideoCameraIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, PlayIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, onUnmounted } from 'vue'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -318,7 +321,7 @@ const testActions = [
   {
     id: 'analyze_resume',
     label: 'Analyze Resume',
-    icon: 'mdi-file-document-outline',
+    icon: 'DocumentIcon-document-outline',
     variant: 'outline'
   },
   {
@@ -336,13 +339,13 @@ const testActions = [
   {
     id: 'multimodal_test',
     label: 'Multimodal Test',
-    icon: 'mdi-image-multiple',
+    icon: 'PhotoIcon-multiple',
     variant: 'secondary'
   },
   {
     id: 'audio_processing',
     label: 'Audio Processing',
-    icon: 'mdi-microphone',
+    icon: 'MicrophoneIcon',
     variant: 'outline'
   }
 ]
@@ -595,14 +598,14 @@ function getAPIKey() {
 
 function getCapabilityIcon(capability) {
   const iconMap = {
-    multimodal: 'mdi-image-multiple',
-    realTime: 'mdi-clock-fast',
+    multimodal: 'PhotoIcon-multiple',
+    realTime: 'ClockIcon-fast',
     contextPersistence: 'mdi-memory',
     streaming: 'mdi-stream',
-    audio: 'mdi-microphone',
-    video: 'mdi-video'
+    audio: 'MicrophoneIcon',
+    video: 'VideoCameraIcon'
   }
-  return iconMap[capability] || 'mdi-check-circle'
+  return iconMap[capability] || 'CheckIcon-circle'
 }
 
 function formatCapabilityName(capability) {
@@ -693,7 +696,7 @@ onUnmounted(() => {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-3xl);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -718,7 +721,7 @@ onUnmounted(() => {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-xl);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
 }
 
@@ -765,7 +768,7 @@ onUnmounted(() => {
 }
 
 .status-disabled {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
 }
 
@@ -800,7 +803,7 @@ onUnmounted(() => {
 .capability-name {
   flex: 1;
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .actions-grid {
@@ -821,7 +824,7 @@ onUnmounted(() => {
 .test-result h3 {
   margin: 0 0 var(--spacing-2) 0;
   font-size: var(--font-size-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .result-content {
@@ -831,7 +834,7 @@ onUnmounted(() => {
   padding: var(--spacing-3);
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   overflow-x: auto;
   max-height: 300px;
   overflow-y: auto;
@@ -857,18 +860,18 @@ onUnmounted(() => {
   display: flex;
   gap: var(--spacing-3);
   padding: var(--spacing-2);
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
   font-family: var(--font-mono);
   font-size: var(--font-size-sm);
 }
 
 .log-entry:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .log-time {
   flex-shrink: 0;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .log-type {
@@ -879,7 +882,7 @@ onUnmounted(() => {
 
 .log-message {
   flex: 1;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .log-info .log-type {

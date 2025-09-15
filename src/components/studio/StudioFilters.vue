@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="font-sans ">
     <div class="search-console noir-glass-card section-card">
       <div class="console-header">
         <span class="console-title">SUSPECT SEARCH CONSOLE</span>
@@ -18,13 +18,13 @@
           @update:model-value="$emit('update:modelValue', $event)"
           @keydown.enter="$emit('investigate')"
         />
-        <UnifiedButton color="glass" appearance="contained" leading-icon="mdi-magnify" :aria-label="'Investigate'" @click="$emit('investigate')">
+        <UnifiedButton color="glass" appearance="contained" leading-icon="MagnifyingGlassIcon" :aria-label="'Investigate'" @click="$emit('investigate')">
           INVESTIGATE
         </UnifiedButton>
         <UnifiedButton
           color="gaming"
           :loading="aiLoading"
-          leading-icon="mdi-robot"
+          leading-icon="CpuChipIcon"
           :disabled="aiLoading"
           aria-label="AI Suggest"
           @click="$emit('aiSuggest')"
@@ -34,7 +34,7 @@
         <UnifiedButton
           color="cyber"
           :loading="aiRankLoading"
-          leading-icon="mdi-target"
+          leading-icon="EyeIcon"
           :disabled="aiRankLoading || !canRank"
           title="Use AI to score visible studios"
           aria-label="AI Rank"
@@ -47,7 +47,7 @@
           appearance="outlined"
           :class="{ active: sortByAIScore }"
           :aria-label="'Toggle sort by AI score'"
-          leading-icon="mdi-target-variant"
+          leading-icon="CursorArrowRaysIcon-variant"
           @click="$emit('update:sortByAIScore', !sortByAIScore)"
         >
           Sort by AI score
@@ -59,7 +59,7 @@
           <UnifiedButton
             color="gaming"
             :loading="aiLoading"
-            leading-icon="mdi-robot"
+            leading-icon="CpuChipIcon"
             :disabled="aiLoading"
             aria-label="AI Suggest"
             @click="$emit('aiSuggest')"
@@ -69,7 +69,7 @@
           <UnifiedButton
             color="cyber"
             :loading="aiRankLoading"
-            leading-icon="mdi-target"
+            leading-icon="EyeIcon"
             :disabled="aiRankLoading || !canRank"
             title="Use AI to score visible studios"
             aria-label="AI Rank"
@@ -82,7 +82,7 @@
             appearance="outlined"
             :class="{ active: sortByAIScore }"
             :aria-label="'Toggle sort by AI score'"
-            leading-icon="mdi-target-variant"
+            leading-icon="CursorArrowRaysIcon-variant"
             @click="$emit('update:sortByAIScore', !sortByAIScore)"
           >
             Sort by AI score
@@ -157,6 +157,8 @@
 </template>
 
 <script setup lang="ts">
+import { CpuChipIcon, EyeIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import MuiTextField from '@/components/ui/MuiTextField.vue'

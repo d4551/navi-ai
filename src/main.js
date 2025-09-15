@@ -40,7 +40,7 @@ initializeGamingFonts().then((allLoaded) => {
 });
 
 // Unified global theme & styles (single entrypoint)
-import "@/styles/index.css";
+import "@/styles/main.css";
 
 
 
@@ -63,6 +63,9 @@ try {
 import { performanceMonitor, memoryMonitor } from "./utils/performance";
 import { resumeAllAudioContexts } from "@/shared/services/utils";
 import { logger } from "./shared/utils/logger";
+
+// Service Worker registration for PWA functionality
+import { serviceWorkerManager } from "./utils/serviceWorker";
 import { TIMEOUTS } from "./utils/config";
 import NProgress from "nprogress";
 // Material MUI CSS replaced by master-theme.css
@@ -415,6 +418,39 @@ app.config.errorHandler = (_error, _instance, info) => {
 performanceMonitor.markStart("app-initialization");
 
 app.mount("#app");
+
+// Initialize Service Worker for PWA functionality
+if (import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    serviceWorkerManager.register().then(registered => {
+      if (registered) {
+        logger.info('Service Worker registered successfully');
+        // Register background sync for jobs and profile data
+        serviceWorkerManager.registerBackgroundSync('background-sync-jobs');
+        serviceWorkerManager.registerBackgroundSync('background-sync-profile');
+      }
+    });
+  });
+
+  // Listen for service worker events
+  window.addEventListener('sw-update-available', () => {
+    logger.info('App update available');
+    // Show update notification (could integrate with toast system)
+    if (window.confirm('A new version of NAVI is available. Refresh to update?')) {
+      window.location.reload();
+    }
+  });
+
+  window.addEventListener('app-offline', () => {
+    logger.info('App is offline - some features may be limited');
+    // Could show offline indicator in header
+  });
+
+  window.addEventListener('app-online', () => {
+    logger.info('App is back online');
+    // Could hide offline indicator
+  });
+}
 
 // Enable audio output after first user gesture (avoids autoplay policy blocks)
 try {

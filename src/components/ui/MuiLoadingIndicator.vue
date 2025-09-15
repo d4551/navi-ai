@@ -1,5 +1,5 @@
 <template>
-  <div :class="loadingClasses">
+  <div :class="loadingClasses" class="font-sans">
     <div class="mui-loading-container">
       <!-- Circular Progress -->
       <svg 

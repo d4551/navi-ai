@@ -1,8 +1,8 @@
 <template>
-  <nav class="navigation-menu bg-white/95 dark:bg-gray-800/95 text-gray-900 dark:text-gray-100" :class="[{ collapsed: isCollapsed, 'ai-online': isAIOnline, 'ai-offline': !isAIOnline }, densityClass]" aria-label="Sidebar navigation">
+  <nav class="navigation-menu glass-surface text-glass-primary font-sans" :class="[{ collapsed: isCollapsed, 'ai-online': isAIOnline, 'ai-offline': !isAIOnline }, densityClass]" aria-label="Sidebar navigation">
     <!-- Enhanced Brand Section with better visual hierarchy -->
-    <div class="nav-brand glass-strong p-4 rounded-lg bg-white/80 dark:bg-gray-700/80 border border-gray-200 dark:border-gray-600">
-      <router-link to="/" class="brand-link text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400" aria-label="Navigate to NAVI home">
+    <div class="nav-brand glass-strong p-glass-md rounded-lg glass-bg border border-glass-border">
+      <router-link to="/" class="brand-link text-glass-primary hover:text-neon-blue" aria-label="Navigate to NAVI home">
         <!-- Brand logo switches automatically between light/dark -->
         <AppLogo class="brand-logo" alt-text="NAVI" />
         <transition name="brand-text-fade" mode="out-in">
@@ -41,14 +41,14 @@
         </transition>
       </router-link>
       
-      <div class="nav-controls flex items-center gap-2 p-2" :class="{ collapsed: isCollapsed }">
-        <!-- Navigation control buttons in a unified row -->
+      <div class="nav-controls flex items-center gap-glass-sm p-glass-sm" :class="{ collapsed: isCollapsed }">
+        <!-- Navigation control buttons in a unified flex flex-wrap -->
         <div class="nav-control-buttons">
           <!-- Search Toggle (opens overlay) -->
           <UnifiedButton
             variant="ghost"
             size="sm"
-            icon="mdi-magnify"
+            icon="MagnifyingGlassIcon"
             :icon-only="true"
             :bare="true"
             :ripple="false"
@@ -100,7 +100,7 @@
               class="nav-control-btn trophy-toggle-btn"
               variant="ghost"
               size="sm"
-              icon="mdi-trophy"
+              icon="TrophyIcon"
               :icon-only="true"
               :bare="true"
               :ripple="false"
@@ -154,7 +154,7 @@
           :is-collapsed="isCollapsed"
           @navigate="onItemNavigate"
         />
-        <div class="nav-divider border-gray-200 dark:border-gray-700" role="separator" aria-hidden="true"></div>
+        <div class="nav-divider border-glass-border dark:border-glass-border dark:border-glass-border" role="separator" aria-hidden="true"></div>
         <NavigationItem
           v-for="item in filteredPlayground"
           :key="item.id"
@@ -162,7 +162,7 @@
           :is-collapsed="isCollapsed"
           @navigate="onItemNavigate"
         />
-        <div class="nav-divider border-gray-200 dark:border-gray-700" role="separator" aria-hidden="true"></div>
+        <div class="nav-divider border-glass-border dark:border-glass-border dark:border-glass-border" role="separator" aria-hidden="true"></div>
         <NavigationItem
           v-for="item in filteredSettings"
           :key="item.id"
@@ -174,10 +174,10 @@
     </div>
 
     <!-- Redesigned Footer -->
-    <div class="nav-footer glass-footer bg-white/80 dark:bg-gray-800/80 border-t border-gray-200 dark:border-gray-700" :class="{ collapsed: isCollapsed }">
+    <div class="nav-footer glass-footer bg-glass-bg/80 dark:bg-gray-800/80 border-t border-glass-border dark:border-glass-border dark:border-glass-border" :class="{ collapsed: isCollapsed }">
       <!-- Expanded footer: rich status + quick actions -->
       <div v-if="!isCollapsed" class="footer-content redesigned" aria-label="Navigation footer">
-        <div class="footer-row">
+        <div class="footer-flex flex-wrap">
           <!-- Model + version -->
           <div class="footer-model" aria-label="AI model and version">
             <Tooltip text="" position="right" :dark="isDark">
@@ -191,7 +191,7 @@
                 </div>
               </template>
               <span
-                class="d-inline-flex align-center gap-1 model-badge"
+                class="inline-flex items-center gap-glass-xs model-badge"
                 role="button"
                 tabindex="0"
                 :aria-label="`AI Model: ${selectedModelDisplay} — Configure AI`"
@@ -207,7 +207,7 @@
             <span class="version-chip" :title="`Version ${appVersion}`">v{{ appVersion }}</span>
           </div>
         </div>
-        <div class="footer-row">
+        <div class="footer-flex flex-wrap">
           <!-- Profile completeness -->
           <div
             class="footer-progress"
@@ -237,7 +237,7 @@
     <div v-if="searchOverlayOpen" class="nav-search-overlay" @keydown.esc.prevent.stop="closeSearchOverlay" @click.self="closeSearchOverlay">
       <div class="nav-search-dialog glass-card section-card" role="dialog" aria-modal="true" aria-label="Global search">
         <div class="nav-search-input">
-          <AppIcon name="mdi-magnify" size="inherit" />
+          <AppIcon name="MagnifyingGlassIcon" size="inherit" />
           <input
             ref="overlaySearchRef"
             v-model.trim="quickFilter"
@@ -247,7 +247,7 @@
             @keydown.enter.prevent="closeSearchOverlay"
           />
           <button v-if="quickFilter" class="clear-btn" aria-label="Clear search" @click="quickFilter = ''">
-            <AppIcon name="mdi-close" />
+            <AppIcon name="XMarkIcon" />
           </button>
         </div>
         <div class="nav-search-hint">
@@ -264,7 +264,7 @@
             class="nav-search-result"
             @click="navigateFromOverlay(res)"
           >
-            <AppIcon :name="res.icon?.replace('mdi ', '') || 'mdi-menu-right'" size="inherit" />
+            <AppIcon :name="res.icon?.replace('mdi ', '') || 'Bars3Icon-right'" size="inherit" />
             <div class="res-main">
               <div class="res-title">{{ res.title }}</div>
               <div class="res-desc">{{ res.description }}</div>
@@ -281,6 +281,9 @@
 </template>
 
 <script setup>
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
@@ -318,7 +321,7 @@ const themeIcon = computed(() => {
   try {
     const mode = theme?.colorScheme?.value || 'system'
     // Use MDI icons for consistency
-    return mode === 'light' ? 'mdi-weather-sunny' : mode === 'dark' ? 'mdi-weather-night' : 'mdi-monitor'
+    return mode === 'light' ? 'mdi-weather-sunny' : mode === 'dark' ? 'MoonIcon' : 'mdi-monitor'
   } catch { return 'mdi-monitor' }
 })
 const themeDisplayName = computed(() => {
@@ -482,7 +485,7 @@ const mainItems = [
     id: 'resume',
     title: 'Documents',
     route: '/documents',
-    icon: icon('mdi-file-document-multiple-outline'),
+    icon: icon('DocumentIcon-document-multiple-outline'),
     description: 'Resume + Cover Letter builder',
     badge: 'Docs',
     isActive: computed(() => route.path === '/resume' || route.path === '/documents')
@@ -499,7 +502,7 @@ const mainItems = [
     id: 'studios',
     title: 'Studios',
     route: '/studios',
-    icon: icon('mdi-account-search'),
+    icon: icon('UserIcon-search'),
     description: 'Research culture, games, roles, intel',
     isActive: computed(() => route.path.startsWith('/studios'))
   },
@@ -507,7 +510,7 @@ const mainItems = [
     id: 'interview-prep',
     title: 'Interview Prep',
     route: '/interview-prep',
-    icon: icon('mdi-microphone-variant'),
+    icon: icon('MicrophoneIcon-variant'),
     description: 'Practice interviews with AI',
     badge: 'AI',
     requiresAI: true,
@@ -552,7 +555,7 @@ const playgroundItems = [
     id: 'cloud',
     title: 'The Cloud',
     route: '/cloud',
-    icon: icon('mdi-cloud'),
+    icon: icon('CloudIcon'),
     description: 'Cloud services and storage',
     isActive: computed(() => route.path === '/cloud')
   },
@@ -645,13 +648,13 @@ function navigateToAISettings() {
   --nav-icon-size: 22px;
   --nav-icon-font: 18px;
   background: var(--glass-surface);
-  border-right: 1px solid var(--glass-border);
+  border-r: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-backdrop-blur) var(--glass-backdrop-saturate);
   font-family: var(--font-primary);
   transition: all var(--duration-normal) var(--easing-ease-out);
   box-shadow: 0 0 24px color-mix(in srgb, var(--color-primary-500) 6%, transparent);
-  border-top-right-radius: var(--radius-lg);
-  border-bottom-right-radius: var(--radius-lg);
+  border-t-right-radius: var(--radius-lg);
+  border-b-right-radius: var(--radius-lg);
   overflow: hidden;
 }
 
@@ -712,14 +715,13 @@ function navigateToAISettings() {
   padding: var(--spacing-lg);
   /* Increase logo size via CSS var override */
   --nav-brand-logo-size: 56px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
   position: relative;
-  /* Glass header treatment */
+  /* Glass header treatment - Remove backdrop-filter to prevent nesting */
   background:
     radial-gradient(120% 60% at 0% 0%, color-mix(in srgb, var(--color-primary-500) 6%, transparent), transparent 40%),
     radial-gradient(120% 60% at 100% 0%, color-mix(in srgb, var(--color-cyber-500) 6%, transparent), transparent 40%),
     rgba(var(--surface-elevated-rgb), 0.92);
-  backdrop-filter: var(--glass-backdrop-blur) var(--glass-backdrop-saturate);
   box-shadow: 0 1px 0 color-mix(in srgb, var(--text-secondary) 6%, transparent) inset;
 }
 
@@ -765,7 +767,7 @@ function navigateToAISettings() {
   pointer-events: none;
 }
 
-/* Dark theme: slightly stronger tint for glass header */
+/* Dark theme: slightly stronger tint for glass header - no backdrop-filter */
 [data-theme="dark"] .nav-brand,
 .dark-theme .nav-brand {
   background:
@@ -781,7 +783,6 @@ function navigateToAISettings() {
   padding: 2px 8px;
   border-radius: var(--border-radius-full);
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop-blur) var(--glass-backdrop-saturate);
   border: 1px solid var(--border-glass);
   color: var(--text-secondary);
   font-size: 0.625rem;
@@ -885,7 +886,7 @@ function navigateToAISettings() {
 }
 
 .nav-control-btn:hover :deep(i) {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Specific button styling using unified design system */
@@ -945,7 +946,7 @@ function navigateToAISettings() {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   font-size: 1.5rem;
   position: relative;
   overflow: hidden;
@@ -1020,9 +1021,9 @@ function navigateToAISettings() {
 
 /* Quick filter and control rows */
 .nav-controls {
-  display: grid;
-  grid-template-rows: auto auto;
-  row-gap: var(--spacing-sm);
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: var(--spacing-sm);
 }
 
 .quick-filter-dock {
@@ -1065,7 +1066,7 @@ function navigateToAISettings() {
   background: transparent;
   border: 0;
   outline: none;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1.05rem;
 }
 
@@ -1096,7 +1097,7 @@ function navigateToAISettings() {
 .nav-search-results { margin-top: var(--spacing-md); display: grid; gap: var(--spacing-sm) }
 .nav-search-result { display: flex; align-items: center; gap: var(--spacing-sm); background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: var(--spacing-sm) var(--spacing-md); text-align: left }
 .nav-search-result:hover { background: var(--glass-hover-bg) }
-.nav-search-result .res-title { font-weight: 600; color: var(--text-primary) }
+.nav-search-result .res-title { font-weight: 600; color: var(--text-primary-600) }
 .nav-search-result .res-desc { font-size: 0.8rem; color: var(--text-secondary) }
 .nav-search-empty { text-align: center; color: var(--text-secondary); padding: var(--spacing-sm) }
 
@@ -1141,7 +1142,7 @@ function navigateToAISettings() {
 .brand-name {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1;
   transition: color var(--duration-normal) var(--easing-ease-out);
 }
@@ -1223,7 +1224,7 @@ function navigateToAISettings() {
 /* Navigation Sections */
 .nav-section {
   margin-bottom: var(--spacing-lg);
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
   padding-bottom: var(--spacing-sm);
 }
 
@@ -1314,7 +1315,7 @@ function navigateToAISettings() {
   padding: 0 4px;
   border-radius: 999px;
   background: var(--color-primary-500);
-  color: #fff;
+  color: var(--text-inverse);
   font-size: 10px;
   font-weight: 700;
   line-height: 16px;
@@ -1396,13 +1397,11 @@ function navigateToAISettings() {
   pointer-events: none;
 }
 
-/* Footer */
+/* Footer - Remove backdrop-filter to prevent nesting */
 .nav-footer {
   padding: var(--spacing-md) var(--spacing-lg);
-  border-top: 1px solid var(--border-subtle);
-  background: rgba(var(--surface-elevated-rgb, 255,255,255), 0.6);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border-t: 1px solid var(--border-subtle);
+  background: rgba(var(--surface-elevated-rgb, 255,255,255), 0.8);
   margin-top: auto;
   transition: all var(--duration-normal) var(--easing-ease-out);
 }
@@ -1416,16 +1415,16 @@ function navigateToAISettings() {
   box-sizing: border-box;
 }
 
-.nav-footer .footer-row {
-  /* First row: status (grow) + model/version (auto) */
+.nav-footer .footer-flex flex-wrap {
+  /* First flex flex-wrap: status (grow) + model/version (auto) */
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--spacing-sm);
 }
 
-/* Ensure the second row (progress) spans full width */
-.nav-footer .footer-content.redesigned > .footer-row:last-child {
+/* Ensure the second flex flex-wrap (progress) spans full width */
+.nav-footer .footer-content.redesigned > .footer-flex flex-wrap:last-child {
   grid-template-columns: 1fr;
 }
 
@@ -1464,7 +1463,7 @@ function navigateToAISettings() {
 .nav-footer .footer-glass-status .fgs-dot.pending { background: var(--color-warning-500, var(--color-warning)); }
 
 .nav-footer .footer-glass-status .fgs-text { display: inline-flex; align-items: center; gap: 8px; }
-.nav-footer .footer-glass-status .fgs-label { font-size: 0.8rem; color: var(--text-primary); }
+.nav-footer .footer-glass-status .fgs-label { font-size: 0.8rem; color: var(--text-primary-600); }
 .nav-footer .footer-glass-status .fgs-env {
   font-size: 0.7rem;
   padding: 2px 8px;
@@ -1494,13 +1493,13 @@ function navigateToAISettings() {
   padding: 2px 8px;
   border-radius: 999px;
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: rgba(var(--surface-glass-rgb, 255,255,255), 0.45);
   backdrop-filter: blur(10px);
 }
 
 .nav-footer .footer-model { display: flex; align-items: center; gap: var(--spacing-xs); justify-self: end; }
-.nav-footer .model-name { font-size: 0.85rem; color: var(--text-primary); max-width: clamp(120px, 18vw, 220px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-footer .model-name { font-size: 0.85rem; color: var(--text-primary-600); max-width: clamp(120px, 18vw, 220px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .nav-footer .footer-progress { display: flex; align-items: center; gap: var(--spacing-sm); min-width: 0; }
 .nav-footer .progress-track { position: relative; flex: 1; height: 8px; background: var(--surface-elevated); border-radius: 999px; overflow: hidden; border: 1px solid var(--border-subtle); }
@@ -1520,16 +1519,14 @@ function navigateToAISettings() {
   background: rgba(var(--surface-glass-rgb, 255,255,255), 0.65);
 }
 
-/* Enhanced collapsed footer */
+/* Enhanced collapsed footer - Remove backdrop-filter to prevent nesting */
 .nav-footer.collapsed {
   padding: var(--spacing-sm);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(var(--surface-elevated-rgb, 255,255,255), 0.55);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  background: rgba(var(--surface-elevated-rgb, 255,255,255), 0.75);
   gap: var(--spacing-xs);
 }
 
@@ -1578,7 +1575,7 @@ function navigateToAISettings() {
   border: 1px solid var(--glass-border);
   background: rgba(var(--surface-glass-rgb, 255,255,255), 0.5);
 }
-.nav-footer .footer-collapsed .version-text { font-size: 0.72rem; color: var(--text-primary); font-weight: 600; letter-spacing: .2px; }
+.nav-footer .footer-collapsed .version-text { font-size: 0.72rem; color: var(--text-primary-600); font-weight: 600; letter-spacing: .2px; }
 
 .footer-info {
   display: flex;
@@ -1625,7 +1622,7 @@ function navigateToAISettings() {
 [data-theme="dark"] .navigation-menu,
 .dark-theme .navigation-menu {
   background: var(--glass-elevated);
-  border-right-color: var(--glass-border);
+  border-r-color: var(--glass-border);
   backdrop-filter: var(--glass-backdrop-blur) var(--glass-backdrop-saturate);
 }
 
@@ -1659,12 +1656,12 @@ function navigateToAISettings() {
 
 [data-theme="dark"] .nav-brand,
 .dark-theme .nav-brand {
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  border-b-color: var(--glass-border);
 }
 
 [data-theme="dark"] .brand-name,
 .dark-theme .brand-name {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .section-title,
@@ -1676,14 +1673,14 @@ function navigateToAISettings() {
 [data-theme="dark"] .nav-footer,
 .dark-theme .nav-footer {
   background: rgba(15, 15, 15, 0.8);
-  border-top-color: rgba(255, 255, 255, 0.08);
+  border-t-color: var(--glass-border);
 }
 
 /* System theme preference support */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .navigation-menu {
     background: rgba(15, 15, 15, 0.95);
-    border-right-color: rgba(255, 255, 255, 0.1);
+    border-r-color: var(--glass-border);
   }
   
   :root:not([data-theme="light"]) .brand-name {
@@ -1697,8 +1694,8 @@ function navigateToAISettings() {
 
 /* Enhanced hover and interaction states */
 .navigation-menu:hover {
-  box-shadow: var(--shadow-lg);
-  border-right-color: var(--border-emphasis);
+  box-shadow: var(--shadow-glass-lg);
+  border-r-color: var(--border-emphasis);
 }
 
 .navigation-menu::after {
@@ -1787,7 +1784,7 @@ function navigateToAISettings() {
 /* High contrast mode */
 @media (prefers-contrast: high) {
   .navigation-menu {
-    border-right: 2px solid var(--text-primary);
+    border-r: 2px solid var(--text-primary-600);
   }
 
   .nav-section::before {
@@ -1796,7 +1793,7 @@ function navigateToAISettings() {
   }
 
   .brand-name {
-    -webkit-text-fill-color: var(--text-primary);
+    -webkit-text-fill-color: var(--text-primary-600);
   }
 }
 
@@ -1825,7 +1822,7 @@ function navigateToAISettings() {
 
 [data-theme="dark"] .nav-items .nav-item:hover,
 .dark-theme .nav-items .nav-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-bg);
 }
 
 /* Responsive */
@@ -1857,7 +1854,7 @@ function navigateToAISettings() {
 
 /* Responsive tweaks: stack everything neatly on narrow widths */
 @media (max-width: 520px) {
-  .nav-footer .footer-row {
+  .nav-footer .footer-flex flex-wrap {
     grid-template-columns: 1fr;
   }
   .nav-footer .footer-model { justify-self: start; }

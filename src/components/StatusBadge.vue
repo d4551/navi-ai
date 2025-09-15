@@ -8,6 +8,7 @@ import { defineProps } from 'vue'
     ]"
     :role="role"
     :aria-label="ariaLabel || $slots.default?.[0]?.text || ''"
+    class="font-sans"
   >
     <slot />
   </span>
@@ -64,7 +65,7 @@ defineProps({
 
 .status-badge-secondary {
   background: var(--glass-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-color: var(--glass-border);
 }
 
@@ -94,14 +95,14 @@ defineProps({
 
 .status-badge-light {
   background: var(--bg-tertiary);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-color: var(--bg-tertiary);
 }
 
 .status-badge-dark {
-  background: var(--text-primary);
+  background: var(--text-primary-600);
   color: white;
-  border-color: var(--text-primary);
+  border-color: var(--text-primary-600);
 }
 
 /* Sizes */
@@ -129,12 +130,12 @@ defineProps({
 [data-theme="dark"] .status-badge-secondary {
   background: var(--dark-glass-elevated);
   border-color: var(--dark-glass-border);
-  color: var(--dark-text-primary);
+  color: var(--dark-text-primary-600);
 }
 
 [data-theme="dark"] .status-badge-light {
   background: var(--dark-bg-tertiary);
-  color: var(--dark-text-primary);
+  color: var(--dark-text-primary-600);
 }
 
 /* Focus and hover states for accessibility */
@@ -156,7 +157,7 @@ defineProps({
   .status-badge-info {
     border-style: solid;
     background: transparent;
-    color: var(--text-primary);
+    color: var(--text-primary-600);
   }
 
   .status-badge-primary {
@@ -196,8 +197,8 @@ defineProps({
 @media print {
   .status-badge {
     background: transparent !important;
-    border: 1px solid var(--text-primary) !important;
-    color: var(--text-primary) !important;
+    border: 1px solid var(--text-primary-600) !important;
+    color: var(--text-primary-600) !important;
   }
 }
 </style>

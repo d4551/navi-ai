@@ -1,5 +1,5 @@
 <template>
-  <div class="document-content-builder">
+  <div class="document-content-builder" class="font-sans">
     <!-- Resume Builder -->
     <ResumeContentBuilder
       v-if="documentType === 'resume'"
@@ -25,7 +25,7 @@
     <!-- Fallback for unsupported types -->
     <div v-else class="unsupported-type">
       <div class="error-message">
-        <AppIcon name="mdi-alert-circle-outline" size="48" class="error-icon" />
+        <AppIcon name="ExclamationCircleIcon" size="48" class="error-icon" />
         <h3>Unsupported Document Type</h3>
         <p>The document type "{{ documentType }}" is not currently supported.</p>
       </div>
@@ -34,6 +34,8 @@
 </template>
 
 <script setup lang="ts">
+import { ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+
 import { computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import ResumeContentBuilder from './ResumeContentBuilder.vue'
@@ -90,7 +92,7 @@ const handleDataUpdate = (data: ResumeData | CoverLetterData) => {
 }
 
 .error-message h3 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-2);
 }
 

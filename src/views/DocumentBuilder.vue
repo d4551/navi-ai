@@ -1,17 +1,17 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <template #header-actions>
       <HeaderActions layout="horizontal" alignment="end" gap="md" priority="secondary">
         <!-- AI Status (only show if offline) -->
         <div v-if="!aiReady" class="ai-status-warning">
-          <AppIcon name="mdi-alert-circle-outline" size="14" />
+          <AppIcon name="ExclamationCircleIcon" size="14" />
           <span>AI Offline</span>
         </div>
 
         <UnifiedButton
           variant="outline"
           size="md"
-          leading-icon="mdi-eye"
+          leading-icon="EyeIcon"
           @click="togglePreview"
         >
           Preview
@@ -20,7 +20,7 @@
         <UnifiedButton
           variant="primary"
           size="md"
-          leading-icon="mdi-download"
+          leading-icon="ArrowDownTrayIcon"
           @click="onExportClick"
         >
           Export
@@ -38,7 +38,7 @@
           class="doc-tab"
           @click="activeDocumentType = docType"
         >
-          <AppIcon :name="docType === 'resume' ? 'mdi-account-box' : 'mdi-email-outline'" />
+          <AppIcon :name="docType === 'resume' ? 'UserIcon-box' : 'mdi-email-outline'" />
           {{ docType === 'resume' ? 'Resume' : 'Cover Letter' }}
         </button>
       </div>
@@ -46,7 +46,7 @@
       <UnifiedButton
         variant="outline"
         size="sm"
-        leading-icon="mdi-import"
+        leading-icon="ArrowDownTrayIcon"
         :disabled="profileImporting"
         :loading="profileImporting"
         @click="importFromProfile"
@@ -60,7 +60,7 @@
       <!-- Job Context (if provided) -->
       <div v-if="jobDescription" class="job-context-banner">
         <div class="job-info">
-          <AppIcon name="mdi-briefcase-outline" />
+          <AppIcon name="BriefcaseIcon" />
           <span>{{ jobInfo.company ? `${jobInfo.company} - ${jobInfo.position}` : 'Job Context Active' }}</span>
           <div v-if="atsScore > 0" class="ats-score">
             {{ atsScore }}% ATS Match
@@ -114,6 +114,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, BriefcaseIcon, ExclamationCircleIcon, EyeIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
 
@@ -290,7 +292,7 @@ const handleExport = async (format: string = 'pdf') => {
               body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
               .header { text-align: center; margin-bottom: 30px; }
               .section { margin-bottom: 20px; }
-              .section-title { font-weight: bold; border-bottom: 1px solid #333; margin-bottom: 10px; }
+              .section-title { font-weight: bold; border-b: 1px solid #333; margin-bottom: 10px; }
               .experience-item, .education-item { margin-bottom: 15px; }
               @media print { body { margin: 0; } }
             </style>

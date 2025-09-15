@@ -1,10 +1,10 @@
 <template>
-  <div class="modal-overlay" @click.self="$emit('close')">
+  <div class="modal-overlay" class="font-sans" @click.self="$emit('close')">
     <div class="studio-comparison-modal glass-card section-card">
       <!-- Modal Header -->
       <div class="modal-header">
         <h2 class="modal-title">Studio Comparison</h2>
-        <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" aria-label="Close" @click="$emit('close')" />
+        <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="$emit('close')" />
       </div>
 
       <!-- Comparison Content -->
@@ -148,7 +148,7 @@
         <UnifiedButton color="glass" appearance="outlined" @click="$emit('close')">
           Close Comparison
         </UnifiedButton>
-        <UnifiedButton color="gaming" leading-icon="mdi-download" @click="exportComparison">
+        <UnifiedButton color="gaming" leading-icon="ArrowDownTrayIcon" @click="exportComparison">
           Export Comparison
         </UnifiedButton>
       </div>
@@ -157,6 +157,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import { useToast } from '@/composables/useToast'
@@ -230,7 +232,7 @@ function exportComparison() {
 
 .modal-header {
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: var(--glass-bg);
   display: flex;
   justify-content: space-between;
@@ -240,7 +242,7 @@ function exportComparison() {
 .modal-title {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -260,7 +262,7 @@ function exportComparison() {
 
 .close-btn:hover {
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-content {
@@ -281,7 +283,7 @@ function exportComparison() {
 .comparison-label {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .studio-header {
@@ -326,7 +328,7 @@ function exportComparison() {
 .studio-name {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -363,7 +365,7 @@ function exportComparison() {
 }
 
 .data-value {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-left: var(--spacing-2);
 }
 
@@ -439,7 +441,7 @@ function exportComparison() {
 }
 
 .culture-text {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   line-height: 1.4;
   margin: 0;
@@ -461,7 +463,7 @@ function exportComparison() {
 }
 
 .interview-text {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   line-height: 1.4;
   margin: 0;
@@ -469,7 +471,7 @@ function exportComparison() {
 
 .modal-footer {
   padding: var(--spacing-6);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--glass-bg);
   display: flex;
   justify-content: flex-end;
@@ -496,10 +498,10 @@ function exportComparison() {
     content: attr(data-studio-name);
     display: block;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--text-primary-600);
     margin-bottom: var(--spacing-2);
     padding-bottom: var(--spacing-2);
-    border-bottom: 1px solid var(--glass-border);
+    border-b: 1px solid var(--glass-border);
   }
 }
 

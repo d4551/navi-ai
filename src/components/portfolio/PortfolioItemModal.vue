@@ -1,8 +1,9 @@
 <template>
   <div
     v-if="visible"
-    class="modal show d-block"
+    class="modal show block"
     style="background-color: var(--modal-backdrop)"
+    class="font-sans"
   >
     <div class="modal-dialog modal-lg">
       <div class="modal-content elevated">
@@ -10,7 +11,7 @@
           <h5 class="modal-title">
             {{ isEditing ? 'Edit Portfolio Item' : 'Add Portfolio Item' }}
           </h5>
-          <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" aria-label="Close" @click="$emit('close')" />
+          <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="$emit('close')" />
         </div>
         <div class="modal-body unified-container">
           <form @submit.prevent="handleSubmit">
@@ -22,14 +23,14 @@
                 class="form-select"
                 required
               >
-                <option value="achievement"><AppIcon name="mdi-trophy" color="warning" context="achievement" aria-hidden="true" /> Achievement</option>
-                <option value="clip"><AppIcon name="mdi-video" size="small" /> Video Clip</option>
+                <option value="achievement"><AppIcon name="TrophyIcon" color="warning" context="achievement" aria-hidden="true" /> Achievement</option>
+                <option value="clip"><AppIcon name="VideoCameraIcon" size="small" /> Video Clip</option>
                 <option value="tournament">🏅 Tournament</option>
-                <option value="leadership"><AppIcon name="mdi-star" color="warning" context="achievement" aria-hidden="true" /> Leadership</option>
-                <option value="content"><AppIcon name="mdi-video" size="small" /> Content Creation</option>
-                <option value="project"><AppIcon name="mdi-folder" size="small" /> Project</option>
+                <option value="leadership"><AppIcon name="StarIcon" color="warning" context="achievement" aria-hidden="true" /> Leadership</option>
+                <option value="content"><AppIcon name="VideoCameraIcon" size="small" /> Content Creation</option>
+                <option value="project"><AppIcon name="FolderIcon" size="small" /> Project</option>
                 <option value="stream"><AppIcon name="mdi-television" size="small" /> Stream Highlight</option>
-                <option value="collaboration"><AppIcon name="mdi-account-group" size="small" /> Collaboration</option>
+                <option value="collaboration"><AppIcon name="UsersIcon" size="small" /> Collaboration</option>
               </select>
             </div>
 
@@ -85,12 +86,12 @@
                 <span
                   v-for="(skill, index) in formData.skills"
                   :key="index"
-                  class="badge bg-secondary me-1 mb-1"
+                  class="badge bg-secondary-500 mr-1 mb-1"
                 >
                   {{ skill }}
                   <button
                     type="button"
-                    class="btn-close btn-close-white ms-1 ui-btn ui-size-md"
+                    class="btn-close btn-close-white ml-1 ui-btn ui-size-md"
                     style="font-size: 0.5em;"
                     @click="removeSkill(index)"
                   ></button>
@@ -130,7 +131,7 @@
                     ></video>
                     <div class="media-info">
                       <span class="media-type">{{ formData.media.type }}</span>
-                      <UnifiedButton type="button" size="sm" variant="danger" appearance="outlined" leading-icon="mdi-delete" @click="removeMedia">Remove</UnifiedButton>
+                      <UnifiedButton type="button" size="sm" variant="danger" appearance="outlined" leading-icon="TrashIcon" @click="removeMedia">Remove</UnifiedButton>
                     </div>
                   </div>
                 </div>
@@ -144,7 +145,7 @@
                       :class="{ active: uploadMode === 'file' }"
                       @click="uploadMode = 'file'"
                     >
-                      <AppIcon name="mdi-upload" /> Upload File
+                      <AppIcon name="ArrowUpTrayIcon" /> Upload File
                     </button>
                     <button 
                       type="button"
@@ -152,7 +153,7 @@
                       :class="{ active: uploadMode === 'url' }"
                       @click="uploadMode = 'url'"
                     >
-                      <AppIcon name="mdi-link" /> URL
+                      <AppIcon name="LinkIcon" /> URL
                     </button>
                   </div>
 
@@ -162,13 +163,13 @@
                       ref="fileInput"
                       type="file" 
                       accept="image/*,video/*"
-                      class="d-none"
+                      class="hidden"
                       @change="handleFileUpload"
                     />
                     <div class="drop-zone" @click="$refs.fileInput.click()">
-                      <AppIcon name="mdi-cloud-upload" class="display-4 text-muted" />
+                      <AppIcon name="CloudIcon-upload" class="display-4 text-secondary" />
                       <p class="mb-2">Click to upload or drag & drop</p>
-                      <small class="text-muted">Images: PNG, JPG, GIF | Videos: MP4, WebM (max 50MB)</small>
+                      <small class="text-secondary">Images: PNG, JPG, GIF | Videos: MP4, WebM (max 50MB)</small>
                     </div>
                   </div>
 
@@ -190,7 +191,7 @@
                         Add
                       </button>
                     </div>
-                    <small class="form-text text-muted mt-1">
+                    <small class="form-text text-secondary mt-1">
                       Supports images, YouTube, Twitch, and other video URLs
                     </small>
                   </div>
@@ -201,8 +202,8 @@
             <!-- Additional Details Based on Type -->
             <div v-if="formData.type === 'achievement'" class="mb-3">
               <label class="form-label">Achievement Details</label>
-              <div class="row g-2">
-                <div class="col-md-6">
+              <div class="flex flex-wrap g-2">
+                <div class="flex-1-md-6">
                   <input
                     v-model="formData.achievement.rank"
                     type="text"
@@ -210,7 +211,7 @@
                     placeholder="Rank/Position (e.g., 1st Place)"
                   />
                 </div>
-                <div class="col-md-6">
+                <div class="flex-1-md-6">
                   <input
                     v-model="formData.achievement.event"
                     type="text"
@@ -225,8 +226,8 @@
             <div v-if="formData.type === 'project' || formData.type === 'content'" class="mb-3">
               <label class="form-label">Statistics (Optional)</label>
               <div class="stats-input">
-                <div v-for="(stat, index) in formData.stats" :key="index" class="row g-2 mb-2">
-                  <div class="col-md-6">
+                <div v-for="(stat, index) in formData.stats" :key="index" class="flex flex-wrap g-2 mb-2">
+                  <div class="flex-1-md-6">
                     <input
                       v-model="stat.label"
                       type="text"
@@ -234,7 +235,7 @@
                       placeholder="Stat name (e.g., Views)"
                     />
                   </div>
-                  <div class="col-md-5">
+                  <div class="flex-1-md-5">
                     <input
                       v-model="stat.value"
                       type="text"
@@ -242,11 +243,11 @@
                       placeholder="Value (e.g., 10K)"
                     />
                   </div>
-                  <div class="col-md-1">
-                    <UnifiedButton type="button" size="sm" variant="danger" appearance="outlined" class="w-100" leading-icon="mdi-minus" @click="removeStat(index)" />
+                  <div class="flex-1-md-1">
+                    <UnifiedButton type="button" size="sm" variant="danger" appearance="outlined" class="w-100" leading-icon="MinusIcon" @click="removeStat(index)" />
                   </div>
                 </div>
-                <UnifiedButton type="button" size="sm" variant="outline" leading-icon="mdi-plus" @click="addStat">Add Stat</UnifiedButton>
+                <UnifiedButton type="button" size="sm" variant="outline" leading-icon="PlusIcon" @click="addStat">Add Stat</UnifiedButton>
               </div>
             </div>
 
@@ -282,6 +283,9 @@
 </template>
 
 <script>
+import { ArrowUpTrayIcon, FolderIcon, MinusIcon, PlusIcon, TrashIcon, UsersIcon, VideoCameraIcon } from '@heroicons/vue/24/outline'
+import { StarIcon, TrophyIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 
 import { ref, computed, watch, defineEmits, defineProps } from 'vue'
@@ -555,7 +559,7 @@ function handleSubmit() {
 
 .upload-tab:hover {
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .upload-tab.active {
@@ -592,14 +596,14 @@ function handleSubmit() {
   padding: 0.75rem;
 }
 
-.stats-input .row + .row {
+.stats-input .flex flex-wrap + .flex flex-wrap {
   margin-top: 0.5rem;
 }
 
 /* Enhanced form styling */
 .form-label {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
 }
@@ -617,19 +621,19 @@ function handleSubmit() {
 }
 
 .modal-header {
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: var(--glass-elevated);
   border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
 }
 
 .modal-footer {
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--glass-elevated);
   border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
 }
 
 .modal-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
 }
 

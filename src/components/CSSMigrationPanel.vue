@@ -1,5 +1,5 @@
 <template>
-  <div class="css-migration-panel">
+  <div class="css-migration-panel" class="font-sans">
     <!-- Header -->
     <div class="panel-header">
       <div class="header-content">
@@ -150,7 +150,7 @@
         
         <!-- Warnings and Errors -->
         <div v-if="lastReport.warnings.length > 0" class="warnings-section">
-          <h4><AppIcon name="mdi-alert" color="warning" context="warning" aria-hidden="true" /> Warnings</h4>
+          <h4><AppIcon name="ExclamationTriangleIcon" color="warning" context="warning" aria-hidden="true" /> Warnings</h4>
           <ul class="warning-list">
             <li v-for="(warning, index) in lastReport.warnings" :key="index">
               {{ warning }}
@@ -159,7 +159,7 @@
         </div>
         
         <div v-if="lastReport.errors.length > 0" class="errors-section">
-          <h4><AppIcon name="mdi-close-circle-outline" color="error" context="error" aria-hidden="true" /> Errors</h4>
+          <h4><AppIcon name="XMarkIcon-circle-outline" color="error" context="error" aria-hidden="true" /> Errors</h4>
           <ul class="error-list">
             <li v-for="(_error, index) in lastReport.errors" :key="index">
               <strong>{{ error.element }}:</strong> {{ error.error }}
@@ -219,6 +219,8 @@
 </template>
 
 <script>
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 
 import { ref, reactive, onMounted, defineExpose } from 'vue'
@@ -356,7 +358,7 @@ defineExpose({
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-b: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="gamification-effects">
+  <div class="gamification-effects font-sans">
     <!-- XP Pop-up Notifications -->
     <Transition name="xp-popup" appear>
       <div v-if="showXPGain" class="xp-popup" :class="`xp-${xpData.type}`">
@@ -39,7 +39,7 @@
           </div>
           <div class="achievement-actions">
             <UnifiedButton variant="gaming" @click="shareAchievement">
-              <AppIcon name="mdi-share-variant" class="me-2" />
+              <AppIcon name="ShareIcon" class="mr-2" />
               Share
             </UnifiedButton>
             <UnifiedButton variant="glass" @click="closeAchievement">
@@ -69,7 +69,7 @@
             <h4>New Unlocks:</h4>
             <ul class="unlock-list">
               <li v-for="unlock in levelUpData.unlocks" :key="unlock" class="unlock-item">
-                <AppIcon name="mdi-star" context="achievement" />
+                <AppIcon name="StarIcon" context="achievement" />
                 {{ unlock }}
               </li>
             </ul>
@@ -101,7 +101,7 @@
           </div>
         </div>
         <div class="konami-message">
-          <h3><AppIcon name="mdi-gamepad-variant" color="gaming" context="gaming" aria-hidden="true" /> Developer Mode Activated <AppIcon name="mdi-gamepad-variant" color="gaming" context="gaming" aria-hidden="true" /></h3>
+          <h3><AppIcon name="PuzzlePieceIcon" color="gaming" context="gaming" aria-hidden="true" /> Developer Mode Activated <AppIcon name="PuzzlePieceIcon" color="gaming" context="gaming" aria-hidden="true" /></h3>
           <p>You found the Konami Code! Enjoy the Matrix effect!</p>
         </div>
       </div>
@@ -120,6 +120,9 @@
 </template>
 
 <script setup lang="ts">
+import { PuzzlePieceIcon, ShareIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, reactive, onUnmounted, defineEmits } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -147,13 +150,13 @@ const xpData = reactive({
   amount: 0,
   reason: '',
   type: 'normal', // normal, bonus, critical
-  icon: 'mdi-star-outline'
+  icon: 'StarIcon-outline'
 })
 
 const achievementData = reactive({
   name: '',
   description: '',
-  icon: 'mdi-trophy-variant',
+  icon: 'TrophyIcon-variant',
   color: '#FFD700',
   xpReward: 100,
   badgeReward: null as string | null
@@ -187,8 +190,8 @@ const triggerXPGain = (amount: number, reason: string, type: 'normal' | 'bonus' 
   xpData.amount = amount
   xpData.reason = reason
   xpData.type = type
-  xpData.icon = type === 'critical' ? 'mdi mdi-lightning-bolt' : 
-                type === 'bonus' ? 'mdi mdi-star' : 'mdi mdi-star-outline'
+  xpData.icon = type === 'critical' ? 'mdi BoltIcon-bolt' : 
+                type === 'bonus' ? 'mdi StarIcon' : 'mdi StarIcon-outline'
   
   showXPGain.value = true
   setTimeout(() => {
@@ -343,7 +346,7 @@ const handleClick = () => {
   if (clickStreak.value === 50) {
     triggerAchievement({
       name: 'Click Master',
-      description: 'Clicked 50 times in a row! Your dedication is admirable.',
+      description: 'Clicked 50 times in a flex flex-wrap! Your dedication is admirable.',
       icon: 'mdi-cursor-default-click',
       color: '#FF6B6B',
       xpReward: 200
@@ -395,18 +398,18 @@ onUnmounted(() => {
   border-radius: var(--radius-card);
   backdrop-filter: var(--glass-mega-blur);
   padding: 1rem 1.5rem;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   pointer-events: auto;
   z-index: var(--z-toast);
 }
 
 .xp-popup.xp-critical {
-  border-left: 4px solid var(--clear-orange);
+  border-l: 4px solid var(--clear-orange);
   background: linear-gradient(135deg, var(--glass-ultra-bg), rgba(255, 140, 0, 0.1));
 }
 
 .xp-popup.xp-bonus {
-  border-left: 4px solid var(--clear-purple);
+  border-l: 4px solid var(--clear-purple);
   background: linear-gradient(135deg, var(--glass-ultra-bg), rgba(128, 0, 255, 0.1));
 }
 
@@ -550,7 +553,7 @@ onUnmounted(() => {
 .achievement-name {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.5rem;
 }
 
@@ -613,7 +616,7 @@ onUnmounted(() => {
 .level-up-content {
   position: relative;
   text-align: center;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .level-up-burst {
@@ -669,7 +672,7 @@ onUnmounted(() => {
 
 .level-up-message {
   font-size: 1.2rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 2rem;
 }
 
@@ -693,7 +696,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .unlock-icon {
@@ -722,7 +725,7 @@ onUnmounted(() => {
   backdrop-filter: var(--glass-mega-blur);
   padding: 1rem 2rem;
   text-align: center;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   pointer-events: auto;
   z-index: var(--z-toast);
 }
@@ -742,7 +745,7 @@ onUnmounted(() => {
 .combo-label {
   display: block;
   font-size: 1rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-top: 0.25rem;
 }
 

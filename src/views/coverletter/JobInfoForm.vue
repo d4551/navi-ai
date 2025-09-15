@@ -3,20 +3,20 @@
   Matches PersonalInfoForm structure and design patterns
 -->
 <template>
-  <section class="glass p-4 gap-4 rounded-lg unified-card">
-    <div class="d-flex align-items-center justify-content-between mb-2">
-      <h2 class="h6 mb-0 d-flex align-items-center gap-2 text-primary">
-        <AppIcon name="mdi-briefcase-outline" class="icon-md" aria-hidden="true" />
+  <section class="glass p-glass-md gap-glass-md rounded-lg unified-card" class="font-sans">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="h6 mb-0 flex items-center gap-glass-sm text-primary-600">
+        <AppIcon name="BriefcaseIcon" class="icon-md" aria-hidden="true" />
         <span>Job Information</span>
       </h2>
-      <div class="d-flex gap-2">
+      <div class="flex gap-glass-sm">
         <UnifiedButton
           v-if="canUseAI"
           color="glass"
           appearance="outlined"
           :loading="loading.jobAnalysis"
           :disabled="loading.jobAnalysis"
-          leading-icon="mdi-brain"
+          leading-icon="CpuChipIcon"
           aria-label="Analyze job posting from text or URL"
           @click="showJobAnalysisModal = true"
         >
@@ -27,7 +27,7 @@
           color="gaming"
           :loading="loading.companyResearch"
           :disabled="loading.companyResearch"
-          leading-icon="mdi-magnify"
+          leading-icon="MagnifyingGlassIcon"
           aria-label="Get AI company research"
           @click="researchCompany"
         >
@@ -120,12 +120,12 @@
         ></textarea>
         <label for="job-description" class="form-label">Job Description</label>
       </div>
-      <div class="form-text d-flex align-items-center justify-content-between">
+      <div class="form-text flex items-center justify-between">
         <span>
-          <AppIcon name="mdi-information-outline" class="me-1" aria-hidden="true" />
+          <AppIcon name="InformationCircleIcon" class="mr-1" aria-hidden="true" />
           Adding the job description helps AI generate better cover letters
         </span>
-        <small v-if="localJobInfo.description" class="text-muted">
+        <small v-if="localJobInfo.description" class="text-secondary">
           {{ localJobInfo.description.length }} characters
         </small>
       </div>
@@ -140,51 +140,51 @@
     >
       <div class="card glass-elevated">
         <div class="card-header section-header">
-          <h3 id="company-research-title" class="h6 mb-0 d-flex align-items-center gap-2">
-            <AppIcon name="mdi-domain" class="text-primary" aria-hidden="true" />
+          <h3 id="company-research-title" class="h6 mb-0 flex items-center gap-glass-sm">
+            <AppIcon name="BuildingOfficeIcon" class="text-primary-600" aria-hidden="true" />
             Company Research: {{ localJobInfo.company }}
           </h3>
         </div>
         <div class="card-body section-body">
           <div v-if="companyResearch.summary" class="mb-3">
-            <h4 class="h7 text-muted mb-2">Company Overview</h4>
+            <h4 class="h7 text-secondary mb-2">Company Overview</h4>
             <p class="small">{{ companyResearch.summary }}</p>
           </div>
 
-          <div class="row g-3">
-            <div v-if="companyResearch.values?.length" class="col-md-4">
-              <h4 class="h7 text-muted mb-2">Core Values</h4>
-              <div class="d-flex flex-wrap gap-1">
+          <div class="flex flex-wrap g-3">
+            <div v-if="companyResearch.values?.length" class="flex-1-md-4">
+              <h4 class="h7 text-secondary mb-2">Core Values</h4>
+              <div class="flex flex-wrap gap-glass-xs">
                 <span
                   v-for="value in companyResearch.values"
                   :key="`value-${value}`"
-                  class="badge bg-primary-subtle text-primary"
+                  class="badge bg-primary-500-subtle text-primary-600"
                 >
                   {{ value }}
                 </span>
               </div>
             </div>
 
-            <div v-if="companyResearch.culture?.length" class="col-md-4">
-              <h4 class="h7 text-muted mb-2">Culture</h4>
-              <div class="d-flex flex-wrap gap-1">
+            <div v-if="companyResearch.culture?.length" class="flex-1-md-4">
+              <h4 class="h7 text-secondary mb-2">Culture</h4>
+              <div class="flex flex-wrap gap-glass-xs">
                 <span
                   v-for="trait in companyResearch.culture"
                   :key="`culture-${trait}`"
-                  class="badge bg-info-subtle text-info"
+                  class="badge bg-blue-500-subtle text-blue-600"
                 >
                   {{ trait }}
                 </span>
               </div>
             </div>
 
-            <div v-if="companyResearch.projects?.length" class="col-md-4">
-              <h4 class="h7 text-muted mb-2">Recent Projects</h4>
-              <div class="d-flex flex-wrap gap-1">
+            <div v-if="companyResearch.projects?.length" class="flex-1-md-4">
+              <h4 class="h7 text-secondary mb-2">Recent Projects</h4>
+              <div class="flex flex-wrap gap-glass-xs">
                 <span
                   v-for="project in companyResearch.projects"
                   :key="`project-${project}`"
-                  class="badge bg-success-subtle text-success"
+                  class="badge bg-success-500-subtle text-success-600"
                 >
                   {{ project }}
                 </span>
@@ -194,8 +194,8 @@
 
           <!-- Key Talking Points -->
           <div v-if="companyResearch.talkingPoints?.length" class="mt-3">
-            <h4 class="h7 text-muted mb-2">
-              <AppIcon name="mdi-lightbulb" aria-hidden="true" />
+            <h4 class="h7 text-secondary mb-2">
+              <AppIcon name="LightBulbIcon" aria-hidden="true" />
               Key Points to Mention
             </h4>
             <ul class="small mb-0">
@@ -219,21 +219,21 @@
       aria-labelledby="job-summary-title"
     >
       <div class="alert alert-light border">
-        <div class="d-flex align-items-start gap-3">
-          <AppIcon name="mdi-check-circle-outline" size="large" color="success" aria-hidden="true" />
+        <div class="flex items-start gap-glass-md">
+          <AppIcon name="CheckCircleIcon" size="large" color="success" aria-hidden="true" />
           <div>
             <h3 id="job-summary-title" class="h6 mb-1">Ready to Generate Cover Letter</h3>
             <p class="mb-2 small">
               <strong>{{ localJobInfo.position }}</strong> at <strong>{{ localJobInfo.company }}</strong>
               <span v-if="localJobInfo.hiringManager"> • {{ localJobInfo.hiringManager }}</span>
             </p>
-            <div class="d-flex gap-2">
+            <div class="flex gap-glass-sm">
               <UnifiedButton
                 v-if="canUseAI"
                 color="gaming"
                 :loading="loading.generation"
                 :disabled="loading.generation"
-                leading-icon="mdi-auto-fix"
+                leading-icon="SparklesIcon"
                 @click="generateCoverLetter"
               >
                 Generate Cover Letter
@@ -241,7 +241,7 @@
               <UnifiedButton
                 color="glass"
                 appearance="outlined"
-                trailing-icon="mdi-arrow-right"
+                trailing-icon="ArrowRightIcon"
                 @click="nextTab"
               >
                 Continue Manually
@@ -255,7 +255,7 @@
     <!-- Job Analysis Modal -->
     <div 
       v-if="showJobAnalysisModal" 
-      class="modal fade show d-block" 
+      class="modal fade show block" 
       style="background-color: rgba(0,0,0,0.5);"
       @click.self="showJobAnalysisModal = false"
     >
@@ -310,9 +310,9 @@
               >
                 <span
                   v-if="loading.jobAnalysis"
-                  class="spinner-border spinner-border-sm me-1"
+                  class="spinner-border spinner-border-sm mr-1"
                 ></span>
-                <AppIcon v-else name="mdi-brain" class="me-1" />
+                <AppIcon v-else name="CpuChipIcon" class="mr-1" />
                 Analyze Job Posting
               </button>
             </div>
@@ -334,9 +334,9 @@
               >
                 <span
                   v-if="loading.jobAnalysis"
-                  class="spinner-border spinner-border-sm me-1"
+                  class="spinner-border spinner-border-sm mr-1"
                 ></span>
-                <AppIcon v-else name="mdi-web" class="me-1" />
+                <AppIcon v-else name="GlobeAltIcon" class="mr-1" />
                 Extract & Analyze
               </button>
             </div>
@@ -344,7 +344,7 @@
             <!-- Analysis Results -->
             <div v-if="jobAnalysisResults" class="mt-4">
               <div class="alert alert-success">
-                <AppIcon name="mdi-check-circle-outline" />
+                <AppIcon name="CheckCircleIcon" />
                 Job analysis completed! The form will be auto-filled with extracted information.
               </div>
               
@@ -361,7 +361,7 @@
 
             <div v-if="jobAnalysisError" class="mt-4">
               <div class="alert alert-danger">
-                <AppIcon name="mdi-alert-circle-outline" class="me-2" />
+                <AppIcon name="ExclamationCircleIcon" class="mr-2" />
                 {{ jobAnalysisError }}
               </div>
             </div>
@@ -390,6 +390,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowRightIcon, BriefcaseIcon, BuildingOfficeIcon, CheckCircleIcon, CpuChipIcon, ExclamationCircleIcon, GlobeAltIcon, InformationCircleIcon, LightBulbIcon, MagnifyingGlassIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -553,7 +555,7 @@ const onDescriptionChange = debounce(() => {
   
   .card-header {
     background: var(--glass-elevated);
-    border-bottom: 1px solid var(--glass-border);
+    border-b: 1px solid var(--glass-border);
   }
   
   .badge { font-size: 0.7rem; padding: 0.3rem 0.6rem; font-weight: 500; border-radius: var(--border-radius-sm); }
@@ -584,7 +586,7 @@ const onDescriptionChange = debounce(() => {
     
     .card-header {
       background: var(--glass-elevated-dark);
-      border-bottom-color: var(--glass-border-dark);
+      border-b-color: var(--glass-border-dark);
     }
   }
   
@@ -600,11 +602,11 @@ const onDescriptionChange = debounce(() => {
     --card-min-width: 100%;
   }
   
-  .company-research-card .row {
+  .company-research-card .flex flex-wrap {
     flex-direction: column;
   }
   
-  .job-summary-card .d-flex {
+  .job-summary-card .flex {
     flex-direction: column;
     align-items: flex-start;
     

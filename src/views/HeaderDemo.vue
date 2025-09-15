@@ -5,12 +5,13 @@
     title="Enhanced Header Demo"
     subtitle="Showcase of the modern animated header system with dynamic stats and effects"
     :header-context="{ projects: 24, clips: 18, achievements: 32 }"
+    class="font-sans "
   >
     <template #header-actions>
-      <UnifiedButton variant="primary" leading-icon="mdi-export">
+      <UnifiedButton variant="primary" leading-icon="ArrowUpTrayIcon">
         Export Demo
       </UnifiedButton>
-      <UnifiedButton variant="glass" leading-icon="mdi-share-variant">
+      <UnifiedButton variant="glass" leading-icon="ShareIcon">
         Share Demo
       </UnifiedButton>
     </template>
@@ -77,6 +78,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowUpTrayIcon, ShareIcon } from '@heroicons/vue/24/outline'
+
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -94,7 +97,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 }
 
 .demo-section h2 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -132,7 +135,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 }
 
 .feature-card h3 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -164,7 +167,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 }
 
 .variant-card h4 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }

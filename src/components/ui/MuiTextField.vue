@@ -1,5 +1,5 @@
 <template>
-  <div :class="textFieldClasses">
+  <div :class="textFieldClasses" class="font-sans">
     <label v-if="label" :for="inputId" :class="labelClasses">
       {{ label }}
       <span v-if="required" class="mui-input-required">*</span>
@@ -119,7 +119,7 @@ export default {
       const c = String(cls).trim();
       if (c.startsWith("mdi-")) return ["mdi", c];
       if (c === "mdi" || c.startsWith("mdi ")) return c;
-      if (c.startsWith("bi-")) return ["bi", c];
+      // Bootstrap icons (bi-) are no longer supported - use Heroicons instead
       return c;
     };
 
@@ -178,7 +178,7 @@ export default {
 
 /* Label */
 .mui-input-label {
-  color: var(--text-muted, rgba(0, 0, 0, 0.6));
+  color: var(--text-secondary, rgba(0, 0, 0, 0.6));
   font-size: 1rem;
   line-height: 1.4375em;
   letter-spacing: 0.00938em;
@@ -209,7 +209,7 @@ export default {
 }
 
 [data-theme="dark"] .mui-input-label {
-  color: var(--text-muted, rgba(255, 255, 255, 0.7));
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
 }
 
 [data-theme="dark"] .mui-input-label-disabled {
@@ -235,7 +235,7 @@ export default {
   font-size: 1rem;
   line-height: 1.4375em;
   letter-spacing: 0.00938em;
-  color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  color: var(--text-primary-600, rgba(0, 0, 0, 0.87));
   box-sizing: border-box;
   cursor: text;
   display: flex;
@@ -252,16 +252,16 @@ export default {
 }
 
 .mui-input::placeholder {
-  color: var(--text-muted, rgba(0, 0, 0, 0.42));
+  color: var(--text-secondary, rgba(0, 0, 0, 0.42));
   opacity: 1;
 }
 
 [data-theme="dark"] .mui-input {
-  color: var(--text-primary, rgba(255, 255, 255, 0.87));
+  color: var(--text-primary-600, rgba(255, 255, 255, 0.87));
 }
 
 [data-theme="dark"] .mui-input::placeholder {
-  color: var(--text-muted, rgba(255, 255, 255, 0.5));
+  color: var(--text-secondary, rgba(255, 255, 255, 0.5));
 }
 
 /* Outlined variant */
@@ -319,7 +319,7 @@ export default {
 
 /* Filled variant */
 .mui-textfield-filled .mui-input-container {
-  background-color: var(--bg-secondary, rgba(0, 0, 0, 0.06));
+  background-color: var(--bg-secondary-500, rgba(0, 0, 0, 0.06));
   border-radius: 4px 4px 0 0;
   position: relative;
   transition: background-color 200ms cubic-bezier(0.0, 0, 0.2, 1);
@@ -349,7 +349,7 @@ export default {
   right: 0;
   height: 1px;
   background-color: var(--glass-border, rgba(0, 0, 0, 0.42));
-  transition: border-bottom-color 200ms cubic-bezier(0.0, 0, 0.2, 1);
+  transition: border-b-color 200ms cubic-bezier(0.0, 0, 0.2, 1);
 }
 
 .mui-textfield-filled .mui-input {
@@ -365,7 +365,7 @@ export default {
 }
 
 [data-theme="dark"] .mui-textfield-filled .mui-input-container {
-  background-color: var(--bg-secondary, rgba(255, 255, 255, 0.09));
+  background-color: var(--bg-secondary-500, rgba(255, 255, 255, 0.09));
 }
 
 /* Standard variant */
@@ -441,7 +441,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted, rgba(0, 0, 0, 0.54));
+  color: var(--text-secondary, rgba(0, 0, 0, 0.54));
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -457,12 +457,12 @@ export default {
 }
 
 [data-theme="dark"] .mui-input-adornment {
-  color: var(--text-muted, rgba(255, 255, 255, 0.7));
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
 }
 
 /* Helper text */
 .mui-input-helper-text {
-  color: var(--text-muted, rgba(0, 0, 0, 0.6));
+  color: var(--text-secondary, rgba(0, 0, 0, 0.6));
   font-size: 0.75rem;
   line-height: 1.66;
   letter-spacing: 0.03333em;
@@ -474,7 +474,7 @@ export default {
 }
 
 [data-theme="dark"] .mui-input-helper-text {
-  color: var(--text-muted, rgba(255, 255, 255, 0.7));
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
 }
 
 /* Disabled state */
@@ -490,7 +490,7 @@ export default {
 /* Auto-fill styles */
 @keyframes mui-auto-fill-cancel {
   to {
-    color: var(--text-primary, rgba(0, 0, 0, 0.87));
+    color: var(--text-primary-600, rgba(0, 0, 0, 0.87));
     background: transparent;
   }
 }
@@ -502,7 +502,7 @@ export default {
 
 @keyframes mui-auto-fill {
   to {
-    color: var(--text-primary, rgba(0, 0, 0, 0.87));
+    color: var(--text-primary-600, rgba(0, 0, 0, 0.87));
     background: transparent;
   }
 }

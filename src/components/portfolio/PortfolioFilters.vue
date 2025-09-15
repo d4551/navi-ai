@@ -1,11 +1,11 @@
 <template>
-  <div class="portfolio-filters">
+  <div class="portfolio-filters" class="font-sans">
     <!-- Main Filter Bar -->
     <div class="filter-bar">
       <!-- Search - Primary Action -->
       <div class="search-section">
         <div class="search-input-wrapper ui-input ui-size-md">
-          <AppIcon name="mdi-magnify" />
+          <AppIcon name="MagnifyingGlassIcon" />
           <input
             v-model="searchQuery"
             type="text"
@@ -18,7 +18,7 @@
             title="Clear all filters"
             @click="clearAllFilters"
           >
-            <AppIcon name="mdi-close-circle-outline" context="error" />
+            <AppIcon name="XMarkIcon-circle-outline" context="error" />
           </button>
         </div>
       </div>
@@ -32,10 +32,10 @@
             :class="{ active: hasActiveFilters }"
             @click="showFilterMenu = !showFilterMenu"
           >
-            <AppIcon name="mdi-filter-variant" />
+            <AppIcon name="AdjustmentsHorizontalIcon" />
             <span class="filter-label">Filters</span>
             <span v-if="activeFilterCount > 0" class="filter-count">{{ activeFilterCount }}</span>
-            <AppIcon name="mdi-chevron-down" class="chevron" :class="{ rotated: showFilterMenu }" />
+            <AppIcon name="ChevronDownIcon" class="chevron" :class="{ rotated: showFilterMenu }" />
           </button>
 
           <!-- Filter Dropdown Menu -->
@@ -77,7 +77,7 @@
                   :class="['filter-option', { active: showFeaturedOnly }]"
                   @click="showFeaturedOnly = !showFeaturedOnly"
                 >
-                  <AppIcon name="mdi-star" context="achievement" />
+                  <AppIcon name="StarIcon" context="achievement" />
                   <span>Featured Only</span>
                 </button>
               </div>
@@ -111,7 +111,7 @@
           @click="removeSkillFilter(skill)"
         >
           <span>{{ skill }}</span>
-          <AppIcon name="mdi-close-circle-outline" context="error" />
+          <AppIcon name="XMarkIcon-circle-outline" context="error" />
         </button>
       </div>
     </div>
@@ -122,9 +122,9 @@
         class="skill-filters-toggle"
         @click="showSkillFilters = !showSkillFilters"
       >
-        <AppIcon name="mdi-tag-multiple-outline" />
+        <AppIcon name="TagIcon-multiple-outline" />
         <span>Filter by Skills</span>
-        <AppIcon name="mdi-chevron-down" class="chevron" :class="{ rotated: showSkillFilters }" />
+        <AppIcon name="ChevronDownIcon" class="chevron" :class="{ rotated: showSkillFilters }" />
       </button>
       
       <div v-show="showSkillFilters" class="skill-filters-grid">
@@ -149,6 +149,9 @@
 </template>
 
 <script setup>
+import { AdjustmentsHorizontalIcon, ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import { computed, ref, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -199,24 +202,24 @@ const showAllSkills = ref(false)
 
 // Filter options
 const typeOptions = [
-  { value: 'achievement', label: 'Achievements', icon: 'mdi-trophy' },
-  { value: 'clip', label: 'Video Clips', icon: 'mdi-play-circle' },
+  { value: 'achievement', label: 'Achievements', icon: 'TrophyIcon' },
+  { value: 'clip', label: 'Video Clips', icon: 'PlayIcon-circle' },
   { value: 'tournament', label: 'Tournaments', icon: 'mdi-tournament' },
-  { value: 'leadership', label: 'Leadership', icon: 'mdi-account-group' },
-  { value: 'content', label: 'Content', icon: 'mdi-video' },
-  { value: 'project', label: 'Projects', icon: 'mdi-rocket-launch' }
+  { value: 'leadership', label: 'Leadership', icon: 'UserIcon-group' },
+  { value: 'content', label: 'Content', icon: 'VideoCameraIcon' },
+  { value: 'project', label: 'Projects', icon: 'RocketLaunchIcon-launch' }
 ]
 
 const sortOptions = [
-  { value: 'recent', label: 'Most Recent', icon: 'mdi-clock-outline' },
-  { value: 'alphabetical', label: 'A-Z', icon: 'mdi-sort-alphabetical-ascending' },
+  { value: 'recent', label: 'Most Recent', icon: 'ClockIcon-outline' },
+  { value: 'alphabetical', label: 'A-Z', icon: 'BarsArrowUpIcon-alphabetical-ascending' },
   { value: 'type', label: 'By Type', icon: 'mdi-shape' },
-  { value: 'featured', label: 'Featured First', icon: 'mdi-star' }
+  { value: 'featured', label: 'Featured First', icon: 'StarIcon' }
 ]
 
 // Layout options for the button group
 const layoutOptions = [
-  { value: 'grid', label: 'Grid', icon: 'mdi-grid', title: 'Grid Layout' },
+  { value: 'grid', label: 'Grid', icon: 'Squares2X2Icon', title: 'Grid Layout' },
   { value: 'list', label: 'List', icon: 'mdi-format-list-bulleted', title: 'List Layout' },
   { value: 'timeline', label: 'Timeline', icon: 'mdi-timeline', title: 'Timeline Layout' }
 ];
@@ -340,7 +343,7 @@ function clearAllFilters() {
 .search-icon {
   position: absolute;
   left: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   z-index: 2;
 }
 
@@ -349,7 +352,7 @@ function clearAllFilters() {
   background: transparent;
   border: none;
   padding: 0.75rem 2.5rem 0.75rem 2.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -358,7 +361,7 @@ function clearAllFilters() {
 }
 
 .search-input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .clear-filters-btn {
@@ -366,7 +369,7 @@ function clearAllFilters() {
   right: 0.5rem;
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   padding: 0.25rem;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
@@ -444,7 +447,7 @@ function clearAllFilters() {
   min-width: 280px;
   z-index: 1000;
   backdrop-filter: blur(var(--glass-backdrop-blur));
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   margin-top: 0.5rem;
 }
 
@@ -459,7 +462,7 @@ function clearAllFilters() {
 .filter-group-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.025em;
   margin-bottom: 0.5rem;
@@ -514,11 +517,11 @@ function clearAllFilters() {
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
-  border-right: 1px solid var(--glass-border);
+  border-r: 1px solid var(--glass-border);
 }
 
 .layout-btn:last-child {
-  border-right: none;
+  border-r: none;
 }
 
 .layout-btn:hover {
@@ -574,7 +577,7 @@ function clearAllFilters() {
 /* Collapsible skill filters */
 .skill-filters-section {
   margin-top: 1rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   padding-top: 1rem;
 }
 

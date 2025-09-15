@@ -1,10 +1,10 @@
 <template>
-  <div class="background-import-manager">
+  <div class="background-import-manager" class="font-sans">
     <!-- Import Status Card -->
     <div class="import-status-card glass-card section-card">
       <div class="card-header section-header">
         <h6 class="card-title">
-          <AppIcon name="mdi-cloud-sync-outline" />
+          <AppIcon name="CloudIcon-sync-outline" />
           Background Import Status
         </h6>
         <div class="status-actions">
@@ -12,7 +12,7 @@
             variant="outline"
             size="sm"
             :disabled="importStatus.isImporting"
-            :leading-icon="refreshService.refreshInterval ? 'mdi-pause' : 'mdi-play'"
+            :leading-icon="refreshService.refreshInterval ? 'PauseIcon' : 'PlayIcon'"
             @click="toggleRefreshService"
           >
             {{ refreshService.refreshInterval ? 'Pause' : 'Start' }} Auto-Refresh
@@ -21,7 +21,7 @@
             variant="primary"
             size="sm"
             :disabled="importStatus.isImporting || refreshService.isRefreshing"
-            leading-icon="mdi-refresh"
+            leading-icon="ArrowPathIcon"
             @click="performManualRefresh"
           >
             Refresh Now
@@ -48,7 +48,7 @@
         <div class="status-grid">
           <div class="status-item">
             <div class="status-icon success">
-              <AppIcon name="mdi-briefcase" />
+              <AppIcon name="BriefcaseIcon" />
             </div>
             <div class="status-content">
               <div class="status-label">Jobs Imported</div>
@@ -59,7 +59,7 @@
 
           <div class="status-item">
             <div class="status-icon primary">
-              <AppIcon name="mdi-folder-multiple-outline-image" />
+              <AppIcon name="FolderIcon-multiple-outline-image" />
             </div>
             <div class="status-content">
               <div class="status-label">Portfolio Projects</div>
@@ -70,7 +70,7 @@
 
           <div class="status-item">
             <div class="status-icon warning">
-              <AppIcon name="mdi-account-tie" />
+              <AppIcon name="UserIcon-tie" />
             </div>
             <div class="status-content">
               <div class="status-label">Interviews</div>
@@ -81,7 +81,7 @@
 
           <div class="status-item">
             <div class="status-icon info">
-              <AppIcon name="mdi-domain" />
+              <AppIcon name="BuildingOfficeIcon" />
             </div>
             <div class="status-content">
               <div class="status-label">Studios</div>
@@ -92,7 +92,7 @@
 
           <div class="status-item">
             <div class="status-icon" :class="refreshService.refreshInterval ? 'success' : 'muted'">
-              <AppIcon :name="refreshService.refreshInterval ? 'mdi-autorenew' : 'mdi-pause'" />
+              <AppIcon :name="refreshService.refreshInterval ? 'mdi-autorenew' : 'PauseIcon'" />
             </div>
             <div class="status-content">
               <div class="status-label">Auto-Refresh</div>
@@ -108,7 +108,7 @@
     <div class="manual-import-card glass-card section-card">
       <div class="card-header section-header">
         <h6 class="card-title">
-          <AppIcon name="mdi-upload" />
+          <AppIcon name="ArrowUpTrayIcon" />
           Manual Data Import
         </h6>
       </div>
@@ -126,8 +126,8 @@
               </div>
             </div>
             <div class="import-option-actions">
-              <UnifiedButton variant="outline" size="sm" :disabled="importStatus.isImporting" leading-icon="mdi-file-plus" @click="selectFile(importType.type)">Select File</UnifiedButton>
-              <UnifiedButton variant="outline" size="sm" :disabled="importStatus.isImporting" leading-icon="mdi-cog" @click="configureImportSource(importType.type)">Options</UnifiedButton>
+              <UnifiedButton variant="outline" size="sm" :disabled="importStatus.isImporting" leading-icon="DocumentIcon-plus" @click="selectFile(importType.type)">Select File</UnifiedButton>
+              <UnifiedButton variant="outline" size="sm" :disabled="importStatus.isImporting" leading-icon="CogIcon" @click="configureImportSource(importType.type)">Options</UnifiedButton>
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@
           :disabled="importStatus.importHistory.length === 0"
           @click="clearHistory"
         >
-          <AppIcon name="mdi-trash-can-outline" />
+          <AppIcon name="TrashIcon" />
           Clear History
         </UnifiedButton>
       </div>
@@ -165,7 +165,7 @@
             class="history-item"
           >
             <div class="history-icon" :class="entry.success ? 'success' : 'danger'">
-              <AppIcon :name="entry.success ? 'mdi-check-circle-outline' : 'mdi-alert-circle-outline'" />
+              <AppIcon :name="entry.success ? 'CheckIcon-circle-outline' : 'mdi-alert-circle-outline'" />
             </div>
             <div class="history-content">
               <div class="history-title">
@@ -185,8 +185,8 @@
     <!-- Errors Panel -->
     <div v-if="importStatus.errors.length > 0" class="errors-card glass-card section-card">
       <div class="card-header section-header">
-        <h6 class="card-title text-danger">
-          <AppIcon name="mdi-alert-circle-outline" />
+        <h6 class="card-title text-error-600">
+          <AppIcon name="ExclamationCircleIcon" />
           Import Errors ({{ importStatus.errors.length }})
         </h6>
         <UnifiedButton
@@ -195,7 +195,7 @@
           size="sm"
           @click="clearErrors"
         >
-          <AppIcon name="mdi-close-circle-outline" context="error" />
+          <AppIcon name="XMarkIcon-circle-outline" context="error" />
           Clear Errors
         </UnifiedButton>
       </div>
@@ -208,7 +208,7 @@
             class="error-item"
           >
             <div class="error-icon">
-              <AppIcon name="mdi-alert-circle-outline" class="text-danger" />
+              <AppIcon name="ExclamationCircleIcon" class="text-error-600" />
             </div>
             <div class="error-content">
               <div class="error-message">{{ error.error }}</div>
@@ -234,6 +234,8 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon, ArrowUpTrayIcon, BriefcaseIcon, BuildingOfficeIcon, CogIcon, ExclamationCircleIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -267,7 +269,7 @@ const importTypes = [
     type: 'resume',
     title: 'Resume Data',
     description: 'Import resume information, experience, and skills',
-    icon: 'mdi-account-box-outline',
+    icon: 'UserIcon-box-outline',
     colorClass: 'primary'
   },
   {
@@ -281,14 +283,14 @@ const importTypes = [
     type: 'portfolio',
     title: 'Portfolio Projects',
     description: 'Import project data, images, and documentation',
-    icon: 'mdi-folder-multiple-outline-image',
+    icon: 'FolderIcon-multiple-outline-image',
     colorClass: 'info'
   },
   {
     type: 'interviews',
     title: 'Interview Records',
     description: 'Import interview feedback and performance data',
-    icon: 'mdi-account-tie',
+    icon: 'UserIcon-tie',
     colorClass: 'warning'
   },
   {
@@ -465,7 +467,7 @@ onMounted(() => {
   padding: 1rem;
   background: var(--glass-elevated);
   border-radius: 8px;
-  border-left: 4px solid var(--color-primary);
+  border-l: 4px solid var(--color-primary);
 }
 
 .operation-info {
@@ -477,7 +479,7 @@ onMounted(() => {
 
 .operation-text {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .operation-progress {
@@ -554,7 +556,7 @@ onMounted(() => {
 
 .status-icon.muted {
   background: var(--glass-border);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .status-content {
@@ -573,13 +575,13 @@ onMounted(() => {
 .status-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.2;
 }
 
 .status-time {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* Manual Import Card */
@@ -645,7 +647,7 @@ onMounted(() => {
 .import-option-title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
@@ -676,16 +678,16 @@ onMounted(() => {
   padding: 0.75rem;
   background: var(--glass-elevated);
   border-radius: 6px;
-  border-left: 3px solid var(--glass-border);
+  border-l: 3px solid var(--glass-border);
 }
 
 .history-item .history-icon.success {
-  border-left-color: var(--color-success);
+  border-l-color: var(--color-success);
 }
 
 .history-item .history-icon.danger,
 .error-item {
-  border-left-color: var(--color-danger);
+  border-l-color: var(--color-danger);
 }
 
 .history-icon,
@@ -702,13 +704,13 @@ onMounted(() => {
 .history-title,
 .error-message {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
 .record-count {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: normal;
 }
 
@@ -717,13 +719,13 @@ onMounted(() => {
   display: flex;
   gap: 1rem;
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .empty-state {
   text-align: center;
   padding: 2rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .empty-state i {

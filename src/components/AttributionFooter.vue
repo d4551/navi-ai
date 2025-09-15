@@ -1,5 +1,6 @@
 <template>
-  <div v-if="activeSources.length > 0" class="attribution-footer">
+  <div v-if="activeSources.length  class="font-sans ">
+    0" class="attribution-footer">
     <div class="attribution-content">
       <span class="attribution-label">Job data provided by:</span>
       <div class="source-links">

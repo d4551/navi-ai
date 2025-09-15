@@ -1,38 +1,38 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="job-data-sources-section">
+  <div class="job-data-sources-section" class="font-sans">
     <!-- Accordion Header -->
     <div class="settings-card mb-4" role="region" aria-labelledby="job-sources-title">
       <div class="card-header section-header card-header--dense accordion-header" role="button" tabindex="0" @click="toggleAccordion" @keydown.enter="toggleAccordion" @keydown.space="toggleAccordion">
-        <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="flex items-center justify-between w-100">
           <div>
             <h5 id="job-sources-title" class="mb-0">
-              <AppIcon name="mdi-database-search" class="me-2 icon-sm" />
+              <AppIcon name="CircleStackIcon-search" class="mr-2 icon-sm" />
               Job Data Sources
             </h5>
-            <p class="text-muted small mb-0 mt-1">
+            <p class="text-secondary small mb-0 mt-1">
               Configure job board APIs and data source preferences
             </p>
           </div>
           <div class="accordion-toggle">
-            <AppIcon name="mdi-chevron-down" class="accordion-icon" :class="{ 'rotated': isExpanded }" />
+            <AppIcon name="ChevronDownIcon" class="accordion-icon" :class="{ 'rotated': isExpanded }" />
           </div>
         </div>
 
         <!-- Provider Health (canonical registry) -->
-        <div class="provider-health glass-input p-3 mb-4">
-          <div class="d-flex align-items-center justify-content-between mb-2">
-            <div class="d-flex align-items-center gap-2">
-              <AppIcon name="mdi-stethoscope" class="text-primary" />
+        <div class="provider-health glass-input p-glass-md mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-glass-sm">
+              <AppIcon name="mdi-stethoscope" class="text-primary-600" />
               <strong>Provider Health</strong>
             </div>
-            <div class="d-flex gap-2 flex-wrap">
+            <div class="flex gap-glass-sm flex-wrap">
               <button
                 class="btn btn-sm btn-outline-secondary v-btn variant-outlined ui-btn ui-size-md"
                 title="Enable gaming-focused sources"
                 @click="enableGamingSources"
               >
-                <AppIcon name="mdi-gamepad-variant" class="me-1" />
+                <AppIcon name="PuzzlePieceIcon" class="mr-1" />
                 Enable Gaming Sources
               </button>
               <button
@@ -40,7 +40,7 @@
                 title="Add a studio board (Greenhouse, Lever, Recruitee, Workable, Ashby)"
                 @click="addCompanyBoard"
               >
-                <AppIcon name="mdi-domain-plus" class="me-1" />
+                <AppIcon name="mdi-domain-plus" class="mr-1" />
                 Add Studio Board
               </button>
               <button
@@ -48,14 +48,14 @@
                 :disabled="checkingHealth"
                 @click="checkProviderHealth"
               >
-                <AppIcon :name="checkingHealth ? 'mdi-loading' : 'mdi-heart-pulse'" :class="{ spin: checkingHealth }" class="me-1" />
+                <AppIcon :name="checkingHealth ? 'ArrowPathIcon' : 'HeartIcon-pulse'" :class="{ spin: checkingHealth }" class="mr-1" />
                 {{ checkingHealth ? 'Checking...' : 'Check Health' }}
               </button>
               <button
                 class="btn btn-sm btn-outline-secondary v-btn variant-outlined ui-btn ui-size-md"
                 @click="toggleDisabledBoards"
               >
-                <AppIcon name="mdi-eye" class="me-1" />
+                <AppIcon name="EyeIcon" class="mr-1" />
                 {{ showDisabledBoards ? 'Hide Disabled' : 'Show Disabled' }}
               </button>
               <button
@@ -63,25 +63,25 @@
                 :disabled="disabledBoards.length === 0"
                 @click="reenableAllBoards"
               >
-                <AppIcon name="mdi-restore" class="me-1" />
+                <AppIcon name="mdi-restore" class="mr-1" />
                 Re-enable All
               </button>
               <button
                 class="btn btn-sm btn-outline-info v-btn variant-outlined ui-btn ui-size-md"
                 @click="reverifyCompanyBoards"
               >
-                <AppIcon name="mdi-refresh" class="me-1" />
+                <AppIcon name="ArrowPathIcon" class="mr-1" />
                 Re-verify Boards
               </button>
             </div>
           </div>
-          <div v-if="providerHealth" class="small text-muted">
-            <span class="me-3">
-              <AppIcon name="mdi-check-circle-outline" class="text-success me-1" />
+          <div v-if="providerHealth" class="small text-secondary">
+            <span class="mr-3">
+              <AppIcon name="CheckCircleIcon" class="text-success-600 mr-1" />
               {{ Object.values(providerHealth).filter(Boolean).length }} healthy
             </span>
             <span>
-              <AppIcon name="mdi-alert-circle-outline" class="text-warning me-1" />
+              <AppIcon name="ExclamationCircleIcon" class="text-warning-600 mr-1" />
               {{ Object.values(providerHealth).filter(v => v === false).length }} issues
             </span>
           </div>
@@ -90,11 +90,11 @@
           <!-- Disabled company boards (auto-managed) -->
           <div v-if="showDisabledBoards" class="mt-2 small">
             <template v-if="disabledBoards.length">
-              <div class="mb-1 fw-semibold">Disabled Boards:</div>
-              <div class="d-flex flex-wrap gap-2">
-                <div v-for="b in disabledBoards" :key="b.type + ':' + b.token" class="disabled-board-chip d-inline-flex align-items-center gap-2 px-2 py-1 rounded-pill">
+              <div class="mb-1 font-semibold">Disabled Boards:</div>
+              <div class="flex flex-wrap gap-glass-sm">
+                <div v-for="b in disabledBoards" :key="b.type + ':' + b.token" class="disabled-board-chip inline-flex items-center gap-glass-sm px-2 py-1 rounded-pill">
                   <span class="chip-text">{{ b.type }}: {{ b.token }}</span>
-                  <UnifiedButton type="button" size="chip" variant="success" appearance="outlined" leading-icon="mdi-check" @click="enableDisabledBoard(b.type, b.token)">Enable</UnifiedButton>
+                  <UnifiedButton type="button" size="chip" variant="success" appearance="outlined" leading-icon="CheckIcon" @click="enableDisabledBoard(b.type, b.token)">Enable</UnifiedButton>
                 </div>
               </div>
             </template>
@@ -105,43 +105,43 @@
 
       <div v-show="isExpanded" class="card-body section-body card-body--dense accordion-content">
         <!-- Quick Stats -->
-        <div class="row g-3 mb-4">
-          <div class="col-md-3">
-            <div class="stat-card glass-input text-center p-3">
-              <div class="stat-value h4 mb-1 text-primary">{{ enabledSources.length }}</div>
-              <div class="stat-label small text-muted">Active Sources</div>
+        <div class="flex flex-wrap g-3 mb-4">
+          <div class="flex-1-md-3">
+            <div class="stat-card glass-input text-center p-glass-md">
+              <div class="stat-value h4 mb-1 text-primary-600">{{ enabledSources.length }}</div>
+              <div class="stat-label small text-secondary">Active Sources</div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="stat-card glass-input text-center p-3">
-              <div class="stat-value h4 mb-1 text-success">{{ publicSources.length }}</div>
-              <div class="stat-label small text-muted">Public APIs</div>
+          <div class="flex-1-md-3">
+            <div class="stat-card glass-input text-center p-glass-md">
+              <div class="stat-value h4 mb-1 text-success-600">{{ publicSources.length }}</div>
+              <div class="stat-label small text-secondary">Public APIs</div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="stat-card glass-input text-center p-3">
-              <div class="stat-value h4 mb-1 text-info">{{ configuredSources.length }}</div>
-              <div class="stat-label small text-muted">Configured</div>
+          <div class="flex-1-md-3">
+            <div class="stat-card glass-input text-center p-glass-md">
+              <div class="stat-value h4 mb-1 text-blue-600">{{ configuredSources.length }}</div>
+              <div class="stat-label small text-secondary">Configured</div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="stat-card glass-input text-center p-3">
-              <div class="stat-value h4 mb-1 text-warning">{{ selectedRegions.length }}</div>
-              <div class="stat-label small text-muted">Regions</div>
+          <div class="flex-1-md-3">
+            <div class="stat-card glass-input text-center p-glass-md">
+              <div class="stat-value h4 mb-1 text-warning-600">{{ selectedRegions.length }}</div>
+              <div class="stat-label small text-secondary">Regions</div>
             </div>
           </div>
         </div>
 
         <!-- Region & Category Filters -->
-        <div class="row g-4 mb-4">
-          <div class="col-md-6">
-            <div class="filter-section p-3 border rounded-3 glass-input">
-              <label class="form-label fw-medium mb-3">
-                <AppIcon name="mdi-earth" class="me-2" />
+        <div class="flex flex-wrap g-4 mb-4">
+          <div class="flex-1-md-6">
+            <div class="filter-section p-glass-md border rounded-3 glass-input">
+              <label class="form-label font-medium mb-3">
+                <AppIcon name="GlobeAmericasIcon" class="mr-2" />
                 Preferred Regions
               </label>
               <div class="region-filters">
-                <div class="d-flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-glass-sm">
                   <button
                     v-for="region in availableRegions"
                     :key="region"
@@ -150,7 +150,7 @@
                     :class="selectedRegions.includes(region) ? 'btn-primary' : 'btn-outline-secondary'"
                     @click="toggleRegion(region)"
                   >
-                    <AppIcon v-if="selectedRegions.includes(region)" name="mdi-check" class="me-1" />
+                    <AppIcon v-if="selectedRegions.includes(region)" name="CheckIcon" class="mr-1" />
                     {{ region }}
                   </button>
                 </div>
@@ -161,14 +161,14 @@
             </div>
           </div>
 
-          <div class="col-md-6">
-            <div class="filter-section p-3 border rounded-3 glass-input">
-              <label class="form-label fw-medium mb-3">
-                <AppIcon name="mdi-tag-multiple" class="me-2" />
+          <div class="flex-1-md-6">
+            <div class="filter-section p-glass-md border rounded-3 glass-input">
+              <label class="form-label font-medium mb-3">
+                <AppIcon name="TagIcon-multiple" class="mr-2" />
                 Job Categories
               </label>
               <div class="category-filters">
-                <div class="d-flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-glass-sm">
                   <button
                     v-for="category in availableCategories"
                     :key="category"
@@ -177,7 +177,7 @@
                     :class="selectedCategories.includes(category) ? 'btn-success' : 'btn-outline-secondary'"
                     @click="toggleCategory(category)"
                   >
-                    <AppIcon v-if="selectedCategories.includes(category)" name="mdi-check" class="me-1" />
+                    <AppIcon v-if="selectedCategories.includes(category)" name="CheckIcon" class="mr-1" />
                     {{ category }}
                   </button>
                 </div>
@@ -201,14 +201,14 @@
             }"
           >
             <!-- Source Header -->
-            <div class="source-header d-flex align-items-start justify-content-between mb-3">
-              <div class="source-info d-flex align-items-center">
-                <div class="source-icon me-3" :style="{ '--source-color': source.color }">
+            <div class="source-header flex items-start justify-between mb-3">
+              <div class="source-info flex items-center">
+                <div class="source-icon mr-3" :style="{ '--source-color': source.color }">
                   <AppIcon :name="source.icon" class="fs-4" />
                 </div>
                 <div>
                   <h6 class="source-name mb-1">{{ source.name }}</h6>
-                  <p class="source-description text-muted small mb-0">{{ source.description }}</p>
+                  <p class="source-description text-secondary small mb-0">{{ source.description }}</p>
                 </div>
               </div>
               <div class="source-toggle">
@@ -229,16 +229,16 @@
 
             <!-- Source Details -->
             <div class="source-details mb-3">
-              <div class="row g-2">
-                <div class="col-6">
+              <div class="flex flex-wrap g-2">
+                <div class="flex-1-6">
                   <div class="detail-item small">
-                    <AppIcon name="mdi-speedometer" class="text-muted me-1" />
+                    <AppIcon name="mdi-speedometer" class="text-secondary mr-1" />
                     {{ source.rateLimit }}
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="flex-1-6">
                   <div class="detail-item small">
-                    <AppIcon name="mdi-earth" class="text-muted me-1" />
+                    <AppIcon name="GlobeAmericasIcon" class="text-secondary mr-1" />
                     {{ source.regions.slice(0, 2).join(', ') }}
                     <span v-if="source.regions.length > 2">+{{ source.regions.length - 2 }}</span>
                   </div>
@@ -248,17 +248,17 @@
 
             <!-- Features -->
             <div class="source-features mb-3">
-              <div class="d-flex flex-wrap gap-1">
+              <div class="flex flex-wrap gap-glass-xs">
                 <span
                   v-for="feature in source.features.slice(0, 3)"
                   :key="feature"
-                  class="badge bg-light text-dark feature-badge"
+                  class="badge bg-glass-bg dark:bg-glass-bg-hover text-glass-primary feature-badge"
                 >
                   {{ feature }}
                 </span>
                 <span
                   v-if="source.features.length > 3"
-                  class="badge bg-light text-muted feature-badge"
+                  class="badge bg-glass-bg dark:bg-glass-bg-hover text-secondary feature-badge"
                   :title="source.features.slice(3).join(', ')"
                 >
                   +{{ source.features.length - 3 }}
@@ -269,8 +269,8 @@
             <!-- API Configuration -->
             <div v-if="source.enabled" class="source-config">
               <!-- Public API Notice -->
-              <div v-if="!source.requiresAuth" class="public-api-notice mb-2 p-2 bg-success-subtle text-success rounded">
-                <AppIcon name="mdi-check-circle-outline" />
+              <div v-if="!source.requiresAuth" class="public-api-notice mb-2 p-glass-sm bg-success-500-subtle text-success-600 rounded">
+                <AppIcon name="CheckCircleIcon" />
                 <small><strong>Public API</strong> - Ready to use</small>
               </div>
 
@@ -278,7 +278,7 @@
               <div v-else-if="source.apiKeyRequired" class="api-key-section mb-2">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text">
-                    <AppIcon name="mdi-key" class="text-muted" />
+                    <AppIcon name="KeyIcon" class="text-secondary" />
                   </span>
                   <input
                     v-model="source.apiKey"
@@ -292,24 +292,24 @@
                     type="button"
                     @click="viewApiDocs(source.id)"
                   >
-                    <AppIcon name="mdi-help-circle-outline" />
+                    <AppIcon name="QuestionMarkCircleIcon" />
                   </button>
                 </div>
               </div>
 
               <!-- Actions -->
-              <div class="source-actions d-flex gap-2">
+              <div class="source-actions flex gap-glass-sm">
                 <button
                   class="btn btn-outline-primary btn-sm flex-fill v-btn variant-outlined ui-btn ui-size-md"
                   :disabled="testingSource === source.id || (source.requiresAuth && !source.apiKey)"
                   @click="testSource(source.id)"
                 >
                   <span v-if="testingSource === source.id">
-                    <AppIcon name="mdi-loading" class="spin me-1" />
+                    <AppIcon name="ArrowPathIcon" class="spin mr-1" />
                     Testing...
                   </span>
                   <span v-else>
-                    <AppIcon name="mdi-transit-connection" class="me-1" />
+                    <AppIcon name="mdi-transit-connection" class="mr-1" />
                     Test
                   </span>
                 </button>
@@ -324,10 +324,10 @@
 
               <!-- Test Results -->
               <div
-                v-if="testResults[source.id]" class="test-result mt-2 p-2 rounded small"
-                :class="testResults[source.id].success ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'"
+                v-if="testResults[source.id]" class="test-result mt-2 p-glass-sm rounded small"
+                :class="testResults[source.id].success ? 'bg-success-500-subtle text-success-600' : 'bg-error-500-subtle text-error-600'"
               >
-                <AppIcon name="mdi-check-circle-outline'" class="testResults[source.id].success ? 'mdi : 'mdi mdi-alert-circle-outline' me-1" />
+                <AppIcon name="CheckIcon-circle-outline'" class="testResults[source.id].success ? 'mdi : 'mdi mdi-alert-circle-outline' mr-1" />
                 {{ testResults[source.id].message }}
                 <span v-if="testResults[source.id].success && testResults[source.id].jobCount !== undefined">
                   ({{ testResults[source.id].jobCount }} jobs available)
@@ -338,16 +338,16 @@
         </div>
 
         <!-- Bulk Actions -->
-        <div class="bulk-actions mt-4 p-3 border rounded-3 glass-input">
+        <div class="bulk-actions mt-4 p-glass-md border rounded-3 glass-input">
           <h6 class="mb-3">
-            <AppIcon name="mdi-cog-outline" class="me-2" />
+            <AppIcon name="mdi-cog-outline" class="mr-2" />
             Quick Actions
           </h6>
-          <div class="d-flex flex-wrap gap-2">
-            <UnifiedButton variant="success" appearance="outlined" size="sm" leading-icon="mdi-check-all" @click="enablePublicSources">Enable Gaming Sources</UnifiedButton>
-            <UnifiedButton variant="info" appearance="outlined" size="sm" leading-icon="mdi-refresh" @click="refreshJobSources">Refresh Sources</UnifiedButton>
-            <UnifiedButton variant="outline" size="sm" leading-icon="mdi-close-circle-outline" @click="disableAllSources">Disable All</UnifiedButton>
-            <UnifiedButton variant="info" appearance="outlined" size="sm" leading-icon="mdi-play-circle-outline" @click="testAllEnabled">Test All Enabled</UnifiedButton>
+          <div class="flex flex-wrap gap-glass-sm">
+            <UnifiedButton variant="success" appearance="outlined" size="sm" leading-icon="CheckIcon-all" @click="enablePublicSources">Enable Gaming Sources</UnifiedButton>
+            <UnifiedButton variant="info" appearance="outlined" size="sm" leading-icon="ArrowPathIcon" @click="refreshJobSources">Refresh Sources</UnifiedButton>
+            <UnifiedButton variant="outline" size="sm" leading-icon="XMarkIcon-circle-outline" @click="disableAllSources">Disable All</UnifiedButton>
+            <UnifiedButton variant="info" appearance="outlined" size="sm" leading-icon="PlayIcon-circle-outline" @click="testAllEnabled">Test All Enabled</UnifiedButton>
             <UnifiedButton variant="warning" appearance="outlined" size="sm" leading-icon="mdi-restore" @click="resetToDefaults">Reset Defaults</UnifiedButton>
           </div>
         </div>
@@ -357,6 +357,8 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon, CheckCircleIcon, CheckIcon, ChevronDownIcon, ExclamationCircleIcon, EyeIcon, GlobeAmericasIcon, KeyIcon, PuzzlePieceIcon, QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, watch, computed, onUnmounted, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -468,7 +470,7 @@ async function testSource(sourceId) {
     const result = await testJobSource(sourceId)
     testResults.value[sourceId] = result
 
-    console.log(`${result.success ? '✅' : '❌'} Test result for ${source.name}:`, result)
+    console.log(`${result.success ? 'CheckIcon' : 'XMarkIcon'} Test result for ${source.name}:`, result)
     emit('test-source', { sourceId, result })
 
   } catch (error) {
@@ -557,7 +559,7 @@ function refreshJobSources() {
     jobSources.value = jobSourceManager.getAllSources()
     
     updateSettings()
-    console.log(`🔄 Refreshed ${jobSources.value.length} job sources`)
+    console.log(`ArrowPathIcon Refreshed ${jobSources.value.length} job sources`)
   } catch (error) {
     console.error('Failed to refresh job sources:', error)
   }
@@ -873,15 +875,15 @@ watch(
   transition: all 0.3s ease;
   padding: 1.25rem;
   position: relative;
-  border-left: 4px solid transparent;
+  border-l: 4px solid transparent;
 }
 
 .source-card.source-enabled {
-  border-left-color: var(--color-primary);
+  border-l-color: var(--color-primary);
 }
 
 .source-card.source-public {
-  border-left-color: var(--color-success);
+  border-l-color: var(--color-success);
 }
 
 .source-card:hover {
@@ -900,7 +902,7 @@ watch(
 
 .source-name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .source-description {
@@ -935,8 +937,8 @@ watch(
 }
 
 .test-result {
-  border-left: 3px solid;
-  border-left-color: inherit;
+  border-l: 3px solid;
+  border-l-color: inherit;
   animation: fadeInUp 0.3s ease;
 }
 
@@ -1001,7 +1003,7 @@ watch(
 
 [data-theme="dark"] .feature-badge {
   background-color: var(--glass-surface-dark) !important;
-  color: var(--dark-text-primary) !important;
+  color: var(--dark-text-primary-600) !important;
   border: 1px solid var(--glass-border-dark);
 }
 

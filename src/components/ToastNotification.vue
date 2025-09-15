@@ -1,10 +1,10 @@
 <template>
-  <teleport to="body">
+  <teleport to="body" class="font-sans ">
     <transition-group name="toast" tag="div" class="toast-container fixed top-4 right-4 z-50" appear>
       <div
         v-for="toast in toasts"
         :key="toast.id"
-        class="toast-item bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100"
+        class="toast-item bg-glass-bg dark:bg-gray-800 border border-glass-border dark:border-glass-border dark:border-glass-border text-glass-primary"
         :class="[
           `toast-${toast.type}`,
           {
@@ -35,7 +35,7 @@
               <button
                 v-for="(action, idx) in toast.actions"
                 :key="idx"
-                class="toast-action-btn bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                class="toast-action-btn bg-glass-bg-hover dark:bg-gray-700 text-gray-700 dark:text-glass-secondary dark:text-glass-secondary hover:bg-gray-200 dark:hover:bg-gray-600"
                 type="button"
                 @click="runAction(toast, action)"
               >
@@ -45,11 +45,11 @@
           </div>
           <button
             v-if="toast.dismissible !== false"
-            class="toast-close text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            class="toast-close text-glass-secondary dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             aria-label="Close notification"
             @click="dismissToast(toast.id)"
           >
-            <AppIcon name="mdi-close" />
+            <AppIcon name="XMarkIcon" />
           </button>
         </div>
         <div
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref } from "vue";
 import AppIcon from '@/components/ui/AppIcon.vue';
 import { reportError } from "@/utils/error";
@@ -106,10 +108,10 @@ export default {
 
     const getIcon = (type) => {
       const icons = {
-        success: "mdi mdi-check-circle-outline",
+        success: "mdi CheckIcon-circle-outline",
         error: "mdi mdi-alert-circle-outline",
         warning: "mdi mdi-alert",
-        info: "mdi mdi-information",
+        info: "mdi InformationCircleIconrmation",
       };
       return icons[type] || icons.info;
     };
@@ -193,7 +195,7 @@ export default {
 .toast-action-btn {
   background: var(--bg-tertiary, rgba(0, 0, 0, 0.06));
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.65rem;
   padding: 2px 6px;
   border-radius: var(--border-radius-sm);
@@ -203,14 +205,14 @@ export default {
 }
 
 .toast-action-btn:hover {
-  background: var(--bg-secondary, rgba(0, 0, 0, 0.12));
+  background: var(--bg-secondary-500, rgba(0, 0, 0, 0.12));
 }
 
 .toast-title {
   font-weight: 600;
   font-size: 0.9rem;
   margin-bottom: var(--spacing-xs);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .toast-text {
@@ -226,14 +228,14 @@ export default {
   padding: var(--spacing-xs);
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   transition: all var(--transition-fast);
   font-size: 1.1rem;
 }
 
 .toast-close:hover {
   background-color: var(--bg-tertiary);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .toast-progress {
@@ -260,22 +262,22 @@ export default {
 /* Toast type styles */
 .toast-success {
   color: var(--color-success);
-  border-left-color: var(--color-success);
+  border-l-color: var(--color-success);
 }
 
 .toast-error {
   color: var(--color-danger);
-  border-left-color: var(--color-danger);
+  border-l-color: var(--color-danger);
 }
 
 .toast-warning {
   color: var(--color-warning);
-  border-left-color: var(--color-warning);
+  border-l-color: var(--color-warning);
 }
 
 .toast-info {
   color: var(--color-info);
-  border-left-color: var(--color-info);
+  border-l-color: var(--color-info);
 }
 
 /* Dark theme glass look */
@@ -304,13 +306,13 @@ export default {
 /* WCAG 2.2 - Reduced Transparency Support */
 @media (prefers-reduced-transparency: reduce) {
   .toast-item {
-    background: var(--bg-primary) !important;
+    background: var(--bg-primary-500) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
 
   [data-theme="dark"] .toast-item {
-    background: var(--dark-bg-primary) !important;
+    background: var(--dark-bg-primary-500) !important;
   }
 
   .toast-item::before {
@@ -366,13 +368,13 @@ export default {
 /* Dark mode support (explicit and system) */
 [data-theme="dark"] .toast-item,
 :root:not([data-theme]) .toast-item {
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   border-color: currentColor;
 }
 
 [data-theme="dark"] .toast-title,
 :root:not([data-theme]) .toast-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .toast-text,
@@ -382,13 +384,13 @@ export default {
 
 [data-theme="dark"] .toast-close,
 :root:not([data-theme]) .toast-close {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 [data-theme="dark"] .toast-close:hover,
 :root:not([data-theme]) .toast-close:hover {
   background-color: var(--bg-tertiary);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* High contrast mode */

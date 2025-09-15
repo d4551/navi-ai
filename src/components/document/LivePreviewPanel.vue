@@ -1,8 +1,8 @@
 <template>
-  <div class="live-preview-panel" :class="{ 'is-sticky': isSticky, 'is-floating': isFloating }">
+  <div class="live-preview-panel" :class="{ 'is-sticky': isSticky, 'is-floating': isFloating }" class="font-sans">
     <div class="preview-header">
       <div class="preview-title">
-        <AppIcon name="mdi-eye-outline" />
+        <AppIcon name="EyeIcon-outline" />
         <span>Live Preview</span>
         <div class="preview-sync-indicator" :class="{ 'is-syncing': isSyncing }">
           <div class="sync-dot"></div>
@@ -18,13 +18,13 @@
         <UnifiedButton
           variant="ghost"
           size="xs"
-          leading-icon="mdi-refresh"
+          leading-icon="ArrowPathIcon"
           @click="refreshPreview"
         />
         <UnifiedButton
           variant="ghost"
           size="xs"
-          :leading-icon="showPreview ? 'mdi-eye-off' : 'mdi-eye'"
+          :leading-icon="showPreview ? 'EyeIcon-off' : 'EyeIcon'"
           @click="togglePreview"
         />
       </div>
@@ -61,21 +61,21 @@
               </div>
               <div class="preview-contact">
                 <span v-if="resumeData.email" class="contact-item">
-                  <AppIcon name="mdi-email" />
+                  <AppIcon name="EnvelopeIcon" />
                   {{ resumeData.email }}
                 </span>
                 <span v-if="resumeData.phone" class="contact-item">
-                  <AppIcon name="mdi-phone" />
+                  <AppIcon name="PhoneIcon" />
                   {{ resumeData.phone }}
                 </span>
                 <span v-if="resumeData.location" class="contact-item">
-                  <AppIcon name="mdi-map-marker" />
+                  <AppIcon name="MapPinIcon" />
                   {{ resumeData.location }}
                 </span>
               </div>
               <div v-if="resumeData.linkedin || resumeData.github || resumeData.website" class="preview-links">
                 <a v-if="resumeData.linkedin" class="preview-link" target="_blank">
-                  <AppIcon name="mdi-linkedin" />
+                  <AppIcon name="LinkIconedin" />
                   LinkedIn
                 </a>
                 <a v-if="resumeData.github" class="preview-link" target="_blank">
@@ -83,7 +83,7 @@
                   GitHub
                 </a>
                 <a v-if="resumeData.website" class="preview-link" target="_blank">
-                  <AppIcon name="mdi-web" />
+                  <AppIcon name="GlobeAltIcon" />
                   Portfolio
                 </a>
               </div>
@@ -158,7 +158,7 @@
 
             <!-- Placeholder sections for empty state -->
             <div v-if="isEmptyState" class="empty-state">
-              <AppIcon name="mdi-file-document-outline" />
+              <AppIcon name="DocumentIcon" />
               <p>Start adding your information to see the live preview</p>
             </div>
           </div>
@@ -228,6 +228,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, DocumentIcon, EnvelopeIcon, GlobeAltIcon, PhoneIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -479,7 +482,7 @@ watch([() => props.resumeData, () => props.coverLetterData], () => {
   justify-content: space-between;
   padding: 12px 16px;
   background: rgba(var(--color-primary-500-rgb), 0.05);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .preview-title {
@@ -488,7 +491,7 @@ watch([() => props.resumeData, () => props.coverLetterData], () => {
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .preview-sync-indicator {
@@ -522,7 +525,7 @@ watch([() => props.resumeData, () => props.coverLetterData], () => {
 
 .template-switcher {
   padding: 12px 16px;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .template-tabs {
@@ -571,7 +574,7 @@ watch([() => props.resumeData, () => props.coverLetterData], () => {
   text-align: center;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 2px solid #f0f0f0;
+  border-b: 2px solid #f0f0f0;
 }
 
 .preview-name {
@@ -629,7 +632,7 @@ watch([() => props.resumeData, () => props.coverLetterData], () => {
   color: var(--color-primary-500);
   margin-bottom: 8px;
   padding-bottom: 4px;
-  border-bottom: 1px solid #e0e0e0;
+  border-b: 1px solid #e0e0e0;
 }
 
 .preview-section-content {
@@ -806,7 +809,7 @@ watch([() => props.resumeData, () => props.coverLetterData], () => {
 .preview-stats {
   padding: 12px 16px;
   background: rgba(var(--color-primary-500-rgb), 0.02);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   display: flex;
   gap: 16px;
   font-size: 11px;
@@ -823,7 +826,7 @@ watch([() => props.resumeData, () => props.coverLetterData], () => {
 
 .stat-value {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .stat-value.score-excellent { color: #10b981; }

@@ -1,5 +1,5 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <!-- Enhanced Demo Header -->
     <div class="demo-header enhanced-glass-card neon-hover on-glass">
       <div class="demo-title">
@@ -18,7 +18,7 @@
           <div class="control-buttons">
             <UnifiedButton 
               variant="gaming" 
-              leading-icon="mdi-robot" 
+              leading-icon="CpuChipIcon" 
               @click="open = true"
             >
               Open NAVI Assistant
@@ -32,7 +32,7 @@
             </UnifiedButton>
             <UnifiedButton 
               variant="ghost" 
-              leading-icon="mdi-refresh"
+              leading-icon="ArrowPathIcon"
               @click="resetChat()"
             >
               Reset Chat
@@ -60,7 +60,7 @@
           <div class="control-buttons">
             <UnifiedButton 
               variant="outline" 
-              leading-icon="mdi-account-plus"
+              leading-icon="UserPlusIcon"
               size="sm"
               @click="simulateUserMessage()"
             >
@@ -68,7 +68,7 @@
             </UnifiedButton>
             <UnifiedButton 
               variant="outline" 
-              leading-icon="mdi-robot"
+              leading-icon="CpuChipIcon"
               size="sm"
               @click="simulateAIResponse()"
             >
@@ -76,7 +76,7 @@
             </UnifiedButton>
             <UnifiedButton 
               variant="outline" 
-              leading-icon="mdi-information"
+              leading-icon="InformationCircleIcon"
               size="sm"
               @click="addSystemMessage()"
             >
@@ -90,7 +90,7 @@
     <!-- Feature Showcase -->
     <div class="features-showcase dense-grid dense-grid--auto-fit">
       <div class="feature-card enhanced-glass-card is-interactive neon-hover on-glass">
-        <AppIcon name="mdi-palette" />
+        <AppIcon name="SwatchIcon" />
         <h3>Master Design System</h3>
         <p>Integrated UnifiedButton, IconButton, and glass morphism styling throughout the interface.</p>
       </div>
@@ -100,7 +100,7 @@
         <p>Optimized for all screen sizes with touch-friendly controls and mobile-first approach.</p>
       </div>
       <div class="feature-card enhanced-glass-card is-interactive neon-hover on-glass">
-        <AppIcon name="mdi-microphone" />
+        <AppIcon name="MicrophoneIcon" />
         <h3>Multimodal Controls</h3>
         <p>Voice input, video streaming, screenshot capture, and file upload capabilities.</p>
       </div>
@@ -117,6 +117,8 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon, CpuChipIcon, InformationCircleIcon, MicrophoneIcon, UserPlusIcon } from '@heroicons/vue/24/outline'
+
 import { ref } from 'vue'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import FairyChatModal from '@/components/FairyChatModal.vue'
@@ -126,7 +128,7 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 const open = ref(false)
 const modalSize = ref('lg')
 const messages = ref([
-  { id: 'm1', type: 'ai', content: "Hi! I'm NAVI, your AI career fairy ✨\nHow can I help with your gaming career today?", timestamp: Date.now() - 120000 },
+  { id: 'm1', type: 'ai', content: "Hi! I'm NAVI, your AI career fairy SparklesIcon\nHow can I help with your gaming career today?", timestamp: Date.now() - 120000 },
   { id: 'm2', type: 'user', content: 'Can you review my resume for a gameplay programmer role?', timestamp: Date.now() - 60000 },
   { id: 'm3', type: 'ai', content: 'Absolutely! Upload your resume or paste the text here. I will check for:\n\n• Technical skills alignment\n• ATS compliance\n• Gaming industry keywords\n• Project showcase effectiveness', timestamp: Date.now() - 30000 },
 ])
@@ -215,7 +217,7 @@ function addSystemMessage() {
 
 function resetChat() {
   messages.value = [
-    { id: 'm1', type: 'ai', content: "Hi! I'm NAVI, your AI career fairy ✨\nHow can I help with your gaming career today?", timestamp: Date.now() - 1000 }
+    { id: 'm1', type: 'ai', content: "Hi! I'm NAVI, your AI career fairy SparklesIcon\nHow can I help with your gaming career today?", timestamp: Date.now() - 1000 }
   ]
 }
 </script>
@@ -238,7 +240,7 @@ function resetChat() {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-3xl);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
@@ -272,7 +274,7 @@ function resetChat() {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-lg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   display: flex;
   align-items: center;
@@ -289,7 +291,7 @@ function resetChat() {
   display: flex;
   gap: var(--spacing-1);
   padding: var(--spacing-1);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
 }
@@ -332,7 +334,7 @@ function resetChat() {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-xl);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -450,7 +452,7 @@ function resetChat() {
 .theme-gaming .feature-card:hover {
   border-color: rgba(0, 255, 136, 0.3);
   box-shadow: 
-    var(--shadow-xl),
+    var(--shadow-glass-xl),
     0 0 20px rgba(0, 255, 136, 0.1);
 }
 

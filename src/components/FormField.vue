@@ -1,9 +1,9 @@
 <template>
-  <div :class="['form-field', containerClass, { required: required }]" class="text-gray-900 dark:text-gray-100">
+  <div :class="['form-field', containerClass, { required: required }]" class="text-glass-primary" class="font-sans">
     <label
       v-if="label"
       :for="fieldId"
-      class="form-label text-gray-700 dark:text-gray-300"
+      class="form-label text-gray-700 dark:text-glass-secondary dark:text-glass-secondary"
       :class="labelClass"
       :style="labelStyle"
     >
@@ -20,7 +20,7 @@
         :id="fieldId"
         :value="modelValue"
         :type="type"
-        class="form-control glass-input bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
+        class="form-control glass-input bg-glass-bg dark:bg-gray-800 border-glass-border-hover dark:border-glass-border-hover dark:border-glass-border-hover text-glass-primary placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
         :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :placeholder="placeholder"
         :required="required"
@@ -36,7 +36,7 @@
         v-else-if="type === 'textarea'"
         :id="fieldId"
         :value="modelValue"
-        class="form-control glass-input enhanced-textarea bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
+        class="form-control glass-input enhanced-textarea bg-glass-bg dark:bg-gray-800 border-glass-border-hover dark:border-glass-border-hover dark:border-glass-border-hover text-glass-primary placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
         :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :placeholder="placeholder"
         :required="required"
@@ -53,7 +53,7 @@
         v-else-if="type === 'select'"
         :id="fieldId"
         :value="modelValue"
-        class="form-select glass-input bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-400"
+        class="form-select glass-input bg-glass-bg dark:bg-gray-800 border-glass-border-hover dark:border-glass-border-hover dark:border-glass-border-hover text-glass-primary focus:border-blue-500 dark:focus:border-blue-400"
         :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :required="required"
         :disabled="disabled"
@@ -90,8 +90,8 @@
 
       <!-- Status Indicator -->
       <div v-if="showStatus" class="input-status">
-        <AppIcon v-if="hasValue && !errorText" name="mdi-check" class="success-icon" />
-        <AppIcon v-else-if="errorText" name="mdi-alert-circle" class="error-icon" />
+        <AppIcon v-if="hasValue && !errorText" name="CheckIcon" class="success-icon" />
+        <AppIcon v-else-if="errorText" name="ExclamationCircleIcon" class="error-icon" />
       </div>
     </div>
 
@@ -107,7 +107,7 @@
       class="form-hint"
       :class="helpClass"
     >
-      <AppIcon v-if="helpIcon" :name="helpIcon" class="me-1" />
+      <AppIcon v-if="helpIcon" :name="helpIcon" class="mr-1" />
       {{ helpText }}
     </div>
 
@@ -116,13 +116,15 @@
       v-if="errorText"
       class="form-error"
     >
-      <AppIcon name="mdi-alert-circle" class="me-1" />
+      <AppIcon name="ExclamationCircleIcon" class="mr-1" />
       {{ errorText }}
     </div>
   </div>
 </template>
 
 <script setup>
+import { CheckIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+
 import { computed, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 

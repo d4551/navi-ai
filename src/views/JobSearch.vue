@@ -7,13 +7,14 @@
     max-width="full"
     content-spacing="normal"
     :hero-stats="jobBoardStats"
+    class="font-sans "
   >
     <template #header-actions>
       <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
         <UnifiedButton
           variant="primary"
           size="md"
-          leading-icon="mdi-magnify"
+          leading-icon="MagnifyingGlassIcon"
           @click="showAdvancedSearch = true"
         >
           Advanced Search
@@ -22,7 +23,7 @@
         <UnifiedButton
           variant="gaming"
           size="md"
-          leading-icon="mdi-gamepad-variant"
+          leading-icon="PuzzlePieceIcon"
           :class="{ active: gamingFilterActive }"
           @click="toggleGamingFilter"
         >
@@ -32,7 +33,7 @@
         <UnifiedButton
           variant="glass"
           size="md"
-          leading-icon="mdi-bookmark-outline"
+          leading-icon="BookmarkIcon-outline"
           @click="showSavedJobs = !showSavedJobs"
         >
           Saved ({{ savedJobs.length }})
@@ -41,11 +42,11 @@
         <UnifiedButton
           variant="outline"
           size="md"
-          leading-icon="mdi-bell-outline"
+          leading-icon="BellIcon"
           @click="showJobAlertsModal = true"
         >
           Job Alerts
-          <UiChip v-if="jobAlerts.length" classes="chip chip-warning chip-compact ms-2">{{ jobAlerts.length }}</UiChip>
+          <UiChip v-if="jobAlerts.length" classes="chip chip-warning chip-compact ml-2">{{ jobAlerts.length }}</UiChip>
         </UnifiedButton>
       </HeaderActions>
 
@@ -57,13 +58,13 @@
 
     <!-- Quick Actions Bar -->
     <div class="content-section">
-      <div class="unified-card bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-        <div class="d-flex flex-wrap justify-content-between align-items-center gap-md">
-          <div class="d-flex flex-wrap gap-sm">
+      <div class="glass-card">
+        <div class="flex flex-wrap justify-between items-center gap-md">
+          <div class="flex flex-wrap gap-sm">
             <UnifiedButton
               variant="primary"
               size="lg"
-              leading-icon="mdi-magnify"
+              leading-icon="MagnifyingGlassIcon"
               @click="showSearchModal = true"
             >
               Pin New Gig Hunt
@@ -71,7 +72,7 @@
             <UnifiedButton
               variant="cyber"
               size="lg"
-              leading-icon="mdi-brain"
+              leading-icon="CpuChipIcon"
               :loading="aiLoading"
               @click="aiRecommendJobs"
             >
@@ -81,21 +82,21 @@
             <UnifiedButton
               variant="glass"
               size="lg"
-              leading-icon="mdi-lightbulb"
+              leading-icon="LightBulbIcon"
               @click="showSmartSearchDialog = true"
             >
               Smart Search
             </UnifiedButton>
           </div>
-          <div class="d-flex align-items-center gap-sm">
-            <UiChip classes="stats-chip bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+          <div class="flex items-center gap-sm">
+            <UiChip classes="stats-chip chip-neon-blue">
               {{ totalJobs }} jobs found
             </UiChip>
             <UnifiedButton
               variant="secondary"
               :loading="refreshing"
               :disabled="refreshing"
-              leading-icon="mdi-refresh"
+              leading-icon="ArrowPathIcon"
               @click="refreshJobs"
             >
               Refresh
@@ -107,30 +108,30 @@
 
     <!-- Advanced Search and Filter Section -->
     <section class="search-filter-section">
-      <StandardCard variant="glass" class="filter-card bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+      <StandardCard variant="glass" class="glass-card filter-card">
         <template #title>
-          <AppIcon name="mdi-filter-variant" />
-          <span class="text-gray-900 dark:text-gray-100">Search & Filter Jobs</span>
+          <AppIcon name="AdjustmentsHorizontalIcon" />
+          <span class="text-glass-primary">Search & Filter Jobs</span>
         </template>
         
         <v-form @submit.prevent="applyFilters">
-          <v-row class="ga-3 align-end">
+          <v-flex flex-wrap class="gap-glass-md align-end">
             <!-- Search Jobs -->
-            <v-col cols="12" md="4">
+            <v-flex-1 cols="12" md="4">
               <v-text-field
                 v-model="searchFilters.keywords"
                 label="Search Jobs"
                 placeholder="Job title, skills, company..."
-                prepend-inner-icon="mdi-magnify"
+                prepend-inner-icon="MagnifyingGlassIcon"
                 variant="outlined"
                 color="primary"
                 density="comfortable"
                 clearable
               />
-            </v-col>
+            </v-flex-1>
             
             <!-- Location -->
-            <v-col cols="12" sm="6" md="2">
+            <v-flex-1 cols="12" sm="6" md="2">
               <v-select
                 v-model="searchFilters.location"
                 label="Location"
@@ -145,12 +146,12 @@
                 variant="outlined"
                 color="primary"
                 density="comfortable"
-                prepend-inner-icon="mdi-map-marker"
+                prepend-inner-icon="MapPinIcon"
               />
-            </v-col>
+            </v-flex-1>
               
             <!-- Job Type -->
-            <v-col cols="12" sm="6" md="2">
+            <v-flex-1 cols="12" sm="6" md="2">
               <v-select
                 v-model="searchFilters.jobType"
                 label="Job Type"
@@ -164,12 +165,12 @@
                 variant="outlined"
                 color="primary"
                 density="comfortable"
-                prepend-inner-icon="mdi-briefcase"
+                prepend-inner-icon="BriefcaseIcon"
               />
-            </v-col>
+            </v-flex-1>
             
             <!-- Posted -->
-            <v-col cols="12" sm="6" md="2">
+            <v-flex-1 cols="12" sm="6" md="2">
               <v-select
                 v-model="searchFilters.posted"
                 label="Posted"
@@ -182,14 +183,14 @@
                 variant="outlined"
                 color="primary"
                 density="comfortable"
-                prepend-inner-icon="mdi-clock-outline"
+                prepend-inner-icon="ClockIcon"
               />
-            </v-col>
+            </v-flex-1>
             
             <!-- Action Buttons -->
-            <v-col cols="12" md="2">
-              <v-row class="ga-2">
-                <v-col cols="6">
+            <v-flex-1 cols="12" md="2">
+              <v-flex flex-wrap class="gap-glass-sm">
+                <v-flex-1 cols="6">
                   <UnifiedButton
                     variant="secondary"
                     block
@@ -197,32 +198,32 @@
                   >
                     Clear
                   </UnifiedButton>
-                </v-col>
-                <v-col cols="6">
+                </v-flex-1>
+                <v-flex-1 cols="6">
                   <UnifiedButton
                     variant="primary"
                     block
-                    leading-icon="mdi-magnify"
+                    leading-icon="MagnifyingGlassIcon"
                     @click="applyFilters"
                   >
                     Search
                   </UnifiedButton>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
+                </v-flex-1>
+              </v-flex flex-wrap>
+            </v-flex-1>
+          </v-flex flex-wrap>
           
           <!-- Gaming-Specific Filters (show when gaming filter is active) -->
           <v-expand-transition>
-            <div v-show="gamingFilterActive" class="gaming-filters mt-4 pt-4" style="border-top: 1px solid var(--border-base);">
-              <h4 class="text-h6 mb-3 text-gray-900 dark:text-gray-100">
-                <AppIcon name="mdi-gamepad-variant" />
+            <div v-show="gamingFilterActive" class="gaming-filters mt-4 pt-4" style="border-t: 1px solid var(--border-base);">
+              <h4 class="text-lg font-semibold mb-3 text-glass-primary">
+                <AppIcon name="PuzzlePieceIcon" />
                 Gaming Industry Filters
               </h4>
               
-              <v-row>
+              <v-flex flex-wrap>
                 <!-- Game Engines -->
-                <v-col cols="12" md="3">
+                <v-flex-1 cols="12" md="3">
                   <v-select
                     v-model="gamingFilters.gameEngines"
                     label="Game Engines"
@@ -232,12 +233,12 @@
                     variant="outlined"
                     color="primary"
                     density="comfortable"
-                    prepend-inner-icon="mdi-engine"
+                    prepend-inner-icon="CogIcon"
                   />
-                </v-col>
+                </v-flex-1>
                 
                 <!-- Studio Types -->
-                <v-col cols="12" md="3">
+                <v-flex-1 cols="12" md="3">
                   <v-select
                     v-model="gamingFilters.studioTypes"
                     label="Studio Types"
@@ -247,12 +248,12 @@
                     variant="outlined"
                     color="primary"
                     density="comfortable"
-                    prepend-inner-icon="mdi-office-building"
+                    prepend-inner-icon="BuildingOffice2Icon"
                   />
-                </v-col>
+                </v-flex-1>
                 
                 <!-- Platforms -->
-                <v-col cols="12" md="3">
+                <v-flex-1 cols="12" md="3">
                   <v-select
                     v-model="gamingFilters.platforms"
                     label="Platforms"
@@ -262,12 +263,12 @@
                     variant="outlined"
                     color="primary"
                     density="comfortable"
-                    prepend-inner-icon="mdi-devices"
+                    prepend-inner-icon="DeviceTabletIcon"
                   />
-                </v-col>
+                </v-flex-1>
                 
                 <!-- Role Categories -->
-                <v-col cols="12" md="3">
+                <v-flex-1 cols="12" md="3">
                   <v-select
                     v-model="gamingFilters.roleCategories"
                     label="Role Categories"
@@ -277,10 +278,10 @@
                     variant="outlined"
                     color="primary"
                     density="comfortable"
-                    prepend-inner-icon="mdi-account-group"
+                    prepend-inner-icon="UsersIcon"
                   />
-                </v-col>
-              </v-row>
+                </v-flex-1>
+              </v-flex flex-wrap>
             </div>
           </v-expand-transition>
         </v-form>
@@ -289,13 +290,13 @@
 
     <!-- Top Matches Section (shown when AI analysis is available) -->
     <v-container v-if="topMatches.length > 0" class="mb-6">
-      <v-card class="top-matches-card bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" elevation="0">
-        <v-card-title class="d-flex align-center justify-space-between pa-4">
-          <div class="d-flex align-center">
-            <AppIcon name="mdi-star" color="warning" size="32" class="me-3" />
+      <v-card class="top-matches-card glass-card" elevation="0">
+        <v-card-title class="flex items-center justify-space-between pa-4">
+          <div class="flex items-center">
+            <AppIcon name="StarIcon" color="warning" size="32" class="mr-3" />
             <div>
-              <h3 class="text-h5 mb-1 text-gray-900 dark:text-gray-100">Top AI Matches for You</h3>
-              <p class="text-body-2 text-gray-600 dark:text-gray-400 mb-0">
+              <h3 class="text-h5 mb-1 text-glass-primary">Top AI Matches for You</h3>
+              <p class="text-body-2 text-glass-secondary mb-0">
                 {{ topMatches.length }} high-match opportunities (60%+ compatibility)
               </p>
             </div>
@@ -304,7 +305,7 @@
             v-if="!aiLoading && jobResults.length > 0"
             variant="outline"
             color="primary"
-            leading-icon="mdi-robot"
+            leading-icon="CpuChipIcon"
             :loading="aiLoading"
             @click="aiRecommendJobs"
           >
@@ -312,14 +313,22 @@
           </UnifiedButton>
         </v-card-title>
         <v-card-text class="pa-4">
-          <v-row>
-            <v-col v-for="job in topMatches.slice(0, 6)" :key="job.id" cols="12" md="6" lg="4">
-              <v-card class="top-match-job-card h-100 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" variant="outlined" hover @click="viewJobDetails(job)">
+          <!-- Skeleton Loading for Top Matches -->
+          <LoadingSkeletons
+            v-if="aiLoading"
+            variant="grid"
+            :grid-item-count="6"
+            :show="true"
+          />
+
+          <v-flex v-else flex-wrap>
+            <v-flex-1 v-for="job in topMatches.slice(0, 6)" :key="job.id" cols="12" md="6" lg="4">
+              <v-card class="top-match-job-card h-100 glass-card" variant="outlined" hover @click="viewJobDetails(job)">
                 <v-card-text class="pa-4">
-                  <div class="d-flex align-start justify-space-between mb-3">
+                  <div class="flex align-start justify-space-between mb-3">
                     <div class="flex-grow-1">
-                      <h4 class="text-h6 mb-1 text-gray-900 dark:text-gray-100">{{ job.title }}</h4>
-                      <p class="text-body-2 text-gray-600 dark:text-gray-400 mb-0">
+                      <h4 class="text-lg font-semibold mb-1 text-glass-primary">{{ job.title }}</h4>
+                      <p class="text-body-2 text-glass-secondary mb-0">
                         {{ job.company }} • {{ job.location }}
                       </p>
                     </div>
@@ -327,8 +336,8 @@
                       {{ job.matchScore }}%
                     </UiChip>
                   </div>
-                  <div class="d-flex align-center justify-space-between">
-                    <div class="d-flex align-center ga-2">
+                  <div class="flex items-center justify-space-between">
+                    <div class="flex items-center gap-glass-sm">
                       <UiChip classes="chip chip-info chip-compact">
                         {{ formatJobType(job.type) }}
                       </UiChip>
@@ -346,8 +355,8 @@
                   </div>
                 </v-card-text>
               </v-card>
-            </v-col>
-          </v-row>
+            </v-flex-1>
+          </v-flex flex-wrap>
           <div v-if="topMatches.length > 6" class="text-center mt-4">
             <UnifiedButton
               variant="outline"
@@ -363,29 +372,29 @@
 
     <!-- AI Analysis CTA (shown when no AI analysis has been run) -->
     <v-container v-else-if="jobResults.length > 0 && !hasRunAIAnalysis" class="mb-6">
-      <v-card class="ai-cta-card text-center bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" elevation="0">
+      <v-card class="ai-cta-card text-center glass-card" elevation="0">
         <v-card-text class="pa-8">
-          <AppIcon name="mdi-robot-excited" size="80" color="primary" class="mb-4" />
-          <h2 class="text-h4 mb-4 text-gray-900 dark:text-gray-100">Get AI-Powered Job Recommendations</h2>
-          <p class="text-body-1 text-gray-600 dark:text-gray-400 mb-6 mx-auto max-w-text-600">
+          <AppIcon name="CpuChipIcon" size="80" color="primary" class="mb-4" />
+          <h2 class="text-h4 mb-4 text-glass-primary">Get AI-Powered Job Recommendations</h2>
+          <p class="text-body-1 text-glass-secondary mb-6 mx-auto max-w-text-600">
             Let our advanced AI analyze {{ jobResults.length }} jobs and find your best matches based on your skills, experience, and preferences.
           </p>
           <UnifiedButton
             variant="primary"
             size="xl"
-            leading-icon="mdi-sparkles"
+            leading-icon="SparklesIcon"
             :loading="aiLoading"
             @click="aiRecommendJobs"
           >
             Analyze Jobs with AI
           </UnifiedButton>
           <div class="mt-4">
-            <UiChip classes="chip chip-success me-2">
-              <AppIcon name="mdi-check-circle" class="me-1" />
+            <UiChip classes="chip chip-success mr-2">
+              <AppIcon name="CheckCircleIcon" class="mr-1" />
               Smart Matching Algorithm
             </UiChip>
             <UiChip classes="chip chip-info">
-              <AppIcon name="mdi-brain" class="me-1" />
+              <AppIcon name="CpuChipIcon" class="mr-1" />
               Personalized Results
             </UiChip>
           </div>
@@ -395,29 +404,37 @@
 
     <!-- Jobs Results Section -->
     <v-container>
-      <v-card id="jobs-table" class="jobs-results-card bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" elevation="0">
-        <v-card-title class="d-flex align-center justify-space-between pa-4">
+      <v-card id="jobs-table" class="jobs-results-card glass-card" elevation="0">
+        <v-card-title class="flex items-center justify-space-between pa-4">
           <div>
-            <h2 class="text-h4 mb-2 text-gray-900 dark:text-gray-100">Gaming Job Opportunities</h2>
-            <p class="text-body-1 text-gray-600 dark:text-gray-400 mb-0">
+            <h2 class="text-h4 mb-2 text-glass-primary">Gaming Job Opportunities</h2>
+            <p class="text-body-1 text-glass-secondary mb-0">
               Curated from multiple gaming industry sources
             </p>
           </div>
           <div class="header-actions-group">
-            <UiChip classes="chip chip-primary bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+            <UiChip classes="chip chip-primary chip-neon-blue">
               {{ filteredJobs.length }} Results
             </UiChip>
             <ViewToggle
               v-model="viewMode" :options="[
-                { value: 'table', icon: 'mdi-table', label: 'Table view' },
+                { value: 'table', icon: 'TableCellsIcon', label: 'Table view' },
                 { value: 'cards', icon: 'mdi-view-grid', label: 'Cards view' },
               ]"
             />
           </div>
         </v-card-title>
         <!-- Table View -->
+        <!-- Skeleton Loading for Table View -->
+        <LoadingSkeletons
+          v-if="(viewMode === 'table') && (loading || refreshing || aiLoading)"
+          variant="table"
+          :table-flex flex-wrap-count="10"
+          :show="true"
+        />
+
         <v-data-table
-          v-if="viewMode === 'table'"
+          v-else-if="viewMode === 'table'"
           v-model="selectedJobs"
           :headers="tableHeaders"
           :items="paginatedJobs"
@@ -431,11 +448,11 @@
           <!-- Empty state -->
           <template #no-data>
             <div class="empty-state text-center pa-8">
-              <AppIcon name="mdi-magnify" size="64" color="primary" class="mb-4 text-gray-400 dark:text-gray-500" />
-              <h3 class="text-h5 mb-2 text-gray-900 dark:text-gray-100">No jobs found</h3>
-              <p class="text-body-2 text-gray-600 dark:text-gray-400 mb-4">
+              <AppIcon name="MagnifyingGlassIcon" size="64" color="primary" class="mb-4 text-glass-secondary" />
+              <h3 class="text-h5 mb-2 text-glass-primary">No jobs found</h3>
+              <p class="text-body-2 text-glass-secondary mb-4">
                 Try adjusting your filters or 
-                <router-link to="/settings#job-sources-section" class="text-primary">configure more job sources</router-link>
+                <router-link to="/settings#job-sources-section" class="text-primary-600">configure more job sources</router-link>
               </p>
             </div>
           </template>
@@ -443,12 +460,12 @@
           <!-- Job Title Column -->
           <template #item.title="{ item }">
             <div class="job-title-cell">
-              <h4 class="text-subtitle-1 font-weight-semibold mb-1 text-gray-900 dark:text-gray-100">{{ item.title }}</h4>
-              <div class="d-flex align-center ga-1 mb-2">
+              <h4 class="text-base font-medium font-weight-semibold mb-1 text-glass-primary">{{ item.title }}</h4>
+              <div class="flex items-center ga-1 mb-2">
                 <UiChip
                   v-for="tag in (item.tags || []).slice(0, 2)"
                   :key="tag"
-                  classes="chip chip-info chip-compact bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
+                  classes="chip chip-info chip-compact chip-neon-blue"
                 >
                   {{ tag }}
                 </UiChip>
@@ -456,7 +473,7 @@
                   v-if="item.matchScore !== undefined && item.matchScore !== null"
                   :classes="`chip chip-${getMatchChipColor(item.matchScore)} chip-compact`"
                 >
-                  <AppIcon name="mdi-target-variant" class="me-1" />
+                  <AppIcon name="CursorArrowRaysIcon-variant" class="mr-1" />
                   {{ Math.round(item.matchScore) }}%
                 </UiChip>
               </div>
@@ -465,7 +482,7 @@
 
           <!-- Company Column -->
           <template #item.company="{ item }">
-            <div class="company-cell d-flex align-center ga-3">
+            <div class="company-cell flex items-center gap-glass-md">
               <v-avatar v-if="item.companyLogo" size="40">
                 <v-img :src="item.companyLogo" :alt="item.company" />
               </v-avatar>
@@ -475,15 +492,15 @@
                 </span>
               </v-avatar>
               <div>
-                <div class="d-flex align-center ga-1">
-                  <span class="font-weight-medium text-gray-900 dark:text-gray-100">{{ item.company }}</span>
+                <div class="flex items-center ga-1">
+                  <span class="font-weight-medium text-glass-primary">{{ item.company }}</span>
                   <UnifiedButton
                     v-if="getMatchingStudio(item.company)"
                     icon-only
                     size="xs"
                     variant="ghost"
                     :aria-label="`View ${item.company} studio details`"
-                    icon="mdi-information-outline"
+                    icon="InformationCircleIcon"
                     @click.stop="openStudioModal(item)"
                   />
                 </div>
@@ -494,8 +511,8 @@
 
           <!-- Location Column -->
           <template #item.location="{ item }">
-            <div class="d-flex align-center ga-1">
-              <AppIcon name="mdi-map-marker" size="16" color="primary" />
+            <div class="flex items-center ga-1">
+              <AppIcon name="MapPinIcon" size="16" color="primary" />
               <span>{{ item.location || 'Not specified' }}</span>
               <UiChip v-if="item.remote" classes="chip chip-success chip-compact">
                 Remote
@@ -529,13 +546,13 @@
 
           <!-- Actions Column -->
           <template #item.actions="{ item }">
-            <div class="d-flex ga-1">
+            <div class="flex ga-1">
               <UnifiedButton
                 icon-only
                 size="sm"
                 variant="outline"
                 aria-label="View job details"
-                icon="mdi-eye"
+                icon="EyeIcon"
                 @click="viewJob(item)"
               />
               <UnifiedButton
@@ -543,7 +560,7 @@
                 size="sm"
                 :variant="isJobSaved(item.id) ? 'primary' : 'outline'"
                 :aria-label="isJobSaved(item.id) ? 'Remove from saved' : 'Save job'"
-                :icon="isJobSaved(item.id) ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                :icon="isJobSaved(item.id) ? 'BookmarkIcon' : 'BookmarkIcon-outline'"
                 @click="toggleSaveJob(item)"
               />
               <UnifiedButton
@@ -551,7 +568,7 @@
                 size="sm"
                 variant="primary"
                 aria-label="Apply to job"
-                icon="mdi-send"
+                icon="PaperAirplaneIcon"
                 @click="applyToJob(item)"
               />
             </div>
@@ -560,17 +577,25 @@
 
         <!-- Cards View -->
         <div v-else-if="viewMode === 'cards'" class="pa-4">
-          <div v-if="filteredJobs.length === 0 && !loading" class="empty-state text-center pa-8">
-            <AppIcon name="mdi-magnify" size="64" color="primary" class="mb-4" />
+          <!-- Skeleton Loading for Cards View -->
+          <LoadingSkeletons
+            v-if="loading || refreshing || aiLoading"
+            variant="grid"
+            :grid-item-count="12"
+            :show="true"
+          />
+
+          <div v-else-if="filteredJobs.length === 0 && !loading" class="empty-state text-center pa-8">
+            <AppIcon name="MagnifyingGlassIcon" size="64" color="primary" class="mb-4" />
             <h3 class="text-h5 mb-2">No jobs found</h3>
             <p class="text-body-2 text-medium-emphasis mb-4">
-              Try adjusting your filters or 
-              <router-link to="/settings#job-sources-section" class="text-primary">configure more job sources</router-link>
+              Try adjusting your filters or
+              <router-link to="/settings#job-sources-section" class="text-primary-600">configure more job sources</router-link>
             </p>
           </div>
-                
-          <v-row v-else>
-            <v-col
+
+          <v-flex v-else flex-wrap>
+            <v-flex-1
               v-for="job in paginatedJobs"
               :key="job.id"
               cols="12"
@@ -587,7 +612,7 @@
               >
                 <v-card-text class="pa-4">
                   <!-- Card Header -->
-                  <div class="d-flex align-start justify-space-between mb-3">
+                  <div class="flex align-start justify-space-between mb-3">
                     <v-checkbox
                       v-model="selectedJobs"
                       :value="job.id"
@@ -595,12 +620,12 @@
                       hide-details
                       @click.stop
                     />
-                    <div class="d-flex ga-1">
+                    <div class="flex ga-1">
                       <UnifiedButton
                         icon-only
                         size="sm"
                         :variant="isJobSaved(job.id) ? 'primary' : 'ghost'"
-                        :icon="isJobSaved(job.id) ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                        :icon="isJobSaved(job.id) ? 'BookmarkIcon' : 'BookmarkIcon-outline'"
                         @click.stop="toggleSaveJob(job)"
                       />
                     </div>
@@ -608,37 +633,37 @@
 
                   <!-- Job Title -->
                   <div class="mb-3">
-                    <h4 class="text-h6 mb-2">{{ job.title }}</h4>
-                    <div class="d-flex align-center ga-1 mb-2">
+                    <h4 class="text-lg font-semibold mb-2">{{ job.title }}</h4>
+                    <div class="flex items-center ga-1 mb-2">
                       <UiChip
                         v-if="job.matchScore !== undefined && job.matchScore !== null"
                         :classes="`chip chip-${getMatchChipColor(job.matchScore)}`"
                       >
-                        <AppIcon name="mdi-target-variant" class="me-1" />
+                        <AppIcon name="CursorArrowRaysIcon-variant" class="mr-1" />
                         {{ Math.round(job.matchScore) }}%
                       </UiChip>
                     </div>
                   </div>
 
                   <!-- Company Info -->
-                  <div class="d-flex align-center mb-4">
-                    <v-avatar v-if="job.companyLogo" size="32" class="me-3">
+                  <div class="flex items-center mb-4">
+                    <v-avatar v-if="job.companyLogo" size="32" class="mr-3">
                       <v-img :src="job.companyLogo" :alt="job.company" />
                     </v-avatar>
-                    <v-avatar v-else color="primary" size="32" class="me-3">
+                    <v-avatar v-else color="primary" size="32" class="mr-3">
                       <span class="text-inverse text-caption font-weight-bold">
                         {{ job.company.charAt(0).toUpperCase() }}
                       </span>
                     </v-avatar>
                     <div class="flex-grow-1">
-                      <div class="d-flex align-center ga-1">
+                      <div class="flex items-center ga-1">
                         <span class="font-weight-medium">{{ job.company }}</span>
                         <UnifiedButton
                           v-if="getMatchingStudio(job.company)"
                           icon-only
                           size="xs"
                           variant="ghost"
-                          icon="mdi-information-outline"
+                          icon="InformationCircleIcon"
                           @click.stop="openStudioModal(job)"
                         />
                       </div>
@@ -648,17 +673,17 @@
 
                   <!-- Job Details -->
                   <div class="mb-4">
-                    <div class="d-flex align-center mb-2">
-                      <AppIcon name="mdi-map-marker" size="16" color="primary" class="me-2" />
+                    <div class="flex items-center mb-2">
+                      <AppIcon name="MapPinIcon" size="16" color="primary" class="mr-2" />
                       <span class="text-body-2">{{ job.location || 'Not specified' }}</span>
                       <UiChip v-if="job.remote" classes="chip chip-success chip-compact ml-2">Remote</UiChip>
                     </div>
-                    <div class="d-flex align-center mb-2">
-                      <AppIcon name="mdi-clock-outline" size="16" color="primary" class="me-2" />
+                    <div class="flex items-center mb-2">
+                      <AppIcon name="ClockIcon" size="16" color="primary" class="mr-2" />
                       <span class="text-body-2">{{ formatJobType(job.type) }}</span>
                     </div>
-                    <div v-if="job.salary" class="d-flex align-center">
-                      <AppIcon name="mdi-currency-usd" size="16" color="success" class="me-2" />
+                    <div v-if="job.salary" class="flex items-center">
+                      <AppIcon name="mdi-currency-usd" size="16" color="success" class="mr-2" />
                       <span class="text-body-2 font-weight-medium">{{ formatSalary(job.salary) }}</span>
                     </div>
                   </div>
@@ -668,15 +693,15 @@
                     <UiChip
                       v-for="tag in (job.tags || []).slice(0, 3)"
                       :key="tag"
-                      classes="chip chip-info chip-compact me-1 mb-1"
+                      classes="chip chip-info chip-compact mr-1 mb-1"
                     >
                       {{ tag }}
                     </UiChip>
                   </div>
 
                   <!-- Action Buttons -->
-                  <div class="d-flex ga-2 flex-column">
-                    <div class="d-flex ga-2">
+                  <div class="flex gap-glass-sm flex-flex-1">
+                    <div class="flex gap-glass-sm">
                       <UnifiedButton
                         variant="outline"
                         color="primary"
@@ -694,13 +719,13 @@
                         Apply
                       </UnifiedButton>
                     </div>
-                    <div class="d-flex ga-1">
+                    <div class="flex ga-1">
                       <UnifiedButton
                         icon-only
                         variant="outline"
                         color="secondary"
                         size="sm"
-                        icon="mdi-brain"
+                        icon="CpuChipIcon"
                         :tooltip="'AI Analysis'"
                         class="flex-grow-0"
                         @click.stop="analyzeJobWithAI(job, 'match')"
@@ -709,7 +734,7 @@
                         <template #activator="{ props }">
                           <UnifiedButton
                             icon-only
-                            icon="mdi-chevron-down"
+                            icon="ChevronDownIcon"
                             size="sm"
                             variant="outline"
                             v-bind="props"
@@ -719,19 +744,19 @@
                         <v-list density="compact">
                           <v-list-item @click="analyzeJobWithAI(job, 'match')">
                             <v-list-item-title>
-                              <AppIcon name="mdi-target" class="me-2" />
+                              <AppIcon name="EyeIcon" class="mr-2" />
                               Match Analysis
                             </v-list-item-title>
                           </v-list-item>
                           <v-list-item @click="analyzeJobWithAI(job, 'salary')">
                             <v-list-item-title>
-                              <AppIcon name="mdi-currency-usd" class="me-2" />
+                              <AppIcon name="mdi-currency-usd" class="mr-2" />
                               Salary Prediction
                             </v-list-item-title>
                           </v-list-item>
                           <v-list-item @click="analyzeJobWithAI(job, 'insights')">
                             <v-list-item-title>
-                              <AppIcon name="mdi-lightbulb" class="me-2" />
+                              <AppIcon name="LightBulbIcon" class="mr-2" />
                               Career Insights
                             </v-list-item-title>
                           </v-list-item>
@@ -741,13 +766,13 @@
                   </div>
                 </v-card-text>
               </v-card>
-            </v-col>
-          </v-row>
+            </v-flex-1>
+          </v-flex flex-wrap>
         </div>
 
         <!-- Pagination -->
         <v-card-actions v-if="totalPages > 1" class="pa-4 border-t">
-          <div class="d-flex justify-space-between align-center w-100">
+          <div class="flex justify-space-between items-center w-100">
             <div class="pagination-info text-medium-emphasis">
               Showing {{ (currentPage - 1) * itemsPerPage + 1 }}-{{ Math.min(currentPage * itemsPerPage, totalJobs) }} of {{ totalJobs }} jobs
             </div>
@@ -768,8 +793,8 @@
     <!-- Advanced Search Modal -->
     <v-dialog v-model="showSearchModal" max-width="900" persistent>
       <v-card>
-        <v-card-title class="d-flex align-center pa-6">
-          <AppIcon name="mdi-robot" color="primary" class="me-3" size="32" />
+        <v-card-title class="flex items-center pa-6">
+          <AppIcon name="CpuChipIcon" color="primary" class="mr-3" size="32" />
           <div>
             <h2 class="text-h5">AI-Powered Job Search</h2>
             <p class="text-body-2 text-medium-emphasis mb-0">Let AI find the perfect gaming jobs for you</p>
@@ -778,7 +803,7 @@
           <UnifiedButton
             icon-only
             variant="ghost"
-            icon="mdi-close"
+            icon="XMarkIcon"
             aria-label="Close"
             @click="showSearchModal = false"
           />
@@ -802,7 +827,7 @@
           <UnifiedButton
             variant="primary"
             :loading="searching"
-            leading-icon="mdi-robot"
+            leading-icon="CpuChipIcon"
             @click="performAdvancedSearch"
           >
             {{ searching ? 'Searching...' : 'Start AI Search' }}
@@ -814,14 +839,14 @@
     <!-- Job Details Modal -->
     <v-dialog v-model="showJobDetails" max-width="1200" scrollable>
       <v-card v-if="selectedJob">
-        <v-card-title class="d-flex align-center pa-6">
+        <v-card-title class="flex items-center pa-6">
           <div class="flex-grow-1">
             <h2 class="text-h5 mb-1">{{ selectedJob.title }}</h2>
             <p class="text-body-1 text-medium-emphasis mb-0">
               {{ selectedJob.company }} • {{ selectedJob.location }}
             </p>
           </div>
-          <UnifiedButton icon-only variant="ghost" icon="mdi-close" aria-label="Close" @click="showJobDetails = false" />
+          <UnifiedButton icon-only variant="ghost" icon="XMarkIcon" aria-label="Close" @click="showJobDetails = false" />
         </v-card-title>
         <v-card-text class="pa-0">
           <JobDetailsView
@@ -838,8 +863,8 @@
     <!-- Studio Details Modal -->
     <v-dialog v-model="selectedStudioForModal" max-width="900" scrollable>
       <v-card v-if="selectedStudioForModal">
-        <v-card-title class="d-flex align-center pa-6">
-          <div class="d-flex align-center ga-4 flex-grow-1">
+        <v-card-title class="flex items-center pa-6">
+          <div class="flex items-center gap-glass-md flex-grow-1">
             <v-avatar v-if="selectedStudioForModal.logo" size="64" class="studio-logo">
               <v-img
                 :src="selectedStudioForModal.logo"
@@ -848,86 +873,86 @@
               />
             </v-avatar>
             <v-avatar v-else size="64" color="primary" class="studio-logo">
-              <AppIcon name="mdi-domain" size="32" color="white" />
+              <AppIcon name="BuildingOfficeIcon" size="32" color="white" />
             </v-avatar>
             <div>
               <h2 class="text-h4 mb-1">{{ selectedStudioForModal.name }}</h2>
               <p class="text-body-1 text-medium-emphasis mb-0">Gaming Studio Details</p>
             </div>
           </div>
-          <UnifiedButton icon-only variant="ghost" icon="mdi-close" aria-label="Close" @click="closeStudioModal" />
+          <UnifiedButton icon-only variant="ghost" icon="XMarkIcon" aria-label="Close" @click="closeStudioModal" />
         </v-card-title>
 
         <v-card-text class="pa-6">
           <!-- Quick Overview -->
           <div class="studio-overview mb-6">
-            <v-row>
-              <v-col cols="12" sm="6" md="3">
+            <v-flex flex-wrap>
+              <v-flex-1 cols="12" sm="6" md="3">
                 <v-card variant="outlined" class="pa-4">
-                  <div class="d-flex align-center ga-3">
-                    <AppIcon name="mdi-map-marker" color="primary" size="24" />
+                  <div class="flex items-center gap-glass-md">
+                    <AppIcon name="MapPinIcon" color="primary" size="24" />
                     <div>
                       <p class="text-caption text-medium-emphasis mb-1">Location</p>
                       <p class="font-weight-semibold mb-0">{{ selectedStudioForModal.headquarters }}</p>
                     </div>
                   </div>
                 </v-card>
-              </v-col>
-              <v-col cols="12" sm="6" md="3">
+              </v-flex-1>
+              <v-flex-1 cols="12" sm="6" md="3">
                 <v-card variant="outlined" class="pa-4">
-                  <div class="d-flex align-center ga-3">
-                    <AppIcon name="mdi-account-group" color="primary" size="24" />
+                  <div class="flex items-center gap-glass-md">
+                    <AppIcon name="UsersIcon" color="primary" size="24" />
                     <div>
                       <p class="text-caption text-medium-emphasis mb-1">Size</p>
                       <p class="font-weight-semibold mb-0">{{ selectedStudioForModal.size }}</p>
                     </div>
                   </div>
                 </v-card>
-              </v-col>
-              <v-col cols="12" sm="6" md="3">
+              </v-flex-1>
+              <v-flex-1 cols="12" sm="6" md="3">
                 <v-card variant="outlined" class="pa-4">
-                  <div class="d-flex align-center ga-3">
-                    <AppIcon name="mdi-calendar" size="24" color="primary" />
+                  <div class="flex items-center gap-glass-md">
+                    <AppIcon name="CalendarIcon" size="24" color="primary" />
                     <div>
                       <p class="text-caption text-medium-emphasis mb-1">Founded</p>
                       <p class="font-weight-semibold mb-0">{{ selectedStudioForModal.founded }}</p>
                     </div>
                   </div>
                 </v-card>
-              </v-col>
-              <v-col cols="12" sm="6" md="3">
+              </v-flex-1>
+              <v-flex-1 cols="12" sm="6" md="3">
                 <v-card variant="outlined" class="pa-4">
-                  <div class="d-flex align-center ga-3">
-                    <AppIcon name="mdi-chart-bar" color="primary" size="24" />
+                  <div class="flex items-center gap-glass-md">
+                    <AppIcon name="ChartBarSquareIcon" color="primary" size="24" />
                     <div>
                       <p class="text-caption text-medium-emphasis mb-1">Type</p>
                       <p class="font-weight-semibold mb-0">{{ selectedStudioForModal.publiclyTraded ? 'Public' : 'Private' }}</p>
                     </div>
                   </div>
                 </v-card>
-              </v-col>
-            </v-row>
+              </v-flex-1>
+            </v-flex flex-wrap>
           </div>
 
           <!-- Studio Description -->
           <div v-if="selectedStudioForModal.description" class="mb-6">
-            <div class="d-flex align-center mb-4">
-              <AppIcon name="mdi-information-outline" color="primary" class="me-2" />
-              <h3 class="text-h6">About</h3>
+            <div class="flex items-center mb-4">
+              <AppIcon name="InformationCircleIcon" color="primary" class="mr-2" />
+              <h3 class="text-lg font-semibold">About</h3>
             </div>
             <p class="text-body-1">{{ selectedStudioForModal.description }}</p>
           </div>
 
           <!-- Culture & Values -->
           <div v-if="selectedStudioForModal.culture" class="mb-6">
-            <div class="d-flex align-center mb-4">
-              <AppIcon name="mdi-heart" color="primary" class="me-2" />
-              <h3 class="text-h6">Culture & Values</h3>
+            <div class="flex items-center mb-4">
+              <AppIcon name="HeartIcon" color="primary" class="mr-2" />
+              <h3 class="text-lg font-semibold">Culture & Values</h3>
             </div>
-            <v-row>
-              <v-col cols="12" md="4">
-                <h4 class="text-subtitle-1 mb-3">Values</h4>
-                <div class="d-flex flex-wrap ga-2">
+            <v-flex flex-wrap>
+              <v-flex-1 cols="12" md="4">
+                <h4 class="text-base font-medium mb-3">Values</h4>
+                <div class="flex flex-wrap gap-glass-sm">
                   <UiChip
                     v-for="value in selectedStudioForModal.culture.values"
                     :key="value"
@@ -936,28 +961,28 @@
                     {{ value }}
                   </UiChip>
                 </div>
-              </v-col>
-              <v-col cols="12" md="4">
-                <h4 class="text-subtitle-1 mb-3">Work Style</h4>
+              </v-flex-1>
+              <v-flex-1 cols="12" md="4">
+                <h4 class="text-base font-medium mb-3">Work Style</h4>
                 <p class="text-body-2 text-medium-emphasis">{{ selectedStudioForModal.culture.workStyle }}</p>
-              </v-col>
-              <v-col cols="12" md="4">
-                <h4 class="text-subtitle-1 mb-3">Environment</h4>
+              </v-flex-1>
+              <v-flex-1 cols="12" md="4">
+                <h4 class="text-base font-medium mb-3">Environment</h4>
                 <p class="text-body-2 text-medium-emphasis">{{ selectedStudioForModal.culture.environment }}</p>
-              </v-col>
-            </v-row>
+              </v-flex-1>
+            </v-flex flex-wrap>
           </div>
 
           <!-- Games & Technologies -->
           <div class="mb-6">
-            <div class="d-flex align-center mb-4">
-              <AppIcon name="mdi-gamepad-variant" color="primary" class="me-2" />
-              <h3 class="text-h6">Games & Technologies</h3>
+            <div class="flex items-center mb-4">
+              <AppIcon name="PuzzlePieceIcon" color="primary" class="mr-2" />
+              <h3 class="text-lg font-semibold">Games & Technologies</h3>
             </div>
-            <v-row>
-              <v-col cols="12" md="6">
-                <h4 class="text-subtitle-1 mb-3">Popular Games</h4>
-                <div class="d-flex flex-wrap ga-2">
+            <v-flex flex-wrap>
+              <v-flex-1 cols="12" md="6">
+                <h4 class="text-base font-medium mb-3">Popular Games</h4>
+                <div class="flex flex-wrap gap-glass-sm">
                   <UiChip
                     v-for="game in selectedStudioForModal.games"
                     :key="game"
@@ -966,10 +991,10 @@
                     {{ game }}
                   </UiChip>
                 </div>
-              </v-col>
-              <v-col cols="12" md="6">
-                <h4 class="text-subtitle-1 mb-3">Technologies</h4>
-                <div class="d-flex flex-wrap ga-2">
+              </v-flex-1>
+              <v-flex-1 cols="12" md="6">
+                <h4 class="text-base font-medium mb-3">Technologies</h4>
+                <div class="flex flex-wrap gap-glass-sm">
                   <UiChip
                     v-for="tech in selectedStudioForModal.technologies"
                     :key="tech"
@@ -978,17 +1003,17 @@
                     {{ tech }}
                   </UiChip>
                 </div>
-              </v-col>
-            </v-row>
+              </v-flex-1>
+            </v-flex flex-wrap>
           </div>
 
           <!-- Common Roles -->
           <div v-if="selectedStudioForModal.commonRoles" class="mb-6">
-            <div class="d-flex align-center mb-4">
-              <AppIcon name="mdi-account-tie" color="primary" class="me-2" />
-              <h3 class="text-h6">Common Roles</h3>
+            <div class="flex items-center mb-4">
+              <AppIcon name="UserIcon-tie" color="primary" class="mr-2" />
+              <h3 class="text-lg font-semibold">Common Roles</h3>
             </div>
-            <div class="d-flex flex-wrap ga-2">
+            <div class="flex flex-wrap gap-glass-sm">
               <UiChip
                 v-for="role in selectedStudioForModal.commonRoles"
                 :key="role"
@@ -1001,9 +1026,9 @@
 
           <!-- Interview Style -->
           <div v-if="selectedStudioForModal.interviewStyle" class="mb-6">
-            <div class="d-flex align-center mb-4">
-              <AppIcon name="mdi-forum" color="primary" class="me-2" />
-              <h3 class="text-h6">Interview Style</h3>
+            <div class="flex items-center mb-4">
+              <AppIcon name="mdi-forum" color="primary" class="mr-2" />
+              <h3 class="text-lg font-semibold">Interview Style</h3>
             </div>
             <p class="text-body-1 text-medium-emphasis">{{ selectedStudioForModal.interviewStyle }}</p>
           </div>
@@ -1019,8 +1044,8 @@
     <!-- Smart Search Dialog -->
     <v-dialog v-model="showSmartSearchDialog" max-width="600" persistent>
       <v-card>
-        <v-card-title class="d-flex align-items-center">
-          <AppIcon name="mdi-lightbulb" class="me-3 text-primary" />
+        <v-card-title class="flex items-center">
+          <AppIcon name="LightBulbIcon" class="mr-3 text-primary-600" />
           <span>Smart Job Search</span>
         </v-card-title>
         <v-card-text>
@@ -1040,7 +1065,7 @@
 
           <div class="mt-4">
             <h6 class="text-subtitle-2 mb-2">Example queries:</h6>
-            <div class="d-flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-glass-sm">
               <UiChip
                 classes="chip chip-primary chip-compact"
                 @click="smartSearchQuery = 'Remote frontend developer position with React, $80k+'"
@@ -1069,7 +1094,7 @@
             variant="primary"
             :disabled="!smartSearchQuery.trim()"
             :loading="searching"
-            leading-icon="mdi-magnify"
+            leading-icon="MagnifyingGlassIcon"
             @click="executeSmartSearch"
           >
             Smart Search
@@ -1093,6 +1118,9 @@
 </template>
 
 <script setup lang="ts">
+import { AdjustmentsHorizontalIcon, ArrowPathIcon, BellIcon, BriefcaseIcon, BuildingOffice2Icon, BuildingOfficeIcon, CalendarIcon, ChartBarSquareIcon, ChevronDownIcon, ClockIcon, CogIcon, CpuChipIcon, DeviceTabletIcon, EyeIcon, InformationCircleIcon, LightBulbIcon, MagnifyingGlassIcon, PaperAirplaneIcon, PuzzlePieceIcon, SparklesIcon, UsersIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, HeartIcon, MapPinIcon, StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted, watch } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { useToast } from '@/composables/useToast'
@@ -1111,6 +1139,7 @@ import CompactGamifyHUD from '@/components/CompactGamifyHUD.vue'
 import GamificationService from '@/utils/gamification'
 import UiChip from '@/components/ui/UiChip.vue'
 import ViewToggle from '@/components/ui/ViewToggle.vue'
+import LoadingSkeletons from '@/components/LoadingSkeletons.vue'
 
 // Services
 import { canonicalJobService as refactoredJobAPIService } from '@/services/jobs'
@@ -1484,7 +1513,7 @@ const onLogoError = (event: Event): void => {
   const target = event.target as HTMLImageElement | null
   if (target instanceof HTMLImageElement) {
     target.style.display = 'none'
-    target.nextElementSibling?.classList.remove('d-none')
+    target.nextElementSibling?.classList.remove('hidden')
   }
 }
 
@@ -2206,7 +2235,7 @@ const getFilteredJobSources = (userPreferences: any) => {
       requiresAuth: false,
       rateLimit: '500/hour',
       icon: 'mdi-github',
-      color: 'var(--text-primary)',
+      color: 'var(--text-primary-600)',
       categories: ['tech', 'developer'],
       features: ['api'],
       regions: ['Global']
@@ -2219,7 +2248,7 @@ const getFilteredJobSources = (userPreferences: any) => {
       deprecated: false,
       requiresAuth: true,
       rateLimit: '100/hour',
-      icon: 'mdi-linkedin',
+      icon: 'LinkIconedin',
       color: 'var(--color-info-600)',
       categories: ['professional', 'networking'],
       features: ['api', 'auth'],
@@ -2304,7 +2333,7 @@ function getSourceIcon(sourceId: string): string {
   const icons: Record<string, string> = {
     arbeitnow: 'mdi mdi-briefcase-search',
     github: 'mdi mdi-github',
-    linkedin: 'mdi mdi-linkedin',
+    linkedin: 'mdi LinkIconedin',
     indeed: 'mdi mdi-briefcase'
   }
   return icons[sourceId] || 'mdi mdi-web'
@@ -2314,18 +2343,18 @@ function getSourceColor(sourceId: string): string {
   // Get computed CSS variables from document
   const root = document.documentElement
   const primaryColor = getComputedStyle(root).getPropertyValue('--color-primary')
-  const textPrimary = getComputedStyle(root).getPropertyValue('--text-primary')
+  const textPrimary = getComputedStyle(root).getPropertyValue('--text-primary-600')
   const infoColor = getComputedStyle(root).getPropertyValue('--color-info')
   const primaryAlt = getComputedStyle(root).getPropertyValue('--color-primary-alt')
-  const textMuted = getComputedStyle(root).getPropertyValue('--text-muted')
+  const textMuted = getComputedStyle(root).getPropertyValue('--text-secondary')
   
   const colors: Record<string, string> = {
     arbeitnow: primaryColor?.trim() || 'var(--color-primary)',
-    github: textPrimary?.trim() || 'var(--text-primary)',
+    github: textPrimary?.trim() || 'var(--text-primary-600)',
     linkedin: infoColor?.trim() || 'var(--color-info)',
     indeed: primaryAlt?.trim() || 'var(--color-primary-alt)'
   }
-  return colors[sourceId] || textMuted?.trim() || 'var(--text-muted)'
+  return colors[sourceId] || textMuted?.trim() || 'var(--text-secondary)'
 }
 
 // Job search caching and rate limiting
@@ -2527,7 +2556,7 @@ onMounted(async () => {
   border-radius: var(--radius-full);
   border: 1px solid var(--glass-border);
   background: var(--glass-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
 }
@@ -2759,7 +2788,7 @@ onMounted(async () => {
 
 .card-header {
   background: var(--glass-header);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   padding: 1.5rem;
 }
 
@@ -2786,11 +2815,11 @@ onMounted(async () => {
   transition: var(--transition-fast);
 }
 
-.job-row {
+.job-flex flex-wrap {
   cursor: pointer;
 }
 
-.job-row:hover {
+.job-flex flex-wrap:hover {
   background-color: rgba(var(--bs-primary-rgb), 0.05);
 }
 
@@ -2999,13 +3028,13 @@ onMounted(async () => {
 
 .item-label {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: 0.25rem;
 }
 
 .item-value {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .info-section {
@@ -3027,7 +3056,7 @@ onMounted(async () => {
 .culture-item h5 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .values-list, .games-list, .tech-list, .roles-list {
@@ -3051,7 +3080,7 @@ onMounted(async () => {
 .game-tag {
   background: var(--glass-surface);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .tech-tag {
@@ -3076,7 +3105,7 @@ onMounted(async () => {
 
 .games-section h5, .tech-section h5 {
   margin-bottom: 0.75rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 @keyframes fadeIn {
@@ -3115,14 +3144,14 @@ onMounted(async () => {
 
 /* Board-style visual elements */
 .board-pins {
-  @apply position-absolute;
+  @apply absolute;
   top: -10px;
   right: -10px;
   pointer-events: none;
 }
 
 .pin {
-  @apply position-absolute;
+  @apply absolute;
   font-size: 1.2rem;
   animation: pinBounce 2s ease-in-out infinite;
 }
@@ -3165,7 +3194,7 @@ onMounted(async () => {
 
 .sam-max-quote::before {
   content: '💬';
-  @apply position-absolute;
+  @apply absolute;
   top: -5px;
   left: 15px;
   font-size: 2rem;
@@ -3248,7 +3277,7 @@ onMounted(async () => {
 /* Hidden Sam & Max References */
 .secret-reference {
   opacity: 0;
-  @apply position-absolute;
+  @apply absolute;
   font-size: 0.8rem;
   color: rgba(var(--v-theme-primary));
   transition: opacity var(--duration-normal) var(--easing-ease);
@@ -3277,7 +3306,7 @@ onMounted(async () => {
 
 .btn-board-style::before {
   content: '';
-  @apply position-absolute;
+  @apply absolute;
   top: 0;
   left: -100%;
   width: 100%;
@@ -3299,7 +3328,7 @@ onMounted(async () => {
 
 /* Max's Comments as Tooltips */
 .max-tooltip {
-  @apply position-absolute;
+  @apply absolute;
   background: rgba(var(--v-theme-surface), 0.8);
   border: 1px solid rgba(var(--v-theme-primary));
   border-radius: 15px;
@@ -3321,15 +3350,15 @@ onMounted(async () => {
 
 .max-tooltip::after {
   content: '';
-  @apply position-absolute;
+  @apply absolute;
   bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid rgba(var(--v-theme-primary));
+  border-l: 8px solid transparent;
+  border-r: 8px solid transparent;
+  border-t: 8px solid rgba(var(--v-theme-primary));
 }
 
 /* Responsive Adjustments for The Board */

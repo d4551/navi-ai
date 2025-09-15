@@ -1,5 +1,5 @@
 <template>
-  <div class="resume-layout">
+  <div class="resume-layout" class="font-sans">
     <!-- Header Section -->
     <header class="resume-header">
       <div class="header-content">
@@ -13,11 +13,11 @@
             Save Draft
           </button>
           <button class="action-btn secondary" @click="previewResume">
-            <AppIcon name="mdi-eye" />
+            <AppIcon name="EyeIcon" />
             Preview
           </button>
           <button class="action-btn primary" @click="exportResume">
-            <AppIcon name="mdi-download" />
+            <AppIcon name="ArrowDownTrayIcon" />
             Export
           </button>
         </div>
@@ -48,7 +48,7 @@
             >
               <AppIcon class="nav-icon" :name="section.icon" />
               <span class="nav-text">{{ section.title }}</span>
-              <AppIcon v-if="section.completed" class="nav-indicator" name="mdi-check-circle-outline" />
+              <AppIcon v-if="section.completed" class="nav-indicator" name="CheckCircleIcon" />
             </li>
           </ul>
         </div>
@@ -56,7 +56,7 @@
         <!-- AI Assistant -->
         <div class="ai-assistant">
           <div class="assistant-header">
-            <AppIcon name="mdi-robot" />
+            <AppIcon name="CpuChipIcon" />
             <h4>AI Assistant</h4>
           </div>
           <p class="assistant-description">Get personalized suggestions for your resume content</p>
@@ -74,10 +74,10 @@
             <h2 class="section-title">{{ currentSection?.title }}</h2>
             <div class="section-actions">
               <button v-if="currentSection?.allowMultiple" class="icon-btn" @click="addItem">
-                <AppIcon name="mdi-plus" />
+                <AppIcon name="PlusIcon" />
               </button>
               <button v-if="currentSection?.allowReorder" class="icon-btn" @click="reorderItems">
-                <AppIcon name="mdi-sort" />
+                <AppIcon name="Bars3BottomLeftIcon" />
               </button>
             </div>
           </div>
@@ -93,7 +93,7 @@
           <div class="preview-header">
             <h3>Live Preview</h3>
             <button class="icon-btn" @click="togglePreview">
-              <AppIcon name="mdi-close-circle-outline" />
+              <AppIcon name="XMarkIcon-circle-outline" />
             </button>
           </div>
           <div class="preview-content">
@@ -108,6 +108,8 @@
 </template>
 
 <script>
+import { ArrowDownTrayIcon, Bars3BottomLeftIcon, CheckCircleIcon, CpuChipIcon, EyeIcon, PlusIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -134,7 +136,7 @@ export default {
       {
         id: 'personal',
         title: 'Personal Information',
-        icon: 'mdi-account',
+        icon: 'UserIcon',
         completed: false,
         required: true
       },
@@ -172,7 +174,7 @@ export default {
       {
         id: 'projects',
         title: 'Projects',
-        icon: 'mdi-folder-multiple-outline',
+        icon: 'FolderIcon-multiple-outline',
         completed: false,
         required: false,
         allowMultiple: true
@@ -188,7 +190,7 @@ export default {
       {
         id: 'additional',
         title: 'Additional Information',
-        icon: 'mdi-plus-circle',
+        icon: 'PlusIcon-circle',
         completed: false,
         required: false
       }
@@ -282,7 +284,7 @@ export default {
 
 .resume-header {
   background-color: var(--md-sys-color-surface-container);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-b: 1px solid var(--md-sys-color-outline-variant);
   padding: 16px 24px;
 }
 
@@ -373,7 +375,7 @@ export default {
 .resume-nav {
   width: 280px;
   background-color: var(--md-sys-color-surface-container-low);
-  border-right: 1px solid var(--md-sys-color-outline-variant);
+  border-r: 1px solid var(--md-sys-color-outline-variant);
   padding: 24px 0;
   overflow-y: auto;
 }
@@ -536,7 +538,7 @@ export default {
 .preview-panel {
   width: 400px;
   background-color: var(--md-sys-color-surface);
-  border-left: 1px solid var(--md-sys-color-outline-variant);
+  border-l: 1px solid var(--md-sys-color-outline-variant);
   display: flex;
   flex-direction: column;
 }
@@ -546,7 +548,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-b: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .preview-header h3 {

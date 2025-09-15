@@ -1,9 +1,9 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="card glass-card section-card h-100" role="complementary" aria-labelledby="about-title">
+  <div class="card glass-card section-card h-100" role="complementary" aria-labelledby="about-title" class="font-sans">
     <div class="card-header section-header card-header--dense">
       <h6 id="about-title" class="mb-0">
-        <InfoIconComponent class="me-2 icon-sm" />About NAVI
+        <InfoIconComponent class="mr-2 icon-sm" />About NAVI
       </h6>
     </div>
     <div class="card-body section-body card-body--dense">
@@ -61,14 +61,14 @@
       <!-- Quick Links -->
       <div class="quick-links mb-4">
         <h6 class="section-title mb-3">Quick Links</h6>
-        <div class="d-grid gap-2">
+        <div class="d-grid gap-glass-sm">
           <a
             href="https://github.com/donnellybrandon/NaviCV"
             target="_blank"
             rel="noopener noreferrer"
-            class="btn btn-outline-secondary btn-sm d-flex align-items-center v-btn variant-outlined ui-btn ui-size-md"
+            class="btn btn-outline-secondary btn-sm flex items-center v-btn variant-outlined ui-btn ui-size-md"
           >
-            <GithubIconComponent class="me-2" />
+            <GithubIconComponent class="mr-2" />
             View on GitHub
             <ExternalLinkIconComponent class="ms-auto" />
           </a>
@@ -77,9 +77,9 @@
             href="https://github.com/donnellybrandon/NaviCV/wiki"
             target="_blank"
             rel="noopener noreferrer"
-            class="btn btn-outline-secondary btn-sm d-flex align-items-center v-btn variant-outlined ui-btn ui-size-md"
+            class="btn btn-outline-secondary btn-sm flex items-center v-btn variant-outlined ui-btn ui-size-md"
           >
-            <BookIconComponent class="me-2" />
+            <BookIconComponent class="mr-2" />
             Documentation
             <ExternalLinkIconComponent class="ms-auto" />
           </a>
@@ -88,9 +88,9 @@
             href="https://github.com/donnellybrandon/NaviCV/discussions"
             target="_blank"
             rel="noopener noreferrer"
-            class="btn btn-outline-secondary btn-sm d-flex align-items-center v-btn variant-outlined ui-btn ui-size-md"
+            class="btn btn-outline-secondary btn-sm flex items-center v-btn variant-outlined ui-btn ui-size-md"
           >
-            <MessageCircleIconComponent class="me-2" />
+            <MessageCircleIconComponent class="mr-2" />
             Community Discord
             <ExternalLinkIconComponent class="ms-auto" />
           </a>
@@ -102,19 +102,19 @@
       <!-- Support & Feedback -->
       <div class="support-feedback">
         <h6 class="section-title mb-3">Support & Feedback</h6>
-        <div class="d-grid gap-2">
-          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="mdi-alert" @click="$emit('report-issue')">Report Issue</UnifiedButton>
+        <div class="d-grid gap-glass-sm">
+          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="ExclamationTriangleIcon" @click="$emit('report-issue')">Report Issue</UnifiedButton>
 
-          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="mdi-lightbulb" @click="$emit('request-feature')">Request Feature</UnifiedButton>
+          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="LightBulbIcon" @click="$emit('request-feature')">Request Feature</UnifiedButton>
 
-          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="mdi-email" @click="$emit('contact-support')">Contact Support</UnifiedButton>
+          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="EnvelopeIcon" @click="$emit('contact-support')">Contact Support</UnifiedButton>
         </div>
       </div>
 
       <!-- Footer -->
-      <div class="about-footer mt-4 pt-3 border-top">
+      <div class="about-footer mt-4 pt-3 border-t">
         <div class="copyright text-center">
-          <small :class="{ 'text-muted': colorScheme === 'light', 'text-muted-dark': colorScheme === 'dark' }">
+          <small :class="{ 'text-secondary': colorScheme === 'light', 'text-secondary-dark': colorScheme === 'dark' }">
             © {{ currentYear }} NAVI CV. All rights by
             <a
               href="https://www.linkedin.com/in/stracos"
@@ -122,7 +122,7 @@
               rel="noopener noreferrer"
               class="legal-link"
             >
-              <GraduationCapIconComponent class="professor-icon me-1" :class="{ 'text-warning': colorScheme === 'light', 'text-warning-dark': colorScheme === 'dark' }" />
+              <GraduationCapIconComponent class="professor-icon mr-1" :class="{ 'text-warning-600': colorScheme === 'light', 'text-warning-600-dark': colorScheme === 'dark' }" />
               Dr. Brandon Donnelly
             </a>. Made with
             <HeartIconComponent class="heart-icon" /> for gamers.
@@ -137,7 +137,7 @@
           >
             Privacy Policy
           </a>
-          <span class="mx-2 text-muted">•</span>
+          <span class="mx-2 text-secondary">•</span>
           <a
             href="#"
             class="legal-link"
@@ -152,6 +152,8 @@
 </template>
 
 <script>
+import { EnvelopeIcon, ExclamationTriangleIcon, LightBulbIcon } from '@heroicons/vue/24/outline'
+
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 import {
   InfoIconComponent,
@@ -242,7 +244,7 @@ export default {
 .app-name {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .app-version {
@@ -259,7 +261,7 @@ export default {
 .section-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }

@@ -1,5 +1,5 @@
 <template>
-  <header class="system-header v-app-bar" role="banner">
+  <header class="system-header v-app-bar" role="banner" class="font-sans">
     <!-- Top Status Bar -->
     <div class="status-bar">
       <div class="status-bar-content">
@@ -32,7 +32,7 @@
           </div>
 
           <!-- Theme toggle removed by guideline; managed in Settings -->
-          <IconButton class="quick-btn" variant="glass" size="sm" icon="mdi-refresh" title="Refresh System" aria-label="Refresh System" @click="refreshSystem" />
+          <IconButton class="quick-btn" variant="glass" size="sm" icon="ArrowPathIcon" title="Refresh System" aria-label="Refresh System" @click="refreshSystem" />
           <IconButton class="quick-btn" variant="glass" size="sm" icon="mdi-cog-outline" title="System Settings" aria-label="System Settings" @click="openSettings" />
         </div>
       </div>
@@ -40,7 +40,7 @@
 
     <!-- Simplified Header Row (glasmorphic, light/dark) -->
     <div class="main-header simple">
-      <div class="header-row">
+      <div class="header-flex flex-wrap">
         <div class="left">
           <h1 class="system-title">
             <AppIcon :name="icon" class="title-icon" />
@@ -67,7 +67,7 @@
             <AppIcon :name="systemStatusIcon" class="status-icon" />
             <span class="status-text">{{ systemStatusText }}</span>
           </div>
-          <IconButton class="quick-btn" variant="glass" size="sm" icon="mdi-refresh" title="Refresh System" aria-label="Refresh System" @click="refreshSystem" />
+          <IconButton class="quick-btn" variant="glass" size="sm" icon="ArrowPathIcon" title="Refresh System" aria-label="Refresh System" @click="refreshSystem" />
           <IconButton class="quick-btn" variant="glass" size="sm" icon="mdi-cog-outline" title="System Settings" aria-label="System Settings" @click="openSettings" />
         </div>
       </div>
@@ -75,6 +75,8 @@
   </header>
 </template>
 <script setup>
+import { ArrowPathIcon } from '@heroicons/vue/24/outline'
+
 import { computed, defineEmits, defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
@@ -109,7 +111,7 @@ const systemStatusClass = computed(() => {
 // Theme toggle is managed in Settings; removed here for simplicity
 
 const systemStatusIcon = computed(() => {
-  return props.online ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'
+  return props.online ? 'CheckIcon-circle-outline' : 'XMarkIcon-circle-outline'
 })
 
 const systemStatusText = computed(() => {
@@ -142,15 +144,15 @@ const providerHealthStatusText = computed(() => {
 })
 
 const providerHealthIcon = computed(() => {
-  if (!props.providerHealth) return 'mdi-help-circle'
+  if (!props.providerHealth) return 'QuestionMarkCircleIcon-circle'
   
   const totalProviders = Object.keys(props.providerHealth).length
   const activeProviders = Object.values(props.providerHealth).filter(Boolean).length
   const healthPercentage = totalProviders > 0 ? (activeProviders / totalProviders) * 100 : 0
   
-  if (healthPercentage === 100) return 'mdi-check-circle-outline'
+  if (healthPercentage === 100) return 'CheckIcon-circle-outline'
   if (healthPercentage >= 50) return 'mdi-alert-circle-outline'
-  return 'mdi-close-circle-outline'
+  return 'XMarkIcon-circle-outline'
 })
 
 // Methods (store already declared above; toggleTheme defined earlier)
@@ -194,7 +196,7 @@ const openSettings = () => {
 <style scoped>
 .status-bar {
   padding: var(--spacing-sm) var(--spacing-md);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: rgba(var(--surface-glass-rgb, 255,255,255), 0.6);
   backdrop-filter: blur(12px) saturate(1.2);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);
@@ -209,7 +211,7 @@ const openSettings = () => {
 
 .station-info { display: inline-flex; align-items: center; gap: var(--spacing-sm); }
 .station-icon { font-size: 1.1rem; color: var(--color-primary-500); }
-.station-label { font-weight: 600; color: var(--text-primary); }
+.station-label { font-weight: 600; color: var(--text-primary-600); }
 .station-id { font-size: 0.8rem; color: var(--text-secondary); }
 
 .system-status .status-indicator {
@@ -220,7 +222,7 @@ const openSettings = () => {
   border-radius: 999px;
   border: 1px solid var(--glass-border);
   background: rgba(var(--surface-glass-rgb, 255,255,255), 0.45);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 .status-indicator.online { border-color: color-mix(in srgb, var(--color-success) 35%, transparent); }
 .status-indicator.offline { border-color: color-mix(in srgb, var(--color-danger) 35%, transparent); }
@@ -240,7 +242,7 @@ const openSettings = () => {
 .quick-btn:hover { background: rgba(var(--surface-glass-rgb, 255,255,255), 0.65); }
 
 .main-header.simple { padding: var(--spacing-md); }
-.main-header .header-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: var(--spacing-md); }
+.main-header .header-flex flex-wrap { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: var(--spacing-md); }
 .system-title { display: flex; align-items: center; gap: var(--spacing-sm); margin: 0; }
 .title-icon { color: var(--color-primary-500); }
 .system-subtitle { margin: 4px 0 0; color: var(--text-secondary); font-size: 0.9rem; }
@@ -282,7 +284,7 @@ const openSettings = () => {
   padding-bottom: var(--spacing-md) !important;
 }
 
-.sys-header-row {
+.sys-header-flex flex-wrap {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: var(--spacing-lg);
@@ -306,7 +308,7 @@ const openSettings = () => {
 
 .sys-subtitle {
   margin: 0.25rem 0 0 0;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.875rem;
   line-height: 1.4;
 }
@@ -318,7 +320,7 @@ const openSettings = () => {
 }
 
 .status-panel {
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
   border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
@@ -328,7 +330,7 @@ const openSettings = () => {
 
 [data-theme="dark"] .status-panel,
 :root:not([data-theme]) .status-panel {
-  background: var(--dark-bg-secondary);
+  background: var(--dark-bg-secondary-500);
   border-color: var(--glass-border-dark);
 }
 
@@ -338,14 +340,14 @@ const openSettings = () => {
   align-items: center;
   margin-bottom: var(--spacing-sm);
   padding-bottom: var(--spacing-xs);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .status-title {
   margin: 0;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -359,7 +361,7 @@ const openSettings = () => {
 
 .health-label {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -381,21 +383,21 @@ const openSettings = () => {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--glass-border);
 }
 
 [data-theme="dark"] .status-item,
 :root:not([data-theme]) .status-item {
-  background: var(--dark-bg-primary);
+  background: var(--dark-bg-primary-500);
   border-color: var(--glass-border-dark);
 }
 
 .service-name {
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .service-status {
@@ -423,7 +425,7 @@ const openSettings = () => {
   justify-content: space-between;
   align-items: center;
   padding-top: var(--spacing-xs);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   font-size: 0.75rem;
 }
 
@@ -455,12 +457,12 @@ const openSettings = () => {
 
 .sys-action.btn:hover {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .sys-header-row {
+  .sys-header-flex flex-wrap {
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
   }

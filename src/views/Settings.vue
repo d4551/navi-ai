@@ -5,13 +5,14 @@
       profileCompleteness,
       themeName: theme?.getThemeDisplayName?.() || 'System',
     }"
+    class="font-sans "
   >
     <template #header-actions>
       <HeaderActions layout="horizontal" alignment="end" gap="md" priority="secondary">
         <UnifiedButton
           variant="glass"
           size="md"
-          leading-icon="mdi-magnify"
+          leading-icon="MagnifyingGlassIcon"
           @click="showSearchModal = true"
         >
           Search
@@ -19,7 +20,7 @@
         <UnifiedButton
           variant="glass"
           size="md"
-          leading-icon="mdi-download"
+          leading-icon="ArrowDownTrayIcon"
           @click="exportSettings"
         >
           Export
@@ -48,39 +49,22 @@
 
     <!-- Main Content with improved layout -->
     <div class="settings-layout unified-container">
-      <!-- Loading State -->
-      <div
-        v-if="store?.loading?.ai"
-        class="glass p-6 gap-4 rounded-lg"
-        role="status"
-        aria-live="polite"
-        aria-label="Loading settings"
-        style="margin-bottom: var(--spacing-6);"
-      >
-        <ContentLoader
-          :height="160"
-          width="100%"
-          :speed="1.2"
-          primary-color="var(--skeleton-primary)"
-          secondary-color="var(--skeleton-secondary)"
-          :animate="true"
-          class="w-100"
-        >
-          <rect x="0" y="0" rx="8" ry="8" width="40%" height="20" />
-          <rect x="0" y="32" rx="6" ry="6" width="60%" height="16" />
-          <rect x="0" y="64" rx="6" ry="6" width="45%" height="40" />
-          <rect x="50%" y="64" rx="6" ry="6" width="45%" height="40" />
-        </ContentLoader>
-      </div>
+      <!-- Enhanced Loading State -->
+      <LoadingSkeletons
+        v-if="store?.loading?.ai || loadingModels || loadingDevices"
+        variant="form"
+        :form-field-count="5"
+        :show="true"
+      />
 
       <!-- Enhanced Settings Navigation with Master Glass Theme -->
       <div class="settings-navigation enhanced-glass-card" style="margin-bottom: var(--spacing-6); position: sticky; top: var(--spacing-4); z-index: 10;">
         <!-- Enhanced Search Header -->
-        <div class="navigation-header glass-section-header" style="padding: var(--spacing-4); border-bottom: 1px solid var(--glass-border);">
-          <div class="d-flex align-items-center gap-3">
+        <div class="navigation-header glass-section-header" style="padding: var(--spacing-4); border-b: 1px solid var(--glass-border);">
+          <div class="flex items-center gap-glass-md">
             <div class="search-input-wrapper flex-grow-1" style="max-width: calc(var(--page-narrow-width) * 0.55);">
               <div class="position-relative">
-                <AppIcon name="mdi-magnify" class="position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);" />
+                <AppIcon name="MagnifyingGlassIcon" class="position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);" />
                 <input
                   v-model="searchQuery"
                   type="text"
@@ -91,7 +75,7 @@
                 />
               </div>
             </div>
-            <div class="quick-filters d-flex gap-2">
+            <div class="quick-filters flex gap-glass-sm">
               <UnifiedButton
                 v-for="quickTab in quickAccessTabs"
                 :key="quickTab.key"
@@ -117,10 +101,10 @@
         <!-- ESSENTIALS Group with Enhanced Unified Profile Tabs -->
         <div v-if="activeTab === 'profile'" class="settings-group">
           <div class="group-header enhanced-glass-card" style="padding: var(--spacing-5); margin-bottom: var(--spacing-4);">
-            <div class="d-flex align-items-center justify-content-between">
+            <div class="flex items-center justify-between">
               <div>
-                <h2 class="h4 mb-2" style="color: var(--text-primary);">
-                  <AppIcon name="mdi-account-card-details" class="me-2" />
+                <h2 class="h4 mb-2" style="color: var(--text-primary-600);">
+                  <AppIcon name="UserIcon-card-details" class="mr-2" />
                   Profile & Identity
                 </h2>
                 <p class="mb-0" style="color: var(--text-secondary);">
@@ -145,7 +129,7 @@
                   <UnifiedButton
                     :variant="activeProfileTab === 'personal' ? 'primary' : 'glass'"
                     size="sm"
-                    leading-icon="mdi-account"
+                    leading-icon="UserIcon"
                     class="profile-tab-btn"
                     @click="activeProfileTab = 'personal'"
                   >
@@ -154,7 +138,7 @@
                   <UnifiedButton
                     :variant="activeProfileTab === 'gaming' ? 'primary' : 'glass'"
                     size="sm"
-                    leading-icon="mdi-gamepad-variant"
+                    leading-icon="PuzzlePieceIcon"
                     class="profile-tab-btn"
                     @click="activeProfileTab = 'gaming'"
                   >
@@ -163,7 +147,7 @@
                   <UnifiedButton
                     :variant="activeProfileTab === 'career' ? 'primary' : 'glass'"
                     size="sm"
-                    leading-icon="mdi-briefcase"
+                    leading-icon="BriefcaseIcon"
                     class="profile-tab-btn"
                     @click="activeProfileTab = 'career'"
                   >
@@ -198,15 +182,15 @@
                 <div v-if="activeProfileTab === 'career'" class="tab-pane profile-tab-pane">
                   <div class="career-details-section glass-section">
                     <div class="section-header glass-section-header">
-                      <h4 class="h6 mb-0" style="color: var(--text-primary); display: flex; align-items: center; gap: var(--spacing-2);">
-                        <AppIcon name="mdi-briefcase" style="color: var(--color-primary-500);" />
+                      <h4 class="h6 mb-0" style="color: var(--text-primary-600); display: flex; align-items: center; gap: var(--spacing-2);">
+                        <AppIcon name="BriefcaseIcon" style="color: var(--color-primary-500);" />
                         Career Preferences
                       </h4>
                       <p class="mb-0" style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--spacing-1);">Define your career goals and preferences</p>
                     </div>
                     
                     <div class="form-grid glass-form-grid">
-                      <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-4);">
+                      <div class="form-flex flex-wrap" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-4);">
                         <div class="glass-form-field">
                           <label for="career-level" class="form-label glass-label">Career Level</label>
                           <select
@@ -235,7 +219,7 @@
                         </div>
                       </div>
                       
-                      <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-4);">
+                      <div class="form-flex flex-wrap" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-4);">
                         <div class="glass-form-field">
                           <label for="work-preference" class="form-label glass-label">Work Preference</label>
                           <select
@@ -287,7 +271,7 @@
             <div class="glass-card-header">
               <div class="header-content">
                 <div class="header-icon">
-                  <AppIcon name="mdi-robot" />
+                  <AppIcon name="CpuChipIcon" />
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">AI & Automation</h2>
@@ -311,7 +295,7 @@
                 <UnifiedButton
                   :variant="activeAITab === 'voice' ? 'primary' : 'glass'"
                   size="sm"
-                  leading-icon="mdi-microphone"
+                  leading-icon="MicrophoneIcon"
                   class="profile-tab-btn"
                   @click="activeAITab = 'voice'"
                 >
@@ -320,7 +304,7 @@
                 <UnifiedButton
                   :variant="activeAITab === 'providers' ? 'primary' : 'glass'"
                   size="sm"
-                  leading-icon="mdi-cloud-outline"
+                  leading-icon="CloudIcon-outline"
                   class="profile-tab-btn"
                   @click="activeAITab = 'providers'"
                 >
@@ -329,7 +313,7 @@
                 <UnifiedButton
                   :variant="activeAITab === 'integration' ? 'primary' : 'glass'"
                   size="sm"
-                  leading-icon="mdi-link-variant"
+                  leading-icon="LinkIcon-variant"
                   class="profile-tab-btn"
                   @click="activeAITab = 'integration'"
                 >
@@ -350,7 +334,16 @@
               <div class="profile-tab-content glass-tab-content">
                 <!-- Gemini API Tab -->
                 <div v-if="activeAITab === 'gemini'" class="tab-pane profile-tab-pane">
+                  <!-- Skeleton Loading for API Configuration -->
+                  <LoadingSkeletons
+                    v-if="loadingModels"
+                    variant="form"
+                    :form-field-count="3"
+                    :show="true"
+                  />
+
                   <ApiConfigurationSection
+                    v-else
                     v-model:settings="settings"
                     :show-api-key="showApiKey"
                     :testing="testing"
@@ -385,8 +378,8 @@
                 <div v-if="activeAITab === 'providers'" class="tab-pane profile-tab-pane">
                   <div class="glass-section">
                     <div class="section-header glass-section-header">
-                      <h4 class="h6 mb-0" style="color: var(--text-primary); display: flex; align-items: center; gap: var(--spacing-2);">
-                        <AppIcon name="mdi-cloud-outline" style="color: var(--color-primary-500);" />
+                      <h4 class="h6 mb-0" style="color: var(--text-primary-600); display: flex; align-items: center; gap: var(--spacing-2);">
+                        <AppIcon name="CloudIcon-outline" style="color: var(--color-primary-500);" />
                         AI Service Providers
                       </h4>
                       <p class="mb-0" style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--spacing-1);">Manage connections to different AI service providers</p>
@@ -438,8 +431,8 @@
                 <div v-if="activeAITab === 'integration'" class="tab-pane profile-tab-pane">
                   <div class="glass-section">
                     <div class="section-header glass-section-header">
-                      <h4 class="h6 mb-0" style="color: var(--text-primary); display: flex; align-items: center; gap: var(--spacing-2);">
-                        <AppIcon name="mdi-link-variant" style="color: var(--color-primary-500);" />
+                      <h4 class="h6 mb-0" style="color: var(--text-primary-600); display: flex; align-items: center; gap: var(--spacing-2);">
+                        <AppIcon name="LinkIcon-variant" style="color: var(--color-primary-500);" />
                         AI Integration & Monitoring
                       </h4>
                       <p class="mb-0" style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--spacing-1);">Monitor AI service health and manage feature integrations</p>
@@ -454,7 +447,7 @@
                 <div v-if="activeAITab === 'advanced'" class="tab-pane profile-tab-pane">
                   <div class="glass-section">
                     <div class="section-header glass-section-header">
-                      <h4 class="h6 mb-0" style="color: var(--text-primary); display: flex; align-items: center; gap: var(--spacing-2);">
+                      <h4 class="h6 mb-0" style="color: var(--text-primary-600); display: flex; align-items: center; gap: var(--spacing-2);">
                         <AppIcon name="mdi-cog-outline" style="color: var(--color-primary-500);" />
                         Advanced AI Settings
                       </h4>
@@ -465,7 +458,7 @@
                       <!-- Response Settings -->
                       <div class="glass-form-field">
                         <h5 class="setting-group-title">Response Generation</h5>
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr auto; gap: var(--spacing-3); align-items: center; margin-bottom: var(--spacing-3);">
+                        <div class="form-flex flex-wrap" style="display: grid; grid-template-columns: 1fr auto; gap: var(--spacing-3); align-items: center; margin-bottom: var(--spacing-3);">
                           <label class="form-label glass-label">Temperature</label>
                           <span class="range-value">{{ settings.aiTemperature ?? 0.7 }}</span>
                         </div>
@@ -479,15 +472,15 @@
 
                       <div class="glass-form-field">
                         <h5 class="setting-group-title">AI Behavior</h5>
-                        <div class="form-row" style="display: flex; align-items: center; gap: var(--spacing-3); margin-bottom: var(--spacing-2);">
+                        <div class="form-flex flex-wrap" style="display: flex; align-items: center; gap: var(--spacing-3); margin-bottom: var(--spacing-2);">
                           <input type="checkbox" :checked="settings.aiAutoSuggest ?? false" class="glass-toggle" @change="updateSetting('aiAutoSuggest', $event.target.checked)" />
                           <label class="toggle-label glass-label">Auto-suggest responses</label>
                         </div>
-                        <div class="form-row" style="display: flex; align-items: center; gap: var(--spacing-3); margin-bottom: var(--spacing-2);">
+                        <div class="form-flex flex-wrap" style="display: flex; align-items: center; gap: var(--spacing-3); margin-bottom: var(--spacing-2);">
                           <input type="checkbox" :checked="settings.aiSmartCorrection ?? false" class="glass-toggle" @change="updateSetting('aiSmartCorrection', $event.target.checked)" />
                           <label class="toggle-label glass-label">Smart grammar correction</label>
                         </div>
-                        <div class="form-row" style="display: flex; align-items: center; gap: var(--spacing-3);">
+                        <div class="form-flex flex-wrap" style="display: flex; align-items: center; gap: var(--spacing-3);">
                           <input type="checkbox" :checked="settings.aiContextAware ?? true" class="glass-toggle" @change="updateSetting('aiContextAware', $event.target.checked)" />
                           <label class="toggle-label glass-label">Context-aware responses</label>
                         </div>
@@ -506,7 +499,7 @@
             <div class="glass-card-header">
               <div class="header-content">
                 <div class="header-icon">
-                  <AppIcon name="mdi-cog" />
+                  <AppIcon name="CogIcon" />
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">System & Interface</h2>
@@ -521,7 +514,7 @@
                 <UnifiedButton
                   :variant="activeSystemTab === 'interface' ? 'primary' : 'glass'"
                   size="sm"
-                  leading-icon="mdi-palette"
+                  leading-icon="SwatchIcon"
                   class="profile-tab-btn"
                   @click="activeSystemTab = 'interface'"
                 >
@@ -548,7 +541,7 @@
                 <UnifiedButton
                   :variant="activeSystemTab === 'voice' ? 'primary' : 'glass'"
                   size="sm"
-                  leading-icon="mdi-microphone"
+                  leading-icon="MicrophoneIcon"
                   class="profile-tab-btn"
                   @click="activeSystemTab = 'voice'"
                 >
@@ -615,7 +608,7 @@
             <div class="glass-card-header">
               <div class="header-content">
                 <div class="header-icon">
-                  <AppIcon name="mdi-briefcase" />
+                  <AppIcon name="BriefcaseIcon" />
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">Career & Data</h2>
@@ -633,7 +626,7 @@
                   class="glass-tab-button"
                   @click="activeCareerTab = 'gaming'"
                 >
-                  <AppIcon name="mdi-gamepad-variant" />
+                  <AppIcon name="PuzzlePieceIcon" />
                   Gaming Career
                 </UnifiedButton>
                 <UnifiedButton
@@ -642,7 +635,7 @@
                   class="glass-tab-button"
                   @click="activeCareerTab = 'sources'"
                 >
-                  <AppIcon name="mdi-database-search" />
+                  <AppIcon name="CircleStackIcon-search" />
                   Data Sources
                 </UnifiedButton>
                 <UnifiedButton
@@ -651,7 +644,7 @@
                   class="glass-tab-button"
                   @click="activeCareerTab = 'management'"
                 >
-                  <AppIcon name="mdi-database-cog" />
+                  <AppIcon name="CircleStackIcon-cog" />
                   Data Management
                 </UnifiedButton>
               </div>
@@ -705,7 +698,7 @@
             <div class="glass-card-header">
               <div class="header-content">
                 <div class="header-icon">
-                  <AppIcon name="mdi-chart-line" />
+                  <AppIcon name="ChartBarIcon" />
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">Insights & Progress</h2>
@@ -723,7 +716,7 @@
                   class="glass-tab-button"
                   @click="activeInsightsTab = 'stats'"
                 >
-                  <AppIcon name="mdi-chart-bar" />
+                  <AppIcon name="ChartBarSquareIcon" />
                   Statistics
                 </UnifiedButton>
                 <UnifiedButton
@@ -732,7 +725,7 @@
                   class="glass-tab-button"
                   @click="activeInsightsTab = 'achievements'"
                 >
-                  <AppIcon name="mdi-trophy" />
+                  <AppIcon name="TrophyIcon" />
                   Achievements
                 </UnifiedButton>
               </div>
@@ -763,7 +756,7 @@
             <div class="glass-card-header">
               <div class="header-content">
                 <div class="header-icon">
-                  <AppIcon name="mdi-tools" />
+                  <AppIcon name="WrenchScrewdriverIcon" />
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">Advanced & Developer</h2>
@@ -781,7 +774,7 @@
                   class="glass-tab-button"
                   @click="activeAdvancedTab = 'developer'"
                 >
-                  <AppIcon name="mdi-code-tags" />
+                  <AppIcon name="CommandLineIcon" />
                   Developer
                 </UnifiedButton>
                 <UnifiedButton
@@ -826,7 +819,7 @@
             <div class="glass-card-header">
               <div class="header-content">
                 <div class="header-icon">
-                  <AppIcon name="mdi-information" />
+                  <AppIcon name="InformationCircleIcon" />
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">Help & About</h2>
@@ -844,7 +837,7 @@
                   class="glass-tab-button"
                   @click="activeHelpTab = 'about'"
                 >
-                  <AppIcon name="mdi-information-outline" />
+                  <AppIcon name="InformationCircleIcon" />
                   About
                 </UnifiedButton>
                 <UnifiedButton
@@ -853,7 +846,7 @@
                   class="glass-tab-button"
                   @click="activeHelpTab = 'tips'"
                 >
-                  <AppIcon name="mdi-lightbulb-outline" />
+                  <AppIcon name="LightBulbIcon-outline" />
                   Tips & Help
                 </UnifiedButton>
               </div>
@@ -890,15 +883,15 @@
       </div>
 
       <!-- Sticky Save Bar -->
-      <div v-show="isDirty" class="settings-save-bar glass p-4 gap-4 rounded-lg neon-interactive" style="position: fixed; bottom: var(--spacing-4); right: var(--spacing-4); z-index: 100;">
-        <div class="d-flex align-items-center gap-3">
-          <div class="d-flex align-items-center gap-2">
+      <div v-show="isDirty" class="settings-save-bar glass p-glass-md gap-glass-md rounded-lg neon-interactive" style="position: fixed; bottom: var(--spacing-4); right: var(--spacing-4); z-index: 100;">
+        <div class="flex items-center gap-glass-md">
+          <div class="flex items-center gap-glass-sm">
             <AppIcon name="mdi-content-save" style="color: var(--color-warning-500);" />
             <span style="color: var(--text-secondary); font-size: 0.875rem;">
               {{ saving ? 'Saving changes…' : 'Unsaved changes' }}
             </span>
           </div>
-          <div class="d-flex gap-2">
+          <div class="flex gap-glass-sm">
             <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-backup-restore" @click="resetToDefaults">
               Reset
             </UnifiedButton>
@@ -929,10 +922,10 @@
             v-for="result in filteredSearchResults.slice(0, 10)"
             :key="result.id"
             class="search-result-item"
-            style="padding: var(--spacing-3); border-bottom: 1px solid var(--glass-border); cursor: pointer;"
+            style="padding: var(--spacing-3); border-b: 1px solid var(--glass-border); cursor: pointer;"
             @click="activeTab = result.tab; showSearchModal = false"
           >
-            <div class="d-flex align-items-center gap-3">
+            <div class="flex items-center gap-glass-md">
               <AppIcon :name="result.icon" />
               <div>
                 <div style="font-weight: 500;">{{ result.title }}</div>
@@ -947,6 +940,9 @@
 </template>
 
 <script setup>
+import { ArrowDownTrayIcon, BriefcaseIcon, ChartBarIcon, ChartBarSquareIcon, CogIcon, CommandLineIcon, CpuChipIcon, InformationCircleIcon, MagnifyingGlassIcon, MicrophoneIcon, PuzzlePieceIcon, UserIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
+import { TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/app'
@@ -961,6 +957,7 @@ import GlassNavTabs from '@/components/GlassNavTabs.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import ModalBase from '@/components/ui/ModalBase.vue'
 import ContentLoader from '@/components/LoadingIndicator.vue'
+import LoadingSkeletons from '@/components/LoadingSkeletons.vue'
 import AIIntegrationPanel from '@/components/AIIntegrationPanel.vue'
 
 // Voice routing
@@ -1039,7 +1036,7 @@ const logicalTabGroups = computed(() => [
   {
     key: 'profile',
     label: 'Profile & Identity',
-    icon: 'mdi-account-card-details',
+    icon: 'UserIcon-card-details',
     description: 'Personal and gaming profile information',
     category: 'essentials'
   },
@@ -1067,7 +1064,7 @@ const logicalTabGroups = computed(() => [
   {
     key: 'insights',
     label: 'Insights & Progress',
-    icon: 'mdi-chart-timeline-variant',
+    icon: 'ChartBarIcon-timeline-variant',
     description: 'Usage statistics and achievements',
     category: 'analytics'
   },
@@ -1081,7 +1078,7 @@ const logicalTabGroups = computed(() => [
   {
     key: 'about',
     label: 'Help & About',
-    icon: 'mdi-help-circle-outline',
+    icon: 'QuestionMarkCircleIcon-circle-outline',
     description: 'App info and support resources',
     category: 'support'
   }
@@ -1089,7 +1086,7 @@ const logicalTabGroups = computed(() => [
 
 // Quick Access Tabs
 const quickAccessTabs = computed(() => [
-  { key: 'profile', shortLabel: 'Profile', icon: 'mdi-account-card-details' },
+  { key: 'profile', shortLabel: 'Profile', icon: 'UserIcon-card-details' },
   { key: 'ai', shortLabel: 'AI', icon: 'mdi-brain' },
   { key: 'system', shortLabel: 'System', icon: 'mdi-tune-vertical' },
   { key: 'career', shortLabel: 'Career', icon: 'mdi-briefcase-search-outline' }
@@ -1098,14 +1095,14 @@ const quickAccessTabs = computed(() => [
 // Search functionality
 const searchResults = computed(() => {
   const allSettings = [
-    { id: 'profile-name', title: 'Personal Profile', description: 'Name, email, contact information', tab: 'profile', icon: 'mdi-account' },
-    { id: 'gaming-profile', title: 'Gaming Profile', description: 'Studio preferences, roles, experience', tab: 'profile', icon: 'mdi-gamepad' },
-    { id: 'api-keys', title: 'API Configuration', description: 'Gemini API key and AI services', tab: 'ai', icon: 'mdi-key' },
+    { id: 'profile-name', title: 'Personal Profile', description: 'Name, email, contact information', tab: 'profile', icon: 'UserIcon' },
+    { id: 'gaming-profile', title: 'Gaming Profile', description: 'Studio preferences, roles, experience', tab: 'profile', icon: 'DevicePhoneMobileIcon' },
+    { id: 'api-keys', title: 'API Configuration', description: 'Gemini API key and AI services', tab: 'ai', icon: 'KeyIcon' },
     { id: 'ai-settings', title: 'AI Features', description: 'AI model preferences and behavior', tab: 'ai', icon: 'mdi-robot' },
-    { id: 'theme-settings', title: 'Theme & Display', description: 'Dark mode, density, appearance', tab: 'system', icon: 'mdi-palette' },
-    { id: 'audio-hardware', title: 'Audio Hardware', description: 'Microphone, speakers, voice settings', tab: 'system', icon: 'mdi-microphone' },
-    { id: 'job-sources', title: 'Job Data Sources', description: 'Gaming studios and job boards', tab: 'career', icon: 'mdi-database' },
-    { id: 'usage-stats', title: 'Usage Statistics', description: 'App usage and performance metrics', tab: 'insights', icon: 'mdi-chart-box' },
+    { id: 'theme-settings', title: 'Theme & Display', description: 'Dark mode, density, appearance', tab: 'system', icon: 'SwatchIcon' },
+    { id: 'audio-hardware', title: 'Audio Hardware', description: 'Microphone, speakers, voice settings', tab: 'system', icon: 'MicrophoneIcon' },
+    { id: 'job-sources', title: 'Job Data Sources', description: 'Gaming studios and job boards', tab: 'career', icon: 'CircleStackIcon' },
+    { id: 'usage-stats', title: 'Usage Statistics', description: 'App usage and performance metrics', tab: 'insights', icon: 'ChartBarIcon-box' },
     { id: 'developer-tools', title: 'Developer Settings', description: 'Debug mode, logs, advanced options', tab: 'advanced', icon: 'mdi-code-tags' }
   ]
   return allSettings
@@ -2248,7 +2245,7 @@ onMounted(() => {
 [data-theme="dark"] .enhanced-search-input {
   background: var(--glass-bg);
   border-color: var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .glass-tab-wrapper {
@@ -2266,7 +2263,7 @@ onMounted(() => {
 [data-theme="dark"] .profile-tab-btn:not([data-variant="primary"]):hover {
   background: var(--glass-hover-bg) !important;
   border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent) !important;
-  color: var(--text-primary) !important;
+  color: var(--text-primary-600) !important;
 }
 
 /* Light Theme Enhancements */
@@ -2412,7 +2409,7 @@ onMounted(() => {
   -webkit-backdrop-filter: var(--glass-backdrop-filter) !important;
   border: 1px solid var(--glass-border) !important;
   box-shadow: var(--glass-shadow) !important;
-  color: var(--text-primary) !important;
+  color: var(--text-primary-600) !important;
 }
 
 .profile-tab-btn:not([data-variant="primary"]):hover {
@@ -2442,7 +2439,7 @@ onMounted(() => {
 }
 
 .glass-section-header {
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
+  border-b: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
   padding-bottom: var(--spacing-3);
   margin-bottom: var(--spacing-5);
   position: relative;
@@ -2546,7 +2543,7 @@ onMounted(() => {
 /* Glass Card Header Consistency */
 .glass-card-header {
   padding: var(--spacing-6) var(--spacing-6) var(--spacing-4);
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 50%, transparent);
+  border-b: 1px solid color-mix(in srgb, var(--glass-border) 50%, transparent);
   position: relative;
 }
 
@@ -2596,7 +2593,7 @@ onMounted(() => {
 .header-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
   line-height: 1.3;
 }
@@ -2632,7 +2629,7 @@ onMounted(() => {
 .glass-tab-button:not([data-variant="glass"]):hover {
   background: var(--glass-hover-bg) !important;
   border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent) !important;
-  color: var(--text-primary) !important;
+  color: var(--text-primary-600) !important;
   transform: translateY(-1px);
   box-shadow: 
     var(--glass-shadow),
@@ -2668,7 +2665,7 @@ onMounted(() => {
 }
 
 .section-header {
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
+  border-b: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
   padding-bottom: var(--spacing-4);
   margin-bottom: var(--spacing-6);
   position: relative;
@@ -2690,7 +2687,7 @@ onMounted(() => {
 .section-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-2) 0;
   display: flex;
   align-items: center;
@@ -2763,7 +2760,7 @@ onMounted(() => {
 .provider-name {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
@@ -2823,7 +2820,7 @@ onMounted(() => {
 .setting-group-title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -2834,7 +2831,7 @@ onMounted(() => {
   background: color-mix(in srgb, var(--glass-bg) 70%, transparent) !important;
   border: 1px solid color-mix(in srgb, var(--glass-border) 70%, transparent) !important;
   backdrop-filter: blur(8px) !important;
-  color: var(--text-primary) !important;
+  color: var(--text-primary-600) !important;
   transition: all var(--duration-normal) var(--easing-ease-out) !important;
 }
 
@@ -2922,7 +2919,7 @@ onMounted(() => {
 
 .toggle-label {
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   flex: 1;

@@ -2,26 +2,27 @@
   <div 
     class="preview-panel-wrapper"
     :class="theme?.getThemeClasses?.('resume-preview')"
+    class="font-sans"
   >
     <!-- Preview Controls Header -->
     <div class="preview-controls glass-elevated mb-3">
       <div
-        class="d-flex align-items-center justify-content-between flex-wrap gap-3"
+        class="flex items-center justify-between flex-wrap gap-glass-md"
       >
-        <div class="d-flex align-items-center gap-2">
-          <h2 class="h6 mb-0 text-primary">
-            <AppIcon name="mdi-eye" size="default" aria-hidden="true" />
+        <div class="flex items-center gap-glass-sm">
+          <h2 class="h6 mb-0 text-primary-600">
+            <AppIcon name="EyeIcon" size="default" aria-hidden="true" />
             Live Preview
           </h2>
-          <div class="live-indicator d-flex align-items-center">
-            <div class="live-pulse me-2"></div>
-            <small class="text-muted fw-medium">Auto-updating</small>
+          <div class="live-indicator flex items-center">
+            <div class="live-pulse mr-2"></div>
+            <small class="text-secondary font-medium">Auto-updating</small>
           </div>
         </div>
 
         <!-- Template Selector -->
-        <div class="template-selector d-flex align-items-center gap-2">
-          <label class="form-label mb-0 text-muted small d-none d-md-inline">Template:</label>
+        <div class="template-selector flex items-center gap-glass-sm">
+          <label class="form-label mb-0 text-secondary small hidden d-md-inline">Template:</label>
           <select
             class="form-select form-select-sm glass-input select-auto-width"
             :value="selectedTemplate"
@@ -34,7 +35,7 @@
             <option value="minimal">Minimal</option>
             <option v-if="canUseAI" value="ai-smart">AI Smart</option>
           </select>
-          <div class="form-check form-switch ms-2" title="Toggle cover page (hero sheet)">
+          <div class="form-check form-switch ml-2" title="Toggle cover page (hero sheet)">
             <input id="toggleCoverPage" v-model="showCoverPage" class="form-check-input" type="checkbox">
             <label class="form-check-label small" for="toggleCoverPage">Cover</label>
           </div>
@@ -45,19 +46,19 @@
           v-if="canUseAI"
           variant="outline"
           :loading="loading.templateGeneration"
-          leading-icon="mdi-wand"
+          leading-icon="CommandLineIcon"
           :aria-label="loading.templateGeneration ? 'Generating smart template...' : 'Generate AI smart template'"
           @click="$emit('generate-smart-template')"
         >
-          <span class="d-none d-lg-inline">Smart Template</span>
+          <span class="hidden d-lg-inline">Smart Template</span>
           <span class="d-lg-none">AI</span>
         </UnifiedButton>
 
         <!-- Additional AI Enhancement Actions -->
-        <div v-if="canUseAI" class="ai-enhance-group d-flex flex-wrap gap-2">
+        <div v-if="canUseAI" class="ai-enhance-group flex flex-wrap gap-glass-sm">
           <UnifiedButton variant="ghost" size="sm" :disabled="loading.ai" leading-icon="mdi-text-box-check" title="AI optimize summary for clarity & impact" @click="emitOptimizeSummary">Improve Summary</UnifiedButton>
-          <UnifiedButton variant="ghost" size="sm" :disabled="loading.ai" leading-icon="mdi-chart-bar" title="AI will try to add measurable impact to bullet points" @click="emitQuantifyExperience">Quantify</UnifiedButton>
-          <UnifiedButton variant="ghost" size="sm" :disabled="loading.ai" leading-icon="mdi-lightbulb-on-outline" title="AI suggest missing relevant skills" @click="emitSuggestSkills">Skills</UnifiedButton>
+          <UnifiedButton variant="ghost" size="sm" :disabled="loading.ai" leading-icon="ChartBarSquareIcon" title="AI will try to add measurable impact to bullet points" @click="emitQuantifyExperience">Quantify</UnifiedButton>
+          <UnifiedButton variant="ghost" size="sm" :disabled="loading.ai" leading-icon="LightBulbIcon-on-outline" title="AI suggest missing relevant skills" @click="emitSuggestSkills">Skills</UnifiedButton>
         </div>
       </div>
     </div>
@@ -65,23 +66,23 @@
     <!-- Export Actions Bar -->
     <div class="export-actions glass-elevated mb-3">
       <div
-        class="d-flex align-items-center justify-content-between flex-wrap gap-2"
+        class="flex items-center justify-between flex-wrap gap-glass-sm"
       >
-        <div class="d-flex align-items-center gap-2">
-          <small class="text-muted fw-medium">Export Options:</small>
+        <div class="flex items-center gap-glass-sm">
+          <small class="text-secondary font-medium">Export Options:</small>
         </div>
 
-        <div class="d-flex align-items-center gap-2" role="group" aria-label="Export and preview options">
-          <UnifiedButton variant="ghost" :disabled="!hasContent" leading-icon="mdi-link-variant" aria-label="Open full preview in new window" @click="previewWindow">
-            <span class="d-none d-sm-inline">Full Preview</span>
+        <div class="flex items-center gap-glass-sm" role="group" aria-label="Export and preview options">
+          <UnifiedButton variant="ghost" :disabled="!hasContent" leading-icon="LinkIcon-variant" aria-label="Open full preview in new window" @click="previewWindow">
+            <span class="hidden d-sm-inline">Full Preview</span>
             <span class="d-sm-none">Preview</span>
           </UnifiedButton>
-          <UnifiedButton variant="primary" :disabled="!hasContent || loading.export" :loading="loading.export" leading-icon="mdi-file-pdf-box" aria-label="Export resume as PDF" @click="exportPDF">PDF</UnifiedButton>
+          <UnifiedButton variant="primary" :disabled="!hasContent || loading.export" :loading="loading.export" leading-icon="DocumentIcon-pdf-box" aria-label="Export resume as PDF" @click="exportPDF">PDF</UnifiedButton>
           <UnifiedButton variant="secondary" :disabled="!hasContent || loading.export" leading-icon="mdi-language-html5" aria-label="Export resume as HTML" @click="exportHTML">
-            <span class="d-none d-lg-inline">HTML</span>
+            <span class="hidden d-lg-inline">HTML</span>
           </UnifiedButton>
           <UnifiedButton variant="outline" :disabled="!hasContent" leading-icon="mdi-clipboard-text-outline" aria-label="Copy HTML to clipboard" @click="copyHTML">
-            <span class="d-none d-lg-inline">Copy</span>
+            <span class="hidden d-lg-inline">Copy</span>
           </UnifiedButton>
         </div>
       </div>
@@ -89,25 +90,25 @@
     <!-- Preview Card -->
     <div class="card section-card section-card card-compact preview-card">
       <div
-        class="card-header section-header card-header--dense d-flex align-items-center justify-content-between"
+        class="card-header section-header card-header--dense flex items-center justify-between"
       >
-        <div class="d-flex align-items-center gap-2">
-          <AppIcon name="mdi-file-document-outline" size="default" color="primary" aria-hidden="true" />
-          <span class="fw-semibold">{{ resume?.personalInfo?.firstName || "Your" }}
+        <div class="flex items-center gap-glass-sm">
+          <AppIcon name="DocumentIcon" size="default" color="primary" aria-hidden="true" />
+          <span class="font-semibold">{{ resume?.personalInfo?.firstName || "Your" }}
             {{ resume?.personalInfo?.lastName || "Resume" }}</span>
         </div>
 
         <!-- Completion Progress -->
         <div
           v-if="hasContent"
-          class="completion-indicator d-flex align-items-center gap-2"
+          class="completion-indicator flex items-center gap-glass-sm"
         >
           <div
             class="progress progress-sm progress-sm-60"
             :title="`${completionPercentage}% complete`"
           >
             <div
-              class="progress-bar bg-success"
+              class="progress-bar bg-success-500"
               :style="`width: ${completionPercentage}%`"
               role="progressbar"
               :aria-valuenow="completionPercentage"
@@ -115,22 +116,22 @@
               aria-valuemax="100"
             ></div>
           </div>
-          <small class="text-muted fw-medium">{{ completionPercentage }}%</small>
+          <small class="text-secondary font-medium">{{ completionPercentage }}%</small>
         </div>
       </div>
       <div class="card-body section-body p-0">
         <!-- Loading State -->
         <div
           v-if="loading.ai || loading.export || loading.templateGeneration"
-          class="loading-state p-4"
+          class="loading-state p-glass-md"
           role="status"
           aria-live="polite"
         >
           <div class="text-center mb-3">
-            <div class="spinner-border text-primary" role="status">
+            <div class="spinner-border text-primary-600" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="text-muted mt-2 mb-0">
+            <p class="text-secondary mt-2 mb-0">
               <span v-if="loading.ai">Generating content...</span>
               <span v-else-if="loading.export">Preparing export...</span>
               <span v-else-if="loading.templateGeneration">Creating template...</span>
@@ -155,17 +156,17 @@
         <!-- Empty State -->
         <div v-else-if="!hasContent" class="empty-state text-center py-5">
           <div class="empty-icon mb-3">
-            <AppIcon name="mdi-file-document-outline" aria-hidden="true" />
+            <AppIcon name="DocumentIcon" aria-hidden="true" />
           </div>
-          <h6 class="text-primary fw-semibold mb-2">
+          <h6 class="text-primary-600 font-semibold mb-2">
             Ready for Your Information
           </h6>
-          <p class="text-muted mb-3">
+          <p class="text-secondary mb-3">
             Start filling out your details to see a live preview of your resume
           </p>
-          <div class="d-flex flex-wrap gap-2 justify-content-center">
-            <small class="text-muted">
-              <AppIcon name="mdi-lightbulb" aria-hidden="true" />
+          <div class="flex flex-wrap gap-glass-sm justify-center">
+            <small class="text-secondary">
+              <AppIcon name="LightBulbIcon" aria-hidden="true" />
               Tip: Changes appear instantly as you type
             </small>
           </div>
@@ -183,30 +184,30 @@
             <div v-if="showCoverPage" class="cover-page mb-5">
               <div class="cover-inner">
                 <h1 class="cover-name">{{ getFullName }}</h1>
-                <p v-if="primaryTitle" class="cover-title h5 fw-semibold text-muted mb-3">{{ primaryTitle }}</p>
+                <p v-if="primaryTitle" class="cover-title h5 font-semibold text-secondary mb-3">{{ primaryTitle }}</p>
                 <p v-if="resume?.personalInfo?.summary" class="lead cover-summary mb-4">{{ firstSummarySentence }}</p>
-                <div v-if="coverHighlights.length" class="cover-highlights d-flex flex-wrap gap-2 mb-4">
-                  <span v-for="h in coverHighlights" :key="h" class="badge badge-compact rounded-pill bg-primary-subtle text-primary">{{ h }}</span>
+                <div v-if="coverHighlights.length" class="cover-highlights flex flex-wrap gap-glass-sm mb-4">
+                  <span v-for="h in coverHighlights" :key="h" class="badge badge-compact rounded-pill bg-primary-500-subtle text-primary-600">{{ h }}</span>
                 </div>
-                <div class="cover-contact small text-muted d-flex flex-wrap gap-3 justify-content-center">
-                  <span v-if="resume?.personalInfo?.email"><AppIcon name="mdi-email" class="me-1" />{{ resume.personalInfo.email }}</span>
-                  <span v-if="resume?.personalInfo?.phone"><AppIcon name="mdi-phone" class="me-1" />{{ resume.personalInfo.phone }}</span>
-                  <span v-if="resume?.personalInfo?.location"><AppIcon name="mdi-map-marker" class="me-1" />{{ resume.personalInfo.location }}</span>
-                  <span v-if="resume?.personalInfo?.linkedIn"><AppIcon name="mdi-linkedin" class="me-1" />LinkedIn</span>
-                  <span v-if="resume?.personalInfo?.portfolio"><AppIcon name="mdi-web" class="me-1" />Portfolio</span>
+                <div class="cover-contact small text-secondary flex flex-wrap gap-glass-md justify-center">
+                  <span v-if="resume?.personalInfo?.email"><AppIcon name="EnvelopeIcon" class="mr-1" />{{ resume.personalInfo.email }}</span>
+                  <span v-if="resume?.personalInfo?.phone"><AppIcon name="PhoneIcon" class="mr-1" />{{ resume.personalInfo.phone }}</span>
+                  <span v-if="resume?.personalInfo?.location"><AppIcon name="MapPinIcon" class="mr-1" />{{ resume.personalInfo.location }}</span>
+                  <span v-if="resume?.personalInfo?.linkedIn"><AppIcon name="LinkIconedin" class="mr-1" />LinkedIn</span>
+                  <span v-if="resume?.personalInfo?.portfolio"><AppIcon name="GlobeAltIcon" class="mr-1" />Portfolio</span>
                 </div>
               </div>
               <hr class="cover-divider" />
             </div>
             <!-- Header Section -->
-            <div class="resume-header text-center mb-4 p-4">
+            <div class="resume-header text-center mb-4 p-glass-md">
               <div class="name-section mb-3">
                 <h1 class="resume-name text-gradient mb-2">
                   {{ getFullName }}
                 </h1>
-                <div class="contact-info text-muted">
+                <div class="contact-info text-secondary">
                   <div
-                    class="contact-line d-flex flex-wrap justify-content-center gap-3"
+                    class="contact-line flex flex-wrap justify-center gap-glass-md"
                   >
                     <span
                       v-if="resume?.personalInfo?.email"
@@ -219,14 +220,14 @@
                       v-if="resume?.personalInfo?.phone"
                       class="contact-item"
                     >
-                      <AppIcon name="mdi-phone" aria-hidden="true" />
+                      <AppIcon name="PhoneIcon" aria-hidden="true" />
                       {{ resume?.personalInfo.phone }}
                     </span>
                     <span
                       v-if="resume?.personalInfo?.location"
                       class="contact-item"
                     >
-                      <AppIcon name="mdi-map-marker" aria-hidden="true" />
+                      <AppIcon name="MapPinIcon" aria-hidden="true" />
                       {{ resume?.personalInfo.location }}
                     </span>
                   </div>
@@ -235,24 +236,24 @@
                       resume?.personalInfo?.linkedIn ||
                         resume?.personalInfo?.portfolio
                     "
-                    class="links-line d-flex flex-wrap justify-content-center gap-3 mt-2"
+                    class="links-line flex flex-wrap justify-center gap-glass-md mt-2"
                   >
                     <a
                       v-if="resume?.personalInfo?.linkedIn"
                       :href="resume?.personalInfo.linkedIn"
                       target="_blank"
-                      class="text-primary text-decoration-none"
+                      class="text-primary-600 text-decoration-none"
                     >
-                      <AppIcon name="mdi-linkedin" class="me-1" />
+                      <AppIcon name="LinkIconedin" class="mr-1" />
                       LinkedIn
                     </a>
                     <a
                       v-if="resume?.personalInfo?.portfolio"
                       :href="resume?.personalInfo.portfolio"
                       target="_blank"
-                      class="text-primary text-decoration-none"
+                      class="text-primary-600 text-decoration-none"
                     >
-                      <AppIcon name="mdi-web" class="me-1" />
+                      <AppIcon name="GlobeAltIcon" class="mr-1" />
                       Portfolio
                     </a>
                   </div>
@@ -266,7 +267,7 @@
               class="resume-section summary-section mb-4"
             >
               <h2 class="section-title">
-                <AppIcon name="mdi-account-details" class="me-2" />
+                <AppIcon name="UserIcon-details" class="mr-2" />
                 Professional Summary
               </h2>
               <div class="section-content">
@@ -282,7 +283,7 @@
               class="resume-section experience-section mb-4"
             >
               <h2 class="section-title">
-                <AppIcon name="mdi-briefcase" aria-hidden="true" />
+                <AppIcon name="BriefcaseIcon" aria-hidden="true" />
                 Professional Experience
               </h2>
               <div class="section-content">
@@ -292,18 +293,18 @@
                   class="experience-item mb-4"
                 >
                   <div
-                    class="experience-header d-flex justify-content-between align-items-start mb-2"
+                    class="experience-header flex justify-between items-start mb-2"
                   >
                     <div class="position-info">
-                      <h3 class="position-title h6 fw-bold mb-1">
+                      <h3 class="position-title h6 font-bold mb-1">
                         {{ exp.title || "Job Title" }}
                       </h3>
-                      <div class="company-name text-primary fw-semibold">
+                      <div class="company-name text-primary-600 font-semibold">
                         {{ exp.company || "Company Name" }}
                       </div>
                     </div>
-                    <div class="date-range text-muted text-end">
-                      <small class="fw-medium">{{ exp.startDate }} -
+                    <div class="date-range text-secondary text-end">
+                      <small class="font-medium">{{ exp.startDate }} -
                         {{ exp.endDate || "Present" }}</small>
                     </div>
                   </div>
@@ -320,7 +321,7 @@
               class="resume-section education-section mb-4"
             >
               <h2 class="section-title">
-                <AppIcon name="mdi-school" class="me-2" />
+                <AppIcon name="AcademicCapIcon" class="mr-2" />
                 Education
               </h2>
               <div class="section-content">
@@ -330,23 +331,23 @@
                   class="education-item mb-3"
                 >
                   <div
-                    class="education-header d-flex justify-content-between align-items-start mb-1"
+                    class="education-header flex justify-between items-start mb-1"
                   >
                     <div class="degree-info">
-                      <h3 class="degree-title h6 fw-bold mb-1">
+                      <h3 class="degree-title h6 font-bold mb-1">
                         {{ edu.degree || "Degree" }}
                       </h3>
-                      <div class="institution-name text-primary">
+                      <div class="institution-name text-primary-600">
                         {{ edu.institution || "Institution" }}
                       </div>
                     </div>
-                    <div class="graduation-date text-muted text-end">
-                      <small class="fw-medium">{{
+                    <div class="graduation-date text-secondary text-end">
+                      <small class="font-medium">{{
                         edu.graduationDate || edu.year || "Year"
                       }}</small>
                     </div>
                   </div>
-                  <div v-if="edu.gpa" class="gpa-info text-muted mb-2">
+                  <div v-if="edu.gpa" class="gpa-info text-secondary mb-2">
                     <small>GPA: {{ edu.gpa }}</small>
                   </div>
                   <div v-if="edu.description" class="education-description">
@@ -362,7 +363,7 @@
               class="resume-section additional-experience-section mb-4"
             >
               <h2 class="section-title">
-                <AppIcon name="mdi-star" aria-hidden="true" />
+                <AppIcon name="StarIcon" aria-hidden="true" />
                 Additional Experience
               </h2>
               <div class="section-content">
@@ -372,22 +373,22 @@
                   class="additional-exp-item mb-3"
                 >
                   <div
-                    class="exp-header d-flex justify-content-between align-items-start mb-1"
+                    class="exp-header flex justify-between items-start mb-1"
                   >
                     <div class="title-info">
-                      <h3 class="exp-title h6 fw-bold mb-1">
+                      <h3 class="exp-title h6 font-bold mb-1">
                         {{ exp.title || "Title" }}
                       </h3>
-                      <div class="organization-name text-primary">
+                      <div class="organization-name text-primary-600">
                         {{ exp.organization || "Organization" }}
                       </div>
                     </div>
-                    <div class="date-range text-muted text-end">
-                      <small class="fw-medium">{{ exp.startDate }} - {{ exp.endDate }}</small>
+                    <div class="date-range text-secondary text-end">
+                      <small class="font-medium">{{ exp.startDate }} - {{ exp.endDate }}</small>
                     </div>
                   </div>
                   <div v-if="exp.type" class="exp-type mb-2">
-                    <span class="badge badge-compact bg-light text-dark">{{
+                    <span class="badge badge-compact bg-glass-bg dark:bg-glass-bg-hover text-glass-primary">{{
                       exp.type
                     }}</span>
                   </div>
@@ -415,15 +416,15 @@
                   class="skill-category mb-3"
                 >
                   <h3
-                    class="skill-category-title h6 fw-semibold text-primary mb-2"
+                    class="skill-category-title h6 font-semibold text-primary-600 mb-2"
                   >
                     Technical Skills
                   </h3>
-                  <div class="skill-tags d-flex flex-wrap gap-2">
+                  <div class="skill-tags flex flex-wrap gap-glass-sm">
                     <span
                       v-for="skill in resume?.skills.technical"
                       :key="skill"
-                      class="badge badge-compact bg-primary-subtle text-primary"
+                      class="badge badge-compact bg-primary-500-subtle text-primary-600"
                     >{{ skill }}</span>
                   </div>
                 </div>
@@ -432,15 +433,15 @@
                   class="skill-category mb-3"
                 >
                   <h3
-                    class="skill-category-title h6 fw-semibold text-primary mb-2"
+                    class="skill-category-title h6 font-semibold text-primary-600 mb-2"
                   >
                     Soft Skills
                   </h3>
-                  <div class="skill-tags d-flex flex-wrap gap-2">
+                  <div class="skill-tags flex flex-wrap gap-glass-sm">
                     <span
                       v-for="skill in resume?.skills.soft"
                       :key="skill"
-                      class="badge badge-compact bg-secondary-subtle text-secondary"
+                      class="badge badge-compact bg-secondary-500-subtle text-secondary"
                     >{{ skill }}</span>
                   </div>
                 </div>
@@ -453,7 +454,7 @@
               class="resume-section portfolio-section mb-4"
             >
               <h2 class="section-title">
-                <AppIcon name="mdi-folder-multiple-outline-image" class="me-2" />
+                <AppIcon name="FolderIcon-multiple-outline-image" class="mr-2" />
                 Portfolio
               </h2>
               <div class="section-content">
@@ -463,22 +464,22 @@
                   class="portfolio-item mb-3"
                 >
                   <div
-                    class="portfolio-header d-flex justify-content-between align-items-start mb-2"
+                    class="portfolio-header flex justify-between items-start mb-2"
                   >
                     <div class="project-info">
-                      <h3 class="project-title h6 fw-bold mb-1">
+                      <h3 class="project-title h6 font-bold mb-1">
                         {{ item.title || "Project Title" }}
                       </h3>
                       <span
                         v-if="item.type"
-                        class="badge badge-compact bg-info-subtle text-info"
+                        class="badge badge-compact bg-blue-500-subtle text-blue-600"
                       >{{ item.type }}</span>
                     </div>
                     <div v-if="item.url" class="project-link">
                       <UnifiedButton
                         variant="outline"
                         :href="item.url"
-                        leading-icon="mdi-link-variant"
+                        leading-icon="LinkIcon-variant"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -501,27 +502,27 @@
     <div v-if="showQuantifyDiff" class="quantify-diff-modal">
       <div class="qd-backdrop" @click="closeQuantifyDiff"></div>
       <div class="qd-dialog section-card section-card">
-        <header class="qd-header d-flex justify-content-between align-items-center mb-3">
+        <header class="qd-header flex justify-between items-center mb-3">
           <h6 class="mb-0">Impact Enhancement Preview</h6>
           <button class="btn btn-sm btn-outline-secondary" @click="closeQuantifyDiff">Close</button>
         </header>
         <div class="qd-body">
           <div class="qd-columns">
-            <div class="qd-col">
-              <h6 class="small text-muted mb-2">Original</h6>
+            <div class="qd-flex-1">
+              <h6 class="small text-secondary mb-2">Original</h6>
               <ul class="qd-list">
                 <li v-for="(line,i) in quantifyOriginal" :key="'o'+i">{{ line }}</li>
               </ul>
             </div>
-            <div class="qd-col">
-              <h6 class="small text-muted mb-2">Enhanced</h6>
+            <div class="qd-flex-1">
+              <h6 class="small text-secondary mb-2">Enhanced</h6>
               <ul class="qd-list enhanced">
                 <li v-for="(line,i) in quantifyEnhanced" :key="'n'+i">{{ line }}</li>
               </ul>
             </div>
           </div>
         </div>
-        <footer class="qd-footer d-flex justify-content-end gap-2 mt-3">
+        <footer class="qd-footer flex justify-end gap-glass-sm mt-3">
           <button class="btn btn-outline-secondary btn-sm" @click="closeQuantifyDiff">Dismiss</button>
           <button class="btn btn-primary btn-sm" @click="$emit('apply-quantified', quantifyEnhanced)">Apply Changes</button>
         </footer>
@@ -530,6 +531,9 @@
   </div>
 </template>
 <script>
+import { AcademicCapIcon, BriefcaseIcon, ChartBarSquareIcon, CommandLineIcon, DocumentIcon, EnvelopeIcon, EyeIcon, GlobeAltIcon, LightBulbIcon, PhoneIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon, StarIcon } from '@heroicons/vue/24/solid'
+
 import { computed, watch, nextTick, ref } from 'vue'
 import { UserRepository } from '@/modules/db/repositories/user'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -657,7 +661,7 @@ export default {
         "--primary-color": "var(--color-primary)",
         "--accent-color": "var(--color-primary-alt)",
         "--section-color": "var(--color-primary)",
-        color: "var(--text-primary)",
+        color: "var(--text-primary-600)",
       };
     });
 
@@ -721,7 +725,7 @@ export default {
       const content =
         document.getElementById("resume-preview")?.innerHTML || "";
       win.document.write(
-        `<!DOCTYPE html><html><head><title>Resume Preview</title><style>body{font-family:var(--font-primary,'Electrolize','Inter',sans-serif);color:var(--text-primary);background:var(--bg-primary);max-width:800px;margin:40px auto;padding:0 20px;}@media print{body{margin:0;padding:20px;}}</style></head><body>${content}</body></html>`,
+        `<!DOCTYPE html><html><head><title>Resume Preview</title><style>body{font-family:var(--font-primary,'Electrolize','Inter',sans-serif);color:var(--text-primary-600);background:var(--bg-primary-500);max-width:800px;margin:40px auto;padding:0 20px;}@media print{body{margin:0;padding:20px;}}</style></head><body>${content}</body></html>`,
       );
       win.document.close();
     };
@@ -734,7 +738,7 @@ export default {
       element.classList.add('exporting')
       try {
         const css = window.getComputedStyle(document.documentElement)
-        const bg = (css.getPropertyValue('--bg-primary') || '#ffffff').trim()
+        const bg = (css.getPropertyValue('--bg-primary-500') || '#ffffff').trim()
         const canvas = await html2canvas(element, {
           scale: 2,
           useCORS: true,
@@ -765,7 +769,7 @@ export default {
         document.getElementById("resume-preview")?.innerHTML || "";
       const blob = new Blob(
         [
-          `<!DOCTYPE html><html><head><meta charset='utf-8'><title>${props.resume?.personalInfo?.name || "Resume"}</title><style>:root{--bg-primary:var(--surface-base);--text-primary:var(--text-primary);--text-secondary:var(--text-secondary);--color-primary:var(--color-primary-500);--font-primary:var(--font-family-primary)}@media(prefers-color-scheme:dark){:root{--bg-primary:var(--surface-base);--text-primary:var(--text-primary);--text-secondary:var(--text-secondary)}}body{font-family:var(--font-primary);color:var(--text-primary);background:var(--bg-primary);max-width:800px;margin:0 auto;padding:40px 20px}</style></head><body>${content}</body></html>`,
+          `<!DOCTYPE html><html><head><meta charset='utf-8'><title>${props.resume?.personalInfo?.name || "Resume"}</title><style>:root{--bg-primary-500:var(--surface-base);--text-primary-600:var(--text-primary-600);--text-secondary:var(--text-secondary);--color-primary:var(--color-primary-500);--font-primary:var(--font-family-primary)}@media(prefers-color-scheme:dark){:root{--bg-primary-500:var(--surface-base);--text-primary-600:var(--text-primary-600);--text-secondary:var(--text-secondary)}}body{font-family:var(--font-primary);color:var(--text-primary-600);background:var(--bg-primary-500);max-width:800px;margin:0 auto;padding:40px 20px}</style></head><body>${content}</body></html>`,
         ],
         { type: "text/html" },
       );
@@ -842,10 +846,10 @@ export default {
 /* Cover Page */
 .cover-page { position: relative; text-align: center; padding: 2rem 1rem 1rem; background: var(--glass-surface-light); border:1px solid var(--glass-border); border-radius: var(--border-radius-lg); }
 [data-theme="dark"] .cover-page { background: var(--glass-surface-dark); }
-.cover-name { font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 800; letter-spacing: .5px; background: linear-gradient(90deg,var(--section-color),color-mix(in srgb,var(--section-color) 60%, var(--text-primary))); -webkit-background-clip:text; background-clip:text; color: transparent; }
+.cover-name { font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 800; letter-spacing: .5px; background: linear-gradient(90deg,var(--section-color),color-mix(in srgb,var(--section-color) 60%, var(--text-primary-600))); -webkit-background-clip:text; background-clip:text; color: transparent; }
 .cover-summary { max-width: var(--page-content-max-width); margin: 0 auto; line-height: 1.4; }
 .cover-highlights .badge { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border:1px solid var(--glass-border); }
-.cover-divider { margin: 2rem auto 0; max-width: calc(var(--page-narrow-width) * 0.33); border-top:2px solid var(--section-color); opacity: .4; }
+.cover-divider { margin: 2rem auto 0; max-width: calc(var(--page-narrow-width) * 0.33); border-t:2px solid var(--section-color); opacity: .4; }
 .ai-enhance-group .btn { --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .6rem; --bs-btn-font-size: .7rem; }
 
 /* Theme Integration */
@@ -917,8 +921,8 @@ export default {
 .preview-content {
   max-width: var(--page-content-max-width);
   margin: 0 auto;
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: var(--bg-primary-500);
+  color: var(--text-primary-600);
   padding: 2rem;
   border-radius: var(--border-radius-md);
   border: 1px solid var(--glass-border);
@@ -939,7 +943,7 @@ export default {
   background: none !important;
   -webkit-background-clip: initial !important;
   background-clip: initial !important;
-  color: var(--text-primary) !important;
+  color: var(--text-primary-600) !important;
 }
 
 /* Template Variants */
@@ -953,7 +957,7 @@ export default {
 
 .template-minimal {
   --section-color: var(--color-primary);
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
@@ -961,7 +965,7 @@ export default {
 [data-theme="dark"] .template-minimal,
 :root:not([data-theme]) .template-minimal {
   --section-color: var(--color-primary);
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   border: 1px solid var(--glass-border-dark);
   box-shadow: var(--glass-shadow-dark);
 }
@@ -1006,7 +1010,7 @@ export default {
 
 /* Resume Sections */
 .resume-header {
-  border-bottom: 2px solid var(--section-color, var(--color-primary-500));
+  border-b: 2px solid var(--section-color, var(--color-primary-500));
   margin-bottom: 2rem !important;
   background: var(--surface-glass);
   padding: 1.5rem;
@@ -1016,7 +1020,7 @@ export default {
 [data-theme="dark"] .resume-header,
 :root:not([data-theme]) .resume-header {
   background: var(--surface-glass);
-  border-bottom-color: var(--section-color, var(--color-primary-400));
+  border-b-color: var(--section-color, var(--color-primary-400));
 }
 
 .resume-name {
@@ -1028,7 +1032,7 @@ export default {
 
 /* Shimmer accent similar to fairy chat */
 .text-gradient {
-  background: linear-gradient(90deg, var(--text-primary), color-mix(in srgb, var(--color-primary-500) 40%, var(--text-primary)));
+  background: linear-gradient(90deg, var(--text-primary-600), color-mix(in srgb, var(--color-primary-500) 40%, var(--text-primary-600)));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1071,7 +1075,7 @@ export default {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   color: var(--section-color, var(--color-primary-500));
-  border-bottom: 1px solid var(--section-color, var(--color-primary-500));
+  border-b: 1px solid var(--section-color, var(--color-primary-500));
   padding-bottom: var(--spacing-2);
   margin-bottom: var(--spacing-4);
   display: flex;
@@ -1080,7 +1084,7 @@ export default {
 
 [data-theme="dark"] .section-title,
 :root:not([data-theme]) .section-title {
-  border-bottom-color: var(--section-color, var(--color-primary-400));
+  border-b-color: var(--section-color, var(--color-primary-400));
 }
 
 .section-content {
@@ -1091,7 +1095,7 @@ export default {
 .experience-item,
 .education-item,
 .additional-exp-item {
-  border-left: 3px solid rgba(102, 126, 234, 0.1);
+  border-l: 3px solid rgba(102, 126, 234, 0.1);
   padding-left: 1rem;
   margin-bottom: 1.5rem;
   position: relative;
@@ -1103,7 +1107,7 @@ export default {
 :root:not([data-theme]) .experience-item,
 :root:not([data-theme]) .education-item,
 :root:not([data-theme]) .additional-exp-item {
-  border-left-color: rgba(144, 180, 255, 0.15);
+  border-l-color: rgba(144, 180, 255, 0.15);
 }
 
 .experience-item::before,
@@ -1113,7 +1117,7 @@ export default {
 .position-title,
 .degree-title,
 .exp-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
@@ -1123,7 +1127,7 @@ export default {
 :root:not([data-theme]) .position-title,
 :root:not([data-theme]) .degree-title,
 :root:not([data-theme]) .exp-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .company-name,
@@ -1151,12 +1155,12 @@ export default {
   border-radius: var(--border-radius-md);
   padding: 1rem;
   transition: all 0.2s ease;
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
 }
 
 [data-theme="dark"] .portfolio-item,
 :root:not([data-theme]) .portfolio-item {
-  background: var(--dark-bg-secondary);
+  background: var(--dark-bg-secondary-500);
   border-color: var(--glass-border-dark);
 }
 
@@ -1222,8 +1226,8 @@ export default {
 /* Dark mode support using data-theme */
 [data-theme="dark"] .preview-content,
 :root:not([data-theme]) .preview-content {
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: var(--bg-primary-500);
+  color: var(--text-primary-600);
   border: 1px solid var(--glass-border-dark);
 }
 

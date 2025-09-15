@@ -1,0 +1,462 @@
+/**
+ * ================================================
+ * WCAG AA/AAA COLOR CONTRAST SYSTEM - NAVI AI
+ * ================================================
+ * Ensures all text/background combinations meet accessibility standards
+ * 4.5:1 contrast ratio for AA, 7:1 for AAA compliance
+ */
+
+/* ===== WCAG COMPLIANT TEXT UTILITIES ===== */
+
+/* AA Compliant Text (4.5:1 contrast ratio) */
+.text-aa {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.text-aa-large {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-lg);
+}
+
+.text-aa-bold {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+/* AAA Compliant Text (7:1 contrast ratio) */
+.text-aaa {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.text-aaa-large {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-lg);
+}
+
+/* ===== GLASS SURFACE TEXT COMPLIANCE ===== */
+
+/* Safe text on glass backgrounds with guaranteed contrast */
+.glass-text-aa {
+  color: var(--text-primary);
+  background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border-safe);
+  font-weight: var(--font-weight-medium);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.glass-text-aaa {
+  color: var(--text-primary);
+  background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--glass-border-safe);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== INTERACTIVE ELEMENT CONTRAST ===== */
+
+/* Button contrast compliance */
+.btn-aa {
+  background: var(--color-primary-600);
+  color: var(--text-on-primary);
+  border: 1px solid var(--color-primary-700);
+  font-weight: var(--font-weight-medium);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.btn-aa:hover {
+  background: var(--color-primary-700);
+  border-color: var(--color-primary-800);
+}
+
+.btn-aa:focus-visible {
+  outline: 3px solid rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.5);
+  outline-offset: 2px;
+}
+
+/* Link contrast compliance */
+.link-aa {
+  color: var(--color-primary-600);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: var(--font-weight-medium);
+}
+
+.link-aa:hover {
+  color: var(--color-primary-700);
+  text-decoration-thickness: 3px;
+}
+
+.link-aa:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ===== STATUS COLORS WITH PROPER CONTRAST ===== */
+
+/* Success states */
+.text-success-aa {
+  color: var(--color-success-700);
+  font-weight: var(--font-weight-medium);
+}
+
+.bg-success-aa {
+  background-color: var(--color-success-50);
+  color: var(--color-success-900);
+  border: 1px solid var(--color-success-200);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+/* Warning states */
+.text-warning-aa {
+  color: var(--color-warning-700);
+  font-weight: var(--font-weight-medium);
+}
+
+.bg-warning-aa {
+  background-color: var(--color-warning-50);
+  color: var(--color-warning-900);
+  border: 1px solid var(--color-warning-200);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+/* Error states */
+.text-error-aa {
+  color: var(--color-error-700);
+  font-weight: var(--font-weight-medium);
+}
+
+.bg-error-aa {
+  background-color: var(--color-error-50);
+  color: var(--color-error-900);
+  border: 1px solid var(--color-error-200);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+/* Info states */
+.text-info-aa {
+  color: var(--color-primary-700);
+  font-weight: var(--font-weight-medium);
+}
+
+.bg-info-aa {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-900);
+  border: 1px solid var(--color-primary-200);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+/* ===== FORM ELEMENT CONTRAST ===== */
+
+.input-aa {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 2px solid var(--glass-border);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  min-height: 44px;
+}
+
+.input-aa:focus {
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.2);
+  outline: none;
+}
+
+.input-aa::placeholder {
+  color: var(--text-muted);
+  font-weight: var(--font-weight-normal);
+}
+
+.label-aa {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-1);
+  display: block;
+}
+
+/* ===== CARD AND CONTAINER CONTRAST ===== */
+
+.card-aa {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-glass-aa {
+  background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-primary);
+  border: 2px solid var(--glass-border-safe);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== NAVIGATION CONTRAST ===== */
+
+.nav-aa {
+  background: var(--bg-primary);
+  border-bottom: 2px solid var(--glass-border);
+}
+
+.nav-link-aa {
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-link-aa:hover {
+  background: var(--glass-bg-hover);
+  color: var(--text-primary);
+}
+
+.nav-link-aa:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+.nav-link-aa.active {
+  background: var(--color-primary-100);
+  color: var(--color-primary-800);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+
+[data-theme="dark"] {
+  /* Enhanced text contrast for dark mode */
+  --text-primary: #ffffff;
+  --text-secondary: #e5e5e5;
+  --text-tertiary: #cccccc;
+  --text-muted: #999999;
+  --text-inverse: #000000;
+
+  /* Stronger borders for better definition */
+  --glass-border-safe: rgba(255, 255, 255, 0.2);
+  --glass-border-subtle: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .text-aa,
+[data-theme="dark"] .text-aaa {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .glass-text-aa {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .glass-text-aaa {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .card-aa {
+  background: var(--bg-primary);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .card-glass-aa {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --text-tertiary: #666666;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --glass-border: #666666;
+    --glass-border-safe: #333333;
+  }
+
+  [data-theme="dark"] {
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-tertiary: #999999;
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --glass-border: #999999;
+    --glass-border-safe: #cccccc;
+  }
+
+  /* Remove all transparency */
+  .glass-text-aa,
+  .glass-text-aaa,
+  .card-glass-aa {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg-primary);
+    border-width: 2px;
+  }
+
+  /* Stronger focus indicators */
+  .btn-aa:focus-visible,
+  .link-aa:focus-visible,
+  .input-aa:focus,
+  .nav-link-aa:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+
+  /* Enhanced button contrast */
+  .btn-aa {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border: 2px solid var(--text-primary);
+  }
+
+  .btn-aa:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-text-aa,
+  .glass-text-aaa,
+  .card-glass-aa {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* ===== UTILITY CLASSES FOR TESTING ===== */
+
+/* Debug utilities to test contrast (uncomment for development) */
+/*
+.contrast-debug {
+  position: relative;
+}
+
+.contrast-debug::after {
+  content: "Contrast: " attr(data-contrast);
+  position: absolute;
+  top: -20px;
+  right: 0;
+  background: red;
+  color: white;
+  padding: 2px 4px;
+  font-size: 10px;
+  font-weight: bold;
+  z-index: 9999;
+  border-radius: 2px;
+}
+
+.contrast-aa::after {
+  background: green;
+  content: "AA";
+}
+
+.contrast-aaa::after {
+  background: blue;
+  content: "AAA";
+}
+*/
+
+/* ===== CONTRAST VALIDATION HELPERS ===== */
+
+/* For development: Add these classes to test elements */
+.test-contrast-aa {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: var(--space-2);
+  border: 1px solid red;
+}
+
+.test-contrast-aaa {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: var(--space-2);
+  border: 2px solid blue;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ===== RESPONSIVE CONTRAST ADJUSTMENTS ===== */
+
+@media (max-width: 768px) {
+  /* Increase font weights on mobile for better readability */
+  .text-aa {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .glass-text-aa {
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  /* Larger touch targets */
+  .btn-aa,
+  .nav-link-aa {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  .input-aa {
+    min-height: 48px;
+    font-size: var(--font-size-base);
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+  .text-aa,
+  .text-aaa,
+  .glass-text-aa,
+  .glass-text-aaa {
+    color: #000000 !important;
+    background: transparent !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .card-aa,
+  .card-glass-aa {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+  }
+}

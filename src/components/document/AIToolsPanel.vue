@@ -1,16 +1,16 @@
 <template>
-  <div class="ai-tools-panel">
+  <div class="ai-tools-panel" class="font-sans">
     <div class="tools-header mb-6">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="flex items-center justify-between">
         <div>
-          <h4 class="fw-semibold mb-1 d-flex align-items-center">
-            <AppIcon name="mdi-robot" class="me-3" color="info" />
+          <h4 class="font-semibold mb-1 flex items-center">
+            <AppIcon name="CpuChipIcon" class="mr-3" color="info" />
             AI-Powered Tools
           </h4>
-          <p class="text-muted mb-0">Advanced AI features for document enhancement and tailoring</p>
+          <p class="text-secondary mb-0">Advanced AI features for document enhancement and tailoring</p>
         </div>
         <div class="ai-status-badge" :class="{ active: aiReady }">
-          <AppIcon name="mdi-brain" class="me-1" />
+          <AppIcon name="CpuChipIcon" class="mr-1" />
           {{ aiReady ? 'AI Ready' : 'AI Unavailable' }}
         </div>
       </div>
@@ -20,19 +20,19 @@
     <div class="tools-grid">
       <!-- Job Description Analyzer -->
       <div class="tool-card surface-elevated border-subtle rounded-lg">
-        <div class="tool-header p-4 border-bottom">
-          <div class="d-flex align-items-center">
+        <div class="tool-header p-glass-md border-b">
+          <div class="flex items-center">
             <div class="tool-icon">
-              <AppIcon name="mdi-magnify" />
+              <AppIcon name="MagnifyingGlassIcon" />
             </div>
-            <div class="ms-3">
-              <h6 class="fw-semibold mb-1">Job Description Analyzer</h6>
-              <p class="text-muted text-sm mb-0">Extract key requirements and skills from job postings</p>
+            <div class="ml-3">
+              <h6 class="font-semibold mb-1">Job Description Analyzer</h6>
+              <p class="text-secondary text-sm mb-0">Extract key requirements and skills from job postings</p>
             </div>
           </div>
         </div>
         
-        <div class="tool-content p-4">
+        <div class="tool-content p-glass-md">
           <textarea
             v-model="jobDescriptionModel"
             class="form-control mb-3"
@@ -40,9 +40,9 @@
             placeholder="Paste the job description here..."
           ></textarea>
           
-          <div class="d-flex justify-content-between align-items-center">
+          <div class="flex justify-between items-center">
             <div v-if="analysisResults.keywords" class="analysis-stats">
-              <small class="text-muted">{{ analysisResults.keywords.length }} keywords found</small>
+              <small class="text-secondary">{{ analysisResults.keywords.length }} keywords found</small>
             </div>
             <UnifiedButton
               variant="primary"
@@ -56,7 +56,7 @@
           </div>
 
           <div v-if="analysisResults.keywords" class="analysis-results mt-3">
-            <h6 class="fw-semibold mb-2">Key Requirements</h6>
+            <h6 class="font-semibold mb-2">Key Requirements</h6>
             <div class="keywords-grid mb-3">
               <span
                 v-for="keyword in analysisResults.keywords.slice(0, 8)"
@@ -68,9 +68,9 @@
             </div>
             
             <div v-if="analysisResults.matchScore" class="match-score">
-              <div class="d-flex justify-content-between mb-1">
-                <span class="text-sm fw-medium">Resume Match Score</span>
-                <span class="text-sm fw-bold" :class="getScoreColor(analysisResults.matchScore)">
+              <div class="flex justify-between mb-1">
+                <span class="text-sm font-medium">Resume Match Score</span>
+                <span class="text-sm font-bold" :class="getScoreColor(analysisResults.matchScore)">
                   {{ analysisResults.matchScore }}%
                 </span>
               </div>
@@ -88,33 +88,33 @@
 
       <!-- Resume Parser -->
       <div class="tool-card surface-elevated border-subtle rounded-lg">
-        <div class="tool-header p-4 border-bottom">
-          <div class="d-flex align-items-center">
+        <div class="tool-header p-glass-md border-b">
+          <div class="flex items-center">
             <div class="tool-icon">
-              <AppIcon name="mdi-file-document-outline" />
+              <AppIcon name="DocumentIcon" />
             </div>
-            <div class="ms-3">
-              <h6 class="fw-semibold mb-1">Resume Parser</h6>
-              <p class="text-muted text-sm mb-0">Upload or paste your resume to extract structured data</p>
+            <div class="ml-3">
+              <h6 class="font-semibold mb-1">Resume Parser</h6>
+              <p class="text-secondary text-sm mb-0">Upload or paste your resume to extract structured data</p>
             </div>
           </div>
         </div>
         
-        <div class="tool-content p-4">
+        <div class="tool-content p-glass-md">
           <div class="upload-area mb-3">
-            <div class="d-flex flex-column gap-2 mb-3">
+            <div class="flex flex-flex-1 gap-glass-sm mb-3">
               <input
                 id="resume-file-input"
                 ref="fileInput"
                 type="file"
-                class="d-none"
+                class="hidden"
                 accept=".pdf,.doc,.docx,.txt,.md,.rtf"
                 @change="onFileChange"
               />
-              <div class="p-3 border-subtle rounded d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center gap-2">
-                  <AppIcon name="mdi-upload" class="text-muted" />
-                  <span class="text-sm text-muted">Upload PDF/DOCX/TXT</span>
+              <div class="p-glass-md border-subtle rounded flex items-center justify-between">
+                <div class="flex items-center gap-glass-sm">
+                  <AppIcon name="ArrowUpTrayIcon" class="text-secondary" />
+                  <span class="text-sm text-secondary">Upload PDF/DOCX/TXT</span>
                 </div>
                 <UnifiedButton variant="ghost" size="xs" @click="() => fileInput?.click()">Choose File</UnifiedButton>
               </div>
@@ -127,11 +127,11 @@
             ></textarea>
           </div>
           
-          <div class="d-flex justify-content-end">
+          <div class="flex justify-end">
             <UnifiedButton
               variant="success"
               size="sm"
-              leading-icon="mdi-upload"
+              leading-icon="ArrowUpTrayIcon"
               :loading="parsing"
               :disabled="!resumeText.trim() || !aiReady"
               @click="parseResume"
@@ -141,7 +141,7 @@
           </div>
 
           <div v-if="parseResults.extracted" class="parse-results mt-3">
-            <h6 class="fw-semibold mb-2">Extracted Information</h6>
+            <h6 class="font-semibold mb-2">Extracted Information</h6>
             <div class="extracted-data">
               <div v-if="parseResults.name" class="data-item">
                 <strong>Name:</strong> {{ parseResults.name }}
@@ -159,7 +159,7 @@
                   >
                     {{ skill }}
                   </span>
-                  <span v-if="parseResults.skills.length > 5" class="text-muted">
+                  <span v-if="parseResults.skills.length > 5" class="text-secondary">
                     +{{ parseResults.skills.length - 5 }} more
                   </span>
                 </div>
@@ -171,19 +171,19 @@
 
       <!-- Document Tailor -->
       <div class="tool-card surface-elevated border-subtle rounded-lg">
-        <div class="tool-header p-4 border-bottom">
-          <div class="d-flex align-items-center">
+        <div class="tool-header p-glass-md border-b">
+          <div class="flex items-center">
             <div class="tool-icon">
               <AppIcon name="mdi-shimmer" color="primary" />
             </div>
-            <div class="ms-3">
-              <h6 class="fw-semibold mb-1">Document Tailor</h6>
-              <p class="text-muted text-sm mb-0">Customize documents for specific job applications</p>
+            <div class="ml-3">
+              <h6 class="font-semibold mb-1">Document Tailor</h6>
+              <p class="text-secondary text-sm mb-0">Customize documents for specific job applications</p>
             </div>
           </div>
         </div>
         
-        <div class="tool-content p-4">
+        <div class="tool-content p-glass-md">
           <div class="tailor-options mb-3">
             <div class="form-check mb-2">
               <input
@@ -192,7 +192,7 @@
                 class="form-check-input"
                 type="checkbox"
               />
-              <label for="tailor-resume" class="form-check-label fw-medium">
+              <label for="tailor-resume" class="form-check-label font-medium">
                 Tailor Resume
               </label>
             </div>
@@ -203,7 +203,7 @@
                 class="form-check-input"
                 type="checkbox"
               />
-              <label for="tailor-cover-letter" class="form-check-label fw-medium">
+              <label for="tailor-cover-letter" class="form-check-label font-medium">
                 Tailor Cover Letter
               </label>
             </div>
@@ -214,17 +214,17 @@
                 class="form-check-input"
                 type="checkbox"
               />
-              <label for="suggest-improvements" class="form-check-label fw-medium">
+              <label for="suggest-improvements" class="form-check-label font-medium">
                 Provide Improvement Suggestions
               </label>
             </div>
           </div>
 
-          <div class="d-flex justify-content-end">
+          <div class="flex justify-end">
             <UnifiedButton
               variant="gaming"
               size="sm"
-              leading-icon="mdi-auto-fix"
+              leading-icon="SparklesIcon"
               :loading="tailoring"
               :disabled="!hasDocumentsToTailor || !jobDescriptionModel.trim() || !aiReady"
               @click="tailorDocuments"
@@ -237,21 +237,21 @@
 
       <!-- Skill Enhancement -->
       <div class="tool-card surface-elevated border-subtle rounded-lg">
-        <div class="tool-header p-4 border-bottom">
-          <div class="d-flex align-items-center">
+        <div class="tool-header p-glass-md border-b">
+          <div class="flex items-center">
             <div class="tool-icon">
-              <AppIcon name="mdi-lightning-bolt" color="warning" />
+              <AppIcon name="BoltIcon-bolt" color="warning" />
             </div>
-            <div class="ms-3">
-              <h6 class="fw-semibold mb-1">Skill Enhancement</h6>
-              <p class="text-muted text-sm mb-0">Get AI-powered skill recommendations</p>
+            <div class="ml-3">
+              <h6 class="font-semibold mb-1">Skill Enhancement</h6>
+              <p class="text-secondary text-sm mb-0">Get AI-powered skill recommendations</p>
             </div>
           </div>
         </div>
         
-        <div class="tool-content p-4">
+        <div class="tool-content p-glass-md">
           <div class="current-skills mb-3">
-            <label class="form-label fw-medium">Current Skills</label>
+            <label class="form-label font-medium">Current Skills</label>
             <div v-if="resumeData.skills && resumeData.skills.length > 0" class="skills-display">
               <span
                 v-for="skill in resumeData.skills"
@@ -261,14 +261,14 @@
                 {{ skill.name }}
               </span>
             </div>
-            <p v-else class="text-muted text-sm">No skills added to resume yet</p>
+            <p v-else class="text-secondary text-sm">No skills added to resume yet</p>
           </div>
 
-          <div class="d-flex justify-content-end">
+          <div class="flex justify-end">
             <UnifiedButton
               variant="info"
               size="sm"
-              leading-icon="mdi-lightbulb"
+              leading-icon="LightBulbIcon"
               :loading="suggesting"
               :disabled="!aiReady"
               @click="suggestSkills"
@@ -278,22 +278,22 @@
           </div>
 
           <div v-if="skillSuggestions.length > 0" class="skill-suggestions mt-3">
-            <h6 class="fw-semibold mb-2">Suggested Skills</h6>
+            <h6 class="font-semibold mb-2">Suggested Skills</h6>
             <div class="suggestions-list">
               <div
                 v-for="suggestion in skillSuggestions"
                 :key="suggestion.name"
                 class="skill-suggestion"
               >
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="flex justify-between items-center">
                   <div>
-                    <div class="fw-medium">{{ suggestion.name }}</div>
-                    <div class="text-sm text-muted">{{ suggestion.category }}</div>
+                    <div class="font-medium">{{ suggestion.name }}</div>
+                    <div class="text-sm text-secondary">{{ suggestion.category }}</div>
                   </div>
                   <UnifiedButton
                     variant="ghost"
                     size="xs"
-                    icon="mdi-plus"
+                    icon="PlusIcon"
                     @click="addSkill(suggestion)"
                   />
                 </div>
@@ -305,22 +305,22 @@
 
       <!-- Writing Assistant -->
       <div class="tool-card surface-elevated border-subtle rounded-lg">
-        <div class="tool-header p-4 border-bottom">
-          <div class="d-flex align-items-center">
+        <div class="tool-header p-glass-md border-b">
+          <div class="flex items-center">
             <div class="tool-icon">
-              <AppIcon name="mdi-pencil" />
+              <AppIcon name="PencilIcon" />
             </div>
-            <div class="ms-3">
-              <h6 class="fw-semibold mb-1">Writing Assistant</h6>
-              <p class="text-muted text-sm mb-0">Improve clarity and impact of your content</p>
+            <div class="ml-3">
+              <h6 class="font-semibold mb-1">Writing Assistant</h6>
+              <p class="text-secondary text-sm mb-0">Improve clarity and impact of your content</p>
             </div>
           </div>
         </div>
         
-        <div class="tool-content p-4">
+        <div class="tool-content p-glass-md">
           <div class="writing-tools">
             <div class="tool-section mb-3">
-              <label class="form-label fw-medium">Text to Improve</label>
+              <label class="form-label font-medium">Text to Improve</label>
               <textarea
                 v-model="textToImprove"
                 class="form-control"
@@ -360,11 +360,11 @@
               </div>
             </div>
 
-            <div class="d-flex justify-content-end">
+            <div class="flex justify-end">
               <UnifiedButton
                 variant="secondary"
                 size="sm"
-                leading-icon="mdi-pencil"
+                leading-icon="PencilIcon"
                 :loading="improving"
                 :disabled="!textToImprove.trim() || !improvementType || !aiReady"
                 @click="improveText"
@@ -374,11 +374,11 @@
             </div>
 
             <div v-if="improvedText" class="improved-text mt-3">
-              <h6 class="fw-semibold mb-2">Improved Version</h6>
-              <div class="improved-content p-3 border-subtle rounded">
+              <h6 class="font-semibold mb-2">Improved Version</h6>
+              <div class="improved-content p-glass-md border-subtle rounded">
                 {{ improvedText }}
               </div>
-              <div class="d-flex justify-content-end mt-2">
+              <div class="flex justify-end mt-2">
                 <UnifiedButton
                   variant="ghost"
                   size="xs"
@@ -394,22 +394,22 @@
 
       <!-- Suggestions Panel -->
       <div class="tool-card surface-elevated border-subtle rounded-lg">
-        <div class="tool-header p-4 border-bottom">
-          <div class="d-flex align-items-center">
+        <div class="tool-header p-glass-md border-b">
+          <div class="flex items-center">
             <div class="tool-icon">
-              <AppIcon name="mdi-lightbulb" color="warning" />
+              <AppIcon name="LightBulbIcon" color="warning" />
             </div>
-            <div class="ms-3">
-              <h6 class="fw-semibold mb-1">Smart Suggestions</h6>
-              <p class="text-muted text-sm mb-0">Personalized recommendations for your documents</p>
+            <div class="ml-3">
+              <h6 class="font-semibold mb-1">Smart Suggestions</h6>
+              <p class="text-secondary text-sm mb-0">Personalized recommendations for your documents</p>
             </div>
           </div>
         </div>
         
-        <div class="tool-content p-4">
+        <div class="tool-content p-glass-md">
           <div v-if="suggestions.length === 0" class="empty-suggestions text-center py-4">
-            <AppIcon name="mdi-target" size="48" class="mb-3 text-muted" color="primary" />
-            <p class="text-muted mb-3">No suggestions yet</p>
+            <AppIcon name="EyeIcon" size="48" class="mb-3 text-secondary" color="primary" />
+            <p class="text-secondary mb-3">No suggestions yet</p>
             <UnifiedButton
               variant="outline"
               size="sm"
@@ -425,12 +425,12 @@
             <div
               v-for="suggestion in suggestions.slice(0, 3)"
               :key="suggestion.id"
-              class="suggestion-item p-3 border-subtle rounded mb-2"
+              class="suggestion-item p-glass-md border-subtle rounded mb-2"
             >
-              <div class="d-flex justify-content-between align-items-start">
+              <div class="flex justify-between items-start">
                 <div class="flex-grow-1">
-                  <div class="fw-medium mb-1">{{ suggestion.title }}</div>
-                  <p class="text-sm text-muted mb-2">{{ suggestion.description }}</p>
+                  <div class="font-medium mb-1">{{ suggestion.title }}</div>
+                  <p class="text-sm text-secondary mb-2">{{ suggestion.description }}</p>
                   <div class="suggestion-tags">
                     <span class="tag">{{ suggestion.category }}</span>
                     <span class="tag">{{ suggestion.priority }}</span>
@@ -440,7 +440,7 @@
                   <UnifiedButton
                     variant="ghost"
                     size="xs"
-                    icon="mdi-check"
+                    icon="CheckIcon"
                     :title="'Apply suggestion'"
                     @click="applySuggestion(suggestion)"
                   />
@@ -465,6 +465,8 @@
 </template>
 
 <script setup>
+import { ArrowUpTrayIcon, CheckIcon, CpuChipIcon, DocumentIcon, EyeIcon, LightBulbIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
 // Load the PDF.js worker as a URL for use in the main thread
@@ -547,9 +549,9 @@ const hasDocumentsToTailor = computed(() => {
 
 // Methods
 const getScoreColor = (score) => {
-  if (score >= 80) return 'text-success'
-  if (score >= 60) return 'text-warning'
-  return 'text-danger'
+  if (score >= 80) return 'text-success-600'
+  if (score >= 60) return 'text-warning-600'
+  return 'text-error-600'
 }
 
 const analyzeJobDescription = async () => {
@@ -808,7 +810,7 @@ const showAllSuggestions = () => {
 }
 
 .tool-card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   border-color: var(--color-primary-200);
 }
 
@@ -888,7 +890,7 @@ const showAllSuggestions = () => {
 
 .tag {
   padding: 0.125rem 0.5rem;
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   color: var(--text-secondary);
   border-radius: var(--radius-sm);
   font-size: 0.75rem;

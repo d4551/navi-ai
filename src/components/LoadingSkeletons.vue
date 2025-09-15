@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="loading-skeletons" role="status" aria-live="polite">
+  <div v-if="show" class="loading-skeletons" role="status" aria-live="polite" class="font-sans">
     <!-- Document Header Skeleton -->
     <ContentLoader
       v-if="variant === 'document' || variant === 'all'"
@@ -51,11 +51,11 @@
     </template>
 
     <!-- Card Grid Skeleton -->
-    <div v-if="variant === 'grid' || variant === 'all'" class="row g-3 mb-3">
+    <div v-if="variant === 'grid' || variant === 'all'" class="flex flex-wrap g-3 mb-3">
       <div
         v-for="n in gridItemCount"
         :key="`grid-${n}`"
-        class="col-12 col-sm-6 col-lg-4"
+        class="flex-1-12 flex-1-sm-6 flex-1-lg-4"
       >
         <ContentLoader
           :height="200"
@@ -145,11 +145,11 @@ onMounted(() => {
 /* Ensure skeleton colors respect theme */
 :deep(.vue-content-loader) {
   --skeleton-primary: var(--bg-tertiary, #e4e4e7);
-  --skeleton-secondary: var(--bg-secondary, #f4f4f5);
+  --skeleton-secondary: var(--bg-secondary-500, #f4f4f5);
 }
 
 [data-theme="dark"] :deep(.vue-content-loader) {
-  --skeleton-primary: var(--bg-secondary);
+  --skeleton-primary: var(--bg-secondary-500);
   --skeleton-secondary: var(--bg-tertiary);
 }
 </style>

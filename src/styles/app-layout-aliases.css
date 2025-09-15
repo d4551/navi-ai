@@ -1,0 +1,17 @@
+/* Tailwind-powered alias utilities to bridge generated layout classes */
+@layer components {
+  .container-sm { @apply max-w-[640px] mx-auto px-4; }
+  .container-md { @apply max-w-[768px] mx-auto px-4; }
+  .container-lg { @apply max-w-[1024px] mx-auto px-4; }
+  .container-xl { @apply max-w-[1280px] mx-auto px-4; }
+
+  .layout-standard { @apply min-h-screen flex flex-col; }
+  .layout-with-sidebar { @apply flex flex-row min-h-screen; }
+  .main-content { @apply flex-grow p-6; }
+
+  .form-input { @apply h-10 rounded border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500; }
+
+  .btn { @apply h-10 px-4 inline-flex items-center justify-center rounded font-medium transition-colors; }
+  .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-700; }
+  .btn-secondary { @apply bg-gray-200 text-gray-800 hover:bg-gray-300; }
+}

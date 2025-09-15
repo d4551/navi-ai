@@ -1,5 +1,5 @@
 <template>
-  <div class="workflow-steps section-card">
+  <div class="workflow-steps section-card" class="font-sans">
     <div class="steps-container" :class="{ mobile: isMobile }">
       <div
         v-for="step in steps"
@@ -14,7 +14,7 @@
         @click="handleStepClick(step)"
       >
         <div class="step-indicator">
-          <AppIcon v-if="step.id < currentStep" name="mdi-check" size="16" />
+          <AppIcon v-if="step.id < currentStep" name="CheckIcon" size="16" />
           <AppIcon v-else-if="step.icon" :name="step.icon" size="16" />
           <span v-else>{{ step.id }}</span>
         </div>
@@ -72,7 +72,7 @@
         <div class="nav-actions">
           <UnifiedButton
             variant="ghost"
-            leading-icon="mdi-chevron-left"
+            leading-icon="ChevronLeftIcon"
             :disabled="!canGoBack"
             @click="$emit('previous-step')"
           >
@@ -82,7 +82,7 @@
           <UnifiedButton
             v-if="currentStep < steps.length"
             variant="primary"
-            trailing-icon="mdi-chevron-right"
+            trailing-icon="ChevronRightIcon"
             :disabled="!canProceed"
             @click="$emit('next-step')"
           >
@@ -92,7 +92,7 @@
           <UnifiedButton
             v-else
             variant="success"
-            leading-icon="mdi-check-circle-outline"
+            leading-icon="CheckCircleIcon"
             :disabled="!canProceed"
             @click="$emit('complete')"
           >
@@ -103,7 +103,7 @@
       
       <!-- Validation Message -->
       <div v-if="!canProceed && validationMessage" class="validation-hint">
-        <AppIcon name="mdi-information-outline" size="16" />
+        <AppIcon name="InformationCircleIcon" size="16" />
         <span>{{ validationMessage }}</span>
       </div>
     </div>
@@ -111,6 +111,8 @@
 </template>
 
 <script setup>
+import { CheckCircleIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+
 import { computed } from 'vue'
 import UnifiedButton from './UnifiedButton.vue'
 import AppIcon from './AppIcon.vue'
@@ -345,7 +347,7 @@ const handleStepClick = (step) => {
 .mobile-progress-bar {
   margin-top: var(--spacing-4);
   padding-top: var(--spacing-3);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .progress-track {
@@ -365,14 +367,14 @@ const handleStepClick = (step) => {
 .progress-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-align: center;
 }
 
 .workflow-navigation {
   margin-top: var(--spacing-6);
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .nav-content {
@@ -389,13 +391,13 @@ const handleStepClick = (step) => {
 
 .current-step {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
 .step-counter {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .nav-actions {

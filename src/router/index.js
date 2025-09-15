@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import { logger } from "@/shared/utils/logger";
 
 // Views - Lazy loaded for better performance with MUI integration
 const Dashboard                = () => import("@/views/Dashboard.vue");
@@ -56,7 +57,6 @@ const Pathology                = () => import("@/views/Pathology.vue");
 // Optional effects + perf utilities
 import { initEffects, staggerFadeIn, pulseOnFocus } from "@/utils/effects";
 import { performanceMonitor } from "@/utils/performance";
-import { logger } from "@/shared/utils/logger";
 
 const routes = [
   // Root redirect
@@ -787,7 +787,7 @@ router.afterEach((to, from) => {
 
 // Add global error handler for navigation failures
 router.onError((error) => {
-  console.warn('Router navigation error:', error);
+  logger.warn('Router navigation error:', error);
   // Don't throw - just log and continue
   // This prevents router warnings from disrupting navigation
 });

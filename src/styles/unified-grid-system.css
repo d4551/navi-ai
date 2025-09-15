@@ -1,0 +1,360 @@
+/**
+ * ================================================
+ * UNIFIED GRID SYSTEM - NAVI AI GAMING PLATFORM
+ * ================================================
+ * Consolidates all grid utilities into 3 responsive patterns:
+ * 1. Responsive Grid (auto-fit)
+ * 2. Fixed Grid (explicit columns)
+ * 3. Masonry Grid (column-based)
+ */
+
+/* ===== CORE GRID VARIABLES ===== */
+:root {
+  /* Grid Breakpoints */
+  --grid-bp-sm: 640px;
+  --grid-bp-md: 768px;
+  --grid-bp-lg: 1024px;
+  --grid-bp-xl: 1280px;
+  --grid-bp-2xl: 1536px;
+
+  /* Grid Card Minimums */
+  --grid-card-xs: 180px;
+  --grid-card-sm: 240px;
+  --grid-card-md: 320px;
+  --grid-card-lg: 400px;
+  --grid-card-xl: 480px;
+
+  /* Grid Gaps */
+  --grid-gap-xs: var(--space-2);
+  --grid-gap-sm: var(--space-3);
+  --grid-gap-md: var(--space-4);
+  --grid-gap-lg: var(--space-6);
+  --grid-gap-xl: var(--space-8);
+}
+
+/* ===== RESPONSIVE GRID PATTERN ===== */
+/* Auto-fit grids that adapt to content and screen size */
+
+.grid-responsive {
+  display: grid;
+  gap: var(--grid-gap-md);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-md), 1fr));
+  align-items: start;
+}
+
+.grid-responsive-xs {
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-xs), 1fr));
+  gap: var(--grid-gap-xs);
+}
+
+.grid-responsive-sm {
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-sm), 1fr));
+  gap: var(--grid-gap-sm);
+}
+
+.grid-responsive-lg {
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-lg), 1fr));
+  gap: var(--grid-gap-lg);
+}
+
+.grid-responsive-xl {
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-xl), 1fr));
+  gap: var(--grid-gap-xl);
+}
+
+/* ===== FIXED GRID PATTERN ===== */
+/* Explicit column counts with responsive breakdowns */
+
+.grid-fixed {
+  display: grid;
+  gap: var(--grid-gap-md);
+  align-items: start;
+}
+
+.grid-fixed-1 { grid-template-columns: 1fr; }
+.grid-fixed-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-fixed-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-fixed-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-fixed-5 { grid-template-columns: repeat(5, 1fr); }
+.grid-fixed-6 { grid-template-columns: repeat(6, 1fr); }
+
+/* ===== MASONRY GRID PATTERN ===== */
+/* Column-based layout for varied content heights */
+
+.grid-masonry {
+  columns: 3;
+  column-gap: var(--grid-gap-md);
+  column-fill: balance;
+}
+
+.grid-masonry > * {
+  break-inside: avoid;
+  margin-bottom: var(--grid-gap-md);
+  display: inline-block;
+  width: 100%;
+}
+
+.grid-masonry-2 { columns: 2; }
+.grid-masonry-4 { columns: 4; }
+.grid-masonry-5 { columns: 5; }
+
+/* ===== SPECIALIZED LAYOUTS ===== */
+
+/* Dashboard Grid - Optimized for dashboard widgets */
+.grid-dashboard {
+  display: grid;
+  gap: var(--grid-gap-lg);
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  align-items: start;
+}
+
+/* Actions Grid - For quick action buttons */
+.grid-actions {
+  display: grid;
+  gap: var(--grid-gap-md);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
+}
+
+/* Stats Grid - For metrics and statistics */
+.grid-stats {
+  display: grid;
+  gap: var(--grid-gap-sm);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-xs), 1fr));
+  align-items: center;
+}
+
+/* Cards Grid - For content cards */
+.grid-cards {
+  display: grid;
+  gap: var(--grid-gap-lg);
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-md), 1fr));
+  align-items: start;
+}
+
+/* Portfolio Grid - For project showcases */
+.grid-portfolio {
+  display: grid;
+  gap: var(--grid-gap-xl);
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-lg), 1fr));
+  align-items: start;
+}
+
+/* ===== RESPONSIVE BREAKDOWNS ===== */
+
+/* Large screens (1280px+) */
+@media (min-width: 1280px) {
+  .grid-fixed-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-fixed-5 { grid-template-columns: repeat(5, 1fr); }
+  .grid-fixed-6 { grid-template-columns: repeat(6, 1fr); }
+  .grid-masonry { columns: 4; }
+  .grid-masonry-4 { columns: 4; }
+  .grid-masonry-5 { columns: 5; }
+}
+
+/* Medium-large screens (1024px - 1279px) */
+@media (max-width: 1279px) and (min-width: 1024px) {
+  .grid-fixed-4 { grid-template-columns: repeat(3, 1fr); }
+  .grid-fixed-5 { grid-template-columns: repeat(4, 1fr); }
+  .grid-fixed-6 { grid-template-columns: repeat(4, 1fr); }
+  .grid-masonry { columns: 3; }
+  .grid-masonry-4 { columns: 3; }
+  .grid-masonry-5 { columns: 4; }
+}
+
+/* Medium screens (768px - 1023px) */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .grid-fixed-3,
+  .grid-fixed-4,
+  .grid-fixed-5,
+  .grid-fixed-6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-masonry,
+  .grid-masonry-4,
+  .grid-masonry-5 {
+    columns: 2;
+  }
+
+  /* Adjust gaps for medium screens */
+  .grid-responsive,
+  .grid-fixed,
+  .grid-dashboard,
+  .grid-actions,
+  .grid-cards,
+  .grid-portfolio {
+    gap: var(--grid-gap-md);
+  }
+}
+
+/* Small screens (640px - 767px) */
+@media (max-width: 767px) and (min-width: 640px) {
+  .grid-fixed-2,
+  .grid-fixed-3,
+  .grid-fixed-4,
+  .grid-fixed-5,
+  .grid-fixed-6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-masonry,
+  .grid-masonry-2,
+  .grid-masonry-4,
+  .grid-masonry-5 {
+    columns: 2;
+  }
+}
+
+/* Extra small screens (< 640px) */
+@media (max-width: 639px) {
+  .grid-fixed-2,
+  .grid-fixed-3,
+  .grid-fixed-4,
+  .grid-fixed-5,
+  .grid-fixed-6 {
+    grid-template-columns: 1fr;
+  }
+  .grid-masonry,
+  .grid-masonry-2,
+  .grid-masonry-4,
+  .grid-masonry-5 {
+    columns: 1;
+  }
+
+  /* Compact gaps for mobile */
+  .grid-responsive,
+  .grid-fixed,
+  .grid-dashboard,
+  .grid-actions,
+  .grid-cards,
+  .grid-portfolio {
+    gap: var(--grid-gap-sm);
+  }
+
+  /* Mobile-specific card minimums */
+  .grid-responsive {
+    grid-template-columns: 1fr;
+  }
+  .grid-responsive-sm,
+  .grid-responsive-lg,
+  .grid-responsive-xl {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== GRID ITEM UTILITIES ===== */
+
+.grid-item-span-2 { grid-column: span 2; }
+.grid-item-span-3 { grid-column: span 3; }
+.grid-item-span-4 { grid-column: span 4; }
+.grid-item-span-full { grid-column: 1 / -1; }
+
+.grid-item-start-1 { grid-column-start: 1; }
+.grid-item-start-2 { grid-column-start: 2; }
+.grid-item-start-3 { grid-column-start: 3; }
+
+.grid-item-end-2 { grid-column-end: 2; }
+.grid-item-end-3 { grid-column-end: 3; }
+.grid-item-end-4 { grid-column-end: 4; }
+
+/* Row utilities */
+.grid-item-row-span-2 { grid-row: span 2; }
+.grid-item-row-span-3 { grid-row: span 3; }
+
+/* ===== GRID CONTAINERS ===== */
+
+.grid-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+.grid-container-sm {
+  max-width: 1200px;
+  padding: var(--space-4);
+}
+
+.grid-container-lg {
+  max-width: 1600px;
+  padding: var(--space-8);
+}
+
+/* Mobile container adjustments */
+@media (max-width: 768px) {
+  .grid-container {
+    padding: var(--space-4);
+  }
+  .grid-container-sm {
+    padding: var(--space-3);
+  }
+  .grid-container-lg {
+    padding: var(--space-4);
+  }
+}
+
+/* ===== LEGACY MIGRATION CLASSES ===== */
+/* Map old classes to new unified system */
+
+/* Replace dense-grid variants */
+.dense-grid { @apply grid-responsive; }
+.dense-grid-sm { @apply grid-responsive-sm; }
+.dense-grid-lg { @apply grid-responsive-lg; }
+
+/* Replace layout-dense variants */
+.layout-dense-2 { @apply grid-fixed-2; }
+.layout-dense-3 { @apply grid-fixed-3; }
+.layout-dense-4 { @apply grid-fixed-4; }
+.layout-dense-auto { @apply grid-responsive; }
+
+/* Replace layout-card-grid */
+.layout-card-grid { @apply grid-cards; }
+
+/* Replace layout-masonry */
+.layout-masonry { @apply grid-masonry; }
+
+/* Replace portfolio-grid */
+.portfolio-grid { @apply grid-portfolio; }
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+
+/* Ensure grid items are properly labeled for screen readers */
+.grid-responsive > *,
+.grid-fixed > *,
+.grid-masonry > * {
+  position: relative;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .grid-responsive,
+  .grid-fixed,
+  .grid-masonry {
+    gap: calc(var(--grid-gap-md) + 4px);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .grid-responsive > *,
+  .grid-fixed > *,
+  .grid-masonry > * {
+    transition: none;
+  }
+}
+
+/* ===== DEBUGGING UTILITIES ===== */
+/* Uncomment for development debugging */
+/*
+.grid-debug .grid-responsive,
+.grid-debug .grid-fixed,
+.grid-debug .grid-masonry {
+  outline: 2px dashed rgba(255, 0, 0, 0.3);
+}
+
+.grid-debug .grid-responsive > *,
+.grid-debug .grid-fixed > *,
+.grid-debug .grid-masonry > * {
+  outline: 1px solid rgba(0, 255, 0, 0.5);
+  min-height: 100px;
+}
+*/

@@ -1,5 +1,5 @@
 <template>
-  <div class="enhanced-realtime-chat" :class="{ 'session-active': isSessionActive }">
+  <div class="enhanced-realtime-chat" :class="{ 'session-active': isSessionActive }" class="font-sans">
     <!-- Enhanced Control Panel -->
     <div class="control-panel" :class="{ collapsed: controlsCollapsed }">
       <button class="controls-toggle" @click="controlsCollapsed = !controlsCollapsed">
@@ -48,7 +48,7 @@
             <UnifiedButton 
               variant="ghost" 
               size="sm" 
-              :leading-icon="micTestActive ? 'mdi-microphone-off' : 'mdi-microphone'" 
+              :leading-icon="micTestActive ? 'MicrophoneIcon-off' : 'MicrophoneIcon'" 
               @click="toggleMicTest"
             >
               {{ micTestActive ? 'Stop Test' : 'Test Mic' }}
@@ -71,8 +71,8 @@
             class="modern-select large"
             @change="updateConfig"
           >
-            <option value="audio">🎤 Audio Only</option>
-            <option value="video">📹 Video + Audio</option>
+            <option value="audio">MicrophoneIcon Audio Only</option>
+            <option value="video">VideoCameraIcon Video + Audio</option>
             <option value="screen">🖥️ Screen Share</option>
             <option value="multimodal">🧠 Multimodal</option>
           </select>
@@ -84,7 +84,7 @@
             v-if="!isSessionActive"
             variant="primary"
             size="lg"
-            leading-icon="mdi-play-circle"
+            leading-icon="PlayIcon-circle"
             :disabled="!canStartSession || isProcessing"
             :loading="isProcessing"
             @click="handleStartSession"
@@ -95,7 +95,7 @@
             v-else
             variant="danger"
             size="lg"
-            leading-icon="mdi-stop-circle"
+            leading-icon="StopIcon-circle"
             :disabled="isProcessing"
             :loading="isProcessing"
             @click="handleStopSession"
@@ -110,11 +110,11 @@
       <div class="media-previews">
         <div v-if="selectedSessionType==='video' || selectedSessionType==='multimodal'" class="preview-card">
           <div class="preview-header">
-            <AppIcon name="mdi-video" />
+            <AppIcon name="VideoCameraIcon" />
             <span>Camera Feed</span>
             <div class="preview-controls">
               <button class="preview-btn" title="Toggle camera">
-                <AppIcon name="mdi-video" />
+                <AppIcon name="VideoCameraIcon" />
               </button>
             </div>
           </div>
@@ -127,7 +127,7 @@
             <span>Screen Share</span>
             <div class="preview-controls">
               <button class="preview-btn" title="Stop sharing">
-                <AppIcon name="mdi-stop" />
+                <AppIcon name="StopIcon" />
               </button>
             </div>
           </div>
@@ -139,7 +139,7 @@
       <div v-if="selectedSessionType === 'audio' || selectedSessionType === 'video' || selectedSessionType === 'multimodal'" class="audio-section">
         <div class="audio-visualizer">
           <div class="volume-display">
-            <AppIcon name="mdi-microphone" class="mic-icon" :class="{ active: isListening }" />
+            <AppIcon name="MicrophoneIcon" class="mic-icon" :class="{ active: isListening }" />
             <div class="volume-bars">
               <div
                 v-for="i in 20" :key="i" class="volume-bar" 
@@ -158,7 +158,7 @@
     <!-- Live Transcription -->
     <div v-if="transcription && isSessionActive" class="transcription-banner">
       <div class="transcription-content">
-        <AppIcon name="mdi-microphone" class="transcription-icon pulsing" />
+        <AppIcon name="MicrophoneIcon" class="transcription-icon pulsing" />
         <div class="transcription-text">{{ transcription }}</div>
         <div class="transcription-indicator">Live</div>
       </div>
@@ -174,7 +174,7 @@
       >
         <div class="message-avatar">
           <div class="avatar" :class="message.role">
-            <AppIcon :name="message.role === 'user' ? 'mdi-account' : 'mdi-robot'" />
+            <AppIcon :name="message.role === 'user' ? 'UserIcon' : 'mdi-robot'" />
           </div>
         </div>
         
@@ -199,7 +199,7 @@
                 @click="showImageModal(message.imageData)"
               />
               <div class="media-overlay">
-                <AppIcon name="mdi-magnify" />
+                <AppIcon name="MagnifyingGlassIcon" />
               </div>
             </div>
             <div class="message-text" v-html="formatContent(message.content)"></div>
@@ -208,10 +208,10 @@
           <!-- Message Actions -->
           <div class="message-actions">
             <button class="action-btn" title="Copy message">
-              <AppIcon name="mdi-content-copy" size="small" />
+              <AppIcon name="DocumentDuplicateIcon" size="small" />
             </button>
             <button v-if="message.role === 'assistant'" class="action-btn" title="Regenerate response">
-              <AppIcon name="mdi-refresh" size="small" />
+              <AppIcon name="ArrowPathIcon" size="small" />
             </button>
           </div>
         </div>
@@ -219,7 +219,7 @@
       <div v-if="isProcessing" class="enhanced-message message-assistant processing">
         <div class="message-avatar">
           <div class="avatar assistant">
-            <AppIcon name="mdi-robot" />
+            <AppIcon name="CpuChipIcon" />
           </div>
         </div>
         <div class="message-body">
@@ -227,7 +227,7 @@
             <span class="message-sender">{{ persona.name }}</span>
             <div class="message-meta">
               <span class="message-type">
-                <AppIcon name="mdi-brain" size="small" />
+                <AppIcon name="CpuChipIcon" size="small" />
                 thinking
               </span>
             </div>
@@ -266,20 +266,20 @@
               title="Attach file" 
               :disabled="isProcessing"
             >
-              <AppIcon name="mdi-attachment" />
+              <AppIcon name="PaperClipIcon" />
             </button>
             <button 
               class="input-action-btn" 
               title="Voice message" 
               :disabled="isProcessing"
             >
-              <AppIcon name="mdi-microphone" />
+              <AppIcon name="MicrophoneIcon" />
             </button>
             <UnifiedButton
               variant="primary"
               size="md"
               icon-only
-              :icon="isProcessing ? 'mdi-loading' : 'mdi-send'"
+              :icon="isProcessing ? 'ArrowPathIcon' : 'mdi-send'"
               :disabled="!textInput.trim() || isProcessing"
               :loading="isProcessing"
               class="send-btn"
@@ -373,10 +373,10 @@
     <!-- Error Display -->
     <div v-if="error" class="enhanced-error-display">
       <div class="error-content">
-        <AppIcon name="mdi-alert-circle" class="error-icon" />
+        <AppIcon name="ExclamationCircleIcon" class="error-icon" />
         <div class="error-message">{{ _error }}</div>
         <button class="error-close" @click="error = null">
-          <AppIcon name="mdi-close" />
+          <AppIcon name="XMarkIcon" />
         </button>
       </div>
     </div>
@@ -386,7 +386,7 @@
       <div class="modal-content" @click.stop>
         <img :src="`data:image/jpeg;base64,${currentModalImage}`" alt="Full size image" />
         <button class="modal-close" @click="closeImageModal">
-          <AppIcon name="mdi-close" />
+          <AppIcon name="XMarkIcon" />
         </button>
       </div>
     </div>
@@ -394,6 +394,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, CpuChipIcon, DocumentDuplicateIcon, ExclamationCircleIcon, MagnifyingGlassIcon, MicrophoneIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { StopIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import { ref, onMounted, reactive, watch, nextTick, computed } from 'vue'
@@ -697,11 +700,11 @@ async function toggleMicTest() {
 function getMessageTypeIcon(type: RealTimeMessage['type']): string {
   const map: Record<RealTimeMessage['type'], string> = {
     text: 'mdi-text',
-    audio: 'mdi-microphone',
-    video: 'mdi-video',
+    audio: 'MicrophoneIcon',
+    video: 'VideoCameraIcon',
     screen: 'mdi-monitor-share'
   };
-  return map[type] ?? 'mdi-help';
+  return map[type] ?? 'QuestionMarkCircleIcon';
 }
 
 function formatTime(ts: Date | string | number) {
@@ -794,7 +797,7 @@ onMounted(() => { enumerateDevices(); });
   align-items: center;
   padding: var(--spacing-3, 1rem) var(--spacing-4, 1.25rem);
   background: var(--glass-surface);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   position: sticky;
@@ -890,7 +893,7 @@ onMounted(() => { enumerateDevices(); });
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   background: var(--surface-color);
-  border-bottom: 1px solid var(--border-color);
+  border-b: 1px solid var(--border-color);
 }
 
 .volume-bar {
@@ -916,7 +919,7 @@ onMounted(() => { enumerateDevices(); });
 .transcription-container {
   padding: 0.75rem 1rem;
   background: var(--info-bg);
-  border-bottom: 1px solid var(--border-color);
+  border-b: 1px solid var(--border-color);
 }
 
 .transcription-text {
@@ -1025,7 +1028,7 @@ onMounted(() => { enumerateDevices(); });
 
 .text-input-container {
   padding: var(--spacing-4, 1rem);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: linear-gradient(
     to top,
     color-mix(in srgb, var(--glass-bg) 80%, transparent),
@@ -1035,9 +1038,9 @@ onMounted(() => { enumerateDevices(); });
   -webkit-backdrop-filter: var(--glass-backdrop-blur-md);
 }
 
-.media-previews { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; padding: 0.5rem 1rem; border-bottom: 1px solid var(--glass-border); background: var(--surface-color); }
+.media-previews { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; padding: 0.5rem 1rem; border-b: 1px solid var(--glass-border); background: var(--surface-color); }
 .preview-tile { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; overflow: hidden; }
-.preview-title { padding: 0.5rem 0.75rem; font-size: 0.9rem; color: var(--text-color); border-bottom: 1px solid var(--glass-border); display: flex; align-items: center; gap: 0.5rem; }
+.preview-title { padding: 0.5rem 0.75rem; font-size: 0.9rem; color: var(--text-color); border-b: 1px solid var(--glass-border); display: flex; align-items: center; gap: 0.5rem; }
 .preview-video { width: 100%; height: 160px; object-fit: cover; background: #000; }
 
 .input-group {
@@ -1051,7 +1054,7 @@ onMounted(() => { enumerateDevices(); });
 
 .config-panel {
   background: var(--surface-color);
-  border-top: 1px solid var(--border-color);
+  border-t: 1px solid var(--border-color);
 }
 
 .config-toggle {
@@ -1072,7 +1075,7 @@ onMounted(() => { enumerateDevices(); });
 
 .config-content {
   padding: 1rem;
-  border-top: 1px solid var(--border-color);
+  border-t: 1px solid var(--border-color);
 }
 
 .form-group {
@@ -1139,7 +1142,7 @@ onMounted(() => { enumerateDevices(); });
 .control-panel {
   background: rgba(var(--surface-color-rgb), 0.7);
   backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(var(--border-color-rgb), 0.2);
+  border-b: 1px solid rgba(var(--border-color-rgb), 0.2);
   padding: 1rem;
   transition: all 0.3s ease;
 }
@@ -1157,7 +1160,7 @@ onMounted(() => { enumerateDevices(); });
   gap: 0.5rem;
   background: none;
   border: none;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   font-weight: 500;
   padding: 0.5rem;
@@ -1168,7 +1171,7 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .controls-toggle:hover {
-  background: rgba(var(--color-primary-rgb), 0.1);
+  background: var(--color-primary-100);
   color: var(--color-primary-500);
 }
 
@@ -1214,7 +1217,7 @@ onMounted(() => { enumerateDevices(); });
 
 .status-text {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1rem;
 }
 
@@ -1232,7 +1235,7 @@ onMounted(() => { enumerateDevices(); });
 .device-section h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 1rem 0;
 }
 
@@ -1260,7 +1263,7 @@ onMounted(() => { enumerateDevices(); });
   background: rgba(var(--surface-color-rgb), 0.7);
   border: 1px solid rgba(var(--border-color-rgb), 0.3);
   border-radius: 8px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.9rem;
   transition: all 0.3s ease;
 }
@@ -1268,7 +1271,7 @@ onMounted(() => { enumerateDevices(); });
 .modern-select:focus {
   outline: none;
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
 }
 
 .modern-select.large {
@@ -1302,7 +1305,7 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .enhanced-messages-container::-webkit-scrollbar-thumb {
-  background: rgba(var(--color-primary-rgb), 0.3);
+  background: var(--color-primary-300);
   border-radius: 3px;
 }
 
@@ -1327,15 +1330,15 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .message-user {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 .message-user .message-body {
   background: linear-gradient(135deg, 
-    rgba(var(--color-primary-rgb), 0.15) 0%,
-    rgba(var(--color-primary-rgb), 0.08) 100%
+    var(--color-primary-100) 0%,
+    var(--color-primary-50) 100%
   );
-  border: 1px solid rgba(var(--color-primary-rgb), 0.3);
+  border: 1px solid var(--color-primary-300);
   border-radius: 18px 4px 18px 18px;
 }
 
@@ -1346,8 +1349,8 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .message-assistant.processing .message-body {
-  background: rgba(var(--color-secondary-rgb), 0.05);
-  border-color: rgba(var(--color-secondary-rgb), 0.2);
+  background: var(--color-secondary-50);
+  border-color: var(--color-secondary-200);
 }
 
 /* Message Avatar */
@@ -1381,7 +1384,7 @@ onMounted(() => { enumerateDevices(); });
     var(--color-accent-500) 100%
   );
   color: white;
-  border-color: rgba(var(--color-secondary-rgb), 0.3);
+  border-color: var(--color-secondary-300);
 }
 
 /* Message Body */
@@ -1395,7 +1398,7 @@ onMounted(() => { enumerateDevices(); });
 
 .message-sender {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.9rem;
 }
 
@@ -1470,7 +1473,7 @@ onMounted(() => { enumerateDevices(); });
     rgba(var(--surface-color-rgb), 0.7) 100%
   );
   backdrop-filter: blur(15px);
-  border-top: 1px solid rgba(var(--border-color-rgb), 0.2);
+  border-t: 1px solid rgba(var(--border-color-rgb), 0.2);
 }
 
 .input-container {
@@ -1491,7 +1494,7 @@ onMounted(() => { enumerateDevices(); });
 
 .input-wrapper:focus-within {
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
 }
 
 .message-input {
@@ -1499,7 +1502,7 @@ onMounted(() => { enumerateDevices(); });
   background: none;
   border: none;
   outline: none;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1rem;
   line-height: 1.5;
   resize: none;
@@ -1530,7 +1533,7 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .input-action-btn:hover:not(:disabled) {
-  background: rgba(var(--color-primary-rgb), 0.1);
+  background: var(--color-primary-100);
   color: var(--color-primary-500);
 }
 
@@ -1554,8 +1557,8 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .quick-action:hover {
-  background: rgba(var(--color-primary-rgb), 0.1);
-  border-color: rgba(var(--color-primary-rgb), 0.3);
+  background: var(--color-primary-100);
+  border-color: var(--color-primary-300);
   color: var(--color-primary-500);
   transform: translateY(-1px);
 }
@@ -1564,11 +1567,11 @@ onMounted(() => { enumerateDevices(); });
 .transcription-banner {
   position: relative;
   background: linear-gradient(135deg, 
-    rgba(var(--color-primary-rgb), 0.1) 0%,
-    rgba(var(--color-secondary-rgb), 0.05) 100%
+    var(--color-primary-100) 0%,
+    var(--color-secondary-50) 100%
   );
   border: 1px solid rgba(var(--color-primary-rgb), 0.2);
-  border-left: 4px solid var(--color-primary-500);
+  border-l: 4px solid var(--color-primary-500);
   padding: 1rem;
   margin: 1rem;
   border-radius: 8px;
@@ -1609,7 +1612,7 @@ onMounted(() => { enumerateDevices(); });
 .transcription-text {
   flex: 1;
   font-style: italic;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .transcription-indicator {
@@ -1631,7 +1634,7 @@ onMounted(() => { enumerateDevices(); });
 /* Media Previews */
 .media-section {
   padding: 1rem;
-  border-bottom: 1px solid rgba(var(--border-color-rgb), 0.1);
+  border-b: 1px solid rgba(var(--border-color-rgb), 0.1);
 }
 
 .media-previews {
@@ -1660,12 +1663,12 @@ onMounted(() => { enumerateDevices(); });
   justify-content: space-between;
   padding: 0.75rem 1rem;
   background: rgba(var(--glass-bg-rgb), 0.7);
-  border-bottom: 1px solid rgba(var(--border-color-rgb), 0.2);
+  border-b: 1px solid rgba(var(--border-color-rgb), 0.2);
 }
 
 .preview-header span {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-left: 0.5rem;
 }
 
@@ -1685,7 +1688,7 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .preview-btn:hover {
-  background: rgba(var(--color-primary-rgb), 0.1);
+  background: var(--color-primary-100);
   color: var(--color-primary-500);
 }
 
@@ -1725,7 +1728,7 @@ onMounted(() => { enumerateDevices(); });
 
 .mic-icon.active {
   color: var(--color-primary-500);
-  filter: drop-shadow(0 0 8px rgba(var(--color-primary-rgb), 0.4));
+  filter: drop-shadow(0 0 8px var(--color-primary-400));
 }
 
 .volume-bars {
@@ -1846,7 +1849,7 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .action-btn:hover {
-  background: rgba(var(--color-primary-rgb), 0.1);
+  background: var(--color-primary-100);
   color: var(--color-primary-500);
 }
 
@@ -1903,8 +1906,8 @@ onMounted(() => { enumerateDevices(); });
 
 /* Session Active State */
 .enhanced-realtime-chat.session-active {
-  border-color: rgba(var(--color-primary-rgb), 0.5);
-  box-shadow: 0 20px 60px rgba(var(--color-primary-rgb), 0.15);
+  border-color: var(--color-primary-500);
+  box-shadow: 0 20px 60px var(--color-primary-100);
 }
 
 /* Image Modal Styles */

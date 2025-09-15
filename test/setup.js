@@ -1,14 +1,28 @@
-// Test setup file
+// Enhanced Test setup file
 import { vi } from "vitest";
 import { config } from "@vue/test-utils";
 
 // Mock global objects that may not be available in test environment
-global.localStorage = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
+const createStorageMock = () => {
+  let store = {};
+  return {
+    getItem: vi.fn(key => store[key] || null),
+    setItem: vi.fn((key, value) => {
+      store[key] = value;
+    }),
+    removeItem: vi.fn(key => {
+      delete store[key];
+    }),
+    clear: vi.fn(() => {
+      store = {};
+    }),
+    length: 0,
+    key: vi.fn(),
+  };
 };
+
+global.localStorage = createStorageMock();
+global.sessionStorage = createStorageMock();
 
 global.performance = {
   mark: vi.fn(),

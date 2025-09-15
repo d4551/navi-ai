@@ -4,6 +4,7 @@
     :class="{ 'breadcrumbs-compact': compact }"
     role="navigation" 
     aria-label="Breadcrumb navigation"
+    class="font-sans"
   >
     <ol class="breadcrumb-list" role="list">
       <!-- Home Link -->
@@ -39,7 +40,7 @@
           class="breadcrumb-link"
           :title="crumb.text"
         >
-          <AppIcon v-if="crumb.icon && !compact" :name="crumb.icon" size="14" class="me-1" />
+          <AppIcon v-if="crumb.icon && !compact" :name="crumb.icon" size="14" class="mr-1" />
           <span class="breadcrumb-text">{{ crumb.text }}</span>
         </router-link>
 
@@ -48,7 +49,7 @@
           class="breadcrumb-current"
           :aria-current="crumb.isLast ? 'page' : undefined"
         >
-          <AppIcon v-if="crumb.icon && !compact" :name="crumb.icon" size="14" class="me-1" />
+          <AppIcon v-if="crumb.icon && !compact" :name="crumb.icon" size="14" class="mr-1" />
           <span class="breadcrumb-text">{{ crumb.text }}</span>
         </span>
       </li>
@@ -61,7 +62,7 @@
         class="breadcrumb-action-btn favorite-btn"
         :variant="'glass'"
         size="sm"
-        :icon="isCurrentPageFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
+        :icon="isCurrentPageFavorite ? 'HeartIcon' : 'HeartIcon-outline'"
         :aria-label="isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'"
         :title="isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'"
         @click="toggleCurrentPageFavorite"
@@ -73,7 +74,7 @@
         class="breadcrumb-action-btn share-btn"
         :variant="'glass'"
         size="sm"
-        icon="mdi-share-variant"
+        icon="ShareIcon"
         aria-label="Share current page"
         title="Share current page"
         @click="shareCurrentPage"
@@ -85,7 +86,7 @@
         class="breadcrumb-action-btn copy-btn"
         :variant="'glass'"
         size="sm"
-        icon="mdi-link"
+        icon="LinkIcon"
         aria-label="Copy page URL"
         title="Copy page URL"
         @click="copyCurrentUrl"
@@ -97,7 +98,7 @@
           class="breadcrumb-action-btn dropdown-btn"
           :variant="'glass'"
           size="sm"
-          icon="mdi-chevron-down"
+          icon="ChevronDownIcon"
           aria-label="Show full breadcrumb"
           @click="toggleDropdown"
         />
@@ -119,11 +120,11 @@
               class="dropdown-link"
               @click="closeDropdown"
             >
-              <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="me-2" />
+              <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="mr-2" />
               {{ crumb.text }}
             </router-link>
             <div v-else class="dropdown-current">
-              <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="me-2" />
+              <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="mr-2" />
               {{ crumb.text }}
             </div>
           </div>
@@ -134,6 +135,8 @@
 </template>
 
 <script setup>
+import { ChevronDownIcon, ShareIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useEnhancedNavigation } from '@/composables/useEnhancedNavigation'
@@ -161,7 +164,7 @@ const _props = defineProps({
   },
   homeIcon: {
     type: String,
-    default: 'mdi-home'
+    default: 'HomeIcon'
   },
   homeText: {
     type: String,
@@ -290,7 +293,7 @@ onUnmounted(() => {
 }
 
 .breadcrumb-separator {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   opacity: 0.6;
   display: flex;
   align-items: center;
@@ -319,7 +322,7 @@ onUnmounted(() => {
 }
 
 .breadcrumb-link.home-link {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -332,7 +335,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: var(--spacing-1);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-1) var(--spacing-2);
   max-width: 200px;
@@ -408,7 +411,7 @@ onUnmounted(() => {
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   backdrop-filter: blur(20px);
   padding: var(--spacing-2);
   margin-top: var(--spacing-2);
@@ -434,7 +437,7 @@ onUnmounted(() => {
   letter-spacing: 0.05em;
   padding: var(--spacing-2) var(--spacing-3);
   margin-bottom: var(--spacing-1);
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
 }
 
 .dropdown-item {
@@ -458,7 +461,7 @@ onUnmounted(() => {
 }
 
 .dropdown-link:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: var(--surface-hover);
 }
 
@@ -467,7 +470,7 @@ onUnmounted(() => {
   align-items: center;
   gap: var(--spacing-2);
   padding: var(--spacing-2) var(--spacing-3);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-medium);
   background: var(--color-primary-bg);
   border-radius: var(--radius-md);
@@ -511,7 +514,7 @@ onUnmounted(() => {
   
   .breadcrumb-item:nth-last-child(2)::before {
     content: '...';
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin-right: var(--spacing-1);
     font-weight: bold;
   }
@@ -521,13 +524,13 @@ onUnmounted(() => {
 [data-theme="dark"] .dropdown-menu,
 .dark-theme .dropdown-menu {
   background: rgba(15, 15, 15, 0.95);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--glass-border);
   backdrop-filter: blur(20px) saturate(180%);
 }
 
 [data-theme="dark"] .dropdown-link:hover,
 .dark-theme .dropdown-link:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-bg);
 }
 
 [data-theme="dark"] .dropdown-current,

@@ -5,6 +5,7 @@
       'item-selected': isSelected,
       'item-favorite': isFavorite 
     }"
+    class="font-sans"
   >
     <div class="item-content">
       <!-- Studio Logo & Basic Info -->
@@ -19,7 +20,7 @@
         <div class="studio-basic-info">
           <h3 class="studio-name">{{ studio.name }}</h3>
           <div class="studio-location">
-            <AppIcon name="mdi-map-marker" />
+            <AppIcon name="MapPinIcon" />
             {{ studio.headquarters || studio.location || 'Location Unknown' }}
           </div>
           <div class="studio-meta">
@@ -42,7 +43,7 @@
           <!-- Games -->
           <div v-if="studio.games?.length" class="detail-section">
             <h4 class="section-title">
-              <AppIcon name="mdi-gamepad-variant" context="gaming" />
+              <AppIcon name="PuzzlePieceIcon" context="gaming" />
               Games ({{ studio.games.length }})
             </h4>
             <div class="tags-list">
@@ -62,7 +63,7 @@
           <!-- Technologies -->
           <div v-if="studio.technologies?.length" class="detail-section">
             <h4 class="section-title">
-              <AppIcon name="mdi-cog" />
+              <AppIcon name="CogIcon" />
               Tech Stack
             </h4>
             <div class="tags-list">
@@ -82,7 +83,7 @@
           <!-- Common Roles -->
           <div v-if="studio.commonRoles?.length" class="detail-section">
             <h4 class="section-title">
-              <AppIcon name="mdi-account-group" />
+              <AppIcon name="UsersIcon" />
               Common Roles
             </h4>
             <div class="tags-list">
@@ -119,7 +120,7 @@
             :title="isFavorite ? 'Remove from watchlist' : 'Add to watchlist'"
             @click.stop="$emit('toggle-favorite', studio.id)"
           >
-            <AppIcon name="mdi-heart" />
+            <AppIcon name="HeartIcon" />
           </button>
           
           <button 
@@ -128,7 +129,7 @@
             title="Select for comparison"
             @click.stop="$emit('toggle-selection', studio.id)"
           >
-            <AppIcon name="mdi-checkbox-marked-circle" />
+            <AppIcon name="CheckIconbox-marked-circle" />
           </button>
         </div>
 
@@ -137,7 +138,7 @@
             color="glass" 
             appearance="outlined" 
             size="sm"
-            leading-icon="mdi-information-outline"
+            leading-icon="InformationCircleIcon"
             @click="$emit('view-details', studio)"
           >
             Details
@@ -146,7 +147,7 @@
           <UnifiedButton 
             color="gaming" 
             size="sm"
-            leading-icon="mdi-briefcase-outline"
+            leading-icon="BriefcaseIcon"
             @click="$emit('view-jobs', studio)"
           >
             Jobs
@@ -181,6 +182,9 @@
 </template>
 
 <script setup lang="ts">
+import { BriefcaseIcon, CogIcon, InformationCircleIcon, PuzzlePieceIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -240,7 +244,7 @@ function getScoreClass(score: number): string {
 }
 
 .studio-list-item.item-favorite {
-  border-left: 4px solid var(--color-error-500);
+  border-l: 4px solid var(--color-error-500);
 }
 
 .item-content {
@@ -291,7 +295,7 @@ function getScoreClass(score: number): string {
 .studio-name {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   line-height: 1.2;
 }
@@ -324,7 +328,7 @@ function getScoreClass(score: number): string {
 }
 
 .studio-description {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   line-height: 1.4;
   margin: 0 0 var(--spacing-3) 0;
@@ -346,7 +350,7 @@ function getScoreClass(score: number): string {
 .section-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   display: flex;
   align-items: center;
@@ -471,7 +475,7 @@ function getScoreClass(score: number): string {
 
 .action-btn:hover {
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border-color: var(--color-primary-300);
 }
 
@@ -495,7 +499,7 @@ function getScoreClass(score: number): string {
 .quick-info-panel {
   margin-top: var(--spacing-4);
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .info-grid {
@@ -513,13 +517,13 @@ function getScoreClass(score: number): string {
 .info-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
 .info-text {
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   opacity: 0.9;
 }
@@ -551,7 +555,7 @@ function getScoreClass(score: number): string {
   }
   
   .item-actions {
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     justify-content: space-between;
     align-items: center;
     min-width: auto;

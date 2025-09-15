@@ -11,66 +11,66 @@ It shows how profile data entered once is automatically synchronized across:
 - Settings and preferences
 -->
 <template>
-  <div class="unified-profile-manager">
+  <div class="unified-profile-manager" class="font-sans">
     <!-- Profile Status Header -->
     <div class="profile-status-header glass-card mb-4">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="flex items-center justify-between">
         <div class="profile-status-info">
           <h5 class="mb-1">
-            <AppIcon name="mdi-account" />
+            <AppIcon name="UserIcon" />
             Unified Profile System
           </h5>
-          <p class="text-muted small mb-0">
+          <p class="text-secondary small mb-0">
             Edit once, sync everywhere - your profile data automatically updates across all features
           </p>
         </div>
         
-        <div class="sync-status-indicators d-flex gap-3">
+        <div class="sync-status-indicators flex gap-glass-md">
           <!-- Profile Completeness -->
-          <div class="sync-indicator" :class="{ 'text-success': completeness >= 80, 'text-warning': completeness < 80 }">
+          <div class="sync-indicator" :class="{ 'text-success-600': completeness >= 80, 'text-warning-600': completeness < 80 }">
             <div class="indicator-icon">
-              <AppIcon v-if="completeness >= 80" name="mdi-account-check" />
-              <AppIcon v-else name="mdi-account-alert" />
+              <AppIcon v-if="completeness >= 80" name="UserIcon-check" />
+              <AppIcon v-else name="UserIcon-alert" />
             </div>
             <div class="indicator-text">
               <div class="text-xs font-weight-bold">{{ Math.round(completeness) }}%</div>
-              <div class="text-xs text-muted">Complete</div>
+              <div class="text-xs text-secondary">Complete</div>
             </div>
           </div>
           
           <!-- Sync Status -->
           <div class="sync-indicator" :class="getSyncStatusClass()">
             <div class="indicator-icon">
-              <AppIcon v-if="isLoading" name="mdi-loading" class="mdi-spin" />
-              <AppIcon v-else-if="syncStatus === 'success'" name="mdi-sync" />
+              <AppIcon v-if="isLoading" name="ArrowPathIcon" class="mdi-spin" />
+              <AppIcon v-else-if="syncStatus === 'success'" name="ArrowPathIcon" />
               <AppIcon v-else-if="syncStatus === 'error'" name="mdi-sync-alert" />
               <AppIcon v-else name="mdi-sync-off" />
             </div>
             <div class="indicator-text">
               <div class="text-xs font-weight-bold">{{ getSyncStatusText() }}</div>
-              <div class="text-xs text-muted">{{ lastSync ? `${getRelativeTime(lastSync)}` : 'Never' }}</div>
+              <div class="text-xs text-secondary">{{ lastSync ? `${getRelativeTime(lastSync)}` : 'Never' }}</div>
             </div>
           </div>
           
           <!-- System Count -->
-          <div class="sync-indicator text-info">
+          <div class="sync-indicator text-blue-600">
             <div class="indicator-icon">
-              <AppIcon name="mdi-grid" />
+              <AppIcon name="Squares2X2Icon" />
             </div>
             <div class="indicator-text">
               <div class="text-xs font-weight-bold">6</div>
-              <div class="text-xs text-muted">Systems</div>
+              <div class="text-xs text-secondary">Systems</div>
             </div>
           </div>
         </div>
       </div>
       
       <!-- Quick Actions -->
-      <div class="profile-quick-actions mt-3 d-flex gap-2">
+      <div class="profile-quick-actions mt-3 flex gap-glass-sm">
         <UnifiedButton
           variant="outline"
           size="sm"
-          leading-icon="mdi-sync"
+          leading-icon="ArrowPathIcon"
           :disabled="isLoading"
           @click="forceSync"
         >
@@ -80,7 +80,7 @@ It shows how profile data entered once is automatically synchronized across:
         <UnifiedButton
           variant="outline"
           size="sm"
-          leading-icon="mdi-eye"
+          leading-icon="EyeIcon"
           @click="showSyncDetails = !showSyncDetails"
         >
           {{ showSyncDetails ? 'Hide' : 'Show' }} Sync Details
@@ -89,7 +89,7 @@ It shows how profile data entered once is automatically synchronized across:
         <UnifiedButton
           variant="outline"
           size="sm"
-          leading-icon="mdi-cog"
+          leading-icon="CogIcon"
           @click="showSettings = !showSettings"
         >
           Settings
@@ -100,21 +100,21 @@ It shows how profile data entered once is automatically synchronized across:
     <!-- Sync Details Panel -->
     <div v-if="showSyncDetails" class="sync-details-panel glass-card mb-4">
       <h6 class="mb-3">
-        <AppIcon name="mdi-information-outline" class="me-2" />
+        <AppIcon name="InformationCircleIcon" class="mr-2" />
         Cross-System Integration Status
       </h6>
       
-      <div class="row g-3">
+      <div class="flex flex-wrap g-3">
         <!-- Job Search System -->
-        <div class="col-md-6 col-lg-4">
+        <div class="flex-1-md-6 flex-1-lg-4">
           <div class="system-status-card" :class="getSystemStatusClass('jobs')">
             <div class="system-header">
               <div class="system-icon">
-                <AppIcon name="mdi-briefcase-search" />
+                <AppIcon name="MagnifyingGlassIcon" />
               </div>
               <div class="system-info">
                 <h6 class="mb-0">Job Search</h6>
-                <small class="text-muted">Matching & Discovery</small>
+                <small class="text-secondary">Matching & Discovery</small>
               </div>
             </div>
             <div class="system-data">
@@ -135,15 +135,15 @@ It shows how profile data entered once is automatically synchronized across:
         </div>
         
         <!-- AI Training System -->
-        <div class="col-md-6 col-lg-4">
+        <div class="flex-1-md-6 flex-1-lg-4">
           <div class="system-status-card" :class="getSystemStatusClass('ai')">
             <div class="system-header">
               <div class="system-icon">
-                <AppIcon name="mdi-brain" />
+                <AppIcon name="CpuChipIcon" />
               </div>
               <div class="system-info">
                 <h6 class="mb-0">AI Training</h6>
-                <small class="text-muted">Personalization</small>
+                <small class="text-secondary">Personalization</small>
               </div>
             </div>
             <div class="system-data">
@@ -164,15 +164,15 @@ It shows how profile data entered once is automatically synchronized across:
         </div>
         
         <!-- Studio Matching System -->
-        <div class="col-md-6 col-lg-4">
+        <div class="flex-1-md-6 flex-1-lg-4">
           <div class="system-status-card" :class="getSystemStatusClass('studios')">
             <div class="system-header">
               <div class="system-icon">
-                <AppIcon name="mdi-gamepad-variant" />
+                <AppIcon name="PuzzlePieceIcon" />
               </div>
               <div class="system-info">
                 <h6 class="mb-0">Studio Matching</h6>
-                <small class="text-muted">Gaming Industry</small>
+                <small class="text-secondary">Gaming Industry</small>
               </div>
             </div>
             <div class="system-data">
@@ -193,15 +193,15 @@ It shows how profile data entered once is automatically synchronized across:
         </div>
         
         <!-- Portfolio System -->
-        <div class="col-md-6 col-lg-4">
+        <div class="flex-1-md-6 flex-1-lg-4">
           <div class="system-status-card" :class="getSystemStatusClass('portfolio')">
             <div class="system-header">
               <div class="system-icon">
-                <AppIcon name="mdi-folder-multiple-outline" />
+                <AppIcon name="FolderIcon-multiple-outline" />
               </div>
               <div class="system-info">
                 <h6 class="mb-0">Portfolio</h6>
-                <small class="text-muted">Showcase</small>
+                <small class="text-secondary">Showcase</small>
               </div>
             </div>
             <div class="system-data">
@@ -222,15 +222,15 @@ It shows how profile data entered once is automatically synchronized across:
         </div>
         
         <!-- Resume System -->
-        <div class="col-md-6 col-lg-4">
+        <div class="flex-1-md-6 flex-1-lg-4">
           <div class="system-status-card" :class="getSystemStatusClass('resume')">
             <div class="system-header">
               <div class="system-icon">
-                <AppIcon name="mdi-file-document-outline" />
+                <AppIcon name="DocumentIcon" />
               </div>
               <div class="system-info">
                 <h6 class="mb-0">Resume Builder</h6>
-                <small class="text-muted">Documents</small>
+                <small class="text-secondary">Documents</small>
               </div>
             </div>
             <div class="system-data">
@@ -251,15 +251,15 @@ It shows how profile data entered once is automatically synchronized across:
         </div>
         
         <!-- Settings System -->
-        <div class="col-md-6 col-lg-4">
+        <div class="flex-1-md-6 flex-1-lg-4">
           <div class="system-status-card" :class="getSystemStatusClass('settings')">
             <div class="system-header">
               <div class="system-icon">
-                <AppIcon name="mdi-cog" />
+                <AppIcon name="CogIcon" />
               </div>
               <div class="system-info">
                 <h6 class="mb-0">Settings</h6>
-                <small class="text-muted">Preferences</small>
+                <small class="text-secondary">Preferences</small>
               </div>
             </div>
             <div class="system-data">
@@ -284,7 +284,7 @@ It shows how profile data entered once is automatically synchronized across:
     <!-- Settings Panel -->
     <div v-if="showSettings" class="settings-panel glass-card">
       <h6 class="mb-3">
-        <AppIcon name="mdi-cog-outline" class="me-2" />
+        <AppIcon name="mdi-cog-outline" class="mr-2" />
         Profile Sync Settings
       </h6>
       
@@ -300,7 +300,7 @@ It shows how profile data entered once is automatically synchronized across:
           <label class="form-check-label" for="auto-sync-toggle">
             <strong>Auto-sync profile changes</strong>
             <br>
-            <small class="text-muted">
+            <small class="text-secondary">
               Automatically update all systems when profile data changes
             </small>
           </label>
@@ -317,7 +317,7 @@ It shows how profile data entered once is automatically synchronized across:
           <label class="form-check-label" for="real-time-sync">
             <strong>Real-time synchronization</strong>
             <br>
-            <small class="text-muted">
+            <small class="text-secondary">
               Sync changes immediately instead of batching
             </small>
           </label>
@@ -342,8 +342,8 @@ It shows how profile data entered once is automatically synchronized across:
                 </div>
               </div>
               <div class="event-status">
-                <AppIcon name="mdi-check-circle-outline" class="text-success" />
-                <AppIcon name="mdi-alert-circle-outline" class="text-warning" />
+                <AppIcon name="CheckCircleIcon" class="text-success-600" />
+                <AppIcon name="ExclamationCircleIcon" class="text-warning-600" />
               </div>
             </div>
           </div>
@@ -354,6 +354,8 @@ It shows how profile data entered once is automatically synchronized across:
 </template>
 
 <script setup>
+import { ArrowPathIcon, CheckCircleIcon, CogIcon, CpuChipIcon, DocumentIcon, ExclamationCircleIcon, EyeIcon, InformationCircleIcon, MagnifyingGlassIcon, PuzzlePieceIcon, UserIcon } from '@heroicons/vue/24/outline'
+
 import { computed, ref, watch, onMounted } from 'vue'
 import { useUnifiedProfile } from '@/composables/useUnifiedProfile'
 import { profileSyncService } from '@/services/ProfileSyncService'
@@ -404,10 +406,10 @@ const toggleAutoSync = () => {
 // Status helpers
 const getSyncStatusClass = () => {
   switch (syncStatus.value) {
-    case 'success': return 'text-success'
-    case 'error': return 'text-danger'
-    case 'syncing': return 'text-primary'
-    default: return 'text-muted'
+    case 'success': return 'text-success-600'
+    case 'error': return 'text-error-600'
+    case 'syncing': return 'text-primary-600'
+    default: return 'text-secondary'
   }
 }
 
@@ -517,7 +519,7 @@ const getAPIKeysStatus = () => {
 
 const getEventIcon = (type) => {
   const iconMap = {
-    'profile-updated': 'mdi-account-edit',
+    'profile-updated': 'UserIcon-edit',
     'section-changed': 'mdi-pencil',
     'batch-update': 'mdi-update',
     'import-complete': 'mdi-import'

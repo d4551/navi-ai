@@ -1,10 +1,10 @@
 <template>
-  <v-card class="glass-card section-card cover-letter-preview-card" elevation="0">
-    <v-card-title class="d-flex align-center pa-4">
-      <AppIcon name="mdi-file-document-outline" class="me-2" />
+  <v-card class="glass-card section-card cover-letter-preview-card" elevation="0" class="font-sans">
+    <v-card-title class="flex items-center pa-4">
+      <AppIcon name="DocumentIcon" class="mr-2" />
       Cover Letter Preview
       <v-spacer />
-      <div class="d-flex align-center gap-2">
+      <div class="flex items-center gap-glass-sm">
         <span class="text-caption">{{ template }} template</span>
         <UnifiedButton
           variant="outline"
@@ -29,7 +29,7 @@
                 {{ coverLetterData.personal.email }}
               </div>
               <div v-if="coverLetterData.personal.phone" class="contact-item">
-                <AppIcon name="mdi-phone-outline" size="16" />
+                <AppIcon name="PhoneIcon-outline" size="16" />
                 {{ coverLetterData.personal.phone }}
               </div>
               <div v-if="coverLetterData.personal.location" class="contact-item">
@@ -37,7 +37,7 @@
                 {{ coverLetterData.personal.location }}
               </div>
               <div v-if="coverLetterData.personal.linkedin" class="contact-item">
-                <AppIcon name="mdi-linkedin" size="16" />
+                <AppIcon name="LinkIconedin" size="16" />
                 {{ coverLetterData.personal.linkedin }}
               </div>
             </div>
@@ -106,6 +106,8 @@
 </template>
 
 <script setup lang="ts">
+import { DocumentIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, defineProps } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -218,14 +220,14 @@ const printCoverLetter = () => {
 }
 
 .cover-letter-header {
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
 }
 
 .applicant-name {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .contact-info {
@@ -294,7 +296,7 @@ const printCoverLetter = () => {
 
 .cover-letter-template-modern .cover-letter-header {
   background: linear-gradient(135deg, color-mix(in srgb, var(--color-info-200) 60%, transparent), color-mix(in srgb, var(--color-info-100) 60%, transparent));
-  border-bottom: 2px solid var(--color-info-300);
+  border-b: 2px solid var(--color-info-300);
 }
 
 .cover-letter-template-elegant .applicant-name {
@@ -305,7 +307,7 @@ const printCoverLetter = () => {
 
 .cover-letter-template-elegant .cover-letter-header {
   background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-100) 70%, transparent), color-mix(in srgb, var(--color-primary-50) 70%, transparent));
-  border-bottom: 1px solid var(--color-primary-200);
+  border-b: 1px solid var(--color-primary-200);
 }
 
 .cover-letter-template-compact {

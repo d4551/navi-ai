@@ -78,6 +78,14 @@ export default defineConfig(({ command }) => ({
     assetsDir: 'assets',
     sourcemap: false, // Reduce bundle size and avoid source map issues
     minify: 'terser',
+    // Enable more aggressive tree shaking
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.logs in production
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+      },
+    },
     rollupOptions: {
       external: [
         'better-sqlite3',
@@ -88,32 +96,72 @@ export default defineConfig(({ command }) => ({
         'events'
       ],
       output: {
-        // Use function-based manualChunks to enable smarter vendor splitting
+        // Optimized manual chunks for better caching and loading
         manualChunks(id) {
-          if (!id.includes('node_modules')) return undefined
+          if (!id.includes('node_modules')) {
+            // Split application code by feature
+            if (id.includes('src/views/')) {
+              const viewName = id.split('src/views/')[1].split('.')[0]
+              return `view-${viewName.toLowerCase()}`
+            }
+            if (id.includes('src/components/')) {
+              if (id.includes('src/components/ui/')) return 'ui-components'
+              if (id.includes('src/components/settings/')) return 'settings-components'
+              if (id.includes('src/components/portfolio/')) return 'portfolio-components'
+              if (id.includes('src/components/jobs/')) return 'jobs-components'
+              return 'shared-components'
+            }
+            return undefined
+          }
+
           const parts = id.split('node_modules/')[1]
           const pkg = parts.startsWith('@') ? parts.split('/').slice(0, 2).join('/') : parts.split('/')[0]
 
-          // Group some known-heavy vendors for better caching
-          const groups = {
-            'vue-vendor': ['vue', 'vue-router', 'pinia'],
-            'ui-vendor': ['vuetify'],
-            'ai-vendor': ['@ai-sdk/google', 'ai', '@google/genai', '@google/generative-ai'],
-            'data-vendor': ['pdf-lib', 'xlsx', 'file-saver', 'jszip'],
-            'charts-vendor': ['chart.js', 'vue-chartjs', 'animejs'],
-            'utils-vendor': ['lodash-es', 'date-fns', 'fuse.js', 'validator'],
-            'media-vendor': ['compromise', 'natural'],
-            'http-vendor': ['axios', 'workbox-window'],
-            // Separate heavy vendors into their own chunks
-            'phonemizer-vendor': ['phonemizer'],
-            'transformers-vendor': ['@huggingface/transformers'],
-            'ml-vendor': ['@tensorflow/tfjs', 'onnxruntime-web', 'ml-matrix']
-          }
-          for (const [group, pkgs] of Object.entries(groups)) {
-            if (pkgs.includes(pkg)) return group
-          }
-          // Fallback: split by package for other vendors
-          return `vendor-${pkg}`
+          // Critical app dependencies - load early
+          const critical = ['vue', 'vue-router', 'pinia']
+          if (critical.includes(pkg)) return 'app-core'
+
+          // Heavy AI/ML libraries - lazy load
+          const aiLibs = ['@ai-sdk/google', '@google/generative-ai', '@google/genai', 'ai']
+          if (aiLibs.includes(pkg)) return 'ai-core'
+
+          const mlLibs = ['@huggingface/transformers', '@tensorflow/tfjs', 'onnxruntime-web', 'onnxruntime-common']
+          if (mlLibs.includes(pkg)) return 'ml-heavy'
+
+          // Audio processing - only load when needed
+          const audioLibs = ['phonemizer', 'kokoro-js']
+          if (audioLibs.includes(pkg)) return 'audio-processing'
+
+          // Document processing
+          const docLibs = ['pdf-lib', 'html2canvas', 'file-saver', 'jszip']
+          if (docLibs.includes(pkg)) return 'document-processing'
+
+          // UI framework
+          const uiLibs = ['vuetify', '@heroicons/vue', 'vue-toastification']
+          if (uiLibs.includes(pkg)) return 'ui-framework'
+
+          // Charts and visualization
+          const chartLibs = ['chart.js', 'vue-chartjs', 'cytoscape', 'animejs']
+          if (chartLibs.includes(pkg)) return 'charts-viz'
+
+          // Utilities - smaller chunks
+          const utilLibs = ['lodash-es', 'date-fns', 'fuse.js', 'validator', 'zod', 'dompurify']
+          if (utilLibs.includes(pkg)) return 'utils'
+
+          // HTTP and networking
+          const httpLibs = ['axios', 'workbox-window']
+          if (httpLibs.includes(pkg)) return 'http'
+
+          // Text processing
+          const textLibs = ['compromise', 'natural', 'marked']
+          if (textLibs.includes(pkg)) return 'text-processing'
+
+          // Monitoring and dev tools
+          const monitoringLibs = ['@sentry/browser', '@sentry/core']
+          if (monitoringLibs.includes(pkg)) return 'monitoring'
+
+          // Fallback for small vendors
+          return `vendor-misc`
         },
         // Optimize chunk file naming
         chunkFileNames: 'js/[name]-[hash].js',
@@ -126,8 +174,8 @@ export default defineConfig(({ command }) => ({
         }
       }
     },
-    // Raise limit for heavy ML/AI vendors while keeping others optimized
-    chunkSizeWarningLimit: 1500,
+    // Optimized chunk size limits
+    chunkSizeWarningLimit: 800, // Stricter limit to catch bloated chunks
     target: 'es2020', // Modern browsers support
     cssCodeSplit: true, // Split CSS into separate chunks
     reportCompressedSize: false // Faster builds
@@ -156,30 +204,34 @@ export default defineConfig(({ command }) => ({
     '__VITE_IS_NODE__': 'false'
   },
   optimizeDeps: {
-    // Force pre-bundling of frequently used deps
+    // Force pre-bundling of critical dependencies
     include: [
-      'animejs', 
-      'buffer', 
-      'process', 
-      'util', 
-      'vue-content-loader', 
-      'pdf-lib',
-      '@google/generative-ai'
+      'vue',
+      'vue-router',
+      'pinia',
+      '@vueuse/core',
+      'animejs',
+      'vue-content-loader'
     ],
-    // Exclude Node.js-only modules from browser builds
+    // Exclude heavy and conditional dependencies
     exclude: [
+      // Node.js only
       'better-sqlite3',
       'electron',
-      'fs',
-      'path',
-      'crypto',
-      'events',
-      // Database services that depend on better-sqlite3
+      'fs', 'path', 'crypto', 'events',
+      // Heavy AI/ML libraries (lazy load)
+      '@huggingface/transformers',
+      'onnxruntime-web',
+      'phonemizer',
+      // Database services
       '@/services/database/DatabaseManager',
       '@/services/database/StudioRepository',
       '@/services/database/JobRepository',
       '@/services/database/DatabaseStudioService',
-      '@/services/database/DatabaseJobService'
+      '@/services/database/DatabaseJobService',
+      // Conditional features
+      'workbox-window',
+      '@sentry/browser'
     ],
     entries: ['index.html']
   },

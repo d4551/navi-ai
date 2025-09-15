@@ -1,5 +1,5 @@
 <template>
-  <div class="skills-radar-chart">
+  <div class="skills-radar-chart" class="font-sans">
     <div class="chart-header">
       <AppIcon name="mdi-radar" aria-hidden="true" />
       <span>Skills Radar</span>
@@ -18,7 +18,7 @@
   <!-- Provide simple bars fallback for environments where canvas is blocked -->
   <noscript>
     <div class="bars">
-    <div v-for="s in normalizedSkills" :key="s.label" class="bar-row">
+    <div v-for="s in normalizedSkills" :key="s.label" class="bar-flex flex-wrap">
     <div class="bar-label">{{ s.label }}</div>
     <div class="bar-track">
     <div class="bar-fill" :style="{ width: `${s.value}%` }"></div>
@@ -92,7 +92,7 @@ const chartData = computed(() => {
 })
 
 const chartOptions = computed(() => {
-  const text = cssVar('--text-primary', '#e5e7eb')
+  const text = cssVar('--text-primary-600', '#e5e7eb')
   const grid = cssVar('--border-glass', 'rgba(255,255,255,0.1)')
   const ticks = cssVar('--text-secondary', '#9ca3af')
   return {
@@ -155,7 +155,7 @@ const chartOptions = computed(() => {
   flex-direction: column;
   gap: 0.5rem;
 }
-.bar-row {
+.bar-flex flex-wrap {
   display: grid;
   grid-template-columns: 1fr 3fr auto;
   gap: 0.5rem;
@@ -168,7 +168,7 @@ const chartOptions = computed(() => {
 .bar-track {
   position: relative;
   height: 8px;
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-radius: 999px;
   overflow: hidden;
 }

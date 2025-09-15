@@ -6,7 +6,13 @@
  */
 
 /* 0. FONT IMPORTS - Load fonts first for both light and dark modes */
-@import '@fontsource/fira-code/400.css';
+/* Electrolize (display/primary) */
+@import '@fontsource/electrolize/index.css';
+/* Orbitron (gaming) important weights */
+@import '@fontsource/orbitron/400.css';
+@import '@fontsource/orbitron/500.css';
+@import '@fontsource/orbitron/700.css';
+@import '@fontsource/orbitron/900.css';
 @import '@fontsource/fira-code/500.css';
 @import '@fontsource/fira-code/600.css';
 @import '@fontsource/fira-code/700.css';
@@ -18,7 +24,22 @@
 /* 1. CORE UNIFIED THEME (Single source of truth) */
 @import './navi-unified-theme.css';
 
-/* 2. LAYOUT COMPONENTS (Pre-built patterns) */
+/* 2. UNIFIED GRID SYSTEM (Consolidated layout utilities) */
+@import './unified-grid-system.css';
+
+/* 3. ACCESSIBILITY SYSTEM (WCAG compliance and focus management) */
+@import './accessibility-system.css';
+
+/* 4. SEMANTIC TYPOGRAPHY (Proper heading hierarchy) */
+@import './semantic-typography.css';
+
+/* 5. WCAG COLOR SYSTEM (AA/AAA contrast compliance) */
+@import './wcag-color-system.css';
+
+/* 6. UNIFIED SPACING SYSTEM (Consistent spacing scale) */
+@import './unified-spacing-system.css';
+
+/* 7. LAYOUT COMPONENTS (Pre-built patterns) */
 @import './navi-layout-components.css';
 
 /* 3. BUTTON SYSTEM (Comprehensive button components) */
@@ -30,11 +51,21 @@
 /* 5. THEME-AWARE COMPONENTS */
 @import './components.css';
 
-/* 6. TAILWIND BASE (For additional utilities) */
+/* 6. FONT OVERRIDES (High priority) */
+@import './font-overrides.css';
+
+/* 7. THEME TEXT UTILITIES (Explicit dark/light mode text colors) */
+@import './theme-text-utilities.css';
+
+/* 8. ENHANCED GLASS UTILITIES (Production-grade utilities) */
+@import './enhanced-glass-utilities.css';
+
+/* 9. TAILWIND BASE (For additional utilities) */
 @import './tailwind.css';
 @import './tailwind-utilities.css';
+@import './tailwind-button-utilities.css';
 
-/* 5. LEGACY COMPATIBILITY (Minimal, will be phased out) */
+/* 10. LEGACY COMPATIBILITY (Minimal, will be phased out) */
 @import './legacy-bridge.css';
 @import './neon-accents.css';
 @import './enhanced-global-improvements.css';

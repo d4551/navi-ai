@@ -1,15 +1,15 @@
 <template>
-  <div v-if="visible" class="modal-overlay" @click="closeModal">
+  <div v-if="visible" class="modal-overlay" class="font-sans" @click="closeModal">
     <div class="modal-dialog glass-card" @click.stop>
       <div class="modal-header">
         <h3 class="modal-title">
-          <AppIcon name="mdi-plus-circle" />
+          <AppIcon name="PlusCircleIcon" />
           Add New Project
         </h3>
         <UnifiedButton
           variant="ghost"
           size="sm"
-          icon="mdi-close"
+          icon="XMarkIcon"
           @click="closeModal"
         />
       </div>
@@ -87,7 +87,7 @@
           </div>
 
           <!-- Engine and Platform -->
-          <div class="form-row">
+          <div class="form-flex flex-wrap">
             <div class="form-group">
               <label for="project-engine" class="form-label">Engine/Technology</label>
               <select
@@ -166,7 +166,7 @@
           :loading="isSubmitting"
           @click="handleSubmit"
         >
-          <AppIcon name="mdi-plus" />
+          <AppIcon name="PlusIcon" />
           Add Project
         </UnifiedButton>
       </div>
@@ -175,6 +175,8 @@
 </template>
 
 <script setup lang="ts">
+import { PlusCircleIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -326,7 +328,7 @@ watch(() => props.visible, (visible) => {
   backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
 }
 
 .modal-header {
@@ -334,7 +336,7 @@ watch(() => props.visible, (visible) => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .modal-title {
@@ -344,7 +346,7 @@ watch(() => props.visible, (visible) => {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-body {
@@ -357,14 +359,14 @@ watch(() => props.visible, (visible) => {
   justify-content: flex-end;
   gap: var(--spacing-3);
   padding: var(--spacing-6);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .form-group {
   margin-bottom: var(--spacing-4);
 }
 
-.form-row {
+.form-flex flex-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-4);
@@ -374,7 +376,7 @@ watch(() => props.visible, (visible) => {
   display: block;
   margin-bottom: var(--spacing-2);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .form-label.required::after {
@@ -389,7 +391,7 @@ watch(() => props.visible, (visible) => {
   border-radius: var(--radius-md);
   background: var(--glass-surface);
   backdrop-filter: var(--glass-backdrop-blur);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   transition: all var(--duration-fast);
 }
@@ -418,7 +420,7 @@ watch(() => props.visible, (visible) => {
   gap: var(--spacing-2);
   cursor: pointer;
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .form-checkbox input[type="checkbox"] {
@@ -438,7 +440,7 @@ watch(() => props.visible, (visible) => {
     max-height: 95vh;
   }
   
-  .form-row {
+  .form-flex flex-wrap {
     grid-template-columns: 1fr;
   }
   

@@ -1,5 +1,5 @@
 <template>
-  <div class="system-status-indicator">
+  <div class="system-status-indicator" class="font-sans">
     <!-- Quick Status Badge -->
     <button
       class="status-badge"
@@ -14,7 +14,7 @@
     >
       <AppIcon :name="statusIcon" :class="{ 'mdi-spin': status === 'checking' }" />
       <span class="status-text">{{ statusText }}</span>
-      <AppIcon name="mdi-chevron-down" class="expand-icon" :class="{ 'expanded': showDetails }" />
+      <AppIcon name="ChevronDownIcon" class="expand-icon" :class="{ 'expanded': showDetails }" />
     </button>
 
     <!-- Detailed Status Panel -->
@@ -31,7 +31,7 @@
               :disabled="isChecking"
               @click="runHealthCheck"
             >
-              <AppIcon :name="isChecking ? 'mdi-loading' : 'mdi-refresh'" :class="{ 'mdi-spin': isChecking }" />
+              <AppIcon :name="isChecking ? 'ArrowPathIcon' : 'ArrowPathIcon'" :class="{ 'mdi-spin': isChecking }" />
               {{ isChecking ? 'Checking...' : 'Refresh' }}
             </button>
             <button
@@ -39,7 +39,7 @@
               :disabled="isRunningFullTest"
               @click="runFullTest"
             >
-              <AppIcon :name="isRunningFullTest ? 'mdi-loading' : 'mdi-test-tube'" :class="{ 'mdi-spin': isRunningFullTest }" />
+              <AppIcon :name="isRunningFullTest ? 'ArrowPathIcon' : 'mdi-test-tube'" :class="{ 'mdi-spin': isRunningFullTest }" />
               {{ isRunningFullTest ? 'Testing...' : 'Full Test' }}
             </button>
           </div>
@@ -125,6 +125,8 @@
 </template>
 
 <script setup lang="ts">
+import { ChevronDownIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { systemIntegrationTest } from '@/utils/SystemIntegrationTest'
@@ -142,11 +144,11 @@ const performanceMetrics = ref<any>(null)
 // Computed properties
 const statusIcon = computed(() => {
   switch (status.value) {
-    case 'healthy': return 'mdi-check-circle-outline'
+    case 'healthy': return 'CheckIcon-circle-outline'
     case 'degraded': return 'mdi-alert-circle-outline'
-    case 'critical': return 'mdi-close-circle-outline'
-    case 'checking': return 'mdi-loading'
-    default: return 'mdi-help-circle'
+    case 'critical': return 'XMarkIcon-circle-outline'
+    case 'checking': return 'ArrowPathIcon'
+    default: return 'QuestionMarkCircleIcon-circle'
   }
 })
 
@@ -251,12 +253,12 @@ const runFullTest = async () => {
 const getComponentIcon = (componentName: string): string => {
   const iconMap: Record<string, string> = {
     'AI Service': 'mdi-robot',
-    'Database': 'mdi-database',
+    'Database': 'CircleStackIcon',
     'Storage': 'mdi-harddisk',
-    'Gaming Studios': 'mdi-gamepad-variant',
-    'Media Streaming': 'mdi-video',
-    'Theme System': 'mdi-palette',
-    'Gamification': 'mdi-trophy'
+    'Gaming Studios': 'DevicePhoneMobileIcon-variant',
+    'Media Streaming': 'VideoCameraIcon',
+    'Theme System': 'SwatchIcon',
+    'Gamification': 'TrophyIcon'
   }
   return iconMap[componentName] || 'mdi-cog'
 }
@@ -277,10 +279,10 @@ const getComponentMetric = (componentName: string, results: any[]): string | nul
 
 const getTestResultIcon = (testStatus: string): string => {
   switch (testStatus) {
-    case 'passed': return 'mdi-check'
-    case 'failed': return 'mdi-close'
+    case 'passed': return 'CheckIcon'
+    case 'failed': return 'XMarkIcon'
     case 'warning': return 'mdi-alert'
-    default: return 'mdi-help'
+    default: return 'QuestionMarkCircleIcon'
   }
 }
 
@@ -391,19 +393,19 @@ onMounted(async () => {
   padding: var(--spacing-3);
   background: var(--surface-elevated);
   border-radius: var(--radius-md);
-  border-left: 3px solid var(--border-base);
+  border-l: 3px solid var(--border-base);
 }
 
 .component-status.status-healthy {
-  border-left-color: var(--color-success-500);
+  border-l-color: var(--color-success-500);
 }
 
 .component-status.status-degraded {
-  border-left-color: var(--color-warning-500);
+  border-l-color: var(--color-warning-500);
 }
 
 .component-status.status-critical {
-  border-left-color: var(--color-error-500);
+  border-l-color: var(--color-error-500);
 }
 
 .component-header {
@@ -482,7 +484,7 @@ onMounted(async () => {
 .metric-value {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .test-results-list {
@@ -495,19 +497,19 @@ onMounted(async () => {
   margin-bottom: var(--spacing-2);
   background: var(--surface-base);
   border-radius: var(--radius-sm);
-  border-left: 2px solid var(--border-base);
+  border-l: 2px solid var(--border-base);
 }
 
 .test-result-item.result-passed {
-  border-left-color: var(--color-success-500);
+  border-l-color: var(--color-success-500);
 }
 
 .test-result-item.result-failed {
-  border-left-color: var(--color-error-500);
+  border-l-color: var(--color-error-500);
 }
 
 .test-result-item.result-warning {
-  border-left-color: var(--color-warning-500);
+  border-l-color: var(--color-warning-500);
 }
 
 .result-header {
@@ -520,7 +522,7 @@ onMounted(async () => {
 }
 
 .result-component {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .result-test {

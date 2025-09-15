@@ -20,8 +20,8 @@ import { useStorage } from '@vueuse/core'
 import { logger } from '@/shared/utils/logger'
 import { useDynamicScaling } from './useDynamicScaling'
 
-// Theme Types
-export type ThemeMode = 'light' | 'dark' | 'system'
+// Theme Types - aligned with settings schema
+export type ThemeMode = 'light' | 'dark' | 'auto' | 'system'
 export type ColorScheme = 'light' | 'dark'
 
 export interface ThemeColors {
@@ -299,7 +299,6 @@ const DESIGN_TOKENS: Omit<ThemeDesignTokens, 'colors'> = {
       primary: "'Electrolize', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
       secondary: "'Inter', 'Electrolize', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       mono: "'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
-      code: "'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
       gaming: "'Orbitron', 'Electrolize', system-ui, sans-serif",
       display: "'Electrolize', 'Inter', system-ui, sans-serif",
       ui: "'Electrolize', 'Inter', system-ui, -apple-system, sans-serif"
@@ -343,10 +342,10 @@ const DESIGN_TOKENS: Omit<ThemeDesignTokens, 'colors'> = {
   },
   borderRadius: {
     none: '0',
-    sm: '0.25rem',    // 4px
-    md: '0.5rem',     // 8px
-    lg: '0.75rem',    // 12px
-    xl: '1rem',       // 16px
+    sm: '0.25rem',    // 4px - slight radius for small elements
+    md: '0.375rem',   // 6px - slight radius for medium elements
+    lg: '0.5rem',     // 8px - slight radius for large elements
+    xl: '0.625rem',   // 10px - slight radius for extra large elements
     full: '9999px'
   },
   shadows: {
@@ -362,33 +361,89 @@ const DESIGN_TOKENS: Omit<ThemeDesignTokens, 'colors'> = {
   }
 }
 
-// Composable state
-const themeMode = useStorage<ThemeMode>('navi-theme-mode', 'light')
-const systemPreference = ref<ColorScheme>('light')
+// Get initial theme from localStorage or system preference
+const getInitialTheme = (): ThemeMode => {
+  if (typeof window === 'undefined') return 'light'
+
+  try {
+    // Check for stored theme preference
+    const storedTheme = localStorage.getItem('navi-theme-mode')
+    if (storedTheme) {
+      const parsed = JSON.parse(storedTheme)
+      return parsed === 'system' ? 'auto' : parsed
+    }
+  } catch {}
+
+  // Default to system preference if no stored theme
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark'
+  }
+
+  return 'light'
+}
+
+const getInitialSystemPreference = (): ColorScheme => {
+  if (typeof window === 'undefined') return 'light'
+
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark'
+  }
+
+  return 'light'
+}
+
+// Composable state - will be synced with Pinia store
+const themeMode = ref<ThemeMode>(getInitialTheme())
+const systemPreference = ref<ColorScheme>(getInitialSystemPreference())
 
 // Create unified theme composable
 export function useUnifiedTheme() {
-  // Initialize dynamic scaling
-  const scaling = useDynamicScaling({
-    enableFontScaling: true,
-    enablePerformanceOptimization: true
-  })
+  // Initialize dynamic scaling with fallback
+  let scaling
+  try {
+    scaling = useDynamicScaling({
+      enableFontScaling: true,
+      enablePerformanceOptimization: true
+    })
+  } catch (error) {
+    logger.warn('Dynamic scaling failed to initialize, using fallback')
+    scaling = {
+      getScaledValue: (value: number) => value,
+      shouldOptimizeAnimations: ref(false)
+    }
+  }
   
   // Computed active color scheme
   const colorScheme = computed<ColorScheme>(() => {
-    return themeMode.value === 'system' ? systemPreference.value : themeMode.value as ColorScheme
+    const mode = themeMode.value === 'auto' ? systemPreference.value : themeMode.value as ColorScheme
+    // Ensure we always return a valid color scheme
+    return (mode === 'dark' || mode === 'light') ? mode : 'light'
   })
 
   // Current theme tokens
-  const _theme = computed<ThemeDesignTokens>(() => ({
-    colors: GAMING_COLORS[colorScheme.value],
-    ...DESIGN_TOKENS
-  }))
+  const _theme = computed<ThemeDesignTokens>(() => {
+    const scheme = colorScheme.value
+    const colors = GAMING_COLORS[scheme]
+
+    if (!colors) {
+      logger.warn(`Theme colors not found for scheme: ${scheme}, falling back to light`)
+      return {
+        colors: GAMING_COLORS.light,
+        ...DESIGN_TOKENS
+      }
+    }
+
+    return {
+      colors,
+      ...DESIGN_TOKENS
+    }
+  })
 
   // Convenience computed properties
   const isDark = computed(() => colorScheme.value === 'dark')
   const isLight = computed(() => colorScheme.value === 'light')
-  const isSystem = computed(() => themeMode.value === 'system')
+  const isAuto = computed(() => themeMode.value === 'auto')
+  const isSystem = computed(() => themeMode.value === 'system' || themeMode.value === 'auto')
 
   // System preference detection
   const updateSystemPreference = () => {
@@ -400,14 +455,36 @@ export function useUnifiedTheme() {
   // Theme switching functions
   const setThemeMode = (mode: ThemeMode) => {
     themeMode.value = mode
+
+    // Sync with Pinia store if available
+    try {
+      if (typeof window !== 'undefined' && (window as any).__PINIA__) {
+        const { useAppStore } = require('@/stores/app')
+        const appStore = useAppStore()
+        if (appStore && appStore.updateSettings) {
+          appStore.updateSettings({ theme: mode })
+        }
+      }
+    } catch (e) {
+      // Silently ignore if store is not available
+    }
+
     logger.info(`Theme mode changed to: ${mode}`)
+  }
+
+  // Sync theme from Pinia store
+  const syncFromStore = (storeTheme: ThemeMode) => {
+    if (storeTheme !== themeMode.value) {
+      themeMode.value = storeTheme
+      logger.info(`Theme synced from store: ${storeTheme}`)
+    }
   }
 
   const toggleTheme = () => {
     if (themeMode.value === 'light') {
       setThemeMode('dark')
     } else if (themeMode.value === 'dark') {
-      setThemeMode('system')
+      setThemeMode('auto')
     } else {
       setThemeMode('light')
     }
@@ -418,8 +495,13 @@ export function useUnifiedTheme() {
     if (typeof document === 'undefined') return
 
     const root = document.documentElement
-    const colors = _theme.value.colors
+    const colors = _theme.value?.colors
     const tokens = _theme.value
+
+    if (!colors || !tokens) {
+      logger.warn('Theme colors or tokens not available, skipping CSS injection')
+      return
+    }
 
     // Inject color variables
     Object.entries(colors).forEach(([key, value]) => {
@@ -433,55 +515,81 @@ export function useUnifiedTheme() {
     })
 
     // Inject typography variables with scaling support
-    Object.entries(tokens.typography.fontFamily).forEach(([key, value]) => {
-      root.style.setProperty(`--font-family-${key}`, value)
-    })
+    if (tokens.typography?.fontFamily) {
+      Object.entries(tokens.typography.fontFamily).forEach(([key, value]) => {
+        root.style.setProperty(`--font-family-${key}`, value)
+      })
+    }
 
-    Object.entries(tokens.typography.fontSize).forEach(([key, value]) => {
-      // Apply scaling to font sizes
-      const scaledValue = scaling.getScaledValue(parseFloat(value))
-      root.style.setProperty(`--font-size-${key}`, `${scaledValue}rem`)
-      root.style.setProperty(`--font-size-${key}-base`, value) // Keep original for reference
-    })
+    if (tokens.typography?.fontSize) {
+      Object.entries(tokens.typography.fontSize).forEach(([key, value]) => {
+        // Apply scaling to font sizes
+        const scaledValue = scaling.getScaledValue(parseFloat(value))
+        root.style.setProperty(`--font-size-${key}`, `${scaledValue}rem`)
+        root.style.setProperty(`--font-size-${key}-base`, value) // Keep original for reference
+      })
+    }
 
-    Object.entries(tokens.typography.fontWeight).forEach(([key, value]) => {
-      root.style.setProperty(`--font-weight-${key}`, value.toString())
-    })
+    if (tokens.typography?.fontWeight) {
+      Object.entries(tokens.typography.fontWeight).forEach(([key, value]) => {
+        root.style.setProperty(`--font-weight-${key}`, value.toString())
+      })
+    }
 
     // Inject spacing variables with scaling support
-    Object.entries(tokens.spacing).forEach(([key, value]) => {
-      const scaledValue = scaling.getScaledValue(parseFloat(value))
-      root.style.setProperty(`--spacing-${key}`, `${scaledValue}rem`)
-      root.style.setProperty(`--spacing-${key}-base`, value) // Keep original for reference
-    })
+    if (tokens.spacing) {
+      Object.entries(tokens.spacing).forEach(([key, value]) => {
+        const scaledValue = scaling.getScaledValue(parseFloat(value))
+        root.style.setProperty(`--spacing-${key}`, `${scaledValue}rem`)
+        root.style.setProperty(`--spacing-${key}-base`, value) // Keep original for reference
+      })
+    }
 
     // Inject border radius variables
-    Object.entries(tokens.borderRadius).forEach(([key, value]) => {
-      root.style.setProperty(`--border-radius-${key}`, value)
-    })
+    if (tokens.borderRadius) {
+      Object.entries(tokens.borderRadius).forEach(([key, value]) => {
+        root.style.setProperty(`--border-radius-${key}`, value)
+      })
+    }
 
     // Inject shadow variables
-    Object.entries(tokens.shadows).forEach(([key, value]) => {
-      root.style.setProperty(`--shadow-${key}`, value)
-    })
+    if (tokens.shadows) {
+      Object.entries(tokens.shadows).forEach(([key, value]) => {
+        root.style.setProperty(`--shadow-${key}`, value)
+      })
+    }
 
     // Inject transition variables (adjust for performance)
-    Object.entries(tokens.transitions).forEach(([key, value]) => {
-      const adjustedTransition = scaling.shouldOptimizeAnimations.value 
-        ? value.replace(/0\.3s|0\.5s/g, '0.15s') // Faster transitions for performance
-        : value
-      root.style.setProperty(`--transition-${key}`, adjustedTransition)
-    })
+    if (tokens.transitions) {
+      Object.entries(tokens.transitions).forEach(([key, value]) => {
+        const adjustedTransition = scaling.shouldOptimizeAnimations.value
+          ? value.replace(/0\.3s|0\.5s/g, '0.15s') // Faster transitions for performance
+          : value
+        root.style.setProperty(`--transition-${key}`, adjustedTransition)
+      })
+    }
 
-    // Set glassmorphic theme variables
-    root.style.setProperty('--glass-bg', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.1)')
-    root.style.setProperty('--glass-bg-hover', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.15)')
-    root.style.setProperty('--glass-bg-active', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.2)')
-    root.style.setProperty('--glass-border', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.3)')
-    root.style.setProperty('--glass-border-hover', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.4)')
-    root.style.setProperty('--glass-shadow', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.1)')
+    // Set glassmorphic theme variables - Pure black/white with subtle glass effects
+    const isDarkMode = colorScheme.value === 'dark'
 
-    // RGB Neon color variables
+    // Glass backgrounds - very subtle opacity for glassmorphism
+    root.style.setProperty('--glass-bg', isDarkMode ? 'rgba(255, 255, 255, 0.03)' : 'rgba(255, 255, 255, 0.08)')
+    root.style.setProperty('--glass-bg-hover', isDarkMode ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.12)')
+    root.style.setProperty('--glass-bg-active', isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.18)')
+
+    // Glass borders - subtle but visible
+    root.style.setProperty('--glass-border', isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.25)')
+    root.style.setProperty('--glass-border-hover', isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.35)')
+
+    // Glass shadows for depth
+    root.style.setProperty('--glass-shadow', isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.1)')
+    root.style.setProperty('--glass-shadow-lg', isDarkMode ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.15)')
+
+    // Glass backdrop blur
+    root.style.setProperty('--glass-backdrop-blur', 'blur(12px)')
+    root.style.setProperty('--glass-blur', 'blur(12px)')
+
+    // RGB Neon color variables for interactive states
     root.style.setProperty('--neon-red', '255, 0, 102')
     root.style.setProperty('--neon-blue', '0, 204, 255')
     root.style.setProperty('--neon-green', '0, 255, 153')
@@ -493,20 +601,38 @@ export function useUnifiedTheme() {
     root.style.setProperty('--neon-lime', '204, 255, 0')
     root.style.setProperty('--neon-teal', '0, 255, 204')
 
+    // Background RGB values for accessibility utilities
+    root.style.setProperty('--bg-primary-rgb', isDarkMode ? '0, 0, 0' : '255, 255, 255')
+    root.style.setProperty('--text-primary-rgb', isDarkMode ? '255, 255, 255' : '0, 0, 0')
+    root.style.setProperty('--surface-rgb', isDarkMode ? '0, 0, 0' : '255, 255, 255')
+
     // Map semantic text colors for utility classes
     root.style.setProperty('--text-primary', colors['on-background'] || (colorScheme.value === 'dark' ? '#ffffff' : '#000000'))
     root.style.setProperty('--text-secondary', colors['on-surface-variant'] || (colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.8)'))
     root.style.setProperty('--text-tertiary', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)')
     root.style.setProperty('--text-muted', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.4)')
 
-    // Background system
-    root.style.setProperty('--bg-primary', colorScheme.value === 'dark' ? '#000000' : '#ffffff')
-    root.style.setProperty('--bg-secondary', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)')
-    root.style.setProperty('--bg-tertiary', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)')
+    // Background system - Pure black/white
+    root.style.setProperty('--bg-primary', isDarkMode ? '#000000' : '#ffffff')
+    root.style.setProperty('--bg-secondary', isDarkMode ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)')
+    root.style.setProperty('--bg-tertiary', isDarkMode ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.85)')
+
+    // Surface colors for cards and components
+    root.style.setProperty('--surface', isDarkMode ? '#000000' : '#ffffff')
+    root.style.setProperty('--surface-variant', isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)')
+
+    // Interactive state backgrounds with neon highlights
+    root.style.setProperty('--bg-hover', isDarkMode ? 'rgba(0, 204, 255, 0.1)' : 'rgba(0, 204, 255, 0.05)')
+    root.style.setProperty('--bg-active', isDarkMode ? 'rgba(0, 204, 255, 0.15)' : 'rgba(0, 204, 255, 0.1)')
+    root.style.setProperty('--bg-focus', isDarkMode ? 'rgba(0, 204, 255, 0.08)' : 'rgba(0, 204, 255, 0.03)')
 
     // Set color scheme attributes for native styling
     root.setAttribute('data-theme', colorScheme.value)
     root.setAttribute('data-color-scheme', colorScheme.value)
+
+    // Apply Tailwind dark mode class for dark: utilities to work
+    root.classList.remove('light', 'dark')
+    root.classList.add(colorScheme.value)
 
     // Add theme transition class for smooth theme changes
     root.classList.add('theme-transitioning')
@@ -645,11 +771,12 @@ export function useUnifiedTheme() {
     // Computed
     isDark: readonly(isDark),
     isLight: readonly(isLight),
-    isSystem: readonly(isSystem),
+    isAuto: readonly(isAuto),
     currentTheme: readonly(currentTheme),
 
     // Actions
     setThemeMode,
+    syncFromStore,
     toggleTheme,
     cycleTheme,
     initializeTheme,
@@ -679,26 +806,33 @@ export default useUnifiedTheme
 
 // Safe global initialization function
 export function initializeUnifiedThemeGlobal() {
-  // Get stored theme preference or default to light
+  // Get stored theme preference or default to system preference
   let effectiveColorScheme: ColorScheme = 'light'
 
   if (typeof window !== 'undefined') {
     try {
       const storedThemeMode = localStorage.getItem('navi-theme-mode')
-      const parsedThemeMode = storedThemeMode ? JSON.parse(storedThemeMode) : 'light'
+      const parsedThemeMode = storedThemeMode ? JSON.parse(storedThemeMode) : null
 
-      if (parsedThemeMode === 'system') {
-        // Only use system preference if user explicitly chose 'system'
+      if (parsedThemeMode === 'auto' || parsedThemeMode === 'system') {
+        // Use system preference for auto mode
         if (window.matchMedia) {
           effectiveColorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
         }
+      } else if (parsedThemeMode === 'dark' || parsedThemeMode === 'light') {
+        // Use explicit stored preference
+        effectiveColorScheme = parsedThemeMode
       } else {
-        // Use stored preference (light or dark)
-        effectiveColorScheme = parsedThemeMode === 'dark' ? 'dark' : 'light'
+        // No stored preference, use system preference
+        if (window.matchMedia) {
+          effectiveColorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
       }
     } catch {
-      // Fallback to light mode if localStorage access fails
-      effectiveColorScheme = 'light'
+      // Fallback to system preference if localStorage access fails
+      if (window.matchMedia) {
+        effectiveColorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      }
     }
   }
   
@@ -735,6 +869,10 @@ export function initializeUnifiedThemeGlobal() {
     // Set color scheme attributes
     root.setAttribute('data-theme', effectiveColorScheme)
     root.setAttribute('data-color-scheme', effectiveColorScheme)
+
+    // Apply Tailwind dark mode class for dark: utilities to work
+    root.classList.remove('light', 'dark')
+    root.classList.add(effectiveColorScheme)
   }
 
   logger.info('Unified theme system initialized globally (safe mode)', { scheme: effectiveColorScheme })

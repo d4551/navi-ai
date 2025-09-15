@@ -1,17 +1,17 @@
 <template>
-  <div v-if="show" class="modal-overlay" @click="handleOverlayClick">
+  <div v-if="show" class="modal-overlay" class="font-sans" @click="handleOverlayClick">
     <div class="preview-modal" @click.stop>
       <!-- Header -->
       <div class="modal-header">
-        <div class="d-flex align-items-center">
-          <AppIcon name="mdi-eye" class="me-3" />
+        <div class="flex items-center">
+          <AppIcon name="EyeIcon" class="mr-3" />
           <div>
             <h5 class="mb-0">Document Preview</h5>
-            <small class="text-muted">{{ documentTitle }}</small>
+            <small class="text-secondary">{{ documentTitle }}</small>
           </div>
         </div>
         
-        <div class="header-actions d-flex align-items-center gap-2">
+        <div class="header-actions flex items-center gap-glass-sm">
           <!-- View Options -->
           <div class="btn-group" role="group">
             <input
@@ -37,7 +37,7 @@
           <UnifiedButton
             variant="primary"
             size="sm"
-            leading-icon="mdi-download"
+            leading-icon="ArrowDownTrayIcon"
             @click="handleExport('pdf')"
           >
             Export PDF
@@ -47,7 +47,7 @@
           <UnifiedButton
             variant="ghost"
             size="sm"
-            icon="mdi-close"
+            icon="XMarkIcon"
             @click="$emit('close')"
           />
         </div>
@@ -215,7 +215,7 @@
           <UnifiedButton
             variant="outline"
             size="sm"
-            leading-icon="mdi-content-copy"
+            leading-icon="DocumentDuplicateIcon"
             @click="copyToClipboard"
           >
             Copy Text
@@ -235,6 +235,8 @@
 </template>
 
 <script setup>
+import { ArrowDownTrayIcon, DocumentDuplicateIcon, EyeIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { computed, ref } from 'vue'
 import { useToast } from '@/composables/useToast'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -448,7 +450,7 @@ const copyToClipboard = async () => {
 .preview-modal {
   background: var(--surface-background);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
   width: 100%;
   max-width: 900px;
   max-height: 90vh;
@@ -461,7 +463,7 @@ const copyToClipboard = async () => {
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .modal-content {
@@ -484,9 +486,9 @@ const copyToClipboard = async () => {
 
 .document-page {
   background: white;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: 2rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   border-radius: var(--radius-md);
   font-family: 'Times New Roman', serif;
   line-height: 1.6;
@@ -502,7 +504,7 @@ const copyToClipboard = async () => {
   font-size: 1.75rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .contact-info {
@@ -526,8 +528,8 @@ const copyToClipboard = async () => {
 .section-title {
   font-size: 1.1rem;
   font-weight: bold;
-  color: var(--text-primary);
-  border-bottom: 2px solid #3498db;
+  color: var(--text-primary-600);
+  border-b: 2px solid #3498db;
   padding-bottom: 0.25rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
@@ -556,7 +558,7 @@ const copyToClipboard = async () => {
 .edu-degree {
   font-weight: bold;
   font-size: 1rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .exp-meta,
@@ -663,7 +665,7 @@ const copyToClipboard = async () => {
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .raw-content pre {
@@ -678,7 +680,7 @@ const copyToClipboard = async () => {
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--glass-surface);
 }
 
@@ -721,7 +723,7 @@ const copyToClipboard = async () => {
   width: 2rem;
   height: 2rem;
   border: 2px solid var(--glass-border);
-  border-top: 2px solid var(--color-primary-500);
+  border-t: 2px solid var(--color-primary-500);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;

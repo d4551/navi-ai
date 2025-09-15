@@ -1,5 +1,5 @@
 <template>
-  <div class="unified-container studio-subnav">
+  <div class="unified-container studio-subnav" class="font-sans">
     <GlassNavTabs
       :tabs="tabs"
       :active-tab="activeKey"
@@ -10,6 +10,8 @@
 </template>
 
 <script setup lang="ts">
+import { UserIcon, ChartBarIcon, CircleStackIcon } from '@heroicons/vue/24/outline'
+
 import { computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import GlassNavTabs from '@/components/GlassNavTabs.vue'
@@ -24,9 +26,9 @@ const router = useRouter()
 const route = useRoute()
 
 const tabs = computed(() => [
-  { key: 'database', label: 'Database', shortLabel: 'DB', icon: 'mdi-database', count: props.databaseCount },
-  { key: 'analytics', label: 'Analytics', shortLabel: 'Stats', icon: 'mdi-chart-line', count: props.analyticsCount },
-  { key: 'network', label: 'Network', shortLabel: 'Net', icon: 'mdi-account-network', count: props.networkCount },
+  { key: 'database', label: 'Database', shortLabel: 'DB', icon: 'CircleStackIcon', count: props.databaseCount },
+  { key: 'analytics', label: 'Analytics', shortLabel: 'Stats', icon: 'ChartBarIcon-line', count: props.analyticsCount },
+  { key: 'network', label: 'Network', shortLabel: 'Net', icon: 'UserIcon-network', count: props.networkCount },
 ])
 
 const activeKey = computed(() => {

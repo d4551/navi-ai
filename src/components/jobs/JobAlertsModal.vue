@@ -5,13 +5,14 @@
     scrollable
     persistent
     class="job-alerts-modal"
+    class="font-sans"
   >
     <v-card class="glass-card">
       <!-- Modal Header -->
       <v-card-title class="modal-header">
         <div class="header-content">
           <div class="title-section">
-            <AppIcon name="mdi-bell" class="title-icon" />
+            <AppIcon name="BellIcon" class="title-icon" />
             <h2>Gaming Job Alerts</h2>
           </div>
           
@@ -24,7 +25,7 @@
           <UnifiedButton
             variant="ghost"
             size="sm"
-            leading-icon="mdi-close"
+            leading-icon="XMarkIcon"
             @click="closeModal"
           />
         </div>
@@ -36,13 +37,13 @@
         <section class="create-alert-section glass-surface">
           <div class="section-header">
             <h3>
-              <AppIcon name="mdi-plus-circle" />
+              <AppIcon name="PlusCircleIcon" />
               Create New Job Alert
             </h3>
             <UnifiedButton
               variant="primary"
               size="sm"
-              leading-icon="mdi-plus"
+              leading-icon="PlusIcon"
               :loading="creating"
               @click="showCreateForm = !showCreateForm"
             >
@@ -234,17 +235,17 @@
                       variant="gaming"
                       size="sm"
                     >
-                      🎮 Gaming
+                      DevicePhoneMobileIcon Gaming
                     </UiChip>
                   </h4>
                   
                   <div class="alert-meta">
                     <div class="alert-criteria">
                       <span v-if="alert.keywords" class="criteria-item">
-                        🔍 {{ alert.keywords }}
+                        MagnifyingGlassIcon {{ alert.keywords }}
                       </span>
                       <span v-if="alert.location" class="criteria-item">
-                        📍 {{ alert.location }}
+                        MapPinIcon {{ alert.location }}
                       </span>
                       <span v-if="alert.level" class="criteria-item">
                         📊 {{ alert.level }}
@@ -260,21 +261,21 @@
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    :leading-icon="alert.active ? 'mdi-pause' : 'mdi-play'"
+                    :leading-icon="alert.active ? 'PauseIcon' : 'PlayIcon'"
                     @click="toggleAlert(alert)"
                   />
                   
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    leading-icon="mdi-pencil"
+                    leading-icon="PencilIcon"
                     @click="editAlert(alert)"
                   />
                   
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    leading-icon="mdi-delete"
+                    leading-icon="TrashIcon"
                     class="delete-btn"
                     @click="deleteAlert(alert.id)"
                   />
@@ -343,7 +344,7 @@
         <div class="actions-left">
           <UnifiedButton
             variant="outline"
-            leading-icon="mdi-cog"
+            leading-icon="CogIcon"
             @click="showSettings = true"
           >
             Settings
@@ -364,6 +365,8 @@
 </template>
 
 <script setup lang="ts">
+import { BellIcon, CogIcon, PencilIcon, PlusCircleIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import UiChip from '@/components/ui/UiChip.vue'
@@ -412,7 +415,7 @@ const newAlert = ref({
 
 // Computed
 const internalShow = computed({
-  get: () => props.show,
+  get: () => _props.show,
   set: (value) => emit('update:show', value)
 })
 
@@ -553,7 +556,7 @@ const formatLastTriggered = (date) => {
 
 .modal-header {
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--border-light);
+  border-b: 1px solid var(--border-light);
 }
 
 .header-content {
@@ -576,7 +579,7 @@ const formatLastTriggered = (date) => {
 
 .title-section h2 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 700;
 }
 
@@ -611,12 +614,12 @@ const formatLastTriggered = (date) => {
   align-items: center;
   gap: var(--spacing-2);
   margin: 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
 }
 
 .create-form {
-  border-top: 1px solid var(--border-light);
+  border-t: 1px solid var(--border-light);
   padding-top: var(--spacing-4);
 }
 
@@ -636,7 +639,7 @@ const formatLastTriggered = (date) => {
 .form-group label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .form-input, .form-select {
@@ -644,7 +647,7 @@ const formatLastTriggered = (date) => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
   background: rgba(var(--surface-rgb), 0.8);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   transition: all 0.2s ease;
 }
@@ -666,12 +669,12 @@ const formatLastTriggered = (date) => {
 }
 
 .range-separator {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
 .gaming-filters {
-  border-top: 1px solid var(--border-light);
+  border-t: 1px solid var(--border-light);
   padding-top: var(--spacing-4);
   margin-bottom: var(--spacing-5);
 }
@@ -697,7 +700,7 @@ const formatLastTriggered = (date) => {
   gap: var(--spacing-3);
   cursor: pointer;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .gaming-checkbox {
@@ -722,7 +725,7 @@ const formatLastTriggered = (date) => {
 
 .gaming-checkbox:checked + .checkmark::after {
   content: '✓';
-  color: white;
+  color: var(--text-inverse);
   font-size: 0.875rem;
   font-weight: 700;
 }
@@ -730,7 +733,7 @@ const formatLastTriggered = (date) => {
 .gaming-sub-filters {
   margin-left: var(--spacing-6);
   padding-left: var(--spacing-4);
-  border-left: 2px solid rgba(var(--color-gaming-500-rgb), 0.3);
+  border-l: 2px solid rgba(var(--color-gaming-500-rgb), 0.3);
 }
 
 .gaming-sub-filters .form-grid {
@@ -742,7 +745,7 @@ const formatLastTriggered = (date) => {
   display: flex;
   justify-content: flex-end;
   gap: var(--spacing-3);
-  border-top: 1px solid var(--border-light);
+  border-t: 1px solid var(--border-light);
   padding-top: var(--spacing-4);
 }
 
@@ -759,13 +762,13 @@ const formatLastTriggered = (date) => {
 
 .empty-icon {
   font-size: 3rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: var(--spacing-4);
 }
 
 .empty-content h4 {
   margin: 0 0 var(--spacing-2) 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .empty-content p {
@@ -806,7 +809,7 @@ const formatLastTriggered = (date) => {
 
 .alert-name {
   margin: 0 0 var(--spacing-2) 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -858,13 +861,13 @@ const formatLastTriggered = (date) => {
 }
 
 .stat-label {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .stat-value {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
 }
 
@@ -888,7 +891,7 @@ const formatLastTriggered = (date) => {
 
 .modal-actions {
   padding: var(--spacing-6);
-  border-top: 1px solid var(--border-light);
+  border-t: 1px solid var(--border-light);
   display: flex;
   justify-content: space-between;
   align-items: center;

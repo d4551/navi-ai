@@ -3,6 +3,7 @@
  * Browser-friendly: uses bundled JSON import instead of fs/url/path
  */
 import roleData from '@/shared/data/rolesData.json';
+import { logger } from '@/shared/utils/logger';
 
 export interface RoleDetail {
   description: string;
@@ -22,7 +23,7 @@ class RoleDataService {
         Object.entries(parsed).map(([key, value]) => [key.toLowerCase(), value])
       );
     } catch (error) {
-      console.warn('Failed to load role data:', error);
+      logger.warn('Failed to load role data:', error);
       this.cache = {};
     }
     return this.cache;

@@ -7,7 +7,7 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
 -->
 
 <template>
-  <div class="voice-controls" :class="{ 'voice-controls--active': isActive }">
+  <div class="voice-controls" :class="{ 'voice-controls--active': isActive }" class="font-sans">
     <!-- Device Selection -->
     <div v-if="showDeviceSelector" class="voice-controls__devices">
       <v-select
@@ -23,7 +23,7 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
         @update:model-value="handleDeviceChange"
       >
         <template #prepend-inner>
-          <v-icon icon="mdi-microphone" size="small" />
+          <v-icon icon="MicrophoneIcon" size="small" />
         </template>
       </v-select>
     </div>
@@ -129,7 +129,7 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
       @click:close="$emit('clear-error')"
     >
       <template #prepend>
-        <v-icon icon="mdi-microphone-off" />
+        <v-icon icon="MicrophoneIcon-off" />
       </template>
       <span>{{ _error }}</span>
       <template #append>
@@ -146,7 +146,7 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
     <!-- Keyboard Instructions -->
     <div v-if="showInstructions" class="voice-controls__instructions">
       <UiChip classes="chip chip-compact">
-        <AppIcon name="mdi-keyboard" class="me-1" />
+        <AppIcon name="KeyIconboard" class="mr-1" />
         Hold Space to talk
       </UiChip>
     </div>
@@ -154,6 +154,8 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
 </template>
 
 <script setup lang="ts">
+import { MicrophoneIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import UiChip from '@/components/ui/UiChip.vue'
@@ -229,10 +231,10 @@ const getButtonColor = () => {
 };
 
 const getButtonIcon = () => {
-  if (props.hasError) return 'mdi-microphone-off';
-  if (props.isProcessing) return 'mdi-loading';
-  if (props.isRecording) return 'mdi-stop';
-  return 'mdi-microphone';
+  if (props.hasError) return 'MicrophoneIcon-off';
+  if (props.isProcessing) return 'ArrowPathIcon';
+  if (props.isRecording) return 'StopIcon';
+  return 'MicrophoneIcon';
 };
 
 const getButtonAriaLabel = () => {
@@ -370,7 +372,7 @@ watch(() => props.isRecording, (newVal, oldVal) => {
 
 <style scoped>
 .voice-controls {
-  @apply flex flex-col gap-4 p-4 rounded-lg;
+  @apply flex flex-flex-1 gap-glass-md p-glass-md rounded-lg;
   background: rgb(var(--v-theme-surface));
   border: 1px solid rgb(var(--v-theme-outline-variant));
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -382,7 +384,7 @@ watch(() => props.isRecording, (newVal, oldVal) => {
 }
 
 .voice-controls__panel {
-  @apply flex flex-col items-center gap-3;
+  @apply flex flex-flex-1 items-center gap-glass-md;
 }
 
 .voice-controls__volume {
@@ -450,7 +452,7 @@ watch(() => props.isRecording, (newVal, oldVal) => {
 }
 
 .status-text--recording {
-  @apply text-success;
+  @apply text-success-600;
 }
 
 .status-text--error {
@@ -458,7 +460,7 @@ watch(() => props.isRecording, (newVal, oldVal) => {
 }
 
 .status-text--processing {
-  @apply text-primary;
+  @apply text-primary-600;
 }
 
 .recording-duration {

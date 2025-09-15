@@ -1,9 +1,9 @@
 <template>
-  <div v-if="show" class="modal-overlay" @click="handleOverlayClick">
+  <div v-if="show" class="modal-overlay" class="font-sans" @click="handleOverlayClick">
     <div class="preview-modal">
       <div class="modal-header">
         <div class="header-content">
-          <AppIcon name="mdi-eye" size="20" />
+          <AppIcon name="EyeIcon" size="20" />
           <h3 class="modal-title">Template Preview</h3>
           <div class="template-info">
             <span class="template-name">{{ template?.name }}</span>
@@ -12,7 +12,7 @@
         <UnifiedButton
           variant="ghost"
           size="sm"
-          leading-icon="mdi-close"
+          leading-icon="XMarkIcon"
           @click="$emit('close')"
         />
       </div>
@@ -69,11 +69,11 @@
         <div class="footer-info">
           <div class="template-meta">
             <span class="meta-item">
-              <AppIcon name="mdi-star" size="14" />
+              <AppIcon name="StarIcon" size="14" />
               {{ template?.rating || 5 }}/5
             </span>
             <span class="meta-item">
-              <AppIcon name="mdi-download" size="14" />
+              <AppIcon name="ArrowDownTrayIcon" size="14" />
               {{ template?.downloads || '1.2k' }} downloads
             </span>
           </div>
@@ -100,6 +100,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, EyeIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
@@ -162,7 +165,7 @@ const selectTemplate = () => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-5);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--surface-base) 100%);
 }
 
@@ -175,7 +178,7 @@ const selectTemplate = () => {
 .modal-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -209,7 +212,7 @@ const selectTemplate = () => {
 
 .preview-document {
   background: white;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   border-radius: var(--radius-md);
   overflow: hidden;
 }
@@ -225,7 +228,7 @@ const selectTemplate = () => {
 .preview-header {
   margin-bottom: var(--spacing-6);
   padding-bottom: var(--spacing-4);
-  border-bottom: 2px solid #333;
+  border-b: 2px solid #333;
 }
 
 .preview-name {
@@ -250,7 +253,7 @@ const selectTemplate = () => {
   color: #333;
   margin: 0 0 var(--spacing-3) 0;
   text-transform: uppercase;
-  border-bottom: 1px solid #ddd;
+  border-b: 1px solid #ddd;
   padding-bottom: var(--spacing-1);
 }
 
@@ -312,7 +315,7 @@ const selectTemplate = () => {
   color: white;
   padding: var(--spacing-4);
   border-radius: var(--radius-md);
-  border-bottom: none;
+  border-b: none;
   margin-bottom: var(--spacing-6);
 }
 
@@ -326,7 +329,7 @@ const selectTemplate = () => {
 
 .template-gaming-pro .section-title {
   color: #667eea;
-  border-bottom: 2px solid #667eea;
+  border-b: 2px solid #667eea;
 }
 
 .template-creative-showcase .preview-header {
@@ -334,7 +337,7 @@ const selectTemplate = () => {
   color: white;
   padding: var(--spacing-4);
   border-radius: var(--radius-md);
-  border-bottom: none;
+  border-b: none;
 }
 
 .template-creative-showcase .preview-name {
@@ -360,7 +363,7 @@ const selectTemplate = () => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4) var(--spacing-5);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--surface-base);
 }
 

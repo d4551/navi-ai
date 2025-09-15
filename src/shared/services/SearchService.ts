@@ -20,6 +20,7 @@ import type {
   RoleInfo 
 } from '../types/interview';
 import { semanticSearchService } from './SemanticSearchService';
+import { logger } from '@/shared/utils/logger';
 
 export class SearchService {
   private studios: GameStudio[];
@@ -278,7 +279,7 @@ export class SearchService {
           }
         });
       } catch (error) {
-        console.warn('Semantic search failed, falling back to keyword search:', error);
+        logger.warn('Semantic search failed, falling back to keyword search:', error);
       }
     }
 
@@ -439,7 +440,7 @@ export class SearchService {
       if (role) this.roleCache.set(key, role);
       return role;
     } catch (error) {
-      console.warn('Role data fetch failed:', error);
+      logger.warn('Role data fetch failed:', error);
       return this.roleCache.get(key) || null;
     }
   }
@@ -516,7 +517,7 @@ export class SearchService {
         matchedTerms: result.matchedTerms
       }));
     } catch (error) {
-      console.warn('Semantic search failed:', error);
+      logger.warn('Semantic search failed:', error);
       return [];
     }
   }
@@ -534,7 +535,7 @@ export class SearchService {
         similarity: result.similarity
       }));
     } catch (error) {
-      console.warn('Find similar failed:', error);
+      logger.warn('Find similar failed:', error);
       return [];
     }
   }
@@ -588,7 +589,7 @@ export class SearchService {
         });
       }
     } catch (error) {
-      console.warn('Intelligent suggestions failed:', error);
+      logger.warn('Intelligent suggestions failed:', error);
     }
 
     return suggestions;

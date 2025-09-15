@@ -7,7 +7,7 @@ export const useSystemStore = defineStore("system", {
   state: () => ({
     stationId: "GS-001",
     endpoints: {
-      webServer: "http:
+      webServer: "",
     },
     azure: {
       connected: false,
@@ -43,9 +43,7 @@ export const useSystemStore = defineStore("system", {
   getters: {
     overallHealth(state) {
       const vals = Object.values(state.services);
-      if (!vals.length) {
-        return 0;
-      }
+      if (!vals.length) return 0;
       const score =
         vals.reduce((acc, s) => acc + (s === "online" ? 1 : 0), 0) /
         vals.length;
@@ -61,17 +59,17 @@ export const useSystemStore = defineStore("system", {
         }
         const data = JSON.parse(raw);
         if (data && typeof data === "object") {
-          this.$patch(_data);
+          this.$patch(data);
         }
       } catch (_e) {
-        logger.warn("System store load failed", e);
+        logger.warn("System store load failed", _e);
       }
     },
     save() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.$state));
       } catch (_e) {
-        logger.warn("System store save failed", e);
+        logger.warn("System store save failed", _e);
       }
     },
     updateSettings(patch) {
@@ -207,8 +205,8 @@ export const useSystemStore = defineStore("system", {
         this.calibration.health = 0;
         this.save();
 
-        logger.error("Calibration failed:", error.message);
-        throw error;
+        logger.error("Calibration failed:", _error?.message || _error);
+        throw _error;
       }
     },
     stopCalibration() {
@@ -310,7 +308,7 @@ export const useSystemStore = defineStore("system", {
 
         logger.debug("Service connectivity check completed", results);
       } catch (_e) {
-        logger.error("pingAll failed:", e.message);
+        logger.error("pingAll failed:", _e?.message || _e);
         // Set all services to offline on error
         Object.keys(this.services).forEach((service) => {
           this.setService(service, "offline");

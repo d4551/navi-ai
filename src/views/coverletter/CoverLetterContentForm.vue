@@ -3,13 +3,13 @@
   Matches the design pattern of resume form components
 -->
 <template>
-  <section class="glass p-4 gap-4 rounded-lg unified-card">
-    <div class="d-flex align-items-center justify-content-between mb-2">
-      <h2 class="h6 mb-0 d-flex align-items-center gap-2 text-primary">
+  <section class="glass p-glass-md gap-glass-md rounded-lg unified-card" class="font-sans">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="h6 mb-0 flex items-center gap-glass-sm text-primary-600">
         <AppIcon name="mdi-text-box-outline" class="icon-md" aria-hidden="true" />
         <span>Cover Letter Content</span>
       </h2>
-      <div class="header-actions d-flex align-items-center gap-2">
+      <div class="header-actions flex items-center gap-glass-sm">
         <UnifiedButton
           v-if="canUseAI && content.body"
           color="glass"
@@ -27,7 +27,7 @@
           color="gaming"
           :loading="loading.generation"
           :disabled="loading.generation || !hasJobInfo"
-          leading-icon="mdi-auto-fix"
+          leading-icon="SparklesIcon"
           aria-label="Generate cover letter with AI"
           @click="generateContent"
         >
@@ -38,9 +38,9 @@
 
     <!-- Cover Letter Settings -->
     <div class="cover-letter-settings mb-4">
-      <div class="row g-3">
+      <div class="flex flex-wrap g-3">
         <!-- Tone Setting -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <label for="tone-select" class="form-label">Tone</label>
           <select
             id="tone-select"
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Length Setting -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <label for="length-select" class="form-label">Length</label>
           <select
             id="length-select"
@@ -72,7 +72,7 @@
         </div>
 
         <!-- Experience Template -->
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <label for="experience-template" class="form-label">Experience Level</label>
           <select
             id="experience-template"
@@ -92,12 +92,12 @@
 
     <!-- Key Points to Highlight -->
     <div class="key-points-section mb-4">
-      <div class="d-flex align-items-center justify-content-between mb-2">
-        <h3 class="h7 text-muted mb-0">Key Points to Highlight</h3>
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="h7 text-secondary mb-0">Key Points to Highlight</h3>
         <UnifiedButton
           color="glass"
           appearance="outlined"
-          leading-icon="mdi-plus"
+          leading-icon="PlusIcon"
           aria-label="Add key point"
           @click="addKeyPoint"
         >
@@ -105,7 +105,7 @@
         </UnifiedButton>
       </div>
 
-      <div v-if="localContent.keyPoints.length === 0" class="text-muted small mb-3">
+      <div v-if="localContent.keyPoints.length === 0" class="text-secondary small mb-3">
         Add specific achievements or skills you want to emphasize in your cover letter.
       </div>
 
@@ -129,7 +129,7 @@
               appearance="outlined"
               icon-only
               :aria-label="`Remove key point ${index + 1}`"
-              icon="mdi-trash-can"
+              icon="TrashIcon"
               @click="removeKeyPoint(index)"
             />
           </div>
@@ -153,17 +153,17 @@
         <label for="cover-letter-body" class="form-label">Cover Letter Body</label>
       </div>
 
-      <div id="cover-body-help" class="form-text d-flex align-items-center justify-content-between" aria-live="polite">
-        <div class="d-flex align-items-center gap-3">
+      <div id="cover-body-help" class="form-text flex items-center justify-between" aria-live="polite">
+        <div class="flex items-center gap-glass-md">
           <span>
-            <AppIcon name="mdi-information-outline" class="me-1" />
+            <AppIcon name="InformationCircleIcon" class="mr-1" />
             Aim for 3-4 paragraphs with specific examples
           </span>
-          <span v-if="localContent.body" class="text-muted">
+          <span v-if="localContent.body" class="text-secondary">
             {{ wordCount }} words • {{ characterCount }} characters
           </span>
         </div>
-        <div v-if="readingTime" class="text-muted small">
+        <div v-if="readingTime" class="text-secondary small">
           {{ readingTime }} min read
         </div>
       </div>
@@ -177,14 +177,14 @@
       aria-labelledby="review-results-title"
     >
       <div class="alert" :class="getReviewAlertClass()">
-        <div class="d-flex align-items-start gap-3">
+        <div class="flex items-start gap-glass-md">
           <i :class="getReviewIcon()" class="icon-lg" aria-hidden="true"></i>
           <div class="flex-grow-1">
             <h3 id="review-results-title" class="h6 mb-2">AI Review Results</h3>
             
             <!-- Overall Score -->
             <div v-if="reviewResults.score" class="mb-3">
-              <div class="d-flex align-items-center gap-2 mb-1">
+              <div class="flex items-center gap-glass-sm mb-1">
                 <strong>Overall Score:</strong>
                 <span class="badge" :class="getScoreBadgeClass(reviewResults.score)">
                   {{ reviewResults.score }}/100
@@ -201,14 +201,14 @@
 
             <!-- Issues Found -->
             <div v-if="reviewResults.issues?.length" class="mb-3">
-              <h4 class="h7 text-muted mb-2">Issues to Address</h4>
+              <h4 class="h7 text-secondary mb-2">Issues to Address</h4>
               <ul class="small mb-0">
                 <li
                   v-for="issue in reviewResults.issues"
                   :key="`issue-${issue.message}`"
                   class="mb-1"
                 >
-                  <span class="badge me-1" :class="getIssueBadgeClass(issue.type)">
+                  <span class="badge mr-1" :class="getIssueBadgeClass(issue.type)">
                     {{ formatIssueType(issue.type) }}
                   </span>
                   {{ issue.message }}
@@ -218,21 +218,21 @@
 
             <!-- Suggestions -->
             <div v-if="reviewResults.suggestions?.length" class="mb-3">
-              <h4 class="h7 text-muted mb-2">Suggestions</h4>
+              <h4 class="h7 text-secondary mb-2">Suggestions</h4>
               <ul class="small mb-0">
                 <li
                   v-for="suggestion in reviewResults.suggestions"
                   :key="`suggestion-${suggestion}`"
                   class="mb-1"
                 >
-                  <AppIcon name="mdi-lightbulb" color="warning" aria-hidden="true" />
+                  <AppIcon name="LightBulbIcon" color="warning" aria-hidden="true" />
                   {{ suggestion }}
                 </li>
               </ul>
             </div>
 
             <!-- Action Buttons -->
-            <div class="d-flex gap-2">
+            <div class="flex gap-glass-sm">
               <button
                 v-if="canUseAI"
                 class="btn btn-sm btn-primary ui-btn ui-size-md"
@@ -241,10 +241,10 @@
               >
                 <span
                   v-if="loading.improvement"
-                  class="spinner-border spinner-border-sm me-1"
+                  class="spinner-border spinner-border-sm mr-1"
                   aria-hidden="true"
                 ></span>
-                <AppIcon name="mdi-auto-fix" class="me-1" />
+                <AppIcon name="SparklesIcon" class="mr-1" />
                 Auto-Improve
               </button>
               <button
@@ -264,20 +264,20 @@
       <div class="card glass-elevated">
         <div class="card-body section-body">
           <h3 class="h6 mb-3">
-            <AppIcon name="mdi-lightbulb" color="primary" aria-hidden="true" />
+            <AppIcon name="LightBulbIcon" color="primary" aria-hidden="true" />
             Cover Letter Tips
           </h3>
-          <div class="row g-3">
-            <div class="col-md-4">
-              <h4 class="h7 text-muted mb-2">Opening Paragraph</h4>
+          <div class="flex flex-wrap g-3">
+            <div class="flex-1-md-4">
+              <h4 class="h7 text-secondary mb-2">Opening Paragraph</h4>
               <p class="small">State the position, how you found it, and a compelling reason why you're interested.</p>
             </div>
-            <div class="col-md-4">
-              <h4 class="h7 text-muted mb-2">Body Paragraphs</h4>
+            <div class="flex-1-md-4">
+              <h4 class="h7 text-secondary mb-2">Body Paragraphs</h4>
               <p class="small">Highlight 2-3 relevant achievements with specific examples and metrics.</p>
             </div>
-            <div class="col-md-4">
-              <h4 class="h7 text-muted mb-2">Closing Paragraph</h4>
+            <div class="flex-1-md-4">
+              <h4 class="h7 text-secondary mb-2">Closing Paragraph</h4>
               <p class="small">Express enthusiasm, request an interview, and provide your contact information.</p>
             </div>
           </div>
@@ -288,6 +288,8 @@
 </template>
 
 <script setup lang="ts">
+import { InformationCircleIcon, LightBulbIcon, PlusIcon, SparklesIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
@@ -406,33 +408,33 @@ const getReviewAlertClass = () => {
 }
 
 const getReviewIcon = () => {
-  if (!props.reviewResults?.score) return 'mdi mdi-information text-info'
+  if (!props.reviewResults?.score) return 'mdi InformationCircleIconrmation text-blue-600'
   const score = props.reviewResults.score
   
-  if (score >= 85) return 'mdi mdi-check-circle-outline text-success'
-  if (score >= 70) return 'mdi mdi-alert text-warning'
-  return 'mdi mdi-alert-circle-outline text-danger'
+  if (score >= 85) return 'mdi CheckIcon-circle-outline text-success-600'
+  if (score >= 70) return 'mdi mdi-alert text-warning-600'
+  return 'mdi mdi-alert-circle-outline text-error-600'
 }
 
 const getScoreBadgeClass = (score: number) => {
-  if (score >= 85) return 'bg-success'
-  if (score >= 70) return 'bg-warning'
-  return 'bg-danger'
+  if (score >= 85) return 'bg-success-500'
+  if (score >= 70) return 'bg-warning-500'
+  return 'bg-error-500'
 }
 
 const getScoreProgressClass = (score: number) => {
-  if (score >= 85) return 'bg-success'
-  if (score >= 70) return 'bg-warning'
-  return 'bg-danger'
+  if (score >= 85) return 'bg-success-500'
+  if (score >= 70) return 'bg-warning-500'
+  return 'bg-error-500'
 }
 
 const getIssueBadgeClass = (type: string) => {
   switch (type) {
-    case 'cliche': return 'bg-warning text-dark'
-    case 'redundancy': return 'bg-info'
-    case 'misalignment': return 'bg-danger'
-    case 'clarity': return 'bg-secondary'
-    default: return 'bg-light text-dark'
+    case 'cliche': return 'bg-warning-500 text-glass-primary'
+    case 'redundancy': return 'bg-blue-500'
+    case 'misalignment': return 'bg-error-500'
+    case 'clarity': return 'bg-secondary-500'
+    default: return 'bg-glass-bg dark:bg-glass-bg-hover text-glass-primary'
   }
 }
 
@@ -470,11 +472,11 @@ const onContentChange = debounce(() => {
   .key-point-item {
     .input-group {
       .form-control {
-        border-right: none;
+        border-r: none;
       }
       
       .btn {
-        border-left: none;
+        border-l: none;
         border-color: var(--glass-border);
       }
     }
@@ -574,7 +576,7 @@ const onContentChange = debounce(() => {
 
 // Responsive design
 @media (max-width: 768px) {
-  .cover-letter-settings .row {
+  .cover-letter-settings .flex flex-wrap {
     flex-direction: column;
   }
   
@@ -587,7 +589,7 @@ const onContentChange = debounce(() => {
     }
   }
   
-  .review-results .d-flex {
+  .review-results .flex {
     flex-direction: column;
     align-items: flex-start;
     
@@ -596,7 +598,7 @@ const onContentChange = debounce(() => {
     }
   }
   
-  .template-suggestions .row {
+  .template-suggestions .flex flex-wrap {
     flex-direction: column;
   }
 }

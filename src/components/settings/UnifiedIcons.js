@@ -1,5 +1,51 @@
-// UnifiedIcons.js - Centralized icon system with MUI and Bootstrap support
+// UnifiedIcons.js - Centralized icon system with MUI and Heroicons support
 import { h } from 'vue'
+import {
+  UserIcon as HeroUserIcon,
+  StarIcon as HeroStarIcon,
+  ShieldCheckIcon as HeroShieldCheckIcon,
+  ArchiveBoxIcon as HeroArchiveBoxIcon,
+  KeyIcon as HeroKeyIcon,
+  EyeIcon as HeroEyeIcon,
+  EyeSlashIcon as HeroEyeSlashIcon,
+  SpeakerWaveIcon as HeroSpeakerWaveIcon,
+  MicrophoneIcon as HeroMicrophoneIcon,
+  ArrowPathIcon as HeroArrowPathIcon,
+  NoSymbolIcon as HeroNoSymbolIcon,
+  CpuChipIcon as HeroCpuChipIcon,
+  PowerIcon as HeroPlugIcon,
+  CheckIcon as HeroCheckIcon,
+  XMarkIcon as HeroXMarkIcon,
+  CogIcon as HeroCogIcon,
+  PuzzlePieceIcon as HeroPuzzlePieceIcon,
+  LightBulbIcon as HeroLightBulbIcon,
+  CircleStackIcon as HeroCircleStackIcon,
+  ChartBarIcon as HeroChartBarIcon,
+  ArrowDownTrayIcon as HeroArrowDownTrayIcon,
+  ArrowUpTrayIcon as HeroArrowUpTrayIcon,
+  TrashIcon as HeroTrashIcon,
+  ExclamationTriangleIcon as HeroExclamationTriangleIcon,
+  CheckCircleIcon as HeroCheckCircleIcon,
+  CodeBracketIcon as HeroCodeBracketIcon,
+  ListBulletIcon as HeroListBulletIcon,
+  InformationCircleIcon as HeroInformationCircleIcon,
+  CommandLineIcon as HeroRobotIcon,
+  BriefcaseIcon as HeroBriefcaseIcon,
+  ChatBubbleLeftRightIcon as HeroChatBubbleLeftRightIcon,
+  DocumentTextIcon as HeroDocumentTextIcon,
+  CalendarIcon as HeroCalendarIcon,
+  PresentationChartLineIcon as HeroChartLineIcon,
+  ClockIcon as HeroClockIcon,
+  ChevronLeftIcon as HeroChevronLeftIcon,
+  ChevronRightIcon as HeroChevronRightIcon,
+  CircleStackIcon as HeroCircleIcon,
+  ArrowTopRightOnSquareIcon as HeroArrowTopRightOnSquareIcon,
+  BookOpenIcon as HeroBookOpenIcon,
+  ChatBubbleLeftIcon as HeroChatBubbleLeftIcon,
+  EnvelopeIcon as HeroEnvelopeIcon,
+  HeartIcon as HeroHeartIcon,
+  AcademicCapIcon as HeroAcademicCapIcon
+} from '@heroicons/vue/24/outline'
 
 // Icon component factory for MUI icons
 const createMUIcon = (iconName, defaultClass = '') => ({
@@ -16,40 +62,54 @@ const createMUIcon = (iconName, defaultClass = '') => ({
   }
 })
 
-// Icon component factory for Bootstrap icons
-const createBSIcon = (iconName, defaultClass = '') => ({
-  name: `BS${iconName}`,
+// Icon component factory for Heroicons
+const createHeroIcon = (iconComponent, defaultClass = '') => ({
+  name: `Hero${iconComponent.name || 'Icon'}`,
   props: {
     className: { type: String, default: defaultClass },
     size: { type: String, default: 'sm' }
   },
   render() {
-    return h('i', {
-      class: ['bi', `bi-${iconName.toLowerCase().replace(/icon$/, '')}`, `icon-${this.size}`, this.className],
+    const sizeClasses = {
+      sm: 'h-4 w-4',
+      md: 'h-5 w-5',
+      lg: 'h-6 w-6',
+      xl: 'h-8 w-8'
+    }
+    return h(iconComponent, {
+      class: [sizeClasses[this.size] || sizeClasses.sm, this.className],
       'aria-hidden': 'true'
     })
   }
 })
 
-// Universal icon component that can use either MUI or Bootstrap
-const createUniversalIcon = (muiName, bsName, defaultClass = '') => ({
+// Universal icon component that can use either MUI or Heroicons
+const createUniversalIcon = (muiName, heroIconComponent, defaultClass = '') => ({
   name: muiName.replace('Icon', ''),
   props: {
     className: { type: String, default: defaultClass },
     size: { type: String, default: 'sm' },
-    library: { type: String, default: 'mui' } // 'mui' or 'bootstrap'
+    library: { type: String, default: 'mui' } // 'mui' or 'heroicons'
   },
   render() {
-    const iconName = this.library === 'bootstrap' ? bsName : muiName
-    const prefix = this.library === 'bootstrap' ? 'bi' : 'mdi'
-    const formattedName = this.library === 'bootstrap'
-      ? iconName.toLowerCase().replace(/icon$/, '')
-      : iconName.toLowerCase().replace(/icon$/, '')
-
-    return h('i', {
-      class: [prefix, `${prefix}-${formattedName}`, `icon-${this.size}`, this.className],
-      'aria-hidden': 'true'
-    })
+    if (this.library === 'heroicons') {
+      const sizeClasses = {
+        sm: 'h-4 w-4',
+        md: 'h-5 w-5',
+        lg: 'h-6 w-6',
+        xl: 'h-8 w-8'
+      }
+      return h(heroIconComponent, {
+        class: [sizeClasses[this.size] || sizeClasses.sm, this.className],
+        'aria-hidden': 'true'
+      })
+    } else {
+      const formattedName = muiName.toLowerCase().replace(/icon$/, '')
+      return h('i', {
+        class: ['mdi', `mdi-${formattedName}`, `icon-${this.size}`, this.className],
+        'aria-hidden': 'true'
+      })
+    }
   }
 })
 
@@ -109,114 +169,112 @@ export const CodeTagsIcon = createMUIcon('CodeTags')
 export const PulseIcon = createMUIcon('Pulse')
 export const GraduationCapIcon = createMUIcon('SchoolOutline')
 
-// Export Bootstrap icon components
-export const BSPersonIcon = createBSIcon('person')
-export const BSStarsIcon = createBSIcon('stars')
-export const BSBadgeIcon = createBSIcon('badge')
-export const BSSaveIcon = createBSIcon('save')
-export const BSKeyIcon = createBSIcon('key')
-export const BSVisibilityIcon = createBSIcon('eye')
-export const BSVisibilityOffIcon = createBSIcon('eye-slash')
-export const BSSoundwaveIcon = createBSIcon('soundwave')
-export const BSMicIcon = createBSIcon('mic')
-export const BSRefreshIcon = createBSIcon('arrow-clockwise')
-export const BSSlashIcon = createBSIcon('slash-circle')
-export const BSCpuIcon = createBSIcon('cpu')
-export const BSPlugIcon = createBSIcon('plug')
-export const BSCheckIcon = createBSIcon('check')
-export const BSCloseIcon = createBSIcon('x')
-export const BSSettingsIcon = createBSIcon('gear')
-export const BSGameIcon = createBSIcon('controller')
-export const BSLightbulbIcon = createBSIcon('lightbulb')
-export const BSDatabaseIcon = createBSIcon('database')
-export const BSBarChartIcon = createBSIcon('bar-chart')
-export const BSDownloadIcon = createBSIcon('download')
-export const BSUploadIcon = createBSIcon('upload')
-export const BSDeleteIcon = createBSIcon('trash')
-export const BSWarningIcon = createBSIcon('exclamation-triangle')
-export const BSCheckCircleIcon = createBSIcon('check-circle')
-export const BSGithubIcon = createBSIcon('github')
-export const BSBulletListIcon = createBSIcon('list-ul')
-export const BSInfoIcon = createBSIcon('info-circle')
-export const BSBotIcon = createBSIcon('robot')
-export const BSBriefcaseIcon = createBSIcon('briefcase')
-export const BSMessageSquareIcon = createBSIcon('chat-square')
-export const BSFileTextIcon = createBSIcon('file-text')
-export const BSCalendarIcon = createBSIcon('calendar')
-export const BSActivityIcon = createBSIcon('activity')
-export const BSClockIcon = createBSIcon('clock')
-export const BSChevronLeftIcon = createBSIcon('chevron-left')
-export const BSChevronRightIcon = createBSIcon('chevron-right')
-export const BSCircleIcon = createBSIcon('circle')
-export const BSCogIcon = createBSIcon('gear')
-export const BSAzureIcon = createBSIcon('cloud')
-export const BSEyeIcon = createBSIcon('eye')
-export const BSEyeSlashIcon = createBSIcon('eye-slash')
-export const BSTrashIcon = createBSIcon('trash')
-export const BSRotateCcwIcon = createBSIcon('arrow-counterclockwise')
-export const BSLinkedinIcon = createBSIcon('linkedin')
-export const BSExternalLinkIcon = createBSIcon('box-arrow-up-right')
-export const BSBookIcon = createBSIcon('book')
-export const BSMessageCircleIcon = createBSIcon('chat')
-export const BSAlertTriangleIcon = createBSIcon('exclamation-triangle')
-export const BSMailIcon = createBSIcon('envelope')
-export const BSHeartIcon = createBSIcon('heart')
-export const BSCodeTagsIcon = createBSIcon('code-slash')
-export const BSPulseIcon = createBSIcon('graph-up')
-export const BSGraduationCapIcon = createBSIcon('mortarboard')
+// Export Heroicons components
+export const HeroPersonWrapped = createHeroIcon(HeroUserIcon)
+export const HeroStarsWrapped = createHeroIcon(HeroStarIcon)
+export const HeroBadgeWrapped = createHeroIcon(HeroShieldCheckIcon)
+export const HeroSaveWrapped = createHeroIcon(HeroArchiveBoxIcon)
+export const HeroKeyWrapped = createHeroIcon(HeroKeyIcon)
+export const HeroVisibilityWrapped = createHeroIcon(HeroEyeIcon)
+export const HeroVisibilityOffWrapped = createHeroIcon(HeroEyeSlashIcon)
+export const HeroSoundwaveWrapped = createHeroIcon(HeroSpeakerWaveIcon)
+export const HeroMicWrapped = createHeroIcon(HeroMicrophoneIcon)
+export const HeroRefreshWrapped = createHeroIcon(HeroArrowPathIcon)
+export const HeroSlashWrapped = createHeroIcon(HeroNoSymbolIcon)
+export const HeroCpuWrapped = createHeroIcon(HeroCpuChipIcon)
+export const HeroPlugWrapped = createHeroIcon(HeroPlugIcon)
+export const HeroCheckWrapped = createHeroIcon(HeroCheckIcon)
+export const HeroCloseWrapped = createHeroIcon(HeroXMarkIcon)
+export const HeroSettingsWrapped = createHeroIcon(HeroCogIcon)
+export const HeroGameWrapped = createHeroIcon(HeroPuzzlePieceIcon)
+export const HeroLightbulbWrapped = createHeroIcon(HeroLightBulbIcon)
+export const HeroDatabaseWrapped = createHeroIcon(HeroCircleStackIcon)
+export const HeroBarChartWrapped = createHeroIcon(HeroChartBarIcon)
+export const HeroDownloadWrapped = createHeroIcon(HeroArrowDownTrayIcon)
+export const HeroUploadWrapped = createHeroIcon(HeroArrowUpTrayIcon)
+export const HeroDeleteWrapped = createHeroIcon(HeroTrashIcon)
+export const HeroWarningWrapped = createHeroIcon(HeroExclamationTriangleIcon)
+export const HeroCheckCircleWrapped = createHeroIcon(HeroCheckCircleIcon)
+export const HeroGithubWrapped = createHeroIcon(HeroCodeBracketIcon)
+export const HeroBulletListWrapped = createHeroIcon(HeroListBulletIcon)
+export const HeroInfoWrapped = createHeroIcon(HeroInformationCircleIcon)
+export const HeroBotWrapped = createHeroIcon(HeroRobotIcon)
+export const HeroBriefcaseWrapped = createHeroIcon(HeroBriefcaseIcon)
+export const HeroMessageSquareWrapped = createHeroIcon(HeroChatBubbleLeftRightIcon)
+export const HeroFileTextWrapped = createHeroIcon(HeroDocumentTextIcon)
+export const HeroCalendarWrapped = createHeroIcon(HeroCalendarIcon)
+export const HeroActivityWrapped = createHeroIcon(HeroChartLineIcon)
+export const HeroClockWrapped = createHeroIcon(HeroClockIcon)
+export const HeroChevronLeftWrapped = createHeroIcon(HeroChevronLeftIcon)
+export const HeroChevronRightWrapped = createHeroIcon(HeroChevronRightIcon)
+export const HeroCircleWrapped = createHeroIcon(HeroCircleIcon)
+export const HeroCogWrapped = createHeroIcon(HeroCogIcon)
+export const HeroEyeWrapped = createHeroIcon(HeroEyeIcon)
+export const HeroEyeSlashWrapped = createHeroIcon(HeroEyeSlashIcon)
+export const HeroTrashWrapped = createHeroIcon(HeroTrashIcon)
+export const HeroRotateCcwWrapped = createHeroIcon(HeroArrowPathIcon)
+export const HeroExternalLinkWrapped = createHeroIcon(HeroArrowTopRightOnSquareIcon)
+export const HeroBookWrapped = createHeroIcon(HeroBookOpenIcon)
+export const HeroMessageCircleWrapped = createHeroIcon(HeroChatBubbleLeftIcon)
+export const HeroAlertTriangleWrapped = createHeroIcon(HeroExclamationTriangleIcon)
+export const HeroMailWrapped = createHeroIcon(HeroEnvelopeIcon)
+export const HeroHeartWrapped = createHeroIcon(HeroHeartIcon)
+export const HeroCodeTagsWrapped = createHeroIcon(HeroCodeBracketIcon)
+export const HeroPulseWrapped = createHeroIcon(HeroChartLineIcon)
+export const HeroGraduationCapWrapped = createHeroIcon(HeroAcademicCapIcon)
 
 // Universal icons (can switch between libraries)
-export const PersonIconComponent = createUniversalIcon('Account', 'person')
-export const StarsIconComponent = createUniversalIcon('StarFourPoints', 'stars')
-export const BadgeIconComponent = createUniversalIcon('Certificate', 'badge')
-export const SaveIconComponent = createUniversalIcon('ContentSave', 'save')
-export const KeyIconComponent = createUniversalIcon('Key', 'key')
-export const VisibilityIconComponent = createUniversalIcon('Eye', 'eye')
-export const VisibilityOffIconComponent = createUniversalIcon('EyeOff', 'eye-slash')
-export const SoundwaveIconComponent = createUniversalIcon('Waveform', 'soundwave')
-export const MicIconComponent = createUniversalIcon('Microphone', 'mic')
-export const RefreshIconComponent = createUniversalIcon('Refresh', 'arrow-clockwise')
-export const SlashIconComponent = createUniversalIcon('Cancel', 'slash-circle')
-export const CpuIconComponent = createUniversalIcon('Chip', 'cpu')
-export const PlugIconComponent = createUniversalIcon('PowerPlug', 'plug')
-export const CheckIconComponent = createUniversalIcon('Check', 'check')
-export const CloseIconComponent = createUniversalIcon('Close', 'x')
-export const SettingsIconComponent = createUniversalIcon('Cog', 'gear')
-export const GameIconComponent = createUniversalIcon('GamepadVariant', 'controller')
-export const LightbulbIconComponent = createUniversalIcon('Lightbulb', 'lightbulb')
-export const DatabaseIconComponent = createUniversalIcon('Database', 'database')
-export const BarChartIconComponent = createUniversalIcon('ChartBar', 'bar-chart')
-export const DownloadIconComponent = createUniversalIcon('Download', 'download')
-export const UploadIconComponent = createUniversalIcon('Upload', 'upload')
-export const DeleteIconComponent = createUniversalIcon('Delete', 'trash')
-export const WarningIconComponent = createUniversalIcon('Alert', 'exclamation-triangle')
-export const CheckCircleIconComponent = createUniversalIcon('CheckCircle', 'check-circle')
-export const GithubIconComponent = createUniversalIcon('Github', 'github')
-export const BulletListIconComponent = createUniversalIcon('FormatListBulleted', 'list-ul')
-export const InfoIconComponent = createUniversalIcon('Info', 'info-circle')
-export const BotIconComponent = createUniversalIcon('Robot', 'robot')
-export const BriefcaseIconComponent = createUniversalIcon('Briefcase', 'briefcase')
-export const MessageSquareIconComponent = createUniversalIcon('MessageText', 'chat-square')
-export const FileTextIconComponent = createUniversalIcon('FileDocument', 'file-text')
-export const CalendarIconComponent = createUniversalIcon('Calendar', 'calendar')
-export const ActivityIconComponent = createUniversalIcon('Activity', 'activity')
-export const ClockIconComponent = createUniversalIcon('Clock', 'clock')
-export const ChevronLeftIconComponent = createUniversalIcon('ChevronLeft', 'chevron-left')
-export const ChevronRightIconComponent = createUniversalIcon('ChevronRight', 'chevron-right')
-export const CircleIconComponent = createUniversalIcon('Circle', 'circle')
-export const CogIconComponent = createUniversalIcon('Cog', 'gear')
-export const AzureIconComponent = createUniversalIcon('MicrosoftAzure', 'cloud')
-export const EyeIconComponent = createUniversalIcon('Eye', 'eye')
-export const EyeSlashIconComponent = createUniversalIcon('EyeOff', 'eye-slash')
-export const TrashIconComponent = createUniversalIcon('Delete', 'trash')
-export const RotateCcwIconComponent = createUniversalIcon('RotateLeft', 'arrow-counterclockwise')
-export const LinkedinIconComponent = createUniversalIcon('Linkedin', 'linkedin')
-export const ExternalLinkIconComponent = createUniversalIcon('OpenInNew', 'box-arrow-up-right')
-export const BookIconComponent = createUniversalIcon('Book', 'book')
-export const MessageCircleIconComponent = createUniversalIcon('MessageText', 'chat')
-export const AlertTriangleIconComponent = createUniversalIcon('Alert', 'exclamation-triangle')
-export const MailIconComponent = createUniversalIcon('Email', 'envelope')
-export const HeartIconComponent = createUniversalIcon('Heart', 'heart')
-export const CodeTagsIconComponent = createUniversalIcon('CodeTags', 'code-slash')
-export const PulseIconComponent = createUniversalIcon('Pulse', 'graph-up')
-export const GraduationCapIconComponent = createUniversalIcon('SchoolOutline', 'mortarboard')
+export const PersonIconComponent = createUniversalIcon('Account', HeroUserIcon)
+export const StarsIconComponent = createUniversalIcon('StarFourPoints', HeroStarIcon)
+export const BadgeIconComponent = createUniversalIcon('Certificate', HeroShieldCheckIcon)
+export const SaveIconComponent = createUniversalIcon('ContentSave', HeroArchiveBoxIcon)
+export const KeyIconComponent = createUniversalIcon('Key', HeroKeyIcon)
+export const VisibilityIconComponent = createUniversalIcon('Eye', HeroEyeIcon)
+export const VisibilityOffIconComponent = createUniversalIcon('EyeOff', HeroEyeSlashIcon)
+export const SoundwaveIconComponent = createUniversalIcon('Waveform', HeroSpeakerWaveIcon)
+export const MicIconComponent = createUniversalIcon('Microphone', HeroMicrophoneIcon)
+export const RefreshIconComponent = createUniversalIcon('Refresh', HeroArrowPathIcon)
+export const SlashIconComponent = createUniversalIcon('Cancel', HeroNoSymbolIcon)
+export const CpuIconComponent = createUniversalIcon('Chip', HeroCpuChipIcon)
+export const PlugIconComponent = createUniversalIcon('PowerPlug', HeroPlugIcon)
+export const CheckIconComponent = createUniversalIcon('Check', HeroCheckIcon)
+export const CloseIconComponent = createUniversalIcon('Close', HeroXMarkIcon)
+export const SettingsIconComponent = createUniversalIcon('Cog', HeroCogIcon)
+export const GameIconComponent = createUniversalIcon('GamepadVariant', HeroPuzzlePieceIcon)
+export const LightbulbIconComponent = createUniversalIcon('Lightbulb', HeroLightBulbIcon)
+export const DatabaseIconComponent = createUniversalIcon('Database', HeroCircleStackIcon)
+export const BarChartIconComponent = createUniversalIcon('ChartBar', HeroChartBarIcon)
+export const DownloadIconComponent = createUniversalIcon('Download', HeroArrowDownTrayIcon)
+export const UploadIconComponent = createUniversalIcon('Upload', HeroArrowUpTrayIcon)
+export const DeleteIconComponent = createUniversalIcon('Delete', HeroTrashIcon)
+export const WarningIconComponent = createUniversalIcon('Alert', HeroExclamationTriangleIcon)
+export const CheckCircleIconComponent = createUniversalIcon('CheckCircle', HeroCheckCircleIcon)
+export const GithubIconComponent = createUniversalIcon('Github', HeroCodeBracketIcon)
+export const BulletListIconComponent = createUniversalIcon('FormatListBulleted', HeroListBulletIcon)
+export const InfoIconComponent = createUniversalIcon('Info', HeroInformationCircleIcon)
+export const BotIconComponent = createUniversalIcon('Robot', HeroRobotIcon)
+export const BriefcaseIconComponent = createUniversalIcon('Briefcase', HeroBriefcaseIcon)
+export const MessageSquareIconComponent = createUniversalIcon('MessageText', HeroChatBubbleLeftRightIcon)
+export const FileTextIconComponent = createUniversalIcon('FileDocument', HeroDocumentTextIcon)
+export const CalendarIconComponent = createUniversalIcon('Calendar', HeroCalendarIcon)
+export const ActivityIconComponent = createUniversalIcon('Activity', HeroChartLineIcon)
+export const ClockIconComponent = createUniversalIcon('Clock', HeroClockIcon)
+export const ChevronLeftIconComponent = createUniversalIcon('ChevronLeft', HeroChevronLeftIcon)
+export const ChevronRightIconComponent = createUniversalIcon('ChevronRight', HeroChevronRightIcon)
+export const CircleIconComponent = createUniversalIcon('Circle', HeroCircleIcon)
+export const CogIconComponent = createUniversalIcon('Cog', HeroCogIcon)
+export const AzureIconComponent = createUniversalIcon('MicrosoftAzure', HeroCircleStackIcon)
+export const EyeIconComponent = createUniversalIcon('Eye', HeroEyeIcon)
+export const EyeSlashIconComponent = createUniversalIcon('EyeOff', HeroEyeSlashIcon)
+export const TrashIconComponent = createUniversalIcon('Delete', HeroTrashIcon)
+export const RotateCcwIconComponent = createUniversalIcon('RotateLeft', HeroArrowPathIcon)
+export const LinkedinIconComponent = createUniversalIcon('Linkedin', HeroArrowTopRightOnSquareIcon)
+export const ExternalLinkIconComponent = createUniversalIcon('OpenInNew', HeroArrowTopRightOnSquareIcon)
+export const BookIconComponent = createUniversalIcon('Book', HeroBookOpenIcon)
+export const MessageCircleIconComponent = createUniversalIcon('MessageText', HeroChatBubbleLeftIcon)
+export const AlertTriangleIconComponent = createUniversalIcon('Alert', HeroExclamationTriangleIcon)
+export const MailIconComponent = createUniversalIcon('Email', HeroEnvelopeIcon)
+export const HeartIconComponent = createUniversalIcon('Heart', HeroHeartIcon)
+export const CodeTagsIconComponent = createUniversalIcon('CodeTags', HeroCodeBracketIcon)
+export const PulseIconComponent = createUniversalIcon('Pulse', HeroChartLineIcon)
+export const GraduationCapIconComponent = createUniversalIcon('SchoolOutline', HeroAcademicCapIcon)

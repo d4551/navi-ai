@@ -8,8 +8,10 @@
     :aria-label="ariaLabel || labelFromIcon"
     :disabled="disabled"
     :ripple="ripple"
+    class="font-sans"
     @click="$emit('click', $event)"
-  />
+  >
+  </UnifiedButton>
 </template>
 
 <script setup lang="ts">
@@ -42,4 +44,3 @@ const labelFromIcon = computed(() => (props.icon || '').replace(/^mdi-/, '').rep
 <style scoped>
 /* Thin wrapper – styling comes from UnifiedButton */
 </style>
-

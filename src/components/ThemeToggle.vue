@@ -1,5 +1,5 @@
 <template>
-  <div class="theme-toggle-container">
+  <div class="theme-toggle-container font-sans">
     <!-- Theme Toggle Button -->
     <UnifiedButton
       variant="outline"
@@ -45,7 +45,6 @@ import { computed } from 'vue'
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 import { useResponsive } from '@/composables/useResponsive'
 import { useUnifiedUI } from '@/composables/useUnifiedUI'
-import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 interface Props {
@@ -110,7 +109,7 @@ const densityIcon = computed(() => {
   align-items: center;
   gap: var(--spacing-xs);
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-left: var(--spacing-sm);
 }
 
@@ -153,7 +152,7 @@ const densityIcon = computed(() => {
 .dark-theme .theme-toggle-container button {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .theme-toggle-container button:hover,
@@ -165,7 +164,7 @@ const densityIcon = computed(() => {
 
 [data-theme="dark"] .theme-label,
 .dark-theme .theme-label {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Gaming theme enhancement */
@@ -183,7 +182,7 @@ const densityIcon = computed(() => {
   :root:not([data-theme="light"]) .theme-toggle-container button {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
+    color: var(--text-primary-600);
   }
   
   :root:not([data-theme="light"]) .theme-toggle-container button:hover {

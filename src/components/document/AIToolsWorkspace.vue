@@ -1,9 +1,9 @@
 <template>
-  <div class="ai-tools-workspace">
+  <div class="ai-tools-workspace" class="font-sans">
     <!-- Profile Integration Banner -->
     <div v-if="profileData" class="profile-integration-banner">
       <div class="banner-content">
-        <AppIcon name="mdi-account-check-outline" class="banner-icon" />
+        <AppIcon name="UserIcon-check-outline" class="banner-icon" />
         <div class="banner-text">
           <h4>Profile Integration Active</h4>
           <p>AI will use your profile data ({{ Math.round(profileCompleteness) }}% complete) to provide personalized suggestions</p>
@@ -11,7 +11,7 @@
         <UnifiedButton
           variant="outline"
           size="sm"
-          leading-icon="mdi-refresh"
+          leading-icon="ArrowPathIcon"
           @click="refreshProfileData"
         >
           Refresh
@@ -31,7 +31,7 @@
             v-if="jobDescription.trim()"
             variant="outline"
             size="sm"
-            leading-icon="mdi-refresh"
+            leading-icon="ArrowPathIcon"
             @click="analyzeJobDescription"
           >
             Re-analyze
@@ -40,7 +40,7 @@
             v-if="profileData && jobDescription.trim()"
             variant="gaming"
             size="sm"
-            leading-icon="mdi-account-sync"
+            leading-icon="UserIcon-sync"
             @click="aiMatchJobToProfile"
           >
             AI + Profile Match
@@ -83,7 +83,7 @@
       <!-- Document Analysis Tool -->
       <div class="tool-card">
         <div class="tool-header">
-          <AppIcon name="mdi-file-find-outline" />
+          <AppIcon name="DocumentIcon-find-outline" />
           <h4>Document Analysis</h4>
         </div>
         <p class="tool-description">
@@ -93,7 +93,7 @@
           <UnifiedButton
             variant="primary"
             size="sm"
-            leading-icon="mdi-magnify"
+            leading-icon="MagnifyingGlassIcon"
             :disabled="!aiReady || analyzing"
             :loading="analyzing"
             @click="analyzeDocuments"
@@ -130,7 +130,7 @@
       <!-- Content Enhancement Tool -->
       <div class="tool-card">
         <div class="tool-header">
-          <AppIcon name="mdi-auto-fix" />
+          <AppIcon name="SparklesIcon" />
           <h4>Content Enhancement</h4>
         </div>
         <p class="tool-description">
@@ -140,7 +140,7 @@
           <UnifiedButton
             variant="gaming"
             size="sm"
-            leading-icon="mdi-sparkles"
+            leading-icon="SparklesIcon"
             :disabled="!aiReady || enhancing"
             :loading="enhancing"
             @click="enhanceContent"
@@ -168,7 +168,7 @@
       <!-- Job Tailoring Tool -->
       <div class="tool-card">
         <div class="tool-header">
-          <AppIcon name="mdi-target" />
+          <AppIcon name="EyeIcon" />
           <h4>Job Tailoring</h4>
         </div>
         <p class="tool-description">
@@ -178,7 +178,7 @@
           <UnifiedButton
             variant="primary"
             size="sm"
-            leading-icon="mdi-target"
+            leading-icon="EyeIcon"
             :disabled="!aiReady || tailoring || !jobDescription.trim()"
             :loading="tailoring"
             @click="handleTailorDocuments"
@@ -201,7 +201,7 @@
       <!-- Skills Optimization Tool -->
       <div class="tool-card">
         <div class="tool-header">
-          <AppIcon name="mdi-chart-line-variant" />
+          <AppIcon name="ChartBarIcon-line-variant" />
           <h4>Skills Optimization</h4>
         </div>
         <p class="tool-description">
@@ -211,7 +211,7 @@
           <UnifiedButton
             variant="outline"
             size="sm"
-            leading-icon="mdi-lightbulb"
+            leading-icon="LightBulbIcon"
             :disabled="!aiReady || optimizingSkills"
             :loading="optimizingSkills"
             @click="optimizeSkills"
@@ -230,7 +230,7 @@
                 @click="addSkill(skill)"
               >
                 <span>{{ skill }}</span>
-                <AppIcon name="mdi-plus-circle" size="14" />
+                <AppIcon name="PlusCircleIcon" size="14" />
               </span>
             </div>
           </div>
@@ -242,13 +242,13 @@
     <div v-if="hasInsights" class="ai-insights-panel">
       <div class="insights-header">
         <h3 class="insights-title">
-          <AppIcon name="mdi-brain" />
+          <AppIcon name="CpuChipIcon" />
           AI Insights
         </h3>
         <UnifiedButton
           variant="ghost"
           size="sm"
-          leading-icon="mdi-refresh"
+          leading-icon="ArrowPathIcon"
           @click="refreshInsights"
         >
           Refresh
@@ -279,6 +279,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, CpuChipIcon, EyeIcon, LightBulbIcon, MagnifyingGlassIcon, PlusCircleIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -604,7 +606,7 @@ if (props.jobDescription.trim()) {
   gap: var(--spacing-2);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -679,7 +681,7 @@ if (props.jobDescription.trim()) {
 
 .tool-card:hover {
   border-color: var(--color-primary-300);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .tool-header {
@@ -692,7 +694,7 @@ if (props.jobDescription.trim()) {
 .tool-header h4 {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -755,7 +757,7 @@ if (props.jobDescription.trim()) {
 .score-value {
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .suggestions-list {
@@ -780,7 +782,7 @@ if (props.jobDescription.trim()) {
 
 .suggestion-text {
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
@@ -862,7 +864,7 @@ if (props.jobDescription.trim()) {
   gap: var(--spacing-2);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -888,7 +890,7 @@ if (props.jobDescription.trim()) {
 
 .insight-type {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .insight-priority {

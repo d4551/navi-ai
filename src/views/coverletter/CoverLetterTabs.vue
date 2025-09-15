@@ -8,6 +8,7 @@
     class="nav nav-tabs nav-fill glass-nav cover-letter-tabs"
     role="tablist" 
     aria-label="Cover letter builder sections"
+    class="font-sans"
     @scroll="updateArrows"
     @pointerdown="onPointerDown"
     @pointermove="onPointerMove"
@@ -40,14 +41,14 @@
     >
       <i 
         :class="tab.icon" 
-        class="me-2 icon-md" 
+        class="mr-2 icon-md" 
         aria-hidden="true"
       ></i>
-      <span class="d-none d-sm-inline">{{ tab.label }}</span>
+      <span class="hidden d-sm-inline">{{ tab.label }}</span>
       <span class="d-sm-none">{{ tab.shortLabel }}</span>
       <span 
         v-if="tab.badge"
-        class="badge badge-compact ms-2"
+        class="badge badge-compact ml-2"
         :class="getBadgeClass(tab.id)"
         :aria-label="`${tab.badge} items in ${tab.label}`"
       >
@@ -106,10 +107,10 @@ const setActiveTab = (tabId: string) => {
 const getBadgeClass = (tabId: string) => {
   const completion = props.completionData?.[tabId] || 0
   
-  if (completion >= 100) return 'bg-success'
-  if (completion >= 75) return 'bg-warning' 
-  if (completion >= 50) return 'bg-info'
-  return 'bg-secondary'
+  if (completion >= 100) return 'bg-success-500'
+  if (completion >= 75) return 'bg-warning-500' 
+  if (completion >= 50) return 'bg-blue-500'
+  return 'bg-secondary-500'
 }
 
 const onTabKeydown = (event: KeyboardEvent, tabId: string) => {
@@ -216,7 +217,7 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .cover-letter-tabs {
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: var(--glass-elevated);
   backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
   -webkit-backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
@@ -228,7 +229,7 @@ onBeforeUnmount(() => {
   
   .nav-link {
     border: none;
-    border-bottom: 3px solid transparent;
+    border-b: 3px solid transparent;
     background: transparent;
     color: var(--text-secondary);
     font-weight: 500;
@@ -244,13 +245,13 @@ onBeforeUnmount(() => {
     &:hover {
       background: rgba(var(--primary-rgb), 0.05);
       color: var(--color-primary);
-      border-bottom-color: rgba(var(--primary-rgb), 0.3);
+      border-b-color: rgba(var(--primary-rgb), 0.3);
     }
     
     &.active {
       background: rgba(var(--primary-rgb), 0.08);
       color: var(--color-primary);
-      border-bottom-color: var(--color-primary);
+      border-b-color: var(--color-primary);
       font-weight: 600;
     }
     
@@ -267,7 +268,7 @@ onBeforeUnmount(() => {
 // Dark theme support
 [data-theme="dark"] .cover-letter-tabs {
   background: var(--glass-elevated-dark);
-  border-bottom-color: var(--glass-border-dark);
+  border-b-color: var(--glass-border-dark);
   
   .nav-link {
     color: var(--text-secondary);
@@ -333,7 +334,7 @@ onBeforeUnmount(() => {
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   flex: 0 0 auto;
   z-index: 2;
 }

@@ -9,27 +9,27 @@ Displays live jobs from multiple API sources with:
 - Auto-refresh and caching
 -->
 <template>
-  <div class="live-job-board">
+  <div class="live-job-board" class="font-sans">
     <!-- Header with Live Stats -->
     <div class="job-board-header glass-card section-card mb-4">
-      <div class="section-header d-flex justify-content-between align-items-center">
+      <div class="section-header flex justify-between items-center">
         <div class="header-info">
           <h2 class="mb-1">
-            <AppIcon name="mdi-briefcase-search" class="text-primary me-2" />
+            <AppIcon name="MagnifyingGlassIcon" class="text-primary-600 mr-2" />
             Live Job Board
-            <span v-if="isSearching" class="loading-indicator ms-2">
-              <AppIcon name="mdi-loading" class="mdi-spin" />
+            <span v-if="isSearching" class="loading-indicator ml-2">
+              <AppIcon name="ArrowPathIcon" class="mdi-spin" />
             </span>
           </h2>
-          <p class="text-muted mb-0">
+          <p class="text-secondary mb-0">
             Real-time opportunities from {{ providerCount }} job sources
-            <span v-if="lastUpdated" class="ms-2">
+            <span v-if="lastUpdated" class="ml-2">
               • Updated {{ getRelativeTime(lastUpdated) }}
             </span>
           </p>
         </div>
         
-        <div class="header-stats d-flex gap-3">
+        <div class="header-stats flex gap-glass-md">
           <div class="stat-card">
             <div class="stat-number">{{ totalJobs.toLocaleString() }}</div>
             <div class="stat-label">Total Jobs</div>
@@ -54,17 +54,17 @@ Displays live jobs from multiple API sources with:
     <div class="search-filters-section glass-card section-card mb-4">
       <div class="search-header section-header">
         <h5 class="mb-0">
-          <AppIcon name="mdi-filter-variant" class="me-2" />
+          <AppIcon name="AdjustmentsHorizontalIcon" class="mr-2" />
           Search & Filter Jobs
         </h5>
         <div v-if="profileSuggestions.length" class="search-suggestions">
-          <span class="text-muted small me-2">Quick searches:</span>
+          <span class="text-secondary small mr-2">Quick searches:</span>
           <UnifiedButton
             v-for="suggestion in profileSuggestions"
             :key="suggestion"
             variant="outline"
             size="chip"
-            class="me-2 mb-1"
+            class="mr-2 mb-1"
             @click="setQuickSearch(suggestion)"
           >
             {{ suggestion }}
@@ -76,7 +76,7 @@ Displays live jobs from multiple API sources with:
           <!-- Search -->
           <div class="filter-item">
             <label class="form-label small">
-              <AppIcon name="mdi-magnify" class="me-1" />
+              <AppIcon name="MagnifyingGlassIcon" class="mr-1" />
               Search Jobs
             </label>
             <input
@@ -91,7 +91,7 @@ Displays live jobs from multiple API sources with:
           <!-- Location -->
           <div class="filter-item">
             <label class="form-label small">
-              <AppIcon name="mdi-map-marker" class="me-1" />
+              <AppIcon name="MapPinIcon" class="mr-1" />
               Location
             </label>
             <select v-model="searchForm.location" class="form-select filter-input">
@@ -108,7 +108,7 @@ Displays live jobs from multiple API sources with:
           <!-- Job Type -->
           <div class="filter-item">
             <label class="form-label small">
-              <AppIcon name="mdi-briefcase" class="me-1" />
+              <AppIcon name="BriefcaseIcon" class="mr-1" />
               Type
             </label>
             <select v-model="searchForm.type" class="form-select filter-input">
@@ -123,7 +123,7 @@ Displays live jobs from multiple API sources with:
           <!-- Posted -->
           <div class="filter-item">
             <label class="form-label small">
-              <AppIcon name="mdi-calendar" class="me-1" />
+              <AppIcon name="CalendarIcon" class="mr-1" />
               Posted
             </label>
             <select v-model="searchForm.datePosted" class="form-select filter-input">
@@ -139,7 +139,7 @@ Displays live jobs from multiple API sources with:
             <UnifiedButton
               variant="primary"
               size="sm"
-              leading-icon="mdi-magnify"
+              leading-icon="MagnifyingGlassIcon"
               :disabled="isSearching"
               @click="searchJobs"
             >
@@ -162,18 +162,18 @@ Displays live jobs from multiple API sources with:
               @keydown.space.prevent="showQuickFilters = !showQuickFilters"
             >
               <div class="header-left">
-                <AppIcon name="mdi-flash" />
+                <AppIcon name="BoltIcon" />
                 <span>Quick Filters</span>
               </div>
               <div class="header-actions">
-                <UnifiedButton variant="outline" size="chip" leading-icon="mdi-close-circle-outline" @click.stop="clearAllQuickFilters">Clear</UnifiedButton>
+                <UnifiedButton variant="outline" size="chip" leading-icon="XMarkIcon-circle-outline" @click.stop="clearAllQuickFilters">Clear</UnifiedButton>
                 <AppIcon class="toggle-icon" :name="showQuickFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
               </div>
             </div>
             <div v-show="showQuickFilters" class="filter-section-body">
-              <div class="filter-toggles d-flex gap-2 flex-wrap align-items-center">
-                <div class="quick-chips d-flex gap-2 flex-wrap me-auto">
-                  <span class="chip-label text-muted">Quick:</span>
+              <div class="filter-toggles flex gap-glass-sm flex-wrap items-center">
+                <div class="quick-chips flex gap-glass-sm flex-wrap me-auto">
+                  <span class="chip-label text-secondary">Quick:</span>
                   <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.seniority==='junior' }" @click="quickFilters.seniority = quickFilters.seniority==='junior' ? '' : 'junior'">Junior</UnifiedButton>
                   <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.seniority==='mid' }" @click="quickFilters.seniority = quickFilters.seniority==='mid' ? '' : 'mid'">Mid</UnifiedButton>
                   <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.seniority==='senior' }" @click="quickFilters.seniority = quickFilters.seniority==='senior' ? '' : 'senior'">Senior</UnifiedButton>
@@ -186,13 +186,13 @@ Displays live jobs from multiple API sources with:
                   <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.salaryMin===150000 }" @click="quickFilters.salaryMin = quickFilters.salaryMin===150000 ? 0 : 150000">≥ $150k</UnifiedButton>
                 </div>
 
-                <UnifiedButton size="sm" :variant="searchForm.gamingOnly ? 'gaming' : 'outline'" leading-icon="mdi-gamepad-variant" @click="toggleGamingFilter">Gaming Only</UnifiedButton>
+                <UnifiedButton size="sm" :variant="searchForm.gamingOnly ? 'gaming' : 'outline'" leading-icon="PuzzlePieceIcon" @click="toggleGamingFilter">Gaming Only</UnifiedButton>
                 
-                <UnifiedButton size="sm" :variant="searchForm.savedJobsOnly ? 'success' : 'outline'" leading-icon="mdi-bookmark" @click="toggleSavedJobsFilter">Saved ({{ savedJobs.length }})</UnifiedButton>
+                <UnifiedButton size="sm" :variant="searchForm.savedJobsOnly ? 'success' : 'outline'" leading-icon="BookmarkIcon" @click="toggleSavedJobsFilter">Saved ({{ savedJobs.length }})</UnifiedButton>
                 
-                <UnifiedButton size="sm" :variant="searchForm.remote ? 'info' : 'outline'" leading-icon="mdi-home" @click="toggleRemoteFilter">Remote</UnifiedButton>
+                <UnifiedButton size="sm" :variant="searchForm.remote ? 'info' : 'outline'" leading-icon="HomeIcon" @click="toggleRemoteFilter">Remote</UnifiedButton>
 
-                <UnifiedButton v-if="hiddenJobIds.size" size="sm" variant="warning" appearance="outlined" leading-icon="mdi-eye" @click="clearHiddenJobs">Clear Hidden ({{ hiddenJobIds.size }})</UnifiedButton>
+                <UnifiedButton v-if="hiddenJobIds.size" size="sm" variant="warning" appearance="outlined" leading-icon="EyeIcon" @click="clearHiddenJobs">Clear Hidden ({{ hiddenJobIds.size }})</UnifiedButton>
               </div>
             </div>
           </div>
@@ -217,10 +217,10 @@ Displays live jobs from multiple API sources with:
               </div>
             </div>
             <div v-show="showAdvancedFilters" class="filter-section-body">
-              <div class="row g-3 align-items-end">
-                <div class="col-md-4">
+              <div class="flex flex-wrap g-3 items-end">
+                <div class="flex-1-md-4">
                   <label class="form-label">
-                    <AppIcon name="mdi-cash" class="me-1" />
+                    <AppIcon name="CurrencyDollarIcon" class="mr-1" />
                     Minimum Salary
                   </label>
                   <input
@@ -231,35 +231,35 @@ Displays live jobs from multiple API sources with:
                     step="25000"
                     class="form-range"
                   />
-                  <div class="small text-muted mt-1">≥ ${{ Math.round(quickFilters.salaryMin/1000) }}k</div>
+                  <div class="small text-secondary mt-1">≥ ${{ Math.round(quickFilters.salaryMin/1000) }}k</div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="flex-1-md-4">
                   <label class="form-label">
-                    <AppIcon name="mdi-domain" class="me-1" /> Company contains
+                    <AppIcon name="BuildingOfficeIcon" class="mr-1" /> Company contains
                   </label>
                   <input v-model.trim="advancedFilters.companyIncludes" type="text" class="form-control" placeholder="e.g. Ubisoft" @keyup.enter="searchJobs" />
                 </div>
 
-                <div class="col-md-4 d-flex gap-3 flex-wrap">
+                <div class="flex-1-md-4 flex gap-glass-md flex-wrap">
                   <div class="form-check">
                     <input id="onlySalary" v-model="advancedFilters.onlyWithSalary" class="form-check-input" type="checkbox" />
                     <label for="onlySalary" class="form-check-label">
-                      <AppIcon name="mdi-currency-usd" class="me-1" /> Only with salary
+                      <AppIcon name="mdi-currency-usd" class="mr-1" /> Only with salary
                     </label>
                   </div>
                   <div class="form-check">
                     <input id="noIntern" v-model="advancedFilters.excludeInternships" class="form-check-input" type="checkbox" />
                     <label for="noIntern" class="form-check-label">
-                      <AppIcon name="mdi-school" class="me-1" /> Exclude internships
+                      <AppIcon name="AcademicCapIcon" class="mr-1" /> Exclude internships
                     </label>
                   </div>
                 </div>
               </div>
 
-              <div class="mt-2 d-flex gap-2 flex-wrap">
-                <UnifiedButton size="sm" variant="outline" leading-icon="mdi-filter-off" @click="clearFilters">Clear All</UnifiedButton>
-                <UnifiedButton size="sm" variant="outline" :disabled="refreshing" :loading="refreshing" leading-icon="mdi-refresh" @click="refreshJobs">Refresh</UnifiedButton>
+              <div class="mt-2 flex gap-glass-sm flex-wrap">
+                <UnifiedButton size="sm" variant="outline" leading-icon="FunnelIcon-off" @click="clearFilters">Clear All</UnifiedButton>
+                <UnifiedButton size="sm" variant="outline" :disabled="refreshing" :loading="refreshing" leading-icon="ArrowPathIcon" @click="refreshJobs">Refresh</UnifiedButton>
                 <UnifiedButton size="sm" variant="success" :disabled="!searchForm.query" leading-icon="mdi-bell-plus" @click="createJobAlert">Create Alert</UnifiedButton>
                 <UnifiedButton 
                   size="sm" 
@@ -272,25 +272,25 @@ Displays live jobs from multiple API sources with:
               </div>
 
               <!-- Provider Status (inline) -->
-              <div v-if="showProviderStatus" class="provider-status-inline mt-3 p-3 glass-bg-light border rounded">
-                <div class="d-flex align-items-center mb-2">
-                  <AppIcon name="mdi-api" class="me-2" />
+              <div v-if="showProviderStatus" class="provider-status-inline mt-3 p-glass-md glass-bg-glass-bg dark:bg-glass-bg-hover border rounded">
+                <div class="flex items-center mb-2">
+                  <AppIcon name="mdi-api" class="mr-2" />
                   <h6 class="mb-0">Live Job Sources</h6>
-                  <span class="badge bg-primary ms-2">{{ Object.keys(providerStatus).length }} providers</span>
+                  <span class="badge bg-primary-500 ml-2">{{ Object.keys(providerStatus).length }} providers</span>
                 </div>
-                <div class="row g-2">
+                <div class="flex flex-wrap g-2">
                   <div
                     v-for="(status, provider) in providerStatus"
                     :key="provider"
-                    class="col-md-3 col-sm-6"
+                    class="flex-1-md-3 flex-1-sm-6"
                   >
                     <div class="provider-card-compact" :class="{ active: status.enabled }">
                       <div class="provider-name">{{ provider }}</div>
                       <div class="provider-status">
-                        <span :class="status.enabled ? 'text-success' : 'text-muted'">
+                        <span :class="status.enabled ? 'text-success-600' : 'text-secondary'">
                           {{ status.enabled ? 'Active' : 'Inactive' }}
                         </span>
-                        <span class="text-muted ms-1 small">
+                        <span class="text-secondary ml-1 small">
                           ({{ status.rateLimitRemaining }} left)
                         </span>
                       </div>
@@ -308,11 +308,11 @@ Displays live jobs from multiple API sources with:
     <!-- Job Alerts Section -->
     <div v-if="jobAlerts.length > 0 || showJobAlerts" class="job-alerts-section mb-4">
       <div class="glass-card section-card">
-        <div class="section-header d-flex justify-content-between align-items-center">
+        <div class="section-header flex justify-between items-center">
           <h6 class="mb-0">
-            <AppIcon name="mdi-bell" class="me-2" />
+            <AppIcon name="BellIcon" class="mr-2" />
             Job Alerts ({{ jobAlerts.length }})
-            <span v-if="realTimeStats.newJobsToday" class="badge bg-primary ms-2">
+            <span v-if="realTimeStats.newJobsToday" class="badge bg-primary-500 ml-2">
               {{ realTimeStats.newJobsToday }} new today
             </span>
           </h6>
@@ -325,7 +325,7 @@ Displays live jobs from multiple API sources with:
         </div>
         
         <div v-if="showJobAlerts" class="section-body">
-          <div v-if="jobAlerts.length === 0" class="text-muted text-center py-3">
+          <div v-if="jobAlerts.length === 0" class="text-secondary text-center py-3">
             No job alerts created yet. Create your first alert using the search form above.
           </div>
           
@@ -333,23 +333,23 @@ Displays live jobs from multiple API sources with:
             <div
               v-for="alert in jobAlerts"
               :key="alert.id"
-              class="alert-item d-flex justify-content-between align-items-center p-3 mb-2 glass-list-item"
+              class="alert-item flex justify-between items-center p-glass-md mb-2 glass-list-item"
               :class="{ 'alert-disabled': !alert.enabled }"
             >
               <div class="alert-info">
                 <div class="alert-name font-weight-medium">{{ alert.name }}</div>
-                <div class="alert-meta text-muted small">
+                <div class="alert-meta text-secondary small">
                   <span>{{ alert.totalMatches }} matches</span>
                   <span class="mx-2">•</span>
                   <span>Last checked {{ getRelativeTime(alert.lastChecked) }}</span>
                   <span v-if="alert.newMatches > 0" class="mx-2">•</span>
-                  <span v-if="alert.newMatches > 0" class="text-success">
+                  <span v-if="alert.newMatches > 0" class="text-success-600">
                     {{ alert.newMatches }} new
                   </span>
                 </div>
               </div>
               
-              <div class="alert-actions d-flex gap-1">
+              <div class="alert-actions flex gap-glass-xs">
                 <button
                   class="btn btn-sm"
                   :class="alert.enabled ? 'btn-success' : 'btn-outline-secondary'"
@@ -362,7 +362,7 @@ Displays live jobs from multiple API sources with:
                   class="btn btn-sm btn-outline-danger"
                   @click="deleteJobAlert(alert.id)"
                 >
-                  <AppIcon name="mdi-delete" />
+                  <AppIcon name="TrashIcon" />
                 </button>
               </div>
             </div>
@@ -375,7 +375,7 @@ Displays live jobs from multiple API sources with:
     <div v-if="newJobNotifications.length > 0" class="job-notifications mb-4">
       <div class="glass-card section-card">
         <h6 class="mb-3">
-          <AppIcon name="mdi-bell-ring" class="text-primary me-2" />
+          <AppIcon name="mdi-bell-ring" class="text-primary-600 mr-2" />
           New Job Notifications
         </h6>
         
@@ -383,13 +383,13 @@ Displays live jobs from multiple API sources with:
           <div
             v-for="notification in newJobNotifications.slice(0, 5)"
             :key="notification.id"
-            class="notification-item p-3 mb-2"
+            class="notification-item p-glass-md mb-2"
             :class="{ 'notification-unread': !notification.read }"
             @click="markNotificationRead(notification.id)"
           >
             <div class="notification-content">
               <div class="notification-message">{{ notification.message }}</div>
-              <div class="notification-time text-muted small">
+              <div class="notification-time text-secondary small">
                 {{ getRelativeTime(notification.timestamp) }}
               </div>
             </div>
@@ -416,9 +416,9 @@ Displays live jobs from multiple API sources with:
 
     <!-- Error State -->
     <div v-if="error" class="alert alert-danger">
-      <AppIcon name="mdi-alert-circle-outline" class="me-2" />
+      <AppIcon name="ExclamationCircleIcon" class="mr-2" />
       {{ _error }}
-      <button class="btn btn-sm btn-outline-danger ms-2" @click="searchJobs">
+      <button class="btn btn-sm btn-outline-danger ml-2" @click="searchJobs">
         Retry
       </button>
     </div>
@@ -426,13 +426,13 @@ Displays live jobs from multiple API sources with:
     <!-- Empty State -->
     <div v-if="!isLoading && !isSearching && displayJobs.length === 0" class="empty-state glass-card section-card text-center">
       <div class="empty-icon mb-3">
-        <AppIcon name="mdi-briefcase-search" style="font-size: 4rem; opacity: 0.3;" />
+        <AppIcon name="MagnifyingGlassIcon" style="font-size: 4rem; opacity: 0.3;" />
       </div>
       <h4 class="mb-2">No jobs found</h4>
-      <p class="text-muted mb-3">
+      <p class="text-secondary mb-3">
         Try adjusting your search criteria or clearing filters
       </p>
-      <div class="d-flex gap-2 justify-content-center">
+      <div class="flex gap-glass-sm justify-center">
         <UnifiedButton variant="outline" @click="clearFilters">
           Clear Filters
         </UnifiedButton>
@@ -446,16 +446,16 @@ Displays live jobs from multiple API sources with:
     <div v-else class="job-results">
       <!-- Loading State -->
       <div v-if="isLoading" class="glass-card section-card mb-3 text-center py-5">
-        <div class="spinner-border text-primary me-2" role="status"></div>
-        <span class="text-muted">Loading jobs from {{ providerCount }} sources...</span>
+        <div class="spinner-border text-primary-600 mr-2" role="status"></div>
+        <span class="text-secondary">Loading jobs from {{ providerCount }} sources...</span>
       </div>
 
       <!-- Error State -->
       <div v-else-if="error" class="glass-card section-card mb-3">
         <div class="alert alert-danger mb-0" role="alert">
-          <AppIcon name="mdi-alert-circle" class="me-2" />
+          <AppIcon name="ExclamationCircleIcon" class="mr-2" />
           Error loading jobs: {{ error }}
-          <UnifiedButton variant="outline" size="sm" class="ms-2" @click="refreshJobs">
+          <UnifiedButton variant="outline" size="sm" class="ml-2" @click="refreshJobs">
             Try Again
           </UnifiedButton>
         </div>
@@ -463,16 +463,16 @@ Displays live jobs from multiple API sources with:
 
       <!-- Results Header -->
       <div v-else class="glass-card section-card mb-3">
-        <div class="section-header d-flex justify-content-between align-items-center">
+        <div class="section-header flex justify-between items-center">
           <div class="results-summary">
             <h5 class="mb-0">
               {{ displayJobs.length }} jobs found
-              <span v-if="visibleJobs.length !== displayJobs.length" class="text-muted">
+              <span v-if="visibleJobs.length !== displayJobs.length" class="text-secondary">
                 (showing {{ (currentPage - 1) * resultsPerPage + 1 }}-{{ Math.min(currentPage * resultsPerPage, displayJobs.length) }})
               </span>
-              <span v-if="isSearching" class="spinner-border spinner-border-sm ms-2" role="status"></span>
+              <span v-if="isSearching" class="spinner-border spinner-border-sm ml-2" role="status"></span>
             </h5>
-            <small class="text-muted">
+            <small class="text-secondary">
               Sorted by relevance {{ gamingJobsCount > 0 ? `• ${gamingJobsCount} gaming-related` : '' }}
               • Updated {{ getRelativeTime(lastUpdated) }}
             </small>
@@ -501,7 +501,7 @@ Displays live jobs from multiple API sources with:
           {{ f.label }}
           <button class="clear-filter" aria-label="Clear filter" @click="clearQuickFilter(f.key)">×</button>
         </span>
-        <button class="btn btn-xs btn-outline-secondary ms-2" @click="clearAllQuickFilters">Clear all</button>
+        <button class="btn btn-xs btn-outline-secondary ml-2" @click="clearAllQuickFilters">Clear all</button>
       </div>
 
       <!-- Job Results Grid -->
@@ -532,12 +532,12 @@ Displays live jobs from multiple API sources with:
     </div>
 
     <!-- Job Details Modal -->
-    <div v-if="selectedJob" class="modal fade show d-block" tabindex="-1">
+    <div v-if="selectedJob" class="modal fade show block" tabindex="-1">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ selectedJob.title }}</h5>
-            <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" aria-label="Close" @click="selectedJob = null"></UnifiedButton>
+            <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="selectedJob = null"></UnifiedButton>
           </div>
           <div class="modal-body">
             <JobDetailsView :job="selectedJob" />
@@ -547,7 +547,7 @@ Displays live jobs from multiple API sources with:
             <UnifiedButton
               variant="gaming"
               :loading="aiAnalyzing"
-              leading-icon="mdi-brain"
+              leading-icon="CpuChipIcon"
               @click="analyzeSelectedJob()"
             >
               {{ aiAnalyzing ? 'Analyzing...' : 'Analyze with AI' }}
@@ -556,7 +556,7 @@ Displays live jobs from multiple API sources with:
               variant="primary"
               :href="selectedJob.url"
               target="_blank"
-              trailing-icon="mdi-open-in-new"
+              trailing-icon="ArrowTopRightOnSquareIcon"
             >
               Apply for Job
             </UnifiedButton>
@@ -578,6 +578,9 @@ Displays live jobs from multiple API sources with:
 </template>
 
 <script setup>
+import { AcademicCapIcon, AdjustmentsHorizontalIcon, ArrowPathIcon, ArrowTopRightOnSquareIcon, BellIcon, BriefcaseIcon, BuildingOfficeIcon, CalendarIcon, CpuChipIcon, CurrencyDollarIcon, ExclamationCircleIcon, EyeIcon, HomeIcon, MagnifyingGlassIcon, PuzzlePieceIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDebounceFn } from '@vueuse/core'
@@ -628,7 +631,7 @@ const getAIInsights = (job) => {
     type: 'career',
     title: 'Career Alignment',
     description: `${careerAlignment.score}% match - ${careerAlignment.reasons.join(', ') || 'Based on your profile'}`,
-    icon: 'mdi-target',
+    icon: 'CursorArrowRaysIcon',
     level: careerAlignment.level,
     score: careerAlignment.score
   })
@@ -654,7 +657,7 @@ const getAIInsights = (job) => {
       type: 'skills',
       title: 'Skills Match',
       description: 'Your skills align well with this role!',
-      icon: 'mdi-check-circle',
+      icon: 'CheckIcon-circle',
       level: 'excellent'
     })
   }
@@ -667,11 +670,11 @@ const getAIInsights = (job) => {
       type: 'recommendation',
       title: topRec.title,
       description: topRec.description,
-      icon: topRec.type === 'skill' ? 'mdi-lightbulb' : topRec.type === 'portfolio' ? 'mdi-briefcase' : 'mdi-account-group',
+      icon: topRec.type === 'skill' ? 'LightBulbIcon' : topRec.type === 'portfolio' ? 'mdi-briefcase' : 'UserIcon-group',
       priority: topRec.priority,
       action: topRec.action ? {
         label: topRec.action,
-        icon: 'mdi-arrow-right'
+        icon: 'ArrowRightIcon'
       } : null
     })
   }
@@ -682,7 +685,7 @@ const getAIInsights = (job) => {
     type: 'market',
     title: 'Market Position',
     description: marketComparison.description || 'Competitive position in the job market',
-    icon: 'mdi-chart-line',
+    icon: 'ChartBarIcon-line',
     trend: marketComparison.trend
   })
   
@@ -697,7 +700,7 @@ const getAIInsights = (job) => {
       score: growthPotential.score,
       action: {
         label: 'Start Interview Prep',
-        icon: 'mdi-microphone',
+        icon: 'MicrophoneIcon',
         route: '/interview-prep'
       }
     })
@@ -1120,8 +1123,8 @@ const convertToCSV = (data) => {
   const headers = Object.keys(data[0])
   const csv = [
     headers.join(','),
-    ...data.map(row => headers.map(header => 
-      JSON.stringify(row[header] || '')
+    ...data.map(flex flex-wrap => headers.map(header => 
+      JSON.stringify(flex flex-wrap[header] || '')
     ).join(','))
   ].join('\n')
   
@@ -1307,11 +1310,11 @@ const getJobFreshness = (job) => { // Fixed function access
   const diffInHours = Math.floor((now - posted) / (1000 * 60 * 60))
   
   if (diffInHours < 2) {
-    return { type: 'hot', label: 'Just Posted', icon: 'mdi-fire' }
+    return { type: 'hot', label: 'Just Posted', icon: 'FireIcon' }
   } else if (diffInHours < 24) {
-    return { type: 'fresh', label: 'New Today', icon: 'mdi-star' }
+    return { type: 'fresh', label: 'New Today', icon: 'StarIcon' }
   } else if (diffInHours < 72) {
-    return { type: 'recent', label: 'Recent', icon: 'mdi-clock-outline' }
+    return { type: 'recent', label: 'Recent', icon: 'ClockIcon-outline' }
   }
   
   return null
@@ -1359,8 +1362,8 @@ const getSkillIcon = (skill) => {
   if (skillLower.includes('c++') || skillLower.includes('c#')) return 'mdi-language-cpp'
   if (skillLower.includes('python')) return 'mdi-language-python'
   if (skillLower.includes('javascript')) return 'mdi-language-javascript'
-  if (skillLower.includes('design')) return 'mdi-palette'
-  if (skillLower.includes('art')) return 'mdi-brush'
+  if (skillLower.includes('design')) return 'SwatchIcon'
+  if (skillLower.includes('art')) return 'PaintBrushIcon'
   if (skillLower.includes('programming')) return 'mdi-code-braces'
   if (skillLower.includes('maya') || skillLower.includes('blender')) return 'mdi-cube-outline'
   if (skillLower.includes('multiplayer') || skillLower.includes('network')) return 'mdi-lan'
@@ -1369,7 +1372,7 @@ const getSkillIcon = (skill) => {
 
 const getSkillTooltip = (skill) => {
   if (isUserSkill(skill)) return `✓ You have this skill! Great match for this role.`
-  if (isCriticalGamingSkill(skill)) return `⭐ Critical gaming skill - high priority for this role`
+  if (isCriticalGamingSkill(skill)) return `StarIcon Critical gaming skill - high priority for this role`
   return `Consider learning ${skill} to improve your match for this role`
 }
 
@@ -1526,7 +1529,7 @@ const advancedFilters = ref({
 
 const activeQuickFilters = computed(() => {
   const items = []
-  if (quickFilters.value.seniority) items.push({ key: 'seniority', label: capitalize(quickFilters.value.seniority), icon: 'mdi-account-badge' })
+  if (quickFilters.value.seniority) items.push({ key: 'seniority', label: capitalize(quickFilters.value.seniority), icon: 'UserIcon-badge' })
   if (quickFilters.value.jobType) items.push({ key: 'jobType', label: formatJobType(quickFilters.value.jobType), icon: 'mdi-briefcase' })
   if (quickFilters.value.salaryMin) items.push({ key: 'salaryMin', label: `≥ $${quickFilters.value.salaryMin/1000}k`, icon: 'mdi-cash' })
   return items
@@ -1936,7 +1939,7 @@ defineExpose({
 <style scoped>
 /* Compact Provider Status Styling */
 .provider-status-inline {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
 }
@@ -1961,7 +1964,7 @@ defineExpose({
 .provider-card-compact .provider-name {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 2px;
 }
 
@@ -2069,7 +2072,7 @@ defineExpose({
   border-radius: 999px;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 12px;
 }
 
@@ -2194,7 +2197,7 @@ defineExpose({
   padding: var(--spacing-5);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   overflow: hidden;
 }
 
@@ -2217,7 +2220,7 @@ defineExpose({
 }
 
 .enhanced-job-card.gaming-job {
-  border-left: 4px solid var(--color-gaming);
+  border-l: 4px solid var(--color-gaming);
   background: linear-gradient(135deg, 
     var(--glass-bg) 0%, 
     rgba(0, 255, 136, 0.03) 100%
@@ -2231,7 +2234,7 @@ defineExpose({
 }
 
 .enhanced-job-card.saved-job {
-  border-right: 4px solid var(--color-primary);
+  border-r: 4px solid var(--color-primary);
   background: linear-gradient(135deg, 
     var(--glass-bg) 0%, 
     rgba(59, 130, 246, 0.03) 100%
@@ -2239,7 +2242,7 @@ defineExpose({
 }
 
 .enhanced-job-card.top-match {
-  border-top: 3px solid var(--color-success);
+  border-t: 3px solid var(--color-success);
   background: linear-gradient(135deg, 
     var(--glass-bg) 0%, 
     rgba(34, 197, 94, 0.03) 100%
@@ -2324,7 +2327,7 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 .company-logo-img {
@@ -2337,8 +2340,8 @@ defineExpose({
   font-family: var(--font-primary);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-lg);
-  color: var(--text-primary);
-  background: var(--glass-bg-light);
+  color: var(--text-primary-600);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 /* Job Title Section */
@@ -2351,7 +2354,7 @@ defineExpose({
   font-family: var(--font-primary);
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-xl);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: var(--line-height-tight);
   margin: 0 0 var(--spacing-2) 0;
   display: -webkit-box;
@@ -2419,7 +2422,7 @@ defineExpose({
   align-items: center;
   gap: var(--spacing-2);
   padding: var(--spacing-2) var(--spacing-3);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   transition: all var(--duration-fast) var(--easing-ease);
@@ -2443,7 +2446,7 @@ defineExpose({
 
 .metric-label {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -2451,7 +2454,7 @@ defineExpose({
 
 .metric-value {
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-semibold);
   white-space: nowrap;
   overflow: hidden;
@@ -2504,7 +2507,7 @@ defineExpose({
   font-family: var(--font-primary);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -2525,8 +2528,8 @@ defineExpose({
   align-items: center;
   gap: var(--spacing-1);
   padding: var(--spacing-1) var(--spacing-3);
-  background: var(--glass-bg-light);
-  color: var(--text-primary);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  color: var(--text-primary-600);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
@@ -2558,7 +2561,7 @@ defineExpose({
   align-items: center;
   padding: var(--spacing-1) var(--spacing-3);
   background: var(--surface-muted);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   border: 1px solid var(--border-muted);
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
@@ -2572,7 +2575,7 @@ defineExpose({
   align-items: center;
   justify-content: space-between;
   padding-top: var(--spacing-3);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   margin-top: var(--spacing-3);
 }
 
@@ -2587,12 +2590,12 @@ defineExpose({
   align-items: center;
   gap: var(--spacing-1);
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .source-info .app-icon {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .source-label {
@@ -2711,14 +2714,14 @@ defineExpose({
 .job-tags .badge { font-size: var(--font-size-xs); padding: 2px 8px; }
 
 .job-footer {
-  border-top: 1px solid var(--border-subtle);
+  border-t: 1px solid var(--border-subtle);
   padding-top: var(--spacing-sm);
   margin-top: var(--spacing-sm);
 }
 
 .badge.bg-gaming {
   background-color: var(--color-gaming-500) !important;
-  color: white;
+  color: var(--text-inverse);
 }
 
 .provider-card {
@@ -2807,13 +2810,13 @@ defineExpose({
   }
   
   .header-actions {
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     justify-content: space-between;
     gap: var(--spacing-2);
   }
   
   .action-group {
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
   }
   
   .job-metrics {
@@ -2877,7 +2880,7 @@ defineExpose({
   
   .action-group.secondary-actions {
     order: 2;
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     justify-content: space-around;
   }
   
@@ -2950,7 +2953,7 @@ defineExpose({
   }
   
   .metric-card:hover {
-    background: var(--glass-bg-light);
+    background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
     border-color: var(--glass-border);
   }
   
@@ -2991,7 +2994,7 @@ defineExpose({
       rgba(15, 15, 15, 0.95) 0%, 
       rgba(20, 35, 25, 0.95) 100%
     );
-    border-left-color: rgba(0, 255, 136, 0.6);
+    border-l-color: rgba(0, 255, 136, 0.6);
   }
   
   .theme-gaming .priority-badge.gaming {
@@ -3042,7 +3045,7 @@ defineExpose({
 
 .alert-name {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .alert-meta {
@@ -3067,7 +3070,7 @@ defineExpose({
 }
 
 .notification-item.notification-unread {
-  border-left: 4px solid var(--color-primary-500);
+  border-l: 4px solid var(--color-primary-500);
   font-weight: var(--font-weight-medium);
 }
 
@@ -3076,7 +3079,7 @@ defineExpose({
 }
 
 .notification-message {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 4px;
 }
 
@@ -3199,7 +3202,7 @@ defineExpose({
   transform: translateX(-50%);
   padding: var(--spacing-1) var(--spacing-2);
   background: var(--surface-overlay);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-xs);
   border-radius: var(--radius-sm);
   white-space: nowrap;
@@ -3274,13 +3277,13 @@ defineExpose({
     box-shadow: none;
     border: 1px solid #000;
     background: white;
-    color: black;
+    color: var(--text-primary-600);
   }
   
   .priority-badge {
     background: white;
     border: 1px solid #000;
-    color: black;
+    color: var(--text-primary-600);
   }
   
   .header-actions {
@@ -3351,7 +3354,7 @@ defineExpose({
 
 .enhanced-job-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
 }
 
 /* Priority Indicators */
@@ -3452,7 +3455,7 @@ defineExpose({
 .enhanced-job-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
   line-height: var(--line-height-tight);
   transition: color var(--duration-fast) var(--easing-ease);
@@ -3528,7 +3531,7 @@ defineExpose({
   align-items: center;
   gap: var(--spacing-2);
   padding: var(--spacing-2) var(--spacing-3);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   min-width: 120px;
@@ -3562,7 +3565,7 @@ defineExpose({
 .metric-value {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .salary-metric .app-icon {
@@ -3590,7 +3593,7 @@ defineExpose({
 
 /* Enhanced Skills Section */
 .enhanced-skills-section {
-  border-top: 1px solid var(--border-subtle);
+  border-t: 1px solid var(--border-subtle);
   padding-top: var(--spacing-3);
 }
 
@@ -3654,14 +3657,14 @@ defineExpose({
   margin-top: var(--spacing-4);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   overflow: hidden;
 }
 
 .ai-insights-header {
   padding: var(--spacing-3) var(--spacing-4);
   background: var(--gradient-primary-subtle);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -3679,7 +3682,7 @@ defineExpose({
   gap: var(--spacing-2);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .ai-insights-content {
@@ -3700,7 +3703,7 @@ defineExpose({
 .insight-section-title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -3821,7 +3824,7 @@ defineExpose({
 .recommendation-title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 2px;
 }
 
@@ -3881,13 +3884,13 @@ defineExpose({
   justify-content: space-between;
   margin-bottom: var(--spacing-6);
   padding-bottom: var(--spacing-4);
-  border-bottom: 2px solid var(--border-base);
+  border-b: 2px solid var(--border-base);
 }
 
 .comparison-title {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -3901,7 +3904,7 @@ defineExpose({
   flex: 1;
   min-width: 200px;
   padding: var(--spacing-3);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   position: relative;
@@ -3910,7 +3913,7 @@ defineExpose({
 .comparison-job-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
@@ -3941,7 +3944,7 @@ defineExpose({
 .comparison-section-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-3);
   display: flex;
   align-items: center;
@@ -3970,7 +3973,7 @@ defineExpose({
 
 .comparison-item-value {
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Bulk Operations Panel */
@@ -3984,7 +3987,7 @@ defineExpose({
   padding: var(--spacing-3) var(--spacing-4);
   margin-bottom: var(--spacing-4);
   backdrop-filter: var(--glass-backdrop-blur);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
 }
 
 .bulk-operations-header {
@@ -3997,7 +4000,7 @@ defineExpose({
 .bulk-operations-title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -4191,7 +4194,7 @@ defineExpose({
   background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 217, 255, 0.08));
   border-color: rgba(0, 255, 136, 0.3);
   box-shadow: 
-    var(--shadow-xl),
+    var(--shadow-glass-xl),
     0 0 20px rgba(0, 255, 136, 0.1);
 }
 

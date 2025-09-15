@@ -1,9 +1,9 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="card glass-card section-card h-100" role="complementary" aria-labelledby="usage-stats-title">
+  <div class="card glass-card section-card h-100" role="complementary" aria-labelledby="usage-stats-title" class="font-sans">
     <div class="card-header section-header card-header--dense">
       <h6 id="usage-stats-title" class="mb-0">
-        <BarChartIconComponent class="me-2 icon-sm" />Usage Statistics
+        <BarChartIconComponent class="mr-2 icon-sm" />Usage Statistics
       </h6>
     </div>
     <div class="card-body section-body card-body--dense">
@@ -78,7 +78,7 @@
       <!-- Progress Indicators -->
       <div class="mt-4">
         <div class="progress-item mb-3">
-          <div class="d-flex justify-content-between align-items-center mb-1">
+          <div class="flex justify-between items-center mb-1">
             <span class="progress-label">Profile Completion</span>
             <span class="progress-value">{{ stats.profileCompletion }}%</span>
           </div>
@@ -95,13 +95,13 @@
         </div>
 
         <div class="progress-item mb-3">
-          <div class="d-flex justify-content-between align-items-center mb-1">
+          <div class="flex justify-between items-center mb-1">
             <span class="progress-label">Skills Assessment</span>
             <span class="progress-value">{{ stats.skillsAssessment }}%</span>
           </div>
           <div class="progress progress--md">
             <div
-              class="progress-bar bg-info progress-bar--var"
+              class="progress-bar bg-blue-500 progress-bar--var"
               role="progressbar"
               :style="{ '--progress-width': stats.skillsAssessment + '%' }"
               :aria-valuenow="stats.skillsAssessment"
@@ -112,13 +112,13 @@
         </div>
 
         <div class="progress-item">
-          <div class="d-flex justify-content-between align-items-center mb-1">
+          <div class="flex justify-between items-center mb-1">
             <span class="progress-label">Interview Readiness</span>
             <span class="progress-value">{{ stats.interviewReadiness }}%</span>
           </div>
           <div class="progress progress--md">
             <div
-              class="progress-bar bg-success progress-bar--var"
+              class="progress-bar bg-success-500 progress-bar--var"
               role="progressbar"
               :style="{ '--progress-width': stats.interviewReadiness + '%' }"
               :aria-valuenow="stats.interviewReadiness"
@@ -130,13 +130,13 @@
       </div>
 
       <!-- Quick Actions -->
-      <div class="mt-4 pt-3 border-top">
-        <div class="d-grid gap-2">
+      <div class="mt-4 pt-3 border-t">
+        <div class="d-grid gap-glass-sm">
           <UnifiedButton
             type="button"
             variant="outline"
             size="sm"
-            leading-icon="mdi-chart-bar"
+            leading-icon="ChartBarSquareIcon"
             @click="$emit('view-detailed-stats')"
           >
             View Detailed Stats
@@ -157,6 +157,8 @@
 </template>
 
 <script>
+import { ChartBarSquareIcon } from '@heroicons/vue/24/outline'
+
 import {
   BarChartIconComponent,
   CalendarIconComponent,
@@ -248,7 +250,7 @@ export default {
 .stat-value {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.2;
 }
 
@@ -267,7 +269,7 @@ export default {
 .progress-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .progress-value {

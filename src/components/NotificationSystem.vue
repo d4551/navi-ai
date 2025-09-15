@@ -6,7 +6,7 @@ Sam & Max inspired messaging and achievement notifications
 -->
 
 <template>
-  <Teleport to="body">
+  <Teleport to="body" class="font-sans ">
     <!-- Notification Container -->
     <div 
       class="notification-system"
@@ -82,7 +82,7 @@ Sam & Max inspired messaging and achievement notifications
               aria-label="Dismiss notification"
               @click.stop="dismissNotification(notification.id)"
             >
-              <AppIcon name="mdi-close-circle-outline" />
+              <AppIcon name="XMarkIcon-circle-outline" />
             </button>
           </div>
 
@@ -119,6 +119,8 @@ Sam & Max inspired messaging and achievement notifications
 </template>
 
 <script>
+import { XMarkIcon, CheckIcon, EyeIcon, InformationCircleIcon, DevicePhoneMobileIcon, TrophyIcon, CursorArrowRaysIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 
 import { ref, onMounted, computed, onUnmounted, defineExpose } from 'vue'
@@ -139,15 +141,15 @@ const activeNotifications = computed(() => notificationStore.notifications)
 // Methods
 function getNotificationIcon(notification) {
   const iconMap = {
-    success: 'mdi-check-circle-outline',
+    success: 'CheckIcon-circle-outline',
     error: 'mdi-alert-circle-outline',
     warning: 'mdi-alert',
-    info: 'mdi-information',
-    achievement: 'mdi-trophy',
+    info: 'InformationCircleIconrmation',
+    achievement: 'TrophyIcon',
     job: 'mdi-briefcase',
     ai: 'mdi-robot',
     system: 'mdi-cog',
-    gaming: 'mdi-gamepad-variant'
+    gaming: 'DevicePhoneMobileIcon-variant'
   }
   
   return notification.icon || iconMap[notification.type] || 'mdi-bell'
@@ -261,13 +263,13 @@ const presets = {
     title: '[TARGET] Perfect Match Found!',
     message: `${job.title} at ${job.company} (${matchScore}% match)`,
     duration: 8000,
-    icon: 'mdi-target',
+    icon: 'CursorArrowRaysIcon',
     actions: [
       {
         id: 'view',
         label: 'View Job',
         type: 'primary',
-        icon: 'mdi-eye',
+        icon: 'EyeIcon',
         onClick: () => {
           // Navigate to job details
         }
@@ -427,7 +429,7 @@ defineExpose({
 
 .notification-icon-element {
   font-size: 1.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   z-index: 2;
   position: relative;
 }
@@ -456,7 +458,7 @@ defineExpose({
   font-family: var(--font-primary);
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
@@ -524,7 +526,7 @@ defineExpose({
   right: 0.5rem;
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0.25rem;
@@ -533,7 +535,7 @@ defineExpose({
 }
 
 .notification-close:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -604,7 +606,7 @@ defineExpose({
 
 .quote-text {
   font-style: italic;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 0.5rem 0;
   line-height: 1.4;
 }

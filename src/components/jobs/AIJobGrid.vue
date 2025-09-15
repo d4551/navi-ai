@@ -1,16 +1,16 @@
 <template>
-  <div class="enhanced-job-grid">
+  <div class="enhanced-job-grid" class="font-sans">
     <!-- Loading State -->
     <div v-if="loading" class="loading-state text-center py-8">
       <LoadingIndicator size="lg" />
-      <p class="text-muted mt-4">Searching gaming job sources...</p>
+      <p class="text-secondary mt-4">Searching gaming job sources...</p>
     </div>
 
     <!-- Empty State -->
     <div v-else-if="jobs.length === 0" class="empty-state text-center py-12">
-      <AppIcon name="mdi-briefcase-search-outline" class="text-6xl text-muted mb-6" />
+      <AppIcon name="mdi-briefcase-search-outline" class="text-6xl text-secondary mb-6" />
       <h3 class="mb-3 text-secondary">No jobs found</h3>
-      <p class="text-muted">Adjust your search criteria or try different keywords.</p>
+      <p class="text-secondary">Adjust your search criteria or try different keywords.</p>
     </div>
 
     <!-- Jobs Grid -->
@@ -37,6 +37,8 @@
 </template>
 
 <script setup>
+import { LightBulbIcon } from '@heroicons/vue/24/outline'
+
 import { computed, ref } from 'vue'
 import EnhancedJobCard from './EnhancedJobCard.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -126,7 +128,7 @@ const getJobInsights = (job) => {
   
   if (hasGamingSkills) {
     insights.push({
-      icon: '💡',
+      icon: 'LightBulbIcon',
       color: '#06b6d4',
       text: 'Highlight your Unity/Unreal projects - they value game engine experience'
     })
@@ -198,7 +200,7 @@ const handleReport = (job) => {
 .empty-state h3 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .empty-state p {

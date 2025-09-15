@@ -3,14 +3,14 @@
   Provides device selection and permission handling for microphone and speakers
 -->
 <template>
-  <div class="audio-device-selector">
+  <div class="audio-device-selector" class="font-sans">
     <!-- Device Selection Controls -->
     <div class="device-controls">
-      <div class="row g-3">
+      <div class="flex flex-wrap g-3">
         <!-- Microphone Selection -->
-        <div class="col-md-6">
-          <label for="microphone-select" class="form-label d-flex align-items-center">
-            <AppIcon name="mdi-microphone" />
+        <div class="flex-1-md-6">
+          <label for="microphone-select" class="form-label flex items-center">
+            <AppIcon name="MicrophoneIcon" />
             Microphone
           </label>
           <select
@@ -47,9 +47,9 @@
         </div>
 
         <!-- Speaker Selection -->
-        <div class="col-md-6">
-          <label for="speaker-select" class="form-label d-flex align-items-center">
-            <AppIcon name="mdi-volume-high" />
+        <div class="flex-1-md-6">
+          <label for="speaker-select" class="form-label flex items-center">
+            <AppIcon name="SpeakerWaveIcon" />
             Speaker
           </label>
           <select
@@ -77,7 +77,7 @@
               size="sm"
               variant="outline-secondary"
               :disabled="!permissionsGranted || isTestingAudio || disabled"
-              :icon="isTestingAudio ? 'mdi mdi-loading mdi-spin' : 'mdi mdi-volume-source'"
+              :icon="isTestingAudio ? 'mdi ArrowPathIcon mdi-spin' : 'mdi mdi-volume-source'"
               @click="testSpeaker"
             >
               {{ isTestingAudio ? 'Testing...' : 'Test Speaker' }}
@@ -89,10 +89,10 @@
 
     <!-- Permission Controls -->
     <div v-if="!permissionsGranted" class="permission-controls mt-3">
-      <div class="alert alert-info d-flex align-items-start">
-        <AppIcon name="mdi-information-outline" class="me-2 mt-1" />
+      <div class="alert alert-info flex items-start">
+        <AppIcon name="InformationCircleIcon" class="mr-2 mt-1" />
         <div>
-          <div class="fw-semibold">Microphone Permission Required</div>
+          <div class="font-semibold">Microphone Permission Required</div>
           <p class="mb-2">
             To use voice features, please grant microphone permissions.
           </p>
@@ -100,7 +100,7 @@
             size="sm"
             variant="primary"
             :disabled="isRequestingPermissions"
-            :icon="isRequestingPermissions ? 'mdi mdi-loading mdi-spin' : 'mdi mdi-microphone'"
+            :icon="isRequestingPermissions ? 'mdi ArrowPathIcon mdi-spin' : 'mdi MicrophoneIcon'"
             @click="requestPermissions"
           >
             {{ isRequestingPermissions ? 'Requesting...' : 'Grant Permissions' }}
@@ -110,12 +110,12 @@
     </div>
 
     <!-- Device Refresh / Lock -->
-    <div class="device-refresh mt-3 d-flex flex-wrap gap-2 align-items-center">
+    <div class="device-refresh mt-3 flex flex-wrap gap-glass-sm items-center">
       <UnifiedButton
         size="sm"
         variant="outline-secondary"
         :disabled="isRefreshing || disabled"
-        :icon="isRefreshing ? 'mdi mdi-loading mdi-spin' : 'mdi mdi-refresh'"
+        :icon="isRefreshing ? 'mdi ArrowPathIcon mdi-spin' : 'mdi ArrowPathIcon'"
         @click="refreshDevices"
       >
         Refresh Devices
@@ -124,20 +124,20 @@
         v-if="lockable"
         size="sm"
         :variant="isLocked ? 'warning' : 'outline-secondary'"
-        :icon="isLocked ? 'mdi mdi-lock' : 'mdi mdi-lock-open-outline'"
+        :icon="isLocked ? 'mdi LockClosedIcon' : 'mdi LockClosedIcon-open-outline'"
         @click="isLocked ? unlockAudio() : lockAudio('Active session')"
       >
         {{ isLocked ? 'Unlock Audio Devices' : 'Lock Audio Devices' }}
       </UnifiedButton>
-      <span v-if="isLocked" class="badge bg-warning-subtle text-warning-emphasis small">Locked</span>
+      <span v-if="isLocked" class="badge bg-warning-500-subtle text-warning-600-emphasis small">Locked</span>
     </div>
 
     <!-- Error Display -->
     <div v-if="error" class="error-display mt-3" role="alert">
-      <div class="alert alert-danger d-flex align-items-start">
-        <AppIcon name="mdi-alert-circle-outline" class="me-2 mt-1" />
+      <div class="alert alert-danger flex items-start">
+        <AppIcon name="ExclamationCircleIcon" class="mr-2 mt-1" />
         <div>
-          <div class="fw-semibold">Audio Device Error</div>
+          <div class="font-semibold">Audio Device Error</div>
           <p class="mb-0">{{ _error }}</p>
         </div>
       </div>
@@ -146,6 +146,8 @@
 </template>
 
 <script setup>
+import { ExclamationCircleIcon, InformationCircleIcon, MicrophoneIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, readonly, computed, watch, onBeforeUnmount, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { logger } from '@/shared/utils/logger';
@@ -475,7 +477,7 @@ defineExpose({
 .device-controls .form-label {
   font-weight: 500;
   font-size: 0.9rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .mic-level-container {
@@ -532,7 +534,7 @@ defineExpose({
 
 .device-refresh {
   padding-top: 1rem;
-  border-top: 1px solid #dee2e6;
+  border-t: 1px solid #dee2e6;
   text-align: left;
 }
 
@@ -544,11 +546,11 @@ defineExpose({
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .device-controls .row > .col-md-6 {
+  .device-controls .flex flex-wrap > .flex-1-md-6 {
     margin-bottom: 1rem;
   }
 
-  .device-controls .row > .col-md-6:last-child {
+  .device-controls .flex flex-wrap > .flex-1-md-6:last-child {
     margin-bottom: 0;
   }
 }
@@ -562,12 +564,12 @@ defineExpose({
   }
 
   .device-controls .form-label {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .mic-level-label,
   .mic-level-value {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .mic-level-bar {
@@ -575,7 +577,7 @@ defineExpose({
   }
 
   .device-refresh {
-    border-top-color: var(--border-base);
+    border-t-color: var(--border-base);
   }
 }
 </style>

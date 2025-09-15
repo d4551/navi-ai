@@ -3,21 +3,22 @@
     :class="headerClasses"
     role="banner"
     :aria-labelledby="titleId"
+    class="font-sans"
   >
     <!-- Glass backdrop effect with improved glassmorphic styling -->
     <div class="glass-strong header-backdrop"></div>
     
     <!-- Optional breadcrumbs with glassmorphic styling -->
-    <nav v-if="showBreadcrumbs && breadcrumbs.length" class="header-breadcrumbs glass p-2 rounded-lg mx-4" aria-label="Breadcrumb">
-      <ol class="breadcrumb-list flex items-center gap-2">
+    <nav v-if="showBreadcrumbs && breadcrumbs.length" class="header-breadcrumbs glass p-glass-sm rounded-lg mx-4" aria-label="Breadcrumb">
+      <ol class="breadcrumb-list flex items-center gap-glass-sm">
         <li class="breadcrumb-item">
-          <router-link to="/" class="breadcrumb-link home-link neon-interactive p-1 rounded">
-            <AppIcon name="mdi-home-outline" />
+          <router-link to="/" class="breadcrumb-link home-link neon-interactive p-glass-xs rounded">
+            <AppIcon name="HomeIcon-outline" />
           </router-link>
         </li>
-        <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item flex items-center gap-2">
-          <AppIcon name="mdi-chevron-right" class="breadcrumb-separator text-glass-enhanced" />
-          <router-link v-if="crumb.route" :to="crumb.route" class="breadcrumb-link neon-interactive p-1 rounded text-glass-enhanced">
+        <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item flex items-center gap-glass-sm">
+          <AppIcon name="ChevronRightIcon" class="breadcrumb-separator text-glass-enhanced" />
+          <router-link v-if="crumb.route" :to="crumb.route" class="breadcrumb-link neon-interactive p-glass-xs rounded text-glass-enhanced">
             {{ crumb.title }}
           </router-link>
           <span v-else class="breadcrumb-current font-medium text-glass-enhanced">{{ crumb.title }}</span>
@@ -25,7 +26,7 @@
       </ol>
     </nav>
     
-    <div class="header-container container-xl px-4 flex items-center justify-between gap-6">
+    <div class="header-container container-xl px-4 flex items-center justify-between gap-glass-lg">
       <!-- Main Title Section -->
       <div class="header-title-section">
         <div class="header-title-wrapper">
@@ -55,7 +56,7 @@
       </div>
 
       <!-- Enhanced AI Status Indicator -->
-      <div v-if="showAiStatus" class="header-ai-status glass p-3 rounded-lg">
+      <div v-if="showAiStatus" class="header-ai-status glass p-glass-md rounded-lg">
         <div 
           class="ai-status-indicator"
           :class="{ 
@@ -81,7 +82,7 @@
       </div>
 
       <!-- Gamification Quick Access -->
-      <div v-if="showGamificationButton" class="header-gamify flex items-center gap-3">
+      <div v-if="showGamificationButton" class="header-gamify flex items-center gap-glass-md">
         <Tooltip :text="''" position="bottom" :dark="isDark">
           <template #content>
             <div class="rich">
@@ -95,7 +96,7 @@
           <UnifiedButton
             variant="ghost"
             size="sm"
-            icon="mdi-trophy"
+            icon="TrophyIcon"
             :icon-only="true"
             :bare="true"
             :ripple="false"
@@ -138,6 +139,9 @@
 </template>
 
 <script setup>
+import { ChevronRightIcon } from '@heroicons/vue/24/outline'
+import { TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, useSlots, defineEmits, defineProps } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -265,9 +269,9 @@ const aiConnected = computed(() => {
 })
 
 const getAIIcon = computed(() => {
-  if (store.loading?.ai) return 'mdi-loading mdi-spin'
-  if (!store.isOnline) return 'mdi-wifi-off'
-  if (!store.settings?.geminiApiKey) return 'mdi-key-outline'
+  if (store.loading?.ai) return 'ArrowPathIcon mdi-spin'
+  if (!store.isOnline) return 'WifiIcon-off'
+  if (!store.settings?.geminiApiKey) return 'KeyIcon-outline'
   if (aiConnected.value) return 'mdi-robot-excited'
   return 'mdi-robot-off'
 })
@@ -747,7 +751,7 @@ function handleActionClick(action, evt) {
 /* High Contrast Support */
 .high-contrast .header-title {
   font-weight: var(--font-weight-bold, 700);
-  border-bottom: 2px solid currentColor;
+  border-b: 2px solid currentColor;
   padding-bottom: var(--spacing-xs, 0.25rem);
 }
 
@@ -825,7 +829,7 @@ function handleActionClick(action, evt) {
 /* Enhanced hover states for both themes */
 .unified-header:hover {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
 }
 
 :root[data-theme="dark"] .unified-header:hover,
@@ -848,7 +852,7 @@ function handleActionClick(action, evt) {
 .header-breadcrumbs {
   margin-bottom: var(--spacing-md);
   padding: var(--spacing-sm) 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
   opacity: 0.8;
 }
 
@@ -889,12 +893,12 @@ function handleActionClick(action, evt) {
 }
 
 .breadcrumb-separator {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.8rem;
 }
 
 .breadcrumb-current {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   font-weight: 500;
 }
@@ -931,7 +935,7 @@ function handleActionClick(action, evt) {
 
 .ai-model-text {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 400;
   opacity: 0.8;
   line-height: 1;

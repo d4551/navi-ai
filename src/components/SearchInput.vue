@@ -1,5 +1,5 @@
 <template>
-  <div ref="searchContainer" class="position-relative search-input-container ui-input ui-size-md">
+  <div ref="searchContainer" class="position-relative search-input-container ui-input ui-size-md" class="font-sans">
     <!-- Main Search Input -->
     <div class="search-input-wrapper ui-input ui-size-md">
       <input
@@ -33,7 +33,7 @@
             type="button"
             @click="removeTag(index)"
           >
-            <AppIcon name="mdi-close-circle-outline" context="error" />
+            <AppIcon name="XMarkIcon-circle-outline" context="error" />
           </button>
         </span>
       </div>
@@ -53,7 +53,7 @@
         type="button"
         @click="clearAll"
       >
-        <AppIcon name="mdi-close-circle-outline" context="error" />
+        <AppIcon name="XMarkIcon-circle-outline" context="error" />
       </button>
     </div>
 
@@ -67,7 +67,7 @@
       <!-- Fuzzy Match Results -->
       <div v-if="fuzzySuggestions.length > 0" class="suggestion-group">
         <div class="suggestion-group-header">
-          <AppIcon name="mdi-magnify" />
+          <AppIcon name="MagnifyingGlassIcon" />
           <span>Search Results</span>
         </div>
         <button
@@ -93,7 +93,7 @@
       <!-- Tag Suggestions -->
       <div v-if="tagSuggestions.length > 0" class="suggestion-group">
         <div class="suggestion-group-header">
-          <AppIcon name="mdi-tag-multiple" />
+          <AppIcon name="TagIcon-multiple" />
           <span>Add Tags</span>
         </div>
         <button
@@ -117,6 +117,8 @@
 </template>
 
 <script setup>
+import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed, onBeforeUnmount, nextTick, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -143,7 +145,7 @@ const _props = defineProps({
   },
   iconClass: {
     type: String,
-    default: 'text-muted'
+    default: 'text-secondary'
   },
   iconStyle: {
     type: String,
@@ -258,7 +260,7 @@ const fuzzySuggestions = computed(() => {
 // Available tag suggestions based on current input
 const availableTagTypes = [
   { type: 'role', icon: 'mdi-briefcase', suggestions: ['Developer', 'Designer', 'Producer', 'Artist', 'QA', 'Manager'] },
-  { type: 'skill', icon: 'mdi-star', suggestions: ['Unity', 'Unreal', 'C#', 'JavaScript', 'Python', 'Blender'] },
+  { type: 'skill', icon: 'StarIcon', suggestions: ['Unity', 'Unreal', 'C#', 'JavaScript', 'Python', 'Blender'] },
   { type: 'location', icon: 'mdi-map-marker', suggestions: ['Remote', 'San Francisco', 'New York', 'London', 'Tokyo'] },
   { type: 'experience', icon: 'mdi-trending-up', suggestions: ['Entry', 'Mid', 'Senior', 'Lead', 'Principal'] },
   { type: 'company', icon: 'mdi-domain', suggestions: ['Indie', 'AAA', 'Startup', 'Enterprise'] }
@@ -409,7 +411,7 @@ const clearAll = () => {
 
 const getTagIcon = (tagType) => {
   const tagTypeMap = availableTagTypes.find(t => t.type === tagType)
-  return tagTypeMap?.icon || 'mdi-tag'
+  return tagTypeMap?.icon || 'TagIcon'
 }
 
 const highlightMatch = (text, query) => {
@@ -448,7 +450,7 @@ onBeforeUnmount(() => {
   border-radius: var(--border-radius-md, 8px);
   backdrop-filter: blur(var(--glass-backdrop-blur, 10px));
   -webkit-backdrop-filter: blur(var(--glass-backdrop-blur, 10px));
-  color: var(--text-primary, #18181b);
+  color: var(--text-primary-600, #18181b);
   padding: 0.75rem 4rem 0.75rem 1rem;
   min-height: 2.75rem;
   transition: all var(--transition-smooth, 0.3s ease);
@@ -461,9 +463,9 @@ onBeforeUnmount(() => {
 }
 
 .enhanced-search-input.with-suggestions {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-bottom-color: transparent;
+  border-b-left-radius: 0;
+  border-b-right-radius: 0;
+  border-b-color: transparent;
 }
 
 .enhanced-search-input:focus {
@@ -474,7 +476,7 @@ onBeforeUnmount(() => {
 }
 
 .enhanced-search-input::placeholder {
-  color: var(--text-muted, #6b7280);
+  color: var(--text-secondary, #6b7280);
   opacity: 0.8;
 }
 
@@ -565,7 +567,7 @@ onBeforeUnmount(() => {
   top: 50%;
   right: 1rem;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 1.2rem;
   z-index: 3;
   transition: all 0.2s ease;
@@ -583,7 +585,7 @@ onBeforeUnmount(() => {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 1rem;
   cursor: pointer;
   padding: 0.2rem;
@@ -606,7 +608,7 @@ onBeforeUnmount(() => {
   right: 0;
   background: var(--glass-surface, rgba(255, 255, 255, 0.95));
   border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.2));
-  border-top: none;
+  border-t: none;
   border-radius: 0 0 var(--border-radius-md, 8px) var(--border-radius-md, 8px);
   backdrop-filter: blur(var(--glass-backdrop-blur, 20px));
   -webkit-backdrop-filter: blur(var(--glass-backdrop-blur, 20px));
@@ -617,11 +619,11 @@ onBeforeUnmount(() => {
 }
 
 .suggestion-group {
-  border-bottom: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-b: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
 }
 
 .suggestion-group:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .suggestion-group-header {
@@ -648,7 +650,7 @@ onBeforeUnmount(() => {
   text-align: left;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.9rem;
 }
 
@@ -659,31 +661,31 @@ onBeforeUnmount(() => {
 }
 
 .fuzzy-suggestion {
-  border-left: 3px solid var(--color-primary);
+  border-l: 3px solid var(--color-primary);
 }
 
 .tag-suggestion {
-  border-left: 3px solid var(--color-success);
+  border-l: 3px solid var(--color-success);
 }
 
 .tag-suggestion.role {
-  border-left-color: var(--color-primary);
+  border-l-color: var(--color-primary);
 }
 
 .tag-suggestion.skill {
-  border-left-color: var(--color-success);
+  border-l-color: var(--color-success);
 }
 
 .tag-suggestion.location {
-  border-left-color: var(--color-info);
+  border-l-color: var(--color-info);
 }
 
 .tag-suggestion.experience {
-  border-left-color: var(--color-warning);
+  border-l-color: var(--color-warning);
 }
 
 .tag-suggestion.company {
-  border-left-color: var(--color-secondary);
+  border-l-color: var(--color-secondary);
 }
 
 .suggestion-content {
@@ -699,7 +701,7 @@ onBeforeUnmount(() => {
 
 .suggestion-category {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: capitalize;
 }
 
@@ -714,7 +716,7 @@ onBeforeUnmount(() => {
 
 .tag-type-label {
   font-size: 0.7rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   background: var(--glass-surface);
   padding: 0.15rem 0.4rem;
   border-radius: 8px;
@@ -772,13 +774,13 @@ onBeforeUnmount(() => {
   .search-suggestions-enhanced {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background: var(--bg-primary);
+    background: var(--bg-primary-500);
     border-color: var(--border-primary);
   }
 
   .search-tag {
     backdrop-filter: none;
-    background: var(--bg-secondary);
+    background: var(--bg-secondary-500);
   }
 }
 </style>

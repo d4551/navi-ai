@@ -1,8 +1,8 @@
 <template>
-  <div class="document-templates">
+  <div class="document-templates" class="font-sans">
     <div class="templates-header">
       <h3 class="section-title">
-        <AppIcon name="mdi-palette-outline" />
+        <AppIcon name="SwatchIcon-outline" />
         Document Templates
       </h3>
       <div class="header-actions">
@@ -11,7 +11,7 @@
             variant="ghost"
             size="sm"
             :class="{ active: viewMode === 'grid' }"
-            leading-icon="mdi-view-grid"
+            leading-icon="Squares2X2Icon"
             @click="viewMode = 'grid'"
           >
             Grid
@@ -20,7 +20,7 @@
             variant="ghost"
             size="sm"
             :class="{ active: viewMode === 'list' }"
-            leading-icon="mdi-view-list"
+            leading-icon="ListBulletIcon"
             @click="viewMode = 'list'"
           >
             List
@@ -66,14 +66,14 @@
         <div class="filter-grid">
           <div class="filter-group">
             <label class="filter-label">
-              <AppIcon name="mdi-domain" />
+              <AppIcon name="BuildingOfficeIcon" />
               Industry
             </label>
             <select v-model="selectedIndustry" class="filter-select enhanced-glass-input">
               <option value="">All Industries</option>
-              <option value="gaming">🎮 Gaming & Entertainment</option>
+              <option value="gaming">DevicePhoneMobileIcon Gaming & Entertainment</option>
               <option value="tech">💻 Technology</option>
-              <option value="creative">🎨 Creative & Design</option>
+              <option value="creative">SwatchIcon Creative & Design</option>
               <option value="business">💼 Business & Finance</option>
               <option value="healthcare">🏥 Healthcare</option>
               <option value="education">📚 Education</option>
@@ -84,7 +84,7 @@
           
           <div class="filter-group">
             <label class="filter-label">
-              <AppIcon name="mdi-trending-up" />
+              <AppIcon name="ArrowTrendingUpIcon" />
               Experience Level
             </label>
             <select v-model="selectedLevel" class="filter-select enhanced-glass-input">
@@ -99,17 +99,17 @@
           
           <div class="filter-group">
             <label class="filter-label">
-              <AppIcon name="mdi-palette-outline" />
+              <AppIcon name="SwatchIcon-outline" />
               Visual Style
             </label>
             <select v-model="selectedStyle" class="filter-select enhanced-glass-input">
               <option value="">All Styles</option>
-              <option value="modern">✨ Modern & Clean</option>
+              <option value="modern">SparklesIcon Modern & Clean</option>
               <option value="classic">📜 Classic & Professional</option>
-              <option value="creative">🎨 Creative & Artistic</option>
+              <option value="creative">SwatchIcon Creative & Artistic</option>
               <option value="minimal">⚪ Minimal & Simple</option>
-              <option value="bold">⚡ Bold & Dynamic</option>
-              <option value="gaming">🎮 Gaming-Focused</option>
+              <option value="bold">BoltIcon Bold & Dynamic</option>
+              <option value="gaming">DevicePhoneMobileIcon Gaming-Focused</option>
             </select>
           </div>
           
@@ -120,11 +120,11 @@
             </label>
             <select v-model="selectedLayout" class="filter-select enhanced-glass-input">
               <option value="">All Layouts</option>
-              <option value="single-column">📄 Single Column</option>
+              <option value="single-column">DocumentIcon Single Column</option>
               <option value="two-column">📰 Two Column</option>
-              <option value="sidebar">📋 Sidebar Layout</option>
-              <option value="timeline">📅 Timeline Style</option>
-              <option value="portfolio">🖼️ Portfolio Grid</option>
+              <option value="sidebar">ClipboardDocumentIcon Sidebar Layout</option>
+              <option value="timeline">CalendarIcon Timeline Style</option>
+              <option value="portfolio">PhotoIcon Portfolio Grid</option>
             </select>
           </div>
         </div>
@@ -147,7 +147,7 @@
                   class="glass-toggle"
                 />
                 <label for="ai-optimize" class="toggle-label">
-                  <AppIcon name="mdi-brain" />
+                  <AppIcon name="CpuChipIcon" />
                   AI Content Optimization
                   <span class="option-description">Automatically enhance content with AI suggestions</span>
                 </label>
@@ -175,7 +175,7 @@
                   class="glass-toggle"
                 />
                 <label for="gaming-focus" class="toggle-label">
-                  <AppIcon name="mdi-gamepad-variant" />
+                  <AppIcon name="PuzzlePieceIcon" />
                   Gaming Industry Focus
                   <span class="option-description">Include gaming-specific sections and terminology</span>
                 </label>
@@ -185,7 +185,7 @@
 
           <div class="option-section">
             <h4 class="option-section-title">
-              <AppIcon name="mdi-eye-outline" />
+              <AppIcon name="EyeIcon-outline" />
               Visual Preferences
             </h4>
             <div class="visual-options">
@@ -223,7 +223,7 @@
       <div v-if="activeOptionTab === 'ai'" class="option-content">
         <div class="ai-suggestions-section">
           <div class="ai-header">
-            <AppIcon name="mdi-lightbulb-on" />
+            <AppIcon name="LightBulbIcon" />
             <h4>AI Template Recommendations</h4>
           </div>
           
@@ -258,7 +258,7 @@
               <UnifiedButton
                 variant="primary"
                 size="sm"
-                leading-icon="mdi-check"
+                leading-icon="CheckIcon"
               >
                 Use Template
               </UnifiedButton>
@@ -288,7 +288,7 @@
                 <UnifiedButton
                   variant="ghost"
                   size="xs"
-                  leading-icon="mdi-eye"
+                  leading-icon="EyeIcon"
                   @click.stop="previewTemplate(template)"
                 >
                   Preview
@@ -296,7 +296,7 @@
                 <UnifiedButton
                   variant="ghost"
                   size="xs"
-                  leading-icon="mdi-heart-outline"
+                  leading-icon="HeartIcon"
                   @click.stop="toggleFavorite(template)"
                 >
                   {{ template.isFavorite ? 'Favorited' : 'Favorite' }}
@@ -313,7 +313,7 @@
           
           <!-- Selection Indicator -->
           <div v-if="selectedTemplate === template.id" class="selection-indicator">
-            <AppIcon name="mdi-check-circle" />
+            <AppIcon name="CheckCircleIcon" />
           </div>
         </div>
 
@@ -326,7 +326,7 @@
                 <AppIcon
                   v-for="star in 5"
                   :key="star"
-                  name="mdi-star"
+                  name="StarIcon"
                   :class="star <= template.rating ? 'filled' : 'empty'"
                 />
               </div>
@@ -346,11 +346,11 @@
 
           <div class="template-stats">
             <div class="stat">
-              <AppIcon name="mdi-download" size="14" />
+              <AppIcon name="ArrowDownTrayIcon" size="14" />
               <span>{{ template.downloads }}</span>
             </div>
             <div class="stat">
-              <AppIcon name="mdi-clock-outline" size="14" />
+              <AppIcon name="ClockIcon" size="14" />
               <span>{{ template.estimatedTime }}</span>
             </div>
           </div>
@@ -369,7 +369,7 @@
               v-else
               variant="outline"
               size="sm"
-              leading-icon="mdi-check"
+              leading-icon="CheckIcon"
               disabled
             >
               Selected
@@ -378,7 +378,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-information-outline"
+              leading-icon="InformationCircleIcon"
               @click.stop="showTemplateDetails(template)"
             >
               Details
@@ -389,7 +389,7 @@
 
       <!-- Empty State -->
       <div v-if="!filteredTemplates.length" class="empty-state">
-        <AppIcon name="mdi-file-search-outline" size="64" />
+        <AppIcon name="DocumentIcon-search-outline" size="64" />
         <h4>No templates found</h4>
         <p>Try adjusting your filters to find more templates.</p>
         <UnifiedButton
@@ -406,14 +406,14 @@
     <div class="custom-template-section">
       <div class="custom-template-card">
         <div class="custom-header">
-          <AppIcon name="mdi-plus-circle" size="24" />
+          <AppIcon name="PlusCircleIcon" size="24" />
           <h4>Create Custom Template</h4>
         </div>
         <p>Start with a blank template and create your own unique design.</p>
         <UnifiedButton
           variant="outline"
           size="sm"
-          leading-icon="mdi-plus"
+          leading-icon="PlusIcon"
           @click="createCustomTemplate"
         >
           Start Custom
@@ -443,6 +443,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, ArrowTrendingUpIcon, BuildingOfficeIcon, CheckIcon, ClockIcon, CpuChipIcon, EyeIcon, HeartIcon, InformationCircleIcon, ListBulletIcon, PlusCircleIcon, PlusIcon, PuzzlePieceIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, LightBulbIcon, StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted } from 'vue'
 import { useToast } from '@/composables/useToast'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -486,7 +489,7 @@ const gamingFocus = ref(false)
 
 // Option Tabs
 const optionTabs = ref([
-  { id: 'filters', name: 'Filters', icon: 'mdi-filter-outline' },
+  { id: 'filters', name: 'Filters', icon: 'FunnelIcon-outline' },
   { id: 'advanced', name: 'Advanced', icon: 'mdi-cog-outline' },
   { id: 'ai', name: 'AI Suggestions', icon: 'mdi-brain' }
 ])
@@ -522,10 +525,10 @@ const aiRecommendations = ref([
 
 // Template Categories
 const categories = ref([
-  { id: 'all', name: 'All Templates', icon: 'mdi-folder-multiple', count: 24 },
+  { id: 'all', name: 'All Templates', icon: 'FolderIcon-multiple', count: 24 },
   { id: 'popular', name: 'Popular', icon: 'mdi-trending-up', count: 8 },
-  { id: 'gaming', name: 'Gaming Industry', icon: 'mdi-controller-classic', count: 6 },
-  { id: 'creative', name: 'Creative', icon: 'mdi-palette', count: 5 },
+  { id: 'gaming', name: 'Gaming Industry', icon: 'DevicePhoneMobileIcon-classic', count: 6 },
+  { id: 'creative', name: 'Creative', icon: 'SwatchIcon', count: 5 },
   { id: 'minimal', name: 'Minimal', icon: 'mdi-minus-circle', count: 5 }
 ])
 
@@ -789,7 +792,7 @@ onMounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -919,7 +922,7 @@ onMounted(() => {
 .template-card:hover {
   border-color: var(--color-primary-300);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
 }
 
 .template-card.selected {
@@ -963,7 +966,7 @@ onMounted(() => {
 
 .preview-tech-minimal {
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .preview-executive-classic {
@@ -1041,7 +1044,7 @@ onMounted(() => {
 .template-name {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1136,7 +1139,7 @@ onMounted(() => {
 .custom-header h4 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1155,7 +1158,7 @@ onMounted(() => {
 
 .empty-state h4 {
   margin: var(--spacing-4) 0 var(--spacing-2);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* List View Specific Styles */
@@ -1195,7 +1198,7 @@ onMounted(() => {
   }
   
   .filter-group {
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     align-items: center;
     justify-content: space-between;
   }
@@ -1232,7 +1235,7 @@ onMounted(() => {
 .options-tabs {
   display: flex;
   background: color-mix(in srgb, var(--glass-bg) 60%, transparent);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .option-tab {
@@ -1254,12 +1257,12 @@ onMounted(() => {
 .option-tab.active {
   background: var(--color-primary-500);
   color: white;
-  border-bottom: 2px solid var(--color-primary-600);
+  border-b: 2px solid var(--color-primary-600);
 }
 
 .option-tab:hover:not(.active) {
   background: var(--glass-hover-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .option-content {
@@ -1284,14 +1287,14 @@ onMounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .enhanced-glass-input {
   background: color-mix(in srgb, var(--glass-bg) 70%, transparent) !important;
   border: 1px solid color-mix(in srgb, var(--glass-border) 70%, transparent) !important;
   backdrop-filter: blur(8px) !important;
-  color: var(--text-primary) !important;
+  color: var(--text-primary-600) !important;
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
@@ -1325,10 +1328,10 @@ onMounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
   padding-bottom: var(--spacing-2);
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
+  border-b: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
 }
 
 .option-toggles {
@@ -1357,7 +1360,7 @@ onMounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .option-description {
@@ -1381,7 +1384,7 @@ onMounted(() => {
 .option-label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .color-options {
@@ -1442,7 +1445,7 @@ onMounted(() => {
   margin: 0;
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .ai-loading {
@@ -1458,7 +1461,7 @@ onMounted(() => {
   width: 32px;
   height: 32px;
   border: 3px solid color-mix(in srgb, var(--color-primary-500) 20%, transparent);
-  border-top: 3px solid var(--color-primary-500);
+  border-t: 3px solid var(--color-primary-500);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -1520,7 +1523,7 @@ onMounted(() => {
 .recommendation-title {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 

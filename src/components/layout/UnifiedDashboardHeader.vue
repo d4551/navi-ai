@@ -1,5 +1,5 @@
 <template>
-  <header class="unified-dashboard-header" :class="headerClasses">
+  <header class="unified-dashboard-header" :class="headerClasses" class="font-sans">
     <!-- Top Navigation Bar -->
     <nav class="header-nav" role="navigation">
       <div class="nav-container">
@@ -7,7 +7,7 @@
         <div class="nav-left">
           <router-link to="/" class="brand-link" aria-label="Go to Dashboard">
             <div class="brand-content">
-              <AppIcon name="mdi-gamepad-variant" size="24" class="brand-icon" />
+              <AppIcon name="PuzzlePieceIcon" size="24" class="brand-icon" />
               <span class="brand-text">NAVI</span>
               <span class="brand-subtitle">Career Assistant</span>
             </div>
@@ -35,7 +35,7 @@
                     {{ crumb.label }}
                   </router-link>
                   <span v-else class="breadcrumb-current">{{ crumb.label }}</span>
-                  <AppIcon v-if="index < breadcrumbs.length - 1" name="mdi-chevron-right" size="16" class="breadcrumb-separator" />
+                  <AppIcon v-if="index < breadcrumbs.length - 1" name="ChevronRightIcon" size="16" class="breadcrumb-separator" />
                 </li>
               </ol>
             </nav>
@@ -56,7 +56,7 @@
               @blur="searchActive = false"
               @input="handleSearch"
             />
-            <AppIcon name="mdi-magnify" size="20" class="search-icon" />
+            <AppIcon name="MagnifyingGlassIcon" size="20" class="search-icon" />
           </div>
 
           <!-- Quick Actions -->
@@ -65,7 +65,7 @@
             <UnifiedButton
               variant="ghost"
               icon-only
-              icon="mdi-microphone"
+              icon="MicrophoneIcon"
               tooltip="Voice Commands (Ctrl+M)"
               @click="toggleVoiceCommands"
             />
@@ -74,7 +74,7 @@
             <UnifiedButton
               variant="ghost"
               icon-only
-              icon="mdi-robot"
+              icon="CpuChipIcon"
               tooltip="AI Assistant (Ctrl+J)"
               :disabled="!aiReady"
               @click="openAIAssistant"
@@ -84,7 +84,7 @@
             <UnifiedButton
               variant="ghost"
               icon-only
-              icon="mdi-bell"
+              icon="BellIcon"
               tooltip="Notifications"
               :badge="notificationCount > 0 ? notificationCount.toString() : undefined"
               @click="toggleNotifications"
@@ -101,20 +101,20 @@
               @click="toggleUserMenu"
             >
               <div class="user-avatar">
-                <AppIcon name="mdi-account-circle" size="32" />
+                <AppIcon name="UserIcon-circle" size="32" />
               </div>
               <div class="user-info">
                 <span class="user-name">{{ userName }}</span>
                 <span class="user-level">Level {{ userLevel }}</span>
               </div>
-              <AppIcon name="mdi-chevron-down" size="16" class="dropdown-icon" />
+              <AppIcon name="ChevronDownIcon" size="16" class="dropdown-icon" />
             </button>
             
             <!-- User Dropdown -->
             <div v-if="userMenuOpen" class="user-dropdown glass-surface">
               <div class="user-dropdown-header">
                 <div class="user-avatar large">
-                  <AppIcon name="mdi-account-circle" size="48" />
+                  <AppIcon name="UserIcon-circle" size="48" />
                 </div>
                 <div class="user-details">
                   <div class="user-name">{{ userName }}</div>
@@ -127,22 +127,22 @@
               
               <nav class="user-menu-nav">
                 <router-link to="/profile" class="menu-item" @click="userMenuOpen = false">
-                  <AppIcon name="mdi-account" />
+                  <AppIcon name="UserIcon" />
                   <span>Profile</span>
                 </router-link>
                 <router-link to="/settings" class="menu-item" @click="userMenuOpen = false">
-                  <AppIcon name="mdi-cog" />
+                  <AppIcon name="CogIcon" />
                   <span>Settings</span>
                 </router-link>
                 <button class="menu-item" @click="toggleTheme">
-                  <AppIcon :name="isDark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'" />
+                  <AppIcon :name="isDark ? 'mdi-white-balance-sunny' : 'MoonIcon'" />
                   <span>{{ isDark ? 'Light Mode' : 'Dark Mode' }}</span>
                 </button>
                 
                 <div class="dropdown-divider"></div>
                 
                 <button class="menu-item danger" @click="logout">
-                  <AppIcon name="mdi-logout" />
+                  <AppIcon name="ArrowLeftOnRectangleIcon" />
                   <span>Logout</span>
                 </button>
               </nav>
@@ -177,6 +177,8 @@
 </template>
 
 <script setup lang="ts">
+import { BellIcon, ChevronDownIcon, ChevronRightIcon, CogIcon, CpuChipIcon, MagnifyingGlassIcon, MicrophoneIcon, PuzzlePieceIcon, UserIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
@@ -292,9 +294,9 @@ onUnmounted(() => {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(var(--color-background-rgb), 0.95);
+  background: var(--bg-primary-500);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(var(--color-border-rgb), 0.1);
+  border-b: 1px solid rgba(var(--color-border-rgb), 0.1);
 }
 
 .header-nav {
@@ -336,18 +338,18 @@ onUnmounted(() => {
 }
 
 .brand-icon {
-  color: rgb(var(--color-primary-rgb));
+  color: var(--color-primary-500);
 }
 
 .brand-text {
   font-weight: 700;
   font-size: 1.25rem;
-  color: rgb(var(--color-on-surface-rgb));
+  color: var(--text-primary-600);
 }
 
 .brand-subtitle {
   font-size: 0.75rem;
-  color: rgb(var(--color-on-surface-variant-rgb));
+  color: var(--text-secondary);
   opacity: 0.8;
 }
 
@@ -356,18 +358,18 @@ onUnmounted(() => {
   align-items: center;
   gap: 0.375rem;
   padding: 0.25rem 0.5rem;
-  background: rgba(var(--color-primary-rgb), 0.1);
-  border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
   border-radius: 12px;
   font-size: 0.75rem;
-  color: rgb(var(--color-primary-rgb));
+  color: var(--color-primary-600);
   transition: all 0.2s ease;
 }
 
 .ai-model-chip.ai-offline {
-  background: rgba(var(--color-error-rgb), 0.1);
-  border-color: rgba(var(--color-error-rgb), 0.2);
-  color: rgb(var(--color-error-rgb));
+  background: var(--color-error-50);
+  border-color: var(--color-error-200);
+  color: var(--color-error-600);
 }
 
 .nav-center {
@@ -398,24 +400,24 @@ onUnmounted(() => {
 }
 
 .breadcrumb-link {
-  color: rgb(var(--color-on-surface-variant-rgb));
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.875rem;
   transition: color 0.2s ease;
 }
 
 .breadcrumb-link:hover {
-  color: rgb(var(--color-primary-rgb));
+  color: var(--color-primary-600);
 }
 
 .breadcrumb-current {
-  color: rgb(var(--color-on-surface-rgb));
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   font-weight: 500;
 }
 
 .breadcrumb-separator {
-  color: rgb(var(--color-on-surface-variant-rgb));
+  color: var(--text-secondary);
   opacity: 0.6;
 }
 
@@ -435,18 +437,18 @@ onUnmounted(() => {
   width: 200px;
   height: 36px;
   padding: 0 2.5rem 0 1rem;
-  background: rgba(var(--color-surface-variant-rgb), 0.5);
+  background: var(--glass-bg);
   border: 1px solid rgba(var(--color-outline-rgb), 0.2);
   border-radius: 18px;
   font-size: 0.875rem;
-  color: rgb(var(--color-on-surface-rgb));
+  color: var(--text-primary-600);
   transition: all 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
-  background: rgba(var(--color-surface-rgb), 0.9);
-  border-color: rgb(var(--color-primary-rgb));
+  background: var(--bg-secondary-500);
+  border-color: var(--color-primary-600);
   box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
 }
 
@@ -457,7 +459,7 @@ onUnmounted(() => {
 .search-icon {
   position: absolute;
   right: 0.75rem;
-  color: rgb(var(--color-on-surface-variant-rgb));
+  color: var(--text-secondary);
   pointer-events: none;
 }
 
@@ -490,7 +492,7 @@ onUnmounted(() => {
 }
 
 .user-avatar {
-  color: rgb(var(--color-primary-rgb));
+  color: var(--color-primary-600);
 }
 
 .user-info {
@@ -508,7 +510,7 @@ onUnmounted(() => {
 
 .user-level {
   font-size: 0.75rem;
-  color: rgb(var(--color-on-surface-variant-rgb));
+  color: var(--text-secondary);
   line-height: 1.2;
 }
 
@@ -542,7 +544,7 @@ onUnmounted(() => {
 }
 
 .user-avatar.large {
-  color: rgb(var(--color-primary-rgb));
+  color: var(--color-primary-600);
 }
 
 .user-details .user-name {
@@ -553,13 +555,13 @@ onUnmounted(() => {
 
 .user-email {
   font-size: 0.875rem;
-  color: rgb(var(--color-on-surface-variant-rgb));
+  color: var(--text-secondary);
   margin-bottom: 0.25rem;
 }
 
 .user-stats {
   font-size: 0.75rem;
-  color: rgb(var(--color-primary-rgb));
+  color: var(--color-primary-600);
   font-weight: 500;
 }
 
@@ -583,7 +585,7 @@ onUnmounted(() => {
   background: none;
   border: none;
   border-radius: 8px;
-  color: rgb(var(--color-on-surface-rgb));
+  color: var(--text-primary-600);
   text-decoration: none;
   font-size: 0.875rem;
   cursor: pointer;
@@ -595,7 +597,7 @@ onUnmounted(() => {
 }
 
 .menu-item.danger {
-  color: rgb(var(--color-error-rgb));
+  color: var(--color-error-600);
 }
 
 .menu-item.danger:hover {
@@ -603,7 +605,7 @@ onUnmounted(() => {
 }
 
 .page-header-section {
-  border-top: 1px solid rgba(var(--color-outline-rgb), 0.1);
+  border-t: 1px solid rgba(var(--color-outline-rgb), 0.1);
   padding: 1.5rem;
   background: rgba(var(--color-surface-variant-rgb), 0.3);
 }
@@ -623,19 +625,23 @@ onUnmounted(() => {
 }
 
 .page-icon {
-  color: rgb(var(--color-primary-rgb));
+  color: var(--text-primary-600);
+}
+
+.page-text {
+  color: var(--text-primary-600);
 }
 
 .page-title {
   font-size: 1.75rem;
   font-weight: 700;
   margin: 0;
-  color: rgb(var(--color-on-surface-rgb));
+  color: var(--text-primary-600) !important;
 }
 
 .page-subtitle {
   font-size: 1rem;
-  color: rgb(var(--color-on-surface-variant-rgb));
+  color: var(--text-secondary) !important;
   margin: 0.25rem 0 0 0;
 }
 
@@ -650,11 +656,11 @@ onUnmounted(() => {
   background: linear-gradient(135deg, 
     rgba(var(--color-primary-rgb), 0.1) 0%, 
     rgba(var(--color-surface-rgb), 0.95) 100%);
-  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.2);
+  border-b: 1px solid rgba(var(--color-primary-rgb), 0.2);
 }
 
 .header-variant-gaming .brand-text {
-  background: linear-gradient(45deg, rgb(var(--color-primary-rgb)), rgb(var(--color-secondary-rgb)));
+  background: linear-gradient(45deg, var(--color-primary-600), rgb(var(--color-secondary-rgb)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

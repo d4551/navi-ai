@@ -1,5 +1,5 @@
 <template>
-  <div class="cover-letter-workflow">
+  <div class="cover-letter-workflow" class="font-sans">
     <!-- Unified Step Navigation -->
     <WorkflowSteps
       :steps="coverLetterSteps"
@@ -17,15 +17,15 @@
       <!-- Step 1: Job Information -->
       <div v-if="currentStep === 1" class="step-panel">
         <div class="panel-header mb-4">
-          <h4 class="fw-semibold">Job Information</h4>
-          <p class="text-muted">Tell us about the position you're applying for</p>
+          <h4 class="font-semibold">Job Information</h4>
+          <p class="text-secondary">Tell us about the position you're applying for</p>
         </div>
           
         <div class="section-header mb-4">
           <UnifiedButton
             variant="ghost"
             size="sm"
-            leading-icon="mdi-import"
+            leading-icon="ArrowDownTrayIcon"
             @click="importFromProfile"
           >
             Import Profile Data
@@ -56,37 +56,37 @@
 
         <!-- Job Information Form -->
         <div class="job-info-form">
-          <div class="row g-4">
-            <div class="col-md-6">
+          <div class="flex flex-wrap g-4">
+            <div class="flex-1-md-6">
               <FormField
                 :model-value="coverLetterData.jobInfo.company"
                 label="Company Name"
-                icon="mdi-domain"
+                icon="BuildingOfficeIcon"
                 placeholder="Tech Corp Inc."
                 :required="true"
                 @update:model-value="(value) => updateJobInfo('company', value)"
               />
             </div>
-            <div class="col-md-6">
+            <div class="flex-1-md-6">
               <FormField
                 :model-value="coverLetterData.jobInfo.position"
                 label="Position Title"
-                icon="mdi-badge-account-outline"
+                icon="IdentificationIcon"
                 placeholder="Senior Software Engineer"
                 :required="true"
                 @update:model-value="(value) => updateJobInfo('position', value)"
               />
             </div>
-            <div class="col-md-6">
+            <div class="flex-1-md-6">
               <FormField
                 :model-value="coverLetterData.jobInfo.hiringManager"
                 label="Hiring Manager"
-                icon="mdi-account-tie"
+                icon="UserIcon-tie"
                 placeholder="Jane Smith (optional)"
                 @update:model-value="(value) => updateJobInfo('hiringManager', value)"
               />
             </div>
-            <div class="col-md-6">
+            <div class="flex-1-md-6">
               <FormField
                 :model-value="coverLetterData.jobInfo.department"
                 label="Department"
@@ -99,7 +99,7 @@
 
           <!-- Key Requirements (extracted from job description) -->
           <div v-if="extractedRequirements.length > 0" class="requirements-section mt-4">
-            <h6 class="fw-semibold mb-3">Key Requirements Identified</h6>
+            <h6 class="font-semibold mb-3">Key Requirements Identified</h6>
             <div class="requirements-grid">
               <div
                 v-for="requirement in extractedRequirements"
@@ -116,14 +116,14 @@
       <!-- Step 2: Letter Tone & Focus -->
       <div v-if="currentStep === 2" class="step-panel">
         <div class="panel-header mb-4">
-          <h4 class="fw-semibold">Letter Style</h4>
-          <p class="text-muted">Choose the tone and focus for your cover letter</p>
+          <h4 class="font-semibold">Letter Style</h4>
+          <p class="text-secondary">Choose the tone and focus for your cover letter</p>
         </div>
 
         <div class="style-options">
-          <div class="row g-4">
-            <div class="col-md-6">
-              <label class="form-label fw-medium">Tone</label>
+          <div class="flex flex-wrap g-4">
+            <div class="flex-1-md-6">
+              <label class="form-label font-medium">Tone</label>
               <div class="tone-options">
                 <div
                   v-for="tone in toneOptions"
@@ -132,17 +132,17 @@
                   :class="{ active: coverLetterData.tone === tone.value }"
                   @click="updateTone(tone.value)"
                 >
-                  <AppIcon :name="tone.icon" class="me-3" />
+                  <AppIcon :name="tone.icon" class="mr-3" />
                   <div>
-                    <div class="fw-semibold">{{ tone.label }}</div>
-                    <div class="text-sm text-muted">{{ tone.description }}</div>
+                    <div class="font-semibold">{{ tone.label }}</div>
+                    <div class="text-sm text-secondary">{{ tone.description }}</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label fw-medium">Primary Focus</label>
+            <div class="flex-1-md-6">
+              <label class="form-label font-medium">Primary Focus</label>
               <div class="focus-options">
                 <div
                   v-for="focus in focusOptions"
@@ -151,10 +151,10 @@
                   :class="{ active: coverLetterData.focus === focus.value }"
                   @click="updateFocus(focus.value)"
                 >
-                  <AppIcon :name="focus.icon" class="me-3" />
+                  <AppIcon :name="focus.icon" class="mr-3" />
                   <div>
-                    <div class="fw-semibold">{{ focus.label }}</div>
-                    <div class="text-sm text-muted">{{ focus.description }}</div>
+                    <div class="font-semibold">{{ focus.label }}</div>
+                    <div class="text-sm text-secondary">{{ focus.description }}</div>
                   </div>
                 </div>
               </div>
@@ -166,10 +166,10 @@
       <!-- Step 6: Review & Export -->
       <div v-if="currentStep === 6" class="step-panel">
         <div class="panel-header mb-3">
-          <h4 class="fw-semibold">Review & Export</h4>
-          <p class="text-muted">Preview your cover letter content before exporting.</p>
+          <h4 class="font-semibold">Review & Export</h4>
+          <p class="text-secondary">Preview your cover letter content before exporting.</p>
         </div>
-        <div class="cl-review surface-elevated border-subtle rounded-lg p-4">
+        <div class="cl-review surface-elevated border-subtle rounded-lg p-glass-md">
           <div class="mb-2"><strong>Target:</strong> {{ coverLetterData.jobInfo.position || 'Position' }} at {{ coverLetterData.jobInfo.company || 'Company' }}</div>
           <div class="mb-2"><strong>Hiring Manager:</strong> {{ coverLetterData.jobInfo.hiringManager || '—' }}</div>
           <div class="mt-3">
@@ -178,23 +178,23 @@
             <p v-if="coverLetterData.content.closing">{{ coverLetterData.content.closing }}</p>
           </div>
         </div>
-        <div class="d-flex gap-2 mt-3">
-          <UnifiedButton variant="primary" leading-icon="mdi-download" @click="emit('export')">Export Cover Letter</UnifiedButton>
+        <div class="flex gap-glass-sm mt-3">
+          <UnifiedButton variant="primary" leading-icon="ArrowDownTrayIcon" @click="emit('export')">Export Cover Letter</UnifiedButton>
         </div>
       </div>
 
       <!-- Step 3: Opening Paragraph -->
       <div v-if="currentStep === 3" class="step-panel">
         <div class="panel-header mb-4">
-          <h4 class="fw-semibold">Opening Paragraph</h4>
-          <p class="text-muted">Create a compelling opening that grabs attention</p>
+          <h4 class="font-semibold">Opening Paragraph</h4>
+          <p class="text-secondary">Create a compelling opening that grabs attention</p>
         </div>
 
         <AIAssistancePanel
           v-if="aiEnabled"
           title="AI Writing Assistant"
           subtitle="Create compelling opening paragraphs"
-          :primary-action="{ label: 'Tailor to Job', icon: 'mdi-target' }"
+          :primary-action="{ label: 'Tailor to Job', icon: 'CursorArrowRaysIcon' }"
           :secondary-actions="[{ key: 'variations', label: 'Generate Variations', icon: 'mdi-shimmer' }]"
           :loading="aiLoading"
           :suggestions="openingSuggestions"
@@ -210,7 +210,7 @@
           :model-value="coverLetterData.content.opening"
           type="textarea"
           label="Opening Paragraph"
-          icon="mdi-file-document-edit-outline"
+          icon="DocumentIcon-document-edit-outline"
           placeholder="Dear Hiring Manager,&#10;&#10;I am excited to apply for the [Position] role at [Company]. With my [X years] of experience in [relevant field], I am confident that my skills in [key skills] make me an ideal candidate for this position."
           :rows="5"
           :show-counter="true"
@@ -224,8 +224,8 @@
       <!-- Step 4: Body Content -->
       <div v-if="currentStep === 4" class="step-panel">
         <div class="panel-header mb-4">
-          <h4 class="fw-semibold">Body Paragraphs</h4>
-          <p class="text-muted">Highlight your relevant experience and achievements</p>
+          <h4 class="font-semibold">Body Paragraphs</h4>
+          <p class="text-secondary">Highlight your relevant experience and achievements</p>
         </div>
 
         <AIAssistancePanel
@@ -234,8 +234,8 @@
           subtitle="Pull relevant experience from your resume to create compelling body content"
           :primary-action="{ label: 'Use Work Experience', icon: 'mdi-briefcase' }"
           :secondary-actions="[
-            { key: 'skills', label: 'Highlight Skills', icon: 'mdi-flash' },
-            { key: 'projects', label: 'Include Projects', icon: 'mdi-folder-multiple' }
+            { key: 'skills', label: 'Highlight Skills', icon: 'BoltIcon' },
+            { key: 'projects', label: 'Include Projects', icon: 'FolderIcon-multiple' }
           ]"
           :loading="aiLoading"
           @primary-action="integrateResumeExperience"
@@ -262,15 +262,15 @@
       <!-- Step 5: Closing -->
       <div v-if="currentStep === 5" class="step-panel">
         <div class="panel-header mb-4">
-          <h4 class="fw-semibold">Closing Paragraph</h4>
-          <p class="text-muted">End with a strong call to action</p>
+          <h4 class="font-semibold">Closing Paragraph</h4>
+          <p class="text-secondary">End with a strong call to action</p>
         </div>
 
         <AIAssistancePanel
           v-if="aiEnabled"
           title="Closing Suggestions"
           subtitle="Generate professional closing paragraphs"
-          :primary-action="{ label: 'Generate Options', icon: 'mdi-target' }"
+          :primary-action="{ label: 'Generate Options', icon: 'CursorArrowRaysIcon' }"
           :loading="aiLoading"
           :suggestions="closingSuggestions"
           :show-tokens="true"
@@ -297,10 +297,10 @@
 
       <!-- Navigation Buttons -->
       <div class="workflow-navigation section-card mt-6">
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="flex justify-between items-center">
           <UnifiedButton
             variant="outline"
-            leading-icon="mdi-chevron-left"
+            leading-icon="ChevronLeftIcon"
             :disabled="currentStep === 1"
             @click="previousStep"
           >
@@ -312,11 +312,11 @@
             <div class="step-counter">Step {{ currentStep }} of {{ coverLetterSteps.length }}</div>
           </div>
 
-          <div class="d-flex gap-2">
+          <div class="flex gap-glass-sm">
             <UnifiedButton
               v-if="currentStep < coverLetterSteps.length"
               variant="primary"
-              trailing-icon="mdi-chevron-right"
+              trailing-icon="ChevronRightIcon"
               :disabled="!canProceed"
               @click="nextStep"
             >
@@ -326,7 +326,7 @@
             <UnifiedButton
               v-else
               variant="success"
-              leading-icon="mdi-check"
+              leading-icon="CheckIcon"
               :disabled="!canProceed"
               @click="completeCoverLetter"
             >
@@ -340,6 +340,8 @@
 </template>
 
 <script setup>
+import { ArrowDownTrayIcon, BuildingOfficeIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon, IdentificationIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { useToast } from '@/composables/useToast'
@@ -435,15 +437,15 @@ const coverLetterSteps = [
 // Options
 const toneOptions = [
   { value: 'professional', label: 'Professional', icon: 'mdi-briefcase', description: 'Formal and business-appropriate' },
-  { value: 'enthusiastic', label: 'Enthusiastic', icon: 'mdi-fire', description: 'Energetic and passionate' },
+  { value: 'enthusiastic', label: 'Enthusiastic', icon: 'FireIcon', description: 'Energetic and passionate' },
   { value: 'confident', label: 'Confident', icon: 'mdi-arm-flex', description: 'Strong and assertive' },
   { value: 'friendly', label: 'Friendly', icon: 'mdi-emoticon-happy-outline', description: 'Warm and personable' }
 ]
 
 const focusOptions = [
-  { value: 'experience', label: 'Experience', icon: 'mdi-star', description: 'Highlight work history' },
-  { value: 'skills', label: 'Skills', icon: 'mdi-flash', description: 'Emphasize technical abilities' },
-  { value: 'achievements', label: 'Achievements', icon: 'mdi-trophy', description: 'Showcase accomplishments' },
+  { value: 'experience', label: 'Experience', icon: 'StarIcon', description: 'Highlight work history' },
+  { value: 'skills', label: 'Skills', icon: 'BoltIcon', description: 'Emphasize technical abilities' },
+  { value: 'achievements', label: 'Achievements', icon: 'TrophyIcon', description: 'Showcase accomplishments' },
   { value: 'culture-fit', label: 'Culture Fit', icon: 'mdi-handshake', description: 'Alignment with company values' }
 ]
 
@@ -822,7 +824,7 @@ const completeCoverLetter = () => {
 .workflow-navigation {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 @media (max-width: 768px) {

@@ -683,7 +683,7 @@ export class DatabaseService {
       await this.count('users');
       return true;
     } catch (error) {
-      console.error('Database health check failed:', error);
+      logger.error('Database health check failed:', error);
       return false;
     }
   }

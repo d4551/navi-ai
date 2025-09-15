@@ -1,5 +1,5 @@
 <template>
-  <div class="job-pagination">
+  <div class="job-pagination" class="font-sans">
     <!-- Results Info -->
     <div class="pagination-info">
       <span class="results-count">
@@ -27,7 +27,7 @@
         class="nav-btn prev-btn"
         @click="$emit('update:currentPage', currentPage - 1)"
       >
-        <AppIcon name="mdi-chevron-left" />
+        <AppIcon name="ChevronLeftIcon" />
         Previous
       </button>
 
@@ -49,7 +49,7 @@
         @click="$emit('update:currentPage', currentPage + 1)"
       >
         Next
-        <AppIcon name="mdi-chevron-right" />
+        <AppIcon name="ChevronRightIcon" />
       </button>
     </div>
 
@@ -76,6 +76,8 @@
 </template>
 
 <script setup>
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
+
 import { computed, ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -151,7 +153,7 @@ const jumpToPageAction = () => {
   flex-direction: column;
   gap: var(--spacing-md);
   padding: var(--spacing-lg) 0;
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
   margin-top: var(--spacing-lg);
 }
 
@@ -183,7 +185,7 @@ const jumpToPageAction = () => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-sm);
   background: var(--surface-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
 }
 
@@ -202,7 +204,7 @@ const jumpToPageAction = () => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-sm);
   background: var(--surface-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   cursor: pointer;
   transition: all var(--duration-fast) var(--easing-ease);
@@ -232,7 +234,7 @@ const jumpToPageAction = () => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-sm);
   background: var(--surface-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   cursor: pointer;
   transition: all var(--duration-fast) var(--easing-ease);
@@ -265,7 +267,7 @@ const jumpToPageAction = () => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-sm);
   background: var(--surface-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-align: center;
   font-size: var(--font-size-sm);
 }
@@ -275,7 +277,7 @@ const jumpToPageAction = () => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-sm);
   background: var(--surface-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   cursor: pointer;
   transition: all var(--duration-fast) var(--easing-ease);

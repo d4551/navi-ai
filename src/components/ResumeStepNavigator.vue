@@ -1,10 +1,10 @@
 <template>
-  <div class="resume-step-navigator">
+  <div class="resume-step-navigator" class="font-sans">
     <div class="unified-grid g-2">
       <div
         v-for="section in sections"
         :key="section.key"
-        class="col"
+        class="flex-1"
       >
         <button
           :class="[ 'step-nav-item',
@@ -18,12 +18,12 @@
           :aria-label="`Navigate to ${section.label}`"
           @click="handleClick(section.key)"
         >
-          <div class="d-flex align-items-center gap-2">
+          <div class="flex items-center gap-glass-sm">
             <AppIcon :name="section.icon" class="mdi-18px" />
             <div class="step-content">
               <div class="step-title">{{ section.shortLabel || section.label }}</div>
               <div v-if="completionStatus[section.key as keyof typeof completionStatus]" class="step-status">
-                <AppIcon name="mdi-check-circle-outline" color="success" />
+                <AppIcon name="CheckCircleIcon" color="success" />
               </div>
             </div>
           </div>
@@ -34,6 +34,8 @@
 </template>
 
 <script setup lang="ts">
+import { CheckCircleIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 interface Section {
   key: string

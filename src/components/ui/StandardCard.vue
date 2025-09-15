@@ -1,5 +1,5 @@
 <template>
-  <div :class="cardClasses" class="standard-card">
+  <div :class="cardClasses" class="standard-card" class="font-sans">
     <div v-if="$slots.title" class="card-title">
       <slot name="title" />
     </div>
@@ -45,7 +45,7 @@ const cardClasses = computed(() => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all var(--duration-normal) var(--easing-ease-out);
   overflow: hidden;
 }
@@ -68,12 +68,12 @@ const cardClasses = computed(() => {
 }
 
 .standard-card--elevated {
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   transform: translateY(0);
 }
 
 .standard-card--elevated:hover {
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
   transform: translateY(-2px);
 }
 
@@ -113,7 +113,7 @@ const cardClasses = computed(() => {
 
 .standard-card--interactive:hover {
   border-color: var(--color-primary-300);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   transform: translateY(-1px);
 }
 
@@ -125,17 +125,17 @@ const cardClasses = computed(() => {
 /* Card title */
 .card-title {
   padding: var(--spacing-md) var(--spacing-lg);
-  border-bottom: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: var(--surface-elevated);
   margin: 0;
 }
 
 .standard-card--gaming .card-title {
-  border-bottom-color: var(--color-gaming-200);
-  color: var(--text-primary);
+  border-b-color: var(--color-gaming-200);
+  color: var(--text-primary-600);
   background: linear-gradient(135deg, 
     rgba(99, 102, 241, 0.05), 
     rgba(0, 255, 136, 0.02)
@@ -143,7 +143,7 @@ const cardClasses = computed(() => {
 }
 
 .standard-card--glass .card-title {
-  border-bottom-color: var(--glass-border);
+  border-b-color: var(--glass-border);
   background: var(--glass-surface-elevated);
   backdrop-filter: var(--glass-backdrop-blur);
 }
@@ -151,7 +151,7 @@ const cardClasses = computed(() => {
 /* Card content */
 .card-content {
   padding: var(--spacing-lg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Dark theme support */
@@ -170,8 +170,8 @@ const cardClasses = computed(() => {
 
 [data-theme="dark"] .card-title {
   background: var(--surface-elevated);
-  border-bottom-color: var(--border-base);
-  color: var(--text-primary);
+  border-b-color: var(--border-base);
+  color: var(--text-primary-600);
 }
 
 /* Responsive design */
@@ -207,7 +207,7 @@ const cardClasses = computed(() => {
   }
   
   .card-title {
-    border-bottom-width: 2px;
+    border-b-width: 2px;
   }
 }
 </style>

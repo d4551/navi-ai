@@ -4,6 +4,7 @@
     :class="['ai-button', variantClass, contextClass]"
     :loading="isProcessing"
     :disabled="!canExecute"
+    class="font-sans"
     @click="handleClick"
   >
     <template #leading-icon>
@@ -24,6 +25,8 @@
 </template>
 
 <script setup lang="ts">
+import { CheckIcon, DocumentIcon, ArrowPathIcon, MicrophoneIcon, ChartBarIcon, LightBulbIcon, KeyIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue';
 import { useAIIntegration } from '@/composables/useAIIntegration';
 import { useAIContext } from '@/composables/useAIContext';
@@ -109,7 +112,7 @@ const currentIcon = computed(() => {
     return 'mdi-alert-circle';
   }
   if (lastResult.value) {
-    return 'mdi-check-circle';
+    return 'CheckIcon-circle';
   }
   return props.icon;
 });
@@ -410,18 +413,18 @@ const genericAIAction = async () => {
 // Utility methods
 const getProcessingIcon = () => {
   const icons = {
-    'analyze_resume': 'mdi-chart-line',
+    'analyze_resume': 'ChartBarIcon-line',
     'enhance_content': 'mdi-pencil-plus',
-    'generate_suggestions': 'mdi-lightbulb',
-    'optimize_keywords': 'mdi-key',
+    'generate_suggestions': 'LightBulbIcon',
+    'optimize_keywords': 'KeyIcon',
     'improve_ats': 'mdi-robot',
-    'generate_cover_letter': 'mdi-file-document-edit',
+    'generate_cover_letter': 'DocumentIcon-document-edit',
     'analyze_job_match': 'mdi-compare',
-    'prepare_interview': 'mdi-microphone',
+    'prepare_interview': 'MicrophoneIcon',
     'optimize_portfolio': 'mdi-briefcase',
   };
   
-  return icons[props.action] || 'mdi-loading';
+  return icons[props.action] || 'ArrowPathIcon';
 };
 
 const getTooltipText = () => {
@@ -477,19 +480,19 @@ watch(() => props.context, () => {
 }
 
 .enhanced-ai-button.context-resume {
-  border-left: 3px solid rgb(var(--v-theme-info));
+  border-l: 3px solid rgb(var(--v-theme-info));
 }
 
 .enhanced-ai-button.context-cover-letter {
-  border-left: 3px solid rgb(var(--v-theme-success));
+  border-l: 3px solid rgb(var(--v-theme-success));
 }
 
 .enhanced-ai-button.context-interview {
-  border-left: 3px solid rgb(var(--v-theme-warning));
+  border-l: 3px solid rgb(var(--v-theme-warning));
 }
 
 .enhanced-ai-button.context-portfolio {
-  border-left: 3px solid rgb(var(--v-theme-error));
+  border-l: 3px solid rgb(var(--v-theme-error));
 }
 
 .ai-status-indicator {

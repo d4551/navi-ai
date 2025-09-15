@@ -1,0 +1,238 @@
+/**
+ * ENHANCED UNIFIED UTILITIES
+ * =========================
+ * Additional utility classes for the unified system
+ */
+
+/* Glass Morphism Utilities */
+.glass-surface {
+  @apply bg-glass-bg backdrop-blur-sm border border-glass-border;
+}
+
+.glass-surface-hover {
+  @apply hover:bg-glass-bg-hover hover:border-glass-border-hover transition-all duration-200;
+}
+
+.glass-surface-active {
+  @apply active:bg-glass-bg-active transform active:scale-95 transition-transform duration-75;
+}
+
+/* Neon Interactive States */
+.neon-focus {
+  @apply focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50 focus:border-neon-blue;
+}
+
+.neon-hover-blue {
+  @apply hover:text-neon-blue hover:border-neon-blue hover:shadow-glow-neon-blue;
+}
+
+.neon-hover-green {
+  @apply hover:text-neon-green hover:border-neon-green hover:shadow-glow-neon-green;
+}
+
+.neon-hover-red {
+  @apply hover:text-neon-red hover:border-neon-red hover:shadow-glow-neon-red;
+}
+
+.neon-hover-purple {
+  @apply hover:text-neon-purple hover:border-neon-purple hover:shadow-glow-neon-purple;
+}
+
+/* Typography Utilities */
+.text-display {
+  @apply font-display text-glass-primary font-bold tracking-wide;
+}
+
+.text-body {
+  @apply font-sans text-glass-secondary leading-relaxed;
+}
+
+.text-code {
+  @apply font-mono text-sm bg-glass-bg px-2 py-1 rounded border border-glass-border;
+}
+
+.text-neon-gradient {
+  @apply bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent;
+}
+
+/* Layout Utilities */
+.container-glass {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.section-glass {
+  @apply glass-card p-glass-lg space-y-glass-md;
+}
+
+.grid-responsive {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-glass-md;
+}
+
+.flex-center-glass {
+  @apply flex items-center justify-center min-h-screen bg-bg-primary;
+}
+
+/* Button Variants */
+.btn-glass {
+  @apply glass-surface glass-surface-hover glass-surface-active neon-focus;
+  @apply px-4 py-2 rounded-md font-medium transition-all duration-200;
+}
+
+.btn-glass-primary {
+  @apply btn-glass text-glass-primary border-glass-border;
+  @apply hover:border-neon-blue hover:shadow-glow-neon-blue;
+}
+
+.btn-glass-secondary {
+  @apply btn-glass text-glass-secondary bg-transparent;
+}
+
+.btn-glass-danger {
+  @apply btn-glass text-error-500 border-error-500;
+  @apply hover:border-error-600 hover:shadow-glow-neon-red;
+}
+
+.btn-glass-success {
+  @apply btn-glass text-success-500 border-success-500;
+  @apply hover:border-success-600 hover:shadow-glow-neon-green;
+}
+
+/* Form Utilities */
+.input-glass {
+  @apply w-full glass-surface neon-focus rounded-md px-3 py-2;
+  @apply text-glass-primary placeholder-glass-secondary;
+}
+
+.label-glass {
+  @apply block text-sm font-medium text-glass-primary mb-2;
+}
+
+.fieldset-glass {
+  @apply space-y-glass-sm p-glass-md border border-glass-border rounded-lg;
+}
+
+/* Card Utilities */
+.card-glass {
+  @apply glass-card glass-surface-hover rounded-lg shadow-glass;
+}
+
+.card-glass-header {
+  @apply flex items-center justify-between p-glass-lg border-b border-glass-border;
+}
+
+.card-glass-body {
+  @apply p-glass-lg space-y-glass-md;
+}
+
+.card-glass-footer {
+  @apply flex items-center justify-end p-glass-lg border-t border-glass-border space-x-glass-sm;
+}
+
+/* Animation Utilities */
+.animate-glass-in {
+  @apply animate-fade-in;
+}
+
+.animate-glass-out {
+  @apply animate-fade-out;
+}
+
+.animate-neon-pulse {
+  animation: neonPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(0, 204, 255, 0.3), 0 0 10px rgba(0, 204, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.6), 0 0 20px rgba(0, 204, 255, 0.3);
+  }
+}
+
+/* Responsive Utilities */
+.responsive-text {
+  @apply text-sm md:text-base lg:text-lg;
+}
+
+.responsive-spacing {
+  @apply p-4 md:p-6 lg:p-8;
+}
+
+.responsive-grid-dense {
+  @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-3 lg:gap-4;
+}
+
+/* Accessibility Utilities */
+.sr-only {
+  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  clip: rect(0, 0, 0, 0);
+}
+
+.focus-visible-only {
+  @apply focus:outline-none;
+}
+
+.focus-visible-only:focus-visible {
+  @apply ring-2 ring-neon ring-opacity-50 outline-none;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .glass-surface {
+    @apply border-2;
+  }
+
+  .text-glass-primary {
+    @apply font-semibold;
+  }
+
+  .btn-glass {
+    @apply border-2;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .glass-surface-hover,
+  .glass-surface-active,
+  .btn-glass,
+  .animate-glass-in,
+  .animate-glass-out,
+  .animate-neon-pulse {
+    @apply transition-none animate-none;
+  }
+}
+
+/* Dark Mode Specific Adjustments */
+.dark .glass-surface {
+  @apply backdrop-blur-md;
+}
+
+.dark .text-glass-primary {
+  @apply text-white;
+}
+
+.dark .text-glass-secondary {
+  @apply text-gray-300;
+}
+
+/* Print Styles */
+@media print {
+  .glass-surface,
+  .card-glass {
+    @apply bg-white border border-gray-300 shadow-none;
+  }
+
+  .text-glass-primary,
+  .text-glass-secondary {
+    @apply text-black;
+  }
+
+  .neon-glow-blue,
+  .neon-glow-green,
+  .neon-glow-red,
+  .neon-glow-purple {
+    @apply shadow-none;
+  }
+}

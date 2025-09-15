@@ -1,22 +1,22 @@
 <template>
-  <div v-if="show" class="modal-overlay" @click="handleOverlayClick">
+  <div v-if="show" class="modal-overlay" class="font-sans" @click="handleOverlayClick">
     <div class="ai-modal" @click.stop>
       <!-- Header -->
       <div class="modal-header">
-        <div class="d-flex align-items-center">
+        <div class="flex items-center">
           <div class="ai-avatar">
-            <AppIcon name="mdi-robot" />
+            <AppIcon name="CpuChipIcon" />
           </div>
-          <div class="ms-3">
+          <div class="ml-3">
             <h5 class="mb-0">AI Assistant</h5>
-            <small class="text-muted">{{ assistantContext.title || 'AI-powered document enhancement' }}</small>
+            <small class="text-secondary">{{ assistantContext.title || 'AI-powered document enhancement' }}</small>
           </div>
         </div>
-        <div class="d-flex align-items-center gap-2">
+        <div class="flex items-center gap-glass-sm">
           <UnifiedButton
             variant="ghost"
             size="sm"
-            icon="mdi-close"
+            icon="XMarkIcon"
             @click="$emit('close')"
           />
         </div>
@@ -27,11 +27,11 @@
         <!-- Context Display -->
         <div v-if="assistantContext.description" class="context-section">
           <div class="context-card">
-            <h6 class="fw-semibold mb-2">
-              <AppIcon :name="assistantContext.icon || 'mdi-lightbulb'" class="me-2" />
+            <h6 class="font-semibold mb-2">
+              <AppIcon :name="assistantContext.icon || 'LightBulbIcon'" class="mr-2" />
               {{ assistantContext.title }}
             </h6>
-            <p class="text-muted mb-0">{{ assistantContext.description }}</p>
+            <p class="text-secondary mb-0">{{ assistantContext.description }}</p>
           </div>
         </div>
 
@@ -41,13 +41,13 @@
             <!-- Welcome Message -->
             <div class="message ai-message">
               <div class="message-avatar">
-                <AppIcon name="mdi-robot" />
+                <AppIcon name="CpuChipIcon" />
               </div>
               <div class="message-content">
                 <div class="message-bubble">
                   <p class="mb-0">{{ welcomeMessage }}</p>
                 </div>
-                <small class="text-muted">AI Assistant</small>
+                <small class="text-secondary">AI Assistant</small>
               </div>
             </div>
 
@@ -59,12 +59,12 @@
               :class="{ 'user-message': message.type === 'user', 'ai-message': message.type === 'ai' }"
             >
               <div class="message-avatar">
-                <AppIcon :name="message.type === 'user' ? 'mdi-account' : 'mdi-robot'" />
+                <AppIcon :name="message.type === 'user' ? 'UserIcon' : 'mdi-robot'" />
               </div>
               <div class="message-content">
                 <div class="message-bubble">
                   <div v-if="message.type === 'ai' && message.suggestions" class="suggestions-list">
-                    <h6 class="fw-semibold mb-2">AI Suggestions:</h6>
+                    <h6 class="font-semibold mb-2">AI Suggestions:</h6>
                     <div
                       v-for="(suggestion, i) in message.suggestions"
                       :key="i"
@@ -83,7 +83,7 @@
                     </div>
                   </div>
                   <div v-else-if="message.type === 'ai' && message.analysis" class="analysis-result">
-                    <h6 class="fw-semibold mb-2">Analysis Results:</h6>
+                    <h6 class="font-semibold mb-2">Analysis Results:</h6>
                     <div class="analysis-score">
                       <div class="score-display">
                         <span class="score-value">{{ message.analysis.score }}/100</span>
@@ -91,7 +91,7 @@
                       </div>
                     </div>
                     <div v-if="message.analysis.strengths" class="analysis-section">
-                      <h6 class="text-success">Strengths:</h6>
+                      <h6 class="text-success-600">Strengths:</h6>
                       <ul>
                         <li v-for="strength in message.analysis.strengths" :key="strength">
                           {{ strength }}
@@ -99,7 +99,7 @@
                       </ul>
                     </div>
                     <div v-if="message.analysis.improvements" class="analysis-section">
-                      <h6 class="text-warning">Areas for Improvement:</h6>
+                      <h6 class="text-warning-600">Areas for Improvement:</h6>
                       <ul>
                         <li v-for="improvement in message.analysis.improvements" :key="improvement">
                           {{ improvement }}
@@ -109,14 +109,14 @@
                   </div>
                   <p v-else class="mb-0">{{ message.text }}</p>
                 </div>
-                <small class="text-muted">{{ message.type === 'user' ? 'You' : 'AI Assistant' }}</small>
+                <small class="text-secondary">{{ message.type === 'user' ? 'You' : 'AI Assistant' }}</small>
               </div>
             </div>
 
             <!-- Loading Message -->
             <div v-if="isProcessing" class="message ai-message">
               <div class="message-avatar">
-                <AppIcon name="mdi-robot" />
+                <AppIcon name="CpuChipIcon" />
               </div>
               <div class="message-content">
                 <div class="message-bubble">
@@ -126,7 +126,7 @@
                     <span></span>
                   </div>
                 </div>
-                <small class="text-muted">AI is thinking...</small>
+                <small class="text-secondary">AI is thinking...</small>
               </div>
             </div>
           </div>
@@ -134,7 +134,7 @@
 
         <!-- Quick Actions -->
         <div v-if="quickActions.length > 0" class="quick-actions">
-          <h6 class="fw-semibold mb-3">Quick Actions:</h6>
+          <h6 class="font-semibold mb-3">Quick Actions:</h6>
           <div class="actions-grid">
             <UnifiedButton
               v-for="action in quickActions"
@@ -165,10 +165,10 @@
           
           <div class="input-actions">
             <div class="input-hint">
-              <small class="text-muted">Ctrl + Enter to send</small>
+              <small class="text-secondary">Ctrl + Enter to send</small>
             </div>
             
-            <div class="d-flex gap-2">
+            <div class="flex gap-glass-sm">
               <UnifiedButton
                 variant="ghost"
                 size="sm"
@@ -181,7 +181,7 @@
               <UnifiedButton
                 variant="primary"
                 size="sm"
-                leading-icon="mdi-send"
+                leading-icon="PaperAirplaneIcon"
                 :disabled="!userInput.trim() || isProcessing"
                 :loading="isProcessing"
                 @click="sendMessage"
@@ -197,6 +197,8 @@
 </template>
 
 <script setup>
+import { CpuChipIcon, PaperAirplaneIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { useToast } from '@/composables/useToast'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -229,7 +231,7 @@ const sessionId = `resume-ai-${Date.now()}`
 const assistantContext = computed(() => ({
   title: 'Document Enhancement',
   description: 'Get AI-powered suggestions to improve your resume or cover letter',
-  icon: 'mdi-target',
+  icon: 'CursorArrowRaysIcon',
   ...props.context
 }))
 
@@ -256,21 +258,21 @@ const quickActions = computed(() => {
     {
       key: 'improve',
       label: 'Suggest Improvements',
-      icon: 'mdi-star-outline',
+      icon: 'StarIcon-outline',
       variant: 'outline',
       action: 'improve'
     },
     {
       key: 'tailor',
       label: 'Tailor to Job',
-      icon: 'mdi-target',
+      icon: 'CursorArrowRaysIcon',
       variant: 'outline',
       action: 'tailor'
     },
     {
       key: 'optimize',
       label: 'Optimize Keywords',
-      icon: 'mdi-key-variant',
+      icon: 'KeyIcon-variant',
       variant: 'outline',
       action: 'optimize'
     }
@@ -428,7 +430,7 @@ onMounted(async () => {
 .ai-modal {
   background: var(--surface-background);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
   width: 100%;
   max-width: 700px;
   max-height: 90vh;
@@ -441,7 +443,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   padding: 2rem 2rem 1.5rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .ai-avatar {
@@ -454,7 +456,7 @@ onMounted(async () => {
   border: 2px solid var(--color-primary-300);
   border-radius: 50%;
   font-size: 1.75rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .modal-content {
@@ -466,8 +468,8 @@ onMounted(async () => {
 
 .context-section {
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid var(--glass-border);
-  background: var(--glass-bg-light);
+  border-b: 1px solid var(--glass-border);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 .context-card {
@@ -503,7 +505,7 @@ onMounted(async () => {
 }
 
 .message.user-message {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 .message.user-message .message-content {
@@ -560,7 +562,7 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: flex-start;
   padding: 1rem 1.25rem;
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   margin-bottom: 0.75rem;
@@ -590,7 +592,7 @@ onMounted(async () => {
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-radius: var(--radius-md);
 }
 
@@ -648,8 +650,8 @@ onMounted(async () => {
 
 .quick-actions {
   padding: 1.5rem 2rem;
-  border-top: 1px solid var(--glass-border);
-  background: var(--glass-bg-light);
+  border-t: 1px solid var(--glass-border);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 .actions-grid {
@@ -659,7 +661,7 @@ onMounted(async () => {
 }
 
 .modal-footer {
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   padding: 1.5rem 2rem 2rem;
   background: var(--surface-background);
 }
@@ -724,7 +726,7 @@ onMounted(async () => {
 }
 
 .messages-container::-webkit-scrollbar-track {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-radius: 3px;
 }
 
@@ -863,6 +865,6 @@ onMounted(async () => {
 [data-theme="dark"] .form-control {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 </style>

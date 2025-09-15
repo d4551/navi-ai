@@ -4,10 +4,10 @@
 -->
 
 <template>
-  <div class="autocomplete-search" :class="{ 'focused': isFocused, 'has-results': hasResults }">
+  <div class="autocomplete-search" :class="{ 'focused': isFocused, 'has-results': hasResults }" class="font-sans">
     <div class="search-input-wrapper ui-input ui-size-md">
       <div class="search-input-container ui-input ui-size-md">
-        <AppIcon name="mdi-magnify" aria-hidden="true" />
+        <AppIcon name="MagnifyingGlassIcon" aria-hidden="true" />
         <input
           ref="searchInput"
           v-model="searchQuery"
@@ -35,10 +35,10 @@
           aria-label="Clear search"
           @click="clearSearch"
         >
-          <AppIcon name="mdi-close-circle-outline" context="error" />
+          <AppIcon name="XMarkIcon-circle-outline" context="error" />
         </button>
         <div v-if="isLoading" class="loading-indicator">
-          <AppIcon name="mdi-loading" class="mdi-spin" aria-hidden="true" />
+          <AppIcon name="ArrowPathIcon" class="mdi-spin" aria-hidden="true" />
         </div>
       </div>
       
@@ -112,7 +112,7 @@
                     </div>
                   </div>
                   <div class="result-action">
-                    <AppIcon name="mdi-arrow-right" aria-hidden="true" />
+                    <AppIcon name="ArrowRightIcon" aria-hidden="true" />
                   </div>
                 </div>
               </div>
@@ -123,7 +123,7 @@
           <div v-if="!searchQuery.trim()" class="search-tips">
             <div class="tip-section">
               <h4 class="tip-title">
-                <AppIcon name="mdi-lightbulb-on" aria-hidden="true" />
+                <AppIcon name="LightBulbIcon" aria-hidden="true" />
                 Search Tips
               </h4>
               <ul class="tip-list">
@@ -141,6 +141,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowRightIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { LightBulbIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, computed, watch, onUnmounted, nextTick } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { searchService } from '@/shared/services/SearchService';
@@ -192,10 +195,10 @@ let searchTimer: NodeJS.Timeout | null = null;
 // Quick filters for common searches
 const quickFilters = ref([
   { id: 'studios', label: 'Studios', icon: 'mdi-domain' },
-  { id: 'roles', label: 'Roles', icon: 'mdi-account-tie' },
+  { id: 'roles', label: 'Roles', icon: 'UserIcon-tie' },
   { id: 'technologies', label: 'Tech', icon: 'mdi-code-tags' },
-  { id: 'aaa', label: 'AAA', icon: 'mdi-star' },
-  { id: 'indie', label: 'Indie', icon: 'mdi-heart' }
+  { id: 'aaa', label: 'AAA', icon: 'StarIcon' },
+  { id: 'indie', label: 'Indie', icon: 'HeartIcon' }
 ]);
 
 // Computed properties
@@ -384,7 +387,7 @@ function updateDropdownPosition() {
 function getCategoryIcon(category: string): string {
   const icons: Record<string, string> = {
     studio: 'mdi mdi-domain',
-    role: 'mdi mdi-account-tie', 
+    role: 'mdi UserIcon-tie', 
     technology: 'mdi mdi-code-tags',
     location: 'mdi mdi-map-marker'
   };
@@ -471,7 +474,7 @@ defineExpose({
   background: var(--glass-surface-light);
   backdrop-filter: blur(calc(var(--glass-backdrop-blur) * 0.5));
   font-size: var(--font-size-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all var(--transition-normal);
 }
 
@@ -509,7 +512,7 @@ defineExpose({
 
 .clear-button:hover {
   background: var(--bg-tertiary);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .quick-filters {
@@ -589,7 +592,7 @@ defineExpose({
 .no-results p {
   font-weight: 500;
   margin-bottom: var(--spacing-xs);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .no-results small {
@@ -603,11 +606,11 @@ defineExpose({
 }
 
 .result-section {
-  border-bottom: 1px solid var(--border-color);
+  border-b: 1px solid var(--border-color);
 }
 
 .result-section:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .section-header {
@@ -616,7 +619,7 @@ defineExpose({
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   background: var(--bg-tertiary);
-  border-bottom: 1px solid var(--border-color);
+  border-b: 1px solid var(--border-color);
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--text-secondary);
@@ -651,13 +654,13 @@ defineExpose({
   padding: var(--spacing-md);
   cursor: pointer;
   transition: all var(--transition-normal);
-  border-bottom: 1px solid transparent;
+  border-b: 1px solid transparent;
 }
 
 .result-item:hover,
 .result-item.selected {
   background: var(--glass-elevated-light);
-  border-bottom-color: var(--border-color);
+  border-b-color: var(--border-color);
 }
 
 .result-item.selected {
@@ -678,7 +681,7 @@ defineExpose({
 
 .result-label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .result-type {
@@ -715,7 +718,7 @@ defineExpose({
 
 .search-tips {
   padding: var(--spacing-lg);
-  border-top: 1px solid var(--border-color);
+  border-t: 1px solid var(--border-color);
   background: var(--bg-tertiary);
 }
 
@@ -725,7 +728,7 @@ defineExpose({
   gap: var(--spacing-xs);
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-sm);
 }
 

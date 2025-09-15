@@ -252,14 +252,14 @@ const breadcrumbs = computed(() => {
   background: var(--surface-base);
   display: flex;
   flex-direction: column;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* ===== HEADER SECTION ===== */
 
 .page-header-section {
   background: var(--glass-bg);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-backdrop-filter);
   border-radius: var(--radius-2xl);
   margin: var(--spacing-4) var(--spacing-4) var(--spacing-6);
@@ -325,7 +325,7 @@ const breadcrumbs = computed(() => {
 .page-title {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   display: flex;
   align-items: center;
@@ -439,7 +439,7 @@ const breadcrumbs = computed(() => {
     color-mix(in srgb, var(--surface-elevated) 92%, transparent) 100%
   );
   border: 1px solid color-mix(in srgb, var(--color-gaming-500) 20%, transparent);
-  box-shadow: 0 25px 50px color-mix(in srgb, var(--text-primary) 8%, transparent);
+  box-shadow: 0 25px 50px color-mix(in srgb, var(--text-primary-600) 8%, transparent);
 }
 
 .page-type-noir .noir-title {
@@ -503,7 +503,7 @@ const breadcrumbs = computed(() => {
 .page-footer-actions {
   padding: var(--spacing-6) var(--spacing-4);
   background: var(--surface-elevated);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

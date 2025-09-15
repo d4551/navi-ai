@@ -1,12 +1,12 @@
 <template>
-  <div v-if="hasError" class="error-boundary min-h-screen flex items-center justify-center p-4">
+  <div v-if="hasError" class="error-boundary min-h-screen flex items-center justify-center p-glass-md">
     <div class="container-md">
       <div class="flex justify-center">
         <div class="w-full max-w-md">
-          <div class="glass-strong p-6 rounded-xl neon-red">
+          <div class="glass-strong p-glass-lg rounded-xl neon-red">
             <div class="text-center mb-4">
-              <div class="flex items-center justify-center gap-2 mb-2">
-                <AppIcon name="mdi-alert" class="text-neon-red text-2xl" />
+              <div class="flex items-center justify-center gap-glass-sm mb-2">
+                <AppIcon name="ExclamationTriangleIcon" class="text-neon-red text-2xl" />
                 <h2 class="text-xl font-bold text-glass-enhanced">Something went wrong</h2>
               </div>
             </div>
@@ -16,16 +16,16 @@
                 team will investigate.
               </p>
 
-              <div v-if="showDetails" class="glass p-3 rounded-lg mt-4 text-left">
+              <div v-if="showDetails" class="glass p-glass-md rounded-lg mt-4 text-left">
                 <h6 class="font-medium text-glass-enhanced mb-2">Error Details:</h6>
                 <pre class="text-sm font-mono text-glass-enhanced overflow-auto">{{ errorDetails }}</pre>
               </div>
 
-              <div class="flex gap-3 flex-wrap justify-center mt-6">
+              <div class="flex gap-glass-md flex-wrap justify-center mt-6">
                 <UnifiedButton
                   data-test="retry-button"
                   variant="primary"
-                  icon="mdi-refresh"
+                  icon="ArrowPathIcon"
                   @click="retry"
                 >
                   Try Again
@@ -34,7 +34,7 @@
                 <UnifiedButton
                   data-test="go-home-button"
                   variant="outline-secondary"
-                  icon="mdi-home"
+                  icon="HomeIcon"
                   @click="goHome"
                 >
                   Go to Dashboard
@@ -43,7 +43,7 @@
                 <UnifiedButton
                   data-test="toggle-details-button"
                   variant="outline-info"
-                  :icon="showDetails ? 'mdi mdi-eye-off-outline' : 'mdi mdi-information-outline'"
+                  :icon="showDetails ? 'mdi EyeIcon-off-outline' : 'mdi InformationCircleIconrmation-outline'"
                   @click="showDetails = !showDetails"
                 >
                   {{ showDetails ? 'Hide' : 'Show' }} Details
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import { ArrowPathIcon, ExclamationTriangleIcon, HomeIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onErrorCaptured, computed } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import UnifiedButton from "@/components/ui/UnifiedButton.vue";
@@ -210,13 +212,47 @@ export default {
       return false; // Prevent error from propagating
     });
 
-    const retry = () => {
-      hasError.value = false;
-      errorDetails.value = "";
-      showDetails.value = false;
+    const retry = async () => {
+      retryCount.value++;
 
-      // Force component re-render
-      router.go(0);
+      if (retryCount.value > _props.maxRetries) {
+        logger.warn(`Max retries (${_props.maxRetries}) reached for error boundary`);
+        return;
+      }
+
+      logger.info(`Retry attempt ${retryCount.value} for error boundary`);
+
+      // For different error categories, use different retry strategies
+      try {
+        if (errorCategory.value === 'resource') {
+          // For resource errors, try to reload the page
+          window.location.reload();
+        } else if (errorCategory.value === 'network') {
+          // For network errors, wait a bit then reset
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          hasError.value = false;
+          errorDetails.value = "";
+          showDetails.value = false;
+        } else if (errorCategory.value === 'auth') {
+          // For auth errors, redirect to login
+          router?.push?.("/login") || (window.location.href = "/login");
+        } else {
+          // Generic retry - reset component state
+          hasError.value = false;
+          errorDetails.value = "";
+          showDetails.value = false;
+
+          // Force component re-render after a short delay
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          router.go(0);
+        }
+      } catch (retryError) {
+        logger.error("Retry failed:", retryError);
+        // If retry fails, at least reset the error state
+        hasError.value = false;
+        errorDetails.value = "";
+        showDetails.value = false;
+      }
     };
 
     const goHome = () => {
@@ -262,7 +298,7 @@ export default {
 <style scoped>
 .error-boundary {
   min-height: 100vh;
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
   display: flex;
   align-items: center;
   padding: var(--spacing-xl) var(--spacing-md);
@@ -271,7 +307,7 @@ export default {
 pre {
   max-height: 220px;
   overflow-y: auto;
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   border: 1px solid var(--bg-tertiary);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
@@ -293,7 +329,7 @@ pre:focus {
 }
 
 @media (max-width: 576px) {
-  .d-flex.gap-2 {
+  .flex.gap-glass-sm {
     flex-direction: column;
   }
   .btn {
@@ -303,7 +339,7 @@ pre:focus {
 
 @media (prefers-color-scheme: dark) {
   pre {
-    background: var(--dark-bg-secondary);
+    background: var(--dark-bg-secondary-500);
     border-color: var(--dark-bg-tertiary);
   }
 }

@@ -4,6 +4,7 @@
     :class="{ 'top-match': isTopMatch, 'has-insights': hasAIInsights }"
     tabindex="0"
     role="article"
+    class="font-sans"
     @click="$emit('select', job)"
     @keydown.enter="$emit('select', job)"
     @keydown.space.prevent="$emit('select', job)"
@@ -18,9 +19,9 @@
       <!-- Header Section -->
       <header class="job-header">
         <!-- Badge Row -->
-        <div class="badge-row">
+        <div class="badge-flex flex-wrap">
           <div class="time-badge">
-            <AppIcon name="mdi-fire" />
+            <AppIcon name="FireIcon" />
             <span>{{ timeText }} • {{ timeBadgeText }}</span>
           </div>
           <div 
@@ -48,12 +49,12 @@
             <div class="company-line">
               <span class="company-name">{{ companyName }}</span>
               <div v-if="job.company?.verified" class="verified-badge">
-                <AppIcon name="mdi-check-circle" />
+                <AppIcon name="CheckCircleIcon" />
                 Verified
               </div>
             </div>
             <div class="location-line">
-              <AppIcon name="mdi-map-marker" />
+              <AppIcon name="MapPinIcon" />
               <span>{{ locationText }}</span>
             </div>
           </div>
@@ -66,7 +67,7 @@
             size="sm"
             :disabled="isApplying"
             :loading="isApplying"
-            leading-icon="mdi-send"
+            leading-icon="PaperAirplaneIcon"
             @click.stop="handleApply"
           >
             {{ isApplying ? 'Applying...' : 'Apply Now' }}
@@ -77,14 +78,14 @@
             :title="isSaved ? 'Saved' : 'Save job'"
             @click.stop="handleSave"
           >
-            <AppIcon :name="isSaved ? 'mdi-bookmark' : 'mdi-bookmark-outline'" />
+            <AppIcon :name="isSaved ? 'BookmarkIcon' : 'BookmarkIcon-outline'" />
           </button>
           <button 
             class="btn-icon control-btn" 
             title="View details"
             @click.stop="$emit('view-details', job)"
           >
-            <AppIcon name="mdi-eye" />
+            <AppIcon name="EyeIcon" />
           </button>
         </div>
       </header>
@@ -93,7 +94,7 @@
       <div v-if="showMetrics" class="job-metrics">
         <div class="metric-item">
           <div class="metric-icon">
-            <AppIcon name="mdi-briefcase" />
+            <AppIcon name="BriefcaseIcon" />
           </div>
           <div class="metric-details">
             <span class="metric-label">Type</span>
@@ -111,7 +112,7 @@
         </div>
         <div v-if="job.duration" class="metric-item">
           <div class="metric-icon">
-            <AppIcon name="mdi-calendar-range" />
+            <AppIcon name="CalendarIcon-range" />
           </div>
           <div class="metric-details">
             <span class="metric-label">Duration</span>
@@ -120,7 +121,7 @@
         </div>
         <div v-if="job.applicants" class="metric-item">
           <div class="metric-icon">
-            <AppIcon name="mdi-account-group" />
+            <AppIcon name="UsersIcon" />
           </div>
           <div class="metric-details">
             <span class="metric-label">Applicants</span>
@@ -166,13 +167,13 @@
       >
         <header class="insights-header" @click.stop="toggleInsights">
           <div class="insights-title">
-            <AppIcon name="mdi-brain" />
+            <AppIcon name="CpuChipIcon" />
             AI Career Insights
           </div>
           <div class="insights-controls">
             <span class="insights-badge">{{ aiInsights.length }} insights</span>
             <AppIcon 
-              name="mdi-chevron-down" 
+              name="ChevronDownIcon" 
               class="expand-icon"
               :class="{ expanded: isInsightsExpanded }"
             />
@@ -208,14 +209,14 @@
           title="Add to compare"
           @click.stop="$emit('add-to-compare', job)"
         >
-          <AppIcon name="mdi-compare" />
+          <AppIcon name="ScaleIcon" />
         </button>
         <button 
           class="footer-btn control-btn" 
           title="Share"
           @click.stop="$emit('share', job)"
         >
-          <AppIcon name="mdi-share-variant" />
+          <AppIcon name="ShareIcon" />
         </button>
         <button 
           class="footer-btn control-btn" 
@@ -230,6 +231,9 @@
 </template>
 
 <script setup>
+import { BriefcaseIcon, ChevronDownIcon, CpuChipIcon, EyeIcon, PaperAirplaneIcon, ScaleIcon, ShareIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -453,7 +457,7 @@ watch(() => props.job?.id, () => {
   top: 16px;
   right: -24px;
   background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
-  color: white;
+  color: var(--text-inverse);
   padding: var(--spacing-1) var(--spacing-8);
   transform: rotate(45deg);
   font-size: var(--font-size-2xs);
@@ -469,12 +473,12 @@ watch(() => props.job?.id, () => {
   background: linear-gradient(135deg, 
     color-mix(in srgb, var(--color-primary-500) 3%, transparent) 0%, 
     color-mix(in srgb, var(--color-primary-600) 2%, transparent) 100%);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   position: relative;
 }
 
 /* Badge Row */
-.badge-row {
+.badge-flex flex-wrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -557,7 +561,7 @@ watch(() => props.job?.id, () => {
 
 .match-label {
   font-size: var(--font-size-2xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
 }
@@ -579,7 +583,7 @@ watch(() => props.job?.id, () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   flex-shrink: 0;
@@ -616,7 +620,7 @@ watch(() => props.job?.id, () => {
 .job-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   line-height: var(--line-height-heading);
 }
@@ -659,14 +663,14 @@ watch(() => props.job?.id, () => {
 .btn-icon:hover {
   background: var(--glass-hover-bg);
   border-color: var(--color-primary-400);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transform: translateY(-1px);
   box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
 }
 
 .btn-icon.saved {
   background: var(--color-primary-500);
-  color: white;
+  color: var(--text-inverse);
   border-color: var(--color-primary-500);
 }
 
@@ -705,7 +709,7 @@ watch(() => props.job?.id, () => {
   flex-wrap: wrap;
   gap: var(--spacing-4);
   background: color-mix(in srgb, var(--surface-container) 50%, transparent);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   align-items: stretch;
 }
 
@@ -738,7 +742,7 @@ watch(() => props.job?.id, () => {
 
 .metric-label {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
   font-weight: var(--font-weight-medium);
@@ -748,13 +752,13 @@ watch(() => props.job?.id, () => {
 .metric-value {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Description */
 .job-description {
   padding: var(--spacing-4) var(--spacing-6);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .description-text {
@@ -869,7 +873,7 @@ watch(() => props.job?.id, () => {
   gap: var(--spacing-2);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .insights-title i {
@@ -890,7 +894,7 @@ watch(() => props.job?.id, () => {
 
 .insights-badge {
   background: var(--color-primary-500);
-  color: white;
+  color: var(--text-inverse);
   padding: var(--spacing-0-5) var(--spacing-2);
   border-radius: var(--radius-md);
   font-size: var(--font-size-2xs);
@@ -899,7 +903,7 @@ watch(() => props.job?.id, () => {
 
 .expand-icon {
   transition: transform var(--duration-fast) ease;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .expand-icon.expanded {
@@ -956,7 +960,7 @@ watch(() => props.job?.id, () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   min-height: 40px;
   margin-top: auto;
   flex-shrink: 0;
@@ -967,7 +971,7 @@ watch(() => props.job?.id, () => {
   align-items: center;
   gap: var(--spacing-1-5);
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   min-height: 32px;
 }
 
@@ -985,12 +989,12 @@ watch(() => props.job?.id, () => {
   justify-content: center;
   cursor: pointer;
   transition: all var(--duration-fast) ease;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: var(--font-size-sm);
 }
 
 .footer-btn:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: var(--glass-hover-bg);
 }
 
@@ -1011,7 +1015,7 @@ watch(() => props.job?.id, () => {
     grid-template-columns: 1fr;
   }
 
-  .badge-row {
+  .badge-flex flex-wrap {
     flex-direction: column;
     gap: var(--spacing-3);
   }
@@ -1082,6 +1086,6 @@ watch(() => props.job?.id, () => {
 }
 
 .enhanced-job-card.has-insights .job-footer {
-  border-top-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  border-t-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 }
 </style>

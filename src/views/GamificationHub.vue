@@ -1,8 +1,8 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <div class="hub-grid">
       <!-- Achievements -->
-      <section class="glass p-4 gap-4 rounded-lg">
+      <section class="glass p-glass-md gap-glass-md rounded-lg">
         <div class="card-header section-header">
           <h3><Icon name="award" /> Achievements</h3>
           <div class="card-badge">{{ earnedAchievements.length }}/{{ allAchievements.length }}</div>
@@ -23,7 +23,7 @@
       </section>
 
       <!-- Quests -->
-      <section class="glass p-4 gap-4 rounded-lg">
+      <section class="glass p-glass-md gap-glass-md rounded-lg">
         <div class="card-header section-header">
           <h3><Icon name="calendar" /> Quests</h3>
           <div class="card-badge">Weekly</div>
@@ -46,7 +46,7 @@
       </section>
 
       <!-- Leaderboard -->
-      <section class="glass p-4 gap-4 rounded-lg">
+      <section class="glass p-glass-md gap-glass-md rounded-lg">
         <div class="card-header section-header">
           <h3><Icon name="bar-chart-3" /> Leaderboard</h3>
           <div class="card-badge">Local</div>
@@ -115,22 +115,22 @@ const levelMilestones = computed(() => {
 <style scoped>
 .gamification-hub { max-width: var(--page-content-max-width); margin: 0 auto; }
 .hub-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; padding: 1rem; }
-.card-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.card-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-b: 1px solid rgba(255,255,255,0.1); }
 .section-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; }
 .achievements, .quests, .leaderboard { padding: 1rem; }
 .achievement { display: flex; gap: 1rem; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; margin-bottom: 0.75rem; background: rgba(255,255,255,0.04); }
 .achievement.earned { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.25); }
 .achievement-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border-radius: 8px; }
-.achievement-title { font-weight: 600; color: var(--text-primary); }
+.achievement-title { font-weight: 600; color: var(--text-primary-600); }
 .achievement-desc { color: rgba(255,255,255,0.7); font-size: var(--font-size-sm); margin-top: 0.15rem; }
 .achievement-meta { display: flex; gap: 1rem; font-size: var(--font-size-xs); margin-top: 0.25rem; color: rgba(255,255,255,0.75); }
 .xp { color: #fbbf24; font-weight: 600; }
 .quests .quest { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; margin-bottom: 0.75rem; background: rgba(255,255,255,0.04); }
 .quest.completed { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.25); }
-.quest-title { font-weight: 600; color: var(--text-primary); }
+.quest-title { font-weight: 600; color: var(--text-primary-600); }
 .quest-desc { color: rgba(255,255,255,0.7); font-size: var(--font-size-sm); margin-bottom: 0.35rem; }
-.leaderboard .xp-summary { padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 1rem; }
-.leaderboard .level { font-weight: 700; color: var(--text-primary); }
+.leaderboard .xp-summary { padding-bottom: 1rem; border-b: 1px solid rgba(255,255,255,0.08); margin-bottom: 1rem; }
+.leaderboard .level { font-weight: 700; color: var(--text-primary-600); }
 .leaderboard .xp { color: rgba(255,255,255,0.85); margin-top: 0.25rem; }
 .leaderboard .bar { height: 10px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; margin-top: 0.5rem; }
 .leaderboard .bar .fill { height: 100%; background: linear-gradient(90deg, #7c3aed, #ec4899); }

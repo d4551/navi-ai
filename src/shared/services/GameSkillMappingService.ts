@@ -4,9 +4,10 @@
  */
 
 import { generateContent } from '@/utils/aiClient'
-import type { 
-  SkillMapping, 
-  CareerPathway, 
+import { logger } from '@/shared/utils/logger'
+import type {
+  SkillMapping,
+  CareerPathway,
   IndustryRole,
   TrendingSkill,
   ReadinessAssessment,
@@ -70,7 +71,7 @@ Return JSON array with format:
       return this.enrichSkillMappings(mappings)
 
     } catch (error) {
-      console.error('Gaming experience analysis failed:', error)
+      logger.error('Gaming experience analysis failed:', error)
       throw error
     }
   }
@@ -120,7 +121,7 @@ Return JSON format:
       const cleanedResult = this.cleanJsonResponse(result || '[]')
       return JSON.parse(cleanedResult) as TrendingSkill[]
     } catch (error) {
-      console.error('Trending skills fetch failed:', error)
+      logger.error('Trending skills fetch failed:', error)
       return this.getFallbackTrendingSkills()
     }
   }
@@ -188,7 +189,7 @@ Return JSON format:
       const cleanedResult = this.cleanJsonResponse(result)
       return JSON.parse(cleanedResult) as IndustryRole
     } catch (error) {
-      console.error('Role requirements fetch failed:', error)
+      logger.error('Role requirements fetch failed:', error)
       throw error
     }
   }

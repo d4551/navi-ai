@@ -7,6 +7,7 @@
       'is-disabled': disabled
     }"
     :draggable="!disabled"
+    class="font-sans"
     @dragstart="handleDragStart"
     @dragend="handleDragEnd"
     @dragover="handleDragOver"
@@ -40,7 +41,7 @@
           v-if="aiEnabled && canOptimize"
           variant="ghost"
           size="xs"
-          leading-icon="mdi-brain"
+          leading-icon="CpuChipIcon"
           :loading="isOptimizing"
           @click="optimizeSection"
         >
@@ -52,7 +53,7 @@
           v-if="canAddItem"
           variant="ghost"
           size="xs"
-          leading-icon="mdi-plus"
+          leading-icon="PlusIcon"
           @click="addItem"
         >
           Add {{ itemTypeName }}
@@ -63,12 +64,12 @@
           <UnifiedButton
             variant="ghost"
             size="xs"
-            leading-icon="mdi-dots-vertical"
+            leading-icon="EllipsisVerticalIcon"
             @click="showOptions = !showOptions"
           />
           <div v-if="showOptions" class="options-dropdown">
             <button class="option-item" @click="duplicateSection">
-              <AppIcon name="mdi-content-copy" />
+              <AppIcon name="DocumentDuplicateIcon" />
               Duplicate Section
             </button>
             <button class="option-item" @click="toggleCollapse">
@@ -76,7 +77,7 @@
               {{ isCollapsed ? 'Expand' : 'Collapse' }}
             </button>
             <button v-if="canDelete" class="option-item danger" @click="confirmDelete">
-              <AppIcon name="mdi-delete" />
+              <AppIcon name="TrashIcon" />
               Delete Section
             </button>
           </div>
@@ -96,7 +97,7 @@
           v-if="canAddItem"
           variant="primary"
           size="sm"
-          :leading-icon="'mdi-plus'"
+          :leading-icon="'PlusIcon'"
           @click="addItem"
         >
           Add {{ itemTypeName }}
@@ -119,6 +120,8 @@
 </template>
 
 <script setup lang="ts">
+import { CpuChipIcon, DocumentDuplicateIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed } from 'vue'
 import { useToast } from '@/composables/useToast'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -259,7 +262,7 @@ function createDragImage(): HTMLElement {
       align-items: center;
       gap: 8px;
       font-size: 14px;
-      color: var(--text-primary);
+      color: var(--text-primary-600);
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
       backdrop-filter: blur(10px);
     ">
@@ -413,7 +416,7 @@ document.addEventListener('click', handleClickOutside)
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px 16px;
-  border-bottom: 1px solid rgba(var(--glass-border-rgb), 0.5);
+  border-b: 1px solid rgba(var(--glass-border-rgb), 0.5);
 }
 
 .section-title-container {
@@ -430,7 +433,7 @@ document.addEventListener('click', handleClickOutside)
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -473,7 +476,7 @@ document.addEventListener('click', handleClickOutside)
   padding: 10px 12px;
   border: none;
   background: transparent;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 14px;
   text-align: left;
   cursor: pointer;
@@ -531,7 +534,7 @@ document.addEventListener('click', handleClickOutside)
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(10px);
   pointer-events: none;

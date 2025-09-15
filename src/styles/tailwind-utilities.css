@@ -1,37 +1,205 @@
 /* Custom Tailwind utility classes that bridge master theme with Tailwind */
 @layer utilities {
-  /* Custom focus ring utility mapped to neon blue */
+  /* ===== RGB NEON INTERACTIVE STATE UTILITIES ===== */
+
+  /* --- Glass text/background helpers used via @apply in components --- */
+  /* Define within @layer so Tailwind can resolve @apply references */
+  .text-glass-primary {
+    color: var(--text-primary);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2);
+  }
+
+  .text-glass-secondary {
+    color: var(--text-secondary);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2);
+  }
+
+  .glass-bg-light {
+    background: var(--glass-bg-light);
+  }
+
+  /* Focus states with neon rings */
   .focus\:ring-neon:focus-visible {
     box-shadow: 0 0 0 3px rgba(var(--neon-blue), 0.3);
+    outline: none;
   }
-  /* Glass morphism utilities */
+
+  .focus\:ring-neon-red:focus-visible {
+    box-shadow: 0 0 0 3px rgba(var(--neon-red), 0.3);
+    outline: none;
+  }
+
+  .focus\:ring-neon-green:focus-visible {
+    box-shadow: 0 0 0 3px rgba(var(--neon-green), 0.3);
+    outline: none;
+  }
+
+  .focus\:ring-neon-purple:focus-visible {
+    box-shadow: 0 0 0 3px rgba(var(--neon-purple), 0.3);
+    outline: none;
+  }
+
+  /* Hover glow effects */
+  .hover\:glow-neon:hover {
+    box-shadow: 0 0 20px rgba(var(--neon-blue), 0.15);
+    border-color: rgba(var(--neon-blue), 0.3);
+    transform: translateY(-1px);
+  }
+
+  .hover\:glow-neon-intense:hover {
+    box-shadow:
+      0 0 30px rgba(var(--neon-blue), 0.3),
+      0 0 60px rgba(var(--neon-blue), 0.1);
+    border-color: rgba(var(--neon-blue), 0.5);
+    transform: translateY(-2px);
+  }
+
+  /* Active states */
+  .active\:glow-neon:active {
+    box-shadow: 0 0 25px rgba(var(--neon-blue), 0.25);
+    border-color: rgba(var(--neon-blue), 0.5);
+    transform: translateY(0);
+  }
+
+  /* Neon color variants for different states */
+  .neon-blue { color: rgb(var(--neon-blue)); }
+  .neon-green { color: rgb(var(--neon-green)); }
+  .neon-red { color: rgb(var(--neon-red)); }
+  .neon-purple { color: rgb(var(--neon-purple)); }
+  .neon-orange { color: rgb(var(--neon-orange)); }
+
+  .hover\:neon-blue:hover { color: rgb(var(--neon-blue)); }
+  .hover\:neon-green:hover { color: rgb(var(--neon-green)); }
+  .hover\:neon-red:hover { color: rgb(var(--neon-red)); }
+  /* Glass morphism utilities with RGB neon highlights */
   .glass-bg {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-backdrop-blur);
     -webkit-backdrop-filter: var(--glass-backdrop-blur);
+    border-radius: var(--border-radius-lg);
+    transition: var(--transition-normal);
   }
 
   .glass-border {
     border: 1px solid var(--glass-border);
   }
 
+  /* Subtle/safe glass border variants */
+  .glass-border-subtle {
+    border: 1px solid var(--glass-border-subtle);
+  }
+
+  .glass-border-safe {
+    border: 1px solid var(--glass-border-safe);
+  }
+
   .glass-shadow {
-    box-shadow: var(--glass-shadow);
+    box-shadow: 0 4px 6px var(--glass-shadow), 0 1px 3px var(--glass-shadow);
   }
 
   .glass-hover {
-    background: var(--glass-hover-bg);
+    background: var(--glass-bg-hover);
   }
 
   .glass-card {
-    /* Inlined from glass-bg, glass-border, glass-shadow, and rounded-glass */
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    border-radius: var(--radius-lg);
-    padding: var(--card-padding);
+    box-shadow: 0 4px 6px var(--glass-shadow), 0 1px 3px var(--glass-shadow);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    transition: var(--transition-normal);
+  }
+
+  .glass-card:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow:
+      0 8px 12px var(--glass-shadow),
+      0 2px 6px var(--glass-shadow),
+      0 0 20px rgba(var(--neon-blue), 0.15);
+  }
+
+  /* Interactive glass components with neon effects */
+  .glass-interactive {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-md);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .glass-interactive:hover {
+    background: var(--bg-hover);
+    border-color: rgba(var(--neon-blue), 0.3);
+    box-shadow:
+      0 0 20px rgba(var(--neon-blue), 0.1),
+      0 4px 8px var(--glass-shadow);
+  }
+
+  .glass-interactive:active {
+    background: var(--bg-active);
+    border-color: rgba(var(--neon-blue), 0.5);
+    box-shadow:
+      0 0 25px rgba(var(--neon-blue), 0.2),
+      0 2px 4px var(--glass-shadow);
+  }
+
+  .glass-interactive:focus-visible {
+    background: var(--bg-focus);
+    border-color: rgba(var(--neon-blue), 0.4);
+    box-shadow:
+      0 0 0 3px rgba(var(--neon-blue), 0.3),
+      0 0 20px rgba(var(--neon-blue), 0.15);
+    outline: none;
+  }
+
+  /* Modal-specific glassmorphic styling */
+  .glass-modal {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all var(--transition-smooth);
+  }
+
+  .glass-modal-backdrop {
+    background: var(--modal-backdrop);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .glass-modal-close-btn {
+    background: rgba(var(--text-secondary), 0.1);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-fast);
+  }
+
+  .glass-modal-close-btn:hover {
+    background: rgba(var(--neon-red), 0.1);
+    border-color: rgba(var(--neon-red), 0.3);
+    box-shadow: 0 0 15px rgba(var(--neon-red), 0.2);
+    transform: scale(1.05);
+  }
+
+  .glass-modal-close-btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(var(--neon-red), 0.3);
+    outline: none;
+  }
+
+  .glass-modal-close-btn:active {
+    transform: scale(0.98);
+    background: rgba(var(--neon-red), 0.2);
   }
 
   /* Text color utilities that automatically adapt to light/dark mode */
@@ -53,6 +221,101 @@
 
   .text-inverse {
     color: var(--text-inverse);
+  }
+
+  /* Glass text utilities optimized for accessibility */
+  .glass-text-light {
+    color: var(--text-tertiary);
+    opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+  }
+
+  .glass-text-dark {
+    color: var(--text-primary);
+    opacity: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+  }
+
+  .glass-text {
+    color: var(--text-secondary);
+    opacity: 0.95;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+  }
+
+  /* High contrast text for accessibility */
+  .text-accessible {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .text-accessible-alt {
+    color: var(--text-primary);
+    background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 2px 6px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+  }
+
+  /* Readable text on glass surfaces */
+  .glass-readable {
+    color: var(--text-primary);
+    background: rgba(var(--surface-rgb, 255, 255, 255), 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--glass-border-subtle);
+  }
+
+  /* Enhanced accessibility for glass backgrounds */
+  .glass-text-contrast {
+    color: var(--text-primary);
+    text-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.8),
+      0 0 1px rgba(0, 0, 0, 0.9);
+    font-weight: 600;
+  }
+
+  .glass-text-outline {
+    color: var(--text-primary);
+    text-shadow:
+      -1px -1px 0 rgba(var(--bg-primary-rgb), 0.8),
+      1px -1px 0 rgba(var(--bg-primary-rgb), 0.8),
+      -1px 1px 0 rgba(var(--bg-primary-rgb), 0.8),
+      1px 1px 0 rgba(var(--bg-primary-rgb), 0.8);
+    font-weight: 500;
+  }
+
+  .glass-text-safe {
+    color: var(--text-primary);
+    background: rgba(var(--bg-primary-rgb), 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 2px 8px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--glass-border-safe);
+  }
+
+  /* WCAG AA compliance helpers */
+  .text-contrast-aa {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1em;
+    line-height: 1.5;
+  }
+
+  .text-contrast-aaa {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.125em;
+    line-height: 1.6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
 
   /* Background utilities that adapt to light/dark mode */
@@ -90,6 +353,14 @@
     border-color: var(--glass-border-hover);
   }
 
+  .border-glass-subtle {
+    border-color: var(--glass-border-subtle);
+  }
+
+  .border-glass-safe {
+    border-color: var(--glass-border-safe);
+  }
+
   /* Overlay utilities that adapt to theme */
   .bg-overlay {
     background: var(--overlay);
@@ -112,38 +383,356 @@
     border-color: var(--color-gaming-500);
   }
 
-  /* Spacing utilities aligned with design system */
+  /* Standardized spacing utilities aligned with design system */
   .spacing-xs {
-    gap: var(--spacing-2);
+    gap: var(--spacing-xs);
   }
 
   .spacing-sm {
-    gap: var(--spacing-3);
+    gap: var(--spacing-sm);
   }
 
   .spacing-md {
-    gap: var(--spacing-4);
+    gap: var(--spacing-md);
   }
 
   .spacing-lg {
-    gap: var(--spacing-6);
+    gap: var(--spacing-lg);
   }
 
   .spacing-xl {
-    gap: var(--spacing-8);
+    gap: var(--spacing-xl);
+  }
+
+  .spacing-2xl {
+    gap: var(--spacing-2xl);
+  }
+
+  .spacing-3xl {
+    gap: var(--spacing-3xl);
+  }
+
+  .spacing-4xl {
+    gap: var(--spacing-4xl);
+  }
+
+  /* Padding utilities */
+  .p-xs { padding: var(--spacing-xs); }
+  .p-sm { padding: var(--spacing-sm); }
+  .p-md { padding: var(--spacing-md); }
+  .p-lg { padding: var(--spacing-lg); }
+  .p-xl { padding: var(--spacing-xl); }
+
+  /* Margin utilities */
+  .m-xs { margin: var(--spacing-xs); }
+  .m-sm { margin: var(--spacing-sm); }
+  .m-md { margin: var(--spacing-md); }
+  .m-lg { margin: var(--spacing-lg); }
+  .m-xl { margin: var(--spacing-xl); }
+
+  /* Directional margin utilities */
+  .mt-xs { margin-top: var(--spacing-xs); }
+  .mt-sm { margin-top: var(--spacing-sm); }
+  .mt-md { margin-top: var(--spacing-md); }
+  .mt-lg { margin-top: var(--spacing-lg); }
+  .mt-xl { margin-top: var(--spacing-xl); }
+
+  .mb-xs { margin-bottom: var(--spacing-xs); }
+  .mb-sm { margin-bottom: var(--spacing-sm); }
+  .mb-md { margin-bottom: var(--spacing-md); }
+  .mb-lg { margin-bottom: var(--spacing-lg); }
+  .mb-xl { margin-bottom: var(--spacing-xl); }
+
+  .ml-xs { margin-left: var(--spacing-xs); }
+  .ml-sm { margin-left: var(--spacing-sm); }
+  .ml-md { margin-left: var(--spacing-md); }
+  .ml-lg { margin-left: var(--spacing-lg); }
+  .ml-xl { margin-left: var(--spacing-xl); }
+
+  .mr-xs { margin-right: var(--spacing-xs); }
+  .mr-sm { margin-right: var(--spacing-sm); }
+  .mr-md { margin-right: var(--spacing-md); }
+  .mr-lg { margin-right: var(--spacing-lg); }
+  .mr-xl { margin-right: var(--spacing-xl); }
+
+  /* Auto margin utilities */
+  .mx-auto { margin-left: auto; margin-right: auto; }
+  .my-auto { margin-top: auto; margin-bottom: auto; }
+  .m-auto { margin: auto; }
+
+  /* Normalized width utilities */
+  .w-content { width: fit-content; }
+  .w-full-container { width: 100%; max-width: 1200px; margin: 0 auto; }
+  .w-sidebar { width: 280px; min-width: 280px; }
+  .w-main-content { width: calc(100% - 280px); min-width: 0; }
+  .w-card { width: 100%; max-width: 400px; }
+  .w-modal { width: 100%; max-width: 600px; }
+  .w-dialog { width: 100%; max-width: 480px; }
+
+  /* Normalized height utilities */
+  .h-header { height: 64px; min-height: 64px; }
+  .h-content { height: calc(100vh - 64px); min-height: calc(100vh - 64px); }
+  .h-card-sm { height: 120px; min-height: 120px; }
+  .h-card-md { height: 200px; min-height: 200px; }
+  .h-card-lg { height: 300px; min-height: 300px; }
+  .h-screen-content { height: 100vh; min-height: 100vh; }
+  .h-fill { height: 100%; min-height: 0; }
+
+  /* Flexbox normalization */
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .flex-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .flex-end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .flex-col-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Position normalization */
+  .absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .absolute-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .fixed-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+  }
+
+  /* Advanced flexbox utilities */
+  .flex-wrap-center {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .flex-wrap-between {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .flex-1-auto {
+    flex: 1 1 auto;
+  }
+
+  .flex-none {
+    flex: none;
+  }
+
+  .flex-shrink-0 {
+    flex-shrink: 0;
+  }
+
+  /* Grid utilities */
+  .grid-center {
+    display: grid;
+    place-items: center;
+  }
+
+  .grid-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  }
+
+  .grid-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  /* Aspect ratio utilities */
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aspect-video {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-portrait {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* Overflow utilities */
+  .overflow-smooth {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .overflow-hidden-x {
+    overflow-x: hidden;
+  }
+
+  .overflow-hidden-y {
+    overflow-y: hidden;
   }
 
   /* Container utilities */
   .container-glass {
-    max-width: var(--page-content-max-width);
+    max-width: 1200px;
     margin-inline: auto;
-    padding-inline: var(--spacing-6);
-    /* Inlined from glass-bg and glass-border */
+    padding-inline: var(--spacing-lg);
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--border-radius-lg);
+  }
+
+  /* Multi-column dense layout support for efficient data display */
+  .layout-dense-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    align-items: start;
+    width: 100%;
+  }
+
+  .layout-dense-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    align-items: start;
+    width: 100%;
+  }
+
+  .layout-dense-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md);
+    align-items: start;
+    width: 100%;
+  }
+
+  .layout-dense-auto {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    align-items: start;
+    width: 100%;
+  }
+
+  /* Compact data tables */
+  .layout-data-table {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-xs);
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-sm);
+    background: var(--glass-bg);
+    border-radius: var(--border-radius-md);
+  }
+
+  /* Dense card layouts */
+  .layout-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--spacing-sm);
+    align-items: stretch;
+    width: 100%;
+  }
+
+  /* Masonry for varied content heights */
+  .layout-masonry {
+    columns: 3;
+    column-gap: var(--spacing-md);
+    column-fill: balance;
+    width: 100%;
+  }
+
+  .layout-masonry > * {
+    break-inside: avoid;
+    margin-bottom: var(--spacing-md);
+    display: inline-block;
+    width: 100%;
+  }
+
+  /* List layouts for data efficiency */
+  .layout-dense-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    width: 100%;
+  }
+
+  .layout-dense-list > * {
+    padding: var(--spacing-sm);
+    background: var(--glass-bg);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Responsive layout adjustments */
+  @media (max-width: 1024px) {
+    .layout-dense-4 { grid-template-columns: repeat(2, 1fr); }
+    .layout-dense-3 { grid-template-columns: repeat(2, 1fr); }
+    .layout-masonry { columns: 2; }
+  }
+
+  @media (max-width: 768px) {
+    .layout-dense-4,
+    .layout-dense-3,
+    .layout-dense-2 {
+      grid-template-columns: 1fr;
+    }
+    .layout-masonry { columns: 1; }
+  }
+
+  /* Flexbox alternatives for dense layouts */
+  .flex-dense {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+  }
+
+  .flex-dense > * {
+    flex: 1 1 280px;
+    min-width: 0;
   }
 
   /* Button utilities */
@@ -186,6 +775,32 @@
 
   .font-display {
     font-family: 'Electrolize', 'Inter', system-ui, sans-serif;
+  }
+
+  /* Scroll container utilities optimized for flex layouts */
+  .content-scroll {
+    /* Allow scroll areas to shrink within flex parents */
+    min-height: 0;
+    /* Keep momentum scrolling on iOS and reduce nested scroll chaining */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Reserve space to prevent layout shift when scrollbars appear */
+    scrollbar-gutter: stable both-edges;
+  }
+
+  /* Directional variants to pair with Tailwind overflow utilities when needed */
+  .content-scroll-y {
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    scrollbar-gutter: stable both-edges;
+  }
+
+  .content-scroll-x {
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-gutter: stable both-edges;
   }
 
   /* Rounded utilities based on design system */
@@ -430,27 +1045,77 @@
     color: var(--text-muted);
   }
 
-  /* Override specific Tailwind classes to use adaptive colors */
-  .text-slate-900,
-  .text-gray-900 {
-    color: var(--text-primary) !important;
+  /* Override specific Tailwind classes to use adaptive colors (scoped to light mode) */
+  [data-theme="light"] .text-slate-900,
+  [data-theme="light"] .text-gray-900 {
+    color: var(--text-primary);
   }
 
-  .text-slate-800,
-  .text-gray-800 {
-    color: var(--text-secondary) !important;
+  [data-theme="light"] .text-slate-800,
+  [data-theme="light"] .text-gray-800 {
+    color: var(--text-secondary);
   }
 
-  .text-slate-700,
-  .text-gray-700 {
-    color: var(--text-tertiary) !important;
+  [data-theme="light"] .text-slate-700,
+  [data-theme="light"] .text-gray-700 {
+    color: var(--text-tertiary);
   }
 
-  .text-slate-600,
-  .text-gray-600,
-  .text-slate-500,
-  .text-gray-500 {
-    color: var(--text-muted) !important;
+  [data-theme="light"] .text-slate-600,
+  [data-theme="light"] .text-gray-600,
+  [data-theme="light"] .text-slate-500,
+  [data-theme="light"] .text-gray-500 {
+    color: var(--text-muted);
+  }
+
+  /* System light mode equivalents when no data-theme attribute is present */
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme]) .text-slate-900,
+    :root:not([data-theme]) .text-gray-900 {
+      color: var(--text-primary);
+    }
+
+    :root:not([data-theme]) .text-slate-800,
+    :root:not([data-theme]) .text-gray-800 {
+      color: var(--text-secondary);
+    }
+
+    :root:not([data-theme]) .text-slate-700,
+    :root:not([data-theme]) .text-gray-700 {
+      color: var(--text-tertiary);
+    }
+
+    :root:not([data-theme]) .text-slate-600,
+    :root:not([data-theme]) .text-gray-600,
+    :root:not([data-theme]) .text-slate-500,
+    :root:not([data-theme]) .text-gray-500 {
+      color: var(--text-muted);
+    }
+  }
+
+  /* System dark mode guard for legacy pages without .dark:* (no data-theme attribute) */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .text-slate-900,
+    :root:not([data-theme]) .text-gray-900 {
+      color: var(--text-primary);
+    }
+
+    :root:not([data-theme]) .text-slate-800,
+    :root:not([data-theme]) .text-gray-800 {
+      color: var(--text-secondary);
+    }
+
+    :root:not([data-theme]) .text-slate-700,
+    :root:not([data-theme]) .text-gray-700 {
+      color: var(--text-tertiary);
+    }
+
+    :root:not([data-theme]) .text-slate-600,
+    :root:not([data-theme]) .text-gray-600,
+    :root:not([data-theme]) .text-slate-500,
+    :root:not([data-theme]) .text-gray-500 {
+      color: var(--text-muted);
+    }
   }
 
   /* Enhanced dark mode border utilities */

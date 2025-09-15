@@ -1,19 +1,19 @@
 <template>
-  <div class="ai-job-search-interface">
+  <div class="ai-job-search-interface" class="font-sans">
     <!-- AI Search Form -->
     <div class="search-form-container mb-4">
       <div class="glass-card section-card-subtle">
         <div class="search-header mb-3">
-          <div class="d-flex align-items-center justify-content-between">
+          <div class="flex items-center justify-between">
             <div>
               <h6 class="mb-1">
-                <AppIcon name="mdi-auto-fix" class="text-primary me-2" />
+                <AppIcon name="SparklesIcon" class="text-primary-600 mr-2" />
                 AI-Powered Job Discovery
               </h6>
-              <p class="text-muted small mb-0">Describe your ideal role, and let AI find the perfect matches</p>
+              <p class="text-secondary small mb-0">Describe your ideal role, and let AI find the perfect matches</p>
             </div>
             <div v-if="!loading" class="ai-status">
-              <span class="badge bg-success">
+              <span class="badge bg-success-500">
                 <AppIcon name="mdi-circle-small" />
                 AI Ready
               </span>
@@ -23,8 +23,8 @@
 
         <!-- Main Search Input -->
         <div class="search-input-section mb-4 ui-input ui-size-md">
-          <label class="form-label fw-medium">
-            <AppIcon name="mdi-message-text" class="me-1" />
+          <label class="form-label font-medium">
+            <AppIcon name="ChatBubbleLeftRightIcon" class="mr-1" />
             Describe Your Dream Gaming Job
           </label>
           <div class="ai-search-input ui-input ui-size-md">
@@ -36,7 +36,7 @@
               :disabled="loading || isSearching"
             ></textarea>
             <div class="input-helpers mt-2">
-              <div class="suggestion-chips d-flex flex-wrap gap-1">
+              <div class="suggestion-chips flex flex-wrap gap-glass-xs">
                 <UnifiedButton
                   v-for="suggestion in quickSuggestions"
                   :key="suggestion"
@@ -54,10 +54,10 @@
 
         <!-- Advanced Parameters -->
         <div class="advanced-parameters">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label small fw-medium">
-                <AppIcon name="mdi-map-marker" />
+          <div class="flex flex-wrap g-3">
+            <div class="flex-1-md-6">
+              <label class="form-label small font-medium">
+                <AppIcon name="MapPinIcon" />
                 Location
               </label>
               <input
@@ -68,9 +68,9 @@
                 :disabled="loading || isSearching"
               >
             </div>
-            <div class="col-md-3">
-              <label class="form-label small fw-medium">
-                <AppIcon name="mdi-account-star" class="me-1" />
+            <div class="flex-1-md-3">
+              <label class="form-label small font-medium">
+                <AppIcon name="UserIcon-star" class="mr-1" />
                 Experience
               </label>
               <select
@@ -85,9 +85,9 @@
                 <option value="lead">Lead/Principal</option>
               </select>
             </div>
-            <div class="col-md-3">
-              <label class="form-label small fw-medium">
-                <AppIcon name="mdi-clock" class="me-1" />
+            <div class="flex-1-md-3">
+              <label class="form-label small font-medium">
+                <AppIcon name="ClockIcon" class="mr-1" />
                 Job Type
               </label>
               <select
@@ -104,14 +104,14 @@
           </div>
 
           <!-- Salary Range -->
-          <div class="row g-3 mt-2">
-            <div class="col-md-6">
-              <label class="form-label small fw-medium">
-                <AppIcon name="mdi-cash" />
+          <div class="flex flex-wrap g-3 mt-2">
+            <div class="flex-1-md-6">
+              <label class="form-label small font-medium">
+                <AppIcon name="CurrencyDollarIcon" />
                 Salary Range (USD)
               </label>
-              <div class="salary-inputs row g-2">
-                <div class="col-6">
+              <div class="salary-inputs flex flex-wrap g-2">
+                <div class="flex-1-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">$</span>
                     <input
@@ -125,7 +125,7 @@
                     >
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="flex-1-6">
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">$</span>
                     <input
@@ -141,9 +141,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-medium">
-                <AppIcon name="mdi-home" />
+            <div class="flex-1-md-6">
+              <label class="form-label small font-medium">
+                <AppIcon name="HomeIcon" />
                 Remote Work
               </label>
               <div class="form-check form-switch mt-2">
@@ -169,10 +169,10 @@
       <div class="glass-card section-card-subtle">
         <div class="insights-header mb-3">
           <h6 class="mb-1">
-            <AppIcon name="mdi-lightbulb" color="warning" />
+            <AppIcon name="LightBulbIcon" color="warning" />
             AI Insights
           </h6>
-          <p class="text-muted small mb-0">Smart recommendations based on your search</p>
+          <p class="text-secondary small mb-0">Smart recommendations based on your search</p>
         </div>
         <div class="insights-grid media-grid">
           <div
@@ -181,11 +181,11 @@
             class="insight-card"
           >
             <div class="insight-icon">
-              <i :class="[insight.icon, 'text-primary']"></i>
+              <i :class="[insight.icon, 'text-primary-600']"></i>
             </div>
             <div class="insight-content">
               <h6 class="insight-title">{{ insight.title }}</h6>
-              <p class="insight-description small text-muted">{{ insight.description }}</p>
+              <p class="insight-description small text-secondary">{{ insight.description }}</p>
               <UnifiedButton
                 v-if="insight.action"
                 variant="outline"
@@ -202,18 +202,18 @@
 
     <!-- Search Actions -->
     <div class="search-actions">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="flex items-center justify-between">
         <div class="search-info">
-          <div class="text-muted small">
-            <AppIcon name="mdi-information" class="me-1" />
+          <div class="text-secondary small">
+            <AppIcon name="InformationCircleIcon" class="mr-1" />
             AI will search across your configured job board sources
           </div>
         </div>
-        <div class="action-buttons d-flex gap-2">
+        <div class="action-buttons flex gap-glass-sm">
           <UnifiedButton
             variant="outline"
             :disabled="loading || isSearching || !hasValidSearch"
-            leading-icon="mdi-bookmark"
+            leading-icon="BookmarkIcon"
             @click="saveCurrentSearch"
           >
             Save Search
@@ -223,7 +223,7 @@
             size="lg"
             :disabled="loading || isSearching || !hasValidSearch"
             :loading="loading || isSearching"
-            leading-icon="mdi-auto-fix"
+            leading-icon="SparklesIcon"
             @click="initiateAISearch"
           >
             Start AI Search
@@ -236,19 +236,19 @@
     <div v-if="loading || isSearching" class="search-progress mt-4">
       <div class="glass-card section-card-subtle">
         <div class="progress-content">
-          <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="flex items-center justify-between mb-3">
             <h6 class="mb-0">
-              <AppIcon name="mdi-auto-fix" class="text-primary me-2" />
+              <AppIcon name="SparklesIcon" class="text-primary-600 mr-2" />
               AI Search in Progress
             </h6>
             <div class="search-timer">
-              <span class="badge badge-compact bg-primary">{{ searchTimer }}s</span>
+              <span class="badge badge-compact bg-primary-500">{{ searchTimer }}s</span>
             </div>
           </div>
 
           <div class="progress mb-3" style="height: 8px;">
             <div
-              class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+              class="progress-bar progress-bar-striped progress-bar-animated bg-primary-500"
               :style="{ width: searchProgress + '%' }"
             ></div>
           </div>
@@ -264,8 +264,8 @@
                 }"
               >
                 <div class="step-icon">
-                  <AppIcon v-if="completedSteps.includes(step.id)" name="mdi-check" />
-                  <AppIcon v-else-if="step.id === currentStep" name="mdi-loading" class="mdi-spin" />
+                  <AppIcon v-if="completedSteps.includes(step.id)" name="CheckIcon" />
+                  <AppIcon v-else-if="step.id === currentStep" name="ArrowPathIcon" class="mdi-spin" />
                   <i v-else :class="step.icon"></i>
                 </div>
                 <div class="step-label small">{{ step.label }}</div>
@@ -279,6 +279,9 @@
 </template>
 
 <script setup>
+import { ChatBubbleLeftRightIcon, CheckIcon, ClockIcon, CurrencyDollarIcon, HomeIcon, InformationCircleIcon, LightBulbIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, onUnmounted, computed, watch, defineEmits, defineProps } from 'vue'
 import { useAIJobSearch } from '@/composables/useAIJobSearch'
 import { useToast } from '@/composables/useToast'
@@ -710,7 +713,7 @@ onUnmounted(() => {
 
 .chip-btn:hover {
   background: var(--color-primary);
-  color: white;
+  color: var(--text-inverse);
   border-color: var(--color-primary);
   transform: translateY(-1px);
 }
@@ -735,7 +738,7 @@ onUnmounted(() => {
   height: 40px;
   border-radius: 50%;
   background: var(--color-primary);
-  color: white;
+  color: var(--text-inverse);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -750,7 +753,7 @@ onUnmounted(() => {
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .insight-description {
@@ -809,13 +812,13 @@ onUnmounted(() => {
 
 .step-completed .step-icon {
   background: var(--color-success);
-  color: white;
+  color: var(--text-inverse);
   border-color: var(--color-success);
 }
 
 .step-active .step-icon {
   background: var(--color-primary);
-  color: white;
+  color: var(--text-inverse);
   border-color: var(--color-primary);
 }
 
@@ -837,7 +840,7 @@ onUnmounted(() => {
     padding: 1rem;
   }
 
-  .d-flex.align-items-center.justify-content-between {
+  .flex.items-center.justify-between {
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start !important;

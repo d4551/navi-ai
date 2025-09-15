@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="multi-select" :class="{ open: isOpen }">
+  <div ref="container" class="multi-select" :class="{ open: isOpen }" class="font-sans">
     <div class="multi-select-trigger" @click="toggleDropdown">
       <div class="selected-items">
         <span v-if="selectedItems.length === 0" class="placeholder">
@@ -215,7 +215,7 @@ onUnmounted(() => {
   border-radius: 1rem;
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
 }
 
 .remove-btn {
@@ -267,7 +267,7 @@ onUnmounted(() => {
 
 .search-container {
   padding: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-b: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .search-input {
@@ -276,7 +276,7 @@ onUnmounted(() => {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.25rem;
   padding: 0.5rem;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
   font-size: 0.875rem;
 }
 
@@ -330,7 +330,7 @@ onUnmounted(() => {
 .option-label {
   flex: 1;
   font-size: 0.875rem;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
 }
 
 .no-options {
@@ -342,7 +342,7 @@ onUnmounted(() => {
 
 .dropdown-actions {
   padding: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-t: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .clear-all-btn {

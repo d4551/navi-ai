@@ -1,5 +1,5 @@
 <template>
-  <div class="step-tabs">
+  <div class="step-tabs" class="font-sans">
     <GlassNavTabs
       :tabs="tabs"
       :active-tab="activeTabLocal"
@@ -8,23 +8,23 @@
     />
 
     <div v-if="showProgress" class="progress progress-thin mb-3" role="progressbar" :aria-valuenow="stepProgress" aria-valuemin="0" aria-valuemax="100" :aria-label="`${ariaLabel} completion`">
-      <div class="progress-bar bg-primary" :style="`width:${stepProgress}%`"></div>
+      <div class="progress-bar bg-primary-500" :style="`width:${stepProgress}%`"></div>
     </div>
     <div v-if="showProgress" class="visually-hidden" aria-live="polite">{{ Math.round(stepProgress) }}% complete.</div>
 
-    <div v-if="showControls" class="d-flex justify-content-between align-items-center mt-2">
+    <div v-if="showControls" class="flex justify-between items-center mt-2">
       <UnifiedButton
         variant="outline"
         size="md"
         type="button"
         :disabled="stepIndex === 0"
-        leading-icon="mdi-arrow-left"
+        leading-icon="ArrowLeftIcon"
         @click="prevStep"
       >
         Previous
       </UnifiedButton>
 
-      <div class="text-muted small">
+      <div class="text-secondary small">
         Step {{ stepIndex + 1 }} of {{ stepsCount }}
       </div>
 
@@ -33,7 +33,7 @@
         variant="primary"
         size="md"
         type="button"
-        trailing-icon="mdi-arrow-right"
+        trailing-icon="ArrowRightIcon"
         @click="nextStep"
       >
         Next
@@ -52,6 +52,8 @@
 </template>
 
 <script setup>
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/vue/24/outline'
+
 import { computed, toRefs, ref, watch, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import GlassNavTabs from '@/components/GlassNavTabs.vue'

@@ -8,6 +8,7 @@
         'portfolio-item-card--selected': selected
       }
     ]"
+    class="font-sans"
     @click="handleClick"
   >
     <!-- Selection Overlay -->
@@ -530,7 +531,7 @@ onUnmounted(() => {
 /* View Mode Variants */
 .portfolio-item-card--list {
   display: flex;
-  flex-direction: row;
+  flex-direction: flex flex-wrap;
   align-items: stretch;
 }
 
@@ -700,7 +701,7 @@ onUnmounted(() => {
 .item-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
   margin: 0 0 0.75rem 0;
   line-height: 1.3;
   background: linear-gradient(135deg, 
@@ -758,7 +759,7 @@ onUnmounted(() => {
 
 .actions-trigger:hover {
   background: rgba(255, 255, 255, 0.2);
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
 }
 
 .actions-dropdown {
@@ -783,7 +784,7 @@ onUnmounted(() => {
   padding: 0.75rem 1rem;
   background: none;
   border: none;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
   text-align: left;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -892,7 +893,7 @@ onUnmounted(() => {
   display: block;
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-primary, #ffffff);
+  color: var(--text-primary-600, #ffffff);
 }
 
 .item-footer {
@@ -902,7 +903,7 @@ onUnmounted(() => {
   gap: 1rem;
   margin-top: auto;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-t: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-links {

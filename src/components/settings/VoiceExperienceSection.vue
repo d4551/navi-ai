@@ -3,15 +3,15 @@
   <div class="settings-card mb-4" role="region" aria-labelledby="voice-experience-title">
     <div class="card-header section-header card-header--dense">
       <h5 id="voice-experience-title" class="mb-0">
-        <SoundwaveIconComponent class="me-2 icon-sm" />Voice Experience
+        <SoundwaveIconComponent class="mr-2 icon-sm" />Voice Experience
       </h5>
     </div>
     <div class="card-body section-body card-body--dense">
       <!-- Voice Mode Toggle -->
-      <div class="voice-mode-section mb-4 p-3 border rounded-3 glass-input">
-        <div class="d-flex align-items-center mb-3">
-          <SoundwaveIconComponent class="me-2 text-primary" />
-          <h6 class="mb-0 text-primary fw-bold">Voice Interaction</h6>
+      <div class="voice-mode-section mb-4 p-glass-md border rounded-3 glass-input">
+        <div class="flex items-center mb-3">
+          <SoundwaveIconComponent class="mr-2 text-primary-600" />
+          <h6 class="mb-0 text-primary-600 font-bold">Voice Interaction</h6>
         </div>
 
         <div class="form-check form-switch mb-2">
@@ -21,7 +21,7 @@
             class="form-check-input"
             type="checkbox"
           />
-          <label class="form-check-label fw-medium" for="voice-mode">
+          <label class="form-check-label font-medium" for="voice-mode">
             Voice Mode (auto‑play assistant responses)
           </label>
         </div>
@@ -32,15 +32,15 @@
       </div>
 
       <!-- Advanced Voice Settings -->
-      <div class="advanced-voice-section p-3 border rounded-3 glass-input">
-        <div class="d-flex align-items-center mb-3">
-          <SettingsIconComponent class="me-2 text-primary" />
-          <h6 class="mb-0 text-primary fw-bold">Advanced Voice Settings</h6>
+      <div class="advanced-voice-section p-glass-md border rounded-3 glass-input">
+        <div class="flex items-center mb-3">
+          <SettingsIconComponent class="mr-2 text-primary-600" />
+          <h6 class="mb-0 text-primary-600 font-bold">Advanced Voice Settings</h6>
         </div>
 
         <!-- TTS Provider Selection -->
         <div class="mb-3">
-          <label for="tts-provider" class="form-label fw-medium">Text-to-Speech Provider</label>
+          <label for="tts-provider" class="form-label font-medium">Text-to-Speech Provider</label>
           <select
             id="tts-provider"
             v-model="localSettings.ttsProvider"
@@ -58,14 +58,14 @@
             <span v-else-if="localSettings.ttsProvider === 'gemini'">
               Uses Google AI Gemini for natural-sounding speech (requires API key)
               <div v-if="!localSettings.geminiApiKey" class="alert alert-warning mt-2 mb-0">
-                <i class="bi bi-exclamation-triangle"></i>
+                <ExclamationTriangleIcon class="h-4 w-4 inline-block mr-1" />
                 <strong>API Key Required:</strong> Please set your Gemini API key in the AI & API section above to use Google AI TTS.
               </div>
             </span>
             <span v-else-if="localSettings.ttsProvider === 'google-cloud'">
               Uses Google Cloud Text-to-Speech API for professional-quality voices (requires separate Google Cloud API key)
               <div v-if="!localSettings.googleCloudApiKey && !localSettings.geminiApiKey" class="alert alert-warning mt-2 mb-0">
-                <i class="bi bi-exclamation-triangle"></i>
+                <ExclamationTriangleIcon class="h-4 w-4 inline-block mr-1" />
                 <strong>API Key Required:</strong> Google Cloud TTS requires a Google Cloud API key with Text-to-Speech permissions, not a Gemini API key.
               </div>
             </span>
@@ -76,7 +76,7 @@
           
           <!-- Provider Health Status -->
           <div v-if="providerHealth && Object.keys(providerHealth).length > 0" class="mt-3">
-            <label class="form-label fw-medium">Provider Health Status</label>
+            <label class="form-label font-medium">Provider Health Status</label>
             <div class="provider-health-grid">
               <div 
                 v-for="(health, provider) in providerHealth" 
@@ -94,7 +94,7 @@
 
         <!-- Kokoro Model Selection (only shown when Kokoro is selected) -->
         <div v-if="localSettings.ttsProvider === 'kokoro'" class="mb-3">
-          <label for="kokoro-model" class="form-label fw-medium">Kokoro Voice Model</label>
+          <label for="kokoro-model" class="form-label font-medium">Kokoro Voice Model</label>
           <select
             id="kokoro-model"
             v-model="localSettings.kokoroModel"
@@ -115,9 +115,9 @@
 
         <!-- Advanced Quality Settings -->
         <div class="mb-3">
-          <label class="form-label fw-medium">Voice Quality Settings</label>
-          <div class="row g-3">
-            <div class="col-sm-6">
+          <label class="form-label font-medium">Voice Quality Settings</label>
+          <div class="flex flex-wrap g-3">
+            <div class="flex-1-sm-6">
               <label for="voice-quality" class="form-label">Quality Level</label>
               <select
                 id="voice-quality"
@@ -130,7 +130,7 @@
                 <option value="high">High (Best quality)</option>
               </select>
             </div>
-            <div class="col-sm-6">
+            <div class="flex-1-sm-6">
               <div class="form-check form-switch mt-4">
                 <input
                   id="adaptive-quality"
@@ -151,9 +151,9 @@
         </div>
 
         <!-- TTS Testing Panel -->
-        <div class="tts-testing-panel p-3 border rounded-3 glass-input">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h6 class="mb-0 text-primary fw-bold">Voice Testing & Diagnostics</h6>
+        <div class="tts-testing-panel p-glass-md border rounded-3 glass-input">
+          <div class="flex items-center justify-between mb-3">
+            <h6 class="mb-0 text-primary-600 font-bold">Voice Testing & Diagnostics</h6>
             <UnifiedButton
               v-if="!isRunningDiagnostics"
               variant="outline"
@@ -163,14 +163,14 @@
             >
               Run Diagnostics
             </UnifiedButton>
-            <div v-else class="d-flex align-items-center text-primary">
-              <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            <div v-else class="flex items-center text-primary-600">
+              <div class="spinner-border spinner-border-sm mr-2" role="status"></div>
               <span class="small">Running diagnostics...</span>
             </div>
           </div>
 
-          <div class="row g-2 mb-3">
-            <div class="col-sm-8">
+          <div class="flex flex-wrap g-2 mb-3">
+            <div class="flex-1-sm-8">
               <input
                 v-model="testMessage"
                 type="text"
@@ -179,11 +179,11 @@
                 @keyup.enter="testCurrentProvider"
               />
             </div>
-            <div class="col-sm-4">
+            <div class="flex-1-sm-4">
               <UnifiedButton
                 variant="primary"
                 size="sm"
-                leading-icon="mdi-play"
+                leading-icon="PlayIcon"
                 :disabled="isTesting || !testMessage.trim()"
                 @click="testCurrentProvider"
               >
@@ -208,7 +208,7 @@
 
           <!-- Test Results -->
           <div v-if="testResults.length > 0" class="test-results">
-            <label class="form-label fw-medium">Recent Test Results</label>
+            <label class="form-label font-medium">Recent Test Results</label>
             <div class="test-results-list">
               <div 
                 v-for="result in testResults.slice(-3)" 
@@ -227,8 +227,8 @@
           </div>
         </div>
 
-        <div class="row g-3">
-          <div class="col-sm-6">
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="voice-handsfree"
@@ -245,7 +245,7 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="chat-cues-muted-audio"
@@ -275,6 +275,7 @@ import {
   SettingsIconComponent,
   SlashIconComponent
 } from './SettingsIcons.js'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import { getVoiceService, getVoiceQualityPreferences, setVoiceQualityPreferences } from '@/utils/voice'
 
@@ -284,6 +285,7 @@ export default {
     SoundwaveIconComponent,
     SettingsIconComponent,
     SlashIconComponent,
+    ExclamationTriangleIcon,
     UnifiedButton
   },
   props: {
@@ -497,7 +499,7 @@ export default {
   font-weight: 600;
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .health-score {
@@ -569,18 +571,18 @@ export default {
   padding: 0.75rem;
   margin-bottom: 0.5rem;
   border-radius: 0.5rem;
-  border-left: 4px solid;
+  border-l: 4px solid;
   background: var(--surface-elevated);
   transition: all 0.3s ease;
 }
 
 .test-result-item.success {
-  border-left-color: var(--color-success-500);
+  border-l-color: var(--color-success-500);
   background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.02) 100%);
 }
 
 .test-result-item.error {
-  border-left-color: var(--color-danger-500);
+  border-l-color: var(--color-danger-500);
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.02) 100%);
 }
 
@@ -599,7 +601,7 @@ export default {
 .result-provider {
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .result-time {

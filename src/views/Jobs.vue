@@ -2,11 +2,12 @@
   <StandardPageLayout 
     title="Gaming Job Central"
     subtitle="Discover video game industry roles with AI‑powered matching and studio intelligence"
-    title-icon="mdi-gamepad-variant"
+    title-icon="PuzzlePieceIcon"
     page-type="gaming"
     max-width="full"
     content-spacing="normal"
     :hero-stats="jobBoardStats"
+    class="font-sans "
   >
     <template #header-actions>
       <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
@@ -14,7 +15,7 @@
         <UnifiedButton
           variant="primary"
           size="md"
-          leading-icon="mdi-magnify"
+          leading-icon="MagnifyingGlassIcon"
           @click="showAdvancedSearch = true"
         >
           Advanced Search
@@ -23,7 +24,7 @@
         <UnifiedButton
           variant="gaming"
           size="md"
-          leading-icon="mdi-gamepad-variant"
+          leading-icon="PuzzlePieceIcon"
           :class="{ active: filters.gamingOnly }"
           @click="toggleGamingFilter"
         >
@@ -33,7 +34,7 @@
         <UnifiedButton
           variant="glass"
           size="md"
-          leading-icon="mdi-bookmark-outline"
+          leading-icon="BookmarkIcon-outline"
           :badge="savedJobs.length"
           @click="showSavedJobs = !showSavedJobs"
         >
@@ -43,7 +44,7 @@
         <UnifiedButton
           variant="outline"
           size="md"
-          leading-icon="mdi-bell-outline"
+          leading-icon="BellIcon"
           :badge="jobAlerts.length"
           @click="showJobAlertsModal = true"
         >
@@ -59,23 +60,23 @@
 
     <!-- AI-Powered Search Hub -->
     <section class="mb-6">
-      <div class="glass-strong p-6 rounded-xl">
+      <div class="glass-strong p-glass-lg rounded-xl">
         <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-3">
-            <AppIcon name="mdi-brain" class="text-2xl text-neon-blue" />
+          <div class="flex items-center gap-glass-md">
+            <AppIcon name="CpuChipIcon" class="text-2xl text-neon-blue" />
             <h2 class="text-xl font-bold text-glass-enhanced">AI Game Career Intelligence</h2>
           </div>
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-glass-md">
             <div class="glass px-3 py-1 rounded-lg text-sm text-glass-enhanced">{{ totalJobs }} Active Positions</div>
             <div class="glass px-3 py-1 rounded-lg text-sm text-glass-enhanced">{{ studioCount }}+ Studios</div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-glass-md">
           <UnifiedButton
             variant="primary"
             size="lg"
-            leading-icon="mdi-magnify"
+            leading-icon="MagnifyingGlassIcon"
             class="search-action-btn"
             @click="showSearchModal = true"
           >
@@ -88,7 +89,7 @@
           <UnifiedButton
             variant="cyber"
             size="lg"
-            leading-icon="mdi-brain"
+            leading-icon="CpuChipIcon"
             :loading="aiLoading"
             class="search-action-btn"
             @click="aiRecommendJobs"
@@ -102,7 +103,7 @@
           <UnifiedButton
             variant="glass"
             size="lg"
-            leading-icon="mdi-target"
+            leading-icon="EyeIcon"
             class="search-action-btn"
             @click="showSmartSearchDialog = true"
           >
@@ -115,7 +116,7 @@
           <UnifiedButton
             variant="gaming"
             size="lg"
-            leading-icon="mdi-office-building"
+            leading-icon="BuildingOffice2Icon"
             class="search-action-btn"
             @click="openStudioExplorer"
           >
@@ -130,10 +131,10 @@
 
     <!-- Advanced Search and Filter Section -->
     <section class="mb-6">
-      <div class="glass p-6 rounded-lg">
+      <div class="glass p-glass-lg rounded-lg">
         <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-3">
-            <AppIcon name="mdi-filter-variant" class="text-xl text-neon-green" />
+          <div class="flex items-center gap-glass-md">
+            <AppIcon name="AdjustmentsHorizontalIcon" class="text-xl text-neon-green" />
             <h2 class="text-lg font-semibold text-glass-enhanced">Search & Filter Gaming Jobs</h2>
           </div>
           <UnifiedButton
@@ -148,9 +149,9 @@
         
         <div class="search-form">
           <!-- Primary Search Row -->
-          <div class="search-row">
+          <div class="search-flex flex-wrap">
             <div class="search-input-container">
-              <AppIcon name="mdi-magnify" class="search-icon" />
+              <AppIcon name="MagnifyingGlassIcon" class="search-icon" />
               <input
                 v-model="searchFilters.keywords"
                 type="text"
@@ -162,7 +163,7 @@
                 v-if="searchFilters.keywords"
                 variant="ghost"
                 size="sm"
-                trailing-icon="mdi-close"
+                trailing-icon="XMarkIcon"
                 class="clear-search-btn"
                 @click="searchFilters.keywords = ''"
               />
@@ -205,7 +206,7 @@
               <UnifiedButton
                 variant="primary"
                 size="md"
-                leading-icon="mdi-magnify"
+                leading-icon="MagnifyingGlassIcon"
                 @click="applyFilters"
               >
                 Search
@@ -217,7 +218,7 @@
           <div v-show="showAdvancedFilters" class="advanced-filters">
             <div class="filter-section">
               <h4 class="filter-section-title">
-                <AppIcon name="mdi-gamepad-variant" />
+                <AppIcon name="PuzzlePieceIcon" />
                 Gaming Industry Filters
               </h4>
               
@@ -266,11 +267,11 @@
 
     <!-- AI-Powered Top Matches Section -->
     <div v-if="topMatches.length > 0" class="content-section">
-      <div class="top-matches-card glass p-4 gap-4 m-4 rounded-lg">
+      <div class="top-matches-card glass p-glass-md gap-glass-md m-glass-md rounded-lg">
         <div class="matches-header">
           <div class="matches-info">
             <div class="matches-icon-group">
-              <AppIcon name="mdi-star" class="matches-icon" />
+              <AppIcon name="StarIcon" class="matches-icon" />
               <div class="matches-text">
                 <h3>Top AI Matches for You</h3>
                 <p>{{ topMatches.length }} high-match opportunities (60%+ compatibility)</p>
@@ -281,7 +282,7 @@
             v-if="!aiLoading && jobResults.length > 0"
             variant="outline"
             size="md"
-            leading-icon="mdi-robot"
+            leading-icon="CpuChipIcon"
             :loading="aiLoading"
             @click="aiRecommendJobs"
           >
@@ -330,15 +331,15 @@
 
     <!-- AI Analysis CTA (when no analysis has been run) -->
     <div v-else-if="filteredJobs.length > 0 && !hasRunAIAnalysis" class="content-section">
-      <div class="ai-cta-card glass p-4 gap-4 m-4 rounded-lg">
+      <div class="ai-cta-card glass p-glass-md gap-glass-md m-glass-md rounded-lg">
         <div class="ai-cta-content">
-          <AppIcon name="mdi-robot-excited" class="ai-cta-icon" />
+          <AppIcon name="CpuChipIcon" class="ai-cta-icon" />
           <h2>Get AI-Powered Job Recommendations</h2>
           <p>Let our advanced AI analyze {{ filteredJobs.length }} jobs and find your best matches based on your skills, experience, and gaming industry preferences.</p>
           <UnifiedButton
             variant="gaming"
             size="xl"
-            leading-icon="mdi-sparkles"
+            leading-icon="SparklesIcon"
             :loading="aiLoading"
             class="ai-analyze-btn"
             @click="aiRecommendJobs"
@@ -347,11 +348,11 @@
           </UnifiedButton>
           <div class="ai-features">
             <span class="feature-badge">
-              <AppIcon name="mdi-check-circle" />
+              <AppIcon name="CheckCircleIcon" />
               Smart Matching Algorithm
             </span>
             <span class="feature-badge">
-              <AppIcon name="mdi-brain" />
+              <AppIcon name="CpuChipIcon" />
               Gaming Industry Focused
             </span>
           </div>
@@ -361,7 +362,7 @@
 
     <!-- Enhanced Job Results Section -->
     <div class="content-section">
-      <div class="results-card glass p-4 gap-4 m-4 rounded-lg">
+      <div class="results-card glass p-glass-md gap-glass-md m-glass-md rounded-lg">
         <div class="results-header">
           <div class="results-info">
             <h2>Gaming Job Opportunities</h2>
@@ -374,7 +375,7 @@
             <ViewToggle
               v-model="viewMode"
               :options="[
-                { value: 'table', icon: 'mdi-table', label: 'Table view' },
+                { value: 'table', icon: 'TableCellsIcon', label: 'Table view' },
                 { value: 'cards', icon: 'mdi-view-grid', label: 'Cards view' },
               ]"
             />
@@ -398,7 +399,7 @@
             variant="outline"
             size="sm"
             :loading="refreshing"
-            leading-icon="mdi-refresh"
+            leading-icon="ArrowPathIcon"
             @click="refreshJobs"
           >
             Refresh
@@ -432,7 +433,7 @@
 
           <!-- Empty State -->
           <div v-if="!loading && filteredJobs.length === 0" class="empty-state">
-            <AppIcon name="mdi-magnify" class="empty-icon" />
+            <AppIcon name="MagnifyingGlassIcon" class="empty-icon" />
             <h3>No gaming jobs found</h3>
             <p>Try adjusting your filters or check out our studio database for more opportunities.</p>
             <div class="empty-actions">
@@ -467,7 +468,7 @@
 
     <!-- Live Data Sources Status -->
     <div class="content-section">
-      <div class="data-sources-card glass p-4 gap-4 m-4 rounded-lg">
+      <div class="data-sources-card glass p-glass-md gap-glass-md m-glass-md rounded-lg">
         <div class="sources-header">
           <h5>Live Gaming Job Sources</h5>
           <UnifiedButton
@@ -531,6 +532,9 @@
 </template>
 
 <script setup>
+import { AdjustmentsHorizontalIcon, ArrowPathIcon, BellIcon, BuildingOffice2Icon, CpuChipIcon, EyeIcon, MagnifyingGlassIcon, PuzzlePieceIcon, SparklesIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
@@ -670,7 +674,7 @@ const totalJobs = computed(() => jobs.value.length)
 const jobBoardStats = computed(() => [
   { label: 'Active Jobs', value: totalJobs.value, icon: 'mdi-briefcase' },
   { label: 'Gaming Studios', value: studioCount.value, icon: 'mdi-office-building' },
-  { label: 'Saved Jobs', value: savedJobs.value.length, icon: 'mdi-bookmark' },
+  { label: 'Saved Jobs', value: savedJobs.value.length, icon: 'BookmarkIcon' },
   { label: 'Job Alerts', value: jobAlerts.value.length, icon: 'mdi-bell' }
 ])
 
@@ -1022,9 +1026,9 @@ const getProviderIcon = (provider) => {
     'Greenhouse': 'mdi-leaf',
     'Lever': 'mdi-office-building',
     'SmartRecruiters': 'mdi-brain',
-    'Workday': 'mdi-calendar',
+    'Workday': 'CalendarIcon',
     'GitHub': 'mdi-github',
-    'AngelList': 'mdi-rocket'
+    'AngelList': 'RocketLaunchIcon'
   }
   return iconMap[provider] || 'mdi-briefcase'
 }
@@ -1101,9 +1105,9 @@ watch([savedJobs, jobAlerts], () => {
   padding: var(--spacing-6);
   border-radius: var(--radius-xl);
   background: linear-gradient(135deg, 
-    rgba(var(--color-primary-500-rgb), 0.05) 0%,
-    rgba(var(--color-gaming-500-rgb), 0.05) 100%);
-  border: 1px solid rgba(var(--color-gaming-400-rgb), 0.2);
+    var(--color-primary-50) 0%,
+    var(--color-gaming-50) 100%);
+  border: 1px solid var(--color-gaming-200);
   backdrop-filter: blur(20px);
 }
 
@@ -1148,13 +1152,13 @@ watch([savedJobs, jobAlerts], () => {
 }
 
 .gaming-stat {
-  background: rgba(var(--color-gaming-500-rgb), 0.15);
+  background: var(--color-gaming-100);
   color: var(--color-gaming-300);
   border-color: rgba(var(--color-gaming-500-rgb), 0.3);
 }
 
 .studio-stat {
-  background: rgba(var(--color-primary-500-rgb), 0.15);
+  background: var(--color-primary-100);
   color: var(--color-primary-300);
   border-color: rgba(var(--color-primary-500-rgb), 0.3);
 }
@@ -1208,11 +1212,11 @@ watch([savedJobs, jobAlerts], () => {
 
 .search-input-container:focus-within {
   border-color: var(--color-gaming-400);
-  box-shadow: 0 0 0 3px rgba(var(--color-gaming-500-rgb), 0.15);
+  box-shadow: 0 0 0 3px var(--color-gaming-100);
 }
 
 .search-icon {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-right: var(--spacing-3);
 }
 
@@ -1222,7 +1226,7 @@ watch([savedJobs, jobAlerts], () => {
   background: transparent;
   padding: var(--spacing-3) 0;
   font-size: 1rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .search-input:focus {
@@ -1273,7 +1277,7 @@ watch([savedJobs, jobAlerts], () => {
 
 .results-info h4 {
   margin: 0 0 var(--spacing-2) 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .results-meta {
@@ -1302,11 +1306,11 @@ watch([savedJobs, jobAlerts], () => {
 }
 
 .sort-select {
-  background: var(--glass p-4 gap-4 m-4 rounded-lg);
+  background: var(--glass p-glass-md gap-glass-md m-glass-md rounded-lg);
   border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
   padding: var(--spacing-2) var(--spacing-3);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -1328,7 +1332,7 @@ watch([savedJobs, jobAlerts], () => {
 
 .sources-header h5 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .sources-grid {
@@ -1420,7 +1424,7 @@ watch([savedJobs, jobAlerts], () => {
   box-shadow: 0 0 20px rgba(var(--neon-primary-rgb), 0.4);
 }
 
-:deep(.glass p-4 gap-4 m-4 rounded-lg) {
+:deep(.glass p-glass-md gap-glass-md m-glass-md rounded-lg) {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);

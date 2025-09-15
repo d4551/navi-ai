@@ -1,18 +1,18 @@
 <template>
-  <v-card variant="outlined" class="mb-4 section-card section-card unified-card">
-    <v-card-title class="d-flex align-center justify-space-between pa-4">
-      <div class="d-flex align-center ga-2">
-        <AppIcon name="mdi-briefcase-outline" size="small" color="primary" />
-        <span class="text-h6">Professional Experience</span>
+  <v-card variant="outlined" class="mb-4 section-card section-card unified-card" class="font-sans">
+    <v-card-title class="flex items-center justify-space-between pa-4">
+      <div class="flex items-center gap-glass-sm">
+        <AppIcon name="BriefcaseIcon" size="small" color="primary" />
+        <span class="text-lg font-semibold">Professional Experience</span>
       </div>
       <UnifiedButton
         variant="primary"
         size="sm"
-        leading-icon="mdi-plus"
+        leading-icon="PlusIcon"
         @click="add"
       >
         <span class="d-sm-none">Add</span>
-        <span class="d-none d-sm-inline">Add Experience</span>
+        <span class="hidden d-sm-inline">Add Experience</span>
       </UnifiedButton>
     </v-card-title>
     
@@ -39,29 +39,29 @@
         @drop="onDrop('experience', index)"
         @dragend="endDrag"
       >
-        <v-card-title class="d-flex justify-space-between align-start pa-3">
+        <v-card-title class="flex justify-space-between align-start pa-3">
           <UiChip
             :id="`work-exp-${index}-title`"
             classes="chip chip-primary chip-compact"
           >
             Work Experience #{{ index + 1 }}
           </UiChip>
-          <div class="d-flex align-center ga-1">
+          <div class="flex items-center ga-1">
             <UnifiedButton
               icon-only
               size="sm"
               variant="outline"
-              icon="mdi-drag-vertical"
+              icon="Bars3Icon"
               aria-label="Drag to reorder"
               class="drag-handle"
             />
-            <div class="d-inline-flex ga-1">
+            <div class="inline-flex ga-1">
               <UnifiedButton
                 :disabled="index === 0"
                 icon-only
                 size="sm"
                 variant="outline"
-                icon="mdi-arrow-up"
+                icon="ArrowUpIcon"
                 aria-label="Move up"
                 @click="move(index, index - 1)"
               />
@@ -70,7 +70,7 @@
                 icon-only
                 size="sm"
                 variant="outline"
-                icon="mdi-arrow-down"
+                icon="ArrowDownIcon"
                 aria-label="Move down"
                 @click="move(index, index + 1)"
               />
@@ -79,7 +79,7 @@
               icon-only
               size="sm"
               variant="outline"
-              icon="mdi-trash-can-outline"
+              icon="TrashIcon"
               :aria-label="`Remove work experience ${index + 1}`"
               @click="remove(index)"
             />
@@ -87,24 +87,24 @@
         </v-card-title>
         
         <div class="pa-3-unified">
-          <v-row>
-            <v-col cols="12" md="6">
+          <v-flex flex-wrap>
+            <v-flex-1 cols="12" md="6">
               <v-text-field
                 v-model="exp.title"
                 label="Job Title"
                 variant="outlined"
                 density="compact"
               />
-            </v-col>
-            <v-col cols="12" md="6">
+            </v-flex-1>
+            <v-flex-1 cols="12" md="6">
               <v-text-field
                 v-model="exp.company"
                 label="Company"
                 variant="outlined"
                 density="compact"
               />
-            </v-col>
-            <v-col cols="12" md="6">
+            </v-flex-1>
+            <v-flex-1 cols="12" md="6">
               <v-text-field
                 v-model="exp.startDate"
                 label="Start Date"
@@ -112,8 +112,8 @@
                 density="compact"
                 placeholder="e.g., Jan 2023"
               />
-            </v-col>
-            <v-col cols="12" md="6">
+            </v-flex-1>
+            <v-flex-1 cols="12" md="6">
               <v-text-field
                 v-model="exp.endDate"
                 label="End Date"
@@ -121,8 +121,8 @@
                 density="compact"
                 placeholder="e.g., Present"
               />
-            </v-col>
-            <v-col cols="12">
+            </v-flex-1>
+            <v-flex-1 cols="12">
               <v-textarea
                 v-model="exp.description"
                 label="Job Description"
@@ -130,7 +130,7 @@
                 rows="4"
                 placeholder="Job responsibilities and achievements..."
               />
-              <div class="d-flex justify-end mt-2">
+              <div class="flex justify-end mt-2">
                 <UnifiedButton
                   v-if="exp.description"
                   variant="outline"
@@ -143,14 +143,14 @@
                   {{ copyingIndex === index ? "Copied" : "Copy" }}
                 </UnifiedButton>
               </div>
-            </v-col>
-          </v-row>
+            </v-flex-1>
+          </v-flex flex-wrap>
         </div>
       </v-card>
 
       <v-empty-state
         v-if="localItems.length === 0"
-        icon="mdi-briefcase-outline"
+        icon="BriefcaseIcon"
         title="No work experience added yet"
         text="Click 'Add Experience' to include your professional background"
       />
@@ -159,6 +159,8 @@
 </template>
 
 <script>
+import { ArrowDownIcon, ArrowUpIcon, Bars3Icon, BriefcaseIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 import UiChip from '@/components/ui/UiChip.vue';
 import UnifiedButton from '@/components/ui/UnifiedButton.vue';

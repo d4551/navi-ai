@@ -1,5 +1,5 @@
 <template>
-  <div class="job-discovery-card ultra-glass-card section-card gaming-card">
+  <div class="job-discovery-card ultra-glass-card section-card gaming-card" class="font-sans">
     <!-- Job Header with Company Branding -->
     <div class="job-header">
       <div class="company-branding">
@@ -66,15 +66,15 @@
     <!-- Salary & Experience Level -->
     <div class="job-meta">
       <div v-if="job.salary" class="salary-range">
-        <AppIcon name="mdi-cash-multiple" class="text-success" />
+        <AppIcon name="mdi-cash-multiple" class="text-success-600" />
         <span>{{ formatSalary(job.salary) }}</span>
       </div>
       <div class="experience-level" :class="getExperienceLevelClass(job.experienceLevel)">
-        <AppIcon name="mdi-account-star" />
+        <AppIcon name="UserIcon-star" />
         <span>{{ job.experienceLevel }}</span>
       </div>
       <div class="job-type">
-        <AppIcon name="mdi-clock-outline" />
+        <AppIcon name="ClockIcon" />
         <span>{{ job.type }}</span>
       </div>
     </div>
@@ -95,7 +95,7 @@
           :class="getUserSkillClass(tech)"
         >
           {{ tech }}
-          <AppIcon v-if="isUserSkill(tech)" name="mdi-check-circle-outline" class="skill-match-icon" />
+          <AppIcon v-if="isUserSkill(tech)" name="CheckCircleIcon" class="skill-match-icon" />
         </span>
         <span v-if="job.technologies.length > 5" class="tech-tag overflow-indicator">
           +{{ job.technologies.length - 5 }} more
@@ -106,12 +106,12 @@
     <!-- Match Reasons (AI Insights) -->
     <div v-if="matchReasons && matchReasons.length" class="match-reasons">
       <h5 class="match-section-title">
-        <AppIcon name="mdi-brain" class="text-cyber" />
+        <AppIcon name="CpuChipIcon" class="text-cyber" />
         Why This Matches You
       </h5>
       <ul class="match-reasons-list">
         <li v-for="reason in matchReasons.slice(0, 3)" :key="reason" class="match-reason">
-          <AppIcon name="mdi-check-circle-outline" color="success" context="success" />
+          <AppIcon name="CheckCircleIcon" color="success" context="success" />
           {{ reason }}
         </li>
       </ul>
@@ -120,7 +120,7 @@
     <!-- Gaming Skills Connection -->
     <div v-if="job.gamingTitles && job.gamingTitles.length" class="gaming-skills-connection">
       <h5 class="gaming-section-title">
-        <AppIcon name="mdi-gamepad-variant" context="gaming" />
+        <AppIcon name="PuzzlePieceIcon" context="gaming" />
         Gaming Skills Applied
       </h5>
       <div class="gaming-titles">
@@ -129,7 +129,7 @@
           :key="titleId"
           class="gaming-title-chip"
         >
-          <span class="game-emoji"><AppIcon name="mdi-gamepad-variant" color="gaming" context="gaming" aria-hidden="true" /></span>
+          <span class="game-emoji"><AppIcon name="PuzzlePieceIcon" color="gaming" context="gaming" aria-hidden="true" /></span>
           {{ getGameTitle(titleId) }}
         </div>
       </div>
@@ -143,7 +143,7 @@
         :loading="applyingJob"
         @click="handleApply"
       >
-        <AppIcon name="mdi-send" class="me-2" />
+        <AppIcon name="PaperAirplaneIcon" class="mr-2" />
         Quick Apply
       </UnifiedButton>
       
@@ -152,7 +152,7 @@
         size="sm" 
         @click="handleViewDetails"
       >
-        <AppIcon name="mdi-eye" class="me-2" />
+        <AppIcon name="EyeIcon" class="mr-2" />
         View Details
       </UnifiedButton>
       
@@ -164,7 +164,7 @@
         :title="isSaved ? 'Remove from saved' : 'Save job'"
         @click="handleSave"
       >
-        <AppIcon :name="isSaved ? 'mdi-heart' : 'mdi-heart-outline'" />
+        <AppIcon :name="isSaved ? 'HeartIcon' : 'HeartIcon-outline'" />
       </UnifiedButton>
       
       <UnifiedButton 
@@ -174,18 +174,18 @@
         title="AI Interview Prep"
         @click="handleInterviewPrep"
       >
-        <AppIcon name="mdi-account-voice" />
+        <AppIcon name="SpeakerWaveIcon" />
       </UnifiedButton>
     </div>
 
     <!-- Job Footer with Posted Date and Applicants -->
     <div class="job-footer">
       <div class="job-posted-date">
-        <AppIcon name="mdi-clock-outline" />
+        <AppIcon name="ClockIcon" />
         Posted {{ getRelativeTime(job.postedDate) }}
       </div>
       <div v-if="job.applicants" class="job-applicants">
-        <AppIcon name="mdi-account-group" />
+        <AppIcon name="UsersIcon" />
         {{ job.applicants }} applicants
       </div>
     </div>
@@ -196,6 +196,8 @@
 </template>
 
 <script setup lang="ts">
+import { CheckCircleIcon, ClockIcon, CpuChipIcon, EyeIcon, PaperAirplaneIcon, PuzzlePieceIcon, SpeakerWaveIcon, UsersIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, defineEmits } from 'vue'
 import UnifiedButton from './UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -374,7 +376,7 @@ const handleInterviewPrep = () => {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  border-left: 4px solid var(--razer-blue);
+  border-l: 4px solid var(--razer-blue);
 }
 
 .job-discovery-card:hover {
@@ -435,7 +437,7 @@ const handleInterviewPrep = () => {
   justify-content: center;
   font-weight: 700;
   font-size: 1.2rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .company-info {
@@ -445,7 +447,7 @@ const handleInterviewPrep = () => {
 .job-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 0.5rem 0;
   line-height: 1.3;
 }
@@ -522,7 +524,7 @@ const handleInterviewPrep = () => {
 .score-value {
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .score-label {
@@ -563,10 +565,10 @@ const handleInterviewPrep = () => {
   font-weight: 500;
 }
 
-.experience-level.entry { border-left: 3px solid var(--razer-green); }
-.experience-level.mid { border-left: 3px solid var(--razer-blue); }
-.experience-level.senior { border-left: 3px solid var(--razer-purple); }
-.experience-level.lead { border-left: 3px solid var(--razer-orange); }
+.experience-level.entry { border-l: 3px solid var(--razer-green); }
+.experience-level.mid { border-l: 3px solid var(--razer-blue); }
+.experience-level.senior { border-l: 3px solid var(--razer-purple); }
+.experience-level.lead { border-l: 3px solid var(--razer-orange); }
 
 /* Job Description */
 .job-description {
@@ -587,7 +589,7 @@ const handleInterviewPrep = () => {
 .tech-section-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 0.5rem 0;
 }
 
@@ -602,7 +604,7 @@ const handleInterviewPrep = () => {
   align-items: center;
   gap: 0.25rem;
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-full);
   font-size: 0.75rem;
@@ -639,7 +641,7 @@ const handleInterviewPrep = () => {
   gap: 0.5rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 0.5rem 0;
 }
 
@@ -725,7 +727,7 @@ const handleInterviewPrep = () => {
   justify-content: space-between;
   align-items: center;
   padding-top: 1rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   color: var(--text-tertiary);
   font-size: 0.8rem;
 }

@@ -144,7 +144,7 @@ export const UI_CONFIG = {
 
   // Icon settings
   icons: {
-    defaultLibrary: 'mui', // 'mui' or 'bootstrap'
+    defaultLibrary: 'mui', // 'mui' or 'heroicons'
     sizes: {
       xs: '0.75rem',
       sm: '1rem',

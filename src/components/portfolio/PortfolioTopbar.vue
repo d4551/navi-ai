@@ -1,5 +1,5 @@
 <template>
-  <nav class="portfolio-topbar" :data-theme="themeName">
+  <nav class="portfolio-topbar" :data-theme="themeName" class="font-sans">
     <!-- Header Section with Stats -->
     <div class="topbar-header">
       <!-- Results and Stats Bar -->
@@ -10,7 +10,7 @@
             <div class="result-label">Projects Found</div>
           </div>
           <div v-if="activeFiltersCount > 0" class="filter-status">
-            <AppIcon name="mdi-filter" />
+            <AppIcon name="FunnelIcon" />
             <span>{{ activeFiltersCount }} filter{{ activeFiltersCount === 1 ? '' : 's' }} active</span>
           </div>
         </div>
@@ -34,10 +34,10 @@
             :aria-label="searchPlaceholder"
             @input="updateSearch"
           />
-          <AppIcon name="mdi-magnify" class="search-icon" />
+          <AppIcon name="MagnifyingGlassIcon" class="search-icon" />
           <AppIcon 
             v-if="searchQuery" 
-            name="mdi-close-circle" 
+            name="XMarkIcon-circle" 
             class="search-clear"
             @click="clearSearch"
           />
@@ -86,7 +86,7 @@
             :variant="viewMode === 'grid' ? 'primary' : 'glass'"
             size="sm"
             icon-only
-            icon="mdi-view-grid"
+            icon="Squares2X2Icon"
             aria-label="Grid view"
             :class="{ active: viewMode === 'grid' }"
             @click="setViewMode('grid')"
@@ -95,7 +95,7 @@
             :variant="viewMode === 'list' ? 'primary' : 'glass'"
             size="sm"
             icon-only
-            icon="mdi-view-list"
+            icon="ListBulletIcon"
             aria-label="List view"
             :class="{ active: viewMode === 'list' }"
             @click="setViewMode('list')"
@@ -106,13 +106,13 @@
         <UnifiedButton 
           variant="primary" 
           size="sm" 
-          leading-icon="mdi-robot"
+          leading-icon="CpuChipIcon"
           class="ai-tools-btn"
           @click="openAITools"
         >
           <span>AI Tools</span>
           <div class="ai-sparkle">
-            <AppIcon name="mdi-star" />
+            <AppIcon name="StarIcon" />
           </div>
         </UnifiedButton>
       </div>
@@ -123,7 +123,7 @@
       <div class="skills-header">
         <div class="skills-title-group">
           <div class="skills-title">
-            <AppIcon name="mdi-tag-multiple" />
+            <AppIcon name="TagIcon-multiple" />
             Filter by Skills
           </div>
           <div v-if="activeSkillsCount > 0" class="active-filters-count">
@@ -139,13 +139,13 @@
               placeholder="Search skills..."
               @input="filterSkills"
             />
-            <AppIcon name="mdi-magnify" class="skill-search-icon" />
+            <AppIcon name="MagnifyingGlassIcon" class="skill-search-icon" />
           </div>
           <UnifiedButton
             v-if="activeSkillsCount > 0"
             variant="glass"
             size="sm"
-            leading-icon="mdi-close"
+            leading-icon="XMarkIcon"
             @click="clearAllSkills"
           >
             Clear All
@@ -177,13 +177,13 @@
           @click="toggleSkill(skill.id)"
         >
           <span class="skill-chip-icon">
-            <AppIcon :name="skill.icon || 'mdi-tag'" />
+            <AppIcon :name="skill.icon || 'TagIcon'" />
           </span>
           {{ skill.name }}
           <span class="chip-count">{{ skill.projectCount }}</span>
           <AppIcon 
             v-if="selectedSkills.includes(skill.id)"
-            name="mdi-close" 
+            name="XMarkIcon" 
             class="skill-chip-remove"
             @click.stop="removeSkill(skill.id)"
           />
@@ -215,7 +215,7 @@
         <UnifiedButton
           variant="ghost"
           size="sm"
-          :leading-icon="showAllSkills ? 'mdi-minus-circle' : 'mdi-plus-circle'"
+          :leading-icon="showAllSkills ? 'mdi-minus-circle' : 'PlusIcon-circle'"
           class="expand-btn"
           @click="toggleShowAllSkills"
         >
@@ -227,6 +227,9 @@
 </template>
 
 <script setup>
+import { CpuChipIcon, FunnelIcon, ListBulletIcon, MagnifyingGlassIcon, Squares2X2Icon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch, onMounted } from 'vue'
 import { useAppStore } from '@/stores/app'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -494,7 +497,7 @@ onMounted(() => {
   background: linear-gradient(135deg, 
     rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.03) 0%, 
     rgba(var(--color-gaming-500-rgb, 168, 85, 247), 0.03) 100%);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 /* Stats Bar */
@@ -625,7 +628,7 @@ onMounted(() => {
   border-radius: var(--radius-lg);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   transition: all var(--duration-fast);
   appearance: none;
@@ -810,7 +813,7 @@ input:checked ~ .toggle-label {
 .skills-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -872,7 +875,7 @@ input:checked ~ .toggle-label {
   gap: var(--spacing-2);
   margin-bottom: var(--spacing-4);
   padding-bottom: var(--spacing-3);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   overflow-x: auto;
 }
 
@@ -917,7 +920,7 @@ input:checked ~ .toggle-label {
 
 .skill-chip {
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: var(--spacing-2-5) var(--spacing-4);
   border-radius: var(--radius-xl);
   font-size: var(--font-size-sm);
@@ -1036,7 +1039,7 @@ input:checked ~ .toggle-label {
 .skill-progress-name {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .skill-progress-value {

@@ -1,11 +1,11 @@
 <template>
-  <div class="enhanced-dashboard" :class="[`dashboard-variant-${variant}`]">
+  <div class="enhanced-dashboard" :class="[`dashboard-variant-${variant}`]" class="font-sans">
     <!-- Dashboard Header -->
     <div class="dashboard-header">
       <div class="header-content">
         <div class="header-main">
           <h1 class="dashboard-title">
-            <v-icon :icon="titleIcon" class="me-3" size="32" />
+            <v-icon :icon="titleIcon" class="mr-3" size="32" />
             {{ title }}
           </h1>
           <p v-if="subtitle" class="dashboard-subtitle">{{ subtitle }}</p>
@@ -87,10 +87,10 @@
             <div class="widget-card">
               <div class="widget-header">
                 <h3 class="widget-title">
-                  <v-icon icon="mdi-clock-outline" class="me-2" />
+                  <v-icon icon="ClockIcon" class="mr-2" />
                   Recent Activity
                 </h3>
-                <UnifiedButton icon-only variant="ghost" size="sm" icon="mdi-refresh" aria-label="Refresh" @click="refreshActivity" />
+                <UnifiedButton icon-only variant="ghost" size="sm" icon="ArrowPathIcon" aria-label="Refresh" @click="refreshActivity" />
               </div>
               <div class="widget-content">
                 <div v-if="recentActivity.length === 0" class="empty-state">
@@ -119,12 +119,12 @@
             <div class="widget-card">
               <div class="widget-header">
                 <h3 class="widget-title">
-                  <v-icon icon="mdi-chart-line" class="me-2" />
+                  <v-icon icon="ChartBarIcon" class="mr-2" />
                   Progress Overview
                 </h3>
                 <v-menu>
                   <template #activator="{ props }">
-                    <UnifiedButton icon-only variant="ghost" size="sm" icon="mdi-dots-vertical" v-bind="props" />
+                    <UnifiedButton icon-only variant="ghost" size="sm" icon="EllipsisVerticalIcon" v-bind="props" />
                   </template>
                   <v-list>
                     <v-list-item @click="exportProgress">
@@ -166,9 +166,9 @@
             <div class="widget-card">
               <div class="widget-header">
                 <h3 class="widget-title">
-                  <v-icon icon="mdi-bell-outline" class="me-2" />
+                  <v-icon icon="BellIcon" class="mr-2" />
                   Notifications
-                  <UiChip v-if="notifications.length > 0" classes="chip chip-info chip-compact ms-2">
+                  <UiChip v-if="notifications.length > 0" classes="chip chip-info chip-compact ml-2">
                     {{ notifications.length }}
                   </UiChip>
                 </h3>
@@ -213,7 +213,7 @@
                     </div>
                     <UnifiedButton 
                       icon-only
-                      icon="mdi-close"
+                      icon="XMarkIcon"
                       variant="ghost"
                       size="xs"
                       class="notification-dismiss"
@@ -285,8 +285,8 @@
           <span class="footer-text">Last updated: {{ formatTime(lastUpdated) }}</span>
         </div>
         <div class="footer-actions">
-          <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-refresh" @click="refreshDashboard">Refresh</UnifiedButton>
-          <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-download" @click="exportDashboard">Export</UnifiedButton>
+          <UnifiedButton variant="ghost" size="sm" leading-icon="ArrowPathIcon" @click="refreshDashboard">Refresh</UnifiedButton>
+          <UnifiedButton variant="ghost" size="sm" leading-icon="ArrowDownTrayIcon" @click="exportDashboard">Export</UnifiedButton>
         </div>
       </div>
     </div>
@@ -294,6 +294,8 @@
 </template>
 
 <script setup>
+import { ArrowDownTrayIcon, ArrowPathIcon, BellIcon, ChartBarIcon, ClockIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import UiChip from '@/components/ui/UiChip.vue'
@@ -344,7 +346,7 @@ const headerStats = ref([
   },
   {
     id: 'completed',
-    icon: 'mdi-check-circle-outline',
+    icon: 'CheckIcon-circle-outline',
     value: '18',
     label: 'Completed',
     color: 'var(--success-color)',
@@ -353,7 +355,7 @@ const headerStats = ref([
   },
   {
     id: 'in-progress',
-    icon: 'mdi-clock-outline',
+    icon: 'ClockIcon-outline',
     value: '6',
     label: 'In Progress',
     color: 'var(--warning-color)'
@@ -374,7 +376,7 @@ const quickActions = ref([
     id: 'create-resume',
     title: 'Create Resume',
     description: 'Build a professional resume with AI assistance',
-    icon: 'mdi-file-document-outline-plus',
+    icon: 'DocumentIcon-document-outline-plus',
     color: 'var(--primary-color)',
     progress: 0,
     onClick: () => emit('actionClick', 'create-resume')
@@ -410,7 +412,7 @@ const quickActions = ref([
 const recentActivity = ref([
   {
     id: 1,
-    icon: 'mdi-file-document-outline',
+    icon: 'DocumentIcon-document-outline',
     color: 'primary',
     text: 'Updated resume - Senior Game Designer position',
     timestamp: new Date(Date.now() - 1000 * 60 * 30) // 30 minutes ago
@@ -424,7 +426,7 @@ const recentActivity = ref([
   },
   {
     id: 3,
-    icon: 'mdi-account-check',
+    icon: 'UserIcon-check',
     color: 'success',
     text: 'Profile optimization completed',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24) // 1 day ago
@@ -480,14 +482,14 @@ const notifications = ref([
 ])
 
 const sidebarStats = ref([
-  { id: 'views', icon: 'mdi-eye', value: '247', label: 'Profile Views', color: 'var(--info-color)' },
+  { id: 'views', icon: 'EyeIcon', value: '247', label: 'Profile Views', color: 'var(--info-color)' },
   { id: 'applications', icon: 'mdi-send', value: '12', label: 'Applications', color: 'var(--success-color)' },
-  { id: 'interviews', icon: 'mdi-account-voice', value: '3', label: 'Interviews', color: 'var(--warning-color)' }
+  { id: 'interviews', icon: 'UserIcon-voice', value: '3', label: 'Interviews', color: 'var(--warning-color)' }
 ])
 
 const recentFiles = ref([
-  { id: 1, name: 'Senior Designer Resume.pdf', icon: 'mdi-file-pdf-box', color: 'red', modified: new Date(Date.now() - 1000 * 60 * 60) },
-  { id: 2, name: 'Cover Letter - Riot Games.docx', icon: 'mdi-file-word-box', color: 'blue', modified: new Date(Date.now() - 1000 * 60 * 60 * 6) },
+  { id: 1, name: 'Senior Designer Resume.pdf', icon: 'DocumentIcon-pdf-box', color: 'red', modified: new Date(Date.now() - 1000 * 60 * 60) },
+  { id: 2, name: 'Cover Letter - Riot Games.docx', icon: 'DocumentIcon-word-box', color: 'blue', modified: new Date(Date.now() - 1000 * 60 * 60 * 6) },
   { id: 3, name: 'Portfolio Draft.html', icon: 'mdi-language-html5', color: 'orange', modified: new Date(Date.now() - 1000 * 60 * 60 * 24) }
 ])
 
@@ -586,7 +588,7 @@ onMounted(() => {
   align-items: center;
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-2);
 }
 
@@ -614,7 +616,7 @@ onMounted(() => {
 
 .stat-clickable:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
 }
 
 .stat-content {
@@ -636,7 +638,7 @@ onMounted(() => {
 .stat-value {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1;
 }
 
@@ -676,7 +678,7 @@ onMounted(() => {
 .actions-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-4);
 }
 
@@ -697,7 +699,7 @@ onMounted(() => {
 
 .action-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
 }
 
 .action-disabled {
@@ -724,7 +726,7 @@ onMounted(() => {
 .action-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
@@ -806,7 +808,7 @@ onMounted(() => {
   align-items: center;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -822,7 +824,7 @@ onMounted(() => {
 
 .empty-text {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-top: var(--spacing-3);
 }
 
@@ -856,13 +858,13 @@ onMounted(() => {
 
 .activity-text {
   font-size: var(--font-size-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
 }
 
 .activity-time {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -887,7 +889,7 @@ onMounted(() => {
 .progress-label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .progress-value {
@@ -902,7 +904,7 @@ onMounted(() => {
 
 .progress-description {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -919,13 +921,13 @@ onMounted(() => {
   gap: var(--spacing-3);
   padding: var(--spacing-4);
   border-radius: var(--radius-sm);
-  border-left: 4px solid transparent;
+  border-l: 4px solid transparent;
   transition: all var(--duration-fast) var(--easing-ease);
 }
 
 .notification-unread {
   background: var(--surface-elevated);
-  border-left-color: var(--primary-color);
+  border-l-color: var(--primary-color);
 }
 
 .notification-content {
@@ -942,12 +944,12 @@ onMounted(() => {
 .notification-title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .notification-time {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .notification-message {
@@ -978,7 +980,7 @@ onMounted(() => {
 .sidebar-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4) 0;
 }
 
@@ -1035,19 +1037,19 @@ onMounted(() => {
 .file-name {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .file-date {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* Footer */
 .dashboard-footer {
   margin-top: var(--spacing-8);
   padding-top: var(--spacing-6);
-  border-top: 1px solid var(--border-color);
+  border-t: 1px solid var(--border-color);
 }
 
 .footer-content {
@@ -1060,7 +1062,7 @@ onMounted(() => {
 
 .footer-text {
   font-size: var(--font-size-sm);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .footer-actions {
@@ -1070,7 +1072,7 @@ onMounted(() => {
 
 /* Variants */
 .dashboard-variant-gaming {
-  background: linear-gradient(135deg, var(--gaming-bg-primary), var(--gaming-bg-secondary));
+  background: linear-gradient(135deg, var(--gaming-bg-primary-500), var(--gaming-bg-secondary-500));
 }
 
 .dashboard-variant-gaming .dashboard-title {

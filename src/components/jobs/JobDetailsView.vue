@@ -1,5 +1,5 @@
 <template>
-  <div class="job-details-view" :class="{ 'sidebar-view': isSidebarView }">
+  <div class="job-details-view" :class="{ 'sidebar-view': isSidebarView }" class="font-sans">
     <div v-if="job" class="job-details-content">
       <!-- Job Header -->
       <div class="job-header glass-card section-card">
@@ -9,19 +9,19 @@
               <img :src="job.company.logo" :alt="`${job.company.name} logo`" />
             </div>
             <div v-else class="company-logo-placeholder">
-              <AppIcon name="mdi-domain" />
+              <AppIcon name="BuildingOfficeIcon" />
             </div>
             <div class="job-title-section">
               <h1 class="job-title">
                 {{ job.title }}
                 <span
                   v-if="job.matchScore !== undefined && job.matchScore !== null"
-                  class="match-badge match-badge-sm ms-2 align-middle"
+                  class="match-badge match-badge-sm ml-2 align-middle"
                   :class="getMatchBadgeClass(job.matchScore)"
                   title="Match score"
                   aria-label="Match score"
                 >
-                  <AppIcon name="mdi-target-variant" class="me-1" aria-hidden="true" />
+                  <AppIcon name="CursorArrowRaysIcon-variant" class="mr-1" aria-hidden="true" />
                   <span class="match-pct">{{ Math.round(job.matchScore) }}%</span>
                 </span>
               </h1>
@@ -29,15 +29,15 @@
                 <h2 class="company-name">{{ job.company?.name || job.company }}</h2>
                 <div class="job-meta">
                   <span v-if="job.location" class="job-location">
-                    <AppIcon name="mdi-map-marker" />
+                    <AppIcon name="MapPinIcon" />
                     {{ job.location }}
                   </span>
                   <span v-if="job.remote" class="job-remote">
-                    <AppIcon name="mdi-home-variant" />
+                    <AppIcon name="HomeIcon-variant" />
                     Remote
                   </span>
                   <span v-if="job.type" class="job-type">
-                    <AppIcon name="mdi-clock-outline" />
+                    <AppIcon name="ClockIcon" />
                     {{ formatJobType(job.type) }}
                   </span>
                 </div>
@@ -49,7 +49,7 @@
             <div class="action-buttons">
               <UnifiedButton
                 variant="outline"
-                :leading-icon="isSaved ? 'mdi-heart' : 'mdi-heart-outline'"
+                :leading-icon="isSaved ? 'HeartIcon' : 'HeartIcon-outline'"
                 :class="{ active: isSaved }"
                 @click="toggleSaved"
               >
@@ -59,7 +59,7 @@
                 variant="primary"
                 :disabled="isApplying"
                 :loading="isApplying"
-                leading-icon="mdi-send"
+                leading-icon="PaperAirplaneIcon"
                 @click="applyToJob"
               >
                 {{ isApplying ? 'Applying...' : 'Apply Now' }}
@@ -98,7 +98,7 @@
           <!-- Requirements -->
           <section v-if="job.requirements && job.requirements.length > 0" class="job-section">
             <h3 class="section-title">
-              <AppIcon name="mdi-check-circle-outline-outline" />
+              <AppIcon name="CheckIcon-circle-outline-outline" />
               Requirements
             </h3>
             <ul class="requirements-list">
@@ -129,7 +129,7 @@
           <!-- Game Engines -->
           <section v-if="job.engines && job.engines.length > 0" class="job-section">
             <h3 class="section-title">
-              <AppIcon name="mdi-gamepad-variant-outline" />
+              <AppIcon name="DevicePhoneMobileIcon-variant-outline" />
               Game Engines
             </h3>
             <div class="engines-grid compact-grid">
@@ -156,7 +156,7 @@
                 :key="benefit"
                 class="benefit-item"
               >
-                <AppIcon name="mdi-check-circle-outline" context="success" />
+                <AppIcon name="CheckCircleIcon" context="success" />
                 <span>{{ benefit }}</span>
               </div>
             </div>
@@ -197,15 +197,15 @@
               </p>
               <div class="company-stats">
                 <div v-if="job.company.size" class="stat-item">
-                  <AppIcon name="mdi-account-group" />
+                  <AppIcon name="UsersIcon" />
                   <span>{{ job.company.size }}</span>
                 </div>
                 <div v-if="job.company.founded" class="stat-item">
-                  <AppIcon name="mdi-calendar" />
+                  <AppIcon name="CalendarIcon" />
                   <span>Founded {{ job.company.founded }}</span>
                 </div>
                 <div v-if="job.company.website" class="stat-item">
-                  <AppIcon name="mdi-web" />
+                  <AppIcon name="GlobeAltIcon" />
                   <a :href="job.company.website" target="_blank" rel="noopener">
                     Website
                   </a>
@@ -244,6 +244,9 @@
 </template>
 
 <script setup>
+import { BuildingOfficeIcon, CalendarIcon, CheckCircleIcon, ClockIcon, GlobeAltIcon, PaperAirplaneIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref, watch, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -374,7 +377,7 @@ const getEngineIcon = (engine) => {
   const iconMap = {
     'unity': 'mdi-unity',
     'unreal': 'mdi-unity', // Using unity icon as fallback
-    'godot': 'mdi-gamepad-variant',
+    'godot': 'DevicePhoneMobileIcon-variant',
     'construct': 'mdi-puzzle'
   }
   return iconMap[engine.toLowerCase()] || 'mdi-cog'
@@ -446,13 +449,13 @@ watch(() => props.job, (newJob) => {
 
 .company-logo-placeholder i {
   font-size: 2rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .job-title {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 0.5rem 0;
   line-height: 1.2;
 }
@@ -507,7 +510,7 @@ watch(() => props.job, (newJob) => {
 .action-buttons .btn.active {
   background: var(--color-danger);
   border-color: var(--color-danger);
-  color: white;
+  color: var(--text-inverse);
 }
 
 /* Job Tags */
@@ -561,7 +564,7 @@ watch(() => props.job, (newJob) => {
   gap: 0.5rem;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 1rem;
 }
 
@@ -612,7 +615,7 @@ watch(() => props.job, (newJob) => {
   text-align: center;
   background: var(--glass-elevated);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all 0.2s ease;
 }
 
@@ -676,7 +679,7 @@ watch(() => props.job, (newJob) => {
 .card-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 1rem;
 }
 
@@ -691,21 +694,21 @@ watch(() => props.job, (newJob) => {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 0;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .info-item:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .info-label {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .info-value {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-align: right;
 }
 
@@ -762,21 +765,21 @@ watch(() => props.job, (newJob) => {
 
 .similar-job-title {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.25rem;
 }
 
 .similar-job-company,
 .similar-job-location {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* Empty State */
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .empty-state i {
@@ -813,7 +816,7 @@ watch(() => props.job, (newJob) => {
 
   .job-actions {
     width: 100%;
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     justify-content: space-between;
     align-items: center;
   }

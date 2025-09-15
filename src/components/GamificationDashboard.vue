@@ -1,28 +1,28 @@
 <template>
-  <div class="gamification-dashboard">
+  <div class="gamification-dashboard" class="font-sans">
     <!-- Top Stats Row -->
-    <div class="row g-3 mb-4">
+    <div class="flex flex-wrap g-3 mb-4">
       <!-- User Level Card - Compact -->
-      <div class="col-md-6">
+      <div class="flex-1-md-6">
         <div class="card gaming-card elevated h-100">
           <div class="card-body section-body text-center">
-            <div class="d-flex align-items-center justify-content-center mb-3">
+            <div class="flex items-center justify-center mb-3">
               <div class="level-avatar-compact" :class="`level-${userLevel.level}`">
                 <span class="level-number">{{ userLevel.level }}</span>
               </div>
-              <div class="ms-3 text-start">
-                <h6 class="mb-1 fw-bold text-gradient">
+              <div class="ml-3 text-start">
+                <h6 class="mb-1 font-bold text-gradient">
                   Level {{ userLevel.level }} {{ userLevel.title }}
                 </h6>
-                <small class="text-muted">{{ userLevel.currentXP }} XP</small>
+                <small class="text-secondary">{{ userLevel.currentXP }} XP</small>
               </div>
             </div>
             
             <!-- XP Progress Bar - Compact -->
             <div class="xp-progress-container">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <small class="text-muted">Next Level</small>
-                <small class="text-primary fw-bold">{{ userLevel.xpForNext }} XP needed</small>
+              <div class="flex justify-between items-center mb-1">
+                <small class="text-secondary">Next Level</small>
+                <small class="text-primary-600 font-bold">{{ userLevel.xpForNext }} XP needed</small>
               </div>
               <div class="progress xp-progress-compact">
                 <div
@@ -40,11 +40,11 @@
       </div>
 
       <!-- Stats Summary Card -->
-      <div class="col-md-6">
+      <div class="flex-1-md-6">
         <div class="card gaming-card elevated h-100">
           <div class="card-body section-body">
             <h6 class="card-title mb-3">
-              <AppIcon name="mdi-chart-bar" />Career Readiness
+              <AppIcon name="ChartBarSquareIcon" />Career Readiness
             </h6>
             <div class="stats-grid split-layout">
               <div class="stat-item">
@@ -54,7 +54,7 @@
               <div class="stat-item">
                 <div class="stat-value">
                   {{ streak.current }}
-                  <AppIcon v-if="streak.current > 0" name="mdi-fire" class="text-warning ms-1" />
+                  <AppIcon v-if="streak.current > 0" name="FireIcon" class="text-warning-600 ml-1" />
                 </div>
                 <div class="stat-label">Day Streak</div>
               </div>
@@ -68,31 +68,31 @@
     <div class="daily-challenges mb-4">
       <div class="card gaming-card elevated glass-surface">
         <div class="card-header section-header bg-gradient text-inverse border-0">
-          <div class="d-flex justify-content-between align-items-center">
+          <div class="flex justify-between items-center">
             <h6 id="daily-challenges-title" class="mb-0">
-              <AppIcon name="mdi-calendar-check-outline" class="me-2" aria-hidden="true" />
+              <AppIcon name="CalendarIcon-check-outline" class="mr-2" aria-hidden="true" />
               Daily Challenges
             </h6>
-            <div class="d-flex gap-2 align-items-center">
+            <div class="flex gap-glass-sm items-center">
               <span class="badge badge-gaming">{{ completedChallenges }}/{{ dailyChallenges.length }} completed</span>
             </div>
           </div>
         </div>
         <div class="card-body section-body" role="region" aria-labelledby="daily-challenges-title">
           <!-- Challenges Grid - Compact -->
-          <div class="row g-2">
+          <div class="flex flex-wrap g-2">
             <div 
               v-for="challenge in dailyChallenges.slice(0, 4)" 
               :key="challenge.id"
-              class="col-md-6"
+              class="flex-1-md-6"
             >
               <div
                 class="challenge-item-compact glass-elevated hover-lift"
                 :class="{ completed: challenge.completed }"
                 role="listitem"
               >
-                <div class="d-flex align-items-center">
-                  <div class="challenge-icon-compact me-3">
+                <div class="flex items-center">
+                  <div class="challenge-icon-compact mr-3">
                     <i
                       :class="challenge.icon"
                       :style="{
@@ -102,13 +102,13 @@
                       }"
                     />
                     <div v-if="challenge.completed" class="completion-checkmark-compact">
-                      <AppIcon name="mdi-check" />
+                      <AppIcon name="CheckIcon" />
                     </div>
                   </div>
                   <div class="flex-grow-1">
-                    <div class="challenge-name-compact fw-semibold">{{ challenge.name }}</div>
+                    <div class="challenge-name-compact font-semibold">{{ challenge.name }}</div>
                     <div class="challenge-reward-compact">
-                      <AppIcon name="mdi-flash" class="me-1" />{{ challenge.xp }} XP
+                      <AppIcon name="BoltIcon" class="mr-1" />{{ challenge.xp }} XP
                     </div>
                   </div>
                   <button
@@ -126,14 +126,14 @@
           <!-- AI Recommendation -->
           <div
             v-if="aiChallengeSuggestion"
-            class="ai-suggestion-compact mt-3 p-3 glass-elevated"
+            class="ai-suggestion-compact mt-3 p-glass-md glass-elevated"
           >
-            <div class="d-flex align-items-center">
-              <AppIcon name="mdi-star-four-points" class="text-primary me-2" />
+            <div class="flex items-center">
+              <AppIcon name="StarIcon-four-points" class="text-primary-600 mr-2" />
               <div class="flex-grow-1">
                 <strong>AI Recommendation</strong>
-                <p class="mb-2 small text-muted">{{ aiChallengeSuggestion.description }}</p>
-                <small class="text-muted">Confidence Level: 87% match</small>
+                <p class="mb-2 small text-secondary">{{ aiChallengeSuggestion.description }}</p>
+                <small class="text-secondary">Confidence Level: 87% match</small>
               </div>
             </div>
           </div>
@@ -146,9 +146,9 @@
                 :style="{ width: (completedChallenges / dailyChallenges.length) * 100 + '%' }"
               />
             </div>
-            <div class="d-flex justify-content-between mt-1">
-              <small class="text-muted">Today's Progress</small>
-              <small class="text-primary">{{ Math.round((completedChallenges / dailyChallenges.length) * 100) }}% completed</small>
+            <div class="flex justify-between mt-1">
+              <small class="text-secondary">Today's Progress</small>
+              <small class="text-primary-600">{{ Math.round((completedChallenges / dailyChallenges.length) * 100) }}% completed</small>
             </div>
           </div>
         </div>
@@ -156,19 +156,19 @@
     </div>
 
     <!-- Recent Activity & Achievement Summary -->
-    <div class="row g-3 mb-4">
+    <div class="flex flex-wrap g-3 mb-4">
       <!-- Quick Achievement Overview -->
-      <div class="col-lg-8">
+      <div class="flex-1-lg-8">
         <div class="card gaming-card elevated glass-surface h-100">
           <div class="card-header section-header bg-gradient text-inverse border-0">
             <h6 class="mb-0">
-              <AppIcon name="mdi-trophy-outline" class="me-2" />
+              <AppIcon name="TrophyIcon" class="mr-2" />
               Recent Achievements & Progress
             </h6>
           </div>
           <div class="card-body section-body">
             <!-- Achievement Progress -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="flex justify-between items-center mb-3">
               <span>Achievement Progress</span>
               <span class="badge badge-gaming">{{ earnedAchievements.length }}/{{ totalAchievements }}</span>
             </div>
@@ -180,22 +180,22 @@
             </div>
             
             <!-- Latest Achievements -->
-            <div class="row g-2">
+            <div class="flex flex-wrap g-2">
               <div 
                 v-for="achievement in allAchievements.slice(0, 3)"
                 :key="achievement.id"
-                class="col-md-4"
+                class="flex-1-md-4"
               >
                 <div 
-                  class="achievement-item-compact p-2 glass-elevated"
+                  class="achievement-item-compact p-glass-sm glass-elevated"
                   :class="{ 'earned': isAchievementEarned(achievement.id) }"
                 >
                   <div class="text-center">
                     <div class="achievement-icon-compact mb-1">
                       <i :class="achievement.icon" :style="{ color: getAchievementColor(achievement) }" />
                     </div>
-                    <div class="achievement-name-compact small fw-semibold">{{ achievement.name }}</div>
-                    <div class="achievement-reward-compact small text-muted">+{{ achievement.xp }} XP</div>
+                    <div class="achievement-name-compact small font-semibold">{{ achievement.name }}</div>
+                    <div class="achievement-reward-compact small text-secondary">+{{ achievement.xp }} XP</div>
                   </div>
                 </div>
               </div>
@@ -211,19 +211,19 @@
       </div>
 
       <!-- Activity Summary -->
-      <div class="col-lg-4">
+      <div class="flex-1-lg-4">
         <div class="card gaming-card elevated glass-surface h-100">
           <div class="card-header section-header bg-gradient text-inverse border-0">
             <h6 class="mb-0">
-              <AppIcon name="mdi-pulse" class="me-2" />
+              <AppIcon name="SignalIcon" class="mr-2" />
               Activity Summary
             </h6>
           </div>
           <div class="card-body section-body">
             <!-- Recent XP Gains -->
             <div v-if="recentXPGains.length > 0" class="mb-3">
-              <small class="text-muted d-block mb-2">Recent XP Gains</small>
-              <div class="d-flex flex-wrap gap-1">
+              <small class="text-secondary block mb-2">Recent XP Gains</small>
+              <div class="flex flex-wrap gap-glass-xs">
                 <div
                   v-for="gain in recentXPGains.slice(0, 3)"
                   :key="gain.id"
@@ -235,12 +235,12 @@
             </div>
             
             <!-- AI Insight -->
-            <div v-if="achievementInsights" class="ai-insight-compact p-2 glass-elevated">
-              <div class="d-flex align-items-start">
-                <AppIcon name="mdi-lightbulb" class="text-warning me-2 mt-1" />
+            <div v-if="achievementInsights" class="ai-insight-compact p-glass-sm glass-elevated">
+              <div class="flex items-start">
+                <AppIcon name="LightBulbIcon" class="text-warning-600 mr-2 mt-1" />
                 <div>
                   <strong class="small">Personalized for your career path</strong>
-                  <p class="small text-muted mb-1">{{ achievementInsights.suggestion }}</p>
+                  <p class="small text-secondary mb-1">{{ achievementInsights.suggestion }}</p>
                 </div>
               </div>
             </div>
@@ -253,7 +253,7 @@
     <!-- Level Up Modal -->
     <div
       v-if="showLevelUpModal"
-      class="modal show d-block"
+      class="modal show block"
       @click="closeLevelUpModal"
     >
       <div class="modal-backdrop show" />
@@ -262,11 +262,11 @@
           <div class="modal-body text-center">
             <div class="level-up-animation">
               <div class="level-up-icon">
-                <AppIcon name="mdi-star" />
+                <AppIcon name="StarIcon" />
               </div>
-              <h4 class="fw-bold text-gradient mt-3">Level Up!</h4>
+              <h4 class="font-bold text-gradient mt-3">Level Up!</h4>
               <p class="lead">You've reached Level {{ newLevel.level }}!</p>
-              <p class="text-muted">
+              <p class="text-secondary">
                 {{ newLevel.title }}
               </p>
 
@@ -277,9 +277,9 @@
                   <li
                     v-for="feature in newFeatures"
                     :key="feature"
-                    class="text-success"
+                    class="text-success-600"
                   >
-                    <AppIcon name="mdi-check-circle-outline" class="me-2" />{{ feature }}
+                    <AppIcon name="CheckCircleIcon" class="mr-2" />{{ feature }}
                   </li>
                 </ul>
               </div>
@@ -296,7 +296,7 @@
     <!-- Achievement Details Modal -->
     <div
       v-if="selectedAchievement"
-      class="modal show d-block"
+      class="modal show block"
       @click="closeAchievementModal"
     >
       <div class="modal-backdrop show" />
@@ -315,17 +315,17 @@
           <div class="modal-body">
             <p>{{ selectedAchievement.description }}</p>
             <div class="achievement-details">
-              <div class="row">
-                <div class="col-6">
+              <div class="flex flex-wrap">
+                <div class="flex-1-6">
                   <strong>Reward:</strong><br />
-                  <span class="text-primary">+{{ selectedAchievement.xp }} XP</span>
+                  <span class="text-primary-600">+{{ selectedAchievement.xp }} XP</span>
                 </div>
-                <div class="col-6">
+                <div class="flex-1-6">
                   <strong>Status:</strong><br />
                   <span
                     :class="isAchievementEarned(selectedAchievement.id)
-                      ? 'text-success'
-                      : 'text-warning'"
+                      ? 'text-success-600'
+                      : 'text-warning-600'"
                   >
                     {{
                       isAchievementEarned(selectedAchievement.id)
@@ -348,7 +348,7 @@
                     :key="key"
                     class="mb-2"
                   >
-                    <div class="d-flex justify-content-between">
+                    <div class="flex justify-between">
                       <span>{{ formatRequirement(key, value) }}</span>
                       <span>{{ getUserStat(key) }}/{{ value }}</span>
                     </div>
@@ -374,6 +374,9 @@
 </template>
 
 <script>
+import { ChartBarSquareIcon, CheckCircleIcon, CheckIcon, CogIcon, LightBulbIcon, SignalIcon, SparklesIcon, TrophyIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch, onMounted } from 'vue';
 import { useToast } from "@/composables/useToast";
 import { useAppStore } from "@/stores/app";
@@ -431,7 +434,7 @@ export default {
                 {
                   id: "start_challenge",
                   text: "Start Challenge",
-                  icon: "mdi-rocket-launch",
+                  icon: "RocketLaunchIcon-launch",
                   label: `Start the ${incompleteChallenge.name} challenge`,
                   challengeId: incompleteChallenge.id,
                 },
@@ -477,7 +480,7 @@ export default {
               {
                 id: "ai_recommended",
                 text: topSuggestion.action,
-                icon: "mdi-stars",
+                icon: "StarIcons",
                 label: `AI Recommended: ${topSuggestion.title}`,
                 priority: topSuggestion.priority,
               },
@@ -504,7 +507,7 @@ export default {
               {
                 id: "start_challenge",
                 text: "Continue Progress",
-                icon: "mdi-arrow-right-circle",
+                icon: "ArrowRightIcon-circle",
                 label: `Continue with ${incompleteChallenge.name}`,
                 challengeId: incompleteChallenge.id,
               },
@@ -699,12 +702,12 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
               text: s.title || s.action,
               icon:
                 s.type === "add"
-                  ? "mdi mdi-plus-circle"
+                  ? "mdi PlusIcon-circle"
                   : s.type === "improve"
-                    ? "mdi mdi-arrow-up-circle"
+                    ? "mdi ArrowUpIcon-circle"
                     : s.type === "optimize"
                       ? "mdi mdi-cog-outline"
-                      : "mdi mdi-flash",
+                      : "mdi BoltIcon",
               action: s.action,
               priority: s.priority,
             })),
@@ -721,20 +724,20 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
       try {
         switch (action.id) {
           case "add":
-            toastSuccess(`<AppIcon name="mdi-rocket" /> Suggestion: ${action.action}`, { duration: 4000 });
+            toastSuccess(`<AppIcon name="RocketLaunchIcon" /> Suggestion: ${action.action}`, { duration: 4000 });
             break;
           case "improve":
-            toastSuccess(`<AppIcon name="mdi-sparkles" class="sparkles" /> Improvement: ${action.action}`, {
+            toastSuccess(`<AppIcon name="SparklesIcon" class="sparkles" /> Improvement: ${action.action}`, {
               duration: 4000,
             });
             break;
           case "optimize":
-            toastSuccess(`<AppIcon name="mdi-cog" /> Optimization: ${action.action}`, {
+            toastSuccess(`<AppIcon name="CogIcon" /> Optimization: ${action.action}`, {
               duration: 4000,
             });
             break;
           default:
-            toastSuccess(`<AppIcon name="mdi-lightbulb" /> ${action.text}: ${action.action}`, {
+            toastSuccess(`<AppIcon name="LightBulbIcon" /> ${action.text}: ${action.action}`, {
               duration: 4000,
             });
         }
@@ -844,7 +847,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
           if (achievement) {
             activities.push({
               id: `achievement-${achievementId}`,
-              icon: "mdi-trophy",
+              icon: "TrophyIcon",
               color: "var(--color-warning)",
               description: `Earned "${achievement.name}" achievement`,
               xp: achievement.xp,
@@ -858,7 +861,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
       recentXPGains.value.forEach((gain) => {
         activities.push({
           id: `xp-${gain.id}`,
-          icon: "mdi-star",
+          icon: "StarIcon",
           color: "var(--color-primary)",
           description: `Earned XP for ${gain.action}`,
           xp: gain.amount,
@@ -931,7 +934,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
       } else if (isAchievementAvailable(achievement)) {
         return "var(--color-primary)"; // Primary blue for available
       } else {
-        return "var(--text-muted)"; // Muted for locked
+        return "var(--text-secondary)"; // Muted for locked
       }
     };
 
@@ -1255,7 +1258,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .stat-label {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-top: 4px;
 }
 
@@ -1282,7 +1285,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1309,7 +1312,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .challenge-name-compact {
   font-size: 0.9rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 2px;
 }
 
@@ -1329,7 +1332,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .achievement-item-compact:hover {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   border-color: var(--color-primary);
 }
 
@@ -1424,7 +1427,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
   background: var(--glass-elevated);
   border-color: var(--primary-border-subtle);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .glass-button:focus-visible {
@@ -1477,7 +1480,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .level-avatar.level-1,
 .level-avatar.level-2 {
-  background: linear-gradient(135deg, var(--text-secondary), var(--text-muted));
+  background: linear-gradient(135deg, var(--text-secondary), var(--text-secondary));
 }
 .level-avatar.level-3,
 .level-avatar.level-4 {
@@ -1631,7 +1634,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 [data-theme="dark"] .challenge-item {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .challenge-item:hover {
@@ -1649,12 +1652,12 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 }
 
 [data-theme="dark"] .challenge-item:hover {
-  background: var(--primary-gradient-bg-dark);
+  background: var(--primary-gradient-bg-glass-bg dark:bg-glass-bg dark:bg-gray-800);
   border-color: var(--primary-border-subtle-dark);
 }
 
 [data-theme="dark"] .challenge-item:focus-visible {
-  background: var(--primary-gradient-bg-dark);
+  background: var(--primary-gradient-bg-glass-bg dark:bg-glass-bg dark:bg-gray-800);
   border-color: var(--color-focus-ring);
 }
 
@@ -1665,7 +1668,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 /* Dark mode completed challenges */
 [data-theme="dark"] .challenge-item.completed {
-  background: var(--success-gradient-bg-dark);
+  background: var(--success-gradient-bg-glass-bg dark:bg-glass-bg dark:bg-gray-800);
   border-color: var(--success-border);
 }
 
@@ -1679,7 +1682,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1710,7 +1713,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .challenge-name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .challenge-description {
@@ -1746,7 +1749,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .achievement-item:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   border-color: var(--color-primary);
 }
 
@@ -1788,7 +1791,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 }
 
 [data-theme="dark"] .achievement-item.available {
-  background: var(--primary-gradient-bg-dark);
+  background: var(--primary-gradient-bg-glass-bg dark:bg-glass-bg dark:bg-gray-800);
   box-shadow: 0 4px 15px var(--primary-glow-subtle-dark);
 }
 
@@ -1800,8 +1803,8 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .achievement-item {
-    background: var(--bg-primary) !important;
-    border: 2px solid var(--text-primary) !important;
+    background: var(--bg-primary-500) !important;
+    border: 2px solid var(--text-primary-600) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -1814,7 +1817,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
   .achievement-item.available {
     border-color: var(--color-primary) !important;
-    background: var(--bg-secondary) !important;
+    background: var(--bg-secondary-500) !important;
   }
 
   .achievement-item.locked {
@@ -1823,8 +1826,8 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
   }
 
   [data-theme="dark"] .achievement-item {
-    background: var(--bg-primary) !important;
-    border-color: var(--text-primary) !important;
+    background: var(--bg-primary-500) !important;
+    border-color: var(--text-primary-600) !important;
   }
 
   [data-theme="dark"] .achievement-item.earned {
@@ -1832,14 +1835,14 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
   }
 
   [data-theme="dark"] .achievement-item.available {
-    background: var(--bg-secondary) !important;
+    background: var(--bg-secondary-500) !important;
   }
 }
 
 /* Reduced transparency support */
 @media (prefers-reduced-transparency: reduce) {
   .achievement-item {
-    background: var(--bg-secondary) !important;
+    background: var(--bg-secondary-500) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -1857,7 +1860,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
   }
 
   [data-theme="dark"] .achievement-item {
-    background: var(--dark-bg-secondary) !important;
+    background: var(--dark-bg-secondary-500) !important;
   }
 
   [data-theme="dark"] .achievement-item.earned {
@@ -1926,7 +1929,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .achievement-name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 4px;
 }
 
@@ -1961,18 +1964,18 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .activity-item {
   padding: var(--spacing-sm) 0;
-  border-bottom: 1px solid var(--bg-tertiary);
+  border-b: 1px solid var(--bg-tertiary);
 }
 
 /* Dark mode activity items */
 [data-theme="dark"] .activity-item,
 :root:not([data-theme]) .activity-item {
-  border-bottom-color: var(--dark-bg-tertiary);
-  color: var(--text-primary);
+  border-b-color: var(--dark-bg-tertiary);
+  color: var(--text-primary-600);
 }
 
 .activity-item:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .activity-icon {
@@ -1999,7 +2002,7 @@ Return JSON array with: {"name": "", "description": "", "xp": 0, "icon": "bi bi-
 
 .activity-description {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .activity-xp {
@@ -2158,7 +2161,7 @@ button,
   .achievement-item,
   .activity-item {
     border-width: 2px !important;
-    background: var(--bg-primary) !important;
+    background: var(--bg-primary-500) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -2170,12 +2173,12 @@ button,
 
   .text-gradient {
     background: none !important;
-    color: var(--text-primary) !important;
+    color: var(--text-primary-600) !important;
     font-weight: bold;
   }
 
   [data-theme="dark"] .text-gradient {
-    color: var(--text-primary) !important;
+    color: var(--text-primary-600) !important;
   }
 }
 
@@ -2192,16 +2195,16 @@ button,
   }
 
   .glass-surface {
-    background: var(--bg-secondary) !important;
+    background: var(--bg-secondary-500) !important;
   }
 
   .glass-elevated {
-    background: var(--bg-primary) !important;
+    background: var(--bg-primary-500) !important;
     border: 2px solid var(--bg-tertiary) !important;
   }
 
   .glass-button {
-    background: var(--bg-secondary) !important;
+    background: var(--bg-secondary-500) !important;
     border: 1px solid var(--bg-tertiary) !important;
   }
 
@@ -2217,31 +2220,31 @@ button,
   }
 
   .activity-icon {
-    background: var(--bg-secondary) !important;
+    background: var(--bg-secondary-500) !important;
     border: 1px solid var(--bg-tertiary) !important;
   }
 
   /* Dark mode fallbacks for reduced transparency */
   [data-theme="dark"] .glass-surface,
   :root:not([data-theme]) .glass-surface {
-    background: var(--dark-bg-secondary) !important;
+    background: var(--dark-bg-secondary-500) !important;
   }
 
   [data-theme="dark"] .glass-elevated,
   :root:not([data-theme]) .glass-elevated {
-    background: var(--dark-bg-primary) !important;
+    background: var(--dark-bg-primary-500) !important;
     border-color: var(--dark-bg-tertiary) !important;
   }
 
   [data-theme="dark"] .glass-button,
   :root:not([data-theme]) .glass-button {
-    background: var(--dark-bg-secondary) !important;
+    background: var(--dark-bg-secondary-500) !important;
     border-color: var(--dark-bg-tertiary) !important;
   }
 
   [data-theme="dark"] .activity-icon,
   :root:not([data-theme]) .activity-icon {
-    background: var(--dark-bg-secondary) !important;
+    background: var(--dark-bg-secondary-500) !important;
     border-color: var(--dark-bg-tertiary) !important;
   }
 }
@@ -2258,7 +2261,7 @@ button,
 
 [data-theme="dark"] .xp-gain-badge {
   background: var(--color-warning-dark);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .challenge-item.completed {
@@ -2278,11 +2281,11 @@ button,
   box-shadow: var(--glass-shadow-elevated-dark);
 }
 
-[data-theme="dark"] .achievement-item .mdi.text-warning {
+[data-theme="dark"] .achievement-item .mdi.text-warning-600 {
   color: var(--color-warning-dark) !important;
 }
 
-  [data-theme="dark"] .achievement-item .mdi.text-muted {
+  [data-theme="dark"] .achievement-item .mdi.text-secondary {
     color: var(--text-tertiary) !important;
   }[data-theme="dark"] .progress.xp-progress .progress-bar {
   background: linear-gradient(90deg, var(--color-warning) 0%, var(--color-warning-dark) 100%);
@@ -2308,32 +2311,32 @@ button,
 /* Ensure proper progressive enhancement for glassmorphic effects */
 @supports not (backdrop-filter: blur(1px)) {
   .glass-surface {
-    background: var(--bg-secondary) !important;
+    background: var(--bg-secondary-500) !important;
   }
 
   .glass-elevated {
-    background: var(--bg-primary) !important;
-    box-shadow: var(--shadow-lg) !important;
+    background: var(--bg-primary-500) !important;
+    box-shadow: var(--shadow-glass-lg) !important;
   }
 
   .glass-button {
-    background: var(--bg-secondary) !important;
+    background: var(--bg-secondary-500) !important;
   }
 
   [data-theme="dark"] .glass-surface,
   :root:not([data-theme]) .glass-surface {
-    background: var(--dark-bg-secondary) !important;
+    background: var(--dark-bg-secondary-500) !important;
   }
 
   [data-theme="dark"] .glass-elevated,
   :root:not([data-theme]) .glass-elevated {
-    background: var(--dark-bg-primary) !important;
-    box-shadow: var(--dark-shadow-lg) !important;
+    background: var(--dark-bg-primary-500) !important;
+    box-shadow: var(--dark-shadow-glass-lg) !important;
   }
 
   [data-theme="dark"] .glass-button,
   :root:not([data-theme]) .glass-button {
-    background: var(--dark-bg-secondary) !important;
+    background: var(--dark-bg-secondary-500) !important;
   }
 }
 </style>

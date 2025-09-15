@@ -1,5 +1,5 @@
 <template>
-  <div class="model-selector">
+  <div class="model-selector" class="font-sans">
     <!-- Model Category Tabs -->
     <div class="model-categories mb-4">
       <nav class="nav nav-pills nav-fill" role="tablist">
@@ -10,9 +10,9 @@
           :class="{ active: activeCategory === category.key }"
           @click="activeCategory = category.key"
         >
-          <AppIcon :name="category.icon" class="me-2" />
+          <AppIcon :name="category.icon" class="mr-2" />
           {{ category.label }}
-          <span v-if="category.count > 0" class="badge badge-compact bg-primary ms-2">{{ category.count }}</span>
+          <span v-if="category.count > 0" class="badge badge-compact bg-primary-500 ml-2">{{ category.count }}</span>
         </button>
       </nav>
     </div>
@@ -26,7 +26,7 @@
           type="checkbox"
         >
         <label class="form-check-label" for="realTimeChatFilter">
-          <AppIcon name="mdi-chat-processing" class="text-success me-1" />
+          <AppIcon name="mdi-chat-processing" class="text-success-600 mr-1" />
           Show only Real-Time Chat capable models
         </label>
       </div>
@@ -48,11 +48,11 @@
           <div class="model-title">
             <h6 class="mb-1">{{ model.displayName }}</h6>
             <div class="model-badges">
-              <span v-if="model.isRecommended" class="badge badge-compact bg-success">Recommended</span>
-              <span v-if="model.isDefault" class="badge badge-compact bg-primary">Default</span>
-              <span v-if="model.isExperimental" class="badge badge-compact bg-warning">Experimental</span>
-              <span v-if="model.supportsRealTimeChat" class="badge badge-compact bg-info">
-                <AppIcon name="mdi-chat-processing" class="me-1" />Real-Time Chat
+              <span v-if="model.isRecommended" class="badge badge-compact bg-success-500">Recommended</span>
+              <span v-if="model.isDefault" class="badge badge-compact bg-primary-500">Default</span>
+              <span v-if="model.isExperimental" class="badge badge-compact bg-warning-500">Experimental</span>
+              <span v-if="model.supportsRealTimeChat" class="badge badge-compact bg-blue-500">
+                <AppIcon name="mdi-chat-processing" class="mr-1" />Real-Time Chat
               </span>
             </div>
           </div>
@@ -64,12 +64,12 @@
         </div>
 
         <!-- Model Info -->
-        <p class="model-description text-muted small mb-2">{{ model.description }}</p>
+        <p class="model-description text-secondary small mb-2">{{ model.description }}</p>
 
         <!-- Capabilities Grid -->
         <div class="capabilities-grid mb-3">
           <div class="capability" :class="{ active: model.supportsStreaming }">
-            <AppIcon name="mdi-flash" />
+            <AppIcon name="BoltIcon" />
             <span>Streaming</span>
           </div>
           <div class="capability" :class="{ active: model.supportsRealTimeChat }">
@@ -77,19 +77,19 @@
             <span>Real-Time</span>
           </div>
           <div class="capability" :class="{ active: model.isMultimodal }">
-            <AppIcon name="mdi-image-multiple" />
+            <AppIcon name="PhotoIcon" />
             <span>Multimodal</span>
           </div>
           <div class="capability" :class="{ active: model.capabilities?.codeGeneration }">
-            <AppIcon name="mdi-code-tags" />
+            <AppIcon name="CommandLineIcon" />
             <span>Coding</span>
           </div>
           <div class="capability" :class="{ active: model.capabilities?.reasoning }">
-            <AppIcon name="mdi-brain" />
+            <AppIcon name="CpuChipIcon" />
             <span>Reasoning</span>
           </div>
           <div class="capability" :class="{ active: model.capabilities?.complexAnalysis }">
-            <AppIcon name="mdi-chart-tree" />
+            <AppIcon name="ChartBarIcon-tree" />
             <span>Analysis</span>
           </div>
         </div>
@@ -121,7 +121,7 @@
         </div>
 
         <!-- Rate Limits -->
-        <div class="rate-limits small text-muted mt-2">
+        <div class="rate-limits small text-secondary mt-2">
           <span>{{ model.limits?.requestsPerMinute || 'N/A' }} RPM</span>
           <span class="mx-2">•</span>
           <span>{{ model.limits?.requestsPerDay || 'N/A' }} RPD</span>
@@ -135,7 +135,7 @@
     <!-- Real-Time Chat Information Panel -->
     <div v-if="showOnlyRealTimeChat || activeCategory === 'realTimeChat'" class="info-panel mt-4">
       <div class="alert alert-info">
-        <h6><AppIcon name="mdi-information" class="me-2" />Real-Time Chat Capabilities</h6>
+        <h6><AppIcon name="InformationCircleIcon" class="mr-2" />Real-Time Chat Capabilities</h6>
         <p class="mb-2">
           Models with real-time chat support can:
         </p>
@@ -151,6 +151,8 @@
 </template>
 
 <script setup>
+import { CommandLineIcon, CpuChipIcon, InformationCircleIcon, PhotoIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, defineEmits, defineProps } from 'vue'
 import { useToast } from '@/composables/useToast'
 import { useAppStore } from '@/stores/app'
@@ -180,7 +182,7 @@ const categories = computed(() => {
     { 
       key: 'recommended', 
       label: 'Recommended', 
-      icon: 'mdi-star', 
+      icon: 'StarIcon', 
       count: modelsByCategory.recommended?.length || 0 
     },
     { 
@@ -192,7 +194,7 @@ const categories = computed(() => {
     { 
       key: 'fast', 
       label: 'Fast', 
-      icon: 'mdi-lightning-bolt', 
+      icon: 'BoltIcon-bolt', 
       count: modelsByCategory.fast?.length || 0 
     },
     { 
@@ -263,25 +265,25 @@ const getScoreClass = (score) => {
 }
 
 const getSpeedClass = (speed) => {
-  if (speed === 'extremely-fast') return 'text-success'
-  if (speed === 'very-fast') return 'text-info'
-  if (speed === 'fast') return 'text-primary'
-  return 'text-muted'
+  if (speed === 'extremely-fast') return 'text-success-600'
+  if (speed === 'very-fast') return 'text-blue-600'
+  if (speed === 'fast') return 'text-primary-600'
+  return 'text-secondary'
 }
 
 const getQualityClass = (quality) => {
-  if (quality === 'very-high') return 'text-success'
-  if (quality === 'high') return 'text-info'
-  if (quality === 'good') return 'text-primary'
-  return 'text-muted'
+  if (quality === 'very-high') return 'text-success-600'
+  if (quality === 'high') return 'text-blue-600'
+  if (quality === 'good') return 'text-primary-600'
+  return 'text-secondary'
 }
 
 const getPricingClass = (pricing) => {
-  if (pricing === 'free-preview') return 'text-success'
-  if (pricing === 'very-low') return 'text-info'
-  if (pricing === 'low') return 'text-primary'
-  if (pricing === 'medium') return 'text-warning'
-  return 'text-danger'
+  if (pricing === 'free-preview') return 'text-success-600'
+  if (pricing === 'very-low') return 'text-blue-600'
+  if (pricing === 'low') return 'text-primary-600'
+  if (pricing === 'medium') return 'text-warning-600'
+  return 'text-error-600'
 }
 
 const formatSpeed = (speed) => {
@@ -460,13 +462,13 @@ const formatTokens = (tokens) => {
 .rate-limits {
   text-align: center;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .info-panel .alert {
   background: var(--info-gradient-bg);
   border: 1px solid var(--info-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Responsive adjustments */
@@ -495,7 +497,7 @@ const formatTokens = (tokens) => {
 }
 
 [data-theme="dark"] .model-card.selected {
-  background: var(--primary-gradient-bg-dark);
+  background: var(--primary-gradient-bg-glass-bg dark:bg-glass-bg dark:bg-gray-800);
 }
 
 [data-theme="dark"] .capability {
@@ -504,7 +506,7 @@ const formatTokens = (tokens) => {
 }
 
 [data-theme="dark"] .capability.active {
-  background: var(--primary-gradient-bg-dark);
+  background: var(--primary-gradient-bg-glass-bg dark:bg-glass-bg dark:bg-gray-800);
   border-color: var(--color-primary-dark);
   color: var(--color-primary-dark);
 }

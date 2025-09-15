@@ -1,5 +1,5 @@
 <template>
-  <div class="skill-mapper-container">
+  <div class="skill-mapper-container font-sans">
     <!-- Animated background orbs -->
     <div class="background-orbs">
       <div class="orb orb-1"></div>
@@ -44,7 +44,7 @@
         <!-- Gaming Experience Input Panel -->
         <section class="input-panel glass-panel">
           <div class="panel-header">
-            <div class="header-icon">🎮</div>
+            <div class="header-icon">DevicePhoneMobileIcon</div>
             <span class="header-title">Your Gaming Experience</span>
           </div>
 
@@ -93,7 +93,7 @@
           <UnifiedButton
             variant="primary"
             size="lg"
-            leading-icon="mdi-sparkles"
+            leading-icon="SparklesIcon"
             :loading="isAnalyzing"
             :disabled="!analysisInput.description?.trim() || isAnalyzing"
             class="analyze-btn"
@@ -151,7 +151,7 @@
         <section v-show="activeTab === 'overview'" class="overview-section glass-surface">
           <div class="section-header">
             <h2>
-              <AppIcon name="mdi-chart-box" size="large" />
+              <AppIcon name="ChartBarIcon" size="large" />
               Skills Overview
             </h2>
             <p>Your comprehensive gaming-to-professional skills profile</p>
@@ -202,7 +202,7 @@
         <section v-show="activeTab === 'skills'" class="skills-section glass-surface">
           <div class="section-header">
             <h2>
-              <AppIcon name="mdi-view-list" size="large" />
+              <AppIcon name="ListBulletIcon" size="large" />
               Mapped Skills
             </h2>
             <p>Your complete professional skills profile</p>
@@ -241,7 +241,7 @@
 
           <div class="skill-web-container">
             <div v-if="skillWebData && skillWebData.nodes?.length" class="skill-network-visualization">
-              <AppIcon name="mdi-graph" size="4rem" />
+              <AppIcon name="ChartBarIcon" size="4rem" />
               <p>Interactive skill network visualization</p>
               <p class="network-stats">{{ skillWebData.nodes.length }} skills connected</p>
             </div>
@@ -257,7 +257,7 @@
         <!-- Career Recommendations -->
         <section v-show="activeTab === 'careers'" class="careers-section glass-panel">
           <div class="panel-header">
-            <div class="header-icon">🚀</div>
+            <div class="header-icon">RocketLaunchIcon</div>
             <span class="header-title">Recommended Career Paths</span>
           </div>
 
@@ -281,7 +281,7 @@
         <section v-show="activeTab === 'compare'" class="compare-section glass-surface">
           <div class="section-header">
             <h2>
-              <AppIcon name="mdi-compare" size="large" />
+              <AppIcon name="ScaleIcon" size="large" />
               Compare Results
             </h2>
             <p>Track changes in your skill analysis over time</p>
@@ -289,9 +289,9 @@
 
           <div class="snapshot-controls">
             <div class="snapshot-actions">
-              <UnifiedButton variant="primary" leading-icon="mdi-camera" @click="saveSnapshot">Save Current Results</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-export" @click="exportSnapshots">Export All</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-import" @click="triggerImport">Import</UnifiedButton>
+              <UnifiedButton variant="primary" leading-icon="CameraIcon" @click="saveSnapshot">Save Current Results</UnifiedButton>
+              <UnifiedButton variant="glass" leading-icon="ArrowUpTrayIcon" @click="exportSnapshots">Export All</UnifiedButton>
+              <UnifiedButton variant="glass" leading-icon="ArrowDownTrayIcon" @click="triggerImport">Import</UnifiedButton>
               <input ref="snapImport" type="file" accept=".json" style="display: none" @change="onImportSnapshots">
               <label class="form-check-label ml-2">
                 <input v-model="replaceSnapshots" type="checkbox" class="form-check-input"> Replace all on import
@@ -308,8 +308,8 @@
               </select>
               <div v-if="leftSnap" class="snapshot-info">
                 <div>{{ leftSnap.skills.length }} skills</div>
-                <UnifiedButton size="xs" variant="glass" leading-icon="mdi-rename" :disabled="!leftSnapKey" @click="renameLeftSnapshot">Rename</UnifiedButton>
-                <UnifiedButton size="xs" variant="outline" leading-icon="mdi-delete" :disabled="!leftSnapKey" @click="deleteSnapshot(leftSnapKey)">Delete</UnifiedButton>
+                <UnifiedButton size="xs" variant="glass" leading-icon="PencilIcon" :disabled="!leftSnapKey" @click="renameLeftSnapshot">Rename</UnifiedButton>
+                <UnifiedButton size="xs" variant="outline" leading-icon="TrashIcon" :disabled="!leftSnapKey" @click="deleteSnapshot(leftSnapKey)">Delete</UnifiedButton>
               </div>
             </div>
 
@@ -321,8 +321,8 @@
               </select>
               <div v-if="rightSnap" class="snapshot-info">
                 <div>{{ rightSnap.skills.length }} skills</div>
-                <UnifiedButton size="xs" variant="glass" leading-icon="mdi-rename" :disabled="!rightSnapKey" @click="renameRightSnapshot">Rename</UnifiedButton>
-                <UnifiedButton size="xs" variant="outline" leading-icon="mdi-delete" :disabled="!rightSnapKey" @click="deleteSnapshot(rightSnapKey)">Delete</UnifiedButton>
+                <UnifiedButton size="xs" variant="glass" leading-icon="PencilIcon" :disabled="!rightSnapKey" @click="renameRightSnapshot">Rename</UnifiedButton>
+                <UnifiedButton size="xs" variant="outline" leading-icon="TrashIcon" :disabled="!rightSnapKey" @click="deleteSnapshot(rightSnapKey)">Delete</UnifiedButton>
               </div>
             </div>
           </div>
@@ -346,19 +346,19 @@
         </section>
 
         <!-- Career role detail modal -->
-        <div v-if="selectedRoleDetails" class="modal fade show d-block" tabindex="-1">
+        <div v-if="selectedRoleDetails" class="modal fade show block" tabindex="-1">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Career Role Details</h5>
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" @click="selectedRoleDetails = null" />
+                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" @click="selectedRoleDetails = null" />
               </div>
               <div class="modal-body">
                 <p>Career role details would be displayed here.</p>
               </div>
               <div class="modal-footer">
                 <UnifiedButton variant="glass" @click="selectedRoleDetails = null">Close</UnifiedButton>
-                <UnifiedButton variant="primary" leading-icon="mdi-briefcase-search">Find Jobs</UnifiedButton>
+                <UnifiedButton variant="primary" leading-icon="MagnifyingGlassIcon">Find Jobs</UnifiedButton>
               </div>
             </div>
           </div>
@@ -366,12 +366,12 @@
       </div>
 
       <!-- Export modal -->
-      <div v-if="showExportModal" class="modal fade show d-block" tabindex="-1">
+      <div v-if="showExportModal" class="modal fade show block" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Export Your Skills</h5>
-              <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" @click="showExportModal = false" />
+              <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" @click="showExportModal = false" />
             </div>
             <div class="modal-body">
               <p>Choose how you'd like to export your skill analysis:</p>
@@ -379,7 +379,7 @@
                 <UnifiedButton
                   variant="primary"
                   size="lg"
-                  leading-icon="mdi-file-pdf-box"
+                  leading-icon="DocumentIcon-pdf-box"
                   @click="handleExport('pdf')"
                 >
                   Export as PDF
@@ -387,7 +387,7 @@
                 <UnifiedButton
                   variant="gaming"
                   size="lg"
-                  leading-icon="mdi-image"
+                  leading-icon="PhotoIcon"
                   @click="handleExport('image')"
                 >
                   Export as Image
@@ -395,7 +395,7 @@
                 <UnifiedButton
                   variant="cyber"
                   size="lg"
-                  leading-icon="mdi-clipboard-text"
+                  leading-icon="ClipboardDocumentIcon"
                   @click="handleExport('json')"
                 >
                   Export as JSON
@@ -415,6 +415,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, ArrowUpTrayIcon, CameraIcon, ChartBarIcon, ClipboardDocumentIcon, ListBulletIcon, MagnifyingGlassIcon, PencilIcon, PhotoIcon, ScaleIcon, SparklesIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted } from 'vue'
 import GlassNavTabs from '@/components/GlassNavTabs.vue'
 import { useEnhancedSkillMapping } from '@/composables/useEnhancedSkillMapping'
@@ -484,13 +486,13 @@ const gamingProfiles = ref([
   { id: 'steam', name: 'Steam', icon: '🎯', selected: false },
   { id: 'discord', name: 'Discord', icon: '💬', selected: true },
   { id: 'youtube', name: 'YouTube', icon: '📺', selected: false },
-  { id: 'xbox', name: 'Xbox', icon: '🎮', selected: false },
+  { id: 'xbox', name: 'Xbox', icon: 'DevicePhoneMobileIcon', selected: false },
   { id: 'itch', name: 'itch.io', icon: '🎪', selected: false },
 ])
 
 const achievements = ref([
-  { id: 1, name: 'Tournament Winner', icon: '🏆' },
-  { id: 2, name: 'Guild Leader (500+ members)', icon: '👥' },
+  { id: 1, name: 'Tournament Winner', icon: 'TrophyIcon' },
+  { id: 2, name: 'Guild Leader (500+ members)', icon: 'UsersIcon' },
   { id: 3, name: 'Data Analyst for Pro Team', icon: '📊' },
 ])
 
@@ -525,9 +527,9 @@ const replaceSnapshots = ref(false)
 
 // Tab configuration
 const navTabs = computed(() => [
-  { id: 'overview', label: 'Overview', icon: 'mdi-chart-box' },
+  { id: 'overview', label: 'Overview', icon: 'ChartBarIcon-box' },
   { id: 'skills', label: 'Skills', icon: 'mdi-view-list' },
-  { id: 'network', label: 'Network', icon: 'mdi-graph' },
+  { id: 'network', label: 'Network', icon: 'PresentationChartLineIcon' },
   { id: 'careers', label: 'Careers', icon: 'mdi-briefcase' },
   { id: 'compare', label: 'Compare', icon: 'mdi-compare' }
 ])
@@ -685,7 +687,7 @@ onMounted(() => {
   background: var(--background-primary);
   position: relative;
   overflow-x: hidden;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /*
@@ -804,7 +806,7 @@ onMounted(() => {
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   border-color: var(--color-primary-300);
 }
 
@@ -865,7 +867,7 @@ onMounted(() => {
 
 .glass-panel:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   border-color: var(--color-primary-300);
 }
 
@@ -891,7 +893,7 @@ onMounted(() => {
 }
 
 .header-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Form Elements */
@@ -903,7 +905,7 @@ onMounted(() => {
   display: block;
   margin-bottom: var(--spacing-2);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .form-textarea {
@@ -912,7 +914,7 @@ onMounted(() => {
   background: var(--surface-container-low);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-family: inherit;
   transition: all var(--duration-normal) var(--easing-ease-out);
   resize: vertical;

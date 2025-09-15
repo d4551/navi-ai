@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-modal-system">
+  <div class="ai-modal-system" class="font-sans">
     <!-- Floating AI Assistant Button -->
     <Teleport to="body">
       <div 
@@ -11,7 +11,7 @@
           variant="gaming"
           size="lg"
           icon-only
-          :icon="aiStatus.isProcessing ? 'mdi-loading' : 'mdi-robot-happy'"
+          :icon="aiStatus.isProcessing ? 'ArrowPathIcon' : 'mdi-robot-happy'"
           :class="{ 'spinning': aiStatus.isProcessing }"
           :tooltip="hasPendingSuggestions ? 
             `AI Assistant - ${activeSuggestions.length} suggestions available` : 
@@ -38,15 +38,15 @@
     >
       <v-card class="ai-modal glass-elevated">
         <!-- Modal Header -->
-        <v-card-title class="d-flex align-center justify-space-between pa-4">
-          <div class="d-flex align-center ga-2">
+        <v-card-title class="flex items-center justify-space-between pa-4">
+          <div class="flex items-center gap-glass-sm">
             <AppIcon 
-              :name="aiStatus.isProcessing ? 'mdi-loading' : 'mdi-robot-happy'"
+              :name="aiStatus.isProcessing ? 'ArrowPathIcon' : 'mdi-robot-happy'"
               :class="{ 'spinning': aiStatus.isProcessing }"
               size="small"
               color="primary"
             />
-            <span class="text-h6">AI Career Assistant</span>
+            <span class="text-lg font-semibold">AI Career Assistant</span>
             <UiChip 
               v-if="currentContext"
               :label="getContextDisplayName(currentContext.entityType)"
@@ -55,7 +55,7 @@
             />
           </div>
           
-          <div class="d-flex align-center ga-2">
+          <div class="flex items-center gap-glass-sm">
             <!-- AI Status Indicator -->
             <div class="ai-status-indicator" :class="getStatusClass()">
               <div class="status-dot"></div>
@@ -65,7 +65,7 @@
             <UnifiedButton
               variant="ghost"
               icon-only
-              icon="mdi-close"
+              icon="XMarkIcon"
               @click="closeModal"
             />
           </div>
@@ -79,7 +79,7 @@
           color="primary"
         >
           <v-tab value="suggestions">
-            <AppIcon name="mdi-lightbulb" size="small" class="mr-2" />
+            <AppIcon name="LightBulbIcon" size="small" class="mr-2" />
             Suggestions
             <UiChip 
               v-if="activeSuggestions.length > 0"
@@ -90,11 +90,11 @@
             />
           </v-tab>
           <v-tab value="analysis">
-            <AppIcon name="mdi-chart-line" size="small" class="mr-2" />
+            <AppIcon name="ChartBarIcon" size="small" class="mr-2" />
             Analysis
           </v-tab>
           <v-tab value="chat">
-            <AppIcon name="mdi-chat" size="small" class="mr-2" />
+            <AppIcon name="ChatBubbleOvalLeftIcon" size="small" class="mr-2" />
             Chat
           </v-tab>
         </v-tabs>
@@ -106,8 +106,8 @@
             <v-window-item value="suggestions">
               <div class="suggestions-panel pa-4">
                 <div v-if="activeSuggestions.length === 0" class="empty-state text-center pa-8">
-                  <AppIcon name="mdi-lightbulb-outline" size="xl" color="muted" />
-                  <h3 class="text-h6 mt-4 mb-2">No Suggestions Available</h3>
+                  <AppIcon name="LightBulbIcon-outline" size="xl" color="muted" />
+                  <h3 class="text-lg font-semibold mt-4 mb-2">No Suggestions Available</h3>
                   <p class="text-body-2 text-medium-emphasis">
                     Start working on your {{ getContextDisplayName(currentContext?.entityType || 'resume') }} to get AI-powered suggestions.
                   </p>
@@ -120,10 +120,10 @@
                     class="suggestion-card mb-3"
                     :class="getPriorityClass(suggestion.priority)"
                   >
-                    <div class="suggestion-header d-flex align-center justify-space-between mb-2">
-                      <div class="d-flex align-center ga-2">
+                    <div class="suggestion-header flex items-center justify-space-between mb-2">
+                      <div class="flex items-center gap-glass-sm">
                         <AppIcon :name="getSuggestionIcon(suggestion.type)" size="small" />
-                        <span class="text-subtitle-1 font-weight-medium">{{ suggestion.title }}</span>
+                        <span class="text-base font-medium font-weight-medium">{{ suggestion.title }}</span>
                         <UiChip 
                           :label="suggestion.priority"
                           :variant="getPriorityVariant(suggestion.priority)"
@@ -131,7 +131,7 @@
                         />
                       </div>
                       
-                      <div class="suggestion-actions d-flex ga-1">
+                      <div class="suggestion-actions flex ga-1">
                         <UnifiedButton
                           variant="primary"
                           size="sm"
@@ -143,7 +143,7 @@
                         <UnifiedButton
                           variant="ghost"
                           size="sm"
-                          icon="mdi-close"
+                          icon="XMarkIcon"
                           @click="dismissSuggestion(suggestion.id)"
                         />
                       </div>
@@ -174,8 +174,8 @@
             <v-window-item value="analysis">
               <div class="analysis-panel pa-4">
                 <div v-if="!lastAnalysis" class="empty-state text-center pa-8">
-                  <AppIcon name="mdi-chart-line" size="xl" color="muted" />
-                  <h3 class="text-h6 mt-4 mb-2">No Analysis Available</h3>
+                  <AppIcon name="ChartBarIcon" size="xl" color="muted" />
+                  <h3 class="text-lg font-semibold mt-4 mb-2">No Analysis Available</h3>
                   <p class="text-body-2 text-medium-emphasis mb-4">
                     Generate an analysis of your {{ getContextDisplayName(currentContext?.entityType || 'resume') }}.
                   </p>
@@ -191,8 +191,8 @@
                 <div v-else class="analysis-content">
                   <!-- Overall Score -->
                   <div class="score-card mb-4 pa-4 rounded glass-elevated">
-                    <div class="d-flex align-center justify-space-between mb-2">
-                      <h3 class="text-h6">Overall Score</h3>
+                    <div class="flex items-center justify-space-between mb-2">
+                      <h3 class="text-lg font-semibold">Overall Score</h3>
                       <div class="score-circle" :class="getScoreClass(lastAnalysis.score)">
                         {{ lastAnalysis.score }}/100
                       </div>
@@ -208,8 +208,8 @@
                   <!-- Strengths and Improvements -->
                   <div class="insights-grid">
                     <div class="strengths-section">
-                      <h4 class="text-subtitle-1 mb-3 d-flex align-center ga-2">
-                        <AppIcon name="mdi-check-circle" color="success" />
+                      <h4 class="text-base font-medium mb-3 flex items-center gap-glass-sm">
+                        <AppIcon name="CheckCircleIcon" color="success" />
                         Strengths
                       </h4>
                       <div class="insight-list">
@@ -224,8 +224,8 @@
                     </div>
 
                     <div class="improvements-section">
-                      <h4 class="text-subtitle-1 mb-3 d-flex align-center ga-2">
-                        <AppIcon name="mdi-alert-circle" color="warning" />
+                      <h4 class="text-base font-medium mb-3 flex items-center gap-glass-sm">
+                        <AppIcon name="ExclamationCircleIcon" color="warning" />
                         Areas for Improvement
                       </h4>
                       <div class="insight-list">
@@ -242,8 +242,8 @@
 
                   <!-- Keywords -->
                   <div v-if="lastAnalysis.keywords?.length" class="keywords-section mt-4">
-                    <h4 class="text-subtitle-1 mb-3">Relevant Keywords</h4>
-                    <div class="keywords-list d-flex flex-wrap ga-2">
+                    <h4 class="text-base font-medium mb-3">Relevant Keywords</h4>
+                    <div class="keywords-list flex flex-wrap gap-glass-sm">
                       <UiChip
                         v-for="keyword in lastAnalysis.keywords"
                         :key="keyword"
@@ -263,7 +263,7 @@
                 <div ref="chatContainer" class="chat-messages pa-4" style="height: 400px; overflow-y: auto;">
                   <div v-if="chatHistory.length === 0" class="empty-chat text-center pa-8">
                     <AppIcon name="mdi-chat-outline" size="xl" color="muted" />
-                    <h3 class="text-h6 mt-4 mb-2">Start a Conversation</h3>
+                    <h3 class="text-lg font-semibold mt-4 mb-2">Start a Conversation</h3>
                     <p class="text-body-2 text-medium-emphasis">
                       Ask me anything about your career, resume, or job search strategy.
                     </p>
@@ -275,9 +275,9 @@
                     class="chat-message mb-4"
                     :class="{ 'user-message': message.role === 'user', 'ai-message': message.role === 'assistant' }"
                   >
-                    <div class="message-header d-flex align-center ga-2 mb-2">
+                    <div class="message-header flex items-center gap-glass-sm mb-2">
                       <AppIcon 
-                        :name="message.role === 'user' ? 'mdi-account' : 'mdi-robot'"
+                        :name="message.role === 'user' ? 'UserIcon' : 'mdi-robot'"
                         size="small"
                       />
                       <span class="text-caption">
@@ -291,8 +291,8 @@
                   </div>
 
                   <div v-if="isTyping" class="typing-indicator mb-4">
-                    <div class="d-flex align-center ga-2">
-                      <AppIcon name="mdi-robot" size="small" />
+                    <div class="flex items-center gap-glass-sm">
+                      <AppIcon name="CpuChipIcon" size="small" />
                       <div class="typing-dots">
                         <span></span>
                         <span></span>
@@ -304,7 +304,7 @@
 
                 <!-- Chat Input -->
                 <div class="chat-input pa-4 border-t">
-                  <div class="d-flex align-center ga-2">
+                  <div class="flex items-center gap-glass-sm">
                     <v-text-field
                       v-model="chatInput"
                       placeholder="Ask me anything about your career..."
@@ -317,7 +317,7 @@
                     />
                     <UnifiedButton
                       variant="primary"
-                      icon="mdi-send"
+                      icon="PaperAirplaneIcon"
                       :disabled="!chatInput.trim() || isSendingMessage"
                       :loading="isSendingMessage"
                       @click="sendMessage"
@@ -331,13 +331,13 @@
 
         <!-- Modal Footer -->
         <v-card-actions class="pa-4 border-t">
-          <div class="d-flex align-center justify-space-between w-100">
+          <div class="flex items-center justify-space-between w-100">
             <div class="session-stats">
               <span class="text-caption text-medium-emphasis">
                 Session: {{ contextStats.appliedActions }} applied, {{ contextStats.dismissedActions }} dismissed
               </span>
             </div>
-            <div class="modal-actions d-flex ga-2">
+            <div class="modal-actions flex gap-glass-sm">
               <UnifiedButton
                 variant="outline"
                 :loading="aiStatus.isProcessing"
@@ -360,6 +360,9 @@
 </template>
 
 <script setup lang="ts">
+import { ChartBarIcon, ChatBubbleOvalLeftIcon, CpuChipIcon, ExclamationCircleIcon, LightBulbIcon, PaperAirplaneIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch, nextTick, onMounted } from 'vue';
 import { useAIContext } from '@/composables/useAIContext';
 import { useAIIntegration } from '@/composables/useAIIntegration';
@@ -544,13 +547,13 @@ const getContextDisplayName = (type?: string) => {
 
 const getSuggestionIcon = (type: string) => {
   const icons = {
-    suggestion: 'mdi-lightbulb',
+    suggestion: 'LightBulbIcon',
     correction: 'mdi-pencil',
     enhancement: 'mdi-trending-up',
-    analysis: 'mdi-chart-line',
+    analysis: 'ChartBarIcon-line',
     generation: 'mdi-auto-fix',
   };
-  return icons[type] || 'mdi-lightbulb';
+  return icons[type] || 'LightBulbIcon';
 };
 
 const getPriorityClass = (priority: string) => {
@@ -736,12 +739,12 @@ watch(() => props.contextType, () => {
 
 .insight-item.success {
   background: rgba(var(--v-theme-success), 0.1);
-  border-left: 4px solid rgb(var(--v-theme-success));
+  border-l: 4px solid rgb(var(--v-theme-success));
 }
 
 .insight-item.warning {
   background: rgba(var(--v-theme-warning), 0.1);
-  border-left: 4px solid rgb(var(--v-theme-warning));
+  border-l: 4px solid rgb(var(--v-theme-warning));
 }
 
 .chat-message.user-message .message-content {

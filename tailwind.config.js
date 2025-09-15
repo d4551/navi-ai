@@ -9,11 +9,8 @@ try { optionalPlugins.push(require('@tailwindcss/typography')) } catch {}
 try { optionalPlugins.push(require('@tailwindcss/aspect-ratio')) } catch {}
 
 export default {
-  // Enhanced dark mode support with multiple selectors
-  darkMode: ['variant', [
-    '@media (prefers-color-scheme: dark) { &:not(.light *) }',
-    '&:is(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *)'
-  ]],
+  important: true,
+  darkMode: ['class', '[data-theme="dark"]'],
   corePlugins: {
     // Keep existing base styles from your design system
     preflight: false,
@@ -21,6 +18,7 @@ export default {
   content: [
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
+    './src/styles/**/*.css',
   ],
   theme: {
     extend: {
@@ -286,6 +284,22 @@ export default {
           boxShadow: 'var(--glass-shadow)',
           transition: 'all 0.3s ease',
         },
+        '.glass-bg-light': {
+          background: 'var(--glass-bg-light)',
+        },
+        '.glass-bg-active': {
+          background: 'var(--glass-bg-active)',
+        },
+        '.glass-interactive': {
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+        },
+        '.glass-surface': {
+          background: 'var(--glass-bg)',
+          backdropFilter: 'blur(20px)',
+          '-webkit-backdrop-filter': 'blur(20px)',
+          border: '1px solid var(--glass-border)',
+        },
         '.glass-sm': {
           backdropFilter: 'blur(10px)',
           '-webkit-backdrop-filter': 'blur(10px)',
@@ -380,6 +394,14 @@ export default {
 
       // Enhanced text accessibility utilities
       addUtilities({
+        '.text-glass-primary': {
+          color: 'var(--text-primary)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2)',
+        },
+        '.text-glass-secondary': {
+          color: 'var(--text-secondary)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2)',
+        },
         '.text-glass-readable': {
           color: 'var(--text-primary)',
           textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
@@ -482,6 +504,53 @@ export default {
           borderRadius: theme('borderRadius.lg'),
           boxShadow: theme('boxShadow.glass-lg'),
         },
+      })
+
+      // Legacy typography aliases mapped to Tailwind theme tokens
+      // Ensures pages use Tailwind-driven sizes/weights/colors instead of legacy CSS
+      const fontSizeEntry = (key) => {
+        const v = theme(`fontSize.${key}`)
+        if (Array.isArray(v)) {
+          return { fontSize: v[0], ...(v[1] || {}) }
+        }
+        return { fontSize: v }
+      }
+      const titleStyles = (sizeKey, weight = '700') => ({
+        ...fontSizeEntry(sizeKey),
+        fontWeight: weight,
+        color: 'var(--text-primary)'
+      })
+      const textStyles = (sizeKey, weight = '400') => ({
+        ...fontSizeEntry(sizeKey),
+        fontWeight: weight,
+        color: 'var(--text-secondary)'
+      })
+
+      const displayFonts = theme('fontFamily.display')
+      const fontFamilyValue = Array.isArray(displayFonts)
+        ? displayFonts.join(', ')
+        : (displayFonts || 'inherit')
+
+      addComponents({
+        '.section-title': titleStyles('2xl', '700'),
+        '.section-subtitle': { ...textStyles('sm', '500'), color: 'var(--text-secondary)' },
+        '.panel-title': titleStyles('lg', '600'),
+        '.panel-subtitle': { ...textStyles('sm', '400'), color: 'var(--text-secondary)' },
+        '.card-title': titleStyles('lg', '600'),
+        '.action-title': titleStyles('base', '600'),
+        '.progress-title': titleStyles('base', '600'),
+        '.logo-title': {
+          ...titleStyles('3xl', '800'),
+          letterSpacing: theme('letterSpacing.wide') || '0.025em',
+          fontFamily: fontFamilyValue,
+        },
+        '.logo-subtitle': { ...textStyles('sm', '500'), color: 'var(--text-muted)' },
+        '.body-text': textStyles('base', '400'),
+        '.muted-text': { ...textStyles('sm', '400'), color: 'var(--text-muted)' },
+        '.text-primary': { color: 'var(--text-primary)' },
+        '.text-secondary': { color: 'var(--text-secondary)' },
+        '.text-tertiary': { color: 'var(--text-tertiary)' },
+        '.text-muted': { color: 'var(--text-muted)' },
       })
     }
   ],

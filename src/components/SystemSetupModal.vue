@@ -1,10 +1,10 @@
 <template>
-  <div v-if="open" class="modal show d-block" role="dialog" aria-modal="true">
+  <div v-if="open" class="modal show block" role="dialog" aria-modal="true" class="font-sans">
     <div class="modal-backdrop show"></div>
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content glass-surface">
         <div class="modal-header bg-gradient text-inverse">
-          <h5 class="modal-title"><AppIcon name="mdi-cog-outline" class="me-2" /> System Setup</h5>
+          <h5 class="modal-title"><AppIcon name="mdi-cog-outline" class="mr-2" /> System Setup</h5>
           <button type="button" class="btn-close btn-close-white ui-btn ui-size-md" aria-label="Close" @click="$emit('close')"></button>
         </div>
         <div class="modal-body">
@@ -19,23 +19,23 @@
           <!-- Device Setup -->
           <div v-if="step===0">
             <h6 class="mb-2">Lighting Device Setup</h6>
-            <div class="small text-muted mb-2">System Status: {{ store.lighting?.scanning ? 'Scanning...' : ((store.lighting?.connectedDevices?.length) ? 'Connected' : 'Idle') }} | Connected Devices: {{ (store.lighting?.connectedDevices?.length) || 0 }} | Primary Device: {{ store.lighting?.primaryDevice || 'None Selected' }}</div>
+            <div class="small text-secondary mb-2">System Status: {{ store.lighting?.scanning ? 'Scanning...' : ((store.lighting?.connectedDevices?.length) ? 'Connected' : 'Idle') }} | Connected Devices: {{ (store.lighting?.connectedDevices?.length) || 0 }} | Primary Device: {{ store.lighting?.primaryDevice || 'None Selected' }}</div>
 
             <div class="mb-3">
               <label class="form-label">LED Device Type</label>
-              <div class="d-flex gap-2 flex-wrap">
+              <div class="flex gap-glass-sm flex-wrap">
                 <UnifiedButton :variant="(store.lighting?.deviceType==='ring') ? 'primary' : 'outline'" @click="setType('ring')">
-                  <div class="fw-semibold">Ring Light</div>
-                  <small class="text-muted d-block">WS2812B/WS2815 Circular LED Array</small>
+                  <div class="font-semibold">Ring Light</div>
+                  <small class="text-secondary block">WS2812B/WS2815 Circular LED Array</small>
                 </UnifiedButton>
                 <UnifiedButton :variant="(store.lighting?.deviceType==='strip') ? 'primary' : 'outline'" @click="setType('strip')">
-                  <div class="fw-semibold">Addressable LED Strip</div>
-                  <small class="text-muted d-block">WS2812B/WS2815 Linear Strip</small>
+                  <div class="font-semibold">Addressable LED Strip</div>
+                  <small class="text-secondary block">WS2812B/WS2815 Linear Strip</small>
                 </UnifiedButton>
               </div>
             </div>
 
-            <div class="d-flex gap-2">
+            <div class="flex gap-glass-sm">
               <UnifiedButton variant="outline" :disabled="!!store.lighting?.scanning" @click="scan">{{ store.lighting?.scanning ? 'Scanning...' : 'Scan' }}</UnifiedButton>
               <UnifiedButton variant="outline" :disabled="!(store.lighting?.connectedDevices?.length)" @click="next">Next</UnifiedButton>
             </div>
@@ -44,15 +44,15 @@
           <!-- Configuration -->
           <div v-else-if="step===1">
             <h6 class="mb-2">Configuration</h6>
-            <div class="row g-3">
-              <div class="col-sm-6">
+            <div class="flex flex-wrap g-3">
+              <div class="flex-1-sm-6">
                 <label class="form-label">Primary Device</label>
                 <select v-model="primary" class="form-select glass-input">
                   <option :value="null">None</option>
                   <option v-for="d in (store.lighting?.connectedDevices || [])" :key="d.id" :value="d.id">{{ d.name }} ({{ d.leds }} LEDs)</option>
                 </select>
               </div>
-              <div class="col-sm-6">
+              <div class="flex-1-sm-6">
                 <label class="form-label">Profile</label>
                 <select v-model="profile" class="form-select glass-input">
                   <option>Default</option>
@@ -62,7 +62,7 @@
                 </select>
               </div>
             </div>
-            <div class="mt-3 d-flex gap-2">
+            <div class="mt-3 flex gap-glass-sm">
               <UnifiedButton variant="outline" @click="prev">Back</UnifiedButton>
               <UnifiedButton variant="outline" @click="next">Next</UnifiedButton>
             </div>
@@ -71,23 +71,23 @@
           <!-- Profiles -->
           <div v-else-if="step===2">
             <h6 class="mb-2">Quick Controls</h6>
-            <div class="d-flex gap-2 align-items-center mb-3">
+            <div class="flex gap-glass-sm items-center mb-3">
               <div class="form-check form-switch">
                 <input id="powerToggle" class="form-check-input" type="checkbox" :checked="!!store.lighting?.power" @change="togglePower">
                 <label class="form-check-label" for="powerToggle">Power: {{ store.lighting?.power ? 'On' : 'Off' }}</label>
               </div>
-              <span class="badge" :class="store.lighting?.power ? 'bg-success' : 'bg-secondary'">{{ store.lighting?.power ? 'On' : 'Off' }}</span>
+              <span class="badge" :class="store.lighting?.power ? 'bg-success-500' : 'bg-secondary-500'">{{ store.lighting?.power ? 'On' : 'Off' }}</span>
             </div>
             <div class="mb-3">
               <label class="form-label">Preset</label>
-              <div class="d-flex gap-2 flex-wrap">
+              <div class="flex gap-glass-sm flex-wrap">
                 <UnifiedButton variant="outline" @click="apply('Default')">Default</UnifiedButton>
                 <UnifiedButton variant="outline" @click="apply('Cool White')">Cool White</UnifiedButton>
                 <UnifiedButton variant="outline" @click="apply('Warm White')">Warm White</UnifiedButton>
                 <UnifiedButton variant="outline" @click="apply('Photography')">Photography</UnifiedButton>
               </div>
             </div>
-            <div class="mt-2 d-flex gap-2">
+            <div class="mt-2 flex gap-glass-sm">
               <UnifiedButton variant="outline" @click="prev">Back</UnifiedButton>
               <UnifiedButton variant="outline" @click="next">Next</UnifiedButton>
             </div>
@@ -96,8 +96,8 @@
           <!-- Complete -->
           <div v-else>
             <h6 class="mb-2">Complete</h6>
-            <p class="small text-muted">Setup finished. You can revisit settings anytime in System Settings.</p>
-            <div class="d-flex gap-2">
+            <p class="small text-secondary">Setup finished. You can revisit settings anytime in System Settings.</p>
+            <div class="flex gap-glass-sm">
               <UnifiedButton variant="primary" @click="$emit('close')">Done</UnifiedButton>
             </div>
           </div>

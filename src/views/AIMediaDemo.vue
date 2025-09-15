@@ -6,12 +6,13 @@
     title="AI Media Studio"
     subtitle="Live + file analysis with smart modes, gallery, and analytics"
     :header-context="{ aiConnected, sdkReady, responses: responses.length }"
+    class="font-sans "
   >
     <template #header-actions>
-      <UnifiedButton variant="primary" leading-icon="mdi-camera" @click="captureNow">
+      <UnifiedButton variant="primary" leading-icon="CameraIcon" @click="captureNow">
         Capture
       </UnifiedButton>
-      <UnifiedButton variant="glass" leading-icon="mdi-download" @click="exportSession">
+      <UnifiedButton variant="glass" leading-icon="ArrowDownTrayIcon" @click="exportSession">
         Export
       </UnifiedButton>
     </template>
@@ -56,10 +57,10 @@
       </div>
 
       <div class="quick-actions">
-        <UnifiedButton variant="primary" leading-icon="mdi-camera" @click="captureNow">
+        <UnifiedButton variant="primary" leading-icon="CameraIcon" @click="captureNow">
           Capture
         </UnifiedButton>
-        <UnifiedButton variant="glass" leading-icon="mdi-trash-can" @click="clearSession">
+        <UnifiedButton variant="glass" leading-icon="TrashIcon" @click="clearSession">
           Clear
         </UnifiedButton>
       </div>
@@ -72,7 +73,7 @@
         <div class="card-header">
           <div class="card-title">
             <div class="card-icon webcam-icon">
-              <AppIcon name="mdi-camera" />
+              <AppIcon name="CameraIcon" />
             </div>
             <span>Webcam</span>
           </div>
@@ -91,7 +92,7 @@
             playsinline
           ></video>
           <div v-else class="preview-placeholder">
-            <AppIcon name="mdi-camera-off" />
+            <AppIcon name="CameraIcon" />
             <p>Camera feed will appear here</p>
           </div>
         </div>
@@ -102,7 +103,7 @@
             :class="{ active: cameraActive }"
             @click="toggleCamera"
           >
-            <AppIcon name="mdi-camera" class="control-btn-icon" />
+            <AppIcon name="CameraIcon" class="control-btn-icon" />
             <span class="control-btn-label">{{ cameraActive ? 'Stop Camera' : 'Start Camera' }}</span>
           </button>
           <button 
@@ -110,7 +111,7 @@
             :class="{ active: microphoneActive }"
             @click="toggleMicrophone"
           >
-            <AppIcon name="mdi-microphone" class="control-btn-icon" />
+            <AppIcon name="MicrophoneIcon" class="control-btn-icon" />
             <span class="control-btn-label">Microphone</span>
           </button>
           <button 
@@ -118,14 +119,14 @@
             :class="{ active: screenShareActive }"
             @click="toggleScreenShare"
           >
-            <AppIcon name="mdi-monitor" class="control-btn-icon" />
+            <AppIcon name="ComputerDesktopIcon" class="control-btn-icon" />
             <span class="control-btn-label">Share Screen</span>
           </button>
           <button 
             class="control-btn danger"
             @click="stopAll"
           >
-            <AppIcon name="mdi-stop" class="control-btn-icon" />
+            <AppIcon name="StopIcon" class="control-btn-icon" />
             <span class="control-btn-label">Stop All</span>
           </button>
         </div>
@@ -136,7 +137,7 @@
         <div class="card-header">
           <div class="card-title">
             <div class="card-icon screen-icon">
-              <AppIcon name="mdi-monitor" />
+              <AppIcon name="ComputerDesktopIcon" />
             </div>
             <span>Screen Share</span>
           </div>
@@ -155,7 +156,7 @@
             playsinline
           ></video>
           <div v-else class="preview-placeholder">
-            <AppIcon name="mdi-monitor-off" />
+            <AppIcon name="ComputerDesktopIcon" />
             <p>Click "Share Screen" to start</p>
           </div>
         </div>
@@ -178,7 +179,7 @@
       <div class="card-header">
         <div class="card-title">
           <div class="card-icon stats-icon">
-            <AppIcon name="mdi-chart-line" />
+            <AppIcon name="ChartBarIcon" />
           </div>
           <span>Live Stats</span>
         </div>
@@ -202,7 +203,7 @@
       <div class="card-header">
         <div class="card-title">
           <div class="card-icon guide-icon">
-            <AppIcon name="mdi-lightbulb" />
+            <AppIcon name="LightBulbIcon" />
           </div>
           <span>Quick Guide</span>
         </div>
@@ -236,6 +237,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, CameraIcon, ChartBarIcon, ComputerDesktopIcon, LightBulbIcon, MicrophoneIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { StopIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useToast } from '@/composables/useToast'
 import { canonicalAI } from '@/modules/ai/CanonicalAIService'
@@ -308,16 +312,16 @@ const toast = useToast()
 
 // Configuration data
 const tabs: Tab[] = [
-  { id: 'live', label: 'Live', icon: 'mdi-video' },
-  { id: 'file', label: 'File', icon: 'mdi-folder' },
+  { id: 'live', label: 'Live', icon: 'VideoCameraIcon' },
+  { id: 'file', label: 'File', icon: 'FolderIcon' },
   { id: 'gallery', label: 'Gallery', icon: 'mdi-view-gallery' },
-  { id: 'analytics', label: 'Analytics', icon: 'mdi-chart-box' }
+  { id: 'analytics', label: 'Analytics', icon: 'ChartBarIcon-box' }
 ]
 
 const modes: Mode[] = [
   { key: 'describe', label: 'Describe', icon: 'mdi-magnify' },
   { key: 'ocr', label: 'OCR', icon: 'mdi-text-recognition' },
-  { key: 'safety', label: 'Safety', icon: 'mdi-shield-check' },
+  { key: 'safety', label: 'Safety', icon: 'ShieldCheckIcon-check' },
   { key: 'ui_qa', label: 'UI QA', icon: 'mdi-test-tube' }
 ]
 
@@ -708,7 +712,7 @@ const animateStatsOnLoad = () => {
 
 .nav-tab:hover {
   background: var(--glass-hover-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transform: translateY(-2px);
 }
 
@@ -744,7 +748,7 @@ const animateStatsOnLoad = () => {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 0.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
@@ -781,7 +785,7 @@ const animateStatsOnLoad = () => {
   background: var(--glass-hover-bg);
   border-color: var(--color-primary-500);
   transform: translateY(-2px);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .mode-chip.active {
@@ -854,7 +858,7 @@ const animateStatsOnLoad = () => {
   justify-content: space-between;
   margin-bottom: var(--spacing-4, 1.5rem);
   padding-bottom: var(--spacing-3, 1rem);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .card-title {
@@ -864,7 +868,7 @@ const animateStatsOnLoad = () => {
   display: flex;
   align-items: center;
   gap: var(--spacing-2, 0.75rem);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   letter-spacing: var(--letter-spacing-tight, -0.025em);
 }
 
@@ -960,7 +964,7 @@ const animateStatsOnLoad = () => {
   background: var(--glass-hover-bg);
   border-color: var(--color-primary-500);
   transform: translateY(-2px);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .control-btn.active {
@@ -1075,7 +1079,7 @@ const animateStatsOnLoad = () => {
 .stat-value {
   font-size: 2rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.5rem;
   position: relative;
   z-index: 1;
@@ -1138,7 +1142,7 @@ const animateStatsOnLoad = () => {
 .guide-step-title {
   font-weight: 700;
   margin-bottom: 0.25rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .guide-step-desc {

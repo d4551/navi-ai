@@ -1,9 +1,9 @@
 <template>
-  <div class="application-tracker">
+  <div class="application-tracker" class="font-sans">
     <div v-if="applications.length === 0" class="empty-state text-center py-5">
-      <AppIcon name="mdi-clipboard-text-outline" class="display-6 text-muted d-block mb-3" />
+      <AppIcon name="mdi-clipboard-text-outline" class="display-6 text-secondary block mb-3" />
       <h6 class="mb-2">No applications tracked yet</h6>
-      <p class="text-muted small mb-0">Apply to jobs and they will appear here for progress tracking.</p>
+      <p class="text-secondary small mb-0">Apply to jobs and they will appear here for progress tracking.</p>
     </div>
 
     <div v-else class="table-container">
@@ -13,44 +13,44 @@
             <tr class="table-header">
               <th class="th-glassmorphic">
                 <div class="header-content">
-                  <AppIcon name="mdi-briefcase-variant" class="me-2" />
+                  <AppIcon name="mdi-briefcase-variant" class="mr-2" />
                   Role
                 </div>
               </th>
               <th class="th-glassmorphic">
                 <div class="header-content">
-                  <AppIcon name="mdi-domain" class="me-2" />
+                  <AppIcon name="BuildingOfficeIcon" class="mr-2" />
                   Company
                 </div>
               </th>
               <th class="th-glassmorphic">
                 <div class="header-content">
-                  <AppIcon name="mdi-calendar" class="me-2" />
+                  <AppIcon name="CalendarIcon" class="mr-2" />
                   Date
                 </div>
               </th>
               <th class="th-glassmorphic">
                 <div class="header-content">
-                  <AppIcon name="mdi-chart-bar" color="info" />
+                  <AppIcon name="ChartBarSquareIcon" color="info" />
                   Status
                 </div>
               </th>
               <th class="th-glassmorphic">
                 <div class="header-content">
-                  <AppIcon name="mdi-note-text" class="me-2" />
+                  <AppIcon name="mdi-note-text" class="mr-2" />
                   Notes
                 </div>
               </th>
               <th class="th-glassmorphic actions-header">
                 <div class="header-content">
-                  <AppIcon name="mdi-cog" />
+                  <AppIcon name="CogIcon" />
                   Actions
                 </div>
               </th>
             </tr>
           </thead>
           <tbody class="table-body">
-            <tr v-for="(app, index) in applications" :key="app.id" class="table-row" :class="`row-${index % 2}`">
+            <tr v-for="(app, index) in applications" :key="app.id" class="table-flex flex-wrap" :class="`flex flex-wrap-${index % 2}`">
               <td class="td-glassmorphic role-cell">
                 <div class="cell-content">
                   <span class="role-title">{{ app.title }}</span>
@@ -81,12 +81,12 @@
                   <div class="notes-container">
                     <ul class="notes-list">
                       <li v-for="note in app.notes" :key="note.id" class="note-item">
-                        <AppIcon name="mdi-chevron-right" class="note-bullet" />
+                        <AppIcon name="ChevronRightIcon" class="note-bullet" />
                         {{ note.text }}
                       </li>
                     </ul>
                     <button class="add-note-btn glassmorphic-btn" @click="openNoteModal(app)">
-                      <AppIcon name="mdi-note-plus-outline" class="me-1" />
+                      <AppIcon name="mdi-note-plus-outline" class="mr-1" />
                       Add Note
                     </button>
                   </div>
@@ -96,10 +96,10 @@
                 <div class="cell-content">
                   <div class="action-buttons">
                     <button class="action-btn view-btn glassmorphic-btn" title="View details" @click="viewDetails(app)">
-                      <AppIcon name="mdi-eye" />
+                      <AppIcon name="EyeIcon" />
                     </button>
                     <button class="action-btn delete-btn glassmorphic-btn" title="Remove" @click="remove(app)">
-                      <AppIcon name="mdi-delete-outline" />
+                      <AppIcon name="TrashIcon-outline" />
                     </button>
                   </div>
                 </div>
@@ -112,12 +112,12 @@
 
     <!-- Note Modal -->
     <Teleport to="body">
-      <div v-if="noteModalApp" class="modal fade show d-block" tabindex="-1" aria-modal="true" role="dialog">
+      <div v-if="noteModalApp" class="modal fade show block" tabindex="-1" aria-modal="true" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content glass-card section-card-subtle">
             <div class="modal-header">
               <h5 class="modal-title">Add Note - {{ noteModalApp.title }}</h5>
-              <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" aria-label="Close" @click="closeNoteModal" />
+              <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="closeNoteModal" />
             </div>
             <div class="modal-body">
               <textarea v-model="noteInput" class="unified-input ui-input" rows="4" placeholder="Interview scheduled, recruiter feedback, etc."></textarea>
@@ -125,7 +125,7 @@
             <div class="modal-footer">
               <button class="unified-btn btn-secondary ui-btn ui-size-md v-btn" @click="closeNoteModal">Cancel</button>
               <button class="unified-btn btn-primary v-btn ui-btn ui-size-md" :disabled="!noteInput.trim()" @click="saveNote">
-                <AppIcon name="mdi-content-save-outline" class="me-1" />
+                <AppIcon name="mdi-content-save-outline" class="mr-1" />
                 Save Note
               </button>
             </div>
@@ -137,6 +137,8 @@
 </template>
 
 <script setup>
+import { BuildingOfficeIcon, CalendarIcon, ChartBarSquareIcon, ChevronRightIcon, CogIcon, EyeIcon } from '@heroicons/vue/24/outline'
+
 import { ref, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -260,7 +262,7 @@ function remove(app) {
     rgba(0, 217, 255, 0.08) 50%,
     rgba(184, 71, 255, 0.1) 100%
   );
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-b: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .th-glassmorphic {
@@ -292,12 +294,12 @@ function remove(app) {
 }
 
 /* Enhanced Row Styling */
-.table-row {
+.table-flex flex-wrap {
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-b: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.table-row:hover {
+.table-flex flex-wrap:hover {
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.05) 0%,
@@ -309,7 +311,7 @@ function remove(app) {
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.table-row.row-0 {
+.table-flex flex-wrap.flex flex-wrap-0 {
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.03) 0%,
@@ -534,7 +536,7 @@ function remove(app) {
 }
 
 .modal-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-b: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1.5rem;
 }
 
@@ -549,7 +551,7 @@ function remove(app) {
 }
 
 .modal-footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-t: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1.5rem;
   gap: 1rem;
 }

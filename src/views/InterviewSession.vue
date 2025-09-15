@@ -1,10 +1,10 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <template #header-actions>
       <UnifiedButton 
         variant="ghost" 
         size="sm"
-        leading-icon="mdi-pause"
+        leading-icon="PauseIcon"
         :disabled="isSubmitting"
         @click="togglePause"
       >
@@ -13,7 +13,7 @@
       <UnifiedButton 
         variant="danger" 
         size="sm"
-        leading-icon="mdi-stop"
+        leading-icon="StopIcon"
         @click="confirmEndSession"
       >
         End Session
@@ -95,7 +95,7 @@
             <UnifiedCard v-if="session?.enableVoiceMode" variant="glass" class="voice-controls">
               <div class="voice-header">
                 <h3>
-                  <AppIcon name="mdi-microphone" />
+                  <AppIcon name="MicrophoneIcon" />
                   Voice Response
                 </h3>
                 <span class="voice-status" :class="{ recording: isRecording }">
@@ -127,7 +127,7 @@
             <UnifiedCard variant="glass" class="text-response" :aria-busy="isSubmitting ? 'true' : 'false'">
               <div class="response-header">
                 <h3>
-                  <AppIcon name="mdi-pencil" />
+                  <AppIcon name="PencilIcon" />
                   Your Response
                 </h3>
                 <div v-if="responseText.trim()" class="response-stats">
@@ -149,11 +149,11 @@
               <!-- Real-time feedback -->
               <div v-if="responseText.trim() && session?.enableRealTimeAnalysis" class="response-feedback">
                 <div class="feedback-item">
-                  <AppIcon name="mdi-chart-bar" />
+                  <AppIcon name="ChartBarSquareIcon" />
                   <span>Confidence: {{ getConfidenceLevel() }}</span>
                 </div>
                 <div class="feedback-item">
-                  <AppIcon name="mdi-clock-fast" />
+                  <AppIcon name="ClockIcon" />
                   <span>Pace: {{ getResponsePace() }}</span>
                 </div>
               </div>
@@ -188,7 +188,7 @@
           >
             <div class="feedback-header">
               <h3>
-                <AppIcon name="mdi-brain" />
+                <AppIcon name="CpuChipIcon" />
                 AI Feedback
               </h3>
               <div class="feedback-score" :class="getScoreClass(currentFeedback.score)">
@@ -214,7 +214,7 @@
 
                 <div v-if="currentFeedback.improvements?.length" class="feedback-section">
                   <h4>
-                    <AppIcon name="mdi-lightbulb-on" />
+                    <AppIcon name="LightBulbIcon" />
                     Improvements
                   </h4>
                   <ul>
@@ -228,7 +228,7 @@
 
             <div class="feedback-actions">
               <UnifiedButton variant="ghost" size="sm" @click="currentFeedback = null">
-                <AppIcon name="mdi-close-circle-outline" />
+                <AppIcon name="XMarkIcon-circle-outline" />
                 Dismiss
               </UnifiedButton>
             </div>
@@ -237,28 +237,28 @@
 
         <!-- Side Column: sticky session info and shortcuts -->
         <aside class="side-column" aria-label="Session information">
-          <UnifiedCard variant="glass" class="side-card sticky glass p-4 gap-4 rounded-lg">
+          <UnifiedCard variant="glass" class="side-card sticky glass p-glass-md gap-glass-md rounded-lg">
             <div class="side-title">{{ sessionTitle }}</div>
             <div class="side-meta">
-              <div class="meta-row">
+              <div class="meta-flex flex-wrap">
                 <AppIcon name="mdi-timer-outline" />
                 <span>Elapsed: {{ formatTime(elapsedTime) }}</span>
               </div>
-              <div class="meta-row">
+              <div class="meta-flex flex-wrap">
                 <AppIcon name="mdi-progress-clock" />
                 <span>Question {{ currentQuestionIndex + 1 }} / {{ totalQuestions }}</span>
               </div>
-              <div v-for="item in headerStats" :key="item.text" class="meta-row">
+              <div v-for="item in headerStats" :key="item.text" class="meta-flex flex-wrap">
                 <AppIcon :name="item.icon?.startsWith('mdi-') ? item.icon : 'mdi-shape'" />
                 <span>{{ item.text }}</span>
               </div>
             </div>
 
             <div class="side-controls">
-              <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-pause" :disabled="isSubmitting" @click="togglePause">
+              <UnifiedButton variant="ghost" size="sm" leading-icon="PauseIcon" :disabled="isSubmitting" @click="togglePause">
                 {{ isPaused ? 'Resume (P)' : 'Pause (P)' }}
               </UnifiedButton>
-              <UnifiedButton variant="danger" size="sm" leading-icon="mdi-stop" @click="confirmEndSession">
+              <UnifiedButton variant="danger" size="sm" leading-icon="StopIcon" @click="confirmEndSession">
                 End Session
               </UnifiedButton>
             </div>
@@ -303,6 +303,9 @@
 </template>
 
 <script setup>
+import { ChartBarSquareIcon, ClockIcon, CpuChipIcon, MicrophoneIcon, PencilIcon } from '@heroicons/vue/24/outline'
+import { LightBulbIcon, PauseIcon, StopIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
@@ -367,7 +370,7 @@ const headerStats = computed(() => {
   const personaName = session.value?.persona?.name || session.value?.config?.persona?.name
   const studio = session.value?.studioName || session.value?.config?.studioName
   const role = session.value?.roleType || session.value?.config?.roleType
-  if (personaName) stats.push({ text: `Persona: ${personaName}`, icon: 'mdi-account-tie' })
+  if (personaName) stats.push({ text: `Persona: ${personaName}`, icon: 'UserIcon-tie' })
   if (studio) stats.push({ text: studio, icon: 'mdi-office-building' })
   if (role) stats.push({ text: role, icon: 'mdi-briefcase-outline' })
   return stats
@@ -621,11 +624,11 @@ function formatTime(seconds) {
 
 function getQuestionIcon(type) {
   const icons = {
-    'behavioral': 'mdi-account-group',
+    'behavioral': 'UserIcon-group',
     'technical': 'mdi-code-braces',
-    'studio-specific': 'mdi-gamepad-variant',
+    'studio-specific': 'DevicePhoneMobileIcon-variant',
     'intro': 'mdi-hand-wave',
-    'closing': 'mdi-check-circle-outline'
+    'closing': 'CheckIcon-circle-outline'
   }
   return icons[type] || 'mdi-comment-question'
 }
@@ -702,7 +705,7 @@ watch(() => route.params.sessionId, () => {
 <style scoped>
 .interview-session-page {
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   display: flex;
   flex-direction: column;
 }
@@ -711,7 +714,7 @@ watch(() => route.params.sessionId, () => {
 
 .progress-container {
   padding: var(--spacing-md) var(--spacing-xl);
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
@@ -780,7 +783,7 @@ watch(() => route.params.sessionId, () => {
   margin-bottom: var(--spacing-lg);
 }
 
-.meta-row {
+.meta-flex flex-wrap {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -795,7 +798,7 @@ watch(() => route.params.sessionId, () => {
 }
 
 .shortcuts {
-  border-top: 1px solid var(--border-subtle);
+  border-t: 1px solid var(--border-subtle);
   padding-top: var(--spacing-md);
 }
 
@@ -811,7 +814,7 @@ watch(() => route.params.sessionId, () => {
 .shortcuts kbd {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
-  border-bottom-width: 2px;
+  border-b-width: 2px;
   padding: 0 var(--spacing-1-5);
   border-radius: 6px;
   font-size: 0.85em;
@@ -886,13 +889,13 @@ watch(() => route.params.sessionId, () => {
 .question-text {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.5;
   margin-bottom: var(--spacing-md);
 }
 
 .follow-ups {
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
 }
@@ -930,7 +933,7 @@ watch(() => route.params.sessionId, () => {
 .question-timer {
   margin-top: var(--spacing-lg);
   padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--border-subtle);
+  border-t: 1px solid var(--border-subtle);
 }
 
 .timer-info {
@@ -992,7 +995,7 @@ watch(() => route.params.sessionId, () => {
   gap: var(--spacing-sm);
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .voice-status {
@@ -1068,7 +1071,7 @@ watch(() => route.params.sessionId, () => {
   gap: var(--spacing-sm);
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .response-stats {
@@ -1087,8 +1090,8 @@ watch(() => route.params.sessionId, () => {
   padding: var(--spacing-md);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-md);
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: var(--bg-primary-500);
+  color: var(--text-primary-600);
   font-family: inherit;
   font-size: 1rem;
   line-height: 1.6;
@@ -1111,7 +1114,7 @@ watch(() => route.params.sessionId, () => {
   gap: var(--spacing-lg);
   margin-top: var(--spacing-md);
   padding-top: var(--spacing-md);
-  border-top: 1px solid var(--border-subtle);
+  border-t: 1px solid var(--border-subtle);
 }
 
 .feedback-item {
@@ -1147,7 +1150,7 @@ watch(() => route.params.sessionId, () => {
   gap: var(--spacing-sm);
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .feedback-score {
@@ -1179,7 +1182,7 @@ watch(() => route.params.sessionId, () => {
 
 .feedback-summary {
   font-size: 1rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-lg);
   line-height: 1.6;
 }
@@ -1196,7 +1199,7 @@ watch(() => route.params.sessionId, () => {
   gap: var(--spacing-sm);
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-md);
 }
 

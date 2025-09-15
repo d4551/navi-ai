@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { ai } from '@/shared/ai/canonical'
 import { generateContent } from '@/utils/aiClient'
+import { logger } from '@/shared/utils/logger'
 
 /**
  * AI Service Composable
@@ -26,10 +27,17 @@ export function useAIService() {
           maxTokens: options.maxTokens || 500,
           temperature: options.temperature || 0.7
         })
-        
+
         return response.content || response
-      } catch {
-        // Silently try fallback without console warnings
+      } catch (aiError) {
+        // Check if it's an API key error
+        if (aiError.message?.includes('API key') || aiError.message?.includes('No Gemini API key found')) {
+          logger.warn('AI service unavailable: API key not configured')
+          // Don't throw error, just return null to allow graceful fallback
+          return null
+        }
+
+        // For other errors, try fallback
         try {
           response = await generateContent(prompt, '', {
             maxTokens: 500,
@@ -37,13 +45,14 @@ export function useAIService() {
             ...options
           })
           return response
-        } catch {
-          throw new Error('AI service not available - please configure your API key in settings')
+        } catch (fallbackError) {
+          logger.warn('Both AI service and fallback failed:', { aiError: aiError.message, fallbackError: fallbackError.message })
+          return null
         }
       }
     } catch (err) {
       error.value = err.message
-      console.error('AI analysis error:', err)
+      logger.error('AI analysis error:', err)
       return null
     } finally {
       isLoading.value = false

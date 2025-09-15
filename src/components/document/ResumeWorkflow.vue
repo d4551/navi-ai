@@ -1,5 +1,5 @@
 <template>
-  <div class="resume-workflow">
+  <div class="resume-workflow" class="font-sans">
     <!-- Unified Step Navigation -->
     <WorkflowSteps
       :steps="resumeSteps"
@@ -24,7 +24,7 @@
           <div class="section-header">
             <div class="section-title-group">
               <div class="section-icon">
-                <AppIcon name="mdi-account-outline" size="24" />
+                <AppIcon name="UserIcon" size="24" />
               </div>
               <div>
                 <h3 class="section-title">Personal Info</h3>
@@ -33,7 +33,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-import"
+              leading-icon="ArrowDownTrayIcon"
               @click="importFromProfile"
             >
               Import Profile
@@ -44,7 +44,7 @@
             <FormField
               v-model="personalInfoName"
               label="Full Name"
-              icon="mdi-account-outline"
+              icon="UserIcon"
               placeholder="Enter your full name"
               :required="true"
               validation-message="Required field"
@@ -64,7 +64,7 @@
               v-model="personalInfoPhone"
               type="tel"
               label="Phone Number"
-              icon="mdi-phone-outline"
+              icon="PhoneIcon-outline"
               placeholder="(555) 123-4567"
             />
             
@@ -79,7 +79,7 @@
               v-model="personalInfoLinkedIn"
               type="url"
               label="LinkedIn Profile"
-              icon="mdi-linkedin"
+              icon="LinkIconedin"
               placeholder="linkedin.com/in/yourprofile"
             />
             
@@ -87,7 +87,7 @@
               v-model="personalInfoWebsite"
               type="url"
               label="Website/Portfolio"
-              icon="mdi-earth"
+              icon="GlobeAmericasIcon"
               placeholder="yourportfolio.com"
             />
           </div>
@@ -110,7 +110,7 @@
             v-if="aiEnabled"
             title="AI Writing Assistant"
             subtitle="Let AI help craft your professional summary"
-            :primary-action="{ label: 'Generate Summary', icon: 'mdi-magic-staff' }"
+            :primary-action="{ label: 'Generate Summary', icon: 'SparklesIcon-staff' }"
             :loading="aiLoading"
             :suggestions="aiSuggestions"
             :show-tokens="true"
@@ -122,9 +122,9 @@
 
           <div class="summary-section">
             <div class="summary-options mb-3">
-              <label class="d-flex align-items-center gap-2">
+              <label class="flex items-center gap-glass-sm">
                 <input type="checkbox" :checked="useRoleInSummary" @change="$emit('toggle-role-summary')" />
-                <span class="text-sm text-muted">Use current role/company in summary</span>
+                <span class="text-sm text-secondary">Use current role/company in summary</span>
               </label>
             </div>
             
@@ -132,7 +132,7 @@
               v-model="resumeSummary"
               type="textarea"
               label="Professional Summary"
-              icon="mdi-card-text-outline"
+              icon="DocumentTextIcon"
               placeholder="Write a compelling 2-3 sentence summary that showcases your expertise, key achievements, and career goals. Focus on what makes you unique and valuable to potential employers."
               :rows="6"
               :show-counter="true"
@@ -142,8 +142,8 @@
               :required="true"
             >
               <template #actions>
-                <div class="d-flex align-items-center gap-2">
-                  <span class="text-xs text-muted">Tokens:</span>
+                <div class="flex items-center gap-glass-sm">
+                  <span class="text-xs text-secondary">Tokens:</span>
                   <button
                     v-for="tk in summaryTokens.slice(0, 3)"
                     :key="tk"
@@ -164,7 +164,7 @@
           <div class="section-header">
             <div class="section-title-group">
               <div class="section-icon">
-                <AppIcon name="mdi-briefcase-outline" size="24" />
+                <AppIcon name="BriefcaseIcon" size="24" />
               </div>
               <div>
                 <h3 class="section-title">Experience</h3>
@@ -172,7 +172,7 @@
             </div>
             <UnifiedButton
               variant="primary"
-              leading-icon="mdi-plus-circle"
+              leading-icon="PlusCircleIcon"
               @click="addExperience"
             >
               Add Experience
@@ -185,7 +185,7 @@
             </div>
             <h4 class="empty-title">Add Your Work Experience</h4>
             <p class="empty-subtitle">Start building your professional story by adding your work history, achievements, and key responsibilities.</p>
-            <UnifiedButton variant="primary" size="lg" leading-icon="mdi-plus-circle" @click="addExperience">
+            <UnifiedButton variant="primary" size="lg" leading-icon="PlusCircleIcon" @click="addExperience">
               Add First Experience
             </UnifiedButton>
           </div>
@@ -209,7 +209,7 @@
                     v-if="aiEnabled"
                     variant="gaming"
                     size="sm"
-                    leading-icon="mdi-magic-staff"
+                    leading-icon="SparklesIcon-staff"
                     title="AI Enhance"
                     @click="enhanceExperience(index)"
                   >
@@ -218,7 +218,7 @@
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    icon="mdi-delete-outline"
+                    icon="TrashIcon-outline"
                     title="Remove Experience"
                     @click="removeExperience(index)"
                   />
@@ -226,10 +226,10 @@
               </div>
 
               <div class="card-content">
-                <div class="form-row">
+                <div class="form-flex flex-wrap">
                   <div class="form-field">
                     <label class="field-label">
-                      <AppIcon name="mdi-badge-account-outline" size="16" class="field-icon" />
+                      <AppIcon name="IdentificationIcon" size="16" class="field-icon" />
                       Job Title
                     </label>
                     <input
@@ -242,7 +242,7 @@
                   </div>
                   <div class="form-field">
                     <label class="field-label">
-                      <AppIcon name="mdi-domain" size="16" class="field-icon" />
+                      <AppIcon name="BuildingOfficeIcon" size="16" class="field-icon" />
                       Company
                     </label>
                     <input
@@ -255,10 +255,10 @@
                   </div>
                 </div>
               
-                <div class="form-row">
+                <div class="form-flex flex-wrap">
                   <div class="form-field">
                     <label class="field-label">
-                      <AppIcon name="mdi-calendar" size="16" class="field-icon" />
+                      <AppIcon name="CalendarIcon" size="16" class="field-icon" />
                       Start Date
                     </label>
                     <input
@@ -270,7 +270,7 @@
                   </div>
                   <div class="form-field">
                     <label class="field-label">
-                      <AppIcon name="mdi-calendar" size="16" class="field-icon" />
+                      <AppIcon name="CalendarIcon" size="16" class="field-icon" />
                       End Date
                     </label>
                     <input
@@ -297,7 +297,7 @@
                     ></textarea>
                     <div class="textarea-footer">
                       <div class="writing-tips">
-                        <AppIcon name="mdi-lightbulb" size="14" />
+                        <AppIcon name="LightBulbIcon" size="14" />
                         <span>Use bullet points, action verbs, and quantify achievements when possible</span>
                       </div>
                       <div class="char-count">{{ experience.description?.length || 0 }} characters</div>
@@ -306,7 +306,7 @@
                   <div v-if="experience.__proposal" class="ai-proposal-card">
                     <div class="proposal-header">
                       <div class="proposal-title">
-                        <AppIcon name="mdi-brain" size="16" />
+                        <AppIcon name="CpuChipIcon" size="16" />
                         <span>AI Enhancement Ready</span>
                       </div>
                       <div class="proposal-actions">
@@ -327,7 +327,7 @@
           <div class="section-header">
             <div class="section-title-group">
               <div class="section-icon">
-                <AppIcon name="mdi-school-outline" size="24" />
+                <AppIcon name="AcademicCapIcon" size="24" />
               </div>
               <div>
                 <h3 class="section-title">Education</h3>
@@ -335,7 +335,7 @@
             </div>
             <UnifiedButton
               variant="primary"
-              leading-icon="mdi-plus-circle"
+              leading-icon="PlusCircleIcon"
               @click="addEducation"
             >
               Add Education
@@ -344,11 +344,11 @@
 
           <div v-if="educationItems.length === 0" class="empty-state-card">
             <div class="empty-icon">
-              <AppIcon name="mdi-school-outline" size="64" />
+              <AppIcon name="AcademicCapIcon" size="64" />
             </div>
             <h4 class="empty-title">Add Your Education</h4>
             <p class="empty-subtitle">Include your degrees, certifications, and relevant coursework to showcase your academic achievements.</p>
-            <UnifiedButton variant="primary" size="lg" leading-icon="mdi-plus-circle" @click="addEducation">
+            <UnifiedButton variant="primary" size="lg" leading-icon="PlusCircleIcon" @click="addEducation">
               Add Education
             </UnifiedButton>
           </div>
@@ -371,7 +371,7 @@
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    icon="mdi-delete-outline"
+                    icon="TrashIcon-outline"
                     title="Remove Education"
                     @click="removeEducation(index)"
                   />
@@ -379,7 +379,7 @@
               </div>
             
               <div class="card-content">
-                <div class="form-row">
+                <div class="form-flex flex-wrap">
                   <div class="form-field">
                     <label class="field-label">
                       <AppIcon name="mdi-certificate-outline" size="16" class="field-icon" />
@@ -395,7 +395,7 @@
                   </div>
                   <div class="form-field">
                     <label class="field-label">
-                      <AppIcon name="mdi-school-outline" size="16" class="field-icon" />
+                      <AppIcon name="AcademicCapIcon" size="16" class="field-icon" />
                       Institution
                     </label>
                     <input
@@ -408,10 +408,10 @@
                   </div>
                 </div>
               
-                <div class="form-row">
+                <div class="form-flex flex-wrap">
                   <div class="form-field">
                     <label class="field-label">
-                      <AppIcon name="mdi-calendar-check-outline" size="16" class="field-icon" />
+                      <AppIcon name="CalendarIcon-check-outline" size="16" class="field-icon" />
                       Graduation Year
                     </label>
                     <input
@@ -423,7 +423,7 @@
                   </div>
                   <div class="form-field">
                     <label class="field-label">
-                      <AppIcon name="mdi-star-outline" size="16" class="field-icon" />
+                      <AppIcon name="StarIcon" size="16" class="field-icon" />
                       GPA (Optional)
                     </label>
                     <input
@@ -453,7 +453,7 @@
             <UnifiedButton
               v-if="aiEnabled"
               variant="gaming"
-              leading-icon="mdi-magic-staff"
+              leading-icon="SparklesIcon-staff"
               :loading="aiLoading"
               @click="suggestSkills"
             >
@@ -464,7 +464,7 @@
           <div class="skills-input-section">
             <div class="skill-input-container">
               <label class="field-label">
-                <AppIcon name="mdi-plus-circle-outline" size="16" class="field-icon" />
+                <AppIcon name="PlusIcon-circle-outline" size="16" class="field-icon" />
                 Add New Skill
               </label>
               <div class="skill-input-group">
@@ -479,7 +479,7 @@
                 <UnifiedButton
                   variant="primary"
                   :disabled="!newSkill.trim()"
-                  icon="mdi-plus"
+                  icon="PlusIcon"
                   @click="addSkill"
                 >
                   Add
@@ -521,7 +521,7 @@
                   title="Remove skill"
                   @click="removeSkill(index)"
                 >
-                  <AppIcon name="mdi-close" size="14" />
+                  <AppIcon name="XMarkIcon" size="14" />
                 </button>
               </div>
             </div>
@@ -549,7 +549,7 @@
           <div class="section-header">
             <div class="section-title-group">
               <div class="section-icon">
-                <AppIcon name="mdi-eye-check" size="24" />
+                <AppIcon name="EyeIcon-check" size="24" />
               </div>
               <div>
                 <h3 class="section-title">Review & Export</h3>
@@ -558,7 +558,7 @@
           </div>
 
           <div class="review-summary">
-            <p class="text-muted">Quick summary of your resume before export:</p>
+            <p class="text-secondary">Quick summary of your resume before export:</p>
             <ul>
               <li><strong>Name:</strong> {{ props.resumeData.personalInfo?.name || '—' }}</li>
               <li><strong>Email:</strong> {{ props.resumeData.personalInfo?.email || '—' }}</li>
@@ -570,7 +570,7 @@
           </div>
 
           <div class="review-actions">
-            <UnifiedButton variant="primary" leading-icon="mdi-download" @click="emit('export')">Export Resume</UnifiedButton>
+            <UnifiedButton variant="primary" leading-icon="ArrowDownTrayIcon" @click="emit('export')">Export Resume</UnifiedButton>
           </div>
         </div>
 
@@ -593,7 +593,7 @@
           <div class="nav-buttons">
             <UnifiedButton
               variant="ghost"
-              leading-icon="mdi-arrow-left"
+              leading-icon="ArrowLeftIcon"
               :disabled="currentStep === 1"
               @click="previousStep"
             >
@@ -605,7 +605,7 @@
                 v-if="currentStep < resumeSteps.length"
                 variant="primary"
                 size="lg"
-                trailing-icon="mdi-arrow-right"
+                trailing-icon="ArrowRightIcon"
                 :disabled="!canProceed"
                 @click="nextStep"
               >
@@ -616,7 +616,7 @@
                 v-else
                 variant="success"
                 size="lg"
-                leading-icon="mdi-check-circle-outline"
+                leading-icon="CheckCircleIcon"
                 @click="completeResume"
               >
                 Complete & Preview Resume
@@ -625,7 +625,7 @@
           </div>
         
           <div v-if="!canProceed" class="validation-hint">
-            <AppIcon name="mdi-information-outline" size="16" />
+            <AppIcon name="InformationCircleIcon" size="16" />
             <span>{{ getValidationMessage() }}</span>
           </div>
         </div>
@@ -635,6 +635,8 @@
 </template>
 
 <script setup>
+import { AcademicCapIcon, ArrowDownTrayIcon, ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon, BuildingOfficeIcon, CalendarIcon, CheckCircleIcon, CpuChipIcon, DocumentTextIcon, GlobeAmericasIcon, IdentificationIcon, InformationCircleIcon, LightBulbIcon, PlusCircleIcon, PlusIcon, StarIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { useToast } from '@/composables/useToast'
@@ -1239,7 +1241,7 @@ const getValidationMessage = () => {
 .workflow-navigation {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 @media (max-width: 768px) {

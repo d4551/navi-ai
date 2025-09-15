@@ -1,13 +1,13 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <StudioSubNav :network-count="contacts.length" />
     <!-- Networking Dashboard -->
     <section class="networking-dashboard ultra-wide-content unified-container">
       <div class="dashboard-layout">
         <!-- Connection Map -->
-        <div class="networking-panel glass p-4 gap-4 rounded-lg connection-map-panel">
+        <div class="networking-panel glass p-glass-md gap-glass-md rounded-lg connection-map-panel">
           <h3 class="panel-title">
-            <AppIcon name="mdi-graphql" class="panel-icon" />
+            <AppIcon name="PresentationChartLineIconql" class="panel-icon" />
             CONNECTION MAP
           </h3>
           <div class="connection-visualization">
@@ -32,17 +32,17 @@
         </div>
 
         <!-- Contact Management -->
-        <div class="networking-panel glass p-4 gap-4 rounded-lg contacts-panel">
+        <div class="networking-panel glass p-glass-md gap-glass-md rounded-lg contacts-panel">
           <h3 class="panel-title">
-            <AppIcon name="mdi-account-details" class="panel-icon" />
+            <AppIcon name="UserIcon-details" class="panel-icon" />
             CONTACT DATABASE
-            <UnifiedButton variant="glass" size="sm" leading-icon="mdi-plus" @click="showAddContact = true">Add Contact</UnifiedButton>
+            <UnifiedButton variant="glass" size="sm" leading-icon="PlusIcon" @click="showAddContact = true">Add Contact</UnifiedButton>
           </h3>
           
           <!-- Search and Filters -->
           <div class="contact-filters">
             <div class="search-bar">
-              <AppIcon name="mdi-magnify" />
+              <AppIcon name="MagnifyingGlassIcon" />
               <input 
                 v-model="contactSearch"
                 type="text"
@@ -108,9 +108,9 @@
         </div>
 
         <!-- Recent Activity -->
-        <div class="networking-panel glass p-4 gap-4 rounded-lg activity-panel">
+        <div class="networking-panel glass p-glass-md gap-glass-md rounded-lg activity-panel">
           <h3 class="panel-title">
-            <AppIcon name="mdi-clock-outline" class="panel-icon" />
+            <AppIcon name="ClockIcon" class="panel-icon" />
             RECENT ACTIVITY
           </h3>
           <div class="activity-feed">
@@ -131,9 +131,9 @@
         </div>
 
         <!-- Networking Opportunities -->
-        <div class="networking-panel glass p-4 gap-4 rounded-lg opportunities-panel">
+        <div class="networking-panel glass p-glass-md gap-glass-md rounded-lg opportunities-panel">
           <h3 class="panel-title">
-            <AppIcon name="mdi-target" />
+            <AppIcon name="EyeIcon" />
             NETWORKING OPPORTUNITIES
           </h3>
           <div class="opportunities-list">
@@ -166,7 +166,7 @@
         <div class="modal-header">
           <h3>Add New Contact</h3>
           <button class="close-btn" @click="showAddContact = false">
-            <AppIcon name="mdi-close" />
+            <AppIcon name="XMarkIcon" />
           </button>
         </div>
         <div class="modal-content">
@@ -201,18 +201,17 @@
 </template>
 
 <script setup lang="ts">
+import { ClockIcon, EyeIcon, MagnifyingGlassIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed } from 'vue'
 import cytoscape from 'cytoscape'
-import { useUnifiedUI } from '@/composables/useUnifiedUI'
-import { useResponsive } from '@/composables/useResponsive'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import StudioSubNav from '@/components/studio/StudioSubNav.vue'
 
 // Theme is globally applied; no per-page theme binding needed
-const unifiedUI = useUnifiedUI()
-const responsive = useResponsive()
+// Removed unused UI/responsive composables
 
 // Component state
 const showAddContact = ref(false)
@@ -309,7 +308,7 @@ const networkingOpportunities = ref([
     title: 'GDC 2024 Networking Mixer',
     description: 'Connect with industry professionals at the Game Developers Conference',
     type: 'event',
-    icon: 'mdi-calendar-account',
+    icon: 'CalendarIcon-account',
     date: 'March 15, 2024',
     attendees: 250
   },
@@ -318,7 +317,7 @@ const networkingOpportunities = ref([
     title: 'Unity Developer Meetup',
     description: 'Monthly meetup for Unity developers in the Bay Area',
     type: 'meetup',
-    icon: 'mdi-account-group',
+    icon: 'UserIcon-group',
     date: 'February 28, 2024',
     attendees: 85
   },
@@ -379,7 +378,8 @@ const addContact = () => {
     id: Date.now().toString(),
     ...newContact.value,
     status: 'new',
-    tags: []
+    tags: [] as string[],
+    avatar: null as null
   }
 
   contacts.value.push(contact)
@@ -399,13 +399,13 @@ const joinOpportunity = (opportunity: any) => {
 }
 
 const getActivityIcon = (type: string) => {
-  const icons = {
-    connection: 'mdi-account-plus',
+  const icons: Record<string, string> = {
+    connection: 'UserIcon-plus',
     message: 'mdi-message',
     referral: 'mdi-handshake',
-    event: 'mdi-calendar'
+    event: 'CalendarIcon'
   }
-  return icons[type] || 'mdi-information'
+  return icons[type] || 'InformationCircleIconrmation'
 }
 
 const formatActivityTime = (timestamp: Date) => {
@@ -439,7 +439,7 @@ onMounted(() => {
         style: {
           'background-color': 'var(--color-primary-500)',
           label: 'data(label)',
-          color: 'var(--text-primary)',
+          color: 'var(--text-primary-600)',
           'text-valign': 'center',
           'text-halign': 'center',
           'font-size': '12px'
@@ -542,17 +542,7 @@ onMounted(() => {
   padding: var(--spacing-6);
 }
 
-.panel-title {
-  font-family: var(--font-gaming);
-  font-size: 1.25rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
-  margin: 0 0 var(--spacing-4);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-2);
-}
+/* removed legacy .panel-title overrides; Tailwind plugin mappings now apply */
 
 .add-contact-btn {
   background: color-mix(in srgb, var(--color-gaming-500) 18%, transparent);
@@ -584,7 +574,7 @@ onMounted(() => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-3) var(--spacing-3) var(--spacing-3) var(--spacing-10);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .search-icon {
@@ -659,12 +649,12 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .contact-name {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
@@ -865,7 +855,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
 }
 
 .modal-content {
@@ -879,7 +869,7 @@ onMounted(() => {
 .form-group label {
   display: block;
   margin-bottom: var(--spacing-2);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -889,7 +879,7 @@ onMounted(() => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-3);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-actions {
@@ -897,7 +887,7 @@ onMounted(() => {
   gap: var(--spacing-3);
   justify-content: flex-end;
   padding: var(--spacing-6);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
 }
 
 .btn-outline, .btn-primary {
@@ -911,7 +901,7 @@ onMounted(() => {
 .btn-outline {
   background: transparent;
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .btn-primary {

@@ -1,5 +1,5 @@
 <template>
-  <div class="unified-document-editor">
+  <div class="unified-document-editor" class="font-sans">
     <!-- Template Selection Bar -->
     <div class="template-bar">
       <div class="template-selector">
@@ -16,7 +16,7 @@
         <UnifiedButton
           variant="outline" 
           size="sm"
-          leading-icon="mdi-lightbulb"
+          leading-icon="LightBulbIcon"
           :disabled="!aiReady"
           @click="getAISuggestions"
         >
@@ -25,7 +25,7 @@
         <UnifiedButton
           variant="gaming" 
           size="sm"
-          leading-icon="mdi-auto-fix"
+          leading-icon="SparklesIcon"
           :disabled="!aiReady || !hasContent"
           @click="aiOptimize"
         >
@@ -45,7 +45,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-brain"
+              leading-icon="CpuChipIcon"
               :disabled="!aiReady"
               @click="aiEnhanceSection('personal')"
             >
@@ -107,7 +107,7 @@
               <UnifiedButton
                 variant="ghost"
                 size="sm"
-                leading-icon="mdi-brain"
+                leading-icon="CpuChipIcon"
                 :disabled="!aiReady"
                 @click="aiEnhanceSection('experience')"
               >
@@ -116,7 +116,7 @@
               <UnifiedButton
                 variant="outline"
                 size="sm"
-                leading-icon="mdi-plus"
+                leading-icon="PlusIcon"
                 @click="addExperience"
               >
                 Add
@@ -141,7 +141,7 @@
               <UnifiedButton
                 variant="ghost"
                 size="sm"
-                trailing-icon="mdi-delete"
+                trailing-icon="TrashIcon"
                 @click="removeExperience(index)"
               />
             </div>
@@ -184,7 +184,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-brain"
+              leading-icon="CpuChipIcon"
               :disabled="!aiReady"
               @click="aiEnhanceSection('skills')"
             >
@@ -211,7 +211,7 @@
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-plus"
+              leading-icon="PlusIcon"
               @click="addEducation"
             >
               Add
@@ -225,7 +225,7 @@
               <UnifiedButton
                 variant="ghost"
                 size="sm"
-                trailing-icon="mdi-delete"
+                trailing-icon="TrashIcon"
                 @click="removeEducation(index)"
               />
             </div>
@@ -246,7 +246,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-brain"
+              leading-icon="CpuChipIcon"
               :disabled="!aiReady"
               @click="aiEnhanceSection('header')"
             >
@@ -289,7 +289,7 @@
               <UnifiedButton
                 variant="gaming"
                 size="sm"
-                leading-icon="mdi-brain"
+                leading-icon="CpuChipIcon"
                 :disabled="!aiReady"
                 @click="aiGenerateFullLetter"
               >
@@ -343,7 +343,7 @@
         <UnifiedButton
           variant="ghost"
           size="sm"
-          trailing-icon="mdi-close"
+          trailing-icon="XMarkIcon"
           @click="aiSuggestions = []"
         />
       </div>
@@ -373,6 +373,8 @@
 </template>
 
 <script setup lang="ts">
+import { CpuChipIcon, LightBulbIcon, PlusIcon, SparklesIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch, withDefaults } from 'vue'
 import { useToast } from '@/composables/useToast'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -600,7 +602,7 @@ watch(selectedTemplate, (newTemplate) => {
 
 .template-label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .template-select {
@@ -608,7 +610,7 @@ watch(selectedTemplate, (newTemplate) => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -641,13 +643,13 @@ watch(selectedTemplate, (newTemplate) => {
   align-items: center;
   justify-content: space-between;
   padding-bottom: var(--spacing-2);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .section-header h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -668,7 +670,7 @@ watch(selectedTemplate, (newTemplate) => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   transition: border-color var(--duration-fast);
 }
@@ -683,7 +685,7 @@ watch(selectedTemplate, (newTemplate) => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   resize: vertical;
   min-height: 80px;
@@ -746,7 +748,7 @@ watch(selectedTemplate, (newTemplate) => {
 
 .skill-category label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -755,7 +757,7 @@ watch(selectedTemplate, (newTemplate) => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   resize: vertical;
   font-family: inherit;
@@ -775,7 +777,7 @@ watch(selectedTemplate, (newTemplate) => {
 
 .letter-section label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -784,7 +786,7 @@ watch(selectedTemplate, (newTemplate) => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -804,7 +806,7 @@ watch(selectedTemplate, (newTemplate) => {
 
 .suggestions-header h4 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .suggestions-list {
@@ -825,7 +827,7 @@ watch(selectedTemplate, (newTemplate) => {
 
 .suggestion-text {
   flex: 1;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 

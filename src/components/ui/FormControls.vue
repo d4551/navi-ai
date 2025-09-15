@@ -1,5 +1,5 @@
 <template>
-  <div class="form-control-wrapper">
+  <div class="form-control-wrapper" class="font-sans">
     <!-- Radio Button -->
     <div v-if="type === 'radio'" class="form-radio" :class="{ 'form-radio-disabled': disabled }">
       <input
@@ -52,8 +52,8 @@
         :class="{ 'form-control-error': hasError }"
       >
         <span class="form-checkbox-indicator">
-          <AppIcon name="mdi-checkbox-blank-outline" />
-          <AppIcon name="mdi-checkbox-marked" />
+          <AppIcon name="CheckIconbox-blank-outline" />
+          <AppIcon name="CheckIconbox-marked" />
         </span>
         <span class="form-control-text">{{ label }}</span>
       </label>
@@ -110,7 +110,7 @@
             :class="getButtonClass(option)"
             :title="option.title || option.label"
           >
-            <i v-if="option.icon" :class="option.icon" class="me-1"></i>
+            <i v-if="option.icon" :class="option.icon" class="mr-1"></i>
             {{ option.label }}
           </label>
         </template>
@@ -131,6 +131,8 @@
 </template>
 
 <script>
+import { CheckIcon } from '@heroicons/vue/24/outline'
+
 import { computed, getCurrentInstance } from 'vue';
 import AppIcon from '@/components/ui/AppIcon.vue';
 
@@ -322,7 +324,7 @@ export default {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all var(--transition-normal);
   min-height: 44px; /* WCAG minimum target size */
   padding: 0.5rem 0;
@@ -342,7 +344,7 @@ export default {
   height: 20px;
   border-radius: 50%;
   border: 2px solid var(--border-color);
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   transition: all var(--transition-normal);
   flex-shrink: 0;
 }
@@ -355,7 +357,7 @@ export default {
 
 .form-radio-input:checked + .form-radio-label .form-radio-indicator {
   border-color: var(--color-primary);
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
 }
 
 .form-radio-input:focus + .form-radio-label .form-radio-indicator {
@@ -365,7 +367,7 @@ export default {
 
 .form-radio-label:hover .form-radio-indicator {
   border-color: var(--color-primary-light);
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
 }
 
 /* Checkbox specific styles */
@@ -377,7 +379,7 @@ export default {
   height: 20px;
   border-radius: 4px;
   border: 2px solid var(--border-color);
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   transition: all var(--transition-normal);
   flex-shrink: 0;
 }
@@ -390,7 +392,7 @@ export default {
 
 .form-checkbox-input:checked + .form-checkbox-label .form-checkbox-indicator {
   border-color: var(--color-primary);
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
 }
 
 .form-checkbox-input:focus + .form-checkbox-label .form-checkbox-indicator {
@@ -400,7 +402,7 @@ export default {
 
 .form-checkbox-label:hover .form-checkbox-indicator {
   border-color: var(--color-primary-light);
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
 }
 
 /* Switch specific styles */
@@ -433,7 +435,7 @@ export default {
 }
 
 .form-switch-input:checked + .form-switch-label .form-switch-thumb {
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   transform: translateX(20px);
 }
 
@@ -443,7 +445,7 @@ export default {
 }
 
 .form-switch-label:hover .form-switch-track {
-  background: var(--bg-secondary);
+  background: var(--bg-secondary-500);
 }
 
 .form-switch-input:checked + .form-switch-label:hover .form-switch-track {
@@ -502,9 +504,9 @@ export default {
 /* Dark mode support using data-theme attribute */
 [data-theme="dark"] .form-radio-indicator,
 [data-theme="dark"] .form-checkbox-indicator {
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
   border-color: var(--border-color);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .form-switch-track {
@@ -517,13 +519,13 @@ export default {
 }
 
 [data-theme="dark"] .form-switch-input:checked + .form-switch-label .form-switch-thumb {
-  background: var(--bg-primary);
+  background: var(--bg-primary-500);
 }
 
 [data-theme="dark"] .form-radio-label,
 [data-theme="dark"] .form-checkbox-label,
 [data-theme="dark"] .form-switch-label {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Animation for state changes */
@@ -551,7 +553,7 @@ export default {
 }
 
 .form-button-group-inline {
-  flex-direction: row;
+  flex-direction: flex flex-wrap;
   align-items: center;
 }
 
@@ -579,7 +581,7 @@ export default {
 }
 
 .form-button-group .btn:hover {
-  background-color: var(--bg-secondary, #f8f9fa);
+  background-color: var(--bg-secondary-500, #f8f9fa);
   border-color: var(--color-primary-light, #4dabf7);
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
@@ -634,7 +636,7 @@ export default {
   }
 
   .form-button-group .btn:hover {
-    background-color: var(--bg-secondary-dark, #343a40);
+    background-color: var(--bg-secondary-500-dark, #343a40);
     border-color: var(--color-primary-light-dark, #74c0fc);
   }
 }

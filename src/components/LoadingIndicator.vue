@@ -1,6 +1,6 @@
 <template>
-  <div v-if="show" class="loading-overlay" :class="{ fullscreen: fullscreen }">
-    <div class="loading-content glass-strong p-6 rounded-xl text-center">
+  <div v-if="show" class="loading-overlay" :class="{ fullscreen: fullscreen }" class="font-sans">
+    <div class="loading-content glass-strong p-glass-lg rounded-xl text-center">
       <div class="spinner-container">
         <div class="spinner" :class="size" />
         <div class="spinner-glow" :class="size" />
@@ -21,7 +21,7 @@
             aria-valuemax="100"
           />
         </div>
-        <small class="text-muted">{{ progress }}%</small>
+        <small class="text-secondary">{{ progress }}%</small>
       </div>
 
       <div v-if="showCancel" class="mt-3">
@@ -211,15 +211,15 @@ export default {
   }
 
   .loading-message {
-    color: var(--text-primary);
+    color: var(--text-primary-600);
   }
 
   .progress {
     background-color: var(--bg-tertiary);
   }
 
-  .text-muted {
-    color: var(--text-muted) !important;
+  .text-secondary {
+    color: var(--text-secondary) !important;
   }
 }
 

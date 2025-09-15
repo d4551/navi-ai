@@ -1,0 +1,152 @@
+/**
+ * Enhanced Dark/Light Mode Text Utilities
+ * Ensures proper text color application across all themes
+ */
+
+/* Base theme-aware text colors with highest specificity */
+html,
+html body,
+html #app,
+html #app-root {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Clean inheritance - removed forced global overrides to allow proper cascade */
+
+/* Theme-specific text color utilities */
+.text-primary,
+.text-theme-primary {
+  color: var(--text-primary, var(--color-on-background));
+}
+
+.text-secondary,
+.text-theme-secondary {
+  color: var(--text-secondary, var(--color-on-surface-variant));
+}
+
+.text-tertiary,
+.text-theme-tertiary {
+  color: var(--text-tertiary, rgba(var(--color-on-background), 0.7));
+}
+
+.text-muted,
+.text-theme-muted {
+  color: var(--text-muted, rgba(var(--color-on-background), 0.5));
+}
+
+/* High contrast utilities for accessibility */
+.text-high-contrast {
+  color: var(--text-primary);
+  font-weight: 600 !important;
+}
+
+.text-medium-contrast {
+  color: var(--text-secondary);
+  font-weight: 500 !important;
+}
+
+.text-low-contrast {
+  color: var(--text-tertiary);
+}
+
+/* Theme-aware headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+}
+
+/* Component-specific theme overrides using CSS variables */
+.glass,
+.glass-card,
+.card-base,
+.card-gaming,
+.btn-secondary,
+.btn-glass,
+.input-base,
+.select-base,
+.textarea-base,
+.table-header th,
+.modal-body,
+.v-application,
+.v-btn,
+.v-text-field,
+.v-card {
+  color: var(--text-primary);
+}
+
+/* Navigation text colors with theme awareness */
+.nav-item {
+  color: var(--text-tertiary);
+}
+
+.nav-item:hover,
+.nav-item.active {
+  color: var(--text-primary);
+}
+
+/* Table cells with secondary text */
+.table-cell {
+  color: var(--text-secondary);
+}
+
+/* Link colors with theme awareness */
+.text-link {
+  color: rgb(var(--neon-blue));
+}
+
+/* Gaming text effects with theme awareness */
+.text-neon {
+  color: rgb(var(--neon-blue));
+}
+
+[data-theme="dark"] .text-neon {
+  text-shadow:
+    0 0 5px rgba(var(--neon-blue), 0.5),
+    0 0 10px rgba(var(--neon-blue), 0.3),
+    0 0 15px rgba(var(--neon-blue), 0.2);
+}
+
+[data-theme="light"] .text-neon {
+  text-shadow:
+    0 0 5px rgba(var(--neon-blue), 0.7),
+    0 0 10px rgba(var(--neon-blue), 0.5);
+}
+
+/* Responsive text adjustments */
+@media (max-width: 768px) {
+  .text-system,
+  body,
+  #app,
+  #app-root {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-system,
+  body,
+  #app,
+  #app-root {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .text-system,
+  body,
+  #app,
+  #app-root {
+    transition: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .text-primary,
+  .text-theme-primary {
+    color: var(--text-primary) !important;
+    text-shadow: 0 0 2px var(--bg-primary) !important;
+  }
+}

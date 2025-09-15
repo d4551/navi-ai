@@ -8,6 +8,7 @@
     }"
     role="tablist"
     :aria-label="ariaLabel"
+    class="font-sans"
     @keydown.left.prevent="onArrow(-1)"
     @keydown.right.prevent="onArrow(1)"
     @pointerdown="onPointerDown"
@@ -25,7 +26,7 @@
       aria-label="Scroll left"
       @click.stop="scrollBy(-1)"
     >
-      <AppIcon name="mdi-chevron-left" />
+      <AppIcon name="ChevronLeftIcon" />
     </button>
     <button
       v-for="tab in tabs"
@@ -43,14 +44,14 @@
     >
       <template v-if="tab.icon">
         <!-- Always render via AppIcon to normalize emoji/MDI and aliases -->
-        <AppIcon :name="tab.icon" :class="gridLayout ? '' : 'me-2'" />
+        <AppIcon :name="tab.icon" :class="gridLayout ? '' : 'mr-2'" />
       </template>
       <span v-if="gridLayout">{{ tab.label }}</span>
       <template v-else>
-        <span class="d-none d-sm-inline">{{ tab.label }}</span>
+        <span class="hidden d-sm-inline">{{ tab.label }}</span>
         <span v-if="tab.shortLabel" class="d-sm-none">{{ tab.shortLabel }}</span>
       </template>
-      <span v-if="tab.count !== undefined" class="tab-count badge bg-info-subtle" aria-hidden="true">{{ tab.count }}</span>
+      <span v-if="tab.count !== undefined" class="tab-count badge bg-blue-500-subtle" aria-hidden="true">{{ tab.count }}</span>
       <span v-else-if="tab.badge || tab.dirty" class="tab-dot" aria-hidden="true"></span>
     </button>
 
@@ -62,7 +63,7 @@
       aria-label="Scroll right"
       @click.stop="scrollBy(1)"
     >
-      <AppIcon name="mdi-chevron-right" />
+      <AppIcon name="ChevronRightIcon" />
     </button>
 
     <!-- Edge fade indicators -->
@@ -72,6 +73,8 @@
 </template>
 
 <script setup lang="ts">
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
+
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 const props = defineProps({
@@ -199,7 +202,7 @@ function onArrow(delta) {
   z-index: var(--z-sticky, 10);
   overflow-x: auto;
   display: flex; /* Ensure horizontal layout */
-  flex-direction: row;
+  flex-direction: flex flex-wrap;
   flex-wrap: nowrap;
   gap: var(--spacing-sm, 0.5rem);
   -webkit-overflow-scrolling: touch;
@@ -224,7 +227,7 @@ function onArrow(delta) {
 .glass-nav .nav-link {
   background: transparent;
   border: none;
-  color: var(--text-primary, #374151);
+  color: var(--text-primary-600, #374151);
   padding: var(--spacing-sm, 0.75rem) calc(var(--spacing-lg, 1.25rem) + 20px) var(--spacing-sm, 0.75rem) var(--spacing-lg, 1.25rem);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 600;
@@ -280,7 +283,7 @@ function onArrow(delta) {
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   flex: 0 0 auto;
   z-index: 2;
 }
@@ -403,7 +406,7 @@ function onArrow(delta) {
 /* Dark theme support */
 
 [data-theme="dark"] .glass-nav .nav-link {
-  color: var(--text-primary, #f9fafb);
+  color: var(--text-primary-600, #f9fafb);
 }
 
 [data-theme="dark"] .glass-nav .nav-link.active {
@@ -428,11 +431,11 @@ function onArrow(delta) {
   .glass-nav {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background: var(--bg-secondary, #f4f4f5);
+    background: var(--bg-secondary-500, #f4f4f5);
     border-color: var(--border-color, #e4e4e7);
   }
   [data-theme="dark"] .glass-nav {
-    background: var(--bg-secondary);
+    background: var(--bg-secondary-500);
   }
 }
 </style>

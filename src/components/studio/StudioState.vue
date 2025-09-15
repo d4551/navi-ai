@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="font-sans ">
     <div v-if="loading" class="loading-grid">
       <div v-for="i in skeletonCount" :key="i" class="studio-card-skeleton glass-card section-card">
         <div class="skeleton-header">

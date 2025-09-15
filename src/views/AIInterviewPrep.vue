@@ -5,9 +5,10 @@
     max-width="xl"
     title="AI Interview Preparation"
     subtitle="Master gaming industry interviews with AI-powered preparation and real-time feedback"
+    class="font-sans "
   >
     <template #header-actions>
-      <div class="header-actions d-flex align-center ga-2">
+      <div class="header-actions flex items-center gap-glass-sm">
         <AIButton
           action="prepare_interview"
           variant="primary"
@@ -18,7 +19,7 @@
         />
         <UnifiedButton 
           variant="gaming" 
-          leading-icon="mdi-play-circle" 
+          leading-icon="PlayIcon-circle" 
           @click="startQuickInterview"
         >
           Start Practice
@@ -35,19 +36,19 @@
         color="primary"
       >
         <v-tab value="setup">
-          <AppIcon name="mdi-cog" class="mr-2" />
+          <AppIcon name="CogIcon" class="mr-2" />
           Setup
         </v-tab>
         <v-tab value="questions">
-          <AppIcon name="mdi-help-circle" class="mr-2" />
+          <AppIcon name="QuestionMarkCircleIcon" class="mr-2" />
           Practice Questions
         </v-tab>
         <v-tab value="mock">
-          <AppIcon name="mdi-microphone" class="mr-2" />
+          <AppIcon name="MicrophoneIcon" class="mr-2" />
           Mock Interview
         </v-tab>
         <v-tab value="feedback">
-          <AppIcon name="mdi-chart-line" class="mr-2" />
+          <AppIcon name="ChartBarIcon" class="mr-2" />
           Performance
         </v-tab>
       </v-tabs>
@@ -57,12 +58,12 @@
         <!-- Setup Tab -->
         <v-window-item value="setup">
           <div class="setup-section">
-            <v-row>
-              <v-col cols="12" md="6">
+            <v-flex flex-wrap>
+              <v-flex-1 cols="12" md="6">
                 <UnifiedCard variant="glass" class="setup-card">
                   <div class="card-header mb-4">
-                    <AppIcon name="mdi-briefcase" color="primary" class="mr-2" />
-                    <h3 class="text-h6">Interview Configuration</h3>
+                    <AppIcon name="BriefcaseIcon" color="primary" class="mr-2" />
+                    <h3 class="text-lg font-semibold">Interview Configuration</h3>
                   </div>
 
                   <v-form @submit.prevent="generateInterviewPlan">
@@ -110,7 +111,7 @@
                       class="mb-4"
                     />
 
-                    <div class="d-flex justify-end">
+                    <div class="flex justify-end">
                       <AIButton
                         action="generate_interview_plan"
                         variant="primary"
@@ -121,13 +122,13 @@
                     </div>
                   </v-form>
                 </UnifiedCard>
-              </v-col>
+              </v-flex-1>
 
-              <v-col cols="12" md="6">
+              <v-flex-1 cols="12" md="6">
                 <UnifiedCard variant="glass" class="profile-card">
                   <div class="card-header mb-4">
-                    <AppIcon name="mdi-account" color="success" class="mr-2" />
-                    <h3 class="text-h6">Your Profile Summary</h3>
+                    <AppIcon name="UserIcon" color="success" class="mr-2" />
+                    <h3 class="text-lg font-semibold">Your Profile Summary</h3>
                   </div>
 
                   <div class="profile-stats">
@@ -169,8 +170,8 @@
                 <!-- AI Recommendations -->
                 <UnifiedCard v-if="aiRecommendations.length > 0" variant="glass" class="recommendations-card mt-4">
                   <div class="card-header mb-4">
-                    <AppIcon name="mdi-lightbulb" color="warning" class="mr-2" />
-                    <h3 class="text-h6">AI Recommendations</h3>
+                    <AppIcon name="LightBulbIcon" color="warning" class="mr-2" />
+                    <h3 class="text-lg font-semibold">AI Recommendations</h3>
                   </div>
 
                   <div class="recommendations-list">
@@ -188,15 +189,15 @@
                     </div>
                   </div>
                 </UnifiedCard>
-              </v-col>
-            </v-row>
+              </v-flex-1>
+            </v-flex flex-wrap>
           </div>
         </v-window-item>
 
         <!-- Practice Questions Tab -->
         <v-window-item value="questions">
           <div class="questions-section">
-            <div class="questions-header mb-4 d-flex align-center justify-space-between">
+            <div class="questions-header mb-4 flex items-center justify-space-between">
               <div>
                 <h3 class="text-h5 mb-2">Practice Questions</h3>
                 <p class="text-body-2 text-medium-emphasis">
@@ -204,12 +205,12 @@
                 </p>
               </div>
               
-              <div class="question-actions d-flex ga-2">
+              <div class="question-actions flex gap-glass-sm">
                 <AIButton
                   action="generate_questions"
                   variant="outline"
                   text="Generate New Questions"
-                  icon="mdi-refresh"
+                  icon="ArrowPathIcon"
                   :context="getInterviewContext()"
                   @success="handleQuestionsGenerated"
                 />
@@ -226,8 +227,8 @@
             </div>
 
             <div v-if="filteredQuestions.length === 0" class="empty-state text-center pa-8">
-              <AppIcon name="mdi-help-circle-outline" size="xl" color="muted" />
-              <h3 class="text-h6 mt-4 mb-2">No Questions Available</h3>
+              <AppIcon name="QuestionMarkCircleIcon" size="xl" color="muted" />
+              <h3 class="text-lg font-semibold mt-4 mb-2">No Questions Available</h3>
               <p class="text-body-2 text-medium-emphasis mb-4">
                 Generate personalized interview questions based on your target role and experience.
               </p>
@@ -247,8 +248,8 @@
                 variant="glass"
                 class="question-card"
               >
-                <div class="question-header d-flex align-center justify-space-between mb-3">
-                  <div class="d-flex align-center ga-2">
+                <div class="question-header flex items-center justify-space-between mb-3">
+                  <div class="flex items-center gap-glass-sm">
                     <UiChip :label="question.category" variant="primary" size="sm" />
                     <UiChip :label="question.difficulty" :variant="getDifficultyVariant(question.difficulty)" size="sm" />
                     <span class="question-number text-caption">#{{ index + 1 }}</span>
@@ -258,14 +259,14 @@
                     <UnifiedButton
                       variant="ghost"
                       icon-only
-                      icon="mdi-play"
+                      icon="PlayIcon"
                       tooltip="Practice this question"
                       @click="practiceQuestion(question)"
                     />
                     <UnifiedButton
                       variant="ghost"
                       icon-only
-                      icon="mdi-bookmark-outline"
+                      icon="BookmarkIcon-outline"
                       tooltip="Save for later"
                       @click="bookmarkQuestion(question)"
                     />
@@ -282,14 +283,14 @@
                       </div>
                       
                       <div v-if="question.keyPoints?.length" class="key-points mb-3">
-                        <strong class="d-block mb-2">Key Points to Address:</strong>
+                        <strong class="block mb-2">Key Points to Address:</strong>
                         <ul class="key-points-list">
                           <li v-for="point in question.keyPoints" :key="point">{{ point }}</li>
                         </ul>
                       </div>
                       
                       <div v-if="question.followUpQuestions?.length" class="follow-ups">
-                        <strong class="d-block mb-2">Potential Follow-ups:</strong>
+                        <strong class="block mb-2">Potential Follow-ups:</strong>
                         <ul class="follow-up-list">
                           <li v-for="followUp in question.followUpQuestions" :key="followUp">{{ followUp }}</li>
                         </ul>
@@ -297,7 +298,7 @@
                     </div>
                   </v-expand-transition>
 
-                  <div class="question-footer d-flex align-center justify-space-between mt-3">
+                  <div class="question-footer flex items-center justify-space-between mt-3">
                     <UnifiedButton
                       variant="text"
                       :text="expandedQuestions.includes(question.id) ? 'Show Less' : 'Show More'"
@@ -319,7 +320,7 @@
           <div class="mock-interview-section">
             <div v-if="!activeMockInterview" class="interview-start">
               <div class="text-center mb-6">
-                <AppIcon name="mdi-microphone-variant" size="xl" color="primary" class="mb-4" />
+                <AppIcon name="MicrophoneIcon-variant" size="xl" color="primary" class="mb-4" />
                 <h3 class="text-h4 mb-2">Ready for Your Mock Interview?</h3>
                 <p class="text-body-1 text-medium-emphasis">
                   Experience a realistic interview simulation with AI-powered feedback
@@ -328,7 +329,7 @@
 
               <UnifiedCard variant="glass" class="interview-setup-card mx-auto" style="max-width: 600px;">
                 <div class="setup-summary mb-4">
-                  <h4 class="text-h6 mb-3">Interview Configuration</h4>
+                  <h4 class="text-lg font-semibold mb-3">Interview Configuration</h4>
                   <div class="config-item">
                     <strong>Role:</strong> {{ selectedRole }}
                   </div>
@@ -344,32 +345,32 @@
                 </div>
 
                 <div class="pre-interview-checklist mb-4">
-                  <h5 class="text-subtitle-1 mb-3">Pre-Interview Checklist</h5>
+                  <h5 class="text-base font-medium mb-3">Pre-Interview Checklist</h5>
                   <div class="checklist-items">
-                    <div class="checklist-item d-flex align-center">
+                    <div class="checklist-item flex items-center">
                       <v-checkbox v-model="checklist.quietSpace" density="compact" />
                       <span>Quiet, distraction-free space</span>
                     </div>
-                    <div class="checklist-item d-flex align-center">
+                    <div class="checklist-item flex items-center">
                       <v-checkbox v-model="checklist.goodLighting" density="compact" />
                       <span>Good lighting and camera setup</span>
                     </div>
-                    <div class="checklist-item d-flex align-center">
+                    <div class="checklist-item flex items-center">
                       <v-checkbox v-model="checklist.notesReady" density="compact" />
                       <span>Notes and resume handy</span>
                     </div>
-                    <div class="checklist-item d-flex align-center">
+                    <div class="checklist-item flex items-center">
                       <v-checkbox v-model="checklist.mindsetReady" density="compact" />
                       <span>Positive mindset and ready to practice</span>
                     </div>
                   </div>
                 </div>
 
-                <div class="d-flex justify-center">
+                <div class="flex justify-center">
                   <UnifiedButton
                     variant="gaming"
                     size="lg"
-                    leading-icon="mdi-play-circle"
+                    leading-icon="PlayIcon-circle"
                     :disabled="!isReadyToStart"
                     @click="startMockInterview"
                   >
@@ -382,9 +383,9 @@
             <!-- Active Interview UI -->
             <div v-else class="active-interview">
               <div class="interview-header mb-4">
-                <div class="d-flex align-center justify-space-between">
+                <div class="flex items-center justify-space-between">
                   <div class="interview-progress">
-                    <h4 class="text-h6">Question {{ currentQuestionIndex + 1 }} of {{ mockInterviewQuestions.length }}</h4>
+                    <h4 class="text-lg font-semibold">Question {{ currentQuestionIndex + 1 }} of {{ mockInterviewQuestions.length }}</h4>
                     <v-progress-linear
                       :model-value="interviewProgress"
                       color="primary"
@@ -394,19 +395,19 @@
                     />
                   </div>
                   
-                  <div class="interview-controls d-flex ga-2">
+                  <div class="interview-controls flex gap-glass-sm">
                     <div class="timer-display">
                       <AppIcon name="mdi-timer" class="mr-1" />
                       {{ formatTime(interviewTimer) }}
                     </div>
                     <UnifiedButton
                       variant="outline"
-                      icon="mdi-pause"
+                      icon="PauseIcon"
                       @click="pauseInterview"
                     />
                     <UnifiedButton
                       variant="error"
-                      icon="mdi-stop"
+                      icon="StopIcon"
                       @click="endInterview"
                     />
                   </div>
@@ -416,9 +417,9 @@
               <div class="interview-content">
                 <UnifiedCard variant="glass" class="current-question-card mb-4">
                   <div class="question-display">
-                    <div class="interviewer-info mb-3 d-flex align-center ga-2">
+                    <div class="interviewer-info mb-3 flex items-center gap-glass-sm">
                       <div class="interviewer-avatar">
-                        <AppIcon name="mdi-account-tie" />
+                        <AppIcon name="UserIcon-tie" />
                       </div>
                       <div>
                         <div class="interviewer-name">{{ currentPersona.name }}</div>
@@ -426,7 +427,7 @@
                       </div>
                     </div>
                     
-                    <div class="question-text text-h6 mb-4">
+                    <div class="question-text text-lg font-semibold mb-4">
                       {{ currentQuestion?.question }}
                     </div>
                     
@@ -439,14 +440,14 @@
                 <!-- Response Recording -->
                 <UnifiedCard variant="glass" class="response-recording-card">
                   <div class="recording-header mb-3">
-                    <h5 class="text-subtitle-1">Your Response</h5>
+                    <h5 class="text-base font-medium">Your Response</h5>
                     <div class="recording-status" :class="{ 'recording': isRecording }">
-                      <AppIcon :name="isRecording ? 'mdi-record-circle' : 'mdi-microphone'" />
+                      <AppIcon :name="isRecording ? 'mdi-record-circle' : 'MicrophoneIcon'" />
                       <span>{{ isRecording ? 'Recording...' : 'Ready to record' }}</span>
                     </div>
                   </div>
 
-                  <div class="recording-controls d-flex align-center justify-center ga-4 mb-4">
+                  <div class="recording-controls flex items-center justify-center gap-glass-md mb-4">
                     <UnifiedButton
                       v-if="!isRecording"
                       variant="primary"
@@ -461,7 +462,7 @@
                       v-else
                       variant="error"
                       size="lg"
-                      leading-icon="mdi-stop"
+                      leading-icon="StopIcon"
                       @click="stopRecording"
                     >
                       Stop Recording
@@ -482,7 +483,7 @@
                       {{ currentResponse }}
                     </div>
                     
-                    <div class="response-actions mt-3 d-flex justify-end ga-2">
+                    <div class="response-actions mt-3 flex justify-end gap-glass-sm">
                       <UnifiedButton
                         variant="outline"
                         @click="reRecordResponse"
@@ -493,7 +494,7 @@
                         action="analyze_response"
                         variant="ghost"
                         text="Get AI Feedback"
-                        icon="mdi-brain"
+                        icon="CpuChipIcon"
                         :context="{ question: currentQuestion, response: currentResponse, role: selectedRole }"
                         @success="handleResponseFeedback"
                       />
@@ -515,8 +516,8 @@
         <v-window-item value="feedback">
           <div class="feedback-section">
             <div v-if="interviewHistory.length === 0" class="empty-feedback text-center pa-8">
-              <AppIcon name="mdi-chart-line-variant" size="xl" color="muted" />
-              <h3 class="text-h6 mt-4 mb-2">No Interview Data</h3>
+              <AppIcon name="ChartBarIcon-line-variant" size="xl" color="muted" />
+              <h3 class="text-lg font-semibold mt-4 mb-2">No Interview Data</h3>
               <p class="text-body-2 text-medium-emphasis">
                 Complete some practice interviews to see your performance analytics and improvement suggestions.
               </p>
@@ -526,41 +527,41 @@
               <!-- Performance Overview -->
               <UnifiedCard variant="glass" class="performance-overview mb-4">
                 <div class="card-header mb-4">
-                  <h3 class="text-h6">Performance Overview</h3>
+                  <h3 class="text-lg font-semibold">Performance Overview</h3>
                 </div>
 
-                <v-row>
-                  <v-col cols="12" md="3">
+                <v-flex flex-wrap>
+                  <v-flex-1 cols="12" md="3">
                     <div class="performance-stat text-center">
-                      <div class="stat-value text-h3 text-primary">{{ userStats.averageScore }}</div>
+                      <div class="stat-value text-h3 text-primary-600">{{ userStats.averageScore }}</div>
                       <div class="stat-label text-body-2">Average Score</div>
                     </div>
-                  </v-col>
-                  <v-col cols="12" md="3">
+                  </v-flex-1>
+                  <v-flex-1 cols="12" md="3">
                     <div class="performance-stat text-center">
-                      <div class="stat-value text-h3 text-success">{{ userStats.completedInterviews }}</div>
+                      <div class="stat-value text-h3 text-success-600">{{ userStats.completedInterviews }}</div>
                       <div class="stat-label text-body-2">Completed</div>
                     </div>
-                  </v-col>
-                  <v-col cols="12" md="3">
+                  </v-flex-1>
+                  <v-flex-1 cols="12" md="3">
                     <div class="performance-stat text-center">
-                      <div class="stat-value text-h3 text-warning">{{ userStats.improvementTrend }}</div>
+                      <div class="stat-value text-h3 text-warning-600">{{ userStats.improvementTrend }}</div>
                       <div class="stat-label text-body-2">Improvement</div>
                     </div>
-                  </v-col>
-                  <v-col cols="12" md="3">
+                  </v-flex-1>
+                  <v-flex-1 cols="12" md="3">
                     <div class="performance-stat text-center">
-                      <div class="stat-value text-h3 text-info">{{ userStats.practiceHours }}</div>
+                      <div class="stat-value text-h3 text-blue-600">{{ userStats.practiceHours }}</div>
                       <div class="stat-label text-body-2">Hours Practiced</div>
                     </div>
-                  </v-col>
-                </v-row>
+                  </v-flex-1>
+                </v-flex flex-wrap>
               </UnifiedCard>
 
               <!-- Recent Interviews -->
               <UnifiedCard variant="glass" class="recent-interviews">
-                <div class="card-header mb-4 d-flex align-center justify-space-between">
-                  <h3 class="text-h6">Recent Interviews</h3>
+                <div class="card-header mb-4 flex items-center justify-space-between">
+                  <h3 class="text-lg font-semibold">Recent Interviews</h3>
                   <AIButton
                     action="analyze_performance_trends"
                     variant="outline"
@@ -574,7 +575,7 @@
                   <div
                     v-for="interview in interviewHistory.slice(0, 5)"
                     :key="interview.id"
-                    class="interview-item d-flex align-center justify-space-between pa-3 mb-2 rounded border"
+                    class="interview-item flex items-center justify-space-between pa-3 mb-2 rounded border"
                   >
                     <div class="interview-info">
                       <div class="interview-title font-weight-medium">
@@ -585,13 +586,13 @@
                       </div>
                     </div>
                     
-                    <div class="interview-score d-flex align-center ga-2">
+                    <div class="interview-score flex items-center gap-glass-sm">
                       <div class="score-circle" :class="getScoreClass(interview.score)">
                         {{ interview.score }}%
                       </div>
                       <UnifiedButton
                         variant="ghost"
-                        icon="mdi-eye"
+                        icon="EyeIcon"
                         @click="viewInterviewDetails(interview)"
                       />
                     </div>
@@ -614,6 +615,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, BriefcaseIcon, ChartBarIcon, CogIcon, CpuChipIcon, EyeIcon, LightBulbIcon, MicrophoneIcon, QuestionMarkCircleIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { PauseIcon, PlayIcon, StopIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue';
@@ -664,7 +668,7 @@ const checklist = ref({
 const aiRecommendations = ref([
   {
     id: 'practice_behavioral',
-    icon: 'mdi-account-group',
+    icon: 'UserIcon-group',
     title: 'Practice Behavioral Questions',
     description: 'Focus on STAR method responses for behavioral scenarios',
     priority: 'high'

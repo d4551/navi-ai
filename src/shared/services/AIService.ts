@@ -28,6 +28,7 @@ import { enhancedSkillExtractor } from '@/shared/services/EnhancedSkillExtractor
 import { aiJobService } from '@/services/AIJobService'
 import { semanticSearchService } from '@/shared/services/SemanticSearchService'
 import { resolveGeminiApiKey } from '@/shared/utils/apiKeys'
+import { logger } from '@/shared/utils/logger'
 
 // AI Service Configuration
 export interface AIServiceConfig {
@@ -198,7 +199,7 @@ export class AIService {
           // Initialize canonical AI client with resolved API key
           await canonicalAIClient.initialize(key, model);
         } catch (e) {
-          console.error('Canonical AI client initialization failed:', e);
+          logger.error('Canonical AI client initialization failed:', e);
           throw new Error(`API key validation failed: ${e instanceof Error ? e.message : 'Invalid API key'}`);
         }
       } else if (provider === 'openai') {
@@ -232,7 +233,7 @@ export class AIService {
       };
     } catch (_error) {
       // Log initialization failures as they are critical for service operation
-      console.error('AI service initialization failed:', _error);
+      logger.error('AI service initialization failed:', _error);
       
       // Enhanced error handling with specific error types
       let errorMessage = 'AI service initialization failed';
@@ -291,7 +292,7 @@ export class AIService {
     } catch (_error) {
       lastError = _error as Error;
       // Log provider failures for debugging fallback behavior
-      console.warn(`Primary provider ${this.config.primaryProvider} failed:`, _error);
+      logger.warn(`Primary provider ${this.config.primaryProvider} failed:`, _error);
     }
 
     // Try fallback providers
@@ -308,7 +309,7 @@ export class AIService {
       } catch (_error) {
         lastError = _error as Error;
         // Log fallback failures for debugging
-        console.warn(`Fallback provider ${provider} failed:`, _error);
+        logger.warn(`Fallback provider ${provider} failed:`, _error);
       }
     }
 
@@ -537,7 +538,7 @@ export class AIService {
       const res = await this.chat({ message, context, sessionId, type: 'chat' });
       return res;
     } catch (error: any) {
-      console.error('realtimeChat failed:', error);
+      logger.error('realtimeChat failed:', error);
       throw new Error(error?.message || 'realtimeChat failed');
     }
   }
@@ -625,7 +626,7 @@ export class AIService {
 
     } catch (error) {
       // Log streaming failures as they affect user experience
-      console.error('Streaming failed:', error);
+      logger.error('Streaming failed:', error);
       throw new Error(`AI streaming failed: ${(error as Error).message}`);
     }
   }
@@ -651,7 +652,7 @@ export class AIService {
           },
           onError: (error: Error) => {
             // Log real-time session errors as they affect user experience
-            console.error('Real-time session error:', error);
+            logger.error('Real-time session error:', error);
           },
           onAudioResponse: (audioData: ArrayBuffer) => {
             request.onMediaData?.(audioData);
@@ -670,7 +671,7 @@ export class AIService {
 
     } catch (error) {
       // Log real-time session failures as they are critical
-      console.error('Real-time session failed:', error);
+      logger.error('Real-time session failed:', error);
       throw new Error(`Real-time session failed: ${(error as Error).message}`);
     }
   }
@@ -683,7 +684,7 @@ export class AIService {
       await this.realTimeService.stopSession();
     } catch (_error) {
       // Log cleanup failures for debugging
-      console.error('Failed to stop real-time session:', _error);
+      logger.error('Failed to stop real-time session:', _error);
     }
   }
 
@@ -1149,7 +1150,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       return contextMessages;
     } catch (_error) {
       // Log context loading failures for debugging
-      console.warn('Failed to load conversation context:', _error);
+      logger.warn('Failed to load conversation context:', _error);
       return [];
     }
   }
@@ -1211,7 +1212,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       await databaseService.saveChatHistory(chatHistory);
     } catch (error) {
       // Log history saving failures for debugging  
-      console.warn('Failed to save conversation history:', error);
+      logger.warn('Failed to save conversation history:', error);
     }
   }
 
@@ -1344,7 +1345,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       return testResponse.content.length > 0;
     } catch (error) {
       // Log health check failures for debugging
-      console.error('AI service health check failed:', error);
+      logger.error('AI service health check failed:', error);
       return false;
     }
   }
@@ -1371,7 +1372,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       // AI service shut down successfully
     } catch (_error) {
       // Log shutdown errors for debugging
-      console.error('Error shutting down AI service:', _error);
+      logger.error('Error shutting down AI service:', _error);
     }
   }
 }

@@ -6,6 +6,7 @@
     :aria-labelledby="`mod-${data.key}-title`"
     :aria-label="`${data.name}: ${data.cta || 'Open'}`"
     tabindex="0"
+    class="font-sans"
     @click="navigate"
     @keydown.enter.prevent.stop="navigate"
     @keydown.space.prevent.stop="navigate"
@@ -34,7 +35,7 @@
     <!-- Module Footer -->
     <div class="module-footer">
       <div class="module-cta">
-        <AppIcon :name="data.ctaIcon || 'mdi-arrow-right'" class="cta-icon" aria-hidden="true" />
+        <AppIcon :name="data.ctaIcon || 'ArrowRightIcon'" class="cta-icon" aria-hidden="true" />
         <span class="cta-text">{{ data.cta || 'Open' }}</span>
       </div>
     </div>
@@ -45,6 +46,8 @@
 </template>
 
 <script>
+import { ArrowRightIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 export default {
   name: 'DashboardModuleCard',
@@ -139,7 +142,7 @@ export default {
   font-size: var(--font-size-sm);
   font-weight: 600;
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border: 1px solid var(--glass-border);
   white-space: nowrap;
   display: flex;
@@ -173,7 +176,7 @@ export default {
   font-weight: 700;
   line-height: 1.3;
   margin: 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   letter-spacing: -0.01em;
 }
 

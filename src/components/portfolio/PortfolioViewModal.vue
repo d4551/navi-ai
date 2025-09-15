@@ -2,6 +2,7 @@
   <div
     v-if="show && item"
     class="modal-overlay"
+    class="font-sans"
     @click="handleOverlayClick"
   >
     <div class="portfolio-modal" @click.stop>
@@ -16,7 +17,7 @@
                 {{ getTypeLabel(item.type) }}
               </span>
               <span v-if="displayDate" class="item-date">
-                <AppIcon name="mdi-calendar" size="14" />
+                <AppIcon name="CalendarIcon" size="14" />
                 {{ displayDate }}
               </span>
             </div>
@@ -26,7 +27,7 @@
               v-if="primaryLink"
               variant="glass"
               size="sm"
-              leading-icon="mdi-open-in-new"
+              leading-icon="ArrowTopRightOnSquareIcon"
               :href="primaryLink"
               target="_blank"
             >
@@ -35,7 +36,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-share-variant"
+              leading-icon="ShareIcon"
               @click="shareItem"
             >
               Share
@@ -44,7 +45,7 @@
               variant="ghost"
               size="sm"
               icon-only
-              leading-icon="mdi-close"
+              leading-icon="XMarkIcon"
               aria-label="Close modal"
               @click="$emit('close')"
             />
@@ -81,7 +82,7 @@
             <!-- Description -->
             <section v-if="item.description" class="content-section">
               <h3 class="section-title">
-                <AppIcon name="mdi-text" />
+                <AppIcon name="DocumentTextIcon" />
                 Description
               </h3>
               <p class="section-text">{{ item.description }}</p>
@@ -90,7 +91,7 @@
             <!-- Game Info -->
             <section v-if="item.game" class="content-section">
               <h3 class="section-title">
-                <AppIcon name="mdi-gamepad-variant" />
+                <AppIcon name="PuzzlePieceIcon" />
                 Game
               </h3>
               <p class="section-text">{{ item.game }}</p>
@@ -99,7 +100,7 @@
             <!-- Skills/Technologies -->
             <section v-if="skillsOrTech?.length" class="content-section">
               <h3 class="section-title">
-                <AppIcon name="mdi-code-tags" />
+                <AppIcon name="CommandLineIcon" />
                 {{ item.type === 'project' ? 'Technologies' : 'Skills' }}
               </h3>
               <div class="tech-tags">
@@ -116,7 +117,7 @@
             <!-- Achievement Details -->
             <section v-if="item.type === 'achievement' && (item.achievement?.rank || item.achievement?.event)" class="content-section">
               <h3 class="section-title">
-                <AppIcon name="mdi-trophy" />
+                <AppIcon name="TrophyIcon" />
                 Achievement Details
               </h3>
               <div class="achievement-details">
@@ -132,7 +133,7 @@
             <!-- Statistics -->
             <section v-if="statsData?.length" class="content-section">
               <h3 class="section-title">
-                <AppIcon name="mdi-chart-line" />
+                <AppIcon name="ChartBarIcon" />
                 Statistics
               </h3>
               <div class="stats-grid">
@@ -150,7 +151,7 @@
             <!-- Links -->
             <section v-if="links?.length" class="content-section">
               <h3 class="section-title">
-                <AppIcon name="mdi-link" />
+                <AppIcon name="LinkIcon" />
                 Links
               </h3>
               <div class="links-grid">
@@ -164,7 +165,7 @@
                 >
                   <AppIcon :name="getLinkIcon(link.type)" />
                   {{ link.label || formatLinkType(link.type) }}
-                  <AppIcon name="mdi-open-in-new" size="14" class="external-icon" />
+                  <AppIcon name="ArrowTopRightOnSquareIcon" size="14" class="external-icon" />
                 </a>
               </div>
             </section>
@@ -202,7 +203,7 @@
                   v-if="primaryLink"
                   variant="primary"
                   size="sm"
-                  leading-icon="mdi-open-in-new"
+                  leading-icon="ArrowTopRightOnSquareIcon"
                   :href="primaryLink"
                   target="_blank"
                   class="action-btn"
@@ -212,7 +213,7 @@
                 <UnifiedButton
                   variant="outline"
                   size="sm"
-                  leading-icon="mdi-pencil"
+                  leading-icon="PencilIcon"
                   class="action-btn"
                   @click="$emit('edit', item)"
                 >
@@ -221,7 +222,7 @@
                 <UnifiedButton
                   variant="outline"
                   size="sm"
-                  leading-icon="mdi-content-copy"
+                  leading-icon="DocumentDuplicateIcon"
                   class="action-btn"
                   @click="$emit('duplicate', item)"
                 >
@@ -237,6 +238,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowTopRightOnSquareIcon, CalendarIcon, ChartBarIcon, CommandLineIcon, DocumentDuplicateIcon, DocumentTextIcon, PencilIcon, PuzzlePieceIcon, ShareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -395,14 +399,14 @@ const formatLinkType = (type?: string): string => {
 
 const getTypeIcon = (type?: string): string => {
   const icons: Record<string, string> = {
-    achievement: 'mdi-trophy',
-    tournament: 'mdi-sword-cross',
+    achievement: 'TrophyIcon',
+    tournament: 'BoltIcon-cross',
     project: 'mdi-code-braces',
-    content: 'mdi-video',
-    leadership: 'mdi-account-group',
-    clip: 'mdi-play-circle',
-    competition: 'mdi-target',
-    game: 'mdi-gamepad-variant',
+    content: 'VideoCameraIcon',
+    leadership: 'UserIcon-group',
+    clip: 'PlayIcon-circle',
+    competition: 'CursorArrowRaysIcon',
+    game: 'DevicePhoneMobileIcon-variant',
     web: 'mdi-web',
     mobile: 'mdi-cellphone',
     tool: 'mdi-wrench',
@@ -410,7 +414,7 @@ const getTypeIcon = (type?: string): string => {
     app: 'mdi-application',
     website: 'mdi-earth'
   }
-  return icons[type || ''] || 'mdi-folder'
+  return icons[type || ''] || 'FolderIcon'
 }
 
 const getTypeLabel = (type?: string): string => {
@@ -434,13 +438,13 @@ const getLinkIcon = (type?: string): string => {
   const icons: Record<string, string> = {
     live: 'mdi-open-in-new',
     source: 'mdi-github',
-    video: 'mdi-play',
-    article: 'mdi-file-document',
+    video: 'PlayIcon',
+    article: 'DocumentIcon-document',
     store: 'mdi-shopping',
     docs: 'mdi-book',
     external: 'mdi-open-in-new'
   }
-  return icons[type || ''] || 'mdi-link'
+  return icons[type || ''] || 'LinkIcon'
 }
 </script>
 
@@ -477,8 +481,8 @@ const getLinkIcon = (type?: string): string => {
 
 .modal-header {
   padding: 2rem 2rem 1.5rem;
-  border-bottom: 1px solid var(--glass-border);
-  background: var(--glass-bg-light);
+  border-b: 1px solid var(--glass-border);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 .header-content {
@@ -495,7 +499,7 @@ const getLinkIcon = (type?: string): string => {
 .modal-title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 1rem 0;
   line-height: 1.2;
 }
@@ -602,7 +606,7 @@ const getLinkIcon = (type?: string): string => {
 }
 
 .content-section:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   transform: translateY(-1px);
 }
 
@@ -612,7 +616,7 @@ const getLinkIcon = (type?: string): string => {
   gap: 0.75rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 1rem 0;
 }
 
@@ -680,7 +684,7 @@ const getLinkIcon = (type?: string): string => {
   display: block;
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .links-grid {
@@ -696,7 +700,7 @@ const getLinkIcon = (type?: string): string => {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-decoration: none;
   transition: all var(--duration-fast);
 }
@@ -729,7 +733,7 @@ const getLinkIcon = (type?: string): string => {
 .sidebar-title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 1rem 0;
 }
 
@@ -747,7 +751,7 @@ const getLinkIcon = (type?: string): string => {
 
 .details-list dd {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 500;
 }
 

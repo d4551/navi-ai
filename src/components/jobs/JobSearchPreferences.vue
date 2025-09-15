@@ -1,15 +1,15 @@
 <template>
-  <div class="job-search-preferences">
-    <div class="row g-4">
+  <div class="job-search-preferences" class="font-sans">
+    <div class="flex flex-wrap g-4">
       <!-- Role Types Section -->
-      <div class="col-lg-6">
+      <div class="flex-1-lg-6">
         <div class="preference-section glass-card section-card-subtle">
           <div class="section-header mb-3">
             <h6 class="mb-1">
-              <AppIcon name="mdi-briefcase-variant" class="me-2 text-primary" />
+              <AppIcon name="mdi-briefcase-variant" class="mr-2 text-primary-600" />
               Role Types
             </h6>
-            <p class="text-muted small mb-0">Select your preferred gaming industry roles</p>
+            <p class="text-secondary small mb-0">Select your preferred gaming industry roles</p>
           </div>
 
           <div class="role-categories">
@@ -18,9 +18,9 @@
               :key="category.name"
               class="role-category mb-3"
             >
-              <div class="category-header d-flex align-items-center mb-2">
-                <i :class="[category.icon, 'me-2']" :style="{ color: category.color }"></i>
-                <span class="fw-medium">{{ category.name }}</span>
+              <div class="category-header flex items-center mb-2">
+                <i :class="[category.icon, 'mr-2']" :style="{ color: category.color }"></i>
+                <span class="font-medium">{{ category.name }}</span>
               </div>
               <div class="role-options">
                 <div
@@ -50,19 +50,19 @@
       </div>
 
       <!-- Experience & Compensation -->
-      <div class="col-lg-6">
+      <div class="flex-1-lg-6">
         <div class="preference-section glass-card section-card-subtle">
           <div class="section-header mb-3">
             <h6 class="mb-1">
-              <AppIcon name="mdi-account-star" class="me-2 text-success" />
+              <AppIcon name="UserIcon-star" class="mr-2 text-success-600" />
               Experience & Compensation
             </h6>
-            <p class="text-muted small mb-0">Define your experience level and salary expectations</p>
+            <p class="text-secondary small mb-0">Define your experience level and salary expectations</p>
           </div>
 
           <!-- Experience Level -->
           <div class="form-group mb-3">
-            <label class="form-label small fw-medium">Experience Level</label>
+            <label class="form-label small font-medium">Experience Level</label>
             <select
               v-model="localPreferences.experienceLevel"
               class="form-select form-select-sm"
@@ -79,12 +79,12 @@
 
           <!-- Salary Range -->
           <div class="form-group mb-3">
-            <label class="form-label small fw-medium">
+            <label class="form-label small font-medium">
               Salary Range
-              <span class="text-muted">(USD/year)</span>
+              <span class="text-secondary">(USD/year)</span>
             </label>
-            <div class="salary-range-inputs row g-2">
-              <div class="col-6">
+            <div class="salary-range-inputs flex flex-wrap g-2">
+              <div class="flex-1-6">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text">$</span>
                   <input
@@ -98,7 +98,7 @@
                   >
                 </div>
               </div>
-              <div class="col-6">
+              <div class="flex-1-6">
                 <div class="input-group input-group-sm">
                   <span class="input-group-text">$</span>
                   <input
@@ -114,7 +114,7 @@
               </div>
             </div>
             <div class="salary-display mt-2">
-              <div class="text-center small text-muted">
+              <div class="text-center small text-secondary">
                 {{ formatSalaryRange(localPreferences.salaryRange) }}
               </div>
             </div>
@@ -123,19 +123,19 @@
       </div>
 
       <!-- Location & Work Style -->
-      <div class="col-lg-6">
+      <div class="flex-1-lg-6">
         <div class="preference-section glass-card section-card-subtle">
           <div class="section-header mb-3">
             <h6 class="mb-1">
-              <AppIcon name="mdi-map-marker" color="info" />
+              <AppIcon name="MapPinIcon" color="info" />
               Location & Work Style
             </h6>
-            <p class="text-muted small mb-0">Set your location and remote work preferences</p>
+            <p class="text-secondary small mb-0">Set your location and remote work preferences</p>
           </div>
 
           <!-- Location Preference -->
           <div class="form-group mb-3">
-            <label class="form-label small fw-medium">Location Preference</label>
+            <label class="form-label small font-medium">Location Preference</label>
             <div class="location-options">
               <div
                 v-for="option in locationOptions"
@@ -151,7 +151,7 @@
                   @change="updatePreferences"
                 >
                 <label :for="`location-${option.value}`" class="form-check-label small">
-                  <i :class="[option.icon, 'me-2']"></i>
+                  <i :class="[option.icon, 'mr-2']"></i>
                   {{ option.label }}
                 </label>
               </div>
@@ -160,7 +160,7 @@
 
           <!-- Work Style -->
           <div class="form-group mb-3">
-            <label class="form-label small fw-medium">Work Style</label>
+            <label class="form-label small font-medium">Work Style</label>
             <select
               v-model="localPreferences.workStyle"
               class="form-select form-select-sm"
@@ -175,7 +175,7 @@
 
           <!-- Company Size -->
           <div class="form-group">
-            <label class="form-label small fw-medium">Company Size</label>
+            <label class="form-label small font-medium">Company Size</label>
             <div class="company-size-options">
               <div
                 v-for="size in companySizeOptions"
@@ -200,19 +200,19 @@
       </div>
 
       <!-- Keywords & Notifications -->
-      <div class="col-lg-6">
+      <div class="flex-1-lg-6">
         <div class="preference-section glass-card section-card-subtle">
           <div class="section-header mb-3">
             <h6 class="mb-1">
-              <AppIcon name="mdi-magnify" color="warning" />
+              <AppIcon name="MagnifyingGlassIcon" color="warning" />
               Keywords & Notifications
             </h6>
-            <p class="text-muted small mb-0">Fine-tune search terms and alert preferences</p>
+            <p class="text-secondary small mb-0">Fine-tune search terms and alert preferences</p>
           </div>
 
           <!-- Keywords -->
           <div class="form-group mb-3">
-            <label class="form-label small fw-medium">Include Keywords</label>
+            <label class="form-label small font-medium">Include Keywords</label>
             <textarea
               v-model="localPreferences.keywords"
               class="form-control form-control-sm glass-input"
@@ -225,7 +225,7 @@
 
           <!-- Exclude Keywords -->
           <div class="form-group mb-3">
-            <label class="form-label small fw-medium">Exclude Keywords</label>
+            <label class="form-label small font-medium">Exclude Keywords</label>
             <textarea
               v-model="localPreferences.excludeKeywords"
               class="form-control form-control-sm glass-input"
@@ -238,8 +238,8 @@
 
           <!-- Notification Frequency -->
           <div class="form-group">
-            <label class="form-label small fw-medium">
-              <AppIcon name="mdi-bell" class="me-1" />
+            <label class="form-label small font-medium">
+              <AppIcon name="BellIcon" class="mr-1" />
               Notification Frequency
             </label>
             <select
@@ -259,19 +259,19 @@
 
     <!-- Preferences Summary -->
     <div class="preferences-summary mt-4">
-      <div class="glass-card section-card-subtle p-3">
-        <div class="d-flex align-items-center justify-content-between">
+      <div class="glass-card section-card-subtle p-glass-md">
+        <div class="flex items-center justify-between">
           <div>
             <h6 class="mb-1">
-              <AppIcon name="mdi-check-circle-outline" color="success" context="success" />
+              <AppIcon name="CheckCircleIcon" color="success" context="success" />
               Preferences Summary
             </h6>
-            <div class="summary-text small text-muted">
+            <div class="summary-text small text-secondary">
               {{ generateSummaryText() }}
             </div>
           </div>
-          <div class="summary-actions d-flex gap-2">
-            <UnifiedButton variant="outline" size="sm" leading-icon="mdi-refresh" @click="resetToDefaults">Reset</UnifiedButton>
+          <div class="summary-actions flex gap-glass-sm">
+            <UnifiedButton variant="outline" size="sm" leading-icon="ArrowPathIcon" @click="resetToDefaults">Reset</UnifiedButton>
             <UnifiedButton variant="primary" size="sm" leading-icon="mdi-content-save" @click="savePreferences">Save</UnifiedButton>
           </div>
         </div>
@@ -281,6 +281,9 @@
 </template>
 
 <script>
+import { ArrowPathIcon, BellIcon, CheckCircleIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 import UnifiedButton from '@/components/ui/UnifiedButton.vue';
 
@@ -302,7 +305,7 @@ const localPreferences = ref({ ...props.preferences })
 const roleCategories = ref([
   {
     name: 'Design & Creative',
-    icon: 'mdi-palette',
+    icon: 'SwatchIcon',
     color: '#8b5cf6',
     roles: ['Game Designer', 'Level Designer', 'Narrative Designer', 'UX/UI Designer', 'Concept Artist']
   },
@@ -314,13 +317,13 @@ const roleCategories = ref([
   },
   {
     name: 'Community & Marketing',
-    icon: 'mdi-account-group',
+    icon: 'UserIcon-group',
     color: '#10b981',
     roles: ['Community Manager', 'Content Creator', 'Marketing Manager', 'Social Media Manager', 'Streamer Coordinator']
   },
   {
     name: 'Esports & Competitive',
-    icon: 'mdi-trophy',
+    icon: 'TrophyIcon',
     color: '#f59e0b',
     roles: ['Esports Manager', 'Tournament Coordinator', 'Team Coach', 'Analyst', 'Broadcast Producer']
   },
@@ -333,8 +336,8 @@ const roleCategories = ref([
 ])
 
 const locationOptions = ref([
-  { value: 'remote', label: 'Remote Only', icon: 'mdi-home' },
-  { value: 'hybrid', label: 'Hybrid Preferred', icon: 'mdi-home-city' },
+  { value: 'remote', label: 'Remote Only', icon: 'HomeIcon' },
+  { value: 'hybrid', label: 'Hybrid Preferred', icon: 'HomeIcon-city' },
   { value: 'onsite', label: 'On-site Only', icon: 'mdi-office-building' },
   { value: 'flexible', label: 'Flexible', icon: 'mdi-map-marker-radius' }
 ])
@@ -475,7 +478,7 @@ const savePreferences = () => {
 
 .role-checkbox .form-check-input:checked + .form-check-label {
   background: var(--color-primary);
-  color: white;
+  color: var(--text-inverse);
   transform: translateY(-1px);
 }
 
@@ -498,7 +501,7 @@ const savePreferences = () => {
 }
 
 .preferences-summary {
-  border-top: 2px dashed var(--glass-border-light);
+  border-t: 2px dashed var(--glass-border-light);
   padding-top: 1rem;
 }
 
@@ -527,7 +530,7 @@ const savePreferences = () => {
     margin-top: 1rem;
   }
 
-  .d-flex.align-items-center.justify-content-between {
+  .flex.items-center.justify-between {
     flex-direction: column;
     align-items: flex-start !important;
   }

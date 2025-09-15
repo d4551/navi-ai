@@ -1,15 +1,15 @@
 <template>
-  <div class="job-board-source-selector">
+  <div class="job-board-source-selector" class="font-sans">
     <!-- Overview Section -->
-    <div class="row mb-4">
-      <div class="col-12">
-        <div class="selection-overview glass-card section-card-subtle p-3">
-          <div class="d-flex align-items-center justify-content-between">
+    <div class="flex flex-wrap mb-4">
+      <div class="flex-1-12">
+        <div class="selection-overview glass-card section-card-subtle p-glass-md">
+          <div class="flex items-center justify-between">
             <div>
               <h6 class="mb-1">Selected Sources: {{ selectedSources.length }}/{{ sources.length }}</h6>
-              <p class="text-muted small mb-0">Configure job board APIs to expand your search reach</p>
+              <p class="text-secondary small mb-0">Configure job board APIs to expand your search reach</p>
             </div>
-            <div class="source-status-indicators d-flex gap-2">
+            <div class="source-status-indicators flex gap-glass-sm">
               <div
                 v-for="source in selectedSourceDetails"
                 :key="source.id"
@@ -35,14 +35,14 @@
         }"
       >
         <!-- Header with toggle -->
-        <div class="source-header d-flex align-items-start justify-content-between">
-          <div class="source-info d-flex align-items-center">
+        <div class="source-header flex items-start justify-between">
+          <div class="source-info flex items-center">
             <div class="source-icon-wrapper" :style="{ backgroundColor: source.color + '20', borderColor: source.color }">
               <AppIcon :name="source.icon" class="source-icon" :style="{ color: source.color }" />
             </div>
-            <div class="ms-3">
+            <div class="ml-3">
               <h6 class="source-name mb-1">{{ source.name }}</h6>
-              <p class="source-description text-muted small mb-0">{{ source.description }}</p>
+              <p class="source-description text-secondary small mb-0">{{ source.description }}</p>
             </div>
           </div>
           <div class="source-toggle">
@@ -64,35 +64,35 @@
         </div>
 
         <!-- Status and Rate Limit -->
-        <div class="source-meta d-flex align-items-center justify-content-between mb-3">
+        <div class="source-meta flex items-center justify-between mb-3">
           <div class="status-badge">
             <span
               class="badge"
               :class="getStatusBadgeClass(source.status)"
             >
-              <AppIcon name="mdi-circle-small" class="me-1" />
+              <AppIcon name="mdi-circle-small" class="mr-1" />
               {{ source.status }}
             </span>
           </div>
-          <div class="rate-limit text-muted small">
-            <AppIcon name="mdi-speedometer" class="me-1" />
+          <div class="rate-limit text-secondary small">
+            <AppIcon name="mdi-speedometer" class="mr-1" />
             {{ source.rateLimit }}
           </div>
         </div>
 
         <!-- Categories -->
         <div class="source-categories mb-3">
-          <div class="category-tags d-flex flex-wrap gap-1">
+          <div class="category-tags flex flex-wrap gap-glass-xs">
             <span
               v-for="category in source.categories.slice(0, 3)"
               :key="category"
-              class="badge bg-light text-dark category-tag"
+              class="badge bg-glass-bg dark:bg-glass-bg-hover text-glass-primary category-tag"
             >
               {{ category }}
             </span>
             <span
               v-if="source.categories.length > 3"
-              class="badge bg-light text-muted category-tag"
+              class="badge bg-glass-bg dark:bg-glass-bg-hover text-secondary category-tag"
             >
               +{{ source.categories.length - 3 }}
             </span>
@@ -105,9 +105,9 @@
             <div
               v-for="feature in source.features.slice(0, 2)"
               :key="feature"
-              class="feature-item d-flex align-items-center small text-muted mb-1"
+              class="feature-item flex items-center small text-secondary mb-1"
             >
-              <AppIcon name="mdi-check-circle-outline" color="success" context="success" />
+              <AppIcon name="CheckCircleIcon" color="success" context="success" />
               {{ feature }}
             </div>
           </div>
@@ -119,8 +119,8 @@
 
           <!-- API Key Section (only for APIs that require keys) -->
           <div v-if="source.apiKey !== 'Not required'" class="api-key-field mb-3">
-            <label :for="`api-key-${source.id}`" class="form-label small fw-medium">
-              <AppIcon name="mdi-key-variant" class="me-1" />
+            <label :for="`api-key-${source.id}`" class="form-label small font-medium">
+              <AppIcon name="KeyIcon-variant" class="mr-1" />
               API Key
             </label>
             <div class="input-group input-group-sm">
@@ -135,35 +135,35 @@
               <IconButton
                 variant="outline"
                 size="sm"
-                icon="mdi-eye"
+                icon="EyeIcon"
                 type="button"
                 @click="togglePasswordVisibility(source.id)"
               />
             </div>
             <div class="form-text">
               <a href="#" class="text-decoration-none" @click.prevent="openApiDocumentation(source.id)">
-                <AppIcon name="mdi-help-circle-outline" />
+                <AppIcon name="QuestionMarkCircleIcon" />
                 Get API key
               </a>
             </div>
           </div>
 
           <!-- Public API Notice -->
-          <div v-else class="public-api-notice mb-3 p-2 bg-success-subtle text-success rounded">
-            <AppIcon name="mdi-check-circle-outline" context="success" />
+          <div v-else class="public-api-notice mb-3 p-glass-sm bg-success-500-subtle text-success-600 rounded">
+            <AppIcon name="CheckCircleIcon" context="success" />
             <strong>Public API</strong> - No authentication required
           </div>
         </div>
 
         <!-- Action buttons for selected sources -->
         <div v-if="selectedSources.includes(source.id) && source.enabled" class="source-actions mt-3">
-          <div class="d-flex gap-2">
+          <div class="flex gap-glass-sm">
             <UnifiedButton
               variant="outline"
               size="sm"
               class="flex-fill"
               :disabled="(source.apiKey !== 'Not required' && !source.apiKey) || testingConnections.includes(source.id)"
-              leading-icon="mdi-lightning-bolt"
+              leading-icon="BoltIcon-bolt"
               @click="testConnection(source.id)"
             >
               <span v-if="testingConnections.includes(source.id)">Testing...</span>
@@ -179,10 +179,10 @@
 
           <!-- Test Results -->
           <div
-            v-if="testResults[source.id]" class="test-result mt-2 p-2 rounded small"
-            :class="testResults[source.id].success ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'"
+            v-if="testResults[source.id]" class="test-result mt-2 p-glass-sm rounded small"
+            :class="testResults[source.id].success ? 'bg-success-500-subtle text-success-600' : 'bg-error-500-subtle text-error-600'"
           >
-            <AppIcon :name="testResults[source.id].success ? 'mdi-check-circle-outline' : 'mdi-alert-circle-outline'" class="me-1" />
+            <AppIcon :name="testResults[source.id].success ? 'CheckIcon-circle-outline' : 'mdi-alert-circle-outline'" class="mr-1" />
             {{ testResults[source.id].message }}
             <span v-if="testResults[source.id].success && testResults[source.id].jobCount !== undefined">
               ({{ testResults[source.id].jobCount }} jobs available)
@@ -193,36 +193,36 @@
     </div>
 
     <!-- Configuration Summary -->
-    <div v-if="selectedSources.length > 0" class="row mt-4">
-      <div class="col-12">
-        <div class="configuration-summary glass-card section-card-subtle p-3">
+    <div v-if="selectedSources.length > 0" class="flex flex-wrap mt-4">
+      <div class="flex-1-12">
+        <div class="configuration-summary glass-card section-card-subtle p-glass-md">
           <h6 class="mb-3">
-            <AppIcon name="mdi-cog" />
+            <AppIcon name="CogIcon" />
             Configuration Summary
           </h6>
-          <div class="summary-stats row g-3">
-            <div class="col-md-3">
+          <div class="summary-stats flex flex-wrap g-3">
+            <div class="flex-1-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-primary">{{ selectedSources.length }}</div>
-                <div class="stat-label small text-muted">Active Sources</div>
+                <div class="stat-value h5 mb-1 text-primary-600">{{ selectedSources.length }}</div>
+                <div class="stat-label small text-secondary">Active Sources</div>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="flex-1-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-success">{{ operationalSources }}</div>
-                <div class="stat-label small text-muted">Operational</div>
+                <div class="stat-value h5 mb-1 text-success-600">{{ operationalSources }}</div>
+                <div class="stat-label small text-secondary">Operational</div>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="flex-1-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-info">{{ totalRateLimit }}</div>
-                <div class="stat-label small text-muted">Total/Hour</div>
+                <div class="stat-value h5 mb-1 text-blue-600">{{ totalRateLimit }}</div>
+                <div class="stat-label small text-secondary">Total/Hour</div>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="flex-1-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-warning">{{ configuredSources }}</div>
-                <div class="stat-label small text-muted">Configured</div>
+                <div class="stat-value h5 mb-1 text-warning-600">{{ configuredSources }}</div>
+                <div class="stat-label small text-secondary">Configured</div>
               </div>
             </div>
           </div>
@@ -233,6 +233,8 @@
 </template>
 
 <script setup>
+import { CheckCircleIcon, CogIcon, EyeIcon, QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -401,7 +403,7 @@ const viewDocumentation = (sourceId) => {
 }
 
 .source-card.source-degraded {
-  border-left: 4px solid var(--color-warning-500);
+  border-l: 4px solid var(--color-warning-500);
 }
 
 .source-icon-wrapper {
@@ -421,7 +423,7 @@ const viewDocumentation = (sourceId) => {
 
 .source-name {
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .source-description {
@@ -513,7 +515,7 @@ const viewDocumentation = (sourceId) => {
 
 [data-theme="dark"] .category-tag {
   background-color: var(--glass-surface-dark) !important;
-  color: var(--text-primary) !important;
+  color: var(--text-primary-600) !important;
   border: 1px solid var(--glass-border-dark);
 }
 
@@ -528,8 +530,8 @@ const viewDocumentation = (sourceId) => {
 }
 
 .test-result {
-  border-left: 3px solid;
-  border-left-color: inherit;
+  border-l: 3px solid;
+  border-l-color: inherit;
 }
 
 .public-api-notice {

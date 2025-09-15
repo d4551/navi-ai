@@ -17,58 +17,58 @@
 }
 .bg-primary {
   background: var(--color-primary-500) !important;
-  color: #fff !important;
+  color: var(--text-on-primary);
   border-color: var(--color-primary-500) !important;
 }
 .bg-secondary {
   background: var(--glass-surface) !important;
-  color: var(--text-primary) !important;
+  color: var(--text-primary);
   border-color: var(--glass-border) !important;
 }
 .bg-success {
   background: var(--color-success-500) !important;
-  color: #fff !important;
+  color: var(--text-on-primary);
 }
 .bg-warning {
   background: var(--color-warning-500) !important;
-  color: #111 !important;
+  color: var(--text-on-primary);
 }
 .bg-danger {
   background: var(--color-error-500, var(--color-danger-500)) !important;
-  color: #fff !important;
+  color: var(--text-on-primary);
 }
 .bg-info {
   background: var(--color-info-500, #3b82f6) !important;
-  color: #fff !important;
+  color: var(--text-on-primary);
 }
 
 /* Text */
 .text-muted {
-  color: var(--text-secondary) !important;
+  color: var(--text-secondary);
 }
 .text-primary {
-  color: var(--color-primary-600, var(--color-primary-500)) !important;
+  color: var(--color-primary-600, var(--color-primary-500));
 }
 .text-secondary {
-  color: var(--text-secondary) !important;
+  color: var(--text-secondary);
 }
 .text-success {
-  color: var(--color-success-600, var(--color-success-500)) !important;
+  color: var(--color-success-600, var(--color-success-500));
 }
 .text-warning {
-  color: var(--color-warning-600, var(--color-warning-500)) !important;
+  color: var(--color-warning-600, var(--color-warning-500));
 }
 .text-danger {
-  color: var(--color-error-600, var(--color-danger-600)) !important;
+  color: var(--color-error-600, var(--color-danger-600));
 }
 .text-info {
-  color: var(--color-info-600, #2563eb) !important;
+  color: var(--color-info-600, #2563eb);
 }
 .text-light {
-  color: #f9fafb !important;
+  color: var(--text-inverse);
 }
 .text-dark {
-  color: #111827 !important;
+  color: var(--text-primary);
 }
 
 /* Borders */

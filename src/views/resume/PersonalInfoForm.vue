@@ -3,13 +3,14 @@
     variant="outlined" 
     class="mb-4 section-card section-card unified-card"
     :class="theme.getThemeClasses('personal-info-form')"
+    class="font-sans"
   >
     <v-card-title 
-      class="d-flex align-center justify-space-between pa-4"
+      class="flex items-center justify-space-between pa-4"
     >
-      <div class="d-flex align-center ga-2">
-        <AppIcon name="mdi-badge-account-outline" size="small" />
-        <span class="text-h6">Personal Information</span>
+      <div class="flex items-center gap-glass-sm">
+        <AppIcon name="IdentificationIcon" size="small" />
+        <span class="text-lg font-semibold">Personal Information</span>
       </div>
       <UnifiedButton
         v-if="canUseAI"
@@ -17,15 +18,15 @@
         variant="ghost"
         size="sm"
         :loading="loadingAutoFill"
-        icon="mdi-wand"
+        icon="CommandLineIcon"
         :tooltip="'AI Assist'"
         @click="$emit('request-summary-suggestions')"
       />
     </v-card-title>
     
     <div class="card-content-sm">
-      <v-row>
-        <v-col cols="12" md="6">
+      <v-flex flex-wrap>
+        <v-flex-1 cols="12" md="6">
           <v-text-field
             v-model="local.personalInfo.name"
             class="glass-input"
@@ -35,9 +36,9 @@
             autocomplete="name"
             @blur="commit()"
           />
-        </v-col>
+        </v-flex-1>
 
-        <v-col cols="12" md="6">
+        <v-flex-1 cols="12" md="6">
           <v-text-field
             v-model="local.personalInfo.email"
             class="glass-input"
@@ -48,9 +49,9 @@
             autocomplete="email"
             @blur="commit()"
           />
-        </v-col>
+        </v-flex-1>
 
-        <v-col cols="12" md="6">
+        <v-flex-1 cols="12" md="6">
           <v-text-field
             v-model="local.personalInfo.phone"
             class="glass-input"
@@ -60,9 +61,9 @@
             autocomplete="tel"
             @blur="commit()"
           />
-        </v-col>
+        </v-flex-1>
 
-        <v-col cols="12" md="6">
+        <v-flex-1 cols="12" md="6">
           <v-text-field
             v-model="local.personalInfo.location"
             class="glass-input"
@@ -72,12 +73,12 @@
             autocomplete="address-level2"
             @blur="commit()"
           />
-        </v-col>
+        </v-flex-1>
 
-        <v-col cols="12">
-          <div class="d-flex justify-space-between align-center mb-2">
-            <v-label class="text-subtitle-1 font-weight-medium">Professional Summary</v-label>
-            <div class="d-flex align-center ga-2">
+        <v-flex-1 cols="12">
+          <div class="flex justify-space-between items-center mb-2">
+            <v-label class="text-base font-medium font-weight-medium">Professional Summary</v-label>
+            <div class="flex items-center gap-glass-sm">
               <UiChip :classes="`chip chip-${getSummaryStatusColor()} chip-compact`">
                 {{ summaryWordCount }} words
               </UiChip>
@@ -88,7 +89,7 @@
                 size="sm"
                 :loading="copying"
                 icon-only
-                icon="mdi-clipboard-outline"
+                icon="ClipboardIcon"
                 @click="$emit('copy-summary')"
               />
             </div>
@@ -111,7 +112,7 @@
                 variant="outline"
                 color="info"
                 size="sm"
-                leading-icon="mdi-lightbulb"
+                leading-icon="LightBulbIcon"
                 class="mt-2"
               >
                 Choose AI Suggestion
@@ -127,13 +128,15 @@
               </v-list-item>
             </v-list>
           </v-menu>
-        </v-col>
-      </v-row>
+        </v-flex-1>
+      </v-flex flex-wrap>
     </div>
   </v-card>
 </template>
 
 <script>
+import { ClipboardIcon, CommandLineIcon, IdentificationIcon, LightBulbIcon } from '@heroicons/vue/24/outline'
+
 import UnifiedButton from '@/components/ui/UnifiedButton.vue';
 import UiChip from '@/components/ui/UiChip.vue';
 import AppIcon from '@/components/ui/AppIcon.vue';

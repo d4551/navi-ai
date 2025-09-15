@@ -1,5 +1,5 @@
 <template>
-  <div :class="gridClasses" :data-layout="variant">
+  <div :class="gridClasses" :data-layout="variant" class="font-sans">
     <slot />
   </div>
 </template>
@@ -32,7 +32,7 @@ const gridClasses = computed(() => {
 
   // Column configuration
   if (typeof props.cols === 'number') {
-    classes.push(`layout-grid--${props.cols}col`)
+    classes.push(`layout-grid--${props.cols}flex-1`)
   } else {
     classes.push(`layout-grid--${props.cols}`)
   }
@@ -82,7 +82,7 @@ const gridStyle = computed(() => {
 <style scoped>
 /* Alignment utilities for grid */
 .layout-grid--align-start { align-items: start; }
-.layout-grid--align-center { align-items: center; }
+.layout-grid--items-center { align-items: center; }
 .layout-grid--align-end { align-items: end; }
 .layout-grid--align-stretch { align-items: stretch; }
 
@@ -106,7 +106,7 @@ const gridStyle = computed(() => {
 }
 
 .layout-grid--card-grid > :deep(*:hover) {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   transform: translateY(-2px);
 }
 

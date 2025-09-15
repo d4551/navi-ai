@@ -1,25 +1,25 @@
 <template>
   <Teleport to="body">
-    <div v-if="open" class="fairy-modal-overlay bg-gray-900/50 dark:bg-gray-900/70" @click.self="close">
+    <div v-if="open" class="fairy-modal-overlay bg-glass-bg dark:bg-glass-bg/50 dark:bg-glass-bg dark:bg-glass-bg/70" @click.self="close">
       <div
         :class="[
-          'fairy-bubble bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100',
+          'fairy-bubble bg-glass-bg dark:bg-gray-800 border border-glass-border dark:border-glass-border dark:border-glass-border text-glass-primary',
           sizeClass || 'fairy-lg',
           'enhanced-gaming-card',
           'bubble-elevated',
           { 'compact-ui': isCompact }
         ]" role="dialog" aria-modal="true" aria-label="NAVI Assistant Chat"
       >
-        <div class="fairy-chat-interface glass-panel glass-panel--compact bg-white/95 dark:bg-gray-800/95" :class="{ 'compact-ui': isCompact }">
+        <div class="fairy-chat-interface glass-panel glass-panel--compact bg-glass-bg/95 dark:bg-gray-800/95" :class="{ 'compact-ui': isCompact }">
           <!-- Welcome Animation -->
           <transition name="welcome-fade">
             <div v-if="showWelcome" class="welcome-animation">
               <div class="welcome-text">NAVI</div>
-              <div class="welcome-sparkles">✨</div>
+              <div class="welcome-sparkles">SparklesIcon</div>
             </div>
           </transition>
           <!-- Header -->
-          <div class="chat-header modern-header bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700" role="heading" aria-level="2">
+          <div class="chat-header modern-header glass-bg-glass-bg dark:bg-glass-bg-hover/50 border-b border-glass-border dark:border-glass-border dark:border-glass-border" role="heading" aria-level="2">
             <div class="header-shimmer"></div>
             <div class="header-info">
               <div class="header-avatar">
@@ -27,10 +27,10 @@
                 <div class="avatar-glow"></div>
               </div>
               <div class="header-details">
-                <h3 class="title-text text-gray-900 dark:text-gray-100">NAVI Assistant</h3>
+                <h3 class="title-text text-glass-primary">NAVI Assistant</h3>
                 <div class="header-status">
                   <span class="status-dot animated-dot" aria-hidden="true"></span>
-                  <span class="status-text text-gray-600 dark:text-gray-400">{{ statusText }} • AI Powered</span>
+                  <span class="status-text text-glass-secondary">{{ statusText }} • AI Powered</span>
                 </div>
               </div>
             </div>
@@ -38,7 +38,7 @@
               <IconButton
                 variant="glass"
                 size="sm"
-                icon="mdi-cog"
+                icon="CogIcon"
                 aria-label="Open voice settings"
                 title="Voice & TTS Settings"
                 class="modern-header-btn"
@@ -47,7 +47,7 @@
               <IconButton
                 variant="ghost"
                 size="sm"
-                icon="mdi-close"
+                icon="XMarkIcon"
                 aria-label="Close chat"
                 title="Close Chat"
                 class="modern-header-btn"
@@ -79,8 +79,8 @@
                 <div class="message-container">
                   <div class="message-avatar enhanced-avatar" :class="`avatar-${msg.type}`">
                     <div class="avatar-glow"></div>
-                    <AppIcon :name="msg.type === 'user' ? 'mdi-account' : msg.type === 'ai' ? 'mdi-robot' : 'mdi-information'" />
-                    <div v-if="msg.type === 'ai'" class="avatar-sparkle">✨</div>
+                    <AppIcon :name="msg.type === 'user' ? 'UserIcon' : msg.type === 'ai' ? 'mdi-robot' : 'InformationCircleIconrmation'" />
+                    <div v-if="msg.type === 'ai'" class="avatar-sparkle">SparklesIcon</div>
                   </div>
                   
                   <div class="message-bubble" :class="`bubble-${msg.type}`">
@@ -92,7 +92,7 @@
                           <IconButton
                             variant="ghost"
                             size="xs"
-                            icon="mdi-content-copy"
+                            icon="DocumentDuplicateIcon"
                             aria-label="Copy message"
                             title="Copy message text"
                             class="copy-btn enhanced-action"
@@ -113,8 +113,8 @@
                 <div class="message-container">
                   <div class="message-avatar enhanced-avatar avatar-ai">
                     <div class="avatar-glow"></div>
-                    <AppIcon name="mdi-robot" />
-                    <div class="avatar-sparkle">✨</div>
+                    <AppIcon name="CpuChipIcon" />
+                    <div class="avatar-sparkle">SparklesIcon</div>
                   </div>
                   
                   <div class="message-bubble bubble-ai typing-bubble">
@@ -137,7 +137,7 @@
               <button
                 v-for="reply in quickReplies"
                 :key="reply.id"
-                class="quick-reply modern-chip bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                class="quick-reply modern-chip bg-glass-bg-hover dark:bg-gray-700 text-gray-700 dark:text-glass-secondary dark:text-glass-secondary hover:bg-gray-200 dark:hover:bg-gray-600"
                 :aria-label="`Send: ${reply.text}`"
                 @click="sendSuggestion(reply.text)"
               >
@@ -148,8 +148,8 @@
             
             <!-- AI Suggestion Chips -->
             <div v-if="shouldShowSuggestions && aiSuggestions.length > 0" class="ai-suggestions-container" role="group" aria-label="AI suggestions">
-              <div class="suggestions-header text-gray-600 dark:text-gray-400">
-                <AppIcon name="mdi-lightbulb-outline" />
+              <div class="suggestions-header text-glass-secondary">
+                <AppIcon name="LightBulbIcon-outline" />
                 <span class="suggestions-title">Suggested follow-ups</span>
               </div>
               <div class="suggestions-chips">
@@ -168,14 +168,14 @@
           </div>
 
           <!-- Input -->
-          <div class="chat-input-container enhanced-input-container glass-footer bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700" role="group" aria-label="Chat input controls">
+          <div class="chat-input-container enhanced-input-container glass-footer glass-bg-glass-bg dark:bg-glass-bg-hover/50 border-t border-glass-border dark:border-glass-border dark:border-glass-border" role="group" aria-label="Chat input controls">
             <!-- Floating Multimodal Controls -->
             <div class="multimodal-controls enhanced-controls">
               <div class="control-group voice-controls">
                 <IconButton
                   :variant="ttsEnabled ? 'glass' : 'ghost'"
                   size="sm"
-                  :icon="ttsEnabled ? 'mdi-volume-high' : 'mdi-volume-off'"
+                  :icon="ttsEnabled ? 'SpeakerWaveIcon' : 'SpeakerXMarkIcon'"
                   :aria-pressed="ttsEnabled ? 'true' : 'false'"
                   title="Toggle text-to-speech"
                   class="enhanced-control-btn"
@@ -184,7 +184,7 @@
                 <IconButton
                   :variant="listening ? 'gaming' : 'ghost'"
                   size="sm"
-                  :icon="listening ? 'mdi-microphone' : 'mdi-microphone-outline'"
+                  :icon="listening ? 'MicrophoneIcon' : 'MicrophoneIcon-outline'"
                   :aria-pressed="listening ? 'true' : 'false'"
                   title="Voice input"
                   class="enhanced-control-btn pulse-on-active"
@@ -196,7 +196,7 @@
                 <IconButton
                   :variant="video ? 'primary' : 'ghost'"
                   size="sm"
-                  :icon="video ? 'mdi-video' : 'mdi-video-outline'"
+                  :icon="video ? 'VideoCameraIcon' : 'VideoCameraIcon-outline'"
                   :aria-pressed="video ? 'true' : 'false'"
                   title="Video streaming"
                   class="enhanced-control-btn"
@@ -205,7 +205,7 @@
                 <IconButton
                   variant="ghost"
                   size="sm"
-                  icon="mdi-camera"
+                  icon="CameraIcon"
                   title="Capture screenshot"
                   class="enhanced-control-btn"
                   @click="captureScreenshot"
@@ -213,7 +213,7 @@
                 <IconButton
                   variant="ghost"
                   size="sm"
-                  icon="mdi-attachment"
+                  icon="PaperClipIcon"
                   title="Upload file"
                   class="enhanced-control-btn"
                   @click="uploadFile"
@@ -224,7 +224,7 @@
                 <IconButton
                   variant="outline"
                   size="sm"
-                  icon="mdi-robot"
+                  icon="CpuChipIcon"
                   title="AI quick actions"
                   class="enhanced-control-btn ai-glow"
                   @click="showQuickActions"
@@ -257,7 +257,7 @@
               <UnifiedButton
                 variant="gaming"
                 icon-only
-                icon="mdi-send"
+                icon="PaperAirplaneIcon"
                 :disabled="!draft"
                 aria-label="Send message"
                 title="Send message (Enter)"
@@ -296,7 +296,7 @@
       <div class="fairy-bubble enhanced-gaming-card" role="dialog" aria-modal="true" aria-label="Voice & TTS Settings">
         <div class="chat-header" role="heading" aria-level="2">
           <div class="chat-title">
-            <AppIcon name="mdi-cog" />
+            <AppIcon name="CogIcon" />
             <span class="title-text">Voice & TTS Settings</span>
           </div>
           <div class="chat-actions">
@@ -304,7 +304,7 @@
               <IconButton
                 variant="ghost"
                 size="sm"
-                icon="mdi-close"
+                icon="XMarkIcon"
                 aria-label="Close settings"
                 title="Close Settings"
                 @click="showTTSModal = false"
@@ -313,7 +313,7 @@
           </div>
         </div>
         <div class="tts-settings-content" style="padding: 16px">
-          <div class="settings-row">
+          <div class="settings-flex flex-wrap">
             <label for="tts-provider-select-modal">TTS Provider</label>
             <select id="tts-provider-select-modal" v-model="ttsProvider" class="tts-provider-select">
               <option value="system">System TTS</option>
@@ -321,17 +321,17 @@
               <option value="kokoro">Kokoro TTS</option>
             </select>
           </div>
-          <div class="settings-row">
+          <div class="settings-flex flex-wrap">
             <label>Speech Rate</label>
             <input v-model.number="ttsRate" type="range" min="0.5" max="2" step="0.1" class="tts-slider" aria-label="Speech rate" />
             <span class="setting-value">{{ ttsRate }}x</span>
           </div>
-          <div class="settings-row">
+          <div class="settings-flex flex-wrap">
             <label>Voice Volume</label>
             <input v-model.number="ttsVolume" type="range" min="0" max="1" step="0.1" class="tts-slider" aria-label="Voice volume" />
             <span class="setting-value">{{ Math.round(ttsVolume * 100) }}%</span>
           </div>
-          <div class="settings-row" style="justify-content: flex-end">
+          <div class="settings-flex flex-wrap" style="justify-content: flex-end">
             <UnifiedButton
               variant="primary"
               @click="showTTSModal = false"
@@ -346,12 +346,15 @@
 </template>
 
 <script setup>
+import { CameraIcon, CogIcon, CpuChipIcon, DocumentDuplicateIcon, PaperAirplaneIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { Teleport, computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import IconButton from '@/components/ui/IconButton.vue'
 import { useUnifiedUI } from '@/composables/useUnifiedUI'
 import { useToast } from '@/composables/useToast'
+import { logger } from '@/shared/utils/logger'
 
 const props = defineProps({
   open: { type: Boolean, default: false },
@@ -383,9 +386,9 @@ const showWelcome = ref(false)
 // Quick replies data
 const quickReplies = ref([
   { id: 1, emoji: '📝', text: 'Build Resume' },
-  { id: 2, emoji: '🔍', text: 'Find Jobs' },
+  { id: 2, emoji: 'MagnifyingGlassIcon', text: 'Find Jobs' },
   { id: 3, emoji: '💼', text: 'Interview Tips' },
-  { id: 4, emoji: '🎮', text: 'Gaming Skills' }
+  { id: 4, emoji: 'DevicePhoneMobileIcon', text: 'Gaming Skills' }
 ])
 
 const open = computed(() => props.open)
@@ -487,7 +490,7 @@ onMounted(() => {
     }
     
     recognition.value.onerror = (event) => {
-      console.error('Speech recognition error:', event.error)
+      logger.error('Speech recognition error:', event.error)
       listening.value = false
       if (event.error === 'no-speech') {
         toastError('No speech detected. Please try again.')
@@ -517,7 +520,7 @@ function toggleListening() {
       recognition.value.start()
       toastInfo('Voice input activated - speak now')
     } catch (error) {
-      console.error('Failed to start speech recognition:', error)
+      logger.error('Failed to start speech recognition:', error)
       listening.value = false
       toastError('Failed to start voice input')
     }
@@ -526,7 +529,7 @@ function toggleListening() {
       recognition.value.stop()
       toastInfo('Voice input deactivated')
     } catch (error) {
-      console.error('Failed to stop speech recognition:', error)
+      logger.error('Failed to stop speech recognition:', error)
     }
   }
 }
@@ -563,7 +566,7 @@ async function startVideoStream() {
     // For now, we just capture the stream for potential screenshot functionality
     
   } catch (error) {
-    console.error('Failed to start video stream:', error)
+    logger.error('Failed to start video stream:', error)
     video.value = false
     
     if (error.name === 'NotAllowedError') {
@@ -626,7 +629,7 @@ async function captureScreenshot() {
       }, 'image/png')
       
     } catch (error) {
-      console.error('Screenshot capture failed:', error)
+      logger.error('Screenshot capture failed:', error)
       toastError('Failed to capture screenshot')
     }
   } else {
@@ -662,7 +665,7 @@ async function captureScreenshot() {
       stream.getTracks().forEach(track => track.stop())
       
     } catch (error) {
-      console.error('Screen capture failed:', error)
+      logger.error('Screen capture failed:', error)
       toastError('Screen capture not available or denied')
     }
   }
@@ -720,7 +723,7 @@ function uploadFile() {
       }
       
     } catch (error) {
-      console.error('File upload failed:', error)
+      logger.error('File upload failed:', error)
       toastError(`Failed to upload ${file.name}`)
     }
   }
@@ -733,11 +736,11 @@ const showQuickActionsMenu = ref(false)
 
 const quickActions = [
   { icon: 'mdi-briefcase-search', label: 'Find Jobs', action: () => emit('send', 'Help me find gaming jobs that match my profile') },
-  { icon: 'mdi-file-document-edit', label: 'Review Resume', action: () => emit('send', 'Please review my resume and suggest improvements') },
+  { icon: 'DocumentIcon-document-edit', label: 'Review Resume', action: () => emit('send', 'Please review my resume and suggest improvements') },
   { icon: 'mdi-school', label: 'Skill Analysis', action: () => emit('send', 'Analyze my skills and suggest areas for growth in game development') },
-  { icon: 'mdi-lightbulb', label: 'Career Advice', action: () => emit('send', 'Give me career advice for advancing in the gaming industry') },
+  { icon: 'LightBulbIcon', label: 'Career Advice', action: () => emit('send', 'Give me career advice for advancing in the gaming industry') },
   { icon: 'mdi-chat-question', label: 'Interview Prep', action: () => emit('send', 'Help me prepare for a game developer interview') },
-  { icon: 'mdi-rocket', label: 'Project Ideas', action: () => emit('send', 'Suggest some game development project ideas to build my portfolio') }
+  { icon: 'RocketLaunchIcon', label: 'Project Ideas', action: () => emit('send', 'Suggest some game development project ideas to build my portfolio') }
 ]
 
 function showQuickActions() {
@@ -761,9 +764,9 @@ function generateContextualSuggestions(lastMessage) {
   // Context-based suggestions based on AI response content
   if (content.includes('resume') || content.includes('cv')) {
     suggestions.push(
-      { id: 'resume-review', text: 'Review my resume', icon: 'mdi-file-document-edit' },
-      { id: 'resume-tailor', text: 'Tailor for specific job', icon: 'mdi-target' },
-      { id: 'resume-skills', text: 'Improve skills section', icon: 'mdi-star-plus' }
+      { id: 'resume-review', text: 'Review my resume', icon: 'DocumentIcon-document-edit' },
+      { id: 'resume-tailor', text: 'Tailor for specific job', icon: 'CursorArrowRaysIcon' },
+      { id: 'resume-skills', text: 'Improve skills section', icon: 'StarIcon-plus' }
     )
   }
   
@@ -777,24 +780,24 @@ function generateContextualSuggestions(lastMessage) {
   
   if (content.includes('skill') || content.includes('learn') || content.includes('improve')) {
     suggestions.push(
-      { id: 'skill-gap', text: 'Analyze skill gaps', icon: 'mdi-chart-line' },
+      { id: 'skill-gap', text: 'Analyze skill gaps', icon: 'ChartBarIcon-line' },
       { id: 'learning-path', text: 'Create learning path', icon: 'mdi-school' },
-      { id: 'project-ideas', text: 'Suggest projects', icon: 'mdi-lightbulb' }
+      { id: 'project-ideas', text: 'Suggest projects', icon: 'LightBulbIcon' }
     )
   }
   
   if (content.includes('interview') || content.includes('preparation')) {
     suggestions.push(
-      { id: 'practice-questions', text: 'Practice questions', icon: 'mdi-help-circle' },
-      { id: 'mock-interview', text: 'Start mock interview', icon: 'mdi-account-voice' },
+      { id: 'practice-questions', text: 'Practice questions', icon: 'QuestionMarkCircleIcon-circle' },
+      { id: 'mock-interview', text: 'Start mock interview', icon: 'UserIcon-voice' },
       { id: 'company-research', text: 'Research company', icon: 'mdi-magnify' }
     )
   }
   
   if (content.includes('portfolio') || content.includes('project')) {
     suggestions.push(
-      { id: 'portfolio-review', text: 'Review portfolio', icon: 'mdi-folder-open' },
-      { id: 'showcase-tips', text: 'Showcase tips', icon: 'mdi-star' },
+      { id: 'portfolio-review', text: 'Review portfolio', icon: 'FolderIcon-open' },
+      { id: 'showcase-tips', text: 'Showcase tips', icon: 'StarIcon' },
       { id: 'github-optimize', text: 'Optimize GitHub', icon: 'mdi-github' }
     )
   }
@@ -802,8 +805,8 @@ function generateContextualSuggestions(lastMessage) {
   // Default suggestions if no specific context
   if (suggestions.length === 0) {
     suggestions.push(
-      { id: 'explore-more', text: 'Tell me more', icon: 'mdi-information' },
-      { id: 'ask-different', text: 'Ask differently', icon: 'mdi-refresh' },
+      { id: 'explore-more', text: 'Tell me more', icon: 'InformationCircleIconrmation' },
+      { id: 'ask-different', text: 'Ask differently', icon: 'ArrowPathIcon' },
       { id: 'get-examples', text: 'Show examples', icon: 'mdi-format-list-bulleted' }
     )
   }
@@ -963,7 +966,7 @@ watch(open, (newVal) => {
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-xl);
-  color: white;
+  color: var(--text-inverse);
   position: relative;
   animation: headerPulse 3s ease-in-out infinite;
 }
@@ -990,7 +993,7 @@ watch(open, (newVal) => {
 .header-details h3 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: white;
+  color: var(--text-inverse);
   margin: 0 0 var(--spacing-1) 0;
 }
 
@@ -1024,7 +1027,7 @@ watch(open, (newVal) => {
 .modern-header-btn {
   background: rgba(255, 255, 255, 0.1) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  color: white !important;
+  color: var(--text-inverse) !important;
   transition: all var(--duration-fast);
 }
 
@@ -1075,7 +1078,7 @@ watch(open, (newVal) => {
 
 .modern-chip:hover {
   background: var(--color-primary-500);
-  color: white;
+  color: var(--text-inverse);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px color-mix(in srgb, var(--color-primary-500) 40%, transparent);
 }
@@ -1094,7 +1097,7 @@ watch(open, (newVal) => {
 .bubble-ai {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
   border-radius: var(--radius-xl);
 }
@@ -1102,7 +1105,7 @@ watch(open, (newVal) => {
 .bubble-user {
   background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
   border: none;
-  color: white;
+  color: var(--text-inverse);
   box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
   border-radius: var(--radius-xl);
 }
@@ -1134,14 +1137,14 @@ watch(open, (newVal) => {
 
 .enhanced-control-btn:hover {
   background: var(--color-primary-500) !important;
-  color: white !important;
+  color: var(--text-inverse) !important;
   border-color: var(--color-primary-500) !important;
   transform: scale(1.1);
 }
 
 .enhanced-control-btn.pulse-on-active {
   background: var(--color-primary-500) !important;
-  color: white !important;
+  color: var(--text-inverse) !important;
   border-color: var(--color-primary-500) !important;
 }
 
@@ -1167,7 +1170,7 @@ watch(open, (newVal) => {
   background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700)) !important;
   border: none !important;
   border-radius: var(--radius-full) !important;
-  color: white !important;
+  color: var(--text-inverse) !important;
   transition: all var(--duration-fast);
   position: relative;
 }
@@ -1236,7 +1239,7 @@ watch(open, (newVal) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   z-index: 1000;
   border-radius: var(--radius-2xl);
 }
@@ -1338,7 +1341,7 @@ watch(open, (newVal) => {
 }
 
 .message-user .message-container {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 /* Enhanced Avatars */
@@ -1368,7 +1371,7 @@ watch(open, (newVal) => {
 
 .avatar-ai {
   background: linear-gradient(135deg, var(--color-primary-500), var(--color-gaming-500));
-  color: white;
+  color: var(--text-inverse);
   box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
@@ -1378,7 +1381,7 @@ watch(open, (newVal) => {
 
 .avatar-user {
   background: linear-gradient(135deg, var(--color-secondary-500), var(--color-accent-500));
-  color: white;
+  color: var(--text-inverse);
   box-shadow: 0 4px 16px color-mix(in srgb, var(--color-secondary-500) 30%, transparent);
 }
 
@@ -1424,14 +1427,14 @@ watch(open, (newVal) => {
 .bubble-ai {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
 }
 
 .bubble-user {
   background: linear-gradient(135deg, var(--color-primary-500), var(--color-gaming-500));
   border: 1px solid var(--color-primary-400);
-  color: white;
+  color: var(--text-inverse);
   box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
 }
 
@@ -1480,16 +1483,16 @@ watch(open, (newVal) => {
 
 .tail-ai {
   left: -8px;
-  border-right: 8px solid var(--glass-bg);
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
+  border-r: 8px solid var(--glass-bg);
+  border-t: 4px solid transparent;
+  border-b: 4px solid transparent;
 }
 
 .tail-user {
   right: -8px;
-  border-left: 8px solid var(--color-primary-500);
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
+  border-l: 8px solid var(--color-primary-500);
+  border-t: 4px solid transparent;
+  border-b: 4px solid transparent;
 }
 
 /* Typing Indicator */
@@ -1564,7 +1567,7 @@ watch(open, (newVal) => {
 /* Enhanced Input Container */
 .enhanced-input-container {
   background: var(--glass-bg);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: var(--spacing-4);
@@ -1769,8 +1772,8 @@ watch(open, (newVal) => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-4);
-  background: var(--glass-bg-light);
-  border-bottom: 1px solid var(--glass-border);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  border-b: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   position: sticky;
@@ -1798,7 +1801,7 @@ watch(open, (newVal) => {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-lg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .chat-actions {
@@ -1874,7 +1877,7 @@ watch(open, (newVal) => {
 }
 
 .message-user {
-  flex-direction: row-reverse;
+  flex-direction: flex flex-wrap-reverse;
 }
 
 .message-avatar {
@@ -1920,7 +1923,7 @@ watch(open, (newVal) => {
 }
 
 .message-ai .message-content {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   margin-right: var(--spacing-8);
 }
 
@@ -1935,7 +1938,7 @@ watch(open, (newVal) => {
 .message-text {
   font-family: var(--font-primary);
   line-height: var(--line-height-relaxed);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   word-wrap: break-word;
   white-space: pre-wrap;
 }
@@ -1946,12 +1949,12 @@ watch(open, (newVal) => {
   justify-content: space-between;
   margin-top: var(--spacing-2);
   padding-top: var(--spacing-2);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .message-timestamp {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-mono);
 }
 
@@ -1960,7 +1963,7 @@ watch(open, (newVal) => {
   /* expose input offset for message list */
   --chat-input-offset: calc(var(--spacing-4) * 2 + 56px + env(safe-area-inset-bottom, 0px));
   background: var(--glass-surface);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
@@ -1971,7 +1974,7 @@ watch(open, (newVal) => {
   position: relative;
 }
 .chat-input-container:focus-within {
-  border-top-color: color-mix(in srgb, var(--color-primary-500) 35%, var(--glass-border));
+  border-t-color: color-mix(in srgb, var(--color-primary-500) 35%, var(--glass-border));
   box-shadow: 0 -6px 20px color-mix(in srgb, var(--color-primary-500) 10%, transparent) inset;
 }
 .chat-input-container::before {
@@ -2010,7 +2013,7 @@ watch(open, (newVal) => {
   font-family: var(--font-primary);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   resize: none;
   min-height: 44px;
   max-height: 120px;
@@ -2023,7 +2026,7 @@ watch(open, (newVal) => {
   outline: none;
   border-color: var(--color-primary-border);
   box-shadow: var(--shadow-focus);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 .fairy-textarea::placeholder {
@@ -2050,17 +2053,17 @@ watch(open, (newVal) => {
   gap: var(--spacing-4);
 }
 
-.settings-row {
+.settings-flex flex-wrap {
   display: flex;
   align-items: center;
   gap: var(--spacing-3);
   font-family: var(--font-primary);
 }
 
-.settings-row label {
+.settings-flex flex-wrap label {
   flex: 0 0 120px;
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .tts-provider-select,
@@ -2070,7 +2073,7 @@ watch(open, (newVal) => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-bg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-family: var(--font-primary);
 }
 
@@ -2154,13 +2157,13 @@ watch(open, (newVal) => {
     justify-content: center;
   }
   
-  .settings-row {
+  .settings-flex flex-wrap {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-2);
   }
   
-  .settings-row label {
+  .settings-flex flex-wrap label {
     flex: none;
   }
 }
@@ -2270,7 +2273,7 @@ watch(open, (newVal) => {
 .ai-suggestions-container {
   margin-top: var(--spacing-4);
   padding: var(--spacing-3);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   backdrop-filter: var(--glass-backdrop-blur);
@@ -2318,7 +2321,7 @@ watch(open, (newVal) => {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-family: var(--font-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
@@ -2334,7 +2337,7 @@ watch(open, (newVal) => {
   border-color: var(--color-primary-border);
   color: var(--color-primary-text);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .suggestion-chip:active {

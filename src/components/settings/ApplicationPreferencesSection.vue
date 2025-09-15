@@ -1,17 +1,17 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card glass-card section-card mb-4" role="region" aria-labelledby="app-prefs-title">
+  <div class="settings-card glass-card section-card mb-4" role="region" aria-labelledby="app-prefs-title" class="font-sans">
     <div class="card-header section-header card-header--dense">
       <h5 id="app-prefs-title" class="mb-0">
-        <SettingsIconComponent class="me-2 icon-sm" />Application Preferences
+        <SettingsIconComponent class="mr-2 icon-sm" />Application Preferences
       </h5>
     </div>
     <div class="card-body section-body card-body--dense">
       <!-- Theme Selection -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <div class="d-flex justify-content-between align-items-center">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <div class="flex justify-between items-center">
           <div>
-            <label class="form-label fw-medium mb-1">Theme</label>
+            <label class="form-label font-medium mb-1">Theme</label>
             <div class="form-text">Switch between light, dark, and system theme preferences</div>
           </div>
           <ThemeToggle :compact="false" />
@@ -19,7 +19,7 @@
       </div>
 
       <!-- Auto-save Settings -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
         <div class="form-check form-switch mb-2">
           <input
             id="auto-save"
@@ -27,7 +27,7 @@
             class="form-check-input"
             type="checkbox"
           />
-          <label class="form-check-label fw-medium" for="auto-save">
+          <label class="form-check-label font-medium" for="auto-save">
             Auto-save changes
           </label>
         </div>
@@ -38,7 +38,7 @@
       </div>
 
       <!-- Cover Letter Auto-Advance -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
         <div class="form-check form-switch mb-2">
           <input
             id="cl-auto-advance"
@@ -46,7 +46,7 @@
             class="form-check-input"
             type="checkbox"
           />
-          <label class="form-check-label fw-medium" for="cl-auto-advance">
+          <label class="form-check-label font-medium" for="cl-auto-advance">
             Auto-advance Cover Letter steps
           </label>
         </div>
@@ -57,10 +57,10 @@
       </div>
 
       <!-- Notification Preferences -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label class="form-label fw-medium mb-3">Notifications</label>
-        <div class="row g-3">
-          <div class="col-sm-6">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label class="form-label font-medium mb-3">Notifications</label>
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="notify-updates"
@@ -73,7 +73,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="notify-errors"
@@ -86,7 +86,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="notify-success"
@@ -99,7 +99,7 @@
               </label>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="notify-chat"
@@ -116,10 +116,10 @@
       </div>
 
       <!-- Performance Settings -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label class="form-label fw-medium mb-3">Performance</label>
-        <div class="row g-3">
-          <div class="col-sm-6">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label class="form-label font-medium mb-3">Performance</label>
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="reduced-motion"
@@ -136,7 +136,7 @@
               performance.
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="high-contrast"
@@ -156,8 +156,8 @@
       </div>
 
       <!-- Language & Localization -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="app-language" class="form-label fw-medium">Application Language</label>
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label for="app-language" class="form-label font-medium">Application Language</label>
         <select
           id="app-language"
           v-model="settings.language"
@@ -180,10 +180,10 @@
       </div>
 
       <!-- Data & Privacy -->
-      <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label class="form-label fw-medium mb-3">Data & Privacy</label>
-        <div class="row g-3">
-          <div class="col-sm-6">
+      <div class="mb-3 p-glass-md border rounded-3 glass-input">
+        <label class="form-label font-medium mb-3">Data & Privacy</label>
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="analytics"
@@ -199,7 +199,7 @@
               Help improve NAVI by sharing anonymous usage data.
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="flex-1-sm-6">
             <div class="form-check form-switch">
               <input
                 id="crash-reports"
@@ -216,7 +216,7 @@
             </div>
           </div>
 
-          <div class="col-12">
+          <div class="flex-1-12">
             <div class="form-check form-switch">
               <input
                 id="data-encryption"
@@ -233,7 +233,7 @@
             </div>
           </div>
 
-          <div class="col-12">
+          <div class="flex-1-12">
             <div class="form-check form-switch">
               <input
                 id="sync-disabled"
@@ -250,7 +250,7 @@
             </div>
           </div>
 
-          <div class="col-12">
+          <div class="flex-1-12">
             <div class="form-check form-switch">
               <input
                 id="anonymize-data"

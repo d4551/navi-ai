@@ -1,5 +1,5 @@
 <template>
-  <div :class="stackClasses" :data-layout="variant">
+  <div :class="stackClasses" :data-layout="variant" class="font-sans">
     <slot />
   </div>
 </template>
@@ -79,17 +79,17 @@ const stackClasses = computed(() => {
 }
 
 .layout-stack--card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   transform: translateY(-1px);
 }
 
 .layout-stack--section {
   padding: var(--spacing-xl) 0;
-  border-bottom: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
 }
 
 .layout-stack--section:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 /* Reverse order */

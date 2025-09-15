@@ -1,57 +1,57 @@
 import { defineEmits, defineProps } from 'vue'
 <template>
-  <div v-if="show" class="modal show d-block" style="background-color: rgba(0,0,0,0.5);">
+  <div v-if="show" class="modal show block" style="background-color: rgba(0,0,0,0.5);" class="font-sans">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title"><AppIcon name="mdi-download-outline" class="me-2" />Export Portfolio</h5>
-          <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" aria-label="Close" @click="$emit('close')" />
+          <h5 class="modal-title"><AppIcon name="ArrowDownTrayIcon-outline" class="mr-2" />Export Portfolio</h5>
+          <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="$emit('close')" />
         </div>
         <div class="modal-body">
-          <p class="text-muted mb-4">Choose an export format for {{ (portfolio && portfolio.length) || 0 }} portfolio items.</p>
+          <p class="text-secondary mb-4">Choose an export format for {{ (portfolio && portfolio.length) || 0 }} portfolio items.</p>
           
           <div class="export-options">
             <!-- HTML Standalone -->
             <div class="export-option" @click="emitExport('html')">
               <div class="export-icon">
-                <AppIcon name="mdi-web" />
+                <AppIcon name="GlobeAltIcon" />
               </div>
               <div class="export-content">
                 <h6 class="export-title">Standalone HTML Site</h6>
                 <p class="export-description">Complete portfolio as a single HTML file with embedded CSS and JavaScript. Perfect for sharing or hosting.</p>
                 <div class="export-badges">
-                  <span class="badge bg-primary">Recommended</span>
-                  <span class="badge bg-success">Self-contained</span>
+                  <span class="badge bg-primary-500">Recommended</span>
+                  <span class="badge bg-success-500">Self-contained</span>
                 </div>
               </div>
-              <AppIcon name="mdi-chevron-right" class="export-arrow" />
+              <AppIcon name="ChevronRightIcon" class="export-arrow" />
             </div>
 
             <!-- Website ZIP -->
             <div class="export-option" @click="emitExport('website')">
               <div class="export-icon">
-                <AppIcon name="mdi-folder-zip" />
+                <AppIcon name="FolderIcon-zip" />
               </div>
               <div class="export-content">
                 <h6 class="export-title">Complete Website (ZIP)</h6>
                 <p class="export-description">Full website structure with separate CSS, JS, and image files. Ideal for hosting on web servers.</p>
                 <div class="export-badges">
-                  <span class="badge bg-info">Pro</span>
+                  <span class="badge bg-blue-500">Pro</span>
                 </div>
               </div>
-              <AppIcon name="mdi-chevron-right" class="export-arrow" />
+              <AppIcon name="ChevronRightIcon" class="export-arrow" />
             </div>
 
             <!-- PDF -->
             <div class="export-option" @click="emitExport('pdf')">
               <div class="export-icon">
-                <AppIcon name="mdi-file-pdf" />
+                <AppIcon name="DocumentIcon-pdf" />
               </div>
               <div class="export-content">
                 <h6 class="export-title">PDF Document</h6>
                 <p class="export-description">Professional PDF portfolio document for printing or email attachments.</p>
               </div>
-              <AppIcon name="mdi-chevron-right" class="export-arrow" />
+              <AppIcon name="ChevronRightIcon" class="export-arrow" />
             </div>
 
             <!-- JSON Data -->
@@ -63,10 +63,10 @@ import { defineEmits, defineProps } from 'vue'
                 <h6 class="export-title">JSON Data</h6>
                 <p class="export-description">Raw portfolio data for importing into other applications or custom processing.</p>
                 <div class="export-badges">
-                  <span class="badge bg-secondary">Developer</span>
+                  <span class="badge bg-secondary-500">Developer</span>
                 </div>
               </div>
-              <AppIcon name="mdi-chevron-right" class="export-arrow" />
+              <AppIcon name="ChevronRightIcon" class="export-arrow" />
             </div>
           </div>
         </div>
@@ -79,6 +79,8 @@ import { defineEmits, defineProps } from 'vue'
 </template>
 
 <script setup>
+import { ChevronRightIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 const props = defineProps({
@@ -101,7 +103,7 @@ function emitExport(fmt) {
 }
 
 .modal-header {
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: var(--surface-elevated);
 }
 
@@ -131,7 +133,7 @@ function emitExport(fmt) {
 
 .export-option:hover {
   border-color: var(--color-primary-500);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   transform: translateY(-1px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
@@ -158,7 +160,7 @@ function emitExport(fmt) {
 .export-title {
   margin: 0;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .export-description {
@@ -181,10 +183,10 @@ function emitExport(fmt) {
   font-weight: 500;
 }
 
-.bg-primary { background: var(--color-primary-500); color: var(--text-primary); }
-.bg-success { background: var(--color-success-500); color: var(--text-primary); }
-.bg-info { background: var(--color-info-500); color: var(--text-primary); }
-.bg-secondary { background: var(--color-secondary-500); color: var(--text-primary); }
+.bg-primary-500 { background: var(--color-primary-500); color: var(--text-primary-600); }
+.bg-success-500 { background: var(--color-success-500); color: var(--text-primary-600); }
+.bg-blue-500 { background: var(--color-info-500); color: var(--text-primary-600); }
+.bg-secondary-500 { background: var(--color-secondary-500); color: var(--text-primary-600); }
 
 .export-arrow {
   color: var(--text-tertiary);
@@ -197,7 +199,7 @@ function emitExport(fmt) {
 }
 
 .modal-footer {
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--surface-elevated);
 }
 </style>

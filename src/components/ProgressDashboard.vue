@@ -1,13 +1,13 @@
 <template>
-  <div class="progress-dashboard">
+  <div class="progress-dashboard" class="font-sans">
     <!-- Compact Progress Grid -->
     <div class="progress-grid">
       <!-- Row 1: Level & XP + Daily Challenges -->
-      <div class="progress-row">
+      <div class="progress-flex flex-wrap">
         <div class="level-card compact-card">
           <div class="card-header section-header">
             <div class="icon-badge level-badge">
-              <AppIcon name="mdi-star" />
+              <AppIcon name="StarIcon" />
             </div>
             <div class="card-info">
               <h6 class="card-title">Level {{ userLevel || 1 }}</h6>
@@ -30,14 +30,14 @@
         <div class="challenges-card compact-card">
           <div class="card-header section-header">
             <div class="icon-badge challenges-badge">
-              <AppIcon name="mdi-flash" />
+              <AppIcon name="BoltIcon" />
             </div>
             <div class="card-info">
               <h6 class="card-title">Daily Challenges</h6>
               <span class="card-subtitle">{{ completedChallenges }}/{{ totalChallenges }} completed</span>
             </div>
             <div class="streak-badge">
-              <AppIcon name="mdi-fire" color="warning" />
+              <AppIcon name="FireIcon" color="warning" />
               <span class="streak-number">{{ dailyStreak || 1 }}</span>
             </div>
           </div>
@@ -47,7 +47,7 @@
                 <span class="challenge-name">{{ challenge.name }}</span>
                 <div class="challenge-reward">
                   <span class="xp-badge">{{ challenge.xp }} XP</span>
-                  <AppIcon name="mdi-check-circle-outline" class="text-success" />
+                  <AppIcon name="CheckCircleIcon" class="text-success-600" />
                 </div>
               </div>
             </div>
@@ -62,11 +62,11 @@
       </div>
 
       <!-- Row 2: Career Readiness + AI Recommendation -->
-      <div class="progress-row">
+      <div class="progress-flex flex-wrap">
         <div class="readiness-card compact-card">
           <div class="card-header section-header">
             <div class="icon-badge readiness-badge">
-              <AppIcon name="mdi-account-check" />
+              <AppIcon name="UserIcon-check" />
             </div>
             <div class="card-info">
               <h6 class="card-title">Career Readiness</h6>
@@ -94,7 +94,7 @@
                   <span class="factor-name">Profile</span>
                   <div class="factor-progress">
                     <div class="progress progress-xs">
-                      <div class="progress-bar bg-primary" style="width: 75%"></div>
+                      <div class="progress-bar bg-primary-500" style="width: 75%"></div>
                     </div>
                   </div>
                 </div>
@@ -102,7 +102,7 @@
                   <span class="factor-name">Skills</span>
                   <div class="factor-progress">
                     <div class="progress progress-xs">
-                      <div class="progress-bar bg-warning" style="width: 60%"></div>
+                      <div class="progress-bar bg-warning-500" style="width: 60%"></div>
                     </div>
                   </div>
                 </div>
@@ -110,7 +110,7 @@
                   <span class="factor-name">Portfolio</span>
                   <div class="factor-progress">
                     <div class="progress progress-xs">
-                      <div class="progress-bar bg-success" style="width: 80%"></div>
+                      <div class="progress-bar bg-success-500" style="width: 80%"></div>
                     </div>
                   </div>
                 </div>
@@ -122,7 +122,7 @@
         <div class="ai-card compact-card">
           <div class="card-header section-header">
             <div class="icon-badge ai-badge">
-              <AppIcon name="mdi-robot" />
+              <AppIcon name="CpuChipIcon" />
             </div>
             <div class="card-info">
               <h6 class="card-title">AI Recommendation</h6>
@@ -135,9 +135,9 @@
           <div class="card-content">
             <p class="ai-recommendation">{{ aiRecommendation }}</p>
             <div class="ai-actions">
-              <UnifiedButton variant="primary" size="sm" leading-icon="mdi-play" @click="$emit('takeAction')">Take Action</UnifiedButton>
+              <UnifiedButton variant="primary" size="sm" leading-icon="PlayIcon" @click="$emit('takeAction')">Take Action</UnifiedButton>
               <span class="ai-powered">
-                <AppIcon name="mdi-sparkles" />
+                <AppIcon name="SparklesIcon" />
                 Powered by AI
               </span>
             </div>
@@ -149,6 +149,9 @@
 </template>
 
 <script>
+import { CheckCircleIcon, CpuChipIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+import { PlayIcon, StarIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 export default {
@@ -191,7 +194,7 @@ export default {
   gap: 1rem;
 }
 
-.progress-row {
+.progress-flex flex-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -453,7 +456,7 @@ export default {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-  .progress-row {
+  .progress-flex flex-wrap {
     grid-template-columns: 1fr;
   }
   

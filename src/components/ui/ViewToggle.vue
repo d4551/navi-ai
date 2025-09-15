@@ -1,5 +1,5 @@
 <template>
-  <div class="view-toggle-group" role="group" :aria-label="ariaLabel">
+  <div class="view-toggle-group" role="group" :aria-label="ariaLabel" class="font-sans">
     <UnifiedButton
       v-for="opt in resolvedOptions"
       :key="opt.value"
@@ -14,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { TableCellsIcon } from '@heroicons/vue/24/outline'
+
 import { computed } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
@@ -32,7 +34,7 @@ const props = withDefaults(defineProps<{
   ariaLabel?: string
 }>(), {
   options: () => ([
-    { value: 'table', icon: 'mdi-table', label: 'Table view' },
+    { value: 'table', icon: 'TableCellsIcon', label: 'Table view' },
     { value: 'cards', icon: 'mdi-view-grid', label: 'Cards view' },
   ]),
   size: 'sm',

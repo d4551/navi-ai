@@ -5,6 +5,7 @@
     scrollable
     persistent
     class="job-details-modal"
+    class="font-sans"
   >
     <v-card v-if="job" class="glass-card">
       <!-- Modal Header -->
@@ -19,20 +20,20 @@
                 class="company-logo-large"
               />
               <div v-else class="company-logo-placeholder">
-                <AppIcon name="mdi-office-building" />
+                <AppIcon name="BuildingOffice2Icon" />
               </div>
             </div>
 
             <div class="job-title-section">
               <h2 class="job-title-large">
                 {{ job.title }}
-                <span v-if="job.featured" class="featured-star">⭐</span>
-                <span v-if="job.isGaming" class="gaming-controller">🎮</span>
+                <span v-if="job.featured" class="featured-star">StarIcon</span>
+                <span v-if="job.isGaming" class="gaming-controller">DevicePhoneMobileIcon</span>
               </h2>
-              <div class="company-location-row">
+              <div class="company-location-flex flex-wrap">
                 <h3 class="company-name-large">{{ job.company?.name || 'Unknown Company' }}</h3>
                 <div class="location-info">
-                  <AppIcon name="mdi-map-marker" />
+                  <AppIcon name="MapPinIcon" />
                   <span>{{ job.location || 'Remote' }}</span>
                 </div>
               </div>
@@ -43,20 +44,20 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              :leading-icon="job.saved ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+              :leading-icon="job.saved ? 'BookmarkIcon' : 'BookmarkIcon-outline'"
               :class="{ 'saved': job.saved }"
               @click="handleSave"
             />
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-share-variant"
+              leading-icon="ShareIcon"
               @click="handleShare"
             />
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-close"
+              leading-icon="XMarkIcon"
               @click="closeModal"
             />
           </div>
@@ -71,26 +72,26 @@
           </div>
           
           <div v-if="job.level" class="stat-item">
-            <AppIcon name="mdi-trending-up" class="stat-icon" />
+            <AppIcon name="ArrowTrendingUpIcon" class="stat-icon" />
             <span class="stat-label">Level:</span>
             <span class="stat-value">{{ job.level }}</span>
           </div>
           
           <div v-if="job.jobType" class="stat-item">
-            <AppIcon name="mdi-briefcase" class="stat-icon" />
+            <AppIcon name="BriefcaseIcon" class="stat-icon" />
             <span class="stat-label">Type:</span>
             <span class="stat-value">{{ job.jobType }}</span>
           </div>
           
           <div class="stat-item">
-            <AppIcon name="mdi-clock-outline" class="stat-icon" />
+            <AppIcon name="ClockIcon" class="stat-icon" />
             <span class="stat-label">Posted:</span>
             <span class="stat-value">{{ formatPostedDate(job.datePosted) }}</span>
           </div>
 
           <!-- AI Match Score for Gaming Jobs -->
           <div v-if="job.isGaming && job.aiScore" class="stat-item ai-score-stat">
-            <AppIcon name="mdi-brain" class="stat-icon ai-icon" />
+            <AppIcon name="CpuChipIcon" class="stat-icon ai-icon" />
             <span class="stat-label">AI Match:</span>
             <span class="stat-value score-value" :class="getScoreClass(job.aiScore)">
               {{ job.aiScore }}%
@@ -116,7 +117,7 @@
             <!-- Requirements -->
             <section v-if="job.requirements?.length" class="content-section">
               <h4 class="section-title">
-                <AppIcon name="mdi-checklist" />
+                <AppIcon name="CheckIconlist" />
                 Requirements
               </h4>
               <ul class="requirements-list">
@@ -127,7 +128,7 @@
             <!-- Responsibilities -->
             <section v-if="job.responsibilities?.length" class="content-section">
               <h4 class="section-title">
-                <AppIcon name="mdi-account-tie" />
+                <AppIcon name="UserIcon-tie" />
                 Responsibilities
               </h4>
               <ul class="responsibilities-list">
@@ -138,7 +139,7 @@
             <!-- Gaming-Specific Info -->
             <section v-if="job.isGaming" class="content-section gaming-section">
               <h4 class="section-title gaming-title">
-                <AppIcon name="mdi-gamepad-variant" />
+                <AppIcon name="PuzzlePieceIcon" />
                 Gaming Industry Details
               </h4>
               
@@ -203,7 +204,7 @@
             <!-- Skills Required -->
             <section class="sidebar-section">
               <h4 class="sidebar-title">
-                <AppIcon name="mdi-star" />
+                <AppIcon name="StarIcon" />
                 Required Skills
               </h4>
               <div class="skills-cloud">
@@ -221,7 +222,7 @@
             <!-- Company Info -->
             <section class="sidebar-section">
               <h4 class="sidebar-title">
-                <AppIcon name="mdi-office-building" />
+                <AppIcon name="BuildingOffice2Icon" />
                 About {{ job.company?.name }}
               </h4>
               
@@ -248,7 +249,7 @@
                 v-if="job.isGaming"
                 variant="gaming"
                 size="sm"
-                leading-icon="mdi-office-building"
+                leading-icon="BuildingOffice2Icon"
                 class="view-studio-btn"
                 @click="viewStudio"
               >
@@ -259,7 +260,7 @@
             <!-- Application Stats -->
             <section class="sidebar-section">
               <h4 class="sidebar-title">
-                <AppIcon name="mdi-chart-line" />
+                <AppIcon name="ChartBarIcon" />
                 Application Stats
               </h4>
               
@@ -275,7 +276,7 @@
               </div>
 
               <div v-if="job.urgent" class="urgency-indicator">
-                <AppIcon name="mdi-fire" class="urgent-icon" />
+                <AppIcon name="FireIcon" class="urgent-icon" />
                 <span>Urgent Hiring</span>
               </div>
             </section>
@@ -296,7 +297,7 @@
                 >
                   <div class="similar-job-title">{{ similarJob.title }}</div>
                   <div class="similar-job-company">{{ similarJob.company?.name }}</div>
-                  <div class="similar-job-location">📍 {{ similarJob.location }}</div>
+                  <div class="similar-job-location">MapPinIcon {{ similarJob.location }}</div>
                 </div>
               </div>
             </section>
@@ -317,7 +318,7 @@
           
           <UnifiedButton
             variant="glass"
-            leading-icon="mdi-bell"
+            leading-icon="BellIcon"
             @click="handleAlert"
           >
             Set Alert
@@ -335,7 +336,7 @@
           <UnifiedButton
             variant="primary"
             size="lg"
-            leading-icon="mdi-send"
+            leading-icon="PaperAirplaneIcon"
             :loading="applying"
             @click="handleApply"
           >
@@ -348,6 +349,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowTrendingUpIcon, BellIcon, BriefcaseIcon, BuildingOffice2Icon, ChartBarIcon, ClockIcon, CpuChipIcon, PaperAirplaneIcon, PuzzlePieceIcon, ShareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon, StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import UiChip from '@/components/ui/UiChip.vue'
@@ -495,15 +499,15 @@ const getScoreClass = (score) => {
 
 const getBenefitIcon = (benefit) => {
   const iconMap = {
-    'Health Insurance': 'mdi-heart',
+    'Health Insurance': 'HeartIcon',
     'Dental': 'mdi-tooth',
-    'Vision': 'mdi-eye',
+    'Vision': 'EyeIcon',
     '401k': 'mdi-bank',
-    'Stock Options': 'mdi-chart-line',
-    'Remote Work': 'mdi-home',
-    'Flexible Hours': 'mdi-clock',
-    'Unlimited PTO': 'mdi-calendar',
-    'Game Library': 'mdi-gamepad-variant',
+    'Stock Options': 'ChartBarIcon-line',
+    'Remote Work': 'HomeIcon',
+    'Flexible Hours': 'ClockIcon',
+    'Unlimited PTO': 'CalendarIcon',
+    'Game Library': 'DevicePhoneMobileIcon-variant',
     'Free Lunch': 'mdi-food',
     'Gym': 'mdi-dumbbell',
     'Conference Budget': 'mdi-school'
@@ -516,7 +520,7 @@ const getBenefitIcon = (benefit) => {
     }
   }
   
-  return 'mdi-check-circle'
+  return 'CheckIcon-circle'
 }
 
 const getSkillVariant = (skill) => {
@@ -540,7 +544,7 @@ const getSkillVariant = (skill) => {
 
 .modal-header {
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--border-light);
+  border-b: 1px solid var(--border-light);
   background: linear-gradient(135deg, 
     rgba(var(--color-gaming-500-rgb), 0.05) 0%,
     transparent 100%);
@@ -579,7 +583,7 @@ const getSkillVariant = (skill) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 1.5rem;
 }
 
@@ -591,7 +595,7 @@ const getSkillVariant = (skill) => {
   margin: 0 0 var(--spacing-2) 0;
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -601,7 +605,7 @@ const getSkillVariant = (skill) => {
   font-size: 1.25rem;
 }
 
-.company-location-row {
+.company-location-flex flex-wrap {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-1);
@@ -649,7 +653,7 @@ const getSkillVariant = (skill) => {
 }
 
 .stat-icon {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .stat-label {
@@ -658,7 +662,7 @@ const getSkillVariant = (skill) => {
 }
 
 .stat-value {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
 }
 
@@ -709,7 +713,7 @@ const getSkillVariant = (skill) => {
   margin: 0 0 var(--spacing-4) 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .gaming-title {
@@ -757,13 +761,13 @@ const getSkillVariant = (skill) => {
 }
 
 .gaming-detail strong {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
 }
 
 .recent-projects h5 {
   margin: 0 0 var(--spacing-2) 0;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .projects-list {
@@ -807,12 +811,12 @@ const getSkillVariant = (skill) => {
   display: flex;
   justify-content: space-between;
   padding: var(--spacing-2) 0;
-  border-bottom: 1px solid var(--border-light);
+  border-b: 1px solid var(--border-light);
   font-size: 0.875rem;
 }
 
 .company-stat:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .company-description {
@@ -850,7 +854,7 @@ const getSkillVariant = (skill) => {
 
 .app-stat .stat-label {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -894,19 +898,19 @@ const getSkillVariant = (skill) => {
 
 .similar-job-title {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   margin-bottom: var(--spacing-1);
 }
 
 .similar-job-company, .similar-job-location {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .modal-actions {
   padding: var(--spacing-6);
-  border-top: 1px solid var(--border-light);
+  border-t: 1px solid var(--border-light);
   display: flex;
   justify-content: space-between;
   align-items: center;

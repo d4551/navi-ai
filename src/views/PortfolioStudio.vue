@@ -2,19 +2,20 @@
   <StandardPageLayout
     title="Portfolio Studio"
     subtitle="Showcase your gaming projects, achievements, and creative works"
-    title-icon="mdi-folder-multiple-image"
+    title-icon="FolderIcon-multiple-image"
     page-type="gaming"
     :hero-stats="headerStats"
     :header-context="{ projects: projectsCount, clips: clipsCount, achievements: achievementsCount }"
     max-width="xl"
     :data-theme="themeName"
+    class="font-sans "
   >
     <template #header-actions>
       <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
         <UnifiedButton 
           variant="gaming" 
           size="md" 
-          leading-icon="mdi-plus" 
+          leading-icon="PlusIcon" 
           @click="addProject"
         >
           Add Project
@@ -30,7 +31,7 @@
         <UnifiedButton 
           variant="outline" 
           size="md" 
-          leading-icon="mdi-robot" 
+          leading-icon="CpuChipIcon" 
           @click="generateShowcase"
         >
           AI Showcase
@@ -39,7 +40,7 @@
           variant="ghost" 
           size="md" 
           icon-only 
-          icon="mdi-share-variant" 
+          leading-icon="ShareIcon" 
           aria-label="Share portfolio"
           @click="sharePortfolio"
         />
@@ -47,7 +48,7 @@
           variant="ghost" 
           size="md" 
           icon-only 
-          icon="mdi-cog" 
+          leading-icon="CogIcon" 
           aria-label="Portfolio settings"
           @click="openSettings"
         />
@@ -62,18 +63,18 @@
           <NavigationBreadcrumbs 
             :compact="false"
             :show-actions="true"
-            home-icon="mdi-gamepad-variant"
+            home-icon="PuzzlePieceIcon"
             home-text="Gaming Hub"
             :show-share="true"
             :show-copy-url="true"
           />
           <div class="page-meta">
             <div class="page-status">
-              <AppIcon name="mdi-check-circle" class="status-icon success" />
+              <AppIcon name="CheckCircleIcon" class="status-icon success" />
               <span class="status-text">Portfolio Active</span>
             </div>
             <div class="last-updated">
-              <AppIcon name="mdi-clock-outline" />
+              <AppIcon name="ClockIcon" />
               <span>Last updated {{ lastUpdated }}</span>
             </div>
           </div>
@@ -84,7 +85,7 @@
           <UnifiedButton
             variant="glass"
             size="sm"
-            leading-icon="mdi-refresh"
+            leading-icon="ArrowPathIcon"
             @click="refreshPortfolio"
           >
             Refresh
@@ -95,7 +96,7 @@
             variant="glass"
             size="sm"
             icon-only
-            icon="mdi-filter-variant"
+            leading-icon="AdjustmentsHorizontalIcon"
             aria-label="Open filters"
             @click="toggleMobileFilters"
           />
@@ -114,7 +115,7 @@
         <!-- Tab Content Summary -->
         <div class="tab-summary">
           <div class="summary-item">
-            <AppIcon name="mdi-view-grid" />
+            <AppIcon name="Squares2X2Icon" />
             <span>{{ getTabSummary() }}</span>
           </div>
         </div>
@@ -140,7 +141,7 @@
     <!-- Improved Layout Structure -->
     <section class="portfolio-layout unified-container" :class="{ 'filters-open': filtersOpen }">
       <!-- Enhanced Filter Sidebar -->
-      <aside id="portfolio-filters" class="enhanced-filter-sidebar glass p-4 gap-4 rounded-lg" role="region" aria-label="Portfolio Filters">
+      <aside id="portfolio-filters" class="enhanced-filter-sidebar glass p-glass-md gap-glass-md rounded-lg" role="region" aria-label="Portfolio Filters">
         <div class="sidebar-header">
           <h3 class="sidebar-main-title">
             <AppIcon name="mdi-tune" />
@@ -153,7 +154,7 @@
               variant="ghost"
               size="xs"
               icon-only
-              icon="mdi-close"
+              leading-icon="XMarkIcon"
               aria-label="Clear all filters"
               @click="clearAllFilters"
             />
@@ -163,14 +164,14 @@
         <!-- Enhanced Search Section -->
         <div class="sidebar-section search-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-magnify" />
+            <AppIcon name="MagnifyingGlassIcon" />
             <span>Search Projects</span>
             <span v-if="query" class="search-count">({{ searchResultsCount }})</span>
           </div>
           <div class="enhanced-search-wrapper">
             <div class="search-section">
               <div class="search-input-container">
-                <AppIcon name="mdi-magnify" class="search-icon" />
+                <AppIcon name="MagnifyingGlassIcon" class="search-icon" />
                 <input 
                   v-model="query" 
                   type="search"
@@ -186,7 +187,7 @@
                   class="search-clear-btn"
                   variant="ghost"
                   icon-only
-                  icon="mdi-close"
+                  leading-icon="XMarkIcon"
                   size="xs"
                   aria-label="Clear search"
                   @click="clearSearch"
@@ -200,7 +201,7 @@
                   :class="{ active: !activeQuickFilter }"
                   @click="activeQuickFilter = null"
                 >
-                  <AppIcon name="mdi-view-grid" />
+                  <AppIcon name="Squares2X2Icon" />
                   <span>All</span>
                   <span class="tab-count">{{ projects.length }}</span>
                 </button>
@@ -209,7 +210,7 @@
                   :class="{ active: activeQuickFilter === 'recent' }"
                   @click="activeQuickFilter = 'recent'"
                 >
-                  <AppIcon name="mdi-clock-outline" />
+                  <AppIcon name="ClockIcon" />
                   <span>Recent</span>
                   <span class="tab-count">{{ recentProjects.length }}</span>
                 </button>
@@ -218,7 +219,7 @@
                   :class="{ active: activeQuickFilter === 'featured' }"
                   @click="activeQuickFilter = 'featured'"
                 >
-                  <AppIcon name="mdi-star" />
+                  <AppIcon name="StarIcon" />
                   <span>Featured</span>
                   <span class="tab-count">{{ featuredProjects.length }}</span>
                 </button>
@@ -256,7 +257,7 @@
               </UnifiedButton>
             </div>
             <div v-else class="search-success">
-              <AppIcon name="mdi-check-circle" />
+              <AppIcon name="CheckCircleIcon" />
               <span>Found {{ filteredProjects.length }} {{ filteredProjects.length === 1 ? 'project' : 'projects' }}</span>
             </div>
           </div>
@@ -264,7 +265,7 @@
 
         <div class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-engine" /> 
+            <AppIcon name="CogIcon" /> 
             <span>Engine</span>
             <span v-if="engine.values().length" class="filter-count">({{ engine.values().length }})</span>
           </div>
@@ -284,7 +285,7 @@
 
         <div class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-monitor" /> 
+            <AppIcon name="ComputerDesktopIcon" /> 
             <span>Platform</span>
             <span v-if="platform.values().length" class="filter-count">({{ platform.values().length }})</span>
           </div>
@@ -304,7 +305,7 @@
 
         <div class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-account" /> 
+            <AppIcon name="UserIcon" /> 
             <span>Role</span>
             <span v-if="role.values().length" class="filter-count">({{ role.values().length }})</span>
           </div>
@@ -324,7 +325,7 @@
 
         <div class="sidebar-section skills-tags-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-tag-multiple" /> 
+            <AppIcon name="TagIcon-multiple" /> 
             <span>Skills & Tags</span>
             <span v-if="tags.values().length" class="filter-count">({{ tags.values().length }})</span>
           </div>
@@ -342,7 +343,7 @@
           <div class="skill-categories">
             <div class="skill-category">
               <h4 class="category-title">
-                <AppIcon name="mdi-gamepad-variant" />
+                <AppIcon name="PuzzlePieceIcon" />
                 <span>Analytics</span>
                 <span class="category-count">4</span>
               </h4>
@@ -359,7 +360,7 @@
             
             <div class="skill-category">
               <h4 class="category-title">
-                <AppIcon name="mdi-account-group" />
+                <AppIcon name="UsersIcon" />
                 <span>Soft Skills</span>
                 <span class="category-count">5</span>
               </h4>
@@ -376,7 +377,7 @@
             
             <div class="skill-category">
               <h4 class="category-title">
-                <AppIcon name="mdi-camera" />
+                <AppIcon name="CameraIcon" />
                 <span>Content</span>
                 <span class="category-count">4</span>
               </h4>
@@ -395,7 +396,7 @@
           <!-- All Tags Section -->
           <div class="all-tags-section">
             <h4 class="category-title">
-              <AppIcon name="mdi-tag-outline" />
+              <AppIcon name="TagIcon-outline" />
               <span>All Tags</span>
               <span class="category-count">{{ filteredTags.length }}</span>
             </h4>
@@ -418,7 +419,7 @@
         </div>
 
         <div class="sidebar-section">
-          <div class="sidebar-title"><AppIcon name="mdi-calendar-range" /> Year Range</div>
+          <div class="sidebar-title"><AppIcon name="CalendarIcon-range" /> Year Range</div>
           <div class="year-slider">
             <div class="slider-values">
               <span>{{ yearFromRange }}</span>
@@ -435,7 +436,7 @@
         <!-- Smart Filters Section -->
         <div v-if="smartFilters.length > 0" class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-lightbulb-outline" /> 
+            <AppIcon name="LightBulbIcon-outline" /> 
             <span>Smart Filters</span>
           </div>
           <div class="smart-filters">
@@ -456,7 +457,7 @@
         <!-- Saved Presets Section -->
         <div v-if="filterPresets.length > 0" class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-bookmark-multiple" /> 
+            <AppIcon name="BookmarkIcon-multiple" /> 
             <span>Saved Presets</span>
           </div>
           <div class="saved-presets">
@@ -471,14 +472,14 @@
                 class="preset-load-btn"
                 @click="loadFilterPreset(preset)"
               >
-                <AppIcon name="mdi-bookmark" class="me-1" />
+                <AppIcon name="BookmarkIcon" class="mr-1" />
                 {{ preset.name }}
               </UnifiedButton>
               <UnifiedButton
                 size="sm"
                 variant="ghost"
                 icon-only
-                icon="mdi-delete"
+                leading-icon="TrashIcon"
                 class="preset-delete-btn"
                 @click="deleteFilterPreset(preset.id)"
               />
@@ -490,7 +491,7 @@
           <UnifiedButton 
             size="sm" 
             variant="outline" 
-            leading-icon="mdi-filter-remove" 
+            leading-icon="FunnelIcon" 
             :disabled="!hasActiveFilters"
             @click="clearAllFilters"
           >
@@ -500,7 +501,7 @@
             v-if="hasActiveFilters"
             size="sm" 
             variant="ghost" 
-            leading-icon="mdi-bookmark-outline" 
+            leading-icon="BookmarkIcon-outline" 
             @click="saveFilterPreset"
           >
             Save Preset
@@ -525,7 +526,7 @@
         </div>
 
         <!-- Enhanced Content Toolbar -->
-        <div class="enhanced-content-toolbar glass p-4 gap-4 rounded-lg">
+        <div class="enhanced-content-toolbar glass p-glass-md gap-glass-md rounded-lg">
           <div class="toolbar-main">
             <div class="left-section">
               <!-- Mobile Filter Toggle -->
@@ -533,7 +534,7 @@
                 class="d-md-none mobile-filter-btn"
                 size="sm"
                 variant="glass"
-                leading-icon="mdi-filter-variant"
+                leading-icon="AdjustmentsHorizontalIcon"
                 :trailing-icon="filtersOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'"
                 :aria-pressed="filtersOpen ? 'true' : 'false'"
                 aria-controls="portfolio-filters"
@@ -552,13 +553,13 @@
                   <span class="item-type">{{ filteredProjects.length === 1 ? 'project' : 'projects' }}</span>
                 </div>
                 <div v-if="hasActiveFilters" class="active-filters-summary">
-                  <AppIcon name="mdi-filter-check" />
+                  <AppIcon name="FunnelIcon-check" />
                   <span>{{ activeFiltersCount }} filters applied</span>
                   <UnifiedButton
                     variant="ghost"
                     size="xs"
                     icon-only
-                    icon="mdi-close"
+                    leading-icon="XMarkIcon"
                     aria-label="Clear filters"
                     class="clear-filters-btn"
                     @click="clearAllFilters"
@@ -571,12 +572,12 @@
               <!-- Enhanced Sort Controls -->
               <div class="sort-controls-enhanced">
                 <label class="sort-label">Sort:</label>
-                <div class="sort-group d-none d-md-inline-flex">
+                <div class="sort-group hidden d-md-inline-flex">
                   <UnifiedButton
                     size="sm"
                     :variant="sortBy === 'recent' ? 'primary' : 'glass'"
                     :class="{ active: sortBy === 'recent' }"
-                    leading-icon="mdi-clock-outline"
+                    leading-icon="ClockIcon"
                     @click="sortBy = 'recent'"
                   >
                     Recent
@@ -585,7 +586,7 @@
                     size="sm"
                     :variant="sortBy === 'title' ? 'primary' : 'glass'"
                     :class="{ active: sortBy === 'title' }"
-                    leading-icon="mdi-sort-alphabetical-ascending"
+                    leading-icon="BarsArrowUpIcon-alphabetical-ascending"
                     @click="sortBy = 'title'"
                   >
                     Name
@@ -594,7 +595,7 @@
                     size="sm"
                     :variant="sortBy === 'engine' ? 'primary' : 'glass'"
                     :class="{ active: sortBy === 'engine' }"
-                    leading-icon="mdi-engine"
+                    leading-icon="CogIcon"
                     @click="sortBy = 'engine'"
                   >
                     Engine
@@ -603,7 +604,7 @@
                     size="sm"
                     :variant="sortBy === 'featured' ? 'primary' : 'glass'"
                     :class="{ active: sortBy === 'featured' }"
-                    leading-icon="mdi-star"
+                    leading-icon="StarIcon"
                     @click="sortBy = 'featured'"
                   >
                     Featured
@@ -611,11 +612,11 @@
                 </div>
 
                 <!-- Mobile Sort Dropdown -->
-                <select v-model="sortBy" class="enhanced-sort-select d-inline d-md-none" aria-label="Sort projects">
-                  <option value="recent">📅 Recent</option>
+                <select v-model="sortBy" class="enhanced-sort-select inline d-md-none" aria-label="Sort projects">
+                  <option value="recent">CalendarIcon Recent</option>
                   <option value="title">🔤 Name</option>
-                  <option value="engine">🎮 Engine</option>
-                  <option value="featured">⭐ Featured</option>
+                  <option value="engine">DevicePhoneMobileIcon Engine</option>
+                  <option value="featured">StarIcon Featured</option>
                 </select>
               </div>
 
@@ -645,7 +646,7 @@
                 <input v-model="autoFeature" type="checkbox" @change="autoFeatureUpdate" />
                 <span class="checkmark"></span>
                 <span class="toggle-text">
-                  <AppIcon name="mdi-star-outline" />
+                  <AppIcon name="StarIcon" />
                   Auto-feature top projects
                 </span>
               </label>
@@ -653,7 +654,7 @@
               <UnifiedButton
                 variant="ghost"
                 size="sm"
-                leading-icon="mdi-download"
+                leading-icon="ArrowDownTrayIcon"
                 @click="exportPortfolio"
               >
                 Export
@@ -662,7 +663,7 @@
               <UnifiedButton
                 variant="ghost"
                 size="sm"
-                leading-icon="mdi-cog"
+                leading-icon="CogIcon"
                 @click="openPortfolioSettings"
               >
                 Settings
@@ -674,22 +675,22 @@
         <!-- Enhanced Showcase Section -->
         <section v-show="activeTab === 'showcase'" class="panel unified-container">
           <!-- Showcase Header -->
-          <div class="section-header glass p-4 gap-4 rounded-lg mb-4">
-            <div class="d-flex align-items-center justify-content-between">
+          <div class="section-header glass p-glass-md gap-glass-md rounded-lg mb-4">
+            <div class="flex items-center justify-between">
               <div>
                 <h2 class="section-title">
-                  <AppIcon name="mdi-star-circle" class="text-warning me-2" />
+                  <AppIcon name="StarIcon-circle" class="text-warning-600 mr-2" />
                   Featured Showcase
                 </h2>
                 <p class="section-description mb-0">
                   Your best work, prominently displayed for maximum impact
                 </p>
               </div>
-              <div class="showcase-actions d-flex gap-2">
+              <div class="showcase-actions flex gap-glass-sm">
                 <UnifiedButton 
                   variant="glass" 
                   size="sm" 
-                  leading-icon="mdi-auto-fix" 
+                  leading-icon="SparklesIcon" 
                   :loading="generatingShowcase"
                   @click="generateShowcase"
                 >
@@ -698,7 +699,7 @@
                 <UnifiedButton 
                   variant="outline" 
                   size="sm" 
-                  leading-icon="mdi-eye-outline" 
+                  leading-icon="EyeIcon-outline" 
                   @click="previewShowcase"
                 >
                   Preview
@@ -710,29 +711,29 @@
           <div v-if="showcaseProjects.length === 0" class="empty-state enhanced-empty">
             <div class="empty-state-content">
               <div class="empty-icon-stack">
-                <AppIcon name="mdi-star-circle-outline" class="empty-icon primary" />
-                <AppIcon name="mdi-plus" class="empty-icon-overlay" />
+                <AppIcon name="StarIcon-circle-outline" class="empty-icon primary" />
+                <AppIcon name="PlusIcon" class="empty-icon-overlay" />
               </div>
               <h3>No Featured Projects Yet</h3>
               <p>Create an impressive showcase by featuring your best projects, or let our AI automatically curate your top work based on engagement and quality metrics.</p>
               <div class="empty-actions-enhanced">
-                <UnifiedButton variant="gaming" leading-icon="mdi-auto-fix" @click="generateShowcase">
+                <UnifiedButton variant="gaming" leading-icon="SparklesIcon" @click="generateShowcase">
                   Auto-Generate Showcase
                 </UnifiedButton>
-                <UnifiedButton variant="glass" leading-icon="mdi-star-outline" @click="manuallyFeature">
+                <UnifiedButton variant="glass" leading-icon="StarIcon" @click="manuallyFeature">
                   Feature Projects Manually
                 </UnifiedButton>
               </div>
             </div>
           </div>
           <div v-else class="responsive-grid responsive-grid--cards-sm showcase-grid">
-            <div v-for="p in showcaseProjects" :key="p.id || p.title" class="showcase-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+            <div v-for="p in showcaseProjects" :key="p.id || p.title" class="showcase-card glass p-glass-md gap-glass-md rounded-lg unified-card is-interactive neon-hover ripple-soft">
               <div class="thumb" :style="{ backgroundImage: p.cover ? `url(${p.cover})` : '' }">
                 <div v-if="!p.cover" class="thumb-fallback">{{ (p.title || 'Project').slice(0,1) }}</div>
                 <div class="badges">
-                  <span v-if="p.featured" class="badge featured"><AppIcon name="mdi-star" /> Featured</span>
-                  <span v-if="p.engine" class="badge"><AppIcon name="mdi-engine" /> {{ p.engine }}</span>
-                  <span v-if="p.platform" class="badge"><AppIcon name="mdi-monitor" /> {{ p.platform }}</span>
+                  <span v-if="p.featured" class="badge featured"><AppIcon name="StarIcon" /> Featured</span>
+                  <span v-if="p.engine" class="badge"><AppIcon name="CogIcon" /> {{ p.engine }}</span>
+                  <span v-if="p.platform" class="badge"><AppIcon name="ComputerDesktopIcon" /> {{ p.platform }}</span>
                 </div>
               </div>
               <div class="body">
@@ -742,8 +743,8 @@
                   <span v-for="t in (p.tags||[]).slice(0,4)" :key="t" class="tag">{{ t }}</span>
                 </div>
                 <div class="actions">
-                  <UnifiedButton size="sm" variant="glass" leading-icon="mdi-eye" @click="viewProject(p)">View</UnifiedButton>
-                  <UnifiedButton size="sm" variant="outline" leading-icon="mdi-share-variant" @click="shareProject(p)">Share</UnifiedButton>
+                  <UnifiedButton size="sm" variant="glass" leading-icon="EyeIcon" @click="viewProject(p)">View</UnifiedButton>
+                  <UnifiedButton size="sm" variant="outline" leading-icon="ShareIcon" @click="shareProject(p)">Share</UnifiedButton>
                 </div>
               </div>
             </div>
@@ -754,27 +755,27 @@
         <section v-show="activeTab === 'projects'" class="panel unified-container">
           <div v-if="filteredProjects.length === 0" class="empty-state">
             <div class="empty-state-content">
-              <AppIcon name="mdi-briefcase-outline" class="empty-icon" />
+              <AppIcon name="BriefcaseIcon" class="empty-icon" />
               <h3>{{ projects.length === 0 ? 'No Projects Yet' : 'No Matching Projects' }}</h3>
               <p v-if="projects.length === 0">Start building your portfolio by adding your first project.</p>
               <p v-else>Try adjusting your filters or search terms to find projects.</p>
               <div class="empty-actions">
-                <UnifiedButton v-if="projects.length === 0" variant="primary" leading-icon="mdi-plus" @click="addProject">
+                <UnifiedButton v-if="projects.length === 0" variant="primary" leading-icon="PlusIcon" @click="addProject">
                   Add Your First Project
                 </UnifiedButton>
-                <UnifiedButton v-else variant="outline" leading-icon="mdi-filter-remove" @click="clearAllFilters">
+                <UnifiedButton v-else variant="outline" leading-icon="FunnelIcon" @click="clearAllFilters">
                   Clear All Filters
                 </UnifiedButton>
               </div>
             </div>
           </div>
           <div v-else :class="['responsive-grid', 'projects-grid', viewMode]">
-            <div v-for="p in filteredProjects" :key="p.id || p.title" class="project-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
-              <div class="row">
+            <div v-for="p in filteredProjects" :key="p.id || p.title" class="project-card glass p-glass-md gap-glass-md rounded-lg unified-card is-interactive neon-hover ripple-soft">
+              <div class="flex flex-wrap">
                 <div class="cover" :style="{ backgroundImage: p.cover ? `url(${p.cover})` : '' }"></div>
                 <div class="info">
                   <div class="title">
-                    <AppIcon name="mdi-gamepad-variant" /> {{ p.title || 'Untitled Project' }}
+                    <AppIcon name="PuzzlePieceIcon" /> {{ p.title || 'Untitled Project' }}
                   </div>
                   <div class="sub">{{ p.role || 'Contributor' }} • {{ p.engine || 'Engine' }} • {{ p.platform || 'Platform' }}</div>
                   <div class="desc">{{ (p.description || '').slice(0,160) }}</div>
@@ -782,17 +783,17 @@
                     <span v-for="t in (p.tags||[]).slice(0,6)" :key="t" class="tag">{{ t }}</span>
                   </div>
                   <div class="actions">
-                    <UnifiedButton v-if="p.demoUrl" size="sm" variant="glass" leading-icon="mdi-play" :href="p.demoUrl" target="_blank">Play</UnifiedButton>
-                    <UnifiedButton v-if="p.link" size="sm" variant="glass" leading-icon="mdi-open-in-new" :href="p.link" target="_blank">Open</UnifiedButton>
-                    <UnifiedButton size="sm" variant="outline" leading-icon="mdi-pencil" @click="editProject(p)">Edit</UnifiedButton>
-                    <UnifiedButton size="sm" :variant="p.featured ? 'primary' : 'ghost'" :leading-icon="p.featured ? 'mdi-star' : 'mdi-star-outline'" @click="toggleFeatured(p)">
+                    <UnifiedButton v-if="p.demoUrl" size="sm" variant="glass" leading-icon="PlayIcon" :href="p.demoUrl" target="_blank">Play</UnifiedButton>
+                    <UnifiedButton v-if="p.link" size="sm" variant="glass" leading-icon="ArrowTopRightOnSquareIcon" :href="p.link" target="_blank">Open</UnifiedButton>
+                    <UnifiedButton size="sm" variant="outline" leading-icon="PencilIcon" @click="editProject(p)">Edit</UnifiedButton>
+                    <UnifiedButton size="sm" :variant="p.featured ? 'primary' : 'ghost'" :leading-icon="p.featured ? 'StarIcon' : 'StarIcon-outline'" @click="toggleFeatured(p)">
                       {{ p.featured ? 'Featured' : 'Pin' }}
                     </UnifiedButton>
                   </div>
 
                   <!-- Inline tag editor toggle -->
                   <div class="tag-editor">
-                    <button class="chip" @click="toggleTagEditor(p)"><AppIcon name="mdi-tag-plus" /> Edit Tags</button>
+                    <button class="chip" @click="toggleTagEditor(p)"><AppIcon name="TagIcon-plus" /> Edit Tags</button>
                   </div>
                   <div v-if="editingTagsFor === (p.id || p.title)" class="tag-editor-panel">
                     <div class="chips">
@@ -818,7 +819,7 @@
     <!-- Clips -->
     <section v-show="activeTab === 'clips'" class="panel unified-container">
       <div class="responsive-grid responsive-grid--cards-sm clips-grid">
-        <div v-for="c in clips" :key="c.id || c.url" class="clip glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+        <div v-for="c in clips" :key="c.id || c.url" class="clip glass p-glass-md gap-glass-md rounded-lg unified-card is-interactive neon-hover ripple-soft">
           <div class="embed">
             <iframe v-if="c.url" :src="toEmbedUrl(c.url)" frameborder="0" allowfullscreen></iframe>
           </div>
@@ -833,8 +834,8 @@
     <!-- Achievements -->
     <section v-show="activeTab === 'achievements'" class="panel unified-container">
       <div class="responsive-grid responsive-grid--cards-sm achievements-grid">
-        <div v-for="a in achievements" :key="a.id || a.title" class="ach-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
-          <div class="title"><AppIcon name="mdi-trophy" /> {{ a.title }}</div>
+        <div v-for="a in achievements" :key="a.id || a.title" class="ach-card glass p-glass-md gap-glass-md rounded-lg unified-card is-interactive neon-hover ripple-soft">
+          <div class="title"><AppIcon name="TrophyIcon" /> {{ a.title }}</div>
           <div class="meta">{{ a.date || a.year }} • {{ a.category || 'Achievement' }}</div>
           <div class="desc">{{ a.description }}</div>
         </div>
@@ -883,6 +884,9 @@
 </template>
 
 <script setup lang="ts">
+import { AdjustmentsHorizontalIcon, ArrowDownTrayIcon, ArrowPathIcon, ArrowTopRightOnSquareIcon, BriefcaseIcon, CameraIcon, ClockIcon, CogIcon, ComputerDesktopIcon, CpuChipIcon, EyeIcon, FunnelIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, PuzzlePieceIcon, ShareIcon, SparklesIcon, Squares2X2Icon, StarIcon, TrashIcon, UserIcon, UsersIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, PlayIcon, TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch, onUnmounted, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
@@ -902,6 +906,7 @@ import { portfolioExportRoutes } from '@/modules/api/portfolio-export'
 import { useToast } from '@/composables/useToast'
 import usePortfolio from '@/composables/usePortfolio'
 import { PortfolioService } from '@/shared/services/PortfolioService'
+import type { PortfolioExportOptions } from '@/modules/api/portfolio-export'
 
 const store = useAppStore()
 const router = useRouter()
@@ -920,7 +925,7 @@ const portfolioTabs = computed(() => [
   { 
     key: 'showcase', 
     label: 'Featured Showcase', 
-    icon: 'mdi-star-circle-outline', 
+    icon: 'StarIcon-circle-outline', 
     shortLabel: 'Featured', 
     count: showcaseProjects.value.length,
     description: 'Your best work, prominently displayed'
@@ -936,7 +941,7 @@ const portfolioTabs = computed(() => [
   { 
     key: 'clips', 
     label: 'Media Gallery', 
-    icon: 'mdi-play-circle-outline', 
+    icon: 'PlayIcon-circle-outline', 
     shortLabel: 'Media', 
     count: clips.value.length,
     description: 'Gameplay clips and videos'
@@ -944,7 +949,7 @@ const portfolioTabs = computed(() => [
   { 
     key: 'achievements', 
     label: 'Achievements', 
-    icon: 'mdi-trophy-outline', 
+    icon: 'TrophyIcon-outline', 
     shortLabel: 'Awards', 
     count: achievements.value.length,
     description: 'Recognition and accomplishments'
@@ -952,7 +957,7 @@ const portfolioTabs = computed(() => [
   { 
     key: 'analytics', 
     label: 'Portfolio Analytics', 
-    icon: 'mdi-chart-line-variant', 
+    icon: 'ChartBarIcon-line-variant', 
     shortLabel: 'Analytics',
     description: 'Portfolio performance insights'
   }
@@ -974,7 +979,8 @@ const projects = computed<any[]>(() => (store.user?.portfolio || []).map((p:any)
   role: p.role || p.position || '',
   year: p.year || p.date || '',
   demoUrl: p.demoUrl || p.playUrl || '',
-  link: p.link || p.url || ''
+  link: p.link || p.url || '',
+  featured: p.featured || false
 })))
 
 function inferEngine(p:any) {
@@ -1067,12 +1073,17 @@ function syncYearRange() {
 function reactiveSet() {
   const s = ref<Set<string>>(new Set())
   return {
+    _raw: s,
     has: (v:string) => s.value.has(v),
     add: (v:string) => s.value.add(v),
     delete: (v:string) => s.value.delete(v),
-    toggle: (v:string) => s.value.has(v) ? s.value.delete(v) : s.value.add(v),
+    toggle: (v:string) => {
+      if (s.value.has(v)) s.value.delete(v)
+      else s.value.add(v)
+    },
     values: () => Array.from(s.value),
-    _raw: s
+    clear: () => s.value.clear(),
+    reset: (values: string[]) => s.value = new Set(values),
   }
 }
 
@@ -1181,7 +1192,7 @@ const filteredProjects = computed(() => {
 // Enhanced computed properties for navigation
 const enhancedTabsComputed = computed(() => portfolioTabs.value.map(tab => ({
   ...tab,
-  count: getTabCount(tab.value)
+  count: getTabCount(tab.key)
 })))
 
 const searchResultsCount = computed(() => query.value ? filteredProjects.value.length : 0)
@@ -1211,7 +1222,7 @@ const activeFiltersCount = computed(() => {
 function clearAllFilters() {
   query.value = ''
   tagSearch.value = ''
-  ;[engine, platform, role, tags].forEach(s => s._raw.value = new Set())
+  ;[engine, platform, role, tags].forEach(s => s.clear())
   yearFromRange.value = yearMin.value
   yearToRange.value = yearMax.value
   yearFrom.value = null
@@ -1238,6 +1249,7 @@ function applySearchSuggestion(suggestion: string) {
 function getTabCount(tabValue: string): number {
   switch (tabValue) {
     case 'showcase':
+      return showcaseProjects.value.length;
     case 'projects':
       return filteredProjects.value.length
     case 'clips':
@@ -1286,7 +1298,7 @@ async function handlePortfolioExport(format: 'html' | 'pdf' | 'json' | 'website'
     
     // Get user metadata for export
     const userProfile = store.profile || {}
-    const exportOptions = {
+    const exportOptions: PortfolioExportOptions = {
       template: 'gaming',
       theme: themeName.value === 'dark' ? 'dark' : 'gaming',
       includeImages: true,
@@ -1323,7 +1335,7 @@ async function handlePortfolioExport(format: 'html' | 'pdf' | 'json' | 'website'
     
     toastSuccess(`${format.toUpperCase()} export completed successfully!`)
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('Export failed:', error)
     toastError(`Export failed: ${error.message || 'Unknown error'}`)
   }
@@ -1374,10 +1386,10 @@ function snapshotCurrentFilters(): PortfolioFilterState {
 
 function applyFilterState(state: PortfolioFilterState) {
   query.value = state.query || ''
-  engine._raw.value = new Set(state.engine || [])
-  platform._raw.value = new Set(state.platform || [])
-  role._raw.value = new Set(state.role || [])
-  tags._raw.value = new Set(state.tags || [])
+  engine.reset(state.engine || [])
+  platform.reset(state.platform || [])
+  role.reset(state.role || [])
+  tags.reset(state.tags || [])
   if (state.yearFrom !== null) yearFromRange.value = state.yearFrom
   if (state.yearTo !== null) yearToRange.value = state.yearTo
   yearFrom.value = state.yearFrom
@@ -1469,10 +1481,10 @@ function loadFilterPreset(preset: any) {
   query.value = preset.filters.query || ''
   
   // Clear existing filters
-  engine._raw.value = new Set(preset.filters.engine || [])
-  platform._raw.value = new Set(preset.filters.platform || [])
-  role._raw.value = new Set(preset.filters.role || [])
-  tags._raw.value = new Set(preset.filters.tags || [])
+  engine.reset(preset.filters.engine || [])
+  platform.reset(preset.filters.platform || [])
+  role.reset(preset.filters.role || [])
+  tags.reset(preset.filters.tags || [])
   
   yearFromRange.value = preset.filters.yearFrom || yearMin.value
   yearToRange.value = preset.filters.yearTo || yearMax.value
@@ -1533,7 +1545,7 @@ const smartFilters = computed(() => {
       count: githubCount,
       action: () => {
         clearAllFilters()
-        tags._raw.value = new Set(['GitHub', 'Open Source'])
+        tags.reset(['GitHub', 'Open Source'])
       }
     })
   }
@@ -1559,8 +1571,8 @@ function loadSavedPresets() {
 const headerStats = computed(() => [
   { label: `${projects.value.length} projects`, icon: 'mdi-briefcase', color: 'primary' },
   { label: `${clips.value.length} clips`, icon: 'mdi-movie-open-outline', color: 'info' },
-  { label: `${achievements.value.length} achievements`, icon: 'mdi-trophy', color: 'success' },
-  { label: `${uniqueTags.value} tags`, icon: 'mdi-tag-multiple', color: 'warning' }
+  { label: `${achievements.value.length} achievements`, icon: 'TrophyIcon', color: 'success' },
+  { label: `${uniqueTags.value} tags`, icon: 'TagIcon-multiple', color: 'warning' }
 ])
 
 // Showcase list: featured first, then recent fill-up to 6
@@ -1829,7 +1841,7 @@ const availableSkills = computed(() => {
   // Extract skills from all projects
   projects.value.forEach((project) => {
     const projectSkills = project.skills || project.tech || project.tags || []
-    projectSkills.forEach((skill) => {
+    projectSkills.forEach((skill: any) => {
       const skillName = typeof skill === 'string' ? skill : skill.name
       const skillId = skillName.toLowerCase().replace(/[^a-z0-9]/g, '-')
       
@@ -1852,11 +1864,11 @@ const availableSkills = computed(() => {
 })
 
 // Enhanced Portfolio Topbar Handlers
-function handleSearchUpdate(searchTerm) {
+function handleSearchUpdate(searchTerm: string) {
   query.value = searchTerm
 }
 
-function handleFiltersUpdate(filters) {
+function handleFiltersUpdate(filters: any) {
   if (filters.type !== undefined) {
     selectedType.value = filters.type
   }
@@ -1869,15 +1881,15 @@ function handleFiltersUpdate(filters) {
   }
 }
 
-function handleSortUpdate(sortOption) {
+function handleSortUpdate(sortOption: 'recent' | 'title' | 'engine' | 'featured') {
   sortBy.value = sortOption
 }
 
-function handleViewModeUpdate(mode) {
+function handleViewModeUpdate(mode: 'grid' | 'list' | 'masonry') {
   viewMode.value = mode
 }
 
-function handleToggleAnalytics(enabled) {
+function handleToggleAnalytics(enabled: boolean) {
   console.log('Analytics toggled:', enabled)
   // Add analytics toggle logic here
 }
@@ -1888,7 +1900,7 @@ function handleOpenAITools() {
 }
 
 // Helper functions for skills
-function categorizeSkill(skillName) {
+function categorizeSkill(skillName: string) {
   const skill = skillName.toLowerCase()
   if (skill.includes('game') || skill.includes('unity') || skill.includes('unreal')) return 'gaming'
   if (skill.includes('design') || skill.includes('art') || skill.includes('creative')) return 'creative'  
@@ -1896,14 +1908,14 @@ function categorizeSkill(skillName) {
   return 'technical'
 }
 
-function getSkillIcon(skillName) {
+function getSkillIcon(skillName: string) {
   const skill = skillName.toLowerCase()
-  if (skill.includes('game')) return 'mdi-gamepad-variant'
+  if (skill.includes('game')) return 'DevicePhoneMobileIcon-variant'
   if (skill.includes('code') || skill.includes('program')) return 'mdi-code-tags'
-  if (skill.includes('design')) return 'mdi-palette'
-  if (skill.includes('team') || skill.includes('lead')) return 'mdi-account-group'
-  if (skill.includes('analysis')) return 'mdi-chart-line'
-  return 'mdi-tag'
+  if (skill.includes('design')) return 'SwatchIcon'
+  if (skill.includes('team') || skill.includes('lead')) return 'UserIcon-group'
+  if (skill.includes('analysis')) return 'ChartBarIcon-line'
+  return 'TagIcon'
 }
 
 // Enhanced keyboard navigation
@@ -2025,7 +2037,7 @@ onUnmounted(() => {
 
 /* Enhanced Tabs Section */
 .enhanced-tabs-section {
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
   padding-bottom: var(--spacing-4);
 }
 
@@ -2063,7 +2075,7 @@ onUnmounted(() => {
   align-items: center;
   margin-bottom: var(--spacing-6);
   padding-bottom: var(--spacing-4);
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
 }
 
 .sidebar-main-title {
@@ -2072,7 +2084,7 @@ onUnmounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -2121,7 +2133,7 @@ onUnmounted(() => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-lg);
   background: var(--surface-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   transition: all var(--duration-normal);
 }
@@ -2146,9 +2158,9 @@ onUnmounted(() => {
   z-index: 10;
   background: var(--surface-elevated);
   border: 1px solid var(--border-base);
-  border-top: none;
+  border-t: none;
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   max-height: var(--spacing-48);
   overflow-y: auto;
 }
@@ -2158,7 +2170,7 @@ onUnmounted(() => {
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
 }
 
 .suggestions-list {
@@ -2173,7 +2185,7 @@ onUnmounted(() => {
   padding: var(--spacing-2) var(--spacing-3);
   border: none;
   background: none;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-align: left;
   border-radius: var(--radius-md);
   transition: background-color var(--duration-fast);
@@ -2235,23 +2247,9 @@ onUnmounted(() => {
 
 /* Mobile Filter Button */
 .mobile-filter-btn {
-  position: relative;
-}
-
-.filter-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: var(--color-primary-500);
-  color: var(--color-primary-contrast);
-  border-radius: 50%;
-  width: var(--spacing-4-5);
-  height: var(--spacing-4-5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
+  display: none;
+  min-width: var(--btn-min-h);
+  height: var(--btn-min-h);
 }
 
 /* Enhanced Result Summary */
@@ -2316,7 +2314,7 @@ onUnmounted(() => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
   background: var(--surface-elevated);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
 }
 
@@ -2337,7 +2335,7 @@ onUnmounted(() => {
 .toolbar-secondary {
   margin-top: var(--spacing-4);
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--border-subtle);
+  border-t: 1px solid var(--border-subtle);
 }
 
 .advanced-options {
@@ -2471,7 +2469,7 @@ onUnmounted(() => {
 
 .secondary-actions {
   padding-left: var(--spacing-2);
-  border-left: 1px solid var(--glass-border);
+  border-l: 1px solid var(--glass-border);
 }
 
 /* Mobile Navigation Styles */
@@ -2490,7 +2488,7 @@ onUnmounted(() => {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     backdrop-filter: var(--glass-backdrop-blur);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-glass-lg);
     transition: all var(--duration-fast) var(--easing-ease);
   }
 
@@ -2509,7 +2507,7 @@ onUnmounted(() => {
   }
 
   .secondary-actions {
-    border-left: none;
+    border-l: none;
     padding-left: 0;
   }
 }
@@ -2704,7 +2702,7 @@ onUnmounted(() => {
 .portfolio-studio { 
   min-height: 100vh; 
   background: var(--surface-base); 
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .portfolio-layout { 
@@ -2726,7 +2724,7 @@ onUnmounted(() => {
   border-radius: var(--radius-xl);
   backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   height: fit-content;
   max-height: calc(100vh - var(--spacing-16));
   overflow-y: auto;
@@ -2743,7 +2741,7 @@ onUnmounted(() => {
   justify-content: space-between;
   width: 100%;
   padding: var(--spacing-2) var(--spacing-3);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   transition: all var(--duration-fast) var(--easing-ease);
@@ -2752,7 +2750,7 @@ onUnmounted(() => {
 .smart-filter-btn:hover {
   background: var(--glass-bg-hover);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .smart-filter-btn .filter-count {
@@ -2773,7 +2771,7 @@ onUnmounted(() => {
   align-items: center;
   gap: var(--spacing-1);
   padding: var(--spacing-1) var(--spacing-2);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   transition: all var(--duration-fast) var(--easing-ease);
@@ -2810,11 +2808,11 @@ onUnmounted(() => {
 .sidebar-section { 
   margin-bottom: var(--spacing-5); 
   padding-bottom: var(--spacing-4);
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 50%, transparent);
+  border-b: 1px solid color-mix(in srgb, var(--glass-border) 50%, transparent);
 }
 
 .sidebar-section:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .sidebar-title { 
@@ -2851,7 +2849,7 @@ onUnmounted(() => {
   padding-right: var(--spacing-8) !important;
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   transition: all var(--duration-fast) var(--easing-ease-out);
 }
 
@@ -2929,7 +2927,7 @@ onUnmounted(() => {
 }
 
 .filter-tab:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transform: translateY(-1px);
 }
 
@@ -2976,7 +2974,7 @@ onUnmounted(() => {
 
 .skill-category {
   padding: var(--spacing-4);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
 }
@@ -2988,12 +2986,12 @@ onUnmounted(() => {
   margin: 0 0 var(--spacing-3);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .category-count {
   background: var(--color-primary-500);
-  color: var(--color-primary-contrast);
+  color: var(--text-on-primary);
   padding: var(--spacing-0-5) var(--spacing-1-5);
   border-radius: var(--radius-full);
   font-size: var(--font-size-2xs);
@@ -3044,8 +3042,8 @@ onUnmounted(() => {
 
 .skill-chip:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  color: var(--text-primary);
+  box-shadow: var(--shadow-glass);
+  color: var(--text-primary-600);
   border-color: var(--color-primary-400);
 }
 
@@ -3078,7 +3076,7 @@ onUnmounted(() => {
 
 .all-tags-section {
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 /* Enhanced Tag Search */
@@ -3092,7 +3090,7 @@ onUnmounted(() => {
   font-size: var(--font-size-sm);
   border-radius: var(--radius-sm);
   border: 1px solid var(--glass-border);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 .tag-search:focus {
@@ -3132,7 +3130,7 @@ onUnmounted(() => {
   padding: var(--spacing-2) var(--spacing-3); 
   border: 1px solid var(--glass-border); 
   border-radius: var(--radius-full); 
-  background: var(--glass-bg-light); 
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover); 
   cursor: pointer; 
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
@@ -3223,7 +3221,7 @@ onUnmounted(() => {
   display: flex;
   gap: var(--spacing-1);
   padding: var(--spacing-1);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-radius: var(--radius-full);
   border: 1px solid var(--glass-border);
 }
@@ -3237,7 +3235,7 @@ onUnmounted(() => {
 .sort-group :deep(.btn-unified.active) { 
   background: var(--color-primary-500);
   color: var(--text-on-primary);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .advanced-controls {
@@ -3257,7 +3255,7 @@ onUnmounted(() => {
 }
 
 .auto-feature-toggle:hover {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 .toggle-label {
@@ -3275,7 +3273,7 @@ onUnmounted(() => {
 
 .view-toggle :deep(.view-toggle-group) {
   padding: var(--spacing-1);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-radius: var(--radius-full);
   border: 1px solid var(--glass-border);
 }
@@ -3291,7 +3289,7 @@ onUnmounted(() => {
 /* Enhanced Mobile Quick Filter */
 .quick-filter-bar { 
   padding: var(--spacing-3); 
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-radius: var(--radius-lg);
   margin-bottom: var(--spacing-3);
   border: 1px solid var(--glass-border);
@@ -3369,110 +3367,6 @@ onUnmounted(() => {
 
 .projects-grid.list {
   grid-template-columns: 1fr;
-  gap: var(--spacing-3);
-}
-
-.projects-grid.masonry {
-  columns: 3;
-  column-gap: var(--spacing-6);
-}
-
-@media (max-width: 1024px) {
-  .projects-grid.masonry {
-    columns: 2;
-  }
-}
-
-@media (max-width: 768px) {
-  .projects-grid.masonry {
-    columns: 1;
-  }
-}
-
-.showcase-grid { 
-  gap: var(--spacing-6); 
-  padding: var(--spacing-4) 0;
-}
-
-.showcase-card {
-  transition: all var(--duration-normal) var(--easing-ease-out);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  position: relative;
-}
-
-.showcase-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
-}
-
-/* Empty State Styling */
-.empty-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  padding: var(--spacing-8);
-}
-
-.empty-state-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  max-width: var(--page-narrow-width);
-  flex: 1;
-}
-
-.empty-icon {
-  font-size: 4rem;
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-4);
-  opacity: 0.6;
-}
-
-.empty-state h3 {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-2);
-}
-
-.empty-state p {
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-6);
-  line-height: var(--line-height-relaxed);
-}
-
-.empty-actions {
-  display: flex;
-  gap: var(--spacing-3);
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.card .thumb { position:relative; height: 140px; border-radius: var(--radius-md); background: var(--glass-bg); background-size: cover; background-position: center; border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; }
-.thumb-fallback { font-weight: 800; font-size: 2rem; color: var(--text-secondary); }
-.badges { position:absolute; top: var(--spacing-2); left: var(--spacing-2); display:flex; gap: var(--spacing-1-5); }
-/* Local badge replaced by unified .badge */
-.card .body { padding: var(--spacing-2-5); }
-.title { font-weight: 700; display:flex; align-items:center; gap: var(--spacing-1-5); }
-.meta { color: var(--text-secondary); font-size: 0.85rem; margin-top: 2px; }
-.tags { display:flex; gap: var(--spacing-1-5); flex-wrap: wrap; margin: var(--spacing-2) 0; }
-.tag { border:1px solid var(--glass-border); background: var(--glass-bg); border-radius:999px; padding: var(--spacing-0-5) var(--spacing-2); font-size: 0.75rem; }
-.actions { display:flex; gap: var(--spacing-2); }
-
-.projects-grid { 
-  gap: var(--spacing-4); 
-  padding: var(--spacing-4) 0;
-}
-
-.projects-grid.grid {
-  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg), 1fr));
-}
-
-.projects-grid.list {
-  grid-template-columns: 1fr;
 }
 
 .project-card {
@@ -3484,15 +3378,15 @@ onUnmounted(() => {
 
 .project-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
 }
 
-.projects-grid.grid .project-card .row { 
+.projects-grid.grid .project-card .flex flex-wrap { 
   display: flex;
   flex-direction: column;
 }
 
-.projects-grid.list .project-card .row { 
+.projects-grid.list .project-card .flex flex-wrap { 
   display: grid; 
   grid-template-columns: var(--grid-card-min-xs) 1fr; 
   gap: var(--spacing-4);
@@ -3501,7 +3395,7 @@ onUnmounted(() => {
 .cover { height: 140px; border-radius: var(--radius-md); background: var(--glass-bg); background-size: cover; background-position: center; border:1px solid var(--glass-border); }
 .projects-grid.list .cover { height: 100%; min-height: 160px; }
 .info .sub { color: var(--text-secondary); font-size: 0.9rem; margin: var(--spacing-1) 0; }
-.info .desc { color: var(--text-primary); opacity: 0.9; font-size: 0.95rem; margin-bottom: 6px; }
+.info .desc { color: var(--text-primary-600); opacity: 0.9; font-size: 0.95rem; margin-bottom: 6px; }
 
 .clips-grid { gap: var(--spacing-3); }
 .clip .embed { position:relative; padding-top: 56.25%; border-radius: var(--radius-md); overflow:hidden; border:1px solid var(--glass-border); background: var(--glass-bg); }
@@ -3537,7 +3431,7 @@ onUnmounted(() => {
     transform: translateX(-100%);
     transition: transform var(--duration-normal) var(--easing-ease-out);
     border-radius: 0;
-    border-left: none;
+    border-l: none;
     max-height: 100vh;
   }
   
@@ -3573,7 +3467,7 @@ onUnmounted(() => {
     grid-template-columns: 1fr;
   }
   
-  .projects-grid.list .project-card .row {
+  .projects-grid.list .project-card .flex flex-wrap {
     grid-template-columns: 1fr;
   }
   
@@ -3634,11 +3528,11 @@ onUnmounted(() => {
 }
 
 [data-theme="dark"] .empty-state {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 [data-theme="dark"] .result-summary {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Accessibility Improvements */
@@ -3759,7 +3653,7 @@ onUnmounted(() => {
   width: 40px;
   height: 40px;
   border: 3px solid var(--glass-border);
-  border-top: 3px solid var(--color-primary-500);
+  border-t: 3px solid var(--color-primary-500);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   transform: translate(-50%, -50%);
@@ -3776,7 +3670,7 @@ onUnmounted(() => {
   background: linear-gradient(
     90deg,
     var(--glass-bg) 25%,
-    var(--glass-bg-light) 50%,
+    var(--glass-bg-glass-bg dark:bg-glass-bg-hover) 50%,
     var(--glass-bg) 75%
   );
   background-size: 200% 100%;
@@ -3822,7 +3716,7 @@ onUnmounted(() => {
 .section-title {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   display: flex;
   align-items: center;
@@ -3844,7 +3738,7 @@ onUnmounted(() => {
 
 /* Enhanced Empty State */
 .enhanced-empty {
-  background: linear-gradient(135deg, var(--glass-bg-light) 0%, var(--glass-bg) 100%);
+  background: linear-gradient(135deg, var(--glass-bg-glass-bg dark:bg-glass-bg-hover) 0%, var(--glass-bg) 100%);
   border-radius: var(--radius-xl);
   border: 2px dashed var(--glass-border);
   min-height: 500px;
@@ -3883,7 +3777,7 @@ onUnmounted(() => {
 
 @media (min-width: 768px) {
   .empty-actions-enhanced {
-    flex-direction: row;
+    flex-direction: flex flex-wrap;
     justify-content: center;
   }
 }
@@ -4010,7 +3904,7 @@ onUnmounted(() => {
 .project-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1) 0;
   line-height: var(--line-height-tight);
 }
@@ -4027,7 +3921,7 @@ onUnmounted(() => {
   font-size: var(--font-size-xs);
   padding: var(--spacing-0-5) var(--spacing-2);
   border-radius: var(--radius-full);
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   color: var(--text-secondary);
 }
@@ -4062,7 +3956,7 @@ onUnmounted(() => {
   border-radius: var(--radius-full);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   white-space: nowrap;
   transition: all var(--duration-fast) var(--easing-ease-out);
 }
@@ -4080,16 +3974,6 @@ onUnmounted(() => {
   gap: var(--spacing-3);
 }
 
-.primary-actions {
-  display: flex;
-  gap: var(--spacing-2);
-}
-
-.secondary-actions {
-  display: flex;
-  gap: var(--spacing-1);
-}
-
 /* Enhanced scrollbar styling */
 .portfolio-layout ::-webkit-scrollbar {
   width: 8px;
@@ -4097,14 +3981,14 @@ onUnmounted(() => {
 }
 
 .portfolio-layout ::-webkit-scrollbar-track {
-  background: var(--glass-bg-light);
+  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
   border-radius: var(--radius-full);
 }
 
 .portfolio-layout ::-webkit-scrollbar-thumb {
   background: var(--glass-border);
   border-radius: var(--radius-full);
-  border: 2px solid var(--glass-bg-light);
+  border: 2px solid var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
 }
 
 .portfolio-layout ::-webkit-scrollbar-thumb:hover {

@@ -1,23 +1,23 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="developer-settings-section">
+  <div class="developer-settings-section" class="font-sans">
     <div class="settings-card glass-card section-card">
       <div class="card-header section-header">
         <h5 class="card-title mb-0">
-          <AppIcon name="mdi-code-braces" class="me-2" />
+          <AppIcon name="CodeBracketIcon" class="mr-2" />
           Developer Settings
         </h5>
       </div>
       <div class="card-body section-body">
         <div class="alert alert-warning mb-4">
-          <AppIcon name="mdi-alert" class="me-2" />
+          <AppIcon name="ExclamationTriangleIcon" class="mr-2" />
           <strong>Warning:</strong> These settings are for advanced users and developers. 
           Changing these settings may affect app performance or stability.
         </div>
 
-        <div class="row g-4">
+        <div class="flex flex-wrap g-4">
           <!-- Left Column: Debug Options -->
-          <div class="col-md-6">
+          <div class="flex-1-md-6">
             <div class="settings-group">
               <h6 class="settings-group-title">Debug Options</h6>
               
@@ -32,7 +32,7 @@
                 <label class="form-check-label" for="debugMode">
                   Enable Debug Mode
                 </label>
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Shows additional debug information and logs
                 </small>
               </div>
@@ -48,7 +48,7 @@
                 <label class="form-check-label" for="verboseLogging">
                   Verbose Logging
                 </label>
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Enables detailed console logging for troubleshooting
                 </small>
               </div>
@@ -64,7 +64,7 @@
                 <label class="form-check-label" for="performanceMonitoring">
                   Performance Monitoring
                 </label>
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Tracks component render times and API response times
                 </small>
               </div>
@@ -80,7 +80,7 @@
                 <label class="form-check-label" for="showComponentOutlines">
                   Show Component Outlines
                 </label>
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Displays visual outlines around Vue components
                 </small>
               </div>
@@ -89,7 +89,7 @@
             <!-- Experimental Features -->
             <div class="settings-group mt-4">
               <h6 class="settings-group-title">
-                <AppIcon name="mdi-flask" class="me-1" />
+                <AppIcon name="mdi-flask" class="mr-1" />
                 Experimental Features
               </h6>
               
@@ -103,7 +103,7 @@
                 <label class="form-check-label" for="experimentalFeatures">
                   Enable Experimental Features
                 </label>
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Access to beta features and new functionalities
                 </small>
               </div>
@@ -119,7 +119,7 @@
                 <label class="form-check-label" for="betaUIComponents">
                   Beta UI Components
                 </label>
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Use new experimental UI components
                 </small>
               </div>
@@ -127,7 +127,7 @@
           </div>
 
           <!-- Right Column: Advanced Options -->
-          <div class="col-md-6">
+          <div class="flex-1-md-6">
             <div class="settings-group">
               <h6 class="settings-group-title">Advanced Options</h6>
               
@@ -143,7 +143,7 @@
                   max="120"
                   step="5"
                 >
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Maximum time to wait for API responses
                 </small>
               </div>
@@ -160,7 +160,7 @@
                   max="2048"
                   step="128"
                 >
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Maximum memory usage before cleanup
                 </small>
               </div>
@@ -177,7 +177,7 @@
                   max="1440"
                   step="5"
                 >
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   How long to cache API responses and computed data
                 </small>
               </div>
@@ -194,7 +194,7 @@
                   max="10"
                   step="1"
                 >
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                   Maximum simultaneous API requests
                 </small>
               </div>
@@ -203,7 +203,7 @@
             <!-- System Information -->
             <div class="settings-group mt-4">
               <h6 class="settings-group-title">
-                <AppIcon name="mdi-information" class="me-1" />
+                <AppIcon name="InformationCircleIcon" class="mr-1" />
                 System Information
               </h6>
               
@@ -235,7 +235,7 @@
 
         <!-- Action Buttons -->
         <div class="settings-actions mt-4">
-          <div class="d-flex flex-wrap gap-2 justify-content-between">
+          <div class="flex flex-wrap gap-glass-sm justify-between">
             <div class="action-group">
               <UnifiedButton
                 type="button"
@@ -249,7 +249,7 @@
             </div>
             
             <div class="action-group">
-              <UnifiedButton type="button" variant="outline" class="me-2" leading-icon="mdi-download" @click="exportDebugInfo">Export Debug Info</UnifiedButton>
+              <UnifiedButton type="button" variant="outline" class="mr-2" leading-icon="ArrowDownTrayIcon" @click="exportDebugInfo">Export Debug Info</UnifiedButton>
               
               <UnifiedButton type="button" variant="outline" leading-icon="mdi-restore" @click="resetToDefaults">Reset Defaults</UnifiedButton>
             </div>
@@ -262,19 +262,19 @@
     <div class="settings-card glass-card section-card mt-4">
       <div class="card-header section-header">
         <h5 class="card-title mb-0">
-          <AppIcon name="mdi-palette" />
+          <AppIcon name="SwatchIcon" />
           Theme & Appearance
         </h5>
       </div>
       <div class="card-body section-body">
-        <div class="row align-items-center">
-          <div class="col-md-6">
+        <div class="flex flex-wrap items-center">
+          <div class="flex-1-md-6">
             <h6>Quick Theme Toggle</h6>
-            <p class="text-muted small mb-0">
+            <p class="text-secondary small mb-0">
               Switch between light, dark, and system themes
             </p>
           </div>
-          <div class="col-md-6 text-md-end">
+          <div class="flex-1-md-6 text-md-end">
             <ThemeToggle :show-device-info="localSettings.debugMode" />
           </div>
         </div>
@@ -284,6 +284,8 @@
 </template>
 
 <script setup>
+import { ArrowDownTrayIcon, CodeBracketIcon, ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed, watch, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { useToast } from '@/composables/useToast'
@@ -447,11 +449,11 @@ onMounted(() => {
 }
 
 .settings-group-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -479,7 +481,7 @@ onMounted(() => {
 
 .info-label {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   min-width: 100px;
 }
 
@@ -490,7 +492,7 @@ onMounted(() => {
 }
 
 .settings-actions {
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   padding-top: 1rem;
 }
 
@@ -512,7 +514,7 @@ onMounted(() => {
 .alert-warning {
   background: var(--glass-surface);
   border: 1px solid rgba(255, 193, 7, 0.3);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -529,7 +531,7 @@ onMounted(() => {
     justify-content: center;
   }
   
-  .settings-actions .d-flex {
+  .settings-actions .flex {
     flex-direction: column;
     gap: 1rem;
   }

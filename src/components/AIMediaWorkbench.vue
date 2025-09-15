@@ -26,14 +26,14 @@
         <span class="badge" :title="'Average confidence score'">Avg {{ averageConfidence }}%</span>
         <span class="badge" :title="'Captured frames'">{{ frames.length }} snapshots</span>
         <div class="quick-actions">
-          <UnifiedButton variant="glass" size="sm" leading-icon="mdi-camera" :aria-label="'Capture snapshot'" title="Capture snapshot (Live)" @click="captureNow">Capture</UnifiedButton>
-          <UnifiedButton variant="outline" size="sm" leading-icon="mdi-trash-can-outline" :aria-label="'Clear session'" title="Clear session" @click="clearSession">Clear</UnifiedButton>
+          <UnifiedButton variant="glass" size="sm" leading-icon="CameraIcon" :aria-label="'Capture snapshot'" title="Capture snapshot (Live)" @click="captureNow">Capture</UnifiedButton>
+          <UnifiedButton variant="outline" size="sm" leading-icon="TrashIcon" :aria-label="'Clear session'" title="Clear session" @click="clearSession">Clear</UnifiedButton>
           <UnifiedButton variant="outline" size="sm" :aria-pressed="split.toString()" :title="split ? 'Disable split view' : 'Enable split view'" :leading-icon="split ? 'mdi-view-sequential' : 'mdi-view-split-vertical'" @click="split = !split">{{ split ? 'Single View' : 'Split View' }}</UnifiedButton>
           <UnifiedButton variant="outline" size="sm" leading-icon="mdi-draw" :aria-pressed="annotationMode.toString()" :title="annotationMode ? 'Disable annotation mode' : 'Enable annotation mode'" @click="annotationMode = !annotationMode">{{ annotationMode ? 'Annotate On' : 'Annotate Off' }}</UnifiedButton>
           <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-broom" title="Reset annotations" @click="resetAnnotations">Reset Annotations</UnifiedButton>
           <UnifiedButton variant="outline" size="sm" leading-icon="mdi-tray-arrow-down" title="Export session (JSON)" @click="exportJSON">Export JSON</UnifiedButton>
-          <UnifiedButton variant="outline" size="sm" leading-icon="mdi-table" title="Export responses (CSV)" @click="exportCSV">Export CSV</UnifiedButton>
-          <UnifiedButton variant="outline" size="sm" leading-icon="mdi-list-box" title="Export manifest (no images)" @click="exportManifest">Export Manifest</UnifiedButton>
+          <UnifiedButton variant="outline" size="sm" leading-icon="TableCellsIcon" title="Export responses (CSV)" @click="exportCSV">Export CSV</UnifiedButton>
+          <UnifiedButton variant="outline" size="sm" leading-icon="ListBulletIcon-box" title="Export manifest (no images)" @click="exportManifest">Export Manifest</UnifiedButton>
         </div>
       </div>
     </div>
@@ -79,21 +79,21 @@
                 <span>{{ formatTime(f.timestamp) }}</span>
                 <div class="thumb-actions">
                   <UnifiedButton size="sm" variant="glass" leading-icon="mdi-tray-arrow-down" @click="download(f)">Save</UnifiedButton>
-                  <UnifiedButton size="sm" variant="outline" leading-icon="mdi-pencil" @click="toggleAnno(f.id)">{{ isAnnoOpen(f.id) ? 'Close' : 'Annotate' }}</UnifiedButton>
+                  <UnifiedButton size="sm" variant="outline" leading-icon="PencilIcon" @click="toggleAnno(f.id)">{{ isAnnoOpen(f.id) ? 'Close' : 'Annotate' }}</UnifiedButton>
                 </div>
               </div>
               <div v-if="isAnnoOpen(f.id)" class="anno-editor">
-                <div class="row">
+                <div class="flex flex-wrap">
                   <label>Labels</label>
                   <input v-model="annoDraft[f.id].labels" type="text" class="form-control glass-input" placeholder="comma,separated,labels" />
                 </div>
-                <div class="row">
+                <div class="flex flex-wrap">
                   <label>Note</label>
                   <textarea v-model="annoDraft[f.id].note" class="form-control glass-input" rows="2" placeholder="Add a note"></textarea>
                 </div>
                 <div class="actions">
                   <UnifiedButton size="sm" variant="primary" leading-icon="mdi-content-save" @click="saveAnno(f.id)">Save</UnifiedButton>
-                  <UnifiedButton size="sm" variant="ghost" leading-icon="mdi-close" @click="toggleAnno(f.id)">Close</UnifiedButton>
+                  <UnifiedButton size="sm" variant="ghost" leading-icon="XMarkIcon" @click="toggleAnno(f.id)">Close</UnifiedButton>
                 </div>
               </div>
             </div>
@@ -103,8 +103,8 @@
 
       <div v-show="activeTab === 'analytics'" class="panel unified-container">
         <div class="glass-card section-card">
-          <h4 class="section-title d-flex align-center gap-sm mb-3">
-            <AppIcon name="mdi-chart-bar" color="info" aria-hidden="true" /> 
+          <h4 class="section-title flex items-center gap-sm mb-3">
+            <AppIcon name="ChartBarSquareIcon" color="info" aria-hidden="true" /> 
             Analytics Dashboard
           </h4>
           <div class="stats-grid">
@@ -143,6 +143,8 @@
 </template>
 
 <script setup lang="ts">
+import { CameraIcon, ChartBarSquareIcon, PencilIcon, TableCellsIcon, TrashIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { usePageAssistantContext } from '@/composables/usePageAssistantContext'
 import AIMediaIntegration from '@/components/AIMediaIntegration.vue'
@@ -160,9 +162,9 @@ const fileRef = ref<InstanceType<typeof FileAnalyzer> | null>(null)
 
 const tabs = [
   { key: 'live', label: 'Live', icon: 'mdi-television', shortLabel: 'Live' },
-  { key: 'file', label: 'File', icon: 'mdi-folder-multiple-outline', shortLabel: 'File' },
-  { key: 'gallery', label: 'Gallery', icon: 'mdi-image-multiple', shortLabel: 'Pix' },
-  { key: 'analytics', label: 'Analytics', icon: 'mdi-chart-bar', shortLabel: 'Stats' }
+  { key: 'file', label: 'File', icon: 'FolderIcon-multiple-outline', shortLabel: 'File' },
+  { key: 'gallery', label: 'Gallery', icon: 'PhotoIcon-multiple', shortLabel: 'Pix' },
+  { key: 'analytics', label: 'Analytics', icon: 'ChartBarIcon-bar', shortLabel: 'Stats' }
 ]
 const activeTab = ref<'live' | 'file' | 'gallery' | 'analytics'>('live')
 const split = ref(false)
@@ -175,7 +177,7 @@ const sessionName = ref('')
 const modes = [
   { key: 'describe', label: 'Describe', icon: 'mdi-magnify' },
   { key: 'ocr', label: 'OCR', icon: 'mdi-alphabetical-variant' },
-  { key: 'safety', label: 'Safety', icon: 'mdi-shield-outline' },
+  { key: 'safety', label: 'Safety', icon: 'ShieldCheckIcon-outline' },
   { key: 'uiqa', label: 'UI QA', icon: 'mdi-test-tube' },
 ]
 const activeMode = ref<'describe' | 'ocr' | 'safety' | 'uiqa'>('describe')
@@ -551,13 +553,13 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 /* Annotation Editor */
 .anno-editor { 
   padding: var(--spacing-3); 
-  border-top: 1px solid var(--glass-border); 
+  border-t: 1px solid var(--glass-border); 
   background: var(--glass-bg); 
   display: grid; 
   gap: var(--spacing-2); 
 }
 
-.anno-editor .row { 
+.anno-editor .flex flex-wrap { 
   display: grid; 
   gap: var(--spacing-1); 
 }
@@ -592,7 +594,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 .stat-value { 
   font-size: 2rem; 
   font-weight: 800; 
-  color: var(--text-primary); 
+  color: var(--text-primary-600); 
   line-height: 1;
 }
 
@@ -611,7 +613,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 .section-subtitle {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-md);
 }
 
@@ -628,7 +630,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
   grid-template-columns: 110px 90px 1fr; 
   gap: var(--spacing-3); 
   padding: var(--spacing-3); 
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   transition: all var(--transition-smooth);
 }
 
@@ -637,7 +639,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 }
 
 .timeline-item:last-child { 
-  border-bottom: 0; 
+  border-b: 0; 
 }
 
 .timeline-time {
@@ -656,7 +658,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 }
 
 .timeline-content {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1.4;
 }
 

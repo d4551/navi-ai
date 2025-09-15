@@ -9,12 +9,12 @@ Demonstrates the complete live job board implementation with:
 - Gaming industry focus
 -->
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <template #header-actions>
       <UnifiedButton
         variant="outline"
         size="sm"
-        leading-icon="mdi-information"
+        leading-icon="InformationCircleIcon"
         @click="showInfo = !showInfo"
       >
         {{ showInfo ? 'Hide' : 'Show' }} Demo Info
@@ -22,32 +22,32 @@ Demonstrates the complete live job board implementation with:
     </template>
 
     <!-- Demo Information Panel -->
-    <div v-if="showInfo" class="demo-info mt-4 p-3 unified-container" style="background: var(--info-surface); border-radius: 8px;">
-      <h6 class="text-primary mb-2">
-        <AppIcon name="mdi-information" class="me-2" />
+    <div v-if="showInfo" class="glass-card demo-info mt-4">
+      <h6 class="text-primary-600 mb-2">
+        <AppIcon name="InformationCircleIcon" class="mr-2" />
         How This Demo Works
       </h6>
       
-      <div class="row">
-        <div class="col-md-6">
+      <div class="flex flex-wrap">
+        <div class="flex-1-md-6">
           <h6>Live API Sources:</h6>
           <ul class="list-unstyled">
-            <li><AppIcon name="mdi-check-circle-outline" class="text-success me-1" /> RemoteOK - Remote jobs (no auth)</li>
-            <li><AppIcon name="mdi-check-circle-outline" class="text-success me-1" /> Arbeitnow - European tech jobs</li>
-            <li><AppIcon name="mdi-alert-circle-outline" class="text-warning me-1" /> JSearch API - Requires RapidAPI key</li>
-            <li><AppIcon name="mdi-alert-circle-outline" class="text-warning me-1" /> Adzuna API - Requires API key</li>
-            <li><AppIcon name="mdi-alert-circle-outline" class="text-warning me-1" /> Reed.co.uk - Requires API key</li>
+            <li><AppIcon name="CheckCircleIcon" class="text-success-600 mr-1" /> RemoteOK - Remote jobs (no auth)</li>
+            <li><AppIcon name="CheckCircleIcon" class="text-success-600 mr-1" /> Arbeitnow - European tech jobs</li>
+            <li><AppIcon name="ExclamationCircleIcon" class="text-warning-600 mr-1" /> JSearch API - Requires RapidAPI key</li>
+            <li><AppIcon name="ExclamationCircleIcon" class="text-warning-600 mr-1" /> Adzuna API - Requires API key</li>
+            <li><AppIcon name="ExclamationCircleIcon" class="text-warning-600 mr-1" /> Reed.co.uk - Requires API key</li>
           </ul>
         </div>
         
-        <div class="col-md-6">
+        <div class="flex-1-md-6">
           <h6>Features Demonstrated:</h6>
           <ul class="list-unstyled">
-            <li><AppIcon name="mdi-star" class="text-primary me-1" /> Profile-based job matching</li>
-            <li><AppIcon name="mdi-star" class="text-primary me-1" /> Gaming industry relevance scoring</li>
-            <li><AppIcon name="mdi-star" class="text-primary me-1" /> Real-time search & filtering</li>
-            <li><AppIcon name="mdi-star" class="text-primary me-1" /> API fallback strategies</li>
-            <li><AppIcon name="mdi-star" class="text-primary me-1" /> Caching & rate limiting</li>
+            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Profile-based job matching</li>
+            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Gaming industry relevance scoring</li>
+            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Real-time search & filtering</li>
+            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> API fallback strategies</li>
+            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Caching & rate limiting</li>
           </ul>
         </div>
       </div>
@@ -58,17 +58,17 @@ Demonstrates the complete live job board implementation with:
     </div>
 
     <!-- API Status Dashboard -->
-    <div class="api-status-dashboard glass p-4 gap-4 rounded-lg mb-4 unified-container">
+    <div class="glass-card api-status-dashboard">
       <h5 class="mb-3">
-        <AppIcon name="mdi-api" class="me-2" />
+        <AppIcon name="mdi-api" class="mr-2" />
         API Status Dashboard
       </h5>
       
-      <div class="row g-3">
+      <div class="flex flex-wrap g-3">
         <div
           v-for="(status, provider) in providerStatus"
           :key="provider"
-          class="col-md-2 col-sm-4 col-6"
+          class="flex-1-md-2 flex-1-sm-4 flex-1-6"
         >
           <div class="api-status-card" :class="{ active: status.enabled, disabled: !status.enabled }">
             <div class="status-header">
@@ -83,18 +83,18 @@ Demonstrates the complete live job board implementation with:
         </div>
       </div>
       
-      <div class="mt-3 d-flex justify-content-between align-items-center">
+      <div class="mt-3 flex justify-between items-center">
         <div class="status-summary">
-          <span class="text-success">{{ enabledProvidersCount }} active</span>
-          <span class="text-muted mx-2">•</span>
-          <span class="text-muted">{{ totalProvidersCount }} total providers</span>
+          <span class="text-success-600">{{ enabledProvidersCount }} active</span>
+          <span class="text-secondary mx-2">•</span>
+          <span class="text-secondary">{{ totalProvidersCount }} total providers</span>
         </div>
         
         <div class="status-actions">
           <UnifiedButton
             variant="outline"
             size="sm"
-            leading-icon="mdi-refresh"
+            leading-icon="ArrowPathIcon"
             @click="refreshProviderStatus"
           >
             Refresh Status
@@ -104,7 +104,7 @@ Demonstrates the complete live job board implementation with:
             variant="outline"
             size="sm"
             leading-icon="mdi-cache"
-            class="ms-2"
+            class="ml-2"
             @click="clearApiCache"
           >
             Clear Cache
@@ -117,51 +117,51 @@ Demonstrates the complete live job board implementation with:
     <LiveJobBoard />
 
     <!-- Demo Tools -->
-    <div class="demo-tools glass p-4 gap-4 rounded-lg mt-4">
+    <div class="demo-tools glass p-glass-md gap-glass-md rounded-lg mt-4">
       <h5 class="mb-3">
-        <AppIcon name="mdi-tools" class="me-2" />
+        <AppIcon name="WrenchScrewdriverIcon" class="mr-2" />
         Demo Tools
       </h5>
       
-      <div class="row g-3">
-        <div class="col-md-3">
+      <div class="flex flex-wrap g-3">
+        <div class="flex-1-md-3">
           <UnifiedButton
             variant="primary"
             block
-            leading-icon="mdi-magnify"
+            leading-icon="MagnifyingGlassIcon"
             @click="testGameDeveloperSearch"
           >
             Test: Game Developer Search
           </UnifiedButton>
         </div>
         
-        <div class="col-md-3">
+        <div class="flex-1-md-3">
           <UnifiedButton
             variant="gaming"
             block
-            leading-icon="mdi-gamepad-variant"
+            leading-icon="PuzzlePieceIcon"
             @click="testUnityDeveloperSearch"
           >
             Test: Unity Developer Search
           </UnifiedButton>
         </div>
         
-        <div class="col-md-3">
+        <div class="flex-1-md-3">
           <UnifiedButton
             variant="cyber"
             block
-            leading-icon="mdi-home"
+            leading-icon="HomeIcon"
             @click="testRemoteJobsSearch"
           >
             Test: Remote Jobs Search
           </UnifiedButton>
         </div>
         
-        <div class="col-md-3">
+        <div class="flex-1-md-3">
           <UnifiedButton
             variant="outline"
             block
-            leading-icon="mdi-account"
+            leading-icon="UserIcon"
             @click="testProfileBasedSearch"
           >
             Test: Profile-Based Search
@@ -170,35 +170,35 @@ Demonstrates the complete live job board implementation with:
       </div>
       
       <!-- Search Results Summary -->
-      <div v-if="lastTestResults" class="test-results mt-4 p-3" style="background: var(--surface-elevated); border-radius: 8px;">
+      <div v-if="lastTestResults" class="test-results mt-4 p-glass-md" style="background: var(--surface-elevated); border-radius: 8px;">
         <h6 class="mb-2">
-          <AppIcon name="mdi-chart-line" class="me-2" />
+          <AppIcon name="ChartBarIcon" class="mr-2" />
           Last Test Results
         </h6>
         
-        <div class="row g-3">
-          <div class="col-md-3">
+        <div class="flex flex-wrap g-3">
+          <div class="flex-1-md-3">
             <div class="result-stat">
               <div class="stat-number">{{ lastTestResults.totalJobs }}</div>
               <div class="stat-label">Total Jobs Found</div>
             </div>
           </div>
           
-          <div class="col-md-3">
+          <div class="flex-1-md-3">
             <div class="result-stat">
               <div class="stat-number">{{ lastTestResults.gamingJobs }}</div>
               <div class="stat-label">Gaming-Related</div>
             </div>
           </div>
           
-          <div class="col-md-3">
+          <div class="flex-1-md-3">
             <div class="result-stat">
               <div class="stat-number">{{ lastTestResults.sources.length }}</div>
               <div class="stat-label">API Sources</div>
             </div>
           </div>
           
-          <div class="col-md-3">
+          <div class="flex-1-md-3">
             <div class="result-stat">
               <div class="stat-number">{{ lastTestResults.responseTime }}ms</div>
               <div class="stat-label">Response Time</div>
@@ -213,24 +213,24 @@ Demonstrates the complete live job board implementation with:
     </div>
 
     <!-- Real-Time Notifications Demo -->
-    <div class="notifications-demo glass p-4 gap-4 rounded-lg mt-4">
+    <div class="notifications-demo glass p-glass-md gap-glass-md rounded-lg mt-4">
       <h5 class="mb-3">
-        <AppIcon name="mdi-bell" class="me-2" />
+        <AppIcon name="BellIcon" class="mr-2" />
         Real-Time Job Alerts Demo
       </h5>
       
-      <div class="row">
-        <div class="col-md-8">
-          <p class="text-muted mb-3">
+      <div class="flex flex-wrap">
+        <div class="flex-1-md-8">
+          <p class="text-secondary mb-3">
             Set up job alerts to receive notifications when new jobs matching your criteria are found.
             This demo shows how the real-time system works.
           </p>
           
-          <div class="alert-controls d-flex gap-2 mb-3">
+          <div class="alert-controls flex gap-glass-sm mb-3">
             <UnifiedButton
               variant="primary"
               size="sm"
-              leading-icon="mdi-plus"
+              leading-icon="PlusIcon"
               @click="createDemoAlert"
             >
               Create Demo Alert
@@ -239,7 +239,7 @@ Demonstrates the complete live job board implementation with:
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-bell"
+              leading-icon="BellIcon"
               :disabled="notificationPermission === 'granted'"
               @click="requestNotificationPermission"
             >
@@ -249,7 +249,7 @@ Demonstrates the complete live job board implementation with:
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-test-tube"
+              leading-icon="BeakerIcon"
               @click="triggerTestNotification"
             >
               Test Notification
@@ -257,7 +257,7 @@ Demonstrates the complete live job board implementation with:
           </div>
         </div>
         
-        <div class="col-md-4">
+        <div class="flex-1-md-4">
           <div class="notification-status">
             <div class="status-item">
               <span class="label">Permission:</span>
@@ -279,14 +279,14 @@ Demonstrates the complete live job board implementation with:
     </div>
 
     <!-- Console Output -->
-    <div class="console-output glass p-4 gap-4 rounded-lg mt-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="console-output glass p-glass-md gap-glass-md rounded-lg mt-4">
+      <div class="flex justify-between items-center mb-3">
         <h5 class="mb-0">
-          <AppIcon name="mdi-console" class="me-2" />
+          <AppIcon name="CommandLineIcon" class="mr-2" />
           API Console Output
         </h5>
         <button class="btn btn-sm btn-outline-secondary" @click="clearConsoleOutput">
-          <AppIcon name="mdi-delete" class="me-1" />
+          <AppIcon name="TrashIcon" class="mr-1" />
           Clear
         </button>
       </div>
@@ -309,6 +309,9 @@ Demonstrates the complete live job board implementation with:
 </template>
 
 <script setup>
+import { ArrowPathIcon, BeakerIcon, BellIcon, ChartBarIcon, CheckCircleIcon, CommandLineIcon, ExclamationCircleIcon, HomeIcon, InformationCircleIcon, MagnifyingGlassIcon, PlusIcon, PuzzlePieceIcon, TrashIcon, UserIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useJobBoard } from '@/composables/useJobBoard'
@@ -584,9 +587,9 @@ const formatPermissionStatus = (permission) => {
 
 const getPermissionClass = (permission) => {
   switch (permission) {
-    case 'granted': return 'text-success'
-    case 'denied': return 'text-danger'
-    default: return 'text-warning'
+    case 'granted': return 'text-success-600'
+    case 'denied': return 'text-error-600'
+    default: return 'text-warning-600'
   }
 }
 
@@ -733,7 +736,7 @@ onUnmounted(() => {
   background: rgba(0, 0, 0, 0.3);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
-  font-family: 'Courier New', monospace;
+  font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
   font-size: var(--font-size-sm);
 }
 
@@ -741,26 +744,26 @@ onUnmounted(() => {
   margin-bottom: var(--spacing-xs);
   padding: var(--spacing-xs);
   border-radius: var(--border-radius-sm);
-  border-left: 3px solid transparent;
+  border-l: 3px solid transparent;
 }
 
 .console-entry.level-info {
-  border-left-color: var(--color-info-500);
+  border-l-color: var(--color-info-500);
   background: rgba(59, 130, 246, 0.1);
 }
 
 .console-entry.level-success {
-  border-left-color: var(--color-success-500);
+  border-l-color: var(--color-success-500);
   background: rgba(34, 197, 94, 0.1);
 }
 
 .console-entry.level-warning {
-  border-left-color: var(--color-warning-500);
+  border-l-color: var(--color-warning-500);
   background: rgba(245, 158, 11, 0.1);
 }
 
 .console-entry.level-error {
-  border-left-color: var(--color-danger-500);
+  border-l-color: var(--color-danger-500);
   background: rgba(239, 68, 68, 0.1);
 }
 
@@ -772,7 +775,7 @@ onUnmounted(() => {
 /* Local level-badge replaced by unified alias */
 
 .message {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .data {

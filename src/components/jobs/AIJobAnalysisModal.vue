@@ -1,11 +1,11 @@
 <template>
-  <v-dialog :model-value="show" max-width="900" persistent @update:model-value="$emit('update:show', $event)">
+  <v-dialog :model-value="show" max-width="900" persistent class="font-sans " @update:model-value="$emit('update:show', $event)">
     <v-card class="ai-analysis-modal">
-      <v-card-title class="d-flex align-items-center justify-space-between">
-        <div class="d-flex align-items-center">
-          <AppIcon name="mdi-brain" class="me-3 text-primary" />
+      <v-card-title class="flex items-center justify-space-between">
+        <div class="flex items-center">
+          <AppIcon name="CpuChipIcon" class="mr-3 text-primary-600" />
           <div>
-            <h3 class="text-h6 mb-0">AI Job Analysis</h3>
+            <h3 class="text-lg font-semibold mb-0">AI Job Analysis</h3>
             <p v-if="job" class="text-body-2 text-medium-emphasis mb-0">
               {{ job.title }} at {{ job.company }}
             </p>
@@ -13,7 +13,7 @@
         </div>
         <UnifiedButton 
           icon-only 
-          icon="mdi-close" 
+          icon="XMarkIcon" 
           variant="ghost" 
           size="sm"
           aria-label="Close"
@@ -25,19 +25,19 @@
         <!-- Analysis Mode Tabs -->
         <v-tabs v-model="activeTab" class="mb-4">
           <v-tab value="match">
-            <AppIcon name="mdi-target" class="me-2" />
+            <AppIcon name="EyeIcon" class="mr-2" />
             Match Analysis
           </v-tab>
           <v-tab value="salary">
-            <AppIcon name="mdi-currency-usd" class="me-2" />
+            <AppIcon name="mdi-currency-usd" class="mr-2" />
             Salary Prediction
           </v-tab>
           <v-tab value="insights">
-            <AppIcon name="mdi-lightbulb" class="me-2" />
+            <AppIcon name="LightBulbIcon" class="mr-2" />
             Career Insights
           </v-tab>
           <v-tab value="market">
-            <AppIcon name="mdi-chart-line" class="me-2" />
+            <AppIcon name="ChartBarIcon" class="mr-2" />
             Market Data
           </v-tab>
         </v-tabs>
@@ -47,9 +47,9 @@
           <v-tabs-window-item value="match">
             <div v-if="matchData" class="match-analysis">
               <div class="mb-4">
-                <div class="d-flex align-items-center mb-2">
-                  <AppIcon name="mdi-target" color="getScoreColor(matchData.matchScore)" class="me-2" />
-                  <h4 class="text-h6">
+                <div class="flex items-center mb-2">
+                  <AppIcon name="EyeIcon" color="getScoreColor(matchData.matchScore)" class="mr-2" />
+                  <h4 class="text-lg font-semibold">
                     {{ matchData.matchScore }}% Match Score
                   </h4>
                 </div>
@@ -71,12 +71,12 @@
 
               <!-- Match Breakdown -->
               <div class="match-breakdown mb-4">
-                <h5 class="text-subtitle-1 mb-3">Match Breakdown</h5>
-                <div class="row">
-                  <div class="col-md-6">
+                <h5 class="text-base font-medium mb-3">Match Breakdown</h5>
+                <div class="flex flex-wrap">
+                  <div class="flex-1-md-6">
                     <div class="metric-card">
                       <div class="metric-header">
-                        <AppIcon name="mdi-cog" class="me-2" />
+                        <AppIcon name="CogIcon" class="mr-2" />
                         Skills Alignment
                       </div>
                       <div class="metric-value">
@@ -90,10 +90,10 @@
                       />
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="flex-1-md-6">
                     <div class="metric-card">
                       <div class="metric-header">
-                        <AppIcon name="mdi-school" class="me-2" />
+                        <AppIcon name="AcademicCapIcon" class="mr-2" />
                         Experience Match
                       </div>
                       <div class="metric-value">
@@ -107,10 +107,10 @@
                       />
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="flex-1-md-6">
                     <div class="metric-card">
                       <div class="metric-header">
-                        <AppIcon name="mdi-map-marker" class="me-2" />
+                        <AppIcon name="MapPinIcon" class="mr-2" />
                         Location Preference
                       </div>
                       <div class="metric-value">
@@ -124,10 +124,10 @@
                       />
                     </div>
                   </div>
-                  <div v-if="matchData.cultureScore" class="col-md-6">
+                  <div v-if="matchData.cultureScore" class="flex-1-md-6">
                     <div class="metric-card">
                       <div class="metric-header">
-                        <AppIcon name="mdi-heart" class="me-2" />
+                        <AppIcon name="HeartIcon" class="mr-2" />
                         Culture Fit
                       </div>
                       <div class="metric-value">
@@ -146,14 +146,14 @@
 
               <!-- Match Reasons -->
               <div class="match-reasons">
-                <h5 class="text-subtitle-1 mb-3">Why This Job Matches</h5>
-                <div class="d-flex flex-wrap gap-2">
+                <h5 class="text-base font-medium mb-3">Why This Job Matches</h5>
+                <div class="flex flex-wrap gap-glass-sm">
                   <UiChip
                     v-for="reason in matchData.matchReasons"
                     :key="reason"
                     classes="chip chip-primary chip-compact"
                   >
-                    <AppIcon name="mdi-check-circle-outline" class="me-2" />
+                    <AppIcon name="CheckCircleIcon" class="mr-2" />
                     {{ reason }}
                   </UiChip>
                 </div>
@@ -167,7 +167,7 @@
           <v-tabs-window-item value="salary">
             <div v-if="salaryData" class="salary-analysis">
               <div class="salary-estimate mb-4">
-                <h4 class="text-h6 mb-2">Estimated Salary Range</h4>
+                <h4 class="text-lg font-semibold mb-2">Estimated Salary Range</h4>
                 <div class="salary-range">
                   <span class="salary-amount">
                     {{ formatCurrency(salaryData.estimatedSalary.min) }} - 
@@ -183,7 +183,7 @@
 
               <!-- Market Data -->
               <div class="market-data mb-4">
-                <h5 class="text-subtitle-1 mb-3">Market Percentiles</h5>
+                <h5 class="text-base font-medium mb-3">Market Percentiles</h5>
                 <div class="percentile-chart">
                   <div class="percentile-bar">
                     <div class="percentile-label">25th</div>
@@ -214,14 +214,14 @@
 
               <!-- Salary Factors -->
               <div class="salary-factors">
-                <h5 class="text-subtitle-1 mb-3">Factors Affecting Salary</h5>
-                <div class="d-flex flex-wrap gap-2">
+                <h5 class="text-base font-medium mb-3">Factors Affecting Salary</h5>
+                <div class="flex flex-wrap gap-glass-sm">
                   <UiChip
                     v-for="factor in salaryData.factors"
                     :key="factor"
                     classes="chip chip-info chip-compact"
                   >
-                    <AppIcon name="mdi-trending-up" class="me-2" />
+                    <AppIcon name="ArrowTrendingUpIcon" class="mr-2" />
                     {{ factor }}
                   </UiChip>
                 </div>
@@ -236,7 +236,7 @@
             <div v-if="insightsData" class="career-insights">
               <!-- Job Complexity -->
               <div class="insight-section mb-4">
-                <h5 class="text-subtitle-1 mb-2">Job Complexity</h5>
+                <h5 class="text-base font-medium mb-2">Job Complexity</h5>
                 <UiChip :classes="`chip chip-${getComplexityColor(insightsData.jobComplexity)}`">
                   {{ capitalizeFirst(insightsData.jobComplexity) }} Level
                 </UiChip>
@@ -244,9 +244,9 @@
 
               <!-- Skills Analysis -->
               <div class="insight-section mb-4">
-                <div class="row">
-                  <div class="col-md-6">
-                    <h5 class="text-subtitle-1 mb-2">Required Skills</h5>
+                <div class="flex flex-wrap">
+                  <div class="flex-1-md-6">
+                    <h5 class="text-base font-medium mb-2">Required Skills</h5>
                     <div class="skills-list">
                       <UiChip
                         v-for="skill in insightsData.requiredSkills.slice(0, 5)"
@@ -257,8 +257,8 @@
                       </UiChip>
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <h5 class="text-subtitle-1 mb-2">Nice-to-Have Skills</h5>
+                  <div class="flex-1-md-6">
+                    <h5 class="text-base font-medium mb-2">Nice-to-Have Skills</h5>
                     <div class="skills-list">
                       <UiChip
                         v-for="skill in insightsData.nicetohaveSkills.slice(0, 5)"
@@ -274,14 +274,14 @@
 
               <!-- Career Progression -->
               <div class="insight-section mb-4">
-                <h5 class="text-subtitle-1 mb-2">Typical Career Progression</h5>
+                <h5 class="text-base font-medium mb-2">Typical Career Progression</h5>
                 <div class="progression-path">
                   <UiChip
                     v-for="(step, index) in insightsData.careerProgression"
                     :key="step"
                     :classes="`chip ${index === 0 ? 'chip-primary' : ''} chip-compact ma-1`"
                   >
-                    <AppIcon name="mdi-arrow-right" class="me-2" />
+                    <AppIcon name="ArrowRightIcon" class="mr-2" />
                     {{ step }}
                   </UiChip>
                 </div>
@@ -289,8 +289,8 @@
 
               <!-- Work Environment Insights -->
               <div class="insight-section mb-4">
-                <div class="row">
-                  <div class="col-md-4">
+                <div class="flex flex-wrap">
+                  <div class="flex-1-md-4">
                     <div class="insight-metric">
                       <div class="metric-label">Remote Compatible</div>
                       <div class="metric-value">
@@ -303,7 +303,7 @@
                       />
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="flex-1-md-4">
                     <div class="insight-metric">
                       <div class="metric-label">Burnout Risk</div>
                       <UiChip 
@@ -313,7 +313,7 @@
                       </UiChip>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="flex-1-md-4">
                     <div class="insight-metric">
                       <div class="metric-label">Learning Curve</div>
                       <UiChip 
@@ -328,9 +328,9 @@
 
               <!-- Industry Growth -->
               <div class="insight-section">
-                <h5 class="text-subtitle-1 mb-2">Industry Outlook</h5>
+                <h5 class="text-base font-medium mb-2">Industry Outlook</h5>
                 <UiChip :classes="`chip chip-${getGrowthColor(insightsData.industryGrowth)}`">
-                  <AppIcon :name="getGrowthIcon(insightsData.industryGrowth)" class="me-2" />
+                  <AppIcon :name="getGrowthIcon(insightsData.industryGrowth)" class="mr-2" />
                   {{ capitalizeFirst(insightsData.industryGrowth) }}
                 </UiChip>
               </div>
@@ -345,60 +345,60 @@
               <div v-if="marketData">
                 <!-- Market Overview -->
                 <div class="market-overview mb-6">
-                  <h4 class="text-h6 mb-3 d-flex align-items-center">
-                    <AppIcon name="mdi-chart-timeline-variant" class="mr-2" />
+                  <h4 class="text-lg font-semibold mb-3 flex items-center">
+                    <AppIcon name="ChartBarIcon-timeline-variant" class="mr-2" />
                     Market Overview
                   </h4>
                   
-                  <v-row class="mb-4">
-                    <v-col cols="12" md="6">
+                  <v-flex flex-wrap class="mb-4">
+                    <v-flex-1 cols="12" md="6">
                       <v-card class="metric-card">
                         <v-card-text>
-                          <div class="d-flex justify-content-between align-items-center">
+                          <div class="flex justify-between items-center">
                             <div>
                               <div class="text-caption text-medium-emphasis">Average Salary Range</div>
-                              <div class="text-h6 text-primary">${marketData.salaryRange.min}k - ${marketData.salaryRange.max}k</div>
+                              <div class="text-lg font-semibold text-primary-600">${marketData.salaryRange.min}k - ${marketData.salaryRange.max}k</div>
                             </div>
-                            <AppIcon name="mdi-cash" size="32" color="success" />
+                            <AppIcon name="CurrencyDollarIcon" size="32" color="success" />
                           </div>
                         </v-card-text>
                       </v-card>
-                    </v-col>
+                    </v-flex-1>
                     
-                    <v-col cols="12" md="6">
+                    <v-flex-1 cols="12" md="6">
                       <v-card class="metric-card">
                         <v-card-text>
-                          <div class="d-flex justify-content-between align-items-center">
+                          <div class="flex justify-between items-center">
                             <div>
                               <div class="text-caption text-medium-emphasis">Market Competition</div>
-                              <div class="text-h6" :class="getCompetitionColor(marketData.competitionLevel)">
+                              <div class="text-lg font-semibold" :class="getCompetitionColor(marketData.competitionLevel)">
                                 {{ formatCompetitionLevel(marketData.competitionLevel) }}
                               </div>
                             </div>
-                            <AppIcon name="mdi-account-group" size="32" color="info" />
+                            <AppIcon name="UsersIcon" size="32" color="info" />
                           </div>
                         </v-card-text>
                       </v-card>
-                    </v-col>
-                  </v-row>
+                    </v-flex-1>
+                  </v-flex flex-wrap>
                 </div>
 
                 <!-- Skill Demand Analysis -->
                 <div class="skill-demand mb-6">
-                  <h5 class="text-subtitle-1 mb-3">
-                    <AppIcon name="mdi-trending-up" class="mr-2" />
+                  <h5 class="text-base font-medium mb-3">
+                    <AppIcon name="ArrowTrendingUpIcon" class="mr-2" />
                     Skill Demand Trends
                   </h5>
                   
                   <div class="skills-trending">
                     <div v-for="skill in marketData.trendingSkills" :key="skill.name" class="skill-trend-item mb-2">
-                      <div class="d-flex justify-content-between align-items-center">
+                      <div class="flex justify-between items-center">
                         <span class="font-weight-medium">{{ skill.name }}</span>
-                        <div class="d-flex align-items-center">
+                        <div class="flex items-center">
                           <div class="demand-bar mr-2">
                             <div class="demand-fill" :style="{ width: skill.demandPercentage + '%' }"></div>
                           </div>
-                          <span class="text-caption" :class="skill.trend > 0 ? 'text-success' : skill.trend < 0 ? 'text-error' : 'text-medium-emphasis'">
+                          <span class="text-caption" :class="skill.trend > 0 ? 'text-success-600' : skill.trend < 0 ? 'text-error' : 'text-medium-emphasis'">
                             {{ skill.trend > 0 ? '+' : '' }}{{ skill.trend }}%
                           </span>
                         </div>
@@ -409,16 +409,16 @@
 
                 <!-- Industry Insights -->
                 <div class="industry-insights mb-4">
-                  <h5 class="text-subtitle-1 mb-3">
-                    <AppIcon name="mdi-domain" class="mr-2" />
+                  <h5 class="text-base font-medium mb-3">
+                    <AppIcon name="BuildingOfficeIcon" class="mr-2" />
                     Industry Analysis
                   </h5>
                   
-                  <v-row>
-                    <v-col cols="12" md="6">
+                  <v-flex flex-wrap>
+                    <v-flex-1 cols="12" md="6">
                       <div class="insight-card">
                         <h6 class="text-subtitle-2 mb-2">Growth Outlook</h6>
-                        <div class="d-flex align-items-center">
+                        <div class="flex items-center">
                           <v-progress-circular
                             :model-value="marketData.growthOutlook"
                             :color="getNumericGrowthColor(marketData.growthOutlook)"
@@ -433,12 +433,12 @@
                           </div>
                         </div>
                       </div>
-                    </v-col>
+                    </v-flex-1>
                     
-                    <v-col cols="12" md="6">
+                    <v-flex-1 cols="12" md="6">
                       <div class="insight-card">
                         <h6 class="text-subtitle-2 mb-2">Remote Opportunities</h6>
-                        <div class="d-flex align-items-center">
+                        <div class="flex items-center">
                           <v-progress-circular
                             :model-value="marketData.remotePercentage"
                             color="primary"
@@ -453,14 +453,14 @@
                           </div>
                         </div>
                       </div>
-                    </v-col>
-                  </v-row>
+                    </v-flex-1>
+                  </v-flex flex-wrap>
                 </div>
 
                 <!-- Market Recommendations -->
                 <div class="market-recommendations">
-                  <h5 class="text-subtitle-1 mb-3">
-                    <AppIcon name="mdi-lightbulb-on" class="mr-2" />
+                  <h5 class="text-base font-medium mb-3">
+                    <AppIcon name="LightBulbIcon" class="mr-2" />
                     Strategic Recommendations
                   </h5>
                   
@@ -473,9 +473,9 @@
                       class="mb-2"
                       density="compact"
                     >
-                      <div class="d-flex align-items-start">
+                      <div class="flex items-start">
                         <AppIcon 
-                          :name="rec.priority === 'high' ? 'mdi-alert' : rec.priority === 'medium' ? 'mdi-information' : 'mdi-lightbulb'"
+                          :name="rec.priority === 'high' ? 'mdi-alert' : rec.priority === 'medium' ? 'InformationCircleIconrmation' : 'LightBulbIcon'"
                           class="mr-2 mt-1"
                           size="16"
                         />
@@ -492,7 +492,7 @@
               <!-- Loading State -->
               <div v-else-if="loadingMarketData" class="text-center py-8">
                 <v-progress-circular indeterminate color="primary" size="48" />
-                <h4 class="text-h6 mt-4">Analyzing Market Data...</h4>
+                <h4 class="text-lg font-semibold mt-4">Analyzing Market Data...</h4>
                 <p class="text-body-2 text-medium-emphasis">
                   Gathering insights from industry trends and salary data
                 </p>
@@ -502,7 +502,7 @@
               <div v-else class="text-center py-8">
                 <UnifiedButton
                   variant="primary"
-                  leading-icon="mdi-chart-timeline-variant"
+                  leading-icon="ChartBarIcon-timeline-variant"
                   :loading="loadingMarketData"
                   @click="generateMarketInsights"
                 >
@@ -523,7 +523,7 @@
         <UnifiedButton 
           v-if="job" 
           variant="primary"
-          leading-icon="mdi-robot"
+          leading-icon="CpuChipIcon"
           @click="analyzeAnotherMode"
         >
           Analyze More
@@ -534,6 +534,9 @@
 </template>
 
 <script setup lang="ts">
+import { AcademicCapIcon, ArrowRightIcon, ArrowTrendingUpIcon, BuildingOfficeIcon, ChartBarIcon, CheckCircleIcon, CogIcon, CpuChipIcon, CurrencyDollarIcon, EyeIcon, LightBulbIcon, UsersIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, LightBulbIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch } from 'vue'
 import type { Job } from '@/shared/types/jobs'
 import type { AIJobMatch, SalaryPrediction, AIJobInsights } from '@/services/AIJobService'
@@ -662,10 +665,10 @@ const getGrowthColor = (growth: string) => {
 const getGrowthIcon = (growth: string) => {
   switch (growth) {
     case 'booming': return 'mdi-trending-up'
-    case 'growing': return 'mdi-arrow-up'
+    case 'growing': return 'ArrowUpIcon'
     case 'stable': return 'mdi-minus'
     case 'declining': return 'mdi-trending-down'
-    default: return 'mdi-help'
+    default: return 'QuestionMarkCircleIcon'
   }
 }
 
@@ -957,9 +960,9 @@ const getDefaultMarketData = () => ({
 
 const getCompetitionColor = (level: string) => {
   switch (level) {
-    case 'low': return 'text-success'
-    case 'medium': return 'text-info'
-    case 'high': return 'text-warning'
+    case 'low': return 'text-success-600'
+    case 'medium': return 'text-blue-600'
+    case 'high': return 'text-warning-600'
     case 'very-high': return 'text-error'
     default: return 'text-medium-emphasis'
   }
@@ -1003,7 +1006,7 @@ const getRemoteDescription = (percentage: number) => {
   overflow-y: auto;
 }
 
-.match-breakdown .row {
+.match-breakdown .flex flex-wrap {
   gap: 1rem;
 }
 
@@ -1067,11 +1070,11 @@ const getRemoteDescription = (percentage: number) => {
 
 .insight-section {
   padding: 1rem 0;
-  border-bottom: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-b: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
 }
 
 .insight-section:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .skills-list {

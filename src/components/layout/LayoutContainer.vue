@@ -1,5 +1,5 @@
 <template>
-  <div :class="containerClasses" :data-layout="variant">
+  <div :class="containerClasses" :data-layout="variant" class="font-sans">
     <slot />
   </div>
 </template>

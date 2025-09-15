@@ -8,10 +8,11 @@ RGB accents with ultra-wide layout and AI-powered job automation
     page-type="gaming"
     title="THE FLOW"
     subtitle="Every great heist needs a perfect plan. Welcome to the automation underworld."
-    :title-icon="'mdi-chart-timeline'"
+    :title-icon="'ChartBarIcon-timeline'"
     :hero-stats="headerStats"
     content-spacing="normal"
     max-width="xl"
+    class="font-sans "
   >
     <!-- Quick Actions -->
     <section class="quick-actions glass-section unified-container">
@@ -21,11 +22,11 @@ RGB accents with ultra-wide layout and AI-powered job automation
       </div>
       <div class="actions-grid tool-grid">
         <button 
-          class="action-card glass p-4 gap-4 rounded-lg neon-interactive"
+          class="action-card glass p-glass-md gap-glass-md rounded-lg neon-interactive"
           @click="createNewFlow"
         >
           <div class="action-icon">
-            <AppIcon name="mdi-plus-circle" class="rgb-icon" />
+            <AppIcon name="PlusCircleIcon" class="rgb-icon" />
           </div>
           <div class="action-content">
             <h3>Create Flow</h3>
@@ -34,11 +35,11 @@ RGB accents with ultra-wide layout and AI-powered job automation
         </button>
         
         <button 
-          class="action-card glass p-4 gap-4 rounded-lg neon-interactive"
+          class="action-card glass p-glass-md gap-glass-md rounded-lg neon-interactive"
           @click="openTemplate"
         >
           <div class="action-icon">
-            <AppIcon name="mdi-file-outline" class="rgb-icon" />
+            <AppIcon name="DocumentIcon-outline" class="rgb-icon" />
           </div>
           <div class="action-content">
             <h3>Templates</h3>
@@ -47,11 +48,11 @@ RGB accents with ultra-wide layout and AI-powered job automation
         </button>
         
         <button 
-          class="action-card glass p-4 gap-4 rounded-lg neon-interactive"
+          class="action-card glass p-glass-md gap-glass-md rounded-lg neon-interactive"
           @click="openNodeRedUI"
         >
           <div class="action-icon">
-            <AppIcon name="mdi-cog" />
+            <AppIcon name="CogIcon" />
           </div>
           <div class="action-content">
             <h3>Node-RED UI</h3>
@@ -60,11 +61,11 @@ RGB accents with ultra-wide layout and AI-powered job automation
         </button>
         
         <button 
-          class="action-card glass p-4 gap-4 rounded-lg neon-interactive"
+          class="action-card glass p-glass-md gap-glass-md rounded-lg neon-interactive"
           @click="viewLogs"
         >
           <div class="action-icon">
-            <AppIcon name="mdi-file-document-outline" />
+            <AppIcon name="DocumentIcon" />
           </div>
           <div class="action-content">
             <h3>Execution Logs</h3>
@@ -111,7 +112,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
             <option value="ai-assistance">AI Assistance</option>
           </select>
           
-          <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-refresh" :class="{ spinning: loading }" @click="refreshFlows">Refresh</UnifiedButton>
+          <UnifiedButton color="glass" appearance="outlined" leading-icon="ArrowPathIcon" :class="{ spinning: loading }" @click="refreshFlows">Refresh</UnifiedButton>
         </div>
       </div>
       
@@ -137,7 +138,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
         <div 
           v-for="flow in sortedFilteredFlows"
           :key="flow.id"
-          class="flow-card glass p-4 gap-4 rounded-lg neon-interactive"
+          class="flow-card glass p-glass-md gap-glass-md rounded-lg neon-interactive"
           role="listitem"
           :aria-label="`${flow.name} ${flow.status}`"
           @click="openFlowDetails(flow)"
@@ -168,7 +169,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
                 :title="flow.status === 'running' ? 'Stop Flow' : 'Start Flow'"
                 @click.stop="toggleFlow(flow)"
               >
-                <AppIcon :name="flow.status === 'running' ? 'mdi-stop' : 'mdi-play'" />
+                <AppIcon :name="flow.status === 'running' ? 'StopIcon' : 'PlayIcon'" />
               </button>
               
               <button 
@@ -176,7 +177,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
                 title="Edit Flow"
                 @click.stop="editFlow(flow)"
               >
-                <AppIcon name="mdi-pencil" />
+                <AppIcon name="PencilIcon" />
               </button>
               <button 
                 class="control-btn ui-icon-btn" 
@@ -184,7 +185,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
                 aria-label="Duplicate flow"
                 @click.stop="duplicateFlow(flow)"
               >
-                <AppIcon name="mdi-content-copy" />
+                <AppIcon name="DocumentDuplicateIcon" />
               </button>
               <button 
                 class="control-btn ui-icon-btn danger" 
@@ -192,7 +193,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
                 aria-label="Delete flow"
                 @click.stop="deleteFlow(flow)"
               >
-                <AppIcon name="mdi-delete-outline" />
+                <AppIcon name="TrashIcon-outline" />
               </button>
             </div>
           </div>
@@ -215,18 +216,18 @@ RGB accents with ultra-wide layout and AI-powered job automation
           
           <!-- Flow Actions -->
           <div class="flow-actions">
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-eye">View</UnifiedButton>
-            <UnifiedButton color="gaming" leading-icon="mdi-play">Run Now</UnifiedButton>
+            <UnifiedButton color="glass" appearance="outlined" leading-icon="EyeIcon">View</UnifiedButton>
+            <UnifiedButton color="gaming" leading-icon="PlayIcon">Run Now</UnifiedButton>
           </div>
         </div>
       </div>
       
       <!-- Empty State -->
-      <div v-else-if="!loading" class="empty-state glass p-6 gap-4 rounded-lg">
+      <div v-else-if="!loading" class="empty-state glass p-glass-lg gap-glass-md rounded-lg">
         <AppIcon name="mdi-lan-disconnect" class="empty-icon" />
         <h3>No Automation Flows</h3>
         <p>Create your first workflow to automate your career tasks</p>
-        <UnifiedButton color="gaming" leading-icon="mdi-plus" @click="createNewFlow">Create First Flow</UnifiedButton>
+        <UnifiedButton color="gaming" leading-icon="PlusIcon" @click="createNewFlow">Create First Flow</UnifiedButton>
       </div>
       
       <!-- Loading State -->
@@ -234,7 +235,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
         <div 
           v-for="i in 4" 
           :key="i"
-          class="flow-card-skeleton glass p-4 gap-4 rounded-lg"
+          class="flow-card-skeleton glass p-glass-md gap-glass-md rounded-lg"
         >
           <div class="skeleton-header">
             <div class="skeleton-icon"></div>
@@ -257,7 +258,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
         <div class="templates-modal glass-modal" @click.stop>
           <div class="modal-header">
             <h2>Flow Templates</h2>
-            <UnifiedButton color="ghost" appearance="text" icon-only icon="mdi-close" aria-label="Close" @click="closeTemplates" />
+            <UnifiedButton color="ghost" appearance="text" icon-only icon="XMarkIcon" aria-label="Close" @click="closeTemplates" />
           </div>
           
           <div class="modal-content">
@@ -265,7 +266,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
               <div 
                 v-for="template in flowTemplates"
                 :key="template.id"
-                class="template-card glass p-4 gap-4 rounded-lg neon-interactive"
+                class="template-card glass p-glass-md gap-glass-md rounded-lg neon-interactive"
                 @click="createFromTemplate(template)"
               >
                 <div class="template-icon">
@@ -297,25 +298,25 @@ RGB accents with ultra-wide layout and AI-powered job automation
         <div class="templates-modal glass-modal" @click.stop>
           <div class="modal-header">
             <h2>Create Flow</h2>
-            <UnifiedButton color="ghost" appearance="text" icon-only icon="mdi-close" aria-label="Close" @click="closeCreate" />
+            <UnifiedButton color="ghost" appearance="text" icon-only icon="XMarkIcon" aria-label="Close" @click="closeCreate" />
           </div>
           <div class="modal-content">
             <form class="create-form" @submit.prevent="submitCreateFlow">
-              <div class="form-row">
+              <div class="form-flex flex-wrap">
                 <label class="form-label" for="cf-name">Name</label>
                 <input id="cf-name" v-model="newFlow.name" class="glass-input" type="text" placeholder="My New Flow" required />
               </div>
-              <div class="form-row">
+              <div class="form-flex flex-wrap">
                 <label class="form-label" for="cf-desc">Description</label>
                 <textarea id="cf-desc" v-model="newFlow.description" class="glass-input" rows="3" placeholder="What does this flow do?"></textarea>
               </div>
-              <div class="form-row">
+              <div class="form-flex flex-wrap">
                 <label class="form-label" for="cf-cat">Category</label>
                 <select id="cf-cat" v-model="newFlow.category" class="glass-input">
                   <option v-for="c in categories" :key="c.value" :value="c.value">{{ c.label }}</option>
                 </select>
               </div>
-              <div class="form-row">
+              <div class="form-flex flex-wrap">
                 <label class="form-label" for="cf-cron">Schedule (cron, optional)</label>
                 <input id="cf-cron" v-model="newFlow.scheduleCron" class="glass-input" type="text" placeholder="e.g. 0 9 * * *" />
               </div>
@@ -323,7 +324,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
           </div>
           <div class="modal-actions">
             <UnifiedButton color="glass" appearance="outlined" @click="closeCreate">Cancel</UnifiedButton>
-            <UnifiedButton color="gaming" leading-icon="mdi-plus" @click="submitCreateFlow">Create Flow</UnifiedButton>
+            <UnifiedButton color="gaming" leading-icon="PlusIcon" @click="submitCreateFlow">Create Flow</UnifiedButton>
           </div>
         </div>
       </div>
@@ -338,7 +339,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
               <i :class="getFlowIcon(selectedFlow.category)" class="modal-icon"></i>
               <h2>{{ selectedFlow.name }}</h2>
             </div>
-            <UnifiedButton color="ghost" appearance="text" icon-only icon="mdi-close" aria-label="Close details" @click="closeFlowDetails" />
+            <UnifiedButton color="ghost" appearance="text" icon-only icon="XMarkIcon" aria-label="Close details" @click="closeFlowDetails" />
           </div>
           
           <div class="modal-content">
@@ -365,15 +366,15 @@ RGB accents with ultra-wide layout and AI-powered job automation
               <div v-if="selectedFlow.schedule" class="detail-section">
                 <h3>Schedule</h3>
                 <p class="mb-2">{{ formatSchedule(selectedFlow.schedule) }}</p>
-                <div class="d-flex align-items-center gap-3">
-                  <label class="d-inline-flex align-items-center gap-2">
+                <div class="flex items-center gap-glass-md">
+                  <label class="inline-flex items-center gap-glass-sm">
                     <input v-model="scheduleEnabled" type="checkbox" @change="applyScheduleToggle" />
                     <span>Enable schedule</span>
                   </label>
-                  <span v-if="scheduleToggleBusy" class="text-muted small">Updating…</span>
+                  <span v-if="scheduleToggleBusy" class="text-secondary small">Updating…</span>
                 </div>
 
-                <div class="d-flex align-items-center gap-2 mt-2">
+                <div class="flex items-center gap-glass-sm mt-2">
                   <input
                     v-model.trim="cronInput"
                     type="text"
@@ -388,21 +389,21 @@ RGB accents with ultra-wide layout and AI-powered job automation
                     <option v-for="p in cronPresets" :key="p.value" :value="p.value">{{ p.label }}</option>
                   </select>
                 </div>
-                <div v-if="cronError" class="text-danger small mt-1">{{ cronError }}</div>
+                <div v-if="cronError" class="text-error-600 small mt-1">{{ cronError }}</div>
               </div>
             </div>
           </div>
           
           <div class="modal-actions">
             <UnifiedButton color="glass" appearance="outlined" @click="closeFlowDetails">Close</UnifiedButton>
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-pencil" @click="editFlow(selectedFlow)">Edit Flow</UnifiedButton>
-            <div class="d-flex align-items-center gap-2">
+            <UnifiedButton color="glass" appearance="outlined" leading-icon="PencilIcon" @click="editFlow(selectedFlow)">Edit Flow</UnifiedButton>
+            <div class="flex items-center gap-glass-sm">
               <select v-if="getInjectNodes(selectedFlow).length > 1" v-model="selectedInjectId" class="glass-input" aria-label="Select inject node">
                 <option v-for="n in getInjectNodes(selectedFlow)" :key="n.id" :value="n.id">{{ n.label || n.id }}</option>
               </select>
-              <UnifiedButton color="gaming" leading-icon="mdi-play" @click="runFlow(selectedFlow)">Run Now</UnifiedButton>
+              <UnifiedButton color="gaming" leading-icon="PlayIcon" @click="runFlow(selectedFlow)">Run Now</UnifiedButton>
             </div>
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-content-copy" @click="duplicateFlow(selectedFlow, true)">Duplicate as Draft</UnifiedButton>
+            <UnifiedButton color="glass" appearance="outlined" leading-icon="DocumentDuplicateIcon" @click="duplicateFlow(selectedFlow, true)">Duplicate as Draft</UnifiedButton>
           </div>
         </div>
       </div>
@@ -411,6 +412,9 @@ RGB accents with ultra-wide layout and AI-powered job automation
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, CogIcon, DocumentDuplicateIcon, DocumentIcon, EyeIcon, PencilIcon, PlusCircleIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { PlayIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, computed, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
 import { useRouter } from 'vue-router'
@@ -466,19 +470,19 @@ const flowStats = computed(() => ({
 // Categories for chips
 const categories = [
   { value: 'job-search', label: 'Job Search', icon: 'mdi-briefcase-search' },
-  { value: 'application', label: 'Applications', icon: 'mdi-file-check' },
-  { value: 'networking', label: 'Networking', icon: 'mdi-account-network' },
+  { value: 'application', label: 'Applications', icon: 'DocumentIcon-check' },
+  { value: 'networking', label: 'Networking', icon: 'UserIcon-network' },
   { value: 'ai-assistance', label: 'AI Assist', icon: 'mdi-robot' },
-  { value: 'analysis', label: 'Analysis', icon: 'mdi-chart-line' },
+  { value: 'analysis', label: 'Analysis', icon: 'ChartBarIcon-line' },
   { value: 'automation', label: 'Automation', icon: 'mdi-cog-sync' },
 ]
 
 // Header stats for PageHeader
 const headerStats = computed(() => [
   { icon: 'mdi-lan', color: 'var(--color-primary-500)', value: flowStats.value.total, label: 'Flows' },
-  { icon: 'mdi-play', color: 'var(--color-success-500)', value: flowStats.value.active, label: 'Running' },
-  { icon: 'mdi-stop', color: 'var(--color-error-500)', value: flowStats.value.stopped, label: 'Stopped' },
-  { icon: nodeRedStatus.value === 'connected' ? 'mdi-power-plug' : 'mdi-power-plug-off', text: nodeRedStatus.value === 'connected' ? 'Node-RED Connected' : (nodeRedStatus.value === 'error' ? 'Node-RED Error' : 'Node-RED Offline'), success: nodeRedStatus.value === 'connected', warning: nodeRedStatus.value !== 'connected' }
+  { icon: 'PlayIcon', color: 'var(--color-success-500)', value: flowStats.value.active, label: 'Running' },
+  { icon: 'StopIcon', color: 'var(--color-error-500)', value: flowStats.value.stopped, label: 'Stopped' },
+  { icon: nodeRedStatus.value === 'connected' ? 'PowerIcon-plug' : 'PowerIcon-plug-off', text: nodeRedStatus.value === 'connected' ? 'Node-RED Connected' : (nodeRedStatus.value === 'error' ? 'Node-RED Error' : 'Node-RED Offline'), success: nodeRedStatus.value === 'connected', warning: nodeRedStatus.value !== 'connected' }
 ])
 
 // Base filtered flows (category + search)
@@ -520,7 +524,7 @@ const flowTemplates = [
     id: 'application-tracker',
     name: 'Application Tracker',
     description: 'Track job applications and send follow-up reminders',
-    icon: 'mdi-file-check',
+    icon: 'DocumentIcon-check',
     tags: ['Applications', 'Tracking', 'Reminders'],
     category: 'application'
   },
@@ -528,7 +532,7 @@ const flowTemplates = [
     id: 'linkedin-connect',
     name: 'LinkedIn Networking',
     description: 'Automate LinkedIn connections with gaming industry professionals',
-    icon: 'mdi-account-network',
+    icon: 'UserIcon-network',
     tags: ['Networking', 'LinkedIn', 'Social'],
     category: 'networking'
   },
@@ -536,7 +540,7 @@ const flowTemplates = [
     id: 'portfolio-update',
     name: 'Portfolio Sync',
     description: 'Automatically update portfolio with latest projects',
-    icon: 'mdi-folder-sync',
+    icon: 'FolderIcon-sync',
     tags: ['Portfolio', 'Sync', 'Updates'],
     category: 'automation'
   },
@@ -879,10 +883,10 @@ const submitCreateFlow = async () => {
 const getFlowIcon = (category: string) => {
   const icons = {
     'job-search': 'mdi-briefcase-search',
-    'application': 'mdi-file-check',
-    'networking': 'mdi-account-network',
+    'application': 'DocumentIcon-check',
+    'networking': 'UserIcon-network',
     'ai-assistance': 'mdi-robot',
-    'analysis': 'mdi-chart-line',
+    'analysis': 'ChartBarIcon-line',
     'automation': 'mdi-cog-sync'
   }
   return (icons as Record<string, string>)[category] || 'mdi-lan'
@@ -893,8 +897,8 @@ const getNodeIcon = (type: string) => {
     'http-request': 'mdi-web',
     'function': 'mdi-code-braces',
     'email': 'mdi-email',
-    'database': 'mdi-database',
-    'schedule': 'mdi-clock'
+    'database': 'CircleStackIcon',
+    'schedule': 'ClockIcon'
   }
   return (icons as Record<string, string>)[type] || 'mdi-circle'
 }
@@ -1101,7 +1105,7 @@ function onCronPresetChange() {
 }
 
 .text-gradient-rgb {
-  background: linear-gradient(45deg, var(--text-primary), var(--color-primary-400));
+  background: linear-gradient(45deg, var(--text-primary-600), var(--color-primary-400));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1136,7 +1140,7 @@ function onCronPresetChange() {
 .stat-value {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   line-height: 1;
 }
 
@@ -1177,7 +1181,7 @@ function onCronPresetChange() {
 .section-title h2 {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-2);
 }
 
@@ -1256,7 +1260,7 @@ function onCronPresetChange() {
 .action-content h3 {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1);
 }
 
@@ -1281,7 +1285,7 @@ function onCronPresetChange() {
   align-items: flex-start;
   margin-bottom: var(--spacing-8);
   padding-bottom: var(--spacing-6);
-  border-bottom: 2px solid var(--border-base);
+  border-b: 2px solid var(--border-base);
   position: relative;
 }
 
@@ -1291,15 +1295,15 @@ function onCronPresetChange() {
   border-radius: var(--radius-xl);
   padding: var(--spacing-6);
   margin-bottom: var(--spacing-8);
-  border-bottom: none;
+  border-b: none;
 }
 
 .section-header .header-content h2 {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-2);
-  background: linear-gradient(135deg, var(--text-primary), var(--color-primary-500));
+  background: linear-gradient(135deg, var(--text-primary-600), var(--color-primary-500));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1328,7 +1332,7 @@ function onCronPresetChange() {
 .category-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-4);
   text-align: center;
 }
@@ -1371,9 +1375,9 @@ function onCronPresetChange() {
 
 .enhanced-chip:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   border-color: var(--color-primary-400);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .enhanced-chip:hover::before {
@@ -1416,7 +1420,7 @@ function onCronPresetChange() {
   background: var(--surface-elevated);
   border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
 }
 
@@ -1428,7 +1432,7 @@ function onCronPresetChange() {
   background: transparent;
   border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   cursor: pointer;
   transition: all var(--duration-fast);
 }
@@ -1545,7 +1549,7 @@ function onCronPresetChange() {
 .flow-name {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1);
 }
 
@@ -1625,7 +1629,7 @@ function onCronPresetChange() {
 .control-btn:hover {
   background: var(--surface-glass);
   border-color: var(--color-primary-300);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .control-btn.active {
@@ -1661,7 +1665,7 @@ function onCronPresetChange() {
 .flow-stats .stat-value {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Flow Actions */
@@ -1700,7 +1704,7 @@ function onCronPresetChange() {
 .glass-button-outline {
   background: transparent;
   border: 1px solid var(--border-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .glass-button-outline:hover {
@@ -1808,7 +1812,7 @@ function onCronPresetChange() {
 
 .empty-state h3 {
   font-size: var(--font-size-xl);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-2);
 }
 
@@ -1850,7 +1854,7 @@ function onCronPresetChange() {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
 }
 
 .modal-title {
@@ -1867,7 +1871,7 @@ function onCronPresetChange() {
 .modal-header h2 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1884,7 +1888,7 @@ function onCronPresetChange() {
 
 .close-btn:hover {
   background: var(--surface-glass);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-content {
@@ -1912,7 +1916,7 @@ function onCronPresetChange() {
 
 .template-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-glass-lg);
   border-color: var(--color-primary-300);
 }
 
@@ -1924,7 +1928,7 @@ function onCronPresetChange() {
 .template-info h4 {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1);
 }
 
@@ -1959,7 +1963,7 @@ function onCronPresetChange() {
 .detail-section h3 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-3);
 }
 
@@ -1991,7 +1995,7 @@ function onCronPresetChange() {
 }
 
 .node-label {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Modal Actions */
@@ -1999,7 +2003,7 @@ function onCronPresetChange() {
   display: flex;
   gap: var(--spacing-3);
   padding: var(--spacing-6);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
 }
 
 .modal-actions .glass-button-outline,
@@ -2018,7 +2022,7 @@ function onCronPresetChange() {
 .modal-actions .glass-button-outline {
   background: transparent;
   border: 1px solid var(--border-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-actions .glass-button-primary {

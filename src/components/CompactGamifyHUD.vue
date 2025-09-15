@@ -1,13 +1,13 @@
 <template>
-  <div class="compact-gamify-hud glass-card section-card" role="region" aria-label="Gamification">
-    <div class="hud-row">
+  <div class="compact-gamify-hud glass-card section-card" role="region" aria-label="Gamification" class="font-sans">
+    <div class="hud-flex flex-wrap">
       <div class="hud-level">
-        <AppIcon name="mdi-trophy" />
+        <AppIcon name="TrophyIcon" />
         <span class="lvl">Lv {{ levelInfo.level }}</span>
         <span class="title">{{ levelInfo.title }}</span>
       </div>
       <div class="hud-streak" title="Daily streak">
-        <AppIcon name="mdi-fire" />
+        <AppIcon name="FireIcon" />
         <span>{{ streak }}</span>
       </div>
     </div>
@@ -15,13 +15,16 @@
       <div class="fill" :style="{ width: levelInfo.progress + '%' }"></div>
     </div>
     <div class="hud-actions">
-      <UnifiedButton size="sm" variant="ghost" leading-icon="mdi-target" @click="openQuests">Quests</UnifiedButton>
-      <UnifiedButton size="sm" variant="glass" leading-icon="mdi-calendar-check" @click="openDaily">Daily</UnifiedButton>
+      <UnifiedButton size="sm" variant="ghost" leading-icon="EyeIcon" @click="openQuests">Quests</UnifiedButton>
+      <UnifiedButton size="sm" variant="glass" leading-icon="CalendarIcon-check" @click="openDaily">Daily</UnifiedButton>
     </div>
   </div>
 </template>
 
 <script setup>
+import { EyeIcon } from '@heroicons/vue/24/outline'
+import { TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
@@ -43,7 +46,7 @@ function openDaily() { router.push('/dashboard') }
 
 <style scoped>
 .compact-gamify-hud { display: grid; gap: 8px; padding: 10px; border: 1px solid var(--glass-border); }
-.hud-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hud-flex flex-wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .hud-level { display: inline-flex; align-items: baseline; gap: 8px; }
 .hud-level .lvl { font-weight: 800; }
 .hud-level .title { font-size: 0.85rem; opacity: 0.8; }

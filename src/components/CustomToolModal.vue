@@ -4,6 +4,7 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby="custom-tool-title"
+    class="font-sans"
     @click.self="emitClose"
     @keydown.esc.prevent.stop="emitClose"
   >
@@ -44,7 +45,7 @@
           </div>
         </form>
       </div>
-      <footer class="modal__footer d-flex justify-content-end gap-2">
+      <footer class="modal__footer flex justify-end gap-glass-sm">
         <UnifiedButton variant="ghost" @click="emitClose">Cancel</UnifiedButton>
         <UnifiedButton variant="primary" leading-icon="mdi-content-save" @click="submit">Save</UnifiedButton>
       </footer>
@@ -123,11 +124,11 @@ onMounted(() => {
 
 .modal {
   background: var(--modal-background);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border: 1px solid var(--modal-border);
   border-radius: var(--radius-modal);
   width: min(420px, 92%);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
   display: flex;
   flex-direction: column;
   padding: var(--spacing-4) var(--spacing-5);
@@ -137,7 +138,7 @@ onMounted(() => {
   font-size: var(--font-size-lg);
   margin: 0;
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal__body {

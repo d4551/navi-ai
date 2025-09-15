@@ -1,11 +1,11 @@
 <template>
-  <div class="activity-timeline">
+  <div class="activity-timeline" class="font-sans">
     <div class="timeline-header">
-      <AppIcon name="mdi-timeline-clock-outline" aria-hidden="true" />
+      <AppIcon name="ClockIcon" aria-hidden="true" />
       <span>Recent Activity</span>
     </div>
     <div v-if="!items.length" class="empty">
-      <AppIcon name="mdi-information-outline" aria-hidden="true" />
+      <AppIcon name="InformationCircleIcon" aria-hidden="true" />
       <span>No recent activity</span>
     </div>
     <ul v-else class="timeline-list">
@@ -22,6 +22,8 @@
 </template>
 
 <script setup lang="ts">
+import { ClockIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 const props = withDefaults(defineProps<{ activities?: any[] }>(), { activities: () => [] })
 const items = props.activities || []

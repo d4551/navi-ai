@@ -4,7 +4,7 @@
     <UnifiedButton
       variant="ghost"
       size="sm"
-      :leading-icon="isOpen ? 'mdi-close' : 'mdi-magnify'"
+      :leading-icon="isOpen ? 'XMarkIcon' : 'mdi-magnify'"
       :aria-label="isOpen ? 'Close search' : 'Open search'"
       class="search-toggle"
       @click="toggleSearch"
@@ -21,7 +21,7 @@
         <div class="search-header">
           <div class="search-input-container">
             <div class="search-icon">
-              <AppIcon name="mdi-magnify" size="20" />
+              <AppIcon name="MagnifyingGlassIcon" size="20" />
             </div>
             <input
               ref="searchInput"
@@ -46,7 +46,7 @@
           <div v-if="searchQuery.trim() && !searchLoading" class="search-section">
             <div class="search-section-header">
               <h3 class="section-title">
-                <AppIcon name="mdi-file-search" size="16" class="me-2" />
+                <AppIcon name="DocumentIcon-search" size="16" class="mr-2" />
                 Search Results
                 <span v-if="searchResults.length" class="result-count">
                   ({{ searchResults.length }})
@@ -79,7 +79,7 @@
                     @click.stop="toggleFavorite(result.path)"
                   >
                     <AppIcon 
-                      :name="isFavorite(result.path) ? 'mdi-heart' : 'mdi-heart-outline'" 
+                      :name="isFavorite(result.path) ? 'HeartIcon' : 'HeartIcon-outline'" 
                       size="16" 
                     />
                   </button>
@@ -88,7 +88,7 @@
             </div>
             
             <div v-else class="no-results">
-              <AppIcon name="mdi-magnify" size="48" class="no-results-icon" />
+              <AppIcon name="MagnifyingGlassIcon" size="48" class="no-results-icon" />
               <p class="no-results-text">No results found for "{{ searchQuery }}"</p>
               <p class="no-results-suggestion">Try different keywords or browse categories below</p>
             </div>
@@ -106,7 +106,7 @@
             <div v-if="quickAccessPages.recent.length" class="search-section">
               <div class="search-section-header">
                 <h3 class="section-title">
-                  <AppIcon name="mdi-history" size="16" class="me-2" />
+                  <AppIcon name="mdi-history" size="16" class="mr-2" />
                   Recently Visited
                 </h3>
                 <button class="section-action" @click="clearRecentPages">
@@ -135,7 +135,7 @@
             <div v-if="quickAccessPages.favorites.length" class="search-section">
               <div class="search-section-header">
                 <h3 class="section-title">
-                  <AppIcon name="mdi-heart" size="16" class="me-2" />
+                  <AppIcon name="HeartIcon" size="16" class="mr-2" />
                   Favorites
                 </h3>
               </div>
@@ -157,7 +157,7 @@
                     class="favorite-btn is-favorite"
                     @click.stop="toggleFavorite(page.path)"
                   >
-                    <AppIcon name="mdi-heart" size="14" />
+                    <AppIcon name="HeartIcon" size="14" />
                   </button>
                 </div>
               </div>
@@ -167,7 +167,7 @@
             <div class="search-section">
               <div class="search-section-header">
                 <h3 class="section-title">
-                  <AppIcon name="mdi-grid" size="16" class="me-2" />
+                  <AppIcon name="Squares2X2Icon" size="16" class="mr-2" />
                   Categories
                 </h3>
               </div>
@@ -193,7 +193,7 @@
             <div class="search-section">
               <div class="search-section-header">
                 <h3 class="section-title">
-                  <AppIcon name="mdi-keyboard" size="16" class="me-2" />
+                  <AppIcon name="KeyIconboard" size="16" class="mr-2" />
                   Shortcuts
                 </h3>
               </div>
@@ -232,6 +232,9 @@
 </template>
 
 <script setup>
+import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useEnhancedNavigation } from '@/composables/useEnhancedNavigation'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -276,7 +279,7 @@ const categories = [
   {
     id: 'gaming-jobs',
     title: 'Gaming Industry',
-    icon: 'mdi-gamepad-variant',
+    icon: 'DevicePhoneMobileIcon-variant',
     searchTerm: 'gaming jobs studios gigs',
     count: 4
   },
@@ -381,7 +384,7 @@ watch(searchQuery, () => {
   max-height: 80vh;
   background: var(--surface-elevated);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-glass-xl);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
   overflow: hidden;
@@ -402,7 +405,7 @@ watch(searchQuery, () => {
 /* Search Header */
 .search-header {
   padding: var(--spacing-4);
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
   background: var(--surface-base);
 }
 
@@ -432,13 +435,13 @@ watch(searchQuery, () => {
   border: none;
   background: transparent;
   font-size: var(--font-size-lg);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   outline: none;
   font-family: var(--font-primary);
 }
 
 .search-input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .search-shortcuts {
@@ -482,11 +485,11 @@ watch(searchQuery, () => {
 /* Search Sections */
 .search-section {
   padding: var(--spacing-4);
-  border-bottom: 1px solid var(--border-subtle);
+  border-b: 1px solid var(--border-subtle);
 }
 
 .search-section:last-child {
-  border-bottom: none;
+  border-b: none;
 }
 
 .search-section-header {
@@ -508,7 +511,7 @@ watch(searchQuery, () => {
 }
 
 .result-count {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: var(--font-weight-normal);
 }
 
@@ -571,7 +574,7 @@ watch(searchQuery, () => {
 .result-title {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
@@ -584,7 +587,7 @@ watch(searchQuery, () => {
 
 .result-path {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-mono);
 }
 
@@ -596,7 +599,7 @@ watch(searchQuery, () => {
 .favorite-btn {
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   cursor: pointer;
   padding: var(--spacing-1);
   border-radius: var(--radius-sm);
@@ -660,7 +663,7 @@ watch(searchQuery, () => {
 .item-title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-0-5);
 }
 
@@ -693,7 +696,7 @@ watch(searchQuery, () => {
   background: var(--surface-elevated);
   border-color: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
 }
 
 .category-icon {
@@ -711,13 +714,13 @@ watch(searchQuery, () => {
 .category-title {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
 .category-count {
   font-size: var(--font-size-xs);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* Shortcuts Grid */
@@ -762,7 +765,7 @@ watch(searchQuery, () => {
 .no-results {
   text-align: center;
   padding: var(--spacing-8) var(--spacing-4);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .no-results-icon {

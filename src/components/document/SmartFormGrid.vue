@@ -1,11 +1,11 @@
 <template>
-  <div class="smart-form-grid" :class="{ 'has-suggestions': showSuggestions }">
+  <div class="smart-form-grid" :class="{ 'has-suggestions': showSuggestions }" class="font-sans">
     <!-- Personal Information Section -->
     <div v-if="section === 'personal'" class="form-grid">
       <!-- Full Name with Smart Detection -->
       <div class="form-field full-width">
         <label class="field-label">
-          <AppIcon name="mdi-account-outline" />
+          <AppIcon name="UserIcon" />
           Full Name
           <span class="required-mark">*</span>
         </label>
@@ -27,7 +27,7 @@
               class="suggestion-item"
               @click="applyNameSuggestion(suggestion)"
             >
-              <AppIcon name="mdi-account" />
+              <AppIcon name="UserIcon" />
               {{ suggestion }}
             </div>
           </div>
@@ -37,7 +37,7 @@
       <!-- Professional Title with AI Suggestions -->
       <div class="form-field full-width">
         <label class="field-label">
-          <AppIcon name="mdi-briefcase-outline" />
+          <AppIcon name="BriefcaseIcon" />
           Professional Title
         </label>
         <div class="smart-input-wrapper">
@@ -54,7 +54,7 @@
             v-if="aiEnabled && !localData.title"
             variant="ghost"
             size="xs"
-            leading-icon="mdi-brain"
+            leading-icon="CpuChipIcon"
             class="ai-suggest-btn"
             @click="generateTitleSuggestions"
           >
@@ -63,7 +63,7 @@
         </div>
         <div v-if="titleSuggestions.length > 0 && focusedField === 'title'" class="suggestions-dropdown">
           <div class="suggestion-header">
-            <AppIcon name="mdi-brain" />
+            <AppIcon name="CpuChipIcon" />
             AI Suggestions
           </div>
           <div
@@ -93,14 +93,14 @@
           @input="validateEmail"
         />
         <div v-if="emailSuggestion" class="inline-suggestion">
-          <AppIcon name="mdi-lightbulb-outline" />
+          <AppIcon name="LightBulbIcon-outline" />
           Did you mean: <button class="suggestion-link" @click="applyEmailSuggestion">{{ emailSuggestion }}</button>?
         </div>
       </div>
 
       <div class="form-field">
         <label class="field-label">
-          <AppIcon name="mdi-phone-outline" />
+          <AppIcon name="PhoneIcon-outline" />
           Phone Number
           <span class="required-mark">*</span>
         </label>
@@ -136,7 +136,7 @@
               class="suggestion-item location-suggestion"
               @click="applyLocationSuggestion(suggestion)"
             >
-              <AppIcon name="mdi-map-marker" />
+              <AppIcon name="MapPinIcon" />
               <div>
                 <div class="location-name">{{ suggestion.main_text || suggestion }}</div>
                 <div v-if="suggestion.secondary_text" class="location-detail">{{ suggestion.secondary_text }}</div>
@@ -149,7 +149,7 @@
       <!-- Social Links -->
       <div class="form-field">
         <label class="field-label">
-          <AppIcon name="mdi-linkedin" />
+          <AppIcon name="LinkIconedin" />
           LinkedIn Profile
         </label>
         <input
@@ -177,7 +177,7 @@
 
       <div class="form-field">
         <label class="field-label">
-          <AppIcon name="mdi-earth" />
+          <AppIcon name="GlobeAmericasIcon" />
           Portfolio Website
         </label>
         <input
@@ -213,7 +213,7 @@
               v-if="aiEnabled"
               variant="ghost"
               size="xs"
-              leading-icon="mdi-brain"
+              leading-icon="CpuChipIcon"
               :loading="generatingSummary"
               @click="generateSummary"
             >
@@ -223,7 +223,7 @@
         </div>
         <div v-if="summaryTips.length > 0" class="writing-tips">
           <div class="tips-header">
-            <AppIcon name="mdi-lightbulb" />
+            <AppIcon name="LightBulbIcon" />
             Writing Tips
           </div>
           <ul class="tips-list">
@@ -239,14 +239,14 @@
     <!-- Import Profile Data Helper -->
     <div v-if="section === 'personal' && showProfileImport" class="profile-import-card">
       <div class="import-header">
-        <AppIcon name="mdi-account-import" />
+        <AppIcon name="UserIcon-import" />
         <span>Import from Profile</span>
       </div>
       <p>Quickly populate fields using your saved profile information.</p>
       <UnifiedButton
         variant="primary"
         size="sm"
-        leading-icon="mdi-import"
+        leading-icon="ArrowDownTrayIcon"
         @click="importFromProfile"
       >
         Import Profile Data
@@ -256,6 +256,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, BriefcaseIcon, CpuChipIcon, GlobeAmericasIcon, LightBulbIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch, nextTick } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { debounce } from 'lodash-es'
@@ -511,7 +514,7 @@ const updateSummaryTips = () => {
   if (!summary.includes('experience') && !summary.includes('skilled')) {
     tips.push({
       id: 'keywords',
-      icon: 'mdi-key',
+      icon: 'KeyIcon',
       text: 'Include relevant keywords like "experience", "skilled", or industry terms'
     })
   }
@@ -627,7 +630,7 @@ const importFromProfile = () => {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-tertiary);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -652,14 +655,14 @@ const importFromProfile = () => {
 }
 
 .location-suggestion {
-  flex-direction: row;
+  flex-direction: flex flex-wrap;
   align-items: flex-start;
   padding: 12px;
 }
 
 .location-name {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .location-detail {
@@ -732,7 +735,7 @@ const importFromProfile = () => {
 .tips-header {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -771,7 +774,7 @@ const importFromProfile = () => {
 .import-header {
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="navigation-item text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100"
+    class="navigation-item text-glass-secondary font-sans"
     :class="{
       active: item.isActive?.value,
       collapsed: isCollapsed,
@@ -13,7 +13,7 @@
   >
     <router-link
       :to="item.route"
-      class="nav-item-link text-inherit hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600"
+      class="nav-item-link glass-interactive neon-blue focus:ring-neon"
       :aria-label="item.description"
       :aria-disabled="item.disabled || undefined"
       :aria-current="item.isActive?.value ? 'page' : undefined"
@@ -52,7 +52,7 @@
       <div
         v-if="showTooltip && isCollapsed"
         ref="tooltipRef"
-        class="nav-tooltip bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
+        class="nav-tooltip bg-glass-bg dark:bg-glass-bg dark:bg-glass-bg-hover text-glass-primary dark:text-glass-primary dark:text-glass-primary"
         :style="tooltipStyle"
       >
         <div class="tooltip-content">
@@ -220,7 +220,7 @@ function normalizeIcon(name) {
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   transition: all var(--duration-normal) var(--easing-ease-out);
   position: relative;
   overflow: hidden;
@@ -243,7 +243,7 @@ function normalizeIcon(name) {
 }
 
 .nav-item-link:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: var(--surface-elevated);
   transform: translateX(2px);
   box-shadow: var(--shadow-sm);
@@ -347,7 +347,7 @@ function normalizeIcon(name) {
 
 .nav-item-description {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   line-height: 1.2;
   opacity: 0.8;
   text-overflow: ellipsis;
@@ -431,7 +431,7 @@ function normalizeIcon(name) {
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.12),
     0 2px 8px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    inset 0 1px 0 var(--glass-border);
   min-width: 200px;
   max-width: 300px;
   position: relative;
@@ -452,7 +452,7 @@ function normalizeIcon(name) {
 .tooltip-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-xs);
 }
 
@@ -519,8 +519,8 @@ function normalizeIcon(name) {
 
 [data-theme="dark"] .nav-item-link:hover,
 .dark-theme .nav-item-link:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
+  background: var(--glass-bg);
+  color: var(--text-primary-600);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -566,13 +566,13 @@ function normalizeIcon(name) {
 [data-theme="dark"] .tooltip-content,
 .dark-theme .tooltip-content {
   background: rgba(15, 15, 15, 0.95);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--glass-border);
   backdrop-filter: blur(20px) saturate(180%);
 }
 
 [data-theme="dark"] .tooltip-arrow,
 .dark-theme .tooltip-arrow {
-  border-color: transparent rgba(255, 255, 255, 0.1) transparent transparent;
+  border-color: transparent var(--glass-border) transparent transparent;
 }
 
 [data-theme="dark"] .tooltip-arrow::after,
@@ -583,7 +583,7 @@ function normalizeIcon(name) {
 /* System theme preference support */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .nav-item-link:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--glass-bg);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
   
@@ -596,7 +596,7 @@ function normalizeIcon(name) {
   
   :root:not([data-theme="light"]) .tooltip-content {
     background: rgba(15, 15, 15, 0.95);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--glass-border);
   }
 }
 

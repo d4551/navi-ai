@@ -1,5 +1,5 @@
 <template>
-  <div class="document-content-builder">
+  <div class="document-content-builder" class="font-sans">
     <!-- Step Indicator -->
     <div class="step-indicator">
       <div class="step-progress">
@@ -22,7 +22,7 @@
       <div v-if="currentStep === 1" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-account-outline" class="me-2" />
+            <AppIcon name="UserIcon" class="mr-2" />
             Contact Information
           </h3>
           <p class="section-description">Your contact details for the cover letter header</p>
@@ -111,7 +111,7 @@
       <div v-if="currentStep === 2" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-office-building-outline" class="me-2" />
+            <AppIcon name="mdi-office-building-outline" class="mr-2" />
             Company Information
           </h3>
           <p class="section-description">Details about the company and position you're applying for</p>
@@ -195,7 +195,7 @@
       <div v-if="currentStep === 3" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-card-text-outline" class="me-2" />
+            <AppIcon name="DocumentTextIcon" class="mr-2" />
             Introduction Paragraph
           </h3>
           <p class="section-description">Hook the reader with a strong opening that explains why you're interested</p>
@@ -210,12 +210,12 @@
             placeholder="Start with a compelling hook that shows your enthusiasm for the role and company. Mention how you found the position and briefly state why you're a great fit..."
           ></textarea>
           <div class="field-help">
-            <small class="text-muted">{{ localData.introduction.length }}/400 characters</small>
+            <small class="text-secondary">{{ localData.introduction.length }}/400 characters</small>
             <UnifiedButton
               v-if="aiEnabled"
               variant="ghost"
               size="sm"
-              leading-icon="mdi-auto-fix"
+              leading-icon="SparklesIcon"
               @click="$emit('ai-request', { type: 'generate-introduction' })"
             >
               AI Generate
@@ -243,7 +243,7 @@
       <div v-if="currentStep === 4" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-text-box-outline" class="me-2" />
+            <AppIcon name="mdi-text-box-outline" class="mr-2" />
             Body Paragraphs
           </h3>
           <p class="section-description">Explain your qualifications and why you're the perfect candidate</p>
@@ -284,7 +284,7 @@
         <div v-if="aiEnabled" class="ai-suggestions">
           <UnifiedButton
             variant="ghost"
-            leading-icon="mdi-lightbulb"
+            leading-icon="LightBulbIcon"
             @click="$emit('ai-request', { type: 'generate-body' })"
           >
             Generate Body Paragraphs with AI
@@ -311,7 +311,7 @@
       <div v-if="currentStep === 5" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-check-circle-outline" class="me-2" />
+            <AppIcon name="CheckCircleIcon" class="mr-2" />
             Conclusion & Call to Action
           </h3>
           <p class="section-description">End with a strong closing that reiterates your interest and next steps</p>
@@ -326,12 +326,12 @@
             placeholder="Reiterate your enthusiasm, mention next steps, and provide a professional closing..."
           ></textarea>
           <div class="field-help">
-            <small class="text-muted">{{ localData.conclusion.length }}/300 characters</small>
+            <small class="text-secondary">{{ localData.conclusion.length }}/300 characters</small>
             <UnifiedButton
               v-if="aiEnabled"
               variant="ghost"
               size="sm"
-              leading-icon="mdi-auto-fix"
+              leading-icon="SparklesIcon"
               @click="$emit('ai-request', { type: 'generate-conclusion' })"
             >
               AI Generate
@@ -359,7 +359,7 @@
       <div v-if="currentStep === 6" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-eye-outline" class="me-2" />
+            <AppIcon name="EyeIcon-outline" class="mr-2" />
             Review & Finalize
           </h3>
           <p class="section-description">Review your cover letter and make final adjustments</p>
@@ -418,6 +418,8 @@
 </template>
 
 <script setup lang="ts">
+import { CheckCircleIcon, DocumentTextIcon, LightBulbIcon, SparklesIcon, UserIcon } from '@heroicons/vue/24/outline'
+
 import { ref, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -552,7 +554,7 @@ watch(localData, () => {
   align-items: center;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-2);
 }
 
@@ -585,7 +587,7 @@ watch(localData, () => {
 
 .field-label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -595,7 +597,7 @@ watch(localData, () => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   transition: border-color var(--duration-fast);
 }
@@ -623,7 +625,7 @@ watch(localData, () => {
   justify-content: space-between;
   align-items: center;
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .body-paragraphs {
@@ -653,7 +655,7 @@ watch(localData, () => {
 .review-section h4 {
   margin: 0 0 var(--spacing-2) 0;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .review-section p {

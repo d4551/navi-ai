@@ -1,5 +1,5 @@
 <template>
-  <nav class="pagination-wrapper" role="navigation" aria-label="Pagination">
+  <nav class="pagination-wrapper" role="navigation" aria-label="Pagination" class="font-sans">
     <!-- Results Info -->
     <div class="pagination-info">
       <span class="results-text">
@@ -30,7 +30,7 @@
         aria-label="Go to previous page"
         @click="goToPage(currentPage - 1)"
       >
-        <AppIcon name="mdi-chevron-left" />
+        <AppIcon name="ChevronLeftIcon" />
         <span class="btn-text">Previous</span>
       </button>
 
@@ -49,7 +49,7 @@
 
         <!-- First ellipsis -->
         <span v-if="showFirstEllipsis" class="pagination-ellipsis">
-          <AppIcon name="mdi-dots-horizontal" />
+          <AppIcon name="EllipsisHorizontalIcon" />
         </span>
 
         <!-- Visible page range -->
@@ -67,7 +67,7 @@
 
         <!-- Last ellipsis -->
         <span v-if="showLastEllipsis" class="pagination-ellipsis">
-          <AppIcon name="mdi-dots-horizontal" />
+          <AppIcon name="EllipsisHorizontalIcon" />
         </span>
 
         <!-- Last page -->
@@ -91,7 +91,7 @@
         @click="goToPage(currentPage + 1)"
       >
         <span class="btn-text">Next</span>
-        <AppIcon name="mdi-chevron-right" />
+        <AppIcon name="ChevronRightIcon" />
       </button>
     </div>
 
@@ -119,6 +119,8 @@
 </template>
 
 <script setup>
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
+
 import { computed, ref, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -248,7 +250,7 @@ const updateItemsPerPage = (newSize) => {
   gap: var(--spacing-md);
   align-items: center;
   padding: var(--spacing-lg) 0;
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
   margin-top: var(--spacing-lg);
 }
 
@@ -277,7 +279,7 @@ const updateItemsPerPage = (newSize) => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-sm);
   background: var(--surface-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   min-width: 120px;
 }
 
@@ -297,7 +299,7 @@ const updateItemsPerPage = (newSize) => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-sm);
   background: var(--surface-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -377,7 +379,7 @@ const updateItemsPerPage = (newSize) => {
   border: 1px solid var(--border-base);
   border-radius: var(--radius-sm);
   background: var(--surface-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-align: center;
   font-size: var(--font-size-sm);
 }
@@ -447,7 +449,7 @@ const updateItemsPerPage = (newSize) => {
   .pagination-btn {
     border-color: var(--border-base-dark, #374151);
     background: var(--surface-base-dark, #1f2937);
-    color: var(--text-primary-dark, #f9fafb);
+    color: var(--text-primary-600-dark, #f9fafb);
   }
   
   .pagination-btn:hover:not(.disabled) {
@@ -459,7 +461,7 @@ const updateItemsPerPage = (newSize) => {
   .quick-jump-input {
     border-color: var(--border-base-dark, #374151);
     background: var(--surface-base-dark, #1f2937);
-    color: var(--text-primary-dark, #f9fafb);
+    color: var(--text-primary-600-dark, #f9fafb);
   }
 }
 

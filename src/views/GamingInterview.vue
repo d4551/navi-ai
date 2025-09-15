@@ -1,5 +1,5 @@
 <template>
-  <div class="gaming-interview-hub">
+  <div class="gaming-interview-hub font-sans">
     <!-- Animated Background -->
     <div class="bg-particles">
       <div class="particle"></div>
@@ -12,7 +12,7 @@
       <header class="header">
         <div class="logo-section">
           <div class="logo-container">
-            <div class="logo-icon">🎮</div>
+            <div class="logo-icon">DevicePhoneMobileIcon</div>
             <div class="logo-text">
               <h2 class="logo-title">NAVI</h2>
               <p class="logo-subtitle">Interview Prep</p>
@@ -34,7 +34,7 @@
           <span>Target Studio</span>
         </button>
         <button class="nav-tab" :class="{ active: activeTab === 'persona' }" @click="activeTab = 'persona'">
-          <span>👤</span>
+          <span>UserIcon</span>
           <span>Interview Persona</span>
         </button>
         <button class="nav-tab" :class="{ active: activeTab === 'setup' }" @click="activeTab = 'setup'">
@@ -50,7 +50,7 @@
           <!-- Interview Prep Tab -->
           <div v-if="activeTab === 'prep'" class="card">
             <h2 class="section-title">
-              <span>🚀</span>
+              <span>RocketLaunchIcon</span>
               Quick Start
             </h2>
             <div class="quick-start-grid">
@@ -153,7 +153,7 @@
           <!-- Interview Persona Tab -->
           <div v-if="activeTab === 'persona'" class="card">
             <h2 class="section-title">
-              <span>👤</span>
+              <span>UserIcon</span>
               Interview Persona
             </h2>
             <div class="persona-grid">
@@ -183,7 +183,7 @@
               Session Configuration
             </h2>
             <div class="setup-form">
-              <div class="form-row">
+              <div class="form-flex flex-wrap">
                 <div class="form-field">
                   <label>Target Role</label>
                   <select v-model="config.roleType" class="form-select">
@@ -201,7 +201,7 @@
                   </select>
                 </div>
               </div>
-              <div class="form-row">
+              <div class="form-flex flex-wrap">
                 <div class="form-field">
                   <label>Duration</label>
                   <select v-model="config.duration" class="form-select">
@@ -263,7 +263,7 @@
 
       <!-- Pro Tip -->
       <div class="pro-tip">
-        <span class="pro-tip-icon">💡</span>
+        <span class="pro-tip-icon">LightBulbIcon</span>
         <div class="pro-tip-text">
           <strong>Pro Tip:</strong> Use "Target Studio" to select your company, "Interview Persona" to customize the interviewer style, and "Session Setup" to fine-tune difficulty and question types.
         </div>
@@ -281,6 +281,8 @@
 </template>
 
 <script setup>
+import { UserIcon, PlayIcon, DevicePhoneMobileIcon, LightBulbIcon, SwatchIcon, RocketLaunchIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -374,14 +376,14 @@ const interviewPersonas = ref([
   {
     id: 'creative-director',
     name: 'Creative Director',
-    avatar: '🎨',
+    avatar: 'SwatchIcon',
     description: 'Vision-focused, interested in creative problem solving',
     traits: ['Innovative', 'Visionary', 'Design-focused']
   },
   {
     id: 'startup-founder',
     name: 'Startup Founder',
-    avatar: '🚀',
+    avatar: 'RocketLaunchIcon',
     description: 'Fast-paced, entrepreneurial mindset, versatility focused',
     traits: ['Agile', 'Risk-taking', 'Multi-skilled']
   }
@@ -393,7 +395,7 @@ const quickSetupOptions = [
     id: 'practice-interview',
     title: 'Practice Interview',
     description: 'Jump straight into a mock interview session with AI feedback',
-    emoji: '▶️',
+    emoji: 'PlayIcon',
     colorClass: 'purple',
     config: {
       roleType: 'software-engineer',
@@ -647,7 +649,7 @@ watch(activeTab, (newTab) => {
   --dark-secondary: #1E293B;
   --dark-tertiary: #334155;
   --light: #F8FAFC;
-  --text-primary: #F1F5F9;
+  --text-primary-600: #F1F5F9;
   --text-secondary: #94A3B8;
   --glass: rgba(30, 41, 59, 0.5);
   --glass-border: rgba(148, 163, 184, 0.1);
@@ -659,7 +661,7 @@ watch(activeTab, (newTab) => {
 .gaming-interview-hub {
   font-family: 'Inter', -apple-system, system-ui, sans-serif;
   background: var(--dark);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
@@ -844,7 +846,7 @@ watch(activeTab, (newTab) => {
 }
 
 .nav-tab:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: rgba(30, 41, 59, 0.7);
   transform: translateY(-2px);
 }
@@ -1052,7 +1054,7 @@ watch(activeTab, (newTab) => {
   background: var(--glass);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
@@ -1230,7 +1232,7 @@ watch(activeTab, (newTab) => {
   gap: 1.5rem;
 }
 
-.form-row {
+.form-flex flex-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -1252,7 +1254,7 @@ watch(activeTab, (newTab) => {
   background: var(--glass);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 1rem;
 }
 
@@ -1306,7 +1308,7 @@ watch(activeTab, (newTab) => {
 
 .btn-secondary {
   background: var(--glass);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   border: 1px solid var(--border);
 }
 
@@ -1464,7 +1466,7 @@ watch(activeTab, (newTab) => {
   width: 40px;
   height: 40px;
   border: 3px solid var(--glass);
-  border-top: 3px solid var(--primary);
+  border-t: 3px solid var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
@@ -1534,7 +1536,7 @@ watch(activeTab, (newTab) => {
     grid-template-columns: 1fr;
   }
   
-  .form-row {
+  .form-flex flex-wrap {
     grid-template-columns: 1fr;
   }
 }

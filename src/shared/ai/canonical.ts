@@ -63,9 +63,14 @@ export const ai = {
 
   async generateText(message: string, options: GenerationOptions = {}) {
     if (!isInitialized) {
-      await this.init({ provider: options.provider });
+      try {
+        await this.init({ provider: options.provider });
+      } catch (error) {
+        logger.error('AI service initialization failed', error);
+        throw error; // Let the specific initialization error bubble up
+      }
     }
-    
+
     try {
       return await aiService.chat({
         message,
@@ -79,7 +84,7 @@ export const ai = {
       });
     } catch (error) {
       logger.error('Text generation failed', error);
-      throw error;
+      throw error; // Let the specific error bubble up instead of generic message
     }
   },
 
@@ -89,7 +94,14 @@ export const ai = {
     options: GenerationOptions = {}
   ) {
     if (!isInitialized) {
-      await this.init({ provider: options.provider });
+      try {
+        await this.init({ provider: options.provider });
+      } catch (error) {
+        logger.error('AI service initialization failed', error);
+        const initError = new Error('AI service not available - please configure your API key in settings');
+        handlers.onError?.(initError);
+        throw initError;
+      }
     }
 
     try {
@@ -115,7 +127,12 @@ export const ai = {
 
   async analyzeImage(imageData: string | ArrayBuffer, prompt: string, options: GenerationOptions = {}) {
     if (!isInitialized) {
-      await this.init({ provider: options.provider });
+      try {
+        await this.init({ provider: options.provider });
+      } catch (error) {
+        logger.error('AI service initialization failed', error);
+        throw new Error('AI service not available - please configure your API key in settings');
+      }
     }
 
     try {
@@ -134,7 +151,12 @@ export const ai = {
 
   async processAudio(audioData: ArrayBuffer, prompt: string, options: GenerationOptions = {}) {
     if (!isInitialized) {
-      await this.init({ provider: options.provider });
+      try {
+        await this.init({ provider: options.provider });
+      } catch (error) {
+        logger.error('AI service initialization failed', error);
+        throw new Error('AI service not available - please configure your API key in settings');
+      }
     }
 
     try {
@@ -162,7 +184,12 @@ export const ai = {
 
   async startRealTime(options: GenerationOptions = {}) {
     if (!isInitialized) {
-      await this.init({ provider: options.provider });
+      try {
+        await this.init({ provider: options.provider });
+      } catch (error) {
+        logger.error('AI service initialization failed', error);
+        throw new Error('AI service not available - please configure your API key in settings');
+      }
     }
 
     try {
@@ -172,7 +199,7 @@ export const ai = {
         provider: options.provider || currentProvider,
         ...options
       });
-      
+
       currentSessions.set(sessionId, sessionKey);
       return sessionId;
     } catch (error) {

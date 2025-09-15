@@ -1,10 +1,10 @@
 <template>
-  <div class="ai-content-optimizer">
+  <div class="ai-content-optimizer" class="font-sans">
     <!-- AI Optimization Panel -->
     <div v-if="showPanel" class="optimization-panel" :class="{ 'is-floating': isFloating }">
       <div class="panel-header">
         <div class="panel-title">
-          <AppIcon name="mdi-brain" class="ai-icon" />
+          <AppIcon name="CpuChipIcon" class="ai-icon" />
           <span>AI Content Optimizer</span>
           <div class="ai-status" :class="aiStatusClass">
             <div class="status-dot"></div>
@@ -21,7 +21,7 @@
           <UnifiedButton
             variant="ghost"
             size="xs"
-            leading-icon="mdi-close"
+            leading-icon="XMarkIcon"
             @click="closePanel"
           />
         </div>
@@ -50,7 +50,7 @@
             <UnifiedButton
               variant="primary"
               size="xs"
-              leading-icon="mdi-refresh"
+              leading-icon="ArrowPathIcon"
               :loading="isGeneratingSuggestions"
               @click="generateSuggestions"
             >
@@ -77,13 +77,13 @@
                   <UnifiedButton
                     variant="ghost"
                     size="xs"
-                    leading-icon="mdi-check"
+                    leading-icon="CheckIcon"
                     @click="applySuggestion(suggestion)"
                   />
                   <UnifiedButton
                     variant="ghost"
                     size="xs"
-                    leading-icon="mdi-close"
+                    leading-icon="XMarkIcon"
                     @click="dismissSuggestion(suggestion.id)"
                   />
                 </div>
@@ -105,7 +105,7 @@
             <div class="analysis-grid">
               <div class="analysis-card">
                 <div class="card-header">
-                  <AppIcon name="mdi-target" />
+                  <AppIcon name="EyeIcon" />
                   <span>Job Match Score</span>
                 </div>
                 <div class="score-display">
@@ -117,7 +117,7 @@
               
               <div class="analysis-card">
                 <div class="card-header">
-                  <AppIcon name="mdi-eye" />
+                  <AppIcon name="EyeIcon" />
                   <span>ATS Compatibility</span>
                 </div>
                 <div class="score-display">
@@ -138,7 +138,7 @@
                   @click="suggestKeywordPlacement(keyword)"
                 >
                   {{ keyword }}
-                  <AppIcon name="mdi-plus" />
+                  <AppIcon name="PlusIcon" />
                 </span>
               </div>
             </div>
@@ -152,7 +152,7 @@
                   class="keyword-tag optimized"
                 >
                   {{ keyword }}
-                  <AppIcon name="mdi-check" />
+                  <AppIcon name="CheckIcon" />
                 </span>
               </div>
             </div>
@@ -202,7 +202,7 @@
                   <UnifiedButton
                     variant="ghost"
                     size="xs"
-                    leading-icon="mdi-auto-fix"
+                    leading-icon="SparklesIcon"
                     @click="applyWritingSuggestion(suggestion)"
                   >
                     Fix
@@ -285,7 +285,7 @@
       class="ai-fab"
       variant="primary"
       size="lg"
-      leading-icon="mdi-brain"
+      leading-icon="CpuChipIcon"
       @click="openPanel"
     >
       AI Optimize
@@ -294,6 +294,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, CheckIcon, CpuChipIcon, EyeIcon, PlusIcon, SparklesIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -365,7 +367,7 @@ const contentSuggestions = ref<ContentSuggestion[]>([
     id: '2',
     type: 'Action Verb',
     priority: 'medium',
-    icon: 'mdi-flash',
+    icon: 'BoltIcon',
     description: 'Use stronger action verbs to make your accomplishments more impactful',
     example: 'Spearheaded instead of Worked on',
     target: 'experience',
@@ -375,7 +377,7 @@ const contentSuggestions = ref<ContentSuggestion[]>([
     id: '3',
     type: 'Industry Keywords',
     priority: 'high',
-    icon: 'mdi-key',
+    icon: 'KeyIcon',
     description: 'Include more relevant industry keywords from the job description',
     target: 'summary',
     action: 'add-keywords'
@@ -425,13 +427,13 @@ const optimizationTabs = computed(() => [
   {
     id: 'suggestions',
     label: 'Suggestions',
-    icon: 'mdi-lightbulb',
+    icon: 'LightBulbIcon',
     count: contentSuggestions.value.length
   },
   {
     id: 'keywords',
     label: 'Keywords',
-    icon: 'mdi-key',
+    icon: 'KeyIcon',
     count: missingKeywords.value.length
   },
   {
@@ -443,7 +445,7 @@ const optimizationTabs = computed(() => [
   {
     id: 'performance',
     label: 'Performance',
-    icon: 'mdi-chart-line',
+    icon: 'ChartBarIcon-line',
     count: performanceTips.value.length
   }
 ])
@@ -609,7 +611,7 @@ watch(() => props.documentContent, () => {
   background: linear-gradient(135deg, 
     rgba(var(--color-primary-500-rgb), 0.1), 
     rgba(var(--color-gaming-500-rgb), 0.1));
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .panel-title {
@@ -618,7 +620,7 @@ watch(() => props.documentContent, () => {
   gap: 8px;
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .ai-icon {
@@ -675,7 +677,7 @@ watch(() => props.documentContent, () => {
 
 .optimization-tabs {
   display: flex;
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: rgba(var(--surface-base-rgb), 0.3);
 }
 
@@ -735,7 +737,7 @@ watch(() => props.documentContent, () => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Suggestions */
@@ -778,7 +780,7 @@ watch(() => props.documentContent, () => {
 .suggestion-type {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .priority-badge {
@@ -821,7 +823,7 @@ watch(() => props.documentContent, () => {
   background: rgba(var(--color-primary-500-rgb), 0.05);
   border-radius: 4px;
   font-size: 12px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Keywords Analysis */
@@ -896,7 +898,7 @@ watch(() => props.documentContent, () => {
   margin: 0 0 8px 0;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .keywords-list {
@@ -961,7 +963,7 @@ watch(() => props.documentContent, () => {
 .metric-value {
   font-size: 16px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 6px;
 }
 
@@ -1023,7 +1025,7 @@ watch(() => props.documentContent, () => {
 .breakdown-value {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   min-width: 40px;
   text-align: right;
 }
@@ -1076,7 +1078,7 @@ watch(() => props.documentContent, () => {
 .tip-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 2px;
 }
 

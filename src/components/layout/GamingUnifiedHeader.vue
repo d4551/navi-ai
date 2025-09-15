@@ -1,5 +1,5 @@
 <template>
-  <header class="gaming-unified-header glass-gaming" :class="headerClasses">
+  <header class="gaming-unified-header glass-gaming" :class="headerClasses" class="font-sans">
     <!-- Main Navigation Bar -->
     <nav class="header-nav gaming-nav" role="navigation">
       <div class="nav-container">
@@ -8,7 +8,7 @@
           <router-link to="/" class="brand-link gaming-focus" aria-label="Go to Gaming Career Dashboard">
             <div class="brand-content">
               <div class="brand-logo">
-                <AppIcon name="mdi-gamepad-variant" size="28" class="brand-icon gaming-pulse" />
+                <AppIcon name="PuzzlePieceIcon" size="28" class="brand-icon gaming-pulse" />
                 <div class="logo-glow"></div>
               </div>
               <div class="brand-text-group">
@@ -50,7 +50,7 @@
                   </span>
                   <AppIcon 
                     v-if="index < breadcrumbs.length - 1" 
-                    name="mdi-chevron-right" 
+                    name="ChevronRightIcon" 
                     size="16" 
                     class="breadcrumb-separator" 
                   />
@@ -63,11 +63,11 @@
           <div v-if="showGamingContext" class="gaming-context">
             <div class="context-stats">
               <div class="stat-item">
-                <AppIcon name="mdi-briefcase" size="16" />
+                <AppIcon name="BriefcaseIcon" size="16" />
                 <span>{{ totalJobs }} Gaming Jobs</span>
               </div>
               <div class="stat-item">
-                <AppIcon name="mdi-office-building" size="16" />
+                <AppIcon name="BuildingOffice2Icon" size="16" />
                 <span>{{ totalStudios }}+ Studios</span>
               </div>
             </div>
@@ -91,9 +91,9 @@
                 @keydown.enter="performSearch"
                 @keydown.escape="clearSearch"
               />
-              <AppIcon name="mdi-magnify" size="20" class="search-icon" />
+              <AppIcon name="MagnifyingGlassIcon" size="20" class="search-icon" />
               <div v-if="searchQuery" class="search-clear" @click="clearSearch">
-                <AppIcon name="mdi-close" size="16" />
+                <AppIcon name="XMarkIcon" size="16" />
               </div>
             </div>
             
@@ -118,7 +118,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-microphone"
+              leading-icon="MicrophoneIcon"
               class="gaming-interactive"
               :tooltip="{ text: 'Voice Commands (Ctrl+M)', position: 'bottom' }"
               :class="{ 'voice-active neon-gaming': voiceActive }"
@@ -129,7 +129,7 @@
             <UnifiedButton
               variant="cyber"
               size="sm"
-              leading-icon="mdi-brain"
+              leading-icon="CpuChipIcon"
               class="ai-assistant-btn"
               :tooltip="{ text: 'Gaming AI Assistant (Ctrl+J)', position: 'bottom' }"
               :disabled="!aiReady"
@@ -146,7 +146,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              leading-icon="mdi-bell"
+              leading-icon="BellIcon"
               class="notifications-btn gaming-interactive"
               :tooltip="{ text: 'Gaming Job Alerts & Notifications', position: 'bottom' }"
               :badge="notificationCount > 0 ? notificationCount.toString() : undefined"
@@ -157,7 +157,7 @@
             <!-- Gaming Profile/XP Status -->
             <div v-if="showGamingProfile" class="gaming-profile-status">
               <div class="xp-indicator glass-gaming">
-                <AppIcon name="mdi-trophy" size="16" class="xp-icon" />
+                <AppIcon name="TrophyIcon" size="16" class="xp-icon" />
                 <span class="xp-level">{{ userLevel }}</span>
               </div>
             </div>
@@ -180,7 +180,7 @@
                   class="user-avatar"
                 />
                 <div v-else class="user-avatar-placeholder">
-                  <AppIcon name="mdi-account" size="20" />
+                  <AppIcon name="UserIcon" size="20" />
                 </div>
                 <div v-if="userOnlineStatus" class="online-indicator neon-gaming"></div>
               </div>
@@ -188,7 +188,7 @@
                 <span class="user-name">{{ userName || 'Gaming Dev' }}</span>
                 <span class="user-role">{{ userRole || 'Job Seeker' }}</span>
               </div>
-              <AppIcon name="mdi-chevron-down" size="16" class="menu-arrow" />
+              <AppIcon name="ChevronDownIcon" size="16" class="menu-arrow" />
             </button>
 
             <!-- Gaming User Menu Dropdown -->
@@ -204,7 +204,7 @@
                 <div class="menu-section">
                   <h5 class="section-title">Career Tools</h5>
                   <router-link to="/profile" class="menu-item gaming-interactive" @click="closeUserMenu">
-                    <AppIcon name="mdi-account-edit" size="18" />
+                    <AppIcon name="UserIcon-edit" size="18" />
                     <span>Gaming Profile</span>
                   </router-link>
                   <router-link to="/portfolio" class="menu-item gaming-interactive" @click="closeUserMenu">
@@ -212,7 +212,7 @@
                     <span>Portfolio</span>
                   </router-link>
                   <router-link to="/skills" class="menu-item gaming-interactive" @click="closeUserMenu">
-                    <AppIcon name="mdi-star" size="18" />
+                    <AppIcon name="StarIcon" size="18" />
                     <span>Skills Mapper</span>
                   </router-link>
                 </div>
@@ -220,11 +220,11 @@
                 <div class="menu-section">
                   <h5 class="section-title">Gaming Focus</h5>
                   <router-link to="/studios" class="menu-item gaming-interactive" @click="closeUserMenu">
-                    <AppIcon name="mdi-office-building" size="18" />
+                    <AppIcon name="BuildingOffice2Icon" size="18" />
                     <span>Studio Database</span>
                   </router-link>
                   <router-link to="/gaming-interview" class="menu-item gaming-interactive" @click="closeUserMenu">
-                    <AppIcon name="mdi-gamepad-variant" size="18" />
+                    <AppIcon name="PuzzlePieceIcon" size="18" />
                     <span>Gaming Interviews</span>
                   </router-link>
                 </div>
@@ -232,18 +232,18 @@
                 <div class="menu-section">
                   <h5 class="section-title">System</h5>
                   <router-link to="/settings" class="menu-item gaming-interactive" @click="closeUserMenu">
-                    <AppIcon name="mdi-cog" size="18" />
+                    <AppIcon name="CogIcon" size="18" />
                     <span>Settings</span>
                   </router-link>
                   <button class="menu-item gaming-interactive" @click="handleThemeToggle">
-                    <AppIcon :name="isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'" size="18" />
+                    <AppIcon :name="isDarkMode ? 'mdi-weather-sunny' : 'MoonIcon'" size="18" />
                     <span>{{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}</span>
                   </button>
                 </div>
 
                 <div class="menu-footer">
                   <button class="menu-item sign-out-btn" @click="handleSignOut">
-                    <AppIcon name="mdi-logout" size="18" />
+                    <AppIcon name="ArrowLeftOnRectangleIcon" size="18" />
                     <span>Sign Out</span>
                   </button>
                 </div>
@@ -291,6 +291,9 @@
 </template>
 
 <script setup>
+import { BellIcon, BriefcaseIcon, BuildingOffice2Icon, ChevronDownIcon, ChevronRightIcon, CogIcon, CpuChipIcon, MagnifyingGlassIcon, MicrophoneIcon, PuzzlePieceIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { StarIcon, TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -344,7 +347,7 @@ const breadcrumbs = computed(() => {
   const crumbs = []
   
   // Add home
-  crumbs.push({ label: 'Gaming Hub', to: '/', icon: 'mdi-gamepad-variant' })
+  crumbs.push({ label: 'Gaming Hub', to: '/', icon: 'DevicePhoneMobileIcon-variant' })
   
   // Generate breadcrumbs based on route
   let currentPath = ''
@@ -380,14 +383,14 @@ const getRouteInfo = (segment, path) => {
     'jobs': { label: 'Gaming Jobs', icon: 'mdi-briefcase-search' },
     'studios': { label: 'Studios', icon: 'mdi-office-building' },
     'portfolio': { label: 'Portfolio', icon: 'mdi-briefcase-variant' },
-    'skills': { label: 'Skills', icon: 'mdi-star' },
-    'interview-prep': { label: 'Interview Prep', icon: 'mdi-microphone' },
-    'gaming-interview': { label: 'Gaming Interview', icon: 'mdi-gamepad-variant' },
+    'skills': { label: 'Skills', icon: 'StarIcon' },
+    'interview-prep': { label: 'Interview Prep', icon: 'MicrophoneIcon' },
+    'gaming-interview': { label: 'Gaming Interview', icon: 'DevicePhoneMobileIcon-variant' },
     'documents': { label: 'Documents', icon: 'mdi-text-box-edit-outline' },
     'settings': { label: 'Settings', icon: 'mdi-cog' }
   }
   
-  return routeMap[segment] || { label: segment.charAt(0).toUpperCase() + segment.slice(1), icon: 'mdi-folder' }
+  return routeMap[segment] || { label: segment.charAt(0).toUpperCase() + segment.slice(1), icon: 'FolderIcon' }
 }
 
 const getAIStatusClass = () => ({
@@ -397,7 +400,7 @@ const getAIStatusClass = () => ({
 })
 
 const getAIStatusIcon = () => {
-  if (aiThinking.value) return 'mdi-loading'
+  if (aiThinking.value) return 'ArrowPathIcon'
   return aiReady.value ? 'mdi-chip' : 'mdi-alert-circle-outline'
 }
 
@@ -420,7 +423,7 @@ const generateSearchSuggestions = () => {
       { id: 2, text: 'Unreal Engine Positions', category: 'Jobs', icon: 'mdi-briefcase' },
       { id: 3, text: 'Epic Games Studio', category: 'Studios', icon: 'mdi-office-building' },
       { id: 4, text: 'Game Designer Remote', category: 'Jobs', icon: 'mdi-briefcase' },
-      { id: 5, text: 'C# Programming Skills', category: 'Skills', icon: 'mdi-star' }
+      { id: 5, text: 'C# Programming Skills', category: 'Skills', icon: 'StarIcon' }
     ]
   } else {
     // Filter suggestions based on search query
@@ -525,7 +528,7 @@ onUnmounted(() => {
   top: 0;
   z-index: 100;
   backdrop-filter: var(--glass-gaming-backdrop);
-  border-bottom: 1px solid var(--glass-gaming-border);
+  border-b: 1px solid var(--glass-gaming-border);
   transition: var(--transition-gaming);
 }
 
@@ -601,7 +604,7 @@ onUnmounted(() => {
 
 .brand-subtitle {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -698,7 +701,7 @@ onUnmounted(() => {
 }
 
 .breadcrumb-current {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -706,7 +709,7 @@ onUnmounted(() => {
 }
 
 .breadcrumb-separator {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .gaming-context {
@@ -757,13 +760,13 @@ onUnmounted(() => {
   outline: none;
   padding: var(--spacing-2-5) var(--spacing-10) var(--spacing-2-5) var(--spacing-4);
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   width: 250px;
   transition: var(--transition-cyber);
 }
 
 .gaming-search-input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .search-expanded {
@@ -773,7 +776,7 @@ onUnmounted(() => {
 .search-icon {
   position: absolute;
   right: var(--spacing-3);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   pointer-events: none;
 }
 
@@ -781,14 +784,14 @@ onUnmounted(() => {
   position: absolute;
   right: var(--spacing-8);
   cursor: pointer;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   transition: var(--transition-cyber);
   padding: var(--spacing-1);
   border-radius: var(--radius-sm);
 }
 
 .search-clear:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: rgba(var(--color-error-500-rgb), 0.1);
 }
 
@@ -822,12 +825,12 @@ onUnmounted(() => {
 .suggestion-text {
   flex: 1;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .suggestion-category {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   background: var(--surface-elevated);
   padding: var(--spacing-0-5) var(--spacing-2);
   border-radius: var(--radius-sm);
@@ -908,7 +911,7 @@ onUnmounted(() => {
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: var(--transition-gaming);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -934,7 +937,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .online-indicator {
@@ -960,7 +963,7 @@ onUnmounted(() => {
 
 .user-role {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   line-height: 1.2;
 }
 
@@ -987,7 +990,7 @@ onUnmounted(() => {
 
 .menu-header {
   padding-bottom: var(--spacing-3);
-  border-bottom: 1px solid var(--border-light);
+  border-b: 1px solid var(--border-light);
   margin-bottom: var(--spacing-3);
 }
 
@@ -1009,7 +1012,7 @@ onUnmounted(() => {
 .section-title {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin: 0 0 var(--spacing-2) 0;
@@ -1021,7 +1024,7 @@ onUnmounted(() => {
   gap: var(--spacing-3);
   padding: var(--spacing-2-5);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-decoration: none;
   border: none;
   background: transparent;
@@ -1037,7 +1040,7 @@ onUnmounted(() => {
 }
 
 .menu-footer {
-  border-top: 1px solid var(--border-light);
+  border-t: 1px solid var(--border-light);
   padding-top: var(--spacing-3);
 }
 
@@ -1048,7 +1051,7 @@ onUnmounted(() => {
 
 /* Secondary Navigation */
 .secondary-nav {
-  border-top: 1px solid var(--border-light);
+  border-t: 1px solid var(--border-light);
 }
 
 .secondary-nav-container {
@@ -1093,7 +1096,7 @@ onUnmounted(() => {
 
 .tab-badge {
   background: var(--color-gaming-500);
-  color: white;
+  color: var(--text-inverse);
   padding: var(--spacing-0-5) var(--spacing-1-5);
   border-radius: var(--radius-full);
   font-size: 0.65rem;

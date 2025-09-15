@@ -1,6 +1,6 @@
 <template>
-  <div class="unified-form-field text-gray-900 dark:text-gray-100" :class="{ required, valid: isValid, error: hasError }">
-    <label v-if="label" class="field-label text-gray-700 dark:text-gray-300">
+  <div class="unified-form-field text-glass-primary" :class="{ required, valid: isValid, error: hasError }" class="font-sans">
+    <label v-if="label" class="field-label text-gray-700 dark:text-glass-secondary dark:text-glass-secondary">
       <AppIcon v-if="icon" :name="icon" size="16" class="field-icon" />
       {{ label }}
       <span v-if="required" class="required-indicator">*</span>
@@ -66,11 +66,11 @@
     <!-- Helper Text / Validation -->
     <div v-if="helperText || validationMessage || hasError" class="field-feedback">
       <div v-if="hasError" class="field-error">
-        <AppIcon name="mdi-alert-circle-outline" size="14" />
+        <AppIcon name="ExclamationCircleIcon" size="14" />
         <span>{{ validationMessage || 'This field has an error' }}</span>
       </div>
       <div v-else-if="validationMessage && isValid" class="field-success">
-        <AppIcon name="mdi-check-circle-outline" size="14" />
+        <AppIcon name="CheckCircleIcon" size="14" />
         <span>{{ validationMessage }}</span>
       </div>
       <div v-else-if="helperText" class="field-helper">
@@ -91,6 +91,8 @@
 </template>
 
 <script setup>
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+
 import { computed, useId } from 'vue'
 import AppIcon from './AppIcon.vue'
 
@@ -194,7 +196,7 @@ const isCounterIdeal = computed(() => {
 const fieldClasses = computed(() => [
   'field-input',
   `field-input--${props.size}`,
-  'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400',
+  'bg-glass-bg dark:bg-gray-800 border-glass-border-hover dark:border-glass-border-hover dark:border-glass-border-hover text-glass-primary placeholder-gray-500 dark:placeholder-gray-400',
   'focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400',
   {
     'field-input--valid': isValid.value && props.modelValue,
@@ -218,7 +220,7 @@ const fieldClasses = computed(() => [
   gap: var(--spacing-2);
   font-weight: 500;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .field-icon {
@@ -242,7 +244,7 @@ const fieldClasses = computed(() => [
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   line-height: 1.5;
   transition: all var(--duration-fast);
@@ -280,7 +282,7 @@ const fieldClasses = computed(() => [
 
 .field-input--disabled {
   background: var(--surface-container);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -315,7 +317,7 @@ const fieldClasses = computed(() => [
 }
 
 .field-helper {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .field-counter {
@@ -323,7 +325,7 @@ const fieldClasses = computed(() => [
   align-items: center;
   gap: var(--spacing-1);
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   justify-content: flex-end;
 }
 

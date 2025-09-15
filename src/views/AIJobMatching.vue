@@ -1,5 +1,5 @@
 <template>
-  <StandardPageLayout>
+  <StandardPageLayout class="font-sans ">
     <template #header>
       <PageHeader
         title="AI Job Matching"
@@ -10,7 +10,7 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              :leading-icon="showMetrics ? 'mdi-eye-off' : 'mdi-eye'"
+              :leading-icon="showMetrics ? 'EyeIcon-off' : 'EyeIcon'"
               @click="showMetrics = !showMetrics"
             >
               {{ showMetrics ? 'Hide' : 'Show' }} Compatibility Metrics
@@ -26,7 +26,7 @@
             <UnifiedButton
               variant="outline"
               size="sm"
-              leading-icon="mdi-refresh"
+              leading-icon="ArrowPathIcon"
               @click="refreshJobs"
             >
               Refresh Matches
@@ -77,6 +77,8 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted } from 'vue'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import PageHeader from '@/components/ui/PageHeader.vue'

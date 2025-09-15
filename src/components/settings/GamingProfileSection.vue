@@ -1,9 +1,9 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div :class="isTabbed ? '' : 'glass-card section-card'" role="region" aria-labelledby="gaming-heading">
+  <div :class="isTabbed ? '' : 'glass-card section-card'" role="region" aria-labelledby="gaming-heading" class="font-sans">
     <div v-if="!isTabbed" class="card-header section-header">
       <h5 id="gaming-heading" class="section-title">
-        <AppIcon name="mdi-gamepad-variant" />
+        <AppIcon name="PuzzlePieceIcon" />
         Gaming Profile
       </h5>
     </div>
@@ -105,7 +105,7 @@
           </div>
         </div>
 
-        <div class="form-actions d-flex align-items-center gap-2">
+        <div class="form-actions flex items-center gap-glass-sm">
           <UnifiedButton
             type="submit"
             color="gaming"
@@ -126,6 +126,8 @@
 </template>
 
 <script>
+import { PuzzlePieceIcon } from '@heroicons/vue/24/outline'
+
 import { useAppStore } from '@/stores/app'
 import { useLogo } from '@/composables/useLogo'
 import { SaveIconComponent, CheckIconComponent, LightbulbIconComponent } from './SettingsIcons.js'

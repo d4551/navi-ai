@@ -1,5 +1,5 @@
 <template>
-  <div :class="['ui-chip', 'glass-badge', mappedClasses]">
+  <div :class="['ui-chip', 'glass-badge', mappedClasses]" class="font-sans">
     <slot />
     <button
       v-if="closable"

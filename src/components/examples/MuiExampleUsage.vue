@@ -1,5 +1,5 @@
 <template>
-  <div class="mui-example-container">
+  <div class="mui-example-container" class="font-sans">
     <!-- Loading Overlay -->
     <MuiLoadingIndicator 
       v-if="isLoading"
@@ -32,7 +32,7 @@
           <UnifiedButton
             appearance="outlined"
             color="secondary"
-            start-icon="mdi-heart"
+            start-icon="HeartIcon"
             @click="handleSecondaryAction"
           >
             Secondary Action
@@ -58,7 +58,7 @@
             label="Full Name"
             placeholder="Enter your full name"
             :required="true"
-            start-adornment="mdi-account"
+            start-adornment="UserIcon"
           />
           
           <MuiTextField
@@ -128,6 +128,8 @@
 </template>
 
 <script>
+import { HeartIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, reactive, computed } from 'vue'
 import {
   UnifiedButton,
@@ -325,9 +327,9 @@ export default {
 .component-section h2 {
   font-size: 1.75rem;
   font-weight: 600;
-  color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  color: var(--text-primary-600, rgba(0, 0, 0, 0.87));
   margin-bottom: 16px;
-  border-bottom: 2px solid var(--color-primary-500);
+  border-b: 2px solid var(--color-primary-500);
   padding-bottom: 8px;
 }
 
@@ -362,12 +364,12 @@ export default {
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: 16px;
-  color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  color: var(--text-primary-600, rgba(0, 0, 0, 0.87));
 }
 
 /* Dark theme adjustments */
 [data-theme="dark"] .mui-example-container {
-  background: var(--bg-secondary, #121212);
+  background: var(--bg-secondary-500, #121212);
 }
 
 [data-theme="dark"] .mui-example-header h1 {
@@ -379,17 +381,17 @@ export default {
 }
 
 [data-theme="dark"] .component-section h2 {
-  color: var(--text-primary, rgba(255, 255, 255, 0.87));
-  border-bottom-color: var(--color-primary-dark, #90b4ff);
+  color: var(--text-primary-600, rgba(255, 255, 255, 0.87));
+  border-b-color: var(--color-primary-dark, #90b4ff);
 }
 
 [data-theme="dark"] .loading-item {
-  background: var(--bg-primary, #1e1e1e);
+  background: var(--bg-primary-500, #1e1e1e);
   border-color: var(--glass-border, rgba(255, 255, 255, 0.12));
 }
 
 [data-theme="dark"] .loading-item h3 {
-  color: var(--text-primary, rgba(255, 255, 255, 0.87));
+  color: var(--text-primary-600, rgba(255, 255, 255, 0.87));
 }
 
 /* Responsive design */

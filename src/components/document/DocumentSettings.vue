@@ -1,8 +1,8 @@
 <template>
-  <div class="document-settings">
+  <div class="document-settings" class="font-sans">
     <div class="settings-header">
       <h3 class="section-title">
-        <AppIcon name="mdi-cog" />
+        <AppIcon name="CogIcon" />
         Document Settings
       </h3>
       <div class="header-actions">
@@ -22,11 +22,11 @@
       <div class="settings-section">
         <div class="section-header">
           <h4 class="section-title">
-            <AppIcon name="mdi-brain" />
+            <AppIcon name="CpuChipIcon" />
             AI Configuration
           </h4>
           <div class="ai-status" :class="{ active: aiActive }">
-            <AppIcon :name="aiActive ? 'mdi-check-circle' : 'mdi-alert-circle'" />
+            <AppIcon :name="aiActive ? 'CheckIcon-circle' : 'mdi-alert-circle'" />
             <span>{{ aiActive ? 'AI Active' : 'AI Offline' }}</span>
           </div>
         </div>
@@ -103,7 +103,7 @@
       <div class="settings-section">
         <div class="section-header">
           <h4 class="section-title">
-            <AppIcon name="mdi-file-document-edit" />
+            <AppIcon name="DocumentTextIcon" />
             Document Preferences
           </h4>
         </div>
@@ -181,7 +181,7 @@
       <div class="settings-section">
         <div class="section-header">
           <h4 class="section-title">
-            <AppIcon name="mdi-download" />
+            <AppIcon name="ArrowDownTrayIcon" />
             Export Settings
           </h4>
         </div>
@@ -247,7 +247,7 @@
       <div class="settings-section">
         <div class="section-header">
           <h4 class="section-title">
-            <AppIcon name="mdi-shield-check" />
+            <AppIcon name="ShieldCheckIcon" />
             Privacy & Security
           </h4>
         </div>
@@ -365,7 +365,7 @@
       <div class="settings-section">
         <div class="section-header">
           <h4 class="section-title">
-            <AppIcon name="mdi-database" />
+            <AppIcon name="CircleStackIcon" />
             Storage Information
           </h4>
         </div>
@@ -389,7 +389,7 @@
           <UnifiedButton
             variant="outline"
             size="sm"
-            leading-icon="mdi-download"
+            leading-icon="ArrowDownTrayIcon"
             @click="exportUserData"
           >
             Export Data
@@ -397,7 +397,7 @@
           <UnifiedButton
             variant="outline"
             size="sm"
-            leading-icon="mdi-delete"
+            leading-icon="TrashIcon"
             @click="clearAllData"
           >
             Clear All Data
@@ -410,7 +410,7 @@
     <div class="settings-footer">
       <div class="footer-info">
         <span class="save-indicator" :class="{ saving: isSaving, saved: recentlySaved }">
-          <AppIcon :name="isSaving ? 'mdi-loading' : recentlySaved ? 'mdi-check' : 'mdi-content-save'" />
+          <AppIcon :name="isSaving ? 'ArrowPathIcon' : recentlySaved ? 'CheckIcon' : 'mdi-content-save'" />
           {{ isSaving ? 'Saving...' : recentlySaved ? 'Saved' : 'Auto-save enabled' }}
         </span>
       </div>
@@ -437,6 +437,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, CircleStackIcon, CogIcon, CpuChipIcon, DocumentTextIcon, ShieldCheckIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, watch, onMounted } from 'vue'
 import { useToast } from '@/composables/useToast'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -494,13 +496,13 @@ const exportFormats = [
     value: 'pdf',
     name: 'PDF',
     description: 'Best for sharing and printing',
-    icon: 'mdi-file-pdf-box'
+    icon: 'DocumentIcon-pdf-box'
   },
   {
     value: 'docx',
     name: 'Word',
     description: 'Editable document format',
-    icon: 'mdi-file-word-box'
+    icon: 'DocumentIcon-word-box'
   },
   {
     value: 'html',
@@ -637,7 +639,7 @@ onMounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -696,7 +698,7 @@ onMounted(() => {
 .setting-label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .setting-select,
@@ -705,7 +707,7 @@ onMounted(() => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
 }
 
@@ -837,7 +839,7 @@ onMounted(() => {
 
 .radio-title {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .radio-description {
@@ -901,7 +903,7 @@ onMounted(() => {
 
 .toggle-title {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .toggle-description {
@@ -950,7 +952,7 @@ onMounted(() => {
 
 .format-name {
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .format-description {
@@ -985,7 +987,7 @@ onMounted(() => {
 .storage-value {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .storage-actions {

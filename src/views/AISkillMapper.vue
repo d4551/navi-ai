@@ -1,5 +1,5 @@
 <template>
-  <div class="skill-mapper-view">
+  <div class="skill-mapper-view font-sans">
     <main class="container-fluid mt-4">
       <!-- Initial Input Section -->
       <div v-if="mappedSkills.length === 0" class="initial-input-section">
@@ -22,7 +22,7 @@
             <UnifiedButton
               variant="primary"
               size="lg"
-              leading-icon="mdi-brain"
+              leading-icon="CpuChipIcon"
               :loading="isAnalyzing"
               :disabled="!analysisInput.description?.trim() || isAnalyzing"
               @click="analyzeGamingExperience"
@@ -38,8 +38,8 @@
         <div class="results-header">
           <h1>Your Professional Skill Profile</h1>
           <div class="header-actions">
-            <UnifiedButton variant="secondary" leading-icon="mdi-refresh" @click="initialize">Start Over</UnifiedButton>
-            <UnifiedButton variant="primary" leading-icon="mdi-export" @click="showExportModal = true">Export Profile</UnifiedButton>
+            <UnifiedButton variant="secondary" leading-icon="ArrowPathIcon" @click="initialize">Start Over</UnifiedButton>
+            <UnifiedButton variant="primary" leading-icon="ArrowUpTrayIcon" @click="showExportModal = true">Export Profile</UnifiedButton>
           </div>
         </div>
 
@@ -138,9 +138,9 @@
           <!-- Compare Tab -->
           <div v-if="activeTab === 'compare'" class="compare-tab">
             <div class="snapshot-controls">
-              <UnifiedButton variant="primary" leading-icon="mdi-camera" @click="saveSnapshot">Save Current Results</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-export" @click="exportSnapshots">Export All</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-import" @click="() => snapImport?.click()">Import</UnifiedButton>
+              <UnifiedButton variant="primary" leading-icon="CameraIcon" @click="saveSnapshot">Save Current Results</UnifiedButton>
+              <UnifiedButton variant="glass" leading-icon="ArrowUpTrayIcon" @click="exportSnapshots">Export All</UnifiedButton>
+              <UnifiedButton variant="glass" leading-icon="ArrowDownTrayIcon" @click="() => snapImport?.click()">Import</UnifiedButton>
               <input ref="snapImport" type="file" accept=".json" style="display: none" @change="onImportSnapshots">
               <label class="form-check-label ml-2">
                 <input v-model="replaceSnapshots" type="checkbox" class="form-check-input"> Replace all on import
@@ -156,8 +156,8 @@
                 </select>
                 <div v-if="leftSnap" class="snapshot-info">
                   <div>{{ leftSnap.skills.length }} skills</div>
-                  <UnifiedButton size="xs" variant="glass" leading-icon="mdi-rename" :disabled="!leftSnapKey" @click="renameSnapshotPrompt(leftSnapKey)">Rename</UnifiedButton>
-                  <UnifiedButton size="xs" variant="outline" leading-icon="mdi-delete" :disabled="!leftSnapKey" @click="deleteSnapshot(leftSnapKey)">Delete</UnifiedButton>
+                  <UnifiedButton size="xs" variant="glass" leading-icon="PencilIcon" :disabled="!leftSnapKey" @click="renameSnapshotPrompt(leftSnapKey)">Rename</UnifiedButton>
+                  <UnifiedButton size="xs" variant="outline" leading-icon="TrashIcon" :disabled="!leftSnapKey" @click="deleteSnapshot(leftSnapKey)">Delete</UnifiedButton>
                 </div>
               </div>
 
@@ -169,8 +169,8 @@
                 </select>
                 <div v-if="rightSnap" class="snapshot-info">
                   <div>{{ rightSnap.skills.length }} skills</div>
-                  <UnifiedButton size="xs" variant="glass" leading-icon="mdi-rename" :disabled="!rightSnapKey" @click="renameSnapshotPrompt(rightSnapKey)">Rename</UnifiedButton>
-                  <UnifiedButton size="xs" variant="outline" leading-icon="mdi-delete" :disabled="!rightSnapKey" @click="deleteSnapshot(rightSnapKey)">Delete</UnifiedButton>
+                  <UnifiedButton size="xs" variant="glass" leading-icon="PencilIcon" :disabled="!rightSnapKey" @click="renameSnapshotPrompt(rightSnapKey)">Rename</UnifiedButton>
+                  <UnifiedButton size="xs" variant="outline" leading-icon="TrashIcon" :disabled="!rightSnapKey" @click="deleteSnapshot(rightSnapKey)">Delete</UnifiedButton>
                 </div>
               </div>
             </div>
@@ -191,19 +191,19 @@
 
         <!-- Modals -->
         <!-- Skill detail modal -->
-        <div v-if="selectedSkill" class="modal fade show d-block" tabindex="-1">
+        <div v-if="selectedSkill" class="modal fade show block" tabindex="-1">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">{{ selectedSkill.transferableSkill }}</h5>
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" @click="selectedSkill = null" />
+                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" @click="selectedSkill = null" />
               </div>
               <div class="modal-body">
                 <div class="skill-detail">
-                  <div class="detail-row"><label>Confidence:</label><div class="confidence-detail" :class="`confidence-${selectedSkill.confidence}`">{{ selectedSkill.confidence }}</div></div>
-                  <div class="detail-row"><label>Source:</label><div>{{ selectedSkill.gameExpression }}</div></div>
-                  <div class="detail-row"><label>Category:</label><div>{{ selectedSkill.category }}</div></div>
-                  <div class="detail-row"><label>Applications:</label><div class="applications-list"><span v-for="app in selectedSkill.industryApplications" :key="app" class="app-tag">{{ app }}</span></div></div>
+                  <div class="detail-flex flex-wrap"><label>Confidence:</label><div class="confidence-detail" :class="`confidence-${selectedSkill.confidence}`">{{ selectedSkill.confidence }}</div></div>
+                  <div class="detail-flex flex-wrap"><label>Source:</label><div>{{ selectedSkill.gameExpression }}</div></div>
+                  <div class="detail-flex flex-wrap"><label>Category:</label><div>{{ selectedSkill.category }}</div></div>
+                  <div class="detail-flex flex-wrap"><label>Applications:</label><div class="applications-list"><span v-for="app in selectedSkill.industryApplications" :key="app" class="app-tag">{{ app }}</span></div></div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -214,37 +214,37 @@
         </div>
 
         <!-- Career role detail modal -->
-        <div v-if="selectedRoleDetails" class="modal fade show d-block" tabindex="-1">
+        <div v-if="selectedRoleDetails" class="modal fade show block" tabindex="-1">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">{{ selectedRoleDetails.role }}</h5>
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" @click="selectedRoleDetails = null" />
+                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" @click="selectedRoleDetails = null" />
               </div>
               <div class="modal-body">
                 <div class="skill-detail">
-                  <div class="detail-row"><label>Match Score:</label><div class="confidence-detail confidence-high">{{ selectedRoleDetails.match }}%</div></div>
-                  <div class="detail-row"><label>Description:</label><div>{{ selectedRoleDetails.pathway.description }}</div></div>
-                  <div class="detail-row"><label>Core Skills:</label><div class="applications-list"><span v-for="c in selectedRoleDetails.pathway.stages.flatMap((s: any) => s.requirements || [])" :key="c" class="app-tag">{{ c }}</span></div></div>
-                  <div class="detail-row"><label>Nice To Have:</label><div class="applications-list"><span v-for="c in selectedRoleDetails.pathway.stages.flatMap((s: any) => s.requirements || [])" :key="c" class="app-tag">{{ c }}</span></div></div>
-                  <div class="detail-row"><label>Tools:</label><div class="applications-list"><span v-for="t in []" :key="t" class="app-tag">{{ t }}</span></div></div>
+                  <div class="detail-flex flex-wrap"><label>Match Score:</label><div class="confidence-detail confidence-high">{{ selectedRoleDetails.match }}%</div></div>
+                  <div class="detail-flex flex-wrap"><label>Description:</label><div>{{ selectedRoleDetails.pathway.description }}</div></div>
+                  <div class="detail-flex flex-wrap"><label>Core Skills:</label><div class="applications-list"><span v-for="c in selectedRoleDetails.pathway.stages.flatMap((s: any) => s.requirements || [])" :key="c" class="app-tag">{{ c }}</span></div></div>
+                  <div class="detail-flex flex-wrap"><label>Nice To Have:</label><div class="applications-list"><span v-for="c in selectedRoleDetails.pathway.stages.flatMap((s: any) => s.requirements || [])" :key="c" class="app-tag">{{ c }}</span></div></div>
+                  <div class="detail-flex flex-wrap"><label>Tools:</label><div class="applications-list"><span v-for="t in []" :key="t" class="app-tag">{{ t }}</span></div></div>
                 </div>
               </div>
               <div class="modal-footer">
                 <UnifiedButton variant="glass" @click="selectedRoleDetails = null">Close</UnifiedButton>
-                <UnifiedButton variant="primary" leading-icon="mdi-briefcase-search">Find Jobs</UnifiedButton>
+                <UnifiedButton variant="primary" leading-icon="MagnifyingGlassIcon">Find Jobs</UnifiedButton>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Export modal -->
-        <div v-if="showExportModal" class="modal fade show d-block" tabindex="-1">
+        <div v-if="showExportModal" class="modal fade show block" tabindex="-1">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Export Skill Profile</h5>
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" @click="showExportModal = false" />
+                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" @click="showExportModal = false" />
               </div>
               <div class="modal-body">
                 <p>Choose your desired export format:</p>
@@ -263,6 +263,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowDownTrayIcon, ArrowPathIcon, ArrowUpTrayIcon, CameraIcon, CpuChipIcon, MagnifyingGlassIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted } from 'vue'
 import type { SkillExportOptions } from '../shared/types/skillMapping'
 import GlassNavTabs from '../components/GlassNavTabs.vue'
@@ -338,9 +340,9 @@ const snapImport = ref<HTMLInputElement | null>(null)
 
 // Tab configuration
 const navTabs = computed(() => [
-  { id: 'overview', label: 'Overview', icon: 'mdi-chart-box' },
+  { id: 'overview', label: 'Overview', icon: 'ChartBarIcon-box' },
   { id: 'skills', label: 'Skills', icon: 'mdi-view-list' },
-  { id: 'network', label: 'Network', icon: 'mdi-graph' },
+  { id: 'network', label: 'Network', icon: 'PresentationChartLineIcon' },
   { id: 'careers', label: 'Careers', icon: 'mdi-briefcase' },
   { id: 'compare', label: 'Compare', icon: 'mdi-compare' }
 ])
@@ -946,7 +948,7 @@ onMounted(() => {
 }
 
 .modal-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-b: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1.5rem;
 }
 
@@ -962,7 +964,7 @@ onMounted(() => {
 }
 
 .modal-footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-t: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1.5rem;
   display: flex;
   gap: 1rem;
@@ -984,12 +986,12 @@ onMounted(() => {
   gap: 1rem;
 }
 
-.detail-row {
+.detail-flex flex-wrap {
   display: flex;
   gap: 1rem;
 }
 
-.detail-row label {
+.detail-flex flex-wrap label {
   min-width: 120px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);

@@ -1,9 +1,9 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
     <!-- AI Integration Header -->
-    <div class="ai-integration-header glass p-4 gap-4 rounded-lg">
+    <div class="glass-card ai-integration-header">
       <div class="header-content">
-        <AppIcon name="mdi-robot-industrial" />
+        <AppIcon name="CpuChipIcon" />
         <h1>AI Integration Center</h1>
       </div>
       <div class="header-description">
@@ -12,7 +12,7 @@
     </div>
 
     <!-- AI Service Status Dashboard -->
-    <div class="ai-status-section glass p-4 gap-4 rounded-lg">
+    <div class="ai-status-section glass-card">
       <h2>AI Service Status</h2>
       
       <div class="status-grid">
@@ -48,7 +48,7 @@
       <div class="service-actions">
         <UnifiedButton
           variant="primary"
-          icon="mdi-play"
+          icon="PlayIcon"
           :loading="aiIntegration.aiInitializing"
           @click="initializeAI"
         >
@@ -57,7 +57,7 @@
         
         <UnifiedButton
           variant="outline"
-          icon="mdi-refresh"
+          icon="ArrowPathIcon"
           :loading="testing"
           @click="testConnection"
         >
@@ -66,7 +66,7 @@
         
         <UnifiedButton
           variant="ghost"
-          icon="mdi-cog"
+          icon="CogIcon"
           @click="openSettings"
         >
           Configure Services
@@ -75,7 +75,7 @@
     </div>
 
     <!-- AI Service Capabilities -->
-    <div class="ai-capabilities-section glass p-4 gap-4 rounded-lg">
+    <div class="ai-capabilities-section glass-card">
       <h2>AI Service Capabilities</h2>
       
       <div class="capabilities-grid">
@@ -95,7 +95,7 @@
     </div>
 
     <!-- AI Action Center -->
-    <div class="ai-actions-section glass p-4 gap-4 rounded-lg">
+    <div class="ai-actions-section glass-card">
       <h2>AI Action Center</h2>
       
       <div class="actions-grid">
@@ -115,7 +115,7 @@
         <h3>Last Result:</h3>
         <div class="result-header">
           <span :class="lastResult.success ? 'status-success' : 'status-error'">
-            {{ lastResult.success ? '✅ SUCCESS' : '❌ FAILED' }}
+            {{ lastResult.success ? 'CheckIcon SUCCESS' : 'XMarkIcon FAILED' }}
           </span>
           <span class="result-timestamp">{{ formatTime(lastResult.timestamp) }}</span>
         </div>
@@ -124,13 +124,13 @@
     </div>
 
     <!-- Real-time Features Test -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass-card">
       <h2>Real-time Features</h2>
       
       <div class="realtime-controls">
         <UnifiedButton
           variant="primary"
-          icon="mdi-microphone"
+          icon="MicrophoneIcon"
           :loading="isRecording"
           @click="toggleAudioRecording"
         >
@@ -139,7 +139,7 @@
         
         <UnifiedButton
           variant="secondary"
-          icon="mdi-video"
+          icon="VideoCameraIcon"
           :loading="isVideoStreaming"
           @click="toggleVideoStreaming"
         >
@@ -148,7 +148,7 @@
         
         <UnifiedButton
           variant="outline"
-          icon="mdi-monitor-screenshot"
+          icon="ComputerDesktopIcon"
           :loading="isScreenCapturing"
           @click="captureScreen"
         >
@@ -182,12 +182,12 @@
     </div>
 
     <!-- Health Check Results -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass-card">
       <h2>AI Health Check</h2>
       
       <UnifiedButton
         variant="outline"
-        icon="mdi-heart-pulse"
+        icon="HeartIcon"
         :loading="runningHealthCheck"
         @click="runHealthCheck"
       >
@@ -212,7 +212,7 @@
                 class="test-result-item"
                 :class="{ 'test-passed': result === true, 'test-failed': result === false }"
               >
-                <AppIcon :name="result === true ? 'mdi-check-circle' : 'mdi-alert-circle'" />
+                <AppIcon :name="result === true ? 'CheckIcon-circle' : 'mdi-alert-circle'" />
                 <span>{{ formatTestName(testName) }}</span>
               </div>
             </div>
@@ -235,7 +235,7 @@
     </div>
 
     <!-- Event Log -->
-    <div class="test-section glass p-4 gap-4 rounded-lg">
+    <div class="test-section glass-card">
       <h2>Event Log</h2>
       
       <div class="log-container">
@@ -254,7 +254,7 @@
       <div class="log-actions">
         <UnifiedButton
           variant="ghost"
-          icon="mdi-delete"
+          icon="TrashIcon"
           @click="clearLog"
         >
           Clear Log
@@ -265,6 +265,9 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon, CogIcon, ComputerDesktopIcon, CpuChipIcon, MicrophoneIcon, TrashIcon, VideoCameraIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, PlayIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
@@ -306,7 +309,7 @@ const testActions = [
   {
     id: 'analyze_resume',
     label: 'Analyze Resume',
-    icon: 'mdi-file-document-outline',
+    icon: 'DocumentIcon-document-outline',
     variant: 'outline'
   },
   {
@@ -324,13 +327,13 @@ const testActions = [
   {
     id: 'multimodal_test',
     label: 'Multimodal Test',
-    icon: 'mdi-image-multiple',
+    icon: 'PhotoIcon-multiple',
     variant: 'secondary'
   },
   {
     id: 'audio_processing',
     label: 'Audio Processing',
-    icon: 'mdi-microphone',
+    icon: 'MicrophoneIcon',
     variant: 'outline'
   }
 ]
@@ -592,14 +595,14 @@ function openSettings() {
 
 function getCapabilityIcon(capability) {
   const iconMap = {
-    multimodal: 'mdi-image-multiple',
-    realTime: 'mdi-clock-fast',
+    multimodal: 'PhotoIcon-multiple',
+    realTime: 'ClockIcon-fast',
     contextPersistence: 'mdi-memory',
     streaming: 'mdi-stream',
-    audio: 'mdi-microphone',
-    video: 'mdi-video'
+    audio: 'MicrophoneIcon',
+    video: 'VideoCameraIcon'
   }
-  return iconMap[capability] || 'mdi-check-circle'
+  return iconMap[capability] || 'CheckIcon-circle'
 }
 
 function formatCapabilityName(capability) {
@@ -939,12 +942,12 @@ onUnmounted(() => {
     display: flex;
     gap: 1rem;
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid rgba(var(--v-theme-outline), 0.1);
-    font-family: 'Courier New', monospace;
+    border-b: 1px solid rgba(var(--v-theme-outline), 0.1);
+    font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
     font-size: 0.9rem;
 
     &:last-child {
-      border-bottom: none;
+      border-b: none;
     }
 
     .log-time {

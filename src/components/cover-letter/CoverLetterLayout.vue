@@ -1,5 +1,5 @@
 <template>
-  <div class="cover-letter-layout">
+  <div class="cover-letter-layout" class="font-sans">
     <!-- Header Section -->
     <header class="cover-letter-header">
       <div class="header-content">
@@ -13,11 +13,11 @@
             Save Draft
           </button>
           <button class="action-btn secondary" @click="previewLetter">
-            <AppIcon name="mdi-eye" />
+            <AppIcon name="EyeIcon" />
             Preview
           </button>
           <button class="action-btn primary" @click="exportLetter">
-            <AppIcon name="mdi-download" />
+            <AppIcon name="ArrowDownTrayIcon" />
             Export
           </button>
         </div>
@@ -36,7 +36,7 @@
           </div>
         </div>
         <button class="change-job-btn" @click="changeJob">
-          <AppIcon name="mdi-pencil" />
+          <AppIcon name="PencilIcon" />
           Change Job
         </button>
       </div>
@@ -51,15 +51,15 @@
           <h3 class="panel-title">Quick Actions</h3>
           <div class="action-grid">
             <button class="quick-action-btn" @click="generateWithAI">
-              <AppIcon name="mdi-robot" />
+              <AppIcon name="CpuChipIcon" />
               <span>AI Generate</span>
             </button>
             <button class="quick-action-btn" @click="useTemplate">
-              <AppIcon name="mdi-file-document-outline" />
+              <AppIcon name="DocumentIcon" />
               <span>Use Template</span>
             </button>
             <button class="quick-action-btn" @click="improveWithAI">
-              <AppIcon name="mdi-auto-fix" />
+              <AppIcon name="SparklesIcon" />
               <span>AI Improve</span>
             </button>
             <button class="quick-action-btn" @click="checkTone">
@@ -93,7 +93,7 @@
               class="progress-item"
               :class="{ completed: item.completed }"
             >
-              <AppIcon v-if="item.completed" name="mdi-check-circle-outline" class="progress-icon" />
+              <AppIcon v-if="item.completed" name="CheckCircleIcon" class="progress-icon" />
               <AppIcon v-else name="mdi-circle-outline" class="progress-icon" />
               <span class="progress-text">{{ item.label }}</span>
             </div>
@@ -107,7 +107,7 @@
         <div class="content-toolbar">
           <div class="toolbar-section">
             <button class="toolbar-btn" :class="{ active: editorMode === 'write' }" @click="setEditorMode('write')">
-              <AppIcon name="mdi-pencil" />
+              <AppIcon name="PencilIcon" />
               Write
             </button>
             <button class="toolbar-btn" :class="{ active: editorMode === 'format' }" @click="setEditorMode('format')">
@@ -115,7 +115,7 @@
               Format
             </button>
             <button class="toolbar-btn" :class="{ active: editorMode === 'review' }" @click="setEditorMode('review')">
-              <AppIcon name="mdi-clipboard-text" />
+              <AppIcon name="ClipboardDocumentIcon" />
               Review
             </button>
           </div>
@@ -147,11 +147,11 @@
           <h3>Live Preview</h3>
           <div class="preview-actions">
             <button class="icon-btn" @click="togglePreviewMode">
-              <AppIcon v-if="previewMode === 'letter'" name="mdi-file-document-outline" />
-              <AppIcon v-else name="mdi-email" />
+              <AppIcon v-if="previewMode === 'letter'" name="DocumentIcon" />
+              <AppIcon v-else name="EnvelopeIcon" />
             </button>
             <button class="icon-btn" @click="closePreview">
-              <AppIcon name="mdi-close-circle-outline" context="error" />
+              <AppIcon name="XMarkIcon-circle-outline" context="error" />
             </button>
           </div>
         </div>
@@ -166,6 +166,8 @@
 </template>
 
 <script>
+import { ArrowDownTrayIcon, CheckCircleIcon, ClipboardDocumentIcon, CpuChipIcon, DocumentIcon, EnvelopeIcon, EyeIcon, PencilIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
@@ -208,7 +210,7 @@ export default {
     const writingTips = ref([
       {
         id: 1,
-        icon: 'mdi-target',
+        icon: 'CursorArrowRaysIcon',
         title: 'Be Specific',
         description: 'Tailor your letter to the specific job and company'
       },
@@ -220,13 +222,13 @@ export default {
       },
       {
         id: 3,
-        icon: 'mdi-chart-line',
+        icon: 'ChartBarIcon-line',
         title: 'Show Impact',
         description: 'Quantify your achievements with numbers and results'
       },
       {
         id: 4,
-        icon: 'mdi-account-heart',
+        icon: 'UserIcon-heart',
         title: 'Show Enthusiasm',
         description: 'Express genuine interest in the role and company'
       }
@@ -356,7 +358,7 @@ export default {
 
 .cover-letter-header {
   background-color: var(--md-sys-color-surface-container);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-b: 1px solid var(--md-sys-color-outline-variant);
   padding: 16px 24px;
 }
 
@@ -477,7 +479,7 @@ export default {
 .cover-letter-sidebar {
   width: 300px;
   background-color: var(--md-sys-color-surface-container-low);
-  border-right: 1px solid var(--md-sys-color-outline-variant);
+  border-r: 1px solid var(--md-sys-color-outline-variant);
   padding: 24px;
   overflow-y: auto;
 }
@@ -614,7 +616,7 @@ export default {
   align-items: center;
   padding: 16px 24px;
   background-color: var(--md-sys-color-surface-container);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-b: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .toolbar-section {
@@ -680,7 +682,7 @@ export default {
 .preview-panel {
   width: 400px;
   background-color: var(--md-sys-color-surface);
-  border-left: 1px solid var(--md-sys-color-outline-variant);
+  border-l: 1px solid var(--md-sys-color-outline-variant);
   display: flex;
   flex-direction: column;
 }
@@ -690,7 +692,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-b: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .preview-header h3 {

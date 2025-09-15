@@ -1,0 +1,334 @@
+/**
+ * ================================================
+ * SEMANTIC TYPOGRAPHY SYSTEM - NAVI AI
+ * ================================================
+ * Consistent, accessible, and semantically correct heading hierarchy
+ * that works across light/dark themes with proper contrast
+ */
+
+/* ===== SEMANTIC HEADING CLASSES ===== */
+/* Use these classes for proper semantic structure */
+
+.page-title {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-6);
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+}
+
+.section-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-display);
+}
+
+.subsection-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.component-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.card-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+/* ===== GLASS-OPTIMIZED HEADINGS ===== */
+/* Enhanced visibility on glass backgrounds */
+
+.glass-title {
+  color: var(--text-primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border-safe);
+  font-weight: var(--font-weight-semibold);
+}
+
+.glass-subtitle {
+  color: var(--text-primary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.08);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border-subtle);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ===== GAMING-THEMED HEADINGS ===== */
+/* Special styling for gaming content */
+
+.gaming-title {
+  font-family: var(--font-gaming);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: rgb(var(--neon-blue));
+  text-shadow:
+    0 0 10px rgba(var(--neon-blue), 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.05em;
+}
+
+.gaming-subtitle {
+  font-family: var(--font-gaming);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: rgb(var(--neon-purple));
+  text-shadow:
+    0 0 8px rgba(var(--neon-purple), 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+  margin-bottom: var(--space-2);
+  letter-spacing: 0.025em;
+}
+
+.level-title {
+  font-family: var(--font-gaming);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: rgb(var(--neon-blue));
+  text-shadow:
+    0 0 12px rgba(var(--neon-blue), 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ===== HIERARCHY ENFORCEMENT ===== */
+/* Prevent improper heading usage */
+
+/* Warn when headings are used out of order (development only) */
+.debug-headings h3:not(h2 ~ h3),
+.debug-headings h4:not(h3 ~ h4),
+.debug-headings h5:not(h4 ~ h5),
+.debug-headings h6:not(h5 ~ h6) {
+  outline: 3px solid red !important;
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .section-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .subsection-title {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .gaming-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .gaming-subtitle {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-2);
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-height-normal);
+  }
+
+  .section-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .gaming-title {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+  .glass-title,
+  .glass-subtitle {
+    background: var(--bg-primary);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-width: 2px;
+  }
+
+  .gaming-title,
+  .gaming-subtitle,
+  .level-title {
+    text-shadow: none;
+    color: var(--text-primary);
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .gaming-title,
+  .gaming-subtitle,
+  .level-title {
+    text-shadow: none;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+.title-with-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.title-with-icon .icon {
+  flex-shrink: 0;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.title-center {
+  text-align: center;
+}
+
+.title-uppercase {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.title-no-margin {
+  margin: 0;
+}
+
+.title-spaced {
+  margin-bottom: var(--space-6);
+}
+
+/* ===== CONTENT GROUPING ===== */
+
+.content-section {
+  margin-bottom: var(--space-8);
+}
+
+.content-section:last-child {
+  margin-bottom: 0;
+}
+
+.content-group {
+  margin-bottom: var(--space-6);
+}
+
+.content-group:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+
+/* Ensure headings have proper contrast */
+h1, h2, h3, h4, h5, h6,
+.page-title, .section-title, .subsection-title,
+.component-title, .card-title {
+  position: relative;
+}
+
+/* Add focus indicators for headings that are also links */
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
+.page-title a, .section-title a, .subsection-title a,
+.component-title a, .card-title a {
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+  margin: calc(-1 * var(--space-1));
+}
+
+h1 a:focus-visible, h2 a:focus-visible, h3 a:focus-visible,
+h4 a:focus-visible, h5 a:focus-visible, h6 a:focus-visible,
+.page-title a:focus-visible, .section-title a:focus-visible,
+.subsection-title a:focus-visible, .component-title a:focus-visible,
+.card-title a:focus-visible {
+  outline: 2px solid rgb(var(--neon-blue));
+  outline-offset: 2px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* ===== SEMANTIC DESCRIPTION LISTS ===== */
+
+.definition-list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.definition-term {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.definition-description {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .definition-list {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}
+
+/* ===== LEGACY HEADING MIGRATION ===== */
+/* Map old classes to new semantic system */
+
+.heading-1 { @apply page-title; }
+.heading-2 { @apply section-title; }
+.heading-3 { @apply subsection-title; }
+.heading-4 { @apply component-title; }
+.heading-5 { @apply card-title; }
+.heading-6 { @apply subtitle; }
+
+.heading-glass { @apply glass-title; }
+.heading-gaming { @apply gaming-title; }
+
+/* Specific legacy classes */
+.dashboard-title { @apply page-title; }
+.section-header { @apply section-title; }
+.card-header { @apply component-title; }

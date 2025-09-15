@@ -1,13 +1,13 @@
 <template>
-  <section class="modal-section ai-insights-section">
+  <section class="modal-section ai-insights-section" class="font-sans">
     <h3 class="section-title">
-      <AppIcon name="mdi-brain" />
+      <AppIcon name="CpuChipIcon" />
       AI Insights
     </h3>
     <div class="ai-insights-card">
-      <div class="d-flex justify-between align-center mb-2">
-        <div class="text-muted">Get strengths, risks, and suggested roles</div>
-        <UnifiedButton color="glass" :loading="loading" leading-icon="mdi-auto-fix" :disabled="loading || !studio" @click="$emit('analyze')">
+      <div class="flex justify-between items-center mb-2">
+        <div class="text-secondary">Get strengths, risks, and suggested roles</div>
+        <UnifiedButton color="glass" :loading="loading" leading-icon="SparklesIcon" :disabled="loading || !studio" @click="$emit('analyze')">
           {{ loading ? 'Analyzing...' : 'Analyze with AI' }}
         </UnifiedButton>
       </div>
@@ -31,12 +31,14 @@
           </div>
         </div>
       </div>
-      <div v-else class="text-muted">Run analysis to see AI insights for this studio.</div>
+      <div v-else class="text-secondary">Run analysis to see AI insights for this studio.</div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { CpuChipIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 defineProps<{
@@ -53,5 +55,5 @@ defineEmits(['analyze'])
 .insight-title { font-weight: 600; margin-bottom: 4px; }
 .insight-list { margin: 0; padding-left: 18px; }
 .insight-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.insight-tag { background: var(--glass-bg-light); border: 1px solid var(--glass-border); padding: 2px 8px; border-radius: 999px; font-size: 0.85rem; }
+.insight-tag { background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover); border: 1px solid var(--glass-border); padding: 2px 8px; border-radius: 999px; font-size: 0.85rem; }
 </style>

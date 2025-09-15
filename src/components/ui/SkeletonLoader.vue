@@ -1,5 +1,5 @@
 <template>
-  <div :class="['skeleton', classes]" :style="styleObject"></div>
+  <div :class="['skeleton', classes]" :style="styleObject" class="font-sans"></div>
 </template>
 
 <script setup lang="ts">

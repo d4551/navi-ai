@@ -1,5 +1,5 @@
 <template>
-  <div class="portfolio-project page-glass-container" :data-theme="themeName">
+  <div class="portfolio-project page-glass-container font-sans" :data-theme="themeName">
     <StandardPageLayout
       page-type="gaming"
       :title="item?.title || 'Project'"
@@ -8,14 +8,14 @@
       max-width="xl"
     >
       <template #header-actions>
-        <UnifiedButton variant="ghost" leading-icon="mdi-arrow-left" @click="goBack">Back</UnifiedButton>
-        <UnifiedButton v-if="primaryLink" variant="glass" leading-icon="mdi-open-in-new" :href="primaryLink" target="_blank">Open</UnifiedButton>
-        <UnifiedButton variant="outline" leading-icon="mdi-share-variant" @click="share">Share</UnifiedButton>
+        <UnifiedButton variant="ghost" leading-icon="ArrowLeftIcon" @click="goBack">Back</UnifiedButton>
+        <UnifiedButton v-if="primaryLink" variant="glass" leading-icon="ArrowTopRightOnSquareIcon" :href="primaryLink" target="_blank">Open</UnifiedButton>
+        <UnifiedButton variant="outline" leading-icon="ShareIcon" @click="share">Share</UnifiedButton>
       </template>
 
       <!-- Hero image -->
       <section v-if="imageUrl" class="hero unified-container">
-        <div class="hero-media glass p-4 gap-4 rounded-lg unified-card">
+        <div class="hero-media glass p-glass-md gap-glass-md rounded-lg unified-card">
           <img :src="imageUrl" :alt="item?.title || 'Project'" />
         </div>
       </section>
@@ -23,27 +23,27 @@
       <div v-if="item" class="unified-container project-body">
         <div class="grid">
           <!-- Left: Main content -->
-          <div class="col main">
-            <article v-if="item.description" class="glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+          <div class="flex-1 main">
+            <article v-if="item.description" class="glass p-glass-md gap-glass-md rounded-lg unified-card is-interactive neon-hover ripple-soft">
               <h2 class="section-title">Summary</h2>
               <p>{{ item.description }}</p>
             </article>
 
-            <article v-if="item.responsibilities?.length" class="glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+            <article v-if="item.responsibilities?.length" class="glass p-glass-md gap-glass-md rounded-lg unified-card is-interactive neon-hover ripple-soft">
               <h2 class="section-title">Responsibilities</h2>
               <ul>
                 <li v-for="r in item.responsibilities" :key="r">{{ r }}</li>
               </ul>
             </article>
 
-            <article v-if="item.outcomes?.length" class="glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+            <article v-if="item.outcomes?.length" class="glass p-glass-md gap-glass-md rounded-lg unified-card is-interactive neon-hover ripple-soft">
               <h2 class="section-title">Outcomes & Impact</h2>
               <ul>
                 <li v-for="o in item.outcomes" :key="o">{{ o }}</li>
               </ul>
             </article>
 
-            <article v-if="item.skills?.length" class="glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+            <article v-if="item.skills?.length" class="glass p-glass-md gap-glass-md rounded-lg unified-card is-interactive neon-hover ripple-soft">
               <h2 class="section-title">Skills</h2>
               <div class="tags">
                 <span v-for="s in item.skills" :key="s" class="tag">{{ s }}</span>
@@ -51,13 +51,13 @@
             </article>
 
             <div class="mt-lg">
-              <UnifiedButton variant="ghost" leading-icon="mdi-arrow-left" @click="goBack">Back to Portfolio</UnifiedButton>
+              <UnifiedButton variant="ghost" leading-icon="ArrowLeftIcon" @click="goBack">Back to Portfolio</UnifiedButton>
             </div>
           </div>
 
           <!-- Right: Details -->
-          <aside class="col side">
-            <div class="glass p-4 gap-4 rounded-lg unified-card details">
+          <aside class="flex-1 side">
+            <div class="glass p-glass-md gap-glass-md rounded-lg unified-card details">
               <h3 class="section-title">Project Details</h3>
               <dl class="meta-list">
                 <template v-if="item.type">
@@ -93,9 +93,9 @@
       </div>
 
       <div v-else class="unified-container">
-        <div class="glass p-6 gap-4 rounded-lg unified-card empty text-center">
+        <div class="glass p-glass-lg gap-glass-md rounded-lg unified-card empty text-center">
           <p>Project not found.</p>
-          <UnifiedButton variant="primary" leading-icon="mdi-arrow-left" @click="goBack">Back to Portfolio</UnifiedButton>
+          <UnifiedButton variant="primary" leading-icon="ArrowLeftIcon" @click="goBack">Back to Portfolio</UnifiedButton>
         </div>
       </div>
     </StandardPageLayout>
@@ -103,6 +103,8 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowLeftIcon, ArrowTopRightOnSquareIcon, ShareIcon } from '@heroicons/vue/24/outline'
+
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
@@ -147,7 +149,7 @@ const links = computed(() => {
   const arr: any[] = Array.isArray(it?.links) ? it.links : []
   const extras: any[] = []
   if (it?.url) extras.push({ url: it.url, label: 'Open', type: 'url', icon: 'mdi-open-in-new' })
-  if (it?.demoUrl) extras.push({ url: it.demoUrl, label: 'Play', type: 'demo', icon: 'mdi-play' })
+  if (it?.demoUrl) extras.push({ url: it.demoUrl, label: 'Play', type: 'demo', icon: 'PlayIcon' })
   const list = [...extras, ...arr.filter(l => l?.url)]
   return list
 })
@@ -160,9 +162,9 @@ const headerStats = computed(() => {
   const engine = it?.engine || ''
   const platform = it?.platform || ''
   return [
-    year ? { label: year, icon: 'mdi-calendar', color: 'info' } : null,
+    year ? { label: year, icon: 'CalendarIcon', color: 'info' } : null,
     engine ? { label: engine, icon: 'mdi-engine', color: 'primary' } : null,
-    platform ? { label: platform, icon: 'mdi-gamepad-variant', color: 'success' } : null,
+    platform ? { label: platform, icon: 'DevicePhoneMobileIcon-variant', color: 'success' } : null,
   ].filter(Boolean) as Array<{label:string,icon:string,color:string}>
 })
 
@@ -194,12 +196,12 @@ async function share() {
 .tags { display: flex; flex-wrap: wrap; gap: var(--spacing-1-5); }
 .tag { border:1px solid var(--glass-border); background: var(--glass-bg); border-radius: 999px; padding: var(--spacing-0-5) var(--spacing-2); font-size: 12px; }
 
-.details .meta-list { display: grid; grid-template-columns: auto 1fr; column-gap: var(--spacing-2-5); row-gap: var(--spacing-1-5); }
+.details .meta-list { display: grid; grid-template-columns: auto 1fr; column-gap: var(--spacing-2-5); flex flex-wrap-gap: var(--spacing-1-5); }
 .details dt { color: var(--text-secondary); font-size: 0.85rem; }
 .details dd { margin: 0; font-weight: 600; }
 .details .divider { height: 1px; background: var(--glass-border); margin: var(--spacing-2-5) 0; }
 .details .links { display: grid; gap: var(--spacing-1-5); }
-.details .link { display:inline-flex; align-items:center; gap: var(--spacing-2); color: var(--text-primary); text-decoration: none; padding: var(--spacing-1-5) var(--spacing-2); border-radius: var(--spacing-2); border:1px solid var(--glass-border); background: var(--surface-glass); }
+.details .link { display:inline-flex; align-items:center; gap: var(--spacing-2); color: var(--text-primary-600); text-decoration: none; padding: var(--spacing-1-5) var(--spacing-2); border-radius: var(--spacing-2); border:1px solid var(--glass-border); background: var(--surface-glass); }
 .details .link:hover { border-color: var(--color-primary-300); }
 
 .empty { padding: var(--spacing-6); }

@@ -21,7 +21,7 @@
         <span :style="{ fontSize: '1.5rem' }">🐶</span>
         <strong :style="{ color: 'var(--color-gaming-500)' }">Sam:</strong>
       </div>
-      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary)' }">
+      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary-600)' }">
         "Nice settings page! Very... settingsy. I bet Max is already trying to hack into the AI configuration."
       </p>
     </div>
@@ -46,7 +46,7 @@
         <span :style="{ fontSize: '1.5rem' }">🐰</span>
         <strong :style="{ color: 'var(--color-cyber-500)' }">Max:</strong>
       </div>
-      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary)' }">
+      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary-600)' }">
         "Ooh, shiny buttons! Can I break them? Please? I promise I'll only destroy the non-essential ones!"
       </p>
     </div>
@@ -71,7 +71,7 @@
         <span :style="{ fontSize: '1.5rem' }">🐶</span>
         <strong :style="{ color: 'var(--color-gaming-500)' }">Sam:</strong>
       </div>
-      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary)' }">
+      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary-600)' }">
         "Dr. Donnelly sure knows his way around a design system. This unified styling is more organized than my desk!"
       </p>
     </div>
@@ -100,7 +100,7 @@
           </div>
         </div>
         <div class="max-avatar">
-          🐰<AppIcon name="mdi-lightning-bolt" size="small" color="warning" />
+          🐰<AppIcon name="BoltIcon-bolt" size="small" color="warning" />
         </div>
       </div>
     </div>
@@ -183,7 +183,7 @@
     <!-- Gaming References Drawer -->
     <div class="gaming-references-drawer" :class="{ open: showGamingRefs }">
       <div class="drawer-handle" @click="toggleGamingRefs">
-        <AppIcon name="mdi-gamepad-variant" context="gaming" />
+        <AppIcon name="PuzzlePieceIcon" context="gaming" />
         <span>Gaming References</span>
       </div>
       <div class="drawer-content">
@@ -200,7 +200,7 @@
               >
                 <span class="ref-icon">{{ ref.icon }}</span>
                 <span class="ref-name">{{ ref.name }}</span>
-                <span v-if="!ref.discovered" class="ref-locked"><AppIcon name="mdi-lock" size="small" /></span>
+                <span v-if="!ref.discovered" class="ref-locked"><AppIcon name="LockClosedIcon" size="small" /></span>
               </button>
             </div>
           </div>
@@ -238,6 +238,8 @@
 </template>
 
 <script setup lang="ts">
+import { LockClosedIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 import { logger } from '@/shared/utils/logger';
 
@@ -263,8 +265,8 @@ const consoleInputRef = ref(null)
 
 // Adventure mode tools
 const adventureTools = [
-  { name: 'Talk', icon: 'mdi-account-voice' },
-  { name: 'Look', icon: 'mdi-eye' },
+  { name: 'Talk', icon: 'UserIcon-voice' },
+  { name: 'Look', icon: 'EyeIcon' },
   { name: 'Use', icon: 'mdi-hand-pointing-right' },
   { name: 'Pick Up', icon: 'mdi-hand-back-left' },
   { name: 'Walk', icon: 'mdi-walk' },
@@ -276,7 +278,7 @@ const gamingReferences = reactive([
   {
     name: 'LucasArts Classics',
     items: [
-      { name: 'SCUMM Engine', icon: '🎮', discovered: false, description: 'The legendary adventure game engine' },
+      { name: 'SCUMM Engine', icon: 'DevicePhoneMobileIcon', discovered: false, description: 'The legendary adventure game engine' },
       { name: 'Monkey Island', icon: '🏴‍☠️', discovered: false, description: 'Guybrush Threepwood was here' },
       { name: 'Day of the Tentacle', icon: '🐙', discovered: false, description: 'Purple Tentacle\'s world domination plan' },
       { name: 'Full Throttle', icon: '🏍️', discovered: false, description: 'Kick stand, kick ass' }
@@ -287,7 +289,7 @@ const gamingReferences = reactive([
     items: [
       { name: 'Tim Schafer', icon: '👨‍💻', discovered: false, description: 'Master of adventure games' },
       { name: 'Ron Gilbert', icon: '🧙‍♂️', discovered: false, description: 'Creator of Monkey Island' },
-      { name: 'Steve Purcell', icon: '🎨', discovered: false, description: 'Creator of Sam & Max' },
+      { name: 'Steve Purcell', icon: 'SwatchIcon', discovered: false, description: 'Creator of Sam & Max' },
       { name: 'Double Fine', icon: '🎭', discovered: false, description: 'Fine games, doubled' }
     ]
   },
@@ -297,7 +299,7 @@ const gamingReferences = reactive([
       { name: 'Freelance Police', icon: '🚔', discovered: true, description: 'Sam & Max\'s profession' },
       { name: 'Game Developer', icon: '👩‍💻', discovered: false, description: 'Your dream job awaits' },
       { name: 'QA Tester', icon: '🐛', discovered: false, description: 'Bug hunter extraordinaire' },
-      { name: 'Indie Studio', icon: '🏠', discovered: false, description: 'Start your own adventure' }
+      { name: 'Indie Studio', icon: 'HomeIcon', discovered: false, description: 'Start your own adventure' }
     ]
   }
 ])
@@ -324,7 +326,7 @@ const samDialogs = [
 
 const maxDialogs = [
   {
-    character: '🐰⚡',
+    character: '🐰BoltIcon',
     text: 'Sam! This job website is BORING! Where are the explosions?!',
     options: [
       { id: 1, text: 'Max, jobs don\'t usually involve explosions', next: 'maxDisappointed' },
@@ -332,7 +334,7 @@ const maxDialogs = [
     ]
   },
   {
-    character: '🐰⚡',
+    character: '🐰BoltIcon',
     text: 'I bet I could get ANY job here! Watch me apply to everything!',
     options: [
       { id: 1, text: 'Max, that\'s not how job applications work', next: 'maxConfused' },
@@ -431,7 +433,7 @@ const selectDialogOption = (option: any) => {
 const showRandomDialog = () => {
   const responses = [
     { character: '🐕‍🦺', text: 'Interesting choice. Very methodical.' },
-    { character: '🐰⚡', text: 'That was AWESOME! Do it again!' },
+    { character: '🐰BoltIcon', text: 'That was AWESOME! Do it again!' },
     { character: '🤖', text: 'NAVI here - need any assistance with that decision?' },
     { character: '👮‍♂️', text: 'The Commissioner wants to know about your progress...' }
   ]
@@ -469,7 +471,7 @@ const playPhoneEasterEgg = () => {
   ]
   
   const message = phoneMessages[Math.floor(Math.random() * phoneMessages.length)]
-  randomDialog.value = { character: '📞', text: message }
+  randomDialog.value = { character: 'PhoneIcon', text: message }
   
   setTimeout(() => {
     randomDialog.value = null
@@ -668,13 +670,13 @@ defineExpose({
   left: 20px;
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 8px solid var(--color-gaming-500);
+  border-l: 10px solid transparent;
+  border-r: 10px solid transparent;
+  border-t: 8px solid var(--color-gaming-500);
 }
 
 [data-theme="dark"] .speech-bubble::after {
-  border-top-color: var(--color-gaming-400);
+  border-t-color: var(--color-gaming-400);
 }
 
 .sam-avatar {
@@ -812,12 +814,12 @@ defineExpose({
   padding: 1rem;
   background: var(--glass-surface-primary);
   backdrop-filter: blur(20px) saturate(180%);
-  border-top: 2px solid var(--color-success-500);
+  border-t: 2px solid var(--color-success-500);
   box-shadow: 0 -8px 32px rgba(var(--color-shadow-rgb), 0.3);
 }
 
 [data-theme="dark"] .adventure-toolbar {
-  border-top-color: var(--color-success-400);
+  border-t-color: var(--color-success-400);
 }
 
 .adventure-tool {
@@ -829,7 +831,7 @@ defineExpose({
   background: var(--glass-surface-secondary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-md);
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-600);
   cursor: pointer;
   transition: all var(--duration-normal) var(--easing-standard);
   min-width: 80px;
@@ -903,7 +905,7 @@ defineExpose({
   background: var(--glass-surface-secondary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-md);
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-600);
   cursor: pointer;
   transition: all var(--duration-normal) var(--easing-standard);
   text-align: left;
@@ -989,7 +991,7 @@ defineExpose({
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-600);
   cursor: pointer;
   width: 2rem;
   height: 2rem;
@@ -1058,7 +1060,7 @@ defineExpose({
   background: var(--glass-surface-elevated);
   backdrop-filter: blur(20px) saturate(180%);
   border: 2px solid var(--color-brand-500);
-  border-right: none;
+  border-r: none;
   border-radius: var(--radius-md) 0 0 var(--radius-md);
   display: flex;
   flex-direction: column;
@@ -1068,7 +1070,7 @@ defineExpose({
   transition: all var(--duration-normal) var(--easing-standard);
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-600);
 }
 
 [data-theme="dark"] .drawer-handle {
@@ -1119,7 +1121,7 @@ defineExpose({
   background: var(--glass-surface-secondary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-md);
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-600);
   cursor: pointer;
   transition: all var(--duration-normal) var(--easing-standard);
   text-align: left;
@@ -1268,12 +1270,12 @@ defineExpose({
   align-items: center;
   padding: 0.5rem 1rem;
   background: rgba(var(--color-background-primary-rgb), 0.9);
-  border-top: 1px solid var(--color-success-500);
+  border-t: 1px solid var(--color-success-500);
 }
 
 [data-theme="dark"] .console-input {
   background: rgba(var(--color-background-secondary-rgb), 0.9);
-  border-top-color: var(--color-success-400);
+  border-t-color: var(--color-success-400);
 }
 
 .prompt {
@@ -1290,7 +1292,7 @@ defineExpose({
   flex: 1;
   background: none;
   border: none;
-  color: var(--color-text-primary);
+  color: var(--color-text-primary-600);
   font-family: inherit;
   font-size: 0.9rem;
   outline: none;

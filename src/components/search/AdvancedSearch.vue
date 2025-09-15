@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <div class="advanced-search">
+  <div class="advanced-search" class="font-sans">
     <!-- Search Header -->
     <div class="search-header">
       <div class="container">
@@ -49,7 +49,7 @@
               type="button"
               @click="searchMode = 'semantic'"
             >
-              <AppIcon name="mdi-brain" aria-hidden="true" />
+              <AppIcon name="CpuChipIcon" aria-hidden="true" />
               Semantic
             </button>
           </div>
@@ -68,7 +68,7 @@
             :aria-expanded="showFilters"
             @click="toggleFilters"
           >
-            <AppIcon name="mdi-tune-vertical" aria-hidden="true" />
+            <AppIcon name="AdjustmentsVerticalIcon" aria-hidden="true" />
             Advanced Filters
             <AppIcon :name="showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'" aria-hidden="true" />
           </button>
@@ -199,7 +199,7 @@
             <span class="results-count">{{ searchResults.length }} results</span>
             <span v-if="searchQuery" class="results-query">for "{{ searchQuery }}"</span>
             <span v-if="searchMode === 'semantic'" class="results-mode">
-              <AppIcon name="mdi-brain" aria-hidden="true" />
+              <AppIcon name="CpuChipIcon" aria-hidden="true" />
               Semantic Search
             </span>
           </div>
@@ -325,7 +325,7 @@
       <!-- Recommendations -->
       <div v-if="!hasSearched && recommendations.length > 0" class="recommendations">
         <h3 class="recommendations-title">
-          <AppIcon name="mdi-star" />
+          <AppIcon name="StarIcon" />
           Recommended for You
         </h3>
         <div class="recommendations-grid tool-grid">
@@ -346,6 +346,9 @@
 </template>
 
 <script setup lang="ts">
+import { AdjustmentsVerticalIcon, CpuChipIcon } from '@heroicons/vue/24/outline'
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, watch, computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { useRouter } from 'vue-router';
@@ -500,7 +503,7 @@ function sortResults() {
 function getResultIcon(type: string): string {
   const icons: Record<string, string> = {
     studio: 'mdi mdi-domain',
-    role: 'mdi mdi-account-tie',
+    role: 'mdi UserIcon-tie',
     technology: 'mdi mdi-code-tags'
   };
   return icons[type] || 'mdi mdi-circle';
@@ -603,7 +606,7 @@ watch(searchMode, async () => {
 .search-header {
   background: var(--glass-surface-light);
   backdrop-filter: blur(var(--glass-backdrop-blur));
-  border-bottom: 1px solid var(--glass-border-light);
+  border-b: 1px solid var(--glass-border-light);
   padding: var(--spacing-xl) 0;
   text-align: center;
 }
@@ -617,7 +620,7 @@ watch(searchMode, async () => {
 .search-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-sm);
   display: flex;
   align-items: center;
@@ -681,7 +684,7 @@ watch(searchMode, async () => {
 }
 
 .toggle-btn:hover {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   background: var(--glass-elevated-light);
 }
 
@@ -710,7 +713,7 @@ watch(searchMode, async () => {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-md) var(--spacing-lg);
-  border-bottom: 1px solid var(--border-color);
+  border-b: 1px solid var(--border-color);
 }
 
 .filters-toggle {
@@ -719,7 +722,7 @@ watch(searchMode, async () => {
   gap: var(--spacing-sm);
   background: none;
   border: none;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-md);
   font-weight: 600;
   cursor: pointer;
@@ -750,7 +753,7 @@ watch(searchMode, async () => {
 }
 
 .filter-group h4 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-md);
   font-weight: 600;
   margin-bottom: var(--spacing-md);
@@ -803,7 +806,7 @@ watch(searchMode, async () => {
   justify-content: flex-end;
   gap: var(--spacing-sm);
   padding-top: var(--spacing-md);
-  border-top: 1px solid var(--border-color);
+  border-t: 1px solid var(--border-color);
 }
 
 /* Results Section */
@@ -813,7 +816,7 @@ watch(searchMode, async () => {
   align-items: center;
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-md);
-  border-bottom: 1px solid var(--border-color);
+  border-b: 1px solid var(--border-color);
 }
 
 .results-info {
@@ -824,7 +827,7 @@ watch(searchMode, async () => {
 
 .results-count {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .results-query {
@@ -844,8 +847,8 @@ watch(searchMode, async () => {
   padding: var(--spacing-xs) var(--spacing-sm);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: var(--bg-primary-500);
+  color: var(--text-primary-600);
 }
 
 .no-results {
@@ -865,7 +868,7 @@ watch(searchMode, async () => {
 }
 
 .no-results h3 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-md);
 }
 
@@ -958,7 +961,7 @@ watch(searchMode, async () => {
 .result-title {
   font-size: var(--font-size-lg);
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-xs);
 }
 
@@ -1033,7 +1036,7 @@ watch(searchMode, async () => {
   display: flex;
   gap: var(--spacing-sm);
   padding-top: var(--spacing-md);
-  border-top: 1px solid var(--border-color);
+  border-t: 1px solid var(--border-color);
 }
 
 /* Recommendations */
@@ -1045,7 +1048,7 @@ watch(searchMode, async () => {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-lg);
 }
 
@@ -1082,7 +1085,7 @@ watch(searchMode, async () => {
 }
 
 .recommendation-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-sm);
 }
 

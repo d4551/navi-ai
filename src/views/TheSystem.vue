@@ -8,15 +8,16 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
     page-type="gaming"
     title="THE SYSTEM"
     subtitle="Every operation needs muscle. Welcome to the machine room."
-    :title-icon="'mdi-server-network'"
+    :title-icon="'ServerIcon-network'"
     content-spacing="normal"
     max-width="xl"
+    class="font-sans "
   >
     <!-- Quick Stats Bar -->
     <section class="stats-bar">
       <div class="stat-card">
         <div class="stat-icon power">
-          <AppIcon name="mdi-power" />
+          <AppIcon name="PowerIcon" />
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ systemPower.mainSystem ? 'Active' : 'Inactive' }}</div>
@@ -25,7 +26,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
       </div>
       <div class="stat-card">
         <div class="stat-icon devices">
-          <AppIcon name="mdi-devices" />
+          <AppIcon name="DeviceTabletIcon" />
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ connectedDevices.filter(d => d.status === 'active').length }}</div>
@@ -34,7 +35,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
       </div>
       <div class="stat-card">
         <div class="stat-icon health">
-          <AppIcon name="mdi-heart-pulse" />
+          <AppIcon name="HeartIcon" />
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ systemHealth.score }}%</div>
@@ -43,7 +44,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
       </div>
       <div class="stat-card">
         <div class="stat-icon network">
-          <AppIcon name="mdi-wifi" />
+          <AppIcon name="WifiIcon" />
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ connections.filter(c => c.status === 'connected').length }}/{{ connections.length }}</div>
@@ -60,10 +61,10 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
       </div>
       <div class="controls-grid responsive-grid--cards-sm">
         <!-- System Power -->
-        <div class="control-card glass p-4 gap-4 rounded-lg neon-interactive">
+        <div class="control-card glass p-glass-md gap-glass-md rounded-lg neon-interactive">
           <div class="control-header">
             <div class="control-icon">
-              <AppIcon name="mdi-power" class="rgb-icon" />
+              <AppIcon name="PowerIcon" class="rgb-icon" />
             </div>
             <div class="control-info">
               <h3>System Power</h3>
@@ -89,10 +90,10 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
         </div>
 
         <!-- Lighting Control -->
-        <div class="control-card glass p-4 gap-4 rounded-lg neon-interactive">
+        <div class="control-card glass p-glass-md gap-glass-md rounded-lg neon-interactive">
           <div class="control-header">
             <div class="control-icon">
-              <AppIcon name="mdi-lightbulb-multiple" class="rgb-icon" />
+              <AppIcon name="LightBulbIcon-multiple" class="rgb-icon" />
             </div>
             <div class="control-info">
               <h3>RGB Lighting</h3>
@@ -118,10 +119,10 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
         </div>
 
         <!-- Audio Control -->
-        <div class="control-card glass p-4 gap-4 rounded-lg neon-interactive">
+        <div class="control-card glass p-glass-md gap-glass-md rounded-lg neon-interactive">
           <div class="control-header">
             <div class="control-icon">
-              <AppIcon name="mdi-volume-high" />
+              <AppIcon name="SpeakerWaveIcon" />
             </div>
             <div class="control-info">
               <h3>Audio System</h3>
@@ -152,7 +153,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
         </div>
 
         <!-- Connection Status -->
-        <div class="control-card glass p-4 gap-4 rounded-lg neon-interactive">
+        <div class="control-card glass p-glass-md gap-glass-md rounded-lg neon-interactive">
           <div class="control-header">
             <div class="control-icon">
               <AppIcon name="mdi-transit-connection" class="rgb-icon" />
@@ -181,13 +182,13 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
     </section>
 
     <!-- Device Management -->
-    <section class="devices-section glass p-4 gap-4 rounded-lg">
+    <section class="devices-section glass p-glass-md gap-glass-md rounded-lg">
       <div class="section-header">
         <h2>Connected Devices</h2>
         <div class="section-subtitle">Monitor and manage system hardware</div>
         <div class="section-controls">
-          <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-refresh" :class="{ spinning: scanning }" @click="scanDevices">Scan Devices</UnifiedButton>
-          <UnifiedButton color="gaming" leading-icon="mdi-tune-vertical" @click="startCalibration">Calibrate</UnifiedButton>
+          <UnifiedButton color="glass" appearance="outlined" leading-icon="ArrowPathIcon" :class="{ spinning: scanning }" @click="scanDevices">Scan Devices</UnifiedButton>
+          <UnifiedButton color="gaming" leading-icon="AdjustmentsVerticalIcon" @click="startCalibration">Calibrate</UnifiedButton>
         </div>
       </div>
       
@@ -195,7 +196,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
         <div 
           v-for="device in connectedDevices"
           :key="device.id"
-          class="device-card glass p-4 gap-4 rounded-lg neon-interactive"
+          class="device-card glass p-glass-md gap-glass-md rounded-lg neon-interactive"
           :class="{ active: device.status === 'active', error: device.status === 'error' }"
         >
           <!-- Device Header -->
@@ -217,7 +218,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
                 size="sm"
                 :variant="device.status === 'active' ? 'primary' : 'glass'"
                 icon-only
-                :leading-icon="device.status === 'active' ? 'mdi-pause' : 'mdi-play'"
+                :leading-icon="device.status === 'active' ? 'PauseIcon' : 'PlayIcon'"
                 @click="toggleDevice(device.id)"
               />
             </div>
@@ -262,16 +263,16 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
           
           <!-- Device Actions -->
           <div class="device-actions">
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-cog" @click="configureDevice(device)">Config</UnifiedButton>
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-play" @click="testDevice(device)">Test</UnifiedButton>
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-file-document-outline" @click="viewDeviceLogs(device)">Logs</UnifiedButton>
+            <UnifiedButton color="glass" appearance="outlined" leading-icon="CogIcon" @click="configureDevice(device)">Config</UnifiedButton>
+            <UnifiedButton color="glass" appearance="outlined" leading-icon="PlayIcon" @click="testDevice(device)">Test</UnifiedButton>
+            <UnifiedButton color="glass" appearance="outlined" leading-icon="DocumentIcon" @click="viewDeviceLogs(device)">Logs</UnifiedButton>
           </div>
         </div>
       </div>
     </section>
 
     <!-- System Analytics -->
-    <section class="analytics-section glass p-4 gap-4 rounded-lg">
+    <section class="analytics-section glass p-glass-md gap-glass-md rounded-lg">
       <div class="section-header">
         <h2>System Analytics</h2>
         <div class="section-subtitle">Performance metrics and system health monitoring</div>
@@ -288,10 +289,10 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
       
       <div class="analytics-grid responsive-grid--cards-md">
         <!-- Performance Chart -->
-        <div class="analytics-card glass p-4 gap-4 rounded-lg analytics-card--large">
+        <div class="analytics-card glass p-glass-md gap-glass-md rounded-lg analytics-card--large">
           <div class="card-header section-header">
             <h3>
-              <AppIcon name="mdi-chart-bar" />
+              <AppIcon name="ChartBarSquareIcon" />
               Performance
             </h3>
             <div class="chart-legend">
@@ -327,17 +328,17 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
         </div>
 
         <!-- Device Status Overview -->
-        <div class="analytics-card glass p-4 gap-4 rounded-lg">
+        <div class="analytics-card glass p-glass-md gap-glass-md rounded-lg">
           <div class="card-header section-header">
             <h3>
-              <AppIcon name="mdi-devices" />
+              <AppIcon name="DeviceTabletIcon" />
               Device Overview
             </h3>
           </div>
           <div class="device-overview">
             <div class="overview-item">
               <div class="overview-icon">
-                <AppIcon name="mdi-usb" class="overview-device-icon" />
+                <AppIcon name="UsbIcon" class="overview-device-icon" />
               </div>
               <div class="overview-info">
                 <div class="overview-label">USB Devices</div>
@@ -347,7 +348,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
             
             <div class="overview-item">
               <div class="overview-icon">
-                <AppIcon name="mdi-bluetooth" class="overview-device-icon" />
+                <AppIcon name="DevicePhoneMobileIcon" class="overview-device-icon" />
               </div>
               <div class="overview-info">
                 <div class="overview-label">Bluetooth</div>
@@ -378,10 +379,10 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
         </div>
 
         <!-- System Health -->
-        <div class="analytics-card glass p-4 gap-4 rounded-lg">
+        <div class="analytics-card glass p-glass-md gap-glass-md rounded-lg">
           <div class="card-header section-header">
             <h3>
-              <AppIcon name="mdi-heart-pulse" />
+              <AppIcon name="HeartIcon" />
               System Health
             </h3>
             <div class="health-score" :class="getHealthClass(systemHealth.score)">
@@ -424,7 +425,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
           <div class="modal-header">
             <h2>System Calibration</h2>
             <button class="close-btn" @click="closeCalibration">
-              <AppIcon name="mdi-close" />
+              <AppIcon name="XMarkIcon" />
             </button>
           </div>
           
@@ -439,7 +440,7 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
                 }"
               >
                 <div class="step-indicator">
-                  <AppIcon :name="calibrationModal.currentStep > index ? 'mdi-check' : `mdi-numeric-${index + 1}`" />
+                  <AppIcon :name="calibrationModal.currentStep > index ? 'CheckIcon' : `mdi-numeric-${index + 1}`" />
                 </div>
                 <div class="step-content">
                   <h4>{{ step.title }}</h4>
@@ -463,10 +464,10 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
           
           <div class="modal-actions">
             <UnifiedButton color="glass" appearance="outlined" :disabled="calibrationModal.inProgress" @click="closeCalibration">Cancel</UnifiedButton>
-            <UnifiedButton v-if="calibrationModal.currentStep < calibrationSteps.length" color="gaming" :disabled="calibrationModal.inProgress" :loading="calibrationModal.inProgress" leading-icon="mdi-arrow-right" @click="nextCalibrationStep">
+            <UnifiedButton v-if="calibrationModal.currentStep < calibrationSteps.length" color="gaming" :disabled="calibrationModal.inProgress" :loading="calibrationModal.inProgress" leading-icon="ArrowRightIcon" @click="nextCalibrationStep">
               {{ calibrationModal.inProgress ? 'Processing...' : 'Next' }}
             </UnifiedButton>
-            <UnifiedButton v-else color="gaming" leading-icon="mdi-check" @click="completeCalibration">Complete</UnifiedButton>
+            <UnifiedButton v-else color="gaming" leading-icon="CheckIcon" @click="completeCalibration">Complete</UnifiedButton>
           </div>
         </div>
       </div>
@@ -475,6 +476,9 @@ RGB-enhanced controls with ultra-wide gaming analytics dashboard
 </template>
 
 <script setup lang="ts">
+import { AdjustmentsVerticalIcon, ArrowPathIcon, ArrowRightIcon, ChartBarSquareIcon, CheckIcon, CogIcon, DeviceTabletIcon, DocumentIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { HeartIcon, PlayIcon } from '@heroicons/vue/24/solid'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
@@ -522,9 +526,9 @@ const lightingPresets = [
 
 // Connection types
 const connections = reactive([
-  { type: 'USB', icon: 'mdi-usb', status: 'connected' },
-  { type: 'Bluetooth', icon: 'mdi-bluetooth', status: 'connected' },
-  { type: 'WiFi', icon: 'mdi-wifi', status: 'connected' },
+  { type: 'USB', icon: 'UsbIcon', status: 'connected' },
+  { type: 'Bluetooth', icon: 'DevicePhoneMobileIcon', status: 'connected' },
+  { type: 'WiFi', icon: 'WifiIcon', status: 'connected' },
   { type: 'Ethernet', icon: 'mdi-ethernet', status: 'disconnected' }
 ])
 
@@ -710,11 +714,11 @@ const completeCalibration = () => {
 // Utility functions  
 const _getHealthIcon = (health: string) => {
   const icons = {
-    healthy: 'mdi-check-circle-outline',
+    healthy: 'CheckIcon-circle-outline',
     warning: 'mdi-alert-circle-outline',
-    error: 'mdi-close-circle-outline'
+    error: 'XMarkIcon-circle-outline'
   }
-  return icons[health] || 'mdi-help-circle'
+  return icons[health] || 'QuestionMarkCircleIcon-circle'
 }
 
 const getHealthClass = (score: number) => {
@@ -727,9 +731,9 @@ const getHealthClass = (score: number) => {
 const getDeviceIcon = (type: string) => {
   const icons = {
     Mouse: 'mdi-mouse',
-    Keyboard: 'mdi-keyboard',
+    Keyboard: 'KeyIconboard',
     Audio: 'mdi-headphones',
-    Camera: 'mdi-camera',
+    Camera: 'CameraIcon',
     Storage: 'mdi-harddisk',
     Network: 'mdi-ethernet'
   }
@@ -843,7 +847,7 @@ onUnmounted(() => {
 .stat-value {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-1);
 }
 
@@ -887,7 +891,7 @@ onUnmounted(() => {
 }
 
 .text-gradient-rgb {
-  background: linear-gradient(45deg, var(--text-primary), var(--color-primary-400));
+  background: linear-gradient(45deg, var(--text-primary-600), var(--color-primary-400));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -943,7 +947,7 @@ onUnmounted(() => {
 
 .status-label {
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-lg);
 }
 
@@ -1040,7 +1044,7 @@ onUnmounted(() => {
 .control-info h3 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1);
 }
 
@@ -1233,7 +1237,7 @@ onUnmounted(() => {
 .volume-value {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   text-align: center;
 }
 
@@ -1244,7 +1248,7 @@ onUnmounted(() => {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
   transition: all var(--duration-fast);
   position: relative;
@@ -1293,7 +1297,7 @@ onUnmounted(() => {
 
 .connection-label {
   flex: 1;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-sm);
 }
 
@@ -1364,7 +1368,7 @@ onUnmounted(() => {
   align-items: flex-start;
   margin-bottom: var(--spacing-6);
   padding-bottom: var(--spacing-4);
-  border-bottom: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
   gap: var(--spacing-4);
 }
 
@@ -1378,7 +1382,7 @@ onUnmounted(() => {
 .section-header h2 {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
   line-height: 1.2;
 }
@@ -1409,7 +1413,7 @@ onUnmounted(() => {
 .refresh-btn {
   background: transparent;
   border: 1px solid var(--border-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .refresh-btn:hover {
@@ -1526,7 +1530,7 @@ onUnmounted(() => {
 .device-name {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1);
 }
 
@@ -1546,7 +1550,7 @@ onUnmounted(() => {
 
 .status-active {
   background: color-mix(in srgb, var(--color-success) 12%, transparent);
-  color: var(--text-success);
+  color: var(--text-success-600);
 }
 
 .status-inactive {
@@ -1561,7 +1565,7 @@ onUnmounted(() => {
 
 :global([data-theme="dark"]) .status-active {
   background: color-mix(in srgb, var(--color-success) 25%, transparent);
-  color: var(--text-success);
+  color: var(--text-success-600);
 }
 
 :global([data-theme="dark"]) .status-error {
@@ -1572,8 +1576,8 @@ onUnmounted(() => {
 /* Device Metrics */
 .device-metrics {
   padding: var(--spacing-4) 0;
-  border-top: 1px solid var(--border-base);
-  border-bottom: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
   margin: var(--spacing-5) 0;
 }
 
@@ -1607,7 +1611,7 @@ onUnmounted(() => {
 .metric-value {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Signal Bars */
@@ -1710,7 +1714,7 @@ onUnmounted(() => {
 .battery-text {
   position: absolute;
   font-size: 8px;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: var(--font-weight-bold);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   z-index: 1;
@@ -1733,7 +1737,7 @@ onUnmounted(() => {
   background: transparent;
   border: 1px solid var(--border-base);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -1809,7 +1813,7 @@ onUnmounted(() => {
   gap: var(--spacing-2);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -1965,7 +1969,7 @@ onUnmounted(() => {
 .overview-count {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Health Score */
@@ -2042,7 +2046,7 @@ onUnmounted(() => {
   text-align: right;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Calibration Modal */
@@ -2091,13 +2095,13 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-6);
-  border-bottom: 1px solid var(--border-base);
+  border-b: 1px solid var(--border-base);
 }
 
 .modal-header h2 {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -2114,7 +2118,7 @@ onUnmounted(() => {
 
 .close-btn:hover {
   background: var(--surface-glass);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-content {
@@ -2174,7 +2178,7 @@ onUnmounted(() => {
 .step-content h4 {
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0 0 var(--spacing-1);
 }
 
@@ -2264,7 +2268,7 @@ onUnmounted(() => {
   display: flex;
   gap: var(--spacing-3);
   padding: var(--spacing-6);
-  border-top: 1px solid var(--border-base);
+  border-t: 1px solid var(--border-base);
 }
 
 .modal-actions .glass-button-outline,
@@ -2283,7 +2287,7 @@ onUnmounted(() => {
 .modal-actions .glass-button-outline {
   background: transparent;
   border: 1px solid var(--border-base);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-actions .glass-button-primary {
@@ -2425,7 +2429,7 @@ onUnmounted(() => {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   padding: var(--spacing-2) var(--spacing-3);
   font-size: var(--font-size-sm);
   transition: all var(--duration-fast);

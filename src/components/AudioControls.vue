@@ -1,24 +1,25 @@
 <template>
   <div
-    class="audio-controls noir-glass-surface p-4 rounded-lg"
+    class="audio-controls noir-glass-surface p-glass-md rounded-lg"
     :class="{ 'recording-active': isRecording,
               'fairy-ai-active': fairyAIMode 
     }"
     role="region"
     aria-label="NAVI Audio System - Voice Input and Output Controls"
+    class="font-sans"
   >
     <!-- Enhanced Device Selection Section -->
     <div v-if="showDeviceSelection" class="device-selection-section mb-4">
-      <h3 class="h6 mb-3 text-muted d-flex align-items-center gap-2">
-        <AppIcon name="mdi-microphone-settings" class="text-primary" />
+      <h3 class="h6 mb-3 text-secondary flex items-center gap-glass-sm">
+        <AppIcon name="MicrophoneIcon-settings" class="text-primary-600" />
         Audio Device Settings
       </h3>
 
-      <div class="row g-3">
+      <div class="flex flex-wrap g-3">
         <!-- Microphone Selection -->
-        <div class="col-md-6">
-          <label class="form-label small fw-medium" for="mic-select">
-            <AppIcon name="mdi-microphone" />
+        <div class="flex-1-md-6">
+          <label class="form-label small font-medium" for="mic-select">
+            <AppIcon name="MicrophoneIcon" />
             Microphone
           </label>
           <select
@@ -44,9 +45,9 @@
         </div>
 
         <!-- Speaker Selection -->
-        <div class="col-md-6">
-          <label class="form-label small fw-medium" for="speaker-select">
-            <AppIcon name="mdi-volume-high" />
+        <div class="flex-1-md-6">
+          <label class="form-label small font-medium" for="speaker-select">
+            <AppIcon name="SpeakerWaveIcon" />
             Speaker
           </label>
           <select
@@ -74,9 +75,9 @@
 
     <!-- Canonical Push-to-Talk Control -->
     <div class="push-to-talk-section">
-      <div class="d-flex align-items-center justify-content-between mb-3">
-        <h3 class="h6 mb-0 text-muted d-flex align-items-center gap-2">
-          <AppIcon name="mdi-microphone-variant" class="text-primary" />
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="h6 mb-0 text-secondary flex items-center gap-glass-sm">
+          <AppIcon name="MicrophoneIcon-variant" class="text-primary-600" />
           Voice Input Controls
         </h3>
       </div>
@@ -92,8 +93,8 @@
       >
         <template #device-selector="{ microphoneDevices, selectedMicId, setSelectedMic }">
           <div class="ptt-device-select mt-2">
-            <label class="form-label small fw-medium mb-1" for="ptt-mic-select">
-              <AppIcon name="mdi-microphone" />
+            <label class="form-label small font-medium mb-1" for="ptt-mic-select">
+              <AppIcon name="MicrophoneIcon" />
               Microphone (PTT)
             </label>
             <select
@@ -119,13 +120,13 @@
 
     <!-- Playback Controls -->
     <div v-if="audioData || isPlaying" class="playback-section mt-3">
-      <div class="d-flex align-items-center gap-2">
+      <div class="flex items-center gap-glass-sm">
         <UnifiedButton
           variant="success"
           size="sm"
           :disabled="!audioData || isPlaying"
           aria-label="Play recorded audio"
-          leading-icon="mdi-play"
+          leading-icon="PlayIcon"
           @click="playAudio"
         >
           Play
@@ -136,7 +137,7 @@
           size="sm"
           :disabled="!isPlaying"
           aria-label="Stop playing audio"
-          leading-icon="mdi-stop"
+          leading-icon="StopIcon"
           @click="stopAudio"
         >
           Stop
@@ -154,15 +155,15 @@
               aria-valuemax="100"
             ></div>
           </div>
-          <small class="text-muted">{{ formatTime(playbackCurrentTime) }} / {{ formatTime(playbackDuration) }}</small>
+          <small class="text-secondary">{{ formatTime(playbackCurrentTime) }} / {{ formatTime(playbackDuration) }}</small>
         </div>
       </div>
     </div>
 
     <!-- Permission Request -->
     <div v-if="!hasPermission" class="permission-section">
-      <div class="alert alert-warning d-flex align-items-center">
-        <AppIcon name="mdi-microphone-off" class="me-2" />
+      <div class="alert alert-warning flex items-center">
+        <AppIcon name="MicrophoneIcon-off" class="mr-2" />
         <div>
           <strong>Microphone access required</strong>
           <p class="mb-0 small">Please grant microphone permission to use voice features.</p>
@@ -176,6 +177,9 @@
 </template>
 
 <script>
+import { MicrophoneIcon } from '@heroicons/vue/24/outline'
+import { PlayIcon, StopIcon } from '@heroicons/vue/24/solid'
+
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { audioService as _audioService } from '@/shared/services/AudioService';
 import { logger } from '@/shared/utils/logger';
@@ -419,7 +423,7 @@ export default {
       recordingDuration.value = 0;
       recordingTimer = setInterval(() => {
         recordingDuration.value += 1;
-        if (recordingDuration.value >= props.maxRecordingDuration) {
+        if (recordingDuration.value >= _props.maxRecordingDuration) {
           handleRecordingStop();
         }
       }, 1000);
@@ -613,7 +617,7 @@ export default {
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .audio-controls {
-    background: var(--bg-secondary-dark);
+    background: var(--bg-secondary-500-dark);
     border-color: var(--border-color-dark);
   }
 
@@ -624,7 +628,7 @@ export default {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-  .recording-section .d-flex {
+  .recording-section .flex {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;

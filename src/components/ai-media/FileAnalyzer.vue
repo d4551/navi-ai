@@ -1,9 +1,9 @@
 <template>
-  <div class="file-analyzer unified-container">
+  <div class="file-analyzer unified-container" class="font-sans">
     <div class="glass-card section-card">
       <div class="analyzer-header">
-        <h3 class="section-title d-flex align-center gap-sm">
-          <AppIcon name="mdi-file-video" /> 
+        <h3 class="section-title flex items-center gap-sm">
+          <AppIcon name="DocumentIcon-video" /> 
           File Analyzer
         </h3>
         <div class="mode-chips">
@@ -27,19 +27,19 @@
 
         <div class="actions">
           <div class="left">
-            <UnifiedButton variant="gaming" leading-icon="mdi-image-search" :disabled="busy" @click="analyzeOnce">
+            <UnifiedButton variant="gaming" leading-icon="PhotoIcon-search" :disabled="busy" @click="analyzeOnce">
               {{ isVideo ? 'Analyze Current Frame' : 'Analyze Image' }}
             </UnifiedButton>
-            <UnifiedButton variant="glass" leading-icon="mdi-camera" :disabled="busy" @click="snapshot">
+            <UnifiedButton variant="glass" leading-icon="CameraIcon" :disabled="busy" @click="snapshot">
               Snapshot to Gallery
             </UnifiedButton>
           </div>
           <div v-if="isVideo" class="right auto">
-            <div class="form-check form-switch me-3">
+            <div class="form-check form-switch mr-3">
               <input id="auto-analyze" v-model="autoAnalyze" class="form-check-input" type="checkbox" @change="toggleAuto" />
               <label class="form-check-label" for="auto-analyze">Auto Analyze</label>
             </div>
-            <label class="me-2">Every {{ intervalSec }}s</label>
+            <label class="mr-2">Every {{ intervalSec }}s</label>
             <input v-model.number="intervalSec" type="range" min="1" max="10" step="1" @input="onIntervalChange" />
           </div>
         </div>
@@ -63,6 +63,8 @@
 </template>
 
 <script setup lang="ts">
+import { CameraIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onUnmounted } from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -101,7 +103,7 @@ let timer: number | null = null
 const modes = [
   { key: 'describe', label: 'Describe', icon: 'mdi-text-box-search' },
   { key: 'ocr', label: 'OCR', icon: 'mdi-text-recognition' },
-  { key: 'safety', label: 'Safety', icon: 'mdi-shield-check' },
+  { key: 'safety', label: 'Safety', icon: 'ShieldCheckIcon-check' },
   { key: 'uiqa', label: 'UI QA', icon: 'mdi-application-cog' },
 ]
 const activeMode = ref<'describe' | 'ocr' | 'safety' | 'uiqa'>('describe')

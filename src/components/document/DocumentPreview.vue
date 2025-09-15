@@ -1,14 +1,14 @@
 <template>
-  <div class="document-preview">
+  <div class="document-preview" class="font-sans">
     <div v-if="isLoading" class="preview-loading">
       <div class="loading-spinner">
-        <AppIcon name="mdi-loading" size="32" class="spinning" />
+        <AppIcon name="ArrowPathIcon" size="32" class="spinning" />
       </div>
       <p>Generating preview...</p>
     </div>
     
     <div v-else-if="previewError" class="preview-error">
-      <AppIcon name="mdi-alert-circle-outline" size="48" />
+      <AppIcon name="ExclamationCircleIcon" size="48" />
       <h4>Preview Error</h4>
       <p>{{ previewError }}</p>
       <UnifiedButton
@@ -28,25 +28,25 @@
             <h1 class="name">{{ resolvedData.personal?.firstName }} {{ resolvedData.personal?.lastName }}</h1>
             <div class="contact-details">
               <div v-if="resolvedData.personal?.email" class="contact-item">
-                <AppIcon name="mdi-email" size="14" />
+                <AppIcon name="EnvelopeIcon" size="14" />
                 <span>{{ resolvedData.personal.email }}</span>
               </div>
               <div v-if="resolvedData.personal?.phone" class="contact-item">
-                <AppIcon name="mdi-phone" size="14" />
+                <AppIcon name="PhoneIcon" size="14" />
                 <span>{{ resolvedData.personal.phone }}</span>
               </div>
               <div v-if="resolvedData.personal?.location" class="contact-item">
-                <AppIcon name="mdi-map-marker" size="14" />
+                <AppIcon name="MapPinIcon" size="14" />
                 <span>{{ resolvedData.personal.location }}</span>
               </div>
             </div>
             <div class="online-presence">
               <div v-if="resolvedData.personal?.website" class="contact-item">
-                <AppIcon name="mdi-web" size="14" />
+                <AppIcon name="GlobeAltIcon" size="14" />
                 <span>{{ resolvedData.personal.website }}</span>
               </div>
               <div v-if="resolvedData.personal?.linkedin" class="contact-item">
-                <AppIcon name="mdi-linkedin" size="14" />
+                <AppIcon name="LinkIconedin" size="14" />
                 <span>{{ resolvedData.personal.linkedin }}</span>
               </div>
               <div v-if="resolvedData.personal?.github" class="contact-item">
@@ -171,7 +171,7 @@
         <UnifiedButton
           variant="ghost"
           size="xs"
-          leading-icon="mdi-minus"
+          leading-icon="MinusIcon"
           :disabled="zoomLevel <= 0.5"
           @click="zoomOut"
         />
@@ -179,7 +179,7 @@
         <UnifiedButton
           variant="ghost"
           size="xs"
-          leading-icon="mdi-plus"
+          leading-icon="PlusIcon"
           :disabled="zoomLevel >= 2"
           @click="zoomIn"
         />
@@ -189,7 +189,7 @@
         <UnifiedButton
           variant="ghost"
           size="xs"
-          leading-icon="mdi-fullscreen"
+          leading-icon="ArrowsPointingOutIcon"
           @click="toggleFullscreen"
         >
           {{ isFullscreen ? 'Exit' : 'Fullscreen' }}
@@ -200,6 +200,9 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowsPointingOutIcon, EnvelopeIcon, ExclamationCircleIcon, GlobeAltIcon, MinusIcon, PhoneIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { MapPinIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, watch, onMounted } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -391,7 +394,7 @@ onMounted(() => {
 }
 
 .preview-error h4 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: var(--spacing-3) 0 var(--spacing-2);
 }
 
@@ -417,7 +420,7 @@ onMounted(() => {
 
 .resume-header {
   margin-bottom: 20px;
-  border-bottom: 2px solid #333;
+  border-b: 2px solid #333;
   padding-bottom: 10px;
 }
 
@@ -455,7 +458,7 @@ onMounted(() => {
   color: #333;
   text-transform: uppercase;
   margin: 0 0 10px 0;
-  border-bottom: 1px solid #ddd;
+  border-b: 1px solid #ddd;
   padding-bottom: 2px;
 }
 
@@ -603,7 +606,7 @@ onMounted(() => {
 
 .signature-line {
   font-weight: bold;
-  border-bottom: 1px solid #333;
+  border-b: 1px solid #333;
   display: inline-block;
   min-width: 200px;
   padding-bottom: 2px;
@@ -611,16 +614,16 @@ onMounted(() => {
 
 /* Template Variations */
 .template-modern .resume-header {
-  border-bottom: 3px solid #007acc;
+  border-b: 3px solid #007acc;
 }
 
 .template-modern .section-title {
   color: #007acc;
-  border-bottom: 2px solid #007acc;
+  border-b: 2px solid #007acc;
 }
 
 .template-creative .resume-header {
-  border-bottom: 3px solid #e91e63;
+  border-b: 3px solid #e91e63;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   padding: 15px;
   border-radius: 5px;
@@ -635,7 +638,7 @@ onMounted(() => {
   color: white;
   padding: 20px;
   border-radius: 8px;
-  border-bottom: none;
+  border-b: none;
 }
 
 .template-gaming-pro .name {
@@ -644,7 +647,7 @@ onMounted(() => {
 
 .template-gaming-pro .section-title {
   color: #667eea;
-  border-bottom: 2px solid #667eea;
+  border-b: 2px solid #667eea;
 }
 
 /* Preview Controls */
@@ -656,7 +659,7 @@ onMounted(() => {
   align-items: center;
   padding: var(--spacing-2);
   background: var(--glass-surface);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 

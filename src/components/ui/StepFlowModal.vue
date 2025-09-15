@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="visible" :max-width="maxWidth">
+  <v-dialog v-model="visible" :max-width="maxWidth" class="font-sans ">
     <v-card>
-      <v-card-title class="d-flex align-center gap-2">
+      <v-card-title class="flex items-center gap-glass-sm">
         <AppIcon v-if="icon" :name="icon" />
         <span>{{ title }}</span>
       </v-card-title>

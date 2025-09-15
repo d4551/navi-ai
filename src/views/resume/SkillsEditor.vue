@@ -2,6 +2,7 @@
   <div 
     class="skills-editor section-card section-card unified-card"
     :class="theme?.getThemeClasses?.('skills-editor')"
+    class="font-sans"
   >
     <!-- Header Section -->
     <div 
@@ -13,12 +14,12 @@
         fontFamily: 'var(--font-family-primary)'
       }"
     >
-      <div class="d-flex align-items-center justify-space-between">
-        <div class="d-flex align-items-center gap-3">
-          <AppIcon name="mdi-brain" size="24" />
+      <div class="flex items-center justify-space-between">
+        <div class="flex items-center gap-glass-md">
+          <AppIcon name="CpuChipIcon" size="24" />
           <div>
             <h3 
-              class="text-h6 mb-1"
+              class="text-lg font-semibold mb-1"
               :style="{ 
                 color: 'var(--color-on-surface)',
                 fontFamily: 'var(--font-family-primary)',
@@ -38,7 +39,7 @@
         
         <!-- Sync Status Indicator -->
         <UiChip :classes="`chip ${isDataSynced ? 'chip-success' : 'chip-warning'} chip-compact`">
-          <AppIcon :name="isDataSynced ? 'mdi-check-circle-outline' : 'mdi-sync'" size="16" class="me-2" />
+          <AppIcon :name="isDataSynced ? 'CheckIcon-circle-outline' : 'mdi-sync'" size="16" class="mr-2" />
           {{ isDataSynced ? 'Synced with Profile' : 'Syncing...' }}
         </UiChip>
       </div>
@@ -56,16 +57,16 @@
       <div class="skills-category mb-4">
         <div class="category-header mb-3">
           <h4 
-            class="text-subtitle-1 mb-2"
+            class="text-base font-medium mb-2"
             :style="{
               color: 'var(--color-on-surface)',
               fontFamily: 'var(--font-family-primary)',
               fontWeight: 'var(--font-weight-medium)'
             }"
           >
-            <AppIcon name="mdi-code-tags" size="20" class="me-2" />
+            <AppIcon name="CommandLineIcon" size="20" class="mr-2" />
             Technical Skills
-            <UiChip classes="chip chip-primary chip-compact ms-2">
+            <UiChip classes="chip chip-primary chip-compact ml-2">
               {{ store.user.skills.technical.length }}
             </UiChip>
           </h4>
@@ -78,7 +79,7 @@
               placeholder="e.g., JavaScript, Python, Unity"
               variant="outlined"
               density="compact"
-              append-inner-icon="mdi-plus"
+              append-inner-icon="PlusIcon"
               :style="{
                 '--v-field-input-color': 'var(--color-on-surface)',
                 '--v-field-overlay-opacity': '0.04',
@@ -99,7 +100,7 @@
             closable
             @close="removeSkill('technical', skill)"
           >
-            <AppIcon name="mdi-code-braces" size="16" class="me-2" />
+            <AppIcon name="CodeBracketIcon" size="16" class="mr-2" />
             {{ skill }}
           </UiChip>
           
@@ -115,10 +116,10 @@
       <!-- Soft Skills -->
       <div class="skills-category mb-4">
         <div class="category-header mb-3">
-          <h4 class="text-subtitle-1 mb-2">
-            <AppIcon name="mdi-account-heart" size="20" class="me-2" />
+          <h4 class="text-base font-medium mb-2">
+            <AppIcon name="HeartIcon" size="20" class="mr-2" />
             Soft Skills
-            <UiChip classes="chip chip-success chip-compact ms-2">
+            <UiChip classes="chip chip-success chip-compact ml-2">
               {{ store.user.skills.soft.length }}
             </UiChip>
           </h4>
@@ -131,7 +132,7 @@
               placeholder="e.g., Leadership, Communication, Problem Solving"
               variant="outlined"
               density="compact"
-              append-inner-icon="mdi-plus"
+              append-inner-icon="PlusIcon"
               class="glass-input"
               @click:append-inner="addSkill('soft', newSoftSkill)"
               @keyup.enter="addSkill('soft', newSoftSkill)"
@@ -148,7 +149,7 @@
             closable
             @close="removeSkill('soft', skill)"
           >
-            <AppIcon name="mdi-account-heart" size="16" class="me-2" />
+            <AppIcon name="HeartIcon" size="16" class="mr-2" />
             {{ skill }}
           </UiChip>
           
@@ -164,10 +165,10 @@
       <!-- Gaming Skills -->
       <div class="skills-category mb-4">
         <div class="category-header mb-3">
-          <h4 class="text-subtitle-1 mb-2">
-            <AppIcon name="mdi-gamepad-variant" size="20" class="me-2" />
+          <h4 class="text-base font-medium mb-2">
+            <AppIcon name="PuzzlePieceIcon" size="20" class="mr-2" />
             Gaming Skills
-            <UiChip classes="chip chip-warning chip-compact ms-2">
+            <UiChip classes="chip chip-warning chip-compact ml-2">
               {{ store.user.skills.gaming.length }}
             </UiChip>
           </h4>
@@ -180,7 +181,7 @@
               placeholder="e.g., Game Design, Esports, Community Management"
               variant="outlined"
               density="compact"
-              append-inner-icon="mdi-plus"
+              append-inner-icon="PlusIcon"
               class="glass-input"
               @click:append-inner="addSkill('gaming', newGamingSkill)"
               @keyup.enter="addSkill('gaming', newGamingSkill)"
@@ -197,7 +198,7 @@
             closable
             @close="removeSkill('gaming', skill)"
           >
-            <AppIcon name="mdi-gamepad-variant" start size="16" />
+            <AppIcon name="PuzzlePieceIcon" start size="16" />
             {{ skill }}
           </UiChip>
           
@@ -216,7 +217,7 @@
           <UnifiedButton
             variant="outline"
             size="sm"
-            leading-icon="mdi-sync"
+            leading-icon="ArrowPathIcon"
             @click="syncWithProfile"
           >
             Sync with Profile
@@ -224,7 +225,7 @@
         </div>
         
         <div class="skills-stats">
-          <span class="text-muted small">
+          <span class="text-secondary small">
             Total Skills: {{ totalSkillsCount }}
           </span>
         </div>
@@ -234,6 +235,8 @@
 </template>
 
 <script setup>
+import { ArrowPathIcon, CodeBracketIcon, CommandLineIcon, CpuChipIcon, HeartIcon, PlusIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
+
 import { ref, computed, onMounted } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
@@ -316,13 +319,13 @@ onMounted(() => {
 .skills-editor {
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   background: var(--color-surface);
 }
 
 .skills-header {
   padding: var(--spacing-lg);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .skills-chips {
@@ -371,7 +374,7 @@ onMounted(() => {
 }
 
 .skills-actions {
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   padding-top: var(--spacing-lg);
   display: flex;
   gap: var(--spacing-md);

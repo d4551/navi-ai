@@ -1,5 +1,5 @@
 <template>
-  <div class="document-content-builder">
+  <div class="document-content-builder" class="font-sans">
     <!-- Step Indicator -->
     <div class="step-indicator">
       <div class="step-progress">
@@ -22,7 +22,7 @@
       <div v-if="currentStep === 1" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-account-outline" class="me-2" />
+            <AppIcon name="UserIcon" class="mr-2" />
             Personal Information
           </h3>
           <p class="section-description">Tell us about yourself to get started</p>
@@ -111,7 +111,7 @@
       <div v-if="currentStep === 2" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-card-text-outline" class="me-2" />
+            <AppIcon name="DocumentTextIcon" class="mr-2" />
             Professional Summary
           </h3>
           <p class="section-description">Write a compelling summary of your professional background</p>
@@ -126,12 +126,12 @@
             placeholder="Write 2-3 sentences about your professional background, key skills, and career goals..."
           ></textarea>
           <div class="field-help">
-            <small class="text-muted">{{ localData.summary.length }}/500 characters</small>
+            <small class="text-secondary">{{ localData.summary.length }}/500 characters</small>
             <UnifiedButton
               v-if="aiEnabled"
               variant="ghost"
               size="sm"
-              leading-icon="mdi-auto-fix"
+              leading-icon="SparklesIcon"
               @click="$emit('ai-request', { type: 'generate-summary' })"
             >
               AI Generate
@@ -159,7 +159,7 @@
       <div v-if="currentStep === 3" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-briefcase-outline" class="me-2" />
+            <AppIcon name="BriefcaseIcon" class="mr-2" />
             Professional Experience
           </h3>
           <p class="section-description">Add your work experience and achievements</p>
@@ -177,7 +177,7 @@
                 <UnifiedButton
                   variant="ghost"
                   size="xs"
-                  leading-icon="mdi-pencil"
+                  leading-icon="PencilIcon"
                   @click="editExperience(index)"
                 >
                   Edit
@@ -185,7 +185,7 @@
                 <UnifiedButton
                   variant="ghost"
                   size="xs"
-                  leading-icon="mdi-delete"
+                  leading-icon="TrashIcon"
                   @click="removeExperience(index)"
                 >
                   Remove
@@ -197,7 +197,7 @@
 
           <UnifiedButton
             variant="outline"
-            leading-icon="mdi-plus"
+            leading-icon="PlusIcon"
             @click="addExperience"
           >
             Add Experience
@@ -224,7 +224,7 @@
       <div v-if="currentStep === 4" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-tag-outline" class="me-2" />
+            <AppIcon name="TagIcon-outline" class="mr-2" />
             Skills & Competencies
           </h3>
           <p class="section-description">List your technical and soft skills</p>
@@ -259,7 +259,7 @@
                 class="skill-remove"
                 @click="removeSkill(index)"
               >
-                <AppIcon name="mdi-close" size="14" />
+                <AppIcon name="XMarkIcon" size="14" />
               </button>
             </span>
           </div>
@@ -267,7 +267,7 @@
           <div v-if="aiEnabled" class="ai-suggestions">
             <UnifiedButton
               variant="ghost"
-              leading-icon="mdi-lightbulb"
+              leading-icon="LightBulbIcon"
               @click="$emit('ai-request', { type: 'suggest-skills' })"
             >
               Get AI Skill Suggestions
@@ -295,7 +295,7 @@
       <div v-if="currentStep === 5" class="step-content">
         <div class="section-header">
           <h3 class="section-title">
-            <AppIcon name="mdi-check-circle-outline" class="me-2" />
+            <AppIcon name="CheckCircleIcon" class="mr-2" />
             Review & Finalize
           </h3>
           <p class="section-description">Review your resume and make final adjustments</p>
@@ -356,7 +356,7 @@
         <div class="modal-header">
           <h3>{{ editingExperienceIndex !== null ? 'Edit Experience' : 'Add Experience' }}</h3>
           <button class="modal-close" @click="closeExperienceModal">
-            <AppIcon name="mdi-close" />
+            <AppIcon name="XMarkIcon" />
           </button>
         </div>
 
@@ -442,6 +442,8 @@
 </template>
 
 <script setup lang="ts">
+import { BriefcaseIcon, CheckCircleIcon, DocumentTextIcon, LightBulbIcon, PencilIcon, PlusIcon, SparklesIcon, TrashIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
 import { ref, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -643,7 +645,7 @@ watch(localData, () => {
   align-items: center;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: var(--spacing-2);
 }
 
@@ -676,7 +678,7 @@ watch(localData, () => {
 
 .field-label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -686,7 +688,7 @@ watch(localData, () => {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   background: var(--glass-surface);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
   transition: border-color var(--duration-fast);
 }
@@ -714,7 +716,7 @@ watch(localData, () => {
   justify-content: space-between;
   align-items: center;
   padding-top: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 .experience-list {
@@ -740,7 +742,7 @@ watch(localData, () => {
 
 .experience-title {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -817,7 +819,7 @@ watch(localData, () => {
 .review-section h4 {
   margin: 0 0 var(--spacing-2) 0;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .review-section p {
@@ -856,13 +858,13 @@ watch(localData, () => {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-4);
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
 }
 
 .modal-header h3 {
   margin: 0;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .modal-close {
@@ -888,7 +890,7 @@ watch(localData, () => {
   justify-content: flex-end;
   gap: var(--spacing-2);
   padding: var(--spacing-4);
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
 }
 
 /* Responsive Design */

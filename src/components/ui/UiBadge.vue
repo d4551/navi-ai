@@ -1,5 +1,5 @@
 <template>
-  <span :class="['ui-badge', classes]">
+  <span :class="['ui-badge', classes]" class="font-sans">
     <slot />
   </span>
 </template>

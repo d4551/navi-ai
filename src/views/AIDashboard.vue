@@ -6,6 +6,7 @@
     page-type="gaming"
     content-spacing="normal"
     max-width="xl"
+    class="font-sans "
   >
     <template #header-actions>
       <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
@@ -19,7 +20,7 @@
         />
         <UnifiedButton
           variant="glass"
-          leading-icon="mdi-gamepad-variant"
+          leading-icon="PuzzlePieceIcon"
           tooltip="Gaming Mode"
           @click="toggleGamingMode"
         >
@@ -27,7 +28,7 @@
         </UnifiedButton>
         <UnifiedButton
           variant="primary"
-          leading-icon="mdi-rocket-launch"
+          leading-icon="RocketLaunchIcon-launch"
           tooltip="Quick Apply"
           @click="openQuickApply"
         >
@@ -44,7 +45,7 @@
             <div class="player-stats">
               <div class="avatar-section">
                 <div class="player-avatar">
-                  <AppIcon name="mdi-account-circle" size="xl" />
+                  <AppIcon name="UserIcon-circle" size="xl" />
                   <div class="level-badge">{{ userLevel }}</div>
                 </div>
                 <div class="player-info">
@@ -55,7 +56,7 @@
 
               <div class="progress-section">
                 <div class="xp-bar-container">
-                  <div class="d-flex justify-space-between align-center mb-2">
+                  <div class="flex justify-space-between items-center mb-2">
                     <span class="text-caption">Level {{ userLevel }}</span>
                     <span class="text-caption">{{ currentXP }} / {{ nextLevelXP }} XP</span>
                   </div>
@@ -72,67 +73,63 @@
                 <div class="stats-grid mt-4">
                   <div class="stat-item">
                     <div class="stat-icon">
-                      <AppIcon name="mdi-target" />
+                      <AppIcon name="EyeIcon" />
                     </div>
                     <div class="stat-info">
                       <div class="stat-value">{{ jobApplications }}</div>
-                      <div class="stat-label">Applications</div>
+                      <div class="stat-icon">
+                        <AppIcon name="DocumentIcon" />
+                      </div>
+                      <div class="stat-info">
+                        <div class="stat-value">{{ resumeScore }}%</div>
+                        <div class="stat-label">Resume Score</div>
+                      </div>
                     </div>
-                  </div>
                   
-                  <div class="stat-item">
-                    <div class="stat-icon">
-                      <AppIcon name="mdi-file-document" />
+                    <div class="stat-item">
+                      <div class="stat-icon">
+                        <AppIcon name="MicrophoneIcon" />
+                      </div>
+                      <div class="stat-info">
+                        <div class="stat-value">{{ interviewsCompleted }}</div>
+                        <div class="stat-label">Mock Interviews</div>
+                      </div>
                     </div>
-                    <div class="stat-info">
-                      <div class="stat-value">{{ resumeScore }}%</div>
-                      <div class="stat-label">Resume Score</div>
-                    </div>
-                  </div>
                   
-                  <div class="stat-item">
-                    <div class="stat-icon">
-                      <AppIcon name="mdi-microphone" />
-                    </div>
-                    <div class="stat-info">
-                      <div class="stat-value">{{ interviewsCompleted }}</div>
-                      <div class="stat-label">Mock Interviews</div>
-                    </div>
-                  </div>
-                  
-                  <div class="stat-item">
-                    <div class="stat-icon">
-                      <AppIcon name="mdi-trophy" />
-                    </div>
-                    <div class="stat-info">
-                      <div class="stat-value">{{ achievements.length }}</div>
-                      <div class="stat-label">Achievements</div>
+                    <div class="stat-item">
+                      <div class="stat-icon">
+                        <AppIcon name="TrophyIcon" />
+                      </div>
+                      <div class="stat-info">
+                        <div class="stat-value">{{ achievements.length }}</div>
+                        <div class="stat-label">Achievements</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Daily Mission -->
-            <div class="daily-mission">
-              <h4 class="mission-title d-flex align-center ga-2">
-                <AppIcon name="mdi-calendar-star" />
-                Daily Mission
-              </h4>
-              <div class="mission-content">
-                <div class="mission-description">{{ dailyMission.description }}</div>
-                <div class="mission-progress">
-                  <v-progress-linear
-                    :model-value="(dailyMission.current / dailyMission.target) * 100"
-                    color="warning"
-                    height="8"
-                    rounded
-                  />
-                  <span class="progress-text">{{ dailyMission.current }}/{{ dailyMission.target }}</span>
-                </div>
-                <div class="mission-reward d-flex align-center ga-1">
-                  <AppIcon name="mdi-star" size="small" />
-                  <span>{{ dailyMission.reward }} XP</span>
+              <!-- Daily Mission -->
+              <div class="daily-mission">
+                <h4 class="mission-title flex items-center gap-glass-sm">
+                  <AppIcon name="CalendarIcon-star" />
+                  Daily Mission
+                </h4>
+                <div class="mission-content">
+                  <div class="mission-description">{{ dailyMission.description }}</div>
+                  <div class="mission-progress">
+                    <v-progress-linear
+                      :model-value="(dailyMission.current / dailyMission.target) * 100"
+                      color="warning"
+                      height="8"
+                      rounded
+                    />
+                    <span class="progress-text">{{ dailyMission.current }}/{{ dailyMission.target }}</span>
+                  </div>
+                  <div class="mission-reward flex items-center ga-1">
+                    <AppIcon name="StarIcon" size="small" />
+                    <span>{{ dailyMission.reward }} XP</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -170,7 +167,7 @@
                 <p class="action-description">{{ action.description }}</p>
               </div>
               <div v-if="action.status" class="action-footer">
-                <div class="action-status d-flex align-center ga-1">
+                <div class="action-status flex items-center ga-1">
                   <AppIcon :name="action.statusIcon" size="small" />
                   <span>{{ action.status }}</span>
                 </div>
@@ -182,23 +179,23 @@
 
       <!-- Live Job Feed -->
       <section class="job-feed-section mb-6">
-        <div class="section-header mb-4 d-flex align-center justify-space-between">
+        <div class="section-header mb-4 flex items-center justify-space-between">
           <div>
             <h2 class="section-title">Latest Gaming Opportunities</h2>
             <p class="section-subtitle">{{ liveJobsCount }} new jobs matching your profile</p>
           </div>
-          <div class="section-actions d-flex ga-2">
+          <div class="section-actions flex gap-glass-sm">
             <AIButton
               action="analyze_job_market"
               variant="outline"
               text="Market Analysis"
-              icon="mdi-chart-line"
+              icon="ChartBarIcon"
               :context="{ profile: userProfile, location: 'Remote' }"
               @success="handleMarketAnalysis"
             />
             <UnifiedButton
               variant="primary"
-              leading-icon="mdi-magnify"
+              leading-icon="MagnifyingGlassIcon"
               @click="navigateTo('/jobs')"
             >
               Browse All Jobs
@@ -216,8 +213,8 @@
             @click="viewJobDetails(job)"
           >
             <div class="job-content">
-              <div class="job-header d-flex align-center justify-space-between mb-3">
-                <div class="company-info d-flex align-center ga-2">
+              <div class="job-header flex items-center justify-space-between mb-3">
+                <div class="company-info flex items-center gap-glass-sm">
                   <div class="company-logo">
                     <AppIcon :name="job.companyIcon || 'mdi-domain'" />
                   </div>
@@ -253,7 +250,7 @@
                 </div>
               </div>
 
-              <div class="job-footer mt-4 d-flex align-center justify-space-between">
+              <div class="job-footer mt-4 flex items-center justify-space-between">
                 <div v-if="job.salary" class="salary-range">
                   <AppIcon name="mdi-currency-usd" size="small" />
                   <span>{{ job.salary }}</span>
@@ -268,7 +265,7 @@
           <!-- View More Card -->
           <UnifiedCard variant="outline" class="view-more-card" clickable @click="navigateTo('/jobs')">
             <div class="view-more-content text-center">
-              <AppIcon name="mdi-plus-circle" size="xl" color="primary" />
+              <AppIcon name="PlusCircleIcon" size="xl" color="primary" />
               <h4 class="mt-2">View More Jobs</h4>
               <p class="text-body-2 text-medium-emphasis">
                 {{ totalJobsCount - liveJobs.length }}+ more opportunities waiting
@@ -285,13 +282,13 @@
           <p class="section-subtitle">Personalized recommendations to boost your career</p>
         </div>
 
-        <v-row>
-          <v-col cols="12" md="8">
+        <v-flex flex-wrap>
+          <v-flex-1 cols="12" md="8">
             <UnifiedCard variant="glass" class="insights-card">
               <div class="insights-content">
                 <div class="insight-header mb-4">
-                  <AppIcon name="mdi-brain" color="primary" class="mr-2" />
-                  <h3 class="text-h6">Weekly Career Report</h3>
+                  <AppIcon name="CpuChipIcon" color="primary" class="mr-2" />
+                  <h3 class="text-lg font-semibold">Weekly Career Report</h3>
                 </div>
 
                 <div class="insight-items">
@@ -318,12 +315,12 @@
                 </div>
               </div>
             </UnifiedCard>
-          </v-col>
+          </v-flex-1>
 
-          <v-col cols="12" md="4">
+          <v-flex-1 cols="12" md="4">
             <UnifiedCard variant="glass" class="skills-radar-card">
               <div class="skills-header mb-4">
-                <h3 class="text-h6">Skill Assessment</h3>
+                <h3 class="text-lg font-semibold">Skill Assessment</h3>
                 <AIButton
                   action="analyze_skills"
                   variant="ghost"
@@ -338,7 +335,7 @@
                 <div
                   v-for="skill in topSkills"
                   :key="skill.name"
-                  class="skill-item d-flex align-center justify-space-between mb-2"
+                  class="skill-item flex items-center justify-space-between mb-2"
                 >
                   <div class="skill-info">
                     <span class="skill-name">{{ skill.name }}</span>
@@ -370,8 +367,8 @@
                 </UnifiedButton>
               </div>
             </UnifiedCard>
-          </v-col>
-        </v-row>
+          </v-flex-1>
+        </v-flex flex-wrap>
       </section>
     </div>
 
@@ -385,6 +382,9 @@
 </template>
 
 <script setup lang="ts">
+import { ChartBarIcon, CpuChipIcon, DocumentIcon, EyeIcon, MagnifyingGlassIcon, MicrophoneIcon, PlusCircleIcon, PuzzlePieceIcon } from '@heroicons/vue/24/outline'
+import { StarIcon, TrophyIcon } from '@heroicons/vue/24/solid'
+
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue';
@@ -440,13 +440,13 @@ const quickActions = ref([
     id: 'resume',
     title: 'Resume Builder',
     description: 'Create ATS-optimized gaming industry resume',
-    icon: 'mdi-file-document-edit',
+    icon: 'DocumentIcon-document-edit',
     route: '/resume-builder',
     color: 'primary',
     variant: 'glass',
     badge: 'AI-Powered',
     status: '85% Complete',
-    statusIcon: 'mdi-check-circle'
+    statusIcon: 'CheckIcon-circle'
   },
   {
     id: 'jobs',
@@ -458,13 +458,13 @@ const quickActions = ref([
     variant: 'glass',
     badge: '12 New',
     status: 'Ready to Apply',
-    statusIcon: 'mdi-rocket'
+    statusIcon: 'RocketLaunchIcon'
   },
   {
     id: 'interview',
     title: 'Interview Prep',
     description: 'Practice with AI-powered mock interviews',
-    icon: 'mdi-microphone-variant',
+    icon: 'MicrophoneIcon-variant',
     route: '/interview-prep',
     color: 'warning',
     variant: 'glass',
@@ -480,7 +480,7 @@ const quickActions = ref([
     color: 'info',
     variant: 'glass',
     status: '3 Projects',
-    statusIcon: 'mdi-star'
+    statusIcon: 'StarIcon'
   },
   {
     id: 'cover-letter',
@@ -503,7 +503,7 @@ const quickActions = ref([
     color: 'purple',
     variant: 'glass',
     status: 'Growth Path',
-    statusIcon: 'mdi-chart-line'
+    statusIcon: 'ChartBarIcon-line'
   }
 ]);
 
@@ -520,7 +520,7 @@ const liveJobs = ref([
     technologies: ['Unity', 'C#', 'Mobile', 'Git', 'Agile'],
     matchScore: 89,
     postedTime: '2 hours ago',
-    companyIcon: 'mdi-gamepad-variant'
+    companyIcon: 'DevicePhoneMobileIcon-variant'
   },
   {
     id: '2',
@@ -546,7 +546,7 @@ const liveJobs = ref([
     technologies: ['Game Design', 'Figma', 'Unity', 'Analytics'],
     matchScore: 62,
     postedTime: '1 day ago',
-    companyIcon: 'mdi-palette'
+    companyIcon: 'SwatchIcon'
   }
 ]);
 
@@ -581,7 +581,7 @@ const careerInsights = ref([
   {
     id: 'resume_boost',
     type: 'success',
-    icon: 'mdi-rocket',
+    icon: 'RocketLaunchIcon',
     title: 'Resume Optimization',
     description: 'Your resume score improved by 15 points after recent AI suggestions',
     action: { text: 'View Changes', route: '/resume-builder' }

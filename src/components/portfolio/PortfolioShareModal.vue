@@ -1,17 +1,18 @@
 <template>
   <div 
     v-if="show" 
-    class="modal show d-block"
+    class="modal show block"
     style="background-color: var(--modal-backdrop)"
+    class="font-sans"
   >
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <AppIcon name="mdi-share" class="me-2" />
+            <AppIcon name="ShareIcon" class="mr-2" />
             Share Your Portfolio
           </h5>
-          <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" aria-label="Close" @click="$emit('close')" />
+          <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="$emit('close')" />
         </div>
         
         <div class="modal-body">
@@ -23,7 +24,7 @@
               </div>
               <div class="user-info">
                 <h6 class="mb-1">{{ user?.name || 'Your Portfolio' }}</h6>
-                <p class="text-muted mb-0">{{ userTitle }}</p>
+                <p class="text-secondary mb-0">{{ userTitle }}</p>
               </div>
               <div class="portfolio-stats">
                 <span class="stat">{{ portfolio.length }} items</span>
@@ -35,7 +36,7 @@
           <!-- Sharing Options -->
           <div class="sharing-section">
             <h6 class="section-title">
-              <AppIcon name="mdi-link" class="me-2" />
+              <AppIcon name="LinkIcon" class="mr-2" />
               Share Links
             </h6>
             
@@ -51,13 +52,13 @@
                 <UnifiedButton
                   variant="outline"
                   size="sm"
-                  :leading-icon="copied === 'url' ? 'mdi-check' : 'mdi-content-copy'"
+                  :leading-icon="copied === 'url' ? 'CheckIcon' : 'mdi-content-copy'"
                   @click="copyToClipboard(portfolioUrl)"
                 >
                   {{ copied === 'url' ? 'Copied!' : 'Copy' }}
                 </UnifiedButton>
               </div>
-              <small class="form-text text-muted">
+              <small class="form-text text-secondary">
                 Share this link to showcase your complete portfolio
               </small>
             </div>
@@ -78,7 +79,7 @@
                   <IconButton
                     variant="outline"
                     size="sm"
-                    :icon="copied === item.id ? 'mdi-check' : 'mdi-share-variant'"
+                    :icon="copied === item.id ? 'CheckIcon' : 'ShareIcon-variant'"
                     :aria-label="'Copy link for ' + item.title"
                     @click="copyToClipboard(getItemUrl(item))"
                   />
@@ -90,14 +91,14 @@
           <!-- Social Media Sharing -->
           <div class="sharing-section">
             <h6 class="section-title">
-              <AppIcon name="mdi-share-variant" class="me-2" />
+              <AppIcon name="ShareIcon" class="mr-2" />
               Social Media
             </h6>
             
             <div class="social-buttons responsive-grid--cards-sm">
               <UnifiedButton variant="glass" leading-icon="mdi-twitter" @click="shareToTwitter">Twitter</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-linkedin" @click="shareToLinkedIn">LinkedIn</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-chat" @click="shareToDiscord">Discord</UnifiedButton>
+              <UnifiedButton variant="glass" leading-icon="LinkIconedin" @click="shareToLinkedIn">LinkedIn</UnifiedButton>
+              <UnifiedButton variant="glass" leading-icon="ChatBubbleOvalLeftIcon" @click="shareToDiscord">Discord</UnifiedButton>
               <UnifiedButton variant="glass" leading-icon="mdi-reddit" @click="shareToReddit">Reddit</UnifiedButton>
             </div>
           </div>
@@ -105,13 +106,13 @@
           <!-- Export Options -->
           <div class="sharing-section">
             <h6 class="section-title">
-              <AppIcon name="mdi-download" class="me-2" />
+              <AppIcon name="ArrowDownTrayIcon" class="mr-2" />
               Export Portfolio
             </h6>
             
             <div class="export-buttons">
-              <UnifiedButton variant="outline" leading-icon="mdi-file-document-outline" @click="exportAsPDF">Export as PDF</UnifiedButton>
-              <UnifiedButton variant="outline" leading-icon="mdi-code-tags" @click="exportAsHTML">Export as HTML</UnifiedButton>
+              <UnifiedButton variant="outline" leading-icon="DocumentIcon" @click="exportAsPDF">Export as PDF</UnifiedButton>
+              <UnifiedButton variant="outline" leading-icon="CommandLineIcon" @click="exportAsHTML">Export as HTML</UnifiedButton>
               <UnifiedButton variant="outline" leading-icon="mdi-code-json" @click="exportAsJSON">Export as JSON</UnifiedButton>
               <UnifiedButton variant="outline" leading-icon="mdi-qrcode" @click="generateQRCode">Generate QR Code</UnifiedButton>
             </div>
@@ -120,7 +121,7 @@
           <!-- Privacy Settings -->
           <div class="sharing-section">
             <h6 class="section-title">
-              <AppIcon name="mdi-shield-check" class="me-2" />
+              <AppIcon name="ShieldCheckIcon" class="mr-2" />
               Privacy Settings
             </h6>
             
@@ -136,7 +137,7 @@
                 <label class="form-check-label" for="publicPortfolio">
                   Make portfolio publicly discoverable
                 </label>
-                <small class="form-text text-muted d-block">
+                <small class="form-text text-secondary block">
                   Allow your portfolio to appear in public searches and directories
                 </small>
               </div>
@@ -152,7 +153,7 @@
                 <label class="form-check-label" for="allowComments">
                   Allow comments and feedback
                 </label>
-                <small class="form-text text-muted d-block">
+                <small class="form-text text-secondary block">
                   Let visitors leave comments on your portfolio items
                 </small>
               </div>
@@ -168,7 +169,7 @@
                 <label class="form-check-label" for="showStats">
                   Show view statistics
                 </label>
-                <small class="form-text text-muted d-block">
+                <small class="form-text text-secondary block">
                   Display view counts and engagement metrics publicly
                 </small>
               </div>
@@ -176,9 +177,9 @@
           </div>
         </div>
 
-        <div class="modal-footer d-flex gap-2">
+        <div class="modal-footer flex gap-glass-sm">
           <UnifiedButton variant="secondary" appearance="outlined" @click="$emit('close')">Close</UnifiedButton>
-          <UnifiedButton variant="primary" leading-icon="mdi-eye" @click="openPortfolioPreview">Preview Portfolio</UnifiedButton>
+          <UnifiedButton variant="primary" leading-icon="EyeIcon" @click="openPortfolioPreview">Preview Portfolio</UnifiedButton>
         </div>
       </div>
     </div>
@@ -186,6 +187,8 @@
 </template>
 
 <script setup>
+import { ArrowDownTrayIcon, ChatBubbleOvalLeftIcon, CommandLineIcon, DocumentIcon, EyeIcon, ShareIcon, ShieldCheckIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import IconButton from '@/components/ui/IconButton.vue'
@@ -334,7 +337,7 @@ function openPortfolioPreview() {
 }
 
 .user-info h6 {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin: 0;
 }
 
@@ -358,7 +361,7 @@ function openPortfolioPreview() {
 }
 
 .section-title {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 600;
   margin-bottom: 1rem;
   display: flex;
@@ -371,14 +374,14 @@ function openPortfolioPreview() {
 
 .form-label {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   margin-bottom: 0.5rem;
 }
 
 .input-group .form-control {
   background: var(--glass-input);
   border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 /* Featured Items */
@@ -406,7 +409,7 @@ function openPortfolioPreview() {
 
 .item-title {
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-size: 0.875rem;
 }
 
@@ -489,7 +492,7 @@ function openPortfolioPreview() {
 }
 
 .form-check-label {
-  color: var(--text-primary);
+  color: var(--text-primary-600);
   font-weight: 500;
   margin-left: 0.5rem;
 }
@@ -530,12 +533,12 @@ function openPortfolioPreview() {
 }
 
 .modal-header {
-  border-bottom: 1px solid var(--glass-border);
+  border-b: 1px solid var(--glass-border);
   background: var(--glass-elevated);
 }
 
 .modal-footer {
-  border-top: 1px solid var(--glass-border);
+  border-t: 1px solid var(--glass-border);
   background: var(--glass-elevated);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="unified-game-experience">
+  <div class="unified-game-experience" class="font-sans">
     <!-- Canonical theme styles handled globally to prevent CORB issues -->
     
     <!-- Sam & Max Easter Eggs -->
@@ -105,6 +105,8 @@
 </template>
 
 <script setup lang="ts">
+import { UserIcon, StarIcon, TrophyIcon, BoltIcon, RocketLaunchIcon } from '@heroicons/vue/24/outline'
+
 import AppIcon from '@/components/ui/AppIcon.vue';
 
 import { ref, reactive, computed, nextTick, onMounted, onUnmounted, defineEmits } from 'vue'
@@ -159,8 +161,8 @@ const quickActions = reactive([
   { name: 'The Profile', icon: 'mdi-briefcase-variant', action: 'navigate', route: '/portfolio', description: 'Manage your gaming portfolio' },
   { name: 'NAVI Chat', icon: 'mdi-robot-excited', action: 'toggle-chat', description: 'Talk with NAVI AI' },
   { name: 'Easter Eggs', icon: 'mdi-egg-easter', action: 'show-easter-eggs', description: 'Discover hidden features' },
-  { name: 'Sam Mode', icon: 'mdi-account-tie', action: 'activate-sam', description: 'Activate Sam mode' },
-  { name: 'Max Mode', icon: 'mdi-flash', action: 'activate-max', description: 'Activate Max mode' },
+  { name: 'Sam Mode', icon: 'UserIcon-tie', action: 'activate-sam', description: 'Activate Sam mode' },
+  { name: 'Max Mode', icon: 'BoltIcon', action: 'activate-max', description: 'Activate Max mode' },
 ])
 
 // Console commands
@@ -330,7 +332,7 @@ const handleAchievement = (achievement: any) => {
   showNotification({
     title: 'Achievement Unlocked!',
     message: achievement.description || achievement.name,
-    icon: 'mdi-trophy'
+    icon: 'TrophyIcon'
   })
 }
 
@@ -338,7 +340,7 @@ const handleLevelUp = (levelData: any) => {
   showNotification({
     title: `Level Up! Level ${levelData.level}`,
     message: 'Your gaming career skills are evolving!',
-    icon: 'mdi-star'
+    icon: 'StarIcon'
   })
 }
 
@@ -480,7 +482,7 @@ onMounted(() => {
     showNotification({
       title: '[GAME] Welcome to NAVI Gaming Career Hub!',
       message: 'Press Ctrl+Shift+~ for console, discover easter eggs, and level up your career!',
-      icon: '🚀'
+      icon: 'RocketLaunchIcon'
     })
   }, 2000)
   
@@ -607,8 +609,8 @@ defineExpose({
   gap: 1rem;
   padding: 1rem 1.5rem;
   max-width: 400px;
-  box-shadow: var(--shadow-lg);
-  border-left: 4px solid var(--razer-green);
+  box-shadow: var(--shadow-glass-lg);
+  border-l: 4px solid var(--razer-green);
   pointer-events: auto;
 }
 
@@ -625,7 +627,7 @@ defineExpose({
   margin: 0 0 0.25rem 0;
   font-size: 1rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .notification-content p {
@@ -652,7 +654,7 @@ defineExpose({
 
 .notification-close:hover {
   background: rgba(255, 0, 0, 0.1);
-  color: var(--text-primary);
+  color: var(--text-primary-600);
 }
 
 .notification-slide-enter-active,
@@ -760,7 +762,7 @@ defineExpose({
   align-items: center;
   padding: 0.75rem 1rem;
   background: rgba(0, 0, 0, 0.9);
-  border-top: 1px solid var(--razer-green);
+  border-t: 1px solid var(--razer-green);
 }
 
 .prompt {

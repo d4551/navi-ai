@@ -1,5 +1,5 @@
 <template>
-  <div class="video-controls glass-surface p-4 rounded-lg" role="region" aria-label="Video and Screen Sharing Controls">
+  <div class="video-controls glass-surface p-glass-md rounded-lg" role="region" aria-label="Video and Screen Sharing Controls" class="font-sans">
     <!-- Video Preview -->
     <div v-if="showPreview && (isCameraActive || isScreenActive)" class="video-preview mb-4">
       <div class="video-container position-relative">
@@ -30,7 +30,7 @@
               title="Switch Camera"
               @click="switchCamera"
             >
-              <AppIcon name="mdi-camera-switch" />
+              <AppIcon name="CameraIcon-switch" />
               <div class="btn-glow"></div>
             </button>
 
@@ -40,7 +40,7 @@
               :title="isMuted ? 'Unmute' : 'Mute'"
               @click="toggleMute"
             >
-              <AppIcon :name="isMuted ? 'mdi-microphone-off' : 'mdi-microphone'" />
+              <AppIcon :name="isMuted ? 'MicrophoneIcon-off' : 'MicrophoneIcon'" />
               <div class="btn-glow"></div>
             </button>
 
@@ -62,16 +62,16 @@
 
     <!-- Device Selection -->
     <div v-if="showDeviceSelection" class="device-selection-section mb-4">
-      <h3 class="h6 mb-3 text-muted d-flex align-items-center gap-2">
-        <AppIcon name="mdi-video-settings" class="text-primary" />
+      <h3 class="h6 mb-3 text-secondary flex items-center gap-glass-sm">
+        <AppIcon name="VideoCameraIcon-settings" class="text-primary-600" />
         Video Device Settings
       </h3>
 
-      <div class="row g-3">
+      <div class="flex flex-wrap g-3">
         <!-- Camera Selection -->
-        <div class="col-12">
-          <label class="form-label small fw-medium" for="camera-select">
-            <AppIcon name="mdi-camera" />
+        <div class="flex-1-12">
+          <label class="form-label small font-medium" for="camera-select">
+            <AppIcon name="CameraIcon" />
             Camera
           </label>
           <select
@@ -100,7 +100,7 @@
 
     <!-- Main Controls -->
     <div class="main-controls">
-      <div class="d-flex flex-wrap gap-2 align-items-center">
+      <div class="flex flex-wrap gap-glass-sm items-center">
         <!-- Camera Toggle -->
         <UnifiedButton
           variant="primary"
@@ -108,7 +108,7 @@
           :disabled="isStreaming || isVideoLocked"
           :aria-pressed="isCameraActive.toString()"
           :title="isCameraActive ? (isVideoLocked ? 'Camera Locked' : 'Stop Camera') : 'Start Camera'"
-          :leading-icon="isCameraActive ? 'mdi-video-off' : 'mdi-video'"
+          :leading-icon="isCameraActive ? 'VideoCameraIcon-off' : 'VideoCameraIcon'"
           @click="toggleCamera"
         >
           {{ isCameraActive ? 'Stop Camera' : 'Start Camera' }}
@@ -135,7 +135,7 @@
           :disabled="!apiKey"
           :aria-pressed="isStreaming.toString()"
           :title="isStreaming ? 'Stop AI Streaming' : 'Start AI Streaming'"
-          leading-icon="mdi-brain"
+          leading-icon="CpuChipIcon"
           @click="toggleAIStreaming"
         >
           {{ isStreaming ? 'Stop AI' : 'Start AI' }}
@@ -145,7 +145,7 @@
         <IconButton
           variant="outline"
           size="sm"
-          icon="mdi-cog"
+          icon="CogIcon"
           title="Device Settings"
           :aria-pressed="showDeviceSelection.toString()"
           @click="showDeviceSelection = !showDeviceSelection"
@@ -154,7 +154,7 @@
         <IconButton
           variant="outline"
           size="sm"
-          :icon="isVideoLocked ? 'mdi-lock' : 'mdi-lock-open-outline'"
+          :icon="isVideoLocked ? 'LockClosedIcon' : 'LockClosedIcon-open-outline'"
           :title="isVideoLocked ? 'Unlock Camera' : 'Lock Camera'"
           @click="isVideoLocked ? unlockVideo() : lockVideo('User locked')"
         />
@@ -170,18 +170,18 @@
       <!-- Status Messages -->
       <div v-if="statusMessage" class="mt-3">
         <div :class="['alert small py-2 px-3 mb-0', statusType]">
-          <AppIcon :name="statusIcon" class="me-1" />
+          <AppIcon :name="statusIcon" class="mr-1" />
           {{ statusMessage }}
         </div>
       </div>
 
       <!-- AI Response Display -->
       <div v-if="aiResponse" class="mt-3">
-        <div class="ai-response-card glass-card section-card p-3">
-          <div class="d-flex align-items-start gap-2">
-            <AppIcon name="mdi-brain" class="text-primary mt-1" />
+        <div class="ai-response-card glass-card section-card p-glass-md">
+          <div class="flex items-start gap-glass-sm">
+            <AppIcon name="CpuChipIcon" class="text-primary-600 mt-1" />
             <div class="flex-grow-1">
-              <h6 class="mb-2 text-primary">AI Analysis</h6>
+              <h6 class="mb-2 text-primary-600">AI Analysis</h6>
               <p class="mb-0 small">{{ aiResponse }}</p>
             </div>
           </div>
@@ -192,6 +192,8 @@
 </template>
 
 <script>
+import { CameraIcon, CogIcon, CpuChipIcon } from '@heroicons/vue/24/outline'
+
 import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
 import { videoService } from '@/shared/services/VideoService';
 import { googleAIStreamingService } from '@/shared/services/GoogleAIStreamingService';
@@ -237,7 +239,7 @@ export default {
     const isMuted = ref(false);
     const statusMessage = ref('');
     const statusType = ref('alert-info');
-    const statusIcon = ref('mdi-information');
+    const statusIcon = ref('InformationCircleIconrmation');
     const aiResponse = ref('');
 
     // Computed properties
@@ -440,10 +442,10 @@ export default {
 
     const getStatusIcon = (type) => {
       switch (type) {
-        case 'success': return 'mdi mdi-check-circle-outline';
+        case 'success': return 'mdi CheckIcon-circle-outline';
         case 'warning': return 'mdi mdi-alert-circle-outline';
         case 'error': return 'mdi mdi-alert-circle-outline';
-        default: return 'mdi mdi-information';
+        default: return 'mdi InformationCircleIconrmation';
       }
     };
 
@@ -717,7 +719,7 @@ export default {
   100% { filter: hue-rotate(360deg); }
 }
 
-.btn .mdi-lock { color: var(--color-warning-600); }
+.btn .LockClosedIcon { color: var(--color-warning-600); }
 .btn .mdi-monitor-lock { color: var(--color-warning-600); }
 
 .video-container:hover .video-controls-overlay-rgb {
