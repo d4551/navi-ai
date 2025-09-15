@@ -10,6 +10,12 @@ import { unifiedStorage } from '@/utils/storage'
 export async function resolveGeminiApiKey(): Promise<string | null> {
   // 1) Local storage settings
   try {
+    // Common direct key cache
+    const direct = localStorage.getItem('gemini_api_key')
+    if (typeof direct === 'string' && direct.trim().length > 0) {
+      return direct.trim()
+    }
+
     const raw = localStorage.getItem('app-settings');
     if (raw) {
       const settings = JSON.parse(raw);

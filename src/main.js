@@ -173,10 +173,10 @@ try {
   if (store.settings?.geminiApiKey) {
     // Use the canonical AI service for initialization
     import("@/shared/services/AIService")
-      .then(async ({ initializeAI }) => {
-        if (initializeAI) {
+      .then(async ({ initializeAI: initializeAIService }) => {
+        if (initializeAIService) {
           try {
-            const result = await initializeAI({
+            const result = await initializeAIService({
               apiKey: store.settings.geminiApiKey,
               model: store.settings.selectedModel || "gemini-2.5-flash",
               primaryProvider: "google",
@@ -211,9 +211,9 @@ try {
     const envKey = import.meta.env.VITE_GEMINI_API_KEY;
     if (envKey) {
       import("@/shared/services/AIService")
-        .then(async ({ initializeAI }) => {
+        .then(async ({ initializeAI: initializeAIService }) => {
           try {
-            const result = await initializeAI({
+            const result = await initializeAIService({
               apiKey: envKey,
               model: "gemini-2.5-flash",
               primaryProvider: "google",
@@ -364,10 +364,10 @@ store.$subscribe((_mutation, state) => {
     const sig = `${newKey}::${newModel}`;
     if (newKey && window.__lastAiSig !== sig) {
       import("./modules/ai")
-        .then(async ({ initializeAI }) => {
-          if (initializeAI) {
+        .then(async ({ initializeAI: initializeAIClient }) => {
+          if (initializeAIClient) {
             try {
-              await initializeAI(newKey, newModel);
+              await initializeAIClient(newKey, newModel);
               window.__lastAiSig = sig;
               store.updateAiStatus?.({
                 initialized: true,

@@ -12,8 +12,15 @@ const getDefaultApiKey = () => {
 export const SETTINGS_SCHEMA = z.object({
   // AI
   geminiApiKey: z.string().trim().optional().default(getDefaultApiKey()),
+  openaiApiKey: z.string().trim().optional().default(''),
   selectedModel: z.string().min(1).default('gemini-2.5-flash'),
   suggestionsSyncMinutes: z.number().int().min(1).max(60).default(7),
+  // Common AI generation controls (aliases for broader compatibility)
+  aiTemperature: z.number().min(0).max(2).default(0.7),
+  aiMaxTokens: z.number().int().min(128).max(32768).default(2048),
+  temperature: z.number().min(0).max(2).default(0.7),
+  maxTokens: z.number().int().min(128).max(32768).default(8192),
+  enableRealtimeFeatures: z.boolean().default(false),
 
   // Theme & UX
   theme: z.enum(['light', 'dark', 'auto']).default('light'),
@@ -21,7 +28,6 @@ export const SETTINGS_SCHEMA = z.object({
   chatCuesMuted: z.boolean().default(false),
   fairyBubbleSize: z.enum(['hidden', 'small', 'full']).default('full'),
   // Input UX
-  pushToTalk: z.boolean().default(true),
   reducedMotion: z.boolean().default(false),
   highContrast: z.boolean().default(false),
   language: z.string().min(2).default('en'),
@@ -54,6 +60,14 @@ export const SETTINGS_SCHEMA = z.object({
   speechRate: z.number().min(0.5).max(2).default(0.85),
   speechPitch: z.number().min(0.5).max(2).default(1.0),
   speechVolume: z.number().min(0).max(1).default(0.9),
+  // Extended audio options used by hardware settings UI
+  audioQuality: z.enum(['low','medium','high','studio']).default('medium'),
+  noiseSuppression: z.boolean().default(true),
+  echoCancellation: z.boolean().default(true),
+  autoGainControl: z.boolean().default(true),
+  pushToTalk: z.boolean().default(true),
+  pushToTalkMode: z.boolean().default(false),
+  pushToTalkKey: z.string().optional().default('Space'),
 
   // Portfolio preferences
   portfolioSort: z.enum(['recent', 'title', 'type']).default('recent'),

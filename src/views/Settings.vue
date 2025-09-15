@@ -567,7 +567,7 @@
                     :audio-devices="audioDevices"
                     :loading-devices="loadingDevices"
                     @load-audio-devices="loadAudioDevices"
-                    @update:settings="updateAudioSettings"
+                    @update:settings="(val) => saveSettings(val)"
                   />
                 </div>
 
@@ -1003,8 +1003,13 @@ const connecting = ref(false)
 const loadingModels = ref(false)
 const apiTestResult = ref(null)
 
-// Settings Data
-const settings = computed(() => store.settings || {})
+// Settings Data (writable for v-model bindings)
+const settings = computed({
+  get: () => store.settings || {},
+  set: (val) => {
+    try { store.updateSettings(val || {}) } catch (e) { console.error('Failed to set settings:', e) }
+  }
+})
 const userProfile = computed(() => {
   const profile = store.userProfile || {}
   return {
@@ -1208,7 +1213,7 @@ const saveAllSettings = async () => {
 }
 
 const saveSettings = async (settingsData) => {
-  await store.updateSettings(settingsData)
+  await store.updateSettings(settingsData || settings.value)
 }
 
 const updateVoiceSettings = async (voiceSettings) => {
