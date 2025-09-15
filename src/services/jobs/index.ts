@@ -4,6 +4,10 @@
 
 export { RefactoredJobAPIService } from '@/services/RefactoredJobAPIService'
 export { refactoredJobAPIService as canonicalJobService } from '@/services/RefactoredJobAPIService'
+import { refactoredJobAPIService } from '@/services/RefactoredJobAPIService'
+
+// Legacy alias expected by some composables (e.g., useJobs)
+export const jobService = refactoredJobAPIService
 
 // Back-compat named export for legacy imports that expect `JobService`-like default
 export default {} as never
