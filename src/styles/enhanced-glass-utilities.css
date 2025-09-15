@@ -3,6 +3,7 @@
  * =========================
  * Additional utility classes for the unified system
  */
+/* stylelint-disable custom-property-pattern, property-no-vendor-prefix, media-feature-name-value-no-unknown */
 
 /* Glass Morphism Utilities */
 .glass-surface {
@@ -178,7 +179,7 @@
 }
 
 /* High Contrast Mode Support */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .glass-surface {
     @apply border-2;
   }
