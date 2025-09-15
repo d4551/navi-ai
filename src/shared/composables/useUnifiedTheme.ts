@@ -298,7 +298,8 @@ const DESIGN_TOKENS: Omit<ThemeDesignTokens, 'colors'> = {
     fontFamily: {
       primary: "'Electrolize', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
       secondary: "'Inter', 'Electrolize', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-      mono: "'JetBrains Mono', 'Fira Code', 'SF Mono', Monaco, Consolas, 'Liberation Mono', monospace",
+      mono: "'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
+      code: "'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
       gaming: "'Orbitron', 'Electrolize', system-ui, sans-serif",
       display: "'Electrolize', 'Inter', system-ui, sans-serif",
       ui: "'Electrolize', 'Inter', system-ui, -apple-system, sans-serif"

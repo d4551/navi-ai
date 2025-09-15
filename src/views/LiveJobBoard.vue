@@ -53,8 +53,7 @@ Demonstrates the complete live job board implementation with:
       </div>
       
       <div class="mt-3">
-        <strong>Note:</strong> Some APIs require keys in .env.local file. Without keys, the system will use mock data 
-        and available free APIs. Check the browser console for detailed API responses.
+        <strong>Note:</strong> Some APIs require keys in .env.local file. Ensure required keys are set to enable all providers. Check the browser console for detailed API responses.
       </div>
     </div>
 

@@ -3,11 +3,12 @@
 
 export const FONTS = {
   primary: 'Electrolize',
-  secondary: 'Inter', 
+  secondary: 'Inter',
   gaming: 'Orbitron',
-  mono: 'JetBrains Mono',
+  mono: 'Fira Code',
+  code: 'Fira Code',
   fallback: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif',
-  monoFallback: '"Fira Code", "SF Mono", Monaco, Consolas, "Liberation Mono", monospace'
+  monoFallback: '"Fira Code", "JetBrains Mono", "SF Mono", Monaco, "Inconsolata", "Roboto Mono", "Menlo", "Consolas", "Liberation Mono", "Courier New", monospace'
 };
 
 // Font stack builder
@@ -92,7 +93,7 @@ export const initializeGamingFonts = async () => {
     }
   } catch {}
 
-  const fontsToLoad = [FONTS.primary, FONTS.secondary, FONTS.gaming, FONTS.mono];
+  const fontsToLoad = [FONTS.primary, FONTS.secondary, FONTS.gaming, FONTS.mono, FONTS.code];
   const loadPromises = [];
   
   // Check each font and create load promises
@@ -141,6 +142,7 @@ export const initializeGamingFonts = async () => {
     document.documentElement.style.setProperty('--font-secondary', `"${FONTS.secondary}", "${FONTS.primary}", ${FONTS.fallback}`);
     document.documentElement.style.setProperty('--font-gaming', `"${FONTS.gaming}", "${FONTS.primary}", ${FONTS.fallback}`);
     document.documentElement.style.setProperty('--font-mono', `"${FONTS.mono}", ${FONTS.monoFallback}`);
+    document.documentElement.style.setProperty('--font-code', `"${FONTS.code}", ${FONTS.monoFallback}`);
     document.documentElement.style.setProperty('--font-display', `"${FONTS.primary}", "${FONTS.secondary}", ${FONTS.fallback}`);
     
     // Add font-loaded class for CSS targeting

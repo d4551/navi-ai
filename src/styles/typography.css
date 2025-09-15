@@ -275,9 +275,13 @@
   border-radius: 0.125rem;
 }
 
-/* Code and monospace text */
-.text-code {
-  font-family: var(--font-family-mono);
+/* Code and monospace text with Fira Code ligatures */
+.text-code,
+.font-mono,
+.font-code {
+  font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  font-feature-settings: 'calt' 1, 'liga' 1; /* Enable ligatures */
+  font-variant-ligatures: common-ligatures;
   font-size: 0.875em;
   background: rgba(var(--text-muted), 0.1);
   padding: 0.125rem 0.25rem;
@@ -286,11 +290,52 @@
 }
 
 .text-code-block {
-  font-family: var(--font-family-mono);
+  font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  font-feature-settings: 'calt' 1, 'liga' 1; /* Enable ligatures */
+  font-variant-ligatures: common-ligatures;
   background: rgba(var(--text-muted), 0.05);
   padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid rgba(var(--text-muted), 0.1);
   color: var(--text-primary);
   overflow-x: auto;
+}
+
+/* Fira Code specific styling for both light and dark modes */
+.fira-code {
+  font-family: 'Fira Code', monospace;
+  font-feature-settings: 'calt' 1, 'liga' 1, 'ss01' 1, 'ss02' 1, 'ss03' 1;
+  font-variant-ligatures: common-ligatures;
+}
+
+/* Enhanced code styling for glassmorphic theme */
+.code-glass {
+  font-family: 'Fira Code', monospace;
+  font-feature-settings: 'calt' 1, 'liga' 1;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode specific Fira Code enhancements */
+[data-theme="dark"] .text-code,
+[data-theme="dark"] .text-code-block,
+[data-theme="dark"] .fira-code,
+[data-theme="dark"] .code-glass {
+  color: var(--text-primary);
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Light mode specific Fira Code enhancements */
+[data-theme="light"] .text-code,
+[data-theme="light"] .text-code-block,
+[data-theme="light"] .fira-code,
+[data-theme="light"] .code-glass {
+  color: var(--text-primary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fira Code Font Test</title>
+    <link rel="stylesheet" href="./dist/css/index-C5Z_HJu9.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .test-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .code-test {
+            font-family: 'Fira Code', monospace;
+            font-feature-settings: 'calt' 1, 'liga' 1;
+            font-variant-ligatures: common-ligatures;
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .dark-mode {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .dark-mode .code-test {
+            background: #2a2a2a;
+            color: #ffffff;
+        }
+
+        .theme-toggle {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fira Code Font & Ligature Test</h1>
+
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>
+
+    <div class="test-section">
+        <h2>Basic Fira Code Test</h2>
+        <div class="code-test">
+/* This should show ligatures if Fira Code is working */
+const func = () => {
+    return x === y && a !== b || c <= d >= e;
+};
+
+// Arrow functions: => <=
+// Equality: === !== == !=
+// Logic: && ||
+// Assignment: := += -= *= /=
+// Comparisons: <= >= <>
+// Other symbols: ... >> << |> <| ~~
+
+function example() {
+    const result = items
+        .filter(x => x !== null)
+        .map(item => ({ ...item, id: item.id || 'default' }))
+        .reduce((acc, curr) => acc + curr.value, 0);
+
+    return result >= threshold ? 'success' : 'failure';
+}
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>CSS Class Tests</h2>
+        <div class="text-code">
+            .font-mono { font-family: var(--font-family-mono); }
+        </div>
+        <br>
+        <div class="fira-code">
+            .fira-code { === !== => <= >= && || }
+        </div>
+        <br>
+        <div class="code-glass">
+            .code-glass with glassmorphic background
+            const hello = () => console.log("world");
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Font Detection</h2>
+        <p id="font-detection">Checking font availability...</p>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.documentElement.setAttribute(
+                'data-theme',
+                document.body.classList.contains('dark-mode') ? 'dark' : 'light'
+            );
+        }
+
+        function checkFontSupport() {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            // Test if Fira Code is available
+            context.font = '20px Fira Code, monospace';
+            const firaText = context.measureText('===').width;
+
+            context.font = '20px monospace';
+            const fallbackText = context.measureText('===').width;
+
+            const fontDetection = document.getElementById('font-detection');
+
+            if (firaText !== fallbackText) {
+                fontDetection.innerHTML = '✅ Fira Code is loaded and working!<br>Font stack is working correctly.';
+                fontDetection.style.color = 'green';
+            } else {
+                fontDetection.innerHTML = '❌ Fira Code might not be loaded.<br>Using fallback monospace font.';
+                fontDetection.style.color = 'red';
+            }
+        }
+
+        // Wait for fonts to load
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(checkFontSupport);
+        } else {
+            // Fallback for older browsers
+            setTimeout(checkFontSupport, 1000);
+        }
+    </script>
+</body>
+</html>

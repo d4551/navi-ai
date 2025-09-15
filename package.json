@@ -144,6 +144,7 @@
     },
     "dependencies": {
         "@ai-sdk/google": "^2.0.12",
+        "@fontsource/fira-code": "^5.2.6",
         "@fontsource/inter": "^5.2.6",
         "@fontsource/roboto": "^5.2.6",
         "@google-cloud/text-to-speech": "^6.3.0",
