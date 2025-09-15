@@ -174,36 +174,53 @@ export class AIService {
       };
     }
 
-    if (_config) {
+    if (config) {
       this.config = { ...this.config, ...config };
     }
 
     try {
-      // Use the centralized API key resolver for better reliability
-      const resolvedKey = await resolveGeminiApiKey();
-      
-      // Allow config to override resolved key
-      const key = (config as any)?.apiKey || resolvedKey;
-      const model = (config as any)?.model || 'gemini-2.5-flash';
-      
-      if (!key) {
-        throw new Error('No Gemini API key found. Please configure your API key in Settings.');
-      }
-      
-      try {
-        // Initialize canonical AI client with resolved API key
-        await canonicalAIClient.initialize(key, model);
-      } catch (e) {
-        console.error('Canonical AI client initialization failed:', e);
-        throw new Error(`API key validation failed: ${e instanceof Error ? e.message : 'Invalid API key'}`);
+      // Decide which provider to initialize
+      const provider = (config && config.primaryProvider) ? config.primaryProvider : this.config.primaryProvider;
+
+      if (provider === 'google') {
+        // Use the centralized API key resolver for better reliability
+        const resolvedKey = await resolveGeminiApiKey();
+        
+        // Allow config to override resolved key
+        const key = (config as any)?.apiKey || resolvedKey;
+        const model = (config as any)?.model || 'gemini-2.5-flash';
+
+        if (!key) {
+          throw new Error('No Gemini API key found. Please configure your API key in Settings.');
+        }
+        
+        try {
+          // Initialize canonical AI client with resolved API key
+          await canonicalAIClient.initialize(key, model);
+        } catch (e) {
+          console.error('Canonical AI client initialization failed:', e);
+          throw new Error(`API key validation failed: ${e instanceof Error ? e.message : 'Invalid API key'}`);
+        }
+      } else if (provider === 'openai') {
+        // Validate OpenAI key presence from config/env/localStorage
+        const openaiKey = (config as any)?.apiKey || (typeof localStorage !== 'undefined' && localStorage.getItem('openai_api_key')) || '';
+        if (!openaiKey) {
+          throw new Error('OpenAI API key not configured');
+        }
+      } else if (provider === 'anthropic') {
+        // Validate Anthropic key presence from config/env/localStorage
+        const anthropicKey = (config as any)?.apiKey || (typeof localStorage !== 'undefined' && localStorage.getItem('anthropic_api_key')) || '';
+        if (!anthropicKey) {
+          throw new Error('Anthropic API key not configured');
+        }
       }
 
       this.initialized = true;
-      
+
       return {
         success: true,
         message: 'AI services initialized successfully',
-        provider: this.config.primaryProvider,
+        provider: provider,
         model: {
           capabilities: {
             imageInput: true,
@@ -215,19 +232,19 @@ export class AIService {
       };
     } catch (_error) {
       // Log initialization failures as they are critical for service operation
-      console.error('AI service initialization failed:', error);
+      console.error('AI service initialization failed:', _error);
       
       // Enhanced error handling with specific error types
       let errorMessage = 'AI service initialization failed';
-      if (error instanceof Error) {
-        if (error.message.includes('API key')) {
+      if (_error instanceof Error) {
+        if (_error.message.includes('API key')) {
           errorMessage = 'Invalid or missing API key. Please check your configuration.';
-        } else if (error.message.includes('network')) {
+        } else if (_error.message.includes('network')) {
           errorMessage = 'Network error during AI service initialization. Please check your connection.';
-        } else if (error.message.includes('rate limit')) {
+        } else if (_error.message.includes('rate limit')) {
           errorMessage = 'Rate limit exceeded. Please wait and try again.';
         } else {
-          errorMessage = `AI service initialization failed: ${error.message}`;
+          errorMessage = `AI service initialization failed: ${_error.message}`;
         }
       }
       
@@ -272,9 +289,9 @@ export class AIService {
 
       return response;
     } catch (_error) {
-      lastError = error as Error;
+      lastError = _error as Error;
       // Log provider failures for debugging fallback behavior
-      console.warn(`Primary provider ${this.config.primaryProvider} failed:`, error);
+      console.warn(`Primary provider ${this.config.primaryProvider} failed:`, _error);
     }
 
     // Try fallback providers
@@ -289,9 +306,9 @@ export class AIService {
 
         return response;
       } catch (_error) {
-        lastError = error as Error;
+        lastError = _error as Error;
         // Log fallback failures for debugging
-        console.warn(`Fallback provider ${provider} failed:`, error);
+        console.warn(`Fallback provider ${provider} failed:`, _error);
       }
     }
 
@@ -576,9 +593,9 @@ export class AIService {
         },
         {
           onChunk: (chunk: string) => {
-            chunks.push(_chunk);
+            chunks.push(chunk);
             fullContent += chunk;
-            request.onChunk?.(_chunk);
+            request.onChunk?.(chunk);
           },
           onComplete: (complete: any) => {
             fullContent = complete;
@@ -666,7 +683,7 @@ export class AIService {
       await this.realTimeService.stopSession();
     } catch (_error) {
       // Log cleanup failures for debugging
-      console.error('Failed to stop real-time session:', error);
+      console.error('Failed to stop real-time session:', _error);
     }
   }
 
@@ -1090,7 +1107,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
             conversationId: request.sessionId
           };
         } catch (_error) {
-          throw new Error(`Google AI failed: ${(error as Error).message}`);
+          throw new Error(`Google AI failed: ${(_error as Error).message}`);
         }
 
       case 'openai':
@@ -1132,7 +1149,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       return contextMessages;
     } catch (_error) {
       // Log context loading failures for debugging
-      console.warn('Failed to load conversation context:', error);
+      console.warn('Failed to load conversation context:', _error);
       return [];
     }
   }
@@ -1213,7 +1230,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
   private async callOpenAIProvider(request: AIRequest): Promise<AIResponse> {
     try {
       // Check for OpenAI API key
-      const apiKey = (typeof process !== 'undefined' && process.env?.OPENAI_API_KEY) || localStorage.getItem('openai_api_key');
+      const apiKey = (typeof localStorage !== 'undefined' && localStorage.getItem('openai_api_key')) || '';
       if (!apiKey) {
         throw new Error('OpenAI API key not configured');
       }
@@ -1255,7 +1272,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
         }
       };
     } catch (_error) {
-      throw new Error(`OpenAI provider failed: ${(error as Error).message}`);
+      throw new Error(`OpenAI provider failed: ${(_error as Error).message}`);
     }
   }
 
@@ -1265,7 +1282,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
   private async callAnthropicProvider(request: AIRequest): Promise<AIResponse> {
     try {
       // Check for Anthropic API key
-      const apiKey = (typeof process !== 'undefined' && process.env?.ANTHROPIC_API_KEY) || localStorage.getItem('anthropic_api_key');
+      const apiKey = (typeof localStorage !== 'undefined' && localStorage.getItem('anthropic_api_key')) || '';
       if (!apiKey) {
         throw new Error('Anthropic API key not configured');
       }
@@ -1307,7 +1324,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
         }
       };
     } catch (_error) {
-      throw new Error(`Anthropic provider failed: ${(error as Error).message}`);
+      throw new Error(`Anthropic provider failed: ${(_error as Error).message}`);
     }
   }
 
@@ -1354,7 +1371,7 @@ Keep it professional but show gaming enthusiasm and industry understanding.`;
       // AI service shut down successfully
     } catch (_error) {
       // Log shutdown errors for debugging
-      console.error('Error shutting down AI service:', error);
+      console.error('Error shutting down AI service:', _error);
     }
   }
 }

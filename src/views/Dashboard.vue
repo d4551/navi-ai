@@ -572,7 +572,7 @@ const stats = ref({
 
 // Navigation helper
 const navigateTo = (path) => {
-  router.push(path)
+  _router.push(path)
 }
 
 // Fetch live data
@@ -598,7 +598,7 @@ const fetchLiveData = async () => {
     stats.value.newJobsToday = Math.floor(Math.random() * 50) + 10
     
   } catch (_error) {
-    console.error('Failed to fetch live data:', error)
+    console.error('Failed to fetch live data:', _error)
   } finally {
     isLoading.value = false
   }

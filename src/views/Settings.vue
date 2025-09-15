@@ -399,7 +399,10 @@
                           <AppIcon name="mdi-google" class="provider-icon" />
                           <div class="provider-info">
                             <h5 class="provider-name">Google Gemini</h5>
-                            <span class="provider-status status-connected">Connected</span>
+                            <span
+                              class="provider-status"
+                              :class="store.settings?.geminiApiKey ? 'status-connected' : 'status-available'"
+                            >{{ store.settings?.geminiApiKey ? 'Connected' : 'Not Connected' }}</span>
                           </div>
                         </div>
                         <div class="provider-features">
@@ -415,7 +418,10 @@
                           <AppIcon name="mdi-openai" class="provider-icon" />
                           <div class="provider-info">
                             <h5 class="provider-name">OpenAI</h5>
-                            <span class="provider-status status-available">Available</span>
+                            <span
+                              class="provider-status"
+                              :class="store.settings?.openaiApiKey ? 'status-connected' : 'status-available'"
+                            >{{ store.settings?.openaiApiKey ? 'Connected' : 'Available' }}</span>
                           </div>
                         </div>
                         <div class="provider-features">
