@@ -241,7 +241,7 @@ export function useToast() {
   return {
     // Basic toasts
     success,
-    error,
+    error: _error,
     warning,
     info,
 

@@ -26,9 +26,7 @@
   outline: none;
 }
 
-.btn:focus-visible {
-  @apply focus\:ring-neon;
-}
+
 
 .btn:disabled {
   opacity: 0.5;
@@ -219,33 +217,111 @@
 /* ===== NEON VARIANT BUTTONS ===== */
 
 .btn-neon-red {
-  @apply btn-primary neon-red;
+  @apply glass neon-red;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-red));
+}
+
+.btn-neon-red:hover {
+  background: var(--glass-bg-hover);
   border-color: rgb(var(--neon-red));
+  transform: translateY(-2px);
+}
+
+.btn-neon-red:active {
+  background: var(--glass-bg-active);
+  transform: translateY(0);
 }
 
 .btn-neon-blue {
-  @apply btn-primary neon-blue;
+  @apply glass neon-blue;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-blue));
+}
+
+.btn-neon-blue:hover {
+  background: var(--glass-bg-hover);
   border-color: rgb(var(--neon-blue));
+  transform: translateY(-2px);
+}
+
+.btn-neon-blue:active {
+  background: var(--glass-bg-active);
+  transform: translateY(0);
 }
 
 .btn-neon-green {
-  @apply btn-primary neon-green;
+  @apply glass neon-green;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-green));
+}
+
+.btn-neon-green:hover {
+  background: var(--glass-bg-hover);
   border-color: rgb(var(--neon-green));
+  transform: translateY(-2px);
+}
+
+.btn-neon-green:active {
+  background: var(--glass-bg-active);
+  transform: translateY(0);
 }
 
 .btn-neon-purple {
-  @apply btn-primary neon-purple;
+  @apply glass neon-purple;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-purple));
+}
+
+.btn-neon-purple:hover {
+  background: var(--glass-bg-hover);
   border-color: rgb(var(--neon-purple));
+  transform: translateY(-2px);
+}
+
+.btn-neon-purple:active {
+  background: var(--glass-bg-active);
+  transform: translateY(0);
 }
 
 .btn-neon-pink {
-  @apply btn-primary neon-pink;
+  @apply glass neon-pink;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-pink));
+}
+
+.btn-neon-pink:hover {
+  background: var(--glass-bg-hover);
   border-color: rgb(var(--neon-pink));
+  transform: translateY(-2px);
+}
+
+.btn-neon-pink:active {
+  background: var(--glass-bg-active);
+  transform: translateY(0);
 }
 
 .btn-neon-cyan {
-  @apply btn-primary neon-cyan;
+  @apply glass neon-cyan;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid rgb(var(--neon-cyan));
+}
+
+.btn-neon-cyan:hover {
+  background: var(--glass-bg-hover);
   border-color: rgb(var(--neon-cyan));
+  transform: translateY(-2px);
+}
+
+.btn-neon-cyan:active {
+  background: var(--glass-bg-active);
+  transform: translateY(0);
 }
 
 /* ===== BUTTON GROUPS ===== */
@@ -306,7 +382,15 @@
 /* ===== FLOATING ACTION BUTTON ===== */
 
 .btn-fab {
-  @apply btn-primary btn-icon-lg neon-blue;
+  @apply glass neon-blue;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  padding: var(--space-3);
+  min-height: 44px;
+  width: 44px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
   position: fixed;
   bottom: var(--space-6);
   right: var(--space-6);
@@ -413,7 +497,14 @@
 
 /* Call-to-action button with pulse effect */
 .btn-cta {
-  @apply btn-primary btn-lg neon-blue animate-pulse-neon;
+  @apply glass neon-blue animate-pulse-neon;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-lg);
+  border-radius: var(--radius-lg);
+  min-height: 48px;
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -421,8 +512,13 @@
 
 /* Subtle action button */
 .btn-subtle {
-  @apply btn-ghost btn-sm;
+  background: transparent;
   color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+  min-height: 32px;
 }
 
 .btn-subtle:hover {
@@ -432,7 +528,9 @@
 
 /* Navigation button */
 .btn-nav {
-  @apply btn-ghost;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
   padding: var(--space-2) var(--space-4);
 }
@@ -446,13 +544,27 @@
 
 /* Menu button */
 .btn-menu {
-  @apply btn-ghost btn-icon-md;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+  padding: var(--space-2);
+  min-height: 36px;
+  width: 36px;
+  aspect-ratio: 1;
   border-radius: var(--radius-md);
 }
 
 /* Close button */
 .btn-close {
-  @apply btn-ghost btn-icon-sm neon-red;
+  @apply neon-red;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+  padding: var(--space-1);
+  min-height: 28px;
+  width: 28px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
   position: absolute;
   top: var(--space-2);
   right: var(--space-2);
@@ -460,7 +572,10 @@
 
 /* Dropdown toggle */
 .btn-dropdown {
-  @apply btn-secondary;
+  @apply glass;
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
   position: relative;
 }
 

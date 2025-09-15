@@ -3,7 +3,7 @@
     <div class="modal-backdrop show"></div>
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content glass-surface">
-        <div class="modal-header bg-gradient text-white">
+        <div class="modal-header bg-gradient text-inverse">
           <h5 class="modal-title"><AppIcon name="mdi-cog-outline" class="me-2" /> System Setup</h5>
           <button type="button" class="btn-close btn-close-white ui-btn ui-size-md" aria-label="Close" @click="$emit('close')"></button>
         </div>

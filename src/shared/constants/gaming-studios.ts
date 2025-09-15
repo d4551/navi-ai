@@ -446,3 +446,13 @@ export const COMPANY_SIZES: readonly string[] = Object.freeze([
   'Enterprise (1000+)'
 ]);
 
+// Regions for location-based filtering
+export const REGIONS: readonly string[] = Object.freeze([
+  'North America',
+  'Europe',
+  'Asia-Pacific',
+  'South America',
+  'Africa',
+  'Remote'
+]);
+

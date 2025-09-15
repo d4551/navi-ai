@@ -317,7 +317,7 @@ function onLogoError(event: Event) {
 }
 
 .key-metrics {
-  @apply stats-grid;
+  @apply grid grid-cols-1 md:grid-cols-3;
   gap: var(--spacing-4);
 }
 
@@ -343,7 +343,7 @@ function onLogoError(event: Event) {
 }
 
 .games-grid {
-  @apply compact-grid;
+  @apply grid grid-cols-2 md:grid-cols-4;
   gap: var(--spacing-2);
 }
 
@@ -406,7 +406,7 @@ function onLogoError(event: Event) {
 }
 
 .roles-grid {
-  @apply settings-grid;
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
   gap: var(--spacing-2);
 }
 

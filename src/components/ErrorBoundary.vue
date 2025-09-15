@@ -101,10 +101,8 @@ export default {
     }
   },
   setup(_props) {
-    const router = useRouter();
-
-    const _router = useRouter();
-    const route = useRoute();
+    const router = useRouter?.() || null;
+    const route = useRoute?.() || null;
 
     const hasError = ref(false);
     const errorDetails = ref("");
@@ -166,19 +164,19 @@ export default {
     onErrorCaptured((_error, instance, info) => {
       // Performance tracking
       performanceMonitor.recordMetric("error", 1, {
-        message: error.message,
+        message: _error.message,
         component: instance?.$options?.name || 'unknown',
-        route: route.name,
+        route: route?.name || 'unknown',
         severity: errorSeverity.value,
         category: errorCategory.value
       });
 
       logger.error("Error caught by boundary:", {
-        error: error.message,
-        stack: error.stack,
+        error: _error.message,
+        stack: _error.stack,
         component: instance?.$options?.name,
         info,
-        route: route.name,
+        route: route?.name || 'unknown',
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString()
       });
@@ -187,7 +185,7 @@ export default {
       categorizeError(_error, info);
 
       hasError.value = true;
-      errorDetails.value = `${error.message}\n\nStack trace:\n${error.stack}\n\nComponent info: ${info}`;
+      errorDetails.value = `${_error.message}\n\nStack trace:\n${_error.stack}\n\nComponent info: ${info}`;
 
       // Enhanced error logging with context
       if (window.errorTracker) {
@@ -195,14 +193,14 @@ export default {
           extra: {
             info,
             component: instance?.$options?.name,
-            route: route.name,
+            route: route?.name || 'unknown',
             category: errorCategory.value,
             severity: errorSeverity.value,
             retryCount: retryCount.value
           },
           tags: {
             component: instance?.$options?.name,
-            route: route.name,
+            route: route?.name || 'unknown',
             category: errorCategory.value,
             severity: errorSeverity.value
           }
@@ -225,7 +223,7 @@ export default {
       hasError.value = false;
       errorDetails.value = "";
       showDetails.value = false;
-      router.push("/");
+      router?.push?.("/") || (window.location.href = "/");
     };
 
     const reportBug = () => {

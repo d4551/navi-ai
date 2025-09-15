@@ -362,7 +362,7 @@ const DESIGN_TOKENS: Omit<ThemeDesignTokens, 'colors'> = {
 }
 
 // Composable state
-const themeMode = useStorage<ThemeMode>('navi-theme-mode', 'system')
+const themeMode = useStorage<ThemeMode>('navi-theme-mode', 'light')
 const systemPreference = ref<ColorScheme>('light')
 
 // Create unified theme composable
@@ -417,8 +417,8 @@ export function useUnifiedTheme() {
     if (typeof document === 'undefined') return
 
     const root = document.documentElement
-    const colors = theme.value.colors
-    const tokens = theme.value
+    const colors = _theme.value.colors
+    const tokens = _theme.value
 
     // Inject color variables
     Object.entries(colors).forEach(([key, value]) => {
@@ -476,6 +476,12 @@ export function useUnifiedTheme() {
     root.style.setProperty('--glass-bg', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.25)' : 'rgba(255, 255, 255, 0.25)')
     root.style.setProperty('--glass-border', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)')
     root.style.setProperty('--glass-shadow', colorScheme.value === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.1)')
+
+    // Map semantic text colors for utility classes
+    root.style.setProperty('--text-primary', colors['on-background'] || (colorScheme.value === 'dark' ? '#f9fafb' : '#111827'))
+    root.style.setProperty('--text-secondary', colors['on-surface-variant'] || (colorScheme.value === 'dark' ? '#d1d5db' : '#4b5563'))
+    root.style.setProperty('--text-tertiary', colors.gray?.[colorScheme.value === 'dark' ? '400' : '500'] || (colorScheme.value === 'dark' ? '#9ca3af' : '#6b7280'))
+    root.style.setProperty('--text-muted', colors.gray?.[colorScheme.value === 'dark' ? '500' : '400'] || '#6b7280')
 
     // Set color scheme attributes for native styling
     root.setAttribute('data-theme', colorScheme.value)
@@ -613,7 +619,7 @@ export function useUnifiedTheme() {
     themeMode: readonly(themeMode),
     colorScheme: readonly(colorScheme),
     systemPreference: readonly(systemPreference),
-    theme: readonly(theme),
+    theme: readonly(_theme),
 
     // Computed
     isDark: readonly(isDark),
@@ -652,16 +658,33 @@ export default useUnifiedTheme
 
 // Safe global initialization function
 export function initializeUnifiedThemeGlobal() {
-  // Detect system preference without reactive refs
-  let currentSystemPreference: ColorScheme = 'light'
-  if (typeof window !== 'undefined' && window.matchMedia) {
-    currentSystemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  // Get stored theme preference or default to light
+  let effectiveColorScheme: ColorScheme = 'light'
+
+  if (typeof window !== 'undefined') {
+    try {
+      const storedThemeMode = localStorage.getItem('navi-theme-mode')
+      const parsedThemeMode = storedThemeMode ? JSON.parse(storedThemeMode) : 'light'
+
+      if (parsedThemeMode === 'system') {
+        // Only use system preference if user explicitly chose 'system'
+        if (window.matchMedia) {
+          effectiveColorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+      } else {
+        // Use stored preference (light or dark)
+        effectiveColorScheme = parsedThemeMode === 'dark' ? 'dark' : 'light'
+      }
+    } catch {
+      // Fallback to light mode if localStorage access fails
+      effectiveColorScheme = 'light'
+    }
   }
   
   // Apply theme variables directly
   if (typeof document !== 'undefined') {
     const root = document.documentElement
-    const colors = GAMING_COLORS[currentSystemPreference]
+    const colors = GAMING_COLORS[effectiveColorScheme]
     const tokens = DESIGN_TOKENS
 
     // Inject color variables
@@ -689,11 +712,11 @@ export function initializeUnifiedThemeGlobal() {
     })
 
     // Set color scheme attributes
-    root.setAttribute('data-theme', currentSystemPreference)
-    root.setAttribute('data-color-scheme', currentSystemPreference)
+    root.setAttribute('data-theme', effectiveColorScheme)
+    root.setAttribute('data-color-scheme', effectiveColorScheme)
   }
-  
-  logger.info('Unified theme system initialized globally (safe mode)', { scheme: currentSystemPreference })
+
+  logger.info('Unified theme system initialized globally (safe mode)', { scheme: effectiveColorScheme })
 }
 
 // Utility function for non-Vue contexts

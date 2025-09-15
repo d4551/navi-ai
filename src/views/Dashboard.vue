@@ -8,48 +8,42 @@
     max-width="xl"
   >
     <template #header-actions>
-      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="secondary">
-        <SearchInput 
+      <HeaderActions layout="horizontal" alignment="end" gap="lg" priority="secondary">
+        <SearchInput
           placeholder="Search jobs, studios, skills..."
           class="header-search"
           variant="ghost"
         />
-        <UnifiedButton
-          variant="ghost"
-          size="md"
-          leading-icon="mdi-microphone"
-          tooltip="Voice Commands"
-          aria-label="Voice Commands"
-        />
         <PushToTalkButton />
-        <ToastNotification />
       </HeaderActions>
     </template>
 
     <!-- Main Dashboard Content -->
-    <div class="container-xl space-y-8">
+    <div class="dashboard-container bg-white dark:bg-gray-900">
       <!-- Enhanced Gamification Section -->
-      <section class="mb-8">
-        <div class="glass-strong p-6 rounded-lg">
-          <div class="flex items-center justify-between gap-6 flex-wrap">
+      <section class="gamification-section">
+        <div class="gamification-card glass-strong bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <div class="gamification-header">
             <div class="level-info">
               <div class="level-badge">🏆</div>
               <div class="level-text">
-                <div class="level-number">Level {{ userLevel }}</div>
-                <div class="level-title">{{ levelTitle }}</div>
+                <div class="level-number text-gray-900 dark:text-gray-100">Level {{ userLevel }}</div>
+                <div class="level-title text-gray-600 dark:text-gray-400">{{ levelTitle }}</div>
               </div>
-            </div>
-            
-            <div class="xp-bar">
-              <div class="xp-bar-bg">
-                <div class="xp-bar-fill" :style="{ width: xpPercentage + '%' }"></div>
-              </div>
-              <div class="xp-text">{{ currentXP }} / {{ requiredXP }} XP</div>
             </div>
 
             <div class="streak-counter">
               <span class="streak-icon">🔥</span>
-              <span>{{ streakDays }} Day Streak</span>
+              <span class="text-gray-900 dark:text-gray-100">{{ streakDays }} Day Streak</span>
+            </div>
+          </div>
+
+          <div class="gamification-progress">
+            <div class="xp-bar">
+              <div class="xp-bar-bg">
+                <div class="xp-bar-fill" :style="{ width: xpPercentage + '%' }"></div>
+              </div>
+              <div class="xp-text text-gray-600 dark:text-gray-400">{{ currentXP }} / {{ requiredXP }} XP</div>
             </div>
 
             <div class="hud-actions">
@@ -67,19 +61,19 @@
       <!-- Quick Actions Grid -->
       <section>
         <div class="mb-6">
-          <h2 class="text-2xl font-bold text-glass-enhanced mb-2">Quick Actions</h2>
-          <p class="text-glass-enhanced opacity-80">Jump into your gaming career tools</p>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Quick Actions</h2>
+          <p class="text-gray-600 dark:text-gray-400 opacity-80">Jump into your gaming career tools</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <UnifiedCard variant="glass" class="action-card neon-interactive">
+          <UnifiedCard variant="glass" class="action-card neon-interactive bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="mdi-file-document-edit" class="action-icon" />
               </div>
               <div class="action-text">
-                <h3>Resume Builder</h3>
-                <p>AI-powered resume optimization for gaming roles</p>
+                <h3 class="text-gray-900 dark:text-gray-100">Resume Builder</h3>
+                <p class="text-gray-600 dark:text-gray-400">AI-powered resume optimization for gaming roles</p>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -92,14 +86,14 @@
             </div>
           </UnifiedCard>
 
-          <UnifiedCard variant="glass" class="action-card neon-interactive">
+          <UnifiedCard variant="glass" class="action-card neon-interactive bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="mdi-briefcase-search" class="action-icon" />
               </div>
               <div class="action-text">
-                <h3>Job Search</h3>
-                <p>Find gaming industry opportunities worldwide</p>
+                <h3 class="text-gray-900 dark:text-gray-100">Job Search</h3>
+                <p class="text-gray-600 dark:text-gray-400">Find gaming industry opportunities worldwide</p>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -112,14 +106,14 @@
             </div>
           </UnifiedCard>
 
-          <UnifiedCard variant="glass" class="action-card neon-interactive">
+          <UnifiedCard variant="glass" class="action-card neon-interactive bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="mdi-domain" class="action-icon" />
               </div>
               <div class="action-text">
-                <h3>Studios Explorer</h3>
-                <p>Discover gaming companies and their culture</p>
+                <h3 class="text-gray-900 dark:text-gray-100">Studios Explorer</h3>
+                <p class="text-gray-600 dark:text-gray-400">Discover gaming companies and their culture</p>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -132,14 +126,14 @@
             </div>
           </UnifiedCard>
 
-          <UnifiedCard variant="glass" class="action-card neon-interactive">
+          <UnifiedCard variant="glass" class="action-card neon-interactive bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="mdi-account-voice" class="action-icon" />
               </div>
               <div class="action-text">
-                <h3>AI Interview</h3>
-                <p>Practice interviews with AI-powered scenarios</p>
+                <h3 class="text-gray-900 dark:text-gray-100">AI Interview</h3>
+                <p class="text-gray-600 dark:text-gray-400">Practice interviews with AI-powered scenarios</p>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -155,16 +149,16 @@
       </section>
 
       <!-- Content Dashboard Grid -->
-      <section>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <section class="dashboard-grid-section">
+        <div class="dashboard-grid">
           <!-- Real-Time Chat Panel -->
-          <UnifiedCard variant="glass" class="content-panel chat-panel">
+          <UnifiedCard variant="glass" class="content-panel chat-panel bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-message-text" class="panel-icon" />
                 <div>
-                  <h3 class="panel-title">AI Assistant</h3>
-                  <p class="panel-subtitle">Get instant help and guidance</p>
+                  <h3 class="panel-title text-gray-900 dark:text-gray-100">AI Assistant</h3>
+                  <p class="panel-subtitle text-gray-600 dark:text-gray-400">Get instant help and guidance</p>
                 </div>
               </div>
               <UnifiedButton
@@ -176,18 +170,22 @@
               />
             </div>
             <div class="panel-content">
-              <RealTimeChat />
+              <RealTimeChat v-if="RealTimeChat" />
+              <div v-else class="chat-fallback">
+                <AppIcon name="mdi-chat-outline" class="text-gray-400 dark:text-gray-500" />
+                <span class="text-gray-600 dark:text-gray-400">Real-Time Chat unavailable</span>
+              </div>
             </div>
           </UnifiedCard>
 
           <!-- Skills Overview Panel -->
-          <UnifiedCard variant="glass" class="content-panel skills-panel">
+          <UnifiedCard variant="glass" class="content-panel skills-panel bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-star-outline" class="panel-icon" />
                 <div>
-                  <h3 class="panel-title">Gaming Skills</h3>
-                  <p class="panel-subtitle">Your technical expertise</p>
+                  <h3 class="panel-title text-gray-900 dark:text-gray-100">Gaming Skills</h3>
+                  <p class="panel-subtitle text-gray-600 dark:text-gray-400">Your technical expertise</p>
                 </div>
               </div>
               <UnifiedButton
@@ -220,13 +218,13 @@
           </UnifiedCard>
 
           <!-- Live Jobs Panel -->
-          <UnifiedCard variant="glass" class="content-panel jobs-panel">
+          <UnifiedCard variant="glass" class="content-panel jobs-panel bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-briefcase-clock" class="panel-icon" />
                 <div>
-                  <h3 class="panel-title">Live Job Opportunities</h3>
-                  <p class="panel-subtitle">Fresh gaming industry positions</p>
+                  <h3 class="panel-title text-gray-900 dark:text-gray-100">Live Job Opportunities</h3>
+                  <p class="panel-subtitle text-gray-600 dark:text-gray-400">Fresh gaming industry positions</p>
                 </div>
               </div>
               <UnifiedButton
@@ -240,18 +238,18 @@
             </div>
             <div class="panel-content">
               <div v-if="isLoading" class="loading-state">
-                <AppIcon name="mdi-loading" class="loading-icon" spin />
-                <p>Loading live jobs...</p>
+                <AppIcon name="mdi-loading" class="loading-icon text-gray-400 dark:text-gray-500" spin />
+                <p class="text-gray-600 dark:text-gray-400">Loading live jobs...</p>
               </div>
               <div v-else-if="liveJobs.length === 0" class="empty-state">
-                <AppIcon name="mdi-briefcase-off" class="empty-icon" />
-                <p>No live jobs found</p>
+                <AppIcon name="mdi-briefcase-off" class="empty-icon text-gray-400 dark:text-gray-500" />
+                <p class="text-gray-600 dark:text-gray-400">No live jobs found</p>
               </div>
               <div v-else class="jobs-list">
                 <div v-for="job in liveJobs" :key="job.id" class="job-item">
                   <div class="job-info">
-                    <h4 class="job-title">{{ job.title }}</h4>
-                    <p class="job-company">{{ job.company }}</p>
+                    <h4 class="job-title text-gray-900 dark:text-gray-100">{{ job.title }}</h4>
+                    <p class="job-company text-gray-600 dark:text-gray-400">{{ job.company }}</p>
                     <div class="job-meta">
                       <UiBadge :label="job.location" variant="neutral" size="xs" />
                       <UiBadge :label="job.remote ? 'Remote' : 'On-site'" variant="neutral" size="xs" />
@@ -280,13 +278,13 @@
           </UnifiedCard>
 
           <!-- AI Insights Panel -->
-          <UnifiedCard variant="glass" class="content-panel insights-panel">
+          <UnifiedCard variant="glass" class="content-panel insights-panel bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-brain" class="panel-icon" />
                 <div>
-                  <h3 class="panel-title">AI Career Insights</h3>
-                  <p class="panel-subtitle">Personalized recommendations</p>
+                  <h3 class="panel-title text-gray-900 dark:text-gray-100">AI Career Insights</h3>
+                  <p class="panel-subtitle text-gray-600 dark:text-gray-400">Personalized recommendations</p>
                 </div>
               </div>
               <UnifiedButton
@@ -300,44 +298,44 @@
             </div>
             <div class="panel-content">
               <div v-if="isLoading" class="loading-state">
-                <AppIcon name="mdi-loading" class="loading-icon" spin />
-                <p>Analyzing career data...</p>
+                <AppIcon name="mdi-loading" class="loading-icon text-gray-400 dark:text-gray-500" spin />
+                <p class="text-gray-600 dark:text-gray-400">Analyzing career data...</p>
               </div>
               <div v-else-if="careerInsights" class="insights-content">
                 <div class="insight-item">
                   <AppIcon name="mdi-trending-up" class="insight-icon" />
                   <div class="insight-details">
-                    <p class="insight-text">{{ careerInsights.marketTrends }}</p>
+                    <p class="insight-text text-gray-900 dark:text-gray-100">{{ careerInsights.marketTrends }}</p>
                   </div>
                 </div>
                 <div class="insight-item">
                   <AppIcon name="mdi-star" class="insight-icon" />
                   <div class="insight-details">
-                    <p class="insight-text">Top skills: {{ careerInsights.inDemandSkills?.slice(0, 3).join(', ') }}</p>
+                    <p class="insight-text text-gray-900 dark:text-gray-100">Top skills: {{ careerInsights.inDemandSkills?.slice(0, 3).join(', ') }}</p>
                   </div>
                 </div>
                 <div class="insight-item">
                   <AppIcon name="mdi-cash" class="insight-icon" />
                   <div class="insight-details">
-                    <p class="insight-text">{{ careerInsights.salaryInsights }}</p>
+                    <p class="insight-text text-gray-900 dark:text-gray-100">{{ careerInsights.salaryInsights }}</p>
                   </div>
                 </div>
               </div>
               <div v-else class="empty-state">
-                <AppIcon name="mdi-robot-excited" class="empty-icon" />
-                <p>Get AI-powered career insights</p>
+                <AppIcon name="mdi-robot-excited" class="empty-icon text-gray-400 dark:text-gray-500" />
+                <p class="text-gray-600 dark:text-gray-400">Get AI-powered career insights</p>
               </div>
             </div>
           </UnifiedCard>
 
           <!-- Activity Timeline Panel -->
-          <UnifiedCard variant="glass" class="content-panel activity-panel">
+          <UnifiedCard variant="glass" class="content-panel activity-panel bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="mdi-timeline-clock-outline" class="panel-icon" />
                 <div>
-                  <h3 class="panel-title">Recent Activity</h3>
-                  <p class="panel-subtitle">Your latest career actions</p>
+                  <h3 class="panel-title text-gray-900 dark:text-gray-100">Recent Activity</h3>
+                  <p class="panel-subtitle text-gray-600 dark:text-gray-400">Your latest career actions</p>
                 </div>
               </div>
               <UnifiedButton
@@ -355,8 +353,8 @@
                     <AppIcon name="mdi-file-document-outline" class="activity-icon" />
                   </div>
                   <div class="activity-details">
-                    <p class="activity-description">Resume updated with new Unity experience</p>
-                    <span class="activity-timestamp">2 hours ago</span>
+                    <p class="activity-description text-gray-900 dark:text-gray-100">Resume updated with new Unity experience</p>
+                    <span class="activity-timestamp text-gray-600 dark:text-gray-400">2 hours ago</span>
                   </div>
                 </div>
                 <div class="activity-item">
@@ -364,8 +362,8 @@
                     <AppIcon name="mdi-send-outline" class="activity-icon" />
                   </div>
                   <div class="activity-details">
-                    <p class="activity-description">Applied to 3 Game Developer positions</p>
-                    <span class="activity-timestamp">1 day ago</span>
+                    <p class="activity-description text-gray-900 dark:text-gray-100">Applied to 3 Game Developer positions</p>
+                    <span class="activity-timestamp text-gray-600 dark:text-gray-400">1 day ago</span>
                   </div>
                 </div>
                 <div class="activity-item">
@@ -373,8 +371,8 @@
                     <AppIcon name="mdi-trophy-outline" class="activity-icon" />
                   </div>
                   <div class="activity-details">
-                    <p class="activity-description">Achievement unlocked: Portfolio Master</p>
-                    <span class="activity-timestamp">3 days ago</span>
+                    <p class="activity-description text-gray-900 dark:text-gray-100">Achievement unlocked: Portfolio Master</p>
+                    <span class="activity-timestamp text-gray-600 dark:text-gray-400">3 days ago</span>
                   </div>
                 </div>
               </div>
@@ -387,17 +385,17 @@
     <!-- Gaming Dashboard Modals -->
     <!-- Daily Quests Modal -->
     <div v-if="showQuests" class="modal-overlay" @click.self="showQuests = false">
-      <div class="quest-modal glass-surface">
+      <div class="quest-modal glass-surface bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <div class="modal-header">
-          <h2>Daily Quests</h2>
+          <h2 class="text-gray-900 dark:text-gray-100">Daily Quests</h2>
           <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-close" @click="showQuests = false" />
         </div>
         <div class="quest-list">
           <div v-for="quest in dailyQuests" :key="quest.id" class="quest-item">
             <div class="quest-info">
-              <div class="quest-title">{{ quest.title }}</div>
-              <div class="quest-description">{{ quest.description }}</div>
-              <div class="quest-reward">Reward: {{ quest.xpReward }} XP</div>
+              <div class="quest-title text-gray-900 dark:text-gray-100">{{ quest.title }}</div>
+              <div class="quest-description text-gray-600 dark:text-gray-400">{{ quest.description }}</div>
+              <div class="quest-reward text-blue-600 dark:text-blue-400">Reward: {{ quest.xpReward }} XP</div>
             </div>
             <div class="quest-progress">
               <div class="progress-bar">
@@ -412,17 +410,17 @@
 
     <!-- Achievements Modal -->
     <div v-if="showAchievements" class="modal-overlay" @click.self="showAchievements = false">
-      <div class="achievements-modal glass-surface">
+      <div class="achievements-modal glass-surface bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <div class="modal-header">
-          <h2>Achievements</h2>
+          <h2 class="text-gray-900 dark:text-gray-100">Achievements</h2>
           <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="mdi-close" @click="showAchievements = false" />
         </div>
         <div class="achievements-grid">
           <div v-for="achievement in achievements" :key="achievement.id" class="achievement-item" :class="{ unlocked: achievement.unlocked }">
             <div class="achievement-icon">{{ achievement.icon }}</div>
             <div class="achievement-info">
-              <div class="achievement-title">{{ achievement.title }}</div>
-              <div class="achievement-description">{{ achievement.description }}</div>
+              <div class="achievement-title text-gray-900 dark:text-gray-100">{{ achievement.title }}</div>
+              <div class="achievement-description text-gray-600 dark:text-gray-400">{{ achievement.description }}</div>
             </div>
           </div>
         </div>
@@ -442,7 +440,6 @@ import UnifiedCard from '@/components/UnifiedCard.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import PushToTalkButton from '@/components/PushToTalkButton.vue'
-import ToastNotification from '@/components/ToastNotification.vue'
 import RealTimeChat from '@/components/RealTimeChat.vue'
 import CompactGamifyHUD from '@/components/CompactGamifyHUD.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -623,6 +620,159 @@ onMounted(() => {
 
   <style scoped>
 /* ===== GAMING CAREER DASHBOARD STYLES ===== */
+
+/* Dashboard Container */
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-lg, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl, 2rem);
+}
+
+/* Gamification Section */
+.gamification-section {
+  width: 100%;
+}
+
+.gamification-card {
+  padding: var(--spacing-lg, 1.5rem);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-backdrop-blur);
+}
+
+.gamification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md, 1rem);
+  gap: var(--spacing-md, 1rem);
+}
+
+.gamification-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 1rem);
+}
+
+/* Dashboard Grid */
+.dashboard-grid-section {
+  width: 100%;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--spacing-xl, 2rem);
+  align-items: start;
+}
+
+/* Panel Improvements */
+.content-panel {
+  height: fit-content;
+  min-height: 300px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md, 1rem);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.panel-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 0.75rem);
+}
+
+.panel-icon {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+.panel-title {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.panel-subtitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.panel-content {
+  padding: var(--spacing-md, 1rem);
+  min-height: 200px;
+}
+
+/* Chat Fallback */
+.chat-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-secondary);
+  gap: var(--spacing-sm, 0.75rem);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-lg, 1.5rem);
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gamification-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+    gap: var(--spacing-sm, 0.75rem);
+  }
+
+  .hud-actions {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: var(--spacing-md, 1rem);
+    gap: var(--spacing-lg, 1.5rem);
+  }
+
+  .gamification-card {
+    padding: var(--spacing-md, 1rem);
+  }
+
+  .content-panel {
+    min-height: 250px;
+  }
+
+  .dashboard-grid {
+    gap: var(--spacing-md, 1rem);
+  }
+
+  .header-search {
+    min-width: 200px;
+  }
+}
+
 .dashboard-view {
   min-height: 100vh;
   background: var(--background-primary);
@@ -646,7 +796,9 @@ onMounted(() => {
 }
 
 .header-search {
-  min-width: 320px;
+  min-width: 300px;
+  max-width: 400px;
+  flex: 1;
 }
 
 /* Enhanced Gamification Section */
@@ -952,7 +1104,7 @@ onMounted(() => {
 
 .action-icon {
   font-size: 1.75rem;
-  color: white;
+  color: var(--text-inverse);
 }
 
 .action-text h3 {

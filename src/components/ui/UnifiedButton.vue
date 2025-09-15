@@ -3,7 +3,7 @@
     :is="resolvedTag"
     ref="buttonRef"
     :class="buttonClasses"
-    :data-variant="(props.color || props.variant)"
+    :data-variant="(props?.color || props?.variant || 'primary')"
     :data-size="resolvedSize"
     :data-icon-only="props.iconOnly ? 'true' : 'false'"
     :to="props.to || undefined"
@@ -20,13 +20,13 @@
     @mouseleave="showTooltip = false"
   >
     <!-- Loading Spinner -->
-    <div v-if="loading || isProcessing" class="spinner-gaming me-2" role="status" aria-hidden="true"></div>
+    <div v-if="loading || isProcessing" class="spinner-gaming me-2 animate-spin text-current opacity-70 dark:opacity-80" role="status" aria-hidden="true"></div>
     
     <!-- AI Status Icons -->
-    <div v-if="showSuccessState" class="ai-success-icon me-2">
+    <div v-if="showSuccessState" class="ai-success-icon me-2 text-green-600 dark:text-green-400">
       <AppIcon name="mdi-check" />
     </div>
-    <div v-if="showErrorState" class="ai-error-icon me-2">
+    <div v-if="showErrorState" class="ai-error-icon me-2 text-red-600 dark:text-red-400">
       <AppIcon name="mdi-alert-circle" style="color: var(--color-error-500);" />
     </div>
 
@@ -58,20 +58,20 @@
     <AppIcon v-if="iconOnly && icon" :name="icon" />
     
     <!-- Badge -->
-    <span v-if="badge" class="button-badge badge-unified bg-warning">{{ badge }}</span>
+    <span v-if="badge" class="button-badge badge-unified bg-warning bg-red-500 dark:bg-red-400 text-white dark:text-gray-900">{{ badge }}</span>
     
     <!-- Tooltip -->
-    <div v-if="tooltip && showTooltip" class="btn-tooltip" :class="tooltipPosition">
+    <div v-if="tooltip && showTooltip" class="btn-tooltip bg-gray-900/90 dark:bg-gray-100/90 text-white dark:text-gray-900 border border-gray-700/50 dark:border-gray-300/50" :class="tooltipPosition">
       {{ tooltip }}
     </div>
     
     <!-- Progress Bar -->
-    <div v-if="showProgress && isProcessing" class="btn-progress-bar">
-      <div class="btn-progress-fill" :style="{ width: `${progress}%` }"></div>
+    <div v-if="showProgress && isProcessing" class="btn-progress-bar bg-gray-200 dark:bg-gray-700">
+      <div class="btn-progress-fill bg-blue-500 dark:bg-blue-400" :style="{ width: `${progress}%` }"></div>
     </div>
     
     <!-- Ripple Effect Container -->
-    <div v-if="ripple" ref="rippleContainer" class="ripple-container" />
+    <div v-if="ripple" ref="rippleContainer" class="ripple-container overflow-hidden" />
   </component>
 </template>
 
@@ -532,24 +532,45 @@ defineExpose({
   color: var(--text-primary); /* Use design system variable */
   border-radius: var(--radius-md); /* Use design system variable */
   box-shadow: var(--glass-shadow); /* Use master theme glass shadow */
+
+  /* Tailwind dark mode classes */
+  @apply bg-white/10 dark:bg-black/20;
+  @apply border-gray-200/30 dark:border-gray-700/50;
+  @apply text-gray-900 dark:text-gray-100;
+  @apply shadow-sm dark:shadow-black/20;
 }
 
 .btn-unified:hover:not(:disabled) {
   box-shadow: var(--glass-shadow); /* Use master theme glass shadow */
   background: var(--glass-hover-bg); /* Use master theme variable */
   transform: translateY(-1px);
+
+  /* Tailwind dark mode hover classes */
+  @apply bg-white/20 dark:bg-black/30;
+  @apply border-gray-300/40 dark:border-gray-600/60;
+  @apply shadow-md dark:shadow-black/40;
 }
 
 .btn-unified:active:not(:disabled) {
   box-shadow: var(--glass-shadow); /* Use master theme glass shadow */
   transform: translateY(0);
   background: var(--glass-hover-bg); /* Use master theme variable */
+
+  /* Tailwind dark mode active classes */
+  @apply bg-white/15 dark:bg-black/25;
+  @apply border-gray-400/50 dark:border-gray-500/70;
+  @apply shadow-sm dark:shadow-black/30;
 }
 
 .btn-unified:focus-visible {
   outline: 3px solid var(--color-primary-400); /* Use design system variable */
   outline-offset: 2px;
   box-shadow: var(--shadow-md), 0 0 0 3px var(--color-primary-200); /* Enhanced focus shadow */
+
+  /* Tailwind dark mode focus classes */
+  @apply ring-2 ring-blue-500 dark:ring-blue-400;
+  @apply ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+  @apply outline-blue-500 dark:outline-blue-400;
 }
 
 /* Size Variants - Improved Touch Targets */
@@ -644,39 +665,54 @@ defineExpose({
 /* Variant Styles */
 .btn-primary,
 .btn-unified[data-variant="primary"] {
-  background: linear-gradient(135deg, 
-    var(--color-primary-500), 
+  background: linear-gradient(135deg,
+    var(--color-primary-500),
     var(--color-primary-600)) !important;
   color: var(--text-on-primary) !important;
   border: 1px solid var(--color-primary-600) !important;
   backdrop-filter: var(--glass-backdrop-filter) !important;
   -webkit-backdrop-filter: var(--glass-backdrop-filter) !important;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 12px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.25) !important;
+
+  /* Tailwind dark mode primary classes */
+  @apply bg-gradient-to-br from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600;
+  @apply text-white dark:text-gray-100;
+  @apply border-blue-700 dark:border-blue-500;
+  @apply shadow-blue-500/25 dark:shadow-blue-400/20;
 }
 
 .btn-primary:hover:not(:disabled),
 .btn-unified[data-variant="primary"]:hover:not(:disabled) {
-  background: linear-gradient(135deg, 
-    var(--color-primary-600), 
+  background: linear-gradient(135deg,
+    var(--color-primary-600),
     var(--color-primary-700)) !important;
   transform: translateY(-1px);
   border-color: var(--color-primary-700) !important;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 20px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.4) !important;
+
+  /* Tailwind dark mode primary hover classes */
+  @apply bg-gradient-to-br from-blue-700 to-blue-800 dark:from-blue-400 dark:to-blue-500;
+  @apply border-blue-800 dark:border-blue-400;
+  @apply shadow-blue-500/40 dark:shadow-blue-400/30;
 }
 
 .btn-primary:active:not(:disabled),
 .btn-unified[data-variant="primary"]:active:not(:disabled) {
   transform: translateY(0);
-  background: linear-gradient(135deg, 
-    var(--color-primary-700), 
+  background: linear-gradient(135deg,
+    var(--color-primary-700),
     var(--color-primary-800)) !important;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 8px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.3) !important;
+
+  /* Tailwind dark mode primary active classes */
+  @apply bg-gradient-to-br from-blue-800 to-blue-900 dark:from-blue-300 dark:to-blue-400;
+  @apply shadow-blue-500/30 dark:shadow-blue-400/20;
 }
 
 .btn-gaming {
@@ -684,6 +720,12 @@ defineExpose({
   color: var(--color-gaming-500); /* Use design system variable */
   border: 1px solid var(--glass-border-gaming); /* Use design system variable */
   box-shadow: var(--shadow-sm);
+
+  /* Tailwind dark mode gaming classes */
+  @apply bg-gradient-to-r from-purple-500/20 to-pink-500/20 dark:from-purple-400/30 dark:to-pink-400/30;
+  @apply text-purple-600 dark:text-purple-300;
+  @apply border-purple-500/30 dark:border-purple-400/40;
+  @apply shadow-purple-500/20 dark:shadow-purple-400/15;
 }
 
 .btn-gaming:hover:not(:disabled) {
@@ -691,6 +733,11 @@ defineExpose({
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow-gaming); /* Use design system variable */
   border-color: var(--glass-border-gaming);
+
+  /* Tailwind dark mode gaming hover classes */
+  @apply bg-gradient-to-r from-purple-500/30 to-pink-500/30 dark:from-purple-400/40 dark:to-pink-400/40;
+  @apply border-purple-600/40 dark:border-purple-300/50;
+  @apply shadow-lg shadow-purple-500/30 dark:shadow-purple-400/25;
 }
 
 .btn-cyber {
@@ -698,6 +745,12 @@ defineExpose({
   color: var(--color-cyber-500); /* Use design system variable */
   border: 1px solid var(--glass-border-cyber); /* Use design system variable */
   box-shadow: var(--shadow-sm);
+
+  /* Tailwind dark mode cyber classes */
+  @apply bg-gradient-to-r from-cyan-500/20 to-blue-500/20 dark:from-cyan-400/30 dark:to-blue-400/30;
+  @apply text-cyan-600 dark:text-cyan-300;
+  @apply border-cyan-500/30 dark:border-cyan-400/40;
+  @apply shadow-cyan-500/20 dark:shadow-cyan-400/15;
 }
 
 .btn-cyber:hover:not(:disabled) {
@@ -705,6 +758,11 @@ defineExpose({
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow-cyber); /* Use design system variable */
   border-color: var(--glass-border-cyber);
+
+  /* Tailwind dark mode cyber hover classes */
+  @apply bg-gradient-to-r from-cyan-500/30 to-blue-500/30 dark:from-cyan-400/40 dark:to-blue-400/40;
+  @apply border-cyan-600/40 dark:border-cyan-300/50;
+  @apply shadow-lg shadow-cyan-500/30 dark:shadow-cyan-400/25;
 }
 
 .btn-glass,
@@ -715,6 +773,13 @@ defineExpose({
   backdrop-filter: var(--glass-backdrop-filter) !important;
   -webkit-backdrop-filter: var(--glass-backdrop-filter) !important;
   box-shadow: var(--glass-shadow) !important;
+
+  /* Tailwind dark mode glass classes */
+  @apply bg-white/10 dark:bg-black/10;
+  @apply text-gray-900 dark:text-gray-100;
+  @apply border-white/20 dark:border-gray-700/40;
+  @apply backdrop-blur-md;
+  @apply shadow-lg shadow-black/10 dark:shadow-black/30;
 }
 
 .btn-glass:hover:not(:disabled),
@@ -722,9 +787,14 @@ defineExpose({
   background: var(--glass-hover-bg) !important;
   transform: translateY(-1px);
   border-color: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.4) !important;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 12px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15) !important;
+
+  /* Tailwind dark mode glass hover classes */
+  @apply bg-white/20 dark:bg-black/20;
+  @apply border-blue-500/40 dark:border-blue-400/50;
+  @apply shadow-xl shadow-blue-500/15 dark:shadow-blue-400/10;
 }
 
 .btn-glass:active:not(:disabled),
@@ -732,6 +802,10 @@ defineExpose({
   transform: translateY(0);
   background: var(--glass-hover-bg) !important;
   box-shadow: var(--glass-shadow) !important;
+
+  /* Tailwind dark mode glass active classes */
+  @apply bg-white/15 dark:bg-black/15;
+  @apply shadow-lg shadow-black/10 dark:shadow-black/20;
 }
 
 /* Remove inner glass capsule - keep it simple for better integration */
@@ -741,44 +815,86 @@ defineExpose({
 
 .btn-success,
 .btn-unified[data-variant="success"] {
-  background: linear-gradient(135deg, 
-    var(--color-success-500), 
+  background: linear-gradient(135deg,
+    var(--color-success-500),
     var(--color-success-600)) !important;
   color: var(--text-on-primary) !important;
   border: 1px solid var(--color-success-600) !important;
   backdrop-filter: var(--glass-backdrop-filter) !important;
   -webkit-backdrop-filter: var(--glass-backdrop-filter) !important;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 12px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.25) !important;
+
+  /* Tailwind dark mode success classes */
+  @apply bg-gradient-to-br from-green-600 to-green-700 dark:from-green-500 dark:to-green-600;
+  @apply text-white dark:text-gray-100;
+  @apply border-green-700 dark:border-green-500;
+  @apply shadow-green-500/25 dark:shadow-green-400/20;
+}
+
+.btn-success:hover:not(:disabled),
+.btn-unified[data-variant="success"]:hover:not(:disabled) {
+  /* Tailwind dark mode success hover classes */
+  @apply bg-gradient-to-br from-green-700 to-green-800 dark:from-green-400 dark:to-green-500;
+  @apply border-green-800 dark:border-green-400;
+  @apply shadow-green-500/40 dark:shadow-green-400/30;
 }
 
 .btn-warning,
 .btn-unified[data-variant="warning"] {
-  background: linear-gradient(135deg, 
-    var(--color-warning-500), 
+  background: linear-gradient(135deg,
+    var(--color-warning-500),
     var(--color-warning-600)) !important;
   color: var(--text-on-primary) !important;
   border: 1px solid var(--color-warning-600) !important;
   backdrop-filter: var(--glass-backdrop-filter) !important;
   -webkit-backdrop-filter: var(--glass-backdrop-filter) !important;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 12px rgba(var(--color-warning-500-rgb, 245, 158, 11), 0.25) !important;
+
+  /* Tailwind dark mode warning classes */
+  @apply bg-gradient-to-br from-yellow-500 to-yellow-600 dark:from-yellow-400 dark:to-yellow-500;
+  @apply text-white dark:text-gray-900;
+  @apply border-yellow-600 dark:border-yellow-400;
+  @apply shadow-yellow-500/25 dark:shadow-yellow-400/20;
+}
+
+.btn-warning:hover:not(:disabled),
+.btn-unified[data-variant="warning"]:hover:not(:disabled) {
+  /* Tailwind dark mode warning hover classes */
+  @apply bg-gradient-to-br from-yellow-600 to-yellow-700 dark:from-yellow-300 dark:to-yellow-400;
+  @apply border-yellow-700 dark:border-yellow-300;
+  @apply shadow-yellow-500/40 dark:shadow-yellow-400/30;
 }
 
 .btn-danger,
 .btn-unified[data-variant="danger"] {
-  background: linear-gradient(135deg, 
-    var(--color-error-500), 
+  background: linear-gradient(135deg,
+    var(--color-error-500),
     var(--color-error-600)) !important;
   color: var(--text-on-primary) !important;
   border: 1px solid var(--color-error-600) !important;
   backdrop-filter: var(--glass-backdrop-filter) !important;
   -webkit-backdrop-filter: var(--glass-backdrop-filter) !important;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 12px rgba(var(--color-error-500-rgb, 239, 68, 68), 0.25) !important;
+
+  /* Tailwind dark mode danger classes */
+  @apply bg-gradient-to-br from-red-600 to-red-700 dark:from-red-500 dark:to-red-600;
+  @apply text-white dark:text-gray-100;
+  @apply border-red-700 dark:border-red-500;
+  @apply shadow-red-500/25 dark:shadow-red-400/20;
+}
+
+.btn-danger:hover:not(:disabled),
+.btn-unified[data-variant="danger"]:hover:not(:disabled) {
+  /* Tailwind dark mode danger hover classes */
+  @apply bg-gradient-to-br from-red-700 to-red-800 dark:from-red-400 dark:to-red-500;
+  @apply border-red-800 dark:border-red-400;
+  @apply shadow-red-500/40 dark:shadow-red-400/30;
 }
 
 .btn-ghost,
@@ -789,6 +905,12 @@ defineExpose({
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+
+  /* Tailwind dark mode ghost classes */
+  @apply bg-transparent;
+  @apply text-gray-700 dark:text-gray-300;
+  @apply border-transparent;
+  @apply shadow-none;
 }
 
 .btn-ghost:hover:not(:disabled),
@@ -798,6 +920,12 @@ defineExpose({
   backdrop-filter: var(--glass-backdrop-filter) !important;
   -webkit-backdrop-filter: var(--glass-backdrop-filter) !important;
   box-shadow: var(--glass-shadow) !important;
+
+  /* Tailwind dark mode ghost hover classes */
+  @apply bg-gray-100 dark:bg-gray-800;
+  @apply border-gray-200 dark:border-gray-700;
+  @apply text-gray-900 dark:text-gray-100;
+  @apply shadow-sm dark:shadow-black/20;
 }
 
 .btn-outline {
@@ -805,6 +933,12 @@ defineExpose({
   color: var(--text-primary); /* Use design system variable */
   border-color: var(--border-base); /* Use design system variable */
   box-shadow: none;
+
+  /* Tailwind dark mode outline classes */
+  @apply bg-transparent;
+  @apply text-gray-700 dark:text-gray-300;
+  @apply border-gray-300 dark:border-gray-600;
+  @apply shadow-none;
 }
 
 .btn-outline:hover:not(:disabled) {
@@ -812,6 +946,12 @@ defineExpose({
   color: var(--text-primary); /* Use design system variable */
   box-shadow: var(--shadow-xs);
   border-color: var(--color-primary-300);
+
+  /* Tailwind dark mode outline hover classes */
+  @apply bg-gray-50 dark:bg-gray-900;
+  @apply text-gray-900 dark:text-gray-100;
+  @apply border-blue-400 dark:border-blue-500;
+  @apply shadow-sm dark:shadow-black/20;
 }
 
 /* State Styles */
@@ -827,12 +967,25 @@ defineExpose({
   background: var(--glass-disabled-bg); /* Use design system variable */
   border-color: var(--border-base);
   box-shadow: none;
+
+  /* Tailwind dark mode disabled classes */
+  @apply opacity-50;
+  @apply cursor-not-allowed;
+  @apply bg-gray-100 dark:bg-gray-800;
+  @apply text-gray-400 dark:text-gray-500;
+  @apply border-gray-200 dark:border-gray-700;
+  @apply shadow-none;
 }
 
 .btn-unified:focus-visible {
   outline: 3px solid var(--color-primary-400); /* Use design system variable */
   outline-offset: 2px;
   box-shadow: var(--shadow-md), 0 0 0 3px var(--color-primary-200); /* Enhanced focus shadow */
+
+  /* Tailwind dark mode focus classes */
+  @apply ring-2 ring-blue-500 dark:ring-blue-400;
+  @apply ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+  @apply outline-blue-500 dark:outline-blue-400;
 }
 
 /* Badge */
@@ -847,6 +1000,15 @@ defineExpose({
   border-radius: var(--radius-full); /* Use design system variable */
   background: var(--color-warning-500); /* Example: use warning color */
   color: var(--text-on-primary);
+
+  /* Tailwind dark mode badge classes */
+  @apply absolute -top-1 -right-1;
+  @apply text-xs font-semibold;
+  @apply px-1.5 py-0.5;
+  @apply rounded-full;
+  @apply bg-red-500 dark:bg-red-400;
+  @apply text-white dark:text-gray-900;
+  @apply shadow-sm dark:shadow-black/20;
 }
 
 /* Ripple Container */
@@ -856,11 +1018,41 @@ defineExpose({
   border-radius: inherit;
   overflow: hidden;
   pointer-events: none;
+
+  /* Tailwind dark mode ripple classes */
+  @apply absolute inset-0 overflow-hidden pointer-events-none rounded-[inherit];
+}
+
+/* Ripple Wave Effect */
+.ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+
+  /* Tailwind dark mode ripple wave classes */
+  @apply absolute rounded-full pointer-events-none;
+  @apply bg-white/40 dark:bg-white/30;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 
 /* Loading States */
 .btn-loading .button-content {
   opacity: 0.7;
+
+  /* Tailwind dark mode loading classes */
+  @apply opacity-70 dark:opacity-60;
 }
 
 /* Full Width */
@@ -889,18 +1081,33 @@ defineExpose({
   background: var(--color-success-500) !important; /* Use design system variable */
   color: var(--text-on-primary) !important; /* Use design system variable */
   box-shadow: var(--shadow-glow-success);
+
+  /* Tailwind dark mode success state classes */
+  @apply bg-green-500 dark:bg-green-400;
+  @apply text-white dark:text-gray-900;
+  @apply shadow-lg shadow-green-500/30 dark:shadow-green-400/25;
 }
 
 .btn-error-state {
   background: var(--color-error-500) !important; /* Use design system variable */
   color: var(--text-on-primary) !important; /* Use design system variable */
   box-shadow: var(--shadow-glow-error);
+
+  /* Tailwind dark mode error state classes */
+  @apply bg-red-500 dark:bg-red-400;
+  @apply text-white dark:text-gray-900;
+  @apply shadow-lg shadow-red-500/30 dark:shadow-red-400/25;
 }
 
 .btn-no-api-key {
   background: var(--color-warning-500) !important; /* Use design system variable */
   color: var(--text-on-primary) !important; /* Use design system variable */
   box-shadow: var(--shadow-glow-warning);
+
+  /* Tailwind dark mode no-api-key state classes */
+  @apply bg-yellow-500 dark:bg-yellow-400;
+  @apply text-white dark:text-gray-900;
+  @apply shadow-lg shadow-yellow-500/30 dark:shadow-yellow-400/25;
 }
 
 .btn-no-api-key::after {
@@ -918,12 +1125,23 @@ defineExpose({
   background: var(--glass-bg-light); /* Use design system variable */
   overflow: hidden;
   border-radius: 0 0 var(--radius-md) var(--radius-md); /* Use design system variable */
+
+  /* Tailwind dark mode progress bar classes */
+  @apply absolute bottom-0 left-0 right-0 h-0.5;
+  @apply bg-gray-200 dark:bg-gray-700;
+  @apply overflow-hidden;
+  @apply rounded-b-md;
 }
 
 .btn-progress-fill {
   height: 100%;
   background: var(--color-primary-500); /* Use design system variable */
   transition: width var(--duration-normal) var(--easing-ease-out); /* Use design system variables */
+
+  /* Tailwind dark mode progress fill classes */
+  @apply h-full;
+  @apply bg-blue-500 dark:bg-blue-400;
+  @apply transition-all duration-300 ease-out;
 }
 
 /* Tooltip */
@@ -939,6 +1157,17 @@ defineExpose({
   pointer-events: none;
   box-shadow: var(--shadow-lg); /* Use design system variable */
   backdrop-filter: var(--glass-backdrop-blur-light); /* Use design system variable */
+
+  /* Tailwind dark mode tooltip classes */
+  @apply absolute z-50;
+  @apply px-3 py-2;
+  @apply bg-gray-900/90 dark:bg-gray-100/90;
+  @apply text-white dark:text-gray-900;
+  @apply text-sm font-medium;
+  @apply rounded-md;
+  @apply backdrop-blur-sm;
+  @apply shadow-lg dark:shadow-black/30;
+  @apply border border-gray-700/50 dark:border-gray-300/50;
 }
 
 .btn-tooltip.top {

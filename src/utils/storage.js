@@ -102,7 +102,7 @@ class IndexedDBStorage {
       logger.info("IndexedDB initialized successfully");
       return true;
     } catch (_error) {
-      logger.error("Failed to initialize IndexedDB:", error);
+      logger.error("Failed to initialize IndexedDB:", _error);
       return false;
     }
   }
@@ -122,7 +122,7 @@ class IndexedDBStorage {
 
       return true;
     } catch (_error) {
-      logger.error(`Failed to save to ${storeName}:`, error);
+      logger.error(`Failed to save to ${storeName}:`, _error);
       return false;
     }
   }
@@ -137,7 +137,7 @@ class IndexedDBStorage {
       const result = await tx.objectStore(storeName).get(id);
       return result || null;
     } catch (_error) {
-      logger.error(`Failed to get from ${storeName}:`, error);
+      logger.error(`Failed to get from ${storeName}:`, _error);
       return null;
     }
   }
@@ -158,7 +158,7 @@ class IndexedDBStorage {
         return await store.getAll();
       }
     } catch (_error) {
-      logger.error(`Failed to get all from ${storeName}:`, error);
+      logger.error(`Failed to get all from ${storeName}:`, _error);
       return [];
     }
   }
@@ -175,7 +175,7 @@ class IndexedDBStorage {
 
       return true;
     } catch (_error) {
-      logger.error(`Failed to delete from ${storeName}:`, error);
+      logger.error(`Failed to delete from ${storeName}:`, _error);
       return false;
     }
   }
@@ -192,7 +192,7 @@ class IndexedDBStorage {
 
       return true;
     } catch (_error) {
-      logger.error(`Failed to clear ${storeName}:`, error);
+      logger.error(`Failed to clear ${storeName}:`, _error);
       return false;
     }
   }
@@ -233,7 +233,7 @@ class IndexedDBStorage {
       const tx = this.db.transaction(storeName, "readonly");
       return await tx.objectStore(storeName).count();
     } catch (_error) {
-      logger.error(`Failed to count ${storeName}:`, error);
+      logger.error(`Failed to count ${storeName}:`, _error);
       return 0;
     }
   }
@@ -260,7 +260,7 @@ class IndexedDBStorage {
 
       return results;
     } catch (_error) {
-      logger.error(`Failed to search ${storeName}:`, error);
+      logger.error(`Failed to search ${storeName}:`, _error);
       return [];
     }
   }
@@ -310,11 +310,11 @@ class SecureStorage {
         expires: options.expires ? Date.now() + options.expires : null,
       };
 
-      const serialized = JSON.stringify(_data);
+      const serialized = JSON.stringify(data);
       localStorage.setItem(this.prefix + key, serialized);
       return true;
     } catch (_error) {
-      logger.error("SecureStorage set error:", error);
+      logger.error("SecureStorage set error:", _error);
       return false;
     }
   }
@@ -340,7 +340,7 @@ class SecureStorage {
 
       return data.value;
     } catch (_error) {
-      logger.error("SecureStorage get error:", error);
+      logger.error("SecureStorage get error:", _error);
       return null;
     }
   }
@@ -354,7 +354,7 @@ class SecureStorage {
       localStorage.removeItem(this.prefix + key);
       return true;
     } catch (_error) {
-      logger.error("SecureStorage remove error:", error);
+      logger.error("SecureStorage remove error:", _error);
       return false;
     }
   }
@@ -381,7 +381,7 @@ class SecureStorage {
 
       return true;
     } catch (_error) {
-      logger.error("SecureStorage clear error:", error);
+      logger.error("SecureStorage clear error:", _error);
       return false;
     }
   }
@@ -547,15 +547,15 @@ export class UnifiedStorage {
       }
 
       // Import to localStorage
-      if (data.localStorage) {
-        for (const [key, value] of Object.entries(data.localStorage)) {
+      if (_data.localStorage) {
+        for (const [key, value] of Object.entries(_data.localStorage)) {
           this.local.set(key, value);
         }
       }
 
       return true;
     } catch (_error) {
-      logger.error("Failed to import data:", error);
+      logger.error("Failed to import data:", _error);
       return false;
     }
   }

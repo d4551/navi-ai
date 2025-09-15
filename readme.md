@@ -1,11 +1,10 @@
 # NAVI - AI-Powered Gaming Career Assistant
 
-https://private-user-images.githubusercontent.com/78459116/489319498-4a4cd685-c97d-44c2-97a9-c653638590a3.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTc4ODQ1MDQsIm5iZiI6MTc1Nzg4NDIwNCwicGF0aCI6Ii83ODQ1OTExNi80ODkzMTk0OTgtNGE0Y2Q2ODUtYzk3ZC00NGMyLTk3YTktYzY1MzYzODU5MGEzLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA5MTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwOTE0VDIxMTAwNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWU5MzRmMGUyYWNlM2YyNjFmNDEyYzY2NTJhZjIyM2EzMWNkZTkzYzBmNTBmYmE1MjA0Mjg0NDc2MGJkMmFjYzAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.JXhDAp118NBDB0dgXb2Aua8HY5c9txCUvlo1ZyJtVj0
+<https://private-user-images.githubusercontent.com/78459116/489319498-4a4cd685-c97d-44c2-97a9-c653638590a3.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTc4ODQ1MDQsIm5iZiI6MTc1Nzg4NDIwNCwicGF0aCI6Ii83ODQ1OTExNi80ODkzMTk0OTgtNGE0Y2Q2ODUtYzk3ZC00NGMyLTk3YTktYzY1MzYzODU5MGEzLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA5MTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwOTE0VDIxMTAwNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWU5MzRmMGUyYWNlM2YyNjFmNDEyYzY2NTJhZjIyM2EzMWNkZTkzYzBmNTBmYmE1MjA0Mjg0NDc2MGJkMmFjYzAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.JXhDAp118NBDB0dgXb2Aua8HY5c9txCUvlo1ZyJtVj0>
 
 <p align="center">
   <video src="navi_s.mp4" controls width="720" poster="docs/screenshots/enhanced-gaming-dashboard.png"></video>
 </p>
-
 
 <p align="center">
   <h1 align="center">HEY! LISTEN!</h1>
@@ -81,7 +80,7 @@ npm run dev
 npm run electron-dev
 ```
 
-**That's it!** NAVI works immediately with no account required. Add your Google AI Studio API key in Settings for enhanced AI features.
+**That's it!** NAVI works immediately with no account required. Add your Google AI Studio API key in Settings for enhanced AI features (get one free at [Google AI Studio](https://aistudio.google.com/)).
 
 Note (macOS): If `npm install` warns about engines for Redocly or hits a permission snag for `electron-builder`, see Troubleshooting below — it’s a quick fix.
 
@@ -205,6 +204,7 @@ _Gaming‑focused job board with advanced filters and de‑duplication._
 - For native modules on Windows (better-sqlite3, keytar):
   - Python 3 (added to PATH)
   - Visual Studio Build Tools (C++ Desktop workload)
+- Google AI Studio API key (free): [https://aistudio.google.com/](https://aistudio.google.com/) (paste into Settings → AI in the app)
 
 ### Quick Start (Desktop/Electron)
 
@@ -417,6 +417,7 @@ npm test -- path/to/test.js
 ### Reporting Issues
 
 When reporting bugs, please include:
+
 - NAVI version
 - Operating system and version
 - Steps to reproduce
@@ -455,6 +456,7 @@ Want better signal and happier candidates? Open an issue to add your **personas*
 ## 📈 Release History
 
 ### v1.0.0 — Stable
+
 - ✅ Unified gaming job board with improved search and de‑duplication
 - ✅ ATS‑friendly resume/CV and cover letter builder with export
 - ✅ Gemini‑powered tailoring, gap analysis, and job matching
@@ -488,11 +490,3 @@ If you run into anything weird, ping issues — we’ll squish it.
 See [DIRECTORY.md](DIRECTORY.md) for the full repo structure, where scripts/tests/demos live, and how to run them after the reorganization.
 
 ![NAVI Fox Loves Helping!](heyLISTEN.jpg)
-
-
-
-
-
-
-
-

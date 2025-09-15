@@ -2,7 +2,7 @@
   <div
     class="ai-fairy-container fairy-accent-upgraded"
     :class="[
-      unifiedUI.unifiedClasses.value,
+      unifiedUI?.unifiedClasses?.value || '',
       {
         'fairy-expanded': expanded,
         'fairy-chatting': isChatActive,
@@ -450,7 +450,7 @@ import {
   getCurrentInstance,
 } from "vue";
 
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useToast } from "@/composables/useToast";
 import { useUnifiedUI } from "@/composables/useUnifiedUI";
 import { useIconReplacement } from "@/composables/useIconReplacement";
@@ -465,9 +465,9 @@ export default {
   name: "AIFairyAssistant",
   components: { AppIcon },
   setup() {
-    const router = useRouter();
+    const router = useRouter?.() || null;
 
-    const route = useRoute();
+    const route = useRoute?.() || null;
     const store = useAppStore();
     const vmInstance = getCurrentInstance();
     const currentPath = () => {
@@ -2458,7 +2458,7 @@ export default {
   justify-content: center;
   font-size: 0.5rem;
   font-weight: bold;
-  color: white;
+  color: var(--text-inverse);
   border: 1px solid rgba(255, 255, 255, 0.8);
   animation: pulse-bounce 1.5s ease-in-out infinite;
   box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
@@ -3223,7 +3223,7 @@ export default {
 
 .message-user .message-text {
   background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
-  color: #fff;
+  color: var(--text-inverse);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: 18px;
   border-top-right-radius: 4px;
@@ -3803,7 +3803,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   font-size: var(--font-size-lg);
 }
 
@@ -3943,7 +3943,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   font-size: var(--font-size-md);
   flex-shrink: 0;
 }
@@ -3976,7 +3976,7 @@ export default {
 
 .message-bubble--user {
   background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
-  color: white;
+  color: var(--text-inverse);
   border-top-left-radius: var(--radius-xl);
   border-top-right-radius: var(--radius-sm);
   margin-left: auto;
@@ -4185,7 +4185,7 @@ export default {
 
 .send-btn {
   background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
-  color: white;
+  color: var(--text-inverse);
 }
 
 .send-btn:hover {

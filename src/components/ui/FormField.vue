@@ -1,6 +1,6 @@
 <template>
-  <div class="unified-form-field" :class="{ required, valid: isValid, error: hasError }">
-    <label v-if="label" class="field-label">
+  <div class="unified-form-field text-gray-900 dark:text-gray-100" :class="{ required, valid: isValid, error: hasError }">
+    <label v-if="label" class="field-label text-gray-700 dark:text-gray-300">
       <AppIcon v-if="icon" :name="icon" size="16" class="field-icon" />
       {{ label }}
       <span v-if="required" class="required-indicator">*</span>
@@ -194,6 +194,8 @@ const isCounterIdeal = computed(() => {
 const fieldClasses = computed(() => [
   'field-input',
   `field-input--${props.size}`,
+  'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400',
+  'focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400',
   {
     'field-input--valid': isValid.value && props.modelValue,
     'field-input--error': props.hasError,

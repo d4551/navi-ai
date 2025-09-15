@@ -57,7 +57,7 @@
 
     <!-- Quick Actions Bar -->
     <div class="content-section">
-      <div class="unified-card">
+      <div class="unified-card bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-md">
           <div class="d-flex flex-wrap gap-sm">
             <UnifiedButton
@@ -88,7 +88,7 @@
             </UnifiedButton>
           </div>
           <div class="d-flex align-items-center gap-sm">
-            <UiChip classes="stats-chip">
+            <UiChip classes="stats-chip bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
               {{ totalJobs }} jobs found
             </UiChip>
             <UnifiedButton
@@ -107,10 +107,10 @@
 
     <!-- Advanced Search and Filter Section -->
     <section class="search-filter-section">
-      <StandardCard variant="glass" class="filter-card">
+      <StandardCard variant="glass" class="filter-card bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <template #title>
           <AppIcon name="mdi-filter-variant" />
-          Search & Filter Jobs
+          <span class="text-gray-900 dark:text-gray-100">Search & Filter Jobs</span>
         </template>
         
         <v-form @submit.prevent="applyFilters">
@@ -215,7 +215,7 @@
           <!-- Gaming-Specific Filters (show when gaming filter is active) -->
           <v-expand-transition>
             <div v-show="gamingFilterActive" class="gaming-filters mt-4 pt-4" style="border-top: 1px solid var(--border-base);">
-              <h4 class="text-h6 mb-3">
+              <h4 class="text-h6 mb-3 text-gray-900 dark:text-gray-100">
                 <AppIcon name="mdi-gamepad-variant" />
                 Gaming Industry Filters
               </h4>
@@ -289,13 +289,13 @@
 
     <!-- Top Matches Section (shown when AI analysis is available) -->
     <v-container v-if="topMatches.length > 0" class="mb-6">
-      <v-card class="top-matches-card" elevation="0">
+      <v-card class="top-matches-card bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" elevation="0">
         <v-card-title class="d-flex align-center justify-space-between pa-4">
           <div class="d-flex align-center">
             <AppIcon name="mdi-star" color="warning" size="32" class="me-3" />
             <div>
-              <h3 class="text-h5 mb-1">Top AI Matches for You</h3>
-              <p class="text-body-2 text-medium-emphasis mb-0">
+              <h3 class="text-h5 mb-1 text-gray-900 dark:text-gray-100">Top AI Matches for You</h3>
+              <p class="text-body-2 text-gray-600 dark:text-gray-400 mb-0">
                 {{ topMatches.length }} high-match opportunities (60%+ compatibility)
               </p>
             </div>
@@ -314,12 +314,12 @@
         <v-card-text class="pa-4">
           <v-row>
             <v-col v-for="job in topMatches.slice(0, 6)" :key="job.id" cols="12" md="6" lg="4">
-              <v-card class="top-match-job-card h-100" variant="outlined" hover @click="viewJobDetails(job)">
+              <v-card class="top-match-job-card h-100 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" variant="outlined" hover @click="viewJobDetails(job)">
                 <v-card-text class="pa-4">
                   <div class="d-flex align-start justify-space-between mb-3">
                     <div class="flex-grow-1">
-                      <h4 class="text-h6 mb-1">{{ job.title }}</h4>
-                      <p class="text-body-2 text-medium-emphasis mb-0">
+                      <h4 class="text-h6 mb-1 text-gray-900 dark:text-gray-100">{{ job.title }}</h4>
+                      <p class="text-body-2 text-gray-600 dark:text-gray-400 mb-0">
                         {{ job.company }} • {{ job.location }}
                       </p>
                     </div>
@@ -363,11 +363,11 @@
 
     <!-- AI Analysis CTA (shown when no AI analysis has been run) -->
     <v-container v-else-if="jobResults.length > 0 && !hasRunAIAnalysis" class="mb-6">
-      <v-card class="ai-cta-card text-center" elevation="0">
+      <v-card class="ai-cta-card text-center bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" elevation="0">
         <v-card-text class="pa-8">
           <AppIcon name="mdi-robot-excited" size="80" color="primary" class="mb-4" />
-          <h2 class="text-h4 mb-4">Get AI-Powered Job Recommendations</h2>
-          <p class="text-body-1 text-medium-emphasis mb-6 mx-auto max-w-text-600">
+          <h2 class="text-h4 mb-4 text-gray-900 dark:text-gray-100">Get AI-Powered Job Recommendations</h2>
+          <p class="text-body-1 text-gray-600 dark:text-gray-400 mb-6 mx-auto max-w-text-600">
             Let our advanced AI analyze {{ jobResults.length }} jobs and find your best matches based on your skills, experience, and preferences.
           </p>
           <UnifiedButton
@@ -395,16 +395,16 @@
 
     <!-- Jobs Results Section -->
     <v-container>
-      <v-card id="jobs-table" class="jobs-results-card" elevation="0">
+      <v-card id="jobs-table" class="jobs-results-card bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700" elevation="0">
         <v-card-title class="d-flex align-center justify-space-between pa-4">
           <div>
-            <h2 class="text-h4 mb-2">Gaming Job Opportunities</h2>
-            <p class="text-body-1 text-medium-emphasis mb-0">
+            <h2 class="text-h4 mb-2 text-gray-900 dark:text-gray-100">Gaming Job Opportunities</h2>
+            <p class="text-body-1 text-gray-600 dark:text-gray-400 mb-0">
               Curated from multiple gaming industry sources
             </p>
           </div>
           <div class="header-actions-group">
-            <UiChip classes="chip chip-primary">
+            <UiChip classes="chip chip-primary bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
               {{ filteredJobs.length }} Results
             </UiChip>
             <ViewToggle
@@ -431,9 +431,9 @@
           <!-- Empty state -->
           <template #no-data>
             <div class="empty-state text-center pa-8">
-              <AppIcon name="mdi-magnify" size="64" color="primary" class="mb-4" />
-              <h3 class="text-h5 mb-2">No jobs found</h3>
-              <p class="text-body-2 text-medium-emphasis mb-4">
+              <AppIcon name="mdi-magnify" size="64" color="primary" class="mb-4 text-gray-400 dark:text-gray-500" />
+              <h3 class="text-h5 mb-2 text-gray-900 dark:text-gray-100">No jobs found</h3>
+              <p class="text-body-2 text-gray-600 dark:text-gray-400 mb-4">
                 Try adjusting your filters or 
                 <router-link to="/settings#job-sources-section" class="text-primary">configure more job sources</router-link>
               </p>
@@ -443,12 +443,12 @@
           <!-- Job Title Column -->
           <template #item.title="{ item }">
             <div class="job-title-cell">
-              <h4 class="text-subtitle-1 font-weight-semibold mb-1">{{ item.title }}</h4>
+              <h4 class="text-subtitle-1 font-weight-semibold mb-1 text-gray-900 dark:text-gray-100">{{ item.title }}</h4>
               <div class="d-flex align-center ga-1 mb-2">
                 <UiChip
                   v-for="tag in (item.tags || []).slice(0, 2)"
                   :key="tag"
-                  classes="chip chip-info chip-compact"
+                  classes="chip chip-info chip-compact bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
                 >
                   {{ tag }}
                 </UiChip>
@@ -470,13 +470,13 @@
                 <v-img :src="item.companyLogo" :alt="item.company" />
               </v-avatar>
               <v-avatar v-else color="primary" size="40">
-                <span class="text-white font-weight-bold">
+                <span class="text-inverse font-weight-bold">
                   {{ item.company.charAt(0).toUpperCase() }}
                 </span>
               </v-avatar>
               <div>
                 <div class="d-flex align-center ga-1">
-                  <span class="font-weight-medium">{{ item.company }}</span>
+                  <span class="font-weight-medium text-gray-900 dark:text-gray-100">{{ item.company }}</span>
                   <UnifiedButton
                     v-if="getMatchingStudio(item.company)"
                     icon-only
@@ -626,7 +626,7 @@
                       <v-img :src="job.companyLogo" :alt="job.company" />
                     </v-avatar>
                     <v-avatar v-else color="primary" size="32" class="me-3">
-                      <span class="text-white text-caption font-weight-bold">
+                      <span class="text-inverse text-caption font-weight-bold">
                         {{ job.company.charAt(0).toUpperCase() }}
                       </span>
                     </v-avatar>

@@ -1,7 +1,7 @@
 <template>
   <div class="job-target-form">
     <div class="unified-card glass-card section-card">
-      <div class="card-header section-header card-header--dense bg-gradient text-white">
+      <div class="card-header section-header card-header--dense bg-gradient text-inverse">
         <h4 class="h5 mb-0">
           <AppIcon name="mdi-target" size="default" />
           Target Position Information

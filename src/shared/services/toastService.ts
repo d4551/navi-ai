@@ -61,8 +61,8 @@ export function toastBatch(operations: Array<() => Promise<any>>, messages: { lo
   return batch(operations, messages)
 }
 
-// Optional default export for convenience
-export default {
+// Service object for those who prefer object syntax
+export const toastService = {
   info: toastInfo,
   success: toastSuccess,
   error: toastError,
@@ -75,3 +75,6 @@ export default {
   handlePromise: toastHandlePromise,
   batch: toastBatch,
 }
+
+// Optional default export for convenience
+export default toastService

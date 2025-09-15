@@ -181,10 +181,10 @@ function emitExport(fmt) {
   font-weight: 500;
 }
 
-.bg-primary { background: var(--color-primary-500); color: white; }
-.bg-success { background: var(--color-success-500); color: white; }
-.bg-info { background: var(--color-info-500); color: white; }
-.bg-secondary { background: var(--color-secondary-500); color: white; }
+.bg-primary { background: var(--color-primary-500); color: var(--text-primary); }
+.bg-success { background: var(--color-success-500); color: var(--text-primary); }
+.bg-info { background: var(--color-info-500); color: var(--text-primary); }
+.bg-secondary { background: var(--color-secondary-500); color: var(--text-primary); }
 
 .export-arrow {
   color: var(--text-tertiary);

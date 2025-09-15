@@ -99,11 +99,11 @@ export async function pulseOnFocus(
   }
 
   document.addEventListener("focusin", (_e) => {
-    if (!e.target.matches(selector)) {
+    if (!_e.target.matches(selector)) {
       return;
     }
     animeLib({
-      targets: e.target,
+      targets: _e.target,
       scale: [1, 1.02, 1],
       duration: 220,
       easing: "easeOutSine",
@@ -196,7 +196,7 @@ export async function ensureAnimeLoaded() {
     }
     return animeLib;
   } catch (_e) {
-    logger.debug("Failed to ensure anime loaded", e);
+    logger.debug("Failed to ensure anime loaded", _e);
     return null;
   }
 }
@@ -214,7 +214,7 @@ export function createAnimationFallback() {
 
   // Create a mock anime object for graceful degradation
   if (!window.anime) {
-    window.anime = function (_options) {
+    window.anime = function (options) {
       // Simple fallback: just call complete callback if provided
       if (options && typeof options.complete === "function") {
         setTimeout(options.complete, options.duration || TIMEOUTS.SHORT);

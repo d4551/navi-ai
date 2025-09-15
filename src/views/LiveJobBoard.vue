@@ -22,7 +22,7 @@ Demonstrates the complete live job board implementation with:
     </template>
 
     <!-- Demo Information Panel -->
-    <div v-if="showInfo" class="demo-info mt-4 p-3 unified-container" style="background: rgba(0, 123, 255, 0.1); border-radius: 8px;">
+    <div v-if="showInfo" class="demo-info mt-4 p-3 unified-container" style="background: var(--info-surface); border-radius: 8px;">
       <h6 class="text-primary mb-2">
         <AppIcon name="mdi-information" class="me-2" />
         How This Demo Works
@@ -171,7 +171,7 @@ Demonstrates the complete live job board implementation with:
       </div>
       
       <!-- Search Results Summary -->
-      <div v-if="lastTestResults" class="test-results mt-4 p-3" style="background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+      <div v-if="lastTestResults" class="test-results mt-4 p-3" style="background: var(--surface-elevated); border-radius: 8px;">
         <h6 class="mb-2">
           <AppIcon name="mdi-chart-line" class="me-2" />
           Last Test Results
@@ -633,9 +633,9 @@ onUnmounted(() => {
 }
 
 .section-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass-surface);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-lg);
 }
@@ -643,7 +643,7 @@ onUnmounted(() => {
 .api-status-card {
   padding: var(--spacing-md);
   border-radius: var(--border-radius-md);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
   text-align: center;
   transition: all var(--transition-fast);
@@ -695,7 +695,7 @@ onUnmounted(() => {
   text-align: center;
   padding: var(--spacing-sm);
   border-radius: var(--border-radius-md);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-elevated);
 }
 
 .stat-number {
@@ -712,7 +712,7 @@ onUnmounted(() => {
 }
 
 .notification-status {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-elevated);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
 }

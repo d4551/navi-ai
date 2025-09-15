@@ -1,16 +1,16 @@
 <template>
   <Teleport to="body">
-    <div v-if="open" class="fairy-modal-overlay" @click.self="close">
+    <div v-if="open" class="fairy-modal-overlay bg-gray-900/50 dark:bg-gray-900/70" @click.self="close">
       <div
         :class="[
-          'fairy-bubble', 
-          sizeClass || 'fairy-lg', 
-          'enhanced-gaming-card', 
-          'bubble-elevated', 
+          'fairy-bubble bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100',
+          sizeClass || 'fairy-lg',
+          'enhanced-gaming-card',
+          'bubble-elevated',
           { 'compact-ui': isCompact }
         ]" role="dialog" aria-modal="true" aria-label="NAVI Assistant Chat"
       >
-        <div class="fairy-chat-interface glass-panel glass-panel--compact" :class="{ 'compact-ui': isCompact }">
+        <div class="fairy-chat-interface glass-panel glass-panel--compact bg-white/95 dark:bg-gray-800/95" :class="{ 'compact-ui': isCompact }">
           <!-- Welcome Animation -->
           <transition name="welcome-fade">
             <div v-if="showWelcome" class="welcome-animation">
@@ -19,7 +19,7 @@
             </div>
           </transition>
           <!-- Header -->
-          <div class="chat-header modern-header" role="heading" aria-level="2">
+          <div class="chat-header modern-header bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700" role="heading" aria-level="2">
             <div class="header-shimmer"></div>
             <div class="header-info">
               <div class="header-avatar">
@@ -27,10 +27,10 @@
                 <div class="avatar-glow"></div>
               </div>
               <div class="header-details">
-                <h3 class="title-text">NAVI Assistant</h3>
+                <h3 class="title-text text-gray-900 dark:text-gray-100">NAVI Assistant</h3>
                 <div class="header-status">
                   <span class="status-dot animated-dot" aria-hidden="true"></span>
-                  <span class="status-text">{{ statusText }} • AI Powered</span>
+                  <span class="status-text text-gray-600 dark:text-gray-400">{{ statusText }} • AI Powered</span>
                 </div>
               </div>
             </div>
@@ -137,7 +137,7 @@
               <button
                 v-for="reply in quickReplies"
                 :key="reply.id"
-                class="quick-reply modern-chip"
+                class="quick-reply modern-chip bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                 :aria-label="`Send: ${reply.text}`"
                 @click="sendSuggestion(reply.text)"
               >
@@ -148,7 +148,7 @@
             
             <!-- AI Suggestion Chips -->
             <div v-if="shouldShowSuggestions && aiSuggestions.length > 0" class="ai-suggestions-container" role="group" aria-label="AI suggestions">
-              <div class="suggestions-header">
+              <div class="suggestions-header text-gray-600 dark:text-gray-400">
                 <AppIcon name="mdi-lightbulb-outline" />
                 <span class="suggestions-title">Suggested follow-ups</span>
               </div>
@@ -156,7 +156,7 @@
                 <button
                   v-for="suggestion in aiSuggestions"
                   :key="suggestion.id"
-                  class="suggestion-chip"
+                  class="suggestion-chip bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800"
                   :aria-label="`Send suggestion: ${suggestion.text}`"
                   @click="sendSuggestion(suggestion.text)"
                 >
@@ -168,7 +168,7 @@
           </div>
 
           <!-- Input -->
-          <div class="chat-input-container enhanced-input-container glass-footer" role="group" aria-label="Chat input controls">
+          <div class="chat-input-container enhanced-input-container glass-footer bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700" role="group" aria-label="Chat input controls">
             <!-- Floating Multimodal Controls -->
             <div class="multimodal-controls enhanced-controls">
               <div class="control-group voice-controls">
@@ -353,7 +353,7 @@ import IconButton from '@/components/ui/IconButton.vue'
 import { useUnifiedUI } from '@/composables/useUnifiedUI'
 import { useToast } from '@/composables/useToast'
 
-const _props = defineProps({
+const props = defineProps({
   open: { type: Boolean, default: false },
   messages: { type: Array, default: () => [] },
   size: { type: String, default: 'lg' }, // 'md' | 'lg' | 'xl'

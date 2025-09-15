@@ -45,7 +45,7 @@
                   class="enhanced-input glass-input-field"
                   placeholder="Your full name"
                   autocomplete="name"
-                  :class="{ 'is-invalid': store.errors.validation?.name, 'has-value': userProfile.personalInfo.name }"
+                  :class="{ 'is-invalid': store.errors?.validation?.name, 'has-value': userProfile.personalInfo.name }"
                   aria-describedby="profile-name-error"
                   required
                   @focus="focusedField = 'name'"
@@ -55,9 +55,9 @@
                   <AppIcon v-if="userProfile.personalInfo.name" name="mdi-check" class="success-icon" />
                 </div>
               </div>
-              <div v-if="store.errors.validation?.name" id="profile-name-error" class="form-error">
+              <div v-if="store.errors?.validation?.name" id="profile-name-error" class="form-error">
                 <AppIcon name="mdi-alert-circle" />
-                {{ store.errors.validation?.name }}
+                {{ store.errors?.validation?.name }}
               </div>
               <div v-else-if="focusedField === 'name'" class="form-hint">
                 <AppIcon name="mdi-information" />
@@ -79,7 +79,7 @@
                   class="enhanced-input glass-input-field"
                   placeholder="you@example.com"
                   autocomplete="email"
-                  :class="{ 'is-invalid': store.errors.validation?.email, 'has-value': userProfile.personalInfo.email }"
+                  :class="{ 'is-invalid': store.errors?.validation?.email, 'has-value': userProfile.personalInfo.email }"
                   aria-describedby="profile-email-error"
                   required
                   @focus="focusedField = 'email'"
@@ -89,9 +89,9 @@
                   <AppIcon v-if="userProfile.personalInfo.email && isValidEmail(userProfile.personalInfo.email)" name="mdi-check" class="success-icon" />
                 </div>
               </div>
-              <div v-if="store.errors.validation?.email" id="profile-email-error" class="form-error">
+              <div v-if="store.errors?.validation?.email" id="profile-email-error" class="form-error">
                 <AppIcon name="mdi-alert-circle" />
-                {{ store.errors.validation?.email }}
+                {{ store.errors?.validation?.email }}
               </div>
               <div v-else-if="focusedField === 'email'" class="form-hint">
                 <AppIcon name="mdi-information" />
@@ -477,7 +477,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
-const _props = defineProps({
+const props = defineProps({
   userProfile: {
     type: Object,
     default: () => ({

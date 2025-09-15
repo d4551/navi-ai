@@ -532,7 +532,7 @@ export function useXPSystem() {
       
       .game-notification.feature {
         background: linear-gradient(135deg, #a8edea, #fed6e3);
-        color: #333;
+        color: var(--text-primary);
       }
     `
     

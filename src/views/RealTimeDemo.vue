@@ -8,14 +8,6 @@
     :header-context="{ sessionActive: isSessionActive, mode: selectedMode, persona: selectedPersona }"
   >
     <template #header-actions>
-      <button 
-        class="theme-toggle" 
-        :title="`Switch to ${isDark ? 'light' : 'dark'} theme`" 
-        aria-label="Toggle theme"
-        @click="toggleTheme"
-      >
-        <AppIcon :name="isDark ? 'mdi-weather-sunny' : 'mdi-weather-night'" />
-      </button>
       <div class="status-indicator" :class="getStatusClass()">
         <div class="status-dot"></div>
         <span>{{ getStatusText() }}</span>
@@ -214,14 +206,8 @@ const {
   allFeaturesSupported
 } = useRealTimeSupport();
 
-// Theme composable
-const {
-  isDark,
-  isLight,
-  colorScheme,
-  getThemeClasses,
-  toggleTheme
-} = useUnifiedTheme();
+// Theme composable (using global theme system)
+const { colorScheme } = useUnifiedTheme();
 
 // Computed
 const hasApiKey = computed(() => !!apiKey.value);
@@ -368,32 +354,6 @@ watch(apiKey, (newKey) => {
   gap: var(--spacing-md);
 }
 
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--surface-elevated);
-  border: 1px solid var(--border-base);
-  border-radius: var(--border-radius-full);
-  color: var(--color-primary-500);
-  font-size: var(--font-size-lg);
-  cursor: pointer;
-  transition: var(--transition-normal);
-  box-shadow: var(--shadow-sm);
-}
-
-.theme-toggle:hover {
-  background: var(--color-primary-50);
-  border-color: var(--color-primary-300);
-  transform: scale(1.05);
-  box-shadow: var(--shadow-md);
-}
-
-.theme-toggle:active {
-  transform: scale(0.95);
-}
 
 .status-indicator {
   display: flex;
@@ -1099,7 +1059,6 @@ watch(apiKey, (newKey) => {
 
 /* Accessibility Enhancements */
 .mode-option:focus-visible,
-.theme-toggle:focus-visible,
 .persona-select:focus-visible {
   outline: 2px solid var(--color-primary-500);
   outline-offset: 2px;

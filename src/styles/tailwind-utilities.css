@@ -1,5 +1,9 @@
 /* Custom Tailwind utility classes that bridge master theme with Tailwind */
 @layer utilities {
+  /* Custom focus ring utility mapped to neon blue */
+  .focus\:ring-neon:focus-visible {
+    box-shadow: 0 0 0 3px rgba(var(--neon-blue), 0.3);
+  }
   /* Glass morphism utilities */
   .glass-bg {
     background: var(--glass-bg);
@@ -20,11 +24,17 @@
   }
 
   .glass-card {
-    @apply glass-bg glass-border glass-shadow rounded-glass;
+    /* Inlined from glass-bg, glass-border, glass-shadow, and rounded-glass */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-lg);
     padding: var(--card-padding);
   }
 
-  /* Text color utilities */
+  /* Text color utilities that automatically adapt to light/dark mode */
   .text-primary {
     color: var(--text-primary);
   }
@@ -39,6 +49,54 @@
 
   .text-muted {
     color: var(--text-muted);
+  }
+
+  .text-inverse {
+    color: var(--text-inverse);
+  }
+
+  /* Background utilities that adapt to light/dark mode */
+  .bg-primary {
+    background-color: var(--bg-primary);
+  }
+
+  .bg-secondary {
+    background-color: var(--bg-secondary);
+  }
+
+  .bg-tertiary {
+    background-color: var(--bg-tertiary);
+  }
+
+  /* Glass background utilities that adapt to theme */
+  .bg-glass {
+    background: var(--glass-bg);
+  }
+
+  .bg-glass-hover {
+    background: var(--glass-bg-hover);
+  }
+
+  .bg-glass-active {
+    background: var(--glass-bg-active);
+  }
+
+  /* Border utilities that adapt to theme */
+  .border-glass {
+    border-color: var(--glass-border);
+  }
+
+  .border-glass-hover {
+    border-color: var(--glass-border-hover);
+  }
+
+  /* Overlay utilities that adapt to theme */
+  .bg-overlay {
+    background: var(--overlay);
+  }
+
+  .bg-overlay-strong {
+    background: var(--overlay-strong);
   }
 
   /* Gaming theme colors */
@@ -80,13 +138,21 @@
     max-width: var(--page-content-max-width);
     margin-inline: auto;
     padding-inline: var(--spacing-6);
-    @apply glass-bg glass-border;
+    /* Inlined from glass-bg and glass-border */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
   }
 
   /* Button utilities */
   .btn-glass {
-    @apply glass-bg glass-border;
+    /* Inlined from glass-bg and glass-border */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     padding: var(--btn-padding-y) var(--btn-padding-x);
     min-height: var(--btn-min-h);
@@ -94,7 +160,8 @@
   }
 
   .btn-glass:hover {
-    @apply glass-hover;
+    /* Inlined from glass-hover */
+    background: var(--glass-hover-bg);
     transform: translateY(-1px);
   }
 
@@ -200,5 +267,325 @@
 
   .text-info {
     color: var(--color-info-500);
+  }
+
+  /* Enhanced adaptive text utilities using CSS variables */
+  .text-adaptive-primary {
+    color: var(--text-primary);
+  }
+
+  .text-adaptive-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-adaptive-tertiary {
+    color: var(--text-tertiary);
+  }
+
+  .text-adaptive-muted {
+    color: var(--text-muted);
+  }
+
+  .text-adaptive-inverse {
+    color: var(--text-inverse);
+  }
+
+  /* Background utilities that adapt automatically */
+  .bg-adaptive-primary {
+    background-color: var(--bg-primary);
+  }
+
+  .bg-adaptive-secondary {
+    background-color: var(--bg-secondary);
+  }
+
+  .bg-adaptive-tertiary {
+    background-color: var(--bg-tertiary);
+  }
+
+  /* Comprehensive dark mode support for Tailwind classes */
+  @media (prefers-color-scheme: dark) {
+    .dark\:text-white { color: var(--text-primary); }
+    .dark\:text-gray-100 { color: var(--text-secondary); }
+    .dark\:text-gray-200 { color: var(--text-secondary); }
+    .dark\:text-gray-300 { color: var(--text-tertiary); }
+    .dark\:text-gray-400 { color: var(--text-muted); }
+    .dark\:text-gray-500 { color: var(--text-muted); }
+    .dark\:text-gray-600 { color: var(--text-muted); }
+    .dark\:text-black { color: var(--text-inverse); }
+
+    .dark\:bg-white { background-color: var(--bg-primary); }
+    .dark\:bg-gray-50 { background-color: var(--bg-secondary); }
+    .dark\:bg-gray-100 { background-color: var(--bg-tertiary); }
+    .dark\:bg-gray-800 { background-color: var(--bg-secondary); }
+    .dark\:bg-gray-900 { background-color: var(--bg-primary); }
+    .dark\:bg-black { background-color: var(--bg-primary); }
+  }
+
+  /* Manual dark mode classes for programmatic control */
+  [data-theme="dark"] .dark\:text-white,
+  .dark .dark\:text-white {
+    color: var(--text-primary);
+  }
+
+  [data-theme="dark"] .dark\:text-gray-100,
+  .dark .dark\:text-gray-100 {
+    color: var(--text-secondary);
+  }
+
+  [data-theme="dark"] .dark\:text-gray-200,
+  .dark .dark\:text-gray-200 {
+    color: var(--text-secondary);
+  }
+
+  [data-theme="dark"] .dark\:text-gray-300,
+  .dark .dark\:text-gray-300 {
+    color: var(--text-tertiary);
+  }
+
+  [data-theme="dark"] .dark\:text-gray-400,
+  .dark .dark\:text-gray-400 {
+    color: var(--text-muted);
+  }
+
+  [data-theme="dark"] .dark\:text-gray-500,
+  .dark .dark\:text-gray-500 {
+    color: var(--text-muted);
+  }
+
+  [data-theme="dark"] .dark\:text-gray-600,
+  .dark .dark\:text-gray-600 {
+    color: var(--text-muted);
+  }
+
+  [data-theme="dark"] .dark\:text-black,
+  .dark .dark\:text-black {
+    color: var(--text-inverse);
+  }
+
+  [data-theme="dark"] .dark\:bg-white,
+  .dark .dark\:bg-white {
+    background-color: var(--bg-primary);
+  }
+
+  [data-theme="dark"] .dark\:bg-gray-50,
+  .dark .dark\:bg-gray-50 {
+    background-color: var(--bg-secondary);
+  }
+
+  [data-theme="dark"] .dark\:bg-gray-100,
+  .dark .dark\:bg-gray-100 {
+    background-color: var(--bg-tertiary);
+  }
+
+  [data-theme="dark"] .dark\:bg-gray-800,
+  .dark .dark\:bg-gray-800 {
+    background-color: var(--bg-secondary);
+  }
+
+  [data-theme="dark"] .dark\:bg-gray-900,
+  .dark .dark\:bg-gray-900 {
+    background-color: var(--bg-primary);
+  }
+
+  [data-theme="dark"] .dark\:bg-black,
+  .dark .dark\:bg-black {
+    background-color: var(--bg-primary);
+  }
+
+  /* Light mode overrides to ensure consistency */
+  [data-theme="light"] .text-black,
+  [data-theme="light"] .text-gray-900 {
+    color: var(--text-primary);
+  }
+
+  [data-theme="light"] .text-gray-800 {
+    color: var(--text-secondary);
+  }
+
+  [data-theme="light"] .text-gray-700,
+  [data-theme="light"] .text-gray-600 {
+    color: var(--text-tertiary);
+  }
+
+  [data-theme="light"] .text-gray-500,
+  [data-theme="light"] .text-gray-400 {
+    color: var(--text-muted);
+  }
+
+  [data-theme="light"] .text-white {
+    color: var(--text-inverse);
+  }
+
+  /* Universal text adaptations */
+  .text-auto {
+    color: var(--text-primary);
+  }
+
+  .text-auto-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-auto-muted {
+    color: var(--text-muted);
+  }
+
+  /* Override specific Tailwind classes to use adaptive colors */
+  .text-slate-900,
+  .text-gray-900 {
+    color: var(--text-primary) !important;
+  }
+
+  .text-slate-800,
+  .text-gray-800 {
+    color: var(--text-secondary) !important;
+  }
+
+  .text-slate-700,
+  .text-gray-700 {
+    color: var(--text-tertiary) !important;
+  }
+
+  .text-slate-600,
+  .text-gray-600,
+  .text-slate-500,
+  .text-gray-500 {
+    color: var(--text-muted) !important;
+  }
+
+  /* Enhanced dark mode border utilities */
+  [data-theme="dark"] .dark\:border-gray-300,
+  .dark .dark\:border-gray-300 {
+    border-color: var(--glass-border);
+  }
+
+  [data-theme="dark"] .dark\:border-gray-400,
+  .dark .dark\:border-gray-400 {
+    border-color: var(--glass-border);
+  }
+
+  [data-theme="dark"] .dark\:border-gray-600,
+  .dark .dark\:border-gray-600 {
+    border-color: var(--glass-border);
+  }
+
+  [data-theme="dark"] .dark\:border-gray-700,
+  .dark .dark\:border-gray-700 {
+    border-color: var(--glass-border);
+  }
+
+  /* Enhanced dark mode background utilities */
+  [data-theme="dark"] .dark\:bg-gray-700,
+  .dark .dark\:bg-gray-700 {
+    background-color: var(--glass-bg);
+  }
+
+  [data-theme="dark"] .dark\:bg-gray-800\/80,
+  .dark .dark\:bg-gray-800\/80 {
+    background-color: var(--glass-bg);
+  }
+
+  [data-theme="dark"] .dark\:bg-gray-800\/90,
+  .dark .dark\:bg-gray-800\/90 {
+    background-color: var(--glass-bg);
+  }
+
+  [data-theme="dark"] .dark\:bg-gray-900\/80,
+  .dark .dark\:bg-gray-900\/80 {
+    background-color: var(--glass-bg);
+  }
+
+  [data-theme="dark"] .dark\:bg-gray-900\/95,
+  .dark .dark\:bg-gray-900\/95 {
+    background-color: var(--glass-bg);
+  }
+
+  [data-theme="dark"] .dark\:bg-white\/80,
+  .dark .dark\:bg-white\/80 {
+    background-color: var(--glass-bg);
+  }
+
+  [data-theme="dark"] .dark\:bg-white\/90,
+  .dark .dark\:bg-white\/90 {
+    background-color: var(--glass-bg);
+  }
+
+  [data-theme="dark"] .dark\:bg-white\/95,
+  .dark .dark\:bg-white\/95 {
+    background-color: var(--glass-bg);
+  }
+
+  /* Enhanced dark mode hover states */
+  [data-theme="dark"] .dark\:hover\:bg-gray-600:hover,
+  .dark .dark\:hover\:bg-gray-600:hover {
+    background-color: var(--glass-hover-bg);
+  }
+
+  [data-theme="dark"] .dark\:hover\:bg-gray-700:hover,
+  .dark .dark\:hover\:bg-gray-700:hover {
+    background-color: var(--glass-hover-bg);
+  }
+
+  [data-theme="dark"] .dark\:hover\:bg-gray-800:hover,
+  .dark .dark\:hover\:bg-gray-800:hover {
+    background-color: var(--glass-hover-bg);
+  }
+
+  /* Enhanced focus states for dark mode */
+  [data-theme="dark"] .dark\:focus\:border-blue-400:focus,
+  .dark .dark\:focus\:border-blue-400:focus {
+    border-color: var(--color-primary-500);
+  }
+
+  [data-theme="dark"] .dark\:focus\:border-blue-500:focus,
+  .dark .dark\:focus\:border-blue-500:focus {
+    border-color: var(--color-primary-500);
+  }
+
+  [data-theme="dark"] .dark\:focus\:ring-blue-400:focus,
+  .dark .dark\:focus\:ring-blue-400:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
+  }
+
+  [data-theme="dark"] .dark\:focus\:ring-blue-500:focus,
+  .dark .dark\:focus\:ring-blue-500:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
+  }
+
+  /* Placeholder color support */
+  [data-theme="dark"] .dark\:placeholder-gray-400::placeholder,
+  .dark .dark\:placeholder-gray-400::placeholder {
+    color: var(--text-muted);
+  }
+
+  [data-theme="dark"] .dark\:placeholder-gray-500::placeholder,
+  .dark .dark\:placeholder-gray-500::placeholder {
+    color: var(--text-muted);
+  }
+
+  /* Status color overrides for dark mode */
+  [data-theme="dark"] .dark\:text-yellow-200,
+  .dark .dark\:text-yellow-200 {
+    color: var(--color-warning-200);
+  }
+
+  [data-theme="dark"] .dark\:text-yellow-300,
+  .dark .dark\:text-yellow-300 {
+    color: var(--color-warning-300);
+  }
+
+  [data-theme="dark"] .dark\:text-blue-400,
+  .dark .dark\:text-blue-400 {
+    color: var(--color-primary-400);
+  }
+
+  [data-theme="dark"] .dark\:bg-yellow-900\/20,
+  .dark .dark\:bg-yellow-900\/20 {
+    background-color: var(--color-warning-50);
+  }
+
+  [data-theme="dark"] .dark\:border-yellow-800,
+  .dark .dark\:border-yellow-800 {
+    border-color: var(--color-warning-200);
   }
 }

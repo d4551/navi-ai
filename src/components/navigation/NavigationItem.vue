@@ -1,8 +1,8 @@
 <template>
   <div
-    class="navigation-item"
-    :class="{ 
-      active: item.isActive?.value, 
+    class="navigation-item text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100"
+    :class="{
+      active: item.isActive?.value,
       collapsed: isCollapsed,
       'has-badge': item.badge,
       'nav-item-focused': isFocused,
@@ -13,7 +13,7 @@
   >
     <router-link
       :to="item.route"
-      class="nav-item-link"
+      class="nav-item-link text-inherit hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600"
       :aria-label="item.description"
       :aria-disabled="item.disabled || undefined"
       :aria-current="item.isActive?.value ? 'page' : undefined"
@@ -52,7 +52,7 @@
       <div
         v-if="showTooltip && isCollapsed"
         ref="tooltipRef"
-        class="nav-tooltip"
+        class="nav-tooltip bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
         :style="tooltipStyle"
       >
         <div class="tooltip-content">
@@ -72,7 +72,7 @@ import { getMdiAlias } from '@/utils/iconAliases'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Props
-const _props = defineProps({
+const props = defineProps({
   item: {
     type: Object,
     required: true
@@ -553,7 +553,7 @@ function normalizeIcon(name) {
 [data-theme="dark"] .badge-text,
 .dark-theme .badge-text {
   background: var(--color-primary-500);
-  color: white;
+  color: var(--text-inverse);
 }
 
 [data-theme="dark"] .indicator-dot,

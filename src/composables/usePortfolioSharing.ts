@@ -360,7 +360,7 @@ export function usePortfolioSharing() {
       body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         line-height: 1.6;
-        color: #333;
+        color: var(--text-primary);
         background: #f8fafc;
       }
       
@@ -483,7 +483,7 @@ export function usePortfolioSharing() {
         font-size: 1.25rem;
         font-weight: 600;
         margin-bottom: 1rem;
-        color: #333;
+        color: var(--text-primary);
       }
       
       .skill-list {

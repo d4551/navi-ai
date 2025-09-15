@@ -345,7 +345,7 @@ export function useRealTimeChat(config: Partial<RealTimeConfig> = {}) {
     isProcessing: readonly(isProcessing),
     volumeLevel: readonly(volumeLevel),
     transcription: readonly(transcription),
-    error: readonly(_error),
+    error: readonly(error),
     sessionStats: readonly(sessionStats),
     
     // Computed

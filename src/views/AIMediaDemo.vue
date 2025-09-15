@@ -62,9 +62,6 @@
         <UnifiedButton variant="glass" leading-icon="mdi-trash-can" @click="clearSession">
           Clear
         </UnifiedButton>
-        <UnifiedButton variant="glass" leading-icon="mdi-download" @click="exportSession">
-          Export
-        </UnifiedButton>
       </div>
     </div>
 

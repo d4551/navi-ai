@@ -1,5 +1,5 @@
 <template>
-  <div id="app-root" class="d-flex flex-col min-h-screen unified-app" :class="unifiedUI.unifiedClasses.value">
+  <div id="app-root" class="d-flex flex-col min-h-screen unified-app bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100" :class="unifiedUI.unifiedClasses">
     <!-- Accessibility: Skip to content link and screen reader announcer -->
     <a href="#main" class="skip-link">Skip to main content</a>
     <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
@@ -11,7 +11,7 @@
         <!-- Sidebar Navigation -->
         <aside
           id="app-sidebar"
-          class="app-sidebar"
+          class="app-sidebar bg-white/90 dark:bg-gray-800/90 border-r border-gray-200 dark:border-gray-700"
           :class="{
             'sidebar-visible': sidebarVisible,
             'sidebar-collapsed': sidebarCollapsed || autoCollapsed,
@@ -36,45 +36,95 @@
         <!-- Main Content Area -->
         <div class="d-flex flex-col flex-1 w-full">
           <!-- Header -->
-          <header class="app-header glass-strong">
-            <div class="container-xl px-4 py-3 header-inner flex items-center justify-between gap-4">
-              <!-- Mobile menu toggle -->
-              <button
-                v-if="isMobile"
-                class="mobile-menu-toggle"
-                :class="{ 'menu-open': sidebarVisible }"
-                type="button"
-                :aria-expanded="sidebarVisible.toString()"
-                aria-controls="app-sidebar"
-                @click="toggleSidebar"
-              >
-                <div class="hamburger-icon" :class="{ active: sidebarVisible }">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </button>
+          <header class="app-header glass-strong bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700">
+            <div class="header-inner">
+              <!-- Left Section: Mobile toggle + AI Status -->
+              <div class="header-left">
+                <!-- Mobile menu toggle -->
+                <button
+                  v-if="isMobile"
+                  class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                  :class="{ 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100': sidebarVisible }"
+                  type="button"
+                  :aria-expanded="sidebarVisible.toString()"
+                  aria-controls="app-sidebar"
+                  @click="toggleSidebar"
+                >
+                  <span class="sr-only">Open main menu</span>
+                  <!-- Heroicon name: outline/menu -->
+                  <svg v-if="!sidebarVisible" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                  <!-- Heroicon name: outline/x -->
+                  <svg v-else class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
 
-              <!-- Global AI Status Banner -->
-              <div
-                v-if="!store.settings?.geminiApiKey"
-                class="ai-status-banner glass p-3 rounded-lg neon-blue"
-                role="status"
-              >
-                <div class="banner-content flex items-center gap-3">
-                  <AppIcon name="mdi-key" class="text-neon-blue" />
-                  <div class="banner-text">
-                    <strong class="text-glass-enhanced">AI Features Inactive</strong>
-                    <p class="text-sm m-0 text-glass-enhanced">Add your API key in <router-link to="/settings" class="neon-interactive text-neon-blue">Settings</router-link> to enable AI features</p>
+                <!-- Global AI Status Banner -->
+                <div
+                  v-if="!store.settings?.geminiApiKey"
+                  class="ai-status-banner glass p-3 rounded-lg neon-blue bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800"
+                  role="status"
+                >
+                  <div class="banner-content flex items-center gap-3">
+                    <!-- Heroicon name: outline/key -->
+                    <svg class="w-5 h-5 text-gaming" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                    </svg>
+                    <div class="banner-text">
+                      <strong class="text-glass-enhanced text-yellow-800 dark:text-yellow-200">AI Features Inactive</strong>
+                      <p class="text-sm m-0 text-glass-enhanced text-yellow-700 dark:text-yellow-300">Add your API key in <router-link to="/settings" class="neon-interactive text-blue-600 dark:text-blue-400 hover:underline">Settings</router-link> to enable AI features</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Section: Header Actions -->
+              <div class="header-right">
+                <div class="nav-brand glass-strong p-3 rounded-lg bg-white/80 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700">
+                  <div class="header-actions">
+                    <!-- Gamification/Achievements Button -->
+                    <UnifiedButton
+                      variant="ghost"
+                      size="sm"
+                      :aria-label="'Achievements'"
+                      @click="openGamificationModal"
+                      class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
+                    >
+                      <!-- Heroicon name: outline/trophy -->
+                      <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Achievements
+                    </UnifiedButton>
+
+                    <!-- Theme Toggle -->
+                    <ThemeToggle :compact="true" />
+
+                    <!-- Settings Button -->
+                    <UnifiedButton
+                      variant="outline"
+                      size="sm"
+                      :aria-label="'Settings'"
+                      @click="$router.push('/settings')"
+                      class="inline-flex items-center px-3 py-2 border border-glass text-sm leading-4 font-medium rounded-md text-primary bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
+                    >
+                      <!-- Heroicon name: outline/cog-6-tooth -->
+                      <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      Settings
+                    </UnifiedButton>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- Quick Access removed by request -->
           </header>
 
           <!-- Page Content -->
-          <main id="main" class="flex-1 overflow-y-auto p-6 main-content" role="main">
+          <main id="main" class="flex-1 overflow-y-auto p-6 main-content bg-gray-50 dark:bg-gray-900" role="main">
             <router-view v-slot="{ Component }">
               <transition name="page-transition" mode="out-in">
                 <component :is="Component" v-if="Component" />
@@ -83,12 +133,12 @@
           </main>
 
           <!-- Footer (env-toggle: VITE_HIDE_FOOTER) -->
-          <footer v-if="!hideFooter" class="app-footer glass p-4">
-            <div class="footer-content container-xl flex justify-between items-center text-sm text-glass-enhanced">
+          <footer v-if="!hideFooter" class="app-footer glass p-4 bg-white/95 dark:bg-gray-900/95 border-t border-gray-200 dark:border-gray-700">
+            <div class="footer-content container-xl flex justify-between items-center text-sm text-glass-enhanced text-gray-600 dark:text-gray-400">
               <div class="footer-brand flex items-center gap-2">
                 <AppLogo alt-text="NAVI - AI Career Assistant" />
               </div>
-              <div class="footer-version font-mono glass-strong px-3 py-1 rounded-md font-medium text-glass-enhanced">
+              <div class="footer-version font-mono glass-strong px-3 py-1 rounded-md font-medium text-glass-enhanced bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                 v{{ appVersion }}
               </div>
             </div>
@@ -99,7 +149,7 @@
       <!-- Mobile Overlay -->
       <div
         v-if="sidebarVisible && isMobile"
-        class="mobile-overlay"
+        class="mobile-overlay bg-gray-900/50 dark:bg-gray-900/70"
         @click="closeSidebar"
       ></div>
       
@@ -121,9 +171,16 @@
         @send="handleAssistantSend"
       />
 
+      <!-- Gamification Modal -->
+      <GamificationModal
+        v-if="gamificationModalOpen"
+        @close="gamificationModalOpen = false"
+      />
+
       <!-- Global Gamification Effects -->
       <GamificationEffects ref="gfx" />
-      
+
+
       <!-- Toast Notifications -->
       <ToastNotification />
     </ErrorBoundary>
@@ -150,6 +207,8 @@ import { useUnifiedUI } from "@/composables/useUnifiedUI";
 import { useResponsive } from "@/composables/useResponsive";
 import AppIcon from "@/components/ui/AppIcon.vue";
 import { usePageAssistantContext } from '@/composables/usePageAssistantContext'
+import ThemeToggle from '@/components/ThemeToggle.vue'
+import GamificationModal from '@/components/GamificationModal.vue'
 
 export default {
   name: "App",
@@ -160,7 +219,9 @@ export default {
     AppLogo, // Register the new AppLogo component
     AppIcon,
     UnifiedButton,
+    ThemeToggle,
     GamificationEffects,
+    GamificationModal,
     ThemeBridge,
     AIFairyAssistant,
     FairyChatModal,
@@ -171,11 +232,10 @@ export default {
 
     const store = useAppStore();
     const route = useRoute();
-    const _router = useRouter();
     const appVersion = computed(() => store.meta?.version || "2.0.0");
     
     // Initialize unified theme system
-    const _theme = useUnifiedTheme();
+    const theme = useUnifiedTheme();
     const unifiedUI = useUnifiedUI();
     const responsive = useResponsive();
     
@@ -211,7 +271,7 @@ export default {
             name: a.name,
             description: a.description || '',
             icon: a.icon || 'mdi mdi-trophy-variant',
-            color: '#FFD700',
+            color: 'var(--color-warning-400)',
             xpReward: a.xp || 0,
           })
         })
@@ -237,7 +297,7 @@ export default {
     const isMobile = computed(() => responsive.isMobile.value);
     
     // Keyboard shortcuts for quick navigation
-    const onKeydown = (_e) => {
+    const onKeydown = (e) => {
       try {
         // Ctrl+, => Settings
         if ((e.ctrlKey || e.metaKey) && e.key === ',') {
@@ -283,6 +343,13 @@ export default {
     onUnmounted(() => {
       window.removeEventListener('keydown', onKeydown);
     });
+
+    // ===== Gamification Modal =====
+    const gamificationModalOpen = ref(false)
+
+    function openGamificationModal() {
+      gamificationModalOpen.value = true
+    }
 
     // ===== Page-aware Assistant Integration =====
     const assistantOpen = ref(false)
@@ -408,6 +475,8 @@ export default {
       handleAssistantSend,
       openAssistantFromNav,
       cycleFairyBubbleSize,
+      gamificationModalOpen,
+      openGamificationModal,
     };
   },
 };
@@ -532,57 +601,64 @@ export default {
   box-shadow: var(--shadow-sm); /* Default shadow from design system */
 }
 
-/* Mobile Menu Toggle */
-.mobile-menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  padding: var(--spacing-sm); /* Use design system variable */
-  cursor: pointer;
-  border-radius: var(--radius-md); /* Use design system variable */
-  transition: background-color var(--duration-fast) var(--easing-ease-out); /* Use design system variables */
-}
 
-.mobile-menu-toggle:hover {
-  background: var(--glass-hover-bg); /* Use design system variable */
-}
-
-@media (max-width: 768px) {
-  .mobile-menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-/* Hamburger Icon */
-.hamburger-icon {
+/* Header Layout */
+.header-inner {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1); /* Use design system variable */
-  width: 20px;
-  height: 16px;
-}
-
-.hamburger-icon span {
-  display: block;
-  height: 2px;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md, 1rem) var(--spacing-lg, 1.5rem);
+  max-width: 1400px;
+  margin: 0 auto;
   width: 100%;
-  background: var(--text-primary); /* Use design system variable */
-  transition: all var(--duration-fast) var(--easing-ease-out); /* Use design system variables */
-  transform-origin: center;
+  gap: var(--spacing-lg, 1.5rem);
 }
 
-.hamburger-icon.active span:nth-child(1) {
-  transform: rotate(45deg) translate(var(--spacing-0-5), var(--spacing-0-5)); /* Use design system variables */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 1rem);
+  flex: 1;
 }
 
-.hamburger-icon.active span:nth-child(2) {
-  opacity: 0;
+.header-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
-.hamburger-icon.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(var(--spacing-0-5), calc(-1 * var(--spacing-0-5))); /* Use design system variables */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 0.75rem);
+}
+
+/* Mobile Header Adjustments */
+@media (max-width: 768px) {
+  .header-inner {
+    padding: var(--spacing-sm, 0.75rem);
+    gap: var(--spacing-sm, 0.75rem);
+  }
+
+  .nav-brand {
+    padding: var(--spacing-xs, 0.5rem) var(--spacing-sm, 0.75rem) !important;
+  }
+
+  .header-actions {
+    gap: var(--spacing-xs, 0.5rem);
+  }
+
+  .ai-status-banner {
+    font-size: 0.875rem;
+  }
+
+  .ai-status-banner .banner-text {
+    min-width: 0;
+  }
+
+  .ai-status-banner p {
+    display: none;
+  }
 }
 
 /* AI Status Banner */
@@ -670,7 +746,7 @@ export default {
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--overlay-backdrop);
     z-index: var(--z-overlay); /* Use design system variable */
     backdrop-filter: var(--glass-backdrop-blur-light); /* Use design system variable */
   }
@@ -741,20 +817,19 @@ body[data-theme="dark"] .hamburger-icon span {
 
 /* Gaming theme enhancements */
 .theme-gaming .app-sidebar {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.02), transparent),
+  background: linear-gradient(135deg, var(--color-gaming-500-10), transparent),
               var(--glass-surface-elevated); /* Use design system variable */
   border-right-color: var(--glass-border-gaming); /* Use design system variable */
 }
 
 .theme-gaming .footer-brand i {
   color: var(--color-gaming-500); /* Use design system variable */
-  filter: drop-shadow(0 0 4px rgba(0, 255, 136, 0.3));
+  filter: drop-shadow(0 0 4px var(--color-gaming-500-30));
 }
 
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   .app-sidebar,
-  .hamburger-icon span,
   .page-transition-enter-active,
   .page-transition-leave-active {
     transition: none;
@@ -782,14 +857,6 @@ body[data-theme="dark"] .hamburger-icon span {
   min-height: clamp(52px, 8vh, 64px); /* Fluid header height */
 }
 
-.mobile-menu-toggle {
-  border-radius: var(--radius-md);
-}
-
-.mobile-menu-toggle:focus-visible {
-  outline: 2px solid var(--color-primary-500);
-  outline-offset: 2px;
-}
 
 /* Enhanced breakpoints for larger screens */
 @media (min-width: 640px) and (max-width: 1023px) {
@@ -813,6 +880,21 @@ body[data-theme="dark"] .hamburger-icon span {
   
   .footer-content {
     gap: clamp(var(--spacing-lg), 2vw, var(--spacing-xl));
+  }
+}
+
+/* Header actions styling */
+.header-actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
   }
 }
 </style>

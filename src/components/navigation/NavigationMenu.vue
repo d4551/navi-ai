@@ -1,8 +1,8 @@
 <template>
-  <nav class="navigation-menu" :class="[{ collapsed: isCollapsed, 'ai-online': isAIOnline, 'ai-offline': !isAIOnline }, densityClass]" aria-label="Sidebar navigation">
+  <nav class="navigation-menu bg-white/95 dark:bg-gray-800/95 text-gray-900 dark:text-gray-100" :class="[{ collapsed: isCollapsed, 'ai-online': isAIOnline, 'ai-offline': !isAIOnline }, densityClass]" aria-label="Sidebar navigation">
     <!-- Enhanced Brand Section with better visual hierarchy -->
-    <div class="nav-brand glass-strong p-4 rounded-lg">
-      <router-link to="/" class="brand-link" aria-label="Navigate to NAVI home">
+    <div class="nav-brand glass-strong p-4 rounded-lg bg-white/80 dark:bg-gray-700/80 border border-gray-200 dark:border-gray-600">
+      <router-link to="/" class="brand-link text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400" aria-label="Navigate to NAVI home">
         <!-- Brand logo switches automatically between light/dark -->
         <AppLogo class="brand-logo" alt-text="NAVI" />
         <transition name="brand-text-fade" mode="out-in">
@@ -139,8 +139,8 @@
     </div>
 
     <!-- Main Navigation (compact, no titled sections) -->
-    <div 
-      class="nav-content"
+    <div
+      class="nav-content bg-transparent"
       tabindex="0"
       role="navigation"
       aria-label="Main navigation menu"
@@ -154,7 +154,7 @@
           :is-collapsed="isCollapsed"
           @navigate="onItemNavigate"
         />
-        <div class="nav-divider" role="separator" aria-hidden="true"></div>
+        <div class="nav-divider border-gray-200 dark:border-gray-700" role="separator" aria-hidden="true"></div>
         <NavigationItem
           v-for="item in filteredPlayground"
           :key="item.id"
@@ -162,7 +162,7 @@
           :is-collapsed="isCollapsed"
           @navigate="onItemNavigate"
         />
-        <div class="nav-divider" role="separator" aria-hidden="true"></div>
+        <div class="nav-divider border-gray-200 dark:border-gray-700" role="separator" aria-hidden="true"></div>
         <NavigationItem
           v-for="item in filteredSettings"
           :key="item.id"
@@ -174,7 +174,7 @@
     </div>
 
     <!-- Redesigned Footer -->
-    <div class="nav-footer glass-footer" :class="{ collapsed: isCollapsed }">
+    <div class="nav-footer glass-footer bg-white/80 dark:bg-gray-800/80 border-t border-gray-200 dark:border-gray-700" :class="{ collapsed: isCollapsed }">
       <!-- Expanded footer: rich status + quick actions -->
       <div v-if="!isCollapsed" class="footer-content redesigned" aria-label="Navigation footer">
         <div class="footer-row">

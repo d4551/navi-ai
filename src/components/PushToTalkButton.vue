@@ -135,7 +135,7 @@ import { canonicalAIClient } from '@/shared/services/CanonicalAIClient';
 import { speak as speakViaService } from '@/utils/voice';
 
 // Props
-const _props = defineProps({
+const props = defineProps({
   maxRecordingTime: {
     type: Number,
     default: 30 // seconds

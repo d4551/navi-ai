@@ -1748,7 +1748,7 @@ function updateStudioRecommendations() {
 
 .section-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-elevated);
   border-color: color-mix(in srgb, var(--color-primary-500) 20%, transparent);
 }
 
@@ -1870,7 +1870,7 @@ function updateStudioRecommendations() {
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--glass-surface-light);
   transform: translate(-50%, -50%);
   transition: width 0.6s, height 0.6s;
 }

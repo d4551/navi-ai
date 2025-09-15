@@ -84,9 +84,6 @@ class MockDatabase {
     return [];
   }
 
-    return this;
-  }
-
   aggregate(_name, _options) {
     console.debug(`MockDatabase.aggregate(): Registered aggregate ${_name}`);
     return this;
@@ -116,10 +113,6 @@ class MockDatabase {
 
 // Enhanced export with development hints
 const DatabaseConstructor = MockDatabase;
-
-// Add helpful static methods
-  return "[MockDatabase - Browser Stub]";
-};
 
 // Default export (ES modules)
 export default DatabaseConstructor;

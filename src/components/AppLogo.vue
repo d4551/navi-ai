@@ -6,7 +6,7 @@
 import { computed } from 'vue';
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme';
 
-const _props = defineProps({
+const props = defineProps({
   altText: {
     type: String,
     default: 'NAVI Logo',

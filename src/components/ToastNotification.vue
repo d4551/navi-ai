@@ -1,15 +1,16 @@
 <template>
   <teleport to="body">
-    <transition-group name="toast" tag="div" class="toast-container" appear>
+    <transition-group name="toast" tag="div" class="toast-container fixed top-4 right-4 z-50" appear>
       <div
         v-for="toast in toasts"
         :key="toast.id"
-        class="toast-item"
-        :class="[ `toast-${toast.type}`,
-                  {
-                    'toast-dismissible': toast.dismissible,
-                    'toast-paused': toast.paused,
-                  },
+        class="toast-item bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100"
+        :class="[
+          `toast-${toast.type}`,
+          {
+            'toast-dismissible': toast.dismissible,
+            'toast-paused': toast.paused,
+          },
         ]"
         role="alert"
         :aria-live="toast.type === 'error' ? 'assertive' : 'polite'"
@@ -34,7 +35,7 @@
               <button
                 v-for="(action, idx) in toast.actions"
                 :key="idx"
-                class="toast-action-btn"
+                class="toast-action-btn bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                 type="button"
                 @click="runAction(toast, action)"
               >
@@ -44,7 +45,7 @@
           </div>
           <button
             v-if="toast.dismissible !== false"
-            class="toast-close"
+            class="toast-close text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             aria-label="Close notification"
             @click="dismissToast(toast.id)"
           >

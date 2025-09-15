@@ -16,6 +16,7 @@
 
 /* 4. TAILWIND BASE (For additional utilities) */
 @import './tailwind.css';
+@import './tailwind-utilities.css';
 
 /* 5. LEGACY COMPATIBILITY (Minimal, will be phased out) */
 @import './legacy-bridge.css';

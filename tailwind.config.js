@@ -21,6 +21,9 @@ export default {
   ],
   theme: {
     extend: {
+      ringColor: {
+        neon: 'rgba(var(--neon-blue), 0.3)',
+      },
       fontFamily: {
         // Align with app font system; Electrolize first, then Inter
         sans: [
@@ -59,19 +62,82 @@ export default {
       colors: {
         // Bridge Tailwind color tokens to existing CSS variables
         primary: {
-          50: 'rgb(var(--color-gaming-50) / <alpha-value>)',
-          100: 'rgb(var(--color-gaming-100) / <alpha-value>)',
-          200: 'rgb(var(--color-gaming-200) / <alpha-value>)',
-          300: 'rgb(var(--color-gaming-300) / <alpha-value>)',
-          400: 'rgb(var(--color-gaming-400) / <alpha-value>)',
-          500: 'rgb(var(--color-gaming-500) / <alpha-value>)',
-          600: 'rgb(var(--color-gaming-600) / <alpha-value>)',
-          700: 'rgb(var(--color-gaming-700) / <alpha-value>)',
-          800: 'rgb(var(--color-gaming-800) / <alpha-value>)',
-          900: 'rgb(var(--color-gaming-900) / <alpha-value>)',
+          50: 'rgb(var(--color-primary-50) / <alpha-value>)',
+          100: 'rgb(var(--color-primary-100) / <alpha-value>)',
+          200: 'rgb(var(--color-primary-200) / <alpha-value>)',
+          300: 'rgb(var(--color-primary-300) / <alpha-value>)',
+          400: 'rgb(var(--color-primary-400) / <alpha-value>)',
+          500: 'rgb(var(--color-primary-500) / <alpha-value>)',
+          600: 'rgb(var(--color-primary-600) / <alpha-value>)',
+          700: 'rgb(var(--color-primary-700) / <alpha-value>)',
+          800: 'rgb(var(--color-primary-800) / <alpha-value>)',
+          900: 'rgb(var(--color-primary-900) / <alpha-value>)',
         },
+        secondary: {
+          50: 'rgb(var(--color-secondary-50) / <alpha-value>)',
+          100: 'rgb(var(--color-secondary-100) / <alpha-value>)',
+          200: 'rgb(var(--color-secondary-200) / <alpha-value>)',
+          300: 'rgb(var(--color-secondary-300) / <alpha-value>)',
+          400: 'rgb(var(--color-secondary-400) / <alpha-value>)',
+          500: 'rgb(var(--color-secondary-500) / <alpha-value>)',
+          600: 'rgb(var(--color-secondary-600) / <alpha-value>)',
+          700: 'rgb(var(--color-secondary-700) / <alpha-value>)',
+          800: 'rgb(var(--color-secondary-800) / <alpha-value>)',
+          900: 'rgb(var(--color-secondary-900) / <alpha-value>)',
+        },
+        success: {
+          50: 'rgb(var(--color-success-50) / <alpha-value>)',
+          500: 'rgb(var(--color-success-500) / <alpha-value>)',
+          600: 'rgb(var(--color-success-600) / <alpha-value>)',
+          700: 'rgb(var(--color-success-700) / <alpha-value>)',
+        },
+        warning: {
+          50: 'rgb(var(--color-warning-50) / <alpha-value>)',
+          500: 'rgb(var(--color-warning-500) / <alpha-value>)',
+          600: 'rgb(var(--color-warning-600) / <alpha-value>)',
+          700: 'rgb(var(--color-warning-700) / <alpha-value>)',
+        },
+        error: {
+          50: 'rgb(var(--color-error-50) / <alpha-value>)',
+          500: 'rgb(var(--color-error-500) / <alpha-value>)',
+          600: 'rgb(var(--color-error-600) / <alpha-value>)',
+          700: 'rgb(var(--color-error-700) / <alpha-value>)',
+        },
+        gray: {
+          50: 'rgb(var(--color-gray-50) / <alpha-value>)',
+          100: 'rgb(var(--color-gray-100) / <alpha-value>)',
+          200: 'rgb(var(--color-gray-200) / <alpha-value>)',
+          300: 'rgb(var(--color-gray-300) / <alpha-value>)',
+          400: 'rgb(var(--color-gray-400) / <alpha-value>)',
+          500: 'rgb(var(--color-gray-500) / <alpha-value>)',
+          600: 'rgb(var(--color-gray-600) / <alpha-value>)',
+          700: 'rgb(var(--color-gray-700) / <alpha-value>)',
+          800: 'rgb(var(--color-gray-800) / <alpha-value>)',
+          900: 'rgb(var(--color-gray-900) / <alpha-value>)',
+          950: 'rgb(var(--color-gray-950) / <alpha-value>)',
+        },
+        // Semantic theme-aware colors
+        background: 'var(--color-background)',
+        surface: 'var(--color-surface)',
+        'surface-variant': 'var(--color-surface-variant)',
+        'on-background': 'var(--color-on-background)',
+        'on-surface': 'var(--color-on-surface)',
+        'on-surface-variant': 'var(--color-on-surface-variant)',
+        // Text color system that adapts to theme
+        'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'text-tertiary': 'var(--text-tertiary)',
+        'text-muted': 'var(--text-muted)',
+        'text-inverse': 'var(--text-inverse)',
+        // Background system that adapts to theme
+        'bg-primary': 'var(--bg-primary)',
+        'bg-secondary': 'var(--bg-secondary)',
+        'bg-tertiary': 'var(--bg-tertiary)',
         // Glassmorphic colors
         glass: {
+          bg: 'var(--glass-bg)',
+          border: 'var(--glass-border)',
+          shadow: 'var(--glass-shadow)',
           light: 'rgba(255, 255, 255, 0.1)',
           medium: 'rgba(255, 255, 255, 0.2)',
           heavy: 'rgba(255, 255, 255, 0.3)',

@@ -187,6 +187,7 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
   padding: 0;
@@ -198,6 +199,42 @@ body {
   transition: color var(--transition-normal), background-color var(--transition-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure text colors are inherited properly across all elements */
+*,
+*::before,
+*::after {
+  color: inherit;
+}
+
+/* Override for specific elements that should maintain their colors */
+input,
+button,
+select,
+textarea {
+  color: var(--text-primary);
+}
+
+/* Ensure proper text color inheritance for all headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+}
+
+/* Ensure proper text color for paragraphs and text elements */
+p, span, div, a {
+  color: inherit;
+}
+
+/* Specific link styling to override browser defaults */
+a {
+  color: var(--text-primary);
+  text-decoration-color: var(--text-secondary);
+}
+
+a:hover {
+  color: var(--text-primary);
+  text-decoration-color: var(--text-primary);
 }
 
 /* ===== GLASSMORPHIC COMPONENTS ===== */

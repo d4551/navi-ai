@@ -87,7 +87,7 @@ interface Props {
   compact?: boolean
 }
 
-const _props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   showVoiceHints: false,
   enableVisualFeedback: true,
   position: 'top-right',

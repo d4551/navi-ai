@@ -233,7 +233,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
-const _props = defineProps({
+const props = defineProps({
   projects: {
     type: Array,
     default: () => []

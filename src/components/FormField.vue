@@ -1,9 +1,9 @@
 <template>
-  <div :class="['form-field', containerClass, { required: required }]">
+  <div :class="['form-field', containerClass, { required: required }]" class="text-gray-900 dark:text-gray-100">
     <label
       v-if="label"
       :for="fieldId"
-      class="form-label"
+      class="form-label text-gray-700 dark:text-gray-300"
       :class="labelClass"
       :style="labelStyle"
     >
@@ -20,7 +20,7 @@
         :id="fieldId"
         :value="modelValue"
         :type="type"
-        class="form-control glass-input"
+        class="form-control glass-input bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
         :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :placeholder="placeholder"
         :required="required"
@@ -36,7 +36,7 @@
         v-else-if="type === 'textarea'"
         :id="fieldId"
         :value="modelValue"
-        class="form-control glass-input enhanced-textarea"
+        class="form-control glass-input enhanced-textarea bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
         :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :placeholder="placeholder"
         :required="required"
@@ -53,7 +53,7 @@
         v-else-if="type === 'select'"
         :id="fieldId"
         :value="modelValue"
-        class="form-select glass-input"
+        class="form-select glass-input bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-400"
         :class="[inputClass, { 'has-value': hasValue, 'is-invalid': errorText }]"
         :required="required"
         :disabled="disabled"

@@ -67,7 +67,7 @@
     <!-- Daily Challenges -->
     <div class="daily-challenges mb-4">
       <div class="card gaming-card elevated glass-surface">
-        <div class="card-header section-header bg-gradient text-white border-0">
+        <div class="card-header section-header bg-gradient text-inverse border-0">
           <div class="d-flex justify-content-between align-items-center">
             <h6 id="daily-challenges-title" class="mb-0">
               <AppIcon name="mdi-calendar-check-outline" class="me-2" aria-hidden="true" />
@@ -160,7 +160,7 @@
       <!-- Quick Achievement Overview -->
       <div class="col-lg-8">
         <div class="card gaming-card elevated glass-surface h-100">
-          <div class="card-header section-header bg-gradient text-white border-0">
+          <div class="card-header section-header bg-gradient text-inverse border-0">
             <h6 class="mb-0">
               <AppIcon name="mdi-trophy-outline" class="me-2" />
               Recent Achievements & Progress
@@ -213,7 +213,7 @@
       <!-- Activity Summary -->
       <div class="col-lg-4">
         <div class="card gaming-card elevated glass-surface h-100">
-          <div class="card-header section-header bg-gradient text-white border-0">
+          <div class="card-header section-header bg-gradient text-inverse border-0">
             <h6 class="mb-0">
               <AppIcon name="mdi-pulse" class="me-2" />
               Activity Summary
