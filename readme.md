@@ -1,6 +1,14 @@
-# NAVI - AI-Powered Gaming Career Assistant</center>
+# NAVI - AI-Powered Gaming Career Assistant
 
-https://private-user-images.githubusercontent.com/78459116/489319498-4a4cd685-c97d-44c2-97a9-c653638590a3.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTc4ODQ1MDQsIm5iZiI6MTc1Nzg4NDIwNCwicGF0aCI6Ii83ODQ1OTExNi80ODkzMTk0OTgtNGE0Y2Q2ODUtYzk3ZC00NGMyLTk3YTktYzY1MzYzODU5MGEzLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA5MTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwOTE0VDIxMTAwNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWU5MzRmMGUyYWNlM2YyNjFmNDEyYzY2NTJhZjIyM2EzMWNkZTkzYzBmNTBmYmE1MjA0Mjg0NDc2MGJkMmFjYzAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.JXhDAp118NBDB0dgXb2Aua8HY5c9txCUvlo1ZyJtVj0
+
+<p align="center">
+  <img src="navi_s.gif" alt="NAVI demo" width="720" />
+</p>
+
+
+<p align="center">
+  <video src="navi_s.mp4" controls width="720" poster="docs/screenshots/enhanced-gaming-dashboard.png"></video>
+</p>
 
 
 <p align="center">
@@ -47,10 +55,11 @@ https://private-user-images.githubusercontent.com/78459116/489319498-4a4cd685-c9
 - [🚀 Quick Start](#-quick-start)
 - [🧭 TL;DR](#-tldr)
 - [🎯 Features](#-features)
+- [🖼️ Screenshots](#-screenshots)
 - [🔮 What's Coming](#-whats-coming)
 - [📦 Installation](#-installation)
 - [🚀 Usage](#-usage)
-- [🛠️ Development](#️-development)
+- [🛠️ Development](#-development)
 - [🤝 Contributing](#-contributing)
 - [📚 Documentation](#-documentation)
 - [📜 License](#-license)
@@ -135,6 +144,25 @@ Note (macOS): If `npm install` warns about engines for Redocly or hits a permiss
 - **Local‑first** settings and secure key storage (Electron).
 
 > 🎮 **[See the complete feature list with detailed screenshots →](featurelist.md)**
+
+## 🖼️ Screenshots
+
+Below are representative screens from the current release. Higher‑resolution images live in `docs/screenshots/`.
+
+![Enhanced Gaming Dashboard](docs/screenshots/enhanced-gaming-dashboard.png)
+_Gaming career dashboard with real‑time job matching._
+
+![AI Interview Preparation](docs/screenshots/ai-interview-preparation.png)
+_Mock interview interface with timed sessions and feedback._
+
+![AI Modal System](docs/screenshots/ai-modal-system.png)
+_Context‑aware AI assistance modal._
+
+![AI Resume Builder](docs/screenshots/ai-resume-builder.png)
+_ATS‑friendly resume/CV builder with live AI feedback._
+
+![Enhanced Job Board](docs/screenshots/enhanced-job-board.png)
+_Gaming‑focused job board with advanced filters and de‑duplication._
 
 ---
 
@@ -267,7 +295,7 @@ npm run api:docs   # builds docs/api.html from docs/openapi.yaml
 
 ---
 
-## �️ Development
+## 🛠️ Development
 
 ### Prerequisites (Development)
 
@@ -402,7 +430,7 @@ When reporting bugs, please include:
 
 ---
 
-## � Documentation
+## 📚 Documentation
 
 - **[Feature List](featurelist.md)** - Complete feature overview with screenshots
 - **[API Documentation](docs/api.html)** - Technical API reference
