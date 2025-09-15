@@ -154,6 +154,14 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
     trends: searchResults.value.trends
   }))
 
+  // Studio count based on search results analytics
+  const studioCount = computed(() =>
+    searchResults.value.analytics.topCompanies?.length || 150
+  )
+
+  // Gaming jobs is just an alias for the search results jobs
+  const gamingJobs = computed(() => searchResults.value.jobs)
+
   // Methods
   const searchJobs = async (resetPage = true) => {
     if (resetPage) currentPage.value = 1
@@ -455,9 +463,12 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
     searchSuggestions,
     topRecommendations,
     marketInsights,
+    studioCount,
+    gamingJobs,
     
     // Methods
     searchJobs,
+    searchGamingJobs: searchJobs, // Alias for consistency
     clearSearch,
     resetFilters,
     applySuggestion,

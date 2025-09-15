@@ -654,7 +654,7 @@ router.beforeEach(async (to, from, next) => {
   try {
     performanceMonitor.markStart(`route-${to.name}`);
   } catch (_e) {
-    logger.debug("Route performance tracking failed:", e);
+    logger.debug("Route performance tracking failed:", _e);
   }
   // Lightweight AI auto-initialization for AI powered routes (idempotent)
   if (to.meta?.aiPowered) {
@@ -672,7 +672,7 @@ router.beforeEach(async (to, from, next) => {
         });
       }
     } catch (_e) {
-      logger.debug("AI auto-init skipped (non-critical):", e);
+      logger.debug("AI auto-init skipped (non-critical):", _e);
     }
   }
 
@@ -695,7 +695,7 @@ router.beforeEach(async (to, from, next) => {
       document.body.classList.add("mui-route");
       document.body.classList.remove("standard-route");
     } catch (_e) {
-      logger.debug("MUI theme setup failed:", e);
+      logger.debug("MUI theme setup failed:", _e);
     }
   } else {
     document.body.classList.remove("mui-route");
@@ -710,7 +710,7 @@ router.beforeEach(async (to, from, next) => {
       NProgress.start();
       routeNPStarted = true;
     } catch (_e) {
-      logger.debug("NProgress start failed:", e);
+      logger.debug("NProgress start failed:", _e);
     }
   }, 120);
   next();
@@ -734,7 +734,7 @@ router.afterEach((to, from) => {
         }
       });
     } catch (_e) {
-      logger.debug("Scroll-to-top failed:", e);
+      logger.debug("Scroll-to-top failed:", _e);
     }
     try {
       performanceMonitor.markEnd(`route-${to.name}`, {
@@ -742,7 +742,7 @@ router.afterEach((to, from) => {
         toRoute: to.name,
       });
     } catch (_e) {
-      logger.debug("Route performance end tracking failed:", e);
+      logger.debug("Route performance end tracking failed:", _e);
     }
     // Optional gentle effects (if anime.js is available)
     try {
@@ -753,7 +753,7 @@ router.afterEach((to, from) => {
         staggerFadeIn(container);
       }
     } catch (_e) {
-      logger.warn("Route animation failed:", e);
+      logger.warn("Route animation failed:", _e);
     }
     if (routeNPDelayTimer) {
       clearTimeout(routeNPDelayTimer);
@@ -763,7 +763,7 @@ router.afterEach((to, from) => {
       try {
         NProgress.done();
       } catch (_e) {
-        logger.debug("NProgress done failed:", e);
+        logger.debug("NProgress done failed:", _e);
       }
       routeNPStarted = false;
     }
@@ -780,9 +780,16 @@ router.afterEach((to, from) => {
       if (sr)
         sr.textContent = `Navigated to ${to.meta?.title || to.name || "page"}`;
     } catch (_e) {
-      logger.debug("Route ARIA announce failed:", e);
+      logger.debug("Route ARIA announce failed:", _e);
     }
   }, 100);
+});
+
+// Add global error handler for navigation failures
+router.onError((error) => {
+  console.warn('Router navigation error:', error);
+  // Don't throw - just log and continue
+  // This prevents router warnings from disrupting navigation
 });
 
 export default router;

@@ -555,7 +555,6 @@ import { useAIJobSearch } from '@/composables/useAIJobSearch.js'
 import { useAppStore } from '@/stores/app'
 
 // Services
-import { CanonicalJobService } from '@/services/CanonicalJobService'
 import { verifyAggregation, verifyDirectOpenEndpoints } from '@/services/IngestionVerifier'
 import { toastService } from '@/shared/services/toastService'
 
