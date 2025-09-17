@@ -1010,7 +1010,7 @@
           <!-- Common Roles -->
           <div v-if="selectedStudioForModal.commonRoles" class="mb-6">
             <div class="flex items-center mb-4">
-              <AppIcon name="UserIcon-tie" color="primary" class="mr-2" />
+              <UserIcon class="mr-2 w-6 h-6 text-primary-600" />
               <h3 class="text-lg font-semibold">Common Roles</h3>
             </div>
             <div class="flex flex-wrap gap-glass-sm">
@@ -1027,7 +1027,7 @@
           <!-- Interview Style -->
           <div v-if="selectedStudioForModal.interviewStyle" class="mb-6">
             <div class="flex items-center mb-4">
-              <AppIcon name="mdi-forum" color="primary" class="mr-2" />
+              <ChatBubbleLeftRightIcon class="mr-2 w-6 h-6 text-primary-600" />
               <h3 class="text-lg font-semibold">Interview Style</h3>
             </div>
             <p class="text-body-1 text-medium-emphasis">{{ selectedStudioForModal.interviewStyle }}</p>
@@ -1118,7 +1118,7 @@
 </template>
 
 <script setup lang="ts">
-import { AdjustmentsHorizontalIcon, ArrowPathIcon, BellIcon, BriefcaseIcon, BuildingOffice2Icon, BuildingOfficeIcon, CalendarIcon, ChartBarSquareIcon, ChevronDownIcon, ClockIcon, CogIcon, CpuChipIcon, DeviceTabletIcon, EyeIcon, InformationCircleIcon, LightBulbIcon, MagnifyingGlassIcon, PaperAirplaneIcon, PuzzlePieceIcon, SparklesIcon, UsersIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { AdjustmentsHorizontalIcon, ArrowPathIcon, BellIcon, BriefcaseIcon, BuildingOfficeIcon, CalendarIcon, ChartBarSquareIcon, ChatBubbleLeftRightIcon, ChevronDownIcon, ClockIcon, CogIcon, CpuChipIcon, CurrencyDollarIcon, EyeIcon, InformationCircleIcon, LightBulbIcon, MagnifyingGlassIcon, PuzzlePieceIcon, SparklesIcon, UserIcon, UsersIcon } from '@heroicons/vue/24/outline'
 import { CheckCircleIcon, HeartIcon, MapPinIcon, StarIcon } from '@heroicons/vue/24/solid'
 
 import { ref, computed, onMounted, watch } from 'vue'
