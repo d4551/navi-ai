@@ -149,6 +149,18 @@ const iconVariant = computed(() => ({
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--glass-bg-hover);
+  border: 1px solid var(--glass-border);
+  animation: pulse-gaming 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.empty-state-icon:hover {
+  transform: scale(1.05);
+  background: var(--glass-bg-active);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+  justify-content: center;
   background: var(--glass-bg);
   border: 2px solid var(--glass-border);
   transition: all var(--duration-normal) var(--easing-ease-out);

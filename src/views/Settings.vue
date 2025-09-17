@@ -1592,7 +1592,7 @@ const showChangelog = () => {
 - Foundation for gaming career tools
 `
 
-  // Show changelog in a modal or alert
+  // Show changelog in a modal
   if (store?.showModal) {
     store.showModal({
       title: 'NAVI Changelog',
@@ -1600,7 +1600,20 @@ const showChangelog = () => {
       type: 'info'
     })
   } else {
-    alert(changelogContent)
+    // Use the improved gaming modal as fallback
+    const { createGamingModal } = await import('@/shared/utils/modalUtils')
+    createGamingModal({
+      title: 'NAVI Changelog',
+      content: `<div class="changelog-content" style="max-height: 400px; overflow-y: auto; font-family: var(--font-family-sans); line-height: 1.6; white-space: pre-wrap;">${changelogContent}</div>`,
+      size: 'lg',
+      buttons: [
+        {
+          text: 'Close',
+          type: 'secondary',
+          onclick: () => {} // Modal will close automatically
+        }
+      ]
+    })
   }
 }
 
@@ -1636,17 +1649,69 @@ const reportIssue = () => {
 
   const githubUrl = `https://github.com/d4551/navi2/issues/new?title=${issueTitle}&body=${issueBody}`
 
-  // Open GitHub issue page in new tab
-  window.open(githubUrl, '_blank', 'noopener,noreferrer')
-
-  // Show notification
-  if (store?.showNotification) {
-    store.showNotification({
-      type: 'info',
-      message: 'Opening GitHub issue page for bug reporting',
-      duration: 3000
-    })
+  // Try to open GitHub issue page with better error handling
+  try {
+    const opened = window.open(githubUrl, '_blank', 'noopener,noreferrer')
+    
+    if (!opened) {
+      // Fallback: copy URL to clipboard and show modal with instructions
+      navigator.clipboard.writeText(githubUrl).then(() => {
+        showIssueModal('GitHub URL copied to clipboard', 'The issue URL has been copied to your clipboard. Please paste it into a new browser tab to create the issue.', githubUrl)
+      }).catch(() => {
+        showIssueModal('Manual Issue Creation', 'Please copy this URL and paste it into a new browser tab:', githubUrl)
+      })
+    } else {
+      // Show success notification
+      if (store?.showNotification) {
+        store.showNotification({
+          type: 'success',
+          message: 'Opening GitHub issue page for bug reporting',
+          duration: 3000
+        })
+      }
+    }
+  } catch (error) {
+    // Fallback for completely blocked popups
+    showIssueModal('Manual Issue Creation Required', 'Please copy this URL and paste it into a new browser tab:', githubUrl)
   }
+}
+
+const showIssueModal = async (title: string, message: string, url: string) => {
+  const { createGamingModal } = await import('@/shared/utils/modalUtils')
+  createGamingModal({
+    title,
+    content: `
+      <p style="margin-bottom: 16px;">${message}</p>
+      <div style="background: var(--glass-bg-hover); border: 1px solid var(--glass-border); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 14px; word-break: break-all; max-height: 120px; overflow-y: auto;">
+        ${url}
+      </div>
+    `,
+    size: 'lg',
+    buttons: [
+      {
+        text: 'Copy URL',
+        type: 'primary',
+        onclick: () => {
+          navigator.clipboard.writeText(url).then(() => {
+            if (store?.showNotification) {
+              store.showNotification({
+                type: 'success',
+                message: 'URL copied to clipboard!',
+                duration: 2000
+              })
+            }
+          }).catch(() => {
+            console.error('Failed to copy URL to clipboard')
+          })
+        }
+      },
+      {
+        text: 'Close',
+        type: 'secondary',
+        onclick: () => {} // Modal will close automatically
+      }
+    ]
+  })
 }
 
 const requestFeature = () => {

@@ -21,7 +21,16 @@
     @mouseleave="showTooltip = false"
   >
     <!-- Loading Spinner -->
-    <div v-if="loading || isProcessing" class="spinner-gaming mr-2 animate-spin text-current opacity-70 dark:opacity-80" role="status" aria-hidden="true"></div>
+    <div 
+      v-if="loading || isProcessing" 
+      class="spinner-gaming mr-2"
+      :class="{ 
+        'lg': resolvedSize === 'lg' || resolvedSize === 'xl',
+        'xl': resolvedSize === 'xl'
+      }"
+      role="status" 
+      aria-hidden="true"
+    ></div>
     
     <!-- AI Status Icons -->
     <div v-if="showSuccessState" class="ai-success-icon mr-2 text-green-600 dark:text-green-400">
@@ -293,11 +302,14 @@ const buttonClasses = computed(() => {
   if (props.disabled) classes.push('btn-disabled')
   if (props.iconOnly) classes.push('btn-icon-only')
   if (props.fullWidth) classes.push('w-full') // Use w-full from design system
-  if (props.ripple) classes.push('ripple-enabled')
-  if (showSuccessState.value) classes.push('btn-success-state')
-  if (showErrorState.value) classes.push('btn-error-state')
+  if (props.ripple) classes.push('ripple-enabled', 'btn-ripple')
+  if (showSuccessState.value) classes.push('btn-success-state', 'feedback-success')
+  if (showErrorState.value) classes.push('btn-error-state', 'feedback-shake')
   if (props.requiresAuth && !hasAPIKey.value) classes.push('btn-no-api-key')
   if (props.responsive) classes.push('btn-responsive')
+  
+  // Add accessibility indicator for focus management
+  classes.push('accessibility-indicator')
 
   return classes
 })

@@ -160,6 +160,117 @@ export function closeAllModals(): void {
  * Creates a modal with custom styling for the gaming theme
  */
 export function createGamingModal(config: ModalConfig): HTMLElement {
+  const modal = document.createElement('div');
+  modal.className = `modal fade show d-block gaming-modal ${config.className || ''}`;
+  modal.style.backgroundColor = 'rgba(0,0,0,0.85)';
+  modal.style.backdropFilter = 'blur(12px)';
+  modal.style.zIndex = '1060';
+
+  const sizeClass = config.size ? `modal-${config.size}` : 'modal-lg';
+  
+  const buttonsHtml = config.buttons ? config.buttons.map(button => {
+    const btnType = button.type ? `btn-${button.type}` : 'btn-primary';
+    const btnClass = `btn ${btnType} glass-button gaming-btn`;
+    const onclickAttr = typeof button.onclick === 'string' ? button.onclick : '';
+    
+    if (button.href) {
+      return `<a href="${button.href}" ${button.target ? `target="${button.target}"` : ''} 
+               class="${btnClass}" onclick="${onclickAttr}"
+               style="min-height: 44px; min-width: 44px;">
+                 ${button.text}
+               </a>`;
+    } else {
+      return `<button type="button" class="${btnClass}" onclick="${onclickAttr}"
+                style="min-height: 44px; min-width: 44px;">
+                ${button.text}
+              </button>`;
+    }
+  }).join('') : '';
+
+  modal.innerHTML = `
+    <div class="modal-dialog ${sizeClass} modal-dialog-centered">
+      <div class="modal-content gaming-modal-content glass-elevated">
+        <div class="modal-header gaming-modal-header glass-bg">
+          <h4 class="modal-title text-glass-primary font-gaming">
+            <i class="mdi mdi-gamepad-variant mr-2 text-neon-blue"></i>
+            ${config.title}
+          </h4>
+          <button type="button" class="btn-close gaming-close" 
+                  onclick="this.closest('.modal').remove()"
+                  aria-label="Close"
+                  style="min-height: 44px; min-width: 44px;">
+            <i class="mdi mdi-close"></i>
+          </button>
+        </div>
+        <div class="modal-body gaming-modal-body">
+          ${config.content}
+        </div>
+        ${buttonsHtml ? `<div class="modal-footer gaming-modal-footer glass-bg-hover">
+          ${buttonsHtml}
+        </div>` : ''}
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Enhanced focus management for accessibility
+  const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  if (firstFocusable) {
+    setTimeout(() => (firstFocusable as HTMLElement).focus(), 100);
+  }
+
+  // Handle outside click with improved gaming UX
+  if (config.closeOnOutsideClick !== false) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        // Add subtle closing animation
+        modal.style.opacity = '0';
+        modal.style.transform = 'scale(0.95)';
+        setTimeout(() => modal.remove(), 200);
+      }
+    });
+  }
+
+  // Handle escape key
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      modal.style.opacity = '0';
+      modal.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        modal.remove();
+        document.removeEventListener('keydown', handleEscape);
+      }, 200);
+    }
+  };
+  document.addEventListener('keydown', handleEscape);
+
+  // Handle function-based button clicks with improved error handling
+  if (config.buttons) {
+    config.buttons.forEach((button, index) => {
+      if (typeof button.onclick === 'function') {
+        const buttonElement = modal.querySelectorAll('.modal-footer .btn')[index];
+        if (buttonElement) {
+          buttonElement.addEventListener('click', (e) => {
+            try {
+              button.onclick!(e);
+            } catch (error) {
+              console.error('Error executing button callback:', error);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  // Add entrance animation
+  requestAnimationFrame(() => {
+    modal.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+    modal.style.opacity = '1';
+    modal.style.transform = 'scale(1)';
+  });
+
+  return modal;
   const modal = createModal({
     ...config,
     className: `gaming-modal ${config.className || ''}`
