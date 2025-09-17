@@ -63,6 +63,19 @@ const inlinePatterns = [
     pattern: /:style="\{\s*fontFamily:\s*'var\(--font-family-primary\)'\s*\}"/g,
     replacement: 'class="font-sans"'
   },
+  {
+    pattern: /:style="\{\s*fontWeight:\s*'var\(--font-weight-medium\)'\s*\}"/g,
+    replacement: 'class="font-medium"'
+  },
+  {
+    pattern: /:style="\{\s*fontSize:\s*'var\(--font-size-sm\)'\s*\}"/g,
+    replacement: 'class="text-sm"'
+  },
+  // Background image patterns (leave dynamic, but clean up simple ones)
+  {
+    pattern: /style="background-image:\s*none;?"/g,
+    replacement: 'class="bg-none"'
+  },
   // Computed styles with simple patterns
   {
     pattern: /style="([^"]*width:\s*\d+px[^"]*)"/g,
