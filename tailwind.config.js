@@ -7,6 +7,7 @@ const optionalPlugins = []
 try { optionalPlugins.push(require('@tailwindcss/forms')) } catch {}
 try { optionalPlugins.push(require('@tailwindcss/typography')) } catch {}
 try { optionalPlugins.push(require('@tailwindcss/aspect-ratio')) } catch {}
+try { optionalPlugins.push(require('@tailwindplus/elements/plugin')) } catch {}
 
 export default {
   important: true,
@@ -52,30 +53,22 @@ export default {
           'sans-serif',
         ],
         mono: [
-          'Fira Code',
-          'JetBrains Mono',
-          'SF Mono',
-          'Monaco',
-          'Inconsolata',
-          'Roboto Mono',
-          'Menlo',
-          'Consolas',
-          'Liberation Mono',
-          'Courier New',
-          'monospace',
+          "'Fira Code Variable'", 
+          "'Fira Code'", 
+          "ui-monospace", 
+          "SFMono-Regular", 
+          "Monaco", 
+          "Consolas", 
+          "monospace"
         ],
         code: [
-          'Fira Code',
-          'JetBrains Mono',
-          'SF Mono',
-          'Monaco',
-          'Inconsolata',
-          'Roboto Mono',
-          'Menlo',
-          'Consolas',
-          'Liberation Mono',
-          'Courier New',
-          'monospace',
+          "'Fira Code Variable'", 
+          "'Fira Code'", 
+          "ui-monospace", 
+          "SFMono-Regular", 
+          "Monaco", 
+          "Consolas", 
+          "monospace"
         ],
       },
       colors: {

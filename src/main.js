@@ -1,6 +1,9 @@
 import { createApp, watch } from "vue";
 import { createPinia, setActivePinia } from "pinia";
 import App from "./App.vue";
+import router from "./router";
+import "@fontsource/fira-code"; // Fira Code font
+import "./assets/tailwind.css";
 
 // Add ripple utility import (auto-inits)
 import "./utils/ripple.js";
@@ -75,8 +78,6 @@ import NProgress from "nprogress";
 import { initStatusPanels } from "@/utils/statusPanel";
 import { initMdiAliasRuntime } from "@/utils/mdiAliasRuntime";
 
-// Router
-import router from "./router";
 // Global directive: glass scroll nav
 import glassScrollNav from "./directives/glassScrollNav";
 import i18n, { setLanguage } from "@/utils/i18n";
