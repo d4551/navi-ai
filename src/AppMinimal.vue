@@ -1,6 +1,6 @@
 <template>
   <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;">
-    <div style="text-align:center;max-width:720px;padding:24px;">
+    <div class="w-[720px]">
       <h1 style="font-size:28px;margin:0 0 12px 0;">NAVI Dev Shell</h1>
       <p style="margin:0 0 16px 0;opacity:0.8;">Vite is running with a minimal app to bypass syntax errors in the main codebase.</p>
       <p style="margin:0 0 8px 0;opacity:0.8;">Once you’re ready, we can gradually re-enable features.</p>

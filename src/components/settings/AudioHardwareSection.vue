@@ -253,7 +253,7 @@
                   type="text"
                   class="form-control glass-input"
                   readonly
-                  style="max-width: 120px;"
+                  class="w-[120px]"
                 />
                 <UnifiedButton
                   variant="outline"

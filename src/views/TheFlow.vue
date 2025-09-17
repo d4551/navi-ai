@@ -146,7 +146,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
           <!-- Flow Header -->
           <div class="flow-header">
             <div class="flow-icon">
-              <i :class="getFlowIcon(flow.category)" class="flow-type-icon"></i>
+              <i :class="getFlowIcon(flow.category) flow-type-icon"></i>
             </div>
             
             <div class="flow-info">
@@ -270,7 +270,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
                 @click="createFromTemplate(template)"
               >
                 <div class="template-icon">
-                  <i :class="template.icon" class="rgb-icon"></i>
+                  <i :class="template.icon rgb-icon"></i>
                 </div>
                 <div class="template-info">
                   <h4>{{ template.name }}</h4>
@@ -336,7 +336,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
         <div class="flow-modal glass-modal" @click.stop>
           <div class="modal-header">
             <div class="modal-title">
-              <i :class="getFlowIcon(selectedFlow.category)" class="modal-icon"></i>
+              <i :class="getFlowIcon(selectedFlow.category) modal-icon"></i>
               <h2>{{ selectedFlow.name }}</h2>
             </div>
             <UnifiedButton color="ghost" appearance="text" icon-only icon="XMarkIcon" aria-label="Close details" @click="closeFlowDetails" />
@@ -357,7 +357,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
                     :key="node.id"
                     class="node-item"
                   >
-                    <i :class="getNodeIcon(node.type)" class="node-icon"></i>
+                    <i :class="getNodeIcon(node.type) node-icon"></i>
                     <span class="node-label">{{ node.label || node.type }}</span>
                   </div>
                 </div>
@@ -380,7 +380,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
                     type="text"
                     class="glass-input"
                     placeholder="e.g., 0 9 * * *"
-                    style="min-width: 220px;"
+                    class="w-[220px]"
                     :disabled="cronBusy"
                   />
                   <UnifiedButton color="glass" appearance="outlined" :loading="cronBusy" @click="applyCronUpdate">Update</UnifiedButton>

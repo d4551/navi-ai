@@ -28,7 +28,7 @@
                   :class="{ active: activeTab === tab.id }"
                   @click="activeTab = tab.id"
                 >
-                  <i :class="tab.icon" class="mr-1"></i>
+                  <i :class="tab.icon mr-1"></i>
                   {{ tab.label }}
                   <span v-if="tab.count !== undefined" class="badge bg-blue-500 ml-1">{{ tab.count }}</span>
                 </button>
@@ -140,7 +140,7 @@
                           <div class="unified-card glass-card section-card">
                             <div class="card-header section-header card-header--dense">
                               <h6 class="mb-0">
-                                <i :class="metric.icon" class="mr-2"></i>
+                                <i :class="metric.icon mr-2"></i>
                                 {{ metric.title }}
                               </h6>
                             </div>
@@ -196,7 +196,7 @@
                       <AppIcon name="CpuChipIcon" class="spin mdi-48px mb-3 text-primary-600" />
                       <h6 class="mb-2">Analyzing Your Content</h6>
                       <p class="text-secondary">AI is evaluating your {{ currentEntityType }} and generating personalized recommendations...</p>
-                      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto;">
+                      <div class="progress mt-3 w-[300px]">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
                       </div>
                     </div>

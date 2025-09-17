@@ -172,7 +172,7 @@
       <AppIcon name="CpuChipIcon" class="mdi-48px mb-3 text-primary-600 mdi-spin" />
       <h6 class="mb-2">Analyzing Your Resume</h6>
       <p class="text-secondary">AI is evaluating your content and generating personalized recommendations...</p>
-      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto;">
+      <div class="progress mt-3 w-[300px]">
         <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
       </div>
     </div>

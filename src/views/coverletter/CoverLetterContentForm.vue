@@ -178,7 +178,7 @@
     >
       <div class="alert" :class="getReviewAlertClass()">
         <div class="flex items-start gap-glass-md">
-          <i :class="getReviewIcon()" class="icon-lg" aria-hidden="true"></i>
+          <i :class="getReviewIcon() icon-lg" aria-hidden="true"></i>
           <div class="flex-grow-1">
             <h3 id="review-results-title" class="h6 mb-2">AI Review Results</h3>
             
@@ -194,7 +194,7 @@
                 <div
                   class="progress-bar"
                   :class="getScoreProgressClass(reviewResults.score)"
-                  :style="`width: ${reviewResults.score}%`"
+                  :class="`w-[${reviewResults.score}%]`"
                 ></div>
               </div>
             </div>

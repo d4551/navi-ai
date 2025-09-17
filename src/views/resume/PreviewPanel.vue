@@ -1,8 +1,7 @@
 <template>
   <div 
     class="preview-panel-wrapper"
-    :class="theme?.getThemeClasses?.('resume-preview')"
-    class="font-sans"
+    :class="theme?.getThemeClasses?.('resume-preview') font-sans"
   >
     <!-- Preview Controls Header -->
     <div class="preview-controls glass-elevated mb-3">
@@ -109,7 +108,7 @@
           >
             <div
               class="progress-bar bg-success-500"
-              :style="`width: ${completionPercentage}%`"
+              :class="`w-[${completionPercentage}%]`"
               role="progressbar"
               :aria-valuenow="completionPercentage"
               aria-valuemin="0"

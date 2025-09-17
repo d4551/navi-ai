@@ -220,8 +220,7 @@
                   label="Filter by Category"
                   variant="outlined"
                   density="compact"
-                  class="filter-select"
-                  style="min-width: 200px;"
+                  class="filter-select w-[200px]"
                 />
               </div>
             </div>
@@ -327,7 +326,7 @@
                 </p>
               </div>
 
-              <UnifiedCard variant="glass" class="interview-setup-card mx-auto" style="max-width: 600px;">
+              <UnifiedCard variant="glass" class="interview-setup-card mx-auto w-[600px]">
                 <div class="setup-summary mb-4">
                   <h4 class="text-lg font-semibold mb-3">Interview Configuration</h4>
                   <div class="config-item">

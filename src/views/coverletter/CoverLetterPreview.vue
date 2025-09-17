@@ -24,7 +24,7 @@
           <select
             class="form-select form-select-sm glass-input"
             :value="selectedTemplate"
-            style="min-width: 140px"
+            class="w-[140px]"
             @change="onTemplateChange"
           >
             <option value="professional">Professional</option>

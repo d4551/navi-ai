@@ -1,6 +1,9 @@
 import { createApp, watch } from "vue";
 import { createPinia, setActivePinia } from "pinia";
 import App from "./App.vue";
+import router from "./router";
+import "@fontsource/fira-code/variable.css"; // Fira Code variable font
+import "./assets/tailwind.css";
 
 // Add ripple utility import (auto-inits)
 import "./utils/ripple.js";

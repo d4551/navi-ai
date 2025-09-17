@@ -7,12 +7,7 @@
     <!-- Header Section -->
     <div 
       class="skills-header glass-elevated"
-      :style="{
-        backgroundColor: 'var(--color-surface)',
-        borderBottom: '1px solid var(--color-gray-200)',
-        padding: 'var(--spacing-lg)',
-        fontFamily: 'var(--font-family-primary)'
-      }"
+      class="bg-surface border-b border-gray-200 p-6 font-sans"
     >
       <div class="flex items-center justify-space-between">
         <div class="flex items-center gap-glass-md">
@@ -30,7 +25,7 @@
             </h3>
             <p 
               class="text-body-2 mb-0"
-              :style="{ color: 'var(--color-gray-600)' }"
+              class="text-text-secondary"
             >
               Showcase your technical and soft skills from your profile
             </p>
@@ -48,21 +43,14 @@
     <!-- Skills Categories -->
     <div 
       class="skills-content"
-      :style="{
-        padding: 'var(--spacing-lg)',
-        backgroundColor: 'var(--color-background)'
-      }"
+      class="p-6 bg-background"
     >
       <!-- Technical Skills -->
       <div class="skills-category mb-4">
         <div class="category-header mb-3">
           <h4 
             class="text-base font-medium mb-2"
-            :style="{
-              color: 'var(--color-on-surface)',
-              fontFamily: 'var(--font-family-primary)',
-              fontWeight: 'var(--font-weight-medium)'
-            }"
+            class="text-text-primary font-sans font-medium"
           >
             <AppIcon name="CommandLineIcon" size="20" class="mr-2" />
             Technical Skills
