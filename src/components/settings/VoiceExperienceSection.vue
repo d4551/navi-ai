@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card mb-4" role="region" aria-labelledby="voice-experience-title">
+  <div
+    class="settings-card mb-4"
+    role="region"
+    aria-labelledby="voice-experience-title"
+  >
     <div class="card-header section-header card-header--dense">
       <h5 id="voice-experience-title" class="mb-0">
         <SoundwaveIconComponent class="mr-2 icon-sm" />Voice Experience
@@ -8,7 +12,9 @@
     </div>
     <div class="card-body section-body card-body--dense">
       <!-- Voice Mode Toggle -->
-      <div class="voice-mode-section mb-4 p-glass-md border rounded-3 glass-input">
+      <div
+        class="voice-mode-section mb-4 p-glass-md border rounded-3 glass-input"
+      >
         <div class="flex items-center mb-3">
           <SoundwaveIconComponent class="mr-2 text-primary-600" />
           <h6 class="mb-0 text-primary-600 font-bold">Voice Interaction</h6>
@@ -32,15 +38,21 @@
       </div>
 
       <!-- Advanced Voice Settings -->
-      <div class="advanced-voice-section p-glass-md border rounded-3 glass-input">
+      <div
+        class="advanced-voice-section p-glass-md border rounded-3 glass-input"
+      >
         <div class="flex items-center mb-3">
           <SettingsIconComponent class="mr-2 text-primary-600" />
-          <h6 class="mb-0 text-primary-600 font-bold">Advanced Voice Settings</h6>
+          <h6 class="mb-0 text-primary-600 font-bold">
+            Advanced Voice Settings
+          </h6>
         </div>
 
         <!-- TTS Provider Selection -->
         <div class="mb-3">
-          <label for="tts-provider" class="form-label font-medium">Text-to-Speech Provider</label>
+          <label for="tts-provider" class="form-label font-medium"
+            >Text-to-Speech Provider</label
+          >
           <select
             id="tts-provider"
             v-model="localSettings.ttsProvider"
@@ -53,38 +65,59 @@
           </select>
           <div class="form-text">
             <span v-if="localSettings.ttsProvider === 'system'">
-              Uses your browser's built-in text-to-speech engine (fast and reliable)
+              Uses your browser's built-in text-to-speech engine (fast and
+              reliable)
             </span>
             <span v-else-if="localSettings.ttsProvider === 'gemini'">
-              Uses Google AI Gemini for natural-sounding speech (requires API key)
-              <div v-if="!localSettings.geminiApiKey" class="alert alert-warning mt-2 mb-0">
+              Uses Google AI Gemini for natural-sounding speech (requires API
+              key)
+              <div
+                v-if="!localSettings.geminiApiKey"
+                class="alert alert-warning mt-2 mb-0"
+              >
                 <ExclamationTriangleIcon class="h-4 w-4 inline-block mr-1" />
-                <strong>API Key Required:</strong> Please set your Gemini API key in the AI & API section above to use Google AI TTS.
+                <strong>API Key Required:</strong> Please set your Gemini API
+                key in the AI & API section above to use Google AI TTS.
               </div>
             </span>
             <span v-else-if="localSettings.ttsProvider === 'google-cloud'">
-              Uses Google Cloud Text-to-Speech API for professional-quality voices (requires separate Google Cloud API key)
-              <div v-if="!localSettings.googleCloudApiKey && !localSettings.geminiApiKey" class="alert alert-warning mt-2 mb-0">
+              Uses Google Cloud Text-to-Speech API for professional-quality
+              voices (requires separate Google Cloud API key)
+              <div
+                v-if="
+                  !localSettings.googleCloudApiKey &&
+                  !localSettings.geminiApiKey
+                "
+                class="alert alert-warning mt-2 mb-0"
+              >
                 <ExclamationTriangleIcon class="h-4 w-4 inline-block mr-1" />
-                <strong>API Key Required:</strong> Google Cloud TTS requires a Google Cloud API key with Text-to-Speech permissions, not a Gemini API key.
+                <strong>API Key Required:</strong> Google Cloud TTS requires a
+                Google Cloud API key with Text-to-Speech permissions, not a
+                Gemini API key.
               </div>
             </span>
             <span v-else-if="localSettings.ttsProvider === 'kokoro'">
-              Uses Kokoro TTS with locally downloaded models for high-quality neural voice synthesis (no internet required)
+              Uses Kokoro TTS with locally downloaded models for high-quality
+              neural voice synthesis (no internet required)
             </span>
           </div>
-          
+
           <!-- Provider Health Status -->
-          <div v-if="providerHealth && Object.keys(providerHealth).length > 0" class="mt-3">
+          <div
+            v-if="providerHealth && Object.keys(providerHealth).length > 0"
+            class="mt-3"
+          >
             <label class="form-label font-medium">Provider Health Status</label>
             <div class="provider-health-grid">
-              <div 
-                v-for="(health, provider) in providerHealth" 
+              <div
+                v-for="(health, provider) in providerHealth"
                 :key="provider"
                 class="health-indicator"
                 :class="`health-${health.status}`"
               >
-                <div class="health-provider">{{ formatProviderName(provider) }}</div>
+                <div class="health-provider">
+                  {{ formatProviderName(provider) }}
+                </div>
                 <div class="health-score">{{ health.healthScore }}%</div>
                 <div class="health-status">{{ health.status }}</div>
               </div>
@@ -94,7 +127,9 @@
 
         <!-- Kokoro Model Selection (only shown when Kokoro is selected) -->
         <div v-if="localSettings.ttsProvider === 'kokoro'" class="mb-3">
-          <label for="kokoro-model" class="form-label font-medium">Kokoro Voice Model</label>
+          <label for="kokoro-model" class="form-label font-medium"
+            >Kokoro Voice Model</label
+          >
           <select
             id="kokoro-model"
             v-model="localSettings.kokoroModel"
@@ -108,8 +143,9 @@
             <option value="custom">Custom Model</option>
           </select>
           <div class="form-text">
-            Select which locally downloaded Kokoro model to use for voice synthesis.
-            Models are stored in <code>/public/local-models/kokoro/</code>
+            Select which locally downloaded Kokoro model to use for voice
+            synthesis. Models are stored in
+            <code>/public/local-models/kokoro/</code>
           </div>
         </div>
 
@@ -118,7 +154,9 @@
           <label class="form-label font-medium">Voice Quality Settings</label>
           <div class="flex flex-wrap g-3">
             <div class="flex-1-sm-6">
-              <label for="voice-quality" class="form-label">Quality Level</label>
+              <label for="voice-quality" class="form-label"
+                >Quality Level</label
+              >
               <select
                 id="voice-quality"
                 v-model="qualitySettings.preferredQuality"
@@ -146,14 +184,17 @@
             </div>
           </div>
           <div class="form-text">
-            Adaptive quality automatically adjusts based on network performance and provider health.
+            Adaptive quality automatically adjusts based on network performance
+            and provider health.
           </div>
         </div>
 
         <!-- TTS Testing Panel -->
         <div class="tts-testing-panel p-glass-md border rounded-3 glass-input">
           <div class="flex items-center justify-between mb-3">
-            <h6 class="mb-0 text-primary-600 font-bold">Voice Testing & Diagnostics</h6>
+            <h6 class="mb-0 text-primary-600 font-bold">
+              Voice Testing & Diagnostics
+            </h6>
             <UnifiedButton
               v-if="!isRunningDiagnostics"
               variant="outline"
@@ -164,7 +205,10 @@
               Run Diagnostics
             </UnifiedButton>
             <div v-else class="flex items-center text-primary-600">
-              <div class="spinner-border spinner-border-sm mr-2" role="status"></div>
+              <div
+                class="spinner-border spinner-border-sm mr-2"
+                role="status"
+              ></div>
               <span class="small">Running diagnostics...</span>
             </div>
           </div>
@@ -210,18 +254,24 @@
           <div v-if="testResults.length > 0" class="test-results">
             <label class="form-label font-medium">Recent Test Results</label>
             <div class="test-results-list">
-              <div 
-                v-for="result in testResults.slice(-3)" 
+              <div
+                v-for="result in testResults.slice(-3)"
                 :key="result.id"
                 class="test-result-item"
-                :class="{ 'success': result.success, 'error': !result.success }"
+                :class="{ success: result.success, error: !result.success }"
               >
                 <div class="result-header">
-                  <span class="result-provider">{{ formatProviderName(result.provider) }}</span>
-                  <span class="result-time">{{ formatTime(result.timestamp) }}</span>
+                  <span class="result-provider">{{
+                    formatProviderName(result.provider)
+                  }}</span>
+                  <span class="result-time">{{
+                    formatTime(result.timestamp)
+                  }}</span>
                 </div>
                 <div class="result-message">{{ result.message }}</div>
-                <div v-if="result.duration" class="result-duration">{{ result.duration }}ms</div>
+                <div v-if="result.duration" class="result-duration">
+                  {{ result.duration }}ms
+                </div>
               </div>
             </div>
           </div>
@@ -241,7 +291,8 @@
               </label>
             </div>
             <div class="form-text">
-              When enabled, chat will re‑arm the mic after NAVI finishes speaking.
+              When enabled, chat will re‑arm the mic after NAVI finishes
+              speaking.
             </div>
           </div>
 
@@ -259,7 +310,10 @@
             </div>
             <div class="form-text hint-chip" role="note">
               <SlashIconComponent />
-              <span>Independent of notifications; respects reduced-motion preference</span>
+              <span
+                >Independent of notifications; respects reduced-motion
+                preference</span
+              >
             </div>
           </div>
         </div>
@@ -273,11 +327,15 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 import {
   SoundwaveIconComponent,
   SettingsIconComponent,
-  SlashIconComponent
+  SlashIconComponent,
 } from './SettingsIcons.js'
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
-import { getVoiceService, getVoiceQualityPreferences, setVoiceQualityPreferences } from '@/utils/voice'
+import {
+  getVoiceService,
+  getVoiceQualityPreferences,
+  setVoiceQualityPreferences,
+} from '@/utils/voice'
 
 export default {
   name: 'VoiceExperienceSection',
@@ -286,18 +344,18 @@ export default {
     SettingsIconComponent,
     SlashIconComponent,
     ExclamationTriangleIcon,
-    UnifiedButton
+    UnifiedButton,
   },
   props: {
     voiceSettings: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   emits: ['save', 'update:voiceSettings'],
   setup(props, { emit }) {
     const voiceService = getVoiceService()
-    
+
     // Create a computed property that handles v-model properly
     const localSettings = computed({
       get() {
@@ -307,19 +365,21 @@ export default {
           kokoroModel: 'default',
           voiceHandsFree: false,
           chatCuesMuted: false,
-          ...props.voiceSettings
+          ...props.voiceSettings,
         }
       },
       set(value) {
         emit('save', value)
         emit('update:voiceSettings', value)
-      }
+      },
     })
 
     // Enhanced functionality state
     const qualitySettings = ref(getVoiceQualityPreferences())
     const providerHealth = ref({})
-    const testMessage = ref('This is a test of the voice synthesis system. Quality and responsiveness are being evaluated.')
+    const testMessage = ref(
+      'This is a test of the voice synthesis system. Quality and responsiveness are being evaluated.'
+    )
     const testResults = ref([])
     const isTesting = ref(false)
     const isRunningDiagnostics = ref(false)
@@ -331,7 +391,10 @@ export default {
         providerHealth.value = voiceService.getProviderHealth()
       } catch (error) {
         // Failed to get provider health - this is expected if service is not configured
-        providerHealth.value[provider] = { status: 'error', message: 'Service unavailable' }
+        providerHealth.value[provider] = {
+          status: 'error',
+          message: 'Service unavailable',
+        }
       }
     }
 
@@ -343,17 +406,17 @@ export default {
     // Provider testing
     const testCurrentProvider = async () => {
       if (!testMessage.value.trim() || isTesting.value) return
-      
+
       isTesting.value = true
       const startTime = Date.now()
       const provider = localSettings.value.ttsProvider
-      
+
       try {
         await voiceService.speak(testMessage.value, {
           provider,
-          ...localSettings.value
+          ...localSettings.value,
         })
-        
+
         const duration = Date.now() - startTime
         const result = {
           id: Date.now(),
@@ -361,20 +424,19 @@ export default {
           success: true,
           message: 'Voice test completed successfully',
           duration,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         }
-        
+
         testResults.value.push(result)
-        
       } catch (error) {
         const result = {
           id: Date.now(),
           provider,
           success: false,
           message: error.message,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         }
-        
+
         testResults.value.push(result)
       } finally {
         isTesting.value = false
@@ -385,15 +447,17 @@ export default {
     // Full diagnostics
     const runFullDiagnostics = async () => {
       isRunningDiagnostics.value = true
-      
+
       try {
         const diagnosticsReport = await voiceService.getDiagnosticsReport()
         // Diagnostics completed successfully - report available in dev console if needed
         updateProviderHealth()
-        
       } catch (error) {
         // Diagnostics failed - provider may not be available
-        providerHealth.value = { status: 'error', message: 'Diagnostics failed' }
+        providerHealth.value = {
+          status: 'error',
+          message: 'Diagnostics failed',
+        }
       } finally {
         isRunningDiagnostics.value = false
       }
@@ -402,7 +466,7 @@ export default {
     // Live monitoring
     const toggleLiveMonitoring = () => {
       if (liveMonitoring.value) {
-        voiceService.startMonitoring((data) => {
+        voiceService.startMonitoring(data => {
           updateProviderHealth()
           // Monitoring data available - processing in background
         }, 15000)
@@ -412,24 +476,24 @@ export default {
     }
 
     // Utility functions
-    const formatProviderName = (provider) => {
+    const formatProviderName = provider => {
       const names = {
-        'system': 'System TTS',
-        'gemini': 'Gemini AI',
+        system: 'System TTS',
+        gemini: 'Gemini AI',
         'google-cloud': 'Google Cloud',
-        'kokoro': 'Kokoro TTS'
+        kokoro: 'Kokoro TTS',
       }
       return names[provider] || provider
     }
 
-    const formatTime = (timestamp) => {
+    const formatTime = timestamp => {
       return new Date(timestamp).toLocaleTimeString()
     }
 
     // Lifecycle
     onMounted(() => {
       updateProviderHealth()
-      
+
       onUnmounted(() => {
         if (liveMonitoring.value) {
           voiceService.stopMonitoring()
@@ -451,9 +515,9 @@ export default {
       runFullDiagnostics,
       toggleLiveMonitoring,
       formatProviderName,
-      formatTime
+      formatTime,
     }
-  }
+  },
 }
 </script>
 
@@ -477,22 +541,38 @@ export default {
 
 .health-indicator.health-healthy {
   border-color: var(--color-success-300);
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.1) 0%,
+    rgba(34, 197, 94, 0.05) 100%
+  );
 }
 
 .health-indicator.health-degraded {
   border-color: var(--color-warning-300);
-  background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.1) 0%,
+    rgba(249, 115, 22, 0.05) 100%
+  );
 }
 
 .health-indicator.health-failed {
   border-color: var(--color-danger-300);
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1) 0%,
+    rgba(239, 68, 68, 0.05) 100%
+  );
 }
 
 .health-indicator.health-unknown {
   border-color: var(--color-gray-300);
-  background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(107, 114, 128, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(107, 114, 128, 0.1) 0%,
+    rgba(107, 114, 128, 0.05) 100%
+  );
 }
 
 .health-provider {
@@ -578,12 +658,20 @@ export default {
 
 .test-result-item.success {
   border-l-color: var(--color-success-500);
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.02) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.05) 0%,
+    rgba(34, 197, 94, 0.02) 100%
+  );
 }
 
 .test-result-item.error {
   border-l-color: var(--color-danger-500);
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.02) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.05) 0%,
+    rgba(239, 68, 68, 0.02) 100%
+  );
 }
 
 .test-result-item:hover {
@@ -632,11 +720,11 @@ export default {
   .provider-health-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .test-result-item {
     padding: 0.5rem;
   }
-  
+
   .result-header {
     flex-direction: column;
     align-items: flex-start;

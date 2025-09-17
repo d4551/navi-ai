@@ -1,7 +1,11 @@
 <template>
   <div class="form-control-wrapper">
     <!-- Radio Button -->
-    <div v-if="type === 'radio'" class="form-radio" :class="{ 'form-radio-disabled': disabled }">
+    <div
+      v-if="type === 'radio'"
+      class="form-radio"
+      :class="{ 'form-radio-disabled': disabled }"
+    >
       <input
         :id="inputId"
         type="radio"
@@ -31,7 +35,11 @@
     </div>
 
     <!-- Checkbox -->
-    <div v-else-if="type === 'checkbox'" class="form-checkbox" :class="{ 'form-checkbox-disabled': disabled }">
+    <div
+      v-else-if="type === 'checkbox'"
+      class="form-checkbox"
+      :class="{ 'form-checkbox-disabled': disabled }"
+    >
       <input
         :id="inputId"
         type="checkbox"
@@ -60,7 +68,11 @@
     </div>
 
     <!-- Switch/Toggle -->
-    <div v-else-if="type === 'switch'" class="form-switch" :class="{ 'form-switch-disabled': disabled }">
+    <div
+      v-else-if="type === 'switch'"
+      class="form-switch"
+      :class="{ 'form-switch-disabled': disabled }"
+    >
       <input
         :id="inputId"
         type="checkbox"
@@ -87,8 +99,20 @@
     </div>
 
     <!-- Button Group (for radio button styling) -->
-    <div v-else-if="type === 'button-group'" class="form-button-group" :class="{ 'form-button-group-disabled': disabled, 'form-button-group-inline': inline }">
-      <div class="btn-group" :class="sizeClass" role="group" :aria-label="label">
+    <div
+      v-else-if="type === 'button-group'"
+      class="form-button-group"
+      :class="{
+        'form-button-group-disabled': disabled,
+        'form-button-group-inline': inline,
+      }"
+    >
+      <div
+        class="btn-group"
+        :class="sizeClass"
+        role="group"
+        :aria-label="label"
+      >
         <template v-for="option in options" :key="option.value">
           <input
             :id="`${inputId}-${option.value}`"
@@ -118,7 +142,11 @@
     </div>
 
     <!-- Error message -->
-    <div v-if="hasError && errorMessage" :id="describedBy" class="form-control-error-message">
+    <div
+      v-if="hasError && errorMessage"
+      :id="describedBy"
+      class="form-control-error-message"
+    >
       <AppIcon name="mdi-alert-circle-outline-outline" />
       {{ errorMessage }}
     </div>
@@ -131,8 +159,8 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance } from 'vue';
-import AppIcon from '@/components/ui/AppIcon.vue';
+import { computed, getCurrentInstance } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 export default {
   name: 'FormControls',
@@ -140,143 +168,154 @@ export default {
     type: {
       type: String,
       required: true,
-      validator: (value) => ['radio', 'checkbox', 'switch', 'button-group'].includes(value)
+      validator: value =>
+        ['radio', 'checkbox', 'switch', 'button-group'].includes(value),
     },
     modelValue: {
       type: [String, Number, Boolean, Array],
-      default: null
+      default: null,
     },
     value: {
       type: [String, Number, Boolean],
-      default: null
+      default: null,
     },
     name: {
       type: String,
-      default: null
+      default: null,
     },
     label: {
       type: String,
-      default: null
+      default: null,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     hasError: {
       type: Boolean,
-      default: false
+      default: false,
     },
     errorMessage: {
       type: String,
-      default: null
+      default: null,
     },
     helpText: {
       type: String,
-      default: null
+      default: null,
     },
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     size: {
       type: String,
       default: 'md',
-      validator: (value) => ['sm', 'md', 'lg'].includes(value)
+      validator: value => ['sm', 'md', 'lg'].includes(value),
     },
     variant: {
       type: String,
       default: 'default',
-      validator: (value) => ['default', 'primary', 'secondary', 'outline'].includes(value)
+      validator: value =>
+        ['default', 'primary', 'secondary', 'outline'].includes(value),
     },
     inline: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['update:modelValue', 'change', 'focus', 'blur'],
   setup(props, { emit }) {
-    const instance = getCurrentInstance();
+    const instance = getCurrentInstance()
 
     const inputId = computed(() =>
-      props.name ? `${props.name}-${instance.uid}` : `form-control-${instance.uid}`
-    );
+      props.name
+        ? `${props.name}-${instance.uid}`
+        : `form-control-${instance.uid}`
+    )
 
     const describedBy = computed(() =>
-      props.hasError && props.errorMessage ? `${inputId.value}-error` :
-      props.helpText ? `${inputId.value}-help` : null
-    );
+      props.hasError && props.errorMessage
+        ? `${inputId.value}-error`
+        : props.helpText
+          ? `${inputId.value}-help`
+          : null
+    )
 
     const isChecked = computed(() => {
       if (props.type === 'checkbox' && Array.isArray(props.modelValue)) {
-        return props.modelValue.includes(props.value);
+        return props.modelValue.includes(props.value)
       }
       if (props.type === 'radio') {
-        return props.modelValue === props.value;
+        return props.modelValue === props.value
       }
-      return Boolean(props.modelValue);
-    });
+      return Boolean(props.modelValue)
+    })
 
-    const handleChange = (event) => {
-      let newValue = event.target.checked;
+    const handleChange = event => {
+      let newValue = event.target.checked
 
       if (props.type === 'checkbox' && Array.isArray(props.modelValue)) {
-        const currentValue = [...props.modelValue];
+        const currentValue = [...props.modelValue]
         if (newValue) {
-          currentValue.push(props.value);
+          currentValue.push(props.value)
         } else {
-          const index = currentValue.indexOf(props.value);
-          if (index > -1) {currentValue.splice(index, 1);}
+          const index = currentValue.indexOf(props.value)
+          if (index > -1) {
+            currentValue.splice(index, 1)
+          }
         }
-        newValue = currentValue;
+        newValue = currentValue
       } else if (props.type === 'radio') {
-        newValue = props.value;
+        newValue = props.value
       }
 
-      emit('update:modelValue', newValue);
-      emit('change', newValue, event);
-    };
+      emit('update:modelValue', newValue)
+      emit('change', newValue, event)
+    }
 
-    const handleFocus = (event) => {
-      emit('focus', event);
-    };
+    const handleFocus = event => {
+      emit('focus', event)
+    }
 
-    const handleBlur = (event) => {
-      emit('blur', event);
-    };
+    const handleBlur = event => {
+      emit('blur', event)
+    }
 
-    const handleButtonGroupChange = (event) => {
-      const newValue = event.target.value;
-      emit('update:modelValue', newValue);
-      emit('change', newValue, event);
-    };
+    const handleButtonGroupChange = event => {
+      const newValue = event.target.value
+      emit('update:modelValue', newValue)
+      emit('change', newValue, event)
+    }
 
     const sizeClass = computed(() => {
       const sizeMap = {
         sm: 'btn-group-sm',
         md: '',
-        lg: 'btn-group-lg'
-      };
-      return sizeMap[props.size] || '';
-    });
+        lg: 'btn-group-lg',
+      }
+      return sizeMap[props.size] || ''
+    })
 
-    const getButtonClass = (option) => {
-      const isSelected = props.modelValue === option.value;
-      const baseClass = isSelected ? 'btn-primary' : 'btn-outline-secondary';
+    const getButtonClass = option => {
+      const isSelected = props.modelValue === option.value
+      const baseClass = isSelected ? 'btn-primary' : 'btn-outline-secondary'
 
       if (props.variant === 'primary') {
-        return isSelected ? 'btn-primary' : 'btn-outline-primary';
+        return isSelected ? 'btn-primary' : 'btn-outline-primary'
       } else if (props.variant === 'secondary') {
-        return isSelected ? 'btn-secondary' : 'btn-outline-secondary';
+        return isSelected ? 'btn-secondary' : 'btn-outline-secondary'
       } else if (props.variant === 'outline') {
-        return isSelected ? 'btn-outline-primary active' : 'btn-outline-secondary';
+        return isSelected
+          ? 'btn-outline-primary active'
+          : 'btn-outline-secondary'
       }
 
-      return baseClass;
-    };
+      return baseClass
+    }
 
     return {
       inputId,
@@ -287,10 +326,10 @@ export default {
       handleFocus,
       handleBlur,
       handleButtonGroupChange,
-      getButtonClass
-    };
-  }
-};
+      getButtonClass,
+    }
+  },
+}
 </script>
 
 <style scoped>
@@ -301,20 +340,26 @@ export default {
 }
 
 /* Common styles */
-.form-radio, .form-checkbox, .form-switch {
+.form-radio,
+.form-checkbox,
+.form-switch {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
   position: relative;
 }
 
-.form-radio-input, .form-checkbox-input, .form-switch-input {
+.form-radio-input,
+.form-checkbox-input,
+.form-switch-input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-.form-radio-label, .form-checkbox-label, .form-switch-label {
+.form-radio-label,
+.form-checkbox-label,
+.form-switch-label {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -451,7 +496,9 @@ export default {
 }
 
 /* Disabled states */
-.form-radio-disabled, .form-checkbox-disabled, .form-switch-disabled {
+.form-radio-disabled,
+.form-checkbox-disabled,
+.form-switch-disabled {
   opacity: 0.6;
   pointer-events: none;
 }
@@ -500,45 +547,57 @@ export default {
 }
 
 /* Dark mode support using data-theme attribute */
-[data-theme="dark"] .form-radio-indicator,
-[data-theme="dark"] .form-checkbox-indicator {
+[data-theme='dark'] .form-radio-indicator,
+[data-theme='dark'] .form-checkbox-indicator {
   background: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .form-switch-track {
+[data-theme='dark'] .form-switch-track {
   background: var(--bg-tertiary);
   border-color: var(--border-color);
 }
 
-[data-theme="dark"] .form-switch-thumb {
+[data-theme='dark'] .form-switch-thumb {
   background: var(--text-secondary);
 }
 
-[data-theme="dark"] .form-switch-input:checked + .form-switch-label .form-switch-thumb {
+[data-theme='dark']
+  .form-switch-input:checked
+  + .form-switch-label
+  .form-switch-thumb {
   background: var(--bg-primary);
 }
 
-[data-theme="dark"] .form-radio-label,
-[data-theme="dark"] .form-checkbox-label,
-[data-theme="dark"] .form-switch-label {
+[data-theme='dark'] .form-radio-label,
+[data-theme='dark'] .form-checkbox-label,
+[data-theme='dark'] .form-switch-label {
   color: var(--text-primary);
 }
 
 /* Animation for state changes */
-.form-radio-indicator, .form-checkbox-indicator, .form-switch-track, .form-switch-thumb {
+.form-radio-indicator,
+.form-checkbox-indicator,
+.form-switch-track,
+.form-switch-thumb {
   animation: form-control-focus 0.2s ease-out;
 }
 
 @keyframes form-control-focus {
-  0% { transform: scale(0.95); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-  .form-radio-indicator, .form-checkbox-indicator, .form-switch-track {
+  .form-radio-indicator,
+  .form-checkbox-indicator,
+  .form-switch-track {
     border-width: 3px;
   }
 }
@@ -608,8 +667,12 @@ export default {
 }
 
 @keyframes form-button-focus {
-  0% { transform: scale(0.98); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Improved spacing for icons in button groups */
@@ -641,12 +704,21 @@ export default {
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .form-radio-indicator, .form-checkbox-indicator, .form-switch-track, .form-switch-thumb,
-  .form-radio-label, .form-checkbox-label, .form-switch-label, .form-button-group .btn {
+  .form-radio-indicator,
+  .form-checkbox-indicator,
+  .form-switch-track,
+  .form-switch-thumb,
+  .form-radio-label,
+  .form-checkbox-label,
+  .form-switch-label,
+  .form-button-group .btn {
     transition: none;
   }
 
-  .form-radio-indicator, .form-checkbox-indicator, .form-switch-track, .form-switch-thumb,
+  .form-radio-indicator,
+  .form-checkbox-indicator,
+  .form-switch-track,
+  .form-switch-thumb,
   .form-button-group .btn {
     animation: none;
   }

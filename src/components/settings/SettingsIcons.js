@@ -5,14 +5,18 @@ import { h } from 'vue'
 const createIcon = (iconName, defaultClass = '') => ({
   name: iconName,
   props: {
-    className: { type: String, default: defaultClass }
+    className: { type: String, default: defaultClass },
   },
   render() {
     return h('i', {
-      class: ['mdi', `mdi-${iconName.toLowerCase().replace(/icon$/, '')}`, this.className],
-      'aria-hidden': 'true'
+      class: [
+        'mdi',
+        `mdi-${iconName.toLowerCase().replace(/icon$/, '')}`,
+        this.className,
+      ],
+      'aria-hidden': 'true',
     })
-  }
+  },
 })
 
 // Export all icon components
@@ -42,7 +46,10 @@ export const DeleteIconComponent = createIcon('Delete', 'icon-sm')
 export const WarningIconComponent = createIcon('Alert', 'icon-sm')
 export const CheckCircleIconComponent = createIcon('CheckCircle', 'icon-sm')
 export const GithubIconComponent = createIcon('Github', 'icon-sm')
-export const BulletListIconComponent = createIcon('FormatListBulleted', 'icon-sm')
+export const BulletListIconComponent = createIcon(
+  'FormatListBulleted',
+  'icon-sm'
+)
 export const InfoIconComponent = createIcon('Info', 'icon-sm')
 export const BotIconComponent = createIcon('Robot', 'icon-sm')
 export const BriefcaseIconComponent = createIcon('Briefcase', 'icon-sm')

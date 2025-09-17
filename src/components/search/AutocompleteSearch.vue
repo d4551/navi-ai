@@ -4,7 +4,10 @@
 -->
 
 <template>
-  <div class="autocomplete-search font-sans" :class="{ 'focused': isFocused, 'has-results': hasResults }">
+  <div
+    class="autocomplete-search font-sans"
+    :class="{ focused: isFocused, 'has-results': hasResults }"
+  >
     <div class="search-input-wrapper ui-input ui-size-md">
       <div class="search-input-container ui-input ui-size-md">
         <AppIcon name="MagnifyingGlassIcon" aria-hidden="true" />
@@ -16,7 +19,9 @@
           :placeholder="placeholder"
           :disabled="disabled"
           :aria-expanded="hasResults"
-          :aria-activedescendant="selectedIndex >= 0 ? `option-${selectedIndex}` : undefined"
+          :aria-activedescendant="
+            selectedIndex >= 0 ? `option-${selectedIndex}` : undefined
+          "
           role="combobox"
           aria-autocomplete="list"
           :aria-label="ariaLabel"
@@ -41,13 +46,13 @@
           <AppIcon name="ArrowPathIcon" class="mdi-spin" aria-hidden="true" />
         </div>
       </div>
-      
+
       <div v-if="showFilters" class="quick-filters">
         <button
           v-for="filter in quickFilters"
           :key="filter.id"
           class="quick-filter"
-          :class="{ 'active': activeFilters.includes(filter.id) }"
+          :class="{ active: activeFilters.includes(filter.id) }"
           type="button"
           @click="toggleFilter(filter.id)"
         >
@@ -84,26 +89,35 @@
             >
               <div class="section-header">
                 <AppIcon :name="getCategoryIcon(category)" aria-hidden="true" />
-                <span class="section-title">{{ formatCategoryName(category) }}</span>
+                <span class="section-title">{{
+                  formatCategoryName(category)
+                }}</span>
                 <span class="section-count">{{ categoryResults.length }}</span>
               </div>
-              
+
               <div class="section-results">
                 <div
                   v-for="(_result, index) in categoryResults"
                   :id="`option-${getGlobalIndex(category, index)}`"
                   :key="`${category}-${result.value}`"
                   class="result-item"
-                  :class="{ 'selected': selectedIndex === getGlobalIndex(category, index) }"
+                  :class="{
+                    selected: selectedIndex === getGlobalIndex(category, index),
+                  }"
                   role="option"
-                  :aria-selected="selectedIndex === getGlobalIndex(category, index)"
+                  :aria-selected="
+                    selectedIndex === getGlobalIndex(category, index)
+                  "
                   @click="selectOption(result)"
                   @mouseenter="selectedIndex = getGlobalIndex(category, index)"
                 >
                   <div class="result-content">
                     <div class="result-main">
                       <span class="result-label">{{ result.label }}</span>
-                      <span v-if="result.category !== category" class="result-type">
+                      <span
+                        v-if="result.category !== category"
+                        class="result-type"
+                      >
                         {{ result.category }}
                       </span>
                     </div>
@@ -146,24 +160,24 @@ import { LightBulbIcon } from '@heroicons/vue/24/solid'
 
 import { ref, onMounted, computed, watch, onUnmounted, nextTick } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import { searchService } from '@/shared/services/SearchService';
-import type { AutocompleteOption } from '@/shared/types/interview';
+import { searchService } from '@/shared/services/SearchService'
+import type { AutocompleteOption } from '@/shared/types/interview'
 
 interface Props {
-  placeholder?: string;
-  ariaLabel?: string;
-  disabled?: boolean;
-  maxResults?: number;
-  showFilters?: boolean;
-  debounceMs?: number;
-  modelValue?: string;
+  placeholder?: string
+  ariaLabel?: string
+  disabled?: boolean
+  maxResults?: number
+  showFilters?: boolean
+  debounceMs?: number
+  modelValue?: string
 }
 
 interface Emits {
-  (e: 'update:modelValue', value: string): void;
-  (e: 'select', option: AutocompleteOption): void;
-  (e: 'search', query: string, filters: string[]): void;
-  (e: 'clear'): void;
+  (e: 'update:modelValue', value: string): void
+  (e: 'select', option: AutocompleteOption): void
+  (e: 'search', query: string, filters: string[]): void
+  (e: 'clear'): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -173,24 +187,24 @@ const props = withDefaults(defineProps<Props>(), {
   maxResults: 10,
   showFilters: true,
   debounceMs: 300,
-  modelValue: ''
-});
+  modelValue: '',
+})
 
-const _emit = defineEmits<Emits>();
+const _emit = defineEmits<Emits>()
 
 // Reactive state
-const searchInput = ref<HTMLInputElement>();
-const dropdownEl = ref<HTMLElement>();
-const searchQuery = ref(props.modelValue);
-const isFocused = ref(false);
-const isLoading = ref(false);
-const selectedIndex = ref(-1);
-const results = ref<AutocompleteOption[]>([]);
-const activeFilters = ref<string[]>([]);
-const dropdownStyles = ref<Record<string, string>>({});
+const searchInput = ref<HTMLInputElement>()
+const dropdownEl = ref<HTMLElement>()
+const searchQuery = ref(props.modelValue)
+const isFocused = ref(false)
+const isLoading = ref(false)
+const selectedIndex = ref(-1)
+const results = ref<AutocompleteOption[]>([])
+const activeFilters = ref<string[]>([])
+const dropdownStyles = ref<Record<string, string>>({})
 
 // Search debounce timer
-let searchTimer: NodeJS.Timeout | null = null;
+let searchTimer: NodeJS.Timeout | null = null
 
 // Quick filters for common searches
 const quickFilters = ref([
@@ -198,245 +212,266 @@ const quickFilters = ref([
   { id: 'roles', label: 'Roles', icon: 'UserIcon-tie' },
   { id: 'technologies', label: 'Tech', icon: 'mdi-code-tags' },
   { id: 'aaa', label: 'AAA', icon: 'StarIcon' },
-  { id: 'indie', label: 'Indie', icon: 'HeartIcon' }
-]);
+  { id: 'indie', label: 'Indie', icon: 'HeartIcon' },
+])
 
 // Computed properties
-const hasResults = computed(() => results.value.length > 0 || searchQuery.value.trim().length > 0);
+const hasResults = computed(
+  () => results.value.length > 0 || searchQuery.value.trim().length > 0
+)
 
 const groupedResults = computed(() => {
-  const groups: Record<string, AutocompleteOption[]> = {};
-  
+  const groups: Record<string, AutocompleteOption[]> = {}
+
   results.value.forEach(result => {
-    const category = result.category;
+    const category = result.category
     if (!groups[category]) {
-      groups[category] = [];
+      groups[category] = []
     }
-    groups[category].push(_result);
-  });
-  
-  return groups;
-});
+    groups[category].push(_result)
+  })
+
+  return groups
+})
 
 // Watch for model value changes
-watch(() => props.modelValue, (newValue) => {
-  if (newValue !== searchQuery.value) {
-    searchQuery.value = newValue;
+watch(
+  () => props.modelValue,
+  newValue => {
+    if (newValue !== searchQuery.value) {
+      searchQuery.value = newValue
+    }
   }
-});
+)
 
 // Watch for search query changes
-watch(searchQuery, (newQuery) => {
-  emit('update:modelValue', newQuery);
-  debouncedSearch(newQuery);
-});
+watch(searchQuery, newQuery => {
+  emit('update:modelValue', newQuery)
+  debouncedSearch(newQuery)
+})
 
 // Methods
 function handleInput(event: Event) {
-  const target = event.target as HTMLInputElement;
-  searchQuery.value = target.value;
+  const target = event.target as HTMLInputElement
+  searchQuery.value = target.value
 }
 
 function handleFocus() {
-  isFocused.value = true;
+  isFocused.value = true
   if (searchQuery.value.trim()) {
-    performSearch(searchQuery.value);
+    performSearch(searchQuery.value)
   }
-  updateDropdownPosition();
+  updateDropdownPosition()
 }
 
 function handleBlur() {
   // Delay hiding to allow click events on results
   setTimeout(() => {
-    isFocused.value = false;
-    selectedIndex.value = -1;
-  }, 200);
+    isFocused.value = false
+    selectedIndex.value = -1
+  }, 200)
 }
 
 function debouncedSearch(query: string) {
   if (searchTimer) {
-    clearTimeout(searchTimer);
+    clearTimeout(searchTimer)
   }
-  
+
   searchTimer = setTimeout(() => {
-    performSearch(query);
-  }, props.debounceMs);
+    performSearch(query)
+  }, props.debounceMs)
 }
 
 async function performSearch(query: string) {
   if (!query.trim()) {
-    results.value = [];
-    return;
+    results.value = []
+    return
   }
 
-  isLoading.value = true;
-  
+  isLoading.value = true
+
   try {
     // Use the new async method with semantic search capabilities
-    const searchResults = await searchService.getAutocompleteOptions(query, props.maxResults);
-    
+    const searchResults = await searchService.getAutocompleteOptions(
+      query,
+      props.maxResults
+    )
+
     // Apply active filters
-    let filteredResults = searchResults;
+    let filteredResults = searchResults
     if (activeFilters.value.length > 0) {
       filteredResults = searchResults.filter(result => {
-        if (activeFilters.value.includes('studios') && result.category === 'studio') return true;
-        if (activeFilters.value.includes('roles') && result.category === 'role') return true;
-        if (activeFilters.value.includes('technologies') && result.category === 'technology') return true;
-        return false;
-      });
+        if (
+          activeFilters.value.includes('studios') &&
+          result.category === 'studio'
+        )
+          return true
+        if (activeFilters.value.includes('roles') && result.category === 'role')
+          return true
+        if (
+          activeFilters.value.includes('technologies') &&
+          result.category === 'technology'
+        )
+          return true
+        return false
+      })
     }
-    
-    results.value = filteredResults;
-    selectedIndex.value = -1;
-    
-    emit('search', query, activeFilters.value);
-    
-    await nextTick();
-    updateDropdownPosition();
+
+    results.value = filteredResults
+    selectedIndex.value = -1
+
+    emit('search', query, activeFilters.value)
+
+    await nextTick()
+    updateDropdownPosition()
   } catch (error) {
-    console.error('Search failed:', error);
-    results.value = [];
+    console.error('Search failed:', error)
+    results.value = []
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
 }
 
 function clearSearch() {
-  searchQuery.value = '';
-  results.value = [];
-  selectedIndex.value = -1;
-  searchInput.value?.focus();
-  emit('clear');
+  searchQuery.value = ''
+  results.value = []
+  selectedIndex.value = -1
+  searchInput.value?.focus()
+  emit('clear')
 }
 
 function clearResults() {
-  isFocused.value = false;
-  selectedIndex.value = -1;
+  isFocused.value = false
+  selectedIndex.value = -1
 }
 
 function navigateResults(direction: number) {
-  if (!hasResults.value) return;
-  
-  const totalResults = results.value.length;
-  if (totalResults === 0) return;
-  
-  selectedIndex.value = Math.max(-1, Math.min(totalResults - 1, selectedIndex.value + direction));
-  
+  if (!hasResults.value) return
+
+  const totalResults = results.value.length
+  if (totalResults === 0) return
+
+  selectedIndex.value = Math.max(
+    -1,
+    Math.min(totalResults - 1, selectedIndex.value + direction)
+  )
+
   // Scroll selected item into view
   if (selectedIndex.value >= 0) {
-    const selectedElement = document.getElementById(`option-${selectedIndex.value}`);
-    selectedElement?.scrollIntoView({ block: 'nearest' });
+    const selectedElement = document.getElementById(
+      `option-${selectedIndex.value}`
+    )
+    selectedElement?.scrollIntoView({ block: 'nearest' })
   }
 }
 
 function selectResult() {
   if (selectedIndex.value >= 0 && results.value[selectedIndex.value]) {
-    selectOption(results.value[selectedIndex.value]);
+    selectOption(results.value[selectedIndex.value])
   }
 }
 
 function selectOption(option: AutocompleteOption) {
-  searchQuery.value = option.label;
-  results.value = [];
-  isFocused.value = false;
-  selectedIndex.value = -1;
-  
-  emit('select', option);
-  searchInput.value?.blur();
+  searchQuery.value = option.label
+  results.value = []
+  isFocused.value = false
+  selectedIndex.value = -1
+
+  emit('select', option)
+  searchInput.value?.blur()
 }
 
 function toggleFilter(filterId: string) {
-  const index = activeFilters.value.indexOf(filterId);
+  const index = activeFilters.value.indexOf(filterId)
   if (index >= 0) {
-    activeFilters.value.splice(index, 1);
+    activeFilters.value.splice(index, 1)
   } else {
-    activeFilters.value.push(filterId);
+    activeFilters.value.push(filterId)
   }
-  
+
   // Re-run search with new filters
   if (searchQuery.value.trim()) {
-    performSearch(searchQuery.value);
+    performSearch(searchQuery.value)
   }
 }
 
 function updateDropdownPosition() {
-  if (!searchInput.value || !dropdownEl.value) return;
-  
-  const inputRect = searchInput.value.getBoundingClientRect();
-  const viewportHeight = window.innerHeight;
-  const dropdownHeight = Math.min(400, viewportHeight * 0.6);
-  
-  const spaceBelow = viewportHeight - inputRect.bottom;
-  const spaceAbove = inputRect.top;
-  
-  const showAbove = spaceBelow < dropdownHeight && spaceAbove > spaceBelow;
-  
+  if (!searchInput.value || !dropdownEl.value) return
+
+  const inputRect = searchInput.value.getBoundingClientRect()
+  const viewportHeight = window.innerHeight
+  const dropdownHeight = Math.min(400, viewportHeight * 0.6)
+
+  const spaceBelow = viewportHeight - inputRect.bottom
+  const spaceAbove = inputRect.top
+
+  const showAbove = spaceBelow < dropdownHeight && spaceAbove > spaceBelow
+
   dropdownStyles.value = {
     position: 'fixed',
     left: `${inputRect.left}px`,
     width: `${inputRect.width}px`,
     maxHeight: `${dropdownHeight}px`,
     zIndex: '1000',
-    ...(showAbove 
+    ...(showAbove
       ? { bottom: `${viewportHeight - inputRect.top}px` }
-      : { top: `${inputRect.bottom}px` }
-    )
-  };
+      : { top: `${inputRect.bottom}px` }),
+  }
 }
 
 function getCategoryIcon(category: string): string {
   const icons: Record<string, string> = {
     studio: 'mdi mdi-domain',
-    role: 'mdi UserIcon-tie', 
+    role: 'mdi UserIcon-tie',
     technology: 'mdi mdi-code-tags',
-    location: 'mdi mdi-map-marker'
-  };
-  return icons[category] || 'mdi mdi-circle';
+    location: 'mdi mdi-map-marker',
+  }
+  return icons[category] || 'mdi mdi-circle'
 }
 
 function formatCategoryName(category: string): string {
   const names: Record<string, string> = {
     studio: 'Studios',
     role: 'Roles',
-    technology: 'Technologies', 
-    location: 'Locations'
-  };
-  return names[category] || category;
+    technology: 'Technologies',
+    location: 'Locations',
+  }
+  return names[category] || category
 }
 
 function getGlobalIndex(category: string, localIndex: number): number {
-  let globalIndex = 0;
-  
+  let globalIndex = 0
+
   for (const [cat, categoryResults] of Object.entries(groupedResults.value)) {
     if (cat === category) {
-      return globalIndex + localIndex;
+      return globalIndex + localIndex
     }
-    globalIndex += categoryResults.length;
+    globalIndex += categoryResults.length
   }
-  
-  return localIndex;
+
+  return localIndex
 }
 
 // Lifecycle
 onMounted(() => {
-  window.addEventListener('scroll', updateDropdownPosition);
-  window.addEventListener('resize', updateDropdownPosition);
-});
+  window.addEventListener('scroll', updateDropdownPosition)
+  window.addEventListener('resize', updateDropdownPosition)
+})
 
 onUnmounted(() => {
   if (searchTimer) {
-    clearTimeout(searchTimer);
+    clearTimeout(searchTimer)
   }
-  window.removeEventListener('scroll', updateDropdownPosition);
-  window.removeEventListener('resize', updateDropdownPosition);
-});
+  window.removeEventListener('scroll', updateDropdownPosition)
+  window.removeEventListener('resize', updateDropdownPosition)
+})
 
 // Expose public methods
 defineExpose({
   focus: () => searchInput.value?.focus(),
   blur: () => searchInput.value?.blur(),
-  clear: clearSearch
-});
+  clear: clearSearch,
+})
 </script>
 
 <style scoped>
@@ -468,7 +503,8 @@ defineExpose({
 
 .search-input {
   width: 100%;
-  padding: var(--spacing-md) var(--spacing-xl) var(--spacing-md) calc(var(--spacing-xl) + 1.25rem);
+  padding: var(--spacing-md) var(--spacing-xl) var(--spacing-md)
+    calc(var(--spacing-xl) + 1.25rem);
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius-md);
   background: var(--glass-surface-light);
@@ -490,7 +526,8 @@ defineExpose({
   cursor: not-allowed;
 }
 
-.clear-button, .loading-indicator {
+.clear-button,
+.loading-indicator {
   position: absolute;
   right: var(--spacing-md);
   display: flex;
@@ -760,27 +797,27 @@ defineExpose({
 }
 
 /* Dark theme adaptations */
-[data-theme="dark"] .search-input,
-[data-theme="dark"] .search-dropdown {
+[data-theme='dark'] .search-input,
+[data-theme='dark'] .search-dropdown {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .search-input:focus {
+[data-theme='dark'] .search-input:focus {
   background: var(--glass-elevated-dark);
 }
 
-[data-theme="dark"] .section-header,
-[data-theme="dark"] .search-tips {
+[data-theme='dark'] .section-header,
+[data-theme='dark'] .search-tips {
   background: var(--dark-bg-tertiary);
 }
 
-[data-theme="dark"] .quick-filter {
+[data-theme='dark'] .quick-filter {
   background: var(--dark-bg-tertiary);
 }
 
-[data-theme="dark"] .result-item:hover,
-[data-theme="dark"] .result-item.selected {
+[data-theme='dark'] .result-item:hover,
+[data-theme='dark'] .result-item.selected {
   background: var(--glass-elevated-dark);
 }
 
@@ -791,11 +828,11 @@ defineExpose({
     right: var(--spacing-md);
     width: auto !important;
   }
-  
+
   .quick-filters {
     justify-content: center;
   }
-  
+
   .result-main {
     flex-direction: column;
     align-items: flex-start;

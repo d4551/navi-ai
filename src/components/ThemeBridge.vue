@@ -5,8 +5,20 @@ import { watch, onMounted } from 'vue'
 import { useTheme as useVuetifyTheme } from 'vuetify'
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 
-const unified = (() => { try { return useUnifiedTheme() } catch { return undefined as any } })()
-const vTheme = (() => { try { return useVuetifyTheme() } catch { return undefined as any } })()
+const unified = (() => {
+  try {
+    return useUnifiedTheme()
+  } catch {
+    return undefined as any
+  }
+})()
+const vTheme = (() => {
+  try {
+    return useVuetifyTheme()
+  } catch {
+    return undefined as any
+  }
+})()
 
 function applyTheme() {
   try {
@@ -36,22 +48,35 @@ onMounted(() => {
   applyTheme()
   try {
     // Observe root for data-theme updates from any source and mirror to body
-    const MObs = (typeof window !== 'undefined' ? window.MutationObserver : undefined)
+    const MObs =
+      typeof window !== 'undefined' ? window.MutationObserver : undefined
     if (!MObs) return
     mo = new MObs(() => {
       try {
-        const scheme = document.documentElement.getAttribute('data-theme') || 'light'
+        const scheme =
+          document.documentElement.getAttribute('data-theme') || 'light'
         document.body && document.body.setAttribute('data-theme', scheme)
       } catch {}
     })
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    })
   } catch {}
 })
-watch(() => unified?.colorScheme?.value, () => applyTheme(), { immediate: true })
+watch(
+  () => unified?.colorScheme?.value,
+  () => applyTheme(),
+  { immediate: true }
+)
 </script>
 
 <template>
-  <span class="theme-bridge font-sans" style="display:none" aria-hidden="true"></span>
+  <span
+    class="theme-bridge font-sans"
+    style="display: none"
+    aria-hidden="true"
+  ></span>
 </template>
 
 <style scoped>

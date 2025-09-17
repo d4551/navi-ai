@@ -1,23 +1,23 @@
 <template>
   <div class="unified-game-experience">
     <!-- Canonical theme styles handled globally to prevent CORB issues -->
-    
+
     <!-- Sam & Max Easter Eggs -->
-    <SamMaxEasterEggs 
+    <SamMaxEasterEggs
       ref="easterEggsRef"
       @easter-egg-found="handleEasterEgg"
       @achievement-unlocked="handleAchievement"
     />
-    
+
     <!-- Gamification Effects System -->
-    <GamificationEffects 
+    <GamificationEffects
       ref="gamificationRef"
       :user-id="userId"
       @achievement-unlocked="handleAchievement"
       @level-up="handleLevelUp"
       @xp-gained="handleXPGain"
     />
-    
+
     <!-- Enhanced Easter Eggs -->
     <EasterEggs
       ref="advancedEasterEggsRef"
@@ -26,7 +26,7 @@
       @easter-egg-found="handleEasterEgg"
       @achievement-unlocked="handleAchievement"
     />
-    
+
     <!-- Interactive Job Discovery -->
     <Teleport to="body">
       <InteractiveJobDiscovery
@@ -34,19 +34,24 @@
         @close="showJobDiscovery = false"
       />
     </Teleport>
-    
+
     <!-- Global RGB Accent System -->
     <div class="rgb-accent-system">
       <div class="rgb-glow-effects" :class="{ active: rgbEffectsActive }">
-        <div v-for="n in 20" :key="n" class="rgb-particle" :style="getParticleStyle(n)"></div>
+        <div
+          v-for="n in 20"
+          :key="n"
+          class="rgb-particle"
+          :style="getParticleStyle(n)"
+        ></div>
       </div>
     </div>
-    
+
     <!-- Global Navigation Enhancement -->
     <nav v-if="enhanceNavigation" class="enhanced-navi-system">
       <div class="navi-quick-actions">
-        <button 
-          v-for="action in quickActions" 
+        <button
+          v-for="action in quickActions"
           :key="action.name"
           class="razer-btn rgb-accent quick-action-btn"
           :title="action.description"
@@ -57,11 +62,14 @@
         </button>
       </div>
     </nav>
-    
+
     <!-- Global Notifications System -->
     <div class="global-notifications">
       <Transition name="notification-slide" appear>
-        <div v-if="currentNotification" class="game-notification razer-glass-card section-card rgb-accent">
+        <div
+          v-if="currentNotification"
+          class="game-notification razer-glass-card section-card rgb-accent"
+        >
           <div class="notification-icon">
             <AppIcon :name="currentNotification.icon" />
           </div>
@@ -69,45 +77,63 @@
             <h4>{{ currentNotification.title }}</h4>
             <p>{{ currentNotification.message }}</p>
           </div>
-          <button class="notification-close" @click="dismissNotification">×</button>
+          <button class="notification-close" @click="dismissNotification">
+            ×
+          </button>
         </div>
       </Transition>
     </div>
-    
+
     <!-- Console Command Interface -->
-    <div v-if="showConsole" class="global-console razer-glass-card section-card">
+    <div
+      v-if="showConsole"
+      class="global-console razer-glass-card section-card"
+    >
       <div class="console-header">
         <span>NAVI Debug Console - Sam & Max Mode</span>
         <button @click="toggleConsole">×</button>
       </div>
       <div class="console-output">
-        <div v-for="line in consoleHistory" :key="line.id" class="console-line" :class="line.type">
+        <div
+          v-for="line in consoleHistory"
+          :key="line.id"
+          class="console-line"
+          :class="line.type"
+        >
           {{ line.text }}
         </div>
       </div>
       <div class="console-input">
         <span class="prompt">NAVI> </span>
-        <input 
-          ref="consoleInputRef" 
+        <input
+          ref="consoleInputRef"
           v-model="consoleCommand"
           placeholder="Enter command... (type 'help' for commands)"
           @keyup.enter="executeCommand"
         />
       </div>
     </div>
-    
+
     <!-- Background Ambience -->
     <audio ref="ambiencePlayer" loop :volume="ambienceVolume">
-      <source src="/sounds/navi-office-ambience.mp3" type="audio/mpeg">
-      <source src="/sounds/sam-max-office.wav" type="audio/wav">
+      <source src="/sounds/navi-office-ambience.mp3" type="audio/mpeg" />
+      <source src="/sounds/sam-max-office.wav" type="audio/wav" />
     </audio>
   </div>
 </template>
 
 <script setup lang="ts">
-import AppIcon from '@/components/ui/AppIcon.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
 
-import { ref, reactive, computed, nextTick, onMounted, onUnmounted, defineEmits } from 'vue'
+import {
+  ref,
+  reactive,
+  computed,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  defineEmits,
+} from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import SamMaxEasterEggs from './SamMaxEasterEggs.vue'
 import GamificationEffects from './GamificationEffects.vue'
@@ -129,11 +155,15 @@ const props = withDefaults(defineProps<Props>(), {
   userId: 'default-user',
   enableSounds: true,
   enableVisualEffects: true,
-  enhanceNavigation: true
+  enhanceNavigation: true,
 })
 
 // Emits
-const emit = defineEmits(['theme-changed', 'easter-egg-activated', 'command-executed'])
+const emit = defineEmits([
+  'theme-changed',
+  'easter-egg-activated',
+  'command-executed',
+])
 
 // Reactive state
 const showJobDiscovery = ref(false)
@@ -155,18 +185,51 @@ const ambiencePlayer = ref()
 
 // Quick actions for enhanced navigation
 const quickActions = reactive([
-  { name: 'The Board', icon: 'mdi-clipboard-search', action: 'navigate', route: '/jobs', description: 'Browse gaming jobs' },
-  { name: 'The Profile', icon: 'mdi-briefcase-variant', action: 'navigate', route: '/portfolio', description: 'Manage your gaming portfolio' },
-  { name: 'NAVI Chat', icon: 'mdi-robot-excited', action: 'toggle-chat', description: 'Talk with NAVI AI' },
-  { name: 'Easter Eggs', icon: 'mdi-egg-easter', action: 'show-easter-eggs', description: 'Discover hidden features' },
-  { name: 'Sam Mode', icon: 'mdi-account-tie', action: 'activate-sam', description: 'Activate Sam mode' },
-  { name: 'Max Mode', icon: 'mdi-flash', action: 'activate-max', description: 'Activate Max mode' },
+  {
+    name: 'The Board',
+    icon: 'mdi-clipboard-search',
+    action: 'navigate',
+    route: '/jobs',
+    description: 'Browse gaming jobs',
+  },
+  {
+    name: 'The Profile',
+    icon: 'mdi-briefcase-variant',
+    action: 'navigate',
+    route: '/portfolio',
+    description: 'Manage your gaming portfolio',
+  },
+  {
+    name: 'NAVI Chat',
+    icon: 'mdi-robot-excited',
+    action: 'toggle-chat',
+    description: 'Talk with NAVI AI',
+  },
+  {
+    name: 'Easter Eggs',
+    icon: 'mdi-egg-easter',
+    action: 'show-easter-eggs',
+    description: 'Discover hidden features',
+  },
+  {
+    name: 'Sam Mode',
+    icon: 'mdi-account-tie',
+    action: 'activate-sam',
+    description: 'Activate Sam mode',
+  },
+  {
+    name: 'Max Mode',
+    icon: 'mdi-flash',
+    action: 'activate-max',
+    description: 'Activate Max mode',
+  },
 ])
 
 // Console commands
 const consoleCommands = {
-  'help': () => 'Commands: theme, sam, max, adventure, jobs, profile, navi, konami, matrix, party, reset, clear',
-  'theme': (args: string[]) => {
+  help: () =>
+    'Commands: theme, sam, max, adventure, jobs, profile, navi, konami, matrix, party, reset, clear',
+  theme: (args: string[]) => {
     const mode = args[0] || 'toggle'
     if (mode === 'dark') {
       setTheme('dark')
@@ -179,61 +242,61 @@ const consoleCommands = {
       return 'Theme toggled'
     }
   },
-  'sam': () => {
+  sam: () => {
     easterEggsRef.value?.activateSamMode()
     return 'Sam mode activated - "We better solve this case professionally..."'
   },
-  'max': () => {
+  max: () => {
     easterEggsRef.value?.activateMaxMode()
     return 'Max mode activated - "Let\'s destroy something! For justice!"'
   },
-  'adventure': () => {
+  adventure: () => {
     easterEggsRef.value?.activateAdventureMode()
     return 'Adventure mode activated - Point and click your way to success!'
   },
-  'jobs': () => {
+  jobs: () => {
     __router.push('/jobs')
     return 'Navigating to The Board...'
   },
-  'profile': () => {
+  profile: () => {
     __router.push('/portfolio')
     return 'Opening The Profile...'
   },
-  'navi': () => {
+  navi: () => {
     showNotification({
       title: 'NAVI Online',
-      message: 'Hey! Listen! I\'m here to help with your gaming career!',
-      icon: 'mdi-face-woman-shimmer'
+      message: "Hey! Listen! I'm here to help with your gaming career!",
+      icon: 'mdi-face-woman-shimmer',
     })
     return 'NAVI is ready to assist!'
   },
-  'konami': () => {
+  konami: () => {
     activateKonamiMode()
     return '↑↑↓↓←→←→BA - Ultimate cheat code activated!'
   },
-  'matrix': () => {
+  matrix: () => {
     activateMatrixMode()
     return 'Welcome to the Matrix... of gaming careers'
   },
-  'party': () => {
+  party: () => {
     activatePartyMode()
     return '[SUCCESS] PARTY TIME! RGB effects at maximum!'
   },
-  'reset': () => {
+  reset: () => {
     resetAllEffects()
     return 'All effects reset to default'
   },
-  'clear': () => {
+  clear: () => {
     consoleHistory.value = []
     return ''
   },
-  'discover': () => {
+  discover: () => {
     showJobDiscovery.value = true
     return 'Opening Interactive Job Discovery...'
   },
-  'stats': () => {
+  stats: () => {
     return `User: ${props.userId} | Easter Eggs Found: ${getEasterEggCount()} | Level: ${getUserLevel()}`
-  }
+  },
 }
 
 // Methods
@@ -261,10 +324,10 @@ const triggerQuickAction = (action: any) => {
 const executeCommand = () => {
   const fullCommand = consoleCommand.value.trim()
   const [command, ...args] = fullCommand.toLowerCase().split(' ')
-  
+
   // Add command to history
   addToConsoleHistory(`> ${fullCommand}`, 'command')
-  
+
   if (consoleCommands[command]) {
     try {
       const result = consoleCommands[command](args)
@@ -275,12 +338,15 @@ const executeCommand = () => {
       addToConsoleHistory(`Error: ${error.message}`, 'error')
     }
   } else {
-    addToConsoleHistory(`Unknown command: ${command}. Type 'help' for available commands.`, 'error')
+    addToConsoleHistory(
+      `Unknown command: ${command}. Type 'help' for available commands.`,
+      'error'
+    )
   }
-  
+
   consoleCommand.value = ''
   emit('command-executed', { command, args, timestamp: Date.now() })
-  
+
   // Scroll console to bottom
   nextTick(() => {
     const output = document.querySelector('.console-output')
@@ -290,14 +356,17 @@ const executeCommand = () => {
   })
 }
 
-const addToConsoleHistory = (text: string, type: 'command' | 'output' | 'error') => {
+const addToConsoleHistory = (
+  text: string,
+  type: 'command' | 'output' | 'error'
+) => {
   consoleHistory.value.push({
     id: Date.now(),
     text,
     type,
-    timestamp: new Date().toLocaleTimeString()
+    timestamp: new Date().toLocaleTimeString(),
   })
-  
+
   // Limit history to last 100 entries
   if (consoleHistory.value.length > 100) {
     consoleHistory.value = consoleHistory.value.slice(-100)
@@ -317,12 +386,16 @@ const handleEasterEgg = (event: any) => {
   showNotification({
     title: 'Easter Egg Found!',
     message: `You discovered: ${event.name || event.type}! (+${event.points || 50} XP)`,
-    icon: '🥚'
+    icon: '🥚',
   })
-  
+
   // Trigger XP gain in gamification system
-  gamificationRef.value?.triggerXPGain(event.points || 50, `Found ${event.name || event.type}`, 'bonus')
-  
+  gamificationRef.value?.triggerXPGain(
+    event.points || 50,
+    `Found ${event.name || event.type}`,
+    'bonus'
+  )
+
   emit('easter-egg-activated', event)
 }
 
@@ -330,7 +403,7 @@ const handleAchievement = (achievement: any) => {
   showNotification({
     title: 'Achievement Unlocked!',
     message: achievement.description || achievement.name,
-    icon: 'mdi-trophy'
+    icon: 'mdi-trophy',
   })
 }
 
@@ -338,7 +411,7 @@ const handleLevelUp = (levelData: any) => {
   showNotification({
     title: `Level Up! Level ${levelData.level}`,
     message: 'Your gaming career skills are evolving!',
-    icon: 'mdi-star'
+    icon: 'mdi-star',
   })
 }
 
@@ -358,19 +431,26 @@ const dismissNotification = () => {
 }
 
 const getParticleStyle = (index: number) => {
-  const colors = ['#00ff88', '#00d9ff', '#a855f7', '#ff006e', '#ff5722', '#ffee00']
+  const colors = [
+    '#00ff88',
+    '#00d9ff',
+    '#a855f7',
+    '#ff006e',
+    '#ff5722',
+    '#ffee00',
+  ]
   const color = colors[index % colors.length]
-  const delay = (index * 0.2) + 's'
-  const duration = (2 + Math.random() * 3) + 's'
+  const delay = index * 0.2 + 's'
+  const duration = 2 + Math.random() * 3 + 's'
   const x = Math.random() * 100 + '%'
   const y = Math.random() * 100 + '%'
-  
+
   return {
     '--particle-color': color,
     '--animation-delay': delay,
     '--animation-duration': duration,
     left: x,
-    top: y
+    top: y,
   }
 }
 
@@ -388,18 +468,18 @@ const toggleTheme = () => {
 const activateKonamiMode = () => {
   document.body.classList.add('konami-ultimate-mode')
   rgbEffectsActive.value = true
-  
+
   // Trigger all easter egg modes
   easterEggsRef.value?.activateSamMode()
   setTimeout(() => easterEggsRef.value?.activateMaxMode(), 1000)
   setTimeout(() => easterEggsRef.value?.activateAdventureMode(), 2000)
-  
+
   // Play special sound
   if (props.enableSounds && ambiencePlayer.value) {
     ambiencePlayer.value.volume = 0.1
     ambiencePlayer.value.play().catch(() => {})
   }
-  
+
   setTimeout(() => {
     document.body.classList.remove('konami-ultimate-mode')
     resetAllEffects()
@@ -416,7 +496,7 @@ const activateMatrixMode = () => {
 const activatePartyMode = () => {
   document.body.classList.add('rgb-party-mode')
   rgbEffectsActive.value = true
-  
+
   setTimeout(() => {
     document.body.classList.remove('rgb-party-mode')
   }, 20000)
@@ -424,16 +504,20 @@ const activatePartyMode = () => {
 
 const resetAllEffects = () => {
   const classes = [
-    'konami-ultimate-mode', 'matrix-career-mode', 'rgb-party-mode',
-    'sam-mode', 'max-mode', 'adventure-mode'
+    'konami-ultimate-mode',
+    'matrix-career-mode',
+    'rgb-party-mode',
+    'sam-mode',
+    'max-mode',
+    'adventure-mode',
   ]
-  
+
   classes.forEach(className => {
     document.body.classList.remove(className)
   })
-  
+
   rgbEffectsActive.value = true
-  
+
   if (ambiencePlayer.value) {
     ambiencePlayer.value.pause()
   }
@@ -456,13 +540,13 @@ const handleGlobalKeypress = (event: KeyboardEvent) => {
     event.preventDefault()
     toggleConsole()
   }
-  
+
   // Ctrl + Shift + D for job discovery
   if (event.ctrlKey && event.shiftKey && event.key === 'D') {
     event.preventDefault()
     showJobDiscovery.value = true
   }
-  
+
   // Escape to close modals
   if (event.key === 'Escape') {
     showConsole.value = false
@@ -474,20 +558,21 @@ const handleGlobalKeypress = (event: KeyboardEvent) => {
 // Initialize
 onMounted(() => {
   document.addEventListener('keydown', handleGlobalKeypress)
-  
+
   // Welcome message
   setTimeout(() => {
     showNotification({
       title: '[GAME] Welcome to NAVI Gaming Career Hub!',
-      message: 'Press Ctrl+Shift+~ for console, discover easter eggs, and level up your career!',
-      icon: '🚀'
+      message:
+        'Press Ctrl+Shift+~ for console, discover easter eggs, and level up your career!',
+      icon: '🚀',
     })
   }, 2000)
-  
+
   // Initialize theme
   const savedTheme = localStorage.getItem('navi-theme') || 'dark'
   setTheme(savedTheme as 'light' | 'dark')
-  
+
   // Initialize RGB effects based on user preference
   const rgbPreference = localStorage.getItem('navi-rgb-effects')
   if (rgbPreference !== null) {
@@ -503,12 +588,14 @@ onUnmounted(() => {
 // Expose methods for parent components
 defineExpose({
   toggleConsole,
-  showJobDiscovery: () => { showJobDiscovery.value = true },
+  showJobDiscovery: () => {
+    showJobDiscovery.value = true
+  },
   activateKonamiMode,
   activateMatrixMode,
   activatePartyMode,
   resetAllEffects,
-  showNotification
+  showNotification,
 })
 </script>
 
@@ -549,13 +636,14 @@ defineExpose({
 }
 
 @keyframes floatParticle {
-  0%, 100% { 
-    transform: translateY(0) scale(0.5); 
-    opacity: 0; 
+  0%,
+  100% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
   }
-  50% { 
-    transform: translateY(-20px) scale(1); 
-    opacity: 1; 
+  50% {
+    transform: translateY(-20px) scale(1);
+    opacity: 1;
   }
 }
 
@@ -685,7 +773,7 @@ defineExpose({
   z-index: 10001;
   border: 2px solid var(--razer-green);
   background: rgba(0, 0, 0, 0.95);
-  box-shadow: 
+  box-shadow:
     0 0 30px var(--razer-green),
     var(--shadow-2xl);
 }
@@ -790,15 +878,29 @@ defineExpose({
 }
 
 @keyframes ultimateRainbow {
-  0% { filter: hue-rotate(0deg) saturate(150%) brightness(1.1); }
-  25% { filter: hue-rotate(90deg) saturate(200%) brightness(1.2); }
-  50% { filter: hue-rotate(180deg) saturate(250%) brightness(1.3); }
-  75% { filter: hue-rotate(270deg) saturate(200%) brightness(1.2); }
-  100% { filter: hue-rotate(360deg) saturate(150%) brightness(1.1); }
+  0% {
+    filter: hue-rotate(0deg) saturate(150%) brightness(1.1);
+  }
+  25% {
+    filter: hue-rotate(90deg) saturate(200%) brightness(1.2);
+  }
+  50% {
+    filter: hue-rotate(180deg) saturate(250%) brightness(1.3);
+  }
+  75% {
+    filter: hue-rotate(270deg) saturate(200%) brightness(1.2);
+  }
+  100% {
+    filter: hue-rotate(360deg) saturate(150%) brightness(1.1);
+  }
 }
 
 :global(.matrix-career-mode) {
-  background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 255, 136, 0.1) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
   color: var(--razer-green);
 }
 
@@ -811,8 +913,12 @@ defineExpose({
 }
 
 @keyframes partyMode {
-  0% { filter: hue-rotate(0deg) saturate(150%) brightness(1.1); }
-  100% { filter: hue-rotate(180deg) saturate(200%) brightness(1.2); }
+  0% {
+    filter: hue-rotate(0deg) saturate(150%) brightness(1.1);
+  }
+  100% {
+    filter: hue-rotate(180deg) saturate(200%) brightness(1.2);
+  }
 }
 
 /* Responsive Design */

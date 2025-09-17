@@ -8,10 +8,7 @@ Sam & Max inspired messaging and achievement notifications
 <template>
   <Teleport to="body">
     <!-- Notification Container -->
-    <div 
-      class="notification-system"
-      :class="{ 'noir-theme': true }"
-    >
+    <div class="notification-system" :class="{ 'noir-theme': true }">
       <!-- Active Notifications -->
       <TransitionGroup
         name="notification"
@@ -22,9 +19,10 @@ Sam & Max inspired messaging and achievement notifications
           v-for="notification in activeNotifications"
           :key="notification.id"
           class="notification-item"
-          :class="[ `notification-${notification.type}`,
-                    { 'notification-persistent': notification.persistent },
-                    { 'notification-interactive': notification.actions?.length > 0 }
+          :class="[
+            `notification-${notification.type}`,
+            { 'notification-persistent': notification.persistent },
+            { 'notification-interactive': notification.actions?.length > 0 },
           ]"
           @click="handleNotificationClick(notification)"
           @mouseenter="pauseTimer(notification.id)"
@@ -34,7 +32,10 @@ Sam & Max inspired messaging and achievement notifications
           <div class="notification-content">
             <!-- Icon -->
             <div class="notification-icon">
-              <i :class="getNotificationIcon(notification)" class="notification-icon-element"></i>
+              <i
+                :class="getNotificationIcon(notification)"
+                class="notification-icon-element"
+              ></i>
               <div class="icon-glow" :class="`glow-${notification.type}`"></div>
             </div>
 
@@ -44,25 +45,28 @@ Sam & Max inspired messaging and achievement notifications
               <div v-if="notification.message" class="notification-text">
                 {{ notification.message }}
               </div>
-              
+
               <!-- Progress bar for timed notifications -->
-              <div 
+              <div
                 v-if="notification.duration && !notification.persistent"
                 class="notification-progress"
               >
-                <div 
+                <div
                   class="progress-bar"
                   :class="`progress-${notification.type}`"
-                  :style="{ 
+                  :style="{
                     width: `${getProgressPercent(notification)}%`,
-                    animationDuration: `${notification.duration}ms`
+                    animationDuration: `${notification.duration}ms`,
                   }"
                 ></div>
               </div>
             </div>
 
             <!-- Actions -->
-            <div v-if="notification.actions?.length" class="notification-actions">
+            <div
+              v-if="notification.actions?.length"
+              class="notification-actions"
+            >
               <button
                 v-for="action in notification.actions"
                 :key="action.id"
@@ -70,14 +74,20 @@ Sam & Max inspired messaging and achievement notifications
                 :class="`btn-${action.type || 'primary'}`"
                 @click.stop="handleAction(notification, action)"
               >
-                <i v-if="action.icon" :class="action.icon" class="action-icon"></i>
+                <i
+                  v-if="action.icon"
+                  :class="action.icon"
+                  class="action-icon"
+                ></i>
                 {{ action.label }}
               </button>
             </div>
 
             <!-- Close button -->
             <button
-              v-if="!notification.persistent || notification.dismissible !== false"
+              v-if="
+                !notification.persistent || notification.dismissible !== false
+              "
               class="notification-close"
               aria-label="Dismiss notification"
               @click.stop="dismissNotification(notification.id)"
@@ -87,7 +97,7 @@ Sam & Max inspired messaging and achievement notifications
           </div>
 
           <!-- Special effects for achievements -->
-          <div 
+          <div
             v-if="notification.type === 'achievement'"
             class="achievement-effects"
           >
@@ -99,14 +109,17 @@ Sam & Max inspired messaging and achievement notifications
       </TransitionGroup>
 
       <!-- Sam & Max Quote Overlay -->
-      <div 
+      <div
         v-if="samMaxQuote"
         class="sam-max-overlay"
         @click="dismissSamMaxQuote"
       >
         <div class="sam-max-bubble">
           <div class="quote-character">
-            <img :src="samMaxQuote.character.avatar" :alt="samMaxQuote.character.name" />
+            <img
+              :src="samMaxQuote.character.avatar"
+              :alt="samMaxQuote.character.name"
+            />
           </div>
           <div class="quote-content">
             <p class="quote-text">{{ samMaxQuote.text }}</p>
@@ -119,7 +132,7 @@ Sam & Max inspired messaging and achievement notifications
 </template>
 
 <script>
-import AppIcon from '@/components/ui/AppIcon.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 import { ref, onMounted, computed, onUnmounted, defineExpose } from 'vue'
 import { useNotificationStore } from '@/stores/notifications'
@@ -147,15 +160,15 @@ function getNotificationIcon(notification) {
     job: 'mdi-briefcase',
     ai: 'mdi-robot',
     system: 'mdi-cog',
-    gaming: 'mdi-gamepad-variant'
+    gaming: 'mdi-gamepad-variant',
   }
-  
+
   return notification.icon || iconMap[notification.type] || 'mdi-bell'
 }
 
 function getProgressPercent(notification) {
   if (!notification.startTime || !notification.duration) return 100
-  
+
   const elapsed = Date.now() - notification.startTime
   const percent = Math.max(0, 100 - (elapsed / notification.duration) * 100)
   return percent
@@ -165,7 +178,7 @@ function handleNotificationClick(notification) {
   if (notification.onClick) {
     notification.onClick(notification)
   }
-  
+
   // Auto-dismiss non-persistent notifications on click
   if (!notification.persistent) {
     dismissNotification(notification.id)
@@ -176,7 +189,7 @@ function handleAction(notification, action) {
   if (action.onClick) {
     action.onClick(notification, action)
   }
-  
+
   // Dismiss notification unless action specifies otherwise
   if (action.dismissOnClick !== false) {
     dismissNotification(notification.id)
@@ -192,9 +205,9 @@ function pauseTimer(id) {
   if (timers.has(id)) {
     const timer = timers.get(id)
     clearTimeout(timer.timeout)
-    
+
     pausedTimers.set(id, {
-      remainingTime: timer.remainingTime - (Date.now() - timer.startTime)
+      remainingTime: timer.remainingTime - (Date.now() - timer.startTime),
     })
   }
 }
@@ -203,7 +216,7 @@ function resumeTimer(id) {
   if (pausedTimers.has(id)) {
     const pausedTimer = pausedTimers.get(id)
     pausedTimers.delete(id)
-    
+
     if (pausedTimer.remainingTime > 0) {
       startTimer(id, pausedTimer.remainingTime)
     }
@@ -212,15 +225,15 @@ function resumeTimer(id) {
 
 function startTimer(id, duration) {
   clearTimer(id)
-  
+
   const timeout = setTimeout(() => {
     dismissNotification(id)
   }, duration)
-  
+
   timers.set(id, {
     timeout,
     startTime: Date.now(),
-    remainingTime: duration
+    remainingTime: duration,
   })
 }
 
@@ -234,7 +247,7 @@ function clearTimer(id) {
 
 function showSamMaxQuote(quote) {
   samMaxQuote.value = quote
-  
+
   // Auto-dismiss after 5 seconds
   setTimeout(() => {
     samMaxQuote.value = null
@@ -248,7 +261,11 @@ function dismissSamMaxQuote() {
 // Notification lifecycle management
 function manageNotificationTimers() {
   activeNotifications.value.forEach(notification => {
-    if (notification.duration && !notification.persistent && !timers.has(notification.id)) {
+    if (
+      notification.duration &&
+      !notification.persistent &&
+      !timers.has(notification.id)
+    ) {
       startTimer(notification.id, notification.duration)
     }
   })
@@ -270,7 +287,7 @@ const presets = {
         icon: 'mdi-eye',
         onClick: () => {
           // Navigate to job details
-        }
+        },
       },
       {
         id: 'apply',
@@ -279,9 +296,9 @@ const presets = {
         icon: 'mdi-send',
         onClick: () => {
           // Quick apply logic
-        }
-      }
-    ]
+        },
+      },
+    ],
   }),
 
   achievement: (title, description, icon) => ({
@@ -290,7 +307,7 @@ const presets = {
     message: description,
     duration: 6000,
     icon: icon,
-    persistent: false
+    persistent: false,
   }),
 
   aiAnalysis: (analysisType, result) => ({
@@ -305,32 +322,32 @@ const presets = {
         type: 'primary',
         onClick: () => {
           // Show analysis results
-        }
-      }
-    ]
+        },
+      },
+    ],
   }),
 
   systemUpdate: (component, status) => ({
     type: 'system',
     title: '[CONFIG] System Update',
     message: `${component} is now ${status}`,
-    duration: 4000
-  })
+    duration: 4000,
+  }),
 }
 
 // Watchers and lifecycle
 onMounted(() => {
   // Set up timer management
   const timerInterval = setInterval(manageNotificationTimers, 100)
-  
+
   // Listen for Sam & Max easter egg notifications
-  document.addEventListener('sam-max-quote', (event) => {
+  document.addEventListener('sam-max-quote', event => {
     showSamMaxQuote(event.detail)
   })
-  
+
   onUnmounted(() => {
     clearInterval(timerInterval)
-    timers.forEach((timer) => clearTimeout(timer.timeout))
+    timers.forEach(timer => clearTimeout(timer.timeout))
     document.removeEventListener('sam-max-quote', showSamMaxQuote)
   })
 })
@@ -338,7 +355,7 @@ onMounted(() => {
 // Expose presets and methods to parent components
 defineExpose({
   presets,
-  showSamMaxQuote
+  showSamMaxQuote,
 })
 </script>
 
@@ -396,9 +413,11 @@ defineExpose({
 
 .notification-achievement {
   border-color: rgba(255, 215, 0, 0.4);
-  background: linear-gradient(135deg, 
-    rgba(255, 215, 0, 0.1) 0%, 
-    rgba(255, 255, 255, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
   box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
   animation: achievementGlow 2s ease-in-out infinite alternate;
 }
@@ -441,11 +460,41 @@ defineExpose({
   animation: pulse 2s ease-in-out infinite;
 }
 
-.glow-success { background: radial-gradient(circle, rgba(0, 255, 135, 0.4) 0%, transparent 70%); }
-.glow-error { background: radial-gradient(circle, rgba(255, 0, 128, 0.4) 0%, transparent 70%); }
-.glow-warning { background: radial-gradient(circle, rgba(255, 170, 0, 0.4) 0%, transparent 70%); }
-.glow-info { background: radial-gradient(circle, rgba(96, 239, 255, 0.4) 0%, transparent 70%); }
-.glow-achievement { background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%); }
+.glow-success {
+  background: radial-gradient(
+    circle,
+    rgba(0, 255, 135, 0.4) 0%,
+    transparent 70%
+  );
+}
+.glow-error {
+  background: radial-gradient(
+    circle,
+    rgba(255, 0, 128, 0.4) 0%,
+    transparent 70%
+  );
+}
+.glow-warning {
+  background: radial-gradient(
+    circle,
+    rgba(255, 170, 0, 0.4) 0%,
+    transparent 70%
+  );
+}
+.glow-info {
+  background: radial-gradient(
+    circle,
+    rgba(96, 239, 255, 0.4) 0%,
+    transparent 70%
+  );
+}
+.glow-achievement {
+  background: radial-gradient(
+    circle,
+    rgba(255, 215, 0, 0.6) 0%,
+    transparent 70%
+  );
+}
 
 .notification-message {
   flex: 1;
@@ -563,12 +612,36 @@ defineExpose({
   animation: sparkleFloat 3s ease-in-out infinite;
 }
 
-.sparkle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
-.sparkle:nth-child(2) { top: 80%; left: 30%; animation-delay: 0.5s; }
-.sparkle:nth-child(3) { top: 60%; right: 20%; animation-delay: 1s; }
-.sparkle:nth-child(4) { top: 40%; right: 40%; animation-delay: 1.5s; }
-.sparkle:nth-child(5) { bottom: 20%; left: 60%; animation-delay: 2s; }
-.sparkle:nth-child(6) { bottom: 60%; right: 60%; animation-delay: 2.5s; }
+.sparkle:nth-child(1) {
+  top: 20%;
+  left: 20%;
+  animation-delay: 0s;
+}
+.sparkle:nth-child(2) {
+  top: 80%;
+  left: 30%;
+  animation-delay: 0.5s;
+}
+.sparkle:nth-child(3) {
+  top: 60%;
+  right: 20%;
+  animation-delay: 1s;
+}
+.sparkle:nth-child(4) {
+  top: 40%;
+  right: 40%;
+  animation-delay: 1.5s;
+}
+.sparkle:nth-child(5) {
+  bottom: 20%;
+  left: 60%;
+  animation-delay: 2s;
+}
+.sparkle:nth-child(6) {
+  bottom: 60%;
+  right: 60%;
+  animation-delay: 2.5s;
+}
 
 .sam-max-overlay {
   position: fixed;
@@ -617,12 +690,19 @@ defineExpose({
 
 /* Animations */
 @keyframes achievementGlow {
-  0% { box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2); }
-  100% { box-shadow: 0 8px 32px rgba(255, 215, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.3); }
+  0% {
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+  }
+  100% {
+    box-shadow:
+      0 8px 32px rgba(255, 215, 0, 0.4),
+      0 0 20px rgba(255, 215, 0, 0.3);
+  }
 }
 
 @keyframes sparkleFloat {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
     transform: translateY(0) scale(0);
   }
@@ -644,8 +724,12 @@ defineExpose({
 }
 
 @keyframes progressShrink {
-  from { width: 100%; }
-  to { width: 0%; }
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }
 
 .notification-enter-active,
@@ -669,18 +753,18 @@ defineExpose({
     padding: 1rem;
     max-width: calc(100vw - 2rem);
   }
-  
+
   .sam-max-overlay {
     left: 1rem;
     right: 1rem;
     max-width: none;
   }
-  
+
   .notification-content {
     flex-direction: column;
     gap: 0.75rem;
   }
-  
+
   .notification-actions {
     justify-content: center;
   }

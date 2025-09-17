@@ -69,7 +69,7 @@ export function useDocumentShortcuts(options: {
       const tabMap: Record<string, string> = {
         '1': 'resume',
         '2': 'cover-letter',
-        '3': 'ai-tools'
+        '3': 'ai-tools',
       }
       options.onSwitchTab(tabMap[key])
       return
@@ -107,12 +107,10 @@ export function useDocumentShortcuts(options: {
       { key: 'Alt + 1/2/3', action: 'Switch tabs' },
       { key: 'Alt + V', action: 'Toggle preview' },
       { key: 'Ctrl/⌘ + Shift + A', action: 'AI Generate' },
-      { key: 'F1', action: 'Show this help' }
+      { key: 'F1', action: 'Show this help' },
     ]
 
-    const helpText = shortcuts
-      .map(s => `${s.key}: ${s.action}`)
-      .join('\n')
+    const helpText = shortcuts.map(s => `${s.key}: ${s.action}`).join('\n')
 
     toast.info(`Keyboard Shortcuts:\n${helpText}`, { duration: 8000 })
   }
@@ -126,6 +124,6 @@ export function useDocumentShortcuts(options: {
   })
 
   return {
-    showShortcutsHelp
+    showShortcutsHelp,
   }
 }

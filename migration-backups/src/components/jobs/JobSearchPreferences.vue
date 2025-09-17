@@ -9,7 +9,9 @@
               <AppIcon name="mdi-briefcase-variant" class="me-2 text-primary" />
               Role Types
             </h6>
-            <p class="text-muted small mb-0">Select your preferred gaming industry roles</p>
+            <p class="text-muted small mb-0">
+              Select your preferred gaming industry roles
+            </p>
           </div>
 
           <div class="role-categories">
@@ -19,7 +21,10 @@
               class="role-category mb-3"
             >
               <div class="category-header d-flex align-items-center mb-2">
-                <i :class="[category.icon, 'me-2']" :style="{ color: category.color }"></i>
+                <i
+                  :class="[category.icon, 'me-2']"
+                  :style="{ color: category.color }"
+                ></i>
                 <span class="fw-medium">{{ category.name }}</span>
               </div>
               <div class="role-options">
@@ -35,7 +40,7 @@
                     type="checkbox"
                     :value="role"
                     @change="updatePreferences"
-                  >
+                  />
                   <label
                     :for="`role-${role.replace(/\s+/g, '-').toLowerCase()}`"
                     class="form-check-label small"
@@ -57,7 +62,9 @@
               <AppIcon name="mdi-account-star" class="me-2 text-success" />
               Experience & Compensation
             </h6>
-            <p class="text-muted small mb-0">Define your experience level and salary expectations</p>
+            <p class="text-muted small mb-0">
+              Define your experience level and salary expectations
+            </p>
           </div>
 
           <!-- Experience Level -->
@@ -95,7 +102,7 @@
                     min="0"
                     step="5000"
                     @input="updatePreferences"
-                  >
+                  />
                 </div>
               </div>
               <div class="col-6">
@@ -109,7 +116,7 @@
                     min="0"
                     step="5000"
                     @input="updatePreferences"
-                  >
+                  />
                 </div>
               </div>
             </div>
@@ -130,12 +137,16 @@
               <AppIcon name="mdi-map-marker" color="info" />
               Location & Work Style
             </h6>
-            <p class="text-muted small mb-0">Set your location and remote work preferences</p>
+            <p class="text-muted small mb-0">
+              Set your location and remote work preferences
+            </p>
           </div>
 
           <!-- Location Preference -->
           <div class="form-group mb-3">
-            <label class="form-label small fw-medium">Location Preference</label>
+            <label class="form-label small fw-medium"
+              >Location Preference</label
+            >
             <div class="location-options">
               <div
                 v-for="option in locationOptions"
@@ -149,8 +160,11 @@
                   type="radio"
                   :value="option.value"
                   @change="updatePreferences"
+                />
+                <label
+                  :for="`location-${option.value}`"
+                  class="form-check-label small"
                 >
-                <label :for="`location-${option.value}`" class="form-check-label small">
                   <i :class="[option.icon, 'me-2']"></i>
                   {{ option.label }}
                 </label>
@@ -189,8 +203,11 @@
                   type="radio"
                   :value="size.value"
                   @change="updatePreferences"
+                />
+                <label
+                  :for="`size-${size.value}`"
+                  class="form-check-label small"
                 >
-                <label :for="`size-${size.value}`" class="form-check-label small">
                   {{ size.label }}
                 </label>
               </div>
@@ -207,7 +224,9 @@
               <AppIcon name="mdi-magnify" color="warning" />
               Keywords & Notifications
             </h6>
-            <p class="text-muted small mb-0">Fine-tune search terms and alert preferences</p>
+            <p class="text-muted small mb-0">
+              Fine-tune search terms and alert preferences
+            </p>
           </div>
 
           <!-- Keywords -->
@@ -233,7 +252,9 @@
               placeholder="gambling, casino, NFT..."
               @input="updatePreferences"
             ></textarea>
-            <div class="form-text">Jobs containing these terms will be filtered out</div>
+            <div class="form-text">
+              Jobs containing these terms will be filtered out
+            </div>
           </div>
 
           <!-- Notification Frequency -->
@@ -263,7 +284,11 @@
         <div class="d-flex align-items-center justify-content-between">
           <div>
             <h6 class="mb-1">
-              <AppIcon name="mdi-check-circle-outline" color="success" context="success" />
+              <AppIcon
+                name="mdi-check-circle-outline"
+                color="success"
+                context="success"
+              />
               Preferences Summary
             </h6>
             <div class="summary-text small text-muted">
@@ -271,8 +296,20 @@
             </div>
           </div>
           <div class="summary-actions d-flex gap-2">
-            <UnifiedButton variant="outline" size="sm" leading-icon="mdi-refresh" @click="resetToDefaults">Reset</UnifiedButton>
-            <UnifiedButton variant="primary" size="sm" leading-icon="mdi-content-save" @click="savePreferences">Save</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="sm"
+              leading-icon="mdi-refresh"
+              @click="resetToDefaults"
+              >Reset</UnifiedButton
+            >
+            <UnifiedButton
+              variant="primary"
+              size="sm"
+              leading-icon="mdi-content-save"
+              @click="savePreferences"
+              >Save</UnifiedButton
+            >
           </div>
         </div>
       </div>
@@ -281,16 +318,16 @@
 </template>
 
 <script>
-import AppIcon from '@/components/ui/AppIcon.vue';
-import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 import { ref, watch, defineEmits, defineProps } from 'vue'
 
 const _props = defineProps({
   preferences: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['update:preferences'])
@@ -304,39 +341,69 @@ const roleCategories = ref([
     name: 'Design & Creative',
     icon: 'mdi-palette',
     color: '#8b5cf6',
-    roles: ['Game Designer', 'Level Designer', 'Narrative Designer', 'UX/UI Designer', 'Concept Artist']
+    roles: [
+      'Game Designer',
+      'Level Designer',
+      'Narrative Designer',
+      'UX/UI Designer',
+      'Concept Artist',
+    ],
   },
   {
     name: 'Engineering & Technical',
     icon: 'mdi-code-tags',
     color: '#06b6d4',
-    roles: ['Game Programmer', 'Engine Developer', 'Graphics Programmer', 'Technical Artist', 'DevOps Engineer']
+    roles: [
+      'Game Programmer',
+      'Engine Developer',
+      'Graphics Programmer',
+      'Technical Artist',
+      'DevOps Engineer',
+    ],
   },
   {
     name: 'Community & Marketing',
     icon: 'mdi-account-group',
     color: '#10b981',
-    roles: ['Community Manager', 'Content Creator', 'Marketing Manager', 'Social Media Manager', 'Streamer Coordinator']
+    roles: [
+      'Community Manager',
+      'Content Creator',
+      'Marketing Manager',
+      'Social Media Manager',
+      'Streamer Coordinator',
+    ],
   },
   {
     name: 'Esports & Competitive',
     icon: 'mdi-trophy',
     color: '#f59e0b',
-    roles: ['Esports Manager', 'Tournament Coordinator', 'Team Coach', 'Analyst', 'Broadcast Producer']
+    roles: [
+      'Esports Manager',
+      'Tournament Coordinator',
+      'Team Coach',
+      'Analyst',
+      'Broadcast Producer',
+    ],
   },
   {
     name: 'Business & Operations',
     icon: 'mdi-briefcase',
     color: '#ef4444',
-    roles: ['Product Manager', 'Producer', 'Business Development', 'Operations Manager', 'QA Lead']
-  }
+    roles: [
+      'Product Manager',
+      'Producer',
+      'Business Development',
+      'Operations Manager',
+      'QA Lead',
+    ],
+  },
 ])
 
 const locationOptions = ref([
   { value: 'remote', label: 'Remote Only', icon: 'mdi-home' },
   { value: 'hybrid', label: 'Hybrid Preferred', icon: 'mdi-home-city' },
   { value: 'onsite', label: 'On-site Only', icon: 'mdi-office-building' },
-  { value: 'flexible', label: 'Flexible', icon: 'mdi-map-marker-radius' }
+  { value: 'flexible', label: 'Flexible', icon: 'mdi-map-marker-radius' },
 ])
 
 const companySizeOptions = ref([
@@ -344,23 +411,33 @@ const companySizeOptions = ref([
   { value: 'small', label: 'Small (51-200)' },
   { value: 'medium', label: 'Medium (201-1000)' },
   { value: 'large', label: 'Large (1000+)' },
-  { value: 'any', label: 'Any Size' }
+  { value: 'any', label: 'Any Size' },
 ])
 
 // Watch for external changes
-watch(() => props.preferences, (newVal) => {
-  localPreferences.value = { ...newVal }
-}, { deep: true })
+watch(
+  () => props.preferences,
+  newVal => {
+    localPreferences.value = { ...newVal }
+  },
+  { deep: true }
+)
 
 // Methods
 const updatePreferences = () => {
   emit('update:preferences', { ...localPreferences.value })
 }
 
-const formatSalaryRange = (range) => {
-  if (!range.min && !range.max) {return 'No salary preference set'}
-  if (!range.min) {return `Up to $${range.max.toLocaleString()}`}
-  if (!range.max) {return `$${range.min.toLocaleString()}+`}
+const formatSalaryRange = range => {
+  if (!range.min && !range.max) {
+    return 'No salary preference set'
+  }
+  if (!range.min) {
+    return `Up to $${range.max.toLocaleString()}`
+  }
+  if (!range.max) {
+    return `$${range.min.toLocaleString()}+`
+  }
   return `$${range.min.toLocaleString()} - $${range.max.toLocaleString()}`
 }
 
@@ -368,7 +445,9 @@ const generateSummaryText = () => {
   const parts = []
 
   if (localPreferences.value.roleTypes.length > 0) {
-    parts.push(`${localPreferences.value.roleTypes.length} role type${localPreferences.value.roleTypes.length !== 1 ? 's' : ''} selected`)
+    parts.push(
+      `${localPreferences.value.roleTypes.length} role type${localPreferences.value.roleTypes.length !== 1 ? 's' : ''} selected`
+    )
   }
 
   if (localPreferences.value.experienceLevel !== 'all') {
@@ -377,7 +456,7 @@ const generateSummaryText = () => {
       mid: 'mid-level',
       senior: 'senior-level',
       lead: 'lead/principal',
-      executive: 'executive'
+      executive: 'executive',
     }
     parts.push(`${levels[localPreferences.value.experienceLevel]} positions`)
   }
@@ -387,9 +466,11 @@ const generateSummaryText = () => {
       remote: 'remote work',
       hybrid: 'hybrid work',
       onsite: 'on-site work',
-      flexible: 'flexible location'
+      flexible: 'flexible location',
     }
-    parts.push(`${locations[localPreferences.value.locationPreference]} preferred`)
+    parts.push(
+      `${locations[localPreferences.value.locationPreference]} preferred`
+    )
   }
 
   return parts.join(', ') || 'Configure your preferences to get started'
@@ -405,7 +486,7 @@ const resetToDefaults = () => {
     workStyle: 'hybrid',
     keywords: '',
     excludeKeywords: '',
-    notificationFrequency: 'daily'
+    notificationFrequency: 'daily',
   }
   updatePreferences()
 }
@@ -491,7 +572,11 @@ const savePreferences = () => {
 }
 
 .salary-display {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1),
+    rgba(139, 92, 246, 0.1)
+  );
   border-radius: var(--border-radius-sm);
   padding: 0.5rem;
   font-weight: 600;
@@ -534,17 +619,17 @@ const savePreferences = () => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .glass-card-subtle {
+[data-theme='dark'] .glass-card-subtle {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .role-category {
+[data-theme='dark'] .role-category {
   background: rgba(0, 0, 0, 0.2);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .salary-range-inputs .input-group-text {
+[data-theme='dark'] .salary-range-inputs .input-group-text {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
   color: var(--text-secondary);

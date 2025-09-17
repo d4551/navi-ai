@@ -7,10 +7,10 @@ export const API_ROUTES = {
     SEARCH: '/jobs/search',
     RECOMMEND: '/jobs/recommend',
     SAVE: '/jobs/save',
-    UNSAVE: '/jobs/unsave', 
+    UNSAVE: '/jobs/unsave',
     SAVED: '/jobs/saved',
     APPLY: '/jobs/apply',
-    APPLICATIONS: '/jobs/applications'
+    APPLICATIONS: '/jobs/applications',
   },
 
   // Resume Routes
@@ -19,7 +19,7 @@ export const API_ROUTES = {
     UPDATE: '/resume',
     EXPORT: '/resume/export',
     TEMPLATES: '/resume/templates',
-    PREVIEW: '/resume/preview'
+    PREVIEW: '/resume/preview',
   },
 
   // Portfolio Routes
@@ -28,7 +28,7 @@ export const API_ROUTES = {
     UPDATE: '/portfolio',
     EXPORT: '/portfolio/export',
     PROJECTS: '/portfolio/projects',
-    PREVIEW: '/portfolio/preview'
+    PREVIEW: '/portfolio/preview',
   },
 
   // AI Routes
@@ -39,62 +39,64 @@ export const API_ROUTES = {
     MATCH_JOBS: '/ai/match-jobs',
     SCORE_RESUME: '/ai/score-resume',
     GENERATE_COVER_LETTER: '/ai/generate-cover-letter',
-    INTERVIEW_PREP: '/ai/interview-prep'
+    INTERVIEW_PREP: '/ai/interview-prep',
   },
 
   // Provider Routes
   PROVIDERS: {
     HEALTH: '/providers/health',
     CONFIG: '/providers/config',
-    STATUS: '/providers/status'
+    STATUS: '/providers/status',
   },
 
   // User Routes
   USER: {
     PROFILE: '/user/profile',
     PREFERENCES: '/user/preferences',
-    SETTINGS: '/user/settings'
+    SETTINGS: '/user/settings',
   },
 
   // Company/Studio Routes
   STUDIOS: {
     SEARCH: '/studios/search',
     GET: '/studios/:id',
-    NORMALIZE: '/studios/normalize'
-  }
-} as const;
+    NORMALIZE: '/studios/normalize',
+  },
+} as const
 
 // Route parameter types
 export type RouteParams = {
-  id?: string;
-  page?: number;
-  limit?: number;
-  [key: string]: any;
-};
+  id?: string
+  page?: number
+  limit?: number
+  [key: string]: any
+}
 
 // Helper function to build URLs with parameters
 export function buildURL(route: string, params?: RouteParams): string {
-  let url = route;
-  
+  let url = route
+
   if (params) {
     // Replace path parameters (like :id)
     Object.entries(_params).forEach(([key, value]) => {
-      url = url.replace(`:${key}`, String(value));
-    });
-    
+      url = url.replace(`:${key}`, String(value))
+    })
+
     // Add query parameters for remaining params
-    const pathParamKeys = (route.match(/:(\w+)/g) || []).map(p => p.substring(1));
+    const pathParamKeys = (route.match(/:(\w+)/g) || []).map(p =>
+      p.substring(1)
+    )
     const queryParams = Object.entries(params)
       .filter(([key]) => !pathParamKeys.includes(key))
       .map(([key, value]) => `${key}=${encodeURIComponent(String(value))}`)
-      .join('&');
-    
+      .join('&')
+
     if (queryParams) {
-      url += `?${queryParams}`;
+      url += `?${queryParams}`
     }
   }
-  
-  return url;
+
+  return url
 }
 
 // OpenAPI route documentation structure
@@ -107,23 +109,23 @@ export const OPENAPI_ROUTES = {
         required: true,
         content: {
           'application/json': {
-            schema: { $ref: '#/components/schemas/JobSearchRequest' }
-          }
-        }
+            schema: { $ref: '#/components/schemas/JobSearchRequest' },
+          },
+        },
       },
       responses: {
         200: {
           description: 'Successful job search',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/JobSearchResponse' }
-            }
-          }
-        }
-      }
-    }
+              schema: { $ref: '#/components/schemas/JobSearchResponse' },
+            },
+          },
+        },
+      },
+    },
   },
-  
+
   '/resume/export': {
     post: {
       summary: 'Export resume in specified format',
@@ -132,21 +134,21 @@ export const OPENAPI_ROUTES = {
         required: true,
         content: {
           'application/json': {
-            schema: { $ref: '#/components/schemas/ResumeExportRequest' }
-          }
-        }
+            schema: { $ref: '#/components/schemas/ResumeExportRequest' },
+          },
+        },
       },
       responses: {
         200: {
           description: 'Resume exported successfully',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/ResumeExportResponse' }
-            }
-          }
-        }
-      }
-    }
+              schema: { $ref: '#/components/schemas/ResumeExportResponse' },
+            },
+          },
+        },
+      },
+    },
   },
 
   '/portfolio/export': {
@@ -157,21 +159,21 @@ export const OPENAPI_ROUTES = {
         required: true,
         content: {
           'application/json': {
-            schema: { $ref: '#/components/schemas/PortfolioExportRequest' }
-          }
-        }
+            schema: { $ref: '#/components/schemas/PortfolioExportRequest' },
+          },
+        },
       },
       responses: {
         200: {
           description: 'Portfolio exported successfully',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/PortfolioExportResponse' }
-            }
-          }
-        }
-      }
-    }
+              schema: { $ref: '#/components/schemas/PortfolioExportResponse' },
+            },
+          },
+        },
+      },
+    },
   },
 
   '/ai/query': {
@@ -182,21 +184,21 @@ export const OPENAPI_ROUTES = {
         required: true,
         content: {
           'application/json': {
-            schema: { $ref: '#/components/schemas/AIModelRequest' }
-          }
-        }
+            schema: { $ref: '#/components/schemas/AIModelRequest' },
+          },
+        },
       },
       responses: {
         200: {
           description: 'AI query completed',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/AIModelResponse' }
-            }
-          }
-        }
-      }
-    }
+              schema: { $ref: '#/components/schemas/AIModelResponse' },
+            },
+          },
+        },
+      },
+    },
   },
 
   '/ai/match-jobs': {
@@ -207,21 +209,21 @@ export const OPENAPI_ROUTES = {
         required: true,
         content: {
           'application/json': {
-            schema: { $ref: '#/components/schemas/JobMatchRequest' }
-          }
-        }
+            schema: { $ref: '#/components/schemas/JobMatchRequest' },
+          },
+        },
       },
       responses: {
         200: {
           description: 'Job matching completed',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/JobMatchResponse' }
-            }
-          }
-        }
-      }
-    }
+              schema: { $ref: '#/components/schemas/JobMatchResponse' },
+            },
+          },
+        },
+      },
+    },
   },
 
   '/ai/score-resume': {
@@ -232,21 +234,21 @@ export const OPENAPI_ROUTES = {
         required: true,
         content: {
           'application/json': {
-            schema: { $ref: '#/components/schemas/ResumeScoreRequest' }
-          }
-        }
+            schema: { $ref: '#/components/schemas/ResumeScoreRequest' },
+          },
+        },
       },
       responses: {
         200: {
           description: 'Resume scoring completed',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/ResumeScoreResponse' }
-            }
-          }
-        }
-      }
-    }
+              schema: { $ref: '#/components/schemas/ResumeScoreResponse' },
+            },
+          },
+        },
+      },
+    },
   },
 
   '/ai/generate-cover-letter': {
@@ -257,21 +259,21 @@ export const OPENAPI_ROUTES = {
         required: true,
         content: {
           'application/json': {
-            schema: { $ref: '#/components/schemas/CoverLetterRequest' }
-          }
-        }
+            schema: { $ref: '#/components/schemas/CoverLetterRequest' },
+          },
+        },
       },
       responses: {
         200: {
           description: 'Cover letter generated successfully',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/CoverLetterResponse' }
-            }
-          }
-        }
-      }
-    }
+              schema: { $ref: '#/components/schemas/CoverLetterResponse' },
+            },
+          },
+        },
+      },
+    },
   },
 
   '/ai/interview-prep': {
@@ -282,21 +284,21 @@ export const OPENAPI_ROUTES = {
         required: true,
         content: {
           'application/json': {
-            schema: { $ref: '#/components/schemas/InterviewPrepRequest' }
-          }
-        }
+            schema: { $ref: '#/components/schemas/InterviewPrepRequest' },
+          },
+        },
       },
       responses: {
         200: {
           description: 'Interview preparation materials generated',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/InterviewPrepResponse' }
-            }
-          }
-        }
-      }
-    }
+              schema: { $ref: '#/components/schemas/InterviewPrepResponse' },
+            },
+          },
+        },
+      },
+    },
   },
 
   '/providers/health': {
@@ -308,25 +310,25 @@ export const OPENAPI_ROUTES = {
           name: 'providers',
           in: 'query',
           schema: { type: 'array', items: { type: 'string' } },
-          description: 'Specific providers to check'
+          description: 'Specific providers to check',
         },
         {
           name: 'timeout',
           in: 'query',
           schema: { type: 'number' },
-          description: 'Request timeout in milliseconds'
-        }
+          description: 'Request timeout in milliseconds',
+        },
       ],
       responses: {
         200: {
           description: 'Provider health check completed',
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/ProviderHealthResponse' }
-            }
-          }
-        }
-      }
-    }
-  }
-};
+              schema: { $ref: '#/components/schemas/ProviderHealthResponse' },
+            },
+          },
+        },
+      },
+    },
+  },
+}

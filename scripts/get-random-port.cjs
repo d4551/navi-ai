@@ -4,7 +4,7 @@
  * Gets a random available port for development servers
  */
 
-const net = require('net');
+const net = require('net')
 
 /**
  * Check if a port is available
@@ -12,20 +12,20 @@ const net = require('net');
  * @returns {Promise<boolean>} - True if port is available
  */
 function isPortAvailable(port) {
-  return new Promise((resolve) => {
-    const server = net.createServer();
-    
+  return new Promise(resolve => {
+    const server = net.createServer()
+
     server.listen(port, () => {
       server.once('close', () => {
-        resolve(true);
-      });
-      server.close();
-    });
-    
+        resolve(true)
+      })
+      server.close()
+    })
+
     server.on('error', () => {
-      resolve(false);
-    });
-  });
+      resolve(false)
+    })
+  })
 }
 
 /**
@@ -35,27 +35,27 @@ function isPortAvailable(port) {
  * @returns {Promise<number>} - Available port number
  */
 async function getRandomPort(min = 3000, max = 65535) {
-  const maxAttempts = 100;
-  let attempts = 0;
-  
+  const maxAttempts = 100
+  let attempts = 0
+
   while (attempts < maxAttempts) {
-    const port = Math.floor(Math.random() * (max - min + 1)) + min;
-    
+    const port = Math.floor(Math.random() * (max - min + 1)) + min
+
     if (await isPortAvailable(port)) {
-      return port;
+      return port
     }
-    
-    attempts++;
+
+    attempts++
   }
-  
+
   // Fallback to a sequential search if random fails
   for (let port = min; port <= max; port++) {
     if (await isPortAvailable(port)) {
-      return port;
+      return port
     }
   }
-  
-  throw new Error(`No available ports found in range ${min}-${max}`);
+
+  throw new Error(`No available ports found in range ${min}-${max}`)
 }
 
 /**
@@ -64,7 +64,7 @@ async function getRandomPort(min = 3000, max = 65535) {
  */
 async function getVitePort() {
   // Vite typically uses ports 3000-9999, but we'll use a wider range
-  return await getRandomPort(3000, 9999);
+  return await getRandomPort(3000, 9999)
 }
 
 /**
@@ -73,41 +73,41 @@ async function getVitePort() {
  */
 async function getElectronPort() {
   // Electron can use any available port
-  return await getRandomPort(3000, 9999);
+  return await getRandomPort(3000, 9999)
 }
 
 // CLI usage
 if (require.main === module) {
-  const args = process.argv.slice(2);
-  const service = args[0] || 'vite';
-  
-  (async () => {
+  const args = process.argv.slice(2)
+  const service = args[0] || 'vite'
+
+  ;(async () => {
     try {
-      let port;
-      
+      let port
+
       switch (service) {
         case 'vite':
-          port = await getVitePort();
-          break;
+          port = await getVitePort()
+          break
         case 'electron':
-          port = await getElectronPort();
-          break;
+          port = await getElectronPort()
+          break
         default:
-          port = await getRandomPort();
+          port = await getRandomPort()
       }
-      
-      console.log(port);
-      process.exit(0);
+
+      console.log(port)
+      process.exit(0)
     } catch (error) {
-      console.error('Error getting random port:', error.message);
-      process.exit(1);
+      console.error('Error getting random port:', error.message)
+      process.exit(1)
     }
-  })();
+  })()
 }
 
 module.exports = {
   getRandomPort,
   getVitePort,
   getElectronPort,
-  isPortAvailable
-};
+  isPortAvailable,
+}

@@ -59,10 +59,16 @@
         <v-card-title>Demo Action</v-card-title>
         <v-card-text>
           <p><strong>Action:</strong> {{ lastAction }}</p>
-          <p v-if="selectedJob"><strong>Job:</strong> {{ selectedJob.title }}</p>
-          <p v-if="selectedJob"><strong>Company:</strong> {{ selectedJob.company?.name || selectedJob.company }}</p>
+          <p v-if="selectedJob">
+            <strong>Job:</strong> {{ selectedJob.title }}
+          </p>
+          <p v-if="selectedJob">
+            <strong>Company:</strong>
+            {{ selectedJob.company?.name || selectedJob.company }}
+          </p>
           <p class="text-caption text-medium-emphasis mt-4">
-            This is a demo. In a real application, this would trigger the appropriate action.
+            This is a demo. In a real application, this would trigger the
+            appropriate action.
           </p>
         </v-card-text>
         <v-card-actions>
@@ -95,19 +101,55 @@ const selectedJob = ref(null)
 // Demo data generators
 const refreshJobs = async () => {
   loading.value = true
-  
+
   // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 1500))
-  
+
   const companies = [
-    { name: 'Roblox', logo: null, verified: true, type: 'AAA Studio', ats: 'Greenhouse' },
-    { name: 'Epic Games', logo: null, verified: true, type: 'AAA Studio', ats: 'Workday' },
-    { name: 'Unity Technologies', logo: null, verified: true, type: 'Engine Company', ats: 'Lever' },
-    { name: 'Blizzard Entertainment', logo: null, verified: true, type: 'AAA Studio', ats: 'SmartRecruiters' },
-    { name: 'Valve Corporation', logo: null, verified: false, type: 'AAA Studio', ats: 'Direct' },
-    { name: 'Indie Game Studio', logo: null, verified: false, type: 'Indie Studio', ats: 'Direct' }
+    {
+      name: 'Roblox',
+      logo: null,
+      verified: true,
+      type: 'AAA Studio',
+      ats: 'Greenhouse',
+    },
+    {
+      name: 'Epic Games',
+      logo: null,
+      verified: true,
+      type: 'AAA Studio',
+      ats: 'Workday',
+    },
+    {
+      name: 'Unity Technologies',
+      logo: null,
+      verified: true,
+      type: 'Engine Company',
+      ats: 'Lever',
+    },
+    {
+      name: 'Blizzard Entertainment',
+      logo: null,
+      verified: true,
+      type: 'AAA Studio',
+      ats: 'SmartRecruiters',
+    },
+    {
+      name: 'Valve Corporation',
+      logo: null,
+      verified: false,
+      type: 'AAA Studio',
+      ats: 'Direct',
+    },
+    {
+      name: 'Indie Game Studio',
+      logo: null,
+      verified: false,
+      type: 'Indie Studio',
+      ats: 'Direct',
+    },
   ]
-  
+
   const jobTitles = [
     'Software Engineer Intern - Summer 2026',
     'Senior Game Developer - Unity',
@@ -118,9 +160,9 @@ const refreshJobs = async () => {
     'Technical Artist',
     'Game Designer',
     'Backend Engineer - Multiplayer Games',
-    'Frontend Developer - Game Portal'
+    'Frontend Developer - Game Portal',
   ]
-  
+
   const locations = [
     'San Francisco, CA, USA',
     'Seattle, WA, USA',
@@ -129,92 +171,99 @@ const refreshJobs = async () => {
     'Remote - US',
     'Vancouver, BC, Canada',
     'Montreal, QC, Canada',
-    'London, UK'
+    'London, UK',
   ]
-  
+
   const skillSets = [
     ['Unity', 'C#', 'Game Development', 'Version Control', 'Agile'],
     ['Unreal Engine', 'C++', 'Blueprint', 'Graphics', 'Performance'],
     ['JavaScript', 'React', 'Node.js', 'MongoDB', 'AWS'],
     ['Python', 'Django', 'PostgreSQL', 'Redis', 'Docker'],
     ['Java', 'Spring Boot', 'Microservices', 'Kubernetes', 'CI/CD'],
-    ['TypeScript', 'Vue.js', 'GraphQL', 'WebGL', 'Three.js']
+    ['TypeScript', 'Vue.js', 'GraphQL', 'WebGL', 'Three.js'],
   ]
-  
+
   const descriptions = [
-    'Join our team to build the platform that powers imagination. You\'ll work on cutting-edge distributed systems, game engine technology, and tools that enable millions of creators worldwide.',
-    'We\'re looking for passionate developers to help create the next generation of interactive entertainment. Work with industry veterans on AAA titles played by millions.',
-    'Help shape the future of game development tools. You\'ll be building editor extensions, pipeline tools, and developer workflows used by teams worldwide.',
+    "Join our team to build the platform that powers imagination. You'll work on cutting-edge distributed systems, game engine technology, and tools that enable millions of creators worldwide.",
+    "We're looking for passionate developers to help create the next generation of interactive entertainment. Work with industry veterans on AAA titles played by millions.",
+    "Help shape the future of game development tools. You'll be building editor extensions, pipeline tools, and developer workflows used by teams worldwide.",
     'Join a collaborative team focused on gameplay systems, player experience, and creating memorable gaming moments that bring people together.',
     'Work on high-performance backend systems that power real-time multiplayer experiences for millions of concurrent players worldwide.',
-    'Design and implement beautiful, intuitive user interfaces for games and game development tools used by creators around the globe.'
+    'Design and implement beautiful, intuitive user interfaces for games and game development tools used by creators around the globe.',
   ]
-  
+
   demoJobs.value = Array.from({ length: 8 }, (_, i) => ({
     id: `demo-job-${i + 1}`,
     title: jobTitles[i % jobTitles.length],
     company: companies[i % companies.length],
     location: locations[i % locations.length],
     remote: Math.random() > 0.6,
-    type: ['full-time', 'internship', 'contract'][Math.floor(Math.random() * 3)],
+    type: ['full-time', 'internship', 'contract'][
+      Math.floor(Math.random() * 3)
+    ],
     description: descriptions[i % descriptions.length],
     skills: skillSets[i % skillSets.length],
-    salary: i % 3 === 0 ? {
-      min: Math.floor(Math.random() * 50 + 80) * 1000,
-      max: Math.floor(Math.random() * 50 + 130) * 1000,
-      currency: 'USD'
-    } : null,
+    salary:
+      i % 3 === 0
+        ? {
+            min: Math.floor(Math.random() * 50 + 80) * 1000,
+            max: Math.floor(Math.random() * 50 + 130) * 1000,
+            currency: 'USD',
+          }
+        : null,
     matchScore: Math.floor(Math.random() * 40 + 60), // 60-100%
     posted: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000),
-    source: ['greenhouse', 'lever', 'workday', 'direct'][Math.floor(Math.random() * 4)],
+    source: ['greenhouse', 'lever', 'workday', 'direct'][
+      Math.floor(Math.random() * 4)
+    ],
     applicants: Math.floor(Math.random() * 200 + 50),
-    duration: i % 4 === 0 ? '12 weeks' : undefined
+    duration: i % 4 === 0 ? '12 weeks' : undefined,
   }))
-  
+
   // Sort by match score descending
   demoJobs.value.sort((a, b) => b.matchScore - a.matchScore)
-  
+
   loading.value = false
 }
 
 // Event handlers
-const handleJobSelected = (job) => {
+const handleJobSelected = job => {
   lastAction.value = 'Job Selected'
   selectedJob.value = job
   showActionModal.value = true
 }
 
-const handleJobApplied = (job) => {
+const handleJobApplied = job => {
   lastAction.value = 'Apply to Job'
   selectedJob.value = job
   showActionModal.value = true
 }
 
-const handleJobSaved = (data) => {
+const handleJobSaved = data => {
   lastAction.value = data.saved ? 'Job Saved' : 'Job Unsaved'
   selectedJob.value = data.job
   showActionModal.value = true
 }
 
-const handleJobDetails = (job) => {
+const handleJobDetails = job => {
   lastAction.value = 'View Job Details'
   selectedJob.value = job
   showActionModal.value = true
 }
 
-const handleAddToCompare = (job) => {
+const handleAddToCompare = job => {
   lastAction.value = 'Add to Compare'
   selectedJob.value = job
   showActionModal.value = true
 }
 
-const handleShareJob = (job) => {
+const handleShareJob = job => {
   lastAction.value = 'Share Job'
   selectedJob.value = job
   showActionModal.value = true
 }
 
-const handleReportJob = (job) => {
+const handleReportJob = job => {
   lastAction.value = 'Report Job'
   selectedJob.value = job
   showActionModal.value = true

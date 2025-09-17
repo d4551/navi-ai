@@ -13,7 +13,7 @@ The easiest way to test your Google AI setup:
 await testGoogleAIConnection()
 
 // Test with your API key
-await testGoogleAI("YOUR_GEMINI_API_KEY_HERE")
+await testGoogleAI('YOUR_GEMINI_API_KEY_HERE')
 
 // Full systems diagnostic
 await runAISystemsCheck()
@@ -162,12 +162,15 @@ await testGoogleAI('your-key', 'gemini-1.5-pro')
 
 ```javascript
 // Set up periodic health checks
-setInterval(async () => {
-  const status = await quickAICheck()
-  if (!status.success) {
-    console.warn('AI service degraded:', status.error)
-  }
-}, 5 * 60 * 1000) // Every 5 minutes
+setInterval(
+  async () => {
+    const status = await quickAICheck()
+    if (!status.success) {
+      console.warn('AI service degraded:', status.error)
+    }
+  },
+  5 * 60 * 1000
+) // Every 5 minutes
 ```
 
 ## Troubleshooting

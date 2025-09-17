@@ -94,7 +94,7 @@ const MDI_TO_ICON_NAME = {
   'mdi-settings': '⚙️',
   'mdi-help-circle': '❓',
   'mdi-close': '❌',
-  'mdi-menu': '☰'
+  'mdi-menu': '☰',
 }
 
 function convertFileContent(content, filePath) {
@@ -124,33 +124,35 @@ function convertFileContent(content, filePath) {
       if (emoji) {
         hasChanges = true
         needsImport = true
-        
+
         // Extract size, color, and other relevant attributes
         const sizeMatch = fullClass.match(/icon-(xs|sm|md|lg|xl)/)
-        const colorMatch = fullClass.match(/text-(primary|secondary|success|warning|error|info)/)
-        
+        const colorMatch = fullClass.match(
+          /text-(primary|secondary|success|warning|error|info)/
+        )
+
         let props = [`name="${emoji}"`]
-        
+
         if (sizeMatch) {
           const sizeMap = {
-            'xs': 'x-small',
-            'sm': 'small', 
-            'md': 'default',
-            'lg': 'large',
-            'xl': 'x-large'
+            xs: 'x-small',
+            sm: 'small',
+            md: 'default',
+            lg: 'large',
+            xl: 'x-large',
           }
           props.push(`size="${sizeMap[sizeMatch[1]] || 'default'}"`)
         }
-        
+
         if (colorMatch) {
           props.push(`color="${colorMatch[1]}"`)
         }
-        
+
         // Keep other attributes
         if (attributes.trim()) {
           props.push(attributes.trim())
         }
-        
+
         return `<AppIcon ${props.join(' ')} />`
       }
       return match
@@ -176,22 +178,26 @@ function convertFileContent(content, filePath) {
     // Find the script tag and add import
     const scriptMatch = updatedContent.match(/<script[^>]*>/)
     if (scriptMatch) {
-      const existingImports = updatedContent.match(/import\s+.*from\s+['"][^'"]*['"]/)
+      const existingImports = updatedContent.match(
+        /import\s+.*from\s+['"][^'"]*['"]/
+      )
       if (existingImports) {
         // Add after existing imports
         const lastImportIndex = updatedContent.lastIndexOf('import')
         const lineEnd = updatedContent.indexOf('\\n', lastImportIndex)
-        updatedContent = updatedContent.slice(0, lineEnd) + 
-          "\\nimport AppIcon from '@/components/ui/AppIcon.vue'" + 
+        updatedContent =
+          updatedContent.slice(0, lineEnd) +
+          "\\nimport AppIcon from '@/components/ui/AppIcon.vue'" +
           updatedContent.slice(lineEnd)
       } else {
         // Add after script tag
         const scriptEndIndex = scriptMatch.index + scriptMatch[0].length
-        updatedContent = updatedContent.slice(0, scriptEndIndex) +
+        updatedContent =
+          updatedContent.slice(0, scriptEndIndex) +
           "\\nimport AppIcon from '@/components/ui/AppIcon.vue'\\n" +
           updatedContent.slice(scriptEndIndex)
       }
-      
+
       // Add to components section
       if (updatedContent.includes('components: {')) {
         updatedContent = updatedContent.replace(
@@ -217,32 +223,35 @@ function convertFileContent(content, filePath) {
 
 async function convertFiles() {
   console.log('🔄 Converting MDI icons to MUI icons via AppIcon component...')
-  
-  const vueFiles = await glob('src/**/*.vue', { 
-    ignore: ['node_modules/**', 'dist/**'] 
+
+  const vueFiles = await glob('src/**/*.vue', {
+    ignore: ['node_modules/**', 'dist/**'],
   })
-  
+
   let totalFiles = 0
   let modifiedFiles = 0
-  
+
   for (const file of vueFiles) {
     totalFiles++
     const filePath = path.resolve(file)
     const originalContent = fs.readFileSync(filePath, 'utf8')
-    
-    const { content: newContent, hasChanges } = convertFileContent(originalContent, filePath)
-    
+
+    const { content: newContent, hasChanges } = convertFileContent(
+      originalContent,
+      filePath
+    )
+
     if (hasChanges) {
       fs.writeFileSync(filePath, newContent)
       modifiedFiles++
       console.log(`✅ Updated ${file}`)
     }
   }
-  
+
   console.log(`\\n📊 Conversion complete!`)
   console.log(`📁 Total files scanned: ${totalFiles}`)
   console.log(`✏️  Files modified: ${modifiedFiles}`)
-  
+
   if (modifiedFiles > 0) {
     console.log('\\n🚀 Next steps:')
     console.log('1. Review the changes')

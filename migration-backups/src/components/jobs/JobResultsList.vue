@@ -24,7 +24,10 @@
         <div class="empty-content">
           <AppIcon name="mdi-briefcase-search-outline" class="empty-icon" />
           <h3>No Gaming Positions Found</h3>
-          <p>Try adjusting your search criteria or browse our studio database for more opportunities.</p>
+          <p>
+            Try adjusting your search criteria or browse our studio database for
+            more opportunities.
+          </p>
           <UnifiedButton
             variant="primary"
             leading-icon="mdi-office-building"
@@ -42,8 +45,8 @@
           class="job-list-item glass-surface"
           :class="{
             'gaming-highlight': gamingFocus && job.isGaming,
-            'featured': job.featured,
-            'saved': job.saved
+            featured: job.featured,
+            saved: job.saved,
           }"
           @click="$emit('job-selected', job)"
         >
@@ -60,8 +63,10 @@
                   <UnifiedButton
                     variant="ghost"
                     size="sm"
-                    :leading-icon="job.saved ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
-                    :class="{ 'saved': job.saved }"
+                    :leading-icon="
+                      job.saved ? 'mdi-bookmark' : 'mdi-bookmark-outline'
+                    "
+                    :class="{ saved: job.saved }"
                     @click.stop="$emit('job-saved', job)"
                   />
                   <UnifiedButton
@@ -88,11 +93,15 @@
                     class="company-logo"
                   />
                   <div class="company-details">
-                    <span class="company-name">{{ job.company?.name || 'Unknown Company' }}</span>
-                    <span class="job-location">📍 {{ job.location || 'Remote' }}</span>
+                    <span class="company-name">{{
+                      job.company?.name || 'Unknown Company'
+                    }}</span>
+                    <span class="job-location"
+                      >📍 {{ job.location || 'Remote' }}</span
+                    >
                   </div>
                 </div>
-                
+
                 <div class="job-meta">
                   <div v-if="job.salary" class="salary-info">
                     💰 {{ formatSalary(job.salary) }}
@@ -108,7 +117,11 @@
           <!-- Job Tags & Skills -->
           <div class="job-tags-section">
             <div class="job-tags">
-              <UiChip v-if="job.level" classes="level-chip" :variant="getLevelVariant(job.level)">
+              <UiChip
+                v-if="job.level"
+                classes="level-chip"
+                :variant="getLevelVariant(job.level)"
+              >
                 {{ job.level }}
               </UiChip>
               <UiChip v-if="job.jobType" classes="type-chip">
@@ -117,7 +130,11 @@
               <UiChip v-if="job.remote" classes="remote-chip" variant="success">
                 Remote OK
               </UiChip>
-              <UiChip v-if="gamingFocus && job.gameGenre" classes="genre-chip" variant="gaming">
+              <UiChip
+                v-if="gamingFocus && job.gameGenre"
+                classes="genre-chip"
+                variant="gaming"
+              >
                 {{ job.gameGenre }}
               </UiChip>
             </div>
@@ -171,7 +188,7 @@
               >
                 Quick Apply
               </UnifiedButton>
-              
+
               <UnifiedButton
                 variant="outline"
                 size="md"
@@ -224,7 +241,7 @@ interface Props {
 
 const _props = withDefaults(defineProps<Props>(), {
   loading: false,
-  gamingFocus: true
+  gamingFocus: true,
 })
 
 // Emits
@@ -235,11 +252,11 @@ const emit = defineEmits([
   'job-details',
   'job-shared',
   'add-to-compare',
-  'browse-studios'
+  'browse-studios',
 ])
 
 // Methods
-const formatSalary = (salary) => {
+const formatSalary = salary => {
   if (typeof salary === 'object' && salary.min && salary.max) {
     return `$${formatNumber(salary.min)} - $${formatNumber(salary.max)}`
   }
@@ -249,52 +266,52 @@ const formatSalary = (salary) => {
   return salary || 'Not specified'
 }
 
-const formatNumber = (num) => {
+const formatNumber = num => {
   if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
   if (num >= 1000) return `${(num / 1000).toFixed(0)}K`
   return num.toString()
 }
 
-const formatPostedDate = (date) => {
+const formatPostedDate = date => {
   if (!date) return 'Recently'
-  
+
   const now = new Date()
   const posted = new Date(date)
   const diffTime = Math.abs(now - posted)
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  
+
   if (diffDays === 1) return '1 day ago'
   if (diffDays < 7) return `${diffDays} days ago`
   if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
   return `${Math.ceil(diffDays / 30)} months ago`
 }
 
-const truncateDescription = (description) => {
+const truncateDescription = description => {
   if (!description) return 'No description available.'
-  return description.length > 200 
+  return description.length > 200
     ? description.substring(0, 200) + '...'
     : description
 }
 
-const getLevelVariant = (level) => {
+const getLevelVariant = level => {
   const levelMap = {
-    'Entry': 'success',
-    'Mid': 'primary',
-    'Senior': 'warning',
-    'Lead': 'error',
-    'Principal': 'gaming'
+    Entry: 'success',
+    Mid: 'primary',
+    Senior: 'warning',
+    Lead: 'error',
+    Principal: 'gaming',
   }
   return levelMap[level] || 'outline'
 }
 
-const getScoreClass = (score) => {
+const getScoreClass = score => {
   if (score >= 90) return 'score-excellent'
   if (score >= 75) return 'score-good'
   if (score >= 60) return 'score-fair'
   return 'score-low'
 }
 
-const viewStudio = (company) => {
+const viewStudio = company => {
   // Navigate to studio page
   emit('studio-selected', company)
 }
@@ -365,8 +382,12 @@ const showJobMenu = (job, event) => {
 }
 
 @keyframes pulse {
-  0% { opacity: 1; }
-  100% { opacity: 0.4; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
 }
 
 .empty-state {
@@ -413,16 +434,20 @@ const showJobMenu = (job, event) => {
 
 .job-list-item.gaming-highlight {
   border-color: rgba(var(--color-gaming-500-rgb), 0.3);
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-gaming-500-rgb), 0.03) 0%,
-    transparent 100%);
+    transparent 100%
+  );
 }
 
 .job-list-item.featured {
   border-color: var(--color-warning-400);
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-warning-500-rgb), 0.05) 0%,
-    transparent 100%);
+    transparent 100%
+  );
 }
 
 .job-list-item.saved {
@@ -450,7 +475,8 @@ const showJobMenu = (job, event) => {
   gap: var(--spacing-2);
 }
 
-.featured-badge, .gaming-badge {
+.featured-badge,
+.gaming-badge {
   font-size: 1rem;
 }
 
@@ -611,7 +637,8 @@ const showJobMenu = (job, event) => {
   gap: var(--spacing-4);
 }
 
-.primary-actions, .secondary-actions {
+.primary-actions,
+.secondary-actions {
   display: flex;
   gap: var(--spacing-2);
 }
@@ -643,7 +670,8 @@ const showJobMenu = (job, event) => {
     align-items: stretch;
   }
 
-  .primary-actions, .secondary-actions {
+  .primary-actions,
+  .secondary-actions {
     justify-content: center;
   }
 }

@@ -5,7 +5,9 @@
       <div class="header-content">
         <div class="title-section">
           <h1 class="resume-title">Resume Builder</h1>
-          <p class="resume-subtitle">Build your professional resume with AI assistance</p>
+          <p class="resume-subtitle">
+            Build your professional resume with AI assistance
+          </p>
         </div>
         <div class="header-actions">
           <button class="action-btn secondary" @click="saveAsDraft">
@@ -22,11 +24,14 @@
           </button>
         </div>
       </div>
-      
+
       <!-- Progress Indicator -->
       <div class="progress-section">
         <div class="progress-bar">
-          <div class="progress-fill" :style="{ width: completionPercentage + '%' }"></div>
+          <div
+            class="progress-fill"
+            :style="{ width: completionPercentage + '%' }"
+          ></div>
         </div>
         <span class="progress-text">{{ completionPercentage }}% Complete</span>
       </div>
@@ -39,8 +44,8 @@
         <div class="nav-section">
           <h3 class="nav-title">Resume Sections</h3>
           <ul class="nav-list">
-            <li 
-              v-for="section in sections" 
+            <li
+              v-for="section in sections"
               :key="section.id"
               class="nav-item"
               :class="{ active: activeSection === section.id }"
@@ -48,7 +53,11 @@
             >
               <AppIcon class="nav-icon" :name="section.icon" />
               <span class="nav-text">{{ section.title }}</span>
-              <AppIcon v-if="section.completed" class="nav-indicator" name="CheckCircleIcon" />
+              <AppIcon
+                v-if="section.completed"
+                class="nav-indicator"
+                name="CheckCircleIcon"
+              />
             </li>
           </ul>
         </div>
@@ -59,7 +68,9 @@
             <AppIcon name="CpuChipIcon" />
             <h4>AI Assistant</h4>
           </div>
-          <p class="assistant-description">Get personalized suggestions for your resume content</p>
+          <p class="assistant-description">
+            Get personalized suggestions for your resume content
+          </p>
           <button class="assistant-btn" @click="openAIAssistant">
             Get AI Help
           </button>
@@ -73,18 +84,29 @@
           <div class="editor-header">
             <h2 class="section-title">{{ currentSection?.title }}</h2>
             <div class="section-actions">
-              <button v-if="currentSection?.allowMultiple" class="icon-btn" @click="addItem">
+              <button
+                v-if="currentSection?.allowMultiple"
+                class="icon-btn"
+                @click="addItem"
+              >
                 <AppIcon name="PlusIcon" />
               </button>
-              <button v-if="currentSection?.allowReorder" class="icon-btn" @click="reorderItems">
+              <button
+                v-if="currentSection?.allowReorder"
+                class="icon-btn"
+                @click="reorderItems"
+              >
                 <AppIcon name="Bars3BottomLeftIcon" />
               </button>
             </div>
           </div>
-          
+
           <!-- Dynamic Section Content -->
           <div class="section-content">
-            <slot :section="currentSection" :data="resumeData[activeSection]"></slot>
+            <slot
+              :section="currentSection"
+              :data="resumeData[activeSection]"
+            ></slot>
           </div>
         </div>
 
@@ -108,7 +130,14 @@
 </template>
 
 <script>
-import { ArrowDownTrayIcon, Bars3BottomLeftIcon, CheckCircleIcon, CpuChipIcon, EyeIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowDownTrayIcon,
+  Bars3BottomLeftIcon,
+  CheckCircleIcon,
+  CpuChipIcon,
+  EyeIcon,
+  PlusIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, onMounted, computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -116,36 +145,45 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 export default {
   name: 'ResumeLayout',
   components: {
-    AppIcon
+    AppIcon,
   },
   props: {
     resumeData: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     showPreview: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  emits: ['save-draft', 'preview', 'export', 'section-change', 'ai-assist', 'preview-toggle', 'add-item', 'reorder-items'],
+  emits: [
+    'save-draft',
+    'preview',
+    'export',
+    'section-change',
+    'ai-assist',
+    'preview-toggle',
+    'add-item',
+    'reorder-items',
+  ],
   setup(props, { emit }) {
     const activeSection = ref('personal')
-    
+
     const sections = ref([
       {
         id: 'personal',
         title: 'Personal Information',
         icon: 'UserIcon',
         completed: false,
-        required: true
+        required: true,
       },
       {
         id: 'summary',
         title: 'Professional Summary',
         icon: 'mdi-text-box',
         completed: false,
-        required: true
+        required: true,
       },
       {
         id: 'experience',
@@ -154,7 +192,7 @@ export default {
         completed: false,
         required: true,
         allowMultiple: true,
-        allowReorder: true
+        allowReorder: true,
       },
       {
         id: 'education',
@@ -162,14 +200,14 @@ export default {
         icon: 'mdi-school',
         completed: false,
         required: true,
-        allowMultiple: true
+        allowMultiple: true,
       },
       {
         id: 'skills',
         title: 'Skills',
         icon: 'mdi-cog',
         completed: false,
-        required: true
+        required: true,
       },
       {
         id: 'projects',
@@ -177,7 +215,7 @@ export default {
         icon: 'FolderIcon-multiple-outline',
         completed: false,
         required: false,
-        allowMultiple: true
+        allowMultiple: true,
       },
       {
         id: 'certifications',
@@ -185,15 +223,15 @@ export default {
         icon: 'mdi-certificate',
         completed: false,
         required: false,
-        allowMultiple: true
+        allowMultiple: true,
       },
       {
         id: 'additional',
         title: 'Additional Information',
         icon: 'PlusIcon-circle',
         completed: false,
-        required: false
-      }
+        required: false,
+      },
     ])
 
     const currentSection = computed(() => {
@@ -205,7 +243,7 @@ export default {
       return Math.round((completed / sections.value.length) * 100)
     })
 
-    const setActiveSection = (sectionId) => {
+    const setActiveSection = sectionId => {
       activeSection.value = sectionId
       emit('section-change', sectionId)
     }
@@ -229,7 +267,7 @@ export default {
     const openAIAssistant = () => {
       emit('ai-assist', {
         section: activeSection.value,
-        data: props.resumeData[activeSection.value]
+        data: props.resumeData[activeSection.value],
       })
     }
 
@@ -247,7 +285,9 @@ export default {
         const sectionData = props.resumeData[section.id]
         if (sectionData) {
           // Basic completion check - can be enhanced based on section requirements
-          section.completed = Boolean(sectionData && Object.keys(sectionData).length > 0)
+          section.completed = Boolean(
+            sectionData && Object.keys(sectionData).length > 0
+          )
         }
       })
     }
@@ -268,9 +308,9 @@ export default {
       togglePreview,
       openAIAssistant,
       addItem,
-      reorderItems
+      reorderItems,
     }
-  }
+  },
 }
 </script>
 
@@ -336,7 +376,7 @@ export default {
 
 .action-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .progress-section {
@@ -476,7 +516,7 @@ export default {
 
 .assistant-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .resume-content {
@@ -525,14 +565,14 @@ export default {
 
 .icon-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .section-content {
   background-color: var(--md-sys-color-surface);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .preview-panel {
@@ -566,7 +606,7 @@ export default {
 .resume-preview {
   background: white;
   min-height: 100%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 
@@ -575,7 +615,7 @@ export default {
   .resume-nav {
     width: 240px;
   }
-  
+
   .preview-panel {
     width: 350px;
   }
@@ -587,21 +627,21 @@ export default {
     gap: 16px;
     align-items: stretch;
   }
-  
+
   .header-actions {
     justify-content: center;
   }
-  
+
   .resume-main {
     flex-direction: column;
   }
-  
+
   .resume-nav {
     width: 100%;
     height: auto;
     max-height: 200px;
   }
-  
+
   .preview-panel {
     display: none; /* Hide preview on mobile by default */
   }

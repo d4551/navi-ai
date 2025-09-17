@@ -15,11 +15,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-const props = withDefaults(defineProps<{ classes?: string; closable?: boolean }>(), { classes: '', closable: false })
+const props = withDefaults(
+  defineProps<{ classes?: string; closable?: boolean }>(),
+  { classes: '', closable: false }
+)
 const closable = props.closable
 const emit = defineEmits<{ close: [] }>()
 const mappedClasses = computed(() => {
-  const cls = (props.classes || '')
+  const cls = props.classes || ''
   return cls
     .replace(/\bchip-compact\b/g, 'glass-badge-compact')
     .replace(/\bchip-primary\b/g, 'glass-badge-primary')
@@ -41,5 +44,7 @@ const mappedClasses = computed(() => {
   cursor: pointer;
   line-height: 1;
 }
-.chip-close:hover { opacity: 0.75; }
+.chip-close:hover {
+  opacity: 0.75;
+}
 </style>

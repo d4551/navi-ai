@@ -19,7 +19,10 @@ export async function searchJobs(params = {}) {
   const res = await refactoredJobAPIService.searchJobs(filters)
   return {
     jobs: res.jobs || [],
-    totalResults: typeof res.totalFound === 'number' ? res.totalFound : (res.jobs?.length || 0),
+    totalResults:
+      typeof res.totalFound === 'number'
+        ? res.totalFound
+        : res.jobs?.length || 0,
     sources: res.sources || [],
     errors: res.errors || [],
     fetchedAt: new Date().toISOString(),
@@ -29,7 +32,7 @@ export async function searchJobs(params = {}) {
 export function getJobSources() {
   try {
     const providers = refactoredJobAPIService.getAllProviders()
-    return providers.map((p) => ({
+    return providers.map(p => ({
       id: p.name,
       name: p.name,
       description: p.description || '',

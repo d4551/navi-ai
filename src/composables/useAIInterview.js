@@ -16,13 +16,13 @@ export function useAIInterview() {
   const isLoading = ref(false)
   const error = ref(null)
   const realTimeCoaching = ref(null)
-  
+
   // Session tracking
   const sessionStats = ref({
     questionsAnswered: 0,
     averageScore: 0,
     timeElapsed: 0,
-    totalResponses: 0
+    totalResponses: 0,
   })
 
   const toast = useToast()
@@ -31,13 +31,16 @@ export function useAIInterview() {
   let coachingTimer = null
 
   // Computed properties
-  const isSessionActive = computed(() => 
-    currentSession.value && currentSession.value.status === 'active'
+  const isSessionActive = computed(
+    () => currentSession.value && currentSession.value.status === 'active'
   )
 
   const hasNextQuestion = computed(() => {
     if (!currentSession.value) return false
-    return currentSession.value.currentQuestionIndex < currentSession.value.questions.length - 1
+    return (
+      currentSession.value.currentQuestionIndex <
+      currentSession.value.questions.length - 1
+    )
   })
 
   const progressPercentage = computed(() => {
@@ -49,19 +52,26 @@ export function useAIInterview() {
 
   const sessionSummary = computed(() => {
     if (!currentSession.value || !currentSession.value.responses) return null
-    
+
     const responses = currentSession.value.responses
     if (responses.length === 0) return null
 
-    const scores = responses.map(r => r.analysis?.overallScore || 0).filter(s => s > 0)
-    const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
+    const scores = responses
+      .map(r => r.analysis?.overallScore || 0)
+      .filter(s => s > 0)
+    const avgScore =
+      scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0
 
     return {
       questionsAnswered: responses.length,
       averageScore: Math.round(avgScore),
-      timeElapsed: currentSession.value.endTime ? 
-        Math.round((currentSession.value.endTime - currentSession.value.startTime) / 1000) : 0,
-      totalQuestions: currentSession.value.questions.length
+      timeElapsed: currentSession.value.endTime
+        ? Math.round(
+            (currentSession.value.endTime - currentSession.value.startTime) /
+              1000
+          )
+        : 0,
+      totalQuestions: currentSession.value.questions.length,
     }
   })
 
@@ -74,19 +84,19 @@ export function useAIInterview() {
       error.value = null
 
       logger.info('Starting AI interview with config:', config)
-      
+
       const result = await aiInterviewService.startInterviewSession(config)
-      
+
       if (result.success) {
         currentSession.value = result.session
         currentQuestion.value = result.session.currentQuestion
-        
+
         // Initialize session stats
         sessionStats.value = {
           questionsAnswered: 0,
           averageScore: 0,
           timeElapsed: 0,
-          totalResponses: 0
+          totalResponses: 0,
         }
 
         toast.success('AI interview started successfully!')
@@ -125,20 +135,25 @@ export function useAIInterview() {
 
       if (analysisResult.success) {
         currentAnalysis.value = analysisResult.analysis
-        
+
         // Update session stats
         sessionStats.value.questionsAnswered += 1
         sessionStats.value.totalResponses += 1
-        
+
         if (analysisResult.analysis.overallScore) {
           const currentAvg = sessionStats.value.averageScore
           const responseCount = sessionStats.value.totalResponses
           sessionStats.value.averageScore = Math.round(
-            ((currentAvg * (responseCount - 1)) + analysisResult.analysis.overallScore) / responseCount
+            (currentAvg * (responseCount - 1) +
+              analysisResult.analysis.overallScore) /
+              responseCount
           )
         }
 
-        logger.info('Response analyzed successfully:', analysisResult.analysis.overallScore)
+        logger.info(
+          'Response analyzed successfully:',
+          analysisResult.analysis.overallScore
+        )
         return { success: true, analysis: analysisResult.analysis }
       } else {
         error.value = analysisResult.error
@@ -173,24 +188,28 @@ export function useAIInterview() {
           currentSession.value.status = 'completed'
           currentSession.value.endTime = Date.now()
           currentSession.value.summary = result.summary
-          
+
           toast.success('Interview completed!')
           logger.info('Interview completed successfully')
           return { success: true, completed: true, summary: result.summary }
         } else {
           // Next question
           currentQuestion.value = result.question
-          
+
           if (!result.isFollowUp) {
             currentSession.value.currentQuestionIndex += 1
           }
-          
+
           // Clear previous analysis for new question
           currentAnalysis.value = null
           realTimeCoaching.value = null
 
           logger.info('Moved to next question:', result.question.id)
-          return { success: true, question: result.question, isFollowUp: result.isFollowUp }
+          return {
+            success: true,
+            question: result.question,
+            isFollowUp: result.isFollowUp,
+          }
         }
       } else {
         error.value = result.error
@@ -206,7 +225,11 @@ export function useAIInterview() {
   }
 
   async function getRealTimeCoaching(responseInProgress) {
-    if (!currentSession.value || !currentQuestion.value || !responseInProgress) {
+    if (
+      !currentSession.value ||
+      !currentQuestion.value ||
+      !responseInProgress
+    ) {
       return
     }
 
@@ -219,7 +242,7 @@ export function useAIInterview() {
 
       if (coaching && coaching.tip) {
         realTimeCoaching.value = coaching
-        
+
         // Auto-hide low urgency tips after 10 seconds
         if (coaching.urgency === 'low') {
           setTimeout(() => {
@@ -269,16 +292,17 @@ export function useAIInterview() {
   }
 
   function endInterview() {
-    if (!currentSession.value) return { success: false, error: 'No active session' }
+    if (!currentSession.value)
+      return { success: false, error: 'No active session' }
 
     const result = aiInterviewService.endSession(currentSession.value.id)
-    
+
     if (result.success) {
       currentSession.value = result.session
       currentQuestion.value = null
       currentAnalysis.value = null
       stopRealTimeCoaching()
-      
+
       toast.success('Interview ended')
       logger.info('Interview session ended')
     }
@@ -304,7 +328,7 @@ export function useAIInterview() {
       isActive: isSessionActive.value,
       hasNext: hasNextQuestion.value,
       progress: progressPercentage.value,
-      summary: sessionSummary.value
+      summary: sessionSummary.value,
     }
   }
 
@@ -318,7 +342,7 @@ export function useAIInterview() {
       questionsAnswered: 0,
       averageScore: 0,
       timeElapsed: 0,
-      totalResponses: 0
+      totalResponses: 0,
     }
     stopRealTimeCoaching()
   }
@@ -326,11 +350,11 @@ export function useAIInterview() {
   // Watch for response changes to trigger real-time coaching
   watch(
     () => realTimeCoaching.value,
-    (newCoaching) => {
+    newCoaching => {
       if (newCoaching && newCoaching.urgency === 'high') {
-        toast.info(newCoaching.tip, { 
+        toast.info(newCoaching.tip, {
           duration: 8000,
-          position: 'top-right'
+          position: 'top-right',
         })
       }
     }
@@ -350,13 +374,13 @@ export function useAIInterview() {
     sessionStats: computed(() => sessionStats.value),
     isLoading: computed(() => isLoading.value),
     error: computed(() => error.value),
-    
+
     // Computed
     isSessionActive,
     hasNextQuestion,
     progressPercentage,
     sessionSummary,
-    
+
     // Methods
     startInterview,
     submitResponse,
@@ -370,6 +394,6 @@ export function useAIInterview() {
     dismissAnalysis,
     dismissCoaching,
     getSessionData,
-    resetSession
+    resetSession,
   }
 }

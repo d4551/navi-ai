@@ -7,7 +7,10 @@
           v-for="(step, index) in resumeSteps"
           :key="step.id"
           class="step-item"
-          :class="{ active: currentStep === step.id, completed: currentStep > step.id }"
+          :class="{
+            active: currentStep === step.id,
+            completed: currentStep > step.id,
+          }"
           @click="$emit('step-change', step.id)"
         >
           <div class="step-number">{{ index + 1 }}</div>
@@ -25,7 +28,9 @@
             <AppIcon name="UserIcon" class="mr-2" />
             Personal Information
           </h3>
-          <p class="section-description">Tell us about yourself to get started</p>
+          <p class="section-description">
+            Tell us about yourself to get started
+          </p>
         </div>
 
         <div class="form-grid personal-info-grid">
@@ -114,7 +119,9 @@
             <AppIcon name="DocumentTextIcon" class="mr-2" />
             Professional Summary
           </h3>
-          <p class="section-description">Write a compelling summary of your professional background</p>
+          <p class="section-description">
+            Write a compelling summary of your professional background
+          </p>
         </div>
 
         <div class="form-field">
@@ -126,7 +133,9 @@
             placeholder="Write 2-3 sentences about your professional background, key skills, and career goals..."
           ></textarea>
           <div class="field-help">
-            <small class="text-secondary">{{ localData.summary.length }}/500 characters</small>
+            <small class="text-secondary"
+              >{{ localData.summary.length }}/500 characters</small
+            >
             <UnifiedButton
               v-if="aiEnabled"
               variant="ghost"
@@ -162,7 +171,9 @@
             <AppIcon name="BriefcaseIcon" class="mr-2" />
             Professional Experience
           </h3>
-          <p class="section-description">Add your work experience and achievements</p>
+          <p class="section-description">
+            Add your work experience and achievements
+          </p>
         </div>
 
         <div class="experience-list">
@@ -172,7 +183,9 @@
             class="experience-item"
           >
             <div class="experience-header">
-              <h4 class="experience-title">{{ exp.title }} at {{ exp.company }}</h4>
+              <h4 class="experience-title">
+                {{ exp.title }} at {{ exp.company }}
+              </h4>
               <div class="experience-actions">
                 <UnifiedButton
                   variant="ghost"
@@ -255,10 +268,7 @@
               class="skill-tag"
             >
               {{ skill.name }}
-              <button
-                class="skill-remove"
-                @click="removeSkill(index)"
-              >
+              <button class="skill-remove" @click="removeSkill(index)">
                 <AppIcon name="XMarkIcon" size="14" />
               </button>
             </span>
@@ -298,7 +308,9 @@
             <AppIcon name="CheckCircleIcon" class="mr-2" />
             Review & Finalize
           </h3>
-          <p class="section-description">Review your resume and make final adjustments</p>
+          <p class="section-description">
+            Review your resume and make final adjustments
+          </p>
         </div>
 
         <div class="review-content">
@@ -306,7 +318,9 @@
             <h4>Personal Information</h4>
             <p><strong>Name:</strong> {{ localData.personalInfo.name }}</p>
             <p><strong>Email:</strong> {{ localData.personalInfo.email }}</p>
-            <p><strong>Location:</strong> {{ localData.personalInfo.location }}</p>
+            <p>
+              <strong>Location:</strong> {{ localData.personalInfo.location }}
+            </p>
           </div>
 
           <div class="review-section">
@@ -351,10 +365,20 @@
     </div>
 
     <!-- Experience Modal -->
-    <div v-if="showExperienceModal" class="modal-overlay" @click="closeExperienceModal">
+    <div
+      v-if="showExperienceModal"
+      class="modal-overlay"
+      @click="closeExperienceModal"
+    >
       <div class="modal-content" @click.stop>
         <div class="modal-header">
-          <h3>{{ editingExperienceIndex !== null ? 'Edit Experience' : 'Add Experience' }}</h3>
+          <h3>
+            {{
+              editingExperienceIndex !== null
+                ? 'Edit Experience'
+                : 'Add Experience'
+            }}
+          </h3>
           <button class="modal-close" @click="closeExperienceModal">
             <AppIcon name="XMarkIcon" />
           </button>
@@ -442,7 +466,18 @@
 </template>
 
 <script setup lang="ts">
-import { BriefcaseIcon, CheckCircleIcon, DocumentTextIcon, LightBulbIcon, PencilIcon, PlusIcon, SparklesIcon, TrashIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  BriefcaseIcon,
+  CheckCircleIcon,
+  DocumentTextIcon,
+  LightBulbIcon,
+  PencilIcon,
+  PlusIcon,
+  SparklesIcon,
+  TrashIcon,
+  UserIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -474,16 +509,20 @@ const experienceForm = ref({
   startDate: '',
   endDate: '',
   current: false,
-  description: ''
+  description: '',
 })
 
 // Local data copy to avoid prop mutation
 const localData = ref(JSON.parse(JSON.stringify(props.documentData)))
 
 // Watch for prop changes
-watch(() => props.documentData, (newData: ResumeData) => {
-  localData.value = JSON.parse(JSON.stringify(newData))
-}, { deep: true })
+watch(
+  () => props.documentData,
+  (newData: ResumeData) => {
+    localData.value = JSON.parse(JSON.stringify(newData))
+  },
+  { deep: true }
+)
 
 // Resume steps
 const resumeSteps = [
@@ -491,7 +530,7 @@ const resumeSteps = [
   { id: 2, label: 'Summary' },
   { id: 3, label: 'Experience' },
   { id: 4, label: 'Skills' },
-  { id: 5, label: 'Review' }
+  { id: 5, label: 'Review' },
 ]
 
 // Methods
@@ -516,7 +555,7 @@ const addExperience = () => {
     startDate: '',
     endDate: '',
     current: false,
-    description: ''
+    description: '',
   }
   editingExperienceIndex.value = null
   showExperienceModal.value = true
@@ -536,7 +575,9 @@ const removeExperience = (index: number) => {
 
 const saveExperience = () => {
   if (editingExperienceIndex.value !== null) {
-    localData.value.experience[editingExperienceIndex.value] = { ...experienceForm.value }
+    localData.value.experience[editingExperienceIndex.value] = {
+      ...experienceForm.value,
+    }
   } else {
     localData.value.experience.push({ ...experienceForm.value })
   }
@@ -554,9 +595,13 @@ const emitDataUpdate = () => {
 }
 
 // Auto-save on data changes
-watch(localData, () => {
-  emitDataUpdate()
-}, { deep: true })
+watch(
+  localData,
+  () => {
+    emitDataUpdate()
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped>

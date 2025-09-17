@@ -1,10 +1,10 @@
 /**
  * Profile Synchronization Service
- * 
- * Manages cross-system profile data synchronization ensuring 
+ *
+ * Manages cross-system profile data synchronization ensuring
  * user profile changes are reflected across all application areas:
  * - Job board and matching algorithms
- * - AI training and personalization  
+ * - AI training and personalization
  * - Studio matching and recommendations
  * - Portfolio generation and templates
  * - Resume and cover letter builders
@@ -16,7 +16,11 @@ import { logger } from '@/shared/utils/logger'
 import { unifiedStorage } from '@/utils/storage'
 
 export interface SyncEvent {
-  type: 'profile-updated' | 'section-changed' | 'batch-update' | 'import-complete'
+  type:
+    | 'profile-updated'
+    | 'section-changed'
+    | 'batch-update'
+    | 'import-complete'
   source: string
   data: any
   timestamp: Date
@@ -73,12 +77,12 @@ export class ProfileSyncService extends EventEmitter {
   async syncProfile(event: Omit<SyncEvent, 'timestamp'>): Promise<void> {
     const fullEvent: SyncEvent = {
       ...event,
-      timestamp: new Date()
+      timestamp: new Date(),
     }
 
     this.syncQueue.push(fullEvent)
     this.addToHistory(fullEvent)
-    
+
     if (!this.isProcessing) {
       await this.processQueue()
     }
@@ -113,7 +117,9 @@ export class ProfileSyncService extends EventEmitter {
     const targetIds = this.getTargetsForEvent(event)
     const sortedTargets = this.sortTargetsByPriority(targetIds)
 
-    logger.info(`Processing sync event: ${event.type} affecting ${targetIds.length} targets`)
+    logger.info(
+      `Processing sync event: ${event.type} affecting ${targetIds.length} targets`
+    )
 
     // Process targets in priority order with dependency resolution
     for (const targetId of sortedTargets) {
@@ -134,21 +140,23 @@ export class ProfileSyncService extends EventEmitter {
   /**
    * Process sync for a single target
    */
-  private async processSingleTarget(target: SyncTarget, event: SyncEvent): Promise<void> {
+  private async processSingleTarget(
+    target: SyncTarget,
+    event: SyncEvent
+  ): Promise<void> {
     const startTime = Date.now()
-    
+
     try {
       await target.handler(event)
-      
+
       const duration = Date.now() - startTime
       logger.debug(`Sync completed for ${target.name} in ${duration}ms`)
-      
-      this.emit('target-synced', { 
-        target: target.id, 
-        event: event.type, 
-        duration 
+
+      this.emit('target-synced', {
+        target: target.id,
+        event: event.type,
+        duration,
       })
-      
     } catch (error) {
       logger.error(`Failed to sync ${target.name}:`, error)
       throw error
@@ -165,7 +173,7 @@ export class ProfileSyncService extends EventEmitter {
 
     // Default mapping based on event type and data
     const allTargets = Array.from(this.syncTargets.keys())
-    
+
     switch (event.type) {
       case 'profile-updated':
         return allTargets
@@ -185,7 +193,14 @@ export class ProfileSyncService extends EventEmitter {
    */
   private getTargetsForSection(section: string): string[] {
     const sectionTargetMap: Record<string, string[]> = {
-      personalInfo: ['jobs', 'ai', 'studios', 'portfolio', 'resume', 'settings'],
+      personalInfo: [
+        'jobs',
+        'ai',
+        'studios',
+        'portfolio',
+        'resume',
+        'settings',
+      ],
       skills: ['jobs', 'ai', 'studios', 'portfolio', 'resume'],
       experience: ['jobs', 'ai', 'studios', 'portfolio', 'resume'],
       education: ['jobs', 'ai', 'studios', 'portfolio', 'resume'],
@@ -193,7 +208,7 @@ export class ProfileSyncService extends EventEmitter {
       careerGoals: ['jobs', 'ai', 'studios'],
       portfolio: ['studios', 'portfolio', 'resume'],
       preferences: ['settings', 'ai'],
-      privacy: ['settings', 'ai', 'jobs']
+      privacy: ['settings', 'ai', 'jobs'],
     }
 
     return sectionTargetMap[section] || Array.from(this.syncTargets.keys())
@@ -226,8 +241,11 @@ export class ProfileSyncService extends EventEmitter {
       handler: async (event: SyncEvent) => {
         try {
           // Clear job matching caches
-          if (typeof window !== 'undefined' && (window as any).jobMatchingCache) {
-            (window as any).jobMatchingCache.clear()
+          if (
+            typeof window !== 'undefined' &&
+            (window as any).jobMatchingCache
+          ) {
+            ;(window as any).jobMatchingCache.clear()
           }
 
           // Update job search preferences
@@ -236,15 +254,14 @@ export class ProfileSyncService extends EventEmitter {
 
           // Trigger re-matching for saved jobs
           this.emit('jobs-profile-updated', { preferences: jobPrefs })
-          
         } catch (error) {
           logger.error('Job system sync failed:', error)
           throw error
         }
-      }
+      },
     })
 
-    // AI Training & Personalization System  
+    // AI Training & Personalization System
     this.registerSyncTarget({
       id: 'ai',
       name: 'AI Training & Personalization',
@@ -257,17 +274,20 @@ export class ProfileSyncService extends EventEmitter {
           await unifiedStorage.setItem('ai-training-context', aiContext)
 
           // Mark AI models for retraining if skills/experience changed
-          if (['skills', 'experience', 'careerGoals'].includes(event.data?.section)) {
+          if (
+            ['skills', 'experience', 'careerGoals'].includes(
+              event.data?.section
+            )
+          ) {
             await unifiedStorage.setItem('ai-needs-retraining', true)
           }
 
           this.emit('ai-profile-updated', { context: aiContext })
-          
         } catch (error) {
           logger.error('AI system sync failed:', error)
           throw error
         }
-      }
+      },
     })
 
     // Studio Matching & Research System
@@ -283,17 +303,19 @@ export class ProfileSyncService extends EventEmitter {
           await unifiedStorage.setItem('studio-preferences', studioPrefs)
 
           // Invalidate studio match caches
-          if (typeof window !== 'undefined' && (window as any).studioMatchingCache) {
-            (window as any).studioMatchingCache.clear()
+          if (
+            typeof window !== 'undefined' &&
+            (window as any).studioMatchingCache
+          ) {
+            ;(window as any).studioMatchingCache.clear()
           }
 
           this.emit('studios-profile-updated', { preferences: studioPrefs })
-          
         } catch (error) {
           logger.error('Studio system sync failed:', error)
           throw error
         }
-      }
+      },
     })
 
     // Portfolio & Showcase System
@@ -312,12 +334,11 @@ export class ProfileSyncService extends EventEmitter {
           await unifiedStorage.setItem('portfolio-needs-regeneration', true)
 
           this.emit('portfolio-profile-updated', { data: portfolioData })
-          
         } catch (error) {
           logger.error('Portfolio system sync failed:', error)
           throw error
         }
-      }
+      },
     })
 
     // Resume & Cover Letter System
@@ -336,12 +357,11 @@ export class ProfileSyncService extends EventEmitter {
           await unifiedStorage.setItem('resume-templates-outdated', true)
 
           this.emit('resume-profile-updated', { data: resumeData })
-          
         } catch (error) {
           logger.error('Resume system sync failed:', error)
           throw error
         }
-      }
+      },
     })
 
     // Settings & Preferences System
@@ -357,12 +377,11 @@ export class ProfileSyncService extends EventEmitter {
           await unifiedStorage.setItem('user-preferences', preferences)
 
           this.emit('settings-profile-updated', { preferences })
-          
         } catch (error) {
           logger.error('Settings system sync failed:', error)
           throw error
         }
-      }
+      },
     })
   }
 
@@ -377,7 +396,7 @@ export class ProfileSyncService extends EventEmitter {
       location: profileData?.personalInfo?.location || '',
       workPreferences: profileData?.careerGoals?.workPreferences || {},
       salaryExpectations: profileData?.careerGoals?.salaryExpectations || {},
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     }
   }
 
@@ -392,8 +411,9 @@ export class ProfileSyncService extends EventEmitter {
       experience: profileData?.experience || [],
       gamingExperience: profileData?.gamingExperience || {},
       careerGoals: profileData?.careerGoals || {},
-      communicationStyle: profileData?.preferences?.communicationStyle || 'professional',
-      lastUpdated: new Date().toISOString()
+      communicationStyle:
+        profileData?.preferences?.communicationStyle || 'professional',
+      lastUpdated: new Date().toISOString(),
     }
   }
 
@@ -407,7 +427,7 @@ export class ProfileSyncService extends EventEmitter {
       careerGoals: profileData?.careerGoals || {},
       portfolioItems: profileData?.portfolio || [],
       achievements: profileData?.achievements || [],
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     }
   }
 
@@ -423,7 +443,7 @@ export class ProfileSyncService extends EventEmitter {
       portfolioItems: profileData?.portfolio || [],
       achievements: profileData?.achievements || [],
       certifications: profileData?.certifications || [],
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     }
   }
 
@@ -438,7 +458,7 @@ export class ProfileSyncService extends EventEmitter {
       skills: profileData?.skills || {},
       certifications: profileData?.certifications || [],
       achievements: profileData?.achievements || [],
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     }
   }
 
@@ -452,7 +472,7 @@ export class ProfileSyncService extends EventEmitter {
       notifications: profileData?.meta?.notifications || {},
       integrations: profileData?.meta?.integrations || {},
       dataConsent: profileData?.meta?.dataConsent || false,
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     }
   }
 
@@ -461,7 +481,7 @@ export class ProfileSyncService extends EventEmitter {
    */
   private addToHistory(event: SyncEvent): void {
     this.syncHistory.unshift(event)
-    
+
     if (this.syncHistory.length > this.maxHistorySize) {
       this.syncHistory = this.syncHistory.slice(0, this.maxHistorySize)
     }

@@ -2,7 +2,10 @@ import { unifiedStorage } from '@/utils/storage'
 import { logger } from '@/shared/utils/logger'
 import { GAMING_STUDIOS } from '@/shared/constants/gaming-studios'
 
-export interface PersistedStudioMeta { version: number; normalizedAt: string }
+export interface PersistedStudioMeta {
+  version: number
+  normalizedAt: string
+}
 
 // Canonical persistence via unifiedStorage (IndexedDB-backed)
 export async function seedStudiosIfEmpty() {
@@ -12,7 +15,7 @@ export async function seedStudiosIfEmpty() {
     const now = new Date().toISOString()
     const records = Object.values(GAMING_STUDIOS).map((s: any) => ({
       ...s,
-      meta: { version: 1, normalizedAt: now } as PersistedStudioMeta
+      meta: { version: 1, normalizedAt: now } as PersistedStudioMeta,
     }))
     for (const r of records) {
       await unifiedStorage.upsertStudio(r)
@@ -28,7 +31,10 @@ export async function getAllStudios() {
 }
 
 export async function upsertStudio(studio: any) {
-  studio.meta = studio.meta || { version: 1, normalizedAt: new Date().toISOString() }
+  studio.meta = studio.meta || {
+    version: 1,
+    normalizedAt: new Date().toISOString(),
+  }
   return await unifiedStorage.upsertStudio(studio)
 }
 

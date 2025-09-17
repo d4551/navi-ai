@@ -20,20 +20,35 @@
           <div class="achievement-header">
             <h2 class="achievement-title">Achievement Unlocked!</h2>
             <div class="achievement-particles">
-              <div v-for="i in 12" :key="i" class="particle" :style="getParticleStyle(i)"></div>
+              <div
+                v-for="i in 12"
+                :key="i"
+                class="particle"
+                :style="getParticleStyle(i)"
+              ></div>
             </div>
           </div>
           <div class="achievement-body">
             <div class="achievement-icon-wrapper">
-              <AppIcon :name="achievementData.icon" class="achievement-icon" :style="{ color: achievementData.color }" />
+              <AppIcon
+                :name="achievementData.icon"
+                class="achievement-icon"
+                :style="{ color: achievementData.color }"
+              />
               <div class="achievement-glow"></div>
             </div>
             <div class="achievement-info">
               <h3 class="achievement-name">{{ achievementData.name }}</h3>
-              <p class="achievement-description">{{ achievementData.description }}</p>
+              <p class="achievement-description">
+                {{ achievementData.description }}
+              </p>
               <div class="achievement-rewards">
-                <span class="reward-xp">+{{ achievementData.xpReward }} XP</span>
-                <span v-if="achievementData.badgeReward" class="reward-badge">{{ achievementData.badgeReward }}</span>
+                <span class="reward-xp"
+                  >+{{ achievementData.xpReward }} XP</span
+                >
+                <span v-if="achievementData.badgeReward" class="reward-badge">{{
+                  achievementData.badgeReward
+                }}</span>
               </div>
             </div>
           </div>
@@ -55,7 +70,12 @@
       <div v-if="showLevelUp" class="level-up-celebration">
         <div class="level-up-content">
           <div class="level-up-burst">
-            <div v-for="i in 16" :key="i" class="burst-ray" :style="getBurstStyle(i)"></div>
+            <div
+              v-for="i in 16"
+              :key="i"
+              class="burst-ray"
+              :style="getBurstStyle(i)"
+            ></div>
           </div>
           <div class="level-up-text">
             <h2 class="level-up-title">LEVEL UP!</h2>
@@ -68,7 +88,11 @@
           <div class="level-up-rewards">
             <h4>New Unlocks:</h4>
             <ul class="unlock-list">
-              <li v-for="unlock in levelUpData.unlocks" :key="unlock" class="unlock-item">
+              <li
+                v-for="unlock in levelUpData.unlocks"
+                :key="unlock"
+                class="unlock-item"
+              >
                 <AppIcon name="StarIcon" context="achievement" />
                 {{ unlock }}
               </li>
@@ -80,13 +104,20 @@
 
     <!-- Combo Counter -->
     <Transition name="combo-counter">
-      <div v-if="showCombo" class="combo-counter" :class="`combo-${comboData.tier}`">
+      <div
+        v-if="showCombo"
+        class="combo-counter"
+        :class="`combo-${comboData.tier}`"
+      >
         <div class="combo-content">
           <span class="combo-multiplier">{{ comboData.multiplier }}x</span>
           <span class="combo-label">{{ comboData.label }}</span>
         </div>
         <div class="combo-progress">
-          <div class="combo-bar" :style="{ width: `${comboData.progress}%` }"></div>
+          <div
+            class="combo-bar"
+            :style="{ width: `${comboData.progress}%` }"
+          ></div>
         </div>
       </div>
     </Transition>
@@ -96,12 +127,31 @@
       <!-- Konami Code Easter Egg -->
       <div v-if="konamiActivated" class="konami-effect">
         <div class="matrix-rain">
-          <div v-for="i in 20" :key="i" class="matrix-column" :style="getMatrixStyle(i)">
+          <div
+            v-for="i in 20"
+            :key="i"
+            class="matrix-column"
+            :style="getMatrixStyle(i)"
+          >
             {{ matrixChars }}
           </div>
         </div>
         <div class="konami-message">
-          <h3><AppIcon name="PuzzlePieceIcon" color="gaming" context="gaming" aria-hidden="true" /> Developer Mode Activated <AppIcon name="PuzzlePieceIcon" color="gaming" context="gaming" aria-hidden="true" /></h3>
+          <h3>
+            <AppIcon
+              name="PuzzlePieceIcon"
+              color="gaming"
+              context="gaming"
+              aria-hidden="true"
+            />
+            Developer Mode Activated
+            <AppIcon
+              name="PuzzlePieceIcon"
+              color="gaming"
+              context="gaming"
+              aria-hidden="true"
+            />
+          </h3>
           <p>You found the Konami Code! Enjoy the Matrix effect!</p>
         </div>
       </div>
@@ -110,7 +160,12 @@
       <div v-if="clickStreak > 10" class="click-streak-effect">
         <div class="streak-counter">{{ clickStreak }} clicks!</div>
         <div class="click-particles">
-          <div v-for="i in 8" :key="i" class="click-particle" :style="getClickParticleStyle(i)"></div>
+          <div
+            v-for="i in 8"
+            :key="i"
+            class="click-particle"
+            :style="getClickParticleStyle(i)"
+          ></div>
         </div>
       </div>
     </div>
@@ -132,7 +187,7 @@ interface Props {
   userId?: string
 }
 withDefaults(defineProps<Props>(), {
-  userId: 'default-user'
+  userId: 'default-user',
 })
 
 // Emits
@@ -150,7 +205,7 @@ const xpData = reactive({
   amount: 0,
   reason: '',
   type: 'normal', // normal, bonus, critical
-  icon: 'StarIcon-outline'
+  icon: 'StarIcon-outline',
 })
 
 const achievementData = reactive({
@@ -159,25 +214,25 @@ const achievementData = reactive({
   icon: 'TrophyIcon-variant',
   color: '#FFD700',
   xpReward: 100,
-  badgeReward: null as string | null
+  badgeReward: null as string | null,
 })
 
 const levelUpData = reactive({
   newLevel: 1,
-  message: 'You\'ve reached a new level!',
-  unlocks: [] as string[]
+  message: "You've reached a new level!",
+  unlocks: [] as string[],
 })
 
 const comboData = reactive({
   multiplier: 1,
   label: 'Combo',
   tier: 'normal', // normal, good, great, perfect
-  progress: 0
+  progress: 0,
 })
 
 const streakData = reactive({
   active: false,
-  count: 0
+  count: 0,
 })
 
 // Easter egg data
@@ -186,18 +241,26 @@ const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65] // Up Up Down Down L
 const konamiIndex = ref(0)
 
 // Methods
-const triggerXPGain = (amount: number, reason: string, type: 'normal' | 'bonus' | 'critical' = 'normal') => {
+const triggerXPGain = (
+  amount: number,
+  reason: string,
+  type: 'normal' | 'bonus' | 'critical' = 'normal'
+) => {
   xpData.amount = amount
   xpData.reason = reason
   xpData.type = type
-  xpData.icon = type === 'critical' ? 'mdi BoltIcon-bolt' : 
-                type === 'bonus' ? 'mdi StarIcon' : 'mdi StarIcon-outline'
-  
+  xpData.icon =
+    type === 'critical'
+      ? 'mdi BoltIcon-bolt'
+      : type === 'bonus'
+        ? 'mdi StarIcon'
+        : 'mdi StarIcon-outline'
+
   showXPGain.value = true
   setTimeout(() => {
     showXPGain.value = false
   }, 3000)
-  
+
   emit('xp-gained', { amount, reason, type })
 }
 
@@ -212,11 +275,11 @@ const triggerLevelUp = (level: number, unlocks: string[] = []) => {
   levelUpData.unlocks = unlocks
   levelUpData.message = getRandomLevelUpMessage()
   showLevelUp.value = true
-  
+
   setTimeout(() => {
     showLevelUp.value = false
   }, 5000)
-  
+
   emit('level-up', { level, unlocks })
 }
 
@@ -225,7 +288,7 @@ const triggerCombo = (multiplier: number, progress: number = 100) => {
   comboData.progress = progress
   comboData.tier = getTierFromMultiplier(multiplier)
   comboData.label = getComboLabel(multiplier)
-  
+
   showCombo.value = true
   setTimeout(() => {
     showCombo.value = false
@@ -239,7 +302,7 @@ const getRandomLevelUpMessage = () => {
     'Achievement unlocked: Career Growth!',
     'Next level gaming professional!',
     'Boss fight preparation complete!',
-    'Skill tree expanded!'
+    'Skill tree expanded!',
   ]
   return messages[Math.floor(Math.random() * messages.length)]
 }
@@ -259,7 +322,7 @@ const getComboLabel = (multiplier: number) => {
     4: 'Awesome!',
     5: 'Perfect!',
     6: 'Incredible!',
-    7: 'Legendary!'
+    7: 'Legendary!',
   }
   return labels[Math.min(multiplier, 7) as keyof typeof labels] || 'Godlike!'
 }
@@ -269,7 +332,7 @@ const getParticleStyle = (index: number) => {
   const delay = index * 0.1
   return {
     '--angle': `${angle}deg`,
-    '--delay': `${delay}s`
+    '--delay': `${delay}s`,
   }
 }
 
@@ -277,15 +340,15 @@ const getBurstStyle = (index: number) => {
   const angle = (360 / 16) * index
   return {
     transform: `rotate(${angle}deg)`,
-    animationDelay: `${index * 0.05}s`
+    animationDelay: `${index * 0.05}s`,
   }
 }
 
 const getMatrixStyle = (index: number) => {
   return {
-    left: `${(index * 5)}%`,
+    left: `${index * 5}%`,
     animationDelay: `${index * 0.1}s`,
-    animationDuration: `${2 + Math.random() * 2}s`
+    animationDuration: `${2 + Math.random() * 2}s`,
   }
 }
 
@@ -293,7 +356,7 @@ const getClickParticleStyle = (index: number) => {
   const angle = (360 / 8) * index
   return {
     transform: `rotate(${angle}deg) translateX(50px)`,
-    animationDelay: `${index * 0.05}s`
+    animationDelay: `${index * 0.05}s`,
   }
 }
 
@@ -302,7 +365,7 @@ const shareAchievement = () => {
     navigator.share({
       title: 'Achievement Unlocked!',
       text: `I just unlocked the "${achievementData.name}" achievement in GeminiCV!`,
-      url: window.location.href
+      url: window.location.href,
     })
   }
 }
@@ -332,9 +395,9 @@ const activateKonamiCode = () => {
     icon: 'mdi-code-braces',
     color: '#00FF00',
     xpReward: 500,
-    badgeReward: 'Secret Developer'
+    badgeReward: 'Secret Developer',
   })
-  
+
   setTimeout(() => {
     konamiActivated.value = false
   }, 10000)
@@ -346,13 +409,14 @@ const handleClick = () => {
   if (clickStreak.value === 50) {
     triggerAchievement({
       name: 'Click Master',
-      description: 'Clicked 50 times in a flex flex-wrap! Your dedication is admirable.',
+      description:
+        'Clicked 50 times in a flex flex-wrap! Your dedication is admirable.',
       icon: 'mdi-cursor-default-click',
       color: '#FF6B6B',
-      xpReward: 200
+      xpReward: 200,
     })
   }
-  
+
   setTimeout(() => {
     if (clickStreak.value > 0) clickStreak.value--
   }, 1000)
@@ -363,13 +427,13 @@ defineExpose({
   triggerXPGain,
   triggerAchievement,
   triggerLevelUp,
-  triggerCombo
+  triggerCombo,
 })
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeyPress)
   document.addEventListener('click', handleClick)
-  
+
   // Initialize streak data (would come from API)
   streakData.active = true
   streakData.count = 3
@@ -405,12 +469,20 @@ onUnmounted(() => {
 
 .xp-popup.xp-critical {
   border-l: 4px solid var(--clear-orange);
-  background: linear-gradient(135deg, var(--glass-ultra-bg), rgba(255, 140, 0, 0.1));
+  background: linear-gradient(
+    135deg,
+    var(--glass-ultra-bg),
+    rgba(255, 140, 0, 0.1)
+  );
 }
 
 .xp-popup.xp-bonus {
   border-l: 4px solid var(--clear-purple);
-  background: linear-gradient(135deg, var(--glass-ultra-bg), rgba(128, 0, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    var(--glass-ultra-bg),
+    rgba(128, 0, 255, 0.1)
+  );
 }
 
 .xp-content {
@@ -442,7 +514,8 @@ onUnmounted(() => {
 }
 
 /* XP Popup Animation */
-.xp-popup-enter-active, .xp-popup-leave-active {
+.xp-popup-enter-active,
+.xp-popup-leave-active {
   transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -522,7 +595,8 @@ onUnmounted(() => {
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateX(80px) scale(1);
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateX(80px)
+      scale(1);
     opacity: 0;
   }
 }
@@ -541,13 +615,24 @@ onUnmounted(() => {
 .achievement-glow {
   position: absolute;
   inset: -20px;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 215, 0, 0.3) 0%,
+    transparent 70%
+  );
   animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(0.8); opacity: 0.5; }
-  50% { transform: scale(1.2); opacity: 0.8; }
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
 }
 
 .achievement-name {
@@ -605,7 +690,11 @@ onUnmounted(() => {
 .level-up-celebration {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 255, 255, 0.1) 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -627,14 +716,27 @@ onUnmounted(() => {
   position: absolute;
   width: 4px;
   height: 120px;
-  background: linear-gradient(to top, transparent, var(--clear-cyan), transparent);
+  background: linear-gradient(
+    to top,
+    transparent,
+    var(--clear-cyan),
+    transparent
+  );
   animation: burstRay 1s ease-out;
 }
 
 @keyframes burstRay {
-  0% { height: 0; opacity: 0; }
-  50% { opacity: 1; }
-  100% { height: 120px; opacity: 0; }
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    height: 120px;
+    opacity: 0;
+  }
 }
 
 .level-up-title {
@@ -766,7 +868,8 @@ onUnmounted(() => {
 }
 
 /* Combo Animation */
-.combo-counter-enter-active, .combo-counter-leave-active {
+.combo-counter-enter-active,
+.combo-counter-leave-active {
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -800,8 +903,12 @@ onUnmounted(() => {
 }
 
 @keyframes matrixFall {
-  0% { top: -100%; }
-  100% { top: 100%; }
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 100%;
+  }
 }
 
 .konami-message {
@@ -893,8 +1000,14 @@ onUnmounted(() => {
 }
 
 @keyframes flicker {
-  0% { opacity: 0.7; transform: scale(1); }
-  100% { opacity: 1; transform: scale(1.1); }
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .streak-count {
@@ -935,7 +1048,10 @@ onUnmounted(() => {
     transform: none;
   }
 
-  .streak-indicator { bottom: 0.75rem; right: 0.75rem; }
+  .streak-indicator {
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
 }
 
 /* Reduced Motion */
@@ -947,7 +1063,7 @@ onUnmounted(() => {
   .matrix-column {
     animation: none !important;
   }
-  
+
   .achievement-glow {
     animation: none !important;
     opacity: 0.6;

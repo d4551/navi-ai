@@ -9,26 +9,32 @@ TailwindPlus Elements has been successfully integrated to provide advanced UI co
 ## Installation
 
 The package is installed via npm:
+
 ```bash
 npm install @tailwindplus/elements
 ```
 
 And imported in `src/main.js`:
+
 ```javascript
-import "@tailwindplus/elements"
+import '@tailwindplus/elements'
 ```
 
 ## Design System Integration
 
 ### Theme Compatibility
+
 All TailwindPlus components automatically inherit NAVI's design tokens:
+
 - Glass morphism effects (`glass-surface`, `glass-bg-active`)
 - Color palette (primary, secondary, text colors)
 - Dark mode support
 - Gaming theme enhancements
 
 ### Component Styling
+
 Components are styled in `src/styles/tailwindplus-integration.css` to match NAVI's aesthetic:
+
 - Consistent border radius and shadows
 - Proper focus states with ring colors
 - Responsive behavior
@@ -37,6 +43,7 @@ Components are styled in `src/styles/tailwindplus-integration.css` to match NAVI
 ## Available Components
 
 ### 1. Autocomplete (`<el-autocomplete>`)
+
 ```vue
 <el-autocomplete class="w-full">
   <input name="skill" placeholder="Search skills..." class="form-input w-full glass-interactive" />
@@ -51,6 +58,7 @@ Components are styled in `src/styles/tailwindplus-integration.css` to match NAVI
 ```
 
 ### 2. Dialog (`<el-dialog>`)
+
 ```vue
 <button command="show-modal" commandfor="my-dialog" class="btn btn-primary">
   Open Dialog
@@ -74,6 +82,7 @@ Components are styled in `src/styles/tailwindplus-integration.css` to match NAVI
 ```
 
 ### 3. Select (`<el-select>`)
+
 ```vue
 <el-select name="experience" value="intermediate" class="w-full">
   <button type="button" class="form-input w-full text-left glass-interactive">
@@ -88,17 +97,28 @@ Components are styled in `src/styles/tailwindplus-integration.css` to match NAVI
 ```
 
 ### 4. Disclosure (`<el-disclosure>`)
+
 ```vue
-<button command="--toggle" commandfor="my-disclosure" type="button" class="btn btn-secondary">
+<button
+  command="--toggle"
+  commandfor="my-disclosure"
+  type="button"
+  class="btn btn-secondary"
+>
   Toggle Content
 </button>
 
-<el-disclosure id="my-disclosure" hidden class="glass-bg-light p-4 rounded-lg transition">
+<el-disclosure
+  id="my-disclosure"
+  hidden
+  class="glass-bg-light p-4 rounded-lg transition"
+>
   <p>Hidden content that can be toggled...</p>
 </el-disclosure>
 ```
 
 ### 5. Dropdown Menu (`<el-dropdown>`)
+
 ```vue
 <el-dropdown>
   <button type="button" class="btn btn-primary">Actions</button>
@@ -110,6 +130,7 @@ Components are styled in `src/styles/tailwindplus-integration.css` to match NAVI
 ```
 
 ### 6. Tabs (`<el-tab-group>`)
+
 ```vue
 <el-tab-group class="w-full">
   <el-tab-list class="flex border-b border-glass-border mb-4">
@@ -124,6 +145,7 @@ Components are styled in `src/styles/tailwindplus-integration.css` to match NAVI
 ```
 
 ### 7. Command Palette (`<el-command-palette>`)
+
 ```vue
 <el-dialog>
   <dialog id="command-palette">
@@ -169,6 +191,7 @@ TailwindPlus components work seamlessly with NAVI's layout system:
 ## Accessibility Features
 
 All TailwindPlus components include:
+
 - Full keyboard navigation
 - Screen reader support
 - Focus management
@@ -178,8 +201,9 @@ All TailwindPlus components include:
 ## Dark Mode Support
 
 Components automatically adapt to NAVI's dark theme:
+
 ```css
-[data-theme="dark"] el-option:hover {
+[data-theme='dark'] el-option:hover {
   @apply glass-bg-active;
 }
 ```
@@ -187,9 +211,10 @@ Components automatically adapt to NAVI's dark theme:
 ## Custom Styling
 
 Override component styles using CSS layers:
+
 ```css
 @layer components {
-  el-option[aria-selected="true"] {
+  el-option[aria-selected='true'] {
     @apply bg-primary-100 text-primary-700;
   }
 }
@@ -205,8 +230,9 @@ Override component styles using CSS layers:
 ## Browser Support
 
 TailwindPlus Elements supports:
+
 - Chrome 111+ (March 2023)
-- Safari 16.4+ (March 2023)  
+- Safari 16.4+ (March 2023)
 - Firefox 128+ (July 2024)
 
 Same as Tailwind CSS v4.0 requirements.
@@ -214,6 +240,7 @@ Same as Tailwind CSS v4.0 requirements.
 ## Migration Notes
 
 When migrating existing components:
+
 1. Replace custom dropdowns with `<el-dropdown>`
 2. Upgrade modals to `<el-dialog>`
 3. Use `<el-tabs>` for tab interfaces

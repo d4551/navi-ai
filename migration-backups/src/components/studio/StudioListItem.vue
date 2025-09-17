@@ -1,21 +1,27 @@
 <template>
-  <div 
+  <div
     class="studio-list-item glass-card section-card interactive-hover"
-    :class="{ 
+    :class="{
       'item-selected': isSelected,
-      'item-favorite': isFavorite 
+      'item-favorite': isFavorite,
     }"
   >
     <div class="item-content">
       <!-- Studio Logo & Basic Info -->
       <div class="studio-identity">
         <div class="logo-container">
-          <img v-if="studio.logo" :src="studio.logo" :alt="studio.name" class="studio-logo" @error="onLogoError" />
+          <img
+            v-if="studio.logo"
+            :src="studio.logo"
+            :alt="studio.name"
+            class="studio-logo"
+            @error="onLogoError"
+          />
           <div v-else class="logo-placeholder">
             {{ studio.name?.charAt(0) || '?' }}
           </div>
         </div>
-        
+
         <div class="studio-basic-info">
           <h3 class="studio-name">{{ studio.name }}</h3>
           <div class="studio-location">
@@ -23,10 +29,15 @@
             {{ studio.headquarters || studio.location || 'Location Unknown' }}
           </div>
           <div class="studio-meta">
-            <span v-if="(studio as any).type || (studio as any).category" class="meta-badge">
+            <span
+              v-if="(studio as any).type || (studio as any).category"
+              class="meta-badge"
+            >
               {{ (studio as any).type || (studio as any).category }}
             </span>
-            <span v-if="studio.founded" class="meta-item">Est. {{ studio.founded }}</span>
+            <span v-if="studio.founded" class="meta-item"
+              >Est. {{ studio.founded }}</span
+            >
             <span v-if="studio.size" class="meta-item">{{ studio.size }}</span>
           </div>
         </div>
@@ -37,7 +48,7 @@
         <p v-if="studio.description" class="studio-description">
           {{ truncateText(studio.description, 150) }}
         </p>
-        
+
         <div class="detail-sections">
           <!-- Games -->
           <div v-if="studio.games?.length" class="detail-section">
@@ -46,9 +57,9 @@
               Games ({{ studio.games.length }})
             </h4>
             <div class="tags-list">
-              <span 
-                v-for="game in studio.games.slice(0, 3)" 
-                :key="game" 
+              <span
+                v-for="game in studio.games.slice(0, 3)"
+                :key="game"
                 class="tag game-tag"
               >
                 {{ game }}
@@ -66,14 +77,17 @@
               Tech Stack
             </h4>
             <div class="tags-list">
-              <span 
-                v-for="tech in studio.technologies.slice(0, 4)" 
-                :key="tech" 
+              <span
+                v-for="tech in studio.technologies.slice(0, 4)"
+                :key="tech"
                 class="tag tech-tag"
               >
                 {{ tech }}
               </span>
-              <span v-if="studio.technologies.length > 4" class="more-indicator">
+              <span
+                v-if="studio.technologies.length > 4"
+                class="more-indicator"
+              >
                 +{{ studio.technologies.length - 4 }} more
               </span>
             </div>
@@ -86,9 +100,9 @@
               Common Roles
             </h4>
             <div class="tags-list">
-              <span 
-                v-for="role in studio.commonRoles.slice(0, 3)" 
-                :key="role" 
+              <span
+                v-for="role in studio.commonRoles.slice(0, 3)"
+                :key="role"
                 class="tag role-tag"
               >
                 {{ role }}
@@ -113,7 +127,7 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-          <button 
+          <button
             class="action-btn favorite-btn"
             :class="{ active: isFavorite }"
             :title="isFavorite ? 'Remove from watchlist' : 'Add to watchlist'"
@@ -121,8 +135,8 @@
           >
             <AppIcon name="mdi-heart" />
           </button>
-          
-          <button 
+
+          <button
             class="action-btn select-btn"
             :class="{ active: isSelected }"
             title="Select for comparison"
@@ -133,18 +147,18 @@
         </div>
 
         <div class="primary-actions">
-          <UnifiedButton 
-            color="glass" 
-            appearance="outlined" 
+          <UnifiedButton
+            color="glass"
+            appearance="outlined"
             size="sm"
             leading-icon="mdi-information-outline"
             @click="$emit('view-details', studio)"
           >
             Details
           </UnifiedButton>
-          
-          <UnifiedButton 
-            color="gaming" 
+
+          <UnifiedButton
+            color="gaming"
             size="sm"
             leading-icon="mdi-briefcase-outline"
             @click="$emit('view-jobs', studio)"
@@ -161,16 +175,16 @@
         <div v-if="studio.culture?.values?.length" class="info-section">
           <h5 class="info-title">Culture & Values</h5>
           <div class="values-list">
-            <span 
-              v-for="value in studio.culture.values.slice(0, 4)" 
-              :key="value" 
+            <span
+              v-for="value in studio.culture.values.slice(0, 4)"
+              :key="value"
               class="value-tag"
             >
               {{ value }}
             </span>
           </div>
         </div>
-        
+
         <div v-if="studio.interviewStyle" class="info-section">
           <h5 class="info-title">Interview Style</h5>
           <p class="info-text">{{ studio.interviewStyle }}</p>
@@ -230,13 +244,21 @@ function getScoreClass(score: number): string {
 
 .studio-list-item:hover {
   border-color: var(--color-primary-300);
-  background: color-mix(in srgb, var(--color-primary-500) 2%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 2%,
+    var(--glass-surface)
+  );
   transform: translateX(4px);
 }
 
 .studio-list-item.item-selected {
   border-color: var(--color-primary-500);
-  background: color-mix(in srgb, var(--color-primary-500) 5%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 5%,
+    var(--glass-surface)
+  );
 }
 
 .studio-list-item.item-favorite {
@@ -368,19 +390,31 @@ function getScoreClass(score: number): string {
 
 .game-tag {
   background: color-mix(in srgb, var(--color-gaming-500) 10%, var(--glass-bg));
-  border-color: color-mix(in srgb, var(--color-gaming-500) 20%, var(--glass-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-gaming-500) 20%,
+    var(--glass-border)
+  );
   color: var(--color-gaming-600);
 }
 
 .tech-tag {
   background: color-mix(in srgb, var(--color-info-500) 10%, var(--glass-bg));
-  border-color: color-mix(in srgb, var(--color-info-500) 20%, var(--glass-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-info-500) 20%,
+    var(--glass-border)
+  );
   color: var(--color-info-600);
 }
 
 .role-tag {
   background: color-mix(in srgb, var(--color-success-500) 10%, var(--glass-bg));
-  border-color: color-mix(in srgb, var(--color-success-500) 20%, var(--glass-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-success-500) 20%,
+    var(--glass-border)
+  );
   color: var(--color-success-600);
 }
 
@@ -423,25 +457,41 @@ function getScoreClass(score: number): string {
 .score-excellent {
   color: var(--color-success-600);
   border-color: var(--color-success-500);
-  background: color-mix(in srgb, var(--color-success-500) 15%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-success-500) 15%,
+    var(--glass-surface)
+  );
 }
 
 .score-good {
   color: var(--color-info-600);
   border-color: var(--color-info-500);
-  background: color-mix(in srgb, var(--color-info-500) 15%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-info-500) 15%,
+    var(--glass-surface)
+  );
 }
 
 .score-fair {
   color: var(--color-warning-600);
   border-color: var(--color-warning-500);
-  background: color-mix(in srgb, var(--color-warning-500) 15%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-warning-500) 15%,
+    var(--glass-surface)
+  );
 }
 
 .score-poor {
   color: var(--color-error-600);
   border-color: var(--color-error-500);
-  background: color-mix(in srgb, var(--color-error-500) 15%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-error-500) 15%,
+    var(--glass-surface)
+  );
 }
 
 .score-label {
@@ -533,7 +583,8 @@ function getScoreClass(score: number): string {
 .value-tag {
   padding: var(--spacing-1) var(--spacing-2);
   background: color-mix(in srgb, var(--color-warning-500) 10%, var(--glass-bg));
-  border: 1px solid color-mix(in srgb, var(--color-warning-500) 20%, var(--glass-border));
+  border: 1px solid
+    color-mix(in srgb, var(--color-warning-500) 20%, var(--glass-border));
   color: var(--color-warning-600);
   border-radius: 999px;
   font-size: 0.75rem;
@@ -545,26 +596,26 @@ function getScoreClass(score: number): string {
     grid-template-columns: 1fr;
     gap: var(--spacing-3);
   }
-  
+
   .studio-identity {
     min-width: auto;
   }
-  
+
   .item-actions {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     min-width: auto;
   }
-  
+
   .ai-score-compact {
     order: 1;
   }
-  
+
   .action-buttons {
     order: 2;
   }
-  
+
   .primary-actions {
     order: 3;
   }
@@ -576,13 +627,13 @@ function getScoreClass(score: number): string {
     text-align: center;
     gap: var(--spacing-2);
   }
-  
+
   .item-actions {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-2);
   }
-  
+
   .primary-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -591,16 +642,16 @@ function getScoreClass(score: number): string {
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .studio-list-item {
+[data-theme='dark'] .studio-list-item {
   background: var(--surface-elevated);
 }
 
-[data-theme="dark"] .logo-container {
+[data-theme='dark'] .logo-container {
   background: var(--surface-elevated);
   border-color: var(--border-subtle);
 }
 
-[data-theme="dark"] .tag {
+[data-theme='dark'] .tag {
   background: var(--surface-elevated);
   border-color: var(--border-subtle);
 }

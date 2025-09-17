@@ -9,7 +9,12 @@ Demonstrates the complete live job board implementation with:
 - Gaming industry focus
 -->
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="normal"
+    max-width="xl"
+    class="font-sans"
+  >
     <template #header-actions>
       <UnifiedButton
         variant="outline"
@@ -27,33 +32,74 @@ Demonstrates the complete live job board implementation with:
         <AppIcon name="InformationCircleIcon" class="mr-2" />
         How This Demo Works
       </h6>
-      
+
       <div class="flex flex-wrap">
         <div class="flex-1-md-6">
           <h6>Live API Sources:</h6>
           <ul class="list-unstyled">
-            <li><AppIcon name="CheckCircleIcon" class="text-success-600 mr-1" /> RemoteOK - Remote jobs (no auth)</li>
-            <li><AppIcon name="CheckCircleIcon" class="text-success-600 mr-1" /> Arbeitnow - European tech jobs</li>
-            <li><AppIcon name="ExclamationCircleIcon" class="text-warning-600 mr-1" /> JSearch API - Requires RapidAPI key</li>
-            <li><AppIcon name="ExclamationCircleIcon" class="text-warning-600 mr-1" /> Adzuna API - Requires API key</li>
-            <li><AppIcon name="ExclamationCircleIcon" class="text-warning-600 mr-1" /> Reed.co.uk - Requires API key</li>
+            <li>
+              <AppIcon name="CheckCircleIcon" class="text-success-600 mr-1" />
+              RemoteOK - Remote jobs (no auth)
+            </li>
+            <li>
+              <AppIcon name="CheckCircleIcon" class="text-success-600 mr-1" />
+              Arbeitnow - European tech jobs
+            </li>
+            <li>
+              <AppIcon
+                name="ExclamationCircleIcon"
+                class="text-warning-600 mr-1"
+              />
+              JSearch API - Requires RapidAPI key
+            </li>
+            <li>
+              <AppIcon
+                name="ExclamationCircleIcon"
+                class="text-warning-600 mr-1"
+              />
+              Adzuna API - Requires API key
+            </li>
+            <li>
+              <AppIcon
+                name="ExclamationCircleIcon"
+                class="text-warning-600 mr-1"
+              />
+              Reed.co.uk - Requires API key
+            </li>
           </ul>
         </div>
-        
+
         <div class="flex-1-md-6">
           <h6>Features Demonstrated:</h6>
           <ul class="list-unstyled">
-            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Profile-based job matching</li>
-            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Gaming industry relevance scoring</li>
-            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Real-time search & filtering</li>
-            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> API fallback strategies</li>
-            <li><AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Caching & rate limiting</li>
+            <li>
+              <AppIcon name="StarIcon" class="text-primary-600 mr-1" />
+              Profile-based job matching
+            </li>
+            <li>
+              <AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Gaming
+              industry relevance scoring
+            </li>
+            <li>
+              <AppIcon name="StarIcon" class="text-primary-600 mr-1" />
+              Real-time search & filtering
+            </li>
+            <li>
+              <AppIcon name="StarIcon" class="text-primary-600 mr-1" /> API
+              fallback strategies
+            </li>
+            <li>
+              <AppIcon name="StarIcon" class="text-primary-600 mr-1" /> Caching
+              & rate limiting
+            </li>
           </ul>
         </div>
       </div>
-      
+
       <div class="mt-3">
-        <strong>Note:</strong> Some APIs require keys in .env.local file. Ensure required keys are set to enable all providers. Check the browser console for detailed API responses.
+        <strong>Note:</strong> Some APIs require keys in .env.local file. Ensure
+        required keys are set to enable all providers. Check the browser console
+        for detailed API responses.
       </div>
     </div>
 
@@ -63,33 +109,49 @@ Demonstrates the complete live job board implementation with:
         <AppIcon name="mdi-api" class="mr-2" />
         API Status Dashboard
       </h5>
-      
+
       <div class="flex flex-wrap g-3">
         <div
           v-for="(status, provider) in providerStatus"
           :key="provider"
           class="flex-1-md-2 flex-1-sm-4 flex-1-6"
         >
-          <div class="api-status-card" :class="{ active: status.enabled, disabled: !status.enabled }">
+          <div
+            class="api-status-card"
+            :class="{ active: status.enabled, disabled: !status.enabled }"
+          >
             <div class="status-header">
-              <div class="status-indicator" :class="status.enabled ? 'online' : 'offline'"></div>
-              <span class="provider-name">{{ formatProviderName(provider) }}</span>
+              <div
+                class="status-indicator"
+                :class="status.enabled ? 'online' : 'offline'"
+              ></div>
+              <span class="provider-name">{{
+                formatProviderName(provider)
+              }}</span>
             </div>
             <div class="status-details">
-              <div class="calls-remaining">{{ status.rateLimitRemaining }} calls left</div>
-              <div class="status-text">{{ status.enabled ? 'Active' : 'Inactive' }}</div>
+              <div class="calls-remaining">
+                {{ status.rateLimitRemaining }} calls left
+              </div>
+              <div class="status-text">
+                {{ status.enabled ? 'Active' : 'Inactive' }}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <div class="mt-3 flex justify-between items-center">
         <div class="status-summary">
-          <span class="text-success-600">{{ enabledProvidersCount }} active</span>
+          <span class="text-success-600"
+            >{{ enabledProvidersCount }} active</span
+          >
           <span class="text-secondary mx-2">•</span>
-          <span class="text-secondary">{{ totalProvidersCount }} total providers</span>
+          <span class="text-secondary"
+            >{{ totalProvidersCount }} total providers</span
+          >
         </div>
-        
+
         <div class="status-actions">
           <UnifiedButton
             variant="outline"
@@ -99,7 +161,7 @@ Demonstrates the complete live job board implementation with:
           >
             Refresh Status
           </UnifiedButton>
-          
+
           <UnifiedButton
             variant="outline"
             size="sm"
@@ -122,7 +184,7 @@ Demonstrates the complete live job board implementation with:
         <AppIcon name="WrenchScrewdriverIcon" class="mr-2" />
         Demo Tools
       </h5>
-      
+
       <div class="flex flex-wrap g-3">
         <div class="flex-1-md-3">
           <UnifiedButton
@@ -134,7 +196,7 @@ Demonstrates the complete live job board implementation with:
             Test: Game Developer Search
           </UnifiedButton>
         </div>
-        
+
         <div class="flex-1-md-3">
           <UnifiedButton
             variant="gaming"
@@ -145,7 +207,7 @@ Demonstrates the complete live job board implementation with:
             Test: Unity Developer Search
           </UnifiedButton>
         </div>
-        
+
         <div class="flex-1-md-3">
           <UnifiedButton
             variant="cyber"
@@ -156,7 +218,7 @@ Demonstrates the complete live job board implementation with:
             Test: Remote Jobs Search
           </UnifiedButton>
         </div>
-        
+
         <div class="flex-1-md-3">
           <UnifiedButton
             variant="outline"
@@ -168,14 +230,18 @@ Demonstrates the complete live job board implementation with:
           </UnifiedButton>
         </div>
       </div>
-      
+
       <!-- Search Results Summary -->
-      <div v-if="lastTestResults" class="test-results mt-4 p-glass-md" style="background: var(--surface-elevated); border-radius: 8px;">
+      <div
+        v-if="lastTestResults"
+        class="test-results mt-4 p-glass-md"
+        style="background: var(--surface-elevated); border-radius: 8px"
+      >
         <h6 class="mb-2">
           <AppIcon name="ChartBarIcon" class="mr-2" />
           Last Test Results
         </h6>
-        
+
         <div class="flex flex-wrap g-3">
           <div class="flex-1-md-3">
             <div class="result-stat">
@@ -183,29 +249,33 @@ Demonstrates the complete live job board implementation with:
               <div class="stat-label">Total Jobs Found</div>
             </div>
           </div>
-          
+
           <div class="flex-1-md-3">
             <div class="result-stat">
               <div class="stat-number">{{ lastTestResults.gamingJobs }}</div>
               <div class="stat-label">Gaming-Related</div>
             </div>
           </div>
-          
+
           <div class="flex-1-md-3">
             <div class="result-stat">
-              <div class="stat-number">{{ lastTestResults.sources.length }}</div>
+              <div class="stat-number">
+                {{ lastTestResults.sources.length }}
+              </div>
               <div class="stat-label">API Sources</div>
             </div>
           </div>
-          
+
           <div class="flex-1-md-3">
             <div class="result-stat">
-              <div class="stat-number">{{ lastTestResults.responseTime }}ms</div>
+              <div class="stat-number">
+                {{ lastTestResults.responseTime }}ms
+              </div>
               <div class="stat-label">Response Time</div>
             </div>
           </div>
         </div>
-        
+
         <div class="mt-2">
           <strong>Sources:</strong> {{ lastTestResults.sources.join(', ') }}
         </div>
@@ -213,19 +283,22 @@ Demonstrates the complete live job board implementation with:
     </div>
 
     <!-- Real-Time Notifications Demo -->
-    <div class="notifications-demo glass p-glass-md gap-glass-md rounded-lg mt-4">
+    <div
+      class="notifications-demo glass p-glass-md gap-glass-md rounded-lg mt-4"
+    >
       <h5 class="mb-3">
         <AppIcon name="BellIcon" class="mr-2" />
         Real-Time Job Alerts Demo
       </h5>
-      
+
       <div class="flex flex-wrap">
         <div class="flex-1-md-8">
           <p class="text-secondary mb-3">
-            Set up job alerts to receive notifications when new jobs matching your criteria are found.
-            This demo shows how the real-time system works.
+            Set up job alerts to receive notifications when new jobs matching
+            your criteria are found. This demo shows how the real-time system
+            works.
           </p>
-          
+
           <div class="alert-controls flex gap-glass-sm mb-3">
             <UnifiedButton
               variant="primary"
@@ -235,7 +308,7 @@ Demonstrates the complete live job board implementation with:
             >
               Create Demo Alert
             </UnifiedButton>
-            
+
             <UnifiedButton
               variant="outline"
               size="sm"
@@ -243,9 +316,13 @@ Demonstrates the complete live job board implementation with:
               :disabled="notificationPermission === 'granted'"
               @click="requestNotificationPermission"
             >
-              {{ notificationPermission === 'granted' ? 'Notifications Enabled' : 'Enable Notifications' }}
+              {{
+                notificationPermission === 'granted'
+                  ? 'Notifications Enabled'
+                  : 'Enable Notifications'
+              }}
             </UnifiedButton>
-            
+
             <UnifiedButton
               variant="outline"
               size="sm"
@@ -256,12 +333,15 @@ Demonstrates the complete live job board implementation with:
             </UnifiedButton>
           </div>
         </div>
-        
+
         <div class="flex-1-md-4">
           <div class="notification-status">
             <div class="status-item">
               <span class="label">Permission:</span>
-              <span class="value" :class="getPermissionClass(notificationPermission)">
+              <span
+                class="value"
+                :class="getPermissionClass(notificationPermission)"
+              >
                 {{ formatPermissionStatus(notificationPermission) }}
               </span>
             </div>
@@ -285,12 +365,15 @@ Demonstrates the complete live job board implementation with:
           <AppIcon name="CommandLineIcon" class="mr-2" />
           API Console Output
         </h5>
-        <button class="btn btn-sm btn-outline-secondary" @click="clearConsoleOutput">
+        <button
+          class="btn btn-sm btn-outline-secondary"
+          @click="clearConsoleOutput"
+        >
           <AppIcon name="TrashIcon" class="mr-1" />
           Clear
         </button>
       </div>
-      
+
       <div ref="consoleRef" class="console-content">
         <div
           v-for="(entry, index) in consoleOutput"
@@ -301,7 +384,9 @@ Demonstrates the complete live job board implementation with:
           <span class="timestamp">{{ formatTimestamp(entry.timestamp) }}</span>
           <span class="level-badge">{{ entry.level.toUpperCase() }}</span>
           <span class="message">{{ entry.message }}</span>
-          <pre v-if="entry.data" class="data">{{ JSON.stringify(entry.data, null, 2) }}</pre>
+          <pre v-if="entry.data" class="data">{{
+            JSON.stringify(entry.data, null, 2)
+          }}</pre>
         </div>
       </div>
     </div>
@@ -309,7 +394,23 @@ Demonstrates the complete live job board implementation with:
 </template>
 
 <script setup>
-import { ArrowPathIcon, BeakerIcon, BellIcon, ChartBarIcon, CheckCircleIcon, CommandLineIcon, ExclamationCircleIcon, HomeIcon, InformationCircleIcon, MagnifyingGlassIcon, PlusIcon, PuzzlePieceIcon, TrashIcon, UserIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  BeakerIcon,
+  BellIcon,
+  ChartBarIcon,
+  CheckCircleIcon,
+  CommandLineIcon,
+  ExclamationCircleIcon,
+  HomeIcon,
+  InformationCircleIcon,
+  MagnifyingGlassIcon,
+  PlusIcon,
+  PuzzlePieceIcon,
+  TrashIcon,
+  UserIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/vue/24/outline'
 import { StarIcon } from '@heroicons/vue/24/solid'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -334,15 +435,18 @@ const consoleRef = ref(null)
 const notificationPermission = ref(null)
 const realTimeStats = ref({
   activeAlerts: 0,
-  newJobsToday: 0
+  newJobsToday: 0,
 })
 
 // Provider status
 const providerStatus = computed(() => jobBoard.getProviderStatus())
-const enabledProvidersCount = computed(() => 
-  Object.values(providerStatus.value).filter(status => status.enabled).length
+const enabledProvidersCount = computed(
+  () =>
+    Object.values(providerStatus.value).filter(status => status.enabled).length
 )
-const totalProvidersCount = computed(() => Object.keys(providerStatus.value).length)
+const totalProvidersCount = computed(
+  () => Object.keys(providerStatus.value).length
+)
 
 // Console logging
 const addConsoleEntry = (level, message, data = null) => {
@@ -350,14 +454,14 @@ const addConsoleEntry = (level, message, data = null) => {
     level,
     message,
     data,
-    timestamp: new Date()
+    timestamp: new Date(),
   })
-  
+
   // Keep only last 50 entries
   if (consoleOutput.value.length > 50) {
     consoleOutput.value = consoleOutput.value.slice(-50)
   }
-  
+
   // Auto-scroll to bottom
   nextTick(() => {
     if (consoleRef.value) {
@@ -369,34 +473,39 @@ const addConsoleEntry = (level, message, data = null) => {
 // Test functions
 const testGameDeveloperSearch = async () => {
   addConsoleEntry('info', 'Testing Game Developer search...')
-  
+
   const startTime = Date.now()
-  
+
   try {
     await jobBoard.searchJobs({
       query: 'game developer',
-      limit: 50
+      limit: 50,
     })
-    
+
     const responseTime = Date.now() - startTime
     const totalJobs = jobBoard.filteredJobs.value.length
-    const gamingJobs = jobBoard.filteredJobs.value.filter(job => (job.gamingRelevance || 0) > 0.3).length
+    const gamingJobs = jobBoard.filteredJobs.value.filter(
+      job => (job.gamingRelevance || 0) > 0.3
+    ).length
     const sources = [...new Set(jobBoard.jobs.value.map(job => job.source))]
-    
+
     lastTestResults.value = {
       totalJobs,
       gamingJobs,
       sources,
-      responseTime
+      responseTime,
     }
-    
-    addConsoleEntry('success', `Found ${totalJobs} jobs (${gamingJobs} gaming-related) from ${sources.length} sources`, {
-      totalJobs,
-      gamingJobs,
-      sources,
-      responseTime
-    })
-    
+
+    addConsoleEntry(
+      'success',
+      `Found ${totalJobs} jobs (${gamingJobs} gaming-related) from ${sources.length} sources`,
+      {
+        totalJobs,
+        gamingJobs,
+        sources,
+        responseTime,
+      }
+    )
   } catch (error) {
     addConsoleEntry('error', 'Game Developer search failed', error)
   }
@@ -404,30 +513,34 @@ const testGameDeveloperSearch = async () => {
 
 const testUnityDeveloperSearch = async () => {
   addConsoleEntry('info', 'Testing Unity Developer search...')
-  
+
   const startTime = Date.now()
-  
+
   try {
     await jobBoard.searchJobs({
       query: 'unity developer',
       gamingOnly: true,
-      limit: 30
+      limit: 30,
     })
-    
+
     const responseTime = Date.now() - startTime
     const totalJobs = jobBoard.filteredJobs.value.length
-    const gamingJobs = jobBoard.filteredJobs.value.filter(job => (job.gamingRelevance || 0) > 0.3).length
+    const gamingJobs = jobBoard.filteredJobs.value.filter(
+      job => (job.gamingRelevance || 0) > 0.3
+    ).length
     const sources = [...new Set(jobBoard.jobs.value.map(job => job.source))]
-    
+
     lastTestResults.value = {
       totalJobs,
       gamingJobs,
       sources,
-      responseTime
+      responseTime,
     }
-    
-    addConsoleEntry('success', `Found ${totalJobs} Unity jobs from ${sources.length} sources`)
-    
+
+    addConsoleEntry(
+      'success',
+      `Found ${totalJobs} Unity jobs from ${sources.length} sources`
+    )
   } catch (error) {
     addConsoleEntry('error', 'Unity Developer search failed', error)
   }
@@ -435,31 +548,35 @@ const testUnityDeveloperSearch = async () => {
 
 const testRemoteJobsSearch = async () => {
   addConsoleEntry('info', 'Testing Remote Jobs search...')
-  
+
   const startTime = Date.now()
-  
+
   try {
     await jobBoard.searchJobs({
       query: 'developer',
       remote: true,
       location: 'remote',
-      limit: 40
+      limit: 40,
     })
-    
+
     const responseTime = Date.now() - startTime
     const totalJobs = jobBoard.filteredJobs.value.length
-    const gamingJobs = jobBoard.filteredJobs.value.filter(job => (job.gamingRelevance || 0) > 0.3).length
+    const gamingJobs = jobBoard.filteredJobs.value.filter(
+      job => (job.gamingRelevance || 0) > 0.3
+    ).length
     const sources = [...new Set(jobBoard.jobs.value.map(job => job.source))]
-    
+
     lastTestResults.value = {
       totalJobs,
       gamingJobs,
       sources,
-      responseTime
+      responseTime,
     }
-    
-    addConsoleEntry('success', `Found ${totalJobs} remote jobs from ${sources.length} sources`)
-    
+
+    addConsoleEntry(
+      'success',
+      `Found ${totalJobs} remote jobs from ${sources.length} sources`
+    )
   } catch (error) {
     addConsoleEntry('error', 'Remote Jobs search failed', error)
   }
@@ -467,30 +584,35 @@ const testRemoteJobsSearch = async () => {
 
 const testProfileBasedSearch = async () => {
   addConsoleEntry('info', 'Testing Profile-based search...')
-  
+
   const startTime = Date.now()
-  
+
   try {
     await jobBoard.autoSearchFromProfile()
-    
+
     const responseTime = Date.now() - startTime
     const totalJobs = jobBoard.filteredJobs.value.length
-    const gamingJobs = jobBoard.filteredJobs.value.filter(job => (job.gamingRelevance || 0) > 0.3).length
+    const gamingJobs = jobBoard.filteredJobs.value.filter(
+      job => (job.gamingRelevance || 0) > 0.3
+    ).length
     const sources = [...new Set(jobBoard.jobs.value.map(job => job.source))]
     const topMatches = jobBoard.topMatches.value.length
-    
+
     lastTestResults.value = {
       totalJobs,
       gamingJobs,
       sources,
-      responseTime
+      responseTime,
     }
-    
-    addConsoleEntry('success', `Profile-based search found ${totalJobs} jobs (${topMatches} top matches)`, {
-      profile: unifiedProfile.jobSearchProfile.value,
-      results: { totalJobs, gamingJobs, topMatches }
-    })
-    
+
+    addConsoleEntry(
+      'success',
+      `Profile-based search found ${totalJobs} jobs (${topMatches} top matches)`,
+      {
+        profile: unifiedProfile.jobSearchProfile.value,
+        results: { totalJobs, gamingJobs, topMatches },
+      }
+    )
   } catch (error) {
     addConsoleEntry('error', 'Profile-based search failed', error)
   }
@@ -517,10 +639,12 @@ const clearApiCache = () => {
 const requestNotificationPermission = async () => {
   const granted = await realTimeJobService.requestNotificationPermission()
   notificationPermission.value = realTimeJobService.getNotificationPermission()
-  
+
   addConsoleEntry(
-    granted ? 'success' : 'warning', 
-    granted ? 'Notification permission granted' : 'Notification permission denied'
+    granted ? 'success' : 'warning',
+    granted
+      ? 'Notification permission granted'
+      : 'Notification permission denied'
   )
 }
 
@@ -530,36 +654,39 @@ const createDemoAlert = async () => {
       'Demo Alert - Unity Developer',
       {
         query: 'unity developer',
-        location: 'remote'
+        location: 'remote',
       },
       {
         pushNotifications: true,
-        emailNotifications: false
+        emailNotifications: false,
       }
     )
-    
+
     addConsoleEntry('success', 'Demo job alert created', alert)
     updateRealTimeStats()
-    
   } catch (error) {
     addConsoleEntry('error', 'Failed to create demo alert', error)
   }
 }
 
 const triggerTestNotification = () => {
-  if (typeof window !== 'undefined' && window.Notification && Notification.permission === 'granted') {
+  if (
+    typeof window !== 'undefined' &&
+    window.Notification &&
+    Notification.permission === 'granted'
+  ) {
     const notification = new Notification('NAVI Job Board Test', {
       body: 'This is a test notification from the live job board demo.',
       icon: '/favicon.ico',
-      tag: 'demo-notification'
+      tag: 'demo-notification',
     })
-    
+
     notification.onclick = () => {
       notification.close()
     }
-    
+
     setTimeout(() => notification.close(), 5000)
-    
+
     addConsoleEntry('success', 'Test notification sent')
   } else {
     addConsoleEntry('warning', 'Notifications not available or not permitted')
@@ -572,24 +699,27 @@ const clearConsoleOutput = () => {
 }
 
 // Utility functions
-const formatProviderName = (provider) => {
+const formatProviderName = provider => {
   return provider.charAt(0).toUpperCase() + provider.slice(1)
 }
 
-const formatTimestamp = (timestamp) => {
+const formatTimestamp = timestamp => {
   return timestamp.toLocaleTimeString()
 }
 
-const formatPermissionStatus = (permission) => {
+const formatPermissionStatus = permission => {
   if (!permission) return 'Not Available'
   return permission.charAt(0).toUpperCase() + permission.slice(1)
 }
 
-const getPermissionClass = (permission) => {
+const getPermissionClass = permission => {
   switch (permission) {
-    case 'granted': return 'text-success-600'
-    case 'denied': return 'text-error-600'
-    default: return 'text-warning-600'
+    case 'granted':
+      return 'text-success-600'
+    case 'denied':
+      return 'text-error-600'
+    default:
+      return 'text-warning-600'
   }
 }
 
@@ -600,23 +730,27 @@ const updateRealTimeStats = () => {
 // Lifecycle
 onMounted(() => {
   addConsoleEntry('info', 'Live Job Board Demo initialized')
-  
+
   // Check notification permission
   notificationPermission.value = realTimeJobService.getNotificationPermission()
-  
+
   // Update real-time stats
   updateRealTimeStats()
-  
+
   // Listen for job board events
-  realTimeJobService.on('new-job', (update) => {
-    addConsoleEntry('info', `New job found: ${update.job.title} at ${update.job.company}`, update)
+  realTimeJobService.on('new-job', update => {
+    addConsoleEntry(
+      'info',
+      `New job found: ${update.job.title} at ${update.job.company}`,
+      update
+    )
     updateRealTimeStats()
   })
-  
+
   realTimeJobService.on('alert-created', () => {
     updateRealTimeStats()
   })
-  
+
   // Start real-time service
   realTimeJobService.start()
 })
@@ -736,7 +870,10 @@ onUnmounted(() => {
   background: rgba(0, 0, 0, 0.3);
   border-radius: var(--border-radius-md);
   padding: var(--spacing-md);
-  font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  font-family:
+    'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata',
+    'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New',
+    monospace;
   font-size: var(--font-size-sm);
 }
 
@@ -788,7 +925,7 @@ onUnmounted(() => {
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .section-card {
+[data-theme='dark'] .section-card {
   background: rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 255, 255, 0.1);
 }

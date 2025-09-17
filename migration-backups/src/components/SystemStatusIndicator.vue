@@ -3,18 +3,26 @@
     <!-- Quick Status Badge -->
     <button
       class="status-badge"
-      :class="{ 'status-healthy': status === 'healthy',
-                'status-degraded': status === 'degraded',
-                'status-critical': status === 'critical',
-                'status-checking': isChecking
+      :class="{
+        'status-healthy': status === 'healthy',
+        'status-degraded': status === 'degraded',
+        'status-critical': status === 'critical',
+        'status-checking': isChecking,
       }"
       :aria-expanded="showDetails"
       aria-label="System Status"
       @click="toggleDetails"
     >
-      <AppIcon :name="statusIcon" :class="{ 'mdi-spin': status === 'checking' }" />
+      <AppIcon
+        :name="statusIcon"
+        :class="{ 'mdi-spin': status === 'checking' }"
+      />
       <span class="status-text">{{ statusText }}</span>
-      <AppIcon name="mdi-chevron-down" class="expand-icon" :class="{ 'expanded': showDetails }" />
+      <AppIcon
+        name="mdi-chevron-down"
+        class="expand-icon"
+        :class="{ expanded: showDetails }"
+      />
     </button>
 
     <!-- Detailed Status Panel -->
@@ -31,7 +39,10 @@
               :disabled="isChecking"
               @click="runHealthCheck"
             >
-              <AppIcon :name="isChecking ? 'mdi-loading' : 'mdi-refresh'" :class="{ 'mdi-spin': isChecking }" />
+              <AppIcon
+                :name="isChecking ? 'mdi-loading' : 'mdi-refresh'"
+                :class="{ 'mdi-spin': isChecking }"
+              />
               {{ isChecking ? 'Checking...' : 'Refresh' }}
             </button>
             <button
@@ -39,7 +50,10 @@
               :disabled="isRunningFullTest"
               @click="runFullTest"
             >
-              <AppIcon :name="isRunningFullTest ? 'mdi-loading' : 'mdi-test-tube'" :class="{ 'mdi-spin': isRunningFullTest }" />
+              <AppIcon
+                :name="isRunningFullTest ? 'mdi-loading' : 'mdi-test-tube'"
+                :class="{ 'mdi-spin': isRunningFullTest }"
+              />
               {{ isRunningFullTest ? 'Testing...' : 'Full Test' }}
             </button>
           </div>
@@ -65,7 +79,11 @@
                 {{ component.metric }}
               </div>
               <div v-if="component.tests" class="component-tests">
-                <span class="test-count">{{ component.tests.passed }}/{{ component.tests.total }}</span>
+                <span class="test-count"
+                  >{{ component.tests.passed }}/{{
+                    component.tests.total
+                  }}</span
+                >
                 <span class="test-label">tests passed</span>
               </div>
             </div>
@@ -82,22 +100,30 @@
             <div v-if="performanceMetrics.memory" class="metric-item">
               <div class="metric-label">Memory Usage</div>
               <div class="metric-value">
-                {{ performanceMetrics.memory.used }}MB / {{ performanceMetrics.memory.total }}MB
+                {{ performanceMetrics.memory.used }}MB /
+                {{ performanceMetrics.memory.total }}MB
               </div>
             </div>
             <div v-if="performanceMetrics.timing" class="metric-item">
               <div class="metric-label">Page Load</div>
-              <div class="metric-value">{{ performanceMetrics.timing.pageLoad }}ms</div>
+              <div class="metric-value">
+                {{ performanceMetrics.timing.pageLoad }}ms
+              </div>
             </div>
             <div v-if="performanceMetrics.connection" class="metric-item">
               <div class="metric-label">Connection</div>
-              <div class="metric-value">{{ performanceMetrics.connection.type }}</div>
+              <div class="metric-value">
+                {{ performanceMetrics.connection.type }}
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Recent Test Results -->
-        <div v-if="healthReport && healthReport.results.length > 0" class="test-results-section">
+        <div
+          v-if="healthReport && healthReport.results.length > 0"
+          class="test-results-section"
+        >
           <h5 class="section-title">
             <AppIcon name="mdi-clipboard-check" />
             Recent Test Results
@@ -142,21 +168,31 @@ const performanceMetrics = ref<any>(null)
 // Computed properties
 const statusIcon = computed(() => {
   switch (status.value) {
-    case 'healthy': return 'mdi-check-circle-outline'
-    case 'degraded': return 'mdi-alert-circle-outline'
-    case 'critical': return 'mdi-close-circle-outline'
-    case 'checking': return 'mdi-loading'
-    default: return 'mdi-help-circle'
+    case 'healthy':
+      return 'mdi-check-circle-outline'
+    case 'degraded':
+      return 'mdi-alert-circle-outline'
+    case 'critical':
+      return 'mdi-close-circle-outline'
+    case 'checking':
+      return 'mdi-loading'
+    default:
+      return 'mdi-help-circle'
   }
 })
 
 const statusText = computed(() => {
   switch (status.value) {
-    case 'healthy': return 'All Systems Operational'
-    case 'degraded': return 'Minor Issues Detected'
-    case 'critical': return 'Critical Issues'
-    case 'checking': return 'Checking...'
-    default: return 'Unknown Status'
+    case 'healthy':
+      return 'All Systems Operational'
+    case 'degraded':
+      return 'Minor Issues Detected'
+    case 'critical':
+      return 'Critical Issues'
+    case 'checking':
+      return 'Checking...'
+    default:
+      return 'Unknown Status'
   }
 })
 
@@ -170,13 +206,19 @@ const componentStatus = computed(() => {
     'Gaming Studios',
     'Media Streaming',
     'Theme System',
-    'Gamification'
+    'Gamification',
   ]
 
   return components.map(componentName => {
-    const componentResults = healthReport.value!.results.filter(r => r.component === componentName)
-    const passedTests = componentResults.filter(r => r.status === 'passed').length
-    const failedTests = componentResults.filter(r => r.status === 'failed').length
+    const componentResults = healthReport.value!.results.filter(
+      r => r.component === componentName
+    )
+    const passedTests = componentResults.filter(
+      r => r.status === 'passed'
+    ).length
+    const failedTests = componentResults.filter(
+      r => r.status === 'failed'
+    ).length
     const totalTests = componentResults.length
 
     let componentStatus: 'healthy' | 'degraded' | 'critical'
@@ -193,7 +235,7 @@ const componentStatus = computed(() => {
       status: componentStatus,
       icon: getComponentIcon(componentName),
       tests: totalTests > 0 ? { passed: passedTests, total: totalTests } : null,
-      metric: getComponentMetric(componentName, componentResults)
+      metric: getComponentMetric(componentName, componentResults),
     }
   })
 })
@@ -201,7 +243,10 @@ const componentStatus = computed(() => {
 const recentTestResults = computed(() => {
   if (!healthReport.value) return []
   return [...healthReport.value.results]
-    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    )
     .slice(0, 8)
 })
 
@@ -213,12 +258,12 @@ const toggleDetails = () => {
 const runHealthCheck = async () => {
   isChecking.value = true
   status.value = 'checking'
-  
+
   try {
     const result = await systemIntegrationTest.runQuickHealthCheck()
     status.value = result.status
     statusMessage.value = result.message
-    
+
     // Update performance metrics
     performanceMetrics.value = systemIntegrationTest.getPerformanceMetrics()
   } catch (error) {
@@ -232,12 +277,12 @@ const runHealthCheck = async () => {
 const runFullTest = async () => {
   isRunningFullTest.value = true
   status.value = 'checking'
-  
+
   try {
     healthReport.value = await systemIntegrationTest.runFullSystemTest()
     status.value = healthReport.value.overallStatus
     statusMessage.value = `Full test complete: ${healthReport.value.passedTests}/${healthReport.value.totalTests} passed`
-    
+
     // Update performance metrics
     performanceMetrics.value = systemIntegrationTest.getPerformanceMetrics()
   } catch (error) {
@@ -251,22 +296,27 @@ const runFullTest = async () => {
 const getComponentIcon = (componentName: string): string => {
   const iconMap: Record<string, string> = {
     'AI Service': 'mdi-robot',
-    'Database': 'mdi-database',
-    'Storage': 'mdi-harddisk',
+    Database: 'mdi-database',
+    Storage: 'mdi-harddisk',
     'Gaming Studios': 'mdi-gamepad-variant',
     'Media Streaming': 'mdi-video',
     'Theme System': 'mdi-palette',
-    'Gamification': 'mdi-trophy'
+    Gamification: 'mdi-trophy',
   }
   return iconMap[componentName] || 'mdi-cog'
 }
 
-const getComponentMetric = (componentName: string, results: any[]): string | null => {
+const getComponentMetric = (
+  componentName: string,
+  results: any[]
+): string | null => {
   // Add specific metrics for different components
   switch (componentName) {
     case 'Gaming Studios': {
       const studioResult = results.find(r => r.test === 'Data retrieval')
-      return studioResult?.message.includes('Retrieved') ? studioResult.message : null
+      return studioResult?.message.includes('Retrieved')
+        ? studioResult.message
+        : null
     }
     case 'AI Service':
       return results.length > 0 ? `${results.length} services tested` : null
@@ -277,10 +327,14 @@ const getComponentMetric = (componentName: string, results: any[]): string | nul
 
 const getTestResultIcon = (testStatus: string): string => {
   switch (testStatus) {
-    case 'passed': return 'mdi-check'
-    case 'failed': return 'mdi-close'
-    case 'warning': return 'mdi-alert'
-    default: return 'mdi-help'
+    case 'passed':
+      return 'mdi-check'
+    case 'failed':
+      return 'mdi-close'
+    case 'warning':
+      return 'mdi-alert'
+    default:
+      return 'mdi-help'
   }
 }
 
@@ -315,25 +369,41 @@ onMounted(async () => {
 }
 
 .status-healthy {
-  background: linear-gradient(135deg, var(--color-success-50), var(--color-success-100));
+  background: linear-gradient(
+    135deg,
+    var(--color-success-50),
+    var(--color-success-100)
+  );
   border-color: var(--color-success-300);
   color: var(--color-success-700);
 }
 
 .status-degraded {
-  background: linear-gradient(135deg, var(--color-warning-50), var(--color-warning-100));
+  background: linear-gradient(
+    135deg,
+    var(--color-warning-50),
+    var(--color-warning-100)
+  );
   border-color: var(--color-warning-300);
   color: var(--color-warning-700);
 }
 
 .status-critical {
-  background: linear-gradient(135deg, var(--color-error-50), var(--color-error-100));
+  background: linear-gradient(
+    135deg,
+    var(--color-error-50),
+    var(--color-error-100)
+  );
   border-color: var(--color-error-300);
   color: var(--color-error-700);
 }
 
 .status-checking {
-  background: linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-50),
+    var(--color-primary-100)
+  );
   border-color: var(--color-primary-300);
   color: var(--color-primary-700);
 }
@@ -555,14 +625,14 @@ onMounted(async () => {
 }
 
 /* Dark mode adjustments */
-[data-theme="dark"] .status-details {
+[data-theme='dark'] .status-details {
   background: var(--surface-glass);
   border-color: var(--border-glass);
 }
 
-[data-theme="dark"] .component-status,
-[data-theme="dark"] .metric-item,
-[data-theme="dark"] .test-result-item {
+[data-theme='dark'] .component-status,
+[data-theme='dark'] .metric-item,
+[data-theme='dark'] .test-result-item {
   background: var(--surface-glass);
 }
 
@@ -572,11 +642,11 @@ onMounted(async () => {
     width: 350px;
     right: -50px;
   }
-  
+
   .components-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
   }

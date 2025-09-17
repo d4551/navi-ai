@@ -10,46 +10,47 @@ import { logger } from '@/shared/utils/logger'
 import { easterEggs } from '@/utils/easterEggs'
 
 const LEVEL_THRESHOLDS = [
-  0, 100, 250, 500, 1000, 1500, 2500, 4000, 6000, 8500, 12000, 16000, 21000, 27000, 34000, 42000, 51000, 61000, 72000, 84000, 100000
+  0, 100, 250, 500, 1000, 1500, 2500, 4000, 6000, 8500, 12000, 16000, 21000,
+  27000, 34000, 42000, 51000, 61000, 72000, 84000, 100000,
 ]
 
 const XP_REWARDS = {
   // Profile completion
-  'profile_complete': 50,
-  'profile_photo_added': 25,
-  'skills_added': 30,
-  'experience_added': 40,
-  
+  profile_complete: 50,
+  profile_photo_added: 25,
+  skills_added: 30,
+  experience_added: 40,
+
   // Resume building
-  'resume_created': 75,
-  'resume_exported': 25,
-  'resume_updated': 15,
-  
+  resume_created: 75,
+  resume_exported: 25,
+  resume_updated: 15,
+
   // Job applications
-  'first_application': 100,
-  'job_applied': 20,
-  'application_interview': 50,
-  'application_offer': 100,
-  
+  first_application: 100,
+  job_applied: 20,
+  application_interview: 50,
+  application_offer: 100,
+
   // AI interactions
-  'ai_chat_started': 10,
-  'ai_chat_completed': 25,
-  'ai_recommendation_used': 30,
-  
+  ai_chat_started: 10,
+  ai_chat_completed: 25,
+  ai_recommendation_used: 30,
+
   // Skill development
-  'skill_mapped': 20,
-  'interview_practiced': 40,
-  'mock_interview_completed': 60,
-  
+  skill_mapped: 20,
+  interview_practiced: 40,
+  mock_interview_completed: 60,
+
   // Social features
-  'studio_explored': 15,
-  'networking_contact': 25,
-  'referral_requested': 30,
-  
+  studio_explored: 15,
+  networking_contact: 25,
+  referral_requested: 30,
+
   // Achievement multipliers
-  'daily_login': 10,
-  'weekly_active': 50,
-  'monthly_dedicated': 150
+  daily_login: 10,
+  weekly_active: 50,
+  monthly_dedicated: 150,
 }
 
 const ACHIEVEMENTS = [
@@ -60,7 +61,7 @@ const ACHIEVEMENTS = [
     icon: 'mdi-account',
     requirement: { type: 'profile_complete', count: 1 },
     xpReward: 100,
-    unlocked: false
+    unlocked: false,
   },
   {
     id: 'job_hunter',
@@ -69,7 +70,7 @@ const ACHIEVEMENTS = [
     icon: 'mdi-target',
     requirement: { type: 'first_application', count: 1 },
     xpReward: 150,
-    unlocked: false
+    unlocked: false,
   },
   {
     id: 'persistent_seeker',
@@ -78,7 +79,7 @@ const ACHIEVEMENTS = [
     icon: 'mdi-fire',
     requirement: { type: 'job_applied', count: 10 },
     xpReward: 200,
-    unlocked: false
+    unlocked: false,
   },
   {
     id: 'ai_collaborator',
@@ -87,7 +88,7 @@ const ACHIEVEMENTS = [
     icon: '🤖',
     requirement: { type: 'ai_chat_completed', count: 5 },
     xpReward: 125,
-    unlocked: false
+    unlocked: false,
   },
   {
     id: 'skill_mapper',
@@ -96,7 +97,7 @@ const ACHIEVEMENTS = [
     icon: '🗺️',
     requirement: { type: 'skill_mapped', count: 15 },
     xpReward: 175,
-    unlocked: false
+    unlocked: false,
   },
   {
     id: 'interview_master',
@@ -105,7 +106,7 @@ const ACHIEVEMENTS = [
     icon: '🎤',
     requirement: { type: 'mock_interview_completed', count: 5 },
     xpReward: 250,
-    unlocked: false
+    unlocked: false,
   },
   {
     id: 'networking_ninja',
@@ -114,7 +115,7 @@ const ACHIEVEMENTS = [
     icon: '🥷',
     requirement: { type: 'networking_contact', count: 10 },
     xpReward: 300,
-    unlocked: false
+    unlocked: false,
   },
   {
     id: 'career_champion',
@@ -123,7 +124,7 @@ const ACHIEVEMENTS = [
     icon: '🏆',
     requirement: { type: 'level', count: 10 },
     xpReward: 500,
-    unlocked: false
+    unlocked: false,
   },
   {
     id: 'gaming_legend',
@@ -132,19 +133,21 @@ const ACHIEVEMENTS = [
     icon: '👑',
     requirement: { type: 'level', count: 20 },
     xpReward: 1000,
-    unlocked: false
-  }
+    unlocked: false,
+  },
 ]
 
 export function useXPSystem() {
   const store = useAppStore()
-  
+
   // Reactive state
   const currentXP = ref(store.gamification?.xp || 0)
-  const achievements = ref(store.gamification?.achievements || [...ACHIEVEMENTS])
+  const achievements = ref(
+    store.gamification?.achievements || [...ACHIEVEMENTS]
+  )
   const actionHistory = ref(store.gamification?.actionHistory || [])
   const streaks = ref(store.gamification?.streaks || { daily: 0, weekly: 0 })
-  
+
   // Computed values
   const currentLevel = computed(() => {
     for (let i = LEVEL_THRESHOLDS.length - 1; i >= 0; i--) {
@@ -154,153 +157,175 @@ export function useXPSystem() {
     }
     return 1
   })
-  
+
   const nextLevelXP = computed(() => {
     const nextLevel = Math.min(currentLevel.value, LEVEL_THRESHOLDS.length - 1)
-    return LEVEL_THRESHOLDS[nextLevel] || LEVEL_THRESHOLDS[LEVEL_THRESHOLDS.length - 1]
+    return (
+      LEVEL_THRESHOLDS[nextLevel] ||
+      LEVEL_THRESHOLDS[LEVEL_THRESHOLDS.length - 1]
+    )
   })
-  
+
   const progressToNextLevel = computed(() => {
     const currentLevelXP = LEVEL_THRESHOLDS[Math.max(0, currentLevel.value - 1)]
     const nextLevelRequirement = nextLevelXP.value
-    const progress = (currentXP.value - currentLevelXP) / (nextLevelRequirement - currentLevelXP)
+    const progress =
+      (currentXP.value - currentLevelXP) /
+      (nextLevelRequirement - currentLevelXP)
     return Math.min(Math.max(progress, 0), 1) * 100
   })
-  
+
   const unlockedAchievements = computed(() => {
     return achievements.value.filter(achievement => achievement.unlocked)
   })
-  
+
   const availableAchievements = computed(() => {
     return achievements.value.filter(achievement => !achievement.unlocked)
   })
-  
+
   const _totalXPFromAchievements = computed(() => {
-    return unlockedAchievements.value.reduce((total, achievement) => total + achievement.xpReward, 0)
+    return unlockedAchievements.value.reduce(
+      (total, achievement) => total + achievement.xpReward,
+      0
+    )
   })
-  
+
   // Methods
   function awardXP(action, customAmount = null, context = {}) {
     const amount = customAmount || XP_REWARDS[action] || 0
-    
+
     if (amount === 0) {
       logger.warn(`No XP reward defined for action: ${action}`)
       return
     }
-    
+
     const oldLevel = currentLevel.value
     currentXP.value += amount
     const newLevel = currentLevel.value
-    
+
     // Record action
     actionHistory.value.unshift({
       action,
       xp: amount,
       timestamp: new Date().toISOString(),
-      context
+      context,
     })
-    
+
     // Keep only last 100 actions
     if (actionHistory.value.length > 100) {
       actionHistory.value = actionHistory.value.slice(0, 100)
     }
-    
+
     // Check for level up
     if (newLevel > oldLevel) {
       handleLevelUp(oldLevel, newLevel)
     }
 
     try {
-      gamificationEvents.emit('xp_awarded', { amount, reason: action, newXP: currentXP.value, oldLevel: oldLevel, newLevel })
+      gamificationEvents.emit('xp_awarded', {
+        amount,
+        reason: action,
+        newXP: currentXP.value,
+        oldLevel: oldLevel,
+        newLevel,
+      })
       if (newLevel > oldLevel) {
         gamificationEvents.emit('level_up', { oldLevel, newLevel })
       }
     } catch {}
-    
+
     // Check for achievement unlocks
     checkAchievements(action)
-    
+
     // Save to store
     saveGameState()
-    
-    logger.debug(`XP awarded: +${amount} for ${action}. Total: ${currentXP.value}`)
-    
+
+    logger.debug(
+      `XP awarded: +${amount} for ${action}. Total: ${currentXP.value}`
+    )
+
     return {
       xpGained: amount,
       totalXP: currentXP.value,
       leveledUp: newLevel > oldLevel,
       newLevel,
-      oldLevel
+      oldLevel,
     }
   }
-  
+
   function handleLevelUp(oldLevel, newLevel) {
     logger.info(`Level up! ${oldLevel} → ${newLevel}`)
-    
+
     // Show celebration
     showLevelUpNotification(newLevel)
-    
+
     // Award bonus XP for major milestones
     if (newLevel % 5 === 0) {
       const bonusXP = newLevel * 10
       currentXP.value += bonusXP
       showXPNotification(`Milestone Bonus: +${bonusXP} XP!`, 'bonus')
     }
-    
+
     // Unlock new features at certain levels
     unlockFeatures(newLevel)
-    
+
     // Easter egg effects
     easterEggs.createParticleEffect(['🎉', '✨', '🌟'], 20)
     easterEggs.playSound('levelup')
   }
-  
+
   function checkAchievements(_action) {
     achievements.value.forEach(achievement => {
       if (achievement.unlocked) return
-      
+
       const { type, count } = achievement.requirement
       let currentCount = 0
-      
+
       if (type === 'level') {
         currentCount = currentLevel.value
       } else {
         currentCount = actionHistory.value.filter(h => h.action === type).length
       }
-      
+
       if (currentCount >= count) {
         unlockAchievement(achievement)
       }
     })
   }
-  
+
   function unlockAchievement(achievement) {
     achievement.unlocked = true
     currentXP.value += achievement.xpReward
-    
+
     logger.info(`Achievement unlocked: ${achievement.name}`)
-    
+
     showAchievementNotification(achievement)
     try {
-      gamificationEvents.emit('achievement_unlocked', { id: achievement.id, name: achievement.name, description: achievement.description, xp: achievement.xpReward, icon: achievement.icon })
+      gamificationEvents.emit('achievement_unlocked', {
+        id: achievement.id,
+        name: achievement.name,
+        description: achievement.description,
+        xp: achievement.xpReward,
+        icon: achievement.icon,
+      })
     } catch {}
     easterEggs.createParticleEffect(achievement.icon, 15)
-    
+
     saveGameState()
   }
-  
+
   function showLevelUpNotification(level) {
     const notification = {
       type: 'level-up',
       title: 'Level Up!',
       message: `You've reached level ${level}!`,
       icon: '⬆️',
-      duration: 5000
+      duration: 5000,
     }
-    
+
     showGameNotification(notification)
   }
-  
+
   function showAchievementNotification(achievement) {
     const notification = {
       type: 'achievement',
@@ -308,24 +333,24 @@ export function useXPSystem() {
       message: `${achievement.icon} ${achievement.name}`,
       description: achievement.description,
       icon: achievement.icon,
-      duration: 6000
+      duration: 6000,
     }
-    
+
     showGameNotification(notification)
   }
-  
+
   function showXPNotification(message, type = 'xp') {
     const notification = {
       type,
       title: 'XP Gained!',
       message,
       icon: '⭐',
-      duration: 3000
+      duration: 3000,
     }
-    
+
     showGameNotification(notification)
   }
-  
+
   function showGameNotification(notification) {
     // Create and show notification element
     const element = document.createElement('div')
@@ -340,7 +365,7 @@ export function useXPSystem() {
         </div>
       </div>
     `
-    
+
     element.style.cssText = `
       position: fixed;
       top: 80px;
@@ -356,9 +381,9 @@ export function useXPSystem() {
       animation: notificationSlide 0.5s ease-out;
       max-width: 320px;
     `
-    
+
     document.body.appendChild(element)
-    
+
     setTimeout(() => {
       if (document.body.contains(element)) {
         element.style.animation = 'notificationSlideOut 0.5s ease-in forwards'
@@ -370,57 +395,60 @@ export function useXPSystem() {
       }
     }, notification.duration)
   }
-  
+
   function unlockFeatures(level) {
     const featureUnlocks = {
       5: ['Advanced AI features', 'Custom resume templates'],
       10: ['Portfolio generator', 'Interview simulator'],
       15: ['Networking tools', 'Salary negotiator'],
-      20: ['All premium features', 'Career mentorship']
+      20: ['All premium features', 'Career mentorship'],
     }
-    
+
     if (featureUnlocks[level]) {
       const features = featureUnlocks[level]
-      showXPNotification(`New features unlocked: ${features.join(', ')}`, 'feature')
+      showXPNotification(
+        `New features unlocked: ${features.join(', ')}`,
+        'feature'
+      )
     }
   }
-  
+
   function getRecentActions(limit = 10) {
     return actionHistory.value.slice(0, limit)
   }
-  
+
   function getAchievementProgress(achievementId) {
     const achievement = achievements.value.find(a => a.id === achievementId)
     if (!achievement || achievement.unlocked) return null
-    
+
     const { type, count } = achievement.requirement
     let current = 0
-    
+
     if (type === 'level') {
       current = currentLevel.value
     } else {
       current = actionHistory.value.filter(h => h.action === type).length
     }
-    
+
     return {
       current: Math.min(current, count),
       target: count,
-      percentage: (current / count) * 100
+      percentage: (current / count) * 100,
     }
   }
-  
+
   function saveGameState() {
     const gameState = {
       xp: currentXP.value,
       achievements: achievements.value,
       actionHistory: actionHistory.value,
       streaks: streaks.value,
-      lastSave: new Date().toISOString()
+      lastSave: new Date().toISOString(),
     }
-    
+
     store.updateGamificationData(gameState)
   }
-  
+
   function resetProgress() {
     currentXP.value = 0
     achievements.value = [...ACHIEVEMENTS]
@@ -429,7 +457,7 @@ export function useXPSystem() {
     saveGameState()
     logger.info('XP system progress reset')
   }
-  
+
   function exportStats() {
     return {
       level: currentLevel.value,
@@ -437,27 +465,27 @@ export function useXPSystem() {
       achievements: unlockedAchievements.value.length,
       totalAchievements: ACHIEVEMENTS.length,
       recentActions: getRecentActions(20),
-      streaks: streaks.value
+      streaks: streaks.value,
     }
   }
-  
+
   // Auto-save periodically
   let autoSaveInterval
   function startAutoSave() {
     autoSaveInterval = setInterval(saveGameState, 30000) // Every 30 seconds
   }
-  
+
   function stopAutoSave() {
     if (autoSaveInterval) {
       clearInterval(autoSaveInterval)
       autoSaveInterval = null
     }
   }
-  
+
   // Initialize CSS for notifications
   function initializeCSS() {
     if (document.getElementById('xp-system-styles')) return
-    
+
     const style = document.createElement('style')
     style.id = 'xp-system-styles'
     style.textContent = `
@@ -535,14 +563,14 @@ export function useXPSystem() {
         color: var(--text-primary);
       }
     `
-    
+
     document.head.appendChild(style)
   }
-  
+
   // Initialize on creation
   initializeCSS()
   startAutoSave()
-  
+
   return {
     // State
     currentXP: computed(() => currentXP.value),
@@ -553,7 +581,7 @@ export function useXPSystem() {
     unlockedAchievements,
     availableAchievements,
     actionHistory: computed(() => actionHistory.value),
-    
+
     // Methods
     awardXP,
     getRecentActions,
@@ -561,7 +589,7 @@ export function useXPSystem() {
     resetProgress,
     exportStats,
     saveGameState,
-    stopAutoSave
+    stopAutoSave,
   }
 }
 

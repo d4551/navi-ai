@@ -7,9 +7,16 @@
     @click.self="$emit('close')"
     @keydown.esc.prevent="$emit('close')"
   >
-    <div class="settings-modal ultra-glass-card section-card gamification-modal" tabindex="-1" @click.stop>
+    <div
+      class="settings-modal ultra-glass-card section-card gamification-modal"
+      tabindex="-1"
+      @click.stop
+    >
       <div class="settings-modal-header">
-        <h3 id="gamification-modal-title" class="d-flex align-items-center gap-2">
+        <h3
+          id="gamification-modal-title"
+          class="d-flex align-items-center gap-2"
+        >
           <AppIcon name="mdi-trophy" />
           Achievements & Challenges
         </h3>

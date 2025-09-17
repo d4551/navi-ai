@@ -13,7 +13,7 @@ function testAchievementPopup() {
     name: 'Test Achievement',
     description: 'This is a test achievement to verify the popup modal works',
     icon: 'mdi-trophy-variant',
-    xp: 100
+    xp: 100,
   })
 
   console.log('Achievement event emitted!')
@@ -28,7 +28,7 @@ function testXPGainPopup() {
     reason: 'Test Action',
     newXP: 150,
     oldLevel: 1,
-    newLevel: 1
+    newLevel: 1,
   })
 
   console.log('XP gain event emitted!')
@@ -41,7 +41,7 @@ function testLevelUp() {
   gamificationEvents.emit('level_up', {
     oldLevel: 1,
     newLevel: 2,
-    title: 'Player'
+    title: 'Player',
   })
 
   console.log('Level up event emitted!')

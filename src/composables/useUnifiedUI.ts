@@ -47,15 +47,18 @@ export function useUnifiedUI() {
         'dark-desktop': isDark && isDesktop,
         'light-mobile': isLight && isMobile,
         'light-tablet': isLight && isTablet,
-        'light-desktop': isLight && isDesktop
+        'light-desktop': isLight && isDesktop,
       }
     } catch (err) {
-      logger?.warn?.('unifiedClasses computation failed – returning empty object', err)
+      logger?.warn?.(
+        'unifiedClasses computation failed – returning empty object',
+        err
+      )
       return {
         'color-scheme-light': true,
         'device-desktop': true,
         'is-light': true,
-        'is-desktop': true
+        'is-desktop': true,
       }
     }
   })
@@ -68,7 +71,7 @@ export function useUnifiedUI() {
       colorScheme: theme.colorScheme.value,
       isDark: theme.isDark.value,
       isLight: theme.isLight.value,
-      isSystem: theme.isSystem.value
+      isSystem: theme.isSystem.value,
     },
 
     // Device info
@@ -79,29 +82,43 @@ export function useUnifiedUI() {
       isDesktop: responsive?.isDesktop.value || false,
       breakpoint: responsive?.currentBreakpoint.value || 'md',
       width: responsive?.windowWidth.value || 1024,
-      height: responsive?.windowHeight.value || 768
+      height: responsive?.windowHeight.value || 768,
     },
 
     // Combined flags for conditional logic
     flags: {
       isDarkMobile: theme.isDark.value && (responsive?.isMobile.value || false),
       isDarkTablet: theme.isDark.value && (responsive?.isTablet.value || false),
-      isDarkDesktop: theme.isDark.value && (responsive?.isDesktop.value || false),
-      isLightMobile: theme.isLight.value && (responsive?.isMobile.value || false),
-      isLightTablet: theme.isLight.value && (responsive?.isTablet.value || false),
-      isLightDesktop: theme.isLight.value && (responsive?.isDesktop.value || false),
+      isDarkDesktop:
+        theme.isDark.value && (responsive?.isDesktop.value || false),
+      isLightMobile:
+        theme.isLight.value && (responsive?.isMobile.value || false),
+      isLightTablet:
+        theme.isLight.value && (responsive?.isTablet.value || false),
+      isLightDesktop:
+        theme.isLight.value && (responsive?.isDesktop.value || false),
       isSmallScreen: responsive?.isSmallMobile.value || false,
-      needsCompactUI: (responsive?.isMobile.value || false) || ((responsive?.isTablet.value || false) && theme.isDark.value)
-    }
+      needsCompactUI:
+        responsive?.isMobile.value ||
+        false ||
+        ((responsive?.isTablet.value || false) && theme.isDark.value),
+    },
   }))
 
   // Density management (global)
-  const density = useStorage<'compact' | 'normal' | 'comfortable'>('ui-density', 'normal')
+  const density = useStorage<'compact' | 'normal' | 'comfortable'>(
+    'ui-density',
+    'normal'
+  )
 
   const applyDensityClass = (value: 'compact' | 'normal' | 'comfortable') => {
     if (typeof document === 'undefined') return
     const root = document.documentElement
-    root.classList.remove('density-compact', 'density-comfortable', 'compact-ui')
+    root.classList.remove(
+      'density-compact',
+      'density-comfortable',
+      'compact-ui'
+    )
     if (value === 'compact') {
       root.classList.add('density-compact')
       // Also expose a generic compact class for components that key off it
@@ -116,14 +133,18 @@ export function useUnifiedUI() {
   }
 
   const cycleDensity = () => {
-    const order: Array<'compact' | 'normal' | 'comfortable'> = ['compact', 'normal', 'comfortable']
+    const order: Array<'compact' | 'normal' | 'comfortable'> = [
+      'compact',
+      'normal',
+      'comfortable',
+    ]
     const idx = order.indexOf(density.value)
     const next = order[(idx + 1) % order.length]
     setDensity(next)
   }
 
   onMounted(() => applyDensityClass(density.value))
-  watch(density, (v) => applyDensityClass(v))
+  watch(density, v => applyDensityClass(v))
 
   // Responsive styling helpers based on theme
   const getThemedResponsiveStyle = (styleConfig: {
@@ -131,7 +152,8 @@ export function useUnifiedUI() {
     tablet?: { light?: any; dark?: any; default?: any }
     desktop?: { light?: any; dark?: any; default?: any }
   }) => {
-    const deviceConfig = styleConfig[(responsive?.deviceType?.value || 'desktop')] || {}
+    const deviceConfig =
+      styleConfig[responsive?.deviceType?.value || 'desktop'] || {}
     const themeStyle = deviceConfig[theme.colorScheme.value]
     const defaultStyle = deviceConfig.default
 
@@ -144,10 +166,17 @@ export function useUnifiedUI() {
     tablet?: { light?: string; dark?: string; default?: string }
     desktop?: { light?: string; dark?: string; default?: string }
   }) => {
-    const deviceConfig = config[(responsive?.deviceType?.value || 'desktop')] || {}
-    return deviceConfig[theme.colorScheme.value] ||
-           deviceConfig.default ||
-           ((responsive?.isMobile?.value || false) ? 'sm' : (responsive?.isTablet?.value || false) ? 'md' : 'lg')
+    const deviceConfig =
+      config[responsive?.deviceType?.value || 'desktop'] || {}
+    return (
+      deviceConfig[theme.colorScheme.value] ||
+      deviceConfig.default ||
+      (responsive?.isMobile?.value || false
+        ? 'sm'
+        : responsive?.isTablet?.value || false
+          ? 'md'
+          : 'lg')
+    )
   }
 
   // Grid configuration based on device and theme
@@ -161,7 +190,11 @@ export function useUnifiedUI() {
     let columns = baseConfig[deviceType] || 3
 
     // Adjust for dark theme on smaller screens (might need more compact layout)
-    if (theme.isDark.value && (responsive?.isMobile?.value || false) && columns > 1) {
+    if (
+      theme.isDark.value &&
+      (responsive?.isMobile?.value || false) &&
+      columns > 1
+    ) {
       return Math.max(1, columns - 1)
     }
 
@@ -207,23 +240,25 @@ export function useUnifiedUI() {
   }
 
   // Card/container styling based on context
-  const getCardClasses = (variant: 'default' | 'elevated' | 'subtle' | 'bordered' = 'default') => {
+  const getCardClasses = (
+    variant: 'default' | 'elevated' | 'subtle' | 'bordered' = 'default'
+  ) => {
     const baseClasses = ['unified-card']
-    
+
     // Theme-based classes
     baseClasses.push(theme.isDark.value ? 'card-dark' : 'card-light')
-    
+
     // Device-based classes
     baseClasses.push(`card-${responsive.deviceType.value}`)
-    
+
     // Variant classes
     baseClasses.push(`card-${variant}`)
-    
+
     // Combined state classes
     if (theme.isDark.value && responsive.isMobile.value) {
       baseClasses.push('card-dark-mobile')
     }
-    
+
     return baseClasses
   }
 
@@ -232,39 +267,43 @@ export function useUnifiedUI() {
     variant: 'primary' | 'secondary' | 'danger' | 'success' = 'primary',
     size?: 'sm' | 'md' | 'lg'
   ) => {
-    const autoSize = size || getComponentSize({
-      mobile: { default: 'sm' },
-      tablet: { default: 'md' },
-      desktop: { default: 'lg' }
-    })
-    
+    const autoSize =
+      size ||
+      getComponentSize({
+        mobile: { default: 'sm' },
+        tablet: { default: 'md' },
+        desktop: { default: 'lg' },
+      })
+
     const colorScheme = theme?.colorScheme?.value || 'light'
     const deviceType = responsive?.deviceType?.value || 'desktop'
     const isDark = Boolean(theme?.isDark?.value)
     const isMobile = Boolean(responsive?.isMobile?.value)
-    
+
     return [
       'unified-btn',
       `btn-${variant}`,
       `btn-${autoSize}`,
       `btn-${colorScheme}`,
       `btn-${deviceType}`,
-      isDark && isMobile ? 'btn-dark-mobile' : null
+      isDark && isMobile ? 'btn-dark-mobile' : null,
     ].filter(Boolean)
   }
 
-  // Input styling based on context  
-  const getInputClasses = (variant: 'default' | 'search' | 'textarea' = 'default') => {
+  // Input styling based on context
+  const getInputClasses = (
+    variant: 'default' | 'search' | 'textarea' = 'default'
+  ) => {
     const colorScheme = theme?.colorScheme?.value || 'light'
     const deviceType = responsive?.deviceType?.value || 'desktop'
     const isMobile = Boolean(responsive?.isMobile?.value)
-    
+
     return [
       'unified-input',
       `input-${variant}`,
       `input-${colorScheme}`,
       `input-${deviceType}`,
-      isMobile ? 'input-mobile-optimized' : null
+      isMobile ? 'input-mobile-optimized' : null,
     ].filter(Boolean)
   }
 
@@ -276,7 +315,7 @@ export function useUnifiedUI() {
       responsive.isMobile.value ? 'is-mobile' : null,
       responsive.isTablet.value ? 'is-tablet' : null,
       responsive.isDesktop.value ? 'is-desktop' : null,
-      ...additionalClasses
+      ...additionalClasses,
     ].filter(Boolean)
   }
 
@@ -290,31 +329,31 @@ export function useUnifiedUI() {
     // Individual systems
     theme,
     responsive,
-    
+
     // Unified state
     unifiedClasses,
     uiConfig,
-    
+
     // Styling helpers
     getThemedResponsiveStyle,
     getComponentSize,
     getGridConfig,
     getSpacing,
     getFontSize,
-    
+
     // Component helpers
     getCardClasses,
     getButtonClasses,
     getInputClasses,
     getResponsiveClasses,
-    
+
     // Initialization
     initialize,
 
     // Density API
     density,
     setDensity,
-    cycleDensity
+    cycleDensity,
   }
 }
 

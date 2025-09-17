@@ -1,6 +1,10 @@
 <template>
   <div class="empty-state-container" :class="stateClass">
-    <div class="empty-state-content glass-card" role="region" :aria-label="title">
+    <div
+      class="empty-state-content glass-card"
+      role="region"
+      :aria-label="title"
+    >
       <!-- Icon Section -->
       <div class="empty-state-icon-wrapper">
         <div class="empty-state-icon" :class="iconVariant">
@@ -11,8 +15,10 @@
       <!-- Content Section -->
       <div class="empty-state-content-section">
         <h3 v-if="title" class="empty-state-title">{{ title }}</h3>
-        <p v-if="description" class="empty-state-description">{{ description }}</p>
-        
+        <p v-if="description" class="empty-state-description">
+          {{ description }}
+        </p>
+
         <!-- Slot for custom content -->
         <div v-if="$slots.default" class="empty-state-custom">
           <slot></slot>
@@ -20,7 +26,10 @@
       </div>
 
       <!-- Actions Section -->
-      <div v-if="primaryAction || secondaryAction || $slots.actions" class="empty-state-actions">
+      <div
+        v-if="primaryAction || secondaryAction || $slots.actions"
+        class="empty-state-actions"
+      >
         <slot name="actions">
           <UnifiedButton
             v-if="primaryAction"
@@ -33,7 +42,7 @@
           >
             {{ primaryAction.label }}
           </UnifiedButton>
-          
+
           <UnifiedButton
             v-if="secondaryAction"
             :variant="secondaryAction.variant || 'ghost'"
@@ -49,7 +58,10 @@
       </div>
 
       <!-- Gaming-specific features -->
-      <div v-if="variant === 'gaming' && gamingHint" class="empty-state-gaming-hint">
+      <div
+        v-if="variant === 'gaming' && gamingHint"
+        class="empty-state-gaming-hint"
+      >
         <div class="gaming-hint-icon">🎮</div>
         <span class="gaming-hint-text">{{ gamingHint }}</span>
       </div>
@@ -79,14 +91,14 @@ interface Props {
   title?: string
   description?: string
   variant?: 'default' | 'gaming' | 'portfolio' | 'jobs' | 'minimal'
-  
+
   // Actions
   primaryAction?: Action
   secondaryAction?: Action
-  
+
   // Gaming-specific
   gamingHint?: string
-  
+
   // Layout
   size?: 'sm' | 'md' | 'lg'
   centered?: boolean
@@ -97,18 +109,18 @@ const props = withDefaults(defineProps<Props>(), {
   iconSize: '64',
   variant: 'default',
   size: 'md',
-  centered: true
+  centered: true,
 })
 
 const stateClass = computed(() => ({
   [`empty-state--${props.variant}`]: true,
   [`empty-state--${props.size}`]: true,
-  'empty-state--centered': props.centered
+  'empty-state--centered': props.centered,
 }))
 
 const iconVariant = computed(() => ({
   [`icon--${props.variant}`]: true,
-  [`icon--${props.size}`]: true
+  [`icon--${props.size}`]: true,
 }))
 </script>
 
@@ -153,23 +165,29 @@ const iconVariant = computed(() => ({
 }
 
 .empty-state-icon.icon--gaming {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-gaming-500-rgb, 0, 255, 136), 0.1),
-    rgba(var(--color-gaming-500-rgb, 0, 255, 136), 0.05));
+    rgba(var(--color-gaming-500-rgb, 0, 255, 136), 0.05)
+  );
   border-color: rgba(var(--color-gaming-500-rgb, 0, 255, 136), 0.3);
 }
 
 .empty-state-icon.icon--portfolio {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-primary-500-rgb), 0.1),
-    rgba(var(--color-primary-500-rgb), 0.05));
+    rgba(var(--color-primary-500-rgb), 0.05)
+  );
   border-color: rgba(var(--color-primary-500-rgb), 0.3);
 }
 
 .empty-state-icon.icon--jobs {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-info-rgb, 6, 182, 212), 0.1),
-    rgba(var(--color-info-rgb, 6, 182, 212), 0.05));
+    rgba(var(--color-info-rgb, 6, 182, 212), 0.05)
+  );
   border-color: rgba(var(--color-info-rgb, 6, 182, 212), 0.3);
 }
 
@@ -254,9 +272,11 @@ const iconVariant = computed(() => ({
 
 /* Variant Styling */
 .empty-state--gaming .empty-state-content {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-gaming-500-rgb, 0, 255, 136), 0.05),
-    rgba(var(--color-gaming-500-rgb, 0, 255, 136), 0.02));
+    rgba(var(--color-gaming-500-rgb, 0, 255, 136), 0.02)
+  );
   border-color: rgba(var(--color-gaming-500-rgb, 0, 255, 136), 0.2);
 }
 
@@ -278,16 +298,16 @@ const iconVariant = computed(() => ({
     padding: var(--spacing-4);
     min-height: 240px;
   }
-  
+
   .empty-state-content {
     padding: var(--spacing-6);
   }
-  
+
   .empty-state-actions {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .empty-state-actions :deep(.btn-unified) {
     width: 100%;
     justify-content: center;
@@ -295,7 +315,7 @@ const iconVariant = computed(() => ({
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .empty-state-content {
+[data-theme='dark'] .empty-state-content {
   background: var(--glass-bg);
   border-color: var(--glass-border);
 }
@@ -328,7 +348,7 @@ const iconVariant = computed(() => ({
     border-width: 2px;
     background: var(--surface-base);
   }
-  
+
   .empty-state-icon {
     border-width: 3px;
     background: var(--surface-elevated);
@@ -342,7 +362,7 @@ const iconVariant = computed(() => ({
     animation: none;
     transition: none;
   }
-  
+
   .empty-state-content:hover .empty-state-icon {
     transform: none;
   }

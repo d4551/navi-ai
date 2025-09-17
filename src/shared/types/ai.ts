@@ -10,7 +10,7 @@ export enum AIProvider {
   CLAUDE = 'claude',
   GROK = 'grok',
   DALLE = 'dalle',
-  STABLE_DIFFUSION = 'stable-diffusion'
+  STABLE_DIFFUSION = 'stable-diffusion',
 }
 
 // Modal Types
@@ -19,7 +19,7 @@ export enum ModalityType {
   IMAGE = 'image',
   AUDIO = 'audio',
   VIDEO = 'video',
-  MIXED = 'mixed'
+  MIXED = 'mixed',
 }
 
 // Provider Configuration Types
@@ -233,7 +233,7 @@ export enum RequestType {
   RESUME_ANALYSIS = 'resume_analysis',
   COVER_LETTER_GEN = 'cover_letter_generation',
   INTERVIEW_PREP = 'interview_preparation',
-  PORTFOLIO_DESC = 'portfolio_description'
+  PORTFOLIO_DESC = 'portfolio_description',
 }
 
 // Streaming Types
@@ -271,7 +271,11 @@ export interface RateLimit {
 
 // Event Types for Reactive Updates
 export interface AIManagerEvent {
-  type: 'provider_health' | 'request_started' | 'request_completed' | 'error_occurred'
+  type:
+    | 'provider_health'
+    | 'request_started'
+    | 'request_completed'
+    | 'error_occurred'
   data: any
 }
 

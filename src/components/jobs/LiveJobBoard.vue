@@ -28,7 +28,7 @@ Displays live jobs from multiple API sources with:
             </span>
           </p>
         </div>
-        
+
         <div class="header-stats flex gap-glass-md">
           <div class="stat-card">
             <div class="stat-number">{{ totalJobs.toLocaleString() }}</div>
@@ -43,7 +43,9 @@ Displays live jobs from multiple API sources with:
             <div class="stat-label">Top Matches</div>
           </div>
           <div v-if="averageSalary > 0" class="stat-card">
-            <div class="stat-number">${{ Math.round(averageSalary / 1000) }}K</div>
+            <div class="stat-number">
+              ${{ Math.round(averageSalary / 1000) }}K
+            </div>
             <div class="stat-label">Avg Salary</div>
           </div>
         </div>
@@ -85,7 +87,7 @@ Displays live jobs from multiple API sources with:
               class="form-control filter-input"
               placeholder="Job title, skills, company..."
               @keyup.enter="searchJobs"
-            >
+            />
           </div>
 
           <!-- Location -->
@@ -94,7 +96,10 @@ Displays live jobs from multiple API sources with:
               <AppIcon name="MapPinIcon" class="mr-1" />
               Location
             </label>
-            <select v-model="searchForm.location" class="form-select filter-input">
+            <select
+              v-model="searchForm.location"
+              class="form-select filter-input"
+            >
               <option value="">All Locations</option>
               <option value="remote">Remote</option>
               <option value="San Francisco, CA">San Francisco</option>
@@ -126,7 +131,10 @@ Displays live jobs from multiple API sources with:
               <AppIcon name="CalendarIcon" class="mr-1" />
               Posted
             </label>
-            <select v-model="searchForm.datePosted" class="form-select filter-input">
+            <select
+              v-model="searchForm.datePosted"
+              class="form-select filter-input"
+            >
               <option value="all">All Time</option>
               <option value="today">Today</option>
               <option value="week">This Week</option>
@@ -147,7 +155,7 @@ Displays live jobs from multiple API sources with:
             </UnifiedButton>
           </div>
         </div>
-        
+
         <!-- Collapsible Filter Sections -->
         <div class="mt-3">
           <!-- Quick Filters -->
@@ -166,33 +174,144 @@ Displays live jobs from multiple API sources with:
                 <span>Quick Filters</span>
               </div>
               <div class="header-actions">
-                <UnifiedButton variant="outline" size="chip" leading-icon="XMarkIcon-circle-outline" @click.stop="clearAllQuickFilters">Clear</UnifiedButton>
-                <AppIcon class="toggle-icon" :name="showQuickFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
+                <UnifiedButton
+                  variant="outline"
+                  size="chip"
+                  leading-icon="XMarkIcon-circle-outline"
+                  @click.stop="clearAllQuickFilters"
+                  >Clear</UnifiedButton
+                >
+                <AppIcon
+                  class="toggle-icon"
+                  :name="
+                    showQuickFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'
+                  "
+                />
               </div>
             </div>
             <div v-show="showQuickFilters" class="filter-section-body">
-              <div class="filter-toggles flex gap-glass-sm flex-wrap items-center">
+              <div
+                class="filter-toggles flex gap-glass-sm flex-wrap items-center"
+              >
                 <div class="quick-chips flex gap-glass-sm flex-wrap me-auto">
                   <span class="chip-label text-secondary">Quick:</span>
-                  <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.seniority==='junior' }" @click="quickFilters.seniority = quickFilters.seniority==='junior' ? '' : 'junior'">Junior</UnifiedButton>
-                  <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.seniority==='mid' }" @click="quickFilters.seniority = quickFilters.seniority==='mid' ? '' : 'mid'">Mid</UnifiedButton>
-                  <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.seniority==='senior' }" @click="quickFilters.seniority = quickFilters.seniority==='senior' ? '' : 'senior'">Senior</UnifiedButton>
-                  <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.seniority==='lead' }" @click="quickFilters.seniority = quickFilters.seniority==='lead' ? '' : 'lead'">Lead+</UnifiedButton>
+                  <UnifiedButton
+                    size="chip"
+                    variant="outline"
+                    :class="{ active: quickFilters.seniority === 'junior' }"
+                    @click="
+                      quickFilters.seniority =
+                        quickFilters.seniority === 'junior' ? '' : 'junior'
+                    "
+                    >Junior</UnifiedButton
+                  >
+                  <UnifiedButton
+                    size="chip"
+                    variant="outline"
+                    :class="{ active: quickFilters.seniority === 'mid' }"
+                    @click="
+                      quickFilters.seniority =
+                        quickFilters.seniority === 'mid' ? '' : 'mid'
+                    "
+                    >Mid</UnifiedButton
+                  >
+                  <UnifiedButton
+                    size="chip"
+                    variant="outline"
+                    :class="{ active: quickFilters.seniority === 'senior' }"
+                    @click="
+                      quickFilters.seniority =
+                        quickFilters.seniority === 'senior' ? '' : 'senior'
+                    "
+                    >Senior</UnifiedButton
+                  >
+                  <UnifiedButton
+                    size="chip"
+                    variant="outline"
+                    :class="{ active: quickFilters.seniority === 'lead' }"
+                    @click="
+                      quickFilters.seniority =
+                        quickFilters.seniority === 'lead' ? '' : 'lead'
+                    "
+                    >Lead+</UnifiedButton
+                  >
                   <span class="chip-sep">|</span>
-                  <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.jobType==='full-time' }" @click="quickFilters.jobType = quickFilters.jobType==='full-time' ? '' : 'full-time'">Full‑time</UnifiedButton>
-                  <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.jobType==='contract' }" @click="quickFilters.jobType = quickFilters.jobType==='contract' ? '' : 'contract'">Contract</UnifiedButton>
+                  <UnifiedButton
+                    size="chip"
+                    variant="outline"
+                    :class="{ active: quickFilters.jobType === 'full-time' }"
+                    @click="
+                      quickFilters.jobType =
+                        quickFilters.jobType === 'full-time' ? '' : 'full-time'
+                    "
+                    >Full‑time</UnifiedButton
+                  >
+                  <UnifiedButton
+                    size="chip"
+                    variant="outline"
+                    :class="{ active: quickFilters.jobType === 'contract' }"
+                    @click="
+                      quickFilters.jobType =
+                        quickFilters.jobType === 'contract' ? '' : 'contract'
+                    "
+                    >Contract</UnifiedButton
+                  >
                   <span class="chip-sep">|</span>
-                  <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.salaryMin===100000 }" @click="quickFilters.salaryMin = quickFilters.salaryMin===100000 ? 0 : 100000">≥ $100k</UnifiedButton>
-                  <UnifiedButton size="chip" variant="outline" :class="{ active: quickFilters.salaryMin===150000 }" @click="quickFilters.salaryMin = quickFilters.salaryMin===150000 ? 0 : 150000">≥ $150k</UnifiedButton>
+                  <UnifiedButton
+                    size="chip"
+                    variant="outline"
+                    :class="{ active: quickFilters.salaryMin === 100000 }"
+                    @click="
+                      quickFilters.salaryMin =
+                        quickFilters.salaryMin === 100000 ? 0 : 100000
+                    "
+                    >≥ $100k</UnifiedButton
+                  >
+                  <UnifiedButton
+                    size="chip"
+                    variant="outline"
+                    :class="{ active: quickFilters.salaryMin === 150000 }"
+                    @click="
+                      quickFilters.salaryMin =
+                        quickFilters.salaryMin === 150000 ? 0 : 150000
+                    "
+                    >≥ $150k</UnifiedButton
+                  >
                 </div>
 
-                <UnifiedButton size="sm" :variant="searchForm.gamingOnly ? 'gaming' : 'outline'" leading-icon="PuzzlePieceIcon" @click="toggleGamingFilter">Gaming Only</UnifiedButton>
-                
-                <UnifiedButton size="sm" :variant="searchForm.savedJobsOnly ? 'success' : 'outline'" leading-icon="BookmarkIcon" @click="toggleSavedJobsFilter">Saved ({{ savedJobs.length }})</UnifiedButton>
-                
-                <UnifiedButton size="sm" :variant="searchForm.remote ? 'info' : 'outline'" leading-icon="HomeIcon" @click="toggleRemoteFilter">Remote</UnifiedButton>
+                <UnifiedButton
+                  size="sm"
+                  :variant="searchForm.gamingOnly ? 'gaming' : 'outline'"
+                  leading-icon="PuzzlePieceIcon"
+                  @click="toggleGamingFilter"
+                  >Gaming Only</UnifiedButton
+                >
 
-                <UnifiedButton v-if="hiddenJobIds.size" size="sm" variant="warning" appearance="outlined" leading-icon="EyeIcon" @click="clearHiddenJobs">Clear Hidden ({{ hiddenJobIds.size }})</UnifiedButton>
+                <UnifiedButton
+                  size="sm"
+                  :variant="searchForm.savedJobsOnly ? 'success' : 'outline'"
+                  leading-icon="BookmarkIcon"
+                  @click="toggleSavedJobsFilter"
+                  >Saved ({{ savedJobs.length }})</UnifiedButton
+                >
+
+                <UnifiedButton
+                  size="sm"
+                  :variant="searchForm.remote ? 'info' : 'outline'"
+                  leading-icon="HomeIcon"
+                  @click="toggleRemoteFilter"
+                  >Remote</UnifiedButton
+                >
+
+                <UnifiedButton
+                  v-if="hiddenJobIds.size"
+                  size="sm"
+                  variant="warning"
+                  appearance="outlined"
+                  leading-icon="EyeIcon"
+                  @click="clearHiddenJobs"
+                  >Clear Hidden ({{ hiddenJobIds.size }})</UnifiedButton
+                >
               </div>
             </div>
           </div>
@@ -205,15 +324,24 @@ Displays live jobs from multiple API sources with:
               tabindex="0"
               :aria-expanded="showAdvancedFilters ? 'true' : 'false'"
               @click="showAdvancedFilters = !showAdvancedFilters"
-              @keydown.enter.prevent="showAdvancedFilters = !showAdvancedFilters"
-              @keydown.space.prevent="showAdvancedFilters = !showAdvancedFilters"
+              @keydown.enter.prevent="
+                showAdvancedFilters = !showAdvancedFilters
+              "
+              @keydown.space.prevent="
+                showAdvancedFilters = !showAdvancedFilters
+              "
             >
               <div class="header-left">
                 <AppIcon name="mdi-tune" />
                 <span>Advanced Filters</span>
               </div>
               <div class="header-actions">
-                <AppIcon class="toggle-icon" :name="showAdvancedFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
+                <AppIcon
+                  class="toggle-icon"
+                  :name="
+                    showAdvancedFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'
+                  "
+                />
               </div>
             </div>
             <div v-show="showAdvancedFilters" class="filter-section-body">
@@ -231,39 +359,81 @@ Displays live jobs from multiple API sources with:
                     step="25000"
                     class="form-range"
                   />
-                  <div class="small text-secondary mt-1">≥ ${{ Math.round(quickFilters.salaryMin/1000) }}k</div>
+                  <div class="small text-secondary mt-1">
+                    ≥ ${{ Math.round(quickFilters.salaryMin / 1000) }}k
+                  </div>
                 </div>
 
                 <div class="flex-1-md-4">
                   <label class="form-label">
-                    <AppIcon name="BuildingOfficeIcon" class="mr-1" /> Company contains
+                    <AppIcon name="BuildingOfficeIcon" class="mr-1" /> Company
+                    contains
                   </label>
-                  <input v-model.trim="advancedFilters.companyIncludes" type="text" class="form-control" placeholder="e.g. Ubisoft" @keyup.enter="searchJobs" />
+                  <input
+                    v-model.trim="advancedFilters.companyIncludes"
+                    type="text"
+                    class="form-control"
+                    placeholder="e.g. Ubisoft"
+                    @keyup.enter="searchJobs"
+                  />
                 </div>
 
                 <div class="flex-1-md-4 flex gap-glass-md flex-wrap">
                   <div class="form-check">
-                    <input id="onlySalary" v-model="advancedFilters.onlyWithSalary" class="form-check-input" type="checkbox" />
+                    <input
+                      id="onlySalary"
+                      v-model="advancedFilters.onlyWithSalary"
+                      class="form-check-input"
+                      type="checkbox"
+                    />
                     <label for="onlySalary" class="form-check-label">
-                      <AppIcon name="mdi-currency-usd" class="mr-1" /> Only with salary
+                      <AppIcon name="mdi-currency-usd" class="mr-1" /> Only with
+                      salary
                     </label>
                   </div>
                   <div class="form-check">
-                    <input id="noIntern" v-model="advancedFilters.excludeInternships" class="form-check-input" type="checkbox" />
+                    <input
+                      id="noIntern"
+                      v-model="advancedFilters.excludeInternships"
+                      class="form-check-input"
+                      type="checkbox"
+                    />
                     <label for="noIntern" class="form-check-label">
-                      <AppIcon name="AcademicCapIcon" class="mr-1" /> Exclude internships
+                      <AppIcon name="AcademicCapIcon" class="mr-1" /> Exclude
+                      internships
                     </label>
                   </div>
                 </div>
               </div>
 
               <div class="mt-2 flex gap-glass-sm flex-wrap">
-                <UnifiedButton size="sm" variant="outline" leading-icon="FunnelIcon-off" @click="clearFilters">Clear All</UnifiedButton>
-                <UnifiedButton size="sm" variant="outline" :disabled="refreshing" :loading="refreshing" leading-icon="ArrowPathIcon" @click="refreshJobs">Refresh</UnifiedButton>
-                <UnifiedButton size="sm" variant="success" :disabled="!searchForm.query" leading-icon="mdi-bell-plus" @click="createJobAlert">Create Alert</UnifiedButton>
-                <UnifiedButton 
-                  size="sm" 
-                  variant="ghost" 
+                <UnifiedButton
+                  size="sm"
+                  variant="outline"
+                  leading-icon="FunnelIcon-off"
+                  @click="clearFilters"
+                  >Clear All</UnifiedButton
+                >
+                <UnifiedButton
+                  size="sm"
+                  variant="outline"
+                  :disabled="refreshing"
+                  :loading="refreshing"
+                  leading-icon="ArrowPathIcon"
+                  @click="refreshJobs"
+                  >Refresh</UnifiedButton
+                >
+                <UnifiedButton
+                  size="sm"
+                  variant="success"
+                  :disabled="!searchForm.query"
+                  leading-icon="mdi-bell-plus"
+                  @click="createJobAlert"
+                  >Create Alert</UnifiedButton
+                >
+                <UnifiedButton
+                  size="sm"
+                  variant="ghost"
                   :leading-icon="showProviderStatus ? 'mdi-api-off' : 'mdi-api'"
                   @click="showProviderStatus = !showProviderStatus"
                 >
@@ -272,11 +442,16 @@ Displays live jobs from multiple API sources with:
               </div>
 
               <!-- Provider Status (inline) -->
-              <div v-if="showProviderStatus" class="provider-status-inline mt-3 p-glass-md glass-bg-glass-bg dark:bg-glass-bg-hover border rounded">
+              <div
+                v-if="showProviderStatus"
+                class="provider-status-inline mt-3 p-glass-md glass-bg-glass-bg dark:bg-glass-bg-hover border rounded"
+              >
                 <div class="flex items-center mb-2">
                   <AppIcon name="mdi-api" class="mr-2" />
                   <h6 class="mb-0">Live Job Sources</h6>
-                  <span class="badge bg-primary-500 ml-2">{{ Object.keys(providerStatus).length }} providers</span>
+                  <span class="badge bg-primary-500 ml-2"
+                    >{{ Object.keys(providerStatus).length }} providers</span
+                  >
                 </div>
                 <div class="flex flex-wrap g-2">
                   <div
@@ -284,10 +459,19 @@ Displays live jobs from multiple API sources with:
                     :key="provider"
                     class="flex-1-md-3 flex-1-sm-6"
                   >
-                    <div class="provider-card-compact" :class="{ active: status.enabled }">
+                    <div
+                      class="provider-card-compact"
+                      :class="{ active: status.enabled }"
+                    >
                       <div class="provider-name">{{ provider }}</div>
                       <div class="provider-status">
-                        <span :class="status.enabled ? 'text-success-600' : 'text-secondary'">
+                        <span
+                          :class="
+                            status.enabled
+                              ? 'text-success-600'
+                              : 'text-secondary'
+                          "
+                        >
                           {{ status.enabled ? 'Active' : 'Inactive' }}
                         </span>
                         <span class="text-secondary ml-1 small">
@@ -304,15 +488,20 @@ Displays live jobs from multiple API sources with:
       </div>
     </div>
 
-
     <!-- Job Alerts Section -->
-    <div v-if="jobAlerts.length > 0 || showJobAlerts" class="job-alerts-section mb-4">
+    <div
+      v-if="jobAlerts.length > 0 || showJobAlerts"
+      class="job-alerts-section mb-4"
+    >
       <div class="glass-card section-card">
         <div class="section-header flex justify-between items-center">
           <h6 class="mb-0">
             <AppIcon name="BellIcon" class="mr-2" />
             Job Alerts ({{ jobAlerts.length }})
-            <span v-if="realTimeStats.newJobsToday" class="badge bg-primary-500 ml-2">
+            <span
+              v-if="realTimeStats.newJobsToday"
+              class="badge bg-primary-500 ml-2"
+            >
               {{ realTimeStats.newJobsToday }} new today
             </span>
           </h6>
@@ -323,12 +512,16 @@ Displays live jobs from multiple API sources with:
             {{ showJobAlerts ? 'Hide' : 'Show' }} Alerts
           </button>
         </div>
-        
+
         <div v-if="showJobAlerts" class="section-body">
-          <div v-if="jobAlerts.length === 0" class="text-secondary text-center py-3">
-            No job alerts created yet. Create your first alert using the search form above.
+          <div
+            v-if="jobAlerts.length === 0"
+            class="text-secondary text-center py-3"
+          >
+            No job alerts created yet. Create your first alert using the search
+            form above.
           </div>
-          
+
           <div v-else class="alerts-list">
             <div
               v-for="alert in jobAlerts"
@@ -337,27 +530,35 @@ Displays live jobs from multiple API sources with:
               :class="{ 'alert-disabled': !alert.enabled }"
             >
               <div class="alert-info">
-                <div class="alert-name font-weight-medium">{{ alert.name }}</div>
+                <div class="alert-name font-weight-medium">
+                  {{ alert.name }}
+                </div>
                 <div class="alert-meta text-secondary small">
                   <span>{{ alert.totalMatches }} matches</span>
                   <span class="mx-2">•</span>
-                  <span>Last checked {{ getRelativeTime(alert.lastChecked) }}</span>
+                  <span
+                    >Last checked {{ getRelativeTime(alert.lastChecked) }}</span
+                  >
                   <span v-if="alert.newMatches > 0" class="mx-2">•</span>
                   <span v-if="alert.newMatches > 0" class="text-success-600">
                     {{ alert.newMatches }} new
                   </span>
                 </div>
               </div>
-              
+
               <div class="alert-actions flex gap-glass-xs">
                 <button
                   class="btn btn-sm"
-                  :class="alert.enabled ? 'btn-success' : 'btn-outline-secondary'"
+                  :class="
+                    alert.enabled ? 'btn-success' : 'btn-outline-secondary'
+                  "
                   @click="toggleJobAlert(alert.id)"
                 >
-                  <AppIcon :name="alert.enabled ? 'mdi-bell' : 'mdi-bell-off'" />
+                  <AppIcon
+                    :name="alert.enabled ? 'mdi-bell' : 'mdi-bell-off'"
+                  />
                 </button>
-                
+
                 <button
                   class="btn btn-sm btn-outline-danger"
                   @click="deleteJobAlert(alert.id)"
@@ -378,7 +579,7 @@ Displays live jobs from multiple API sources with:
           <AppIcon name="mdi-bell-ring" class="text-primary-600 mr-2" />
           New Job Notifications
         </h6>
-        
+
         <div class="notifications-list">
           <div
             v-for="notification in newJobNotifications.slice(0, 5)"
@@ -393,7 +594,7 @@ Displays live jobs from multiple API sources with:
                 {{ getRelativeTime(notification.timestamp) }}
               </div>
             </div>
-            
+
             <div class="notification-actions">
               <UnifiedButton
                 variant="outline"
@@ -405,7 +606,7 @@ Displays live jobs from multiple API sources with:
             </div>
           </div>
         </div>
-        
+
         <div v-if="newJobNotifications.length > 5" class="text-center mt-2">
           <button class="btn btn-sm btn-link">
             Show {{ newJobNotifications.length - 5 }} more notifications
@@ -424,9 +625,15 @@ Displays live jobs from multiple API sources with:
     </div>
 
     <!-- Empty State -->
-    <div v-if="!isLoading && !isSearching && displayJobs.length === 0" class="empty-state glass-card section-card text-center">
+    <div
+      v-if="!isLoading && !isSearching && displayJobs.length === 0"
+      class="empty-state glass-card section-card text-center"
+    >
       <div class="empty-icon mb-3">
-        <AppIcon name="MagnifyingGlassIcon" style="font-size: 4rem; opacity: 0.3;" />
+        <AppIcon
+          name="MagnifyingGlassIcon"
+          style="font-size: 4rem; opacity: 0.3"
+        />
       </div>
       <h4 class="mb-2">No jobs found</h4>
       <p class="text-secondary mb-3">
@@ -445,9 +652,14 @@ Displays live jobs from multiple API sources with:
     <!-- Job Results -->
     <div v-else class="job-results">
       <!-- Loading State -->
-      <div v-if="isLoading" class="glass-card section-card mb-3 text-center py-5">
+      <div
+        v-if="isLoading"
+        class="glass-card section-card mb-3 text-center py-5"
+      >
         <div class="spinner-border text-primary-600 mr-2" role="status"></div>
-        <span class="text-secondary">Loading jobs from {{ providerCount }} sources...</span>
+        <span class="text-secondary"
+          >Loading jobs from {{ providerCount }} sources...</span
+        >
       </div>
 
       <!-- Error State -->
@@ -455,7 +667,12 @@ Displays live jobs from multiple API sources with:
         <div class="alert alert-danger mb-0" role="alert">
           <AppIcon name="ExclamationCircleIcon" class="mr-2" />
           Error loading jobs: {{ error }}
-          <UnifiedButton variant="outline" size="sm" class="ml-2" @click="refreshJobs">
+          <UnifiedButton
+            variant="outline"
+            size="sm"
+            class="ml-2"
+            @click="refreshJobs"
+          >
             Try Again
           </UnifiedButton>
         </div>
@@ -467,41 +684,69 @@ Displays live jobs from multiple API sources with:
           <div class="results-summary">
             <h5 class="mb-0">
               {{ displayJobs.length }} jobs found
-              <span v-if="visibleJobs.length !== displayJobs.length" class="text-secondary">
-                (showing {{ (currentPage - 1) * resultsPerPage + 1 }}-{{ Math.min(currentPage * resultsPerPage, displayJobs.length) }})
+              <span
+                v-if="visibleJobs.length !== displayJobs.length"
+                class="text-secondary"
+              >
+                (showing {{ (currentPage - 1) * resultsPerPage + 1 }}-{{
+                  Math.min(currentPage * resultsPerPage, displayJobs.length)
+                }})
               </span>
-              <span v-if="isSearching" class="spinner-border spinner-border-sm ml-2" role="status"></span>
+              <span
+                v-if="isSearching"
+                class="spinner-border spinner-border-sm ml-2"
+                role="status"
+              ></span>
             </h5>
             <small class="text-secondary">
-              Sorted by relevance {{ gamingJobsCount > 0 ? `• ${gamingJobsCount} gaming-related` : '' }}
+              Sorted by relevance
+              {{
+                gamingJobsCount > 0 ? `• ${gamingJobsCount} gaming-related` : ''
+              }}
               • Updated {{ getRelativeTime(lastUpdated) }}
             </small>
           </div>
           <div class="results-actions header-actions-group">
-            <select v-model="sortBy" class="form-select sort-select" aria-label="Sort results">
+            <select
+              v-model="sortBy"
+              class="form-select sort-select"
+              aria-label="Sort results"
+            >
               <option value="relevance">Sort by Relevance</option>
               <option value="date">Newest First</option>
               <option value="salary">Highest Salary</option>
               <option value="company">Company A-Z</option>
             </select>
             <ViewToggle
-              v-model="viewMode" :options="[
+              v-model="viewMode"
+              :options="[
                 { value: 'grid', icon: 'mdi-view-grid', label: 'Grid view' },
-                { value: 'list', icon: 'mdi-view-list', label: 'List view' }
+                { value: 'list', icon: 'mdi-view-list', label: 'List view' },
               ]"
             />
           </div>
         </div>
       </div>
-      
+
       <!-- Active filters (quick) -->
       <div v-if="activeQuickFilters.length" class="active-filters mb-2">
         <span v-for="f in activeQuickFilters" :key="f.key" class="filter-pill">
           <AppIcon :name="f.icon" />
           {{ f.label }}
-          <button class="clear-filter" aria-label="Clear filter" @click="clearQuickFilter(f.key)">×</button>
+          <button
+            class="clear-filter"
+            aria-label="Clear filter"
+            @click="clearQuickFilter(f.key)"
+          >
+            ×
+          </button>
         </span>
-        <button class="btn btn-xs btn-outline-secondary ml-2" @click="clearAllQuickFilters">Clear all</button>
+        <button
+          class="btn btn-xs btn-outline-secondary ml-2"
+          @click="clearAllQuickFilters"
+        >
+          Clear all
+        </button>
       </div>
 
       <!-- Job Results Grid -->
@@ -537,13 +782,22 @@ Displays live jobs from multiple API sources with:
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ selectedJob.title }}</h5>
-            <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="selectedJob = null"></UnifiedButton>
+            <UnifiedButton
+              variant="ghost"
+              size="sm"
+              icon-only
+              :icon="'XMarkIcon'"
+              aria-label="Close"
+              @click="selectedJob = null"
+            ></UnifiedButton>
           </div>
           <div class="modal-body">
             <JobDetailsView :job="selectedJob" />
           </div>
           <div class="modal-footer">
-            <UnifiedButton variant="secondary" @click="selectedJob = null">Close</UnifiedButton>
+            <UnifiedButton variant="secondary" @click="selectedJob = null"
+              >Close</UnifiedButton
+            >
             <UnifiedButton
               variant="gaming"
               :loading="aiAnalyzing"
@@ -578,7 +832,24 @@ Displays live jobs from multiple API sources with:
 </template>
 
 <script setup>
-import { AcademicCapIcon, AdjustmentsHorizontalIcon, ArrowPathIcon, ArrowTopRightOnSquareIcon, BellIcon, BriefcaseIcon, BuildingOfficeIcon, CalendarIcon, CpuChipIcon, CurrencyDollarIcon, ExclamationCircleIcon, EyeIcon, HomeIcon, MagnifyingGlassIcon, PuzzlePieceIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import {
+  AcademicCapIcon,
+  AdjustmentsHorizontalIcon,
+  ArrowPathIcon,
+  ArrowTopRightOnSquareIcon,
+  BellIcon,
+  BriefcaseIcon,
+  BuildingOfficeIcon,
+  CalendarIcon,
+  CpuChipIcon,
+  CurrencyDollarIcon,
+  ExclamationCircleIcon,
+  EyeIcon,
+  HomeIcon,
+  MagnifyingGlassIcon,
+  PuzzlePieceIcon,
+  TrashIcon,
+} from '@heroicons/vue/24/outline'
 import { MapPinIcon } from '@heroicons/vue/24/solid'
 
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
@@ -619,12 +890,12 @@ const jobNotifications = ref(new Map())
 const loadingStates = ref(new Map())
 
 // Enhanced AI Insights Functions
-const getAIInsights = (job) => {
+const getAIInsights = job => {
   if (!job) return null
-  
+
   const profile = unifiedProfile.jobSearchProfile.value
   const insights = []
-  
+
   // Career Alignment Insight
   const careerAlignment = calculateCareerAlignment(job, profile)
   insights.push({
@@ -633,9 +904,9 @@ const getAIInsights = (job) => {
     description: `${careerAlignment.score}% match - ${careerAlignment.reasons.join(', ') || 'Based on your profile'}`,
     icon: 'CursorArrowRaysIcon',
     level: careerAlignment.level,
-    score: careerAlignment.score
+    score: careerAlignment.score,
   })
-  
+
   // Skill Gap Analysis
   const skillGaps = identifySkillGaps(job, profile)
   if (skillGaps.missing.length > 0) {
@@ -649,8 +920,8 @@ const getAIInsights = (job) => {
       action: {
         label: 'View Learning Resources',
         icon: 'mdi-book-open-variant',
-        route: '/skill-mapper'
-      }
+        route: '/skill-mapper',
+      },
     })
   } else {
     insights.push({
@@ -658,10 +929,10 @@ const getAIInsights = (job) => {
       title: 'Skills Match',
       description: 'Your skills align well with this role!',
       icon: 'CheckIcon-circle',
-      level: 'excellent'
+      level: 'excellent',
     })
   }
-  
+
   // Recommendations
   const recommendations = generateRecommendations(job, profile)
   if (recommendations.length > 0) {
@@ -670,86 +941,107 @@ const getAIInsights = (job) => {
       type: 'recommendation',
       title: topRec.title,
       description: topRec.description,
-      icon: topRec.type === 'skill' ? 'LightBulbIcon' : topRec.type === 'portfolio' ? 'mdi-briefcase' : 'UserIcon-group',
+      icon:
+        topRec.type === 'skill'
+          ? 'LightBulbIcon'
+          : topRec.type === 'portfolio'
+            ? 'mdi-briefcase'
+            : 'UserIcon-group',
       priority: topRec.priority,
-      action: topRec.action ? {
-        label: topRec.action,
-        icon: 'ArrowRightIcon'
-      } : null
+      action: topRec.action
+        ? {
+            label: topRec.action,
+            icon: 'ArrowRightIcon',
+          }
+        : null,
     })
   }
-  
+
   // Market Comparison
   const marketComparison = getMarketComparison(job)
   insights.push({
     type: 'market',
     title: 'Market Position',
-    description: marketComparison.description || 'Competitive position in the job market',
+    description:
+      marketComparison.description || 'Competitive position in the job market',
     icon: 'ChartBarIcon-line',
-    trend: marketComparison.trend
+    trend: marketComparison.trend,
   })
-  
+
   // Growth Potential for Gaming Roles
   const growthPotential = assessGrowthPotential(job)
   if (growthPotential.score > 60) {
     insights.push({
       type: 'growth',
       title: 'Growth Potential',
-      description: growthPotential.reasons.join(', ') || 'Good growth opportunities',
+      description:
+        growthPotential.reasons.join(', ') || 'Good growth opportunities',
       icon: 'mdi-trending-up',
       score: growthPotential.score,
       action: {
         label: 'Start Interview Prep',
         icon: 'MicrophoneIcon',
-        route: '/interview-prep'
-      }
+        route: '/interview-prep',
+      },
     })
   }
-  
+
   return insights
 }
 
 const calculateCareerAlignment = (job, profile) => {
   let score = 0
   let reasons = []
-  
+
   // Check title alignment
-  if (profile.desiredRoles?.some(role => 
-    job.title.toLowerCase().includes(role.toLowerCase())
-  )) {
+  if (
+    profile.desiredRoles?.some(role =>
+      job.title.toLowerCase().includes(role.toLowerCase())
+    )
+  ) {
     score += 30
     reasons.push('Title matches your desired roles')
   }
-  
+
   // Check industry alignment (gaming focus)
-  if ((job.gamingRelevance || 0) > 0.3 && profile.targetIndustries?.includes('gaming')) {
+  if (
+    (job.gamingRelevance || 0) > 0.3 &&
+    profile.targetIndustries?.includes('gaming')
+  ) {
     score += 25
     reasons.push('Gaming industry alignment')
   }
-  
+
   // Check skill alignment
   const skillMatch = calculateSkillAlignment(job, profile)
   score += skillMatch * 25
   if (skillMatch > 0.7) {
     reasons.push('Strong skill alignment')
   }
-  
+
   // Check location preference
   if (job.remote && profile.workPreferences?.remote) {
     score += 10
     reasons.push('Remote work preference match')
   }
-  
+
   // Check experience level
   if (job.experienceLevel === profile.experienceLevel) {
     score += 10
     reasons.push('Experience level match')
   }
-  
+
   return {
     score: Math.min(score, 100),
-    level: score > 80 ? 'excellent' : score > 60 ? 'good' : score > 40 ? 'fair' : 'poor',
-    reasons
+    level:
+      score > 80
+        ? 'excellent'
+        : score > 60
+          ? 'good'
+          : score > 40
+            ? 'fair'
+            : 'poor',
+    reasons,
   }
 }
 
@@ -757,68 +1049,158 @@ const identifySkillGaps = (job, profile) => {
   const requiredSkills = job.tags || []
   const userSkills = Array.isArray(profile.skills) ? profile.skills : []
   const userSkillsLower = userSkills.map(s => s.toLowerCase())
-  
-  const missingSkills = requiredSkills.filter(skill => 
-    !userSkillsLower.includes(skill.toLowerCase())
+
+  const missingSkills = requiredSkills.filter(
+    skill => !userSkillsLower.includes(skill.toLowerCase())
   )
-  
+
   // Enhanced critical skills for gaming industry
   const gamingCriticalSkills = [
-    'unity', 'unreal', 'c++', 'c#', 'python', 'lua', 'glsl', 'hlsl',
-    'maya', 'blender', '3ds max', 'substance', 'zbrush', 'photoshop',
-    'perforce', 'git', 'jenkins', 'jira', 'confluence',
-    'gameplay programming', 'graphics programming', 'engine programming',
-    'level design', 'game design', 'narrative design', 'ui/ux design',
-    'technical art', 'vfx', 'animation', 'rigging', 'lighting',
-    'audio programming', 'wwise', 'fmod', 'procedural generation',
-    'multiplayer', 'networking', 'server architecture', 'aws', 'azure',
-    'playfab', 'steamworks', 'console development', 'mobile development'
+    'unity',
+    'unreal',
+    'c++',
+    'c#',
+    'python',
+    'lua',
+    'glsl',
+    'hlsl',
+    'maya',
+    'blender',
+    '3ds max',
+    'substance',
+    'zbrush',
+    'photoshop',
+    'perforce',
+    'git',
+    'jenkins',
+    'jira',
+    'confluence',
+    'gameplay programming',
+    'graphics programming',
+    'engine programming',
+    'level design',
+    'game design',
+    'narrative design',
+    'ui/ux design',
+    'technical art',
+    'vfx',
+    'animation',
+    'rigging',
+    'lighting',
+    'audio programming',
+    'wwise',
+    'fmod',
+    'procedural generation',
+    'multiplayer',
+    'networking',
+    'server architecture',
+    'aws',
+    'azure',
+    'playfab',
+    'steamworks',
+    'console development',
+    'mobile development',
   ]
-  
-  const webCriticalSkills = ['javascript', 'typescript', 'react', 'vue', 'angular', 'node', 'express']
-  
+
+  const webCriticalSkills = [
+    'javascript',
+    'typescript',
+    'react',
+    'vue',
+    'angular',
+    'node',
+    'express',
+  ]
+
   const criticalSkills = missingSkills.filter(skill => {
     const skillLower = skill.toLowerCase()
-    return gamingCriticalSkills.includes(skillLower) || webCriticalSkills.includes(skillLower)
+    return (
+      gamingCriticalSkills.includes(skillLower) ||
+      webCriticalSkills.includes(skillLower)
+    )
   })
-  
+
   // Categorize missing skills
   const categorizedSkills = {
     programming: [],
     tools: [],
     design: [],
     technical: [],
-    other: []
+    other: [],
   }
-  
+
   missingSkills.forEach(skill => {
     const skillLower = skill.toLowerCase()
-    if (['unity', 'unreal', 'c++', 'c#', 'python', 'javascript', 'lua', 'gameplay programming', 'graphics programming'].some(s => skillLower.includes(s))) {
+    if (
+      [
+        'unity',
+        'unreal',
+        'c++',
+        'c#',
+        'python',
+        'javascript',
+        'lua',
+        'gameplay programming',
+        'graphics programming',
+      ].some(s => skillLower.includes(s))
+    ) {
       categorizedSkills.programming.push(skill)
-    } else if (['maya', 'blender', 'substance', 'zbrush', 'photoshop', 'perforce', 'git', 'jenkins'].some(s => skillLower.includes(s))) {
+    } else if (
+      [
+        'maya',
+        'blender',
+        'substance',
+        'zbrush',
+        'photoshop',
+        'perforce',
+        'git',
+        'jenkins',
+      ].some(s => skillLower.includes(s))
+    ) {
       categorizedSkills.tools.push(skill)
-    } else if (['game design', 'level design', 'ui/ux', 'narrative design', 'technical art'].some(s => skillLower.includes(s))) {
+    } else if (
+      [
+        'game design',
+        'level design',
+        'ui/ux',
+        'narrative design',
+        'technical art',
+      ].some(s => skillLower.includes(s))
+    ) {
       categorizedSkills.design.push(skill)
-    } else if (['multiplayer', 'networking', 'aws', 'azure', 'console development'].some(s => skillLower.includes(s))) {
+    } else if (
+      ['multiplayer', 'networking', 'aws', 'azure', 'console development'].some(
+        s => skillLower.includes(s)
+      )
+    ) {
       categorizedSkills.technical.push(skill)
     } else {
       categorizedSkills.other.push(skill)
     }
   })
-  
+
   return {
     missing: missingSkills.slice(0, 5),
     critical: criticalSkills,
     categorized: categorizedSkills,
     total: missingSkills.length,
-    matchPercentage: Math.round(((requiredSkills.length - missingSkills.length) / Math.max(requiredSkills.length, 1)) * 100),
-    impact: criticalSkills.length > 0 ? 'high' : missingSkills.length > 3 ? 'medium' : 'low'
+    matchPercentage: Math.round(
+      ((requiredSkills.length - missingSkills.length) /
+        Math.max(requiredSkills.length, 1)) *
+        100
+    ),
+    impact:
+      criticalSkills.length > 0
+        ? 'high'
+        : missingSkills.length > 3
+          ? 'medium'
+          : 'low',
   }
 }
 
 const generateRecommendations = (job, profile) => {
   const recommendations = []
-  
+
   // Resume tailoring
   if (job.tags?.length > 0) {
     recommendations.push({
@@ -826,21 +1208,22 @@ const generateRecommendations = (job, profile) => {
       title: 'Tailor your resume',
       description: `Highlight experience with ${job.tags.slice(0, 3).join(', ')} to better match this role`,
       priority: 'high',
-      action: 'Open Resume Builder'
+      action: 'Open Resume Builder',
     })
   }
-  
+
   // Portfolio enhancement
   if ((job.gamingRelevance || 0) > 0.3) {
     recommendations.push({
       type: 'portfolio',
       title: 'Showcase gaming projects',
-      description: 'Add relevant gaming projects to strengthen your portfolio for this role',
+      description:
+        'Add relevant gaming projects to strengthen your portfolio for this role',
       priority: 'medium',
-      action: 'Update Portfolio'
+      action: 'Update Portfolio',
     })
   }
-  
+
   // Skill development
   const skillGaps = identifySkillGaps(job, profile)
   if (skillGaps.critical.length > 0) {
@@ -849,90 +1232,113 @@ const generateRecommendations = (job, profile) => {
       title: 'Develop critical skills',
       description: `Consider learning ${skillGaps.critical[0]} to qualify for similar roles`,
       priority: 'high',
-      action: 'Find Resources'
+      action: 'Find Resources',
     })
   }
-  
+
   // Networking
   recommendations.push({
     type: 'network',
     title: 'Connect with the company',
     description: `Research ${job.company} employees on LinkedIn for networking opportunities`,
     priority: 'medium',
-    action: 'View Company'
+    action: 'View Company',
   })
-  
+
   return recommendations
 }
 
-const getMarketComparison = (job) => {
+const getMarketComparison = job => {
   // Mock market data - in real app would fetch from API
-  const similarJobs = filteredJobs.value.filter(j => 
-    j.id !== job.id && 
-    j.title.toLowerCase().includes(job.title.split(' ')[0].toLowerCase())
+  const similarJobs = filteredJobs.value.filter(
+    j =>
+      j.id !== job.id &&
+      j.title.toLowerCase().includes(job.title.split(' ')[0].toLowerCase())
   )
-  
-  const salaryComparison = job.salary ? {
-    position: 'competitive', // above/below/competitive
-    percentile: 75,
-    range: `$${parseInt(job.salary.replace(/\D/g, '')) * 0.9}k - $${parseInt(job.salary.replace(/\D/g, '')) * 1.1}k`
-  } : null
-  
+
+  const salaryComparison = job.salary
+    ? {
+        position: 'competitive', // above/below/competitive
+        percentile: 75,
+        range: `$${parseInt(job.salary.replace(/\D/g, '')) * 0.9}k - $${parseInt(job.salary.replace(/\D/g, '')) * 1.1}k`,
+      }
+    : null
+
   return {
     similarJobsCount: similarJobs.length,
     salaryComparison,
-    demand: similarJobs.length > 10 ? 'high' : similarJobs.length > 5 ? 'medium' : 'low',
-    growthTrend: 'positive' // positive/negative/stable
+    demand:
+      similarJobs.length > 10
+        ? 'high'
+        : similarJobs.length > 5
+          ? 'medium'
+          : 'low',
+    growthTrend: 'positive', // positive/negative/stable
   }
 }
 
-const assessGrowthPotential = (job) => {
+const assessGrowthPotential = job => {
   let score = 50
   const factors = []
-  
+
   // Gaming industry growth
   if ((job.gamingRelevance || 0) > 0.3) {
     score += 20
     factors.push('Gaming industry growth')
   }
-  
+
   // Remote opportunities
   if (job.remote) {
     score += 10
     factors.push('Remote work flexibility')
   }
-  
+
   // Tech stack relevance
   const modernTech = ['react', 'vue', 'typescript', 'python', 'unity', 'unreal']
-  const hasModernTech = job.tags?.some(tag => 
+  const hasModernTech = job.tags?.some(tag =>
     modernTech.includes(tag.toLowerCase())
   )
   if (hasModernTech) {
     score += 15
     factors.push('Modern technology stack')
   }
-  
+
   return {
     score: Math.min(score, 100),
     level: score > 80 ? 'high' : score > 60 ? 'medium' : 'low',
     factors,
-    timeframe: '2-3 years'
+    timeframe: '2-3 years',
   }
 }
 
-const generateSkillSuggestions = (missingSkills) => {
+const generateSkillSuggestions = missingSkills => {
   return missingSkills.slice(0, 3).map(skill => ({
     skill,
     resources: [
-      { type: 'course', name: `${skill} Fundamentals`, provider: 'Online Course', url: `https://www.coursera.org/search?query=${encodeURIComponent(skill)}` },
-      { type: 'practice', name: `${skill} Projects`, provider: 'GitHub', url: `https://github.com/search?q=${encodeURIComponent(skill)}+language:javascript` },
-      { type: 'certification', name: `${skill} Certification`, provider: 'Industry', url: `https://www.google.com/search?q=${encodeURIComponent(skill)}+certification` }
-    ]
+      {
+        type: 'course',
+        name: `${skill} Fundamentals`,
+        provider: 'Online Course',
+        url: `https://www.coursera.org/search?query=${encodeURIComponent(skill)}`,
+      },
+      {
+        type: 'practice',
+        name: `${skill} Projects`,
+        provider: 'GitHub',
+        url: `https://github.com/search?q=${encodeURIComponent(skill)}+language:javascript`,
+      },
+      {
+        type: 'certification',
+        name: `${skill} Certification`,
+        provider: 'Industry',
+        url: `https://www.google.com/search?q=${encodeURIComponent(skill)}+certification`,
+      },
+    ],
   }))
 }
 
 // Add method to actually use the generated suggestions
-const openLearningResource = (resource) => {
+const openLearningResource = resource => {
   if (resource.url) {
     window.open(resource.url, '_blank')
   }
@@ -944,7 +1350,7 @@ const createJobAlert = () => {
     alert('Please enter a search query to create an alert')
     return
   }
-  
+
   const alert = {
     id: Date.now().toString(),
     query: searchForm.value.query,
@@ -952,11 +1358,11 @@ const createJobAlert = () => {
     created: new Date().toISOString(),
     active: true,
     lastNotified: null,
-    jobsFound: 0
+    jobsFound: 0,
   }
-  
+
   jobAlerts.value.push(alert)
-  
+
   // Store in localStorage for persistence
   try {
     localStorage.setItem('job_alerts', JSON.stringify(jobAlerts.value))
@@ -968,7 +1374,7 @@ const createJobAlert = () => {
 
 // autoSearchFromProfile is provided by the composable
 
-const toggleInsights = (jobId) => {
+const toggleInsights = jobId => {
   expandedInsights.value = expandedInsights.value === jobId ? null : jobId
 }
 
@@ -984,30 +1390,33 @@ const handleInsightAction = (action, job) => {
       // Open learning resources modal
       break
     case 'View Company':
-      window.open(`https://linkedin.com/company/${job.company.toLowerCase().replace(/\s+/g, '-')}`, '_blank')
+      window.open(
+        `https://linkedin.com/company/${job.company.toLowerCase().replace(/\s+/g, '-')}`,
+        '_blank'
+      )
       break
   }
 }
 
 // Job Comparison Functions
-const isInComparison = (jobId) => {
+const isInComparison = jobId => {
   return comparisonJobs.value.some(j => j.id === jobId)
 }
 
-const toggleComparison = (job) => {
+const toggleComparison = job => {
   const index = comparisonJobs.value.findIndex(j => j.id === job.id)
   if (index >= 0) {
     comparisonJobs.value.splice(index, 1)
   } else if (comparisonJobs.value.length < 3) {
     comparisonJobs.value.push(job)
   }
-  
+
   if (comparisonJobs.value.length >= 2) {
     showJobComparison.value = true
   }
 }
 
-const removeFromComparison = (jobId) => {
+const removeFromComparison = jobId => {
   comparisonJobs.value = comparisonJobs.value.filter(j => j.id !== jobId)
   if (comparisonJobs.value.length < 2) {
     showJobComparison.value = false
@@ -1019,49 +1428,51 @@ const clearComparison = () => {
   showJobComparison.value = false
 }
 
-const compareJobs = (jobs) => {
+const compareJobs = jobs => {
   return {
     salaries: jobs.map(j => j.salary || 'Not specified'),
     locations: jobs.map(j => j.location),
     types: jobs.map(j => j.type || 'Not specified'),
     skills: {
       common: getCommonSkills(jobs),
-      unique: getUniqueSkills(jobs)
+      unique: getUniqueSkills(jobs),
     },
     benefits: jobs.map(j => j.benefits || []),
     companies: jobs.map(j => ({
       name: j.company,
       size: j.companySize || 'Unknown',
-      industry: j.industry || 'Unknown'
-    }))
+      industry: j.industry || 'Unknown',
+    })),
   }
 }
 
-const getCommonSkills = (jobs) => {
+const getCommonSkills = jobs => {
   const allSkills = jobs.flatMap(j => j.tags || [])
   const skillCounts = allSkills.reduce((acc, skill) => {
     acc[skill] = (acc[skill] || 0) + 1
     return acc
   }, {})
-  
+
   return Object.entries(skillCounts)
     .filter(([, count]) => count === jobs.length)
     .map(([skill]) => skill)
 }
 
-const getUniqueSkills = (jobs) => {
+const getUniqueSkills = jobs => {
   return jobs.map(job => ({
     jobId: job.id,
-    skills: (job.tags || []).filter(tag => 
-      !jobs.some(otherJob => 
-        otherJob.id !== job.id && (otherJob.tags || []).includes(tag)
-      )
-    )
+    skills: (job.tags || []).filter(
+      tag =>
+        !jobs.some(
+          otherJob =>
+            otherJob.id !== job.id && (otherJob.tags || []).includes(tag)
+        )
+    ),
   }))
 }
 
 // Bulk Operations Functions
-const toggleJobSelection = (jobId) => {
+const toggleJobSelection = jobId => {
   if (selectedJobIds.value.has(jobId)) {
     selectedJobIds.value.delete(jobId)
   } else {
@@ -1074,7 +1485,7 @@ const bulkSaveJobs = async () => {
   const jobs = Array.from(selectedJobIds.value)
     .map(id => filteredJobs.value.find(j => j.id === id))
     .filter(Boolean)
-  
+
   try {
     for (const job of jobs) {
       await saveJob(job)
@@ -1090,7 +1501,7 @@ const bulkCompareJobs = () => {
     .map(id => filteredJobs.value.find(j => j.id === id))
     .filter(Boolean)
     .slice(0, 3) // Limit to 3 jobs
-  
+
   comparisonJobs.value = jobs
   showJobComparison.value = true
   selectedJobIds.value.clear()
@@ -1100,7 +1511,7 @@ const bulkExportJobs = () => {
   const jobs = Array.from(selectedJobIds.value)
     .map(id => filteredJobs.value.find(j => j.id === id))
     .filter(Boolean)
-  
+
   const exportData = jobs.map(job => ({
     title: job.title,
     company: job.company,
@@ -1109,25 +1520,25 @@ const bulkExportJobs = () => {
     type: job.type,
     url: job.url,
     tags: job.tags?.join(', '),
-    description: job.description
+    description: job.description,
   }))
-  
+
   const csv = convertToCSV(exportData)
   downloadCSV(csv, 'selected_jobs.csv')
   selectedJobIds.value.clear()
 }
 
-const convertToCSV = (data) => {
+const convertToCSV = data => {
   if (data.length === 0) return ''
-  
+
   const headers = Object.keys(data[0])
   const csv = [
     headers.join(','),
-    ...data.map(row => headers.map(header => 
-      JSON.stringify(row[header] || '')
-    ).join(','))
+    ...data.map(row =>
+      headers.map(header => JSON.stringify(row[header] || '')).join(',')
+    ),
   ].join('\n')
-  
+
   return csv
 }
 
@@ -1144,64 +1555,65 @@ const downloadCSV = (csv, filename) => {
 }
 
 // Quick Actions Functions
-const quickApply = async (job) => {
+const quickApply = async job => {
   if (!canQuickApply(job)) return
-  
+
   loadingStates.value.set(job.id, 'applying')
-  
+
   try {
     // In a real app, this would submit application via API
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
+
     // Track application
-    const applications = JSON.parse(localStorage.getItem('job_applications') || '[]')
+    const applications = JSON.parse(
+      localStorage.getItem('job_applications') || '[]'
+    )
     applications.push({
       jobId: job.id,
       jobTitle: job.title,
       company: job.company,
       appliedAt: new Date().toISOString(),
-      status: 'submitted'
+      status: 'submitted',
     })
     localStorage.setItem('job_applications', JSON.stringify(applications))
-    
+
     // Show success notification
     jobNotifications.value.set(job.id, {
       type: 'success',
       message: 'Application submitted successfully!',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     })
-    
+
     // Auto-clear notification
     setTimeout(() => {
       jobNotifications.value.delete(job.id)
     }, 5000)
-    
   } catch {
     jobNotifications.value.set(job.id, {
       type: 'error',
       message: 'Failed to submit application. Please try the direct link.',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     })
   } finally {
     loadingStates.value.delete(job.id)
   }
 }
 
-const canQuickApply = (job) => {
+const canQuickApply = job => {
   // Check if job supports quick apply (mock logic)
   const quickApplyProviders = ['greenhouse', 'lever', 'workday']
-  return quickApplyProviders.some(provider => 
-    job.url?.includes(provider) || job.provider === provider
+  return quickApplyProviders.some(
+    provider => job.url?.includes(provider) || job.provider === provider
   )
 }
 
-const shareJob = async (job) => {
+const shareJob = async job => {
   const shareData = {
     title: `${job.title} at ${job.company}`,
     text: `Check out this ${job.title} position at ${job.company}`,
-    url: job.url
+    url: job.url,
   }
-  
+
   try {
     if (navigator.share) {
       await navigator.share(shareData)
@@ -1210,9 +1622,9 @@ const shareJob = async (job) => {
       jobNotifications.value.set(job.id, {
         type: 'success',
         message: 'Job link copied to clipboard!',
-        timestamp: Date.now()
+        timestamp: Date.now(),
       })
-      
+
       setTimeout(() => {
         jobNotifications.value.delete(job.id)
       }, 3000)
@@ -1233,7 +1645,7 @@ const updateJobStatus = (jobId, status) => {
 
 const addJobNotification = (jobId, notification) => {
   jobNotifications.value.set(jobId, notification)
-  
+
   // Auto-clear after delay
   setTimeout(() => {
     jobNotifications.value.delete(jobId)
@@ -1243,17 +1655,17 @@ const addJobNotification = (jobId, notification) => {
 // Helper Functions
 const calculateSkillAlignment = (job, profile) => {
   const jobSkills = (job.tags || []).map(s => s.toLowerCase())
-  const userSkills = Array.isArray(profile.skills) 
+  const userSkills = Array.isArray(profile.skills)
     ? profile.skills.map(s => s.toLowerCase())
     : []
-  
+
   if (jobSkills.length === 0) return 0
-  
+
   const matchedSkills = jobSkills.filter(skill => userSkills.includes(skill))
   return matchedSkills.length / jobSkills.length
 }
 
-const getCompanyInitials = (companyName) => {
+const getCompanyInitials = companyName => {
   return companyName
     .split(' ')
     .map(word => word[0])
@@ -1262,38 +1674,38 @@ const getCompanyInitials = (companyName) => {
     .toUpperCase()
 }
 
-const onLogoError = (event) => {
+const onLogoError = event => {
   event.target.style.display = 'none'
   event.target.nextElementSibling.style.display = 'flex'
 }
 
-const formatJobType = (type) => {
+const formatJobType = type => {
   const types = {
     'full-time': 'Full-time',
     'part-time': 'Part-time',
-    'contract': 'Contract',
-    'freelance': 'Freelance',
-    'intern': 'Internship',
-    'temporary': 'Temporary'
+    contract: 'Contract',
+    freelance: 'Freelance',
+    intern: 'Internship',
+    temporary: 'Temporary',
   }
   return types[type?.toLowerCase()] || type
 }
 
-const getRelativeTime = (dateString) => {
+const getRelativeTime = dateString => {
   if (!dateString) return 'Recently'
-  
+
   const date = new Date(dateString)
   const now = new Date()
   const diffInHours = Math.floor((now - date) / (1000 * 60 * 60))
-  
+
   if (diffInHours < 1) return 'Just now'
   if (diffInHours < 24) return `${diffInHours}h ago`
   if (diffInHours < 48) return 'Yesterday'
-  
+
   const diffInDays = Math.floor(diffInHours / 24)
   if (diffInDays < 7) return `${diffInDays}d ago`
   if (diffInDays < 30) return `${Math.floor(diffInDays / 7)}w ago`
-  
+
   return date.toLocaleDateString()
 }
 
@@ -1302,13 +1714,14 @@ const truncateDescription = (description, maxLength = 150) => {
   return description.substring(0, maxLength).trim() + '...'
 }
 
-const getJobFreshness = (job) => { // Fixed function access
+const getJobFreshness = job => {
+  // Fixed function access
   if (!job?.posted) return null
-  
+
   const posted = new Date(job.posted)
   const now = new Date()
   const diffInHours = Math.floor((now - posted) / (1000 * 60 * 60))
-  
+
   if (diffInHours < 2) {
     return { type: 'hot', label: 'Just Posted', icon: 'FireIcon' }
   } else if (diffInHours < 24) {
@@ -1316,18 +1729,20 @@ const getJobFreshness = (job) => { // Fixed function access
   } else if (diffInHours < 72) {
     return { type: 'recent', label: 'Recent', icon: 'ClockIcon-outline' }
   }
-  
+
   return null
 }
 
 // Enhanced Gaming Skills Helper Functions
-const getSkillMatchPercentage = (job) => {
+const getSkillMatchPercentage = job => {
   const requiredSkills = job.tags || []
   const matchedSkills = requiredSkills.filter(skill => isUserSkill(skill))
-  return Math.round((matchedSkills.length / Math.max(requiredSkills.length, 1)) * 100)
+  return Math.round(
+    (matchedSkills.length / Math.max(requiredSkills.length, 1)) * 100
+  )
 }
 
-const getSkillMatchLevel = (job) => {
+const getSkillMatchLevel = job => {
   const percentage = getSkillMatchPercentage(job)
   if (percentage >= 80) return 'excellent'
   if (percentage >= 60) return 'good'
@@ -1335,94 +1750,143 @@ const getSkillMatchLevel = (job) => {
   return 'poor'
 }
 
-const isCriticalGamingSkill = (skill) => {
+const isCriticalGamingSkill = skill => {
   const criticalSkills = [
-    'unity', 'unreal', 'c++', 'c#', 'python', 'lua', 'glsl', 'hlsl',
-    'maya', 'blender', '3ds max', 'substance', 'zbrush', 
-    'gameplay programming', 'graphics programming', 'engine programming',
-    'level design', 'game design', 'narrative design', 'technical art'
+    'unity',
+    'unreal',
+    'c++',
+    'c#',
+    'python',
+    'lua',
+    'glsl',
+    'hlsl',
+    'maya',
+    'blender',
+    '3ds max',
+    'substance',
+    'zbrush',
+    'gameplay programming',
+    'graphics programming',
+    'engine programming',
+    'level design',
+    'game design',
+    'narrative design',
+    'technical art',
   ]
   return criticalSkills.some(critical => skill.toLowerCase().includes(critical))
 }
 
-const isProgrammingSkill = (skill) => {
-  const programmingSkills = ['c++', 'c#', 'python', 'javascript', 'lua', 'java', 'kotlin', 'swift', 'programming']
+const isProgrammingSkill = skill => {
+  const programmingSkills = [
+    'c++',
+    'c#',
+    'python',
+    'javascript',
+    'lua',
+    'java',
+    'kotlin',
+    'swift',
+    'programming',
+  ]
   return programmingSkills.some(prog => skill.toLowerCase().includes(prog))
 }
 
-const isDesignSkill = (skill) => {
-  const designSkills = ['design', 'art', 'ui', 'ux', 'photoshop', 'maya', 'blender', 'zbrush', 'substance']
+const isDesignSkill = skill => {
+  const designSkills = [
+    'design',
+    'art',
+    'ui',
+    'ux',
+    'photoshop',
+    'maya',
+    'blender',
+    'zbrush',
+    'substance',
+  ]
   return designSkills.some(design => skill.toLowerCase().includes(design))
 }
 
-const getSkillIcon = (skill) => {
+const getSkillIcon = skill => {
   const skillLower = skill.toLowerCase()
   if (skillLower.includes('unity')) return 'mdi-unity'
   if (skillLower.includes('unreal')) return 'mdi-unreal'
-  if (skillLower.includes('c++') || skillLower.includes('c#')) return 'mdi-language-cpp'
+  if (skillLower.includes('c++') || skillLower.includes('c#'))
+    return 'mdi-language-cpp'
   if (skillLower.includes('python')) return 'mdi-language-python'
   if (skillLower.includes('javascript')) return 'mdi-language-javascript'
   if (skillLower.includes('design')) return 'SwatchIcon'
   if (skillLower.includes('art')) return 'PaintBrushIcon'
   if (skillLower.includes('programming')) return 'mdi-code-braces'
-  if (skillLower.includes('maya') || skillLower.includes('blender')) return 'mdi-cube-outline'
-  if (skillLower.includes('multiplayer') || skillLower.includes('network')) return 'mdi-lan'
+  if (skillLower.includes('maya') || skillLower.includes('blender'))
+    return 'mdi-cube-outline'
+  if (skillLower.includes('multiplayer') || skillLower.includes('network'))
+    return 'mdi-lan'
   return 'mdi-cog'
 }
 
-const getSkillTooltip = (skill) => {
-  if (isUserSkill(skill)) return `✓ You have this skill! Great match for this role.`
-  if (isCriticalGamingSkill(skill)) return `StarIcon Critical gaming skill - high priority for this role`
+const getSkillTooltip = skill => {
+  if (isUserSkill(skill))
+    return `✓ You have this skill! Great match for this role.`
+  if (isCriticalGamingSkill(skill))
+    return `StarIcon Critical gaming skill - high priority for this role`
   return `Consider learning ${skill} to improve your match for this role`
 }
 
-const hasSkillGaps = (job) => {
+const hasSkillGaps = job => {
   const profile = unifiedProfile.jobSearchProfile.value
   const skillGaps = identifySkillGaps(job, profile)
   return skillGaps.missing.length > 0
 }
 
-const getCriticalSkillGaps = (job) => {
+const getCriticalSkillGaps = job => {
   const profile = unifiedProfile.jobSearchProfile.value
   const skillGaps = identifySkillGaps(job, profile)
   return skillGaps.critical || []
 }
 
-const navigateToSkillMapper = (job) => {
+const navigateToSkillMapper = job => {
   // Store job context for skill mapper
-  localStorage.setItem('skillMapperContext', JSON.stringify({
-    jobTitle: job.title,
-    requiredSkills: job.tags,
-    company: job.company
-  }))
+  localStorage.setItem(
+    'skillMapperContext',
+    JSON.stringify({
+      jobTitle: job.title,
+      requiredSkills: job.tags,
+      company: job.company,
+    })
+  )
   router.push('/skill-mapper')
 }
 
-const startInterviewPrep = (job) => {
+const startInterviewPrep = job => {
   // Store job context for interview prep
-  localStorage.setItem('interviewPrepContext', JSON.stringify({
-    jobTitle: job.title,
-    company: job.company,
-    skills: job.tags,
-    description: job.description
-  }))
+  localStorage.setItem(
+    'interviewPrepContext',
+    JSON.stringify({
+      jobTitle: job.title,
+      company: job.company,
+      skills: job.tags,
+      description: job.description,
+    })
+  )
   router.push('/interview-prep')
 }
 
-const isUserSkill = (skill) => {
+const isUserSkill = skill => {
   const profile = unifiedProfile.jobSearchProfile.value
-  const userSkills = Array.isArray(profile.skills) ? profile.skills.map(s => s.toLowerCase()) : []
+  const userSkills = Array.isArray(profile.skills)
+    ? profile.skills.map(s => s.toLowerCase())
+    : []
   return userSkills.includes(skill.toLowerCase())
 }
 
-const extractSalaryNumber = (salaryString) => {
+const extractSalaryNumber = salaryString => {
   if (!salaryString) return 0
   const numbers = salaryString.match(/[\d,]+/g)
   if (!numbers) return 0
   return parseInt(numbers[0].replace(/,/g, '')) || 0
 }
 
-const getMatchScoreClass = (score) => {
+const getMatchScoreClass = score => {
   if (score >= 90) return 'score-excellent'
   if (score >= 75) return 'score-good'
   if (score >= 60) return 'score-fair'
@@ -1453,7 +1917,7 @@ const searchForm = ref({
   datePosted: 'all',
   gamingOnly: false,
   savedJobsOnly: false,
-  remote: false
+  remote: false,
 })
 
 // Computed properties
@@ -1475,19 +1939,24 @@ const {
   saveJob,
   unsaveJob,
   isJobSaved,
-  getProviderStatus
+  getProviderStatus,
 } = jobBoard
 
-  const providerStatus = computed(() => getProviderStatus())
-  const providerCount = computed(() => Object.keys(providerStatus.value).filter(p => providerStatus.value[p].enabled).length)
-  
-  // Collapsible sections
-  const showQuickFilters = ref(true)
-  const showAdvancedFilters = ref(false)
+const providerStatus = computed(() => getProviderStatus())
+const providerCount = computed(
+  () =>
+    Object.keys(providerStatus.value).filter(
+      p => providerStatus.value[p].enabled
+    ).length
+)
+
+// Collapsible sections
+const showQuickFilters = ref(true)
+const showAdvancedFilters = ref(false)
 
 const sortedJobs = computed(() => {
   const jobs = [...filteredJobs.value]
-  
+
   switch (sortBy.value) {
     case 'date':
       return jobs.sort((a, b) => {
@@ -1511,8 +1980,8 @@ const sortedJobs = computed(() => {
 // Quick filters (local-only refinement without extra API calls)
 const quickFilters = ref({
   seniority: '', // 'junior' | 'mid' | 'senior' | 'lead'
-  jobType: '',   // 'full-time' | 'contract' | 'part-time' | 'internship'
-  salaryMin: 0
+  jobType: '', // 'full-time' | 'contract' | 'part-time' | 'internship'
+  salaryMin: 0,
 })
 
 // View + pagination state
@@ -1524,21 +1993,40 @@ const currentPage = ref(1)
 const advancedFilters = ref({
   onlyWithSalary: false,
   excludeInternships: false,
-  companyIncludes: ''
+  companyIncludes: '',
 })
 
 const activeQuickFilters = computed(() => {
   const items = []
-  if (quickFilters.value.seniority) items.push({ key: 'seniority', label: capitalize(quickFilters.value.seniority), icon: 'UserIcon-badge' })
-  if (quickFilters.value.jobType) items.push({ key: 'jobType', label: formatJobType(quickFilters.value.jobType), icon: 'mdi-briefcase' })
-  if (quickFilters.value.salaryMin) items.push({ key: 'salaryMin', label: `≥ $${quickFilters.value.salaryMin/1000}k`, icon: 'mdi-cash' })
+  if (quickFilters.value.seniority)
+    items.push({
+      key: 'seniority',
+      label: capitalize(quickFilters.value.seniority),
+      icon: 'UserIcon-badge',
+    })
+  if (quickFilters.value.jobType)
+    items.push({
+      key: 'jobType',
+      label: formatJobType(quickFilters.value.jobType),
+      icon: 'mdi-briefcase',
+    })
+  if (quickFilters.value.salaryMin)
+    items.push({
+      key: 'salaryMin',
+      label: `≥ $${quickFilters.value.salaryMin / 1000}k`,
+      icon: 'mdi-cash',
+    })
   return items
 })
 
-const capitalize = (s = '') => s ? s.charAt(0).toUpperCase() + s.slice(1) : ''
+const capitalize = (s = '') => (s ? s.charAt(0).toUpperCase() + s.slice(1) : '')
 
-const clearQuickFilter = (key) => { quickFilters.value[key] = key === 'salaryMin' ? 0 : '' }
-const clearAllQuickFilters = () => { quickFilters.value = { seniority: '', jobType: '', salaryMin: 0 } }
+const clearQuickFilter = key => {
+  quickFilters.value[key] = key === 'salaryMin' ? 0 : ''
+}
+const clearAllQuickFilters = () => {
+  quickFilters.value = { seniority: '', jobType: '', salaryMin: 0 }
+}
 
 // Hidden jobs (persist locally)
 const hiddenJobIds = ref(new Set())
@@ -1572,44 +2060,62 @@ function pushAssistantContext() {
       topMatches: topMatches.value.length,
       providersActive: providerCount.value,
     },
-    selectedJob: selectedJob.value ? {
-      id: selectedJob.value.id,
-      title: selectedJob.value.title,
-      company: selectedJob.value.company,
-      location: selectedJob.value.location,
-    } : null,
+    selectedJob: selectedJob.value
+      ? {
+          id: selectedJob.value.id,
+          title: selectedJob.value.title,
+          company: selectedJob.value.company,
+          location: selectedJob.value.location,
+        }
+      : null,
   }
   setPageContext(ctx)
 }
 
 onMounted(pushAssistantContext)
-watch([
-  () => searchForm.value.query,
-  () => searchForm.value.location,
-  () => searchForm.value.type,
-  () => searchForm.value.datePosted,
-  () => searchForm.value.gamingOnly,
-  () => searchForm.value.savedJobsOnly,
-  () => searchForm.value.remote,
-  () => quickFilters.value.seniority,
-  () => quickFilters.value.jobType,
-  () => quickFilters.value.salaryMin,
-  () => advancedFilters.value.companyIncludes,
-  () => advancedFilters.value.onlyWithSalary,
-  () => advancedFilters.value.excludeInternships,
-  viewMode,
-  resultsPerPage,
-  selectedJob,
-], pushAssistantContext, { deep: false })
+watch(
+  [
+    () => searchForm.value.query,
+    () => searchForm.value.location,
+    () => searchForm.value.type,
+    () => searchForm.value.datePosted,
+    () => searchForm.value.gamingOnly,
+    () => searchForm.value.savedJobsOnly,
+    () => searchForm.value.remote,
+    () => quickFilters.value.seniority,
+    () => quickFilters.value.jobType,
+    () => quickFilters.value.salaryMin,
+    () => advancedFilters.value.companyIncludes,
+    () => advancedFilters.value.onlyWithSalary,
+    () => advancedFilters.value.excludeInternships,
+    viewMode,
+    resultsPerPage,
+    selectedJob,
+  ],
+  pushAssistantContext,
+  { deep: false }
+)
 
-onUnmounted(() => { clearPageContext() })
+onUnmounted(() => {
+  clearPageContext()
+})
 
-watch(hiddenJobIds, (set) => {
-  try { localStorage.setItem(HIDDEN_KEY, JSON.stringify(Array.from(set))) } catch {}
-}, { deep: true })
+watch(
+  hiddenJobIds,
+  set => {
+    try {
+      localStorage.setItem(HIDDEN_KEY, JSON.stringify(Array.from(set)))
+    } catch {}
+  },
+  { deep: true }
+)
 
-const hideJob = (id) => { hiddenJobIds.value.add(id) }
-const clearHiddenJobs = () => { hiddenJobIds.value.clear() }
+const hideJob = id => {
+  hiddenJobIds.value.add(id)
+}
+const clearHiddenJobs = () => {
+  hiddenJobIds.value.clear()
+}
 
 // Final display list after local filters
 const displayJobs = computed(() => {
@@ -1625,14 +2131,22 @@ const displayJobs = computed(() => {
   }
   if (quickFilters.value.seniority) {
     const s = quickFilters.value.seniority
-    const pat = s === 'junior' ? /(junior|entry|level\s*1)/i
-              : s === 'mid' ? /(mid|intermediate|level\s*2)/i
-              : s === 'senior' ? /(senior|sr\.|lead|principal|staff|level\s*[34])/i
-              : /(lead|principal|staff)/i
-    list = list.filter(j => pat.test(j.title || '') || pat.test(j.description || ''))
+    const pat =
+      s === 'junior'
+        ? /(junior|entry|level\s*1)/i
+        : s === 'mid'
+          ? /(mid|intermediate|level\s*2)/i
+          : s === 'senior'
+            ? /(senior|sr\.|lead|principal|staff|level\s*[34])/i
+            : /(lead|principal|staff)/i
+    list = list.filter(
+      j => pat.test(j.title || '') || pat.test(j.description || '')
+    )
   }
   if (quickFilters.value.salaryMin) {
-    list = list.filter(j => extractSalaryNumber(j.salary) >= quickFilters.value.salaryMin)
+    list = list.filter(
+      j => extractSalaryNumber(j.salary) >= quickFilters.value.salaryMin
+    )
   }
 
   // Advanced refinements
@@ -1640,7 +2154,9 @@ const displayJobs = computed(() => {
     list = list.filter(j => !!extractSalaryNumber(j.salary))
   }
   if (advancedFilters.value.excludeInternships) {
-    list = list.filter(j => !/(intern|internship)/i.test(`${j.title || ''} ${j.type || ''}`))
+    list = list.filter(
+      j => !/(intern|internship)/i.test(`${j.title || ''} ${j.type || ''}`)
+    )
   }
   if (advancedFilters.value.companyIncludes?.trim()) {
     const q = advancedFilters.value.companyIncludes.trim().toLowerCase()
@@ -1666,7 +2182,7 @@ const searchJobs = async () => {
   await performSearch(base)
 }
 
-const setQuickSearch = (suggestion) => {
+const setQuickSearch = suggestion => {
   searchForm.value.query = suggestion
   searchJobs()
 }
@@ -1694,7 +2210,7 @@ const clearFilters = () => {
     datePosted: 'all',
     gamingOnly: false,
     savedJobsOnly: false,
-    remote: false
+    remote: false,
   }
   searchJobs()
 }
@@ -1707,7 +2223,7 @@ const refreshJobs = async () => {
     console.log('Jobs refreshed:', {
       total: totalJobs.value,
       filtered: filteredJobs.value.length,
-      providers: Object.keys(providerStatus.value).length
+      providers: Object.keys(providerStatus.value).length,
     })
   } finally {
     refreshing.value = false
@@ -1727,7 +2243,7 @@ const initializeJobSearch = async () => {
   }
 }
 
-const toggleSaveJob = async (job) => {
+const toggleSaveJob = async job => {
   if (isJobSaved(job.id)) {
     await unsaveJob(job.id)
   } else {
@@ -1735,33 +2251,33 @@ const toggleSaveJob = async (job) => {
   }
 }
 
-const viewJobDetails = (job) => {
+const viewJobDetails = job => {
   selectedJob.value = job
 }
 
 // Event handlers for JobResultsGrid
-const handleJobApply = async (job) => {
+const handleJobApply = async job => {
   // Existing applyToJob logic or new implementation
   console.log('Applying to job:', job.title)
   // You can add actual apply logic here
 }
 
-const handleJobSave = (job) => {
+const handleJobSave = job => {
   // Use existing save functionality
   toggleSaveJob(job)
 }
 
-const handleAddToCompare = (job) => {
+const handleAddToCompare = job => {
   // Use existing comparison functionality
   toggleComparison(job)
 }
 
-const handleShareJob = async (job) => {
+const handleShareJob = async job => {
   // Use existing share functionality
   await shareJob(job)
 }
 
-const handleReportJob = (job) => {
+const handleReportJob = job => {
   console.log('Reporting job:', job.title)
   // Add report functionality here
 }
@@ -1783,7 +2299,9 @@ const analyzeSelectedJob = async (mode = 'match') => {
 
     // Predict salary and gather insights
     aiSalaryData.value = await aiJobService.predictSalary(selectedJob.value)
-    aiInsightsData.value = await aiJobService.analyzeJobInsights(selectedJob.value)
+    aiInsightsData.value = await aiJobService.analyzeJobInsights(
+      selectedJob.value
+    )
 
     showAIAnalysis.value = true
   } catch (e) {
@@ -1794,7 +2312,7 @@ const analyzeSelectedJob = async (mode = 'match') => {
   }
 }
 
-const handleItemsPerPageChange = (newSize) => {
+const handleItemsPerPageChange = newSize => {
   resultsPerPage.value = newSize
   currentPage.value = 1 // Reset to first page when changing page size
 }
@@ -1833,7 +2351,16 @@ onMounted(async () => {
 })
 
 watch([viewMode, resultsPerPage, currentPage], ([mode, size, page]) => {
-  try { localStorage.setItem(PREFS_KEY, JSON.stringify({ viewMode: mode, resultsPerPage: size, currentPage: page })) } catch {}
+  try {
+    localStorage.setItem(
+      PREFS_KEY,
+      JSON.stringify({
+        viewMode: mode,
+        resultsPerPage: size,
+        currentPage: page,
+      })
+    )
+  } catch {}
 })
 
 // Persist collapsible panel UI state (independent key to avoid overwrites)
@@ -1844,53 +2371,70 @@ onMounted(() => {
     const raw = localStorage.getItem(FILTER_UI_KEY)
     if (raw) {
       const ui = JSON.parse(raw)
-      if (typeof ui?.showQuickFilters === 'boolean') showQuickFilters.value = ui.showQuickFilters
-      if (typeof ui?.showAdvancedFilters === 'boolean') showAdvancedFilters.value = ui.showAdvancedFilters
+      if (typeof ui?.showQuickFilters === 'boolean')
+        showQuickFilters.value = ui.showQuickFilters
+      if (typeof ui?.showAdvancedFilters === 'boolean')
+        showAdvancedFilters.value = ui.showAdvancedFilters
     }
   } catch {}
 })
 
 watch([showQuickFilters, showAdvancedFilters], ([q, a]) => {
-  try { localStorage.setItem(FILTER_UI_KEY, JSON.stringify({ showQuickFilters: q, showAdvancedFilters: a })) } catch {}
+  try {
+    localStorage.setItem(
+      FILTER_UI_KEY,
+      JSON.stringify({ showQuickFilters: q, showAdvancedFilters: a })
+    )
+  } catch {}
 })
 
 // Debounced search on query change
 const debouncedSearch = useDebounceFn(() => searchJobs(), 400)
-watch(() => searchForm.value.query, () => debouncedSearch())
+watch(
+  () => searchForm.value.query,
+  () => debouncedSearch()
+)
 
 // Reset to first page when search criteria change
-watch([
-  () => searchForm.value.query,
-  () => searchForm.value.location,
-  () => searchForm.value.type,
-  () => searchForm.value.datePosted,
-  () => searchForm.value.gamingOnly,
-  () => searchForm.value.savedJobsOnly,
-  () => searchForm.value.remote,
-  () => quickFilters.value.seniority,
-  () => quickFilters.value.jobType,
-  () => quickFilters.value.salaryMin,
-  () => advancedFilters.value.companyIncludes,
-  () => advancedFilters.value.onlyWithSalary,
-  () => advancedFilters.value.excludeInternships
-], () => {
-  currentPage.value = 1 // Reset to first page when filters change
-})
+watch(
+  [
+    () => searchForm.value.query,
+    () => searchForm.value.location,
+    () => searchForm.value.type,
+    () => searchForm.value.datePosted,
+    () => searchForm.value.gamingOnly,
+    () => searchForm.value.savedJobsOnly,
+    () => searchForm.value.remote,
+    () => quickFilters.value.seniority,
+    () => quickFilters.value.jobType,
+    () => quickFilters.value.salaryMin,
+    () => advancedFilters.value.companyIncludes,
+    () => advancedFilters.value.onlyWithSalary,
+    () => advancedFilters.value.excludeInternships,
+  ],
+  () => {
+    currentPage.value = 1 // Reset to first page when filters change
+  }
+)
 
 // Highlight search matches in text
-const escapeHtml = (s = '') => s
-  .replace(/&/g, '&amp;')
-  .replace(/</g, '&lt;')
-  .replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;')
-  .replace(/'/g, '&#39;')
+const escapeHtml = (s = '') =>
+  s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
 
 const highlight = (text = '') => {
   const q = (searchForm.value.query || '').trim()
   if (!q) return escapeHtml(text)
   const words = Array.from(new Set(q.split(/\s+/).filter(Boolean))).slice(0, 6)
   if (!words.length) return escapeHtml(text)
-  const pattern = new RegExp(`(${words.map(w => w.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')).join('|')})`, 'gi')
+  const pattern = new RegExp(
+    `(${words.map(w => w.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')).join('|')})`,
+    'gi'
+  )
   return escapeHtml(text).replace(pattern, '<mark>$1</mark>')
 }
 
@@ -1931,15 +2475,14 @@ defineExpose({
   hideJob,
   visibleJobs,
   loadMoreJobs,
-  highlight
+  highlight,
 })
-
 </script>
 
 <style scoped>
 /* Compact Provider Status Styling */
 .provider-status-inline {
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
 }
@@ -1989,19 +2532,32 @@ defineExpose({
   align-items: end;
 }
 
-.filter-item .form-label.small { margin-bottom: 4px; font-size: 0.85rem; color: var(--text-secondary); }
-.filter-input { min-height: 38px; padding: 8px 10px; }
+.filter-item .form-label.small {
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.filter-input {
+  min-height: 38px;
+  padding: 8px 10px;
+}
 
 .filter-actions :deep(.unified-button),
 .filter-actions :deep(button),
-.filter-actions .btn { width: 100%; }
+.filter-actions .btn {
+  width: 100%;
+}
 
 @media (max-width: 1024px) {
-  .filter-actions { grid-column: 1 / -1; }
+  .filter-actions {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 640px) {
-  .filter-actions { grid-column: 1 / -1; }
+  .filter-actions {
+    grid-column: 1 / -1;
+  }
 }
 
 /* Collapsible filter sections */
@@ -2012,7 +2568,9 @@ defineExpose({
   backdrop-filter: var(--glass-backdrop-blur-sm);
 }
 
-.filter-section + .filter-section { margin-top: var(--spacing-2); }
+.filter-section + .filter-section {
+  margin-top: var(--spacing-2);
+}
 
 .filter-section-header {
   display: flex;
@@ -2034,9 +2592,13 @@ defineExpose({
   background: var(--glass-hover-bg);
 }
 
-.filter-section-header .toggle-icon { opacity: 0.7; }
+.filter-section-header .toggle-icon {
+  opacity: 0.7;
+}
 
-.filter-section-body { padding: 10px 12px 12px; }
+.filter-section-body {
+  padding: 10px 12px 12px;
+}
 
 /* Results toolbar + compact sort */
 .results-toolbar {
@@ -2045,15 +2607,40 @@ defineExpose({
   align-items: end;
 }
 
-.results-actions { display: flex; gap: var(--spacing-2); align-items: center; }
-.sort-select { min-width: 210px; min-height: 34px; padding: 6px 10px; }
-.per-page-select { min-width: 140px; min-height: 34px; padding: 6px 10px; }
-.view-toggle { display: inline-flex; gap: 6px; }
-.view-toggle .btn { min-height: 34px; display: inline-flex; align-items: center; gap: 6px; }
+.results-actions {
+  display: flex;
+  gap: var(--spacing-2);
+  align-items: center;
+}
+.sort-select {
+  min-width: 210px;
+  min-height: 34px;
+  padding: 6px 10px;
+}
+.per-page-select {
+  min-width: 140px;
+  min-height: 34px;
+  padding: 6px 10px;
+}
+.view-toggle {
+  display: inline-flex;
+  gap: 6px;
+}
+.view-toggle .btn {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 
 @media (max-width: 640px) {
-  .results-actions { justify-content: flex-start; }
-  .sort-select, .per-page-select { min-width: 100%; }
+  .results-actions {
+    justify-content: flex-start;
+  }
+  .sort-select,
+  .per-page-select {
+    min-width: 100%;
+  }
 }
 
 /* Compact active filters */
@@ -2077,7 +2664,9 @@ defineExpose({
 }
 
 /* List view forces single column */
-.job-grid.list-view { grid-template-columns: 1fr !important; }
+.job-grid.list-view {
+  grid-template-columns: 1fr !important;
+}
 
 .filter-pill .clear-filter {
   background: none;
@@ -2183,8 +2772,13 @@ defineExpose({
   border-color: var(--color-primary-300);
 }
 
-.quick-chips .chip-label { align-self: center; }
-.quick-chips .chip-sep { opacity: 0.5; align-self: center; }
+.quick-chips .chip-label {
+  align-self: center;
+}
+.quick-chips .chip-sep {
+  opacity: 0.5;
+  align-self: center;
+}
 
 /* Enhanced Job Card Styling */
 .enhanced-job-card {
@@ -2221,30 +2815,33 @@ defineExpose({
 
 .enhanced-job-card.gaming-job {
   border-l: 4px solid var(--color-gaming);
-  background: linear-gradient(135deg, 
-    var(--glass-bg) 0%, 
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg) 0%,
     rgba(0, 255, 136, 0.03) 100%
   );
 }
 
 .enhanced-job-card.gaming-job:hover {
-  box-shadow: 
+  box-shadow:
     var(--shadow-2xl),
     0 0 20px rgba(0, 255, 136, 0.1);
 }
 
 .enhanced-job-card.saved-job {
   border-r: 4px solid var(--color-primary);
-  background: linear-gradient(135deg, 
-    var(--glass-bg) 0%, 
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg) 0%,
     rgba(59, 130, 246, 0.03) 100%
   );
 }
 
 .enhanced-job-card.top-match {
   border-t: 3px solid var(--color-success);
-  background: linear-gradient(135deg, 
-    var(--glass-bg) 0%, 
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg) 0%,
     rgba(34, 197, 94, 0.03) 100%
   );
 }
@@ -2327,7 +2924,7 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
 }
 
 .company-logo-img {
@@ -2341,7 +2938,7 @@ defineExpose({
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-lg);
   color: var(--text-primary-600);
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
 }
 
 /* Job Title Section */
@@ -2422,7 +3019,7 @@ defineExpose({
   align-items: center;
   gap: var(--spacing-2);
   padding: var(--spacing-2) var(--spacing-3);
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   transition: all var(--duration-fast) var(--easing-ease);
@@ -2528,7 +3125,7 @@ defineExpose({
   align-items: center;
   gap: var(--spacing-1);
   padding: var(--spacing-1) var(--spacing-3);
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
   color: var(--text-primary-600);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
@@ -2711,7 +3308,10 @@ defineExpose({
   margin: 0;
 }
 
-.job-tags .badge { font-size: var(--font-size-xs); padding: 2px 8px; }
+.job-tags .badge {
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+}
 
 .job-footer {
   border-t: 1px solid var(--border-subtle);
@@ -2766,11 +3366,11 @@ defineExpose({
   .job-grid {
     gap: var(--spacing-5);
   }
-  
+
   .enhanced-job-card {
     padding: var(--spacing-6);
   }
-  
+
   /* Grid utility handles responsive behavior */
 }
 
@@ -2779,15 +3379,15 @@ defineExpose({
   .job-grid {
     gap: var(--spacing-4);
   }
-  
+
   .header-main {
     gap: var(--spacing-3);
   }
-  
+
   .header-actions {
     gap: var(--spacing-2);
   }
-  
+
   .action-group.secondary-actions {
     flex-direction: column;
     gap: var(--spacing-1);
@@ -2799,42 +3399,42 @@ defineExpose({
   .job-grid {
     gap: var(--spacing-3);
   }
-  
+
   .enhanced-job-card {
     padding: var(--spacing-4);
   }
-  
+
   .header-main {
     flex-direction: column;
     gap: var(--spacing-3);
   }
-  
+
   .header-actions {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--spacing-2);
   }
-  
+
   .action-group {
     display: flex;
     flex-wrap: wrap;
   }
-  
+
   .job-metrics {
     gap: var(--spacing-2);
   }
-  
+
   .metric-card {
     padding: var(--spacing-2);
   }
-  
+
   .enhanced-job-footer {
     flex-direction: column;
     gap: var(--spacing-2);
     align-items: flex-start;
   }
-  
+
   .header-stats {
     gap: var(--spacing-2);
   }
@@ -2845,95 +3445,95 @@ defineExpose({
   .job-grid {
     gap: var(--spacing-2);
   }
-  
+
   .enhanced-job-card {
     padding: var(--spacing-3);
     border-radius: var(--radius-lg);
   }
-  
+
   .priority-indicators {
     gap: var(--spacing-1);
   }
-  
+
   .priority-badge {
     font-size: var(--font-size-2xs);
     padding: 2px var(--spacing-1);
   }
-  
+
   .company-logo-wrapper,
   .company-logo-placeholder {
     width: 40px;
     height: 40px;
   }
-  
+
   .enhanced-job-title {
     font-size: var(--font-size-lg);
   }
-  
+
   .header-actions {
     flex-direction: column;
     gap: var(--spacing-2);
     align-items: stretch;
   }
-  
+
   .action-group.primary-actions {
     order: 1;
   }
-  
+
   .action-group.secondary-actions {
     order: 2;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
   }
-  
+
   .apply-btn {
     width: 100%;
     justify-content: center;
   }
-  
+
   .job-metrics {
     grid-template-columns: 1fr;
     gap: var(--spacing-2);
   }
-  
+
   .metric-card {
     padding: var(--spacing-2);
     gap: var(--spacing-2);
   }
-  
+
   .skills-tags {
     gap: var(--spacing-1);
   }
-  
+
   .enhanced-skill-tag {
     font-size: var(--font-size-2xs);
     padding: 2px var(--spacing-2);
   }
-  
+
   .enhanced-job-footer {
     flex-direction: column;
     gap: var(--spacing-2);
     align-items: center;
     text-align: center;
   }
-  
+
   .score-indicator {
     width: 32px;
     height: 32px;
     font-size: var(--font-size-2xs);
   }
-  
+
   .header-stats {
     grid-template-columns: 1fr;
     gap: var(--spacing-2);
   }
-  
+
   .stat-card {
     padding: var(--spacing-2);
     min-width: auto;
   }
-  
+
   .job-board-header .section-header {
     flex-direction: column;
     gap: var(--spacing-3);
@@ -2946,26 +3546,26 @@ defineExpose({
   .enhanced-job-card {
     transition: none;
   }
-  
+
   .enhanced-job-card:hover {
     transform: none;
   }
-  
+
   .enhanced-skill-tag:hover {
     transform: none;
   }
-  
+
   .metric-card:hover {
-    background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+    background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
     border-color: var(--glass-border);
   }
-  
+
   /* Larger touch targets */
   .priority-badge {
     min-height: 32px;
     padding: var(--spacing-1) var(--spacing-3);
   }
-  
+
   .enhanced-skill-tag {
     min-height: 28px;
     padding: var(--spacing-1) var(--spacing-3);
@@ -2974,17 +3574,17 @@ defineExpose({
 
 /* Dark theme responsive adjustments */
 @media (max-width: 768px) {
-  [data-theme="dark"] .enhanced-job-card {
+  [data-theme='dark'] .enhanced-job-card {
     background: rgba(15, 15, 15, 0.9);
     border-color: rgba(255, 255, 255, 0.1);
   }
-  
-  [data-theme="dark"] .metric-card {
+
+  [data-theme='dark'] .metric-card {
     background: rgba(20, 20, 20, 0.8);
     border-color: rgba(255, 255, 255, 0.1);
   }
-  
-  [data-theme="dark"] .enhanced-skill-tag {
+
+  [data-theme='dark'] .enhanced-skill-tag {
     background: rgba(25, 25, 25, 0.8);
     border-color: rgba(255, 255, 255, 0.1);
   }
@@ -2993,13 +3593,14 @@ defineExpose({
 /* Gaming theme responsive enhancements */
 @media (max-width: 768px) {
   .theme-gaming .enhanced-job-card.gaming-job {
-    background: linear-gradient(135deg, 
-      rgba(15, 15, 15, 0.95) 0%, 
+    background: linear-gradient(
+      135deg,
+      rgba(15, 15, 15, 0.95) 0%,
       rgba(20, 35, 25, 0.95) 100%
     );
     border-l-color: rgba(0, 255, 136, 0.6);
   }
-  
+
   .theme-gaming .priority-badge.gaming {
     background: rgba(0, 255, 136, 0.15);
     border-color: rgba(0, 255, 136, 0.3);
@@ -3011,17 +3612,17 @@ defineExpose({
   .job-grid.list-view .enhanced-job-card {
     padding: var(--spacing-3);
   }
-  
+
   .job-grid.list-view .header-main {
     gap: var(--spacing-2);
   }
-  
+
   .job-grid.list-view .job-metrics {
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-1);
   }
-  
+
   .job-grid.list-view .metric-card {
     flex: 1;
     min-width: 100px;
@@ -3130,11 +3731,12 @@ defineExpose({
 }
 
 @keyframes pulse {
-  0%, 100% { 
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
-  50% { 
+  50% {
     transform: scale(1.05);
     opacity: 0.8;
   }
@@ -3192,7 +3794,7 @@ defineExpose({
 .enhanced-job-card:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
-  box-shadow: 
+  box-shadow:
     var(--shadow-2xl),
     0 0 0 4px var(--color-primary-bg);
 }
@@ -3238,16 +3840,16 @@ defineExpose({
   .enhanced-job-card {
     border-width: 2px;
   }
-  
+
   .priority-badge {
     border-width: 2px;
     font-weight: var(--font-weight-bold);
   }
-  
+
   .enhanced-skill-tag {
     border-width: 2px;
   }
-  
+
   .score-indicator {
     border-width: 3px;
     font-weight: var(--font-weight-black);
@@ -3263,11 +3865,11 @@ defineExpose({
     animation: none;
     transition-duration: 0.01ms;
   }
-  
+
   .enhanced-job-card:hover {
     transform: none;
   }
-  
+
   .score-indicator {
     animation: none;
   }
@@ -3282,51 +3884,51 @@ defineExpose({
     background: white;
     color: var(--text-primary-600);
   }
-  
+
   .priority-badge {
     background: white;
     border: 1px solid #000;
     color: var(--text-primary-600);
   }
-  
+
   .header-actions {
     display: none;
   }
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .glass-card {
+[data-theme='dark'] .glass-card {
   background: rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .enhanced-job-card:hover {
+[data-theme='dark'] .enhanced-job-card:hover {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] .enhanced-job-card:focus-visible {
+[data-theme='dark'] .enhanced-job-card:focus-visible {
   outline-color: rgba(59, 130, 246, 0.8);
-  box-shadow: 
+  box-shadow:
     0 8px 30px rgba(0, 0, 0, 0.3),
     0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
-[data-theme="dark"] .alert-item {
+[data-theme='dark'] .alert-item {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .alert-item:hover {
+[data-theme='dark'] .alert-item:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-[data-theme="dark"] .notification-item {
+[data-theme='dark'] .notification-item {
   background: rgba(59, 130, 246, 0.15);
   border-color: rgba(59, 130, 246, 0.3);
 }
 
-[data-theme="dark"] .notification-item:hover {
+[data-theme='dark'] .notification-item:hover {
   background: rgba(59, 130, 246, 0.2);
   border-color: rgba(59, 130, 246, 0.4);
 }
@@ -3380,19 +3982,31 @@ defineExpose({
 }
 
 .priority-badge.top-match {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 193, 7, 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.15),
+    rgba(255, 193, 7, 0.15)
+  );
   color: var(--color-warning-700);
   border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .priority-badge.gaming {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 217, 255, 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.15),
+    rgba(0, 217, 255, 0.15)
+  );
   color: var(--color-success-700);
   border: 1px solid rgba(0, 255, 136, 0.3);
 }
 
 .priority-badge.remote {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.15),
+    rgba(147, 51, 234, 0.15)
+  );
   color: var(--color-primary-700);
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
@@ -3534,7 +4148,7 @@ defineExpose({
   align-items: center;
   gap: var(--spacing-2);
   padding: var(--spacing-2) var(--spacing-3);
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   min-width: 120px;
@@ -3660,7 +4274,7 @@ defineExpose({
   margin-top: var(--spacing-4);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
   overflow: hidden;
 }
 
@@ -3907,7 +4521,7 @@ defineExpose({
   flex: 1;
   min-width: 200px;
   padding: var(--spacing-3);
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   position: relative;
@@ -4063,7 +4677,12 @@ defineExpose({
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
   animation: shimmer 1.5s infinite;
 }
 
@@ -4094,34 +4713,34 @@ defineExpose({
     flex-direction: column;
     gap: var(--spacing-3);
   }
-  
+
   .header-actions {
     justify-content: flex-end;
     width: 100%;
   }
-  
+
   .job-metrics {
     flex-direction: column;
   }
-  
+
   .comparison-content {
     padding: var(--spacing-4);
   }
-  
+
   .comparison-jobs {
     flex-direction: column;
   }
-  
+
   .comparison-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .bulk-operations-header {
     flex-direction: column;
     gap: var(--spacing-2);
     align-items: flex-start;
   }
-  
+
   .bulk-actions {
     flex-wrap: wrap;
   }
@@ -4131,26 +4750,26 @@ defineExpose({
   .priority-indicators {
     flex-wrap: wrap;
   }
-  
+
   .header-left {
     flex-direction: column;
     gap: var(--spacing-2);
   }
-  
+
   .job-company-info {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-1);
   }
-  
+
   .secondary-actions {
     opacity: 1; /* Always visible on mobile */
   }
-  
+
   .ai-insights-content {
     padding: var(--spacing-3);
   }
-  
+
   .job-notification {
     position: fixed;
     top: var(--spacing-4);
@@ -4160,43 +4779,51 @@ defineExpose({
 }
 
 /* Dark Theme Adjustments */
-[data-theme="dark"] .enhanced-job-card {
+[data-theme='dark'] .enhanced-job-card {
   background: rgba(255, 255, 255, 0.02);
 }
 
-[data-theme="dark"] .enhanced-job-card:hover {
+[data-theme='dark'] .enhanced-job-card:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="dark"] .metric-card {
+[data-theme='dark'] .metric-card {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .ai-insights-panel {
+[data-theme='dark'] .ai-insights-panel {
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .comparison-content {
+[data-theme='dark'] .comparison-content {
   background: var(--surface-base);
 }
 
-[data-theme="dark"] .bulk-operations-panel {
+[data-theme='dark'] .bulk-operations-panel {
   background: rgba(0, 0, 0, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Gaming Theme Enhancements */
 .theme-gaming .enhanced-job-card.gaming-job {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.03), rgba(0, 217, 255, 0.03));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.03),
+    rgba(0, 217, 255, 0.03)
+  );
   border-color: rgba(0, 255, 136, 0.2);
 }
 
 .theme-gaming .enhanced-job-card.gaming-job:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 217, 255, 0.08));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.08),
+    rgba(0, 217, 255, 0.08)
+  );
   border-color: rgba(0, 255, 136, 0.3);
-  box-shadow: 
+  box-shadow:
     var(--shadow-glass-xl),
     0 0 20px rgba(0, 255, 136, 0.1);
 }
@@ -4210,11 +4837,11 @@ defineExpose({
   .bulk-operations-panel {
     border-width: 2px;
   }
-  
+
   .priority-badge {
     border-width: 2px;
   }
-  
+
   .enhanced-skill-tag {
     border-width: 2px;
   }
@@ -4228,15 +4855,15 @@ defineExpose({
   .recommendation-item {
     transition: none;
   }
-  
+
   .enhanced-job-card:hover {
     transform: none;
   }
-  
+
   .job-notification {
     animation: none;
   }
-  
+
   .job-card-loading::after {
     animation: none;
   }

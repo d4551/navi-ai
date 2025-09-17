@@ -868,8 +868,8 @@
 }
 
 /* === THEME RESPONSIVE === */
-[data-theme="dark"] .glass-panel,
-[data-theme="dark"] .glass-card {
+[data-theme='dark'] .glass-panel,
+[data-theme='dark'] .glass-card {
   background: var(--glass-surface);
   border-color: var(--glass-border);
 }

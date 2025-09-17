@@ -2,8 +2,8 @@
   <div class="portfolio-grid font-sans" :class="gridClass">
     <!-- Loading State -->
     <div v-if="loading" class="loading-grid portfolio-grid">
-      <div 
-        v-for="i in loadingCount" 
+      <div
+        v-for="i in loadingCount"
         :key="`loading-${i}`"
         class="portfolio-skeleton"
       >
@@ -43,26 +43,31 @@
       <div v-if="selectedItems.length > 0" class="selection-header">
         <div class="selection-info">
           <Icon name="check-square" />
-          <span>{{ selectedItems.length }} item{{ selectedItems.length !== 1 ? 's' : '' }} selected</span>
+          <span
+            >{{ selectedItems.length }} item{{
+              selectedItems.length !== 1 ? 's' : ''
+            }}
+            selected</span
+          >
         </div>
         <div class="selection-actions">
-          <UnifiedButton 
-            size="sm" 
+          <UnifiedButton
+            size="sm"
             variant="outline"
             @click="$emit('clear-selection')"
           >
             Clear
           </UnifiedButton>
-          <UnifiedButton 
-            size="sm" 
+          <UnifiedButton
+            size="sm"
             variant="outline"
             @click="$emit('bulk-edit', selectedItems)"
           >
             <Icon name="edit" />
             Edit
           </UnifiedButton>
-          <UnifiedButton 
-            size="sm" 
+          <UnifiedButton
+            size="sm"
             variant="outline"
             @click="$emit('bulk-delete', selectedItems)"
           >
@@ -77,7 +82,9 @@
         name="portfolio-grid"
         tag="div"
         class="grid-items"
-        :class="{ 'portfolio-grid': viewMode === 'grid' || viewMode === 'masonry' }"
+        :class="{
+          'portfolio-grid': viewMode === 'grid' || viewMode === 'masonry',
+        }"
         appear
       >
         <PortfolioItemCard
@@ -87,10 +94,10 @@
           :view-mode="viewMode"
           :selection-mode="selectionMode"
           :selected="selectedItems.includes(item.id)"
-          :style="{ 
+          :style="{
             '--animation-delay': `${index * animationDelay}ms`,
             '--grid-column': getGridColumn(index),
-            '--grid-flex flex-wrap': getGridRow(index)
+            '--grid-flex flex-wrap': getGridRow(index),
           }"
           @select="handleItemSelect"
           @edit="$emit('edit', $event)"
@@ -116,7 +123,7 @@
       </div>
 
       <!-- Infinite Scroll Trigger -->
-      <div 
+      <div
         v-if="infiniteScroll && hasMore"
         ref="infiniteScrollTrigger"
         class="infinite-scroll-trigger"
@@ -125,7 +132,7 @@
 
     <!-- Floating Action Button -->
     <Teleport to="body">
-      <div 
+      <div
         v-if="showFab && !loading"
         class="floating-action-button"
         :class="{ 'fab--hidden': selectedItems.length > 0 }"
@@ -188,11 +195,12 @@ const _props = withDefaults(defineProps<Props>(), {
   showFab: true,
   showCreateButton: true,
   emptyTitle: 'No Portfolio Items',
-  emptyDescription: 'Start building your portfolio by creating your first item.',
+  emptyDescription:
+    'Start building your portfolio by creating your first item.',
   emptyIcon: 'folder',
   columns: 0, // 0 = auto
   gap: 24,
-  loadingMore: false
+  loadingMore: false,
 })
 
 const emit = defineEmits<{
@@ -218,9 +226,12 @@ const intersectionObserver = ref<any>(null)
 // Computed properties
 const loadingCount = computed(() => {
   switch (props.viewMode) {
-    case 'list': return 6
-    case 'timeline': return 4
-    default: return 8
+    case 'list':
+      return 6
+    case 'timeline':
+      return 4
+    default:
+      return 8
   }
 })
 
@@ -229,13 +240,13 @@ const gridClass = computed(() => [
   {
     'portfolio-grid--loading': props.loading,
     'portfolio-grid--selection': props.selectionMode,
-    'portfolio-grid--empty': !props.items.length && !props.loading
-  }
+    'portfolio-grid--empty': !props.items.length && !props.loading,
+  },
 ])
 
 const gridStyles = computed(() => {
   const styles: Record<string, string> = {
-    '--gap': `${props.gap}px`
+    '--gap': `${props.gap}px`,
   }
 
   if (props.columns > 0 && props.viewMode === 'grid') {
@@ -257,7 +268,10 @@ const hasMore = computed(() => {
 })
 
 const remainingCount = computed(() => {
-  return Math.max(0, props.items.length - currentPage.value * props.itemsPerPage)
+  return Math.max(
+    0,
+    props.items.length - currentPage.value * props.itemsPerPage
+  )
 })
 
 // Methods
@@ -299,7 +313,7 @@ const setupInfiniteScroll = () => {
     },
     {
       rootMargin: '100px',
-      threshold: 0.1
+      threshold: 0.1,
     }
   )
 
@@ -315,7 +329,7 @@ const cleanupInfiniteScroll = () => {
 // Watchers
 watch(
   () => props.infiniteScroll,
-  (enabled) => {
+  enabled => {
     if (enabled) {
       nextTick(() => setupInfiniteScroll())
     } else {
@@ -400,7 +414,7 @@ watch(
 }
 
 /* Custom columns override */
-.portfolio-grid--grid .grid-items[style*="--columns"] {
+.portfolio-grid--grid .grid-items[style*='--columns'] {
   grid-template-columns: repeat(var(--columns), 1fr);
 }
 
@@ -470,9 +484,11 @@ watch(
   text-align: center;
   padding: 6rem 2rem;
   min-height: 500px;
-  background: linear-gradient(135deg, 
-    rgba(124, 58, 237, 0.05) 0%, 
-    rgba(236, 72, 153, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.05) 0%,
+    rgba(236, 72, 153, 0.05) 100%
+  );
   border-radius: 2rem;
   border: 2px dashed rgba(255, 255, 255, 0.1);
   margin: 2rem 0;
@@ -508,9 +524,11 @@ watch(
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, 
-    rgba(124, 58, 237, 0.15) 0%, 
-    rgba(236, 72, 153, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.15) 0%,
+    rgba(236, 72, 153, 0.1) 100%
+  );
   border: 1px solid rgba(124, 58, 237, 0.4);
   border-radius: 1.25rem;
   padding: 1.25rem 2rem;
@@ -569,12 +587,14 @@ watch(
   border-radius: 50%;
   width: 4.5rem;
   height: 4.5rem;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(124, 58, 237, 0.3),
     0 2px 8px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(135deg, 
-    rgba(124, 58, 237, 1) 0%, 
-    rgba(236, 72, 153, 1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 1) 0%,
+    rgba(236, 72, 153, 1) 100%
+  );
   border: 2px solid rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
@@ -584,16 +604,18 @@ watch(
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, 
-    rgba(255, 255, 255, 0.3) 0%, 
-    transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .fab-button:hover {
   transform: scale(1.15);
-  box-shadow: 
+  box-shadow:
     0 16px 64px rgba(124, 58, 237, 0.5),
     0 4px 16px rgba(0, 0, 0, 0.3);
 }
@@ -604,7 +626,8 @@ watch(
 
 /* Animations */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.5;
   }
   50% {
@@ -655,27 +678,27 @@ watch(
   .loading-grid {
     gap: 1rem;
   }
-  
+
   .selection-header {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
   }
-  
+
   .selection-actions {
     justify-content: center;
   }
-  
+
   .empty-state {
     padding: 2rem 1rem;
     min-height: 300px;
   }
-  
+
   .floating-action-button {
     bottom: 1rem;
     right: 1rem;
   }
-  
+
   .fab-button {
     width: 3.5rem;
     height: 3.5rem;
@@ -687,11 +710,11 @@ watch(
     flex-direction: column;
     width: 100%;
   }
-  
+
   .empty-title {
     font-size: 1.25rem;
   }
-  
+
   .empty-description {
     font-size: 0.875rem;
   }
@@ -704,7 +727,7 @@ watch(
   .load-more-section {
     display: none;
   }
-  
+
   .portfolio-grid--grid .grid-items {
     gap: 1rem;
   }
@@ -719,11 +742,11 @@ watch(
   .fab-button {
     transition: none;
   }
-  
+
   .portfolio-skeleton {
     animation: none;
   }
-  
+
   .skeleton-media {
     animation: none;
   }
@@ -735,7 +758,7 @@ watch(
     background: rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.1);
   }
-  
+
   .skeleton-media {
     background: linear-gradient(
       90deg,
@@ -744,15 +767,15 @@ watch(
       rgba(0, 0, 0, 0.05) 100%
     );
   }
-  
+
   .skeleton-title {
     background: rgba(0, 0, 0, 0.1);
   }
-  
+
   .skeleton-text {
     background: rgba(0, 0, 0, 0.05);
   }
-  
+
   .skeleton-tag {
     background: rgba(0, 0, 0, 0.08);
   }

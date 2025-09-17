@@ -1,7 +1,5 @@
 module.exports = {
-  extends: [
-    'stylelint-config-standard',
-  ],
+  extends: ['stylelint-config-standard'],
   overrides: [
     {
       files: ['**/*.vue', '**/*.html'],
@@ -20,8 +18,9 @@ module.exports = {
     'selector-class-pattern': [
       '^[a-z][a-z0-9\-]*$',
       {
-        message: 'Expected class selector to be kebab-case (e.g., .glass-card, .section-header)'
-      }
+        message:
+          'Expected class selector to be kebab-case (e.g., .glass-card, .section-header)',
+      },
     ],
     // Enforce kebab-case for custom properties (CSS variables)
     'custom-property-pattern': null,

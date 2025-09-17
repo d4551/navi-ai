@@ -36,14 +36,17 @@
             <AppIcon name="mdi-chart-line" />
             Analysis Results
           </h4>
-          
+
           <div class="results-grid">
             <div class="result-card">
               <div class="result-header">
                 <AppIcon name="mdi-target" />
                 <span>ATS Compatibility</span>
               </div>
-              <div class="result-score" :class="getScoreClass(analysisResults.atsScore)">
+              <div
+                class="result-score"
+                :class="getScoreClass(analysisResults.atsScore)"
+              >
                 {{ analysisResults.atsScore }}%
               </div>
               <div class="result-description">
@@ -56,11 +59,16 @@
                 <AppIcon name="mdi-key-variant" />
                 <span>Keyword Match</span>
               </div>
-              <div class="result-score" :class="getScoreClass(analysisResults.keywordMatch)">
+              <div
+                class="result-score"
+                :class="getScoreClass(analysisResults.keywordMatch)"
+              >
                 {{ analysisResults.keywordMatch }}%
               </div>
               <div class="result-description">
-                {{ getScoreDescription(analysisResults.keywordMatch, 'keywords') }}
+                {{
+                  getScoreDescription(analysisResults.keywordMatch, 'keywords')
+                }}
               </div>
             </div>
 
@@ -69,11 +77,16 @@
                 <AppIcon name="mdi-format-text" />
                 <span>Content Quality</span>
               </div>
-              <div class="result-score" :class="getScoreClass(analysisResults.contentQuality)">
+              <div
+                class="result-score"
+                :class="getScoreClass(analysisResults.contentQuality)"
+              >
                 {{ analysisResults.contentQuality }}%
               </div>
               <div class="result-description">
-                {{ getScoreDescription(analysisResults.contentQuality, 'content') }}
+                {{
+                  getScoreDescription(analysisResults.contentQuality, 'content')
+                }}
               </div>
             </div>
           </div>
@@ -85,7 +98,7 @@
             <AppIcon name="mdi-lightbulb-outline" />
             AI Suggestions
           </h4>
-          
+
           <div class="suggestions-list">
             <div
               v-for="suggestion in suggestions"
@@ -97,7 +110,10 @@
                 <div class="suggestion-meta">
                   <AppIcon :name="getSuggestionIcon(suggestion.type)" />
                   <span class="suggestion-type">{{ suggestion.type }}</span>
-                  <span class="suggestion-priority" :class="suggestion.priority">
+                  <span
+                    class="suggestion-priority"
+                    :class="suggestion.priority"
+                  >
                     {{ suggestion.priority }}
                   </span>
                 </div>
@@ -132,7 +148,7 @@
             <AppIcon name="mdi-message-text-outline" />
             Ask AI Assistant
           </h4>
-          
+
           <div ref="chatMessagesRef" class="chat-messages">
             <div
               v-for="message in chatMessages"
@@ -141,18 +157,23 @@
               :class="message.role"
             >
               <div class="message-avatar">
-                <AppIcon 
-                  :name="message.role === 'user' ? 'mdi-account' : 'mdi-brain'" 
+                <AppIcon
+                  :name="message.role === 'user' ? 'mdi-account' : 'mdi-brain'"
                   size="16"
                 />
               </div>
               <div class="message-content">
-                <div class="message-text" v-html="formatMessage(message.text)"></div>
-                <div class="message-timestamp">{{ formatTimestamp(message.timestamp) }}</div>
+                <div
+                  class="message-text"
+                  v-html="formatMessage(message.text)"
+                ></div>
+                <div class="message-timestamp">
+                  {{ formatTimestamp(message.timestamp) }}
+                </div>
               </div>
             </div>
           </div>
-          
+
           <div class="chat-input">
             <textarea
               v-model="chatInput"
@@ -181,7 +202,7 @@
             <AppIcon name="mdi-lightning-bolt" />
             Quick Actions
           </h4>
-          
+
           <div class="actions-grid">
             <UnifiedButton
               variant="outline"
@@ -231,18 +252,10 @@
           </span>
         </div>
         <div class="footer-actions">
-          <UnifiedButton
-            variant="ghost"
-            size="sm"
-            @click="toggleChat"
-          >
+          <UnifiedButton variant="ghost" size="sm" @click="toggleChat">
             {{ showChat ? 'Hide Chat' : 'Show Chat' }}
           </UnifiedButton>
-          <UnifiedButton
-            variant="outline"
-            size="sm"
-            @click="$emit('close')"
-          >
+          <UnifiedButton variant="outline" size="sm" @click="$emit('close')">
             Close
           </UnifiedButton>
         </div>
@@ -266,8 +279,8 @@ const props = defineProps<{
 
 // Emits
 const emit = defineEmits<{
-  'close': []
-  'apply': [any]
+  close: []
+  apply: [any]
 }>()
 
 const toast = useToast()
@@ -316,34 +329,36 @@ const getScoreDescription = (score: number, type: string) => {
       excellent: 'Excellent ATS compatibility',
       good: 'Good ATS compatibility with minor improvements needed',
       fair: 'Moderate ATS compatibility, several improvements needed',
-      poor: 'Poor ATS compatibility, major improvements required'
+      poor: 'Poor ATS compatibility, major improvements required',
     },
     keywords: {
       excellent: 'Excellent keyword optimization',
       good: 'Good keyword coverage with room for improvement',
       fair: 'Moderate keyword usage, add more relevant terms',
-      poor: 'Poor keyword coverage, significant improvements needed'
+      poor: 'Poor keyword coverage, significant improvements needed',
     },
     content: {
       excellent: 'Excellent content quality and structure',
       good: 'Good content with minor enhancements possible',
       fair: 'Content needs improvement in clarity and impact',
-      poor: 'Content requires significant rewriting and restructuring'
-    }
+      poor: 'Content requires significant rewriting and restructuring',
+    },
   }
-  
+
   const scoreClass = getScoreClass(score)
-  return descriptions[type as keyof typeof descriptions][scoreClass as keyof typeof descriptions.ats]
+  return descriptions[type as keyof typeof descriptions][
+    scoreClass as keyof typeof descriptions.ats
+  ]
 }
 
 const getSuggestionIcon = (type: string) => {
   const icons = {
-    'summary': 'mdi-text-box-outline',
-    'experience': 'mdi-briefcase-outline',
-    'skills': 'mdi-cog-outline',
-    'format': 'mdi-format-text',
-    'keywords': 'mdi-key-variant',
-    'general': 'mdi-lightbulb-outline'
+    summary: 'mdi-text-box-outline',
+    experience: 'mdi-briefcase-outline',
+    skills: 'mdi-cog-outline',
+    format: 'mdi-format-text',
+    keywords: 'mdi-key-variant',
+    general: 'mdi-lightbulb-outline',
   }
   return icons[type as keyof typeof icons] || 'mdi-lightbulb-outline'
 }
@@ -356,20 +371,20 @@ const applySuggestion = (suggestion: any) => {
 
 const sendChatMessage = async () => {
   if (!chatInput.value.trim() || aiProcessing.value) return
-  
+
   const message = {
     id: Date.now().toString(),
     role: 'user',
     text: chatInput.value,
-    timestamp: new Date()
+    timestamp: new Date(),
   }
-  
+
   chatMessages.value.push(message)
   const userMessage = chatInput.value
   chatInput.value = ''
-  
+
   aiProcessing.value = true
-  
+
   try {
     // Add typing indicator
     const typingMessage = {
@@ -377,41 +392,42 @@ const sendChatMessage = async () => {
       role: 'assistant',
       text: 'Thinking...',
       timestamp: new Date(),
-      isTyping: true
+      isTyping: true,
     }
     chatMessages.value.push(typingMessage)
-    
+
     await nextTick()
     scrollToBottom()
-    
+
     // Use canonical AI service
     const response = await ai.generateText(
       `Context: ${JSON.stringify(props.context)}\n\nUser question: ${userMessage}`,
       { temperature: 0.7 }
     )
-    
+
     // Remove typing indicator
     const typingIndex = chatMessages.value.findIndex(m => m.id === 'typing')
     if (typingIndex !== -1) {
       chatMessages.value.splice(typingIndex, 1)
     }
-    
+
     // Add AI response
     const aiMessage = {
       id: Date.now().toString(),
       role: 'assistant',
-      text: response.content || 'I apologize, but I encountered an issue processing your request.',
-      timestamp: new Date()
+      text:
+        response.content ||
+        'I apologize, but I encountered an issue processing your request.',
+      timestamp: new Date(),
     }
     chatMessages.value.push(aiMessage)
-    
   } catch (error) {
     // Remove typing indicator
     const typingIndex = chatMessages.value.findIndex(m => m.id === 'typing')
     if (typingIndex !== -1) {
       chatMessages.value.splice(typingIndex, 1)
     }
-    
+
     toast.error('Failed to get AI response')
     console.error('AI chat error:', error)
   } finally {
@@ -422,13 +438,15 @@ const sendChatMessage = async () => {
 }
 
 const formatMessage = (text: string) => {
-  return text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+  return text
+    .replace(/\n/g, '<br>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
 }
 
 const formatTimestamp = (timestamp: Date) => {
-  return timestamp.toLocaleTimeString('en-US', { 
-    hour: '2-digit', 
-    minute: '2-digit' 
+  return timestamp.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
   })
 }
 
@@ -449,15 +467,15 @@ const improveContent = async () => {
       `Please provide suggestions to improve this document content: ${JSON.stringify(props.context)}`,
       { temperature: 0.5 }
     )
-    
+
     suggestions.value.push({
       id: Date.now().toString(),
       type: 'general',
       priority: 'medium',
       text: response.content || 'Content improvement suggestions generated.',
-      applied: false
+      applied: false,
     })
-    
+
     toast.success('Content improvement suggestions generated')
   } catch (error) {
     toast.error('Failed to generate improvements')
@@ -470,16 +488,17 @@ const optimizeForJob = async () => {
   aiProcessing.value = true
   try {
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
+
     suggestions.value.push({
       id: Date.now().toString(),
       type: 'keywords',
       priority: 'high',
       text: 'Add more job-relevant keywords to improve ATS matching.',
-      example: 'Include specific technologies and skills mentioned in the job description.',
-      applied: false
+      example:
+        'Include specific technologies and skills mentioned in the job description.',
+      applied: false,
     })
-    
+
     toast.success('Job optimization suggestions generated')
   } catch (error) {
     toast.error('Failed to generate job optimization')
@@ -492,16 +511,16 @@ const enhanceWriting = async () => {
   aiProcessing.value = true
   try {
     await new Promise(resolve => setTimeout(resolve, 1500))
-    
+
     suggestions.value.push({
       id: Date.now().toString(),
       type: 'format',
       priority: 'medium',
       text: 'Improve sentence structure and use stronger action verbs.',
       example: 'Replace "Worked on" with "Developed", "Led", or "Implemented".',
-      applied: false
+      applied: false,
     })
-    
+
     toast.success('Writing enhancement suggestions generated')
   } catch (error) {
     toast.error('Failed to generate writing enhancements')
@@ -513,16 +532,16 @@ const enhanceWriting = async () => {
 const analyzeDocument = async () => {
   aiProcessing.value = true
   isAnalyzing.value = true
-  
+
   try {
     await new Promise(resolve => setTimeout(resolve, 3000))
-    
+
     analysisResults.value = {
       atsScore: Math.floor(Math.random() * 30) + 70,
       keywordMatch: Math.floor(Math.random() * 25) + 65,
-      contentQuality: Math.floor(Math.random() * 20) + 75
+      contentQuality: Math.floor(Math.random() * 20) + 75,
     }
-    
+
     // Generate comprehensive suggestions
     suggestions.value = [
       {
@@ -530,8 +549,9 @@ const analyzeDocument = async () => {
         type: 'summary',
         priority: 'high',
         text: 'Strengthen your professional summary with quantifiable achievements.',
-        example: 'Led a team of 5 developers to deliver project 2 weeks ahead of schedule.',
-        applied: false
+        example:
+          'Led a team of 5 developers to deliver project 2 weeks ahead of schedule.',
+        applied: false,
       },
       {
         id: '2',
@@ -539,7 +559,7 @@ const analyzeDocument = async () => {
         priority: 'medium',
         text: 'Add more specific metrics to your experience descriptions.',
         example: 'Increased user engagement by 35% through UI/UX improvements.',
-        applied: false
+        applied: false,
       },
       {
         id: '3',
@@ -547,10 +567,10 @@ const analyzeDocument = async () => {
         priority: 'low',
         text: 'Include trending technologies relevant to your target role.',
         example: 'Add TypeScript, Docker, or cloud technologies if applicable.',
-        applied: false
-      }
+        applied: false,
+      },
     ]
-    
+
     toast.success('Document analysis complete')
   } catch (error) {
     toast.error('Failed to analyze document')
@@ -567,7 +587,7 @@ onMounted(() => {
       id: 'welcome',
       role: 'assistant',
       text: `Hello! I'm here to help you improve your ${contextTypeLabel.value.toLowerCase()}. I can analyze your content, suggest improvements, and answer questions about best practices. How can I assist you today?`,
-      timestamp: new Date()
+      timestamp: new Date(),
     })
   }
 })
@@ -612,7 +632,11 @@ onMounted(() => {
   justify-content: space-between;
   padding: var(--spacing-5);
   border-bottom: 1px solid var(--glass-border);
-  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-gaming-50) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-50) 0%,
+    var(--color-gaming-50) 100%
+  );
 }
 
 .header-content {
@@ -969,8 +993,12 @@ onMounted(() => {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive Design */
@@ -978,29 +1006,29 @@ onMounted(() => {
   .ai-modal-overlay {
     padding: var(--spacing-2);
   }
-  
+
   .ai-modal {
     max-height: 95vh;
   }
-  
+
   .results-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .actions-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .modal-footer {
     flex-direction: column;
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .footer-actions {
     justify-content: space-between;
   }
-  
+
   .message-content {
     max-width: 85%;
   }

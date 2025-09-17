@@ -3,97 +3,102 @@
  * Replaces the broken complex pipeline with something that actually works
  */
 
-import { unifiedStorage } from "@/utils/storage";
-import { logger } from "@/shared/utils/logger";
-import { GAMING_STUDIOS } from "@/shared/constants/gaming-studios";
-import { TOP_100_GAMING_STUDIOS } from "@/data/top-100-gaming-studios";
+import { unifiedStorage } from '@/utils/storage'
+import { logger } from '@/shared/utils/logger'
+import { GAMING_STUDIOS } from '@/shared/constants/gaming-studios'
+import { TOP_100_GAMING_STUDIOS } from '@/data/top-100-gaming-studios'
 
 export interface SimpleStudio {
-  id: string;
-  name: string;
-  description?: string;
-  location?: string;
-  size?: string;
-  type?: string;
-  founded?: number;
-  games?: string[];
-  technologies?: string[];
-  website?: string;
-  dataSource?: string[];
-  lastUpdated: Date;
+  id: string
+  name: string
+  description?: string
+  location?: string
+  size?: string
+  type?: string
+  founded?: number
+  games?: string[]
+  technologies?: string[]
+  website?: string
+  dataSource?: string[]
+  lastUpdated: Date
 }
 
 export class SimpleStudioService {
-  
   /**
    * Import all studios from static sources + Steam data
    */
   async importAllStudios(includeLive = false): Promise<{
-    success: boolean;
-    total: number;
-    imported: number;
-    errors: string[];
+    success: boolean
+    total: number
+    imported: number
+    errors: string[]
   }> {
     const result = {
       success: false,
       total: 0,
       imported: 0,
-      errors: [] as string[]
-    };
+      errors: [] as string[],
+    }
 
     try {
-      logger.info('Starting simple studio import...');
-      
+      logger.info('Starting simple studio import...')
+
       // 1. Import from GAMING_STUDIOS constants
-      const gamingStudios = Object.values(GAMING_STUDIOS || {});
+      const gamingStudios = Object.values(GAMING_STUDIOS || {})
       for (const studio of gamingStudios) {
         try {
-          const simple = this.convertToSimpleStudio(studio as any, 'gaming-studios');
-          await this.storeStudio(simple);
-          result.imported++;
+          const simple = this.convertToSimpleStudio(
+            studio as any,
+            'gaming-studios'
+          )
+          await this.storeStudio(simple)
+          result.imported++
         } catch (_error) {
-          result.errors.push(`Gaming studio ${studio.name}: ${error.message}`);
+          result.errors.push(`Gaming studio ${studio.name}: ${error.message}`)
         }
       }
-      
+
       // 2. Import from TOP_100_GAMING_STUDIOS
       for (const studio of TOP_100_GAMING_STUDIOS || []) {
         try {
-          const simple = this.convertToSimpleStudio(studio as any, 'top-100');
-          await this.storeStudio(simple);
-          result.imported++;
+          const simple = this.convertToSimpleStudio(studio as any, 'top-100')
+          await this.storeStudio(simple)
+          result.imported++
         } catch (error) {
-          result.errors.push(`Top 100 studio ${studio.name}: ${error.message}`);
+          result.errors.push(`Top 100 studio ${studio.name}: ${error.message}`)
         }
       }
 
       // 3. Import from Steam (if requested and working)
       if (includeLive) {
         try {
-          const steamStudios = await this.fetchSteamStudios();
+          const steamStudios = await this.fetchSteamStudios()
           for (const studio of steamStudios) {
             try {
-              await this.storeStudio(studio);
-              result.imported++;
+              await this.storeStudio(studio)
+              result.imported++
             } catch (error) {
-              result.errors.push(`Steam studio ${studio.name}: ${error.message}`);
+              result.errors.push(
+                `Steam studio ${studio.name}: ${error.message}`
+              )
             }
           }
         } catch (_error) {
-          result.errors.push(`Steam fetch failed: ${error.message}`);
+          result.errors.push(`Steam fetch failed: ${error.message}`)
         }
       }
 
-      result.total = result.imported + result.errors.length;
-      result.success = result.imported > 0;
+      result.total = result.imported + result.errors.length
+      result.success = result.imported > 0
 
-      logger.info(`Simple studio import completed: ${result.imported}/${result.total} successful`);
-      return result;
-
+      logger.info(
+        `Simple studio import completed: ${result.imported}/${result.total} successful`
+      )
+      return result
     } catch (error) {
-      logger.error('Studio import failed:', error);
-      result.errors.push(`System error: ${error.message}`);
-      return result;
+      logger.error('Studio import failed:', error)
+      result.errors.push(`System error: ${error.message}`)
+      return result
     }
   }
 
@@ -102,7 +107,7 @@ export class SimpleStudioService {
    */
   private convertToSimpleStudio(studio: any, source: string): SimpleStudio {
     if (!studio.id) {
-      studio.id = this.generateId(studio.name);
+      studio.id = this.generateId(studio.name)
     }
 
     return {
@@ -114,11 +119,13 @@ export class SimpleStudioService {
       type: studio.type || 'Indie',
       founded: studio.founded || new Date().getFullYear(),
       games: Array.isArray(studio.games) ? studio.games.slice(0, 10) : [],
-      technologies: Array.isArray(studio.technologies) ? studio.technologies : [],
+      technologies: Array.isArray(studio.technologies)
+        ? studio.technologies
+        : [],
       website: studio.website,
       dataSource: [source],
-      lastUpdated: new Date()
-    };
+      lastUpdated: new Date(),
+    }
   }
 
   /**
@@ -129,7 +136,7 @@ export class SimpleStudioService {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
-      .slice(0, 50);
+      .slice(0, 50)
   }
 
   /**
@@ -137,18 +144,18 @@ export class SimpleStudioService {
    */
   private async storeStudio(studio: SimpleStudio): Promise<void> {
     if (!studio.id || !studio.name) {
-      throw new Error('Studio missing required fields');
+      throw new Error('Studio missing required fields')
     }
 
     // Check if already exists
-    const existing = await unifiedStorage.getStudio(studio.id);
+    const existing = await unifiedStorage.getStudio(studio.id)
     if (existing) {
       // Update existing
-      const merged = { ...existing, ...studio, lastUpdated: new Date() };
-      await unifiedStorage.upsertStudio(merged);
+      const merged = { ...existing, ...studio, lastUpdated: new Date() }
+      await unifiedStorage.upsertStudio(merged)
     } else {
       // Create new
-      await unifiedStorage.upsertStudio(studio);
+      await unifiedStorage.upsertStudio(studio)
     }
   }
 
@@ -157,14 +164,16 @@ export class SimpleStudioService {
    */
   private async fetchSteamStudios(): Promise<SimpleStudio[]> {
     try {
-      const { SteamDataSource } = await import("@/services/ingestion/SteamDataSource");
-      const steamSource = new SteamDataSource();
-      
+      const { SteamDataSource } = await import(
+        '@/services/ingestion/SteamDataSource'
+      )
+      const steamSource = new SteamDataSource()
+
       // Test connection
-      const canConnect = await steamSource.testConnection();
+      const canConnect = await steamSource.testConnection()
       if (!canConnect) {
-        logger.warn('Steam API not available');
-        return [];
+        logger.warn('Steam API not available')
+        return []
       }
 
       // Fetch limited data
@@ -175,13 +184,13 @@ export class SimpleStudioService {
         status: 'running' as const,
         progress: 0,
         errors: [],
-        metadata: { maxStudios: 5 } // Keep it small
-      };
+        metadata: { maxStudios: 5 }, // Keep it small
+      }
 
-      const rawStudios = await steamSource.fetchData(mockJob);
-      
+      const rawStudios = await steamSource.fetchData(mockJob)
+
       // Convert to SimpleStudio format
-      const simpleStudios: SimpleStudio[] = [];
+      const simpleStudios: SimpleStudio[] = []
       for (const raw of rawStudios || []) {
         if (raw.name && raw.confidence > 0.6) {
           simpleStudios.push({
@@ -196,17 +205,16 @@ export class SimpleStudioService {
             technologies: ['Unity', 'C#'],
             website: raw.websites?.[0],
             dataSource: ['steam'],
-            lastUpdated: new Date()
-          });
+            lastUpdated: new Date(),
+          })
         }
       }
 
-      logger.info(`Converted ${simpleStudios.length} studios from Steam`);
-      return simpleStudios;
-
+      logger.info(`Converted ${simpleStudios.length} studios from Steam`)
+      return simpleStudios
     } catch (error) {
-      logger.warn('Steam fetch failed:', error);
-      return [];
+      logger.warn('Steam fetch failed:', error)
+      return []
     }
   }
 
@@ -215,10 +223,10 @@ export class SimpleStudioService {
    */
   async getAllStudios(): Promise<SimpleStudio[]> {
     try {
-      return await unifiedStorage.getAllStudios() || [];
+      return (await unifiedStorage.getAllStudios()) || []
     } catch (error) {
-      logger.error('Failed to get all studios:', error);
-      return [];
+      logger.error('Failed to get all studios:', error)
+      return []
     }
   }
 
@@ -226,35 +234,35 @@ export class SimpleStudioService {
    * Get studio statistics
    */
   async getStatistics(): Promise<{
-    total: number;
-    bySource: Record<string, number>;
-    byType: Record<string, number>;
-    lastUpdated: string;
+    total: number
+    bySource: Record<string, number>
+    byType: Record<string, number>
+    lastUpdated: string
   }> {
-    const studios = await this.getAllStudios();
-    
-    const bySource: Record<string, number> = {};
-    const byType: Record<string, number> = {};
-    
+    const studios = await this.getAllStudios()
+
+    const bySource: Record<string, number> = {}
+    const byType: Record<string, number> = {}
+
     for (const studio of studios) {
       // Count by source
       if (studio.dataSource) {
         for (const source of studio.dataSource) {
-          bySource[source] = (bySource[source] || 0) + 1;
+          bySource[source] = (bySource[source] || 0) + 1
         }
       }
-      
+
       // Count by type
-      const type = studio.type || 'Unknown';
-      byType[type] = (byType[type] || 0) + 1;
+      const type = studio.type || 'Unknown'
+      byType[type] = (byType[type] || 0) + 1
     }
 
     return {
       total: studios.length,
       bySource,
       byType,
-      lastUpdated: new Date().toISOString()
-    };
+      lastUpdated: new Date().toISOString(),
+    }
   }
 
   /**
@@ -262,12 +270,12 @@ export class SimpleStudioService {
    */
   async clearAll(): Promise<void> {
     try {
-      await unifiedStorage.clear();
-      logger.info('All studios cleared');
+      await unifiedStorage.clear()
+      logger.info('All studios cleared')
     } catch (error) {
-      logger.error('Failed to clear studios:', error);
+      logger.error('Failed to clear studios:', error)
     }
   }
 }
 
-export const simpleStudioService = new SimpleStudioService();
+export const simpleStudioService = new SimpleStudioService()

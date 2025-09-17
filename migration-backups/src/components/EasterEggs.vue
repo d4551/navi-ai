@@ -3,7 +3,21 @@
     <!-- Hidden Gaming References -->
     <div v-if="showSecretMenu" class="secret-menu">
       <div class="secret-menu-content">
-        <h3><AppIcon name="mdi-gamepad-variant" color="gaming" context="gaming" aria-hidden="true" /> Secret Developer Menu <AppIcon name="mdi-gamepad-variant" color="gaming" context="gaming" aria-hidden="true" /></h3>
+        <h3>
+          <AppIcon
+            name="mdi-gamepad-variant"
+            color="gaming"
+            context="gaming"
+            aria-hidden="true"
+          />
+          Secret Developer Menu
+          <AppIcon
+            name="mdi-gamepad-variant"
+            color="gaming"
+            context="gaming"
+            aria-hidden="true"
+          />
+        </h3>
         <div class="secret-options">
           <UnifiedButton variant="gaming" size="sm" @click="activateMatrixMode">
             Matrix Mode
@@ -14,7 +28,11 @@
           <UnifiedButton variant="glass" size="sm" @click="activatePartyMode">
             Party Mode
           </UnifiedButton>
-          <UnifiedButton variant="ghost" size="sm" @click="showSecretMenu = false">
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            @click="showSecretMenu = false"
+          >
             Close
           </UnifiedButton>
         </div>
@@ -40,7 +58,10 @@
         <h4>[TARGET] Click Challenge!</h4>
         <p>Can you click {{ targetClicks }} times in {{ timeLeft }}s?</p>
         <div class="challenge-progress">
-          <div class="progress-bar" :style="{ width: `${(currentClicks / targetClicks) * 100}%` }"></div>
+          <div
+            class="progress-bar"
+            :style="{ width: `${(currentClicks / targetClicks) * 100}%` }"
+          ></div>
         </div>
         <div class="challenge-stats">
           {{ currentClicks }} / {{ targetClicks }}
@@ -50,7 +71,12 @@
 
     <!-- Hidden Studio References -->
     <div v-if="showStudioEggs" class="studio-easter-eggs">
-      <div v-for="egg in studioEggs" :key="egg.id" class="studio-egg" @click="revealStudioEgg(egg)">
+      <div
+        v-for="egg in studioEggs"
+        :key="egg.id"
+        class="studio-egg"
+        @click="revealStudioEgg(egg)"
+      >
         {{ egg.hint }}
       </div>
     </div>
@@ -79,16 +105,24 @@
 
     <!-- Sound Effects -->
     <audio ref="audioRef" preload="auto">
-      <source src="/sounds/achievement.mp3" type="audio/mpeg">
-      <source src="/sounds/level-up.wav" type="audio/wav">
+      <source src="/sounds/achievement.mp3" type="audio/mpeg" />
+      <source src="/sounds/level-up.wav" type="audio/wav" />
     </audio>
   </div>
 </template>
 
 <script lang="ts">
-import AppIcon from '@/components/ui/AppIcon.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
 
-import { ref, onMounted, onUnmounted, defineEmits, withDefaults, defineProps, defineExpose } from 'vue'
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  defineEmits,
+  withDefaults,
+  defineProps,
+  defineExpose,
+} from 'vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 // Props
@@ -99,7 +133,7 @@ interface Props {
 
 const _props = withDefaults(defineProps<Props>(), {
   enableSounds: true,
-  enableVisualEffects: true
+  enableVisualEffects: true,
 })
 
 // Emits
@@ -136,22 +170,75 @@ const audioRef = ref<HTMLAudioElement>()
 
 // Easter egg data
 const gamingQuotes = [
-  { id: 1, text: "A game is worth a thousand words.", source: "Sid Meier" },
-  { id: 2, text: "The best games are easy to learn and hard to master.", source: "Nolan Bushnell" },
-  { id: 3, text: "Players are artists who create their own reality within the game.", source: "Shigeru Miyamoto" },
-  { id: 4, text: "Good games give players meaningful choices.", source: "Sid Meier" },
-  { id: 5, text: "A game designer is an experience architect.", source: "Jesse Schell" },
-  { id: 6, text: "Games are the most elevated form of investigation.", source: "Albert Einstein" },
-  { id: 7, text: "The medium of games is interaction.", source: "Chris Crawford" },
-  { id: 8, text: "Play is the highest form of research.", source: "Albert Einstein" }
+  { id: 1, text: 'A game is worth a thousand words.', source: 'Sid Meier' },
+  {
+    id: 2,
+    text: 'The best games are easy to learn and hard to master.',
+    source: 'Nolan Bushnell',
+  },
+  {
+    id: 3,
+    text: 'Players are artists who create their own reality within the game.',
+    source: 'Shigeru Miyamoto',
+  },
+  {
+    id: 4,
+    text: 'Good games give players meaningful choices.',
+    source: 'Sid Meier',
+  },
+  {
+    id: 5,
+    text: 'A game designer is an experience architect.',
+    source: 'Jesse Schell',
+  },
+  {
+    id: 6,
+    text: 'Games are the most elevated form of investigation.',
+    source: 'Albert Einstein',
+  },
+  {
+    id: 7,
+    text: 'The medium of games is interaction.',
+    source: 'Chris Crawford',
+  },
+  {
+    id: 8,
+    text: 'Play is the highest form of research.',
+    source: 'Albert Einstein',
+  },
 ]
 
 const studioEggs = [
-  { id: 1, hint: "🐍 Hiss... Solid advice", studio: "Kojima Productions", revealed: false },
-  { id: 2, hint: "⚡ Sparks fly in the city of Rapture", studio: "2K Boston", revealed: false },
-  { id: 3, hint: "🧊 Winter is coming... for the undead", studio: "Naughty Dog", revealed: false },
-  { id: 4, hint: "🔫 Remember, no Russian", studio: "Infinity Ward", revealed: false },
-  { id: 5, hint: "🏰 A man chooses, a slave obeys", studio: "Irrational Games", revealed: false }
+  {
+    id: 1,
+    hint: '🐍 Hiss... Solid advice',
+    studio: 'Kojima Productions',
+    revealed: false,
+  },
+  {
+    id: 2,
+    hint: '⚡ Sparks fly in the city of Rapture',
+    studio: '2K Boston',
+    revealed: false,
+  },
+  {
+    id: 3,
+    hint: '🧊 Winter is coming... for the undead',
+    studio: 'Naughty Dog',
+    revealed: false,
+  },
+  {
+    id: 4,
+    hint: '🔫 Remember, no Russian',
+    studio: 'Infinity Ward',
+    revealed: false,
+  },
+  {
+    id: 5,
+    hint: '🏰 A man chooses, a slave obeys',
+    studio: 'Irrational Games',
+    revealed: false,
+  },
 ]
 
 // Konami code tracking
@@ -164,7 +251,7 @@ const activateMatrixMode = () => {
   setTimeout(() => {
     document.body.classList.remove('matrix-mode')
   }, 10000)
-  
+
   playSound('matrix')
   emit('easter-egg-found', { type: 'matrix', points: 100 })
 }
@@ -174,7 +261,7 @@ const activateRetroMode = () => {
   setTimeout(() => {
     document.body.classList.remove('retro-mode')
   }, 15000)
-  
+
   playSound('retro')
   emit('easter-egg-found', { type: 'retro', points: 150 })
 }
@@ -183,13 +270,13 @@ const activatePartyMode = () => {
   startFloatingIcons()
   startCursorTrail()
   document.body.classList.add('party-mode')
-  
+
   setTimeout(() => {
     stopFloatingIcons()
     stopCursorTrail()
     document.body.classList.remove('party-mode')
   }, 30000)
-  
+
   playSound('party')
   emit('easter-egg-found', { type: 'party', points: 200 })
 }
@@ -198,14 +285,14 @@ const startClickChallenge = () => {
   showClickChallenge.value = true
   currentClicks.value = 0
   timeLeft.value = 10
-  
+
   challengeTimer.value = setInterval(() => {
     timeLeft.value--
     if (timeLeft.value <= 0) {
       endClickChallenge()
     }
   }, 1000)
-  
+
   // Add click listener
   document.addEventListener('click', handleChallengeClick)
 }
@@ -216,12 +303,12 @@ const endClickChallenge = () => {
     clearInterval(challengeTimer.value)
   }
   document.removeEventListener('click', handleChallengeClick)
-  
+
   if (currentClicks.value >= targetClicks.value) {
     emit('achievement-unlocked', {
       name: 'Speed Clicker',
       description: `Clicked ${targetClicks.value} times in 10 seconds!`,
-      points: 300
+      points: 300,
     })
   }
 }
@@ -245,9 +332,9 @@ const startFloatingIcons = () => {
     'mdi mdi-heart',
     'mdi mdi-lightning-bolt',
     'mdi mdi-rocket',
-    'mdi mdi-diamond-stone'
+    'mdi mdi-diamond-stone',
   ]
-  
+
   const createFloatingIcon = () => {
     const icon = {
       id: Date.now() + Math.random(),
@@ -261,12 +348,12 @@ const startFloatingIcons = () => {
         animation: `floatIcon ${3 + Math.random() * 2}s ease-in-out infinite`,
         zIndex: 1000,
         pointerEvents: 'auto',
-        cursor: 'pointer'
-      }
+        cursor: 'pointer',
+      },
     }
-    
+
     floatingIcons.value.push(icon)
-    
+
     // Remove icon after animation
     setTimeout(() => {
       const index = floatingIcons.value.findIndex(i => i.id === icon.id)
@@ -275,7 +362,7 @@ const startFloatingIcons = () => {
       }
     }, 5000)
   }
-  
+
   // Create icons periodically
   const createIcon = () => {
     if (floatingIconsActive.value) {
@@ -303,10 +390,10 @@ const collectIcon = (icon: any) => {
 
 const startCursorTrail = () => {
   cursorTrailActive.value = true
-  
+
   const updateCursorTrail = (e: MouseEvent) => {
     if (!cursorTrailActive.value) return
-    
+
     const trail = {
       style: {
         position: 'fixed',
@@ -314,14 +401,14 @@ const startCursorTrail = () => {
         top: e.clientY + 'px',
         transform: 'translate(-50%, -50%)',
         pointerEvents: 'none',
-        zIndex: 999
-      }
+        zIndex: 999,
+      },
     }
-    
+
     cursorTrails.value[trailIndex.value] = trail
     trailIndex.value = (trailIndex.value + 1) % 10
   }
-  
+
   document.addEventListener('mousemove', updateCursorTrail)
 }
 
@@ -332,12 +419,13 @@ const stopCursorTrail = () => {
 
 const startGamingQuotes = () => {
   showGamingQuotes.value = true
-  
+
   const showNextQuote = () => {
-    const randomQuote = gamingQuotes[Math.floor(Math.random() * gamingQuotes.length)]
+    const randomQuote =
+      gamingQuotes[Math.floor(Math.random() * gamingQuotes.length)]
     currentQuote.value = randomQuote
   }
-  
+
   showNextQuote()
   quoteTimer.value = setInterval(showNextQuote, 8000)
 }
@@ -352,10 +440,10 @@ const stopGamingQuotes = () => {
 const revealStudioEgg = (egg: any) => {
   if (!egg.revealed) {
     egg.revealed = true
-    emit('easter-egg-found', { 
-      type: 'studio-reference', 
+    emit('easter-egg-found', {
+      type: 'studio-reference',
       studio: egg.studio,
-      points: 75 
+      points: 75,
     })
     playSound('reveal')
   }
@@ -378,14 +466,14 @@ const activateKonamiCode = () => {
   emit('achievement-unlocked', {
     name: 'Konami Master',
     description: 'Entered the legendary Konami Code!',
-    points: 500
+    points: 500,
   })
   playSound('konami')
 }
 
 const playSound = (_type: string) => {
   if (!props.enableSounds || !audioRef.value) return
-  
+
   // This would play different sounds based on type
   // audioRef.value.src = `/sounds/${type}.mp3`
   // audioRef.value.play()
@@ -395,11 +483,11 @@ const playSound = (_type: string) => {
 const randomEasterEggs = () => {
   // 1% chance every 30 seconds to show a random easter egg
   const random = Math.random()
-  
+
   if (random < 0.01) {
     const eggs = ['quotes', 'studio-eggs', 'click-challenge']
     const randomEgg = eggs[Math.floor(Math.random() * eggs.length)]
-    
+
     switch (randomEgg) {
       case 'quotes':
         startGamingQuotes()
@@ -407,7 +495,9 @@ const randomEasterEggs = () => {
         break
       case 'studio-eggs':
         showStudioEggs.value = true
-        setTimeout(() => { showStudioEggs.value = false }, 20000)
+        setTimeout(() => {
+          showStudioEggs.value = false
+        }, 20000)
         break
       case 'click-challenge':
         startClickChallenge()
@@ -421,17 +511,17 @@ const checkSpecialDates = () => {
   const now = new Date()
   const month = now.getMonth() + 1
   const day = now.getDate()
-  
+
   // April 1st - April Fool's
   if (month === 4 && day === 1) {
     activatePartyMode()
   }
-  
+
   // Halloween
   if (month === 10 && day === 31) {
     document.body.classList.add('halloween-mode')
   }
-  
+
   // Game developer appreciation day (would need to be defined)
   // etc.
 }
@@ -440,13 +530,13 @@ const checkSpecialDates = () => {
 onMounted(() => {
   // Set up event listeners
   document.addEventListener('keydown', handleKonamiCode)
-  
+
   // Random easter eggs timer
   const randomTimer = setInterval(randomEasterEggs, 30000)
-  
+
   // Check for special dates
   checkSpecialDates()
-  
+
   // Cleanup function
   onUnmounted(() => {
     document.removeEventListener('keydown', handleKonamiCode)
@@ -465,7 +555,7 @@ defineExpose({
   activatePartyMode,
   startClickChallenge,
   startGamingQuotes,
-  stopGamingQuotes
+  stopGamingQuotes,
 })
 </script>
 
@@ -524,7 +614,8 @@ defineExpose({
 }
 
 @keyframes floatIcon {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg);
     opacity: 0.7;
   }
@@ -711,8 +802,12 @@ defineExpose({
 }
 
 @keyframes rainbow {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
 :global(.halloween-mode) {

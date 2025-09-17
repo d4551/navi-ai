@@ -4,9 +4,9 @@
       <thead>
         <tr>
           <th class="col-select">
-            <input 
-              type="checkbox" 
-              :checked="allSelected" 
+            <input
+              type="checkbox"
+              :checked="allSelected"
               @change="toggleAllSelection"
             />
           </th>
@@ -18,39 +18,29 @@
             Location
             <AppIcon name="mdi-sort" class="sort-icon" />
           </th>
-          <th class="col-type" @click="$emit('sort', 'type')">
-            Type
-          </th>
-          <th class="col-size" @click="$emit('sort', 'size')">
-            Size
-          </th>
-          <th class="col-founded" @click="$emit('sort', 'founded')">
-            Founded
-          </th>
-          <th class="col-games">
-            Games
-          </th>
+          <th class="col-type" @click="$emit('sort', 'type')">Type</th>
+          <th class="col-size" @click="$emit('sort', 'size')">Size</th>
+          <th class="col-founded" @click="$emit('sort', 'founded')">Founded</th>
+          <th class="col-games">Games</th>
           <th class="col-ai-score" @click="$emit('sort', 'aiScore')">
             AI Score
           </th>
-          <th class="col-actions">
-            Actions
-          </th>
+          <th class="col-actions">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr 
-          v-for="studio in studios" 
+        <tr
+          v-for="studio in studios"
           :key="studio.id"
           class="studio-row"
-          :class="{ 
+          :class="{
             'row-selected': selectedStudios.includes(studio.id),
-            'row-favorite': favoriteStudios.includes(studio.id)
+            'row-favorite': favoriteStudios.includes(studio.id),
           }"
         >
           <td class="col-select">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               :checked="selectedStudios.includes(studio.id)"
               @change="$emit('toggle-selection', studio.id)"
             />
@@ -58,8 +48,15 @@
           <td class="col-studio">
             <div class="studio-cell">
               <div class="studio-logo">
-                <img v-if="studio.logo" :src="studio.logo" :alt="studio.name" @error="onLogoError" />
-                <div v-else class="logo-placeholder">{{ studio.name?.charAt(0) }}</div>
+                <img
+                  v-if="studio.logo"
+                  :src="studio.logo"
+                  :alt="studio.name"
+                  @error="onLogoError"
+                />
+                <div v-else class="logo-placeholder">
+                  {{ studio.name?.charAt(0) }}
+                </div>
               </div>
               <div class="studio-info">
                 <div class="studio-name">{{ studio.name }}</div>
@@ -73,7 +70,10 @@
             {{ studio.headquarters || studio.location || 'Unknown' }}
           </td>
           <td class="col-type">
-            <span v-if="(studio as any).type || (studio as any).category" class="type-badge">
+            <span
+              v-if="(studio as any).type || (studio as any).category"
+              class="type-badge"
+            >
               {{ (studio as any).type || (studio as any).category }}
             </span>
           </td>
@@ -92,22 +92,28 @@
             </div>
           </td>
           <td class="col-ai-score">
-            <div v-if="aiScores && aiScores[studio.id] !== undefined" class="ai-score-cell">
-              <div class="score-indicator" :class="getScoreClass(aiScores[studio.id])">
+            <div
+              v-if="aiScores && aiScores[studio.id] !== undefined"
+              class="ai-score-cell"
+            >
+              <div
+                class="score-indicator"
+                :class="getScoreClass(aiScores[studio.id])"
+              >
                 {{ Math.round(aiScores[studio.id]) }}
               </div>
             </div>
           </td>
           <td class="col-actions">
             <div class="action-buttons">
-              <button 
+              <button
                 class="action-btn favorite-btn"
                 :class="{ active: favoriteStudios.includes(studio.id) }"
                 @click="$emit('toggle-favorite', studio.id)"
               >
                 <AppIcon name="mdi-heart" />
               </button>
-              <button 
+              <button
                 class="action-btn details-btn"
                 @click="$emit('view-details', studio)"
               >
@@ -136,11 +142,14 @@ const emit = defineEmits<{
   'toggle-favorite': [studioId: string]
   'toggle-selection': [studioId: string]
   'view-details': [studio: any]
-  'sort': [column: string]
+  sort: [column: string]
 }>()
 
 const allSelected = computed(() => {
-  return props.studios.length > 0 && props.studios.every(s => props.selectedStudios.includes(s.id))
+  return (
+    props.studios.length > 0 &&
+    props.studios.every(s => props.selectedStudios.includes(s.id))
+  )
 })
 
 function toggleAllSelection() {
@@ -219,11 +228,19 @@ td {
 }
 
 .studio-row:hover {
-  background: color-mix(in srgb, var(--color-primary-500) 3%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 3%,
+    var(--glass-surface)
+  );
 }
 
 .studio-row.row-selected {
-  background: color-mix(in srgb, var(--color-primary-500) 8%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 8%,
+    var(--glass-surface)
+  );
 }
 
 .studio-row.row-favorite {
@@ -358,22 +375,43 @@ td {
 }
 
 /* Column widths */
-.col-select { width: 50px; text-align: center; }
-.col-studio { min-width: 250px; }
-.col-location { min-width: 150px; }
-.col-type { width: 100px; }
-.col-size { width: 120px; }
-.col-founded { width: 100px; }
-.col-games { min-width: 200px; }
-.col-ai-score { width: 100px; text-align: center; }
-.col-actions { width: 100px; text-align: center; }
+.col-select {
+  width: 50px;
+  text-align: center;
+}
+.col-studio {
+  min-width: 250px;
+}
+.col-location {
+  min-width: 150px;
+}
+.col-type {
+  width: 100px;
+}
+.col-size {
+  width: 120px;
+}
+.col-founded {
+  width: 100px;
+}
+.col-games {
+  min-width: 200px;
+}
+.col-ai-score {
+  width: 100px;
+  text-align: center;
+}
+.col-actions {
+  width: 100px;
+  text-align: center;
+}
 
 /* Dark theme adjustments */
-[data-theme="dark"] th {
+[data-theme='dark'] th {
   background: var(--surface-elevated);
 }
 
-[data-theme="dark"] .studio-logo {
+[data-theme='dark'] .studio-logo {
   background: var(--surface-elevated);
   border-color: var(--border-subtle);
 }

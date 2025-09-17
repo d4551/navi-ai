@@ -10,27 +10,29 @@
  * @returns {number} - Edit distance
  */
 export function levenshteinDistance(a, b) {
-  if (a.length === 0) return b.length;
-  if (b.length === 0) return a.length;
+  if (a.length === 0) return b.length
+  if (b.length === 0) return a.length
 
-  const matrix = Array(b.length + 1).fill().map(() => Array(a.length + 1).fill(0));
+  const matrix = Array(b.length + 1)
+    .fill()
+    .map(() => Array(a.length + 1).fill(0))
 
   // Initialize first column and row
-  for (let i = 0; i <= a.length; i++) matrix[0][i] = i;
-  for (let j = 0; j <= b.length; j++) matrix[j][0] = j;
+  for (let i = 0; i <= a.length; i++) matrix[0][i] = i
+  for (let j = 0; j <= b.length; j++) matrix[j][0] = j
 
   for (let j = 1; j <= b.length; j++) {
     for (let i = 1; i <= a.length; i++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1
       matrix[j][i] = Math.min(
-        matrix[j - 1][i] + 1,     // deletion
-        matrix[j][i - 1] + 1,     // insertion
+        matrix[j - 1][i] + 1, // deletion
+        matrix[j][i - 1] + 1, // insertion
         matrix[j - 1][i - 1] + cost // substitution
-      );
+      )
     }
   }
 
-  return matrix[b.length][a.length];
+  return matrix[b.length][a.length]
 }
 
 /**
@@ -40,10 +42,10 @@ export function levenshteinDistance(a, b) {
  * @returns {number} - Similarity score (0-100)
  */
 export function levenshteinSimilarity(a, b) {
-  const distance = levenshteinDistance(a.toLowerCase(), b.toLowerCase());
-  const maxLength = Math.max(a.length, b.length);
-  if (maxLength === 0) return 100;
-  return Math.round(((maxLength - distance) / maxLength) * 100);
+  const distance = levenshteinDistance(a.toLowerCase(), b.toLowerCase())
+  const maxLength = Math.max(a.length, b.length)
+  if (maxLength === 0) return 100
+  return Math.round(((maxLength - distance) / maxLength) * 100)
 }
 
 /**
@@ -60,74 +62,80 @@ export function enhancedFuzzyMatch(query, target, options = {}) {
     levenshteinWeight = 0.3,
     prefixWeight = 0.2,
     wordOrderWeight = 0.1,
-    minScore = 50
-  } = options;
+    minScore = 50,
+  } = options
 
-  const normalizedQuery = caseSensitive ? query : query.toLowerCase();
-  const normalizedTarget = caseSensitive ? target : target.toLowerCase();
+  const normalizedQuery = caseSensitive ? query : query.toLowerCase()
+  const normalizedTarget = caseSensitive ? target : target.toLowerCase()
 
   // Algorithm 1: Substring matching
-  let substringScore = 0;
+  let substringScore = 0
   if (normalizedTarget.includes(normalizedQuery)) {
-    const position = normalizedTarget.indexOf(normalizedQuery);
-    substringScore = 100 - (position / normalizedTarget.length) * 20; // Earlier matches score higher
+    const position = normalizedTarget.indexOf(normalizedQuery)
+    substringScore = 100 - (position / normalizedTarget.length) * 20 // Earlier matches score higher
   }
 
   // Algorithm 2: Levenshtein similarity
-  const levenshteinScore = levenshteinSimilarity(normalizedQuery, normalizedTarget);
+  const levenshteinScore = levenshteinSimilarity(
+    normalizedQuery,
+    normalizedTarget
+  )
 
   // Algorithm 3: Prefix matching
-  let prefixScore = 0;
+  let prefixScore = 0
   if (normalizedTarget.startsWith(normalizedQuery)) {
-    prefixScore = 100;
+    prefixScore = 100
   } else {
     // Partial prefix matching
-    let commonPrefix = 0;
-    const minLength = Math.min(normalizedQuery.length, normalizedTarget.length);
+    let commonPrefix = 0
+    const minLength = Math.min(normalizedQuery.length, normalizedTarget.length)
     for (let i = 0; i < minLength; i++) {
       if (normalizedQuery[i] === normalizedTarget[i]) {
-        commonPrefix++;
+        commonPrefix++
       } else {
-        break;
+        break
       }
     }
-    prefixScore = (commonPrefix / normalizedQuery.length) * 100;
+    prefixScore = (commonPrefix / normalizedQuery.length) * 100
   }
 
   // Algorithm 4: Word order matching
-  let wordOrderScore = 0;
-  const queryWords = normalizedQuery.split(/\s+/).filter(w => w.length > 0);
-  const targetWords = normalizedTarget.split(/\s+/).filter(w => w.length > 0);
-  
+  let wordOrderScore = 0
+  const queryWords = normalizedQuery.split(/\s+/).filter(w => w.length > 0)
+  const targetWords = normalizedTarget.split(/\s+/).filter(w => w.length > 0)
+
   if (queryWords.length > 0) {
-    let matchedWords = 0;
-    let orderBonus = 0;
-    let lastFoundIndex = -1;
+    let matchedWords = 0
+    let orderBonus = 0
+    let lastFoundIndex = -1
 
     for (const queryWord of queryWords) {
       for (let i = 0; i < targetWords.length; i++) {
-        if (targetWords[i].includes(queryWord) || queryWord.includes(targetWords[i])) {
-          matchedWords++;
+        if (
+          targetWords[i].includes(queryWord) ||
+          queryWord.includes(targetWords[i])
+        ) {
+          matchedWords++
           if (i > lastFoundIndex) {
-            orderBonus += 10; // Bonus for maintaining order
-            lastFoundIndex = i;
+            orderBonus += 10 // Bonus for maintaining order
+            lastFoundIndex = i
           }
-          break;
+          break
         }
       }
     }
-    
-    wordOrderScore = (matchedWords / queryWords.length) * 100 + orderBonus;
-    wordOrderScore = Math.min(wordOrderScore, 100);
+
+    wordOrderScore = (matchedWords / queryWords.length) * 100 + orderBonus
+    wordOrderScore = Math.min(wordOrderScore, 100)
   }
 
   // Weighted composite score
   const compositeScore = Math.round(
-    (substringScore * substringWeight) +
-    (levenshteinScore * levenshteinWeight) +
-    (prefixScore * prefixWeight) +
-    (wordOrderScore * wordOrderWeight)
-  );
+    substringScore * substringWeight +
+      levenshteinScore * levenshteinWeight +
+      prefixScore * prefixWeight +
+      wordOrderScore * wordOrderWeight
+  )
 
   return {
     score: compositeScore,
@@ -137,10 +145,10 @@ export function enhancedFuzzyMatch(query, target, options = {}) {
       levenshtein: Math.round(levenshteinScore),
       prefix: Math.round(prefixScore),
       wordOrder: Math.round(wordOrderScore),
-      composite: compositeScore
+      composite: compositeScore,
     },
-    algorithm: 'enhanced-fuzzy'
-  };
+    algorithm: 'enhanced-fuzzy',
+  }
 }
 
 /**
@@ -153,33 +161,33 @@ export function enhancedFuzzyMatch(query, target, options = {}) {
 export function fuzzySearch(query, items, options = {}) {
   const {
     keys = ['name'], // Fields to search in
-    threshold = 60,   // Minimum score threshold
-    limit = 10,       // Maximum results to return
-    tieBreaker = 'levenshtein' // 'levenshtein' or 'length' or 'alphabetical'
-  } = options;
+    threshold = 60, // Minimum score threshold
+    limit = 10, // Maximum results to return
+    tieBreaker = 'levenshtein', // 'levenshtein' or 'length' or 'alphabetical'
+  } = options
 
   if (!query || !Array.isArray(items)) {
-    return [];
+    return []
   }
 
-  const results = [];
+  const results = []
 
   for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    let bestMatch = { score: 0, field: null };
+    const item = items[i]
+    let bestMatch = { score: 0, field: null }
 
     // Check all specified keys/fields
     for (const key of keys) {
-      const value = typeof item === 'string' ? item : item[key];
-      if (!value) continue;
+      const value = typeof item === 'string' ? item : item[key]
+      if (!value) continue
 
-      const match = enhancedFuzzyMatch(query, String(value), options);
+      const match = enhancedFuzzyMatch(query, String(value), options)
       if (match.score > bestMatch.score) {
         bestMatch = {
           score: match.score,
           field: key,
-          breakdown: match.breakdown
-        };
+          breakdown: match.breakdown,
+        }
       }
     }
 
@@ -190,42 +198,48 @@ export function fuzzySearch(query, items, options = {}) {
         score: bestMatch.score,
         field: bestMatch.field,
         breakdown: bestMatch.breakdown,
-        index: i
-      });
+        index: i,
+      })
     }
   }
 
   // Sort by score (descending) with tie-breakers
   results.sort((a, b) => {
     if (b.score !== a.score) {
-      return b.score - a.score;
+      return b.score - a.score
     }
 
     // Tie-breaker logic
     if (tieBreaker === 'levenshtein') {
       // Use Levenshtein distance as tie-breaker (lower is better)
-      const aValue = typeof a.item === 'string' ? a.item : a.item[a.field];
-      const bValue = typeof b.item === 'string' ? b.item : b.item[b.field];
-      const aDistance = levenshteinDistance(query.toLowerCase(), String(aValue).toLowerCase());
-      const bDistance = levenshteinDistance(query.toLowerCase(), String(bValue).toLowerCase());
-      return aDistance - bDistance;
+      const aValue = typeof a.item === 'string' ? a.item : a.item[a.field]
+      const bValue = typeof b.item === 'string' ? b.item : b.item[b.field]
+      const aDistance = levenshteinDistance(
+        query.toLowerCase(),
+        String(aValue).toLowerCase()
+      )
+      const bDistance = levenshteinDistance(
+        query.toLowerCase(),
+        String(bValue).toLowerCase()
+      )
+      return aDistance - bDistance
     } else if (tieBreaker === 'length') {
       // Shorter strings win ties (more precise matches)
-      const aValue = typeof a.item === 'string' ? a.item : a.item[a.field];
-      const bValue = typeof b.item === 'string' ? b.item : b.item[b.field];
-      return String(aValue).length - String(bValue).length;
+      const aValue = typeof a.item === 'string' ? a.item : a.item[a.field]
+      const bValue = typeof b.item === 'string' ? b.item : b.item[b.field]
+      return String(aValue).length - String(bValue).length
     } else if (tieBreaker === 'alphabetical') {
       // Alphabetical order as tie-breaker
-      const aValue = typeof a.item === 'string' ? a.item : a.item[a.field];
-      const bValue = typeof b.item === 'string' ? b.item : b.item[b.field];
-      return String(aValue).localeCompare(String(bValue));
+      const aValue = typeof a.item === 'string' ? a.item : a.item[a.field]
+      const bValue = typeof b.item === 'string' ? b.item : b.item[b.field]
+      return String(aValue).localeCompare(String(bValue))
     }
 
-    return 0;
-  });
+    return 0
+  })
 
   // Apply limit
-  return results.slice(0, limit);
+  return results.slice(0, limit)
 }
 
 /**
@@ -239,7 +253,7 @@ export const FUZZY_PRESETS = {
     levenshteinWeight: 0.3,
     prefixWeight: 0.2,
     wordOrderWeight: 0.0,
-    tieBreaker: 'levenshtein'
+    tieBreaker: 'levenshtein',
   },
 
   // Balanced matching for general search
@@ -249,7 +263,7 @@ export const FUZZY_PRESETS = {
     levenshteinWeight: 0.3,
     prefixWeight: 0.2,
     wordOrderWeight: 0.1,
-    tieBreaker: 'levenshtein'
+    tieBreaker: 'levenshtein',
   },
 
   // Lenient matching for typo-tolerant search
@@ -259,7 +273,7 @@ export const FUZZY_PRESETS = {
     levenshteinWeight: 0.4,
     prefixWeight: 0.1,
     wordOrderWeight: 0.2,
-    tieBreaker: 'levenshtein'
+    tieBreaker: 'levenshtein',
   },
 
   // Company name matching optimized
@@ -270,9 +284,9 @@ export const FUZZY_PRESETS = {
     prefixWeight: 0.3,
     wordOrderWeight: 0.0,
     tieBreaker: 'length',
-    caseSensitive: false
-  }
-};
+    caseSensitive: false,
+  },
+}
 
 /**
  * Quick search function with preset configurations
@@ -282,9 +296,14 @@ export const FUZZY_PRESETS = {
  * @param {Object} overrides - Option overrides
  * @returns {Array} - Search results
  */
-export function quickFuzzySearch(query, items, preset = 'balanced', overrides = {}) {
-  const config = { ...FUZZY_PRESETS[preset], ...overrides };
-  return fuzzySearch(query, items, config);
+export function quickFuzzySearch(
+  query,
+  items,
+  preset = 'balanced',
+  overrides = {}
+) {
+  const config = { ...FUZZY_PRESETS[preset], ...overrides }
+  return fuzzySearch(query, items, config)
 }
 
 export default {
@@ -293,5 +312,5 @@ export default {
   enhancedFuzzyMatch,
   fuzzySearch,
   quickFuzzySearch,
-  FUZZY_PRESETS
-};
+  FUZZY_PRESETS,
+}

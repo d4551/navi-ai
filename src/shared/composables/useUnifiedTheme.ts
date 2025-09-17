@@ -1,11 +1,11 @@
 /**
  * UNIFIED THEME SYSTEM - SINGLE SOURCE OF TRUTH
  * =============================================
- * 
+ *
  * Consolidates all theme-related functionality from:
  * - useTheme.js + useTheme.ts (duplicated composables)
  * - modules/ui/theme/index.ts (theme constants)
- * 
+ *
  * Features:
  * - Dark/light mode switching with system preference detection
  * - Gaming-focused design tokens optimized for desktop
@@ -175,7 +175,7 @@ const GAMING_COLORS: Record<ColorScheme, ThemeColors> = {
       600: 'rgba(255, 255, 255, 0.5)',
       700: 'rgba(255, 255, 255, 0.4)',
       800: 'rgba(255, 255, 255, 0.3)',
-      900: 'rgba(255, 255, 255, 0.2)'
+      900: 'rgba(255, 255, 255, 0.2)',
     },
     secondary: {
       50: 'rgba(0, 204, 255, 0.1)',
@@ -187,25 +187,25 @@ const GAMING_COLORS: Record<ColorScheme, ThemeColors> = {
       600: 'rgba(0, 204, 255, 0.8)',
       700: 'rgba(0, 204, 255, 0.9)',
       800: 'rgba(0, 204, 255, 0.95)',
-      900: 'rgb(0, 204, 255)'
+      900: 'rgb(0, 204, 255)',
     },
     success: {
       50: 'rgba(0, 255, 153, 0.1)',
       500: 'rgb(0, 255, 153)',
       600: 'rgba(0, 255, 153, 0.8)',
-      700: 'rgba(0, 255, 153, 0.9)'
+      700: 'rgba(0, 255, 153, 0.9)',
     },
     warning: {
       50: 'rgba(255, 165, 0, 0.1)',
       500: 'rgb(255, 165, 0)',
       600: 'rgba(255, 165, 0, 0.8)',
-      700: 'rgba(255, 165, 0, 0.9)'
+      700: 'rgba(255, 165, 0, 0.9)',
     },
     error: {
       50: 'rgba(255, 0, 102, 0.1)',
       500: 'rgb(255, 0, 102)',
       600: 'rgba(255, 0, 102, 0.8)',
-      700: 'rgba(255, 0, 102, 0.9)'
+      700: 'rgba(255, 0, 102, 0.9)',
     },
     gray: {
       50: '#ffffff',
@@ -218,14 +218,14 @@ const GAMING_COLORS: Record<ColorScheme, ThemeColors> = {
       700: 'rgba(255, 255, 255, 0.3)',
       800: 'rgba(255, 255, 255, 0.2)',
       900: 'rgba(255, 255, 255, 0.1)',
-      950: 'rgba(255, 255, 255, 0.05)'
+      950: 'rgba(255, 255, 255, 0.05)',
     },
     background: '#ffffff',
     surface: '#ffffff',
     'surface-variant': 'rgba(255, 255, 255, 0.85)',
     'on-background': '#000000',
     'on-surface': '#000000',
-    'on-surface-variant': 'rgba(0, 0, 0, 0.7)'
+    'on-surface-variant': 'rgba(0, 0, 0, 0.7)',
   },
   dark: {
     primary: {
@@ -238,7 +238,7 @@ const GAMING_COLORS: Record<ColorScheme, ThemeColors> = {
       600: 'rgba(0, 0, 0, 0.6)',
       700: 'rgba(0, 0, 0, 0.7)',
       800: 'rgba(0, 0, 0, 0.8)',
-      900: 'rgba(0, 0, 0, 0.9)'
+      900: 'rgba(0, 0, 0, 0.9)',
     },
     secondary: {
       50: 'rgba(0, 204, 255, 0.1)',
@@ -250,25 +250,25 @@ const GAMING_COLORS: Record<ColorScheme, ThemeColors> = {
       600: 'rgba(0, 204, 255, 0.8)',
       700: 'rgba(0, 204, 255, 0.9)',
       800: 'rgba(0, 204, 255, 0.95)',
-      900: 'rgb(0, 204, 255)'
+      900: 'rgb(0, 204, 255)',
     },
     success: {
       50: 'rgba(0, 255, 153, 0.1)',
       500: 'rgb(0, 255, 153)',
       600: 'rgba(0, 255, 153, 0.8)',
-      700: 'rgba(0, 255, 153, 0.9)'
+      700: 'rgba(0, 255, 153, 0.9)',
     },
     warning: {
       50: 'rgba(255, 165, 0, 0.1)',
       500: 'rgb(255, 165, 0)',
       600: 'rgba(255, 165, 0, 0.8)',
-      700: 'rgba(255, 165, 0, 0.9)'
+      700: 'rgba(255, 165, 0, 0.9)',
     },
     error: {
       50: 'rgba(255, 0, 102, 0.1)',
       500: 'rgb(255, 0, 102)',
       600: 'rgba(255, 0, 102, 0.8)',
-      700: 'rgba(255, 0, 102, 0.9)'
+      700: 'rgba(255, 0, 102, 0.9)',
     },
     gray: {
       50: 'rgba(0, 0, 0, 0.05)',
@@ -281,84 +281,86 @@ const GAMING_COLORS: Record<ColorScheme, ThemeColors> = {
       700: 'rgba(0, 0, 0, 0.7)',
       800: 'rgba(0, 0, 0, 0.8)',
       900: 'rgba(0, 0, 0, 0.9)',
-      950: '#000000'
+      950: '#000000',
     },
     background: '#000000',
     surface: '#000000',
     'surface-variant': 'rgba(0, 0, 0, 0.85)',
     'on-background': '#ffffff',
     'on-surface': '#ffffff',
-    'on-surface-variant': 'rgba(255, 255, 255, 0.7)'
-  }
+    'on-surface-variant': 'rgba(255, 255, 255, 0.7)',
+  },
 }
 
 // Design tokens for consistent styling
 const DESIGN_TOKENS: Omit<ThemeDesignTokens, 'colors'> = {
   typography: {
     fontFamily: {
-      primary: "'Electrolize', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
-      secondary: "'Inter', 'Electrolize', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      primary:
+        "'Electrolize', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+      secondary:
+        "'Inter', 'Electrolize', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       mono: "'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
       gaming: "'Orbitron', 'Electrolize', system-ui, sans-serif",
       display: "'Electrolize', 'Inter', system-ui, sans-serif",
-      ui: "'Electrolize', 'Inter', system-ui, -apple-system, sans-serif"
+      ui: "'Electrolize', 'Inter', system-ui, -apple-system, sans-serif",
     },
     fontSize: {
-      xs: '0.75rem',    // 12px
-      sm: '0.875rem',   // 14px
-      md: '1rem',       // 16px
-      lg: '1.125rem',   // 18px
-      xl: '1.25rem',    // 20px
-      '2xl': '1.5rem',  // 24px
-      '3xl': '2rem',    // 32px
-      '4xl': '2.5rem'   // 40px
+      xs: '0.75rem', // 12px
+      sm: '0.875rem', // 14px
+      md: '1rem', // 16px
+      lg: '1.125rem', // 18px
+      xl: '1.25rem', // 20px
+      '2xl': '1.5rem', // 24px
+      '3xl': '2rem', // 32px
+      '4xl': '2.5rem', // 40px
     },
     fontWeight: {
       normal: 400,
       medium: 500,
       semibold: 600,
-      bold: 700
+      bold: 700,
     },
     lineHeight: {
       tight: 1.25,
       normal: 1.5,
-      relaxed: 1.75
+      relaxed: 1.75,
     },
     letterSpacing: {
       tight: '-0.025em',
       normal: '0',
-      wide: '0.025em'
-    }
+      wide: '0.025em',
+    },
   },
   spacing: {
-    xs: '0.25rem',    // 4px
-    sm: '0.5rem',     // 8px
-    md: '1rem',       // 16px
-    lg: '1.5rem',     // 24px
-    xl: '2rem',       // 32px
-    '2xl': '3rem',    // 48px
-    '3xl': '4rem',    // 64px
-    '4xl': '6rem'     // 96px
+    xs: '0.25rem', // 4px
+    sm: '0.5rem', // 8px
+    md: '1rem', // 16px
+    lg: '1.5rem', // 24px
+    xl: '2rem', // 32px
+    '2xl': '3rem', // 48px
+    '3xl': '4rem', // 64px
+    '4xl': '6rem', // 96px
   },
   borderRadius: {
     none: '0',
-    sm: '0.25rem',    // 4px - slight radius for small elements
-    md: '0.375rem',   // 6px - slight radius for medium elements
-    lg: '0.5rem',     // 8px - slight radius for large elements
-    xl: '0.625rem',   // 10px - slight radius for extra large elements
-    full: '9999px'
+    sm: '0.25rem', // 4px - slight radius for small elements
+    md: '0.375rem', // 6px - slight radius for medium elements
+    lg: '0.5rem', // 8px - slight radius for large elements
+    xl: '0.625rem', // 10px - slight radius for extra large elements
+    full: '9999px',
   },
   shadows: {
     sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
     md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
     lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-    xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
+    xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
   },
   transitions: {
     fast: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
     normal: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    slow: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
-  }
+    slow: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+  },
 }
 
 // Get initial theme from localStorage or system preference
@@ -375,7 +377,10 @@ const getInitialTheme = (): ThemeMode => {
   } catch {}
 
   // Default to system preference if no stored theme
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  if (
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  ) {
     return 'dark'
   }
 
@@ -385,7 +390,10 @@ const getInitialTheme = (): ThemeMode => {
 const getInitialSystemPreference = (): ColorScheme => {
   if (typeof window === 'undefined') return 'light'
 
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  if (
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  ) {
     return 'dark'
   }
 
@@ -403,21 +411,24 @@ export function useUnifiedTheme() {
   try {
     scaling = useDynamicScaling({
       enableFontScaling: true,
-      enablePerformanceOptimization: true
+      enablePerformanceOptimization: true,
     })
   } catch (error) {
     logger.warn('Dynamic scaling failed to initialize, using fallback')
     scaling = {
       getScaledValue: (value: number) => value,
-      shouldOptimizeAnimations: ref(false)
+      shouldOptimizeAnimations: ref(false),
     }
   }
-  
+
   // Computed active color scheme
   const colorScheme = computed<ColorScheme>(() => {
-    const mode = themeMode.value === 'auto' ? systemPreference.value : themeMode.value as ColorScheme
+    const mode =
+      themeMode.value === 'auto'
+        ? systemPreference.value
+        : (themeMode.value as ColorScheme)
     // Ensure we always return a valid color scheme
-    return (mode === 'dark' || mode === 'light') ? mode : 'light'
+    return mode === 'dark' || mode === 'light' ? mode : 'light'
   })
 
   // Current theme tokens
@@ -426,16 +437,18 @@ export function useUnifiedTheme() {
     const colors = GAMING_COLORS[scheme]
 
     if (!colors) {
-      logger.warn(`Theme colors not found for scheme: ${scheme}, falling back to light`)
+      logger.warn(
+        `Theme colors not found for scheme: ${scheme}, falling back to light`
+      )
       return {
         colors: GAMING_COLORS.light,
-        ...DESIGN_TOKENS
+        ...DESIGN_TOKENS,
       }
     }
 
     return {
       colors,
-      ...DESIGN_TOKENS
+      ...DESIGN_TOKENS,
     }
   })
 
@@ -443,12 +456,17 @@ export function useUnifiedTheme() {
   const isDark = computed(() => colorScheme.value === 'dark')
   const isLight = computed(() => colorScheme.value === 'light')
   const isAuto = computed(() => themeMode.value === 'auto')
-  const isSystem = computed(() => themeMode.value === 'system' || themeMode.value === 'auto')
+  const isSystem = computed(
+    () => themeMode.value === 'system' || themeMode.value === 'auto'
+  )
 
   // System preference detection
   const updateSystemPreference = () => {
     if (typeof window !== 'undefined' && window.matchMedia) {
-      systemPreference.value = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      systemPreference.value = window.matchMedia('(prefers-color-scheme: dark)')
+        .matches
+        ? 'dark'
+        : 'light'
     }
   }
 
@@ -499,7 +517,9 @@ export function useUnifiedTheme() {
     const tokens = _theme.value
 
     if (!colors || !tokens) {
-      logger.warn('Theme colors or tokens not available, skipping CSS injection')
+      logger.warn(
+        'Theme colors or tokens not available, skipping CSS injection'
+      )
       return
     }
 
@@ -508,9 +528,11 @@ export function useUnifiedTheme() {
       if (typeof value === 'string') {
         root.style.setProperty(`--color-${key}`, value)
       } else if (typeof value === 'object' && value !== null) {
-        Object.entries(value as Record<string, string>).forEach(([shade, color]) => {
-          root.style.setProperty(`--color-${key}-${shade}`, color)
-        })
+        Object.entries(value as Record<string, string>).forEach(
+          ([shade, color]) => {
+            root.style.setProperty(`--color-${key}-${shade}`, color)
+          }
+        )
       }
     })
 
@@ -573,17 +595,38 @@ export function useUnifiedTheme() {
     const isDarkMode = colorScheme.value === 'dark'
 
     // Glass backgrounds - very subtle opacity for glassmorphism
-    root.style.setProperty('--glass-bg', isDarkMode ? 'rgba(255, 255, 255, 0.03)' : 'rgba(255, 255, 255, 0.08)')
-    root.style.setProperty('--glass-bg-hover', isDarkMode ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.12)')
-    root.style.setProperty('--glass-bg-active', isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.18)')
+    root.style.setProperty(
+      '--glass-bg',
+      isDarkMode ? 'rgba(255, 255, 255, 0.03)' : 'rgba(255, 255, 255, 0.08)'
+    )
+    root.style.setProperty(
+      '--glass-bg-hover',
+      isDarkMode ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.12)'
+    )
+    root.style.setProperty(
+      '--glass-bg-active',
+      isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.18)'
+    )
 
     // Glass borders - subtle but visible
-    root.style.setProperty('--glass-border', isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.25)')
-    root.style.setProperty('--glass-border-hover', isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.35)')
+    root.style.setProperty(
+      '--glass-border',
+      isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.25)'
+    )
+    root.style.setProperty(
+      '--glass-border-hover',
+      isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.35)'
+    )
 
     // Glass shadows for depth
-    root.style.setProperty('--glass-shadow', isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.1)')
-    root.style.setProperty('--glass-shadow-lg', isDarkMode ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.15)')
+    root.style.setProperty(
+      '--glass-shadow',
+      isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.1)'
+    )
+    root.style.setProperty(
+      '--glass-shadow-lg',
+      isDarkMode ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.15)'
+    )
 
     // Glass backdrop blur
     root.style.setProperty('--glass-backdrop-blur', 'blur(12px)')
@@ -602,29 +645,76 @@ export function useUnifiedTheme() {
     root.style.setProperty('--neon-teal', '0, 255, 204')
 
     // Background RGB values for accessibility utilities
-    root.style.setProperty('--bg-primary-rgb', isDarkMode ? '0, 0, 0' : '255, 255, 255')
-    root.style.setProperty('--text-primary-rgb', isDarkMode ? '255, 255, 255' : '0, 0, 0')
-    root.style.setProperty('--surface-rgb', isDarkMode ? '0, 0, 0' : '255, 255, 255')
+    root.style.setProperty(
+      '--bg-primary-rgb',
+      isDarkMode ? '0, 0, 0' : '255, 255, 255'
+    )
+    root.style.setProperty(
+      '--text-primary-rgb',
+      isDarkMode ? '255, 255, 255' : '0, 0, 0'
+    )
+    root.style.setProperty(
+      '--surface-rgb',
+      isDarkMode ? '0, 0, 0' : '255, 255, 255'
+    )
 
     // Map semantic text colors for utility classes
-    root.style.setProperty('--text-primary', colors['on-background'] || (colorScheme.value === 'dark' ? '#ffffff' : '#000000'))
-    root.style.setProperty('--text-secondary', colors['on-surface-variant'] || (colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.8)'))
-    root.style.setProperty('--text-tertiary', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)')
-    root.style.setProperty('--text-muted', colorScheme.value === 'dark' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.4)')
+    root.style.setProperty(
+      '--text-primary',
+      colors['on-background'] ||
+        (colorScheme.value === 'dark' ? '#ffffff' : '#000000')
+    )
+    root.style.setProperty(
+      '--text-secondary',
+      colors['on-surface-variant'] ||
+        (colorScheme.value === 'dark'
+          ? 'rgba(255, 255, 255, 0.9)'
+          : 'rgba(0, 0, 0, 0.8)')
+    )
+    root.style.setProperty(
+      '--text-tertiary',
+      colorScheme.value === 'dark'
+        ? 'rgba(255, 255, 255, 0.7)'
+        : 'rgba(0, 0, 0, 0.6)'
+    )
+    root.style.setProperty(
+      '--text-muted',
+      colorScheme.value === 'dark'
+        ? 'rgba(255, 255, 255, 0.5)'
+        : 'rgba(0, 0, 0, 0.4)'
+    )
 
     // Background system - Pure black/white
     root.style.setProperty('--bg-primary', isDarkMode ? '#000000' : '#ffffff')
-    root.style.setProperty('--bg-secondary', isDarkMode ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)')
-    root.style.setProperty('--bg-tertiary', isDarkMode ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.85)')
+    root.style.setProperty(
+      '--bg-secondary',
+      isDarkMode ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)'
+    )
+    root.style.setProperty(
+      '--bg-tertiary',
+      isDarkMode ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.85)'
+    )
 
     // Surface colors for cards and components
     root.style.setProperty('--surface', isDarkMode ? '#000000' : '#ffffff')
-    root.style.setProperty('--surface-variant', isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)')
+    root.style.setProperty(
+      '--surface-variant',
+      isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+    )
 
     // Interactive state backgrounds with neon highlights
-    root.style.setProperty('--bg-hover', isDarkMode ? 'rgba(0, 204, 255, 0.1)' : 'rgba(0, 204, 255, 0.05)')
-    root.style.setProperty('--bg-active', isDarkMode ? 'rgba(0, 204, 255, 0.15)' : 'rgba(0, 204, 255, 0.1)')
-    root.style.setProperty('--bg-focus', isDarkMode ? 'rgba(0, 204, 255, 0.08)' : 'rgba(0, 204, 255, 0.03)')
+    root.style.setProperty(
+      '--bg-hover',
+      isDarkMode ? 'rgba(0, 204, 255, 0.1)' : 'rgba(0, 204, 255, 0.05)'
+    )
+    root.style.setProperty(
+      '--bg-active',
+      isDarkMode ? 'rgba(0, 204, 255, 0.15)' : 'rgba(0, 204, 255, 0.1)'
+    )
+    root.style.setProperty(
+      '--bg-focus',
+      isDarkMode ? 'rgba(0, 204, 255, 0.08)' : 'rgba(0, 204, 255, 0.03)'
+    )
 
     // Set color scheme attributes for native styling
     root.setAttribute('data-theme', colorScheme.value)
@@ -659,18 +749,22 @@ export function useUnifiedTheme() {
     const rgb = backgroundColor.match(/\d+/g)
     if (!rgb) return isDark.value ? '#ffffff' : '#000000'
 
-    const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000
+    const brightness =
+      (parseInt(rgb[0]) * 299 +
+        parseInt(rgb[1]) * 587 +
+        parseInt(rgb[2]) * 114) /
+      1000
     return brightness > 128 ? '#000000' : '#ffffff'
   }
 
   // Generate component-specific theme classes
   const getThemeClasses = (componentName: string): string[] => {
     const classes = [`${componentName}--${colorScheme.value}`]
-    
+
     if (isDark.value) {
       classes.push(`${componentName}--dark`)
     }
-    
+
     return classes
   }
 
@@ -688,7 +782,7 @@ export function useUnifiedTheme() {
     logger.info('Unified theme system initialized', {
       mode: themeMode.value,
       colorScheme: colorScheme.value,
-      systemPreference: systemPreference.value
+      systemPreference: systemPreference.value,
     })
   }
 
@@ -697,9 +791,9 @@ export function useUnifiedTheme() {
     // Initialize scaling outside of component context
     const scalingResult = useDynamicScaling({
       enableFontScaling: true,
-      enablePerformanceOptimization: true
+      enablePerformanceOptimization: true,
     })
-    
+
     updateSystemPreference()
     injectCSSCustomProperties()
 
@@ -715,7 +809,7 @@ export function useUnifiedTheme() {
     logger.info('Unified theme system initialized globally', {
       mode: themeMode.value,
       colorScheme: colorScheme.value,
-      systemPreference: systemPreference.value
+      systemPreference: systemPreference.value,
     })
 
     return scalingResult
@@ -724,36 +818,36 @@ export function useUnifiedTheme() {
   // UI Helper Methods
   const getThemeIcon = (): string => {
     if (isSystem.value) {
-      return "mdi-theme-light-dark";
+      return 'mdi-theme-light-dark'
     } else if (isDark.value) {
-      return "mdi-moon-waning-crescent";
+      return 'mdi-moon-waning-crescent'
     } else {
-      return "mdi-white-balance-sunny";
+      return 'mdi-white-balance-sunny'
     }
-  };
+  }
 
   const getThemeDisplayName = (): string => {
     if (isSystem.value) {
-      return "System";
+      return 'System'
     } else if (isDark.value) {
-      return "Dark";
+      return 'Dark'
     } else {
-      return "Light";
+      return 'Light'
     }
-  };
+  }
 
   const cycleTheme = (): void => {
     if (themeMode.value === 'light') {
-      setThemeMode('dark');
+      setThemeMode('dark')
     } else if (themeMode.value === 'dark') {
-      setThemeMode('system');
+      setThemeMode('system')
     } else {
-      setThemeMode('light');
+      setThemeMode('light')
     }
-  };
+  }
 
   // Current theme for backward compatibility
-  const currentTheme = computed(() => colorScheme.value);
+  const currentTheme = computed(() => colorScheme.value)
 
   // Watch for changes and update CSS variables
   watch(colorScheme, injectCSSCustomProperties, { immediate: false })
@@ -797,7 +891,7 @@ export function useUnifiedTheme() {
 
     // Constants for external use
     GAMING_COLORS,
-    DESIGN_TOKENS
+    DESIGN_TOKENS,
   }
 }
 
@@ -812,12 +906,18 @@ export function initializeUnifiedThemeGlobal() {
   if (typeof window !== 'undefined') {
     try {
       const storedThemeMode = localStorage.getItem('navi-theme-mode')
-      const parsedThemeMode = storedThemeMode ? JSON.parse(storedThemeMode) : null
+      const parsedThemeMode = storedThemeMode
+        ? JSON.parse(storedThemeMode)
+        : null
 
       if (parsedThemeMode === 'auto' || parsedThemeMode === 'system') {
         // Use system preference for auto mode
         if (window.matchMedia) {
-          effectiveColorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          effectiveColorScheme = window.matchMedia(
+            '(prefers-color-scheme: dark)'
+          ).matches
+            ? 'dark'
+            : 'light'
         }
       } else if (parsedThemeMode === 'dark' || parsedThemeMode === 'light') {
         // Use explicit stored preference
@@ -825,17 +925,24 @@ export function initializeUnifiedThemeGlobal() {
       } else {
         // No stored preference, use system preference
         if (window.matchMedia) {
-          effectiveColorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          effectiveColorScheme = window.matchMedia(
+            '(prefers-color-scheme: dark)'
+          ).matches
+            ? 'dark'
+            : 'light'
         }
       }
     } catch {
       // Fallback to system preference if localStorage access fails
       if (window.matchMedia) {
-        effectiveColorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        effectiveColorScheme = window.matchMedia('(prefers-color-scheme: dark)')
+          .matches
+          ? 'dark'
+          : 'light'
       }
     }
   }
-  
+
   // Apply theme variables directly
   if (typeof document !== 'undefined') {
     const root = document.documentElement
@@ -847,9 +954,11 @@ export function initializeUnifiedThemeGlobal() {
       if (typeof value === 'string') {
         root.style.setProperty(`--color-${key}`, value)
       } else if (typeof value === 'object' && value !== null) {
-        Object.entries(value as Record<string, string>).forEach(([shade, color]) => {
-          root.style.setProperty(`--color-${key}-${shade}`, color)
-        })
+        Object.entries(value as Record<string, string>).forEach(
+          ([shade, color]) => {
+            root.style.setProperty(`--color-${key}-${shade}`, color)
+          }
+        )
       }
     })
 
@@ -875,40 +984,44 @@ export function initializeUnifiedThemeGlobal() {
     root.classList.add(effectiveColorScheme)
   }
 
-  logger.info('Unified theme system initialized globally (safe mode)', { scheme: effectiveColorScheme })
+  logger.info('Unified theme system initialized globally (safe mode)', {
+    scheme: effectiveColorScheme,
+  })
 }
 
 // Utility function for non-Vue contexts
 export function createThemeUtils() {
-  const { theme, getColor, getContrastColor, isDark, isLight } = useUnifiedTheme()
-  
+  const { theme, getColor, getContrastColor, isDark, isLight } =
+    useUnifiedTheme()
+
   return {
     theme,
     getColor,
     getContrastColor,
     isDark,
-    isLight
+    isLight,
   }
 }
 
 // CSS-in-JS helper for styled components
 export function createThemeCSS(colorScheme: ColorScheme = 'light') {
   const colors = GAMING_COLORS[colorScheme]
-  
+
   return {
     colors,
     ...DESIGN_TOKENS,
     utils: {
-      surface: (opacity = 1) => `rgba(${colorScheme === 'dark' ? '17, 24, 39' : '249, 250, 251'}, ${opacity})`,
+      surface: (opacity = 1) =>
+        `rgba(${colorScheme === 'dark' ? '17, 24, 39' : '249, 250, 251'}, ${opacity})`,
       primary: (opacity = 1) => `rgba(99, 102, 241, ${opacity})`,
       text: (variant: 'primary' | 'secondary' | 'muted' = 'primary') => {
         const variants = {
           primary: colors['on-background'],
           secondary: colors.gray[colorScheme === 'dark' ? '300' : '600'],
-          muted: colors.gray[colorScheme === 'dark' ? '400' : '500']
+          muted: colors.gray[colorScheme === 'dark' ? '400' : '500'],
         }
         return variants[variant]
-      }
-    }
+      },
+    },
   }
 }

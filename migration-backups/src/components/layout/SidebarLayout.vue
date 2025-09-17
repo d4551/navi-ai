@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-row min-h-screen">
-    <aside class="w-[var(--sidebar-width)] bg-gray-100 border-r border-gray-200 h-screen overflow-y-auto fixed">
+    <aside
+      class="w-[var(--sidebar-width)] bg-gray-100 border-r border-gray-200 h-screen overflow-y-auto fixed"
+    >
       <div class="p-4">
         <h2 class="text-lg font-semibold mb-4">Navigation</h2>
         <nav class="space-y-1">
@@ -9,9 +11,17 @@
             :key="item.name"
             :href="item.href"
             class="flex items-center px-2 py-2 rounded-md text-sm font-medium"
-            :class="item.current ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'"
+            :class="
+              item.current
+                ? 'bg-gray-200 text-gray-900'
+                : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+            "
           >
-            <hero-icon :name="item.icon" class="mr-3 h-5 w-5 text-gray-500" :class="item.current ? 'text-gray-700' : 'text-gray-400'" />
+            <hero-icon
+              :name="item.icon"
+              class="mr-3 h-5 w-5 text-gray-500"
+              :class="item.current ? 'text-gray-700' : 'text-gray-400'"
+            />
             {{ item.name }}
           </a>
         </nav>
@@ -37,7 +47,7 @@ export default {
   components: {
     AppHeader,
     AppFooter,
-    HeroIcon
+    HeroIcon,
   },
   data() {
     return {
@@ -48,8 +58,8 @@ export default {
         { name: 'Calendar', href: '#', icon: 'calendar', current: false },
         { name: 'Reports', href: '#', icon: 'chart-bar', current: false },
         { name: 'Settings', href: '#', icon: 'cog', current: false },
-      ]
+      ],
     }
-  }
+  },
 }
 </script>

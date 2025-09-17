@@ -38,7 +38,7 @@ export function useUserProfile() {
   const profileErrors = computed(() => profileValidation.value.errors)
 
   // Update methods
-  const updatePersonalInfo = async (_data) => {
+  const updatePersonalInfo = async _data => {
     try {
       const ok = store.updatePersonalInfo(data)
       if (!ok) throw new Error('Validation failed')
@@ -50,7 +50,7 @@ export function useUserProfile() {
     }
   }
 
-  const updateExperience = async (experiences) => {
+  const updateExperience = async experiences => {
     try {
       const ok = store.updateProfessionalExperience(experiences)
       if (!ok) throw new Error('Validation failed')
@@ -62,7 +62,7 @@ export function useUserProfile() {
     }
   }
 
-  const updateEducation = async (educationData) => {
+  const updateEducation = async educationData => {
     try {
       const ok = store.updateEducation(educationData)
       if (!ok) throw new Error('Validation failed')
@@ -74,7 +74,7 @@ export function useUserProfile() {
     }
   }
 
-  const updateSkills = async (skillsData) => {
+  const updateSkills = async skillsData => {
     try {
       const ok = store.updateSkills(skillsData)
       if (!ok) throw new Error('Validation failed')
@@ -86,7 +86,7 @@ export function useUserProfile() {
     }
   }
 
-  const updateGamingExperience = async (gamingData) => {
+  const updateGamingExperience = async gamingData => {
     try {
       const ok = store.updateGamingExperience(gamingData)
       if (!ok) throw new Error('Validation failed')
@@ -98,7 +98,7 @@ export function useUserProfile() {
     }
   }
 
-  const updateCareerGoals = async (goalsData) => {
+  const updateCareerGoals = async goalsData => {
     try {
       const ok = store.updateCareerGoals(goalsData)
       if (!ok) throw new Error('Validation failed')
@@ -110,7 +110,7 @@ export function useUserProfile() {
     }
   }
 
-  const updatePortfolio = async (portfolioData) => {
+  const updatePortfolio = async portfolioData => {
     try {
       const ok = store.updatePortfolioItems(portfolioData)
       if (!ok) throw new Error('Validation failed')
@@ -139,14 +139,17 @@ export function useUserProfile() {
     }
   }
 
-  const exportProfile = async (format) => {
+  const exportProfile = async format => {
     try {
       const currentProfile = profile.value
       if (!currentProfile) {
         return { success: false, error: 'No profile data to export' }
       }
-      
-      const result = await userProfileService.exportProfile(currentProfile, format)
+
+      const result = await userProfileService.exportProfile(
+        currentProfile,
+        format
+      )
       return result
     } catch (error) {
       logger.error('Failed to export profile:', error)
@@ -167,7 +170,7 @@ export function useUserProfile() {
   }
 
   // Profile context extraction for specific use cases
-  const getProfileForContext = (context) => {
+  const getProfileForContext = context => {
     const currentProfile = profile.value
     if (!currentProfile) return null
     return userProfileService.extractForContext(currentProfile, context)
@@ -182,7 +185,7 @@ export function useUserProfile() {
       skills: updateSkills,
       gamingExperience: updateGamingExperience,
       careerGoals: updateCareerGoals,
-      portfolio: updatePortfolio
+      portfolio: updatePortfolio,
     }
 
     const updateMethod = updateMethods[section]
@@ -203,9 +206,10 @@ export function useUserProfile() {
   // Watch for profile changes and auto-calculate completeness
   watch(
     profile,
-    (newProfile) => {
+    newProfile => {
       if (newProfile) {
-        const completeness = userProfileService.calculateCompleteness(newProfile)
+        const completeness =
+          userProfileService.calculateCompleteness(newProfile)
         if (completeness !== newProfile.meta?.profileCompleteness) {
           try {
             // Pinia: mutate state directly or via an action
@@ -232,12 +236,12 @@ export function useUserProfile() {
     aiData,
     profileCompleteness,
     profileMeta,
-    
+
     // Validation
     profileValidation,
     isProfileValid,
     profileErrors,
-    
+
     // Update methods
     updatePersonalInfo,
     updateExperience,
@@ -247,15 +251,15 @@ export function useUserProfile() {
     updateCareerGoals,
     updatePortfolio,
     updateProfileSection,
-    
+
     // Import/Export
     importProfile,
     exportProfile,
-    
+
     // Sync and utilities
     syncProfile,
     getProfileForContext,
-    calculateCompleteness
+    calculateCompleteness,
   }
 }
 

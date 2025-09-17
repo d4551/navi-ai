@@ -1,6 +1,6 @@
 /**
  * Real-Time Job Service
- * 
+ *
  * Provides real-time job updates, notifications, and background sync
  * Integrates with the live job API service for continuous data refresh
  */
@@ -9,20 +9,24 @@
 class SimpleEmitter {
   private listeners: Record<string, Array<(..._args: any[]) => void>> = {}
   on(event: string, cb: (..._args: any[]) => void) {
-    (this.listeners[event] ||= []).push(cb)
+    ;(this.listeners[event] ||= []).push(cb)
     return this
   }
   off(event: string, cb: (..._args: any[]) => void) {
     const arr = this.listeners[event]
     if (!arr) return this
-    this.listeners[event] = arr.filter((fn) => fn !== cb)
+    this.listeners[event] = arr.filter(fn => fn !== cb)
     return this
   }
   emit(event: string, ..._args: any[]) {
     const arr = this.listeners[event]
     if (!arr) return false
-    arr.slice().forEach((fn) => {
-      try { fn(..._args) } catch { /* swallow */ }
+    arr.slice().forEach(fn => {
+      try {
+        fn(..._args)
+      } catch {
+        /* swallow */
+      }
     })
     return arr.length > 0
   }
@@ -119,7 +123,11 @@ export class RealTimeJobService extends SimpleEmitter {
   }
 
   // Job Alert Management
-  async createAlert(name: string, filters: JobFilters, options: Partial<JobAlert> = {}): Promise<JobAlert> {
+  async createAlert(
+    name: string,
+    filters: JobFilters,
+    options: Partial<JobAlert> = {}
+  ): Promise<JobAlert> {
     if (this.jobAlerts.size >= this.MAX_ALERTS) {
       throw new Error(`Maximum of ${this.MAX_ALERTS} job alerts allowed`)
     }
@@ -135,7 +143,7 @@ export class RealTimeJobService extends SimpleEmitter {
       emailNotifications: options.emailNotifications ?? false,
       pushNotifications: options.pushNotifications ?? true,
       createdAt: new Date(),
-      ...options
+      ...options,
     }
 
     this.jobAlerts.set(alert.id, alert)
@@ -152,7 +160,10 @@ export class RealTimeJobService extends SimpleEmitter {
     return alert
   }
 
-  async updateAlert(alertId: string, updates: Partial<JobAlert>): Promise<JobAlert> {
+  async updateAlert(
+    alertId: string,
+    updates: Partial<JobAlert>
+  ): Promise<JobAlert> {
     const alert = this.jobAlerts.get(alertId)
     if (!alert) {
       throw new Error('Job alert not found')
@@ -193,7 +204,9 @@ export class RealTimeJobService extends SimpleEmitter {
 
     await this.saveAlerts()
 
-    logger.info(`${alert.enabled ? 'Enabled' : 'Disabled'} job alert: ${alert.name}`)
+    logger.info(
+      `${alert.enabled ? 'Enabled' : 'Disabled'} job alert: ${alert.name}`
+    )
     this.emit('alert-toggled', alert)
 
     return alert
@@ -219,14 +232,16 @@ export class RealTimeJobService extends SimpleEmitter {
   private async checkAllAlerts(): Promise<void> {
     if (!this.isRunning) return
 
-    const enabledAlerts = Array.from(this.jobAlerts.values()).filter(alert => alert.enabled)
-    
+    const enabledAlerts = Array.from(this.jobAlerts.values()).filter(
+      alert => alert.enabled
+    )
+
     logger.debug(`Checking ${enabledAlerts.length} enabled job alerts`)
 
     for (const alert of enabledAlerts) {
       try {
         await this.checkAlert(alert.id)
-        
+
         // Small delay between checks to avoid rate limiting
         await this.delay(2000)
       } catch (error) {
@@ -234,9 +249,9 @@ export class RealTimeJobService extends SimpleEmitter {
       }
     }
 
-    this.emit('alerts-checked', { 
+    this.emit('alerts-checked', {
       totalChecked: enabledAlerts.length,
-      timestamp: new Date()
+      timestamp: new Date(),
     })
   }
 
@@ -267,16 +282,16 @@ export class RealTimeJobService extends SimpleEmitter {
 
       if (newJobs.length > 0) {
         logger.info(`Found ${newJobs.length} new jobs for alert: ${alert.name}`)
-        
+
         // Emit new job events
         for (const job of newJobs) {
           const update: JobUpdate = {
             type: 'new',
             job,
             alert,
-            timestamp: new Date()
+            timestamp: new Date(),
           }
-          
+
           this.emit('new-job', update)
         }
 
@@ -291,14 +306,16 @@ export class RealTimeJobService extends SimpleEmitter {
       }
 
       await this.saveAlerts()
-
     } catch (error) {
       logger.error(`Error checking alert ${alert.name}:`, error)
     }
   }
 
   // Notifications
-  private async sendPushNotification(alert: JobAlert, newJobs: Job[]): Promise<void> {
+  private async sendPushNotification(
+    alert: JobAlert,
+    newJobs: Job[]
+  ): Promise<void> {
     if (typeof window === 'undefined' || !window.Notification) return
 
     if (Notification.permission === 'granted') {
@@ -309,8 +326,12 @@ export class RealTimeJobService extends SimpleEmitter {
         tag: `job-alert-${alert.id}`,
         data: {
           alertId: alert.id,
-          jobs: newJobs.map(job => ({ id: job.id, title: job.title, company: job.company }))
-        }
+          jobs: newJobs.map(job => ({
+            id: job.id,
+            title: job.title,
+            company: job.company,
+          })),
+        },
       })
 
       notification.onclick = () => {
@@ -325,11 +346,16 @@ export class RealTimeJobService extends SimpleEmitter {
     }
   }
 
-  private async sendEmailNotification(alert: JobAlert, newJobs: Job[]): Promise<void> {
+  private async sendEmailNotification(
+    alert: JobAlert,
+    newJobs: Job[]
+  ): Promise<void> {
     // Email notifications would require a backend service
     // For now, we'll just log the intent
-    logger.info(`Would send email notification for alert: ${alert.name} with ${newJobs.length} new jobs`)
-    
+    logger.info(
+      `Would send email notification for alert: ${alert.name} with ${newJobs.length} new jobs`
+    )
+
     // In a real implementation, this would call a backend API to send emails
     // Example:
     // await fetch('/api/notifications/email', {
@@ -373,7 +399,7 @@ export class RealTimeJobService extends SimpleEmitter {
       const seenJobsData = Object.fromEntries(
         Array.from(this.lastSeenJobs.entries()).map(([alertId, jobIds]) => [
           alertId,
-          Array.from(jobIds)
+          Array.from(jobIds),
         ])
       )
 
@@ -394,7 +420,7 @@ export class RealTimeJobService extends SimpleEmitter {
           this.jobAlerts.set(alert.id, {
             ...alert,
             lastChecked: new Date(alert.lastChecked),
-            createdAt: new Date(alert.createdAt)
+            createdAt: new Date(alert.createdAt),
           })
         }
       }
@@ -442,11 +468,11 @@ export class RealTimeJobService extends SimpleEmitter {
   getStats(): RealTimeJobStats {
     const alerts = Array.from(this.jobAlerts.values())
     const activeAlerts = alerts.filter(alert => alert.enabled)
-    
+
     const newJobsToday = alerts.reduce((total, alert) => {
       const today = new Date()
       const lastChecked = new Date(alert.lastChecked)
-      
+
       if (
         lastChecked.getDate() === today.getDate() &&
         lastChecked.getMonth() === today.getMonth() &&
@@ -457,15 +483,21 @@ export class RealTimeJobService extends SimpleEmitter {
       return total
     }, 0)
 
-    const lastUpdateTime = alerts.length > 0 ? 
-      new Date(Math.max(...alerts.map(alert => new Date(alert.lastChecked).getTime()))) : null
+    const lastUpdateTime =
+      alerts.length > 0
+        ? new Date(
+            Math.max(
+              ...alerts.map(alert => new Date(alert.lastChecked).getTime())
+            )
+          )
+        : null
 
     return {
       totalAlerts: alerts.length,
       activeAlerts: activeAlerts.length,
       newJobsToday,
       lastUpdateTime,
-      isConnected: this.isRunning
+      isConnected: this.isRunning,
     }
   }
 }

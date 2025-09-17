@@ -1,201 +1,265 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NAVI CSP Bookmarklet - One-Click Fix</title>
     <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            line-height: 1.6;
-        }
-        .container {
-            background: white;
-            color: #333;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .bookmarklet {
-            display: inline-block;
-            padding: 15px 30px;
-            background: linear-gradient(45deg, #ff4757, #ff3838);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 18px;
-            margin: 20px 10px;
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .bookmarklet:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
-        }
-        .instructions {
-            background: #f8f9fa;
-            border-left: 4px solid #007bff;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-        .code-box {
-            background: #1a1a1a;
-            color: #00ff00;
-            padding: 20px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            overflow-x: auto;
-            white-space: pre-wrap;
-        }
-        .instant-fix {
-            background: linear-gradient(45deg, #2ecc71, #27ae60);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 20px 0;
-            color: white;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 5px;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .warning {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        line-height: 1.6;
+      }
+      .container {
+        background: white;
+        color: #333;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      .bookmarklet {
+        display: inline-block;
+        padding: 15px 30px;
+        background: linear-gradient(45deg, #ff4757, #ff3838);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 18px;
+        margin: 20px 10px;
+        box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .bookmarklet:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
+      }
+      .instructions {
+        background: #f8f9fa;
+        border-left: 4px solid #007bff;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+      }
+      .code-box {
+        background: #1a1a1a;
+        color: #00ff00;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: 'Courier New', monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+      }
+      .instant-fix {
+        background: linear-gradient(45deg, #2ecc71, #27ae60);
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        margin: 20px 0;
+        color: white;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .warning {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>🛠️ NAVI CSP Bookmarklet - One-Click Fix</h1>
-        
-        <div class="instant-fix">
-            <h2>🚀 Instant Solution: Drag This Button!</h2>
-            <p>Drag the button below to your browser's bookmarks bar for instant CSP fixing:</p>
-            <a href="javascript:(function(){console.log('🚨 NAVI CSP Fix Applied');document.querySelectorAll('meta[http-equiv=&quot;Content-Security-Policy&quot;]').forEach(m=>{console.log('Removing CSP:',m.content.substring(0,50)+'...');m.remove();});const c=document.createElement('meta');c.setAttribute('http-equiv','Content-Security-Policy');c.setAttribute('content',&quot;default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;&quot;);document.head.appendChild(c);console.log('✅ All NAVI features should work now!');alert('🎉 NAVI CSP Fixed! All features enabled.');})();" class="bookmarklet">🛠️ Fix NAVI CSP</a>
-        </div>
+      <h1>🛠️ NAVI CSP Bookmarklet - One-Click Fix</h1>
 
-        <div class="instructions">
-            <h3>📋 How to Use the Bookmarklet:</h3>
-            <ol>
-                <li><strong>Drag the red button above</strong> to your browser's bookmarks bar</li>
-                <li><strong>Go to your NAVI application</strong> where you're having CSP issues</li>
-                <li><strong>Click the bookmark</strong> you just created</li>
-                <li><strong>See the success alert</strong> - all features should now work!</li>
-            </ol>
-        </div>
+      <div class="instant-fix">
+        <h2>🚀 Instant Solution: Drag This Button!</h2>
+        <p>
+          Drag the button below to your browser's bookmarks bar for instant CSP
+          fixing:
+        </p>
+        <a
+          href="javascript:(function(){console.log('🚨 NAVI CSP Fix Applied');document.querySelectorAll('meta[http-equiv=&quot;Content-Security-Policy&quot;]').forEach(m=>{console.log('Removing CSP:',m.content.substring(0,50)+'...');m.remove();});const c=document.createElement('meta');c.setAttribute('http-equiv','Content-Security-Policy');c.setAttribute('content',&quot;default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;&quot;);document.head.appendChild(c);console.log('✅ All NAVI features should work now!');alert('🎉 NAVI CSP Fixed! All features enabled.');})();"
+          class="bookmarklet"
+          >🛠️ Fix NAVI CSP</a
+        >
+      </div>
 
-        <div class="warning">
-            <strong>⚠️ What This Fixes:</strong><br>
-            • Blob media URLs (audio/video)<br>
-            • WebAssembly compilation (Kokoro TTS)<br>
-            • Webpack development server connections<br>
-            • Settings save functionality<br>
-            • All CSP-related errors
-        </div>
+      <div class="instructions">
+        <h3>📋 How to Use the Bookmarklet:</h3>
+        <ol>
+          <li>
+            <strong>Drag the red button above</strong> to your browser's
+            bookmarks bar
+          </li>
+          <li>
+            <strong>Go to your NAVI application</strong> where you're having CSP
+            issues
+          </li>
+          <li><strong>Click the bookmark</strong> you just created</li>
+          <li>
+            <strong>See the success alert</strong> - all features should now
+            work!
+          </li>
+        </ol>
+      </div>
 
-        <h3>🎯 Alternative: Console Command</h3>
-        <p>If bookmarklets don't work, copy this code to your browser console:</p>
-        
-        <div class="code-box" id="consoleCode">// ULTIMATE NAVI CSP FIX (One-liner)
-document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]').forEach(m=>m.remove());const c=document.createElement('meta');c.setAttribute('http-equiv','Content-Security-Policy');c.setAttribute('content',"default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;");document.head.appendChild(c);console.log('✅ NAVI CSP fixed!');</div>
-        
-        <button onclick="copyCode()">📋 Copy Console Code</button>
-        <button onclick="testFix()">🧪 Test Fix on This Page</button>
+      <div class="warning">
+        <strong>⚠️ What This Fixes:</strong><br />
+        • Blob media URLs (audio/video)<br />
+        • WebAssembly compilation (Kokoro TTS)<br />
+        • Webpack development server connections<br />
+        • Settings save functionality<br />
+        • All CSP-related errors
+      </div>
 
-        <h3>🔧 What Each Fix Does:</h3>
-        <ul>
-            <li><strong>Blob Support:</strong> Allows audio/video generated by TTS engines</li>
-            <li><strong>WASM Support:</strong> Enables Kokoro TTS neural processing</li>
-            <li><strong>Webpack Support:</strong> Fixes development server connections</li>
-            <li><strong>Unsafe Eval:</strong> Required for AI/ML libraries</li>
-            <li><strong>Data URLs:</strong> Allows embedded media and fonts</li>
-        </ul>
+      <h3>🎯 Alternative: Console Command</h3>
+      <p>If bookmarklets don't work, copy this code to your browser console:</p>
 
-        <div id="status"></div>
+      <div class="code-box" id="consoleCode">
+        // ULTIMATE NAVI CSP FIX (One-liner)
+        document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]').forEach(m=>m.remove());const
+        c=document.createElement('meta');c.setAttribute('http-equiv','Content-Security-Policy');c.setAttribute('content',"default-src
+        'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; script-src
+        'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob:
+        https://cdn.jsdelivr.net webpack: data:; style-src 'self'
+        'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self'
+        https://fonts.googleapis.com https://fonts.gstatic.com
+        https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:;
+        media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss:
+        blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none';
+        base-uri 'self'; form-action 'self'; worker-src 'self' blob:
+        data:;");document.head.appendChild(c);console.log('✅ NAVI CSP fixed!');
+      </div>
+
+      <button onclick="copyCode()">📋 Copy Console Code</button>
+      <button onclick="testFix()">🧪 Test Fix on This Page</button>
+
+      <h3>🔧 What Each Fix Does:</h3>
+      <ul>
+        <li>
+          <strong>Blob Support:</strong> Allows audio/video generated by TTS
+          engines
+        </li>
+        <li>
+          <strong>WASM Support:</strong> Enables Kokoro TTS neural processing
+        </li>
+        <li>
+          <strong>Webpack Support:</strong> Fixes development server connections
+        </li>
+        <li><strong>Unsafe Eval:</strong> Required for AI/ML libraries</li>
+        <li><strong>Data URLs:</strong> Allows embedded media and fonts</li>
+      </ul>
+
+      <div id="status"></div>
     </div>
 
     <script>
-        function copyCode() {
-            const code = document.getElementById('consoleCode').textContent.trim();
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(code).then(() => {
-                    showStatus('✅ Copied! Paste in NAVI console and press Enter.', 'success');
-                }).catch(() => {
-                    fallbackCopy(code);
-                });
-            } else {
-                fallbackCopy(code);
-            }
-        }
+      function copyCode() {
+        const code = document.getElementById('consoleCode').textContent.trim()
 
-        function fallbackCopy(text) {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showStatus('✅ Copied! Paste in NAVI console and press Enter.', 'success');
-            } catch (err) {
-                showStatus('❌ Copy failed. Please select and copy manually.', 'error');
-            }
-            document.body.removeChild(textArea);
+        if (navigator.clipboard) {
+          navigator.clipboard
+            .writeText(code)
+            .then(() => {
+              showStatus(
+                '✅ Copied! Paste in NAVI console and press Enter.',
+                'success'
+              )
+            })
+            .catch(() => {
+              fallbackCopy(code)
+            })
+        } else {
+          fallbackCopy(code)
         }
+      }
 
-        function testFix() {
-            try {
-                // Apply the fix to this page
-                document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]').forEach(m => m.remove());
-                const c = document.createElement('meta');
-                c.setAttribute('http-equiv', 'Content-Security-Policy');
-                c.setAttribute('content', "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;");
-                document.head.appendChild(c);
-                
-                // Test blob creation
-                const testBlob = new Blob(['test'], { type: 'text/plain' });
-                const testUrl = URL.createObjectURL(testBlob);
-                URL.revokeObjectURL(testUrl);
-                
-                showStatus('✅ Fix applied and tested successfully on this page!', 'success');
-            } catch (error) {
-                showStatus('❌ Test failed: ' + error.message, 'error');
-            }
+      function fallbackCopy(text) {
+        const textArea = document.createElement('textarea')
+        textArea.value = text
+        document.body.appendChild(textArea)
+        textArea.select()
+        try {
+          document.execCommand('copy')
+          showStatus(
+            '✅ Copied! Paste in NAVI console and press Enter.',
+            'success'
+          )
+        } catch (err) {
+          showStatus(
+            '❌ Copy failed. Please select and copy manually.',
+            'error'
+          )
         }
+        document.body.removeChild(textArea)
+      }
 
-        function showStatus(message, type) {
-            const statusDiv = document.getElementById('status');
-            const bgColor = type === 'success' ? '#d4edda' : '#f8d7da';
-            const textColor = type === 'success' ? '#155724' : '#721c24';
-            statusDiv.innerHTML = `<div style="background: ${bgColor}; color: ${textColor}; padding: 15px; border-radius: 8px; margin: 15px 0;">${message}</div>`;
+      function testFix() {
+        try {
+          // Apply the fix to this page
+          document
+            .querySelectorAll('meta[http-equiv="Content-Security-Policy"]')
+            .forEach(m => m.remove())
+          const c = document.createElement('meta')
+          c.setAttribute('http-equiv', 'Content-Security-Policy')
+          c.setAttribute(
+            'content',
+            "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;"
+          )
+          document.head.appendChild(c)
+
+          // Test blob creation
+          const testBlob = new Blob(['test'], { type: 'text/plain' })
+          const testUrl = URL.createObjectURL(testBlob)
+          URL.revokeObjectURL(testUrl)
+
+          showStatus(
+            '✅ Fix applied and tested successfully on this page!',
+            'success'
+          )
+        } catch (error) {
+          showStatus('❌ Test failed: ' + error.message, 'error')
         }
+      }
 
-        // Show help on load
-        window.addEventListener('load', () => {
-            showStatus('💡 Drag the red "Fix NAVI CSP" button to your bookmarks bar for instant fixing!', 'success');
-        });
+      function showStatus(message, type) {
+        const statusDiv = document.getElementById('status')
+        const bgColor = type === 'success' ? '#d4edda' : '#f8d7da'
+        const textColor = type === 'success' ? '#155724' : '#721c24'
+        statusDiv.innerHTML = `<div style="background: ${bgColor}; color: ${textColor}; padding: 15px; border-radius: 8px; margin: 15px 0;">${message}</div>`
+      }
+
+      // Show help on load
+      window.addEventListener('load', () => {
+        showStatus(
+          '💡 Drag the red "Fix NAVI CSP" button to your bookmarks bar for instant fixing!',
+          'success'
+        )
+      })
     </script>
-</body>
+  </body>
 </html>

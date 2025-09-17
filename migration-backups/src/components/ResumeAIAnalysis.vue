@@ -28,8 +28,13 @@
         <div class="col-md-4">
           <div class="unified-card glass-card section-card text-center">
             <div class="card-body section-body">
-              <div class="score-circle" :class="getScoreClass(analysisResults.overallScore)">
-                <div class="score-number">{{ analysisResults.overallScore }}</div>
+              <div
+                class="score-circle"
+                :class="getScoreClass(analysisResults.overallScore)"
+              >
+                <div class="score-number">
+                  {{ analysisResults.overallScore }}
+                </div>
                 <div class="score-label">Score</div>
               </div>
               <h6 class="mt-3 mb-3">Resume Quality</h6>
@@ -45,7 +50,11 @@
           <div class="unified-card glass-card section-card">
             <div class="card-header section-header card-header--dense">
               <h6 class="mb-0">
-                <AppIcon name="mdi-check-circle-outline" color="success" context="success" />
+                <AppIcon
+                  name="mdi-check-circle-outline"
+                  color="success"
+                  context="success"
+                />
                 Strengths ({{ analysisResults.strengths?.length || 0 }})
               </h6>
             </div>
@@ -60,7 +69,10 @@
                   <small>{{ strength }}</small>
                 </li>
               </ul>
-              <div v-if="!analysisResults.strengths?.length" class="text-muted small">
+              <div
+                v-if="!analysisResults.strengths?.length"
+                class="text-muted small"
+              >
                 <AppIcon name="mdi-information-outline" class="me-1" />
                 Analysis will identify key strengths
               </div>
@@ -89,13 +101,22 @@
                   <button
                     v-if="canUseAi"
                     class="btn btn-link btn-sm ms-2 p-0 ui-btn ui-size-md"
-                    @click="$emit('apply-suggestion', { type: 'improvement', data: improvement, index })"
+                    @click="
+                      $emit('apply-suggestion', {
+                        type: 'improvement',
+                        data: improvement,
+                        index,
+                      })
+                    "
                   >
                     <AppIcon name="mdi-auto-fix" class="text-primary" />
                   </button>
                 </li>
               </ul>
-              <div v-if="!analysisResults.improvements?.length" class="text-muted small">
+              <div
+                v-if="!analysisResults.improvements?.length"
+                class="text-muted small"
+              >
                 <AppIcon name="mdi-information-outline" class="me-1" />
                 No improvements suggested
               </div>
@@ -119,7 +140,8 @@
                 <h6 class="text-success mb-2">Missing Keywords</h6>
                 <div class="keyword-tags">
                   <span
-                    v-for="keyword in analysisResults.keywordOptimization.missing"
+                    v-for="keyword in analysisResults.keywordOptimization
+                      .missing"
                     :key="keyword"
                     class="badge bg-danger-subtle text-danger me-1 mb-1"
                   >
@@ -131,7 +153,8 @@
                 <h6 class="text-warning mb-2">Omitted Keywords</h6>
                 <div class="keyword-tags">
                   <span
-                    v-for="keyword in analysisResults.keywordOptimization.overused"
+                    v-for="keyword in analysisResults.keywordOptimization
+                      .overused"
                     :key="keyword"
                     class="badge bg-warning-subtle text-warning me-1 mb-1"
                   >
@@ -142,7 +165,9 @@
               <div class="col-md-4">
                 <h6 class="text-info mb-2">Recommended Density</h6>
                 <div class="text-center">
-                  <div class="h4 text-info mb-1">{{ analysisResults.keywordOptimization.recommendedDensity }}</div>
+                  <div class="h4 text-info mb-1">
+                    {{ analysisResults.keywordOptimization.recommendedDensity }}
+                  </div>
                   <small class="text-muted">Optimal keyword usage</small>
                 </div>
               </div>
@@ -156,7 +181,9 @@
     <div v-else-if="!loading" class="text-center text-muted py-5">
       <AppIcon name="mdi-brain" class="mdi-48px mb-3" />
       <h6 class="mb-2">Ready for AI Analysis</h6>
-      <p class="mb-3">Click "Analyze Resume" to get AI-powered insights and recommendations</p>
+      <p class="mb-3">
+        Click "Analyze Resume" to get AI-powered insights and recommendations
+      </p>
       <button
         class="unified-btn btn-primary v-btn ui-btn ui-size-md"
         :disabled="!resumeData"
@@ -171,9 +198,15 @@
     <div v-if="loading" class="text-center py-5">
       <AppIcon name="mdi-brain" class="mdi-48px mb-3 text-primary mdi-spin" />
       <h6 class="mb-2">Analyzing Your Resume</h6>
-      <p class="text-muted">AI is evaluating your content and generating personalized recommendations...</p>
-      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto;">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
+      <p class="text-muted">
+        AI is evaluating your content and generating personalized
+        recommendations...
+      </p>
+      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          style="width: 75%"
+        ></div>
       </div>
     </div>
   </div>
@@ -236,7 +269,7 @@ const runATSCheck = async () => {
   emit('apply-suggestion', {
     type: 'ats-check',
     data: 'Check ATS compatibility',
-    action: 'run-ats-analysis'
+    action: 'run-ats-analysis',
   })
 }
 </script>
@@ -286,27 +319,47 @@ const runATSCheck = async () => {
 
 /* Score color classes */
 .score-excellent {
-  background: linear-gradient(135deg, var(--color-success), var(--color-success));
+  background: linear-gradient(
+    135deg,
+    var(--color-success),
+    var(--color-success)
+  );
   color: white;
 }
 
 .score-good {
-  background: linear-gradient(135deg, var(--color-success-500), var(--color-success-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-success-500),
+    var(--color-success-600)
+  );
   color: white;
 }
 
 .score-average {
-  background: linear-gradient(135deg, var(--color-warning-500), var(--color-warning-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-warning-500),
+    var(--color-warning-600)
+  );
   color: white;
 }
 
 .score-fair {
-  background: linear-gradient(135deg, var(--color-warning-400), var(--color-warning-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-warning-400),
+    var(--color-warning-500)
+  );
   color: white;
 }
 
 .score-poor {
-  background: linear-gradient(135deg, var(--color-error-500), var(--color-error-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-error-500),
+    var(--color-error-600)
+  );
   color: white;
 }
 
@@ -324,8 +377,12 @@ const runATSCheck = async () => {
 
 /* Spin animation for loading icon */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {
@@ -364,12 +421,12 @@ const runATSCheck = async () => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .score-circle {
+[data-theme='dark'] .score-circle {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] .badge.bg-danger-subtle,
-[data-theme="dark"] .badge.bg-warning-subtle {
+[data-theme='dark'] .badge.bg-danger-subtle,
+[data-theme='dark'] .badge.bg-warning-subtle {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 

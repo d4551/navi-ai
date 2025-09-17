@@ -23,7 +23,7 @@ export function useAIButtons(pageName = '') {
     extract: false,
     review: false,
     interview: false,
-    custom: false
+    custom: false,
   })
 
   // AI Button Configurations by Page
@@ -35,7 +35,7 @@ export function useAIButtons(pageName = '') {
         text: 'AI Resume Analysis',
         tooltip: 'Get AI-powered insights on your resume',
         variant: 'primary',
-        position: 'header'
+        position: 'header',
       },
       {
         action: 'search_jobs',
@@ -43,10 +43,10 @@ export function useAIButtons(pageName = '') {
         text: 'Smart Job Search',
         tooltip: 'Find matching jobs with AI',
         variant: 'secondary',
-        position: 'quick-actions'
-      }
+        position: 'quick-actions',
+      },
     ],
-    
+
     resumeBuilder: [
       {
         action: 'generate_resume_content',
@@ -55,7 +55,7 @@ export function useAIButtons(pageName = '') {
         tooltip: 'Generate resume content with AI',
         variant: 'primary',
         position: 'toolbar',
-        context: () => ({ resumeContent: store.resumeData })
+        context: () => ({ resumeContent: store.resumeData }),
       },
       {
         action: 'analyze_resume',
@@ -64,7 +64,7 @@ export function useAIButtons(pageName = '') {
         tooltip: 'Get AI feedback on your resume',
         variant: 'outline',
         position: 'toolbar',
-        context: () => ({ resumeContent: store.resumeData })
+        context: () => ({ resumeContent: store.resumeData }),
       },
       {
         action: 'extract_skills',
@@ -73,9 +73,11 @@ export function useAIButtons(pageName = '') {
         tooltip: 'Extract skills from experience',
         variant: 'secondary',
         position: 'skills-section',
-        context: () => ({ 
-          content: store.resumeData?.experience?.map(exp => exp.description).join('\n') 
-        })
+        context: () => ({
+          content: store.resumeData?.experience
+            ?.map(exp => exp.description)
+            .join('\n'),
+        }),
       },
       {
         action: 'enhance_content',
@@ -84,8 +86,8 @@ export function useAIButtons(pageName = '') {
         tooltip: 'Improve content with AI suggestions',
         variant: 'ghost',
         position: 'section-actions',
-        context: () => ({ content: '' }) // Will be populated by component
-      }
+        context: () => ({ content: '' }), // Will be populated by component
+      },
     ],
 
     coverLetterBuilder: [
@@ -99,8 +101,8 @@ export function useAIButtons(pageName = '') {
         context: () => ({
           resumeContent: store.resumeData,
           jobDescription: store.coverLetterData?.jobInfo?.description,
-          companyInfo: store.coverLetterData?.jobInfo?.company
-        })
+          companyInfo: store.coverLetterData?.jobInfo?.company,
+        }),
       },
       {
         action: 'research_company',
@@ -109,9 +111,9 @@ export function useAIButtons(pageName = '') {
         tooltip: 'Get AI insights about the company',
         variant: 'outline',
         position: 'job-info-section',
-        context: () => ({ 
-          companyName: store.coverLetterData?.jobInfo?.company 
-        })
+        context: () => ({
+          companyName: store.coverLetterData?.jobInfo?.company,
+        }),
       },
       {
         action: 'enhance_content',
@@ -120,10 +122,10 @@ export function useAIButtons(pageName = '') {
         tooltip: 'Improve cover letter content',
         variant: 'secondary',
         position: 'content-section',
-        context: () => ({ 
-          content: store.coverLetterData?.content?.body 
-        })
-      }
+        context: () => ({
+          content: store.coverLetterData?.content?.body,
+        }),
+      },
     ],
 
     portfolioGenerator: [
@@ -136,8 +138,8 @@ export function useAIButtons(pageName = '') {
         position: 'toolbar',
         context: () => ({
           portfolioContent: store.portfolioData,
-          targetRole: store.user?.targetRole
-        })
+          targetRole: store.user?.targetRole,
+        }),
       },
       {
         action: 'enhance_content',
@@ -146,8 +148,8 @@ export function useAIButtons(pageName = '') {
         tooltip: 'Enhance portfolio projects with AI',
         variant: 'primary',
         position: 'project-sections',
-        context: () => ({ content: '' })
-      }
+        context: () => ({ content: '' }),
+      },
     ],
 
     skillMapper: [
@@ -161,8 +163,8 @@ export function useAIButtons(pageName = '') {
         context: () => ({
           gameTitle: '',
           achievements: [],
-          targetRole: store.user?.targetRole
-        })
+          targetRole: store.user?.targetRole,
+        }),
       },
       {
         action: 'analyze_job_match',
@@ -173,9 +175,9 @@ export function useAIButtons(pageName = '') {
         position: 'results-section',
         context: () => ({
           skills: store.user?.skills || [],
-          job: ''
-        })
-      }
+          job: '',
+        }),
+      },
     ],
 
     jobSearch: [
@@ -189,8 +191,8 @@ export function useAIButtons(pageName = '') {
         context: () => ({
           skills: store.user?.skills || [],
           gamingExperience: store.user?.gamingExperience || {},
-          preferences: store.user?.jobPreferences || {}
-        })
+          preferences: store.user?.jobPreferences || {},
+        }),
       },
       {
         action: 'analyze_job_match',
@@ -201,9 +203,9 @@ export function useAIButtons(pageName = '') {
         position: 'job-cards',
         context: () => ({
           resume: store.resumeData,
-          job: '' // Will be populated by component
-        })
-      }
+          job: '', // Will be populated by component
+        }),
+      },
     ],
 
     gamingInterview: [
@@ -216,8 +218,8 @@ export function useAIButtons(pageName = '') {
         position: 'main-action',
         context: () => ({
           jobDescription: store.interviewData?.jobDescription,
-          difficulty: store.interviewData?.difficulty || 'mid'
-        })
+          difficulty: store.interviewData?.difficulty || 'mid',
+        }),
       },
       {
         action: 'prepare_interview',
@@ -229,9 +231,9 @@ export function useAIButtons(pageName = '') {
         context: () => ({
           studioName: store.interviewData?.company,
           role: store.interviewData?.role,
-          userBackground: store.user
-        })
-      }
+          userBackground: store.user,
+        }),
+      },
     ],
 
     settings: [
@@ -244,14 +246,14 @@ export function useAIButtons(pageName = '') {
         position: 'ai-section',
         context: () => ({
           message: 'Hello, this is a test message.',
-          type: 'chat'
-        })
-      }
-    ]
+          type: 'chat',
+        }),
+      },
+    ],
   }
 
   // Get buttons for current page
-  const getButtonsForPage = (page) => {
+  const getButtonsForPage = page => {
     return pageConfigurations[page] || []
   }
 
@@ -264,7 +266,7 @@ export function useAIButtons(pageName = '') {
   // Execute AI action with loading state management
   const executeAIAction = async (actionConfig, customContext = {}) => {
     const action = actionConfig.action
-    
+
     if (loadingStates.value[action] || loadingStates.value.custom) {
       return null
     }
@@ -280,7 +282,7 @@ export function useAIButtons(pageName = '') {
       // Build context
       const context = {
         ...(actionConfig.context ? actionConfig.context() : {}),
-        ...customContext
+        ...customContext,
       }
 
       // Execute AI action
@@ -292,7 +294,6 @@ export function useAIButtons(pageName = '') {
       } else {
         throw new Error('AI action returned no result')
       }
-
     } catch (error) {
       console.error(`AI action failed (${action}):`, error)
       toast.error(`AI ${action.replace(/_/g, ' ')} failed: ${error.message}`)
@@ -309,25 +310,23 @@ export function useAIButtons(pageName = '') {
 
   // Quick action shortcuts
   const quickActions = {
-    generateResumeContent: (context = {}) => executeAIAction(
-      { action: 'generate_resume_content', context: () => context }
-    ),
-    
-    analyzeCoverLetter: (context = {}) => executeAIAction(
-      { action: 'enhance_content', context: () => context }
-    ),
-    
-    searchJobs: (context = {}) => executeAIAction(
-      { action: 'search_jobs', context: () => context }
-    ),
-    
-    mapSkills: (context = {}) => executeAIAction(
-      { action: 'map_skills', context: () => context }
-    ),
-    
-    startInterview: (context = {}) => executeAIAction(
-      { action: 'conduct_interview', context: () => context }
-    )
+    generateResumeContent: (context = {}) =>
+      executeAIAction({
+        action: 'generate_resume_content',
+        context: () => context,
+      }),
+
+    analyzeCoverLetter: (context = {}) =>
+      executeAIAction({ action: 'enhance_content', context: () => context }),
+
+    searchJobs: (context = {}) =>
+      executeAIAction({ action: 'search_jobs', context: () => context }),
+
+    mapSkills: (context = {}) =>
+      executeAIAction({ action: 'map_skills', context: () => context }),
+
+    startInterview: (context = {}) =>
+      executeAIAction({ action: 'conduct_interview', context: () => context }),
   }
 
   // Button states
@@ -335,7 +334,7 @@ export function useAIButtons(pageName = '') {
     hasAPIKey: !!(store.settings?.geminiApiKey || store.settings?.openaiApiKey),
     aiInitialized: ai.isAIInitialized.value,
     aiInitializing: ai.aiInitializing.value,
-    loadingStates: loadingStates.value
+    loadingStates: loadingStates.value,
   }))
 
   // Create button props for components
@@ -349,25 +348,30 @@ export function useAIButtons(pageName = '') {
     loading: loadingStates.value[config.action] || loadingStates.value.custom,
     context: {
       ...(config.context ? config.context() : {}),
-      ...additionalContext
+      ...additionalContext,
     },
-    onSuccess: (_result) => {
+    onSuccess: _result => {
       // AI action completed successfully
       return result
     },
-    onError: (error) => {
+    onError: error => {
       console.error(`AI ${config.action} failed:`, error)
-    }
+    },
   })
 
   // Initialize AI if needed
   const ensureAIReady = async () => {
     if (!buttonStates.value.hasAPIKey) {
-      toast.warning('Please configure your AI API key in Settings to use AI features.')
+      toast.warning(
+        'Please configure your AI API key in Settings to use AI features.'
+      )
       return false
     }
 
-    if (!buttonStates.value.aiInitialized && !buttonStates.value.aiInitializing) {
+    if (
+      !buttonStates.value.aiInitialized &&
+      !buttonStates.value.aiInitializing
+    ) {
       await ai.initializeAI()
     }
 
@@ -378,19 +382,19 @@ export function useAIButtons(pageName = '') {
     // State
     loadingStates: computed(() => loadingStates.value),
     buttonStates,
-    
+
     // Page configurations
     getButtonsForPage,
     getButtonsByPosition,
-    
+
     // Actions
     executeAIAction,
     quickActions,
     ensureAIReady,
-    
+
     // Utilities
     createButtonProps,
-    
+
     // Convenience methods for common patterns
     addAIButtonToSection: (sectionRef, buttonConfig) => {
       // Helper to dynamically add AI buttons to sections
@@ -398,7 +402,7 @@ export function useAIButtons(pageName = '') {
         return createButtonProps(buttonConfig)
       }
       return null
-    }
+    },
   }
 }
 

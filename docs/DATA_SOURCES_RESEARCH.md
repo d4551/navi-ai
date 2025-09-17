@@ -3,6 +3,7 @@
 ## Available APIs and Data Sources
 
 ### 1. Steam API
+
 - **Steam Web API**: Provides game and developer information
 - **Endpoint**: `https://api.steampowered.com/`
 - **Key endpoints**:
@@ -14,6 +15,7 @@
 - **Authentication**: Steam Web API key required
 
 ### 2. IGDB API (Internet Game Database)
+
 - **Endpoint**: `https://api.igdb.com/v4/`
 - **Data**: Comprehensive game database with company information
 - **Authentication**: Twitch Client ID + Bearer token
@@ -21,6 +23,7 @@
 - **Coverage**: 200,000+ games, company profiles
 
 ### 3. Giant Bomb API
+
 - **Endpoint**: `https://www.giantbomb.com/api/`
 - **Data**: Game reviews, company profiles, franchise information
 - **Authentication**: API key
@@ -28,17 +31,20 @@
 - **Coverage**: Detailed editorial content
 
 ### 4. MobyGames API
+
 - **Endpoint**: `https://api.mobygames.com/v1/`
 - **Data**: Historical game database, company information
 - **Authentication**: API key
 - **Coverage**: Retro and modern games, detailed company histories
 
 ### 5. Epic Games Store API
+
 - **Limited public API for game listings**
 - **GraphQL endpoint**: `https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions`
 - **Data**: Free games, basic store information
 
 ### 6. Scraping Sources (with respect to robots.txt)
+
 - **Crunchbase**: Company information, funding data
 - **LinkedIn**: Company profiles, employee counts
 - **Glassdoor**: Company reviews and salary information
@@ -47,6 +53,7 @@
 ## Data Fields Available
 
 ### Steam Store API Response Structure
+
 ```json
 {
   "success": true,
@@ -54,15 +61,16 @@
     "name": "Game Name",
     "developers": ["Studio Name"],
     "publishers": ["Publisher Name"],
-    "release_date": {"date": "2023-01-01"},
-    "genres": [{"description": "Action"}],
-    "categories": [{"description": "Single-player"}],
+    "release_date": { "date": "2023-01-01" },
+    "genres": [{ "description": "Action" }],
+    "categories": [{ "description": "Single-player" }],
     "short_description": "Game description"
   }
 }
 ```
 
 ### IGDB Company Data
+
 ```json
 {
   "id": 123,
@@ -70,8 +78,8 @@
   "description": "Company description",
   "country": 123,
   "start_date": 946684800,
-  "websites": [{"url": "https://example.com"}],
-  "logo": {"url": "logo.jpg"}
+  "websites": [{ "url": "https://example.com" }],
+  "logo": { "url": "logo.jpg" }
 }
 ```
 
@@ -84,12 +92,14 @@
 5. **Conflict Resolution**: Source priority system with manual review queue
 
 ## Rate Limiting Strategy
+
 - Steam: 100k/day = ~1.16 requests/second sustained
 - IGDB: 4 requests/second with burst handling
 - Implement exponential backoff and request queuing
 - Cache responses for 24 hours minimum
 
 ## Data Quality Considerations
+
 - Name normalization (Inc., LLC, Studios vs Studio)
 - Address standardization
 - Duplicate detection across sources

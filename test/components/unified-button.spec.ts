@@ -9,7 +9,7 @@ vi.mock('../../src/composables/useToast', () => ({
     error: vi.fn(),
     warning: vi.fn(),
     info: vi.fn(),
-  })
+  }),
 }))
 import UnifiedButton from '../../src/components/ui/UnifiedButton.vue'
 
@@ -18,8 +18,8 @@ describe('UnifiedButton', () => {
     const wrapper = mount(UnifiedButton, {
       props: { label: 'Click', ripple: false },
       global: {
-        plugins: [createPinia()]
-      }
+        plugins: [createPinia()],
+      },
     })
 
     expect(wrapper.classes()).toContain('btn')

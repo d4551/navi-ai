@@ -12,21 +12,21 @@
  * - RGB neon highlights on interactive states
  */
 
-import fs from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'fs/promises'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const ROOT_DIR = path.resolve(__dirname, '..');
-const SRC_DIR = path.join(ROOT_DIR, 'src');
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const ROOT_DIR = path.resolve(__dirname, '..')
+const SRC_DIR = path.join(ROOT_DIR, 'src')
 
 // Configuration for the unified system
 const SYSTEM_CONFIG = {
   theme: {
     pure: {
       white: '#ffffff',
-      black: '#000000'
+      black: '#000000',
     },
     neon: {
       blue: 'rgb(0, 204, 255)',
@@ -36,20 +36,20 @@ const SYSTEM_CONFIG = {
       pink: 'rgb(255, 51, 204)',
       cyan: 'rgb(51, 255, 255)',
       orange: 'rgb(255, 165, 0)',
-      yellow: 'rgb(255, 255, 0)'
+      yellow: 'rgb(255, 255, 0)',
     },
     glass: {
       backgroundLight: 'rgba(255, 255, 255, 0.08)',
       backgroundDark: 'rgba(255, 255, 255, 0.03)',
       borderLight: 'rgba(255, 255, 255, 0.25)',
       borderDark: 'rgba(255, 255, 255, 0.08)',
-      blur: 'blur(12px)'
-    }
+      blur: 'blur(12px)',
+    },
   },
   fonts: {
     primary: "'Electrolize', 'Inter', system-ui, sans-serif",
     mono: "'Fira Code', 'JetBrains Mono', monospace",
-    gaming: "'Orbitron', 'Electrolize', system-ui, sans-serif"
+    gaming: "'Orbitron', 'Electrolize', system-ui, sans-serif",
   },
   spacing: {
     xs: '0.25rem',
@@ -57,15 +57,15 @@ const SYSTEM_CONFIG = {
     md: '1rem',
     lg: '1.5rem',
     xl: '2rem',
-    '2xl': '3rem'
+    '2xl': '3rem',
   },
   borderRadius: {
     sm: '0.25rem',
     md: '0.375rem',
     lg: '0.5rem',
-    xl: '0.625rem'
-  }
-};
+    xl: '0.625rem',
+  },
+}
 
 // Legacy icon mappings to Heroicons
 const ICON_MAPPINGS = {
@@ -224,8 +224,8 @@ const ICON_MAPPINGS = {
   '📎': 'PaperClipIcon',
   '🏷️': 'TagIcon',
   '🚀': 'RocketLaunchIcon',
-  '✨': 'SparklesIcon'
-};
+  '✨': 'SparklesIcon',
+}
 
 // Component patterns for standardization
 const COMPONENT_PATTERNS = {
@@ -234,59 +234,59 @@ const COMPONENT_PATTERNS = {
       wrapper: `<div class="glass-card transition-all duration-300 hover:shadow-glass-lg">`,
       header: `<header class="flex items-center justify-between p-6 border-b border-glass-border">`,
       content: `<main class="p-6 space-y-4">`,
-      footer: `<footer class="flex items-center justify-end p-6 border-t border-glass-border space-x-3">`
+      footer: `<footer class="flex items-center justify-end p-6 border-t border-glass-border space-x-3">`,
     },
     script: {
       imports: [
         "import { ref, computed, onMounted } from 'vue'",
         "import { useAppStore, useThemeStore } from '@/stores'",
-        "import { logger } from '@/shared/utils/logger'"
+        "import { logger } from '@/shared/utils/logger'",
       ],
       setup: `const appStore = useAppStore()
 const themeStore = useThemeStore()
 const loading = ref(false)
-const error = ref(null)`
-    }
+const error = ref(null)`,
+    },
   },
   button: {
     primary: `bg-glass-bg hover:bg-glass-bg-hover border border-glass-border hover:border-neon-blue hover:shadow-glow-neon-blue text-glass-primary font-medium px-4 py-2 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50`,
     secondary: `bg-transparent hover:bg-glass-bg-hover border border-glass-border hover:border-glass-border-hover text-glass-secondary font-medium px-4 py-2 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50`,
-    danger: `bg-glass-bg hover:bg-glass-bg-hover border border-error-500 hover:border-error-600 hover:shadow-glow-neon-red text-error-500 hover:text-error-600 font-medium px-4 py-2 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-error-500 focus:ring-opacity-50`
+    danger: `bg-glass-bg hover:bg-glass-bg-hover border border-error-500 hover:border-error-600 hover:shadow-glow-neon-red text-error-500 hover:text-error-600 font-medium px-4 py-2 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-error-500 focus:ring-opacity-50`,
   },
   input: {
-    base: `w-full bg-glass-bg border border-glass-border rounded-md px-3 py-2 text-glass-primary placeholder-glass-secondary focus:outline-none focus:ring-2 focus:ring-neon focus:border-neon transition-all duration-200`
+    base: `w-full bg-glass-bg border border-glass-border rounded-md px-3 py-2 text-glass-primary placeholder-glass-secondary focus:outline-none focus:ring-2 focus:ring-neon focus:border-neon transition-all duration-200`,
   },
   card: {
-    base: `glass-card bg-glass-bg backdrop-blur-sm border border-glass-border rounded-lg shadow-glass transition-all duration-300 hover:shadow-glass-lg hover:border-glass-border-hover`
-  }
-};
+    base: `glass-card bg-glass-bg backdrop-blur-sm border border-glass-border rounded-lg shadow-glass transition-all duration-300 hover:shadow-glass-lg hover:border-glass-border-hover`,
+  },
+}
 
 /**
  * Scan directory for Vue components
  */
 async function scanComponents(dir) {
-  const components = [];
+  const components = []
 
   async function scan(currentDir) {
     try {
-      const items = await fs.readdir(currentDir, { withFileTypes: true });
+      const items = await fs.readdir(currentDir, { withFileTypes: true })
 
       for (const item of items) {
-        const fullPath = path.join(currentDir, item.name);
+        const fullPath = path.join(currentDir, item.name)
 
         if (item.isDirectory()) {
-          await scan(fullPath);
+          await scan(fullPath)
         } else if (item.name.endsWith('.vue')) {
-          components.push(fullPath);
+          components.push(fullPath)
         }
       }
     } catch (error) {
-      console.warn(`Failed to scan directory ${currentDir}:`, error.message);
+      console.warn(`Failed to scan directory ${currentDir}:`, error.message)
     }
   }
 
-  await scan(dir);
-  return components;
+  await scan(dir)
+  return components
 }
 
 /**
@@ -294,54 +294,66 @@ async function scanComponents(dir) {
  */
 async function processComponent(filePath) {
   try {
-    const content = await fs.readFile(filePath, 'utf-8');
-    let modified = content;
-    let hasChanges = false;
+    const content = await fs.readFile(filePath, 'utf-8')
+    let modified = content
+    let hasChanges = false
 
     // Replace legacy icons with Heroicons
     for (const [legacy, heroicon] of Object.entries(ICON_MAPPINGS)) {
       const patterns = [
         // MDI class usage
-        new RegExp(`class="([^"]*\\s)?${legacy.replace('-', '\\-')}(\\s[^"]*)?\"`, 'g'),
-        new RegExp(`class='([^']*\\s)?${legacy.replace('-', '\\-')}(\\s[^']*)?'`, 'g'),
+        new RegExp(
+          `class="([^"]*\\s)?${legacy.replace('-', '\\-')}(\\s[^"]*)?\"`,
+          'g'
+        ),
+        new RegExp(
+          `class='([^']*\\s)?${legacy.replace('-', '\\-')}(\\s[^']*)?'`,
+          'g'
+        ),
         // Direct icon references
         new RegExp(`"${legacy.replace('-', '\\-')}"`, 'g'),
         new RegExp(`'${legacy.replace('-', '\\-')}'`, 'g'),
         // Emoji replacements
-        new RegExp(legacy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')
-      ];
+        new RegExp(legacy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+      ]
 
       patterns.forEach(pattern => {
         if (pattern.test(modified)) {
-          modified = modified.replace(pattern, (match) => {
-            hasChanges = true;
+          modified = modified.replace(pattern, match => {
+            hasChanges = true
             if (match.includes('class=')) {
               // For class replacements, we need to handle the component import separately
-              return match.replace(legacy, `heroicon-${heroicon.toLowerCase()}`);
+              return match.replace(legacy, `heroicon-${heroicon.toLowerCase()}`)
             } else {
-              return match.replace(legacy, heroicon);
+              return match.replace(legacy, heroicon)
             }
-          });
+          })
         }
-      });
+      })
     }
 
     // Add Heroicons imports if icons were replaced
     if (hasChanges && !modified.includes('@heroicons/vue')) {
-      const scriptMatch = modified.match(/<script[^>]*>/);
+      const scriptMatch = modified.match(/<script[^>]*>/)
       if (scriptMatch) {
-        const heroiconsUsed = new Set();
+        const heroiconsUsed = new Set()
 
         // Extract which heroicons are used
         for (const [legacy, heroicon] of Object.entries(ICON_MAPPINGS)) {
-          if (modified.includes(heroicon) || modified.includes(`heroicon-${heroicon.toLowerCase()}`)) {
-            heroiconsUsed.add(heroicon);
+          if (
+            modified.includes(heroicon) ||
+            modified.includes(`heroicon-${heroicon.toLowerCase()}`)
+          ) {
+            heroiconsUsed.add(heroicon)
           }
         }
 
         if (heroiconsUsed.size > 0) {
-          const importStatement = `import { ${Array.from(heroiconsUsed).join(', ')} } from '@heroicons/vue/24/outline'\n`;
-          modified = modified.replace(scriptMatch[0], `${scriptMatch[0]}\n${importStatement}`);
+          const importStatement = `import { ${Array.from(heroiconsUsed).join(', ')} } from '@heroicons/vue/24/outline'\n`
+          modified = modified.replace(
+            scriptMatch[0],
+            `${scriptMatch[0]}\n${importStatement}`
+          )
         }
       }
     }
@@ -359,7 +371,8 @@ async function processComponent(filePath) {
       'border-gray-200': 'border-glass-border',
       'border-gray-300': 'border-glass-border-hover',
       'border-gray-700': 'border-glass-border dark:border-glass-border',
-      'border-gray-600': 'border-glass-border-hover dark:border-glass-border-hover',
+      'border-gray-600':
+        'border-glass-border-hover dark:border-glass-border-hover',
 
       // Text classes
       'text-gray-900': 'text-glass-primary',
@@ -376,53 +389,67 @@ async function processComponent(filePath) {
       'shadow-xl': 'shadow-glass-xl',
 
       // Hover states with neon accents
-      'hover:bg-blue-50': 'hover:bg-glass-bg-hover hover:border-neon-blue hover:shadow-glow-neon-blue',
+      'hover:bg-blue-50':
+        'hover:bg-glass-bg-hover hover:border-neon-blue hover:shadow-glow-neon-blue',
       'hover:bg-gray-50': 'hover:bg-glass-bg-hover',
       'hover:bg-gray-100': 'hover:bg-glass-bg-active',
       'hover:text-blue-600': 'hover:text-neon-blue',
-      'hover:border-blue-500': 'hover:border-neon-blue'
-    };
+      'hover:border-blue-500': 'hover:border-neon-blue',
+    }
 
     for (const [oldClass, newClass] of Object.entries(glassClassReplacements)) {
-      const regex = new RegExp(`\\b${oldClass}\\b`, 'g');
+      const regex = new RegExp(`\\b${oldClass}\\b`, 'g')
       if (regex.test(modified)) {
-        modified = modified.replace(regex, newClass);
-        hasChanges = true;
+        modified = modified.replace(regex, newClass)
+        hasChanges = true
       }
     }
 
     // Ensure Pinia store usage
     if (modified.includes('$store') && !modified.includes('useAppStore')) {
-      const scriptMatch = modified.match(/<script[^>]*>([\s\S]*?)<\/script>/);
+      const scriptMatch = modified.match(/<script[^>]*>([\s\S]*?)<\/script>/)
       if (scriptMatch) {
-        let scriptContent = scriptMatch[1];
+        let scriptContent = scriptMatch[1]
 
         // Add store imports
         if (!scriptContent.includes('useAppStore')) {
-          scriptContent = `import { useAppStore } from '@/stores/app'\n${scriptContent}`;
-          hasChanges = true;
+          scriptContent = `import { useAppStore } from '@/stores/app'\n${scriptContent}`
+          hasChanges = true
         }
 
         // Replace $store usage with composable
-        scriptContent = scriptContent.replace(/\$store/g, 'useAppStore()');
+        scriptContent = scriptContent.replace(/\$store/g, 'useAppStore()')
 
-        modified = modified.replace(scriptMatch[0], `<script${scriptMatch[0].match(/^<script([^>]*)>/)[1]}>${scriptContent}</script>`);
+        modified = modified.replace(
+          scriptMatch[0],
+          `<script${scriptMatch[0].match(/^<script([^>]*)>/)[1]}>${scriptContent}</script>`
+        )
       }
     }
 
     // Add consistent font classes
-    if (!modified.includes('font-sans') && !modified.includes('font-mono') && !modified.includes('font-gaming')) {
+    if (
+      !modified.includes('font-sans') &&
+      !modified.includes('font-mono') &&
+      !modified.includes('font-gaming')
+    ) {
       // Add default font to root element
-      const templateMatch = modified.match(/<template>([\s\S]*?)<\/template>/);
+      const templateMatch = modified.match(/<template>([\s\S]*?)<\/template>/)
       if (templateMatch) {
-        let templateContent = templateMatch[1];
+        let templateContent = templateMatch[1]
         // Find the root element and add font class
-        const rootElementMatch = templateContent.match(/^(\s*)<(\w+)([^>]*?)>/);
+        const rootElementMatch = templateContent.match(/^(\s*)<(\w+)([^>]*?)>/)
         if (rootElementMatch && !rootElementMatch[3].includes('font-')) {
-          const newRoot = `${rootElementMatch[1]}<${rootElementMatch[2]}${rootElementMatch[3]} class="font-sans${rootElementMatch[3].includes('class=') ? '' : ' '}">`;
-          templateContent = templateContent.replace(rootElementMatch[0], newRoot);
-          modified = modified.replace(templateMatch[0], `<template>${templateContent}</template>`);
-          hasChanges = true;
+          const newRoot = `${rootElementMatch[1]}<${rootElementMatch[2]}${rootElementMatch[3]} class="font-sans${rootElementMatch[3].includes('class=') ? '' : ' '}">`
+          templateContent = templateContent.replace(
+            rootElementMatch[0],
+            newRoot
+          )
+          modified = modified.replace(
+            templateMatch[0],
+            `<template>${templateContent}</template>`
+          )
+          hasChanges = true
         }
       }
     }
@@ -446,21 +473,23 @@ async function processComponent(filePath) {
       'gap-3': 'gap-glass-md',
       'gap-4': 'gap-glass-md',
       'gap-6': 'gap-glass-lg',
-      'gap-8': 'gap-glass-xl'
-    };
+      'gap-8': 'gap-glass-xl',
+    }
 
-    for (const [oldSpacing, newSpacing] of Object.entries(spacingReplacements)) {
-      const regex = new RegExp(`\\b${oldSpacing}\\b`, 'g');
+    for (const [oldSpacing, newSpacing] of Object.entries(
+      spacingReplacements
+    )) {
+      const regex = new RegExp(`\\b${oldSpacing}\\b`, 'g')
       if (regex.test(modified)) {
-        modified = modified.replace(regex, newSpacing);
-        hasChanges = true;
+        modified = modified.replace(regex, newSpacing)
+        hasChanges = true
       }
     }
 
-    return { content: modified, hasChanges, filePath };
+    return { content: modified, hasChanges, filePath }
   } catch (error) {
-    console.error(`Error processing component ${filePath}:`, error.message);
-    return { content: null, hasChanges: false, filePath, error: error.message };
+    console.error(`Error processing component ${filePath}:`, error.message)
+    return { content: null, hasChanges: false, filePath, error: error.message }
   }
 }
 
@@ -658,12 +687,12 @@ export default {
   createUtilityClasses,
   SYSTEM_CONFIG: ${JSON.stringify(SYSTEM_CONFIG, null, 2)}
 }
-`;
+`
 
-  const utilsPath = path.join(SRC_DIR, 'composables', 'useThemeUtils.js');
-  await fs.mkdir(path.dirname(utilsPath), { recursive: true });
-  await fs.writeFile(utilsPath, utilsContent);
-  console.log('✅ Created unified theme utilities');
+  const utilsPath = path.join(SRC_DIR, 'composables', 'useThemeUtils.js')
+  await fs.mkdir(path.dirname(utilsPath), { recursive: true })
+  await fs.writeFile(utilsPath, utilsContent)
+  console.log('✅ Created unified theme utilities')
 }
 
 /**
@@ -833,12 +862,12 @@ export default {
   useErrorState,
   useThemeManager
 }
-`;
+`
 
-  const connectorPath = path.join(SRC_DIR, 'composables', 'useStores.js');
-  await fs.mkdir(path.dirname(connectorPath), { recursive: true });
-  await fs.writeFile(connectorPath, connectorContent);
-  console.log('✅ Created Pinia store connector');
+  const connectorPath = path.join(SRC_DIR, 'composables', 'useStores.js')
+  await fs.mkdir(path.dirname(connectorPath), { recursive: true })
+  await fs.writeFile(connectorPath, connectorContent)
+  console.log('✅ Created Pinia store connector')
 }
 
 /**
@@ -999,12 +1028,17 @@ export default {
   }
 }
 </script>
-`;
+`
 
-  const templatePath = path.join(SRC_DIR, 'components', 'ui', 'StandardComponent.vue');
-  await fs.mkdir(path.dirname(templatePath), { recursive: true });
-  await fs.writeFile(templatePath, templateContent);
-  console.log('✅ Created standardized component template');
+  const templatePath = path.join(
+    SRC_DIR,
+    'components',
+    'ui',
+    'StandardComponent.vue'
+  )
+  await fs.mkdir(path.dirname(templatePath), { recursive: true })
+  await fs.writeFile(templatePath, templateContent)
+  console.log('✅ Created standardized component template')
 }
 
 /**
@@ -1249,90 +1283,91 @@ async function createEnhancedCSS() {
     @apply shadow-none;
   }
 }
-`;
+`
 
-  const cssPath = path.join(SRC_DIR, 'styles', 'enhanced-glass-utilities.css');
-  await fs.mkdir(path.dirname(cssPath), { recursive: true });
-  await fs.writeFile(cssPath, enhancedCSS);
-  console.log('✅ Created enhanced CSS utilities');
+  const cssPath = path.join(SRC_DIR, 'styles', 'enhanced-glass-utilities.css')
+  await fs.mkdir(path.dirname(cssPath), { recursive: true })
+  await fs.writeFile(cssPath, enhancedCSS)
+  console.log('✅ Created enhanced CSS utilities')
 }
 
 /**
  * Main execution function
  */
 async function main() {
-  const startTime = Date.now();
+  const startTime = Date.now()
 
-  console.log('🚀 Starting NAVI Unified System Builder...\n');
+  console.log('🚀 Starting NAVI Unified System Builder...\n')
 
   try {
     // Create enhanced utilities and templates
-    await createThemeUtilities();
-    await createStoreConnector();
-    await createComponentTemplate();
-    await createEnhancedCSS();
+    await createThemeUtilities()
+    await createStoreConnector()
+    await createComponentTemplate()
+    await createEnhancedCSS()
 
     // Scan and process all Vue components
-    console.log('📦 Scanning Vue components...');
-    const components = await scanComponents(path.join(SRC_DIR, 'components'));
-    const views = await scanComponents(path.join(SRC_DIR, 'views'));
-    const allComponents = [...components, ...views];
+    console.log('📦 Scanning Vue components...')
+    const components = await scanComponents(path.join(SRC_DIR, 'components'))
+    const views = await scanComponents(path.join(SRC_DIR, 'views'))
+    const allComponents = [...components, ...views]
 
-    console.log(`Found ${allComponents.length} components to process\n`);
+    console.log(`Found ${allComponents.length} components to process\n`)
 
-    let processedCount = 0;
-    let modifiedCount = 0;
-    let errorCount = 0;
+    let processedCount = 0
+    let modifiedCount = 0
+    let errorCount = 0
 
     // Process components with progress indicator
     for (const componentPath of allComponents) {
-      const relativePath = path.relative(ROOT_DIR, componentPath);
-      process.stdout.write(`Processing: ${relativePath}...`);
+      const relativePath = path.relative(ROOT_DIR, componentPath)
+      process.stdout.write(`Processing: ${relativePath}...`)
 
-      const result = await processComponent(componentPath);
+      const result = await processComponent(componentPath)
 
       if (result.error) {
-        console.log(` ❌ Error: ${result.error}`);
-        errorCount++;
+        console.log(` ❌ Error: ${result.error}`)
+        errorCount++
       } else if (result.hasChanges) {
-        await fs.writeFile(componentPath, result.content);
-        console.log(` ✅ Updated`);
-        modifiedCount++;
+        await fs.writeFile(componentPath, result.content)
+        console.log(` ✅ Updated`)
+        modifiedCount++
       } else {
-        console.log(` ⭕ No changes needed`);
+        console.log(` ⭕ No changes needed`)
       }
 
-      processedCount++;
+      processedCount++
     }
 
-    console.log(`\n📊 Processing Summary:`);
-    console.log(`   • Total components: ${processedCount}`);
-    console.log(`   • Modified: ${modifiedCount}`);
-    console.log(`   • Errors: ${errorCount}`);
-    console.log(`   • No changes: ${processedCount - modifiedCount - errorCount}`);
+    console.log(`\n📊 Processing Summary:`)
+    console.log(`   • Total components: ${processedCount}`)
+    console.log(`   • Modified: ${modifiedCount}`)
+    console.log(`   • Errors: ${errorCount}`)
+    console.log(
+      `   • No changes: ${processedCount - modifiedCount - errorCount}`
+    )
 
-    const endTime = Date.now();
-    const duration = ((endTime - startTime) / 1000).toFixed(2);
+    const endTime = Date.now()
+    const duration = ((endTime - startTime) / 1000).toFixed(2)
 
-    console.log(`\n🎉 NAVI Unified System Builder completed in ${duration}s`);
-    console.log(`\n✨ Your application now features:`);
-    console.log(`   • Pure black/white glassmorphic design with Tailwind`);
-    console.log(`   • Fira Code font integration`);
-    console.log(`   • Heroicons replacing legacy icons`);
-    console.log(`   • Centralized Pinia state management`);
-    console.log(`   • Consistent spacing and layout`);
-    console.log(`   • RGB neon highlights on interactive states`);
-    console.log(`   • Production-grade component patterns`);
-
+    console.log(`\n🎉 NAVI Unified System Builder completed in ${duration}s`)
+    console.log(`\n✨ Your application now features:`)
+    console.log(`   • Pure black/white glassmorphic design with Tailwind`)
+    console.log(`   • Fira Code font integration`)
+    console.log(`   • Heroicons replacing legacy icons`)
+    console.log(`   • Centralized Pinia state management`)
+    console.log(`   • Consistent spacing and layout`)
+    console.log(`   • RGB neon highlights on interactive states`)
+    console.log(`   • Production-grade component patterns`)
   } catch (error) {
-    console.error(`\n❌ Build failed:`, error.message);
-    process.exit(1);
+    console.error(`\n❌ Build failed:`, error.message)
+    process.exit(1)
   }
 }
 
 // Run the script
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
+  main()
 }
 
 export default {
@@ -1341,5 +1376,5 @@ export default {
   scanComponents,
   SYSTEM_CONFIG,
   ICON_MAPPINGS,
-  COMPONENT_PATTERNS
-};
+  COMPONENT_PATTERNS,
+}

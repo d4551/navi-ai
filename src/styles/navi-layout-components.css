@@ -142,8 +142,15 @@
 }
 
 @keyframes pulseIndicator {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.1); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
 }
 
 /* ===== CARD COMPONENTS ===== */
@@ -827,13 +834,17 @@
 }
 
 .modal-close:hover {
-  box-shadow: 0 0 20px rgba(255, 0, 85, 0.4), 0 8px 32px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    0 0 20px rgba(255, 0, 85, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.15);
   border-color: #ff0055;
   transform: translateY(-2px);
 }
 
 .dark .modal-close:hover {
-  box-shadow: 0 0 20px rgba(255, 0, 85, 0.4), 0 8px 32px rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 20px rgba(255, 0, 85, 0.4),
+    0 8px 32px rgba(255, 255, 255, 0.1);
 }
 
 .modal-content {
@@ -1031,10 +1042,12 @@
 
 /* Loading states */
 .skeleton {
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     var(--glass-bg) 25%,
     var(--glass-bg-hover) 50%,
-    var(--glass-bg) 75%);
+    var(--glass-bg) 75%
+  );
   background-size: 200% 100%;
   animation: skeleton 1.5s ease-in-out infinite;
   border-radius: var(--radius-md);

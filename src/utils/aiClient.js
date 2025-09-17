@@ -12,7 +12,7 @@ import {
   ensureApiKey,
   getStreamClient,
   resetAIService,
-  reinitializeIfModelChanged
+  reinitializeIfModelChanged,
 } from '@/shared/services/CanonicalAIClient'
 
 import { aiService } from '@/shared/services/AIService'
@@ -75,26 +75,31 @@ async function ensureAIInitialized() {
   try {
     // Try to get API key from localStorage or app settings
     const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}')
-    const apiKey = appSettings.geminiApiKey || import.meta.env.VITE_GEMINI_API_KEY || null
-    
+    const apiKey =
+      appSettings.geminiApiKey || import.meta.env.VITE_GEMINI_API_KEY || null
+
     if (apiKey) {
       console.log('Auto-initializing AI service with available API key')
       const result = await aiService.initialize({
         apiKey,
         model: appSettings.selectedModel || 'gemini-2.5-flash',
-        primaryProvider: 'google'
+        primaryProvider: 'google',
       })
-      
+
       if (!result.success) {
         throw new Error(result.message || 'AI initialization failed')
       }
       return true
     } else {
-      throw new Error('AI service not initialized. Please configure your API key first.')
+      throw new Error(
+        'AI service not initialized. Please configure your API key first.'
+      )
     }
   } catch (initError) {
     console.warn('Failed to auto-initialize AI service:', initError)
-    throw new Error('AI service not initialized. Please configure your API key first.')
+    throw new Error(
+      'AI service not initialized. Please configure your API key first.'
+    )
   }
 }
 
@@ -102,85 +107,120 @@ async function ensureAIInitialized() {
 async function generateContent(prompt, systemInstructions = '', options = {}) {
   // Ensure AI is initialized using the canonical service
   await ensureAIInitialized()
-  
+
   try {
     // Use the canonical AI service for generation
     const response = await aiService.chat({
       message: prompt,
       context: systemInstructions,
       type: 'chat',
-      options
+      options,
     })
-    
+
     return response.content
   } catch (error) {
     console.error('generateContent failed:', error)
-    
+
     // Fallback to direct client if canonical service fails
     const client = getBestAIClient()
-    
+
     // Auto-initialize client if needed
     if (!isAIClientReady()) {
       try {
-        const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}')
-        const apiKey = appSettings.geminiApiKey || import.meta.env.VITE_GEMINI_API_KEY || null
-        
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+        const apiKey =
+          appSettings.geminiApiKey ||
+          import.meta.env.VITE_GEMINI_API_KEY ||
+          null
+
         if (apiKey) {
           await client.initialize(apiKey)
         } else {
-          throw new Error('AI service not initialized. Please configure your API key first.')
+          throw new Error(
+            'AI service not initialized. Please configure your API key first.'
+          )
         }
       } catch (initError) {
         console.warn('Failed to auto-initialize AI client:', initError)
-        throw new Error('AI service not initialized. Please configure your API key first.')
+        throw new Error(
+          'AI service not initialized. Please configure your API key first.'
+        )
       }
     }
-    
+
     try {
       return await client.generateText(prompt, systemInstructions, options)
     } catch (fallbackError) {
       console.error('Fallback client also failed:', fallbackError)
-      throw new Error('AI service not initialized. Please configure your API key first.')
+      throw new Error(
+        'AI service not initialized. Please configure your API key first.'
+      )
     }
   }
 }
 
-async function generateSmartContent(contentType, userInput, context = {}, options = {}) {
+async function generateSmartContent(
+  contentType,
+  userInput,
+  context = {},
+  options = {}
+) {
   // Ensure AI is initialized
   await ensureAIInitialized()
-  
+
   try {
     // Use canonical AI service for smart content generation
     const response = await aiService.chat({
       message: userInput,
       context: `Content type: ${contentType}. Additional context: ${JSON.stringify(context)}`,
       type: 'generation',
-      options
+      options,
     })
-    
+
     return response.content
   } catch (error) {
     console.error('generateSmartContent failed with canonical service:', error)
-    
+
     // Fallback to direct client
     const client = getBestAIClient()
     try {
-      return await client.generateSmartContent(contentType, userInput, context, options)
+      return await client.generateSmartContent(
+        contentType,
+        userInput,
+        context,
+        options
+      )
     } catch (fallbackError) {
       console.error('Fallback client also failed:', fallbackError)
-      throw new Error('AI service not initialized. Please configure your API key first.')
+      throw new Error(
+        'AI service not initialized. Please configure your API key first.'
+      )
     }
   }
 }
 
-async function getContextualSuggestions(componentType, currentData = {}, userProfile = {}, options = {}) {
+async function getContextualSuggestions(
+  componentType,
+  currentData = {},
+  userProfile = {},
+  options = {}
+) {
   const client = getBestAIClient()
   try {
-    return await client.getContextualSuggestions(componentType, currentData, userProfile, options)
+    return await client.getContextualSuggestions(
+      componentType,
+      currentData,
+      userProfile,
+      options
+    )
   } catch (error) {
     console.error('getContextualSuggestions failed:', error)
     if (error.message.includes('not initialized')) {
-      throw new Error('AI service not initialized. Please configure your API key first.')
+      throw new Error(
+        'AI service not initialized. Please configure your API key first.'
+      )
     }
     throw error
   }
@@ -201,12 +241,14 @@ async function streamText(prompt, options = {}) {
     return {
       textStream: async function* () {
         yield result.text || result
-      }
+      },
     }
   } catch (error) {
     console.error('streamText failed:', error)
     if (error.message.includes('not initialized')) {
-      throw new Error('AI service not initialized. Please configure your API key first.')
+      throw new Error(
+        'AI service not initialized. Please configure your API key first.'
+      )
     }
     throw error
   }
@@ -220,7 +262,7 @@ let __aiInitPromise = null
 async function initializeAI(apiKey, model = 'gemini-2.5-flash') {
   const client = getBestAIClient()
 
-  const signature = `${(apiKey||'').trim()}::${(model||'').trim()}`
+  const signature = `${(apiKey || '').trim()}::${(model || '').trim()}`
   try {
     // Skip if already initialized with same config
     if (client?.isReady?.value && __aiInitSignature === signature) {
@@ -240,13 +282,18 @@ async function initializeAI(apiKey, model = 'gemini-2.5-flash') {
       const result = await __aiInitPromise
       __aiInitPromise = null
       if (result?.success === false) {
-        throw new Error(result?.error || 'AI service not initialized. Please configure your API key first.')
+        throw new Error(
+          result?.error ||
+            'AI service not initialized. Please configure your API key first.'
+        )
       }
       return result
     } catch (error) {
       __aiInitPromise = null
       console.error('Modern AI client initialization failed:', error)
-      throw new Error('AI service not initialized. Please configure your API key first.')
+      throw new Error(
+        'AI service not initialized. Please configure your API key first.'
+      )
     }
   }
 
@@ -258,13 +305,18 @@ async function initializeAI(apiKey, model = 'gemini-2.5-flash') {
       const result = await __aiInitPromise
       __aiInitPromise = null
       if (result?.success === false) {
-        throw new Error(result?.error || 'AI service not initialized. Please configure your API key first.')
+        throw new Error(
+          result?.error ||
+            'AI service not initialized. Please configure your API key first.'
+        )
       }
       return result
     } catch (error) {
       __aiInitPromise = null
       console.error('Canonical AI client initialization failed:', error)
-      throw new Error('AI service not initialized. Please configure your API key first.')
+      throw new Error(
+        'AI service not initialized. Please configure your API key first.'
+      )
     }
   }
 
@@ -278,12 +330,14 @@ async function initializeAI(apiKey, model = 'gemini-2.5-flash') {
   } catch (error) {
     __aiInitPromise = null
     console.error('AI client fallback initialization failed:', error)
-    throw new Error('AI service not initialized. Please configure your API key first.')
+    throw new Error(
+      'AI service not initialized. Please configure your API key first.'
+    )
   }
 }
 
 // Use the canonical client's getAIClient function for full compatibility
-export { getAIClient };
+export { getAIClient }
 
 // Enhanced exports with modern AI capabilities
 export {
@@ -298,7 +352,7 @@ export {
   ensureApiKey,
   resetAIService,
   reinitializeIfModelChanged,
-  getStreamClient
+  getStreamClient,
 }
 
 // Default export for convenience - returns the best available AI client

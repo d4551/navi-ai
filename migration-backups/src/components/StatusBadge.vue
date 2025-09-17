@@ -1,10 +1,11 @@
 import { defineProps } from 'vue'
 <template>
   <span
-    :class="[ 'status-badge',
-              `status-badge-${variant}`,
-              `status-badge-${size}`,
-              { 'status-badge-pill': pill }
+    :class="[
+      'status-badge',
+      `status-badge-${variant}`,
+      `status-badge-${size}`,
+      { 'status-badge-pill': pill },
     ]"
     :role="role"
     :aria-label="ariaLabel || $slots.default?.[0]?.text || ''"
@@ -18,25 +19,35 @@ defineProps({
   variant: {
     type: String,
     default: 'secondary',
-    validator: value => ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'].includes(value)
+    validator: value =>
+      [
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+        'light',
+        'dark',
+      ].includes(value),
   },
   size: {
     type: String,
     default: 'md',
-    validator: value => ['sm', 'md', 'lg'].includes(value)
+    validator: value => ['sm', 'md', 'lg'].includes(value),
   },
   pill: {
     type: Boolean,
-    default: false
+    default: false,
   },
   role: {
     type: String,
-    default: null
+    default: null,
   },
   ariaLabel: {
     type: String,
-    default: null
-  }
+    default: null,
+  },
 })
 </script>
 
@@ -126,13 +137,13 @@ defineProps({
 }
 
 /* Dark theme support */
-[data-theme="dark"] .status-badge-secondary {
+[data-theme='dark'] .status-badge-secondary {
   background: var(--dark-glass-elevated);
   border-color: var(--dark-glass-border);
   color: var(--dark-text-primary);
 }
 
-[data-theme="dark"] .status-badge-light {
+[data-theme='dark'] .status-badge-light {
   background: var(--dark-bg-tertiary);
   color: var(--dark-text-primary);
 }

@@ -634,7 +634,7 @@
   /* Removed legacy spacing aliases; use --spacing-* canonical tokens */
   --spacing-desktop-xl: var(--spacing-2xl);
   /* Removed legacy z-index aliases; use canonical --z-* tokens */
-/* Misc */
+  /* Misc */
   --animation-normal: 0.3s ease-out;
   --angle: 135deg;
   --rgb-green: rgba(0, 255, 136, 1);
@@ -701,7 +701,7 @@
 
 /* Light Theme (Default) */
 :root,
-[data-theme="light"] {
+[data-theme='light'] {
   /* Surface Colors */
   --surface-base: #ffffff;
   --surface-elevated: rgba(255, 255, 255, 0.95);
@@ -750,7 +750,7 @@
 }
 
 /* Dark Theme */
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* Surface Colors (pure black base) */
   --surface-base: #000000;
   --surface-elevated: rgba(0, 0, 0, 0.95);
@@ -800,7 +800,7 @@
 }
 
 /* Gaming Theme */
-[data-theme="gaming"] {
+[data-theme='gaming'] {
   --border-glass: rgba(0, 255, 136, 0.15);
   --text-primary: #00ff88;
   --glass-bg: rgba(0, 255, 136, 0.1);
@@ -1284,7 +1284,7 @@
 /* Focus visibility: accessible neon ring tuned for glass UI */
 :where(
   button,
-  [role="button"],
+  [role='button'],
   a,
   input,
   textarea,
@@ -1303,7 +1303,7 @@
 }
 
 /* Hover/active neon glows on primary interactive elements */
-:where(button, [role="button"], .unified-button, .v-btn) {
+:where(button, [role='button'], .unified-button, .v-btn) {
   transition:
     transform var(--duration-fast) var(--easing-smooth),
     box-shadow var(--duration-fast) var(--easing-smooth),
@@ -1312,11 +1312,11 @@
   border-radius: var(--radius-md);
 }
 
-:where(button, [role="button"], .unified-button, .v-btn):hover {
+:where(button, [role='button'], .unified-button, .v-btn):hover {
   box-shadow: 0 8px 24px var(--neon-hover);
 }
 
-:where(button, [role="button"], .unified-button, .v-btn):active {
+:where(button, [role='button'], .unified-button, .v-btn):active {
   transform: translateY(1px);
   box-shadow: 0 6px 18px var(--neon-active);
 }
@@ -1461,7 +1461,7 @@
   justify-content: center;
 }
 
-[data-theme="dark"] .loading-overlay {
+[data-theme='dark'] .loading-overlay {
   background: rgba(0, 0, 0, 0.8);
 }
 
@@ -1512,7 +1512,7 @@
     --surface-base: #ffffff;
   }
 
-  [data-theme="dark"] {
+  [data-theme='dark'] {
     --border-base: #ffffff;
     --border-strong: #ffffff;
     --text-primary: #ffffff;
@@ -2317,7 +2317,7 @@
   border-color: color-mix(in srgb, var(--color-info) 28%, transparent);
   color: color-mix(in srgb, var(--color-info) 86%, var(--text-primary));
 }
-[data-theme="dark"] .ai-chip {
+[data-theme='dark'] .ai-chip {
   background: color-mix(
     in srgb,
     var(--color-info) 18%,
@@ -2339,7 +2339,7 @@
   border-color: color-mix(in srgb, var(--color-primary-500) 32%, transparent);
   color: color-mix(in srgb, var(--color-primary-500) 92%, var(--text-primary));
 }
-[data-theme="dark"] .role-chip {
+[data-theme='dark'] .role-chip {
   background: color-mix(
     in srgb,
     var(--color-primary-500) 18%,
@@ -2372,8 +2372,8 @@
   border-color: color-mix(in srgb, var(--color-info) 20%, transparent);
   color: color-mix(in srgb, var(--color-info) 72%, var(--text-secondary));
 }
-[data-theme="dark"] .app-chip,
-[data-theme="dark"] .app-tag {
+[data-theme='dark'] .app-chip,
+[data-theme='dark'] .app-tag {
   background: color-mix(
     in srgb,
     var(--color-info) 12%,
@@ -2431,8 +2431,8 @@
   border-color: color-mix(in srgb, var(--color-primary-500) 28%, transparent);
   color: color-mix(in srgb, var(--color-primary-500) 86%, var(--text-primary));
 }
-[data-theme="dark"] .badge.bg-primary,
-[data-theme="dark"] .badge.text-bg-primary {
+[data-theme='dark'] .badge.bg-primary,
+[data-theme='dark'] .badge.text-bg-primary {
   background: color-mix(
     in srgb,
     var(--color-primary-500) 18%,
@@ -2481,7 +2481,7 @@
   border-color: color-mix(in srgb, var(--text-secondary) 18%, transparent);
   color: var(--text-secondary);
 }
-[data-theme="dark"] .badge.bg-secondary-subtle {
+[data-theme='dark'] .badge.bg-secondary-subtle {
   background: color-mix(
     in srgb,
     var(--text-secondary) 12%,
@@ -2491,19 +2491,19 @@
 }
 
 /* Dark theme strengthening for contrast */
-[data-theme="dark"] .badge,
-[data-theme="dark"] .ui-chip,
-[data-theme="dark"] .chip,
-[data-theme="dark"] .ui-badge {
+[data-theme='dark'] .badge,
+[data-theme='dark'] .ui-chip,
+[data-theme='dark'] .chip,
+[data-theme='dark'] .ui-badge {
   background: rgba(255, 255, 255, 0.06);
   border-color: var(--glass-border);
   color: var(--dark-text-primary, var(--text-primary));
 }
 
-[data-theme="dark"] .badge.bg-info,
-[data-theme="dark"] .badge.text-bg-info,
-[data-theme="dark"] .chip-info,
-[data-theme="dark"] .ui-chip.info {
+[data-theme='dark'] .badge.bg-info,
+[data-theme='dark'] .badge.text-bg-info,
+[data-theme='dark'] .chip-info,
+[data-theme='dark'] .ui-chip.info {
   background: color-mix(
     in srgb,
     var(--color-info) 18%,
@@ -2517,9 +2517,9 @@
   );
 }
 
-[data-theme="dark"] .badge.bg-info-subtle,
-[data-theme="dark"] .chip-info-subtle,
-[data-theme="dark"] .ui-chip.info-subtle {
+[data-theme='dark'] .badge.bg-info-subtle,
+[data-theme='dark'] .chip-info-subtle,
+[data-theme='dark'] .ui-chip.info-subtle {
   background: color-mix(
     in srgb,
     var(--color-info) 12%,
@@ -2558,10 +2558,10 @@
   border-color: color-mix(in srgb, var(--color-error) 28%, transparent);
   color: color-mix(in srgb, var(--color-error) 86%, #fff);
 }
-[data-theme="dark"] .badge.bg-success,
-[data-theme="dark"] .badge.text-bg-success,
-[data-theme="dark"] .chip-success,
-[data-theme="dark"] .ui-chip.success {
+[data-theme='dark'] .badge.bg-success,
+[data-theme='dark'] .badge.text-bg-success,
+[data-theme='dark'] .chip-success,
+[data-theme='dark'] .ui-chip.success {
   background: color-mix(
     in srgb,
     var(--color-success) 18%,
@@ -2574,10 +2574,10 @@
     var(--dark-text-primary, #e5e7eb)
   );
 }
-[data-theme="dark"] .badge.bg-warning,
-[data-theme="dark"] .badge.text-bg-warning,
-[data-theme="dark"] .chip-warning,
-[data-theme="dark"] .ui-chip.warning {
+[data-theme='dark'] .badge.bg-warning,
+[data-theme='dark'] .badge.text-bg-warning,
+[data-theme='dark'] .chip-warning,
+[data-theme='dark'] .ui-chip.warning {
   background: color-mix(
     in srgb,
     var(--color-warning) 18%,
@@ -2590,10 +2590,10 @@
     var(--dark-text-primary, #e5e7eb)
   );
 }
-[data-theme="dark"] .badge.bg-danger,
-[data-theme="dark"] .badge.text-bg-danger,
-[data-theme="dark"] .chip-danger,
-[data-theme="dark"] .ui-chip.danger {
+[data-theme='dark'] .badge.bg-danger,
+[data-theme='dark'] .badge.text-bg-danger,
+[data-theme='dark'] .chip-danger,
+[data-theme='dark'] .ui-chip.danger {
   background: color-mix(
     in srgb,
     var(--color-error) 18%,
@@ -2643,8 +2643,8 @@
   border-color: color-mix(in srgb, var(--text-secondary) 28%, transparent);
   color: var(--text-primary);
 }
-[data-theme="dark"] .badge.bg-secondary,
-[data-theme="dark"] .badge.text-bg-secondary {
+[data-theme='dark'] .badge.bg-secondary,
+[data-theme='dark'] .badge.text-bg-secondary {
   background: color-mix(
     in srgb,
     var(--text-secondary) 18%,
@@ -2679,7 +2679,7 @@
   border-color: var(--glass-border);
   color: var(--text-primary);
 }
-[data-theme="dark"] .badge.bg-primary-subtle {
+[data-theme='dark'] .badge.bg-primary-subtle {
   background: color-mix(
     in srgb,
     var(--color-primary-500) 14%,
@@ -2687,7 +2687,7 @@
   );
   border-color: color-mix(in srgb, var(--color-primary-500) 28%, transparent);
 }
-[data-theme="dark"] .badge.bg-success-subtle {
+[data-theme='dark'] .badge.bg-success-subtle {
   background: color-mix(
     in srgb,
     var(--color-success) 14%,
@@ -2695,7 +2695,7 @@
   );
   border-color: color-mix(in srgb, var(--color-success) 28%, transparent);
 }
-[data-theme="dark"] .badge.bg-warning-subtle {
+[data-theme='dark'] .badge.bg-warning-subtle {
   background: color-mix(
     in srgb,
     var(--color-warning) 14%,
@@ -2703,7 +2703,7 @@
   );
   border-color: color-mix(in srgb, var(--color-warning) 28%, transparent);
 }
-[data-theme="dark"] .badge.bg-danger-subtle {
+[data-theme='dark'] .badge.bg-danger-subtle {
   background: color-mix(
     in srgb,
     var(--color-error) 14%,
@@ -2711,7 +2711,7 @@
   );
   border-color: color-mix(in srgb, var(--color-error) 28%, transparent);
 }
-[data-theme="dark"] .badge.bg-light {
+[data-theme='dark'] .badge.bg-light {
   background: rgba(255, 255, 255, 0.12);
   border-color: var(--glass-border);
   color: var(--dark-text-primary, #e5e7eb);
@@ -2854,10 +2854,10 @@
   right: 0;
   background: linear-gradient(270deg, rgba(0, 0, 0, 0.08), transparent);
 }
-[data-theme="dark"] .glass-nav .edge-fade.left {
+[data-theme='dark'] .glass-nav .edge-fade.left {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent);
 }
-[data-theme="dark"] .glass-nav .edge-fade.right {
+[data-theme='dark'] .glass-nav .edge-fade.right {
   background: linear-gradient(270deg, rgba(255, 255, 255, 0.06), transparent);
 }
 
@@ -2879,7 +2879,7 @@
   color: #fff;
 }
 
-[data-theme="dark"] .button-badge.badge-unified {
+[data-theme='dark'] .button-badge.badge-unified {
   border-color: var(--glass-border);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
@@ -3106,17 +3106,17 @@
     color-mix(in srgb, var(--color-success) 28%, transparent);
 }
 
-[data-theme="dark"] .badge.bg-info:hover,
-[data-theme="dark"] .badge.text-bg-info:hover,
-[data-theme="dark"] .chip-info:hover,
-[data-theme="dark"] .ui-chip.info:hover {
+[data-theme='dark'] .badge.bg-info:hover,
+[data-theme='dark'] .badge.text-bg-info:hover,
+[data-theme='dark'] .chip-info:hover,
+[data-theme='dark'] .ui-chip.info:hover {
   box-shadow: 0 8px 18px color-mix(in srgb, var(--color-info) 35%, transparent);
 }
 
-[data-theme="dark"] .badge.bg-success:hover,
-[data-theme="dark"] .badge.text-bg-success:hover,
-[data-theme="dark"] .chip-success:hover,
-[data-theme="dark"] .ui-chip.success:hover {
+[data-theme='dark'] .badge.bg-success:hover,
+[data-theme='dark'] .badge.text-bg-success:hover,
+[data-theme='dark'] .chip-success:hover,
+[data-theme='dark'] .ui-chip.success:hover {
   box-shadow: 0 8px 18px
     color-mix(in srgb, var(--color-success) 32%, transparent);
 }
@@ -3139,18 +3139,18 @@
   box-shadow: 0 6px 16px color-mix(in srgb, var(--color-error) 32%, transparent);
 }
 
-[data-theme="dark"] .badge.bg-warning:hover,
-[data-theme="dark"] .badge.text-bg-warning:hover,
-[data-theme="dark"] .chip-warning:hover,
-[data-theme="dark"] .ui-chip.warning:hover {
+[data-theme='dark'] .badge.bg-warning:hover,
+[data-theme='dark'] .badge.text-bg-warning:hover,
+[data-theme='dark'] .chip-warning:hover,
+[data-theme='dark'] .ui-chip.warning:hover {
   box-shadow: 0 8px 18px
     color-mix(in srgb, var(--color-warning) 35%, transparent);
 }
 
-[data-theme="dark"] .badge.bg-danger:hover,
-[data-theme="dark"] .badge.text-bg-danger:hover,
-[data-theme="dark"] .chip-danger:hover,
-[data-theme="dark"] .ui-chip.danger:hover {
+[data-theme='dark'] .badge.bg-danger:hover,
+[data-theme='dark'] .badge.text-bg-danger:hover,
+[data-theme='dark'] .chip-danger:hover,
+[data-theme='dark'] .ui-chip.danger:hover {
   box-shadow: 0 8px 18px color-mix(in srgb, var(--color-error) 38%, transparent);
 }
 
@@ -3213,5 +3213,3 @@
   gap: var(--spacing-2);
   flex-wrap: wrap;
 }
-
-

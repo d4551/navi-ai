@@ -5,7 +5,9 @@
       <div class="flex justify-between items-start">
         <div>
           <h1 class="text-3xl font-bold text-primary mb-2">Portfolio System</h1>
-          <p class="text-muted">Create, manage, and share your professional portfolio</p>
+          <p class="text-muted">
+            Create, manage, and share your professional portfolio
+          </p>
         </div>
         <div class="stats-grid">
           <div class="stat-card">
@@ -39,17 +41,11 @@
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-semibold">Your Projects</h2>
           <div class="flex gap-3">
-            <button
-              class="btn btn-outline"
-              @click="showTemplateModal = true"
-            >
+            <button class="btn btn-outline" @click="showTemplateModal = true">
               <AppIcon name="mdi-shape-outline" />
               Use Template
             </button>
-            <button
-              class="btn btn-primary"
-              @click="createNewProject"
-            >
+            <button class="btn btn-primary" @click="createNewProject">
               <AppIcon name="mdi-plus" />
               New Project
             </button>
@@ -85,7 +81,7 @@
               type="text"
               placeholder="Search projects..."
               class="form-input"
-            >
+            />
           </div>
         </div>
 
@@ -103,9 +99,9 @@
                 {{ project.status.replace('-', ' ') }}
               </div>
             </div>
-            
+
             <p class="project-description">{{ project.description }}</p>
-            
+
             <div class="project-meta">
               <div class="project-category">
                 <AppIcon :name="getCategoryIcon(project.category)" />
@@ -115,7 +111,7 @@
                 {{ formatDate(project.updatedAt) }}
               </div>
             </div>
-            
+
             <div class="project-technologies">
               <span
                 v-for="tech in project.technologies.slice(0, 3)"
@@ -128,13 +124,15 @@
                 +{{ project.technologies.length - 3 }} more
               </span>
             </div>
-            
+
             <div class="project-actions">
               <button
                 class="btn btn-sm btn-outline"
                 @click.stop="toggleFeatured(project)"
               >
-                <AppIcon :name="project.featured ? 'mdi-star' : 'mdi-star-outline'" />
+                <AppIcon
+                  :name="project.featured ? 'mdi-star' : 'mdi-star-outline'"
+                />
                 {{ project.featured ? 'Featured' : 'Feature' }}
               </button>
               <button
@@ -153,7 +151,9 @@
           <AppIcon name="mdi-folder-open-outline" />
           <h3>No projects found</h3>
           <p>Create your first project or adjust your filters</p>
-          <UnifiedButton variant="primary" @click="createNewProject">Create Project</UnifiedButton>
+          <UnifiedButton variant="primary" @click="createNewProject"
+            >Create Project</UnifiedButton
+          >
         </div>
       </div>
 
@@ -161,7 +161,12 @@
       <div v-if="activeTab === 'templates'" class="templates-tab">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-semibold">Portfolio Templates</h2>
-          <UnifiedButton variant="primary" leading-icon="mdi-plus" @click="showCreateTemplateModal = true">Create Template</UnifiedButton>
+          <UnifiedButton
+            variant="primary"
+            leading-icon="mdi-plus"
+            @click="showCreateTemplateModal = true"
+            >Create Template</UnifiedButton
+          >
         </div>
 
         <!-- Template Categories -->
@@ -169,7 +174,10 @@
           <button
             v-for="category in templateCategories"
             :key="category.id"
-            :class="['category-btn', { active: selectedTemplateCategory === category.id }]"
+            :class="[
+              'category-btn',
+              { active: selectedTemplateCategory === category.id },
+            ]"
             @click="selectedTemplateCategory = category.id"
           >
             <AppIcon :name="category.icon" />
@@ -191,16 +199,16 @@
                 :src="template.preview.thumbnail"
                 :alt="template.name"
                 class="template-thumbnail"
-              >
+              />
               <div v-else class="template-placeholder">
                 <AppIcon name="mdi-image-outline" />
               </div>
             </div>
-            
+
             <div class="template-content">
               <h3 class="template-title">{{ template.name }}</h3>
               <p class="template-description">{{ template.description }}</p>
-              
+
               <div class="template-meta">
                 <span class="template-difficulty" :class="template.difficulty">
                   {{ template.difficulty }}
@@ -210,7 +218,7 @@
                   {{ template.estimatedTime }}min
                 </span>
               </div>
-              
+
               <div class="template-tags">
                 <span
                   v-for="tag in template.tags.slice(0, 3)"
@@ -220,7 +228,7 @@
                   {{ tag }}
                 </span>
               </div>
-              
+
               <div class="template-actions">
                 <button
                   class="btn btn-primary w-full"
@@ -239,10 +247,7 @@
       <div v-if="activeTab === 'sharing'" class="sharing-tab">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-semibold">Portfolio Sharing</h2>
-          <button
-            class="btn btn-primary"
-            @click="showCreateShareModal = true"
-          >
+          <button class="btn btn-primary" @click="showCreateShareModal = true">
             <AppIcon name="mdi-share-variant" />
             Create Share Link
           </button>
@@ -286,9 +291,9 @@
                 {{ share.isActive ? 'Active' : 'Inactive' }}
               </div>
             </div>
-            
+
             <p class="share-description">{{ share.description }}</p>
-            
+
             <div class="share-stats">
               <div class="share-stat">
                 <AppIcon name="mdi-eye" />
@@ -299,13 +304,9 @@
                 Created {{ formatDate(share.createdAt) }}
               </div>
             </div>
-            
+
             <div class="share-url">
-              <input
-                :value="share.url"
-                readonly
-                class="form-input"
-              >
+              <input :value="share.url" readonly class="form-input" />
               <button
                 class="btn btn-outline"
                 @click="copyToClipboard(share.url)"
@@ -314,12 +315,9 @@
                 Copy
               </button>
             </div>
-            
+
             <div class="share-actions">
-              <button
-                class="btn btn-sm btn-outline"
-                @click="editShare(share)"
-              >
+              <button class="btn btn-sm btn-outline" @click="editShare(share)">
                 <AppIcon name="mdi-pencil" />
                 Edit
               </button>
@@ -330,10 +328,7 @@
                 <AppIcon name="mdi-chart-line" />
                 Analytics
               </button>
-              <button
-                class="btn btn-sm btn-danger"
-                @click="deleteShare(share)"
-              >
+              <button class="btn btn-sm btn-danger" @click="deleteShare(share)">
                 <AppIcon name="mdi-delete" />
                 Delete
               </button>
@@ -345,7 +340,7 @@
       <!-- Analytics Tab -->
       <div v-if="activeTab === 'analytics'" class="analytics-tab">
         <h2 class="text-2xl font-semibold mb-6">Portfolio Analytics</h2>
-        
+
         <!-- Analytics Overview -->
         <div class="analytics-overview mb-6">
           <div class="analytics-card">
@@ -355,8 +350,12 @@
           </div>
           <div class="analytics-card">
             <h3>Most Viewed Project</h3>
-            <div class="analytics-value">{{ mostViewedProject?.title || 'N/A' }}</div>
-            <div class="analytics-detail">{{ mostViewedProject?.views || 0 }} views</div>
+            <div class="analytics-value">
+              {{ mostViewedProject?.title || 'N/A' }}
+            </div>
+            <div class="analytics-detail">
+              {{ mostViewedProject?.views || 0 }} views
+            </div>
           </div>
           <div class="analytics-card">
             <h3>Average View Time</h3>
@@ -416,7 +415,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, defineAsyncComponent, watch, nextTick } from 'vue'
+import {
+  ref,
+  computed,
+  onMounted,
+  defineAsyncComponent,
+  watch,
+  nextTick,
+} from 'vue'
 import {
   Chart,
   LineController,
@@ -427,7 +433,7 @@ import {
   ArcElement,
   PieController,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -440,10 +446,18 @@ import type { PortfolioProject } from '@/modules/db/repositories/portfolio'
 import type { PortfolioTemplate } from '@/composables/useEnhancedPortfolio'
 
 // Components (would be imported in real implementation)
-const TemplateModal = defineAsyncComponent(() => import('@/components/portfolio/TemplateModal.vue'))
-const CreateTemplateModal = defineAsyncComponent(() => import('@/components/portfolio/CreateTemplateModal.vue'))
-const PortfolioShareModal = defineAsyncComponent(() => import('@/components/portfolio/PortfolioShareModal.vue'))
-const ProjectModal = defineAsyncComponent(() => import('@/components/portfolio/ProjectModal.vue'))
+const TemplateModal = defineAsyncComponent(
+  () => import('@/components/portfolio/TemplateModal.vue')
+)
+const CreateTemplateModal = defineAsyncComponent(
+  () => import('@/components/portfolio/CreateTemplateModal.vue')
+)
+const PortfolioShareModal = defineAsyncComponent(
+  () => import('@/components/portfolio/PortfolioShareModal.vue')
+)
+const ProjectModal = defineAsyncComponent(
+  () => import('@/components/portfolio/ProjectModal.vue')
+)
 
 // Composables
 const portfolio = useEnhancedPortfolio()
@@ -467,10 +481,25 @@ const editingProject = ref<PortfolioProject | null>(null)
 
 // Computed
 const portfolioTabs = computed(() => [
-  { key: 'projects', label: 'Projects', icon: 'mdi-folder-multiple-outline', badge: portfolio.projects.value.length },
-  { key: 'templates', label: 'Templates', icon: 'mdi-shape-outline', badge: templates.templates.value.length },
-  { key: 'sharing', label: 'Sharing', icon: 'mdi-share-variant', badge: sharing.activeShares.value.length },
-  { key: 'analytics', label: 'Analytics', icon: 'mdi-chart-line' }
+  {
+    key: 'projects',
+    label: 'Projects',
+    icon: 'mdi-folder-multiple-outline',
+    badge: portfolio.projects.value.length,
+  },
+  {
+    key: 'templates',
+    label: 'Templates',
+    icon: 'mdi-shape-outline',
+    badge: templates.templates.value.length,
+  },
+  {
+    key: 'sharing',
+    label: 'Sharing',
+    icon: 'mdi-share-variant',
+    badge: sharing.activeShares.value.length,
+  },
+  { key: 'analytics', label: 'Analytics', icon: 'mdi-chart-line' },
 ])
 
 // Tabs mapped for GlassNavTabs (uses `count` for numeric badges)
@@ -497,14 +526,17 @@ const filteredProjects = computed(() => {
 
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(p =>
-      p.title.toLowerCase().includes(query) ||
-      p.description.toLowerCase().includes(query) ||
-      p.technologies.some(tech => tech.toLowerCase().includes(query))
+    filtered = filtered.filter(
+      p =>
+        p.title.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query) ||
+        p.technologies.some(tech => tech.toLowerCase().includes(query))
     )
   }
 
-  return filtered.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+  return filtered.sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  )
 })
 
 const filteredTemplates = computed(() => {
@@ -517,27 +549,32 @@ const filteredTemplates = computed(() => {
 const templateCategories = computed(() => templates.categories.value)
 
 const totalDownloads = computed(() => {
-  return sharing.sharedPortfolios.value.reduce((total, share) => 
-    total + share.analytics.engagement.downloadCount, 0
+  return sharing.sharedPortfolios.value.reduce(
+    (total, share) => total + share.analytics.engagement.downloadCount,
+    0
   )
 })
 
 const mostViewedProject = computed(() => {
   const projectViews = sharing.sharedPortfolios.value
     .flatMap(share => share.analytics.engagement.mostViewedProjects)
-    .reduce((acc, proj) => {
-      acc[proj.projectId] = (acc[proj.projectId] || 0) + proj.views
-      return acc
-    }, {} as Record<string, number>)
+    .reduce(
+      (acc, proj) => {
+        acc[proj.projectId] = (acc[proj.projectId] || 0) + proj.views
+        return acc
+      },
+      {} as Record<string, number>
+    )
 
-  const topProjectId = Object.entries(projectViews)
-    .sort(([,a], [,b]) => b - a)[0]?.[0]
+  const topProjectId = Object.entries(projectViews).sort(
+    ([, a], [, b]) => b - a
+  )[0]?.[0]
 
   if (topProjectId) {
     const project = portfolio.projects.value.find(p => p.id === topProjectId)
     return {
       title: project?.title,
-      views: projectViews[topProjectId]
+      views: projectViews[topProjectId],
     }
   }
 
@@ -551,7 +588,7 @@ function getCategoryIcon(category: string): string {
     web: 'mdi mdi-web',
     mobile: 'mdi mdi-cellphone',
     tool: 'mdi mdi-tools',
-    other: 'mdi mdi-folder'
+    other: 'mdi mdi-folder',
   }
   return icons[category as keyof typeof icons] || icons.other
 }
@@ -560,7 +597,7 @@ function formatDate(date: Date | string): string {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 
@@ -577,7 +614,9 @@ function editProject(project: PortfolioProject) {
 async function toggleFeatured(project: PortfolioProject) {
   try {
     await portfolio.updateProject(project.id, { featured: !project.featured })
-    toast.success(`Project ${project.featured ? 'unfeatured' : 'featured'} successfully`)
+    toast.success(
+      `Project ${project.featured ? 'unfeatured' : 'featured'} successfully`
+    )
   } catch {
     toast.error('Failed to update project')
   }
@@ -590,7 +629,7 @@ async function duplicateProject(project: PortfolioProject) {
       title: `${project.title} (Copy)`,
       id: undefined,
       createdAt: undefined,
-      updatedAt: undefined
+      updatedAt: undefined,
     }
     await portfolio.createProject(duplicate as any)
     toast.success('Project duplicated successfully')
@@ -656,7 +695,11 @@ async function handleCreateTemplate(templateData: any) {
 
 async function handleCreateShare(shareData: any) {
   try {
-    await sharing.createShare(portfolio.portfolio.value!, shareData.settings, shareData.projectIds)
+    await sharing.createShare(
+      portfolio.portfolio.value!,
+      shareData.settings,
+      shareData.projectIds
+    )
     showCreateShareModal.value = false
     toast.success('Share link created successfully')
   } catch {
@@ -701,24 +744,21 @@ onMounted(async () => {
   })
 })
 
-watch(() => sharing.sharedPortfolios.value, () => {
-  // Schedule chart rendering when shared portfolios change
-  nextTick(() => {
-    renderCharts()
-  })
-}, { deep: true })
+watch(
+  () => sharing.sharedPortfolios.value,
+  () => {
+    // Schedule chart rendering when shared portfolios change
+    nextTick(() => {
+      renderCharts()
+    })
+  },
+  { deep: true }
+)
 
 // Destructure for template access
-const {
-  portfolioStats,
-  projects
-} = portfolio
+const { portfolioStats, projects } = portfolio
 
-const {
-  sharedPortfolios,
-  activeShares,
-  totalViews
-} = sharing
+const { sharedPortfolios, activeShares, totalViews } = sharing
 </script>
 
 <style scoped>
@@ -1208,25 +1248,25 @@ const {
   .enhanced-portfolio-system {
     padding: 1rem;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .projects-grid,
   .templates-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .analytics-charts {
     grid-template-columns: 1fr;
   }
-  
+
   .project-filters {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .template-categories {
 // Register Chart.js components
 Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, ArcElement, PieController, Tooltip, Legend)

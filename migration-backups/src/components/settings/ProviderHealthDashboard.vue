@@ -6,32 +6,44 @@
         Provider Health Dashboard
       </h3>
       <div class="health-summary">
-        <div class="summary-stat" :class="{ 'status-good': summary.failedProviders === 0 }">
-          <span class="stat-value">{{ summary.healthyProviders }}/{{ summary.totalProviders }}</span>
+        <div
+          class="summary-stat"
+          :class="{ 'status-good': summary.failedProviders === 0 }"
+        >
+          <span class="stat-value"
+            >{{ summary.healthyProviders }}/{{ summary.totalProviders }}</span
+          >
           <span class="stat-label">Healthy</span>
         </div>
         <div class="summary-stat">
-          <span class="stat-value">{{ Math.round(summary.averageResponseTime) }}ms</span>
+          <span class="stat-value"
+            >{{ Math.round(summary.averageResponseTime) }}ms</span
+          >
           <span class="stat-label">Avg Response</span>
         </div>
         <div class="summary-stat">
-          <span class="stat-value">{{ formatLastCheck(summary.lastCheckTime) }}</span>
+          <span class="stat-value">{{
+            formatLastCheck(summary.lastCheckTime)
+          }}</span>
           <span class="stat-label">Last Check</span>
         </div>
       </div>
     </div>
 
     <div class="provider-grid">
-      <div 
-        v-for="provider in healthReports" 
+      <div
+        v-for="provider in healthReports"
         :key="`${provider.providerType}:${provider.providerName}`"
         class="provider-card"
-        :class="[`status-${provider.metrics.status}`, { 'disabled': !provider.isEnabled }]"
+        :class="[
+          `status-${provider.metrics.status}`,
+          { disabled: !provider.isEnabled },
+        ]"
       >
         <div class="provider-header">
           <div class="provider-info">
-            <AppIcon 
-              :name="getProviderIcon(provider.providerType)" 
+            <AppIcon
+              :name="getProviderIcon(provider.providerType)"
               class="provider-icon"
             />
             <div>
@@ -39,7 +51,10 @@
               <span class="provider-type">{{ provider.providerType }}</span>
             </div>
           </div>
-          <div class="status-indicator" :class="`status-${provider.metrics.status}`">
+          <div
+            class="status-indicator"
+            :class="`status-${provider.metrics.status}`"
+          >
             <span class="status-dot"></span>
             <span class="status-text">{{ provider.metrics.status }}</span>
           </div>
@@ -48,24 +63,39 @@
         <div class="provider-metrics">
           <div class="metric">
             <span class="metric-label">Response Time</span>
-            <span class="metric-value">{{ Math.round(provider.metrics.averageResponseTime) }}ms</span>
+            <span class="metric-value"
+              >{{ Math.round(provider.metrics.averageResponseTime) }}ms</span
+            >
           </div>
           <div class="metric">
             <span class="metric-label">Success Rate</span>
             <span class="metric-value">
-              {{ provider.metrics.totalChecks > 0 ? 
-                Math.round((1 - provider.metrics.errorCount / provider.metrics.totalChecks) * 100) : 100 }}%
+              {{
+                provider.metrics.totalChecks > 0
+                  ? Math.round(
+                      (1 -
+                        provider.metrics.errorCount /
+                          provider.metrics.totalChecks) *
+                        100
+                    )
+                  : 100
+              }}%
             </span>
           </div>
           <div class="metric">
             <span class="metric-label">Consecutive Failures</span>
-            <span class="metric-value" :class="{ 'error': provider.metrics.consecutiveFailures > 0 }">
+            <span
+              class="metric-value"
+              :class="{ error: provider.metrics.consecutiveFailures > 0 }"
+            >
               {{ provider.metrics.consecutiveFailures }}
             </span>
           </div>
           <div class="metric">
             <span class="metric-label">Last Check</span>
-            <span class="metric-value">{{ formatLastCheck(provider.metrics.lastCheck) }}</span>
+            <span class="metric-value">{{
+              formatLastCheck(provider.metrics.lastCheck)
+            }}</span>
           </div>
         </div>
 
@@ -121,7 +151,7 @@ const loading = ref(false)
 
 const summary = computed(() => providerHealthDashboard.getHealthSummary())
 
-const getProviderIcon = (type) => {
+const getProviderIcon = type => {
   const icons = {
     greenhouse: 'mdi-greenhouse',
     lever: 'mdi-lever',
@@ -129,19 +159,19 @@ const getProviderIcon = (type) => {
     workday: 'mdi-calendar-today',
     government: 'mdi-bank',
     gaming: 'mdi-gamepad-variant',
-    opensource: 'mdi-github'
+    opensource: 'mdi-github',
   }
   return icons[type] || 'mdi-web'
 }
 
-const formatLastCheck = (timestamp) => {
+const formatLastCheck = timestamp => {
   if (!timestamp) return 'Never'
   const now = Date.now()
   const diff = now - timestamp
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  
+
   if (minutes < 1) return 'Just now'
   if (minutes < 60) return `${minutes}m ago`
   if (hours < 24) return `${hours}h ago`
@@ -152,13 +182,13 @@ const loadHealthData = () => {
   healthReports.value = providerHealthDashboard.getProviderHealthReport()
 }
 
-const resetProvider = (provider) => {
+const resetProvider = provider => {
   const key = `${provider.providerType}:${provider.providerName}`
   providerHealthDashboard.resetProviderHealth(key)
   loadHealthData()
 }
 
-const toggleProvider = (provider) => {
+const toggleProvider = provider => {
   // This would integrate with the job service to enable/disable providers
   console.log('Toggle provider:', provider.providerName)
   // Implementation depends on the specific provider management system

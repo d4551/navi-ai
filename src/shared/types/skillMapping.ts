@@ -41,19 +41,19 @@ export interface SkillEvidence {
   createdAt: Date
 }
 
-export type EvidenceType = 
-  | 'clip' 
-  | 'stats' 
-  | 'community' 
-  | 'achievement' 
-  | 'document' 
-  | 'portfolio_piece' 
+export type EvidenceType =
+  | 'clip'
+  | 'stats'
+  | 'community'
+  | 'achievement'
+  | 'document'
+  | 'portfolio_piece'
   | 'testimonial'
   | 'certificate'
 
-export type SkillCategory = 
+export type SkillCategory =
   | 'leadership'
-  | 'community' 
+  | 'community'
   | 'technical'
   | 'creative'
   | 'analytical'

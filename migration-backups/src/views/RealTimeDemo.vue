@@ -1,11 +1,15 @@
 <template>
-  <StandardPageLayout 
-    page-type="gaming" 
-    content-spacing="none" 
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="none"
     max-width="full"
     title="NAVI Live Chat"
     subtitle="Next-generation AI conversation experience"
-    :header-context="{ sessionActive: isSessionActive, mode: selectedMode, persona: selectedPersona }"
+    :header-context="{
+      sessionActive: isSessionActive,
+      mode: selectedMode,
+      persona: selectedPersona,
+    }"
   >
     <template #header-actions>
       <div class="status-indicator" :class="getStatusClass()">
@@ -19,7 +23,9 @@
         <div class="modal-header">
           <AppIcon name="mdi-key" class="header-icon" />
           <h2>Connect Your AI</h2>
-          <p>Enter your Google AI Studio API key to unlock NAVI's full potential</p>
+          <p>
+            Enter your Google AI Studio API key to unlock NAVI's full potential
+          </p>
         </div>
         <div class="modal-body">
           <div class="api-key-input">
@@ -30,9 +36,9 @@
               class="modern-input"
               @keypress.enter="setApiKey"
             />
-            <UnifiedButton 
-              variant="primary" 
-              leading-icon="mdi-connection" 
+            <UnifiedButton
+              variant="primary"
+              leading-icon="mdi-connection"
               :disabled="!tempApiKey.trim()"
               @click="setApiKey"
             >
@@ -40,7 +46,11 @@
             </UnifiedButton>
           </div>
           <div class="api-help">
-            <a href="https://aistudio.google.com/app/apikey" target="_blank" class="help-link">
+            <a
+              href="https://aistudio.google.com/app/apikey"
+              target="_blank"
+              class="help-link"
+            >
               <AppIcon name="mdi-open-in-new" />
               Get your free API key
             </a>
@@ -53,10 +63,13 @@
     <div v-if="hasApiKey" class="chat-interface">
       <!-- Mode Selection Sidebar -->
       <div class="mode-sidebar" :class="{ collapsed: sidebarCollapsed }">
-        <button class="sidebar-toggle" @click="sidebarCollapsed = !sidebarCollapsed">
+        <button
+          class="sidebar-toggle"
+          @click="sidebarCollapsed = !sidebarCollapsed"
+        >
           <AppIcon :name="sidebarCollapsed ? 'mdi-menu' : 'mdi-close'" />
         </button>
-        
+
         <div class="sidebar-content">
           <h3>Experience Mode</h3>
           <div class="mode-list">
@@ -64,7 +77,10 @@
               v-for="mode in demoModes"
               :key="mode.id"
               class="mode-option"
-              :class="{ active: selectedMode === mode.id, disabled: !mode.supported }"
+              :class="{
+                active: selectedMode === mode.id,
+                disabled: !mode.supported,
+              }"
               :disabled="!mode.supported || isSessionActive"
               @click="selectMode(mode.id)"
             >
@@ -85,7 +101,11 @@
           <!-- AI Persona Selection -->
           <div class="persona-section">
             <h4>AI Persona</h4>
-            <select v-model="selectedPersona" class="persona-select" :disabled="isSessionActive">
+            <select
+              v-model="selectedPersona"
+              class="persona-select"
+              :disabled="isSessionActive"
+            >
               <option value="navi">NAVI - Gaming Career Expert</option>
               <option value="coach">Career Coach - Professional Guide</option>
               <option value="mentor">Tech Mentor - Industry Insider</option>
@@ -108,7 +128,7 @@
           @message="handleMessage"
           @error="handleError"
         />
-        
+
         <!-- Welcome Screen -->
         <div v-else class="welcome-screen">
           <div class="welcome-content">
@@ -116,8 +136,11 @@
               <AppIcon name="mdi-robot" />
             </div>
             <h2>Welcome to NAVI Live</h2>
-            <p>Choose an experience mode from the sidebar to begin your AI conversation</p>
-            
+            <p>
+              Choose an experience mode from the sidebar to begin your AI
+              conversation
+            </p>
+
             <!-- Feature Highlights -->
             <div class="feature-highlights">
               <div class="feature" :class="{ supported: isAudioSupported }">
@@ -128,7 +151,10 @@
                 <AppIcon name="mdi-video" />
                 <span>Video Analysis</span>
               </div>
-              <div class="feature" :class="{ supported: isScreenShareSupported }">
+              <div
+                class="feature"
+                :class="{ supported: isScreenShareSupported }"
+              >
                 <AppIcon name="mdi-monitor-share" />
                 <span>Screen Sharing</span>
               </div>
@@ -182,19 +208,19 @@ import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 import { ref, onMounted, computed, watch } from 'vue'
-import { useRealTimeSupport } from '@/composables/useRealTimeChat';
-import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme';
-import RealTimeChat from '@/components/RealTimeChat.vue';
+import { useRealTimeSupport } from '@/composables/useRealTimeChat'
+import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
+import RealTimeChat from '@/components/RealTimeChat.vue'
 // import PageHeader from '@/components/ui/PageHeader.vue' // Removed - not used in new design
 
 // Reactive state
-const tempApiKey = ref('');
-const apiKey = ref('');
-const selectedMode = ref(null);
-const selectedPersona = ref('navi');
-const error = ref(null);
-const sessionStats = ref(null);
-const sidebarCollapsed = ref(false);
+const tempApiKey = ref('')
+const apiKey = ref('')
+const selectedMode = ref(null)
+const selectedPersona = ref('navi')
+const error = ref(null)
+const sessionStats = ref(null)
+const sidebarCollapsed = ref(false)
 
 // Composables
 const {
@@ -203,14 +229,14 @@ const {
   isScreenShareSupported,
   isSpeechRecognitionSupported,
   isSpeechSynthesisSupported,
-  allFeaturesSupported
-} = useRealTimeSupport();
+  allFeaturesSupported,
+} = useRealTimeSupport()
 
 // Theme composable (using global theme system)
-const { colorScheme } = useUnifiedTheme();
+const { colorScheme } = useUnifiedTheme()
 
 // Computed
-const hasApiKey = computed(() => !!apiKey.value);
+const hasApiKey = computed(() => !!apiKey.value)
 
 const demoModes = computed(() => [
   {
@@ -218,130 +244,130 @@ const demoModes = computed(() => [
     title: 'Voice Chat',
     description: 'Natural voice conversation',
     icon: 'mdi-microphone',
-    supported: isAudioSupported.value && isSpeechRecognitionSupported.value
+    supported: isAudioSupported.value && isSpeechRecognitionSupported.value,
   },
   {
     id: 'video',
     title: 'Video Chat',
     description: 'AI can see and analyze you',
     icon: 'mdi-video',
-    supported: isVideoSupported.value && isAudioSupported.value
+    supported: isVideoSupported.value && isAudioSupported.value,
   },
   {
     id: 'screen',
     title: 'Screen Assistant',
     description: 'Help with your screen content',
     icon: 'mdi-monitor-share',
-    supported: isScreenShareSupported.value
+    supported: isScreenShareSupported.value,
   },
   {
     id: 'multimodal',
     title: 'Full Experience',
     description: 'All capabilities combined',
     icon: 'mdi-brain',
-    supported: allFeaturesSupported.value
-  }
-]);
+    supported: allFeaturesSupported.value,
+  },
+])
 
 const getStatusClass = () => {
-  if (error.value) return 'status-error';
-  if (sessionStats.value) return 'status-active';
-  if (hasApiKey.value) return 'status-ready';
-  return 'status-setup';
-};
+  if (error.value) return 'status-error'
+  if (sessionStats.value) return 'status-active'
+  if (hasApiKey.value) return 'status-ready'
+  return 'status-setup'
+}
 
 const getStatusText = () => {
-  if (error.value) return 'Error';
-  if (sessionStats.value) return 'Live Session';
-  if (hasApiKey.value && selectedMode.value) return 'Ready to Chat';
-  if (hasApiKey.value) return 'Select Mode';
-  return 'Setup Required';
-};
+  if (error.value) return 'Error'
+  if (sessionStats.value) return 'Live Session'
+  if (hasApiKey.value && selectedMode.value) return 'Ready to Chat'
+  if (hasApiKey.value) return 'Select Mode'
+  return 'Setup Required'
+}
 
 // Methods
 function setApiKey() {
   if (tempApiKey.value.trim()) {
-    apiKey.value = tempApiKey.value.trim();
-    tempApiKey.value = '';
-    error.value = null;
+    apiKey.value = tempApiKey.value.trim()
+    tempApiKey.value = ''
+    error.value = null
   }
 }
 
 function selectMode(modeId) {
-  selectedMode.value = modeId;
-  error.value = null;
+  selectedMode.value = modeId
+  error.value = null
 }
 
 function getModeTitle(modeId) {
-  const mode = demoModes.value.find(m => m.id === modeId);
-  return mode ? mode.title : modeId;
+  const mode = demoModes.value.find(m => m.id === modeId)
+  return mode ? mode.title : modeId
 }
 
 function handleSessionStart(session) {
   sessionStats.value = {
     mode: getModeTitle(session.type),
     messages: 0,
-    duration: '00:00'
-  };
-  
+    duration: '00:00',
+  }
+
   // Start duration timer
-  const startTime = Date.now();
+  const startTime = Date.now()
   const timer = setInterval(() => {
     if (!sessionStats.value) {
-      clearInterval(timer);
-      return;
+      clearInterval(timer)
+      return
     }
-    
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const minutes = Math.floor(elapsed / 60);
-    const seconds = elapsed % 60;
-    sessionStats.value.duration = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  }, 1000);
-  
+
+    const elapsed = Math.floor((Date.now() - startTime) / 1000)
+    const minutes = Math.floor(elapsed / 60)
+    const seconds = elapsed % 60
+    sessionStats.value.duration = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+  }, 1000)
+
   // Store timer reference to clear it later
-  sessionStats.value.timer = timer;
-  
+  sessionStats.value.timer = timer
+
   // Auto-collapse sidebar on mobile after session starts
   if (window.innerWidth <= 768) {
-    sidebarCollapsed.value = true;
+    sidebarCollapsed.value = true
   }
 }
 
 function handleSessionEnd() {
   if (sessionStats.value?.timer) {
-    clearInterval(sessionStats.value.timer);
+    clearInterval(sessionStats.value.timer)
   }
   // Keep stats visible for a while, then clear
   setTimeout(() => {
-    sessionStats.value = null;
-  }, 5000);
+    sessionStats.value = null
+  }, 5000)
 }
 
 function handleMessage(_message) {
   if (sessionStats.value) {
-    sessionStats.value.messages++;
+    sessionStats.value.messages++
   }
 }
 
 function handleError(err) {
-  error.value = err instanceof Error ? err.message : err.toString();
+  error.value = err instanceof Error ? err.message : err.toString()
 }
 
 // Lifecycle
 onMounted(() => {
   // Check for saved API key (in a real app, this would be more secure)
-  const savedKey = localStorage.getItem('demo-api-key');
+  const savedKey = localStorage.getItem('demo-api-key')
   if (savedKey) {
-    apiKey.value = savedKey;
+    apiKey.value = savedKey
   }
-});
+})
 
 // Watch for API key changes to save it
-watch(apiKey, (newKey) => {
+watch(apiKey, newKey => {
   if (newKey) {
-    localStorage.setItem('demo-api-key', newKey);
+    localStorage.setItem('demo-api-key', newKey)
   }
-});
+})
 </script>
 
 <style scoped>
@@ -353,7 +379,6 @@ watch(apiKey, (newKey) => {
   align-items: center;
   gap: var(--spacing-md);
 }
-
 
 .status-indicator {
   display: flex;
@@ -419,13 +444,14 @@ watch(apiKey, (newKey) => {
 }
 
 @keyframes pulse {
-  0%, 100% { 
-    opacity: 1; 
-    transform: scale(1); 
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  50% { 
-    opacity: 0.7; 
-    transform: scale(1.2); 
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
   }
 }
 
@@ -466,7 +492,11 @@ watch(apiKey, (newKey) => {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
 }
 
 .modal-header {
@@ -642,7 +672,12 @@ watch(apiKey, (newKey) => {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, var(--color-primary-100), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary-100),
+    transparent
+  );
   transition: var(--transition-normal);
 }
 
@@ -660,7 +695,8 @@ watch(apiKey, (newKey) => {
 .mode-option.active {
   background: var(--color-primary-100);
   border-color: var(--color-primary-500);
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 4px 20px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   color: var(--color-primary-700);
   position: relative;
 }
@@ -767,9 +803,17 @@ watch(apiKey, (newKey) => {
   height: 100%;
   padding: var(--spacing-3xl);
   position: relative;
-  background: 
-    radial-gradient(circle at 30% 30%, var(--color-primary-500) 0%, transparent 50%),
-    radial-gradient(circle at 70% 70%, var(--color-secondary-500) 0%, transparent 50%);
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      var(--color-primary-500) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 70%,
+      var(--color-secondary-500) 0%,
+      transparent 50%
+    );
   background-size: 100% 100%;
   background-attachment: fixed;
 }
@@ -802,8 +846,12 @@ watch(apiKey, (newKey) => {
 }
 
 @keyframes glow {
-  from { filter: drop-shadow(0 0 20px var(--color-primary-500)); }
-  to { filter: drop-shadow(0 0 40px var(--color-primary-300)); }
+  from {
+    filter: drop-shadow(0 0 20px var(--color-primary-500));
+  }
+  to {
+    filter: drop-shadow(0 0 40px var(--color-primary-300));
+  }
 }
 
 .welcome-content h2 {
@@ -812,7 +860,11 @@ watch(apiKey, (newKey) => {
   font-family: var(--font-family-gaming);
   color: var(--text-primary);
   margin: 0 0 var(--spacing-md) 0;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -855,15 +907,24 @@ watch(apiKey, (newKey) => {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(from 0deg, transparent, var(--color-primary-100), transparent);
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    var(--color-primary-100),
+    transparent
+  );
   animation: rotate 8s linear infinite;
   opacity: 0;
   transition: var(--transition-normal);
 }
 
 @keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .feature:hover {
@@ -879,13 +940,15 @@ watch(apiKey, (newKey) => {
   background: var(--color-success-50);
   border-color: var(--color-success-300);
   color: var(--color-success-700);
-  box-shadow: 0 0 20px color-mix(in srgb, var(--color-success-500) 10%, transparent);
+  box-shadow: 0 0 20px
+    color-mix(in srgb, var(--color-success-500) 10%, transparent);
 }
 
 .feature.supported:hover {
   background: var(--color-success-100);
   border-color: var(--color-success-400);
-  box-shadow: 0 0 30px color-mix(in srgb, var(--color-success-500) 20%, transparent);
+  box-shadow: 0 0 30px
+    color-mix(in srgb, var(--color-success-500) 20%, transparent);
 }
 
 .feature:not(.supported) {
@@ -986,8 +1049,12 @@ watch(apiKey, (newKey) => {
 }
 
 @keyframes shrink {
-  0% { width: 100%; }
-  100% { width: 0%; }
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
 }
 
 .error-icon {
@@ -1051,7 +1118,7 @@ watch(apiKey, (newKey) => {
   .floating-stats {
     border-width: 2px;
   }
-  
+
   .status-dot {
     border: 2px solid currentColor;
   }
@@ -1080,7 +1147,7 @@ watch(apiKey, (newKey) => {
     animation: none !important;
     transition: none !important;
   }
-  
+
   .mode-option:hover:not(.disabled),
   .feature:hover {
     transform: none !important;
@@ -1092,17 +1159,17 @@ watch(apiKey, (newKey) => {
   .mode-sidebar {
     width: 280px;
   }
-  
+
   .chat-interface {
     border-radius: var(--border-radius-md);
   }
-  
+
   .floating-stats {
     position: static;
     margin: var(--spacing-md) 0;
     border-radius: var(--border-radius-md);
   }
-  
+
   .stats-content {
     flex-direction: row;
     justify-content: space-around;
@@ -1115,7 +1182,7 @@ watch(apiKey, (newKey) => {
     min-height: calc(100vh - 160px);
     border-radius: var(--border-radius-sm);
   }
-  
+
   .mode-sidebar {
     position: relative;
     width: 100%;
@@ -1126,24 +1193,24 @@ watch(apiKey, (newKey) => {
     max-height: 200px;
     overflow-y: auto;
   }
-  
+
   .mode-sidebar.collapsed {
     max-height: 60px;
     padding: var(--spacing-sm) var(--spacing-md);
   }
-  
+
   .sidebar-content {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-lg);
     align-items: center;
   }
-  
+
   .collapsed .sidebar-content {
     opacity: 1;
     pointer-events: auto;
   }
-  
+
   .mode-list {
     display: flex;
     flex-direction: row;
@@ -1151,32 +1218,32 @@ watch(apiKey, (newKey) => {
     margin: 0;
     flex-wrap: wrap;
   }
-  
+
   .mode-option {
     padding: var(--spacing-sm) var(--spacing-md);
     min-width: auto;
     flex-shrink: 0;
   }
-  
+
   .chat-area {
     flex: 1;
     min-height: 400px;
   }
-  
+
   .modal-content {
     padding: var(--spacing-2xl);
     margin: var(--spacing-md);
     border-radius: var(--border-radius-lg);
   }
-  
+
   .api-key-input {
     flex-direction: column;
   }
-  
+
   .welcome-content h2 {
     font-size: var(--font-size-3xl);
   }
-  
+
   .feature-highlights {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-md);
@@ -1187,43 +1254,43 @@ watch(apiKey, (newKey) => {
   .mode-sidebar {
     padding: var(--spacing-sm);
   }
-  
+
   .sidebar-content {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-md);
   }
-  
+
   .mode-list {
     flex-direction: column;
     gap: var(--spacing-xs);
   }
-  
+
   .mode-option {
     padding: var(--spacing-sm);
     font-size: var(--font-size-sm);
   }
-  
+
   .welcome-content {
     padding: var(--spacing-md);
   }
-  
+
   .welcome-content h2 {
     font-size: var(--font-size-2xl);
   }
-  
+
   .feature-highlights {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
   }
-  
+
   .floating-stats {
     right: var(--spacing-sm);
     bottom: var(--spacing-sm);
     position: fixed;
     padding: var(--spacing-sm);
   }
-  
+
   .error-toast {
     right: var(--spacing-sm);
     bottom: var(--spacing-sm);

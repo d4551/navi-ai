@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="system-configuration" role="region" aria-labelledby="system-config-title">
+  <div
+    class="system-configuration"
+    role="region"
+    aria-labelledby="system-config-title"
+  >
     <!-- Header Section -->
     <div class="system-header glass-card section-card mb-6">
       <div class="system-header-content">
@@ -10,7 +14,8 @@
             System Configuration
           </h2>
           <p class="system-description">
-            Configure cloud services, performance settings, and data management preferences
+            Configure cloud services, performance settings, and data management
+            preferences
           </p>
         </div>
         <div class="system-status">
@@ -49,7 +54,9 @@
         <div v-show="settings.azureEnabled" class="section-content">
           <div class="config-fields">
             <div class="field-group">
-              <label for="azure-endpoint" class="field-label">Azure Endpoint</label>
+              <label for="azure-endpoint" class="field-label"
+                >Azure Endpoint</label
+              >
               <input
                 id="azure-endpoint"
                 v-model="settings.azureEndpoint"
@@ -91,7 +98,9 @@
 
             <div class="field-row">
               <div class="field-group">
-                <label for="azure-deployment" class="field-label">Deployment</label>
+                <label for="azure-deployment" class="field-label"
+                  >Deployment</label
+                >
                 <input
                   id="azure-deployment"
                   v-model="settings.azureDeployment"
@@ -106,7 +115,9 @@
               </div>
 
               <div class="field-group">
-                <label for="azure-api-version" class="field-label">API Version</label>
+                <label for="azure-api-version" class="field-label"
+                  >API Version</label
+                >
                 <select
                   id="azure-api-version"
                   v-model="settings.azureApiVersion"
@@ -147,7 +158,9 @@
                   id="fairy-bubble-size"
                   v-model="settings.fairyBubbleSize"
                   class="field-input glass-input"
-                  @change="$emit('update-fairy-setting', settings.fairyBubbleSize)"
+                  @change="
+                    $emit('update-fairy-setting', settings.fairyBubbleSize)
+                  "
                 >
                   <option value="full">Full (with chat)</option>
                   <option value="small">Small (page aware)</option>
@@ -157,11 +170,14 @@
               <div class="toggle-description">
                 Choose the AI assistant bubble size and behavior
                 <div class="toggle-hint">
-                  <em>Tip: Click the fairy or press Ctrl+Shift+F to cycle through sizes</em>
+                  <em
+                    >Tip: Click the fairy or press Ctrl+Shift+F to cycle through
+                    sizes</em
+                  >
                 </div>
               </div>
             </div>
-            
+
             <div class="toggle-item">
               <div class="toggle-control">
                 <div class="form-check form-switch">
@@ -171,7 +187,10 @@
                     class="form-check-input"
                     type="checkbox"
                   />
-                  <label class="form-check-label toggle-label" for="system-tray">
+                  <label
+                    class="form-check-label toggle-label"
+                    for="system-tray"
+                  >
                     System Tray
                   </label>
                 </div>
@@ -190,7 +209,10 @@
                     class="form-check-input"
                     type="checkbox"
                   />
-                  <label class="form-check-label toggle-label" for="auto-startup">
+                  <label
+                    class="form-check-label toggle-label"
+                    for="auto-startup"
+                  >
                     Auto-start
                   </label>
                 </div>
@@ -209,7 +231,10 @@
                     class="form-check-input"
                     type="checkbox"
                   />
-                  <label class="form-check-label toggle-label" for="hardware-acceleration">
+                  <label
+                    class="form-check-label toggle-label"
+                    for="hardware-acceleration"
+                  >
                     Hardware Acceleration
                   </label>
                 </div>
@@ -249,7 +274,9 @@
             <h3>Storage & Cache</h3>
           </div>
           <div class="storage-stats">
-            <span class="cache-size">{{ formatCacheSize(currentCacheSize) }}</span>
+            <span class="cache-size">{{
+              formatCacheSize(currentCacheSize)
+            }}</span>
             <span class="cache-label">used</span>
           </div>
         </div>
@@ -277,7 +304,9 @@
             </div>
 
             <div class="field-group">
-              <label for="log-retention" class="field-label">Log Retention</label>
+              <label for="log-retention" class="field-label"
+                >Log Retention</label
+              >
               <div class="field-input-with-unit">
                 <input
                   id="log-retention"
@@ -352,7 +381,9 @@
             </div>
 
             <div v-show="settings.autoBackup" class="backup-frequency">
-              <label for="backup-frequency" class="field-label">Frequency</label>
+              <label for="backup-frequency" class="field-label"
+                >Frequency</label
+              >
               <select
                 id="backup-frequency"
                 v-model="settings.backupFrequency"
@@ -394,30 +425,33 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 import {
   CogIconComponent,
   AzureIconComponent,
   EyeIconComponent,
   EyeSlashIconComponent,
-  CheckIconComponent
+  CheckIconComponent,
 } from './SettingsIcons.js'
 
 // Create missing icon components
 const PerformanceIconComponent = {
   name: 'PerformanceIconComponent',
-  template: '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/></svg>'
+  template:
+    '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/></svg>',
 }
 
 const StorageIconComponent = {
   name: 'StorageIconComponent',
-  template: '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M6,2H18A2,2 0 0,1 20,4V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M12,4A6,6 0 0,0 6,10C6,13.31 8.69,16 12.1,16L11.22,18.15C11.22,18.29 11.34,18.4 11.5,18.4H12.5C12.66,18.4 12.78,18.29 12.78,18.15L11.9,16C15.31,16 18,13.31 18,10A6,6 0 0,0 12,4M12,6A4,4 0 0,1 16,10A4,4 0 0,1 12,14A4,4 0 0,1 8,10A4,4 0 0,1 12,6Z"/></svg>'
+  template:
+    '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M6,2H18A2,2 0 0,1 20,4V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M12,4A6,6 0 0,0 6,10C6,13.31 8.69,16 12.1,16L11.22,18.15C11.22,18.29 11.34,18.4 11.5,18.4H12.5C12.66,18.4 12.78,18.29 12.78,18.15L11.9,16C15.31,16 18,13.31 18,10A6,6 0 0,0 12,4M12,6A4,4 0 0,1 16,10A4,4 0 0,1 12,14A4,4 0 0,1 8,10A4,4 0 0,1 12,6Z"/></svg>',
 }
 
 const BackupIconComponent = {
   name: 'BackupIconComponent',
-  template: '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M12,8L8,12H11V16H13V12H16L12,8Z"/></svg>'
+  template:
+    '<svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M12,8L8,12H11V16H13V12H16L12,8Z"/></svg>',
 }
 
 export default {
@@ -431,26 +465,27 @@ export default {
     PerformanceIconComponent,
     StorageIconComponent,
     BackupIconComponent,
-    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue')
+    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
   },
   props: {
     settings: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ['clear-cache', 'clear-logs', 'export-settings', 'import-settings'],
   data() {
     return {
       showAzureKey: false,
-      currentCacheSize: 0 // This would be calculated from actual cache
+      currentCacheSize: 0, // This would be calculated from actual cache
     }
   },
   computed: {
     systemStatus() {
       const hasAzure = this.settings.azureEnabled && this.settings.azureApiKey
-      const hasOptimalSettings = this.settings.hardwareAcceleration && !this.settings.debugMode
-      
+      const hasOptimalSettings =
+        this.settings.hardwareAcceleration && !this.settings.debugMode
+
       if (hasAzure && hasOptimalSettings) {
         return { class: 'status-good', text: 'Optimal' }
       } else if (hasAzure || hasOptimalSettings) {
@@ -458,7 +493,7 @@ export default {
       } else {
         return { class: 'status-error', text: 'Basic' }
       }
-    }
+    },
   },
   mounted() {
     this.calculateCacheSize()
@@ -475,8 +510,8 @@ export default {
       // This would calculate actual cache size
       // For now, simulate a cache size
       this.currentCacheSize = Math.floor(Math.random() * 100) * 1024 * 1024 // Random MB in bytes
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -491,7 +526,11 @@ export default {
 .system-header {
   padding: var(--spacing-6);
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--glass-surface) 0%, var(--glass-surface-elevated) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--glass-surface) 0%,
+    var(--glass-surface-elevated) 100%
+  );
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-backdrop-blur);
 }
@@ -606,7 +645,11 @@ export default {
   align-items: center;
   padding: var(--spacing-5);
   border-bottom: 1px solid var(--glass-border);
-  background: linear-gradient(135deg, var(--glass-surface-elevated) 0%, var(--glass-surface) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--glass-surface-elevated) 0%,
+    var(--glass-surface) 100%
+  );
 }
 
 .section-title {
@@ -938,21 +981,21 @@ export default {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .config-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-3);
   }
-  
+
   .toggle-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .field-row {
     grid-template-columns: 1fr;
   }
@@ -971,7 +1014,8 @@ export default {
   border: 2px dashed var(--color-primary-200);
   border-radius: var(--radius-md);
   padding: var(--spacing-4);
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     color-mix(in srgb, var(--color-primary-50) 30%, transparent),
     color-mix(in srgb, var(--color-secondary-50) 30%, transparent)
   );
@@ -980,7 +1024,8 @@ export default {
 
 .fairy-toggle:hover {
   border-color: var(--color-primary-300);
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     color-mix(in srgb, var(--color-primary-100) 40%, transparent),
     color-mix(in srgb, var(--color-secondary-100) 40%, transparent)
   );

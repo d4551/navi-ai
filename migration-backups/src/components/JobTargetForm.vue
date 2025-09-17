@@ -1,7 +1,9 @@
 <template>
   <div class="job-target-form">
     <div class="unified-card glass-card section-card">
-      <div class="card-header section-header card-header--dense bg-gradient text-inverse">
+      <div
+        class="card-header section-header card-header--dense bg-gradient text-inverse"
+      >
         <h4 class="h5 mb-0">
           <AppIcon name="mdi-target" size="default" />
           Target Position Information
@@ -40,11 +42,14 @@
             ></textarea>
             <small class="text-muted mt-1 d-block">
               <AppIcon name="mdi-information-outline" class="me-1" />
-              AI will analyze this to suggest relevant skills and tailor your resume
+              AI will analyze this to suggest relevant skills and tailor your
+              resume
             </small>
           </div>
           <div class="col-12">
-            <label class="form-label small fw-medium">Job Requirements (Optional)</label>
+            <label class="form-label small fw-medium"
+              >Job Requirements (Optional)</label
+            >
             <div class="d-flex gap-2 mb-2">
               <input
                 v-model="newRequirement"
@@ -77,7 +82,9 @@
             </div>
           </div>
           <div class="col-12">
-            <label class="form-label small fw-medium">Key Skills Needed (Optional)</label>
+            <label class="form-label small fw-medium"
+              >Key Skills Needed (Optional)</label
+            >
             <div class="d-flex gap-2 mb-2">
               <input
                 v-model="newKeyword"
@@ -176,9 +183,13 @@ const newRequirement = ref('')
 const newKeyword = ref('')
 
 // Watch for external changes
-watch(() => props.modelValue, (newValue) => {
-  jobTarget.value = { ...newValue }
-}, { deep: true })
+watch(
+  () => props.modelValue,
+  newValue => {
+    jobTarget.value = { ...newValue }
+  },
+  { deep: true }
+)
 
 const addRequirement = () => {
   if (newRequirement.value.trim()) {
@@ -231,8 +242,12 @@ const removeKeyword = (index: number) => {
 
 /* Spin animation for loading icon */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {
@@ -248,7 +263,7 @@ const removeKeyword = (index: number) => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .badge.bg-light {
+[data-theme='dark'] .badge.bg-light {
   background-color: var(--glass-surface) !important;
   border-color: var(--glass-border) !important;
   color: var(--text-primary);

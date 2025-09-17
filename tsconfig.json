@@ -19,14 +19,14 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    
+
     /* Path resolution */
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@modules/*": ["src/modules/*"]
     },
-    
+
     /* Type checking */
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

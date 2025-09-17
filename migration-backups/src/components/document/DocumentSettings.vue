@@ -26,7 +26,9 @@
             AI Configuration
           </h4>
           <div class="ai-status" :class="{ active: aiActive }">
-            <AppIcon :name="aiActive ? 'mdi-check-circle' : 'mdi-alert-circle'" />
+            <AppIcon
+              :name="aiActive ? 'mdi-check-circle' : 'mdi-alert-circle'"
+            />
             <span>{{ aiActive ? 'AI Active' : 'AI Offline' }}</span>
           </div>
         </div>
@@ -34,7 +36,10 @@
         <div class="settings-grid">
           <div class="setting-item">
             <label class="setting-label">Writing Tone</label>
-            <select v-model="localAIConfig.tone" class="setting-select glass-input">
+            <select
+              v-model="localAIConfig.tone"
+              class="setting-select glass-input"
+            >
               <option value="professional">Professional & Formal</option>
               <option value="friendly">Friendly & Approachable</option>
               <option value="impactful">Confident & Impactful</option>
@@ -55,11 +60,17 @@
                 step="1"
                 class="setting-slider"
                 @input="updateCreativityLevel"
-              >
+              />
               <div class="slider-labels">
-                <span class="label" :class="{ active: creativityLevel == 0 }">Conservative</span>
-                <span class="label" :class="{ active: creativityLevel == 1 }">Balanced</span>
-                <span class="label" :class="{ active: creativityLevel == 2 }">Creative</span>
+                <span class="label" :class="{ active: creativityLevel == 0 }"
+                  >Conservative</span
+                >
+                <span class="label" :class="{ active: creativityLevel == 1 }"
+                  >Balanced</span
+                >
+                <span class="label" :class="{ active: creativityLevel == 2 }"
+                  >Creative</span
+                >
               </div>
             </div>
             <p class="setting-description">
@@ -71,15 +82,13 @@
             <label class="setting-label">Optimization Focus</label>
             <div class="radio-group">
               <label class="radio-option">
-                <input
-                  v-model="localAIConfig.focus"
-                  type="radio"
-                  value="ats"
-                >
+                <input v-model="localAIConfig.focus" type="radio" value="ats" />
                 <span class="radio-custom"></span>
                 <div class="radio-content">
                   <span class="radio-title">ATS Optimized</span>
-                  <span class="radio-description">Best for applicant tracking systems</span>
+                  <span class="radio-description"
+                    >Best for applicant tracking systems</span
+                  >
                 </div>
               </label>
               <label class="radio-option">
@@ -87,11 +96,13 @@
                   v-model="localAIConfig.focus"
                   type="radio"
                   value="recruiter"
-                >
+                />
                 <span class="radio-custom"></span>
                 <div class="radio-content">
                   <span class="radio-title">Recruiter Friendly</span>
-                  <span class="radio-description">Optimized for human readers</span>
+                  <span class="radio-description"
+                    >Optimized for human readers</span
+                  >
                 </div>
               </label>
             </div>
@@ -116,11 +127,13 @@
                   v-model="localPreferences.autoSave"
                   type="checkbox"
                   class="toggle-input"
-                >
+                />
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Auto Save</span>
-                  <span class="toggle-description">Automatically save changes as you work</span>
+                  <span class="toggle-description"
+                    >Automatically save changes as you work</span
+                  >
                 </div>
               </label>
             </div>
@@ -133,11 +146,13 @@
                   v-model="localPreferences.showTokens"
                   type="checkbox"
                   class="toggle-input"
-                >
+                />
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Show Placeholder Tokens</span>
-                  <span class="toggle-description">Display {{ name }}, {{ email }} tokens in preview</span>
+                  <span class="toggle-description"
+                    >Display {{ name }}, {{ email }} tokens in preview</span
+                  >
                 </div>
               </label>
             </div>
@@ -145,7 +160,10 @@
 
           <div class="setting-item">
             <label class="setting-label">Default Template</label>
-            <select v-model="localPreferences.defaultTemplate" class="setting-select glass-input">
+            <select
+              v-model="localPreferences.defaultTemplate"
+              class="setting-select glass-input"
+            >
               <option value="modern">Modern</option>
               <option value="classic">Classic</option>
               <option value="creative">Creative</option>
@@ -160,7 +178,10 @@
 
           <div class="setting-item">
             <label class="setting-label">Language</label>
-            <select v-model="localPreferences.language" class="setting-select glass-input">
+            <select
+              v-model="localPreferences.language"
+              class="setting-select glass-input"
+            >
               <option value="en">English (US)</option>
               <option value="en-gb">English (UK)</option>
               <option value="es">Español</option>
@@ -194,18 +215,22 @@
                 v-for="format in exportFormats"
                 :key="format.value"
                 class="format-option"
-                :class="{ selected: exportSettings.defaultFormat === format.value }"
+                :class="{
+                  selected: exportSettings.defaultFormat === format.value,
+                }"
               >
                 <input
                   v-model="exportSettings.defaultFormat"
                   type="radio"
                   :value="format.value"
                   class="format-input"
-                >
+                />
                 <div class="format-content">
                   <AppIcon :name="format.icon" size="24" />
                   <span class="format-name">{{ format.name }}</span>
-                  <span class="format-description">{{ format.description }}</span>
+                  <span class="format-description">{{
+                    format.description
+                  }}</span>
                 </div>
               </label>
             </div>
@@ -213,7 +238,10 @@
 
           <div class="setting-item">
             <label class="setting-label">PDF Quality</label>
-            <select v-model="exportSettings.pdfQuality" class="setting-select glass-input">
+            <select
+              v-model="exportSettings.pdfQuality"
+              class="setting-select glass-input"
+            >
               <option value="draft">Draft (Fast)</option>
               <option value="standard">Standard</option>
               <option value="high">High Quality</option>
@@ -231,11 +259,13 @@
                   v-model="exportSettings.includeMetadata"
                   type="checkbox"
                   class="toggle-input"
-                >
+                />
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Include Metadata</span>
-                  <span class="toggle-description">Add creation date, template info to exports</span>
+                  <span class="toggle-description"
+                    >Add creation date, template info to exports</span
+                  >
                 </div>
               </label>
             </div>
@@ -260,11 +290,13 @@
                   v-model="privacySettings.localDataOnly"
                   type="checkbox"
                   class="toggle-input"
-                >
+                />
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Local Data Only</span>
-                  <span class="toggle-description">Keep all data on your device</span>
+                  <span class="toggle-description"
+                    >Keep all data on your device</span
+                  >
                 </div>
               </label>
             </div>
@@ -277,11 +309,13 @@
                   v-model="privacySettings.encryptData"
                   type="checkbox"
                   class="toggle-input"
-                >
+                />
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Encrypt Saved Data</span>
-                  <span class="toggle-description">Encrypt documents in local storage</span>
+                  <span class="toggle-description"
+                    >Encrypt documents in local storage</span
+                  >
                 </div>
               </label>
             </div>
@@ -289,7 +323,10 @@
 
           <div class="setting-item">
             <label class="setting-label">Data Retention</label>
-            <select v-model="privacySettings.dataRetention" class="setting-select glass-input">
+            <select
+              v-model="privacySettings.dataRetention"
+              class="setting-select glass-input"
+            >
               <option value="session">Session Only</option>
               <option value="30days">30 Days</option>
               <option value="90days">90 Days</option>
@@ -320,11 +357,13 @@
                   v-model="advancedSettings.debugMode"
                   type="checkbox"
                   class="toggle-input"
-                >
+                />
                 <span class="toggle-slider"></span>
                 <div class="toggle-content">
                   <span class="toggle-title">Debug Mode</span>
-                  <span class="toggle-description">Show detailed AI processing information</span>
+                  <span class="toggle-description"
+                    >Show detailed AI processing information</span
+                  >
                 </div>
               </label>
             </div>
@@ -338,7 +377,7 @@
               min="5"
               max="60"
               class="setting-input glass-input"
-            >
+            />
             <p class="setting-description">
               Maximum wait time for AI responses
             </p>
@@ -353,7 +392,7 @@
               max="4000"
               step="100"
               class="setting-input glass-input"
-            >
+            />
             <p class="setting-description">
               Limit AI response length (affects cost and speed)
             </p>
@@ -409,17 +448,30 @@
     <!-- Settings Actions -->
     <div class="settings-footer">
       <div class="footer-info">
-        <span class="save-indicator" :class="{ saving: isSaving, saved: recentlySaved }">
-          <AppIcon :name="isSaving ? 'mdi-loading' : recentlySaved ? 'mdi-check' : 'mdi-content-save'" />
-          {{ isSaving ? 'Saving...' : recentlySaved ? 'Saved' : 'Auto-save enabled' }}
+        <span
+          class="save-indicator"
+          :class="{ saving: isSaving, saved: recentlySaved }"
+        >
+          <AppIcon
+            :name="
+              isSaving
+                ? 'mdi-loading'
+                : recentlySaved
+                  ? 'mdi-check'
+                  : 'mdi-content-save'
+            "
+          />
+          {{
+            isSaving
+              ? 'Saving...'
+              : recentlySaved
+                ? 'Saved'
+                : 'Auto-save enabled'
+          }}
         </span>
       </div>
       <div class="footer-actions">
-        <UnifiedButton
-          variant="outline"
-          size="sm"
-          @click="cancelChanges"
-        >
+        <UnifiedButton variant="outline" size="sm" @click="cancelChanges">
           Cancel
         </UnifiedButton>
         <UnifiedButton
@@ -467,25 +519,25 @@ const recentlySaved = ref(false)
 const exportSettings = ref({
   defaultFormat: 'pdf',
   pdfQuality: 'standard',
-  includeMetadata: true
+  includeMetadata: true,
 })
 
 const privacySettings = ref({
   localDataOnly: true,
   encryptData: false,
-  dataRetention: '90days'
+  dataRetention: '90days',
 })
 
 const advancedSettings = ref({
   debugMode: false,
   apiTimeout: 30,
-  maxTokens: 2000
+  maxTokens: 2000,
 })
 
 const storageInfo = ref({
   documentsCount: 12,
   storageUsed: '2.3 MB',
-  lastBackup: 'Never'
+  lastBackup: 'Never',
 })
 
 // Export format options
@@ -494,26 +546,26 @@ const exportFormats = [
     value: 'pdf',
     name: 'PDF',
     description: 'Best for sharing and printing',
-    icon: 'mdi-file-pdf-box'
+    icon: 'mdi-file-pdf-box',
   },
   {
     value: 'docx',
     name: 'Word',
     description: 'Editable document format',
-    icon: 'mdi-file-word-box'
+    icon: 'mdi-file-word-box',
   },
   {
     value: 'html',
     name: 'HTML',
     description: 'Web-friendly format',
-    icon: 'mdi-language-html5'
+    icon: 'mdi-language-html5',
   },
   {
     value: 'json',
     name: 'JSON',
     description: 'Data export for backup',
-    icon: 'mdi-code-braces'
-  }
+    icon: 'mdi-code-braces',
+  },
 ]
 
 // Computed
@@ -532,13 +584,15 @@ const saveSettings = async () => {
   isSaving.value = true
   try {
     await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
-    
+
     emit('update-config', localAIConfig.value)
     emit('update-preferences', localPreferences.value)
-    
+
     recentlySaved.value = true
-    setTimeout(() => { recentlySaved.value = false }, 2000)
-    
+    setTimeout(() => {
+      recentlySaved.value = false
+    }, 2000)
+
     toast.success('Settings saved successfully')
   } catch (error) {
     toast.error('Failed to save settings')
@@ -554,17 +608,21 @@ const cancelChanges = () => {
 }
 
 const resetToDefaults = () => {
-  if (confirm('Reset all settings to default values? This action cannot be undone.')) {
+  if (
+    confirm(
+      'Reset all settings to default values? This action cannot be undone.'
+    )
+  ) {
     localAIConfig.value = {
       tone: 'professional',
       level: 'balanced',
-      focus: 'ats'
+      focus: 'ats',
     }
     localPreferences.value = {
       autoSave: true,
       showTokens: false,
       defaultTemplate: 'modern',
-      language: 'en'
+      language: 'en',
     }
     creativityLevel.value = 1
     toast.success('Settings reset to defaults')
@@ -579,10 +637,12 @@ const exportUserData = () => {
     exportSettings: exportSettings.value,
     privacySettings: privacySettings.value,
     advancedSettings: advancedSettings.value,
-    exportedAt: new Date().toISOString()
+    exportedAt: new Date().toISOString(),
   }
-  
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: 'application/json',
+  })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -591,13 +651,19 @@ const exportUserData = () => {
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
-  
+
   toast.success('Settings exported successfully')
 }
 
 const clearAllData = () => {
-  if (confirm('Delete all documents and settings? This action cannot be undone.')) {
-    if (confirm('Are you absolutely sure? This will remove everything including saved documents.')) {
+  if (
+    confirm('Delete all documents and settings? This action cannot be undone.')
+  ) {
+    if (
+      confirm(
+        'Are you absolutely sure? This will remove everything including saved documents.'
+      )
+    ) {
       // Clear data logic would go here
       toast.success('All data cleared')
     }
@@ -605,11 +671,15 @@ const clearAllData = () => {
 }
 
 // Auto-save settings changes
-watch([localAIConfig, localPreferences], () => {
-  if (localPreferences.value.autoSave) {
-    saveSettings()
-  }
-}, { deep: true })
+watch(
+  [localAIConfig, localPreferences],
+  () => {
+    if (localPreferences.value.autoSave) {
+      saveSettings()
+    }
+  },
+  { deep: true }
+)
 
 // Initialize creativity level from config
 onMounted(() => {
@@ -800,7 +870,7 @@ onMounted(() => {
   background: var(--color-primary-50);
 }
 
-.radio-option input[type="radio"] {
+.radio-option input[type='radio'] {
   display: none;
 }
 
@@ -813,11 +883,11 @@ onMounted(() => {
   transition: all var(--duration-fast);
 }
 
-.radio-option input[type="radio"]:checked + .radio-custom {
+.radio-option input[type='radio']:checked + .radio-custom {
   border-color: var(--color-primary-500);
 }
 
-.radio-option input[type="radio"]:checked + .radio-custom::after {
+.radio-option input[type='radio']:checked + .radio-custom::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -1041,31 +1111,31 @@ onMounted(() => {
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .section-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-2);
   }
-  
+
   .format-options {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
-  
+
   .storage-info {
     grid-template-columns: 1fr;
   }
-  
+
   .storage-actions {
     flex-direction: column;
   }
-  
+
   .settings-footer {
     flex-direction: column;
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .footer-actions {
     justify-content: space-between;
   }

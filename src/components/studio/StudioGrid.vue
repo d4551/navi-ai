@@ -14,7 +14,13 @@
       <div class="studio-card-header section-header">
         <div class="studio-logo-container">
           <div class="logo-wrapper">
-            <img v-if="studio.logo" :src="studio.logo" :alt="studio.name" class="studio-logo-image" @error="onImgErr" />
+            <img
+              v-if="studio.logo"
+              :src="studio.logo"
+              :alt="studio.name"
+              class="studio-logo-image"
+              @error="onImgErr"
+            />
             <div v-else class="logo-placeholder-enhanced">
               <span class="logo-initial">{{ studio.name?.charAt(0) }}</span>
             </div>
@@ -32,17 +38,31 @@
             {{ studio.headquarters || studio.location }}
           </p>
           <div class="studio-meta-badges">
-            <span v-if="(studio as any).type || (studio as any).category" class="meta-badge">{{ (studio as any).type || (studio as any).category }}</span>
+            <span
+              v-if="(studio as any).type || (studio as any).category"
+              class="meta-badge"
+              >{{ (studio as any).type || (studio as any).category }}</span
+            >
             <span v-if="studio.size" class="meta-badge">{{ studio.size }}</span>
-            <span v-if="studio.founded" class="meta-badge">{{ studio.founded }}</span>
+            <span v-if="studio.founded" class="meta-badge">{{
+              studio.founded
+            }}</span>
           </div>
         </div>
 
         <div class="studio-actions-header">
-          <button class="favorite-btn-enhanced" :class="{ active: favoriteIds.includes(studio.id) }" @click.stop="$emit('toggle-favorite', studio.id)">
+          <button
+            class="favorite-btn-enhanced"
+            :class="{ active: favoriteIds.includes(studio.id) }"
+            @click.stop="$emit('toggle-favorite', studio.id)"
+          >
             <AppIcon name="HeartIcon" />
           </button>
-          <div v-if="aiScoreMap && aiScoreMap[studio.id] !== undefined" class="rating-indicator ai-score-chip" :title="'AI suitability score'">
+          <div
+            v-if="aiScoreMap && aiScoreMap[studio.id] !== undefined"
+            class="rating-indicator ai-score-chip"
+            :title="'AI suitability score'"
+          >
             <AppIcon name="EyeIcon" />
             <span>{{ Math.round(aiScoreMap[studio.id]) }}%</span>
           </div>
@@ -57,27 +77,53 @@
         <div class="kpi-grid">
           <div v-if="studio.employeeCount" class="kpi-item">
             <div class="kpi-icon"><AppIcon name="UsersIcon" /></div>
-            <div class="kpi-data"><div class="kpi-value">{{ studio.employeeCount }}</div><div class="kpi-label">Employees</div></div>
+            <div class="kpi-data">
+              <div class="kpi-value">{{ studio.employeeCount }}</div>
+              <div class="kpi-label">Employees</div>
+            </div>
           </div>
           <div v-if="studio.games?.length" class="kpi-item">
             <div class="kpi-icon"><AppIcon name="PuzzlePieceIcon" /></div>
-            <div class="kpi-data"><div class="kpi-value">{{ studio.games.length }}</div><div class="kpi-label">Games</div></div>
+            <div class="kpi-data">
+              <div class="kpi-value">{{ studio.games.length }}</div>
+              <div class="kpi-label">Games</div>
+            </div>
           </div>
           <div v-if="studio.technologies?.length" class="kpi-item">
             <div class="kpi-icon"><AppIcon name="CommandLineIcon" /></div>
-            <div class="kpi-data"><div class="kpi-value">{{ studio.technologies.length }}</div><div class="kpi-label">Tech Stack</div></div>
+            <div class="kpi-data">
+              <div class="kpi-value">{{ studio.technologies.length }}</div>
+              <div class="kpi-label">Tech Stack</div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="studio-card-footer">
         <div class="footer-stats">
-          <div class="stat-item"><AppIcon name="CalendarIcon" /><span>Est. {{ studio.founded }}</span></div>
-          <div v-if="studio.website" class="stat-item"><AppIcon name="GlobeAltIcon" /><span>Website</span></div>
+          <div class="stat-item">
+            <AppIcon name="CalendarIcon" /><span
+              >Est. {{ studio.founded }}</span
+            >
+          </div>
+          <div v-if="studio.website" class="stat-item">
+            <AppIcon name="GlobeAltIcon" /><span>Website</span>
+          </div>
         </div>
         <div class="footer-actions">
-          <UnifiedButton color="gaming" leading-icon="BriefcaseIcon" @click.stop="$emit('view-jobs', studio)">View Jobs</UnifiedButton>
-          <UnifiedButton color="glass" appearance="outlined" leading-icon="InformationCircleIcon" @click.stop="$emit('open-details', studio)">Details</UnifiedButton>
+          <UnifiedButton
+            color="gaming"
+            leading-icon="BriefcaseIcon"
+            @click.stop="$emit('view-jobs', studio)"
+            >View Jobs</UnifiedButton
+          >
+          <UnifiedButton
+            color="glass"
+            appearance="outlined"
+            leading-icon="InformationCircleIcon"
+            @click.stop="$emit('open-details', studio)"
+            >Details</UnifiedButton
+          >
         </div>
       </div>
     </div>
@@ -85,7 +131,17 @@
 </template>
 
 <script setup lang="ts">
-import { BriefcaseIcon, CalendarIcon, ChartBarSquareIcon, CommandLineIcon, EyeIcon, GlobeAltIcon, InformationCircleIcon, PuzzlePieceIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import {
+  BriefcaseIcon,
+  CalendarIcon,
+  ChartBarSquareIcon,
+  CommandLineIcon,
+  EyeIcon,
+  GlobeAltIcon,
+  InformationCircleIcon,
+  PuzzlePieceIcon,
+  UsersIcon,
+} from '@heroicons/vue/24/outline'
 import { HeartIcon, MapPinIcon, StarIcon } from '@heroicons/vue/24/solid'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -109,7 +165,10 @@ function onImgErr(e: Event) {
 .studios-grid {
   display: grid;
   gap: var(--spacing-6);
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid-card-min-md)), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, var(--grid-card-min-md)), 1fr)
+  );
   width: 100%;
 }
 
@@ -133,7 +192,7 @@ function onImgErr(e: Event) {
 
 .studio-infographic-card:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 12px 32px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
   border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
@@ -142,7 +201,7 @@ function onImgErr(e: Event) {
 
 .studio-infographic-card:focus-visible {
   outline: none;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 0 2px var(--color-primary-500);
   transform: translateY(-1px);
@@ -186,7 +245,11 @@ function onImgErr(e: Event) {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-primary-600)
+  );
   color: white;
 }
 
@@ -396,16 +459,16 @@ function onImgErr(e: Event) {
     grid-template-columns: 1fr;
     gap: var(--spacing-4);
   }
-  
+
   .studio-infographic-card {
     padding: var(--spacing-4);
     min-height: 280px;
   }
-  
+
   .footer-actions {
     flex-direction: column;
   }
-  
+
   .kpi-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -415,11 +478,11 @@ function onImgErr(e: Event) {
   .studio-infographic-card {
     padding: var(--spacing-3);
   }
-  
+
   .studio-card-header {
     gap: var(--spacing-2);
   }
-  
+
   .kpi-grid {
     grid-template-columns: 1fr;
   }
@@ -442,12 +505,24 @@ function onImgErr(e: Event) {
 }
 
 /* Staggered animation delay */
-.studios-grid > *:nth-child(1) { animation-delay: 0ms; }
-.studios-grid > *:nth-child(2) { animation-delay: 100ms; }
-.studios-grid > *:nth-child(3) { animation-delay: 200ms; }
-.studios-grid > *:nth-child(4) { animation-delay: 300ms; }
-.studios-grid > *:nth-child(5) { animation-delay: 400ms; }
-.studios-grid > *:nth-child(n+6) { animation-delay: 500ms; }
+.studios-grid > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.studios-grid > *:nth-child(2) {
+  animation-delay: 100ms;
+}
+.studios-grid > *:nth-child(3) {
+  animation-delay: 200ms;
+}
+.studios-grid > *:nth-child(4) {
+  animation-delay: 300ms;
+}
+.studios-grid > *:nth-child(5) {
+  animation-delay: 400ms;
+}
+.studios-grid > *:nth-child(n + 6) {
+  animation-delay: 500ms;
+}
 
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
@@ -456,7 +531,7 @@ function onImgErr(e: Event) {
     animation: none;
     transition: none;
   }
-  
+
   .studio-infographic-card:hover {
     transform: none;
   }
@@ -467,7 +542,7 @@ function onImgErr(e: Event) {
     border-width: 2px;
     backdrop-filter: none;
   }
-  
+
   .logo-wrapper,
   .rating-indicator,
   .favorite-btn-enhanced {

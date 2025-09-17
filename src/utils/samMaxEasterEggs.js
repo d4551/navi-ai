@@ -4,7 +4,7 @@
  * Enhanced with noir crime theme animations and detective interactions
  */
 
-import { noirAnimations } from './noirAnimations.js';
+import { noirAnimations } from './noirAnimations.js'
 import { logger } from '@/shared/utils/logger'
 
 export const SAM_MAX_QUOTES = {
@@ -20,55 +20,55 @@ export const SAM_MAX_QUOTES = {
     "Sam: 'Every job posting tells a story of corporate intrigue.'",
     "Max: 'I bet the CEOs are all secretly crime bosses!'",
     "Sam: 'The gaming industry - where creativity meets commerce.'",
-    "Max: 'Can I list 'professional troublemaker' as work experience?'"
+    "Max: 'Can I list 'professional troublemaker' as work experience?'",
   ],
-  
+
   PROFILE_CLICKS: [
     "Sam: 'The Profile is where we keep all your professional dirt, Max.'",
     "Max: 'Can I list 'professional troublemaker' as a skill?'",
     "Sam: 'Your resume is looking sharp. Almost as sharp as your teeth.'",
     "Max: 'I put down 'advanced mayhem' under special abilities.'",
     "Sam: 'Remember to update your LinkedIn... oh wait, this IS better than LinkedIn.'",
-    "Max: 'Can I add 'immunity to logic' as a qualification?'"
+    "Max: 'Can I add 'immunity to logic' as a qualification?'",
   ],
-  
+
   AI_CLICKS: [
     "Sam: 'NAVI is our artificial intelligence assistant, Max.'",
     "Max: 'Is it smarter than a hyperkinetic rabbity thing?'",
     "Sam: 'NAVI helps match your gaming skills to career opportunities.'",
     "Max: 'Can it help me get a job as a professional chaos agent?'",
     "Sam: 'The AI recommendations are surprisingly accurate.'",
-    "Max: 'Does it know about my secret stash of cheat codes?'"
+    "Max: 'Does it know about my secret stash of cheat codes?'",
   ],
-  
+
   RANDOM_CLICKS: [
     "Max: 'This website has more personality than most NPCs!'",
     "Sam: 'Gaming careers are the future, Max. The cyberpunk future.'",
     "Max: 'I bet I could speedrun a job interview!'",
     "Sam: 'Remember when getting a job just meant showing up?'",
     "Max: 'These glass morphism effects are smoother than my one-liners!'",
-    "Sam: 'The RGB lighting makes everything look more professional.'"
+    "Sam: 'The RGB lighting makes everything look more professional.'",
   ],
 
   KONAMI_ACTIVATION: [
     "Max: 'UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A!'",
     "Sam: 'Max, that's the Konami Code, not our case number.'",
     "Max: 'I just unlocked 30 extra lives for my career!'",
-    "Sam: 'Well, I suppose we all need cheat codes sometimes.'"
+    "Sam: 'Well, I suppose we all need cheat codes sometimes.'",
   ],
 
   ACHIEVEMENT_UNLOCKS: [
     "Max: 'ACHIEVEMENT UNLOCKED! Do I get a trophy made of cheese?'",
     "Sam: 'That's another step toward your gaming industry domination, Max.'",
     "Max: 'I'm collecting achievements faster than speeding tickets!'",
-    "Sam: 'Your professional development is as chaotic as expected.'"
+    "Sam: 'Your professional development is as chaotic as expected.'",
   ],
 
   ERROR_MESSAGES: [
     "Max: 'Error 404: Max not found! Wait, here I am!'",
     "Sam: 'Technical difficulties are just puzzles in disguise, Max.'",
     "Max: 'Is this a bug or a feature? I can never tell!'",
-    "Sam: 'Every good adventure has a few glitches along the way.'"
+    "Sam: 'Every good adventure has a few glitches along the way.'",
   ],
 
   SUSPECTS_CLICKS: [
@@ -81,7 +81,7 @@ export const SAM_MAX_QUOTES = {
     "Sam: 'Every studio is a suspect until proven innocent... of bad game design.'",
     "Max: 'Look Sam! This one has a suspicion level of 5! Must be EA!'",
     "Sam: 'The threat assessment is crucial for career safety, Max.'",
-    "Max: 'I wonder if any of them have secret underground lairs...'"
+    "Max: 'I wonder if any of them have secret underground lairs...'",
   ],
 
   CASE_DASHBOARD_CLICKS: [
@@ -92,83 +92,89 @@ export const SAM_MAX_QUOTES = {
     "Sam: 'The evidence is mounting that you need to update your portfolio.'",
     "Max: 'I bet there's a conspiracy to keep hyperkinetic rabbity things unemployed!'",
     "Sam: 'Detective work and job hunting require the same attention to detail.'",
-    "Max: 'This dashboard has more RGB than a gaming rig!'"
-  ]
-};
+    "Max: 'This dashboard has more RGB than a gaming rig!'",
+  ],
+}
 
 export const SAM_MAX_INTERACTIONS = {
   DOUBLE_CLICK_RESPONSES: [
     "Max: 'Stop clicking me! I'm not a stress ball!'",
     "Sam: 'Patience, Max. Good things come to those who don't click frantically.'",
     "Max: 'CLICK CLICK CLICK! Am I a button now?'",
-    "Sam: 'Your enthusiasm is noted and slightly concerning.'"
+    "Sam: 'Your enthusiasm is noted and slightly concerning.'",
   ],
 
   IDLE_COMMENTS: [
     "Max: 'Are we going to stare at the screen all day, Sam?'",
     "Sam: 'Sometimes the best career moves require careful observation, Max.'",
     "Max: 'I'm bored. Can we arrest someone for not hiring us yet?'",
-    "Sam: 'Patience is a virtue in both detective work and job hunting.'"
+    "Sam: 'Patience is a virtue in both detective work and job hunting.'",
   ],
 
   SECRET_AREAS: [
     "Max: 'Ooh! A secret area! Is there treasure?'",
     "Sam: 'You found a hidden feature, Max. Consider it a professional easter egg.'",
     "Max: 'Secret areas are the best areas! Except for cheese areas.'",
-    "Sam: 'Your curiosity serves you well in both gaming and career development.'"
-  ]
-};
+    "Sam: 'Your curiosity serves you well in both gaming and career development.'",
+  ],
+}
 
 class SamMaxEasterEggs {
   constructor() {
-    this.clickCount = 0;
-    this.lastQuote = '';
-    this.idleTimer = null;
-    this.commentElement = null;
-    this.initialized = false;
+    this.clickCount = 0
+    this.lastQuote = ''
+    this.idleTimer = null
+    this.commentElement = null
+    this.initialized = false
     // Disabled by default; enabled via About tab egg toggle
-    this.enabled = false;
+    this.enabled = false
   }
 
   initialize() {
-    if (this.initialized) return;
-    
-    this.createCommentBubble();
-    this.setupClickHandlers();
-    this.setupIdleTimer();
-    this.setupSpecialInteractions();
-    
+    if (this.initialized) return
+
+    this.createCommentBubble()
+    this.setupClickHandlers()
+    this.setupIdleTimer()
+    this.setupSpecialInteractions()
+
     // Respect persisted preference or global flag
     try {
-      const saved = (typeof localStorage !== 'undefined')
-        ? localStorage.getItem('samMaxCommentsVisible')
-        : null;
-      if (saved === 'true' || (typeof window !== 'undefined' && window.__samMaxEggEnabled === true)) {
-        this.enabled = true;
+      const saved =
+        typeof localStorage !== 'undefined'
+          ? localStorage.getItem('samMaxCommentsVisible')
+          : null
+      if (
+        saved === 'true' ||
+        (typeof window !== 'undefined' && window.__samMaxEggEnabled === true)
+      ) {
+        this.enabled = true
       }
     } catch (_) {
       // ignore storage errors
     }
-    
+
     // Listen for activation/deactivation from Settings About egg
     if (typeof window !== 'undefined') {
       window.addEventListener('sam-max-egg-activated', () => {
-        this.enabled = true;
-      });
+        this.enabled = true
+      })
       window.addEventListener('sam-max-egg-deactivated', () => {
-        this.enabled = false;
-        this.hideCommentBubble();
-      });
+        this.enabled = false
+        this.hideCommentBubble()
+      })
     }
-    
-    this.initialized = true;
-    logger.info('[GAME] Sam & Max Easter Eggs initialized! Click around to hear their commentary.');
+
+    this.initialized = true
+    logger.info(
+      '[GAME] Sam & Max Easter Eggs initialized! Click around to hear their commentary.'
+    )
   }
 
   createCommentBubble() {
-    this.commentElement = document.createElement('div');
-    this.commentElement.id = 'sam-max-bubble';
-    this.commentElement.className = 'sam-max-comment-bubble';
+    this.commentElement = document.createElement('div')
+    this.commentElement.id = 'sam-max-bubble'
+    this.commentElement.className = 'sam-max-comment-bubble'
     this.commentElement.innerHTML = `
       <div class="bubble-content">
         <div class="characters">
@@ -177,20 +183,20 @@ class SamMaxEasterEggs {
         </div>
         <div class="dialogue-text"></div>
       </div>
-    `;
-    
+    `
+
     // Add CSS for the bubble
-    this.addCommentBubbleStyles();
-    
-    document.body.appendChild(this.commentElement);
-    this.hideCommentBubble();
+    this.addCommentBubbleStyles()
+
+    document.body.appendChild(this.commentElement)
+    this.hideCommentBubble()
   }
 
   addCommentBubbleStyles() {
-    if (document.getElementById('sam-max-styles')) return;
-    
-    const style = document.createElement('style');
-    style.id = 'sam-max-styles';
+    if (document.getElementById('sam-max-styles')) return
+
+    const style = document.createElement('style')
+    style.id = 'sam-max-styles'
     style.textContent = `
       .sam-max-comment-bubble {
         position: fixed;
@@ -426,254 +432,279 @@ class SamMaxEasterEggs {
           text-shadow: none;
         }
       }
-    `;
-    
-    document.head.appendChild(style);
+    `
+
+    document.head.appendChild(style)
   }
 
   showComment(text, duration = 4000) {
     // Only show comments when the Easter egg has been explicitly enabled
-    if (!this.commentElement || !this.enabled) return;
-    
-    const dialogueText = this.commentElement.querySelector('.dialogue-text');
-    dialogueText.textContent = text;
-    
-    this.commentElement.classList.add('visible');
-    
+    if (!this.commentElement || !this.enabled) return
+
+    const dialogueText = this.commentElement.querySelector('.dialogue-text')
+    dialogueText.textContent = text
+
+    this.commentElement.classList.add('visible')
+
     // Hide after duration
     setTimeout(() => {
-      this.hideCommentBubble();
-    }, duration);
+      this.hideCommentBubble()
+    }, duration)
   }
 
   hideCommentBubble() {
     if (this.commentElement) {
-      this.commentElement.classList.remove('visible');
+      this.commentElement.classList.remove('visible')
     }
   }
 
   getRandomQuote(category) {
-    const quotes = SAM_MAX_QUOTES[category] || SAM_MAX_QUOTES.RANDOM_CLICKS;
-    let quote;
-    
+    const quotes = SAM_MAX_QUOTES[category] || SAM_MAX_QUOTES.RANDOM_CLICKS
+    let quote
+
     // Avoid repeating the same quote
     do {
-      quote = quotes[Math.floor(Math.random() * quotes.length)];
-    } while (quote === this.lastQuote && quotes.length > 1);
-    
-    this.lastQuote = quote;
-    return quote;
+      quote = quotes[Math.floor(Math.random() * quotes.length)]
+    } while (quote === this.lastQuote && quotes.length > 1)
+
+    this.lastQuote = quote
+    return quote
   }
 
   setupClickHandlers() {
     // The Board clicks (Job Search)
-    document.addEventListener('click', (event) => {
-      const target = event.target.closest('[data-nav-item="jobs"], [href*="/jobs"], .the-board');
+    document.addEventListener('click', event => {
+      const target = event.target.closest(
+        '[data-nav-item="jobs"], [href*="/jobs"], .the-board'
+      )
       if (target) {
-        this.showComment(this.getRandomQuote('BOARD_CLICKS'));
-        return;
+        this.showComment(this.getRandomQuote('BOARD_CLICKS'))
+        return
       }
-    });
+    })
 
     // The Suspects clicks (Studios)
-    document.addEventListener('click', (event) => {
-      const target = event.target.closest('[href*="/studios"], .the-suspects, .studio-card, .suspect-card');
+    document.addEventListener('click', event => {
+      const target = event.target.closest(
+        '[href*="/studios"], .the-suspects, .studio-card, .suspect-card'
+      )
       if (target) {
-        this.showComment(this.getRandomQuote('SUSPECTS_CLICKS'));
-        
+        this.showComment(this.getRandomQuote('SUSPECTS_CLICKS'))
+
         // Add special noir animations for suspect interactions
-        if (Math.random() < 0.3) { // 30% chance
-          const suspectCard = target.closest('.studio-card, .suspect-card');
+        if (Math.random() < 0.3) {
+          // 30% chance
+          const suspectCard = target.closest('.studio-card, .suspect-card')
           if (suspectCard) {
-            noirAnimations.suspicionRising(suspectCard);
+            noirAnimations.suspicionRising(suspectCard)
           } else {
-            noirAnimations.investigationSweep(target);
+            noirAnimations.investigationSweep(target)
           }
         }
-        return;
+        return
       }
-    });
+    })
 
     // Case Dashboard clicks
-    document.addEventListener('click', (event) => {
-      const target = event.target.closest('[href*="/dashboard"], .case-dashboard, .detective-badge');
+    document.addEventListener('click', event => {
+      const target = event.target.closest(
+        '[href*="/dashboard"], .case-dashboard, .detective-badge'
+      )
       if (target) {
-        this.showComment(this.getRandomQuote('CASE_DASHBOARD_CLICKS'));
-        
+        this.showComment(this.getRandomQuote('CASE_DASHBOARD_CLICKS'))
+
         // Add detective spotlight effect
-        if (Math.random() < 0.25) { // 25% chance
-          noirAnimations.detectiveSpotlight(target);
+        if (Math.random() < 0.25) {
+          // 25% chance
+          noirAnimations.detectiveSpotlight(target)
         }
-        return;
+        return
       }
-    });
+    })
 
     // The Profile clicks
-    document.addEventListener('click', (event) => {
-      const target = event.target.closest('[href*="/settings"], .settings-link');
+    document.addEventListener('click', event => {
+      const target = event.target.closest('[href*="/settings"], .settings-link')
       if (target) {
-        this.showComment(this.getRandomQuote('PROFILE_CLICKS'));
-        return;
+        this.showComment(this.getRandomQuote('PROFILE_CLICKS'))
+        return
       }
-    });
+    })
 
     // AI/NAVI clicks
-    document.addEventListener('click', (event) => {
-      const target = event.target.closest('.ai-fairy, .ai-status, [class*="ai-"], .fairy-chat');
+    document.addEventListener('click', event => {
+      const target = event.target.closest(
+        '.ai-fairy, .ai-status, [class*="ai-"], .fairy-chat'
+      )
       if (target) {
-        this.showComment(this.getRandomQuote('AI_CLICKS'));
-        
+        this.showComment(this.getRandomQuote('AI_CLICKS'))
+
         // Add matrix rain effect for AI interactions
-        if (Math.random() < 0.15) { // 15% chance
-          noirAnimations.createMatrixRain(3000);
+        if (Math.random() < 0.15) {
+          // 15% chance
+          noirAnimations.createMatrixRain(3000)
         }
-        return;
+        return
       }
-    });
+    })
 
     // Random clicks with low probability
-    document.addEventListener('click', (_event) => {
-      if (Math.random() < 0.05) { // 5% chance
-        this.showComment(this.getRandomQuote('RANDOM_CLICKS'));
+    document.addEventListener('click', _event => {
+      if (Math.random() < 0.05) {
+        // 5% chance
+        this.showComment(this.getRandomQuote('RANDOM_CLICKS'))
       }
-    });
+    })
 
     // Double click detection
-    let lastClickTime = 0;
-    document.addEventListener('click', (_event) => {
-      const currentTime = Date.now();
+    let lastClickTime = 0
+    document.addEventListener('click', _event => {
+      const currentTime = Date.now()
       if (currentTime - lastClickTime < 400) {
-        const quotes = SAM_MAX_INTERACTIONS.DOUBLE_CLICK_RESPONSES;
-        this.showComment(quotes[Math.floor(Math.random() * quotes.length)]);
+        const quotes = SAM_MAX_INTERACTIONS.DOUBLE_CLICK_RESPONSES
+        this.showComment(quotes[Math.floor(Math.random() * quotes.length)])
       }
-      lastClickTime = currentTime;
-    });
+      lastClickTime = currentTime
+    })
   }
 
   setupIdleTimer() {
-    let idleTime = 0;
-    
+    let idleTime = 0
+
     const resetIdleTimer = () => {
-      idleTime = 0;
-    };
+      idleTime = 0
+    }
 
     // Reset timer on user activity
-    ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
-      document.addEventListener(event, resetIdleTimer, true);
-    });
+    ;['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(
+      event => {
+        document.addEventListener(event, resetIdleTimer, true)
+      }
+    )
 
     // Check for idle state every second
     setInterval(() => {
-      idleTime++;
-      
+      idleTime++
+
       // Show idle comment after 30 seconds
       if (idleTime === 30) {
-        const quotes = SAM_MAX_INTERACTIONS.IDLE_COMMENTS;
-        this.showComment(quotes[Math.floor(Math.random() * quotes.length)], 3000);
+        const quotes = SAM_MAX_INTERACTIONS.IDLE_COMMENTS
+        this.showComment(
+          quotes[Math.floor(Math.random() * quotes.length)],
+          3000
+        )
       }
-      
+
       // Show another comment after 2 minutes
       if (idleTime === 120) {
-        this.showComment(this.getRandomQuote('RANDOM_CLICKS'), 3000);
-        idleTime = 0; // Reset to avoid spamming
+        this.showComment(this.getRandomQuote('RANDOM_CLICKS'), 3000)
+        idleTime = 0 // Reset to avoid spamming
       }
-    }, 1000);
+    }, 1000)
   }
 
   setupSpecialInteractions() {
     // Konami code detection with special effects
     document.addEventListener('konami-activated', () => {
-      this.showComment(this.getRandomQuote('KONAMI_ACTIVATION'), 5000);
-      
+      this.showComment(this.getRandomQuote('KONAMI_ACTIVATION'), 5000)
+
       // Trigger dramatic screen shake and matrix rain
-      noirAnimations.screenShake(2, 800);
+      noirAnimations.screenShake(2, 800)
       setTimeout(() => {
-        noirAnimations.createMatrixRain(8000);
-      }, 500);
-    });
+        noirAnimations.createMatrixRain(8000)
+      }, 500)
+    })
 
     // Achievement unlocks
-    document.addEventListener('achievement-unlocked', (_event) => {
+    document.addEventListener('achievement-unlocked', _event => {
       setTimeout(() => {
-        this.showComment(this.getRandomQuote('ACHIEVEMENT_UNLOCKS'), 4000);
-      }, 1000); // Delay so it doesn't conflict with achievement popup
-    });
+        this.showComment(this.getRandomQuote('ACHIEVEMENT_UNLOCKS'), 4000)
+      }, 1000) // Delay so it doesn't conflict with achievement popup
+    })
 
     // Error handling with glitch effects
-    window.addEventListener('error', (_event) => {
-      if (Math.random() < 0.3) { // 30% chance to comment on errors
-        this.showComment(this.getRandomQuote('ERROR_MESSAGES'), 3000);
-        
+    window.addEventListener('error', _event => {
+      if (Math.random() < 0.3) {
+        // 30% chance to comment on errors
+        this.showComment(this.getRandomQuote('ERROR_MESSAGES'), 3000)
+
         // Add glitch effect on errors
-        const mainContent = document.querySelector('.main-content') || document.body;
-        noirAnimations.noirGlitch(mainContent, 2);
+        const mainContent =
+          document.querySelector('.main-content') || document.body
+        noirAnimations.noirGlitch(mainContent, 2)
       }
-    });
+    })
 
     // Secret area discovery
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', event => {
       if (event.target.classList.contains('gaming-icon-secret')) {
-        const quotes = SAM_MAX_INTERACTIONS.SECRET_AREAS;
-        this.showComment(quotes[Math.floor(Math.random() * quotes.length)], 4000);
+        const quotes = SAM_MAX_INTERACTIONS.SECRET_AREAS
+        this.showComment(
+          quotes[Math.floor(Math.random() * quotes.length)],
+          4000
+        )
       }
-    });
+    })
   }
 
   // Special interaction: clicking on the comment bubble itself
   setupBubbleInteraction() {
-    if (!this.commentElement) return;
-    
-    let bubbleClicks = 0;
+    if (!this.commentElement) return
+
+    let bubbleClicks = 0
     this.commentElement.addEventListener('click', () => {
-      bubbleClicks++;
-      
+      bubbleClicks++
+
       const responses = [
         "Max: 'Hey! Stop poking the fourth wall!'",
         "Sam: 'The comment bubble is not interactive... or is it?'",
         "Max: 'Are you trying to break the website by clicking me?'",
-        "Sam: 'I suppose even UI elements need attention sometimes.'"
-      ];
-      
+        "Sam: 'I suppose even UI elements need attention sometimes.'",
+      ]
+
       if (bubbleClicks <= responses.length) {
-        this.showComment(responses[bubbleClicks - 1], 3000);
+        this.showComment(responses[bubbleClicks - 1], 3000)
       } else {
-        this.showComment("Max: 'Okay, you've clicked enough. Go find a job!'", 3000);
+        this.showComment(
+          "Max: 'Okay, you've clicked enough. Go find a job!'",
+          3000
+        )
       }
-    });
+    })
   }
 
   // Public method to trigger specific comments
   triggerComment(category, customText = null) {
-    const text = customText || this.getRandomQuote(category);
-    this.showComment(text);
+    const text = customText || this.getRandomQuote(category)
+    this.showComment(text)
   }
 
   destroy() {
     if (this.commentElement) {
-      this.commentElement.remove();
-      this.commentElement = null;
+      this.commentElement.remove()
+      this.commentElement = null
     }
-    
+
     if (this.idleTimer) {
-      clearInterval(this.idleTimer);
-      this.idleTimer = null;
+      clearInterval(this.idleTimer)
+      this.idleTimer = null
     }
-    
-    this.initialized = false;
+
+    this.initialized = false
   }
 }
 
 // Global instance
-export const samMaxEasterEggs = new SamMaxEasterEggs();
+export const samMaxEasterEggs = new SamMaxEasterEggs()
 
 // Auto-initialize
 if (typeof window !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
     // Delay initialization slightly to ensure other systems are ready
     setTimeout(() => {
-      samMaxEasterEggs.initialize();
-    }, 1000);
-  });
+      samMaxEasterEggs.initialize()
+    }, 1000)
+  })
 }
 
-export default samMaxEasterEggs;
+export default samMaxEasterEggs

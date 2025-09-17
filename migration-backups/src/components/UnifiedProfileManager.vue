@@ -21,37 +21,53 @@ It shows how profile data entered once is automatically synchronized across:
             Unified Profile System
           </h5>
           <p class="text-muted small mb-0">
-            Edit once, sync everywhere - your profile data automatically updates across all features
+            Edit once, sync everywhere - your profile data automatically updates
+            across all features
           </p>
         </div>
-        
+
         <div class="sync-status-indicators d-flex gap-3">
           <!-- Profile Completeness -->
-          <div class="sync-indicator" :class="{ 'text-success': completeness >= 80, 'text-warning': completeness < 80 }">
+          <div
+            class="sync-indicator"
+            :class="{
+              'text-success': completeness >= 80,
+              'text-warning': completeness < 80,
+            }"
+          >
             <div class="indicator-icon">
               <AppIcon v-if="completeness >= 80" name="mdi-account-check" />
               <AppIcon v-else name="mdi-account-alert" />
             </div>
             <div class="indicator-text">
-              <div class="text-xs font-weight-bold">{{ Math.round(completeness) }}%</div>
+              <div class="text-xs font-weight-bold">
+                {{ Math.round(completeness) }}%
+              </div>
               <div class="text-xs text-muted">Complete</div>
             </div>
           </div>
-          
+
           <!-- Sync Status -->
           <div class="sync-indicator" :class="getSyncStatusClass()">
             <div class="indicator-icon">
               <AppIcon v-if="isLoading" name="mdi-loading" class="mdi-spin" />
               <AppIcon v-else-if="syncStatus === 'success'" name="mdi-sync" />
-              <AppIcon v-else-if="syncStatus === 'error'" name="mdi-sync-alert" />
+              <AppIcon
+                v-else-if="syncStatus === 'error'"
+                name="mdi-sync-alert"
+              />
               <AppIcon v-else name="mdi-sync-off" />
             </div>
             <div class="indicator-text">
-              <div class="text-xs font-weight-bold">{{ getSyncStatusText() }}</div>
-              <div class="text-xs text-muted">{{ lastSync ? `${getRelativeTime(lastSync)}` : 'Never' }}</div>
+              <div class="text-xs font-weight-bold">
+                {{ getSyncStatusText() }}
+              </div>
+              <div class="text-xs text-muted">
+                {{ lastSync ? `${getRelativeTime(lastSync)}` : 'Never' }}
+              </div>
             </div>
           </div>
-          
+
           <!-- System Count -->
           <div class="sync-indicator text-info">
             <div class="indicator-icon">
@@ -64,7 +80,7 @@ It shows how profile data entered once is automatically synchronized across:
           </div>
         </div>
       </div>
-      
+
       <!-- Quick Actions -->
       <div class="profile-quick-actions mt-3 d-flex gap-2">
         <UnifiedButton
@@ -76,7 +92,7 @@ It shows how profile data entered once is automatically synchronized across:
         >
           Force Sync
         </UnifiedButton>
-        
+
         <UnifiedButton
           variant="outline"
           size="sm"
@@ -85,7 +101,7 @@ It shows how profile data entered once is automatically synchronized across:
         >
           {{ showSyncDetails ? 'Hide' : 'Show' }} Sync Details
         </UnifiedButton>
-        
+
         <UnifiedButton
           variant="outline"
           size="sm"
@@ -103,7 +119,7 @@ It shows how profile data entered once is automatically synchronized across:
         <AppIcon name="mdi-information-outline" class="me-2" />
         Cross-System Integration Status
       </h6>
-      
+
       <div class="row g-3">
         <!-- Job Search System -->
         <div class="col-md-6 col-lg-4">
@@ -120,7 +136,9 @@ It shows how profile data entered once is automatically synchronized across:
             <div class="system-data">
               <div class="data-item">
                 <span class="label">Skills:</span>
-                <span class="value">{{ skills?.technical?.length || 0 }} technical</span>
+                <span class="value"
+                  >{{ skills?.technical?.length || 0 }} technical</span
+                >
               </div>
               <div class="data-item">
                 <span class="label">Experience:</span>
@@ -128,12 +146,14 @@ It shows how profile data entered once is automatically synchronized across:
               </div>
               <div class="data-item">
                 <span class="label">Location:</span>
-                <span class="value">{{ personalInfo?.location || 'Not set' }}</span>
+                <span class="value">{{
+                  personalInfo?.location || 'Not set'
+                }}</span>
               </div>
             </div>
           </div>
         </div>
-        
+
         <!-- AI Training System -->
         <div class="col-md-6 col-lg-4">
           <div class="system-status-card" :class="getSystemStatusClass('ai')">
@@ -153,19 +173,26 @@ It shows how profile data entered once is automatically synchronized across:
               </div>
               <div class="data-item">
                 <span class="label">Gaming XP:</span>
-                <span class="value">{{ getGamingExperienceSize() }} entries</span>
+                <span class="value"
+                  >{{ getGamingExperienceSize() }} entries</span
+                >
               </div>
               <div class="data-item">
                 <span class="label">Goals:</span>
-                <span class="value">{{ careerGoals?.targetRoles?.length || 0 }} roles</span>
+                <span class="value"
+                  >{{ careerGoals?.targetRoles?.length || 0 }} roles</span
+                >
               </div>
             </div>
           </div>
         </div>
-        
+
         <!-- Studio Matching System -->
         <div class="col-md-6 col-lg-4">
-          <div class="system-status-card" :class="getSystemStatusClass('studios')">
+          <div
+            class="system-status-card"
+            :class="getSystemStatusClass('studios')"
+          >
             <div class="system-header">
               <div class="system-icon">
                 <AppIcon name="mdi-gamepad-variant" />
@@ -182,7 +209,9 @@ It shows how profile data entered once is automatically synchronized across:
               </div>
               <div class="data-item">
                 <span class="label">Gaming Skills:</span>
-                <span class="value">{{ skills?.gaming?.length || 0 }} skills</span>
+                <span class="value"
+                  >{{ skills?.gaming?.length || 0 }} skills</span
+                >
               </div>
               <div class="data-item">
                 <span class="label">Achievements:</span>
@@ -191,10 +220,13 @@ It shows how profile data entered once is automatically synchronized across:
             </div>
           </div>
         </div>
-        
+
         <!-- Portfolio System -->
         <div class="col-md-6 col-lg-4">
-          <div class="system-status-card" :class="getSystemStatusClass('portfolio')">
+          <div
+            class="system-status-card"
+            :class="getSystemStatusClass('portfolio')"
+          >
             <div class="system-header">
               <div class="system-icon">
                 <AppIcon name="mdi-folder-multiple-outline" />
@@ -220,10 +252,13 @@ It shows how profile data entered once is automatically synchronized across:
             </div>
           </div>
         </div>
-        
+
         <!-- Resume System -->
         <div class="col-md-6 col-lg-4">
-          <div class="system-status-card" :class="getSystemStatusClass('resume')">
+          <div
+            class="system-status-card"
+            :class="getSystemStatusClass('resume')"
+          >
             <div class="system-header">
               <div class="system-icon">
                 <AppIcon name="mdi-file-document-outline" />
@@ -240,19 +275,26 @@ It shows how profile data entered once is automatically synchronized across:
               </div>
               <div class="data-item">
                 <span class="label">Certs:</span>
-                <span class="value">{{ profile?.certifications?.length || 0 }} items</span>
+                <span class="value"
+                  >{{ profile?.certifications?.length || 0 }} items</span
+                >
               </div>
               <div class="data-item">
                 <span class="label">Languages:</span>
-                <span class="value">{{ skills?.languages?.length || 0 }} known</span>
+                <span class="value"
+                  >{{ skills?.languages?.length || 0 }} known</span
+                >
               </div>
             </div>
           </div>
         </div>
-        
+
         <!-- Settings System -->
         <div class="col-md-6 col-lg-4">
-          <div class="system-status-card" :class="getSystemStatusClass('settings')">
+          <div
+            class="system-status-card"
+            :class="getSystemStatusClass('settings')"
+          >
             <div class="system-header">
               <div class="system-icon">
                 <AppIcon name="mdi-cog" />
@@ -269,7 +311,9 @@ It shows how profile data entered once is automatically synchronized across:
               </div>
               <div class="data-item">
                 <span class="label">Consent:</span>
-                <span class="value">{{ profile?.meta?.dataConsent ? 'Given' : 'Required' }}</span>
+                <span class="value">{{
+                  profile?.meta?.dataConsent ? 'Given' : 'Required'
+                }}</span>
               </div>
               <div class="data-item">
                 <span class="label">API Keys:</span>
@@ -287,7 +331,7 @@ It shows how profile data entered once is automatically synchronized across:
         <AppIcon name="mdi-cog-outline" class="me-2" />
         Profile Sync Settings
       </h6>
-      
+
       <div class="settings-options">
         <div class="form-check form-switch mb-3">
           <input
@@ -296,16 +340,16 @@ It shows how profile data entered once is automatically synchronized across:
             class="form-check-input"
             type="checkbox"
             @change="toggleAutoSync"
-          >
+          />
           <label class="form-check-label" for="auto-sync-toggle">
             <strong>Auto-sync profile changes</strong>
-            <br>
+            <br />
             <small class="text-muted">
               Automatically update all systems when profile data changes
             </small>
           </label>
         </div>
-        
+
         <div class="form-check form-switch mb-3">
           <input
             id="real-time-sync"
@@ -313,16 +357,16 @@ It shows how profile data entered once is automatically synchronized across:
             class="form-check-input"
             type="checkbox"
             :disabled="!autoSyncEnabled"
-          >
+          />
           <label class="form-check-label" for="real-time-sync">
             <strong>Real-time synchronization</strong>
-            <br>
+            <br />
             <small class="text-muted">
               Sync changes immediately instead of batching
             </small>
           </label>
         </div>
-        
+
         <div class="sync-history mt-4">
           <h6 class="mb-2">Recent Sync Events</h6>
           <div class="sync-events-list">
@@ -337,8 +381,12 @@ It shows how profile data entered once is automatically synchronized across:
               <div class="event-details">
                 <div class="event-title">{{ getEventTitle(event.type) }}</div>
                 <div class="event-meta">
-                  <span class="event-time">{{ getRelativeTime(event.timestamp) }}</span>
-                  <span class="event-systems">• {{ event.affectedSystems.length }} systems</span>
+                  <span class="event-time">{{
+                    getRelativeTime(event.timestamp)
+                  }}</span>
+                  <span class="event-systems"
+                    >• {{ event.affectedSystems.length }} systems</span
+                  >
                 </div>
               </div>
               <div class="event-status">
@@ -404,23 +452,31 @@ const toggleAutoSync = () => {
 // Status helpers
 const getSyncStatusClass = () => {
   switch (syncStatus.value) {
-    case 'success': return 'text-success'
-    case 'error': return 'text-danger'
-    case 'syncing': return 'text-primary'
-    default: return 'text-muted'
+    case 'success':
+      return 'text-success'
+    case 'error':
+      return 'text-danger'
+    case 'syncing':
+      return 'text-primary'
+    default:
+      return 'text-muted'
   }
 }
 
 const getSyncStatusText = () => {
   switch (syncStatus.value) {
-    case 'success': return 'Synced'
-    case 'error': return 'Error'
-    case 'syncing': return 'Syncing...'
-    default: return 'Idle'
+    case 'success':
+      return 'Synced'
+    case 'error':
+      return 'Error'
+    case 'syncing':
+      return 'Syncing...'
+    default:
+      return 'Idle'
   }
 }
 
-const getSystemStatusClass = (systemId) => {
+const getSystemStatusClass = systemId => {
   const contextData = unifiedProfile.state.contextData[systemId]
   if (contextData?.lastSync) {
     return 'system-active'
@@ -428,18 +484,18 @@ const getSystemStatusClass = (systemId) => {
   return 'system-inactive'
 }
 
-const getRelativeTime = (date) => {
+const getRelativeTime = date => {
   if (!date) return 'Never'
   const now = new Date()
   const diff = now - new Date(date)
   const minutes = Math.floor(diff / 60000)
-  
+
   if (minutes < 1) return 'Just now'
   if (minutes < 60) return `${minutes}m ago`
-  
+
   const hours = Math.floor(minutes / 60)
   if (hours < 24) return `${hours}h ago`
-  
+
   const days = Math.floor(hours / 24)
   return `${days}d ago`
 }
@@ -456,8 +512,9 @@ const getAIContextSize = () => {
 
 const getGamingExperienceSize = () => {
   if (!gamingExperience.value) return 0
-  return Object.values(gamingExperience.value).reduce((sum, arr) => 
-    sum + (Array.isArray(arr) ? arr.length : 0), 0
+  return Object.values(gamingExperience.value).reduce(
+    (sum, arr) => sum + (Array.isArray(arr) ? arr.length : 0),
+    0
   )
 }
 
@@ -497,17 +554,19 @@ const getResumeSections = () => {
 const getPrivacyStatus = () => {
   const settings = profile.value?.meta?.privacySettings
   if (!settings) return 'Not configured'
-  
+
   const enabled = Object.values(settings).filter(Boolean).length
   const total = Object.keys(settings).length
-  
+
   return `${enabled}/${total} enabled`
 }
 
 const getAPIKeysStatus = () => {
   const appStore = useAppStore()
-  const hasGeminiKey = appStore.settings.geminiApiKey && appStore.settings.geminiApiKey.trim().length > 0
-  
+  const hasGeminiKey =
+    appStore.settings.geminiApiKey &&
+    appStore.settings.geminiApiKey.trim().length > 0
+
   if (hasGeminiKey) {
     return 'Configured'
   } else {
@@ -515,22 +574,22 @@ const getAPIKeysStatus = () => {
   }
 }
 
-const getEventIcon = (type) => {
+const getEventIcon = type => {
   const iconMap = {
     'profile-updated': 'mdi-account-edit',
     'section-changed': 'mdi-pencil',
     'batch-update': 'mdi-update',
-    'import-complete': 'mdi-import'
+    'import-complete': 'mdi-import',
   }
   return iconMap[type] || 'mdi-sync'
 }
 
-const getEventTitle = (type) => {
+const getEventTitle = type => {
   const titleMap = {
     'profile-updated': 'Profile Updated',
     'section-changed': 'Section Changed',
     'batch-update': 'Batch Update',
-    'import-complete': 'Import Complete'
+    'import-complete': 'Import Complete',
   }
   return titleMap[type] || 'Sync Event'
 }
@@ -538,34 +597,38 @@ const getEventTitle = (type) => {
 // Setup sync event listening
 onMounted(() => {
   // Load recent sync events
-  recentSyncEvents.value = profileSyncService.getSyncHistory()
+  recentSyncEvents.value = profileSyncService
+    .getSyncHistory()
     .slice(0, 5)
     .map(event => ({
       ...event,
-      success: event.success !== undefined ? event.success : (event.error === undefined || event.error === null)
+      success:
+        event.success !== undefined
+          ? event.success
+          : event.error === undefined || event.error === null,
     }))
-    
+
   // Listen for new sync events
-  profileSyncService.on('sync-complete', (eventData) => {
+  profileSyncService.on('sync-complete', eventData => {
     recentSyncEvents.value.unshift({
       ...eventData.event,
       success: true,
-      timestamp: new Date()
+      timestamp: new Date(),
     })
-    
+
     if (recentSyncEvents.value.length > 10) {
       recentSyncEvents.value = recentSyncEvents.value.slice(0, 10)
     }
   })
-  
-  profileSyncService.on('sync-error', (eventData) => {
+
+  profileSyncService.on('sync-error', eventData => {
     recentSyncEvents.value.unshift({
       ...eventData.event,
       success: false,
       error: eventData.error,
-      timestamp: new Date()
+      timestamp: new Date(),
     })
-    
+
     if (recentSyncEvents.value.length > 10) {
       recentSyncEvents.value = recentSyncEvents.value.slice(0, 10)
     }

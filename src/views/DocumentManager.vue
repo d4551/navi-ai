@@ -1,7 +1,17 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="normal"
+    max-width="xl"
+    class="font-sans"
+  >
     <template #header-actions>
-      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
+      <HeaderActions
+        layout="horizontal"
+        alignment="end"
+        gap="md"
+        priority="primary"
+      >
         <!-- Document Type Quick Switch -->
         <div class="doc-type-switcher">
           <UnifiedButton
@@ -23,7 +33,11 @@
             class="template-select unified-select"
           >
             <option value="">Choose Template</option>
-            <option v-for="template in availableTemplates" :key="template.id" :value="template.id">
+            <option
+              v-for="template in availableTemplates"
+              :key="template.id"
+              :value="template.id"
+            >
               {{ template.name }}
             </option>
           </select>
@@ -157,7 +171,11 @@
         >
           <AppIcon :name="docType.icon" />
           <span>{{ docType.label }}</span>
-          <div v-if="getDocumentStatus(docType.value)" class="tab-indicator" :class="getDocumentStatus(docType.value)"></div>
+          <div
+            v-if="getDocumentStatus(docType.value)"
+            class="tab-indicator"
+            :class="getDocumentStatus(docType.value)"
+          ></div>
         </button>
       </div>
     </div>
@@ -169,11 +187,24 @@
         <div class="job-info">
           <AppIcon name="BriefcaseIcon" />
           <div class="job-details">
-            <div class="job-title">{{ jobInfo.company ? `${jobInfo.company} - ${jobInfo.position}` : 'Job Context Active' }}</div>
-            <div class="job-meta">{{ jobInfo.location || 'Remote' }} • {{ jobInfo.type || 'Full-time' }}</div>
+            <div class="job-title">
+              {{
+                jobInfo.company
+                  ? `${jobInfo.company} - ${jobInfo.position}`
+                  : 'Job Context Active'
+              }}
+            </div>
+            <div class="job-meta">
+              {{ jobInfo.location || 'Remote' }} •
+              {{ jobInfo.type || 'Full-time' }}
+            </div>
           </div>
           <div class="job-metrics">
-            <div v-if="atsScore > 0" class="ats-score" :class="getATSScoreClass(atsScore)">
+            <div
+              v-if="atsScore > 0"
+              class="ats-score"
+              :class="getATSScoreClass(atsScore)"
+            >
               {{ atsScore }}% ATS Match
             </div>
             <div class="match-score">{{ skillMatch }}% Skills Match</div>
@@ -209,9 +240,13 @@
             <AppIcon :name="suggestion.icon" />
             <div class="suggestion-content">
               <div class="suggestion-title">{{ suggestion.title }}</div>
-              <div class="suggestion-description">{{ suggestion.description }}</div>
+              <div class="suggestion-description">
+                {{ suggestion.description }}
+              </div>
             </div>
-            <div class="suggestion-confidence">{{ suggestion.confidence }}%</div>
+            <div class="suggestion-confidence">
+              {{ suggestion.confidence }}%
+            </div>
           </div>
         </div>
       </div>
@@ -221,7 +256,11 @@
         <div class="editor-panel" :class="{ 'split-view': showLivePreview }">
           <div class="editor-header">
             <div class="editor-info">
-              <h3>{{ documentTypes.find(t => t.value === activeDocumentType)?.label }}</h3>
+              <h3>
+                {{
+                  documentTypes.find(t => t.value === activeDocumentType)?.label
+                }}
+              </h3>
               <div class="editor-meta">
                 <span>{{ getWordCount() }} words</span>
                 <span>•</span>
@@ -232,7 +271,11 @@
               <UnifiedButton
                 variant="ghost"
                 size="sm"
-                :leading-icon="showLivePreview ? 'mdi-view-sequential' : 'mdi-view-split-vertical'"
+                :leading-icon="
+                  showLivePreview
+                    ? 'mdi-view-sequential'
+                    : 'mdi-view-split-vertical'
+                "
                 @click="toggleLivePreview"
               >
                 {{ showLivePreview ? 'Single View' : 'Split View' }}
@@ -294,7 +337,6 @@
         </div>
       </div>
     </div>
-    
 
     <!-- Enhanced Modals -->
     <DocumentPreviewModal
@@ -374,7 +416,18 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowDownTrayIcon, ArrowPathIcon, BriefcaseIcon, ClockIcon, CpuChipIcon, DocumentIcon, ExclamationCircleIcon, EyeIcon, StarIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowDownTrayIcon,
+  ArrowPathIcon,
+  BriefcaseIcon,
+  ClockIcon,
+  CpuChipIcon,
+  DocumentIcon,
+  ExclamationCircleIcon,
+  EyeIcon,
+  StarIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, onMounted, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
@@ -444,7 +497,7 @@ const {
   updateDocumentData,
   _updateJobDescription,
   selectTemplate,
-  revertToVersion
+  revertToVersion,
 } = useDocumentManager()
 
 // AI Integration
@@ -456,7 +509,7 @@ const {
   _handleTailoring,
   _handleAISuggestions,
   _optimizeContent,
-  _showAISuggestions
+  _showAISuggestions,
 } = useAIIntegration(resumeData, coverLetterData, jobDescription.value)
 
 // Enhanced State Management
@@ -482,16 +535,19 @@ const documentTypes = ref([
   { value: 'resume', label: 'Resume', icon: 'UserIcon-box' },
   { value: 'cover-letter', label: 'Cover Letter', icon: 'mdi-email-outline' },
   { value: 'portfolio', label: 'Portfolio', icon: 'mdi-briefcase-variant' },
-  { value: 'transcript', label: 'Transcript', icon: 'mdi-school' }
+  { value: 'transcript', label: 'Transcript', icon: 'mdi-school' },
 ])
 
 // Active document context
 const activeDocumentType = ref<DocumentType>('resume')
 const currentDocumentData = computed(() => {
   switch (activeDocumentType.value) {
-    case 'resume': return resumeData
-    case 'cover-letter': return coverLetterData
-    default: return resumeData
+    case 'resume':
+      return resumeData
+    case 'cover-letter':
+      return coverLetterData
+    default:
+      return resumeData
   }
 })
 
@@ -504,17 +560,17 @@ const selectedDocumentTheme = ref<DocumentTheme>({
     secondary: '#64748b',
     accent: '#3b82f6',
     background: '#ffffff',
-    text: '#1e293b'
+    text: '#1e293b',
   },
   fonts: {
     heading: 'Inter, sans-serif',
-    body: 'Inter, sans-serif'
+    body: 'Inter, sans-serif',
   },
   layout: {
     margins: '1in',
     spacing: '1.15',
-    columns: 1
-  }
+    columns: 1,
+  },
 })
 
 // Available Templates
@@ -524,7 +580,7 @@ const availableTemplates = ref([
   { id: 'creative', name: 'Creative Design', category: 'creative' },
   { id: 'gaming', name: 'Gaming Industry', category: 'industry' },
   { id: 'tech', name: 'Tech Focus', category: 'industry' },
-  { id: 'ats-optimized', name: 'ATS Optimized', category: 'optimized' }
+  { id: 'ats-optimized', name: 'ATS Optimized', category: 'optimized' },
 ])
 
 // AI Suggestions
@@ -538,7 +594,8 @@ const profileData = computed(() => unifiedProfile.profile.value)
 const documentCount = computed(() => {
   let count = 0
   if (resumeData.value && Object.keys(resumeData.value).length > 0) count++
-  if (coverLetterData.value && Object.keys(coverLetterData.value).length > 0) count++
+  if (coverLetterData.value && Object.keys(coverLetterData.value).length > 0)
+    count++
   return count
 })
 
@@ -649,7 +706,7 @@ const enhanceWithAI = () => {
   aiModalContext.value = {
     type: 'enhance',
     documentType: activeDocumentType.value,
-    data: currentDocumentData.value
+    data: currentDocumentData.value,
   }
 }
 
@@ -667,18 +724,20 @@ const _handleProfileEnhancedSuggestion = async (suggestion: any) => {
       case 'refresh-profile':
         await syncProfileData()
         break
-        
+
       case 'job-profile-match':
         // Handle job-profile match analysis
         if (suggestion.data) {
           // Update ATS score or other relevant metrics
-          toast.success(`Profile match: ${suggestion.data.skillMatch}% skill compatibility`)
-          
+          toast.success(
+            `Profile match: ${suggestion.data.skillMatch}% skill compatibility`
+          )
+
           // You could store this data for display in the sidebar
           // atsScore.value = suggestion.data.skillMatch
         }
         break
-        
+
       default:
         console.log('Unknown profile suggestion type:', suggestion.type)
     }
@@ -705,11 +764,11 @@ const importFromProfile = async () => {
 
   try {
     profileImporting.value = true
-    
+
     // Import data for both resume and cover letter
     const resumeProfileData = unifiedProfile.getContextualProfile('resume')
     const coverLetterProfileData = unifiedProfile.getContextualProfile('jobs')
-    
+
     if (resumeProfileData) {
       // Map profile data to resume format
       updateDocumentData('resume', {
@@ -717,20 +776,20 @@ const importFromProfile = async () => {
         experience: resumeProfileData.experience || [],
         education: resumeProfileData.education || [],
         skills: resumeProfileData.skills || { technical: [], soft: [] },
-        achievements: resumeProfileData.achievements || []
+        achievements: resumeProfileData.achievements || [],
       })
     }
-    
+
     if (coverLetterProfileData) {
       // Map profile data to cover letter format - basic structure
       updateDocumentData('cover-letter', {
         ...coverLetterData,
-        personalInfo: resumeProfileData?.personalInfo || coverLetterData.personalInfo
+        personalInfo:
+          resumeProfileData?.personalInfo || coverLetterData.personalInfo,
       })
     }
-    
+
     toast.success('Profile data imported successfully')
-    
   } catch (error) {
     console.error('Profile import failed:', error)
     toast.error('Failed to import profile data')
@@ -757,25 +816,27 @@ const _aiEnhanceFromProfile = async () => {
     toast.error('AI service or profile data not available')
     return
   }
-  
+
   try {
     const documentType = activeDocumentType.value
     const currentData = currentDocumentData.value
-    
+
     if (documentType === 'resume') {
       const result = await profileAI.generateResumeWithProfile(
         jobDescription.value,
         {
           includeGamingExperience: true,
           optimizeForATS: true,
-          focusOnTargetRole: true
+          focusOnTargetRole: true,
         }
       )
-      
+
       if (result.success && result.data) {
         // Apply the AI-generated improvements
         updateDocumentData('resume', result.data)
-        toast.success(`AI enhancement complete (${result.confidence}% confidence)`)
+        toast.success(
+          `AI enhancement complete (${result.confidence}% confidence)`
+        )
       } else {
         toast.error(result.error || 'AI enhancement failed')
       }
@@ -785,29 +846,30 @@ const _aiEnhanceFromProfile = async () => {
         jobInfo.value,
         {
           includeGamingExperience: true,
-          usePersonalityInsights: true
+          usePersonalityInsights: true,
         }
       )
-      
+
       if (result.success && result.data) {
         updateDocumentData('cover-letter', result.data)
-        toast.success(`AI enhancement complete (${result.confidence}% confidence)`)
+        toast.success(
+          `AI enhancement complete (${result.confidence}% confidence)`
+        )
       } else {
         toast.error(result.error || 'AI enhancement failed')
       }
     }
-    
+
     // Also get personalized suggestions
     const suggestionsResult = await profileAI.getPersonalizedSuggestions(
       documentType,
       currentData
     )
-    
+
     if (suggestionsResult.success && suggestionsResult.suggestions) {
       console.log('AI Suggestions:', suggestionsResult.suggestions)
       // You could show these in a modal or sidebar
     }
-    
   } catch (error) {
     console.error('AI profile enhancement failed:', error)
     toast.error('AI enhancement failed')
@@ -838,7 +900,8 @@ const _getATSScoreClass = (score: number) => {
 }
 
 const _getATSScoreDescription = (score: number) => {
-  if (score >= 80) return 'Excellent! Your documents are well-optimized for ATS systems.'
+  if (score >= 80)
+    return 'Excellent! Your documents are well-optimized for ATS systems.'
   if (score >= 60) return 'Good compatibility. Consider minor optimizations.'
   return 'Needs improvement. AI can help optimize your documents.'
 }
@@ -864,7 +927,7 @@ const _getATSScoreDescription = (score: number) => {
 //       achievements: [],
 //       certifications: []
 //     })
-//     
+//
 //     // Reset cover letter data
 //     Object.assign(coverLetterData, {
 //       jobInfo: {
@@ -880,7 +943,7 @@ const _getATSScoreDescription = (score: number) => {
 //       tone: 'professional',
 //       focus: 'experience'
 //     })
-//     
+//
 //     // Reset workflow
 //     currentWorkflowStep.value = 0
 //     currentStep.value = 1
@@ -893,20 +956,19 @@ onMounted(async () => {
   try {
     // Load saved document drafts and restore user session
     await loadDocumentDrafts()
-    
+
     // Initialize AI service if available
     if (aiReady.value) {
       await initializeAIFeatures()
     }
-    
+
     // Load profile data if available
     if (unifiedProfile.profile.value) {
       await syncProfileData()
     }
-    
+
     // Set up auto-save watchers
     setupAutoSave()
-    
   } catch (error) {
     console.error('Failed to initialize document manager:', error)
     toast.error('Failed to load document data')
@@ -917,12 +979,12 @@ const loadDocumentDrafts = async () => {
   try {
     const resumeDraft = localStorage.getItem('navi-resume-draft')
     const coverLetterDraft = localStorage.getItem('navi-cover-letter-draft')
-    
+
     if (resumeDraft) {
       const parsed = JSON.parse(resumeDraft)
       updateDocumentData('resume', parsed)
     }
-    
+
     if (coverLetterDraft) {
       const parsed = JSON.parse(coverLetterDraft)
       updateDocumentData('cover-letter', parsed)
@@ -935,7 +997,10 @@ const loadDocumentDrafts = async () => {
 const initializeAIFeatures = async () => {
   try {
     // Pre-warm AI service for faster response times
-    await handleAIRequest({ type: 'initialize', documentType: activeDocumentType.value })
+    await handleAIRequest({
+      type: 'initialize',
+      documentType: activeDocumentType.value,
+    })
   } catch (error) {
     console.error('AI initialization failed:', error)
   }
@@ -943,18 +1008,26 @@ const initializeAIFeatures = async () => {
 
 const setupAutoSave = () => {
   // Auto-save resume changes
-  watch(resumeData, (newData) => {
-    if (newData && Object.keys(newData).length > 0) {
-      localStorage.setItem('navi-resume-draft', JSON.stringify(newData))
-    }
-  }, { deep: true })
-  
-  // Auto-save cover letter changes  
-  watch(coverLetterData, (newData) => {
-    if (newData && Object.keys(newData).length > 0) {
-      localStorage.setItem('navi-cover-letter-draft', JSON.stringify(newData))
-    }
-  }, { deep: true })
+  watch(
+    resumeData,
+    newData => {
+      if (newData && Object.keys(newData).length > 0) {
+        localStorage.setItem('navi-resume-draft', JSON.stringify(newData))
+      }
+    },
+    { deep: true }
+  )
+
+  // Auto-save cover letter changes
+  watch(
+    coverLetterData,
+    newData => {
+      if (newData && Object.keys(newData).length > 0) {
+        localStorage.setItem('navi-cover-letter-draft', JSON.stringify(newData))
+      }
+    },
+    { deep: true }
+  )
 }
 </script>
 
@@ -1037,7 +1110,11 @@ const setupAutoSave = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-primary-600)
+  );
   border-radius: var(--radius-lg);
   color: white;
 }
@@ -1114,10 +1191,18 @@ const setupAutoSave = () => {
   border-radius: 50%;
 }
 
-.tab-indicator.complete { background: var(--color-success-500); }
-.tab-indicator.partial { background: var(--color-warning-500); }
-.tab-indicator.draft { background: var(--color-info-500); }
-.tab-indicator.empty { background: var(--color-gray-400); }
+.tab-indicator.complete {
+  background: var(--color-success-500);
+}
+.tab-indicator.partial {
+  background: var(--color-warning-500);
+}
+.tab-indicator.draft {
+  background: var(--color-info-500);
+}
+.tab-indicator.empty {
+  background: var(--color-gray-400);
+}
 
 .document-actions {
   display: flex;
@@ -1151,7 +1236,11 @@ const setupAutoSave = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, var(--color-primary-50), var(--color-success-50));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-50),
+    var(--color-success-50)
+  );
   border: 1px solid var(--color-primary-200);
   border-radius: var(--radius-xl);
   padding: var(--spacing-4) var(--spacing-5);
@@ -1186,14 +1275,16 @@ const setupAutoSave = () => {
   gap: var(--spacing-3);
 }
 
-.ats-score, .match-score {
+.ats-score,
+.match-score {
   padding: var(--spacing-2) var(--spacing-3);
   border-radius: var(--radius-md);
   font-size: 0.875rem;
   font-weight: 600;
 }
 
-.ats-score.high, .match-score {
+.ats-score.high,
+.match-score {
   background: var(--color-success-100);
   color: var(--color-success-800);
 }
@@ -1301,7 +1392,8 @@ const setupAutoSave = () => {
   flex-direction: column;
 }
 
-.editor-header, .preview-header {
+.editor-header,
+.preview-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1310,14 +1402,16 @@ const setupAutoSave = () => {
   background: var(--glass-surface);
 }
 
-.editor-info h3, .preview-info h3 {
+.editor-info h3,
+.preview-info h3 {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-primary-600);
 }
 
-.editor-meta, .preview-meta {
+.editor-meta,
+.preview-meta {
   font-size: 0.875rem;
   color: var(--text-secondary);
   margin-top: var(--spacing-1);
@@ -1337,7 +1431,6 @@ const setupAutoSave = () => {
   overflow-y: auto;
   padding: var(--spacing-4);
 }
-
 
 /* Responsive Design */
 @media (max-width: 1200px) {
@@ -1420,7 +1513,8 @@ const setupAutoSave = () => {
     padding: var(--spacing-3);
   }
 
-  .editor-header, .preview-header {
+  .editor-header,
+  .preview-header {
     padding: var(--spacing-3);
   }
 
@@ -1450,7 +1544,11 @@ const setupAutoSave = () => {
 
 /* Gaming Theme Enhancements */
 .theme-gaming .stat-icon {
-  background: linear-gradient(135deg, var(--color-gaming-500), var(--color-gaming-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-gaming-500),
+    var(--color-gaming-600)
+  );
 }
 
 .theme-gaming .doc-tab.active {
@@ -1470,7 +1568,11 @@ const setupAutoSave = () => {
 }
 
 .theme-dark .job-context-banner {
-  background: linear-gradient(135deg, var(--color-primary-900), var(--color-success-900));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-900),
+    var(--color-success-900)
+  );
   border-color: var(--color-primary-700);
 }
 
@@ -1480,7 +1582,9 @@ const setupAutoSave = () => {
 }
 
 /* Animation Enhancements */
-.stat-card, .suggestion-item, .doc-tab {
+.stat-card,
+.suggestion-item,
+.doc-tab {
   animation: fadeInUp 0.3s ease-out;
 }
 

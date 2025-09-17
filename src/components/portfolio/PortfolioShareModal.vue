@@ -1,6 +1,6 @@
 <template>
-  <div 
-    v-if="show" 
+  <div
+    v-if="show"
     class="modal show block"
     style="background-color: var(--modal-backdrop)"
     class="font-sans"
@@ -12,9 +12,16 @@
             <AppIcon name="ShareIcon" class="mr-2" />
             Share Your Portfolio
           </h5>
-          <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="$emit('close')" />
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            :icon="'XMarkIcon'"
+            aria-label="Close"
+            @click="$emit('close')"
+          />
         </div>
-        
+
         <div class="modal-body">
           <!-- Portfolio Preview -->
           <div class="portfolio-preview mb-4">
@@ -39,20 +46,18 @@
               <AppIcon name="LinkIcon" class="mr-2" />
               Share Links
             </h6>
-            
+
             <!-- Public Portfolio URL -->
             <div class="share-option">
               <label class="form-label">Public Portfolio URL</label>
               <div class="input-group">
-                <input 
-                  :value="portfolioUrl" 
-                  class="form-control" 
-                  readonly
-                />
+                <input :value="portfolioUrl" class="form-control" readonly />
                 <UnifiedButton
                   variant="outline"
                   size="sm"
-                  :leading-icon="copied === 'url' ? 'CheckIcon' : 'mdi-content-copy'"
+                  :leading-icon="
+                    copied === 'url' ? 'CheckIcon' : 'mdi-content-copy'
+                  "
                   @click="copyToClipboard(portfolioUrl)"
                 >
                   {{ copied === 'url' ? 'Copied!' : 'Copy' }}
@@ -67,8 +72,8 @@
             <div v-if="featuredItems.length" class="share-option">
               <label class="form-label">Featured Items</label>
               <div class="featured-items">
-                <div 
-                  v-for="item in featuredItems.slice(0, 3)" 
+                <div
+                  v-for="item in featuredItems.slice(0, 3)"
                   :key="item.id"
                   class="featured-item"
                 >
@@ -79,7 +84,9 @@
                   <IconButton
                     variant="outline"
                     size="sm"
-                    :icon="copied === item.id ? 'CheckIcon' : 'ShareIcon-variant'"
+                    :icon="
+                      copied === item.id ? 'CheckIcon' : 'ShareIcon-variant'
+                    "
                     :aria-label="'Copy link for ' + item.title"
                     @click="copyToClipboard(getItemUrl(item))"
                   />
@@ -94,12 +101,32 @@
               <AppIcon name="ShareIcon" class="mr-2" />
               Social Media
             </h6>
-            
+
             <div class="social-buttons responsive-grid--cards-sm">
-              <UnifiedButton variant="glass" leading-icon="mdi-twitter" @click="shareToTwitter">Twitter</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="LinkIconedin" @click="shareToLinkedIn">LinkedIn</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="ChatBubbleOvalLeftIcon" @click="shareToDiscord">Discord</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-reddit" @click="shareToReddit">Reddit</UnifiedButton>
+              <UnifiedButton
+                variant="glass"
+                leading-icon="mdi-twitter"
+                @click="shareToTwitter"
+                >Twitter</UnifiedButton
+              >
+              <UnifiedButton
+                variant="glass"
+                leading-icon="LinkIconedin"
+                @click="shareToLinkedIn"
+                >LinkedIn</UnifiedButton
+              >
+              <UnifiedButton
+                variant="glass"
+                leading-icon="ChatBubbleOvalLeftIcon"
+                @click="shareToDiscord"
+                >Discord</UnifiedButton
+              >
+              <UnifiedButton
+                variant="glass"
+                leading-icon="mdi-reddit"
+                @click="shareToReddit"
+                >Reddit</UnifiedButton
+              >
             </div>
           </div>
 
@@ -109,12 +136,32 @@
               <AppIcon name="ArrowDownTrayIcon" class="mr-2" />
               Export Portfolio
             </h6>
-            
+
             <div class="export-buttons">
-              <UnifiedButton variant="outline" leading-icon="DocumentIcon" @click="exportAsPDF">Export as PDF</UnifiedButton>
-              <UnifiedButton variant="outline" leading-icon="CommandLineIcon" @click="exportAsHTML">Export as HTML</UnifiedButton>
-              <UnifiedButton variant="outline" leading-icon="mdi-code-json" @click="exportAsJSON">Export as JSON</UnifiedButton>
-              <UnifiedButton variant="outline" leading-icon="mdi-qrcode" @click="generateQRCode">Generate QR Code</UnifiedButton>
+              <UnifiedButton
+                variant="outline"
+                leading-icon="DocumentIcon"
+                @click="exportAsPDF"
+                >Export as PDF</UnifiedButton
+              >
+              <UnifiedButton
+                variant="outline"
+                leading-icon="CommandLineIcon"
+                @click="exportAsHTML"
+                >Export as HTML</UnifiedButton
+              >
+              <UnifiedButton
+                variant="outline"
+                leading-icon="mdi-code-json"
+                @click="exportAsJSON"
+                >Export as JSON</UnifiedButton
+              >
+              <UnifiedButton
+                variant="outline"
+                leading-icon="mdi-qrcode"
+                @click="generateQRCode"
+                >Generate QR Code</UnifiedButton
+              >
             </div>
           </div>
 
@@ -124,32 +171,33 @@
               <AppIcon name="ShieldCheckIcon" class="mr-2" />
               Privacy Settings
             </h6>
-            
+
             <div class="privacy-options">
               <div class="form-check">
-                <input 
+                <input
                   id="publicPortfolio"
                   v-model="settings.isPublic"
-                  class="form-check-input" 
+                  class="form-check-input"
                   type="checkbox"
                   @change="updatePrivacySettings"
-                >
+                />
                 <label class="form-check-label" for="publicPortfolio">
                   Make portfolio publicly discoverable
                 </label>
                 <small class="form-text text-secondary block">
-                  Allow your portfolio to appear in public searches and directories
+                  Allow your portfolio to appear in public searches and
+                  directories
                 </small>
               </div>
-              
+
               <div class="form-check">
-                <input 
+                <input
                   id="allowComments"
                   v-model="settings.allowComments"
-                  class="form-check-input" 
+                  class="form-check-input"
                   type="checkbox"
                   @change="updatePrivacySettings"
-                >
+                />
                 <label class="form-check-label" for="allowComments">
                   Allow comments and feedback
                 </label>
@@ -159,13 +207,13 @@
               </div>
 
               <div class="form-check">
-                <input 
+                <input
                   id="showStats"
                   v-model="settings.showStats"
-                  class="form-check-input" 
+                  class="form-check-input"
                   type="checkbox"
                   @change="updatePrivacySettings"
-                >
+                />
                 <label class="form-check-label" for="showStats">
                   Show view statistics
                 </label>
@@ -178,8 +226,18 @@
         </div>
 
         <div class="modal-footer flex gap-glass-sm">
-          <UnifiedButton variant="secondary" appearance="outlined" @click="$emit('close')">Close</UnifiedButton>
-          <UnifiedButton variant="primary" leading-icon="EyeIcon" @click="openPortfolioPreview">Preview Portfolio</UnifiedButton>
+          <UnifiedButton
+            variant="secondary"
+            appearance="outlined"
+            @click="$emit('close')"
+            >Close</UnifiedButton
+          >
+          <UnifiedButton
+            variant="primary"
+            leading-icon="EyeIcon"
+            @click="openPortfolioPreview"
+            >Preview Portfolio</UnifiedButton
+          >
         </div>
       </div>
     </div>
@@ -187,7 +245,15 @@
 </template>
 
 <script setup>
-import { ArrowDownTrayIcon, ChatBubbleOvalLeftIcon, CommandLineIcon, DocumentIcon, EyeIcon, ShareIcon, ShieldCheckIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowDownTrayIcon,
+  ChatBubbleOvalLeftIcon,
+  CommandLineIcon,
+  DocumentIcon,
+  EyeIcon,
+  ShareIcon,
+  ShieldCheckIcon,
+} from '@heroicons/vue/24/outline'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -198,7 +264,7 @@ import { useToast } from '@/composables/useToast'
 
 const props = defineProps({
   show: { type: Boolean, default: false },
-  portfolio: { type: Array, default: () => [] }
+  portfolio: { type: Array, default: () => [] },
 })
 
 const emit = defineEmits(['close', 'export'])
@@ -210,26 +276,28 @@ const copied = ref(null)
 const settings = ref({
   isPublic: true,
   allowComments: false,
-  showStats: true
+  showStats: true,
 })
 
 // Computed properties
 const user = computed(() => store.user)
 const userTitle = computed(() => {
   const profile = user.value?.gamingProfile
-  return profile?.primaryRole || profile?.specialization || 'Gaming Professional'
+  return (
+    profile?.primaryRole || profile?.specialization || 'Gaming Professional'
+  )
 })
 
-const featuredCount = computed(() => 
-  props.portfolio.filter(item => item.featured).length
+const featuredCount = computed(
+  () => props.portfolio.filter(item => item.featured).length
 )
 
-const featuredItems = computed(() => 
+const featuredItems = computed(() =>
   props.portfolio.filter(item => item.featured)
 )
 
-const portfolioUrl = computed(() => 
-  `${window.location.origin}/portfolio/${user.value?.id || 'preview'}`
+const portfolioUrl = computed(
+  () => `${window.location.origin}/portfolio/${user.value?.id || 'preview'}`
 )
 
 // Methods
@@ -242,11 +310,11 @@ async function copyToClipboard(text) {
     await navigator.clipboard.writeText(text)
     const itemId = text.includes('/portfolio/') && text.split('/').pop()
     copied.value = text === portfolioUrl.value ? 'url' : itemId
-    
+
     setTimeout(() => {
       copied.value = null
     }, 2000)
-    
+
     toast.success('Link copied to clipboard!')
   } catch (error) {
     toast.error('Failed to copy link')
@@ -277,9 +345,15 @@ function shareToReddit() {
   window.open(url, '_blank')
 }
 
-function exportAsPDF() { emit('export', 'pdf') }
-function exportAsHTML() { emit('export', 'html') }
-function exportAsJSON() { emit('export', 'json') }
+function exportAsPDF() {
+  emit('export', 'pdf')
+}
+function exportAsHTML() {
+  emit('export', 'html')
+}
+function exportAsJSON() {
+  emit('export', 'json')
+}
 
 function generateQRCode() {
   // Open QR code generator with portfolio URL
@@ -504,19 +578,19 @@ function openPortfolioPreview() {
     text-align: center;
     gap: 0.75rem;
   }
-  
+
   .portfolio-stats {
     justify-content: center;
   }
-  
+
   .social-buttons {
     /* Responsive handled by utility class */
   }
-  
+
   .export-buttons {
     flex-direction: column;
   }
-  
+
   .export-buttons .btn {
     min-width: auto;
   }

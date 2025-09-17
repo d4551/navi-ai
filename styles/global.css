@@ -13,13 +13,13 @@
   --space-8: 2rem;
   --space-12: 3rem;
   --space-16: 4rem;
-  
+
   /* Standard container widths */
   --container-sm: 640px;
   --container-md: 768px;
   --container-lg: 1024px;
   --container-xl: 1280px;
-  
+
   /* Standard component heights */
   --header-height: 64px;
   --footer-height: 60px;
@@ -57,34 +57,34 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
+
   .layout-standard {
     @apply min-h-screen flex flex-col;
   }
-  
+
   .layout-with-sidebar {
     @apply flex flex-row min-h-screen;
   }
-  
+
   .main-content {
     @apply flex-grow p-6;
   }
-  
+
   /* Standard form elements */
   .form-input {
     height: var(--input-height);
     @apply rounded border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500;
   }
-  
+
   .btn {
     height: var(--button-height);
     @apply px-4 inline-flex items-center justify-center rounded font-medium transition-colors;
   }
-  
+
   .btn-primary {
     @apply bg-blue-600 text-white hover:bg-blue-700;
   }
-  
+
   .btn-secondary {
     @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
   }

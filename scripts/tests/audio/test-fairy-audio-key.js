@@ -11,7 +11,10 @@ console.log('')
 
 console.log('📋 Environment Check:')
 const envKey = process.env.VITE_GEMINI_API_KEY
-console.log('VITE_GEMINI_API_KEY:', envKey ? `✅ SET (${envKey.substring(0,8)}...)` : '❌ NOT SET')
+console.log(
+  'VITE_GEMINI_API_KEY:',
+  envKey ? `✅ SET (${envKey.substring(0, 8)}...)` : '❌ NOT SET'
+)
 console.log('')
 
 if (envKey) {

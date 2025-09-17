@@ -7,18 +7,18 @@
  */
 
 /* 1) Unified Design System (replaces fragmented CSS files) */
-@import "./unified-design-system.css";
+@import './unified-design-system.css';
 
 /* 2) Legacy components (kept for compatibility during transition) */
-@import "./jobs.css";
-@import "./studios.css";
+@import './jobs.css';
+@import './studios.css';
 
 /* 3) Specialized components that haven't been consolidated yet */
-@import "./enhanced-fairy-interface.css";
-@import "./unified-document-theme.css";
+@import './enhanced-fairy-interface.css';
+@import './unified-document-theme.css';
 
 /* 4) Legacy bridge for backwards compatibility */
-@import "./legacy-bridge.css";
+@import './legacy-bridge.css';
 
 /*
  * TRANSITION NOTES:
@@ -40,14 +40,14 @@
  */
 
 /* Enhanced text contrast for glass backgrounds */
-:root[data-theme="light"] {
+:root[data-theme='light'] {
   --text-primary: #111827; /* Dark gray for better contrast on white glass */
   --text-secondary: #374151;
   --text-tertiary: #4b5563;
   --text-muted: #6b7280;
 }
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   --text-primary: #f9fafb; /* Light gray for better contrast on black glass */
   --text-secondary: #d1d5db;
   --text-tertiary: #9ca3af;
@@ -59,12 +59,12 @@
 .on-glass {
   color: var(--text-primary);
 }
-[data-theme="light"] .text-on-glass,
-[data-theme="light"] .on-glass {
+[data-theme='light'] .text-on-glass,
+[data-theme='light'] .on-glass {
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
 }
-[data-theme="dark"] .text-on-glass,
-[data-theme="dark"] .on-glass {
+[data-theme='dark'] .text-on-glass,
+[data-theme='dark'] .on-glass {
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
 }
 
@@ -525,7 +525,7 @@ small {
   .dense-grid--cols-6 {
     grid-template-columns: 1fr;
   }
-  
+
   .dense-grid--auto-fit,
   .dense-grid--auto-fill {
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
@@ -538,7 +538,7 @@ small {
   .dense-grid--cols-6 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  
+
   .dense-grid--cols-3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -549,7 +549,7 @@ small {
   .dense-grid--cols-6 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  
+
   .dense-grid--cols-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -689,7 +689,7 @@ small {
 }
 
 :where(.control-btn).active,
-:where(.control-btn)[aria-pressed="true"] {
+:where(.control-btn)[aria-pressed='true'] {
   background: var(--control-active-bg);
   color: var(--control-active-fg);
   border-color: color-mix(
@@ -712,7 +712,7 @@ small {
 }
 
 :where(.control-btn):disabled,
-:where(.control-btn)[aria-disabled="true"] {
+:where(.control-btn)[aria-disabled='true'] {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -724,7 +724,7 @@ small {
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--spacing-2));
 }
 .chat-input-container.glass-footer::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   right: 0;
@@ -733,7 +733,7 @@ small {
   pointer-events: none;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08), transparent);
 }
-[data-theme="dark"] .chat-input-container.glass-footer::before {
+[data-theme='dark'] .chat-input-container.glass-footer::before {
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.06),
@@ -802,7 +802,7 @@ small {
 
 /* Gaming variant (unify legacy and modern classes under master tokens) */
 .btn-gaming,
-:where(.unified-button)[data-variant="gaming"],
+:where(.unified-button)[data-variant='gaming'],
 .modern-button--gaming {
   --btn-bg: linear-gradient(
     135deg,
@@ -816,7 +816,7 @@ small {
 :where(
   .btn-gaming,
   .modern-button--gaming,
-  .unified-button[data-variant="gaming"]
+  .unified-button[data-variant='gaming']
 ):hover {
   --btn-hover-bg: color-mix(
     in srgb,
@@ -829,7 +829,7 @@ small {
 :where(
   .btn-gaming,
   .modern-button--gaming,
-  .unified-button[data-variant="gaming"]
+  .unified-button[data-variant='gaming']
 ):active {
   --btn-active-bg: color-mix(
     in srgb,
@@ -841,7 +841,7 @@ small {
 
 /* Primary/Secondary/Info/Success/Warning/Danger variants */
 .btn-primary,
-:where(.unified-button)[data-variant="primary"],
+:where(.unified-button)[data-variant='primary'],
 :where(.v-btn).variant-contained.primary {
   --btn-bg: linear-gradient(
     135deg,
@@ -888,7 +888,7 @@ small {
 
 /* Button sizes with optimized typography */
 .btn-sm,
-:where(.unified-button)[data-size="sm"],
+:where(.unified-button)[data-size='sm'],
 :where(.v-btn).size-sm {
   min-height: calc(var(--btn-min-h) - 8px);
   padding: calc(var(--btn-padding-y) - 4px) calc(var(--btn-padding-x) - 8px);
@@ -896,7 +896,7 @@ small {
   line-height: var(--line-height-ui);
 }
 .btn-lg,
-:where(.unified-button)[data-size="lg"],
+:where(.unified-button)[data-size='lg'],
 :where(.v-btn).size-lg {
   min-height: calc(var(--btn-min-h) + 8px);
   padding: calc(var(--btn-padding-y) + 4px) calc(var(--btn-padding-x) + 8px);
@@ -908,7 +908,7 @@ small {
 .btn-icon-only,
 .icon-only,
 :where(.v-btn).icon,
-:where(.unified-button)[data-icon-only="true"] {
+:where(.unified-button)[data-icon-only='true'] {
   aspect-ratio: 1 / 1;
   padding: 0;
   width: 40px;
@@ -1273,7 +1273,7 @@ small {
 
 /* Size variants for inputs/selects/textareas with optimized typography */
 :where(input, select, textarea).form-control-sm,
-:where(.unified-input)[data-size="sm"],
+:where(.unified-input)[data-size='sm'],
 :where(.ui-input).ui-size-sm {
   padding: calc(var(--input-padding-y) - 0.2rem)
     calc(var(--input-padding-x) - 0.15rem);
@@ -1283,7 +1283,7 @@ small {
 }
 
 :where(input, select, textarea).form-control-lg,
-:where(.unified-input)[data-size="lg"],
+:where(.unified-input)[data-size='lg'],
 :where(.ui-input).ui-size-lg {
   padding: calc(var(--input-padding-y) + 0.15rem)
     calc(var(--input-padding-x) + 0.15rem);
@@ -1448,16 +1448,16 @@ small {
   :where(.unified-container, .page-glass-container)
   :where(
     input:not([type]),
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="search"],
-    input[type="number"],
-    input[type="url"],
-    input[type="tel"],
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    input[type='search'],
+    input[type='number'],
+    input[type='url'],
+    input[type='tel'],
     textarea,
     select
-  ):not([data-unstyled="true"]) {
+  ):not([data-unstyled='true']) {
   padding: calc(var(--input-padding-y) - 4px) calc(var(--input-padding-x) - 4px);
   border-radius: 10px;
 }
@@ -1466,16 +1466,16 @@ small {
   :where(.unified-container, .page-glass-container)
   :where(
     input:not([type]),
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="search"],
-    input[type="number"],
-    input[type="url"],
-    input[type="tel"],
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    input[type='search'],
+    input[type='number'],
+    input[type='url'],
+    input[type='tel'],
     textarea,
     select
-  ):not([data-unstyled="true"]) {
+  ):not([data-unstyled='true']) {
   padding: calc(var(--input-padding-y) + 2px) calc(var(--input-padding-x) + 2px);
   border-radius: 14px;
 }
@@ -1648,7 +1648,7 @@ small {
 
 /* ===== Tooltip glass styling for helper hovers ===== */
 :where(.unified-container, .page-glass-container)
-  :where(.v-overlay__content[role="tooltip"]) {
+  :where(.v-overlay__content[role='tooltip']) {
   background: var(--glass-surface) !important;
   border: 1px solid var(--glass-border) !important;
   color: var(--text-primary) !important;
@@ -1661,9 +1661,9 @@ small {
 
 /* Tooltip arrow tuned to glass */
 :where(.unified-container, .page-glass-container)
-  :where(.v-overlay__content[role="tooltip"] .v-overlay__arrow),
+  :where(.v-overlay__content[role='tooltip'] .v-overlay__arrow),
 :where(.unified-container, .page-glass-container)
-  :where(.v-overlay__content[role="tooltip"] .v-overlay__arrow::before) {
+  :where(.v-overlay__content[role='tooltip'] .v-overlay__arrow::before) {
   background: var(--glass-surface) !important;
   border: 1px solid var(--glass-border) !important;
 }
@@ -1845,13 +1845,13 @@ small {
 /* Tooltip density tweaks */
 .density-compact
   :where(.unified-container, .page-glass-container)
-  :where(.v-overlay__content[role="tooltip"]) {
+  :where(.v-overlay__content[role='tooltip']) {
   padding: 4px 8px !important;
   font-size: 0.9rem !important;
 }
 .density-comfortable
   :where(.unified-container, .page-glass-container)
-  :where(.v-overlay__content[role="tooltip"]) {
+  :where(.v-overlay__content[role='tooltip']) {
   padding: 8px 12px !important;
   font-size: 1rem !important;
 }
@@ -1886,16 +1886,16 @@ small {
 :where(.unified-container, .page-glass-container)
   :where(
     input:not([type]),
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="search"],
-    input[type="number"],
-    input[type="url"],
-    input[type="tel"],
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    input[type='search'],
+    input[type='number'],
+    input[type='url'],
+    input[type='tel'],
     textarea,
     select
-  ):not([class]):not([data-unstyled="true"]) {
+  ):not([class]):not([data-unstyled='true']) {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
@@ -1912,16 +1912,16 @@ small {
 :where(.unified-container, .page-glass-container)
   :where(
     input:not([type]),
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="search"],
-    input[type="number"],
-    input[type="url"],
-    input[type="tel"],
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    input[type='search'],
+    input[type='number'],
+    input[type='url'],
+    input[type='tel'],
     textarea,
     select
-  ):not([class]):not([data-unstyled="true"]):focus {
+  ):not([class]):not([data-unstyled='true']):focus {
   outline: none;
   border-color: color-mix(
     in srgb,
@@ -1935,8 +1935,8 @@ small {
   background: var(--glass-hover-bg);
 }
 
-:where(.unified-container, .page-glass-container) input[type="checkbox"],
-:where(.unified-container, .page-glass-container) input[type="radio"] {
+:where(.unified-container, .page-glass-container) input[type='checkbox'],
+:where(.unified-container, .page-glass-container) input[type='radio'] {
   accent-color: var(--color-primary-500);
 }
 

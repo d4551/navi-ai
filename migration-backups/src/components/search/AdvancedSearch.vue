@@ -13,7 +13,8 @@
           Discover Gaming Opportunities
         </h2>
         <p class="search-description">
-          Find your perfect role in the gaming industry with intelligent search and personalized recommendations
+          Find your perfect role in the gaming industry with intelligent search
+          and personalized recommendations
         </p>
       </div>
     </div>
@@ -32,7 +33,7 @@
           @search="handleSearch"
           @clear="handleSearchClear"
         />
-        
+
         <!-- Search Mode Toggle -->
         <div class="search-mode-toggle">
           <div class="toggle-group">
@@ -54,7 +55,11 @@
             </button>
           </div>
           <small class="toggle-help">
-            {{ searchMode === 'semantic' ? 'AI-powered contextual search' : 'Traditional keyword matching' }}
+            {{
+              searchMode === 'semantic'
+                ? 'AI-powered contextual search'
+                : 'Traditional keyword matching'
+            }}
           </small>
         </div>
       </div>
@@ -70,9 +75,12 @@
           >
             <AppIcon name="mdi-tune-vertical" aria-hidden="true" />
             Advanced Filters
-            <AppIcon :name="showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'" aria-hidden="true" />
+            <AppIcon
+              :name="showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+              aria-hidden="true"
+            />
           </button>
-          
+
           <div v-if="activeFilterCount > 0" class="active-filters-count">
             {{ activeFilterCount }} active
           </div>
@@ -88,16 +96,20 @@
                   v-for="category in roleCategories"
                   :key="category"
                   class="filter-chip"
-                  :class="{ active: selectedFilters.roleCategories?.includes(category) }"
+                  :class="{
+                    active: selectedFilters.roleCategories?.includes(category),
+                  }"
                 >
                   <input
                     v-model="selectedFilters.roleCategories"
                     type="checkbox"
                     :value="category"
                     class="filter-checkbox"
-                  >
+                  />
                   <span class="filter-label">{{ category }}</span>
-                  <span class="filter-count">({{ getRoleCategoryCount(category) }})</span>
+                  <span class="filter-count"
+                    >({{ getRoleCategoryCount(category) }})</span
+                  >
                 </label>
               </div>
             </div>
@@ -110,16 +122,21 @@
                   v-for="category in studioCategories"
                   :key="category"
                   class="filter-chip"
-                  :class="{ active: selectedFilters.studioCategories?.includes(category) }"
+                  :class="{
+                    active:
+                      selectedFilters.studioCategories?.includes(category),
+                  }"
                 >
                   <input
                     v-model="selectedFilters.studioCategories"
                     type="checkbox"
                     :value="category"
                     class="filter-checkbox"
-                  >
+                  />
                   <span class="filter-label">{{ category }}</span>
-                  <span class="filter-count">({{ getStudioCategoryCount(category) }})</span>
+                  <span class="filter-count"
+                    >({{ getStudioCategoryCount(category) }})</span
+                  >
                 </label>
               </div>
             </div>
@@ -132,14 +149,16 @@
                   v-for="size in companySizes"
                   :key="size"
                   class="filter-chip"
-                  :class="{ active: selectedFilters.companySizes?.includes(size) }"
+                  :class="{
+                    active: selectedFilters.companySizes?.includes(size),
+                  }"
                 >
                   <input
                     v-model="selectedFilters.companySizes"
                     type="checkbox"
                     :value="size"
                     class="filter-checkbox"
-                  >
+                  />
                   <span class="filter-label">{{ size }}</span>
                 </label>
               </div>
@@ -149,22 +168,28 @@
             <div class="filter-group">
               <h4 class="filter-title">Work Style</h4>
               <div class="filter-chips">
-                <label class="filter-chip" :class="{ active: selectedFilters.remoteWork === true }">
+                <label
+                  class="filter-chip"
+                  :class="{ active: selectedFilters.remoteWork === true }"
+                >
                   <input
                     v-model="selectedFilters.remoteWork"
                     type="radio"
                     :value="true"
                     class="filter-checkbox"
-                  >
+                  />
                   <span class="filter-label">Remote</span>
                 </label>
-                <label class="filter-chip" :class="{ active: selectedFilters.remoteWork === false }">
+                <label
+                  class="filter-chip"
+                  :class="{ active: selectedFilters.remoteWork === false }"
+                >
                   <input
                     v-model="selectedFilters.remoteWork"
                     type="radio"
                     :value="false"
                     class="filter-checkbox"
-                  >
+                  />
                   <span class="filter-label">On-site</span>
                 </label>
               </div>
@@ -196,14 +221,18 @@
         <!-- Results Header -->
         <div class="results-header">
           <div class="results-info">
-            <span class="results-count">{{ searchResults.length }} results</span>
-            <span v-if="searchQuery" class="results-query">for "{{ searchQuery }}"</span>
+            <span class="results-count"
+              >{{ searchResults.length }} results</span
+            >
+            <span v-if="searchQuery" class="results-query"
+              >for "{{ searchQuery }}"</span
+            >
             <span v-if="searchMode === 'semantic'" class="results-mode">
               <AppIcon name="mdi-brain" aria-hidden="true" />
               Semantic Search
             </span>
           </div>
-          
+
           <div class="results-sort">
             <select v-model="sortBy" class="sort-select" @change="sortResults">
               <option value="relevance">Best Match</option>
@@ -226,7 +255,9 @@
                 <li>Check spelling of search terms</li>
                 <li>Try broader keywords</li>
                 <li>Remove some filters</li>
-                <li v-if="searchMode === 'keyword'">Switch to semantic search for better matching</li>
+                <li v-if="searchMode === 'keyword'">
+                  Switch to semantic search for better matching
+                </li>
               </ul>
             </div>
           </div>
@@ -244,36 +275,48 @@
           >
             <div class="result-header">
               <div class="result-icon">
-                <AppIcon :name="getResultIcon(result.type)" aria-hidden="true" />
+                <AppIcon
+                  :name="getResultIcon(result.type)"
+                  aria-hidden="true"
+                />
               </div>
               <div class="result-meta">
-                <span class="result-type">{{ formatResultType(result.type) }}</span>
+                <span class="result-type">{{
+                  formatResultType(result.type)
+                }}</span>
                 <div v-if="result.similarity" class="result-score">
                   <span class="score-label">Match:</span>
                   <div class="score-bar">
-                    <div 
-                      class="score-fill" 
-                      :style="{ width: `${(result.similarity * 100)}%` }"
+                    <div
+                      class="score-fill"
+                      :style="{ width: `${result.similarity * 100}%` }"
                     ></div>
                   </div>
-                  <span class="score-value">{{ Math.round(result.similarity * 100) }}%</span>
+                  <span class="score-value"
+                    >{{ Math.round(result.similarity * 100) }}%</span
+                  >
                 </div>
               </div>
             </div>
 
             <div class="result-content">
               <h3 class="result-title">{{ getResultTitle(result) }}</h3>
-              <p class="result-description">{{ getResultDescription(result) }}</p>
-              
+              <p class="result-description">
+                {{ getResultDescription(result) }}
+              </p>
+
               <!-- Studio-specific info -->
               <div v-if="result.type === 'studio'" class="result-details">
                 <div class="detail-tags">
                   <span class="detail-tag">{{ result.size }}</span>
                   <span class="detail-tag">{{ result.headquarters }}</span>
-                  <span v-if="result.category" class="detail-tag category">{{ result.category }}</span>
+                  <span v-if="result.category" class="detail-tag category">{{
+                    result.category
+                  }}</span>
                 </div>
                 <div v-if="result.games" class="result-games">
-                  <strong>Games:</strong> {{ result.games.slice(0, 3).join(', ') }}
+                  <strong>Games:</strong>
+                  {{ result.games.slice(0, 3).join(', ') }}
                   <span v-if="result.games.length > 3">...</span>
                 </div>
               </div>
@@ -282,7 +325,11 @@
               <div v-if="result.type === 'role'" class="result-details">
                 <div class="detail-tags">
                   <span class="detail-tag category">{{ result.category }}</span>
-                  <span v-if="result.demandLevel" class="detail-tag" :class="`demand-${result.demandLevel}`">
+                  <span
+                    v-if="result.demandLevel"
+                    class="detail-tag"
+                    :class="`demand-${result.demandLevel}`"
+                  >
                     {{ result.demandLevel }} demand
                   </span>
                 </div>
@@ -323,7 +370,10 @@
       </div>
 
       <!-- Recommendations -->
-      <div v-if="!hasSearched && recommendations.length > 0" class="recommendations">
+      <div
+        v-if="!hasSearched && recommendations.length > 0"
+        class="recommendations"
+      >
         <h3 class="recommendations-title">
           <AppIcon name="mdi-star" />
           Recommended for You
@@ -335,7 +385,11 @@
             class="recommendation-card"
             @click="selectRecommendation(rec)"
           >
-            <AppIcon :name="getResultIcon(rec.category)" class="recommendation-icon" aria-hidden="true" />
+            <AppIcon
+              :name="getResultIcon(rec.category)"
+              class="recommendation-icon"
+              aria-hidden="true"
+            />
             <h4 class="recommendation-title">{{ rec.label }}</h4>
             <p class="recommendation-description">{{ rec.description }}</p>
           </div>
@@ -348,53 +402,60 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import { useRouter } from 'vue-router';
-import { useAppStore } from '@/stores/app';
-import AutocompleteSearch from './AutocompleteSearch.vue';
-import { searchService } from '@/shared/services/SearchService';
-import { ROLE_CATEGORIES, STUDIO_CATEGORIES, COMPANY_SIZES } from '@/shared/constants/gaming-studios';
-import type { AutocompleteOption } from '@/shared/types/interview';
+import { useRouter } from 'vue-router'
+import { useAppStore } from '@/stores/app'
+import AutocompleteSearch from './AutocompleteSearch.vue'
+import { searchService } from '@/shared/services/SearchService'
+import {
+  ROLE_CATEGORIES,
+  STUDIO_CATEGORIES,
+  COMPANY_SIZES,
+} from '@/shared/constants/gaming-studios'
+import type { AutocompleteOption } from '@/shared/types/interview'
 
-const _router = useRouter();
-const store = useAppStore();
+const _router = useRouter()
+const store = useAppStore()
 
 // Search state
-const searchQuery = ref('');
-const searchMode = ref<'keyword' | 'semantic'>('semantic');
-const searchResults = ref<any[]>([]);
-const hasSearched = ref(false);
-const isSearching = ref(false);
+const searchQuery = ref('')
+const searchMode = ref<'keyword' | 'semantic'>('semantic')
+const searchResults = ref<any[]>([])
+const hasSearched = ref(false)
+const isSearching = ref(false)
 
 // Filters
-const showFilters = ref(false);
+const showFilters = ref(false)
 const selectedFilters = ref<any>({
   roleCategories: [],
   studioCategories: [],
   companySizes: [],
-  remoteWork: null
-});
-const sortBy = ref('relevance');
+  remoteWork: null,
+})
+const sortBy = ref('relevance')
 
 // Recommendations
-const recommendations = ref<AutocompleteOption[]>([]);
+const recommendations = ref<AutocompleteOption[]>([])
 
 // Computed properties
-const roleCategories = computed(() => Object.keys(ROLE_CATEGORIES));
-const studioCategories = computed(() => Object.keys(STUDIO_CATEGORIES));
-const companySizes = computed(() => COMPANY_SIZES);
+const roleCategories = computed(() => Object.keys(ROLE_CATEGORIES))
+const studioCategories = computed(() => Object.keys(STUDIO_CATEGORIES))
+const companySizes = computed(() => COMPANY_SIZES)
 
 const activeFilterCount = computed(() => {
-  let count = 0;
-  if (selectedFilters.value.roleCategories?.length) count += selectedFilters.value.roleCategories.length;
-  if (selectedFilters.value.studioCategories?.length) count += selectedFilters.value.studioCategories.length;
-  if (selectedFilters.value.companySizes?.length) count += selectedFilters.value.companySizes.length;
-  if (selectedFilters.value.remoteWork !== null) count += 1;
-  return count;
-});
+  let count = 0
+  if (selectedFilters.value.roleCategories?.length)
+    count += selectedFilters.value.roleCategories.length
+  if (selectedFilters.value.studioCategories?.length)
+    count += selectedFilters.value.studioCategories.length
+  if (selectedFilters.value.companySizes?.length)
+    count += selectedFilters.value.companySizes.length
+  if (selectedFilters.value.remoteWork !== null) count += 1
+  return count
+})
 
 // Methods
 function toggleFilters() {
-  showFilters.value = !showFilters.value;
+  showFilters.value = !showFilters.value
 }
 
 function clearFilters() {
@@ -402,98 +463,102 @@ function clearFilters() {
     roleCategories: [],
     studioCategories: [],
     companySizes: [],
-    remoteWork: null
-  };
+    remoteWork: null,
+  }
   if (hasSearched.value) {
-    applyFilters();
+    applyFilters()
   }
 }
 
 async function handleSearch(query: string, filters: string[]) {
-  if (!query.trim()) return;
-  
-  isSearching.value = true;
-  hasSearched.value = true;
-  
+  if (!query.trim()) return
+
+  isSearching.value = true
+  hasSearched.value = true
+
   try {
     if (searchMode.value === 'semantic') {
       searchResults.value = await searchService.semanticSearch(query, {
         threshold: 0.05,
         maxResults: 50,
         filters: {
-          types: filters.length ? filters as any : undefined,
-          ...selectedFilters.value
-        }
-      });
+          types: filters.length ? (filters as any) : undefined,
+          ...selectedFilters.value,
+        },
+      })
     } else {
       // Traditional search
       const result = searchService.search({
         query,
         filters: selectedFilters.value,
         sortBy: sortBy.value as any,
-        sortOrder: 'desc'
-      });
-      
+        sortOrder: 'desc',
+      })
+
       searchResults.value = [
         ...result.studios.map(studio => ({ ...studio, type: 'studio' })),
-        ...result.roles.map(role => ({ 
-          name: role, 
-          type: 'role', 
-          category: searchService.getRoleCategory?.(role) || 'Other'
-        }))
-      ];
+        ...result.roles.map(role => ({
+          name: role,
+          type: 'role',
+          category: searchService.getRoleCategory?.(role) || 'Other',
+        })),
+      ]
     }
   } catch (error) {
-    console.error('Search failed:', error);
-    searchResults.value = [];
+    console.error('Search failed:', error)
+    searchResults.value = []
   } finally {
-    isSearching.value = false;
+    isSearching.value = false
   }
 }
 
 async function handleSearchSelect(option: AutocompleteOption) {
-  searchQuery.value = option.label;
-  await handleSearch(option.label, []);
+  searchQuery.value = option.label
+  await handleSearch(option.label, [])
 }
 
 function handleSearchClear() {
-  searchQuery.value = '';
-  searchResults.value = [];
-  hasSearched.value = false;
+  searchQuery.value = ''
+  searchResults.value = []
+  hasSearched.value = false
 }
 
 async function applyFilters() {
   if (searchQuery.value.trim()) {
-    await handleSearch(searchQuery.value, []);
+    await handleSearch(searchQuery.value, [])
   }
 }
 
 function sortResults() {
   // Implement sorting logic based on sortBy
-  const results = [...searchResults.value];
-  
+  const results = [...searchResults.value]
+
   switch (sortBy.value) {
     case 'name':
-      results.sort((a, b) => getResultTitle(a).localeCompare(getResultTitle(b)));
-      break;
+      results.sort((a, b) => getResultTitle(a).localeCompare(getResultTitle(b)))
+      break
     case 'founded':
-      results.sort((a, b) => (b.founded || 0) - (a.founded || 0));
-      break;
+      results.sort((a, b) => (b.founded || 0) - (a.founded || 0))
+      break
     case 'size':
       results.sort((a, b) => {
-        const sizeA = extractNumberFromSize(a.size || '');
-        const sizeB = extractNumberFromSize(b.size || '');
-        return sizeB - sizeA;
-      });
-      break;
+        const sizeA = extractNumberFromSize(a.size || '')
+        const sizeB = extractNumberFromSize(b.size || '')
+        return sizeB - sizeA
+      })
+      break
     default: // relevance
       if (searchMode.value === 'semantic') {
-        results.sort((a, b) => (b.similarity * (b.relevanceBoost || 1)) - (a.similarity * (a.relevanceBoost || 1)));
+        results.sort(
+          (a, b) =>
+            b.similarity * (b.relevanceBoost || 1) -
+            a.similarity * (a.relevanceBoost || 1)
+        )
       }
-      break;
+      break
   }
-  
-  searchResults.value = results;
+
+  searchResults.value = results
 }
 
 // Helper methods
@@ -501,41 +566,44 @@ function getResultIcon(type: string): string {
   const icons: Record<string, string> = {
     studio: 'mdi mdi-domain',
     role: 'mdi mdi-account-tie',
-    technology: 'mdi mdi-code-tags'
-  };
-  return icons[type] || 'mdi mdi-circle';
+    technology: 'mdi mdi-code-tags',
+  }
+  return icons[type] || 'mdi mdi-circle'
 }
 
 function formatResultType(type: string): string {
   const types: Record<string, string> = {
     studio: 'Studio',
     role: 'Role',
-    technology: 'Technology'
-  };
-  return types[type] || type;
+    technology: 'Technology',
+  }
+  return types[type] || type
 }
 
 function getResultTitle(result: any): string {
-  return result.name || result.title || result.label || 'Untitled';
+  return result.name || result.title || result.label || 'Untitled'
 }
 
 function getResultDescription(result: any): string {
-  if (result.description) return result.description;
-  if (result.type === 'role') return `${result.category || 'Professional'} role in gaming industry`;
-  return 'No description available';
+  if (result.description) return result.description
+  if (result.type === 'role')
+    return `${result.category || 'Professional'} role in gaming industry`
+  return 'No description available'
 }
 
 function getRoleCategoryCount(category: string): number {
-  return ROLE_CATEGORIES[category as keyof typeof ROLE_CATEGORIES]?.length || 0;
+  return ROLE_CATEGORIES[category as keyof typeof ROLE_CATEGORIES]?.length || 0
 }
 
 function getStudioCategoryCount(category: string): number {
-  return STUDIO_CATEGORIES[category as keyof typeof STUDIO_CATEGORIES]?.length || 0;
+  return (
+    STUDIO_CATEGORIES[category as keyof typeof STUDIO_CATEGORIES]?.length || 0
+  )
 }
 
 function extractNumberFromSize(size: string): number {
-  const match = size.match(/(\d+)/);
-  return match ? parseInt(match[1]) : 0;
+  const match = size.match(/(\d+)/)
+  return match ? parseInt(match[1]) : 0
 }
 
 function selectResult(_result: any) {
@@ -544,8 +612,8 @@ function selectResult(_result: any) {
 }
 
 function selectRecommendation(rec: AutocompleteOption) {
-  searchQuery.value = rec.label;
-  handleSearch(rec.label, []);
+  searchQuery.value = rec.label
+  handleSearch(rec.label, [])
 }
 
 function viewDetails(result: any) {
@@ -562,8 +630,8 @@ function viewDetails(result: any) {
 function startInterview(studio: any) {
   router.push({
     name: 'GamingInterview',
-    query: { studioId: studio.id }
-  });
+    query: { studioId: studio.id },
+  })
 }
 
 // Lifecycle
@@ -574,28 +642,30 @@ onMounted(async () => {
       userRole: store.user?.profile?.desiredRole,
       userSkills: store.user?.profile?.skills || [],
       userLocation: store.user?.profile?.location,
-      preferredStudioTypes: store.user?.preferences?.studioTypes || []
-    };
-    
-    recommendations.value = await searchService.getIntelligentSuggestions(userContext);
+      preferredStudioTypes: store.user?.preferences?.studioTypes || [],
+    }
+
+    recommendations.value =
+      await searchService.getIntelligentSuggestions(userContext)
   } catch (error) {
-    console.warn('Failed to load recommendations:', error);
+    console.warn('Failed to load recommendations:', error)
   }
-});
+})
 
 // Watch for search mode changes
 watch(searchMode, async () => {
   if (searchQuery.value.trim() && hasSearched.value) {
-    await handleSearch(searchQuery.value, []);
+    await handleSearch(searchQuery.value, [])
   }
-});
+})
 </script>
 
 <style scoped>
 .advanced-search {
   min-height: 100vh;
-  background: linear-gradient(135deg, 
-    var(--glass-bg-start) 0%, 
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg-start) 0%,
     var(--glass-bg-end) 100%
   );
 }
@@ -945,7 +1015,11 @@ watch(searchMode, async () => {
 
 .score-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-success), var(--color-primary));
+  background: linear-gradient(
+    90deg,
+    var(--color-success),
+    var(--color-primary)
+  );
   transition: width var(--transition-normal);
 }
 
@@ -1096,41 +1170,41 @@ watch(searchMode, async () => {
   .search-container {
     padding: var(--spacing-md);
   }
-  
+
   .filters-grid {
     /* Responsive grid handled by utility classes */
   }
-  
+
   .results-grid {
     /* Responsive grid handled by utility classes */
   }
-  
+
   .results-header {
     flex-direction: column;
     gap: var(--spacing-md);
     align-items: flex-start;
   }
-  
+
   .recommendations-grid {
     /* Responsive grid handled by utility classes */
   }
 }
 
 /* Dark theme adaptations */
-[data-theme="dark"] .search-header {
+[data-theme='dark'] .search-header {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .filters-section,
-[data-theme="dark"] .result-card,
-[data-theme="dark"] .recommendation-card {
+[data-theme='dark'] .filters-section,
+[data-theme='dark'] .result-card,
+[data-theme='dark'] .recommendation-card {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .result-card:hover,
-[data-theme="dark"] .recommendation-card:hover {
+[data-theme='dark'] .result-card:hover,
+[data-theme='dark'] .recommendation-card:hover {
   background: var(--glass-elevated-dark);
 }
 </style>

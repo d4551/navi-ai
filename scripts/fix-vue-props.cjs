@@ -5,37 +5,37 @@
  * Specifically fixes missing prop defaults and required prop issues
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 class VuePropFixer {
   constructor() {
-    this.srcDir = path.join(process.cwd(), 'src');
-    this.fixCount = 0;
+    this.srcDir = path.join(process.cwd(), 'src')
+    this.fixCount = 0
   }
 
   // Get all Vue files
   getVueFiles(dir) {
-    const files = [];
-    const items = fs.readdirSync(dir);
-    
+    const files = []
+    const items = fs.readdirSync(dir)
+
     for (const item of items) {
-      const fullPath = path.join(dir, item);
-      const stat = fs.statSync(fullPath);
-      
+      const fullPath = path.join(dir, item)
+      const stat = fs.statSync(fullPath)
+
       if (stat.isDirectory() && !item.startsWith('.')) {
-        files.push(...this.getVueFiles(fullPath));
+        files.push(...this.getVueFiles(fullPath))
       } else if (item.endsWith('.vue')) {
-        files.push(fullPath);
+        files.push(fullPath)
       }
     }
-    
-    return files;
+
+    return files
   }
 
   // Fix prop definitions
   fixProps(content) {
-    let modified = false;
+    let modified = false
 
     // Prop configurations that need defaults
     const propConfigs = [
@@ -61,80 +61,86 @@ class VuePropFixer {
       { name: 'loadingText', default: "''" },
       { name: 'successText', default: "''" },
       { name: 'errorText', default: "''" },
-      { name: 'tooltip', default: "''" }
-    ];
+      { name: 'tooltip', default: "''" },
+    ]
 
     for (const { name, default: defaultValue } of propConfigs) {
       // Pattern to match prop without default
       const regex = new RegExp(
         `(\\s*${name}:\\s*\\{[^}]*type:[^}]*?)(?!.*default:)(\\s*\\})`,
         'gi'
-      );
-      
-      const newContent = content.replace(regex, `$1,\n    default: ${defaultValue}\n  $2`);
+      )
+
+      const newContent = content.replace(
+        regex,
+        `$1,\n    default: ${defaultValue}\n  $2`
+      )
       if (newContent !== content) {
-        content = newContent;
-        modified = true;
-        this.fixCount++;
+        content = newContent
+        modified = true
+        this.fixCount++
       }
     }
 
     // Fix 'show' prop that should be optional
-    const showRegex = /(show:\s*\{\s*type:\s*Boolean,?\s*default:\s*(false|true))(\s*\})/gi;
-    const showReplacement = '$1,\n    required: false$3';
-    
-    const showFixed = content.replace(showRegex, showReplacement);
+    const showRegex =
+      /(show:\s*\{\s*type:\s*Boolean,?\s*default:\s*(false|true))(\s*\})/gi
+    const showReplacement = '$1,\n    required: false$3'
+
+    const showFixed = content.replace(showRegex, showReplacement)
     if (showFixed !== content) {
-      content = showFixed;
-      modified = true;
-      this.fixCount++;
+      content = showFixed
+      modified = true
+      this.fixCount++
     }
 
-    return { content, modified };
+    return { content, modified }
   }
 
   // Process a single Vue file
   processFile(filePath) {
     try {
-      const content = fs.readFileSync(filePath, 'utf8');
-      const result = this.fixProps(content);
-      
+      const content = fs.readFileSync(filePath, 'utf8')
+      const result = this.fixProps(content)
+
       if (result.modified) {
-        fs.writeFileSync(filePath, result.content, 'utf8');
-        console.log(`✅ Fixed props in: ${path.relative(this.srcDir, filePath)}`);
-        return true;
+        fs.writeFileSync(filePath, result.content, 'utf8')
+        console.log(
+          `✅ Fixed props in: ${path.relative(this.srcDir, filePath)}`
+        )
+        return true
       }
-      return false;
+      return false
     } catch (error) {
-      console.error(`❌ Error processing ${filePath}:`, error.message);
-      return false;
+      console.error(`❌ Error processing ${filePath}:`, error.message)
+      return false
     }
   }
 
   // Main execution
   run() {
-    console.log('🔧 Fixing Vue.js prop defaults...\n');
-    
-    const files = this.getVueFiles(this.srcDir);
-    let processedFiles = 0;
+    console.log('🔧 Fixing Vue.js prop defaults...\n')
+
+    const files = this.getVueFiles(this.srcDir)
+    let processedFiles = 0
 
     for (const file of files) {
       if (this.processFile(file)) {
-        processedFiles++;
+        processedFiles++
       }
     }
 
-    console.log(`\n📊 Summary:`);
-    console.log(`• Total fixes applied: ${this.fixCount}`);
-    console.log(`• Files modified: ${processedFiles}/${files.length}`);
-    console.log('\n✨ Prop fixing completed!');
+    console.log(`\n📊 Summary:`)
+    console.log(`• Total fixes applied: ${this.fixCount}`)
+    console.log(`• Files modified: ${processedFiles}/${files.length}`)
+    console.log('\n✨ Prop fixing completed!')
   }
 }
 
 // Run if called directly
 if (require.main === module) {
-  const fixer = new VuePropFixer();
-  fixer.run();
+  const fixer = new VuePropFixer()
+  fixer.run()
 }
 
-module.exports = VuePropFixer;
+module.exports = VuePropFixer

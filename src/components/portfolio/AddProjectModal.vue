@@ -18,7 +18,9 @@
         <form @submit.prevent="handleSubmit">
           <!-- Project Title -->
           <div class="form-group">
-            <label for="project-title" class="form-label required">Project Title</label>
+            <label for="project-title" class="form-label required"
+              >Project Title</label
+            >
             <input
               id="project-title"
               v-model="formData.title"
@@ -27,12 +29,14 @@
               placeholder="e.g., Indie Puzzle Game, Portfolio Website"
               required
               autofocus
-            >
+            />
           </div>
 
           <!-- Project Description -->
           <div class="form-group">
-            <label for="project-description" class="form-label">Description</label>
+            <label for="project-description" class="form-label"
+              >Description</label
+            >
             <textarea
               id="project-description"
               v-model="formData.description"
@@ -71,8 +75,10 @@
               type="url"
               class="form-control glass-input"
               placeholder="https://..."
+            />
+            <small class="form-hint"
+              >Link to live demo, Steam page, itch.io, etc.</small
             >
-            <small class="form-hint">Link to live demo, Steam page, itch.io, etc.</small>
           </div>
 
           <div class="form-group">
@@ -83,13 +89,15 @@
               type="url"
               class="form-control glass-input"
               placeholder="https://github.com/username/repository"
-            >
+            />
           </div>
 
           <!-- Engine and Platform -->
           <div class="form-flex flex-wrap">
             <div class="form-group">
-              <label for="project-engine" class="form-label">Engine/Technology</label>
+              <label for="project-engine" class="form-label"
+                >Engine/Technology</label
+              >
               <select
                 id="project-engine"
                 v-model="formData.engine"
@@ -136,17 +144,14 @@
               type="text"
               class="form-control glass-input"
               placeholder="e.g., puzzle, multiplayer, 2D (comma-separated)"
-            >
+            />
             <small class="form-hint">Separate tags with commas</small>
           </div>
 
           <!-- Featured Toggle -->
           <div class="form-group">
             <label class="form-checkbox">
-              <input
-                v-model="formData.featured"
-                type="checkbox"
-              >
+              <input v-model="formData.featured" type="checkbox" />
               <span class="checkmark"></span>
               Feature this project in my portfolio
             </label>
@@ -155,10 +160,7 @@
       </div>
 
       <div class="modal-footer">
-        <UnifiedButton
-          variant="ghost"
-          @click="closeModal"
-        >
+        <UnifiedButton variant="ghost" @click="closeModal">
           Cancel
         </UnifiedButton>
         <UnifiedButton
@@ -215,7 +217,7 @@ const formData = ref<ProjectFormData>({
   githubUrl: '',
   engine: '',
   platform: '',
-  featured: false
+  featured: false,
 })
 
 const tagsInput = ref('')
@@ -230,18 +232,21 @@ const tags = computed(() => {
 })
 
 // Auto-fetch metadata when URL changes
-watch(() => formData.value.url, async (newUrl) => {
-  if (newUrl && !formData.value.description) {
-    try {
-      const metadata = await PortfolioService.fetchLinkMetadata(newUrl)
-      if (metadata.description) {
-        formData.value.description = metadata.description
+watch(
+  () => formData.value.url,
+  async newUrl => {
+    if (newUrl && !formData.value.description) {
+      try {
+        const metadata = await PortfolioService.fetchLinkMetadata(newUrl)
+        if (metadata.description) {
+          formData.value.description = metadata.description
+        }
+      } catch (error) {
+        // Silently fail - user can enter description manually
       }
-    } catch (error) {
-      // Silently fail - user can enter description manually
     }
   }
-})
+)
 
 const closeModal = () => {
   emit('close')
@@ -257,7 +262,7 @@ const resetForm = () => {
     githubUrl: '',
     engine: '',
     platform: '',
-    featured: false
+    featured: false,
   }
   tagsInput.value = ''
   isSubmitting.value = false
@@ -281,7 +286,7 @@ const handleSubmit = async () => {
       platforms: formData.value.platform ? [formData.value.platform] : [],
       date: new Date().toISOString().split('T')[0], // Current date as YYYY-MM-DD
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     }
 
     emit('submit', project)
@@ -296,11 +301,14 @@ const handleSubmit = async () => {
 }
 
 // Reset form when modal closes
-watch(() => props.visible, (visible) => {
-  if (!visible) {
-    resetForm()
+watch(
+  () => props.visible,
+  visible => {
+    if (!visible) {
+      resetForm()
+    }
   }
-})
+)
 </script>
 
 <style scoped>
@@ -399,7 +407,8 @@ watch(() => props.visible, (visible) => {
 .form-control:focus {
   outline: none;
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   background: var(--glass-elevated);
 }
 
@@ -423,7 +432,7 @@ watch(() => props.visible, (visible) => {
   color: var(--text-primary-600);
 }
 
-.form-checkbox input[type="checkbox"] {
+.form-checkbox input[type='checkbox'] {
   margin: 0;
   width: 18px;
   height: 18px;
@@ -435,15 +444,15 @@ watch(() => props.visible, (visible) => {
   .modal-overlay {
     padding: var(--spacing-2);
   }
-  
+
   .modal-dialog {
     max-height: 95vh;
   }
-  
+
   .form-flex flex-wrap {
     grid-template-columns: 1fr;
   }
-  
+
   .modal-header,
   .modal-body,
   .modal-footer {

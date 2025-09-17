@@ -56,13 +56,12 @@ export async function runEnhancedPortfolioMigration(): Promise<void> {
         templates: true,
         sharing: true,
         analytics: true,
-        aiIntegration: true
-      }
+        aiIntegration: true,
+      },
     }
 
     await unifiedStorage.set('portfolio-migration-state', newMigrationState)
     logger.info('Enhanced portfolio system migration completed successfully')
-
   } catch (error) {
     logger.error('Enhanced portfolio migration failed:', error)
     throw error
@@ -86,7 +85,7 @@ async function initializePortfolioTables(): Promise<void> {
         settings: 'object',
         version: 'number',
         createdAt: 'date',
-        updatedAt: 'date'
+        updatedAt: 'date',
       },
       portfolioProjects: {
         id: 'string',
@@ -108,7 +107,7 @@ async function initializePortfolioTables(): Promise<void> {
         order: 'number',
         metadata: 'object',
         createdAt: 'date',
-        updatedAt: 'date'
+        updatedAt: 'date',
       },
       portfolioTemplates: {
         id: 'string',
@@ -125,7 +124,7 @@ async function initializePortfolioTables(): Promise<void> {
         isBuiltIn: 'boolean',
         usageCount: 'number',
         createdAt: 'date',
-        updatedAt: 'date'
+        updatedAt: 'date',
       },
       sharedPortfolios: {
         id: 'string',
@@ -137,7 +136,7 @@ async function initializePortfolioTables(): Promise<void> {
         analytics: 'object',
         isActive: 'boolean',
         createdAt: 'date',
-        lastViewed: 'date'
+        lastViewed: 'date',
       },
       portfolioAnalytics: {
         id: 'string',
@@ -147,9 +146,9 @@ async function initializePortfolioTables(): Promise<void> {
         timestamp: 'date',
         sessionId: 'string',
         userAgent: 'string',
-        referrer: 'string'
-      }
-    }
+        referrer: 'string',
+      },
+    },
   }
 
   await unifiedStorage.set('portfolio-schema', portfolioSchema)
@@ -162,48 +161,56 @@ async function migrateExistingPortfolioData(): Promise<void> {
   try {
     // Get existing portfolio data from app store
     const existingPortfolio = await unifiedStorage.get('user')?.portfolio
-    
-    if (existingPortfolio && Array.isArray(existingPortfolio) && existingPortfolio.length > 0) {
-      logger.info(`Found ${existingPortfolio.length} existing portfolio items to migrate`)
+
+    if (
+      existingPortfolio &&
+      Array.isArray(existingPortfolio) &&
+      existingPortfolio.length > 0
+    ) {
+      logger.info(
+        `Found ${existingPortfolio.length} existing portfolio items to migrate`
+      )
 
       // Convert legacy portfolio items to new format
-      const migratedProjects = existingPortfolio.map((item: any, index: number) => ({
-        id: item.id || crypto.randomUUID(),
-        title: item.title || 'Untitled Project',
-        description: item.description || '',
-        longDescription: item.longDescription || item.description || '',
-        category: mapLegacyType(item.type),
-        status: item.status || 'completed',
-        technologies: item.skills || item.technologies || [],
-        role: item.role || 'Developer',
-        teamSize: item.teamSize || 1,
-        duration: {
-          startDate: item.startDate ? new Date(item.startDate) : new Date(),
-          endDate: item.endDate ? new Date(item.endDate) : new Date()
-        },
-        media: {
-          screenshots: item.media?.screenshots || [],
-          videos: item.media?.videos || [],
-          demos: item.url ? [item.url] : []
-        },
-        links: {
-          live: item.url || item.liveUrl,
-          github: item.githubUrl,
-          documentation: item.documentation,
-          store: item.storeUrl
-        },
-        achievements: item.achievements || [],
-        challenges: item.challenges || [],
-        featured: item.featured || false,
-        order: index,
-        metadata: {
-          legacyId: item.id,
-          migratedAt: new Date(),
-          originalType: item.type
-        },
-        createdAt: item.createdAt ? new Date(item.createdAt) : new Date(),
-        updatedAt: new Date()
-      }))
+      const migratedProjects = existingPortfolio.map(
+        (item: any, index: number) => ({
+          id: item.id || crypto.randomUUID(),
+          title: item.title || 'Untitled Project',
+          description: item.description || '',
+          longDescription: item.longDescription || item.description || '',
+          category: mapLegacyType(item.type),
+          status: item.status || 'completed',
+          technologies: item.skills || item.technologies || [],
+          role: item.role || 'Developer',
+          teamSize: item.teamSize || 1,
+          duration: {
+            startDate: item.startDate ? new Date(item.startDate) : new Date(),
+            endDate: item.endDate ? new Date(item.endDate) : new Date(),
+          },
+          media: {
+            screenshots: item.media?.screenshots || [],
+            videos: item.media?.videos || [],
+            demos: item.url ? [item.url] : [],
+          },
+          links: {
+            live: item.url || item.liveUrl,
+            github: item.githubUrl,
+            documentation: item.documentation,
+            store: item.storeUrl,
+          },
+          achievements: item.achievements || [],
+          challenges: item.challenges || [],
+          featured: item.featured || false,
+          order: index,
+          metadata: {
+            legacyId: item.id,
+            migratedAt: new Date(),
+            originalType: item.type,
+          },
+          createdAt: item.createdAt ? new Date(item.createdAt) : new Date(),
+          updatedAt: new Date(),
+        })
+      )
 
       // Create new portfolio structure
       const newPortfolio = {
@@ -215,39 +222,39 @@ async function migrateExistingPortfolioData(): Promise<void> {
           location: '',
           email: '',
           website: '',
-          social: {}
+          social: {},
         },
         projects: migratedProjects,
         skills: {
           primary: extractSkillsFromProjects(migratedProjects, 'primary'),
           secondary: extractSkillsFromProjects(migratedProjects, 'secondary'),
-          tools: extractSkillsFromProjects(migratedProjects, 'tools')
+          tools: extractSkillsFromProjects(migratedProjects, 'tools'),
         },
         theme: {
           primaryColor: '#6366f1',
           secondaryColor: '#8b5cf6',
           layout: 'grid',
           showContact: true,
-          showSkills: true
+          showSkills: true,
         },
         seo: {
           title: 'Gaming Portfolio',
           description: 'Professional gaming industry portfolio',
-          keywords: ['gaming', 'portfolio', 'developer']
+          keywords: ['gaming', 'portfolio', 'developer'],
         },
         settings: {
           autoSave: true,
           analytics: true,
-          sharing: true
+          sharing: true,
         },
         version: 2,
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       }
 
       // Save migrated portfolio
       await unifiedStorage.set('portfolio', newPortfolio)
-      
+
       // Backup original data
       await unifiedStorage.set('portfolio-legacy-backup', existingPortfolio)
 
@@ -280,7 +287,7 @@ async function initializeTemplateSystem(): Promise<void> {
             type: 'text',
             content: '',
             order: 1,
-            required: true
+            required: true,
           },
           {
             id: 'features',
@@ -288,7 +295,7 @@ async function initializeTemplateSystem(): Promise<void> {
             type: 'list',
             content: [],
             order: 2,
-            required: true
+            required: true,
           },
           {
             id: 'technical',
@@ -296,19 +303,20 @@ async function initializeTemplateSystem(): Promise<void> {
             type: 'list',
             content: [],
             order: 3,
-            required: false
-          }
+            required: false,
+          },
         ],
         suggestedMedia: ['gameplay-video', 'screenshots'],
-        requiredFields: ['title', 'description', 'technologies']
+        requiredFields: ['title', 'description', 'technologies'],
       },
       aiPrompts: {
-        description: 'Create a description for a {genre} game project built with {engine}',
+        description:
+          'Create a description for a {genre} game project built with {engine}',
         achievements: 'List achievements for this game development project',
-        technologies: 'Describe the technical implementation of this game'
+        technologies: 'Describe the technical implementation of this game',
       },
       preview: {
-        thumbnail: '/templates/game-dev-basic.jpg'
+        thumbnail: '/templates/game-dev-basic.jpg',
       },
       tags: ['game', 'development', 'basic'],
       difficulty: 'beginner',
@@ -316,7 +324,7 @@ async function initializeTemplateSystem(): Promise<void> {
       isBuiltIn: true,
       usageCount: 0,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 'web-app-basic',
@@ -333,7 +341,7 @@ async function initializeTemplateSystem(): Promise<void> {
             type: 'text',
             content: '',
             order: 1,
-            required: true
+            required: true,
           },
           {
             id: 'features',
@@ -341,7 +349,7 @@ async function initializeTemplateSystem(): Promise<void> {
             type: 'list',
             content: [],
             order: 2,
-            required: true
+            required: true,
           },
           {
             id: 'stack',
@@ -349,19 +357,20 @@ async function initializeTemplateSystem(): Promise<void> {
             type: 'list',
             content: [],
             order: 3,
-            required: true
-          }
+            required: true,
+          },
         ],
         suggestedMedia: ['screenshots', 'demo-video'],
-        requiredFields: ['title', 'description', 'technologies', 'liveUrl']
+        requiredFields: ['title', 'description', 'technologies', 'liveUrl'],
       },
       aiPrompts: {
-        description: 'Create a description for a {type} web application using {technologies}',
+        description:
+          'Create a description for a {type} web application using {technologies}',
         achievements: 'List technical achievements for this web project',
-        technologies: 'Explain the technology choices for this web application'
+        technologies: 'Explain the technology choices for this web application',
       },
       preview: {
-        thumbnail: '/templates/web-app-basic.jpg'
+        thumbnail: '/templates/web-app-basic.jpg',
       },
       tags: ['web', 'application', 'basic'],
       difficulty: 'beginner',
@@ -369,8 +378,8 @@ async function initializeTemplateSystem(): Promise<void> {
       isBuiltIn: true,
       usageCount: 0,
       createdAt: new Date(),
-      updatedAt: new Date()
-    }
+      updatedAt: new Date(),
+    },
   ]
 
   // Save built-in templates
@@ -379,7 +388,10 @@ async function initializeTemplateSystem(): Promise<void> {
   }
 
   // Initialize template index
-  await unifiedStorage.set('portfolio-templates-index', builtInTemplates.map(t => t.id))
+  await unifiedStorage.set(
+    'portfolio-templates-index',
+    builtInTemplates.map(t => t.id)
+  )
 
   logger.info('Portfolio template system initialized')
 }
@@ -395,12 +407,12 @@ async function initializeSharingSystem(): Promise<void> {
       customDomains: false, // Premium feature
       analytics: true,
       downloadTracking: true,
-      customBranding: true
+      customBranding: true,
     },
     limits: {
       maxActiveShares: 5,
       maxViewsPerMonth: 10000,
-      maxCustomTemplates: 10
+      maxCustomTemplates: 10,
     },
     defaultSettings: {
       isPublic: false,
@@ -410,12 +422,12 @@ async function initializeSharingSystem(): Promise<void> {
       analytics: {
         enableTracking: true,
         trackDownloads: true,
-        trackViewTime: true
+        trackViewTime: true,
       },
       branding: {
-        showWatermark: true
-      }
-    }
+        showWatermark: true,
+      },
+    },
   }
 
   await unifiedStorage.set('portfolio-sharing-config', sharingConfig)
@@ -437,13 +449,13 @@ async function initializeAnalyticsSystem(): Promise<void> {
       'download',
       'contact_click',
       'share_created',
-      'template_used'
+      'template_used',
     ],
     privacy: {
       anonymizeIPs: true,
       respectDNT: true,
-      cookieConsent: true
-    }
+      cookieConsent: true,
+    },
   }
 
   await unifiedStorage.set('portfolio-analytics-config', analyticsConfig)
@@ -453,7 +465,7 @@ async function initializeAnalyticsSystem(): Promise<void> {
     totalDownloads: 0,
     popularProjects: [],
     topReferrers: {},
-    lastUpdated: new Date()
+    lastUpdated: new Date(),
   })
 
   logger.info('Portfolio analytics system initialized')
@@ -469,18 +481,22 @@ async function initializeAIIntegration(): Promise<void> {
       templateCreation: true,
       suggestionEngine: true,
       autoTagging: true,
-      seoOptimization: true
+      seoOptimization: true,
     },
     limits: {
       requestsPerDay: 50,
-      tokensPerRequest: 1000
+      tokensPerRequest: 1000,
     },
     templates: {
-      projectDescription: 'Create a professional portfolio description for a {type} project called {title} using {technologies}. Highlight key features and technical achievements.',
-      achievementSummary: 'Summarize the key achievements and impacts of this {type} project: {description}',
-      skillExtraction: 'Extract relevant skills and technologies from this project description: {description}',
-      seoOptimization: 'Generate SEO-optimized title, description, and keywords for this portfolio project: {title} - {description}'
-    }
+      projectDescription:
+        'Create a professional portfolio description for a {type} project called {title} using {technologies}. Highlight key features and technical achievements.',
+      achievementSummary:
+        'Summarize the key achievements and impacts of this {type} project: {description}',
+      skillExtraction:
+        'Extract relevant skills and technologies from this project description: {description}',
+      seoOptimization:
+        'Generate SEO-optimized title, description, and keywords for this portfolio project: {title} - {description}',
+    },
   }
 
   await unifiedStorage.set('portfolio-ai-config', aiConfig)
@@ -491,27 +507,33 @@ async function initializeAIIntegration(): Promise<void> {
 // Helper functions
 function mapLegacyType(legacyType: string): string {
   const typeMap: Record<string, string> = {
-    'achievement': 'game',
-    'project': 'game',
-    'tournament': 'game',
-    'leadership': 'other',
-    'content': 'other',
-    'clip': 'other',
-    'competition': 'game'
+    achievement: 'game',
+    project: 'game',
+    tournament: 'game',
+    leadership: 'other',
+    content: 'other',
+    clip: 'other',
+    competition: 'game',
   }
 
   return typeMap[legacyType] || 'other'
 }
 
-function extractSkillsFromProjects(projects: any[], category: 'primary' | 'secondary' | 'tools'): string[] {
+function extractSkillsFromProjects(
+  projects: any[],
+  category: 'primary' | 'secondary' | 'tools'
+): string[] {
   const allSkills = projects.flatMap(p => p.technologies || [])
-  const skillCounts = allSkills.reduce((counts: Record<string, number>, skill: string) => {
-    counts[skill] = (counts[skill] || 0) + 1
-    return counts
-  }, {})
+  const skillCounts = allSkills.reduce(
+    (counts: Record<string, number>, skill: string) => {
+      counts[skill] = (counts[skill] || 0) + 1
+      return counts
+    },
+    {}
+  )
 
   const sortedSkills = Object.entries(skillCounts)
-    .sort(([,a], [,b]) => (b as number) - (a as number))
+    .sort(([, a], [, b]) => (b as number) - (a as number))
     .map(([skill]) => skill)
 
   switch (category) {
@@ -527,5 +549,5 @@ function extractSkillsFromProjects(projects: any[], category: 'primary' | 'secon
 }
 
 export default {
-  runEnhancedPortfolioMigration
+  runEnhancedPortfolioMigration,
 }

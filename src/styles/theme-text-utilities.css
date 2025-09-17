@@ -10,7 +10,9 @@ html #app,
 html #app-root {
   color: var(--text-primary);
   background: var(--bg-primary);
-  transition: color 0.3s ease, background-color 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
 }
 
 /* Clean inheritance - removed forced global overrides to allow proper cascade */
@@ -52,7 +54,12 @@ html #app-root {
 }
 
 /* Theme-aware headings */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-primary);
 }
 
@@ -100,14 +107,14 @@ h1, h2, h3, h4, h5, h6 {
   color: rgb(var(--neon-blue));
 }
 
-[data-theme="dark"] .text-neon {
+[data-theme='dark'] .text-neon {
   text-shadow:
     0 0 5px rgba(var(--neon-blue), 0.5),
     0 0 10px rgba(var(--neon-blue), 0.3),
     0 0 15px rgba(var(--neon-blue), 0.2);
 }
 
-[data-theme="light"] .text-neon {
+[data-theme='light'] .text-neon {
   text-shadow:
     0 0 5px rgba(var(--neon-blue), 0.7),
     0 0 10px rgba(var(--neon-blue), 0.5);

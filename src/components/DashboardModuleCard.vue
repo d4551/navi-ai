@@ -1,7 +1,7 @@
 <template>
   <div
     class="unified-card dashboard-module-card font-sans"
-    :class="[`variant--${data.colorClass}`, { 'featured': data.featured }]"
+    :class="[`variant--${data.colorClass}`, { featured: data.featured }]"
     role="button"
     :aria-labelledby="`mod-${data.key}-title`"
     :aria-label="`${data.name}: ${data.cta || 'Open'}`"
@@ -17,7 +17,9 @@
       </div>
       <div v-if="data.statLabel && data.statValue" class="module-stat-badge">
         <span class="stat-value">{{ data.statValue }}</span>
-        <span v-if="data.statLabel" class="stat-label">{{ data.statLabel }}</span>
+        <span v-if="data.statLabel" class="stat-label">{{
+          data.statLabel
+        }}</span>
       </div>
     </div>
 
@@ -34,7 +36,11 @@
     <!-- Module Footer -->
     <div class="module-footer">
       <div class="module-cta">
-        <AppIcon :name="data.ctaIcon || 'ArrowRightIcon'" class="cta-icon" aria-hidden="true" />
+        <AppIcon
+          :name="data.ctaIcon || 'ArrowRightIcon'"
+          class="cta-icon"
+          aria-hidden="true"
+        />
         <span class="cta-text">{{ data.cta || 'Open' }}</span>
       </div>
     </div>
@@ -56,7 +62,7 @@ export default {
   setup(props, { emit }) {
     const navigate = () => emit('navigate', { route: props.data.route })
     return { navigate }
-  }
+  },
 }
 </script>
 
@@ -251,7 +257,8 @@ export default {
   color: var(--color-success-500);
 }
 
-.dashboard-module-card.variant--color-success-soft:hover .module-icon-container {
+.dashboard-module-card.variant--color-success-soft:hover
+  .module-icon-container {
   border-color: var(--color-success-400);
   background: rgba(var(--color-success-rgb), 0.1);
 }
@@ -285,7 +292,8 @@ export default {
   color: var(--color-warning-500);
 }
 
-.dashboard-module-card.variant--color-warning-soft:hover .module-icon-container {
+.dashboard-module-card.variant--color-warning-soft:hover
+  .module-icon-container {
   border-color: var(--color-warning-400);
   background: rgba(var(--color-warning-rgb), 0.1);
 }
@@ -310,24 +318,24 @@ export default {
     padding: var(--spacing-md);
     gap: var(--spacing-sm);
   }
-  
+
   .module-icon-container {
     width: 48px;
     height: 48px;
   }
-  
+
   .module-icon {
     font-size: var(--font-size-xl);
   }
-  
+
   .module-title {
     font-size: var(--font-size-base);
   }
-  
+
   .module-description {
     font-size: var(--font-size-xs);
   }
-  
+
   .module-stat-badge {
     font-size: var(--font-size-xs);
   }

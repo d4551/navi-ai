@@ -6,16 +6,16 @@
 
 export class NoirAnimationManager {
   constructor() {
-    this.activeAnimations = new Set();
-    this.styleInjected = false;
-    this.injectStyles();
+    this.activeAnimations = new Set()
+    this.styleInjected = false
+    this.injectStyles()
   }
 
   injectStyles() {
-    if (this.styleInjected) return;
+    if (this.styleInjected) return
 
-    const styleElement = document.createElement('style');
-    styleElement.id = 'noir-animations-styles';
+    const styleElement = document.createElement('style')
+    styleElement.id = 'noir-animations-styles'
     styleElement.textContent = `
       /* Noir Detective Animations */
       
@@ -255,185 +255,194 @@ export class NoirAnimationManager {
           opacity: 0;
         }
       }
-    `;
+    `
 
-    document.head.appendChild(styleElement);
-    this.styleInjected = true;
+    document.head.appendChild(styleElement)
+    this.styleInjected = true
   }
 
   // Apply detective spotlight effect to an element
   detectiveSpotlight(element, duration = 2000) {
-    if (this.activeAnimations.has(`spotlight-${element}`)) return;
-    
-    const animationId = `spotlight-${element}`;
-    this.activeAnimations.add(animationId);
-    
-    element.classList.add('noir-spotlight-effect');
-    
+    if (this.activeAnimations.has(`spotlight-${element}`)) return
+
+    const animationId = `spotlight-${element}`
+    this.activeAnimations.add(animationId)
+
+    element.classList.add('noir-spotlight-effect')
+
     setTimeout(() => {
-      element.classList.remove('noir-spotlight-effect');
-      this.activeAnimations.delete(animationId);
-    }, duration);
+      element.classList.remove('noir-spotlight-effect')
+      this.activeAnimations.delete(animationId)
+    }, duration)
   }
 
   // Apply glitch effect (for suspicious activities)
   noirGlitch(element, intensity = 1) {
-    if (this.activeAnimations.has(`glitch-${element}`)) return;
-    
-    const animationId = `glitch-${element}`;
-    this.activeAnimations.add(animationId);
-    
-    element.style.animationDuration = `${0.3 / intensity}s`;
-    element.classList.add('noir-glitch-effect');
-    
+    if (this.activeAnimations.has(`glitch-${element}`)) return
+
+    const animationId = `glitch-${element}`
+    this.activeAnimations.add(animationId)
+
+    element.style.animationDuration = `${0.3 / intensity}s`
+    element.classList.add('noir-glitch-effect')
+
     setTimeout(() => {
-      element.classList.remove('noir-glitch-effect');
-      element.style.animationDuration = '';
-      this.activeAnimations.delete(animationId);
-    }, 300);
+      element.classList.remove('noir-glitch-effect')
+      element.style.animationDuration = ''
+      this.activeAnimations.delete(animationId)
+    }, 300)
   }
 
   // Suspicion level rising animation
   suspicionRising(element) {
-    if (this.activeAnimations.has(`suspicion-${element}`)) return;
-    
-    const animationId = `suspicion-${element}`;
-    this.activeAnimations.add(animationId);
-    
-    element.classList.add('suspicion-rising-effect');
-    
+    if (this.activeAnimations.has(`suspicion-${element}`)) return
+
+    const animationId = `suspicion-${element}`
+    this.activeAnimations.add(animationId)
+
+    element.classList.add('suspicion-rising-effect')
+
     setTimeout(() => {
-      element.classList.remove('suspicion-rising-effect');
-      this.activeAnimations.delete(animationId);
-    }, 3000);
+      element.classList.remove('suspicion-rising-effect')
+      this.activeAnimations.delete(animationId)
+    }, 3000)
   }
 
   // Evidence reveal animation
   evidenceReveal(element) {
-    element.classList.add('evidence-reveal-effect');
+    element.classList.add('evidence-reveal-effect')
   }
 
   // Investigation sweep animation
   investigationSweep(element) {
-    if (this.activeAnimations.has(`sweep-${element}`)) return;
-    
-    const animationId = `sweep-${element}`;
-    this.activeAnimations.add(animationId);
-    
-    element.classList.add('investigation-sweep-effect');
-    
+    if (this.activeAnimations.has(`sweep-${element}`)) return
+
+    const animationId = `sweep-${element}`
+    this.activeAnimations.add(animationId)
+
+    element.classList.add('investigation-sweep-effect')
+
     setTimeout(() => {
-      element.classList.remove('investigation-sweep-effect');
-      this.activeAnimations.delete(animationId);
-    }, 1500);
+      element.classList.remove('investigation-sweep-effect')
+      this.activeAnimations.delete(animationId)
+    }, 1500)
   }
 
   // Typewriter effect for detective notes
   detectiveTypewriter(element, text, speed = 50) {
-    element.textContent = '';
-    element.classList.add('detective-typewriter-effect');
-    
-    let i = 0;
+    element.textContent = ''
+    element.classList.add('detective-typewriter-effect')
+
+    let i = 0
     const typeInterval = setInterval(() => {
       if (i < text.length) {
-        element.textContent += text.charAt(i);
-        i++;
+        element.textContent += text.charAt(i)
+        i++
       } else {
-        clearInterval(typeInterval);
+        clearInterval(typeInterval)
         setTimeout(() => {
-          element.classList.remove('detective-typewriter-effect');
-        }, 1000);
+          element.classList.remove('detective-typewriter-effect')
+        }, 1000)
       }
-    }, speed);
+    }, speed)
   }
 
   // Matrix rain effect for AI/hacking theme
   createMatrixRain(duration = 5000) {
-    const container = document.createElement('div');
-    container.className = 'matrix-rain-container';
-    
-    const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-    const columns = Math.floor(window.innerWidth / 14);
-    
+    const container = document.createElement('div')
+    container.className = 'matrix-rain-container'
+
+    const characters =
+      '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン'
+    const columns = Math.floor(window.innerWidth / 14)
+
     for (let i = 0; i < columns; i++) {
-      const char = document.createElement('div');
-      char.className = 'matrix-character';
-      char.textContent = characters[Math.floor(Math.random() * characters.length)];
-      char.style.left = `${i * 14}px`;
-      char.style.animationDelay = `${Math.random() * 2}s`;
-      char.style.animationDuration = `${Math.random() * 3 + 2}s`;
-      
-      container.appendChild(char);
+      const char = document.createElement('div')
+      char.className = 'matrix-character'
+      char.textContent =
+        characters[Math.floor(Math.random() * characters.length)]
+      char.style.left = `${i * 14}px`
+      char.style.animationDelay = `${Math.random() * 2}s`
+      char.style.animationDuration = `${Math.random() * 3 + 2}s`
+
+      container.appendChild(char)
     }
-    
-    document.body.appendChild(container);
-    
+
+    document.body.appendChild(container)
+
     setTimeout(() => {
-      container.remove();
-    }, duration);
+      container.remove()
+    }, duration)
   }
 
   // Crime boss entrance effect
   crimeBossEntrance(element) {
-    element.classList.add('crime-boss-entrance-effect');
-    
+    element.classList.add('crime-boss-entrance-effect')
+
     setTimeout(() => {
-      element.classList.remove('crime-boss-entrance-effect');
-    }, 1500);
+      element.classList.remove('crime-boss-entrance-effect')
+    }, 1500)
   }
 
   // Screen shake effect for dramatic moments
   screenShake(intensity = 1, duration = 500) {
-    const originalTransform = document.body.style.transform;
-    let start = Date.now();
-    
+    const originalTransform = document.body.style.transform
+    let start = Date.now()
+
     const shake = () => {
-      const elapsed = Date.now() - start;
+      const elapsed = Date.now() - start
       if (elapsed < duration) {
-        const x = (Math.random() - 0.5) * intensity * 10;
-        const y = (Math.random() - 0.5) * intensity * 10;
-        document.body.style.transform = `translate(${x}px, ${y}px)`;
-        requestAnimationFrame(shake);
+        const x = (Math.random() - 0.5) * intensity * 10
+        const y = (Math.random() - 0.5) * intensity * 10
+        document.body.style.transform = `translate(${x}px, ${y}px)`
+        requestAnimationFrame(shake)
       } else {
-        document.body.style.transform = originalTransform;
+        document.body.style.transform = originalTransform
       }
-    };
-    
-    shake();
+    }
+
+    shake()
   }
 
   // Trigger random noir effect
   triggerRandomNoirEffect() {
     const effects = [
-      () => this.noirGlitch(document.querySelector('.main-content') || document.body),
-      () => this.investigationSweep(document.querySelector('header') || document.querySelector('.navigation')),
+      () =>
+        this.noirGlitch(
+          document.querySelector('.main-content') || document.body
+        ),
+      () =>
+        this.investigationSweep(
+          document.querySelector('header') ||
+            document.querySelector('.navigation')
+        ),
       () => this.screenShake(0.5, 300),
-      () => this.createMatrixRain(3000)
-    ];
-    
-    const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-    randomEffect();
+      () => this.createMatrixRain(3000),
+    ]
+
+    const randomEffect = effects[Math.floor(Math.random() * effects.length)]
+    randomEffect()
   }
 
   // Clean up all animations
   cleanup() {
-    this.activeAnimations.clear();
-    const styleElement = document.getElementById('noir-animations-styles');
+    this.activeAnimations.clear()
+    const styleElement = document.getElementById('noir-animations-styles')
     if (styleElement) {
-      styleElement.remove();
-      this.styleInjected = false;
+      styleElement.remove()
+      this.styleInjected = false
     }
   }
 }
 
 // Global instance
-export const noirAnimations = new NoirAnimationManager();
+export const noirAnimations = new NoirAnimationManager()
 
 // Auto-initialize
 if (typeof window !== 'undefined') {
   window.addEventListener('load', () => {
-    noirAnimations.injectStyles();
-  });
+    noirAnimations.injectStyles()
+  })
 }
 
-export default noirAnimations;
+export default noirAnimations

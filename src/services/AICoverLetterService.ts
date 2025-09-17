@@ -98,7 +98,9 @@ class AICoverLetterService {
       await ai.init({ provider: AIProvider.GEMINI })
       return
     } catch {
-      throw new Error('AI service not initialized. Please configure your API key in settings.')
+      throw new Error(
+        'AI service not initialized. Please configure your API key in settings.'
+      )
     }
   }
 
@@ -106,8 +108,8 @@ class AICoverLetterService {
    * Generate a complete cover letter from job description and user profile
    */
   async generateFromJobDescription(
-    jobDescription: string, 
-    userProfile: any = {}, 
+    jobDescription: string,
+    userProfile: any = {},
     options: GenerationOptions = {}
   ): Promise<CoverLetterResult> {
     try {
@@ -129,7 +131,7 @@ GENERATION OPTIONS:
 Create a compelling, personalized cover letter for this gaming industry position that demonstrates genuine passion for gaming, highlights transferable skills, and shows cultural fit.`
 
       const cacheKey = `${jobDescription.slice(0, 100)}_${JSON.stringify(userProfile)}_${JSON.stringify(options)}`
-      
+
       // Check cache first
       if (this.generationCache.has(cacheKey)) {
         const cached = this.generationCache.get(cacheKey)
@@ -170,32 +172,34 @@ Please create a compelling cover letter that highlights relevant skills and expe
       try {
         // Try to parse as JSON first
         const parsedContent = JSON.parse(result.content)
-          
-          // Validate required fields
-          if (!parsedContent.coverLetter?.fullText) {
-            throw new Error('Missing required cover letter content')
-          }
 
-          const response: CoverLetterResult = {
-            success: true,
-            coverLetter: parsedContent.coverLetter,
-            keyPoints: parsedContent.keyPoints || [],
-            personalizations: parsedContent.personalizations || [],
-            suggestions: parsedContent.suggestions || {}
-          }
+        // Validate required fields
+        if (!parsedContent.coverLetter?.fullText) {
+          throw new Error('Missing required cover letter content')
+        }
 
-          // Cache the result
-          this.generationCache.set(cacheKey, {
-            timestamp: Date.now(),
-            data: response
-          })
+        const response: CoverLetterResult = {
+          success: true,
+          coverLetter: parsedContent.coverLetter,
+          keyPoints: parsedContent.keyPoints || [],
+          personalizations: parsedContent.personalizations || [],
+          suggestions: parsedContent.suggestions || {},
+        }
+
+        // Cache the result
+        this.generationCache.set(cacheKey, {
+          timestamp: Date.now(),
+          data: response,
+        })
 
         logger.info('Cover letter generated successfully')
         return response
-
       } catch (parseError) {
-        logger.warn('Failed to parse AI response, using fallback format:', parseError)
-        
+        logger.warn(
+          'Failed to parse AI response, using fallback format:',
+          parseError
+        )
+
         // Fallback: use raw content as full text
         const fallbackResult: CoverLetterResult = {
           success: true,
@@ -203,26 +207,29 @@ Please create a compelling cover letter that highlights relevant skills and expe
             fullText: result.content,
             sections: {
               opening: result.content.split('\n\n')[0] || '',
-              body: result.content.split('\n\n').slice(1, -1).join('\n\n') || '',
-              closing: result.content.split('\n\n').slice(-1)[0] || ''
-            }
+              body:
+                result.content.split('\n\n').slice(1, -1).join('\n\n') || '',
+              closing: result.content.split('\n\n').slice(-1)[0] || '',
+            },
           },
           keyPoints: ['Generated with AI assistance'],
           personalizations: ['Tailored to job requirements'],
-          suggestions: { note: 'Fallback generation used' }
+          suggestions: { note: 'Fallback generation used' },
         }
 
         return fallbackResult
       }
-
     } catch (error: any) {
       logger.error('Cover letter generation error:', error)
       return {
         success: false,
         error: error.message || 'Generation failed',
-        coverLetter: { fullText: '', sections: { opening: '', body: '', closing: '' } },
+        coverLetter: {
+          fullText: '',
+          sections: { opening: '', body: '', closing: '' },
+        },
         keyPoints: [],
-        personalizations: []
+        personalizations: [],
       }
     }
   }
@@ -231,15 +238,15 @@ Please create a compelling cover letter that highlights relevant skills and expe
    * Research company information for personalization
    */
   async researchCompany(
-    companyName: string, 
-    jobTitle = '', 
+    companyName: string,
+    jobTitle = '',
     additionalContext = ''
   ): Promise<CompanyResearchResult> {
     try {
       await this.ensureAiReady()
 
       const cacheKey = `${companyName}_${jobTitle}_${additionalContext}`
-      
+
       // Check cache first
       if (this.companyCache.has(cacheKey)) {
         const cached = this.companyCache.get(cacheKey)
@@ -266,13 +273,19 @@ Return JSON format:
 Focus on gaming industry relevance, company culture, recent projects, and information that would be valuable for a cover letter.`
 
       const prompt = `${systemInstructions}\n\n${userPrompt}`
-      const text = await ai.generateText(prompt, { temperature: 0.3, maxTokens: 800 })
-      const result = { success: true, content: typeof text === 'string' ? text : text.content || '' }
+      const text = await ai.generateText(prompt, {
+        temperature: 0.3,
+        maxTokens: 800,
+      })
+      const result = {
+        success: true,
+        content: typeof text === 'string' ? text : text.content || '',
+      }
 
       if (result.success) {
         try {
           const parsedContent = JSON.parse(result.content)
-          
+
           const response: CompanyResearchResult = {
             success: true,
             companyOverview: parsedContent.companyOverview,
@@ -280,21 +293,20 @@ Focus on gaming industry relevance, company culture, recent projects, and inform
             projects: parsedContent.projects || [],
             position: parsedContent.position,
             talkingPoints: parsedContent.talkingPoints || [],
-            hooks: parsedContent.hooks || []
+            hooks: parsedContent.hooks || [],
           }
 
           // Cache the result
           this.companyCache.set(cacheKey, {
             timestamp: Date.now(),
-            data: response
+            data: response,
           })
 
           logger.info('Company research completed successfully')
           return response
-
         } catch (parseError) {
           logger.warn('Failed to parse company research response:', parseError)
-          
+
           return {
             success: false,
             error: 'Failed to parse research results',
@@ -303,23 +315,22 @@ Focus on gaming industry relevance, company culture, recent projects, and inform
               culture: ['Professional gaming environment'],
               projects: ['Various gaming projects'],
               talkingPoints: [`Mention interest in ${companyName}`],
-              hooks: [`I'm excited about the opportunity at ${companyName}`]
-            }
+              hooks: [`I'm excited about the opportunity at ${companyName}`],
+            },
           }
         }
       } else {
         logger.error('Company research failed')
         return {
           success: false,
-          error: 'Research failed'
+          error: 'Research failed',
         }
       }
-
     } catch (error: any) {
       logger.error('Company research error:', error)
       return {
         success: false,
-        error: error.message || 'Research failed'
+        error: error.message || 'Research failed',
       }
     }
   }
@@ -328,8 +339,8 @@ Focus on gaming industry relevance, company culture, recent projects, and inform
    * Review and score a cover letter
    */
   async reviewCoverLetter(
-    coverLetterText: string, 
-    jobDescription = '', 
+    coverLetterText: string,
+    jobDescription = '',
     userProfile: any = {}
   ): Promise<ReviewResult> {
     try {
@@ -376,13 +387,19 @@ ${JSON.stringify(userProfile, null, 2)}
 Provide detailed review and scoring.`
 
       const prompt = `${systemInstructions}\n\n${userPrompt}`
-      const text = await ai.generateText(prompt, { temperature: 0.3, maxTokens: 1000 })
-      const result = { success: true, content: typeof text === 'string' ? text : text.content || '' }
+      const text = await ai.generateText(prompt, {
+        temperature: 0.3,
+        maxTokens: 1000,
+      })
+      const result = {
+        success: true,
+        content: typeof text === 'string' ? text : text.content || '',
+      }
 
       if (result.success) {
         try {
           const parsedContent = JSON.parse(result.content)
-          
+
           const response: ReviewResult = {
             success: true,
             score: parsedContent.score || 0,
@@ -391,15 +408,14 @@ Provide detailed review and scoring.`
             weaknesses: parsedContent.weaknesses || [],
             suggestions: parsedContent.suggestions || [],
             atsCompliance: parsedContent.atsCompliance !== false,
-            revisionPriority: parsedContent.revisionPriority || []
+            revisionPriority: parsedContent.revisionPriority || [],
           }
 
           logger.info('Cover letter review completed')
           return response
-
         } catch (parseError) {
           logger.warn('Failed to parse review response:', parseError)
-          
+
           return {
             success: false,
             error: 'Failed to parse review results',
@@ -408,8 +424,8 @@ Provide detailed review and scoring.`
               score: 70,
               strengths: ['Content provided'],
               weaknesses: ['Needs detailed review'],
-              suggestions: ['Consider professional review']
-            }
+              suggestions: ['Consider professional review'],
+            },
           }
         }
       } else {
@@ -417,16 +433,15 @@ Provide detailed review and scoring.`
         return {
           success: false,
           score: 0,
-          error: 'Review failed'
+          error: 'Review failed',
         }
       }
-
     } catch (error: any) {
       logger.error('Cover letter review error:', error)
       return {
         success: false,
         score: 0,
-        error: error.message || 'Review failed'
+        error: error.message || 'Review failed',
       }
     }
   }
@@ -435,17 +450,18 @@ Provide detailed review and scoring.`
    * Improve an existing cover letter
    */
   async improveCoverLetter(
-    coverLetterText: string, 
-    improvementFocus: string[] = [], 
-    jobDescription = '', 
+    coverLetterText: string,
+    improvementFocus: string[] = [],
+    jobDescription = '',
     userProfile: any = {}
   ): Promise<ImprovementResult> {
     try {
       await this.ensureAiReady()
 
-      const focusAreas = improvementFocus.length > 0 
-        ? improvementFocus.join(', ')
-        : 'overall quality, relevance, and impact'
+      const focusAreas =
+        improvementFocus.length > 0
+          ? improvementFocus.join(', ')
+          : 'overall quality, relevance, and impact'
 
       const systemInstructions = `You are a professional cover letter editor specializing in gaming industry applications. Improve cover letters while maintaining the author's voice.
 
@@ -474,31 +490,36 @@ IMPROVEMENT FOCUS: ${focusAreas}
 Improve this cover letter while maintaining authenticity.`
 
       const prompt = `${systemInstructions}\n\n${userPrompt}`
-      const text = await ai.generateText(prompt, { temperature: 0.5, maxTokens: 1200 })
-      const result = { success: true, content: typeof text === 'string' ? text : text.content || '' }
+      const text = await ai.generateText(prompt, {
+        temperature: 0.5,
+        maxTokens: 1200,
+      })
+      const result = {
+        success: true,
+        content: typeof text === 'string' ? text : text.content || '',
+      }
 
       if (result.success) {
         try {
           const parsedContent = JSON.parse(result.content)
-          
+
           const response: ImprovementResult = {
             success: true,
             improvedText: parsedContent.improvedText || coverLetterText,
             changes: parsedContent.changes || [],
             improvements: parsedContent.improvements || [],
-            keywordBoosts: parsedContent.keywordBoosts || []
+            keywordBoosts: parsedContent.keywordBoosts || [],
           }
 
           logger.info('Cover letter improvement completed')
           return response
-
         } catch (parseError) {
           logger.warn('Failed to parse improvement response:', parseError)
-          
+
           return {
             success: false,
             improvedText: coverLetterText,
-            error: 'Failed to parse improvement results'
+            error: 'Failed to parse improvement results',
           }
         }
       } else {
@@ -506,16 +527,15 @@ Improve this cover letter while maintaining authenticity.`
         return {
           success: false,
           improvedText: coverLetterText,
-          error: 'Improvement failed'
+          error: 'Improvement failed',
         }
       }
-
     } catch (error: any) {
       logger.error('Cover letter improvement error:', error)
       return {
         success: false,
         improvedText: coverLetterText,
-        error: error.message || 'Improvement failed'
+        error: error.message || 'Improvement failed',
       }
     }
   }
@@ -524,9 +544,9 @@ Improve this cover letter while maintaining authenticity.`
    * Generate multiple variations of a cover letter
    */
   async generateVariations(
-    baseContent: string, 
-    jobDescription = '', 
-    userProfile: any = {}, 
+    baseContent: string,
+    jobDescription = '',
+    userProfile: any = {},
     count = 3
   ): Promise<VariationsResult> {
     try {
@@ -565,28 +585,35 @@ ${JSON.stringify(userProfile, null, 2)}
 Generate ${count} variations with different approaches and tones.`
 
       const prompt = `${systemInstructions}\n\n${userPrompt}`
-      const text = await ai.generateText(prompt, { temperature: 0.8, maxTokens: 2000 })
-      const result = { success: true, content: typeof text === 'string' ? text : text.content || '' }
+      const text = await ai.generateText(prompt, {
+        temperature: 0.8,
+        maxTokens: 2000,
+      })
+      const result = {
+        success: true,
+        content: typeof text === 'string' ? text : text.content || '',
+      }
 
       if (result.success) {
         try {
           const parsedContent = JSON.parse(result.content)
-          
+
           const response: VariationsResult = {
             success: true,
-            variations: parsedContent.variations || []
+            variations: parsedContent.variations || [],
           }
 
-          logger.info(`Generated ${response.variations.length} cover letter variations`)
+          logger.info(
+            `Generated ${response.variations.length} cover letter variations`
+          )
           return response
-
         } catch (parseError) {
           logger.warn('Failed to parse variations response:', parseError)
-          
+
           return {
             success: false,
             variations: [],
-            error: 'Failed to parse variation results'
+            error: 'Failed to parse variation results',
           }
         }
       } else {
@@ -594,16 +621,15 @@ Generate ${count} variations with different approaches and tones.`
         return {
           success: false,
           variations: [],
-          error: 'Variation generation failed'
+          error: 'Variation generation failed',
         }
       }
-
     } catch (error: any) {
       logger.error('Cover letter variations error:', error)
       return {
         success: false,
         variations: [],
-        error: error.message || 'Variation generation failed'
+        error: error.message || 'Variation generation failed',
       }
     }
   }
@@ -629,5 +655,5 @@ export type {
   ReviewResult,
   ImprovementResult,
   VariationsResult,
-  GenerationOptions
+  GenerationOptions,
 }

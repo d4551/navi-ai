@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="card glass-card section-card h-100 font-sans" role="complementary" aria-labelledby="about-title">
+  <div
+    class="card glass-card section-card h-100 font-sans"
+    role="complementary"
+    aria-labelledby="about-title"
+  >
     <div class="card-header section-header card-header--dense">
       <h6 id="about-title" class="mb-0">
         <InfoIconComponent class="mr-2 icon-sm" />About NAVI
@@ -10,19 +14,15 @@
       <!-- App Info -->
       <div class="app-info mb-4">
         <div class="app-logo mb-3">
-          <img
-            :src="logoSrc"
-            alt="NAVI Logo"
-            class="img-fluid logo-max-60"
-          />
+          <img :src="logoSrc" alt="NAVI Logo" class="img-fluid logo-max-60" />
         </div>
 
         <div class="app-details">
           <h6 class="app-name mb-1">NAVI - AI Career Assistant</h6>
           <p class="app-version mb-2">Version {{ appVersion }}</p>
           <p class="app-description mb-0">
-            Your intelligent companion for gaming career development,
-            interview preparation, and professional growth.
+            Your intelligent companion for gaming career development, interview
+            preparation, and professional growth.
           </p>
         </div>
       </div>
@@ -95,7 +95,13 @@
             <ExternalLinkIconComponent class="ms-auto" />
           </a>
 
-          <UnifiedButton variant="outline" size="sm" leading-icon="mdi-history" @click="$emit('show-changelog')">Changelog</UnifiedButton>
+          <UnifiedButton
+            variant="outline"
+            size="sm"
+            leading-icon="mdi-history"
+            @click="$emit('show-changelog')"
+            >Changelog</UnifiedButton
+          >
         </div>
       </div>
 
@@ -103,18 +109,44 @@
       <div class="support-feedback">
         <h6 class="section-title mb-3">Support & Feedback</h6>
         <div class="d-grid gap-glass-sm">
-          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="ExclamationTriangleIcon" @click="$emit('report-issue')">Report Issue</UnifiedButton>
+          <UnifiedButton
+            type="button"
+            variant="outline"
+            size="sm"
+            leading-icon="ExclamationTriangleIcon"
+            @click="$emit('report-issue')"
+            >Report Issue</UnifiedButton
+          >
 
-          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="LightBulbIcon" @click="$emit('request-feature')">Request Feature</UnifiedButton>
+          <UnifiedButton
+            type="button"
+            variant="outline"
+            size="sm"
+            leading-icon="LightBulbIcon"
+            @click="$emit('request-feature')"
+            >Request Feature</UnifiedButton
+          >
 
-          <UnifiedButton type="button" variant="outline" size="sm" leading-icon="EnvelopeIcon" @click="$emit('contact-support')">Contact Support</UnifiedButton>
+          <UnifiedButton
+            type="button"
+            variant="outline"
+            size="sm"
+            leading-icon="EnvelopeIcon"
+            @click="$emit('contact-support')"
+            >Contact Support</UnifiedButton
+          >
         </div>
       </div>
 
       <!-- Footer -->
       <div class="about-footer mt-4 pt-3 border-t">
         <div class="copyright text-center">
-          <small :class="{ 'text-secondary': colorScheme === 'light', 'text-secondary-dark': colorScheme === 'dark' }">
+          <small
+            :class="{
+              'text-secondary': colorScheme === 'light',
+              'text-secondary-dark': colorScheme === 'dark',
+            }"
+          >
             © {{ currentYear }} NAVI CV. All rights by
             <a
               href="https://www.linkedin.com/in/stracos"
@@ -122,27 +154,24 @@
               rel="noopener noreferrer"
               class="legal-link"
             >
-              <GraduationCapIconComponent class="professor-icon mr-1" :class="{ 'text-warning-600': colorScheme === 'light', 'text-warning-600-dark': colorScheme === 'dark' }" />
-              Dr. Brandon Donnelly
-            </a>. Made with
-            <HeartIconComponent class="heart-icon" /> for gamers.
+              <GraduationCapIconComponent
+                class="professor-icon mr-1"
+                :class="{
+                  'text-warning-600': colorScheme === 'light',
+                  'text-warning-600-dark': colorScheme === 'dark',
+                }"
+              />
+              Dr. Brandon Donnelly </a
+            >. Made with <HeartIconComponent class="heart-icon" /> for gamers.
           </small>
         </div>
 
         <div class="legal-links mt-2 text-center">
-          <a
-            href="#"
-            class="legal-link"
-            @click.prevent="$emit('show-privacy')"
-          >
+          <a href="#" class="legal-link" @click.prevent="$emit('show-privacy')">
             Privacy Policy
           </a>
           <span class="mx-2 text-secondary">•</span>
-          <a
-            href="#"
-            class="legal-link"
-            @click.prevent="$emit('show-terms')"
-          >
+          <a href="#" class="legal-link" @click.prevent="$emit('show-terms')">
             Terms of Service
           </a>
         </div>
@@ -152,7 +181,11 @@
 </template>
 
 <script>
-import { EnvelopeIcon, ExclamationTriangleIcon, LightBulbIcon } from '@heroicons/vue/24/outline'
+import {
+  EnvelopeIcon,
+  ExclamationTriangleIcon,
+  LightBulbIcon,
+} from '@heroicons/vue/24/outline'
 
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 import {
@@ -172,7 +205,7 @@ import {
   LightbulbIconComponent,
   MailIconComponent,
   HeartIconComponent,
-  GraduationCapIconComponent
+  GraduationCapIconComponent,
 } from './UnifiedIcons.js'
 import { getAppVersion } from '@/utils/version'
 
@@ -196,17 +229,17 @@ export default {
     MailIconComponent,
     HeartIconComponent,
     GraduationCapIconComponent,
-    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue')
+    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
   },
   props: {
     appVersion: {
       type: String,
-      default: getAppVersion()
+      default: getAppVersion(),
     },
     logoSrc: {
       type: String,
-      default: '/logoDark.svg'
-    }
+      default: '/logoDark.svg',
+    },
   },
   emits: [
     'show-changelog',
@@ -214,24 +247,26 @@ export default {
     'request-feature',
     'contact-support',
     'show-privacy',
-    'show-terms'
+    'show-terms',
   ],
   setup() {
     const { colorScheme } = useUnifiedTheme()
-    return { 
-      colorScheme: colorScheme || 'light' // Provide fallback
+    return {
+      colorScheme: colorScheme || 'light', // Provide fallback
     }
   },
   computed: {
     currentYear() {
       return new Date().getFullYear()
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped>
-.logo-max-60 { max-height: 60px; }
+.logo-max-60 {
+  max-height: 60px;
+}
 .app-info {
   text-align: center;
 }

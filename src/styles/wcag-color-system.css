@@ -258,7 +258,7 @@
 
 /* ===== DARK MODE OVERRIDES ===== */
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* Enhanced text contrast for dark mode */
   --text-primary: #ffffff;
   --text-secondary: #e5e5e5;
@@ -271,29 +271,29 @@
   --glass-border-subtle: rgba(255, 255, 255, 0.15);
 }
 
-[data-theme="dark"] .text-aa,
-[data-theme="dark"] .text-aaa {
+[data-theme='dark'] .text-aa,
+[data-theme='dark'] .text-aaa {
   color: #ffffff;
 }
 
-[data-theme="dark"] .glass-text-aa {
+[data-theme='dark'] .glass-text-aa {
   background: rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
 
-[data-theme="dark"] .glass-text-aaa {
+[data-theme='dark'] .glass-text-aaa {
   background: rgba(0, 0, 0, 0.4);
   border-color: rgba(255, 255, 255, 0.3);
   color: #ffffff;
 }
 
-[data-theme="dark"] .card-aa {
+[data-theme='dark'] .card-aa {
   background: var(--bg-primary);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .card-glass-aa {
+[data-theme='dark'] .card-glass-aa {
   background: rgba(0, 0, 0, 0.8);
   border-color: rgba(255, 255, 255, 0.2);
 }
@@ -311,7 +311,7 @@
     --glass-border-safe: #333333;
   }
 
-  [data-theme="dark"] {
+  [data-theme='dark'] {
     --text-primary: #ffffff;
     --text-secondary: #cccccc;
     --text-tertiary: #999999;

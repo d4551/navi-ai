@@ -23,7 +23,7 @@ export function useStores() {
     meta,
     isConfigured,
     hasPortfolio,
-    profileCompleteness
+    profileCompleteness,
   } = storeToRefs(appStore)
 
   // Theme store
@@ -32,7 +32,7 @@ export function useStores() {
     config: themeConfig,
     effectiveTheme,
     currentPalette,
-    themeClasses
+    themeClasses,
   } = storeToRefs(themeStore)
 
   return {
@@ -56,10 +56,11 @@ export function useStores() {
     themeClasses,
 
     // Combined utilities
-    isLoading: (key) => loading.value[key] || false,
-    hasError: (key) => key ? errors.value[key] : Object.values(errors.value).some(Boolean),
+    isLoading: key => loading.value[key] || false,
+    hasError: key =>
+      key ? errors.value[key] : Object.values(errors.value).some(Boolean),
     isDarkMode: () => effectiveTheme.value === 'dark',
-    isLightMode: () => effectiveTheme.value === 'light'
+    isLightMode: () => effectiveTheme.value === 'light',
   }
 }
 
@@ -73,7 +74,7 @@ export function useLoadingState(initialKeys = []) {
     appStore.setLoading(key, value)
   }
 
-  const clearLoading = (key) => {
+  const clearLoading = key => {
     appStore.setLoading(key, false)
   }
 
@@ -91,7 +92,7 @@ export function useLoadingState(initialKeys = []) {
     setLoading,
     clearLoading,
     clearAllLoading,
-    isAnyLoading: () => Object.values(loading.value).some(Boolean)
+    isAnyLoading: () => Object.values(loading.value).some(Boolean),
   }
 }
 
@@ -105,7 +106,7 @@ export function useErrorState() {
     appStore.setError(type, message)
   }
 
-  const clearError = (type) => {
+  const clearError = type => {
     appStore.clearError(type)
   }
 
@@ -118,7 +119,7 @@ export function useErrorState() {
     setError,
     clearError,
     clearAllErrors,
-    hasAnyError: () => Object.values(errors.value).some(Boolean)
+    hasAnyError: () => Object.values(errors.value).some(Boolean),
   }
 }
 
@@ -132,13 +133,17 @@ export function useThemeManager() {
     themeStore.toggleDarkMode()
   }
 
-  const setTheme = (mode) => {
+  const setTheme = mode => {
     themeStore.setMode(mode)
   }
 
-  const updateThemeConfig = (config) => {
+  const updateThemeConfig = config => {
     Object.entries(config).forEach(([key, value]) => {
-      if (typeof themeStore[`set${key.charAt(0).toUpperCase() + key.slice(1)}`] === 'function') {
+      if (
+        typeof themeStore[
+          `set${key.charAt(0).toUpperCase() + key.slice(1)}`
+        ] === 'function'
+      ) {
         themeStore[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](value)
       }
     })
@@ -151,7 +156,7 @@ export function useThemeManager() {
     setTheme,
     updateThemeConfig,
     isDark: () => effectiveTheme.value === 'dark',
-    isLight: () => effectiveTheme.value === 'light'
+    isLight: () => effectiveTheme.value === 'light',
   }
 }
 
@@ -159,5 +164,5 @@ export default {
   useStores,
   useLoadingState,
   useErrorState,
-  useThemeManager
+  useThemeManager,
 }

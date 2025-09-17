@@ -39,17 +39,20 @@ class SimpleDocumentStorage {
     return SimpleDocumentStorage.instance
   }
 
-  async saveDocument(type: 'resume' | 'cover-letter', data: any): Promise<void> {
+  async saveDocument(
+    type: 'resume' | 'cover-letter',
+    data: any
+  ): Promise<void> {
     try {
       const documents = this.loadDocuments()
       const existingIndex = documents.findIndex(doc => doc.type === type)
-      
+
       const documentItem: DocumentStorageItem = {
         id: data.id || this.generateId(),
         type,
         data,
         createdAt: data.createdAt || new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       }
 
       if (existingIndex >= 0) {
@@ -65,11 +68,14 @@ class SimpleDocumentStorage {
     }
   }
 
-  async getDocument(type: 'resume' | 'cover-letter', id?: string): Promise<any> {
+  async getDocument(
+    type: 'resume' | 'cover-letter',
+    id?: string
+  ): Promise<any> {
     try {
       const documents = this.loadDocuments()
-      const document = documents.find(doc => 
-        doc.type === type && (id ? doc.id === id : true)
+      const document = documents.find(
+        doc => doc.type === type && (id ? doc.id === id : true)
       )
       return document?.data || null
     } catch (error) {
@@ -82,7 +88,7 @@ class SimpleDocumentStorage {
     try {
       const versions = this.loadVersions()
       versions.unshift(version)
-      
+
       // Keep only the last 100 versions
       if (versions.length > 100) {
         versions.splice(100)
@@ -145,20 +151,20 @@ export const databaseService = {
   saveDocument: async (type: 'resume' | 'cover-letter', data: any) => {
     return SimpleDocumentStorage.getInstance().saveDocument(type, data)
   },
-  
+
   getDocument: async (type: 'resume' | 'cover-letter', id?: string) => {
     return SimpleDocumentStorage.getInstance().getDocument(type, id)
   },
-  
+
   saveVersion: async (version: VersionStorageItem) => {
     return SimpleDocumentStorage.getInstance().saveVersion(version)
   },
-  
+
   getVersions: async () => {
     return SimpleDocumentStorage.getInstance().getVersions()
   },
-  
+
   deleteVersion: async (versionId: string) => {
     return SimpleDocumentStorage.getInstance().deleteVersion(versionId)
-  }
+  },
 }

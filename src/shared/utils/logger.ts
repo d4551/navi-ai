@@ -3,49 +3,53 @@
  * Provides consistent logging across renderer and main processes
  */
 
-import * as Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/browser'
 export interface LogEntry {
-  level: 'debug' | 'info' | 'warn' | 'error';
-  message: string;
-  data?: any;
-  timestamp: number;
-  context?: string;
+  level: 'debug' | 'info' | 'warn' | 'error'
+  message: string
+  data?: any
+  timestamp: number
+  context?: string
 }
 
 // Allow optional electron preload API typing in renderer
 // Note: window.api is accessed dynamically; no global TS declaration required here.
 
 class Logger {
-  private isDevelopment = typeof process !== 'undefined' && process.env.NODE_ENV === 'development';
-  private seenMessages = new Set<string>();
+  private isDevelopment =
+    typeof process !== 'undefined' && process.env.NODE_ENV === 'development'
+  private seenMessages = new Set<string>()
   private reportingEnabled =
-    (typeof process !== 'undefined' && (process.env.VITE_ENABLE_SENTRY ?? process.env.ENABLE_SENTRY)) !== 'false';
+    (typeof process !== 'undefined' &&
+      (process.env.VITE_ENABLE_SENTRY ?? process.env.ENABLE_SENTRY)) !== 'false'
 
   constructor() {
-    const dsn = typeof process !== 'undefined' && (process.env.VITE_SENTRY_DSN ?? process.env.SENTRY_DSN);
+    const dsn =
+      typeof process !== 'undefined' &&
+      (process.env.VITE_SENTRY_DSN ?? process.env.SENTRY_DSN)
     if (this.reportingEnabled && dsn) {
-      Sentry.init({ dsn });
+      Sentry.init({ dsn })
     } else {
-      this.reportingEnabled = false;
+      this.reportingEnabled = false
     }
   }
 
   debug(message: string, data?: any, context?: string): void {
     if (this.isDevelopment) {
-      this.log('debug', message, data, context);
+      this.log('debug', message, data, context)
     }
   }
 
   info(message: string, data?: any, context?: string): void {
-    this.log('info', message, data, context);
+    this.log('info', message, data, context)
   }
 
   warn(message: string, data?: any, context?: string): void {
-    this.log('warn', message, data, context);
+    this.log('warn', message, data, context)
   }
 
   error(message: string, data?: any, context?: string): void {
-    this.log('error', message, data, context);
+    this.log('error', message, data, context)
   }
 
   /**
@@ -56,105 +60,125 @@ class Logger {
    * @param data Optional data to log
    * @param context Optional context string
    */
-  once(key: string, level: LogEntry['level'] = 'warn', message: string, data?: any, context?: string): void {
-    const uniqueKey = String(key);
+  once(
+    key: string,
+    level: LogEntry['level'] = 'warn',
+    message: string,
+    data?: any,
+    context?: string
+  ): void {
+    const uniqueKey = String(key)
     if (this.seenMessages.has(uniqueKey)) {
-      return;
+      return
     }
-    this.seenMessages.add(uniqueKey);
-    this[level](message, data, context);
+    this.seenMessages.add(uniqueKey)
+    this[level](message, data, context)
   }
 
-  private log(level: LogEntry['level'], message: string, data?: any, context?: string): void {
+  private log(
+    level: LogEntry['level'],
+    message: string,
+    data?: any,
+    context?: string
+  ): void {
     const entry: LogEntry = {
       level,
       message,
       data,
       timestamp: Date.now(),
-      context
-    };
+      context,
+    }
 
     // Console output with appropriate styling
-    const prefix = `[${level.toUpperCase()}]`;
-    const timestamp = new Date(entry.timestamp).toISOString();
-    const contextStr = context ? `[${context}] ` : '';
-    
-    const logMessage = `${prefix} ${timestamp} ${contextStr}${message}`;
+    const prefix = `[${level.toUpperCase()}]`
+    const timestamp = new Date(entry.timestamp).toISOString()
+    const contextStr = context ? `[${context}] ` : ''
+
+    const logMessage = `${prefix} ${timestamp} ${contextStr}${message}`
 
     // Format data for better console display
-    let formattedData: any = data;
+    let formattedData: any = data
     // Preserve real Error objects so console shows stack/details
     if (data instanceof Error) {
-      formattedData = data;
+      formattedData = data
     } else if (data && typeof data === 'object') {
       // Safely stringify objects (handle circular refs and nested Errors)
       try {
-        const seen = new WeakSet();
+        const seen = new WeakSet()
         formattedData = JSON.stringify(
           data,
           (key, value) => {
             if (value instanceof Error) {
-              return { name: value.name, message: value.message, stack: value.stack };
+              return {
+                name: value.name,
+                message: value.message,
+                stack: value.stack,
+              }
             }
             if (typeof value === 'object' && value !== null) {
-              if (seen.has(value)) return '[Circular]';
-              seen.add(value);
+              if (seen.has(value)) return '[Circular]'
+              seen.add(value)
             }
-            return value;
+            return value
           },
-          2,
-        );
+          2
+        )
       } catch {
-        formattedData = String(data);
+        formattedData = String(data)
       }
     }
 
     switch (level) {
       case 'debug':
-        console.debug(logMessage, formattedData || '');
-        break;
+        console.debug(logMessage, formattedData || '')
+        break
       case 'info':
-        console.info(logMessage, formattedData || '');
-        break;
+        console.info(logMessage, formattedData || '')
+        break
       case 'warn':
-        console.warn(logMessage, formattedData || '');
-        break;
+        console.warn(logMessage, formattedData || '')
+        break
       case 'error':
-        console.error(logMessage, formattedData || '');
-        break;
+        console.error(logMessage, formattedData || '')
+        break
     }
 
     // In production, you might want to send to a logging service
     if (!this.isDevelopment && level === 'error') {
-      this.reportError(entry);
+      this.reportError(entry)
     }
   }
 
   setReportingEnabled(enabled: boolean): void {
-    this.reportingEnabled = enabled;
+    this.reportingEnabled = enabled
   }
 
   private reportError(entry: LogEntry): void {
     if (!this.reportingEnabled) {
-      return;
+      return
     }
     try {
       Sentry.withScope(scope => {
-        const sentryLevel = (entry.level === 'warn' ? 'warning' : entry.level) as Sentry.SeverityLevel;
-        scope.setLevel(sentryLevel);
-        if (entry.context) scope.setTag('context', entry.context);
-        if (entry.data) scope.setContext('data', entry.data);
+        const sentryLevel = (
+          entry.level === 'warn' ? 'warning' : entry.level
+        ) as Sentry.SeverityLevel
+        scope.setLevel(sentryLevel)
+        if (entry.context) scope.setTag('context', entry.context)
+        if (entry.data) scope.setContext('data', entry.data)
         const error =
-          entry.data instanceof Error ? entry.data : new Error(entry.message);
-        Sentry.captureException(error);
-      });
-      if (typeof window !== 'undefined' && (window as any).api?.app?.reportError) {
-        (window as any).api.app.reportError(entry);
+          entry.data instanceof Error ? entry.data : new Error(entry.message)
+        Sentry.captureException(error)
+      })
+      if (
+        typeof window !== 'undefined' &&
+        (window as any).api?.app?.reportError
+      ) {
+        ;(window as any).api.app.reportError(entry)
       }
     } catch (error) {
-      console.error('Failed to report error:', error);
+      console.error('Failed to report error:', error)
     }
   }
 }
 
-export const logger = new Logger();
+export const logger = new Logger()

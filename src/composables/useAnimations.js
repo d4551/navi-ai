@@ -13,14 +13,14 @@ export function useAnimations() {
   onMounted(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     prefersReducedMotion.value = mediaQuery.matches
-    
+
     // Listen for changes
-    const handleChange = (e) => {
+    const handleChange = e => {
       prefersReducedMotion.value = e.matches
     }
-    
+
     mediaQuery.addEventListener('change', handleChange)
-    
+
     onUnmounted(() => {
       mediaQuery.removeEventListener('change', handleChange)
     })
@@ -36,7 +36,7 @@ export function useAnimations() {
       stagger = 0,
       easing = 'cubic-bezier(0.4, 0, 0.2, 1)',
       from = { opacity: 0, transform: 'translateY(20px)' },
-      to = { opacity: 1, transform: 'translateY(0)' }
+      to = { opacity: 1, transform: 'translateY(0)' },
     } = options
 
     if (prefersReducedMotion.value) {
@@ -50,7 +50,7 @@ export function useAnimations() {
       return Promise.resolve()
     }
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const elementList = Array.isArray(elements) ? elements : [elements]
       let completed = 0
 
@@ -61,7 +61,7 @@ export function useAnimations() {
         Object.assign(element.style, {
           ...from,
           transition: `all ${duration}ms ${easing}`,
-          transitionDelay: `${delay + (index * stagger)}ms`
+          transitionDelay: `${delay + index * stagger}ms`,
         })
 
         // Trigger animation on next frame
@@ -73,7 +73,7 @@ export function useAnimations() {
         const handleTransitionEnd = () => {
           completed++
           element.removeEventListener('transitionend', handleTransitionEnd)
-          
+
           if (completed === elementList.length) {
             resolve()
           }
@@ -92,7 +92,7 @@ export function useAnimations() {
       duration = 300,
       delay = 0,
       easing = 'cubic-bezier(0.4, 0, 0.2, 1)',
-      to = { opacity: 0, transform: 'translateY(-20px)' }
+      to = { opacity: 0, transform: 'translateY(-20px)' },
     } = options
 
     if (prefersReducedMotion.value) {
@@ -105,16 +105,16 @@ export function useAnimations() {
       return Promise.resolve()
     }
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const elementList = Array.isArray(elements) ? elements : [elements]
       let completed = 0
 
-      elementList.forEach((element) => {
+      elementList.forEach(element => {
         if (!element) return
 
         Object.assign(element.style, {
           transition: `all ${duration}ms ${easing}`,
-          transitionDelay: `${delay}ms`
+          transitionDelay: `${delay}ms`,
         })
 
         requestAnimationFrame(() => {
@@ -124,7 +124,7 @@ export function useAnimations() {
         const handleTransitionEnd = () => {
           completed++
           element.removeEventListener('transitionend', handleTransitionEnd)
-          
+
           if (completed === elementList.length) {
             resolve()
           }
@@ -139,16 +139,12 @@ export function useAnimations() {
    * Scale animation for buttons and interactive elements
    */
   const scalePress = (element, options = {}) => {
-    const {
-      scale = 0.95,
-      duration = 150,
-      returnDuration = 200
-    } = options
+    const { scale = 0.95, duration = 150, returnDuration = 200 } = options
 
     if (!element || prefersReducedMotion.value) return
 
     const originalTransform = element.style.transform
-    
+
     // Press down
     element.style.transition = `transform ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`
     element.style.transform = `${originalTransform} scale(${scale})`
@@ -164,10 +160,7 @@ export function useAnimations() {
    * Bounce animation for success states
    */
   const bounce = (element, options = {}) => {
-    const { 
-      duration = 600,
-      intensity = 1.1 
-    } = options
+    const { duration = 600, intensity = 1.1 } = options
 
     if (!element || prefersReducedMotion.value) return
 
@@ -176,12 +169,12 @@ export function useAnimations() {
       { transform: `scale(${intensity})`, offset: 0.3 },
       { transform: 'scale(1)', offset: 0.6 },
       { transform: `scale(${intensity * 0.95})`, offset: 0.8 },
-      { transform: 'scale(1)', offset: 1 }
+      { transform: 'scale(1)', offset: 1 },
     ]
 
     element.animate(keyframes, {
       duration,
-      easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+      easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
     })
   }
 
@@ -189,10 +182,7 @@ export function useAnimations() {
    * Shake animation for error states
    */
   const shake = (element, options = {}) => {
-    const { 
-      duration = 500,
-      intensity = 10 
-    } = options
+    const { duration = 500, intensity = 10 } = options
 
     if (!element || prefersReducedMotion.value) return
 
@@ -206,12 +196,12 @@ export function useAnimations() {
       { transform: `translateX(${intensity / 2}px)`, offset: 0.6 },
       { transform: `translateX(-${intensity / 4}px)`, offset: 0.7 },
       { transform: `translateX(${intensity / 4}px)`, offset: 0.8 },
-      { transform: 'translateX(0)', offset: 1 }
+      { transform: 'translateX(0)', offset: 1 },
     ]
 
     element.animate(keyframes, {
       duration,
-      easing: 'cubic-bezier(0.36, 0.07, 0.19, 0.97)'
+      easing: 'cubic-bezier(0.36, 0.07, 0.19, 0.97)',
     })
   }
 
@@ -222,7 +212,7 @@ export function useAnimations() {
     const {
       duration = 300,
       distance = 50,
-      easing = 'cubic-bezier(0.4, 0, 0.2, 1)'
+      easing = 'cubic-bezier(0.4, 0, 0.2, 1)',
     } = options
 
     if (!element || prefersReducedMotion.value) {
@@ -235,12 +225,12 @@ export function useAnimations() {
       up: { x: 0, y: distance },
       down: { x: 0, y: -distance },
       left: { x: distance, y: 0 },
-      right: { x: -distance, y: 0 }
+      right: { x: -distance, y: 0 },
     }
 
     const { x, y } = directions[direction] || directions.up
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       // Set initial state
       element.style.opacity = '0'
       element.style.transform = `translate(${x}px, ${y}px)`
@@ -264,7 +254,7 @@ export function useAnimations() {
     const {
       duration = 1000,
       easing = 'cubic-bezier(0.4, 0, 0.2, 1)',
-      onUpdate = () => {}
+      onUpdate = () => {},
     } = options
 
     if (!element || prefersReducedMotion.value) {
@@ -273,20 +263,21 @@ export function useAnimations() {
       return Promise.resolve()
     }
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const startTime = performance.now()
       const valueDiff = toValue - fromValue
 
-      const animate = (currentTime) => {
+      const animate = currentTime => {
         const elapsed = currentTime - startTime
         const progress = Math.min(elapsed / duration, 1)
-        
-        // Easing function
-        const easeProgress = progress < 0.5
-          ? 2 * progress * progress
-          : 1 - Math.pow(-2 * progress + 2, 3) / 2
 
-        const currentValue = fromValue + (valueDiff * easeProgress)
+        // Easing function
+        const easeProgress =
+          progress < 0.5
+            ? 2 * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2
+
+        const currentValue = fromValue + valueDiff * easeProgress
         element.style.width = `${currentValue}%`
         onUpdate(currentValue)
 
@@ -305,18 +296,14 @@ export function useAnimations() {
    * Typewriter text animation
    */
   const typeWriter = (element, text, options = {}) => {
-    const {
-      speed = 50,
-      cursor = true,
-      cursorChar = '|'
-    } = options
+    const { speed = 50, cursor = true, cursorChar = '|' } = options
 
     if (!element || prefersReducedMotion.value) {
       element.textContent = text
       return Promise.resolve()
     }
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       let index = 0
       element.textContent = ''
 
@@ -350,7 +337,7 @@ export function useAnimations() {
                 addCursor()
               }
               blinkCount++
-              
+
               if (blinkCount >= 6) {
                 clearInterval(blink)
                 removeCursor()
@@ -371,10 +358,7 @@ export function useAnimations() {
    * Ripple effect for buttons
    */
   const ripple = (element, event, options = {}) => {
-    const {
-      color = 'rgba(255, 255, 255, 0.6)',
-      duration = 600
-    } = options
+    const { color = 'rgba(255, 255, 255, 0.6)', duration = 600 } = options
 
     if (!element || prefersReducedMotion.value) return
 
@@ -406,13 +390,16 @@ export function useAnimations() {
     element.appendChild(rippleEl)
 
     // Animate the ripple
-    rippleEl.animate([
-      { transform: 'scale(0)', opacity: 1 },
-      { transform: 'scale(1)', opacity: 0 }
-    ], {
-      duration,
-      easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-    }).onfinish = () => {
+    rippleEl.animate(
+      [
+        { transform: 'scale(0)', opacity: 1 },
+        { transform: 'scale(1)', opacity: 0 },
+      ],
+      {
+        duration,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      }
+    ).onfinish = () => {
       rippleEl.remove()
       // Restore original position if we changed it
       if (originalPosition !== element.style.position && !originalPosition) {
@@ -425,19 +412,15 @@ export function useAnimations() {
    * Stagger animation for lists
    */
   const staggerChildren = (container, options = {}) => {
-    const {
-      selector = '> *',
-      delay = 100,
-      animation = 'fadeIn'
-    } = options
+    const { selector = '> *', delay = 100, animation = 'fadeIn' } = options
 
     if (!container) return Promise.resolve()
 
     const children = container.querySelectorAll(selector)
-    
-    return new Promise((resolve) => {
+
+    return new Promise(resolve => {
       let completed = 0
-      
+
       children.forEach((child, index) => {
         setTimeout(async () => {
           switch (animation) {
@@ -450,14 +433,14 @@ export function useAnimations() {
             default:
               await fadeIn(child)
           }
-          
+
           completed++
           if (completed === children.length) {
             resolve()
           }
         }, index * delay)
       })
-      
+
       // Handle empty case
       if (children.length === 0) {
         resolve()
@@ -471,7 +454,7 @@ export function useAnimations() {
   const morphNumber = (element, fromValue, toValue, options = {}) => {
     const {
       duration = 1000,
-      formatter = (value) => Math.round(value).toString()
+      formatter = value => Math.round(value).toString(),
     } = options
 
     if (!element || prefersReducedMotion.value) {
@@ -479,18 +462,18 @@ export function useAnimations() {
       return Promise.resolve()
     }
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const startTime = performance.now()
       const valueDiff = toValue - fromValue
 
-      const animate = (currentTime) => {
+      const animate = currentTime => {
         const elapsed = currentTime - startTime
         const progress = Math.min(elapsed / duration, 1)
-        
+
         // Easing
         const easeProgress = 1 - Math.pow(1 - progress, 3)
-        const currentValue = fromValue + (valueDiff * easeProgress)
-        
+        const currentValue = fromValue + valueDiff * easeProgress
+
         element.textContent = formatter(currentValue)
 
         if (progress < 1) {
@@ -507,7 +490,7 @@ export function useAnimations() {
   /**
    * Queue system for managing multiple animations
    */
-  const queueAnimation = (animationFn) => {
+  const queueAnimation = animationFn => {
     animationQueue.value.push(animationFn)
     if (!isAnimating.value) {
       processQueue()
@@ -522,13 +505,13 @@ export function useAnimations() {
 
     isAnimating.value = true
     const animation = animationQueue.value.shift()
-    
+
     try {
       await animation()
     } catch (error) {
       console.warn('Animation error:', error)
     }
-    
+
     // Process next animation
     await nextTick()
     processQueue()
@@ -547,7 +530,7 @@ export function useAnimations() {
     ripple,
     staggerChildren,
     morphNumber,
-    queueAnimation
+    queueAnimation,
   }
 }
 
@@ -559,9 +542,9 @@ export const animationDirectives = {
     mounted(el, binding) {
       const { fadeIn } = useAnimations()
       const options = binding.value || {}
-      
+
       // Use intersection observer for performance
-      const observer = new IntersectionObserver((entries) => {
+      const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             fadeIn(el, options)
@@ -569,18 +552,18 @@ export const animationDirectives = {
           }
         })
       })
-      
+
       observer.observe(el)
-    }
+    },
   },
-  
-  'ripple': {
+
+  ripple: {
     mounted(el) {
       const { ripple } = useAnimations()
-      
-      el.addEventListener('click', (event) => {
+
+      el.addEventListener('click', event => {
         ripple(el, event)
       })
-    }
-  }
+    },
+  },
 }

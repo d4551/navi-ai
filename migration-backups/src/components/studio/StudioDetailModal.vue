@@ -6,8 +6,15 @@
         <div class="header-content">
           <div class="studio-identity">
             <div class="logo-container">
-              <img v-if="studio.logo" :src="studio.logo" :alt="studio.name" @error="onLogoError" />
-              <div v-else class="logo-placeholder">{{ studio.name?.charAt(0) }}</div>
+              <img
+                v-if="studio.logo"
+                :src="studio.logo"
+                :alt="studio.name"
+                @error="onLogoError"
+              />
+              <div v-else class="logo-placeholder">
+                {{ studio.name?.charAt(0) }}
+              </div>
             </div>
             <div class="studio-title-info">
               <h2 class="studio-name">{{ studio.name }}</h2>
@@ -18,7 +25,7 @@
             </div>
           </div>
           <div class="header-actions">
-            <button 
+            <button
               class="action-btn favorite-btn"
               :class="{ active: isFavorite }"
               @click="$emit('toggle-favorite', studio.id)"
@@ -38,8 +45,10 @@
           <!-- Studio Overview -->
           <section class="overview-section">
             <h3 class="section-title">Studio Overview</h3>
-            <p v-if="studio.description" class="description">{{ studio.description }}</p>
-            
+            <p v-if="studio.description" class="description">
+              {{ studio.description }}
+            </p>
+
             <div class="key-metrics">
               <div v-if="studio.founded" class="metric-item">
                 <AppIcon name="mdi-calendar" />
@@ -51,10 +60,15 @@
                 <span class="metric-label">Size</span>
                 <span class="metric-value">{{ studio.size }}</span>
               </div>
-              <div v-if="(studio as any).type || (studio as any).category" class="metric-item">
+              <div
+                v-if="(studio as any).type || (studio as any).category"
+                class="metric-item"
+              >
                 <AppIcon name="mdi-office-building" />
                 <span class="metric-label">Type</span>
-                <span class="metric-value">{{ (studio as any).type || (studio as any).category }}</span>
+                <span class="metric-value">{{
+                  (studio as any).type || (studio as any).category
+                }}</span>
               </div>
               <div v-if="studio.publiclyTraded" class="metric-item">
                 <AppIcon name="mdi-chart-bar" color="info" />
@@ -78,7 +92,11 @@
           <section v-if="studio.technologies?.length" class="tech-section">
             <h3 class="section-title">Technology Stack</h3>
             <div class="tech-grid">
-              <div v-for="tech in studio.technologies" :key="tech" class="tech-item">
+              <div
+                v-for="tech in studio.technologies"
+                :key="tech"
+                class="tech-item"
+              >
                 {{ tech }}
               </div>
             </div>
@@ -87,11 +105,18 @@
           <!-- Company Culture -->
           <section v-if="studio.culture" class="culture-section">
             <h3 class="section-title">Company Culture</h3>
-            
-            <div v-if="studio.culture.values?.length" class="culture-subsection">
+
+            <div
+              v-if="studio.culture.values?.length"
+              class="culture-subsection"
+            >
               <h4 class="subsection-title">Core Values</h4>
               <div class="values-list">
-                <div v-for="value in studio.culture.values" :key="value" class="value-item">
+                <div
+                  v-for="value in studio.culture.values"
+                  :key="value"
+                  class="value-item"
+                >
                   {{ value }}
                 </div>
               </div>
@@ -112,7 +137,11 @@
           <section v-if="studio.commonRoles?.length" class="roles-section">
             <h3 class="section-title">Common Roles</h3>
             <div class="roles-grid">
-              <div v-for="role in studio.commonRoles" :key="role" class="role-item">
+              <div
+                v-for="role in studio.commonRoles"
+                :key="role"
+                class="role-item"
+              >
                 {{ role }}
               </div>
             </div>
@@ -128,16 +157,16 @@
 
       <!-- Modal Footer -->
       <div class="modal-footer">
-        <UnifiedButton 
-          color="glass" 
+        <UnifiedButton
+          color="glass"
           appearance="outlined"
           leading-icon="mdi-briefcase-outline"
           @click="$emit('view-jobs', studio)"
         >
           View Open Positions
         </UnifiedButton>
-        
-        <UnifiedButton 
+
+        <UnifiedButton
           color="gaming"
           leading-icon="mdi-microphone"
           @click="$emit('start-interview', studio)"
@@ -350,7 +379,8 @@ function onLogoError(event: Event) {
 .game-item {
   padding: var(--spacing-2) var(--spacing-3);
   background: color-mix(in srgb, var(--color-gaming-500) 15%, var(--glass-bg));
-  border: 1px solid color-mix(in srgb, var(--color-gaming-500) 30%, var(--glass-border));
+  border: 1px solid
+    color-mix(in srgb, var(--color-gaming-500) 30%, var(--glass-border));
   color: var(--color-gaming-600);
   border-radius: var(--radius-md);
   font-size: 0.875rem;
@@ -366,7 +396,8 @@ function onLogoError(event: Event) {
 .tech-item {
   padding: var(--spacing-2) var(--spacing-3);
   background: color-mix(in srgb, var(--color-info-500) 15%, var(--glass-bg));
-  border: 1px solid color-mix(in srgb, var(--color-info-500) 30%, var(--glass-border));
+  border: 1px solid
+    color-mix(in srgb, var(--color-info-500) 30%, var(--glass-border));
   color: var(--color-info-600);
   border-radius: 999px;
   font-size: 0.875rem;
@@ -392,7 +423,8 @@ function onLogoError(event: Event) {
 .value-item {
   padding: var(--spacing-2) var(--spacing-3);
   background: color-mix(in srgb, var(--color-warning-500) 15%, var(--glass-bg));
-  border: 1px solid color-mix(in srgb, var(--color-warning-500) 30%, var(--glass-border));
+  border: 1px solid
+    color-mix(in srgb, var(--color-warning-500) 30%, var(--glass-border));
   color: var(--color-warning-600);
   border-radius: 999px;
   font-size: 0.875rem;
@@ -413,7 +445,8 @@ function onLogoError(event: Event) {
 .role-item {
   padding: var(--spacing-2) var(--spacing-3);
   background: color-mix(in srgb, var(--color-success-500) 15%, var(--glass-bg));
-  border: 1px solid color-mix(in srgb, var(--color-success-500) 30%, var(--glass-border));
+  border: 1px solid
+    color-mix(in srgb, var(--color-success-500) 30%, var(--glass-border));
   color: var(--color-success-600);
   border-radius: var(--radius-md);
   font-size: 0.875rem;
@@ -445,48 +478,48 @@ function onLogoError(event: Event) {
   .modal-overlay {
     padding: var(--spacing-2);
   }
-  
+
   .studio-detail-modal {
     max-height: 95vh;
   }
-  
+
   .modal-header,
   .modal-content,
   .modal-footer {
     padding: var(--spacing-4);
   }
-  
+
   .studio-identity {
     flex-direction: column;
     text-align: center;
     gap: var(--spacing-3);
   }
-  
+
   .studio-name {
     font-size: 1.5rem;
   }
-  
+
   .key-metrics {
     grid-template-columns: 1fr;
   }
-  
+
   .modal-footer {
     flex-direction: column;
   }
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .studio-detail-modal {
+[data-theme='dark'] .studio-detail-modal {
   background: var(--surface-elevated);
 }
 
-[data-theme="dark"] .modal-header,
-[data-theme="dark"] .modal-footer {
+[data-theme='dark'] .modal-header,
+[data-theme='dark'] .modal-footer {
   background: var(--surface-base);
 }
 
-[data-theme="dark"] .logo-container,
-[data-theme="dark"] .metric-item {
+[data-theme='dark'] .logo-container,
+[data-theme='dark'] .metric-item {
   background: var(--surface-elevated);
   border-color: var(--border-subtle);
 }

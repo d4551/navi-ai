@@ -1,318 +1,318 @@
-import { defineStore } from "pinia";
-import { Mutex } from "async-mutex";
-import { setVoiceRoutingPreferences } from "@/utils/voice";
-import GamificationService from "@/utils/gamification";
-import { logger } from "@/shared/utils/logger";
-import { validateEmail, validateRequired } from "@/utils/validation";
-import { unifiedStorage } from "@/utils/storage";
-import { statisticsService } from "@/shared/services/StatisticsService";
-import { userProfileService } from "@/services/UserProfileService";
+import { defineStore } from 'pinia'
+import { Mutex } from 'async-mutex'
+import { setVoiceRoutingPreferences } from '@/utils/voice'
+import GamificationService from '@/utils/gamification'
+import { logger } from '@/shared/utils/logger'
+import { validateEmail, validateRequired } from '@/utils/validation'
+import { unifiedStorage } from '@/utils/storage'
+import { statisticsService } from '@/shared/services/StatisticsService'
+import { userProfileService } from '@/services/UserProfileService'
 import {
   DEFAULT_SETTINGS,
   mergeSettings,
   Settings,
-} from "@/shared/schemas/settingsSchema";
-import { getAppVersion } from "@/utils/version";
+} from '@/shared/schemas/settingsSchema'
+import { getAppVersion } from '@/utils/version'
 
 // Comprehensive type definitions
 export interface PersonalInfo {
-  name: string;
-  email: string;
-  phone: string;
-  location: string;
-  website: string;
-  linkedIn: string;
-  github: string;
-  portfolio: string;
-  summary: string;
-  profilePicture: string | null;
+  name: string
+  email: string
+  phone: string
+  location: string
+  website: string
+  linkedIn: string
+  github: string
+  portfolio: string
+  summary: string
+  profilePicture: string | null
   // Extended fields
-  currentRole?: string;
-  currentCompany?: string;
-  yearsExperience?: number | null;
+  currentRole?: string
+  currentCompany?: string
+  yearsExperience?: number | null
 }
 
 export interface Experience {
-  id: string;
-  company: string;
-  title: string;
-  startDate: string;
-  endDate: string | null;
-  current: boolean;
-  description: string;
-  achievements: string[];
+  id: string
+  company: string
+  title: string
+  startDate: string
+  endDate: string | null
+  current: boolean
+  description: string
+  achievements: string[]
 }
 
 export interface Education {
-  id: string;
-  institution: string;
-  degree: string;
-  field: string;
-  startDate: string;
-  endDate: string | null;
-  gpa?: number;
-  achievements: string[];
+  id: string
+  institution: string
+  degree: string
+  field: string
+  startDate: string
+  endDate: string | null
+  gpa?: number
+  achievements: string[]
 }
 
 export interface Achievement {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  category: string;
+  id: string
+  title: string
+  description: string
+  date: string
+  category: string
 }
 
 export interface Certification {
-  id: string;
-  name: string;
-  issuer: string;
-  date: string;
-  expiryDate?: string;
-  credentialId?: string;
-  credentialUrl?: string;
+  id: string
+  name: string
+  issuer: string
+  date: string
+  expiryDate?: string
+  credentialId?: string
+  credentialUrl?: string
 }
 
 export interface Skills {
-  technical: string[];
-  soft: string[];
-  languages: string[];
-  tools: string[];
-  frameworks: string[];
-  gaming: string[];
+  technical: string[]
+  soft: string[]
+  languages: string[]
+  tools: string[]
+  frameworks: string[]
+  gaming: string[]
 }
 
 export interface GamingExperience {
-  competitiveGaming: string[];
-  teamLeadership: string[];
-  communityInvolvement: string[];
-  contentCreation: string[];
-  tournaments: string[];
-  achievements: string[];
-  preferredGames: string[];
-  platforms: string[];
-  guildsTeams: string[];
+  competitiveGaming: string[]
+  teamLeadership: string[]
+  communityInvolvement: string[]
+  contentCreation: string[]
+  tournaments: string[]
+  achievements: string[]
+  preferredGames: string[]
+  platforms: string[]
+  guildsTeams: string[]
 }
 
 export interface SalaryExpectations {
-  min: number | null;
-  max: number | null;
-  currency: string;
+  min: number | null
+  max: number | null
+  currency: string
 }
 
 export interface WorkPreferences {
-  remote: boolean;
-  hybrid: boolean;
-  onsite: boolean;
-  relocationWillingness: boolean;
+  remote: boolean
+  hybrid: boolean
+  onsite: boolean
+  relocationWillingness: boolean
 }
 
 export interface CareerGoals {
-  targetRoles: string[];
-  targetIndustries: string[];
-  targetCompanies: string[];
-  salaryExpectations: SalaryExpectations;
-  workPreferences: WorkPreferences;
-  timeframe: string;
+  targetRoles: string[]
+  targetIndustries: string[]
+  targetCompanies: string[]
+  salaryExpectations: SalaryExpectations
+  workPreferences: WorkPreferences
+  timeframe: string
 }
 
 export interface PrivacySettings {
-  publicProfile: boolean;
-  shareWithRecruiters: boolean;
-  allowAnalytics: boolean;
+  publicProfile: boolean
+  shareWithRecruiters: boolean
+  allowAnalytics: boolean
 }
 
 export interface ProfileMeta {
-  profileCompleteness: number;
-  lastUpdated: string | null;
-  createdAt: string | null;
-  version: string;
-  dataConsent: boolean;
-  privacySettings: PrivacySettings;
+  profileCompleteness: number
+  lastUpdated: string | null
+  createdAt: string | null
+  version: string
+  dataConsent: boolean
+  privacySettings: PrivacySettings
 }
 
 export interface AIData {
-  skillMappings: Array<{ gaming: string; professional: string }>;
-  resumeOptimizations: Array<{ field: string; suggestion: string }>;
-  coverLetterDrafts: Array<{ id: string; company: string; content: string }>;
+  skillMappings: Array<{ gaming: string; professional: string }>
+  resumeOptimizations: Array<{ field: string; suggestion: string }>
+  coverLetterDrafts: Array<{ id: string; company: string; content: string }>
   interviewPractice: Array<{
-    question: string;
-    answer: string;
-    feedback: string;
-  }>;
+    question: string
+    answer: string
+    feedback: string
+  }>
   careerInsights: Array<{
-    insight: string;
-    category: string;
-    confidence: number;
-  }>;
-  marketAnalysis: Record<string, any>;
+    insight: string
+    category: string
+    confidence: number
+  }>
+  marketAnalysis: Record<string, any>
 }
 
 export interface User {
   // Legacy fields for compatibility
-  name: string;
-  email: string;
-  portfolio: any[];
-  personalInfo: PersonalInfo;
-  experience: Experience[];
-  education: Education[];
-  achievements: (Achievement | string)[];
-  certifications: Certification[];
-  skills: Skills;
-  gamingExperience: GamingExperience;
-  careerGoals: CareerGoals;
-  aiData: AIData;
-  meta: ProfileMeta;
-  xp: number;
-  previousXP: number;
-  dailyChallenges: Record<string, string[]>;
-  weeklyQuests?: Record<string, string[]>;
-  longestStreak: number;
-  resumesGenerated: number;
-  level: number;
+  name: string
+  email: string
+  portfolio: any[]
+  personalInfo: PersonalInfo
+  experience: Experience[]
+  education: Education[]
+  achievements: (Achievement | string)[]
+  certifications: Certification[]
+  skills: Skills
+  gamingExperience: GamingExperience
+  careerGoals: CareerGoals
+  aiData: AIData
+  meta: ProfileMeta
+  xp: number
+  previousXP: number
+  dailyChallenges: Record<string, string[]>
+  weeklyQuests?: Record<string, string[]>
+  longestStreak: number
+  resumesGenerated: number
+  level: number
 
   // Enhanced gamification tracking
-  interviewsCompleted: number;
-  skillAssessmentsCompleted: number;
-  totalTimeSpent: number;
-  featureUsage: Record<string, number>;
+  interviewsCompleted: number
+  skillAssessmentsCompleted: number
+  totalTimeSpent: number
+  featureUsage: Record<string, number>
 }
 
 export interface ResumeData {
-  personalInfo: Partial<PersonalInfo>;
-  experience: Experience[];
-  education: Education[];
+  personalInfo: Partial<PersonalInfo>
+  experience: Experience[]
+  education: Education[]
   skills: {
-    technical: string[];
-    soft: string[];
-  };
-  achievements: Achievement[];
+    technical: string[]
+    soft: string[]
+  }
+  achievements: Achievement[]
 }
 
 export interface JobApplication {
-  id: string;
-  company: string;
-  title?: string;
-  appliedAt: string;
-  status: string;
-  [key: string]: any;
+  id: string
+  company: string
+  title?: string
+  appliedAt: string
+  status: string
+  [key: string]: any
 }
 
 export interface SavedJob {
-  id: string;
-  savedAt: string;
-  [key: string]: any;
+  id: string
+  savedAt: string
+  [key: string]: any
 }
 
 export interface JobSearchData {
-  preferences: Record<string, any>;
-  savedJobs: SavedJob[];
-  applications: JobApplication[];
-  lastSearchSources: string[];
+  preferences: Record<string, any>
+  savedJobs: SavedJob[]
+  applications: JobApplication[]
+  lastSearchSources: string[]
 }
 
 export interface ChatMessage {
-  id?: string;
-  role: string;
-  content: string;
-  timestamp?: string;
+  id?: string
+  role: string
+  content: string
+  timestamp?: string
 }
 
 export interface PublicLogo {
-  url: string;
-  status: string;
-  lastFetched: string;
+  url: string
+  status: string
+  lastFetched: string
 }
 
 export interface CoverLetterDraft {
-  id: string;
-  company: string;
-  position: string;
-  role: string;
-  preferences: Record<string, any>;
-  studioProfile: Record<string, any>;
-  content: Record<string, any>;
+  id: string
+  company: string
+  position: string
+  role: string
+  preferences: Record<string, any>
+  studioProfile: Record<string, any>
+  content: Record<string, any>
   meta: {
-    createdAt: string;
-    updatedAt: string;
-  };
+    createdAt: string
+    updatedAt: string
+  }
 }
 
 export interface LoadingStates {
-  ai: boolean;
-  save: boolean;
-  export: boolean;
-  validation: boolean;
-  skillSuggestions: boolean;
-  scoring: boolean;
-  optimization: boolean;
-  autoFill: boolean;
-  templateGeneration: boolean;
-  contentEdit: boolean;
-  autoCompose: boolean;
-  profileAnalysis: boolean;
-  skillAnalysis: boolean;
+  ai: boolean
+  save: boolean
+  export: boolean
+  validation: boolean
+  skillSuggestions: boolean
+  scoring: boolean
+  optimization: boolean
+  autoFill: boolean
+  templateGeneration: boolean
+  contentEdit: boolean
+  autoCompose: boolean
+  profileAnalysis: boolean
+  skillAnalysis: boolean
 }
 
 export interface Errors {
-  api: string | null;
-  validation: Record<string, string>;
-  network: string | null;
+  api: string | null
+  validation: Record<string, string>
+  network: string | null
 }
 
 export interface AppMeta {
-  version: string;
-  lastSave: Date | null;
-  isOnline: boolean;
+  version: string
+  lastSave: Date | null
+  isOnline: boolean
 }
 
 export interface AIStatus {
-  initialized: boolean;
-  lastError: string | null;
-  model: string | null;
+  initialized: boolean
+  lastError: string | null
+  model: string | null
 }
 
 export interface AppState {
-  user: User;
-  settings: Settings;
-  resumeData: ResumeData;
-  jobSearchData: JobSearchData;
-  chatHistory: ChatMessage[];
-  publicLogos: Record<string, PublicLogo>;
-  normalizedStudios: Record<string, any>;
-  coverLetterDrafts: CoverLetterDraft[];
-  loading: LoadingStates;
-  errors: Errors;
-  meta: AppMeta;
-  aiStatus: AIStatus;
-  availableModels: any[];
+  user: User
+  settings: Settings
+  resumeData: ResumeData
+  jobSearchData: JobSearchData
+  chatHistory: ChatMessage[]
+  publicLogos: Record<string, PublicLogo>
+  normalizedStudios: Record<string, any>
+  coverLetterDrafts: CoverLetterDraft[]
+  loading: LoadingStates
+  errors: Errors
+  meta: AppMeta
+  aiStatus: AIStatus
+  availableModels: any[]
 }
 
 // Module-level mutex to serialize persistence
-const persistMutex = new Mutex();
+const persistMutex = new Mutex()
 
-export const useAppStore = defineStore("app", {
+export const useAppStore = defineStore('app', {
   state: (): AppState => ({
     // Comprehensive User Profile Data
     user: {
       // Legacy fields for compatibility
-      name: "",
-      email: "",
+      name: '',
+      email: '',
       portfolio: [],
 
       // New comprehensive profile structure
       personalInfo: {
-        name: "",
-        email: "",
-        phone: "",
-        location: "",
-        website: "",
-        linkedIn: "",
-        github: "",
-        portfolio: "",
-        summary: "",
+        name: '',
+        email: '',
+        phone: '',
+        location: '',
+        website: '',
+        linkedIn: '',
+        github: '',
+        portfolio: '',
+        summary: '',
         profilePicture: null,
-        currentRole: "",
-        currentCompany: "",
+        currentRole: '',
+        currentCompany: '',
         yearsExperience: null,
       },
 
@@ -348,7 +348,7 @@ export const useAppStore = defineStore("app", {
         salaryExpectations: {
           min: null,
           max: null,
-          currency: "USD",
+          currency: 'USD',
         },
         workPreferences: {
           remote: false,
@@ -356,7 +356,7 @@ export const useAppStore = defineStore("app", {
           onsite: false,
           relocationWillingness: false,
         },
-        timeframe: "",
+        timeframe: '',
       },
 
       aiData: {
@@ -372,7 +372,7 @@ export const useAppStore = defineStore("app", {
         profileCompleteness: 0,
         lastUpdated: null,
         createdAt: null,
-        version: "1.0",
+        version: '1.0',
         dataConsent: false,
         privacySettings: {
           publicProfile: false,
@@ -480,43 +480,42 @@ export const useAppStore = defineStore("app", {
       return !!(
         state.settings.geminiApiKey &&
         (state.user.personalInfo?.name || state.user.name)
-      );
+      )
     },
 
     // Legacy compatibility getters
-    mappedSkills: (state) => {
-      let legacyMapped: any[] = [];
+    mappedSkills: state => {
+      let legacyMapped: any[] = []
       if (Array.isArray(state.user.skills)) {
         legacyMapped =
-          state.user.skills.filter((skill: any) => skill.realWorldMapping) ||
-          [];
+          state.user.skills.filter((skill: any) => skill.realWorldMapping) || []
       }
       const aiMapped = Array.isArray(state.user.aiData?.skillMappings)
         ? state.user.aiData.skillMappings
-        : [];
-      return [...legacyMapped, ...aiMapped];
+        : []
+      return [...legacyMapped, ...aiMapped]
     },
 
     hasPortfolio: (state): boolean => {
-      return state.user.portfolio && state.user.portfolio.length > 0;
+      return state.user.portfolio && state.user.portfolio.length > 0
     },
 
-    portfolioPreferences: (state) => ({
+    portfolioPreferences: state => ({
       sort: state.settings.portfolioSort,
       filter: state.settings.portfolioFilter,
     }),
 
     hasValidEmail: (state): boolean => {
-      const email = state.user.personalInfo?.email || state.user.email;
-      return validateEmail(email);
+      const email = state.user.personalInfo?.email || state.user.email
+      return validateEmail(email)
     },
 
     profileCompleteness: (state): number => {
-      const completeness = userProfileService.calculateCompleteness(state.user);
+      const completeness = userProfileService.calculateCompleteness(state.user)
       if (state.user.meta.profileCompleteness !== completeness) {
-        state.user.meta.profileCompleteness = completeness;
+        state.user.meta.profileCompleteness = completeness
       }
-      return completeness;
+      return completeness
     },
 
     userProfile: (state): User => state.user,
@@ -524,21 +523,21 @@ export const useAppStore = defineStore("app", {
     personalInfo: (state): PersonalInfo => {
       return (
         state.user.personalInfo || {
-          name: state.user.name || "",
-          email: state.user.email || "",
-          phone: "",
-          location: "",
-          website: "",
-          linkedIn: "",
-          github: "",
-          portfolio: "",
-          summary: "",
+          name: state.user.name || '',
+          email: state.user.email || '',
+          phone: '',
+          location: '',
+          website: '',
+          linkedIn: '',
+          github: '',
+          portfolio: '',
+          summary: '',
           profilePicture: null,
-          currentRole: "",
-          currentCompany: "",
+          currentRole: '',
+          currentCompany: '',
           yearsExperience: null,
         }
-      );
+      )
     },
 
     allSkills: (state): Skills => state.user.skills,
@@ -551,16 +550,16 @@ export const useAppStore = defineStore("app", {
           targetRoles: [],
           targetIndustries: [],
           targetCompanies: [],
-          salaryExpectations: { min: null, max: null, currency: "USD" },
+          salaryExpectations: { min: null, max: null, currency: 'USD' },
           workPreferences: {
             remote: false,
             hybrid: false,
             onsite: false,
             relocationWillingness: false,
           },
-          timeframe: "",
+          timeframe: '',
         }
-      );
+      )
     },
 
     aiEnhancements: (state): AIData => {
@@ -573,7 +572,7 @@ export const useAppStore = defineStore("app", {
           careerInsights: [],
           marketAnalysis: {},
         }
-      );
+      )
     },
 
     profileMetadata: (state): ProfileMeta => {
@@ -582,7 +581,7 @@ export const useAppStore = defineStore("app", {
           profileCompleteness: 0,
           lastUpdated: null,
           createdAt: null,
-          version: "1.0",
+          version: '1.0',
           dataConsent: false,
           privacySettings: {
             publicProfile: false,
@@ -590,24 +589,24 @@ export const useAppStore = defineStore("app", {
             allowAnalytics: true,
           },
         }
-      );
+      )
     },
 
     // Data for AI services
-    aiTrainingData: (state) => {
-      return userProfileService.extractForContext(state.user, "ai-training");
+    aiTrainingData: state => {
+      return userProfileService.extractForContext(state.user, 'ai-training')
     },
 
-    resumeContext: (state) => {
-      return userProfileService.extractForContext(state.user, "resume");
+    resumeContext: state => {
+      return userProfileService.extractForContext(state.user, 'resume')
     },
 
-    coverLetterData: (state) => {
-      return userProfileService.extractForContext(state.user, "cover-letter");
+    coverLetterData: state => {
+      return userProfileService.extractForContext(state.user, 'cover-letter')
     },
 
-    jobSearchContext: (state) => {
-      return userProfileService.extractForContext(state.user, "job-search");
+    jobSearchContext: state => {
+      return userProfileService.extractForContext(state.user, 'job-search')
     },
 
     hasErrors: (state): boolean => {
@@ -615,20 +614,20 @@ export const useAppStore = defineStore("app", {
         state.errors.api ||
         state.errors.network ||
         Object.keys(state.errors.validation).length > 0
-      );
+      )
     },
 
     isOnline: (state): boolean => state.meta.isOnline,
 
     // Gamification getters
     userLevel: (state): number => {
-      const xp = state.user.xp || 0;
-      return Math.floor(xp / 100) + 1;
+      const xp = state.user.xp || 0
+      return Math.floor(xp / 100) + 1
     },
 
     xpForNextLevel: (state): number => {
-      const currentLevel = Math.floor((state.user.xp || 0) / 100) + 1;
-      return currentLevel * 100 - (state.user.xp || 0);
+      const currentLevel = Math.floor((state.user.xp || 0) / 100) + 1
+      return currentLevel * 100 - (state.user.xp || 0)
     },
 
     totalAchievements: (): number => 8,
@@ -637,27 +636,27 @@ export const useAppStore = defineStore("app", {
       (state.user.achievements || []).length,
 
     totalAchievementsAvailable: (): number => {
-      return 9;
+      return 9
     },
 
     currentStreak: (state): number => {
-      const dailyChallenges = state.user.dailyChallenges || {};
-      let streak = 0;
-      const currentDate = new Date();
+      const dailyChallenges = state.user.dailyChallenges || {}
+      let streak = 0
+      const currentDate = new Date()
 
       while (true) {
-        const dateString = currentDate.toDateString();
-        const challengesForDay = dailyChallenges[dateString] || [];
+        const dateString = currentDate.toDateString()
+        const challengesForDay = dailyChallenges[dateString] || []
 
         if (challengesForDay.length === 0) {
-          break;
+          break
         }
 
-        streak++;
-        currentDate.setDate(currentDate.getDate() - 1);
+        streak++
+        currentDate.setDate(currentDate.getDate() - 1)
       }
 
-      return streak;
+      return streak
     },
 
     // Profile data getters for the new structure
@@ -680,7 +679,7 @@ export const useAppStore = defineStore("app", {
       state.user.meta || ({} as ProfileMeta),
 
     // Interview statistics getter
-    getInterviewStats: (state) => ({
+    getInterviewStats: state => ({
       totalInterviews: state.user.interviewsCompleted || 0,
       totalSessions: state.user.interviewsCompleted || 0,
       completedInterviews: state.user.interviewsCompleted || 0,
@@ -690,18 +689,18 @@ export const useAppStore = defineStore("app", {
     }),
 
     // Selected model info from cached availableModels
-    selectedModelInfo: (state) => {
-      const id = state.settings?.selectedModel;
+    selectedModelInfo: state => {
+      const id = state.settings?.selectedModel
       if (
         !id ||
         !Array.isArray(state.availableModels) ||
         state.availableModels.length === 0
       )
-        return null;
+        return null
       return (
         state.availableModels.find((m: any) => m.id === id || m.name === id) ||
         null
-      );
+      )
     },
   },
 
@@ -737,13 +736,25 @@ export const useAppStore = defineStore("app", {
     },
 
     // Test current Gemini API key connectivity
-    async testGeminiApiKey(): Promise<{ success: boolean; message: string; details?: any }> {
+    async testGeminiApiKey(): Promise<{
+      success: boolean
+      message: string
+      details?: any
+    }> {
       try {
-        const { resolveGeminiApiKey, testApiKey } = await import('@/shared/utils/apiKeys')
-        const key = (this.settings?.geminiApiKey && this.settings.geminiApiKey.trim()) || (await resolveGeminiApiKey()) || ''
+        const { resolveGeminiApiKey, testApiKey } = await import(
+          '@/shared/utils/apiKeys'
+        )
+        const key =
+          (this.settings?.geminiApiKey && this.settings.geminiApiKey.trim()) ||
+          (await resolveGeminiApiKey()) ||
+          ''
         if (!key) return { success: false, message: 'API key is required' }
         const res = await testApiKey(key, 'gemini')
-        this.updateAiStatus({ initialized: !!res.success, lastError: res.success ? null : res.message })
+        this.updateAiStatus({
+          initialized: !!res.success,
+          lastError: res.success ? null : res.message,
+        })
         return res
       } catch (e: any) {
         const msg = e?.message || 'Unknown error'
@@ -773,13 +784,18 @@ export const useAppStore = defineStore("app", {
         if (result.success) {
           this.updateAiStatus({ initialized: true, lastError: null })
           // Optionally warm model cache
-          try { await this.loadAvailableModels() } catch {}
+          try {
+            await this.loadAvailableModels()
+          } catch {}
           return true
         }
         return false
       } catch (e: any) {
         logger.error('connectGeminiApi failed:', e)
-        this.updateAiStatus({ initialized: false, lastError: e?.message || 'Failed to connect API' })
+        this.updateAiStatus({
+          initialized: false,
+          lastError: e?.message || 'Failed to connect API',
+        })
         return false
       }
     },
@@ -789,13 +805,20 @@ export const useAppStore = defineStore("app", {
       try {
         // Use cache first
         this.loadAvailableModelsFromCache()
-        const key = (this.settings?.geminiApiKey && this.settings.geminiApiKey.trim()) || null
+        const key =
+          (this.settings?.geminiApiKey && this.settings.geminiApiKey.trim()) ||
+          null
         if (!key) return
         const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`
-        const resp = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+        const resp = await fetch(url, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        })
         if (!resp.ok) {
           const txt = await resp.text().catch(() => '')
-          throw new Error(`Models request failed (${resp.status}): ${resp.statusText} ${txt}`)
+          throw new Error(
+            `Models request failed (${resp.status}): ${resp.statusText} ${txt}`
+          )
         }
         const data = await resp.json().catch(() => ({}))
         const models = Array.isArray(data?.models) ? data.models : []
@@ -807,171 +830,170 @@ export const useAppStore = defineStore("app", {
     // Cache and expose available models globally
     setAvailableModels(models: any[]): void {
       try {
-        this.availableModels = Array.isArray(models) ? models : [];
+        this.availableModels = Array.isArray(models) ? models : []
         // Persist a lightweight cache with timestamp for quick startup
         try {
-          unifiedStorage.local.set("gemini_models_cache", {
+          unifiedStorage.local.set('gemini_models_cache', {
             ts: Date.now(),
             models: this.availableModels,
-          });
+          })
         } catch {}
       } catch {
-        this.availableModels = [];
+        this.availableModels = []
       }
     },
 
-
     loadAvailableModelsFromCache(maxAgeMs: number = 24 * 60 * 60 * 1000): void {
       try {
-        const cached = unifiedStorage.local.get("gemini_models_cache") as any;
+        const cached = unifiedStorage.local.get('gemini_models_cache') as any
         if (
           cached &&
           Array.isArray(cached.models) &&
-          typeof cached.ts === "number"
+          typeof cached.ts === 'number'
         ) {
           if (Date.now() - cached.ts < maxAgeMs) {
-            this.availableModels = cached.models;
+            this.availableModels = cached.models
           }
         }
       } catch {}
     },
     upsertNormalizedStudios(studios: any[]) {
-      if (!Array.isArray(studios) || studios.length === 0) return;
-      const map = this.normalizedStudios || {};
+      if (!Array.isArray(studios) || studios.length === 0) return
+      const map = this.normalizedStudios || {}
       for (const s of studios) {
-        if (!s?.id) continue;
-        map[s.id] = { ...(map[s.id] || {}), ...s };
+        if (!s?.id) continue
+        map[s.id] = { ...(map[s.id] || {}), ...s }
       }
-      this.normalizedStudios = { ...map };
+      this.normalizedStudios = { ...map }
     },
     // Internal helper: get gamification service bound to this store
     _gamify(): any {
       try {
-        const G: any = GamificationService as any;
-        if (typeof G === "function") {
+        const G: any = GamificationService as any
+        if (typeof G === 'function') {
           try {
-            return new G(this);
+            return new G(this)
           } catch {
-            return G(this);
+            return G(this)
           }
         }
       } catch {}
-      return null;
+      return null
     },
 
     // Persist resume/cover letter data to the store and storage
     async saveDocumentData(payload: {
-      resumeData?: any;
-      coverLetterData?: any;
+      resumeData?: any
+      coverLetterData?: any
     }): Promise<boolean> {
       try {
-        const { resumeData, coverLetterData } = payload || {};
+        const { resumeData, coverLetterData } = payload || {}
 
         // Attach to user object (kept flexible for JS callers)
         if (resumeData) {
-          (this.user as any).resumeData = resumeData;
+          ;(this.user as any).resumeData = resumeData
         }
         if (coverLetterData) {
-          (this.user as any).coverLetterData = coverLetterData;
+          ;(this.user as any).coverLetterData = coverLetterData
         }
 
         if (this.settings.autoSave) {
-          await this.saveToStorage();
+          await this.saveToStorage()
         }
 
-        return true;
+        return true
       } catch (error: any) {
-        logger.error("Failed to save document data:", error);
-        this.setError("api", "Failed to save document data");
-        return false;
+        logger.error('Failed to save document data:', error)
+        this.setError('api', 'Failed to save document data')
+        return false
       }
     },
 
     // Error management
     setError(type: keyof Errors, error: string | null): void {
-      if (type === "validation") {
+      if (type === 'validation') {
         // For validation, we need to handle it as an object
-        return;
+        return
       }
-      (this.errors as any)[type] = error;
+      ;(this.errors as any)[type] = error
     },
 
     clearError(type?: keyof Errors): void {
       if (type) {
-        if (type === "validation") {
-          this.errors.validation = {};
+        if (type === 'validation') {
+          this.errors.validation = {}
         } else {
-          (this.errors as any)[type] = null;
+          ;(this.errors as any)[type] = null
         }
       } else {
-        this.errors = { api: null, validation: {}, network: null };
+        this.errors = { api: null, validation: {}, network: null }
       }
     },
 
     setValidationError(field: string, message: string): void {
-      this.errors.validation[field] = message;
+      this.errors.validation[field] = message
     },
 
     clearValidationError(field: string): void {
-      delete this.errors.validation[field];
+      delete this.errors.validation[field]
     },
 
     // Enhanced load from storage with error handling
     loadFromStorage(): void {
       try {
-        const stored = unifiedStorage.local.get("navicv-data");
+        const stored = unifiedStorage.local.get('navicv-data')
         if (stored) {
-          let data: any;
+          let data: any
           try {
-            data = typeof stored === "string" ? JSON.parse(stored) : stored;
+            data = typeof stored === 'string' ? JSON.parse(stored) : stored
           } catch (parseError: any) {
             logger.error(
-              "Failed to parse stored data, resetting to defaults:",
-              parseError.message,
-            );
-            unifiedStorage.local.remove("navicv-data");
-            return;
+              'Failed to parse stored data, resetting to defaults:',
+              parseError.message
+            )
+            unifiedStorage.local.remove('navicv-data')
+            return
           }
 
           // Validate data structure before patching
-          if (data && typeof data === "object" && !Array.isArray(data)) {
+          if (data && typeof data === 'object' && !Array.isArray(data)) {
             try {
               // Validate and normalize data structure
-              if (data.user && typeof data.user === "object") {
+              if (data.user && typeof data.user === 'object') {
                 data.user.xp =
-                  typeof data.user.xp === "number" ? data.user.xp : 0;
+                  typeof data.user.xp === 'number' ? data.user.xp : 0
                 data.user.level =
-                  typeof data.user.level === "number" ? data.user.level : 1;
+                  typeof data.user.level === 'number' ? data.user.level : 1
                 data.user.achievements = Array.isArray(data.user.achievements)
                   ? data.user.achievements
-                  : [];
+                  : []
                 data.user.dailyChallenges =
-                  typeof data.user.dailyChallenges === "object" &&
+                  typeof data.user.dailyChallenges === 'object' &&
                   data.user.dailyChallenges !== null
                     ? data.user.dailyChallenges
-                    : {};
+                    : {}
                 data.user.weeklyQuests =
-                  typeof data.user.weeklyQuests === "object" &&
+                  typeof data.user.weeklyQuests === 'object' &&
                   data.user.weeklyQuests !== null
                     ? data.user.weeklyQuests
-                    : {};
+                    : {}
 
                 data.user.portfolio = Array.isArray(data.user.portfolio)
                   ? data.user.portfolio
-                  : [];
+                  : []
                 data.user.experience = Array.isArray(data.user.experience)
                   ? data.user.experience
-                  : [];
+                  : []
                 data.user.education = Array.isArray(data.user.education)
                   ? data.user.education
-                  : [];
+                  : []
                 data.user.certifications = Array.isArray(
-                  data.user.certifications,
+                  data.user.certifications
                 )
                   ? data.user.certifications
-                  : [];
+                  : []
 
-                if (!data.user.skills || typeof data.user.skills !== "object") {
+                if (!data.user.skills || typeof data.user.skills !== 'object') {
                   data.user.skills = {
                     technical: [],
                     soft: [],
@@ -979,107 +1001,107 @@ export const useAppStore = defineStore("app", {
                     tools: [],
                     frameworks: [],
                     gaming: [],
-                  };
+                  }
                 } else {
-                  Object.keys(data.user.skills).forEach((key) => {
+                  Object.keys(data.user.skills).forEach(key => {
                     if (!Array.isArray(data.user.skills[key])) {
-                      data.user.skills[key] = [];
+                      data.user.skills[key] = []
                     }
-                  });
+                  })
                 }
               }
 
               if (
                 data.jobSearchData &&
-                typeof data.jobSearchData === "object"
+                typeof data.jobSearchData === 'object'
               ) {
                 data.jobSearchData.savedJobs = Array.isArray(
-                  data.jobSearchData.savedJobs,
+                  data.jobSearchData.savedJobs
                 )
                   ? data.jobSearchData.savedJobs
-                  : [];
+                  : []
                 data.jobSearchData.applications = Array.isArray(
-                  data.jobSearchData.applications,
+                  data.jobSearchData.applications
                 )
                   ? data.jobSearchData.applications
-                  : [];
+                  : []
                 data.jobSearchData.lastSearchSources = Array.isArray(
-                  data.jobSearchData.lastSearchSources,
+                  data.jobSearchData.lastSearchSources
                 )
                   ? data.jobSearchData.lastSearchSources
-                  : [];
+                  : []
               }
 
-              if (!data.resumeData || typeof data.resumeData !== "object") {
+              if (!data.resumeData || typeof data.resumeData !== 'object') {
                 data.resumeData = {
                   personalInfo: {},
                   experience: [],
                   education: [],
                   achievements: [],
                   skills: { technical: [], soft: [] },
-                };
+                }
               } else {
                 data.resumeData.personalInfo =
-                  data.resumeData.personalInfo || {};
+                  data.resumeData.personalInfo || {}
                 data.resumeData.experience = Array.isArray(
-                  data.resumeData.experience,
+                  data.resumeData.experience
                 )
                   ? data.resumeData.experience
-                  : [];
+                  : []
                 data.resumeData.education = Array.isArray(
-                  data.resumeData.education,
+                  data.resumeData.education
                 )
                   ? data.resumeData.education
-                  : [];
+                  : []
                 data.resumeData.achievements = Array.isArray(
-                  data.resumeData.achievements,
+                  data.resumeData.achievements
                 )
                   ? data.resumeData.achievements
-                  : [];
+                  : []
                 data.resumeData.skills = data.resumeData.skills || {
                   technical: [],
                   soft: [],
-                };
+                }
                 if (!Array.isArray(data.resumeData.skills.technical)) {
-                  data.resumeData.skills.technical = [];
+                  data.resumeData.skills.technical = []
                 }
                 if (!Array.isArray(data.resumeData.skills.soft)) {
-                  data.resumeData.skills.soft = [];
+                  data.resumeData.skills.soft = []
                 }
               }
 
               data.coverLetterDrafts = Array.isArray(data.coverLetterDrafts)
                 ? data.coverLetterDrafts
-                : [];
+                : []
               data.chatHistory = Array.isArray(data.chatHistory)
                 ? data.chatHistory
-                : [];
+                : []
 
-              if (data.settings && typeof data.settings === "object") {
+              if (data.settings && typeof data.settings === 'object') {
                 data.settings.theme =
-                  typeof data.settings.theme === "string"
+                  typeof data.settings.theme === 'string'
                     ? data.settings.theme
-                    : "auto";
+                    : 'auto'
                 data.settings.autoSave =
-                  typeof data.settings.autoSave === "boolean"
+                  typeof data.settings.autoSave === 'boolean'
                     ? data.settings.autoSave
-                    : true;
+                    : true
               }
 
-              this.$patch(data);
-              this.meta.lastSave = new Date(data.meta?.lastSave || Date.now());
-              logger.debug("App state loaded from storage successfully");
+              this.$patch(data)
+              this.meta.lastSave = new Date(data.meta?.lastSave || Date.now())
+              logger.debug('App state loaded from storage successfully')
               try {
-                this.settings = mergeSettings(DEFAULT_SETTINGS, this.settings);
+                this.settings = mergeSettings(DEFAULT_SETTINGS, this.settings)
               } catch {}
             } catch (patchError: any) {
               logger.error(
-                "Failed to apply stored data, using defaults:",
-                patchError.message,
-              );
+                'Failed to apply stored data, using defaults:',
+                patchError.message
+              )
             }
           } else {
-            logger.warn("Invalid stored data structure, using defaults");
+            logger.warn('Invalid stored data structure, using defaults')
           }
         }
 
@@ -1088,55 +1110,58 @@ export const useAppStore = defineStore("app", {
           unifiedStorage
             .getPreferences?.()
             .then((prefs: any) => {
-              if (prefs && typeof prefs === "object") {
-                this.settings = mergeSettings(this.settings, prefs);
+              if (prefs && typeof prefs === 'object') {
+                this.settings = mergeSettings(this.settings, prefs)
               }
             })
-            .catch(() => {});
+            .catch(() => {})
         } catch {}
 
         // Load theme from UnifiedStorage if not already set, also check unified theme storage
         try {
-          const legacyThemeKey = "navicv-theme";
-          const unifiedThemeKey = "navi-theme-mode";
+          const legacyThemeKey = 'navicv-theme'
+          const unifiedThemeKey = 'navi-theme-mode'
 
-          let themeToLoad = null;
+          let themeToLoad = null
 
           // First try to get from unified theme storage (newer format)
           try {
-            const unifiedTheme = localStorage.getItem(unifiedThemeKey);
+            const unifiedTheme = localStorage.getItem(unifiedThemeKey)
             if (unifiedTheme) {
-              const parsed = JSON.parse(unifiedTheme);
+              const parsed = JSON.parse(unifiedTheme)
               // Convert legacy 'system' to 'auto'
-              themeToLoad = parsed === 'system' ? 'auto' : parsed;
+              themeToLoad = parsed === 'system' ? 'auto' : parsed
             }
           } catch {}
 
           // Fallback to legacy storage
           if (!themeToLoad) {
-            const storedTheme = unifiedStorage.get(legacyThemeKey);
+            const storedTheme = unifiedStorage.get(legacyThemeKey)
             if (storedTheme && storedTheme.value) {
-              themeToLoad = storedTheme.value === 'system' ? 'auto' : storedTheme.value;
+              themeToLoad =
+                storedTheme.value === 'system' ? 'auto' : storedTheme.value
             }
           }
 
           if (themeToLoad) {
-            this.settings.theme = themeToLoad;
+            this.settings.theme = themeToLoad
 
             // Sync with unified theme system after loading
             try {
-              import('@/shared/composables/useUnifiedTheme').then(({ default: useUnifiedTheme }) => {
-                const theme = useUnifiedTheme();
-                theme.syncFromStore(themeToLoad as any);
-              }).catch(() => {});
+              import('@/shared/composables/useUnifiedTheme')
+                .then(({ default: useUnifiedTheme }) => {
+                  const theme = useUnifiedTheme()
+                  theme.syncFromStore(themeToLoad as any)
+                })
+                .catch(() => {})
             } catch (e) {}
           }
         } catch {
           // Ignore theme loading errors
         }
       } catch (error: any) {
-        logger.error("Failed to load data from storage:", error);
-        this.setError("network", "Failed to load saved data");
+        logger.error('Failed to load data from storage:', error)
+        this.setError('network', 'Failed to load saved data')
       }
     },
 
@@ -1144,43 +1169,43 @@ export const useAppStore = defineStore("app", {
     async saveToStorage(): Promise<void> {
       await persistMutex.runExclusive(async () => {
         try {
-          this.meta.lastSave = new Date();
+          this.meta.lastSave = new Date()
           const dataToSave = {
             ...this.$state,
             meta: { ...this.meta, lastSave: this.meta.lastSave.toISOString() },
-          };
-          unifiedStorage.local.set("navicv-data", dataToSave);
+          }
+          unifiedStorage.local.set('navicv-data', dataToSave)
           try {
-            await unifiedStorage.setPreferences?.(this.settings);
+            await unifiedStorage.setPreferences?.(this.settings)
           } catch {}
-          this.clearError("network");
+          this.clearError('network')
         } catch (error: any) {
-          logger.error("Failed to save data to storage:", error);
-          this.setError("network", "Failed to save data");
+          logger.error('Failed to save data to storage:', error)
+          this.setError('network', 'Failed to save data')
         }
-      });
+      })
     },
 
     // Profile sync notification system
     emitProfileSync(profile: User, changes: any): void {
-      if (typeof window !== "undefined") {
-        const event = new CustomEvent("profile-sync", {
+      if (typeof window !== 'undefined') {
+        const event = new CustomEvent('profile-sync', {
           detail: { profile, changes },
-        });
-        window.dispatchEvent(event);
+        })
+        window.dispatchEvent(event)
       }
     },
 
     // Listen for profile sync events
     addProfileSyncListener(
-      callback: (_event: CustomEvent) => void,
+      callback: (_event: CustomEvent) => void
     ): () => void {
-      if (typeof window !== "undefined") {
-        const handler = (e: Event) => callback(e as CustomEvent);
-        window.addEventListener("profile-sync", handler);
-        return () => window.removeEventListener("profile-sync", handler);
+      if (typeof window !== 'undefined') {
+        const handler = (e: Event) => callback(e as CustomEvent)
+        window.addEventListener('profile-sync', handler)
+        return () => window.removeEventListener('profile-sync', handler)
       }
-      return () => {};
+      return () => {}
     },
 
     // Enhanced update user with validation and comprehensive profile management
@@ -1188,45 +1213,45 @@ export const useAppStore = defineStore("app", {
       try {
         // Handle both legacy and new profile structure
         const isLegacyUpdate =
-          userData.name !== undefined || userData.email !== undefined;
+          userData.name !== undefined || userData.email !== undefined
 
         if (isLegacyUpdate) {
-          return this.updateLegacyUser(userData);
+          return this.updateLegacyUser(userData)
         }
 
         // Use profile service for comprehensive updates
         const updatedProfile = userProfileService.mergeProfileData(
           this.user,
           userData,
-          "form",
-        );
+          'form'
+        )
 
         // Validate the merged profile
-        const validation = userProfileService.validateProfile(updatedProfile);
+        const validation = userProfileService.validateProfile(updatedProfile)
         if (!validation.isValid) {
           validation.errors.forEach((error: any) => {
-            this.setValidationError(error.field, error.message);
-          });
-          return false;
+            this.setValidationError(error.field, error.message)
+          })
+          return false
         }
 
-        this.clearError();
-        this.user = updatedProfile;
+        this.clearError()
+        this.user = updatedProfile
 
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
 
-        userProfileService.notifyProfileSync(this.user, userData);
-        this.emitProfileSync(this.user, userData);
-        this.handleProfileUpdateGamification(userData);
+        userProfileService.notifyProfileSync(this.user, userData)
+        this.emitProfileSync(this.user, userData)
+        this.handleProfileUpdateGamification(userData)
 
-        logger.info("User profile updated successfully");
-        return true;
+        logger.info('User profile updated successfully')
+        return true
       } catch (error: any) {
-        logger.error("Failed to update user:", error);
-        this.setError("api", "Failed to update user information");
-        return false;
+        logger.error('Failed to update user:', error)
+        this.setError('api', 'Failed to update user information')
+        return false
       }
     },
 
@@ -1234,60 +1259,57 @@ export const useAppStore = defineStore("app", {
     updateLegacyUser(userData: Partial<User>): boolean {
       try {
         if (userData.email && !validateEmail(userData.email)) {
-          this.setValidationError(
-            "email",
-            "Please enter a valid email address",
-          );
-          return false;
+          this.setValidationError('email', 'Please enter a valid email address')
+          return false
         }
 
         if (userData.name !== undefined && !validateRequired(userData.name)) {
-          this.setValidationError("name", "Name is required");
-          return false;
+          this.setValidationError('name', 'Name is required')
+          return false
         }
 
-        this.clearValidationError("email");
-        this.clearValidationError("name");
+        this.clearValidationError('email')
+        this.clearValidationError('name')
 
         if (userData.name !== undefined) {
-          this.user.name = userData.name;
-          this.user.personalInfo.name = userData.name;
+          this.user.name = userData.name
+          this.user.personalInfo.name = userData.name
         }
         if (userData.email !== undefined) {
-          this.user.email = userData.email;
-          this.user.personalInfo.email = userData.email;
+          this.user.email = userData.email
+          this.user.personalInfo.email = userData.email
         }
 
         if (userData.gamingExperience !== undefined) {
-          this.user.gamingExperience = userData.gamingExperience as any;
+          this.user.gamingExperience = userData.gamingExperience as any
         }
         if (userData.skills !== undefined) {
-          this.user.skills = userData.skills as any;
+          this.user.skills = userData.skills as any
         }
         if (userData.portfolio !== undefined) {
-          this.user.portfolio = userData.portfolio;
+          this.user.portfolio = userData.portfolio
         }
 
-        this.user.meta.lastUpdated = new Date().toISOString();
+        this.user.meta.lastUpdated = new Date().toISOString()
 
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
 
-        this.handleProfileUpdateGamification(userData);
-        return true;
+        this.handleProfileUpdateGamification(userData)
+        return true
       } catch (error: any) {
-        logger.error("Failed to update legacy user:", error);
-        return false;
+        logger.error('Failed to update legacy user:', error)
+        return false
       }
     },
 
     // Handle gamification for profile updates
     handleProfileUpdateGamification(userData: Partial<User>): void {
-      const g = this._gamify();
+      const g = this._gamify()
       if (g) {
         try {
-          g.completeDailyChallenge("update_profile");
+          g.completeDailyChallenge('update_profile')
           if (
             userData.name ||
             userData.email ||
@@ -1296,10 +1318,9 @@ export const useAppStore = defineStore("app", {
             userData.skills ||
             userData.gamingExperience
           ) {
-            g.awardXP(10, "profile_update");
+            g.awardXP(10, 'profile_update')
           }
-          g.updateStreak();
-
+          g.updateStreak()
 
           // AND we're not currently updating achievements (to prevent loops)
           if (
@@ -1307,92 +1328,91 @@ export const useAppStore = defineStore("app", {
             Array.isArray(userData.portfolio) &&
             !userData.achievements
           ) {
-            const newPortfolioCount = userData.portfolio.length;
-            const currentPortfolioCount = this.user.portfolio?.length || 0;
-
+            const newPortfolioCount = userData.portfolio.length
+            const currentPortfolioCount = this.user.portfolio?.length || 0
 
             if (
               newPortfolioCount !== currentPortfolioCount &&
               newPortfolioCount >= 5
             ) {
-              g.processAchievements();
+              g.processAchievements()
             }
           } else if (!userData.achievements) {
             // For non-portfolio, non-achievement updates, still process achievements but less frequently
-            g.processAchievements();
+            g.processAchievements()
           }
         } catch (e: any) {
-          logger.warn("Gamification profile update failed:", e);
+          logger.warn('Gamification profile update failed:', e)
         }
       }
     },
 
     // New comprehensive profile update methods
     updatePersonalInfo(personalInfo: PersonalInfo): boolean {
-      const userData = { personalInfo };
-      return this.updateUser(userData);
+      const userData = { personalInfo }
+      return this.updateUser(userData)
     },
 
     updateProfessionalExperience(experience: Experience[]): boolean {
-      const userData = { experience };
-      return this.updateUser(userData);
+      const userData = { experience }
+      return this.updateUser(userData)
     },
 
     updateEducation(education: Education[]): boolean {
-      const userData = { education };
-      return this.updateUser(userData);
+      const userData = { education }
+      return this.updateUser(userData)
     },
 
     updateSkills(skills: Skills): boolean {
-      const userData = { skills };
-      return this.updateUser(userData);
+      const userData = { skills }
+      return this.updateUser(userData)
     },
 
     updateGamingExperience(gamingExperience: GamingExperience): boolean {
-      const userData = { gamingExperience };
-      return this.updateUser(userData);
+      const userData = { gamingExperience }
+      return this.updateUser(userData)
     },
 
     updateCareerGoals(careerGoals: CareerGoals): boolean {
-      const userData = { careerGoals };
-      return this.updateUser(userData);
+      const userData = { careerGoals }
+      return this.updateUser(userData)
     },
 
     updatePortfolioItems(portfolio: any[]): boolean {
-      const userData = { portfolio };
-      return this.updateUser(userData);
+      const userData = { portfolio }
+      return this.updateUser(userData)
     },
 
-    updatePortfolioLayout(layout: "grid" | "list" | "timeline"): boolean {
-      return this.updateSettings({ portfolioLayout: layout });
+    updatePortfolioLayout(layout: 'grid' | 'list' | 'timeline'): boolean {
+      return this.updateSettings({ portfolioLayout: layout })
     },
 
     togglePortfolioAnalytics(): boolean {
       return this.updateSettings({
         portfolioShowAnalytics: !this.settings.portfolioShowAnalytics,
-      });
+      })
     },
 
     updateAIData(aiData: AIData): boolean {
-      const userData = { aiData };
-      return this.updateUser(userData);
+      const userData = { aiData }
+      return this.updateUser(userData)
     },
 
     // Initialize complete profile for new users
     initializeUserProfile(basicInfo: any = {}): boolean {
       try {
-        const newProfile = userProfileService.initializeProfile(basicInfo);
-        this.user = newProfile;
+        const newProfile = userProfileService.initializeProfile(basicInfo)
+        this.user = newProfile
 
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
 
-        logger.info("User profile initialized");
-        return true;
+        logger.info('User profile initialized')
+        return true
       } catch (error: any) {
-        logger.error("Failed to initialize user profile:", error);
-        return false;
+        logger.error('Failed to initialize user profile:', error)
+        return false
       }
     },
 
@@ -1401,24 +1421,26 @@ export const useAppStore = defineStore("app", {
       try {
         if (
           settings.geminiApiKey !== undefined &&
-          typeof settings.geminiApiKey === "string"
+          typeof settings.geminiApiKey === 'string'
         ) {
-          settings.geminiApiKey = settings.geminiApiKey.trim();
-          this.clearValidationError("apiKey");
+          settings.geminiApiKey = settings.geminiApiKey.trim()
+          this.clearValidationError('apiKey')
         }
 
-        this.settings = mergeSettings(this.settings, settings);
+        this.settings = mergeSettings(this.settings, settings)
 
         // Sync theme changes with unified theme system
         if (settings.theme !== undefined) {
           try {
             // Import and sync with unified theme composable
-            import('@/shared/composables/useUnifiedTheme').then(({ default: useUnifiedTheme }) => {
-              const theme = useUnifiedTheme();
-              theme.syncFromStore(settings.theme as any);
-            }).catch(() => {
-              // Silently ignore if theme composable is not available
-            });
+            import('@/shared/composables/useUnifiedTheme')
+              .then(({ default: useUnifiedTheme }) => {
+                const theme = useUnifiedTheme()
+                theme.syncFromStore(settings.theme as any)
+              })
+              .catch(() => {
+                // Silently ignore if theme composable is not available
+              })
           } catch (e) {
             // Silently ignore sync errors
           }
@@ -1427,19 +1449,19 @@ export const useAppStore = defineStore("app", {
         // Ensure geminiApiKey is also saved to localStorage for easy access by AI services
         if (
           settings.geminiApiKey !== undefined &&
-          typeof window !== "undefined"
+          typeof window !== 'undefined'
         ) {
           try {
             if (settings.geminiApiKey && settings.geminiApiKey.trim()) {
               localStorage.setItem(
-                "gemini_api_key",
-                settings.geminiApiKey.trim(),
-              );
+                'gemini_api_key',
+                settings.geminiApiKey.trim()
+              )
             } else {
-              localStorage.removeItem("gemini_api_key");
+              localStorage.removeItem('gemini_api_key')
             }
           } catch (e) {
-            logger.warn("Failed to save API key to localStorage:", e);
+            logger.warn('Failed to save API key to localStorage:', e)
           }
         }
 
@@ -1450,235 +1472,231 @@ export const useAppStore = defineStore("app", {
             micDeviceId: this.settings.selectedMicId,
             speakerDeviceId: this.settings.selectedSpeakerId,
             lang: this.settings.voiceLang,
-          });
+          })
         } catch {}
 
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
-        return true;
+        return true
       } catch (error: any) {
-        logger.error("Failed to update settings:", error);
-        this.setError("api", "Failed to update settings");
-        return false;
+        logger.error('Failed to update settings:', error)
+        this.setError('api', 'Failed to update settings')
+        return false
       }
     },
 
     // Reset settings to defaults
     async resetSettings(): Promise<boolean> {
       try {
-        logger.info("Resetting all settings to defaults");
+        logger.info('Resetting all settings to defaults')
 
         // Reset settings to default values
-        this.settings = { ...DEFAULT_SETTINGS };
+        this.settings = { ...DEFAULT_SETTINGS }
 
         // Clear localStorage API key
-        if (typeof window !== "undefined") {
+        if (typeof window !== 'undefined') {
           try {
-            localStorage.removeItem("gemini_api_key");
+            localStorage.removeItem('gemini_api_key')
           } catch (e) {
-            logger.warn("Failed to clear API key from localStorage:", e);
+            logger.warn('Failed to clear API key from localStorage:', e)
           }
         }
 
         // Clear validation errors
-        this.errors.validation = {};
-        this.errors.api = null;
+        this.errors.validation = {}
+        this.errors.api = null
 
         // Save to storage if auto-save is enabled
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
 
-        logger.info("Settings reset to defaults successfully");
-        return true;
+        logger.info('Settings reset to defaults successfully')
+        return true
       } catch (error: any) {
-        logger.error("Failed to reset settings:", error);
-        this.setError("api", "Failed to reset settings to defaults");
-        return false;
+        logger.error('Failed to reset settings:', error)
+        this.setError('api', 'Failed to reset settings to defaults')
+        return false
       }
     },
 
     updateAiStatus(status: Partial<AIStatus>): void {
-      this.aiStatus = { ...this.aiStatus, ...status };
+      this.aiStatus = { ...this.aiStatus, ...status }
     },
 
     // Enhanced add chat message with validation
     addChatMessage(message: ChatMessage): void {
       try {
-        if (typeof message.content !== "string" || !message.role) {
+        if (typeof message.content !== 'string' || !message.role) {
           throw new Error(
-            "Invalid message format: content must be string and role must be defined",
-          );
+            'Invalid message format: content must be string and role must be defined'
+          )
         }
 
         const entry: ChatMessage = {
           ...message,
           timestamp: message.timestamp || new Date().toISOString(),
           id: message.id || Date.now().toString(),
-        };
-        this.chatHistory.push(entry);
+        }
+        this.chatHistory.push(entry)
 
         if (this.chatHistory.length > 100) {
-          this.chatHistory = this.chatHistory.slice(-50);
+          this.chatHistory = this.chatHistory.slice(-50)
         }
 
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
 
-        if (message.role === "user") {
-          const g = this._gamify();
+        if (message.role === 'user') {
+          const g = this._gamify()
           if (g) {
             try {
-              g.completeDailyChallenge("chat_session");
-              g.awardXP(5, "chat_message");
-              g.updateStreak();
+              g.completeDailyChallenge('chat_session')
+              g.awardXP(5, 'chat_message')
+              g.updateStreak()
             } catch (e: any) {
-              logger.warn("Gamification chat hooks failed:", e);
+              logger.warn('Gamification chat hooks failed:', e)
             }
           }
         }
       } catch (error: any) {
-        logger.error("Failed to add chat message:", error);
-        this.setError("api", "Failed to save chat message");
+        logger.error('Failed to add chat message:', error)
+        this.setError('api', 'Failed to save chat message')
       }
     },
 
     // Clear chat history
     clearChatHistory(): void {
       try {
-        this.chatHistory = [];
+        this.chatHistory = []
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
       } catch (error: any) {
-        logger.error("Failed to clear chat history:", error);
-        this.setError("api", "Failed to clear chat history");
+        logger.error('Failed to clear chat history:', error)
+        this.setError('api', 'Failed to clear chat history')
       }
     },
 
     // Enhanced set loading state
     setLoading(type: keyof LoadingStates, value: boolean): void {
       if (Object.prototype.hasOwnProperty.call(this.loading, type)) {
-        this.loading[type] = value;
+        this.loading[type] = value
       } else {
-        logger.warn(`Unknown loading type: ${type}`);
+        logger.warn(`Unknown loading type: ${type}`)
       }
     },
 
     // Network status management
     setOnlineStatus(isOnline: boolean): void {
-      this.meta.isOnline = isOnline;
+      this.meta.isOnline = isOnline
       if (!isOnline) {
         this.setError(
-          "network",
-          "You are currently offline. Some features may not work.",
-        );
+          'network',
+          'You are currently offline. Some features may not work.'
+        )
       } else {
-        this.clearError("network");
+        this.clearError('network')
       }
     },
 
     // Initialize connection monitoring
     initializeNetworkMonitoring(): void {
       if (!(this as any)._onOnline) {
-        (this as any)._onOnline = () => this.setOnlineStatus(true);
+        ;(this as any)._onOnline = () => this.setOnlineStatus(true)
       }
       if (!(this as any)._onOffline) {
-        (this as any)._onOffline = () => this.setOnlineStatus(false);
+        ;(this as any)._onOffline = () => this.setOnlineStatus(false)
       }
-      window.addEventListener("online", (this as any)._onOnline);
-      window.addEventListener("offline", (this as any)._onOffline);
-      this.setOnlineStatus(navigator.onLine);
+      window.addEventListener('online', (this as any)._onOnline)
+      window.addEventListener('offline', (this as any)._onOffline)
+      this.setOnlineStatus(navigator.onLine)
     },
 
     // Cleanup method for removing event listeners
     cleanup(): void {
       try {
         if ((this as any)._onOnline) {
-          window.removeEventListener("online", (this as any)._onOnline);
+          window.removeEventListener('online', (this as any)._onOnline)
         }
       } catch (error: any) {
-        logger.error("Error removing online event listener:", error);
+        logger.error('Error removing online event listener:', error)
       }
       try {
         if ((this as any)._onOffline) {
-          window.removeEventListener("offline", (this as any)._onOffline);
+          window.removeEventListener('offline', (this as any)._onOffline)
         }
       } catch (error: any) {
-        logger.error("Error removing offline event listener:", error);
+        logger.error('Error removing offline event listener:', error)
       }
-      (this as any)._onOnline = null;
-      (this as any)._onOffline = null;
+      ;(this as any)._onOnline = null
+      ;(this as any)._onOffline = null
     },
 
     // Additional methods for job applications, portfolio, etc.
     saveJob(job: any): boolean {
       try {
         if (!job || !job.id) {
-          throw new Error("Invalid job");
+          throw new Error('Invalid job')
         }
-        const exists = this.jobSearchData.savedJobs.find(
-          (j) => j.id === job.id,
-        );
+        const exists = this.jobSearchData.savedJobs.find(j => j.id === job.id)
         if (exists) {
-          return false;
+          return false
         }
 
-        const saved = { ...job, savedAt: new Date().toISOString() };
-        this.jobSearchData.savedJobs.push(saved);
+        const saved = { ...job, savedAt: new Date().toISOString() }
+        this.jobSearchData.savedJobs.push(saved)
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
 
         try {
-          statisticsService.recordSavedJob();
+          statisticsService.recordSavedJob()
         } catch (e: any) {
-          logger.warn("Statistics tracking failed for saved job:", e);
+          logger.warn('Statistics tracking failed for saved job:', e)
         }
 
-        const g = this._gamify();
+        const g = this._gamify()
         if (g) {
           try {
-            g.awardXP(10, "job_saved");
-            const today = new Date().toDateString();
+            g.awardXP(10, 'job_saved')
+            const today = new Date().toDateString()
             const savedJobs = Array.isArray(this.jobSearchData.savedJobs)
               ? this.jobSearchData.savedJobs
-              : [];
+              : []
             const countToday = savedJobs.filter(
-              (j) => new Date(j.savedAt).toDateString() === today,
-            ).length;
+              j => new Date(j.savedAt).toDateString() === today
+            ).length
             if (countToday >= 3) {
-              g.completeDailyChallenge("job_search");
-              g.updateStreak();
+              g.completeDailyChallenge('job_search')
+              g.updateStreak()
             }
-            g.processAchievements();
+            g.processAchievements()
           } catch (e: any) {
-            logger.warn("Gamification saveJob hooks failed:", e);
+            logger.warn('Gamification saveJob hooks failed:', e)
           }
         }
-        return true;
+        return true
       } catch (error: any) {
-        logger.error("Failed to save job:", error);
-        this.setError("api", "Failed to save job");
-        return false;
+        logger.error('Failed to save job:', error)
+        this.setError('api', 'Failed to save job')
+        return false
       }
     },
 
     // Cover letter drafts management
     saveCoverLetterDraft(draft: Partial<CoverLetterDraft>): string | null {
       try {
-        const now = new Date().toISOString();
-        const id = draft.id || Date.now().toString();
-        const existingIndex = this.coverLetterDrafts.findIndex(
-          (d) => d.id === id,
-        );
+        const now = new Date().toISOString()
+        const id = draft.id || Date.now().toString()
+        const existingIndex = this.coverLetterDrafts.findIndex(d => d.id === id)
         const normalized: CoverLetterDraft = {
           id,
-          company: draft.company || "",
-          position: draft.position || "",
-          role: draft.role || "",
+          company: draft.company || '',
+          position: draft.position || '',
+          role: draft.role || '',
           preferences: draft.preferences || {},
           studioProfile: draft.studioProfile || {},
           content: draft.content || {},
@@ -1686,56 +1704,53 @@ export const useAppStore = defineStore("app", {
             createdAt: draft.meta?.createdAt || now,
             updatedAt: now,
           },
-        };
+        }
         if (existingIndex >= 0) {
-          this.coverLetterDrafts.splice(existingIndex, 1, normalized);
+          this.coverLetterDrafts.splice(existingIndex, 1, normalized)
         } else {
-          this.coverLetterDrafts.push(normalized);
+          this.coverLetterDrafts.push(normalized)
         }
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
-        return normalized.id;
+        return normalized.id
       } catch (error: any) {
-        logger.error("Failed to save cover letter draft:", error);
-        this.setError("api", "Failed to save cover letter draft");
-        return null;
+        logger.error('Failed to save cover letter draft:', error)
+        this.setError('api', 'Failed to save cover letter draft')
+        return null
       }
     },
 
     deleteCoverLetterDraft(id: string): boolean {
       try {
         if (!Array.isArray(this.coverLetterDrafts)) {
-          this.coverLetterDrafts = [];
-          return false;
+          this.coverLetterDrafts = []
+          return false
         }
-        this.coverLetterDrafts = this.coverLetterDrafts.filter(
-          (d) => d.id !== id,
-        );
+        this.coverLetterDrafts = this.coverLetterDrafts.filter(d => d.id !== id)
         if (this.settings.autoSave) {
-          this.saveToStorage();
+          this.saveToStorage()
         }
-        return true;
+        return true
       } catch (error: any) {
-        logger.error("Failed to delete cover letter draft:", error);
-        this.setError("api", "Failed to delete cover letter draft");
-        return false;
+        logger.error('Failed to delete cover letter draft:', error)
+        this.setError('api', 'Failed to delete cover letter draft')
+        return false
       }
     },
 
     findCoverLetterDraftsByCompany(company: string): CoverLetterDraft[] {
       try {
         if (!Array.isArray(this.coverLetterDrafts)) {
-          return [];
+          return []
         }
         return this.coverLetterDrafts.filter(
-          (d) =>
-            (d.company || "").toLowerCase() === (company || "").toLowerCase(),
-        );
+          d => (d.company || '').toLowerCase() === (company || '').toLowerCase()
+        )
       } catch (error: any) {
-        logger.error("Failed to query cover letter drafts:", error);
-        return [];
+        logger.error('Failed to query cover letter drafts:', error)
+        return []
       }
     },
   },
-});
+})

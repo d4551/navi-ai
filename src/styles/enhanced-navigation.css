@@ -512,7 +512,7 @@
 }
 
 /* === THEME VARIANTS === */
-[data-theme="dark"] .navigation-menu {
+[data-theme='dark'] .navigation-menu {
   background: linear-gradient(
     180deg,
     rgba(var(--surface-glass-rgb), 0.95) 0%,

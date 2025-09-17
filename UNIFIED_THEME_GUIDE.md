@@ -7,6 +7,7 @@ This guide demonstrates how to use the unified theme system that provides a sing
 ## 🏗️ Core Architecture
 
 ### Theme Files Structure
+
 ```
 src/styles/
 ├── index.css                      # Main import file
@@ -16,6 +17,7 @@ src/styles/
 ```
 
 ### Color System
+
 - **Light Mode**: Pure white (#ffffff) backgrounds
 - **Dark Mode**: Pure black (#000000) backgrounds
 - **Glass Effects**: Subtle transparency with backdrop blur
@@ -24,46 +26,46 @@ src/styles/
 ## 🎯 Key CSS Variables
 
 ### Core Colors
+
 ```css
---bg-primary: #ffffff | #000000          /* Pure backgrounds */
---text-primary: #000000 | #ffffff        /* High contrast text */
---text-secondary: rgba(0,0,0,0.8) | rgba(255,255,255,0.9)
---text-tertiary: rgba(0,0,0,0.6) | rgba(255,255,255,0.7)
---text-muted: rgba(0,0,0,0.4) | rgba(255,255,255,0.5)
+--bg-primary: #ffffff | #000000 /* Pure backgrounds */ --text-primary: #000000 |
+  #ffffff /* High contrast text */ --text-secondary: rgba(0, 0, 0, 0.8) |
+  rgba(255, 255, 255, 0.9) --text-tertiary: rgba(0, 0, 0, 0.6) |
+  rgba(255, 255, 255, 0.7) --text-muted: rgba(0, 0, 0, 0.4) |
+  rgba(255, 255, 255, 0.5);
 ```
 
 ### Glassmorphic System
+
 ```css
---glass-bg: rgba(255,255,255,0.1) | rgba(255,255,255,0.05)
---glass-bg-hover: rgba(255,255,255,0.15) | rgba(255,255,255,0.08)
---glass-border: rgba(255,255,255,0.3) | rgba(255,255,255,0.1)
---glass-blur: blur(20px)
---glass-shadow: 0 8px 32px rgba(0,0,0,0.1) | rgba(0,0,0,0.3)
+--glass-bg: rgba(255, 255, 255, 0.1) | rgba(255, 255, 255, 0.05)
+  --glass-bg-hover: rgba(255, 255, 255, 0.15) | rgba(255, 255, 255, 0.08)
+  --glass-border: rgba(255, 255, 255, 0.3) | rgba(255, 255, 255, 0.1)
+  --glass-blur: blur(20px) --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) |
+  rgba(0, 0, 0, 0.3);
 ```
 
 ### RGB Neon Colors
+
 ```css
---neon-red: 255, 0, 102
---neon-blue: 0, 204, 255
---neon-green: 0, 255, 153
---neon-purple: 153, 0, 255
---neon-pink: 255, 51, 204
---neon-cyan: 51, 255, 255
---neon-orange: 255, 165, 0
+--neon-red:
+  255, 0, 102 --neon-blue: 0, 204, 255 --neon-green: 0, 255,
+  153 --neon-purple: 153, 0, 255 --neon-pink: 255, 51, 204 --neon-cyan: 51, 255,
+  255 --neon-orange: 255, 165, 0;
 ```
 
 ### Spacing Scale
+
 ```css
---space-1: 4px      --space-8: 32px
---space-2: 8px      --space-10: 40px
---space-3: 12px     --space-12: 48px
---space-4: 16px     --space-16: 64px
---space-6: 24px     --space-20: 80px
+--space-1: 4px --space-8: 32px --space-2: 8px --space-10: 40px --space-3: 12px
+  --space-12: 48px --space-4: 16px --space-16: 64px --space-6: 24px
+  --space-20: 80px;
 ```
 
 ## 🧩 Component Classes
 
 ### Glass Components
+
 ```css
 /* Basic glass element */
 .glass {
@@ -89,6 +91,7 @@ src/styles/
 ```
 
 ### Neon Highlight System
+
 ```css
 /* Basic neon effect */
 .neon:hover {
@@ -99,12 +102,19 @@ src/styles/
 }
 
 /* Color variants */
-.neon-red:hover { box-shadow: 0 0 20px rgba(var(--neon-red), 0.4); }
-.neon-green:hover { box-shadow: 0 0 20px rgba(var(--neon-green), 0.4); }
-.neon-purple:hover { box-shadow: 0 0 20px rgba(var(--neon-purple), 0.4); }
+.neon-red:hover {
+  box-shadow: 0 0 20px rgba(var(--neon-red), 0.4);
+}
+.neon-green:hover {
+  box-shadow: 0 0 20px rgba(var(--neon-green), 0.4);
+}
+.neon-purple:hover {
+  box-shadow: 0 0 20px rgba(var(--neon-purple), 0.4);
+}
 ```
 
 ### Text Accessibility
+
 ```css
 /* High contrast text on glass */
 .text-glass-primary {
@@ -125,6 +135,7 @@ src/styles/
 ## 🏗️ Layout System
 
 ### Dense Multi-Column Layouts
+
 ```css
 /* Responsive grid */
 .dense-grid {
@@ -150,6 +161,7 @@ src/styles/
 ```
 
 ### Flexbox Layouts
+
 ```css
 .flex-layout {
   display: flex;
@@ -168,6 +180,7 @@ src/styles/
 ## 🎨 Usage Examples
 
 ### Glass Card Component
+
 ```vue
 <template>
   <div class="glass-card neon-blue">
@@ -189,6 +202,7 @@ src/styles/
 ```
 
 ### Interactive Button
+
 ```vue
 <template>
   <button class="glass-button neon-blue">
@@ -216,6 +230,7 @@ src/styles/
 ```
 
 ### Dense Data Grid
+
 ```vue
 <template>
   <div class="dense-grid">
@@ -233,16 +248,27 @@ The system includes built-in responsive breakpoints:
 
 ```css
 /* Desktop first approach */
-@media (max-width: 1400px) { /* Large desktop adjustments */ }
-@media (max-width: 1200px) { /* Desktop adjustments */ }
-@media (max-width: 1024px) { /* Tablet landscape */ }
-@media (max-width: 768px)  { /* Tablet portrait */ }
-@media (max-width: 480px)  { /* Mobile */ }
+@media (max-width: 1400px) {
+  /* Large desktop adjustments */
+}
+@media (max-width: 1200px) {
+  /* Desktop adjustments */
+}
+@media (max-width: 1024px) {
+  /* Tablet landscape */
+}
+@media (max-width: 768px) {
+  /* Tablet portrait */
+}
+@media (max-width: 480px) {
+  /* Mobile */
+}
 ```
 
 ## ♿ Accessibility Features
 
 ### Screen Reader Support
+
 ```css
 .sr-only {
   position: absolute;
@@ -253,6 +279,7 @@ The system includes built-in responsive breakpoints:
 ```
 
 ### High Contrast Text
+
 ```css
 .text-contrast-high {
   font-weight: var(--font-weight-bold);
@@ -262,6 +289,7 @@ The system includes built-in responsive breakpoints:
 ```
 
 ### Focus Management
+
 ```css
 .focus\:ring-neon:focus-visible {
   box-shadow: 0 0 0 3px rgba(var(--neon-blue), 0.3);
@@ -272,6 +300,7 @@ The system includes built-in responsive breakpoints:
 ## 🎯 Best Practices
 
 ### 1. Always Use Theme Variables
+
 ```css
 /* ✅ Good */
 color: var(--text-primary);
@@ -285,6 +314,7 @@ border-radius: 8px;
 ```
 
 ### 2. Layer Glass Effects Properly
+
 ```css
 /* ✅ Proper layering */
 .glass-element {
@@ -296,14 +326,22 @@ border-radius: 8px;
 ```
 
 ### 3. Use Semantic Neon Colors
+
 ```css
 /* ✅ Semantic usage */
-.success-button { border-color: rgba(var(--neon-green), 0.3); }
-.warning-button { border-color: rgba(var(--neon-orange), 0.3); }
-.error-button { border-color: rgba(var(--neon-red), 0.3); }
+.success-button {
+  border-color: rgba(var(--neon-green), 0.3);
+}
+.warning-button {
+  border-color: rgba(var(--neon-orange), 0.3);
+}
+.error-button {
+  border-color: rgba(var(--neon-red), 0.3);
+}
 ```
 
 ### 4. Ensure Text Readability
+
 ```css
 /* ✅ Accessible text on glass */
 .glass-text {
@@ -316,6 +354,7 @@ border-radius: 8px;
 ## 🔧 Theme Integration
 
 ### Vue Component Integration
+
 ```vue
 <script setup>
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
@@ -325,13 +364,14 @@ const { isDark, colorScheme, getColor } = useUnifiedTheme()
 ```
 
 ### CSS-in-JS Integration
+
 ```js
 import { createThemeCSS } from '@/shared/composables/useUnifiedTheme'
 
 const theme = createThemeCSS('dark')
 const styles = {
   background: theme.colors.background,
-  color: theme.colors['on-background']
+  color: theme.colors['on-background'],
 }
 ```
 

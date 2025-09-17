@@ -17,7 +17,9 @@ export interface AggregationVerification {
 }
 
 // Verifies the canonical provider registry by performing one aggregated search.
-export async function verifyAggregation(query = 'game'): Promise<AggregationVerification> {
+export async function verifyAggregation(
+  query = 'game'
+): Promise<AggregationVerification> {
   try {
     const res = await canonicalJobService.searchJobs({ query, remote: true })
     const bySource: Record<string, number> = {}
@@ -38,7 +40,9 @@ export async function verifyAggregation(query = 'game'): Promise<AggregationVeri
 }
 
 // Directly hits open endpoints to validate CORS/network and ingestion mapping.
-export async function verifyDirectOpenEndpoints(query = 'game'): Promise<ProviderVerification[]> {
+export async function verifyDirectOpenEndpoints(
+  query = 'game'
+): Promise<ProviderVerification[]> {
   const results: ProviderVerification[] = []
 
   // RemoteOK (no search param; client-side filter)
@@ -47,15 +51,22 @@ export async function verifyDirectOpenEndpoints(query = 'game'): Promise<Provide
     if (!r.ok) throw new Error(`HTTP ${r.status}`)
     const data = await r.json()
     const arr = Array.isArray(data) ? data.slice(1) : []
-    const filtered = arr.filter((j: any) => `${j.position} ${j.description}`.toLowerCase().includes(query))
+    const filtered = arr.filter((j: any) =>
+      `${j.position} ${j.description}`.toLowerCase().includes(query)
+    )
     results.push({
       provider: 'RemoteOK',
       ok: filtered.length > 0,
       count: filtered.length,
-      sample: filtered[0]?.position
+      sample: filtered[0]?.position,
     })
   } catch (e: any) {
-    results.push({ provider: 'RemoteOK', ok: false, count: 0, error: e?.message || 'network' })
+    results.push({
+      provider: 'RemoteOK',
+      ok: false,
+      count: 0,
+      error: e?.message || 'network',
+    })
   }
 
   // Remotive
@@ -71,10 +82,15 @@ export async function verifyDirectOpenEndpoints(query = 'game'): Promise<Provide
       provider: 'Remotive',
       ok: jobs.length > 0,
       count: jobs.length,
-      sample: jobs[0]?.title
+      sample: jobs[0]?.title,
     })
   } catch (e: any) {
-    results.push({ provider: 'Remotive', ok: false, count: 0, error: e?.message || 'network' })
+    results.push({
+      provider: 'Remotive',
+      ok: false,
+      count: 0,
+      error: e?.message || 'network',
+    })
   }
 
   // ArbeitsNow
@@ -89,15 +105,22 @@ export async function verifyDirectOpenEndpoints(query = 'game'): Promise<Provide
       provider: 'ArbeitsNow',
       ok: jobs.length > 0,
       count: jobs.length,
-      sample: jobs[0]?.title
+      sample: jobs[0]?.title,
     })
   } catch (e: any) {
-    results.push({ provider: 'ArbeitsNow', ok: false, count: 0, error: e?.message || 'network' })
+    results.push({
+      provider: 'ArbeitsNow',
+      ok: false,
+      count: 0,
+      error: e?.message || 'network',
+    })
   }
 
   // WeWorkRemotely RSS (programming)
   try {
-    const r = await fetch('https://weworkremotely.com/categories/remote-programming-jobs.rss')
+    const r = await fetch(
+      'https://weworkremotely.com/categories/remote-programming-jobs.rss'
+    )
     if (!r.ok) throw new Error(`HTTP ${r.status}`)
     const xml = await r.text()
     const matches = (xml.match(/<item>/g) || []).length
@@ -105,10 +128,15 @@ export async function verifyDirectOpenEndpoints(query = 'game'): Promise<Provide
       provider: 'WeWorkRemotely',
       ok: matches > 0,
       count: matches,
-      sample: 'RSS feed items: ' + matches
+      sample: 'RSS feed items: ' + matches,
     })
   } catch (e: any) {
-    results.push({ provider: 'WeWorkRemotely', ok: false, count: 0, error: e?.message || 'network' })
+    results.push({
+      provider: 'WeWorkRemotely',
+      ok: false,
+      count: 0,
+      error: e?.message || 'network',
+    })
   }
 
   return results

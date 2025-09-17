@@ -3,15 +3,33 @@
 @tailwind components;
 
 @layer components {
-  .section-title { @apply text-2xl font-bold text-primary; }
-  .section-subtitle { @apply text-sm font-medium text-secondary; }
-  .card-title { @apply text-lg font-semibold text-primary; }
-  .action-title { @apply text-base font-semibold text-primary; }
-  .progress-title { @apply text-base font-semibold text-primary; }
+  .section-title {
+    @apply text-2xl font-bold text-primary;
+  }
+  .section-subtitle {
+    @apply text-sm font-medium text-secondary;
+  }
+  .card-title {
+    @apply text-lg font-semibold text-primary;
+  }
+  .action-title {
+    @apply text-base font-semibold text-primary;
+  }
+  .progress-title {
+    @apply text-base font-semibold text-primary;
+  }
 
-  .logo-title { @apply text-3xl font-extrabold tracking-wide font-display text-primary; }
-  .logo-subtitle { @apply text-sm font-medium text-muted; }
+  .logo-title {
+    @apply text-3xl font-extrabold tracking-wide font-display text-primary;
+  }
+  .logo-subtitle {
+    @apply text-sm font-medium text-muted;
+  }
 
-  .body-text { @apply text-base text-secondary; }
-  .muted-text { @apply text-sm text-muted; }
+  .body-text {
+    @apply text-base text-secondary;
+  }
+  .muted-text {
+    @apply text-sm text-muted;
+  }
 }

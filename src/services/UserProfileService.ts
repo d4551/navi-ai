@@ -28,7 +28,7 @@ export class UserProfileService {
       'personalInfo.email',
       'experience',
       'education',
-      'skills.technical'
+      'skills.technical',
     ]
 
     let requiredComplete = 0
@@ -73,23 +73,30 @@ export class UserProfileService {
 
     if (!user.skills || typeof user.skills !== 'object') {
       errors.push('Skills data is required')
-    } else if (!Array.isArray(user.skills.technical) || user.skills.technical.length === 0) {
+    } else if (
+      !Array.isArray(user.skills.technical) ||
+      user.skills.technical.length === 0
+    ) {
       errors.push('At least one technical skill is required')
     }
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     }
   }
 
-  mergeProfileData(user: any, newData: any, source: 'form' | 'ai' | 'import' = 'form'): any {
+  mergeProfileData(
+    user: any,
+    newData: any,
+    source: 'form' | 'ai' | 'import' = 'form'
+  ): any {
     const merged = { ...user }
 
     if (newData.personalInfo) {
       merged.personalInfo = {
         ...merged.personalInfo,
-        ...newData.personalInfo
+        ...newData.personalInfo,
       }
     }
 
@@ -107,8 +114,9 @@ export class UserProfileService {
         soft: newData.skills.soft || merged.skills?.soft || [],
         languages: newData.skills.languages || merged.skills?.languages || [],
         tools: newData.skills.tools || merged.skills?.tools || [],
-        frameworks: newData.skills.frameworks || merged.skills?.frameworks || [],
-        gaming: newData.skills.gaming || merged.skills?.gaming || []
+        frameworks:
+          newData.skills.frameworks || merged.skills?.frameworks || [],
+        gaming: newData.skills.gaming || merged.skills?.gaming || [],
       }
     }
 
@@ -127,7 +135,7 @@ export class UserProfileService {
     merged.meta = {
       ...merged.meta,
       lastUpdated: new Date().toISOString(),
-      version: merged.meta?.version || '1.0'
+      version: merged.meta?.version || '1.0',
     }
 
     return merged
@@ -149,7 +157,7 @@ export class UserProfileService {
         github: '',
         portfolio: '',
         summary: '',
-        profilePicture: null
+        profilePicture: null,
       },
       experience: [],
       education: [],
@@ -161,7 +169,7 @@ export class UserProfileService {
         languages: [],
         tools: [],
         frameworks: [],
-        gaming: []
+        gaming: [],
       },
       gamingExperience: {
         competitiveGaming: [],
@@ -172,7 +180,7 @@ export class UserProfileService {
         achievements: [],
         preferredGames: [],
         platforms: [],
-        guildsTeams: []
+        guildsTeams: [],
       },
       careerGoals: {
         targetRoles: [],
@@ -183,9 +191,9 @@ export class UserProfileService {
           remote: false,
           hybrid: false,
           onsite: false,
-          relocationWillingness: false
+          relocationWillingness: false,
         },
-        timeframe: ''
+        timeframe: '',
       },
       aiData: {
         skillMappings: [],
@@ -193,7 +201,7 @@ export class UserProfileService {
         coverLetterDrafts: [],
         interviewPractice: [],
         careerInsights: [],
-        marketAnalysis: {}
+        marketAnalysis: {},
       },
       meta: {
         profileCompleteness: basicInfo.name && basicInfo.email ? 10 : 0,
@@ -204,44 +212,44 @@ export class UserProfileService {
         privacySettings: {
           publicProfile: false,
           shareWithRecruiters: false,
-          allowAnalytics: true
-        }
+          allowAnalytics: true,
+        },
       },
       xp: 0,
       level: 1,
       totalTimeSpent: 0,
       interviewsCompleted: 0,
-      resumesGenerated: 0
+      resumesGenerated: 0,
     }
   }
 
   extractForContext(user: any, context: string): ProfileExtractionResult {
     const contextMap: Record<string, ProfileExtractionResult> = {
-      'resume': {
+      resume: {
         personalInfo: user.personalInfo,
         experience: user.experience || [],
         education: user.education || [],
         skills: user.skills?.technical || [],
-        certifications: user.certifications || []
+        certifications: user.certifications || [],
       },
       'cover-letter': {
         personalInfo: user.personalInfo,
         recentExperience: user.experience?.[0],
         careerGoals: user.careerGoals,
-        gamingExperience: user.gamingExperience?.competitiveGaming || []
+        gamingExperience: user.gamingExperience?.competitiveGaming || [],
       },
       'job-search': {
         skills: user.skills,
         location: user.personalInfo?.location,
         experience: user.experience,
-        careerGoals: user.careerGoals
+        careerGoals: user.careerGoals,
       },
       'ai-training': {
         technicalSkills: user.skills?.technical || [],
         gamingSkills: user.skills?.gaming || [],
         professionalExperience: user.experience || [],
-        careerGoals: user.careerGoals
-      }
+        careerGoals: user.careerGoals,
+      },
     }
 
     return contextMap[context] || { user }
@@ -249,9 +257,11 @@ export class UserProfileService {
 
   notifyProfileSync(profile: any, changes: any): void {
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('profile-sync', {
-        detail: { profile, changes }
-      }))
+      window.dispatchEvent(
+        new CustomEvent('profile-sync', {
+          detail: { profile, changes },
+        })
+      )
     }
   }
 

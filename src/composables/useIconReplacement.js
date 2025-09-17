@@ -1,11 +1,14 @@
 import { computed } from 'vue'
-import { getIconForEmoji, createIconComponent, hasReplaceableEmojis } from '@/utils/iconMapping'
+import {
+  getIconForEmoji,
+  createIconComponent,
+  hasReplaceableEmojis,
+} from '@/utils/iconMapping'
 
 /**
  * Vue composable for handling emoji to icon conversion
  */
 export function useIconReplacement() {
-  
   /**
    * Convert emoji to Material Design Icon
    * @param {string} emoji - Emoji to convert
@@ -31,12 +34,12 @@ export function useIconReplacement() {
    * @param {import('vue').Ref<string>} textRef - Reactive text reference
    * @returns {import('vue').ComputedRef} Text with replaced emojis
    */
-  const replaceEmojisReactive = (textRef) => {
+  const replaceEmojisReactive = textRef => {
     return computed(() => {
       if (!textRef.value) return ''
-      
+
       let result = textRef.value
-      
+
       // Replace common emojis with icon components
       result = result.replace(/🎮/g, '<v-icon>mdi-gamepad-variant</v-icon>')
       result = result.replace(/🎯/g, '<v-icon>mdi-target</v-icon>')
@@ -45,7 +48,10 @@ export function useIconReplacement() {
       result = result.replace(/⭐/g, '<v-icon>mdi-star</v-icon>')
       result = result.replace(/🚀/g, '<v-icon>mdi-rocket</v-icon>')
       result = result.replace(/💼/g, '<v-icon>mdi-briefcase</v-icon>')
-      result = result.replace(/📝/g, '<v-icon>mdi-file-document-outline-edit</v-icon>')
+      result = result.replace(
+        /📝/g,
+        '<v-icon>mdi-file-document-outline-edit</v-icon>'
+      )
       result = result.replace(/🎨/g, '<v-icon>mdi-palette</v-icon>')
       result = result.replace(/🔧/g, '<v-icon>mdi-wrench</v-icon>')
       result = result.replace(/⚙️/g, '<v-icon>mdi-cog</v-icon>')
@@ -64,8 +70,14 @@ export function useIconReplacement() {
       result = result.replace(/🎥/g, '<v-icon>mdi-video</v-icon>')
       result = result.replace(/👤/g, '<v-icon>mdi-account</v-icon>')
       result = result.replace(/👥/g, '<v-icon>mdi-account-group</v-icon>')
-      result = result.replace(/✅/g, '<v-icon>mdi-check-circle-outline</v-icon>')
-      result = result.replace(/❌/g, '<v-icon>mdi-close-circle-outline</v-icon>')
+      result = result.replace(
+        /✅/g,
+        '<v-icon>mdi-check-circle-outline</v-icon>'
+      )
+      result = result.replace(
+        /❌/g,
+        '<v-icon>mdi-close-circle-outline</v-icon>'
+      )
       result = result.replace(/✓/g, '<v-icon>mdi-check</v-icon>')
       result = result.replace(/🔒/g, '<v-icon>mdi-lock</v-icon>')
       result = result.replace(/🔍/g, '<v-icon>mdi-magnify</v-icon>')
@@ -74,11 +86,14 @@ export function useIconReplacement() {
       result = result.replace(/☀️/g, '<v-icon>mdi-weather-sunny</v-icon>')
       result = result.replace(/🐛/g, '<v-icon>mdi-bug</v-icon>')
       result = result.replace(/📖/g, '<v-icon>mdi-book</v-icon>')
-      result = result.replace(/📄/g, '<v-icon>mdi-file-document-outline</v-icon>')
+      result = result.replace(
+        /📄/g,
+        '<v-icon>mdi-file-document-outline</v-icon>'
+      )
       result = result.replace(/📁/g, '<v-icon>mdi-folder</v-icon>')
       result = result.replace(/📋/g, '<v-icon>mdi-clipboard-text</v-icon>')
       result = result.replace(/🧪/g, '<v-icon>mdi-test-tube</v-icon>')
-      
+
       return result
     })
   }
@@ -88,7 +103,7 @@ export function useIconReplacement() {
    * @param {string} text - Text to check
    * @returns {boolean} True if contains emojis
    */
-  const containsEmojis = (text) => {
+  const containsEmojis = text => {
     return hasReplaceableEmojis(text)
   }
 
@@ -99,16 +114,16 @@ export function useIconReplacement() {
    */
   const getIconSize = (context = 'default') => {
     const sizeMap = {
-      'small': 'small',
-      'medium': 'default', 
-      'large': 'large',
+      small: 'small',
+      medium: 'default',
+      large: 'large',
       'x-large': 'x-large',
-      'button': 'small',
-      'header': 'large',
-      'card': 'default',
-      'list': 'small'
+      button: 'small',
+      header: 'large',
+      card: 'default',
+      list: 'small',
     }
-    
+
     return sizeMap[context] || 'default'
   }
 
@@ -119,17 +134,17 @@ export function useIconReplacement() {
    */
   const getIconColor = (context = 'default') => {
     const colorMap = {
-      'primary': 'primary',
-      'secondary': 'secondary',
-      'success': 'success',
-      'warning': 'warning',
-      'error': 'error',
-      'info': 'info',
-      'muted': 'grey',
-      'gaming': 'purple',
-      'achievement': 'amber'
+      primary: 'primary',
+      secondary: 'secondary',
+      success: 'success',
+      warning: 'warning',
+      error: 'error',
+      info: 'info',
+      muted: 'grey',
+      gaming: 'purple',
+      achievement: 'amber',
     }
-    
+
     return colorMap[context] || undefined
   }
 
@@ -139,7 +154,7 @@ export function useIconReplacement() {
     replaceEmojisReactive,
     containsEmojis,
     getIconSize,
-    getIconColor
+    getIconColor,
   }
 }
 

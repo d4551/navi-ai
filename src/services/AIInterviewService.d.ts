@@ -26,7 +26,9 @@ declare module '@/services/AIInterviewService' {
   }
 
   export const aiInterviewService: {
-    startInterviewSession: (_config: StartInterviewConfig) => Promise<InterviewSessionResult>
+    startInterviewSession: (
+      _config: StartInterviewConfig
+    ) => Promise<InterviewSessionResult>
     getInterviewStats?: () => Promise<any>
     getInterviewHistory?: (_limit?: number) => Promise<any>
   }

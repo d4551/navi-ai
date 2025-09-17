@@ -9,7 +9,9 @@
       :leading-icon="theme?.getThemeIcon?.() || 'mdi-monitor'"
       @click="theme?.cycleTheme?.()"
     >
-      <span class="theme-label">{{ theme?.getThemeDisplayName?.() || 'System' }}</span>
+      <span class="theme-label">{{
+        theme?.getThemeDisplayName?.() || 'System'
+      }}</span>
     </UnifiedButton>
 
     <!-- Optional Density Toggle -->
@@ -27,7 +29,10 @@
 
     <!-- Device Info (dev mode only) -->
     <div v-if="showDeviceInfo" class="device-info">
-      <span class="device-badge" :class="`device-${responsive.deviceType.value}`">
+      <span
+        class="device-badge"
+        :class="`device-${responsive.deviceType.value}`"
+      >
         {{ responsive.deviceType.value }}
       </span>
       <span class="breakpoint-badge">
@@ -70,14 +75,24 @@ const themeToggleLabel = computed(() => {
 
 const densityLabel = computed(() => {
   const d = ui.density.value
-  return d === 'compact' ? 'Compact' : d === 'comfortable' ? 'Comfortable' : 'Normal'
+  return d === 'compact'
+    ? 'Compact'
+    : d === 'comfortable'
+      ? 'Comfortable'
+      : 'Normal'
 })
 
-const densityToggleLabel = computed(() => `Cycle density (current: ${densityLabel.value})`)
+const densityToggleLabel = computed(
+  () => `Cycle density (current: ${densityLabel.value})`
+)
 
 const densityIcon = computed(() => {
   const d = ui.density.value
-  return d === 'compact' ? 'mdi-format-line-weight' : d === 'comfortable' ? 'mdi-format-line-spacing' : 'mdi-equal'
+  return d === 'compact'
+    ? 'mdi-format-line-weight'
+    : d === 'comfortable'
+      ? 'mdi-format-line-spacing'
+      : 'mdi-equal'
 })
 </script>
 
@@ -149,21 +164,21 @@ const densityIcon = computed(() => {
 }
 
 /* Enhanced Dark Theme Support */
-[data-theme="dark"] .theme-toggle-container button,
+[data-theme='dark'] .theme-toggle-container button,
 .dark-theme .theme-toggle-container button {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .theme-toggle-container button:hover,
+[data-theme='dark'] .theme-toggle-container button:hover,
 .dark-theme .theme-toggle-container button:hover {
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transform: translateY(-1px);
 }
 
-[data-theme="dark"] .theme-label,
+[data-theme='dark'] .theme-label,
 .dark-theme .theme-label {
   color: var(--text-primary);
 }
@@ -171,7 +186,11 @@ const densityIcon = computed(() => {
 /* Gaming theme enhancement */
 .theme-gaming .theme-toggle-container button {
   border: 1px solid var(--border-gaming);
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 217, 255, 0.03));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.05),
+    rgba(0, 217, 255, 0.03)
+  );
 }
 
 .theme-gaming .theme-toggle-container button:hover {
@@ -180,13 +199,13 @@ const densityIcon = computed(() => {
 
 /* System theme support */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-toggle-container button {
+  :root:not([data-theme='light']) .theme-toggle-container button {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
   }
-  
-  :root:not([data-theme="light"]) .theme-toggle-container button:hover {
+
+  :root:not([data-theme='light']) .theme-toggle-container button:hover {
     background: rgba(255, 255, 255, 0.1);
   }
 }
@@ -202,7 +221,12 @@ const densityIcon = computed(() => {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transform: translateX(-100%);
   transition: transform 0.6s var(--easing-ease-out);
 }
@@ -216,7 +240,7 @@ const densityIcon = computed(() => {
   .theme-label {
     display: none;
   }
-  
+
   .device-info {
     display: none;
   }

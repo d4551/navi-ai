@@ -14,17 +14,21 @@
       <Radar :data="chartData" :options="chartOptions" />
     </div>
   </div>
-  
+
   <!-- Provide simple bars fallback for environments where canvas is blocked -->
   <noscript>
     <div class="bars">
-    <div v-for="s in normalizedSkills" :key="s.label" class="bar-flex flex-wrap">
-    <div class="bar-label">{{ s.label }}</div>
-    <div class="bar-track">
-    <div class="bar-fill" :style="{ width: `${s.value}%` }"></div>
-    </div>
-    <div class="bar-value">{{ s.value }}%</div>
-    </div>
+      <div
+        v-for="s in normalizedSkills"
+        :key="s.label"
+        class="bar-flex flex-wrap"
+      >
+        <div class="bar-label">{{ s.label }}</div>
+        <div class="bar-track">
+          <div class="bar-fill" :style="{ width: `${s.value}%` }"></div>
+        </div>
+        <div class="bar-value">{{ s.value }}%</div>
+      </div>
     </div>
   </noscript>
 </template>
@@ -33,14 +37,31 @@
 import { computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { Radar } from 'vue-chartjs'
-import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js'
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend,
+} from 'chart.js'
 
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend)
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend
+)
 
-type SkillInput = string | { label?: string; name?: string; skill?: string; value?: number }
+type SkillInput =
+  | string
+  | { label?: string; name?: string; skill?: string; value?: number }
 
 const props = withDefaults(defineProps<{ skills?: SkillInput[] }>(), {
-  skills: () => []
+  skills: () => [],
 })
 
 // Normalize input to { label, value } in [0..100]
@@ -54,14 +75,14 @@ const normalizedSkills = computed(() => {
     value = Math.max(0, Math.min(100, Math.round(value)))
     return { label, value }
   })
-  return mapped
-    .sort((a, b) => (b.value - a.value))
-    .slice(0, 12)
+  return mapped.sort((a, b) => b.value - a.value).slice(0, 12)
 })
 
 function cssVar(name: string, fallback: string): string {
   if (typeof window === 'undefined') return fallback
-  const val = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  const val = getComputedStyle(document.documentElement)
+    .getPropertyValue(name)
+    .trim()
   return val || fallback
 }
 
@@ -70,7 +91,9 @@ const chartData = computed(() => {
   const data = normalizedSkills.value.map(s => s.value)
   const primary = cssVar('--color-primary-500', 'rgba(59,130,246,1)')
   const primaryTrans = cssVar('--color-primary-500', '59,130,246') // try to parse rgb if available
-  const bg = primary.includes(',') ? `rgba(${primaryTrans},0.2)` : 'rgba(59,130,246,0.2)'
+  const bg = primary.includes(',')
+    ? `rgba(${primaryTrans},0.2)`
+    : 'rgba(59,130,246,0.2)'
   return {
     labels,
     datasets: [
@@ -85,9 +108,9 @@ const chartData = computed(() => {
         pointHoverBackgroundColor: '#fff',
         pointHoverBorderColor: primary,
         fill: true,
-        tension: 0.2
-      }
-    ]
+        tension: 0.2,
+      },
+    ],
   }
 })
 
@@ -100,30 +123,37 @@ const chartOptions = computed(() => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        labels: { color: text, boxWidth: 12 }
+        labels: { color: text, boxWidth: 12 },
       },
       tooltip: {
         enabled: true,
         callbacks: {
-          label: (ctx: any) => `${ctx.parsed.r || ctx.parsed} %`
-        }
-      }
+          label: (ctx: any) => `${ctx.parsed.r || ctx.parsed} %`,
+        },
+      },
     },
     elements: {
-      line: { borderJoinStyle: 'round' }
+      line: { borderJoinStyle: 'round' },
     },
     scales: {
       r: {
         angleLines: { color: grid },
         grid: { color: grid },
-        pointLabels: { color: text, font: { size: 12 }},
-        ticks: { color: ticks, backdropColor: 'transparent', showLabelBackdrop: false, stepSize: 20, max: 100, beginAtZero: true }
-      }
+        pointLabels: { color: text, font: { size: 12 } },
+        ticks: {
+          color: ticks,
+          backdropColor: 'transparent',
+          showLabelBackdrop: false,
+          stepSize: 20,
+          max: 100,
+          beginAtZero: true,
+        },
+      },
     },
     animation: {
       duration: 1000,
-      easing: 'easeOutQuart'
-    }
+      easing: 'easeOutQuart',
+    },
   } as const
 })
 </script>
@@ -135,7 +165,10 @@ const chartOptions = computed(() => {
   border-radius: var(--radius-lg);
   padding: 1rem;
 }
-.chart-container { position: relative; height: 320px; }
+.chart-container {
+  position: relative;
+  height: 320px;
+}
 .chart-header {
   display: flex;
   align-items: center;
@@ -168,7 +201,7 @@ const chartOptions = computed(() => {
 .bar-track {
   position: relative;
   height: 8px;
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
   border-radius: 999px;
   overflow: hidden;
 }

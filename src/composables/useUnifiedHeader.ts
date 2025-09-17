@@ -24,7 +24,7 @@ export interface HeaderActionGroup {
 export function useUnifiedHeader() {
   const router = useRouter()
   const store = useAppStore()
-  
+
   // Global state
   const loading = ref(false)
   const searchQuery = ref('')
@@ -41,7 +41,10 @@ export function useUnifiedHeader() {
 
     voiceCommands: () => {
       voiceCommandsActive.value = !voiceCommandsActive.value
-      console.log('Voice commands:', voiceCommandsActive.value ? 'activated' : 'deactivated')
+      console.log(
+        'Voice commands:',
+        voiceCommandsActive.value ? 'activated' : 'deactivated'
+      )
       // Implement voice command logic
     },
 
@@ -52,7 +55,10 @@ export function useUnifiedHeader() {
 
     notifications: () => {
       notificationsOpen.value = !notificationsOpen.value
-      console.log('Notifications:', notificationsOpen.value ? 'opened' : 'closed')
+      console.log(
+        'Notifications:',
+        notificationsOpen.value ? 'opened' : 'closed'
+      )
     },
 
     settings: () => {
@@ -63,7 +69,7 @@ export function useUnifiedHeader() {
       // Clear store data
       store.reset?.()
       router.push('/login')
-    }
+    },
   }
 
   // Standard action sets for different page types
@@ -82,7 +88,7 @@ export function useUnifiedHeader() {
                 variant: 'gaming',
                 disabled: !store?.aiStatus?.initialized,
                 tooltip: 'Open AI Career Assistant',
-                handler: commonActions.aiAssistant
+                handler: commonActions.aiAssistant,
               },
               {
                 id: 'voice-commands',
@@ -90,10 +96,10 @@ export function useUnifiedHeader() {
                 icon: 'mdi-microphone',
                 variant: 'ghost',
                 tooltip: 'Voice Commands (Ctrl+M)',
-                handler: commonActions.voiceCommands
-              }
-            ]
-          }
+                handler: commonActions.voiceCommands,
+              },
+            ],
+          },
         ]
 
       case 'data-management':
@@ -108,24 +114,24 @@ export function useUnifiedHeader() {
                 label: 'Import',
                 icon: 'mdi-upload',
                 variant: 'outline',
-                handler: () => console.log('Import data')
+                handler: () => console.log('Import data'),
               },
               {
                 id: 'export',
                 label: 'Export',
                 icon: 'mdi-download',
                 variant: 'outline',
-                handler: () => console.log('Export data')
+                handler: () => console.log('Export data'),
               },
               {
                 id: 'sync',
                 label: 'Sync',
                 icon: 'mdi-sync',
                 variant: 'outline',
-                handler: () => console.log('Sync data')
-              }
-            ]
-          }
+                handler: () => console.log('Sync data'),
+              },
+            ],
+          },
         ]
 
       case 'document-editor':
@@ -139,24 +145,24 @@ export function useUnifiedHeader() {
                 label: 'Preview',
                 icon: 'mdi-eye',
                 variant: 'outline',
-                handler: () => console.log('Preview document')
+                handler: () => console.log('Preview document'),
               },
               {
                 id: 'save',
                 label: 'Save',
                 icon: 'mdi-content-save',
                 variant: 'primary',
-                handler: () => console.log('Save document')
+                handler: () => console.log('Save document'),
               },
               {
                 id: 'export',
                 label: 'Export',
                 icon: 'mdi-download',
                 variant: 'outline',
-                handler: () => console.log('Export document')
-              }
-            ]
-          }
+                handler: () => console.log('Export document'),
+              },
+            ],
+          },
         ]
 
       case 'settings':
@@ -170,31 +176,31 @@ export function useUnifiedHeader() {
                 label: 'Search',
                 icon: 'mdi-magnify',
                 variant: 'glass',
-                handler: () => console.log('Search settings')
+                handler: () => console.log('Search settings'),
               },
               {
                 id: 'export-settings',
                 label: 'Export',
                 icon: 'mdi-download',
                 variant: 'glass',
-                handler: () => console.log('Export settings')
+                handler: () => console.log('Export settings'),
               },
               {
                 id: 'reset-settings',
                 label: 'Reset',
                 icon: 'mdi-backup-restore',
                 variant: 'ghost',
-                handler: () => console.log('Reset settings')
+                handler: () => console.log('Reset settings'),
               },
               {
                 id: 'save-settings',
                 label: 'Save All',
                 icon: 'mdi-content-save',
                 variant: 'primary',
-                handler: () => console.log('Save all settings')
-              }
-            ]
-          }
+                handler: () => console.log('Save all settings'),
+              },
+            ],
+          },
         ]
 
       default:
@@ -208,16 +214,21 @@ export function useUnifiedHeader() {
                 label: 'Refresh',
                 icon: 'mdi-refresh',
                 variant: 'ghost',
-                handler: () => window.location.reload()
-              }
-            ]
-          }
+                handler: () => window.location.reload(),
+              },
+            ],
+          },
         ]
     }
   }
 
   // Custom action builder
-  const createAction = (config: Partial<HeaderAction> & { id: string; handler: () => void | Promise<void> }): HeaderAction => {
+  const createAction = (
+    config: Partial<HeaderAction> & {
+      id: string
+      handler: () => void | Promise<void>
+    }
+  ): HeaderAction => {
     return {
       label: config.label || config.id,
       icon: config.icon || 'mdi-help',
@@ -225,22 +236,26 @@ export function useUnifiedHeader() {
       loading: config.loading || false,
       disabled: config.disabled || false,
       tooltip: config.tooltip,
-      ...config
+      ...config,
     }
   }
 
-  const createActionGroup = (config: Partial<HeaderActionGroup> & { id: string; actions: HeaderAction[] }): HeaderActionGroup => {
+  const createActionGroup = (
+    config: Partial<HeaderActionGroup> & { id: string; actions: HeaderAction[] }
+  ): HeaderActionGroup => {
     return {
       label: config.label,
       priority: config.priority || 'secondary',
       layout: config.layout || 'horizontal',
-      ...config
+      ...config,
     }
   }
 
   // State getters
   const isLoading = computed(() => loading.value)
-  const hasNotifications = computed(() => (store?.notifications?.unread || 0) > 0)
+  const hasNotifications = computed(
+    () => (store?.notifications?.unread || 0) > 0
+  )
   const isAIReady = computed(() => store?.aiStatus?.initialized || false)
 
   return {
@@ -249,16 +264,16 @@ export function useUnifiedHeader() {
     searchQuery,
     voiceCommandsActive,
     notificationsOpen,
-    
+
     // Computed
     isLoading,
     hasNotifications,
     isAIReady,
-    
+
     // Methods
     commonActions,
     getStandardActions,
     createAction,
-    createActionGroup
+    createActionGroup,
   }
 }

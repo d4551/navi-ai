@@ -1,5 +1,8 @@
 <template>
-  <v-card variant="outlined" class="mb-4 section-card section-card unified-card">
+  <v-card
+    variant="outlined"
+    class="mb-4 section-card section-card unified-card"
+  >
     <v-card-title class="d-flex align-center justify-space-between pa-4">
       <div class="d-flex align-center ga-2">
         <AppIcon name="mdi-briefcase-outline" size="small" color="primary" />
@@ -15,7 +18,7 @@
         <span class="d-none d-sm-inline">Add Experience</span>
       </UnifiedButton>
     </v-card-title>
-    
+
     <div class="card-content-sm">
       <v-card
         v-for="(exp, index) in localItems"
@@ -32,7 +35,9 @@
           ).toString()
         "
         draggable="true"
-        :class="{ 'drag-over': dragOver.type === 'experience' && dragOver.index === index,
+        :class="{
+          'drag-over':
+            dragOver.type === 'experience' && dragOver.index === index,
         }"
         @dragstart="startDrag('experience', index)"
         @dragover.prevent="onDragOver($event, 'experience', index)"
@@ -85,7 +90,7 @@
             />
           </div>
         </v-card-title>
-        
+
         <div class="pa-3-unified">
           <v-row>
             <v-col cols="12" md="6">
@@ -137,10 +142,14 @@
                   color="secondary"
                   size="sm"
                   :loading="copyingIndex === index"
-                  :leading-icon="copyingIndex === index ? 'mdi-clipboard-check-outline' : 'mdi-clipboard-outline'"
+                  :leading-icon="
+                    copyingIndex === index
+                      ? 'mdi-clipboard-check-outline'
+                      : 'mdi-clipboard-outline'
+                  "
                   @click="$emit('copy-experience', index)"
                 >
-                  {{ copyingIndex === index ? "Copied" : "Copy" }}
+                  {{ copyingIndex === index ? 'Copied' : 'Copy' }}
                 </UnifiedButton>
               </div>
             </v-col>
@@ -159,39 +168,39 @@
 </template>
 
 <script>
-import AppIcon from '@/components/ui/AppIcon.vue';
-import UiChip from '@/components/ui/UiChip.vue';
-import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UiChip from '@/components/ui/UiChip.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 import { reactive, watch } from 'vue'
-import { useDragReorderList } from "@/composables/useDragReorderList";
-import { useUserProfile } from "@/composables/useUserProfile";
+import { useDragReorderList } from '@/composables/useDragReorderList'
+import { useUserProfile } from '@/composables/useUserProfile'
 
 export default {
-  name: "ExperienceList",
+  name: 'ExperienceList',
   components: { AppIcon, UnifiedButton, UiChip },
   props: {
     modelValue: { type: Array, default: () => [] },
     copyingIndex: { type: Number, default: null },
   },
-  emits: ["update:modelValue", "copy-experience"],
+  emits: ['update:modelValue', 'copy-experience'],
   setup(_props, { emit }) {
-    const { experience, updateExperience } = useUserProfile();
+    const { experience, updateExperience } = useUserProfile()
 
     // Prioritize the user profile as the source of truth.
-    const localItems = reactive([]);
+    const localItems = reactive([])
 
     // Watch for profile experience changes and sync with local state
     watch(
       experience,
-      (newExperience) => {
-        const items = Array.isArray(newExperience) ? newExperience : [];
-        localItems.splice(0, localItems.length, ...items);
+      newExperience => {
+        const items = Array.isArray(newExperience) ? newExperience : []
+        localItems.splice(0, localItems.length, ...items)
       },
       { deep: true, immediate: true } // immediate: true runs the watcher on component load
-    );
+    )
 
-    const listResolver = () => localItems;
+    const listResolver = () => localItems
     const {
       dragState,
       dragOver,
@@ -200,33 +209,33 @@ export default {
       onDrop,
       endDrag,
       moveItem,
-    } = useDragReorderList(listResolver);
+    } = useDragReorderList(listResolver)
 
     const commit = async () => {
-      const experienceData = localItems.map((i) => ({ ...i }));
-      emit("update:modelValue", experienceData);
+      const experienceData = localItems.map(i => ({ ...i }))
+      emit('update:modelValue', experienceData)
       // Also update the global profile
-      await updateExperience(experienceData);
-    };
+      await updateExperience(experienceData)
+    }
 
     const add = () => {
       localItems.push({
-        title: "",
-        company: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      });
-      commit();
-    };
-    const remove = (index) => {
-      localItems.splice(index, 1);
-      commit();
-    };
+        title: '',
+        company: '',
+        startDate: '',
+        endDate: '',
+        description: '',
+      })
+      commit()
+    }
+    const remove = index => {
+      localItems.splice(index, 1)
+      commit()
+    }
     const move = (from, to) => {
-      moveItem("experience", from, to);
-      commit();
-    };
+      moveItem('experience', from, to)
+      commit()
+    }
 
     return {
       localItems,
@@ -239,7 +248,7 @@ export default {
       move,
       add,
       remove,
-    };
+    }
   },
-};
+}
 </script>

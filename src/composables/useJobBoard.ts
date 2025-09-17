@@ -1,6 +1,6 @@
 /**
  * Job Board Composable
- * 
+ *
  * Provides reactive job board functionality with live API integration
  * Integrates with unified profile system for personalized job matching
  */
@@ -36,14 +36,14 @@ export function useJobBoard() {
     error: null,
     lastUpdated: null,
     totalJobs: 0,
-    sources: []
+    sources: [],
   })
 
   const jobs = ref<Job[]>([])
   const filteredJobs = ref<Job[]>([])
   const savedJobs = ref<Job[]>([])
   const currentFilters = ref<JobSearchFilters>({})
-  
+
   // Services
   const unifiedProfile = useUnifiedProfile()
   const refactoredJobService = canonicalJobService
@@ -54,50 +54,53 @@ export function useJobBoard() {
     if (!profile) return []
 
     const suggestions = []
-    
+
     // Add preferred roles
     if (profile.preferredRoles?.length) {
       suggestions.push(...profile.preferredRoles.slice(0, 3))
     }
-    
+
     // Add skill-based searches
     if (profile.skills?.technical?.length) {
       const topSkills = profile.skills.technical.slice(0, 2)
       suggestions.push(`${topSkills.join(' ')} developer`)
     }
-    
+
     // Add gaming-specific suggestions
     if (profile.skills?.gaming?.length) {
       suggestions.push(`${profile.skills.gaming[0]} developer`)
     }
-    
+
     return suggestions.filter(Boolean).slice(0, 5)
   })
 
   // Computed properties
   const totalJobs = computed(() => filteredJobs.value.length)
-  const gamingJobsCount = computed(() => 
-    filteredJobs.value.filter(job => (job.gamingRelevance || 0) > 0.3).length
+  const gamingJobsCount = computed(
+    () =>
+      filteredJobs.value.filter(job => (job.gamingRelevance || 0) > 0.3).length
   )
   const averageSalary = computed(() => {
     const jobsWithSalary = filteredJobs.value.filter(job => job.salary)
     if (jobsWithSalary.length === 0) return 0
-    
-    const salaries = jobsWithSalary.map(job => extractSalaryNumber(job.salary))
+
+    const salaries = jobsWithSalary
+      .map(job => extractSalaryNumber(job.salary))
       .filter(salary => salary > 0)
-    
-    return salaries.length > 0 ? 
-      salaries.reduce((sum, salary) => sum + salary, 0) / salaries.length : 0
+
+    return salaries.length > 0
+      ? salaries.reduce((sum, salary) => sum + salary, 0) / salaries.length
+      : 0
   })
 
   const topMatches = computed(() => {
     const profile = unifiedProfile.jobSearchProfile.value
     if (!profile) return []
-    
+
     return filteredJobs.value
       .map(job => ({
         ...job,
-        matchScore: calculateJobMatchScore(job, profile)
+        matchScore: calculateJobMatchScore(job, profile),
       }))
       .sort((a, b) => b.matchScore - a.matchScore)
       .slice(0, 10)
@@ -118,7 +121,9 @@ export function useJobBoard() {
       if (refactoredResults.jobs.length > 0) {
         allJobs.push(...refactoredResults.jobs)
         state.value.sources.push(...refactoredResults.sources)
-        logger.info(`Added ${refactoredResults.jobs.length} jobs from provider registry`)
+        logger.info(
+          `Added ${refactoredResults.jobs.length} jobs from provider registry`
+        )
       }
 
       // Remove duplicates based on title and company
@@ -131,11 +136,13 @@ export function useJobBoard() {
       // Apply additional filtering
       applyFilters(filters)
 
-      logger.info(`Job search completed: ${allJobs.length} total jobs, ${filteredJobs.value.length} after filtering`)
-
+      logger.info(
+        `Job search completed: ${allJobs.length} total jobs, ${filteredJobs.value.length} after filtering`
+      )
     } catch (error) {
       logger.error('Job search failed:', error)
-      state.value.error = error instanceof Error ? error.message : 'Job search failed'
+      state.value.error =
+        error instanceof Error ? error.message : 'Job search failed'
     } finally {
       state.value.isSearching = false
     }
@@ -146,7 +153,13 @@ export function useJobBoard() {
       return await refactoredJobService.searchJobs(filters)
     } catch (error) {
       logger.warn('Refactored service search failed:', error)
-      return { jobs: [], sources: [], totalFound: 0, errors: [error.message], processingTime: 0 }
+      return {
+        jobs: [],
+        sources: [],
+        totalFound: 0,
+        errors: [error.message],
+        processingTime: 0,
+      }
     }
   }
 
@@ -168,7 +181,7 @@ export function useJobBoard() {
     if (filters.datePosted && filters.datePosted !== 'all') {
       const now = new Date()
       const cutoffDate = new Date()
-      
+
       switch (filters.datePosted) {
         case 'today':
           cutoffDate.setDate(now.getDate() - 1)
@@ -180,16 +193,19 @@ export function useJobBoard() {
           cutoffDate.setMonth(now.getMonth() - 1)
           break
       }
-      
-      filtered = filtered.filter(job => 
-        job.postedDate && new Date(job.postedDate) >= cutoffDate
+
+      filtered = filtered.filter(
+        job => job.postedDate && new Date(job.postedDate) >= cutoffDate
       )
     }
 
     // Matching score filter
     if (filters.matchingScore && unifiedProfile.jobSearchProfile.value) {
       filtered = filtered.filter(job => {
-        const score = calculateJobMatchScore(job, unifiedProfile.jobSearchProfile.value!)
+        const score = calculateJobMatchScore(
+          job,
+          unifiedProfile.jobSearchProfile.value!
+        )
         return score >= (filters.matchingScore || 0)
       })
     }
@@ -197,24 +213,28 @@ export function useJobBoard() {
     // Sort by relevance (gaming relevance + match score + recency)
     filtered.sort((a, b) => {
       const profile = unifiedProfile.jobSearchProfile.value
-      
+
       let scoreA = (a.gamingRelevance || 0) * 0.3
       let scoreB = (b.gamingRelevance || 0) * 0.3
-      
+
       if (profile) {
         scoreA += calculateJobMatchScore(a, profile) * 0.5
         scoreB += calculateJobMatchScore(b, profile) * 0.5
       }
-      
+
       // Add recency bonus
-      const daysSinceA = a.postedDate ? 
-        (Date.now() - new Date(a.postedDate).getTime()) / (1000 * 60 * 60 * 24) : 30
-      const daysSinceB = b.postedDate ? 
-        (Date.now() - new Date(b.postedDate).getTime()) / (1000 * 60 * 60 * 24) : 30
-      
-      scoreA += Math.max(0, (7 - daysSinceA) / 7) * 0.2  // Recent posts get bonus
+      const daysSinceA = a.postedDate
+        ? (Date.now() - new Date(a.postedDate).getTime()) /
+          (1000 * 60 * 60 * 24)
+        : 30
+      const daysSinceB = b.postedDate
+        ? (Date.now() - new Date(b.postedDate).getTime()) /
+          (1000 * 60 * 60 * 24)
+        : 30
+
+      scoreA += Math.max(0, (7 - daysSinceA) / 7) * 0.2 // Recent posts get bonus
       scoreB += Math.max(0, (7 - daysSinceB) / 7) * 0.2
-      
+
       return scoreB - scoreA
     })
 
@@ -251,7 +271,7 @@ export function useJobBoard() {
 
     const filters: JobSearchFilters = {
       location: profile.location || undefined,
-      remote: profile.remotePreference || undefined
+      remote: profile.remotePreference || undefined,
     }
 
     // Use preferred roles or skills for search query
@@ -266,21 +286,27 @@ export function useJobBoard() {
 
   // Real-time updates
   let autoRefreshInterval: NodeJS.Timeout | null = null
-  
+
   const startAutoRefresh = (intervalMinutes = 30) => {
     // Clear any existing interval
     if (autoRefreshInterval) {
       clearInterval(autoRefreshInterval)
     }
-    
-    autoRefreshInterval = setInterval(async () => {
-      if (currentFilters.value.query || Object.keys(currentFilters.value).length > 0) {
-        logger.info('Auto-refreshing job search')
-        await searchJobs(currentFilters.value)
-      }
-    }, intervalMinutes * 60 * 1000)
+
+    autoRefreshInterval = setInterval(
+      async () => {
+        if (
+          currentFilters.value.query ||
+          Object.keys(currentFilters.value).length > 0
+        ) {
+          logger.info('Auto-refreshing job search')
+          await searchJobs(currentFilters.value)
+        }
+      },
+      intervalMinutes * 60 * 1000
+    )
   }
-  
+
   // Cleanup function for auto-refresh
   onUnmounted(() => {
     if (autoRefreshInterval) {
@@ -301,10 +327,10 @@ export function useJobBoard() {
 
   const extractSalaryNumber = (salaryString?: string): number => {
     if (!salaryString) return 0
-    
+
     const numbers = salaryString.match(/[\d,]+/g)
     if (!numbers) return 0
-    
+
     const amount = parseInt(numbers[0].replace(/,/g, ''))
     return isNaN(amount) ? 0 : amount
   }
@@ -325,7 +351,9 @@ export function useJobBoard() {
     if (profile.location && job.location) {
       if (job.remote && profile.remotePreference) {
         score += 1
-      } else if (job.location.toLowerCase().includes(profile.location.toLowerCase())) {
+      } else if (
+        job.location.toLowerCase().includes(profile.location.toLowerCase())
+      ) {
         score += 1
       }
     }
@@ -333,16 +361,24 @@ export function useJobBoard() {
     // Experience level match (basic heuristic)
     if (profile.experience?.length) {
       const totalYears = profile.experience.reduce((sum: number, exp: any) => {
-        const years = exp.endDate ? 
-          (new Date(exp.endDate) - new Date(exp.startDate)) / (1000 * 60 * 60 * 24 * 365) : 
-          (new Date() - new Date(exp.startDate)) / (1000 * 60 * 60 * 24 * 365)
+        const years = exp.endDate
+          ? (new Date(exp.endDate) - new Date(exp.startDate)) /
+            (1000 * 60 * 60 * 24 * 365)
+          : (new Date() - new Date(exp.startDate)) / (1000 * 60 * 60 * 24 * 365)
         return sum + years
       }, 0)
 
       const jobTitle = job.title.toLowerCase()
-      if (totalYears > 5 && (jobTitle.includes('senior') || jobTitle.includes('lead'))) {
+      if (
+        totalYears > 5 &&
+        (jobTitle.includes('senior') || jobTitle.includes('lead'))
+      ) {
         score += 1
-      } else if (totalYears > 2 && totalYears <= 5 && !jobTitle.includes('senior')) {
+      } else if (
+        totalYears > 2 &&
+        totalYears <= 5 &&
+        !jobTitle.includes('senior')
+      ) {
         score += 1
       } else if (totalYears <= 2 && jobTitle.includes('junior')) {
         score += 1
@@ -396,15 +432,19 @@ export function useJobBoard() {
   }
 
   // Profile sync integration
-  watch(() => unifiedProfile.jobSearchProfile.value, async (newProfile) => {
-    if (newProfile && !jobs.value.length) {
-      // Auto-search when profile is available and no jobs loaded
-      await autoSearchFromProfile()
-    } else if (newProfile && jobs.value.length) {
-      // Re-apply filters with new profile data
-      applyFilters(currentFilters.value)
-    }
-  }, { deep: true })
+  watch(
+    () => unifiedProfile.jobSearchProfile.value,
+    async newProfile => {
+      if (newProfile && !jobs.value.length) {
+        // Auto-search when profile is available and no jobs loaded
+        await autoSearchFromProfile()
+      } else if (newProfile && jobs.value.length) {
+        // Re-apply filters with new profile data
+        applyFilters(currentFilters.value)
+      }
+    },
+    { deep: true }
+  )
 
   // Initialization
   onMounted(async () => {
@@ -432,30 +472,30 @@ export function useJobBoard() {
     filteredJobs,
     savedJobs,
     currentFilters,
-    
+
     // Computed
     totalJobs,
     gamingJobsCount,
     averageSalary,
     topMatches,
     profileSuggestions,
-    
+
     // Actions
     searchJobs,
     autoSearchFromProfile,
     saveJob,
     unsaveJob,
     isJobSaved,
-    
+
     // Utilities
     getProviderStatus,
     refreshProviders,
-    
+
     // Loading states
     isLoading: computed(() => state.value.isLoading),
     isSearching: computed(() => state.value.isSearching),
     error: computed(() => state.value.error),
-    lastUpdated: computed(() => state.value.lastUpdated)
+    lastUpdated: computed(() => state.value.lastUpdated),
   }
 }
 

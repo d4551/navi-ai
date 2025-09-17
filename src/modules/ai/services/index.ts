@@ -1,7 +1,7 @@
 // Centralized AI Services
 // Unified interface for all AI operations with error handling and retries
 
- // @ts-ignore - AI functions exist at runtime
+// @ts-ignore - AI functions exist at runtime
 import { generateSmartContent, isAIClientReady } from '@/modules/ai'
 import { useAppStore } from '@/stores/app'
 
@@ -69,8 +69,8 @@ export class AIService {
           data: result,
           metadata: {
             latency: Date.now() - startTime,
-            model: 'auto'
-          }
+            model: 'auto',
+          },
         }
       } catch (error) {
         console.warn(`AI generation attempt ${attempt} failed:`, error)
@@ -80,13 +80,15 @@ export class AIService {
             success: false,
             error: error instanceof Error ? error.message : 'Unknown AI error',
             metadata: {
-              latency: Date.now() - startTime
-            }
+              latency: Date.now() - startTime,
+            },
           }
         }
 
         // Wait before retry
-        await new Promise(resolve => setTimeout(resolve, this.retryDelay * attempt))
+        await new Promise(resolve =>
+          setTimeout(resolve, this.retryDelay * attempt)
+        )
       }
     }
 
@@ -94,17 +96,20 @@ export class AIService {
       success: false,
       error: 'Max retry attempts exceeded',
       metadata: {
-        latency: Date.now() - startTime
-      }
+        latency: Date.now() - startTime,
+      },
     }
   }
 
   // Specialized methods for common AI operations
-  async generateResumeContent(content: string, context: any = {}): Promise<AIResponse> {
+  async generateResumeContent(
+    content: string,
+    context: any = {}
+  ): Promise<AIResponse> {
     // Enrich context with user profile snapshot
     try {
       const store = useAppStore()
-      const pi = (store?.user?.personalInfo) || {}
+      const pi = store?.user?.personalInfo || {}
       context = {
         ...context,
         personalInfo: {
@@ -118,24 +123,27 @@ export class AIService {
           portfolio: pi.portfolio,
           currentRole: pi.currentRole,
           currentCompany: pi.currentCompany,
-          yearsExperience: pi.yearsExperience
-        }
+          yearsExperience: pi.yearsExperience,
+        },
       }
     } catch {}
 
     return this.generateContent({
       contentType: 'resume',
       userInput: content,
-      context
+      context,
     })
   }
 
-  async generateCoverLetter(jobDescription: string, resumeData: any): Promise<AIResponse> {
+  async generateCoverLetter(
+    jobDescription: string,
+    resumeData: any
+  ): Promise<AIResponse> {
     // Include personal info snapshot for personalization
     let enrichedContext: any = { resumeData }
     try {
       const store = useAppStore()
-      const pi = (store?.user?.personalInfo) || {}
+      const pi = store?.user?.personalInfo || {}
       enrichedContext = {
         ...enrichedContext,
         personalInfo: {
@@ -149,15 +157,15 @@ export class AIService {
           portfolio: pi.portfolio,
           currentRole: pi.currentRole,
           currentCompany: pi.currentCompany,
-          yearsExperience: pi.yearsExperience
-        }
+          yearsExperience: pi.yearsExperience,
+        },
       }
     } catch {}
 
     return this.generateContent({
       contentType: 'cover-letter',
       userInput: jobDescription,
-      context: enrichedContext
+      context: enrichedContext,
     })
   }
 
@@ -166,7 +174,7 @@ export class AIService {
     let enrichedCriteria: any = { jobCriteria }
     try {
       const store = useAppStore()
-      const pi = (store?.user?.personalInfo) || {}
+      const pi = store?.user?.personalInfo || {}
       enrichedCriteria = {
         ...enrichedCriteria,
         candidateProfile: {
@@ -175,15 +183,19 @@ export class AIService {
           currentRole: pi.currentRole,
           currentCompany: pi.currentCompany,
           yearsExperience: pi.yearsExperience,
-          links: { linkedIn: pi.linkedIn, github: pi.github, portfolio: pi.portfolio }
-        }
+          links: {
+            linkedIn: pi.linkedIn,
+            github: pi.github,
+            portfolio: pi.portfolio,
+          },
+        },
       }
     } catch {}
 
     return this.generateContent({
       contentType: 'job-matching',
       userInput: JSON.stringify(resumeData),
-      context: enrichedCriteria
+      context: enrichedCriteria,
     })
   }
 
@@ -191,7 +203,7 @@ export class AIService {
     return this.generateContent({
       contentType: 'interview-prep',
       userInput: `${jobTitle} at ${company}`,
-      context: {}
+      context: {},
     })
   }
 }
@@ -200,5 +212,6 @@ export class AIService {
 export const aiService = AIService.getInstance()
 
 // Convenience functions
-export const generateWithRetry = (request: AIRequest) => aiService.generateContent(request)
+export const generateWithRetry = (request: AIRequest) =>
+  aiService.generateContent(request)
 export const isAIServiceReady = () => aiService.isReady()

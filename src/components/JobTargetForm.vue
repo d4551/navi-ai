@@ -1,7 +1,9 @@
 <template>
   <div class="job-target-form font-sans">
     <div class="unified-card glass-card section-card">
-      <div class="card-header section-header card-header--dense bg-gradient text-inverse">
+      <div
+        class="card-header section-header card-header--dense bg-gradient text-inverse"
+      >
         <h4 class="h5 mb-0">
           <AppIcon name="EyeIcon" size="default" />
           Target Position Information
@@ -40,11 +42,14 @@
             ></textarea>
             <small class="text-secondary mt-1 block">
               <AppIcon name="InformationCircleIcon" class="mr-1" />
-              AI will analyze this to suggest relevant skills and tailor your resume
+              AI will analyze this to suggest relevant skills and tailor your
+              resume
             </small>
           </div>
           <div class="flex-1-12">
-            <label class="form-label small font-medium">Job Requirements (Optional)</label>
+            <label class="form-label small font-medium"
+              >Job Requirements (Optional)</label
+            >
             <div class="flex gap-glass-sm mb-2">
               <input
                 v-model="newRequirement"
@@ -77,7 +82,9 @@
             </div>
           </div>
           <div class="flex-1-12">
-            <label class="form-label small font-medium">Key Skills Needed (Optional)</label>
+            <label class="form-label small font-medium"
+              >Key Skills Needed (Optional)</label
+            >
             <div class="flex gap-glass-sm mb-2">
               <input
                 v-model="newKeyword"
@@ -147,7 +154,12 @@
 </template>
 
 <script setup lang="ts">
-import { CpuChipIcon, EyeIcon, InformationCircleIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import {
+  CpuChipIcon,
+  EyeIcon,
+  InformationCircleIcon,
+  PlusIcon,
+} from '@heroicons/vue/24/outline'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
 import { ref, watch } from 'vue'
@@ -178,9 +190,13 @@ const newRequirement = ref('')
 const newKeyword = ref('')
 
 // Watch for external changes
-watch(() => props.modelValue, (newValue) => {
-  jobTarget.value = { ...newValue }
-}, { deep: true })
+watch(
+  () => props.modelValue,
+  newValue => {
+    jobTarget.value = { ...newValue }
+  },
+  { deep: true }
+)
 
 const addRequirement = () => {
   if (newRequirement.value.trim()) {
@@ -233,8 +249,12 @@ const removeKeyword = (index: number) => {
 
 /* Spin animation for loading icon */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {
@@ -250,7 +270,7 @@ const removeKeyword = (index: number) => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .badge.bg-glass-bg dark:bg-glass-bg-hover {
+[data-theme='dark'] .badge.bg-glass-bg dark:bg-glass-bg-hover {
   background-color: var(--glass-surface) !important;
   border-color: var(--glass-border) !important;
   color: var(--text-primary-600);

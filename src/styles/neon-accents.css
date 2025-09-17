@@ -16,7 +16,7 @@
 /* Unified focus ring */
 .focus-ring,
 button:focus-visible,
-[role="button"]:focus-visible,
+[role='button']:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
@@ -62,7 +62,7 @@ a.neon-link {
   text-decoration: none;
 }
 a.neon-link::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   right: 100%;

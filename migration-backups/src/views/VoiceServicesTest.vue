@@ -1,5 +1,9 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="normal"
+    max-width="xl"
+  >
     <!-- Diagnostics Section -->
     <section class="glass-card">
       <div class="section-header">
@@ -7,7 +11,7 @@
         <div class="section-subtitle">Test voice and audio capabilities</div>
       </div>
       <div class="section-body">
-        <UnifiedButton 
+        <UnifiedButton
           :loading="isRunningDiagnostics"
           variant="primary"
           leading-icon="mdi-robot"
@@ -15,12 +19,16 @@
         >
           Run Diagnostics
         </UnifiedButton>
-              
+
         <div v-if="diagnosticsResults" class="diagnostics-results">
           <h3>Results:</h3>
-          <div 
+          <div
             class="alert"
-            :class="diagnosticsResults.capabilities.fullSupport ? 'alert-success' : 'alert-warning'"
+            :class="
+              diagnosticsResults.capabilities.fullSupport
+                ? 'alert-success'
+                : 'alert-warning'
+            "
           >
             {{ getVoiceServicesStatusMessage(diagnosticsResults.capabilities) }}
           </div>
@@ -31,12 +39,66 @@
                 <v-expansion-panel-title>Capabilities</v-expansion-panel-title>
                 <v-expansion-panel-text>
                   <ul class="capability-list">
-                    <li>WebSocket: <AppIcon :name="diagnosticsResults.capabilities.webSocket ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>AudioContext: <AppIcon :name="diagnosticsResults.capabilities.audioContext ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>getUserMedia: <AppIcon :name="diagnosticsResults.capabilities.getUserMedia ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>getDisplayMedia: <AppIcon :name="diagnosticsResults.capabilities.getDisplayMedia ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>WebRTC: <AppIcon :name="diagnosticsResults.capabilities.webRTC ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
-                    <li>MediaRecorder: <AppIcon :name="diagnosticsResults.capabilities.mediaRecorder ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /></li>
+                    <li>
+                      WebSocket:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.capabilities.webSocket
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                    </li>
+                    <li>
+                      AudioContext:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.capabilities.audioContext
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                    </li>
+                    <li>
+                      getUserMedia:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.capabilities.getUserMedia
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                    </li>
+                    <li>
+                      getDisplayMedia:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.capabilities.getDisplayMedia
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                    </li>
+                    <li>
+                      WebRTC:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.capabilities.webRTC
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                    </li>
+                    <li>
+                      MediaRecorder:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.capabilities.mediaRecorder
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                    </li>
                   </ul>
                 </v-expansion-panel-text>
               </v-expansion-panel>
@@ -46,26 +108,66 @@
                 <v-expansion-panel-text>
                   <ul class="capability-list">
                     <li>
-                      Audio Context: <AppIcon :name="diagnosticsResults.tests.audioContext.success ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" /> 
-                      <span v-if="diagnosticsResults.tests.audioContext.error" class="error-text">
+                      Audio Context:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.tests.audioContext.success
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                      <span
+                        v-if="diagnosticsResults.tests.audioContext.error"
+                        class="error-text"
+                      >
                         - {{ diagnosticsResults.tests.audioContext.error }}
                       </span>
                     </li>
                     <li>
-                      Microphone: <AppIcon :name="diagnosticsResults.tests.microphone.success ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" />
-                      <span v-if="diagnosticsResults.tests.microphone.error" class="error-text">
+                      Microphone:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.tests.microphone.success
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                      <span
+                        v-if="diagnosticsResults.tests.microphone.error"
+                        class="error-text"
+                      >
                         - {{ diagnosticsResults.tests.microphone.error }}
                       </span>
                     </li>
                     <li>
-                      Camera: <AppIcon :name="diagnosticsResults.tests.camera.success ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" />
-                      <span v-if="diagnosticsResults.tests.camera.error" class="error-text">
+                      Camera:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.tests.camera.success
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                      <span
+                        v-if="diagnosticsResults.tests.camera.error"
+                        class="error-text"
+                      >
                         - {{ diagnosticsResults.tests.camera.error }}
                       </span>
                     </li>
                     <li>
-                      Screen Share: <AppIcon :name="diagnosticsResults.tests.screenShare.success ? 'mdi-check-circle-outline' : 'mdi-close-circle-outline'" />
-                      <span v-if="diagnosticsResults.tests.screenShare.error" class="error-text">
+                      Screen Share:
+                      <AppIcon
+                        :name="
+                          diagnosticsResults.tests.screenShare.success
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-close-circle-outline'
+                        "
+                      />
+                      <span
+                        v-if="diagnosticsResults.tests.screenShare.error"
+                        class="error-text"
+                      >
                         - {{ diagnosticsResults.tests.screenShare.error }}
                       </span>
                     </li>
@@ -82,7 +184,7 @@
                 <v-card class="mb-4">
                   <v-card-title>AI Services Test</v-card-title>
                   <v-card-text>
-                    <UnifiedButton 
+                    <UnifiedButton
                       :loading="isInitializingAI"
                       variant="secondary"
                       class="mr-2"
@@ -92,7 +194,7 @@
                       Initialize AI Services
                     </UnifiedButton>
 
-                    <UiChip 
+                    <UiChip
                       v-if="aiStatus"
                       :classes="`chip ${aiStatus.success ? 'chip-success' : 'chip-danger'} chip-compact ml-2`"
                     >
@@ -100,8 +202,16 @@
                     </UiChip>
 
                     <div v-if="aiInitialized" class="mt-4">
-                      <h4>AI Services Initialized <AppIcon name="mdi-check-circle-outline" color="success" context="success" aria-hidden="true" /></h4>
-                      <UnifiedButton 
+                      <h4>
+                        AI Services Initialized
+                        <AppIcon
+                          name="mdi-check-circle-outline"
+                          color="success"
+                          context="success"
+                          aria-hidden="true"
+                        />
+                      </h4>
+                      <UnifiedButton
                         :loading="isTestingVoice"
                         variant="info"
                         class="mr-2"
@@ -110,7 +220,7 @@
                       >
                         Test Voice Input
                       </UnifiedButton>
-                      <UnifiedButton 
+                      <UnifiedButton
                         :loading="isTestingVideo"
                         variant="warning"
                         class="mr-2"
@@ -119,7 +229,7 @@
                       >
                         Test Video Streaming
                       </UnifiedButton>
-                      <UnifiedButton 
+                      <UnifiedButton
                         :loading="isTestingScreen"
                         variant="cyber"
                         leading-icon="mdi-monitor"
@@ -140,17 +250,27 @@
                   <v-card-title>Console Output</v-card-title>
                   <v-card-text>
                     <div class="console-output">
-                      <div 
-                        v-for="(log, index) in consoleOutput" 
+                      <div
+                        v-for="(log, index) in consoleOutput"
                         :key="index"
                         :class="['console-line', `console-${log.level}`]"
                       >
-                        <span class="timestamp">{{ formatTime(log.timestamp) }}</span>
-                        <span class="level">[{{ log.level.toUpperCase() }}]</span>
+                        <span class="timestamp">{{
+                          formatTime(log.timestamp)
+                        }}</span>
+                        <span class="level"
+                          >[{{ log.level.toUpperCase() }}]</span
+                        >
                         <span class="message">{{ log.message }}</span>
                       </div>
                     </div>
-                    <UnifiedButton size="sm" variant="ghost" class="mt-2" @click="clearConsole">Clear Console</UnifiedButton>
+                    <UnifiedButton
+                      size="sm"
+                      variant="ghost"
+                      class="mt-2"
+                      @click="clearConsole"
+                      >Clear Console</UnifiedButton
+                    >
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -163,44 +283,44 @@
 </template>
 
 <script>
-import AppIcon from '@/components/ui/AppIcon.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import UiChip from '@/components/ui/UiChip.vue'
-import { ref, onMounted } from 'vue';
-import { useToast } from '@/composables/useToast';
-import { useLiveMultimediaAI } from '@/composables/useLiveMultimediaAI';
-import { 
-  runVoiceServicesDiagnostics, 
-  getVoiceServicesStatusMessage 
-} from '@/shared/utils/voiceServicesValidator';
+import { ref, onMounted } from 'vue'
+import { useToast } from '@/composables/useToast'
+import { useLiveMultimediaAI } from '@/composables/useLiveMultimediaAI'
+import {
+  runVoiceServicesDiagnostics,
+  getVoiceServicesStatusMessage,
+} from '@/shared/utils/voiceServicesValidator'
 
 export default {
   name: 'VoiceServicesTest',
-  components: { 
+  components: {
     AppIcon,
-    StandardPageLayout, 
-    UnifiedButton, 
-    UiChip 
+    StandardPageLayout,
+    UnifiedButton,
+    UiChip,
   },
   setup() {
-    const toast = useToast();
-    
+    const toast = useToast()
+
     // Diagnostics
-    const isRunningDiagnostics = ref(false);
-    const diagnosticsResults = ref(null);
-    
+    const isRunningDiagnostics = ref(false)
+    const diagnosticsResults = ref(null)
+
     // AI Services
-    const isInitializingAI = ref(false);
-    const aiInitialized = ref(false);
-    const aiStatus = ref(null);
-    const isTestingVoice = ref(false);
-    const isTestingVideo = ref(false);
-    const isTestingScreen = ref(false);
-    
+    const isInitializingAI = ref(false)
+    const aiInitialized = ref(false)
+    const aiStatus = ref(null)
+    const isTestingVoice = ref(false)
+    const isTestingVideo = ref(false)
+    const isTestingScreen = ref(false)
+
     // Console
-    const consoleOutput = ref([]);
-    
+    const consoleOutput = ref([])
+
     // AI Composable
     const {
       state: multimediaState,
@@ -210,73 +330,85 @@ export default {
       toggleVideoStreaming,
       captureScreenshot,
       isMultimediaReady,
-    } = useLiveMultimediaAI();
+    } = useLiveMultimediaAI()
 
     // Helper functions
     function addToConsole(level, message) {
       consoleOutput.value.push({
         timestamp: new Date(),
         level,
-        message: typeof message === 'object' ? JSON.stringify(message) : message
-      });
-      
+        message:
+          typeof message === 'object' ? JSON.stringify(message) : message,
+      })
+
       // Keep only last 50 entries
       if (consoleOutput.value.length > 50) {
-        consoleOutput.value = consoleOutput.value.slice(-50);
+        consoleOutput.value = consoleOutput.value.slice(-50)
       }
     }
 
     function formatTime(timestamp) {
-      return timestamp.toLocaleTimeString();
+      return timestamp.toLocaleTimeString()
     }
 
     function clearConsole() {
-      consoleOutput.value = [];
+      consoleOutput.value = []
     }
 
     // Diagnostics
     async function runDiagnostics() {
-      isRunningDiagnostics.value = true;
-      addToConsole('info', 'Running voice services diagnostics...');
-      
+      isRunningDiagnostics.value = true
+      addToConsole('info', 'Running voice services diagnostics...')
+
       try {
-        const results = await runVoiceServicesDiagnostics();
-        diagnosticsResults.value = results;
-        
-        addToConsole('info', 'Diagnostics completed');
-        addToConsole('info', `Full support: ${results.capabilities.fullSupport}`);
-        
+        const results = await runVoiceServicesDiagnostics()
+        diagnosticsResults.value = results
+
+        addToConsole('info', 'Diagnostics completed')
+        addToConsole(
+          'info',
+          `Full support: ${results.capabilities.fullSupport}`
+        )
+
         if (results.errors.missing.length > 0) {
-          addToConsole('error', `Missing features: ${results.errors.missing.join(', ')}`);
+          addToConsole(
+            'error',
+            `Missing features: ${results.errors.missing.join(', ')}`
+          )
         }
-        
+
         if (results.errors.warnings.length > 0) {
-          addToConsole('warn', `Warnings: ${results.errors.warnings.join(', ')}`);
+          addToConsole(
+            'warn',
+            `Warnings: ${results.errors.warnings.join(', ')}`
+          )
         }
-        
-        toast.success('Diagnostics completed');
+
+        toast.success('Diagnostics completed')
       } catch (error) {
-        addToConsole('error', `Diagnostics failed: ${error.message}`);
-        toast.error('Diagnostics failed');
+        addToConsole('error', `Diagnostics failed: ${error.message}`)
+        toast.error('Diagnostics failed')
       } finally {
-        isRunningDiagnostics.value = false;
+        isRunningDiagnostics.value = false
       }
     }
 
     // AI Services
     async function initializeAI() {
-      isInitializingAI.value = true;
-      addToConsole('info', 'Initializing AI services...');
-      
+      isInitializingAI.value = true
+      addToConsole('info', 'Initializing AI services...')
+
       try {
-        const settings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-        const apiKey = settings.geminiApiKey;
-        
+        const settings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+        const apiKey = settings.geminiApiKey
+
         if (!apiKey) {
-          aiStatus.value = { success: false, message: 'No API key configured' };
-          addToConsole('error', 'No Gemini API key found in settings');
-          toast.error('Please configure your Gemini API key in settings');
-          return;
+          aiStatus.value = { success: false, message: 'No API key configured' }
+          addToConsole('error', 'No Gemini API key found in settings')
+          toast.error('Please configure your Gemini API key in settings')
+          return
         }
 
         const success = await initializeMultimediaAI({
@@ -287,103 +419,116 @@ export default {
           enableScreenshot: true,
           maxTokens: 8192,
           temperature: 0.7,
-        });
+        })
 
         if (success) {
-          aiInitialized.value = true;
-          aiStatus.value = { success: true, message: 'AI services ready' };
-          addToConsole('info', 'AI services initialized successfully');
-          toast.success('AI services initialized successfully');
+          aiInitialized.value = true
+          aiStatus.value = { success: true, message: 'AI services ready' }
+          addToConsole('info', 'AI services initialized successfully')
+          toast.success('AI services initialized successfully')
         } else {
-          aiStatus.value = { success: false, message: 'Initialization failed' };
-          addToConsole('error', 'AI services initialization failed');
-          toast.error('AI services initialization failed');
+          aiStatus.value = { success: false, message: 'Initialization failed' }
+          addToConsole('error', 'AI services initialization failed')
+          toast.error('AI services initialization failed')
         }
       } catch (error) {
-        aiStatus.value = { success: false, message: error.message };
-        addToConsole('error', `AI initialization error: ${error.message}`);
-        toast.error(`AI initialization error: ${error.message}`);
+        aiStatus.value = { success: false, message: error.message }
+        addToConsole('error', `AI initialization error: ${error.message}`)
+        toast.error(`AI initialization error: ${error.message}`)
       } finally {
-        isInitializingAI.value = false;
+        isInitializingAI.value = false
       }
     }
 
     // Test functions
     async function testVoiceInput() {
-      isTestingVoice.value = true;
-      addToConsole('info', 'Testing voice input...');
-      
+      isTestingVoice.value = true
+      addToConsole('info', 'Testing voice input...')
+
       try {
         if (!isMultimediaReady()) {
-          addToConsole('error', 'AI services not ready');
-          toast.error('AI services not ready');
-          return;
+          addToConsole('error', 'AI services not ready')
+          toast.error('AI services not ready')
+          return
         }
 
-        await toggleAudioStreaming();
-        addToConsole('info', `Voice streaming: ${multimediaState.isAudioStreaming ? 'ON' : 'OFF'}`);
-        toast.info(`Voice streaming: ${multimediaState.isAudioStreaming ? 'ON' : 'OFF'}`);
+        await toggleAudioStreaming()
+        addToConsole(
+          'info',
+          `Voice streaming: ${multimediaState.isAudioStreaming ? 'ON' : 'OFF'}`
+        )
+        toast.info(
+          `Voice streaming: ${multimediaState.isAudioStreaming ? 'ON' : 'OFF'}`
+        )
       } catch (error) {
-        addToConsole('error', `Voice test error: ${error.message}`);
-        toast.error(`Voice test error: ${error.message}`);
+        addToConsole('error', `Voice test error: ${error.message}`)
+        toast.error(`Voice test error: ${error.message}`)
       } finally {
-        isTestingVoice.value = false;
+        isTestingVoice.value = false
       }
     }
 
     async function testVideoStreaming() {
-      isTestingVideo.value = true;
-      addToConsole('info', 'Testing video streaming...');
-      
+      isTestingVideo.value = true
+      addToConsole('info', 'Testing video streaming...')
+
       try {
         if (!isMultimediaReady()) {
-          addToConsole('error', 'AI services not ready');
-          toast.error('AI services not ready');
-          return;
+          addToConsole('error', 'AI services not ready')
+          toast.error('AI services not ready')
+          return
         }
 
-        await toggleVideoStreaming();
-        addToConsole('info', `Video streaming: ${multimediaState.isVideoStreaming ? 'ON' : 'OFF'}`);
-        toast.info(`Video streaming: ${multimediaState.isVideoStreaming ? 'ON' : 'OFF'}`);
+        await toggleVideoStreaming()
+        addToConsole(
+          'info',
+          `Video streaming: ${multimediaState.isVideoStreaming ? 'ON' : 'OFF'}`
+        )
+        toast.info(
+          `Video streaming: ${multimediaState.isVideoStreaming ? 'ON' : 'OFF'}`
+        )
       } catch (error) {
-        addToConsole('error', `Video test error: ${error.message}`);
-        toast.error(`Video test error: ${error.message}`);
+        addToConsole('error', `Video test error: ${error.message}`)
+        toast.error(`Video test error: ${error.message}`)
       } finally {
-        isTestingVideo.value = false;
+        isTestingVideo.value = false
       }
     }
 
     async function testScreenCapture() {
-      isTestingScreen.value = true;
-      addToConsole('info', 'Testing screen capture...');
-      
+      isTestingScreen.value = true
+      addToConsole('info', 'Testing screen capture...')
+
       try {
         if (!isMultimediaReady()) {
-          addToConsole('error', 'AI services not ready');
-          toast.error('AI services not ready');
-          return;
+          addToConsole('error', 'AI services not ready')
+          toast.error('AI services not ready')
+          return
         }
 
-        const result = await captureScreenshot('Test screenshot analysis');
+        const result = await captureScreenshot('Test screenshot analysis')
         if (result) {
-          addToConsole('info', `Screen capture successful: ${result.content.substring(0, 100)}...`);
-          toast.success('Screen capture test successful');
+          addToConsole(
+            'info',
+            `Screen capture successful: ${result.content.substring(0, 100)}...`
+          )
+          toast.success('Screen capture test successful')
         } else {
-          addToConsole('error', 'Screen capture failed');
-          toast.error('Screen capture failed');
+          addToConsole('error', 'Screen capture failed')
+          toast.error('Screen capture failed')
         }
       } catch (error) {
-        addToConsole('error', `Screen capture error: ${error.message}`);
-        toast.error(`Screen capture error: ${error.message}`);
+        addToConsole('error', `Screen capture error: ${error.message}`)
+        toast.error(`Screen capture error: ${error.message}`)
       } finally {
-        isTestingScreen.value = false;
+        isTestingScreen.value = false
       }
     }
 
     // Lifecycle
     onMounted(() => {
-      addToConsole('info', 'Voice Services Test page loaded');
-    });
+      addToConsole('info', 'Voice Services Test page loaded')
+    })
 
     return {
       // Diagnostics
@@ -391,13 +536,13 @@ export default {
       diagnosticsResults,
       runDiagnostics,
       getVoiceServicesStatusMessage,
-      
+
       // AI Services
       isInitializingAI,
       aiInitialized,
       aiStatus,
       initializeAI,
-      
+
       // Tests
       isTestingVoice,
       isTestingVideo,
@@ -405,18 +550,18 @@ export default {
       testVoiceInput,
       testVideoStreaming,
       testScreenCapture,
-      
+
       // Console
       consoleOutput,
       formatTime,
       clearConsole,
-      
+
       // AI State
       multimediaState,
       isAIInitialized,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -429,7 +574,10 @@ export default {
   color: var(--text-primary);
   padding: 15px;
   border-radius: 8px;
-  font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  font-family:
+    'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata',
+    'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New',
+    monospace;
   font-size: 12px;
   max-height: 300px;
   overflow-y: auto;

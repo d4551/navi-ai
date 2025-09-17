@@ -31,10 +31,10 @@ export function initMdiAliasRuntime() {
   aliasAllExisting()
   // Observe changes
   try {
-    const obs = new MutationObserver((mutations) => {
+    const obs = new MutationObserver(mutations => {
       for (const m of mutations) {
         if (m.type === 'childList') {
-          m.addedNodes.forEach((n) => {
+          m.addedNodes.forEach(n => {
             aliasNodeClasses(n)
             // Also check descendants
             if (n.querySelectorAll) {
@@ -46,7 +46,12 @@ export function initMdiAliasRuntime() {
         }
       }
     })
-    obs.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] })
+    obs.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class'],
+    })
   } catch {}
 }
 

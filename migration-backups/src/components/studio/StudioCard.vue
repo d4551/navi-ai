@@ -1,35 +1,44 @@
 <template>
-  <div 
+  <div
     class="studio-card glass-card section-card interactive-hover enhanced-glass-card"
-    :class="{ 
+    :class="{
       'card-selected': isSelected,
       'card-favorite': isFavorite,
-      'card-ai-scored': aiScore !== undefined
+      'card-ai-scored': aiScore !== undefined,
     }"
   >
     <!-- Card Header -->
     <div class="card-header section-header glass-header">
       <div class="studio-logo-section">
         <div class="logo-container">
-          <img v-if="studio.logo" :src="studio.logo" :alt="studio.name" class="studio-logo" @error="onLogoError" />
+          <img
+            v-if="studio.logo"
+            :src="studio.logo"
+            :alt="studio.name"
+            class="studio-logo"
+            @error="onLogoError"
+          />
           <div v-else class="logo-placeholder">
             {{ studio.name?.charAt(0) || '?' }}
           </div>
         </div>
-        
+
         <div class="studio-badges">
           <span v-if="studio.publiclyTraded" class="badge bg-info-subtle">
             <AppIcon name="mdi-chart-bar" color="info" />
             Public
           </span>
-          <span v-if="(studio as any).type || (studio as any).category" class="badge bg-info">
+          <span
+            v-if="(studio as any).type || (studio as any).category"
+            class="badge bg-info"
+          >
             {{ (studio as any).type || (studio as any).category }}
           </span>
         </div>
       </div>
 
       <div class="card-actions">
-        <button 
+        <button
           class="action-btn favorite-btn glass-action-btn"
           :class="{ active: isFavorite }"
           :title="isFavorite ? 'Remove from watchlist' : 'Add to watchlist'"
@@ -37,8 +46,8 @@
         >
           <AppIcon name="mdi-heart" />
         </button>
-        
-        <button 
+
+        <button
           class="action-btn select-btn glass-action-btn"
           :class="{ active: isSelected }"
           title="Select for comparison"
@@ -50,7 +59,10 @@
     </div>
 
     <!-- AI Score Indicator with Enhanced Visual Hierarchy -->
-    <div v-if="aiScore !== undefined" class="ai-score-indicator enhanced-score-badge">
+    <div
+      v-if="aiScore !== undefined"
+      class="ai-score-indicator enhanced-score-badge"
+    >
       <div class="score-circle" :class="getScoreClass(aiScore)">
         <span class="score-value">{{ Math.round(aiScore) }}</span>
         <span class="score-label">AI Match</span>
@@ -61,19 +73,33 @@
     <!-- Studio Info -->
     <div class="studio-info">
       <h3 class="studio-name" :title="studio.name">{{ studio.name }}</h3>
-      <div v-if="studio.dataSource || studio.confidence !== undefined" class="source-row">
-        <span v-if="studio.dataSource?.length" class="source-badge" :title="`Sources: ${studio.dataSource.join(', ')}`">
+      <div
+        v-if="studio.dataSource || studio.confidence !== undefined"
+        class="source-row"
+      >
+        <span
+          v-if="studio.dataSource?.length"
+          class="source-badge"
+          :title="`Sources: ${studio.dataSource.join(', ')}`"
+        >
           <AppIcon name="mdi-database" />
           {{ compactSources(studio.dataSource) }}
         </span>
-        <span v-if="studio.confidence !== undefined" class="confidence-badge" :class="confidenceClass(studio.confidence)" :title="`Confidence ${(studio.confidence*100).toFixed(1)}%`">
+        <span
+          v-if="studio.confidence !== undefined"
+          class="confidence-badge"
+          :class="confidenceClass(studio.confidence)"
+          :title="`Confidence ${(studio.confidence * 100).toFixed(1)}%`"
+        >
           {{ (studio.confidence * 100).toFixed(0) }}%
         </span>
       </div>
-      
+
       <div class="studio-location enhanced-location">
         <AppIcon name="mdi-map-marker" class="location-icon" />
-        <span class="location-text">{{ studio.headquarters || studio.location || 'Location Unknown' }}</span>
+        <span class="location-text">{{
+          studio.headquarters || studio.location || 'Location Unknown'
+        }}</span>
       </div>
 
       <p v-if="studio.description" class="studio-description">
@@ -96,7 +122,11 @@
         </div>
         <div v-if="studio.games?.length" class="metric metric-games">
           <div class="metric-icon-wrapper">
-            <AppIcon name="mdi-gamepad-variant" context="gaming" class="metric-icon" />
+            <AppIcon
+              name="mdi-gamepad-variant"
+              context="gaming"
+              class="metric-icon"
+            />
           </div>
           <span class="metric-text">{{ studio.games.length }} games</span>
         </div>
@@ -106,9 +136,9 @@
       <div v-if="studio.games?.length" class="featured-games">
         <h4 class="section-title">Popular Games</h4>
         <div class="games-list">
-          <span 
-            v-for="game in studio.games.slice(0, 3)" 
-            :key="game" 
+          <span
+            v-for="game in studio.games.slice(0, 3)"
+            :key="game"
             class="game-tag"
           >
             {{ game }}
@@ -123,9 +153,9 @@
       <div v-if="studio.technologies?.length" class="tech-stack">
         <h4 class="section-title">Tech Stack</h4>
         <div class="tech-tags">
-          <span 
-            v-for="tech in studio.technologies.slice(0, 4)" 
-            :key="tech" 
+          <span
+            v-for="tech in studio.technologies.slice(0, 4)"
+            :key="tech"
             class="tech-tag"
           >
             {{ tech }}
@@ -139,26 +169,26 @@
 
     <!-- Card Footer Actions -->
     <div class="card-footer">
-      <UnifiedButton 
-        color="glass" 
-        appearance="outlined" 
+      <UnifiedButton
+        color="glass"
+        appearance="outlined"
         size="sm"
         leading-icon="mdi-information-outline"
         @click="$emit('view-details', studio)"
       >
         Details
       </UnifiedButton>
-      
-      <UnifiedButton 
-        color="gaming" 
+
+      <UnifiedButton
+        color="gaming"
         size="sm"
         leading-icon="mdi-briefcase-outline"
         @click="$emit('view-jobs', studio)"
       >
         View Jobs
       </UnifiedButton>
-      
-      <UnifiedButton 
+
+      <UnifiedButton
         color="cyber"
         appearance="outlined"
         size="sm"
@@ -173,7 +203,7 @@
     <!-- Hover Overlay for Quick Actions -->
     <div class="card-overlay">
       <div class="overlay-actions">
-        <UnifiedButton 
+        <UnifiedButton
           color="gaming"
           leading-icon="mdi-target"
           @click="$emit('quick-apply', studio)"
@@ -225,7 +255,7 @@ function compactSources(sources: string[]): string {
   if (!sources) return ''
   const uniq = Array.from(new Set(sources))
   if (uniq.length <= 2) return uniq.join(', ')
-  return uniq.slice(0,2).join(', ') + ` +${uniq.length - 2}`
+  return uniq.slice(0, 2).join(', ') + ` +${uniq.length - 2}`
 }
 
 function confidenceClass(c: number) {
@@ -256,7 +286,7 @@ function confidenceClass(c: number) {
 
 .studio-card:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 12px 32px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
   border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
@@ -266,7 +296,7 @@ function confidenceClass(c: number) {
 .studio-card.card-selected {
   border-color: var(--color-primary-500);
   background: color-mix(in srgb, var(--color-primary-500) 5%, var(--glass-bg));
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 0 1px var(--color-primary-500);
 }
@@ -284,11 +314,13 @@ function confidenceClass(c: number) {
 }
 
 .studio-card.card-ai-scored {
-  background: linear-gradient(135deg, 
-    var(--glass-bg) 0%, 
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg) 0%,
     color-mix(in srgb, var(--color-primary-500) 3%, var(--glass-bg)) 100%
   );
-  border-left: 3px solid color-mix(in srgb, var(--color-primary-500) 60%, transparent);
+  border-left: 3px solid
+    color-mix(in srgb, var(--color-primary-500) 60%, transparent);
 }
 
 .card-header {
@@ -362,7 +394,7 @@ function confidenceClass(c: number) {
   background: var(--glass-hover-bg);
   color: var(--text-primary);
   border-color: color-mix(in srgb, var(--color-primary-500) 50%, transparent);
-  box-shadow: 
+  box-shadow:
     var(--shadow-md),
     0 0 12px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   transform: scale(1.05);
@@ -420,8 +452,14 @@ function confidenceClass(c: number) {
 }
 
 @keyframes pulse-glow {
-  from { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
-  to { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); }
+  from {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
 
 .score-circle {
@@ -443,25 +481,41 @@ function confidenceClass(c: number) {
 .score-excellent {
   color: var(--color-success-600);
   border-color: var(--color-success-500);
-  background: color-mix(in srgb, var(--color-success-500) 15%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-success-500) 15%,
+    var(--glass-surface)
+  );
 }
 
 .score-good {
   color: var(--color-info-600);
   border-color: var(--color-info-500);
-  background: color-mix(in srgb, var(--color-info-500) 15%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-info-500) 15%,
+    var(--glass-surface)
+  );
 }
 
 .score-fair {
   color: var(--color-warning-600);
   border-color: var(--color-warning-500);
-  background: color-mix(in srgb, var(--color-warning-500) 15%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-warning-500) 15%,
+    var(--glass-surface)
+  );
 }
 
 .score-poor {
   color: var(--color-error-600);
   border-color: var(--color-error-500);
-  background: color-mix(in srgb, var(--color-error-500) 15%, var(--glass-surface));
+  background: color-mix(
+    in srgb,
+    var(--color-error-500) 15%,
+    var(--glass-surface)
+  );
 }
 
 .score-value {
@@ -626,8 +680,16 @@ function confidenceClass(c: number) {
 }
 
 .game-tag {
-  background: color-mix(in srgb, var(--color-gaming-500, #ff6b35) 10%, var(--glass-bg));
-  border-color: color-mix(in srgb, var(--color-gaming-500, #ff6b35) 20%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--color-gaming-500, #ff6b35) 10%,
+    var(--glass-bg)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--color-gaming-500, #ff6b35) 20%,
+    transparent
+  );
   color: var(--color-gaming-600, #e55a2b);
   font-weight: var(--font-weight-medium);
   transition: all var(--duration-fast);
@@ -670,9 +732,9 @@ function confidenceClass(c: number) {
   bottom: var(--overlay-footer-safe, 88px);
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.60) 0%,
-    rgba(0,0,0,0.45) 55%,
-    rgba(0,0,0,0.00) 100%
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.45) 55%,
+    rgba(0, 0, 0, 0) 100%
   );
   display: flex;
   align-items: center;
@@ -687,7 +749,9 @@ function confidenceClass(c: number) {
 
 /* Show overlay only on devices that actually support hover */
 @media (hover: hover) {
-  .studio-card:hover .card-overlay { opacity: 1; }
+  .studio-card:hover .card-overlay {
+    opacity: 1;
+  }
 }
 
 .overlay-actions {
@@ -705,17 +769,19 @@ function confidenceClass(c: number) {
     padding: var(--spacing-4);
   }
   /* Slightly larger safe area for stacked footer */
-  .card-overlay { bottom: var(--overlay-footer-safe-mobile, 112px); }
-  
+  .card-overlay {
+    bottom: var(--overlay-footer-safe-mobile, 112px);
+  }
+
   .card-footer {
     flex-direction: column;
   }
-  
+
   .studio-metrics {
     flex-direction: column;
     gap: var(--spacing-2);
   }
-  
+
   .ai-score-indicator {
     position: static;
     align-self: flex-end;
@@ -724,38 +790,38 @@ function confidenceClass(c: number) {
 }
 
 /* Enhanced Light/Dark Mode Integration */
-[data-theme="dark"] .studio-card,
-[data-theme="dark"] .enhanced-glass-card {
+[data-theme='dark'] .studio-card,
+[data-theme='dark'] .enhanced-glass-card {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .logo-container {
+[data-theme='dark'] .logo-container {
   background: var(--glass-bg);
   border-color: var(--glass-border);
 }
 
-[data-theme="dark"] .enhanced-location {
+[data-theme='dark'] .enhanced-location {
   background: rgba(var(--glass-border-rgb, 255, 255, 255), 0.05);
 }
 
-[data-theme="dark"] .enhanced-location:hover {
+[data-theme='dark'] .enhanced-location:hover {
   background: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
 }
 
-[data-theme="dark"] .enhanced-metrics .metric {
+[data-theme='dark'] .enhanced-metrics .metric {
   background: var(--glass-bg);
   border-color: var(--glass-border);
 }
 
-[data-theme="dark"] .enhanced-metrics .metric:hover {
+[data-theme='dark'] .enhanced-metrics .metric:hover {
   background: var(--glass-hover-bg);
   border-color: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.3);
 }
 
-[data-theme="light"] .studio-card,
-[data-theme="light"] .enhanced-glass-card {
+[data-theme='light'] .studio-card,
+[data-theme='light'] .enhanced-glass-card {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
@@ -768,7 +834,7 @@ function confidenceClass(c: number) {
 .enhanced-location,
 .enhanced-metrics .metric,
 .action-btn {
-  transition: 
+  transition:
     background-color var(--duration-normal),
     border-color var(--duration-normal),
     color var(--duration-normal),
@@ -782,12 +848,12 @@ function confidenceClass(c: number) {
   .enhanced-glass-card {
     transition: none;
   }
-  
+
   .studio-card:hover,
   .enhanced-glass-card:hover {
     transform: none;
   }
-  
+
   .score-glow {
     animation: none;
   }
@@ -799,7 +865,7 @@ function confidenceClass(c: number) {
     border-width: 2px;
     backdrop-filter: none;
   }
-  
+
   .enhanced-metrics .metric {
     border-width: 2px;
     backdrop-filter: none;
@@ -809,7 +875,7 @@ function confidenceClass(c: number) {
 /* Focus states for accessibility */
 .studio-card:focus-visible {
   outline: none;
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 0 2px var(--color-primary-500);
   transform: translateY(-1px);
@@ -817,7 +883,7 @@ function confidenceClass(c: number) {
 
 .action-btn:focus-visible {
   outline: none;
-  box-shadow: 
+  box-shadow:
     var(--shadow-sm),
     0 0 0 2px var(--color-primary-500);
 }
@@ -830,7 +896,11 @@ function confidenceClass(c: number) {
 }
 
 .game-tag:hover {
-  background: color-mix(in srgb, var(--color-gaming-500, #ff6b35) 15%, var(--glass-bg));
+  background: color-mix(
+    in srgb,
+    var(--color-gaming-500, #ff6b35) 15%,
+    var(--glass-bg)
+  );
 }
 
 .tech-tag:hover {

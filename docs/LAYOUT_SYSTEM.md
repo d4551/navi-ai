@@ -130,7 +130,6 @@ The NAVI layout system provides a comprehensive, standardized approach to organi
 <!-- Dashboard Page -->
 <StandardPageLayout>
   <div class="container-xl space-y-8">
-
     <!-- Gamification Section -->
     <section class="mb-8">
       <div class="glass-strong p-6 rounded-lg">
@@ -147,7 +146,6 @@ The NAVI layout system provides a comprehensive, standardized approach to organi
         <!-- Action cards -->
       </div>
     </section>
-
   </div>
 </StandardPageLayout>
 ```
@@ -244,6 +242,7 @@ The NAVI layout system provides a comprehensive, standardized approach to organi
 ### From Custom CSS to Layout System
 
 **Before:**
+
 ```css
 .custom-section {
   background: var(--glass-bg);
@@ -254,13 +253,15 @@ The NAVI layout system provides a comprehensive, standardized approach to organi
 ```
 
 **After:**
+
 ```html
-<section class="glass p-6 rounded-lg mb-8">
+<section class="glass p-6 rounded-lg mb-8"></section>
 ```
 
 ### From Legacy Grid to Modern Grid
 
 **Before:**
+
 ```css
 .old-grid {
   display: grid;
@@ -270,8 +271,9 @@ The NAVI layout system provides a comprehensive, standardized approach to organi
 ```
 
 **After:**
+
 ```html
-<div class="card-grid">
+<div class="card-grid"></div>
 ```
 
 ## 📋 Maintenance

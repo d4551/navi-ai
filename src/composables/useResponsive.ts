@@ -9,14 +9,14 @@ export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl'
 
 // Enhanced breakpoint definitions (matching modern device standards)
 const BREAKPOINTS = {
-  xs: 0,       // Extra small devices (very small phones)
-  mobile: 480, // Small mobile phones  
-  sm: 576,     // Small devices (larger phones/landscape)
-  md: 768,     // Medium devices (tablets)
-  lg: 992,     // Large devices (small desktops/large tablets)
-  xl: 1200,    // Extra large devices (desktops)
-  xxl: 1400,   // Ultra-wide desktop displays
-  xxxl: 1600   // Very large desktop displays
+  xs: 0, // Extra small devices (very small phones)
+  mobile: 480, // Small mobile phones
+  sm: 576, // Small devices (larger phones/landscape)
+  md: 768, // Medium devices (tablets)
+  lg: 992, // Large devices (small desktops/large tablets)
+  xl: 1200, // Extra large devices (desktops)
+  xxl: 1400, // Ultra-wide desktop displays
+  xxxl: 1600, // Very large desktop displays
 } as const
 
 // Global reactive state
@@ -29,7 +29,7 @@ export function useResponsive() {
     const width = windowWidth.value
     if (width >= BREAKPOINTS.xxxl) return 'xxxl'
     if (width >= BREAKPOINTS.xxl) return 'xxl'
-    if (width >= BREAKPOINTS.xl) return 'xl'  
+    if (width >= BREAKPOINTS.xl) return 'xl'
     if (width >= BREAKPOINTS.lg) return 'lg'
     if (width >= BREAKPOINTS.md) return 'md'
     if (width >= BREAKPOINTS.sm) return 'sm'
@@ -51,15 +51,34 @@ export function useResponsive() {
 
   // Enhanced granular breakpoint checks
   const isXs = computed(() => windowWidth.value < BREAKPOINTS.sm)
-  const isSm = computed(() => windowWidth.value >= BREAKPOINTS.sm && windowWidth.value < BREAKPOINTS.md)
-  const isMd = computed(() => windowWidth.value >= BREAKPOINTS.md && windowWidth.value < BREAKPOINTS.lg)
-  const isLg = computed(() => windowWidth.value >= BREAKPOINTS.lg && windowWidth.value < BREAKPOINTS.xl)
-  const isXl = computed(() => windowWidth.value >= BREAKPOINTS.xl && windowWidth.value < BREAKPOINTS.xxl)
-  const isXxl = computed(() => windowWidth.value >= BREAKPOINTS.xxl && windowWidth.value < BREAKPOINTS.xxxl)
+  const isSm = computed(
+    () =>
+      windowWidth.value >= BREAKPOINTS.sm && windowWidth.value < BREAKPOINTS.md
+  )
+  const isMd = computed(
+    () =>
+      windowWidth.value >= BREAKPOINTS.md && windowWidth.value < BREAKPOINTS.lg
+  )
+  const isLg = computed(
+    () =>
+      windowWidth.value >= BREAKPOINTS.lg && windowWidth.value < BREAKPOINTS.xl
+  )
+  const isXl = computed(
+    () =>
+      windowWidth.value >= BREAKPOINTS.xl && windowWidth.value < BREAKPOINTS.xxl
+  )
+  const isXxl = computed(
+    () =>
+      windowWidth.value >= BREAKPOINTS.xxl &&
+      windowWidth.value < BREAKPOINTS.xxxl
+  )
   const isXxxl = computed(() => windowWidth.value >= BREAKPOINTS.xxxl)
-  
+
   // Ultra-wide display detection
-  const isUltraWide = computed(() => windowWidth.value >= 1600 && (windowWidth.value / windowHeight.value) > 2.0)
+  const isUltraWide = computed(
+    () =>
+      windowWidth.value >= 1600 && windowWidth.value / windowHeight.value > 2.0
+  )
 
   // Responsive range checks
   const isSmallMobile = computed(() => windowWidth.value < BREAKPOINTS.mobile)
@@ -74,7 +93,7 @@ export function useResponsive() {
     'device-tablet': isTablet.value,
     'device-desktop': isDesktop.value,
     [`device-${deviceType.value}`]: true,
-    
+
     // Breakpoint classes
     [`breakpoint-${currentBreakpoint.value}`]: true,
     'breakpoint-xs': isXs.value,
@@ -84,20 +103,20 @@ export function useResponsive() {
     'breakpoint-xl': isXl.value,
     'breakpoint-xxl': isXxl.value,
     'breakpoint-xxxl': isXxxl.value,
-    
+
     // Range classes
     'small-mobile': isSmallMobile.value,
     'mobile-up': isMobileUp.value,
     'tablet-up': isTabletUp.value,
     'desktop-up': isDesktopUp.value,
-    
+
     // Special display classes
     'ultra-wide': isUltraWide.value,
-    
+
     // Screen ratio classes
-    'landscape': screenInfo.value.isLandscape,
-    'portrait': screenInfo.value.isPortrait,
-    'square-ish': Math.abs(screenInfo.value.aspectRatio - 1) < 0.2
+    landscape: screenInfo.value.isLandscape,
+    portrait: screenInfo.value.isPortrait,
+    'square-ish': Math.abs(screenInfo.value.aspectRatio - 1) < 0.2,
   }))
 
   // Screen size helpers
@@ -108,7 +127,7 @@ export function useResponsive() {
     isLandscape: windowWidth.value > windowHeight.value,
     isPortrait: windowWidth.value <= windowHeight.value,
     deviceType: deviceType.value,
-    breakpoint: currentBreakpoint.value
+    breakpoint: currentBreakpoint.value,
   }))
 
   // Responsive grid columns calculation
@@ -194,21 +213,38 @@ export function useResponsive() {
   // Responsive CSS helpers
   const getResponsiveCSS = () => ({
     gridColumns: `repeat(${getGridColumns({ mobile: 1, tablet: 2, desktop: 4 })}, 1fr)`,
-    containerPadding: getResponsiveSpacing({ mobile: '0.75rem', tablet: '1rem', desktop: '1.5rem' }),
-    fontSize: getResponsiveFontSize({ mobile: '0.875rem', tablet: '1rem', desktop: '1.125rem' })
+    containerPadding: getResponsiveSpacing({
+      mobile: '0.75rem',
+      tablet: '1rem',
+      desktop: '1.5rem',
+    }),
+    fontSize: getResponsiveFontSize({
+      mobile: '0.875rem',
+      tablet: '1rem',
+      desktop: '1.125rem',
+    }),
   })
 
   // Media query helpers for programmatic use
   const createMediaQuery = (query: string) => {
-    if (typeof window === 'undefined') return { matches: false, addEventListener: () => {}, removeEventListener: () => {} }
+    if (typeof window === 'undefined')
+      return {
+        matches: false,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+      }
     return window.matchMedia(query)
   }
 
-  const watchBreakpoint = (breakpoint: Breakpoint | 'mobile', callback: (matches: boolean) => void) => {
-    const query = breakpoint === 'mobile' 
-      ? `(max-width: ${BREAKPOINTS.md - 1}px)`
-      : `(min-width: ${BREAKPOINTS[breakpoint]}px)`
-    
+  const watchBreakpoint = (
+    breakpoint: Breakpoint | 'mobile',
+    callback: (matches: boolean) => void
+  ) => {
+    const query =
+      breakpoint === 'mobile'
+        ? `(max-width: ${BREAKPOINTS.md - 1}px)`
+        : `(min-width: ${BREAKPOINTS[breakpoint]}px)`
+
     const mediaQuery = createMediaQuery(query)
     const handler = (e: Event) => callback((e as MediaQueryListEvent).matches)
 
@@ -216,7 +252,8 @@ export function useResponsive() {
     mediaQuery.addEventListener('change', handler as EventListener)
     callback(mediaQuery.matches) // Initial call
 
-    return () => mediaQuery.removeEventListener('change', handler as EventListener)
+    return () =>
+      mediaQuery.removeEventListener('change', handler as EventListener)
   }
 
   return {
@@ -226,12 +263,12 @@ export function useResponsive() {
     currentBreakpoint,
     deviceType,
     screenInfo,
-    
+
     // Device checks
     isMobile,
-    isTablet, 
+    isTablet,
     isDesktop,
-    
+
     // Breakpoint checks
     isXs,
     isSm,
@@ -239,16 +276,16 @@ export function useResponsive() {
     isLg,
     isXl,
     isXxl,
-    
+
     // Range checks
     isSmallMobile,
     isMobileUp,
     isTabletUp,
     isDesktopUp,
-    
+
     // CSS classes
     deviceClasses,
-    
+
     // Utilities
     getGridColumns,
     getResponsiveSpacing,
@@ -258,10 +295,10 @@ export function useResponsive() {
     isBreakpointUp,
     isBreakpointDown,
     watchBreakpoint,
-    
+
     // Lifecycle
     initializeResponsive,
-    cleanup
+    cleanup,
   }
 }
 

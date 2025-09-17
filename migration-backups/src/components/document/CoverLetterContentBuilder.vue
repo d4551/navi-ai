@@ -7,7 +7,10 @@
           v-for="(step, index) in coverLetterSteps"
           :key="step.id"
           class="step-item"
-          :class="{ active: currentStep === step.id, completed: currentStep > step.id }"
+          :class="{
+            active: currentStep === step.id,
+            completed: currentStep > step.id,
+          }"
           @click="$emit('step-change', step.id)"
         >
           <div class="step-number">{{ index + 1 }}</div>
@@ -25,7 +28,9 @@
             <AppIcon name="mdi-account-outline" class="me-2" />
             Contact Information
           </h3>
-          <p class="section-description">Your contact details for the cover letter header</p>
+          <p class="section-description">
+            Your contact details for the cover letter header
+          </p>
         </div>
 
         <div class="form-grid contact-info-grid">
@@ -114,7 +119,9 @@
             <AppIcon name="mdi-office-building-outline" class="me-2" />
             Company Information
           </h3>
-          <p class="section-description">Details about the company and position you're applying for</p>
+          <p class="section-description">
+            Details about the company and position you're applying for
+          </p>
         </div>
 
         <div class="form-grid company-info-grid">
@@ -160,10 +167,7 @@
 
           <div class="form-field">
             <label class="field-label">How did you find this position?</label>
-            <select
-              v-model="localData.companyInfo.source"
-              class="field-input"
-            >
+            <select v-model="localData.companyInfo.source" class="field-input">
               <option value="">Select source</option>
               <option value="company-website">Company Website</option>
               <option value="job-board">Job Board</option>
@@ -198,7 +202,10 @@
             <AppIcon name="mdi-card-text-outline" class="me-2" />
             Introduction Paragraph
           </h3>
-          <p class="section-description">Hook the reader with a strong opening that explains why you're interested</p>
+          <p class="section-description">
+            Hook the reader with a strong opening that explains why you're
+            interested
+          </p>
         </div>
 
         <div class="form-field">
@@ -210,7 +217,9 @@
             placeholder="Start with a compelling hook that shows your enthusiasm for the role and company. Mention how you found the position and briefly state why you're a great fit..."
           ></textarea>
           <div class="field-help">
-            <small class="text-muted">{{ localData.introduction.length }}/400 characters</small>
+            <small class="text-muted"
+              >{{ localData.introduction.length }}/400 characters</small
+            >
             <UnifiedButton
               v-if="aiEnabled"
               variant="ghost"
@@ -246,12 +255,16 @@
             <AppIcon name="mdi-text-box-outline" class="me-2" />
             Body Paragraphs
           </h3>
-          <p class="section-description">Explain your qualifications and why you're the perfect candidate</p>
+          <p class="section-description">
+            Explain your qualifications and why you're the perfect candidate
+          </p>
         </div>
 
         <div class="body-paragraphs">
           <div class="form-field">
-            <label class="field-label">Body Paragraph 1 - Your Experience</label>
+            <label class="field-label"
+              >Body Paragraph 1 - Your Experience</label
+            >
             <textarea
               v-model="localData.bodyParagraph1"
               class="field-textarea"
@@ -314,7 +327,10 @@
             <AppIcon name="mdi-check-circle-outline" class="me-2" />
             Conclusion & Call to Action
           </h3>
-          <p class="section-description">End with a strong closing that reiterates your interest and next steps</p>
+          <p class="section-description">
+            End with a strong closing that reiterates your interest and next
+            steps
+          </p>
         </div>
 
         <div class="form-field">
@@ -326,7 +342,9 @@
             placeholder="Reiterate your enthusiasm, mention next steps, and provide a professional closing..."
           ></textarea>
           <div class="field-help">
-            <small class="text-muted">{{ localData.conclusion.length }}/300 characters</small>
+            <small class="text-muted"
+              >{{ localData.conclusion.length }}/300 characters</small
+            >
             <UnifiedButton
               v-if="aiEnabled"
               variant="ghost"
@@ -362,7 +380,9 @@
             <AppIcon name="mdi-eye-outline" class="me-2" />
             Review & Finalize
           </h3>
-          <p class="section-description">Review your cover letter and make final adjustments</p>
+          <p class="section-description">
+            Review your cover letter and make final adjustments
+          </p>
         </div>
 
         <div class="review-content">
@@ -375,9 +395,16 @@
 
           <div class="review-section">
             <h4>Company Information</h4>
-            <p><strong>Company:</strong> {{ localData.companyInfo.companyName }}</p>
-            <p><strong>Position:</strong> {{ localData.companyInfo.jobTitle }}</p>
-            <p><strong>Hiring Manager:</strong> {{ localData.companyInfo.hiringManager || 'Not specified' }}</p>
+            <p>
+              <strong>Company:</strong> {{ localData.companyInfo.companyName }}
+            </p>
+            <p>
+              <strong>Position:</strong> {{ localData.companyInfo.jobTitle }}
+            </p>
+            <p>
+              <strong>Hiring Manager:</strong>
+              {{ localData.companyInfo.hiringManager || 'Not specified' }}
+            </p>
           </div>
 
           <div class="review-section">
@@ -387,9 +414,18 @@
 
           <div class="review-section">
             <h4>Body Content</h4>
-            <p><strong>Paragraph 1:</strong> {{ localData.bodyParagraph1 ? 'Written' : 'Not written' }}</p>
-            <p><strong>Paragraph 2:</strong> {{ localData.bodyParagraph2 ? 'Written' : 'Not written' }}</p>
-            <p><strong>Paragraph 3:</strong> {{ localData.bodyParagraph3 ? 'Written' : 'Not written' }}</p>
+            <p>
+              <strong>Paragraph 1:</strong>
+              {{ localData.bodyParagraph1 ? 'Written' : 'Not written' }}
+            </p>
+            <p>
+              <strong>Paragraph 2:</strong>
+              {{ localData.bodyParagraph2 ? 'Written' : 'Not written' }}
+            </p>
+            <p>
+              <strong>Paragraph 3:</strong>
+              {{ localData.bodyParagraph3 ? 'Written' : 'Not written' }}
+            </p>
           </div>
 
           <div class="review-section">
@@ -441,9 +477,13 @@ const emit = defineEmits<{
 const localData = ref(JSON.parse(JSON.stringify(props.documentData)))
 
 // Watch for prop changes
-watch(() => props.documentData, (newData: CoverLetterData) => {
-  localData.value = JSON.parse(JSON.stringify(newData))
-}, { deep: true })
+watch(
+  () => props.documentData,
+  (newData: CoverLetterData) => {
+    localData.value = JSON.parse(JSON.stringify(newData))
+  },
+  { deep: true }
+)
 
 // Cover letter steps
 const coverLetterSteps = [
@@ -452,7 +492,7 @@ const coverLetterSteps = [
   { id: 3, label: 'Introduction' },
   { id: 4, label: 'Body' },
   { id: 5, label: 'Conclusion' },
-  { id: 6, label: 'Review' }
+  { id: 6, label: 'Review' },
 ]
 
 // Methods
@@ -461,9 +501,13 @@ const emitDataUpdate = () => {
 }
 
 // Auto-save on data changes
-watch(localData, () => {
-  emitDataUpdate()
-}, { deep: true })
+watch(
+  localData,
+  () => {
+    emitDataUpdate()
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped>

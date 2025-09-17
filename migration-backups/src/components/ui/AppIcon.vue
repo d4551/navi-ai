@@ -1,5 +1,9 @@
 <template>
-  <span :class="[rootClasses, $attrs.class]" :style="[computedStyle, $attrs.style]" v-bind="$attrs">
+  <span
+    :class="[rootClasses, $attrs.class]"
+    :style="[computedStyle, $attrs.style]"
+    v-bind="$attrs"
+  >
     <!-- Heroicons -->
     <component
       :is="heroiconComponent"
@@ -138,7 +142,6 @@ import {
   SunIcon,
   MoonIcon,
   CloudIcon,
-
 } from '@heroicons/vue/24/outline'
 
 import {
@@ -152,7 +155,6 @@ import {
   LightBulbIcon as LightBulbIconSolid,
   HomeIcon as HomeIconSolid,
   UserIcon as UserIconSolid,
-
 } from '@heroicons/vue/24/solid'
 
 export default {
@@ -165,65 +167,88 @@ export default {
      */
     name: {
       type: String,
-      required: true
+      required: true,
     },
-    
+
     /**
      * Icon size - can be predefined or custom
      */
     size: {
       type: [String, Number],
       default: 'default',
-      validator: (value) => {
-        const validSizes = ['x-small', 'small', 'default', 'large', 'x-large', 'inherit']
+      validator: value => {
+        const validSizes = [
+          'x-small',
+          'small',
+          'default',
+          'large',
+          'x-large',
+          'inherit',
+        ]
         return validSizes.includes(value) || !isNaN(value)
-      }
+      },
     },
-    
+
     /**
      * Icon color - can be theme color or custom
      */
     color: {
       type: String,
-      default: undefined
+      default: undefined,
     },
-    
+
     /**
      * Context for automatic sizing and coloring
      */
     context: {
       type: String,
       default: 'default',
-      validator: (value) => {
+      validator: value => {
         const validContexts = [
-          'default', 'button', 'header', 'card', 'list', 'navigation',
-          'achievement', 'gaming', 'success', 'warning', 'error', 'info'
+          'default',
+          'button',
+          'header',
+          'card',
+          'list',
+          'navigation',
+          'achievement',
+          'gaming',
+          'success',
+          'warning',
+          'error',
+          'info',
         ]
         return validContexts.includes(value)
-      }
+      },
     },
-    
+
     /**
      * Additional CSS classes
      */
     variant: {
       type: String,
       default: undefined,
-      validator: (value) => {
-        const validVariants = ['filled', 'outlined', 'rounded', 'sharp', 'two-tone']
+      validator: value => {
+        const validVariants = [
+          'filled',
+          'outlined',
+          'rounded',
+          'sharp',
+          'two-tone',
+        ]
         return !value || validVariants.includes(value)
-      }
+      },
     },
-    
+
     /**
      * Make icon interactive (hover effects, etc.)
      */
     interactive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  
+
   setup(props) {
     // Heroicons mapping - modern icon system
     const HEROICON_MAP = {
@@ -236,176 +261,176 @@ export default {
       'chevron-right': ChevronRightIcon,
       'chevron-up': ChevronUpIcon,
       'chevron-down': ChevronDownIcon,
-      'close': XMarkIcon,
-      'x': XMarkIcon,
-      'plus': PlusIcon,
-      'minus': MinusIcon,
-      'check': CheckIcon,
+      close: XMarkIcon,
+      x: XMarkIcon,
+      plus: PlusIcon,
+      minus: MinusIcon,
+      check: CheckIcon,
       'dots-horizontal': EllipsisHorizontalIcon,
-      'menu': Bars3Icon,
+      menu: Bars3Icon,
 
       // Communication & Media
-      'chat': ChatBubbleLeftRightIcon,
-      'phone': PhoneIcon,
-      'email': EnvelopeIcon,
-      'envelope': EnvelopeIcon,
-      'microphone': MicrophoneIcon,
-      'mic': MicrophoneIcon,
-      'speaker': SpeakerWaveIcon,
-      'volume': SpeakerWaveIcon,
-      'video': VideoCameraIcon,
-      'camera': CameraIcon,
-      'play': PlayIcon,
-      'pause': PauseIcon,
-      'stop': StopIcon,
+      chat: ChatBubbleLeftRightIcon,
+      phone: PhoneIcon,
+      email: EnvelopeIcon,
+      envelope: EnvelopeIcon,
+      microphone: MicrophoneIcon,
+      mic: MicrophoneIcon,
+      speaker: SpeakerWaveIcon,
+      volume: SpeakerWaveIcon,
+      video: VideoCameraIcon,
+      camera: CameraIcon,
+      play: PlayIcon,
+      pause: PauseIcon,
+      stop: StopIcon,
 
       // Business & Work
-      'briefcase': BriefcaseIcon,
-      'office': BuildingOfficeIcon,
-      'building': BuildingOfficeIcon,
-      'user': UserIcon,
-      'account': UserIcon,
-      'users': UsersIcon,
-      'group': UsersIcon,
-      'graduation': AcademicCapIcon,
-      'school': AcademicCapIcon,
-      'document': DocumentIcon,
-      'file': DocumentIcon,
+      briefcase: BriefcaseIcon,
+      office: BuildingOfficeIcon,
+      building: BuildingOfficeIcon,
+      user: UserIcon,
+      account: UserIcon,
+      users: UsersIcon,
+      group: UsersIcon,
+      graduation: AcademicCapIcon,
+      school: AcademicCapIcon,
+      document: DocumentIcon,
+      file: DocumentIcon,
       'document-text': DocumentTextIcon,
       'file-text': DocumentTextIcon,
-      'clipboard': ClipboardDocumentIcon,
-      'folder': FolderIcon,
+      clipboard: ClipboardDocumentIcon,
+      folder: FolderIcon,
 
       // Tech & Gaming
-      'computer': ComputerDesktopIcon,
-      'desktop': ComputerDesktopIcon,
-      'laptop': ComputerDesktopIcon,
+      computer: ComputerDesktopIcon,
+      desktop: ComputerDesktopIcon,
+      laptop: ComputerDesktopIcon,
       'phone-mobile': DevicePhoneMobileIcon,
-      'mobile': DevicePhoneMobileIcon,
-      'cellphone': DevicePhoneMobileIcon,
-      'settings': CogIcon,
-      'cog': CogIcon,
-      'tools': WrenchScrewdriverIcon,
-      'wrench': WrenchScrewdriverIcon,
-      'bolt': BoltIcon,
-      'flash': BoltIcon,
-      'lightning': BoltIcon,
-      'lightbulb': LightBulbIcon,
-      'idea': LightBulbIcon,
+      mobile: DevicePhoneMobileIcon,
+      cellphone: DevicePhoneMobileIcon,
+      settings: CogIcon,
+      cog: CogIcon,
+      tools: WrenchScrewdriverIcon,
+      wrench: WrenchScrewdriverIcon,
+      bolt: BoltIcon,
+      flash: BoltIcon,
+      lightning: BoltIcon,
+      lightbulb: LightBulbIcon,
+      idea: LightBulbIcon,
 
       // Status & Feedback
       'check-circle': CheckCircleIcon,
-      'success': CheckCircleIcon,
+      success: CheckCircleIcon,
       'x-circle': XCircleIcon,
-      'error': XCircleIcon,
-      'alert': ExclamationTriangleIcon,
-      'warning': ExclamationTriangleIcon,
-      'info': InformationCircleIcon,
-      'information': InformationCircleIcon,
-      'heart': HeartIcon,
-      'favorite': HeartIcon,
-      'star': StarIcon,
-      'trophy': TrophyIcon,
-      'achievement': TrophyIcon,
-      'fire': FireIcon,
+      error: XCircleIcon,
+      alert: ExclamationTriangleIcon,
+      warning: ExclamationTriangleIcon,
+      info: InformationCircleIcon,
+      information: InformationCircleIcon,
+      heart: HeartIcon,
+      favorite: HeartIcon,
+      star: StarIcon,
+      trophy: TrophyIcon,
+      achievement: TrophyIcon,
+      fire: FireIcon,
 
       // Search & Discovery
-      'search': MagnifyingGlassIcon,
-      'magnify': MagnifyingGlassIcon,
-      'eye': EyeIcon,
-      'view': EyeIcon,
-      'filter': FunnelIcon,
-      'adjustments': AdjustmentsHorizontalIcon,
+      search: MagnifyingGlassIcon,
+      magnify: MagnifyingGlassIcon,
+      eye: EyeIcon,
+      view: EyeIcon,
+      filter: FunnelIcon,
+      adjustments: AdjustmentsHorizontalIcon,
 
       // Social & Sharing
-      'share': ShareIcon,
-      'link': LinkIcon,
-      'web': GlobeAltIcon,
-      'globe': GlobeAltIcon,
-      'website': GlobeAltIcon,
+      share: ShareIcon,
+      link: LinkIcon,
+      web: GlobeAltIcon,
+      globe: GlobeAltIcon,
+      website: GlobeAltIcon,
 
       // Data & Analytics
       'chart-bar': ChartBarIcon,
       'bar-chart': ChartBarIcon,
       'chart-line': ChartBarIcon,
       'line-chart': ChartBarIcon,
-      'analytics': PresentationChartLineIcon,
-      'presentation': PresentationChartLineIcon,
+      analytics: PresentationChartLineIcon,
+      presentation: PresentationChartLineIcon,
 
       // Location & Maps
       'map-pin': MapPinIcon,
-      'location': MapPinIcon,
-      'marker': MapPinIcon,
-      'home': HomeIcon,
+      location: MapPinIcon,
+      marker: MapPinIcon,
+      home: HomeIcon,
 
       // UI Elements
-      'paint': PaintBrushIcon,
-      'brush': PaintBrushIcon,
-      'palette': SwatchIcon,
-      'color': SwatchIcon,
-      'stack': RectangleStackIcon,
-      'layers': RectangleStackIcon,
-      'window': WindowIcon,
+      paint: PaintBrushIcon,
+      brush: PaintBrushIcon,
+      palette: SwatchIcon,
+      color: SwatchIcon,
+      stack: RectangleStackIcon,
+      layers: RectangleStackIcon,
+      window: WindowIcon,
 
       // Tools & Utilities
-      'clock': ClockIcon,
-      'time': ClockIcon,
-      'calendar': CalendarIcon,
-      'date': CalendarIcon,
-      'tag': TagIcon,
-      'bookmark': BookmarkIcon,
-      'archive': ArchiveBoxIcon,
-      'trash': TrashIcon,
-      'delete': TrashIcon,
-      'pencil': PencilIcon,
-      'edit': PencilIcon,
-      'wifi': WifiIcon,
-      'signal': WifiIcon,
-      'battery': ShieldCheckIcon,
-      'shield': ShieldCheckIcon,
-      'security': ShieldCheckIcon,
-      'key': KeyIcon,
-      'lock': LockClosedIcon,
-      'unlock': LockOpenIcon,
+      clock: ClockIcon,
+      time: ClockIcon,
+      calendar: CalendarIcon,
+      date: CalendarIcon,
+      tag: TagIcon,
+      bookmark: BookmarkIcon,
+      archive: ArchiveBoxIcon,
+      trash: TrashIcon,
+      delete: TrashIcon,
+      pencil: PencilIcon,
+      edit: PencilIcon,
+      wifi: WifiIcon,
+      signal: WifiIcon,
+      battery: ShieldCheckIcon,
+      shield: ShieldCheckIcon,
+      security: ShieldCheckIcon,
+      key: KeyIcon,
+      lock: LockClosedIcon,
+      unlock: LockOpenIcon,
 
       // Arrows & Directions
-      'refresh': ArrowPathIcon,
-      'reload': ArrowPathIcon,
-      'undo': ArrowUturnLeftIcon,
-      'redo': ArrowUturnRightIcon,
+      refresh: ArrowPathIcon,
+      reload: ArrowPathIcon,
+      undo: ArrowUturnLeftIcon,
+      redo: ArrowUturnRightIcon,
 
       // Media Controls
-      'forward': ForwardIcon,
-      'next': ForwardIcon,
-      'backward': BackwardIcon,
-      'previous': BackwardIcon,
-      'mute': SpeakerXMarkIcon,
+      forward: ForwardIcon,
+      next: ForwardIcon,
+      backward: BackwardIcon,
+      previous: BackwardIcon,
+      mute: SpeakerXMarkIcon,
 
       // Financial
-      'dollar': CurrencyDollarIcon,
-      'money': CurrencyDollarIcon,
+      dollar: CurrencyDollarIcon,
+      money: CurrencyDollarIcon,
       'credit-card': CreditCardIcon,
-      'card': CreditCardIcon,
-      'cash': BanknotesIcon,
+      card: CreditCardIcon,
+      cash: BanknotesIcon,
 
       // Educational
-      'book': BookOpenIcon,
-      'read': BookOpenIcon,
-      'puzzle': PuzzlePieceIcon,
-      'experiment': BeakerIcon,
-      'lab': BeakerIcon,
+      book: BookOpenIcon,
+      read: BookOpenIcon,
+      puzzle: PuzzlePieceIcon,
+      experiment: BeakerIcon,
+      lab: BeakerIcon,
 
       // Weather & Nature
-      'sun': SunIcon,
+      sun: SunIcon,
       'light-mode': SunIcon,
-      'moon': MoonIcon,
+      moon: MoonIcon,
       'dark-mode': MoonIcon,
-      'cloud': CloudIcon,
+      cloud: CloudIcon,
 
       // Gaming & Entertainment (using robot as gamepad substitute)
-      'gamepad': ComputerDesktopIcon,
-      'gaming': ComputerDesktopIcon,
-      'robot': ComputerDesktopIcon,
+      gamepad: ComputerDesktopIcon,
+      gaming: ComputerDesktopIcon,
+      robot: ComputerDesktopIcon,
     }
 
     // MDI to Heroicon migration mapping
@@ -532,7 +557,7 @@ export default {
       return false
     })
 
-    const resolveIconName = (name) => {
+    const resolveIconName = name => {
       if (!name) return null
       const n = String(name).trim()
 
@@ -579,7 +604,7 @@ export default {
       return classes.join(' ')
     })
 
-    const resolveToMdi = (name) => {
+    const resolveToMdi = name => {
       if (!name) return 'mdi-shape'
       let n = String(name).trim()
       if (n.startsWith('mdi-')) return getMdiAlias(n) || n
@@ -593,38 +618,38 @@ export default {
     }
 
     const resolvedMdi = computed(() => resolveToMdi(props.name))
-    
+
     const computedSize = computed(() => {
       if (props.size !== 'default') {
         return props.size
       }
-      
+
       // Context-based sizing
       const contextSizes = {
-        'button': 'small',
-        'header': 'large',
-        'card': 'default',
-        'list': 'small',
-        'navigation': 'default',
-        'achievement': 'large'
+        button: 'small',
+        header: 'large',
+        card: 'default',
+        list: 'small',
+        navigation: 'default',
+        achievement: 'large',
       }
-      
+
       return contextSizes[props.context] || 'default'
     })
-    
+
     const computedStyle = computed(() => {
       const styles = {}
-      
+
       // Handle sizing
       const size = computedSize.value
       const sizeMap = {
         'x-small': '16px',
-        'small': '20px',
-        'default': '24px',
-        'large': '32px',
-        'x-large': '40px'
+        small: '20px',
+        default: '24px',
+        large: '32px',
+        'x-large': '40px',
       }
-      
+
       if (size === 'inherit') {
         // Defer sizing to CSS; avoid inline styles
       } else if (sizeMap[size]) {
@@ -636,15 +661,15 @@ export default {
         styles.width = `${size}px`
         styles.height = `${size}px`
       }
-      
+
       // Handle coloring (theme-aware via CSS vars)
       const themeColors = {
-        'achievement': 'var(--color-warning-500)',
-        'gaming': 'var(--color-primary-500)',
-        'success': 'var(--color-success-500)',
-        'warning': 'var(--color-warning-500)',
-        'error': 'var(--color-danger-500)',
-        'info': 'var(--color-info-500)'
+        achievement: 'var(--color-warning-500)',
+        gaming: 'var(--color-primary-500)',
+        success: 'var(--color-success-500)',
+        warning: 'var(--color-warning-500)',
+        error: 'var(--color-danger-500)',
+        info: 'var(--color-info-500)',
       }
 
       if (props.color) {
@@ -652,30 +677,32 @@ export default {
       } else if (props.context && themeColors[props.context]) {
         styles.color = themeColors[props.context]
       }
-      
+
       return styles
     })
-    
+
     const computedClasses = computed(() => {
       const classes = []
-      
+
       if (props.variant) {
         classes.push(`icon-${props.variant}`)
       }
-      
+
       if (props.interactive) {
         classes.push('icon-interactive')
       }
-      
+
       if (props.context && props.context !== 'default') {
         classes.push(`icon-context-${props.context}`)
       }
-      
+
       return classes.join(' ')
     })
-    
-    const rootClasses = computed(() => ['mui-icon', computedClasses.value].filter(Boolean).join(' '))
-    
+
+    const rootClasses = computed(() =>
+      ['mui-icon', computedClasses.value].filter(Boolean).join(' ')
+    )
+
     return {
       resolvedMdi,
       computedSize,
@@ -684,9 +711,9 @@ export default {
       rootClasses,
       isHeroicon,
       heroiconComponent,
-      heroiconClasses
+      heroiconClasses,
     }
-  }
+  },
 }
 </script>
 
@@ -709,9 +736,21 @@ export default {
   opacity: 0.8;
 }
 
-.icon-context-achievement { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-warning-500) 40%, transparent)); }
-.icon-context-gaming { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-primary-500) 40%, transparent)); }
-.icon-context-success { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-success-500) 40%, transparent)); }
+.icon-context-achievement {
+  filter: drop-shadow(
+    0 0 4px color-mix(in srgb, var(--color-warning-500) 40%, transparent)
+  );
+}
+.icon-context-gaming {
+  filter: drop-shadow(
+    0 0 4px color-mix(in srgb, var(--color-primary-500) 40%, transparent)
+  );
+}
+.icon-context-success {
+  filter: drop-shadow(
+    0 0 4px color-mix(in srgb, var(--color-success-500) 40%, transparent)
+  );
+}
 
 .icon-context-warning {
   filter: drop-shadow(0 0 4px rgba(255, 152, 0, 0.4));
@@ -751,9 +790,15 @@ export default {
 
 /* Animation effects */
 @keyframes icon-pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .icon-context-achievement:hover {

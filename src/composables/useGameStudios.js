@@ -27,7 +27,9 @@ export function useGameStudios() {
       total.value = result.total
       facets.value = result.facets
 
-      logger.info(`Loaded ${result.studios.length} studios of ${result.total} total`)
+      logger.info(
+        `Loaded ${result.studios.length} studios of ${result.total} total`
+      )
     } catch (err) {
       error.value = err.message || 'Failed to load studios'
       logger.error('Failed to load studios:', err)
@@ -44,7 +46,9 @@ export function useGameStudios() {
       const suggestions = await gameStudioService.getSuggestions(query, limit)
       studios.value = suggestions
 
-      logger.info(`Found ${suggestions.length} studio suggestions for query: ${query}`)
+      logger.info(
+        `Found ${suggestions.length} studio suggestions for query: ${query}`
+      )
     } catch (err) {
       error.value = err.message || 'Failed to search studios'
       logger.error('Failed to search studios:', err)
@@ -62,7 +66,7 @@ export function useGameStudios() {
     }
   }
 
-  const toggleFavorite = async (studioId) => {
+  const toggleFavorite = async studioId => {
     try {
       const isNowFavorite = await gameStudioService.toggleFavorite(studioId)
 
@@ -86,7 +90,7 @@ export function useGameStudios() {
     }
   }
 
-  const isStudioFavorite = async (studioId) => {
+  const isStudioFavorite = async studioId => {
     try {
       return await gameStudioService.isStudioFavorite(studioId)
     } catch (err) {
@@ -95,7 +99,7 @@ export function useGameStudios() {
     }
   }
 
-  const findStudioByCompany = async (companyName) => {
+  const findStudioByCompany = async companyName => {
     try {
       loading.value = true
       error.value = null
@@ -111,7 +115,7 @@ export function useGameStudios() {
     }
   }
 
-  const getStudiosByCategory = async (category) => {
+  const getStudiosByCategory = async category => {
     try {
       loading.value = true
       error.value = null
@@ -143,7 +147,7 @@ export function useGameStudios() {
     }
   }
 
-  const advancedSearch = async (criteria) => {
+  const advancedSearch = async criteria => {
     try {
       loading.value = true
       error.value = null
@@ -166,8 +170,8 @@ export function useGameStudios() {
           types: [],
           locations: [],
           sizes: [],
-          technologies: []
-        }
+          technologies: [],
+        },
       }
     } finally {
       loading.value = false
@@ -179,15 +183,15 @@ export function useGameStudios() {
   const hasError = computed(() => error.value !== null)
   const hasFavorites = computed(() => favorites.value.length > 0)
 
-  const getStudioById = (studioId) => {
+  const getStudioById = studioId => {
     return studios.value.find(studio => studio.id === studioId) || null
   }
 
-  const getStudiosByType = (type) => {
+  const getStudiosByType = type => {
     return studios.value.filter(studio => studio.type === type)
   }
 
-  const getStudiosByTechnology = (technology) => {
+  const getStudiosByTechnology = technology => {
     return studios.value.filter(studio =>
       studio.technologies.some(tech =>
         tech.toLowerCase().includes(technology.toLowerCase())
@@ -195,7 +199,7 @@ export function useGameStudios() {
     )
   }
 
-  const getFilteredStudios = (filterFn) => {
+  const getFilteredStudios = filterFn => {
     return computed(() => studios.value.filter(filterFn))
   }
 
@@ -232,7 +236,7 @@ export function useGameStudios() {
       byRegion: {},
       avgRating: 0,
       totalRating: 0,
-      ratedStudios: 0
+      ratedStudios: 0,
     }
 
     studios.value.forEach(studio => {
@@ -287,6 +291,6 @@ export function useGameStudios() {
     getStudiosByTechnology,
     getFilteredStudios,
     clearError,
-    clearData
+    clearData,
   }
 }

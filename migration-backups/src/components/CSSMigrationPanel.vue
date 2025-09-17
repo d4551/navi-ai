@@ -8,14 +8,13 @@
         </div>
         <div class="header-text">
           <h2>CSS Migration Tool</h2>
-          <p>Rapidly apply global design system while preserving IDs and attributes</p>
+          <p>
+            Rapidly apply global design system while preserving IDs and
+            attributes
+          </p>
         </div>
       </div>
-      <UnifiedButton
-        variant="ghost"
-        size="sm"
-        @click="togglePanel"
-      >
+      <UnifiedButton variant="ghost" size="sm" @click="togglePanel">
         <Icon :name="isExpanded ? 'chevron-up' : 'chevron-down'" />
       </UnifiedButton>
     </div>
@@ -35,7 +34,7 @@
             <Icon name="square" />
             Migrate Buttons
           </UnifiedButton>
-          
+
           <UnifiedButton
             variant="primary"
             size="sm"
@@ -45,7 +44,7 @@
             <Icon name="credit-card" />
             Migrate Cards
           </UnifiedButton>
-          
+
           <UnifiedButton
             variant="primary"
             size="sm"
@@ -55,7 +54,7 @@
             <Icon name="type" />
             Migrate Inputs
           </UnifiedButton>
-          
+
           <UnifiedButton
             variant="warning"
             size="sm"
@@ -82,24 +81,24 @@
               class="selector-input"
             />
           </div>
-          
+
           <div class="form-options">
             <label class="checkbox-label">
               <input v-model="options.dryRun" type="checkbox" />
               <span>Dry Run (preview only)</span>
             </label>
-            
+
             <label class="checkbox-label">
               <input v-model="options.preserveIds" type="checkbox" />
               <span>Preserve IDs</span>
             </label>
-            
+
             <label class="checkbox-label">
               <input v-model="options.backupStyles" type="checkbox" />
               <span>Backup Styles</span>
             </label>
           </div>
-          
+
           <UnifiedButton
             variant="secondary"
             :disabled="!customSelector || isRunning"
@@ -118,11 +117,13 @@
           <div class="result-stat">
             <Icon name="check-circle" class="stat-icon success" />
             <div class="stat-content">
-              <span class="stat-number">{{ lastReport.elementsProcessed }}</span>
+              <span class="stat-number">{{
+                lastReport.elementsProcessed
+              }}</span>
               <span class="stat-label">Elements Processed</span>
             </div>
           </div>
-          
+
           <div class="result-stat">
             <Icon name="edit" class="stat-icon primary" />
             <div class="stat-content">
@@ -130,7 +131,7 @@
               <span class="stat-label">Styles Converted</span>
             </div>
           </div>
-          
+
           <div class="result-stat">
             <Icon name="alert-triangle" class="stat-icon warning" />
             <div class="stat-content">
@@ -138,7 +139,7 @@
               <span class="stat-label">Warnings</span>
             </div>
           </div>
-          
+
           <div class="result-stat">
             <Icon name="x-circle" class="stat-icon error" />
             <div class="stat-content">
@@ -147,19 +148,35 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Warnings and Errors -->
         <div v-if="lastReport.warnings.length > 0" class="warnings-section">
-          <h4><AppIcon name="mdi-alert" color="warning" context="warning" aria-hidden="true" /> Warnings</h4>
+          <h4>
+            <AppIcon
+              name="mdi-alert"
+              color="warning"
+              context="warning"
+              aria-hidden="true"
+            />
+            Warnings
+          </h4>
           <ul class="warning-list">
             <li v-for="(warning, index) in lastReport.warnings" :key="index">
               {{ warning }}
             </li>
           </ul>
         </div>
-        
+
         <div v-if="lastReport.errors.length > 0" class="errors-section">
-          <h4><AppIcon name="mdi-close-circle-outline" color="error" context="error" aria-hidden="true" /> Errors</h4>
+          <h4>
+            <AppIcon
+              name="mdi-close-circle-outline"
+              color="error"
+              context="error"
+              aria-hidden="true"
+            />
+            Errors
+          </h4>
           <ul class="error-list">
             <li v-for="(_error, index) in lastReport.errors" :key="index">
               <strong>{{ error.element }}:</strong> {{ error.error }}
@@ -169,24 +186,19 @@
       </div>
 
       <!-- Backup and Rollback -->
-      <div v-if="migrationTool && migrationTool.backupData.size > 0" class="backup-section">
+      <div
+        v-if="migrationTool && migrationTool.backupData.size > 0"
+        class="backup-section"
+      >
         <h3>Backup & Rollback</h3>
         <p>{{ migrationTool.backupData.size }} elements backed up</p>
         <div class="backup-actions">
-          <UnifiedButton
-            variant="warning"
-            size="sm"
-            @click="rollbackAll"
-          >
+          <UnifiedButton variant="warning" size="sm" @click="rollbackAll">
             <Icon name="undo" />
             Rollback All Changes
           </UnifiedButton>
-          
-          <UnifiedButton
-            variant="ghost"
-            size="sm"
-            @click="clearBackups"
-          >
+
+          <UnifiedButton variant="ghost" size="sm" @click="clearBackups">
             <Icon name="trash" />
             Clear Backups
           </UnifiedButton>
@@ -219,7 +231,7 @@
 </template>
 
 <script>
-import AppIcon from '@/components/ui/AppIcon.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 import { ref, reactive, onMounted, defineExpose } from 'vue'
 import { useToast } from '@/composables/useToast'
@@ -242,7 +254,7 @@ const options = reactive({
   preserveIds: true,
   preserveDataAttributes: true,
   backupStyles: true,
-  generateReport: true
+  generateReport: true,
 })
 
 // Methods
@@ -253,15 +265,19 @@ const togglePanel = () => {
 const runMigration = async (migrationFn, message) => {
   isRunning.value = true
   loadingMessage.value = message
-  
+
   try {
     const report = await migrationFn(options)
     lastReport.value = report
-    
+
     if (options.dryRun) {
-      toastInfo(`[SEARCH] Dry run complete: ${report.elementsProcessed} elements would be processed`)
+      toastInfo(
+        `[SEARCH] Dry run complete: ${report.elementsProcessed} elements would be processed`
+      )
     } else {
-      toastSuccess(`Migration complete: ${report.stylesConverted} styles converted`)
+      toastSuccess(
+        `Migration complete: ${report.stylesConverted} styles converted`
+      )
     }
   } catch (error) {
     toastError(`Migration failed: ${error.message}`)
@@ -290,7 +306,7 @@ const migratePage = () => {
 
 const migrateCustom = () => {
   if (!customSelector.value) return
-  
+
   runMigration(
     () => quickMigrations.migrateComponent(customSelector.value),
     `Migrating ${customSelector.value}...`
@@ -299,7 +315,7 @@ const migrateCustom = () => {
 
 const rollbackAll = () => {
   if (!migrationTool.value) return
-  
+
   const rolledBack = migrationTool.value.rollbackAll()
   toastSuccess(`Rollback complete: ${rolledBack} elements`)
   lastReport.value = null
@@ -307,7 +323,7 @@ const rollbackAll = () => {
 
 const clearBackups = () => {
   if (!migrationTool.value) return
-  
+
   migrationTool.value.backupData.clear()
   toastInfo('Backup data cleared')
 }
@@ -316,7 +332,7 @@ const injectDesignSystemCSS = () => {
   if (!migrationTool.value) {
     migrationTool.value = new CSSMigrationTool()
   }
-  
+
   migrationTool.value.injectDesignSystemCSS()
   toastSuccess('Design system CSS injected')
 }
@@ -330,7 +346,7 @@ onMounted(() => {
 defineExpose({
   migrationTool,
   togglePanel,
-  runMigration
+  runMigration,
 })
 </script>
 
@@ -462,7 +478,7 @@ defineExpose({
   cursor: pointer;
 }
 
-.checkbox-label input[type="checkbox"] {
+.checkbox-label input[type='checkbox'] {
   width: 14px;
   height: 14px;
   accent-color: #7c3aed;
@@ -487,10 +503,18 @@ defineExpose({
   font-size: 16px;
 }
 
-.stat-icon.success { color: #22c55e; }
-.stat-icon.primary { color: #7c3aed; }
-.stat-icon.warning { color: #f59e0b; }
-.stat-icon.error { color: #ef4444; }
+.stat-icon.success {
+  color: #22c55e;
+}
+.stat-icon.primary {
+  color: #7c3aed;
+}
+.stat-icon.warning {
+  color: #f59e0b;
+}
+.stat-icon.error {
+  color: #ef4444;
+}
 
 .stat-content {
   display: flex;
@@ -585,8 +609,12 @@ defineExpose({
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Scrollbar styling */
@@ -615,11 +643,11 @@ defineExpose({
     right: 20px;
     left: 20px;
   }
-  
+
   .action-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .results-grid {
     grid-template-columns: 1fr;
   }

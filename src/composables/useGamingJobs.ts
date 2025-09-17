@@ -3,14 +3,22 @@
  * Vue 3 composable for gaming industry job search with AI enhancements
  */
 
-import { ref, reactive, computed, watch, onMounted, getCurrentInstance, readonly } from 'vue'
+import {
+  ref,
+  reactive,
+  computed,
+  watch,
+  onMounted,
+  getCurrentInstance,
+  readonly,
+} from 'vue'
 import type { Job } from '@/shared/types/jobs'
-import { 
+import {
   gamingJobsService,
   type GamingJobFilters,
   type GamingJobSearchResult,
   type GamingJobAlert,
-  type JobRecommendation
+  type JobRecommendation,
 } from '@/services/GamingJobsService'
 import { useToast } from '@/composables/useToast'
 import { logger } from '@/shared/utils/logger'
@@ -23,11 +31,7 @@ export interface UseGamingJobsOptions {
 }
 
 export function useGamingJobs(options: UseGamingJobsOptions = {}) {
-  const {
-    autoSearch = false,
-    defaultFilters = {},
-    pageSize = 12
-  } = options
+  const { autoSearch = false, defaultFilters = {}, pageSize = 12 } = options
 
   // State
   const isLoading = ref(false)
@@ -42,19 +46,19 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
       topCompanies: [],
       locationHotspots: [],
       experienceDistribution: [],
-      remoteVsOnsite: { remote: 0, hybrid: 0, onsite: 0 }
+      remoteVsOnsite: { remote: 0, hybrid: 0, onsite: 0 },
     },
     recommendations: [],
     trends: [],
     sources: [],
     processingTime: 0,
-    errors: []
+    errors: [],
   })
-  
+
   const currentPage = ref(1)
   const searchQuery = ref('')
   const searchError = ref<string | null>(null)
-  
+
   // Filters
   const filters = reactive<GamingJobFilters>({
     location: '',
@@ -74,7 +78,7 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
     cultureFit: false,
     careerGrowth: false,
     diversityFocused: false,
-    ...defaultFilters
+    ...defaultFilters,
   })
 
   // Job management
@@ -94,9 +98,13 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
 
   // Computed properties
   const hasResults = computed(() => searchResults.value.jobs.length > 0)
-  const hasError = computed(() => searchError.value !== null || searchResults.value.errors.length > 0)
-  const totalPages = computed(() => Math.ceil(searchResults.value.jobs.length / pageSize))
-  
+  const hasError = computed(
+    () => searchError.value !== null || searchResults.value.errors.length > 0
+  )
+  const totalPages = computed(() =>
+    Math.ceil(searchResults.value.jobs.length / pageSize)
+  )
+
   const paginatedJobs = computed(() => {
     const start = (currentPage.value - 1) * pageSize
     const end = start + pageSize
@@ -123,11 +131,11 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
 
   const searchSuggestions = computed(() => {
     if (!searchQuery.value) return []
-    
+
     const query = searchQuery.value.toLowerCase()
     const suggestions = [
       'Unity Developer',
-      'Unreal Engine Developer', 
+      'Unreal Engine Developer',
       'Game Designer',
       'Technical Artist',
       'Gameplay Programmer',
@@ -135,15 +143,15 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
       'VR Developer',
       'Game Producer',
       'QA Engineer',
-      'Community Manager'
+      'Community Manager',
     ]
-    
+
     return suggestions
       .filter(suggestion => suggestion.toLowerCase().includes(query))
       .slice(0, 5)
   })
 
-  const topRecommendations = computed(() => 
+  const topRecommendations = computed(() =>
     searchResults.value.recommendations.slice(0, 3)
   )
 
@@ -151,12 +159,12 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
     averageSalary: searchResults.value.analytics.averageSalary,
     topSkills: searchResults.value.analytics.topSkills.slice(0, 5),
     remotePercentage: searchResults.value.analytics.remoteVsOnsite.remote,
-    trends: searchResults.value.trends
+    trends: searchResults.value.trends,
   }))
 
   // Studio count based on search results analytics
-  const studioCount = computed(() =>
-    searchResults.value.analytics.topCompanies?.length || 150
+  const studioCount = computed(
+    () => searchResults.value.analytics.topCompanies?.length || 150
   )
 
   // Gaming jobs is just an alias for the search results jobs
@@ -165,28 +173,27 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
   // Methods
   const searchJobs = async (resetPage = true) => {
     if (resetPage) currentPage.value = 1
-    
+
     isSearching.value = true
     searchError.value = null
-    
+
     try {
       const searchFilters = {
         ...filters,
-        keywords: searchQuery.value
+        keywords: searchQuery.value,
       }
-      
+
       logger.debug('Searching gaming jobs with filters:', searchFilters)
-      
+
       const result = await gamingJobsService.searchGamingJobs(searchFilters)
       searchResults.value = result
-      
+
       if (result.errors.length > 0) {
         logger.warn('Search completed with errors:', result.errors)
         showToast('Search completed with some issues', 'warning')
       } else {
         logger.info(`Found ${result.totalResults} gaming jobs`)
       }
-      
     } catch (error) {
       logger.error('Gaming job search failed:', error)
       searchError.value = error.message || 'Search failed'
@@ -221,7 +228,7 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
       skillsMatch: false,
       cultureFit: false,
       careerGrowth: false,
-      diversityFocused: false
+      diversityFocused: false,
     })
     searchJobs()
   }
@@ -238,24 +245,31 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
 
   const setSortBy = (sort: string) => {
     sortBy.value = sort
-    
+
     // Sort the current results
     const jobs = [...searchResults.value.jobs]
     switch (sort) {
       case 'date':
-        jobs.sort((a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime())
+        jobs.sort(
+          (a, b) =>
+            new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime()
+        )
         break
       case 'salary-high':
         jobs.sort((a, b) => {
-          const salaryA = typeof a.salary === 'object' ? (a.salary as any).max || 0 : 0
-          const salaryB = typeof b.salary === 'object' ? (b.salary as any).max || 0 : 0
+          const salaryA =
+            typeof a.salary === 'object' ? (a.salary as any).max || 0 : 0
+          const salaryB =
+            typeof b.salary === 'object' ? (b.salary as any).max || 0 : 0
           return salaryB - salaryA
         })
         break
       case 'salary-low':
         jobs.sort((a, b) => {
-          const salaryA = typeof a.salary === 'object' ? (a.salary as any).min || 0 : 0
-          const salaryB = typeof b.salary === 'object' ? (b.salary as any).min || 0 : 0
+          const salaryA =
+            typeof a.salary === 'object' ? (a.salary as any).min || 0 : 0
+          const salaryB =
+            typeof b.salary === 'object' ? (b.salary as any).min || 0 : 0
           return salaryA - salaryB
         })
         break
@@ -272,7 +286,7 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
           return (b.matchScore || 0) - (a.matchScore || 0)
         })
     }
-    
+
     searchResults.value.jobs = jobs
     currentPage.value = 1
   }
@@ -314,10 +328,13 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
 
   const applyToJob = (job: Job) => {
     appliedJobs.value.add(job.id)
-    
+
     // Track application in analytics
-    logger.info('Job application started:', { jobId: job.id, company: job.company })
-    
+    logger.info('Job application started:', {
+      jobId: job.id,
+      company: job.company,
+    })
+
     if (job.applicationUrl) {
       window.open(job.applicationUrl, '_blank')
     } else if (job.url) {
@@ -326,7 +343,7 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
       showToast('Application link not available', 'warning')
       return
     }
-    
+
     showToast(`Application opened for ${job.title}`, 'success')
   }
 
@@ -372,13 +389,15 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
         Technologies: job.technologies?.join(', ') || '',
         'Match Score': job.matchScore ? `${job.matchScore}%` : '',
         'Posted Date': new Date(job.postedDate).toLocaleDateString(),
-        URL: job.applicationUrl || job.url || ''
+        URL: job.applicationUrl || job.url || '',
       }))
-      
+
       const csvHeaders = Object.keys(csvData[0])
-      const csvRows = csvData.map(row => csvHeaders.map(header => `"${row[header] || ''}"`).join(','))
+      const csvRows = csvData.map(row =>
+        csvHeaders.map(header => `"${row[header] || ''}"`).join(',')
+      )
       const csvContent = [csvHeaders.join(','), ...csvRows].join('\n')
-      
+
       // Download CSV
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
       const link = document.createElement('a')
@@ -387,7 +406,7 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-      
+
       showToast(`Exported ${jobsToExport.length} jobs to CSV`, 'success')
     } catch (error) {
       logger.error('Failed to export jobs:', error)
@@ -405,9 +424,13 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
     }
   })
 
-  watch([filters], () => {
-    debouncedSearch()
-  }, { deep: true })
+  watch(
+    [filters],
+    () => {
+      debouncedSearch()
+    },
+    { deep: true }
+  )
 
   // Lifecycle - only register if we're in a component instance
   const instance = getCurrentInstance()
@@ -418,11 +441,11 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
       if (savedViewMode === 'list' || savedViewMode === 'grid') {
         viewMode.value = savedViewMode
       }
-      
+
       // Load saved jobs and alerts
       savedJobs.value = gamingJobsService.getSavedJobs()
       jobAlerts.value = gamingJobsService.getJobAlerts()
-      
+
       // Auto-search if enabled
       if (autoSearch) {
         searchJobs()
@@ -446,14 +469,14 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
     savedJobs: readonly(savedJobs),
     jobAlerts: readonly(jobAlerts),
     appliedJobs: readonly(appliedJobs),
-    
+
     // UI State
     viewMode,
     sortBy,
     showAdvancedFilters,
     showSavedJobs,
     showAnalytics,
-    
+
     // Computed
     hasResults,
     hasError,
@@ -465,7 +488,7 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
     marketInsights,
     studioCount,
     gamingJobs,
-    
+
     // Methods
     searchJobs,
     searchGamingJobs: searchJobs, // Alias for consistency
@@ -475,21 +498,21 @@ export function useGamingJobs(options: UseGamingJobsOptions = {}) {
     setViewMode,
     setSortBy,
     goToPage,
-    
+
     // Job Management
     saveJob,
     unsaveJob,
     isJobSaved,
     applyToJob,
     hasAppliedToJob,
-    
+
     // Job Alerts
     createJobAlert,
     deleteJobAlert,
-    
+
     // Export
     exportJobs,
     exportSavedJobs,
-    exportSearchResults
+    exportSearchResults,
   }
 }

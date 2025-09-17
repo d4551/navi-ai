@@ -1,137 +1,139 @@
-
-console.warn('Using better-sqlite3 browser stub - SQLite operations will be mocked');
+console.warn(
+  'Using better-sqlite3 browser stub - SQLite operations will be mocked'
+)
 
 // Environment detection and helpful guidance
-const isBrowser = typeof window !== "undefined";
+const isBrowser = typeof window !== 'undefined'
 const isElectron =
-  typeof window !== "undefined" && window.process && window.process.type;
+  typeof window !== 'undefined' && window.process && window.process.type
 
 if (isBrowser && !isElectron) {
-  console.info('   • IndexedDB via the "idb" package for structured data');
-  console.info("   • localStorage/sessionStorage for simple key-value data");
-  console.info("   • WebSQL (deprecated) or SQL.js for SQL-like operations");
+  console.info('   • IndexedDB via the "idb" package for structured data')
+  console.info('   • localStorage/sessionStorage for simple key-value data')
+  console.info('   • WebSQL (deprecated) or SQL.js for SQL-like operations')
 }
 
 class MockDatabase {
   constructor(path) {
-    this.mockData = new Map();
-    this.isOpen = false;
+    this.mockData = new Map()
+    this.isOpen = false
 
     console.warn(
-      `MockDatabase: SQLite operations are not available in browser. Path attempted: ${path || "memory"}`,
-    );
-    this.isOpen = true;
+      `MockDatabase: SQLite operations are not available in browser. Path attempted: ${path || 'memory'}`
+    )
+    this.isOpen = true
 
     // Provide helpful guidance for developers
-    if (typeof window !== "undefined") {
-      console.info("Consider using IndexedDB or localStorage for browser data persistence");
+    if (typeof window !== 'undefined') {
+      console.info(
+        'Consider using IndexedDB or localStorage for browser data persistence'
+      )
     }
   }
 
   prepare(sql) {
-    console.debug(`MockDatabase.prepare(): ${sql}`);
+    console.debug(`MockDatabase.prepare(): ${sql}`)
 
     return {
-      get: (_params) => {
-        console.debug("MockDatabase.get() called with params:", params);
-        return null;
+      get: _params => {
+        console.debug('MockDatabase.get() called with params:', params)
+        return null
       },
-      all: (_params) => {
-        console.debug("MockDatabase.all() called with params:", params);
-        return [];
+      all: _params => {
+        console.debug('MockDatabase.all() called with params:', params)
+        return []
       },
-      run: (_params) => {
-        console.debug("MockDatabase.run() called with params:", params);
+      run: _params => {
+        console.debug('MockDatabase.run() called with params:', params)
         return {
           changes: 0,
-          lastInsertRowid: 0
-        };
+          lastInsertRowid: 0,
+        }
       },
-      iterate: (_params) => {
-        console.debug("MockDatabase.iterate() called with params:", params);
-        return [];
+      iterate: _params => {
+        console.debug('MockDatabase.iterate() called with params:', params)
+        return []
       },
-    };
+    }
   }
 
   exec(sql) {
-    console.debug(`MockDatabase.exec(): ${sql}`);
-    return this;
+    console.debug(`MockDatabase.exec(): ${sql}`)
+    return this
   }
 
   close() {
-    console.debug("MockDatabase.close() called");
-    this.isOpen = false;
-    return this;
+    console.debug('MockDatabase.close() called')
+    this.isOpen = false
+    return this
   }
 
   backup(destination, options) {
     console.debug(
       `MockDatabase.backup() to ${destination} with options:`,
-      options,
-    );
+      options
+    )
 
     return {
       finalize: () => {
-        console.debug("MockDatabase backup finalized");
+        console.debug('MockDatabase backup finalized')
       },
-    };
+    }
   }
 
   // Additional helpful methods for development
   pragma(sql) {
-    console.debug(`MockDatabase.pragma(): ${sql}`);
-    return [];
+    console.debug(`MockDatabase.pragma(): ${sql}`)
+    return []
   }
 
   aggregate(_name, _options) {
-    console.debug(`MockDatabase.aggregate(): Registered aggregate ${_name}`);
-    return this;
+    console.debug(`MockDatabase.aggregate(): Registered aggregate ${_name}`)
+    return this
   }
 
   // Property getters for compatibility
   get open() {
-    return this.isOpen;
+    return this.isOpen
   }
 
   get inTransaction() {
-    return false;
+    return false
   }
 
   get readonly() {
-    return false;
+    return false
   }
 
   get name() {
-    return ":memory:";
+    return ':memory:'
   }
 
   get memory() {
-    return true;
+    return true
   }
 }
 
 // Enhanced export with development hints
-const DatabaseConstructor = MockDatabase;
+const DatabaseConstructor = MockDatabase
 
 // Default export (ES modules)
-export default DatabaseConstructor;
+export default DatabaseConstructor
 
 // CommonJS export for compatibility
-export { MockDatabase };
+export { MockDatabase }
 
-export const Database = DatabaseConstructor;
+export const Database = DatabaseConstructor
 
-export const constants = {
-};
+export const constants = {}
 
 // Helpful error class for better debugging
 export class SQLiteError extends Error {
   constructor(message, code) {
-    super(`[MockSQLite] ${message}`);
-    this.name = "SQLiteError";
+    super(`[MockSQLite] ${message}`)
+    this.name = 'SQLiteError'
     if (code) {
-      this.code = code;
+      this.code = code
     }
   }
 }

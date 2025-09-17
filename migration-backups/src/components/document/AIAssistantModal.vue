@@ -9,7 +9,9 @@
           </div>
           <div class="ms-3">
             <h5 class="mb-0">AI Assistant</h5>
-            <small class="text-muted">{{ assistantContext.title || 'AI-powered document enhancement' }}</small>
+            <small class="text-muted">{{
+              assistantContext.title || 'AI-powered document enhancement'
+            }}</small>
           </div>
         </div>
         <div class="d-flex align-items-center gap-2">
@@ -28,7 +30,10 @@
         <div v-if="assistantContext.description" class="context-section">
           <div class="context-card">
             <h6 class="fw-semibold mb-2">
-              <AppIcon :name="assistantContext.icon || 'mdi-lightbulb'" class="me-2" />
+              <AppIcon
+                :name="assistantContext.icon || 'mdi-lightbulb'"
+                class="me-2"
+              />
               {{ assistantContext.title }}
             </h6>
             <p class="text-muted mb-0">{{ assistantContext.description }}</p>
@@ -56,14 +61,22 @@
               v-for="(message, index) in messages"
               :key="index"
               class="message"
-              :class="{ 'user-message': message.type === 'user', 'ai-message': message.type === 'ai' }"
+              :class="{
+                'user-message': message.type === 'user',
+                'ai-message': message.type === 'ai',
+              }"
             >
               <div class="message-avatar">
-                <AppIcon :name="message.type === 'user' ? 'mdi-account' : 'mdi-robot'" />
+                <AppIcon
+                  :name="message.type === 'user' ? 'mdi-account' : 'mdi-robot'"
+                />
               </div>
               <div class="message-content">
                 <div class="message-bubble">
-                  <div v-if="message.type === 'ai' && message.suggestions" class="suggestions-list">
+                  <div
+                    v-if="message.type === 'ai' && message.suggestions"
+                    class="suggestions-list"
+                  >
                     <h6 class="fw-semibold mb-2">AI Suggestions:</h6>
                     <div
                       v-for="(suggestion, i) in message.suggestions"
@@ -82,26 +95,43 @@
                       </div>
                     </div>
                   </div>
-                  <div v-else-if="message.type === 'ai' && message.analysis" class="analysis-result">
+                  <div
+                    v-else-if="message.type === 'ai' && message.analysis"
+                    class="analysis-result"
+                  >
                     <h6 class="fw-semibold mb-2">Analysis Results:</h6>
                     <div class="analysis-score">
                       <div class="score-display">
-                        <span class="score-value">{{ message.analysis.score }}/100</span>
+                        <span class="score-value"
+                          >{{ message.analysis.score }}/100</span
+                        >
                         <span class="score-label">Overall Score</span>
                       </div>
                     </div>
-                    <div v-if="message.analysis.strengths" class="analysis-section">
+                    <div
+                      v-if="message.analysis.strengths"
+                      class="analysis-section"
+                    >
                       <h6 class="text-success">Strengths:</h6>
                       <ul>
-                        <li v-for="strength in message.analysis.strengths" :key="strength">
+                        <li
+                          v-for="strength in message.analysis.strengths"
+                          :key="strength"
+                        >
                           {{ strength }}
                         </li>
                       </ul>
                     </div>
-                    <div v-if="message.analysis.improvements" class="analysis-section">
+                    <div
+                      v-if="message.analysis.improvements"
+                      class="analysis-section"
+                    >
                       <h6 class="text-warning">Areas for Improvement:</h6>
                       <ul>
-                        <li v-for="improvement in message.analysis.improvements" :key="improvement">
+                        <li
+                          v-for="improvement in message.analysis.improvements"
+                          :key="improvement"
+                        >
                           {{ improvement }}
                         </li>
                       </ul>
@@ -109,7 +139,9 @@
                   </div>
                   <p v-else class="mb-0">{{ message.text }}</p>
                 </div>
-                <small class="text-muted">{{ message.type === 'user' ? 'You' : 'AI Assistant' }}</small>
+                <small class="text-muted">{{
+                  message.type === 'user' ? 'You' : 'AI Assistant'
+                }}</small>
               </div>
             </div>
 
@@ -162,12 +194,12 @@
             :disabled="isProcessing"
             @keydown.ctrl.enter="sendMessage"
           ></textarea>
-          
+
           <div class="input-actions">
             <div class="input-hint">
               <small class="text-muted">Ctrl + Enter to send</small>
             </div>
-            
+
             <div class="d-flex gap-2">
               <UnifiedButton
                 variant="ghost"
@@ -177,7 +209,7 @@
               >
                 Clear
               </UnifiedButton>
-              
+
               <UnifiedButton
                 variant="primary"
                 size="sm"
@@ -207,12 +239,12 @@ import { aiService } from '@/shared/services/AIService'
 const _props = defineProps({
   show: {
     type: Boolean,
-    default: false
+    default: false,
   },
   context: {
     type: Object,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 })
 
 // Emits
@@ -228,19 +260,24 @@ const sessionId = `resume-ai-${Date.now()}`
 // Computed
 const assistantContext = computed(() => ({
   title: 'Document Enhancement',
-  description: 'Get AI-powered suggestions to improve your resume or cover letter',
+  description:
+    'Get AI-powered suggestions to improve your resume or cover letter',
   icon: 'mdi-target',
-  ...props.context
+  ...props.context,
 }))
 
 const welcomeMessage = computed(() => {
   const contextMessages = {
-    'resume-analysis': 'Hi! I\'m here to help analyze your resume and provide actionable feedback.',
-    'cover-letter-review': 'Hello! I can help you review and improve your cover letter.',
-    'job-tailoring': 'Hi there! I can help tailor your documents to match the job requirements.',
-    'general': 'Hello! I\'m your AI assistant. How can I help you improve your documents today?'
+    'resume-analysis':
+      "Hi! I'm here to help analyze your resume and provide actionable feedback.",
+    'cover-letter-review':
+      'Hello! I can help you review and improve your cover letter.',
+    'job-tailoring':
+      'Hi there! I can help tailor your documents to match the job requirements.',
+    general:
+      "Hello! I'm your AI assistant. How can I help you improve your documents today?",
   }
-  
+
   return contextMessages[props.context.type] || contextMessages.general
 })
 
@@ -251,36 +288,40 @@ const quickActions = computed(() => {
       label: 'Analyze Document',
       icon: 'mdi-brain',
       variant: 'primary',
-      action: 'analyze'
+      action: 'analyze',
     },
     {
       key: 'improve',
       label: 'Suggest Improvements',
       icon: 'mdi-star-outline',
       variant: 'outline',
-      action: 'improve'
+      action: 'improve',
     },
     {
       key: 'tailor',
       label: 'Tailor to Job',
       icon: 'mdi-target',
       variant: 'outline',
-      action: 'tailor'
+      action: 'tailor',
     },
     {
       key: 'optimize',
       label: 'Optimize Keywords',
       icon: 'mdi-key-variant',
       variant: 'outline',
-      action: 'optimize'
-    }
+      action: 'optimize',
+    },
   ]
 
   // Filter actions based on context
   if (props.context.type === 'resume-analysis') {
-    return baseActions.filter(a => ['analyze', 'improve', 'optimize'].includes(a.action))
+    return baseActions.filter(a =>
+      ['analyze', 'improve', 'optimize'].includes(a.action)
+    )
   } else if (props.context.type === 'cover-letter-review') {
-    return baseActions.filter(a => ['analyze', 'improve', 'tailor'].includes(a.action))
+    return baseActions.filter(a =>
+      ['analyze', 'improve', 'tailor'].includes(a.action)
+    )
   }
 
   return baseActions
@@ -301,14 +342,14 @@ const sendMessage = async () => {
   messages.value.push({
     type: 'user',
     text: message,
-    timestamp: new Date()
+    timestamp: new Date(),
   })
 
   // Process AI response
   await processAIResponse(message)
 }
 
-const processAIResponse = async (userMessage) => {
+const processAIResponse = async userMessage => {
   isProcessing.value = true
   try {
     // Initialize AI service - now uses centralized API key resolver
@@ -322,17 +363,19 @@ const processAIResponse = async (userMessage) => {
       context: sys,
       type: 'chat',
       sessionId,
-      onChunk: async (chunk) => {
+      onChunk: async chunk => {
         messages.value[idx].text += chunk
-        await nextTick(); scrollToBottom()
+        await nextTick()
+        scrollToBottom()
       },
-      onComplete: async (full) => {
+      onComplete: async full => {
         messages.value[idx].text = full
-        await nextTick(); scrollToBottom()
+        await nextTick()
+        scrollToBottom()
       },
-      onError: (err) => {
+      onError: err => {
         toast.error('AI error: ' + (err?.message || err))
-      }
+      },
     })
   } catch (error) {
     toast.error('Failed to process AI request: ' + error.message)
@@ -346,32 +389,34 @@ function buildSystemContext() {
   return [
     ctx?.title ? `Context: ${ctx.title}` : '',
     ctx?.description ? `Description: ${ctx.description}` : '',
-    'You are an expert resume/cover letter assistant. Provide concise, ATS-friendly suggestions with strong action verbs and measurable outcomes where possible.'
-  ].filter(Boolean).join('\n')
+    'You are an expert resume/cover letter assistant. Provide concise, ATS-friendly suggestions with strong action verbs and measurable outcomes where possible.',
+  ]
+    .filter(Boolean)
+    .join('\n')
 }
 
-const handleQuickAction = async (action) => {
+const handleQuickAction = async action => {
   const actionMessages = {
     analyze: 'Please analyze my document and provide detailed feedback',
     improve: 'What are the main areas I should improve in my document?',
     tailor: 'How can I tailor this document for a specific job?',
-    optimize: 'Help me optimize keywords for ATS systems'
+    optimize: 'Help me optimize keywords for ATS systems',
   }
 
   const message = actionMessages[action.action] || action.label
-  
+
   // Add user message
   messages.value.push({
     type: 'user',
     text: message,
-    timestamp: new Date()
+    timestamp: new Date(),
   })
 
   // Process AI response
   await processAIResponse(message)
 }
 
-const applySuggestion = (suggestion) => {
+const applySuggestion = suggestion => {
   emit('apply', suggestion)
   toast.success('Suggestion applied successfully')
 }
@@ -389,18 +434,21 @@ const scrollToBottom = () => {
 }
 
 // Watchers
-watch(() => props.show, (newShow) => {
-  if (newShow) {
-    // Focus on input when modal opens
-    nextTick(() => {
-      const input = document.querySelector('.modal-footer textarea')
-      if (input) input.focus()
-    })
+watch(
+  () => props.show,
+  newShow => {
+    if (newShow) {
+      // Focus on input when modal opens
+      nextTick(() => {
+        const input = document.querySelector('.modal-footer textarea')
+        if (input) input.focus()
+      })
+    }
   }
-})
+)
 
 onMounted(async () => {
-  try { 
+  try {
     // Pre-initialize AI service to check configuration
     await aiService.initialize()
   } catch (error) {
@@ -450,7 +498,11 @@ onMounted(async () => {
   justify-content: center;
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, var(--color-primary-100), var(--color-primary-200));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-100),
+    var(--color-primary-200)
+  );
   border: 2px solid var(--color-primary-300);
   border-radius: 50%;
   font-size: 1.75rem;
@@ -708,7 +760,9 @@ onMounted(async () => {
 }
 
 @keyframes typing {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.4;
   }
@@ -751,7 +805,12 @@ onMounted(async () => {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-primary-300), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary-300),
+    transparent
+  );
 }
 
 /* Improved Animation Timing */
@@ -771,56 +830,56 @@ onMounted(async () => {
   .modal-overlay {
     padding: 0.75rem;
   }
-  
+
   .ai-modal {
     max-height: 97vh;
     border-radius: var(--radius-md);
   }
-  
+
   .modal-header {
     padding: 1.25rem 1.5rem 1rem;
   }
-  
+
   .modal-footer {
     padding: 1rem 1.5rem 1.25rem;
   }
-  
+
   .messages-container {
     padding: 1rem 1.5rem 1.5rem;
     gap: 1.25rem;
   }
-  
+
   .message-content {
     max-width: 88%;
   }
-  
+
   .message-bubble {
     padding: 1rem 1.25rem;
   }
-  
+
   .suggestion-item {
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
     padding: 1rem;
   }
-  
+
   .actions-grid {
     grid-template-columns: 1fr;
     gap: 0.75rem;
   }
-  
+
   .input-actions {
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
   }
-  
+
   .context-section,
   .quick-actions {
     padding: 1rem 1.5rem;
   }
-  
+
   .ai-avatar {
     width: 48px;
     height: 48px;
@@ -832,17 +891,17 @@ onMounted(async () => {
   .modal-overlay {
     padding: 0.5rem;
   }
-  
+
   .message {
     gap: 0.75rem;
   }
-  
+
   .message-avatar {
     width: 28px;
     height: 28px;
     font-size: 0.85rem;
   }
-  
+
   .form-control {
     min-height: 80px;
     padding: 0.875rem 1rem;
@@ -850,17 +909,17 @@ onMounted(async () => {
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .message-bubble {
+[data-theme='dark'] .message-bubble {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .context-card {
+[data-theme='dark'] .context-card {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .form-control {
+[data-theme='dark'] .form-control {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
   color: var(--text-primary);

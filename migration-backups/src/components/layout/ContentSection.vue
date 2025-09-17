@@ -1,10 +1,18 @@
 <template>
-  <section class="content-section" :class="sectionClasses" :data-section-type="type">
+  <section
+    class="content-section"
+    :class="sectionClasses"
+    :data-section-type="type"
+  >
     <!-- Section Header -->
     <header v-if="title || $slots['section-header']" class="section-header">
       <div v-if="title" class="section-title-container">
         <h2 class="section-title" :class="titleClasses">
-          <AppIcon :name="titleIcon" :color="titleIconColor" class="section-title-icon" />
+          <AppIcon
+            :name="titleIcon"
+            :color="titleIconColor"
+            class="section-title-icon"
+          />
           {{ title }}
         </h2>
         <p v-if="subtitle" class="section-subtitle">{{ subtitle }}</p>
@@ -34,7 +42,15 @@ interface Props {
   subtitle?: string
   titleIcon?: string
   titleIconColor?: string
-  type?: 'default' | 'card' | 'hero' | 'stats' | 'form' | 'list' | 'gaming' | 'noir'
+  type?:
+    | 'default'
+    | 'card'
+    | 'hero'
+    | 'stats'
+    | 'form'
+    | 'list'
+    | 'gaming'
+    | 'noir'
   spacing?: 'none' | 'compact' | 'normal' | 'comfortable' | 'spacious'
   background?: 'none' | 'glass' | 'elevated' | 'primary' | 'secondary'
   border?: boolean
@@ -47,7 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
   background: 'none',
   border: false,
   fullWidth: false,
-  titleIconColor: 'primary'
+  titleIconColor: 'primary',
 })
 
 const sectionClasses = computed(() => [
@@ -56,17 +72,15 @@ const sectionClasses = computed(() => [
   `section-bg-${props.background}`,
   {
     'section-border': props.border,
-    'section-full-width': props.fullWidth
-  }
+    'section-full-width': props.fullWidth,
+  },
 ])
 
-const titleClasses = computed(() => [
-  `title-${props.type}`
-])
+const titleClasses = computed(() => [`title-${props.type}`])
 
 const contentClasses = computed(() => [
   `content-${props.type}`,
-  `content-spacing-${props.spacing}`
+  `content-spacing-${props.spacing}`,
 ])
 </script>
 
@@ -211,11 +225,15 @@ const contentClasses = computed(() => [
 
 /* Noir Section */
 .section-type-noir {
-  background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(10,10,10,0.90) 100%);
-  border: 1px solid rgba(0,255,127,0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(10, 10, 10, 0.9) 100%
+  );
+  border: 1px solid rgba(0, 255, 127, 0.2);
   border-radius: var(--radius-xl);
   padding: var(--spacing-6);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 
 .section-type-noir .title-noir {
@@ -223,7 +241,7 @@ const contentClasses = computed(() => [
   color: var(--text-inverse);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wider);
-  text-shadow: 0 0 15px rgba(0,255,127,0.4);
+  text-shadow: 0 0 15px rgba(0, 255, 127, 0.4);
 }
 
 /* ===== BACKGROUND VARIANTS ===== */
@@ -337,19 +355,19 @@ const contentClasses = computed(() => [
     align-items: stretch;
     gap: var(--spacing-3);
   }
-  
+
   .section-header-actions {
     justify-content: flex-start;
   }
-  
+
   .section-title {
     font-size: var(--font-size-lg);
   }
-  
+
   .section-type-hero .title-hero {
     font-size: var(--font-size-xl);
   }
-  
+
   .section-full-width {
     margin-left: calc(-1 * var(--spacing-2));
     margin-right: calc(-1 * var(--spacing-2));
@@ -365,7 +383,7 @@ const contentClasses = computed(() => [
     align-items: flex-start;
     gap: var(--spacing-1);
   }
-  
+
   .section-title-icon {
     font-size: var(--font-size-lg);
   }

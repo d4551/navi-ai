@@ -6,4 +6,3 @@ export default class DalleProvider extends BaseAIProvider {
     super(AIProvider.DALLE, [ModalityType.IMAGE])
   }
 }
-

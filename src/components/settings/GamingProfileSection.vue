@@ -1,6 +1,11 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div :class="isTabbed ? '' : 'glass-card section-card'" role="region" aria-labelledby="gaming-heading" class="font-sans">
+  <div
+    :class="isTabbed ? '' : 'glass-card section-card'"
+    role="region"
+    aria-labelledby="gaming-heading"
+    class="font-sans"
+  >
     <div v-if="!isTabbed" class="card-header section-header">
       <h5 id="gaming-heading" class="section-title">
         <AppIcon name="PuzzlePieceIcon" />
@@ -11,7 +16,9 @@
       <form novalidate @submit.prevent="$emit('save')">
         <div class="card-grid" style="--card-grid-cols: 2">
           <div>
-            <label for="portfolio-url" class="form-label">Portfolio/Website</label>
+            <label for="portfolio-url" class="form-label"
+              >Portfolio/Website</label
+            >
             <input
               id="portfolio-url"
               v-model="gamingProfile.portfolioUrl"
@@ -61,7 +68,9 @@
 
         <div class="card-grid mt-3" style="--card-grid-cols: 2">
           <div>
-            <label for="game-engines" class="form-label">Game Engines & Tools</label>
+            <label for="game-engines" class="form-label"
+              >Game Engines & Tools</label
+            >
             <input
               id="game-engines"
               v-model="gamingProfile.gameEngines"
@@ -75,7 +84,9 @@
             </div>
           </div>
           <div>
-            <label for="specialization" class="form-label">Specialization</label>
+            <label for="specialization" class="form-label"
+              >Specialization</label
+            >
             <select
               id="specialization"
               v-model="gamingProfile.specialization"
@@ -101,7 +112,10 @@
         <div class="form-help">
           <div class="hint-chip">
             <LightbulbIconComponent />
-            <span>This information helps tailor job recommendations and resume optimization for gaming industry positions.</span>
+            <span
+              >This information helps tailor job recommendations and resume
+              optimization for gaming industry positions.</span
+            >
           </div>
         </div>
 
@@ -130,7 +144,11 @@ import { PuzzlePieceIcon } from '@heroicons/vue/24/outline'
 
 import { useAppStore } from '@/stores/app'
 import { useLogo } from '@/composables/useLogo'
-import { SaveIconComponent, CheckIconComponent, LightbulbIconComponent } from './SettingsIcons.js'
+import {
+  SaveIconComponent,
+  CheckIconComponent,
+  LightbulbIconComponent,
+} from './SettingsIcons.js'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
@@ -141,32 +159,32 @@ export default {
     CheckIconComponent,
     LightbulbIconComponent,
     AppIcon,
-    UnifiedButton
+    UnifiedButton,
   },
   props: {
     gamingProfile: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     saving: {
       type: Boolean,
-      default: false
+      default: false,
     },
     profileSaved: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isTabbed: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['save'],
   setup() {
     const store = useAppStore()
     const { logoSrc } = useLogo(store)
     return { store, logoSrc }
-  }
+  },
 }
 </script>
 

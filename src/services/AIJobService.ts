@@ -74,7 +74,7 @@ export class AIJobService {
         salaryRange: (store.user as any)?.salaryExpectation || {},
         location: (store.user as any)?.location || '',
         workStyle: (store.user as any)?.workStyle || 'hybrid',
-        careerGoals: (store.user as any)?.careerGoals || []
+        careerGoals: (store.user as any)?.careerGoals || [],
       }
     } catch (e) {
       // Safe no‑op if store not ready; methods will still function with defaults
@@ -106,7 +106,7 @@ export class AIJobService {
         salaryFit: 'match' as const,
         skillAlignment: 50,
         experienceAlignment: 50,
-        locationPreference: 50
+        locationPreference: 50,
       }))
     }
   }
@@ -115,7 +115,10 @@ export class AIJobService {
    * Generate personalized job recommendations
    * Applies filtering and thresholding to analyzed matches
    */
-  async generateRecommendations(jobs: Job[], limit: number = 10): Promise<AIJobMatch[]> {
+  async generateRecommendations(
+    jobs: Job[],
+    limit: number = 10
+  ): Promise<AIJobMatch[]> {
     this.tryHydrateProfile()
     const matches = await this.analyzeJobMatches(jobs)
     const recommendations = matches
@@ -129,17 +132,28 @@ export class AIJobService {
     const profile = this.userProfile.value
     const matchReasons: string[] = []
     let totalScore = 0
-    let weights = { skills: 0.35, experience: 0.25, salary: 0.20, location: 0.15, culture: 0.05 }
+    let weights = {
+      skills: 0.35,
+      experience: 0.25,
+      salary: 0.2,
+      location: 0.15,
+      culture: 0.05,
+    }
 
     // Skill alignment analysis
     const skillScore = this.calculateSkillAlignment(job, profile.skills)
     totalScore += skillScore * weights.skills
     if (skillScore > 70) {
-      matchReasons.push(`Strong skill match (${Math.round(skillScore)}% alignment)`)
+      matchReasons.push(
+        `Strong skill match (${Math.round(skillScore)}% alignment)`
+      )
     }
 
     // Experience alignment
-    const experienceScore = this.calculateExperienceAlignment(job, profile.experience)
+    const experienceScore = this.calculateExperienceAlignment(
+      job,
+      profile.experience
+    )
     totalScore += experienceScore * weights.experience
     if (experienceScore > 80) {
       matchReasons.push('Experience level perfectly matches')
@@ -172,7 +186,7 @@ export class AIJobService {
       skillAlignment: skillScore,
       experienceAlignment: experienceScore,
       locationPreference: locationScore,
-      cultureScore
+      cultureScore,
     }
   }
 
@@ -182,11 +196,11 @@ export class AIJobService {
     const jobSkills = [
       ...(job.requirements || []),
       ...(job.technologies || []),
-      ...this.extractSkillsFromDescription(job.description || '')
+      ...this.extractSkillsFromDescription(job.description || ''),
     ].map(skill => skill.toLowerCase())
 
     const userSkillsLower = userSkills.map(skill => skill.toLowerCase())
-    
+
     let matchCount = 0
     let totalWeight = 0
 
@@ -194,11 +208,14 @@ export class AIJobService {
       const weight = this.getSkillImportance(jobSkill)
       totalWeight += weight
 
-      if (userSkillsLower.some(userSkill => 
-        userSkill.includes(jobSkill) || 
-        jobSkill.includes(userSkill) ||
-        this.areRelatedSkills(userSkill, jobSkill)
-      )) {
+      if (
+        userSkillsLower.some(
+          userSkill =>
+            userSkill.includes(jobSkill) ||
+            jobSkill.includes(userSkill) ||
+            this.areRelatedSkills(userSkill, jobSkill)
+        )
+      ) {
         matchCount += weight
       }
     })
@@ -206,29 +223,43 @@ export class AIJobService {
     return totalWeight > 0 ? (matchCount / totalWeight) * 100 : 50
   }
 
-  private calculateExperienceAlignment(job: Job, userExperience: number): number {
+  private calculateExperienceAlignment(
+    job: Job,
+    userExperience: number
+  ): number {
     const jobLevel = job.experienceLevel || 'mid'
     const requiredYears = this.getExperienceYears(jobLevel)
-    
-    if (userExperience >= requiredYears - 1 && userExperience <= requiredYears + 3) {
+
+    if (
+      userExperience >= requiredYears - 1 &&
+      userExperience <= requiredYears + 3
+    ) {
       return 100 // Perfect match
-    } else if (userExperience >= requiredYears - 2 && userExperience <= requiredYears + 5) {
+    } else if (
+      userExperience >= requiredYears - 2 &&
+      userExperience <= requiredYears + 5
+    ) {
       return 80 // Good match
     } else if (userExperience < requiredYears) {
       return Math.max(20, (userExperience / requiredYears) * 60) // Underqualified but learning opportunity
     } else {
-      return Math.max(30, 70 - ((userExperience - requiredYears) * 5)) // Overqualified
+      return Math.max(30, 70 - (userExperience - requiredYears) * 5) // Overqualified
     }
   }
 
-  private analyzeSalaryFit(job: Job, userSalaryRange: any): 'below' | 'match' | 'above' {
+  private analyzeSalaryFit(
+    job: Job,
+    userSalaryRange: any
+  ): 'below' | 'match' | 'above' {
     if (!job.salary || !userSalaryRange?.min) return 'match'
 
-    const jobSalary = typeof job.salary === 'object' 
-      ? (job.salary.min + job.salary.max) / 2 
-      : parseInt(String(job.salary).replace(/\D/g, ''))
+    const jobSalary =
+      typeof job.salary === 'object'
+        ? (job.salary.min + job.salary.max) / 2
+        : parseInt(String(job.salary).replace(/\D/g, ''))
 
-    const userExpected = (userSalaryRange.min + (userSalaryRange.max || userSalaryRange.min)) / 2
+    const userExpected =
+      (userSalaryRange.min + (userSalaryRange.max || userSalaryRange.min)) / 2
 
     if (jobSalary < userExpected * 0.8) return 'below'
     if (jobSalary > userExpected * 1.2) return 'above'
@@ -237,9 +268,12 @@ export class AIJobService {
 
   private calculateSalaryScore(salaryFit: 'below' | 'match' | 'above'): number {
     switch (salaryFit) {
-      case 'match': return 100
-      case 'above': return 85
-      case 'below': return 40
+      case 'match':
+        return 100
+      case 'above':
+        return 85
+      case 'below':
+        return 40
     }
   }
 
@@ -247,17 +281,20 @@ export class AIJobService {
     if (job.remote && profile.workStyle === 'remote') return 100
     if (!job.remote && profile.workStyle === 'onsite') return 100
     if (profile.workStyle === 'hybrid') return 85
-    
+
     // Geographic matching
     if (profile.location && job.location) {
       const userLocation = profile.location.toLowerCase()
       const jobLocation = job.location.toLowerCase()
-      
-      if (jobLocation.includes(userLocation) || userLocation.includes(jobLocation)) {
+
+      if (
+        jobLocation.includes(userLocation) ||
+        userLocation.includes(jobLocation)
+      ) {
         return 95
       }
     }
-    
+
     return 60 // Neutral score
   }
 
@@ -266,28 +303,40 @@ export class AIJobService {
       // AI-powered culture analysis based on job description and company
       const cultureKeywords = {
         collaborative: ['team', 'collaboration', 'agile', 'scrum'],
-        innovative: ['innovation', 'cutting-edge', 'research', 'new technology'],
+        innovative: [
+          'innovation',
+          'cutting-edge',
+          'research',
+          'new technology',
+        ],
         fastPaced: ['fast-paced', 'startup', 'dynamic', 'rapid growth'],
         stable: ['established', 'mature', 'stable', 'enterprise'],
-        creative: ['creative', 'design', 'artistic', 'visual']
+        creative: ['creative', 'design', 'artistic', 'visual'],
       }
 
       const description = (job.description || '').toLowerCase()
       const cultureScores: Record<string, number> = {}
 
       Object.entries(cultureKeywords).forEach(([culture, keywords]) => {
-        const score = keywords.reduce((acc, keyword) => {
-          return acc + (description.includes(keyword) ? 1 : 0)
-        }, 0) / keywords.length * 100
-        
+        const score =
+          (keywords.reduce((acc, keyword) => {
+            return acc + (description.includes(keyword) ? 1 : 0)
+          }, 0) /
+            keywords.length) *
+          100
+
         cultureScores[culture] = score
       })
 
       // Match against user preferences (mock implementation)
-      const userPreferences = profile.preferences?.culture || ['collaborative', 'innovative']
-      const alignmentScore = userPreferences.reduce((acc: number, pref: string) => {
-        return acc + (cultureScores[pref] || 50)
-      }, 0) / userPreferences.length
+      const userPreferences = profile.preferences?.culture || [
+        'collaborative',
+        'innovative',
+      ]
+      const alignmentScore =
+        userPreferences.reduce((acc: number, pref: string) => {
+          return acc + (cultureScores[pref] || 50)
+        }, 0) / userPreferences.length
 
       return Math.min(alignmentScore, 100)
     } catch (error) {
@@ -307,12 +356,12 @@ export class AIJobService {
       // AI-powered salary prediction
       const baseSalary = this.calculateBaseSalary(job)
       const adjustments = this.calculateSalaryAdjustments(job)
-      
+
       const prediction: SalaryPrediction = {
         estimatedSalary: {
           min: Math.round(baseSalary * adjustments.min),
           max: Math.round(baseSalary * adjustments.max),
-          currency: 'USD'
+          currency: 'USD',
         },
         confidence: this.calculatePredictionConfidence(job),
         factors: this.getSalaryFactors(job, adjustments),
@@ -320,8 +369,8 @@ export class AIJobService {
           percentile25: Math.round(baseSalary * 0.8),
           percentile50: Math.round(baseSalary),
           percentile75: Math.round(baseSalary * 1.3),
-          percentile90: Math.round(baseSalary * 1.6)
-        }
+          percentile90: Math.round(baseSalary * 1.6),
+        },
       }
 
       this.setCachedResult(cacheKey, prediction)
@@ -332,7 +381,12 @@ export class AIJobService {
         estimatedSalary: { min: 50000, max: 120000, currency: 'USD' },
         confidence: 50,
         factors: ['Limited data available'],
-        marketData: { percentile25: 60000, percentile50: 80000, percentile75: 100000, percentile90: 120000 }
+        marketData: {
+          percentile25: 60000,
+          percentile50: 80000,
+          percentile75: 100000,
+          percentile90: 120000,
+        },
       }
     }
   }
@@ -354,7 +408,7 @@ export class AIJobService {
         industryGrowth: this.analyzeIndustryGrowth(job.company, technologies),
         remoteCompatibility: this.analyzeRemoteCompatibility(job, description),
         burnoutRisk: this.analyzeBurnoutRisk(description, job.type),
-        learningCurve: this.analyzeLearningCurve(technologies, requirements)
+        learningCurve: this.analyzeLearningCurve(technologies, requirements),
       }
     } catch (error) {
       logger.error('Job insights analysis failed:', error)
@@ -362,11 +416,15 @@ export class AIJobService {
         jobComplexity: 'intermediate',
         requiredSkills: job.requirements || [],
         nicetohaveSkills: [],
-        careerProgression: ['Senior Developer', 'Lead Developer', 'Engineering Manager'],
+        careerProgression: [
+          'Senior Developer',
+          'Lead Developer',
+          'Engineering Manager',
+        ],
         industryGrowth: 'stable',
         remoteCompatibility: 70,
         burnoutRisk: 'medium',
-        learningCurve: 'moderate'
+        learningCurve: 'moderate',
       }
     }
   }
@@ -390,14 +448,12 @@ export class AIJobService {
     }
   }
 
-  
-
   // Helper methods
   private extractSkillsFromDescription(description: string): string[] {
     const skillPatterns = [
       /\b(React|Vue|Angular|JavaScript|TypeScript|Python|Java|C#|C\+\+|Go|Rust|Swift|Kotlin)\b/gi,
       /\b(Unity|Unreal Engine|Blender|Maya|Photoshop|Figma|Git|Docker|Kubernetes)\b/gi,
-      /\b(AWS|Azure|GCP|MongoDB|PostgreSQL|MySQL|Redis|Elasticsearch)\b/gi
+      /\b(AWS|Azure|GCP|MongoDB|PostgreSQL|MySQL|Redis|Elasticsearch)\b/gi,
     ]
 
     const skills = new Set<string>()
@@ -412,9 +468,17 @@ export class AIJobService {
   }
 
   private getSkillImportance(skill: string): number {
-    const highImportance = ['react', 'vue', 'angular', 'unity', 'unreal', 'python', 'javascript']
+    const highImportance = [
+      'react',
+      'vue',
+      'angular',
+      'unity',
+      'unreal',
+      'python',
+      'javascript',
+    ]
     const mediumImportance = ['git', 'sql', 'mongodb', 'docker', 'aws']
-    
+
     const skillLower = skill.toLowerCase()
     if (highImportance.some(s => skillLower.includes(s))) return 3
     if (mediumImportance.some(s => skillLower.includes(s))) return 2
@@ -423,28 +487,39 @@ export class AIJobService {
 
   private areRelatedSkills(skill1: string, skill2: string): boolean {
     const relatedSkills = {
-      'react': ['jsx', 'redux', 'nextjs'],
-      'vue': ['vuex', 'nuxt'],
-      'unity': ['c#', 'game development'],
-      'python': ['django', 'flask', 'fastapi']
+      react: ['jsx', 'redux', 'nextjs'],
+      vue: ['vuex', 'nuxt'],
+      unity: ['c#', 'game development'],
+      python: ['django', 'flask', 'fastapi'],
     }
 
     const skill1Lower = skill1.toLowerCase()
     const skill2Lower = skill2.toLowerCase()
 
-    return Object.entries(relatedSkills).some(([key, related]) => 
-      (skill1Lower.includes(key) && related.some(r => skill2Lower.includes(r))) ||
-      (skill2Lower.includes(key) && related.some(r => skill1Lower.includes(r)))
+    return Object.entries(relatedSkills).some(
+      ([key, related]) =>
+        (skill1Lower.includes(key) &&
+          related.some(r => skill2Lower.includes(r))) ||
+        (skill2Lower.includes(key) &&
+          related.some(r => skill1Lower.includes(r)))
     )
   }
 
   private getExperienceYears(level: string): number {
     switch (level.toLowerCase()) {
-      case 'entry': case 'junior': return 1
-      case 'mid': case 'intermediate': return 3
-      case 'senior': return 5
-      case 'lead': case 'principal': return 8
-      default: return 3
+      case 'entry':
+      case 'junior':
+        return 1
+      case 'mid':
+      case 'intermediate':
+        return 3
+      case 'senior':
+        return 5
+      case 'lead':
+      case 'principal':
+        return 8
+      default:
+        return 3
     }
   }
 
@@ -458,26 +533,30 @@ export class AIJobService {
       'fullstack developer': 80000,
       'data scientist': 90000,
       'ml engineer': 95000,
-      'devops engineer': 85000
+      'devops engineer': 85000,
     }
 
     const jobTitle = job.title.toLowerCase()
-    const baseSalary = Object.entries(baseSalaries).find(([title]) => 
-      jobTitle.includes(title)
-    )?.[1] || 70000
+    const baseSalary =
+      Object.entries(baseSalaries).find(([title]) =>
+        jobTitle.includes(title)
+      )?.[1] || 70000
 
     // Experience level multiplier
     const experienceMultiplier = {
-      'entry': 0.7,
-      'junior': 0.8,
-      'mid': 1.0,
-      'intermediate': 1.1,
-      'senior': 1.4,
-      'lead': 1.7,
-      'principal': 2.0
+      entry: 0.7,
+      junior: 0.8,
+      mid: 1.0,
+      intermediate: 1.1,
+      senior: 1.4,
+      lead: 1.7,
+      principal: 2.0,
     }
 
-    const multiplier = experienceMultiplier[job.experienceLevel as keyof typeof experienceMultiplier] || 1.0
+    const multiplier =
+      experienceMultiplier[
+        job.experienceLevel as keyof typeof experienceMultiplier
+      ] || 1.0
     return baseSalary * multiplier
   }
 
@@ -486,14 +565,29 @@ export class AIJobService {
     let maxAdjust = 1.4
 
     // Location adjustments
-    const highCostAreas = ['san francisco', 'new york', 'seattle', 'los angeles']
-    if (highCostAreas.some(area => job.location?.toLowerCase().includes(area))) {
+    const highCostAreas = [
+      'san francisco',
+      'new york',
+      'seattle',
+      'los angeles',
+    ]
+    if (
+      highCostAreas.some(area => job.location?.toLowerCase().includes(area))
+    ) {
       minAdjust *= 1.3
       maxAdjust *= 1.5
     }
 
     // Company size adjustments (heuristic based on company name)
-    const bigTech = ['google', 'microsoft', 'apple', 'amazon', 'meta', 'netflix', 'epic games']
+    const bigTech = [
+      'google',
+      'microsoft',
+      'apple',
+      'amazon',
+      'meta',
+      'netflix',
+      'epic games',
+    ]
     if (bigTech.some(company => job.company?.toLowerCase().includes(company))) {
       minAdjust *= 1.2
       maxAdjust *= 1.6
@@ -520,7 +614,7 @@ export class AIJobService {
 
   private getSalaryFactors(job: Job, adjustments: any): string[] {
     const factors = []
-    
+
     if (adjustments.min > 1.0) {
       factors.push('High-cost location premium')
     }
@@ -530,131 +624,241 @@ export class AIJobService {
     if (job.experienceLevel === 'senior' || job.experienceLevel === 'lead') {
       factors.push('Senior-level position')
     }
-    if (job.requirements?.some(req => req.toLowerCase().includes('ai') || req.toLowerCase().includes('machine learning'))) {
+    if (
+      job.requirements?.some(
+        req =>
+          req.toLowerCase().includes('ai') ||
+          req.toLowerCase().includes('machine learning')
+      )
+    ) {
       factors.push('High-demand AI/ML skills')
     }
-    
+
     return factors
   }
 
-  private analyzeJobComplexity(job: Job): 'entry' | 'intermediate' | 'advanced' | 'expert' {
+  private analyzeJobComplexity(
+    job: Job
+  ): 'entry' | 'intermediate' | 'advanced' | 'expert' {
     const requirements = job.requirements || []
     const technologies = job.technologies || []
     const description = job.description || ''
-    
+
     let complexity = 0
-    
+
     // Count advanced technologies
-    const advancedTech = ['ai', 'machine learning', 'blockchain', 'kubernetes', 'microservices']
-    complexity += advancedTech.filter(tech => 
-      description.toLowerCase().includes(tech) || 
-      technologies.some(t => t.toLowerCase().includes(tech))
-    ).length * 2
-    
+    const advancedTech = [
+      'ai',
+      'machine learning',
+      'blockchain',
+      'kubernetes',
+      'microservices',
+    ]
+    complexity +=
+      advancedTech.filter(
+        tech =>
+          description.toLowerCase().includes(tech) ||
+          technologies.some(t => t.toLowerCase().includes(tech))
+      ).length * 2
+
     // Count requirements
     complexity += requirements.length
-    
+
     // Experience level factor
-    const expLevels = { 'entry': 1, 'junior': 1, 'mid': 2, 'senior': 3, 'lead': 4 }
+    const expLevels = { entry: 1, junior: 1, mid: 2, senior: 3, lead: 4 }
     complexity += expLevels[job.experienceLevel as keyof typeof expLevels] || 2
-    
+
     if (complexity >= 12) return 'expert'
     if (complexity >= 8) return 'advanced'
     if (complexity >= 5) return 'intermediate'
     return 'entry'
   }
 
-  private extractRequiredSkills(requirements: string[], description: string): string[] {
+  private extractRequiredSkills(
+    requirements: string[],
+    description: string
+  ): string[] {
     const allText = (requirements.join(' ') + ' ' + description).toLowerCase()
-    const requiredIndicators = ['required', 'must have', 'essential', 'mandatory']
-    
+    const requiredIndicators = [
+      'required',
+      'must have',
+      'essential',
+      'mandatory',
+    ]
+
     const skills = this.extractSkillsFromDescription(allText)
-    return skills.filter(skill => 
-      requiredIndicators.some(indicator => 
-        allText.includes(`${indicator}${skill.toLowerCase()}`) ||
-        allText.includes(`${skill.toLowerCase()}${indicator}`)
+    return skills.filter(skill =>
+      requiredIndicators.some(
+        indicator =>
+          allText.includes(`${indicator}${skill.toLowerCase()}`) ||
+          allText.includes(`${skill.toLowerCase()}${indicator}`)
       )
     )
   }
 
   private extractNiceToHaveSkills(description: string): string[] {
-    const niceToHaveIndicators = ['nice to have', 'preferred', 'bonus', 'plus', 'advantage']
+    const niceToHaveIndicators = [
+      'nice to have',
+      'preferred',
+      'bonus',
+      'plus',
+      'advantage',
+    ]
     const descLower = description.toLowerCase()
-    
+
     return this.extractSkillsFromDescription(description).filter(skill =>
-      niceToHaveIndicators.some(indicator =>
-        descLower.includes(`${indicator}${skill.toLowerCase()}`) ||
-        descLower.includes(`${skill.toLowerCase()}${indicator}`)
+      niceToHaveIndicators.some(
+        indicator =>
+          descLower.includes(`${indicator}${skill.toLowerCase()}`) ||
+          descLower.includes(`${skill.toLowerCase()}${indicator}`)
       )
     )
   }
 
   private analyzeCareerProgression(title: string): string[] {
     const progressionPaths = {
-      'developer': ['Senior Developer', 'Lead Developer', 'Engineering Manager', 'CTO'],
-      'designer': ['Senior Designer', 'Design Lead', 'Design Manager', 'Head of Design'],
-      'analyst': ['Senior Analyst', 'Lead Analyst', 'Analytics Manager', 'Head of Analytics']
+      developer: [
+        'Senior Developer',
+        'Lead Developer',
+        'Engineering Manager',
+        'CTO',
+      ],
+      designer: [
+        'Senior Designer',
+        'Design Lead',
+        'Design Manager',
+        'Head of Design',
+      ],
+      analyst: [
+        'Senior Analyst',
+        'Lead Analyst',
+        'Analytics Manager',
+        'Head of Analytics',
+      ],
     }
-    
+
     const titleLower = title.toLowerCase()
-    const path = Object.entries(progressionPaths).find(([key]) => 
+    const path = Object.entries(progressionPaths).find(([key]) =>
       titleLower.includes(key)
     )?.[1] || ['Senior Role', 'Lead Role', 'Management', 'Executive']
-    
+
     return path
   }
 
-  private analyzeIndustryGrowth(company: string, technologies: string[]): 'declining' | 'stable' | 'growing' | 'booming' {
-    const boomingTech = ['ai', 'machine learning', 'vr', 'ar', 'blockchain', 'quantum']
+  private analyzeIndustryGrowth(
+    company: string,
+    technologies: string[]
+  ): 'declining' | 'stable' | 'growing' | 'booming' {
+    const boomingTech = [
+      'ai',
+      'machine learning',
+      'vr',
+      'ar',
+      'blockchain',
+      'quantum',
+    ]
     const growingTech = ['react', 'vue', 'python', 'kubernetes', 'cloud']
-    
+
     const techText = technologies.join(' ').toLowerCase()
-    
+
     if (boomingTech.some(tech => techText.includes(tech))) return 'booming'
     if (growingTech.some(tech => techText.includes(tech))) return 'growing'
     if (company?.toLowerCase().includes('startup')) return 'growing'
-    
+
     return 'stable'
   }
 
   private analyzeRemoteCompatibility(job: Job, description: string): number {
     if (job.remote) return 95
-    
-    const remoteIndicators = ['remote', 'distributed', 'work from home', 'wfh', 'flexible']
-    const localIndicators = ['onsite', 'office', 'in-person', 'laboratory', 'manufacturing']
-    
+
+    const remoteIndicators = [
+      'remote',
+      'distributed',
+      'work from home',
+      'wfh',
+      'flexible',
+    ]
+    const localIndicators = [
+      'onsite',
+      'office',
+      'in-person',
+      'laboratory',
+      'manufacturing',
+    ]
+
     const descLower = description.toLowerCase()
-    const remoteScore = remoteIndicators.reduce((score, indicator) => 
-      score + (descLower.includes(indicator) ? 20 : 0), 0
+    const remoteScore = remoteIndicators.reduce(
+      (score, indicator) => score + (descLower.includes(indicator) ? 20 : 0),
+      0
     )
-    const localScore = localIndicators.reduce((score, indicator) => 
-      score - (descLower.includes(indicator) ? 15 : 0), 0
+    const localScore = localIndicators.reduce(
+      (score, indicator) => score - (descLower.includes(indicator) ? 15 : 0),
+      0
     )
-    
+
     return Math.max(0, Math.min(100, 60 + remoteScore + localScore))
   }
 
-  private analyzeBurnoutRisk(description: string, jobType?: string): 'low' | 'medium' | 'high' {
-    const highRiskIndicators = ['fast-paced', 'high-pressure', 'tight deadlines', 'overtime', 'crunch']
-    const lowRiskIndicators = ['work-life balance', 'flexible hours', 'wellness', 'sustainable']
-    
+  private analyzeBurnoutRisk(
+    description: string,
+    jobType?: string
+  ): 'low' | 'medium' | 'high' {
+    const highRiskIndicators = [
+      'fast-paced',
+      'high-pressure',
+      'tight deadlines',
+      'overtime',
+      'crunch',
+    ]
+    const lowRiskIndicators = [
+      'work-life balance',
+      'flexible hours',
+      'wellness',
+      'sustainable',
+    ]
+
     const descLower = description.toLowerCase()
-    const highRisk = highRiskIndicators.some(indicator => descLower.includes(indicator))
-    const lowRisk = lowRiskIndicators.some(indicator => descLower.includes(indicator))
-    
+    const highRisk = highRiskIndicators.some(indicator =>
+      descLower.includes(indicator)
+    )
+    const lowRisk = lowRiskIndicators.some(indicator =>
+      descLower.includes(indicator)
+    )
+
     if (highRisk && !lowRisk) return 'high'
     if (lowRisk && !highRisk) return 'low'
     return 'medium'
   }
 
-  private analyzeLearningCurve(technologies: string[], requirements: string[]): 'gentle' | 'moderate' | 'steep' {
-    const advancedTech = ['machine learning', 'ai', 'blockchain', 'quantum', 'webgl', 'webassembly']
-    const moderateTech = ['react', 'vue', 'angular', 'docker', 'kubernetes', 'aws']
-    
+  private analyzeLearningCurve(
+    technologies: string[],
+    requirements: string[]
+  ): 'gentle' | 'moderate' | 'steep' {
+    const advancedTech = [
+      'machine learning',
+      'ai',
+      'blockchain',
+      'quantum',
+      'webgl',
+      'webassembly',
+    ]
+    const moderateTech = [
+      'react',
+      'vue',
+      'angular',
+      'docker',
+      'kubernetes',
+      'aws',
+    ]
+
     const allTech = [...technologies, ...requirements].map(t => t.toLowerCase())
-    const hasAdvanced = advancedTech.some(tech => allTech.some(t => t.includes(tech)))
-    const hasModerate = moderateTech.some(tech => allTech.some(t => t.includes(tech)))
-    
+    const hasAdvanced = advancedTech.some(tech =>
+      allTech.some(t => t.includes(tech))
+    )
+    const hasModerate = moderateTech.some(tech =>
+      allTech.some(t => t.includes(tech))
+    )
+
     if (hasAdvanced) return 'steep'
     if (hasModerate) return 'moderate'
     return 'gentle'
@@ -663,41 +867,43 @@ export class AIJobService {
   private async analyzeSkillMarket(skill: string): Promise<JobMarketInsight> {
     // Mock implementation - in production, this would use real market data APIs
     const marketData = {
-      'unity': { demand: 'high', trend: 'rising', salary: 82000, growth: 15 },
-      'react': { demand: 'high', trend: 'stable', salary: 78000, growth: 8 },
-      'python': { demand: 'high', trend: 'rising', salary: 85000, growth: 20 },
-      'ai': { demand: 'high', trend: 'booming', salary: 120000, growth: 35 },
-      'vue': { demand: 'medium', trend: 'rising', salary: 75000, growth: 12 }
+      unity: { demand: 'high', trend: 'rising', salary: 82000, growth: 15 },
+      react: { demand: 'high', trend: 'stable', salary: 78000, growth: 8 },
+      python: { demand: 'high', trend: 'rising', salary: 85000, growth: 20 },
+      ai: { demand: 'high', trend: 'booming', salary: 120000, growth: 35 },
+      vue: { demand: 'medium', trend: 'rising', salary: 75000, growth: 12 },
     }
-    
+
     const skillLower = skill.toLowerCase()
-    const data = Object.entries(marketData).find(([key]) => 
-      skillLower.includes(key) || key.includes(skillLower)
+    const data = Object.entries(marketData).find(
+      ([key]) => skillLower.includes(key) || key.includes(skillLower)
     )?.[1] || { demand: 'medium', trend: 'stable', salary: 70000, growth: 5 }
-    
+
     return {
       skill,
       demand: data.demand as any,
       trend: data.trend as any,
       averageSalary: data.salary,
       projectedGrowth: data.growth,
-      relatedSkills: this.getRelatedSkills(skill)
+      relatedSkills: this.getRelatedSkills(skill),
     }
   }
 
   private getRelatedSkills(skill: string): string[] {
     const relatedSkillsMap = {
-      'unity': ['C#', 'Game Development', 'Blender', 'Maya'],
-      'react': ['JavaScript', 'TypeScript', 'Redux', 'Next.js'],
-      'python': ['Django', 'FastAPI', 'Data Science', 'Machine Learning'],
-      'ai': ['Machine Learning', 'TensorFlow', 'PyTorch', 'Python'],
-      'vue': ['JavaScript', 'TypeScript', 'Nuxt.js', 'Vuex']
+      unity: ['C#', 'Game Development', 'Blender', 'Maya'],
+      react: ['JavaScript', 'TypeScript', 'Redux', 'Next.js'],
+      python: ['Django', 'FastAPI', 'Data Science', 'Machine Learning'],
+      ai: ['Machine Learning', 'TensorFlow', 'PyTorch', 'Python'],
+      vue: ['JavaScript', 'TypeScript', 'Nuxt.js', 'Vuex'],
     }
-    
+
     const skillLower = skill.toLowerCase()
-    return Object.entries(relatedSkillsMap).find(([key]) => 
-      skillLower.includes(key) || key.includes(skillLower)
-    )?.[1] || []
+    return (
+      Object.entries(relatedSkillsMap).find(
+        ([key]) => skillLower.includes(key) || key.includes(skillLower)
+      )?.[1] || []
+    )
   }
 
   private passesRecommendationFilters(match: AIJobMatch): boolean {
@@ -718,7 +924,7 @@ export class AIJobService {
   private setCachedResult(key: string, data: any): void {
     this.modelCache.set(key, {
       data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     })
   }
 }

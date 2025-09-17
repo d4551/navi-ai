@@ -11,11 +11,10 @@ import type {
   IndustryRole,
   TrendingSkill,
   ReadinessAssessment,
-  GameToIndustryTranslation
+  GameToIndustryTranslation,
 } from '@/shared/types/skillMapping'
 
 export class GameSkillMappingService {
-
   /**
    * Analyze gaming experience and detect transferable skills
    */
@@ -69,7 +68,6 @@ Return JSON array with format:
       const cleanedResult = this.cleanJsonResponse(result)
       const mappings = JSON.parse(cleanedResult) as SkillMapping[]
       return this.enrichSkillMappings(mappings)
-
     } catch (error) {
       logger.error('Gaming experience analysis failed:', error)
       throw error
@@ -116,7 +114,7 @@ Return JSON format:
         prompt,
         'You are a gaming industry analyst. Return valid JSON array only.'
       )
-      
+
       // Clean the response to handle markdown-formatted JSON
       const cleanedResult = this.cleanJsonResponse(result || '[]')
       return JSON.parse(cleanedResult) as TrendingSkill[]
@@ -132,15 +130,15 @@ Return JSON format:
   async getRoleSkillRequirements(roleId: string): Promise<IndustryRole> {
     const roleMap = {
       'game-designer': 'Game Designer',
-      'community-manager': 'Community Manager', 
+      'community-manager': 'Community Manager',
       'gameplay-programmer': 'Gameplay Programmer',
       'technical-artist': 'Technical Artist',
-      'producer': 'Game Producer',
+      producer: 'Game Producer',
       'qa-engineer': 'QA Engineer',
       'level-designer': 'Level Designer',
       'narrative-designer': 'Narrative Designer',
       'live-ops-manager': 'Live Operations Manager',
-      'esports-coordinator': 'Esports Coordinator'
+      'esports-coordinator': 'Esports Coordinator',
     }
 
     const roleName = (roleMap as Record<string, string>)[roleId] || roleId
@@ -184,7 +182,7 @@ Return JSON format:
         prompt,
         'You are a gaming industry HR specialist. Return valid JSON only.'
       )
-      
+
       // Clean the response to handle markdown-formatted JSON
       const cleanedResult = this.cleanJsonResponse(result)
       return JSON.parse(cleanedResult) as IndustryRole
@@ -205,34 +203,35 @@ Return JSON format:
       technical: this.calculateCategoryScore(userSkills, 'technical'),
       soft: this.calculateCategoryScore(userSkills, 'leadership', 'community'),
       industry: this.calculateIndustryKnowledgeScore(userSkills),
-      portfolio: this.calculatePortfolioScore(userSkills)
+      portfolio: this.calculatePortfolioScore(userSkills),
     }
 
-    const overallScore = Object.values(categories).reduce((sum, score) => sum + score, 0) / 4
+    const overallScore =
+      Object.values(categories).reduce((sum, score) => sum + score, 0) / 4
 
     return {
       overallScore: Math.round(overallScore),
       categories: {
         technical: {
           score: categories.technical,
-          feedback: this.getTechnicalFeedback(categories.technical)
+          feedback: this.getTechnicalFeedback(categories.technical),
         },
         softSkills: {
           score: categories.soft,
-          feedback: this.getSoftSkillsFeedback(categories.soft)
+          feedback: this.getSoftSkillsFeedback(categories.soft),
         },
         industryKnowledge: {
           score: categories.industry,
-          feedback: this.getIndustryFeedback(categories.industry)
+          feedback: this.getIndustryFeedback(categories.industry),
         },
         portfolio: {
           score: categories.portfolio,
-          feedback: this.getPortfolioFeedback(categories.portfolio)
-        }
+          feedback: this.getPortfolioFeedback(categories.portfolio),
+        },
       },
       improvementSuggestions: this.getImprovementSuggestions(categories),
       nextSteps: this.getNextSteps(categories, targetRole),
-      lastAssessed: new Date()
+      lastAssessed: new Date(),
     }
   }
 
@@ -248,44 +247,101 @@ Return JSON format:
         skillsRequired: ['Leadership', 'Communication', 'Event Planning'],
         evidenceTypes: ['community', 'achievement'],
         difficultyToTransition: 'moderate',
-        famousExamples: [{ name: 'Various Blizzard CMs', description: 'Many Blizzard community managers started as guild leaders', achievement: 'Community Leadership', relevantSkills: ['Leadership', 'Communication'] }]
+        famousExamples: [
+          {
+            name: 'Various Blizzard CMs',
+            description:
+              'Many Blizzard community managers started as guild leaders',
+            achievement: 'Community Leadership',
+            relevantSkills: ['Leadership', 'Communication'],
+          },
+        ],
       },
       {
         gameActivity: 'Meta Analysis in LoL',
         professionalEquivalent: 'Systems Designer, Data Analyst',
-        industries: ['Game Design', 'Business Intelligence', 'Product Management'],
-        skillsRequired: ['Data Analysis', 'Pattern Recognition', 'Strategic Thinking'],
+        industries: [
+          'Game Design',
+          'Business Intelligence',
+          'Product Management',
+        ],
+        skillsRequired: [
+          'Data Analysis',
+          'Pattern Recognition',
+          'Strategic Thinking',
+        ],
         evidenceTypes: ['stats', 'document'],
         difficultyToTransition: 'moderate',
-        famousExamples: [{ name: 'Riot Design Team', description: 'Riot\'s design team includes many former pro players', achievement: 'Game Design Innovation', relevantSkills: ['Systems Design', 'Data Analysis'] }]
+        famousExamples: [
+          {
+            name: 'Riot Design Team',
+            description: "Riot's design team includes many former pro players",
+            achievement: 'Game Design Innovation',
+            relevantSkills: ['Systems Design', 'Data Analysis'],
+          },
+        ],
       },
       {
         gameActivity: 'Speedrun Route Optimization',
         professionalEquivalent: 'Process Optimization, QA Engineer',
         industries: ['Game Testing', 'Operations', 'Software Engineering'],
-        skillsRequired: ['Process Optimization', 'Attention to Detail', 'Problem Solving'],
+        skillsRequired: [
+          'Process Optimization',
+          'Attention to Detail',
+          'Problem Solving',
+        ],
         evidenceTypes: ['clip', 'stats'],
         difficultyToTransition: 'easy',
-        famousExamples: [{ name: 'GDQ Community', description: 'GDQ speedrunners often become game testers', achievement: 'Process Optimization', relevantSkills: ['Testing', 'Optimization'] }]
+        famousExamples: [
+          {
+            name: 'GDQ Community',
+            description: 'GDQ speedrunners often become game testers',
+            achievement: 'Process Optimization',
+            relevantSkills: ['Testing', 'Optimization'],
+          },
+        ],
       },
       {
         gameActivity: 'Streaming & Content Creation',
         professionalEquivalent: 'Marketing, Community Manager',
         industries: ['Marketing', 'Content Strategy', 'Brand Management'],
-        skillsRequired: ['Content Creation', 'Public Speaking', 'Brand Building'],
+        skillsRequired: [
+          'Content Creation',
+          'Public Speaking',
+          'Brand Building',
+        ],
         evidenceTypes: ['portfolio_piece', 'stats'],
         difficultyToTransition: 'easy',
-        famousExamples: [{ name: 'Industry Streamers', description: 'Many gaming companies hire former streamers for marketing roles', achievement: 'Content Marketing', relevantSkills: ['Marketing', 'Community Building'] }]
+        famousExamples: [
+          {
+            name: 'Industry Streamers',
+            description:
+              'Many gaming companies hire former streamers for marketing roles',
+            achievement: 'Content Marketing',
+            relevantSkills: ['Marketing', 'Community Building'],
+          },
+        ],
       },
       {
         gameActivity: 'Game Modding',
         professionalEquivalent: 'Game Developer, Level Designer',
-        industries: ['Game Development', 'Software Engineering', 'Technical Art'],
+        industries: [
+          'Game Development',
+          'Software Engineering',
+          'Technical Art',
+        ],
         skillsRequired: ['Programming', '3D Modeling', 'Level Design'],
         evidenceTypes: ['portfolio_piece', 'achievement'],
         difficultyToTransition: 'moderate',
-        famousExamples: [{ name: 'Counter-Strike and DOTA', description: 'Originally mods that became commercial games', achievement: 'Technical Innovation', relevantSkills: ['Programming', 'Game Design'] }]
-      }
+        famousExamples: [
+          {
+            name: 'Counter-Strike and DOTA',
+            description: 'Originally mods that became commercial games',
+            achievement: 'Technical Innovation',
+            relevantSkills: ['Programming', 'Game Design'],
+          },
+        ],
+      },
     ]
 
     return examples
@@ -307,13 +363,29 @@ Return JSON format:
         description: 'Lead game development teams and projects',
         matchScore: this.calculatePathwayMatch(userSkills, 'producer'),
         stages: [
-          { title: 'Associate Producer', duration: '1-2 years', description: 'Learn project management basics' },
-          { title: 'Producer', duration: '3-5 years', description: 'Manage full game projects' },
-          { title: 'Senior Producer', duration: '5+ years', description: 'Lead multiple projects and teams' }
+          {
+            title: 'Associate Producer',
+            duration: '1-2 years',
+            description: 'Learn project management basics',
+          },
+          {
+            title: 'Producer',
+            duration: '3-5 years',
+            description: 'Manage full game projects',
+          },
+          {
+            title: 'Senior Producer',
+            duration: '5+ years',
+            description: 'Lead multiple projects and teams',
+          },
         ],
-        requiredSkills: ['Project Management', 'Team Leadership', 'Communication'],
+        requiredSkills: [
+          'Project Management',
+          'Team Leadership',
+          'Communication',
+        ],
         estimatedTimeToEntry: '6-12 months',
-        jobMarketTrend: 'growing'
+        jobMarketTrend: 'growing',
       })
     }
 
@@ -321,16 +393,29 @@ Return JSON format:
       pathways.push({
         id: 'developer-path',
         title: 'Game Developer',
-        description: 'Create games through programming and technical implementation',
+        description:
+          'Create games through programming and technical implementation',
         matchScore: this.calculatePathwayMatch(userSkills, 'developer'),
         stages: [
-          { title: 'Junior Developer', duration: '1-2 years', description: 'Learn programming fundamentals' },
-          { title: 'Game Developer', duration: '3-5 years', description: 'Develop game features' },
-          { title: 'Senior Developer', duration: '5+ years', description: 'Architect game systems' }
+          {
+            title: 'Junior Developer',
+            duration: '1-2 years',
+            description: 'Learn programming fundamentals',
+          },
+          {
+            title: 'Game Developer',
+            duration: '3-5 years',
+            description: 'Develop game features',
+          },
+          {
+            title: 'Senior Developer',
+            duration: '5+ years',
+            description: 'Architect game systems',
+          },
         ],
         requiredSkills: ['Programming', 'Game Engines', 'Problem Solving'],
         estimatedTimeToEntry: '12-24 months',
-        jobMarketTrend: 'growing'
+        jobMarketTrend: 'growing',
       })
     }
 
@@ -341,13 +426,29 @@ Return JSON format:
         description: 'Design gameplay mechanics and player experiences',
         matchScore: this.calculatePathwayMatch(userSkills, 'designer'),
         stages: [
-          { title: 'Junior Designer', duration: '1-2 years', description: 'Create design documents' },
-          { title: 'Game Designer', duration: '3-5 years', description: 'Design game systems' },
-          { title: 'Lead Designer', duration: '5+ years', description: 'Guide overall game vision' }
+          {
+            title: 'Junior Designer',
+            duration: '1-2 years',
+            description: 'Create design documents',
+          },
+          {
+            title: 'Game Designer',
+            duration: '3-5 years',
+            description: 'Design game systems',
+          },
+          {
+            title: 'Lead Designer',
+            duration: '5+ years',
+            description: 'Guide overall game vision',
+          },
         ],
-        requiredSkills: ['Game Design', 'Systems Thinking', 'Player Psychology'],
+        requiredSkills: [
+          'Game Design',
+          'Systems Thinking',
+          'Player Psychology',
+        ],
         estimatedTimeToEntry: '6-18 months',
-        jobMarketTrend: 'growing'
+        jobMarketTrend: 'growing',
       })
     }
 
@@ -358,40 +459,42 @@ Return JSON format:
 
   private cleanJsonResponse(response: string): string {
     if (!response) return '[]'
-    
+
     // Remove markdown code blocks
     let cleaned = response.trim()
-    
+
     // Remove ```json and ``` markers
     cleaned = cleaned.replace(/^```json\s*/i, '')
     cleaned = cleaned.replace(/```\s*$/i, '')
-    
+
     // Remove any remaining ``` markers
     cleaned = cleaned.replace(/^```\s*/gm, '')
     cleaned = cleaned.replace(/```\s*$/gm, '')
-    
+
     // Trim whitespace
     cleaned = cleaned.trim()
-    
+
     // If it doesn't start with [ or {, try to find JSON in the response
     if (!cleaned.startsWith('[') && !cleaned.startsWith('{')) {
-      const jsonMatch = cleaned.match(/(\[[\s\S]*\]|\{[\s\S]*\})/);
+      const jsonMatch = cleaned.match(/(\[[\s\S]*\]|\{[\s\S]*\})/)
       if (jsonMatch) {
-        cleaned = jsonMatch[1];
+        cleaned = jsonMatch[1]
       }
     }
-    
+
     return cleaned || '[]'
   }
 
-  private async enrichSkillMappings(mappings: SkillMapping[]): Promise<SkillMapping[]> {
+  private async enrichSkillMappings(
+    mappings: SkillMapping[]
+  ): Promise<SkillMapping[]> {
     return mappings.map(mapping => ({
       ...mapping,
       id: this.generateSkillId(),
       createdAt: new Date(),
       confidence: Math.max(60, Math.min(100, mapping.confidence || 75)),
       evidence: [],
-      verified: false
+      verified: false,
     }))
   }
 
@@ -399,44 +502,54 @@ Return JSON format:
     return `skill_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
   }
 
-  private calculateCategoryScore(skills: SkillMapping[], ...categories: string[]): number {
-    const relevantSkills = skills.filter(skill => 
+  private calculateCategoryScore(
+    skills: SkillMapping[],
+    ...categories: string[]
+  ): number {
+    const relevantSkills = skills.filter(skill =>
       categories.some(cat => skill.category?.includes(cat))
     )
-    
+
     if (relevantSkills.length === 0) return 0
-    
-    const avgConfidence = relevantSkills.reduce((sum, skill) => sum + (skill.confidence || 0), 0) / relevantSkills.length
-    return Math.min(100, avgConfidence + (relevantSkills.length * 5))
+
+    const avgConfidence =
+      relevantSkills.reduce((sum, skill) => sum + (skill.confidence || 0), 0) /
+      relevantSkills.length
+    return Math.min(100, avgConfidence + relevantSkills.length * 5)
   }
 
   private calculateIndustryKnowledgeScore(skills: SkillMapping[]): number {
-    const industrySpecificSkills = skills.filter(skill => 
-      skill.industryApplications.some(app => 
-        app.toLowerCase().includes('game') || 
-        app.toLowerCase().includes('esports') ||
-        app.toLowerCase().includes('streaming')
+    const industrySpecificSkills = skills.filter(skill =>
+      skill.industryApplications.some(
+        app =>
+          app.toLowerCase().includes('game') ||
+          app.toLowerCase().includes('esports') ||
+          app.toLowerCase().includes('streaming')
       )
     )
-    
+
     return Math.min(100, industrySpecificSkills.length * 15)
   }
 
   private calculatePortfolioScore(skills: SkillMapping[]): number {
-    const skillsWithEvidence = skills.filter(skill => skill.evidence && skill.evidence.length > 0)
+    const skillsWithEvidence = skills.filter(
+      skill => skill.evidence && skill.evidence.length > 0
+    )
     if (skills.length === 0) return 0
     return Math.round((skillsWithEvidence.length / skills.length) * 100)
   }
 
   private getTechnicalFeedback(score: number): string {
     if (score >= 80) return 'Excellent technical foundation for gaming industry'
-    if (score >= 60) return 'Good technical skills, consider learning Unity or Unreal'
+    if (score >= 60)
+      return 'Good technical skills, consider learning Unity or Unreal'
     return 'Focus on building technical skills through online courses'
   }
 
   private getSoftSkillsFeedback(score: number): string {
     if (score >= 80) return 'Outstanding leadership and communication skills'
-    if (score >= 60) return 'Good interpersonal skills, perfect for team environments'
+    if (score >= 60)
+      return 'Good interpersonal skills, perfect for team environments'
     return 'Work on communication and teamwork skills'
   }
 
@@ -452,29 +565,38 @@ Return JSON format:
     return 'Critical: Build portfolio to showcase your abilities'
   }
 
-  private getImprovementSuggestions(categories: Record<string, number>): string[] {
+  private getImprovementSuggestions(
+    categories: Record<string, number>
+  ): string[] {
     const suggestions: string[] = []
-    
+
     if (categories.portfolio < 60) {
-      suggestions.push('Create playable game prototypes to showcase design skills')
+      suggestions.push(
+        'Create playable game prototypes to showcase design skills'
+      )
     }
-    
+
     if (categories.technical < 70) {
       suggestions.push('Learn industry-standard tools (Unity, Unreal, Figma)')
     }
-    
+
     if (categories.industry < 60) {
-      suggestions.push('Follow gaming industry news and join professional communities')
+      suggestions.push(
+        'Follow gaming industry news and join professional communities'
+      )
     }
-    
+
     suggestions.push('Participate in game jams to build portfolio and network')
-    
+
     return suggestions
   }
 
-  private getNextSteps(_categories: Record<string, number>, targetRole?: string): string[] {
+  private getNextSteps(
+    _categories: Record<string, number>,
+    targetRole?: string
+  ): string[] {
     const steps: string[] = []
-    
+
     if (targetRole === 'game-designer') {
       steps.push('Create design documents for your favorite games')
       steps.push('Build paper prototypes of game mechanics')
@@ -485,32 +607,37 @@ Return JSON format:
       steps.push('Identify specific role and research requirements')
       steps.push('Connect with industry professionals on LinkedIn')
     }
-    
+
     return steps
   }
 
-  private categorizeSkills(skills: SkillMapping[]): Record<string, SkillMapping[]> {
+  private categorizeSkills(
+    skills: SkillMapping[]
+  ): Record<string, SkillMapping[]> {
     return {
       leadership: skills.filter(s => s.category?.includes('leadership')),
       technical: skills.filter(s => s.category?.includes('technical')),
       creative: skills.filter(s => s.category?.includes('creative')),
       analytical: skills.filter(s => s.category?.includes('analytical')),
-      community: skills.filter(s => s.category?.includes('community'))
+      community: skills.filter(s => s.category?.includes('community')),
     }
   }
 
-  private calculatePathwayMatch(skills: SkillMapping[], pathway: 'producer' | 'developer' | 'designer'): number {
+  private calculatePathwayMatch(
+    skills: SkillMapping[],
+    pathway: 'producer' | 'developer' | 'designer'
+  ): number {
     const pathwaySkillMap = {
       producer: ['leadership', 'community'],
       developer: ['technical'],
-      designer: ['creative', 'analytical']
+      designer: ['creative', 'analytical'],
     }
-    
+
     const relevantCategories = pathwaySkillMap[pathway] || []
-    const matchingSkills = skills.filter(skill => 
+    const matchingSkills = skills.filter(skill =>
       relevantCategories.some((cat: string) => skill.category?.includes(cat))
     )
-    
+
     if (skills.length === 0) return 0
     return Math.round((matchingSkills.length / skills.length) * 100)
   }
@@ -519,34 +646,41 @@ Return JSON format:
     return [
       {
         skill: 'LiveOps Management',
-        description: 'Managing live game content, events, and player engagement post-launch',
+        description:
+          'Managing live game content, events, and player engagement post-launch',
         demandGrowth: 45,
         avgSalaryMin: 85000,
         avgSalaryMax: 130000,
-        roles: ['Live Operations Manager', 'Product Manager', 'Community Manager'],
+        roles: [
+          'Live Operations Manager',
+          'Product Manager',
+          'Community Manager',
+        ],
         learningResources: ['Unity Learn', 'Game Developer Conference talks'],
-        difficulty: 'intermediate'
+        difficulty: 'intermediate',
       },
       {
         skill: 'Unity Scripting (C#)',
-        description: 'Programming gameplay mechanics and tools in Unity game engine',
+        description:
+          'Programming gameplay mechanics and tools in Unity game engine',
         demandGrowth: 38,
         avgSalaryMin: 70000,
         avgSalaryMax: 120000,
         roles: ['Game Developer', 'Tools Programmer', 'Technical Designer'],
         learningResources: ['Unity Learn', 'Coursera', 'YouTube tutorials'],
-        difficulty: 'intermediate'
+        difficulty: 'intermediate',
       },
       {
         skill: 'VR/AR Game Design',
-        description: 'Designing user experiences for virtual and augmented reality games',
+        description:
+          'Designing user experiences for virtual and augmented reality games',
         demandGrowth: 52,
         avgSalaryMin: 90000,
         avgSalaryMax: 140000,
         roles: ['VR Designer', 'UX Designer', 'Technical Artist'],
         learningResources: ['Meta Developer docs', 'Unity XR Toolkit'],
-        difficulty: 'advanced'
-      }
+        difficulty: 'advanced',
+      },
     ]
   }
 }

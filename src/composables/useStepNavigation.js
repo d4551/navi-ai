@@ -9,8 +9,12 @@ import { ref, computed, nextTick } from 'vue'
 export function useStepNavigation(steps, isCompleteFn, anchorSelectors = []) {
   const currentStep = ref(0)
 
-  const isStepComplete = (idx) => {
-    try { return !!isCompleteFn(idx) } catch { return false }
+  const isStepComplete = idx => {
+    try {
+      return !!isCompleteFn(idx)
+    } catch {
+      return false
+    }
   }
 
   const progress = computed(() => {
@@ -19,13 +23,19 @@ export function useStepNavigation(steps, isCompleteFn, anchorSelectors = []) {
   })
 
   function goToStep(idx) {
-    if (idx < 0 || idx >= steps.length) {return}
+    if (idx < 0 || idx >= steps.length) {
+      return
+    }
     currentStep.value = idx
     if (anchorSelectors[idx]) {
       nextTick(() => {
         const el = document.querySelector(anchorSelectors[idx])
         if (el && 'scrollIntoView' in el) {
-          try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }) } catch { /* no-op */ }
+          try {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          } catch {
+            /* no-op */
+          }
         }
       })
     }
@@ -36,6 +46,6 @@ export function useStepNavigation(steps, isCompleteFn, anchorSelectors = []) {
     currentStep,
     progress,
     goToStep,
-    isStepComplete
+    isStepComplete,
   }
 }

@@ -18,7 +18,7 @@ export function useJobs(initial: Partial<JobFilters> = {}) {
     remote: initial.remote,
     experienceLevel: initial.experienceLevel,
     query: initial.query,
-    limit: initial.limit || 50
+    limit: initial.limit || 50,
   })
 
   const sourceStats = computed(() => jobSourceManager.getSourceStats())
@@ -48,7 +48,18 @@ export function useJobs(initial: Partial<JobFilters> = {}) {
     }
   }
 
-  return { loading, error, jobs, sources, total, processingTime, filters, search, sourceStats, sourcesList }
+  return {
+    loading,
+    error,
+    jobs,
+    sources,
+    total,
+    processingTime,
+    filters,
+    search,
+    sourceStats,
+    sourcesList,
+  }
 }
 
 export default useJobs

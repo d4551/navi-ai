@@ -12,10 +12,15 @@
             variant="outline"
             size="sm"
             :disabled="importStatus.isImporting"
-            :leading-icon="refreshService.refreshInterval ? 'PauseIcon' : 'PlayIcon'"
+            :leading-icon="
+              refreshService.refreshInterval ? 'PauseIcon' : 'PlayIcon'
+            "
             @click="toggleRefreshService"
           >
-            {{ refreshService.refreshInterval ? 'Pause' : 'Start' }} Auto-Refresh
+            {{
+              refreshService.refreshInterval ? 'Pause' : 'Start'
+            }}
+            Auto-Refresh
           </UnifiedButton>
           <UnifiedButton
             variant="primary"
@@ -33,7 +38,9 @@
         <!-- Current Operation -->
         <div v-if="importStatus.isImporting" class="current-operation">
           <div class="operation-info">
-            <span class="operation-text">{{ importStatus.currentOperation }}</span>
+            <span class="operation-text">{{
+              importStatus.currentOperation
+            }}</span>
             <span class="operation-progress">{{ importStatus.progress }}%</span>
           </div>
           <div class="progress-bar">
@@ -52,8 +59,12 @@
             </div>
             <div class="status-content">
               <div class="status-label">Jobs Imported</div>
-              <div class="status-value">{{ stats.jobsCount.toLocaleString() }}</div>
-              <div class="status-time">{{ formatLastUpdate(stats.jobsLastUpdate) }}</div>
+              <div class="status-value">
+                {{ stats.jobsCount.toLocaleString() }}
+              </div>
+              <div class="status-time">
+                {{ formatLastUpdate(stats.jobsLastUpdate) }}
+              </div>
             </div>
           </div>
 
@@ -64,7 +75,9 @@
             <div class="status-content">
               <div class="status-label">Portfolio Projects</div>
               <div class="status-value">{{ stats.portfolioCount }}</div>
-              <div class="status-time">{{ formatLastUpdate(stats.portfolioLastUpdate) }}</div>
+              <div class="status-time">
+                {{ formatLastUpdate(stats.portfolioLastUpdate) }}
+              </div>
             </div>
           </div>
 
@@ -75,7 +88,9 @@
             <div class="status-content">
               <div class="status-label">Interviews</div>
               <div class="status-value">{{ stats.interviewsCount }}</div>
-              <div class="status-time">{{ formatLastUpdate(stats.interviewsLastUpdate) }}</div>
+              <div class="status-time">
+                {{ formatLastUpdate(stats.interviewsLastUpdate) }}
+              </div>
             </div>
           </div>
 
@@ -86,18 +101,32 @@
             <div class="status-content">
               <div class="status-label">Studios</div>
               <div class="status-value">{{ stats.studiosCount }}</div>
-              <div class="status-time">{{ formatLastUpdate(stats.studiosLastUpdate) }}</div>
+              <div class="status-time">
+                {{ formatLastUpdate(stats.studiosLastUpdate) }}
+              </div>
             </div>
           </div>
 
           <div class="status-item">
-            <div class="status-icon" :class="refreshService.refreshInterval ? 'success' : 'muted'">
-              <AppIcon :name="refreshService.refreshInterval ? 'mdi-autorenew' : 'PauseIcon'" />
+            <div
+              class="status-icon"
+              :class="refreshService.refreshInterval ? 'success' : 'muted'"
+            >
+              <AppIcon
+                :name="
+                  refreshService.refreshInterval ? 'mdi-autorenew' : 'PauseIcon'
+                "
+              />
             </div>
             <div class="status-content">
               <div class="status-label">Auto-Refresh</div>
-              <div class="status-value">{{ refreshService.refreshInterval ? 'Active' : 'Paused' }}</div>
-              <div class="status-time">Every {{ Math.round(refreshService.refreshFrequency / 60000) }}min</div>
+              <div class="status-value">
+                {{ refreshService.refreshInterval ? 'Active' : 'Paused' }}
+              </div>
+              <div class="status-time">
+                Every
+                {{ Math.round(refreshService.refreshFrequency / 60000) }}min
+              </div>
             </div>
           </div>
         </div>
@@ -115,19 +144,39 @@
 
       <div class="card-body section-body">
         <div class="import-options">
-          <div v-for="importType in importTypes" :key="importType.type" class="import-option">
+          <div
+            v-for="importType in importTypes"
+            :key="importType.type"
+            class="import-option"
+          >
             <div class="import-option-header">
               <div class="import-option-icon" :class="importType.colorClass">
                 <AppIcon :name="importType.icon" />
               </div>
               <div class="import-option-info">
                 <h6 class="import-option-title">{{ importType.title }}</h6>
-                <p class="import-option-description">{{ importType.description }}</p>
+                <p class="import-option-description">
+                  {{ importType.description }}
+                </p>
               </div>
             </div>
             <div class="import-option-actions">
-              <UnifiedButton variant="outline" size="sm" :disabled="importStatus.isImporting" leading-icon="DocumentIcon-plus" @click="selectFile(importType.type)">Select File</UnifiedButton>
-              <UnifiedButton variant="outline" size="sm" :disabled="importStatus.isImporting" leading-icon="CogIcon" @click="configureImportSource(importType.type)">Options</UnifiedButton>
+              <UnifiedButton
+                variant="outline"
+                size="sm"
+                :disabled="importStatus.isImporting"
+                leading-icon="DocumentIcon-plus"
+                @click="selectFile(importType.type)"
+                >Select File</UnifiedButton
+              >
+              <UnifiedButton
+                variant="outline"
+                size="sm"
+                :disabled="importStatus.isImporting"
+                leading-icon="CogIcon"
+                @click="configureImportSource(importType.type)"
+                >Options</UnifiedButton
+              >
             </div>
           </div>
         </div>
@@ -164,17 +213,30 @@
             :key="entry.id"
             class="history-item"
           >
-            <div class="history-icon" :class="entry.success ? 'success' : 'danger'">
-              <AppIcon :name="entry.success ? 'CheckIcon-circle-outline' : 'mdi-alert-circle-outline'" />
+            <div
+              class="history-icon"
+              :class="entry.success ? 'success' : 'danger'"
+            >
+              <AppIcon
+                :name="
+                  entry.success
+                    ? 'CheckIcon-circle-outline'
+                    : 'mdi-alert-circle-outline'
+                "
+              />
             </div>
             <div class="history-content">
               <div class="history-title">
                 {{ getImportTypeTitle(entry.dataType) }}
-                <span class="record-count">{{ entry.recordCount }} records</span>
+                <span class="record-count"
+                  >{{ entry.recordCount }} records</span
+                >
               </div>
               <div class="history-details">
                 <span class="history-source">{{ entry.source }}</span>
-                <span class="history-time">{{ formatTimestamp(entry.timestamp) }}</span>
+                <span class="history-time">{{
+                  formatTimestamp(entry.timestamp)
+                }}</span>
               </div>
             </div>
           </div>
@@ -183,7 +245,10 @@
     </div>
 
     <!-- Errors Panel -->
-    <div v-if="importStatus.errors.length > 0" class="errors-card glass-card section-card">
+    <div
+      v-if="importStatus.errors.length > 0"
+      class="errors-card glass-card section-card"
+    >
       <div class="card-header section-header">
         <h6 class="card-title text-error-600">
           <AppIcon name="ExclamationCircleIcon" />
@@ -214,7 +279,9 @@
               <div class="error-message">{{ error.error }}</div>
               <div class="error-details">
                 <span class="error-type">{{ error.dataType }}</span>
-                <span class="error-time">{{ formatTimestamp(error.timestamp) }}</span>
+                <span class="error-time">{{
+                  formatTimestamp(error.timestamp)
+                }}</span>
               </div>
             </div>
           </div>
@@ -234,7 +301,15 @@
 </template>
 
 <script setup>
-import { ArrowPathIcon, ArrowUpTrayIcon, BriefcaseIcon, BuildingOfficeIcon, CogIcon, ExclamationCircleIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  ArrowUpTrayIcon,
+  BriefcaseIcon,
+  BuildingOfficeIcon,
+  CogIcon,
+  ExclamationCircleIcon,
+  TrashIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -243,7 +318,7 @@ import {
   importData,
   importStatus,
   backgroundRefreshService,
-  BackgroundRefreshService as _BackgroundRefreshService
+  BackgroundRefreshService as _BackgroundRefreshService,
 } from '@/services/backgroundImportService'
 
 // Reactive state
@@ -260,7 +335,7 @@ const stats = reactive({
   interviewsCount: 0,
   interviewsLastUpdate: null,
   studiosCount: 0,
-  studiosLastUpdate: null
+  studiosLastUpdate: null,
 })
 
 // Import type configurations
@@ -270,36 +345,36 @@ const importTypes = [
     title: 'Resume Data',
     description: 'Import resume information, experience, and skills',
     icon: 'UserIcon-box-outline',
-    colorClass: 'primary'
+    colorClass: 'primary',
   },
   {
     type: 'jobs',
     title: 'Job Listings',
     description: 'Import job opportunities and application data',
     icon: 'mdi-briefcase-search',
-    colorClass: 'success'
+    colorClass: 'success',
   },
   {
     type: 'portfolio',
     title: 'Portfolio Projects',
     description: 'Import project data, images, and documentation',
     icon: 'FolderIcon-multiple-outline-image',
-    colorClass: 'info'
+    colorClass: 'info',
   },
   {
     type: 'interviews',
     title: 'Interview Records',
     description: 'Import interview feedback and performance data',
     icon: 'UserIcon-tie',
-    colorClass: 'warning'
+    colorClass: 'warning',
   },
   {
     type: 'studios',
     title: 'Game Studios',
     description: 'Import studio data, company info, and specializations',
     icon: 'mdi-domain',
-    colorClass: 'info'
-  }
+    colorClass: 'info',
+  },
 ]
 
 // Methods
@@ -327,27 +402,34 @@ const performManualRefresh = async () => {
   }
 }
 
-const selectFile = (importType) => {
+const selectFile = importType => {
   selectedImportType.value = importType
   console.info(`Selecting file for ${importType} import`)
   fileInput.value?.click()
 }
 
-const handleFileSelect = async (event) => {
+const handleFileSelect = async event => {
   const file = event.target.files[0]
   if (!file || !selectedImportType.value) {
     return
   }
 
   try {
-    const result = await importData(selectedImportType.value, file.path || file.name, {
-      fileName: file.name,
-      fileSize: file.size
-    })
+    const result = await importData(
+      selectedImportType.value,
+      file.path || file.name,
+      {
+        fileName: file.name,
+        fileSize: file.size,
+      }
+    )
 
     if (result.success) {
       await updateStats()
-      console.info(`Import ${selectedImportType.value} successful:`, result.message)
+      console.info(
+        `Import ${selectedImportType.value} successful:`,
+        result.message
+      )
     } else {
       console.error(`Import ${selectedImportType.value} failed:`, result.error)
     }
@@ -359,7 +441,7 @@ const handleFileSelect = async (event) => {
   }
 }
 
-const configureImportSource = async (importType) => {
+const configureImportSource = async importType => {
   try {
     refreshService.configure({ enabledSources: [importType] })
     console.info(`Configured import source: ${importType}`)
@@ -382,13 +464,23 @@ const updateStats = async () => {
   try {
     // Update statistics from localStorage or IPC
     const jobsData = JSON.parse(localStorage.getItem('gemini-cv-jobs') || '[]')
-    const portfolioData = JSON.parse(localStorage.getItem('gemini-cv-portfolio') || '[]')
-    const interviewsData = JSON.parse(localStorage.getItem('gemini-cv-interviews') || '[]')
-    const studiosData = JSON.parse(localStorage.getItem('gemini-cv-studios') || '[]')
+    const portfolioData = JSON.parse(
+      localStorage.getItem('gemini-cv-portfolio') || '[]'
+    )
+    const interviewsData = JSON.parse(
+      localStorage.getItem('gemini-cv-interviews') || '[]'
+    )
+    const studiosData = JSON.parse(
+      localStorage.getItem('gemini-cv-studios') || '[]'
+    )
 
     stats.jobsCount = Array.isArray(jobsData) ? jobsData.length : 0
-    stats.portfolioCount = Array.isArray(portfolioData) ? portfolioData.length : 0
-    stats.interviewsCount = Array.isArray(interviewsData) ? interviewsData.length : 0
+    stats.portfolioCount = Array.isArray(portfolioData)
+      ? portfolioData.length
+      : 0
+    stats.interviewsCount = Array.isArray(interviewsData)
+      ? interviewsData.length
+      : 0
     stats.studiosCount = Array.isArray(studiosData) ? studiosData.length : 0
 
     // Update timestamps
@@ -397,31 +489,38 @@ const updateStats = async () => {
     stats.portfolioLastUpdate = cache.portfolioLastUpdate || null
     stats.interviewsLastUpdate = cache.interviewsLastUpdate || null
     stats.studiosLastUpdate = cache.studiosLastUpdate || null
-
   } catch (error) {
     console.error('Failed to update stats:', error)
   }
 }
 
 // Utility functions
-const formatLastUpdate = (timestamp) => {
-  if (!timestamp) {return 'Never'}
+const formatLastUpdate = timestamp => {
+  if (!timestamp) {
+    return 'Never'
+  }
 
   const date = new Date(timestamp)
   const now = new Date()
   const diffMinutes = Math.floor((now - date) / (1000 * 60))
 
-  if (diffMinutes < 1) {return 'Just now'}
-  if (diffMinutes < 60) {return `${diffMinutes}m ago`}
-  if (diffMinutes < 1440) {return `${Math.floor(diffMinutes / 60)}h ago`}
+  if (diffMinutes < 1) {
+    return 'Just now'
+  }
+  if (diffMinutes < 60) {
+    return `${diffMinutes}m ago`
+  }
+  if (diffMinutes < 1440) {
+    return `${Math.floor(diffMinutes / 60)}h ago`
+  }
   return `${Math.floor(diffMinutes / 1440)}d ago`
 }
 
-const formatTimestamp = (timestamp) => {
+const formatTimestamp = timestamp => {
   return new Date(timestamp).toLocaleString()
 }
 
-const getImportTypeTitle = (dataType) => {
+const getImportTypeTitle = dataType => {
   const type = importTypes.find(t => t.type === dataType)
   return type?.title || dataType
 }
@@ -497,7 +596,11 @@ onMounted(() => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-success));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-success)
+  );
   transition: width 0.3s ease;
 }
 
@@ -758,10 +861,10 @@ onMounted(() => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .status-item,
-[data-theme="dark"] .import-option,
-[data-theme="dark"] .history-item,
-[data-theme="dark"] .error-item {
+[data-theme='dark'] .status-item,
+[data-theme='dark'] .import-option,
+[data-theme='dark'] .history-item,
+[data-theme='dark'] .error-item {
   background: var(--glass-surface);
   border-color: var(--glass-border);
 }

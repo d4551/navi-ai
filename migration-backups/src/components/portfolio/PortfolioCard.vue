@@ -1,8 +1,9 @@
 <template>
-  <div 
-    class="portfolio-card" 
-    :class="[ `portfolio-card--${layout}`, 
-              { 'portfolio-card--featured': item.featured }
+  <div
+    class="portfolio-card"
+    :class="[
+      `portfolio-card--${layout}`,
+      { 'portfolio-card--featured': item.featured },
     ]"
   >
     <!-- Featured Badge -->
@@ -13,14 +14,14 @@
     <!-- Media Section -->
     <div v-if="item.media" class="card-media">
       <div class="media-container">
-        <img 
+        <img
           v-if="item.media.type === 'image'"
-          :src="item.media.url" 
+          :src="item.media.url"
           :alt="item.title"
           class="media-image"
           @error="handleMediaError"
         />
-        <video 
+        <video
           v-else-if="item.media.type === 'video'"
           :src="item.media.url"
           class="media-video"
@@ -34,7 +35,7 @@
         </div>
       </div>
       <div class="media-overlay">
-        <button 
+        <button
           v-if="item.media.type === 'video'"
           class="play-button"
           @click="togglePlay"
@@ -55,7 +56,7 @@
           </span>
         </div>
         <div class="actions-menu" @click.stop>
-          <button 
+          <button
             class="actions-toggle"
             :aria-expanded="showActions"
             @click="showActions = !showActions"
@@ -67,13 +68,15 @@
               <AppIcon name="mdi-pencil" />Edit
             </button>
             <button @click="$emit('toggle-featured', item)">
-              <AppIcon :name="item.featured ? 'mdi-star' : 'mdi-star-outline'" />
+              <AppIcon
+                :name="item.featured ? 'mdi-star' : 'mdi-star-outline'"
+              />
               {{ item.featured ? 'Unfeature' : 'Feature' }}
             </button>
             <button class="text-info" @click="shareItem">
               <AppIcon name="mdi-share" />Share
             </button>
-            <hr class="dropdown-divider">
+            <hr class="dropdown-divider" />
             <button class="text-danger" @click="$emit('delete', item)">
               <AppIcon name="mdi-delete" />Delete
             </button>
@@ -87,7 +90,7 @@
         <p v-if="item.description" class="card-description">
           {{ truncateText(item.description, layout === 'list' ? 200 : 120) }}
         </p>
-        
+
         <!-- Game Info -->
         <div v-if="item.game" class="game-info">
           <AppIcon name="mdi-gamepad-variant" />
@@ -118,14 +121,16 @@
       <!-- Skills & Tags -->
       <div v-if="item.skills?.length" class="card-skills">
         <div class="skills-container">
-          <span 
-            v-for="skill in (layout === 'list' ? item.skills : item.skills.slice(0, 6))" 
-            :key="skill" 
+          <span
+            v-for="skill in layout === 'list'
+              ? item.skills
+              : item.skills.slice(0, 6)"
+            :key="skill"
             class="skill-tag"
           >
             {{ skill }}
           </span>
-          <span 
+          <span
             v-if="layout !== 'list' && item.skills.length > 6"
             class="skill-tag skill-tag--more"
           >
@@ -162,7 +167,7 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 const _props = defineProps({
   item: { type: Object, required: true },
   layout: { type: String, default: 'grid' },
-  showAnalytics: { type: Boolean, default: false }
+  showAnalytics: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['edit', 'delete', 'toggle-featured', 'share'])
@@ -182,7 +187,7 @@ function getTypeIcon(type) {
     content: 'mdi-video',
     project: 'mdi-folder-multiple-outline',
     stream: 'mdi-broadcast',
-    collaboration: 'mdi-account-group'
+    collaboration: 'mdi-account-group',
   }
   return icons[type] || 'mdi-file'
 }
@@ -196,7 +201,7 @@ function getTypeLabel(type) {
     content: 'Content',
     project: 'Project',
     stream: 'Stream',
-    collaboration: 'Collaboration'
+    collaboration: 'Collaboration',
   }
   return labels[type] || 'Item'
 }
@@ -211,7 +216,7 @@ function formatDate(date) {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 
@@ -232,7 +237,7 @@ function formatStatLabel(key) {
     plays: 'Plays',
     wins: 'Wins',
     kills: 'Kills',
-    score: 'Score'
+    score: 'Score',
   }
   return labels[key] || key.charAt(0).toUpperCase() + key.slice(1)
 }
@@ -291,7 +296,7 @@ if (typeof document !== 'undefined') {
   border-radius: 20px;
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.08),
     0 1px 0 rgba(255, 255, 255, 0.1) inset;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -309,12 +314,16 @@ if (typeof document !== 'undefined') {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.2) 0%, 
-    transparent 25%, 
-    transparent 75%, 
-    rgba(255, 255, 255, 0.1) 100%);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 25%,
+    transparent 75%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: xor;
   -webkit-mask-composite: xor;
   pointer-events: none;
@@ -322,7 +331,7 @@ if (typeof document !== 'undefined') {
 
 .portfolio-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.15),
     0 8px 32px rgba(var(--color-primary-rgb), 0.1),
     0 1px 0 rgba(255, 255, 255, 0.2) inset;
@@ -330,16 +339,19 @@ if (typeof document !== 'undefined') {
 }
 
 .portfolio-card:hover::before {
-  background: linear-gradient(135deg, 
-    rgba(var(--color-primary-rgb), 0.3) 0%, 
-    rgba(var(--color-success-rgb), 0.2) 50%, 
-    rgba(var(--color-warning-rgb), 0.3) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-primary-rgb), 0.3) 0%,
+    rgba(var(--color-success-rgb), 0.2) 50%,
+    rgba(var(--color-warning-rgb), 0.3) 100%
+  );
 }
 
 /* Enhanced Featured Card */
 .portfolio-card--featured {
-  background: linear-gradient(135deg, 
-    var(--glass-surface), 
+  background: linear-gradient(
+    135deg,
+    var(--glass-surface),
     rgba(255, 193, 7, 0.08)
   );
   border-color: rgba(255, 193, 7, 0.4);
@@ -353,8 +365,9 @@ if (typeof document !== 'undefined') {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, 
-    var(--color-warning), 
+  background: linear-gradient(
+    90deg,
+    var(--color-warning),
     var(--color-warning-alt, #ffc107)
   );
   border-radius: 20px 20px 0 0;
@@ -364,7 +377,11 @@ if (typeof document !== 'undefined') {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: linear-gradient(135deg, var(--color-warning), var(--color-warning-alt, #ffc107));
+  background: linear-gradient(
+    135deg,
+    var(--color-warning),
+    var(--color-warning-alt, #ffc107)
+  );
   color: white;
   width: 32px;
   height: 32px;
@@ -374,22 +391,23 @@ if (typeof document !== 'undefined') {
   justify-content: center;
   font-size: 0.875rem;
   z-index: 3;
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(255, 193, 7, 0.4),
     0 1px 0 rgba(255, 255, 255, 0.2) inset;
   animation: featuredPulse 2s ease-in-out infinite;
 }
 
 @keyframes featuredPulse {
-  0%, 100% { 
+  0%,
+  100% {
     transform: scale(1);
-    box-shadow: 
+    box-shadow:
       0 4px 12px rgba(255, 193, 7, 0.4),
       0 1px 0 rgba(255, 255, 255, 0.2) inset;
   }
-  50% { 
+  50% {
     transform: scale(1.1);
-    box-shadow: 
+    box-shadow:
       0 6px 20px rgba(255, 193, 7, 0.6),
       0 1px 0 rgba(255, 255, 255, 0.3) inset;
   }
@@ -401,7 +419,11 @@ if (typeof document !== 'undefined') {
   width: 100%;
   height: 240px;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--glass-elevated), var(--glass-surface));
+  background: linear-gradient(
+    135deg,
+    var(--glass-elevated),
+    var(--glass-surface)
+  );
   border-radius: 16px 16px 0 0;
 }
 
@@ -433,8 +455,9 @@ if (typeof document !== 'undefined') {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, 
-    var(--glass-elevated), 
+  background: linear-gradient(
+    135deg,
+    var(--glass-elevated),
     rgba(var(--color-primary-rgb), 0.1)
   );
   color: var(--text-secondary);
@@ -446,10 +469,12 @@ if (typeof document !== 'undefined') {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, 
-    transparent 0%, 
-    rgba(var(--color-primary-rgb), 0.05) 50%, 
-    transparent 100%);
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(var(--color-primary-rgb), 0.05) 50%,
+    transparent 100%
+  );
 }
 
 .media-overlay {
@@ -458,9 +483,11 @@ if (typeof document !== 'undefined') {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(0, 0, 0, 0.3) 0%, 
-    rgba(0, 0, 0, 0.5) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -475,7 +502,11 @@ if (typeof document !== 'undefined') {
 }
 
 .play-button {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-alt));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-alt)
+  );
   color: white;
   border: none;
   width: 56px;
@@ -484,7 +515,7 @@ if (typeof document !== 'undefined') {
   font-size: 1.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(var(--color-primary-rgb), 0.4),
     0 1px 0 rgba(255, 255, 255, 0.2) inset;
   position: relative;
@@ -495,16 +526,18 @@ if (typeof document !== 'undefined') {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, 
-    rgba(255, 255, 255, 0.2) 0%, 
-    transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .play-button:hover {
   transform: scale(1.15);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(var(--color-primary-rgb), 0.6),
     0 1px 0 rgba(255, 255, 255, 0.3) inset;
 }
@@ -544,7 +577,7 @@ if (typeof document !== 'undefined') {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  box-shadow: 
+  box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.15),
     0 1px 0 rgba(255, 255, 255, 0.2) inset;
   position: relative;
@@ -557,10 +590,12 @@ if (typeof document !== 'undefined') {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(45deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    transparent 50%, 
-    rgba(255, 255, 255, 0.1) 100%);
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -883,16 +918,16 @@ if (typeof document !== 'undefined') {
   .portfolio-card {
     border-radius: 16px;
   }
-  
+
   .card-media {
     height: 200px;
   }
-  
+
   .type-badge {
     font-size: 0.7rem;
     padding: 0.375rem 0.75rem;
   }
-  
+
   .project-stats {
     gap: 0.75rem;
   }
@@ -902,20 +937,20 @@ if (typeof document !== 'undefined') {
   .portfolio-card {
     border-radius: 14px;
   }
-  
+
   .card-content {
     padding: 1.125rem;
     gap: 0.875rem;
   }
-  
+
   .card-media {
     height: 180px;
   }
-  
+
   .card-title {
     font-size: 1rem;
   }
-  
+
   .featured-badge {
     width: 28px;
     height: 28px;
@@ -923,7 +958,7 @@ if (typeof document !== 'undefined') {
     right: 12px;
     font-size: 0.8rem;
   }
-  
+
   .play-button {
     width: 48px;
     height: 48px;
@@ -936,60 +971,60 @@ if (typeof document !== 'undefined') {
     border-radius: 12px;
     transform: none !important;
   }
-  
+
   .portfolio-card:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 
+    box-shadow:
       0 12px 40px rgba(0, 0, 0, 0.12),
       0 4px 16px rgba(var(--color-primary-rgb), 0.08),
       0 1px 0 rgba(255, 255, 255, 0.15) inset;
   }
-  
+
   .card-content {
     padding: 1rem;
     gap: 0.75rem;
   }
-  
+
   .card-media {
     height: 160px;
   }
-  
+
   .card-header-section {
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
   }
-  
+
   .type-badge {
     align-self: flex-start;
     font-size: 0.65rem;
     padding: 0.375rem 0.625rem;
   }
-  
+
   .actions-menu {
     align-self: flex-end;
     margin-top: -32px;
   }
-  
+
   .card-title {
     font-size: 0.95rem;
     line-height: 1.2;
   }
-  
+
   .card-description {
     font-size: 0.8rem;
     -webkit-line-clamp: 2;
   }
-  
+
   .project-stats {
     gap: 0.75rem;
     justify-content: space-between;
   }
-  
+
   .stat-item {
     min-width: 60px;
   }
-  
+
   .featured-badge {
     width: 24px;
     height: 24px;
@@ -997,42 +1032,42 @@ if (typeof document !== 'undefined') {
     right: 10px;
     font-size: 0.75rem;
   }
-  
+
   .play-button {
     width: 40px;
     height: 40px;
     font-size: 1.1rem;
   }
-  
+
   .portfolio-card--list {
     flex-direction: column;
   }
-  
+
   .portfolio-card--list .card-media {
     width: 100%;
     height: 140px;
     border-radius: 12px 12px 0 0;
   }
-  
+
   .portfolio-card--list .card-content {
     padding: 0.875rem;
   }
-  
+
   .skills-container {
     gap: 0.25rem;
   }
-  
+
   .skill-tag {
     font-size: 0.7rem;
     padding: 0.2rem 0.4rem;
   }
-  
+
   .card-footer-section {
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-start;
   }
-  
+
   .analytics-preview {
     align-self: flex-end;
   }
@@ -1043,84 +1078,84 @@ if (typeof document !== 'undefined') {
     border-radius: 10px;
     margin-bottom: 1rem;
   }
-  
+
   .card-content {
     padding: 0.875rem;
     gap: 0.625rem;
   }
-  
+
   .card-media {
     height: 140px;
   }
-  
+
   .card-title {
     font-size: 0.9rem;
     -webkit-line-clamp: 1;
   }
-  
+
   .card-description {
     font-size: 0.75rem;
     -webkit-line-clamp: 2;
   }
-  
+
   .type-badge {
     font-size: 0.6rem;
     padding: 0.25rem 0.5rem;
     border-radius: 12px;
   }
-  
+
   .project-stats {
     gap: 0.5rem;
     flex-wrap: wrap;
   }
-  
+
   .stat-item {
     flex: 1;
     min-width: 50px;
   }
-  
+
   .stat-value {
     font-size: 0.875rem;
   }
-  
+
   .stat-label {
     font-size: 0.65rem;
   }
-  
+
   .achievement-details {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .skills-container {
     gap: 0.2rem;
   }
-  
+
   .skill-tag {
     font-size: 0.65rem;
     padding: 0.15rem 0.35rem;
     border-radius: 8px;
   }
-  
+
   .card-footer-section {
     padding-top: 0.5rem;
   }
-  
+
   .timestamp,
   .view-count,
   .like-count {
     font-size: 0.7rem;
   }
-  
+
   .actions-dropdown {
     min-width: 120px;
     font-size: 0.8rem;
   }
-  
+
   .portfolio-card--timeline {
     margin-left: 1.5rem;
   }
-  
+
   .portfolio-card--timeline::before {
     left: -1.5rem;
     width: 10px;
@@ -1133,28 +1168,28 @@ if (typeof document !== 'undefined') {
   .portfolio-card {
     cursor: default;
   }
-  
+
   .actions-toggle {
     width: 44px;
     height: 44px;
     border-radius: 8px;
   }
-  
+
   .play-button {
     width: 56px;
     height: 56px;
   }
-  
+
   .actions-dropdown button {
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
   }
-  
+
   .skill-tag {
     padding: 0.375rem 0.625rem;
     min-height: 32px;
   }
-  
+
   .type-badge {
     min-height: 32px;
   }
@@ -1165,12 +1200,12 @@ if (typeof document !== 'undefined') {
   .portfolio-card--list {
     flex-direction: row;
   }
-  
+
   .portfolio-card--list .card-media {
     width: 180px;
     height: 120px;
   }
-  
+
   .card-media {
     height: 120px;
   }
@@ -1188,11 +1223,11 @@ if (typeof document !== 'undefined') {
   .portfolio-card .card-content {
     padding: 0.75rem;
   }
-  
+
   .portfolio-card .card-title {
     font-size: 0.85rem;
   }
-  
+
   .portfolio-card .project-stats {
     flex-direction: column;
     gap: 0.25rem;
@@ -1207,11 +1242,11 @@ if (typeof document !== 'undefined') {
   .play-button {
     transition: none;
   }
-  
+
   .portfolio-card:hover {
     transform: none;
   }
-  
+
   .portfolio-card:hover .media-image,
   .portfolio-card:hover .media-video {
     transform: none;

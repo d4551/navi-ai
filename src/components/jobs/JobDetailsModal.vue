@@ -1,7 +1,7 @@
 <template>
-  <v-dialog 
-    v-model="internalShow" 
-    max-width="900" 
+  <v-dialog
+    v-model="internalShow"
+    max-width="900"
     scrollable
     persistent
     class="job-details-modal font-sans"
@@ -27,10 +27,14 @@
               <h2 class="job-title-large">
                 {{ job.title }}
                 <span v-if="job.featured" class="featured-star">StarIcon</span>
-                <span v-if="job.isGaming" class="gaming-controller">DevicePhoneMobileIcon</span>
+                <span v-if="job.isGaming" class="gaming-controller"
+                  >DevicePhoneMobileIcon</span
+                >
               </h2>
               <div class="company-location-flex flex-wrap">
-                <h3 class="company-name-large">{{ job.company?.name || 'Unknown Company' }}</h3>
+                <h3 class="company-name-large">
+                  {{ job.company?.name || 'Unknown Company' }}
+                </h3>
                 <div class="location-info">
                   <AppIcon name="MapPinIcon" />
                   <span>{{ job.location || 'Remote' }}</span>
@@ -43,8 +47,10 @@
             <UnifiedButton
               variant="ghost"
               size="sm"
-              :leading-icon="job.saved ? 'BookmarkIcon' : 'BookmarkIcon-outline'"
-              :class="{ 'saved': job.saved }"
+              :leading-icon="
+                job.saved ? 'BookmarkIcon' : 'BookmarkIcon-outline'
+              "
+              :class="{ saved: job.saved }"
               @click="handleSave"
             />
             <UnifiedButton
@@ -67,32 +73,42 @@
           <div v-if="job.salary" class="stat-item">
             <AppIcon name="mdi-currency-usd" class="stat-icon" />
             <span class="stat-label">Salary:</span>
-            <span class="stat-value salary-value">{{ formatSalary(job.salary) }}</span>
+            <span class="stat-value salary-value">{{
+              formatSalary(job.salary)
+            }}</span>
           </div>
-          
+
           <div v-if="job.level" class="stat-item">
             <AppIcon name="ArrowTrendingUpIcon" class="stat-icon" />
             <span class="stat-label">Level:</span>
             <span class="stat-value">{{ job.level }}</span>
           </div>
-          
+
           <div v-if="job.jobType" class="stat-item">
             <AppIcon name="BriefcaseIcon" class="stat-icon" />
             <span class="stat-label">Type:</span>
             <span class="stat-value">{{ job.jobType }}</span>
           </div>
-          
+
           <div class="stat-item">
             <AppIcon name="ClockIcon" class="stat-icon" />
             <span class="stat-label">Posted:</span>
-            <span class="stat-value">{{ formatPostedDate(job.datePosted) }}</span>
+            <span class="stat-value">{{
+              formatPostedDate(job.datePosted)
+            }}</span>
           </div>
 
           <!-- AI Match Score for Gaming Jobs -->
-          <div v-if="job.isGaming && job.aiScore" class="stat-item ai-score-stat">
+          <div
+            v-if="job.isGaming && job.aiScore"
+            class="stat-item ai-score-stat"
+          >
             <AppIcon name="CpuChipIcon" class="stat-icon ai-icon" />
             <span class="stat-label">AI Match:</span>
-            <span class="stat-value score-value" :class="getScoreClass(job.aiScore)">
+            <span
+              class="stat-value score-value"
+              :class="getScoreClass(job.aiScore)"
+            >
               {{ job.aiScore }}%
             </span>
           </div>
@@ -110,7 +126,10 @@
                 <AppIcon name="mdi-text-box-outline" />
                 Job Description
               </h4>
-              <div class="job-description-full" v-html="formatDescription(job.description)"></div>
+              <div
+                class="job-description-full"
+                v-html="formatDescription(job.description)"
+              ></div>
             </section>
 
             <!-- Requirements -->
@@ -125,13 +144,18 @@
             </section>
 
             <!-- Responsibilities -->
-            <section v-if="job.responsibilities?.length" class="content-section">
+            <section
+              v-if="job.responsibilities?.length"
+              class="content-section"
+            >
               <h4 class="section-title">
                 <AppIcon name="UserIcon-tie" />
                 Responsibilities
               </h4>
               <ul class="responsibilities-list">
-                <li v-for="resp in job.responsibilities" :key="resp">{{ resp }}</li>
+                <li v-for="resp in job.responsibilities" :key="resp">
+                  {{ resp }}
+                </li>
               </ul>
             </section>
 
@@ -141,7 +165,7 @@
                 <AppIcon name="PuzzlePieceIcon" />
                 Gaming Industry Details
               </h4>
-              
+
               <div class="gaming-details-grid">
                 <div v-if="job.gameGenre" class="gaming-detail">
                   <strong>Game Genre:</strong> {{ job.gameGenre }}
@@ -191,7 +215,10 @@
                   :key="benefit"
                   class="benefit-item"
                 >
-                  <AppIcon :name="getBenefitIcon(benefit)" class="benefit-icon" />
+                  <AppIcon
+                    :name="getBenefitIcon(benefit)"
+                    class="benefit-icon"
+                  />
                   <span>{{ benefit }}</span>
                 </div>
               </div>
@@ -224,19 +251,25 @@
                 <AppIcon name="BuildingOffice2Icon" />
                 About {{ job.company?.name }}
               </h4>
-              
+
               <div v-if="job.company" class="company-stats">
                 <div class="company-stat">
                   <span class="stat-label">Size:</span>
-                  <span class="stat-value">{{ job.company.size || 'Unknown' }}</span>
+                  <span class="stat-value">{{
+                    job.company.size || 'Unknown'
+                  }}</span>
                 </div>
                 <div class="company-stat">
                   <span class="stat-label">Industry:</span>
-                  <span class="stat-value">{{ job.company.industry || 'Gaming' }}</span>
+                  <span class="stat-value">{{
+                    job.company.industry || 'Gaming'
+                  }}</span>
                 </div>
                 <div class="company-stat">
                   <span class="stat-label">Founded:</span>
-                  <span class="stat-value">{{ job.company.founded || 'Unknown' }}</span>
+                  <span class="stat-value">{{
+                    job.company.founded || 'Unknown'
+                  }}</span>
                 </div>
               </div>
 
@@ -262,7 +295,7 @@
                 <AppIcon name="ChartBarIcon" />
                 Application Stats
               </h4>
-              
+
               <div class="app-stats">
                 <div class="app-stat">
                   <span class="stat-number">{{ job.applicants || 0 }}</span>
@@ -286,7 +319,7 @@
                 <AppIcon name="mdi-similarity" />
                 Similar Gaming Jobs
               </h4>
-              
+
               <div class="similar-jobs-list">
                 <div
                   v-for="similarJob in similarJobs.slice(0, 3)"
@@ -295,8 +328,12 @@
                   @click="$emit('job-selected', similarJob)"
                 >
                   <div class="similar-job-title">{{ similarJob.title }}</div>
-                  <div class="similar-job-company">{{ similarJob.company?.name }}</div>
-                  <div class="similar-job-location">MapPinIcon {{ similarJob.location }}</div>
+                  <div class="similar-job-company">
+                    {{ similarJob.company?.name }}
+                  </div>
+                  <div class="similar-job-location">
+                    MapPinIcon {{ similarJob.location }}
+                  </div>
                 </div>
               </div>
             </section>
@@ -314,7 +351,7 @@
           >
             Add to Compare
           </UnifiedButton>
-          
+
           <UnifiedButton
             variant="glass"
             leading-icon="BellIcon"
@@ -325,13 +362,10 @@
         </div>
 
         <div class="actions-right">
-          <UnifiedButton
-            variant="secondary"
-            @click="closeModal"
-          >
+          <UnifiedButton variant="secondary" @click="closeModal">
             Close
           </UnifiedButton>
-          
+
           <UnifiedButton
             variant="primary"
             size="lg"
@@ -348,7 +382,19 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowTrendingUpIcon, BellIcon, BriefcaseIcon, BuildingOffice2Icon, ChartBarIcon, ClockIcon, CpuChipIcon, PaperAirplaneIcon, PuzzlePieceIcon, ShareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowTrendingUpIcon,
+  BellIcon,
+  BriefcaseIcon,
+  BuildingOffice2Icon,
+  ChartBarIcon,
+  ClockIcon,
+  CpuChipIcon,
+  PaperAirplaneIcon,
+  PuzzlePieceIcon,
+  ShareIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import { MapPinIcon, StarIcon } from '@heroicons/vue/24/solid'
 
 import { ref, computed, watch } from 'vue'
@@ -367,7 +413,7 @@ interface Props {
 const _props = withDefaults(defineProps<Props>(), {
   show: false,
   job: null,
-  similarJobs: () => []
+  similarJobs: () => [],
 })
 
 // Emits
@@ -376,7 +422,7 @@ const emit = defineEmits([
   'job-applied',
   'job-saved',
   'job-selected',
-  'studio-selected'
+  'studio-selected',
 ])
 
 // State
@@ -385,7 +431,7 @@ const applying = ref(false)
 // Computed
 const internalShow = computed({
   get: () => _props.show,
-  set: (value) => emit('update:show', value)
+  set: value => emit('update:show', value),
 })
 
 // Methods
@@ -395,12 +441,12 @@ const closeModal = () => {
 
 const handleApply = async () => {
   if (!_props.job) return
-  
+
   applying.value = true
   try {
     // Simulate application process
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
+
     emit('job-applied', _props.job)
     toastService.success(`Application submitted for ${_props.job.title}!`)
     closeModal()
@@ -413,7 +459,7 @@ const handleApply = async () => {
 
 const handleSave = () => {
   if (!_props.job) return
-  
+
   emit('job-saved', _props.job)
   const message = _props.job.saved ? 'Job removed from saved' : 'Job saved!'
   toastService.success(message)
@@ -421,12 +467,12 @@ const handleSave = () => {
 
 const handleShare = () => {
   if (!_props.job) return
-  
+
   if (navigator.share) {
     navigator.share({
       title: _props.job.title,
       text: `Check out this gaming job: ${_props.job.title} at ${_props.job.company?.name}`,
-      url: window.location.href
+      url: window.location.href,
     })
   } else {
     // Fallback: copy to clipboard
@@ -452,7 +498,7 @@ const viewStudio = () => {
 }
 
 // Formatting functions
-const formatSalary = (salary) => {
+const formatSalary = salary => {
   if (typeof salary === 'object' && salary.min && salary.max) {
     return `$${formatNumber(salary.min)} - $${formatNumber(salary.max)}`
   }
@@ -462,45 +508,49 @@ const formatSalary = (salary) => {
   return salary || 'Not specified'
 }
 
-const formatNumber = (num) => {
+const formatNumber = num => {
   if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
   if (num >= 1000) return `${(num / 1000).toFixed(0)}K`
   return num.toString()
 }
 
-const formatPostedDate = (date) => {
+const formatPostedDate = date => {
   if (!date) return 'Recently'
-  
+
   const now = new Date()
   const posted = new Date(date)
   const diffTime = Math.abs(now - posted)
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  
+
   if (diffDays === 1) return '1 day ago'
   if (diffDays < 7) return `${diffDays} days ago`
   if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
   return `${Math.ceil(diffDays / 30)} months ago`
 }
 
-const formatDescription = (description) => {
+const formatDescription = description => {
   if (!description) return '<p>No description available.</p>'
-  
+
   // Convert line breaks to paragraphs
-  return '<p>' + description.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>'
+  return (
+    '<p>' +
+    description.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') +
+    '</p>'
+  )
 }
 
-const getScoreClass = (score) => {
+const getScoreClass = score => {
   if (score >= 90) return 'excellent'
   if (score >= 75) return 'good'
   if (score >= 60) return 'fair'
   return 'low'
 }
 
-const getBenefitIcon = (benefit) => {
+const getBenefitIcon = benefit => {
   const iconMap = {
     'Health Insurance': 'HeartIcon',
-    'Dental': 'mdi-tooth',
-    'Vision': 'EyeIcon',
+    Dental: 'mdi-tooth',
+    Vision: 'EyeIcon',
     '401k': 'mdi-bank',
     'Stock Options': 'ChartBarIcon-line',
     'Remote Work': 'HomeIcon',
@@ -508,22 +558,30 @@ const getBenefitIcon = (benefit) => {
     'Unlimited PTO': 'CalendarIcon',
     'Game Library': 'DevicePhoneMobileIcon-variant',
     'Free Lunch': 'mdi-food',
-    'Gym': 'mdi-dumbbell',
-    'Conference Budget': 'mdi-school'
+    Gym: 'mdi-dumbbell',
+    'Conference Budget': 'mdi-school',
   }
-  
+
   // Find partial matches
   for (const [key, icon] of Object.entries(iconMap)) {
     if (benefit.toLowerCase().includes(key.toLowerCase())) {
       return icon
     }
   }
-  
+
   return 'CheckIcon-circle'
 }
 
-const getSkillVariant = (skill) => {
-  const gamingSkills = ['Unity', 'Unreal', 'C#', 'C++', 'Game Design', 'Animation', '3D Modeling']
+const getSkillVariant = skill => {
+  const gamingSkills = [
+    'Unity',
+    'Unreal',
+    'C#',
+    'C++',
+    'Game Design',
+    'Animation',
+    '3D Modeling',
+  ]
   return gamingSkills.includes(skill) ? 'gaming' : 'outline'
 }
 </script>
@@ -544,9 +602,11 @@ const getSkillVariant = (skill) => {
 .modal-header {
   padding: var(--spacing-6);
   border-b: 1px solid var(--border-light);
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-gaming-500-rgb), 0.05) 0%,
-    transparent 100%);
+    transparent 100%
+  );
 }
 
 .header-content {
@@ -600,7 +660,8 @@ const getSkillVariant = (skill) => {
   gap: var(--spacing-2);
 }
 
-.featured-star, .gaming-controller {
+.featured-star,
+.gaming-controller {
   font-size: 1.25rem;
 }
 
@@ -701,11 +762,13 @@ const getSkillVariant = (skill) => {
   gap: var(--spacing-8);
 }
 
-.content-section, .sidebar-section {
+.content-section,
+.sidebar-section {
   margin-bottom: var(--spacing-6);
 }
 
-.section-title, .sidebar-title {
+.section-title,
+.sidebar-title {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -728,20 +791,24 @@ const getSkillVariant = (skill) => {
   margin-bottom: var(--spacing-3);
 }
 
-.requirements-list, .responsibilities-list {
+.requirements-list,
+.responsibilities-list {
   padding-left: var(--spacing-4);
   color: var(--text-secondary);
 }
 
-.requirements-list li, .responsibilities-list li {
+.requirements-list li,
+.responsibilities-list li {
   margin-bottom: var(--spacing-2);
   line-height: 1.6;
 }
 
 .gaming-section {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-gaming-500-rgb), 0.03) 0%,
-    transparent 100%);
+    transparent 100%
+  );
   padding: var(--spacing-4);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(var(--color-gaming-500-rgb), 0.2);
@@ -902,7 +969,8 @@ const getSkillVariant = (skill) => {
   margin-bottom: var(--spacing-1);
 }
 
-.similar-job-company, .similar-job-location {
+.similar-job-company,
+.similar-job-location {
   font-size: 0.75rem;
   color: var(--text-secondary);
 }
@@ -915,7 +983,8 @@ const getSkillVariant = (skill) => {
   align-items: center;
 }
 
-.actions-left, .actions-right {
+.actions-left,
+.actions-right {
   display: flex;
   gap: var(--spacing-3);
 }
@@ -925,29 +994,30 @@ const getSkillVariant = (skill) => {
   .content-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .header-content {
     flex-direction: column;
     gap: var(--spacing-4);
   }
-  
+
   .job-header-info {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-  
+
   .quick-stats-bar {
     flex-direction: column;
     gap: var(--spacing-3);
   }
-  
+
   .modal-actions {
     flex-direction: column;
     gap: var(--spacing-4);
   }
-  
-  .actions-left, .actions-right {
+
+  .actions-left,
+  .actions-right {
     width: 100%;
     justify-content: center;
   }

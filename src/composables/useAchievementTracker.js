@@ -12,110 +12,110 @@ const unlockedAchievements = ref(new Set())
 // Achievement definitions
 const ACHIEVEMENT_DEFINITIONS = {
   // Document Building Achievements
-  'first_resume': {
+  first_resume: {
     id: 'first_resume',
     title: 'Resume Builder',
     description: 'Created your first resume',
     icon: 'mdi-file-document',
     type: 'document',
-    points: 10
+    points: 10,
   },
-  'first_cover_letter': {
+  first_cover_letter: {
     id: 'first_cover_letter',
     title: 'Cover Letter Writer',
     description: 'Created your first cover letter',
     icon: 'mdi-email',
     type: 'document',
-    points: 10
+    points: 10,
   },
-  'document_master': {
+  document_master: {
     id: 'document_master',
     title: 'Document Master',
     description: 'Created 5 different documents',
     icon: 'mdi-trophy',
     type: 'document',
-    points: 50
+    points: 50,
   },
-  
+
   // AI Interaction Achievements
-  'ai_assistant': {
+  ai_assistant: {
     id: 'ai_assistant',
     title: 'AI Assistant',
     description: 'Used AI assistance for the first time',
     icon: 'mdi-robot',
     type: 'ai',
-    points: 15
+    points: 15,
   },
-  'ai_expert': {
+  ai_expert: {
     id: 'ai_expert',
     title: 'AI Expert',
     description: 'Used AI assistance 10 times',
     icon: 'mdi-brain',
     type: 'ai',
-    points: 30
+    points: 30,
   },
-  
+
   // Voice & TTS Achievements
-  'voice_enabled': {
+  voice_enabled: {
     id: 'voice_enabled',
     title: 'Voice Activated',
     description: 'Enabled voice features',
     icon: 'mdi-microphone',
     type: 'voice',
-    points: 10
+    points: 10,
   },
-  'tts_user': {
+  tts_user: {
     id: 'tts_user',
     title: 'Text-to-Speech User',
     description: 'Used text-to-speech functionality',
     icon: 'mdi-volume-high',
     type: 'voice',
-    points: 10
+    points: 10,
   },
-  
+
   // Job Search Achievements
-  'job_search_start': {
+  job_search_start: {
     id: 'job_search_start',
     title: 'Job Hunter',
     description: 'Started your job search journey',
     icon: 'mdi-briefcase-search',
     type: 'jobs',
-    points: 10
+    points: 10,
   },
-  'first_application': {
+  first_application: {
     id: 'first_application',
     title: 'First Application',
     description: 'Applied to your first job',
     icon: 'mdi-send',
     type: 'jobs',
-    points: 20
+    points: 20,
   },
-  
+
   // Gaming Industry Achievements
-  'gaming_focus': {
+  gaming_focus: {
     id: 'gaming_focus',
     title: 'Game Developer Path',
     description: 'Focused your search on gaming industry',
     icon: 'mdi-gamepad-variant',
     type: 'gaming',
-    points: 15
+    points: 15,
   },
-  'unity_expert': {
+  unity_expert: {
     id: 'unity_expert',
     title: 'Unity Expert',
     description: 'Added Unity skills to your profile',
     icon: 'mdi-unity',
     type: 'gaming',
-    points: 20
+    points: 20,
   },
-  'unreal_expert': {
+  unreal_expert: {
     id: 'unreal_expert',
     title: 'Unreal Expert',
     description: 'Added Unreal Engine skills to your profile',
     icon: 'mdi-unreal',
     type: 'gaming',
-    points: 20
-  }
+    points: 20,
+  },
 }
 
 // Load achievements from localStorage
@@ -125,7 +125,7 @@ const loadAchievements = () => {
     if (stored) {
       const data = JSON.parse(stored)
       unlockedAchievements.value = new Set(data.unlocked || [])
-      
+
       // Initialize progress tracking
       data.progress?.forEach((value, key) => {
         achievements.value.set(key, value)
@@ -142,7 +142,7 @@ const saveAchievements = () => {
     const data = {
       unlocked: Array.from(unlockedAchievements.value),
       progress: Object.fromEntries(achievements.value),
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     }
     localStorage.setItem('navi_achievements', JSON.stringify(data))
   } catch (error) {
@@ -151,35 +151,35 @@ const saveAchievements = () => {
 }
 
 // Check if an achievement is unlocked
-const isAchievementUnlocked = (achievementId) => {
+const isAchievementUnlocked = achievementId => {
   return unlockedAchievements.value.has(achievementId)
 }
 
 // Unlock an achievement
-const unlockAchievement = (achievementId) => {
+const unlockAchievement = achievementId => {
   const achievement = ACHIEVEMENT_DEFINITIONS[achievementId]
   if (!achievement) {
     logger.warn('Unknown achievement:', achievementId)
     return false
   }
-  
+
   if (isAchievementUnlocked(achievementId)) {
     return false // Already unlocked
   }
-  
+
   unlockedAchievements.value.add(achievementId)
   saveAchievements()
-  
+
   logger.info('Achievement unlocked:', achievement.title)
-  
+
   // Show achievement notification
   showAchievementNotification(achievement)
-  
+
   return true
 }
 
 // Show achievement notification
-const showAchievementNotification = (achievement) => {
+const showAchievementNotification = achievement => {
   // Create and show a notification
   const notification = document.createElement('div')
   notification.className = 'achievement-notification'
@@ -196,7 +196,7 @@ const showAchievementNotification = (achievement) => {
       </div>
     </div>
   `
-  
+
   // Add notification styles
   notification.style.cssText = `
     position: fixed;
@@ -211,7 +211,7 @@ const showAchievementNotification = (achievement) => {
     max-width: 300px;
     animation: slideInRight 0.5s ease-out;
   `
-  
+
   // Add animation styles if not already present
   if (!document.querySelector('#achievement-styles')) {
     const styles = document.createElement('style')
@@ -261,9 +261,9 @@ const showAchievementNotification = (achievement) => {
     `
     document.head.appendChild(styles)
   }
-  
+
   document.body.appendChild(notification)
-  
+
   // Remove notification after 5 seconds
   setTimeout(() => {
     notification.style.animation = 'slideInRight 0.5s ease-out reverse'
@@ -287,15 +287,18 @@ const trackProgress = (key, increment = 1) => {
 // Document-specific achievement tracking
 const trackDocumentAchievement = (type, action = 'created') => {
   logger.debug('Tracking document achievement:', { type, action })
-  
+
   if (action === 'created') {
     // Track first document creation
     if (type === 'resume' && !isAchievementUnlocked('first_resume')) {
       unlockAchievement('first_resume')
-    } else if (type === 'cover_letter' && !isAchievementUnlocked('first_cover_letter')) {
+    } else if (
+      type === 'cover_letter' &&
+      !isAchievementUnlocked('first_cover_letter')
+    ) {
       unlockAchievement('first_cover_letter')
     }
-    
+
     // Track document master achievement
     const documentsCreated = trackProgress('documents_created')
     if (documentsCreated >= 5 && !isAchievementUnlocked('document_master')) {
@@ -307,12 +310,12 @@ const trackDocumentAchievement = (type, action = 'created') => {
 // AI-specific achievement tracking
 const trackAIAchievement = (action = 'used') => {
   logger.debug('Tracking AI achievement:', { action })
-  
+
   if (action === 'used') {
     if (!isAchievementUnlocked('ai_assistant')) {
       unlockAchievement('ai_assistant')
     }
-    
+
     const aiUsage = trackProgress('ai_usage')
     if (aiUsage >= 10 && !isAchievementUnlocked('ai_expert')) {
       unlockAchievement('ai_expert')
@@ -323,7 +326,7 @@ const trackAIAchievement = (action = 'used') => {
 // Voice-specific achievement tracking
 const trackVoiceAchievement = (type, action = 'enabled') => {
   logger.debug('Tracking voice achievement:', { type, action })
-  
+
   if (action === 'enabled') {
     if (type === 'voice' && !isAchievementUnlocked('voice_enabled')) {
       unlockAchievement('voice_enabled')
@@ -336,20 +339,20 @@ const trackVoiceAchievement = (type, action = 'enabled') => {
 // Job search achievement tracking
 const trackJobAchievement = (action, data = {}) => {
   logger.debug('Tracking job achievement:', { action, data })
-  
+
   switch (action) {
     case 'search_started':
       if (!isAchievementUnlocked('job_search_start')) {
         unlockAchievement('job_search_start')
       }
       break
-      
+
     case 'application_submitted':
       if (!isAchievementUnlocked('first_application')) {
         unlockAchievement('first_application')
       }
       break
-      
+
     case 'gaming_focus':
       if (!isAchievementUnlocked('gaming_focus')) {
         unlockAchievement('gaming_focus')
@@ -359,14 +362,17 @@ const trackJobAchievement = (action, data = {}) => {
 }
 
 // Skill-specific achievement tracking
-const trackSkillAchievement = (skill) => {
+const trackSkillAchievement = skill => {
   logger.debug('Tracking skill achievement:', { skill })
-  
+
   const skillLower = skill.toLowerCase()
-  
+
   if (skillLower.includes('unity') && !isAchievementUnlocked('unity_expert')) {
     unlockAchievement('unity_expert')
-  } else if (skillLower.includes('unreal') && !isAchievementUnlocked('unreal_expert')) {
+  } else if (
+    skillLower.includes('unreal') &&
+    !isAchievementUnlocked('unreal_expert')
+  ) {
     unlockAchievement('unreal_expert')
   }
 }
@@ -380,17 +386,19 @@ const getUnlockedAchievements = () => {
 
 // Get total points earned
 const getTotalPoints = () => {
-  return getUnlockedAchievements()
-    .reduce((total, achievement) => total + achievement.points, 0)
+  return getUnlockedAchievements().reduce(
+    (total, achievement) => total + achievement.points,
+    0
+  )
 }
 
 // Get achievements by type
-const getAchievementsByType = (type) => {
+const getAchievementsByType = type => {
   return Object.values(ACHIEVEMENT_DEFINITIONS)
     .filter(achievement => achievement.type === type)
     .map(achievement => ({
       ...achievement,
-      unlocked: isAchievementUnlocked(achievement.id)
+      unlocked: isAchievementUnlocked(achievement.id),
     }))
 }
 
@@ -401,14 +409,16 @@ const getAchievementProgress = () => {
   return {
     total,
     unlocked,
-    percentage: Math.round((unlocked / total) * 100)
+    percentage: Math.round((unlocked / total) * 100),
   }
 }
 
 // Computed properties
-const totalAchievements = computed(() => Object.keys(ACHIEVEMENT_DEFINITIONS).length)
+const totalAchievements = computed(
+  () => Object.keys(ACHIEVEMENT_DEFINITIONS).length
+)
 const unlockedCount = computed(() => unlockedAchievements.value.size)
-const completionPercentage = computed(() => 
+const completionPercentage = computed(() =>
   Math.round((unlockedCount.value / totalAchievements.value) * 100)
 )
 const totalPoints = computed(() => getTotalPoints())
@@ -421,13 +431,13 @@ export function useAchievementTracker() {
     // State
     achievements: achievements.value,
     unlockedAchievements: unlockedAchievements.value,
-    
+
     // Computed
     totalAchievements,
     unlockedCount,
     completionPercentage,
     totalPoints,
-    
+
     // Methods
     isAchievementUnlocked,
     unlockAchievement,
@@ -441,10 +451,10 @@ export function useAchievementTracker() {
     getTotalPoints,
     getAchievementsByType,
     getAchievementProgress,
-    
+
     // Storage
     loadAchievements,
-    saveAchievements
+    saveAchievements,
   }
 }
 

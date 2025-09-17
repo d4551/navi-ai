@@ -1,5 +1,10 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="normal"
+    max-width="xl"
+    class="font-sans"
+  >
     <!-- AI Integration Header -->
     <div class="glass-card ai-integration-header">
       <div class="header-content">
@@ -7,44 +12,57 @@
         <h1>AI Integration Center</h1>
       </div>
       <div class="header-description">
-        Monitor and manage AI service connectivity, real-time capabilities, and integration status across the platform.
+        Monitor and manage AI service connectivity, real-time capabilities, and
+        integration status across the platform.
       </div>
     </div>
 
     <!-- AI Service Status Dashboard -->
     <div class="ai-status-section glass-card">
       <h2>AI Service Status</h2>
-      
+
       <div class="status-grid">
         <div class="status-item">
           <label>AI Initialized:</label>
-          <span :class="aiIntegration.isAIInitialized ? 'status-success' : 'status-error'">
+          <span
+            :class="
+              aiIntegration.isAIInitialized ? 'status-success' : 'status-error'
+            "
+          >
             {{ aiIntegration.isAIInitialized ? 'Yes' : 'No' }}
           </span>
         </div>
-        
+
         <div class="status-item">
           <label>Initializing:</label>
-          <span :class="aiIntegration.aiInitializing ? 'status-warning' : 'status-info'">
+          <span
+            :class="
+              aiIntegration.aiInitializing ? 'status-warning' : 'status-info'
+            "
+          >
             {{ aiIntegration.aiInitializing ? 'Yes' : 'No' }}
           </span>
         </div>
-        
+
         <div class="status-item">
           <label>Error:</label>
-          <span :class="aiIntegration.aiError ? 'status-error' : 'status-success'">
+          <span
+            :class="aiIntegration.aiError ? 'status-error' : 'status-success'"
+          >
             {{ aiIntegration.aiError || 'None' }}
           </span>
         </div>
-        
+
         <div class="status-item">
           <label>Has API Key:</label>
-          <span :class="aiIntegration.hasAIKey ? 'status-success' : 'status-error'">
+          <span
+            :class="aiIntegration.hasAIKey ? 'status-success' : 'status-error'"
+          >
             {{ aiIntegration.hasAIKey ? 'Yes' : 'No' }}
           </span>
         </div>
       </div>
-      
+
       <div class="service-actions">
         <UnifiedButton
           variant="primary"
@@ -54,7 +72,7 @@
         >
           Initialize AI Services
         </UnifiedButton>
-        
+
         <UnifiedButton
           variant="outline"
           icon="ArrowPathIcon"
@@ -63,12 +81,8 @@
         >
           Test Connection
         </UnifiedButton>
-        
-        <UnifiedButton
-          variant="ghost"
-          icon="CogIcon"
-          @click="openSettings"
-        >
+
+        <UnifiedButton variant="ghost" icon="CogIcon" @click="openSettings">
           Configure Services
         </UnifiedButton>
       </div>
@@ -77,16 +91,18 @@
     <!-- AI Service Capabilities -->
     <div class="ai-capabilities-section glass-card">
       <h2>AI Service Capabilities</h2>
-      
+
       <div class="capabilities-grid">
-        <div 
-          v-for="(enabled, capability) in aiIntegration.aiCapabilities" 
+        <div
+          v-for="(enabled, capability) in aiIntegration.aiCapabilities"
           :key="capability"
           class="capability-item"
           :class="{ 'capability-enabled': enabled }"
         >
           <AppIcon :name="getCapabilityIcon(capability)" />
-          <span class="capability-name">{{ formatCapabilityName(capability) }}</span>
+          <span class="capability-name">{{
+            formatCapabilityName(capability)
+          }}</span>
           <span :class="enabled ? 'status-success' : 'status-disabled'">
             {{ enabled ? 'Enabled' : 'Disabled' }}
           </span>
@@ -97,7 +113,7 @@
     <!-- AI Action Center -->
     <div class="ai-actions-section glass-card">
       <h2>AI Action Center</h2>
-      
+
       <div class="actions-grid">
         <UnifiedButton
           v-for="action in testActions"
@@ -110,23 +126,27 @@
           {{ action.label }}
         </UnifiedButton>
       </div>
-      
+
       <div v-if="lastResult" class="test-result">
         <h3>Last Result:</h3>
         <div class="result-header">
           <span :class="lastResult.success ? 'status-success' : 'status-error'">
             {{ lastResult.success ? 'CheckIcon SUCCESS' : 'XMarkIcon FAILED' }}
           </span>
-          <span class="result-timestamp">{{ formatTime(lastResult.timestamp) }}</span>
+          <span class="result-timestamp">{{
+            formatTime(lastResult.timestamp)
+          }}</span>
         </div>
-        <pre class="result-content">{{ JSON.stringify(lastResult, null, 2) }}</pre>
+        <pre class="result-content">{{
+          JSON.stringify(lastResult, null, 2)
+        }}</pre>
       </div>
     </div>
 
     <!-- Real-time Features Test -->
     <div class="test-section glass-card">
       <h2>Real-time Features</h2>
-      
+
       <div class="realtime-controls">
         <UnifiedButton
           variant="primary"
@@ -136,7 +156,7 @@
         >
           {{ isRecording ? 'Stop Recording' : 'Start Audio Test' }}
         </UnifiedButton>
-        
+
         <UnifiedButton
           variant="secondary"
           icon="VideoCameraIcon"
@@ -145,7 +165,7 @@
         >
           {{ isVideoStreaming ? 'Stop Video' : 'Start Video Test' }}
         </UnifiedButton>
-        
+
         <UnifiedButton
           variant="outline"
           icon="ComputerDesktopIcon"
@@ -155,25 +175,43 @@
           Capture Screen
         </UnifiedButton>
       </div>
-      
+
       <div v-if="realTimeStatus" class="realtime-status">
         <h4>Real-time Status:</h4>
         <div class="status-grid">
           <div class="status-item">
             <label>Session Active:</label>
-            <span :class="realTimeStatus.sessionActive ? 'status-success' : 'status-disabled'">
+            <span
+              :class="
+                realTimeStatus.sessionActive
+                  ? 'status-success'
+                  : 'status-disabled'
+              "
+            >
               {{ realTimeStatus.sessionActive ? 'Yes' : 'No' }}
             </span>
           </div>
           <div class="status-item">
             <label>Audio Streaming:</label>
-            <span :class="realTimeStatus.audioStreaming ? 'status-success' : 'status-disabled'">
+            <span
+              :class="
+                realTimeStatus.audioStreaming
+                  ? 'status-success'
+                  : 'status-disabled'
+              "
+            >
               {{ realTimeStatus.audioStreaming ? 'Active' : 'Inactive' }}
             </span>
           </div>
           <div class="status-item">
             <label>Video Streaming:</label>
-            <span :class="realTimeStatus.videoStreaming ? 'status-success' : 'status-disabled'">
+            <span
+              :class="
+                realTimeStatus.videoStreaming
+                  ? 'status-success'
+                  : 'status-disabled'
+              "
+            >
               {{ realTimeStatus.videoStreaming ? 'Active' : 'Inactive' }}
             </span>
           </div>
@@ -184,7 +222,7 @@
     <!-- Health Check Results -->
     <div class="test-section glass-card">
       <h2>AI Health Check</h2>
-      
+
       <UnifiedButton
         variant="outline"
         icon="HeartIcon"
@@ -193,39 +231,54 @@
       >
         Run Health Check
       </UnifiedButton>
-      
+
       <div v-if="healthCheckResult" class="health-result">
         <div class="health-header">
           <span :class="`health-${healthCheckResult.status}`">
             {{ healthCheckResult.status.toUpperCase() }}
           </span>
-          <span class="health-timestamp">{{ formatTime(healthCheckResult.timestamp) }}</span>
+          <span class="health-timestamp">{{
+            formatTime(healthCheckResult.timestamp)
+          }}</span>
         </div>
-        
+
         <div class="health-details">
           <div v-if="healthCheckResult.details.tests" class="health-tests">
             <h4>Test Results:</h4>
             <div class="test-results-grid">
-              <div 
-                v-for="(result, testName) in healthCheckResult.details.tests" 
+              <div
+                v-for="(result, testName) in healthCheckResult.details.tests"
                 :key="testName"
                 class="test-result-item"
-                :class="{ 'test-passed': result === true, 'test-failed': result === false }"
+                :class="{
+                  'test-passed': result === true,
+                  'test-failed': result === false,
+                }"
               >
-                <AppIcon :name="result === true ? 'CheckIcon-circle' : 'mdi-alert-circle'" />
+                <AppIcon
+                  :name="
+                    result === true ? 'CheckIcon-circle' : 'mdi-alert-circle'
+                  "
+                />
                 <span>{{ formatTestName(testName) }}</span>
               </div>
             </div>
           </div>
-          
+
           <div v-if="healthCheckResult.details.summary" class="health-summary">
             <strong>{{ healthCheckResult.details.summary }}</strong>
           </div>
-          
-          <div v-if="healthCheckResult.details.tests?.errors?.length" class="health-errors">
+
+          <div
+            v-if="healthCheckResult.details.tests?.errors?.length"
+            class="health-errors"
+          >
             <h4>Errors:</h4>
             <ul>
-              <li v-for="error in healthCheckResult.details.tests.errors" :key="error">
+              <li
+                v-for="error in healthCheckResult.details.tests.errors"
+                :key="error"
+              >
                 {{ error }}
               </li>
             </ul>
@@ -237,10 +290,10 @@
     <!-- Event Log -->
     <div class="test-section glass-card">
       <h2>Event Log</h2>
-      
+
       <div class="log-container">
-        <div 
-          v-for="(event, index) in eventLog" 
+        <div
+          v-for="(event, index) in eventLog"
           :key="index"
           class="log-entry"
           :class="`log-${event.type}`"
@@ -250,13 +303,9 @@
           <span class="log-message">{{ event.message }}</span>
         </div>
       </div>
-      
+
       <div class="log-actions">
-        <UnifiedButton
-          variant="ghost"
-          icon="TrashIcon"
-          @click="clearLog"
-        >
+        <UnifiedButton variant="ghost" icon="TrashIcon" @click="clearLog">
           Clear Log
         </UnifiedButton>
       </div>
@@ -265,7 +314,15 @@
 </template>
 
 <script setup>
-import { ArrowPathIcon, CogIcon, ComputerDesktopIcon, CpuChipIcon, MicrophoneIcon, TrashIcon, VideoCameraIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  CogIcon,
+  ComputerDesktopIcon,
+  CpuChipIcon,
+  MicrophoneIcon,
+  TrashIcon,
+  VideoCameraIcon,
+} from '@heroicons/vue/24/outline'
 import { HeartIcon, PlayIcon } from '@heroicons/vue/24/solid'
 
 import { ref, onMounted, onUnmounted } from 'vue'
@@ -304,52 +361,52 @@ const testActions = [
     id: 'generate_text',
     label: 'Generate Text',
     icon: 'mdi-text',
-    variant: 'primary'
+    variant: 'primary',
   },
   {
     id: 'analyze_resume',
     label: 'Analyze Resume',
     icon: 'DocumentIcon-document-outline',
-    variant: 'outline'
+    variant: 'outline',
   },
   {
     id: 'search_jobs',
     label: 'Search Jobs',
     icon: 'mdi-briefcase-search',
-    variant: 'outline'
+    variant: 'outline',
   },
   {
     id: 'realtime_chat',
     label: 'Realtime Chat',
     icon: 'mdi-chat',
-    variant: 'gaming'
+    variant: 'gaming',
   },
   {
     id: 'multimodal_test',
     label: 'Multimodal Test',
     icon: 'PhotoIcon-multiple',
-    variant: 'secondary'
+    variant: 'secondary',
   },
   {
     id: 'audio_processing',
     label: 'Audio Processing',
     icon: 'MicrophoneIcon',
-    variant: 'outline'
-  }
+    variant: 'outline',
+  },
 ]
 
 // Enhanced Methods
 async function initializeAI() {
   try {
     addLog('info', 'Initializing enhanced AI services...')
-    
+
     // Initialize canonical AI service
     await canonicalAI.initialize({
       geminiApiKey: getAPIKey(),
       primaryProvider: 'google',
       enableMultimodal: true,
       enableRealTime: true,
-      enableContextPersistence: true
+      enableContextPersistence: true,
     })
 
     // Initialize multimedia AI service
@@ -358,12 +415,12 @@ async function initializeAI() {
       apiKey: getAPIKey(),
       enableAudio: true,
       enableVideo: true,
-      enableScreenshot: true
+      enableScreenshot: true,
     })
 
     addLog('success', 'Enhanced AI services initialized successfully')
     toast.success('Enhanced AI initialized successfully!')
-    
+
     // Update real-time status
     updateRealTimeStatus()
   } catch (error) {
@@ -376,16 +433,18 @@ async function testConnection() {
   testing.value = true
   try {
     addLog('info', 'Testing enhanced AI connection...')
-    
+
     // Test basic functionality
-    const result = await canonicalAI.generateText('Hello, this is a connection test.')
-    
+    const result = await canonicalAI.generateText(
+      'Hello, this is a connection test.'
+    )
+
     if (result.success) {
       addLog('success', 'AI connection test passed')
-      lastResult.value = { 
-        ...result, 
+      lastResult.value = {
+        ...result,
         timestamp: new Date(),
-        testType: 'connection'
+        testType: 'connection',
       }
       toast.success('Connection test passed!')
     } else {
@@ -404,75 +463,90 @@ async function testAction(action) {
   processingAction.value = action.id
   try {
     addLog('info', `Testing ${action.label}...`)
-    
+
     let result = null
     switch (action.id) {
       case 'generate_text': {
-        result = await canonicalAI.generateText('Generate a creative story about AI and gaming.')
-        break
-      }
-        
-      case 'analyze_resume': {
         result = await canonicalAI.generateText(
-          'Analyze this resume content for gaming industry positions.', 
-          { systemPrompt: 'You are an expert resume analyst for the gaming industry.' }
+          'Generate a creative story about AI and gaming.'
         )
         break
       }
-        
+
+      case 'analyze_resume': {
+        result = await canonicalAI.generateText(
+          'Analyze this resume content for gaming industry positions.',
+          {
+            systemPrompt:
+              'You are an expert resume analyst for the gaming industry.',
+          }
+        )
+        break
+      }
+
       case 'search_jobs': {
         result = await canonicalAI.generateText(
           'Find 5 suitable gaming industry jobs based on my skills in JavaScript and game development.',
-          { systemPrompt: 'You are a job search assistant specializing in gaming careers.' }
+          {
+            systemPrompt:
+              'You are a job search assistant specializing in gaming careers.',
+          }
         )
         break
       }
-        
+
       case 'realtime_chat': {
         const sessionId = `test-session-${Date.now()}`
         result = await canonicalAI.startRealTimeSession(sessionId, {
           onConnect: () => addLog('info', 'Real-time session connected'),
-          onError: (error) => addLog('error', `Real-time error: ${error.message}`)
+          onError: error =>
+            addLog('error', `Real-time error: ${error.message}`),
         })
-        
+
         if (result.success) {
-          const chatResult = await canonicalAI.sendRealTimeMessage(sessionId, 'Hello from real-time chat!')
+          const chatResult = await canonicalAI.sendRealTimeMessage(
+            sessionId,
+            'Hello from real-time chat!'
+          )
           result.chatResponse = chatResult
         }
         break
       }
-        
+
       case 'multimodal_test': {
         result = await canonicalAI.generateMultimodal({
-          text: 'This is a multimodal test with text input only.'
+          text: 'This is a multimodal test with text input only.',
         })
         break
       }
-        
+
       case 'audio_processing': {
         // Create mock audio data for testing
         const mockAudioData = new ArrayBuffer(1024)
         result = await canonicalAI.processAudio(mockAudioData, {
           format: 'wav',
           transcribeOnly: false,
-          systemPrompt: 'Please transcribe this audio and provide feedback on the gaming industry topic.'
+          systemPrompt:
+            'Please transcribe this audio and provide feedback on the gaming industry topic.',
         })
         break
       }
     }
     if (result?.success !== false) {
       addLog('success', `${action.label} completed successfully`)
-      lastResult.value = { 
-        ...result, 
+      lastResult.value = {
+        ...result,
         timestamp: new Date(),
-        testType: action.id
+        testType: action.id,
       }
       toast.success(`${action.label} completed!`)
     } else {
-      addLog('error', `${action.label} failed: ${result?.error || 'Unknown error'}`)
+      addLog(
+        'error',
+        `${action.label} failed: ${result?.error || 'Unknown error'}`
+      )
       toast.error(`${action.label} failed`)
     }
-    
   } catch (error) {
     addLog('error', `${action.label} error: ${error.message}`)
     toast.error(`${action.label} failed: ${error.message}`)
@@ -484,7 +558,7 @@ async function testAction(action) {
 // Real-time feature methods
 async function toggleAudioRecording() {
   const multimediaService = LiveMultimediaAIService.getInstance()
-  
+
   if (isRecording.value) {
     multimediaService.stopAudioStreaming()
     isRecording.value = false
@@ -504,7 +578,7 @@ async function toggleAudioRecording() {
 
 async function toggleVideoStreaming() {
   const multimediaService = LiveMultimediaAIService.getInstance()
-  
+
   if (isVideoStreaming.value) {
     multimediaService.stopVideoStreaming()
     isVideoStreaming.value = false
@@ -527,12 +601,12 @@ async function captureScreen() {
   try {
     const multimediaService = LiveMultimediaAIService.getInstance()
     const result = await multimediaService.captureAndAnalyzeScreen()
-    
+
     addLog('success', 'Screen captured and analyzed')
-    lastResult.value = { 
-      ...result, 
+    lastResult.value = {
+      ...result,
       timestamp: new Date(),
-      testType: 'screen_capture'
+      testType: 'screen_capture',
     }
     toast.success('Screen capture completed!')
   } catch (error) {
@@ -548,15 +622,15 @@ async function runHealthCheck() {
   try {
     addLog('info', 'Running comprehensive health check...')
     const health = await canonicalAI.healthCheck()
-    
+
     healthCheckResult.value = {
       ...health,
-      timestamp: new Date()
+      timestamp: new Date(),
     }
-    
+
     const statusMsg = `Health check completed: ${health.status.toUpperCase()}`
     addLog(health.status === 'healthy' ? 'success' : 'warning', statusMsg)
-    
+
     if (health.status === 'healthy') {
       toast.success('All AI services are healthy!')
     } else {
@@ -573,18 +647,20 @@ async function runHealthCheck() {
 function updateRealTimeStatus() {
   const multimediaService = LiveMultimediaAIService.getInstance()
   const streamingState = multimediaService.getStreamingState()
-  
+
   realTimeStatus.value = {
     sessionActive: canonicalAI.isReady,
     audioStreaming: streamingState?.isAudioStreaming || false,
-    videoStreaming: streamingState?.isVideoStreaming || false
+    videoStreaming: streamingState?.isVideoStreaming || false,
   }
 }
 
 // Utility methods
 function getAPIKey() {
   // Get API key from store settings
-  return store.settings?.geminiApiKey || localStorage.getItem('gemini_api_key') || ''
+  return (
+    store.settings?.geminiApiKey || localStorage.getItem('gemini_api_key') || ''
+  )
 }
 
 function openSettings() {
@@ -600,26 +676,30 @@ function getCapabilityIcon(capability) {
     contextPersistence: 'mdi-memory',
     streaming: 'mdi-stream',
     audio: 'MicrophoneIcon',
-    video: 'VideoCameraIcon'
+    video: 'VideoCameraIcon',
   }
   return iconMap[capability] || 'CheckIcon-circle'
 }
 
 function formatCapabilityName(capability) {
-  return capability.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())
+  return capability
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
 }
 
 function formatTestName(testName) {
-  return testName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())
+  return testName
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
 }
 
 function addLog(type, message) {
   eventLog.value.unshift({
     type,
     message,
-    timestamp: new Date()
+    timestamp: new Date(),
   })
-  
+
   // Keep only last 50 log entries
   if (eventLog.value.length > 50) {
     eventLog.value = eventLog.value.slice(0, 50)
@@ -665,7 +745,7 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    
+
     h1 {
       margin: 0;
       color: rgb(var(--v-theme-primary));
@@ -679,7 +759,7 @@ onUnmounted(() => {
 }
 
 .ai-status-section,
-.ai-capabilities-section, 
+.ai-capabilities-section,
 .ai-actions-section {
   margin-bottom: 2rem;
 
@@ -943,7 +1023,10 @@ onUnmounted(() => {
     gap: 1rem;
     padding: 0.75rem 1rem;
     border-b: 1px solid rgba(var(--v-theme-outline), 0.1);
-    font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    font-family:
+      'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata',
+      'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New',
+      monospace;
     font-size: 0.9rem;
 
     &:last-child {

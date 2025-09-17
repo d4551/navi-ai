@@ -1,6 +1,11 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div role="region" aria-labelledby="profile-heading" class="profile-section enhanced-glass-section font-sans" :class="{ 'is-tabbed': isTabbed }">
+  <div
+    role="region"
+    aria-labelledby="profile-heading"
+    class="profile-section enhanced-glass-section font-sans"
+    :class="{ 'is-tabbed': isTabbed }"
+  >
     <!-- Enhanced Header -->
     <div v-if="!isTabbed" class="section-header">
       <div class="header-content">
@@ -9,10 +14,15 @@
             <AppIcon name="UserIcon-card-details" />
             Personal Profile
           </h3>
-          <p class="section-subtitle">Essential information for your gaming career profile</p>
+          <p class="section-subtitle">
+            Essential information for your gaming career profile
+          </p>
         </div>
         <div class="profile-completion-badge">
-          <div class="completion-ring" :style="{ '--completion': completionPercentage + '%' }">
+          <div
+            class="completion-ring"
+            :style="{ '--completion': completionPercentage + '%' }"
+          >
             <span class="completion-text">{{ completionPercentage }}%</span>
           </div>
           <span class="completion-label">Complete</span>
@@ -45,17 +55,28 @@
                   class="enhanced-input glass-input-field"
                   placeholder="Your full name"
                   autocomplete="name"
-                  :class="{ 'is-invalid': store.errors?.validation?.name, 'has-value': userProfile.personalInfo.name }"
+                  :class="{
+                    'is-invalid': store.errors?.validation?.name,
+                    'has-value': userProfile.personalInfo.name,
+                  }"
                   aria-describedby="profile-name-error"
                   required
                   @focus="focusedField = 'name'"
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon v-if="userProfile.personalInfo.name" name="CheckIcon" class="success-icon" />
+                  <AppIcon
+                    v-if="userProfile.personalInfo.name"
+                    name="CheckIcon"
+                    class="success-icon"
+                  />
                 </div>
               </div>
-              <div v-if="store.errors?.validation?.name" id="profile-name-error" class="form-error">
+              <div
+                v-if="store.errors?.validation?.name"
+                id="profile-name-error"
+                class="form-error"
+              >
                 <AppIcon name="ExclamationCircleIcon" />
                 {{ store.errors?.validation?.name }}
               </div>
@@ -64,7 +85,7 @@
                 Used across NAVI and in your resume
               </div>
             </div>
-            
+
             <div class="form-field required">
               <label for="profile-email" class="form-label">
                 <AppIcon name="EnvelopeIcon" class="label-icon" />
@@ -79,17 +100,31 @@
                   class="enhanced-input glass-input-field"
                   placeholder="you@example.com"
                   autocomplete="email"
-                  :class="{ 'is-invalid': store.errors?.validation?.email, 'has-value': userProfile.personalInfo.email }"
+                  :class="{
+                    'is-invalid': store.errors?.validation?.email,
+                    'has-value': userProfile.personalInfo.email,
+                  }"
                   aria-describedby="profile-email-error"
                   required
                   @focus="focusedField = 'email'"
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon v-if="userProfile.personalInfo.email && isValidEmail(userProfile.personalInfo.email)" name="CheckIcon" class="success-icon" />
+                  <AppIcon
+                    v-if="
+                      userProfile.personalInfo.email &&
+                      isValidEmail(userProfile.personalInfo.email)
+                    "
+                    name="CheckIcon"
+                    class="success-icon"
+                  />
                 </div>
               </div>
-              <div v-if="store.errors?.validation?.email" id="profile-email-error" class="form-error">
+              <div
+                v-if="store.errors?.validation?.email"
+                id="profile-email-error"
+                class="form-error"
+              >
                 <AppIcon name="ExclamationCircleIcon" />
                 {{ store.errors?.validation?.email }}
               </div>
@@ -98,7 +133,7 @@
                 Primary contact for job opportunities
               </div>
             </div>
-            
+
             <div class="form-field">
               <label for="profile-phone" class="form-label">
                 <AppIcon name="PhoneIcon" class="label-icon" />
@@ -117,7 +152,11 @@
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon v-if="userProfile.personalInfo.phone" name="CheckIcon" class="success-icon" />
+                  <AppIcon
+                    v-if="userProfile.personalInfo.phone"
+                    name="CheckIcon"
+                    class="success-icon"
+                  />
                 </div>
               </div>
               <div v-if="focusedField === 'phone'" class="form-hint">
@@ -125,7 +164,7 @@
                 Optional - for recruiters to contact you
               </div>
             </div>
-            
+
             <div class="form-field">
               <label for="profile-location" class="form-label">
                 <AppIcon name="MapPinIcon" class="label-icon" />
@@ -144,7 +183,11 @@
                   @blur="focusedField = null"
                 />
                 <div class="input-status">
-                  <AppIcon v-if="userProfile.personalInfo.location" name="CheckIcon" class="success-icon" />
+                  <AppIcon
+                    v-if="userProfile.personalInfo.location"
+                    name="CheckIcon"
+                    class="success-icon"
+                  />
                 </div>
               </div>
               <div v-if="focusedField === 'location'" class="form-hint">
@@ -153,7 +196,7 @@
               </div>
             </div>
           </div>
-        
+
           <!-- Professional Information Section -->
           <div class="form-section">
             <div class="section-divider">
@@ -175,12 +218,18 @@
                     class="enhanced-input"
                     placeholder="e.g., Senior Gameplay Engineer"
                     autocomplete="organization-title"
-                    :class="{ 'has-value': userProfile.personalInfo.currentRole }"
+                    :class="{
+                      'has-value': userProfile.personalInfo.currentRole,
+                    }"
                     @focus="focusedField = 'role'"
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.currentRole" name="CheckIcon" class="success-icon" />
+                    <AppIcon
+                      v-if="userProfile.personalInfo.currentRole"
+                      name="CheckIcon"
+                      class="success-icon"
+                    />
                   </div>
                 </div>
                 <div v-if="focusedField === 'role'" class="form-hint">
@@ -188,7 +237,7 @@
                   Your current or most recent job title
                 </div>
               </div>
-            
+
               <div class="form-field">
                 <label for="profile-company" class="form-label">
                   <AppIcon name="BuildingOfficeIcon" class="label-icon" />
@@ -202,12 +251,18 @@
                     class="enhanced-input"
                     placeholder="e.g., Epic Games"
                     autocomplete="organization"
-                    :class="{ 'has-value': userProfile.personalInfo.currentCompany }"
+                    :class="{
+                      'has-value': userProfile.personalInfo.currentCompany,
+                    }"
                     @focus="focusedField = 'company'"
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.currentCompany" name="CheckIcon" class="success-icon" />
+                    <AppIcon
+                      v-if="userProfile.personalInfo.currentCompany"
+                      name="CheckIcon"
+                      class="success-icon"
+                    />
                   </div>
                 </div>
                 <div v-if="focusedField === 'company'" class="form-hint">
@@ -215,7 +270,7 @@
                   Studio or company you work for
                 </div>
               </div>
-            
+
               <div class="form-field">
                 <label for="profile-years" class="form-label">
                   <AppIcon name="CalendarIcon-clock" class="label-icon" />
@@ -231,12 +286,18 @@
                     class="enhanced-input"
                     placeholder="e.g., 5"
                     inputmode="decimal"
-                    :class="{ 'has-value': userProfile.personalInfo.yearsExperience }"
+                    :class="{
+                      'has-value': userProfile.personalInfo.yearsExperience,
+                    }"
                     @focus="focusedField = 'years'"
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.yearsExperience" name="CheckIcon" class="success-icon" />
+                    <AppIcon
+                      v-if="userProfile.personalInfo.yearsExperience"
+                      name="CheckIcon"
+                      class="success-icon"
+                    />
                   </div>
                 </div>
                 <div v-if="focusedField === 'years'" class="form-hint">
@@ -246,7 +307,7 @@
               </div>
             </div>
           </div>
-        
+
           <!-- Online Presence Section -->
           <div class="form-section">
             <div class="section-divider">
@@ -273,7 +334,11 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.website" name="CheckIcon" class="success-icon" />
+                    <AppIcon
+                      v-if="userProfile.personalInfo.website"
+                      name="CheckIcon"
+                      class="success-icon"
+                    />
                   </div>
                 </div>
                 <div v-if="focusedField === 'website'" class="form-hint">
@@ -281,7 +346,7 @@
                   Your personal or professional website
                 </div>
               </div>
-            
+
               <div class="form-field">
                 <label for="profile-linkedin" class="form-label">
                   <AppIcon name="LinkIconedin" class="label-icon" />
@@ -299,7 +364,11 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.linkedIn" name="CheckIcon" class="success-icon" />
+                    <AppIcon
+                      v-if="userProfile.personalInfo.linkedIn"
+                      name="CheckIcon"
+                      class="success-icon"
+                    />
                   </div>
                 </div>
                 <div v-if="focusedField === 'linkedin'" class="form-hint">
@@ -307,7 +376,7 @@
                   Professional networking profile
                 </div>
               </div>
-            
+
               <div class="form-field">
                 <label for="profile-github" class="form-label">
                   <AppIcon name="mdi-github" class="label-icon" />
@@ -325,7 +394,11 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.github" name="CheckIcon" class="success-icon" />
+                    <AppIcon
+                      v-if="userProfile.personalInfo.github"
+                      name="CheckIcon"
+                      class="success-icon"
+                    />
                   </div>
                 </div>
                 <div v-if="focusedField === 'github'" class="form-hint">
@@ -333,7 +406,7 @@
                   Code portfolio and open source contributions
                 </div>
               </div>
-            
+
               <div class="form-field">
                 <label for="profile-portfolio" class="form-label">
                   <AppIcon name="FolderIcon-image" class="label-icon" />
@@ -351,7 +424,11 @@
                     @blur="focusedField = null"
                   />
                   <div class="input-status">
-                    <AppIcon v-if="userProfile.personalInfo.portfolio" name="CheckIcon" class="success-icon" />
+                    <AppIcon
+                      v-if="userProfile.personalInfo.portfolio"
+                      name="CheckIcon"
+                      class="success-icon"
+                    />
                   </div>
                 </div>
                 <div v-if="focusedField === 'portfolio'" class="form-hint">
@@ -361,7 +438,7 @@
               </div>
             </div>
           </div>
-        
+
           <!-- Professional Summary Section -->
           <div class="form-section">
             <div class="section-divider">
@@ -391,11 +468,14 @@
               </div>
               <div v-if="focusedField === 'summary'" class="form-hint">
                 <AppIcon name="InformationCircleIcon" />
-                <span>This appears on your resume and helps match you with relevant opportunities. Aim for 2-3 sentences.</span>
+                <span
+                  >This appears on your resume and helps match you with relevant
+                  opportunities. Aim for 2-3 sentences.</span
+                >
               </div>
             </div>
           </div>
-        
+
           <!-- Form Actions -->
           <div class="form-actions-section">
             <div class="actions-content">
@@ -440,15 +520,21 @@
                 </UnifiedButton>
               </div>
             </div>
-          
+
             <!-- Success/Error Messages -->
             <Transition name="message-fade">
-              <div v-if="profileSaved" class="success-message" aria-live="polite">
+              <div
+                v-if="profileSaved"
+                class="success-message"
+                aria-live="polite"
+              >
                 <AppIcon name="CheckCircleIcon" />
-                <span>Profile saved successfully! Your changes are now live.</span>
+                <span
+                  >Profile saved successfully! Your changes are now live.</span
+                >
               </div>
             </Transition>
-          
+
             <!-- Profile Completion Tips -->
             <div v-if="!isProfileComplete" class="completion-tips">
               <div class="tip-header">
@@ -456,7 +542,12 @@
                 <span>Complete your profile to improve job matching</span>
               </div>
               <div class="tip-list">
-                <div v-for="tip in incompleteTips" :key="tip.field" class="tip-item" @click="focusField(tip.field)">
+                <div
+                  v-for="tip in incompleteTips"
+                  :key="tip.field"
+                  class="tip-item"
+                  @click="focusField(tip.field)"
+                >
                   <AppIcon name="PlusIcon-circle-outline" />
                   <span>{{ tip.message }}</span>
                 </div>
@@ -470,7 +561,18 @@
 </template>
 
 <script setup>
-import { BriefcaseIcon, BuildingOfficeIcon, CheckIcon, EnvelopeIcon, ExclamationCircleIcon, GlobeAltIcon, InformationCircleIcon, PhoneIcon, SparklesIcon, UserIcon } from '@heroicons/vue/24/outline'
+import {
+  BriefcaseIcon,
+  BuildingOfficeIcon,
+  CheckIcon,
+  EnvelopeIcon,
+  ExclamationCircleIcon,
+  GlobeAltIcon,
+  InformationCircleIcon,
+  PhoneIcon,
+  SparklesIcon,
+  UserIcon,
+} from '@heroicons/vue/24/outline'
 import { CheckCircleIcon, MapPinIcon } from '@heroicons/vue/24/solid'
 
 import { computed, ref, watch } from 'vue'
@@ -484,17 +586,17 @@ const props = defineProps({
   userProfile: {
     type: Object,
     default: () => ({
-      personalInfo: {}
-    })
+      personalInfo: {},
+    }),
   },
   saving: {
     type: Boolean,
-    default: false
+    default: false,
   },
   isTabbed: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 // Emits
@@ -511,8 +613,13 @@ const focusedField = ref(null)
 // Computed properties
 const completionPercentage = computed(() => {
   const fields = [
-    'name', 'email', 'location', 'currentRole', 
-    'currentCompany', 'yearsExperience', 'summary'
+    'name',
+    'email',
+    'location',
+    'currentRole',
+    'currentCompany',
+    'yearsExperience',
+    'summary',
   ]
   const completed = fields.filter(field => {
     const value = props.userProfile.personalInfo?.[field]
@@ -532,30 +639,42 @@ const hasRequiredFields = computed(() => {
 const incompleteTips = computed(() => {
   const tips = []
   const info = props.userProfile.personalInfo || {}
-  
+
   if (!info.currentRole) {
-    tips.push({ field: 'role', message: 'Add your current role to improve job matching' })
+    tips.push({
+      field: 'role',
+      message: 'Add your current role to improve job matching',
+    })
   }
   if (!info.summary) {
-    tips.push({ field: 'summary', message: 'Write a professional summary to stand out' })
+    tips.push({
+      field: 'summary',
+      message: 'Write a professional summary to stand out',
+    })
   }
   if (!info.linkedIn && !info.github && !info.portfolio) {
-    tips.push({ field: 'linkedin', message: 'Add your LinkedIn or GitHub to showcase experience' })
+    tips.push({
+      field: 'linkedin',
+      message: 'Add your LinkedIn or GitHub to showcase experience',
+    })
   }
   if (!info.location) {
-    tips.push({ field: 'location', message: 'Add location for better job opportunities' })
+    tips.push({
+      field: 'location',
+      message: 'Add location for better job opportunities',
+    })
   }
-  
+
   return tips.slice(0, 3) // Show max 3 tips
 })
 
 // Methods
-const isValidEmail = (email) => {
+const isValidEmail = email => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailRegex.test(email)
 }
 
-const focusField = (fieldName) => {
+const focusField = fieldName => {
   const fieldId = `profile-${fieldName}`
   const element = document.getElementById(fieldId)
   if (element) {
@@ -568,17 +687,19 @@ const autoFillSuggestions = async () => {
   try {
     const { useAIService } = await import('@/composables/useAIService')
     const aiService = useAIService()
-    
+
     if (!aiService.isReady.value) {
-      toast.error('AI service not available. Please configure your API key in settings.')
+      toast.error(
+        'AI service not available. Please configure your API key in settings.'
+      )
       return
     }
-    
+
     const suggestions = await aiService.generateProfileSuggestions({
       currentData: profile.value,
-      context: 'gaming_industry'
+      context: 'gaming_industry',
     })
-    
+
     if (suggestions) {
       // Apply suggestions to profile fields
       Object.keys(suggestions).forEach(key => {
@@ -598,19 +719,28 @@ const previewProfile = () => {
   // Create a preview modal or dialog showing formatted profile data
   const formattedProfile = {
     ...profile.value,
-    skills: Array.isArray(profile.value.skills) ? profile.value.skills : profile.value.skills?.split(',').map(s => s.trim()).filter(Boolean) || []
+    skills: Array.isArray(profile.value.skills)
+      ? profile.value.skills
+      : profile.value.skills
+          ?.split(',')
+          .map(s => s.trim())
+          .filter(Boolean) || [],
   }
-  
+
   // Emit event to parent or show modal
   emit('profile-preview', formattedProfile)
-  
+
   // Alternative: Show in-place preview
   toast.info('Profile preview - check console for formatted data')
   console.info('Profile Preview:', JSON.stringify(formattedProfile, null, 2))
 }
 
 const resetForm = () => {
-  if (confirm('Are you sure you want to reset all fields? This will clear any unsaved changes.')) {
+  if (
+    confirm(
+      'Are you sure you want to reset all fields? This will clear any unsaved changes.'
+    )
+  ) {
     // Reset to empty state
     Object.keys(props.userProfile.personalInfo).forEach(key => {
       props.userProfile.personalInfo[key] = ''
@@ -619,17 +749,20 @@ const resetForm = () => {
 }
 
 // Watch for successful save
-watch(() => props.saving, (newSaving, oldSaving) => {
-  if (oldSaving && !newSaving) {
-    profileSaved.value = true
-    setTimeout(() => {
-      profileSaved.value = false
-    }, 4000)
+watch(
+  () => props.saving,
+  (newSaving, oldSaving) => {
+    if (oldSaving && !newSaving) {
+      profileSaved.value = true
+      setTimeout(() => {
+        profileSaved.value = false
+      }, 4000)
+    }
   }
-})
+)
 
 // Watch for completion changes
-watch(completionPercentage, (newPercentage) => {
+watch(completionPercentage, newPercentage => {
   if (newPercentage === 100 && !profileSaved.value) {
     // Show profile completion celebration
     profileSaved.value = true
@@ -645,7 +778,9 @@ watch(completionPercentage, (newPercentage) => {
   --section-spacing: var(--spacing-8);
   background: var(--glass-bg);
   color: var(--text-primary-600);
-  transition: background-color var(--duration-normal), color var(--duration-normal);
+  transition:
+    background-color var(--duration-normal),
+    color var(--duration-normal);
 }
 
 .profile-section:not(.is-tabbed) {
@@ -698,7 +833,7 @@ watch(completionPercentage, (newPercentage) => {
   height: 60px;
   border-radius: 50%;
   background: conic-gradient(
-    var(--color-primary-500) 0deg, 
+    var(--color-primary-500) 0deg,
     var(--color-primary-500) calc(var(--completion) * 3.6deg),
     var(--glass-border) calc(var(--completion) * 3.6deg),
     var(--glass-border) 360deg
@@ -847,7 +982,7 @@ watch(completionPercentage, (newPercentage) => {
   outline: none;
   border-color: var(--color-primary-500);
   background: var(--glass-hover-bg);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
 }
@@ -855,7 +990,7 @@ watch(completionPercentage, (newPercentage) => {
 .enhanced-input.has-value,
 .glass-input-field.has-value {
   border-color: rgba(var(--color-success-500-rgb, 34, 197, 94), 0.5);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 3px rgba(0, 0, 0, 0.1),
     0 0 8px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.1);
 }
@@ -877,7 +1012,9 @@ watch(completionPercentage, (newPercentage) => {
   color: var(--color-success-500);
   font-size: var(--font-size-lg);
   transition: color var(--duration-normal);
-  filter: drop-shadow(0 0 4px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.3));
+  filter: drop-shadow(
+    0 0 4px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.3)
+  );
 }
 
 /* Enhanced Textarea */
@@ -911,7 +1048,7 @@ watch(completionPercentage, (newPercentage) => {
   outline: none;
   border-color: var(--color-primary-500);
   background: var(--glass-hover-bg);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15);
 }
@@ -999,7 +1136,7 @@ watch(completionPercentage, (newPercentage) => {
   -webkit-backdrop-filter: var(--glass-backdrop-filter);
   border: 1px solid var(--color-success-500);
   border-radius: var(--radius-lg);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 12px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.15);
   transition: all var(--duration-normal);
@@ -1085,7 +1222,7 @@ watch(completionPercentage, (newPercentage) => {
 
 .enhanced-glass-section:hover {
   border-color: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.2);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 8px 25px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05);
 }
@@ -1110,7 +1247,9 @@ watch(completionPercentage, (newPercentage) => {
 
 .enhanced-glass-section .success-icon {
   font-size: var(--font-size-sm);
-  filter: drop-shadow(0 0 4px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.3));
+  filter: drop-shadow(
+    0 0 4px rgba(var(--color-success-500-rgb, 34, 197, 94), 0.3)
+  );
 }
 
 /* Enhanced completion tips with glass theme */
@@ -1124,59 +1263,59 @@ watch(completionPercentage, (newPercentage) => {
 /* Enhanced Light/Dark Mode Integration for Profile Settings */
 
 /* Dark Theme Enhancements */
-[data-theme="dark"] .enhanced-glass-section {
+[data-theme='dark'] .enhanced-glass-section {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .glass-input-field {
+[data-theme='dark'] .glass-input-field {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   color: var(--text-primary-600);
 }
 
-[data-theme="dark"] .glass-input-field:focus {
+[data-theme='dark'] .glass-input-field:focus {
   background: var(--glass-hover-bg);
   border-color: var(--color-primary-500);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 3px rgba(0, 0, 0, 0.1),
     0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15),
     var(--glass-shadow);
 }
 
-[data-theme="dark"] .enhanced-glass-section .section-divider {
+[data-theme='dark'] .enhanced-glass-section .section-divider {
   background: rgba(var(--glass-border-rgb, 255, 255, 255), 0.02);
   border-color: rgba(var(--glass-border-rgb, 255, 255, 255), 0.05);
 }
 
-[data-theme="dark"] .enhanced-glass-section .input-status {
+[data-theme='dark'] .enhanced-glass-section .input-status {
   background: var(--glass-bg);
   border-color: var(--glass-border);
 }
 
-[data-theme="dark"] .enhanced-glass-section .completion-tips {
+[data-theme='dark'] .enhanced-glass-section .completion-tips {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
 /* Light Theme Enhancements */
-[data-theme="light"] .enhanced-glass-section {
+[data-theme='light'] .enhanced-glass-section {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="light"] .glass-input-field {
+[data-theme='light'] .glass-input-field {
   background: var(--glass-bg);
   border-color: var(--glass-border);
 }
 
-[data-theme="light"] .glass-input-field:focus {
+[data-theme='light'] .glass-input-field:focus {
   background: var(--glass-hover-bg);
   border-color: var(--color-primary-500);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 3px rgba(0, 0, 0, 0.1),
     0 0 0 3px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15),
     var(--glass-shadow);
@@ -1188,7 +1327,7 @@ watch(completionPercentage, (newPercentage) => {
 .enhanced-glass-section .section-divider,
 .enhanced-glass-section .input-status,
 .enhanced-glass-section .completion-tips {
-  transition: 
+  transition:
     background-color var(--duration-normal),
     border-color var(--duration-normal),
     color var(--duration-normal),
@@ -1202,7 +1341,7 @@ watch(completionPercentage, (newPercentage) => {
   .glass-input-field {
     transition: none;
   }
-  
+
   .enhanced-glass-section:hover {
     transform: none;
   }
@@ -1214,7 +1353,7 @@ watch(completionPercentage, (newPercentage) => {
     border-width: 2px;
     backdrop-filter: none;
   }
-  
+
   .enhanced-glass-section .completion-tips {
     border-width: 2px;
     backdrop-filter: none;
@@ -1228,34 +1367,38 @@ watch(completionPercentage, (newPercentage) => {
     align-items: flex-start;
     gap: var(--spacing-3);
   }
-  
+
   .completion-ring {
     width: 50px;
     height: 50px;
   }
-  
+
   .completion-ring::before {
     width: 36px;
     height: 36px;
   }
-  
+
   .actions-content {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .quick-actions,
   .primary-actions {
     justify-content: center;
   }
-  
+
   .form-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

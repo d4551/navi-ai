@@ -24,21 +24,22 @@ export function piniaPersistPlugin({ key = 'pinia', paths = [] }) {
         console.error('Failed to restore persisted state:', error)
       }
     }
-    
+
     // Subscribe to state changes and persist them
     store.$subscribe((mutation, state) => {
       // Create a partial state object if paths are specified
-      const stateToPersist = paths.length > 0
-        ? paths.reduce((obj, path) => {
-            const value = state[path]
-            if (value !== undefined) obj[path] = value
-            return obj
-          }, {})
-        : state
-      
+      const stateToPersist =
+        paths.length > 0
+          ? paths.reduce((obj, path) => {
+              const value = state[path]
+              if (value !== undefined) obj[path] = value
+              return obj
+            }, {})
+          : state
+
       localStorage.setItem(key, JSON.stringify(stateToPersist))
     })
-    
+
     // Add persist flag to store
     store.persist = true
   }

@@ -7,7 +7,12 @@
     }"
   >
     <template #header-actions>
-      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="secondary">
+      <HeaderActions
+        layout="horizontal"
+        alignment="end"
+        gap="md"
+        priority="secondary"
+      >
         <UnifiedButton
           variant="glass"
           size="md"
@@ -40,7 +45,7 @@
           leading-icon="mdi-content-save"
           @click="saveAllSettings"
         >
-          {{ saving ? "Saving..." : "Save All" }}
+          {{ saving ? 'Saving...' : 'Save All' }}
         </UnifiedButton>
         <ThemeToggle :compact="true" :show-density="true" />
       </HeaderActions>
@@ -57,20 +62,46 @@
       />
 
       <!-- Enhanced Settings Navigation with Master Glass Theme -->
-      <div class="settings-navigation enhanced-glass-card" style="margin-bottom: var(--spacing-6); position: sticky; top: var(--spacing-4); z-index: 10;">
+      <div
+        class="settings-navigation enhanced-glass-card"
+        style="
+          margin-bottom: var(--spacing-6);
+          position: sticky;
+          top: var(--spacing-4);
+          z-index: 10;
+        "
+      >
         <!-- Enhanced Search Header -->
-        <div class="navigation-header glass-section-header" style="padding: var(--spacing-4); border-bottom: 1px solid var(--glass-border);">
+        <div
+          class="navigation-header glass-section-header"
+          style="
+            padding: var(--spacing-4);
+            border-bottom: 1px solid var(--glass-border);
+          "
+        >
           <div class="d-flex align-items-center gap-3">
-            <div class="search-input-wrapper flex-grow-1" style="max-width: calc(var(--page-narrow-width) * 0.55);">
+            <div
+              class="search-input-wrapper flex-grow-1"
+              style="max-width: calc(var(--page-narrow-width) * 0.55)"
+            >
               <div class="position-relative">
-                <AppIcon name="mdi-magnify" class="position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);" />
+                <AppIcon
+                  name="mdi-magnify"
+                  class="position-absolute"
+                  style="
+                    left: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--text-muted);
+                  "
+                />
                 <input
                   v-model="searchQuery"
                   type="text"
                   class="glass-input enhanced-search-input"
                   placeholder="Search settings..."
                   aria-label="Search settings"
-                  style="padding-left: 40px;"
+                  style="padding-left: 40px"
                 />
               </div>
             </div>
@@ -90,8 +121,12 @@
         </div>
 
         <!-- Tab Navigation -->
-        <div style="padding: 0 var(--spacing-4) var(--spacing-4);">
-          <GlassNavTabs v-model:active-tab="activeTab" :tabs="logicalTabGroups" aria-label="Settings Categories" />
+        <div style="padding: 0 var(--spacing-4) var(--spacing-4)">
+          <GlassNavTabs
+            v-model:active-tab="activeTab"
+            :tabs="logicalTabGroups"
+            aria-label="Settings Categories"
+          />
         </div>
       </div>
 
@@ -99,34 +134,56 @@
       <div class="settings-content">
         <!-- ESSENTIALS Group with Enhanced Unified Profile Tabs -->
         <div v-if="activeTab === 'profile'" class="settings-group">
-          <div class="group-header enhanced-glass-card" style="padding: var(--spacing-5); margin-bottom: var(--spacing-4);">
+          <div
+            class="group-header enhanced-glass-card"
+            style="padding: var(--spacing-5); margin-bottom: var(--spacing-4)"
+          >
             <div class="d-flex align-items-center justify-content-between">
               <div>
-                <h2 class="h4 mb-2" style="color: var(--text-primary);">
+                <h2 class="h4 mb-2" style="color: var(--text-primary)">
                   <AppIcon name="mdi-account-card-details" class="me-2" />
                   Profile & Identity
                 </h2>
-                <p class="mb-0" style="color: var(--text-secondary);">
+                <p class="mb-0" style="color: var(--text-secondary)">
                   Essential profile information and gaming career details
                 </p>
               </div>
               <div class="profile-completion">
-                <div class="completion-badge" style="padding: var(--spacing-2) var(--spacing-3); background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);">
-                  <span style="color: var(--text-secondary); font-size: 0.875rem;">Completion</span>
-                  <div style="font-weight: 600; color: var(--color-primary-500);">{{ Math.round(profileCompleteness) }}%</div>
+                <div
+                  class="completion-badge"
+                  style="
+                    padding: var(--spacing-2) var(--spacing-3);
+                    background: var(--glass-bg);
+                    border: 1px solid var(--glass-border);
+                    border-radius: var(--radius-lg);
+                  "
+                >
+                  <span
+                    style="color: var(--text-secondary); font-size: 0.875rem"
+                    >Completion</span
+                  >
+                  <div
+                    style="font-weight: 600; color: var(--color-primary-500)"
+                  >
+                    {{ Math.round(profileCompleteness) }}%
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Enhanced Unified Profile with Master Glass Tabs -->
-          <div class="enhanced-glass-card profile-main-card enhanced-profile-card">
+          <div
+            class="enhanced-glass-card profile-main-card enhanced-profile-card"
+          >
             <div class="profile-tabs-container">
               <!-- Enhanced Tab Navigation -->
               <div class="profile-tab-navigation">
                 <div class="profile-tab-buttons glass-tab-wrapper">
                   <UnifiedButton
-                    :variant="activeProfileTab === 'personal' ? 'primary' : 'glass'"
+                    :variant="
+                      activeProfileTab === 'personal' ? 'primary' : 'glass'
+                    "
                     size="sm"
                     leading-icon="mdi-account"
                     class="profile-tab-btn"
@@ -135,7 +192,9 @@
                     Personal Info
                   </UnifiedButton>
                   <UnifiedButton
-                    :variant="activeProfileTab === 'gaming' ? 'primary' : 'glass'"
+                    :variant="
+                      activeProfileTab === 'gaming' ? 'primary' : 'glass'
+                    "
                     size="sm"
                     leading-icon="mdi-gamepad-variant"
                     class="profile-tab-btn"
@@ -144,7 +203,9 @@
                     Gaming Profile
                   </UnifiedButton>
                   <UnifiedButton
-                    :variant="activeProfileTab === 'career' ? 'primary' : 'glass'"
+                    :variant="
+                      activeProfileTab === 'career' ? 'primary' : 'glass'
+                    "
                     size="sm"
                     leading-icon="mdi-briefcase"
                     class="profile-tab-btn"
@@ -158,7 +219,10 @@
               <!-- Enhanced Tab Content -->
               <div class="profile-tab-content glass-tab-content">
                 <!-- Personal Info Tab -->
-                <div v-if="activeProfileTab === 'personal'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeProfileTab === 'personal'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <ProfileSection
                     v-model:user-profile="userProfile"
                     :saving="saving"
@@ -168,7 +232,10 @@
                 </div>
 
                 <!-- Gaming Profile Tab -->
-                <div v-if="activeProfileTab === 'gaming'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeProfileTab === 'gaming'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <GamingProfileSection
                     v-model:gaming-profile="userProfile.gamingProfile"
                     :saving="saving"
@@ -178,20 +245,57 @@
                 </div>
 
                 <!-- Career Details Tab -->
-                <div v-if="activeProfileTab === 'career'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeProfileTab === 'career'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <div class="career-details-section glass-section">
                     <div class="section-header glass-section-header">
-                      <h4 class="h6 mb-0" style="color: var(--text-primary); display: flex; align-items: center; gap: var(--spacing-2);">
-                        <AppIcon name="mdi-briefcase" style="color: var(--color-primary-500);" />
+                      <h4
+                        class="h6 mb-0"
+                        style="
+                          color: var(--text-primary);
+                          display: flex;
+                          align-items: center;
+                          gap: var(--spacing-2);
+                        "
+                      >
+                        <AppIcon
+                          name="mdi-briefcase"
+                          style="color: var(--color-primary-500)"
+                        />
                         Career Preferences
                       </h4>
-                      <p class="mb-0" style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--spacing-1);">Define your career goals and preferences</p>
+                      <p
+                        class="mb-0"
+                        style="
+                          color: var(--text-secondary);
+                          font-size: 0.875rem;
+                          margin-top: var(--spacing-1);
+                        "
+                      >
+                        Define your career goals and preferences
+                      </p>
                     </div>
-                    
+
                     <div class="form-grid glass-form-grid">
-                      <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-4);">
+                      <div
+                        class="form-row"
+                        style="
+                          display: grid;
+                          grid-template-columns: repeat(
+                            auto-fit,
+                            minmax(300px, 1fr)
+                          );
+                          gap: var(--spacing-4);
+                        "
+                      >
                         <div class="glass-form-field">
-                          <label for="career-level" class="form-label glass-label">Career Level</label>
+                          <label
+                            for="career-level"
+                            class="form-label glass-label"
+                            >Career Level</label
+                          >
                           <select
                             id="career-level"
                             v-model="userProfile.careerPreferences.level"
@@ -205,25 +309,47 @@
                             <option value="director">Director/VP</option>
                           </select>
                         </div>
-                        
+
                         <div class="glass-form-field">
-                          <label for="preferred-roles" class="form-label glass-label">Preferred Roles</label>
+                          <label
+                            for="preferred-roles"
+                            class="form-label glass-label"
+                            >Preferred Roles</label
+                          >
                           <input
                             id="preferred-roles"
-                            v-model="userProfile.careerPreferences.preferredRoles"
+                            v-model="
+                              userProfile.careerPreferences.preferredRoles
+                            "
                             type="text"
                             class="glass-input enhanced-glass-input"
                             placeholder="e.g., Game Developer, Technical Artist"
                           />
                         </div>
                       </div>
-                      
-                      <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-4);">
+
+                      <div
+                        class="form-row"
+                        style="
+                          display: grid;
+                          grid-template-columns: repeat(
+                            auto-fit,
+                            minmax(250px, 1fr)
+                          );
+                          gap: var(--spacing-4);
+                        "
+                      >
                         <div class="glass-form-field">
-                          <label for="work-preference" class="form-label glass-label">Work Preference</label>
+                          <label
+                            for="work-preference"
+                            class="form-label glass-label"
+                            >Work Preference</label
+                          >
                           <select
                             id="work-preference"
-                            v-model="userProfile.careerPreferences.workPreference"
+                            v-model="
+                              userProfile.careerPreferences.workPreference
+                            "
                             class="glass-input enhanced-glass-input"
                           >
                             <option value="">Select preference</option>
@@ -233,9 +359,13 @@
                             <option value="flexible">Flexible</option>
                           </select>
                         </div>
-                        
+
                         <div class="glass-form-field">
-                          <label for="salary-range" class="form-label glass-label">Target Salary Range</label>
+                          <label
+                            for="salary-range"
+                            class="form-label glass-label"
+                            >Target Salary Range</label
+                          >
                           <input
                             id="salary-range"
                             v-model="userProfile.careerPreferences.salaryRange"
@@ -245,9 +375,11 @@
                           />
                         </div>
                       </div>
-                      
+
                       <div class="glass-form-field">
-                        <label for="career-goals" class="form-label glass-label">Career Goals</label>
+                        <label for="career-goals" class="form-label glass-label"
+                          >Career Goals</label
+                        >
                         <textarea
                           id="career-goals"
                           v-model="userProfile.careerPreferences.goals"
@@ -274,7 +406,9 @@
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">AI & Automation</h2>
-                  <p class="header-description">Configure AI services, API keys, and intelligent features</p>
+                  <p class="header-description">
+                    Configure AI services, API keys, and intelligent features
+                  </p>
                 </div>
               </div>
             </div>
@@ -332,7 +466,10 @@
               <!-- Enhanced Tab Content -->
               <div class="profile-tab-content glass-tab-content">
                 <!-- Gemini API Tab -->
-                <div v-if="activeAITab === 'gemini'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeAITab === 'gemini'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <!-- Skeleton Loading for API Configuration -->
                   <LoadingSkeletons
                     v-if="loadingModels"
@@ -360,30 +497,56 @@
                 </div>
 
                 <!-- Voice AI Tab -->
-                <div v-if="activeAITab === 'voice'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeAITab === 'voice'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <VoiceExperienceSection
                     :voice-settings="{
                       voiceMode: settings.voiceMode || false,
                       ttsProvider: settings.ttsProvider || 'system',
                       kokoroModel: settings.kokoroModel || 'default',
                       voiceHandsFree: settings.voiceHandsFree || false,
-                      chatCuesMuted: settings.chatCuesMuted || false
+                      chatCuesMuted: settings.chatCuesMuted || false,
                     }"
                     @save="updateVoiceSettings"
                   />
                 </div>
 
                 <!-- Providers Tab -->
-                <div v-if="activeAITab === 'providers'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeAITab === 'providers'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <div class="glass-section">
                     <div class="section-header glass-section-header">
-                      <h4 class="h6 mb-0" style="color: var(--text-primary); display: flex; align-items: center; gap: var(--spacing-2);">
-                        <AppIcon name="mdi-cloud-outline" style="color: var(--color-primary-500);" />
+                      <h4
+                        class="h6 mb-0"
+                        style="
+                          color: var(--text-primary);
+                          display: flex;
+                          align-items: center;
+                          gap: var(--spacing-2);
+                        "
+                      >
+                        <AppIcon
+                          name="mdi-cloud-outline"
+                          style="color: var(--color-primary-500)"
+                        />
                         AI Service Providers
                       </h4>
-                      <p class="mb-0" style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--spacing-1);">Manage connections to different AI service providers</p>
+                      <p
+                        class="mb-0"
+                        style="
+                          color: var(--text-secondary);
+                          font-size: 0.875rem;
+                          margin-top: var(--spacing-1);
+                        "
+                      >
+                        Manage connections to different AI service providers
+                      </p>
                     </div>
-                    
+
                     <div class="provider-grid">
                       <!-- Google Gemini -->
                       <div class="provider-card glass-card">
@@ -393,8 +556,17 @@
                             <h5 class="provider-name">Google Gemini</h5>
                             <span
                               class="provider-status"
-                              :class="store.settings?.geminiApiKey ? 'status-connected' : 'status-available'"
-                            >{{ store.settings?.geminiApiKey ? 'Connected' : 'Not Connected' }}</span>
+                              :class="
+                                store.settings?.geminiApiKey
+                                  ? 'status-connected'
+                                  : 'status-available'
+                              "
+                              >{{
+                                store.settings?.geminiApiKey
+                                  ? 'Connected'
+                                  : 'Not Connected'
+                              }}</span
+                            >
                           </div>
                         </div>
                         <div class="provider-features">
@@ -412,8 +584,17 @@
                             <h5 class="provider-name">OpenAI</h5>
                             <span
                               class="provider-status"
-                              :class="store.settings?.openaiApiKey ? 'status-connected' : 'status-available'"
-                            >{{ store.settings?.openaiApiKey ? 'Connected' : 'Available' }}</span>
+                              :class="
+                                store.settings?.openaiApiKey
+                                  ? 'status-connected'
+                                  : 'status-available'
+                              "
+                              >{{
+                                store.settings?.openaiApiKey
+                                  ? 'Connected'
+                                  : 'Available'
+                              }}</span
+                            >
                           </div>
                         </div>
                         <div class="provider-features">
@@ -427,61 +608,205 @@
                 </div>
 
                 <!-- Integration Tab -->
-                <div v-if="activeAITab === 'integration'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeAITab === 'integration'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <div class="glass-section">
                     <div class="section-header glass-section-header">
-                      <h4 class="h6 mb-0" style="color: var(--text-primary); display: flex; align-items: center; gap: var(--spacing-2);">
-                        <AppIcon name="mdi-link-variant" style="color: var(--color-primary-500);" />
+                      <h4
+                        class="h6 mb-0"
+                        style="
+                          color: var(--text-primary);
+                          display: flex;
+                          align-items: center;
+                          gap: var(--spacing-2);
+                        "
+                      >
+                        <AppIcon
+                          name="mdi-link-variant"
+                          style="color: var(--color-primary-500)"
+                        />
                         AI Integration & Monitoring
                       </h4>
-                      <p class="mb-0" style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--spacing-1);">Monitor AI service health and manage feature integrations</p>
+                      <p
+                        class="mb-0"
+                        style="
+                          color: var(--text-secondary);
+                          font-size: 0.875rem;
+                          margin-top: var(--spacing-1);
+                        "
+                      >
+                        Monitor AI service health and manage feature
+                        integrations
+                      </p>
                     </div>
-                    
+
                     <!-- AI Integration Panel -->
                     <AIIntegrationPanel />
                   </div>
                 </div>
 
                 <!-- Advanced Tab -->
-                <div v-if="activeAITab === 'advanced'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeAITab === 'advanced'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <div class="glass-section">
                     <div class="section-header glass-section-header">
-                      <h4 class="h6 mb-0" style="color: var(--text-primary); display: flex; align-items: center; gap: var(--spacing-2);">
-                        <AppIcon name="mdi-cog-outline" style="color: var(--color-primary-500);" />
+                      <h4
+                        class="h6 mb-0"
+                        style="
+                          color: var(--text-primary);
+                          display: flex;
+                          align-items: center;
+                          gap: var(--spacing-2);
+                        "
+                      >
+                        <AppIcon
+                          name="mdi-cog-outline"
+                          style="color: var(--color-primary-500)"
+                        />
                         Advanced AI Settings
                       </h4>
-                      <p class="mb-0" style="color: var(--text-secondary); font-size: 0.875rem; margin-top: var(--spacing-1);">Fine-tune AI behavior and performance settings</p>
+                      <p
+                        class="mb-0"
+                        style="
+                          color: var(--text-secondary);
+                          font-size: 0.875rem;
+                          margin-top: var(--spacing-1);
+                        "
+                      >
+                        Fine-tune AI behavior and performance settings
+                      </p>
                     </div>
-                    
+
                     <div class="glass-form-grid">
                       <!-- Response Settings -->
                       <div class="glass-form-field">
                         <h5 class="setting-group-title">Response Generation</h5>
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr auto; gap: var(--spacing-3); align-items: center; margin-bottom: var(--spacing-3);">
-                          <label class="form-label glass-label">Temperature</label>
-                          <span class="range-value">{{ settings.aiTemperature ?? 0.7 }}</span>
+                        <div
+                          class="form-row"
+                          style="
+                            display: grid;
+                            grid-template-columns: 1fr auto;
+                            gap: var(--spacing-3);
+                            align-items: center;
+                            margin-bottom: var(--spacing-3);
+                          "
+                        >
+                          <label class="form-label glass-label"
+                            >Temperature</label
+                          >
+                          <span class="range-value">{{
+                            settings.aiTemperature ?? 0.7
+                          }}</span>
                         </div>
-                        <input type="range" min="0" max="1" step="0.1" :value="settings.aiTemperature ?? 0.7" class="glass-slider enhanced-glass-input" style="width: 100%;" @input="updateSetting('aiTemperature', parseFloat($event.target.value))" />
+                        <input
+                          type="range"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          :value="settings.aiTemperature ?? 0.7"
+                          class="glass-slider enhanced-glass-input"
+                          style="width: 100%"
+                          @input="
+                            updateSetting(
+                              'aiTemperature',
+                              parseFloat($event.target.value)
+                            )
+                          "
+                        />
                       </div>
-                      
+
                       <div class="glass-form-field">
                         <label class="form-label glass-label">Max Tokens</label>
-                        <input type="number" :value="settings.aiMaxTokens ?? 2048" class="glass-input enhanced-glass-input" placeholder="2048" @input="updateSetting('aiMaxTokens', parseInt($event.target.value))" />
+                        <input
+                          type="number"
+                          :value="settings.aiMaxTokens ?? 2048"
+                          class="glass-input enhanced-glass-input"
+                          placeholder="2048"
+                          @input="
+                            updateSetting(
+                              'aiMaxTokens',
+                              parseInt($event.target.value)
+                            )
+                          "
+                        />
                       </div>
 
                       <div class="glass-form-field">
                         <h5 class="setting-group-title">AI Behavior</h5>
-                        <div class="form-row" style="display: flex; align-items: center; gap: var(--spacing-3); margin-bottom: var(--spacing-2);">
-                          <input type="checkbox" :checked="settings.aiAutoSuggest ?? false" class="glass-toggle" @change="updateSetting('aiAutoSuggest', $event.target.checked)" />
-                          <label class="toggle-label glass-label">Auto-suggest responses</label>
+                        <div
+                          class="form-row"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            gap: var(--spacing-3);
+                            margin-bottom: var(--spacing-2);
+                          "
+                        >
+                          <input
+                            type="checkbox"
+                            :checked="settings.aiAutoSuggest ?? false"
+                            class="glass-toggle"
+                            @change="
+                              updateSetting(
+                                'aiAutoSuggest',
+                                $event.target.checked
+                              )
+                            "
+                          />
+                          <label class="toggle-label glass-label"
+                            >Auto-suggest responses</label
+                          >
                         </div>
-                        <div class="form-row" style="display: flex; align-items: center; gap: var(--spacing-3); margin-bottom: var(--spacing-2);">
-                          <input type="checkbox" :checked="settings.aiSmartCorrection ?? false" class="glass-toggle" @change="updateSetting('aiSmartCorrection', $event.target.checked)" />
-                          <label class="toggle-label glass-label">Smart grammar correction</label>
+                        <div
+                          class="form-row"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            gap: var(--spacing-3);
+                            margin-bottom: var(--spacing-2);
+                          "
+                        >
+                          <input
+                            type="checkbox"
+                            :checked="settings.aiSmartCorrection ?? false"
+                            class="glass-toggle"
+                            @change="
+                              updateSetting(
+                                'aiSmartCorrection',
+                                $event.target.checked
+                              )
+                            "
+                          />
+                          <label class="toggle-label glass-label"
+                            >Smart grammar correction</label
+                          >
                         </div>
-                        <div class="form-row" style="display: flex; align-items: center; gap: var(--spacing-3);">
-                          <input type="checkbox" :checked="settings.aiContextAware ?? true" class="glass-toggle" @change="updateSetting('aiContextAware', $event.target.checked)" />
-                          <label class="toggle-label glass-label">Context-aware responses</label>
+                        <div
+                          class="form-row"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            gap: var(--spacing-3);
+                          "
+                        >
+                          <input
+                            type="checkbox"
+                            :checked="settings.aiContextAware ?? true"
+                            class="glass-toggle"
+                            @change="
+                              updateSetting(
+                                'aiContextAware',
+                                $event.target.checked
+                              )
+                            "
+                          />
+                          <label class="toggle-label glass-label"
+                            >Context-aware responses</label
+                          >
                         </div>
                       </div>
                     </div>
@@ -502,7 +827,10 @@
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">System & Interface</h2>
-                  <p class="header-description">Application preferences, hardware settings, and system configuration</p>
+                  <p class="header-description">
+                    Application preferences, hardware settings, and system
+                    configuration
+                  </p>
                 </div>
               </div>
             </div>
@@ -511,7 +839,9 @@
               <!-- Tab Navigation -->
               <div class="glass-tab-wrapper">
                 <UnifiedButton
-                  :variant="activeSystemTab === 'interface' ? 'primary' : 'glass'"
+                  :variant="
+                    activeSystemTab === 'interface' ? 'primary' : 'glass'
+                  "
                   size="sm"
                   leading-icon="mdi-palette"
                   class="profile-tab-btn"
@@ -520,7 +850,9 @@
                   Interface
                 </UnifiedButton>
                 <UnifiedButton
-                  :variant="activeSystemTab === 'hardware' ? 'primary' : 'glass'"
+                  :variant="
+                    activeSystemTab === 'hardware' ? 'primary' : 'glass'
+                  "
                   size="sm"
                   leading-icon="mdi-speaker"
                   class="profile-tab-btn"
@@ -551,7 +883,10 @@
               <!-- Tab Content -->
               <div class="profile-tab-content glass-tab-content">
                 <!-- Interface Tab -->
-                <div v-if="activeSystemTab === 'interface'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeSystemTab === 'interface'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <ApplicationPreferencesSection
                     :settings="settings"
                     @save="saveSettings"
@@ -559,7 +894,10 @@
                 </div>
 
                 <!-- Hardware Tab -->
-                <div v-if="activeSystemTab === 'hardware'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeSystemTab === 'hardware'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <AudioHardwareSection
                     :settings="settings"
                     :voices="voices"
@@ -571,27 +909,38 @@
                 </div>
 
                 <!-- System Tab -->
-                <div v-if="activeSystemTab === 'system'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeSystemTab === 'system'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <SystemConfigurationSection
-                    :settings="{ ...settings.system || {}, fairyBubbleSize: settings.fairyBubbleSize }"
+                    :settings="{
+                      ...(settings.system || {}),
+                      fairyBubbleSize: settings.fairyBubbleSize,
+                    }"
                     @clear-cache="clearAppCache"
                     @clear-logs="clearApplicationLogs"
                     @export-settings="exportUserSettings"
                     @import-settings="importUserSettings"
-                    @update-fairy-setting="(value) => store.updateSettings({ fairyBubbleSize: value })"
+                    @update-fairy-setting="
+                      value => store.updateSettings({ fairyBubbleSize: value })
+                    "
                     @save="saveSettings"
                   />
                 </div>
 
                 <!-- Voice Tab -->
-                <div v-if="activeSystemTab === 'voice'" class="tab-pane profile-tab-pane">
+                <div
+                  v-if="activeSystemTab === 'voice'"
+                  class="tab-pane profile-tab-pane"
+                >
                   <VoiceExperienceSection
                     :voice-settings="{
                       voiceMode: settings.voiceMode || false,
                       ttsProvider: settings.ttsProvider || 'system',
                       kokoroModel: settings.kokoroModel || 'default',
                       voiceHandsFree: settings.voiceHandsFree || false,
-                      chatCuesMuted: settings.chatCuesMuted || false
+                      chatCuesMuted: settings.chatCuesMuted || false,
                     }"
                     @save="updateVoiceSettings"
                   />
@@ -611,7 +960,10 @@
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">Career & Data</h2>
-                  <p class="header-description">Job search settings, data sources, and career development tools</p>
+                  <p class="header-description">
+                    Job search settings, data sources, and career development
+                    tools
+                  </p>
                 </div>
               </div>
             </div>
@@ -638,7 +990,9 @@
                   Data Sources
                 </UnifiedButton>
                 <UnifiedButton
-                  :variant="activeCareerTab === 'management' ? 'glass' : 'ghost'"
+                  :variant="
+                    activeCareerTab === 'management' ? 'glass' : 'ghost'
+                  "
                   size="sm"
                   class="glass-tab-button"
                   @click="activeCareerTab = 'management'"
@@ -701,7 +1055,9 @@
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">Insights & Progress</h2>
-                  <p class="header-description">Usage statistics, achievements, and development tracking</p>
+                  <p class="header-description">
+                    Usage statistics, achievements, and development tracking
+                  </p>
                 </div>
               </div>
             </div>
@@ -719,7 +1075,9 @@
                   Statistics
                 </UnifiedButton>
                 <UnifiedButton
-                  :variant="activeInsightsTab === 'achievements' ? 'glass' : 'ghost'"
+                  :variant="
+                    activeInsightsTab === 'achievements' ? 'glass' : 'ghost'
+                  "
                   size="sm"
                   class="glass-tab-button"
                   @click="activeInsightsTab = 'achievements'"
@@ -741,7 +1099,10 @@
                 </div>
 
                 <!-- Achievements Tab -->
-                <div v-if="activeInsightsTab === 'achievements'" class="tab-pane">
+                <div
+                  v-if="activeInsightsTab === 'achievements'"
+                  class="tab-pane"
+                >
                   <GamificationDashboard />
                 </div>
               </div>
@@ -759,7 +1120,9 @@
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">Advanced & Developer</h2>
-                  <p class="header-description">Developer tools, system configuration, and advanced features</p>
+                  <p class="header-description">
+                    Developer tools, system configuration, and advanced features
+                  </p>
                 </div>
               </div>
             </div>
@@ -768,7 +1131,9 @@
               <!-- Tab Navigation -->
               <div class="glass-tab-wrapper">
                 <UnifiedButton
-                  :variant="activeAdvancedTab === 'developer' ? 'glass' : 'ghost'"
+                  :variant="
+                    activeAdvancedTab === 'developer' ? 'glass' : 'ghost'
+                  "
                   size="sm"
                   class="glass-tab-button"
                   @click="activeAdvancedTab = 'developer'"
@@ -822,7 +1187,9 @@
                 </div>
                 <div class="header-text">
                   <h2 class="header-title">Help & About</h2>
-                  <p class="header-description">App information, support resources, and tips</p>
+                  <p class="header-description">
+                    App information, support resources, and tips
+                  </p>
                 </div>
               </div>
             </div>
@@ -882,19 +1249,42 @@
       </div>
 
       <!-- Sticky Save Bar -->
-      <div v-show="isDirty" class="settings-save-bar glass p-4 gap-4 rounded-lg neon-interactive" style="position: fixed; bottom: var(--spacing-4); right: var(--spacing-4); z-index: 100;">
+      <div
+        v-show="isDirty"
+        class="settings-save-bar glass p-4 gap-4 rounded-lg neon-interactive"
+        style="
+          position: fixed;
+          bottom: var(--spacing-4);
+          right: var(--spacing-4);
+          z-index: 100;
+        "
+      >
         <div class="d-flex align-items-center gap-3">
           <div class="d-flex align-items-center gap-2">
-            <AppIcon name="mdi-content-save" style="color: var(--color-warning-500);" />
-            <span style="color: var(--text-secondary); font-size: 0.875rem;">
+            <AppIcon
+              name="mdi-content-save"
+              style="color: var(--color-warning-500)"
+            />
+            <span style="color: var(--text-secondary); font-size: 0.875rem">
               {{ saving ? 'Saving changes…' : 'Unsaved changes' }}
             </span>
           </div>
           <div class="d-flex gap-2">
-            <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-backup-restore" @click="resetToDefaults">
+            <UnifiedButton
+              variant="ghost"
+              size="sm"
+              leading-icon="mdi-backup-restore"
+              @click="resetToDefaults"
+            >
               Reset
             </UnifiedButton>
-            <UnifiedButton variant="primary" size="sm" :disabled="saving" leading-icon="mdi-content-save" @click="saveAllSettings">
+            <UnifiedButton
+              variant="primary"
+              size="sm"
+              :disabled="saving"
+              leading-icon="mdi-content-save"
+              @click="saveAllSettings"
+            >
               {{ saving ? 'Saving…' : 'Save All' }}
             </UnifiedButton>
           </div>
@@ -908,27 +1298,36 @@
       title="Search Settings"
       @close="showSearchModal = false"
     >
-      <div style="padding: var(--spacing-4);">
+      <div style="padding: var(--spacing-4)">
         <input
           v-model="searchQuery"
           type="text"
           class="glass-input w-100 mb-3"
           placeholder="Search for settings, features, or options..."
-          style="font-size: 1.1rem; padding: var(--spacing-4);"
+          style="font-size: 1.1rem; padding: var(--spacing-4)"
         />
         <div v-if="filteredSearchResults?.length" class="search-results">
           <div
             v-for="result in filteredSearchResults.slice(0, 10)"
             :key="result.id"
             class="search-result-item"
-            style="padding: var(--spacing-3); border-bottom: 1px solid var(--glass-border); cursor: pointer;"
-            @click="activeTab = result.tab; showSearchModal = false"
+            style="
+              padding: var(--spacing-3);
+              border-bottom: 1px solid var(--glass-border);
+              cursor: pointer;
+            "
+            @click="
+              activeTab = result.tab
+              showSearchModal = false
+            "
           >
             <div class="d-flex align-items-center gap-3">
               <AppIcon :name="result.icon" />
               <div>
-                <div style="font-weight: 500;">{{ result.title }}</div>
-                <div style="font-size: 0.875rem; color: var(--text-secondary);">{{ result.description }}</div>
+                <div style="font-weight: 500">{{ result.title }}</div>
+                <div style="font-size: 0.875rem; color: var(--text-secondary)">
+                  {{ result.description }}
+                </div>
               </div>
             </div>
           </div>
@@ -1008,7 +1407,7 @@ const userProfile = computed(() => {
     gamingProfile: profile.gamingProfile || {},
     careerProfile: profile.careerProfile || {},
     careerPreferences: profile.careerPreferences || {},
-    ...profile
+    ...profile,
   }
 })
 
@@ -1034,50 +1433,50 @@ const logicalTabGroups = computed(() => [
     label: 'Profile & Identity',
     icon: 'mdi-account-card-details',
     description: 'Personal and gaming profile information',
-    category: 'essentials'
+    category: 'essentials',
   },
   {
     key: 'ai',
     label: 'AI & Automation',
     icon: 'mdi-brain',
     description: 'AI services and intelligent features',
-    category: 'features'
+    category: 'features',
   },
   {
     key: 'system',
     label: 'System & Interface',
     icon: 'mdi-tune-vertical',
     description: 'App preferences and hardware settings',
-    category: 'system'
+    category: 'system',
   },
   {
     key: 'career',
     label: 'Career & Data',
     icon: 'mdi-briefcase-search-outline',
     description: 'Job search and data management',
-    category: 'data'
+    category: 'data',
   },
   {
     key: 'insights',
     label: 'Insights & Progress',
     icon: 'mdi-chart-timeline-variant',
     description: 'Usage statistics and achievements',
-    category: 'analytics'
+    category: 'analytics',
   },
   {
     key: 'advanced',
     label: 'Advanced & Developer',
     icon: 'mdi-console-line',
     description: 'Developer tools and system configuration',
-    category: 'advanced'
+    category: 'advanced',
   },
   {
     key: 'about',
     label: 'Help & About',
     icon: 'mdi-help-circle-outline',
     description: 'App info and support resources',
-    category: 'support'
-  }
+    category: 'support',
+  },
 ])
 
 // Quick Access Tabs
@@ -1085,21 +1484,75 @@ const quickAccessTabs = computed(() => [
   { key: 'profile', shortLabel: 'Profile', icon: 'mdi-account-card-details' },
   { key: 'ai', shortLabel: 'AI', icon: 'mdi-brain' },
   { key: 'system', shortLabel: 'System', icon: 'mdi-tune-vertical' },
-  { key: 'career', shortLabel: 'Career', icon: 'mdi-briefcase-search-outline' }
+  { key: 'career', shortLabel: 'Career', icon: 'mdi-briefcase-search-outline' },
 ])
 
 // Search functionality
 const searchResults = computed(() => {
   const allSettings = [
-    { id: 'profile-name', title: 'Personal Profile', description: 'Name, email, contact information', tab: 'profile', icon: 'mdi-account' },
-    { id: 'gaming-profile', title: 'Gaming Profile', description: 'Studio preferences, roles, experience', tab: 'profile', icon: 'mdi-gamepad' },
-    { id: 'api-keys', title: 'API Configuration', description: 'Gemini API key and AI services', tab: 'ai', icon: 'mdi-key' },
-    { id: 'ai-settings', title: 'AI Features', description: 'AI model preferences and behavior', tab: 'ai', icon: 'mdi-robot' },
-    { id: 'theme-settings', title: 'Theme & Display', description: 'Dark mode, density, appearance', tab: 'system', icon: 'mdi-palette' },
-    { id: 'audio-hardware', title: 'Audio Hardware', description: 'Microphone, speakers, voice settings', tab: 'system', icon: 'mdi-microphone' },
-    { id: 'job-sources', title: 'Job Data Sources', description: 'Gaming studios and job boards', tab: 'career', icon: 'mdi-database' },
-    { id: 'usage-stats', title: 'Usage Statistics', description: 'App usage and performance metrics', tab: 'insights', icon: 'mdi-chart-box' },
-    { id: 'developer-tools', title: 'Developer Settings', description: 'Debug mode, logs, advanced options', tab: 'advanced', icon: 'mdi-code-tags' }
+    {
+      id: 'profile-name',
+      title: 'Personal Profile',
+      description: 'Name, email, contact information',
+      tab: 'profile',
+      icon: 'mdi-account',
+    },
+    {
+      id: 'gaming-profile',
+      title: 'Gaming Profile',
+      description: 'Studio preferences, roles, experience',
+      tab: 'profile',
+      icon: 'mdi-gamepad',
+    },
+    {
+      id: 'api-keys',
+      title: 'API Configuration',
+      description: 'Gemini API key and AI services',
+      tab: 'ai',
+      icon: 'mdi-key',
+    },
+    {
+      id: 'ai-settings',
+      title: 'AI Features',
+      description: 'AI model preferences and behavior',
+      tab: 'ai',
+      icon: 'mdi-robot',
+    },
+    {
+      id: 'theme-settings',
+      title: 'Theme & Display',
+      description: 'Dark mode, density, appearance',
+      tab: 'system',
+      icon: 'mdi-palette',
+    },
+    {
+      id: 'audio-hardware',
+      title: 'Audio Hardware',
+      description: 'Microphone, speakers, voice settings',
+      tab: 'system',
+      icon: 'mdi-microphone',
+    },
+    {
+      id: 'job-sources',
+      title: 'Job Data Sources',
+      description: 'Gaming studios and job boards',
+      tab: 'career',
+      icon: 'mdi-database',
+    },
+    {
+      id: 'usage-stats',
+      title: 'Usage Statistics',
+      description: 'App usage and performance metrics',
+      tab: 'insights',
+      icon: 'mdi-chart-box',
+    },
+    {
+      id: 'developer-tools',
+      title: 'Developer Settings',
+      description: 'Debug mode, logs, advanced options',
+      tab: 'advanced',
+      icon: 'mdi-code-tags',
+    },
   ]
   return allSettings
 })
@@ -1107,9 +1560,10 @@ const searchResults = computed(() => {
 const filteredSearchResults = computed(() => {
   if (!searchQuery.value) return []
   const query = searchQuery.value.toLowerCase()
-  return searchResults.value.filter(item =>
-    item.title.toLowerCase().includes(query) ||
-    item.description.toLowerCase().includes(query)
+  return searchResults.value.filter(
+    item =>
+      item.title.toLowerCase().includes(query) ||
+      item.description.toLowerCase().includes(query)
   )
 })
 
@@ -1117,24 +1571,24 @@ const filteredSearchResults = computed(() => {
 const profileCompleteness = computed(() => {
   const profile = userProfile.value
   if (!profile) return 0
-  
+
   let completed = 0
   let total = 0
-  
+
   // Personal info fields
   const personalFields = ['name', 'email', 'phone', 'location']
   personalFields.forEach(field => {
     total++
     if (profile.personalInfo?.[field]) completed++
   })
-  
+
   // Gaming profile fields
   const gamingFields = ['preferredRoles', 'experienceLevel', 'portfolioUrl']
   gamingFields.forEach(field => {
     total++
     if (profile.gamingProfile?.[field]) completed++
   })
-  
+
   return total > 0 ? (completed / total) * 100 : 0
 })
 
@@ -1150,32 +1604,35 @@ onMounted(() => {
 
 const isDirty = computed(() => {
   if (!originalSettings.value || !originalUserProfile.value) return false
-  
+
   // Deep comparison function
   const hasChanges = (original, current) => {
     if (original === current) return false
     if (typeof original !== typeof current) return true
     if (original === null || current === null) return original !== current
-    
+
     if (typeof original === 'object') {
       const originalKeys = Object.keys(original)
       const currentKeys = Object.keys(current)
-      
+
       if (originalKeys.length !== currentKeys.length) return true
-      
+
       for (const key of originalKeys) {
         if (hasChanges(original[key], current[key])) return true
       }
       return false
     }
-    
+
     return original !== current
   }
-  
+
   // Check if settings have been modified
   const settingsChanged = hasChanges(originalSettings.value, settings.value)
-  const profileChanged = hasChanges(originalUserProfile.value, userProfile.value)
-  
+  const profileChanged = hasChanges(
+    originalUserProfile.value,
+    userProfile.value
+  )
+
   return settingsChanged || profileChanged
 })
 
@@ -1185,15 +1642,15 @@ const saveAllSettings = async () => {
   try {
     // Save settings only - user profile is handled through individual section saves
     const success = store.updateSettings(settings.value)
-    
+
     if (!success) {
       throw new Error('Failed to update settings')
     }
-    
+
     // Reset original values after successful save
     originalSettings.value = JSON.parse(JSON.stringify(settings.value))
     originalUserProfile.value = JSON.parse(JSON.stringify(userProfile.value))
-    
+
     // Show success notification
   } catch (error) {
     console.error('Failed to save settings:', error)
@@ -1203,27 +1660,27 @@ const saveAllSettings = async () => {
   }
 }
 
-const saveSettings = async (settingsData) => {
+const saveSettings = async settingsData => {
   await store.updateSettings(settingsData)
 }
 
-const updateVoiceSettings = async (voiceSettings) => {
+const updateVoiceSettings = async voiceSettings => {
   // Extract voice settings and update the main settings object
   const updatedSettings = {
     voiceMode: voiceSettings.voiceMode,
     ttsProvider: voiceSettings.ttsProvider,
     kokoroModel: voiceSettings.kokoroModel,
     voiceHandsFree: voiceSettings.voiceHandsFree,
-    chatCuesMuted: voiceSettings.chatCuesMuted
+    chatCuesMuted: voiceSettings.chatCuesMuted,
   }
-  
+
   await store.updateSettings(updatedSettings)
 }
 
 const updateSetting = async (key, value) => {
   // Update the reactive settings object
   settings.value[key] = value
-  
+
   // Auto-save individual setting changes
   try {
     await store.updateSettings({ [key]: value })
@@ -1233,9 +1690,13 @@ const updateSetting = async (key, value) => {
 }
 
 const resetToDefaults = async () => {
-  if (confirm('Are you sure you want to reset all settings to defaults? This cannot be undone.')) {
+  if (
+    confirm(
+      'Are you sure you want to reset all settings to defaults? This cannot be undone.'
+    )
+  ) {
     await store.resetSettings()
-    
+
     // Reset original values after successful reset
     originalSettings.value = JSON.parse(JSON.stringify(settings.value))
     originalUserProfile.value = JSON.parse(JSON.stringify(userProfile.value))
@@ -1246,10 +1707,12 @@ const exportSettings = () => {
   const data = {
     settings: settings.value,
     profile: userProfile.value,
-    exportDate: new Date().toISOString()
+    exportDate: new Date().toISOString(),
   }
-  
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: 'application/json',
+  })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -1280,7 +1743,7 @@ const audioDevices = ref([])
 const voices = ref([])
 
 // Event handlers
-const handleTipAction = (tip) => {
+const handleTipAction = tip => {
   // Show a success notification for the tip action
   if (tip && tip.title) {
     // Use the store's notification system if available, otherwise fall back to alert
@@ -1288,7 +1751,7 @@ const handleTipAction = (tip) => {
       store.showNotification({
         type: 'success',
         message: `Tip action completed: ${tip.title}`,
-        duration: 3000
+        duration: 3000,
       })
     } else {
       alert(`Tip: ${tip.title}`)
@@ -1296,24 +1759,24 @@ const handleTipAction = (tip) => {
   }
 }
 
-const completeRecommendation = (recommendation) => {
+const completeRecommendation = recommendation => {
   if (recommendation && recommendation.id) {
     // Mark the recommendation as completed in the store or local state
     if (store.completeRecommendation) {
       store.completeRecommendation(recommendation.id)
     }
-    
+
     // Show success notification
     if (store.showNotification) {
       store.showNotification({
         type: 'success',
         message: `Recommendation completed: ${recommendation.title || 'Task completed'}`,
-        duration: 3000
+        duration: 3000,
       })
     } else {
       alert(`Completed: ${recommendation.title || 'Task completed'}`)
     }
-    
+
     // Remove the completed recommendation from the list
     recommendationsData.value = recommendationsData.value.filter(
       rec => rec.id !== recommendation.id
@@ -1330,11 +1793,13 @@ const exportUserData = () => {
     settings: settings.value,
     usageStats: usageStats.value,
     tips: tipsData.value,
-    recommendations: recommendationsData.value
+    recommendations: recommendationsData.value,
   }
 
   // Create a blob and download link
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+    type: 'application/json',
+  })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -1347,7 +1812,7 @@ const exportUserData = () => {
     store.showNotification({
       type: 'success',
       message: 'User data exported successfully',
-      duration: 3000
+      duration: 3000,
     })
   } else {
     alert('User data exported successfully')
@@ -1359,52 +1824,59 @@ const importUserData = () => {
   const input = document.createElement('input')
   input.type = 'file'
   input.accept = '.json'
-  
-  input.onchange = async (event) => {
+
+  input.onchange = async event => {
     const file = event.target.files[0]
     if (!file) return
-    
+
     try {
       const fileContent = await file.text()
       const importedData = JSON.parse(fileContent)
-      
+
       // Validate the imported data structure
       if (!importedData || typeof importedData !== 'object') {
         throw new Error('Invalid file format')
       }
-      
+
       // Check if this is a NAVI export file
       if (!importedData.version || !importedData.exportDate) {
         throw new Error('Not a valid NAVI data export file')
       }
-      
+
       // Confirm with user before importing
-      if (confirm('Are you sure you want to import this data? This will overwrite your current settings and profile.')) {
+      if (
+        confirm(
+          'Are you sure you want to import this data? This will overwrite your current settings and profile.'
+        )
+      ) {
         // Import profile data if available
         if (importedData.profile && store.saveUserProfile) {
           await store.saveUserProfile(importedData.profile)
         }
-        
+
         // Import settings data if available
         if (importedData.settings && store.saveSettings) {
           await store.saveSettings(importedData.settings)
         }
-        
+
         // Update local state if needed
         if (importedData.tips && Array.isArray(importedData.tips)) {
           tipsData.value = importedData.tips
         }
-        
-        if (importedData.recommendations && Array.isArray(importedData.recommendations)) {
+
+        if (
+          importedData.recommendations &&
+          Array.isArray(importedData.recommendations)
+        ) {
           recommendationsData.value = importedData.recommendations
         }
-        
+
         // Show success notification
         if (store.showNotification) {
           store.showNotification({
             type: 'success',
             message: 'User data imported successfully',
-            duration: 3000
+            duration: 3000,
           })
         } else {
           alert('User data imported successfully')
@@ -1412,54 +1884,66 @@ const importUserData = () => {
       }
     } catch (error) {
       console.error('Failed to import user data:', error)
-      
+
       // Show error notification
       if (store.showNotification) {
         store.showNotification({
           type: 'error',
           message: `Import failed: ${error.message || 'Invalid file format'}`,
-          duration: 5000
+          duration: 5000,
         })
       } else {
         alert(`Import failed: ${error.message || 'Invalid file format'}`)
       }
     }
   }
-  
+
   // Trigger the file selection dialog
   input.click()
 }
 
 const clearAppCache = () => {
-  if (confirm('Are you sure you want to clear the application cache? This will remove temporary data but preserve your settings and profile.')) {
+  if (
+    confirm(
+      'Are you sure you want to clear the application cache? This will remove temporary data but preserve your settings and profile.'
+    )
+  ) {
     try {
       // Clear localStorage cache
-      const keysToPreserve = ['userProfile', 'settings', 'authToken', 'sessionData']
+      const keysToPreserve = [
+        'userProfile',
+        'settings',
+        'authToken',
+        'sessionData',
+      ]
       const allKeys = Object.keys(localStorage)
-      
+
       for (const key of allKeys) {
         if (!keysToPreserve.includes(key) && !key.startsWith('navi-')) {
           localStorage.removeItem(key)
         }
       }
-      
+
       // Clear sessionStorage
       sessionStorage.clear()
-      
+
       // Clear IndexedDB if available
       if (window.indexedDB && window.indexedDB.databases) {
-        window.indexedDB.databases().then((databases) => {
-          for (const db of databases) {
-            if (db.name && db.name.includes('navi-cache')) {
-              window.indexedDB.deleteDatabase(db.name)
+        window.indexedDB
+          .databases()
+          .then(databases => {
+            for (const db of databases) {
+              if (db.name && db.name.includes('navi-cache')) {
+                window.indexedDB.deleteDatabase(db.name)
+              }
             }
-          }
-        }).catch(console.error)
+          })
+          .catch(console.error)
       }
-      
+
       // Clear service worker cache if available
       if ('caches' in window) {
-        window.caches.keys().then((cacheNames) => {
+        window.caches.keys().then(cacheNames => {
           for (const cacheName of cacheNames) {
             if (cacheName.includes('navi') || cacheName.includes('workbox')) {
               window.caches.delete(cacheName)
@@ -1467,26 +1951,26 @@ const clearAppCache = () => {
           }
         })
       }
-      
+
       // Show success notification
       if (store.showNotification) {
         store.showNotification({
           type: 'success',
           message: 'Application cache cleared successfully',
-          duration: 3000
+          duration: 3000,
         })
       } else {
         alert('Application cache cleared successfully')
       }
     } catch (error) {
       console.error('Failed to clear cache:', error)
-      
+
       // Show error notification
       if (store.showNotification) {
         store.showNotification({
           type: 'error',
           message: 'Failed to clear cache. Some data may still be cached.',
-          duration: 5000
+          duration: 5000,
         })
       } else {
         alert('Failed to clear cache. Some data may still be cached.')
@@ -1511,38 +1995,44 @@ const exportDebugInfo = () => {
     hardwareConcurrency: window.navigator.hardwareConcurrency || 'unknown',
     deviceMemory: window.navigator.deviceMemory || 'unknown',
     cookieEnabled: window.navigator.cookieEnabled,
-    javaEnabled: window.navigator.javaEnabled ? window.navigator.javaEnabled() : false,
+    javaEnabled: window.navigator.javaEnabled
+      ? window.navigator.javaEnabled()
+      : false,
     screen: {
       width: window.screen.width,
       height: window.screen.height,
       colorDepth: window.screen.colorDepth,
-      pixelDepth: window.screen.pixelDepth
+      pixelDepth: window.screen.pixelDepth,
     },
     window: {
       innerWidth: window.innerWidth,
       innerHeight: window.innerHeight,
       outerWidth: window.outerWidth,
-      outerHeight: window.outerHeight
+      outerHeight: window.outerHeight,
     },
     location: {
       href: window.location.href,
       origin: window.location.origin,
       protocol: window.location.protocol,
-      host: window.location.host
+      host: window.location.host,
     },
     localStorageKeys: Object.keys(window.localStorage),
     sessionStorageKeys: Object.keys(window.sessionStorage),
     settings: settings.value,
     profile: userProfile.value,
-    storeState: store ? { 
-      availableModels: store.availableModels,
-      selectedModelInfo: store.selectedModelInfo,
-      loading: store.loading
-    } : 'Store not available'
+    storeState: store
+      ? {
+          availableModels: store.availableModels,
+          selectedModelInfo: store.selectedModelInfo,
+          loading: store.loading,
+        }
+      : 'Store not available',
   }
 
   // Create and download debug info file
-  const blob = new Blob([JSON.stringify(debugInfo, null, 2)], { type: 'application/json' })
+  const blob = new Blob([JSON.stringify(debugInfo, null, 2)], {
+    type: 'application/json',
+  })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -1555,7 +2045,7 @@ const exportDebugInfo = () => {
     store.showNotification({
       type: 'success',
       message: 'Debug information exported successfully',
-      duration: 3000
+      duration: 3000,
     })
   } else {
     alert('Debug information exported successfully')
@@ -1593,7 +2083,7 @@ const showChangelog = () => {
     store.showModal({
       title: 'NAVI Changelog',
       content: changelogContent,
-      type: 'info'
+      type: 'info',
     })
   } else {
     alert(changelogContent)
@@ -1602,8 +2092,11 @@ const showChangelog = () => {
 
 const reportIssue = () => {
   // Create a GitHub issue URL with pre-filled template
-  const issueTitle = encodeURIComponent('Bug Report: [Please describe the issue]')
-  const issueBody = encodeURIComponent(`
+  const issueTitle = encodeURIComponent(
+    'Bug Report: [Please describe the issue]'
+  )
+  const issueBody = encodeURIComponent(
+    `
 ## Bug Description
 [Please describe the bug in detail]
 
@@ -1628,7 +2121,8 @@ const reportIssue = () => {
 
 ## Additional Context
 [Add any other context about the problem here]
-  `.trim())
+  `.trim()
+  )
 
   const githubUrl = `https://github.com/d4551/navi2/issues/new?title=${issueTitle}&body=${issueBody}`
 
@@ -1640,15 +2134,18 @@ const reportIssue = () => {
     store.showNotification({
       type: 'info',
       message: 'Opening GitHub issue page for bug reporting',
-      duration: 3000
+      duration: 3000,
     })
   }
 }
 
 const requestFeature = () => {
   // Create a GitHub issue URL for feature requests with pre-filled template
-  const issueTitle = encodeURIComponent('Feature Request: [Please describe the feature]')
-  const issueBody = encodeURIComponent(`
+  const issueTitle = encodeURIComponent(
+    'Feature Request: [Please describe the feature]'
+  )
+  const issueBody = encodeURIComponent(
+    `
 ## Feature Description
 [Please describe the feature you would like to see in detail]
 
@@ -1668,7 +2165,8 @@ const requestFeature = () => {
 - **App Version:** ${appVersion.value}
 - **Browser:** ${window.navigator.userAgent}
 - **OS:** ${window.navigator.platform}
-  `.trim())
+  `.trim()
+  )
 
   const githubUrl = `https://github.com/d4551/navi2/issues/new?title=${issueTitle}&body=${issueBody}&labels=enhancement`
 
@@ -1680,7 +2178,7 @@ const requestFeature = () => {
     store.showNotification({
       type: 'info',
       message: 'Opening GitHub for feature request submission',
-      duration: 3000
+      duration: 3000,
     })
   }
 }
@@ -1688,7 +2186,8 @@ const requestFeature = () => {
 const contactSupport = () => {
   // Open email client with support email
   const subject = encodeURIComponent('NAVI Support Request')
-  const body = encodeURIComponent(`
+  const body = encodeURIComponent(
+    `
 Hello NAVI Support Team,
 
 I need assistance with the following:
@@ -1701,7 +2200,8 @@ Operating System: ${window.navigator.platform}
 
 Best regards,
 [Your Name]
-  `.trim())
+  `.trim()
+  )
 
   const mailtoUrl = `mailto:support@navi-app.com?subject=${subject}&body=${body}`
 
@@ -1713,7 +2213,7 @@ Best regards,
     store.showNotification({
       type: 'info',
       message: 'Opening email client for support contact',
-      duration: 3000
+      duration: 3000,
     })
   }
 }
@@ -1764,7 +2264,7 @@ If you have questions about this privacy policy, please contact us at privacy@na
     store.showModal({
       title: 'NAVI Privacy Policy',
       content: privacyContent,
-      type: 'info'
+      type: 'info',
     })
   } else {
     alert(privacyContent)
@@ -1808,7 +2308,7 @@ For questions about these terms, please contact us at terms@navi-app.com.
     store.showModal({
       title: 'NAVI Terms of Service',
       content: termsContent,
-      type: 'info'
+      type: 'info',
     })
   } else {
     alert(termsContent)
@@ -1823,12 +2323,14 @@ const exportUsageStats = () => {
     statistics: usageStats.value,
     profile: {
       name: userProfile.value.personalInfo?.name,
-      email: userProfile.value.personalInfo?.email
-    }
+      email: userProfile.value.personalInfo?.email,
+    },
   }
 
   // Create a blob and download link
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+    type: 'application/json',
+  })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -1841,7 +2343,7 @@ const exportUsageStats = () => {
     store.showNotification({
       type: 'success',
       message: 'Usage statistics exported successfully',
-      duration: 3000
+      duration: 3000,
     })
   } else {
     alert('Usage statistics exported successfully')
@@ -1849,10 +2351,14 @@ const exportUsageStats = () => {
 }
 
 const resetUsageStats = () => {
-  if (confirm('Are you sure you want to reset all usage statistics? This action cannot be undone.')) {
+  if (
+    confirm(
+      'Are you sure you want to reset all usage statistics? This action cannot be undone.'
+    )
+  ) {
     // Reset usage statistics to empty object
     usageStats.value = {}
-    
+
     // Optionally, reset in the store if available
     if (store?.resetUsageStatistics) {
       store.resetUsageStatistics()
@@ -1863,7 +2369,7 @@ const resetUsageStats = () => {
       store.showNotification({
         type: 'success',
         message: 'Usage statistics reset successfully',
-        duration: 3000
+        duration: 3000,
       })
     } else {
       alert('Usage statistics reset successfully')
@@ -1880,12 +2386,14 @@ const testApiKey = async () => {
     const result = await store.testGeminiApiKey()
     apiTestResult.value = {
       success: result.success,
-      message: result.message || (result.success ? 'API key is valid' : 'API key test failed')
+      message:
+        result.message ||
+        (result.success ? 'API key is valid' : 'API key test failed'),
     }
   } catch (error) {
     apiTestResult.value = {
       success: false,
-      message: error.message || 'Failed to test API key'
+      message: error.message || 'Failed to test API key',
     }
   } finally {
     testing.value = false
@@ -1926,46 +2434,51 @@ const updateVoiceRouting = () => {
     sttProvider: voiceSettings.sttProvider || 'system',
     micDeviceId: voiceSettings.micDeviceId || '',
     speakerDeviceId: voiceSettings.speakerDeviceId || '',
-    lang: voiceSettings.lang || 'en-US'
+    lang: voiceSettings.lang || 'en-US',
   })
 }
 
 // Clear application logs
 const clearApplicationLogs = () => {
-  if (confirm('Are you sure you want to clear all application logs? This action cannot be undone.')) {
+  if (
+    confirm(
+      'Are you sure you want to clear all application logs? This action cannot be undone.'
+    )
+  ) {
     try {
       // Clear console logs if available
       if (console.clear) {
         console.clear()
       }
-      
+
       // Clear any stored logs in localStorage
-      const logKeys = Object.keys(localStorage).filter(key => 
-        key.includes('log') || key.includes('debug') || key.includes('error')
+      const logKeys = Object.keys(localStorage).filter(
+        key =>
+          key.includes('log') || key.includes('debug') || key.includes('error')
       )
-      
+
       for (const key of logKeys) {
         localStorage.removeItem(key)
       }
-      
+
       // Show success notification
       if (store.showNotification) {
         store.showNotification({
           type: 'success',
           message: 'Application logs cleared successfully',
-          duration: 3000
+          duration: 3000,
         })
       } else {
         alert('Application logs cleared successfully')
       }
     } catch (error) {
       console.error('Failed to clear logs:', error)
-      
+
       if (store.showNotification) {
         store.showNotification({
           type: 'error',
           message: 'Failed to clear logs completely',
-          duration: 5000
+          duration: 5000,
         })
       } else {
         alert('Failed to clear logs completely')
@@ -1982,17 +2495,19 @@ const exportResume = () => {
 
 const exportPortfolio = () => {
   // Future implementation: Export portfolio data
-  alert('Portfolio export will be implemented in future update')  
+  alert('Portfolio export will be implemented in future update')
 }
 
 const exportChatHistory = () => {
   try {
     const chatData = {
       chatHistory: store.chatHistory,
-      exportDate: new Date().toISOString()
+      exportDate: new Date().toISOString(),
     }
-    
-    const blob = new Blob([JSON.stringify(chatData, null, 2)], { type: 'application/json' })
+
+    const blob = new Blob([JSON.stringify(chatData, null, 2)], {
+      type: 'application/json',
+    })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -2036,7 +2551,7 @@ const importUserSettings = () => {
 }
 
 // Update audio settings
-const updateAudioSettings = (newSettings) => {
+const updateAudioSettings = newSettings => {
   settings.value = { ...settings.value, ...newSettings }
   saveSettings()
 }
@@ -2045,47 +2560,51 @@ const updateAudioSettings = (newSettings) => {
 const loadAudioDevices = async () => {
   try {
     loadingDevices.value = true
-    
+
     // Check for browser support
     if (!navigator?.mediaDevices?.getUserMedia) {
-      throw new Error('Audio devices are not supported in this browser. Please use a modern browser like Chrome, Firefox, or Edge.')
+      throw new Error(
+        'Audio devices are not supported in this browser. Please use a modern browser like Chrome, Firefox, or Edge.'
+      )
     }
-    
+
     // Request microphone permission first
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    
+
     // Get audio devices
     const devices = await navigator.mediaDevices.enumerateDevices()
     audioDevices.value = devices.filter(device => device.kind === 'audioinput')
-    
+
     // Stop the stream since we only needed it for permissions
     stream.getTracks().forEach(track => track.stop())
-    
+
     // Load available voices for TTS
     loadVoices()
-    
   } catch (error) {
     console.error('Failed to load audio devices:', error)
-    
+
     // Provide user-friendly error messages
     let userMessage = 'Failed to access audio devices'
     if (error instanceof Error) {
       if (error.name === 'NotAllowedError') {
-        userMessage = 'Microphone permission was denied. Please allow microphone access and try again.'
+        userMessage =
+          'Microphone permission was denied. Please allow microphone access and try again.'
       } else if (error.name === 'NotFoundError') {
-        userMessage = 'No microphone devices found. Please check your audio hardware.'
+        userMessage =
+          'No microphone devices found. Please check your audio hardware.'
       } else if (error.name === 'NotSupportedError') {
-        userMessage = 'Audio devices are not supported on this browser or device.'
+        userMessage =
+          'Audio devices are not supported on this browser or device.'
       } else if (error.message.includes('not supported')) {
         userMessage = error.message
       }
     }
-    
+
     if (store.showNotification) {
       store.showNotification({
         type: 'error',
         message: userMessage,
-        duration: 5000
+        duration: 5000,
       })
     }
   } finally {
@@ -2099,9 +2618,9 @@ const loadVoices = () => {
     const updateVoices = () => {
       voices.value = window.speechSynthesis.getVoices()
     }
-    
+
     updateVoices()
-    
+
     // Some browsers load voices asynchronously
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
       window.speechSynthesis.onvoiceschanged = updateVoices
@@ -2113,14 +2632,18 @@ const loadVoices = () => {
 onMounted(() => {
   // Load initial data if needed
   updateVoiceRouting()
-  
+
   // Load audio devices on mount
   loadAudioDevices()
-  
+
   // Watch for changes to voice settings
-  watch(() => settings.value.voice, () => {
-    updateVoiceRouting()
-  }, { deep: true })
+  watch(
+    () => settings.value.voice,
+    () => {
+      updateVoiceRouting()
+    },
+    { deep: true }
+  )
 })
 </script>
 
@@ -2193,7 +2716,7 @@ onMounted(() => {
 
 .enhanced-glass-card:hover {
   border-color: color-mix(in srgb, var(--color-primary-500) 30%, transparent);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 8px 25px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 }
@@ -2216,7 +2739,7 @@ onMounted(() => {
 .enhanced-search-input:focus {
   outline: none;
   border-color: var(--color-primary-500);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 3px rgba(0, 0, 0, 0.1),
     0 0 0 3px color-mix(in srgb, var(--color-primary-500) 15%, transparent),
     var(--glass-shadow);
@@ -2226,53 +2749,57 @@ onMounted(() => {
 /* Enhanced Light/Dark Mode Integration for Settings */
 
 /* Dark Theme Enhancements */
-[data-theme="dark"] .enhanced-glass-card {
+[data-theme='dark'] .enhanced-glass-card {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .enhanced-profile-card {
+[data-theme='dark'] .enhanced-profile-card {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-filter);
   border-color: var(--glass-border);
 }
 
-[data-theme="dark"] .enhanced-search-input {
+[data-theme='dark'] .enhanced-search-input {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .glass-tab-wrapper {
+[data-theme='dark'] .glass-tab-wrapper {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .profile-tab-btn:not([data-variant="primary"]) {
+[data-theme='dark'] .profile-tab-btn:not([data-variant='primary']) {
   background: var(--glass-bg) !important;
   border-color: var(--glass-border) !important;
   color: var(--text-secondary) !important;
 }
 
-[data-theme="dark"] .profile-tab-btn:not([data-variant="primary"]):hover {
+[data-theme='dark'] .profile-tab-btn:not([data-variant='primary']):hover {
   background: var(--glass-hover-bg) !important;
-  border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 40%,
+    transparent
+  ) !important;
   color: var(--text-primary) !important;
 }
 
 /* Light Theme Enhancements */
-[data-theme="light"] .enhanced-glass-card {
+[data-theme='light'] .enhanced-glass-card {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="light"] .enhanced-search-input:focus {
+[data-theme='light'] .enhanced-search-input:focus {
   background: var(--glass-hover-bg);
   border-color: var(--color-primary-500);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 3px rgba(0, 0, 0, 0.1),
     0 0 0 3px color-mix(in srgb, var(--color-primary-500) 15%, transparent),
     var(--glass-shadow);
@@ -2284,7 +2811,7 @@ onMounted(() => {
 .enhanced-search-input,
 .glass-tab-wrapper,
 .profile-tab-btn {
-  transition: 
+  transition:
     background-color var(--duration-normal),
     border-color var(--duration-normal),
     color var(--duration-normal),
@@ -2299,12 +2826,12 @@ onMounted(() => {
     border-width: 2px;
     backdrop-filter: none;
   }
-  
+
   .enhanced-search-input {
     border-width: 2px;
     backdrop-filter: none;
   }
-  
+
   .glass-tab-wrapper {
     border-width: 2px;
     backdrop-filter: none;
@@ -2320,7 +2847,7 @@ onMounted(() => {
   .profile-tab-btn {
     transition: none;
   }
-  
+
   .enhanced-glass-card:hover,
   .enhanced-profile-card:hover {
     transform: none;
@@ -2348,12 +2875,14 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, 
+  background: linear-gradient(
+    90deg,
     transparent 0%,
     color-mix(in srgb, var(--color-primary-500) 60%, transparent) 20%,
     color-mix(in srgb, var(--color-primary-500) 80%, transparent) 50%,
     color-mix(in srgb, var(--color-primary-500) 60%, transparent) 80%,
-    transparent 100%);
+    transparent 100%
+  );
   z-index: 1;
 }
 
@@ -2385,10 +2914,12 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    color-mix(in srgb, var(--color-primary-500) 40%, transparent), 
-    transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent),
+    transparent
+  );
   opacity: 0.8;
 }
 
@@ -2399,7 +2930,7 @@ onMounted(() => {
   font-size: 0.875rem;
 }
 
-.profile-tab-btn:not([data-variant="primary"]) {
+.profile-tab-btn:not([data-variant='primary']) {
   background: var(--glass-bg) !important;
   backdrop-filter: var(--glass-backdrop-filter) !important;
   -webkit-backdrop-filter: var(--glass-backdrop-filter) !important;
@@ -2408,11 +2939,15 @@ onMounted(() => {
   color: var(--text-primary) !important;
 }
 
-.profile-tab-btn:not([data-variant="primary"]):hover {
+.profile-tab-btn:not([data-variant='primary']):hover {
   background: var(--glass-hover-bg) !important;
-  border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 40%,
+    transparent
+  ) !important;
   transform: translateY(-1px);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 12px color-mix(in srgb, var(--color-primary-500) 15%, transparent) !important;
 }
@@ -2435,7 +2970,8 @@ onMounted(() => {
 }
 
 .glass-section-header {
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--glass-border) 60%, transparent);
   padding-bottom: var(--spacing-3);
   margin-bottom: var(--spacing-5);
   position: relative;
@@ -2448,9 +2984,11 @@ onMounted(() => {
   left: 0;
   width: 60px;
   height: 2px;
-  background: linear-gradient(90deg, 
-    var(--color-primary-500), 
-    color-mix(in srgb, var(--color-primary-500) 40%, transparent));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent)
+  );
   border-radius: var(--radius-full);
 }
 
@@ -2484,12 +3022,21 @@ onMounted(() => {
 
 .enhanced-glass-input:focus {
   background: color-mix(in srgb, var(--glass-bg) 85%, transparent) !important;
-  border-color: color-mix(in srgb, var(--color-primary-500) 60%, transparent) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 15%, transparent) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 60%,
+    transparent
+  ) !important;
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent) !important;
 }
 
 .enhanced-glass-input:hover:not(:focus) {
-  border-color: color-mix(in srgb, var(--glass-border) 90%, var(--text-secondary)) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--glass-border) 90%,
+    var(--text-secondary)
+  ) !important;
   background: color-mix(in srgb, var(--glass-bg) 80%, transparent) !important;
 }
 
@@ -2497,28 +3044,28 @@ onMounted(() => {
   .settings-grid {
     grid-template-columns: 1fr !important;
   }
-  
+
   .quick-filters {
     width: 100%;
     justify-content: center;
   }
-  
+
   .navigation-header > div {
     flex-direction: column;
     gap: var(--spacing-3);
   }
-  
+
   .settings-save-bar {
     left: var(--spacing-4);
     right: var(--spacing-4);
     bottom: var(--spacing-4);
   }
-  
+
   .glass-tab-wrapper {
     flex-direction: column;
     gap: var(--spacing-1);
   }
-  
+
   .profile-tab-btn {
     justify-content: flex-start;
   }
@@ -2528,7 +3075,7 @@ onMounted(() => {
   .profile-tabs-container {
     padding: var(--spacing-4) !important;
   }
-  
+
   .profile-tab-pane {
     padding: 0 !important;
   }
@@ -2539,7 +3086,8 @@ onMounted(() => {
 /* Glass Card Header Consistency */
 .glass-card-header {
   padding: var(--spacing-6) var(--spacing-6) var(--spacing-4);
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 50%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--glass-border) 50%, transparent);
   position: relative;
 }
 
@@ -2550,12 +3098,14 @@ onMounted(() => {
   left: var(--spacing-6);
   right: var(--spacing-6);
   height: 1px;
-  background: linear-gradient(90deg, 
+  background: linear-gradient(
+    90deg,
     transparent 0%,
     color-mix(in srgb, var(--color-primary-500) 40%, transparent) 20%,
     color-mix(in srgb, var(--color-primary-500) 60%, transparent) 50%,
     color-mix(in srgb, var(--color-primary-500) 40%, transparent) 80%,
-    transparent 100%);
+    transparent 100%
+  );
 }
 
 .header-content {
@@ -2571,10 +3121,13 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     color-mix(in srgb, var(--color-primary-500) 10%, transparent) 0%,
-    color-mix(in srgb, var(--color-primary-500) 5%, transparent) 100%);
-  border: 1px solid color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+    color-mix(in srgb, var(--color-primary-500) 5%, transparent) 100%
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   border-radius: var(--radius-xl);
   color: var(--color-primary-500);
   font-size: 1.25rem;
@@ -2614,7 +3167,7 @@ onMounted(() => {
   gap: var(--spacing-2);
 }
 
-.glass-tab-button:not([data-variant="glass"]) {
+.glass-tab-button:not([data-variant='glass']) {
   background: var(--glass-bg) !important;
   backdrop-filter: var(--glass-backdrop-filter) !important;
   border: 1px solid var(--glass-border) !important;
@@ -2622,12 +3175,16 @@ onMounted(() => {
   color: var(--text-secondary) !important;
 }
 
-.glass-tab-button:not([data-variant="glass"]):hover {
+.glass-tab-button:not([data-variant='glass']):hover {
   background: var(--glass-hover-bg) !important;
-  border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 40%,
+    transparent
+  ) !important;
   color: var(--text-primary) !important;
   transform: translateY(-1px);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 12px color-mix(in srgb, var(--color-primary-500) 15%, transparent) !important;
 }
@@ -2655,13 +3212,14 @@ onMounted(() => {
 
 .enhanced-section-card:hover {
   border-color: color-mix(in srgb, var(--color-primary-500) 30%, transparent);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 8px 25px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 }
 
 .section-header {
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--glass-border) 60%, transparent);
   padding-bottom: var(--spacing-4);
   margin-bottom: var(--spacing-6);
   position: relative;
@@ -2674,9 +3232,11 @@ onMounted(() => {
   left: 0;
   width: 60px;
   height: 2px;
-  background: linear-gradient(90deg, 
-    var(--color-primary-500), 
-    color-mix(in srgb, var(--color-primary-500) 40%, transparent));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent)
+  );
   border-radius: var(--radius-full);
 }
 
@@ -2723,16 +3283,18 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, 
+  background: linear-gradient(
+    90deg,
     transparent 0%,
     color-mix(in srgb, var(--color-primary-500) 60%, transparent) 50%,
-    transparent 100%);
+    transparent 100%
+  );
 }
 
 .provider-card:hover {
   transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 8px 20px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
 }
@@ -2772,13 +3334,15 @@ onMounted(() => {
 .status-connected {
   background: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
   color: var(--color-primary-500);
-  border: 1px solid color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
 }
 
 .status-available {
   background: color-mix(in srgb, var(--color-secondary-500) 10%, transparent);
   color: var(--color-secondary-500);
-  border: 1px solid color-mix(in srgb, var(--color-secondary-500) 20%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-secondary-500) 20%, transparent);
 }
 
 .provider-features {
@@ -2833,8 +3397,13 @@ onMounted(() => {
 
 .glass-input:focus {
   background: color-mix(in srgb, var(--glass-bg) 85%, transparent) !important;
-  border-color: color-mix(in srgb, var(--color-primary-500) 60%, transparent) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 15%, transparent) !important;
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 60%,
+    transparent
+  ) !important;
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent) !important;
   outline: none !important;
 }
 
@@ -2862,7 +3431,8 @@ onMounted(() => {
 
 .glass-slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  box-shadow: 0 4px 12px
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent);
 }
 
 .range-value {
@@ -2926,11 +3496,11 @@ onMounted(() => {
   .provider-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .advanced-settings-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .header-content {
     flex-direction: column;
     text-align: center;
@@ -2942,11 +3512,11 @@ onMounted(() => {
   .glass-card-content {
     padding: var(--spacing-4);
   }
-  
+
   .setting-group {
     padding: var(--spacing-4);
   }
-  
+
   .provider-card {
     padding: var(--spacing-4);
   }

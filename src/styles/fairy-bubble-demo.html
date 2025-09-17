@@ -1,370 +1,473 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fairy Bubble System Redesign Demo</title>
-    
+
     <!-- Import our design system -->
-    <link rel="stylesheet" href="./design-system.css">
-    <link rel="stylesheet" href="./design-system.css">
-    
+    <link rel="stylesheet" href="./design-system.css" />
+    <link rel="stylesheet" href="./design-system.css" />
+
     <style>
-        body {
-            font-family: var(--font-family-ui);
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            margin: 0;
-            padding: var(--spacing-8);
-            min-height: 100vh;
-            color: var(--text-primary);
-        }
-        
-        .demo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: var(--spacing-8);
-            padding: var(--spacing-6);
-        }
-        
-        .demo-section {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-6);
-            backdrop-filter: blur(10px);
-        }
-        
-        .demo-title {
-            font-family: var(--font-family-display);
-            font-size: var(--font-size-xl);
-            color: var(--color-gaming-400);
-            margin-bottom: var(--spacing-4);
-            text-align: center;
-        }
-        
-        .theme-toggle {
-            position: fixed;
-            top: var(--spacing-4);
-            right: var(--spacing-4);
-            padding: var(--spacing-3) var(--spacing-4);
-            background: var(--glass-surface);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
-            color: var(--text-primary);
-            cursor: pointer;
-            backdrop-filter: blur(20px);
-            transition: all var(--duration-normal);
-        }
-        
-        .theme-toggle:hover {
-            background: var(--glass-hover-bg);
-            transform: translateY(-1px);
-        }
-        
-        .controls {
-            margin: var(--spacing-4) 0;
-            display: flex;
-            gap: var(--spacing-3);
-            flex-wrap: wrap;
-        }
-        
-        .control-btn {
-            padding: var(--spacing-2) var(--spacing-4);
-            background: var(--glass-surface);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all var(--duration-normal);
-            font-size: var(--font-size-sm);
-        }
-        
-        .control-btn:hover {
-            background: var(--glass-hover-bg);
-            transform: translateY(-1px);
-        }
-        
-        .control-btn.active {
-            background: var(--color-primary-500);
-            color: white;
-            border-color: var(--color-primary-600);
-        }
+      body {
+        font-family: var(--font-family-ui);
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        margin: 0;
+        padding: var(--spacing-8);
+        min-height: 100vh;
+        color: var(--text-primary);
+      }
+
+      .demo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: var(--spacing-8);
+        padding: var(--spacing-6);
+      }
+
+      .demo-section {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-6);
+        backdrop-filter: blur(10px);
+      }
+
+      .demo-title {
+        font-family: var(--font-family-display);
+        font-size: var(--font-size-xl);
+        color: var(--color-gaming-400);
+        margin-bottom: var(--spacing-4);
+        text-align: center;
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: var(--spacing-4);
+        right: var(--spacing-4);
+        padding: var(--spacing-3) var(--spacing-4);
+        background: var(--glass-surface);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        color: var(--text-primary);
+        cursor: pointer;
+        backdrop-filter: blur(20px);
+        transition: all var(--duration-normal);
+      }
+
+      .theme-toggle:hover {
+        background: var(--glass-hover-bg);
+        transform: translateY(-1px);
+      }
+
+      .controls {
+        margin: var(--spacing-4) 0;
+        display: flex;
+        gap: var(--spacing-3);
+        flex-wrap: wrap;
+      }
+
+      .control-btn {
+        padding: var(--spacing-2) var(--spacing-4);
+        background: var(--glass-surface);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-md);
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all var(--duration-normal);
+        font-size: var(--font-size-sm);
+      }
+
+      .control-btn:hover {
+        background: var(--glass-hover-bg);
+        transform: translateY(-1px);
+      }
+
+      .control-btn.active {
+        background: var(--color-primary-500);
+        color: white;
+        border-color: var(--color-primary-600);
+      }
     </style>
-</head>
-<body>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙 Toggle Theme</button>
-    
+  </head>
+  <body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+      🌙 Toggle Theme
+    </button>
+
     <div class="demo-container">
-        <!-- Basic Fairy Bubble -->
-        <div class="demo-section">
-            <h2 class="demo-title">Basic Fairy Bubble</h2>
-            <div class="controls">
-                <button class="control-btn" onclick="toggleClass('demo-bubble-1', 'bubble-persistent')">Toggle Persistent</button>
-                <button class="control-btn" onclick="toggleClass('demo-bubble-1', 'bubble-elevated')">Toggle Elevated</button>
-                <button class="control-btn" onclick="toggleClass('demo-bubble-1', 'bubble-interactive')">Toggle Interactive</button>
-            </div>
-            
-            <div id="demo-bubble-1" class="fairy-bubble">
-                <div class="bubble-content">
-                    <div class="bubble-header">
-                        <div class="bubble-title">✨ AI Fairy Assistant</div>
-                    </div>
-                    <div class="bubble-body">
-                        This is a basic fairy bubble using our redesigned system. It features advanced glass morphism, proper design system integration, and smooth animations.
-                    </div>
-                    <div class="bubble-actions">
-                        <button class="control-btn">Ask Question</button>
-                        <button class="control-btn">Get Help</button>
-                    </div>
-                </div>
-            </div>
+      <!-- Basic Fairy Bubble -->
+      <div class="demo-section">
+        <h2 class="demo-title">Basic Fairy Bubble</h2>
+        <div class="controls">
+          <button
+            class="control-btn"
+            onclick="toggleClass('demo-bubble-1', 'bubble-persistent')"
+          >
+            Toggle Persistent
+          </button>
+          <button
+            class="control-btn"
+            onclick="toggleClass('demo-bubble-1', 'bubble-elevated')"
+          >
+            Toggle Elevated
+          </button>
+          <button
+            class="control-btn"
+            onclick="toggleClass('demo-bubble-1', 'bubble-interactive')"
+          >
+            Toggle Interactive
+          </button>
         </div>
-        
-        <!-- Enhanced Gaming Card -->
-        <div class="demo-section">
-            <h2 class="demo-title">Enhanced Gaming Card</h2>
-            <div class="controls">
-                <button class="control-btn" onclick="toggleClass('demo-bubble-2', 'bubble-persistent')">Toggle Persistent</button>
-                <button class="control-btn" onclick="toggleClass('demo-bubble-2', 'bubble-elevated')">Toggle Elevated</button>
-                <button class="control-btn" onclick="toggleClass('demo-bubble-2', 'bubble-interactive')">Toggle Interactive</button>
+
+        <div id="demo-bubble-1" class="fairy-bubble">
+          <div class="bubble-content">
+            <div class="bubble-header">
+              <div class="bubble-title">✨ AI Fairy Assistant</div>
             </div>
-            
-            <div id="demo-bubble-2" class="enhanced-gaming-card">
-                <div class="bubble-content">
-                    <div class="bubble-header">
-                        <div class="bubble-title">🎮 Gaming Hub</div>
-                        <div class="bubble-subtitle">Premium Experience</div>
-                    </div>
-                    <div class="bubble-body">
-                        Enhanced gaming card with premium visual effects, advanced shadow systems, and gaming-specific styling. Perfect for highlighting important gaming content.
-                    </div>
-                    <div class="bubble-actions">
-                        <button class="control-btn">Launch Game</button>
-                        <button class="control-btn">View Stats</button>
-                        <button class="control-btn">Settings</button>
-                    </div>
-                </div>
+            <div class="bubble-body">
+              This is a basic fairy bubble using our redesigned system. It
+              features advanced glass morphism, proper design system
+              integration, and smooth animations.
             </div>
+            <div class="bubble-actions">
+              <button class="control-btn">Ask Question</button>
+              <button class="control-btn">Get Help</button>
+            </div>
+          </div>
         </div>
-        
-        <!-- Interactive States Demo -->
-        <div class="demo-section">
-            <h2 class="demo-title">Interactive States</h2>
-            <div class="controls">
-                <button class="control-btn" onclick="setDemoState('demo-bubble-3', 'persistent')">Persistent</button>
-                <button class="control-btn" onclick="setDemoState('demo-bubble-3', 'elevated')">Elevated</button>
-                <button class="control-btn" onclick="setDemoState('demo-bubble-3', 'interactive')">Interactive</button>
-                <button class="control-btn" onclick="setDemoState('demo-bubble-3', 'all')">All States</button>
-            </div>
-            
-            <div id="demo-bubble-3" class="fairy-bubble bubble-interactive">
-                <div class="bubble-content">
-                    <div class="bubble-header">
-                        <div class="bubble-title">🔮 State Demo</div>
-                    </div>
-                    <div class="bubble-body">
-                        Hover over me to see interactive effects! Click the buttons above to toggle different states and see how they combine.
-                    </div>
-                    <div class="bubble-actions">
-                        <button class="control-btn">Interact</button>
-                    </div>
-                </div>
-            </div>
+      </div>
+
+      <!-- Enhanced Gaming Card -->
+      <div class="demo-section">
+        <h2 class="demo-title">Enhanced Gaming Card</h2>
+        <div class="controls">
+          <button
+            class="control-btn"
+            onclick="toggleClass('demo-bubble-2', 'bubble-persistent')"
+          >
+            Toggle Persistent
+          </button>
+          <button
+            class="control-btn"
+            onclick="toggleClass('demo-bubble-2', 'bubble-elevated')"
+          >
+            Toggle Elevated
+          </button>
+          <button
+            class="control-btn"
+            onclick="toggleClass('demo-bubble-2', 'bubble-interactive')"
+          >
+            Toggle Interactive
+          </button>
         </div>
-        
-        <!-- Size Variants -->
-        <div class="demo-section">
-            <h2 class="demo-title">Size Variants</h2>
-            <div class="controls">
-                <button class="control-btn" onclick="setSizeVariant('small')">Small</button>
-                <button class="control-btn" onclick="setSizeVariant('default')">Default</button>
-                <button class="control-btn" onclick="setSizeVariant('large')">Large</button>
-                <button class="control-btn" onclick="setSizeVariant('xl')">Extra Large</button>
+
+        <div id="demo-bubble-2" class="enhanced-gaming-card">
+          <div class="bubble-content">
+            <div class="bubble-header">
+              <div class="bubble-title">🎮 Gaming Hub</div>
+              <div class="bubble-subtitle">Premium Experience</div>
             </div>
-            
-            <div id="demo-bubble-4" class="fairy-bubble bubble-float">
-                <div class="bubble-content">
-                    <div class="bubble-header">
-                        <div class="bubble-title">📐 Size Demo</div>
-                    </div>
-                    <div class="bubble-body">
-                        This bubble demonstrates different size variants. Use the controls above to switch between sizes.
-                    </div>
-                    <div class="bubble-actions">
-                        <button class="control-btn">Resize</button>
-                    </div>
-                </div>
+            <div class="bubble-body">
+              Enhanced gaming card with premium visual effects, advanced shadow
+              systems, and gaming-specific styling. Perfect for highlighting
+              important gaming content.
             </div>
+            <div class="bubble-actions">
+              <button class="control-btn">Launch Game</button>
+              <button class="control-btn">View Stats</button>
+              <button class="control-btn">Settings</button>
+            </div>
+          </div>
         </div>
-        
-        <!-- Animation Demo -->
-        <div class="demo-section">
-            <h2 class="demo-title">Animations</h2>
-            <div class="controls">
-                <button class="control-btn" onclick="triggerAnimation('entrance')">Entrance</button>
-                <button class="control-btn" onclick="triggerAnimation('exit')">Exit</button>
-                <button class="control-btn" onclick="triggerAnimation('float')">Float</button>
-                <button class="control-btn" onclick="triggerAnimation('pulse')">Pulse</button>
-            </div>
-            
-            <div id="demo-bubble-5" class="enhanced-gaming-card bubble-persistent">
-                <div class="bubble-content">
-                    <div class="bubble-header">
-                        <div class="bubble-title">🎭 Animation Demo</div>
-                    </div>
-                    <div class="bubble-body">
-                        Watch the smooth animations powered by our design system timing functions and easing curves.
-                    </div>
-                    <div class="bubble-actions">
-                        <button class="control-btn">Animate</button>
-                    </div>
-                </div>
-            </div>
+      </div>
+
+      <!-- Interactive States Demo -->
+      <div class="demo-section">
+        <h2 class="demo-title">Interactive States</h2>
+        <div class="controls">
+          <button
+            class="control-btn"
+            onclick="setDemoState('demo-bubble-3', 'persistent')"
+          >
+            Persistent
+          </button>
+          <button
+            class="control-btn"
+            onclick="setDemoState('demo-bubble-3', 'elevated')"
+          >
+            Elevated
+          </button>
+          <button
+            class="control-btn"
+            onclick="setDemoState('demo-bubble-3', 'interactive')"
+          >
+            Interactive
+          </button>
+          <button
+            class="control-btn"
+            onclick="setDemoState('demo-bubble-3', 'all')"
+          >
+            All States
+          </button>
         </div>
-        
-        <!-- Theme Variants -->
-        <div class="demo-section">
-            <h2 class="demo-title">Theme Integration</h2>
-            <div class="controls">
-                <button class="control-btn" onclick="setThemeClass('default')">Default</button>
-                <button class="control-btn" onclick="setThemeClass('theme-gaming')">Gaming</button>
-                <button class="control-btn" onclick="setThemeClass('theme-cyber')">Cyber</button>
+
+        <div id="demo-bubble-3" class="fairy-bubble bubble-interactive">
+          <div class="bubble-content">
+            <div class="bubble-header">
+              <div class="bubble-title">🔮 State Demo</div>
             </div>
-            
-            <div id="demo-bubble-6" class="fairy-bubble bubble-elevated">
-                <div class="bubble-content">
-                    <div class="bubble-header">
-                        <div class="bubble-title">🎨 Theme Demo</div>
-                    </div>
-                    <div class="bubble-body">
-                        Experience how the bubble adapts to different themes while maintaining consistent design system principles.
-                    </div>
-                    <div class="bubble-actions">
-                        <button class="control-btn">Switch Theme</button>
-                    </div>
-                </div>
+            <div class="bubble-body">
+              Hover over me to see interactive effects! Click the buttons above
+              to toggle different states and see how they combine.
             </div>
+            <div class="bubble-actions">
+              <button class="control-btn">Interact</button>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Size Variants -->
+      <div class="demo-section">
+        <h2 class="demo-title">Size Variants</h2>
+        <div class="controls">
+          <button class="control-btn" onclick="setSizeVariant('small')">
+            Small
+          </button>
+          <button class="control-btn" onclick="setSizeVariant('default')">
+            Default
+          </button>
+          <button class="control-btn" onclick="setSizeVariant('large')">
+            Large
+          </button>
+          <button class="control-btn" onclick="setSizeVariant('xl')">
+            Extra Large
+          </button>
+        </div>
+
+        <div id="demo-bubble-4" class="fairy-bubble bubble-float">
+          <div class="bubble-content">
+            <div class="bubble-header">
+              <div class="bubble-title">📐 Size Demo</div>
+            </div>
+            <div class="bubble-body">
+              This bubble demonstrates different size variants. Use the controls
+              above to switch between sizes.
+            </div>
+            <div class="bubble-actions">
+              <button class="control-btn">Resize</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animation Demo -->
+      <div class="demo-section">
+        <h2 class="demo-title">Animations</h2>
+        <div class="controls">
+          <button class="control-btn" onclick="triggerAnimation('entrance')">
+            Entrance
+          </button>
+          <button class="control-btn" onclick="triggerAnimation('exit')">
+            Exit
+          </button>
+          <button class="control-btn" onclick="triggerAnimation('float')">
+            Float
+          </button>
+          <button class="control-btn" onclick="triggerAnimation('pulse')">
+            Pulse
+          </button>
+        </div>
+
+        <div id="demo-bubble-5" class="enhanced-gaming-card bubble-persistent">
+          <div class="bubble-content">
+            <div class="bubble-header">
+              <div class="bubble-title">🎭 Animation Demo</div>
+            </div>
+            <div class="bubble-body">
+              Watch the smooth animations powered by our design system timing
+              functions and easing curves.
+            </div>
+            <div class="bubble-actions">
+              <button class="control-btn">Animate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme Variants -->
+      <div class="demo-section">
+        <h2 class="demo-title">Theme Integration</h2>
+        <div class="controls">
+          <button class="control-btn" onclick="setThemeClass('default')">
+            Default
+          </button>
+          <button class="control-btn" onclick="setThemeClass('theme-gaming')">
+            Gaming
+          </button>
+          <button class="control-btn" onclick="setThemeClass('theme-cyber')">
+            Cyber
+          </button>
+        </div>
+
+        <div id="demo-bubble-6" class="fairy-bubble bubble-elevated">
+          <div class="bubble-content">
+            <div class="bubble-header">
+              <div class="bubble-title">🎨 Theme Demo</div>
+            </div>
+            <div class="bubble-body">
+              Experience how the bubble adapts to different themes while
+              maintaining consistent design system principles.
+            </div>
+            <div class="bubble-actions">
+              <button class="control-btn">Switch Theme</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
+
     <script>
-        // Theme toggle functionality
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            html.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+      // Theme toggle functionality
+      function toggleTheme() {
+        const html = document.documentElement
+        const currentTheme = html.getAttribute('data-theme')
+        html.setAttribute(
+          'data-theme',
+          currentTheme === 'dark' ? 'light' : 'dark'
+        )
+      }
+
+      // Class toggle utility
+      function toggleClass(elementId, className) {
+        const element = document.getElementById(elementId)
+        element.classList.toggle(className)
+        updateButtonState(elementId, className)
+      }
+
+      // Set specific demo state
+      function setDemoState(elementId, state) {
+        const element = document.getElementById(elementId)
+        // Clear all state classes
+        element.classList.remove(
+          'bubble-persistent',
+          'bubble-elevated',
+          'bubble-interactive'
+        )
+
+        // Apply new state
+        switch (state) {
+          case 'persistent':
+            element.classList.add('bubble-persistent')
+            break
+          case 'elevated':
+            element.classList.add('bubble-elevated')
+            break
+          case 'interactive':
+            element.classList.add('bubble-interactive')
+            break
+          case 'all':
+            element.classList.add(
+              'bubble-persistent',
+              'bubble-elevated',
+              'bubble-interactive'
+            )
+            break
         }
-        
-        // Class toggle utility
-        function toggleClass(elementId, className) {
-            const element = document.getElementById(elementId);
-            element.classList.toggle(className);
-            updateButtonState(elementId, className);
+      }
+
+      // Size variant switcher
+      function setSizeVariant(size) {
+        const element = document.getElementById('demo-bubble-4')
+        // Clear size classes
+        element.classList.remove('bubble-sm', 'bubble-lg', 'bubble-xl')
+
+        // Apply new size
+        if (size !== 'default') {
+          element.classList.add(
+            `bubble-${size === 'xl' ? 'xl' : size === 'large' ? 'lg' : 'sm'}`
+          )
         }
-        
-        // Set specific demo state
-        function setDemoState(elementId, state) {
-            const element = document.getElementById(elementId);
-            // Clear all state classes
-            element.classList.remove('bubble-persistent', 'bubble-elevated', 'bubble-interactive');
-            
-            // Apply new state
-            switch(state) {
-                case 'persistent':
-                    element.classList.add('bubble-persistent');
-                    break;
-                case 'elevated':
-                    element.classList.add('bubble-elevated');
-                    break;
-                case 'interactive':
-                    element.classList.add('bubble-interactive');
-                    break;
-                case 'all':
-                    element.classList.add('bubble-persistent', 'bubble-elevated', 'bubble-interactive');
-                    break;
-            }
+      }
+
+      // Animation triggers
+      function triggerAnimation(type) {
+        const element = document.getElementById('demo-bubble-5')
+        // Clear animation classes
+        element.classList.remove(
+          'bubble-float',
+          'bubble-entrance-animation',
+          'bubble-exit-animation'
+        )
+        element.style.animation = ''
+
+        setTimeout(() => {
+          switch (type) {
+            case 'entrance':
+              element.classList.add('bubble-entrance-animation')
+              break
+            case 'exit':
+              element.classList.add('bubble-exit-animation')
+              setTimeout(() => {
+                element.classList.remove('bubble-exit-animation')
+              }, 500)
+              break
+            case 'float':
+              element.classList.add('bubble-float')
+              break
+            case 'pulse':
+              element.style.animation = 'bubble-pulse 2s ease-in-out 3'
+              break
+          }
+        }, 50)
+      }
+
+      // Theme class setter
+      function setThemeClass(theme) {
+        const element = document.getElementById('demo-bubble-6')
+        // Clear theme classes
+        element.classList.remove('theme-gaming', 'theme-cyber')
+
+        // Apply new theme
+        if (theme !== 'default') {
+          element.classList.add(theme)
         }
-        
-        // Size variant switcher
-        function setSizeVariant(size) {
-            const element = document.getElementById('demo-bubble-4');
-            // Clear size classes
-            element.classList.remove('bubble-sm', 'bubble-lg', 'bubble-xl');
-            
-            // Apply new size
-            if (size !== 'default') {
-                element.classList.add(`bubble-${size === 'xl' ? 'xl' : size === 'large' ? 'lg' : 'sm'}`);
-            }
-        }
-        
-        // Animation triggers
-        function triggerAnimation(type) {
-            const element = document.getElementById('demo-bubble-5');
-            // Clear animation classes
-            element.classList.remove('bubble-float', 'bubble-entrance-animation', 'bubble-exit-animation');
-            element.style.animation = '';
-            
-            setTimeout(() => {
-                switch(type) {
-                    case 'entrance':
-                        element.classList.add('bubble-entrance-animation');
-                        break;
-                    case 'exit':
-                        element.classList.add('bubble-exit-animation');
-                        setTimeout(() => {
-                            element.classList.remove('bubble-exit-animation');
-                        }, 500);
-                        break;
-                    case 'float':
-                        element.classList.add('bubble-float');
-                        break;
-                    case 'pulse':
-                        element.style.animation = 'bubble-pulse 2s ease-in-out 3';
-                        break;
-                }
-            }, 50);
-        }
-        
-        // Theme class setter
-        function setThemeClass(theme) {
-            const element = document.getElementById('demo-bubble-6');
-            // Clear theme classes
-            element.classList.remove('theme-gaming', 'theme-cyber');
-            
-            // Apply new theme
-            if (theme !== 'default') {
-                element.classList.add(theme);
-            }
-        }
-        
-        // Button state updater
-        function updateButtonState(elementId, className) {
-            const element = document.getElementById(elementId);
-            const hasClass = element.classList.contains(className);
-            
-            // Find the button and update its state
-            const buttons = document.querySelectorAll('.control-btn');
-            buttons.forEach(btn => {
-                if (btn.textContent.includes(className.replace('bubble-', '').replace('-', ' '))) {
-                    btn.classList.toggle('active', hasClass);
-                }
-            });
-        }
-        
-        // Initialize demo
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🎉 Fairy Bubble System Redesign Demo Loaded!');
-            console.log('✨ Features:');
-            console.log('  - Single source of truth design system integration');
-            console.log('  - Advanced glass morphism effects');
-            console.log('  - Smooth animations and transitions');
-            console.log('  - Full accessibility support');
-            console.log('  - Mobile-responsive design');
-            console.log('  - Theme-aware styling');
-            console.log('  - Performance optimized');
-        });
+      }
+
+      // Button state updater
+      function updateButtonState(elementId, className) {
+        const element = document.getElementById(elementId)
+        const hasClass = element.classList.contains(className)
+
+        // Find the button and update its state
+        const buttons = document.querySelectorAll('.control-btn')
+        buttons.forEach(btn => {
+          if (
+            btn.textContent.includes(
+              className.replace('bubble-', '').replace('-', ' ')
+            )
+          ) {
+            btn.classList.toggle('active', hasClass)
+          }
+        })
+      }
+
+      // Initialize demo
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('🎉 Fairy Bubble System Redesign Demo Loaded!')
+        console.log('✨ Features:')
+        console.log('  - Single source of truth design system integration')
+        console.log('  - Advanced glass morphism effects')
+        console.log('  - Smooth animations and transitions')
+        console.log('  - Full accessibility support')
+        console.log('  - Mobile-responsive design')
+        console.log('  - Theme-aware styling')
+        console.log('  - Performance optimized')
+      })
     </script>
-</body>
+  </body>
 </html>

@@ -5,10 +5,7 @@
 <template>
   <div
     class="push-to-talk-container font-sans"
-    :class="{ 'recording': isRecording,
-              'speaking': isSpeaking,
-              'error': hasError
-    }"
+    :class="{ recording: isRecording, speaking: isSpeaking, error: hasError }"
   >
     <!-- Main Push-to-Talk Button -->
     <button
@@ -46,7 +43,9 @@
         ></div>
       </div>
       <span class="recording-time">{{ formatTime(recordingTime) }}</span>
-      <span class="max-time text-secondary">/ {{ formatTime(maxRecordingTime) }}</span>
+      <span class="max-time text-secondary"
+        >/ {{ formatTime(maxRecordingTime) }}</span
+      >
     </div>
 
     <!-- Transcript Display -->
@@ -78,7 +77,7 @@
         </button>
       </div>
       <div class="response-content p-glass-md border rounded">
-        <div class="streaming-text" :class="{ 'typing': isStreaming }">
+        <div class="streaming-text" :class="{ typing: isStreaming }">
           {{ displayedResponse }}
         </div>
       </div>
@@ -125,48 +124,65 @@
 </template>
 
 <script setup>
-import { ExclamationCircleIcon, MicrophoneIcon } from '@heroicons/vue/24/outline'
+import {
+  ExclamationCircleIcon,
+  MicrophoneIcon,
+} from '@heroicons/vue/24/outline'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
-import { ref, onMounted, readonly, computed, onBeforeUnmount, defineEmits, defineProps, defineExpose, watch } from 'vue'
-import { useAppStore } from '@/stores/app';
-import { audioService } from '@/shared/services/AudioService';
-import { getBestAIClient, initializeAI as initializeAIClient } from '@/modules/ai';
-import { logger } from '@/shared/utils/logger';
-import { canonicalAIClient } from '@/shared/services/CanonicalAIClient';
-import { speak as speakViaService } from '@/utils/voice';
+import {
+  ref,
+  onMounted,
+  readonly,
+  computed,
+  onBeforeUnmount,
+  defineEmits,
+  defineProps,
+  defineExpose,
+  watch,
+} from 'vue'
+import { useAppStore } from '@/stores/app'
+import { audioService } from '@/shared/services/AudioService'
+import {
+  getBestAIClient,
+  initializeAI as initializeAIClient,
+} from '@/modules/ai'
+import { logger } from '@/shared/utils/logger'
+import { canonicalAIClient } from '@/shared/services/CanonicalAIClient'
+import { speak as speakViaService } from '@/utils/voice'
 
 // Props
 const props = defineProps({
   maxRecordingTime: {
     type: Number,
-    default: 30 // seconds
+    default: 30, // seconds
   },
   showTranscript: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showResponse: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showDeviceSelector: {
     type: Boolean,
-    default: false
+    default: false,
   },
   autoSend: {
     type: Boolean,
-    default: true
+    default: true,
   },
   systemPrompt: {
     type: String,
-    default: 'You are NAVI, a helpful AI career assistant. Provide concise, practical responses.'
+    default:
+      'You are NAVI, a helpful AI career assistant. Provide concise, practical responses.',
   },
   disabled: {
     type: Boolean,
-    default: false
-  }
-});
+    default: false,
+  },
+})
 
 // Emits
 const emit = defineEmits([
@@ -174,243 +190,276 @@ const emit = defineEmits([
   'recordingStop',
   'transcript',
   'response',
-  'error'
-]);
+  'error',
+])
 
 // State
-const isRecording = ref(false);
-const isSpeaking = ref(false);
-const isStreaming = ref(false);
-const hasError = ref(false);
-const error = ref('');
-const transcript = ref('');
-const interimTranscript = ref('');
-const aiResponse = ref('');
-const displayedResponse = ref('');
-const voiceLevel = ref(0);
-const recordingTime = ref(0);
-const isAvailable = ref(false);
-const speechSynthesisAvailable = ref(false);
-const store = useAppStore();
+const isRecording = ref(false)
+const isSpeaking = ref(false)
+const isStreaming = ref(false)
+const hasError = ref(false)
+const error = ref('')
+const transcript = ref('')
+const interimTranscript = ref('')
+const aiResponse = ref('')
+const displayedResponse = ref('')
+const voiceLevel = ref(0)
+const recordingTime = ref(0)
+const isAvailable = ref(false)
+const speechSynthesisAvailable = ref(false)
+const store = useAppStore()
 
 // Optional device selection state (only used when showDeviceSelector is true)
-const microphoneDevices = ref([]);
-const selectedMicId = ref('');
+const microphoneDevices = ref([])
+const selectedMicId = ref('')
 
 // Media references
-let mediaRecorder = null;
-const audioStream = null;
-let audioContext = null;
-let analyser = null;
-let microphone = null;
-let recordingTimer = null;
-let recordingStartTime = null;
-let speechRecognition = null;
-let speechSynthesis = null;
+let mediaRecorder = null
+const audioStream = null
+let audioContext = null
+let analyser = null
+let microphone = null
+let recordingTimer = null
+let recordingStartTime = null
+let speechRecognition = null
+let speechSynthesis = null
 
 // Computed properties
 const buttonClasses = computed(() => ({
   'btn-danger': isRecording.value,
   'btn-outline-primary': !isRecording.value && !hasError.value,
   'btn-outline-danger': hasError.value && !isRecording.value,
-  'disabled': !isAvailable.value || isSpeaking.value || props.disabled
-}));
+  disabled: !isAvailable.value || isSpeaking.value || props.disabled,
+}))
 
 const iconClass = computed(() => {
-  if (hasError.value) {return 'MicrophoneIcon-off';}
-  if (isRecording.value) {return 'StopIcon-circle';}
-  return 'MicrophoneIcon';
-});
+  if (hasError.value) {
+    return 'MicrophoneIcon-off'
+  }
+  if (isRecording.value) {
+    return 'StopIcon-circle'
+  }
+  return 'MicrophoneIcon'
+})
 
 const buttonText = computed(() => {
-  if (!isAvailable.value) {return 'Not Available';}
-  if (hasError.value) {return 'Microphone Error';}
-  if (isRecording.value) {return 'Recording...';}
-  return 'Push to Talk';
-});
+  if (!isAvailable.value) {
+    return 'Not Available'
+  }
+  if (hasError.value) {
+    return 'Microphone Error'
+  }
+  if (isRecording.value) {
+    return 'Recording...'
+  }
+  return 'Push to Talk'
+})
 
 const ariaLabel = computed(() => {
-  if (isRecording.value) {return 'Stop recording (release to stop)';}
-  return 'Start recording (hold to record)';
-});
+  if (isRecording.value) {
+    return 'Stop recording (release to stop)'
+  }
+  return 'Start recording (hold to record)'
+})
 
 // Initialize component
 onMounted(async () => {
-  await initializeAudio();
-  initializeSpeechRecognition();
-  initializeSpeechSynthesis();
+  await initializeAudio()
+  initializeSpeechRecognition()
+  initializeSpeechSynthesis()
   if (props.showDeviceSelector) {
     try {
-      const svc = await import('@/shared/services/AudioService');
-      const devices = await svc.audioService.getAvailableDevices();
-      microphoneDevices.value = devices.filter(d => d.kind === 'audioinput');
-      const preferred = svc.audioService.getPreferredDevices?.().input || '';
-      selectedMicId.value = typeof preferred === 'string' ? preferred : '';
+      const svc = await import('@/shared/services/AudioService')
+      const devices = await svc.audioService.getAvailableDevices()
+      microphoneDevices.value = devices.filter(d => d.kind === 'audioinput')
+      const preferred = svc.audioService.getPreferredDevices?.().input || ''
+      selectedMicId.value = typeof preferred === 'string' ? preferred : ''
     } catch {}
   }
-});
+})
 
 onBeforeUnmount(() => {
-  cleanup();
-});
+  cleanup()
+})
 
 // React to language changes in settings
-watch(() => store.settings?.voiceLang, (lang) => {
-  try {
-    if (speechRecognition) {
-      speechRecognition.lang = lang || 'en-US';
-    }
-  } catch {}
-});
+watch(
+  () => store.settings?.voiceLang,
+  lang => {
+    try {
+      if (speechRecognition) {
+        speechRecognition.lang = lang || 'en-US'
+      }
+    } catch {}
+  }
+)
 
 // Audio initialization
 async function initializeAudio() {
   try {
     // Non-invasive availability check; do not prompt for permissions on mount
     if (!navigator.mediaDevices || !window.MediaRecorder) {
-      throw new Error('Media recording not supported');
+      throw new Error('Media recording not supported')
     }
-    isAvailable.value = true;
-    logger.info('Audio recording capabilities available');
+    isAvailable.value = true
+    logger.info('Audio recording capabilities available')
   } catch (err) {
-    logger.error('Audio initialization failed:', err);
-    setError(`Microphone not available: ${err.message}`);
+    logger.error('Audio initialization failed:', err)
+    setError(`Microphone not available: ${err.message}`)
   }
 }
 
 // Speech recognition initialization
 function initializeSpeechRecognition() {
   try {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognition) {
-      logger.warn('Speech recognition not supported');
-      return;
+      logger.warn('Speech recognition not supported')
+      return
     }
 
-    speechRecognition = new SpeechRecognition();
-    speechRecognition.continuous = true;
-    speechRecognition.interimResults = true;
+    speechRecognition = new SpeechRecognition()
+    speechRecognition.continuous = true
+    speechRecognition.interimResults = true
     // Use settings-driven language, fallback to en-US
-    speechRecognition.lang = store.settings?.voiceLang || 'en-US';
+    speechRecognition.lang = store.settings?.voiceLang || 'en-US'
 
-    speechRecognition.onresult = (event) => {
-      let finalTranscript = '';
-      let interimTranscriptText = '';
+    speechRecognition.onresult = event => {
+      let finalTranscript = ''
+      let interimTranscriptText = ''
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcriptSegment = event.results[i][0].transcript;
+        const transcriptSegment = event.results[i][0].transcript
         if (event.results[i].isFinal) {
-          finalTranscript += transcriptSegment;
+          finalTranscript += transcriptSegment
         } else {
-          interimTranscriptText += transcriptSegment;
+          interimTranscriptText += transcriptSegment
         }
       }
 
       if (finalTranscript) {
-        transcript.value = finalTranscript;
-        emit('transcript', finalTranscript);
+        transcript.value = finalTranscript
+        emit('transcript', finalTranscript)
 
         if (props.autoSend && finalTranscript.trim()) {
-          processTranscript(finalTranscript);
+          processTranscript(finalTranscript)
         }
       }
 
-      interimTranscript.value = interimTranscriptText;
-    };
+      interimTranscript.value = interimTranscriptText
+    }
 
-    speechRecognition.onerror = (event) => {
-      logger.error('Speech recognition error:', event.error);
-      setError(`Speech recognition error: ${event.error}`);
-    };
+    speechRecognition.onerror = event => {
+      logger.error('Speech recognition error:', event.error)
+      setError(`Speech recognition error: ${event.error}`)
+    }
 
-    logger.info('Speech recognition initialized');
+    logger.info('Speech recognition initialized')
   } catch (err) {
-    logger.error('Speech recognition initialization failed:', err);
+    logger.error('Speech recognition initialization failed:', err)
   }
 }
 
 // Speech synthesis initialization
 function initializeSpeechSynthesis() {
   if ('speechSynthesis' in window) {
-    speechSynthesis = window.speechSynthesis;
-    speechSynthesisAvailable.value = true;
-    logger.info('Speech synthesis initialized');
+    speechSynthesis = window.speechSynthesis
+    speechSynthesisAvailable.value = true
+    logger.info('Speech synthesis initialized')
   } else {
-    logger.warn('Speech synthesis not supported');
+    logger.warn('Speech synthesis not supported')
   }
 }
 
 // Recording functions
 async function startRecording() {
-  if (!isAvailable.value || isRecording.value || isSpeaking.value || props.disabled) {
-    return;
+  if (
+    !isAvailable.value ||
+    isRecording.value ||
+    isSpeaking.value ||
+    props.disabled
+  ) {
+    return
   }
 
   try {
     // Clear previous state
-    clearError();
-    transcript.value = '';
-    interimTranscript.value = '';
-    aiResponse.value = '';
-    displayedResponse.value = '';
+    clearError()
+    transcript.value = ''
+    interimTranscript.value = ''
+    aiResponse.value = ''
+    displayedResponse.value = ''
 
     // Use canonical AudioService for recording & volume
-    audioService.setVolumeCallback((v) => { voiceLevel.value = Math.round(v * 100); });
-    await audioService.startRecording({ deviceId: selectedMicId.value || undefined });
+    audioService.setVolumeCallback(v => {
+      voiceLevel.value = Math.round(v * 100)
+    })
+    await audioService.startRecording({
+      deviceId: selectedMicId.value || undefined,
+    })
 
     // Start system speech recognition only if provider is system
-    if (speechRecognition && (store.settings?.sttProvider || 'system') === 'system') {
-      speechRecognition.start();
+    if (
+      speechRecognition &&
+      (store.settings?.sttProvider || 'system') === 'system'
+    ) {
+      speechRecognition.start()
     }
 
-    recordingStartTime = Date.now();
-    isRecording.value = true;
+    recordingStartTime = Date.now()
+    isRecording.value = true
 
     // Start recording timer
     recordingTimer = setInterval(() => {
-      recordingTime.value = (Date.now() - recordingStartTime) / 1000;
+      recordingTime.value = (Date.now() - recordingStartTime) / 1000
 
       // Auto-stop if max time reached
       if (recordingTime.value >= props.maxRecordingTime) {
-        stopRecording();
+        stopRecording()
       }
-    }, 100);
+    }, 100)
 
-    emit('recordingStart');
-    logger.info('Recording started');
+    emit('recordingStart')
+    logger.info('Recording started')
   } catch (err) {
-    logger.error('Failed to start recording:', err);
-    setError(`Failed to start recording: ${err.message}`);
+    logger.error('Failed to start recording:', err)
+    setError(`Failed to start recording: ${err.message}`)
   }
 }
 
 async function stopRecording() {
-  if (!isRecording.value) {return;}
+  if (!isRecording.value) {
+    return
+  }
 
   try {
-    isRecording.value = false;
+    isRecording.value = false
 
     // Clear timer
     if (recordingTimer) {
-      clearInterval(recordingTimer);
-      recordingTimer = null;
+      clearInterval(recordingTimer)
+      recordingTimer = null
     }
 
     // Stop system speech recognition
-    if (speechRecognition && (store.settings?.sttProvider || 'system') === 'system') {
-      speechRecognition.stop();
+    if (
+      speechRecognition &&
+      (store.settings?.sttProvider || 'system') === 'system'
+    ) {
+      speechRecognition.stop()
     }
 
     // Stop recording via canonical service and fetch blob
-    const blob = await audioService.stopRecording();
+    const blob = await audioService.stopRecording()
 
     // If Gemini STT selected, transcribe via IPC when available, otherwise fallback to CanonicalAIClient
     if ((store.settings?.sttProvider || 'system') === 'gemini' && blob) {
       try {
-        const base64 = await blobToBase64(blob);
-        const mimeType = blob.type || 'audio/webm;codecs=opus';
-        const language = store.settings?.voiceLang || 'en-US';
-        let text = '';
+        const base64 = await blobToBase64(blob)
+        const mimeType = blob.type || 'audio/webm;codecs=opus'
+        const language = store.settings?.voiceLang || 'en-US'
+        let text = ''
 
         // Prefer Electron IPC when available
         try {
@@ -419,47 +468,53 @@ async function stopRecording() {
             language,
             mimeType,
             audioData: base64,
-          });
+          })
           if (result?.success && result.transcript) {
-            text = result.transcript;
+            text = result.transcript
           }
-        } catch {/* fall through to SDK */}
+        } catch {
+          /* fall through to SDK */
+        }
 
         // Fallback: use SDK via CanonicalAIClient
         if (!text) {
           try {
             // Ensure client is initialized
-            const key = store.settings?.geminiApiKey || '';
+            const key = store.settings?.geminiApiKey || ''
             if (key && !canonicalAIClient.isReady()) {
-              await canonicalAIClient.initialize(key);
+              await canonicalAIClient.initialize(key)
             }
-            const res = await canonicalAIClient.transcribeAudio({ base64, mimeType, language });
-            text = res?.text || '';
+            const res = await canonicalAIClient.transcribeAudio({
+              base64,
+              mimeType,
+              language,
+            })
+            text = res?.text || ''
           } catch (sdkErr) {
-            logger.error('CanonicalAIClient.transcribeAudio failed', sdkErr);
+            logger.error('CanonicalAIClient.transcribeAudio failed', sdkErr)
           }
         }
 
         if (text) {
-          transcript.value = text;
-          emit('transcript', text);
+          transcript.value = text
+          emit('transcript', text)
           if (props.autoSend) {
-            processTranscript(text);
+            processTranscript(text)
           }
         }
       } catch (e) {
-        logger.error('Gemini STT failed', e);
+        logger.error('Gemini STT failed', e)
       }
     }
 
-    recordingTime.value = 0;
-    voiceLevel.value = 0;
+    recordingTime.value = 0
+    voiceLevel.value = 0
 
-    emit('recordingStop', blob || null);
-    logger.info('Recording stopped');
+    emit('recordingStop', blob || null)
+    logger.info('Recording stopped')
   } catch (err) {
-    logger.error('Failed to stop recording:', err);
-    setError(`Failed to stop recording: ${err.message}`);
+    logger.error('Failed to stop recording:', err)
+    setError(`Failed to stop recording: ${err.message}`)
   }
 }
 
@@ -468,45 +523,50 @@ async function stopRecording() {
 function setupMediaRecorder() {
   const options = {
     mimeType: 'audio/webm;codecs=opus',
-    audioBitsPerSecond: 128000
-  };
-
-  // Fallback for Safari
-  if (!(window.MediaRecorder?.isTypeSupported?.(options.mimeType))) {
-    options.mimeType = 'audio/mp4';
+    audioBitsPerSecond: 128000,
   }
 
-  mediaRecorder = new (window.MediaRecorder || function(){ return {}; })(audioStream, options);
+  // Fallback for Safari
+  if (!window.MediaRecorder?.isTypeSupported?.(options.mimeType)) {
+    options.mimeType = 'audio/mp4'
+  }
 
-  const audioChunks = [];
+  mediaRecorder = new (window.MediaRecorder ||
+    function () {
+      return {}
+    })(audioStream, options)
 
-  mediaRecorder.ondataavailable = (event) => {
+  const audioChunks = []
+
+  mediaRecorder.ondataavailable = event => {
     if (event.data.size > 0) {
-      audioChunks.push(event.data);
+      audioChunks.push(event.data)
     }
-  };
+  }
 
   mediaRecorder.onstop = async () => {
     if (audioChunks.length > 0) {
-      const audioBlob = new Blob(audioChunks, { type: options.mimeType });
-      logger.info(`Recorded audio blob: ${audioBlob.size} bytes`);
+      const audioBlob = new Blob(audioChunks, { type: options.mimeType })
+      logger.info(`Recorded audio blob: ${audioBlob.size} bytes`)
       // Could send to main process for STT processing if needed
     }
-  };
+  }
 }
 
 // AI Processing
 async function processTranscript(text) {
-  if (!text.trim()) {return;}
+  if (!text.trim()) {
+    return
+  }
 
   try {
-    isStreaming.value = true;
-    const aiClient = getBestAIClient();
+    isStreaming.value = true
+    const aiClient = getBestAIClient()
 
     // Initialize AI if needed
-    const apiKey = store.settings?.geminiApiKey;
+    const apiKey = store.settings?.geminiApiKey
     if (apiKey && (!aiClient.isReady || !aiClient.isReady.value)) {
-      await initializeAIClient(apiKey);
+      await initializeAIClient(apiKey)
     }
 
     // Use modern streaming if available
@@ -514,130 +574,142 @@ async function processTranscript(text) {
       const stream = await aiClient.streamText(text, {
         systemPrompt: props.systemPrompt,
         temperature: 0.7,
-        maxTokens: 512
-      });
+        maxTokens: 512,
+      })
 
       // Process stream chunks
       for await (const chunk of stream.textStream) {
-        aiResponse.value += chunk;
-        typeWriterEffect(_chunk);
+        aiResponse.value += chunk
+        typeWriterEffect(_chunk)
       }
 
-      isStreaming.value = false;
-      emit('response', aiResponse.value);
-      logger.info('AI streaming response completed');
+      isStreaming.value = false
+      emit('response', aiResponse.value)
+      logger.info('AI streaming response completed')
 
       // Cleanup stream
-      if (stream.cleanup) {stream.cleanup();}
+      if (stream.cleanup) {
+        stream.cleanup()
+      }
     } else {
       // Fallback to non-streaming
       const result = await aiClient.generateText(text, props.systemPrompt, {
         temperature: 0.7,
-        maxTokens: 512
-      });
+        maxTokens: 512,
+      })
 
-      aiResponse.value = result.text || result;
-      typeWriterEffect(aiResponse.value);
-      isStreaming.value = false;
-      emit('response', aiResponse.value);
-      logger.info('AI response completed');
+      aiResponse.value = result.text || result
+      typeWriterEffect(aiResponse.value)
+      isStreaming.value = false
+      emit('response', aiResponse.value)
+      logger.info('AI response completed')
     }
 
     // Store controller for potential cancellation
     // controller.cancel() if needed
   } catch (_err) {
-    isStreaming.value = false;
-    logger.error('Failed to process transcript:', err);
-    setError(`Failed to process speech: ${err.message}`);
+    isStreaming.value = false
+    logger.error('Failed to process transcript:', err)
+    setError(`Failed to process speech: ${err.message}`)
   }
 }
 
 // Typewriter effect for AI response
 function typeWriterEffect(newText) {
   // Simple immediate display for now, could add typing animation
-  displayedResponse.value = aiResponse.value;
+  displayedResponse.value = aiResponse.value
 }
 
 // Helpers
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.onloadend = () => {
-      const dataUrl = reader.result;
-      const base64 = String(dataUrl).split(',')[1] || '';
-      resolve(base64);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
+      const dataUrl = reader.result
+      const base64 = String(dataUrl).split(',')[1] || ''
+      resolve(base64)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
 }
 
 // Text-to-speech
 async function speakResponse() {
-  if (!aiResponse.value || isSpeaking.value) {return;}
+  if (!aiResponse.value || isSpeaking.value) {
+    return
+  }
   try {
-    isSpeaking.value = true;
-    await speakViaService(aiResponse.value, { rate: 0.9, pitch: 1.0, volume: 0.8 });
-    isSpeaking.value = false;
+    isSpeaking.value = true
+    await speakViaService(aiResponse.value, {
+      rate: 0.9,
+      pitch: 1.0,
+      volume: 0.8,
+    })
+    isSpeaking.value = false
   } catch (_err) {
-    isSpeaking.value = false;
-    logger.error('Failed to start speech synthesis:', err);
-    setError(`Failed to speak response: ${err.message}`);
+    isSpeaking.value = false
+    logger.error('Failed to start speech synthesis:', err)
+    setError(`Failed to speak response: ${err.message}`)
   }
 }
 
 // Keyboard event handlers
 function handleSpaceKey(event) {
   if (!event.repeat) {
-    startRecording();
+    startRecording()
   }
 }
 
 function handleSpaceKeyUp() {
-  stopRecording();
+  stopRecording()
 }
 
 // Utility functions
 function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
 function setError(message) {
-  error.value = message;
-  hasError.value = true;
-  emit('error', message);
+  error.value = message
+  hasError.value = true
+  emit('error', message)
 }
 
 function clearError() {
-  error.value = '';
-  hasError.value = false;
+  error.value = ''
+  hasError.value = false
 }
 
 function cleanup() {
   if (recordingTimer) {
-    clearInterval(recordingTimer);
+    clearInterval(recordingTimer)
   }
 
   if (audioStream) {
-    audioStream.getTracks().forEach(track => track.stop());
+    audioStream.getTracks().forEach(track => track.stop())
   }
 
   if (audioContext) {
-    audioContext.close();
+    audioContext.close()
   }
 
   if (speechRecognition) {
-    speechRecognition.stop();
+    speechRecognition.stop()
   }
 
-  try { window.speechSynthesis?.cancel?.(); } catch {}
+  try {
+    window.speechSynthesis?.cancel?.()
+  } catch {}
 }
 
 function setSelectedMic(id) {
-  selectedMicId.value = id || '';
-  try { audioService.setPreferredInputDevice(id || undefined); } catch {}
+  selectedMicId.value = id || ''
+  try {
+    audioService.setPreferredInputDevice(id || undefined)
+  } catch {}
 }
 
 // Expose methods for parent components
@@ -651,8 +723,8 @@ defineExpose({
   aiResponse: readonly(aiResponse),
   setSelectedMic,
   selectedMicId,
-  microphoneDevices
-});
+  microphoneDevices,
+})
 </script>
 
 <style scoped>
@@ -669,7 +741,7 @@ defineExpose({
 
 .push-to-talk-btn:not(.disabled):hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .push-to-talk-btn:not(.disabled):active {
@@ -693,9 +765,18 @@ defineExpose({
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 0.7; }
-  50% { transform: scale(1.05); opacity: 0.3; }
-  100% { transform: scale(1); opacity: 0.7; }
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
 }
 
 .voice-meter-container {
@@ -714,7 +795,12 @@ defineExpose({
 
 .voice-level-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-success) 0%, var(--color-warning) 70%, var(--color-danger) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-success) 0%,
+    var(--color-warning) 70%,
+    var(--color-danger) 100%
+  );
   transition: width 0.1s ease;
   border-radius: 3px;
 }
@@ -752,8 +838,14 @@ defineExpose({
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .ai-response {
@@ -812,5 +904,4 @@ defineExpose({
   outline: var(--focus-ring-size) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
 }
-
 </style>

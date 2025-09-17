@@ -4,697 +4,697 @@
  */
 
 export interface paths {
-    "/ai/init": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Initialize AI service */
-        post: operations["aiInit"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ai/generate": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Generate text */
-        post: operations["aiGenerateText"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ai/models": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List available models */
-        get: operations["aiListModels"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/jobs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Search aggregated jobs */
-        get: operations["jobsSearch"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/jobs/match": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Compute match scores for jobs */
-        post: operations["jobsMatch"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/jobs/recommend": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Recommend top jobs for profile */
-        post: operations["jobsRecommend"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/export/resume": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Export resume */
-        post: operations["exportResume"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/export/portfolio": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Export portfolio */
-        post: operations["exportPortfolio"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/interview/start": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Start interview session */
-        post: operations["interviewStart"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/interview/{sessionId}/next": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Get next question */
-        post: operations["interviewNext"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/interview/{sessionId}/submit": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Submit response */
-        post: operations["interviewSubmit"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/settings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get settings */
-        get: operations["settingsGet"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Update settings */
-        patch: operations["settingsPatch"];
-        trace?: never;
-    };
+  '/ai/init': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Initialize AI service */
+    post: operations['aiInit']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/ai/generate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Generate text */
+    post: operations['aiGenerateText']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/ai/models': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** List available models */
+    get: operations['aiListModels']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/jobs': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Search aggregated jobs */
+    get: operations['jobsSearch']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/jobs/match': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Compute match scores for jobs */
+    post: operations['jobsMatch']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/jobs/recommend': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Recommend top jobs for profile */
+    post: operations['jobsRecommend']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/export/resume': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Export resume */
+    post: operations['exportResume']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/export/portfolio': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Export portfolio */
+    post: operations['exportPortfolio']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/interview/start': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Start interview session */
+    post: operations['interviewStart']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/interview/{sessionId}/next': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Get next question */
+    post: operations['interviewNext']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/interview/{sessionId}/submit': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** Submit response */
+    post: operations['interviewSubmit']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/settings': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get settings */
+    get: operations['settingsGet']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** Update settings */
+    patch: operations['settingsPatch']
+    trace?: never
+  }
 }
-export type webhooks = Record<string, never>;
+export type webhooks = Record<string, never>
 export interface components {
-    schemas: {
-        AIInitResponse: {
-            success?: boolean;
-            model?: string;
-            /** Format: int64 */
-            timestamp?: number;
-            error?: string | null;
-        };
-        Model: {
-            id?: string;
-            description?: string;
-        };
-        AITextRequest: {
-            prompt: string;
-            systemInstructions?: string;
-            options?: {
-                temperature?: number;
-                topK?: number;
-                topP?: number;
-                maxTokens?: number;
-                model?: string;
-            };
-        };
-        AITextResponse: {
-            text?: string;
-            latencyMs?: number;
-        };
-        Job: {
-            id?: string;
-            title?: string;
-            company?: string;
-            location?: string;
-            remote?: boolean;
-            salary?: {
-                min?: number;
-                max?: number;
-                currency?: string;
-            };
-            description?: string;
-            /** Format: date-time */
-            postedDate?: string;
-            source?: string;
-        };
-        JobAggregationResult: {
-            jobs?: components["schemas"]["Job"][];
-            sources?: string[];
-            totalFound?: number;
-            errors?: string[];
-            processingTime?: number;
-        };
-        ResumeExportRequest: {
-            /** @description Resume data object */
-            data?: Record<string, never>;
-            formats?: ("pdf" | "json" | "markdown" | "html" | "docx")[];
-            options?: Record<string, never>;
-        };
-        PortfolioExportRequest: {
-            items?: Record<string, never>[];
-            /** @enum {string} */
-            format?: "pdf" | "image" | "zip";
-            options?: Record<string, never>;
-        };
-        Settings: {
-            [key: string]: unknown;
-        };
-        InterviewConfig: {
-            role?: string;
-            /** @enum {string} */
-            difficulty?: "easy" | "medium" | "hard";
-            language?: string;
-        };
-        InterviewSession: {
-            id?: string;
-            /** Format: date-time */
-            startedAt?: string;
-            stats?: Record<string, never>;
-        };
-        InterviewQuestion: {
-            id?: string;
-            text?: string;
-            type?: string;
-        };
-        InterviewEvaluation: {
-            score?: number;
-            feedback?: string;
-        };
-        UserProfile: {
-            id?: string;
-            name?: string;
-            email?: string;
-            skills?: string[];
-            /** @description years */
-            experience?: number;
-            interests?: string[];
-            location?: string;
-            salaryExpectation?: {
-                min?: number;
-                max?: number;
-            };
-            /** @enum {string} */
-            workStyle?: "remote" | "hybrid" | "onsite";
-            rolePreferences?: string[];
-            companySize?: string;
-            technologies?: string[];
-        };
-        MatchResult: {
-            jobId?: string;
-            matchScore?: number;
-            matchBreakdown?: {
-                skillsMatch?: number;
-                experienceMatch?: number;
-                locationMatch?: number;
-                salaryMatch?: number;
-                cultureMatch?: number;
-                technologyMatch?: number;
-            };
-            missingSkills?: string[];
-            recommendedSkills?: string[];
-            strengths?: string[];
-            improvementAreas?: string[];
-        };
-    };
-    responses: {
-        /** @description Invalid request */
-        BadRequest: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    error?: string;
-                };
-            };
-        };
-    };
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+  schemas: {
+    AIInitResponse: {
+      success?: boolean
+      model?: string
+      /** Format: int64 */
+      timestamp?: number
+      error?: string | null
+    }
+    Model: {
+      id?: string
+      description?: string
+    }
+    AITextRequest: {
+      prompt: string
+      systemInstructions?: string
+      options?: {
+        temperature?: number
+        topK?: number
+        topP?: number
+        maxTokens?: number
+        model?: string
+      }
+    }
+    AITextResponse: {
+      text?: string
+      latencyMs?: number
+    }
+    Job: {
+      id?: string
+      title?: string
+      company?: string
+      location?: string
+      remote?: boolean
+      salary?: {
+        min?: number
+        max?: number
+        currency?: string
+      }
+      description?: string
+      /** Format: date-time */
+      postedDate?: string
+      source?: string
+    }
+    JobAggregationResult: {
+      jobs?: components['schemas']['Job'][]
+      sources?: string[]
+      totalFound?: number
+      errors?: string[]
+      processingTime?: number
+    }
+    ResumeExportRequest: {
+      /** @description Resume data object */
+      data?: Record<string, never>
+      formats?: ('pdf' | 'json' | 'markdown' | 'html' | 'docx')[]
+      options?: Record<string, never>
+    }
+    PortfolioExportRequest: {
+      items?: Record<string, never>[]
+      /** @enum {string} */
+      format?: 'pdf' | 'image' | 'zip'
+      options?: Record<string, never>
+    }
+    Settings: {
+      [key: string]: unknown
+    }
+    InterviewConfig: {
+      role?: string
+      /** @enum {string} */
+      difficulty?: 'easy' | 'medium' | 'hard'
+      language?: string
+    }
+    InterviewSession: {
+      id?: string
+      /** Format: date-time */
+      startedAt?: string
+      stats?: Record<string, never>
+    }
+    InterviewQuestion: {
+      id?: string
+      text?: string
+      type?: string
+    }
+    InterviewEvaluation: {
+      score?: number
+      feedback?: string
+    }
+    UserProfile: {
+      id?: string
+      name?: string
+      email?: string
+      skills?: string[]
+      /** @description years */
+      experience?: number
+      interests?: string[]
+      location?: string
+      salaryExpectation?: {
+        min?: number
+        max?: number
+      }
+      /** @enum {string} */
+      workStyle?: 'remote' | 'hybrid' | 'onsite'
+      rolePreferences?: string[]
+      companySize?: string
+      technologies?: string[]
+    }
+    MatchResult: {
+      jobId?: string
+      matchScore?: number
+      matchBreakdown?: {
+        skillsMatch?: number
+        experienceMatch?: number
+        locationMatch?: number
+        salaryMatch?: number
+        cultureMatch?: number
+        technologyMatch?: number
+      }
+      missingSkills?: string[]
+      recommendedSkills?: string[]
+      strengths?: string[]
+      improvementAreas?: string[]
+    }
+  }
+  responses: {
+    /** @description Invalid request */
+    BadRequest: {
+      headers: {
+        [name: string]: unknown
+      }
+      content: {
+        'application/json': {
+          error?: string
+        }
+      }
+    }
+  }
+  parameters: never
+  requestBodies: never
+  headers: never
+  pathItems: never
 }
-export type $defs = Record<string, never>;
+export type $defs = Record<string, never>
 export interface operations {
-    aiInit: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    apiKey: string;
-                    /** @default gemini-1.5-flash */
-                    model?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description Initialized */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AIInitResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-        };
-    };
-    aiGenerateText: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AITextRequest"];
-            };
-        };
-        responses: {
-            /** @description Generated text */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AITextResponse"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-        };
-    };
-    aiListModels: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of models */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Model"][];
-                };
-            };
-        };
-    };
-    jobsSearch: {
-        parameters: {
-            query?: {
-                query?: string;
-                location?: string;
-                remoteOnly?: boolean;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Aggregated job results */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JobAggregationResult"];
-                };
-            };
-            400: components["responses"]["BadRequest"];
-        };
-    };
-    jobsMatch: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    profile?: components["schemas"]["UserProfile"];
-                    jobs?: components["schemas"]["Job"][];
-                };
-            };
-        };
-        responses: {
-            /** @description Match results */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        success?: boolean;
-                        data?: components["schemas"]["MatchResult"][];
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-        };
-    };
-    jobsRecommend: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    profile?: components["schemas"]["UserProfile"];
-                    jobs?: components["schemas"]["Job"][];
-                    /** @default 10 */
-                    limit?: number;
-                };
-            };
-        };
-        responses: {
-            /** @description Top matches */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        success?: boolean;
-                        data?: components["schemas"]["MatchResult"][];
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-        };
-    };
-    exportResume: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ResumeExportRequest"];
-            };
-        };
-        responses: {
-            /** @description Exported file (as base64 if via IPC) */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        format?: "pdf" | "json" | "markdown" | "html" | "docx";
-                        /** @description base64 payload or JSON string */
-                        data?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-        };
-    };
-    exportPortfolio: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PortfolioExportRequest"];
-            };
-        };
-        responses: {
-            /** @description Exported file (as base64) */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        format?: "pdf" | "image" | "zip";
-                        data?: string;
-                    };
-                };
-            };
-            400: components["responses"]["BadRequest"];
-        };
-    };
-    interviewStart: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["InterviewConfig"];
-            };
-        };
-        responses: {
-            /** @description Session started */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InterviewSession"];
-                };
-            };
-        };
-    };
-    interviewNext: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                sessionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Next question */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InterviewQuestion"];
-                };
-            };
-        };
-    };
-    interviewSubmit: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                sessionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    response?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description Acknowledged */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InterviewEvaluation"];
-                };
-            };
-        };
-    };
-    settingsGet: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Current settings */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Settings"];
-                };
-            };
-        };
-    };
-    settingsPatch: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    [key: string]: unknown;
-                };
-            };
-        };
-        responses: {
-            /** @description Updated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Settings"];
-                };
-            };
-        };
-    };
+  aiInit: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': {
+          apiKey: string
+          /** @default gemini-1.5-flash */
+          model?: string
+        }
+      }
+    }
+    responses: {
+      /** @description Initialized */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AIInitResponse']
+        }
+      }
+      400: components['responses']['BadRequest']
+    }
+  }
+  aiGenerateText: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AITextRequest']
+      }
+    }
+    responses: {
+      /** @description Generated text */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AITextResponse']
+        }
+      }
+      400: components['responses']['BadRequest']
+    }
+  }
+  aiListModels: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description List of models */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Model'][]
+        }
+      }
+    }
+  }
+  jobsSearch: {
+    parameters: {
+      query?: {
+        query?: string
+        location?: string
+        remoteOnly?: boolean
+        limit?: number
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Aggregated job results */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['JobAggregationResult']
+        }
+      }
+      400: components['responses']['BadRequest']
+    }
+  }
+  jobsMatch: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': {
+          profile?: components['schemas']['UserProfile']
+          jobs?: components['schemas']['Job'][]
+        }
+      }
+    }
+    responses: {
+      /** @description Match results */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            success?: boolean
+            data?: components['schemas']['MatchResult'][]
+          }
+        }
+      }
+      400: components['responses']['BadRequest']
+    }
+  }
+  jobsRecommend: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': {
+          profile?: components['schemas']['UserProfile']
+          jobs?: components['schemas']['Job'][]
+          /** @default 10 */
+          limit?: number
+        }
+      }
+    }
+    responses: {
+      /** @description Top matches */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            success?: boolean
+            data?: components['schemas']['MatchResult'][]
+          }
+        }
+      }
+      400: components['responses']['BadRequest']
+    }
+  }
+  exportResume: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ResumeExportRequest']
+      }
+    }
+    responses: {
+      /** @description Exported file (as base64 if via IPC) */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            /** @enum {string} */
+            format?: 'pdf' | 'json' | 'markdown' | 'html' | 'docx'
+            /** @description base64 payload or JSON string */
+            data?: string
+          }
+        }
+      }
+      400: components['responses']['BadRequest']
+    }
+  }
+  exportPortfolio: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PortfolioExportRequest']
+      }
+    }
+    responses: {
+      /** @description Exported file (as base64) */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            /** @enum {string} */
+            format?: 'pdf' | 'image' | 'zip'
+            data?: string
+          }
+        }
+      }
+      400: components['responses']['BadRequest']
+    }
+  }
+  interviewStart: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['InterviewConfig']
+      }
+    }
+    responses: {
+      /** @description Session started */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['InterviewSession']
+        }
+      }
+    }
+  }
+  interviewNext: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        sessionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Next question */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['InterviewQuestion']
+        }
+      }
+    }
+  }
+  interviewSubmit: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        sessionId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': {
+          response?: string
+        }
+      }
+    }
+    responses: {
+      /** @description Acknowledged */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['InterviewEvaluation']
+        }
+      }
+    }
+  }
+  settingsGet: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Current settings */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Settings']
+        }
+      }
+    }
+  }
+  settingsPatch: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': {
+          [key: string]: unknown
+        }
+      }
+    }
+    responses: {
+      /** @description Updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Settings']
+        }
+      }
+    }
+  }
 }

@@ -1,7 +1,9 @@
 <template>
   <v-card class="glass-card section-card resume-preview-card" elevation="0">
     <v-card-title class="d-flex align-center pa-4">
-      <span class="me-2" aria-hidden="true"><AppIcon name="mdi-file-document-outline" aria-hidden="true" /></span>
+      <span class="me-2" aria-hidden="true"
+        ><AppIcon name="mdi-file-document-outline" aria-hidden="true"
+      /></span>
       <span>Resume Preview</span>
       <v-spacer />
       <div class="d-flex ga-2">
@@ -23,42 +25,72 @@
         />
       </div>
     </v-card-title>
-    
+
     <v-card-text class="pa-0">
-      <div ref="previewRef" class="resume-preview-content" :class="templateClass">
+      <div
+        ref="previewRef"
+        class="resume-preview-content"
+        :class="templateClass"
+      >
         <!-- Header Section -->
         <div v-if="resumeData.personal" class="resume-header pa-6-unified">
           <div class="text-center mb-4">
             <h1 class="text-h3 font-weight-bold mb-2">
-              {{ resumeData.personal.firstName }} {{ resumeData.personal.lastName }}
+              {{ resumeData.personal.firstName }}
+              {{ resumeData.personal.lastName }}
             </h1>
             <div class="contact-info d-flex justify-center flex-wrap ga-4 mb-4">
-              <div v-if="resumeData.personal.email" class="d-flex align-center ga-1">
+              <div
+                v-if="resumeData.personal.email"
+                class="d-flex align-center ga-1"
+              >
                 <AppIcon name="mdi-email" size="16" />
                 <span>{{ resumeData.personal.email }}</span>
               </div>
-              <div v-if="resumeData.personal.phone" class="d-flex align-center ga-1">
-                <span aria-hidden="true"><AppIcon name="mdi-phone" aria-hidden="true" /></span>
+              <div
+                v-if="resumeData.personal.phone"
+                class="d-flex align-center ga-1"
+              >
+                <span aria-hidden="true"
+                  ><AppIcon name="mdi-phone" aria-hidden="true"
+                /></span>
                 <span>{{ resumeData.personal.phone }}</span>
               </div>
-              <div v-if="resumeData.personal.location" class="d-flex align-center ga-1">
-                <span aria-hidden="true"><AppIcon name="mdi-map-marker" aria-hidden="true" /></span>
+              <div
+                v-if="resumeData.personal.location"
+                class="d-flex align-center ga-1"
+              >
+                <span aria-hidden="true"
+                  ><AppIcon name="mdi-map-marker" aria-hidden="true"
+                /></span>
                 <span>{{ resumeData.personal.location }}</span>
               </div>
-              <div v-if="resumeData.personal.website" class="d-flex align-center ga-1">
+              <div
+                v-if="resumeData.personal.website"
+                class="d-flex align-center ga-1"
+              >
                 <AppIcon name="mdi-web" size="16" />
                 <span>{{ resumeData.personal.website }}</span>
               </div>
-              <div v-if="resumeData.personal.linkedin" class="d-flex align-center ga-1">
+              <div
+                v-if="resumeData.personal.linkedin"
+                class="d-flex align-center ga-1"
+              >
                 <AppIcon name="mdi-linkedin" size="16" />
                 <span>{{ resumeData.personal.linkedin }}</span>
               </div>
-              <div v-if="resumeData.personal.github" class="d-flex align-center ga-1">
+              <div
+                v-if="resumeData.personal.github"
+                class="d-flex align-center ga-1"
+              >
                 <AppIcon name="mdi-github" size="16" />
                 <span>{{ resumeData.personal.github }}</span>
               </div>
             </div>
-            <p v-if="resumeData.personal.summary" class="text-body-1 text-medium-emphasis">
+            <p
+              v-if="resumeData.personal.summary"
+              class="text-body-1 text-medium-emphasis"
+            >
               {{ resumeData.personal.summary }}
             </p>
           </div>
@@ -67,12 +99,19 @@
         <v-divider />
 
         <!-- Experience Section -->
-        <div v-if="resumeData.experience?.length" class="resume-section pa-6-unified">
+        <div
+          v-if="resumeData.experience?.length"
+          class="resume-section pa-6-unified"
+        >
           <h2 class="text-h5 font-weight-bold mb-4 d-flex align-center">
             <AppIcon name="mdi-briefcase" class="me-2" aria-hidden="true" />
             Experience
           </h2>
-          <div v-for="(exp, index) in resumeData.experience" :key="index" class="mb-4">
+          <div
+            v-for="(exp, index) in resumeData.experience"
+            :key="index"
+            class="mb-4"
+          >
             <div class="d-flex justify-space-between align-start mb-2">
               <div>
                 <h3 class="text-h6 font-weight-semibold">{{ exp.title }}</h3>
@@ -80,24 +119,38 @@
               </div>
               <div class="text-right">
                 <p class="text-body-2 text-medium-emphasis">
-                  {{ formatDate(exp.startDate) }} - {{ exp.current ? 'Present' : formatDate(exp.endDate) }}
+                  {{ formatDate(exp.startDate) }} -
+                  {{ exp.current ? 'Present' : formatDate(exp.endDate) }}
                 </p>
-                <p v-if="exp.location" class="text-body-2 text-medium-emphasis">{{ exp.location }}</p>
+                <p v-if="exp.location" class="text-body-2 text-medium-emphasis">
+                  {{ exp.location }}
+                </p>
               </div>
             </div>
-            <p v-if="exp.description" class="text-body-1 mb-2">{{ exp.description }}</p>
+            <p v-if="exp.description" class="text-body-1 mb-2">
+              {{ exp.description }}
+            </p>
             <ul v-if="exp.achievements?.length" class="achievements-list">
-              <li v-for="achievement in exp.achievements" :key="achievement" class="text-body-2 mb-1">
+              <li
+                v-for="achievement in exp.achievements"
+                :key="achievement"
+                class="text-body-2 mb-1"
+              >
                 {{ achievement }}
               </li>
             </ul>
           </div>
         </div>
 
-        <v-divider v-if="resumeData.experience?.length && resumeData.skills?.length" />
+        <v-divider
+          v-if="resumeData.experience?.length && resumeData.skills?.length"
+        />
 
         <!-- Skills Section -->
-        <div v-if="resumeData.skills?.length" class="resume-section pa-6-unified">
+        <div
+          v-if="resumeData.skills?.length"
+          class="resume-section pa-6-unified"
+        >
           <h2 class="text-h5 font-weight-bold mb-4 d-flex align-center">
             <AppIcon name="mdi-code-tags" color="primary" class="me-2" />
             Skills
@@ -113,15 +166,24 @@
           </div>
         </div>
 
-        <v-divider v-if="resumeData.skills?.length && resumeData.education?.length" />
+        <v-divider
+          v-if="resumeData.skills?.length && resumeData.education?.length"
+        />
 
         <!-- Education Section -->
-        <div v-if="resumeData.education?.length" class="resume-section pa-6-unified">
+        <div
+          v-if="resumeData.education?.length"
+          class="resume-section pa-6-unified"
+        >
           <h2 class="text-h5 font-weight-bold mb-4 d-flex align-center">
             <AppIcon name="mdi-school" color="primary" class="me-2" />
             Education
           </h2>
-          <div v-for="(edu, index) in resumeData.education" :key="index" class="mb-3">
+          <div
+            v-for="(edu, index) in resumeData.education"
+            :key="index"
+            class="mb-3"
+          >
             <div class="d-flex justify-space-between align-start">
               <div>
                 <h3 class="text-h6 font-weight-semibold">{{ edu.degree }}</h3>
@@ -130,9 +192,12 @@
               </div>
               <div class="text-right">
                 <p class="text-body-2 text-medium-emphasis">
-                  {{ formatDate(edu.startDate) }} - {{ edu.current ? 'Present' : formatDate(edu.endDate) }}
+                  {{ formatDate(edu.startDate) }} -
+                  {{ edu.current ? 'Present' : formatDate(edu.endDate) }}
                 </p>
-                <p v-if="edu.location" class="text-body-2 text-medium-emphasis">{{ edu.location }}</p>
+                <p v-if="edu.location" class="text-body-2 text-medium-emphasis">
+                  {{ edu.location }}
+                </p>
               </div>
             </div>
           </div>
@@ -199,20 +264,22 @@ interface Props {
 
 const _props = withDefaults(defineProps<Props>(), {
   resumeData: () => ({}),
-  template: 'classic'
+  template: 'classic',
 })
 
 const { toast } = useToast()
 const previewRef = ref<HTMLElement>()
 
-const templateClass = computed(() => `resume-template-${(props.template || 'classic').toLowerCase()}`)
+const templateClass = computed(
+  () => `resume-template-${(props.template || 'classic').toLowerCase()}`
+)
 
 const formatDate = (dateString: string | undefined): string => {
   if (!dateString) return ''
   try {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'short'
+      month: 'short',
     })
   } catch {
     return dateString
@@ -227,23 +294,23 @@ const downloadResume = async () => {
 
     // Show loading state
     toast.info('Generating PDF...')
-    
+
     // Import the export utilities
     const { exportElementToPDF } = await import('@/utils/export.js')
-    
+
     // Generate PDF from the resume preview
-    const filename = `${props.resumeData.personal?.firstName || 'resume'}_${props.resumeData.personal?.lastName || ''}_resume`.trim()
+    const filename =
+      `${props.resumeData.personal?.firstName || 'resume'}_${props.resumeData.personal?.lastName || ''}_resume`.trim()
     const success = await exportElementToPDF(previewRef.value, filename, {
       scale: 2,
-      backgroundColor: '#ffffff'
+      backgroundColor: '#ffffff',
     })
-    
+
     if (success) {
       toast.success('Resume downloaded successfully!')
     } else {
       throw new Error('PDF generation failed')
     }
-    
   } catch (error) {
     console.error('PDF download error:', error)
     toast.error('Failed to download resume. Please try again.')
@@ -323,12 +390,12 @@ const printResume = () => {
     box-shadow: none !important;
     border: none !important;
   }
-  
+
   .v-card-title,
   .v-card-actions {
     display: none !important;
   }
-  
+
   .resume-preview-content {
     margin: 0;
     padding: 0;
@@ -342,19 +409,45 @@ const printResume = () => {
 }
 
 .v-theme--dark .resume-header {
-  background: linear-gradient(135deg, var(--surface-elevated) 0%, var(--surface-elevated-alt, var(--surface-base)) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--surface-elevated) 0%,
+    var(--surface-elevated-alt, var(--surface-base)) 100%
+  );
 }
 
 /* Simple template variants */
 .resume-template-modern h1,
-.resume-template-modern h2 { color: var(--color-info-500); }
-.resume-template-modern .resume-header { background: linear-gradient(135deg, color-mix(in srgb, var(--color-info-200) 60%, transparent), color-mix(in srgb, var(--color-info-100) 60%, transparent)); }
+.resume-template-modern h2 {
+  color: var(--color-info-500);
+}
+.resume-template-modern .resume-header {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-info-200) 60%, transparent),
+    color-mix(in srgb, var(--color-info-100) 60%, transparent)
+  );
+}
 
 .resume-template-elegant h1,
-.resume-template-elegant h2 { color: var(--color-primary-400); }
-.resume-template-elegant .resume-header { background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-100) 70%, transparent), color-mix(in srgb, var(--color-primary-50) 70%, transparent)); }
+.resume-template-elegant h2 {
+  color: var(--color-primary-400);
+}
+.resume-template-elegant .resume-header {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-100) 70%, transparent),
+    color-mix(in srgb, var(--color-primary-50) 70%, transparent)
+  );
+}
 
-.resume-template-compact { font-size: 13px; }
-.resume-template-compact .resume-header { padding: 12px 0; }
-.resume-template-compact .achievements-list { margin-left: 1.25rem; }
+.resume-template-compact {
+  font-size: 13px;
+}
+.resume-template-compact .resume-header {
+  padding: 12px 0;
+}
+.resume-template-compact .achievements-list {
+  margin-left: 1.25rem;
+}
 </style>

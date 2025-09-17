@@ -7,69 +7,69 @@
 
 class Logger {
   constructor() {
-    this.isDevelopment = process.env.NODE_ENV === 'development';
-    this.seenMessages = new Set();
+    this.isDevelopment = process.env.NODE_ENV === 'development'
+    this.seenMessages = new Set()
   }
 
   debug(message, data, context) {
     if (this.isDevelopment) {
-      this.log('debug', message, data, context);
+      this.log('debug', message, data, context)
     }
   }
 
   info(message, data, context) {
-    this.log('info', message, data, context);
+    this.log('info', message, data, context)
   }
 
   warn(message, data, context) {
-    this.log('warn', message, data, context);
+    this.log('warn', message, data, context)
   }
 
   error(message, data, context) {
-    this.log('error', message, data, context);
+    this.log('error', message, data, context)
   }
 
   once(key, level = 'warn', message, data, context) {
-    const uniqueKey = String(key);
+    const uniqueKey = String(key)
     if (this.seenMessages.has(uniqueKey)) {
-      return;
+      return
     }
-    this.seenMessages.add(uniqueKey);
-    this[level](message, data, context);
+    this.seenMessages.add(uniqueKey)
+    this[level](message, data, context)
   }
 
   log(level, message, data, context) {
-    const timestamp = new Date().toISOString();
-    const contextStr = context ? `[${context}] ` : '';
-    const logMessage = `[${level.toUpperCase()}] ${timestamp} ${contextStr}${message}`;
+    const timestamp = new Date().toISOString()
+    const contextStr = context ? `[${context}] ` : ''
+    const logMessage = `[${level.toUpperCase()}] ${timestamp} ${contextStr}${message}`
 
     // Format data for better console display
-    let formattedData = data;
+    let formattedData = data
     if (data && typeof data === 'object') {
       try {
-        formattedData = JSON.stringify(data, null, 2);
+        formattedData = JSON.stringify(data, null, 2)
       } catch (e) {
-        formattedData = String(data);
+        formattedData = String(data)
       }
     }
 
     switch (level) {
       case 'debug':
-        console.debug(logMessage, formattedData || '');
-        break;
+        console.debug(logMessage, formattedData || '')
+        break
       case 'info':
-        console.info(logMessage, formattedData || '');
-        break;
+        console.info(logMessage, formattedData || '')
+        break
       case 'warn':
-        console.warn(logMessage, formattedData || '');
-        break;
+        console.warn(logMessage, formattedData || '')
+        break
       case 'error':
-        console.error(logMessage, formattedData || '');
-        break;
+        console.error(logMessage, formattedData || '')
+        break
     }
   }
 }
 
-const logger = new Logger();
+const logger = new Logger()
 
-module.exports = { logger };
+module.exports = { logger }

@@ -11,4 +11,3 @@ export const jobService = refactoredJobAPIService
 
 // Back-compat named export for legacy imports that expect `JobService`-like default
 export default {} as never
-

@@ -26,7 +26,18 @@ import { computed, useSlots, useAttrs } from 'vue'
 import UnifiedButton from './UnifiedButton.vue'
 
 interface Props {
-  variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'ghost' | 'outline' | 'gaming' | 'cyber' | 'glass'
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info'
+    | 'ghost'
+    | 'outline'
+    | 'gaming'
+    | 'cyber'
+    | 'glass'
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   icon?: string | undefined
   loading?: boolean
@@ -38,7 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   icon: undefined,
   loading: false,
-  disabled: false
+  disabled: false,
 })
 
 defineEmits<{

@@ -70,7 +70,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
     try {
       const resp = await this.httpClient.get(this.baseUrl, {
         validateStatus: () => true,
-        timeout: 15000
+        timeout: 15000,
       })
       if (resp.status === 404) return false
       return resp.status >= 200 && resp.status < 300
@@ -87,28 +87,52 @@ export class CompanyBoardProvider extends BaseJobProvider {
     } catch (error: any) {
       const status = error?.response?.status
       const message = error?.message || ''
-      
+
       // Handle common API issues silently
       if (status === 404 || status === 410 || status === 403) {
         // Invalid or retired board token - log as info only
-        logger.info(`Company board not accessible: ${this.config.name} (${this.config.type}:${this.config.token}) - Status: ${status}`, undefined, 'CompanyBoardProvider')
+        logger.info(
+          `Company board not accessible: ${this.config.name} (${this.config.type}:${this.config.token}) - Status: ${status}`,
+          undefined,
+          'CompanyBoardProvider'
+        )
         return []
       }
-      
+
       // Handle CORS errors (common in browser environments)
-      if (message.includes('CORS') || message.includes('Access-Control-Allow-Origin') || error?.code === 'ERR_FAILED') {
-        logger.info(`CORS error accessing ${this.config.name} - may require server-side proxy`, undefined, 'CompanyBoardProvider')
+      if (
+        message.includes('CORS') ||
+        message.includes('Access-Control-Allow-Origin') ||
+        error?.code === 'ERR_FAILED'
+      ) {
+        logger.info(
+          `CORS error accessing ${this.config.name} - may require server-side proxy`,
+          undefined,
+          'CompanyBoardProvider'
+        )
         return []
       }
-      
+
       // Handle network timeout or connection issues
-      if (message.includes('timeout') || message.includes('ECONNREFUSED') || message.includes('net::ERR_FAILED')) {
-        logger.info(`Network error accessing ${this.config.name} - service may be temporarily unavailable`, undefined, 'CompanyBoardProvider')
+      if (
+        message.includes('timeout') ||
+        message.includes('ECONNREFUSED') ||
+        message.includes('net::ERR_FAILED')
+      ) {
+        logger.info(
+          `Network error accessing ${this.config.name} - service may be temporarily unavailable`,
+          undefined,
+          'CompanyBoardProvider'
+        )
         return []
       }
-      
+
       // Only surface unexpected errors
-      logger.error(`Unexpected error from ${this.config.name}: ${message}`, undefined, 'CompanyBoardProvider')
+      logger.error(
+        `Unexpected error from ${this.config.name}: ${message}`,
+        undefined,
+        'CompanyBoardProvider'
+      )
       return []
     }
   }
@@ -174,7 +198,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.updated_at || new Date().toISOString(),
       featured: false,
-      source: `Greenhouse (${this.config.name})`
+      source: `Greenhouse (${this.config.name})`,
     }))
   }
 
@@ -186,7 +210,8 @@ export class CompanyBoardProvider extends BaseJobProvider {
       title: job.text,
       company: job.company || this.config.name,
       location: job.categories?.location || 'Not specified',
-      remote: job.categories?.location?.toLowerCase().includes('remote') || false,
+      remote:
+        job.categories?.location?.toLowerCase().includes('remote') || false,
       salary: this.parseSalary(job.salaryDescription),
       description: job.description || job.descriptionPlain || '',
       requirements: this.parseRequirements(job.description || ''),
@@ -195,7 +220,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
       type: job.type || 'full-time',
       postedDate: job.createdAt || new Date().toISOString(),
       featured: false,
-      source: `Lever (${this.config.name})`
+      source: `Lever (${this.config.name})`,
     }))
   }
 
@@ -216,7 +241,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.created_at || new Date().toISOString(),
       featured: false,
-      source: `Recruitee (${this.config.name})`
+      source: `Recruitee (${this.config.name})`,
     }))
   }
 
@@ -237,7 +262,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.createdAt || new Date().toISOString(),
       featured: false,
-      source: `Workable (${this.config.name})`
+      source: `Workable (${this.config.name})`,
     }))
   }
 
@@ -250,11 +275,13 @@ export class CompanyBoardProvider extends BaseJobProvider {
       company: job.companyName || this.config.name,
       location: job.location || 'Not specified',
       remote: job.location?.toLowerCase().includes('remote') || false,
-      salary: job.salaryRange ? {
-        min: job.salaryRange.min,
-        max: job.salaryRange.max,
-        currency: job.salaryRange.currency
-      } : undefined,
+      salary: job.salaryRange
+        ? {
+            min: job.salaryRange.min,
+            max: job.salaryRange.max,
+            currency: job.salaryRange.currency,
+          }
+        : undefined,
       description: job.description || '',
       requirements: this.parseRequirements(job.description || ''),
       technologies: this.extractTechnologies(job.description || ''),
@@ -262,21 +289,30 @@ export class CompanyBoardProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.postedDate || new Date().toISOString(),
       featured: false,
-      source: `Ashby (${this.config.name})`
+      source: `Ashby (${this.config.name})`,
     }))
   }
 
   private parseSmartRecruitersJobs(data: any): Job[] {
     // SmartRecruiters responses typically include a 'content' array
-    const items = Array.isArray(data?.content) ? data.content : Array.isArray(data) ? data : []
+    const items = Array.isArray(data?.content)
+      ? data.content
+      : Array.isArray(data)
+        ? data
+        : []
     return items.map((item: any) => {
       const title = item?.name || item?.title || 'Unknown Position'
       const company = this.config.name
-      const loc = item?.location?.city || item?.primaryLocation?.city || 'Not specified'
-      const country = item?.location?.country || item?.primaryLocation?.country || ''
+      const loc =
+        item?.location?.city || item?.primaryLocation?.city || 'Not specified'
+      const country =
+        item?.location?.country || item?.primaryLocation?.country || ''
       const location = country ? `${loc}, ${country}` : loc
       const id = item?.id || item?.ref || Math.random().toString(36)
-      const description = item?.jobAd?.sections?.jobDescription?.text || item?.jobAd?.sections?.requirements?.text || ''
+      const description =
+        item?.jobAd?.sections?.jobDescription?.text ||
+        item?.jobAd?.sections?.requirements?.text ||
+        ''
       return {
         id: `smartrecruiters-${id}`,
         title,
@@ -289,9 +325,10 @@ export class CompanyBoardProvider extends BaseJobProvider {
         technologies: this.extractTechnologies(description),
         experienceLevel: 'mid',
         type: 'full-time',
-        postedDate: item?.releasedDate || item?.updatedOn || new Date().toISOString(),
+        postedDate:
+          item?.releasedDate || item?.updatedOn || new Date().toISOString(),
         featured: false,
-        source: `SmartRecruiters (${this.config.name})`
+        source: `SmartRecruiters (${this.config.name})`,
       } as Job
     })
   }
@@ -318,7 +355,7 @@ export class CompanyBoardProvider extends BaseJobProvider {
         type: 'full-time',
         postedDate: attr?.created_at || new Date().toISOString(),
         featured: false,
-        source: `Teamtailor (${this.config.name})`
+        source: `Teamtailor (${this.config.name})`,
       } as Job
     })
   }
@@ -348,23 +385,25 @@ export class CompanyBoardProvider extends BaseJobProvider {
         type: 'full-time',
         postedDate: p.postedOn || new Date().toISOString(),
         featured: false,
-        source: `Workday (${this.config.name})`
+        source: `Workday (${this.config.name})`,
       } as Job
     })
   }
 
-  public parseSalary(salaryDescription?: string): { min: number; max: number; currency: string } | undefined {
+  public parseSalary(
+    salaryDescription?: string
+  ): { min: number; max: number; currency: string } | undefined {
     if (!salaryDescription || typeof salaryDescription !== 'string') {
-      return undefined;
+      return undefined
     }
 
-    const text = salaryDescription.toLowerCase().trim();
-    
+    const text = salaryDescription.toLowerCase().trim()
+
     // Common salary patterns
     const patterns = [
       // $100,000 - $150,000
       /\$?([\d,]+)\s*[-–—]\s*\$?([\d,]+)/,
-      // $100K - $150K  
+      // $100K - $150K
       /\$?([\d,]+)k\s*[-–—]\s*\$?([\d,]+)k/i,
       // Up to $150,000
       /up\s*to\s*\$?([\d,]+)/,
@@ -374,53 +413,57 @@ export class CompanyBoardProvider extends BaseJobProvider {
       /£([\d,]+)\s*[-–—]\s*£([\d,]+)/,
       // €100,000 - €150,000 (EU)
       /€([\d,]+)\s*[-–—]\s*€([\d,]+)/,
-    ];
+    ]
 
-    let currency = 'USD';
-    if (text.includes('£')) currency = 'GBP';
-    else if (text.includes('€')) currency = 'EUR';
+    let currency = 'USD'
+    if (text.includes('£')) currency = 'GBP'
+    else if (text.includes('€')) currency = 'EUR'
 
     for (const pattern of patterns) {
-      const match = text.match(pattern);
+      const match = text.match(pattern)
       if (match) {
-        let min: number, max: number;
-        
+        let min: number, max: number
+
         if (match[2]) {
           // Range format
-          min = parseInt(match[1].replace(/[,k]/gi, ''));
-          max = parseInt(match[2].replace(/[,k]/gi, ''));
-          
+          min = parseInt(match[1].replace(/[,k]/gi, ''))
+          max = parseInt(match[2].replace(/[,k]/gi, ''))
+
           // Handle K notation
-          if (match[1].toLowerCase().includes('k')) min *= 1000;
-          if (match[2].toLowerCase().includes('k')) max *= 1000;
+          if (match[1].toLowerCase().includes('k')) min *= 1000
+          if (match[2].toLowerCase().includes('k')) max *= 1000
         } else {
           // Single value (up to/starting at)
-          const value = parseInt(match[1].replace(/[,k]/gi, ''));
-          const finalValue = match[1].toLowerCase().includes('k') ? value * 1000 : value;
-          
+          const value = parseInt(match[1].replace(/[,k]/gi, ''))
+          const finalValue = match[1].toLowerCase().includes('k')
+            ? value * 1000
+            : value
+
           if (text.includes('up to')) {
-            min = Math.round(finalValue * 0.7); // Estimate minimum
-            max = finalValue;
+            min = Math.round(finalValue * 0.7) // Estimate minimum
+            max = finalValue
           } else if (text.includes('starting')) {
-            min = finalValue;
-            max = Math.round(finalValue * 1.3); // Estimate maximum
+            min = finalValue
+            max = Math.round(finalValue * 1.3) // Estimate maximum
           } else {
-            min = max = finalValue;
+            min = max = finalValue
           }
         }
 
-        return { min, max, currency };
+        return { min, max, currency }
       }
     }
 
-    return undefined;
+    return undefined
   }
 }
 
 // Factory function to create company board providers from config
-export function createCompanyBoardProviders(configs: CompanyBoardConfig[]): CompanyBoardProvider[] {
-  return configs.map((config, index) =>
-    new CompanyBoardProvider(config, 20 + index)
+export function createCompanyBoardProviders(
+  configs: CompanyBoardConfig[]
+): CompanyBoardProvider[] {
+  return configs.map(
+    (config, index) => new CompanyBoardProvider(config, 20 + index)
   )
 }
 

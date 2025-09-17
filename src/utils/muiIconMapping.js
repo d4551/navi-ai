@@ -73,7 +73,7 @@ import {
   BugReport as BugIcon,
   Science as TestTubeIcon,
   Egg as EggEasterIcon,
-  LocalCafe as CupIcon
+  LocalCafe as CupIcon,
 } from '@mui/icons-material'
 
 export const EMOJI_TO_MUI_ICON_MAP = {
@@ -88,7 +88,7 @@ export const EMOJI_TO_MUI_ICON_MAP = {
   '💼': BriefcaseIcon,
   '📝': DocumentEditIcon,
   '🎨': PaletteIcon,
-  
+
   // Technical & System
   '🔧': WrenchIcon,
   '⚙️': CogIcon,
@@ -101,7 +101,7 @@ export const EMOJI_TO_MUI_ICON_MAP = {
   '⚡': LightningIcon,
   '🌈': PaletteIcon,
   '🔥': FireIcon,
-  
+
   // Communication & Media
   '🎤': MicrophoneIcon,
   '🔊': VolumeHighIcon,
@@ -113,14 +113,14 @@ export const EMOJI_TO_MUI_ICON_MAP = {
   '📺': TelevisionIcon,
   '🗣️': AccountVoiceIcon,
   '💭': ThoughtBubbleIcon,
-  
+
   // Files & Documents
   '📄': DocumentIcon,
   '📁': FolderIcon,
   '📋': ClipboardIcon,
   '📖': BookIcon,
   '📍': MapMarkerIcon,
-  
+
   // People & Users
   '👤': AccountIcon,
   '👥': AccountGroupIcon,
@@ -128,7 +128,7 @@ export const EMOJI_TO_MUI_ICON_MAP = {
   '👨‍💻': AccountEditIcon,
   '🧙‍♂️': WizardIcon,
   '🧚‍♀️': FaceWomanShimmerIcon,
-  
+
   // Status & Actions
   '✅': CheckCircleIcon,
   '❌': CloseCircleIcon,
@@ -136,7 +136,7 @@ export const EMOJI_TO_MUI_ICON_MAP = {
   '🔒': LockIcon,
   '🔍': MagnifyIcon,
   '🤖': RobotIcon,
-  
+
   // Theme & UI
   '🌙': WeatherNightIcon,
   '☀️': WeatherSunnyIcon,
@@ -144,7 +144,7 @@ export const EMOJI_TO_MUI_ICON_MAP = {
   '🎭': DramaMasksIcon,
   '🎲': DiceIcon,
   '🃏': CardsPlayingIcon,
-  
+
   // Gaming Specific
   '🐕‍🦺': DogServiceIcon, // Sam
   '🐰': RabbitIcon, // Max
@@ -153,7 +153,7 @@ export const EMOJI_TO_MUI_ICON_MAP = {
   '🏍️': MotorbikeIcon,
   '🚔': CarEmergencyIcon,
   '🏠': HomeIcon,
-  
+
   // Achievements & Progress
   '🏅': MedalIcon,
   '📈': ChartIcon,
@@ -162,14 +162,14 @@ export const EMOJI_TO_MUI_ICON_MAP = {
   '💸': CashMinusIcon,
   '🎈': BalloonIcon,
   '🎁': GiftIcon,
-  
+
   // Bugs & Development
   '🐛': BugIcon,
   '🧪': TestTubeIcon,
-  
+
   // Easter Eggs
   '🥚': EggEasterIcon,
-  '🥤': CupIcon
+  '🥤': CupIcon,
 }
 
 // MDI to MUI Icon mapping for existing codebase
@@ -244,7 +244,7 @@ export const MDI_TO_MUI_ICON_MAP = {
   'mdi-test-tube': TestTubeIcon,
   'mdi-egg-easter': EggEasterIcon,
   'mdi-cup': CupIcon,
-  'mdi-help-circle': StarIcon // Default fallback
+  'mdi-help-circle': StarIcon, // Default fallback
 }
 
 /**
@@ -274,13 +274,11 @@ export function getMuiIconForMdi(mdiIcon, fallback = StarIcon) {
  * @returns {Object} Component and props
  */
 export function createMuiIconComponent(emoji, options = {}) {
-  const {
-    fallback = StarIcon
-  } = options
+  const { fallback = StarIcon } = options
 
   return {
     component: getMuiIconForEmoji(emoji, fallback),
-    props: {}
+    props: {},
   }
 }
 
@@ -289,5 +287,5 @@ export default {
   MDI_TO_MUI_ICON_MAP,
   getMuiIconForEmoji,
   getMuiIconForMdi,
-  createMuiIconComponent
+  createMuiIconComponent,
 }

@@ -2,8 +2,19 @@
 <template>
   <div class="job-data-sources-section">
     <!-- Accordion Header -->
-    <div class="settings-card mb-4" role="region" aria-labelledby="job-sources-title">
-      <div class="card-header section-header card-header--dense accordion-header" role="button" tabindex="0" @click="toggleAccordion" @keydown.enter="toggleAccordion" @keydown.space="toggleAccordion">
+    <div
+      class="settings-card mb-4"
+      role="region"
+      aria-labelledby="job-sources-title"
+    >
+      <div
+        class="card-header section-header card-header--dense accordion-header"
+        role="button"
+        tabindex="0"
+        @click="toggleAccordion"
+        @keydown.enter="toggleAccordion"
+        @keydown.space="toggleAccordion"
+      >
         <div class="d-flex align-items-center justify-content-between w-100">
           <div>
             <h5 id="job-sources-title" class="mb-0">
@@ -15,7 +26,11 @@
             </p>
           </div>
           <div class="accordion-toggle">
-            <AppIcon name="mdi-chevron-down" class="accordion-icon" :class="{ 'rotated': isExpanded }" />
+            <AppIcon
+              name="mdi-chevron-down"
+              class="accordion-icon"
+              :class="{ rotated: isExpanded }"
+            />
           </div>
         </div>
 
@@ -48,7 +63,11 @@
                 :disabled="checkingHealth"
                 @click="checkProviderHealth"
               >
-                <AppIcon :name="checkingHealth ? 'mdi-loading' : 'mdi-heart-pulse'" :class="{ spin: checkingHealth }" class="me-1" />
+                <AppIcon
+                  :name="checkingHealth ? 'mdi-loading' : 'mdi-heart-pulse'"
+                  :class="{ spin: checkingHealth }"
+                  class="me-1"
+                />
                 {{ checkingHealth ? 'Checking...' : 'Check Health' }}
               </button>
               <button
@@ -77,24 +96,47 @@
           </div>
           <div v-if="providerHealth" class="small text-muted">
             <span class="me-3">
-              <AppIcon name="mdi-check-circle-outline" class="text-success me-1" />
+              <AppIcon
+                name="mdi-check-circle-outline"
+                class="text-success me-1"
+              />
               {{ Object.values(providerHealth).filter(Boolean).length }} healthy
             </span>
             <span>
-              <AppIcon name="mdi-alert-circle-outline" class="text-warning me-1" />
-              {{ Object.values(providerHealth).filter(v => v === false).length }} issues
+              <AppIcon
+                name="mdi-alert-circle-outline"
+                class="text-warning me-1"
+              />
+              {{
+                Object.values(providerHealth).filter(v => v === false).length
+              }}
+              issues
             </span>
           </div>
-          <div v-else class="small text-secondary">Click "Check Health" to probe provider availability.</div>
+          <div v-else class="small text-secondary">
+            Click "Check Health" to probe provider availability.
+          </div>
 
           <!-- Disabled company boards (auto-managed) -->
           <div v-if="showDisabledBoards" class="mt-2 small">
             <template v-if="disabledBoards.length">
               <div class="mb-1 fw-semibold">Disabled Boards:</div>
               <div class="d-flex flex-wrap gap-2">
-                <div v-for="b in disabledBoards" :key="b.type + ':' + b.token" class="disabled-board-chip d-inline-flex align-items-center gap-2 px-2 py-1 rounded-pill">
+                <div
+                  v-for="b in disabledBoards"
+                  :key="b.type + ':' + b.token"
+                  class="disabled-board-chip d-inline-flex align-items-center gap-2 px-2 py-1 rounded-pill"
+                >
                   <span class="chip-text">{{ b.type }}: {{ b.token }}</span>
-                  <UnifiedButton type="button" size="chip" variant="success" appearance="outlined" leading-icon="mdi-check" @click="enableDisabledBoard(b.type, b.token)">Enable</UnifiedButton>
+                  <UnifiedButton
+                    type="button"
+                    size="chip"
+                    variant="success"
+                    appearance="outlined"
+                    leading-icon="mdi-check"
+                    @click="enableDisabledBoard(b.type, b.token)"
+                    >Enable</UnifiedButton
+                  >
                 </div>
               </div>
             </template>
@@ -103,30 +145,41 @@
         </div>
       </div>
 
-      <div v-show="isExpanded" class="card-body section-body card-body--dense accordion-content">
+      <div
+        v-show="isExpanded"
+        class="card-body section-body card-body--dense accordion-content"
+      >
         <!-- Quick Stats -->
         <div class="row g-3 mb-4">
           <div class="col-md-3">
             <div class="stat-card glass-input text-center p-3">
-              <div class="stat-value h4 mb-1 text-primary">{{ enabledSources.length }}</div>
+              <div class="stat-value h4 mb-1 text-primary">
+                {{ enabledSources.length }}
+              </div>
               <div class="stat-label small text-muted">Active Sources</div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="stat-card glass-input text-center p-3">
-              <div class="stat-value h4 mb-1 text-success">{{ publicSources.length }}</div>
+              <div class="stat-value h4 mb-1 text-success">
+                {{ publicSources.length }}
+              </div>
               <div class="stat-label small text-muted">Public APIs</div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="stat-card glass-input text-center p-3">
-              <div class="stat-value h4 mb-1 text-info">{{ configuredSources.length }}</div>
+              <div class="stat-value h4 mb-1 text-info">
+                {{ configuredSources.length }}
+              </div>
               <div class="stat-label small text-muted">Configured</div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="stat-card glass-input text-center p-3">
-              <div class="stat-value h4 mb-1 text-warning">{{ selectedRegions.length }}</div>
+              <div class="stat-value h4 mb-1 text-warning">
+                {{ selectedRegions.length }}
+              </div>
               <div class="stat-label small text-muted">Regions</div>
             </div>
           </div>
@@ -147,10 +200,18 @@
                     :key="region"
                     type="button"
                     class="btn btn-sm region-filter-btn ui-btn ui-size-md"
-                    :class="selectedRegions.includes(region) ? 'btn-primary' : 'btn-outline-secondary'"
+                    :class="
+                      selectedRegions.includes(region)
+                        ? 'btn-primary'
+                        : 'btn-outline-secondary'
+                    "
                     @click="toggleRegion(region)"
                   >
-                    <AppIcon v-if="selectedRegions.includes(region)" name="mdi-check" class="me-1" />
+                    <AppIcon
+                      v-if="selectedRegions.includes(region)"
+                      name="mdi-check"
+                      class="me-1"
+                    />
                     {{ region }}
                   </button>
                 </div>
@@ -174,10 +235,18 @@
                     :key="category"
                     type="button"
                     class="btn btn-sm category-filter-btn ui-btn ui-size-md"
-                    :class="selectedCategories.includes(category) ? 'btn-success' : 'btn-outline-secondary'"
+                    :class="
+                      selectedCategories.includes(category)
+                        ? 'btn-success'
+                        : 'btn-outline-secondary'
+                    "
                     @click="toggleCategory(category)"
                   >
-                    <AppIcon v-if="selectedCategories.includes(category)" name="mdi-check" class="me-1" />
+                    <AppIcon
+                      v-if="selectedCategories.includes(category)"
+                      name="mdi-check"
+                      class="me-1"
+                    />
                     {{ category }}
                   </button>
                 </div>
@@ -195,20 +264,28 @@
             v-for="source in jobSources"
             :key="source.id"
             class="source-card glass-input"
-            :class="{ 'source-enabled': source.enabled,
-                      'source-configured': isSourceConfigured(source),
-                      'source-public': !source.requiresAuth
+            :class="{
+              'source-enabled': source.enabled,
+              'source-configured': isSourceConfigured(source),
+              'source-public': !source.requiresAuth,
             }"
           >
             <!-- Source Header -->
-            <div class="source-header d-flex align-items-start justify-content-between mb-3">
+            <div
+              class="source-header d-flex align-items-start justify-content-between mb-3"
+            >
               <div class="source-info d-flex align-items-center">
-                <div class="source-icon me-3" :style="{ '--source-color': source.color }">
+                <div
+                  class="source-icon me-3"
+                  :style="{ '--source-color': source.color }"
+                >
                   <AppIcon :name="source.icon" class="fs-4" />
                 </div>
                 <div>
                   <h6 class="source-name mb-1">{{ source.name }}</h6>
-                  <p class="source-description text-muted small mb-0">{{ source.description }}</p>
+                  <p class="source-description text-muted small mb-0">
+                    {{ source.description }}
+                  </p>
                 </div>
               </div>
               <div class="source-toggle">
@@ -218,9 +295,14 @@
                     v-model="source.enabled"
                     class="form-check-input"
                     type="checkbox"
-                    @change="updateSourceConfig(source.id, { enabled: source.enabled })"
+                    @change="
+                      updateSourceConfig(source.id, { enabled: source.enabled })
+                    "
+                  />
+                  <label
+                    :for="`source-${source.id}`"
+                    class="form-check-label visually-hidden"
                   >
-                  <label :for="`source-${source.id}`" class="form-check-label visually-hidden">
                     Toggle {{ source.name }}
                   </label>
                 </div>
@@ -240,7 +322,9 @@
                   <div class="detail-item small">
                     <AppIcon name="mdi-earth" class="text-muted me-1" />
                     {{ source.regions.slice(0, 2).join(', ') }}
-                    <span v-if="source.regions.length > 2">+{{ source.regions.length - 2 }}</span>
+                    <span v-if="source.regions.length > 2"
+                      >+{{ source.regions.length - 2 }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -269,13 +353,19 @@
             <!-- API Configuration -->
             <div v-if="source.enabled" class="source-config">
               <!-- Public API Notice -->
-              <div v-if="!source.requiresAuth" class="public-api-notice mb-2 p-2 bg-success-subtle text-success rounded">
+              <div
+                v-if="!source.requiresAuth"
+                class="public-api-notice mb-2 p-2 bg-success-subtle text-success rounded"
+              >
                 <AppIcon name="mdi-check-circle-outline" />
                 <small><strong>Public API</strong> - Ready to use</small>
               </div>
 
               <!-- API Key Input -->
-              <div v-else-if="source.apiKeyRequired" class="api-key-section mb-2">
+              <div
+                v-else-if="source.apiKeyRequired"
+                class="api-key-section mb-2"
+              >
                 <div class="input-group input-group-sm">
                   <span class="input-group-text">
                     <AppIcon name="mdi-key" class="text-muted" />
@@ -285,8 +375,10 @@
                     type="password"
                     class="form-control"
                     :placeholder="`Enter ${source.name} API key`"
-                    @change="updateSourceConfig(source.id, { apiKey: source.apiKey })"
-                  >
+                    @change="
+                      updateSourceConfig(source.id, { apiKey: source.apiKey })
+                    "
+                  />
                   <button
                     class="btn btn-outline-secondary v-btn variant-outlined ui-btn ui-size-md"
                     type="button"
@@ -301,7 +393,10 @@
               <div class="source-actions d-flex gap-2">
                 <button
                   class="btn btn-outline-primary btn-sm flex-fill v-btn variant-outlined ui-btn ui-size-md"
-                  :disabled="testingSource === source.id || (source.requiresAuth && !source.apiKey)"
+                  :disabled="
+                    testingSource === source.id ||
+                    (source.requiresAuth && !source.apiKey)
+                  "
                   @click="testSource(source.id)"
                 >
                   <span v-if="testingSource === source.id">
@@ -324,12 +419,25 @@
 
               <!-- Test Results -->
               <div
-                v-if="testResults[source.id]" class="test-result mt-2 p-2 rounded small"
-                :class="testResults[source.id].success ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'"
+                v-if="testResults[source.id]"
+                class="test-result mt-2 p-2 rounded small"
+                :class="
+                  testResults[source.id].success
+                    ? 'bg-success-subtle text-success'
+                    : 'bg-danger-subtle text-danger'
+                "
               >
-                <AppIcon name="mdi-check-circle-outline'" class="testResults[source.id].success ? 'mdi : 'mdi mdi-alert-circle-outline' me-1" />
+                <AppIcon
+                  name="mdi-check-circle-outline'"
+                  class="testResults[source.id].success ? 'mdi : 'mdi mdi-alert-circle-outline' me-1"
+                />
                 {{ testResults[source.id].message }}
-                <span v-if="testResults[source.id].success && testResults[source.id].jobCount !== undefined">
+                <span
+                  v-if="
+                    testResults[source.id].success &&
+                    testResults[source.id].jobCount !== undefined
+                  "
+                >
                   ({{ testResults[source.id].jobCount }} jobs available)
                 </span>
               </div>
@@ -344,11 +452,45 @@
             Quick Actions
           </h6>
           <div class="d-flex flex-wrap gap-2">
-            <UnifiedButton variant="success" appearance="outlined" size="sm" leading-icon="mdi-check-all" @click="enablePublicSources">Enable Gaming Sources</UnifiedButton>
-            <UnifiedButton variant="info" appearance="outlined" size="sm" leading-icon="mdi-refresh" @click="refreshJobSources">Refresh Sources</UnifiedButton>
-            <UnifiedButton variant="outline" size="sm" leading-icon="mdi-close-circle-outline" @click="disableAllSources">Disable All</UnifiedButton>
-            <UnifiedButton variant="info" appearance="outlined" size="sm" leading-icon="mdi-play-circle-outline" @click="testAllEnabled">Test All Enabled</UnifiedButton>
-            <UnifiedButton variant="warning" appearance="outlined" size="sm" leading-icon="mdi-restore" @click="resetToDefaults">Reset Defaults</UnifiedButton>
+            <UnifiedButton
+              variant="success"
+              appearance="outlined"
+              size="sm"
+              leading-icon="mdi-check-all"
+              @click="enablePublicSources"
+              >Enable Gaming Sources</UnifiedButton
+            >
+            <UnifiedButton
+              variant="info"
+              appearance="outlined"
+              size="sm"
+              leading-icon="mdi-refresh"
+              @click="refreshJobSources"
+              >Refresh Sources</UnifiedButton
+            >
+            <UnifiedButton
+              variant="outline"
+              size="sm"
+              leading-icon="mdi-close-circle-outline"
+              @click="disableAllSources"
+              >Disable All</UnifiedButton
+            >
+            <UnifiedButton
+              variant="info"
+              appearance="outlined"
+              size="sm"
+              leading-icon="mdi-play-circle-outline"
+              @click="testAllEnabled"
+              >Test All Enabled</UnifiedButton
+            >
+            <UnifiedButton
+              variant="warning"
+              appearance="outlined"
+              size="sm"
+              leading-icon="mdi-restore"
+              @click="resetToDefaults"
+              >Reset Defaults</UnifiedButton
+            >
           </div>
         </div>
       </div>
@@ -357,7 +499,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed, onUnmounted, defineEmits, defineProps } from 'vue'
+import {
+  ref,
+  onMounted,
+  watch,
+  computed,
+  onUnmounted,
+  defineEmits,
+  defineProps,
+} from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import { jobSourceManager } from '@/services/JobSourceManager'
@@ -368,19 +518,19 @@ import {
   getAllRegions,
   getAllCategories,
   updateJobSourceConfig,
-  testJobSource
+  testJobSource,
 } from '@/services/jobService'
 
 const _props = defineProps({
   settings: {
     type: Object,
-    default: () => ({})
+    default: () => ({}),
   },
   // When true, expand the accordion automatically (e.g., deep links)
   autoExpand: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:settings', 'test-source'])
@@ -388,8 +538,16 @@ const emit = defineEmits(['update:settings', 'test-source'])
 // Reactive state
 const isExpanded = ref(false) // Default closed
 const jobSources = ref([])
-const selectedRegions = ref((props.settings && props.settings.preferredRegions) ? props.settings.preferredRegions : [])
-const selectedCategories = ref((props.settings && props.settings.preferredCategories) ? props.settings.preferredCategories : [])
+const selectedRegions = ref(
+  props.settings && props.settings.preferredRegions
+    ? props.settings.preferredRegions
+    : []
+)
+const selectedCategories = ref(
+  props.settings && props.settings.preferredCategories
+    ? props.settings.preferredCategories
+    : []
+)
 const testingSource = ref(null)
 const testResults = ref({})
 const checkingHealth = ref(false)
@@ -420,7 +578,9 @@ function toggleAccordion() {
 }
 
 function isSourceConfigured(source) {
-  if (!source.requiresAuth) {return true}
+  if (!source.requiresAuth) {
+    return true
+  }
   return source.apiKey && source.apiKey.trim().length > 0
 }
 
@@ -454,7 +614,9 @@ function updateSourceConfig(sourceId, config) {
 
 async function testSource(sourceId) {
   const source = jobSources.value.find(s => s.id === sourceId)
-  if (!source) {return}
+  if (!source) {
+    return
+  }
 
   console.log(`[SEARCH] Testing ${source.name}...`)
   testingSource.value = sourceId
@@ -468,14 +630,16 @@ async function testSource(sourceId) {
     const result = await testJobSource(sourceId)
     testResults.value[sourceId] = result
 
-    console.log(`${result.success ? '✅' : '❌'} Test result for ${source.name}:`, result)
+    console.log(
+      `${result.success ? '✅' : '❌'} Test result for ${source.name}:`,
+      result
+    )
     emit('test-source', { sourceId, result })
-
   } catch (error) {
     console.error(`[✗] Test failed for ${source.name}:`, error)
     testResults.value[sourceId] = {
       success: false,
-      message: `Connection failed: ${error.message}`
+      message: `Connection failed: ${error.message}`,
     }
   } finally {
     testingSource.value = null
@@ -492,13 +656,13 @@ function enablePublicSources() {
   // Enable gaming-focused and public sources using the manager
   const gamingSources = jobSourceManager.getSourcesBy({ gamingFocus: 0.3 })
   const publicSources = jobSourceManager.getSourcesBy({ requiresAuth: false })
-  
+
   // Combine and deduplicate
   const sourcesToEnable = new Set([
     ...gamingSources.map(s => s.id),
-    ...publicSources.map(s => s.id)
+    ...publicSources.map(s => s.id),
   ])
-  
+
   jobSources.value.forEach(source => {
     if (sourcesToEnable.has(source.id)) {
       source.enabled = true
@@ -506,8 +670,10 @@ function enablePublicSources() {
     }
   })
   updateSettings()
-  
-  console.log(`[GAME] Enabled ${sourcesToEnable.size} gaming and public job sources`)
+
+  console.log(
+    `[GAME] Enabled ${sourcesToEnable.size} gaming and public job sources`
+  )
 }
 
 function disableAllSources() {
@@ -538,7 +704,7 @@ function resetToDefaults() {
   const publicSources = jobSourceManager.getSourcesBy({ requiresAuth: false })
   const defaultEnabledIds = new Set([
     ...gamingSources.slice(0, 4).map(s => s.id), // Top 4 gaming sources
-    ...publicSources.slice(0, 4).map(s => s.id)  // Top 4 public sources
+    ...publicSources.slice(0, 4).map(s => s.id), // Top 4 public sources
   ])
 
   jobSources.value.forEach(source => {
@@ -555,7 +721,7 @@ function refreshJobSources() {
     // Use the job source manager to get updated sources
     jobSourceManager.forceRefresh()
     jobSources.value = jobSourceManager.getAllSources()
-    
+
     updateSettings()
     console.log(`🔄 Refreshed ${jobSources.value.length} job sources`)
   } catch (error) {
@@ -564,18 +730,22 @@ function refreshJobSources() {
 }
 
 function updateSettings() {
-  const base = (props.settings && typeof props.settings === 'object') ? props.settings : {}
+  const base =
+    props.settings && typeof props.settings === 'object' ? props.settings : {}
   const newSettings = {
     ...base,
     preferredRegions: [...selectedRegions.value],
     preferredCategories: [...selectedCategories.value],
     enabledJobSources: enabledSources.value.map(s => s.id),
     jobSourcesConfig: Object.fromEntries(
-      jobSources.value.map(source => [source.id, {
-        enabled: source.enabled,
-        apiKey: source.apiKey || ''
-      }])
-    )
+      jobSources.value.map(source => [
+        source.id,
+        {
+          enabled: source.enabled,
+          apiKey: source.apiKey || '',
+        },
+      ])
+    ),
   }
 
   emit('update:settings', newSettings)
@@ -597,7 +767,7 @@ async function checkProviderHealth() {
 // Quick-enable gaming-focused providers (priority already tuned in code)
 function enableGamingSources() {
   const gaming = jobSourceManager.getSourcesBy({ gamingFocus: 0.5 })
-  gaming.forEach((s) => {
+  gaming.forEach(s => {
     s.enabled = true
     jobSourceManager.updateSourceConfig(s.id, { enabled: true })
   })
@@ -611,8 +781,11 @@ function addCompanyBoard() {
     if (!name) return
     const token = window.prompt('Board token (e.g., riotgames)')?.trim()
     if (!token) return
-    const type = window.prompt('ATS type: greenhouse | lever | recruitee | workable | ashby')?.trim()?.toLowerCase()
-    const allowed = ['greenhouse','lever','recruitee','workable','ashby']
+    const type = window
+      .prompt('ATS type: greenhouse | lever | recruitee | workable | ashby')
+      ?.trim()
+      ?.toLowerCase()
+    const allowed = ['greenhouse', 'lever', 'recruitee', 'workable', 'ashby']
     if (!type || !allowed.includes(type)) {
       alert('Invalid ATS type. Use one of: ' + allowed.join(', '))
       return
@@ -627,10 +800,19 @@ function addCompanyBoard() {
     // If previously disabled, re-enable now
     const raw = window?.localStorage?.getItem('navi-disabled-company-boards')
     let disabled = []
-    try { disabled = raw ? JSON.parse(raw) || [] : [] } catch { disabled = [] }
-    const filtered = disabled.filter((x) => !(x && x.type === type && x.token === token))
+    try {
+      disabled = raw ? JSON.parse(raw) || [] : []
+    } catch {
+      disabled = []
+    }
+    const filtered = disabled.filter(
+      x => !(x && x.type === type && x.token === token)
+    )
     if (filtered.length !== disabled.length) {
-      window?.localStorage?.setItem('navi-disabled-company-boards', JSON.stringify(filtered))
+      window?.localStorage?.setItem(
+        'navi-disabled-company-boards',
+        JSON.stringify(filtered)
+      )
     }
 
     // Reload providers with merged list and verify
@@ -651,7 +833,9 @@ onMounted(() => {
   // Load job sources from the job source manager
   try {
     jobSources.value = jobSourceManager.getAllSources()
-    console.log(`[TARGET] Loaded ${jobSources.value.length} job sources from manager`)
+    console.log(
+      `[TARGET] Loaded ${jobSources.value.length} job sources from manager`
+    )
   } catch (error) {
     console.error('Failed to load job sources from manager:', error)
     // Fallback to legacy method
@@ -670,7 +854,10 @@ onMounted(() => {
     jobSources.value.forEach(source => {
       const savedConfig = props.settings.jobSourcesConfig[source.id]
       if (savedConfig) {
-        source.enabled = savedConfig.enabled !== undefined ? savedConfig.enabled : source.enabled
+        source.enabled =
+          savedConfig.enabled !== undefined
+            ? savedConfig.enabled
+            : source.enabled
         source.apiKey = savedConfig.apiKey || ''
       }
     })
@@ -680,9 +867,11 @@ onMounted(() => {
     totalSources: jobSources.value.length,
     enabledSources: enabledSources.value.length,
     publicSources: publicSources.value.length,
-    gamingSources: jobSources.value.filter(s => s.gamingFocus && s.gamingFocus > 0.5).length,
+    gamingSources: jobSources.value.filter(
+      s => s.gamingFocus && s.gamingFocus > 0.5
+    ).length,
     regions: availableRegions.value.length,
-    categories: availableCategories.value.length
+    categories: availableCategories.value.length,
   })
 
   // Auto-expand when deep-linked or when prop requests it
@@ -691,7 +880,7 @@ onMounted(() => {
     if (props.autoExpand || hash.includes('job-sources-section')) {
       isExpanded.value = true
     }
-        } catch (_e) {
+  } catch (_e) {
     // non-blocking
   }
 
@@ -738,7 +927,9 @@ function getUserCompanyBoards() {
   try {
     const raw = window?.localStorage?.getItem('navi-company-boards')
     const parsed = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? parsed.filter(b => b && b.name && b.type && b.token) : []
+    return Array.isArray(parsed)
+      ? parsed.filter(b => b && b.name && b.type && b.token)
+      : []
   } catch {
     return []
   }
@@ -748,7 +939,10 @@ async function reenableAllBoards() {
   try {
     window?.localStorage?.removeItem('navi-disabled-company-boards')
     disabledBoards.value = []
-    const merged = [...(Array.isArray(COMPANY_BOARDS) ? COMPANY_BOARDS : []), ...getUserCompanyBoards()]
+    const merged = [
+      ...(Array.isArray(COMPANY_BOARDS) ? COMPANY_BOARDS : []),
+      ...getUserCompanyBoards(),
+    ]
     refactoredJobAPIService.reloadCompanyProviders(merged)
     refreshJobSources()
     await checkProviderHealth()
@@ -759,7 +953,10 @@ async function reenableAllBoards() {
 
 async function reverifyCompanyBoards() {
   try {
-    const merged = [...(Array.isArray(COMPANY_BOARDS) ? COMPANY_BOARDS : []), ...getUserCompanyBoards()]
+    const merged = [
+      ...(Array.isArray(COMPANY_BOARDS) ? COMPANY_BOARDS : []),
+      ...getUserCompanyBoards(),
+    ]
     refactoredJobAPIService.reloadCompanyProviders(merged)
     loadDisabledBoards()
   } catch (e) {
@@ -769,12 +966,18 @@ async function reverifyCompanyBoards() {
 
 function saveUserCompanyBoards(list) {
   try {
-    window?.localStorage?.setItem('navi-company-boards', JSON.stringify(list || []))
+    window?.localStorage?.setItem(
+      'navi-company-boards',
+      JSON.stringify(list || [])
+    )
   } catch {}
 }
 
 function getMergedCompanyBoards() {
-  return [...(Array.isArray(COMPANY_BOARDS) ? COMPANY_BOARDS : []), ...getUserCompanyBoards()]
+  return [
+    ...(Array.isArray(COMPANY_BOARDS) ? COMPANY_BOARDS : []),
+    ...getUserCompanyBoards(),
+  ]
 }
 
 async function enableDisabledBoard(type, token) {
@@ -782,9 +985,16 @@ async function enableDisabledBoard(type, token) {
     // Remove from disabled list
     const raw = window?.localStorage?.getItem('navi-disabled-company-boards')
     let list = []
-    try { list = raw ? JSON.parse(raw) || [] : [] } catch { list = [] }
-    list = list.filter((x) => !(x && x.type === type && x.token === token))
-    window?.localStorage?.setItem('navi-disabled-company-boards', JSON.stringify(list))
+    try {
+      list = raw ? JSON.parse(raw) || [] : []
+    } catch {
+      list = []
+    }
+    list = list.filter(x => !(x && x.type === type && x.token === token))
+    window?.localStorage?.setItem(
+      'navi-disabled-company-boards',
+      JSON.stringify(list)
+    )
     loadDisabledBoards()
 
     // Reload providers with merged list
@@ -802,7 +1012,7 @@ async function enableDisabledBoard(type, token) {
 // If the prop flips to true later (e.g., navigation within app), expand
 watch(
   () => props.autoExpand,
-  (val) => {
+  val => {
     if (val) {
       isExpanded.value = true
     }
@@ -952,8 +1162,12 @@ watch(
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {
@@ -961,8 +1175,8 @@ watch(
 }
 
 .disabled-board-chip {
-  background: var(--glass-input-bg, rgba(255,255,255,0.06));
-  border: 1px solid var(--glass-border, rgba(255,255,255,0.12));
+  background: var(--glass-input-bg, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
 }
 
 .btn.btn-xs {
@@ -994,12 +1208,12 @@ watch(
 }
 
 /* Dark theme support */
-[data-theme="dark"] .source-card {
+[data-theme='dark'] .source-card {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .feature-badge {
+[data-theme='dark'] .feature-badge {
   background-color: var(--glass-surface-dark) !important;
   color: var(--dark-text-primary) !important;
   border: 1px solid var(--glass-border-dark);

@@ -6,26 +6,29 @@
       </div>
       <p>Generating preview...</p>
     </div>
-    
+
     <div v-else-if="previewError" class="preview-error">
       <AppIcon name="mdi-alert-circle-outline" size="48" />
       <h4>Preview Error</h4>
       <p>{{ previewError }}</p>
-      <UnifiedButton
-        variant="outline"
-        size="sm"
-        @click="refreshPreview"
-      >
+      <UnifiedButton variant="outline" size="sm" @click="refreshPreview">
         Try Again
       </UnifiedButton>
     </div>
 
     <div v-else class="preview-container">
       <!-- Resume Preview -->
-      <div v-if="documentType === 'resume'" class="resume-preview" :class="`template-${template}`">
+      <div
+        v-if="documentType === 'resume'"
+        class="resume-preview"
+        :class="`template-${template}`"
+      >
         <div class="resume-header">
           <div class="personal-info">
-            <h1 class="name">{{ resolvedData.personal?.firstName }} {{ resolvedData.personal?.lastName }}</h1>
+            <h1 class="name">
+              {{ resolvedData.personal?.firstName }}
+              {{ resolvedData.personal?.lastName }}
+            </h1>
             <div class="contact-details">
               <div v-if="resolvedData.personal?.email" class="contact-item">
                 <AppIcon name="mdi-email" size="14" />
@@ -69,7 +72,11 @@
         <div v-if="resolvedData.experience?.length" class="resume-section">
           <h2 class="section-title">Professional Experience</h2>
           <div class="section-content">
-            <div v-for="exp in resolvedData.experience" :key="exp.title + exp.company" class="experience-item">
+            <div
+              v-for="exp in resolvedData.experience"
+              :key="exp.title + exp.company"
+              class="experience-item"
+            >
               <div class="experience-header">
                 <div class="position-info">
                   <h3 class="position-title">{{ exp.title }}</h3>
@@ -77,9 +84,12 @@
                 </div>
                 <div class="date-location">
                   <div class="employment-dates">
-                    {{ formatDate(exp.startDate) }} - {{ exp.current ? 'Present' : formatDate(exp.endDate) }}
+                    {{ formatDate(exp.startDate) }} -
+                    {{ exp.current ? 'Present' : formatDate(exp.endDate) }}
                   </div>
-                  <div v-if="exp.location" class="location">{{ exp.location }}</div>
+                  <div v-if="exp.location" class="location">
+                    {{ exp.location }}
+                  </div>
                 </div>
               </div>
               <div v-if="exp.description" class="experience-description">
@@ -93,7 +103,11 @@
         <div v-if="resolvedData.education?.length" class="resume-section">
           <h2 class="section-title">Education</h2>
           <div class="section-content">
-            <div v-for="edu in resolvedData.education" :key="edu.degree + edu.school" class="education-item">
+            <div
+              v-for="edu in resolvedData.education"
+              :key="edu.degree + edu.school"
+              class="education-item"
+            >
               <div class="education-header">
                 <div class="degree-info">
                   <h3 class="degree-title">{{ edu.degree }}</h3>
@@ -101,9 +115,12 @@
                 </div>
                 <div class="date-location">
                   <div class="education-dates">
-                    {{ formatDate(edu.startDate) }} - {{ formatDate(edu.endDate) }}
+                    {{ formatDate(edu.startDate) }} -
+                    {{ formatDate(edu.endDate) }}
                   </div>
-                  <div v-if="edu.location" class="location">{{ edu.location }}</div>
+                  <div v-if="edu.location" class="location">
+                    {{ edu.location }}
+                  </div>
                 </div>
               </div>
               <div v-if="edu.gpa" class="gpa">GPA: {{ edu.gpa }}</div>
@@ -116,7 +133,11 @@
           <h2 class="section-title">Technical Skills</h2>
           <div class="section-content">
             <div class="skills-grid">
-              <span v-for="skill in resolvedData.skills" :key="skill" class="skill-tag">
+              <span
+                v-for="skill in resolvedData.skills"
+                :key="skill"
+                class="skill-tag"
+              >
                 {{ skill }}
               </span>
             </div>
@@ -125,34 +146,55 @@
       </div>
 
       <!-- Cover Letter Preview -->
-      <div v-else-if="documentType === 'cover-letter'" class="cover-letter-preview" :class="`template-${template}`">
+      <div
+        v-else-if="documentType === 'cover-letter'"
+        class="cover-letter-preview"
+        :class="`template-${template}`"
+      >
         <div class="letter-header">
           <div class="sender-info">
-            <div class="sender-name">{{ documentData.personalInfo?.name || 'Your Name' }}</div>
+            <div class="sender-name">
+              {{ documentData.personalInfo?.name || 'Your Name' }}
+            </div>
             <div class="sender-contact">
-              {{ documentData.personalInfo?.email || 'your.email@example.com' }} |
+              {{
+                documentData.personalInfo?.email || 'your.email@example.com'
+              }}
+              |
               {{ documentData.personalInfo?.phone || '(555) 123-4567' }}
             </div>
-            <div class="sender-location">{{ documentData.personalInfo?.location || 'City, State' }}</div>
+            <div class="sender-location">
+              {{ documentData.personalInfo?.location || 'City, State' }}
+            </div>
           </div>
-          <div class="letter-date">{{ formatDate(new Date().toISOString()) }}</div>
+          <div class="letter-date">
+            {{ formatDate(new Date().toISOString()) }}
+          </div>
         </div>
 
         <div v-if="documentData.jobInfo?.company" class="recipient-info">
-          <div class="recipient-name">{{ documentData.jobInfo.hiringManager || 'Hiring Manager' }}</div>
+          <div class="recipient-name">
+            {{ documentData.jobInfo.hiringManager || 'Hiring Manager' }}
+          </div>
           <div class="company-name">{{ documentData.jobInfo.company }}</div>
-          <div class="position-title">{{ documentData.jobInfo.position }} Position</div>
+          <div class="position-title">
+            {{ documentData.jobInfo.position }} Position
+          </div>
         </div>
 
         <div class="letter-body">
           <div v-if="documentData.content?.opening" class="letter-section">
             <p>{{ resolveTokens(documentData.content.opening) }}</p>
           </div>
-          
+
           <div v-if="documentData.content?.body" class="letter-section">
-            <div v-html="formatDescription(resolveTokens(documentData.content.body))"></div>
+            <div
+              v-html="
+                formatDescription(resolveTokens(documentData.content.body))
+              "
+            ></div>
           </div>
-          
+
           <div v-if="documentData.content?.closing" class="letter-section">
             <p>{{ resolveTokens(documentData.content.closing) }}</p>
           </div>
@@ -160,7 +202,9 @@
 
         <div class="letter-signature">
           <p>Sincerely,</p>
-          <div class="signature-line">{{ documentData.personalInfo?.name || 'Your Name' }}</div>
+          <div class="signature-line">
+            {{ documentData.personalInfo?.name || 'Your Name' }}
+          </div>
         </div>
       </div>
     </div>
@@ -184,7 +228,7 @@
           @click="zoomIn"
         />
       </div>
-      
+
       <div class="preview-actions">
         <UnifiedButton
           variant="ghost"
@@ -221,16 +265,20 @@ const isFullscreen = ref(false)
 // Token mapping
 const tokenMap = computed(() => ({
   '{{name}}': props.documentData.personalInfo?.name || 'Your Name',
-  '{{firstName}}': props.documentData.personalInfo?.name?.split(' ')[0] || 'Your',
-  '{{lastName}}': props.documentData.personalInfo?.name?.split(' ').slice(1).join(' ') || 'Name',
-  '{{email}}': props.documentData.personalInfo?.email || 'your.email@example.com',
+  '{{firstName}}':
+    props.documentData.personalInfo?.name?.split(' ')[0] || 'Your',
+  '{{lastName}}':
+    props.documentData.personalInfo?.name?.split(' ').slice(1).join(' ') ||
+    'Name',
+  '{{email}}':
+    props.documentData.personalInfo?.email || 'your.email@example.com',
   '{{phone}}': props.documentData.personalInfo?.phone || '(555) 123-4567',
   '{{location}}': props.documentData.personalInfo?.location || 'City, State',
   '{{website}}': props.documentData.personalInfo?.website || '',
   '{{linkedin}}': props.documentData.personalInfo?.linkedin || '',
   '{{github}}': props.documentData.personalInfo?.github || '',
   '{{company}}': props.documentData.jobInfo?.company || 'Company Name',
-  '{{position}}': props.documentData.jobInfo?.position || 'Position Title'
+  '{{position}}': props.documentData.jobInfo?.position || 'Position Title',
 }))
 
 // Resolved data for resume
@@ -246,16 +294,16 @@ const resolvedData = computed(() => {
         website: tokenMap.value['{{website}}'],
         linkedin: tokenMap.value['{{linkedin}}'],
         github: tokenMap.value['{{github}}'],
-        summary: resolveTokens(props.documentData.summary || '')
+        summary: resolveTokens(props.documentData.summary || ''),
       },
       experience: (props.documentData.experience || []).map((exp: any) => ({
         ...exp,
-        description: resolveTokens(exp.description || '')
+        description: resolveTokens(exp.description || ''),
       })),
       education: props.documentData.education || [],
-      skills: (props.documentData.skills || []).map((skill: any) => 
+      skills: (props.documentData.skills || []).map((skill: any) =>
         typeof skill === 'string' ? skill : skill.name
-      )
+      ),
     }
   }
   return props.documentData
@@ -264,11 +312,14 @@ const resolvedData = computed(() => {
 // Methods
 const resolveTokens = (text: string): string => {
   if (!text || !props.showTokens) return text
-  
+
   let resolved = text
   Object.entries(tokenMap.value).forEach(([token, value]) => {
     if (value) {
-      resolved = resolved.replace(new RegExp(token.replace(/[{}]/g, '\\$&'), 'g'), value)
+      resolved = resolved.replace(
+        new RegExp(token.replace(/[{}]/g, '\\$&'), 'g'),
+        value
+      )
     }
   })
   return resolved
@@ -279,7 +330,7 @@ const formatDate = (dateString: string): string => {
   try {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'short'
+      month: 'short',
     })
   } catch {
     return dateString
@@ -288,7 +339,7 @@ const formatDate = (dateString: string): string => {
 
 const formatDescription = (text: string): string => {
   if (!text) return ''
-  
+
   // Convert bullet points and line breaks to HTML
   return text
     .replace(/\n/g, '<br>')
@@ -324,22 +375,30 @@ const refreshPreview = () => {
 const generatePreview = async () => {
   isLoading.value = true
   previewError.value = ''
-  
+
   try {
     // Simulate preview generation delay
     await new Promise(resolve => setTimeout(resolve, 800))
-    
+
     // Validate data
     if (props.documentType === 'resume') {
-      if (!props.documentData.personalInfo?.name && !props.documentData.summary && !props.documentData.experience?.length) {
-        throw new Error('No content to preview. Please add some information first.')
+      if (
+        !props.documentData.personalInfo?.name &&
+        !props.documentData.summary &&
+        !props.documentData.experience?.length
+      ) {
+        throw new Error(
+          'No content to preview. Please add some information first.'
+        )
       }
     } else if (props.documentType === 'cover-letter') {
-      if (!props.documentData.content?.opening && !props.documentData.content?.body) {
+      if (
+        !props.documentData.content?.opening &&
+        !props.documentData.content?.body
+      ) {
         throw new Error('No cover letter content to preview.')
       }
     }
-    
   } catch (error: any) {
     previewError.value = error.message
   } finally {
@@ -348,9 +407,13 @@ const generatePreview = async () => {
 }
 
 // Watch for data changes
-watch([() => props.documentData, () => props.template], () => {
-  generatePreview()
-}, { deep: true })
+watch(
+  [() => props.documentData, () => props.template],
+  () => {
+    generatePreview()
+  },
+  { deep: true }
+)
 
 // Initialize
 onMounted(() => {
@@ -691,8 +754,12 @@ onMounted(() => {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive Design */
@@ -702,18 +769,18 @@ onMounted(() => {
     font-size: 10px;
     padding: var(--spacing-2);
   }
-  
+
   .experience-header,
   .education-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-1);
   }
-  
+
   .date-location {
     text-align: left;
   }
-  
+
   .letter-header {
     flex-direction: column;
     gap: var(--spacing-3);
@@ -725,12 +792,12 @@ onMounted(() => {
   .preview-controls {
     display: none;
   }
-  
+
   .preview-container {
     overflow: visible;
     padding: 0;
   }
-  
+
   .resume-preview,
   .cover-letter-preview {
     max-width: none;

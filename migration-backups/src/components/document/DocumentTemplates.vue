@@ -49,7 +49,7 @@
     <!-- Enhanced Template Options Panel -->
     <div class="template-options-panel glass-card">
       <div class="options-tabs">
-        <button 
+        <button
           v-for="tab in optionTabs"
           :key="tab.id"
           class="option-tab"
@@ -69,7 +69,10 @@
               <AppIcon name="mdi-domain" />
               Industry
             </label>
-            <select v-model="selectedIndustry" class="filter-select enhanced-glass-input">
+            <select
+              v-model="selectedIndustry"
+              class="filter-select enhanced-glass-input"
+            >
               <option value="">All Industries</option>
               <option value="gaming">🎮 Gaming & Entertainment</option>
               <option value="tech">💻 Technology</option>
@@ -81,13 +84,16 @@
               <option value="marketing">📈 Marketing & Sales</option>
             </select>
           </div>
-          
+
           <div class="filter-group">
             <label class="filter-label">
               <AppIcon name="mdi-trending-up" />
               Experience Level
             </label>
-            <select v-model="selectedLevel" class="filter-select enhanced-glass-input">
+            <select
+              v-model="selectedLevel"
+              class="filter-select enhanced-glass-input"
+            >
               <option value="">All Levels</option>
               <option value="entry">🌱 Entry Level (0-2 years)</option>
               <option value="mid">🌿 Mid Level (3-5 years)</option>
@@ -96,13 +102,16 @@
               <option value="executive">👑 Executive/C-Suite</option>
             </select>
           </div>
-          
+
           <div class="filter-group">
             <label class="filter-label">
               <AppIcon name="mdi-palette-outline" />
               Visual Style
             </label>
-            <select v-model="selectedStyle" class="filter-select enhanced-glass-input">
+            <select
+              v-model="selectedStyle"
+              class="filter-select enhanced-glass-input"
+            >
               <option value="">All Styles</option>
               <option value="modern">✨ Modern & Clean</option>
               <option value="classic">📜 Classic & Professional</option>
@@ -112,13 +121,16 @@
               <option value="gaming">🎮 Gaming-Focused</option>
             </select>
           </div>
-          
+
           <div class="filter-group">
             <label class="filter-label">
               <AppIcon name="mdi-format-columns" />
               Layout Type
             </label>
-            <select v-model="selectedLayout" class="filter-select enhanced-glass-input">
+            <select
+              v-model="selectedLayout"
+              class="filter-select enhanced-glass-input"
+            >
               <option value="">All Layouts</option>
               <option value="single-column">📄 Single Column</option>
               <option value="two-column">📰 Two Column</option>
@@ -149,10 +161,12 @@
                 <label for="ai-optimize" class="toggle-label">
                   <AppIcon name="mdi-brain" />
                   AI Content Optimization
-                  <span class="option-description">Automatically enhance content with AI suggestions</span>
+                  <span class="option-description"
+                    >Automatically enhance content with AI suggestions</span
+                  >
                 </label>
               </div>
-              
+
               <div class="toggle-option">
                 <input
                   id="ats-friendly"
@@ -163,10 +177,12 @@
                 <label for="ats-friendly" class="toggle-label">
                   <AppIcon name="mdi-robot-outline" />
                   ATS-Friendly Format
-                  <span class="option-description">Optimize for Applicant Tracking Systems</span>
+                  <span class="option-description"
+                    >Optimize for Applicant Tracking Systems</span
+                  >
                 </label>
               </div>
-              
+
               <div class="toggle-option">
                 <input
                   id="gaming-focus"
@@ -177,7 +193,9 @@
                 <label for="gaming-focus" class="toggle-label">
                   <AppIcon name="mdi-gamepad-variant" />
                   Gaming Industry Focus
-                  <span class="option-description">Include gaming-specific sections and terminology</span>
+                  <span class="option-description"
+                    >Include gaming-specific sections and terminology</span
+                  >
                 </label>
               </div>
             </div>
@@ -204,7 +222,7 @@
                   </button>
                 </div>
               </div>
-              
+
               <div class="font-selector">
                 <label class="option-label">Typography</label>
                 <select v-model="selectedFont" class="enhanced-glass-input">
@@ -226,12 +244,12 @@
             <AppIcon name="mdi-lightbulb-on" />
             <h4>AI Template Recommendations</h4>
           </div>
-          
+
           <div v-if="loading" class="ai-loading">
             <div class="loading-spinner"></div>
             <span>Analyzing your profile for perfect template matches...</span>
           </div>
-          
+
           <div v-else class="ai-recommendations">
             <div
               v-for="recommendation in aiRecommendations"
@@ -243,7 +261,9 @@
                 {{ recommendation.score }}%
               </div>
               <div class="recommendation-content">
-                <h5 class="recommendation-title">{{ recommendation.templateName }}</h5>
+                <h5 class="recommendation-title">
+                  {{ recommendation.templateName }}
+                </h5>
                 <p class="recommendation-reason">{{ recommendation.reason }}</p>
                 <div class="recommendation-tags">
                   <span
@@ -274,9 +294,9 @@
         v-for="template in filteredTemplates"
         :key="template.id"
         class="template-card"
-        :class="{ 
+        :class="{
           selected: selectedTemplate === template.id,
-          premium: template.isPremium 
+          premium: template.isPremium,
         }"
         @click="selectTemplate(template.id)"
       >
@@ -304,15 +324,18 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Premium Badge -->
           <div v-if="template.isPremium" class="premium-badge">
             <AppIcon name="mdi-crown" size="14" />
             <span>Premium</span>
           </div>
-          
+
           <!-- Selection Indicator -->
-          <div v-if="selectedTemplate === template.id" class="selection-indicator">
+          <div
+            v-if="selectedTemplate === template.id"
+            class="selection-indicator"
+          >
             <AppIcon name="mdi-check-circle" />
           </div>
         </div>
@@ -333,9 +356,9 @@
               <span class="rating-text">({{ template.reviewCount }})</span>
             </div>
           </div>
-          
+
           <p class="template-description">{{ template.description }}</p>
-          
+
           <div class="template-features">
             <div class="feature-tags">
               <span class="feature-tag">{{ template.industry }}</span>
@@ -374,7 +397,7 @@
             >
               Selected
             </UnifiedButton>
-            
+
             <UnifiedButton
               variant="ghost"
               size="sm"
@@ -392,11 +415,7 @@
         <AppIcon name="mdi-file-search-outline" size="64" />
         <h4>No templates found</h4>
         <p>Try adjusting your filters to find more templates.</p>
-        <UnifiedButton
-          variant="outline"
-          size="sm"
-          @click="clearFilters"
-        >
+        <UnifiedButton variant="outline" size="sm" @click="clearFilters">
           Clear Filters
         </UnifiedButton>
       </div>
@@ -488,16 +507,36 @@ const gamingFocus = ref(false)
 const optionTabs = ref([
   { id: 'filters', name: 'Filters', icon: 'mdi-filter-outline' },
   { id: 'advanced', name: 'Advanced', icon: 'mdi-cog-outline' },
-  { id: 'ai', name: 'AI Suggestions', icon: 'mdi-brain' }
+  { id: 'ai', name: 'AI Suggestions', icon: 'mdi-brain' },
 ])
 
 // Color Schemes
 const colorSchemes = ref([
-  { id: 'default', name: 'Default', preview: 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)' },
-  { id: 'professional', name: 'Professional', preview: 'linear-gradient(45deg, #2c3e50 0%, #34495e 100%)' },
-  { id: 'gaming', name: 'Gaming', preview: 'linear-gradient(45deg, #00ff88 0%, #00d9ff 100%)' },
-  { id: 'creative', name: 'Creative', preview: 'linear-gradient(45deg, #ff6b6b 0%, #ffa500 100%)' },
-  { id: 'minimal', name: 'Minimal', preview: 'linear-gradient(45deg, #f8f9fa 0%, #e9ecef 100%)' }
+  {
+    id: 'default',
+    name: 'Default',
+    preview: 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)',
+  },
+  {
+    id: 'professional',
+    name: 'Professional',
+    preview: 'linear-gradient(45deg, #2c3e50 0%, #34495e 100%)',
+  },
+  {
+    id: 'gaming',
+    name: 'Gaming',
+    preview: 'linear-gradient(45deg, #00ff88 0%, #00d9ff 100%)',
+  },
+  {
+    id: 'creative',
+    name: 'Creative',
+    preview: 'linear-gradient(45deg, #ff6b6b 0%, #ffa500 100%)',
+  },
+  {
+    id: 'minimal',
+    name: 'Minimal',
+    preview: 'linear-gradient(45deg, #f8f9fa 0%, #e9ecef 100%)',
+  },
 ])
 
 // AI Recommendations (mock data - would come from AI service)
@@ -507,26 +546,33 @@ const aiRecommendations = ref([
     templateId: 'gaming-pro',
     templateName: 'Gaming Professional',
     score: 92,
-    reason: 'Perfect match for your gaming industry experience and technical skills',
-    tags: ['Gaming', 'Technical', 'Modern']
+    reason:
+      'Perfect match for your gaming industry experience and technical skills',
+    tags: ['Gaming', 'Technical', 'Modern'],
   },
   {
     id: 2,
     templateId: 'tech-senior',
     templateName: 'Senior Tech Leader',
     score: 87,
-    reason: 'Highlights leadership experience and technical expertise effectively',
-    tags: ['Leadership', 'Technical', 'Professional']
-  }
+    reason:
+      'Highlights leadership experience and technical expertise effectively',
+    tags: ['Leadership', 'Technical', 'Professional'],
+  },
 ])
 
 // Template Categories
 const categories = ref([
   { id: 'all', name: 'All Templates', icon: 'mdi-folder-multiple', count: 24 },
   { id: 'popular', name: 'Popular', icon: 'mdi-trending-up', count: 8 },
-  { id: 'gaming', name: 'Gaming Industry', icon: 'mdi-controller-classic', count: 6 },
+  {
+    id: 'gaming',
+    name: 'Gaming Industry',
+    icon: 'mdi-controller-classic',
+    count: 6,
+  },
   { id: 'creative', name: 'Creative', icon: 'mdi-palette', count: 5 },
-  { id: 'minimal', name: 'Minimal', icon: 'mdi-minus-circle', count: 5 }
+  { id: 'minimal', name: 'Minimal', icon: 'mdi-minus-circle', count: 5 },
 ])
 
 // Template Data
@@ -534,7 +580,8 @@ const templates = ref([
   {
     id: 'gaming-pro',
     name: 'Gaming Professional',
-    description: 'Perfect for game developers, designers, and gaming industry professionals.',
+    description:
+      'Perfect for game developers, designers, and gaming industry professionals.',
     category: 'gaming',
     industry: 'gaming',
     level: 'mid',
@@ -545,12 +592,13 @@ const templates = ref([
     estimatedTime: '15 min',
     isPremium: false,
     isFavorite: false,
-    features: ['ATS Optimized', 'Gaming Focus', 'Portfolio Integration']
+    features: ['ATS Optimized', 'Gaming Focus', 'Portfolio Integration'],
   },
   {
     id: 'creative-showcase',
     name: 'Creative Showcase',
-    description: 'Showcase your creative work with this visually striking template.',
+    description:
+      'Showcase your creative work with this visually striking template.',
     category: 'creative',
     industry: 'creative',
     level: 'mid',
@@ -561,7 +609,7 @@ const templates = ref([
     estimatedTime: '20 min',
     isPremium: true,
     isFavorite: false,
-    features: ['Portfolio Grid', 'Visual Focus', 'Creative Layout']
+    features: ['Portfolio Grid', 'Visual Focus', 'Creative Layout'],
   },
   {
     id: 'tech-minimal',
@@ -577,7 +625,7 @@ const templates = ref([
     estimatedTime: '10 min',
     isPremium: false,
     isFavorite: true,
-    features: ['Clean Layout', 'Tech Focused', 'Fast Setup']
+    features: ['Clean Layout', 'Tech Focused', 'Fast Setup'],
   },
   {
     id: 'executive-classic',
@@ -593,12 +641,13 @@ const templates = ref([
     estimatedTime: '12 min',
     isPremium: false,
     isFavorite: false,
-    features: ['Executive Focus', 'Classic Design', 'Professional']
+    features: ['Executive Focus', 'Classic Design', 'Professional'],
   },
   {
     id: 'startup-bold',
     name: 'Startup Bold',
-    description: 'Bold and energetic template for startup and entrepreneurial roles.',
+    description:
+      'Bold and energetic template for startup and entrepreneurial roles.',
     category: 'creative',
     industry: 'tech',
     level: 'mid',
@@ -609,12 +658,13 @@ const templates = ref([
     estimatedTime: '18 min',
     isPremium: true,
     isFavorite: false,
-    features: ['Bold Colors', 'Startup Culture', 'Energetic Design']
+    features: ['Bold Colors', 'Startup Culture', 'Energetic Design'],
   },
   {
     id: 'game-designer',
     name: 'Game Designer Pro',
-    description: 'Specialized template for game designers with portfolio integration.',
+    description:
+      'Specialized template for game designers with portfolio integration.',
     category: 'gaming',
     industry: 'gaming',
     level: 'senior',
@@ -625,8 +675,8 @@ const templates = ref([
     estimatedTime: '25 min',
     isPremium: true,
     isFavorite: true,
-    features: ['Game Portfolio', 'Project Showcase', 'Visual Examples']
-  }
+    features: ['Game Portfolio', 'Project Showcase', 'Visual Examples'],
+  },
 ])
 
 // Computed Properties
@@ -679,7 +729,9 @@ const showTemplateDetails = (template: any) => {
 
 const toggleFavorite = (template: any) => {
   template.isFavorite = !template.isFavorite
-  toast.success(template.isFavorite ? 'Added to favorites' : 'Removed from favorites')
+  toast.success(
+    template.isFavorite ? 'Added to favorites' : 'Removed from favorites'
+  )
 }
 
 const handleTemplateSelection = (templateId: string) => {
@@ -711,45 +763,47 @@ const createCustomTemplate = () => {
         top: '1in',
         bottom: '1in',
         left: '0.75in',
-        right: '0.75in'
+        right: '0.75in',
       },
       colors: {
         primary: '#2563eb',
         text: '#1f2937',
-        accent: '#10b981'
-      }
+        accent: '#10b981',
+      },
     },
     layout: {
       header: {
         enabled: true,
         style: 'minimal',
-        includePhoto: false
+        includePhoto: false,
       },
       sections: [
         { id: 'personal', enabled: true, order: 1 },
         { id: 'summary', enabled: true, order: 2 },
         { id: 'experience', enabled: true, order: 3 },
         { id: 'education', enabled: true, order: 4 },
-        { id: 'skills', enabled: true, order: 5 }
-      ]
+        { id: 'skills', enabled: true, order: 5 },
+      ],
     },
     customization: {
       allowReordering: true,
       allowSectionToggle: true,
-      allowStyleChanges: true
-    }
+      allowStyleChanges: true,
+    },
   }
 
   // Add to templates list
   templates.value.push(customTemplate)
-  
+
   // Select the new template
   selectedTemplate.value = customTemplate
   emit('template-selected', customTemplate)
-  
+
   // Show success message
-  toast.success('Custom template created! You can further customize it in the template editor.')
-  
+  toast.success(
+    'Custom template created! You can further customize it in the template editor.'
+  )
+
   // Optionally, you could open a template customization modal here
   // openTemplateCustomizer(customTemplate)
 }
@@ -760,7 +814,9 @@ const updateCategoryCounts = () => {
     if (category.id === 'all') {
       category.count = templates.value.length
     } else {
-      category.count = templates.value.filter(t => t.category === category.id).length
+      category.count = templates.value.filter(
+        t => t.category === category.id
+      ).length
     }
   })
 }
@@ -945,7 +1001,11 @@ onMounted(() => {
 .preview-image {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, var(--surface-secondary) 0%, var(--surface-tertiary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--surface-secondary) 0%,
+    var(--surface-tertiary) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1188,31 +1248,31 @@ onMounted(() => {
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .template-filters {
     flex-direction: column;
     gap: var(--spacing-3);
   }
-  
+
   .filter-group {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
-  
+
   .templates-container.grid {
     grid-template-columns: 1fr;
   }
-  
+
   .templates-container.list .template-card {
     grid-template-columns: 1fr;
     height: auto;
   }
-  
+
   .templates-container.list .template-preview {
     height: 150px;
   }
-  
+
   .category-tabs {
     justify-content: center;
   }
@@ -1301,7 +1361,8 @@ onMounted(() => {
 .enhanced-glass-input:focus {
   background: color-mix(in srgb, var(--glass-bg) 85%, transparent) !important;
   border-color: var(--color-primary-500) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 15%, transparent) !important;
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent) !important;
   outline: none;
 }
 
@@ -1328,7 +1389,8 @@ onMounted(() => {
   color: var(--text-primary);
   margin: 0 0 var(--spacing-4) 0;
   padding-bottom: var(--spacing-2);
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 60%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--glass-border) 60%, transparent);
 }
 
 .option-toggles {
@@ -1406,7 +1468,8 @@ onMounted(() => {
 .color-option.active {
   border-color: var(--color-primary-500);
   transform: scale(1.05);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  box-shadow: 0 4px 12px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
 .color-name {
@@ -1430,10 +1493,13 @@ onMounted(() => {
   align-items: center;
   gap: var(--spacing-3);
   padding: var(--spacing-4);
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     color-mix(in srgb, var(--color-primary-500) 10%, transparent) 0%,
-    color-mix(in srgb, var(--color-primary-500) 5%, transparent) 100%);
-  border: 1px solid color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+    color-mix(in srgb, var(--color-primary-500) 5%, transparent) 100%
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(8px);
 }
@@ -1457,15 +1523,20 @@ onMounted(() => {
 .loading-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  border: 3px solid
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   border-top: 3px solid var(--color-primary-500);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .ai-recommendations {
@@ -1490,7 +1561,7 @@ onMounted(() => {
 .recommendation-card:hover {
   border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 8px 20px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
 }
@@ -1501,13 +1572,18 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-primary-600)
+  );
   color: white;
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  box-shadow: 0 4px 12px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
 .recommendation-content {
@@ -1541,7 +1617,8 @@ onMounted(() => {
   padding: var(--spacing-0-5) var(--spacing-2);
   background: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
   color: var(--color-primary-600);
-  border: 1px solid color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
@@ -1552,23 +1629,23 @@ onMounted(() => {
   .advanced-options-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .filter-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .color-options {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .option-content {
     padding: var(--spacing-4);
   }
-  
+
   .options-tabs {
     flex-direction: column;
   }
-  
+
   .option-tab {
     padding: var(--spacing-3);
     justify-content: flex-start;

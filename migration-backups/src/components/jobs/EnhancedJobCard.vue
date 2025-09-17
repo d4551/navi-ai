@@ -1,5 +1,5 @@
 <template>
-  <article 
+  <article
     class="enhanced-job-card glass-card"
     :class="{ 'top-match': isTopMatch, 'has-insights': hasAIInsights }"
     tabindex="0"
@@ -9,9 +9,7 @@
     @keydown.space.prevent="$emit('select', job)"
   >
     <!-- Top Match Ribbon -->
-    <div v-if="isTopMatch" class="top-match-ribbon">
-      TOP MATCH
-    </div>
+    <div v-if="isTopMatch" class="top-match-ribbon">TOP MATCH</div>
 
     <!-- Main Content -->
     <div class="job-card-content">
@@ -23,14 +21,16 @@
             <AppIcon name="mdi-fire" />
             <span>{{ timeText }} • {{ timeBadgeText }}</span>
           </div>
-          <div 
-            v-if="job.matchScore !== undefined" 
-            class="match-score" 
+          <div
+            v-if="job.matchScore !== undefined"
+            class="match-score"
             :style="{ '--match': job.matchScore }"
             :title="`${Math.round(job.matchScore)}% match`"
           >
             <div class="match-score-inner">
-              <span class="match-percentage">{{ Math.round(job.matchScore) }}%</span>
+              <span class="match-percentage"
+                >{{ Math.round(job.matchScore) }}%</span
+              >
               <span class="match-label">Match</span>
             </div>
           </div>
@@ -38,11 +38,18 @@
 
         <!-- Main Header Content -->
         <div class="header-content">
-          <div class="company-logo" :style="{ backgroundColor: companyColorHex }">
-            <img v-if="job.company?.logo" :src="job.company.logo" :alt="`${companyName} logo`" />
+          <div
+            class="company-logo"
+            :style="{ backgroundColor: companyColorHex }"
+          >
+            <img
+              v-if="job.company?.logo"
+              :src="job.company.logo"
+              :alt="`${companyName} logo`"
+            />
             <span v-else class="logo-text">{{ companyInitial }}</span>
           </div>
-        
+
           <div class="job-info">
             <h3 class="job-title">{{ job.title }}</h3>
             <div class="company-line">
@@ -58,11 +65,11 @@
             </div>
           </div>
         </div>
-      
+
         <!-- Action Buttons -->
         <div class="header-actions">
-          <UnifiedButton 
-            variant="primary" 
+          <UnifiedButton
+            variant="primary"
             size="sm"
             :disabled="isApplying"
             :loading="isApplying"
@@ -71,16 +78,18 @@
           >
             {{ isApplying ? 'Applying...' : 'Apply Now' }}
           </UnifiedButton>
-          <button 
-            class="btn-icon control-btn" 
+          <button
+            class="btn-icon control-btn"
             :class="{ saved: isSaved }"
             :title="isSaved ? 'Saved' : 'Save job'"
             @click.stop="handleSave"
           >
-            <AppIcon :name="isSaved ? 'mdi-bookmark' : 'mdi-bookmark-outline'" />
+            <AppIcon
+              :name="isSaved ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+            />
           </button>
-          <button 
-            class="btn-icon control-btn" 
+          <button
+            class="btn-icon control-btn"
             title="View details"
             @click.stop="$emit('view-details', job)"
           >
@@ -131,13 +140,13 @@
 
       <!-- Description Section -->
       <div class="job-description">
-        <p 
-          class="description-text" 
+        <p
+          class="description-text"
           :class="{ 'description-expanded': isDescriptionExpanded }"
         >
           {{ job.description || job.summary || 'No description available.' }}
         </p>
-        <button 
+        <button
           v-if="shouldShowReadMore"
           class="read-more"
           @click.stop="toggleDescription"
@@ -148,9 +157,9 @@
 
       <!-- Skills Section -->
       <div v-if="displaySkills.length > 0" class="skills-section">
-        <span 
-          v-for="skill in displaySkills" 
-          :key="skill" 
+        <span
+          v-for="skill in displaySkills"
+          :key="skill"
           class="skill-tag"
           :class="getSkillClass(skill)"
         >
@@ -159,8 +168,8 @@
       </div>
 
       <!-- AI Insights Panel -->
-      <div 
-        v-if="hasAIInsights" 
+      <div
+        v-if="hasAIInsights"
         class="ai-insights"
         :class="{ 'insights-expanded': isInsightsExpanded }"
       >
@@ -171,8 +180,8 @@
           </div>
           <div class="insights-controls">
             <span class="insights-badge">{{ aiInsights.length }} insights</span>
-            <AppIcon 
-              name="mdi-chevron-down" 
+            <AppIcon
+              name="mdi-chevron-down"
               class="expand-icon"
               :class="{ expanded: isInsightsExpanded }"
             />
@@ -180,9 +189,9 @@
         </header>
         <div class="insights-content">
           <div class="insight-items">
-            <div 
-              v-for="(insight, index) in aiInsights" 
-              :key="index" 
+            <div
+              v-for="(insight, index) in aiInsights"
+              :key="index"
               class="insight-item"
             >
               <div class="insight-icon" :style="{ color: insight.color }">
@@ -199,26 +208,26 @@
     <footer class="job-footer">
       <div class="source-info">
         <AppIcon name="mdi-source-branch" />
-        via {{ job.source || 'Direct' }} 
+        via {{ job.source || 'Direct' }}
         <span v-if="job.company?.ats">({{ job.company.ats }})</span>
       </div>
       <div class="footer-actions">
-        <button 
-          class="footer-btn control-btn" 
+        <button
+          class="footer-btn control-btn"
           title="Add to compare"
           @click.stop="$emit('add-to-compare', job)"
         >
           <AppIcon name="mdi-compare" />
         </button>
-        <button 
-          class="footer-btn control-btn" 
+        <button
+          class="footer-btn control-btn"
           title="Share"
           @click.stop="$emit('share', job)"
         >
           <AppIcon name="mdi-share-variant" />
         </button>
-        <button 
-          class="footer-btn control-btn" 
+        <button
+          class="footer-btn control-btn"
           title="Report"
           @click.stop="$emit('report', job)"
         >
@@ -237,30 +246,30 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 const _props = defineProps({
   job: {
     type: Object,
-    required: true
+    required: true,
   },
   showMetrics: {
     type: Boolean,
-    default: true
+    default: true,
   },
   maxSkills: {
     type: Number,
-    default: 6
+    default: 6,
   },
   aiInsights: {
     type: Array,
-    default: () => []
-  }
+    default: () => [],
+  },
 })
 
 const emit = defineEmits([
   'select',
   'apply',
   'save',
-  'view-details', 
+  'view-details',
   'add-to-compare',
   'share',
-  'report'
+  'report',
 ])
 
 // State
@@ -270,23 +279,21 @@ const isDescriptionExpanded = ref(false)
 const isInsightsExpanded = ref(false)
 
 // Computed
-const isTopMatch = computed(() => 
-  props.job.matchScore !== undefined && props.job.matchScore >= 85
+const isTopMatch = computed(
+  () => props.job.matchScore !== undefined && props.job.matchScore >= 85
 )
 
-const hasAIInsights = computed(() => 
-  props.aiInsights && props.aiInsights.length > 0
+const hasAIInsights = computed(
+  () => props.aiInsights && props.aiInsights.length > 0
 )
 
-const companyName = computed(() => 
-  typeof props.job.company === 'object' 
-    ? props.job.company.name 
+const companyName = computed(() =>
+  typeof props.job.company === 'object'
+    ? props.job.company.name
     : props.job.company || 'Unknown Company'
 )
 
-const companyInitial = computed(() => 
-  companyName.value.charAt(0).toUpperCase()
-)
+const companyInitial = computed(() => companyName.value.charAt(0).toUpperCase())
 
 const companyColorHex = computed(() => {
   // Generate a consistent color based on company name
@@ -299,7 +306,7 @@ const companyColorHex = computed(() => {
     'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
   ]
   const hash = companyName.value.split('').reduce((a, b) => {
-    a = ((a << 5) - a) + b.charCodeAt(0)
+    a = (a << 5) - a + b.charCodeAt(0)
     return a & a
   }, 0)
   return colors[Math.abs(hash) % colors.length]
@@ -317,7 +324,7 @@ const timeText = computed(() => {
   const now = new Date()
   const postDate = new Date(props.job.posted)
   const diffHours = Math.floor((now - postDate) / (1000 * 60 * 60))
-  
+
   if (diffHours < 1) return 'NEW'
   if (diffHours < 24) return `${diffHours}h ago`
   const diffDays = Math.floor(diffHours / 24)
@@ -365,21 +372,22 @@ const toggleInsights = () => {
   isInsightsExpanded.value = !isInsightsExpanded.value
 }
 
-const formatJobType = (type) => {
+const formatJobType = type => {
   const typeMap = {
     'full-time': 'Full-time',
     'part-time': 'Part-time',
-    'contract': 'Contract',
-    'internship': 'Internship',
-    'freelance': 'Freelance'
+    contract: 'Contract',
+    internship: 'Internship',
+    freelance: 'Freelance',
   }
   return typeMap[type?.toLowerCase()] || type || 'Not specified'
 }
 
-const formatSalary = (salary) => {
+const formatSalary = salary => {
   if (typeof salary === 'object') {
     const { min, max, currency = 'USD' } = salary
-    const symbol = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : currency
+    const symbol =
+      currency === 'USD' ? '$' : currency === 'EUR' ? '€' : currency
     if (min && max) {
       return `${symbol}${min.toLocaleString()}-${symbol}${max.toLocaleString()}`
     }
@@ -388,11 +396,11 @@ const formatSalary = (salary) => {
   return salary || 'Not specified'
 }
 
-const getSkillClass = (skill) => {
+const getSkillClass = skill => {
   const gamingSkills = ['unity', 'unreal', 'godot', 'gamedev', 'c#', 'c++']
   const webSkills = ['javascript', 'typescript', 'react', 'vue', 'node']
   const dataSkills = ['python', 'sql', 'mongodb', 'postgresql']
-  
+
   const skillLower = skill.toLowerCase()
   if (gamingSkills.some(gs => skillLower.includes(gs))) return 'skill-gaming'
   if (webSkills.some(ws => skillLower.includes(ws))) return 'skill-web'
@@ -401,12 +409,15 @@ const getSkillClass = (skill) => {
 }
 
 // Watch for job changes
-watch(() => props.job?.id, () => {
-  isSaved.value = false
-  isApplying.value = false
-  isDescriptionExpanded.value = false
-  isInsightsExpanded.value = false
-})
+watch(
+  () => props.job?.id,
+  () => {
+    isSaved.value = false
+    isApplying.value = false
+    isDescriptionExpanded.value = false
+    isInsightsExpanded.value = false
+  }
+)
 </script>
 
 <style scoped>
@@ -435,7 +446,7 @@ watch(() => props.job?.id, () => {
 
 .enhanced-job-card:focus-visible {
   outline: none;
-  box-shadow: 
+  box-shadow:
     0 0 0 2px var(--color-primary-500),
     var(--glass-shadow);
 }
@@ -452,23 +463,30 @@ watch(() => props.job?.id, () => {
   position: absolute;
   top: 16px;
   right: -24px;
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-primary-600) 100%
+  );
   color: var(--text-inverse);
   padding: var(--spacing-1) var(--spacing-8);
   transform: rotate(45deg);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--letter-spacing-wide);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
   z-index: 10;
 }
 
 /* Header Section */
 .job-header {
   padding: var(--spacing-6);
-  background: linear-gradient(135deg, 
-    color-mix(in srgb, var(--color-primary-500) 3%, transparent) 0%, 
-    color-mix(in srgb, var(--color-primary-600) 2%, transparent) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 3%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary-600) 2%, transparent) 100%
+  );
   border-bottom: 1px solid var(--glass-border);
   position: relative;
 }
@@ -492,7 +510,8 @@ watch(() => props.job?.id, () => {
   display: flex;
   align-items: center;
   gap: var(--spacing-1-5);
-  border: 1px solid color-mix(in srgb, var(--color-warning-500) 20%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-warning-500) 20%, transparent);
   height: 32px;
   min-width: fit-content;
 }
@@ -517,12 +536,14 @@ watch(() => props.job?.id, () => {
     from 0deg,
     var(--color-primary-500) 0deg,
     var(--color-primary-500) calc(var(--match) * 3.6deg),
-    color-mix(in srgb, var(--color-primary-500) 15%, transparent) calc(var(--match) * 3.6deg)
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent)
+      calc(var(--match) * 3.6deg)
   );
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   flex-shrink: 0;
 }
 
@@ -575,7 +596,11 @@ watch(() => props.job?.id, () => {
   width: 56px;
   height: 56px;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-primary-600) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -583,8 +608,8 @@ watch(() => props.job?.id, () => {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   flex-shrink: 0;
-  box-shadow: 
-    0 2px 8px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   transition: all var(--duration-fast) ease;
   overflow: hidden;
 }
@@ -644,7 +669,8 @@ watch(() => props.job?.id, () => {
   border-radius: var(--radius-full);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-medium);
-  border: 1px solid color-mix(in srgb, var(--color-success-500) 20%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-success-500) 20%, transparent);
 }
 
 .location-line {
@@ -661,7 +687,8 @@ watch(() => props.job?.id, () => {
   border-color: var(--color-primary-400);
   color: var(--text-primary);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
 }
 
 .btn-icon.saved {
@@ -669,7 +696,6 @@ watch(() => props.job?.id, () => {
   color: var(--text-inverse);
   border-color: var(--color-primary-500);
 }
-
 
 /* Action Buttons */
 .header-actions {
@@ -696,7 +722,6 @@ watch(() => props.job?.id, () => {
   flex-shrink: 0;
   font-size: var(--font-size-base);
 }
-
 
 /* Metrics Section */
 .job-metrics {
@@ -806,7 +831,8 @@ watch(() => props.job?.id, () => {
   border-radius: var(--radius-full);
   font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-medium);
-  border: 1px solid color-mix(in srgb, var(--color-primary-500) 15%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent);
   transition: all var(--duration-fast) ease;
   height: 28px;
   display: inline-flex;
@@ -821,9 +847,17 @@ watch(() => props.job?.id, () => {
 }
 
 .skill-tag.skill-gaming {
-  background: color-mix(in srgb, var(--color-gaming-500, #ff6b35) 8%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--color-gaming-500, #ff6b35) 8%,
+    transparent
+  );
   color: var(--color-gaming-600, #e55a2b);
-  border-color: color-mix(in srgb, var(--color-gaming-500, #ff6b35) 15%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--color-gaming-500, #ff6b35) 15%,
+    transparent
+  );
 }
 
 .skill-tag.skill-web {
@@ -841,12 +875,15 @@ watch(() => props.job?.id, () => {
 /* AI Insights */
 .ai-insights {
   margin: 0 var(--spacing-6) var(--spacing-5);
-  background: linear-gradient(135deg, 
-    color-mix(in srgb, var(--color-primary-500) 5%, transparent) 0%, 
-    color-mix(in srgb, var(--color-primary-600) 3%, transparent) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 5%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary-600) 3%, transparent) 100%
+  );
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--color-primary-500) 15%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent);
 }
 
 .insights-header {
@@ -878,8 +915,13 @@ watch(() => props.job?.id, () => {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .insights-controls {
@@ -1072,7 +1114,7 @@ watch(() => props.job?.id, () => {
 
 /* Focus and interaction states */
 .enhanced-job-card:focus-within {
-  box-shadow: 
+  box-shadow:
     0 0 0 2px var(--color-primary-500),
     var(--glass-shadow);
 }
@@ -1082,6 +1124,10 @@ watch(() => props.job?.id, () => {
 }
 
 .enhanced-job-card.has-insights .job-footer {
-  border-top-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  border-top-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 10%,
+    transparent
+  );
 }
 </style>

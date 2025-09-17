@@ -12,15 +12,18 @@ Location: `electron/services/AIService.js` (main process)
   - `getStatus()`, `getMetrics()`, `reset()` for health/ops.
 
 Renderer Use
+
 - `src/utils/aiClient.js` provides a single source of truth:
   - Text: `generateContent(prompt, system, options)`
   - Streaming: `streamText({ prompt, systemInstructions, options }, { onChunk, onComplete, onError })`
   - Extras: `generateSmartContent`, `mapSkills`, `scoreResume`, `listModels`, etc.
 
 Audio Pipelines
+
 - STT: Renderer records mic via `AudioService` → sends Base64 audio via IPC `audio-stt-transcribe` → `transcribeAudio()` in main → transcript to UI.
 - TTS: Renderer calls `api.audio.ttsSpeak({ provider: 'gemini', ... })`; currently routes to renderer system TTS with future space for Gemini audio when supported.
 
 Security
+
 - API key never exposed to renderer; it’s passed once via IPC to main for initialization.
 - All IPC payloads validated and sanitized; rate-limited in preload.

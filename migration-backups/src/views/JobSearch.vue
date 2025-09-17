@@ -1,5 +1,5 @@
 <template>
-  <StandardPageLayout 
+  <StandardPageLayout
     title="The Job Board"
     subtitle="Discover video game industry roles with AI‑powered matching and studio intel"
     title-icon="mdi-clipboard-text-outline"
@@ -9,7 +9,12 @@
     :hero-stats="jobBoardStats"
   >
     <template #header-actions>
-      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
+      <HeaderActions
+        layout="horizontal"
+        alignment="end"
+        gap="md"
+        priority="primary"
+      >
         <UnifiedButton
           variant="primary"
           size="md"
@@ -18,7 +23,7 @@
         >
           Advanced Search
         </UnifiedButton>
-        
+
         <UnifiedButton
           variant="gaming"
           size="md"
@@ -45,7 +50,11 @@
           @click="showJobAlertsModal = true"
         >
           Job Alerts
-          <UiChip v-if="jobAlerts.length" classes="chip chip-warning chip-compact ms-2">{{ jobAlerts.length }}</UiChip>
+          <UiChip
+            v-if="jobAlerts.length"
+            classes="chip chip-warning chip-compact ms-2"
+            >{{ jobAlerts.length }}</UiChip
+          >
         </UnifiedButton>
       </HeaderActions>
 
@@ -58,7 +67,9 @@
     <!-- Quick Actions Bar -->
     <div class="content-section">
       <div class="glass-card">
-        <div class="d-flex flex-wrap justify-content-between align-items-center gap-md">
+        <div
+          class="d-flex flex-wrap justify-content-between align-items-center gap-md"
+        >
           <div class="d-flex flex-wrap gap-sm">
             <UnifiedButton
               variant="primary"
@@ -77,7 +88,7 @@
             >
               AI Job Matching
             </UnifiedButton>
-            
+
             <UnifiedButton
               variant="glass"
               size="lg"
@@ -112,7 +123,7 @@
           <AppIcon name="mdi-filter-variant" />
           <span class="text-glass-primary">Search & Filter Jobs</span>
         </template>
-        
+
         <v-form @submit.prevent="applyFilters">
           <v-row class="ga-3 align-end">
             <!-- Search Jobs -->
@@ -128,7 +139,7 @@
                 clearable
               />
             </v-col>
-            
+
             <!-- Location -->
             <v-col cols="12" sm="6" md="2">
               <v-select
@@ -140,7 +151,7 @@
                   { title: 'United States', value: 'us' },
                   { title: 'Europe', value: 'eu' },
                   { title: 'Asia', value: 'asia' },
-                  { title: 'Canada', value: 'canada' }
+                  { title: 'Canada', value: 'canada' },
                 ]"
                 variant="outlined"
                 color="primary"
@@ -148,7 +159,7 @@
                 prepend-inner-icon="mdi-map-marker"
               />
             </v-col>
-              
+
             <!-- Job Type -->
             <v-col cols="12" sm="6" md="2">
               <v-select
@@ -159,7 +170,7 @@
                   { title: 'Full Time', value: 'full-time' },
                   { title: 'Part Time', value: 'part-time' },
                   { title: 'Contract', value: 'contract' },
-                  { title: 'Internship', value: 'internship' }
+                  { title: 'Internship', value: 'internship' },
                 ]"
                 variant="outlined"
                 color="primary"
@@ -167,7 +178,7 @@
                 prepend-inner-icon="mdi-briefcase"
               />
             </v-col>
-            
+
             <!-- Posted -->
             <v-col cols="12" sm="6" md="2">
               <v-select
@@ -177,7 +188,7 @@
                   { title: 'All Time', value: '' },
                   { title: 'Last 24 hours', value: '24h' },
                   { title: 'Last 7 days', value: '7d' },
-                  { title: 'Last 30 days', value: '30d' }
+                  { title: 'Last 30 days', value: '30d' },
                 ]"
                 variant="outlined"
                 color="primary"
@@ -185,7 +196,7 @@
                 prepend-inner-icon="mdi-clock-outline"
               />
             </v-col>
-            
+
             <!-- Action Buttons -->
             <v-col cols="12" md="2">
               <v-row class="ga-2">
@@ -211,15 +222,19 @@
               </v-row>
             </v-col>
           </v-row>
-          
+
           <!-- Gaming-Specific Filters (show when gaming filter is active) -->
           <v-expand-transition>
-            <div v-show="gamingFilterActive" class="gaming-filters mt-4 pt-4" style="border-top: 1px solid var(--border-base);">
+            <div
+              v-show="gamingFilterActive"
+              class="gaming-filters mt-4 pt-4"
+              style="border-top: 1px solid var(--border-base)"
+            >
               <h4 class="text-h6 mb-3 text-glass-primary">
                 <AppIcon name="mdi-gamepad-variant" />
                 Gaming Industry Filters
               </h4>
-              
+
               <v-row>
                 <!-- Game Engines -->
                 <v-col cols="12" md="3">
@@ -235,7 +250,7 @@
                     prepend-inner-icon="mdi-engine"
                   />
                 </v-col>
-                
+
                 <!-- Studio Types -->
                 <v-col cols="12" md="3">
                   <v-select
@@ -250,7 +265,7 @@
                     prepend-inner-icon="mdi-office-building"
                   />
                 </v-col>
-                
+
                 <!-- Platforms -->
                 <v-col cols="12" md="3">
                   <v-select
@@ -265,7 +280,7 @@
                     prepend-inner-icon="mdi-devices"
                   />
                 </v-col>
-                
+
                 <!-- Role Categories -->
                 <v-col cols="12" md="3">
                   <v-select
@@ -294,9 +309,12 @@
           <div class="d-flex align-center">
             <AppIcon name="mdi-star" color="warning" size="32" class="me-3" />
             <div>
-              <h3 class="text-h5 mb-1 text-glass-primary">Top AI Matches for You</h3>
+              <h3 class="text-h5 mb-1 text-glass-primary">
+                Top AI Matches for You
+              </h3>
               <p class="text-body-2 text-glass-secondary mb-0">
-                {{ topMatches.length }} high-match opportunities (60%+ compatibility)
+                {{ topMatches.length }} high-match opportunities (60%+
+                compatibility)
               </p>
             </div>
           </div>
@@ -321,17 +339,32 @@
           />
 
           <v-row v-else>
-            <v-col v-for="job in topMatches.slice(0, 6)" :key="job.id" cols="12" md="6" lg="4">
-              <v-card class="top-match-job-card h-100 glass-card" variant="outlined" hover @click="viewJobDetails(job)">
+            <v-col
+              v-for="job in topMatches.slice(0, 6)"
+              :key="job.id"
+              cols="12"
+              md="6"
+              lg="4"
+            >
+              <v-card
+                class="top-match-job-card h-100 glass-card"
+                variant="outlined"
+                hover
+                @click="viewJobDetails(job)"
+              >
                 <v-card-text class="pa-4">
                   <div class="d-flex align-start justify-space-between mb-3">
                     <div class="flex-grow-1">
-                      <h4 class="text-h6 mb-1 text-glass-primary">{{ job.title }}</h4>
+                      <h4 class="text-h6 mb-1 text-glass-primary">
+                        {{ job.title }}
+                      </h4>
                       <p class="text-body-2 text-glass-secondary mb-0">
                         {{ job.company }} • {{ job.location }}
                       </p>
                     </div>
-                    <UiChip :classes="`chip chip-${getMatchChipColor(job.matchScore)}`">
+                    <UiChip
+                      :classes="`chip chip-${getMatchChipColor(job.matchScore)}`"
+                    >
                       {{ job.matchScore }}%
                     </UiChip>
                   </div>
@@ -340,7 +373,10 @@
                       <UiChip classes="chip chip-info chip-compact">
                         {{ formatJobType(job.type) }}
                       </UiChip>
-                      <UiChip v-if="job.salary" classes="chip chip-success chip-compact">
+                      <UiChip
+                        v-if="job.salary"
+                        classes="chip chip-success chip-compact"
+                      >
                         {{ formatSalary(job.salary) }}
                       </UiChip>
                     </div>
@@ -370,13 +406,26 @@
     </v-container>
 
     <!-- AI Analysis CTA (shown when no AI analysis has been run) -->
-    <v-container v-else-if="jobResults.length > 0 && !hasRunAIAnalysis" class="mb-6">
+    <v-container
+      v-else-if="jobResults.length > 0 && !hasRunAIAnalysis"
+      class="mb-6"
+    >
       <v-card class="ai-cta-card text-center glass-card" elevation="0">
         <v-card-text class="pa-8">
-          <AppIcon name="mdi-robot-excited" size="80" color="primary" class="mb-4" />
-          <h2 class="text-h4 mb-4 text-glass-primary">Get AI-Powered Job Recommendations</h2>
-          <p class="text-body-1 text-glass-secondary mb-6 mx-auto max-w-text-600">
-            Let our advanced AI analyze {{ jobResults.length }} jobs and find your best matches based on your skills, experience, and preferences.
+          <AppIcon
+            name="mdi-robot-excited"
+            size="80"
+            color="primary"
+            class="mb-4"
+          />
+          <h2 class="text-h4 mb-4 text-glass-primary">
+            Get AI-Powered Job Recommendations
+          </h2>
+          <p
+            class="text-body-1 text-glass-secondary mb-6 mx-auto max-w-text-600"
+          >
+            Let our advanced AI analyze {{ jobResults.length }} jobs and find
+            your best matches based on your skills, experience, and preferences.
           </p>
           <UnifiedButton
             variant="primary"
@@ -403,10 +452,16 @@
 
     <!-- Jobs Results Section -->
     <v-container>
-      <v-card id="jobs-table" class="jobs-results-card glass-card" elevation="0">
+      <v-card
+        id="jobs-table"
+        class="jobs-results-card glass-card"
+        elevation="0"
+      >
         <v-card-title class="d-flex align-center justify-space-between pa-4">
           <div>
-            <h2 class="text-h4 mb-2 text-glass-primary">Gaming Job Opportunities</h2>
+            <h2 class="text-h4 mb-2 text-glass-primary">
+              Gaming Job Opportunities
+            </h2>
             <p class="text-body-1 text-glass-secondary mb-0">
               Curated from multiple gaming industry sources
             </p>
@@ -416,7 +471,8 @@
               {{ filteredJobs.length }} Results
             </UiChip>
             <ViewToggle
-              v-model="viewMode" :options="[
+              v-model="viewMode"
+              :options="[
                 { value: 'table', icon: 'mdi-table', label: 'Table view' },
                 { value: 'cards', icon: 'mdi-view-grid', label: 'Cards view' },
               ]"
@@ -426,7 +482,7 @@
         <!-- Table View -->
         <!-- Skeleton Loading for Table View -->
         <LoadingSkeletons
-          v-if="(viewMode === 'table') && (loading || refreshing || aiLoading)"
+          v-if="viewMode === 'table' && (loading || refreshing || aiLoading)"
           variant="table"
           :table-row-count="10"
           :show="true"
@@ -447,11 +503,20 @@
           <!-- Empty state -->
           <template #no-data>
             <div class="empty-state text-center pa-8">
-              <AppIcon name="mdi-magnify" size="64" color="primary" class="mb-4 text-glass-secondary" />
+              <AppIcon
+                name="mdi-magnify"
+                size="64"
+                color="primary"
+                class="mb-4 text-glass-secondary"
+              />
               <h3 class="text-h5 mb-2 text-glass-primary">No jobs found</h3>
               <p class="text-body-2 text-glass-secondary mb-4">
-                Try adjusting your filters or 
-                <router-link to="/settings#job-sources-section" class="text-primary">configure more job sources</router-link>
+                Try adjusting your filters or
+                <router-link
+                  to="/settings#job-sources-section"
+                  class="text-primary"
+                  >configure more job sources</router-link
+                >
               </p>
             </div>
           </template>
@@ -459,7 +524,11 @@
           <!-- Job Title Column -->
           <template #item.title="{ item }">
             <div class="job-title-cell">
-              <h4 class="text-subtitle-1 font-weight-semibold mb-1 text-glass-primary">{{ item.title }}</h4>
+              <h4
+                class="text-subtitle-1 font-weight-semibold mb-1 text-glass-primary"
+              >
+                {{ item.title }}
+              </h4>
               <div class="d-flex align-center ga-1 mb-2">
                 <UiChip
                   v-for="tag in (item.tags || []).slice(0, 2)"
@@ -469,7 +538,9 @@
                   {{ tag }}
                 </UiChip>
                 <UiChip
-                  v-if="item.matchScore !== undefined && item.matchScore !== null"
+                  v-if="
+                    item.matchScore !== undefined && item.matchScore !== null
+                  "
                   :classes="`chip chip-${getMatchChipColor(item.matchScore)} chip-compact`"
                 >
                   <AppIcon name="mdi-target-variant" class="me-1" />
@@ -492,7 +563,9 @@
               </v-avatar>
               <div>
                 <div class="d-flex align-center ga-1">
-                  <span class="font-weight-medium text-glass-primary">{{ item.company }}</span>
+                  <span class="font-weight-medium text-glass-primary">{{
+                    item.company
+                  }}</span>
                   <UnifiedButton
                     v-if="getMatchingStudio(item.company)"
                     icon-only
@@ -503,7 +576,9 @@
                     @click.stop="openStudioModal(item)"
                   />
                 </div>
-                <p class="text-body-2 text-medium-emphasis mb-0">{{ item.source }}</p>
+                <p class="text-body-2 text-medium-emphasis mb-0">
+                  {{ item.source }}
+                </p>
               </div>
             </div>
           </template>
@@ -513,7 +588,10 @@
             <div class="d-flex align-center ga-1">
               <AppIcon name="mdi-map-marker" size="16" color="primary" />
               <span>{{ item.location || 'Not specified' }}</span>
-              <UiChip v-if="item.remote" classes="chip chip-success chip-compact">
+              <UiChip
+                v-if="item.remote"
+                classes="chip chip-success chip-compact"
+              >
                 Remote
               </UiChip>
             </div>
@@ -531,9 +609,7 @@
             <span v-if="item.salary" class="font-weight-medium">
               {{ formatSalary(item.salary) }}
             </span>
-            <span v-else class="text-medium-emphasis">
-              Not disclosed
-            </span>
+            <span v-else class="text-medium-emphasis"> Not disclosed </span>
           </template>
 
           <!-- Posted Date Column -->
@@ -558,8 +634,12 @@
                 icon-only
                 size="sm"
                 :variant="isJobSaved(item.id) ? 'primary' : 'outline'"
-                :aria-label="isJobSaved(item.id) ? 'Remove from saved' : 'Save job'"
-                :icon="isJobSaved(item.id) ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                :aria-label="
+                  isJobSaved(item.id) ? 'Remove from saved' : 'Save job'
+                "
+                :icon="
+                  isJobSaved(item.id) ? 'mdi-bookmark' : 'mdi-bookmark-outline'
+                "
                 @click="toggleSaveJob(item)"
               />
               <UnifiedButton
@@ -584,12 +664,24 @@
             :show="true"
           />
 
-          <div v-else-if="filteredJobs.length === 0 && !loading" class="empty-state text-center pa-8">
-            <AppIcon name="mdi-magnify" size="64" color="primary" class="mb-4" />
+          <div
+            v-else-if="filteredJobs.length === 0 && !loading"
+            class="empty-state text-center pa-8"
+          >
+            <AppIcon
+              name="mdi-magnify"
+              size="64"
+              color="primary"
+              class="mb-4"
+            />
             <h3 class="text-h5 mb-2">No jobs found</h3>
             <p class="text-body-2 text-medium-emphasis mb-4">
               Try adjusting your filters or
-              <router-link to="/settings#job-sources-section" class="text-primary">configure more job sources</router-link>
+              <router-link
+                to="/settings#job-sources-section"
+                class="text-primary"
+                >configure more job sources</router-link
+              >
             </p>
           </div>
 
@@ -624,7 +716,11 @@
                         icon-only
                         size="sm"
                         :variant="isJobSaved(job.id) ? 'primary' : 'ghost'"
-                        :icon="isJobSaved(job.id) ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                        :icon="
+                          isJobSaved(job.id)
+                            ? 'mdi-bookmark'
+                            : 'mdi-bookmark-outline'
+                        "
                         @click.stop="toggleSaveJob(job)"
                       />
                     </div>
@@ -635,7 +731,10 @@
                     <h4 class="text-h6 mb-2">{{ job.title }}</h4>
                     <div class="d-flex align-center ga-1 mb-2">
                       <UiChip
-                        v-if="job.matchScore !== undefined && job.matchScore !== null"
+                        v-if="
+                          job.matchScore !== undefined &&
+                          job.matchScore !== null
+                        "
                         :classes="`chip chip-${getMatchChipColor(job.matchScore)}`"
                       >
                         <AppIcon name="mdi-target-variant" class="me-1" />
@@ -656,7 +755,9 @@
                     </v-avatar>
                     <div class="flex-grow-1">
                       <div class="d-flex align-center ga-1">
-                        <span class="font-weight-medium">{{ job.company }}</span>
+                        <span class="font-weight-medium">{{
+                          job.company
+                        }}</span>
                         <UnifiedButton
                           v-if="getMatchingStudio(job.company)"
                           icon-only
@@ -666,24 +767,51 @@
                           @click.stop="openStudioModal(job)"
                         />
                       </div>
-                      <p class="text-body-2 text-medium-emphasis mb-0">{{ job.source }}</p>
+                      <p class="text-body-2 text-medium-emphasis mb-0">
+                        {{ job.source }}
+                      </p>
                     </div>
                   </div>
 
                   <!-- Job Details -->
                   <div class="mb-4">
                     <div class="d-flex align-center mb-2">
-                      <AppIcon name="mdi-map-marker" size="16" color="primary" class="me-2" />
-                      <span class="text-body-2">{{ job.location || 'Not specified' }}</span>
-                      <UiChip v-if="job.remote" classes="chip chip-success chip-compact ml-2">Remote</UiChip>
+                      <AppIcon
+                        name="mdi-map-marker"
+                        size="16"
+                        color="primary"
+                        class="me-2"
+                      />
+                      <span class="text-body-2">{{
+                        job.location || 'Not specified'
+                      }}</span>
+                      <UiChip
+                        v-if="job.remote"
+                        classes="chip chip-success chip-compact ml-2"
+                        >Remote</UiChip
+                      >
                     </div>
                     <div class="d-flex align-center mb-2">
-                      <AppIcon name="mdi-clock-outline" size="16" color="primary" class="me-2" />
-                      <span class="text-body-2">{{ formatJobType(job.type) }}</span>
+                      <AppIcon
+                        name="mdi-clock-outline"
+                        size="16"
+                        color="primary"
+                        class="me-2"
+                      />
+                      <span class="text-body-2">{{
+                        formatJobType(job.type)
+                      }}</span>
                     </div>
                     <div v-if="job.salary" class="d-flex align-center">
-                      <AppIcon name="mdi-currency-usd" size="16" color="success" class="me-2" />
-                      <span class="text-body-2 font-weight-medium">{{ formatSalary(job.salary) }}</span>
+                      <AppIcon
+                        name="mdi-currency-usd"
+                        size="16"
+                        color="success"
+                        class="me-2"
+                      />
+                      <span class="text-body-2 font-weight-medium">{{
+                        formatSalary(job.salary)
+                      }}</span>
                     </div>
                   </div>
 
@@ -753,7 +881,9 @@
                               Salary Prediction
                             </v-list-item-title>
                           </v-list-item>
-                          <v-list-item @click="analyzeJobWithAI(job, 'insights')">
+                          <v-list-item
+                            @click="analyzeJobWithAI(job, 'insights')"
+                          >
                             <v-list-item-title>
                               <AppIcon name="mdi-lightbulb" class="me-2" />
                               Career Insights
@@ -773,7 +903,10 @@
         <v-card-actions v-if="totalPages > 1" class="pa-4 border-t">
           <div class="d-flex justify-space-between align-center w-100">
             <div class="pagination-info text-medium-emphasis">
-              Showing {{ (currentPage - 1) * itemsPerPage + 1 }}-{{ Math.min(currentPage * itemsPerPage, totalJobs) }} of {{ totalJobs }} jobs
+              Showing {{ (currentPage - 1) * itemsPerPage + 1 }}-{{
+                Math.min(currentPage * itemsPerPage, totalJobs)
+              }}
+              of {{ totalJobs }} jobs
             </div>
             <v-pagination
               v-model="currentPage"
@@ -788,7 +921,6 @@
       </v-card>
     </v-container>
 
-
     <!-- Advanced Search Modal -->
     <v-dialog v-model="showSearchModal" max-width="900" persistent>
       <v-card>
@@ -796,7 +928,9 @@
           <AppIcon name="mdi-robot" color="primary" class="me-3" size="32" />
           <div>
             <h2 class="text-h5">AI-Powered Job Search</h2>
-            <p class="text-body-2 text-medium-emphasis mb-0">Let AI find the perfect gaming jobs for you</p>
+            <p class="text-body-2 text-medium-emphasis mb-0">
+              Let AI find the perfect gaming jobs for you
+            </p>
           </div>
           <v-spacer />
           <UnifiedButton
@@ -822,7 +956,12 @@
         </v-card-text>
         <v-card-actions class="pa-6 pt-0">
           <v-spacer />
-          <UnifiedButton variant="outline" color="secondary" @click="showSearchModal = false">Close</UnifiedButton>
+          <UnifiedButton
+            variant="outline"
+            color="secondary"
+            @click="showSearchModal = false"
+            >Close</UnifiedButton
+          >
           <UnifiedButton
             variant="primary"
             :loading="searching"
@@ -845,7 +984,13 @@
               {{ selectedJob.company }} • {{ selectedJob.location }}
             </p>
           </div>
-          <UnifiedButton icon-only variant="ghost" icon="mdi-close" aria-label="Close" @click="showJobDetails = false" />
+          <UnifiedButton
+            icon-only
+            variant="ghost"
+            icon="mdi-close"
+            aria-label="Close"
+            @click="showJobDetails = false"
+          />
         </v-card-title>
         <v-card-text class="pa-0">
           <JobDetailsView
@@ -858,13 +1003,16 @@
       </v-card>
     </v-dialog>
 
-
     <!-- Studio Details Modal -->
     <v-dialog v-model="selectedStudioForModal" max-width="900" scrollable>
       <v-card v-if="selectedStudioForModal">
         <v-card-title class="d-flex align-center pa-6">
           <div class="d-flex align-center ga-4 flex-grow-1">
-            <v-avatar v-if="selectedStudioForModal.logo" size="64" class="studio-logo">
+            <v-avatar
+              v-if="selectedStudioForModal.logo"
+              size="64"
+              class="studio-logo"
+            >
               <v-img
                 :src="selectedStudioForModal.logo"
                 :alt="`${selectedStudioForModal.name} logo`"
@@ -876,10 +1024,18 @@
             </v-avatar>
             <div>
               <h2 class="text-h4 mb-1">{{ selectedStudioForModal.name }}</h2>
-              <p class="text-body-1 text-medium-emphasis mb-0">Gaming Studio Details</p>
+              <p class="text-body-1 text-medium-emphasis mb-0">
+                Gaming Studio Details
+              </p>
             </div>
           </div>
-          <UnifiedButton icon-only variant="ghost" icon="mdi-close" aria-label="Close" @click="closeStudioModal" />
+          <UnifiedButton
+            icon-only
+            variant="ghost"
+            icon="mdi-close"
+            aria-label="Close"
+            @click="closeStudioModal"
+          />
         </v-card-title>
 
         <v-card-text class="pa-6">
@@ -891,8 +1047,12 @@
                   <div class="d-flex align-center ga-3">
                     <AppIcon name="mdi-map-marker" color="primary" size="24" />
                     <div>
-                      <p class="text-caption text-medium-emphasis mb-1">Location</p>
-                      <p class="font-weight-semibold mb-0">{{ selectedStudioForModal.headquarters }}</p>
+                      <p class="text-caption text-medium-emphasis mb-1">
+                        Location
+                      </p>
+                      <p class="font-weight-semibold mb-0">
+                        {{ selectedStudioForModal.headquarters }}
+                      </p>
                     </div>
                   </div>
                 </v-card>
@@ -900,10 +1060,16 @@
               <v-col cols="12" sm="6" md="3">
                 <v-card variant="outlined" class="pa-4">
                   <div class="d-flex align-center ga-3">
-                    <AppIcon name="mdi-account-group" color="primary" size="24" />
+                    <AppIcon
+                      name="mdi-account-group"
+                      color="primary"
+                      size="24"
+                    />
                     <div>
                       <p class="text-caption text-medium-emphasis mb-1">Size</p>
-                      <p class="font-weight-semibold mb-0">{{ selectedStudioForModal.size }}</p>
+                      <p class="font-weight-semibold mb-0">
+                        {{ selectedStudioForModal.size }}
+                      </p>
                     </div>
                   </div>
                 </v-card>
@@ -913,8 +1079,12 @@
                   <div class="d-flex align-center ga-3">
                     <AppIcon name="mdi-calendar" size="24" color="primary" />
                     <div>
-                      <p class="text-caption text-medium-emphasis mb-1">Founded</p>
-                      <p class="font-weight-semibold mb-0">{{ selectedStudioForModal.founded }}</p>
+                      <p class="text-caption text-medium-emphasis mb-1">
+                        Founded
+                      </p>
+                      <p class="font-weight-semibold mb-0">
+                        {{ selectedStudioForModal.founded }}
+                      </p>
                     </div>
                   </div>
                 </v-card>
@@ -925,7 +1095,13 @@
                     <AppIcon name="mdi-chart-bar" color="primary" size="24" />
                     <div>
                       <p class="text-caption text-medium-emphasis mb-1">Type</p>
-                      <p class="font-weight-semibold mb-0">{{ selectedStudioForModal.publiclyTraded ? 'Public' : 'Private' }}</p>
+                      <p class="font-weight-semibold mb-0">
+                        {{
+                          selectedStudioForModal.publiclyTraded
+                            ? 'Public'
+                            : 'Private'
+                        }}
+                      </p>
                     </div>
                   </div>
                 </v-card>
@@ -936,7 +1112,11 @@
           <!-- Studio Description -->
           <div v-if="selectedStudioForModal.description" class="mb-6">
             <div class="d-flex align-center mb-4">
-              <AppIcon name="mdi-information-outline" color="primary" class="me-2" />
+              <AppIcon
+                name="mdi-information-outline"
+                color="primary"
+                class="me-2"
+              />
               <h3 class="text-h6">About</h3>
             </div>
             <p class="text-body-1">{{ selectedStudioForModal.description }}</p>
@@ -963,11 +1143,15 @@
               </v-col>
               <v-col cols="12" md="4">
                 <h4 class="text-subtitle-1 mb-3">Work Style</h4>
-                <p class="text-body-2 text-medium-emphasis">{{ selectedStudioForModal.culture.workStyle }}</p>
+                <p class="text-body-2 text-medium-emphasis">
+                  {{ selectedStudioForModal.culture.workStyle }}
+                </p>
               </v-col>
               <v-col cols="12" md="4">
                 <h4 class="text-subtitle-1 mb-3">Environment</h4>
-                <p class="text-body-2 text-medium-emphasis">{{ selectedStudioForModal.culture.environment }}</p>
+                <p class="text-body-2 text-medium-emphasis">
+                  {{ selectedStudioForModal.culture.environment }}
+                </p>
               </v-col>
             </v-row>
           </div>
@@ -975,7 +1159,11 @@
           <!-- Games & Technologies -->
           <div class="mb-6">
             <div class="d-flex align-center mb-4">
-              <AppIcon name="mdi-gamepad-variant" color="primary" class="me-2" />
+              <AppIcon
+                name="mdi-gamepad-variant"
+                color="primary"
+                class="me-2"
+              />
               <h3 class="text-h6">Games & Technologies</h3>
             </div>
             <v-row>
@@ -1029,13 +1217,20 @@
               <AppIcon name="mdi-forum" color="primary" class="me-2" />
               <h3 class="text-h6">Interview Style</h3>
             </div>
-            <p class="text-body-1 text-medium-emphasis">{{ selectedStudioForModal.interviewStyle }}</p>
+            <p class="text-body-1 text-medium-emphasis">
+              {{ selectedStudioForModal.interviewStyle }}
+            </p>
           </div>
         </v-card-text>
 
         <v-card-actions class="pa-6 pt-0">
           <v-spacer />
-          <UnifiedButton variant="outline" color="secondary" @click="closeStudioModal">Close</UnifiedButton>
+          <UnifiedButton
+            variant="outline"
+            color="secondary"
+            @click="closeStudioModal"
+            >Close</UnifiedButton
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -1049,9 +1244,10 @@
         </v-card-title>
         <v-card-text>
           <p class="text-body-2 mb-4">
-            Tell me what you're looking for in natural language, and I'll find the perfect jobs for you!
+            Tell me what you're looking for in natural language, and I'll find
+            the perfect jobs for you!
           </p>
-          
+
           <v-textarea
             v-model="smartSearchQuery"
             label="Describe your ideal job"
@@ -1067,19 +1263,28 @@
             <div class="d-flex flex-wrap gap-2">
               <UiChip
                 classes="chip chip-primary chip-compact"
-                @click="smartSearchQuery = 'Remote frontend developer position with React, $80k+'"
+                @click="
+                  smartSearchQuery =
+                    'Remote frontend developer position with React, $80k+'
+                "
               >
                 Remote React developer $80k+
               </UiChip>
               <UiChip
                 classes="chip chip-primary chip-compact"
-                @click="smartSearchQuery = 'Senior game developer at AAA studio, Unity experience'"
+                @click="
+                  smartSearchQuery =
+                    'Senior game developer at AAA studio, Unity experience'
+                "
               >
                 Senior Unity at AAA studio
               </UiChip>
               <UiChip
                 classes="chip chip-primary chip-compact"
-                @click="smartSearchQuery = 'Entry level programming job, willing to learn, full-time'"
+                @click="
+                  smartSearchQuery =
+                    'Entry level programming job, willing to learn, full-time'
+                "
               >
                 Entry level programming
               </UiChip>
@@ -1088,8 +1293,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <UnifiedButton variant="ghost" @click="showSmartSearchDialog = false">Cancel</UnifiedButton>
-          <UnifiedButton 
+          <UnifiedButton variant="ghost" @click="showSmartSearchDialog = false"
+            >Cancel</UnifiedButton
+          >
+          <UnifiedButton
             variant="primary"
             :disabled="!smartSearchQuery.trim()"
             :loading="searching"
@@ -1141,13 +1348,25 @@ import LoadingSkeletons from '@/components/LoadingSkeletons.vue'
 import { canonicalJobService as refactoredJobAPIService } from '@/services/jobs'
 import type { GamingJobFilters } from '@/services/GamingJobsService'
 import { JobRepository } from '@/services/JobRepository'
-import { buildNormalizedStudios, buildTokenIndex, fuzzyMatchStudios, normalizeStudio, type NormalizedStudio } from '@/shared/utils/studioNormalization'
+import {
+  buildNormalizedStudios,
+  buildTokenIndex,
+  fuzzyMatchStudios,
+  normalizeStudio,
+  type NormalizedStudio,
+} from '@/shared/utils/studioNormalization'
 import { seedStudiosIfEmpty } from '@/shared/services/StudioPersistenceService'
 import { GAMING_STUDIOS } from '@/shared/constants/gaming-studios'
 import { aiJobService, type AIJobMatch } from '@/services/AIJobService'
 
 // Types
-import type { Job, JobFilters, JobType, ExperienceLevel, SalaryRange } from '@/shared/types/jobs'
+import type {
+  Job,
+  JobFilters,
+  JobType,
+  ExperienceLevel,
+  SalaryRange,
+} from '@/shared/types/jobs'
 
 // Reactive state
 const router = useRouter()
@@ -1169,30 +1388,34 @@ const selectedStudioForModal = ref<NormalizedStudio | null>(null)
 const refreshing = ref<boolean>(false)
 const aiLoading = ref<boolean>(false)
 
-
 // Studio fuzzy index
 const studioTokenIndex = ref<Record<string, Set<string>> | null>(null)
 const normalizedStudioList = ref<NormalizedStudio[]>([])
 
 // Lightweight Levenshtein distance for tie-breakers
 function levenshtein(a: string, b: string) {
-  a = (a||'').toLowerCase(); b = (b||'').toLowerCase();
-  const m = a.length, n = b.length;
-  if (m === 0) return n; if (n === 0) return m;
-  const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
-  for (let i = 0; i <= m; i++) dp[i][0] = i;
-  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  a = (a || '').toLowerCase()
+  b = (b || '').toLowerCase()
+  const m = a.length,
+    n = b.length
+  if (m === 0) return n
+  if (n === 0) return m
+  const dp: number[][] = Array.from({ length: m + 1 }, () =>
+    Array(n + 1).fill(0)
+  )
+  for (let i = 0; i <= m; i++) dp[i][0] = i
+  for (let j = 0; j <= n; j++) dp[0][j] = j
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1
       dp[i][j] = Math.min(
         dp[i - 1][j] + 1,
         dp[i][j - 1] + 1,
         dp[i - 1][j - 1] + cost
-      );
+      )
     }
   }
-  return dp[m][n];
+  return dp[m][n]
 }
 
 // Search and Filter State
@@ -1217,41 +1440,70 @@ const gamingFilters = ref<GamingJobFilters>({
   studioTypes: [],
   platforms: [],
   roleCategories: [],
-  workStyle: 'any'
+  workStyle: 'any',
 })
 
 // Gaming filter options
 const gameEngineOptions = ref([
-  'Unity', 'Unreal Engine', 'Godot', 'CryEngine', 'Frostbite',
-  'Source Engine', 'id Tech', 'Custom Engine'
+  'Unity',
+  'Unreal Engine',
+  'Godot',
+  'CryEngine',
+  'Frostbite',
+  'Source Engine',
+  'id Tech',
+  'Custom Engine',
 ])
 
 const studioTypeOptions = ref([
-  'AAA Studio', 'Indie Studio', 'Mobile Studio', 'VR/AR Studio',
-  'Publisher', 'Platform Holder', 'Middleware', 'Tools & Engine'
+  'AAA Studio',
+  'Indie Studio',
+  'Mobile Studio',
+  'VR/AR Studio',
+  'Publisher',
+  'Platform Holder',
+  'Middleware',
+  'Tools & Engine',
 ])
 
 const platformOptions = ref([
-  'PC', 'PlayStation', 'Xbox', 'Nintendo Switch', 'Mobile',
-  'VR/AR', 'Web', 'Console', 'Cross-platform'
+  'PC',
+  'PlayStation',
+  'Xbox',
+  'Nintendo Switch',
+  'Mobile',
+  'VR/AR',
+  'Web',
+  'Console',
+  'Cross-platform',
 ])
 
 const roleCategoryOptions = ref([
-  'Programming', 'Design', 'Art & Animation', 'Audio', 'Production',
-  'QA Testing', 'Marketing', 'Business', 'Community', 'Operations'
+  'Programming',
+  'Design',
+  'Art & Animation',
+  'Audio',
+  'Production',
+  'QA Testing',
+  'Marketing',
+  'Business',
+  'Community',
+  'Operations',
 ])
 
 // Additional missing state
 const gamingJobsCount = ref(0)
 const averageSalary = ref(75000)
-const topMatches = computed(() => jobResults.value.filter(j => (Number(j.matchScore) || 0) >= 60))
+const topMatches = computed(() =>
+  jobResults.value.filter(j => (Number(j.matchScore) || 0) >= 60)
+)
 
 // Hero stats for StandardPageLayout
 const jobBoardStats = computed(() => [
   { label: `${totalJobs.value.toLocaleString()} Live Jobs` },
   { label: `${gamingJobsCount.value} Gaming` },
   { label: `${topMatches.value.length} Top Matches` },
-  { label: `$${Math.round(averageSalary.value / 1000)}K Avg Salary` }
+  { label: `$${Math.round(averageSalary.value / 1000)}K Avg Salary` },
 ])
 const showAdvancedSearch = ref(false)
 const showSavedJobs = ref(false)
@@ -1261,7 +1513,7 @@ const searchFilters = ref({
   keywords: '',
   location: '',
   jobType: '',
-  posted: ''
+  posted: '',
 })
 
 // AI-powered features
@@ -1281,10 +1533,12 @@ const itemsPerPage = ref(25)
 
 // Gaming filter functionality
 const gamingFilterActive = computed(() => {
-  return gamingFilters.value.gameEngines?.length > 0 ||
-         gamingFilters.value.studioTypes?.length > 0 ||
-         gamingFilters.value.platforms?.length > 0 ||
-         gamingFilters.value.roleCategories?.length > 0
+  return (
+    gamingFilters.value.gameEngines?.length > 0 ||
+    gamingFilters.value.studioTypes?.length > 0 ||
+    gamingFilters.value.platforms?.length > 0 ||
+    gamingFilters.value.roleCategories?.length > 0
+  )
 })
 
 const toggleGamingFilter = () => {
@@ -1295,7 +1549,7 @@ const toggleGamingFilter = () => {
       studioTypes: [],
       platforms: [],
       roleCategories: [],
-      workStyle: 'any'
+      workStyle: 'any',
     }
   } else {
     // Set some default gaming filters to activate gaming mode
@@ -1305,25 +1559,34 @@ const toggleGamingFilter = () => {
 
 // Computed Properties
 const totalJobs = computed(() => filteredJobs.value.length)
-const totalPages = computed(() => Math.ceil(totalJobs.value / itemsPerPage.value))
+const totalPages = computed(() =>
+  Math.ceil(totalJobs.value / itemsPerPage.value)
+)
 // Bulk selection currently not exposed; keep derived guard minimal to avoid ESLint noise
-const _allSelected = computed(() => selectedJobs.value.length === paginatedJobs.value.length && paginatedJobs.value.length > 0)
+const _allSelected = computed(
+  () =>
+    selectedJobs.value.length === paginatedJobs.value.length &&
+    paginatedJobs.value.length > 0
+)
 
 const filteredJobs = computed(() => {
   let jobs = jobResults.value
 
   if (searchKeywords.value) {
     const keywords = searchKeywords.value.toLowerCase()
-    jobs = jobs.filter(job =>
-      job.title.toLowerCase().includes(keywords) ||
-      job.company.toLowerCase().includes(keywords) ||
-      job.tags?.some(tag => tag.toLowerCase().includes(keywords))
+    jobs = jobs.filter(
+      job =>
+        job.title.toLowerCase().includes(keywords) ||
+        job.company.toLowerCase().includes(keywords) ||
+        job.tags?.some(tag => tag.toLowerCase().includes(keywords))
     )
   }
 
   if (selectedLocation.value) {
     jobs = jobs.filter(job => {
-      if (selectedLocation.value === 'remote') {return job.remote}
+      if (selectedLocation.value === 'remote') {
+        return job.remote
+      }
       // Add more location filtering logic here
       return true
     })
@@ -1338,9 +1601,17 @@ const filteredJobs = computed(() => {
       const title = job.title.toLowerCase()
       switch (selectedExperience.value) {
         case 'entry':
-          return title.includes('junior') || title.includes('entry') || title.includes('associate')
+          return (
+            title.includes('junior') ||
+            title.includes('entry') ||
+            title.includes('associate')
+          )
         case 'mid':
-          return !title.includes('senior') && !title.includes('lead') && !title.includes('principal')
+          return (
+            !title.includes('senior') &&
+            !title.includes('lead') &&
+            !title.includes('principal')
+          )
         case 'senior':
           return title.includes('senior')
         case 'lead':
@@ -1398,57 +1669,59 @@ const tableHeaders = computed(() => [
     key: 'title',
     align: 'start' as const,
     sortable: true,
-    width: '25%'
+    width: '25%',
   },
   {
     title: 'Company',
     key: 'company',
     align: 'start' as const,
     sortable: true,
-    width: '20%'
+    width: '20%',
   },
   {
     title: 'Location',
     key: 'location',
     align: 'start' as const,
     sortable: true,
-    width: '15%'
+    width: '15%',
   },
   {
     title: 'Type',
     key: 'type',
     align: 'center' as const,
     sortable: true,
-    width: '10%'
+    width: '10%',
   },
   {
     title: 'Salary',
     key: 'salary',
     align: 'start' as const,
     sortable: false,
-    width: '15%'
+    width: '15%',
   },
   {
     title: 'Posted',
     key: 'postedDate',
     align: 'start' as const,
     sortable: true,
-    width: '10%'
+    width: '10%',
   },
   {
     title: 'Actions',
     key: 'actions',
     align: 'center' as const,
     sortable: false,
-    width: '10%'
-  }
+    width: '10%',
+  },
 ])
 
 // headerActions removed; actions are in-page
 
 // Function to check if a job's company matches a studio in our database (normalized first)
 const getMatchingStudio = (companyName: string): NormalizedStudio | null => {
-  if (!companyName) {return null}
+  if (!companyName) {
+    return null
+  }
   try {
     const map = store.normalizedStudios || {}
     const list = Object.values(map) as NormalizedStudio[]
@@ -1461,9 +1734,14 @@ const getMatchingStudio = (companyName: string): NormalizedStudio | null => {
   // Fuzzy match via token index
   try {
     if (studioTokenIndex.value && normalizedStudioList.value?.length) {
-      const studiosById = (store.normalizedStudios || {});
-      const results = fuzzyMatchStudios(String(companyName), studioTokenIndex.value, studiosById) || [];
-      const top = results[0];
+      const studiosById = store.normalizedStudios || {}
+      const results =
+        fuzzyMatchStudios(
+          String(companyName),
+          studioTokenIndex.value,
+          studiosById
+        ) || []
+      const top = results[0]
       if (top && top.score >= 70) {
         return studiosById[top.id] || null
       }
@@ -1473,19 +1751,27 @@ const getMatchingStudio = (companyName: string): NormalizedStudio | null => {
   try {
     const list = Object.values(store.normalizedStudios || {}) as any[]
     if (list.length) {
-      let best: any = null, bestDist = Infinity
+      let best: any = null,
+        bestDist = Infinity
       for (const s of list) {
         const d = levenshtein(String(companyName), String(s?.name || ''))
-        if (d < bestDist) { bestDist = d; best = s }
+        if (d < bestDist) {
+          bestDist = d
+          best = s
+        }
       }
-      if (best && (bestDist <= 2 || bestDist <= Math.ceil(String(companyName).length * 0.2))) {
+      if (
+        best &&
+        (bestDist <= 2 ||
+          bestDist <= Math.ceil(String(companyName).length * 0.2))
+      ) {
         return best
       }
     }
   } catch {}
   // Fallback to static constants
-  const studioEntry = Object.values(GAMING_STUDIOS).find(studio =>
-    studio.name.toLowerCase() === companyName.toLowerCase()
+  const studioEntry = Object.values(GAMING_STUDIOS).find(
+    studio => studio.name.toLowerCase() === companyName.toLowerCase()
   )
   return studioEntry ? normalizeStudio(studioEntry) : null
 }
@@ -1522,13 +1808,13 @@ const searchPreferences = ref({
   salaryMax: null,
   experience: '',
   jobType: '',
-  skills: []
+  skills: [],
 })
 
 const searchForm = ref({
   query: '',
   filters: {},
-  aiEnhanced: true
+  aiEnhanced: true,
 })
 
 // Methods
@@ -1544,7 +1830,7 @@ const toggleSaveJob = async (job: Job): Promise<void> => {
     toast.info(`Removed "${job.title}" from saved jobs`)
     // Remove from local saved jobs array
     savedJobs.value = savedJobs.value.filter(j => j.id !== job.id)
-    
+
     // Remove from database
     try {
       await JobRepository.unsaveJob(job.id)
@@ -1554,7 +1840,7 @@ const toggleSaveJob = async (job: Job): Promise<void> => {
   } else {
     savedJobIds.value.add(job.id)
     toast.success(`Saved "${job.title}" to your saved jobs`)
-    
+
     // Save to both store and database
     store.saveJob(job)
     try {
@@ -1582,14 +1868,18 @@ const applyToJob = async (job: Job): Promise<void> => {
       appliedAt: new Date(),
       status: 'applied',
       matchScore: job.matchScore,
-      resumeId: store.resumeData?.id || null
+      resumeId: store.resumeData?.id || null,
     })
 
     // Enhanced job application with smart document generation
-    try { gService.completeDailyChallenge('job_apply'); gService.updateStreak() } catch {}
-    const shouldUseSmartApply = (job.matchScore || 0) > 60 ||
-                                !store.resumeData?.personalInfo?.firstName ||
-                                !store.resumeData?.experience?.length
+    try {
+      gService.completeDailyChallenge('job_apply')
+      gService.updateStreak()
+    } catch {}
+    const shouldUseSmartApply =
+      (job.matchScore || 0) > 60 ||
+      !store.resumeData?.personalInfo?.firstName ||
+      !store.resumeData?.experience?.length
 
     if (shouldUseSmartApply) {
       const result = await showSmartApplicationDialog(job)
@@ -1604,8 +1894,8 @@ const applyToJob = async (job: Job): Promise<void> => {
             position: encodeURIComponent(job.title),
             description: encodeURIComponent(job.description || ''),
             requirements: encodeURIComponent(JSON.stringify(job.tags || [])),
-            autoGenerate: 'true'
-          }
+            autoGenerate: 'true',
+          },
         })
         toast.success('Resume builder opened with job prepopulation')
         return
@@ -1616,18 +1906,20 @@ const applyToJob = async (job: Job): Promise<void> => {
             jobId: job.id,
             company: encodeURIComponent(job.company),
             position: encodeURIComponent(job.title),
-            autoTailor: 'true'
-          }
+            autoTailor: 'true',
+          },
         })
         toast.success('Resume tailoring initiated')
         return
       } else if (result?.action === 'optimize-cover-letter') {
         // Ensure basic resume info exists before opening cover letter
         if (!store.resumeData?.personalInfo?.firstName) {
-          toast.warning('Please complete your resume personal information first')
+          toast.warning(
+            'Please complete your resume personal information first'
+          )
           await router.push({
             path: '/resume',
-            query: { returnTo: `/cover-letter?jobId=${job.id}` }
+            query: { returnTo: `/cover-letter?jobId=${job.id}` },
           })
           return
         }
@@ -1639,8 +1931,8 @@ const applyToJob = async (job: Job): Promise<void> => {
             company: encodeURIComponent(job.company),
             position: encodeURIComponent(job.title),
             description: encodeURIComponent(job.description || ''),
-            autoGenerate: 'true'
-          }
+            autoGenerate: 'true',
+          },
         })
         toast.success('Cover letter builder opened with job context')
         return
@@ -1661,7 +1953,7 @@ const applyToJob = async (job: Job): Promise<void> => {
 
 // Smart application dialog with multiple options
 const showSmartApplicationDialog = async (job: Job) => {
-  return new Promise<{ action: string } | null>((resolve) => {
+  return new Promise<{ action: string } | null>(resolve => {
     try {
       if (store.setModal) {
         store.setModal({
@@ -1669,13 +1961,16 @@ const showSmartApplicationDialog = async (job: Job) => {
           job: job,
           onOptimizeBoth: () => resolve({ action: 'optimize-both' }),
           onOptimizeResume: () => resolve({ action: 'optimize-resume' }),
-          onOptimizeCoverLetter: () => resolve({ action: 'optimize-cover-letter' }),
+          onOptimizeCoverLetter: () =>
+            resolve({ action: 'optimize-cover-letter' }),
           onSkip: () => resolve({ action: 'skip' }),
-          onCancel: () => resolve(null)
+          onCancel: () => resolve(null),
         })
       } else {
         // Fallback to simple confirmation
-        const confirmed = confirm(`Would you like to optimize your application for "${job.title}"?\n\nWe can tailor your resume and cover letter to increase your chances!`)
+        const confirmed = confirm(
+          `Would you like to optimize your application for "${job.title}"?\n\nWe can tailor your resume and cover letter to increase your chances!`
+        )
         resolve(confirmed ? { action: 'optimize-both' } : { action: 'skip' })
       }
     } catch {
@@ -1700,7 +1995,12 @@ const performStandardApplication = (job: Job) => {
 // badge class helper not used; removed
 
 const formatJobType = (type: JobType): string => {
-  return type?.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') || 'Not specified'
+  return (
+    type
+      ?.split('-')
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ') || 'Not specified'
+  )
 }
 
 const formatSalary = (salary: string | SalaryRange | undefined): string => {
@@ -1710,15 +2010,23 @@ const formatSalary = (salary: string | SalaryRange | undefined): string => {
 }
 
 const formatDate = (date: Date | string | undefined): string => {
-  if (!date) {return 'Unknown'}
+  if (!date) {
+    return 'Unknown'
+  }
   const now = new Date()
   const dateObj = typeof date === 'string' ? new Date(date) : date
   const diffTime = Math.abs(now.getTime() - dateObj.getTime())
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
-  if (diffDays === 1) {return '1 day ago'}
-  if (diffDays < 7) {return `${diffDays} days ago`}
-  if (diffDays < 30) {return `${Math.floor(diffDays / 7)} weeks ago`}
+  if (diffDays === 1) {
+    return '1 day ago'
+  }
+  if (diffDays < 7) {
+    return `${diffDays} days ago`
+  }
+  if (diffDays < 30) {
+    return `${Math.floor(diffDays / 7)} weeks ago`
+  }
   return dateObj.toLocaleDateString()
 }
 
@@ -1730,7 +2038,7 @@ const aiRecommendJobs = async () => {
     if (!jobs.length) {
       const searchResult = await refactoredJobAPIService.searchJobs({
         title: 'developer',
-        location: 'remote'
+        location: 'remote',
       })
       jobs = searchResult.jobs
       jobResults.value = jobs
@@ -1745,16 +2053,16 @@ const aiRecommendJobs = async () => {
       ...match.job,
       matchScore: match.matchScore,
       matchReasons: match.matchReasons,
-      aiEnhanced: true
+      aiEnhanced: true,
     }))
 
     // Get personalized recommendations
     const recommendations = await aiJobService.generateRecommendations(jobs, 10)
-    
+
     toast({
       title: 'AI Analysis Complete',
       description: `Analyzed ${jobs.length} jobs and found ${recommendations.length} top recommendations`,
-      type: 'success'
+      type: 'success',
     })
 
     showAIRecommendations.value = true
@@ -1763,7 +2071,7 @@ const aiRecommendJobs = async () => {
     toast({
       title: 'AI Recommendation Failed',
       description: 'Unable to generate recommendations at this time',
-      type: 'error'
+      type: 'error',
     })
   } finally {
     aiLoading.value = false
@@ -1771,7 +2079,10 @@ const aiRecommendJobs = async () => {
 }
 
 // AI-powered job analysis for individual jobs
-const analyzeJobWithAI = async (job: Job, mode: 'match' | 'salary' | 'insights' = 'match') => {
+const analyzeJobWithAI = async (
+  job: Job,
+  mode: 'match' | 'salary' | 'insights' = 'match'
+) => {
   try {
     aiAnalysisMode.value = mode
     selectedJobForAI.value = job
@@ -1800,7 +2111,7 @@ const analyzeJobWithAI = async (job: Job, mode: 'match' | 'salary' | 'insights' 
     toast({
       title: 'AI Analysis Failed',
       description: 'Unable to analyze this job at the moment',
-      type: 'error'
+      type: 'error',
     })
   }
 }
@@ -1811,33 +2122,33 @@ const performSmartSearch = async (query: string) => {
   try {
     // Enhanced search filters based on natural language query
     const enhancedFilters = await parseNaturalLanguageQuery(query)
-    
+
     const result = await refactoredJobAPIService.searchJobs(enhancedFilters)
-    
+
     // Apply AI analysis to results
     const aiAnalyzedJobs = await aiJobService.analyzeJobMatches(result.jobs)
-    
+
     // Update results with AI scores
     jobResults.value = aiAnalyzedJobs.map(match => ({
       ...match.job,
       matchScore: match.matchScore,
       matchReasons: match.matchReasons,
-      aiEnhanced: true
+      aiEnhanced: true,
     }))
 
     toast({
       title: 'Smart Search Complete',
       description: `Found ${result.jobs.length} jobs with AI-powered matching`,
-      type: 'success'
+      type: 'success',
     })
   } catch (error) {
     console.error('Smart search failed:', error)
     toast({
       title: 'Smart Search Failed',
       description: 'Falling back to regular search',
-      type: 'warning'
+      type: 'warning',
     })
-    
+
     // Fallback to regular search
     const result = await refactoredJobAPIService.searchJobs({ title: query })
     jobResults.value = result.jobs
@@ -1847,7 +2158,9 @@ const performSmartSearch = async (query: string) => {
 }
 
 // Natural language query parser
-const parseNaturalLanguageQuery = async (query: string): Promise<JobFilters> => {
+const parseNaturalLanguageQuery = async (
+  query: string
+): Promise<JobFilters> => {
   const queryLower = query.toLowerCase()
   const filters: JobFilters = { title: query }
 
@@ -1869,7 +2182,10 @@ const parseNaturalLanguageQuery = async (query: string): Promise<JobFilters> => 
   // Extract job type
   if (queryLower.includes('part-time') || queryLower.includes('part time')) {
     filters.jobType = 'part-time'
-  } else if (queryLower.includes('contract') || queryLower.includes('freelance')) {
+  } else if (
+    queryLower.includes('contract') ||
+    queryLower.includes('freelance')
+  ) {
     filters.jobType = 'contract'
   } else if (queryLower.includes('internship')) {
     filters.jobType = 'internship'
@@ -1881,7 +2197,8 @@ const parseNaturalLanguageQuery = async (query: string): Promise<JobFilters> => 
   const salaryMatch = query.match(/\$?(\d{1,3}),?(\d{3})/g)
   if (salaryMatch) {
     const salary = parseInt(salaryMatch[0].replace(/[$,]/g, ''))
-    if (salary > 1000) { // Assuming yearly salary
+    if (salary > 1000) {
+      // Assuming yearly salary
       filters.salaryMin = Math.floor(salary * 0.9) // 10% below mentioned
       filters.salaryMax = Math.floor(salary * 1.3) // 30% above mentioned
     }
@@ -1901,7 +2218,7 @@ const closeAIModal = () => {
 // Smart Search execution
 const executeSmartSearch = async () => {
   if (!smartSearchQuery.value.trim()) return
-  
+
   showSmartSearchDialog.value = false
   await performSmartSearch(smartSearchQuery.value)
   smartSearchQuery.value = ''
@@ -1927,7 +2244,7 @@ const refreshJobs = async () => {
       location: selectedLocation.value,
       jobType: selectedJobType.value as JobType,
       experienceLevel: selectedExperience.value as ExperienceLevel,
-      remote: selectedLocation.value === 'remote'
+      remote: selectedLocation.value === 'remote',
     }
     const result = await refactoredJobAPIService.searchJobs(filters)
     jobResults.value = result.jobs
@@ -2061,98 +2378,136 @@ const refreshJobs = async () => {
   return { success: true, data: filteredJobs }
 } */
 
-
-// Local job matching algorithm 
+// Local job matching algorithm
 const performLocalJobMatching = async (jobs: any[], profile: any) => {
   return jobs.map(job => {
     let score = 0
     const weights = { skills: 40, title: 30, description: 20, location: 10 }
-    
+
     // Skill matching
-    const jobSkills = [...(job.requirements || []), ...(job.title?.toLowerCase().split(' ') || [])]
-    const userSkills: string[] = Array.isArray(profile.skills) ? profile.skills.map((s: string) => s.toLowerCase()) : []
-    const skillMatches = jobSkills.filter((req: string) => 
-      userSkills.some((skill: string) => req.toLowerCase().includes(skill) || skill.includes(req.toLowerCase()))
+    const jobSkills = [
+      ...(job.requirements || []),
+      ...(job.title?.toLowerCase().split(' ') || []),
+    ]
+    const userSkills: string[] = Array.isArray(profile.skills)
+      ? profile.skills.map((s: string) => s.toLowerCase())
+      : []
+    const skillMatches = jobSkills.filter((req: string) =>
+      userSkills.some(
+        (skill: string) =>
+          req.toLowerCase().includes(skill) || skill.includes(req.toLowerCase())
+      )
     ).length
     score += Math.min(skillMatches * 15, weights.skills)
-    
+
     // Title relevance
     const titleWords: string[] = job.title?.toLowerCase().split(' ') || []
-    const interestWords: string[] = Array.isArray(profile.interests) ? profile.interests.map((i: string) => i.toLowerCase()) : []
-    const titleMatches = titleWords.filter((word: string) => 
-      interestWords.some((interest: string) => word.includes(interest) || interest.includes(word))
+    const interestWords: string[] = Array.isArray(profile.interests)
+      ? profile.interests.map((i: string) => i.toLowerCase())
+      : []
+    const titleMatches = titleWords.filter((word: string) =>
+      interestWords.some(
+        (interest: string) => word.includes(interest) || interest.includes(word)
+      )
     ).length
     score += Math.min(titleMatches * 10, weights.title)
-    
+
     // Description matching
     const description = job.description?.toLowerCase() || ''
-    const descriptionMatches = userSkills.filter((skill: string) => 
+    const descriptionMatches = userSkills.filter((skill: string) =>
       description.includes(skill)
     ).length
     score += Math.min(descriptionMatches * 5, weights.description)
-    
+
     // Location preference
     if (profile.location && job.location) {
-      if (job.location.toLowerCase().includes(profile.location.toLowerCase()) ||
-          profile.location.toLowerCase() === 'remote' && job.location.toLowerCase().includes('remote')) {
+      if (
+        job.location.toLowerCase().includes(profile.location.toLowerCase()) ||
+        (profile.location.toLowerCase() === 'remote' &&
+          job.location.toLowerCase().includes('remote'))
+      ) {
         score += weights.location
       }
     }
-    
+
     return { ...job, matchScore: Math.min(Math.round(score), 100) }
   })
 }
 
-const performSearch = async (searchData: { query: string; filters: any; aiEnhanced: boolean }) => {
+const performSearch = async (searchData: {
+  query: string
+  filters: any
+  aiEnhanced: boolean
+}) => {
   searching.value = true
   try {
     const filters: JobFilters = {
       title: searchData.query,
-      ...searchData.filters
+      ...searchData.filters,
     }
 
     // Fetch jobs from canonical service based on incoming filters
     const searchRes = await refactoredJobAPIService.searchJobs(filters)
     const currentJobs = Array.isArray(searchRes?.jobs) ? searchRes.jobs : []
     jobResults.value = currentJobs
-    
+
     // Build user profile for matching
     const profile = {
-      skills: store.user?.skills || (Array.isArray(store.mappedSkills) ? store.mappedSkills.map((s: any) => s.name) : []) || [],
+      skills:
+        store.user?.skills ||
+        (Array.isArray(store.mappedSkills)
+          ? store.mappedSkills.map((s: any) => s.name)
+          : []) ||
+        [],
       experience: store.user?.experience || 0,
       interests: store.user?.interests || [],
       location: store.user?.location,
       workStyle: store.user?.workStyle,
       salaryExpectation: store.user?.salaryExpectation,
-      technologies: store.user?.technologies || []
+      technologies: store.user?.technologies || [],
     }
-    
-    let scoredJobs;
-    
+
+    let scoredJobs
+
     // Try window.api first if available
     if (window.api?.jobs?.recommend && currentJobs.length) {
       try {
-        const resp = await window.api.jobs.recommend({ profile, jobs: currentJobs, limit: 25 })
+        const resp = await window.api.jobs.recommend({
+          profile,
+          jobs: currentJobs,
+          limit: 25,
+        })
         const recs = Array.isArray(resp?.data) ? resp.data : resp || []
         const scoreMap = new Map(recs.map((r: any) => [r.jobId, r.matchScore]))
-        scoredJobs = currentJobs.map(j => ({...j, matchScore: Number(scoreMap.get(j.id) || j.matchScore || 0) }))
+        scoredJobs = currentJobs.map(j => ({
+          ...j,
+          matchScore: Number(scoreMap.get(j.id) || j.matchScore || 0),
+        }))
       } catch (apiError) {
-        console.warn('Window API recommendation failed, using local matching:', apiError)
+        console.warn(
+          'Window API recommendation failed, using local matching:',
+          apiError
+        )
       }
     }
-    
+
     // Fallback to local AI-like matching algorithm
     if (!scoredJobs) {
       scoredJobs = await performLocalJobMatching(currentJobs, profile)
     }
-    
+
     // Sort by match score and update results
-    const sortedJobs = scoredJobs.sort((a, b) => (Number(b.matchScore) || 0) - (Number(a.matchScore) || 0))
+    const sortedJobs = scoredJobs.sort(
+      (a, b) => (Number(b.matchScore) || 0) - (Number(a.matchScore) || 0)
+    )
     jobResults.value = sortedJobs
-    
-    const topMatchesCount = sortedJobs.filter(j => (j.matchScore || 0) > 60).length
-    toast.success(`AI analysis complete! Found ${topMatchesCount} high-match opportunities`)
-    
+
+    const topMatchesCount = sortedJobs.filter(
+      j => (j.matchScore || 0) > 60
+    ).length
+    toast.success(
+      `AI analysis complete! Found ${topMatchesCount} high-match opportunities`
+    )
   } catch (error) {
     console.error('AI recommendation failed:', error)
     toast.error('AI recommendation temporarily unavailable')
@@ -2161,17 +2516,26 @@ const performSearch = async (searchData: { query: string; filters: any; aiEnhanc
   }
 }
 
-
 const performAdvancedSearch = () => {
   performSearch(searchForm.value)
 }
 
 // Removed unused enhanced AI button handlers
 
-const saveSearch = (searchData: { query: string; filters: any; aiEnhanced: boolean }) => {
+const saveSearch = (searchData: {
+  query: string
+  filters: any
+  aiEnhanced: boolean
+}) => {
   try {
-    const saved = JSON.parse(localStorage.getItem(LS_KEYS.savedSearches) || '[]')
-    saved.push({ id: Date.now(), ...searchData, savedAt: new Date().toISOString() })
+    const saved = JSON.parse(
+      localStorage.getItem(LS_KEYS.savedSearches) || '[]'
+    )
+    saved.push({
+      id: Date.now(),
+      ...searchData,
+      savedAt: new Date().toISOString(),
+    })
     localStorage.setItem(LS_KEYS.savedSearches, JSON.stringify(saved))
     toast.success('Search saved')
   } catch (e) {
@@ -2179,7 +2543,9 @@ const saveSearch = (searchData: { query: string; filters: any; aiEnhanced: boole
   }
 }
 
-const updateSearchPreferences = (preferences: Partial<typeof searchPreferences.value>) => {
+const updateSearchPreferences = (
+  preferences: Partial<typeof searchPreferences.value>
+) => {
   searchPreferences.value = { ...searchPreferences.value, ...preferences }
 }
 
@@ -2187,7 +2553,11 @@ const updateSearchPreferences = (preferences: Partial<typeof searchPreferences.v
 // High quality matches (>=60%) used in the Top Matches section
 
 // Flag indicating whether any AI analysis (match scores) has been applied
-const hasRunAIAnalysis = computed(() => jobResults.value.some(j => j.matchScore !== undefined && j.matchScore !== null))
+const hasRunAIAnalysis = computed(() =>
+  jobResults.value.some(
+    j => j.matchScore !== undefined && j.matchScore !== null
+  )
+)
 
 // Wrapper used by the Top Matches card button (alias to existing viewJob logic)
 function viewJobDetails(job: Job) {
@@ -2220,7 +2590,7 @@ const getFilteredJobSources = (userPreferences: any) => {
       color: 'var(--color-info-500)',
       categories: ['global', 'remote'],
       features: ['api', 'scraping'],
-      regions: ['Global']
+      regions: ['Global'],
     },
     {
       id: 'github',
@@ -2234,7 +2604,7 @@ const getFilteredJobSources = (userPreferences: any) => {
       color: 'var(--text-primary)',
       categories: ['tech', 'developer'],
       features: ['api'],
-      regions: ['Global']
+      regions: ['Global'],
     },
     {
       id: 'linkedin',
@@ -2248,7 +2618,7 @@ const getFilteredJobSources = (userPreferences: any) => {
       color: 'var(--color-info-600)',
       categories: ['professional', 'networking'],
       features: ['api', 'auth'],
-      regions: ['Global']
+      regions: ['Global'],
     },
     {
       id: 'indeed',
@@ -2262,13 +2632,16 @@ const getFilteredJobSources = (userPreferences: any) => {
       color: 'var(--color-primary-600)',
       categories: ['search', 'aggregator'],
       features: ['scraping'],
-      regions: ['Global']
-    }
+      regions: ['Global'],
+    },
   ]
 
   // Filter based on user preferences
   return defaultSources.filter(source => {
-    if (userPreferences.enabledSources && userPreferences.enabledSources.length > 0) {
+    if (
+      userPreferences.enabledSources &&
+      userPreferences.enabledSources.length > 0
+    ) {
       return userPreferences.enabledSources.includes(source.id)
     }
     return source.enabled && !source.deprecated
@@ -2281,7 +2654,7 @@ const initializeJobSources = async () => {
     const userPreferences = {
       enabledSources: store.settings.enabledJobSources || [],
       regions: store.settings.preferredRegions || [],
-      categories: store.settings.preferredCategories || []
+      categories: store.settings.preferredCategories || [],
     }
 
     // Load filtered job sources based on user preferences
@@ -2291,21 +2664,28 @@ const initializeJobSources = async () => {
     jobBoardSources.value = sources.map((source: any) => ({
       id: source.id,
       name: source.name,
-      description: source.description || `${source.regions?.join(', ') || 'Global'} job listings`,
+      description:
+        source.description ||
+        `${source.regions?.join(', ') || 'Global'} job listings`,
       enabled: source.enabled && !source.deprecated,
-      apiKey: source.requiresAuth ? (store.settings.jobSourcesConfig?.[source.id]?.apiKey || '') : 'Not required',
+      apiKey: source.requiresAuth
+        ? store.settings.jobSourcesConfig?.[source.id]?.apiKey || ''
+        : 'Not required',
       rateLimit: source.rateLimit || 'Unknown',
       status: source.deprecated ? 'deprecated' : 'operational',
       icon: source.icon || getSourceIcon(source.id),
       color: source.color || getSourceColor(source.id),
       categories: source.categories || source.features || [],
-      features: source.features || []
+      features: source.features || [],
     }))
 
     // Update selected sources based on user preferences
     if (userPreferences.enabledSources.length > 0) {
-      selectedSources.value = userPreferences.enabledSources.filter((sourceId: string) =>
-        jobBoardSources.value.some(source => source.id === sourceId && source.enabled)
+      selectedSources.value = userPreferences.enabledSources.filter(
+        (sourceId: string) =>
+          jobBoardSources.value.some(
+            source => source.id === sourceId && source.enabled
+          )
       )
     } else {
       // Default to enabled sources if no preferences set
@@ -2318,7 +2698,9 @@ const initializeJobSources = async () => {
       total: jobBoardSources.value.length,
       enabled: jobBoardSources.value.filter(s => s.enabled).length,
       selected: selectedSources.value.length,
-      sources: jobBoardSources.value.map(s => `${s.name} (${s.enabled ? 'enabled' : 'disabled'})`)
+      sources: jobBoardSources.value.map(
+        s => `${s.name} (${s.enabled ? 'enabled' : 'disabled'})`
+      ),
     })
   } catch (error) {
     console.error('Failed to load job sources:', error)
@@ -2330,7 +2712,7 @@ function getSourceIcon(sourceId: string): string {
     arbeitnow: 'mdi mdi-briefcase-search',
     github: 'mdi mdi-github',
     linkedin: 'mdi mdi-linkedin',
-    indeed: 'mdi mdi-briefcase'
+    indeed: 'mdi mdi-briefcase',
   }
   return icons[sourceId] || 'mdi mdi-web'
 }
@@ -2338,17 +2720,20 @@ function getSourceIcon(sourceId: string): string {
 function getSourceColor(sourceId: string): string {
   // Get computed CSS variables from document
   const root = document.documentElement
-  const primaryColor = getComputedStyle(root).getPropertyValue('--color-primary')
+  const primaryColor =
+    getComputedStyle(root).getPropertyValue('--color-primary')
   const textPrimary = getComputedStyle(root).getPropertyValue('--text-primary')
   const infoColor = getComputedStyle(root).getPropertyValue('--color-info')
-  const primaryAlt = getComputedStyle(root).getPropertyValue('--color-primary-alt')
+  const primaryAlt = getComputedStyle(root).getPropertyValue(
+    '--color-primary-alt'
+  )
   const textMuted = getComputedStyle(root).getPropertyValue('--text-muted')
-  
+
   const colors: Record<string, string> = {
     arbeitnow: primaryColor?.trim() || 'var(--color-primary)',
     github: textPrimary?.trim() || 'var(--text-primary)',
     linkedin: infoColor?.trim() || 'var(--color-info)',
-    indeed: primaryAlt?.trim() || 'var(--color-primary-alt)'
+    indeed: primaryAlt?.trim() || 'var(--color-primary-alt)',
   }
   return colors[sourceId] || textMuted?.trim() || 'var(--text-muted)'
 }
@@ -2378,28 +2763,44 @@ const LS_KEYS = {
   filters: 'jobSearch.filters',
   savedSearches: 'jobSearch.savedSearches',
   resultsCache: 'jobSearch.resultsCache',
-  savedJobs: 'jobSearch.savedJobs'
+  savedJobs: 'jobSearch.savedJobs',
 }
 
 function loadPersisted() {
   try {
     const s = localStorage.getItem(LS_KEYS.sources)
-    if (s) {selectedSources.value = JSON.parse(s)}
+    if (s) {
+      selectedSources.value = JSON.parse(s)
+    }
     const p = localStorage.getItem(LS_KEYS.preferences)
-    if (p) {searchPreferences.value = { ...searchPreferences.value, ...JSON.parse(p) }}
+    if (p) {
+      searchPreferences.value = { ...searchPreferences.value, ...JSON.parse(p) }
+    }
     const a = localStorage.getItem(LS_KEYS.applications)
-    if (a) {applications.value = JSON.parse(a)}
-  const f = localStorage.getItem(LS_KEYS.filters)
-  if (f) {activeFilters.value = { ...activeFilters.value, ...JSON.parse(f) }}
-  const cached = localStorage.getItem(LS_KEYS.resultsCache)
-  if (cached) {jobResults.value = JSON.parse(cached)}
-  const saved = localStorage.getItem(LS_KEYS.savedJobs)
-  if (saved) {savedJobs.value = JSON.parse(saved)}
-  } catch (e) { console.warn('Failed to load persisted job search data', e) }
+    if (a) {
+      applications.value = JSON.parse(a)
+    }
+    const f = localStorage.getItem(LS_KEYS.filters)
+    if (f) {
+      activeFilters.value = { ...activeFilters.value, ...JSON.parse(f) }
+    }
+    const cached = localStorage.getItem(LS_KEYS.resultsCache)
+    if (cached) {
+      jobResults.value = JSON.parse(cached)
+    }
+    const saved = localStorage.getItem(LS_KEYS.savedJobs)
+    if (saved) {
+      savedJobs.value = JSON.parse(saved)
+    }
+  } catch (e) {
+    console.warn('Failed to load persisted job search data', e)
+  }
 }
 
 function persist(key: string, value: any) {
-  try { localStorage.setItem(key, JSON.stringify(value)) } catch (e) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch (e) {
     console.debug('Persist failed for', key, e)
   }
 }
@@ -2416,7 +2817,7 @@ const loadSavedJobsFromDB = async () => {
     // Load saved job IDs from repository
     const savedJobIds_db = await JobRepository.getSavedJobs()
     savedJobIds_db.forEach(jobId => savedJobIds.value.add(jobId))
-    
+
     // Load recent jobs from repository to populate jobResults
     const recentJobs = await JobRepository.getAll()
     if (recentJobs.length > 0) {
@@ -2441,16 +2842,22 @@ onMounted(async () => {
   await loadSavedJobsFromDB()
   await initializeJobSources()
   // Seed and import studios for cross-matching
-  try { await seedStudiosIfEmpty() } catch {}
+  try {
+    await seedStudiosIfEmpty()
+  } catch {}
   try {
     const normalized = buildNormalizedStudios()
     // Persist normalized list to Electron main (idempotent)
     // @ts-ignore
     if ((window.electronAPI as any)?.studios?.importNormalized) {
-      try { await (window.electronAPI as any).studios.importNormalized(normalized) } catch {}
+      try {
+        await (window.electronAPI as any).studios.importNormalized(normalized)
+      } catch {}
     }
     // Update Pinia store cache for UI lookups
-    try { store.upsertNormalizedStudios(normalized) } catch {}
+    try {
+      store.upsertNormalizedStudios(normalized)
+    } catch {}
     // Build fuzzy token index locally for quick lookups
     try {
       studioTokenIndex.value = buildTokenIndex(normalized)
@@ -2460,22 +2867,25 @@ onMounted(async () => {
     console.warn('Studio normalization/import failed', e)
   }
 })
-
 </script>
 
 <style scoped>
 /* Vuetify Material UI Enhancements */
 .job-search-container {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-surface), 0.8) 0%, 
-    rgba(var(--v-theme-background), 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-surface), 0.8) 0%,
+    rgba(var(--v-theme-background), 0.95) 100%
+  );
   min-height: 100vh;
 }
 
 .hero-header {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-primary), 0.1) 0%, 
-    rgba(var(--v-theme-secondary), 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-primary), 0.1) 0%,
+    rgba(var(--v-theme-secondary), 0.05) 100%
+  );
   border-radius: 24px;
   padding: 3rem 2rem;
   backdrop-filter: blur(10px);
@@ -2487,21 +2897,27 @@ onMounted(async () => {
 }
 
 .action-bar-card {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-surface), 0.9) 0%, 
-    rgba(var(--v-theme-surface-variant), 0.7) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-surface), 0.9) 0%,
+    rgba(var(--v-theme-surface-variant), 0.7) 100%
+  );
 }
 
 .filter-card {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-surface), 0.95) 0%, 
-    rgba(var(--v-theme-surface-bright), 0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-surface), 0.95) 0%,
+    rgba(var(--v-theme-surface-bright), 0.8) 100%
+  );
 }
 
 .top-matches-card {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-surface), 0.9) 0%, 
-    rgba(var(--v-theme-warning), 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-surface), 0.9) 0%,
+    rgba(var(--v-theme-warning), 0.05) 100%
+  );
   border: 1px solid rgba(var(--v-theme-warning), 0.2);
 }
 
@@ -2516,17 +2932,21 @@ onMounted(async () => {
 }
 
 .ai-cta-card {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-primary), 0.05) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-primary), 0.05) 0%,
     rgba(var(--v-theme-secondary), 0.08) 50%,
-    rgba(var(--v-theme-info), 0.05) 100%);
+    rgba(var(--v-theme-info), 0.05) 100%
+  );
   border: 2px solid rgba(var(--v-theme-primary), 0.2);
 }
 
 .jobs-results-card {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-surface), 0.95) 0%, 
-    rgba(var(--v-theme-surface-container), 0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-surface), 0.95) 0%,
+    rgba(var(--v-theme-surface-container), 0.8) 100%
+  );
 }
 
 /* Unified chip for toolbar stats */
@@ -2562,16 +2982,40 @@ onMounted(async () => {
   font-size: 0.8rem;
 }
 
-.ui-chip.chip-primary { border-color: color-mix(in srgb, var(--color-primary-500) 50%, transparent); color: var(--color-primary-500); }
-.ui-chip.chip-success { border-color: color-mix(in srgb, var(--color-success) 60%, transparent); color: var(--color-success); }
-.ui-chip.chip-info { border-color: color-mix(in srgb, var(--color-info) 60%, transparent); color: var(--color-info); }
-.ui-chip.chip-warning { border-color: color-mix(in srgb, var(--color-warning) 60%, transparent); color: var(--color-warning); }
-.ui-chip.chip-danger { border-color: color-mix(in srgb, var(--color-error) 60%, transparent); color: var(--color-error); }
+.ui-chip.chip-primary {
+  border-color: color-mix(in srgb, var(--color-primary-500) 50%, transparent);
+  color: var(--color-primary-500);
+}
+.ui-chip.chip-success {
+  border-color: color-mix(in srgb, var(--color-success) 60%, transparent);
+  color: var(--color-success);
+}
+.ui-chip.chip-info {
+  border-color: color-mix(in srgb, var(--color-info) 60%, transparent);
+  color: var(--color-info);
+}
+.ui-chip.chip-warning {
+  border-color: color-mix(in srgb, var(--color-warning) 60%, transparent);
+  color: var(--color-warning);
+}
+.ui-chip.chip-danger {
+  border-color: color-mix(in srgb, var(--color-error) 60%, transparent);
+  color: var(--color-error);
+}
 
 /* Map match color names to classes if function returns strings like 'success', 'warning', etc. */
-.ui-chip.chip-green { border-color: color-mix(in srgb, var(--color-success) 60%, transparent); color: var(--color-success); }
-.ui-chip.chip-orange { border-color: color-mix(in srgb, var(--color-warning) 60%, transparent); color: var(--color-warning); }
-.ui-chip.chip-red { border-color: color-mix(in srgb, var(--color-error) 60%, transparent); color: var(--color-error); }
+.ui-chip.chip-green {
+  border-color: color-mix(in srgb, var(--color-success) 60%, transparent);
+  color: var(--color-success);
+}
+.ui-chip.chip-orange {
+  border-color: color-mix(in srgb, var(--color-warning) 60%, transparent);
+  color: var(--color-warning);
+}
+.ui-chip.chip-red {
+  border-color: color-mix(in srgb, var(--color-error) 60%, transparent);
+  color: var(--color-error);
+}
 
 .jobs-data-table {
   background: transparent;
@@ -2592,15 +3036,19 @@ onMounted(async () => {
 
 .selected-job-card {
   border-color: rgb(var(--v-theme-primary));
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-primary), 0.08) 0%, 
-    rgba(var(--v-theme-surface), 0.9) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-primary), 0.08) 0%,
+    rgba(var(--v-theme-surface), 0.9) 100%
+  );
 }
 
 .studio-logo {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-primary), 0.1) 0%, 
-    rgba(var(--v-theme-secondary), 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-primary), 0.1) 0%,
+    rgba(var(--v-theme-secondary), 0.1) 100%
+  );
   border: 2px solid rgba(var(--v-theme-primary), 0.2);
 }
 
@@ -2611,7 +3059,8 @@ onMounted(async () => {
 
 /* Animations */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -2639,9 +3088,11 @@ onMounted(async () => {
 }
 
 .v-theme--dark .hero-header {
-  background: linear-gradient(135deg, 
-    rgba(var(--v-theme-primary), 0.15) 0%, 
-    rgba(var(--v-theme-secondary), 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--v-theme-primary), 0.15) 0%,
+    rgba(var(--v-theme-secondary), 0.1) 100%
+  );
 }
 
 /* Responsive adjustments */
@@ -2649,11 +3100,11 @@ onMounted(async () => {
   .hero-header {
     padding: 2rem 1rem;
   }
-  
+
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1rem;
   }
@@ -2663,11 +3114,11 @@ onMounted(async () => {
   .job-search-container {
     padding: 1rem !important;
   }
-  
+
   .hero-header {
     padding: 1.5rem 1rem;
   }
-  
+
   .hero-title {
     font-size: 1.5rem;
   }
@@ -2695,7 +3146,7 @@ onMounted(async () => {
     background: rgb(var(--v-theme-surface)) !important;
     border-width: 2px !important;
   }
-  
+
   .job-card {
     border-width: 2px !important;
   }
@@ -2708,11 +3159,11 @@ onMounted(async () => {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .hero-icon {
     animation: none;
   }
-  
+
   .job-card:hover,
   .top-match-job-card:hover {
     transform: none;
@@ -2736,11 +3187,11 @@ onMounted(async () => {
   .job-search-redesign {
     padding: 1rem 0.75rem;
   }
-  
+
   .tab-content-wrapper {
     min-height: 40vh;
   }
-  
+
   .section-card {
     border-radius: var(--border-radius-md);
     margin-bottom: 1rem;
@@ -2763,8 +3214,17 @@ onMounted(async () => {
 }
 
 /* Simple spinner animation for health check */
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.spin { animation: spin 1s linear infinite; }
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
 
 .step-number {
   width: 48px;
@@ -2844,7 +3304,10 @@ onMounted(async () => {
 .job-cards-grid {
   min-height: 400px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-lg), 1fr)
+  );
   gap: 2rem;
   padding: 1rem 0;
 }
@@ -2938,7 +3401,7 @@ onMounted(async () => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .step-number {
+[data-theme='dark'] .step-number {
   box-shadow: 0 4px 12px var(--gaming-glow);
 }
 
@@ -3055,13 +3518,19 @@ onMounted(async () => {
   color: var(--text-primary);
 }
 
-.values-list, .games-list, .tech-list, .roles-list {
+.values-list,
+.games-list,
+.tech-list,
+.roles-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.value-tag, .game-tag, .tech-tag, .role-tag {
+.value-tag,
+.game-tag,
+.tech-tag,
+.role-tag {
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.875rem;
@@ -3069,7 +3538,11 @@ onMounted(async () => {
 }
 
 .value-tag {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   color: var(--text-on-primary);
 }
 
@@ -3080,12 +3553,20 @@ onMounted(async () => {
 }
 
 .tech-tag {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   color: var(--text-on-primary);
 }
 
 .role-tag {
-  background: linear-gradient(135deg, var(--color-success-500), var(--color-success-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-success-500),
+    var(--color-success-600)
+  );
   color: var(--text-on-primary);
 }
 
@@ -3095,11 +3576,13 @@ onMounted(async () => {
   gap: 2rem;
 }
 
-.games-section, .tech-section {
+.games-section,
+.tech-section {
   flex: 1;
 }
 
-.games-section h5, .tech-section h5 {
+.games-section h5,
+.tech-section h5 {
   margin-bottom: 0.75rem;
   color: var(--text-primary);
 }
@@ -3171,8 +3654,13 @@ onMounted(async () => {
 }
 
 @keyframes pinBounce {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.1) rotate(5deg); }
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(5deg);
+  }
 }
 
 /* Sam & Max Quote Styling */
@@ -3244,10 +3732,22 @@ onMounted(async () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(var(--v-theme-primary), 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(var(--v-theme-secondary), 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(var(--v-theme-info), 0.1) 0%, transparent 50%);
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(var(--v-theme-primary), 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(var(--v-theme-secondary), 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 80%,
+      rgba(var(--v-theme-info), 0.1) 0%,
+      transparent 50%
+    );
   opacity: 0.03;
   pointer-events: none;
   z-index: -1;
@@ -3263,11 +3763,21 @@ onMounted(async () => {
 }
 
 @keyframes pinCrazy {
-  0% { transform: scale(1) rotate(0deg); }
-  25% { transform: scale(1.3) rotate(90deg); }
-  50% { transform: scale(0.8) rotate(180deg); }
-  75% { transform: scale(1.2) rotate(270deg); }
-  100% { transform: scale(1) rotate(360deg); }
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.3) rotate(90deg);
+  }
+  50% {
+    transform: scale(0.8) rotate(180deg);
+  }
+  75% {
+    transform: scale(1.2) rotate(270deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
 }
 
 /* Hidden Sam & Max References */
@@ -3307,7 +3817,12 @@ onMounted(async () => {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left var(--duration-slow) var(--easing-ease);
 }
 
@@ -3363,16 +3878,16 @@ onMounted(async () => {
     margin: 1rem;
     padding: 1rem;
   }
-  
+
   .quote-text {
     font-size: 1rem;
     padding-left: 1.5rem;
   }
-  
+
   .board-pins {
     display: none; /* Hide pins on mobile to reduce clutter */
   }
-  
+
   .btn-board-style {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
@@ -3381,10 +3896,12 @@ onMounted(async () => {
 
 /* Accessibility Improvements */
 @media (prefers-reduced-motion: reduce) {
-  .pin, .easter-egg:hover, .konami-activated {
+  .pin,
+  .easter-egg:hover,
+  .konami-activated {
     animation: none !important;
   }
-  
+
   .easter-egg:hover {
     transform: none;
   }
@@ -3396,7 +3913,7 @@ onMounted(async () => {
     background: rgb(var(--v-theme-surface));
     border: 2px solid rgb(var(--v-theme-primary));
   }
-  
+
   .quote-text {
     color: rgb(var(--v-theme-primary));
   }

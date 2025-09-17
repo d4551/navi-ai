@@ -35,7 +35,9 @@
             />
           </div>
           <div class="form-group">
-            <label for="custom-tool-description" class="form-label">Description</label>
+            <label for="custom-tool-description" class="form-label"
+              >Description</label
+            >
             <textarea
               id="custom-tool-description"
               v-model="description"
@@ -47,7 +49,12 @@
       </div>
       <footer class="modal__footer flex justify-end gap-glass-sm">
         <UnifiedButton variant="ghost" @click="emitClose">Cancel</UnifiedButton>
-        <UnifiedButton variant="primary" leading-icon="mdi-content-save" @click="submit">Save</UnifiedButton>
+        <UnifiedButton
+          variant="primary"
+          leading-icon="mdi-content-save"
+          @click="submit"
+          >Save</UnifiedButton
+        >
       </footer>
     </div>
   </div>
@@ -64,9 +71,9 @@ interface ToolForm {
   description: string
 }
 
-const emit = defineEmits<{ 
-  (e: 'save', tool: ToolForm): void; 
-  (e: 'close'): void 
+const emit = defineEmits<{
+  (e: 'save', tool: ToolForm): void
+  (e: 'close'): void
 }>()
 
 const name = ref('')
@@ -106,7 +113,10 @@ const submit = () => {
 }
 
 onMounted(() => {
-  setTimeout(() => modalEl.value?.querySelector<HTMLInputElement>('input')?.focus(), 0)
+  setTimeout(
+    () => modalEl.value?.querySelector<HTMLInputElement>('input')?.focus(),
+    0
+  )
 })
 </script>
 

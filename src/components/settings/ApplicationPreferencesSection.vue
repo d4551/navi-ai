@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card glass-card section-card mb-4 font-sans" role="region" aria-labelledby="app-prefs-title">
+  <div
+    class="settings-card glass-card section-card mb-4 font-sans"
+    role="region"
+    aria-labelledby="app-prefs-title"
+  >
     <div class="card-header section-header card-header--dense">
       <h5 id="app-prefs-title" class="mb-0">
         <SettingsIconComponent class="mr-2 icon-sm" />Application Preferences
@@ -12,7 +16,9 @@
         <div class="flex justify-between items-center">
           <div>
             <label class="form-label font-medium mb-1">Theme</label>
-            <div class="form-text">Switch between light, dark, and system theme preferences</div>
+            <div class="form-text">
+              Switch between light, dark, and system theme preferences
+            </div>
           </div>
           <ThemeToggle :compact="false" />
         </div>
@@ -52,7 +58,10 @@
         </div>
         <div class="form-text hint-chip" role="note">
           <SettingsIconComponent />
-          <span>Automatically move to the next step after key actions (analyze, generate, review).</span>
+          <span
+            >Automatically move to the next step after key actions (analyze,
+            generate, review).</span
+          >
         </div>
       </div>
 
@@ -132,8 +141,7 @@
               </label>
             </div>
             <div class="form-text">
-              Minimizes animations and transitions for better
-              performance.
+              Minimizes animations and transitions for better performance.
             </div>
           </div>
           <div class="flex-1-sm-6">
@@ -157,7 +165,9 @@
 
       <!-- Language & Localization -->
       <div class="mb-3 p-glass-md border rounded-3 glass-input">
-        <label for="app-language" class="form-label font-medium">Application Language</label>
+        <label for="app-language" class="form-label font-medium"
+          >Application Language</label
+        >
         <select
           id="app-language"
           v-model="settings.language"
@@ -273,10 +283,7 @@
 </template>
 
 <script>
-import {
-  SettingsIconComponent,
-  SaveIconComponent
-} from './SettingsIcons.js'
+import { SettingsIconComponent, SaveIconComponent } from './SettingsIcons.js'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 
 export default {
@@ -284,14 +291,14 @@ export default {
   components: {
     SettingsIconComponent,
     SaveIconComponent,
-    ThemeToggle
+    ThemeToggle,
   },
   props: {
     settings: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: []
+  emits: [],
 }
 </script>

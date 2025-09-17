@@ -1,30 +1,30 @@
 export interface ResumeData {
   personalInfo: {
-    name: string;
-    email: string;
-    phone?: string;
-    location?: string;
-    linkedin?: string;
-    github?: string;
-  };
-  summary: string;
-  experience: Array<{ title: string; company: string; description: string; }>;
-  education: Array<{ institution: string; degree: string; year: string; }>;
-  skills: Array<{ name: string }>;
-  projects: Array<{ title: string; description: string }>;
+    name: string
+    email: string
+    phone?: string
+    location?: string
+    linkedin?: string
+    github?: string
+  }
+  summary: string
+  experience: Array<{ title: string; company: string; description: string }>
+  education: Array<{ institution: string; degree: string; year: string }>
+  skills: Array<{ name: string }>
+  projects: Array<{ title: string; description: string }>
 }
 
 export interface CoverLetterData {
   jobInfo: {
-    company: string;
-    position: string;
-    hiringManager?: string;
-  };
+    company: string
+    position: string
+    hiringManager?: string
+  }
   content: {
-    opening: string;
-    body: string;
-    closing: string;
-  };
+    opening: string
+    body: string
+    closing: string
+  }
 }
 
 export interface JobInfo {
@@ -57,4 +57,4 @@ export function useDocumentManager(): {
   updateAIConfig: (_config: AIConfig) => void
   updatePreferences: (_prefs: UserPreferences) => void
   revertToVersion: (_version: DocumentVersion) => void
-};
+}

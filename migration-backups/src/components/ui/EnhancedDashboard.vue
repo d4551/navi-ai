@@ -25,9 +25,17 @@
               <div class="stat-details">
                 <div class="stat-value">{{ stat.value }}</div>
                 <div class="stat-label">{{ stat.label }}</div>
-                <div v-if="stat.change" class="stat-change" :class="[`change-${stat.changeType}`]">
-                  <v-icon 
-                    :icon="stat.changeType === 'positive' ? 'mdi-trending-up' : 'mdi-trending-down'"
+                <div
+                  v-if="stat.change"
+                  class="stat-change"
+                  :class="[`change-${stat.changeType}`]"
+                >
+                  <v-icon
+                    :icon="
+                      stat.changeType === 'positive'
+                        ? 'mdi-trending-up'
+                        : 'mdi-trending-down'
+                    "
                     size="14"
                   />
                   {{ stat.change }}
@@ -58,12 +66,14 @@
               <div class="action-details">
                 <h4 class="action-title">{{ action.title }}</h4>
                 <p class="action-description">{{ action.description }}</p>
-                <div v-if="action.badge" class="action-badge">{{ action.badge }}</div>
+                <div v-if="action.badge" class="action-badge">
+                  {{ action.badge }}
+                </div>
               </div>
             </div>
             <div v-if="action.progress !== undefined" class="action-progress">
-              <v-progress-linear 
-                :model-value="action.progress" 
+              <v-progress-linear
+                :model-value="action.progress"
                 :color="action.color || 'primary'"
                 height="4"
                 rounded
@@ -80,7 +90,7 @@
         <!-- Primary Content Area -->
         <div class="content-primary" :class="[`grid-layout-${layout}`]">
           <slot name="primary" />
-          
+
           <!-- Default widgets if no content provided -->
           <div v-if="!$slots.primary" class="default-widgets portfolio-grid">
             <!-- Recent Activity Widget -->
@@ -90,11 +100,22 @@
                   <v-icon icon="mdi-clock-outline" class="me-2" />
                   Recent Activity
                 </h3>
-                <UnifiedButton icon-only variant="ghost" size="sm" icon="mdi-refresh" aria-label="Refresh" @click="refreshActivity" />
+                <UnifiedButton
+                  icon-only
+                  variant="ghost"
+                  size="sm"
+                  icon="mdi-refresh"
+                  aria-label="Refresh"
+                  @click="refreshActivity"
+                />
               </div>
               <div class="widget-content">
                 <div v-if="recentActivity.length === 0" class="empty-state">
-                  <v-icon icon="mdi-clipboard-text-outline" size="48" color="grey-lighten-1" />
+                  <v-icon
+                    icon="mdi-clipboard-text-outline"
+                    size="48"
+                    color="grey-lighten-1"
+                  />
                   <p class="empty-text">No recent activity</p>
                 </div>
                 <div v-else class="activity-list">
@@ -108,7 +129,9 @@
                     </div>
                     <div class="activity-content">
                       <p class="activity-text">{{ item.text }}</p>
-                      <p class="activity-time">{{ formatTime(item.timestamp) }}</p>
+                      <p class="activity-time">
+                        {{ formatTime(item.timestamp) }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -124,7 +147,13 @@
                 </h3>
                 <v-menu>
                   <template #activator="{ props }">
-                    <UnifiedButton icon-only variant="ghost" size="sm" icon="mdi-dots-vertical" v-bind="props" />
+                    <UnifiedButton
+                      icon-only
+                      variant="ghost"
+                      size="sm"
+                      icon="mdi-dots-vertical"
+                      v-bind="props"
+                    />
                   </template>
                   <v-list>
                     <v-list-item @click="exportProgress">
@@ -147,7 +176,7 @@
                       <span class="progress-label">{{ item.label }}</span>
                       <span class="progress-value">{{ item.value }}%</span>
                     </div>
-                    <v-progress-linear 
+                    <v-progress-linear
                       :model-value="item.value"
                       :color="item.color || 'primary'"
                       height="8"
@@ -168,14 +197,17 @@
                 <h3 class="widget-title">
                   <v-icon icon="mdi-bell-outline" class="me-2" />
                   Notifications
-                  <UiChip v-if="notifications.length > 0" classes="chip chip-info chip-compact ms-2">
+                  <UiChip
+                    v-if="notifications.length > 0"
+                    classes="chip chip-info chip-compact ms-2"
+                  >
                     {{ notifications.length }}
                   </UiChip>
                 </h3>
-                <UnifiedButton 
-                  v-if="notifications.length > 0" 
-                  variant="ghost" 
-                  size="sm" 
+                <UnifiedButton
+                  v-if="notifications.length > 0"
+                  variant="ghost"
+                  size="sm"
                   @click="markAllRead"
                 >
                   Mark all read
@@ -183,7 +215,11 @@
               </div>
               <div class="widget-content">
                 <div v-if="notifications.length === 0" class="empty-state">
-                  <v-icon icon="mdi-bell-off" size="48" color="grey-lighten-1" />
+                  <v-icon
+                    icon="mdi-bell-off"
+                    size="48"
+                    color="grey-lighten-1"
+                  />
                   <p class="empty-text">No new notifications</p>
                 </div>
                 <div v-else class="notifications-list">
@@ -195,23 +231,34 @@
                   >
                     <div class="notification-content">
                       <div class="notification-header">
-                        <span class="notification-title">{{ notification.title }}</span>
-                        <span class="notification-time">{{ formatTime(notification.timestamp) }}</span>
+                        <span class="notification-title">{{
+                          notification.title
+                        }}</span>
+                        <span class="notification-time">{{
+                          formatTime(notification.timestamp)
+                        }}</span>
                       </div>
-                      <p class="notification-message">{{ notification.message }}</p>
-                      <div v-if="notification.actions" class="notification-actions">
+                      <p class="notification-message">
+                        {{ notification.message }}
+                      </p>
+                      <div
+                        v-if="notification.actions"
+                        class="notification-actions"
+                      >
                         <UnifiedButton
                           v-for="action in notification.actions"
                           :key="action.id"
                           :variant="action.primary ? 'primary' : 'ghost'"
                           size="sm"
-                          @click="handleNotificationAction(notification, action)"
+                          @click="
+                            handleNotificationAction(notification, action)
+                          "
                         >
                           {{ action.label }}
                         </UnifiedButton>
                       </div>
                     </div>
-                    <UnifiedButton 
+                    <UnifiedButton
                       icon-only
                       icon="mdi-close"
                       variant="ghost"
@@ -230,7 +277,7 @@
         <!-- Sidebar Content -->
         <div v-if="showSidebar" class="content-sidebar">
           <slot name="sidebar" />
-          
+
           <!-- Default sidebar content -->
           <div v-if="!$slots.sidebar" class="default-sidebar">
             <!-- Quick Stats -->
@@ -282,11 +329,25 @@
     <div v-if="showFooter" class="dashboard-footer">
       <div class="footer-content">
         <div class="footer-info">
-          <span class="footer-text">Last updated: {{ formatTime(lastUpdated) }}</span>
+          <span class="footer-text"
+            >Last updated: {{ formatTime(lastUpdated) }}</span
+          >
         </div>
         <div class="footer-actions">
-          <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-refresh" @click="refreshDashboard">Refresh</UnifiedButton>
-          <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-download" @click="exportDashboard">Export</UnifiedButton>
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            leading-icon="mdi-refresh"
+            @click="refreshDashboard"
+            >Refresh</UnifiedButton
+          >
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            leading-icon="mdi-download"
+            @click="exportDashboard"
+            >Export</UnifiedButton
+          >
         </div>
       </div>
     </div>
@@ -306,18 +367,17 @@ const props = defineProps({
   variant: {
     type: String,
     default: 'default',
-    validator: v => ['default', 'gaming', 'minimal', 'professional'].includes(v)
+    validator: v =>
+      ['default', 'gaming', 'minimal', 'professional'].includes(v),
   },
   layout: {
     type: String,
     default: 'grid',
-    validator: v => ['grid', 'masonry', 'list', 'compact'].includes(v)
+    validator: v => ['grid', 'masonry', 'list', 'compact'].includes(v),
   },
-  showStats: { type: Boolean, default: true,
-    default: () => ({})
-   },
+  showStats: { type: Boolean, default: true, default: () => ({}) },
   showSidebar: { type: Boolean, default: true },
-  showFooter: { type: Boolean, default: true }
+  showFooter: { type: Boolean, default: true },
 })
 
 // Emits
@@ -325,7 +385,7 @@ const emit = defineEmits([
   'refresh',
   'export',
   'actionClick',
-  'notificationAction'
+  'notificationAction',
 ])
 
 // Reactive data
@@ -340,7 +400,7 @@ const headerStats = ref([
     label: 'Total Projects',
     color: 'var(--primary-color)',
     change: '+12%',
-    changeType: 'positive'
+    changeType: 'positive',
   },
   {
     id: 'completed',
@@ -349,14 +409,14 @@ const headerStats = ref([
     label: 'Completed',
     color: 'var(--success-color)',
     change: '+8%',
-    changeType: 'positive'
+    changeType: 'positive',
   },
   {
     id: 'in-progress',
     icon: 'mdi-clock-outline',
     value: '6',
     label: 'In Progress',
-    color: 'var(--warning-color)'
+    color: 'var(--warning-color)',
   },
   {
     id: 'success-rate',
@@ -365,8 +425,8 @@ const headerStats = ref([
     label: 'Success Rate',
     color: 'var(--success-color)',
     change: '+2%',
-    changeType: 'positive'
-  }
+    changeType: 'positive',
+  },
 ])
 
 const quickActions = ref([
@@ -377,7 +437,7 @@ const quickActions = ref([
     icon: 'mdi-file-document-outline-plus',
     color: 'var(--primary-color)',
     progress: 0,
-    onClick: () => emit('actionClick', 'create-resume')
+    onClick: () => emit('actionClick', 'create-resume'),
   },
   {
     id: 'search-jobs',
@@ -386,7 +446,7 @@ const quickActions = ref([
     icon: 'mdi-briefcase-search',
     color: 'var(--info-color)',
     badge: 'New',
-    onClick: () => emit('actionClick', 'search-jobs')
+    onClick: () => emit('actionClick', 'search-jobs'),
   },
   {
     id: 'portfolio',
@@ -395,7 +455,7 @@ const quickActions = ref([
     icon: 'mdi-briefcase-variant',
     color: 'var(--secondary-color)',
     progress: 75,
-    onClick: () => emit('actionClick', 'portfolio')
+    onClick: () => emit('actionClick', 'portfolio'),
   },
   {
     id: 'skills',
@@ -403,8 +463,8 @@ const quickActions = ref([
     description: 'Discover transferable skills',
     icon: 'mdi-brain',
     color: 'var(--purple-color)',
-    onClick: () => emit('actionClick', 'skills')
-  }
+    onClick: () => emit('actionClick', 'skills'),
+  },
 ])
 
 const recentActivity = ref([
@@ -413,22 +473,22 @@ const recentActivity = ref([
     icon: 'mdi-file-document-outline',
     color: 'primary',
     text: 'Updated resume - Senior Game Designer position',
-    timestamp: new Date(Date.now() - 1000 * 60 * 30) // 30 minutes ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
   },
   {
     id: 2,
     icon: 'mdi-briefcase-search',
     color: 'info',
     text: 'Applied to 3 new gaming positions',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2) // 2 hours ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
   },
   {
     id: 3,
     icon: 'mdi-account-check',
     color: 'success',
     text: 'Profile optimization completed',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24) // 1 day ago
-  }
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
+  },
 ])
 
 const progressItems = ref([
@@ -437,22 +497,22 @@ const progressItems = ref([
     label: 'Resume Completion',
     value: 85,
     color: 'primary',
-    description: 'Add 2 more work experiences'
+    description: 'Add 2 more work experiences',
   },
   {
     id: 'portfolio',
     label: 'Portfolio',
     value: 60,
     color: 'secondary',
-    description: '3 projects remaining'
+    description: '3 projects remaining',
   },
   {
     id: 'applications',
     label: 'Job Applications',
     value: 40,
     color: 'info',
-    description: 'Target: 20 applications this month'
-  }
+    description: 'Target: 20 applications this month',
+  },
 ])
 
 const notifications = ref([
@@ -464,8 +524,8 @@ const notifications = ref([
     read: false,
     actions: [
       { id: 'view', label: 'View Jobs', primary: true },
-      { id: 'dismiss', label: 'Dismiss' }
-    ]
+      { id: 'dismiss', label: 'Dismiss' },
+    ],
   },
   {
     id: 2,
@@ -473,26 +533,60 @@ const notifications = ref([
     message: 'Your resume analysis is complete',
     timestamp: new Date(Date.now() - 1000 * 60 * 60),
     read: false,
-    actions: [
-      { id: 'view-report', label: 'View Report', primary: true }
-    ]
-  }
+    actions: [{ id: 'view-report', label: 'View Report', primary: true }],
+  },
 ])
 
 const sidebarStats = ref([
-  { id: 'views', icon: 'mdi-eye', value: '247', label: 'Profile Views', color: 'var(--info-color)' },
-  { id: 'applications', icon: 'mdi-send', value: '12', label: 'Applications', color: 'var(--success-color)' },
-  { id: 'interviews', icon: 'mdi-account-voice', value: '3', label: 'Interviews', color: 'var(--warning-color)' }
+  {
+    id: 'views',
+    icon: 'mdi-eye',
+    value: '247',
+    label: 'Profile Views',
+    color: 'var(--info-color)',
+  },
+  {
+    id: 'applications',
+    icon: 'mdi-send',
+    value: '12',
+    label: 'Applications',
+    color: 'var(--success-color)',
+  },
+  {
+    id: 'interviews',
+    icon: 'mdi-account-voice',
+    value: '3',
+    label: 'Interviews',
+    color: 'var(--warning-color)',
+  },
 ])
 
 const recentFiles = ref([
-  { id: 1, name: 'Senior Designer Resume.pdf', icon: 'mdi-file-pdf-box', color: 'red', modified: new Date(Date.now() - 1000 * 60 * 60) },
-  { id: 2, name: 'Cover Letter - Riot Games.docx', icon: 'mdi-file-word-box', color: 'blue', modified: new Date(Date.now() - 1000 * 60 * 60 * 6) },
-  { id: 3, name: 'Portfolio Draft.html', icon: 'mdi-language-html5', color: 'orange', modified: new Date(Date.now() - 1000 * 60 * 60 * 24) }
+  {
+    id: 1,
+    name: 'Senior Designer Resume.pdf',
+    icon: 'mdi-file-pdf-box',
+    color: 'red',
+    modified: new Date(Date.now() - 1000 * 60 * 60),
+  },
+  {
+    id: 2,
+    name: 'Cover Letter - Riot Games.docx',
+    icon: 'mdi-file-word-box',
+    color: 'blue',
+    modified: new Date(Date.now() - 1000 * 60 * 60 * 6),
+  },
+  {
+    id: 3,
+    name: 'Portfolio Draft.html',
+    icon: 'mdi-language-html5',
+    color: 'orange',
+    modified: new Date(Date.now() - 1000 * 60 * 60 * 24),
+  },
 ])
 
 // Methods
-const formatTime = (date) => {
+const formatTime = date => {
   const now = new Date()
   const diff = now - date
   const minutes = Math.floor(diff / (1000 * 60))
@@ -505,7 +599,7 @@ const formatTime = (date) => {
   return date.toLocaleDateString()
 }
 
-const handleActionClick = (action) => {
+const handleActionClick = action => {
   if (!action.disabled && action.onClick) {
     action.onClick()
   }
@@ -518,7 +612,7 @@ const handleNotificationAction = (notification, action) => {
   }
 }
 
-const dismissNotification = (id) => {
+const dismissNotification = id => {
   const index = notifications.value.findIndex(n => n.id === id)
   if (index > -1) {
     notifications.value.splice(index, 1)
@@ -526,7 +620,7 @@ const dismissNotification = (id) => {
 }
 
 const markAllRead = () => {
-  notifications.value.forEach(n => n.read = true)
+  notifications.value.forEach(n => (n.read = true))
 }
 
 const refreshActivity = () => {
@@ -551,7 +645,7 @@ const resetProgress = () => {
   console.log('Resetting progress...')
 }
 
-const openFile = (file) => {
+const openFile = file => {
   console.log('Opening file:', file.name)
 }
 
@@ -874,7 +968,6 @@ onMounted(() => {
 }
 
 .progress-item {
-  
 }
 
 .progress-header {
@@ -1025,7 +1118,6 @@ onMounted(() => {
 }
 
 .file-icon {
-  
 }
 
 .file-info {
@@ -1070,7 +1162,11 @@ onMounted(() => {
 
 /* Variants */
 .dashboard-variant-gaming {
-  background: linear-gradient(135deg, var(--gaming-bg-primary), var(--gaming-bg-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--gaming-bg-primary),
+    var(--gaming-bg-secondary)
+  );
 }
 
 .dashboard-variant-gaming .dashboard-title {
@@ -1103,7 +1199,7 @@ onMounted(() => {
     grid-template-columns: 1fr;
     gap: var(--spacing-6);
   }
-  
+
   .content-sidebar {
     width: 100%;
     position: static;
@@ -1114,15 +1210,15 @@ onMounted(() => {
   .enhanced-dashboard {
     padding: var(--spacing-4);
   }
-  
+
   .header-stats {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .actions-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .grid-layout-grid .default-widgets,
   .grid-layout-masonry .default-widgets {
     grid-template-columns: 1fr;
@@ -1134,11 +1230,11 @@ onMounted(() => {
   .header-stats {
     grid-template-columns: 1fr;
   }
-  
+
   .dashboard-title {
     font-size: var(--font-size-2xl);
   }
-  
+
   .footer-content {
     flex-direction: column;
     gap: var(--spacing-4);

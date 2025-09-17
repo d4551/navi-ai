@@ -26,7 +26,7 @@ Focus on:
 - Quantifiable achievements
 - Gaming-specific skills transferrable to professional roles
 - Industry-relevant technologies
-- Leadership and collaboration experience`
+- Leadership and collaboration experience`,
   },
 
   optimize: {
@@ -42,8 +42,8 @@ Ensure:
 - Strong action verbs
 - Measurable results
 - Relevant technical skills
-- Professional formatting`
-  }
+- Professional formatting`,
+  },
 }
 
 // Cover letter prompts
@@ -70,8 +70,8 @@ Make it:
 - Personalized to the company
 - Highlight transferable skills
 - Professional yet engaging
-- 3-4 paragraphs maximum`
-  }
+- 3-4 paragraphs maximum`,
+  },
 }
 
 // Job matching prompts
@@ -92,8 +92,8 @@ Provide:
 1. Match percentage (0-100)
 2. Key matching skills
 3. Missing skills to develop
-4. Recommended next steps`
-  }
+4. Recommended next steps`,
+  },
 }
 
 // Interview preparation prompts
@@ -110,7 +110,7 @@ Include:
 - Technical questions
 - Behavioral questions
 - Gaming-specific scenarios
-- Problem-solving exercises`
+- Problem-solving exercises`,
   },
 
   feedback: {
@@ -125,12 +125,15 @@ Job Title: {jobTitle}
 Rate the response (1-10) and provide:
 - Strengths
 - Areas for improvement
-- Suggested better response`
-  }
+- Suggested better response`,
+  },
 }
 
 // Utility functions for prompt building
-export const buildPrompt = (template: PromptTemplate, variables: Record<string, any>): string => {
+export const buildPrompt = (
+  template: PromptTemplate,
+  variables: Record<string, any>
+): string => {
   let prompt = template.userPrompt
 
   Object.entries(variables).forEach(([key, value]) => {
@@ -142,11 +145,18 @@ export const buildPrompt = (template: PromptTemplate, variables: Record<string, 
 }
 
 export const getSystemPrompt = (type: string, subtype: string): string => {
-  const promptGroups = { resumePrompts, coverLetterPrompts, jobMatchingPrompts, interviewPrompts }
+  const promptGroups = {
+    resumePrompts,
+    coverLetterPrompts,
+    jobMatchingPrompts,
+    interviewPrompts,
+  }
   const group = promptGroups[type as keyof typeof promptGroups]
 
   if (group && subtype in group) {
-    const promptTemplate = group[subtype as keyof typeof group] as PromptTemplate
+    const promptTemplate = group[
+      subtype as keyof typeof group
+    ] as PromptTemplate
     return promptTemplate.systemPrompt
   }
 

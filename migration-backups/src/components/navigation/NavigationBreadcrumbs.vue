@@ -1,8 +1,8 @@
 <template>
-  <nav 
+  <nav
     class="navigation-breadcrumbs"
     :class="{ 'breadcrumbs-compact': compact }"
-    role="navigation" 
+    role="navigation"
     aria-label="Breadcrumb navigation"
   >
     <ol class="breadcrumb-list" role="list">
@@ -39,7 +39,12 @@
           class="breadcrumb-link"
           :title="crumb.text"
         >
-          <AppIcon v-if="crumb.icon && !compact" :name="crumb.icon" size="14" class="me-1" />
+          <AppIcon
+            v-if="crumb.icon && !compact"
+            :name="crumb.icon"
+            size="14"
+            class="me-1"
+          />
           <span class="breadcrumb-text">{{ crumb.text }}</span>
         </router-link>
 
@@ -48,7 +53,12 @@
           class="breadcrumb-current"
           :aria-current="crumb.isLast ? 'page' : undefined"
         >
-          <AppIcon v-if="crumb.icon && !compact" :name="crumb.icon" size="14" class="me-1" />
+          <AppIcon
+            v-if="crumb.icon && !compact"
+            :name="crumb.icon"
+            size="14"
+            class="me-1"
+          />
           <span class="breadcrumb-text">{{ crumb.text }}</span>
         </span>
       </li>
@@ -62,8 +72,12 @@
         :variant="'glass'"
         size="sm"
         :icon="isCurrentPageFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
-        :aria-label="isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'"
-        :title="isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'"
+        :aria-label="
+          isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'
+        "
+        :title="
+          isCurrentPageFavorite ? 'Remove from favorites' : 'Add to favorites'
+        "
         @click="toggleCurrentPageFavorite"
       />
 
@@ -92,7 +106,10 @@
       />
 
       <!-- Dropdown Menu for Mobile -->
-      <div v-if="compact && breadcrumbs.length > maxMobileItems" class="breadcrumb-dropdown">
+      <div
+        v-if="compact && breadcrumbs.length > maxMobileItems"
+        class="breadcrumb-dropdown"
+      >
         <IconButton
           class="breadcrumb-action-btn dropdown-btn"
           :variant="'glass'"
@@ -102,11 +119,7 @@
           @click="toggleDropdown"
         />
 
-        <div
-          v-if="dropdownOpen"
-          class="dropdown-menu"
-          @click.stop
-        >
+        <div v-if="dropdownOpen" class="dropdown-menu" @click.stop>
           <div class="dropdown-header">Navigation Path</div>
           <div
             v-for="(crumb, index) in breadcrumbs"
@@ -119,11 +132,21 @@
               class="dropdown-link"
               @click="closeDropdown"
             >
-              <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="me-2" />
+              <AppIcon
+                v-if="crumb.icon"
+                :name="crumb.icon"
+                size="16"
+                class="me-2"
+              />
               {{ crumb.text }}
             </router-link>
             <div v-else class="dropdown-current">
-              <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="me-2" />
+              <AppIcon
+                v-if="crumb.icon"
+                :name="crumb.icon"
+                size="16"
+                class="me-2"
+              />
               {{ crumb.text }}
             </div>
           </div>
@@ -145,40 +168,40 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 const _props = defineProps({
   compact: {
     type: Boolean,
-    default: false
+    default: false,
   },
   showActions: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showShare: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showCopyUrl: {
     type: Boolean,
-    default: true
+    default: true,
   },
   homeIcon: {
     type: String,
-    default: 'mdi-home'
+    default: 'mdi-home',
   },
   homeText: {
     type: String,
-    default: 'Home'
+    default: 'Home',
   },
   homeLabel: {
     type: String,
-    default: 'Go to homepage'
+    default: 'Go to homepage',
   },
   separatorIcon: {
     type: String,
-    default: 'mdi-chevron-right'
+    default: 'mdi-chevron-right',
   },
   maxMobileItems: {
     type: Number,
-    default: 2
-  }
+    default: 2,
+  },
 })
 
 // Composables
@@ -206,7 +229,7 @@ const shareCurrentPage = async () => {
     try {
       await navigator.share({
         title: document.title,
-        url: window.location.href
+        url: window.location.href,
       })
     } catch (error) {
       if (error.name !== 'AbortError') {
@@ -248,7 +271,7 @@ const closeDropdown = () => {
 }
 
 // Close dropdown when clicking outside
-const handleClickOutside = (event) => {
+const handleClickOutside = event => {
   if (!event.target.closest('.breadcrumb-dropdown')) {
     closeDropdown()
   }
@@ -479,17 +502,17 @@ onUnmounted(() => {
   .navigation-breadcrumbs {
     gap: var(--spacing-2);
   }
-  
+
   .breadcrumb-link,
   .breadcrumb-current {
     max-width: 100px;
     font-size: var(--font-size-xs);
   }
-  
+
   .breadcrumb-actions {
     gap: var(--spacing-0-5);
   }
-  
+
   .breadcrumb-action-btn {
     width: 28px;
     height: 28px;
@@ -500,15 +523,15 @@ onUnmounted(() => {
   .breadcrumb-list {
     gap: 0;
   }
-  
+
   .breadcrumb-item:not(:last-child):not(:first-child) {
     display: none;
   }
-  
+
   .breadcrumb-item:nth-last-child(2) {
     display: flex;
   }
-  
+
   .breadcrumb-item:nth-last-child(2)::before {
     content: '...';
     color: var(--text-muted);
@@ -518,32 +541,40 @@ onUnmounted(() => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .dropdown-menu,
+[data-theme='dark'] .dropdown-menu,
 .dark-theme .dropdown-menu {
   background: rgba(15, 15, 15, 0.95);
   border-color: var(--glass-border);
   backdrop-filter: blur(20px) saturate(180%);
 }
 
-[data-theme="dark"] .dropdown-link:hover,
+[data-theme='dark'] .dropdown-link:hover,
 .dark-theme .dropdown-link:hover {
   background: var(--glass-bg);
 }
 
-[data-theme="dark"] .dropdown-current,
+[data-theme='dark'] .dropdown-current,
 .dark-theme .dropdown-current {
   background: rgba(99, 102, 241, 0.15);
 }
 
 /* Gaming theme enhancements */
 .theme-gaming .breadcrumb-link:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 217, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.1),
+    rgba(0, 217, 255, 0.05)
+  );
   border: 1px solid rgba(0, 255, 136, 0.2);
   transform: translateY(-1px);
 }
 
 .theme-gaming .breadcrumb-action-btn:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 217, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.1),
+    rgba(0, 217, 255, 0.05)
+  );
   border: 1px solid rgba(0, 255, 136, 0.2);
 }
 </style>

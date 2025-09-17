@@ -25,23 +25,35 @@ interface ToggleOption {
   label?: string
 }
 
-const props = withDefaults(defineProps<{
-  modelValue: string
-  options?: ToggleOption[]
-  size?: 'xs' | 'sm' | 'md'
-  activeVariant?: 'primary' | 'secondary' | 'gaming' | 'cyber' | 'glass' | 'success' | 'warning' | 'danger' | 'info'
-  inactiveVariant?: 'outline' | 'ghost'
-  ariaLabel?: string
-}>(), {
-  options: () => ([
-    { value: 'table', icon: 'TableCellsIcon', label: 'Table view' },
-    { value: 'cards', icon: 'mdi-view-grid', label: 'Cards view' },
-  ]),
-  size: 'sm',
-  activeVariant: 'primary',
-  inactiveVariant: 'outline',
-  ariaLabel: 'View mode'
-})
+const props = withDefaults(
+  defineProps<{
+    modelValue: string
+    options?: ToggleOption[]
+    size?: 'xs' | 'sm' | 'md'
+    activeVariant?:
+      | 'primary'
+      | 'secondary'
+      | 'gaming'
+      | 'cyber'
+      | 'glass'
+      | 'success'
+      | 'warning'
+      | 'danger'
+      | 'info'
+    inactiveVariant?: 'outline' | 'ghost'
+    ariaLabel?: string
+  }>(),
+  {
+    options: () => [
+      { value: 'table', icon: 'TableCellsIcon', label: 'Table view' },
+      { value: 'cards', icon: 'mdi-view-grid', label: 'Cards view' },
+    ],
+    size: 'sm',
+    activeVariant: 'primary',
+    inactiveVariant: 'outline',
+    ariaLabel: 'View mode',
+  }
+)
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -64,4 +76,3 @@ function onSelect(val: string) {
   gap: var(--spacing-1);
 }
 </style>
-

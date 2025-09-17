@@ -3,88 +3,94 @@
  * Handles Steam API, IGDB, and other gaming data sources with conflict resolution
  */
 
-import { logger } from "@/shared/utils/logger";
-import type { GameStudio, TeamSize } from "@/shared/types/jobs";
+import { logger } from '@/shared/utils/logger'
+import type { GameStudio, TeamSize } from '@/shared/types/jobs'
 
 export interface DataSource {
-  id: string;
-  name: string;
-  priority: number; // Higher = more trusted
-  rateLimit: { requests: number; window: number }; // requests per window (ms)
-  enabled: boolean;
+  id: string
+  name: string
+  priority: number // Higher = more trusted
+  rateLimit: { requests: number; window: number } // requests per window (ms)
+  enabled: boolean
 }
 
 export interface IngestionJob {
-  id: string;
-  sourceId: string;
-  type: "full_sync" | "incremental" | "single_entity";
-  status: "pending" | "running" | "completed" | "failed" | "cancelled";
-  progress: number;
-  totalItems?: number;
-  processedItems?: number;
-  errors: IngestionError[];
-  startedAt?: Date;
-  completedAt?: Date;
-  metadata: Record<string, any>;
+  id: string
+  sourceId: string
+  type: 'full_sync' | 'incremental' | 'single_entity'
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled'
+  progress: number
+  totalItems?: number
+  processedItems?: number
+  errors: IngestionError[]
+  startedAt?: Date
+  completedAt?: Date
+  metadata: Record<string, any>
 }
 
 export interface IngestionError {
-  id: string;
-  message: string;
-  entityId?: string;
-  entityName?: string;
-  severity: "warning" | "error" | "critical";
-  timestamp: Date;
-  retryCount: number;
-  resolved: boolean;
+  id: string
+  message: string
+  entityId?: string
+  entityName?: string
+  severity: 'warning' | 'error' | 'critical'
+  timestamp: Date
+  retryCount: number
+  resolved: boolean
 }
 
 export interface RawStudioData {
-  sourceId: string;
-  sourceEntityId: string;
-  name: string;
-  description?: string;
-  websites?: string[];
+  sourceId: string
+  sourceEntityId: string
+  name: string
+  description?: string
+  websites?: string[]
   games?: Array<{
-    name: string;
-    releaseDate?: string;
-    platforms?: string[];
-    genres?: string[];
-  }>;
-  location?: string;
-  logo?: string;
+    name: string
+    releaseDate?: string
+    platforms?: string[]
+    genres?: string[]
+  }>
+  location?: string
+  logo?: string
   // Additional fields may vary by source
-  metadata: Record<string, any>;
-  lastUpdated: Date;
-  confidence: number; // 0-1 score for data quality
+  metadata: Record<string, any>
+  lastUpdated: Date
+  confidence: number // 0-1 score for data quality
 }
 
 export interface ConflictResolution {
-  entityId: string;
+  entityId: string
   conflicts: Array<{
-    field: string;
-    sources: Array<{ sourceId: string; value: any; confidence: number }>;
-    resolution: "auto" | "manual" | "pending";
-    resolvedValue?: any;
-    resolvedBy?: string;
-    resolvedAt?: Date;
-  }>;
+    field: string
+    sources: Array<{ sourceId: string; value: any; confidence: number }>
+    resolution: 'auto' | 'manual' | 'pending'
+    resolvedValue?: any
+    resolvedBy?: string
+    resolvedAt?: Date
+  }>
 }
 
 export class DataIngestionService {
-  private sources: Map<string, DataSource> = new Map();
-  private rateLimiters: Map<string, RateLimiter> = new Map();
-  private activeJobs: Map<string, IngestionJob> = new Map();
+  private sources: Map<string, DataSource> = new Map()
+  private rateLimiters: Map<string, RateLimiter> = new Map()
+  private activeJobs: Map<string, IngestionJob> = new Map()
 
   constructor() {
-    this.initializeDataSources().catch(err => logger.error('Failed to initialize data sources', err, 'DataIngestionService'));
+    this.initializeDataSources().catch(err =>
+      logger.error(
+        'Failed to initialize data sources',
+        err,
+        'DataIngestionService'
+      )
+    )
   }
 
   private async initializeDataSources() {
-    const { getEnabledDataSources } = await import("@/config/data-sources");
-    const enabledSources = getEnabledDataSources();
+    const { getEnabledDataSources } = await import('@/config/data-sources')
+    const enabledSources = getEnabledDataSources()
 
-    enabledSources.forEach((_config) => {
+    enabledSources.forEach(_config => {
       const source: DataSource = {
         id: config.id,
         name: config.name,
@@ -94,127 +100,125 @@ export class DataIngestionService {
           window: config.rateLimit.windowMs,
         },
         enabled: config.enabled,
-      };
+      }
 
-      this.sources.set(source.id, source);
-      this.rateLimiters.set(source.id, new RateLimiter(source.rateLimit));
-    });
+      this.sources.set(source.id, source)
+      this.rateLimiters.set(source.id, new RateLimiter(source.rateLimit))
+    })
   }
 
   async startIngestionJob(
     sourceId: string,
-    type: IngestionJob["type"],
+    type: IngestionJob['type'],
     options: {
-      entityIds?: string[];
-      fullSync?: boolean;
-      metadata?: Record<string, any>;
-    } = {},
+      entityIds?: string[]
+      fullSync?: boolean
+      metadata?: Record<string, any>
+    } = {}
   ): Promise<string> {
-    const source = this.sources.get(sourceId);
+    const source = this.sources.get(sourceId)
     if (!source) {
-      throw new Error(`Unknown data source: ${sourceId}`);
+      throw new Error(`Unknown data source: ${sourceId}`)
     }
 
     if (!source.enabled) {
-      throw new Error(`Data source ${sourceId} is not enabled`);
+      throw new Error(`Data source ${sourceId} is not enabled`)
     }
 
-    const jobId = crypto.randomUUID();
+    const jobId = crypto.randomUUID()
     const job: IngestionJob = {
       id: jobId,
       sourceId,
       type,
-      status: "pending",
+      status: 'pending',
       progress: 0,
       errors: [],
       metadata: options.metadata || {},
-    };
+    }
 
-    this.activeJobs.set(jobId, job);
+    this.activeJobs.set(jobId, job)
 
     // Start job asynchronously
-    this.executeIngestionJob(job).catch((error) => {
-      logger.error(`Ingestion job ${jobId} failed:`, error);
-      job.status = "failed";
+    this.executeIngestionJob(job).catch(error => {
+      logger.error(`Ingestion job ${jobId} failed:`, error)
+      job.status = 'failed'
       job.errors.push({
         id: crypto.randomUUID(),
         message: error.message,
-        severity: "critical",
+        severity: 'critical',
         timestamp: new Date(),
         retryCount: 0,
         resolved: false,
-      });
-    });
+      })
+    })
 
-    logger.info(`Started ingestion job ${jobId} for source ${sourceId}`);
-    return jobId;
+    logger.info(`Started ingestion job ${jobId} for source ${sourceId}`)
+    return jobId
   }
 
   private async executeIngestionJob(job: IngestionJob): Promise<void> {
-    job.status = "running";
-    job.startedAt = new Date();
+    job.status = 'running'
+    job.startedAt = new Date()
 
     try {
-      const sourceService = await this.getSourceService(job.sourceId);
-      const rawData = await sourceService.fetchData(job);
+      const sourceService = await this.getSourceService(job.sourceId)
+      const rawData = await sourceService.fetchData(job)
 
-      job.totalItems = rawData.length;
-      job.processedItems = 0;
+      job.totalItems = rawData.length
+      job.processedItems = 0
 
       for (const data of rawData) {
         try {
-          await this.processRawData(_data);
-          job.processedItems++;
-          job.progress = Math.floor(
-            (job.processedItems / job.totalItems) * 100,
-          );
+          await this.processRawData(_data)
+          job.processedItems++
+          job.progress = Math.floor((job.processedItems / job.totalItems) * 100)
         } catch (error: any) {
           job.errors.push({
             id: crypto.randomUUID(),
             message: error.message,
             entityId: data.sourceEntityId,
             entityName: data.name,
-            severity: "error",
+            severity: 'error',
             timestamp: new Date(),
             retryCount: 0,
             resolved: false,
-          });
+          })
         }
 
         // Check rate limits
-        await this.rateLimiters.get(job.sourceId)?.wait();
+        await this.rateLimiters.get(job.sourceId)?.wait()
       }
 
-      job.status = "completed";
-      job.progress = 100;
+      job.status = 'completed'
+      job.progress = 100
     } catch (error: any) {
-      job.status = "failed";
+      job.status = 'failed'
       job.errors.push({
         id: crypto.randomUUID(),
         message: `Job execution failed: ${error.message}`,
-        severity: "critical",
+        severity: 'critical',
         timestamp: new Date(),
         retryCount: 0,
         resolved: false,
-      });
+      })
     } finally {
-      job.completedAt = new Date();
+      job.completedAt = new Date()
     }
   }
 
   private async processRawData(rawData: RawStudioData): Promise<void> {
     // Normalize the raw data
-    const normalized = await this.normalizeRawData(rawData);
+    const normalized = await this.normalizeRawData(rawData)
 
     // Check for existing studios (conflict detection)
-    const conflicts = await this.detectConflicts(normalized);
+    const conflicts = await this.detectConflicts(normalized)
 
     if (conflicts.length > 0) {
       // Handle conflicts based on resolution strategy
-      await this.handleConflicts(normalized, conflicts);
+      await this.handleConflicts(normalized, conflicts)
     } else {
       // No conflicts, safe to import
-      await this.importStudio(normalized);
+      await this.importStudio(normalized)
     }
   }
 
@@ -223,16 +227,16 @@ export class DataIngestionService {
     return {
       id: this.generateStudioId(rawData.name),
       name: this.cleanStudioName(rawData.name),
-      location: this.normalizeLocation(rawData.location || ""),
+      location: this.normalizeLocation(rawData.location || ''),
       size: this.inferStudioSize(rawData),
       type: this.inferStudioType(rawData),
       founded: this.extractFoundedYear(rawData),
-      description: rawData.description || "",
-      games: rawData.games?.map((g) => g.name) || [],
+      description: rawData.description || '',
+      games: rawData.games?.map(g => g.name) || [],
       technologies: this.inferTechnologies(rawData),
       culture: {
         values: [],
-        workStyle: "Unknown",
+        workStyle: 'Unknown',
         benefits: [],
         diversity: true,
         remoteFirst: false,
@@ -241,210 +245,209 @@ export class DataIngestionService {
       logo: rawData.logo,
       openPositions: 0,
       benefits: [],
-    };
+    }
   }
 
   private async detectConflicts(
-    _studio: GameStudio,
+    _studio: GameStudio
   ): Promise<ConflictResolution[]> {
     // Implementation would check against existing studios
     // Using fuzzy matching on name, website, games, etc.
-    return [];
+    return []
   }
 
   private async handleConflicts(
     studio: GameStudio,
-    conflicts: ConflictResolution[],
+    conflicts: ConflictResolution[]
   ): Promise<void> {
     // Implement conflict resolution strategies
     logger.warn(
       `Conflicts detected for studio ${studio.name}:`,
-      conflicts.length,
-    );
+      conflicts.length
+    )
   }
 
   private async importStudio(studio: GameStudio): Promise<void> {
     // Store the studio data where StudioDataManager can find it
-    const { unifiedStorage } = await import("@/utils/storage");
-    
+    const { unifiedStorage } = await import('@/utils/storage')
+
     // Get existing steam data
-    const existingSteamData = await unifiedStorage.get("steam_studio_data") || [];
-    
+    const existingSteamData =
+      (await unifiedStorage.get('steam_studio_data')) || []
+
     // Add new studio to the collection
-    const updatedSteamData = [...existingSteamData];
-    const existingIndex = updatedSteamData.findIndex(s => s.id === studio.id);
-    
+    const updatedSteamData = [...existingSteamData]
+    const existingIndex = updatedSteamData.findIndex(s => s.id === studio.id)
+
     if (existingIndex >= 0) {
-      updatedSteamData[existingIndex] = studio;
+      updatedSteamData[existingIndex] = studio
     } else {
-      updatedSteamData.push(studio);
+      updatedSteamData.push(studio)
     }
-    
+
     // Store back to storage
-    await unifiedStorage.set("steam_studio_data", updatedSteamData);
-    
-    logger.info(`Successfully imported studio: ${studio.name}`);
+    await unifiedStorage.set('steam_studio_data', updatedSteamData)
+
+    logger.info(`Successfully imported studio: ${studio.name}`)
   }
 
   // Utility methods
   private generateStudioId(name: string): string {
     return name
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .slice(0, 100);
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 100)
   }
 
   private cleanStudioName(name: string): string {
     return name
-      .replace(/\s+(inc\.?|llc\.?|ltd\.?|corp\.?|corporation)$/i, "")
-      .trim();
+      .replace(/\s+(inc\.?|llc\.?|ltd\.?|corp\.?|corporation)$/i, '')
+      .trim()
   }
 
   private normalizeLocation(location: string): string {
     // Simple location normalization
-    return location.replace(/,\s*$/, "").trim();
+    return location.replace(/,\s*$/, '').trim()
   }
 
   private inferStudioSize(data: RawStudioData): TeamSize {
-    const gameCount = data.games?.length || 0;
-    if (gameCount > 10) return "Large (51-200)" as TeamSize;
-    if (gameCount > 3) return "Medium (11-50)" as TeamSize;
-    return "Small (2-10)" as TeamSize;
+    const gameCount = data.games?.length || 0
+    if (gameCount > 10) return 'Large (51-200)' as TeamSize
+    if (gameCount > 3) return 'Medium (11-50)' as TeamSize
+    return 'Small (2-10)' as TeamSize
   }
 
-  private inferStudioType(data: RawStudioData): GameStudio["type"] {
-    const games = data.games || [];
-    const name = data.name.toLowerCase();
+  private inferStudioType(data: RawStudioData): GameStudio['type'] {
+    const games = data.games || []
+    const name = data.name.toLowerCase()
 
     if (
-      name.includes("mobile") ||
-      games.some((g) =>
+      name.includes('mobile') ||
+      games.some(g =>
         g.platforms?.some(
-          (p) =>
-            p.toLowerCase().includes("mobile") ||
-            p.includes("ios") ||
-            p.includes("android"),
-        ),
+          p =>
+            p.toLowerCase().includes('mobile') ||
+            p.includes('ios') ||
+            p.includes('android')
+        )
       )
     ) {
-      return "Mobile";
+      return 'Mobile'
     }
 
     if (
-      name.includes("vr") ||
-      name.includes("virtual reality") ||
-      games.some((g) =>
-        g.platforms?.some((p) => p.toLowerCase().includes("vr")),
-      )
+      name.includes('vr') ||
+      name.includes('virtual reality') ||
+      games.some(g => g.platforms?.some(p => p.toLowerCase().includes('vr')))
     ) {
-      return "VR/AR";
+      return 'VR/AR'
     }
 
-    if (games.length > 5) return "AAA";
-    return "Indie";
+    if (games.length > 5) return 'AAA'
+    return 'Indie'
   }
 
   private extractFoundedYear(data: RawStudioData): number {
     // Try to extract founded year from various sources
-    const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getFullYear()
     const oldestGame = data.games?.reduce((oldest, game) => {
       const year = game.releaseDate
         ? new Date(game.releaseDate).getFullYear()
-        : currentYear;
-      return year < oldest ? year : oldest;
-    }, currentYear);
+        : currentYear
+      return year < oldest ? year : oldest
+    }, currentYear)
 
-    return oldestGame || currentYear;
+    return oldestGame || currentYear
   }
 
   private inferTechnologies(data: RawStudioData): string[] {
-    const techs: string[] = [];
-    const games = data.games || [];
+    const techs: string[] = []
+    const games = data.games || []
 
     // Infer from platforms
-    if (games.some((g) => g.platforms?.some((p) => p.includes("PC")))) {
-      techs.push("C++", "DirectX");
+    if (games.some(g => g.platforms?.some(p => p.includes('PC')))) {
+      techs.push('C++', 'DirectX')
     }
-    if (games.some((g) => g.platforms?.some((p) => p.includes("Mobile")))) {
-      techs.push("Unity", "C#");
+    if (games.some(g => g.platforms?.some(p => p.includes('Mobile')))) {
+      techs.push('Unity', 'C#')
     }
-    if (games.some((g) => g.platforms?.some((p) => p.includes("Console")))) {
-      techs.push("C++", "PlayStation SDK", "Xbox SDK");
+    if (games.some(g => g.platforms?.some(p => p.includes('Console')))) {
+      techs.push('C++', 'PlayStation SDK', 'Xbox SDK')
     }
 
-    return Array.from(new Set(techs));
+    return Array.from(new Set(techs))
   }
 
   private async getSourceService(sourceId: string) {
     // Factory method to get the appropriate source service
     switch (sourceId) {
-      case "steam": {
-        const { SteamDataSource } = await import("./SteamDataSource");
-        return new SteamDataSource();
+      case 'steam': {
+        const { SteamDataSource } = await import('./SteamDataSource')
+        return new SteamDataSource()
       }
-      case "public-apis": {
-        const { PublicAPIDataSource } = await import("./PublicAPIDataSource");
-        return new PublicAPIDataSource();
+      case 'public-apis': {
+        const { PublicAPIDataSource } = await import('./PublicAPIDataSource')
+        return new PublicAPIDataSource()
       }
-      case "igdb": {
-        const { IGDBDataSource } = await import("./IGDBDataSource");
-        return new IGDBDataSource();
+      case 'igdb': {
+        const { IGDBDataSource } = await import('./IGDBDataSource')
+        return new IGDBDataSource()
       }
       default:
-        throw new Error(`No service implementation for source: ${sourceId}`);
+        throw new Error(`No service implementation for source: ${sourceId}`)
     }
   }
 
   // Public API methods
   getJob(jobId: string): IngestionJob | null {
-    return this.activeJobs.get(jobId) || null;
+    return this.activeJobs.get(jobId) || null
   }
 
   getAllJobs(): IngestionJob[] {
-    return Array.from(this.activeJobs.values());
+    return Array.from(this.activeJobs.values())
   }
 
   getDataSources(): DataSource[] {
-    return Array.from(this.sources.values());
+    return Array.from(this.sources.values())
   }
 
   async cancelJob(jobId: string): Promise<boolean> {
-    const job = this.activeJobs.get(jobId);
-    if (job && job.status === "running") {
-      job.status = "cancelled";
-      return true;
+    const job = this.activeJobs.get(jobId)
+    if (job && job.status === 'running') {
+      job.status = 'cancelled'
+      return true
     }
-    return false;
+    return false
   }
 }
 
 class RateLimiter {
-  private requests: Array<{ timestamp: number }> = [];
+  private requests: Array<{ timestamp: number }> = []
 
   // eslint-disable-next-line no-unused-vars
   constructor(private config: { requests: number; window: number }) {}
 
   async wait(): Promise<void> {
-    const now = Date.now();
+    const now = Date.now()
 
     // Remove old requests outside the window
     this.requests = this.requests.filter(
-      (req) => now - req.timestamp < this.config.window,
-    );
+      req => now - req.timestamp < this.config.window
+    )
 
     if (this.requests.length >= this.config.requests) {
-      const oldestRequest = this.requests[0];
-      const waitTime = this.config.window - (now - oldestRequest.timestamp);
+      const oldestRequest = this.requests[0]
+      const waitTime = this.config.window - (now - oldestRequest.timestamp)
 
       if (waitTime > 0) {
-        await new Promise((resolve) => setTimeout(resolve, waitTime));
+        await new Promise(resolve => setTimeout(resolve, waitTime))
       }
     }
 
-    this.requests.push({ timestamp: now });
+    this.requests.push({ timestamp: now })
   }
 }
 
-export const dataIngestionService = new DataIngestionService();
-export default dataIngestionService;
+export const dataIngestionService = new DataIngestionService()
+export default dataIngestionService

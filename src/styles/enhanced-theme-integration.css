@@ -5,18 +5,18 @@
  */
 
 /* Base Design System (must load first) */
-@import "./design-system.css";
+@import './design-system.css';
 
 /* Enhanced Layout System */
-@import "./layout-utilities.css";
+@import './layout-utilities.css';
 
 /* Enhanced Component Systems */
-@import "./enhanced-navigation.css";
-@import "./enhanced-buttons.css";
-@import "./enhanced-fairy-interface.css";
+@import './enhanced-navigation.css';
+@import './enhanced-buttons.css';
+@import './enhanced-fairy-interface.css';
 
 /* Global Enhancements (must load last) */
-@import "./enhanced-global-improvements.css";
+@import './enhanced-global-improvements.css';
 
 /*
  * INTEGRATION OVERRIDES
@@ -63,7 +63,7 @@
     overflow: hidden;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: -100%;
@@ -266,7 +266,7 @@
 }
 
 /* Dark theme specific enhancements */
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* Enhanced dark mode integration */
   .glass-panel,
   .glass-card {

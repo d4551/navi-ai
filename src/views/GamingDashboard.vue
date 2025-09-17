@@ -2,7 +2,7 @@
   <div class="gaming-dashboard font-sans">
     <!-- Animated Background -->
     <div class="background-animation"></div>
-    
+
     <!-- Dashboard Container -->
     <div class="container-xl p-glass-md gap-glass-lg">
       <!-- Dashboard Header -->
@@ -21,10 +21,13 @@
               <div class="level-title">{{ levelTitle }}</div>
             </div>
           </div>
-          
+
           <div class="xp-bar">
             <div class="xp-bar-bg">
-              <div class="xp-bar-fill" :style="{ width: xpPercentage + '%' }"></div>
+              <div
+                class="xp-bar-fill"
+                :style="{ width: xpPercentage + '%' }"
+              ></div>
             </div>
             <div class="xp-text">{{ currentXP }} / {{ requiredXP }} XP</div>
           </div>
@@ -35,10 +38,20 @@
           </div>
 
           <div class="hud-actions">
-            <UnifiedButton variant="gaming" size="sm" leading-icon="EyeIcon" @click="showQuests = true">
+            <UnifiedButton
+              variant="gaming"
+              size="sm"
+              leading-icon="EyeIcon"
+              @click="showQuests = true"
+            >
               Daily Quests
             </UnifiedButton>
-            <UnifiedButton variant="gaming" size="sm" leading-icon="TrophyIcon" @click="showAchievements = true">
+            <UnifiedButton
+              variant="gaming"
+              size="sm"
+              leading-icon="TrophyIcon"
+              @click="showAchievements = true"
+            >
               Achievements
             </UnifiedButton>
           </div>
@@ -47,8 +60,8 @@
 
       <!-- Quick Actions Grid -->
       <section class="quick-actions">
-        <div 
-          v-for="action in quickActions" 
+        <div
+          v-for="action in quickActions"
           :key="action.id"
           class="glass p-glass-lg rounded-lg neon-interactive"
           @click="handleQuickAction(action)"
@@ -73,14 +86,23 @@
                 <div class="panel-icon">💬</div>
                 <div class="panel-info">
                   <div class="panel-title">AI Assistant</div>
-                  <div class="panel-subtitle">Get instant help and guidance</div>
+                  <div class="panel-subtitle">
+                    Get instant help and guidance
+                  </div>
                 </div>
               </div>
-              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="ArrowsPointingOutIcon" />
+              <UnifiedButton
+                variant="ghost"
+                size="sm"
+                icon-only
+                leading-icon="ArrowsPointingOutIcon"
+              />
             </div>
             <div class="ai-assistant-content">
               <div class="ai-avatar">🤖</div>
-              <p class="ai-message">AI Assistant ready to help with your gaming career!</p>
+              <p class="ai-message">
+                AI Assistant ready to help with your gaming career!
+              </p>
               <UnifiedButton variant="primary" @click="startAIConversation">
                 Start Conversation
               </UnifiedButton>
@@ -97,11 +119,17 @@
                   <div class="panel-subtitle">Your latest career actions</div>
                 </div>
               </div>
-              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="ArrowPathIcon" @click="refreshActivity" />
+              <UnifiedButton
+                variant="ghost"
+                size="sm"
+                icon-only
+                leading-icon="ArrowPathIcon"
+                @click="refreshActivity"
+              />
             </div>
             <div class="activity-list">
-              <div 
-                v-for="activity in recentActivity" 
+              <div
+                v-for="activity in recentActivity"
                 :key="activity.id"
                 class="activity-item"
                 :class="{ 'animate-in': activity.isNew }"
@@ -110,8 +138,12 @@
                   <AppIcon :name="activity.icon" />
                 </div>
                 <div class="activity-details">
-                  <div class="activity-description">{{ activity.description }}</div>
-                  <div class="activity-timestamp">{{ formatTimeAgo(activity.timestamp) }}</div>
+                  <div class="activity-description">
+                    {{ activity.description }}
+                  </div>
+                  <div class="activity-timestamp">
+                    {{ formatTimeAgo(activity.timestamp) }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -130,22 +162,34 @@
                   <div class="panel-subtitle">Your technical expertise</div>
                 </div>
               </div>
-              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="PlusIcon" @click="addSkill" />
+              <UnifiedButton
+                variant="ghost"
+                size="sm"
+                icon-only
+                leading-icon="PlusIcon"
+                @click="addSkill"
+              />
             </div>
             <div class="skills-content">
               <div class="skills-grid">
-                <div 
-                  v-for="skill in topSkills" 
+                <div
+                  v-for="skill in topSkills"
                   :key="skill.name"
                   class="skill-chip"
                   :class="{ active: skill.isActive }"
                   @click="toggleSkill(skill)"
                 >
                   {{ skill.name }}
-                  <span v-if="skill.level" class="skill-level">{{ skill.level }}</span>
+                  <span v-if="skill.level" class="skill-level">{{
+                    skill.level
+                  }}</span>
                 </div>
               </div>
-              <UnifiedButton variant="glass" class="manage-skills-btn" @click="openSkillManager">
+              <UnifiedButton
+                variant="glass"
+                class="manage-skills-btn"
+                @click="openSkillManager"
+              >
                 Manage All Skills
               </UnifiedButton>
             </div>
@@ -161,11 +205,17 @@
                   <div class="panel-subtitle">Industry leaders to watch</div>
                 </div>
               </div>
-              <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="HeartIcon" @click="toggleFavorites" />
+              <UnifiedButton
+                variant="ghost"
+                size="sm"
+                icon-only
+                leading-icon="HeartIcon"
+                @click="toggleFavorites"
+              />
             </div>
             <div class="studios-list">
-              <div 
-                v-for="studio in featuredStudios" 
+              <div
+                v-for="studio in featuredStudios"
                 :key="studio.id"
                 class="studio-item"
                 @click="exploreStudio(studio)"
@@ -174,11 +224,17 @@
                 <div class="studio-description">{{ studio.description }}</div>
                 <div class="studio-meta">
                   <span class="studio-badge">{{ studio.location }}</span>
-                  <span class="studio-badge">{{ studio.employeeCount }}+ employees</span>
+                  <span class="studio-badge"
+                    >{{ studio.employeeCount }}+ employees</span
+                  >
                 </div>
               </div>
             </div>
-            <UnifiedButton variant="glass" class="explore-studios-btn" @click="openStudioExplorer">
+            <UnifiedButton
+              variant="glass"
+              class="explore-studios-btn"
+              @click="openStudioExplorer"
+            >
               Explore All Studios
             </UnifiedButton>
           </div>
@@ -187,11 +243,21 @@
     </div>
 
     <!-- Modals -->
-    <div v-if="showQuests" class="modal-overlay" @click.self="showQuests = false">
+    <div
+      v-if="showQuests"
+      class="modal-overlay"
+      @click.self="showQuests = false"
+    >
       <div class="quest-modal">
         <div class="modal-header">
           <h2>Daily Quests</h2>
-          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="XMarkIcon" @click="showQuests = false" />
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            leading-icon="XMarkIcon"
+            @click="showQuests = false"
+          />
         </div>
         <div class="quest-list">
           <div v-for="quest in dailyQuests" :key="quest.id" class="quest-item">
@@ -202,27 +268,49 @@
             </div>
             <div class="quest-progress">
               <div class="progress-bar">
-                <div class="progress-fill" :style="{ width: (quest.progress / quest.total * 100) + '%' }"></div>
+                <div
+                  class="progress-fill"
+                  :style="{ width: (quest.progress / quest.total) * 100 + '%' }"
+                ></div>
               </div>
-              <span class="progress-text">{{ quest.progress }}/{{ quest.total }}</span>
+              <span class="progress-text"
+                >{{ quest.progress }}/{{ quest.total }}</span
+              >
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div v-if="showAchievements" class="modal-overlay" @click.self="showAchievements = false">
+    <div
+      v-if="showAchievements"
+      class="modal-overlay"
+      @click.self="showAchievements = false"
+    >
       <div class="achievements-modal">
         <div class="modal-header">
           <h2>Achievements</h2>
-          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="XMarkIcon" @click="showAchievements = false" />
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            leading-icon="XMarkIcon"
+            @click="showAchievements = false"
+          />
         </div>
         <div class="achievements-grid">
-          <div v-for="achievement in achievements" :key="achievement.id" class="achievement-item" :class="{ unlocked: achievement.unlocked }">
+          <div
+            v-for="achievement in achievements"
+            :key="achievement.id"
+            class="achievement-item"
+            :class="{ unlocked: achievement.unlocked }"
+          >
             <div class="achievement-icon">{{ achievement.icon }}</div>
             <div class="achievement-info">
               <div class="achievement-title">{{ achievement.title }}</div>
-              <div class="achievement-description">{{ achievement.description }}</div>
+              <div class="achievement-description">
+                {{ achievement.description }}
+              </div>
             </div>
           </div>
         </div>
@@ -230,11 +318,21 @@
     </div>
 
     <!-- AI Conversation Modal -->
-    <div v-if="showAIConversation" class="modal-overlay" @click.self="showAIConversation = false">
+    <div
+      v-if="showAIConversation"
+      class="modal-overlay"
+      @click.self="showAIConversation = false"
+    >
       <div class="ai-conversation-modal">
         <div class="modal-header">
           <h2>AI Career Assistant</h2>
-          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="XMarkIcon" @click="showAIConversation = false" />
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            leading-icon="XMarkIcon"
+            @click="showAIConversation = false"
+          />
         </div>
         <div class="conversation-content">
           <div class="conversation-messages">
@@ -248,7 +346,9 @@
               </div>
               <div class="message-content">
                 <div class="message-text">{{ message.content }}</div>
-                <div class="message-time">{{ formatMessageTime(message.timestamp) }}</div>
+                <div class="message-time">
+                  {{ formatMessageTime(message.timestamp) }}
+                </div>
               </div>
             </div>
             <div v-if="isLoading" class="message ai">
@@ -270,8 +370,8 @@
               :disabled="isLoading"
               @keypress.enter="sendMessage"
             />
-            <UnifiedButton 
-              variant="primary" 
+            <UnifiedButton
+              variant="primary"
               :disabled="!userInput.trim() || isLoading"
               leading-icon="PaperAirplaneIcon"
               @click="sendMessage"
@@ -286,7 +386,14 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowPathIcon, ArrowsPointingOutIcon, EyeIcon, PaperAirplaneIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  ArrowsPointingOutIcon,
+  EyeIcon,
+  PaperAirplaneIcon,
+  PlusIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import { HeartIcon, TrophyIcon } from '@heroicons/vue/24/solid'
 
 import { ref, computed, onMounted } from 'vue'
@@ -352,7 +459,9 @@ const toast = useToast()
 const showQuests = ref(false)
 const showAchievements = ref(false)
 const showAIConversation = ref(false)
-const conversationMessages = ref<Array<{ role: 'user' | 'ai' | 'system'; content: string; timestamp: Date }>>([])
+const conversationMessages = ref<
+  Array<{ role: 'user' | 'ai' | 'system'; content: string; timestamp: Date }>
+>([])
 const userInput = ref('')
 const isLoading = ref(false)
 const aiSessionId = ref<string>('dashboard-ai-session')
@@ -379,7 +488,7 @@ const quickActions: QuickAction[] = [
     description: 'AI-powered resume optimization for gaming industry roles',
     icon: '📝',
     buttonText: 'Build Resume',
-    route: '/documents'
+    route: '/documents',
   },
   {
     id: 'jobs',
@@ -387,7 +496,7 @@ const quickActions: QuickAction[] = [
     description: 'Find gaming opportunities worldwide',
     icon: 'MagnifyingGlassIcon',
     buttonText: 'Search Jobs',
-    route: '/jobs'
+    route: '/jobs',
   },
   {
     id: 'studios',
@@ -395,7 +504,7 @@ const quickActions: QuickAction[] = [
     description: 'Discover gaming companies and culture',
     icon: '🏢',
     buttonText: 'Explore Studios',
-    route: '/studios/network'
+    route: '/studios/network',
   },
   {
     id: 'interview',
@@ -403,8 +512,8 @@ const quickActions: QuickAction[] = [
     description: 'Practice with AI-powered scenarios',
     icon: 'MicrophoneIcon',
     buttonText: 'Start Practice',
-    route: '/interview-prep'
-  }
+    route: '/interview-prep',
+  },
 ]
 
 // Recent Activity
@@ -413,20 +522,20 @@ const recentActivity = ref<Activity[]>([
     id: '1',
     description: 'Resume updated with Unity experience',
     icon: 'DocumentIcon-document-edit',
-    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000) // 2 hours ago
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
   },
   {
     id: '2',
     description: 'Applied to 3 Game Developer positions',
     icon: 'mdi-send',
-    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000) // 1 day ago
+    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
   },
   {
     id: '3',
     description: 'Achievement unlocked: Portfolio Master',
     icon: 'TrophyIcon',
-    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) // 3 days ago
-  }
+    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+  },
 ])
 
 // Skills
@@ -438,7 +547,7 @@ const topSkills = ref<Skill[]>([
   { name: 'Maya', level: 2, isActive: false },
   { name: 'C#', level: 4, isActive: true },
   { name: 'Game Design', level: 3, isActive: true },
-  { name: 'Level Design', level: 2, isActive: false }
+  { name: 'Level Design', level: 2, isActive: false },
 ])
 
 // Featured Studios
@@ -448,22 +557,22 @@ const featuredStudios = ref<Studio[]>([
     name: 'Riot Games',
     description: 'Creators of League of Legends and VALORANT',
     location: 'Los Angeles, CA',
-    employeeCount: 5000
+    employeeCount: 5000,
   },
   {
     id: '2',
     name: 'Electronic Arts',
     description: 'Publisher of FIFA, The Sims, and Battlefield',
     location: 'Redwood City, CA',
-    employeeCount: 10000
+    employeeCount: 10000,
   },
   {
     id: '3',
     name: 'Ubisoft',
-    description: 'Developer of Assassin\'s Creed and Far Cry',
+    description: "Developer of Assassin's Creed and Far Cry",
     location: 'Montreal, Canada',
-    employeeCount: 20000
-  }
+    employeeCount: 20000,
+  },
 ])
 
 // Daily Quests
@@ -474,7 +583,7 @@ const dailyQuests = ref<Quest[]>([
     description: 'Add skills and experience to your profile',
     progress: 2,
     total: 5,
-    xpReward: 50
+    xpReward: 50,
   },
   {
     id: '2',
@@ -482,7 +591,7 @@ const dailyQuests = ref<Quest[]>([
     description: 'Submit applications to gaming positions',
     progress: 1,
     total: 3,
-    xpReward: 75
+    xpReward: 75,
   },
   {
     id: '3',
@@ -490,8 +599,8 @@ const dailyQuests = ref<Quest[]>([
     description: 'Connect with industry professionals',
     progress: 0,
     total: 2,
-    xpReward: 100
-  }
+    xpReward: 100,
+  },
 ])
 
 // Achievements
@@ -501,36 +610,36 @@ const achievements = ref<Achievement[]>([
     title: 'First Steps',
     description: 'Created your first resume',
     icon: 'RocketLaunchIcon',
-    unlocked: true
+    unlocked: true,
   },
   {
     id: '2',
     title: 'Job Hunter',
     description: 'Applied to 10 positions',
     icon: '🎯',
-    unlocked: true
+    unlocked: true,
   },
   {
     id: '3',
     title: 'Portfolio Master',
     description: 'Completed your portfolio',
     icon: 'TrophyIcon',
-    unlocked: true
+    unlocked: true,
   },
   {
     id: '4',
     title: 'Network Builder',
     description: 'Connected with 25 professionals',
     icon: '🤝',
-    unlocked: false
+    unlocked: false,
   },
   {
     id: '5',
     title: 'Interview Ace',
     description: 'Completed 5 AI interview sessions',
     icon: 'StarIcon',
-    unlocked: false
-  }
+    unlocked: false,
+  },
 ])
 
 // Methods
@@ -548,27 +657,28 @@ function startAIConversation() {
   if (conversationMessages.value.length === 0) {
     conversationMessages.value.push({
       role: 'ai',
-      content: 'Hello! I\'m your AI Career Assistant. I can help you with gaming industry career advice, resume tips, interview preparation, and more. What would you like to discuss today?',
-      timestamp: new Date()
+      content:
+        "Hello! I'm your AI Career Assistant. I can help you with gaming industry career advice, resume tips, interview preparation, and more. What would you like to discuss today?",
+      timestamp: new Date(),
     })
   }
 }
 
 async function sendMessage() {
   if (!userInput.value.trim() || isLoading.value) return
-  
+
   const message = userInput.value.trim()
   userInput.value = ''
-  
+
   // Add user message to conversation
   conversationMessages.value.push({
     role: 'user',
     content: message,
-    timestamp: new Date()
+    timestamp: new Date(),
   })
-  
+
   isLoading.value = true
-  
+
   try {
     // Ensure AI is initialized
     if (!aiInitialized.value) {
@@ -582,7 +692,10 @@ async function sendMessage() {
     // Build minimal context from last few messages
     const recent = conversationMessages.value.slice(-6)
     const context = recent
-      .map(m => `${m.role === 'user' ? 'User' : m.role === 'ai' ? 'Assistant' : 'System'}: ${m.content}`)
+      .map(
+        m =>
+          `${m.role === 'user' ? 'User' : m.role === 'ai' ? 'Assistant' : 'System'}: ${m.content}`
+      )
       .join('\n')
 
     // Call canonical AI service
@@ -593,20 +706,24 @@ async function sendMessage() {
       sessionId: aiSessionId.value,
     })
 
-    const aiText = response?.content || 'Sorry, I could not generate a response.'
+    const aiText =
+      response?.content || 'Sorry, I could not generate a response.'
     conversationMessages.value.push({
       role: 'ai',
       content: aiText,
-      timestamp: new Date()
+      timestamp: new Date(),
     })
-    
+
     // Add XP for using AI assistant
     currentXP.value += 10
     toast.success('+10 XP for using AI Assistant!')
-    
   } catch (error) {
     console.error('AI conversation error:', error)
-    toast.error(error instanceof Error ? error.message : 'Failed to get AI response. Please try again.')
+    toast.error(
+      error instanceof Error
+        ? error.message
+        : 'Failed to get AI response. Please try again.'
+    )
   } finally {
     isLoading.value = false
   }
@@ -625,10 +742,10 @@ function refreshActivity() {
     description: 'Refreshed activity feed',
     icon: 'ArrowPathIcon',
     timestamp: new Date(),
-    isNew: true
+    isNew: true,
   }
   recentActivity.value.unshift(newActivity)
-  
+
   setTimeout(() => {
     const index = recentActivity.value.findIndex(a => a.id === newActivity.id)
     if (index >= 0) {
@@ -669,7 +786,7 @@ function formatTimeAgo(date: Date): string {
   const diffInMs = now.getTime() - date.getTime()
   const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
   const diffInDays = Math.floor(diffInHours / 24)
-  
+
   if (diffInHours < 1) return 'Just now'
   if (diffInHours < 24) return `${diffInHours} hours ago`
   if (diffInDays === 1) return '1 day ago'
@@ -701,13 +818,13 @@ onMounted(() => {
 <style scoped>
 /* CSS Variables */
 :root {
-  --primary: #7C3AED;
-  --primary-dark: #6D28D9;
-  --primary-light: #A78BFA;
-  --secondary: #06B6D4;
-  --accent: #F59E0B;
-  --success: #10B981;
-  --danger: #EF4444;
+  --primary: #7c3aed;
+  --primary-dark: #6d28d9;
+  --primary-light: #a78bfa;
+  --secondary: #06b6d4;
+  --accent: #f59e0b;
+  --success: #10b981;
+  --danger: #ef4444;
   --glow: rgba(124, 58, 237, 0.4);
 }
 
@@ -759,9 +876,16 @@ onMounted(() => {
 }
 
 @keyframes float {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(30px, -30px) rotate(120deg); }
-  66% { transform: translate(-20px, 20px) rotate(240deg); }
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, -30px) rotate(120deg);
+  }
+  66% {
+    transform: translate(-20px, 20px) rotate(240deg);
+  }
 }
 
 .dashboard-container {
@@ -781,7 +905,12 @@ onMounted(() => {
 .main-title {
   font-size: 3rem;
   font-weight: 900;
-  background: linear-gradient(135deg, var(--primary-light), var(--secondary), var(--accent));
+  background: linear-gradient(
+    135deg,
+    var(--primary-light),
+    var(--secondary),
+    var(--accent)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -791,9 +920,15 @@ onMounted(() => {
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .subtitle {
@@ -821,13 +956,23 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary),
+    var(--secondary),
+    transparent
+  );
   animation: shimmer 3s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .hud-content {
@@ -858,8 +1003,15 @@ onMounted(() => {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 10px 30px var(--glow); }
-  50% { transform: scale(1.05); box-shadow: 0 15px 40px var(--glow); }
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px var(--glow);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px var(--glow);
+  }
 }
 
 .level-text {
@@ -907,7 +1059,12 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   animation: shimmer 2s infinite;
 }
 
@@ -935,9 +1092,16 @@ onMounted(() => {
 }
 
 @keyframes flicker {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  25% { transform: scale(1.1) rotate(-5deg); }
-  75% { transform: scale(1.1) rotate(5deg); }
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(5deg);
+  }
 }
 
 .hud-actions {
@@ -1509,11 +1673,17 @@ onMounted(() => {
   animation: typing 1.4s infinite ease-in-out;
 }
 
-.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+.typing-indicator span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.typing-indicator span:nth-child(2) {
+  animation-delay: -0.16s;
+}
 
 @keyframes typing {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0.8);
     opacity: 0.5;
   }

@@ -19,15 +19,12 @@ export interface VirtualScrollState {
   visibleItems: any[]
 }
 
-export function useVirtualScroll<T>(
-  items: T[],
-  options: VirtualScrollOptions
-) {
+export function useVirtualScroll<T>(items: T[], options: VirtualScrollOptions) {
   const {
     itemHeight,
     containerHeight,
     overscan = 5,
-    enableSmoothScrolling = true
+    enableSmoothScrolling = true,
   } = options
 
   const scrollTop = ref(0)
@@ -59,7 +56,7 @@ export function useVirtualScroll<T>(
       endIndex,
       offsetY,
       totalHeight,
-      visibleItems
+      visibleItems,
     }
   })
 
@@ -77,13 +74,16 @@ export function useVirtualScroll<T>(
   }
 
   // Scroll to specific item
-  const scrollToItem = (index: number, behavior: 'auto' | 'smooth' = 'smooth') => {
+  const scrollToItem = (
+    index: number,
+    behavior: 'auto' | 'smooth' = 'smooth'
+  ) => {
     if (!containerRef.value) return
 
     const targetScrollTop = index * itemHeight
     containerRef.value.scrollTo({
       top: targetScrollTop,
-      behavior
+      behavior,
     })
   }
 
@@ -104,7 +104,7 @@ export function useVirtualScroll<T>(
     scrollToItem,
     scrollToTop,
     scrollToBottom,
-    scrollTop
+    scrollTop,
   }
 }
 
@@ -128,7 +128,7 @@ export function useInfiniteLoad(
 
   const canLoad = computed(() => {
     const now = Date.now()
-    return !loading.value && (now - lastLoadTime.value) >= loadingDelay
+    return !loading.value && now - lastLoadTime.value >= loadingDelay
   })
 
   const handleScroll = async (event: Event) => {
@@ -155,7 +155,7 @@ export function useInfiniteLoad(
     containerRef,
     loading,
     handleScroll,
-    canLoad
+    canLoad,
   }
 }
 
@@ -168,14 +168,11 @@ export interface SearchOptions {
   searchFields?: string[]
 }
 
-export function useOptimizedSearch<T>(
-  items: T[],
-  options: SearchOptions = {}
-) {
+export function useOptimizedSearch<T>(items: T[], options: SearchOptions = {}) {
   const {
     debounceMs = 300,
     minQueryLength = 2,
-    searchFields = ['title', 'description']
+    searchFields = ['title', 'description'],
   } = options
 
   const query = ref('')
@@ -219,8 +216,8 @@ export function useOptimizedSearch<T>(
           return value.toLowerCase().includes(searchQuery)
         }
         if (Array.isArray(value)) {
-          return value.some(v => 
-            typeof v === 'string' && v.toLowerCase().includes(searchQuery)
+          return value.some(
+            v => typeof v === 'string' && v.toLowerCase().includes(searchQuery)
           )
         }
         return false
@@ -242,7 +239,7 @@ export function useOptimizedSearch<T>(
     setQuery,
     clearSearch,
     loading,
-    filteredItems
+    filteredItems,
   }
 }
 
@@ -254,7 +251,7 @@ export function usePerformanceMonitor() {
     heapUsed: 0,
     heapTotal: 0,
     renderTime: 0,
-    itemsRendered: 0
+    itemsRendered: 0,
   })
 
   const startTime = ref(0)
@@ -277,12 +274,17 @@ export function usePerformanceMonitor() {
     }
   }
 
-  const logPerformanceWarning = (message: string, threshold: number, actual: number) => {
+  const logPerformanceWarning = (
+    message: string,
+    threshold: number,
+    actual: number
+  ) => {
     if (actual > threshold) {
       console.warn(`Performance Warning: ${message}`, {
         threshold,
         actual,
-        recommendation: 'Consider enabling virtualization or reducing item complexity'
+        recommendation:
+          'Consider enabling virtualization or reducing item complexity',
       })
     }
   }
@@ -292,7 +294,7 @@ export function usePerformanceMonitor() {
     startRenderTracking,
     endRenderTracking,
     updateMemoryUsage,
-    logPerformanceWarning
+    logPerformanceWarning,
   }
 }
 
@@ -317,20 +319,20 @@ export function useLazyImages() {
     try {
       if (typeof window !== 'undefined' && window.Image) {
         const img = new window.Image()
-        
-        return new Promise<boolean>((resolve) => {
+
+        return new Promise<boolean>(resolve => {
           img.onload = () => {
             imageCache.set(src, true)
             loadingImages.delete(src)
             resolve(true)
           }
-          
+
           img.onerror = () => {
             imageCache.set(src, false)
             loadingImages.delete(src)
             resolve(false)
           }
-          
+
           img.src = src
         })
       } else {
@@ -363,7 +365,7 @@ export function useLazyImages() {
     loadImage,
     preloadImages,
     isImageLoaded,
-    clearCache
+    clearCache,
   }
 }
 
@@ -388,9 +390,9 @@ export function useBatchOperations() {
         const batchResults = await Promise.all(
           batch.map(item => _operation(item))
         )
-        
+
         results.push(...batchResults)
-        
+
         if (_onProgress) {
           _onProgress(i + batch.length, items.length)
         }
@@ -408,6 +410,6 @@ export function useBatchOperations() {
   return {
     batchSize,
     processing: readonly(processing),
-    processBatch
+    processBatch,
   }
 }

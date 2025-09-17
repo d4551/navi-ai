@@ -1,5 +1,8 @@
 <template>
-  <div class="job-details-view font-sans" :class="{ 'sidebar-view': isSidebarView }">
+  <div
+    class="job-details-view font-sans"
+    :class="{ 'sidebar-view': isSidebarView }"
+  >
     <div v-if="job" class="job-details-content">
       <!-- Job Header -->
       <div class="job-header glass-card section-card">
@@ -21,12 +24,20 @@
                   title="Match score"
                   aria-label="Match score"
                 >
-                  <AppIcon name="CursorArrowRaysIcon-variant" class="mr-1" aria-hidden="true" />
-                  <span class="match-pct">{{ Math.round(job.matchScore) }}%</span>
+                  <AppIcon
+                    name="CursorArrowRaysIcon-variant"
+                    class="mr-1"
+                    aria-hidden="true"
+                  />
+                  <span class="match-pct"
+                    >{{ Math.round(job.matchScore) }}%</span
+                  >
                 </span>
               </h1>
               <div class="company-details">
-                <h2 class="company-name">{{ job.company?.name || job.company }}</h2>
+                <h2 class="company-name">
+                  {{ job.company?.name || job.company }}
+                </h2>
                 <div class="job-meta">
                   <span v-if="job.location" class="job-location">
                     <AppIcon name="MapPinIcon" />
@@ -92,11 +103,17 @@
               Job Description
             </h3>
             <!-- eslint-disable-next-line vue/no-v-html -->
-            <div class="job-description" v-html="formatDescription(job.description)"></div>
+            <div
+              class="job-description"
+              v-html="formatDescription(job.description)"
+            ></div>
           </section>
 
           <!-- Requirements -->
-          <section v-if="job.requirements && job.requirements.length > 0" class="job-section">
+          <section
+            v-if="job.requirements && job.requirements.length > 0"
+            class="job-section"
+          >
             <h3 class="section-title">
               <AppIcon name="CheckIcon-circle-outline-outline" />
               Requirements
@@ -109,7 +126,10 @@
           </section>
 
           <!-- Skills & Technologies -->
-          <section v-if="job.skills && job.skills.length > 0" class="job-section">
+          <section
+            v-if="job.skills && job.skills.length > 0"
+            class="job-section"
+          >
             <h3 class="section-title">
               <AppIcon name="mdi-cog-outline" />
               Required Skills
@@ -127,7 +147,10 @@
           </section>
 
           <!-- Game Engines -->
-          <section v-if="job.engines && job.engines.length > 0" class="job-section">
+          <section
+            v-if="job.engines && job.engines.length > 0"
+            class="job-section"
+          >
             <h3 class="section-title">
               <AppIcon name="DevicePhoneMobileIcon-variant-outline" />
               Game Engines
@@ -145,7 +168,10 @@
           </section>
 
           <!-- Benefits -->
-          <section v-if="job.benefits && job.benefits.length > 0" class="job-section">
+          <section
+            v-if="job.benefits && job.benefits.length > 0"
+            class="job-section"
+          >
             <h3 class="section-title">
               <AppIcon name="mdi-gift-outline" />
               Benefits & Perks
@@ -171,7 +197,9 @@
             <div class="info-list">
               <div v-if="job.experience" class="info-item">
                 <span class="info-label">Experience Level</span>
-                <span class="info-value">{{ formatExperience(job.experience) }}</span>
+                <span class="info-value">{{
+                  formatExperience(job.experience)
+                }}</span>
               </div>
               <div v-if="job.salary" class="info-item">
                 <span class="info-label">Salary Range</span>
@@ -189,7 +217,10 @@
           </div>
 
           <!-- Company Card -->
-          <div v-if="job.company && typeof job.company === 'object'" class="company-card glass-card section-card">
+          <div
+            v-if="job.company && typeof job.company === 'object'"
+            class="company-card glass-card section-card"
+          >
             <h4 class="card-title">About {{ job.company.name }}</h4>
             <div class="company-info">
               <p v-if="job.company.description" class="company-description">
@@ -215,7 +246,10 @@
           </div>
 
           <!-- Similar Jobs -->
-          <div v-if="similarJobs.length > 0" class="similar-jobs-card glass-card section-card">
+          <div
+            v-if="similarJobs.length > 0"
+            class="similar-jobs-card glass-card section-card"
+          >
             <h4 class="card-title">Similar Jobs</h4>
             <div class="similar-jobs-list">
               <div
@@ -225,8 +259,12 @@
                 @click="$emit('select-job', similarJob)"
               >
                 <div class="similar-job-title">{{ similarJob.title }}</div>
-                <div class="similar-job-company">{{ similarJob.company?.name || similarJob.company }}</div>
-                <div class="similar-job-location">{{ similarJob.location }}</div>
+                <div class="similar-job-company">
+                  {{ similarJob.company?.name || similarJob.company }}
+                </div>
+                <div class="similar-job-location">
+                  {{ similarJob.location }}
+                </div>
               </div>
             </div>
           </div>
@@ -238,13 +276,24 @@
     <div v-else class="empty-state">
       <AppIcon name="mdi-briefcase-search-outline" />
       <h3>Select a job to view details</h3>
-      <p>Choose a job from the list to see detailed information, requirements, and application options.</p>
+      <p>
+        Choose a job from the list to see detailed information, requirements,
+        and application options.
+      </p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { BuildingOfficeIcon, CalendarIcon, CheckCircleIcon, ClockIcon, GlobeAltIcon, PaperAirplaneIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import {
+  BuildingOfficeIcon,
+  CalendarIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  GlobeAltIcon,
+  PaperAirplaneIcon,
+  UsersIcon,
+} from '@heroicons/vue/24/outline'
 import { MapPinIcon } from '@heroicons/vue/24/solid'
 
 import { ref, watch, defineEmits, defineProps } from 'vue'
@@ -254,16 +303,16 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 const _props = defineProps({
   job: {
     type: Object,
-    default: null
+    default: null,
   },
   similarJobs: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   isSidebarView: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const emit = defineEmits(['select-job', 'save-job', 'apply-job'])
@@ -298,32 +347,33 @@ const applyToJob = async () => {
   }
 }
 
-const formatJobType = (type) => {
+const formatJobType = type => {
   const typeMap = {
     'full-time': 'Full-time',
     'part-time': 'Part-time',
-    'contract': 'Contract',
-    'internship': 'Internship',
-    'freelance': 'Freelance'
+    contract: 'Contract',
+    internship: 'Internship',
+    freelance: 'Freelance',
   }
   return typeMap[type] || type
 }
 
-const formatExperience = (experience) => {
+const formatExperience = experience => {
   const expMap = {
-    'entry': 'Entry Level',
-    'mid': 'Mid Level',
-    'senior': 'Senior Level',
-    'lead': 'Lead',
-    'principal': 'Principal'
+    entry: 'Entry Level',
+    mid: 'Mid Level',
+    senior: 'Senior Level',
+    lead: 'Lead',
+    principal: 'Principal',
   }
   return expMap[experience] || experience
 }
 
-const formatSalary = (salary) => {
+const formatSalary = salary => {
   if (typeof salary === 'object') {
     const { min, max, currency = 'USD' } = salary
-    const symbol = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : currency
+    const symbol =
+      currency === 'USD' ? '$' : currency === 'EUR' ? '€' : currency
     if (min && max) {
       return `${symbol}${min.toLocaleString()} - ${symbol}${max.toLocaleString()}`
     }
@@ -331,21 +381,33 @@ const formatSalary = (salary) => {
   return salary
 }
 
-const formatDate = (date) => {
-  if (!date) {return ''}
+const formatDate = date => {
+  if (!date) {
+    return ''
+  }
   const now = new Date()
   const postDate = new Date(date)
   const diffDays = Math.floor((now - postDate) / (1000 * 60 * 60 * 24))
 
-  if (diffDays === 0) {return 'Today'}
-  if (diffDays === 1) {return '1 day ago'}
-  if (diffDays < 7) {return `${diffDays} days ago`}
-  if (diffDays < 30) {return `${Math.floor(diffDays / 7)} weeks ago`}
+  if (diffDays === 0) {
+    return 'Today'
+  }
+  if (diffDays === 1) {
+    return '1 day ago'
+  }
+  if (diffDays < 7) {
+    return `${diffDays} days ago`
+  }
+  if (diffDays < 30) {
+    return `${Math.floor(diffDays / 7)} weeks ago`
+  }
   return `${Math.floor(diffDays / 30)} months ago`
 }
 
-const formatDescription = (description) => {
-  if (!description) {return ''}
+const formatDescription = description => {
+  if (!description) {
+    return ''
+  }
   // Simple HTML formatting for line breaks
   return description
     .replace(/\n\n/g, '</p><p>')
@@ -354,43 +416,54 @@ const formatDescription = (description) => {
     .replace(/$/, '</p>')
 }
 
-const getTagClass = (tag) => {
+const getTagClass = tag => {
   const gamingTags = ['unity', 'unreal', 'gamedev', 'gaming', 'game']
   const skillTags = ['javascript', 'python', 'c#', 'react', 'vue']
 
-  if (gamingTags.some(t => tag.toLowerCase().includes(t))) {return 'tag-gaming'}
-  if (skillTags.some(t => tag.toLowerCase().includes(t))) {return 'tag-skill'}
+  if (gamingTags.some(t => tag.toLowerCase().includes(t))) {
+    return 'tag-gaming'
+  }
+  if (skillTags.some(t => tag.toLowerCase().includes(t))) {
+    return 'tag-skill'
+  }
   return 'tag-default'
 }
 
-const getSkillLevel = (skill) => {
+const getSkillLevel = skill => {
   // Simple skill level detection based on common patterns
   const advanced = ['senior', 'expert', 'lead', 'architect']
   const intermediate = ['mid', 'intermediate', 'experienced']
 
-  if (advanced.some(level => skill.toLowerCase().includes(level))) {return 'skill-advanced'}
-  if (intermediate.some(level => skill.toLowerCase().includes(level))) {return 'skill-intermediate'}
+  if (advanced.some(level => skill.toLowerCase().includes(level))) {
+    return 'skill-advanced'
+  }
+  if (intermediate.some(level => skill.toLowerCase().includes(level))) {
+    return 'skill-intermediate'
+  }
   return 'skill-basic'
 }
 
-const getEngineIcon = (engine) => {
+const getEngineIcon = engine => {
   const iconMap = {
-    'unity': 'mdi-unity',
-    'unreal': 'mdi-unity', // Using unity icon as fallback
-    'godot': 'DevicePhoneMobileIcon-variant',
-    'construct': 'mdi-puzzle'
+    unity: 'mdi-unity',
+    unreal: 'mdi-unity', // Using unity icon as fallback
+    godot: 'DevicePhoneMobileIcon-variant',
+    construct: 'mdi-puzzle',
   }
   return iconMap[engine.toLowerCase()] || 'mdi-cog'
 }
 
 // Watch for job changes to reset state
-watch(() => props.job, (newJob) => {
-  if (newJob) {
-    // Check if job is already saved (would normally check against saved jobs list)
-    isSaved.value = false
-    isApplying.value = false
+watch(
+  () => props.job,
+  newJob => {
+    if (newJob) {
+      // Check if job is already saved (would normally check against saved jobs list)
+      isSaved.value = false
+      isApplying.value = false
+    }
   }
-})
+)
 </script>
 
 <style scoped>
@@ -844,13 +917,13 @@ watch(() => props.job, (newJob) => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .job-description,
-[data-theme="dark"] .requirements-list li,
-[data-theme="dark"] .company-description {
+[data-theme='dark'] .job-description,
+[data-theme='dark'] .requirements-list li,
+[data-theme='dark'] .company-description {
   color: var(--text-secondary);
 }
 
-[data-theme="dark"] .match-score-circle::before {
+[data-theme='dark'] .match-score-circle::before {
   background: var(--glass-surface);
 }
 </style>

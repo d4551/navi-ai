@@ -36,10 +36,10 @@ export const ALIASES: Record<string, string> = {
   'mdi-waveform': 'mdi-sine-wave',
   'mdi-graph-outline': 'mdi-chart-line',
   'mdi-graph': 'mdi-chart-line',
-  
+
   // Document icon aliases
   'mdi-file-document-outline-edit': 'mdi-file-document-edit',
-  'mdi-file-document-edit-outline': 'mdi-file-document-edit'
+  'mdi-file-document-edit-outline': 'mdi-file-document-edit',
 }
 
 export function getMdiAlias(name?: string | null): string | undefined {

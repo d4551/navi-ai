@@ -1,25 +1,33 @@
 <template>
-  <StandardPageLayout 
-    page-type="gaming" 
-    content-spacing="normal" 
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="normal"
     max-width="xl"
     title="AI Media Studio"
     subtitle="Live + file analysis with smart modes, gallery, and analytics"
     :header-context="{ aiConnected, sdkReady, responses: responses.length }"
   >
     <template #header-actions>
-      <UnifiedButton variant="primary" leading-icon="mdi-camera" @click="captureNow">
+      <UnifiedButton
+        variant="primary"
+        leading-icon="mdi-camera"
+        @click="captureNow"
+      >
         Capture
       </UnifiedButton>
-      <UnifiedButton variant="glass" leading-icon="mdi-download" @click="exportSession">
+      <UnifiedButton
+        variant="glass"
+        leading-icon="mdi-download"
+        @click="exportSession"
+      >
         Export
       </UnifiedButton>
     </template>
-    
+
     <!-- Navigation Tabs -->
     <nav class="modern-nav-tabs">
-      <button 
-        v-for="tab in tabs" 
+      <button
+        v-for="tab in tabs"
         :key="tab.id"
         class="nav-tab"
         :class="{ active: activeTab === tab.id }"
@@ -33,17 +41,17 @@
     <!-- Control Toolbar -->
     <div class="modern-toolbar">
       <div class="session-input-group">
-        <input 
+        <input
           v-model="sessionName"
-          type="text" 
-          class="session-input" 
+          type="text"
+          class="session-input"
           placeholder="Session name"
           @change="persistSessionName"
         />
       </div>
-        
+
       <div class="mode-chips">
-        <div 
+        <div
           v-for="mode in modes"
           :key="mode.key"
           class="mode-chip"
@@ -56,10 +64,18 @@
       </div>
 
       <div class="quick-actions">
-        <UnifiedButton variant="primary" leading-icon="mdi-camera" @click="captureNow">
+        <UnifiedButton
+          variant="primary"
+          leading-icon="mdi-camera"
+          @click="captureNow"
+        >
           Capture
         </UnifiedButton>
-        <UnifiedButton variant="glass" leading-icon="mdi-trash-can" @click="clearSession">
+        <UnifiedButton
+          variant="glass"
+          leading-icon="mdi-trash-can"
+          @click="clearSession"
+        >
           Clear
         </UnifiedButton>
       </div>
@@ -80,9 +96,9 @@
             <span>{{ cameraActive ? 'Active' : 'Inactive' }}</span>
           </div>
         </div>
-          
+
         <div class="media-preview">
-          <video 
+          <video
             v-if="cameraActive && cameraStream"
             ref="webcamVideo"
             class="preview-video"
@@ -97,15 +113,17 @@
         </div>
 
         <div class="controls-grid">
-          <button 
+          <button
             class="control-btn"
             :class="{ active: cameraActive }"
             @click="toggleCamera"
           >
             <AppIcon name="mdi-camera" class="control-btn-icon" />
-            <span class="control-btn-label">{{ cameraActive ? 'Stop Camera' : 'Start Camera' }}</span>
+            <span class="control-btn-label">{{
+              cameraActive ? 'Stop Camera' : 'Start Camera'
+            }}</span>
           </button>
-          <button 
+          <button
             class="control-btn"
             :class="{ active: microphoneActive }"
             @click="toggleMicrophone"
@@ -113,7 +131,7 @@
             <AppIcon name="mdi-microphone" class="control-btn-icon" />
             <span class="control-btn-label">Microphone</span>
           </button>
-          <button 
+          <button
             class="control-btn"
             :class="{ active: screenShareActive }"
             @click="toggleScreenShare"
@@ -121,10 +139,7 @@
             <AppIcon name="mdi-monitor" class="control-btn-icon" />
             <span class="control-btn-label">Share Screen</span>
           </button>
-          <button 
-            class="control-btn danger"
-            @click="stopAll"
-          >
+          <button class="control-btn danger" @click="stopAll">
             <AppIcon name="mdi-stop" class="control-btn-icon" />
             <span class="control-btn-label">Stop All</span>
           </button>
@@ -144,9 +159,9 @@
             <span>{{ screenShareActive ? 'Active' : 'Inactive' }}</span>
           </div>
         </div>
-          
+
         <div class="media-preview">
-          <video 
+          <video
             v-if="screenShareActive && screenStream"
             ref="screenVideo"
             class="preview-video"
@@ -162,7 +177,7 @@
 
         <!-- Audio Visualizer -->
         <div class="audio-visualizer">
-          <div 
+          <div
             v-for="i in 12"
             :key="i"
             class="visualizer-bar"
@@ -183,15 +198,17 @@
           <span>Live Stats</span>
         </div>
       </div>
-        
+
       <div class="stats-grid">
-        <div 
+        <div
           v-for="(stat, index) in liveStats"
           :key="stat.label"
           class="stat-card"
           :style="{ animationDelay: `${index * 0.1}s` }"
         >
-          <div class="stat-value" :data-value="stat.value">{{ stat.displayValue }}</div>
+          <div class="stat-value" :data-value="stat.value">
+            {{ stat.displayValue }}
+          </div>
           <div class="stat-label">{{ stat.label }}</div>
         </div>
       </div>
@@ -207,9 +224,9 @@
           <span>Quick Guide</span>
         </div>
       </div>
-        
+
       <div class="guide-grid">
-        <div 
+        <div
           v-for="(step, index) in guideSteps"
           :key="step.number"
           class="guide-step-card"
@@ -225,10 +242,10 @@
     </div>
 
     <!-- Hidden AI Media Integration -->
-    <AIMediaIntegration 
+    <AIMediaIntegration
       ref="mediaIntegration"
       :mode-prompt="modePrompt"
-      style="display: none;"
+      style="display: none"
       @ai-response="recordResponse"
       @integration-error="onError"
     />
@@ -311,32 +328,32 @@ const tabs: Tab[] = [
   { id: 'live', label: 'Live', icon: 'mdi-video' },
   { id: 'file', label: 'File', icon: 'mdi-folder' },
   { id: 'gallery', label: 'Gallery', icon: 'mdi-view-gallery' },
-  { id: 'analytics', label: 'Analytics', icon: 'mdi-chart-box' }
+  { id: 'analytics', label: 'Analytics', icon: 'mdi-chart-box' },
 ]
 
 const modes: Mode[] = [
   { key: 'describe', label: 'Describe', icon: 'mdi-magnify' },
   { key: 'ocr', label: 'OCR', icon: 'mdi-text-recognition' },
   { key: 'safety', label: 'Safety', icon: 'mdi-shield-check' },
-  { key: 'ui_qa', label: 'UI QA', icon: 'mdi-test-tube' }
+  { key: 'ui_qa', label: 'UI QA', icon: 'mdi-test-tube' },
 ]
 
 const guideSteps: GuideStep[] = [
   {
     number: 1,
     title: 'Start a source',
-    description: 'Use Start Camera or Share Screen to stream media.'
+    description: 'Use Start Camera or Share Screen to stream media.',
   },
   {
     number: 2,
     title: 'Pick a mode',
-    description: 'Switch analysis modes for objects, text, or scenes.'
+    description: 'Switch analysis modes for objects, text, or scenes.',
   },
   {
     number: 3,
     title: 'Export results',
-    description: 'Save a JSON bundle of your session at any time.'
-  }
+    description: 'Save a JSON bundle of your session at any time.',
+  },
 ]
 
 // Computed properties
@@ -345,7 +362,7 @@ const modePrompt = computed(() => {
     describe: 'Describe what you see in detail',
     ocr: 'Extract and transcribe any text visible',
     safety: 'Analyze for safety concerns or inappropriate content',
-    ui_qa: 'Evaluate UI/UX elements and user interface quality'
+    ui_qa: 'Evaluate UI/UX elements and user interface quality',
   }
   return prompts[activeMode.value as keyof typeof prompts] || prompts.describe
 })
@@ -354,23 +371,23 @@ const liveStats = computed<StatItem[]>(() => [
   {
     label: 'Responses',
     value: responses.value.length,
-    displayValue: responses.value.length.toString()
+    displayValue: responses.value.length.toString(),
   },
   {
     label: 'Avg Confidence',
     value: averageConfidence.value,
-    displayValue: `${averageConfidence.value}%`
+    displayValue: `${averageConfidence.value}%`,
   },
   {
     label: 'Avg Latency',
     value: averageLatency.value,
-    displayValue: `${averageLatency.value.toFixed(1)}s`
+    displayValue: `${averageLatency.value.toFixed(1)}s`,
   },
   {
     label: 'Frames',
     value: frames.value.length,
-    displayValue: frames.value.length.toString()
-  }
+    displayValue: frames.value.length.toString(),
+  },
 ])
 
 const averageConfidence = computed(() => {
@@ -381,7 +398,7 @@ const averageConfidence = computed(() => {
 
 const averageLatency = computed(() => {
   // Mock latency calculation
-  return 1.2 + (Math.random() * 0.8)
+  return 1.2 + Math.random() * 0.8
 })
 
 // Media control functions
@@ -400,20 +417,20 @@ const toggleCamera = async () => {
 
 const startCamera = async () => {
   try {
-    cameraStream.value = await navigator.mediaDevices.getUserMedia({ 
-      video: true, 
-      audio: false 
+    cameraStream.value = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false,
     })
-    
+
     if (webcamVideo.value && cameraStream.value) {
       webcamVideo.value.srcObject = cameraStream.value
       await webcamVideo.value.play()
       cameraActive.value = true
-      
+
       if (!startTime.value) {
         startTime.value = new Date()
       }
-      
+
       toast.success('Camera started')
     }
   } catch (error) {
@@ -427,11 +444,11 @@ const stopCamera = async () => {
     cameraStream.value.getTracks().forEach(track => track.stop())
     cameraStream.value = null
   }
-  
+
   if (webcamVideo.value) {
     webcamVideo.value.srcObject = null
   }
-  
+
   cameraActive.value = false
   toast.info('Camera stopped')
 }
@@ -451,20 +468,20 @@ const toggleScreenShare = async () => {
 
 const startScreenShare = async () => {
   try {
-    screenStream.value = await navigator.mediaDevices.getDisplayMedia({ 
-      video: true, 
-      audio: true 
+    screenStream.value = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: true,
     })
-    
+
     if (screenVideo.value && screenStream.value) {
       screenVideo.value.srcObject = screenStream.value
       await screenVideo.value.play()
       screenShareActive.value = true
-      
+
       if (!startTime.value) {
         startTime.value = new Date()
       }
-      
+
       toast.success('Screen sharing started')
     }
   } catch (error) {
@@ -478,11 +495,11 @@ const stopScreenShare = async () => {
     screenStream.value.getTracks().forEach(track => track.stop())
     screenStream.value = null
   }
-  
+
   if (screenVideo.value) {
     screenVideo.value.srcObject = null
   }
-  
+
   screenShareActive.value = false
   toast.info('Screen sharing stopped')
 }
@@ -506,19 +523,19 @@ const captureNow = () => {
   frames.value.push({
     id: Date.now(),
     timestamp: new Date(),
-    source: cameraActive.value ? 'camera' : 'screen'
+    source: cameraActive.value ? 'camera' : 'screen',
   })
-  
+
   // Mock AI response
   setTimeout(() => {
     recordResponse({
       mode: activeMode.value,
       content: `Analysis result for frame ${frames.value.length}`,
       confidence: 85 + Math.random() * 15,
-      timestamp: new Date()
+      timestamp: new Date(),
     })
   }, 500)
-  
+
   toast.success('Frame captured and analyzing...')
 }
 
@@ -536,13 +553,13 @@ const exportSession = () => {
     startTime: startTime.value,
     responses: responses.value,
     frames: frames.value,
-    stats: liveStats.value
+    stats: liveStats.value,
   }
-  
-  const blob = new Blob([JSON.stringify(sessionData, null, 2)], { 
-    type: 'application/json' 
+
+  const blob = new Blob([JSON.stringify(sessionData, null, 2)], {
+    type: 'application/json',
   })
-  
+
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -551,7 +568,7 @@ const exportSession = () => {
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
-  
+
   toast.success('Session exported')
 }
 
@@ -567,7 +584,7 @@ const recordResponse = (response: any) => {
     mode: response.mode || activeMode.value,
     content: response.content,
     confidence: response.confidence || 95,
-    timestamp: new Date()
+    timestamp: new Date(),
   })
 }
 
@@ -584,19 +601,18 @@ onMounted(async () => {
       await canonicalAI.initialize({
         primaryProvider: 'google',
         enableMultimodal: true,
-        enableRealTime: true
+        enableRealTime: true,
       })
     }
-    
+
     aiConnected.value = canonicalAI.isReady
     sdkReady.value = true
-    
+
     // Animate stats on load
     await nextTick()
     animateStatsOnLoad()
-    
+
     toast.success('AI Media Studio initialized')
-    
   } catch (error) {
     console.error('Initialization failed:', error)
     toast.error('Failed to initialize AI services')
@@ -616,7 +632,7 @@ const animateStatsOnLoad = () => {
       if (finalValue && !isNaN(finalValue)) {
         let currentValue = 0
         const increment = Math.max(1, finalValue / 20)
-        
+
         const counter = setInterval(() => {
           currentValue += increment
           if (currentValue >= finalValue) {
@@ -668,8 +684,15 @@ const animateStatsOnLoad = () => {
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success-500) 70%, transparent); }
-  50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--color-success-500) 0%, transparent); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0
+      color-mix(in srgb, var(--color-success-500) 70%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 10px
+      color-mix(in srgb, var(--color-success-500) 0%, transparent);
+  }
 }
 
 /* Content Layout - now uses StandardPageLayout container */
@@ -715,7 +738,8 @@ const animateStatsOnLoad = () => {
 .nav-tab.active {
   background: var(--color-primary-500);
   color: white;
-  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  box-shadow: 0 10px 30px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
 /* Modern Toolbar - Standardized */
@@ -752,7 +776,8 @@ const animateStatsOnLoad = () => {
 .session-input:focus {
   outline: none;
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 }
 
 .mode-chips {
@@ -1017,8 +1042,13 @@ const animateStatsOnLoad = () => {
 }
 
 @keyframes audioWave {
-  0%, 100% { height: 10px; }
-  50% { height: 30px; }
+  0%,
+  100% {
+    height: 10px;
+  }
+  50% {
+    height: 30px;
+  }
 }
 
 /* Stats Grid */
@@ -1058,13 +1088,21 @@ const animateStatsOnLoad = () => {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary-500) 10%, transparent) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent) 0%,
+    transparent 70%
+  );
   animation: rotate 10s linear infinite;
 }
 
 @keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .stat-card:hover {
@@ -1159,36 +1197,36 @@ const animateStatsOnLoad = () => {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .modern-card {
     padding: 1.5rem;
     min-height: auto;
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
-  
+
   .guide-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .modern-toolbar {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .mode-chips,
   .quick-actions {
     justify-content: center;
   }
-  
+
   .status-badges {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .header-content {
     flex-direction: column;
     align-items: center;
@@ -1207,39 +1245,39 @@ const animateStatsOnLoad = () => {
     min-height: auto;
     border-radius: 1rem;
   }
-  
+
   .media-preview {
     min-height: 150px;
     margin-bottom: 1rem;
   }
-  
+
   .controls-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
   }
-  
+
   .control-btn {
     padding: 0.75rem 0.5rem;
     font-size: 0.875rem;
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
   }
-  
+
   .stat-card {
     padding: 1rem;
   }
-  
+
   .stat-value {
     font-size: 1.5rem;
   }
-  
+
   .mode-chips {
     justify-content: center;
   }
-  
+
   .mode-chip {
     font-size: 0.75rem;
     padding: 0.375rem 0.75rem;
@@ -1256,7 +1294,7 @@ const animateStatsOnLoad = () => {
   .stat-card::before {
     animation: none !important;
   }
-  
+
   .modern-card:hover,
   .nav-tab:hover,
   .control-btn:hover {

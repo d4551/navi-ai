@@ -1,5 +1,10 @@
 <template>
-  <div v-if="show" class="loading-skeletons font-sans" role="status" aria-live="polite">
+  <div
+    v-if="show"
+    class="loading-skeletons font-sans"
+    role="status"
+    aria-live="polite"
+  >
     <!-- Document Header Skeleton -->
     <ContentLoader
       v-if="variant === 'document' || variant === 'all'"
@@ -51,7 +56,10 @@
     </template>
 
     <!-- Card Grid Skeleton -->
-    <div v-if="variant === 'grid' || variant === 'all'" class="flex flex-wrap g-3 mb-3">
+    <div
+      v-if="variant === 'grid' || variant === 'all'"
+      class="flex flex-wrap g-3 mb-3"
+    >
       <div
         v-for="n in gridItemCount"
         :key="`grid-${n}`"
@@ -103,25 +111,26 @@ import { ContentLoader } from 'vue-content-loader'
 defineProps({
   show: {
     type: Boolean,
-    default: true
+    default: true,
   },
   variant: {
     type: String,
     default: 'document',
-    validator: (value) => ['document', 'form', 'grid', 'table', 'all'].includes(value)
+    validator: value =>
+      ['document', 'form', 'grid', 'table', 'all'].includes(value),
   },
   formFieldCount: {
     type: Number,
-    default: 3
+    default: 3,
   },
   gridItemCount: {
     type: Number,
-    default: 6
+    default: 6,
   },
   tableRowCount: {
     type: Number,
-    default: 5
-  }
+    default: 5,
+  },
 })
 
 // Respect user's motion preferences
@@ -131,7 +140,7 @@ onMounted(() => {
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   prefersReducedMotion.value = mediaQuery.matches
 
-  mediaQuery.addEventListener('change', (e) => {
+  mediaQuery.addEventListener('change', e => {
     prefersReducedMotion.value = e.matches
   })
 })
@@ -148,7 +157,7 @@ onMounted(() => {
   --skeleton-secondary: var(--bg-secondary-500, #f4f4f5);
 }
 
-[data-theme="dark"] :deep(.vue-content-loader) {
+[data-theme='dark'] :deep(.vue-content-loader) {
   --skeleton-primary: var(--bg-secondary-500);
   --skeleton-secondary: var(--bg-tertiary);
 }

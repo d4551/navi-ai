@@ -8,9 +8,14 @@
 
     <!-- Empty State -->
     <div v-else-if="jobs.length === 0" class="empty-state text-center py-12">
-      <AppIcon name="mdi-briefcase-search-outline" class="text-6xl text-secondary mb-6" />
+      <AppIcon
+        name="mdi-briefcase-search-outline"
+        class="text-6xl text-secondary mb-6"
+      />
       <h3 class="mb-3 text-secondary">No jobs found</h3>
-      <p class="text-secondary">Adjust your search criteria or try different keywords.</p>
+      <p class="text-secondary">
+        Adjust your search criteria or try different keywords.
+      </p>
     </div>
 
     <!-- Jobs Grid -->
@@ -47,24 +52,24 @@ import LoadingIndicator from '@/components/LoadingIndicator.vue'
 const _props = defineProps({
   jobs: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   loading: {
     type: Boolean,
-    default: false
+    default: false,
   },
   showMetrics: {
     type: Boolean,
-    default: true
+    default: true,
   },
   maxSkillsPerCard: {
     type: Number,
-    default: 6
+    default: 6,
   },
   enableAIInsights: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 })
 
 const emit = defineEmits([
@@ -74,95 +79,97 @@ const emit = defineEmits([
   'job-details',
   'add-to-compare',
   'share-job',
-  'report-job'
+  'report-job',
 ])
 
 // Generate AI insights for jobs based on match score and other factors
-const getJobInsights = (job) => {
+const getJobInsights = job => {
   if (!props.enableAIInsights) return []
-  
+
   const insights = []
-  
+
   // Match score insights
   if (job.matchScore >= 90) {
     insights.push({
       icon: '✓',
       color: '#10b981',
-      text: 'Excellent match for your skills and experience'
+      text: 'Excellent match for your skills and experience',
     })
   } else if (job.matchScore >= 80) {
     insights.push({
       icon: '★',
       color: '#667eea',
-      text: 'Strong alignment with your game development background'
+      text: 'Strong alignment with your game development background',
     })
   }
-  
+
   // Urgency insights
   if (job.posted) {
-    const hoursAgo = Math.floor((new Date() - new Date(job.posted)) / (1000 * 60 * 60))
+    const hoursAgo = Math.floor(
+      (new Date() - new Date(job.posted)) / (1000 * 60 * 60)
+    )
     if (hoursAgo <= 48) {
       insights.push({
         icon: '!',
         color: '#f59e0b',
-        text: 'New posting - apply quickly for best consideration'
+        text: 'New posting - apply quickly for best consideration',
       })
     }
   }
-  
+
   // Company insights
   if (job.company?.type === 'AAA Studio') {
     insights.push({
       icon: '🏢',
       color: '#8b5cf6',
-      text: 'AAA studio with strong return offer rates for this role'
+      text: 'AAA studio with strong return offer rates for this role',
     })
   }
-  
+
   // Skills insights
   const gamingSkills = ['Unity', 'Unreal', 'C#', 'C++', 'Game Development']
   const jobSkills = job.skills || job.tags || []
-  const hasGamingSkills = jobSkills.some(skill => 
+  const hasGamingSkills = jobSkills.some(skill =>
     gamingSkills.some(gs => skill.toLowerCase().includes(gs.toLowerCase()))
   )
-  
+
   if (hasGamingSkills) {
     insights.push({
       icon: 'LightBulbIcon',
       color: '#06b6d4',
-      text: 'Highlight your Unity/Unreal projects - they value game engine experience'
+      text: 'Highlight your Unity/Unreal projects - they value game engine experience',
     })
   }
-  
+
   return insights.slice(0, 4) // Limit to 4 insights
 }
 
 // Event handlers
-const handleJobSelect = (job) => {
+const handleJobSelect = job => {
   emit('job-selected', job)
 }
 
-const handleJobApply = (job) => {
+const handleJobApply = job => {
   emit('job-applied', job)
 }
 
-const handleJobSave = (data) => {
+const handleJobSave = data => {
   emit('job-saved', data)
 }
 
-const handleJobDetails = (job) => {
+const handleJobDetails = job => {
   emit('job-details', job)
 }
 
-const handleAddToCompare = (job) => {
+const handleAddToCompare = job => {
   emit('add-to-compare', job)
 }
 
-const handleShare = (job) => {
+const handleShare = job => {
   emit('share-job', job)
 }
 
-const handleReport = (job) => {
+const handleReport = job => {
   emit('report-job', job)
 }
 </script>
@@ -227,7 +234,7 @@ const handleReport = (job) => {
   .jobs-container {
     padding: 0 var(--spacing-4);
   }
-  
+
   .jobs-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-4);
@@ -238,7 +245,7 @@ const handleReport = (job) => {
   .jobs-container {
     padding: 0 var(--spacing-2);
   }
-  
+
   .jobs-grid {
     gap: var(--spacing-3);
   }
@@ -261,10 +268,22 @@ const handleReport = (job) => {
 }
 
 /* Staggered animation delay for multiple cards */
-.jobs-grid > *:nth-child(1) { animation-delay: 0ms; }
-.jobs-grid > *:nth-child(2) { animation-delay: 100ms; }
-.jobs-grid > *:nth-child(3) { animation-delay: 200ms; }
-.jobs-grid > *:nth-child(4) { animation-delay: 300ms; }
-.jobs-grid > *:nth-child(5) { animation-delay: 400ms; }
-.jobs-grid > *:nth-child(n+6) { animation-delay: 500ms; }
+.jobs-grid > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.jobs-grid > *:nth-child(2) {
+  animation-delay: 100ms;
+}
+.jobs-grid > *:nth-child(3) {
+  animation-delay: 200ms;
+}
+.jobs-grid > *:nth-child(4) {
+  animation-delay: 300ms;
+}
+.jobs-grid > *:nth-child(5) {
+  animation-delay: 400ms;
+}
+.jobs-grid > *:nth-child(n + 6) {
+  animation-delay: 500ms;
+}
 </style>

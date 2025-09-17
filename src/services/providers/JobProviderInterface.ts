@@ -31,7 +31,15 @@ export interface JobProvider {
 export interface CompanyBoardConfig {
   name: string
   token: string
-  type: 'greenhouse' | 'lever' | 'recruitee' | 'workable' | 'ashby' | 'smartrecruiters' | 'teamtailor' | 'workday'
+  type:
+    | 'greenhouse'
+    | 'lever'
+    | 'recruitee'
+    | 'workable'
+    | 'ashby'
+    | 'smartrecruiters'
+    | 'teamtailor'
+    | 'workday'
 }
 
 export interface RateLimiter {
@@ -105,19 +113,30 @@ export class JobProviderRegistry {
       .sort((a, b) => a.priority - b.priority)
   }
 
-  async fetchFromProvider(providerName: string, filters: JobFilters): Promise<Job[]> {
+  async fetchFromProvider(
+    providerName: string,
+    filters: JobFilters
+  ): Promise<Job[]> {
     const provider = this.providers.get(providerName)
     if (!provider || !provider.enabled) {
       return []
     }
 
     if (!this.rateLimiter.canMakeRequest(providerName)) {
-      logger.info(`Rate limit exceeded for ${providerName}`, undefined, 'JobProviderRegistry')
+      logger.info(
+        `Rate limit exceeded for ${providerName}`,
+        undefined,
+        'JobProviderRegistry'
+      )
       return []
     }
 
     if (this.activeRequests >= this.concurrencyLimit) {
-      logger.info(`Concurrency limit reached (${this.activeRequests}/${this.concurrencyLimit}), skipping ${providerName}`, undefined, 'JobProviderRegistry')
+      logger.info(
+        `Concurrency limit reached (${this.activeRequests}/${this.concurrencyLimit}), skipping ${providerName}`,
+        undefined,
+        'JobProviderRegistry'
+      )
       return []
     }
 
@@ -130,28 +149,53 @@ export class JobProviderRegistry {
       // Handle common API issues more gracefully
       const errorMessage = error?.message || ''
       const statusCode = error?.response?.status
-      
+
       if (statusCode === 404 || statusCode === 403 || statusCode === 410) {
         // API endpoints that are no longer available - log as info
-        logger.info(`Provider ${providerName} endpoint not accessible (${statusCode})`, undefined, 'JobProviderRegistry')
-      } else if (errorMessage.includes('CORS') || errorMessage.includes('Access-Control-Allow-Origin') || error?.code === 'ERR_FAILED') {
+        logger.info(
+          `Provider ${providerName} endpoint not accessible (${statusCode})`,
+          undefined,
+          'JobProviderRegistry'
+        )
+      } else if (
+        errorMessage.includes('CORS') ||
+        errorMessage.includes('Access-Control-Allow-Origin') ||
+        error?.code === 'ERR_FAILED'
+      ) {
         // CORS errors - common in browser environments
-        logger.info(`CORS error for ${providerName} - may require server-side proxy`, undefined, 'JobProviderRegistry')
-      } else if (errorMessage.includes('timeout') || errorMessage.includes('ECONNREFUSED')) {
+        logger.info(
+          `CORS error for ${providerName} - may require server-side proxy`,
+          undefined,
+          'JobProviderRegistry'
+        )
+      } else if (
+        errorMessage.includes('timeout') ||
+        errorMessage.includes('ECONNREFUSED')
+      ) {
         // Network connectivity issues
-        logger.info(`Network timeout for ${providerName} - service may be temporarily unavailable`, undefined, 'JobProviderRegistry')
+        logger.info(
+          `Network timeout for ${providerName} - service may be temporarily unavailable`,
+          undefined,
+          'JobProviderRegistry'
+        )
       } else {
         // Only log unexpected errors as actual errors
-        logger.error(`Unexpected error fetching from ${providerName}:`, error, 'JobProviderRegistry')
+        logger.error(
+          `Unexpected error fetching from ${providerName}:`,
+          error,
+          'JobProviderRegistry'
+        )
       }
-      
+
       return []
     } finally {
       this.activeRequests--
     }
   }
 
-  async fetchFromAllProviders(filters: JobFilters): Promise<{ jobs: Job[]; sources: string[] }> {
+  async fetchFromAllProviders(
+    filters: JobFilters
+  ): Promise<{ jobs: Job[]; sources: string[] }> {
     const providers = this.getAllProviders()
     const results = await Promise.allSettled(
       providers.map(provider => this.fetchFromProvider(provider.name, filters))
@@ -199,8 +243,13 @@ export abstract class BaseJobProvider implements JobProvider {
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     try {
       const params = this.buildParams(filters)
-      const response = await this.makeRequest(params).catch(() => undefined as any)
-      const data = response && typeof response === 'object' ? (response as any).data : undefined
+      const response = await this.makeRequest(params).catch(
+        () => undefined as any
+      )
+      const data =
+        response && typeof response === 'object'
+          ? (response as any).data
+          : undefined
       return this.parseResponse(data)
     } catch {
       // As a defensive fallback, return empty array so the registry can proceed.
@@ -208,11 +257,15 @@ export abstract class BaseJobProvider implements JobProvider {
     }
   }
 
-  protected async makeRequest(params: Record<string, any>): Promise<AxiosResponse> {
+  protected async makeRequest(
+    params: Record<string, any>
+  ): Promise<AxiosResponse> {
     return this.httpClient.get(this.baseUrl, { params })
   }
 
-  public parseSalary(salaryText: string | any): { min: number; max: number } | undefined {
+  public parseSalary(
+    salaryText: string | any
+  ): { min: number; max: number } | undefined {
     if (!salaryText) return undefined
 
     if (typeof salaryText === 'object' && salaryText.min && salaryText.max) {
@@ -227,7 +280,7 @@ export abstract class BaseJobProvider implements JobProvider {
       const max = parseInt(numbers[1].replace(/[,k]/g, ''))
       return {
         min: numbers[0].includes('k') ? min * 1000 : min,
-        max: numbers[1].includes('k') ? max * 1000 : max
+        max: numbers[1].includes('k') ? max * 1000 : max,
       }
     }
 
@@ -237,13 +290,17 @@ export abstract class BaseJobProvider implements JobProvider {
   public parseRequirements(description: string): string[] {
     const requirements: string[] = []
 
-    const reqSection = description.match(/requirements?:?\s*(.*?)(?:\n\n|\n[A-Z]|$)/is)
+    const reqSection = description.match(
+      /requirements?:?\s*(.*?)(?:\n\n|\n[A-Z]|$)/is
+    )
     if (reqSection) {
       const lines = reqSection[1].split(/\n+|\*\s*/)
-      requirements.push(...lines
-        .map(line => line.trim())
-        .filter(line => line.length > 10 && line.length < 100)
-        .slice(0, 5))
+      requirements.push(
+        ...lines
+          .map(line => line.trim())
+          .filter(line => line.length > 10 && line.length < 100)
+          .slice(0, 5)
+      )
     }
 
     return requirements
@@ -251,8 +308,18 @@ export abstract class BaseJobProvider implements JobProvider {
 
   public extractTechnologies(description: string): string[] {
     const techKeywords = [
-      'Unity', 'Unreal Engine', 'C++', 'C#', 'Python', 'JavaScript',
-      'Blender', 'Maya', 'Photoshop', 'Git', 'Perforce', 'JIRA'
+      'Unity',
+      'Unreal Engine',
+      'C++',
+      'C#',
+      'Python',
+      'JavaScript',
+      'Blender',
+      'Maya',
+      'Photoshop',
+      'Git',
+      'Perforce',
+      'JIRA',
     ]
 
     const descriptionLower = description.toLowerCase()
@@ -266,7 +333,11 @@ export abstract class BaseJobProvider implements JobProvider {
 
     const levelLower = level.toLowerCase()
 
-    if (levelLower.includes('entry') || levelLower.includes('junior') || levelLower.includes('0-2')) {
+    if (
+      levelLower.includes('entry') ||
+      levelLower.includes('junior') ||
+      levelLower.includes('0-2')
+    ) {
       return 'entry'
     }
 
@@ -274,7 +345,11 @@ export abstract class BaseJobProvider implements JobProvider {
       return 'senior'
     }
 
-    if (levelLower.includes('lead') || levelLower.includes('principal') || levelLower.includes('director')) {
+    if (
+      levelLower.includes('lead') ||
+      levelLower.includes('principal') ||
+      levelLower.includes('director')
+    ) {
       return 'lead'
     }
 

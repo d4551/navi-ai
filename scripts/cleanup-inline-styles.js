@@ -5,9 +5,9 @@
  * Removes and optimizes inline CSS custom properties that clutter layouts
  */
 
-import fs from 'fs';
-import path from 'path';
-import { execSync } from 'child_process';
+import fs from 'fs'
+import path from 'path'
+import { execSync } from 'child_process'
 
 // Patterns to identify excessive inline styles
 const PROBLEMATIC_PATTERNS = [
@@ -17,182 +17,206 @@ const PROBLEMATIC_PATTERNS = [
   // Very long inline styles (over 200 characters)
   /style="[^"]{200,}"/g,
   // Multiple design token assignments
-  /style="[^"]*--[a-z-]+:[^"]*--[a-z-]+:[^"]*--[a-z-]+:/g
-];
+  /style="[^"]*--[a-z-]+:[^"]*--[a-z-]+:[^"]*--[a-z-]+:/g,
+]
 
 // Styles that should be extracted to CSS classes
 const EXTRACTABLE_PATTERNS = [
   // Typography patterns
-  { pattern: /style="[^"]*font-family:\s*var\(--font-[^)]+\)[^"]*font-weight:\s*var\(--font-[^)]+\)[^"]*"/g, className: 'typography-primary' },
+  {
+    pattern:
+      /style="[^"]*font-family:\s*var\(--font-[^)]+\)[^"]*font-weight:\s*var\(--font-[^)]+\)[^"]*"/g,
+    className: 'typography-primary',
+  },
   // Grid patterns
   { pattern: /style="[^"]*--card-grid-cols:\s*\d+[^"]*"/g, className: null }, // These are acceptable
   // Color scheme patterns
-  { pattern: /style="[^"]*--color-primary-\d+:[^"]*--color-secondary-\d+:[^"]*"/g, className: 'theme-colors' }
-];
+  {
+    pattern:
+      /style="[^"]*--color-primary-\d+:[^"]*--color-secondary-\d+:[^"]*"/g,
+    className: 'theme-colors',
+  },
+]
 
 function findVueFiles() {
   try {
-    const result = execSync('find . -name "*.vue" | grep -v node_modules | grep -v dist', 
-      { encoding: 'utf8' });
-    return result.trim().split('\n').filter(f => f);
+    const result = execSync(
+      'find . -name "*.vue" | grep -v node_modules | grep -v dist',
+      { encoding: 'utf8' }
+    )
+    return result
+      .trim()
+      .split('\n')
+      .filter(f => f)
   } catch (error) {
-    console.error('Error finding Vue files:', error.message);
-    return [];
+    console.error('Error finding Vue files:', error.message)
+    return []
   }
 }
 
 function analyzeFile() {
-  if (!fs.existsSync(filePath)) return null;
-  
-  const content = fs.readFileSync(filePath, 'utf8');
-  const issues = [];
-  
+  if (!fs.existsSync(filePath)) return null
+
+  const content = fs.readFileSync(filePath, 'utf8')
+  const issues = []
+
   // Check for problematic patterns
   PROBLEMATIC_PATTERNS.forEach((pattern, index) => {
-    const matches = content.match(pattern);
+    const matches = content.match(pattern)
     if (matches && matches.length > 0) {
       issues.push({
         type: 'excessive-inline-styles',
         pattern: index,
         matches: matches.length,
-        examples: matches.slice(0, 2) // Show first 2 examples
-      });
+        examples: matches.slice(0, 2), // Show first 2 examples
+      })
     }
-  });
-  
+  })
+
   // Check for extractable patterns
   EXTRACTABLE_PATTERNS.forEach(({ pattern, className }) => {
-    const matches = content.match(pattern);
+    const matches = content.match(pattern)
     if (matches && matches.length > 0 && className) {
       issues.push({
         type: 'extractable-styles',
         className,
         matches: matches.length,
-        examples: matches.slice(0, 2)
-      });
+        examples: matches.slice(0, 2),
+      })
     }
-  });
-  
+  })
+
   // Check for very long style attributes
-  const longStyleMatches = content.match(/style="[^"]{150,}"/g);
+  const longStyleMatches = content.match(/style="[^"]{150,}"/g)
   if (longStyleMatches && longStyleMatches.length > 0) {
     issues.push({
       type: 'long-inline-styles',
       matches: longStyleMatches.length,
-      examples: longStyleMatches.slice(0, 2).map(s => s.substring(0, 100) + '...')
-    });
+      examples: longStyleMatches
+        .slice(0, 2)
+        .map(s => s.substring(0, 100) + '...'),
+    })
   }
-  
-  return issues.length > 0 ? { filePath, issues } : null;
+
+  return issues.length > 0 ? { filePath, issues } : null
 }
 
 function cleanupFile(analysis) {
-  const { filePath, issues } = analysis;
-  let content = fs.readFileSync(filePath, 'utf8');
-  let modified = false;
-  
-  console.log(`\n🔧 Cleaning up ${filePath}`);
-  
+  const { filePath, issues } = analysis
+  let content = fs.readFileSync(filePath, 'utf8')
+  let modified = false
+
+  console.log(`\n🔧 Cleaning up ${filePath}`)
+
   issues.forEach(issue => {
     switch (issue.type) {
       case 'excessive-inline-styles':
-        console.log(`  - Found ${issue.matches} excessive inline style(s)`);
+        console.log(`  - Found ${issue.matches} excessive inline style(s)`)
         issue.examples.forEach(example => {
-          console.log(`    Example: ${example.substring(0, 80)}...`);
-          
+          console.log(`    Example: ${example.substring(0, 80)}...`)
+
           // Extract CSS custom properties and create a class
-          const className = generateClassName(example);
-          const cssClass = extractCSSFromStyle(example);
-          
+          const className = generateClassName(example)
+          const cssClass = extractCSSFromStyle(example)
+
           // Replace inline style with class
-          content = content.replace(example, `class="${className}"`);
-          
+          content = content.replace(example, `class="${className}"`)
+
           // Add note about the extracted CSS
-          console.log(`    → Extracted to class: ${className}`);
-          console.log(`    → CSS to add: ${cssClass}`);
-          
-          modified = true;
-        });
-        break;
-        
+          console.log(`    → Extracted to class: ${className}`)
+          console.log(`    → CSS to add: ${cssClass}`)
+
+          modified = true
+        })
+        break
+
       case 'long-inline-styles':
-        console.log(`  - Found ${issue.matches} long inline style(s)`);
+        console.log(`  - Found ${issue.matches} long inline style(s)`)
         issue.examples.forEach(example => {
-          console.log(`    Long style: ${example}`);
+          console.log(`    Long style: ${example}`)
           // These need manual review
-        });
-        break;
-        
+        })
+        break
+
       case 'extractable-styles':
-        console.log(`  - Found ${issue.matches} extractable style(s) → ${issue.className}`);
-        break;
+        console.log(
+          `  - Found ${issue.matches} extractable style(s) → ${issue.className}`
+        )
+        break
     }
-  });
-  
+  })
+
   if (modified) {
-    fs.writeFileSync(filePath, content, 'utf8');
-    return true;
+    fs.writeFileSync(filePath, content, 'utf8')
+    return true
   }
-  
-  return false;
+
+  return false
 }
 
 function generateClassName(styleAttr) {
   // Generate a semantic class name based on the style content
-  if (styleAttr.includes('--color-primary')) return 'theme-primary-colors';
-  if (styleAttr.includes('--font-family')) return 'typography-custom';
-  if (styleAttr.includes('--spacing')) return 'spacing-custom';
-  return 'extracted-styles';
+  if (styleAttr.includes('--color-primary')) return 'theme-primary-colors'
+  if (styleAttr.includes('--font-family')) return 'typography-custom'
+  if (styleAttr.includes('--spacing')) return 'spacing-custom'
+  return 'extracted-styles'
 }
 
 function extractCSSFromStyle(styleAttr) {
   // Extract the CSS content from style attribute
-  const match = styleAttr.match(/style="([^"]*)"/);
+  const match = styleAttr.match(/style="([^"]*)"/)
   if (match) {
-    const styles = match[1];
-    return `.extracted-styles {\n  ${styles.replace(/;/g, ';\n  ')}\n}`;
+    const styles = match[1]
+    return `.extracted-styles {\n  ${styles.replace(/;/g, ';\n  ')}\n}`
   }
-  return '';
+  return ''
 }
 
 function generateRecommendations(allIssues) {
-  console.log('\n📋 CLEANUP RECOMMENDATIONS:');
-  console.log('================================');
-  
-  const totalFiles = allIssues.length;
-  const totalIssues = allIssues.reduce((sum, file) => sum + file.issues.length, 0);
-  
-  console.log(`📊 Found ${totalIssues} issues across ${totalFiles} files\n`);
-  
+  console.log('\n📋 CLEANUP RECOMMENDATIONS:')
+  console.log('================================')
+
+  const totalFiles = allIssues.length
+  const totalIssues = allIssues.reduce(
+    (sum, file) => sum + file.issues.length,
+    0
+  )
+
+  console.log(`📊 Found ${totalIssues} issues across ${totalFiles} files\n`)
+
   // CSS classes to create
-  const cssClasses = new Set();
+  const cssClasses = new Set()
   allIssues.forEach(file => {
     file.issues.forEach(issue => {
-      if (issue.className) cssClasses.add(issue.className);
-    });
-  });
-  
+      if (issue.className) cssClasses.add(issue.className)
+    })
+  })
+
   if (cssClasses.size > 0) {
-    console.log('🎨 CSS CLASSES TO CREATE:');
+    console.log('🎨 CSS CLASSES TO CREATE:')
     cssClasses.forEach(className => {
-      console.log(`  .${className} { /* Extract common styles here */ }`);
-    });
-    console.log('');
+      console.log(`  .${className} { /* Extract common styles here */ }`)
+    })
+    console.log('')
   }
-  
-  console.log('🔧 ACTIONS TO TAKE:');
-  console.log('1. Move repeated inline styles to CSS classes');
-  console.log('2. Use CSS custom properties at the root level instead of inline');
-  console.log('3. Implement a design token system for consistent theming');
-  console.log('4. Consider using CSS-in-JS libraries if dynamic styles are needed');
-  console.log('5. Add linting rules to prevent excessive inline styles');
-  console.log('');
-  
-  console.log('🎯 THEME OPTIMIZATION:');
-  console.log('- Create a unified theme.css file with all design tokens');
-  console.log('- Use CSS custom properties at :root level');
-  console.log('- Implement theme switching via data attributes');
-  console.log('- Extract component-specific styles to .vue <style> sections');
+
+  console.log('🔧 ACTIONS TO TAKE:')
+  console.log('1. Move repeated inline styles to CSS classes')
+  console.log(
+    '2. Use CSS custom properties at the root level instead of inline'
+  )
+  console.log('3. Implement a design token system for consistent theming')
+  console.log(
+    '4. Consider using CSS-in-JS libraries if dynamic styles are needed'
+  )
+  console.log('5. Add linting rules to prevent excessive inline styles')
+  console.log('')
+
+  console.log('🎯 THEME OPTIMIZATION:')
+  console.log('- Create a unified theme.css file with all design tokens')
+  console.log('- Use CSS custom properties at :root level')
+  console.log('- Implement theme switching via data attributes')
+  console.log('- Extract component-specific styles to .vue <style> sections')
 }
 
 function createOptimizedThemeCSS() {
@@ -312,59 +336,67 @@ function createOptimizedThemeCSS() {
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
 }
-`;
+`
 
-  fs.writeFileSync('/workspaces/navi2/src/styles/optimized-theme.css', themeCSS, 'utf8');
-  console.log('✅ Created optimized theme CSS file: src/styles/optimized-theme.css');
+  fs.writeFileSync(
+    '/workspaces/navi2/src/styles/optimized-theme.css',
+    themeCSS,
+    'utf8'
+  )
+  console.log(
+    '✅ Created optimized theme CSS file: src/styles/optimized-theme.css'
+  )
 }
 
 function main() {
-  console.log('🔍 Analyzing Vue files for excessive inline styles...\n');
-  
-  const files = findVueFiles();
-  console.log(`📁 Found ${files.length} Vue files to analyze\n`);
-  
-  const issues = [];
-  let cleanedFiles = 0;
-  
+  console.log('🔍 Analyzing Vue files for excessive inline styles...\n')
+
+  const files = findVueFiles()
+  console.log(`📁 Found ${files.length} Vue files to analyze\n`)
+
+  const issues = []
+  let cleanedFiles = 0
+
   for (const file of files) {
-    const analysis = analyzeFile(file);
+    const analysis = analyzeFile(file)
     if (analysis) {
-      issues.push(analysis);
-      
+      issues.push(analysis)
+
       // Clean up the file (commented out for safety)
       // const wasModified = cleanupFile(analysis);
       // if (wasModified) cleanedFiles++;
-      
-      console.log(`⚠️  Issues found in ${analysis.filePath}:`);
+
+      console.log(`⚠️  Issues found in ${analysis.filePath}:`)
       analysis.issues.forEach(issue => {
-        console.log(`   - ${issue.type}: ${issue.matches} instances`);
-      });
+        console.log(`   - ${issue.type}: ${issue.matches} instances`)
+      })
     }
   }
-  
+
   if (issues.length === 0) {
-    console.log('✅ No excessive inline styles found! Your codebase is clean.');
-    console.log('\n💡 If you\'re seeing these styles at runtime, they might be:');
-    console.log('   - Generated by a component library (like Vuetify)');
-    console.log('   - Injected by a theme system or composable');
-    console.log('   - Created dynamically by JavaScript');
-    console.log('\n🔧 Consider checking:');
-    console.log('   - Vuetify theme configuration');
-    console.log('   - Theme composables that might inject styles');
-    console.log('   - Browser dev tools to see where styles originate');
+    console.log('✅ No excessive inline styles found! Your codebase is clean.')
+    console.log("\n💡 If you're seeing these styles at runtime, they might be:")
+    console.log('   - Generated by a component library (like Vuetify)')
+    console.log('   - Injected by a theme system or composable')
+    console.log('   - Created dynamically by JavaScript')
+    console.log('\n🔧 Consider checking:')
+    console.log('   - Vuetify theme configuration')
+    console.log('   - Theme composables that might inject styles')
+    console.log('   - Browser dev tools to see where styles originate')
   } else {
-    generateRecommendations(issues);
+    generateRecommendations(issues)
   }
-  
+
   // Create optimized theme file
-  createOptimizedThemeCSS();
-  
-  console.log(`\n📊 SUMMARY:`);
-  console.log(`   Files analyzed: ${files.length}`);
-  console.log(`   Files with issues: ${issues.length}`);
-  console.log(`   Files cleaned: ${cleanedFiles}`);
-  console.log(`\n🎯 Next steps: Review the generated optimized-theme.css and integrate it into your build system.`);
+  createOptimizedThemeCSS()
+
+  console.log(`\n📊 SUMMARY:`)
+  console.log(`   Files analyzed: ${files.length}`)
+  console.log(`   Files with issues: ${issues.length}`)
+  console.log(`   Files cleaned: ${cleanedFiles}`)
+  console.log(
+    `\n🎯 Next steps: Review the generated optimized-theme.css and integrate it into your build system.`
+  )
 }
 
-main();
+main()

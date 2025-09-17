@@ -1,5 +1,8 @@
 import { logger } from '@/shared/utils/logger'
-import { normalizeStudio, type NormalizedStudio } from '@/shared/utils/studioNormalization'
+import {
+  normalizeStudio,
+  type NormalizedStudio,
+} from '@/shared/utils/studioNormalization'
 import type { GameStudio } from '@/shared/types/interview'
 import { upsertStudio } from '@/shared/services/StudioPersistenceService'
 import { useAppStore } from '@/stores/app'
@@ -28,17 +31,23 @@ export interface ImportResult {
 }
 
 function sanitizeId(name: string) {
-  return name.toLowerCase().trim()
-    .replace(/&/g,'and')
-    .replace(/[^a-z0-9]+/g,'-')
-    .replace(/^-+|-+$/g,'')
-    .slice(0,120)
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 120)
 }
 
 function validate(raw: RawStudioInput): string[] {
   const errs: string[] = []
   if (!raw.name || raw.name.trim().length < 2) errs.push('name required')
-  if (raw.founded && (raw.founded < 1800 || raw.founded > (new Date().getFullYear()+1))) errs.push('founded out of range')
+  if (
+    raw.founded &&
+    (raw.founded < 1800 || raw.founded > new Date().getFullYear() + 1)
+  )
+    errs.push('founded out of range')
   return errs
 }
 
@@ -46,9 +55,17 @@ export function validateRawStudios(items: RawStudioInput[]): {
   validCount: number
   errorCount: number
   warningCount: number
-  results: Array<{ input: RawStudioInput; errors: string[]; warnings: string[] }>
+  results: Array<{
+    input: RawStudioInput
+    errors: string[]
+    warnings: string[]
+  }>
 } {
-  const results: Array<{ input: RawStudioInput; errors: string[]; warnings: string[] }> = []
+  const results: Array<{
+    input: RawStudioInput
+    errors: string[]
+    warnings: string[]
+  }> = []
   let validCount = 0
   let errorCount = 0
   let warningCount = 0
@@ -56,8 +73,10 @@ export function validateRawStudios(items: RawStudioInput[]): {
     const errors = validate(input)
     const warnings: string[] = []
     if (!input.description) warnings.push('missing description')
-    if (!input.games || input.games.length === 0) warnings.push('no games listed')
-    if (!input.technologies || input.technologies.length === 0) warnings.push('no technologies listed')
+    if (!input.games || input.games.length === 0)
+      warnings.push('no games listed')
+    if (!input.technologies || input.technologies.length === 0)
+      warnings.push('no technologies listed')
     if (!input.size) warnings.push('size not specified')
     if (!input.headquarters) warnings.push('headquarters not specified')
     results.push({ input, errors, warnings })
@@ -68,9 +87,19 @@ export function validateRawStudios(items: RawStudioInput[]): {
   return { validCount, errorCount, warningCount, results }
 }
 
-export async function importStudios(rawStudios: RawStudioInput[], { overwrite = true } = {}): Promise<ImportResult> {
+export async function importStudios(
+  rawStudios: RawStudioInput[],
+  { overwrite = true } = {}
+): Promise<ImportResult> {
   const store = useAppStore()
-  const result: ImportResult = { total: rawStudios.length, created: 0, updated: 0, skipped: 0, errors: [], normalized: 0 }
+  const result: ImportResult = {
+    total: rawStudios.length,
+    created: 0,
+    updated: 0,
+    skipped: 0,
+    errors: [],
+    normalized: 0,
+  }
   if (!Array.isArray(rawStudios) || rawStudios.length === 0) return result
 
   const upserts: Record<string, NormalizedStudio> = {}
@@ -79,7 +108,13 @@ export async function importStudios(rawStudios: RawStudioInput[], { overwrite = 
     try {
       const errors = validate(raw)
       if (errors.length) {
-        result.skipped++; result.errors.push({ id: raw.id, name: raw.name, error: errors.join(', ') }); continue
+        result.skipped++
+        result.errors.push({
+          id: raw.id,
+          name: raw.name,
+          error: errors.join(', '),
+        })
+        continue
       }
       const id = raw.id || sanitizeId(raw.name)
       // Build minimal GameStudio
@@ -100,13 +135,17 @@ export async function importStudios(rawStudios: RawStudioInput[], { overwrite = 
         category: raw.category,
         region: raw.region,
         remoteWork: raw.remoteWork,
-        companySize: raw.companySize
+        companySize: raw.companySize,
       }
 
       const normalized = normalizeStudio(studio)
       upserts[id] = normalized
-    } catch (e:any) {
-      result.errors.push({ id: raw.id, name: raw.name, error: e.message || 'unknown error' })
+    } catch (e: any) {
+      result.errors.push({
+        id: raw.id,
+        name: raw.name,
+        error: e.message || 'unknown error',
+      })
     }
   }
 
@@ -114,7 +153,8 @@ export async function importStudios(rawStudios: RawStudioInput[], { overwrite = 
   const toPersist: NormalizedStudio[] = []
   for (const [id, norm] of Object.entries(upserts)) {
     const exists = !!existingMap[id]
-    if (!exists) result.created++; else result.updated++
+    if (!exists) result.created++
+    else result.updated++
     if (!exists || overwrite) {
       toPersist.push(norm)
     } else {
@@ -132,16 +172,41 @@ export async function importStudios(rawStudios: RawStudioInput[], { overwrite = 
   }
 
   // Update store
-  try { store.upsertNormalizedStudios(Object.values(upserts)) } catch (e) { logger.warn('Failed to update store normalized studios', e) }
+  try {
+    store.upsertNormalizedStudios(Object.values(upserts))
+  } catch (e) {
+    logger.warn('Failed to update store normalized studios', e)
+  }
   result.normalized = Object.keys(upserts).length
   logger.info('Studio import completed', result)
   return result
 }
 
-export async function importStudiosFromJSON(jsonText: string): Promise<ImportResult> {
+export async function importStudiosFromJSON(
+  jsonText: string
+): Promise<ImportResult> {
   let data: any
-  try { data = JSON.parse(jsonText) } catch { return { total: 0, created: 0, updated: 0, skipped: 0, errors: [{ error: 'Invalid JSON' }], normalized: 0 } }
-  if (!Array.isArray(data)) return { total: 0, created: 0, updated: 0, skipped: 0, errors: [{ error: 'Root JSON must be an array' }], normalized: 0 }
+  try {
+    data = JSON.parse(jsonText)
+  } catch {
+    return {
+      total: 0,
+      created: 0,
+      updated: 0,
+      skipped: 0,
+      errors: [{ error: 'Invalid JSON' }],
+      normalized: 0,
+    }
+  }
+  if (!Array.isArray(data))
+    return {
+      total: 0,
+      created: 0,
+      updated: 0,
+      skipped: 0,
+      errors: [{ error: 'Root JSON must be an array' }],
+      normalized: 0,
+    }
   return importStudios(data)
 }
 

@@ -21,7 +21,7 @@ export class CareerjetProvider extends BaseJobProvider {
       location: filters.location || '',
       pagesize: 50,
       page: 1,
-      sort: 'relevance'
+      sort: 'relevance',
     }
   }
 
@@ -42,7 +42,7 @@ export class CareerjetProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.date || new Date().toISOString(),
       featured: false,
-      source: 'Careerjet'
+      source: 'Careerjet',
     }))
   }
 }
@@ -61,7 +61,7 @@ export class JoobleProvider extends BaseJobProvider {
       keywords: filters.title || '',
       location: filters.location || '',
       page: 1,
-      searchMode: 1
+      searchMode: 1,
     }
   }
 
@@ -82,7 +82,7 @@ export class JoobleProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.updated || new Date().toISOString(),
       featured: false,
-      source: 'Jooble'
+      source: 'Jooble',
     }))
   }
 }
@@ -100,7 +100,7 @@ export class ReedProvider extends BaseJobProvider {
       keywords: filters.title || '',
       location: filters.location || '',
       resultsToTake: 50,
-      resultsToSkip: 0
+      resultsToSkip: 0,
     }
   }
 
@@ -108,8 +108,8 @@ export class ReedProvider extends BaseJobProvider {
     return this.httpClient.get(this.baseUrl, {
       params,
       headers: {
-        'Authorization': `Basic ${btoa(`${this.apiKey}:`)}`
-      }
+        Authorization: `Basic ${btoa(`${this.apiKey}:`)}`,
+      },
     })
   }
 
@@ -122,10 +122,13 @@ export class ReedProvider extends BaseJobProvider {
       company: job.employerName || 'Not specified',
       location: job.locationName || 'UK',
       remote: job.isWorkFromHome || false,
-      salary: job.minimumSalary && job.maximumSalary ? {
-        min: job.minimumSalary,
-        max: job.maximumSalary
-      } : undefined,
+      salary:
+        job.minimumSalary && job.maximumSalary
+          ? {
+              min: job.minimumSalary,
+              max: job.maximumSalary,
+            }
+          : undefined,
       description: job.jobDescription || '',
       requirements: this.parseRequirements(job.jobDescription || ''),
       technologies: this.extractTechnologies(job.jobDescription || ''),
@@ -133,7 +136,7 @@ export class ReedProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.date || new Date().toISOString(),
       featured: false,
-      source: 'Reed.co.uk'
+      source: 'Reed.co.uk',
     }))
   }
 }
@@ -151,7 +154,7 @@ export class JujuProvider extends BaseJobProvider {
       publisher: this.apiKey,
       k: filters.title || '',
       l: filters.location || '',
-      limit: 50
+      limit: 50,
     }
   }
 
@@ -172,7 +175,7 @@ export class JujuProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.date || new Date().toISOString(),
       featured: false,
-      source: 'Juju'
+      source: 'Juju',
     }))
   }
 }
@@ -183,6 +186,6 @@ export function createAdditionalProviders(): BaseJobProvider[] {
     new CareerjetProvider(),
     new JoobleProvider(),
     new ReedProvider(),
-    new JujuProvider()
+    new JujuProvider(),
   ]
 }

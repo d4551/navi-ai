@@ -1,156 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Emergency Media CSP Fix - NAVI</title>
     <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f8f9fa;
-            line-height: 1.6;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-        .alert.error {
-            background: #fecaca;
-            border: 1px solid #ef4444;
-            color: #991b1b;
-        }
-        .alert.success {
-            background: #d1edff;
-            border: 1px solid #0ea5e9;
-            color: #0c4a6e;
-        }
-        .alert.warning {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            color: #92400e;
-        }
-        button {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 5px;
-        }
-        button:hover {
-            background: #b91c1c;
-        }
-        .code {
-            background: #1f2937;
-            color: #f3f4f6;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            white-space: pre-wrap;
-        }
-        .step {
-            background: #f0f9ff;
-            border-left: 4px solid #0ea5e9;
-            padding: 15px;
-            margin: 15px 0;
-        }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f8f9fa;
+        line-height: 1.6;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      }
+      .alert {
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .alert.error {
+        background: #fecaca;
+        border: 1px solid #ef4444;
+        color: #991b1b;
+      }
+      .alert.success {
+        background: #d1edff;
+        border: 1px solid #0ea5e9;
+        color: #0c4a6e;
+      }
+      .alert.warning {
+        background: #fef3c7;
+        border: 1px solid #f59e0b;
+        color: #92400e;
+      }
+      button {
+        background: #dc2626;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 10px 5px;
+      }
+      button:hover {
+        background: #b91c1c;
+      }
+      .code {
+        background: #1f2937;
+        color: #f3f4f6;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: 'Courier New', monospace;
+        white-space: pre-wrap;
+      }
+      .step {
+        background: #f0f9ff;
+        border-left: 4px solid #0ea5e9;
+        padding: 15px;
+        margin: 15px 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>🚨 EMERGENCY: Fix Blob Media CSP Block</h1>
-        
-        <div class="alert error">
-            <strong>⚠️ Critical Issue Detected:</strong><br>
-            Content Security Policy is blocking blob URLs for media content. This prevents audio/video features from working.
+      <h1>🚨 EMERGENCY: Fix Blob Media CSP Block</h1>
+
+      <div class="alert error">
+        <strong>⚠️ Critical Issue Detected:</strong><br />
+        Content Security Policy is blocking blob URLs for media content. This
+        prevents audio/video features from working.
+      </div>
+
+      <div class="step">
+        <h3>🔧 Quick Fix (Click Button Below)</h3>
+        <p>This will immediately apply the correct CSP to allow blob media:</p>
+        <button onclick="emergencyFix()">🛠️ EMERGENCY FIX - APPLY NOW</button>
+      </div>
+
+      <div class="step">
+        <h3>📋 Manual Fix (Browser Console)</h3>
+        <p>
+          Alternatively, copy and paste this code in your browser's console on
+          the main NAVI app:
+        </p>
+        <div class="code" id="consoleCode">
+          // ULTIMATE CSP FIX FOR NAVI (All Issues) console.log('🚨 Applying
+          comprehensive CSP fix...');
+          document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]').forEach(meta
+          => { console.log('Removing CSP:', meta.content.substring(0, 50) +
+          '...'); meta.remove(); }); const csp = document.createElement('meta');
+          csp.setAttribute('http-equiv', 'Content-Security-Policy');
+          csp.setAttribute('content', "default-src 'self' 'unsafe-inline'
+          'unsafe-eval' data: blob: webpack:; script-src 'self' 'unsafe-inline'
+          'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net
+          webpack: data:; style-src 'self' 'unsafe-inline'
+          https://fonts.googleapis.com data:; font-src 'self'
+          https://fonts.googleapis.com https://fonts.gstatic.com
+          https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:;
+          media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss:
+          blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none';
+          base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;");
+          document.head.appendChild(csp); console.log('✅ Ultimate CSP applied!
+          All features should work.');
         </div>
-        
-        <div class="step">
-            <h3>🔧 Quick Fix (Click Button Below)</h3>
-            <p>This will immediately apply the correct CSP to allow blob media:</p>
-            <button onclick="emergencyFix()">🛠️ EMERGENCY FIX - APPLY NOW</button>
-        </div>
-        
-        <div class="step">
-            <h3>📋 Manual Fix (Browser Console)</h3>
-            <p>Alternatively, copy and paste this code in your browser's console on the main NAVI app:</p>
-            <div class="code" id="consoleCode">
-// ULTIMATE CSP FIX FOR NAVI (All Issues)
-console.log('🚨 Applying comprehensive CSP fix...');
-document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]').forEach(meta => {
-  console.log('Removing CSP:', meta.content.substring(0, 50) + '...');
-  meta.remove();
-});
-const csp = document.createElement('meta');
-csp.setAttribute('http-equiv', 'Content-Security-Policy');
-csp.setAttribute('content', "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;");
-document.head.appendChild(csp);
-console.log('✅ Ultimate CSP applied! All features should work.');
-            </div>
-            <button onclick="copyToClipboard()">📋 Copy to Clipboard</button>
-        </div>
-        
-        <div id="status"></div>
-        
-        <div class="step">
-            <h3>🔄 After Applying Fix</h3>
-            <ol>
-                <li>Go back to your NAVI app</li>
-                <li>Try using audio/TTS features</li>
-                <li>The "Refused to load media" errors should be gone</li>
-                <li>If issues persist, hard refresh the page (Ctrl+F5)</li>
-            </ol>
-        </div>
+        <button onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+      </div>
+
+      <div id="status"></div>
+
+      <div class="step">
+        <h3>🔄 After Applying Fix</h3>
+        <ol>
+          <li>Go back to your NAVI app</li>
+          <li>Try using audio/TTS features</li>
+          <li>The "Refused to load media" errors should be gone</li>
+          <li>If issues persist, hard refresh the page (Ctrl+F5)</li>
+        </ol>
+      </div>
     </div>
 
     <script>
-        function showStatus(message, type = 'success') {
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerHTML = `<div class="alert ${type}">${message}</div>`;
-        }
+      function showStatus(message, type = 'success') {
+        const statusDiv = document.getElementById('status')
+        statusDiv.innerHTML = `<div class="alert ${type}">${message}</div>`
+      }
 
-        function emergencyFix() {
-            try {
-                // This fix applies to the current page AND provides code for main app
-                // Remove existing CSP
-                const existingCSPs = document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]');
-                existingCSPs.forEach(meta => meta.remove());
+      function emergencyFix() {
+        try {
+          // This fix applies to the current page AND provides code for main app
+          // Remove existing CSP
+          const existingCSPs = document.querySelectorAll(
+            'meta[http-equiv="Content-Security-Policy"]'
+          )
+          existingCSPs.forEach(meta => meta.remove())
 
-                // Add comprehensive development CSP that supports everything
-                const emergencyCSP = document.createElement('meta');
-                emergencyCSP.setAttribute('http-equiv', 'Content-Security-Policy');
-                emergencyCSP.setAttribute('content', 
-                    "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; " +
-                    "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; " +
-                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; " +
-                    "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; " +
-                    "img-src 'self' data: https: blob:; " +
-                    "media-src 'self' blob: data:; " +
-                    "connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; " +
-                    "object-src 'none'; " +
-                    "base-uri 'self'; " +
-                    "form-action 'self'; " +
-                    "worker-src 'self' blob: data:;"
-                );
-                
-                document.head.appendChild(emergencyCSP);
-                
-                // Store the fix code for easy access
-                const fixCode = `
+          // Add comprehensive development CSP that supports everything
+          const emergencyCSP = document.createElement('meta')
+          emergencyCSP.setAttribute('http-equiv', 'Content-Security-Policy')
+          emergencyCSP.setAttribute(
+            'content',
+            "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; " +
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; " +
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; " +
+              "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; " +
+              "img-src 'self' data: https: blob:; " +
+              "media-src 'self' blob: data:; " +
+              "connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; " +
+              "object-src 'none'; " +
+              "base-uri 'self'; " +
+              "form-action 'self'; " +
+              "worker-src 'self' blob: data:;"
+          )
+
+          document.head.appendChild(emergencyCSP)
+
+          // Store the fix code for easy access
+          const fixCode = `
 // ULTIMATE CSP FIX FOR NAVI (All Issues)
 console.log('🚨 Applying comprehensive CSP fix...');
 document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]').forEach(meta => {
@@ -162,29 +179,29 @@ csp.setAttribute('http-equiv', 'Content-Security-Policy');
 csp.setAttribute('content', "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: webpack:; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net webpack: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data: https: blob:; media-src 'self' blob: data:; connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net webpack: data:; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob: data:;");
 document.head.appendChild(csp);
 console.log('✅ Ultimate CSP applied! All features should work.');
-                `.trim();
-                
-                window.fixCode = fixCode;
-                
-                showStatus(
-                    '✅ <strong>Emergency CSP Applied!</strong><br><br>' +
-                    '🔧 <strong>This page is now fixed</strong><br><br>' +
-                    '⚠️ <strong>To fix your main NAVI app:</strong><br>' +
-                    '1. Go to your NAVI app<br>' +
-                    '2. Open browser console (F12)<br>' +
-                    '3. Click the "Copy Ultimate Fix" button below<br>' +
-                    '4. Paste and press Enter<br><br>' +
-                    '<button onclick="copyUltimateFix()">📋 Copy Ultimate Fix Code</button><br><br>' +
-                    '💡 <strong>Or use the bookmarklet below for instant fixing!</strong>',
-                    'success'
-                );
-                
-                // Create a bookmarklet
-                const bookmarkletCode = `javascript:(function(){${fixCode.replace(/\n/g, '').replace(/  +/g, ' ')}})();`;
-                
-                setTimeout(() => {
-                    const bookmarkletDiv = document.createElement('div');
-                    bookmarkletDiv.innerHTML = `
+                `.trim()
+
+          window.fixCode = fixCode
+
+          showStatus(
+            '✅ <strong>Emergency CSP Applied!</strong><br><br>' +
+              '🔧 <strong>This page is now fixed</strong><br><br>' +
+              '⚠️ <strong>To fix your main NAVI app:</strong><br>' +
+              '1. Go to your NAVI app<br>' +
+              '2. Open browser console (F12)<br>' +
+              '3. Click the "Copy Ultimate Fix" button below<br>' +
+              '4. Paste and press Enter<br><br>' +
+              '<button onclick="copyUltimateFix()">📋 Copy Ultimate Fix Code</button><br><br>' +
+              '💡 <strong>Or use the bookmarklet below for instant fixing!</strong>',
+            'success'
+          )
+
+          // Create a bookmarklet
+          const bookmarkletCode = `javascript:(function(){${fixCode.replace(/\n/g, '').replace(/  +/g, ' ')}})();`
+
+          setTimeout(() => {
+            const bookmarkletDiv = document.createElement('div')
+            bookmarkletDiv.innerHTML = `
                         <div style="margin-top: 20px; padding: 15px; background: #e7f3ff; border: 1px solid #0ea5e9; border-radius: 8px;">
                             <h4>🔖 Bookmarklet Solution (Drag to bookmarks bar):</h4>
                             <a href="${bookmarkletCode}" style="display: inline-block; padding: 10px 15px; background: #dc2626; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">🛠️ Fix NAVI CSP</a>
@@ -195,70 +212,102 @@ console.log('✅ Ultimate CSP applied! All features should work.');
                                 3. Instant fix!
                             </p>
                         </div>
-                    `;
-                    document.querySelector('.container').appendChild(bookmarkletDiv);
-                }, 1000);
-                
-            } catch (error) {
-                showStatus(
-                    '❌ <strong>Fix Failed:</strong> ' + error.message + '<br><br>' +
-                    'Please use the manual console method instead.',
-                    'error'
-                );
-            }
+                    `
+            document.querySelector('.container').appendChild(bookmarkletDiv)
+          }, 1000)
+        } catch (error) {
+          showStatus(
+            '❌ <strong>Fix Failed:</strong> ' +
+              error.message +
+              '<br><br>' +
+              'Please use the manual console method instead.',
+            'error'
+          )
         }
+      }
 
-        function copyUltimateFix() {
-            const code = window.fixCode || document.getElementById('consoleCode').textContent;
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(code).then(() => {
-                    showStatus('✅ <strong>Ultimate fix copied!</strong> Now paste it in your NAVI app\'s console and press Enter.', 'success');
-                }).catch(err => {
-                    showStatus('❌ Failed to copy. Please select and copy the code manually.', 'error');
-                });
-            } else {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    showStatus('✅ <strong>Ultimate fix copied!</strong> Now paste it in your NAVI app\'s console and press Enter.', 'success');
-                } catch (err) {
-                    showStatus('❌ Failed to copy. Please select and copy the code manually.', 'error');
-                } finally {
-                    document.body.removeChild(textArea);
-                }
-            }
-        }
+      function copyUltimateFix() {
+        const code =
+          window.fixCode || document.getElementById('consoleCode').textContent
 
-        function copyToClipboard() {
-            const code = document.getElementById('consoleCode').textContent;
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(code).then(() => {
-                    showStatus('✅ <strong>Copied to clipboard!</strong> Now paste it in your NAVI app\'s console.', 'success');
-                }).catch(err => {
-                    showStatus('❌ Failed to copy. Please select and copy the code manually.', 'error');
-                });
-            } else {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    showStatus('✅ <strong>Copied to clipboard!</strong> Now paste it in your NAVI app\'s console.', 'success');
-                } catch (err) {
-                    showStatus('❌ Failed to copy. Please select and copy the code manually.', 'error');
-                } finally {
-                    document.body.removeChild(textArea);
-                }
-            }
+        if (navigator.clipboard) {
+          navigator.clipboard
+            .writeText(code)
+            .then(() => {
+              showStatus(
+                "✅ <strong>Ultimate fix copied!</strong> Now paste it in your NAVI app's console and press Enter.",
+                'success'
+              )
+            })
+            .catch(err => {
+              showStatus(
+                '❌ Failed to copy. Please select and copy the code manually.',
+                'error'
+              )
+            })
+        } else {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea')
+          textArea.value = code
+          document.body.appendChild(textArea)
+          textArea.select()
+          try {
+            document.execCommand('copy')
+            showStatus(
+              "✅ <strong>Ultimate fix copied!</strong> Now paste it in your NAVI app's console and press Enter.",
+              'success'
+            )
+          } catch (err) {
+            showStatus(
+              '❌ Failed to copy. Please select and copy the code manually.',
+              'error'
+            )
+          } finally {
+            document.body.removeChild(textArea)
+          }
         }
+      }
+
+      function copyToClipboard() {
+        const code = document.getElementById('consoleCode').textContent
+
+        if (navigator.clipboard) {
+          navigator.clipboard
+            .writeText(code)
+            .then(() => {
+              showStatus(
+                "✅ <strong>Copied to clipboard!</strong> Now paste it in your NAVI app's console.",
+                'success'
+              )
+            })
+            .catch(err => {
+              showStatus(
+                '❌ Failed to copy. Please select and copy the code manually.',
+                'error'
+              )
+            })
+        } else {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea')
+          textArea.value = code
+          document.body.appendChild(textArea)
+          textArea.select()
+          try {
+            document.execCommand('copy')
+            showStatus(
+              "✅ <strong>Copied to clipboard!</strong> Now paste it in your NAVI app's console.",
+              'success'
+            )
+          } catch (err) {
+            showStatus(
+              '❌ Failed to copy. Please select and copy the code manually.',
+              'error'
+            )
+          } finally {
+            document.body.removeChild(textArea)
+          }
+        }
+      }
     </script>
-</body>
+  </body>
 </html>

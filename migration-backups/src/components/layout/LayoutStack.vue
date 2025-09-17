@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   justify: 'start',
   variant: 'default',
   responsive: true,
-  reverse: false
+  reverse: false,
 })
 
 const stackClasses = computed(() => {
@@ -62,11 +62,21 @@ const stackClasses = computed(() => {
 
 <style scoped>
 /* Additional justify content utilities for stacks */
-.layout-stack--justify-start { justify-content: flex-start; }
-.layout-stack--justify-center { justify-content: center; }
-.layout-stack--justify-end { justify-content: flex-end; }
-.layout-stack--justify-between { justify-content: space-between; }
-.layout-stack--justify-around { justify-content: space-around; }
+.layout-stack--justify-start {
+  justify-content: flex-start;
+}
+.layout-stack--justify-center {
+  justify-content: center;
+}
+.layout-stack--justify-end {
+  justify-content: flex-end;
+}
+.layout-stack--justify-between {
+  justify-content: space-between;
+}
+.layout-stack--justify-around {
+  justify-content: space-around;
+}
 
 /* Variant styling */
 .layout-stack--card {
@@ -107,7 +117,7 @@ const stackClasses = computed(() => {
   .layout-stack--responsive.layout-stack--2xl {
     gap: var(--spacing-lg);
   }
-  
+
   .layout-stack--responsive.layout-stack--lg {
     gap: var(--spacing-md);
   }
@@ -119,25 +129,23 @@ const stackClasses = computed(() => {
 }
 
 /* Dark theme optimizations */
-[data-theme="dark"] .layout-stack--card {
+[data-theme='dark'] .layout-stack--card {
   background: var(--surface-elevated);
   border-color: var(--border-base);
 }
 
 /* Gaming theme enhancements */
 .theme-gaming .layout-stack--card {
-  background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.05), 
-    rgba(0, 255, 136, 0.02)
-  ), var(--surface-elevated);
+  background:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(0, 255, 136, 0.02)),
+    var(--surface-elevated);
   border-color: var(--color-gaming-200);
 }
 
-[data-theme="dark"].theme-gaming .layout-stack--card {
-  background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.1), 
-    rgba(0, 255, 136, 0.05)
-  ), var(--surface-elevated);
+[data-theme='dark'].theme-gaming .layout-stack--card {
+  background:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(0, 255, 136, 0.05)),
+    var(--surface-elevated);
   border-color: var(--color-gaming-300);
 }
 </style>

@@ -2,7 +2,12 @@
   <div class="ai-modal-system">
     <!-- AI Helper Modal -->
     <Teleport to="body">
-      <div v-if="showHelperModal" class="modal fade show" :style="{ display: showHelperModal ? 'block' : 'none' }" @click.self="closeModal">
+      <div
+        v-if="showHelperModal"
+        class="modal fade show"
+        :style="{ display: showHelperModal ? 'block' : 'none' }"
+        @click.self="closeModal"
+      >
         <div class="modal-dialog modal-lg">
           <div class="modal-content zelda-modal-content">
             <div class="modal-header zelda-modal-header glass-elevated">
@@ -11,11 +16,21 @@
                   <AppIcon name="mdi-triforce" class="zelda-triforce-header" />
                   <AppIcon name="mdi-brain" class="magical-brain me-2" />
                 </div>
-                <span class="title-text">{{ helperTitle || 'AI Assistant' }}</span>
+                <span class="title-text">{{
+                  helperTitle || 'AI Assistant'
+                }}</span>
                 <div class="title-subtitle">Your magical companion</div>
               </h5>
               <div class="d-flex align-items-center gap-2">
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" class="zelda-close-btn" aria-label="Close" @click="closeModal" />
+                <UnifiedButton
+                  variant="ghost"
+                  size="sm"
+                  icon-only
+                  :icon="'mdi-close'"
+                  class="zelda-close-btn"
+                  aria-label="Close"
+                  @click="closeModal"
+                />
               </div>
             </div>
             <div class="modal-body">
@@ -30,14 +45,21 @@
                 >
                   <i :class="tab.icon" class="me-1"></i>
                   {{ tab.label }}
-                  <span v-if="tab.count !== undefined" class="badge bg-info ms-1">{{ tab.count }}</span>
+                  <span
+                    v-if="tab.count !== undefined"
+                    class="badge bg-info ms-1"
+                    >{{ tab.count }}</span
+                  >
                 </button>
               </div>
 
               <!-- Tab Content -->
               <div class="tab-content">
                 <!-- Suggestions Tab -->
-                <div v-if="activeTab === 'suggestions'" class="tab-pane fade show active">
+                <div
+                  v-if="activeTab === 'suggestions'"
+                  class="tab-pane fade show active"
+                >
                   <div class="unified-grid g-3 mb-3">
                     <div
                       v-for="suggestion in filteredSuggestions"
@@ -45,30 +67,53 @@
                       class="suggestion-card col-md-6"
                       :class="getPriorityClass(suggestion.priority)"
                     >
-                      <div class="card h-100" :class="getPriorityCardClass(suggestion.priority)">
+                      <div
+                        class="card h-100"
+                        :class="getPriorityCardClass(suggestion.priority)"
+                      >
                         <div class="card-body section-body card-body--dense">
                           <div class="d-flex align-items-start">
                             <div class="flex-grow-1">
                               <div class="d-flex align-items-center mb-2">
-                                <span :class="`badge me-2 ${getBadgeClass(suggestion.type)}`">{{ suggestion.type }}</span>
-                                <small class="text-muted">{{ getPriorityLabel(suggestion.priority) }}</small>
+                                <span
+                                  :class="`badge me-2 ${getBadgeClass(suggestion.type)}`"
+                                  >{{ suggestion.type }}</span
+                                >
+                                <small class="text-muted">{{
+                                  getPriorityLabel(suggestion.priority)
+                                }}</small>
                               </div>
                               <h6 class="mb-2">{{ suggestion.title }}</h6>
-                              <p class="text-muted small mb-3">{{ suggestion.description }}</p>
+                              <p class="text-muted small mb-3">
+                                {{ suggestion.description }}
+                              </p>
 
-                              <div v-if="!suggestion.appliedAt" class="d-flex gap-2">
+                              <div
+                                v-if="!suggestion.appliedAt"
+                                class="d-flex gap-2"
+                              >
                                 <button
                                   class="unified-btn btn-sm ui-btn ui-size-md v-btn"
                                   :class="getActionButtonClass(suggestion)"
-                                  :disabled="processingSuggestion === suggestion.id || isProcessing"
+                                  :disabled="
+                                    processingSuggestion === suggestion.id ||
+                                    isProcessing
+                                  "
                                   @click="applySuggestion(suggestion.id)"
                                 >
                                   <AppIcon name="mdi-auto-fix" class="me-1" />
-                                  {{ processingSuggestion === suggestion.id ? 'Applying...' : getActionText(suggestion) }}
+                                  {{
+                                    processingSuggestion === suggestion.id
+                                      ? 'Applying...'
+                                      : getActionText(suggestion)
+                                  }}
                                 </button>
                                 <button
                                   class="unified-btn btn-outline-secondary btn-sm v-btn variant-outlined ui-btn ui-size-md"
-                                  :disabled="processingSuggestion === suggestion.id || isProcessing"
+                                  :disabled="
+                                    processingSuggestion === suggestion.id ||
+                                    isProcessing
+                                  "
                                   @click="dismissSuggestion(suggestion.id)"
                                 >
                                   <AppIcon name="mdi-close-circle-outline" />
@@ -76,7 +121,10 @@
                                 </button>
                               </div>
 
-                              <small v-if="suggestion.appliedAt" class="text-success">
+                              <small
+                                v-if="suggestion.appliedAt"
+                                class="text-success"
+                              >
                                 <AppIcon name="mdi-check-circle-outline" />
                                 Applied {{ formatDate(suggestion.appliedAt) }}
                               </small>
@@ -87,17 +135,30 @@
                     </div>
                   </div>
 
-                  <div v-if="filteredSuggestions.length === 0" class="text-center text-muted py-4">
+                  <div
+                    v-if="filteredSuggestions.length === 0"
+                    class="text-center text-muted py-4"
+                  >
                     <AppIcon name="mdi-lightbulb" />
                     <h6>No Suggestions Available</h6>
-                    <p>AI assistant will provide suggestions when you make changes to your content.</p>
+                    <p>
+                      AI assistant will provide suggestions when you make
+                      changes to your content.
+                    </p>
                   </div>
                 </div>
 
                 <!-- Analysis Tab -->
-                <div v-if="activeTab === 'analysis'" class="tab-pane fade show active">
+                <div
+                  v-if="activeTab === 'analysis'"
+                  class="tab-pane fade show active"
+                >
                   <div class="analysis-section">
-                    <div class="d-flex gap-3 mb-3" role="group" aria-label="Analysis actions">
+                    <div
+                      class="d-flex gap-3 mb-3"
+                      role="group"
+                      aria-label="Analysis actions"
+                    >
                       <button
                         class="unified-btn btn-primary btn-sm v-btn ui-btn ui-size-md"
                         :disabled="!currentEntity || isProcessing"
@@ -111,7 +172,10 @@
                         :disabled="!currentEntity || isProcessing"
                         @click="runATSCalculations"
                       >
-                        <AppIcon name="mdi-check-circle-outline-outline" class="me-2" />
+                        <AppIcon
+                          name="mdi-check-circle-outline-outline"
+                          class="me-2"
+                        />
                         ATS Compatibility Check
                       </button>
                     </div>
@@ -121,34 +185,59 @@
                       <div class="unified-grid g-3">
                         <!-- Overall Score -->
                         <div class="col-md-4">
-                          <div class="unified-card glass-card section-card text-center">
+                          <div
+                            class="unified-card glass-card section-card text-center"
+                          >
                             <div class="card-body section-body">
-                              <div class="score-circle" :class="getScoreClass(analysisResults.overallScore)">
-                                <div class="score-number">{{ analysisResults.overallScore || 0 }}</div>
+                              <div
+                                class="score-circle"
+                                :class="
+                                  getScoreClass(analysisResults.overallScore)
+                                "
+                              >
+                                <div class="score-number">
+                                  {{ analysisResults.overallScore || 0 }}
+                                </div>
                                 <div class="score-label">Score</div>
                               </div>
                               <h6 class="mt-3 mb-3">Quality Score</h6>
                               <div class="score-description">
-                                {{ getScoreDescription(analysisResults.overallScore || 0) }}
+                                {{
+                                  getScoreDescription(
+                                    analysisResults.overallScore || 0
+                                  )
+                                }}
                               </div>
                             </div>
                           </div>
                         </div>
 
                         <!-- Analysis Metrics -->
-                        <div v-for="(metric, index) in analysisMetrics" :key="index" class="col-md-4">
+                        <div
+                          v-for="(metric, index) in analysisMetrics"
+                          :key="index"
+                          class="col-md-4"
+                        >
                           <div class="unified-card glass-card section-card">
-                            <div class="card-header section-header card-header--dense">
+                            <div
+                              class="card-header section-header card-header--dense"
+                            >
                               <h6 class="mb-0">
                                 <i :class="metric.icon" class="me-2"></i>
                                 {{ metric.title }}
                               </h6>
                             </div>
-                            <div class="card-body section-body card-body--dense">
+                            <div
+                              class="card-body section-body card-body--dense"
+                            >
                               <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
-                                  <div class="metric-value">{{ metric.value }}</div>
-                                  <small class="text-muted">{{ metric.description }}</small>
+                                  <div class="metric-value">
+                                    {{ metric.value }}
+                                  </div>
+                                  <small class="text-muted">{{
+                                    metric.description
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -156,7 +245,10 @@
                         </div>
 
                         <!-- Recommendations -->
-                        <div v-if="analysisResults.recommendations?.length" class="col-12">
+                        <div
+                          v-if="analysisResults.recommendations?.length"
+                          class="col-12"
+                        >
                           <div class="unified-card glass-card section-card">
                             <div class="card-header section-header">
                               <h6 class="mb-0">
@@ -167,12 +259,19 @@
                             <div class="card-body section-body">
                               <ul class="list-unstyled mb-0">
                                 <li
-                                  v-for="(recommendation, index) in analysisResults.recommendations"
+                                  v-for="(
+                                    recommendation, index
+                                  ) in analysisResults.recommendations"
                                   :key="index"
                                   class="mb-2 d-flex align-items-start"
                                 >
-                                  <AppIcon name="mdi-check-circle-outline" color="success" />
-                                  <span class="small">{{ recommendation }}</span>
+                                  <AppIcon
+                                    name="mdi-check-circle-outline"
+                                    color="success"
+                                  />
+                                  <span class="small">{{
+                                    recommendation
+                                  }}</span>
                                 </li>
                               </ul>
                             </div>
@@ -181,30 +280,52 @@
                       </div>
                     </div>
 
-                    <div v-else-if="!isProcessing" class="text-center text-muted py-4">
+                    <div
+                      v-else-if="!isProcessing"
+                      class="text-center text-muted py-4"
+                    >
                       <AppIcon name="mdi-brain" class="mdi-48px mb-3" />
                       <h6 class="mb-2">Ready for Analysis</h6>
-                      <p class="mb-3">Click "Analyze Content" to get AI insights about your {{ currentEntityType }}</p>
+                      <p class="mb-3">
+                        Click "Analyze Content" to get AI insights about your
+                        {{ currentEntityType }}
+                      </p>
                       <small class="text-info">
                         <AppIcon name="mdi-information-outline" class="me-1" />
-                        Analysis includes keyword optimization, ATS compatibility, and improvement suggestions
+                        Analysis includes keyword optimization, ATS
+                        compatibility, and improvement suggestions
                       </small>
                     </div>
 
                     <!-- Loading State -->
                     <div v-if="isProcessing" class="text-center py-4">
-                      <AppIcon name="mdi-brain" class="spin mdi-48px mb-3 text-primary" />
+                      <AppIcon
+                        name="mdi-brain"
+                        class="spin mdi-48px mb-3 text-primary"
+                      />
                       <h6 class="mb-2">Analyzing Your Content</h6>
-                      <p class="text-muted">AI is evaluating your {{ currentEntityType }} and generating personalized recommendations...</p>
-                      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
+                      <p class="text-muted">
+                        AI is evaluating your {{ currentEntityType }} and
+                        generating personalized recommendations...
+                      </p>
+                      <div
+                        class="progress mt-3"
+                        style="max-width: 300px; margin: 0 auto"
+                      >
+                        <div
+                          class="progress-bar progress-bar-striped progress-bar-animated"
+                          style="width: 75%"
+                        ></div>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- Chat Tab -->
-                <div v-if="activeTab === 'chat'" class="tab-pane fade show active">
+                <div
+                  v-if="activeTab === 'chat'"
+                  class="tab-pane fade show active"
+                >
                   <div class="chat-interface mb-3">
                     <div ref="chatContainer" class="chat-messages">
                       <div
@@ -213,24 +334,48 @@
                         class="message mb-3"
                         :class="{ 'message-own': message.sender === 'user' }"
                       >
-                        <div class="d-flex" :class="{ 'justify-content-end': message.sender === 'user' }">
+                        <div
+                          class="d-flex"
+                          :class="{
+                            'justify-content-end': message.sender === 'user',
+                          }"
+                        >
                           <!-- Left-side avatar for AI/System -->
-                          <div v-if="message.sender !== 'user'" class="message-avatar me-2">
-                            <AppIcon :name="message.sender === 'ai' ? 'mdi-robot' : 'mdi-information'" />
+                          <div
+                            v-if="message.sender !== 'user'"
+                            class="message-avatar me-2"
+                          >
+                            <AppIcon
+                              :name="
+                                message.sender === 'ai'
+                                  ? 'mdi-robot'
+                                  : 'mdi-information'
+                              "
+                            />
                           </div>
 
                           <div
                             class="message-bubble"
-                            :class="{ 'message-bubble-own': message.sender === 'user', 'message-bubble-ai': message.sender === 'ai' }"
+                            :class="{
+                              'message-bubble-own': message.sender === 'user',
+                              'message-bubble-ai': message.sender === 'ai',
+                            }"
                           >
                             <div class="message-content">
-                              <p class="mb-0 message-text">{{ message.content }}</p>
-                              <small class="text-muted message-timestamp">{{ formatTime(message.timestamp) }}</small>
+                              <p class="mb-0 message-text">
+                                {{ message.content }}
+                              </p>
+                              <small class="text-muted message-timestamp">{{
+                                formatTime(message.timestamp)
+                              }}</small>
                             </div>
                           </div>
 
                           <!-- Right-side avatar for User -->
-                          <div v-if="message.sender === 'user'" class="message-avatar ms-2">
+                          <div
+                            v-if="message.sender === 'user'"
+                            class="message-avatar ms-2"
+                          >
                             <AppIcon name="mdi-account" />
                           </div>
                         </div>
@@ -250,7 +395,10 @@
                       </div>
                     </div>
 
-                    <form class="chat-input-section" @submit.prevent="sendChatMessage">
+                    <form
+                      class="chat-input-section"
+                      @submit.prevent="sendChatMessage"
+                    >
                       <div class="input-group">
                         <input
                           v-model="chatInput"
@@ -259,7 +407,7 @@
                           placeholder="Ask me anything about your application materials..."
                           :disabled="isProcessing"
                           @keydown.enter.prevent="sendChatMessage"
-                        >
+                        />
                         <button
                           type="submit"
                           class="unified-btn btn-primary v-btn ui-btn ui-size-md"
@@ -274,7 +422,11 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="unified-btn btn-secondary ui-btn ui-size-md v-btn" @click="closeModal">
+              <button
+                type="button"
+                class="unified-btn btn-secondary ui-btn ui-size-md v-btn"
+                @click="closeModal"
+              >
                 <AppIcon name="mdi-close-circle-outline" />
                 Close
               </button>
@@ -299,15 +451,25 @@
     </Teleport>
 
     <!-- Floating AI Button - Zelda Style -->
-    <div v-if="!showHelperModal && showFloatingButton" class="ai-floating-button zelda-style">
+    <div
+      v-if="!showHelperModal && showFloatingButton"
+      class="ai-floating-button zelda-style"
+    >
       <button
         class="unified-btn btn-primary btn-lg rounded-circle zelda-assistant-btn v-btn ui-btn ui-size-md"
-        :class="{ 'pulse': newSuggestionsAvailable, 'magical-glow': newSuggestionsAvailable }"
+        :class="{
+          pulse: newSuggestionsAvailable,
+          'magical-glow': newSuggestionsAvailable,
+        }"
         title="Hey! Listen! - AI Assistant"
         @click="openModal"
       >
         <AppIcon name="mdi-brain" class="magical-icon" />
-        <span v-if="newSuggestionsAvailable" class="notification-badge magical-badge">{{ activeSuggestions.length }}</span>
+        <span
+          v-if="newSuggestionsAvailable"
+          class="notification-badge magical-badge"
+          >{{ activeSuggestions.length }}</span
+        >
         <!-- Magical particles -->
         <div class="magical-particles">
           <span v-for="i in 6" :key="i" class="particle"></span>
@@ -315,7 +477,10 @@
       </button>
 
       <!-- Enhanced Zelda-style tooltip -->
-      <div v-if="activeSuggestions.length > 0" class="ai-tooltip zelda-dialogue">
+      <div
+        v-if="activeSuggestions.length > 0"
+        class="ai-tooltip zelda-dialogue"
+      >
         <div class="tooltip-arrow zelda-arrow"></div>
         <div class="tooltip-content zelda-content">
           <div class="zelda-header">
@@ -323,10 +488,15 @@
             <span class="zelda-greeting">Hey! Listen!</span>
           </div>
           <div class="zelda-message">
-            I have {{ activeSuggestions.length }} suggestions to help improve your {{ currentEntityType }}!
+            I have {{ activeSuggestions.length }} suggestions to help improve
+            your {{ currentEntityType }}!
           </div>
           <ul class="zelda-suggestions mb-0 small">
-            <li v-for="suggestion in activeSuggestions.slice(0, 3)" :key="suggestion.id" class="zelda-suggestion-item">
+            <li
+              v-for="suggestion in activeSuggestions.slice(0, 3)"
+              :key="suggestion.id"
+              class="zelda-suggestion-item"
+            >
               <AppIcon name="mdi-chevron-right" class="zelda-arrow-icon" />
               {{ suggestion.title }}
             </li>
@@ -362,7 +532,7 @@ const _props = withDefaults(defineProps<Props>(), {
   entityData: () => ({}),
   targetJob: undefined,
   show: false,
-  showFloatingButton: true
+  showFloatingButton: true,
 })
 
 // Emits
@@ -390,13 +560,9 @@ const filteredSuggestions = computed(() =>
   aiContext.activeSuggestions.value.filter(s => !s.appliedAt)
 )
 
-const recentActions = computed(() =>
-  aiContext.recentActions.value.slice(0, 5)
-)
+const recentActions = computed(() => aiContext.recentActions.value.slice(0, 5))
 
-const activeSuggestions = computed(() =>
-  aiContext.activeSuggestions.value
-)
+const activeSuggestions = computed(() => aiContext.activeSuggestions.value)
 
 const contextTabs = computed(() => {
   const tabs = [
@@ -404,38 +570,41 @@ const contextTabs = computed(() => {
       id: 'suggestions',
       label: 'Suggestions',
       icon: 'mdi-lightbulb',
-      count: filteredSuggestions.value.length
+      count: filteredSuggestions.value.length,
     },
     {
       id: 'analysis',
       label: 'Analysis',
-      icon: 'mdi-magnify-scan'
+      icon: 'mdi-magnify-scan',
     },
     {
       id: 'chat',
       label: 'Chat',
-      icon: 'mdi-chat-question'
-    }
+      icon: 'mdi-chat-question',
+    },
   ]
 
   return tabs
 })
 
 const helperTitle = computed(() => {
-  const entityPrefix = _props.entityType ? `${_props.entityType.charAt(0).toUpperCase() + _props.entityType.slice(1)} - ` : ''
+  const entityPrefix = _props.entityType
+    ? `${_props.entityType.charAt(0).toUpperCase() + _props.entityType.slice(1)} - `
+    : ''
   return `${entityPrefix}AI Assistant`
 })
 
-const newSuggestionsAvailable = computed(() =>
-  activeSuggestions.value.length > 0
+const newSuggestionsAvailable = computed(
+  () => activeSuggestions.value.length > 0
 )
 
-const currentEntity = computed(() =>
-  _props.entityData || aiContext.state.currentContext?.entities?.[0]?.data
+const currentEntity = computed(
+  () => _props.entityData || aiContext.state.currentContext?.entities?.[0]?.data
 )
 
-const currentEntityType = computed(() =>
-  _props.entityType || aiContext.state.currentContext?.entityType || 'content'
+const currentEntityType = computed(
+  () =>
+    _props.entityType || aiContext.state.currentContext?.entityType || 'content'
 )
 
 const analysisMetrics = computed(() => {
@@ -446,27 +615,31 @@ const analysisMetrics = computed(() => {
       title: 'Keywords Matched',
       value: analysisResults.value.keywordScore || '75%',
       icon: 'mdi-tag-text',
-      description: 'Resume keywords matching job requirements'
+      description: 'Resume keywords matching job requirements',
     },
     {
       title: 'ATS Score',
       value: analysisResults.value.atsScore || '82%',
       icon: 'mdi-check-decagram',
-      description: 'Applicants Tracking System compatibility'
+      description: 'Applicants Tracking System compatibility',
     },
     {
       title: 'Strength Score',
       value: analysisResults.value.strengthScore || '78%',
       icon: 'mdi-trending-up',
-      description: 'Overall content quality assessment'
-    }
+      description: 'Overall content quality assessment',
+    },
   ]
 })
 
 // Methods
 const openModal = async (): Promise<void> => {
   if (_props.entityType && _props.entityId) {
-    await aiContext.initializeContext(_props.entityType, _props.entityId, _props.targetJob)
+    await aiContext.initializeContext(
+      _props.entityType,
+      _props.entityId,
+      _props.targetJob
+    )
   }
 
   showHelperModal.value = true
@@ -516,7 +689,7 @@ const runATSCalculations = async (): Promise<void> => {
       ...analysisResults.value,
       atsScore: atsResults.score,
       atsIssues: atsResults.issues,
-      atsSuggestions: atsResults.suggestions
+      atsSuggestions: atsResults.suggestions,
     }
   } catch (error) {
     console.error('ATS analysis failed:', error)
@@ -537,8 +710,8 @@ const performAnalysis = async (): Promise<any> => {
     recommendations: [
       'Add more quantifiable achievements to demonstrate impact',
       'Include relevant technical skills matching the job requirements',
-      'Strengthen the summary section with specific accomplishments'
-    ]
+      'Strengthen the summary section with specific accomplishments',
+    ],
   }
 
   return analysis
@@ -552,8 +725,8 @@ const performATSAnalysis = async (): Promise<any> => {
     suggestions: [
       'Use standard section headings (Skills, Experience, Education)',
       'Incorporate keywords from the job description naturally',
-      'Use plain text formatting and avoid complex layouts'
-    ]
+      'Use plain text formatting and avoid complex layouts',
+    ],
   }
 }
 
@@ -564,7 +737,7 @@ const sendChatMessage = async (): Promise<void> => {
     id: Date.now(),
     content: chatInput.value.trim(),
     sender: 'user',
-    timestamp: new Date()
+    timestamp: new Date(),
   }
 
   chatMessages.value.push(userMessage)
@@ -580,7 +753,7 @@ const sendChatMessage = async (): Promise<void> => {
       id: Date.now() + 1,
       content: `Thank you for your question about "${userMessage.content}". Based on your content, I recommend focusing on quantifiable achievements and relevant keywords. Would you like me to help you refine any specific section?`,
       sender: 'ai',
-      timestamp: new Date()
+      timestamp: new Date(),
     }
 
     chatMessages.value.push(aiResponse)
@@ -599,52 +772,73 @@ const sendChatMessage = async (): Promise<void> => {
 // Utility methods
 const getPriorityClass = (priority: string): string => {
   switch (priority) {
-    case 'high': return 'priority-high'
-    case 'urgent': return 'priority-urgent'
-    default: return 'priority-normal'
+    case 'high':
+      return 'priority-high'
+    case 'urgent':
+      return 'priority-urgent'
+    default:
+      return 'priority-normal'
   }
 }
 
 const getPriorityCardClass = (priority: string): string => {
   switch (priority) {
-    case 'high': return 'border-warning'
-    case 'urgent': return 'border-danger bg-light-danger'
-    default: return 'border-secondary'
+    case 'high':
+      return 'border-warning'
+    case 'urgent':
+      return 'border-danger bg-light-danger'
+    default:
+      return 'border-secondary'
   }
 }
 
 const getBadgeClass = (type: string): string => {
   switch (type) {
-    case 'enhancement': return 'bg-primary'
-    case 'correction': return 'bg-danger'
-    case 'analysis': return 'bg-info'
-    default: return 'bg-secondary'
+    case 'enhancement':
+      return 'bg-primary'
+    case 'correction':
+      return 'bg-danger'
+    case 'analysis':
+      return 'bg-info'
+    default:
+      return 'bg-secondary'
   }
 }
 
 const getPriorityLabel = (priority: string): string => {
   switch (priority) {
-    case 'high': return 'High Priority'
-    case 'urgent': return 'Urgent'
-    case 'low': return 'Low Priority'
-    default: return 'Normal'
+    case 'high':
+      return 'High Priority'
+    case 'urgent':
+      return 'Urgent'
+    case 'low':
+      return 'Low Priority'
+    default:
+      return 'Normal'
   }
 }
 
 const getActionText = (suggestion: any): string => {
   switch (suggestion.type) {
-    case 'enhancement': return 'Apply'
-    case 'correction': return 'Fix'
-    case 'analysis': return 'Analyze'
-    default: return 'Action'
+    case 'enhancement':
+      return 'Apply'
+    case 'correction':
+      return 'Fix'
+    case 'analysis':
+      return 'Analyze'
+    default:
+      return 'Action'
   }
 }
 
 const getActionButtonClass = (suggestion: any): string => {
   switch (suggestion.priority) {
-    case 'urgent': return 'btn-danger'
-    case 'high': return 'btn-warning'
-    default: return 'btn-primary'
+    case 'urgent':
+      return 'btn-danger'
+    case 'high':
+      return 'btn-warning'
+    default:
+      return 'btn-primary'
   }
 }
 
@@ -658,21 +852,30 @@ const getScoreClass = (score: number): string => {
 const getScoreDescription = (score: number): string => {
   if (score >= 90) return 'Excellent quality'
   if (score >= 80) return 'Good quality with minor improvements'
-  if (score >= 70) return 'Average quality - significant improvements recommended'
+  if (score >= 70)
+    return 'Average quality - significant improvements recommended'
   return 'Needs substantial improvement'
 }
 
 const formatDate = (date: Date): string => {
-  return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return (
+    date.toLocaleDateString() +
+    ' ' +
+    date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  )
 }
 
 const formatTime = (timestamp: Date): string => {
-  return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return timestamp.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 
 const scrollToBottom = (): void => {
   if (document.querySelector('.chat-messages')) {
-    document.querySelector('.chat-messages')!.scrollTop = document.querySelector('.chat-messages')!.scrollHeight
+    document.querySelector('.chat-messages')!.scrollTop =
+      document.querySelector('.chat-messages')!.scrollHeight
   }
 }
 
@@ -683,13 +886,16 @@ onMounted(async () => {
   }
 
   // Watch for prop changes
-  watch(() => _props.show, async (newShow) => {
-    if (newShow && !showHelperModal.value) {
-      await openModal()
-    } else if (!newShow && showHelperModal.value) {
-      closeModal()
+  watch(
+    () => _props.show,
+    async newShow => {
+      if (newShow && !showHelperModal.value) {
+        await openModal()
+      } else if (!newShow && showHelperModal.value) {
+        closeModal()
+      }
     }
-  })
+  )
 })
 
 // Handle escape key
@@ -725,8 +931,13 @@ onUnmounted(() => {
 }
 
 @keyframes pulseWarn {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* Floating Button - Enhanced Zelda Style */
@@ -755,12 +966,14 @@ onUnmounted(() => {
 }
 
 .zelda-assistant-btn.magical-glow {
-  animation: magicalPulse 2s ease-in-out infinite,
-             gentleFloat 3s ease-in-out infinite;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2),
-              0 0 25px rgba(26, 115, 232, 0.5),
-              0 0 35px rgba(52, 168, 83, 0.3),
-              0 0 45px rgba(251, 188, 4, 0.2);
+  animation:
+    magicalPulse 2s ease-in-out infinite,
+    gentleFloat 3s ease-in-out infinite;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    0 0 25px rgba(26, 115, 232, 0.5),
+    0 0 35px rgba(52, 168, 83, 0.3),
+    0 0 45px rgba(251, 188, 4, 0.2);
 }
 
 .magical-icon {
@@ -779,21 +992,38 @@ onUnmounted(() => {
   position: absolute;
   width: 4px;
   height: 4px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(251, 188, 4, 0.6) 100%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(251, 188, 4, 0.6) 100%
+  );
   border-radius: 50%;
   animation: particleOrbit 4s linear infinite;
   opacity: 0.8;
 }
 
-.particle:nth-child(1) { animation-delay: 0s; }
-.particle:nth-child(2) { animation-delay: 0.7s; }
-.particle:nth-child(3) { animation-delay: 1.4s; }
-.particle:nth-child(4) { animation-delay: 2.1s; }
-.particle:nth-child(5) { animation-delay: 2.8s; }
-.particle:nth-child(6) { animation-delay: 3.5s; }
+.particle:nth-child(1) {
+  animation-delay: 0s;
+}
+.particle:nth-child(2) {
+  animation-delay: 0.7s;
+}
+.particle:nth-child(3) {
+  animation-delay: 1.4s;
+}
+.particle:nth-child(4) {
+  animation-delay: 2.1s;
+}
+.particle:nth-child(5) {
+  animation-delay: 2.8s;
+}
+.particle:nth-child(6) {
+  animation-delay: 3.5s;
+}
 
 @keyframes magicalPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     filter: brightness(1);
   }
@@ -804,7 +1034,8 @@ onUnmounted(() => {
 }
 
 @keyframes gentleFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -814,13 +1045,15 @@ onUnmounted(() => {
 
 @keyframes iconGlow {
   0% {
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8),
-                 0 0 12px rgba(26, 115, 232, 0.6);
+    text-shadow:
+      0 0 8px rgba(255, 255, 255, 0.8),
+      0 0 12px rgba(26, 115, 232, 0.6);
   }
   100% {
-    text-shadow: 0 0 12px rgba(255, 255, 255, 1),
-                 0 0 18px rgba(26, 115, 232, 0.8),
-                 0 0 24px rgba(52, 168, 83, 0.4);
+    text-shadow:
+      0 0 12px rgba(255, 255, 255, 1),
+      0 0 18px rgba(26, 115, 232, 0.8),
+      0 0 24px rgba(52, 168, 83, 0.4);
   }
 }
 
@@ -829,7 +1062,8 @@ onUnmounted(() => {
     transform: rotate(0deg) translateX(45px) rotate(0deg);
     opacity: 0;
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 0.8;
   }
   100% {
@@ -857,15 +1091,25 @@ onUnmounted(() => {
 }
 
 .magical-badge {
-  background: linear-gradient(45deg, var(--color-error-500) 0%, var(--color-warning-500) 100%);
-  box-shadow: 0 2px 8px rgba(var(--color-error-rgb), 0.4),
-              0 0 12px rgba(var(--color-warning-rgb), 0.3);
+  background: linear-gradient(
+    45deg,
+    var(--color-error-500) 0%,
+    var(--color-warning-500) 100%
+  );
+  box-shadow:
+    0 2px 8px rgba(var(--color-error-rgb), 0.4),
+    0 0 12px rgba(var(--color-warning-rgb), 0.3);
   border: 2px solid rgba(255, 255, 255, 0.9);
 }
 
 @keyframes badgeBounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
 }
 
 /* Enhanced Zelda-style AI Tooltip */
@@ -989,13 +1233,15 @@ onUnmounted(() => {
 
 @keyframes triforceGlow {
   0% {
-    text-shadow: 0 0 8px rgba(251, 188, 4, 0.6),
-                 0 0 12px rgba(251, 188, 4, 0.3);
+    text-shadow:
+      0 0 8px rgba(251, 188, 4, 0.6),
+      0 0 12px rgba(251, 188, 4, 0.3);
   }
   100% {
-    text-shadow: 0 0 12px rgba(251, 188, 4, 0.9),
-                 0 0 18px rgba(251, 188, 4, 0.5),
-                 0 0 24px rgba(251, 188, 4, 0.2);
+    text-shadow:
+      0 0 12px rgba(251, 188, 4, 0.9),
+      0 0 18px rgba(251, 188, 4, 0.5),
+      0 0 24px rgba(251, 188, 4, 0.2);
   }
 }
 
@@ -1033,22 +1279,38 @@ onUnmounted(() => {
 }
 
 .score-excellent {
-  background: linear-gradient(135deg, var(--color-success), var(--color-success-light));
+  background: linear-gradient(
+    135deg,
+    var(--color-success),
+    var(--color-success-light)
+  );
   color: white;
 }
 
 .score-good {
-  background: linear-gradient(135deg, var(--color-success-500), var(--color-success-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-success-500),
+    var(--color-success-600)
+  );
   color: white;
 }
 
 .score-average {
-  background: linear-gradient(135deg, var(--color-warning-500), var(--color-warning-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-warning-500),
+    var(--color-warning-600)
+  );
   color: white;
 }
 
 .score-poor {
-  background: linear-gradient(135deg, var(--color-error-500), var(--color-error-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-error-500),
+    var(--color-error-600)
+  );
   color: white;
 }
 
@@ -1070,16 +1332,39 @@ onUnmounted(() => {
   overflow-wrap: anywhere;
 }
 
-.chat-messages .message-content a { color: var(--color-primary-500); text-decoration: underline; }
+.chat-messages .message-content a {
+  color: var(--color-primary-500);
+  text-decoration: underline;
+}
 .chat-messages .message-content code {
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  font-family: var(
+    --font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
+    monospace
+  );
   background: var(--surface-elevated);
   border: 1px solid var(--glass-border);
   border-radius: 4px;
   padding: 0 4px;
 }
 .chat-messages .message-content pre {
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  font-family: var(
+    --font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
+    monospace
+  );
   background: var(--surface-elevated);
   border: 1px solid var(--glass-border);
   border-radius: 8px;
@@ -1102,7 +1387,8 @@ onUnmounted(() => {
 }
 
 .message-bubble-ai {
-  border-left: 3px solid color-mix(in srgb, var(--color-primary-500) 55%, transparent);
+  border-left: 3px solid
+    color-mix(in srgb, var(--color-primary-500) 55%, transparent);
 }
 
 .message-bubble-own {
@@ -1146,12 +1432,20 @@ onUnmounted(() => {
   animation: typingDot 1.4s ease-in-out infinite;
 }
 
-.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-.typing-indicator span:nth-child(3) { animation-delay: 0s; }
+.typing-indicator span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.typing-indicator span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0s;
+}
 
 @keyframes typingDot {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     opacity: 0.3;
   }
   40% {
@@ -1161,10 +1455,12 @@ onUnmounted(() => {
 
 /* Enhanced Modal Header - Zelda Style */
 .zelda-modal-header {
-  background: linear-gradient(135deg, 
-              rgba(26, 115, 232, 0.95) 0%,
-              rgba(52, 168, 83, 0.9) 50%,
-              rgba(251, 188, 4, 0.85) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(26, 115, 232, 0.95) 0%,
+    rgba(52, 168, 83, 0.9) 50%,
+    rgba(251, 188, 4, 0.85) 100%
+  );
   color: white;
   padding: 20px 24px;
   border-bottom: 2px solid rgba(255, 255, 255, 0.3);
@@ -1253,73 +1549,86 @@ onUnmounted(() => {
 }
 
 @keyframes patternFlow {
-  0% { transform: translateX(0) translateY(0); }
-  100% { transform: translateX(-20px) translateY(-20px); }
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(-20px) translateY(-20px);
+  }
 }
 
 @keyframes triforceHeaderGlow {
   0% {
-    text-shadow: 0 0 10px rgba(251, 188, 4, 0.8),
-                 0 0 20px rgba(251, 188, 4, 0.4);
+    text-shadow:
+      0 0 10px rgba(251, 188, 4, 0.8),
+      0 0 20px rgba(251, 188, 4, 0.4);
   }
   100% {
-    text-shadow: 0 0 15px rgba(251, 188, 4, 1),
-                 0 0 25px rgba(251, 188, 4, 0.6),
-                 0 0 35px rgba(251, 188, 4, 0.3);
+    text-shadow:
+      0 0 15px rgba(251, 188, 4, 1),
+      0 0 25px rgba(251, 188, 4, 0.6),
+      0 0 35px rgba(251, 188, 4, 0.3);
   }
 }
 
 @keyframes brainPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
   }
   50% {
     transform: scale(1.05);
-    text-shadow: 0 0 18px rgba(255, 255, 255, 1),
-                 0 0 24px rgba(26, 115, 232, 0.6);
+    text-shadow:
+      0 0 18px rgba(255, 255, 255, 1),
+      0 0 24px rgba(26, 115, 232, 0.6);
   }
 }
 
 /* Dark Theme Support */
-[data-theme="dark"] .ai-tooltip .tooltip-content {
+[data-theme='dark'] .ai-tooltip .tooltip-content {
   background: var(--glass-surface);
   border-color: var(--glass-border);
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .message-bubble {
+[data-theme='dark'] .message-bubble {
   background: var(--glass-surface);
   border-color: var(--glass-border);
 }
 
-[data-theme="dark"] .chat-messages {
+[data-theme='dark'] .chat-messages {
   background: var(--glass-surface);
   border-color: var(--glass-border);
 }
 
-[data-theme="dark"] .zelda-content {
-  background: linear-gradient(135deg, 
-              rgba(30, 30, 30, 0.95) 0%,
-              rgba(20, 20, 25, 0.98) 100%);
+[data-theme='dark'] .zelda-content {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 30, 30, 0.95) 0%,
+    rgba(20, 20, 25, 0.98) 100%
+  );
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-[data-theme="dark"] .zelda-message {
+[data-theme='dark'] .zelda-message {
   color: var(--text-muted);
 }
 
 /* Enhanced Modal Content */
 .zelda-modal-content {
-  background: linear-gradient(135deg, 
-              rgba(255, 255, 255, 0.95) 0%,
-              rgba(248, 250, 255, 0.98) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(248, 250, 255, 0.98) 100%
+  );
   backdrop-filter: blur(20px);
   border: 2px solid rgba(26, 115, 232, 0.2);
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15),
-              0 0 20px rgba(26, 115, 232, 0.1),
-              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(26, 115, 232, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   overflow: hidden;
 }
 
@@ -1356,7 +1665,11 @@ onUnmounted(() => {
 }
 
 .zelda-modal-content .nav-link.active {
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-success-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-success-500) 100%
+  );
   color: white;
   box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.3);
   transform: translateY(-1px);
@@ -1397,36 +1710,42 @@ onUnmounted(() => {
 }
 
 /* Dark theme modal adjustments */
-[data-theme="dark"] .zelda-modal-content {
-  background: linear-gradient(135deg, 
-              rgba(20, 20, 25, 0.95) 0%,
-              rgba(15, 15, 20, 0.98) 100%);
+[data-theme='dark'] .zelda-modal-content {
+  background: linear-gradient(
+    135deg,
+    rgba(20, 20, 25, 0.95) 0%,
+    rgba(15, 15, 20, 0.98) 100%
+  );
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-[data-theme="dark"] .zelda-modal-content .modal-footer {
+[data-theme='dark'] .zelda-modal-content .modal-footer {
   background: rgba(15, 15, 20, 0.8);
   border-top-color: rgba(255, 255, 255, 0.15);
 }
 
-[data-theme="dark"] .zelda-modal-content .nav-tabs {
+[data-theme='dark'] .zelda-modal-content .nav-tabs {
   background: rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="dark"] .zelda-modal-content .unified-card {
+[data-theme='dark'] .zelda-modal-content .unified-card {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-[data-theme="dark"] .zelda-modal-content .unified-card:hover {
+[data-theme='dark'] .zelda-modal-content .unified-card:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* Spin Animation for Processing */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {

@@ -19,7 +19,7 @@ import {
   StreamCallbacks,
   ConcurrentProcess,
   HealthMetrics,
-  PerformanceReport
+  PerformanceReport,
 } from '@/shared/types/ai'
 
 // Concrete provider implementations
@@ -76,7 +76,7 @@ class MultiModalAIManager {
     currentRequests: new Map<string, MultiModalRequest>(),
     performanceData: [],
     defaultModality: ModalityType.TEXT,
-    loadBalancing: true
+    loadBalancing: true,
   })
 
   // Configuration
@@ -87,7 +87,7 @@ class MultiModalAIManager {
     enableFallback: true,
     healthCheckInterval: 30000, // 30 seconds
     defaultTimeout: 60000, // 60 seconds
-    maxRetries: 3
+    maxRetries: 3,
   }
 
   static getInstance(config?: Partial<AIManagerConfig>): MultiModalAIManager {
@@ -107,7 +107,9 @@ class MultiModalAIManager {
 
   // Computed properties
   get isReady() {
-    return computed(() => this.state.isInitialized && this.getHealthyProviders().length > 0)
+    return computed(
+      () => this.state.isInitialized && this.getHealthyProviders().length > 0
+    )
   }
 
   get activeProviders() {
@@ -148,12 +150,14 @@ class MultiModalAIManager {
         lastHealthCheck: 0,
         activeRequests: 0,
         totalRequests: 0,
-        errorCount: 0
+        errorCount: 0,
       })
     })
   }
 
-  async initialize(config ?: ProviderConfig[]): Promise<{ success: boolean; message: string }> {
+  async initialize(
+    config?: ProviderConfig[]
+  ): Promise<{ success: boolean; message: string }> {
     try {
       logger.info('Initializing MultiModal AI Manager...')
 
@@ -162,22 +166,27 @@ class MultiModalAIManager {
       }
 
       // Initialize configured providers
-      const initPromises = this.config.providers.map(async (providerConfig) => {
+      const initPromises = this.config.providers.map(async providerConfig => {
         const provider = this.providers.get(providerConfig.provider)
         if (provider) {
           try {
             await provider.initialize(providerConfig)
             this.updateProviderStatus(providerConfig.provider, {
               initialized: true,
-              health: 'healthy'
+              health: 'healthy',
             })
             logger.info(`Initialized provider: ${providerConfig.provider}`)
           } catch (error) {
-            logger.error(`Failed to initialize provider ${providerConfig.provider}:`, error)
+            logger.error(
+              `Failed to initialize provider ${providerConfig.provider}:`,
+              error
+            )
             this.updateProviderStatus(providerConfig.provider, {
               initialized: false,
               health: 'down',
-              errorCount: (this.state.providers.get(providerConfig.provider)?.errorCount || 0) + 1
+              errorCount:
+                (this.state.providers.get(providerConfig.provider)
+                  ?.errorCount || 0) + 1,
             })
           }
         }
@@ -189,28 +198,36 @@ class MultiModalAIManager {
       const healthyProviders = this.getHealthyProviders()
 
       if (healthyProviders.length === 0) {
-        throw new Error('No AI providers could be initialized. Please check your API keys.')
+        throw new Error(
+          'No AI providers could be initialized. Please check your API keys.'
+        )
       }
 
       this.state.isInitialized = true
-      logger.info(`MultiModal AI Manager initialized with ${healthyProviders.length} providers`)
+      logger.info(
+        `MultiModal AI Manager initialized with ${healthyProviders.length} providers`
+      )
 
       return {
         success: true,
-        message: `Successfully initialized ${healthyProviders.length} AI providers`
+        message: `Successfully initialized ${healthyProviders.length} AI providers`,
       }
-
     } catch (error) {
       logger.error('Failed to initialize MultiModal AI Manager:', error)
       return {
         success: false,
-        message: error instanceof Error ? error.message : 'Unknown initialization error'
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Unknown initialization error',
       }
     }
   }
 
   // Core execution methods
-  async executeRequest(request: MultiModalRequest): Promise<MultiModalResponse> {
+  async executeRequest(
+    request: MultiModalRequest
+  ): Promise<MultiModalResponse> {
     const startTime = Date.now()
     this.state.currentRequests.set(request.id, request)
 
@@ -223,19 +240,23 @@ class MultiModalAIManager {
       } else {
         return await this.executeSequential(request)
       }
-
     } catch (error) {
       const errorResponse = this.createErrorResponse(request, error)
       this.updateMetrics(request, startTime, errorResponse)
       return errorResponse
     } finally {
       this.state.currentRequests.delete(request.id)
-      this.eventEmitter.emit('request_completed', { requestId: request.id, timing: Date.now() - startTime })
+      this.eventEmitter.emit('request_completed', {
+        requestId: request.id,
+        timing: Date.now() - startTime,
+      })
     }
   }
 
   // Sequential execution (single provider)
-  private async executeSequential(request: MultiModalRequest): Promise<MultiModalResponse> {
+  private async executeSequential(
+    request: MultiModalRequest
+  ): Promise<MultiModalResponse> {
     const provider = this.selectProvider(request)
 
     if (!provider) {
@@ -243,14 +264,18 @@ class MultiModalAIManager {
     }
 
     this.incrementProviderRequests(request.providers[0])
-    const result = await this.providers.get(request.providers[0])!.execute(request)
+    const result = await this.providers
+      .get(request.providers[0])!
+      .execute(request)
     this.decrementProviderRequests(request.providers[0])
 
     return result
   }
 
   // Concurrent execution (multiple providers)
-  private async executeConcurrent(request: MultiModalRequest): Promise<MultiModalResponse> {
+  private async executeConcurrent(
+    request: MultiModalRequest
+  ): Promise<MultiModalResponse> {
     const concurrentProcess: ConcurrentProcess = {
       id: `concurrent_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       request,
@@ -258,36 +283,44 @@ class MultiModalAIManager {
         id: `process_${Math.random().toString(36).substr(2, 9)}`,
         provider,
         status: 'pending' as const,
-        timing: { startedAt: 0, completedAt: 0, totalTime: 0, processingTime: 0 }
+        timing: {
+          startedAt: 0,
+          completedAt: 0,
+          totalTime: 0,
+          processingTime: 0,
+        },
       })),
       coordinator: {
         strategy: 'parallel',
         combiner: this.combineResults.bind(this),
-        timeout: this.config.defaultTimeout
-      }
+        timeout: this.config.defaultTimeout,
+      },
     }
 
     // Execute all providers in parallel
-    const promises = concurrentProcess.processes.map(async (process) => {
+    const promises = concurrentProcess.processes.map(async process => {
       try {
         process.status = 'running'
         process.timing.startedAt = Date.now()
 
         this.incrementProviderRequests(process.provider)
-        const result = await this.providers.get(process.provider)!.execute(request)
+        const result = await this.providers
+          .get(process.provider)!
+          .execute(request)
         process.result = result
         process.status = 'completed'
         process.timing.completedAt = Date.now()
-        process.timing.totalTime = process.timing.completedAt - process.timing.startedAt
+        process.timing.totalTime =
+          process.timing.completedAt - process.timing.startedAt
         process.timing.processingTime = process.timing.totalTime
 
         this.decrementProviderRequests(process.provider)
         return result
-
       } catch (error) {
         process.status = 'failed'
         process.timing.completedAt = Date.now()
-        process.timing.totalTime = process.timing.completedAt - process.timing.startedAt
+        process.timing.totalTime =
+          process.timing.completedAt - process.timing.startedAt
         this.decrementProviderRequests(process.provider)
         throw error
       }
@@ -299,7 +332,9 @@ class MultiModalAIManager {
       return firstResult
     } catch (error) {
       if (error instanceof AggregateError) {
-        throw new Error(`All concurrent executions failed: ${error.errors.map(e => e.message).join(', ')}`)
+        throw new Error(
+          `All concurrent executions failed: ${error.errors.map(e => e.message).join(', ')}`
+        )
       }
       throw error
     }
@@ -307,8 +342,10 @@ class MultiModalAIManager {
 
   // Provider selection with load balancing
   private selectProvider(request: MultiModalRequest): AIProvider | null {
-    const availableProviders = request.providers.filter(provider =>
-      this.isProviderHealthy(provider) && this.canHandleRequest(provider, request)
+    const availableProviders = request.providers.filter(
+      provider =>
+        this.isProviderHealthy(provider) &&
+        this.canHandleRequest(provider, request)
     )
 
     if (availableProviders.length === 0) {
@@ -321,14 +358,18 @@ class MultiModalAIManager {
 
     // Load balancing: select provider with least active requests
     return availableProviders.reduce((selected, current) => {
-      const selectedLoad = this.state.providers.get(selected)?.activeRequests || 0
+      const selectedLoad =
+        this.state.providers.get(selected)?.activeRequests || 0
       const currentLoad = this.state.providers.get(current)?.activeRequests || 0
       return currentLoad < selectedLoad ? current : selected
     })
   }
 
   // Check if provider can handle request
-  private canHandleRequest(provider: AIProvider, request: MultiModalRequest): boolean {
+  private canHandleRequest(
+    provider: AIProvider,
+    request: MultiModalRequest
+  ): boolean {
     const providerImpl = this.providers.get(provider)
     return providerImpl ? providerImpl.canHandle(request) : false
   }
@@ -338,7 +379,9 @@ class MultiModalAIManager {
     const provider = this.selectProvider(request)
 
     if (!provider) {
-      callbacks.onError?.(new Error('No suitable provider available for streaming'))
+      callbacks.onError?.(
+        new Error('No suitable provider available for streaming')
+      )
       return null
     }
 
@@ -350,17 +393,19 @@ class MultiModalAIManager {
         onError: (error: Error) => {
           this.decrementProviderRequests(provider)
           callbacks.onError?.(error)
-        }
+        },
       })
     } else {
-      callbacks.onError?.(new Error('Selected provider does not support streaming'))
+      callbacks.onError?.(
+        new Error('Selected provider does not support streaming')
+      )
       return null
     }
   }
 
   // Model management
   getAvailableModels(): ModelInfo[] {
-    const allModels: ModelInfo[] = [];
+    const allModels: ModelInfo[] = []
 
     this.providers.forEach(provider => {
       if (provider.getModels) {
@@ -399,25 +444,30 @@ class MultiModalAIManager {
   }
 
   private async performHealthChecks() {
-    const healthChecks = Array.from(this.providers.entries()).map(async ([provider, impl]) => {
-      try {
-        const health = await impl.checkHealth()
-        this.updateProviderHealth(provider, health)
-      } catch (error) {
-        this.updateProviderHealth(provider, {
-          status: 'down',
-          responseTime: 0,
-          errorRate: 1
-        })
+    const healthChecks = Array.from(this.providers.entries()).map(
+      async ([provider, impl]) => {
+        try {
+          const health = await impl.checkHealth()
+          this.updateProviderHealth(provider, health)
+        } catch (error) {
+          this.updateProviderHealth(provider, {
+            status: 'down',
+            responseTime: 0,
+            errorRate: 1,
+          })
+        }
       }
-    })
+    )
 
     await Promise.allSettled(healthChecks)
     this.eventEmitter.emit('health_check_completed', this.getHealthOverview())
   }
 
   // Helper methods
-  private updateProviderStatus(provider: AIProvider, updates: Partial<ProviderStatus>) {
+  private updateProviderStatus(
+    provider: AIProvider,
+    updates: Partial<ProviderStatus>
+  ) {
     const current = this.state.providers.get(provider)
     if (current) {
       this.state.providers.set(provider, { ...current, ...updates })
@@ -430,7 +480,7 @@ class MultiModalAIManager {
       this.state.providers.set(provider, {
         ...current,
         health: health.status,
-        lastHealthCheck: Date.now()
+        lastHealthCheck: Date.now(),
       })
     }
   }
@@ -441,7 +491,7 @@ class MultiModalAIManager {
       this.state.providers.set(provider, {
         ...current,
         activeRequests: current.activeRequests + 1,
-        totalRequests: current.totalRequests + 1
+        totalRequests: current.totalRequests + 1,
       })
     }
   }
@@ -451,12 +501,16 @@ class MultiModalAIManager {
     if (current) {
       this.state.providers.set(provider, {
         ...current,
-        activeRequests: Math.max(0, current.activeRequests - 1)
+        activeRequests: Math.max(0, current.activeRequests - 1),
       })
     }
   }
 
-  private updateMetrics(request: MultiModalRequest, startTime: number, response: MultiModalResponse) {
+  private updateMetrics(
+    request: MultiModalRequest,
+    startTime: number,
+    response: MultiModalResponse
+  ) {
     const duration = Date.now() - startTime
 
     // Add performance data for analysis
@@ -467,7 +521,7 @@ class MultiModalAIManager {
       averageSpeed: duration,
       averageCost: response.usage.cost,
       qualityScore: response.success ? 1 : 0,
-      uptime: response.success ? 100 : 0
+      uptime: response.success ? 100 : 0,
     })
 
     // Keep only recent data (last 100 entries)
@@ -476,7 +530,10 @@ class MultiModalAIManager {
     }
   }
 
-  private createErrorResponse(request: MultiModalRequest, error: any): MultiModalResponse {
+  private createErrorResponse(
+    request: MultiModalRequest,
+    error: any
+  ): MultiModalResponse {
     return {
       id: `error_${Date.now()}`,
       requestId: request.id,
@@ -484,9 +541,21 @@ class MultiModalAIManager {
       model: 'unknown',
       success: false,
       content: {},
-      usage: { inputTokens: 0, outputTokens: 0, imagesGenerated: 0, audioDuration: 0, videoDuration: 0, cost: 0 },
-      timing: { startedAt: 0, completedAt: Date.now(), totalTime: 0, processingTime: 0 },
-      error: error instanceof Error ? error.message : String(error)
+      usage: {
+        inputTokens: 0,
+        outputTokens: 0,
+        imagesGenerated: 0,
+        audioDuration: 0,
+        videoDuration: 0,
+        cost: 0,
+      },
+      timing: {
+        startedAt: 0,
+        completedAt: Date.now(),
+        totalTime: 0,
+        processingTime: 0,
+      },
+      error: error instanceof Error ? error.message : String(error),
     }
   }
 
@@ -504,7 +573,11 @@ class MultiModalAIManager {
   private getHealthOverview() {
     const healthy = this.getHealthyProviders().length
     const total = this.providers.size
-    return { healthy, total, percentage: total > 0 ? (healthy / total) * 100 : 0 }
+    return {
+      healthy,
+      total,
+      percentage: total > 0 ? (healthy / total) * 100 : 0,
+    }
   }
 
   // Event handling
@@ -543,14 +616,20 @@ export function useMultiModalAI() {
     isReady: multiModalAIManager.isReady,
     activeProviders: multiModalAIManager.activeProviders,
     currentLoad: multiModalAIManager.currentLoad,
-    executeRequest: (request: MultiModalRequest) => multiModalAIManager.executeRequest(request),
-    streamRequest: (request: MultiModalRequest, callbacks: StreamCallbacks) => multiModalAIManager.streamRequest(request, callbacks),
+    executeRequest: (request: MultiModalRequest) =>
+      multiModalAIManager.executeRequest(request),
+    streamRequest: (request: MultiModalRequest, callbacks: StreamCallbacks) =>
+      multiModalAIManager.streamRequest(request, callbacks),
     getAvailableModels: () => multiModalAIManager.getAvailableModels(),
-    switchModel: (provider: AIProvider, modelId: string) => multiModalAIManager.switchModel(provider, modelId),
-    on: (event: string, callback: any) => multiModalAIManager.on(event, callback),
-    off: (event: string, callback: any) => multiModalAIManager.off(event, callback),
-    initialize: (config: ProviderConfig[]) => multiModalAIManager.initialize(config),
+    switchModel: (provider: AIProvider, modelId: string) =>
+      multiModalAIManager.switchModel(provider, modelId),
+    on: (event: string, callback: any) =>
+      multiModalAIManager.on(event, callback),
+    off: (event: string, callback: any) =>
+      multiModalAIManager.off(event, callback),
+    initialize: (config: ProviderConfig[]) =>
+      multiModalAIManager.initialize(config),
     performanceMetrics: multiModalAIManager.performanceMetrics,
-    destroy: () => multiModalAIManager.destroy()
+    destroy: () => multiModalAIManager.destroy(),
   }
 }

@@ -1,9 +1,9 @@
 <template>
-  <nav 
+  <nav
     class="enhanced-navigation"
     :class="[
       `nav-variant-${variant}`,
-      { 'nav-sticky': sticky, 'nav-transparent': transparent }
+      { 'nav-sticky': sticky, 'nav-transparent': transparent },
     ]"
     role="navigation"
     :aria-label="ariaLabel"
@@ -15,18 +15,34 @@
         <div v-if="!glassHeader" class="nav-left">
           <router-link to="/" class="nav-brand" :aria-label="brandLabel">
             <div class="brand-content">
-              <AppIcon v-if="brandIcon" :name="brandIcon" size="24" class="brand-icon" />
+              <AppIcon
+                v-if="brandIcon"
+                :name="brandIcon"
+                size="24"
+                class="brand-icon"
+              />
               <span v-if="brandText" class="brand-text">{{ brandText }}</span>
             </div>
           </router-link>
-          <Tooltip v-if="modelDisplay && aiOnline" position="bottom" :dark="isDarkMode">
+          <Tooltip
+            v-if="modelDisplay && aiOnline"
+            position="bottom"
+            :dark="isDarkMode"
+          >
             <template #content>
               <div class="rich">
                 <span class="tooltip-title">{{ modelDisplay }}</span>
                 <div class="badges">
-                  <span v-for="cap in modelCapabilityBadges" :key="cap" class="cap-badge">{{ cap }}</span>
+                  <span
+                    v-for="cap in modelCapabilityBadges"
+                    :key="cap"
+                    class="cap-badge"
+                    >{{ cap }}</span
+                  >
                 </div>
-                <div class="tooltip-footer"><AppIcon name="mdi-cog-outline" /> Configure AI</div>
+                <div class="tooltip-footer">
+                  <AppIcon name="mdi-cog-outline" /> Configure AI
+                </div>
               </div>
             </template>
             <div
@@ -40,22 +56,68 @@
             >
               <AppIcon name="mdi-chip" />
               <span class="chip-text">{{ modelDisplay }}</span>
-              <AppIcon name="mdi-cog-outline" class="model-gear" aria-hidden="true" />
+              <AppIcon
+                name="mdi-cog-outline"
+                class="model-gear"
+                aria-hidden="true"
+              />
             </div>
           </Tooltip>
-          <div v-if="showBreadcrumbs && breadcrumbs.length > 0" class="nav-breadcrumbs">
-            <AppIcon name="ChevronRightIcon" size="16" class="breadcrumb-separator" />
+          <div
+            v-if="showBreadcrumbs && breadcrumbs.length > 0"
+            class="nav-breadcrumbs"
+          >
+            <AppIcon
+              name="ChevronRightIcon"
+              size="16"
+              class="breadcrumb-separator"
+            />
             <ol class="breadcrumb-list" role="list">
-              <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item" :class="{ 'breadcrumb-current': index === breadcrumbs.length - 1 }">
-                <router-link v-if="crumb.to && index !== breadcrumbs.length - 1" :to="crumb.to" class="breadcrumb-link" :aria-current="index === breadcrumbs.length - 1 ? 'page' : undefined">
-                  <AppIcon v-if="crumb.icon" :name="crumb.icon" size="14" class="mr-1" />
+              <li
+                v-for="(crumb, index) in breadcrumbs"
+                :key="index"
+                class="breadcrumb-item"
+                :class="{
+                  'breadcrumb-current': index === breadcrumbs.length - 1,
+                }"
+              >
+                <router-link
+                  v-if="crumb.to && index !== breadcrumbs.length - 1"
+                  :to="crumb.to"
+                  class="breadcrumb-link"
+                  :aria-current="
+                    index === breadcrumbs.length - 1 ? 'page' : undefined
+                  "
+                >
+                  <AppIcon
+                    v-if="crumb.icon"
+                    :name="crumb.icon"
+                    size="14"
+                    class="mr-1"
+                  />
                   {{ crumb.text }}
                 </router-link>
-                <span v-else class="breadcrumb-current-text" :aria-current="index === breadcrumbs.length - 1 ? 'page' : undefined">
-                  <AppIcon v-if="crumb.icon" :name="crumb.icon" size="14" class="mr-1" />
+                <span
+                  v-else
+                  class="breadcrumb-current-text"
+                  :aria-current="
+                    index === breadcrumbs.length - 1 ? 'page' : undefined
+                  "
+                >
+                  <AppIcon
+                    v-if="crumb.icon"
+                    :name="crumb.icon"
+                    size="14"
+                    class="mr-1"
+                  />
                   {{ crumb.text }}
                 </span>
-                <AppIcon v-if="index < breadcrumbs.length - 1" name="ChevronRightIcon" size="14" class="breadcrumb-separator" />
+                <AppIcon
+                  v-if="index < breadcrumbs.length - 1"
+                  name="ChevronRightIcon"
+                  size="14"
+                  class="breadcrumb-separator"
+                />
               </li>
             </ol>
           </div>
@@ -67,27 +129,51 @@
             <!-- Row 1: Brand and AI status -->
             <div class="brand-flex flex-wrap">
               <router-link to="/" class="brand-link" :aria-label="brandLabel">
-                <img v-if="brandLogo" :src="brandLogo" alt="NAVI" class="app-logo brand-logo" />
+                <img
+                  v-if="brandLogo"
+                  :src="brandLogo"
+                  alt="NAVI"
+                  class="app-logo brand-logo"
+                />
                 <div v-else class="brand-logo brand-icon-fallback">
-                  <AppIcon :name="brandIcon || 'DevicePhoneMobileIcon-variant'" size="28" />
+                  <AppIcon
+                    :name="brandIcon || 'DevicePhoneMobileIcon-variant'"
+                    size="28"
+                  />
                 </div>
                 <div class="brand-text">
                   <span class="brand-name">{{ brandText }}</span>
-                  <span v-if="brandSubtitle" class="brand-subtitle">{{ brandSubtitle }}</span>
+                  <span v-if="brandSubtitle" class="brand-subtitle">{{
+                    brandSubtitle
+                  }}</span>
                 </div>
               </router-link>
-              <div class="brand-status" :class="aiOnline ? 'status-connected' : 'status-disconnected'">
+              <div
+                class="brand-status"
+                :class="aiOnline ? 'status-connected' : 'status-disconnected'"
+              >
                 <div class="status-dot"></div>
                 <span class="status-text">{{ aiStatusText }}</span>
               </div>
-              <Tooltip v-if="modelDisplay && aiOnline" position="bottom" :dark="isDarkMode">
+              <Tooltip
+                v-if="modelDisplay && aiOnline"
+                position="bottom"
+                :dark="isDarkMode"
+              >
                 <template #content>
                   <div class="rich">
                     <span class="tooltip-title">{{ modelDisplay }}</span>
                     <div class="badges">
-                      <span v-for="cap in modelCapabilityBadges" :key="cap" class="cap-badge">{{ cap }}</span>
+                      <span
+                        v-for="cap in modelCapabilityBadges"
+                        :key="cap"
+                        class="cap-badge"
+                        >{{ cap }}</span
+                      >
                     </div>
-                    <div class="tooltip-footer"><AppIcon name="mdi-cog-outline" /> Configure AI</div>
+                    <div class="tooltip-footer">
+                      <AppIcon name="mdi-cog-outline" /> Configure AI
+                    </div>
                   </div>
                 </template>
                 <div
@@ -101,26 +187,55 @@
                 >
                   <AppIcon name="mdi-chip" />
                   <span class="chip-text">{{ modelDisplay }}</span>
-                  <AppIcon name="mdi-cog-outline" class="model-gear" aria-hidden="true" />
+                  <AppIcon
+                    name="mdi-cog-outline"
+                    class="model-gear"
+                    aria-hidden="true"
+                  />
                 </div>
               </Tooltip>
             </div>
 
             <!-- Row 2: Control Buttons -->
             <div class="nav-control-buttons">
-              <button class="modern-button" type="button" aria-label="Toggle search" title="Search (Ctrl+K)" @click="emit('search', searchQuery)">
+              <button
+                class="modern-button"
+                type="button"
+                aria-label="Toggle search"
+                title="Search (Ctrl+K)"
+                @click="emit('search', searchQuery)"
+              >
                 <AppIcon name="MagnifyingGlassIcon" />
                 <div class="ripple-container"></div>
               </button>
-              <button class="modern-button" type="button" aria-label="Toggle density" title="Density" @click="emit('toggleDensity')">
+              <button
+                class="modern-button"
+                type="button"
+                aria-label="Toggle density"
+                title="Density"
+                @click="emit('toggleDensity')"
+              >
                 <AppIcon name="mdi-format-line-spacing" />
                 <div class="ripple-container"></div>
               </button>
-              <button v-if="showThemeToggle" class="modern-button" type="button" aria-label="Switch theme" title="Switch theme" @click="toggleTheme()">
+              <button
+                v-if="showThemeToggle"
+                class="modern-button"
+                type="button"
+                aria-label="Switch theme"
+                title="Switch theme"
+                @click="toggleTheme()"
+              >
                 <AppIcon name="MoonIcon" />
                 <div class="ripple-container"></div>
               </button>
-              <button class="modern-button" type="button" aria-label="Collapse navigation" title="Collapse sidebar (Ctrl+B)" @click="emit('collapse')">
+              <button
+                class="modern-button"
+                type="button"
+                aria-label="Collapse navigation"
+                title="Collapse sidebar (Ctrl+B)"
+                @click="emit('collapse')"
+              >
                 <AppIcon name="mdi-chevron-double-left" />
                 <div class="ripple-container"></div>
               </button>
@@ -131,7 +246,13 @@
             <div>
               <div class="quick-filter-field">
                 <AppIcon name="MagnifyingGlassIcon" />
-                <input v-model="quickFilter" type="text" placeholder="Filter navigation..." aria-label="Filter navigation" @input="onQuickFilterInput" />
+                <input
+                  v-model="quickFilter"
+                  type="text"
+                  placeholder="Filter navigation..."
+                  aria-label="Filter navigation"
+                  @input="onQuickFilterInput"
+                />
               </div>
             </div>
           </div>
@@ -153,9 +274,9 @@
                 @input="handleSearchInput"
               >
                 <template v-if="searchLoading" #append-inner>
-                  <v-progress-circular 
-                    indeterminate 
-                    size="16" 
+                  <v-progress-circular
+                    indeterminate
+                    size="16"
                     width="2"
                     color="primary"
                   />
@@ -163,8 +284,8 @@
               </v-text-field>
 
               <!-- Search Suggestions Dropdown -->
-              <div 
-                v-if="searchSuggestions.length > 0 && showSuggestions" 
+              <div
+                v-if="searchSuggestions.length > 0 && showSuggestions"
                 class="search-suggestions"
                 role="listbox"
               >
@@ -175,9 +296,17 @@
                   role="option"
                   @click="selectSuggestion(suggestion)"
                 >
-                  <AppIcon :name="suggestion.icon || 'DocumentIcon'" size="16" class="mr-2" />
+                  <AppIcon
+                    :name="suggestion.icon || 'DocumentIcon'"
+                    size="16"
+                    class="mr-2"
+                  />
                   <span class="suggestion-text">{{ suggestion.text }}</span>
-                  <span v-if="suggestion.category" class="suggestion-category">{{ suggestion.category }}</span>
+                  <span
+                    v-if="suggestion.category"
+                    class="suggestion-category"
+                    >{{ suggestion.category }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -211,7 +340,7 @@
 
           <!-- Notifications Bell -->
           <div v-if="showNotifications" class="nav-notifications">
-            <v-badge 
+            <v-badge
               v-if="notificationCount > 0"
               :content="notificationCount > 99 ? '99+' : notificationCount"
               color="error"
@@ -252,9 +381,9 @@
                   :aria-label="userMenuLabel"
                 >
                   <v-avatar size="28" class="mr-2">
-                    <v-img 
-                      v-if="userAvatar" 
-                      :src="userAvatar" 
+                    <v-img
+                      v-if="userAvatar"
+                      :src="userAvatar"
                       :alt="userName"
                     />
                     <AppIcon v-else name="UserIcon" />
@@ -293,7 +422,9 @@
               :icon="isDarkMode ? 'mdi-weather-sunny' : 'MoonIcon'"
               variant="ghost"
               size="sm"
-              :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+              :aria-label="
+                isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+              "
               @click="toggleTheme"
             />
           </div>
@@ -302,11 +433,14 @@
     </div>
 
     <!-- Secondary Navigation (Tabs/Filters) -->
-    <div v-if="showSecondaryNav && secondaryNavItems.length > 0" class="nav-secondary">
+    <div
+      v-if="showSecondaryNav && secondaryNavItems.length > 0"
+      class="nav-secondary"
+    >
       <div class="nav-container">
-        <v-tabs 
+        <v-tabs
           v-model="activeSecondaryTab"
-          color="primary" 
+          color="primary"
           align-tabs="start"
           class="nav-tabs"
         >
@@ -317,10 +451,15 @@
             :to="item.to"
             class="nav-secondary-tab"
           >
-            <AppIcon v-if="item.icon" :name="item.icon" size="16" class="mr-2" />
+            <AppIcon
+              v-if="item.icon"
+              :name="item.icon"
+              size="16"
+              class="mr-2"
+            />
             {{ item.text }}
-            <UiChip 
-              v-if="item.count !== undefined" 
+            <UiChip
+              v-if="item.count !== undefined"
               classes="chip chip-info chip-compact ml-2"
             >
               {{ item.count }}
@@ -342,7 +481,13 @@
 </template>
 
 <script setup>
-import { BellIcon, ChevronDownIcon, ChevronRightIcon, MagnifyingGlassIcon, UserIcon } from '@heroicons/vue/24/outline'
+import {
+  BellIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+  MagnifyingGlassIcon,
+  UserIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -357,7 +502,8 @@ const _props = defineProps({
   variant: {
     type: String,
     default: 'default',
-    validator: v => ['default', 'gaming', 'minimal', 'professional'].includes(v)
+    validator: v =>
+      ['default', 'gaming', 'minimal', 'professional'].includes(v),
   },
   sticky: { type: Boolean, default: true },
   transparent: { type: Boolean, default: false },
@@ -369,7 +515,7 @@ const _props = defineProps({
   showThemeToggle: { type: Boolean, default: false },
   showSecondaryNav: { type: Boolean, default: false },
   showProgress: { type: Boolean, default: false },
-  
+
   // Brand/Logo
   brandIcon: { type: String, default: 'DevicePhoneMobileIcon-variant' },
   brandText: { type: String, default: 'NAVI' },
@@ -377,27 +523,27 @@ const _props = defineProps({
   brandLogo: { type: String, default: '' },
   glassHeader: { type: Boolean, default: false },
   brandLabel: { type: String, default: 'Go to homepage' },
-  
+
   // User data
   userName: { type: String, default: 'User' },
   userAvatar: { type: String, default: '' },
-  
+
   // Configuration
   ariaLabel: { type: String, default: 'Main navigation' },
   userMenuLabel: { type: String, default: 'User menu' },
   notificationCount: { type: Number, default: 0 },
-  progressValue: { type: Number, default: 0 }
+  progressValue: { type: Number, default: 0 },
 })
 
 // Emits
 const emit = defineEmits([
-  'search', 
+  'search',
   'searchInput',
-  'toggleNotifications', 
+  'toggleNotifications',
   'toggleTheme',
   'userMenuClick',
   'toggleDensity',
-  'collapse'
+  'collapse',
 ])
 
 // Composables
@@ -422,16 +568,32 @@ const onQuickFilterInput = () => emit('searchInput', quickFilter.value)
 // AI Status + Model (sourced from store)
 import { useAppStore } from '@/stores/app'
 const store = useAppStore?.()
-const aiOnline = computed(() => !!(store?.settings?.geminiApiKey && store?.aiStatus?.initialized))
-const aiStatusText = computed(() => aiOnline.value ? 'AI Ready' : 'AI Offline')
-const modelDisplay = computed(() => store?.selectedModelInfo?.displayName || store?.settings?.selectedModel || '')
+const aiOnline = computed(
+  () => !!(store?.settings?.geminiApiKey && store?.aiStatus?.initialized)
+)
+const aiStatusText = computed(() =>
+  aiOnline.value ? 'AI Ready' : 'AI Offline'
+)
+const modelDisplay = computed(
+  () =>
+    store?.selectedModelInfo?.displayName ||
+    store?.settings?.selectedModel ||
+    ''
+)
 const modelCapabilityBadges = computed(() => {
   const caps = store?.selectedModelInfo?.capabilities || {}
   const out = []
   if (caps.multiTurn) out.push('Multi‑turn')
   if (caps.imageInput) out.push('Vision')
   if (caps.videoInput) out.push('Video')
-  if (caps.audioInput || caps.audioOutput) out.push(caps.audioInput && caps.audioOutput ? 'Audio I/O' : (caps.audioInput ? 'Audio In' : 'Audio Out'))
+  if (caps.audioInput || caps.audioOutput)
+    out.push(
+      caps.audioInput && caps.audioOutput
+        ? 'Audio I/O'
+        : caps.audioInput
+          ? 'Audio In'
+          : 'Audio Out'
+    )
   if (caps.realtimeChat) out.push('Real‑time')
   if (caps.liveChat) out.push('Live')
   if (caps.codeGeneration) out.push('Code')
@@ -454,38 +616,40 @@ function navigateToAISettings() {
 const breadcrumbs = computed(() => {
   const crumbs = []
   const pathSegments = route.path.split('/').filter(Boolean)
-  
+
   // Generate breadcrumbs from route
   let currentPath = ''
   pathSegments.forEach((segment, index) => {
     currentPath += '/' + segment
-    
+
     // Map route segments to readable names
     const segmentNames = {
-      'resume': 'Resume Builder',
-      'jobs': 'The Board', 
-      'portfolio': 'Portfolio',
-      'skills': 'Skill Mapper',
-      'settings': 'Settings',
-      'gaming-jobs': 'Gaming Gigs'
+      resume: 'Resume Builder',
+      jobs: 'The Board',
+      portfolio: 'Portfolio',
+      skills: 'Skill Mapper',
+      settings: 'Settings',
+      'gaming-jobs': 'Gaming Gigs',
     }
-    
+
     const segmentIcons = {
-      'resume': 'DocumentIcon-document-outline-edit',
-      'jobs': 'mdi-briefcase-search',
-      'portfolio': 'mdi-briefcase-variant',
-      'skills': 'mdi-map',
-      'settings': 'mdi-cog',
-      'gaming-jobs': 'DevicePhoneMobileIcon-variant'
+      resume: 'DocumentIcon-document-outline-edit',
+      jobs: 'mdi-briefcase-search',
+      portfolio: 'mdi-briefcase-variant',
+      skills: 'mdi-map',
+      settings: 'mdi-cog',
+      'gaming-jobs': 'DevicePhoneMobileIcon-variant',
     }
-    
+
     crumbs.push({
-      text: segmentNames[segment] || segment.charAt(0).toUpperCase() + segment.slice(1),
+      text:
+        segmentNames[segment] ||
+        segment.charAt(0).toUpperCase() + segment.slice(1),
       to: index === pathSegments.length - 1 ? null : currentPath,
-      icon: segmentIcons[segment]
+      icon: segmentIcons[segment],
     })
   })
-  
+
   return crumbs
 })
 
@@ -495,14 +659,14 @@ const quickActions = ref([
     icon: 'PlusIcon',
     label: 'Create New',
     color: 'primary',
-    onClick: () => router.push('/resume')
+    onClick: () => router.push('/resume'),
   },
   {
     id: 'help',
     icon: 'QuestionMarkCircleIcon-circle',
     label: 'Help',
-    color: 'default'
-  }
+    color: 'default',
+  },
 ])
 
 const userMenuItems = ref([
@@ -510,13 +674,29 @@ const userMenuItems = ref([
   { id: 'preferences', icon: 'mdi-cog', text: 'Preferences', to: '/settings' },
   { id: 'billing', icon: 'mdi-credit-card', text: 'Billing', badge: 'Pro' },
   { id: 'divider', divider: true },
-  { id: 'logout', icon: 'ArrowLeftOnRectangleIcon', text: 'Sign Out', onClick: handleLogout }
+  {
+    id: 'logout',
+    icon: 'ArrowLeftOnRectangleIcon',
+    text: 'Sign Out',
+    onClick: handleLogout,
+  },
 ])
 
 const secondaryNavItems = ref([
-  { id: 'dashboard', text: 'Dashboard', icon: 'mdi-view-dashboard', to: '/', count: 5 },
-  { id: 'active', text: 'Active Projects', icon: 'mdi-briefcase', to: '/projects' },
-  { id: 'archived', text: 'Archived', icon: 'mdi-archive', to: '/archived' }
+  {
+    id: 'dashboard',
+    text: 'Dashboard',
+    icon: 'mdi-view-dashboard',
+    to: '/',
+    count: 5,
+  },
+  {
+    id: 'active',
+    text: 'Active Projects',
+    icon: 'mdi-briefcase',
+    to: '/projects',
+  },
+  { id: 'archived', text: 'Archived', icon: 'mdi-archive', to: '/archived' },
 ])
 
 const searchSuggestions = ref([])
@@ -527,16 +707,28 @@ const handleSearch = () => {
   showSuggestions.value = false
 }
 
-const handleSearchInput = (event) => {
+const handleSearchInput = event => {
   emit('searchInput', event.target.value)
-  
+
   // Mock search suggestions
   if (event.target.value.length > 1) {
     searchSuggestions.value = [
-      { text: 'Resume Templates', icon: 'DocumentIcon-document-outline', category: 'Templates' },
-      { text: 'Job Search', icon: 'mdi-briefcase-search', category: 'Features' },
-      { text: 'Gaming Jobs', icon: 'DevicePhoneMobileIcon-variant', category: 'Jobs' }
-    ].filter(item => 
+      {
+        text: 'Resume Templates',
+        icon: 'DocumentIcon-document-outline',
+        category: 'Templates',
+      },
+      {
+        text: 'Job Search',
+        icon: 'mdi-briefcase-search',
+        category: 'Features',
+      },
+      {
+        text: 'Gaming Jobs',
+        icon: 'DevicePhoneMobileIcon-variant',
+        category: 'Jobs',
+      },
+    ].filter(item =>
       item.text.toLowerCase().includes(event.target.value.toLowerCase())
     )
     showSuggestions.value = true
@@ -545,7 +737,7 @@ const handleSearchInput = (event) => {
   }
 }
 
-const selectSuggestion = (suggestion) => {
+const selectSuggestion = suggestion => {
   searchQuery.value = suggestion.text
   showSuggestions.value = false
   handleSearch()
@@ -561,11 +753,15 @@ const handleLogout = () => {
 }
 
 // Watch for route changes to update secondary nav
-watch(() => route.name, (newRouteName) => {
-  if (newRouteName) {
-    activeSecondaryTab.value = newRouteName.toLowerCase()
-  }
-}, { immediate: true })
+watch(
+  () => route.name,
+  newRouteName => {
+    if (newRouteName) {
+      activeSecondaryTab.value = newRouteName.toLowerCase()
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped>
@@ -899,15 +1095,15 @@ watch(() => route.name, (newRouteName) => {
   .nav-center { max-width: 100%; margin: 0; }
   .nav-search-layout { flex-direction: column; align-items: stretch; gap: var(--spacing-2); }
   .nav-filters-wrapper { justify-content: flex-start; }
-  
+
   .nav-breadcrumbs {
     display: none;
   }
-  
+
   .user-name {
     display: none;
   }
-  
+
   .nav-quick-actions {
     gap: var(--spacing-1);
   }
@@ -917,11 +1113,11 @@ watch(() => route.name, (newRouteName) => {
   .nav-container {
     padding: 0 var(--spacing-2);
   }
-  
+
   .brand-text {
     display: none;
   }
-  
+
   .nav-quick-actions {
     display: none;
   }

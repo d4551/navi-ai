@@ -13,7 +13,7 @@ async function run() {
     `${base}/#/resume`,
     `${base}/#/jobs`,
     `${base}/#/skills`,
-    `${base}/#/settings`
+    `${base}/#/settings`,
   ]
 
   const options = {
@@ -23,8 +23,8 @@ async function run() {
     hideElements: ['.vite-error-overlay'],
     ignore: [
       // SPA hash routing false positives (anchor targets handled by router)
-      'WCAG2AAA.Principle2.Guideline2_4.2_4_1.G1,G123,G124.NoSuchID'
-    ]
+      'WCAG2AAA.Principle2.Guideline2_4.2_4_1.G1,G123,G124.NoSuchID',
+    ],
   }
 
   let failures = 0
@@ -52,4 +52,7 @@ async function run() {
   }
 }
 
-run().catch((err) => { console.error(err); process.exitCode = 1 })
+run().catch(err => {
+  console.error(err)
+  process.exitCode = 1
+})

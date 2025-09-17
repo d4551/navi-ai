@@ -18,7 +18,13 @@
           @update:model-value="$emit('update:modelValue', $event)"
           @keydown.enter="$emit('investigate')"
         />
-        <UnifiedButton color="glass" appearance="contained" leading-icon="mdi-magnify" :aria-label="'Investigate'" @click="$emit('investigate')">
+        <UnifiedButton
+          color="glass"
+          appearance="contained"
+          leading-icon="mdi-magnify"
+          :aria-label="'Investigate'"
+          @click="$emit('investigate')"
+        >
           INVESTIGATE
         </UnifiedButton>
         <UnifiedButton
@@ -108,7 +114,13 @@
       <div class="investigation-grid ultra-wide-grid">
         <div class="investigation-parameter">
           <label class="parameter-label noir-label">OPERATION TYPE</label>
-          <select :value="filters.type" class="parameter-select form-select glass-input" @change="onFilterChange('type', ($event.target as HTMLSelectElement).value)">
+          <select
+            :value="filters.type"
+            class="parameter-select form-select glass-input"
+            @change="
+              onFilterChange('type', ($event.target as HTMLSelectElement).value)
+            "
+          >
             <option value="">ALL OPERATIONS</option>
             <option value="AAA">MAJOR OPERATIONS</option>
             <option value="Indie">UNDERGROUND</option>
@@ -131,7 +143,13 @@
 
         <div class="investigation-parameter">
           <label class="parameter-label noir-label">ORGANIZATION SIZE</label>
-          <select :value="filters.size" class="parameter-select form-select glass-input" @change="onFilterChange('size', ($event.target as HTMLSelectElement).value)">
+          <select
+            :value="filters.size"
+            class="parameter-select form-select glass-input"
+            @change="
+              onFilterChange('size', ($event.target as HTMLSelectElement).value)
+            "
+          >
             <option value="">ALL SIZES</option>
             <option value="Startup">SMALL OPERATION (1-50)</option>
             <option value="Mid-size">MEDIUM OUTFIT (51-500)</option>
@@ -142,14 +160,28 @@
         <div class="investigation-parameter">
           <label class="parameter-label noir-label">GHOST OPERATIONS</label>
           <label class="investigation-checkbox noir-checkbox">
-            <input :checked="filters.remoteWork === true" type="checkbox" @change="onFilterChange('remoteWork', ($event.target as HTMLInputElement).checked)" />
+            <input
+              :checked="filters.remoteWork === true"
+              type="checkbox"
+              @change="
+                onFilterChange(
+                  'remoteWork',
+                  ($event.target as HTMLInputElement).checked
+                )
+              "
+            />
             <span class="checkbox-indicator rgb-accent-border"></span>
             REMOTE OPERATIVES
           </label>
         </div>
       </div>
 
-      <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-magnify-expand" @click="$emit('update:showAdvanced', !showAdvanced)">
+      <UnifiedButton
+        color="glass"
+        appearance="outlined"
+        leading-icon="mdi-magnify-expand"
+        @click="$emit('update:showAdvanced', !showAdvanced)"
+      >
         {{ showAdvanced ? 'BASIC SEARCH' : 'DEEP INVESTIGATION' }}
       </UnifiedButton>
     </div>
@@ -161,7 +193,13 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import MuiTextField from '@/components/ui/MuiTextField.vue'
 
-interface Chip { key: string; value: any; label: string; icon: string; type: string }
+interface Chip {
+  key: string
+  value: any
+  label: string
+  icon: string
+  type: string
+}
 
 const props = defineProps<{
   modelValue: string
@@ -184,7 +222,7 @@ const emit = defineEmits([
   'investigate',
   'aiSuggest',
   'aiRank',
-  'toggleFilter'
+  'toggleFilter',
 ])
 
 function onFilterChange(key: string, value: any) {
@@ -201,10 +239,18 @@ function onFilterChange(key: string, value: any) {
   gap: 0.5rem;
   margin: 0.5rem 0 1rem;
 }
-.filter-chip { cursor: pointer; }
+.filter-chip {
+  cursor: pointer;
+}
 .filter-chip.active {
   border-color: color-mix(in srgb, var(--color-primary-500) 60%, transparent);
 }
-.sort-btn { display: inline-flex; align-items: center; gap: 6px; }
-.sort-btn.active { color: var(--color-primary-400); }
+.sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.sort-btn.active {
+  color: var(--color-primary-400);
+}
 </style>

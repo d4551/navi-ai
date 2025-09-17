@@ -3,6 +3,7 @@
 ## 🎨 Overview
 
 The NAVI unified theme system provides a centralized, consistent design language with:
+
 - **Pure black/white base** with glassmorphic effects
 - **RGB neon highlights** for interactive states
 - **Consistent spacing, sizing, and layouts**
@@ -24,6 +25,7 @@ src/styles/
 ## 🎯 Design Tokens
 
 ### Colors
+
 ```css
 /* Base Colors */
 --navi-pure-white: #ffffff;
@@ -39,23 +41,39 @@ src/styles/
 ```
 
 ### Spacing Scale
+
 ```css
---space-1: 4px;    --space-2: 8px;     --space-3: 12px;
---space-4: 16px;   --space-5: 20px;    --space-6: 24px;
---space-8: 32px;   --space-10: 40px;   --space-12: 48px;
---space-16: 64px;  --space-20: 80px;   --space-24: 96px;
+--space-1: 4px;
+--space-2: 8px;
+--space-3: 12px;
+--space-4: 16px;
+--space-5: 20px;
+--space-6: 24px;
+--space-8: 32px;
+--space-10: 40px;
+--space-12: 48px;
+--space-16: 64px;
+--space-20: 80px;
+--space-24: 96px;
 ```
 
 ### Border Radius
+
 ```css
---radius-xs: 4px;    --radius-sm: 8px;     --radius-md: 12px;
---radius-lg: 16px;   --radius-xl: 20px;    --radius-2xl: 24px;
---radius-3xl: 32px;  --radius-full: 9999px;
+--radius-xs: 4px;
+--radius-sm: 8px;
+--radius-md: 12px;
+--radius-lg: 16px;
+--radius-xl: 20px;
+--radius-2xl: 24px;
+--radius-3xl: 32px;
+--radius-full: 9999px;
 ```
 
 ## 🔮 Glassmorphic Components
 
 ### Glass Base Classes
+
 ```html
 <!-- Basic glass effect -->
 <div class="glass">Content with glassmorphic background</div>
@@ -67,6 +85,7 @@ src/styles/
 ```
 
 ### Neon Highlights
+
 ```html
 <!-- Auto neon highlight (blue) -->
 <button class="neon">Hover for neon glow</button>
@@ -84,6 +103,7 @@ src/styles/
 ## 🏗️ Layout System
 
 ### Containers
+
 ```html
 <!-- Responsive containers -->
 <div class="container-md">Medium width container (448px)</div>
@@ -92,6 +112,7 @@ src/styles/
 ```
 
 ### Flexbox Utilities
+
 ```html
 <!-- Flex layouts -->
 <div class="flex items-center justify-between gap-4">
@@ -101,6 +122,7 @@ src/styles/
 ```
 
 ### Grid System
+
 ```html
 <!-- Responsive grid -->
 <div class="grid grid-cols-3 gap-6">
@@ -119,6 +141,7 @@ src/styles/
 ## 🎴 Pre-built Layout Components
 
 ### Cards
+
 ```html
 <!-- Standard card -->
 <div class="card">
@@ -126,9 +149,7 @@ src/styles/
     <h3 class="card-title">Card Title</h3>
     <p class="card-subtitle">Optional subtitle</p>
   </div>
-  <div class="card-content">
-    Main content here
-  </div>
+  <div class="card-content">Main content here</div>
   <div class="card-footer">
     <button class="btn-primary">Action</button>
   </div>
@@ -140,6 +161,7 @@ src/styles/
 ```
 
 ### Navigation
+
 ```html
 <!-- Header navigation -->
 <nav class="nav-header">
@@ -166,6 +188,7 @@ src/styles/
 ```
 
 ### Dashboard Layouts
+
 ```html
 <!-- Two-column dashboard -->
 <div class="dashboard-two-col">
@@ -184,11 +207,12 @@ src/styles/
 ```
 
 ### Forms
+
 ```html
 <div class="form-container">
   <div class="form-group">
     <label class="form-label">Email Address</label>
-    <input type="email" class="form-input" placeholder="Enter email">
+    <input type="email" class="form-input" placeholder="Enter email" />
     <div class="form-help">We'll never share your email</div>
   </div>
 
@@ -202,6 +226,7 @@ src/styles/
 ## 🔘 Button System
 
 ### Basic Buttons
+
 ```html
 <!-- Primary button with neon blue highlight -->
 <button class="btn-primary">Primary Action</button>
@@ -214,6 +239,7 @@ src/styles/
 ```
 
 ### Button Sizes
+
 ```html
 <button class="btn-primary btn-xs">Extra Small</button>
 <button class="btn-primary btn-sm">Small</button>
@@ -223,6 +249,7 @@ src/styles/
 ```
 
 ### Neon Button Variants
+
 ```html
 <button class="btn-neon-red">Red Neon</button>
 <button class="btn-neon-green">Green Neon</button>
@@ -232,6 +259,7 @@ src/styles/
 ```
 
 ### Icon Buttons
+
 ```html
 <!-- Round icon button -->
 <button class="btn-icon btn-primary">
@@ -245,6 +273,7 @@ src/styles/
 ```
 
 ### Button States
+
 ```html
 <!-- Loading state -->
 <button class="btn-primary btn-loading">Loading...</button>
@@ -259,11 +288,13 @@ src/styles/
 ## 📱 Responsive Design
 
 ### Breakpoints
+
 - Mobile: `max-width: 480px`
 - Tablet: `max-width: 768px`
 - Desktop: `max-width: 1024px`
 
 ### Responsive Classes
+
 ```html
 <!-- Hide on mobile -->
 <div class="md:hidden">Hidden on tablet and below</div>
@@ -280,6 +311,7 @@ src/styles/
 ## ♿ Accessibility Features
 
 ### Text Accessibility on Glass
+
 ```html
 <!-- High contrast text for glass backgrounds -->
 <div class="glass">
@@ -295,19 +327,19 @@ src/styles/
 ```
 
 ### Focus Management
+
 ```html
 <!-- Neon focus ring -->
-<button class="btn-primary focus:ring-neon">
-  Accessible button
-</button>
+<button class="btn-primary focus:ring-neon">Accessible button</button>
 
 <!-- Custom focus outline -->
-<input class="form-input focus:outline-neon">
+<input class="form-input focus:outline-neon" />
 ```
 
 ## 🎬 Animations
 
 ### Built-in Animations
+
 ```html
 <!-- Fade in animation -->
 <div class="animate-fade-in">Fades in on load</div>
@@ -325,6 +357,7 @@ src/styles/
 ## 🎯 Best Practices
 
 ### 1. Use Semantic Classes
+
 ```html
 <!-- Good: Semantic naming -->
 <button class="btn-primary">Submit Form</button>
@@ -334,16 +367,16 @@ src/styles/
 ```
 
 ### 2. Layer Glass Effects
+
 ```html
 <!-- Good: Layered glass effects -->
 <div class="glass">
-  <div class="glass-card">
-    Nested glass for depth
-  </div>
+  <div class="glass-card">Nested glass for depth</div>
 </div>
 ```
 
 ### 3. Consistent Spacing
+
 ```html
 <!-- Good: Use design tokens -->
 <div class="p-6 mb-4 gap-3">Consistent spacing</div>
@@ -353,6 +386,7 @@ src/styles/
 ```
 
 ### 4. Accessible Text Contrast
+
 ```html
 <!-- Good: High contrast on glass -->
 <div class="glass">
@@ -371,13 +405,13 @@ The theme automatically responds to the `data-theme` attribute on the root eleme
 
 ```javascript
 // Switch to dark theme
-document.documentElement.setAttribute('data-theme', 'dark');
+document.documentElement.setAttribute('data-theme', 'dark')
 
 // Switch to light theme
-document.documentElement.setAttribute('data-theme', 'light');
+document.documentElement.setAttribute('data-theme', 'light')
 
 // Use system preference
-document.documentElement.removeAttribute('data-theme');
+document.documentElement.removeAttribute('data-theme')
 ```
 
 ## 📊 Multi-Column Dense Layouts
@@ -403,11 +437,12 @@ For efficient data display:
 ## 🔧 Customization
 
 ### Overriding Design Tokens
+
 ```css
 :root {
   /* Override specific tokens */
   --radius-md: 16px; /* More rounded */
-  --space-4: 20px;   /* More spacing */
+  --space-4: 20px; /* More spacing */
 
   /* Custom neon color */
   --neon-custom: 255, 128, 0; /* Orange */
@@ -423,6 +458,7 @@ For efficient data display:
 ```
 
 ### Creating Custom Components
+
 ```css
 .my-custom-component {
   /* Use existing tokens */

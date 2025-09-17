@@ -26,8 +26,6 @@
   outline: none;
 }
 
-
-
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -400,7 +398,9 @@
 
 .btn-fab:hover {
   transform: scale(1.1);
-  box-shadow: var(--glass-shadow-xl), 0 0 30px rgba(var(--neon-blue), 0.4);
+  box-shadow:
+    var(--glass-shadow-xl),
+    0 0 30px rgba(var(--neon-blue), 0.4);
 }
 
 /* ===== LOADING STATE ===== */
@@ -471,7 +471,7 @@
   outline-offset: 2px;
 }
 
-.btn[aria-pressed="true"] {
+.btn[aria-pressed='true'] {
   background: var(--glass-bg-active);
   border-color: rgb(var(--neon-blue));
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -587,6 +587,6 @@
   border-bottom: none;
 }
 
-.btn-dropdown[aria-expanded="true"]::after {
+.btn-dropdown[aria-expanded='true']::after {
   transform: rotate(180deg);
 }

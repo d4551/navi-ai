@@ -11,12 +11,22 @@
   >
     <!-- Header Slot -->
     <div v-if="$slots.header || title || headerIcon" :class="headerClasses">
-      <div v-if="headerIcon || title" class="unified-card-header section-header-content">
-        <AppIcon v-if="headerIcon" :name="headerIcon" class="unified-card-icon" />
+      <div
+        v-if="headerIcon || title"
+        class="unified-card-header section-header-content"
+      >
+        <AppIcon
+          v-if="headerIcon"
+          :name="headerIcon"
+          class="unified-card-icon"
+        />
         <h3 v-if="title" class="unified-card-title">{{ title }}</h3>
       </div>
       <slot name="header" />
-      <div v-if="$slots.actions" class="unified-card-header section-header-actions">
+      <div
+        v-if="$slots.actions"
+        class="unified-card-header section-header-actions"
+      >
         <slot name="actions" />
       </div>
     </div>
@@ -51,7 +61,16 @@ import { computed, useSlots } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 export interface UnifiedCardProps {
-  variant?: 'default' | 'gaming' | 'job' | 'dashboard' | 'portfolio' | 'settings' | 'studio' | 'glass' | 'elevated'
+  variant?:
+    | 'default'
+    | 'gaming'
+    | 'job'
+    | 'dashboard'
+    | 'portfolio'
+    | 'settings'
+    | 'studio'
+    | 'glass'
+    | 'elevated'
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   interactive?: boolean
   disabled?: boolean
@@ -70,7 +89,7 @@ const props = withDefaults(defineProps<UnifiedCardProps>(), {
   loading: false,
   title: '',
   headerIcon: '',
-  ariaLabel: ''
+  ariaLabel: '',
 })
 
 const emit = defineEmits<{
@@ -89,26 +108,26 @@ const cardClasses = computed(() => [
   {
     'unified-card--interactive': props.interactive,
     'unified-card--disabled': props.disabled,
-    'unified-card--loading': props.loading
-  }
+    'unified-card--loading': props.loading,
+  },
 ])
 
 const headerClasses = computed(() => [
   'unified-card-header',
   `unified-card-header--${props.variant}`,
   {
-    'unified-card-header--with-actions': !!slots.actions
-  }
+    'unified-card-header--with-actions': !!slots.actions,
+  },
 ])
 
 const contentClasses = computed(() => [
   'unified-card-content',
-  `unified-card-content--${props.size}`
+  `unified-card-content--${props.size}`,
 ])
 
 const footerClasses = computed(() => [
   'unified-card-footer',
-  `unified-card-footer--${props.variant}`
+  `unified-card-footer--${props.variant}`,
 ])
 
 // Event handlers
@@ -119,7 +138,11 @@ const handleClick = (event: Event) => {
 }
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (!props.disabled && props.interactive && (event.key === 'Enter' || event.key === ' ')) {
+  if (
+    !props.disabled &&
+    props.interactive &&
+    (event.key === 'Enter' || event.key === ' ')
+  ) {
     event.preventDefault()
     emit('click', event)
   }
@@ -141,7 +164,9 @@ const handleKeydown = (event: KeyboardEvent) => {
   background: var(--glass-surface); /* Use design system variable */
   border: 1px solid var(--glass-border); /* Use design system variable */
   backdrop-filter: var(--glass-backdrop-blur); /* Use design system variable */
-  -webkit-backdrop-filter: var(--glass-backdrop-blur); /* Use design system variable */
+  -webkit-backdrop-filter: var(
+    --glass-backdrop-blur
+  ); /* Use design system variable */
   transition: all var(--duration-normal) var(--easing-ease-out); /* Use design system variables */
   overflow: hidden;
   font-family: var(--font-primary); /* Use design system variable */
@@ -201,7 +226,9 @@ const handleKeydown = (event: KeyboardEvent) => {
 .unified-card--interactive:focus-visible {
   outline: 3px solid var(--color-primary-400); /* Use design system variable */
   outline-offset: 2px;
-  box-shadow: var(--shadow-md), 0 0 0 3px var(--color-primary-200); /* Enhanced focus shadow */
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 3px var(--color-primary-200); /* Enhanced focus shadow */
 }
 
 .unified-card--interactive:active:not(.unified-card--disabled) {
@@ -224,7 +251,9 @@ const handleKeydown = (event: KeyboardEvent) => {
   position: absolute;
   inset: 0;
   background: var(--glass-surface-overlay); /* Use design system variable */
-  backdrop-filter: var(--glass-backdrop-blur-light); /* Use design system variable */
+  backdrop-filter: var(
+    --glass-backdrop-blur-light
+  ); /* Use design system variable */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -247,7 +276,11 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 /* Gaming Variant */
 .unified-card--gaming {
-  background: linear-gradient(135deg, var(--glass-surface), rgba(0, 255, 136, 0.02)); /* Use design system variable */
+  background: linear-gradient(
+    135deg,
+    var(--glass-surface),
+    rgba(0, 255, 136, 0.02)
+  ); /* Use design system variable */
   border: 1px solid var(--glass-border-gaming); /* Use design system variable */
   position: relative;
 }
@@ -256,7 +289,11 @@ const handleKeydown = (event: KeyboardEvent) => {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--color-gaming-500), var(--color-cyber-500)); /* Use design system variables */
+  background: linear-gradient(
+    135deg,
+    var(--color-gaming-500),
+    var(--color-cyber-500)
+  ); /* Use design system variables */
   opacity: 0.05;
   pointer-events: none;
 }
@@ -264,7 +301,11 @@ const handleKeydown = (event: KeyboardEvent) => {
 .unified-card-glow {
   position: absolute;
   inset: -2px;
-  background: linear-gradient(135deg, var(--color-gaming-500), var(--color-cyber-500)); /* Use design system variables */
+  background: linear-gradient(
+    135deg,
+    var(--color-gaming-500),
+    var(--color-cyber-500)
+  ); /* Use design system variables */
   border-radius: inherit;
   opacity: 0;
   z-index: var(--z-hide); /* Use design system variable */
@@ -309,15 +350,23 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 /* Studio Variant */
 .unified-card--studio {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700)); /* Use design system variables */
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-primary-700)
+  ); /* Use design system variables */
   color: var(--text-on-primary); /* Use design system variable */
 }
 
 /* Glass Variant */
 .unified-card--glass {
   background: var(--glass-surface-elevated); /* Use design system variable */
-  backdrop-filter: var(--glass-backdrop-blur-strong); /* Use design system variable */
-  -webkit-backdrop-filter: var(--glass-backdrop-blur-strong); /* Use design system variable */
+  backdrop-filter: var(
+    --glass-backdrop-blur-strong
+  ); /* Use design system variable */
+  -webkit-backdrop-filter: var(
+    --glass-backdrop-blur-strong
+  ); /* Use design system variable */
   box-shadow: var(--glass-shadow-lg); /* Use design system variable */
 }
 
@@ -405,8 +454,14 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 /* Gaming Header */
 .unified-card-header--gaming {
-  background: linear-gradient(135deg, var(--color-gaming-500), var(--color-cyber-500)); /* Use design system variables */
-  border-bottom-color: var(--glass-border-gaming); /* Use design system variable */
+  background: linear-gradient(
+    135deg,
+    var(--color-gaming-500),
+    var(--color-cyber-500)
+  ); /* Use design system variables */
+  border-bottom-color: var(
+    --glass-border-gaming
+  ); /* Use design system variable */
   color: var(--text-on-primary); /* Use design system variable */
 }
 
@@ -417,7 +472,11 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 /* Job Header */
 .unified-card-header--job {
-  background: linear-gradient(90deg, rgba(var(--color-primary-500-rgb), 0.1), transparent); /* Use design system variable */
+  background: linear-gradient(
+    90deg,
+    rgba(var(--color-primary-500-rgb), 0.1),
+    transparent
+  ); /* Use design system variable */
 }
 
 /* Dashboard Header */
@@ -428,8 +487,12 @@ const handleKeydown = (event: KeyboardEvent) => {
 /* Studio Header */
 .unified-card-header--studio {
   background: var(--glass-bg-medium); /* Use design system variable */
-  backdrop-filter: var(--glass-backdrop-blur-light); /* Use design system variable */
-  border-bottom-color: var(--glass-border-light); /* Use design system variable */
+  backdrop-filter: var(
+    --glass-backdrop-blur-light
+  ); /* Use design system variable */
+  border-bottom-color: var(
+    --glass-border-light
+  ); /* Use design system variable */
 }
 
 /* ============================================
@@ -468,23 +531,24 @@ const handleKeydown = (event: KeyboardEvent) => {
    DARK THEME SUPPORT
    ============================================ */
 
-[data-theme="dark"] .unified-card {
+[data-theme='dark'] .unified-card {
   background: var(--glass-surface); /* Use design system variable */
   border-color: var(--glass-border); /* Use design system variable */
   box-shadow: var(--shadow-md); /* Use design system variable */
 }
 
-[data-theme="dark"] .unified-card--interactive:hover:not(.unified-card--disabled) {
+[data-theme='dark']
+  .unified-card--interactive:hover:not(.unified-card--disabled) {
   box-shadow: var(--shadow-lg); /* Use design system variable */
   border-color: var(--glass-border-strong); /* Use design system variable */
 }
 
-[data-theme="dark"] .unified-card-header {
+[data-theme='dark'] .unified-card-header {
   background: var(--glass-surface-elevated); /* Use design system variable */
   border-bottom-color: var(--glass-border); /* Use design system variable */
 }
 
-[data-theme="dark"] .unified-card-footer {
+[data-theme='dark'] .unified-card-footer {
   background: var(--glass-surface-elevated); /* Use design system variable */
   border-top-color: var(--glass-border); /* Use design system variable */
 }
@@ -500,7 +564,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     transition: none;
     transform: none;
   }
-  
+
   .unified-card-ripple::after {
     animation: none;
   }
@@ -512,7 +576,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     -webkit-backdrop-filter: none;
     background: var(--surface-base); /* Use design system variable */
   }
-  
+
   .unified-card--glass {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -528,15 +592,15 @@ const handleKeydown = (event: KeyboardEvent) => {
     padding: var(--spacing-sm) var(--spacing-md); /* Use design system variables */
     min-height: 50px;
   }
-  
+
   .unified-card-content {
     padding: var(--spacing-md); /* Use design system variable */
   }
-  
+
   .unified-card-footer {
     padding: var(--spacing-sm) var(--spacing-md); /* Use design system variables */
   }
-  
+
   .unified-card-title {
     font-size: var(--font-size-base); /* Use design system variable */
   }
@@ -548,11 +612,11 @@ const handleKeydown = (event: KeyboardEvent) => {
     align-items: stretch;
     gap: var(--spacing-sm); /* Use design system variable */
   }
-  
+
   .unified-card-header-actions {
     justify-content: center;
   }
-  
+
   .unified-card--portfolio {
     aspect-ratio: 4/3;
   }

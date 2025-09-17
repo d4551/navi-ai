@@ -7,7 +7,12 @@ import { logger } from '@/shared/utils/logger'
 // Reuse consolidated export utilities for browser fallbacks
 // Keeps export behavior consistent across the app
 import { ExportService } from '@/utils/export'
-import type { ResumeData, ExportFormat, ExportOptions, ResumeExperienceItem } from '../../shared/types/resume'
+import type {
+  ResumeData,
+  ExportFormat,
+  ExportOptions,
+  ResumeExperienceItem,
+} from '../../shared/types/resume'
 
 export interface ResumeExportRequest {
   resumeData: ResumeData
@@ -45,26 +50,31 @@ export class ResumeExportService {
   /**
    * Export resume to specified format
    */
-  async exportResume(request: ResumeExportRequest): Promise<ResumeExportResponse> {
+  async exportResume(
+    request: ResumeExportRequest
+  ): Promise<ResumeExportResponse> {
     try {
       logger.info(`Exporting resume to ${request.format}`)
-      
+
       switch (request.format) {
         case 'pdf':
           return await this.exportToPDF(request.resumeData, request.options)
-        
+
         case 'docx':
           return await this.exportToDocx(request.resumeData, request.options)
-        
+
         case 'html':
           return await this.exportToHTML(request.resumeData, request.options)
-        
+
         case 'json':
           return await this.exportToJSON(request.resumeData, request.options)
-        
+
         case 'markdown':
-          return await this.exportToMarkdown(request.resumeData, request.options)
-        
+          return await this.exportToMarkdown(
+            request.resumeData,
+            request.options
+          )
+
         default:
           throw new Error(`Unsupported export format: ${request.format}`)
       }
@@ -72,7 +82,7 @@ export class ResumeExportService {
       logger.error('Resume export failed:', error)
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown export error'
+        error: error instanceof Error ? error.message : 'Unknown export error',
       }
     }
   }
@@ -80,13 +90,19 @@ export class ResumeExportService {
   /**
    * Export resume as PDF using modern web APIs
    */
-  private async exportToPDF(resumeData: ResumeData, options?: ExportOptions): Promise<ResumeExportResponse> {
+  private async exportToPDF(
+    resumeData: ResumeData,
+    options?: ExportOptions
+  ): Promise<ResumeExportResponse> {
     try {
       // Generate HTML template
       const htmlTemplate = this.generateHTMLTemplate(resumeData, options)
-      
+
       // Check if we're in Electron environment
-      if (typeof window !== 'undefined' && (window as any).electronAPI?.resume?.exportPDF) {
+      if (
+        typeof window !== 'undefined' &&
+        (window as any).electronAPI?.resume?.exportPDF
+      ) {
         // Use Electron's PDF generation
         const result = await (window as any).electronAPI.resume.exportPDF({
           html: htmlTemplate,
@@ -94,10 +110,10 @@ export class ResumeExportService {
             format: options?.pageFormat || 'A4',
             margin: options?.margins,
             displayHeaderFooter: false,
-            printBackground: true
-          }
+            printBackground: true,
+          },
         })
-        
+
         if (result.success) {
           return {
             success: true,
@@ -107,15 +123,17 @@ export class ResumeExportService {
               format: 'pdf',
               size: result.buffer.length,
               pageCount: result.pageCount,
-              generatedAt: new Date().toISOString()
-            }
+              generatedAt: new Date().toISOString(),
+            },
           }
         }
         throw new Error(result.error)
       }
-      
+
       // Fallback to browser PDF generation via shared ExportService
-      const blob = await ExportService.exportToPDF(resumeData, { theme: options?.theme })
+      const blob = await ExportService.exportToPDF(resumeData, {
+        theme: options?.theme,
+      })
       return {
         success: true,
         blob,
@@ -123,45 +141,52 @@ export class ResumeExportService {
         metadata: {
           format: 'pdf',
           size: blob.size,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }
-      
     } catch (error) {
-      throw new Error(`PDF export failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw new Error(
+        `PDF export failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
     }
   }
 
   /**
    * Export resume as DOCX
    */
-  private async exportToDocx(resumeData: ResumeData, options?: ExportOptions): Promise<ResumeExportResponse> {
+  private async exportToDocx(
+    resumeData: ResumeData,
+    options?: ExportOptions
+  ): Promise<ResumeExportResponse> {
     try {
       // Check if we have docx generation capability
-      if (typeof window !== 'undefined' && (window as any).electronAPI?.resume?.exportDocx) {
+      if (
+        typeof window !== 'undefined' &&
+        (window as any).electronAPI?.resume?.exportDocx
+      ) {
         const result = await (window as any).electronAPI.resume.exportDocx({
           resumeData,
           template: options?.template || 'modern',
-          options
+          options,
         })
-        
+
         if (result.success) {
           return {
             success: true,
-            blob: new Blob([result.buffer], { 
-              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
+            blob: new Blob([result.buffer], {
+              type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             }),
             filename: this.generateFilename(resumeData, 'docx'),
             metadata: {
               format: 'docx',
               size: result.buffer.length,
-              generatedAt: new Date().toISOString()
-            }
+              generatedAt: new Date().toISOString(),
+            },
           }
         }
         throw new Error(result.error)
       }
-      
+
       // Web-based DOCX generation fallback via shared ExportService
       const blob = await ExportService.exportToDocx(resumeData)
       return {
@@ -171,23 +196,27 @@ export class ResumeExportService {
         metadata: {
           format: 'docx',
           size: blob.size,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }
-      
     } catch (error) {
-      throw new Error(`DOCX export failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw new Error(
+        `DOCX export failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
     }
   }
 
   /**
    * Export resume as HTML
    */
-  private async exportToHTML(resumeData: ResumeData, options?: ExportOptions): Promise<ResumeExportResponse> {
+  private async exportToHTML(
+    resumeData: ResumeData,
+    options?: ExportOptions
+  ): Promise<ResumeExportResponse> {
     try {
       const htmlContent = this.generateHTMLTemplate(resumeData, options)
       const blob = new Blob([htmlContent], { type: 'text/html' })
-      
+
       return {
         success: true,
         blob,
@@ -195,30 +224,39 @@ export class ResumeExportService {
         metadata: {
           format: 'html',
           size: blob.size,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }
     } catch (error) {
-      throw new Error(`HTML export failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw new Error(
+        `HTML export failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
     }
   }
 
   /**
    * Export resume as JSON
    */
-  private async exportToJSON(resumeData: ResumeData, _options?: ExportOptions): Promise<ResumeExportResponse> {
+  private async exportToJSON(
+    resumeData: ResumeData,
+    _options?: ExportOptions
+  ): Promise<ResumeExportResponse> {
     try {
-      const jsonContent = JSON.stringify({
-        ...resumeData,
-        exportMetadata: {
-          version: '1.0',
-          exportedAt: new Date().toISOString(),
-          exportedBy: 'NAVI Gaming Jobseeker Platform'
-        }
-      }, null, 2)
-      
+      const jsonContent = JSON.stringify(
+        {
+          ...resumeData,
+          exportMetadata: {
+            version: '1.0',
+            exportedAt: new Date().toISOString(),
+            exportedBy: 'NAVI Gaming Jobseeker Platform',
+          },
+        },
+        null,
+        2
+      )
+
       const blob = new Blob([jsonContent], { type: 'application/json' })
-      
+
       return {
         success: true,
         blob,
@@ -226,22 +264,27 @@ export class ResumeExportService {
         metadata: {
           format: 'json',
           size: blob.size,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }
     } catch (error) {
-      throw new Error(`JSON export failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw new Error(
+        `JSON export failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
     }
   }
 
   /**
    * Export resume as Markdown
    */
-  private async exportToMarkdown(resumeData: ResumeData, _options?: ExportOptions): Promise<ResumeExportResponse> {
+  private async exportToMarkdown(
+    resumeData: ResumeData,
+    _options?: ExportOptions
+  ): Promise<ResumeExportResponse> {
     try {
       const markdownContent = this.generateMarkdownTemplate(resumeData)
       const blob = new Blob([markdownContent], { type: 'text/markdown' })
-      
+
       return {
         success: true,
         blob,
@@ -249,21 +292,26 @@ export class ResumeExportService {
         metadata: {
           format: 'markdown',
           size: blob.size,
-          generatedAt: new Date().toISOString()
-        }
+          generatedAt: new Date().toISOString(),
+        },
       }
     } catch (error) {
-      throw new Error(`Markdown export failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw new Error(
+        `Markdown export failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
     }
   }
 
   /**
    * Generate HTML template for resume
    */
-  private generateHTMLTemplate(resumeData: ResumeData, options?: ExportOptions): string {
+  private generateHTMLTemplate(
+    resumeData: ResumeData,
+    options?: ExportOptions
+  ): string {
     const template = options?.template || 'modern'
     const theme = options?.theme || 'light'
-    
+
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -294,58 +342,71 @@ export class ResumeExportService {
    */
   private generateMarkdownTemplate(resumeData: ResumeData): string {
     const sections = []
-    
+
     // Header
     if (resumeData.personalInfo) {
       sections.push(`# ${resumeData.personalInfo.name}`)
-      
+
       const contactInfo = []
-      if (resumeData.personalInfo.email) contactInfo.push(`📧 ${resumeData.personalInfo.email}`)
-      if (resumeData.personalInfo.phone) contactInfo.push(`📱 ${resumeData.personalInfo.phone}`)
-      if (resumeData.personalInfo.location) contactInfo.push(`📍 ${resumeData.personalInfo.location}`)
-      
+      if (resumeData.personalInfo.email)
+        contactInfo.push(`📧 ${resumeData.personalInfo.email}`)
+      if (resumeData.personalInfo.phone)
+        contactInfo.push(`📱 ${resumeData.personalInfo.phone}`)
+      if (resumeData.personalInfo.location)
+        contactInfo.push(`📍 ${resumeData.personalInfo.location}`)
+
       if (contactInfo.length) {
         sections.push(contactInfo.join(' | ') + '\n')
       }
     }
-    
+
     // Summary
     if (resumeData.summary) {
       sections.push('## Professional Summary\n')
       sections.push(resumeData.summary + '\n')
     }
-    
+
     // Experience
     if (resumeData.experience?.length) {
       sections.push('## Experience\n')
       resumeData.experience.forEach((exp: ResumeExperienceItem) => {
         sections.push(`### ${exp.title} at ${exp.company}`)
-        sections.push(`*${exp.startDate} - ${exp.endDate || 'Present'}* | ${exp.location || ''}`)
+        sections.push(
+          `*${exp.startDate} - ${exp.endDate || 'Present'}* | ${exp.location || ''}`
+        )
         if (exp.description) sections.push(`\n${exp.description}\n`)
       })
     }
-    
+
     // Skills
-    if (resumeData.skills?.technical?.length || resumeData.skills?.soft?.length) {
+    if (
+      resumeData.skills?.technical?.length ||
+      resumeData.skills?.soft?.length
+    ) {
       sections.push('## Skills\n')
       if (resumeData.skills.technical?.length) {
-        sections.push(`**Technical Skills:** ${resumeData.skills.technical.join(', ')}\n`)
+        sections.push(
+          `**Technical Skills:** ${resumeData.skills.technical.join(', ')}\n`
+        )
       }
       if (resumeData.skills.soft?.length) {
         sections.push(`**Soft Skills:** ${resumeData.skills.soft.join(', ')}\n`)
       }
     }
-    
+
     // Gaming Experience
     if (resumeData.gamingExperience) {
       sections.push('## Gaming Industry Experience\n')
       const gaming = resumeData.gamingExperience
-      if (gaming.gameEngines) sections.push(`**Game Engines:** ${gaming.gameEngines}\n`)
-      if (gaming.platforms) sections.push(`**Platforms:** ${gaming.platforms}\n`)
+      if (gaming.gameEngines)
+        sections.push(`**Game Engines:** ${gaming.gameEngines}\n`)
+      if (gaming.platforms)
+        sections.push(`**Platforms:** ${gaming.platforms}\n`)
       if (gaming.genres) sections.push(`**Genres:** ${gaming.genres}\n`)
-      if (gaming.shippedTitles) sections.push(`**Shipped Titles:** ${gaming.shippedTitles}\n`)
+      if (gaming.shippedTitles)
+        sections.push(`**Shipped Titles:** ${gaming.shippedTitles}\n`)
     }
-    
+
     return sections.join('\n')
   }
 
@@ -374,7 +435,7 @@ export class ResumeExportService {
         body { font-size: 12pt; }
       }
     `
-    
+
     // Template-specific CSS
     const templateCSS = {
       modern: `
@@ -394,10 +455,13 @@ export class ResumeExportService {
         h1 { color: #00ffff; text-shadow: 0 0 10px #00ffff; }
         h2 { color: #ff6b6b; border-bottom-color: #ff6b6b; }
         .skill-tag { background: #ff6b6b; color: #0a0a0a; border: 1px solid #00ff00; }
-      `
+      `,
     }
-    
-    return baseCSS + (templateCSS[template as keyof typeof templateCSS] || templateCSS.modern)
+
+    return (
+      baseCSS +
+      (templateCSS[template as keyof typeof templateCSS] || templateCSS.modern)
+    )
   }
 
   /**
@@ -405,12 +469,12 @@ export class ResumeExportService {
    */
   private generatePersonalInfoSection(personalInfo?: any): string {
     if (!personalInfo) return ''
-    
+
     const contactItems = []
     if (personalInfo.email) contactItems.push(personalInfo.email)
     if (personalInfo.phone) contactItems.push(personalInfo.phone)
     if (personalInfo.location) contactItems.push(personalInfo.location)
-    
+
     return `
       <div class="personal-info section">
         <h1>${personalInfo.name || 'Professional'}</h1>
@@ -431,15 +495,19 @@ export class ResumeExportService {
 
   private generateExperienceSection(experience?: any[]): string {
     if (!experience?.length) return ''
-    
-    const experienceItems = experience.map(exp => `
+
+    const experienceItems = experience
+      .map(
+        exp => `
       <div class="experience-item">
         <h3>${exp.title} at ${exp.company}</h3>
         <div class="date-range">${exp.startDate} - ${exp.endDate || 'Present'} | ${exp.location || ''}</div>
         ${exp.description ? `<p>${exp.description}</p>` : ''}
       </div>
-    `).join('')
-    
+    `
+      )
+      .join('')
+
     return `
       <div class="experience section">
         <h2>Experience</h2>
@@ -450,36 +518,50 @@ export class ResumeExportService {
 
   private generateSkillsSection(skills?: any): string {
     if (!skills) return ''
-    
+
     const sections = []
     if (skills.technical?.length) {
-      const skillTags = skills.technical.map((skill: string) => `<span class="skill-tag">${skill}</span>`).join('')
-      sections.push(`<div><strong>Technical Skills:</strong><div class="skills-list">${skillTags}</div></div>`)
+      const skillTags = skills.technical
+        .map((skill: string) => `<span class="skill-tag">${skill}</span>`)
+        .join('')
+      sections.push(
+        `<div><strong>Technical Skills:</strong><div class="skills-list">${skillTags}</div></div>`
+      )
     }
-    
+
     if (skills.soft?.length) {
-      const skillTags = skills.soft.map((skill: string) => `<span class="skill-tag">${skill}</span>`).join('')
-      sections.push(`<div><strong>Soft Skills:</strong><div class="skills-list">${skillTags}</div></div>`)
+      const skillTags = skills.soft
+        .map((skill: string) => `<span class="skill-tag">${skill}</span>`)
+        .join('')
+      sections.push(
+        `<div><strong>Soft Skills:</strong><div class="skills-list">${skillTags}</div></div>`
+      )
     }
-    
-    return sections.length ? `
+
+    return sections.length
+      ? `
       <div class="skills section">
         <h2>Skills</h2>
         ${sections.join('')}
       </div>
-    ` : ''
+    `
+      : ''
   }
 
   private generateEducationSection(education?: any[]): string {
     if (!education?.length) return ''
-    
-    const educationItems = education.map(edu => `
+
+    const educationItems = education
+      .map(
+        edu => `
       <div class="education-item">
         <h3>${edu.degree} in ${edu.field}</h3>
         <div class="date-range">${edu.school} | ${edu.year}</div>
       </div>
-    `).join('')
-    
+    `
+      )
+      .join('')
+
     return `
       <div class="education section">
         <h2>Education</h2>
@@ -490,32 +572,48 @@ export class ResumeExportService {
 
   private generateGamingSection(gamingExperience?: any): string {
     if (!gamingExperience) return ''
-    
+
     const items = []
-    if (gamingExperience.gameEngines) items.push(`<p><strong>Game Engines:</strong> ${gamingExperience.gameEngines}</p>`)
-    if (gamingExperience.platforms) items.push(`<p><strong>Platforms:</strong> ${gamingExperience.platforms}</p>`)
-    if (gamingExperience.genres) items.push(`<p><strong>Genres:</strong> ${gamingExperience.genres}</p>`)
-    if (gamingExperience.shippedTitles) items.push(`<p><strong>Shipped Titles:</strong> ${gamingExperience.shippedTitles}</p>`)
-    
-    return items.length ? `
+    if (gamingExperience.gameEngines)
+      items.push(
+        `<p><strong>Game Engines:</strong> ${gamingExperience.gameEngines}</p>`
+      )
+    if (gamingExperience.platforms)
+      items.push(
+        `<p><strong>Platforms:</strong> ${gamingExperience.platforms}</p>`
+      )
+    if (gamingExperience.genres)
+      items.push(`<p><strong>Genres:</strong> ${gamingExperience.genres}</p>`)
+    if (gamingExperience.shippedTitles)
+      items.push(
+        `<p><strong>Shipped Titles:</strong> ${gamingExperience.shippedTitles}</p>`
+      )
+
+    return items.length
+      ? `
       <div class="gaming section">
         <h2>Gaming Industry Experience</h2>
         ${items.join('')}
       </div>
-    ` : ''
+    `
+      : ''
   }
 
   private generateProjectsSection(projects?: any[]): string {
     if (!projects?.length) return ''
-    
-    const projectItems = projects.map(project => `
+
+    const projectItems = projects
+      .map(
+        project => `
       <div class="project-item">
         <h3>${project.title}</h3>
         <p>${project.description}</p>
         ${project.technologies ? `<div class="skills-list">${project.technologies.map((tech: string) => `<span class="skill-tag">${tech}</span>`).join('')}</div>` : ''}
       </div>
-    `).join('')
-    
+    `
+      )
+      .join('')
+
     return `
       <div class="projects section">
         <h2>Projects</h2>
@@ -527,7 +625,11 @@ export class ResumeExportService {
   /**
    * Browser-based PDF generation fallback
    */
-  private async generatePDFInBrowser(_htmlContent: string, resumeData: ResumeData, _options?: ExportOptions): Promise<ResumeExportResponse> {
+  private async generatePDFInBrowser(
+    _htmlContent: string,
+    resumeData: ResumeData,
+    _options?: ExportOptions
+  ): Promise<ResumeExportResponse> {
     // Backward-compatible wrapper: delegate to shared ExportService for consistency
     const blob = await ExportService.exportToPDF(resumeData)
     return {
@@ -537,15 +639,18 @@ export class ResumeExportService {
       metadata: {
         format: 'pdf',
         size: blob.size,
-        generatedAt: new Date().toISOString()
-      }
+        generatedAt: new Date().toISOString(),
+      },
     }
   }
 
   /**
    * Browser-based DOCX generation fallback
    */
-  private async generateDocxInBrowser(resumeData: ResumeData, _options?: ExportOptions): Promise<ResumeExportResponse> {
+  private async generateDocxInBrowser(
+    resumeData: ResumeData,
+    _options?: ExportOptions
+  ): Promise<ResumeExportResponse> {
     // Delegate to shared ExportService DOCX implementation
     const blob = await ExportService.exportToDocx(resumeData)
     return {
@@ -555,8 +660,8 @@ export class ResumeExportService {
       metadata: {
         format: 'docx',
         size: blob.size,
-        generatedAt: new Date().toISOString()
-      }
+        generatedAt: new Date().toISOString(),
+      },
     }
   }
 
@@ -564,19 +669,20 @@ export class ResumeExportService {
    * Generate RTF content for Word compatibility
    */
   private generateRTFContent(resumeData: ResumeData): string {
-    const rtfHeader = '{\\rtf1\\ansi\\deff0 {\\fonttbl {\\f0 Times New Roman;}}\\f0\\fs24'
+    const rtfHeader =
+      '{\\rtf1\\ansi\\deff0 {\\fonttbl {\\f0 Times New Roman;}}\\f0\\fs24'
     const rtfFooter = '}'
-    
+
     let content = ''
-    
+
     if (resumeData.personalInfo?.name) {
       content += `\\b\\fs32 ${resumeData.personalInfo.name}\\b0\\fs24\\par`
     }
-    
+
     if (resumeData.summary) {
       content += `\\par\\b Professional Summary\\b0\\par${resumeData.summary}\\par`
     }
-    
+
     return rtfHeader + content + rtfFooter
   }
 
@@ -600,9 +706,17 @@ export const resumeExportRoutes = {
     return await resumeExportService.exportResume(request)
   },
 
-  async downloadResume(resumeData: ResumeData, format: ExportFormat, options?: ExportOptions): Promise<void> {
-    const result = await resumeExportService.exportResume({ resumeData, format, options })
-    
+  async downloadResume(
+    resumeData: ResumeData,
+    format: ExportFormat,
+    options?: ExportOptions
+  ): Promise<void> {
+    const result = await resumeExportService.exportResume({
+      resumeData,
+      format,
+      options,
+    })
+
     if (result.success && result.blob && result.filename) {
       // Create download link
       const url = URL.createObjectURL(result.blob)
@@ -616,5 +730,5 @@ export const resumeExportRoutes = {
     } else {
       throw new Error(result.error || 'Export failed')
     }
-  }
+  },
 }

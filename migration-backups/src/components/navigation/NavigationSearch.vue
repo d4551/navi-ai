@@ -9,13 +9,9 @@
       class="search-toggle"
       @click="toggleSearch"
     />
-    
+
     <!-- Search Modal/Overlay -->
-    <div 
-      v-if="isOpen" 
-      class="search-overlay"
-      @click.self="closeSearch"
-    >
+    <div v-if="isOpen" class="search-overlay" @click.self="closeSearch">
       <div class="search-modal">
         <!-- Search Header -->
         <div class="search-header">
@@ -43,7 +39,10 @@
         <!-- Search Content -->
         <div class="search-content">
           <!-- Search Results -->
-          <div v-if="searchQuery.trim() && !searchLoading" class="search-section">
+          <div
+            v-if="searchQuery.trim() && !searchLoading"
+            class="search-section"
+          >
             <div class="search-section-header">
               <h3 class="section-title">
                 <AppIcon name="mdi-file-search" size="16" class="me-2" />
@@ -53,7 +52,7 @@
                 </span>
               </h3>
             </div>
-            
+
             <div v-if="searchResults.length" class="search-results">
               <div
                 v-for="(_result, index) in searchResults"
@@ -75,22 +74,34 @@
                   <button
                     class="favorite-btn"
                     :class="{ 'is-favorite': isFavorite(result.path) }"
-                    :aria-label="isFavorite(result.path) ? 'Remove from favorites' : 'Add to favorites'"
+                    :aria-label="
+                      isFavorite(result.path)
+                        ? 'Remove from favorites'
+                        : 'Add to favorites'
+                    "
                     @click.stop="toggleFavorite(result.path)"
                   >
-                    <AppIcon 
-                      :name="isFavorite(result.path) ? 'mdi-heart' : 'mdi-heart-outline'" 
-                      size="16" 
+                    <AppIcon
+                      :name="
+                        isFavorite(result.path)
+                          ? 'mdi-heart'
+                          : 'mdi-heart-outline'
+                      "
+                      size="16"
                     />
                   </button>
                 </div>
               </div>
             </div>
-            
+
             <div v-else class="no-results">
               <AppIcon name="mdi-magnify" size="48" class="no-results-icon" />
-              <p class="no-results-text">No results found for "{{ searchQuery }}"</p>
-              <p class="no-results-suggestion">Try different keywords or browse categories below</p>
+              <p class="no-results-text">
+                No results found for "{{ searchQuery }}"
+              </p>
+              <p class="no-results-suggestion">
+                Try different keywords or browse categories below
+              </p>
             </div>
           </div>
 
@@ -132,7 +143,10 @@
             </div>
 
             <!-- Favorite Pages -->
-            <div v-if="quickAccessPages.favorites.length" class="search-section">
+            <div
+              v-if="quickAccessPages.favorites.length"
+              class="search-section"
+            >
               <div class="search-section-header">
                 <h3 class="section-title">
                   <AppIcon name="mdi-heart" size="16" class="me-2" />
@@ -205,9 +219,7 @@
                   <div class="shortcut-description">Open search</div>
                 </div>
                 <div class="shortcut-item">
-                  <div class="shortcut-keys">
-                    <kbd>↑</kbd> <kbd>↓</kbd>
-                  </div>
+                  <div class="shortcut-keys"><kbd>↑</kbd> <kbd>↓</kbd></div>
                   <div class="shortcut-description">Navigate results</div>
                 </div>
                 <div class="shortcut-item">
@@ -249,7 +261,7 @@ const {
   closeSearch,
   toggleFavorite,
   isFavorite,
-  recentPages
+  recentPages,
 } = useEnhancedNavigation()
 
 // Component state
@@ -264,52 +276,49 @@ const categories = [
     title: 'Career Tools',
     icon: 'mdi-briefcase',
     searchTerm: 'resume cover letter portfolio',
-    count: 4
+    count: 4,
   },
   {
     id: 'ai-features',
     title: 'AI Features',
     icon: 'mdi-robot',
     searchTerm: 'ai assistant chat tailored',
-    count: 3
+    count: 3,
   },
   {
     id: 'gaming-jobs',
     title: 'Gaming Industry',
     icon: 'mdi-gamepad-variant',
     searchTerm: 'gaming jobs studios gigs',
-    count: 4
+    count: 4,
   },
   {
     id: 'system-tools',
     title: 'System & Settings',
     icon: 'mdi-cog-outline',
     searchTerm: 'settings flow cloud system',
-    count: 4
-  }
+    count: 4,
+  },
 ]
 
 // Methods
 const handleSearchEnter = () => {
   if (searchResults.value.length > 0) {
-    const targetIndex = selectedResultIndex.value >= 0 
-      ? selectedResultIndex.value 
-      : 0
+    const targetIndex =
+      selectedResultIndex.value >= 0 ? selectedResultIndex.value : 0
     navigateToResult(searchResults.value[targetIndex])
   }
 }
 
-const navigateResults = (direction) => {
+const navigateResults = direction => {
   const maxIndex = searchResults.value.length - 1
-  
+
   if (direction === 'down') {
-    selectedResultIndex.value = selectedResultIndex.value >= maxIndex 
-      ? 0 
-      : selectedResultIndex.value + 1
+    selectedResultIndex.value =
+      selectedResultIndex.value >= maxIndex ? 0 : selectedResultIndex.value + 1
   } else if (direction === 'up') {
-    selectedResultIndex.value = selectedResultIndex.value <= 0 
-      ? maxIndex 
-      : selectedResultIndex.value - 1
+    selectedResultIndex.value =
+      selectedResultIndex.value <= 0 ? maxIndex : selectedResultIndex.value - 1
   }
 }
 
@@ -318,7 +327,7 @@ const clearRecentPages = () => {
 }
 
 // Watch for search open/close to focus input
-watch(isOpen, async (newValue) => {
+watch(isOpen, async newValue => {
   if (newValue) {
     await nextTick()
     if (searchInput.value) {
@@ -803,15 +812,15 @@ watch(searchQuery, () => {
   .search-overlay {
     padding: var(--spacing-4);
   }
-  
+
   .search-modal {
     max-height: 90vh;
   }
-  
+
   .category-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .shortcuts-grid {
     grid-template-columns: 1fr;
   }

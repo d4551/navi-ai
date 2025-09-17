@@ -5,8 +5,12 @@
       <div v-if="mappedSkills.length === 0" class="initial-input-section">
         <div class="input-card">
           <div class="input-header">
-            <h2 class="input-title">Map Your Gaming Skills to Real-World Careers</h2>
-            <p class="input-subtitle">Translate your in-game talents into professional strengths.</p>
+            <h2 class="input-title">
+              Map Your Gaming Skills to Real-World Careers
+            </h2>
+            <p class="input-subtitle">
+              Translate your in-game talents into professional strengths.
+            </p>
           </div>
           <div class="input-body">
             <textarea
@@ -38,8 +42,18 @@
         <div class="results-header">
           <h1>Your Professional Skill Profile</h1>
           <div class="header-actions">
-            <UnifiedButton variant="secondary" leading-icon="mdi-refresh" @click="initialize">Start Over</UnifiedButton>
-            <UnifiedButton variant="primary" leading-icon="mdi-export" @click="showExportModal = true">Export Profile</UnifiedButton>
+            <UnifiedButton
+              variant="secondary"
+              leading-icon="mdi-refresh"
+              @click="initialize"
+              >Start Over</UnifiedButton
+            >
+            <UnifiedButton
+              variant="primary"
+              leading-icon="mdi-export"
+              @click="showExportModal = true"
+              >Export Profile</UnifiedButton
+            >
           </div>
         </div>
 
@@ -59,17 +73,23 @@
               <div class="metric-card">
                 <div class="metric-title">Industry Readiness</div>
                 <div class="metric-value">{{ industryReadinessScore }}%</div>
-                <div class="metric-description">Your alignment with in-demand industry skills.</div>
+                <div class="metric-description">
+                  Your alignment with in-demand industry skills.
+                </div>
               </div>
               <div class="metric-card">
                 <div class="metric-title">Top Skill Category</div>
                 <div class="metric-value-text">{{ topSkillCategories[0] }}</div>
-                <div class="metric-description">Your most prominent area of expertise.</div>
+                <div class="metric-description">
+                  Your most prominent area of expertise.
+                </div>
               </div>
               <div class="metric-card">
                 <div class="metric-title">Total Skills Mapped</div>
                 <div class="metric-value">{{ mappedSkills.length }}</div>
-                <div class="metric-description">Unique professional skills identified.</div>
+                <div class="metric-description">
+                  Unique professional skills identified.
+                </div>
               </div>
             </div>
           </div>
@@ -77,16 +97,30 @@
           <!-- Skills Tab -->
           <div v-if="activeTab === 'skills'" class="skills-tab">
             <div class="skill-list">
-              <div v-for="skill in mappedSkills" :key="skill.id" class="skill-item" @click="selectedSkill = skill">
+              <div
+                v-for="skill in mappedSkills"
+                :key="skill.id"
+                class="skill-item"
+                @click="selectedSkill = skill"
+              >
                 <div class="skill-name">{{ skill.transferableSkill }}</div>
-                <div class="skill-confidence" :class="`confidence-${skill.confidence}`">{{ skill.confidence }}</div>
+                <div
+                  class="skill-confidence"
+                  :class="`confidence-${skill.confidence}`"
+                >
+                  {{ skill.confidence }}
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Network Tab -->
           <div v-if="activeTab === 'network'" class="network-tab">
-            <svg :width="skillWebWidth" :height="skillWebHeight" class="skill-network-graph">
+            <svg
+              :width="skillWebWidth"
+              :height="skillWebHeight"
+              class="skill-network-graph"
+            >
               <!-- Connections -->
               <g class="connections">
                 <line
@@ -102,7 +136,13 @@
               </g>
               <!-- Nodes -->
               <g class="nodes">
-                <g v-for="node in skillWebData.nodes" :key="node.id" class="node" :transform="`translate(${node.x}, ${node.y})`" @click="selectSkillFromNetwork(node)">
+                <g
+                  v-for="node in skillWebData.nodes"
+                  :key="node.id"
+                  class="node"
+                  :transform="`translate(${node.x}, ${node.y})`"
+                  @click="selectSkillFromNetwork(node)"
+                >
                   <circle :r="node.radius" :class="`node-cat-${node.type}`" />
                   <text :dy="node.radius + 12">{{ node.label }}</text>
                 </g>
@@ -121,14 +161,21 @@
               >
                 <div class="career-header">
                   <h3>{{ career.role }}</h3>
-                  <div class="career-match-score">{{ Math.round(career.match) }}%</div>
+                  <div class="career-match-score">
+                    {{ Math.round(career.match) }}%
+                  </div>
                 </div>
                 <div class="career-description">
                   {{ career.pathway.description }}
                 </div>
                 <div class="career-skills">
                   <div class="career-match-details">
-                    <strong>{{ (career.pathway.stages[0]?.requirements || []).length }} matching skills</strong>
+                    <strong
+                      >{{
+                        (career.pathway.stages[0]?.requirements || []).length
+                      }}
+                      matching skills</strong
+                    >
                   </div>
                 </div>
               </div>
@@ -138,12 +185,38 @@
           <!-- Compare Tab -->
           <div v-if="activeTab === 'compare'" class="compare-tab">
             <div class="snapshot-controls">
-              <UnifiedButton variant="primary" leading-icon="mdi-camera" @click="saveSnapshot">Save Current Results</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-export" @click="exportSnapshots">Export All</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="mdi-import" @click="() => snapImport?.click()">Import</UnifiedButton>
-              <input ref="snapImport" type="file" accept=".json" style="display: none" @change="onImportSnapshots">
+              <UnifiedButton
+                variant="primary"
+                leading-icon="mdi-camera"
+                @click="saveSnapshot"
+                >Save Current Results</UnifiedButton
+              >
+              <UnifiedButton
+                variant="glass"
+                leading-icon="mdi-export"
+                @click="exportSnapshots"
+                >Export All</UnifiedButton
+              >
+              <UnifiedButton
+                variant="glass"
+                leading-icon="mdi-import"
+                @click="() => snapImport?.click()"
+                >Import</UnifiedButton
+              >
+              <input
+                ref="snapImport"
+                type="file"
+                accept=".json"
+                style="display: none"
+                @change="onImportSnapshots"
+              />
               <label class="form-check-label ml-2">
-                <input v-model="replaceSnapshots" type="checkbox" class="form-check-input"> Replace all on import
+                <input
+                  v-model="replaceSnapshots"
+                  type="checkbox"
+                  class="form-check-input"
+                />
+                Replace all on import
               </label>
             </div>
 
@@ -152,12 +225,28 @@
                 <h4>Left Snapshot</h4>
                 <select v-model="leftSnapKey" class="form-select">
                   <option value="">Choose snapshot...</option>
-                  <option v-for="s in snapshots" :key="s.key" :value="s.key">{{ s.name }} ({{ formatWhen(s.at) }})</option>
+                  <option v-for="s in snapshots" :key="s.key" :value="s.key">
+                    {{ s.name }} ({{ formatWhen(s.at) }})
+                  </option>
                 </select>
                 <div v-if="leftSnap" class="snapshot-info">
                   <div>{{ leftSnap.skills.length }} skills</div>
-                  <UnifiedButton size="xs" variant="glass" leading-icon="mdi-rename" :disabled="!leftSnapKey" @click="renameSnapshotPrompt(leftSnapKey)">Rename</UnifiedButton>
-                  <UnifiedButton size="xs" variant="outline" leading-icon="mdi-delete" :disabled="!leftSnapKey" @click="deleteSnapshot(leftSnapKey)">Delete</UnifiedButton>
+                  <UnifiedButton
+                    size="xs"
+                    variant="glass"
+                    leading-icon="mdi-rename"
+                    :disabled="!leftSnapKey"
+                    @click="renameSnapshotPrompt(leftSnapKey)"
+                    >Rename</UnifiedButton
+                  >
+                  <UnifiedButton
+                    size="xs"
+                    variant="outline"
+                    leading-icon="mdi-delete"
+                    :disabled="!leftSnapKey"
+                    @click="deleteSnapshot(leftSnapKey)"
+                    >Delete</UnifiedButton
+                  >
                 </div>
               </div>
 
@@ -165,12 +254,28 @@
                 <h4>Right Snapshot</h4>
                 <select v-model="rightSnapKey" class="form-select">
                   <option value="">Choose snapshot...</option>
-                  <option v-for="s in snapshots" :key="s.key" :value="s.key">{{ s.name }} ({{ formatWhen(s.at) }})</option>
+                  <option v-for="s in snapshots" :key="s.key" :value="s.key">
+                    {{ s.name }} ({{ formatWhen(s.at) }})
+                  </option>
                 </select>
                 <div v-if="rightSnap" class="snapshot-info">
                   <div>{{ rightSnap.skills.length }} skills</div>
-                  <UnifiedButton size="xs" variant="glass" leading-icon="mdi-rename" :disabled="!rightSnapKey" @click="renameSnapshotPrompt(rightSnapKey)">Rename</UnifiedButton>
-                  <UnifiedButton size="xs" variant="outline" leading-icon="mdi-delete" :disabled="!rightSnapKey" @click="deleteSnapshot(rightSnapKey)">Delete</UnifiedButton>
+                  <UnifiedButton
+                    size="xs"
+                    variant="glass"
+                    leading-icon="mdi-rename"
+                    :disabled="!rightSnapKey"
+                    @click="renameSnapshotPrompt(rightSnapKey)"
+                    >Rename</UnifiedButton
+                  >
+                  <UnifiedButton
+                    size="xs"
+                    variant="outline"
+                    leading-icon="mdi-delete"
+                    :disabled="!rightSnapKey"
+                    @click="deleteSnapshot(rightSnapKey)"
+                    >Delete</UnifiedButton
+                  >
                 </div>
               </div>
             </div>
@@ -179,11 +284,19 @@
               <h3>Comparison</h3>
               <div class="diff-section">
                 <h4>Skills only in {{ leftSnap.name }}</h4>
-                <ul><li v-for="skill in diff.onlyLeft" :key="skill.id">{{ skill.transferableSkill }}</li></ul>
+                <ul>
+                  <li v-for="skill in diff.onlyLeft" :key="skill.id">
+                    {{ skill.transferableSkill }}
+                  </li>
+                </ul>
               </div>
               <div class="diff-section">
                 <h4>Skills only in {{ rightSnap.name }}</h4>
-                <ul><li v-for="skill in diff.onlyRight" :key="skill.id">{{ skill.transferableSkill }}</li></ul>
+                <ul>
+                  <li v-for="skill in diff.onlyRight" :key="skill.id">
+                    {{ skill.transferableSkill }}
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -195,63 +308,170 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">{{ selectedSkill.transferableSkill }}</h5>
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" @click="selectedSkill = null" />
+                <h5 class="modal-title">
+                  {{ selectedSkill.transferableSkill }}
+                </h5>
+                <UnifiedButton
+                  variant="ghost"
+                  size="sm"
+                  icon-only
+                  :icon="'mdi-close'"
+                  @click="selectedSkill = null"
+                />
               </div>
               <div class="modal-body">
                 <div class="skill-detail">
-                  <div class="detail-row"><label>Confidence:</label><div class="confidence-detail" :class="`confidence-${selectedSkill.confidence}`">{{ selectedSkill.confidence }}</div></div>
-                  <div class="detail-row"><label>Source:</label><div>{{ selectedSkill.gameExpression }}</div></div>
-                  <div class="detail-row"><label>Category:</label><div>{{ selectedSkill.category }}</div></div>
-                  <div class="detail-row"><label>Applications:</label><div class="applications-list"><span v-for="app in selectedSkill.industryApplications" :key="app" class="app-tag">{{ app }}</span></div></div>
+                  <div class="detail-row">
+                    <label>Confidence:</label>
+                    <div
+                      class="confidence-detail"
+                      :class="`confidence-${selectedSkill.confidence}`"
+                    >
+                      {{ selectedSkill.confidence }}
+                    </div>
+                  </div>
+                  <div class="detail-row">
+                    <label>Source:</label>
+                    <div>{{ selectedSkill.gameExpression }}</div>
+                  </div>
+                  <div class="detail-row">
+                    <label>Category:</label>
+                    <div>{{ selectedSkill.category }}</div>
+                  </div>
+                  <div class="detail-row">
+                    <label>Applications:</label>
+                    <div class="applications-list">
+                      <span
+                        v-for="app in selectedSkill.industryApplications"
+                        :key="app"
+                        class="app-tag"
+                        >{{ app }}</span
+                      >
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="modal-footer">
-                <UnifiedButton variant="glass" @click="selectedSkill = null">Close</UnifiedButton>
+                <UnifiedButton variant="glass" @click="selectedSkill = null"
+                  >Close</UnifiedButton
+                >
               </div>
             </div>
           </div>
         </div>
 
         <!-- Career role detail modal -->
-        <div v-if="selectedRoleDetails" class="modal fade show d-block" tabindex="-1">
+        <div
+          v-if="selectedRoleDetails"
+          class="modal fade show d-block"
+          tabindex="-1"
+        >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">{{ selectedRoleDetails.role }}</h5>
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" @click="selectedRoleDetails = null" />
+                <UnifiedButton
+                  variant="ghost"
+                  size="sm"
+                  icon-only
+                  :icon="'mdi-close'"
+                  @click="selectedRoleDetails = null"
+                />
               </div>
               <div class="modal-body">
                 <div class="skill-detail">
-                  <div class="detail-row"><label>Match Score:</label><div class="confidence-detail confidence-high">{{ selectedRoleDetails.match }}%</div></div>
-                  <div class="detail-row"><label>Description:</label><div>{{ selectedRoleDetails.pathway.description }}</div></div>
-                  <div class="detail-row"><label>Core Skills:</label><div class="applications-list"><span v-for="c in selectedRoleDetails.pathway.stages.flatMap((s: any) => s.requirements || [])" :key="c" class="app-tag">{{ c }}</span></div></div>
-                  <div class="detail-row"><label>Nice To Have:</label><div class="applications-list"><span v-for="c in selectedRoleDetails.pathway.stages.flatMap((s: any) => s.requirements || [])" :key="c" class="app-tag">{{ c }}</span></div></div>
-                  <div class="detail-row"><label>Tools:</label><div class="applications-list"><span v-for="t in []" :key="t" class="app-tag">{{ t }}</span></div></div>
+                  <div class="detail-row">
+                    <label>Match Score:</label>
+                    <div class="confidence-detail confidence-high">
+                      {{ selectedRoleDetails.match }}%
+                    </div>
+                  </div>
+                  <div class="detail-row">
+                    <label>Description:</label>
+                    <div>{{ selectedRoleDetails.pathway.description }}</div>
+                  </div>
+                  <div class="detail-row">
+                    <label>Core Skills:</label>
+                    <div class="applications-list">
+                      <span
+                        v-for="c in selectedRoleDetails.pathway.stages.flatMap(
+                          (s: any) => s.requirements || []
+                        )"
+                        :key="c"
+                        class="app-tag"
+                        >{{ c }}</span
+                      >
+                    </div>
+                  </div>
+                  <div class="detail-row">
+                    <label>Nice To Have:</label>
+                    <div class="applications-list">
+                      <span
+                        v-for="c in selectedRoleDetails.pathway.stages.flatMap(
+                          (s: any) => s.requirements || []
+                        )"
+                        :key="c"
+                        class="app-tag"
+                        >{{ c }}</span
+                      >
+                    </div>
+                  </div>
+                  <div class="detail-row">
+                    <label>Tools:</label>
+                    <div class="applications-list">
+                      <span v-for="t in []" :key="t" class="app-tag">{{
+                        t
+                      }}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="modal-footer">
-                <UnifiedButton variant="glass" @click="selectedRoleDetails = null">Close</UnifiedButton>
-                <UnifiedButton variant="primary" leading-icon="mdi-briefcase-search">Find Jobs</UnifiedButton>
+                <UnifiedButton
+                  variant="glass"
+                  @click="selectedRoleDetails = null"
+                  >Close</UnifiedButton
+                >
+                <UnifiedButton
+                  variant="primary"
+                  leading-icon="mdi-briefcase-search"
+                  >Find Jobs</UnifiedButton
+                >
               </div>
             </div>
           </div>
         </div>
 
         <!-- Export modal -->
-        <div v-if="showExportModal" class="modal fade show d-block" tabindex="-1">
+        <div
+          v-if="showExportModal"
+          class="modal fade show d-block"
+          tabindex="-1"
+        >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Export Skill Profile</h5>
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'mdi-close'" @click="showExportModal = false" />
+                <UnifiedButton
+                  variant="ghost"
+                  size="sm"
+                  icon-only
+                  :icon="'mdi-close'"
+                  @click="showExportModal = false"
+                />
               </div>
               <div class="modal-body">
                 <p>Choose your desired export format:</p>
                 <div class="export-options">
-                  <UnifiedButton @click="handleExport('json')">JSON</UnifiedButton>
-                  <UnifiedButton @click="handleExport('csv')">CSV</UnifiedButton>
-                  <UnifiedButton @click="handleExport('pdf')">PDF</UnifiedButton>
+                  <UnifiedButton @click="handleExport('json')"
+                    >JSON</UnifiedButton
+                  >
+                  <UnifiedButton @click="handleExport('csv')"
+                    >CSV</UnifiedButton
+                  >
+                  <UnifiedButton @click="handleExport('pdf')"
+                    >PDF</UnifiedButton
+                  >
                 </div>
               </div>
             </div>
@@ -272,10 +492,10 @@ import { useUnifiedUI } from '../composables/useUnifiedUI'
 import UnifiedButton from '../components/ui/UnifiedButton.vue'
 
 interface Snapshot {
-  key: string;
-  name: string;
-  at: number;
-  skills: any[]; // Consider defining a proper type for skills
+  key: string
+  name: string
+  at: number
+  skills: any[] // Consider defining a proper type for skills
 }
 
 // Composable
@@ -309,11 +529,17 @@ const {
   updateSkill: _updateSkill,
   exportSkills,
   getGameToIndustryTranslations: _getTranslations,
-  initialize
+  initialize,
 } = useEnhancedSkillMapping()
 
 // Unified theme and UI systems
-const _theme = (() => { try { return useUnifiedTheme() } catch { return undefined as any } })()
+const _theme = (() => {
+  try {
+    return useUnifiedTheme()
+  } catch {
+    return undefined as any
+  }
+})()
 const _ui = useUnifiedUI()
 
 // Local state
@@ -342,21 +568,29 @@ const navTabs = computed(() => [
   { id: 'skills', label: 'Skills', icon: 'mdi-view-list' },
   { id: 'network', label: 'Network', icon: 'mdi-graph' },
   { id: 'careers', label: 'Careers', icon: 'mdi-briefcase' },
-  { id: 'compare', label: 'Compare', icon: 'mdi-compare' }
+  { id: 'compare', label: 'Compare', icon: 'mdi-compare' },
 ])
 
 // Computed values for snapshot comparison
-const leftSnap = computed(() => snapshots.value.find(s => s.key === leftSnapKey.value))
-const rightSnap = computed(() => snapshots.value.find(s => s.key === rightSnapKey.value))
+const leftSnap = computed(() =>
+  snapshots.value.find(s => s.key === leftSnapKey.value)
+)
+const rightSnap = computed(() =>
+  snapshots.value.find(s => s.key === rightSnapKey.value)
+)
 const diff = computed(() => {
   if (!leftSnap.value || !rightSnap.value) {
     return { onlyLeft: [], onlyRight: [], changed: [] }
   }
   // Simple diff logic - would be more sophisticated in real app
   return {
-    onlyLeft: leftSnap.value.skills.filter(ls => !rightSnap.value?.skills.find(rs => rs.id === ls.id)),
-    onlyRight: rightSnap.value.skills.filter(rs => !leftSnap.value?.skills.find(ls => ls.id === rs.id)),
-    changed: []
+    onlyLeft: leftSnap.value.skills.filter(
+      ls => !rightSnap.value?.skills.find(rs => rs.id === ls.id)
+    ),
+    onlyRight: rightSnap.value.skills.filter(
+      rs => !leftSnap.value?.skills.find(ls => ls.id === rs.id)
+    ),
+    changed: [],
   }
 })
 
@@ -367,7 +601,13 @@ const selectSkillFromNetwork = (node: any) => {
 
 const handleExport = async (format: SkillExportOptions['format']) => {
   try {
-    await exportSkills({ format, framework: 'discipline', includeAnalysis: false, includeEvidence: false, includeReadiness: false })
+    await exportSkills({
+      format,
+      framework: 'discipline',
+      includeAnalysis: false,
+      includeEvidence: false,
+      includeReadiness: false,
+    })
     showExportModal.value = false
   } catch (error) {
     console.error('Export failed:', error)
@@ -379,7 +619,7 @@ const saveSnapshot = () => {
     key: Date.now().toString(),
     name: `Snapshot ${new Date().toLocaleDateString()}`,
     at: Date.now(),
-    skills: [...mappedSkills.value]
+    skills: [...mappedSkills.value],
   }
   snapshots.value.push(snapshot)
 }
@@ -397,9 +637,9 @@ const exportSnapshots = () => {
 const onImportSnapshots = (event: any) => {
   const file = event.target.files[0]
   if (!file) return
-  
+
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = e => {
     try {
       const importedSnapshots = JSON.parse(e.target?.result as string)
       if (replaceSnapshots.value) {
@@ -437,7 +677,8 @@ const renameSnapshotPrompt = (key: string) => {
 }
 
 const pickSnap = (key: string) => snapshots.value.find(s => s.key === key)
-const formatWhen = (timestamp: number) => new Date(timestamp).toLocaleDateString()
+const formatWhen = (timestamp: number) =>
+  new Date(timestamp).toLocaleDateString()
 
 // Lifecycle
 onMounted(() => {
@@ -449,7 +690,8 @@ onMounted(() => {
 /* Gaming-themed modern design system */
 .skill-mapper-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(18, 18, 23, 0.95) 0%,
     rgba(25, 25, 35, 0.9) 50%,
     rgba(30, 30, 45, 0.95) 100%
@@ -465,10 +707,22 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(600px circle at 20% 30%, rgba(120, 119, 198, 0.15), transparent 50%),
-    radial-gradient(800px circle at 80% 70%, rgba(255, 119, 198, 0.15), transparent 50%),
-    radial-gradient(600px circle at 40% 80%, rgba(120, 255, 198, 0.1), transparent 50%);
+  background:
+    radial-gradient(
+      600px circle at 20% 30%,
+      rgba(120, 119, 198, 0.15),
+      transparent 50%
+    ),
+    radial-gradient(
+      800px circle at 80% 70%,
+      rgba(255, 119, 198, 0.15),
+      transparent 50%
+    ),
+    radial-gradient(
+      600px circle at 40% 80%,
+      rgba(120, 255, 198, 0.1),
+      transparent 50%
+    );
   pointer-events: none;
   z-index: 0;
 }
@@ -487,7 +741,7 @@ onMounted(() => {
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   margin-bottom: 2rem;
@@ -497,7 +751,7 @@ onMounted(() => {
 
 .glass-surface:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
@@ -1017,36 +1271,36 @@ onMounted(() => {
   .skill-mapper-scroll-view {
     padding: 1rem;
   }
-  
+
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .category-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .skills-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .career-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .comparison-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .input-actions {
     flex-direction: column;
   }
-  
+
   .snapshot-actions {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .diff-summary {
     flex-direction: column;
     gap: 1rem;
@@ -1057,7 +1311,7 @@ onMounted(() => {
   .metrics-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section-header h2 {
     font-size: 1.5rem;
     flex-direction: column;

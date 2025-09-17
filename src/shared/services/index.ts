@@ -19,32 +19,32 @@ export const createServiceRouter = (services: Record<string, any>) => {
     hasService: (name: string) => name in services,
     listServices: () => Object.keys(services),
     registerService: (name: string, service: any) => {
-      services[name] = service;
-    }
-  };
-};
+      services[name] = service
+    },
+  }
+}
 
 // Service registry factory for lazy loading
 export const createLazyServiceRegistry = () => {
-  const services: Record<string, any> = {};
-  
+  const services: Record<string, any> = {}
+
   return createServiceRouter({
     async loadService(name: string, importPath: string) {
       if (!services[name]) {
         try {
-          const module = await import(importPath);
-          services[name] = module.default || module[name] || module;
+          const module = await import(importPath)
+          services[name] = module.default || module[name] || module
         } catch (error) {
-          const loggerModule = await import('@/shared/utils/logger');
-          loggerModule.logger.error(`Failed to load service ${name}:`, error);
-          throw error;
+          const loggerModule = await import('@/shared/utils/logger')
+          loggerModule.logger.error(`Failed to load service ${name}:`, error)
+          throw error
         }
       }
-      return services[name];
+      return services[name]
     },
-    ...services
-  });
-};
+    ...services,
+  })
+}
 
 // Default service registry for common app services
-export const serviceRegistry = createLazyServiceRegistry();
+export const serviceRegistry = createLazyServiceRegistry()

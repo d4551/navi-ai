@@ -1,14 +1,25 @@
 <template>
-  <header class="gaming-unified-header glass-gaming font-sans" :class="headerClasses">
+  <header
+    class="gaming-unified-header glass-gaming font-sans"
+    :class="headerClasses"
+  >
     <!-- Main Navigation Bar -->
     <nav class="header-nav gaming-nav" role="navigation">
       <div class="nav-container">
         <!-- Left Section: Brand & Context -->
         <div class="nav-left">
-          <router-link to="/" class="brand-link gaming-focus" aria-label="Go to Gaming Career Dashboard">
+          <router-link
+            to="/"
+            class="brand-link gaming-focus"
+            aria-label="Go to Gaming Career Dashboard"
+          >
             <div class="brand-content">
               <div class="brand-logo">
-                <AppIcon name="PuzzlePieceIcon" size="28" class="brand-icon gaming-pulse" />
+                <AppIcon
+                  name="PuzzlePieceIcon"
+                  size="28"
+                  class="brand-icon gaming-pulse"
+                />
                 <div class="logo-glow"></div>
               </div>
               <div class="brand-text-group">
@@ -17,9 +28,13 @@
               </div>
             </div>
           </router-link>
-          
+
           <!-- AI Model Status with Gaming Theme -->
-          <div v-if="aiModelInfo" class="ai-status-chip" :class="getAIStatusClass()">
+          <div
+            v-if="aiModelInfo"
+            class="ai-status-chip"
+            :class="getAIStatusClass()"
+          >
             <div class="ai-status-indicator">
               <AppIcon :name="getAIStatusIcon()" size="16" />
               <div v-if="aiReady" class="status-pulse gaming-pulse"></div>
@@ -35,24 +50,38 @@
           <div v-if="breadcrumbs.length > 0" class="gaming-breadcrumbs">
             <nav aria-label="Gaming Career Breadcrumb">
               <ol class="breadcrumb-list">
-                <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item">
-                  <router-link 
-                    v-if="crumb.to && index < breadcrumbs.length - 1" 
-                    :to="crumb.to" 
+                <li
+                  v-for="(crumb, index) in breadcrumbs"
+                  :key="index"
+                  class="breadcrumb-item"
+                >
+                  <router-link
+                    v-if="crumb.to && index < breadcrumbs.length - 1"
+                    :to="crumb.to"
                     class="breadcrumb-link gaming-interactive"
                   >
-                    <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="breadcrumb-icon" />
+                    <AppIcon
+                      v-if="crumb.icon"
+                      :name="crumb.icon"
+                      size="16"
+                      class="breadcrumb-icon"
+                    />
                     {{ crumb.label }}
                   </router-link>
                   <span v-else class="breadcrumb-current gaming-title">
-                    <AppIcon v-if="crumb.icon" :name="crumb.icon" size="16" class="breadcrumb-icon" />
+                    <AppIcon
+                      v-if="crumb.icon"
+                      :name="crumb.icon"
+                      size="16"
+                      class="breadcrumb-icon"
+                    />
                     {{ crumb.label }}
                   </span>
-                  <AppIcon 
-                    v-if="index < breadcrumbs.length - 1" 
-                    name="ChevronRightIcon" 
-                    size="16" 
-                    class="breadcrumb-separator" 
+                  <AppIcon
+                    v-if="index < breadcrumbs.length - 1"
+                    name="ChevronRightIcon"
+                    size="16"
+                    class="breadcrumb-separator"
                   />
                 </li>
               </ol>
@@ -77,7 +106,10 @@
         <!-- Right Section: Search & Actions -->
         <div class="nav-right">
           <!-- Enhanced Gaming Search -->
-          <div class="gaming-search-container" :class="{ 'search-active': searchActive }">
+          <div
+            class="gaming-search-container"
+            :class="{ 'search-active': searchActive }"
+          >
             <div class="search-wrapper glass-cyber">
               <input
                 v-model="searchQuery"
@@ -91,23 +123,36 @@
                 @keydown.enter="performSearch"
                 @keydown.escape="clearSearch"
               />
-              <AppIcon name="MagnifyingGlassIcon" size="20" class="search-icon" />
+              <AppIcon
+                name="MagnifyingGlassIcon"
+                size="20"
+                class="search-icon"
+              />
               <div v-if="searchQuery" class="search-clear" @click="clearSearch">
                 <AppIcon name="XMarkIcon" size="16" />
               </div>
             </div>
-            
+
             <!-- Search Suggestions for Gaming -->
-            <div v-if="searchActive && searchSuggestions.length > 0" class="search-suggestions glass-surface">
+            <div
+              v-if="searchActive && searchSuggestions.length > 0"
+              class="search-suggestions glass-surface"
+            >
               <div
                 v-for="suggestion in searchSuggestions"
                 :key="suggestion.id"
                 class="suggestion-item gaming-interactive"
                 @click="selectSuggestion(suggestion)"
               >
-                <AppIcon :name="suggestion.icon" size="16" class="suggestion-icon" />
+                <AppIcon
+                  :name="suggestion.icon"
+                  size="16"
+                  class="suggestion-icon"
+                />
                 <span class="suggestion-text">{{ suggestion.text }}</span>
-                <span class="suggestion-category">{{ suggestion.category }}</span>
+                <span class="suggestion-category">{{
+                  suggestion.category
+                }}</span>
               </div>
             </div>
           </div>
@@ -124,14 +169,17 @@
               :class="{ 'voice-active neon-gaming': voiceActive }"
               @click="toggleVoiceCommands"
             />
-            
+
             <!-- AI Gaming Assistant -->
             <UnifiedButton
               variant="cyber"
               size="sm"
               leading-icon="CpuChipIcon"
               class="ai-assistant-btn"
-              :tooltip="{ text: 'Gaming AI Assistant (Ctrl+J)', position: 'bottom' }"
+              :tooltip="{
+                text: 'Gaming AI Assistant (Ctrl+J)',
+                position: 'bottom',
+              }"
               :disabled="!aiReady"
               :class="{ 'ai-thinking': aiThinking }"
               @click="openGamingAIAssistant"
@@ -141,16 +189,23 @@
                 <span></span><span></span><span></span>
               </div>
             </UnifiedButton>
-            
+
             <!-- Gaming Notifications -->
             <UnifiedButton
               variant="ghost"
               size="sm"
               leading-icon="BellIcon"
               class="notifications-btn gaming-interactive"
-              :tooltip="{ text: 'Gaming Job Alerts & Notifications', position: 'bottom' }"
-              :badge="notificationCount > 0 ? notificationCount.toString() : undefined"
-              :class="{ 'has-notifications neon-gaming': notificationCount > 0 }"
+              :tooltip="{
+                text: 'Gaming Job Alerts & Notifications',
+                position: 'bottom',
+              }"
+              :badge="
+                notificationCount > 0 ? notificationCount.toString() : undefined
+              "
+              :class="{
+                'has-notifications neon-gaming': notificationCount > 0,
+              }"
               @click="toggleNotifications"
             />
 
@@ -165,7 +220,7 @@
 
           <!-- Enhanced User Menu -->
           <div ref="userMenuRef" class="gaming-user-menu">
-            <button 
+            <button
               class="user-button glass-gaming gaming-interactive"
               :class="{ 'menu-active neon-gaming': userMenuOpen }"
               :aria-expanded="userMenuOpen"
@@ -182,7 +237,10 @@
                 <div v-else class="user-avatar-placeholder">
                   <AppIcon name="UserIcon" size="20" />
                 </div>
-                <div v-if="userOnlineStatus" class="online-indicator neon-gaming"></div>
+                <div
+                  v-if="userOnlineStatus"
+                  class="online-indicator neon-gaming"
+                ></div>
               </div>
               <div class="user-info">
                 <span class="user-name">{{ userName || 'Gaming Dev' }}</span>
@@ -196,22 +254,38 @@
               <div v-if="userMenuOpen" class="user-menu-dropdown glass-gaming">
                 <div class="menu-header">
                   <div class="user-profile-summary">
-                    <h4 class="profile-name gaming-title">{{ userName || 'Gaming Developer' }}</h4>
-                    <p class="profile-subtitle">Level {{ userLevel }} • {{ userXP }} XP</p>
+                    <h4 class="profile-name gaming-title">
+                      {{ userName || 'Gaming Developer' }}
+                    </h4>
+                    <p class="profile-subtitle">
+                      Level {{ userLevel }} • {{ userXP }} XP
+                    </p>
                   </div>
                 </div>
 
                 <div class="menu-section">
                   <h5 class="section-title">Career Tools</h5>
-                  <router-link to="/profile" class="menu-item gaming-interactive" @click="closeUserMenu">
+                  <router-link
+                    to="/profile"
+                    class="menu-item gaming-interactive"
+                    @click="closeUserMenu"
+                  >
                     <AppIcon name="UserIcon-edit" size="18" />
                     <span>Gaming Profile</span>
                   </router-link>
-                  <router-link to="/portfolio" class="menu-item gaming-interactive" @click="closeUserMenu">
+                  <router-link
+                    to="/portfolio"
+                    class="menu-item gaming-interactive"
+                    @click="closeUserMenu"
+                  >
                     <AppIcon name="mdi-briefcase-variant" size="18" />
                     <span>Portfolio</span>
                   </router-link>
-                  <router-link to="/skills" class="menu-item gaming-interactive" @click="closeUserMenu">
+                  <router-link
+                    to="/skills"
+                    class="menu-item gaming-interactive"
+                    @click="closeUserMenu"
+                  >
                     <AppIcon name="StarIcon" size="18" />
                     <span>Skills Mapper</span>
                   </router-link>
@@ -219,11 +293,19 @@
 
                 <div class="menu-section">
                   <h5 class="section-title">Gaming Focus</h5>
-                  <router-link to="/studios" class="menu-item gaming-interactive" @click="closeUserMenu">
+                  <router-link
+                    to="/studios"
+                    class="menu-item gaming-interactive"
+                    @click="closeUserMenu"
+                  >
                     <AppIcon name="BuildingOffice2Icon" size="18" />
                     <span>Studio Database</span>
                   </router-link>
-                  <router-link to="/gaming-interview" class="menu-item gaming-interactive" @click="closeUserMenu">
+                  <router-link
+                    to="/gaming-interview"
+                    class="menu-item gaming-interactive"
+                    @click="closeUserMenu"
+                  >
                     <AppIcon name="PuzzlePieceIcon" size="18" />
                     <span>Gaming Interviews</span>
                   </router-link>
@@ -231,12 +313,22 @@
 
                 <div class="menu-section">
                   <h5 class="section-title">System</h5>
-                  <router-link to="/settings" class="menu-item gaming-interactive" @click="closeUserMenu">
+                  <router-link
+                    to="/settings"
+                    class="menu-item gaming-interactive"
+                    @click="closeUserMenu"
+                  >
                     <AppIcon name="CogIcon" size="18" />
                     <span>Settings</span>
                   </router-link>
-                  <button class="menu-item gaming-interactive" @click="handleThemeToggle">
-                    <AppIcon :name="isDarkMode ? 'mdi-weather-sunny' : 'MoonIcon'" size="18" />
+                  <button
+                    class="menu-item gaming-interactive"
+                    @click="handleThemeToggle"
+                  >
+                    <AppIcon
+                      :name="isDarkMode ? 'mdi-weather-sunny' : 'MoonIcon'"
+                      size="18"
+                    />
                     <span>{{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}</span>
                   </button>
                 </div>
@@ -304,7 +396,7 @@ import { toastService } from '@/shared/services/toastService'
 // Props
 interface Props {
   showGamingContext?: boolean
-  showGamingProfile?: boolean  
+  showGamingProfile?: boolean
   showSecondaryNav?: boolean
   secondaryNavTabs?: Array<any>
   contextActions?: Array<any>
@@ -345,10 +437,10 @@ const headerClasses = computed(() => ({
 const breadcrumbs = computed(() => {
   const pathSegments = route.path.split('/').filter(Boolean)
   const crumbs = []
-  
+
   // Add home
   crumbs.push({ label: 'Gaming Hub', to: '/', icon: 'DevicePhoneMobileIcon-variant' })
-  
+
   // Generate breadcrumbs based on route
   let currentPath = ''
   pathSegments.forEach((segment, index) => {
@@ -362,7 +454,7 @@ const breadcrumbs = computed(() => {
       })
     }
   })
-  
+
   return crumbs
 })
 
@@ -389,7 +481,7 @@ const getRouteInfo = (segment, path) => {
     'documents': { label: 'Documents', icon: 'mdi-text-box-edit-outline' },
     'settings': { label: 'Settings', icon: 'mdi-cog' }
   }
-  
+
   return routeMap[segment] || { label: segment.charAt(0).toUpperCase() + segment.slice(1), icon: 'FolderIcon' }
 }
 
@@ -503,7 +595,7 @@ const handleClickOutside = (event) => {
 // Lifecycle
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
-  
+
   // Keyboard shortcuts
   document.addEventListener('keydown', (_e) => {
     if (e.ctrlKey && e.key === 'm') {
@@ -580,7 +672,11 @@ onUnmounted(() => {
 .logo-glow {
   position: absolute;
   inset: -4px;
-  background: radial-gradient(circle, rgba(var(--color-gaming-500-rgb), 0.3) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(var(--color-gaming-500-rgb), 0.3) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transition: var(--transition-gaming);
 }
@@ -758,7 +854,8 @@ onUnmounted(() => {
   background: transparent;
   border: none;
   outline: none;
-  padding: var(--spacing-2-5) var(--spacing-10) var(--spacing-2-5) var(--spacing-4);
+  padding: var(--spacing-2-5) var(--spacing-10) var(--spacing-2-5)
+    var(--spacing-4);
   font-size: 0.875rem;
   color: var(--text-primary-600);
   width: 250px;
@@ -870,8 +967,12 @@ onUnmounted(() => {
   animation: pulse 1.4s ease-in-out infinite both;
 }
 
-.ai-thinking-dots span:nth-child(1) { animation-delay: -0.32s; }
-.ai-thinking-dots span:nth-child(2) { animation-delay: -0.16s; }
+.ai-thinking-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.ai-thinking-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
 
 .has-notifications {
   animation: gamingPulse 2s infinite;
@@ -1124,7 +1225,9 @@ onUnmounted(() => {
 }
 
 @keyframes pulse {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
     opacity: 0.5;
   }
@@ -1139,15 +1242,15 @@ onUnmounted(() => {
   .gaming-search-input {
     width: 200px;
   }
-  
+
   .search-expanded {
     width: 250px;
   }
-  
+
   .brand-text-group {
     display: none;
   }
-  
+
   .gaming-context {
     display: none;
   }
@@ -1158,19 +1261,19 @@ onUnmounted(() => {
     padding: 0 var(--spacing-3);
     gap: var(--spacing-3);
   }
-  
+
   .gaming-breadcrumbs {
     display: none;
   }
-  
+
   .gaming-search-input {
     width: 150px;
   }
-  
+
   .user-info {
     display: none;
   }
-  
+
   .gaming-actions {
     gap: var(--spacing-1);
   }
@@ -1180,7 +1283,7 @@ onUnmounted(() => {
   .ai-status-chip {
     display: none;
   }
-  
+
   .gaming-profile-status {
     display: none;
   }

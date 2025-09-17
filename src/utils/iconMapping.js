@@ -15,7 +15,7 @@ export const EMOJI_TO_ICON_MAP = {
   '💼': 'mdi-briefcase',
   '📝': 'mdi-file-document-edit-outline',
   '🎨': 'mdi-palette',
-  
+
   // Technical & System
   '🔧': 'mdi-wrench',
   '⚙️': 'mdi-cog',
@@ -28,7 +28,7 @@ export const EMOJI_TO_ICON_MAP = {
   '⚡': 'mdi-lightning-bolt',
   '🌈': 'mdi-palette',
   '🔥': 'mdi-fire',
-  
+
   // Communication & Media
   '🎤': 'mdi-microphone',
   '🔊': 'mdi-volume-high',
@@ -40,14 +40,14 @@ export const EMOJI_TO_ICON_MAP = {
   '📺': 'mdi-television',
   '🗣️': 'mdi-account-voice',
   '💭': 'mdi-thought-bubble',
-  
+
   // Files & Documents
   '📄': 'mdi-file-document-outline',
   '📁': 'mdi-folder',
   '📋': 'mdi-clipboard-text',
   '📖': 'mdi-book',
   '📍': 'mdi-map-marker',
-  
+
   // People & Users
   '👤': 'mdi-account',
   '👥': 'mdi-account-group',
@@ -55,7 +55,7 @@ export const EMOJI_TO_ICON_MAP = {
   '👨‍💻': 'mdi-account-edit',
   '🧙‍♂️': 'mdi-wizard-hat',
   '🧚‍♀️': 'mdi-face-woman-shimmer',
-  
+
   // Status & Actions
   '✅': 'mdi-check-circle-outline',
   '❌': 'mdi-close-circle-outline',
@@ -63,7 +63,7 @@ export const EMOJI_TO_ICON_MAP = {
   '🔒': 'mdi-lock',
   '🔍': 'mdi-magnify',
   '🤖': 'mdi-robot',
-  
+
   // Theme & UI
   '🌙': 'mdi-weather-night',
   '☀️': 'mdi-weather-sunny',
@@ -71,7 +71,7 @@ export const EMOJI_TO_ICON_MAP = {
   '🎭': 'mdi-drama-masks',
   '🎲': 'mdi-dice-6',
   '🃏': 'mdi-cards-playing-outline',
-  
+
   // Gaming Specific
   '🐕‍🦺': 'mdi-dog-service', // Sam
   '🐰': 'mdi-rabbit', // Max
@@ -80,7 +80,7 @@ export const EMOJI_TO_ICON_MAP = {
   '🏍️': 'mdi-motorbike',
   '🚔': 'mdi-car-emergency',
   '🏠': 'mdi-home',
-  
+
   // Achievements & Progress
   '🏅': 'mdi-medal',
   '📈': 'mdi-trending-up',
@@ -89,14 +89,14 @@ export const EMOJI_TO_ICON_MAP = {
   '💸': 'mdi-cash-minus',
   '🎈': 'mdi-balloon',
   '🎁': 'mdi-gift',
-  
+
   // Bugs & Development
   '🐛': 'mdi-bug',
   '🧪': 'mdi-test-tube',
-  
+
   // Easter Eggs
   '🥚': 'mdi-egg-easter',
-  '🥤': 'mdi-cup'
+  '🥤': 'mdi-cup',
 }
 
 /**
@@ -119,13 +119,13 @@ export function createIconComponent(emoji, options = {}) {
   const {
     size = 'default',
     color = 'default',
-    fallback = 'mdi-help-circle'
+    fallback = 'mdi-help-circle',
   } = options
 
   return {
     icon: getIconForEmoji(emoji, fallback),
     size,
-    color
+    color,
   }
 }
 
@@ -136,12 +136,12 @@ export function createIconComponent(emoji, options = {}) {
  */
 export function replaceEmojisInText(text) {
   let result = text
-  
+
   Object.entries(EMOJI_TO_ICON_MAP).forEach(([emoji, icon]) => {
     const regex = new RegExp(emoji, 'g')
     result = result.replace(regex, `[${icon}]`)
   })
-  
+
   return result
 }
 
@@ -169,5 +169,5 @@ export default {
   createIconComponent,
   replaceEmojisInText,
   hasReplaceableEmojis,
-  extractEmojis
+  extractEmojis,
 }

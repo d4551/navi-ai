@@ -3,9 +3,16 @@
  * This replaces the monolithic switch-based approach with a pluggable provider system
  */
 
-import { JobProviderRegistry, SimpleRateLimiter, JobProvider } from './providers/JobProviderInterface'
+import {
+  JobProviderRegistry,
+  SimpleRateLimiter,
+  JobProvider,
+} from './providers/JobProviderInterface'
 import { COMPANY_BOARDS } from './providers/companyBoards'
-import { createCompanyBoardProviders, CompanyBoardProvider } from './providers/CompanyBoardProvider'
+import {
+  createCompanyBoardProviders,
+  CompanyBoardProvider,
+} from './providers/CompanyBoardProvider'
 import { createAdditionalProviders } from './providers/AdditionalProviders'
 import { createOpenSourceJobProviders } from './providers/OpenSourceJobProviders'
 import { createLiveAPIProvider } from './providers/LiveAPIProvider'
@@ -17,7 +24,7 @@ import {
   NYCJobsProvider,
   DOLSeasonalJobsProvider,
   BundesagenturProvider,
-  WorkNetProvider
+  WorkNetProvider,
 } from './providers/GovDataProviders'
 import type { Job, JobFilters } from '@/shared/types/jobs'
 import { gameStudioService } from './GameStudioService'
@@ -36,7 +43,10 @@ interface JobAggregationResult {
 export class RefactoredJobAPIService {
   private registry: JobProviderRegistry
   private readonly CACHE_DURATION = 15 * 60 * 1000 // 15 minutes
-  private cache = new Map<string, { data: JobAggregationResult; expiry: number }>()
+  private cache = new Map<
+    string,
+    { data: JobAggregationResult; expiry: number }
+  >()
   private companyProviderNames = new Set<string>()
   private readonly DISABLED_COMPANY_BOARDS_KEY = 'navi-disabled-company-boards'
 
@@ -67,7 +77,9 @@ export class RefactoredJobAPIService {
     try {
       const liveProvider = createLiveAPIProvider()
       this.registry.register(liveProvider)
-    } catch {/* non-fatal */}
+    } catch {
+      /* non-fatal */
+    }
 
     // Add gaming-specific providers (highest priority - most relevant)
     const gamingProviders = createGamingJobProviders()
@@ -92,13 +104,17 @@ export class RefactoredJobAPIService {
     // Verify company providers in the background and auto-disable 404
     this.verifyCompanyProviders(companyProviders).catch(() => {})
 
-    logger.info(`Initialized ${this.registry.getAllProviders().length} job providers`, {
-      gaming: gamingProviders.length,
-      openSource: openSourceProviders.length,
-      government: 7,
-      additional: additionalProviders.length,
-      company: companyProviders.length
-    }, 'RefactoredJobAPIService')
+    logger.info(
+      `Initialized ${this.registry.getAllProviders().length} job providers`,
+      {
+        gaming: gamingProviders.length,
+        openSource: openSourceProviders.length,
+        government: 7,
+        additional: additionalProviders.length,
+        company: companyProviders.length,
+      },
+      'RefactoredJobAPIService'
+    )
   }
 
   private loadCompanyBoardConfigs() {
@@ -110,11 +126,17 @@ export class RefactoredJobAPIService {
         if (raw) {
           const userBoards = JSON.parse(raw)
           if (Array.isArray(userBoards)) {
-            const merged = [...base, ...userBoards.filter(b => b && b.name && b.token && b.type)]
+            const merged = [
+              ...base,
+              ...userBoards.filter(b => b && b.name && b.token && b.type),
+            ]
             // Filter out disabled boards
             const disabled = this.getDisabledCompanyBoards()
             if (disabled.length) {
-              return merged.filter(c => !disabled.some(d => d.type === c.type && d.token === c.token))
+              return merged.filter(
+                c =>
+                  !disabled.some(d => d.type === c.type && d.token === c.token)
+              )
             }
             return merged
           }
@@ -124,7 +146,9 @@ export class RefactoredJobAPIService {
     // Apply disabled filter to base as well
     const disabled = this.getDisabledCompanyBoards()
     if (disabled.length) {
-      return base.filter(c => !disabled.some(d => d.type === c.type && d.token === c.token))
+      return base.filter(
+        c => !disabled.some(d => d.type === c.type && d.token === c.token)
+      )
     }
     return base
   }
@@ -132,85 +156,105 @@ export class RefactoredJobAPIService {
   private getDisabledCompanyBoards(): Array<{ type: string; token: string }> {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        const raw = window.localStorage.getItem(this.DISABLED_COMPANY_BOARDS_KEY)
+        const raw = window.localStorage.getItem(
+          this.DISABLED_COMPANY_BOARDS_KEY
+        )
         if (raw) {
           const parsed = JSON.parse(raw)
-          if (Array.isArray(parsed)) return parsed.filter(x => x && x.type && x.token)
+          if (Array.isArray(parsed))
+            return parsed.filter(x => x && x.type && x.token)
         }
       }
     } catch {}
     return []
   }
 
-  private saveDisabledCompanyBoards(list: Array<{ type: string; token: string }>) {
+  private saveDisabledCompanyBoards(
+    list: Array<{ type: string; token: string }>
+  ) {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem(this.DISABLED_COMPANY_BOARDS_KEY, JSON.stringify(list))
+        window.localStorage.setItem(
+          this.DISABLED_COMPANY_BOARDS_KEY,
+          JSON.stringify(list)
+        )
       }
     } catch {}
   }
 
-  private async verifyCompanyProviders(providers: CompanyBoardProvider[]): Promise<void> {
+  private async verifyCompanyProviders(
+    providers: CompanyBoardProvider[]
+  ): Promise<void> {
     const disabled = this.getDisabledCompanyBoards()
     const set = new Set(disabled.map(d => `${d.type}:${d.token}`))
-    
-    const checks = providers.map(async (p) => {
+
+    const checks = providers.map(async p => {
       const providerKey = `${p.config.type}:${p.config.token}`
       const startTime = Date.now()
-      
+
       try {
         const ok = await p.verifyAvailability()
         const responseTime = Date.now() - startTime
-        
+
         // Update health dashboard
         providerHealthDashboard.updateProviderHealth(providerKey, {
           success: ok,
           responseTime,
-          error: ok ? undefined : 'Provider verification failed'
+          error: ok ? undefined : 'Provider verification failed',
         })
-        
+
         if (!ok) {
           // Track failure
           p.enabled = false
           if (!set.has(providerKey)) {
             set.add(providerKey)
-            logger.warn(`Provider ${p.name} disabled after verification failure`, { 
-              provider: p.name, 
-              type: p.config.type,
-              responseTime
-            })
+            logger.warn(
+              `Provider ${p.name} disabled after verification failure`,
+              {
+                provider: p.name,
+                type: p.config.type,
+                responseTime,
+              }
+            )
           }
         } else {
           // Re-enable if it was disabled due to temporary issues
           if (set.has(providerKey)) {
             set.delete(providerKey)
             p.enabled = true
-            logger.info(`Provider ${p.name} re-enabled after successful verification`)
+            logger.info(
+              `Provider ${p.name} re-enabled after successful verification`
+            )
           }
         }
       } catch (error) {
         const responseTime = Date.now() - startTime
         logger.error(`Provider verification failed for ${p.name}:`, error)
-        
+
         // Update health dashboard with error
         providerHealthDashboard.updateProviderHealth(providerKey, {
           success: false,
           responseTime,
-          error: error instanceof Error ? error.message : 'Unknown error'
+          error: error instanceof Error ? error.message : 'Unknown error',
         })
-        
+
         p.enabled = false
         set.add(providerKey)
       }
     })
-    
+
     await Promise.allSettled(checks)
-    const list = Array.from(set).map(s => ({ type: s.split(':')[0], token: s.split(':')[1] }))
+    const list = Array.from(set).map(s => ({
+      type: s.split(':')[0],
+      token: s.split(':')[1],
+    }))
     this.saveDisabledCompanyBoards(list)
   }
 
   // Replace registered company board providers at runtime and persist configs
-  reloadCompanyProviders(configs: Array<{ name: string; token: string; type: string }>): void {
+  reloadCompanyProviders(
+    configs: Array<{ name: string; token: string; type: string }>
+  ): void {
     // Unregister previous company providers
     for (const name of this.companyProviderNames) {
       this.registry.unregister(name)
@@ -230,7 +274,10 @@ export class RefactoredJobAPIService {
     // Persist configs
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem('navi-company-boards', JSON.stringify(configs || []))
+        window.localStorage.setItem(
+          'navi-company-boards',
+          JSON.stringify(configs || [])
+        )
       }
     } catch {}
   }
@@ -247,7 +294,8 @@ export class RefactoredJobAPIService {
 
     try {
       // Fetch from all enabled providers concurrently
-      const { jobs, sources } = await this.registry.fetchFromAllProviders(filters)
+      const { jobs, sources } =
+        await this.registry.fetchFromAllProviders(filters)
 
       // Deduplicate and enhance jobs
       const uniqueJobs = this.deduplicateJobs(jobs)
@@ -258,7 +306,7 @@ export class RefactoredJobAPIService {
         sources,
         totalFound: enhancedJobs.length,
         errors: [], // Registry handles errors internally
-        processingTime: Date.now() - startTime
+        processingTime: Date.now() - startTime,
       }
 
       // Cache results
@@ -271,8 +319,10 @@ export class RefactoredJobAPIService {
         jobs: [],
         sources: [],
         totalFound: 0,
-        errors: [`Search failed: ${error instanceof Error ? error.message : 'Unknown error'}`],
-        processingTime: Date.now() - startTime
+        errors: [
+          `Search failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        ],
+        processingTime: Date.now() - startTime,
       }
     }
   }
@@ -305,7 +355,9 @@ export class RefactoredJobAPIService {
         const studio = await gameStudioService.findByCompanyName(job.company)
         if (studio) {
           studioId = studio.id
-          studioSlug = (studio as any).slug || studio.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+          studioSlug =
+            (studio as any).slug ||
+            studio.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-')
           studioType = studio.type || studioType
           // Prefer authoritative data from the studio DB
           if (Array.isArray(studio.genres) && studio.genres.length) {
@@ -315,7 +367,9 @@ export class RefactoredJobAPIService {
             platforms = studio.platforms
           }
         }
-      } catch {/* non-fatal */}
+      } catch {
+        /* non-fatal */
+      }
 
       enhanced.push({
         ...job,
@@ -325,16 +379,27 @@ export class RefactoredJobAPIService {
         gameGenres: gameGenres as any,
         platforms: platforms as any,
         // Match score will be calculated by JobMatchingService when needed
-        matchScore: (job as any).matchScore
+        matchScore: (job as any).matchScore,
       })
     }
     return enhanced
   }
 
-  private identifyStudioType(company: string): 'AAA' | 'Mobile' | 'Indie' | 'Unknown' {
+  private identifyStudioType(
+    company: string
+  ): 'AAA' | 'Mobile' | 'Indie' | 'Unknown' {
     const companyLower = company.toLowerCase()
 
-    const aaaStudios = ['epic games', 'blizzard', 'valve', 'riot games', 'sony', 'microsoft', 'nintendo', 'activision']
+    const aaaStudios = [
+      'epic games',
+      'blizzard',
+      'valve',
+      'riot games',
+      'sony',
+      'microsoft',
+      'nintendo',
+      'activision',
+    ]
     if (aaaStudios.some(studio => companyLower.includes(studio))) {
       return 'AAA'
     }
@@ -344,7 +409,10 @@ export class RefactoredJobAPIService {
       return 'Mobile'
     }
 
-    if (companyLower.includes('indie') || companyLower.includes('independent')) {
+    if (
+      companyLower.includes('indie') ||
+      companyLower.includes('independent')
+    ) {
       return 'Indie'
     }
 
@@ -352,15 +420,38 @@ export class RefactoredJobAPIService {
   }
 
   private identifyGameGenres(description: string): string[] {
-    const genres = ['RPG', 'FPS', 'Strategy', 'Puzzle', 'Action', 'Racing', 'Sports', 'Horror']
+    const genres = [
+      'RPG',
+      'FPS',
+      'Strategy',
+      'Puzzle',
+      'Action',
+      'Racing',
+      'Sports',
+      'Horror',
+    ]
     const descriptionLower = description.toLowerCase()
-    return genres.filter(genre => descriptionLower.includes(genre.toLowerCase()))
+    return genres.filter(genre =>
+      descriptionLower.includes(genre.toLowerCase())
+    )
   }
 
   private identifyPlatforms(description: string): string[] {
-    const platforms = ['PC', 'Console', 'Mobile', 'VR', 'AR', 'Web', 'Switch', 'PlayStation', 'Xbox']
+    const platforms = [
+      'PC',
+      'Console',
+      'Mobile',
+      'VR',
+      'AR',
+      'Web',
+      'Switch',
+      'PlayStation',
+      'Xbox',
+    ]
     const descriptionLower = description.toLowerCase()
-    return platforms.filter(platform => descriptionLower.includes(platform.toLowerCase()))
+    return platforms.filter(platform =>
+      descriptionLower.includes(platform.toLowerCase())
+    )
   }
 
   private generateCacheKey(filters: JobFilters): string {
@@ -378,7 +469,7 @@ export class RefactoredJobAPIService {
   private setCache(key: string, data: JobAggregationResult): void {
     this.cache.set(key, {
       data,
-      expiry: Date.now() + this.CACHE_DURATION
+      expiry: Date.now() + this.CACHE_DURATION,
     })
   }
 
@@ -388,8 +479,10 @@ export class RefactoredJobAPIService {
   }
 
   private generateJobKey(job: Job): string {
-    return `${job.company.toLowerCase()}-${job.title.toLowerCase()}-${job.location.toLowerCase()}`
-      .replace(/[^a-z0-9-]/g, '')
+    return `${job.company.toLowerCase()}-${job.title.toLowerCase()}-${job.location.toLowerCase()}`.replace(
+      /[^a-z0-9-]/g,
+      ''
+    )
   }
 
   // Provider management methods
@@ -410,7 +503,11 @@ export class RefactoredJobAPIService {
   }
 
   // Report basic provider status for settings/diagnostics UIs
-  getProviderStatus(): Array<{ name: string; enabled: boolean; priority: number }> {
+  getProviderStatus(): Array<{
+    name: string
+    enabled: boolean
+    priority: number
+  }> {
     return this.registry.getAllProviders().map(p => ({
       name: p.name,
       enabled: p.enabled,

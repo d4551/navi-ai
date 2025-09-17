@@ -1,5 +1,8 @@
 <template>
-  <v-card variant="outlined" class="mb-4 section-card section-card unified-card">
+  <v-card
+    variant="outlined"
+    class="mb-4 section-card section-card unified-card"
+  >
     <v-card-title class="d-flex align-center justify-space-between pa-4">
       <div class="d-flex align-center ga-2">
         <AppIcon name="mdi-school-outline" size="small" color="primary" />
@@ -15,7 +18,7 @@
         <span class="d-none d-sm-inline">Add Education</span>
       </UnifiedButton>
     </v-card-title>
-    
+
     <div class="card-content-sm">
       <v-card
         v-for="(edu, index) in localItems"
@@ -32,7 +35,9 @@
           ).toString()
         "
         draggable="true"
-        :class="{ 'drag-over': dragOver.type === 'education' && dragOver.index === index,
+        :class="{
+          'drag-over':
+            dragOver.type === 'education' && dragOver.index === index,
         }"
         @dragstart="startDrag('education', index)"
         @dragover.prevent="onDragOver($event, 'education', index)"
@@ -85,7 +90,7 @@
             />
           </div>
         </v-card-title>
-        
+
         <div class="pa-3-unified">
           <v-row>
             <v-col cols="12" md="6">
@@ -138,30 +143,30 @@
 </template>
 
 <script>
-import AppIcon from '@/components/ui/AppIcon.vue';
-import UnifiedButton from '@/components/ui/UnifiedButton.vue';
-import UiChip from '@/components/ui/UiChip.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import UiChip from '@/components/ui/UiChip.vue'
 
 import { reactive, watch } from 'vue'
-import { useDragReorderList } from "@/composables/useDragReorderList";
+import { useDragReorderList } from '@/composables/useDragReorderList'
 
 export default {
-  name: "EducationList",
+  name: 'EducationList',
   components: { AppIcon, UnifiedButton, UiChip },
   props: {
     modelValue: { type: Array, default: () => [] },
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   setup(_props, { emit }) {
-    const localItems = reactive([...(props.modelValue || [])]);
+    const localItems = reactive([...(props.modelValue || [])])
     watch(
       () => props.modelValue,
-      (v) => {
-        localItems.splice(0, localItems.length, ...(v || []));
-      },
-    );
+      v => {
+        localItems.splice(0, localItems.length, ...(v || []))
+      }
+    )
 
-    const listResolver = () => localItems;
+    const listResolver = () => localItems
     const {
       dragState,
       dragOver,
@@ -170,25 +175,25 @@ export default {
       onDrop,
       endDrag,
       moveItem,
-    } = useDragReorderList(listResolver);
+    } = useDragReorderList(listResolver)
 
     const commit = () =>
       emit(
-        "update:modelValue",
-        localItems.map((i) => ({ ...i })),
-      );
+        'update:modelValue',
+        localItems.map(i => ({ ...i }))
+      )
     const add = () => {
-      localItems.push({ degree: "", school: "", year: "", gpa: "" });
-      commit();
-    };
-    const remove = (index) => {
-      localItems.splice(index, 1);
-      commit();
-    };
+      localItems.push({ degree: '', school: '', year: '', gpa: '' })
+      commit()
+    }
+    const remove = index => {
+      localItems.splice(index, 1)
+      commit()
+    }
     const move = (from, to) => {
-      moveItem("education", from, to);
-      commit();
-    };
+      moveItem('education', from, to)
+      commit()
+    }
 
     return {
       localItems,
@@ -201,7 +206,7 @@ export default {
       move,
       add,
       remove,
-    };
+    }
   },
-};
+}
 </script>

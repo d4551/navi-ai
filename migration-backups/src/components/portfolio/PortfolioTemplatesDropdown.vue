@@ -8,7 +8,11 @@
         border-radius: var(--border-radius-md);
       "
     >
-      <AppIcon name="mdi-auto-fix" class="icon-sm" style="margin-right: var(--spacing-xs)" />
+      <AppIcon
+        name="mdi-auto-fix"
+        class="icon-sm"
+        style="margin-right: var(--spacing-xs)"
+      />
       Templates
     </button>
     <ul class="dropdown-menu">
@@ -82,13 +86,13 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 defineProps({
   store: {
     type: Object,
-    required: true
+    required: true,
   },
   optimizing: {
     type: Boolean,
-    default: false
-  }
-});
+    default: false,
+  },
+})
 
-defineEmits(['applyTemplate', 'showAISuggestions', 'optimizePortfolio']);
+defineEmits(['applyTemplate', 'showAISuggestions', 'optimizePortfolio'])
 </script>

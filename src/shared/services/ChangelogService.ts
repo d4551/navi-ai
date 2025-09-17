@@ -3,22 +3,22 @@
  * Manages application version history and changelog display
  */
 
-import { createModal } from '../utils/modalUtils';
+import { createModal } from '../utils/modalUtils'
 
 export interface ChangelogEntry {
-  version: string;
-  date: string;
-  type: 'major' | 'minor' | 'patch' | 'feature' | 'improvement' | 'bugfix';
-  changes: string[];
-  breaking?: boolean;
-  highlights?: string[];
+  version: string
+  date: string
+  type: 'major' | 'minor' | 'patch' | 'feature' | 'improvement' | 'bugfix'
+  changes: string[]
+  breaking?: boolean
+  highlights?: string[]
 }
 
 export interface UpcomingFeature {
-  title: string;
-  description: string;
-  status: 'planned' | 'in-development' | 'testing';
-  estimatedRelease?: string;
+  title: string
+  description: string
+  status: 'planned' | 'in-development' | 'testing'
+  estimatedRelease?: string
 }
 
 class ChangelogService {
@@ -32,12 +32,9 @@ class ChangelogService {
         'New unified modal system with consistent styling',
         'Enhanced sharing service with multi-platform support',
         'Improved statistics tracking with detailed analytics',
-        'Dynamic challenge system based on user progress'
+        'Dynamic challenge system based on user progress',
       ],
-      highlights: [
-        'Complete modular refactoring',
-        'Enhanced user experience'
-      ]
+      highlights: ['Complete modular refactoring', 'Enhanced user experience'],
     },
     {
       version: '1.2.0',
@@ -48,12 +45,9 @@ class ChangelogService {
         'Added gaming industry-specific interview scenarios',
         'Improved portfolio generator with interactive previews',
         'New career pathway visualization',
-        'Advanced skill-to-industry translation engine'
+        'Advanced skill-to-industry translation engine',
       ],
-      highlights: [
-        'Visual skill mapping',
-        'Gaming industry focus'
-      ]
+      highlights: ['Visual skill mapping', 'Gaming industry focus'],
     },
     {
       version: '1.1.5',
@@ -64,8 +58,8 @@ class ChangelogService {
         'Enhanced responsive design for mobile devices',
         'Improved accessibility with better ARIA labels',
         'Performance optimizations for large resumes',
-        'Better error handling and user feedback'
-      ]
+        'Better error handling and user feedback',
+      ],
     },
     {
       version: '1.1.0',
@@ -76,12 +70,9 @@ class ChangelogService {
         'Implemented voice recognition for hands-free operation',
         'New gaming studio database with 50+ companies',
         'Enhanced resume templates for gaming industry',
-        'Real-time interview analysis and scoring'
+        'Real-time interview analysis and scoring',
       ],
-      highlights: [
-        'Mock interview system',
-        'Voice recognition'
-      ]
+      highlights: ['Mock interview system', 'Voice recognition'],
     },
     {
       version: '1.0.5',
@@ -92,8 +83,8 @@ class ChangelogService {
         'Resolved theme switching problems',
         'Corrected skill mapping edge cases',
         'Improved error handling across all components',
-        'Fixed portfolio export functionality'
-      ]
+        'Fixed portfolio export functionality',
+      ],
     },
     {
       version: '1.0.0',
@@ -105,97 +96,105 @@ class ChangelogService {
         'Portfolio generator with project showcasing',
         'Basic skill mapping functionality',
         'Job search integration with gaming companies',
-        'User profile and progress tracking'
+        'User profile and progress tracking',
       ],
-      highlights: [
-        'Initial public release',
-        'Core AI features'
-      ],
-      breaking: true
-    }
-  ];
+      highlights: ['Initial public release', 'Core AI features'],
+      breaking: true,
+    },
+  ]
 
   private upcomingFeatures: UpcomingFeature[] = [
     {
       title: 'Advanced Analytics Dashboard',
-      description: 'Comprehensive analytics with career progression insights and portfolio performance tracking',
+      description:
+        'Comprehensive analytics with career progression insights and portfolio performance tracking',
       status: 'in-development',
-      estimatedRelease: 'Q2 2025'
+      estimatedRelease: 'Q2 2025',
     },
     {
       title: 'Team Collaboration Features',
-      description: 'Share portfolios and collaborate on projects with teammates in real-time',
+      description:
+        'Share portfolios and collaborate on projects with teammates in real-time',
       status: 'planned',
-      estimatedRelease: 'Q2 2025'
+      estimatedRelease: 'Q2 2025',
     },
     {
       title: 'Gaming Platform Integration',
-      description: 'Direct integration with Steam, Discord, Epic Games Store, and other gaming platforms',
+      description:
+        'Direct integration with Steam, Discord, Epic Games Store, and other gaming platforms',
       status: 'testing',
-      estimatedRelease: 'Q1 2025'
+      estimatedRelease: 'Q1 2025',
     },
     {
       title: 'AI-Powered Interview Simulator',
-      description: 'Practice interviews with AI personas from different game studios',
+      description:
+        'Practice interviews with AI personas from different game studios',
       status: 'in-development',
-      estimatedRelease: 'Q1 2025'
+      estimatedRelease: 'Q1 2025',
     },
     {
       title: 'Advanced Resume Parsing',
-      description: 'Upload existing resumes and automatically extract structured data with AI',
+      description:
+        'Upload existing resumes and automatically extract structured data with AI',
       status: 'completed',
-      estimatedRelease: 'Available Now'
+      estimatedRelease: 'Available Now',
     },
     {
       title: 'Market Insights & Salary Analysis',
-      description: 'Real-time job market analytics and salary benchmarking for gaming roles',
+      description:
+        'Real-time job market analytics and salary benchmarking for gaming roles',
       status: 'completed',
-      estimatedRelease: 'Available Now'
+      estimatedRelease: 'Available Now',
     },
     {
       title: 'Custom Template Builder',
-      description: 'Create personalized resume and portfolio templates with advanced customization',
+      description:
+        'Create personalized resume and portfolio templates with advanced customization',
       status: 'completed',
-      estimatedRelease: 'Available Now'
+      estimatedRelease: 'Available Now',
     },
     {
       title: 'Version Control & History',
-      description: 'Track changes and compare different versions of your documents',
+      description:
+        'Track changes and compare different versions of your documents',
       status: 'completed',
-      estimatedRelease: 'Available Now'
+      estimatedRelease: 'Available Now',
     },
     {
       title: 'Multi-Provider AI Integration',
       description: 'Support for OpenAI, Claude, Gemini, and Grok AI models',
       status: 'completed',
-      estimatedRelease: 'Available Now'
+      estimatedRelease: 'Available Now',
     },
     {
       title: 'Blockchain Portfolio Verification',
-      description: 'Immutable verification of achievements and work history on blockchain',
+      description:
+        'Immutable verification of achievements and work history on blockchain',
       status: 'planned',
-      estimatedRelease: 'Q3 2025'
+      estimatedRelease: 'Q3 2025',
     },
     {
       title: 'VR/AR Portfolio Showcase',
-      description: 'Present your portfolio in immersive VR environments for gaming companies',
+      description:
+        'Present your portfolio in immersive VR environments for gaming companies',
       status: 'planned',
-      estimatedRelease: 'Q4 2025'
+      estimatedRelease: 'Q4 2025',
     },
     {
       title: 'Mobile Application',
-      description: 'Native mobile app for iOS and Android with full feature parity',
+      description:
+        'Native mobile app for iOS and Android with full feature parity',
       status: 'planned',
-      estimatedRelease: 'Q4 2025'
-    }
-  ];
+      estimatedRelease: 'Q4 2025',
+    },
+  ]
 
   /**
    * Shows the changelog modal
    */
   showChangelog(): void {
-    const content = this.generateChangelogHTML();
-    
+    const content = this.generateChangelogHTML()
+
     createModal({
       title: '📋 Changelog & Updates',
       content,
@@ -204,25 +203,25 @@ class ChangelogService {
         {
           text: 'Close',
           type: 'secondary',
-          onclick: 'this.closest(\'.modal\').remove()'
+          onclick: "this.closest('.modal').remove()",
         },
         {
           text: 'View on GitHub',
           type: 'primary',
           href: 'https://github.com/anthropics/claude-code',
           target: '_blank',
-          onclick: 'this.closest(\'.modal\').remove()'
-        }
-      ]
-    });
+          onclick: "this.closest('.modal').remove()",
+        },
+      ],
+    })
   }
 
   /**
    * Generates the changelog HTML content
    */
   private generateChangelogHTML(): string {
-    const currentVersion = this.getCurrentVersion();
-    const recentChanges = this.changelog.slice(0, 5); // Show last 5 versions
+    const currentVersion = this.getCurrentVersion()
+    const recentChanges = this.changelog.slice(0, 5) // Show last 5 versions
 
     let html = `
       <div class="changelog-modal">
@@ -241,11 +240,11 @@ class ChangelogService {
         <div class="changelog-content">
           <h5 class="mb-3">📈 Recent Updates</h5>
           <div class="changelog-list">
-    `;
+    `
 
     recentChanges.forEach(entry => {
-      const typeIcon = this.getTypeIcon(entry.type);
-      const typeColor = this.getTypeColor(entry.type);
+      const typeIcon = this.getTypeIcon(entry.type)
+      const typeColor = this.getTypeColor(entry.type)
 
       html += `
         <div class="changelog-entry mb-4 p-3 border rounded">
@@ -255,20 +254,28 @@ class ChangelogService {
             ${entry.breaking ? '<span class="badge bg-warning ms-2">Breaking Changes</span>' : ''}
           </div>
           
-          ${entry.highlights ? `
+          ${
+            entry.highlights
+              ? `
           <div class="highlights mb-2">
-            ${entry.highlights.map(highlight => `
+            ${entry.highlights
+              .map(
+                highlight => `
               <span class="badge bg-success bg-opacity-10 text-success me-1 mb-1">[MAGIC] ${highlight}</span>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
-          ` : ''}
+          `
+              : ''
+          }
 
           <ul class="changes-list mb-0">
             ${entry.changes.map(change => `<li>${change}</li>`).join('')}
           </ul>
         </div>
-      `;
-    });
+      `
+    })
 
     html += `
           </div>
@@ -277,7 +284,10 @@ class ChangelogService {
         <div class="upcoming-features mt-4">
           <h5 class="mb-3">🔮 Coming Soon</h5>
           <div class="features-grid">
-            ${this.upcomingFeatures.slice(0, 4).map(feature => `
+            ${this.upcomingFeatures
+              .slice(0, 4)
+              .map(
+                feature => `
               <div class="feature-card p-3 border rounded mb-3">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                   <h6 class="mb-0">${feature.title}</h6>
@@ -286,7 +296,9 @@ class ChangelogService {
                 <p class="text-muted small mb-1">${feature.description}</p>
                 ${feature.estimatedRelease ? `<small class="text-primary">Est. ${feature.estimatedRelease}</small>` : ''}
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
         </div>
 
@@ -304,39 +316,39 @@ class ChangelogService {
           </div>
         </div>
       </div>
-    `;
+    `
 
-    return html;
+    return html
   }
 
   /**
    * Gets the current version info
    */
   getCurrentVersion(): ChangelogEntry {
-    return this.changelog[0];
+    return this.changelog[0]
   }
 
   /**
    * Gets all changelog entries
    */
   getAllChanges(): ChangelogEntry[] {
-    return [...this.changelog];
+    return [...this.changelog]
   }
 
   /**
    * Gets changes since a specific version
    */
   getChangesSince(version: string): ChangelogEntry[] {
-    const index = this.changelog.findIndex(entry => entry.version === version);
-    return index >= 0 ? this.changelog.slice(0, index) : [];
+    const index = this.changelog.findIndex(entry => entry.version === version)
+    return index >= 0 ? this.changelog.slice(0, index) : []
   }
 
   /**
    * Checks if there are new changes since user's last seen version
    */
   hasNewChanges(lastSeenVersion?: string): boolean {
-    if (!lastSeenVersion) return true;
-    return this.getChangesSince(lastSeenVersion).length > 0;
+    if (!lastSeenVersion) return true
+    return this.getChangesSince(lastSeenVersion).length > 0
   }
 
   /**
@@ -349,9 +361,9 @@ class ChangelogService {
       patch: '🔧',
       feature: '🎉',
       improvement: '⚡',
-      bugfix: '🐛'
-    };
-    return icons[type] || '📝';
+      bugfix: '🐛',
+    }
+    return icons[type] || '📝'
   }
 
   /**
@@ -364,9 +376,9 @@ class ChangelogService {
       patch: 'bg-info',
       feature: 'bg-success',
       improvement: 'bg-warning',
-      bugfix: 'bg-secondary'
-    };
-    return colors[type] || 'bg-light';
+      bugfix: 'bg-secondary',
+    }
+    return colors[type] || 'bg-light'
   }
 
   /**
@@ -376,9 +388,9 @@ class ChangelogService {
     const colors: Record<string, string> = {
       planned: 'bg-secondary',
       'in-development': 'bg-warning',
-      testing: 'bg-info'
-    };
-    return colors[status] || 'bg-light';
+      testing: 'bg-info',
+    }
+    return colors[status] || 'bg-light'
   }
 
   /**
@@ -388,12 +400,12 @@ class ChangelogService {
     const labels: Record<string, string> = {
       planned: 'Planned',
       'in-development': 'In Development',
-      testing: 'Testing'
-    };
-    return labels[status] || status;
+      testing: 'Testing',
+    }
+    return labels[status] || status
   }
 }
 
 // Export singleton instance
-export const changelogService = new ChangelogService();
-export default changelogService;
+export const changelogService = new ChangelogService()
+export default changelogService

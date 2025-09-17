@@ -1,5 +1,11 @@
 import BaseAIProvider from './BaseAIProvider'
-import { AIProvider, ModalityType, MultiModalRequest, MultiModalResponse, StreamCallbacks } from '@/shared/types/ai'
+import {
+  AIProvider,
+  ModalityType,
+  MultiModalRequest,
+  MultiModalResponse,
+  StreamCallbacks,
+} from '@/shared/types/ai'
 import { logger } from '@/shared/utils/logger'
 
 export default class GrokProvider extends BaseAIProvider {
@@ -12,7 +18,7 @@ export default class GrokProvider extends BaseAIProvider {
 
   async initialize(config: any): Promise<void> {
     await super.initialize(config)
-    
+
     if (!config.apiKey) {
       throw new Error('Grok API key is required')
     }
@@ -30,7 +36,9 @@ export default class GrokProvider extends BaseAIProvider {
 
     try {
       // Extract text content
-      const textContent = request.content.find(c => c.type === ModalityType.TEXT)
+      const textContent = request.content.find(
+        c => c.type === ModalityType.TEXT
+      )
       const prompt = textContent?.data || ''
 
       if (!prompt) {
@@ -41,20 +49,20 @@ export default class GrokProvider extends BaseAIProvider {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`
+          Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify({
           model: this.currentModel || 'grok-beta',
           messages: [
             {
               role: 'user',
-              content: prompt
-            }
+              content: prompt,
+            },
           ],
           temperature: request.options?.temperature || 0.7,
           max_tokens: request.options?.maxTokens || 4000,
-          stream: false
-        })
+          stream: false,
+        }),
       })
 
       if (!response.ok) {
@@ -78,14 +86,14 @@ export default class GrokProvider extends BaseAIProvider {
           imagesGenerated: 0,
           audioDuration: 0,
           videoDuration: 0,
-          cost: 0 // Calculate based on pricing if needed
+          cost: 0, // Calculate based on pricing if needed
         },
         timing: {
           startedAt: start,
           completedAt: Date.now(),
           totalTime: Date.now() - start,
-          processingTime: Date.now() - start
-        }
+          processingTime: Date.now() - start,
+        },
       }
     } catch (error) {
       logger.error('Grok execution error:', error)
@@ -102,15 +110,16 @@ export default class GrokProvider extends BaseAIProvider {
           imagesGenerated: 0,
           audioDuration: 0,
           videoDuration: 0,
-          cost: 0
+          cost: 0,
         },
         timing: {
           startedAt: start,
           completedAt: Date.now(),
           totalTime: Date.now() - start,
-          processingTime: Date.now() - start
+          processingTime: Date.now() - start,
         },
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
       }
     }
   }
@@ -121,7 +130,7 @@ export default class GrokProvider extends BaseAIProvider {
       provider: this.provider,
       modality: ModalityType.TEXT,
       startTime: Date.now(),
-      chunkCount: 0
+      chunkCount: 0,
     }
 
     callbacks.onStart?.(session)
@@ -136,7 +145,9 @@ export default class GrokProvider extends BaseAIProvider {
     ;(async () => {
       try {
         // Extract text content
-        const textContent = request.content.find(c => c.type === ModalityType.TEXT)
+        const textContent = request.content.find(
+          c => c.type === ModalityType.TEXT
+        )
         const prompt = textContent?.data || ''
 
         if (!prompt) {
@@ -148,24 +159,26 @@ export default class GrokProvider extends BaseAIProvider {
           signal: controller.signal,
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.apiKey}`
+            Authorization: `Bearer ${this.apiKey}`,
           },
           body: JSON.stringify({
             model: this.currentModel || 'grok-beta',
             messages: [
               {
                 role: 'user',
-                content: prompt
-              }
+                content: prompt,
+              },
             ],
             temperature: request.options?.temperature || 0.7,
             max_tokens: request.options?.maxTokens || 4000,
-            stream: true
-          })
+            stream: true,
+          }),
         })
 
         if (!response.ok || !response.body) {
-          throw new Error(`Grok API error: ${response.status} - ${await response.text()}`)
+          throw new Error(
+            `Grok API error: ${response.status} - ${await response.text()}`
+          )
         }
 
         const reader = response.body.getReader()
@@ -184,7 +197,7 @@ export default class GrokProvider extends BaseAIProvider {
           for (const line of lines) {
             const trimmed = line.trim()
             if (!trimmed || !trimmed.startsWith('data:')) continue
-            
+
             const data = trimmed.replace(/^data:\s*/, '')
             if (data === '[DONE]') {
               reader.cancel()
@@ -218,22 +231,23 @@ export default class GrokProvider extends BaseAIProvider {
             imagesGenerated: 0,
             audioDuration: 0,
             videoDuration: 0,
-            cost: 0
+            cost: 0,
           },
           timing: {
             startedAt: session.startTime,
             completedAt: Date.now(),
             totalTime: Date.now() - session.startTime,
-            processingTime: Date.now() - session.startTime
-          }
+            processingTime: Date.now() - session.startTime,
+          },
         })
       } catch (error) {
         logger.error('Grok streaming error:', error)
-        callbacks.onError?.(error instanceof Error ? error : new Error(String(error)))
+        callbacks.onError?.(
+          error instanceof Error ? error : new Error(String(error))
+        )
       }
     })()
 
     return controller
   }
 }
-

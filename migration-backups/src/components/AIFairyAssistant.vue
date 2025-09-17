@@ -19,7 +19,14 @@
     :data-theme="unifiedUI?.theme?.colorScheme?.value || 'light'"
     :data-bubble-size="bubbleSize"
     :aria-busy="isThinking ? 'true' : 'false'"
-    :title="fairyStatus + ' (Click to cycle: ' + bubbleSize + ' -> ' + getNextSizeLabel() + ')'"
+    :title="
+      fairyStatus +
+      ' (Click to cycle: ' +
+      bubbleSize +
+      ' -> ' +
+      getNextSizeLabel() +
+      ')'
+    "
     role="button"
     tabindex="0"
     :aria-label="getAriaLabel()"
@@ -66,11 +73,19 @@
       <!-- Main Character -->
       <div class="fairy-body">
         <div class="fairy-core">
-          <AppIcon :name="getIcon('mdi-shimmer','mdi-shimmer')" :size="getIconSize()" :color="getIconColor()" />
+          <AppIcon
+            :name="getIcon('mdi-shimmer', 'mdi-shimmer')"
+            :size="getIconSize()"
+            :color="getIconColor()"
+          />
         </div>
         <div class="fairy-sparkles" aria-hidden="true">
           <span v-for="n in 3" :key="n" class="sparkle">
-            <AppIcon :name="getIcon('mdi-shimmer','mdi-shimmer')" :size="getIconSize()" :color="getIconColor()" />
+            <AppIcon
+              :name="getIcon('mdi-shimmer', 'mdi-shimmer')"
+              :size="getIconSize()"
+              :color="getIconColor()"
+            />
           </span>
         </div>
       </div>
@@ -86,14 +101,10 @@
           <div class="pulse-ring"></div>
         </div>
       </transition>
-      
+
       <!-- Small mode page indicator -->
       <transition name="indicator-appear">
-        <div
-          v-if="isSmallMode"
-          class="page-indicator"
-          aria-hidden="true"
-        >
+        <div v-if="isSmallMode" class="page-indicator" aria-hidden="true">
           <div class="page-indicator-dot"></div>
         </div>
       </transition>
@@ -105,7 +116,11 @@
           aria-hidden="true"
         >
           <div class="indicator-icon">
-            <AppIcon :name="getIcon('mdi-microphone','mdi-microphone')" :size="getIconSize()" :color="getIconColor()" />
+            <AppIcon
+              :name="getIcon('mdi-microphone', 'mdi-microphone')"
+              :size="getIconSize()"
+              :color="getIconColor()"
+            />
           </div>
           <div class="voice-waves">
             <div
@@ -125,7 +140,11 @@
           aria-hidden="true"
         >
           <div class="indicator-icon">
-            <AppIcon :name="getIcon('mdi-thought-bubble','mdi-thought-bubble')" :size="getIconSize()" :color="getIconColor()" />
+            <AppIcon
+              :name="getIcon('mdi-thought-bubble', 'mdi-thought-bubble')"
+              :size="getIconSize()"
+              :color="getIconColor()"
+            />
           </div>
           <div class="thinking-dots">
             <div
@@ -143,7 +162,10 @@
   <!-- Text Bubble -->
   <transition name="bubble-appear">
     <div
-      v-if="(currentMessage || expanded || shouldShowEmptyBubble) && bubbleSize !== 'hidden'"
+      v-if="
+        (currentMessage || expanded || shouldShowEmptyBubble) &&
+        bubbleSize !== 'hidden'
+      "
       class="fairy-bubble enhanced-gaming-card"
       :class="{
         'bubble-persistent': expanded,
@@ -159,8 +181,15 @@
         role="group"
         aria-label="Assistant suggestion"
       >
-        <div class="message-text" role="status" aria-live="polite">{{ currentMessage.text }}</div>
-        <div v-if="currentMessage.actions" class="message-actions" role="toolbar" aria-label="Quick actions">
+        <div class="message-text" role="status" aria-live="polite">
+          {{ currentMessage.text }}
+        </div>
+        <div
+          v-if="currentMessage.actions"
+          class="message-actions"
+          role="toolbar"
+          aria-label="Quick actions"
+        >
           <button
             v-for="action in currentMessage.actions"
             :key="action.id"
@@ -182,7 +211,11 @@
         role="group"
         aria-label="AI assistant ready"
       >
-        <div class="message-text message-text--empty" role="status" aria-live="polite">
+        <div
+          class="message-text message-text--empty"
+          role="status"
+          aria-live="polite"
+        >
           Ready to help!
           <span class="fairy-emoji"><AppIcon name="mdi-auto-fix" /></span>
         </div>
@@ -228,7 +261,9 @@
             <div class="message-avatar">🤖</div>
             <div class="message-content">
               <div class="message-bubble">
-                Hi! I'm NAVI, your AI career fairy! ✨ I can help with resumes, job searches, interviews, and more. What would you like to work on today?
+                Hi! I'm NAVI, your AI career fairy! ✨ I can help with resumes,
+                job searches, interviews, and more. What would you like to work
+                on today?
               </div>
               <span class="message-time">Just now</span>
             </div>
@@ -250,7 +285,9 @@
             <div class="message-avatar">🤖</div>
             <div class="message-content">
               <div class="message-bubble">
-                Perfect! I can help you ace that gaming industry interview! Let me prepare some tailored questions and tips based on your target role. What position are you interviewing for?
+                Perfect! I can help you ace that gaming industry interview! Let
+                me prepare some tailored questions and tips based on your target
+                role. What position are you interviewing for?
               </div>
               <span class="message-time">Just now</span>
             </div>
@@ -276,17 +313,23 @@
         <div class="chat-input-container">
           <!-- Primary Input Area -->
           <div class="primary-input-area">
-            <textarea class="text-input" placeholder="Ask NAVI anything..." rows="1"></textarea>
+            <textarea
+              class="text-input"
+              placeholder="Ask NAVI anything..."
+              rows="1"
+            ></textarea>
             <div class="input-actions">
               <button class="control-btn" title="Upload file">📎</button>
               <button class="send-btn">➤</button>
             </div>
           </div>
-          
+
           <!-- Secondary Controls -->
           <div class="secondary-controls">
             <div class="control-group media-controls">
-              <button class="control-btn active" title="Text-to-speech">🔊</button>
+              <button class="control-btn active" title="Text-to-speech">
+                🔊
+              </button>
               <button class="control-btn" title="Voice input">🎤</button>
               <button class="control-btn" title="Video call">📹</button>
               <button class="control-btn" title="Screen capture">📸</button>
@@ -323,7 +366,10 @@
         <div class="camera-header">
           <h3 id="camera-modal-title">Camera Input</h3>
           <button class="glass-btn" @click="closeCameraModal">
-            <AppIcon :name="getIcon('mdi-close','mdi-close')" :size="getIconSize()" />
+            <AppIcon
+              :name="getIcon('mdi-close', 'mdi-close')"
+              :size="getIconSize()"
+            />
           </button>
         </div>
         <div class="camera-content">
@@ -331,7 +377,10 @@
           <canvas ref="cameraCanvas" style="display: none"></canvas>
           <div class="camera-controls">
             <button class="glass-btn ai-powered" @click="captureImage">
-              <AppIcon :name="getIcon('mdi-camera','mdi-camera')" :size="getIconSize()" />
+              <AppIcon
+                :name="getIcon('mdi-camera', 'mdi-camera')"
+                :size="getIconSize()"
+              />
               Capture & Analyze
             </button>
           </div>
@@ -351,22 +400,36 @@
       @click.self="showTTSModal = false"
       @keydown.esc.prevent="showTTSModal = false"
     >
-      <div class="settings-modal ultra-glass-card section-card" tabindex="-1" @click.stop>
+      <div
+        class="settings-modal ultra-glass-card section-card"
+        tabindex="-1"
+        @click.stop
+      >
         <div class="settings-modal-header">
           <h3 id="tts-modal-title">
-            <AppIcon :name="getIcon('mdi-cog','mdi-cog')" :size="getIconSize()" />
+            <AppIcon
+              :name="getIcon('mdi-cog', 'mdi-cog')"
+              :size="getIconSize()"
+            />
             Voice & TTS Settings
           </h3>
-          <button class="glass-btn" aria-label="Close settings" @click="showTTSModal = false">
-            <AppIcon :name="getIcon('mdi-close','mdi-close')" :size="getIconSize()" />
+          <button
+            class="glass-btn"
+            aria-label="Close settings"
+            @click="showTTSModal = false"
+          >
+            <AppIcon
+              :name="getIcon('mdi-close', 'mdi-close')"
+              :size="getIconSize()"
+            />
           </button>
         </div>
         <div class="settings-modal-content tts-settings-content">
           <div class="settings-row">
             <label for="tts-provider-select">TTS Provider</label>
-            <select 
+            <select
               id="tts-provider-select"
-              v-model="ttsSettings.provider" 
+              v-model="ttsSettings.provider"
               class="tts-provider-select"
               aria-describedby="tts-provider-help"
               @change="saveTTSSettings"
@@ -379,32 +442,34 @@
 
           <div class="settings-row">
             <label>Speech Rate</label>
-            <input 
-              v-model.number="ttsSettings.rate" 
-              type="range" 
-              min="0.5" 
-              max="2" 
+            <input
+              v-model.number="ttsSettings.rate"
+              type="range"
+              min="0.5"
+              max="2"
               step="0.1"
               class="tts-slider"
               aria-label="Speech rate"
               @input="saveTTSSettings"
-            >
+            />
             <span class="setting-value">{{ ttsSettings.rate }}x</span>
           </div>
 
           <div class="settings-row">
             <label>Voice Volume</label>
-            <input 
-              v-model.number="ttsSettings.volume" 
-              type="range" 
-              min="0" 
-              max="1" 
+            <input
+              v-model.number="ttsSettings.volume"
+              type="range"
+              min="0"
+              max="1"
               step="0.1"
               class="tts-slider"
               aria-label="Voice volume"
               @input="saveTTSSettings"
+            />
+            <span class="setting-value"
+              >{{ Math.round(ttsSettings.volume * 100) }}%</span
             >
-            <span class="setting-value">{{ Math.round(ttsSettings.volume * 100) }}%</span>
           </div>
 
           <div class="settings-row">
@@ -418,16 +483,34 @@
           </div>
 
           <div class="settings-row">
-            <button class="test-tts-btn glass-btn" :disabled="isSpeaking" @click="testTTS">
-              <AppIcon :name="isSpeaking ? getIcon('mdi-stop','mdi-stop') : getIcon('mdi-play','mdi-play')" :size="getIconSize()" />
+            <button
+              class="test-tts-btn glass-btn"
+              :disabled="isSpeaking"
+              @click="testTTS"
+            >
+              <AppIcon
+                :name="
+                  isSpeaking
+                    ? getIcon('mdi-stop', 'mdi-stop')
+                    : getIcon('mdi-play', 'mdi-play')
+                "
+                :size="getIconSize()"
+              />
               {{ isSpeaking ? 'Stop' : 'Test Voice' }}
             </button>
           </div>
 
           <div class="settings-info">
             <small class="provider-info">
-              <AppIcon :name="getIcon('mdi-information-outline','mdi-information-outline')" :size="getIconSize()" />
-              <span id="tts-provider-help">{{ getProviderInfo(ttsSettings.provider) }}</span>
+              <AppIcon
+                :name="
+                  getIcon('mdi-information-outline', 'mdi-information-outline')
+                "
+                :size="getIconSize()"
+              />
+              <span id="tts-provider-help">{{
+                getProviderInfo(ttsSettings.provider)
+              }}</span>
             </small>
           </div>
         </div>
@@ -437,7 +520,7 @@
 </template>
 
 <script>
-import AppIcon from '@/components/ui/AppIcon.vue';
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 import {
   ref,
@@ -448,45 +531,54 @@ import {
   onMounted,
   onUnmounted,
   getCurrentInstance,
-} from "vue";
+} from 'vue'
 
-import { useRoute, useRouter } from "vue-router";
-import { useToast } from "@/composables/useToast";
-import { useUnifiedUI } from "@/composables/useUnifiedUI";
-import { useIconReplacement } from "@/composables/useIconReplacement";
-import { useLiveMultimediaAI } from "@/composables/useLiveMultimediaAI";
-import { useAppStore } from "@/stores/app";
-import { runVoiceServicesDiagnostics, getVoiceServicesStatusMessage } from "@/shared/utils/voiceServicesValidator";
-import { logger } from "@/shared/utils/logger";
-import { speak, stopSpeaking, isVoiceSupported, setVoiceRoutingPreferences } from "@/utils/voice.js";
-import { resolveGeminiApiKey } from "@/shared/utils/apiKeys";
+import { useRoute, useRouter } from 'vue-router'
+import { useToast } from '@/composables/useToast'
+import { useUnifiedUI } from '@/composables/useUnifiedUI'
+import { useIconReplacement } from '@/composables/useIconReplacement'
+import { useLiveMultimediaAI } from '@/composables/useLiveMultimediaAI'
+import { useAppStore } from '@/stores/app'
+import {
+  runVoiceServicesDiagnostics,
+  getVoiceServicesStatusMessage,
+} from '@/shared/utils/voiceServicesValidator'
+import { logger } from '@/shared/utils/logger'
+import {
+  speak,
+  stopSpeaking,
+  isVoiceSupported,
+  setVoiceRoutingPreferences,
+} from '@/utils/voice.js'
+import { resolveGeminiApiKey } from '@/shared/utils/apiKeys'
 
 export default {
-  name: "AIFairyAssistant",
+  name: 'AIFairyAssistant',
   components: { AppIcon },
   setup() {
-    const _router = useRouter?.() || null;
+    const _router = useRouter?.() || null
 
-    const route = useRoute?.() || null;
-    const store = useAppStore();
-    const vmInstance = getCurrentInstance();
+    const route = useRoute?.() || null
+    const store = useAppStore()
+    const vmInstance = getCurrentInstance()
     const currentPath = () => {
       try {
-        if (route && typeof route.path !== 'undefined') return route.path;
+        if (route && typeof route.path !== 'undefined') return route.path
       } catch {}
       try {
-        const mockRoute = vmInstance?.proxy?.$route;
-        if (mockRoute && typeof mockRoute.path === 'string') return mockRoute.path;
+        const mockRoute = vmInstance?.proxy?.$route
+        if (mockRoute && typeof mockRoute.path === 'string')
+          return mockRoute.path
       } catch {}
-      return '/';
-    };
-    const toast = useToast();
-    const unifiedUI = useUnifiedUI();
-    const { getIcon, getIconSize, getIconColor } = useIconReplacement();
-    const useAIIntegrationFactory = inject("useAIIntegration", null);
+      return '/'
+    }
+    const toast = useToast()
+    const unifiedUI = useUnifiedUI()
+    const { getIcon, getIconSize, getIconColor } = useIconReplacement()
+    const useAIIntegrationFactory = inject('useAIIntegration', null)
     const aiIntegration = useAIIntegrationFactory
       ? useAIIntegrationFactory()
-      : null;
+      : null
 
     // Enhanced AI integration check with auto-initialization
     async function ensureAIReady() {
@@ -494,108 +586,121 @@ export default {
         logger.warn('AI integration not available')
         return false
       }
-      
+
       if (!aiIntegration.isAIInitialized.value) {
         logger.info('AI not initialized, attempting initialization...')
         const success = await aiIntegration.initializeAI()
         if (!success) {
-          toast.error('Failed to initialize AI services. Please check your settings.')
+          toast.error(
+            'Failed to initialize AI services. Please check your settings.'
+          )
           return false
         }
       }
-      
+
       return true
     }
 
     // State
-    const expanded = ref(false);
-    const currentMessage = ref(null);
-    const userInput = ref("");
-    const chatMessages = ref([]);
-    const isListening = ref(false);
-    const isVideoStreaming = ref(false);
-    const isThinking = ref(false);
-    const isProcessing = ref(false);
-    const hasNotifications = ref(false);
-    const cameraModalOpen = ref(false);
-    const messagesContainer = ref(null);
-    
+    const expanded = ref(false)
+    const currentMessage = ref(null)
+    const userInput = ref('')
+    const chatMessages = ref([])
+    const isListening = ref(false)
+    const isVideoStreaming = ref(false)
+    const isThinking = ref(false)
+    const isProcessing = ref(false)
+    const hasNotifications = ref(false)
+    const cameraModalOpen = ref(false)
+    const messagesContainer = ref(null)
+
     // Bubble size state management
-    const bubbleSize = computed(() => store.settings?.fairyBubbleSize || 'full');
-    const isVisible = computed(() => bubbleSize.value !== 'hidden');
-    const isSmallMode = computed(() => bubbleSize.value === 'small');
-    const isFullMode = computed(() => bubbleSize.value === 'full');
-    const cameraVideo = ref(null);
-    const cameraCanvas = ref(null);
-    const cameraModalEl = ref(null);
-    const chatInputEl = ref(null);
-    
+    const bubbleSize = computed(() => store.settings?.fairyBubbleSize || 'full')
+    const isVisible = computed(() => bubbleSize.value !== 'hidden')
+    const isSmallMode = computed(() => bubbleSize.value === 'small')
+    const isFullMode = computed(() => bubbleSize.value === 'full')
+    const cameraVideo = ref(null)
+    const cameraCanvas = ref(null)
+    const cameraModalEl = ref(null)
+    const chatInputEl = ref(null)
+
     // UI settings
-    const compactUI = ref(false);
+    const compactUI = ref(false)
 
     // TTS State
-    const ttsEnabled = ref(true); // Default to enabled
-    const isSpeaking = ref(false);
-    const currentSpeakingMessageId = ref(null); // Track which message is being spoken
+    const ttsEnabled = ref(true) // Default to enabled
+    const isSpeaking = ref(false)
+    const currentSpeakingMessageId = ref(null) // Track which message is being spoken
     const ttsSettings = ref({
       rate: 0.9,
       pitch: 1.0,
       volume: 0.8,
       voice: null,
-      provider: 'system' // 'system' or 'gemini'
-    });
+      provider: 'system', // 'system' or 'gemini'
+    })
     // Cached Gemini API key state for provider helper
-    const hasGeminiApiKey = ref(false);
-    (async () => { try { hasGeminiApiKey.value = !!(await resolveGeminiApiKey()); } catch {} })();
+    const hasGeminiApiKey = ref(false)
+    ;(async () => {
+      try {
+        hasGeminiApiKey.value = !!(await resolveGeminiApiKey())
+      } catch {}
+    })()
     function getProviderInfo(provider) {
-      const hasApiKey = hasGeminiApiKey.value;
-      const hasElectronAPI = Boolean(window.api?.audio?.ttsSpeak);
+      const hasApiKey = hasGeminiApiKey.value
+      const hasElectronAPI = Boolean(window.api?.audio?.ttsSpeak)
       switch (provider) {
         case 'gemini':
-          if (!hasApiKey) return 'Google AI Gemini TTS (requires API key in main settings)';
-          if (!hasElectronAPI) return 'Google AI TTS (browser mode - falling back to system TTS)';
-          return 'Using Google AI Gemini for natural-sounding speech (API key active)';
+          if (!hasApiKey)
+            return 'Google AI Gemini TTS (requires API key in main settings)'
+          if (!hasElectronAPI)
+            return 'Google AI TTS (browser mode - falling back to system TTS)'
+          return 'Using Google AI Gemini for natural-sounding speech (API key active)'
         case 'kokoro':
-          return 'Using Kokoro TTS for high-quality neural voice synthesis (local processing)';
+          return 'Using Kokoro TTS for high-quality neural voice synthesis (local processing)'
         case 'system':
         default:
-          return 'Using browser\'s built-in text-to-speech engine (fast and reliable)';
+          return "Using browser's built-in text-to-speech engine (fast and reliable)"
       }
     }
-    
+
     // TTS Settings Modal
-    const showTTSModal = ref(false);
+    const showTTSModal = ref(false)
 
     function autoResizeInput() {
       try {
-        const el = chatInputEl.value;
-        if (!el) return;
-        el.style.height = 'auto';
-        const max = 140; // ~5 lines
-        el.style.height = Math.min(el.scrollHeight, max) + 'px';
+        const el = chatInputEl.value
+        if (!el) return
+        el.style.height = 'auto'
+        const max = 140 // ~5 lines
+        el.style.height = Math.min(el.scrollHeight, max) + 'px'
       } catch {}
     }
 
     function onInputEnter(e) {
       // Shift+Enter inserts newline, Enter alone sends
       if (e.shiftKey) {
-        return; // default prevented by handler signature
+        return // default prevented by handler signature
       }
-      sendMessage();
+      sendMessage()
     }
 
     function copyMessage(message) {
       try {
-        const text = normalizeContentForDisplay(message.content || message.text || '');
-        if (!text) return;
+        const text = normalizeContentForDisplay(
+          message.content || message.text || ''
+        )
+        if (!text) return
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(() => {
-            toast.success('Message copied');
-          }).catch(() => {
-            fallbackCopy(text);
-          });
+          navigator.clipboard
+            .writeText(text)
+            .then(() => {
+              toast.success('Message copied')
+            })
+            .catch(() => {
+              fallbackCopy(text)
+            })
         } else {
-          fallbackCopy(text);
+          fallbackCopy(text)
         }
       } catch {
         // ignore
@@ -604,19 +709,19 @@ export default {
 
     function fallbackCopy(text) {
       try {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.position = 'absolute';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        toast.success('Message copied');
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.setAttribute('readonly', '')
+        ta.style.position = 'absolute'
+        ta.style.left = '-9999px'
+        document.body.appendChild(ta)
+        ta.select()
+        document.execCommand('copy')
+        document.body.removeChild(ta)
+        toast.success('Message copied')
       } catch {}
     }
-    
+
     // Import live multimedia AI composable
     const {
       state: multimediaState,
@@ -632,84 +737,84 @@ export default {
       sendMessage: sendAIMessage,
       addUserMessage: addAIUserMessage,
       isMultimediaReady,
-    } = useLiveMultimediaAI();
+    } = useLiveMultimediaAI()
 
     // Auto-messages for different contexts
     const contextMessages = {
-      "/": {
+      '/': {
         text: "Welcome to NAVI! I'm your AI career fairy. Ready to find your dream gaming job? ✨",
         actions: [
           {
-            id: "start_resume",
-            label: "Build Resume",
-            icon: "mdi-file-document-outline-edit",
+            id: 'start_resume',
+            label: 'Build Resume',
+            icon: 'mdi-file-document-outline-edit',
           },
-          { id: "find_jobs", label: "Find Jobs", icon: "mdi-magnify" },
+          { id: 'find_jobs', label: 'Find Jobs', icon: 'mdi-magnify' },
         ],
       },
-      "/resume": {
+      '/resume': {
         text: "Let's create an amazing resume! I can help optimize your content with AI. 📝",
         actions: [
-          { id: "ai_optimize", label: "AI Optimize", icon: "mdi-auto-fix" },
+          { id: 'ai_optimize', label: 'AI Optimize', icon: 'mdi-auto-fix' },
           {
-            id: "suggest_skills",
-            label: "Suggest Skills",
-            icon: "mdi-lightbulb",
+            id: 'suggest_skills',
+            label: 'Suggest Skills',
+            icon: 'mdi-lightbulb',
           },
         ],
       },
-      "/jobs": {
-        text: "Searching for jobs? I can analyze matches and help with applications! 🎯",
+      '/jobs': {
+        text: 'Searching for jobs? I can analyze matches and help with applications! 🎯',
         actions: [
-          { id: "analyze_match", label: "Analyze Match", icon: "mdi-target" },
+          { id: 'analyze_match', label: 'Analyze Match', icon: 'mdi-target' },
           {
-            id: "salary_insights",
-            label: "Salary Tips",
-            icon: "mdi-currency-usd",
+            id: 'salary_insights',
+            label: 'Salary Tips',
+            icon: 'mdi-currency-usd',
           },
         ],
       },
-      "/interview": {
+      '/interview': {
         text: "Interview prep time! Let's practice with AI-powered mock interviews. 🎤",
         actions: [
           {
-            id: "mock_interview",
-            label: "Start Interview",
-            icon: "mdi-account-voice",
+            id: 'mock_interview',
+            label: 'Start Interview',
+            icon: 'mdi-account-voice',
           },
-          { id: "review_answers", label: "Review Tips", icon: "mdi-format-list-checks" },
+          {
+            id: 'review_answers',
+            label: 'Review Tips',
+            icon: 'mdi-format-list-checks',
+          },
         ],
       },
-    };
+    }
 
     // Computed
-    const isChatActive = computed(
-      () => isListening.value || isProcessing.value,
-    );
+    const isChatActive = computed(() => isListening.value || isProcessing.value)
 
-  const fairyStatus = computed(() => {
-      if (isThinking.value) return "NAVI is thinking...";
-      if (isListening.value) return "NAVI is listening...";
-      if (hasNotifications.value) return "NAVI has tips for you!";
-      return "Click to chat with NAVI";
-  });
+    const fairyStatus = computed(() => {
+      if (isThinking.value) return 'NAVI is thinking...'
+      if (isListening.value) return 'NAVI is listening...'
+      if (hasNotifications.value) return 'NAVI has tips for you!'
+      return 'Click to chat with NAVI'
+    })
 
-  const shouldShowEmptyBubble = computed(() => {
+    const shouldShowEmptyBubble = computed(() => {
       // Show empty bubble when fairy is visible but has no message and is not expanded
-      return !currentMessage.value && !expanded.value && !isThinking.value;
-  });
+      return !currentMessage.value && !expanded.value && !isThinking.value
+    })
 
     // Quick replies for fast starts
-    const quickReplies = ref([
-      'Build Resume',
-      'Find Jobs',
-      'Interview Tips',
-    ])
+    const quickReplies = ref(['Build Resume', 'Find Jobs', 'Interview Tips'])
 
     const showQuickReplies = computed(() => {
       try {
         return expanded.value && (chatMessages.value?.length || 0) <= 2
-      } catch { return false }
+      } catch {
+        return false
+      }
     })
 
     function sendQuickReply(text) {
@@ -721,39 +826,46 @@ export default {
 
     // Random fairy tips and easter eggs
     const fairyTips = [
-      "Did you know? Adding gaming achievements to your resume can show leadership skills! 🏆",
+      'Did you know? Adding gaming achievements to your resume can show leadership skills! 🏆',
       "Easter egg: Try typing 'konami code' for a surprise! 🎮",
       "Pro tip: Mention specific game engines you've worked with - Unity, Unreal, etc. 🛠️",
       "Fun fact: I'm powered by Google's latest AI models for the best career advice! 🤖",
-      "Secret: I can analyze your voice tone during mock interviews! 🎯",
-      "Gaming companies love seeing community involvement - mention your Discord servers! 💬",
-      "Try uploading a screenshot of your gaming setup - I can suggest improvements! 📸",
-      "Voice tip: Practice your elevator pitch with me using voice input! 🗣️",
-    ];
+      'Secret: I can analyze your voice tone during mock interviews! 🎯',
+      'Gaming companies love seeing community involvement - mention your Discord servers! 💬',
+      'Try uploading a screenshot of your gaming setup - I can suggest improvements! 📸',
+      'Voice tip: Practice your elevator pitch with me using voice input! 🗣️',
+    ]
 
     // Initialize AI services
-  async function initializeAIServices() {
+    async function initializeAIServices() {
       try {
         // First run voice services diagnostics
         // Run non-invasive diagnostics so we never trigger permission prompts on load
-        const diagnostics = await runVoiceServicesDiagnostics({ invasive: false });
-        const statusMessage = getVoiceServicesStatusMessage(diagnostics.capabilities);
-        
-        logger.info(statusMessage);
-        
+        const diagnostics = await runVoiceServicesDiagnostics({
+          invasive: false,
+        })
+        const statusMessage = getVoiceServicesStatusMessage(
+          diagnostics.capabilities
+        )
+
+        logger.info(statusMessage)
+
         if (!diagnostics.capabilities.fullSupport) {
-          toast.warning(`Voice services limited: ${statusMessage}`);
+          toast.warning(`Voice services limited: ${statusMessage}`)
           if (diagnostics.errors.missing.length > 0) {
-            logger.error('Missing required features:', diagnostics.errors.missing);
+            logger.error(
+              'Missing required features:',
+              diagnostics.errors.missing
+            )
           }
         }
 
-  // Resolve API key consistently across chat and voice
-  const apiKey = await resolveGeminiApiKey();
-        
+        // Resolve API key consistently across chat and voice
+        const apiKey = await resolveGeminiApiKey()
+
         if (!apiKey) {
-          toast.warning('Please configure your Gemini API key in settings');
-          return false;
+          toast.warning('Please configure your Gemini API key in settings')
+          return false
         }
 
         const success = await initializeMultimediaAI({
@@ -764,124 +876,133 @@ export default {
           enableScreenshot: diagnostics.capabilities.getDisplayMedia,
           maxTokens: 8192,
           temperature: 0.7,
-        });
+        })
 
         if (success) {
-          toast.success('AI Fairy multimedia services ready!');
+          toast.success('AI Fairy multimedia services ready!')
         } else {
-          toast.error('Failed to initialize AI services');
+          toast.error('Failed to initialize AI services')
         }
-        
-        return success;
+
+        return success
       } catch (error) {
-        logger.error('Failed to initialize AI services:', error);
-        toast.error('Failed to initialize AI services. Check your API key.');
-        return false;
+        logger.error('Failed to initialize AI services:', error)
+        toast.error('Failed to initialize AI services. Check your API key.')
+        return false
       }
     }
 
     // Add screenshot capture function
     async function captureScreenshotWithAI() {
       if (!isAIInitialized.value) {
-        await initializeAIServices();
+        await initializeAIServices()
       }
 
       if (!isMultimediaReady()) {
-        toast.warning("AI services not ready. Please check your API key in settings.");
-        return;
+        toast.warning(
+          'AI services not ready. Please check your API key in settings.'
+        )
+        return
       }
 
       try {
-        isThinking.value = true;
-        toast.info("📸 Capturing screenshot for AI analysis...");
-        
-        await captureScreenshot("Analyze this screenshot and provide insights. What do you see that might be relevant for career development or gaming industry work?");
+        isThinking.value = true
+        toast.info('📸 Capturing screenshot for AI analysis...')
+
+        await captureScreenshot(
+          'Analyze this screenshot and provide insights. What do you see that might be relevant for career development or gaming industry work?'
+        )
       } catch (error) {
-        logger.error("Screenshot capture failed:", error);
-        toast.error("Screenshot capture failed. Check screen sharing permissions.");
+        logger.error('Screenshot capture failed:', error)
+        toast.error(
+          'Screenshot capture failed. Check screen sharing permissions.'
+        )
       } finally {
-        isThinking.value = false;
+        isThinking.value = false
       }
     }
 
     // Methods
     function toggleExpanded() {
       // Cycle through bubble states: full -> small -> hidden -> full
-      const currentSize = bubbleSize.value;
-      let nextSize;
-      
+      const currentSize = bubbleSize.value
+      let nextSize
+
       if (currentSize === 'full') {
-        nextSize = 'small';
-        expanded.value = false; // Close chat if open
+        nextSize = 'small'
+        expanded.value = false // Close chat if open
       } else if (currentSize === 'small') {
-        nextSize = 'hidden';
-        expanded.value = false;
-      } else { // hidden
-        nextSize = 'full';
-        expanded.value = true; // Open chat when returning to full
+        nextSize = 'hidden'
+        expanded.value = false
+      } else {
+        // hidden
+        nextSize = 'full'
+        expanded.value = true // Open chat when returning to full
       }
-      
+
       // Update the setting
-      store.updateSettings({ fairyBubbleSize: nextSize });
-      
+      store.updateSettings({ fairyBubbleSize: nextSize })
+
       // Initialize chat if expanding to full mode
       if (nextSize === 'full') {
-        expanded.value = true;
-        initializeChat();
+        expanded.value = true
+        initializeChat()
         nextTick(() => {
           try {
-            const inputEl = chatInputEl.value || document.querySelector('.fairy-input');
-            inputEl?.focus?.();
-            autoResizeInput();
+            const inputEl =
+              chatInputEl.value || document.querySelector('.fairy-input')
+            inputEl?.focus?.()
+            autoResizeInput()
           } catch {}
-        });
+        })
       } else if (nextSize === 'small') {
         // In small mode, show a brief page-aware message without full chat
-        expanded.value = false;
+        expanded.value = false
         // Could add a small tooltip or brief page context here
       }
     }
-    
+
     // Separate function for opening full chat (used by other parts of the app)
     function openFullChat() {
-      store.updateSettings({ fairyBubbleSize: 'full' });
-      expanded.value = true;
-      initializeChat();
+      store.updateSettings({ fairyBubbleSize: 'full' })
+      expanded.value = true
+      initializeChat()
       nextTick(() => {
         try {
-          const inputEl = chatInputEl.value || document.querySelector('.fairy-input');
-          inputEl?.focus?.();
-          autoResizeInput();
+          const inputEl =
+            chatInputEl.value || document.querySelector('.fairy-input')
+          inputEl?.focus?.()
+          autoResizeInput()
         } catch {}
-      });
+      })
     }
-    
+
     // Helper functions for UI labels
     function getNextSizeLabel() {
-      const currentSize = bubbleSize.value;
-      if (currentSize === 'full') return 'small';
-      if (currentSize === 'small') return 'hidden';
-      return 'full';
+      const currentSize = bubbleSize.value
+      if (currentSize === 'full') return 'small'
+      if (currentSize === 'small') return 'hidden'
+      return 'full'
     }
-    
+
     function getAriaLabel() {
-      const currentSize = bubbleSize.value;
-      const nextSize = getNextSizeLabel();
-      
+      const currentSize = bubbleSize.value
+      const nextSize = getNextSizeLabel()
+
       if (expanded.value) {
-        return `AI assistant chat open. Click to make ${nextSize}.`;
+        return `AI assistant chat open. Click to make ${nextSize}.`
       } else if (currentSize === 'full') {
-        return `AI assistant with chat bubble visible. Click to make ${nextSize}.`;
+        return `AI assistant with chat bubble visible. Click to make ${nextSize}.`
       } else if (currentSize === 'small') {
-        return `AI assistant in small page-aware mode. Click to hide chat bubble.`;
+        return `AI assistant in small page-aware mode. Click to hide chat bubble.`
       } else {
-        return `AI assistant with chat bubble hidden. Click to show full mode.`;
+        return `AI assistant with chat bubble hidden. Click to show full mode.`
       }
     }
 
     function closeExpanded() {
-      expanded.value = false;
-      currentMessage.value = null;
+      expanded.value = false
+      currentMessage.value = null
     }
 
     async function initializeChat() {
@@ -889,297 +1010,318 @@ export default {
         // Add welcome message
         const welcomeMessage = {
           id: Date.now(),
-          type: "ai",
+          type: 'ai',
           content:
             "Hi! I'm NAVI, your AI career fairy! [MAGIC] I can help with resumes, job searches, interviews, and more. What would you like to work on?",
           timestamp: new Date(),
-        };
-        chatMessages.value.push(welcomeMessage);
-        
+        }
+        chatMessages.value.push(welcomeMessage)
+
         // Speak welcome message if TTS is enabled
         if (ttsEnabled.value) {
-          setTimeout(() => speakMessage(welcomeMessage.content, welcomeMessage.id), 500);
+          setTimeout(
+            () => speakMessage(welcomeMessage.content, welcomeMessage.id),
+            500
+          )
         }
 
         // Add context-specific tip
-        const contextTip = contextMessages[currentPath()];
+        const contextTip = contextMessages[currentPath()]
         if (contextTip) {
           setTimeout(() => {
             const tipMessage = {
               id: Date.now(),
-              type: "system",
+              type: 'system',
               content: contextTip.text,
               timestamp: new Date(),
-            };
-            chatMessages.value.push(tipMessage);
-            
+            }
+            chatMessages.value.push(tipMessage)
+
             // Speak context tip if TTS is enabled (delay to avoid overlap)
             if (ttsEnabled.value) {
-              setTimeout(() => speakMessage(tipMessage.content, tipMessage.id), 1500);
+              setTimeout(
+                () => speakMessage(tipMessage.content, tipMessage.id),
+                1500
+              )
             }
-          }, 1000);
+          }, 1000)
         }
       }
 
-      await nextTick();
-      scrollToBottomIfNear();
+      await nextTick()
+      scrollToBottomIfNear()
     }
 
     async function sendMessage() {
-      if (!userInput.value.trim() || isProcessing.value) return;
+      if (!userInput.value.trim() || isProcessing.value) return
 
-      const message = userInput.value.trim();
-      userInput.value = "";
+      const message = userInput.value.trim()
+      userInput.value = ''
 
       // Add user message
       chatMessages.value.push({
         id: Date.now(),
-        type: "user",
+        type: 'user',
         content: message,
         timestamp: new Date(),
-      });
+      })
 
       // Check for easter eggs
       if (
-        message.toLowerCase().includes("konami") ||
-        message.toLowerCase().includes("↑↑↓↓←→←→ba")
+        message.toLowerCase().includes('konami') ||
+        message.toLowerCase().includes('↑↑↓↓←→←→ba')
       ) {
-        triggerKonamiEasterEgg();
-        return;
+        triggerKonamiEasterEgg()
+        return
       }
 
       // Show thinking state
-      isThinking.value = true;
-      isProcessing.value = true;
+      isThinking.value = true
+      isProcessing.value = true
 
       try {
         // Ensure AI is ready
-        const aiReady = await ensureAIReady();
+        const aiReady = await ensureAIReady()
         if (!aiReady) {
-          throw new Error('AI services not available');
+          throw new Error('AI services not available')
         }
 
         // Use AI integration for response with enhanced context
-        const response = await aiIntegration?.triggerAIAction("realtime_chat", {
+        const response = await aiIntegration?.triggerAIAction('realtime_chat', {
           message: message,
           context: {
             page: currentPath(),
             userProfile: store?.user || {}, // Include user profile data
             chatHistory: chatMessages.value.slice(-5), // Last 5 messages for context
             sessionId: `fairy-${Date.now()}`,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
           },
-        });
+        })
 
         if (response && response.content) {
           const aiMessage = {
             id: Date.now(),
-            type: "ai",
+            type: 'ai',
             content: normalizeContentForDisplay(response.content),
             timestamp: new Date(),
-            metadata: response.metadata || {}
-          };
-          chatMessages.value.push(aiMessage);
-          
+            metadata: response.metadata || {},
+          }
+          chatMessages.value.push(aiMessage)
+
           // Speak the response if TTS is enabled
           if (ttsEnabled.value) {
-            await speakMessage(aiMessage.content, aiMessage.id);
+            await speakMessage(aiMessage.content, aiMessage.id)
           }
         } else {
           // Enhanced fallback with contextual responses
-          const contextualResponse = getContextualFallbackResponse(message);
+          const contextualResponse = getContextualFallbackResponse(message)
           const fallbackMessage = {
             id: Date.now(),
-            type: "ai",
+            type: 'ai',
             content: contextualResponse,
             timestamp: new Date(),
-          };
-          chatMessages.value.push(fallbackMessage);
-          
+          }
+          chatMessages.value.push(fallbackMessage)
+
           // Speak the fallback response if TTS is enabled
           if (ttsEnabled.value) {
-            await speakMessage(fallbackMessage.content, fallbackMessage.id);
+            await speakMessage(fallbackMessage.content, fallbackMessage.id)
           }
         }
-      } catch (error) {        
-        logger.error("Fairy chat error:", error);
-        
+      } catch (error) {
+        logger.error('Fairy chat error:', error)
+
         // Enhanced error handling with specific error messages
-        let errorResponse = "Oops! Something went wrong. Let me try that again! 🔧";
-        
+        let errorResponse =
+          'Oops! Something went wrong. Let me try that again! 🔧'
+
         if (error.message.includes('API key')) {
-          errorResponse = "I need an API key to work properly. Please check your settings! ⚙️";
+          errorResponse =
+            'I need an API key to work properly. Please check your settings! ⚙️'
         } else if (error.message.includes('network')) {
-          errorResponse = "I'm having trouble connecting. Please check your internet connection! 🌐";
-        } else if (error.message.includes('quota') || error.message.includes('limit')) {
-          errorResponse = "I've reached my usage limit for now. Please try again later! ⏰";
+          errorResponse =
+            "I'm having trouble connecting. Please check your internet connection! 🌐"
+        } else if (
+          error.message.includes('quota') ||
+          error.message.includes('limit')
+        ) {
+          errorResponse =
+            "I've reached my usage limit for now. Please try again later! ⏰"
         }
-        
+
         chatMessages.value.push({
           id: Date.now(),
-          type: "ai",
+          type: 'ai',
           content: errorResponse,
           timestamp: new Date(),
-        });
+        })
       } finally {
-        isThinking.value = false;
-        isProcessing.value = false;
-        await nextTick();
-        scrollToBottomIfNear();
+        isThinking.value = false
+        isProcessing.value = false
+        await nextTick()
+        scrollToBottomIfNear()
       }
     }
 
     // Helper function for contextual fallback responses
     function getContextualFallbackResponse(message) {
-      const lowerMessage = message.toLowerCase();
-      
+      const lowerMessage = message.toLowerCase()
+
       if (lowerMessage.includes('resume') || lowerMessage.includes('cv')) {
-        return "I'd love to help with your resume! Try uploading it or ask me specific questions about resume building. ✨";
-      } else if (lowerMessage.includes('job') || lowerMessage.includes('career')) {
-        return "Let's work on your career goals! I can help you find jobs, analyze matches, or prepare for interviews. 🎯";
+        return "I'd love to help with your resume! Try uploading it or ask me specific questions about resume building. ✨"
+      } else if (
+        lowerMessage.includes('job') ||
+        lowerMessage.includes('career')
+      ) {
+        return "Let's work on your career goals! I can help you find jobs, analyze matches, or prepare for interviews. 🎯"
       } else if (lowerMessage.includes('interview')) {
-        return "Interview prep is one of my specialties! Would you like to practice questions or get tips for a specific role? 🎤";
-      } else if (lowerMessage.includes('skill') || lowerMessage.includes('learn')) {
-        return "Skill development is key to career growth! Tell me about your current skills or what you'd like to learn. 📚";
+        return 'Interview prep is one of my specialties! Would you like to practice questions or get tips for a specific role? 🎤'
+      } else if (
+        lowerMessage.includes('skill') ||
+        lowerMessage.includes('learn')
+      ) {
+        return "Skill development is key to career growth! Tell me about your current skills or what you'd like to learn. 📚"
       } else if (lowerMessage.includes('portfolio')) {
-        return "A great portfolio showcases your best work! I can help you organize and present your projects effectively. 🎨";
+        return 'A great portfolio showcases your best work! I can help you organize and present your projects effectively. 🎨'
       } else {
-        return "I'm here to help with your gaming career! Try asking me about resumes, jobs, interviews, or skill development. ✨";
+        return "I'm here to help with your gaming career! Try asking me about resumes, jobs, interviews, or skill development. ✨"
       }
     }
 
     // Listen for settings updates (e.g., API key added in settings panel)
     try {
-    window.addEventListener('app-settings-updated', async (e) => {
+      window.addEventListener('app-settings-updated', async e => {
         try {
-          const detail = e?.detail || {};
-          const newKey = detail.geminiApiKey || await resolveGeminiApiKey();
+          const detail = e?.detail || {}
+          const newKey = detail.geminiApiKey || (await resolveGeminiApiKey())
           if (newKey && !isAIInitialized.value) {
-            await initializeAIServices();
+            await initializeAIServices()
           }
-      hasGeminiApiKey.value = !!newKey;
+          hasGeminiApiKey.value = !!newKey
         } catch {}
-      });
+      })
     } catch {}
 
     async function toggleVoiceInput() {
       // Initialize AI if not ready
       if (!isAIInitialized.value) {
-        await initializeAIServices();
+        await initializeAIServices()
       }
 
       if (!isMultimediaReady()) {
-        toast.warning("AI services not ready. Check your API key in settings.");
-        return;
+        toast.warning('AI services not ready. Check your API key in settings.')
+        return
       }
 
       try {
         // Toggle actual voice streaming with Gemini AI
-        await toggleAudioStreaming();
-        isListening.value = multimediaState.isAudioStreaming;
-        
+        await toggleAudioStreaming()
+        isListening.value = multimediaState.isAudioStreaming
+
         // Show current transcription if available
         if (currentTranscription.value) {
-          userInput.value = currentTranscription.value;
+          userInput.value = currentTranscription.value
         }
       } catch (error) {
-        logger.error("Voice input error:", error);
-        isListening.value = false;
-        toast.error("Voice input failed. Please check microphone permissions.");
+        logger.error('Voice input error:', error)
+        isListening.value = false
+        toast.error('Voice input failed. Please check microphone permissions.')
       }
     }
 
     function openCamera() {
-      cameraModalOpen.value = true;
+      cameraModalOpen.value = true
       nextTick(async () => {
         try {
           // Focus the modal container for accessibility
-          const el = vmInstance?.proxy?.$refs?.cameraModalEl;
+          const el = vmInstance?.proxy?.$refs?.cameraModalEl
           if (el && typeof el.focus === 'function') {
-            el.focus();
+            el.focus()
           }
         } catch {}
-        await initializeCamera();
-      });
+        await initializeCamera()
+      })
     }
 
     async function initializeCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { width: 640, height: 480 },
-        });
+        })
         if (cameraVideo.value) {
-          cameraVideo.value.srcObject = stream;
+          cameraVideo.value.srcObject = stream
         }
-      } catch (error) {        logger.error("Camera error:", error);
-        toast.error("Camera access denied or not available");
-        closeCameraModal();
+      } catch (error) {
+        logger.error('Camera error:', error)
+        toast.error('Camera access denied or not available')
+        closeCameraModal()
       }
     }
 
     async function captureImage() {
-      if (!cameraVideo.value || !cameraCanvas.value) return;
+      if (!cameraVideo.value || !cameraCanvas.value) return
 
-      const canvas = cameraCanvas.value;
-      const video = cameraVideo.value;
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      const canvas = cameraCanvas.value
+      const video = cameraVideo.value
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
 
-      const context = canvas.getContext("2d");
-      context.drawImage(video, 0, 0);
+      const context = canvas.getContext('2d')
+      context.drawImage(video, 0, 0)
 
       // Convert to blob and process with AI
-      canvas.toBlob(async (_blob) => {
+      canvas.toBlob(async _blob => {
         try {
           // This would send the image to Google AI for analysis
           chatMessages.value.push({
             id: Date.now(),
-            type: "ai",
+            type: 'ai',
             content:
-              "Great photo! I can see your setup. Here are some tips based on what I observed... 📸✨",
+              'Great photo! I can see your setup. Here are some tips based on what I observed... 📸✨',
             timestamp: new Date(),
-          });
+          })
 
-          closeCameraModal();
-          await nextTick();
-          scrollToBottomIfNear();
-        } catch (error) {          logger.error("Image analysis error:", error);
-          toast.error("Failed to analyze image");
+          closeCameraModal()
+          await nextTick()
+          scrollToBottomIfNear()
+        } catch (error) {
+          logger.error('Image analysis error:', error)
+          toast.error('Failed to analyze image')
         }
-      });
+      })
     }
 
     function closeCameraModal() {
-      cameraModalOpen.value = false;
+      cameraModalOpen.value = false
       if (cameraVideo.value?.srcObject) {
-        const tracks = cameraVideo.value.srcObject.getTracks();
-        tracks.forEach((track) => track.stop());
+        const tracks = cameraVideo.value.srcObject.getTracks()
+        tracks.forEach(track => track.stop())
       }
     }
 
     function onCameraModalKeydown(e) {
       // Trap focus within the camera modal when open
-      if (!cameraModalOpen.value) return;
-      if (e.key !== 'Tab') return;
+      if (!cameraModalOpen.value) return
+      if (e.key !== 'Tab') return
       try {
-        const root = cameraModalEl.value;
-        if (!root) return;
+        const root = cameraModalEl.value
+        if (!root) return
         const focusable = root.querySelectorAll(
           'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
-        );
-        if (!focusable.length) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        const active = document.activeElement;
+        )
+        if (!focusable.length) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        const active = document.activeElement
         if (e.shiftKey) {
           if (active === first || !root.contains(active)) {
-            last.focus();
-            e.preventDefault();
+            last.focus()
+            e.preventDefault()
           }
         } else {
           if (active === last) {
-            first.focus();
-            e.preventDefault();
+            first.focus()
+            e.preventDefault()
           }
         }
       } catch {}
@@ -1187,166 +1329,168 @@ export default {
 
     function uploadFile() {
       // Create file input
-      const input = document.createElement("input");
-      input.type = "file";
-      input.accept = "image/*,.pdf,.doc,.docx";
-      input.onchange = async (e) => {
-        const file = e?.target?.files?.[0];
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.accept = 'image/*,.pdf,.doc,.docx'
+      input.onchange = async e => {
+        const file = e?.target?.files?.[0]
         if (file) {
           chatMessages.value.push({
             id: Date.now(),
-            type: "system",
+            type: 'system',
             content: `File uploaded: ${file.name}`,
             timestamp: new Date(),
-          });
+          })
 
           // Process file with AI
           setTimeout(() => {
             chatMessages.value.push({
               id: Date.now(),
-              type: "ai",
-              content: `I've analyzed your ${file.type?.includes("image") ? "image" : "document"}. Here are my insights... 📄✨`,
+              type: 'ai',
+              content: `I've analyzed your ${file.type?.includes('image') ? 'image' : 'document'}. Here are my insights... 📄✨`,
               timestamp: new Date(),
-            });
-          }, 2000);
+            })
+          }, 2000)
         }
-      };
-      input.click();
+      }
+      input.click()
     }
 
     async function executeAction(action) {
-      logger.info("Executing fairy action:", action.id);
+      logger.info('Executing fairy action:', action.id)
 
       switch (action.id) {
-        case "start_resume":
-          window.location.href = "/resume";
-          break;
-        case "find_jobs":
-          window.location.href = "/jobs";
-          break;
-        case "ai_optimize":
-        case "suggest_skills":
-        case "analyze_match":
-        case "salary_insights":
-        case "mock_interview":
-        case "review_answers": {
+        case 'start_resume':
+          window.location.href = '/resume'
+          break
+        case 'find_jobs':
+          window.location.href = '/jobs'
+          break
+        case 'ai_optimize':
+        case 'suggest_skills':
+        case 'analyze_match':
+        case 'salary_insights':
+        case 'mock_interview':
+        case 'review_answers': {
           // Trigger AI action through integration
-          const result = await aiIntegration?.triggerAIAction(
-            action.id,
-            {
-              context: route.path,
-              action: action.id,
-            },
-          );
+          const result = await aiIntegration?.triggerAIAction(action.id, {
+            context: route.path,
+            action: action.id,
+          })
           if (result) {
-            toast.success(`${action.label} completed!`);
-            logger.debug?.("Fairy action result:", result);
+            toast.success(`${action.label} completed!`)
+            logger.debug?.('Fairy action result:', result)
           }
-          break;
+          break
         }
       }
 
-      currentMessage.value = null;
+      currentMessage.value = null
     }
 
     function triggerKonamiEasterEgg() {
       // Add konami mode to body
-      document.body.classList.add("konami-mode");
+      document.body.classList.add('konami-mode')
 
       chatMessages.value.push({
         id: Date.now(),
-        type: "ai",
+        type: 'ai',
         content:
           "[SUCCESS] KONAMI CODE ACTIVATED! You've unlocked Rainbow Mode! Your gaming knowledge is legendary! 🌈✨🎮",
         timestamp: new Date(),
-      });
+      })
 
       // Remove after 10 seconds
       setTimeout(() => {
-        document.body.classList.remove("konami-mode");
-      }, 10000);
+        document.body.classList.remove('konami-mode')
+      }, 10000)
 
       // Achievement unlock effect
-      toast.success("[TROPHY] Achievement Unlocked: Secret Code Master!");
+      toast.success('[TROPHY] Achievement Unlocked: Secret Code Master!')
     }
 
     function showContextualTip() {
-      const tip = contextMessages[currentPath()];
+      const tip = contextMessages[currentPath()]
       if (tip) {
-        currentMessage.value = tip;
-        hasNotifications.value = true;
+        currentMessage.value = tip
+        hasNotifications.value = true
 
         // Auto-hide after 10 seconds
         setTimeout(() => {
           if (currentMessage.value === tip) {
-            currentMessage.value = null;
-            hasNotifications.value = false;
+            currentMessage.value = null
+            hasNotifications.value = false
           }
-        }, 10000);
+        }, 10000)
       }
     }
 
     // Send quick AI message using the multimedia AI service
     async function sendQuickAIMessage() {
       try {
-        isThinking.value = true;
-        const quickMessage = "Give me a quick tip for my current page";
-        
+        isThinking.value = true
+        const quickMessage = 'Give me a quick tip for my current page'
+
         // Use the AI message service
-        await sendAIMessage(quickMessage);
-        
+        await sendAIMessage(quickMessage)
+
         // Add user message to chat
         addAIUserMessage({
           text: quickMessage,
           timestamp: Date.now(),
-          type: 'user'
-        });
+          type: 'user',
+        })
       } catch (error) {
-        logger.error("Quick AI message error:", error);
-        toast.error("Failed to send AI message");
+        logger.error('Quick AI message error:', error)
+        toast.error('Failed to send AI message')
       } finally {
-        isThinking.value = false;
+        isThinking.value = false
       }
     }
-    
+
     // TTS Functions
     function toggleTTS() {
-      ttsEnabled.value = !ttsEnabled.value;
-      
+      ttsEnabled.value = !ttsEnabled.value
+
       // Save preference to localStorage
-      localStorage.setItem('fairy-tts-enabled', ttsEnabled.value.toString());
-      
+      localStorage.setItem('fairy-tts-enabled', ttsEnabled.value.toString())
+
       // Stop current speech if disabling
       if (!ttsEnabled.value && isSpeaking.value) {
-        stopSpeaking();
-        isSpeaking.value = false;
-        currentSpeakingMessageId.value = null;
+        stopSpeaking()
+        isSpeaking.value = false
+        currentSpeakingMessageId.value = null
       }
-      
-      toast.info(ttsEnabled.value ? "Text-to-speech enabled" : "Text-to-speech disabled");
+
+      toast.info(
+        ttsEnabled.value ? 'Text-to-speech enabled' : 'Text-to-speech disabled'
+      )
     }
-    
+
     async function speakMessage(text, messageId = null) {
       if (!ttsEnabled.value || !text || !isVoiceSupported()) {
-        return;
+        return
       }
-      
+
       try {
         // Clean up the text for speech
-        const cleanText = cleanTextForSpeech(text);
-        
+        const cleanText = cleanTextForSpeech(text)
+
         if (cleanText.length === 0) {
-          return;
+          return
         }
-        
-        isSpeaking.value = true;
+
+        isSpeaking.value = true
         if (messageId) {
-          currentSpeakingMessageId.value = messageId;
+          currentSpeakingMessageId.value = messageId
         }
-        
+
         // Get current settings from localStorage or use defaults
-        const savedSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-        const resolvedKey = savedSettings.geminiApiKey || await resolveGeminiApiKey();
+        const savedSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+        const resolvedKey =
+          savedSettings.geminiApiKey || (await resolveGeminiApiKey())
         const voiceSettings = {
           rate: ttsSettings.value.rate,
           pitch: ttsSettings.value.pitch,
@@ -1357,259 +1501,289 @@ export default {
           language: savedSettings.language || 'en-US',
           lang: savedSettings.language || 'en-US',
           // Prefer explicit voice when set in settings
-          voice: (ttsSettings.value.provider === 'system')
-            ? (savedSettings.ttsVoice || null)
-            : (savedSettings.geminiVoice || null)
-        };
-        
-        logger.debug('TTS Settings:', voiceSettings);
-        logger.debug('Speaking with provider:', voiceSettings.provider);
-        logger.debug('API Key available:', !!voiceSettings.apiKey, voiceSettings.apiKey ? `(${voiceSettings.apiKey.slice(0, 8)}...)` : '(none)');
+          voice:
+            ttsSettings.value.provider === 'system'
+              ? savedSettings.ttsVoice || null
+              : savedSettings.geminiVoice || null,
+        }
+
+        logger.debug('TTS Settings:', voiceSettings)
+        logger.debug('Speaking with provider:', voiceSettings.provider)
+        logger.debug(
+          'API Key available:',
+          !!voiceSettings.apiKey,
+          voiceSettings.apiKey
+            ? `(${voiceSettings.apiKey.slice(0, 8)}...)`
+            : '(none)'
+        )
         // Voice routing preferences debug removed due to import issue
-        
-        await speak(cleanText, voiceSettings);
-        
+
+        await speak(cleanText, voiceSettings)
       } catch (error) {
-        logger.error('TTS error:', error);
-        toast.warning('Failed to speak message');
+        logger.error('TTS error:', error)
+        toast.warning('Failed to speak message')
       } finally {
-        isSpeaking.value = false;
-        currentSpeakingMessageId.value = null;
+        isSpeaking.value = false
+        currentSpeakingMessageId.value = null
       }
     }
-    
+
     async function toggleMessageTTS(message) {
       // If this message is currently speaking, stop it
       if (currentSpeakingMessageId.value === message.id) {
-        stopSpeaking();
-        isSpeaking.value = false;
-        currentSpeakingMessageId.value = null;
-        return;
+        stopSpeaking()
+        isSpeaking.value = false
+        currentSpeakingMessageId.value = null
+        return
       }
-      
+
       // If another message is speaking, stop it first
       if (isSpeaking.value) {
-        stopSpeaking();
-        isSpeaking.value = false;
-        currentSpeakingMessageId.value = null;
-        
+        stopSpeaking()
+        isSpeaking.value = false
+        currentSpeakingMessageId.value = null
+
         // Small delay to ensure clean stop
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 100))
       }
-      
+
       // Start speaking this message
-      await speakMessage(message.content, message.id);
+      await speakMessage(message.content, message.id)
     }
-    
+
     function cleanTextForSpeech(text) {
-      if (!text) return '';
-      
+      if (!text) return ''
+
       // First normalize the text in case it's an object
-      const normalizedText = normalizeContentForDisplay(text);
-      
-      return normalizedText
-        // Remove markdown formatting
-        .replace(/\*\*(.*?)\*\*/g, '$1')  // **bold**
-        .replace(/\*(.*?)\*/g, '$1')      // *italic*
-        .replace(/`(.*?)`/g, '$1')        // `code`
-        .replace(/\[(.*?)\]\(.*?\)/g, '$1') // [text](url)
-        // Remove special tokens and formatting
-        .replace(/\[MAGIC\]/g, '')
-        .replace(/\[SUCCESS\]/g, '')
-        .replace(/\[TROPHY\]/g, '')
-        .replace(/\[object Object\]/gi, '')
-        .replace(/\{.*?\}/g, '')          // Remove JSON objects
-        .replace(/".*?"/g, '')           // Remove quoted strings
-        // Replace emoji codes with words
-        .replace(/✨/g, 'sparkles')
-        .replace(/🎮/g, 'gaming')
-        .replace(/📝/g, 'note')
-        .replace(/🎯/g, 'target')
-        .replace(/🎤/g, 'microphone')
-        .replace(/🏆/g, 'trophy')
-        .replace(/🛠️/g, 'tools')
-        .replace(/🤖/g, 'robot')
-        .replace(/💬/g, 'chat')
-        .replace(/📸/g, 'camera')
-        .replace(/🗣️/g, 'speaking')
-        .replace(/🌈/g, 'rainbow')
-        .replace(/🔧/g, 'wrench')
-        .replace(/🔊/g, 'sound on')
-        .replace(/🔇/g, 'sound off')
-        // Clean up extra spaces and newlines
-        .replace(/\s+/g, ' ')
-        .replace(/\n+/g, '. ')           // Replace newlines with periods
-        .replace(/\.\.+/g, '.')         // Remove multiple periods
-        .trim();
+      const normalizedText = normalizeContentForDisplay(text)
+
+      return (
+        normalizedText
+          // Remove markdown formatting
+          .replace(/\*\*(.*?)\*\*/g, '$1') // **bold**
+          .replace(/\*(.*?)\*/g, '$1') // *italic*
+          .replace(/`(.*?)`/g, '$1') // `code`
+          .replace(/\[(.*?)\]\(.*?\)/g, '$1') // [text](url)
+          // Remove special tokens and formatting
+          .replace(/\[MAGIC\]/g, '')
+          .replace(/\[SUCCESS\]/g, '')
+          .replace(/\[TROPHY\]/g, '')
+          .replace(/\[object Object\]/gi, '')
+          .replace(/\{.*?\}/g, '') // Remove JSON objects
+          .replace(/".*?"/g, '') // Remove quoted strings
+          // Replace emoji codes with words
+          .replace(/✨/g, 'sparkles')
+          .replace(/🎮/g, 'gaming')
+          .replace(/📝/g, 'note')
+          .replace(/🎯/g, 'target')
+          .replace(/🎤/g, 'microphone')
+          .replace(/🏆/g, 'trophy')
+          .replace(/🛠️/g, 'tools')
+          .replace(/🤖/g, 'robot')
+          .replace(/💬/g, 'chat')
+          .replace(/📸/g, 'camera')
+          .replace(/🗣️/g, 'speaking')
+          .replace(/🌈/g, 'rainbow')
+          .replace(/🔧/g, 'wrench')
+          .replace(/🔊/g, 'sound on')
+          .replace(/🔇/g, 'sound off')
+          // Clean up extra spaces and newlines
+          .replace(/\s+/g, ' ')
+          .replace(/\n+/g, '. ') // Replace newlines with periods
+          .replace(/\.\.+/g, '.') // Remove multiple periods
+          .trim()
+      )
     }
-    
+
     function loadTTSPreferences() {
       try {
         // Load fairy-specific TTS enabled state
-        const saved = localStorage.getItem('fairy-tts-enabled');
+        const saved = localStorage.getItem('fairy-tts-enabled')
         if (saved !== null) {
-          ttsEnabled.value = saved === 'true';
+          ttsEnabled.value = saved === 'true'
         } else {
           // Default to voiceMode setting if fairy-specific setting doesn't exist
-          const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-          ttsEnabled.value = appSettings.voiceMode || false;
+          const appSettings = JSON.parse(
+            localStorage.getItem('app-settings') || '{}'
+          )
+          ttsEnabled.value = appSettings.voiceMode || false
         }
-        
+
         // Load TTS settings from main app settings
-        const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-        
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+
         // Use proper setting names from schema
-        ttsSettings.value.rate = appSettings.speechRate || 0.85;
-        ttsSettings.value.pitch = appSettings.speechPitch || 1.0;
-        ttsSettings.value.volume = appSettings.speechVolume || 0.8;
-        ttsSettings.value.provider = appSettings.ttsProvider || 'system';
-        ttsSettings.value.voice = appSettings.ttsVoice || '';
-        compactUI.value = Boolean(appSettings.compactUI);
-        
+        ttsSettings.value.rate = appSettings.speechRate || 0.85
+        ttsSettings.value.pitch = appSettings.speechPitch || 1.0
+        ttsSettings.value.volume = appSettings.speechVolume || 0.8
+        ttsSettings.value.provider = appSettings.ttsProvider || 'system'
+        ttsSettings.value.voice = appSettings.ttsVoice || ''
+        compactUI.value = Boolean(appSettings.compactUI)
+
         logger.debug('Loaded TTS settings from localStorage:', {
           ttsProvider: appSettings.ttsProvider,
           speechRate: appSettings.speechRate,
-          current: ttsSettings.value
-        });
-        
+          current: ttsSettings.value,
+        })
+
         logger.debug('Loaded TTS settings:', {
           enabled: ttsEnabled.value,
           provider: ttsSettings.value.provider,
           rate: ttsSettings.value.rate,
-          volume: ttsSettings.value.volume
-        });
-        
+          volume: ttsSettings.value.volume,
+        })
+
         // Update voice routing with loaded settings
         setVoiceRoutingPreferences({
           ttsProvider: ttsSettings.value.provider,
           sttProvider: appSettings.sttProvider || 'system',
           lang: appSettings.voiceLang || appSettings.language || 'en-US',
           speakerDeviceId: appSettings.selectedSpeakerId || '',
-          micDeviceId: appSettings.selectedMicId || ''
-        });
-        
+          micDeviceId: appSettings.selectedMicId || '',
+        })
       } catch (error) {
-        logger.error('Failed to load TTS preferences:', error);
+        logger.error('Failed to load TTS preferences:', error)
       }
     }
-    
+
     function saveTTSSettings() {
       try {
-        const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-        
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+
         // Save to proper setting names from schema
-        appSettings.speechRate = ttsSettings.value.rate;
-        appSettings.speechPitch = ttsSettings.value.pitch;
-        appSettings.speechVolume = ttsSettings.value.volume;
-        appSettings.ttsProvider = ttsSettings.value.provider;
-        appSettings.ttsVoice = ttsSettings.value.voice;
-        
+        appSettings.speechRate = ttsSettings.value.rate
+        appSettings.speechPitch = ttsSettings.value.pitch
+        appSettings.speechVolume = ttsSettings.value.volume
+        appSettings.ttsProvider = ttsSettings.value.provider
+        appSettings.ttsVoice = ttsSettings.value.voice
+
         // Also update voiceMode if this is the first time setting TTS
         if (ttsEnabled.value && !appSettings.voiceMode) {
-          appSettings.voiceMode = true;
+          appSettings.voiceMode = true
         }
-        
-        localStorage.setItem('app-settings', JSON.stringify(appSettings));
-        
+
+        localStorage.setItem('app-settings', JSON.stringify(appSettings))
+
         // Update voice routing preferences with all current settings
         setVoiceRoutingPreferences({
           ttsProvider: ttsSettings.value.provider,
           sttProvider: appSettings.sttProvider || 'system',
           lang: appSettings.voiceLang || appSettings.language || 'en-US',
           speakerDeviceId: appSettings.selectedSpeakerId || '',
-          micDeviceId: appSettings.selectedMicId || ''
-        });
-        
+          micDeviceId: appSettings.selectedMicId || '',
+        })
+
         // Sync compact UI in case it changed externally
         if (typeof appSettings.compactUI === 'boolean') {
-          compactUI.value = appSettings.compactUI;
+          compactUI.value = appSettings.compactUI
         }
 
         logger.info('TTS settings saved and routing updated:', {
           provider: ttsSettings.value.provider,
           rate: ttsSettings.value.rate,
           volume: ttsSettings.value.volume,
-          voiceMode: appSettings.voiceMode
-        });
-        
-        toast.success(`TTS provider updated to ${ttsSettings.value.provider === 'gemini' ? 'Google AI (Gemini)' : 'System TTS'}`);
+          voiceMode: appSettings.voiceMode,
+        })
+
+        toast.success(
+          `TTS provider updated to ${ttsSettings.value.provider === 'gemini' ? 'Google AI (Gemini)' : 'System TTS'}`
+        )
       } catch (error) {
-        logger.error('Failed to save TTS settings:', error);
-        toast.error('Failed to save TTS settings');
+        logger.error('Failed to save TTS settings:', error)
+        toast.error('Failed to save TTS settings')
       }
     }
 
     function saveUISettings(compact) {
       try {
-        const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-        appSettings.compactUI = Boolean(compact);
-        localStorage.setItem('app-settings', JSON.stringify(appSettings));
-        compactUI.value = Boolean(compact);
-        toast.info(`Compact UI ${compactUI.value ? 'enabled' : 'disabled'}`);
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+        appSettings.compactUI = Boolean(compact)
+        localStorage.setItem('app-settings', JSON.stringify(appSettings))
+        compactUI.value = Boolean(compact)
+        toast.info(`Compact UI ${compactUI.value ? 'enabled' : 'disabled'}`)
       } catch (error) {
-        logger.error('Failed to save UI settings:', error);
+        logger.error('Failed to save UI settings:', error)
       }
     }
-    
+
     async function testTTS() {
       if (isSpeaking.value) {
-        stopSpeaking();
-        isSpeaking.value = false;
-        currentSpeakingMessageId.value = null;
-        return;
+        stopSpeaking()
+        isSpeaking.value = false
+        currentSpeakingMessageId.value = null
+        return
       }
-      
-      const resolvedKey = await resolveGeminiApiKey();
-      const hasApiKey = Boolean(resolvedKey);
-      
-      let testMessage;
+
+      const resolvedKey = await resolveGeminiApiKey()
+      const hasApiKey = Boolean(resolvedKey)
+
+      let testMessage
       if (ttsSettings.value.provider === 'gemini') {
-        testMessage = hasApiKey 
-          ? "Hello! This is Google AI Gemini text-to-speech. How natural do I sound?"
-          : "Google AI TTS selected but no API key found. Using system TTS instead.";
+        testMessage = hasApiKey
+          ? 'Hello! This is Google AI Gemini text-to-speech. How natural do I sound?'
+          : 'Google AI TTS selected but no API key found. Using system TTS instead.'
       } else {
-        testMessage = "Hello! This is your browser's system text-to-speech. Clear and reliable!";
+        testMessage =
+          "Hello! This is your browser's system text-to-speech. Clear and reliable!"
       }
-      
-      await speakMessage(testMessage); // Don't pass messageId for test messages
+
+      await speakMessage(testMessage) // Don't pass messageId for test messages
     }
-    
-  // (removed redundant async getProviderInfo definition)
+
+    // (removed redundant async getProviderInfo definition)
 
     // Update video streaming state tracking
-    watch(() => multimediaState.isVideoStreaming, (newValue) => {
-      isVideoStreaming.value = newValue;
-    });
-
-    // Update audio streaming state tracking  
-    watch(() => multimediaState.isAudioStreaming, (newValue) => {
-      isListening.value = newValue;
-    });
-    
-    // Keep latest message and thinking skeleton in view
-    watch(() => isThinking.value, async (thinking) => {
-      if (thinking) {
-        await nextTick();
-        scrollToBottomIfNear();
+    watch(
+      () => multimediaState.isVideoStreaming,
+      newValue => {
+        isVideoStreaming.value = newValue
       }
-    });
-    
+    )
+
+    // Update audio streaming state tracking
+    watch(
+      () => multimediaState.isAudioStreaming,
+      newValue => {
+        isListening.value = newValue
+      }
+    )
+
+    // Keep latest message and thinking skeleton in view
+    watch(
+      () => isThinking.value,
+      async thinking => {
+        if (thinking) {
+          await nextTick()
+          scrollToBottomIfNear()
+        }
+      }
+    )
+
     // Watch for app settings changes and sync TTS settings
     const appSettingsWatcher = () => {
       try {
-        const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-        
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+
         // Only update if settings actually changed
-        const newProvider = appSettings.ttsProvider || 'system';
-        const newRate = appSettings.speechRate || 0.85;
-        const newVolume = appSettings.speechVolume || 0.8;
-        const newCompact = Boolean(appSettings.compactUI);
-        
-        if (newProvider !== ttsSettings.value.provider ||
-            newRate !== ttsSettings.value.rate ||
-            newVolume !== ttsSettings.value.volume ||
-            newCompact !== compactUI.value) {
-          
+        const newProvider = appSettings.ttsProvider || 'system'
+        const newRate = appSettings.speechRate || 0.85
+        const newVolume = appSettings.speechVolume || 0.8
+        const newCompact = Boolean(appSettings.compactUI)
+
+        if (
+          newProvider !== ttsSettings.value.provider ||
+          newRate !== ttsSettings.value.rate ||
+          newVolume !== ttsSettings.value.volume ||
+          newCompact !== compactUI.value
+        ) {
           logger.debug('App settings changed, syncing UI/TTS settings:', {
             oldProvider: ttsSettings.value.provider,
             newProvider,
@@ -1617,210 +1791,235 @@ export default {
             newRate,
             oldVolume: ttsSettings.value.volume,
             newVolume,
-            compactUI: { old: compactUI.value, new: newCompact }
-          });
-          
-          ttsSettings.value.provider = newProvider;
-          ttsSettings.value.rate = newRate;
-          ttsSettings.value.volume = newVolume;
-          ttsSettings.value.pitch = appSettings.speechPitch || 1.0;
-          ttsSettings.value.voice = appSettings.ttsVoice || '';
-          compactUI.value = newCompact;
-          
+            compactUI: { old: compactUI.value, new: newCompact },
+          })
+
+          ttsSettings.value.provider = newProvider
+          ttsSettings.value.rate = newRate
+          ttsSettings.value.volume = newVolume
+          ttsSettings.value.pitch = appSettings.speechPitch || 1.0
+          ttsSettings.value.voice = appSettings.ttsVoice || ''
+          compactUI.value = newCompact
+
           // Update voice routing
           setVoiceRoutingPreferences({
             ttsProvider: newProvider,
             sttProvider: appSettings.sttProvider || 'system',
-            lang: appSettings.voiceLang || appSettings.language || 'en-US'
-          });
+            lang: appSettings.voiceLang || appSettings.language || 'en-US',
+          })
         }
       } catch (error) {
-        logger.debug('App settings watcher error:', error);
+        logger.debug('App settings watcher error:', error)
       }
-    };
-    
+    }
+
     // Check for settings changes every few seconds
-    let settingsInterval = null;
+    let settingsInterval = null
 
     function showRandomTip() {
-      const tip = fairyTips[Math.floor(Math.random() * fairyTips.length)];
+      const tip = fairyTips[Math.floor(Math.random() * fairyTips.length)]
       currentMessage.value = {
         text: tip,
-        actions: [{ id: "dismiss", label: "Thanks!", icon: "mdi-thumb-up" }],
-      };
-      hasNotifications.value = true;
+        actions: [{ id: 'dismiss', label: 'Thanks!', icon: 'mdi-thumb-up' }],
+      }
+      hasNotifications.value = true
     }
 
     function normalizeContentForDisplay(content) {
-      if (content == null) return "";
-      if (typeof content === 'string') return content;
+      if (content == null) return ''
+      if (typeof content === 'string') return content
       // Common AI response shapes
       if (typeof content === 'object') {
         // Handle Google AI response format
         if (content.candidates && Array.isArray(content.candidates)) {
-          const candidate = content.candidates[0];
+          const candidate = content.candidates[0]
           if (candidate && candidate.content && candidate.content.parts) {
-            return candidate.content.parts.map(part => part.text || '').join('\n');
+            return candidate.content.parts
+              .map(part => part.text || '')
+              .join('\n')
           }
         }
         // Handle other common formats
-        if (typeof content.content === 'string') return content.content;
-        if (typeof content.text === 'string') return content.text;
-        if (typeof content.message === 'string') return content.message;
-        if (typeof content.response === 'string') return content.response;
+        if (typeof content.content === 'string') return content.content
+        if (typeof content.text === 'string') return content.text
+        if (typeof content.message === 'string') return content.message
+        if (typeof content.response === 'string') return content.response
         // Handle array of messages
         if (Array.isArray(content) && content.length > 0) {
-          return content.map(item => normalizeContentForDisplay(item)).join('\n');
+          return content
+            .map(item => normalizeContentForDisplay(item))
+            .join('\n')
         }
         // If it's an object but none of the common properties exist, try to extract meaningful text
-        const meaningfulText = extractMeaningfulText(content);
-        if (meaningfulText) return meaningfulText;
-        
+        const meaningfulText = extractMeaningfulText(content)
+        if (meaningfulText) return meaningfulText
+
         // Last resort - avoid [object Object]
-  try {
-          const jsonStr = JSON.stringify(content, null, 2);
+        try {
+          const jsonStr = JSON.stringify(content, null, 2)
           // If it's a simple object, try to format it nicely
           if (jsonStr.length < 200) {
-            return jsonStr.replace(/[{}"]/g, '').replace(/,\n/g, ', ').trim();
+            return jsonStr.replace(/[{}"]/g, '').replace(/,\n/g, ', ').trim()
           }
-          return 'AI response received (complex format)';
-  } catch {
-          return String(content).replace('[object Object]', 'AI response received');
+          return 'AI response received (complex format)'
+        } catch {
+          return String(content).replace(
+            '[object Object]',
+            'AI response received'
+          )
         }
       }
-      return String(content);
+      return String(content)
     }
-    
+
     function extractMeaningfulText(obj) {
       // Try to find any string property that looks like content
-      const textProps = ['text', 'content', 'message', 'response', 'answer', 'reply', 'output'];
+      const textProps = [
+        'text',
+        'content',
+        'message',
+        'response',
+        'answer',
+        'reply',
+        'output',
+      ]
       for (const prop of textProps) {
         if (obj[prop] && typeof obj[prop] === 'string' && obj[prop].trim()) {
-          return obj[prop];
+          return obj[prop]
         }
       }
-      
+
       // Look for nested objects
       for (const key in obj) {
         if (typeof obj[key] === 'object' && obj[key] !== null) {
-          const nested = extractMeaningfulText(obj[key]);
-          if (nested) return nested;
+          const nested = extractMeaningfulText(obj[key])
+          if (nested) return nested
         }
       }
-      
-      return null;
+
+      return null
     }
 
     function getMessageSegments(content) {
-      const text = normalizeContentForDisplay(content);
-      const segments = [];
+      const text = normalizeContentForDisplay(content)
+      const segments = []
 
-      const parts = text.split(/(`[^`]*`)/g);
-      parts.forEach((part) => {
-        if (!part) return;
+      const parts = text.split(/(`[^`]*`)/g)
+      parts.forEach(part => {
+        if (!part) return
         if (/^`[^`]*`$/.test(part)) {
-          segments.push({ type: "code", text: part.slice(1, -1) });
+          segments.push({ type: 'code', text: part.slice(1, -1) })
         } else {
-          const strongSplit = part.split(/(\*\*[^*]+\*\*)/g);
-          strongSplit.forEach((s) => {
-            if (!s) return;
+          const strongSplit = part.split(/(\*\*[^*]+\*\*)/g)
+          strongSplit.forEach(s => {
+            if (!s) return
             if (/^\*\*[^*]+\*\*$/.test(s)) {
-              segments.push({ type: "strong", text: s.slice(2, -2) });
+              segments.push({ type: 'strong', text: s.slice(2, -2) })
             } else {
-              const emSplit = s.split(/(\*[^*]+\*)/g);
-              emSplit.forEach((e) => {
-                if (!e) return;
+              const emSplit = s.split(/(\*[^*]+\*)/g)
+              emSplit.forEach(e => {
+                if (!e) return
                 if (/^\*[^*]+\*$/.test(e)) {
-                  segments.push({ type: "em", text: e.slice(1, -1) });
+                  segments.push({ type: 'em', text: e.slice(1, -1) })
                 } else {
-                  segments.push({ type: "text", text: e });
+                  segments.push({ type: 'text', text: e })
                 }
-              });
+              })
             }
-          });
+          })
         }
-      });
+      })
 
-      return segments;
+      return segments
     }
 
     function formatTime(timestamp) {
       return new Date(timestamp).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+        hour: '2-digit',
+        minute: '2-digit',
+      })
     }
 
-    const isUserNearBottom = ref(true);
-    const hasNewMessages = ref(false);
+    const isUserNearBottom = ref(true)
+    const hasNewMessages = ref(false)
 
     function updateNearBottomState() {
       try {
-        const el = messagesContainer.value;
-        if (!el) return;
-        const threshold = 30;
-        const delta = el.scrollHeight - el.scrollTop - el.clientHeight;
-        isUserNearBottom.value = delta <= threshold;
+        const el = messagesContainer.value
+        if (!el) return
+        const threshold = 30
+        const delta = el.scrollHeight - el.scrollTop - el.clientHeight
+        isUserNearBottom.value = delta <= threshold
         if (isUserNearBottom.value) {
-          hasNewMessages.value = false;
+          hasNewMessages.value = false
         }
       } catch {}
     }
 
     function scrollToBottom(force = true) {
-      const el = messagesContainer.value;
-      if (!el) return;
+      const el = messagesContainer.value
+      if (!el) return
       if (!force) {
-        updateNearBottomState();
-        if (!isUserNearBottom.value) return;
+        updateNearBottomState()
+        if (!isUserNearBottom.value) return
       }
-      el.scrollTop = el.scrollHeight;
-      isUserNearBottom.value = true;
-      hasNewMessages.value = false;
+      el.scrollTop = el.scrollHeight
+      isUserNearBottom.value = true
+      hasNewMessages.value = false
     }
 
     function scrollToBottomIfNear() {
-      scrollToBottom(false);
+      scrollToBottom(false)
     }
 
     function onHoverStart() {
       // Add hover effect class
       if (!expanded.value && !isChatActive.value) {
         document
-          .querySelector(".ai-fairy-container")
-          ?.classList.add("fairy-hovering");
+          .querySelector('.ai-fairy-container')
+          ?.classList.add('fairy-hovering')
       }
     }
 
     function onHoverEnd() {
       // Remove hover effect class
       document
-        .querySelector(".ai-fairy-container")
-        ?.classList.remove("fairy-hovering");
+        .querySelector('.ai-fairy-container')
+        ?.classList.remove('fairy-hovering')
     }
 
     // Push-to-talk (hold Space to talk)
-    const pttActive = ref(false);
+    const pttActive = ref(false)
     async function handleKeydown(e) {
       try {
         // Ignore typing in inputs/textarea or with modifiers
-        const tag = (e.target && e.target.tagName) ? String(e.target.tagName).toLowerCase() : '';
-        if (tag === 'input' || tag === 'textarea' || e.ctrlKey || e.metaKey || e.altKey) return;
+        const tag =
+          e.target && e.target.tagName
+            ? String(e.target.tagName).toLowerCase()
+            : ''
+        if (
+          tag === 'input' ||
+          tag === 'textarea' ||
+          e.ctrlKey ||
+          e.metaKey ||
+          e.altKey
+        )
+          return
         if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar') {
           if (!pttActive.value) {
             // Initialize AI services if needed
             if (!isAIInitialized.value) {
-              await initializeAIServices();
+              await initializeAIServices()
             }
-            if (!isMultimediaReady()) return;
-            const started = await toggleAudioStreaming();
+            if (!isMultimediaReady()) return
+            const started = await toggleAudioStreaming()
             if (started !== false) {
-              pttActive.value = true;
-              isListening.value = true;
-              e.preventDefault();
+              pttActive.value = true
+              isListening.value = true
+              e.preventDefault()
             }
           } else {
-            e.preventDefault();
+            e.preventDefault()
           }
         }
       } catch {}
@@ -1830,10 +2029,10 @@ export default {
       try {
         if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar') {
           if (pttActive.value) {
-            stopAudioStreaming();
-            isListening.value = false;
-            pttActive.value = false;
-            e.preventDefault();
+            stopAudioStreaming()
+            isListening.value = false
+            pttActive.value = false
+            e.preventDefault()
           }
         }
       } catch {}
@@ -1844,64 +2043,75 @@ export default {
       () => currentPath(),
       () => {
         // Show contextual tip when route changes
-        setTimeout(showContextualTip, 2000);
-      },
-    );
+        setTimeout(showContextualTip, 2000)
+      }
+    )
 
     // Storage change handler for settings synchronization
-    const handleStorageChange = (event) => {
+    const handleStorageChange = event => {
       if (event.key === 'app-settings' && event.newValue) {
-        logger.debug('Settings changed in storage, syncing...');
+        logger.debug('Settings changed in storage, syncing...')
         try {
-          const newSettings = JSON.parse(event.newValue);
+          const newSettings = JSON.parse(event.newValue)
           // Trigger settings reload if TTS provider changed
           if (newSettings.ttsProvider !== ttsSettings.value.provider) {
-            logger.info('TTS provider changed via storage event:', newSettings.ttsProvider);
-            appSettingsWatcher(); // Force immediate update
+            logger.info(
+              'TTS provider changed via storage event:',
+              newSettings.ttsProvider
+            )
+            appSettingsWatcher() // Force immediate update
           }
         } catch (error) {
-          logger.debug('Error parsing storage change:', error);
+          logger.debug('Error parsing storage change:', error)
         }
       }
-    };
+    }
 
     // Lifecycle
     onMounted(async () => {
       // Load TTS preferences
-      loadTTSPreferences();
-      
+      loadTTSPreferences()
+
       // Listen for storage changes from other tabs/components (like Settings view)
-      window.addEventListener('storage', handleStorageChange);
-      
+      window.addEventListener('storage', handleStorageChange)
+
       // Listen for fairy chat open events from other components
       window.addEventListener('open-fairy-chat', () => {
-        openFullChat();
-      });
-      
+        openFullChat()
+      })
+
       // Start watching for app settings changes (fallback for same-tab changes)
-      settingsInterval = setInterval(appSettingsWatcher, 2000);
-      
+      settingsInterval = setInterval(appSettingsWatcher, 2000)
+
       // Show initial tip after delay
-      setTimeout(showContextualTip, 3000);
+      setTimeout(showContextualTip, 3000)
 
       // Show random tips periodically
       setInterval(() => {
         if (!expanded.value && Math.random() > 0.7) {
-          showRandomTip();
+          showRandomTip()
         }
-      }, 60000); // Every minute, 30% chance
+      }, 60000) // Every minute, 30% chance
 
       // Initial sizing for input if present
-      nextTick(() => autoResizeInput());
+      nextTick(() => autoResizeInput())
 
       // Auto-initialize AI services when a Gemini API key is present
       // and real-time features are enabled (or voice mode is on).
       try {
-        const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-        const haveKey = !!(store.settings?.geminiApiKey || appSettings.geminiApiKey);
-        const wantRealtime = !!(store.settings?.enableRealtimeFeatures || appSettings.enableRealtimeFeatures || appSettings.voiceMode);
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+        const haveKey = !!(
+          store.settings?.geminiApiKey || appSettings.geminiApiKey
+        )
+        const wantRealtime = !!(
+          store.settings?.enableRealtimeFeatures ||
+          appSettings.enableRealtimeFeatures ||
+          appSettings.voiceMode
+        )
         if (haveKey && wantRealtime && !isAIInitialized.value) {
-          await initializeAIServices();
+          await initializeAIServices()
         }
       } catch {
         // non-critical
@@ -1910,40 +2120,43 @@ export default {
       // Install push-to-talk listeners
       try {
         if (store.settings?.pushToTalk) {
-          window.addEventListener('keydown', handleKeydown);
-          window.addEventListener('keyup', handleKeyup);
-        }
-      } catch {}
-    });
-
-    onUnmounted(() => {
-      closeCameraModal();
-      
-      // Clean up storage event listener
-      window.removeEventListener('storage', handleStorageChange);
-      
-      // Clean up settings watcher
-      if (settingsInterval) {
-        clearInterval(settingsInterval);
-      }
-
-      try {
-        window.removeEventListener('keydown', handleKeydown);
-        window.removeEventListener('keyup', handleKeyup);
-      } catch {}
-    });
-
-    // React to push-to-talk setting changes
-    watch(() => store.settings?.pushToTalk, (enabled) => {
-      try {
-        window.removeEventListener('keydown', handleKeydown);
-        window.removeEventListener('keyup', handleKeyup);
-        if (enabled) {
-          window.addEventListener('keydown', handleKeydown);
-          window.addEventListener('keyup', handleKeyup);
+          window.addEventListener('keydown', handleKeydown)
+          window.addEventListener('keyup', handleKeyup)
         }
       } catch {}
     })
+
+    onUnmounted(() => {
+      closeCameraModal()
+
+      // Clean up storage event listener
+      window.removeEventListener('storage', handleStorageChange)
+
+      // Clean up settings watcher
+      if (settingsInterval) {
+        clearInterval(settingsInterval)
+      }
+
+      try {
+        window.removeEventListener('keydown', handleKeydown)
+        window.removeEventListener('keyup', handleKeyup)
+      } catch {}
+    })
+
+    // React to push-to-talk setting changes
+    watch(
+      () => store.settings?.pushToTalk,
+      enabled => {
+        try {
+          window.removeEventListener('keydown', handleKeydown)
+          window.removeEventListener('keyup', handleKeyup)
+          if (enabled) {
+            window.addEventListener('keydown', handleKeydown)
+            window.addEventListener('keyup', handleKeyup)
+          }
+        } catch {}
+      }
+    )
 
     return {
       // State
@@ -1962,20 +2175,20 @@ export default {
       cameraVideo,
       cameraCanvas,
       cameraModalEl,
-      
+
       // Bubble size state
       bubbleSize,
       isVisible,
       isSmallMode,
       isFullMode,
-      
+
       // TTS State
       ttsEnabled,
       isSpeaking,
       ttsSettings,
       showTTSModal,
       currentSpeakingMessageId,
-      
+
       // Push-to-talk state
       pttActive,
 
@@ -1985,12 +2198,11 @@ export default {
       shouldShowEmptyBubble,
       unifiedUI,
       getMessageSegments,
-  // Quick replies
-  quickReplies,
-  showQuickReplies,
-  sendQuickReply,
-      
-      
+      // Quick replies
+      quickReplies,
+      showQuickReplies,
+      sendQuickReply,
+
       // AI Multimedia State
       getIcon,
       getIconSize,
@@ -2013,7 +2225,7 @@ export default {
       uploadFile,
       executeAction,
       formatTime,
-      
+
       // TTS Methods
       toggleTTS,
       speakMessage,
@@ -2030,7 +2242,7 @@ export default {
       autoResizeInput,
       onInputEnter,
       saveUISettings,
-      
+
       // AI Multimedia State
       multimediaState,
       aiConversationHistory,
@@ -2042,10 +2254,10 @@ export default {
       addAIUserMessage,
       onHoverStart,
       onHoverEnd,
-  onCameraModalKeydown,
-    };
+      onCameraModalKeydown,
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -2053,28 +2265,36 @@ export default {
 .ai-fairy-container {
   /* Positioning - Fixed to viewport bottom-right, not affected by page content */
   position: fixed !important;
-  bottom: calc(var(--spacing-6, 1.5rem) + env(safe-area-inset-bottom, 0px)) !important;
-  right: calc(var(--spacing-6, 1.5rem) + env(safe-area-inset-right, 0px)) !important;
+  bottom: calc(
+    var(--spacing-6, 1.5rem) + env(safe-area-inset-bottom, 0px)
+  ) !important;
+  right: calc(
+    var(--spacing-6, 1.5rem) + env(safe-area-inset-right, 0px)
+  ) !important;
   z-index: 9999; /* Higher z-index to ensure it stays on top */
-  
+
   /* Prevent any interference from page layout */
   max-width: calc(100vw - 2 * var(--spacing-6, 1.5rem));
   max-height: calc(100vh - 2 * var(--spacing-6, 1.5rem));
-  
+
   /* Default full size */
   width: var(--spacing-18, 4.5rem);
   height: var(--spacing-18, 4.5rem);
   transition: all var(--duration-normal) ease;
-  
+
   /* Ensure it's not affected by parent containers */
-  transform: translate3d(0, 0, 0); /* Force hardware acceleration and create new stacking context */
+  transform: translate3d(
+    0,
+    0,
+    0
+  ); /* Force hardware acceleration and create new stacking context */
   will-change: transform; /* Optimize for position changes */
-  
+
   /* Isolation from parent layout */
   isolation: isolate; /* Create new stacking context */
   contain: layout style; /* Contain layout calculations */
   pointer-events: auto; /* Ensure interactions work */
-  
+
   /* Override any inherited positioning */
   margin: 0 !important;
   padding: 0 !important;
@@ -2088,7 +2308,7 @@ export default {
   padding: 0;
 
   /* Unified Design System Variables */
-  font-family: var(--font-family-gaming, "Orbitron");
+  font-family: var(--font-family-gaming, 'Orbitron');
   --fairy-primary: var(--color-primary-500);
   --fairy-secondary: var(--color-secondary-500);
   --fairy-tertiary: var(--color-primary-400);
@@ -2118,7 +2338,7 @@ export default {
 
 /* Unified Container Effects */
 .ai-fairy-container::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: var(--glass-surface);
@@ -2641,7 +2861,7 @@ export default {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-2xl);
-  box-shadow: 
+  box-shadow:
     0 10px 40px color-mix(in srgb, black 8%, transparent),
     0 2px 10px color-mix(in srgb, black 4%, transparent);
   overflow: hidden;
@@ -2665,8 +2885,8 @@ export default {
 
 .fairy-expanded .fairy-bubble {
   width: clamp(320px, 90vw, 520px);
-  height: auto;             /* dynamic */
-  max-height: 85vh;         /* viewport cap */
+  height: auto; /* dynamic */
+  max-height: 85vh; /* viewport cap */
 }
 
 .bubble-content {
@@ -2690,7 +2910,7 @@ export default {
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: 18px;
   border-top-left-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .bubble-content--glass {
@@ -2705,9 +2925,11 @@ export default {
 }
 
 .bubble-content--glass .glass-btn.ai-powered {
-  background: linear-gradient(135deg,
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-primary-500-rgb), 0.15) 0%,
-    rgba(var(--color-accent-500-rgb, 118,75,162), 0.12) 100%);
+    rgba(var(--color-accent-500-rgb, 118, 75, 162), 0.12) 100%
+  );
   border: 1px solid rgba(var(--color-primary-500-rgb), 0.35);
   color: var(--color-primary-600);
   padding: var(--spacing-2) var(--spacing-3);
@@ -2718,9 +2940,11 @@ export default {
 }
 
 .bubble-content--glass .glass-btn.ai-powered:hover {
-  background: linear-gradient(135deg,
+  background: linear-gradient(
+    135deg,
     rgba(var(--color-primary-500-rgb), 0.25) 0%,
-    rgba(var(--color-accent-500-rgb, 118,75,162), 0.22) 100%);
+    rgba(var(--color-accent-500-rgb, 118, 75, 162), 0.22) 100%
+  );
   border-color: rgba(var(--color-primary-500-rgb), 0.5);
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(var(--color-primary-500-rgb), 0.22);
@@ -2797,7 +3021,12 @@ export default {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary-500) 20%, transparent), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent),
+    transparent
+  );
   opacity: 0.28;
   pointer-events: none;
 }
@@ -2859,8 +3088,17 @@ export default {
 }
 
 @keyframes icon-shimmer {
-  0%, 100% { opacity: 1; filter: drop-shadow(0 0 0 transparent); }
-  50% { opacity: 0.7; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary-500) 40%, transparent)); }
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    opacity: 0.7;
+    filter: drop-shadow(
+      0 0 6px color-mix(in srgb, var(--color-primary-500) 40%, transparent)
+    );
+  }
 }
 
 .chat-status {
@@ -2883,7 +3121,8 @@ export default {
   height: 18px;
   border-radius: 9px;
   background: color-mix(in srgb, var(--color-primary-500) 20%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent);
   font-size: 10px;
   letter-spacing: 0.3px;
 }
@@ -2898,32 +3137,47 @@ export default {
 
 .status-dot.listening {
   background: var(--color-info-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-info-500) 30%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-info-500) 30%, transparent);
 }
 
 .status-dot.thinking {
   background: var(--color-warning-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-warning-500) 30%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-warning-500) 30%, transparent);
   animation: status-pulse 1.6s ease-in-out infinite;
 }
 
 .status-dot.idle {
   background: var(--color-success-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-success-500) 25%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-success-500) 25%, transparent);
 }
 
 /* Tint the chip slightly by state */
-.chat-status[data-state="listening"] {
+.chat-status[data-state='listening'] {
   background: color-mix(in srgb, var(--color-info-500) 10%, var(--glass-bg));
-  border-color: color-mix(in srgb, var(--color-info-500) 30%, var(--glass-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-info-500) 30%,
+    var(--glass-border)
+  );
 }
-.chat-status[data-state="thinking"] {
+.chat-status[data-state='thinking'] {
   background: color-mix(in srgb, var(--color-warning-500) 10%, var(--glass-bg));
-  border-color: color-mix(in srgb, var(--color-warning-500) 30%, var(--glass-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-warning-500) 30%,
+    var(--glass-border)
+  );
 }
-.chat-status[data-state="idle"] {
+.chat-status[data-state='idle'] {
   background: color-mix(in srgb, var(--color-success-500) 8%, var(--glass-bg));
-  border-color: color-mix(in srgb, var(--color-success-500) 25%, var(--glass-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-success-500) 25%,
+    var(--glass-border)
+  );
 }
 
 /* Quick replies styling */
@@ -2953,8 +3207,15 @@ export default {
 }
 
 @keyframes status-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.25); opacity: 0.8; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.8;
+  }
 }
 
 /* TTS inline panel styles removed (replaced by settings modal) */
@@ -3222,13 +3483,18 @@ export default {
 }
 
 .message-user .message-text {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   color: var(--text-inverse);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: 18px;
   border-top-right-radius: 4px;
   margin-left: auto;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  box-shadow: 0 4px 12px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
 /* Rich text formatting inside messages */
@@ -3237,7 +3503,17 @@ export default {
   text-decoration: underline;
 }
 .message-content .message-text code {
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  font-family: var(
+    --font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
+    monospace
+  );
   background: var(--surface-elevated);
   color: var(--text-primary);
   border: 1px solid var(--glass-border);
@@ -3245,7 +3521,17 @@ export default {
   padding: 0 4px;
 }
 .message-content .message-text pre {
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  font-family: var(
+    --font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
+    monospace
+  );
   background: var(--surface-elevated);
   color: var(--text-primary);
   border: 1px solid var(--glass-border);
@@ -3261,8 +3547,16 @@ export default {
   border-color: color-mix(in srgb, var(--color-primary-500) 35%, transparent);
 }
 .message-user .message-avatar {
-  background: color-mix(in srgb, var(--color-cyber-500, var(--color-secondary-500)) 14%, transparent);
-  border-color: color-mix(in srgb, var(--color-cyber-500, var(--color-secondary-500)) 35%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--color-cyber-500, var(--color-secondary-500)) 14%,
+    transparent
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--color-cyber-500, var(--color-secondary-500)) 35%,
+    transparent
+  );
 }
 .message-system .message-avatar {
   background: color-mix(in srgb, var(--color-warning-500) 14%, transparent);
@@ -3271,7 +3565,8 @@ export default {
 
 /* Distinct AI message treatment for readability */
 .message-ai .message-content {
-  border-left: 3px solid color-mix(in srgb, var(--color-primary-500) 60%, transparent);
+  border-left: 3px solid
+    color-mix(in srgb, var(--color-primary-500) 60%, transparent);
 }
 
 .compact-ui .message-content {
@@ -3356,7 +3651,8 @@ export default {
 }
 
 @keyframes tts-playing-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
   }
@@ -3373,9 +3669,12 @@ export default {
 
 .chat-input-container {
   /* expose input offset for message list */
-  --chat-input-offset: calc(var(--spacing-4) * 2 + 56px + env(safe-area-inset-bottom, 0px));
+  --chat-input-offset: calc(
+    var(--spacing-4) * 2 + 56px + env(safe-area-inset-bottom, 0px)
+  );
   border-top: 1px solid var(--glass-border);
-  padding: var(--spacing-4) var(--spacing-4) calc(var(--spacing-4) + env(safe-area-inset-bottom, 0px));
+  padding: var(--spacing-4) var(--spacing-4)
+    calc(var(--spacing-4) + env(safe-area-inset-bottom, 0px));
   position: sticky;
   bottom: 0;
   background: var(--glass-surface);
@@ -3384,8 +3683,13 @@ export default {
   z-index: 2;
 }
 .chat-input-container:focus-within {
-  border-top-color: color-mix(in srgb, var(--color-primary-500) 35%, var(--glass-border));
-  box-shadow: 0 -6px 20px color-mix(in srgb, var(--color-primary-500) 10%, transparent) inset;
+  border-top-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 35%,
+    var(--glass-border)
+  );
+  box-shadow: 0 -6px 20px
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent) inset;
 }
 .chat-input-container::before {
   content: '';
@@ -3395,10 +3699,16 @@ export default {
   top: -8px;
   height: 8px;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.08), transparent);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08), transparent);
 }
 @media (prefers-color-scheme: dark) {
-  .chat-input-container::before { background: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent); }
+  .chat-input-container::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.06),
+      transparent
+    );
+  }
 }
 
 .multimodal-controls {
@@ -3438,12 +3748,13 @@ export default {
 .glass-btn:focus-visible,
 .tts-provider-select:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--fairy-primary) 45%, transparent);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--fairy-primary) 45%, transparent);
   border-color: var(--color-primary-500);
 }
 
 .control-btn::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -3463,14 +3774,21 @@ export default {
   color: var(--control-hover-fg);
   border-color: var(--control-border);
   transform: translateY(-1px);
-  filter: drop-shadow(0 2px 8px color-mix(in srgb, var(--color-primary-500) 18%, transparent));
+  filter: drop-shadow(
+    0 2px 8px color-mix(in srgb, var(--color-primary-500) 18%, transparent)
+  );
 }
 
 .control-btn.active {
   background: var(--control-active-bg);
   color: var(--control-active-fg);
-  border-color: color-mix(in srgb, var(--color-primary-500) 40%, var(--control-border));
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 40%,
+    var(--control-border)
+  );
+  box-shadow: 0 6px 18px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   animation: active-pulse 2s ease-in-out infinite;
 }
 
@@ -3489,30 +3807,35 @@ export default {
 }
 
 /* TTS Button Styling */
-.control-btn[title*="text-to-speech"] {
+.control-btn[title*='text-to-speech'] {
   background: color-mix(in srgb, var(--color-info-500) 10%, transparent);
   border-color: color-mix(in srgb, var(--color-info-500) 30%, transparent);
 }
 
-.control-btn[title*="text-to-speech"]:hover {
+.control-btn[title*='text-to-speech']:hover {
   background: color-mix(in srgb, var(--color-info-500) 20%, transparent);
   border-color: color-mix(in srgb, var(--color-info-500) 50%, transparent);
-  box-shadow: 0 0 15px color-mix(in srgb, var(--color-info-500) 30%, transparent);
+  box-shadow: 0 0 15px
+    color-mix(in srgb, var(--color-info-500) 30%, transparent);
 }
 
-.control-btn[title*="text-to-speech"].active {
+.control-btn[title*='text-to-speech'].active {
   background: color-mix(in srgb, var(--color-success-500) 15%, transparent);
   border-color: color-mix(in srgb, var(--color-success-500) 40%, transparent);
-  box-shadow: 0 0 20px color-mix(in srgb, var(--color-success-500) 30%, transparent);
+  box-shadow: 0 0 20px
+    color-mix(in srgb, var(--color-success-500) 30%, transparent);
   animation: tts-active-pulse 2s ease-in-out infinite;
 }
 
 @keyframes tts-active-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px color-mix(in srgb, var(--color-success-500) 30%, transparent);
+  0%,
+  100% {
+    box-shadow: 0 0 20px
+      color-mix(in srgb, var(--color-success-500) 30%, transparent);
   }
   50% {
-    box-shadow: 0 0 30px color-mix(in srgb, var(--color-success-500) 45%, transparent);
+    box-shadow: 0 0 30px
+      color-mix(in srgb, var(--color-success-500) 45%, transparent);
   }
 }
 
@@ -3525,14 +3848,16 @@ export default {
 .control-btn.ai-quick-message:hover {
   background: color-mix(in srgb, var(--color-primary-600) 20%, transparent);
   border-color: color-mix(in srgb, var(--color-primary-600) 50%, transparent);
-  box-shadow: 0 0 15px color-mix(in srgb, var(--color-primary-600) 30%, transparent);
+  box-shadow: 0 0 15px
+    color-mix(in srgb, var(--color-primary-600) 30%, transparent);
 }
 
 /* Video Streaming Active State */
-.control-btn.active[title*="video"] {
+.control-btn.active[title*='video'] {
   background: color-mix(in srgb, var(--color-warning-500) 15%, transparent);
   border-color: color-mix(in srgb, var(--color-warning-500) 40%, transparent);
-  box-shadow: 0 0 20px color-mix(in srgb, var(--color-warning-500) 30%, transparent);
+  box-shadow: 0 0 20px
+    color-mix(in srgb, var(--color-warning-500) 30%, transparent);
 }
 
 .text-input-group {
@@ -3601,7 +3926,8 @@ export default {
   outline: none;
   border-color: var(--color-primary-500);
   background: var(--glass-bg-light);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 }
 
 .text-input::placeholder {
@@ -3623,7 +3949,9 @@ export default {
   min-height: 44px; /* touch target */
 }
 
-.fairy-textarea { resize: none; }
+.fairy-textarea {
+  resize: none;
+}
 
 .fairy-input::placeholder {
   color: var(--text-secondary);
@@ -3664,7 +3992,9 @@ export default {
   height: var(--spacing-8);
 }
 
-.send-btn::before { content: none; }
+.send-btn::before {
+  content: none;
+}
 
 .send-btn:hover {
   background: var(--glass-hover-bg);
@@ -3717,9 +4047,11 @@ export default {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     color-mix(in srgb, var(--color-error-500) 8%, transparent),
-    color-mix(in srgb, var(--color-error-400) 6%, transparent));
+    color-mix(in srgb, var(--color-error-400) 6%, transparent)
+  );
   opacity: 0;
   transition: opacity var(--duration-normal);
   border-radius: inherit;
@@ -3730,7 +4062,7 @@ export default {
   border-color: var(--glass-border-hover);
   color: var(--color-error-500);
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 
+  box-shadow:
     0 4px 16px color-mix(in srgb, var(--color-error-500) 15%, transparent),
     inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
 }
@@ -3752,7 +4084,7 @@ export default {
 /* Dark theme optimizations */
 @media (prefers-color-scheme: dark) {
   .fairy-close:hover {
-    box-shadow: 
+    box-shadow:
       0 4px 20px color-mix(in srgb, var(--color-error-500) 20%, transparent),
       inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
   }
@@ -3765,11 +4097,11 @@ export default {
     transition: none;
     animation: none;
   }
-  
+
   .fairy-close:hover {
     transform: none;
   }
-  
+
   .fairy-close:active {
     transform: none;
   }
@@ -3798,7 +4130,11 @@ export default {
 .header-icon {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
@@ -3872,7 +4208,11 @@ export default {
   flex: 1;
   overflow-y: auto;
   padding: var(--spacing-6);
-  background: color-mix(in srgb, var(--surface-base) 98%, var(--color-primary-500) 2%);
+  background: color-mix(
+    in srgb,
+    var(--surface-base) 98%,
+    var(--color-primary-500) 2%
+  );
   scroll-behavior: smooth;
 }
 
@@ -3895,9 +4235,11 @@ export default {
 
 /* Welcome Card */
 .welcome-card {
-  background: linear-gradient(135deg, 
-    color-mix(in srgb, var(--color-primary-500) 10%, transparent) 0%, 
-    color-mix(in srgb, var(--color-gaming-500) 10%, transparent) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent) 0%,
+    color-mix(in srgb, var(--color-gaming-500) 10%, transparent) 100%
+  );
   border-radius: var(--radius-lg);
   padding: var(--spacing-4);
   margin-bottom: var(--spacing-5);
@@ -3925,13 +4267,13 @@ export default {
 }
 
 @keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(10px); 
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -3939,7 +4281,11 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3975,7 +4321,11 @@ export default {
 }
 
 .message-bubble--user {
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   color: var(--text-inverse);
   border-top-left-radius: var(--radius-xl);
   border-top-right-radius: var(--radius-sm);
@@ -4057,7 +4407,9 @@ export default {
 }
 
 @keyframes typing {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.5;
   }
@@ -4123,7 +4475,11 @@ export default {
 
 .input-wrapper {
   flex: 1;
-  background: color-mix(in srgb, var(--surface-base) 95%, var(--color-primary-500) 5%);
+  background: color-mix(
+    in srgb,
+    var(--surface-base) 95%,
+    var(--color-primary-500) 5%
+  );
   border-radius: var(--radius-2xl);
   padding: var(--spacing-1) var(--spacing-1) var(--spacing-1) var(--spacing-3);
   display: flex;
@@ -4136,7 +4492,8 @@ export default {
 .input-wrapper:focus-within {
   background: var(--glass-bg);
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 }
 
 .chat-input {
@@ -4184,13 +4541,18 @@ export default {
 }
 
 .send-btn {
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   color: var(--text-inverse);
 }
 
 .send-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
 .send-btn:disabled {
@@ -4204,7 +4566,11 @@ export default {
   display: flex;
   gap: var(--spacing-1);
   padding: var(--spacing-2) var(--spacing-4);
-  background: color-mix(in srgb, var(--surface-base) 95%, var(--color-primary-500) 5%);
+  background: color-mix(
+    in srgb,
+    var(--surface-base) 95%,
+    var(--color-primary-500) 5%
+  );
   border-top: 1px solid var(--glass-border);
 }
 
@@ -4435,9 +4801,9 @@ export default {
 
 /* Disabled control visual hint */
 .control-btn[disabled],
-.control-btn[aria-disabled="true"],
+.control-btn[aria-disabled='true'],
 .send-btn[disabled],
-.send-btn[aria-disabled="true"] {
+.send-btn[aria-disabled='true'] {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -4474,8 +4840,12 @@ export default {
 }
 
 @keyframes mdi-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Thinking skeleton */
@@ -4489,50 +4859,64 @@ export default {
   height: 10px;
   margin: 6px 0;
   border-radius: 6px;
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     color-mix(in srgb, var(--glass-bg-light) 90%, transparent) 0%,
     color-mix(in srgb, var(--glass-bg) 90%, transparent) 50%,
-    color-mix(in srgb, var(--glass-bg-light) 90%, transparent) 100%);
+    color-mix(in srgb, var(--glass-bg-light) 90%, transparent) 100%
+  );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.4s ease-in-out infinite;
 }
 
 @keyframes skeleton-shimmer {
-  0% { background-position: 0% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Tablet positioning adjustments */
 @media (max-width: 768px) and (min-width: 481px) {
   .ai-fairy-container {
-    bottom: calc(var(--spacing-5, 1.25rem) + env(safe-area-inset-bottom, 0px)) !important;
-    right: calc(var(--spacing-5, 1.25rem) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(
+      var(--spacing-5, 1.25rem) + env(safe-area-inset-bottom, 0px)
+    ) !important;
+    right: calc(
+      var(--spacing-5, 1.25rem) + env(safe-area-inset-right, 0px)
+    ) !important;
   }
 }
 
 /* Small screens: expand chat to viewport with improved positioning */
 @media (max-width: 480px) {
   .ai-fairy-container {
-    bottom: calc(var(--spacing-4, 1rem) + env(safe-area-inset-bottom, 0px)) !important;
-    right: calc(var(--spacing-4, 1rem) + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(
+      var(--spacing-4, 1rem) + env(safe-area-inset-bottom, 0px)
+    ) !important;
+    right: calc(
+      var(--spacing-4, 1rem) + env(safe-area-inset-right, 0px)
+    ) !important;
     z-index: 9999 !important; /* Ensure mobile positioning takes precedence */
   }
-  
+
   .fairy-expanded .fairy-bubble {
     width: calc(100vw - 2 * var(--spacing-4));
     right: var(--spacing-2);
     max-height: min(75vh, 620px);
   }
-  
+
   .fairy-bubble.bubble-persistent {
     bottom: calc(var(--spacing-16, 4rem) + env(safe-area-inset-bottom, 0px));
     right: var(--spacing-2);
   }
-  
+
   .fairy-chat-interface {
     height: min(65vh, 520px);
   }
-  
+
   .message-content {
     max-width: 80%;
   }
@@ -4839,18 +5223,33 @@ export default {
 }
 
 @keyframes pulse-warning {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes pulse-success {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes pulse-hidden {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 /* Page indicator for small mode */
@@ -4878,8 +5277,15 @@ export default {
 }
 
 @keyframes pulse-page {
-  0%, 100% { opacity: 0.6; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }
 
 @media (hover: none) {

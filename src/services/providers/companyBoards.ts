@@ -19,7 +19,7 @@ export const COMPANY_BOARDS: CompanyBoardConfig[] = [
   // Alternative tokens for previously failing companies - these may work
   { name: 'Discord', token: 'discord', type: 'greenhouse' },
   { name: 'Unity Technologies', token: 'unity3d', type: 'greenhouse' },
-  
+
   // Temporarily disabled due to 404 errors - tokens may have changed
   // To re-enable, visit the public boards and verify tokens:
   // { name: 'Valve', token: 'valvesoftware', type: 'greenhouse' }, // Check: https://boards.greenhouse.io/valvesoftware

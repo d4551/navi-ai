@@ -3,44 +3,49 @@
  * Interfaces between UI components and StudioRepository
  */
 
-import { StudioRepository } from '@/modules/db/repositories/studios';
-import type { GameStudio, GameGenre, StudioType, Platform } from '@/shared/types/jobs';
-import type { StudioData } from '@/modules/db/repositories/studios';
-import { logger } from '@/shared/utils/logger';
+import { StudioRepository } from '@/modules/db/repositories/studios'
+import type {
+  GameStudio,
+  GameGenre,
+  StudioType,
+  Platform,
+} from '@/shared/types/jobs'
+import type { StudioData } from '@/modules/db/repositories/studios'
+import { logger } from '@/shared/utils/logger'
 
 export interface GameStudioFilters {
-  type?: StudioType;
-  location?: string;
-  size?: string;
-  technologies?: string[];
-  remoteWork?: boolean;
-  hasGames?: boolean;
-  genres?: GameGenre[];
-  platforms?: Platform[];
+  type?: StudioType
+  location?: string
+  size?: string
+  technologies?: string[]
+  remoteWork?: boolean
+  hasGames?: boolean
+  genres?: GameGenre[]
+  platforms?: Platform[]
 }
 
 export interface StudioSearchResult {
-  studios: GameStudio[];
-  total: number;
-  filters: GameStudioFilters;
+  studios: GameStudio[]
+  total: number
+  filters: GameStudioFilters
   facets: {
-    types: Array<{ type: StudioType; count: number }>;
-    locations: Array<{ location: string; count: number }>;
-    sizes: Array<{ size: string; count: number }>;
-    technologies: Array<{ technology: string; count: number }>;
-  };
+    types: Array<{ type: StudioType; count: number }>
+    locations: Array<{ location: string; count: number }>
+    sizes: Array<{ size: string; count: number }>
+    technologies: Array<{ technology: string; count: number }>
+  }
 }
 
 export class GameStudioService {
-  private static instance: GameStudioService;
+  private static instance: GameStudioService
 
   private constructor() {}
 
   static getInstance(): GameStudioService {
     if (!GameStudioService.instance) {
-      GameStudioService.instance = new GameStudioService();
+      GameStudioService.instance = new GameStudioService()
     }
-    return GameStudioService.instance;
+    return GameStudioService.instance
   }
 
   // Back-compat simple search by name/description/technologies
@@ -48,15 +53,22 @@ export class GameStudioService {
     try {
       const q = (query || '').trim().toLowerCase()
       if (!q) {
-        return (Object.values(await StudioRepository.getAll()) as StudioData[]).map(s => this.toGameStudio(s))
+        return (
+          Object.values(await StudioRepository.getAll()) as StudioData[]
+        ).map(s => this.toGameStudio(s))
       }
       const all = Object.values(await StudioRepository.getAll()) as StudioData[]
-      return all.filter(studio =>
-        studio.name.toLowerCase().includes(q) ||
-        (studio.description || '').toLowerCase().includes(q) ||
-        (studio.technologies || []).some(t => t.toLowerCase().includes(q)) ||
-        (studio.games || []).some(g => g.toLowerCase().includes(q))
-      ).map(s => this.toGameStudio(s))
+      return all
+        .filter(
+          studio =>
+            studio.name.toLowerCase().includes(q) ||
+            (studio.description || '').toLowerCase().includes(q) ||
+            (studio.technologies || []).some(t =>
+              t.toLowerCase().includes(q)
+            ) ||
+            (studio.games || []).some(g => g.toLowerCase().includes(q))
+        )
+        .map(s => this.toGameStudio(s))
     } catch (error) {
       logger.error('Error searching studios:', error)
       return []
@@ -70,29 +82,33 @@ export class GameStudioService {
     limit: number = 20
   ): Promise<StudioSearchResult> {
     try {
-      let studios = Object.values(await StudioRepository.getAll()) as StudioData[];
+      let studios = Object.values(
+        await StudioRepository.getAll()
+      ) as StudioData[]
 
       // Apply filters
       if (filters) {
-        studios = await this.applyFilters(studios, filters);
+        studios = await this.applyFilters(studios, filters)
       }
 
       // Calculate facets
-      const facets = await this.calculateFacets(studios);
+      const facets = await this.calculateFacets(studios)
 
       // Pagination
-      const startIndex = (page - 1) * limit;
-      const endIndex = startIndex + limit;
-      const paginatedStudios = studios.slice(startIndex, endIndex).map(s => this.toGameStudio(s));
+      const startIndex = (page - 1) * limit
+      const endIndex = startIndex + limit
+      const paginatedStudios = studios
+        .slice(startIndex, endIndex)
+        .map(s => this.toGameStudio(s))
 
       return {
         studios: paginatedStudios,
         total: studios.length,
         filters: filters || {},
-        facets
-      };
+        facets,
+      }
     } catch (error) {
-      logger.error('Error getting studios:', error);
+      logger.error('Error getting studios:', error)
       return {
         studios: [],
         total: 0,
@@ -101,114 +117,119 @@ export class GameStudioService {
           types: [],
           locations: [],
           sizes: [],
-          technologies: []
-        }
-      };
+          technologies: [],
+        },
+      }
     }
   }
 
   // Get a single studio by ID
   async getStudioById(id: string): Promise<GameStudio | null> {
     try {
-      const s = await StudioRepository.getById(id);
-      return s ? this.toGameStudio(s as StudioData) : null;
+      const s = await StudioRepository.getById(id)
+      return s ? this.toGameStudio(s as StudioData) : null
     } catch (error) {
-      logger.error('Error getting studio by ID:', error);
-      return null;
+      logger.error('Error getting studio by ID:', error)
+      return null
     }
   }
 
   // Find studio by company name (for job/company matching)
   async findByCompanyName(companyName: string): Promise<GameStudio | null> {
     try {
-      const studio = await StudioRepository.findByCompanyName(companyName);
+      const studio = await StudioRepository.findByCompanyName(companyName)
 
       if (!studio) {
         // Try fuzzy matching for better UX
-        const allStudios = Object.values(await StudioRepository.getAll()) as StudioData[];
-        const match = this.fuzzyMatchStudio(companyName, allStudios);
-        return match ? this.toGameStudio(match) : null;
+        const allStudios = Object.values(
+          await StudioRepository.getAll()
+        ) as StudioData[]
+        const match = this.fuzzyMatchStudio(companyName, allStudios)
+        return match ? this.toGameStudio(match) : null
       }
 
-      return studio ? this.toGameStudio(studio as StudioData) : null;
+      return studio ? this.toGameStudio(studio as StudioData) : null
     } catch (error) {
-      logger.error('Error finding studio by company name:', error);
-      return null;
+      logger.error('Error finding studio by company name:', error)
+      return null
     }
   }
 
   // Get favorite studios
   async getFavoriteStudios(): Promise<GameStudio[]> {
     try {
-      const favoriteIds = await StudioRepository.getFavorites();
-      const favorites: GameStudio[] = [];
+      const favoriteIds = await StudioRepository.getFavorites()
+      const favorites: GameStudio[] = []
 
       for (const id of favoriteIds) {
-        const studio = await StudioRepository.getById(id);
+        const studio = await StudioRepository.getById(id)
         if (studio) {
-          favorites.push(this.toGameStudio(studio as StudioData));
+          favorites.push(this.toGameStudio(studio as StudioData))
         }
       }
 
-      return favorites;
+      return favorites
     } catch (error) {
-      logger.error('Error getting favorite studios:', error);
-      return [];
+      logger.error('Error getting favorite studios:', error)
+      return []
     }
   }
 
   // Toggle favorite status
   async toggleFavorite(studioId: string): Promise<boolean> {
     try {
-      const isFavorite = await StudioRepository.isFavorite(studioId);
+      const isFavorite = await StudioRepository.isFavorite(studioId)
 
       if (isFavorite) {
-        await StudioRepository.removeFavorite(studioId);
-        return false;
+        await StudioRepository.removeFavorite(studioId)
+        return false
       } else {
-        await StudioRepository.addFavorite(studioId);
-        return true;
+        await StudioRepository.addFavorite(studioId)
+        return true
       }
     } catch (error) {
-      logger.error('Error toggling favorite:', error);
-      throw error;
+      logger.error('Error toggling favorite:', error)
+      throw error
     }
   }
 
   // Check if a studio is favorited
   async isStudioFavorite(studioId: string): Promise<boolean> {
     try {
-      return await StudioRepository.isFavorite(studioId);
+      return await StudioRepository.isFavorite(studioId)
     } catch (error) {
-      logger.error('Error checking favorite status:', error);
-      return false;
+      logger.error('Error checking favorite status:', error)
+      return false
     }
   }
 
   // Get studio suggestions for autocomplete
-  async getSuggestions(query: string, limit: number = 10): Promise<GameStudio[]> {
+  async getSuggestions(
+    query: string,
+    limit: number = 10
+  ): Promise<GameStudio[]> {
     try {
       if (!query.trim()) {
         // Return recently viewed or popular studios if no query
-        return await this.getPopularStudios(limit);
+        return await this.getPopularStudios(limit)
       }
 
-      const suggestions = await StudioRepository.getSuggestions(query, limit);
-      return suggestions.map(s => this.toGameStudio(s as StudioData));
+      const suggestions = await StudioRepository.getSuggestions(query, limit)
+      return suggestions.map(s => this.toGameStudio(s as StudioData))
     } catch (error) {
-      logger.error('Error getting suggestions:', error);
-      return [];
+      logger.error('Error getting suggestions:', error)
+      return []
     }
   }
 
   // Advanced search with full criteria support
   async advancedSearch(criteria: {
-    query?: string;
-    filters?: GameStudioFilters;
-    sortBy?: 'name' | 'size' | 'founded' | 'rating';
-    sortOrder?: 'asc' | 'desc';
-    page?: number;
-    limit?: number;
+    query?: string
+    filters?: GameStudioFilters
+    sortBy?: 'name' | 'size' | 'founded' | 'rating'
+    sortOrder?: 'asc' | 'desc'
+    page?: number
+    limit?: number
   }): Promise<StudioSearchResult> {
     try {
       const {
@@ -217,176 +238,195 @@ export class GameStudioService {
         sortBy = 'name',
         sortOrder = 'asc',
         page = 1,
-        limit = 20
-      } = criteria;
+        limit = 20,
+      } = criteria
 
       // Get initial results
-      let results = Object.values(await StudioRepository.getAll()) as StudioData[];
+      let results = Object.values(
+        await StudioRepository.getAll()
+      ) as StudioData[]
 
       // Apply text search
       if (query) {
-        results = results.filter(studio =>
-          studio.name.toLowerCase().includes(query.toLowerCase()) ||
-          (studio.description && studio.description.toLowerCase().includes(query.toLowerCase())) ||
-          (studio.technologies || []).some(tech => tech.toLowerCase().includes(query.toLowerCase())) ||
-          (studio.games || []).some(game => game.toLowerCase().includes(query.toLowerCase()))
-        );
+        results = results.filter(
+          studio =>
+            studio.name.toLowerCase().includes(query.toLowerCase()) ||
+            (studio.description &&
+              studio.description.toLowerCase().includes(query.toLowerCase())) ||
+            (studio.technologies || []).some(tech =>
+              tech.toLowerCase().includes(query.toLowerCase())
+            ) ||
+            (studio.games || []).some(game =>
+              game.toLowerCase().includes(query.toLowerCase())
+            )
+        )
       }
 
       // Apply filters
-      results = await this.applyFilters(results, filters);
+      results = await this.applyFilters(results, filters)
 
       // Apply sorting
-      results = this.sortStudios(results, sortBy, sortOrder);
+      results = this.sortStudios(results, sortBy, sortOrder)
 
       // Calculate facets
-      const facets = await this.calculateFacets(results);
+      const facets = await this.calculateFacets(results)
 
       // Pagination
-      const startIndex = (page - 1) * limit;
-      const endIndex = startIndex + limit;
-      const paginatedResults = results.slice(startIndex, endIndex).map(s => this.toGameStudio(s));
+      const startIndex = (page - 1) * limit
+      const endIndex = startIndex + limit
+      const paginatedResults = results
+        .slice(startIndex, endIndex)
+        .map(s => this.toGameStudio(s))
 
       return {
         studios: paginatedResults,
         total: results.length,
         filters,
-        facets
-      };
+        facets,
+      }
     } catch (error) {
-      logger.error('Error in advanced search:', error);
-      throw error;
+      logger.error('Error in advanced search:', error)
+      throw error
     }
   }
 
   // Get studios by category (enterprise, large, medium, small, indie)
   async getStudiosByCategory(category: string): Promise<GameStudio[]> {
     try {
-      const res = await StudioRepository.getByCategory(category);
-      return res.map(s => this.toGameStudio(s as StudioData));
+      const res = await StudioRepository.getByCategory(category)
+      return res.map(s => this.toGameStudio(s as StudioData))
     } catch (error) {
-      logger.error('Error getting studios by category:', error);
-      return [];
+      logger.error('Error getting studios by category:', error)
+      return []
     }
   }
 
   // Get studios by region
   async getStudiosByRegion(region: string): Promise<GameStudio[]> {
     try {
-      const res = await StudioRepository.getByRegion(region);
-      return res.map(s => this.toGameStudio(s as StudioData));
+      const res = await StudioRepository.getByRegion(region)
+      return res.map(s => this.toGameStudio(s as StudioData))
     } catch (error) {
-      logger.error('Error getting studios by region:', error);
-      return [];
+      logger.error('Error getting studios by region:', error)
+      return []
     }
   }
 
   // Get popular/recommended studios
   async getPopularStudios(limit: number = 10): Promise<GameStudio[]> {
     try {
-      const allStudios = Object.values(await StudioRepository.getAll()) as StudioData[];
+      const allStudios = Object.values(
+        await StudioRepository.getAll()
+      ) as StudioData[]
 
       // Sort by size and founded date (established large studios tend to be more popular)
       return allStudios
         .sort((a, b) => {
           // Primary sort: larger studios first
-          const sizeA = this.extractStudioSize(a);
-          const sizeB = this.extractStudioSize(b);
-          if (sizeA !== sizeB) return sizeB - sizeA;
+          const sizeA = this.extractStudioSize(a)
+          const sizeB = this.extractStudioSize(b)
+          if (sizeA !== sizeB) return sizeB - sizeA
 
           // Secondary sort: older/more established first
-          return (a.founded || 2025) - (b.founded || 2025);
+          return (a.founded || 2025) - (b.founded || 2025)
         })
         .slice(0, limit)
-        .map(s => this.toGameStudio(s));
+        .map(s => this.toGameStudio(s))
     } catch (error) {
-      logger.error('Error getting popular studios:', error);
-      return [];
+      logger.error('Error getting popular studios:', error)
+      return []
     }
   }
 
   // Get recently founded studios (trending)
   async getRecentStudios(limit: number = 10): Promise<GameStudio[]> {
     try {
-      const allStudios = Object.values(await StudioRepository.getAll()) as StudioData[];
+      const allStudios = Object.values(
+        await StudioRepository.getAll()
+      ) as StudioData[]
 
       return allStudios
         .filter(studio => studio.founded && studio.founded >= 2015)
         .sort((a, b) => (b.founded || 0) - (a.founded || 0))
         .slice(0, limit)
-        .map(s => this.toGameStudio(s));
+        .map(s => this.toGameStudio(s))
     } catch (error) {
-      logger.error('Error getting recent studios:', error);
-      return [];
+      logger.error('Error getting recent studios:', error)
+      return []
     }
   }
 
   // Get studio statistics
   async getStudioStats(): Promise<{
-    totalStudios: number;
-    byType: Record<string, number>;
-    byRegion: Record<string, number>;
-    avgStudiosPerTechnology: number;
-    mostCommonTechnologies: Array<{ tech: string; count: number }>;
-    totalOpenPositions: number;
-    averageSalary: number;
-    growthRate: number;
+    totalStudios: number
+    byType: Record<string, number>
+    byRegion: Record<string, number>
+    avgStudiosPerTechnology: number
+    mostCommonTechnologies: Array<{ tech: string; count: number }>
+    totalOpenPositions: number
+    averageSalary: number
+    growthRate: number
   }> {
     try {
-      const studios = Object.values(await StudioRepository.getAll()) as StudioData[];
+      const studios = Object.values(
+        await StudioRepository.getAll()
+      ) as StudioData[]
 
       // Count by type
-      const byType: Record<string, number> = {};
+      const byType: Record<string, number> = {}
       studios.forEach((studio: any) => {
-        byType[studio.type] = (byType[studio.type] || 0) + 1;
-      });
+        byType[studio.type] = (byType[studio.type] || 0) + 1
+      })
 
       // Count by region
-      const byRegion: Record<string, number> = {};
+      const byRegion: Record<string, number> = {}
       studios.forEach((studio: any) => {
-        const region = this.categorizeRegion(studio.location || studio.headquarters || '');
-        byRegion[region] = (byRegion[region] || 0) + 1;
-      });
+        const region = this.categorizeRegion(
+          studio.location || studio.headquarters || ''
+        )
+        byRegion[region] = (byRegion[region] || 0) + 1
+      })
 
       // Most common technologies
-      const techCounts: Record<string, number> = {};
+      const techCounts: Record<string, number> = {}
       studios.forEach(studio => {
-        (studio.technologies || []).forEach(tech => {
-          techCounts[tech] = (techCounts[tech] || 0) + 1;
-        });
-      });
+        ;(studio.technologies || []).forEach(tech => {
+          techCounts[tech] = (techCounts[tech] || 0) + 1
+        })
+      })
 
       const mostCommonTechnologies = Object.entries(techCounts)
         .map(([tech, count]) => ({ tech, count }))
         .sort((a, b) => b.count - a.count)
-        .slice(0, 10);
+        .slice(0, 10)
 
       const avgStudiosPerTechnology =
         mostCommonTechnologies.length > 0
           ? studios.length / Math.max(1, mostCommonTechnologies[0].count)
-          : 0;
+          : 0
 
       // Aggregate additional analytics
       const totalOpenPositions = studios.reduce(
-        (sum, studio: any) => sum + (studio.openPositions || studio.hiringData?.openPositions || 0),
+        (sum, studio: any) =>
+          sum + (studio.openPositions || studio.hiringData?.openPositions || 0),
         0
-      );
+      )
 
       const salarySamples = studios
         .filter((s: any) => s.averageSalary)
-        .map((s: any) => ((s.averageSalary!.min + s.averageSalary!.max) / 2));
+        .map((s: any) => (s.averageSalary!.min + s.averageSalary!.max) / 2)
       const averageSalary =
         salarySamples.length > 0
           ? salarySamples.reduce((a, b) => a + b, 0) / salarySamples.length
-          : 0;
+          : 0
 
-      const currentYear = new Date().getFullYear();
+      const currentYear = new Date().getFullYear()
       const recentStudios = studios.filter(
         s => s.founded && s.founded >= currentYear - 1
-      ).length;
+      ).length
       const growthRate = studios.length
         ? (recentStudios / studios.length) * 100
-        : 0;
+        : 0
 
       return {
         totalStudios: studios.length,
@@ -396,10 +436,10 @@ export class GameStudioService {
         mostCommonTechnologies,
         totalOpenPositions,
         averageSalary,
-        growthRate
-      };
+        growthRate,
+      }
     } catch (error) {
-      logger.error('Error calculating studio stats:', error);
+      logger.error('Error calculating studio stats:', error)
       return {
         totalStudios: 0,
         byType: {},
@@ -408,30 +448,38 @@ export class GameStudioService {
         mostCommonTechnologies: [],
         totalOpenPositions: 0,
         averageSalary: 0,
-        growthRate: 0
-      };
+        growthRate: 0,
+      }
     }
   }
 
   // Private helper methods
 
-  private async applyFilters(studios: StudioData[], filters: GameStudioFilters): Promise<StudioData[]> {
-    let filtered: StudioData[] = [...studios];
+  private async applyFilters(
+    studios: StudioData[],
+    filters: GameStudioFilters
+  ): Promise<StudioData[]> {
+    let filtered: StudioData[] = [...studios]
 
     if (filters.type) {
-      filtered = filtered.filter(studio => (studio as any).type === filters.type);
+      filtered = filtered.filter(
+        studio => (studio as any).type === filters.type
+      )
     }
 
     if (filters.location) {
-      const locationQuery = filters.location.toLowerCase();
-      filtered = filtered.filter(studio =>
-        (studio as any).location?.toLowerCase().includes(locationQuery) ||
-        (studio as any).headquarters?.toLowerCase().includes(locationQuery)
-      );
+      const locationQuery = filters.location.toLowerCase()
+      filtered = filtered.filter(
+        studio =>
+          (studio as any).location?.toLowerCase().includes(locationQuery) ||
+          (studio as any).headquarters?.toLowerCase().includes(locationQuery)
+      )
     }
 
     if (filters.size) {
-      filtered = filtered.filter(studio => (studio as any).size === filters.size);
+      filtered = filtered.filter(
+        studio => (studio as any).size === filters.size
+      )
     }
 
     if (filters.technologies && filters.technologies.length > 0) {
@@ -441,190 +489,235 @@ export class GameStudioService {
             studioTech.toLowerCase().includes(tech.toLowerCase())
           )
         )
-      );
+      )
     }
 
     if (filters.remoteWork !== undefined) {
-      filtered = filtered.filter(studio => !!(studio as any).culture?.remoteFirst === filters.remoteWork);
+      filtered = filtered.filter(
+        studio => !!(studio as any).culture?.remoteFirst === filters.remoteWork
+      )
     }
 
     if (filters.hasGames) {
-      filtered = filtered.filter(studio => (studio.games || []).length > 0);
+      filtered = filtered.filter(studio => (studio.games || []).length > 0)
     }
 
     if (filters.genres && filters.genres.length > 0) {
       filtered = filtered.filter(studio => {
-        const studioGenres = this.extractStudioGenres(studio);
-        return filters.genres!.some(genre => studioGenres.includes(genre));
-      });
+        const studioGenres = this.extractStudioGenres(studio)
+        return filters.genres!.some(genre => studioGenres.includes(genre))
+      })
     }
 
-    return filtered;
+    return filtered
   }
 
-  private sortStudios(studios: StudioData[], sortBy: string, sortOrder: 'asc' | 'desc'): StudioData[] {
+  private sortStudios(
+    studios: StudioData[],
+    sortBy: string,
+    sortOrder: 'asc' | 'desc'
+  ): StudioData[] {
     return studios.sort((a, b) => {
-      let comparison = 0;
+      let comparison = 0
 
       switch (sortBy) {
         case 'name':
-          comparison = a.name.localeCompare(b.name);
-          break;
+          comparison = a.name.localeCompare(b.name)
+          break
         case 'size':
-          comparison = this.extractStudioSize(a) - this.extractStudioSize(b);
-          break;
+          comparison = this.extractStudioSize(a) - this.extractStudioSize(b)
+          break
         case 'founded':
-          comparison = ((a as any).founded || 2025) - ((b as any).founded || 2025);
-          break;
+          comparison =
+            ((a as any).founded || 2025) - ((b as any).founded || 2025)
+          break
         case 'rating':
-          comparison = ((a as any).rating || 0) - ((b as any).rating || 0);
-          break;
+          comparison = ((a as any).rating || 0) - ((b as any).rating || 0)
+          break
         default:
-          return 0;
+          return 0
       }
 
-      return sortOrder === 'desc' ? -comparison : comparison;
-    });
+      return sortOrder === 'desc' ? -comparison : comparison
+    })
   }
 
-  private async calculateFacets(studios: StudioData[]): Promise<StudioSearchResult['facets']> {
-    const types: Array<{ type: StudioType; count: number }> = [];
-    const locations: Array<{ location: string; count: number }> = [];
-    const sizes: Array<{ size: string; count: number }> = [];
-    const technologies: Array<{ technology: string; count: number }> = [];
+  private async calculateFacets(
+    studios: StudioData[]
+  ): Promise<StudioSearchResult['facets']> {
+    const types: Array<{ type: StudioType; count: number }> = []
+    const locations: Array<{ location: string; count: number }> = []
+    const sizes: Array<{ size: string; count: number }> = []
+    const technologies: Array<{ technology: string; count: number }> = []
 
     // Count types
-    const typeCounts: Record<string, number> = {};
+    const typeCounts: Record<string, number> = {}
     studios.forEach((studio: any) => {
-      typeCounts[studio.type] = (typeCounts[studio.type] || 0) + 1;
-    });
+      typeCounts[studio.type] = (typeCounts[studio.type] || 0) + 1
+    })
     Object.entries(typeCounts).forEach(([type, count]) => {
-      types.push({ type: type as StudioType, count });
-    });
+      types.push({ type: type as StudioType, count })
+    })
 
     // Count locations
-    const locationCounts: Record<string, number> = {};
+    const locationCounts: Record<string, number> = {}
     studios.forEach((studio: any) => {
       const loc = studio.location || studio.headquarters || 'Unknown'
-      locationCounts[loc] = (locationCounts[loc] || 0) + 1;
-    });
+      locationCounts[loc] = (locationCounts[loc] || 0) + 1
+    })
     Object.entries(locationCounts).forEach(([location, count]) => {
-      locations.push({ location, count });
-    });
+      locations.push({ location, count })
+    })
 
     // Count sizes
-    const sizeCounts: Record<string, number> = {};
+    const sizeCounts: Record<string, number> = {}
     studios.forEach((studio: any) => {
-      sizeCounts[studio.size] = (sizeCounts[studio.size] || 0) + 1;
-    });
+      sizeCounts[studio.size] = (sizeCounts[studio.size] || 0) + 1
+    })
     Object.entries(sizeCounts).forEach(([size, count]) => {
-      sizes.push({ size, count });
-    });
+      sizes.push({ size, count })
+    })
 
     // Count technologies
-    const techCounts: Record<string, number> = {};
+    const techCounts: Record<string, number> = {}
     studios.forEach(studio => {
-      (studio.technologies || []).forEach(tech => {
-        techCounts[tech] = (techCounts[tech] || 0) + 1;
-      });
-    });
+      ;(studio.technologies || []).forEach(tech => {
+        techCounts[tech] = (techCounts[tech] || 0) + 1
+      })
+    })
     Object.entries(techCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 20) // Top 20 technologies
       .forEach(([technology, count]) => {
-        technologies.push({ technology, count });
-      });
+        technologies.push({ technology, count })
+      })
 
-    return { types, locations, sizes, technologies };
+    return { types, locations, sizes, technologies }
   }
 
-  private fuzzyMatchStudio(companyName: string, studios: StudioData[]): StudioData | null {
+  private fuzzyMatchStudio(
+    companyName: string,
+    studios: StudioData[]
+  ): StudioData | null {
     // Simple fuzzy matching for company names
-    const normalized = companyName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const normalized = companyName.toLowerCase().replace(/[^a-z0-9]/g, '')
 
     for (const studio of studios) {
-      const studioNormalized = studio.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const studioNormalized = studio.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '')
 
       // Check if company name contains studio name or vice versa
-      if (normalized.includes(studioNormalized) || studioNormalized.includes(normalized)) {
-        return studio;
+      if (
+        normalized.includes(studioNormalized) ||
+        studioNormalized.includes(normalized)
+      ) {
+        return studio
       }
 
       // Check for common abbreviations
       if (this.isAbbreviationMatch(companyName, studio.name)) {
-        return studio;
+        return studio
       }
     }
 
-    return null;
+    return null
   }
 
   private isAbbreviationMatch(name1: string, name2: string): boolean {
     // Common abbreviations like "AC" for "Activision", "BBB" for "Blizzard" etc.
-    const words1 = name1.split(/\s+/).filter(word => word.length > 0);
-    const words2 = name2.split(/\s+/).filter(word => word.length > 0);
+    const words1 = name1.split(/\s+/).filter(word => word.length > 0)
+    const words2 = name2.split(/\s+/).filter(word => word.length > 0)
 
     // If one is very short and the other contains similar letters, might be abbreviation
     if (words1.length === 1 && words2.length > 1 && words1[0].length <= 3) {
-      const abbreviation = words1[0].toLowerCase();
-      const fullName = words2.slice(0, 3).join('').toLowerCase();
-      return fullName.includes(abbreviation);
+      const abbreviation = words1[0].toLowerCase()
+      const fullName = words2.slice(0, 3).join('').toLowerCase()
+      return fullName.includes(abbreviation)
     }
 
-    return false;
+    return false
   }
 
   private extractStudioGenres(studio: StudioData): string[] {
-    const genres: string[] = [];
-    const desc = (studio.description || '').toLowerCase();
-    const games = (studio.games || []).join(' ').toLowerCase();
+    const genres: string[] = []
+    const desc = (studio.description || '').toLowerCase()
+    const games = (studio.games || []).join(' ').toLowerCase()
 
-    if (desc.includes('rpg') || games.includes('rpg')) genres.push('RPG');
-    if (desc.includes('action') || games.includes('action')) genres.push('Action');
-    if (desc.includes('strategy') || games.includes('strategy')) genres.push('Strategy');
-    if (desc.includes('shooter') || games.includes('shooter')) genres.push('Shooter');
-    if (desc.includes('simulation') || games.includes('simulation')) genres.push('Simulation');
-    if (desc.includes('puzzle') || games.includes('puzzle')) genres.push('Puzzle');
-    if (desc.includes('racing') || games.includes('racing')) genres.push('Racing');
-    if (desc.includes('sports') || games.includes('sports')) genres.push('Sports');
+    if (desc.includes('rpg') || games.includes('rpg')) genres.push('RPG')
+    if (desc.includes('action') || games.includes('action'))
+      genres.push('Action')
+    if (desc.includes('strategy') || games.includes('strategy'))
+      genres.push('Strategy')
+    if (desc.includes('shooter') || games.includes('shooter'))
+      genres.push('Shooter')
+    if (desc.includes('simulation') || games.includes('simulation'))
+      genres.push('Simulation')
+    if (desc.includes('puzzle') || games.includes('puzzle'))
+      genres.push('Puzzle')
+    if (desc.includes('racing') || games.includes('racing'))
+      genres.push('Racing')
+    if (desc.includes('sports') || games.includes('sports'))
+      genres.push('Sports')
 
-    return genres;
+    return genres
   }
 
   private extractStudioSize(studio: StudioData): number {
-    const sizeStr = String((studio as any).size || '').toLowerCase();
-    const match = sizeStr.match(/(\d+)/);
-    if (match) return parseInt(match[1]);
-    if (sizeStr.includes('enterprise')) return 5000;
-    if (sizeStr.includes('large')) return 2000;
-    if (sizeStr.includes('medium')) return 200;
-    if (sizeStr.includes('small')) return 50;
-    if (sizeStr.includes('indie')) return 10;
-    return 0;
+    const sizeStr = String((studio as any).size || '').toLowerCase()
+    const match = sizeStr.match(/(\d+)/)
+    if (match) return parseInt(match[1])
+    if (sizeStr.includes('enterprise')) return 5000
+    if (sizeStr.includes('large')) return 2000
+    if (sizeStr.includes('medium')) return 200
+    if (sizeStr.includes('small')) return 50
+    if (sizeStr.includes('indie')) return 10
+    return 0
   }
 
   private categorizeRegion(location: string): string {
     // Simple region categorization - could be enhanced with better location data
-    const loc = location.toLowerCase();
+    const loc = location.toLowerCase()
 
-    if (loc.includes('california') || loc.includes('san francisco') || loc.includes('los angeles') ||
-        loc.includes('new york') || loc.includes('seattle') || loc.includes('boston')) {
-      return 'North America';
+    if (
+      loc.includes('california') ||
+      loc.includes('san francisco') ||
+      loc.includes('los angeles') ||
+      loc.includes('new york') ||
+      loc.includes('seattle') ||
+      loc.includes('boston')
+    ) {
+      return 'North America'
     }
 
-    if (loc.includes('london') || loc.includes('uk') || loc.includes('manchester') ||
-        loc.includes('germany') || loc.includes('berlin') || loc.includes('paris') ||
-        loc.includes('france') || loc.includes('amsterdam') || loc.includes('helsinki') ||
-        loc.includes('stockholm') || loc.includes('warsaw')) {
-      return 'Europe';
+    if (
+      loc.includes('london') ||
+      loc.includes('uk') ||
+      loc.includes('manchester') ||
+      loc.includes('germany') ||
+      loc.includes('berlin') ||
+      loc.includes('paris') ||
+      loc.includes('france') ||
+      loc.includes('amsterdam') ||
+      loc.includes('helsinki') ||
+      loc.includes('stockholm') ||
+      loc.includes('warsaw')
+    ) {
+      return 'Europe'
     }
 
-    if (loc.includes('tokyo') || loc.includes('japan') || loc.includes('shanghai') ||
-        loc.includes('china') || loc.includes('korea') || loc.includes('seoul')) {
-      return 'Asia-Pacific';
+    if (
+      loc.includes('tokyo') ||
+      loc.includes('japan') ||
+      loc.includes('shanghai') ||
+      loc.includes('china') ||
+      loc.includes('korea') ||
+      loc.includes('seoul')
+    ) {
+      return 'Asia-Pacific'
     }
 
-    return 'Other';
+    return 'Other'
   }
 
   private toGameStudio(s: StudioData): GameStudio {
@@ -640,14 +733,21 @@ export class GameStudioService {
       description: (s as any).description || '',
       games: (s as any).games || [],
       technologies: (s as any).technologies || [],
-      culture: (s as any).culture || { workStyle: '', values: [], benefits: [], diversity: false, remoteFirst: false },
-      openPositions: (s as any).hiringData?.openPositions || (s as any).openPositions || 0,
+      culture: (s as any).culture || {
+        workStyle: '',
+        values: [],
+        benefits: [],
+        diversity: false,
+        remoteFirst: false,
+      },
+      openPositions:
+        (s as any).hiringData?.openPositions || (s as any).openPositions || 0,
       averageSalary: (s as any).averageSalary,
       rating: (s as any).rating,
-      benefits: (s as any).benefits || []
+      benefits: (s as any).benefits || [],
     }
   }
 }
 
 // Export singleton instance
-export const gameStudioService = GameStudioService.getInstance();
+export const gameStudioService = GameStudioService.getInstance()

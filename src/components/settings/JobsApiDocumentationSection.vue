@@ -1,10 +1,17 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card glass-card section-card mb-4 font-sans" role="region" aria-labelledby="jobs-api-title">
+  <div
+    class="settings-card glass-card section-card mb-4 font-sans"
+    role="region"
+    aria-labelledby="jobs-api-title"
+  >
     <div class="card-header section-header card-header--dense">
       <h5 id="jobs-api-title" class="mb-0">
         <CodeTagsIconComponent class="mr-2 icon-sm" />Jobs API Documentation
-        <span class="badge bg-glass-bg dark:bg-glass-bg-hover text-glass-primary ml-2">v{{ apiDocumentation.version }}</span>
+        <span
+          class="badge bg-glass-bg dark:bg-glass-bg-hover text-glass-primary ml-2"
+          >v{{ apiDocumentation.version }}</span
+        >
       </h5>
     </div>
     <div class="card-body section-body card-body--dense">
@@ -23,10 +30,11 @@
             <div class="flex items-center">
               <span
                 class="status-indicator mr-2"
-                :class="{ 'status-operational': status.status === 'operational',
-                          'status-degraded': status.status === 'degraded',
-                          'status-down': status.status === 'down',
-                          'status-unknown': status.status === 'unknown',
+                :class="{
+                  'status-operational': status.status === 'operational',
+                  'status-degraded': status.status === 'degraded',
+                  'status-down': status.status === 'down',
+                  'status-unknown': status.status === 'unknown',
                 }"
                 :title="`${status.uptime}% uptime`"
                 role="img"
@@ -52,12 +60,14 @@
             <div class="endpoint-header flex items-center mb-2">
               <span
                 class="badge method-badge mr-2"
-                :class="{ 'bg-success-500': endpoint.method === 'GET',
-                          'bg-primary-500': endpoint.method === 'POST',
-                          'bg-warning-500': endpoint.method === 'PUT',
-                          'bg-error-500': endpoint.method === 'DELETE',
+                :class="{
+                  'bg-success-500': endpoint.method === 'GET',
+                  'bg-primary-500': endpoint.method === 'POST',
+                  'bg-warning-500': endpoint.method === 'PUT',
+                  'bg-error-500': endpoint.method === 'DELETE',
                 }"
-              >{{ endpoint.method }}</span>
+                >{{ endpoint.method }}</span
+              >
               <code class="endpoint-path">{{ path }}</code>
             </div>
             <p class="endpoint-description small text-secondary mb-0">
@@ -74,18 +84,24 @@
         </label>
         <div class="examples-container">
           <div
-            v-for="(example, index) in apiDocumentation.examples.searchRequests.slice(0, 2)"
+            v-for="(
+              example, index
+            ) in apiDocumentation.examples.searchRequests.slice(0, 2)"
             :key="index"
             class="example-item mb-3"
           >
             <div class="example-header mb-2">
-              <h6 class="example-title mb-1 font-medium">{{ example.title }}</h6>
+              <h6 class="example-title mb-1 font-medium">
+                {{ example.title }}
+              </h6>
               <p class="example-description small text-secondary mb-2">
                 {{ example.description }}
               </p>
             </div>
             <div class="example-code">
-              <pre class="bg-glass-bg dark:bg-glass-bg dark:bg-gray-800 text-glass-primary dark:text-glass-primary p-glass-md rounded"><code>{{ JSON.stringify(example.request, null, 2) }}</code></pre>
+              <pre
+                class="bg-glass-bg dark:bg-glass-bg dark:bg-gray-800 text-glass-primary dark:text-glass-primary p-glass-md rounded"
+              ><code>{{ JSON.stringify(example.request, null, 2) }}</code></pre>
             </div>
           </div>
         </div>
@@ -139,7 +155,7 @@ import {
   CodeTagsIconComponent,
   PulseIconComponent,
   ListIconComponent,
-  CodeBracesIconComponent
+  CodeBracesIconComponent,
 } from './SettingsIcons.js'
 
 export default {
@@ -149,19 +165,19 @@ export default {
     PulseIconComponent,
     ListIconComponent,
     CodeBracesIconComponent,
-    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue')
+    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
   },
   props: {
     apiDocumentation: {
       type: Object,
-      required: true
+      required: true,
     },
     apiMonitoring: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['view-full-documentation', 'test-api-connection']
+  emits: ['view-full-documentation', 'test-api-connection'],
 }
 </script>
 

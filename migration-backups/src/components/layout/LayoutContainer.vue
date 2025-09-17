@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'page',
   padding: 'md',
   responsive: true,
-  center: false
+  center: false,
 })
 
 const containerClasses = computed(() => {
@@ -72,8 +72,12 @@ const containerClasses = computed(() => {
 }
 
 /* Custom padding modifiers for precise control */
-.container--xs-padding { padding: var(--spacing-xs) !important; }
-.container--2xl-padding { padding: var(--spacing-2xl) !important; }
+.container--xs-padding {
+  padding: var(--spacing-xs) !important;
+}
+.container--2xl-padding {
+  padding: var(--spacing-2xl) !important;
+}
 
 /* Responsive padding adjustments */
 @media (max-width: 767px) {
@@ -81,14 +85,14 @@ const containerClasses = computed(() => {
   .container--responsive.container--2xl-padding {
     padding: var(--spacing-lg) !important;
   }
-  
+
   .container--responsive.container--lg-padding {
     padding: var(--spacing-md) !important;
   }
 }
 
 /* Dark theme optimizations */
-[data-theme="dark"] .container--responsive {
+[data-theme='dark'] .container--responsive {
   background: var(--surface-base);
 }
 

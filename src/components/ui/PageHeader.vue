@@ -7,12 +7,16 @@
       {
         'header-centered': centered,
         'header-stacked': stacked,
-        'header-with-gradient': useGradient
-      }
+        'header-with-gradient': useGradient,
+      },
     ]"
   >
     <!-- Simplified glassmorphic background -->
-    <div v-if="showParticles || enableModernEffects" class="header-effects" aria-hidden="true">
+    <div
+      v-if="showParticles || enableModernEffects"
+      class="header-effects"
+      aria-hidden="true"
+    >
       <div class="neon-glow"></div>
     </div>
 
@@ -41,35 +45,50 @@
           </component>
 
           <!-- Subtitle -->
-          <p
-            v-if="subtitle"
-            class="text-glass-enhanced opacity-80 text-lg"
-          >
+          <p v-if="subtitle" class="text-glass-enhanced opacity-80 text-lg">
             {{ subtitle }}
           </p>
         </div>
 
         <!-- Enhanced Stats Section -->
-        <div v-if="stats && stats.length" class="header-stats flex flex-wrap gap-glass-md mt-6">
+        <div
+          v-if="stats && stats.length"
+          class="header-stats flex flex-wrap gap-glass-md mt-6"
+        >
           <div
             v-for="stat in stats"
             :key="stat.label || stat.key"
             class="glass p-glass-md rounded-lg flex items-center gap-glass-md neon-interactive"
           >
             <div v-if="stat.icon" class="stat-icon-wrapper">
-              <AppIcon :name="stat.icon" class="text-xl" :style="{ color: stat.color }" />
+              <AppIcon
+                :name="stat.icon"
+                class="text-xl"
+                :style="{ color: stat.color }"
+              />
             </div>
             <div v-if="stat.value && stat.label" class="stat-info">
-              <div class="text-2xl font-bold text-glass-enhanced">{{ stat.value }}</div>
-              <div class="text-sm text-glass-enhanced opacity-70">{{ stat.label }}</div>
+              <div class="text-2xl font-bold text-glass-enhanced">
+                {{ stat.value }}
+              </div>
+              <div class="text-sm text-glass-enhanced opacity-70">
+                {{ stat.label }}
+              </div>
             </div>
-            <span v-else-if="stat.text" class="text-glass-enhanced font-medium">{{ stat.text }}</span>
+            <span
+              v-else-if="stat.text"
+              class="text-glass-enhanced font-medium"
+              >{{ stat.text }}</span
+            >
           </div>
         </div>
       </div>
-      
+
       <!-- Actions Section -->
-      <div v-if="$slots.actions || actions?.length" class="header-actions flex items-center gap-glass-md">
+      <div
+        v-if="$slots.actions || actions?.length"
+        class="header-actions flex items-center gap-glass-md"
+      >
         <slot name="actions">
           <component
             :is="action.component || 'UnifiedButton'"
@@ -114,33 +133,33 @@ interface Props {
   title: string
   subtitle?: string
   icon?: string
-  
+
   // Layout Props
   variant?: 'default' | 'gaming' | 'dashboard' | 'settings' | 'glass' | 'hero'
   size?: 'sm' | 'md' | 'lg' | 'xl'
   centered?: boolean
   stacked?: boolean
-  
+
   // Styling Props
   useGradient?: boolean
   gradientFrom?: string
   gradientTo?: string
   backgroundColor?: string
   textColor?: string
-  
+
   // Title Props
   titleTag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   titleSize?: 'sm' | 'md' | 'lg' | 'xl'
-  
+
   // Interactive Props
   stats?: HeaderStat[]
   actions?: HeaderAction[]
-  
+
   // Effect Props
   showShimmer?: boolean
   showParticles?: boolean
   showSwirls?: boolean
-  
+
   // Enhanced modern effects
   enableModernEffects?: boolean
   enableCountUpAnimation?: boolean
@@ -162,7 +181,7 @@ const props = withDefaults(defineProps<Props>(), {
   showSwirls: true,
   enableModernEffects: true,
   enableCountUpAnimation: true,
-  enableParallax: true
+  enableParallax: true,
 })
 
 const emit = defineEmits<{
@@ -190,8 +209,8 @@ const titleClasses = computed(() => [
   `header-title-${props.titleSize}`,
   `header-title-${props.variant}`,
   {
-    'text-center': props.centered
-  }
+    'text-center': props.centered,
+  },
 ])
 
 // Event Handlers
@@ -205,7 +224,7 @@ const handleActionClick = (action: HeaderAction, index: number) => {
 // Modern Effects and Animations
 onMounted(async () => {
   await nextTick()
-  
+
   // Animate stat values counting up
   const statValues = document.querySelectorAll('.stat-value[data-value]')
   statValues.forEach((stat, index) => {
@@ -214,7 +233,7 @@ onMounted(async () => {
       if (finalValue && !isNaN(finalValue)) {
         let currentValue = 0
         const increment = Math.max(1, finalValue / 30)
-        
+
         const counter = setInterval(() => {
           currentValue += increment
           if (currentValue >= finalValue) {
@@ -226,17 +245,17 @@ onMounted(async () => {
       }
     }, index * 200)
   })
-  
+
   // Add click ripple effect to stat cards
   const statCards = document.querySelectorAll('.modern-stat-card')
   statCards.forEach(card => {
-    card.addEventListener('click', function(e: Event) {
+    card.addEventListener('click', function (e: Event) {
       const ripple = document.createElement('span')
       const rect = (this as HTMLElement).getBoundingClientRect()
       const size = Math.max(rect.width, rect.height)
       const x = (e as MouseEvent).clientX - rect.left - size / 2
       const y = (e as MouseEvent).clientY - rect.top - size / 2
-      
+
       ripple.style.cssText = `
         position: absolute;
         border-radius: 50%;
@@ -249,30 +268,31 @@ onMounted(async () => {
         pointer-events: none;
         z-index: 1000;
       `
-      
       ;(this as HTMLElement).appendChild(ripple)
       setTimeout(() => ripple.remove(), 600)
     })
   })
-  
+
   // Add parallax effect to background animation
   if (typeof window !== 'undefined' && props.enableParallax) {
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', e => {
       const header = document.querySelector('.unified-page-header')
       if (header) {
         const x = e.clientX / window.innerWidth
         const y = e.clientY / window.innerHeight
-        
+
         const background = header.querySelector('.header-background-animation')
         if (background) {
-          ;(background as HTMLElement).style.transform = `translate(${x * 20 - 10}px, ${y * 20 - 10}px)`
+          ;(background as HTMLElement).style.transform =
+            `translate(${x * 20 - 10}px, ${y * 20 - 10}px)`
         }
-        
+
         // Enhanced parallax for particles
         const particles = header.querySelectorAll('.particle')
         particles.forEach((particle, index) => {
           const speed = (index + 1) * 0.5
-          ;(particle as HTMLElement).style.transform = `translate(${x * speed - speed/2}px, ${y * speed - speed/2}px)`
+          ;(particle as HTMLElement).style.transform =
+            `translate(${x * speed - speed / 2}px, ${y * speed - speed / 2}px)`
         })
       }
     })
@@ -287,19 +307,19 @@ onMounted(async () => {
 
 /* Modern Header CSS Variables */
 :root {
-  --primary: #8B5CF6;
-  --primary-dark: #7C3AED;
-  --primary-light: #A78BFA;
-  --secondary: #06B6D4;
-  --accent: #F59E0B;
-  --success: #10B981;
-  --danger: #EF4444;
-  --dark: #0F172A;
-  --dark-secondary: #1E293B;
+  --primary: #8b5cf6;
+  --primary-dark: #7c3aed;
+  --primary-light: #a78bfa;
+  --secondary: #06b6d4;
+  --accent: #f59e0b;
+  --success: #10b981;
+  --danger: #ef4444;
+  --dark: #0f172a;
+  --dark-secondary: #1e293b;
   --dark-tertiary: #334155;
-  --light: #F8FAFC;
-  --text-primary-600: #F1F5F9;
-  --text-secondary: #94A3B8;
+  --light: #f8fafc;
+  --text-primary-600: #f1f5f9;
+  --text-secondary: #94a3b8;
   --glass: rgba(30, 41, 59, 0.7);
   --glass-light: rgba(148, 163, 184, 0.1);
   --border: rgba(148, 163, 184, 0.2);
@@ -314,7 +334,12 @@ onMounted(async () => {
   box-shadow: var(--shadow-glass-lg);
   overflow: hidden;
   /* Modern gradient background */
-  background: linear-gradient(135deg, var(--dark) 0%, var(--dark-secondary) 50%, var(--dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--dark) 0%,
+    var(--dark-secondary) 50%,
+    var(--dark) 100%
+  );
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
@@ -369,7 +394,7 @@ onMounted(async () => {
   height: 200%;
   top: -50%;
   left: -50%;
-  background-image: 
+  background-image:
     radial-gradient(circle at 20% 50%, var(--primary) 0%, transparent 50%),
     radial-gradient(circle at 80% 30%, var(--secondary) 0%, transparent 50%),
     radial-gradient(circle at 40% 80%, var(--accent) 0%, transparent 50%);
@@ -377,8 +402,12 @@ onMounted(async () => {
 }
 
 @keyframes rotateBackground {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Floating Particles */
@@ -466,13 +495,25 @@ onMounted(async () => {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--accent), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary),
+    var(--secondary),
+    var(--accent),
+    transparent
+  );
   animation: borderGlow 3s ease-in-out infinite;
 }
 
 @keyframes borderGlow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Legacy Background Effects */
@@ -493,33 +534,90 @@ onMounted(async () => {
 }
 
 @keyframes shimmer {
-  0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
-  50% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+  0%,
+  100% {
+    transform: translateX(-100%) translateY(-100%) rotate(30deg);
+  }
+  50% {
+    transform: translateX(100%) translateY(100%) rotate(30deg);
+  }
 }
 
 /* Swirling glass light effects */
-.header-swirls { position: absolute; inset: -20%; overflow: hidden; pointer-events: none; z-index: 0; }
+.header-swirls {
+  position: absolute;
+  inset: -20%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
 .header-swirls .swirl {
   position: absolute;
-  width: 40vmin; height: 40vmin;
+  width: 40vmin;
+  height: 40vmin;
   border-radius: 50%;
   filter: blur(40px);
   opacity: 0.22;
   mix-blend-mode: screen;
-  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--color-primary-500) 40%, transparent), transparent 60%);
+  background: radial-gradient(
+    circle at 30% 30%,
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent),
+    transparent 60%
+  );
   animation: swirl-float 24s ease-in-out infinite;
 }
-.header-swirls .swirl.s1 { top: 10%; left: 0%; animation-delay: 0s }
-.header-swirls .swirl.s2 { bottom: -5%; right: 5%; animation-delay: 4s; background: radial-gradient(circle at 70% 40%, color-mix(in srgb, var(--color-cyber-500, #00d9ff) 40%, transparent), transparent 60%); }
-.header-swirls .swirl.s3 { top: -10%; right: 20%; animation-delay: 8s; background: radial-gradient(circle at 40% 60%, color-mix(in srgb, var(--color-gaming-500, #00ff88) 35%, transparent), transparent 60%); }
-.header-swirls .swirl.s4 { bottom: 10%; left: 25%; animation-delay: 12s; background: radial-gradient(circle at 60% 40%, color-mix(in srgb, var(--color-accent-500, #ff6ad5) 28%, transparent), transparent 60%); }
+.header-swirls .swirl.s1 {
+  top: 10%;
+  left: 0%;
+  animation-delay: 0s;
+}
+.header-swirls .swirl.s2 {
+  bottom: -5%;
+  right: 5%;
+  animation-delay: 4s;
+  background: radial-gradient(
+    circle at 70% 40%,
+    color-mix(in srgb, var(--color-cyber-500, #00d9ff) 40%, transparent),
+    transparent 60%
+  );
+}
+.header-swirls .swirl.s3 {
+  top: -10%;
+  right: 20%;
+  animation-delay: 8s;
+  background: radial-gradient(
+    circle at 40% 60%,
+    color-mix(in srgb, var(--color-gaming-500, #00ff88) 35%, transparent),
+    transparent 60%
+  );
+}
+.header-swirls .swirl.s4 {
+  bottom: 10%;
+  left: 25%;
+  animation-delay: 12s;
+  background: radial-gradient(
+    circle at 60% 40%,
+    color-mix(in srgb, var(--color-accent-500, #ff6ad5) 28%, transparent),
+    transparent 60%
+  );
+}
 
 @keyframes swirl-float {
-  0% { transform: translate3d(0,0,0) scale(1) rotate(0deg); }
-  25% { transform: translate3d(5%, -4%, 0) scale(1.05) rotate(20deg); }
-  50% { transform: translate3d(-6%, 5%, 0) scale(0.95) rotate(45deg); }
-  75% { transform: translate3d(4%, 6%, 0) scale(1.03) rotate(20deg); }
-  100% { transform: translate3d(0,0,0) scale(1) rotate(0deg); }
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(5%, -4%, 0) scale(1.05) rotate(20deg);
+  }
+  50% {
+    transform: translate3d(-6%, 5%, 0) scale(0.95) rotate(45deg);
+  }
+  75% {
+    transform: translate3d(4%, 6%, 0) scale(1.03) rotate(20deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
 }
 
 /* Container */
@@ -579,7 +677,12 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   /* Modern gradient text effect */
-  background: linear-gradient(135deg, var(--primary-light), var(--secondary), var(--accent));
+  background: linear-gradient(
+    135deg,
+    var(--primary-light),
+    var(--secondary),
+    var(--accent)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -588,9 +691,15 @@ onMounted(async () => {
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Standardised Header Actions */
@@ -649,7 +758,8 @@ onMounted(async () => {
 .header-title-gaming {
   /* Maintain strong contrast over gradients */
   color: var(--text-on-primary);
-  text-shadow: 0 2px 8px color-mix(in srgb, var(--color-gaming-500) 35%, transparent);
+  text-shadow: 0 2px 8px
+    color-mix(in srgb, var(--color-gaming-500) 35%, transparent);
 }
 
 .header-title-default {
@@ -718,8 +828,12 @@ onMounted(async () => {
 }
 
 @keyframes shimmerStat {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .modern-stat-card:hover {
@@ -751,8 +865,13 @@ onMounted(async () => {
 }
 
 @keyframes iconPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 .stat-icon {
@@ -813,7 +932,9 @@ onMounted(async () => {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
+  transition:
+    width 0.6s,
+    height 0.6s;
   pointer-events: none;
 }
 
@@ -869,8 +990,9 @@ onMounted(async () => {
 
 /* Variant-Specific Styles */
 .header-gaming {
-  background: linear-gradient(135deg, 
-    rgba(102, 126, 234, 0.9) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.9) 0%,
     rgba(118, 75, 162, 0.9) 50%,
     rgba(255, 107, 107, 0.8) 100%
   );
@@ -886,20 +1008,24 @@ onMounted(async () => {
 }
 
 .header-dashboard {
-  background: linear-gradient(135deg, 
-    var(--color-primary-600) 0%, 
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-600) 0%,
     var(--color-primary-500) 100%
   );
 }
 
 .header-settings {
-  background: linear-gradient(135deg, 
-    var(--color-secondary-600) 0%, 
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-600) 0%,
     var(--color-secondary-500) 100%
   );
 }
 
-.header-glass { /* keep as alias for glass styling */ }
+.header-glass {
+  /* keep as alias for glass styling */
+}
 
 .header-glass .header-subtitle {
   color: var(--text-secondary);
@@ -920,7 +1046,8 @@ onMounted(async () => {
 }
 
 .header-hero {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(59, 130, 246, 0.95) 0%,
     rgba(147, 51, 234, 0.9) 50%,
     rgba(236, 72, 153, 0.85) 100%
@@ -929,34 +1056,39 @@ onMounted(async () => {
 }
 
 /* Dark Theme Support */
-[data-theme="dark"] .unified-page-header { box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-[data-theme="dark"] .header-swirls .swirl { opacity: 0.28; filter: blur(48px); }
+[data-theme='dark'] .unified-page-header {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+[data-theme='dark'] .header-swirls .swirl {
+  opacity: 0.28;
+  filter: blur(48px);
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .unified-page-header {
     padding: var(--spacing-lg) var(--spacing-md);
   }
-  
+
   .header-container {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-md);
   }
-  
+
   .header-actions {
     justify-content: center;
     flex-wrap: wrap;
   }
-  
+
   .header-stats {
     justify-content: center;
   }
-  
+
   .header-title-lg {
     font-size: 1.75rem;
   }
-  
+
   .header-title-xl {
     font-size: 2rem;
   }
@@ -966,11 +1098,11 @@ onMounted(async () => {
   .unified-page-header {
     padding: var(--spacing-md) var(--spacing-sm);
   }
-  
-.header-title-md {
-  font-size: var(--font-size-xl);
-}
-  
+
+  .header-title-md {
+    font-size: var(--font-size-xl);
+  }
+
   .stat-chip {
     padding: var(--spacing-xs) var(--spacing-sm);
     font-size: var(--font-size-xs);
@@ -997,11 +1129,11 @@ onMounted(async () => {
   .stat-value[data-value] {
     animation: none !important;
   }
-  
+
   .modern-stat-card:hover {
     transform: none;
   }
-  
+
   .stat-chip:hover {
     transform: none;
   }
@@ -1012,7 +1144,7 @@ onMounted(async () => {
   .unified-page-header {
     border: 2px solid var(--text-primary-600);
   }
-  
+
   .stat-chip {
     border-width: 2px;
   }

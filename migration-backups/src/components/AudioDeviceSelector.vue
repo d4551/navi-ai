@@ -9,7 +9,10 @@
       <div class="row g-3">
         <!-- Microphone Selection -->
         <div class="col-md-6">
-          <label for="microphone-select" class="form-label d-flex align-items-center">
+          <label
+            for="microphone-select"
+            class="form-label d-flex align-items-center"
+          >
             <AppIcon name="mdi-microphone" />
             Microphone
           </label>
@@ -21,19 +24,28 @@
             @change="onMicrophoneChange"
           >
             <option value="">
-              {{ microphoneDevices.length > 0 ? 'Default Microphone' : 'No microphones found' }}
+              {{
+                microphoneDevices.length > 0
+                  ? 'Default Microphone'
+                  : 'No microphones found'
+              }}
             </option>
             <option
               v-for="device in microphoneDevices"
               :key="device.deviceId"
               :value="device.deviceId"
             >
-              {{ device.label || `Microphone ${device.deviceId.slice(0, 8)}...` }}
+              {{
+                device.label || `Microphone ${device.deviceId.slice(0, 8)}...`
+              }}
             </option>
           </select>
 
           <!-- Microphone Level Indicator -->
-          <div v-if="selectedMicrophoneId && microphoneLevel > 0" class="mic-level-container mt-2">
+          <div
+            v-if="selectedMicrophoneId && microphoneLevel > 0"
+            class="mic-level-container mt-2"
+          >
             <div class="mic-level-label">Input Level:</div>
             <div class="mic-level-bar">
               <div
@@ -42,13 +54,18 @@
                 :class="{ 'level-high': microphoneLevel > 80 }"
               ></div>
             </div>
-            <div class="mic-level-value">{{ Math.round(microphoneLevel) }}%</div>
+            <div class="mic-level-value">
+              {{ Math.round(microphoneLevel) }}%
+            </div>
           </div>
         </div>
 
         <!-- Speaker Selection -->
         <div class="col-md-6">
-          <label for="speaker-select" class="form-label d-flex align-items-center">
+          <label
+            for="speaker-select"
+            class="form-label d-flex align-items-center"
+          >
             <AppIcon name="mdi-volume-high" />
             Speaker
           </label>
@@ -60,7 +77,9 @@
             @change="onSpeakerChange"
           >
             <option value="">
-              {{ speakerDevices.length > 0 ? 'Default Speaker' : 'System default' }}
+              {{
+                speakerDevices.length > 0 ? 'Default Speaker' : 'System default'
+              }}
             </option>
             <option
               v-for="device in speakerDevices"
@@ -77,7 +96,11 @@
               size="sm"
               variant="outline-secondary"
               :disabled="!permissionsGranted || isTestingAudio || disabled"
-              :icon="isTestingAudio ? 'mdi mdi-loading mdi-spin' : 'mdi mdi-volume-source'"
+              :icon="
+                isTestingAudio
+                  ? 'mdi mdi-loading mdi-spin'
+                  : 'mdi mdi-volume-source'
+              "
               @click="testSpeaker"
             >
               {{ isTestingAudio ? 'Testing...' : 'Test Speaker' }}
@@ -100,10 +123,16 @@
             size="sm"
             variant="primary"
             :disabled="isRequestingPermissions"
-            :icon="isRequestingPermissions ? 'mdi mdi-loading mdi-spin' : 'mdi mdi-microphone'"
+            :icon="
+              isRequestingPermissions
+                ? 'mdi mdi-loading mdi-spin'
+                : 'mdi mdi-microphone'
+            "
             @click="requestPermissions"
           >
-            {{ isRequestingPermissions ? 'Requesting...' : 'Grant Permissions' }}
+            {{
+              isRequestingPermissions ? 'Requesting...' : 'Grant Permissions'
+            }}
           </UnifiedButton>
         </div>
       </div>
@@ -129,7 +158,11 @@
       >
         {{ isLocked ? 'Unlock Audio Devices' : 'Lock Audio Devices' }}
       </UnifiedButton>
-      <span v-if="isLocked" class="badge bg-warning-subtle text-warning-emphasis small">Locked</span>
+      <span
+        v-if="isLocked"
+        class="badge bg-warning-subtle text-warning-emphasis small"
+        >Locked</span
+      >
     </div>
 
     <!-- Error Display -->
@@ -146,37 +179,46 @@
 </template>
 
 <script setup>
-import { ref, onMounted, readonly, computed, watch, onBeforeUnmount, defineEmits, defineProps } from 'vue'
+import {
+  ref,
+  onMounted,
+  readonly,
+  computed,
+  watch,
+  onBeforeUnmount,
+  defineEmits,
+  defineProps,
+} from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import { logger } from '@/shared/utils/logger';
-import { audioService } from '@/shared/services/AudioService';
-import UnifiedButton from '@/components/ui/UnifiedButton.vue';
-import { useMediaLock } from '@/composables/useMediaLock';
+import { logger } from '@/shared/utils/logger'
+import { audioService } from '@/shared/services/AudioService'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import { useMediaLock } from '@/composables/useMediaLock'
 
 // Props
 const _props = defineProps({
   disabled: { type: Boolean, default: false },
   autoRefresh: { type: Boolean, default: true },
   showTestControls: { type: Boolean, default: true },
-  lockable: { type: Boolean, default: true }
-});
+  lockable: { type: Boolean, default: true },
+})
 // Media lock integration
-const { audioLocked, lockAudio, unlockAudio } = useMediaLock();
-const isLocked = computed(() => audioLocked.value);
+const { audioLocked, lockAudio, unlockAudio } = useMediaLock()
+const isLocked = computed(() => audioLocked.value)
 
 // Hotplug and refresh management
-let refreshTimerId = null;
-let deviceChangeListenerAttached = false;
+let refreshTimerId = null
+let deviceChangeListenerAttached = false
 
 const onDeviceChange = async () => {
   try {
     if (permissionsGranted.value) {
-      await refreshDevices();
+      await refreshDevices()
     }
   } catch (e) {
-    logger.warn('Device change refresh failed:', e);
+    logger.warn('Device change refresh failed:', e)
   }
-};
+}
 
 // Emits
 const emit = defineEmits([
@@ -184,20 +226,20 @@ const emit = defineEmits([
   'speakerSelected',
   'permissionsChanged',
   'devicesChanged',
-  'error'
-]);
+  'error',
+])
 
 // State
-const permissionsGranted = ref(false);
-const isRequestingPermissions = ref(false);
-const isRefreshing = ref(false);
-const isTestingAudio = ref(false);
-const microphoneDevices = ref([]);
-const speakerDevices = ref([]);
-const selectedMicrophoneId = ref('');
-const selectedSpeakerId = ref('');
-const microphoneLevel = ref(0);
-const error = ref('');
+const permissionsGranted = ref(false)
+const isRequestingPermissions = ref(false)
+const isRefreshing = ref(false)
+const isTestingAudio = ref(false)
+const microphoneDevices = ref([])
+const speakerDevices = ref([])
+const selectedMicrophoneId = ref('')
+const selectedSpeakerId = ref('')
+const microphoneLevel = ref(0)
+const error = ref('')
 
 // Audio monitoring via AudioService
 
@@ -206,125 +248,146 @@ const speakerSelectionSupported = computed(() => {
   // Speaker selection is limited in browsers
   // Chrome supports it, Firefox and Safari have limited support
   try {
-    const AudioCtor = typeof window !== 'undefined' ? window.HTMLAudioElement : undefined;
-    return !!(AudioCtor && AudioCtor.prototype && 'setSinkId' in AudioCtor.prototype);
+    const AudioCtor =
+      typeof window !== 'undefined' ? window.HTMLAudioElement : undefined
+    return !!(
+      AudioCtor &&
+      AudioCtor.prototype &&
+      'setSinkId' in AudioCtor.prototype
+    )
   } catch (_error) {
-    return false;
+    return false
   }
-});
+})
 
- // Initialize on mount
+// Initialize on mount
 onMounted(async () => {
-  await checkPermissions();
+  await checkPermissions()
   if (permissionsGranted.value) {
-    await refreshDevices();
+    await refreshDevices()
   }
 
   // Listen for device hotplug events
   try {
-    if (typeof navigator !== 'undefined' && navigator.mediaDevices?.addEventListener) {
-      navigator.mediaDevices.addEventListener('devicechange', onDeviceChange);
-      deviceChangeListenerAttached = true;
+    if (
+      typeof navigator !== 'undefined' &&
+      navigator.mediaDevices?.addEventListener
+    ) {
+      navigator.mediaDevices.addEventListener('devicechange', onDeviceChange)
+      deviceChangeListenerAttached = true
     }
   } catch (e) {
-    logger.warn('Unable to attach devicechange listener:', e);
+    logger.warn('Unable to attach devicechange listener:', e)
   }
 
   // Auto-refresh devices periodically (fallback)
   if (props.autoRefresh && !refreshTimerId) {
     refreshTimerId = setInterval(() => {
       if (permissionsGranted.value) {
-        refreshDevices();
+        refreshDevices()
       }
-    }, 30000); // Every 30 seconds
+    }, 30000) // Every 30 seconds
   }
-});
+})
 
 onBeforeUnmount(() => {
-  cleanup();
-});
+  cleanup()
+})
 
 // Watch for device changes
 watch([selectedMicrophoneId, selectedSpeakerId], () => {
   if (selectedMicrophoneId.value) {
-    startMicrophoneMonitoring();
+    startMicrophoneMonitoring()
   } else {
-    stopMicrophoneMonitoring();
+    stopMicrophoneMonitoring()
   }
-});
+})
 
 // Permission handling
 async function checkPermissions() {
   try {
     // Non-invasive check: do not prompt on mount
-    let granted = false;
-    const permAPI = navigator.permissions;
+    let granted = false
+    const permAPI = navigator.permissions
     if (permAPI && typeof permAPI.query === 'function') {
       try {
-        const status = await permAPI.query({ name: 'microphone' });
-        granted = status.state === 'granted';
-      } catch {/* ignore unsupported */}
+        const status = await permAPI.query({ name: 'microphone' })
+        granted = status.state === 'granted'
+      } catch {
+        /* ignore unsupported */
+      }
     }
     if (!granted && navigator.mediaDevices?.enumerateDevices) {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      granted = devices.some(d => d.kind === 'audioinput' && typeof d.label === 'string' && d.label.trim().length > 0);
+      const devices = await navigator.mediaDevices.enumerateDevices()
+      granted = devices.some(
+        d =>
+          d.kind === 'audioinput' &&
+          typeof d.label === 'string' &&
+          d.label.trim().length > 0
+      )
     }
-    permissionsGranted.value = granted;
-    emit('permissionsChanged', granted);
+    permissionsGranted.value = granted
+    emit('permissionsChanged', granted)
   } catch (err) {
-    logger.error('Permission check failed:', err);
-    setError(`Permission check failed: ${err.message}`);
+    logger.error('Permission check failed:', err)
+    setError(`Permission check failed: ${err.message}`)
   }
 }
 
 async function requestPermissions() {
-  if (isRequestingPermissions.value) {return;}
+  if (isRequestingPermissions.value) {
+    return
+  }
 
-  isRequestingPermissions.value = true;
-  clearError();
+  isRequestingPermissions.value = true
+  clearError()
 
   try {
-    const granted = await audioService.requestMicrophonePermission();
-    permissionsGranted.value = granted;
-    emit('permissionsChanged', granted);
+    const granted = await audioService.requestMicrophonePermission()
+    permissionsGranted.value = granted
+    emit('permissionsChanged', granted)
     if (granted) {
-      await refreshDevices();
-      logger.info('Microphone permissions granted');
+      await refreshDevices()
+      logger.info('Microphone permissions granted')
     }
   } catch (err) {
-    logger.error('Permission request failed:', err);
-    setError(`Permission denied: ${err.message}`);
-    permissionsGranted.value = false;
-    emit('permissionsChanged', false);
+    logger.error('Permission request failed:', err)
+    setError(`Permission denied: ${err.message}`)
+    permissionsGranted.value = false
+    emit('permissionsChanged', false)
   } finally {
-    isRequestingPermissions.value = false;
+    isRequestingPermissions.value = false
   }
 }
 
 // Device enumeration
 async function refreshDevices() {
-  if (isRefreshing.value || !permissionsGranted.value) {return;}
+  if (isRefreshing.value || !permissionsGranted.value) {
+    return
+  }
 
-  isRefreshing.value = true;
-  clearError();
+  isRefreshing.value = true
+  clearError()
 
   try {
-    const devices = await audioService.getAvailableDevices();
-    microphoneDevices.value = devices.filter(d => d.kind === 'audioinput');
-    speakerDevices.value = devices.filter(d => d.kind === 'audiooutput');
+    const devices = await audioService.getAvailableDevices()
+    microphoneDevices.value = devices.filter(d => d.kind === 'audioinput')
+    speakerDevices.value = devices.filter(d => d.kind === 'audiooutput')
 
     // Emit devices changed event
     emit('devicesChanged', {
       microphones: microphoneDevices.value,
-      speakers: speakerDevices.value
-    });
+      speakers: speakerDevices.value,
+    })
 
-    logger.info(`Found ${microphoneDevices.value.length} microphones, ${speakerDevices.value.length} speakers`);
+    logger.info(
+      `Found ${microphoneDevices.value.length} microphones, ${speakerDevices.value.length} speakers`
+    )
   } catch (err) {
-    logger.error('Device enumeration failed:', err);
-    setError(`Failed to get audio devices: ${err.message}`);
+    logger.error('Device enumeration failed:', err)
+    setError(`Failed to get audio devices: ${err.message}`)
   } finally {
-    isRefreshing.value = false;
+    isRefreshing.value = false
   }
 }
 
@@ -332,120 +395,143 @@ async function refreshDevices() {
 function onMicrophoneChange() {
   emit('microphoneSelected', {
     deviceId: selectedMicrophoneId.value,
-    device: microphoneDevices.value.find(d => d.deviceId === selectedMicrophoneId.value)
-  });
-  try { audioService.setPreferredInputDevice(selectedMicrophoneId.value || undefined); } catch {}
+    device: microphoneDevices.value.find(
+      d => d.deviceId === selectedMicrophoneId.value
+    ),
+  })
+  try {
+    audioService.setPreferredInputDevice(
+      selectedMicrophoneId.value || undefined
+    )
+  } catch {}
 
   if (selectedMicrophoneId.value) {
-    startMicrophoneMonitoring();
+    startMicrophoneMonitoring()
   } else {
-    stopMicrophoneMonitoring();
+    stopMicrophoneMonitoring()
   }
 }
 
 function onSpeakerChange() {
   emit('speakerSelected', {
     deviceId: selectedSpeakerId.value,
-    device: speakerDevices.value.find(d => d.deviceId === selectedSpeakerId.value)
-  });
-  try { audioService.setPreferredOutputDevice(selectedSpeakerId.value || undefined); } catch { /* noop */ }
+    device: speakerDevices.value.find(
+      d => d.deviceId === selectedSpeakerId.value
+    ),
+  })
+  try {
+    audioService.setPreferredOutputDevice(selectedSpeakerId.value || undefined)
+  } catch {
+    /* noop */
+  }
 }
 
 // Microphone monitoring
 async function startMicrophoneMonitoring() {
-  if (!selectedMicrophoneId.value || !permissionsGranted.value) {return;}
+  if (!selectedMicrophoneId.value || !permissionsGranted.value) {
+    return
+  }
   try {
-    await audioService.startMonitoring(selectedMicrophoneId.value, (lvl) => {
-      microphoneLevel.value = Math.round(lvl * 100);
-    });
-    logger.info('Microphone monitoring started');
+    await audioService.startMonitoring(selectedMicrophoneId.value, lvl => {
+      microphoneLevel.value = Math.round(lvl * 100)
+    })
+    logger.info('Microphone monitoring started')
   } catch (err) {
-    logger.error('Failed to start microphone monitoring:', err);
-    setError(`Microphone monitoring failed: ${err.message}`);
+    logger.error('Failed to start microphone monitoring:', err)
+    setError(`Microphone monitoring failed: ${err.message}`)
   }
 }
 
 function stopMicrophoneMonitoring() {
-  try { audioService.stopMonitoring(); } catch {}
-  microphoneLevel.value = 0;
+  try {
+    audioService.stopMonitoring()
+  } catch {}
+  microphoneLevel.value = 0
 }
 
 // Speaker testing
 async function testSpeaker() {
-  if (isTestingAudio.value) {return;}
+  if (isTestingAudio.value) {
+    return
+  }
 
-  isTestingAudio.value = true;
-  clearError();
+  isTestingAudio.value = true
+  clearError()
 
   try {
     // Generate a simple test tone
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)()
+    const oscillator = audioContext.createOscillator()
+    const gainNode = audioContext.createGain()
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    oscillator.connect(gainNode)
+    gainNode.connect(audioContext.destination)
 
     // Configure test tone
-    oscillator.frequency.value = 440; // A4 note
-    oscillator.type = 'sine';
+    oscillator.frequency.value = 440 // A4 note
+    oscillator.type = 'sine'
 
     // Fade in and out
-    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.1);
-    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.4);
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime)
+    gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.1)
+    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.4)
 
     // Play for 0.5 seconds
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.5);
+    oscillator.start(audioContext.currentTime)
+    oscillator.stop(audioContext.currentTime + 0.5)
 
     // If speaker selection is supported, try to use selected speaker
     if (speakerSelectionSupported.value && selectedSpeakerId.value) {
       try {
-        await audioContext.destination.setSinkId(selectedSpeakerId.value);
-        logger.info(`Test audio routed to speaker: ${selectedSpeakerId.value}`);
+        await audioContext.destination.setSinkId(selectedSpeakerId.value)
+        logger.info(`Test audio routed to speaker: ${selectedSpeakerId.value}`)
       } catch (err) {
-        logger.warn('Failed to route to selected speaker:', err);
+        logger.warn('Failed to route to selected speaker:', err)
         // Continue with default speaker
       }
     }
 
     // Clean up after test
     setTimeout(() => {
-      isTestingAudio.value = false;
-      audioContext.close();
-    }, 600);
+      isTestingAudio.value = false
+      audioContext.close()
+    }, 600)
 
-    logger.info('Speaker test completed');
+    logger.info('Speaker test completed')
   } catch (err) {
-    logger.error('Speaker test failed:', err);
-    setError(`Speaker test failed: ${err.message}`);
-    isTestingAudio.value = false;
+    logger.error('Speaker test failed:', err)
+    setError(`Speaker test failed: ${err.message}`)
+    isTestingAudio.value = false
   }
 }
 
 // Utility functions
 function setError(message) {
-  error.value = message;
-  emit('error', message);
+  error.value = message
+  emit('error', message)
 }
 
 function clearError() {
-  error.value = '';
+  error.value = ''
 }
 
 function cleanup() {
-  stopMicrophoneMonitoring();
+  stopMicrophoneMonitoring()
   try {
     if (refreshTimerId) {
-      clearInterval(refreshTimerId);
-      refreshTimerId = null;
+      clearInterval(refreshTimerId)
+      refreshTimerId = null
     }
   } catch {}
   try {
-    if (deviceChangeListenerAttached && typeof navigator !== 'undefined' && navigator.mediaDevices?.removeEventListener) {
-      navigator.mediaDevices.removeEventListener('devicechange', onDeviceChange);
-      deviceChangeListenerAttached = false;
+    if (
+      deviceChangeListenerAttached &&
+      typeof navigator !== 'undefined' &&
+      navigator.mediaDevices?.removeEventListener
+    ) {
+      navigator.mediaDevices.removeEventListener('devicechange', onDeviceChange)
+      deviceChangeListenerAttached = false
     }
   } catch {}
 }
@@ -460,8 +546,8 @@ defineExpose({
   permissionsGranted: readonly(permissionsGranted),
   selectedMicrophoneId,
   selectedSpeakerId,
-  isLocked
-});
+  isLocked,
+})
 </script>
 
 <style scoped>
@@ -502,7 +588,13 @@ defineExpose({
 
 .mic-level-fill {
   height: 100%;
-  background: linear-gradient(90deg, #28a745 0%, #ffc107 50%, #fd7e14 85%, #dc3545 100%);
+  background: linear-gradient(
+    90deg,
+    #28a745 0%,
+    #ffc107 50%,
+    #fd7e14 85%,
+    #dc3545 100%
+  );
   border-radius: 2px;
   transition: width 0.15s ease;
 }
@@ -513,8 +605,12 @@ defineExpose({
 }
 
 @keyframes level-warning {
-  from { opacity: 0.7; }
-  to { opacity: 1; }
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .mic-level-value {
@@ -536,7 +632,9 @@ defineExpose({
   text-align: left;
 }
 
-.badge.small { font-size: 0.65rem; }
+.badge.small {
+  font-size: 0.65rem;
+}
 
 .error-display .alert {
   margin-bottom: 0;

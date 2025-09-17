@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-if="show && item"
-    class="modal-overlay"
-    @click="handleOverlayClick"
-  >
+  <div v-if="show && item" class="modal-overlay" @click="handleOverlayClick">
     <div class="portfolio-modal" @click.stop>
       <!-- Header -->
       <div class="modal-header">
@@ -70,7 +66,10 @@
               controls
             ></video>
             <div v-else class="hero-placeholder">
-              <AppIcon :name="getTypeIcon(item.type)" class="placeholder-icon" />
+              <AppIcon
+                :name="getTypeIcon(item.type)"
+                class="placeholder-icon"
+              />
             </div>
           </div>
         </section>
@@ -114,7 +113,13 @@
             </section>
 
             <!-- Achievement Details -->
-            <section v-if="item.type === 'achievement' && (item.achievement?.rank || item.achievement?.event)" class="content-section">
+            <section
+              v-if="
+                item.type === 'achievement' &&
+                (item.achievement?.rank || item.achievement?.event)
+              "
+              class="content-section"
+            >
               <h3 class="section-title">
                 <AppIcon name="mdi-trophy" />
                 Achievement Details
@@ -164,7 +169,11 @@
                 >
                   <AppIcon :name="getLinkIcon(link.type)" />
                   {{ link.label || formatLinkType(link.type) }}
-                  <AppIcon name="mdi-open-in-new" size="14" class="external-icon" />
+                  <AppIcon
+                    name="mdi-open-in-new"
+                    size="14"
+                    class="external-icon"
+                  />
                 </a>
               </div>
             </section>
@@ -294,9 +303,11 @@ const isImage = computed(() => {
 const isVideo = computed(() => {
   if (!mediaUrl.value) return false
   if (props.item?.media?.type === 'video') return true
-  return /\.(mp4|webm|mov|avi)$/i.test(mediaUrl.value) || 
-         mediaUrl.value.includes('youtube.com') || 
-         mediaUrl.value.includes('youtu.be')
+  return (
+    /\.(mp4|webm|mov|avi)$/i.test(mediaUrl.value) ||
+    mediaUrl.value.includes('youtube.com') ||
+    mediaUrl.value.includes('youtu.be')
+  )
 })
 
 const displayDate = computed(() => {
@@ -311,30 +322,33 @@ const skillsOrTech = computed(() => {
 const statsData = computed(() => {
   const item = props.item
   if (!item) return []
-  
+
   if (item.stats) return item.stats
-  
+
   if (item.metrics) {
     return Object.entries(item.metrics).map(([key, value]) => ({
       label: formatMetricLabel(key),
-      value: formatMetricValue(value)
+      value: formatMetricValue(value),
     }))
   }
-  
+
   return []
 })
 
 const links = computed(() => {
   const item = props.item
   if (!item) return []
-  
+
   const arr: any[] = Array.isArray(item.links) ? item.links : []
   const extras: any[] = []
-  
-  if (item.liveUrl) extras.push({ url: item.liveUrl, label: 'Live Demo', type: 'live' })
-  if (item.githubUrl) extras.push({ url: item.githubUrl, label: 'Source Code', type: 'source' })
-  if (item.url) extras.push({ url: item.url, label: 'View Project', type: 'external' })
-  
+
+  if (item.liveUrl)
+    extras.push({ url: item.liveUrl, label: 'Live Demo', type: 'live' })
+  if (item.githubUrl)
+    extras.push({ url: item.githubUrl, label: 'Source Code', type: 'source' })
+  if (item.url)
+    extras.push({ url: item.url, label: 'View Project', type: 'external' })
+
   return [...extras, ...arr.filter(l => l?.url)]
 })
 
@@ -355,7 +369,7 @@ const shareItem = async () => {
       await navigator.share({
         title: props.item?.title || 'Portfolio Item',
         text: props.item?.description || '',
-        url: window.location.href
+        url: window.location.href,
       })
     } else {
       // Fallback: copy to clipboard
@@ -368,7 +382,8 @@ const shareItem = async () => {
 }
 
 const formatMetricLabel = (key: string): string => {
-  return key.replace(/([A-Z])/g, ' $1')
+  return key
+    .replace(/([A-Z])/g, ' $1')
     .replace(/^./, str => str.toUpperCase())
     .replace(/_/g, ' ')
 }
@@ -388,7 +403,7 @@ const formatLinkType = (type?: string): string => {
     article: 'Article',
     store: 'Store Page',
     docs: 'Documentation',
-    external: 'View Project'
+    external: 'View Project',
   }
   return types[type || ''] || 'Link'
 }
@@ -408,7 +423,7 @@ const getTypeIcon = (type?: string): string => {
     tool: 'mdi-wrench',
     demo: 'mdi-monitor',
     app: 'mdi-application',
-    website: 'mdi-earth'
+    website: 'mdi-earth',
   }
   return icons[type || ''] || 'mdi-folder'
 }
@@ -425,7 +440,7 @@ const getTypeLabel = (type?: string): string => {
     game: 'Game',
     web: 'Web App',
     mobile: 'Mobile App',
-    tool: 'Tool'
+    tool: 'Tool',
   }
   return labels[type || ''] || 'Portfolio Item'
 }
@@ -438,7 +453,7 @@ const getLinkIcon = (type?: string): string => {
     article: 'mdi-file-document',
     store: 'mdi-shopping',
     docs: 'mdi-book',
-    external: 'mdi-open-in-new'
+    external: 'mdi-open-in-new',
   }
   return icons[type || ''] || 'mdi-link'
 }
@@ -847,21 +862,21 @@ const getLinkIcon = (type?: string): string => {
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .portfolio-modal {
+[data-theme='dark'] .portfolio-modal {
   box-shadow: 0 25px 100px rgba(0, 0, 0, 0.6);
 }
 
-[data-theme="dark"] .hero-placeholder {
+[data-theme='dark'] .hero-placeholder {
   background: rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="dark"] .tech-tag {
+[data-theme='dark'] .tech-tag {
   background: rgba(124, 58, 237, 0.15);
   border-color: rgba(124, 58, 237, 0.3);
   color: rgba(124, 58, 237, 0.9);
 }
 
-[data-theme="dark"] .tech-tag:hover {
+[data-theme='dark'] .tech-tag:hover {
   background: rgba(124, 58, 237, 0.25);
 }
 </style>

@@ -1,10 +1,16 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card glass-card section-card mb-4" role="region" aria-labelledby="jobs-api-title">
+  <div
+    class="settings-card glass-card section-card mb-4"
+    role="region"
+    aria-labelledby="jobs-api-title"
+  >
     <div class="card-header section-header card-header--dense">
       <h5 id="jobs-api-title" class="mb-0">
         <CodeTagsIconComponent class="me-2 icon-sm" />Jobs API Documentation
-        <span class="badge bg-light text-dark ms-2">v{{ apiDocumentation.version }}</span>
+        <span class="badge bg-light text-dark ms-2"
+          >v{{ apiDocumentation.version }}</span
+        >
       </h5>
     </div>
     <div class="card-body section-body card-body--dense">
@@ -23,10 +29,11 @@
             <div class="d-flex align-items-center">
               <span
                 class="status-indicator me-2"
-                :class="{ 'status-operational': status.status === 'operational',
-                          'status-degraded': status.status === 'degraded',
-                          'status-down': status.status === 'down',
-                          'status-unknown': status.status === 'unknown',
+                :class="{
+                  'status-operational': status.status === 'operational',
+                  'status-degraded': status.status === 'degraded',
+                  'status-down': status.status === 'down',
+                  'status-unknown': status.status === 'unknown',
                 }"
                 :title="`${status.uptime}% uptime`"
                 role="img"
@@ -52,12 +59,14 @@
             <div class="endpoint-header d-flex align-items-center mb-2">
               <span
                 class="badge method-badge me-2"
-                :class="{ 'bg-success': endpoint.method === 'GET',
-                          'bg-primary': endpoint.method === 'POST',
-                          'bg-warning': endpoint.method === 'PUT',
-                          'bg-danger': endpoint.method === 'DELETE',
+                :class="{
+                  'bg-success': endpoint.method === 'GET',
+                  'bg-primary': endpoint.method === 'POST',
+                  'bg-warning': endpoint.method === 'PUT',
+                  'bg-danger': endpoint.method === 'DELETE',
                 }"
-              >{{ endpoint.method }}</span>
+                >{{ endpoint.method }}</span
+              >
               <code class="endpoint-path">{{ path }}</code>
             </div>
             <p class="endpoint-description small text-muted mb-0">
@@ -74,7 +83,9 @@
         </label>
         <div class="examples-container">
           <div
-            v-for="(example, index) in apiDocumentation.examples.searchRequests.slice(0, 2)"
+            v-for="(
+              example, index
+            ) in apiDocumentation.examples.searchRequests.slice(0, 2)"
             :key="index"
             class="example-item mb-3"
           >
@@ -85,7 +96,9 @@
               </p>
             </div>
             <div class="example-code">
-              <pre class="bg-dark text-light p-3 rounded"><code>{{ JSON.stringify(example.request, null, 2) }}</code></pre>
+              <pre
+                class="bg-dark text-light p-3 rounded"
+              ><code>{{ JSON.stringify(example.request, null, 2) }}</code></pre>
             </div>
           </div>
         </div>
@@ -137,7 +150,7 @@ import {
   CodeTagsIconComponent,
   PulseIconComponent,
   ListIconComponent,
-  CodeBracesIconComponent
+  CodeBracesIconComponent,
 } from './SettingsIcons.js'
 
 export default {
@@ -147,19 +160,19 @@ export default {
     PulseIconComponent,
     ListIconComponent,
     CodeBracesIconComponent,
-    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue')
+    UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
   },
   props: {
     apiDocumentation: {
       type: Object,
-      required: true
+      required: true,
     },
     apiMonitoring: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['view-full-documentation', 'test-api-connection']
+  emits: ['view-full-documentation', 'test-api-connection'],
 }
 </script>
 

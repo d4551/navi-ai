@@ -1,7 +1,18 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card mb-4" role="region" aria-labelledby="data-mgmt-title">
-    <div class="card-header section-header card-header--dense accordion-header" role="button" tabindex="0" @click="toggleAccordion" @keydown.enter="toggleAccordion" @keydown.space="toggleAccordion">
+  <div
+    class="settings-card mb-4"
+    role="region"
+    aria-labelledby="data-mgmt-title"
+  >
+    <div
+      class="card-header section-header card-header--dense accordion-header"
+      role="button"
+      tabindex="0"
+      @click="toggleAccordion"
+      @keydown.enter="toggleAccordion"
+      @keydown.space="toggleAccordion"
+    >
       <div class="d-flex align-items-center justify-content-between w-100">
         <div>
           <h5 id="data-mgmt-title" class="mb-0">
@@ -9,11 +20,18 @@
           </h5>
         </div>
         <div class="accordion-toggle">
-          <AppIcon name="mdi-chevron-down" class="accordion-icon" :class="{ 'rotated': isExpanded }" />
+          <AppIcon
+            name="mdi-chevron-down"
+            class="accordion-icon"
+            :class="{ rotated: isExpanded }"
+          />
         </div>
       </div>
     </div>
-    <div v-show="isExpanded" class="card-body section-body card-body--dense accordion-content">
+    <div
+      v-show="isExpanded"
+      class="card-body section-body card-body--dense accordion-content"
+    >
       <!-- Data Export -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
         <label class="form-label fw-medium mb-3">Export Data</label>
@@ -34,21 +52,42 @@
           </div>
 
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-briefcase" @click="$emit('export-portfolio')">Export Portfolio</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-briefcase"
+              @click="$emit('export-portfolio')"
+              >Export Portfolio</UnifiedButton
+            >
             <div class="form-text">
               Download your portfolio data and projects.
             </div>
           </div>
 
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-message-text" @click="$emit('export-chat-history')">Export Chat History</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-message-text"
+              @click="$emit('export-chat-history')"
+              >Export Chat History</UnifiedButton
+            >
             <div class="form-text">
               Download all your conversations and interview sessions.
             </div>
           </div>
 
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-cog" @click="$emit('export-settings')">Export Settings</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-cog"
+              @click="$emit('export-settings')"
+              >Export Settings</UnifiedButton
+            >
             <div class="form-text">
               Download your application settings and preferences.
             </div>
@@ -76,28 +115,54 @@
         <label class="form-label fw-medium mb-3">Import Data</label>
         <div class="card-grid" style="--card-grid-cols: 2">
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-upload" @click="$emit('import-resume')">Import Resume</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-upload"
+              @click="$emit('import-resume')"
+              >Import Resume</UnifiedButton
+            >
             <div class="form-text">
               Upload and import resume data from external sources.
             </div>
           </div>
 
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-upload" @click="$emit('import-portfolio')">Import Portfolio</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-upload"
+              @click="$emit('import-portfolio')"
+              >Import Portfolio</UnifiedButton
+            >
             <div class="form-text">
               Import portfolio data and project information.
             </div>
           </div>
 
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-upload" @click="$emit('import-settings')">Import Settings</UnifiedButton>
-            <div class="form-text">
-              Restore settings from a backup file.
-            </div>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-upload"
+              @click="$emit('import-settings')"
+              >Import Settings</UnifiedButton
+            >
+            <div class="form-text">Restore settings from a backup file.</div>
           </div>
 
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-linkedin" @click="$emit('import-linkedin')">Import from LinkedIn</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-linkedin"
+              @click="$emit('import-linkedin')"
+              >Import from LinkedIn</UnifiedButton
+            >
             <div class="form-text">
               Import profile data from your LinkedIn account.
             </div>
@@ -109,36 +174,65 @@
       <div class="mb-3 p-3 border rounded-3 glass-input">
         <label class="form-label fw-medium mb-3">Clear Data</label>
         <div class="alert alert-warning" role="alert">
-          <strong>Warning:</strong> These actions cannot be undone. Make sure to export important data first.
+          <strong>Warning:</strong> These actions cannot be undone. Make sure to
+          export important data first.
         </div>
 
         <div class="card-grid" style="--card-grid-cols: 2">
           <div>
-            <UnifiedButton variant="danger" appearance="outlined" size="md" class="w-100" leading-icon="mdi-trash-can-outline" @click="$emit('clear-chat-history')">Clear Chat History</UnifiedButton>
+            <UnifiedButton
+              variant="danger"
+              appearance="outlined"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-trash-can-outline"
+              @click="$emit('clear-chat-history')"
+              >Clear Chat History</UnifiedButton
+            >
             <div class="form-text">
               Delete all conversations and interview sessions.
             </div>
           </div>
 
           <div>
-            <UnifiedButton variant="danger" appearance="outlined" size="md" class="w-100" leading-icon="mdi-trash-can-outline" @click="$emit('clear-cache')">Clear Cache</UnifiedButton>
+            <UnifiedButton
+              variant="danger"
+              appearance="outlined"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-trash-can-outline"
+              @click="$emit('clear-cache')"
+              >Clear Cache</UnifiedButton
+            >
             <div class="form-text">
               Clear cached responses and temporary data.
             </div>
           </div>
 
           <div>
-            <UnifiedButton variant="danger" appearance="outlined" size="md" class="w-100" leading-icon="mdi-trash-can-outline" @click="$emit('clear-portfolio')">Clear Portfolio</UnifiedButton>
-            <div class="form-text">
-              Remove all portfolio data and projects.
-            </div>
+            <UnifiedButton
+              variant="danger"
+              appearance="outlined"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-trash-can-outline"
+              @click="$emit('clear-portfolio')"
+              >Clear Portfolio</UnifiedButton
+            >
+            <div class="form-text">Remove all portfolio data and projects.</div>
           </div>
 
           <div>
-            <UnifiedButton variant="danger" appearance="outlined" size="md" class="w-100" leading-icon="mdi-rotate-ccw" @click="$emit('reset-settings')">Reset Settings</UnifiedButton>
-            <div class="form-text">
-              Reset all settings to default values.
-            </div>
+            <UnifiedButton
+              variant="danger"
+              appearance="outlined"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-rotate-ccw"
+              @click="$emit('reset-settings')"
+              >Reset Settings</UnifiedButton
+            >
+            <div class="form-text">Reset all settings to default values.</div>
           </div>
         </div>
       </div>
@@ -159,9 +253,7 @@
                 Encrypt stored data
               </label>
             </div>
-            <div class="form-text">
-              Encrypt sensitive data stored locally.
-            </div>
+            <div class="form-text">Encrypt sensitive data stored locally.</div>
           </div>
 
           <div>
@@ -176,9 +268,7 @@
                 Disable cloud sync
               </label>
             </div>
-            <div class="form-text">
-              Keep all data stored locally only.
-            </div>
+            <div class="form-text">Keep all data stored locally only.</div>
           </div>
 
           <div style="grid-column: span 2">
@@ -207,7 +297,9 @@
           <div>
             <div class="storage-info">
               <div class="storage-label">Chat History</div>
-              <div class="storage-value">{{ formatBytes(storageStats.chatHistorySize) }}</div>
+              <div class="storage-value">
+                {{ formatBytes(storageStats.chatHistorySize) }}
+              </div>
               <div class="progress progress--thin">
                 <div
                   class="progress-bar progress-bar--var"
@@ -224,7 +316,9 @@
           <div>
             <div class="storage-info">
               <div class="storage-label">Portfolio Data</div>
-              <div class="storage-value">{{ formatBytes(storageStats.portfolioSize) }}</div>
+              <div class="storage-value">
+                {{ formatBytes(storageStats.portfolioSize) }}
+              </div>
               <div class="progress progress--thin">
                 <div
                   class="progress-bar progress-bar--var"
@@ -241,7 +335,9 @@
           <div>
             <div class="storage-info">
               <div class="storage-label">Cache</div>
-              <div class="storage-value">{{ formatBytes(storageStats.cacheSize) }}</div>
+              <div class="storage-value">
+                {{ formatBytes(storageStats.cacheSize) }}
+              </div>
               <div class="progress progress--thin">
                 <div
                   class="progress-bar progress-bar--var"
@@ -258,7 +354,9 @@
           <div>
             <div class="storage-info">
               <div class="storage-label">Settings</div>
-              <div class="storage-value">{{ formatBytes(storageStats.settingsSize) }}</div>
+              <div class="storage-value">
+                {{ formatBytes(storageStats.settingsSize) }}
+              </div>
               <div class="progress progress--thin">
                 <div
                   class="progress-bar bg-info progress-bar--var"
@@ -279,14 +377,28 @@
         <label class="form-label fw-medium mb-3">Jobs API</label>
         <div class="card-grid" style="--card-grid-cols: 2">
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-code-tags" @click="$emit('view-api-docs')">View API Documentation</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-code-tags"
+              @click="$emit('view-api-docs')"
+              >View API Documentation</UnifiedButton
+            >
             <div class="form-text">
               Access complete jobs API documentation and endpoints.
             </div>
           </div>
 
           <div>
-            <UnifiedButton variant="outline" size="md" class="w-100" leading-icon="mdi-pulse" @click="$emit('test-api')">Test API Status</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              size="md"
+              class="w-100"
+              leading-icon="mdi-pulse"
+              @click="$emit('test-api')"
+              >Test API Status</UnifiedButton
+            >
             <div class="form-text">
               Check connectivity and status of job search APIs.
             </div>
@@ -312,13 +424,13 @@ import {
   TrashIconComponent,
   RotateCcwIconComponent,
   CodeTagsIconComponent,
-  PulseIconComponent
+  PulseIconComponent,
 } from './SettingsIcons.js'
 
 const _props = defineProps({
   settings: {
     type: Object,
-    required: true
+    required: true,
   },
   storageStats: {
     type: Object,
@@ -327,9 +439,9 @@ const _props = defineProps({
       portfolioSize: 0,
       cacheSize: 0,
       settingsSize: 0,
-      totalSize: 0
-    })
-  }
+      totalSize: 0,
+    }),
+  },
 })
 
 const emit = defineEmits([
@@ -348,7 +460,7 @@ const emit = defineEmits([
   'reset-settings',
   'view-api-docs',
   'test-api',
-  'update:settings'
+  'update:settings',
 ])
 
 // Accordion state (default open)
@@ -362,19 +474,23 @@ function toggleAccordion() {
 // Computed proxies (avoid mutating props)
 const dataEncryption = computed({
   get: () => props.settings?.dataEncryption,
-  set: (val) => emit('update:settings', { ...props.settings, dataEncryption: val })
+  set: val =>
+    emit('update:settings', { ...props.settings, dataEncryption: val }),
 })
 const syncDisabled = computed({
   get: () => props.settings?.syncDisabled,
-  set: (val) => emit('update:settings', { ...props.settings, syncDisabled: val })
+  set: val => emit('update:settings', { ...props.settings, syncDisabled: val }),
 })
 const anonymizeData = computed({
   get: () => props.settings?.anonymizeData,
-  set: (val) => emit('update:settings', { ...props.settings, anonymizeData: val })
+  set: val =>
+    emit('update:settings', { ...props.settings, anonymizeData: val }),
 })
 
 function formatBytes(bytes) {
-  if (bytes === 0) {return '0 B'}
+  if (bytes === 0) {
+    return '0 B'
+  }
   const k = 1024
   const sizes = ['B', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
@@ -383,25 +499,41 @@ function formatBytes(bytes) {
 
 // Computed properties
 const chatHistoryPercent = computed(() =>
-  Math.min((props.storageStats.chatHistorySize / props.storageStats.totalSize) * 100, 100)
+  Math.min(
+    (props.storageStats.chatHistorySize / props.storageStats.totalSize) * 100,
+    100
+  )
 )
 
 const portfolioPercent = computed(() =>
-  Math.min((props.storageStats.portfolioSize / props.storageStats.totalSize) * 100, 100)
+  Math.min(
+    (props.storageStats.portfolioSize / props.storageStats.totalSize) * 100,
+    100
+  )
 )
 
 const cachePercent = computed(() =>
-  Math.min((props.storageStats.cacheSize / props.storageStats.totalSize) * 100, 100)
+  Math.min(
+    (props.storageStats.cacheSize / props.storageStats.totalSize) * 100,
+    100
+  )
 )
 
 const settingsPercent = computed(() =>
-  Math.min((props.storageStats.settingsSize / props.storageStats.totalSize) * 100, 100)
+  Math.min(
+    (props.storageStats.settingsSize / props.storageStats.totalSize) * 100,
+    100
+  )
 )
 </script>
 
 <style scoped>
-.progress--thin { height: 6px; }
-.progress-bar--var { width: var(--progress-width); }
+.progress--thin {
+  height: 6px;
+}
+.progress-bar--var {
+  width: var(--progress-width);
+}
 /* Accordion styles */
 .accordion-header {
   cursor: pointer;

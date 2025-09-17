@@ -1,386 +1,442 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Fairy Voice System Test</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            min-height: 100vh;
-        }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 24px;
-            margin: 16px 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        
-        .fairy-icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
-        }
-        
-        .test-section {
-            margin: 24px 0;
-        }
-        
-        .test-button {
-            background: linear-gradient(135deg, #00ff88, #00d9ff);
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            margin: 8px;
-            transition: transform 0.2s ease;
-        }
-        
-        .test-button:hover {
-            transform: translateY(-2px);
-        }
-        
-        .test-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .settings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin: 16px 0;
-        }
-        
-        .setting-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 8px;
-        }
-        
-        .setting-label {
-            font-size: 14px;
-            opacity: 0.8;
-            margin-bottom: 4px;
-        }
-        
-        .setting-value {
-            font-weight: 600;
-        }
-        
-        .status-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        
-        .status-ok { background: #00ff88; }
-        .status-warning { background: #ffaa00; }
-        .status-error { background: #ff4444; }
-        
-        .provider-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 16px;
-            margin: 8px 0;
-        }
-        
-        .provider-card.active {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-        }
-        
-        .console-output {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            padding: 16px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            max-height: 200px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
-        
-        select, input[type="range"] {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px;
-            border-radius: 4px;
-            width: 100%;
-        }
-        
-        .test-text {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            width: 100%;
-            min-height: 80px;
-            resize: vertical;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 24px;
+        margin: 16px 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .fairy-icon {
+        font-size: 3rem;
+        margin-bottom: 16px;
+      }
+
+      .test-section {
+        margin: 24px 0;
+      }
+
+      .test-button {
+        background: linear-gradient(135deg, #00ff88, #00d9ff);
+        border: none;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        margin: 8px;
+        transition: transform 0.2s ease;
+      }
+
+      .test-button:hover {
+        transform: translateY(-2px);
+      }
+
+      .test-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .settings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin: 16px 0;
+      }
+
+      .setting-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px;
+        border-radius: 8px;
+      }
+
+      .setting-label {
+        font-size: 14px;
+        opacity: 0.8;
+        margin-bottom: 4px;
+      }
+
+      .setting-value {
+        font-weight: 600;
+      }
+
+      .status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+
+      .status-ok {
+        background: #00ff88;
+      }
+      .status-warning {
+        background: #ffaa00;
+      }
+      .status-error {
+        background: #ff4444;
+      }
+
+      .provider-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 16px;
+        margin: 8px 0;
+      }
+
+      .provider-card.active {
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+      }
+
+      .console-output {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        padding: 16px;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        max-height: 200px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+
+      select,
+      input[type='range'] {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 8px;
+        border-radius: 4px;
+        width: 100%;
+      }
+
+      .test-text {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        width: 100%;
+        min-height: 80px;
+        resize: vertical;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <div class="fairy-icon">🧚‍♀️</div>
-        <h1>AI Fairy Voice System Test</h1>
-        <p>Comprehensive testing and configuration for TTS/STT integration</p>
+      <div class="fairy-icon">🧚‍♀️</div>
+      <h1>AI Fairy Voice System Test</h1>
+      <p>Comprehensive testing and configuration for TTS/STT integration</p>
     </div>
 
     <div class="card">
-        <h2>🔧 Quick Settings Fix</h2>
-        <p>Fix common voice configuration issues automatically.</p>
-        <button class="test-button" onclick="runQuickFix()">
-            🔧 Run Quick Fix
-        </button>
-        <button class="test-button" onclick="runFullDiagnostic()">
-            🧪 Full Diagnostic
-        </button>
-        <div id="fix-status" class="console-output" style="display: none;"></div>
+      <h2>🔧 Quick Settings Fix</h2>
+      <p>Fix common voice configuration issues automatically.</p>
+      <button class="test-button" onclick="runQuickFix()">
+        🔧 Run Quick Fix
+      </button>
+      <button class="test-button" onclick="runFullDiagnostic()">
+        🧪 Full Diagnostic
+      </button>
+      <div id="fix-status" class="console-output" style="display: none"></div>
     </div>
 
     <div class="card">
-        <h2>⚙️ Current Voice Settings</h2>
-        <div class="settings-grid" id="current-settings">
-            <!-- Settings will be populated by JavaScript -->
-        </div>
-        <button class="test-button" onclick="refreshSettings()">
-            🔄 Refresh Settings
-        </button>
+      <h2>⚙️ Current Voice Settings</h2>
+      <div class="settings-grid" id="current-settings">
+        <!-- Settings will be populated by JavaScript -->
+      </div>
+      <button class="test-button" onclick="refreshSettings()">
+        🔄 Refresh Settings
+      </button>
     </div>
 
     <div class="card">
-        <h2>🎤 TTS Provider Test</h2>
-        <p>Test different text-to-speech providers with sample text.</p>
-        
-        <div style="margin: 16px 0;">
-            <label class="setting-label">Test Text:</label>
-            <textarea class="test-text" id="test-text" placeholder="Enter text to speak...">
+      <h2>🎤 TTS Provider Test</h2>
+      <p>Test different text-to-speech providers with sample text.</p>
+
+      <div style="margin: 16px 0">
+        <label class="setting-label">Test Text:</label>
+        <textarea
+          class="test-text"
+          id="test-text"
+          placeholder="Enter text to speak..."
+        >
 Hello! This is a test of the AI Fairy voice system. I can speak using different providers including system TTS, Google AI Gemini, and Kokoro neural voices.
-            </textarea>
-        </div>
-        
-        <div class="provider-card" id="system-provider">
-            <h3>🖥️ System TTS</h3>
-            <p>Built-in browser text-to-speech</p>
-            <button class="test-button" onclick="testTTS('system')">
-                🔊 Test System TTS
-            </button>
-        </div>
-        
-        <div class="provider-card" id="gemini-provider">
-            <h3>🤖 Google AI (Gemini)</h3>
-            <p>AI-powered natural speech synthesis</p>
-            <div class="setting-item">
-                <div class="setting-label">API Key Status:</div>
-                <div class="setting-value" id="gemini-api-status">Checking...</div>
-            </div>
-            <button class="test-button" onclick="testTTS('gemini')" id="gemini-test-btn">
-                🔊 Test Gemini TTS
-            </button>
-        </div>
-        
-        <div class="provider-card" id="kokoro-provider">
-            <h3>🎵 Kokoro TTS</h3>
-            <p>Local neural voice synthesis</p>
-            <div class="setting-item">
-                <div class="setting-label">Models Status:</div>
-                <div class="setting-value" id="kokoro-models-status">Checking...</div>
-            </div>
-            <button class="test-button" onclick="testTTS('kokoro')" id="kokoro-test-btn">
-                🔊 Test Kokoro TTS
-            </button>
-        </div>
-    </div>
+            </textarea
+        >
+      </div>
 
-    <div class="card">
-        <h2>🎙️ Speech Recognition Test</h2>
-        <p>Test speech-to-text functionality.</p>
-        
+      <div class="provider-card" id="system-provider">
+        <h3>🖥️ System TTS</h3>
+        <p>Built-in browser text-to-speech</p>
+        <button class="test-button" onclick="testTTS('system')">
+          🔊 Test System TTS
+        </button>
+      </div>
+
+      <div class="provider-card" id="gemini-provider">
+        <h3>🤖 Google AI (Gemini)</h3>
+        <p>AI-powered natural speech synthesis</p>
         <div class="setting-item">
-            <div class="setting-label">Browser Support:</div>
-            <div class="setting-value" id="stt-support">Checking...</div>
+          <div class="setting-label">API Key Status:</div>
+          <div class="setting-value" id="gemini-api-status">Checking...</div>
         </div>
-        
-        <button class="test-button" onclick="testSTT()" id="stt-test-btn">
-            🎙️ Test Speech Recognition
+        <button
+          class="test-button"
+          onclick="testTTS('gemini')"
+          id="gemini-test-btn"
+        >
+          🔊 Test Gemini TTS
         </button>
-        
-        <div id="stt-result" class="console-output" style="display: none;"></div>
+      </div>
+
+      <div class="provider-card" id="kokoro-provider">
+        <h3>🎵 Kokoro TTS</h3>
+        <p>Local neural voice synthesis</p>
+        <div class="setting-item">
+          <div class="setting-label">Models Status:</div>
+          <div class="setting-value" id="kokoro-models-status">Checking...</div>
+        </div>
+        <button
+          class="test-button"
+          onclick="testTTS('kokoro')"
+          id="kokoro-test-btn"
+        >
+          🔊 Test Kokoro TTS
+        </button>
+      </div>
     </div>
 
     <div class="card">
-        <h2>📊 Voice System Status</h2>
-        <div id="system-status">
-            <!-- Status will be populated by JavaScript -->
-        </div>
+      <h2>🎙️ Speech Recognition Test</h2>
+      <p>Test speech-to-text functionality.</p>
+
+      <div class="setting-item">
+        <div class="setting-label">Browser Support:</div>
+        <div class="setting-value" id="stt-support">Checking...</div>
+      </div>
+
+      <button class="test-button" onclick="testSTT()" id="stt-test-btn">
+        🎙️ Test Speech Recognition
+      </button>
+
+      <div id="stt-result" class="console-output" style="display: none"></div>
     </div>
 
     <div class="card">
-        <h2>🛠️ Advanced Configuration</h2>
-        <p>Adjust voice settings and test configuration.</p>
-        
-        <div class="settings-grid">
-            <div class="setting-item">
-                <label class="setting-label">TTS Provider:</label>
-                <select id="tts-provider" onchange="updateTTSProvider()">
-                    <option value="system">System TTS</option>
-                    <option value="gemini">Google AI (Gemini)</option>
-                    <option value="kokoro">Kokoro TTS</option>
-                </select>
-            </div>
-            
-            <div class="setting-item">
-                <label class="setting-label">Speech Rate:</label>
-                <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="0.85" onchange="updateSpeechRate()">
-                <div class="setting-value" id="rate-value">0.85x</div>
-            </div>
-            
-            <div class="setting-item">
-                <label class="setting-label">Speech Volume:</label>
-                <input type="range" id="speech-volume" min="0" max="1" step="0.1" value="0.9" onchange="updateSpeechVolume()">
-                <div class="setting-value" id="volume-value">90%</div>
-            </div>
-            
-            <div class="setting-item">
-                <label class="setting-label">Voice Mode:</label>
-                <button class="test-button" onclick="toggleVoiceMode()" id="voice-mode-btn">
-                    Enable Voice Mode
-                </button>
-            </div>
+      <h2>📊 Voice System Status</h2>
+      <div id="system-status">
+        <!-- Status will be populated by JavaScript -->
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🛠️ Advanced Configuration</h2>
+      <p>Adjust voice settings and test configuration.</p>
+
+      <div class="settings-grid">
+        <div class="setting-item">
+          <label class="setting-label">TTS Provider:</label>
+          <select id="tts-provider" onchange="updateTTSProvider()">
+            <option value="system">System TTS</option>
+            <option value="gemini">Google AI (Gemini)</option>
+            <option value="kokoro">Kokoro TTS</option>
+          </select>
         </div>
-        
-        <button class="test-button" onclick="saveSettings()">
-            💾 Save Settings
-        </button>
-        <button class="test-button" onclick="resetSettings()">
-            🔄 Reset to Defaults
-        </button>
+
+        <div class="setting-item">
+          <label class="setting-label">Speech Rate:</label>
+          <input
+            type="range"
+            id="speech-rate"
+            min="0.5"
+            max="2"
+            step="0.1"
+            value="0.85"
+            onchange="updateSpeechRate()"
+          />
+          <div class="setting-value" id="rate-value">0.85x</div>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">Speech Volume:</label>
+          <input
+            type="range"
+            id="speech-volume"
+            min="0"
+            max="1"
+            step="0.1"
+            value="0.9"
+            onchange="updateSpeechVolume()"
+          />
+          <div class="setting-value" id="volume-value">90%</div>
+        </div>
+
+        <div class="setting-item">
+          <label class="setting-label">Voice Mode:</label>
+          <button
+            class="test-button"
+            onclick="toggleVoiceMode()"
+            id="voice-mode-btn"
+          >
+            Enable Voice Mode
+          </button>
+        </div>
+      </div>
+
+      <button class="test-button" onclick="saveSettings()">
+        💾 Save Settings
+      </button>
+      <button class="test-button" onclick="resetSettings()">
+        🔄 Reset to Defaults
+      </button>
     </div>
 
     <script>
-        // Global state
-        let currentSettings = {};
-        let voiceSupport = {};
-        
-        // Initialize page
-        async function initializePage() {
-            console.log('🧚‍♀️ Initializing AI Fairy Voice Test Page...');
-            
-            await checkVoiceSupport();
-            await loadCurrentSettings();
-            await checkProviderStatus();
-            updateUI();
+      // Global state
+      let currentSettings = {}
+      let voiceSupport = {}
+
+      // Initialize page
+      async function initializePage() {
+        console.log('🧚‍♀️ Initializing AI Fairy Voice Test Page...')
+
+        await checkVoiceSupport()
+        await loadCurrentSettings()
+        await checkProviderStatus()
+        updateUI()
+      }
+
+      // Check browser voice support
+      async function checkVoiceSupport() {
+        voiceSupport = {
+          speechSynthesis: 'speechSynthesis' in window,
+          speechRecognition:
+            'webkitSpeechRecognition' in window ||
+            'SpeechRecognition' in window,
+          webAudio: 'AudioContext' in window || 'webkitAudioContext' in window,
+          mediaDevices:
+            'mediaDevices' in navigator &&
+            'getUserMedia' in navigator.mediaDevices,
+          webAssembly: 'WebAssembly' in window,
         }
-        
-        // Check browser voice support
-        async function checkVoiceSupport() {
-            voiceSupport = {
-                speechSynthesis: 'speechSynthesis' in window,
-                speechRecognition: 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window,
-                webAudio: 'AudioContext' in window || 'webkitAudioContext' in window,
-                mediaDevices: 'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices,
-                webAssembly: 'WebAssembly' in window
-            };
-            
-            // Update STT support status
-            const sttStatus = document.getElementById('stt-support');
-            if (voiceSupport.speechRecognition) {
-                sttStatus.innerHTML = '<span class="status-indicator status-ok"></span>Supported';
-            } else {
-                sttStatus.innerHTML = '<span class="status-indicator status-error"></span>Not Supported';
-                document.getElementById('stt-test-btn').disabled = true;
-            }
+
+        // Update STT support status
+        const sttStatus = document.getElementById('stt-support')
+        if (voiceSupport.speechRecognition) {
+          sttStatus.innerHTML =
+            '<span class="status-indicator status-ok"></span>Supported'
+        } else {
+          sttStatus.innerHTML =
+            '<span class="status-indicator status-error"></span>Not Supported'
+          document.getElementById('stt-test-btn').disabled = true
         }
-        
-        // Load current settings from localStorage
-        async function loadCurrentSettings() {
-            try {
-                const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-                currentSettings = {
-                    ttsProvider: appSettings.ttsProvider || 'system',
-                    sttProvider: appSettings.sttProvider || 'system',
-                    speechRate: appSettings.speechRate || 0.85,
-                    speechPitch: appSettings.speechPitch || 1.0,
-                    speechVolume: appSettings.speechVolume || 0.9,
-                    voiceMode: appSettings.voiceMode || false,
-                    voiceLang: appSettings.voiceLang || 'en-US',
-                    geminiApiKey: appSettings.geminiApiKey || '',
-                    ttsVoice: appSettings.ttsVoice || '',
-                    kokoroModel: appSettings.kokoroModel || 'default'
-                };
-                
-                console.log('Settings loaded:', currentSettings);
-            } catch (error) {
-                console.error('Failed to load settings:', error);
-                currentSettings = {
-                    ttsProvider: 'system',
-                    sttProvider: 'system',
-                    speechRate: 0.85,
-                    speechPitch: 1.0,
-                    speechVolume: 0.9,
-                    voiceMode: false,
-                    voiceLang: 'en-US',
-                    geminiApiKey: '',
-                    ttsVoice: '',
-                    kokoroModel: 'default'
-                };
-            }
+      }
+
+      // Load current settings from localStorage
+      async function loadCurrentSettings() {
+        try {
+          const appSettings = JSON.parse(
+            localStorage.getItem('app-settings') || '{}'
+          )
+          currentSettings = {
+            ttsProvider: appSettings.ttsProvider || 'system',
+            sttProvider: appSettings.sttProvider || 'system',
+            speechRate: appSettings.speechRate || 0.85,
+            speechPitch: appSettings.speechPitch || 1.0,
+            speechVolume: appSettings.speechVolume || 0.9,
+            voiceMode: appSettings.voiceMode || false,
+            voiceLang: appSettings.voiceLang || 'en-US',
+            geminiApiKey: appSettings.geminiApiKey || '',
+            ttsVoice: appSettings.ttsVoice || '',
+            kokoroModel: appSettings.kokoroModel || 'default',
+          }
+
+          console.log('Settings loaded:', currentSettings)
+        } catch (error) {
+          console.error('Failed to load settings:', error)
+          currentSettings = {
+            ttsProvider: 'system',
+            sttProvider: 'system',
+            speechRate: 0.85,
+            speechPitch: 1.0,
+            speechVolume: 0.9,
+            voiceMode: false,
+            voiceLang: 'en-US',
+            geminiApiKey: '',
+            ttsVoice: '',
+            kokoroModel: 'default',
+          }
         }
-        
-        // Check provider status
-        async function checkProviderStatus() {
-            // Check Gemini API key
-            const geminiStatus = document.getElementById('gemini-api-status');
-            const geminiProvider = document.getElementById('gemini-provider');
-            const geminiBtn = document.getElementById('gemini-test-btn');
-            
-            if (currentSettings.geminiApiKey && currentSettings.geminiApiKey.trim()) {
-                geminiStatus.innerHTML = '<span class="status-indicator status-ok"></span>API Key Configured';
-                geminiProvider.classList.add('active');
-            } else {
-                geminiStatus.innerHTML = '<span class="status-indicator status-warning"></span>No API Key';
-                geminiBtn.disabled = true;
-            }
-            
-            // Check Kokoro models
-            const kokoroStatus = document.getElementById('kokoro-models-status');
-            const kokoroProvider = document.getElementById('kokoro-provider');
-            
-            try {
-                // Try to import Kokoro
-                const KokoroModule = await import('kokoro-js');
-                kokoroStatus.innerHTML = '<span class="status-indicator status-ok"></span>Package Available';
-                kokoroProvider.classList.add('active');
-            } catch (error) {
-                kokoroStatus.innerHTML = '<span class="status-indicator status-warning"></span>Package Not Available';
-                document.getElementById('kokoro-test-btn').disabled = true;
-            }
+      }
+
+      // Check provider status
+      async function checkProviderStatus() {
+        // Check Gemini API key
+        const geminiStatus = document.getElementById('gemini-api-status')
+        const geminiProvider = document.getElementById('gemini-provider')
+        const geminiBtn = document.getElementById('gemini-test-btn')
+
+        if (
+          currentSettings.geminiApiKey &&
+          currentSettings.geminiApiKey.trim()
+        ) {
+          geminiStatus.innerHTML =
+            '<span class="status-indicator status-ok"></span>API Key Configured'
+          geminiProvider.classList.add('active')
+        } else {
+          geminiStatus.innerHTML =
+            '<span class="status-indicator status-warning"></span>No API Key'
+          geminiBtn.disabled = true
         }
-        
-        // Update UI with current settings
-        function updateUI() {
-            // Update current settings display
-            const settingsContainer = document.getElementById('current-settings');
-            settingsContainer.innerHTML = `
+
+        // Check Kokoro models
+        const kokoroStatus = document.getElementById('kokoro-models-status')
+        const kokoroProvider = document.getElementById('kokoro-provider')
+
+        try {
+          // Try to import Kokoro
+          const KokoroModule = await import('kokoro-js')
+          kokoroStatus.innerHTML =
+            '<span class="status-indicator status-ok"></span>Package Available'
+          kokoroProvider.classList.add('active')
+        } catch (error) {
+          kokoroStatus.innerHTML =
+            '<span class="status-indicator status-warning"></span>Package Not Available'
+          document.getElementById('kokoro-test-btn').disabled = true
+        }
+      }
+
+      // Update UI with current settings
+      function updateUI() {
+        // Update current settings display
+        const settingsContainer = document.getElementById('current-settings')
+        settingsContainer.innerHTML = `
                 <div class="setting-item">
                     <div class="setting-label">TTS Provider:</div>
                     <div class="setting-value">${currentSettings.ttsProvider}</div>
@@ -405,37 +461,49 @@ Hello! This is a test of the AI Fairy voice system. I can speak using different 
                     <div class="setting-label">Voice Language:</div>
                     <div class="setting-value">${currentSettings.voiceLang}</div>
                 </div>
-            `;
-            
-            // Update form controls
-            document.getElementById('tts-provider').value = currentSettings.ttsProvider;
-            document.getElementById('speech-rate').value = currentSettings.speechRate;
-            document.getElementById('speech-volume').value = currentSettings.speechVolume;
-            document.getElementById('rate-value').textContent = currentSettings.speechRate + 'x';
-            document.getElementById('volume-value').textContent = Math.round(currentSettings.speechVolume * 100) + '%';
-            
-            const voiceModeBtn = document.getElementById('voice-mode-btn');
-            voiceModeBtn.textContent = currentSettings.voiceMode ? 'Disable Voice Mode' : 'Enable Voice Mode';
-            voiceModeBtn.style.background = currentSettings.voiceMode ? 
-                'linear-gradient(135deg, #ff4444, #cc0000)' : 
-                'linear-gradient(135deg, #00ff88, #00d9ff)';
-            
-            // Update system status
-            updateSystemStatus();
-        }
-        
+            `
+
+        // Update form controls
+        document.getElementById('tts-provider').value =
+          currentSettings.ttsProvider
+        document.getElementById('speech-rate').value =
+          currentSettings.speechRate
+        document.getElementById('speech-volume').value =
+          currentSettings.speechVolume
+        document.getElementById('rate-value').textContent =
+          currentSettings.speechRate + 'x'
+        document.getElementById('volume-value').textContent =
+          Math.round(currentSettings.speechVolume * 100) + '%'
+
+        const voiceModeBtn = document.getElementById('voice-mode-btn')
+        voiceModeBtn.textContent = currentSettings.voiceMode
+          ? 'Disable Voice Mode'
+          : 'Enable Voice Mode'
+        voiceModeBtn.style.background = currentSettings.voiceMode
+          ? 'linear-gradient(135deg, #ff4444, #cc0000)'
+          : 'linear-gradient(135deg, #00ff88, #00d9ff)'
+
         // Update system status
-        function updateSystemStatus() {
-            const statusContainer = document.getElementById('system-status');
-            const features = [
-                { name: 'Speech Synthesis', supported: voiceSupport.speechSynthesis },
-                { name: 'Speech Recognition', supported: voiceSupport.speechRecognition },
-                { name: 'Web Audio API', supported: voiceSupport.webAudio },
-                { name: 'Media Devices', supported: voiceSupport.mediaDevices },
-                { name: 'WebAssembly', supported: voiceSupport.webAssembly }
-            ];
-            
-            statusContainer.innerHTML = features.map(feature => `
+        updateSystemStatus()
+      }
+
+      // Update system status
+      function updateSystemStatus() {
+        const statusContainer = document.getElementById('system-status')
+        const features = [
+          { name: 'Speech Synthesis', supported: voiceSupport.speechSynthesis },
+          {
+            name: 'Speech Recognition',
+            supported: voiceSupport.speechRecognition,
+          },
+          { name: 'Web Audio API', supported: voiceSupport.webAudio },
+          { name: 'Media Devices', supported: voiceSupport.mediaDevices },
+          { name: 'WebAssembly', supported: voiceSupport.webAssembly },
+        ]
+
+        statusContainer.innerHTML = features
+          .map(
+            feature => `
                 <div class="setting-item">
                     <div class="setting-label">${feature.name}:</div>
                     <div class="setting-value">
@@ -443,251 +511,260 @@ Hello! This is a test of the AI Fairy voice system. I can speak using different 
                         ${feature.supported ? 'Supported' : 'Not Supported'}
                     </div>
                 </div>
-            `).join('');
-        }
-        
-        // Test TTS with different providers
-        async function testTTS(provider) {
-            const testText = document.getElementById('test-text').value || 'Hello! This is a test of the voice system.';
-            
-            console.log(`Testing ${provider} TTS with text: "${testText}"`);
-            
-            try {
-                // Create test options
-                const options = {
-                    provider: provider,
-                    rate: currentSettings.speechRate,
-                    volume: currentSettings.speechVolume,
-                    pitch: currentSettings.speechPitch
-                };
-                
-                // Add API key for Gemini
-                if (provider === 'gemini' && currentSettings.geminiApiKey) {
-                    options.apiKey = currentSettings.geminiApiKey;
-                }
-                
-                // Use the voice utility from the main app
-                if (window.naviVoiceFix) {
-                    // Import voice utility dynamically
-                    const voiceModule = await import('/src/utils/voice.js');
-                    await voiceModule.speak(testText, options);
-                    console.log(`✅ ${provider} TTS test completed`);
-                } else {
-                    // Fallback to Web Speech API for system TTS
-                    if (provider === 'system' && 'speechSynthesis' in window) {
-                        const utterance = new SpeechSynthesisUtterance(testText);
-                        utterance.rate = options.rate;
-                        utterance.volume = options.volume;
-                        utterance.pitch = options.pitch;
-                        
-                        speechSynthesis.speak(utterance);
-                        console.log('✅ System TTS test completed (fallback)');
-                    } else {
-                        throw new Error('Voice utilities not available');
-                    }
-                }
-                
-            } catch (error) {
-                console.error(`❌ ${provider} TTS test failed:`, error);
-                alert(`TTS test failed: ${error.message}`);
+            `
+          )
+          .join('')
+      }
+
+      // Test TTS with different providers
+      async function testTTS(provider) {
+        const testText =
+          document.getElementById('test-text').value ||
+          'Hello! This is a test of the voice system.'
+
+        console.log(`Testing ${provider} TTS with text: "${testText}"`)
+
+        try {
+          // Create test options
+          const options = {
+            provider: provider,
+            rate: currentSettings.speechRate,
+            volume: currentSettings.speechVolume,
+            pitch: currentSettings.speechPitch,
+          }
+
+          // Add API key for Gemini
+          if (provider === 'gemini' && currentSettings.geminiApiKey) {
+            options.apiKey = currentSettings.geminiApiKey
+          }
+
+          // Use the voice utility from the main app
+          if (window.naviVoiceFix) {
+            // Import voice utility dynamically
+            const voiceModule = await import('/src/utils/voice.js')
+            await voiceModule.speak(testText, options)
+            console.log(`✅ ${provider} TTS test completed`)
+          } else {
+            // Fallback to Web Speech API for system TTS
+            if (provider === 'system' && 'speechSynthesis' in window) {
+              const utterance = new SpeechSynthesisUtterance(testText)
+              utterance.rate = options.rate
+              utterance.volume = options.volume
+              utterance.pitch = options.pitch
+
+              speechSynthesis.speak(utterance)
+              console.log('✅ System TTS test completed (fallback)')
+            } else {
+              throw new Error('Voice utilities not available')
             }
+          }
+        } catch (error) {
+          console.error(`❌ ${provider} TTS test failed:`, error)
+          alert(`TTS test failed: ${error.message}`)
         }
-        
-        // Test Speech Recognition
-        async function testSTT() {
-            if (!voiceSupport.speechRecognition) {
-                alert('Speech recognition not supported in this browser');
-                return;
-            }
-            
-            const resultDiv = document.getElementById('stt-result');
-            const btn = document.getElementById('stt-test-btn');
-            
-            try {
-                btn.disabled = true;
-                btn.textContent = '🎙️ Listening...';
-                resultDiv.style.display = 'block';
-                resultDiv.textContent = 'Listening for speech... (speak now)';
-                
-                const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-                const recognition = new SpeechRecognition();
-                
-                recognition.continuous = false;
-                recognition.interimResults = false;
-                recognition.lang = currentSettings.voiceLang;
-                
-                recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    const confidence = event.results[0][0].confidence;
-                    
-                    resultDiv.textContent = `Recognized: "${transcript}"\nConfidence: ${Math.round(confidence * 100)}%`;
-                    console.log('✅ Speech recognition successful:', transcript);
-                };
-                
-                recognition.onerror = (event) => {
-                    resultDiv.textContent = `Error: ${event.error}`;
-                    console.error('❌ Speech recognition error:', event.error);
-                };
-                
-                recognition.onend = () => {
-                    btn.disabled = false;
-                    btn.textContent = '🎙️ Test Speech Recognition';
-                };
-                
-                recognition.start();
-                
-            } catch (error) {
-                console.error('❌ STT test failed:', error);
-                resultDiv.textContent = `Error: ${error.message}`;
-                btn.disabled = false;
-                btn.textContent = '🎙️ Test Speech Recognition';
-            }
+      }
+
+      // Test Speech Recognition
+      async function testSTT() {
+        if (!voiceSupport.speechRecognition) {
+          alert('Speech recognition not supported in this browser')
+          return
         }
-        
-        // Quick fix function
-        async function runQuickFix() {
-            const statusDiv = document.getElementById('fix-status');
-            statusDiv.style.display = 'block';
-            statusDiv.textContent = 'Running quick fix...\n';
-            
-            try {
-                // Load and run the fix script
-                if (window.naviVoiceFix) {
-                    const results = await window.naviVoiceFix.fixAllAIFairyVoiceSettings();
-                    statusDiv.textContent += 'Quick fix completed!\n';
-                    statusDiv.textContent += JSON.stringify(results, null, 2);
-                } else {
-                    // Try to load the fix script
-                    const script = document.createElement('script');
-                    script.src = '/fix-ai-fairy-voice-settings.js';
-                    document.head.appendChild(script);
-                    
-                    statusDiv.textContent += 'Fix script loaded. Please try again.\n';
-                }
-                
-                // Reload settings
-                await loadCurrentSettings();
-                updateUI();
-                
-            } catch (error) {
-                statusDiv.textContent += `Error: ${error.message}\n`;
-                console.error('Quick fix failed:', error);
-            }
+
+        const resultDiv = document.getElementById('stt-result')
+        const btn = document.getElementById('stt-test-btn')
+
+        try {
+          btn.disabled = true
+          btn.textContent = '🎙️ Listening...'
+          resultDiv.style.display = 'block'
+          resultDiv.textContent = 'Listening for speech... (speak now)'
+
+          const SpeechRecognition =
+            window.webkitSpeechRecognition || window.SpeechRecognition
+          const recognition = new SpeechRecognition()
+
+          recognition.continuous = false
+          recognition.interimResults = false
+          recognition.lang = currentSettings.voiceLang
+
+          recognition.onresult = event => {
+            const transcript = event.results[0][0].transcript
+            const confidence = event.results[0][0].confidence
+
+            resultDiv.textContent = `Recognized: "${transcript}"\nConfidence: ${Math.round(confidence * 100)}%`
+            console.log('✅ Speech recognition successful:', transcript)
+          }
+
+          recognition.onerror = event => {
+            resultDiv.textContent = `Error: ${event.error}`
+            console.error('❌ Speech recognition error:', event.error)
+          }
+
+          recognition.onend = () => {
+            btn.disabled = false
+            btn.textContent = '🎙️ Test Speech Recognition'
+          }
+
+          recognition.start()
+        } catch (error) {
+          console.error('❌ STT test failed:', error)
+          resultDiv.textContent = `Error: ${error.message}`
+          btn.disabled = false
+          btn.textContent = '🎙️ Test Speech Recognition'
         }
-        
-        // Full diagnostic function
-        async function runFullDiagnostic() {
-            const statusDiv = document.getElementById('fix-status');
-            statusDiv.style.display = 'block';
-            statusDiv.textContent = 'Running full diagnostic...\n';
-            
-            try {
-                // Load and run the diagnostic script
-                if (window.naviVoiceDiagnostic) {
-                    const results = await window.naviVoiceDiagnostic.runFullDiagnostic();
-                    statusDiv.textContent += 'Full diagnostic completed!\n';
-                    statusDiv.textContent += 'Check browser console for detailed results.\n';
-                } else {
-                    // Try to load the diagnostic script
-                    const script = document.createElement('script');
-                    script.src = '/ai-fairy-voice-diagnostic.js';
-                    document.head.appendChild(script);
-                    
-                    statusDiv.textContent += 'Diagnostic script loaded. Please try again.\n';
-                }
-                
-            } catch (error) {
-                statusDiv.textContent += `Error: ${error.message}\n`;
-                console.error('Full diagnostic failed:', error);
-            }
+      }
+
+      // Quick fix function
+      async function runQuickFix() {
+        const statusDiv = document.getElementById('fix-status')
+        statusDiv.style.display = 'block'
+        statusDiv.textContent = 'Running quick fix...\n'
+
+        try {
+          // Load and run the fix script
+          if (window.naviVoiceFix) {
+            const results =
+              await window.naviVoiceFix.fixAllAIFairyVoiceSettings()
+            statusDiv.textContent += 'Quick fix completed!\n'
+            statusDiv.textContent += JSON.stringify(results, null, 2)
+          } else {
+            // Try to load the fix script
+            const script = document.createElement('script')
+            script.src = '/fix-ai-fairy-voice-settings.js'
+            document.head.appendChild(script)
+
+            statusDiv.textContent += 'Fix script loaded. Please try again.\n'
+          }
+
+          // Reload settings
+          await loadCurrentSettings()
+          updateUI()
+        } catch (error) {
+          statusDiv.textContent += `Error: ${error.message}\n`
+          console.error('Quick fix failed:', error)
         }
-        
-        // Settings update functions
-        function updateTTSProvider() {
-            const provider = document.getElementById('tts-provider').value;
-            currentSettings.ttsProvider = provider;
-            console.log('TTS provider updated to:', provider);
+      }
+
+      // Full diagnostic function
+      async function runFullDiagnostic() {
+        const statusDiv = document.getElementById('fix-status')
+        statusDiv.style.display = 'block'
+        statusDiv.textContent = 'Running full diagnostic...\n'
+
+        try {
+          // Load and run the diagnostic script
+          if (window.naviVoiceDiagnostic) {
+            const results = await window.naviVoiceDiagnostic.runFullDiagnostic()
+            statusDiv.textContent += 'Full diagnostic completed!\n'
+            statusDiv.textContent +=
+              'Check browser console for detailed results.\n'
+          } else {
+            // Try to load the diagnostic script
+            const script = document.createElement('script')
+            script.src = '/ai-fairy-voice-diagnostic.js'
+            document.head.appendChild(script)
+
+            statusDiv.textContent +=
+              'Diagnostic script loaded. Please try again.\n'
+          }
+        } catch (error) {
+          statusDiv.textContent += `Error: ${error.message}\n`
+          console.error('Full diagnostic failed:', error)
         }
-        
-        function updateSpeechRate() {
-            const rate = parseFloat(document.getElementById('speech-rate').value);
-            currentSettings.speechRate = rate;
-            document.getElementById('rate-value').textContent = rate + 'x';
-            console.log('Speech rate updated to:', rate);
+      }
+
+      // Settings update functions
+      function updateTTSProvider() {
+        const provider = document.getElementById('tts-provider').value
+        currentSettings.ttsProvider = provider
+        console.log('TTS provider updated to:', provider)
+      }
+
+      function updateSpeechRate() {
+        const rate = parseFloat(document.getElementById('speech-rate').value)
+        currentSettings.speechRate = rate
+        document.getElementById('rate-value').textContent = rate + 'x'
+        console.log('Speech rate updated to:', rate)
+      }
+
+      function updateSpeechVolume() {
+        const volume = parseFloat(
+          document.getElementById('speech-volume').value
+        )
+        currentSettings.speechVolume = volume
+        document.getElementById('volume-value').textContent =
+          Math.round(volume * 100) + '%'
+        console.log('Speech volume updated to:', volume)
+      }
+
+      function toggleVoiceMode() {
+        currentSettings.voiceMode = !currentSettings.voiceMode
+        updateUI()
+        console.log('Voice mode toggled to:', currentSettings.voiceMode)
+      }
+
+      function saveSettings() {
+        try {
+          const appSettings = JSON.parse(
+            localStorage.getItem('app-settings') || '{}'
+          )
+          Object.assign(appSettings, currentSettings)
+          localStorage.setItem('app-settings', JSON.stringify(appSettings))
+
+          alert('Settings saved successfully!')
+          console.log('Settings saved:', currentSettings)
+        } catch (error) {
+          alert('Failed to save settings: ' + error.message)
+          console.error('Save failed:', error)
         }
-        
-        function updateSpeechVolume() {
-            const volume = parseFloat(document.getElementById('speech-volume').value);
-            currentSettings.speechVolume = volume;
-            document.getElementById('volume-value').textContent = Math.round(volume * 100) + '%';
-            console.log('Speech volume updated to:', volume);
+      }
+
+      function resetSettings() {
+        if (confirm('Reset all voice settings to defaults?')) {
+          currentSettings = {
+            ttsProvider: 'system',
+            sttProvider: 'system',
+            speechRate: 0.85,
+            speechPitch: 1.0,
+            speechVolume: 0.9,
+            voiceMode: false,
+            voiceLang: 'en-US',
+            geminiApiKey: currentSettings.geminiApiKey, // Keep API key
+            ttsVoice: '',
+            kokoroModel: 'default',
+          }
+
+          updateUI()
+          saveSettings()
+          console.log('Settings reset to defaults')
         }
-        
-        function toggleVoiceMode() {
-            currentSettings.voiceMode = !currentSettings.voiceMode;
-            updateUI();
-            console.log('Voice mode toggled to:', currentSettings.voiceMode);
-        }
-        
-        function saveSettings() {
-            try {
-                const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-                Object.assign(appSettings, currentSettings);
-                localStorage.setItem('app-settings', JSON.stringify(appSettings));
-                
-                alert('Settings saved successfully!');
-                console.log('Settings saved:', currentSettings);
-            } catch (error) {
-                alert('Failed to save settings: ' + error.message);
-                console.error('Save failed:', error);
-            }
-        }
-        
-        function resetSettings() {
-            if (confirm('Reset all voice settings to defaults?')) {
-                currentSettings = {
-                    ttsProvider: 'system',
-                    sttProvider: 'system',
-                    speechRate: 0.85,
-                    speechPitch: 1.0,
-                    speechVolume: 0.9,
-                    voiceMode: false,
-                    voiceLang: 'en-US',
-                    geminiApiKey: currentSettings.geminiApiKey, // Keep API key
-                    ttsVoice: '',
-                    kokoroModel: 'default'
-                };
-                
-                updateUI();
-                saveSettings();
-                console.log('Settings reset to defaults');
-            }
-        }
-        
-        function refreshSettings() {
-            loadCurrentSettings().then(() => {
-                updateUI();
-                alert('Settings refreshed!');
-            });
-        }
-        
-        // Initialize page when loaded
-        window.addEventListener('load', initializePage);
-        
-        // Load external scripts
-        const scripts = [
-            '/fix-ai-fairy-voice-settings.js',
-            '/ai-fairy-voice-diagnostic.js',
-            '/ai-fairy-voice-integration.js',
-            '/test-ai-fairy-voice-integration.js'
-        ];
-        
-        scripts.forEach(src => {
-            const script = document.createElement('script');
-            script.src = src;
-            script.async = true;
-            document.head.appendChild(script);
-        });
+      }
+
+      function refreshSettings() {
+        loadCurrentSettings().then(() => {
+          updateUI()
+          alert('Settings refreshed!')
+        })
+      }
+
+      // Initialize page when loaded
+      window.addEventListener('load', initializePage)
+
+      // Load external scripts
+      const scripts = [
+        '/fix-ai-fairy-voice-settings.js',
+        '/ai-fairy-voice-diagnostic.js',
+        '/ai-fairy-voice-integration.js',
+        '/test-ai-fairy-voice-integration.js',
+      ]
+
+      scripts.forEach(src => {
+        const script = document.createElement('script')
+        script.src = src
+        script.async = true
+        document.head.appendChild(script)
+      })
     </script>
-</body>
+  </body>
 </html>

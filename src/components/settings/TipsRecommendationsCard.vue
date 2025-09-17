@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="card h-100 font-sans" role="complementary" aria-labelledby="tips-title">
+  <div
+    class="card h-100 font-sans"
+    role="complementary"
+    aria-labelledby="tips-title"
+  >
     <div class="card-header section-header card-header--dense">
       <h6 id="tips-title" class="mb-0">
         <LightbulbIconComponent class="mr-2 icon-sm" />Tips & Recommendations
@@ -106,7 +110,9 @@
             </div>
             <div class="recommendation-content">
               <div class="recommendation-title">{{ rec.title }}</div>
-              <div class="recommendation-description">{{ rec.description }}</div>
+              <div class="recommendation-description">
+                {{ rec.description }}
+              </div>
             </div>
             <UnifiedButton
               v-if="!rec.completed"
@@ -128,14 +134,14 @@
 <script>
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
 
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 import {
   LightbulbIconComponent,
   ChevronLeftIconComponent,
   ChevronRightIconComponent,
   CheckCircleIconComponent,
-  CircleIconComponent
+  CircleIconComponent,
 } from './SettingsIcons.js'
 
 export default {
@@ -147,22 +153,22 @@ export default {
     CheckCircleIconComponent,
     CircleIconComponent,
     UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
-    IconButton: () => import('@/components/ui/IconButton.vue')
+    IconButton: () => import('@/components/ui/IconButton.vue'),
   },
   props: {
     tips: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     recommendations: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ['tip-action', 'complete-recommendation'],
   data() {
     return {
-      currentTipIndex: 0
+      currentTipIndex: 0,
     }
   },
   computed: {
@@ -172,7 +178,7 @@ export default {
     quickTips() {
       // Return first 3 tips as quick tips
       return this.tips.slice(0, 3)
-    }
+    },
   },
   methods: {
     previousTip() {
@@ -189,8 +195,8 @@ export default {
       if (index >= 0 && index < this.tips.length) {
         this.currentTipIndex = index
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

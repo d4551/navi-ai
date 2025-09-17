@@ -22,7 +22,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   variant: 'default',
   size: 'md',
-  interactive: false
+  interactive: false,
 })
 
 const { getCardClasses } = useUnifiedUI()
@@ -33,7 +33,7 @@ const cardClasses = computed(() => {
     ...baseClasses,
     `standard-card--${props.variant}`,
     `standard-card--${props.size}`,
-    { 'standard-card--interactive': props.interactive }
+    { 'standard-card--interactive': props.interactive },
   ]
 })
 </script>
@@ -52,11 +52,14 @@ const cardClasses = computed(() => {
 
 /* Variant styles */
 .standard-card--gaming {
-  background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.1), 
-    rgba(139, 69, 19, 0.05),
-    rgba(0, 255, 136, 0.05)
-  ), var(--surface-base);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.1),
+      rgba(139, 69, 19, 0.05),
+      rgba(0, 255, 136, 0.05)
+    ),
+    var(--surface-base);
   border-color: var(--color-gaming-200);
   backdrop-filter: var(--glass-backdrop-blur);
 }
@@ -136,10 +139,9 @@ const cardClasses = computed(() => {
 .standard-card--gaming .card-title {
   border-b-color: var(--color-gaming-200);
   color: var(--text-primary-600);
-  background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.05), 
-    rgba(0, 255, 136, 0.02)
-  ), var(--surface-elevated);
+  background:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(0, 255, 136, 0.02)),
+    var(--surface-elevated);
 }
 
 .standard-card--glass .card-title {
@@ -155,20 +157,19 @@ const cardClasses = computed(() => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .standard-card {
+[data-theme='dark'] .standard-card {
   background: var(--surface-base);
   border-color: var(--border-base);
 }
 
-[data-theme="dark"] .standard-card--gaming {
-  background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.15), 
-    rgba(0, 255, 136, 0.08)
-  ), var(--surface-base);
+[data-theme='dark'] .standard-card--gaming {
+  background:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(0, 255, 136, 0.08)),
+    var(--surface-base);
   border-color: var(--color-gaming-300);
 }
 
-[data-theme="dark"] .card-title {
+[data-theme='dark'] .card-title {
   background: var(--surface-elevated);
   border-b-color: var(--border-base);
   color: var(--text-primary-600);
@@ -180,12 +181,12 @@ const cardClasses = computed(() => {
   .standard-card--lg .card-content {
     padding: var(--spacing-md);
   }
-  
+
   .standard-card--md .card-title,
   .standard-card--md .card-content {
     padding: var(--spacing-sm) var(--spacing-md);
   }
-  
+
   .standard-card {
     border-radius: var(--radius-md);
   }
@@ -205,7 +206,7 @@ const cardClasses = computed(() => {
   .standard-card {
     border-width: 2px;
   }
-  
+
   .card-title {
     border-b-width: 2px;
   }
