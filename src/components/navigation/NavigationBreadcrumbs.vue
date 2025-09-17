@@ -1,10 +1,9 @@
 <template>
   <nav 
-    class="navigation-breadcrumbs"
+    class="navigation-breadcrumbs font-sans"
     :class="{ 'breadcrumbs-compact': compact }"
     role="navigation" 
     aria-label="Breadcrumb navigation"
-    class="font-sans"
   >
     <ol class="breadcrumb-list" role="list">
       <!-- Home Link -->

@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="card glass-card section-card h-100" role="complementary" aria-labelledby="usage-stats-title" class="font-sans">
+  <div class="card glass-card section-card h-100 font-sans" role="complementary" aria-labelledby="usage-stats-title">
     <div class="card-header section-header card-header--dense">
       <h6 id="usage-stats-title" class="mb-0">
         <BarChartIconComponent class="mr-2 icon-sm" />Usage Statistics

@@ -1,5 +1,5 @@
 <template>
-  <div class="cover-letter-layout" class="font-sans">
+  <div class="cover-letter-layout font-sans">
     <!-- Header Section -->
     <header class="cover-letter-header">
       <div class="header-content">

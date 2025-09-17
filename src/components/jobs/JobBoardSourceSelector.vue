@@ -1,5 +1,5 @@
 <template>
-  <div class="job-board-source-selector" class="font-sans">
+  <div class="job-board-source-selector font-sans">
     <!-- Overview Section -->
     <div class="flex flex-wrap mb-4">
       <div class="flex-1-12">

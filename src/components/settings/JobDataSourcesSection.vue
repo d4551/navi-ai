@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="job-data-sources-section" class="font-sans">
+  <div class="job-data-sources-section font-sans">
     <!-- Accordion Header -->
     <div class="settings-card mb-4" role="region" aria-labelledby="job-sources-title">
       <div class="card-header section-header card-header--dense accordion-header" role="button" tabindex="0" @click="toggleAccordion" @keydown.enter="toggleAccordion" @keydown.space="toggleAccordion">

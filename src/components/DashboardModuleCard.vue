@@ -1,12 +1,11 @@
 <template>
   <div
-    class="unified-card dashboard-module-card"
+    class="unified-card dashboard-module-card font-sans"
     :class="[`variant--${data.colorClass}`, { 'featured': data.featured }]"
     role="button"
     :aria-labelledby="`mod-${data.key}-title`"
     :aria-label="`${data.name}: ${data.cta || 'Open'}`"
     tabindex="0"
-    class="font-sans"
     @click="navigate"
     @keydown.enter.prevent.stop="navigate"
     @keydown.space.prevent.stop="navigate"

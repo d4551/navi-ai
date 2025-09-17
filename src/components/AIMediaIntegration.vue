@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-media-integration unified-container" class="font-sans">
+  <div class="ai-media-integration unified-container font-sans">
     <div class="glass-card section-card">
       <div class="integration-header">
         <h3 class="section-title flex items-center gap-sm mb-3">

@@ -4,12 +4,11 @@
 -->
 <template>
   <div
-    class="push-to-talk-container"
+    class="push-to-talk-container font-sans"
     :class="{ 'recording': isRecording,
               'speaking': isSpeaking,
               'error': hasError
     }"
-    class="font-sans"
   >
     <!-- Main Push-to-Talk Button -->
     <button

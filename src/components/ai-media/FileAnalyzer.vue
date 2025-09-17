@@ -1,5 +1,5 @@
 <template>
-  <div class="file-analyzer unified-container" class="font-sans">
+  <div class="file-analyzer unified-container font-sans">
     <div class="glass-card section-card">
       <div class="analyzer-header">
         <h3 class="section-title flex items-center gap-sm">

@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card glass-card section-card mb-4" role="region" aria-labelledby="app-prefs-title" class="font-sans">
+  <div class="settings-card glass-card section-card mb-4 font-sans" role="region" aria-labelledby="app-prefs-title">
     <div class="card-header section-header card-header--dense">
       <h5 id="app-prefs-title" class="mb-0">
         <SettingsIconComponent class="mr-2 icon-sm" />Application Preferences

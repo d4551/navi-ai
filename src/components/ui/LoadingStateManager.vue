@@ -1,11 +1,10 @@
 <template>
   <div
-    class="loading-state-manager"
+    class="loading-state-manager font-sans"
     :class="[
       `loading-variant-${variant}`,
       { 'loading-fullscreen': fullscreen }
     ]"
-    class="font-sans"
   >
     <!-- Skeleton Loading States -->
     <div v-if="isLoading" class="skeleton-container" role="status" aria-live="polite">

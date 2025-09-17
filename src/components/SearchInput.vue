@@ -1,5 +1,5 @@
 <template>
-  <div ref="searchContainer" class="position-relative search-input-container ui-input ui-size-md" class="font-sans">
+  <div ref="searchContainer" class="position-relative search-input-container ui-input ui-size-md font-sans">
     <!-- Main Search Input -->
     <div class="search-input-wrapper ui-input ui-size-md">
       <input

@@ -1,11 +1,10 @@
 <template>
   <div 
-    class="studio-list-item glass-card section-card interactive-hover"
+    class="studio-list-item glass-card section-card interactive-hover font-sans"
     :class="{ 
       'item-selected': isSelected,
       'item-favorite': isFavorite 
     }"
-    class="font-sans"
   >
     <div class="item-content">
       <!-- Studio Logo & Basic Info -->

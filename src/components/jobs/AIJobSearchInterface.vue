@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-job-search-interface" class="font-sans">
+  <div class="ai-job-search-interface font-sans">
     <!-- AI Search Form -->
     <div class="search-form-container mb-4">
       <div class="glass-card section-card-subtle">
@@ -279,6 +279,7 @@
 </template>
 
 <script setup>
+// AI Job Search Interface Component
 import { ChatBubbleLeftRightIcon, CheckIcon, ClockIcon, CurrencyDollarIcon, HomeIcon, InformationCircleIcon, LightBulbIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 import { MapPinIcon } from '@heroicons/vue/24/solid'
 
@@ -366,8 +367,20 @@ const {
 // Toast notifications
 const { success: toastSuccess, error: toastError, warning: toastWarning } = useToast()
 
-// Local state
-const localSearchForm = ref({ ...props.searchForm })
+// Local state - initialize with default structure if _props.searchForm is not provided
+const defaultSearchForm = {
+  query: '',
+  location: '',
+  type: 'full-time',
+  salaryMin: '',
+  salaryMax: '',
+  remote: false
+}
+
+const localSearchForm = ref({ 
+  ...defaultSearchForm, 
+  ...(_props.searchForm || {})
+})
 const searchTimer = ref(0)
 const searchProgress = ref(0)
 const currentStep = ref(1)
@@ -410,7 +423,7 @@ const hasValidSearch = computed(() =>
 )
 
 // Watch for external form changes
-watch(() => props.searchForm, (newForm) => {
+watch(() => _props.searchForm, (newForm) => {
   localSearchForm.value = { ...newForm }
 }, { deep: true })
 
@@ -458,7 +471,7 @@ watch(jobSearchProfile, (profile) => {
 }, { immediate: true })
 
 // Watch loading state to manage search progress  
-watch(() => props.loading || isSearching.value, (isLoading) => {
+watch(() => _props.loading || isSearching.value, (isLoading) => {
   if (isLoading) {
     startSearchProgress()
   } else {

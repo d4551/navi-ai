@@ -1,5 +1,5 @@
 <template>
-  <div class="unified-game-experience" class="font-sans">
+  <div class="unified-game-experience font-sans">
     <!-- Canonical theme styles handled globally to prevent CORB issues -->
     
     <!-- Sam & Max Easter Eggs -->

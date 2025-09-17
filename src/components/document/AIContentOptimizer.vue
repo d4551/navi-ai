@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-content-optimizer" class="font-sans">
+  <div class="ai-content-optimizer font-sans">
     <!-- AI Optimization Panel -->
     <div v-if="showPanel" class="optimization-panel" :class="{ 'is-floating': isFloating }">
       <div class="panel-header">

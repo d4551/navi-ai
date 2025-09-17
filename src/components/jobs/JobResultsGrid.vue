@@ -1,5 +1,5 @@
 <template>
-  <div class="job-results-grid" class="font-sans">
+  <div class="job-results-grid font-sans">
     <!-- Loading State -->
     <div v-if="loading" class="loading-state text-center py-8">
       <LoadingIndicator size="large" />

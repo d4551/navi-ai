@@ -1,5 +1,5 @@
 <template>
-  <div class="unified-document-editor" class="font-sans">
+  <div class="unified-document-editor font-sans">
     <!-- Template Selection Bar -->
     <div class="template-bar">
       <div class="template-selector">

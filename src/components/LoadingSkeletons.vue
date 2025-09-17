@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="loading-skeletons" role="status" aria-live="polite" class="font-sans">
+  <div v-if="show" class="loading-skeletons font-sans" role="status" aria-live="polite">
     <!-- Document Header Skeleton -->
     <ContentLoader
       v-if="variant === 'document' || variant === 'all'"

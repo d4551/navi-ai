@@ -6,128 +6,72 @@
 /* stylelint-disable custom-property-pattern, property-no-vendor-prefix, media-feature-name-value-no-unknown */
 
 /* Glass Morphism Utilities */
-.glass-surface {
-  @apply bg-glass-bg backdrop-blur-sm border border-glass-border;
-}
+.glass-surface { /* removed custom styles */ }
 
-.glass-surface-hover {
-  @apply hover:bg-glass-bg-hover hover:border-glass-border-hover transition-all duration-200;
-}
+.glass-surface-hover { /* removed custom styles */ }
 
-.glass-surface-active {
-  @apply active:bg-glass-bg-active transform active:scale-95 transition-transform duration-75;
-}
+.glass-surface-active { /* removed custom styles */ }
 
 /* Neon Interactive States */
-.neon-focus {
-  @apply focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50 focus:border-neon-blue;
-}
+.neon-focus { /* removed custom styles */ }
 
-.neon-hover-blue {
-  @apply hover:text-neon-blue hover:border-neon-blue hover:shadow-glow-neon-blue;
-}
+.neon-hover-blue { /* removed custom styles */ }
 
-.neon-hover-green {
-  @apply hover:text-neon-green hover:border-neon-green hover:shadow-glow-neon-green;
-}
+.neon-hover-green { /* removed custom styles */ }
 
-.neon-hover-red {
-  @apply hover:text-neon-red hover:border-neon-red hover:shadow-glow-neon-red;
-}
+.neon-hover-red { /* removed custom styles */ }
 
-.neon-hover-purple {
-  @apply hover:text-neon-purple hover:border-neon-purple hover:shadow-glow-neon-purple;
-}
+.neon-hover-purple { /* removed custom styles */ }
 
 /* Typography Utilities */
-.text-display {
-  @apply font-display text-glass-primary font-bold tracking-wide;
-}
+.text-display { /* removed custom styles */ }
 
-.text-body {
-  @apply font-sans text-glass-secondary leading-relaxed;
-}
+.text-body { /* removed custom styles */ }
 
-.text-code {
-  @apply font-mono text-sm bg-glass-bg px-2 py-1 rounded border border-glass-border;
-}
+.text-code { /* removed custom styles */ }
 
-.text-neon-gradient {
-  @apply bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent;
-}
+.text-neon-gradient { /* removed custom styles */ }
 
 /* Layout Utilities */
 .container-glass {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-.section-glass {
-  @apply glass-card p-glass-lg space-y-glass-md;
-}
+.section-glass { /* removed custom styles */ }
 
-.grid-responsive {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-glass-md;
-}
+.grid-responsive { /* removed custom styles */ }
 
-.flex-center-glass {
-  @apply flex items-center justify-center min-h-screen bg-bg-primary;
-}
+.flex-center-glass { /* removed custom styles */ }
 
 /* Button Variants */
 .btn-glass {
-  @apply glass-surface glass-surface-hover glass-surface-active neon-focus;
+  
   @apply px-4 py-2 rounded-md font-medium transition-all duration-200;
 }
 
-.btn-glass-primary {
-  @apply btn-glass text-glass-primary border-glass-border;
-  @apply hover:border-neon-blue hover:shadow-glow-neon-blue;
-}
+.btn-glass-primary { /* removed custom styles */ }
 
-.btn-glass-secondary {
-  @apply btn-glass text-glass-secondary bg-transparent;
-}
+.btn-glass-secondary { /* removed custom styles */ }
 
-.btn-glass-danger {
-  @apply btn-glass text-error-500 border-error-500;
-  @apply hover:border-error-600 hover:shadow-glow-neon-red;
-}
+.btn-glass-danger { /* removed custom styles */ }
 
-.btn-glass-success {
-  @apply btn-glass text-success-500 border-success-500;
-  @apply hover:border-success-600 hover:shadow-glow-neon-green;
-}
+.btn-glass-success { /* removed custom styles */ }
 
 /* Form Utilities */
-.input-glass {
-  @apply w-full glass-surface neon-focus rounded-md px-3 py-2;
-  @apply text-glass-primary placeholder-glass-secondary;
-}
+.input-glass { /* removed custom styles */ }
 
-.label-glass {
-  @apply block text-sm font-medium text-glass-primary mb-2;
-}
+.label-glass { /* removed custom styles */ }
 
-.fieldset-glass {
-  @apply space-y-glass-sm p-glass-md border border-glass-border rounded-lg;
-}
+.fieldset-glass { /* removed custom styles */ }
 
 /* Card Utilities */
-.card-glass {
-  @apply glass-card glass-surface-hover rounded-lg shadow-glass;
-}
+.card-glass { /* removed custom styles */ }
 
-.card-glass-header {
-  @apply flex items-center justify-between p-glass-lg border-b border-glass-border;
-}
+.card-glass-header { /* removed custom styles */ }
 
-.card-glass-body {
-  @apply p-glass-lg space-y-glass-md;
-}
+.card-glass-body { /* removed custom styles */ }
 
-.card-glass-footer {
-  @apply flex items-center justify-end p-glass-lg border-t border-glass-border space-x-glass-sm;
-}
+.card-glass-footer { /* removed custom styles */ }
 
 /* Animation Utilities */
 .animate-glass-in {
@@ -135,7 +79,7 @@
 }
 
 .animate-glass-out {
-  @apply animate-fade-out;
+  animation: fadeOut 0.3s ease-out forwards;
 }
 
 .animate-neon-pulse {
@@ -174,9 +118,7 @@
   @apply focus:outline-none;
 }
 
-.focus-visible-only:focus-visible {
-  @apply ring-2 ring-neon ring-opacity-50 outline-none;
-}
+.focus-visible-only:focus-visible { /* removed custom styles */ }
 
 /* High Contrast Mode Support */
 @media (prefers-contrast: more) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="loading-modal-title" class="font-sans" @keydown.esc.prevent.stop="emitClose">
+  <div class="modal-overlay font-sans" role="dialog" aria-modal="true" aria-labelledby="loading-modal-title" @keydown.esc.prevent.stop="emitClose">
     <div ref="modalEl" class="modal">
       <header class="modal__header">
         <h2 id="loading-modal-title" class="modal__title">{{ title }}</h2>

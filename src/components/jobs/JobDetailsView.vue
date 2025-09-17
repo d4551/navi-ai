@@ -1,5 +1,5 @@
 <template>
-  <div class="job-details-view" :class="{ 'sidebar-view': isSidebarView }" class="font-sans">
+  <div class="job-details-view font-sans" :class="{ 'sidebar-view': isSidebarView }">
     <div v-if="job" class="job-details-content">
       <!-- Job Header -->
       <div class="job-header glass-card section-card">

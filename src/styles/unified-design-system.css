@@ -772,3 +772,327 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* === ENHANCED GAMING MODALS === */
+
+.gaming-modal {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.gaming-modal-content {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.gaming-modal-header {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--glass-bg) 90%, var(--color-primary-500) 10%),
+    color-mix(in srgb, var(--glass-bg) 95%, var(--color-primary-400) 5%)
+  );
+  border-bottom: 1px solid var(--glass-border);
+  padding: var(--spacing-6);
+}
+
+.gaming-modal-header .modal-title {
+  font-family: var(--font-family-gaming);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  margin: 0;
+}
+
+.gaming-modal-body {
+  padding: var(--spacing-6);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  font-family: var(--font-family-sans);
+  line-height: var(--line-height-relaxed);
+}
+
+.gaming-modal-footer {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--glass-bg) 90%, var(--color-secondary-500) 10%),
+    var(--glass-bg)
+  );
+  border-top: 1px solid var(--glass-border);
+  padding: var(--spacing-5) var(--spacing-6);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  align-items: center;
+}
+
+.gaming-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-3) var(--spacing-6);
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.gaming-btn:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gaming-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gaming-btn:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
+}
+
+.gaming-btn.btn-primary {
+  background: var(--color-primary-500);
+  border-color: var(--color-primary-600);
+  color: white;
+}
+
+.gaming-btn.btn-primary:hover {
+  background: var(--color-primary-600);
+  border-color: var(--color-primary-700);
+}
+
+.gaming-close {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gaming-close:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border);
+  color: var(--text-primary);
+}
+
+.gaming-close:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Enhanced entrance animations */
+.gaming-modal.show {
+  animation: modalFadeIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive design for gaming modals */
+@media (max-width: 768px) {
+  .gaming-modal-content {
+    margin: var(--spacing-4);
+    border-radius: 12px;
+  }
+  
+  .gaming-modal-header,
+  .gaming-modal-body,
+  .gaming-modal-footer {
+    padding: var(--spacing-4);
+  }
+  
+  .gaming-modal-footer {
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+  
+  .gaming-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* === ENHANCED LOADING ANIMATIONS === */
+
+.spinner-gaming {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--glass-border);
+  border-radius: 50%;
+  border-top-color: var(--color-primary-500);
+  animation: spin 1s ease-in-out infinite;
+}
+
+.spinner-gaming.lg {
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
+}
+
+.spinner-gaming.xl {
+  width: 32px;
+  height: 32px;
+  border-width: 4px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Gaming-themed pulse animation */
+.pulse-gaming {
+  animation: pulseGaming 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseGaming {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+    filter: brightness(1.1);
+  }
+}
+
+/* Enhanced ripple effect for better gaming UX */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: 0;
+}
+
+.btn-ripple:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-ripple > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* === IMPROVED ACCESSIBILITY INDICATORS === */
+
+.accessibility-indicator {
+  position: relative;
+}
+
+.accessibility-indicator::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  left: -2px;
+  border: 2px solid transparent;
+  border-radius: inherit;
+  pointer-events: none;
+  transition: border-color 0.2s ease;
+}
+
+.accessibility-indicator:focus-visible::after {
+  border-color: var(--color-primary-500);
+  animation: focusGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes focusGlow {
+  from {
+    box-shadow: 0 0 4px var(--color-primary-500);
+  }
+  to {
+    box-shadow: 0 0 8px var(--color-primary-400), 0 0 16px var(--color-primary-500);
+  }
+}
+
+/* Enhanced error and success feedback */
+.feedback-shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+.feedback-success {
+  animation: successBounce 0.6s ease-out;
+}
+
+@keyframes successBounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

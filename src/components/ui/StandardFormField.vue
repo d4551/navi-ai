@@ -1,5 +1,5 @@
 <template>
-  <div class="standard-form-field" :class="fieldClass" class="font-sans">
+  <div class="standard-form-field font-sans" :class="fieldClass">
     <!-- Label -->
     <label
       v-if="label || $slots.label"

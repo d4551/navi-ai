@@ -1,5 +1,5 @@
 <template>
-  <div class="document-templates" class="font-sans">
+  <div class="document-templates font-sans">
     <div class="templates-header">
       <h3 class="section-title">
         <AppIcon name="SwatchIcon-outline" />

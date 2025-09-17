@@ -1,5 +1,5 @@
 <template>
-  <div class="job-tailored-resume-generator" class="font-sans">
+  <div class="job-tailored-resume-generator font-sans">
     <!-- Header -->
     <div class="generator-header mb-6">
       <h2 class="h2 text-gradient-gaming mb-2">

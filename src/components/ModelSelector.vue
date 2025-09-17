@@ -1,5 +1,5 @@
 <template>
-  <div class="model-selector" class="font-sans">
+  <div class="model-selector font-sans">
     <!-- Model Category Tabs -->
     <div class="model-categories mb-4">
       <nav class="nav nav-pills nav-fill" role="tablist">

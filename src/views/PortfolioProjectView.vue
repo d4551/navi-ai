@@ -196,7 +196,7 @@ async function share() {
 .tags { display: flex; flex-wrap: wrap; gap: var(--spacing-1-5); }
 .tag { border:1px solid var(--glass-border); background: var(--glass-bg); border-radius: 999px; padding: var(--spacing-0-5) var(--spacing-2); font-size: 12px; }
 
-.details .meta-list { display: grid; grid-template-columns: auto 1fr; column-gap: var(--spacing-2-5); flex flex-wrap-gap: var(--spacing-1-5); }
+.details .meta-list { display: grid; grid-template-columns: auto 1fr; column-gap: var(--spacing-2-5); row-gap: var(--spacing-1-5); }
 .details dt { color: var(--text-secondary); font-size: 0.85rem; }
 .details dd { margin: 0; font-weight: 600; }
 .details .divider { height: 1px; background: var(--glass-border); margin: var(--spacing-2-5) 0; }

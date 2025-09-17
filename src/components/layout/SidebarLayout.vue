@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-flex flex-wrap min-h-screen" class="font-sans">
+  <div class="flex flex-flex flex-wrap min-h-screen font-sans">
     <aside class="w-[var(--sidebar-width)] bg-glass-bg-hover border-r border-glass-border h-screen overflow-y-auto fixed">
       <div class="p-glass-md">
         <h2 class="text-lg font-semibold mb-4">Navigation</h2>

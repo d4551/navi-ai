@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="loading-overlay" :class="{ fullscreen: fullscreen }" class="font-sans">
+  <div v-if="show" class="loading-overlay font-sans" :class="{ fullscreen: fullscreen }">
     <div class="loading-content glass-strong p-glass-lg rounded-xl text-center">
       <div class="spinner-container">
         <div class="spinner" :class="size" />

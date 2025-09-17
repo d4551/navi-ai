@@ -1,5 +1,5 @@
 <template>
-  <div class="studios-grid enhanced-grid" class="font-sans">
+  <div class="studios-grid enhanced-grid font-sans">
     <div
       v-for="studio in studios"
       :key="studio.id"

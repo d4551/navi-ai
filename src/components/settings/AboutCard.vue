@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="card glass-card section-card h-100" role="complementary" aria-labelledby="about-title" class="font-sans">
+  <div class="card glass-card section-card h-100 font-sans" role="complementary" aria-labelledby="about-title">
     <div class="card-header section-header card-header--dense">
       <h6 id="about-title" class="mb-0">
         <InfoIconComponent class="mr-2 icon-sm" />About NAVI

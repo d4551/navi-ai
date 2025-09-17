@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div role="region" aria-labelledby="audio-hardware-title" class="enhanced-hardware-section" class="font-sans">
+  <div role="region" aria-labelledby="audio-hardware-title" class="enhanced-hardware-section font-sans">
     <!-- Section Header -->
     <div class="section-header glass-section-header">
       <div class="header-content">

@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-modal-system" class="font-sans">
+  <div class="ai-modal-system font-sans">
     <!-- Floating AI Assistant Button -->
     <Teleport to="body">
       <div 

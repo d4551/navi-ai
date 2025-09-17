@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="ai-modal-overlay" class="font-sans" @click="handleOverlayClick">
+  <div v-if="show" class="ai-modal-overlay font-sans" @click="handleOverlayClick">
     <div class="ai-modal" :class="{ 'full-width': isAnalyzing }">
       <div class="modal-header">
         <div class="header-content">

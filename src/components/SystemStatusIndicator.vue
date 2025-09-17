@@ -1,5 +1,5 @@
 <template>
-  <div class="system-status-indicator" class="font-sans">
+  <div class="system-status-indicator font-sans">
     <!-- Quick Status Badge -->
     <button
       class="status-badge"

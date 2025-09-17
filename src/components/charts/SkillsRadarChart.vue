@@ -1,5 +1,5 @@
 <template>
-  <div class="skills-radar-chart" class="font-sans">
+  <div class="skills-radar-chart font-sans">
     <div class="chart-header">
       <AppIcon name="mdi-radar" aria-hidden="true" />
       <span>Skills Radar</span>

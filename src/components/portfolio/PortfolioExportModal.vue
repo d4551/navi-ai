@@ -1,6 +1,6 @@
 import { defineEmits, defineProps } from 'vue'
 <template>
-  <div v-if="show" class="modal show block" style="background-color: rgba(0,0,0,0.5);" class="font-sans">
+  <div v-if="show" class="modal show block font-sans" style="background-color: rgba(0,0,0,0.5);">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">

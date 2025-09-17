@@ -1,5 +1,5 @@
 <template>
-  <div class="css-migration-panel" class="font-sans">
+  <div class="css-migration-panel font-sans">
     <!-- Header -->
     <div class="panel-header">
       <div class="header-content">

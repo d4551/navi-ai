@@ -1,5 +1,5 @@
 <template>
-  <div class="enhanced-realtime-chat" :class="{ 'session-active': isSessionActive }" class="font-sans">
+  <div class="enhanced-realtime-chat font-sans" :class="{ 'session-active': isSessionActive }">
     <!-- Enhanced Control Panel -->
     <div class="control-panel" :class="{ collapsed: controlsCollapsed }">
       <button class="controls-toggle" @click="controlsCollapsed = !controlsCollapsed">

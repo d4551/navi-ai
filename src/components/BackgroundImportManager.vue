@@ -1,5 +1,5 @@
 <template>
-  <div class="background-import-manager" class="font-sans">
+  <div class="background-import-manager font-sans">
     <!-- Import Status Card -->
     <div class="import-status-card glass-card section-card">
       <div class="card-header section-header">

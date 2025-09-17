@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown" class="font-sans">
+  <div class="dropdown font-sans">
     <UnifiedButton
       variant="primary"
       size="sm"

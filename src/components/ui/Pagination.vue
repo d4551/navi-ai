@@ -1,5 +1,5 @@
 <template>
-  <nav class="pagination-wrapper" role="navigation" aria-label="Pagination" class="font-sans">
+  <nav class="pagination-wrapper font-sans" role="navigation" aria-label="Pagination">
     <!-- Results Info -->
     <div class="pagination-info">
       <span class="results-text">

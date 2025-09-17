@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-dashboard" class="font-sans">
+  <div class="progress-dashboard font-sans">
     <!-- Compact Progress Grid -->
     <div class="progress-grid">
       <!-- Row 1: Level & XP + Daily Challenges -->

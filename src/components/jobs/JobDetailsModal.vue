@@ -4,8 +4,7 @@
     max-width="900" 
     scrollable
     persistent
-    class="job-details-modal"
-    class="font-sans"
+    class="job-details-modal font-sans"
   >
     <v-card v-if="job" class="glass-card">
       <!-- Modal Header -->
@@ -385,7 +384,7 @@ const applying = ref(false)
 
 // Computed
 const internalShow = computed({
-  get: () => props.show,
+  get: () => _props.show,
   set: (value) => emit('update:show', value)
 })
 
@@ -395,15 +394,15 @@ const closeModal = () => {
 }
 
 const handleApply = async () => {
-  if (!props.job) return
+  if (!_props.job) return
   
   applying.value = true
   try {
     // Simulate application process
     await new Promise(resolve => setTimeout(resolve, 2000))
     
-    emit('job-applied', props.job)
-    toastService.success(`Application submitted for ${props.job.title}!`)
+    emit('job-applied', _props.job)
+    toastService.success(`Application submitted for ${_props.job.title}!`)
     closeModal()
   } catch (error) {
     toastService.error('Application failed: ' + error.message)
@@ -413,43 +412,43 @@ const handleApply = async () => {
 }
 
 const handleSave = () => {
-  if (!props.job) return
+  if (!_props.job) return
   
-  emit('job-saved', props.job)
-  const message = props.job.saved ? 'Job removed from saved' : 'Job saved!'
+  emit('job-saved', _props.job)
+  const message = _props.job.saved ? 'Job removed from saved' : 'Job saved!'
   toastService.success(message)
 }
 
 const handleShare = () => {
-  if (!props.job) return
+  if (!_props.job) return
   
   if (navigator.share) {
     navigator.share({
-      title: props.job.title,
-      text: `Check out this gaming job: ${props.job.title} at ${props.job.company?.name}`,
+      title: _props.job.title,
+      text: `Check out this gaming job: ${_props.job.title} at ${_props.job.company?.name}`,
       url: window.location.href
     })
   } else {
     // Fallback: copy to clipboard
-    const text = `${props.job.title} at ${props.job.company?.name} - ${window.location.href}`
+    const text = `${_props.job.title} at ${_props.job.company?.name} - ${window.location.href}`
     navigator.clipboard.writeText(text)
     toastService.success('Job link copied to clipboard!')
   }
 }
 
 const handleCompare = () => {
-  if (!props.job) return
+  if (!_props.job) return
   toastService.info('Job added to comparison (feature coming soon)')
 }
 
 const handleAlert = () => {
-  if (!props.job) return
+  if (!_props.job) return
   toastService.info('Job alert created (feature coming soon)')
 }
 
 const viewStudio = () => {
-  if (!props.job?.company) return
-  emit('studio-selected', props.job.company)
+  if (!_props.job?.company) return
+  emit('studio-selected', _props.job.company)
 }
 
 // Formatting functions

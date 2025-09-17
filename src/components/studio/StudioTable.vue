@@ -1,5 +1,5 @@
 <template>
-  <div class="studio-table" class="font-sans">
+  <div class="studio-table font-sans">
     <table class="table-responsive">
       <thead>
         <tr>

@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown" class="font-sans">
+  <div class="dropdown font-sans">
     <button
       class="btn btn-outline-secondary dropdown-toggle btn-sm glass-elevated v-btn variant-outlined ui-btn ui-size-md"
       data-bs-toggle="dropdown"

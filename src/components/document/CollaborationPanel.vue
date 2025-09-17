@@ -1,5 +1,5 @@
 <template>
-  <div class="collaboration-panel" :class="{ 'is-expanded': isExpanded }" class="font-sans">
+  <div class="collaboration-panel font-sans" :class="{ 'is-expanded': isExpanded }">
     <!-- Collaboration Header -->
     <div class="panel-header">
       <div class="header-content">

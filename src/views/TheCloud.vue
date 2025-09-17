@@ -524,9 +524,6 @@ Modern cloud intelligence and data syndication with unified design
 </template>
 
 <script setup lang="ts">
-import { ArrowPathIcon, ArrowTrendingUpIcon, ChartBarIcon, ChartBarSquareIcon, CheckCircleIcon, CircleStackIcon, CogIcon, CpuChipIcon, ExclamationCircleIcon, LockClosedIcon, ShieldCheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { CheckCircleIcon, PlayIcon } from '@heroicons/vue/24/solid'
-
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 import { ref, reactive, onMounted } from 'vue'
@@ -957,8 +954,8 @@ input:checked + .slider:before {
 /* Service Metrics */
 .service-metrics {
   padding: var(--spacing-4) 0;
-  border-t: 1px solid var(--border-base);
-  border-b: 1px solid var(--border-base);
+  border-top: 1px solid var(--border-base);
+  border-bottom: 1px solid var(--border-base);
   margin: var(--spacing-4) 0;
 }
 
@@ -1091,7 +1088,7 @@ input:checked + .slider:before {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-3) 0;
-  border-t: 1px solid var(--border-base);
+  border-top: 1px solid var(--border-base);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -1161,7 +1158,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-6);
-  border-b: 1px solid var(--border-base);
+  border-bottom: 1px solid var(--border-base);
 }
 
 .modal-content {
@@ -1186,7 +1183,7 @@ input:checked + .slider:before {
   display: flex;
   gap: var(--spacing-3);
   padding: var(--spacing-6);
-  border-t: 1px solid var(--border-base);
+  border-top: 1px solid var(--border-base);
 }
 
 /* Responsive Design */

@@ -1,5 +1,5 @@
 <template>
-  <div class="application-tracker" class="font-sans">
+  <div class="application-tracker font-sans">
     <div v-if="applications.length === 0" class="empty-state text-center py-5">
       <AppIcon name="mdi-clipboard-text-outline" class="display-6 text-secondary block mb-3" />
       <h6 class="mb-2">No applications tracked yet</h6>

@@ -1,12 +1,11 @@
 <template>
   <div 
-    class="studio-card glass-card section-card interactive-hover enhanced-glass-card"
+    class="studio-card glass-card section-card interactive-hover enhanced-glass-card font-sans"
     :class="{ 
       'card-selected': isSelected,
       'card-favorite': isFavorite,
       'card-ai-scored': aiScore !== undefined
     }"
-    class="font-sans"
   >
     <!-- Card Header -->
     <div class="card-header section-header glass-header">

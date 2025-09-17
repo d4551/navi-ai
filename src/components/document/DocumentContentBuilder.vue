@@ -1,5 +1,5 @@
 <template>
-  <div class="document-content-builder" class="font-sans">
+  <div class="document-content-builder font-sans">
     <!-- Resume Builder -->
     <ResumeContentBuilder
       v-if="documentType === 'resume'"

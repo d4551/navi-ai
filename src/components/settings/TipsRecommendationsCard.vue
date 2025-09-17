@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="card h-100" role="complementary" aria-labelledby="tips-title" class="font-sans">
+  <div class="card h-100 font-sans" role="complementary" aria-labelledby="tips-title">
     <div class="card-header section-header card-header--dense">
       <h6 id="tips-title" class="mb-0">
         <LightbulbIconComponent class="mr-2 icon-sm" />Tips & Recommendations

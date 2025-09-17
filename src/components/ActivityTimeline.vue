@@ -1,5 +1,5 @@
 <template>
-  <div class="activity-timeline" class="font-sans">
+  <div class="activity-timeline font-sans">
     <div class="timeline-header">
       <AppIcon name="ClockIcon" aria-hidden="true" />
       <span>Recent Activity</span>

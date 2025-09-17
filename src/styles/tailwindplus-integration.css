@@ -1,0 +1,309 @@
+/* TailwindPlus Elements Integration with NAVI Design System */
+
+@layer components {
+  /* Enhanced TailwindPlus element styling to match NAVI theme */
+  
+  /* Autocomplete styling */
+  el-autocomplete {
+    @apply relative inline-block;
+  }
+  
+  el-autocomplete input {
+    @apply form-input glass-interactive;
+  }
+  
+  el-options {
+    @apply glass-surface border border-glass-border rounded-lg shadow-lg overflow-hidden;
+  }
+  
+  el-options[popover] {
+    @apply p-0;
+  }
+  
+  el-option {
+    @apply block w-full px-4 py-2 text-left glass-interactive cursor-pointer transition-colors;
+  }
+  
+  el-option:hover:not([disabled]),
+  el-option[aria-selected="true"] {
+    @apply glass-bg-active text-primary-600;
+  }
+  
+  el-option[disabled] {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Select styling */
+  el-select {
+    @apply relative inline-block;
+  }
+  
+  el-select button {
+    @apply form-input glass-interactive;
+  }
+  
+  el-selectedcontent {
+    @apply block truncate;
+  }
+
+  /* Dialog styling */
+  el-dialog {
+    @apply contents;
+  }
+  
+  el-dialog dialog {
+    @apply fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-6 lg:p-8;
+    @apply bg-transparent backdrop-blur-sm;
+  }
+  
+  el-dialog-backdrop {
+    @apply fixed inset-0 bg-black/50 transition-opacity;
+  }
+  
+  el-dialog-panel {
+    @apply relative glass-card shadow-xl rounded-lg;
+    @apply transform transition-all duration-200;
+  }
+
+  /* Disclosure styling */
+  el-disclosure {
+    @apply block overflow-hidden transition-all duration-200;
+  }
+  
+  el-disclosure[hidden] {
+    @apply max-h-0 opacity-0;
+  }
+  
+  el-disclosure:not([hidden]) {
+    @apply max-h-screen opacity-100;
+  }
+
+  /* Dropdown menu styling */
+  el-dropdown {
+    @apply relative inline-block;
+  }
+  
+  el-menu {
+    @apply glass-surface border border-glass-border rounded-lg shadow-lg overflow-hidden;
+  }
+  
+  el-menu[popover] {
+    @apply p-0;
+  }
+  
+  el-menu button {
+    @apply block w-full px-4 py-2 text-left glass-interactive cursor-pointer transition-colors;
+  }
+  
+  el-menu button:hover:not([disabled]) {
+    @apply glass-bg-active;
+  }
+  
+  el-menu button[disabled] {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Popover styling */
+  el-popover {
+    @apply glass-surface border border-glass-border rounded-lg shadow-lg;
+  }
+  
+  el-popover[popover] {
+    @apply p-4;
+  }
+
+  /* Tab styling */
+  el-tab-group {
+    @apply block;
+  }
+  
+  el-tab-list {
+    @apply flex border-b border-glass-border;
+  }
+  
+  el-tab-list button {
+    @apply px-4 py-2 font-medium text-sm border-b-2 border-transparent;
+    @apply hover:border-glass-border focus:border-primary-500 transition-colors;
+    @apply data-[selected]:border-primary-500 data-[selected]:text-primary-600;
+  }
+  
+  el-tab-panels {
+    @apply mt-4;
+  }
+  
+  el-tab-panels > div {
+    @apply block;
+  }
+  
+  el-tab-panels > div[hidden] {
+    @apply hidden;
+  }
+
+  /* Command palette styling */
+  el-command-palette {
+    @apply block;
+  }
+  
+  el-command-list {
+    @apply max-h-80 overflow-y-auto;
+  }
+  
+  el-command-list button {
+    @apply w-full text-left px-3 py-2 rounded transition-colors;
+    @apply hover:glass-bg-active focus:glass-bg-active;
+  }
+  
+  el-no-results {
+    @apply p-8 text-center text-glass-secondary;
+  }
+  
+  el-command-preview {
+    @apply p-4 border-l border-glass-border;
+  }
+
+  /* Enhanced animations for TailwindPlus elements */
+  .transition-discrete {
+    transition-property: display, opacity, scale;
+    transition-behavior: allow-discrete;
+  }
+
+  /* Popover anchor positioning enhancements */
+  [popover]:popover-open {
+    @apply opacity-100 scale-100;
+  }
+  
+  [popover]:not(:popover-open) {
+    @apply opacity-0 scale-95;
+  }
+  
+  [popover][data-enter] {
+    @apply opacity-100 scale-100 transition-all duration-200;
+  }
+  
+  [popover][data-leave] {
+    @apply opacity-0 scale-95 transition-all duration-150;
+  }
+
+  /* Focus management for TailwindPlus elements */
+  [data-focus-visible] {
+    @apply ring-2 ring-primary-500 ring-offset-2;
+  }
+  
+  [data-theme="dark"] [data-focus-visible] {
+    @apply ring-offset-gray-900;
+  }
+
+  /* Responsive behavior for TailwindPlus components */
+  @media (max-width: 640px) {
+    el-options,
+    el-menu {
+      @apply max-h-60 overflow-y-auto;
+    }
+    
+    el-dialog-panel {
+      @apply mx-4 mt-16;
+    }
+    
+    el-command-palette {
+      @apply mx-4;
+    }
+  }
+
+  /* Loading states for async TailwindPlus components */
+  [aria-busy="true"] {
+    @apply opacity-75 pointer-events-none;
+  }
+  
+  [aria-busy="true"]::after {
+    content: '';
+    @apply absolute inset-0 bg-transparent;
+    background-image: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
+    animation: loading-shimmer 1.5s infinite;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    el-option:hover,
+    el-option[aria-selected="true"],
+    el-menu button:hover {
+      @apply bg-black text-white;
+    }
+    
+    [data-theme="dark"] el-option:hover,
+    [data-theme="dark"] el-option[aria-selected="true"],
+    [data-theme="dark"] el-menu button:hover {
+      @apply bg-white text-black;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    el-dialog-panel,
+    el-disclosure,
+    [popover] {
+      @apply transition-none;
+    }
+  }
+}
+
+/* Keyframe animations for loading states */
+@keyframes loading-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Print styles for TailwindPlus components */
+@media print {
+  el-dialog,
+  el-popover,
+  [popover] {
+    @apply hidden;
+  }
+  
+  el-disclosure[hidden] {
+    @apply block opacity-100 max-h-none;
+  }
+  
+  el-tab-panels > div[hidden] {
+    @apply block;
+  }
+}
+
+/* Custom properties for dynamic theming */
+:root {
+  --tailwindplus-border-radius: theme('borderRadius.lg');
+  --tailwindplus-shadow: theme('boxShadow.lg');
+  --tailwindplus-transition: theme('transitionDuration.200');
+  --tailwindplus-focus-ring: theme('colors.primary.500');
+}
+
+[data-theme="dark"] {
+  --tailwindplus-focus-ring: theme('colors.primary.400');
+}
+
+/* Integration with existing NAVI layout system */
+.layout-stack el-autocomplete,
+.layout-stack el-select,
+.layout-inline el-autocomplete,
+.layout-inline el-select {
+  @apply flex-1 min-w-0;
+}
+
+.layout-grid el-dialog-panel,
+.layout-container el-dialog-panel {
+  @apply w-full max-w-none;
+}
+
+.glass-card el-tab-list {
+  @apply -mx-6 -mt-6 mb-6 px-6 border-glass-border;
+}
+
+.glass-surface el-options,
+.glass-surface el-menu {
+  @apply border-glass-border opacity-50;
+}

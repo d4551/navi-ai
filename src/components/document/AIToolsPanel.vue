@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-tools-panel" class="font-sans">
+  <div class="ai-tools-panel font-sans">
     <div class="tools-header mb-6">
       <div class="flex items-center justify-between">
         <div>

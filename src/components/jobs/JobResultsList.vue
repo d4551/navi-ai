@@ -1,5 +1,5 @@
 <template>
-  <div class="job-results-list" class="font-sans">
+  <div class="job-results-list font-sans">
     <!-- Loading State -->
     <div v-if="loading" class="loading-container">
       <div class="loading-grid">

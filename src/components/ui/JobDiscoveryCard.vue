@@ -1,5 +1,5 @@
 <template>
-  <div class="job-discovery-card ultra-glass-card section-card gaming-card" class="font-sans">
+  <div class="job-discovery-card ultra-glass-card section-card gaming-card font-sans">
     <!-- Job Header with Company Branding -->
     <div class="job-header">
       <div class="company-branding">

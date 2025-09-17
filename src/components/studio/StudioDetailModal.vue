@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay" class="font-sans" @click.self="$emit('close')">
+  <div class="modal-overlay font-sans" @click.self="$emit('close')">
     <div class="studio-detail-modal glass-card section-card">
       <!-- Modal Header -->
       <div class="modal-header">

@@ -1,5 +1,5 @@
 <template>
-  <div class="lazy-feature-example" class="font-sans">
+  <div class="lazy-feature-example font-sans">
     <!-- PDF Export Feature -->
     <div class="feature-section">
       <h3>PDF Export</h3>

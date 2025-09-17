@@ -1,5 +1,5 @@
 <template>
-  <div class="document-content-builder" class="font-sans">
+  <div class="document-content-builder font-sans">
     <!-- Step Indicator -->
     <div class="step-indicator">
       <div class="step-progress">

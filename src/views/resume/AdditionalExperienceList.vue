@@ -1,5 +1,5 @@
 <template>
-  <section class="mb-4" class="font-sans">
+  <section class="mb-4 font-sans">
     <div
       class="section-header flex items-center justify-between mb-3"
     >

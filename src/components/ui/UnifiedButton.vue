@@ -21,7 +21,16 @@
     @mouseleave="showTooltip = false"
   >
     <!-- Loading Spinner -->
-    <div v-if="loading || isProcessing" class="spinner-gaming mr-2 animate-spin text-current opacity-70 dark:opacity-80" role="status" aria-hidden="true"></div>
+    <div 
+      v-if="loading || isProcessing" 
+      class="spinner-gaming mr-2"
+      :class="{ 
+        'lg': resolvedSize === 'lg' || resolvedSize === 'xl',
+        'xl': resolvedSize === 'xl'
+      }"
+      role="status" 
+      aria-hidden="true"
+    ></div>
     
     <!-- AI Status Icons -->
     <div v-if="showSuccessState" class="ai-success-icon mr-2 text-green-600 dark:text-green-400">
@@ -293,11 +302,14 @@ const buttonClasses = computed(() => {
   if (props.disabled) classes.push('btn-disabled')
   if (props.iconOnly) classes.push('btn-icon-only')
   if (props.fullWidth) classes.push('w-full') // Use w-full from design system
-  if (props.ripple) classes.push('ripple-enabled')
-  if (showSuccessState.value) classes.push('btn-success-state')
-  if (showErrorState.value) classes.push('btn-error-state')
+  if (props.ripple) classes.push('ripple-enabled', 'btn-ripple')
+  if (showSuccessState.value) classes.push('btn-success-state', 'feedback-success')
+  if (showErrorState.value) classes.push('btn-error-state', 'feedback-shake')
   if (props.requiresAuth && !hasAPIKey.value) classes.push('btn-no-api-key')
   if (props.responsive) classes.push('btn-responsive')
+  
+  // Add accessibility indicator for focus management
+  classes.push('accessibility-indicator')
 
   return classes
 })
@@ -662,7 +674,7 @@ defineExpose({
 
   /* Tailwind dark mode primary classes */
   @apply bg-gradient-to-br from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary dark:text-glass-primary;
+  
   @apply border-blue-700 dark:border-blue-500;
   @apply shadow-blue-500/25 dark:shadow-blue-400/20;
 }
@@ -721,7 +733,7 @@ defineExpose({
   /* Tailwind dark mode gaming hover classes */
   @apply bg-gradient-to-r from-purple-500/30 to-pink-500/30 dark:from-purple-400/40 dark:to-pink-400/40;
   @apply border-purple-600/40 dark:border-purple-300/50;
-  @apply shadow-glass-lg shadow-purple-500/30 dark:shadow-purple-400/25;
+  
 }
 
 .btn-cyber {
@@ -746,7 +758,7 @@ defineExpose({
   /* Tailwind dark mode cyber hover classes */
   @apply bg-gradient-to-r from-cyan-500/30 to-blue-500/30 dark:from-cyan-400/40 dark:to-blue-400/40;
   @apply border-cyan-600/40 dark:border-cyan-300/50;
-  @apply shadow-glass-lg shadow-cyan-500/30 dark:shadow-cyan-400/25;
+  
 }
 
 .btn-glass,
@@ -759,11 +771,11 @@ defineExpose({
   box-shadow: var(--glass-shadow) !important;
 
   /* Tailwind dark mode glass classes */
-  @apply bg-glass-bg/10 dark:bg-glass-bg dark:bg-glass-bg/10;
-  @apply text-glass-primary;
-  @apply border-white/20 dark:border-glass-border dark:border-glass-border/40;
+  @apply bg-white/10 dark:bg-black/10;
+  @apply text-gray-800 dark:text-white;
+  @apply border-white/20 dark:border-gray-700;
   @apply backdrop-blur-md;
-  @apply shadow-glass-lg shadow-black/10 dark:shadow-black/30;
+  @apply shadow-lg shadow-black/10 dark:shadow-black/30;
 }
 
 .btn-glass:hover:not(:disabled),
@@ -774,11 +786,6 @@ defineExpose({
   box-shadow:
     var(--glass-shadow),
     0 0 12px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.15) !important;
-
-  /* Tailwind dark mode glass hover classes */
-  @apply bg-glass-bg/20 dark:bg-glass-bg dark:bg-glass-bg/20;
-  @apply border-blue-500/40 dark:border-blue-400/50;
-  @apply shadow-glass-xl shadow-blue-500/15 dark:shadow-blue-400/10;
 }
 
 .btn-glass:active:not(:disabled),
@@ -788,8 +795,7 @@ defineExpose({
   box-shadow: var(--glass-shadow) !important;
 
   /* Tailwind dark mode glass active classes */
-  @apply bg-glass-bg/15 dark:bg-glass-bg dark:bg-glass-bg/15;
-  @apply shadow-glass-lg shadow-black/10 dark:shadow-black/20;
+
 }
 
 /* Remove inner glass capsule - keep it simple for better integration */
@@ -812,7 +818,7 @@ defineExpose({
 
   /* Tailwind dark mode success classes */
   @apply bg-gradient-to-br from-green-600 to-green-700 dark:from-green-500 dark:to-green-600;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary dark:text-glass-primary;
+  
   @apply border-green-700 dark:border-green-500;
   @apply shadow-green-500/25 dark:shadow-green-400/20;
 }
@@ -840,7 +846,7 @@ defineExpose({
 
   /* Tailwind dark mode warning classes */
   @apply bg-gradient-to-br from-yellow-500 to-yellow-600 dark:from-yellow-400 dark:to-yellow-500;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary;
+  
   @apply border-yellow-600 dark:border-yellow-400;
   @apply shadow-yellow-500/25 dark:shadow-yellow-400/20;
 }
@@ -868,7 +874,7 @@ defineExpose({
 
   /* Tailwind dark mode danger classes */
   @apply bg-gradient-to-br from-red-600 to-red-700 dark:from-red-500 dark:to-red-600;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary dark:text-glass-primary;
+  
   @apply border-red-700 dark:border-red-500;
   @apply shadow-red-500/25 dark:shadow-red-400/20;
 }
@@ -892,7 +898,7 @@ defineExpose({
 
   /* Tailwind dark mode ghost classes */
   @apply bg-transparent;
-  @apply text-gray-700 dark:text-glass-secondary dark:text-glass-secondary;
+  
   @apply border-transparent;
   @apply shadow-none;
 }
@@ -906,9 +912,7 @@ defineExpose({
   box-shadow: var(--glass-shadow) !important;
 
   /* Tailwind dark mode ghost hover classes */
-  @apply bg-glass-bg-hover dark:bg-gray-800;
-  @apply border-glass-border dark:border-glass-border dark:border-glass-border;
-  @apply text-glass-primary;
+
   @apply shadow-sm dark:shadow-black/20;
 }
 
@@ -920,8 +924,7 @@ defineExpose({
 
   /* Tailwind dark mode outline classes */
   @apply bg-transparent;
-  @apply text-gray-700 dark:text-glass-secondary dark:text-glass-secondary;
-  @apply border-glass-border-hover dark:border-glass-border-hover dark:border-glass-border-hover;
+
   @apply shadow-none;
 }
 
@@ -932,8 +935,7 @@ defineExpose({
   border-color: var(--color-primary-300);
 
     /* Tailwind dark mode outline hover classes */
-    @apply bg-glass-bg dark:bg-glass-bg-hover;
-  @apply text-glass-primary;
+
   @apply border-blue-400 dark:border-blue-500;
   @apply shadow-sm dark:shadow-black/20;
 }
@@ -955,9 +957,7 @@ defineExpose({
   /* Tailwind dark mode disabled classes */
   @apply opacity-50;
   @apply cursor-not-allowed;
-  @apply bg-glass-bg-hover dark:bg-gray-800;
-  @apply text-gray-400 dark:text-glass-secondary;
-  @apply border-glass-border dark:border-glass-border dark:border-glass-border;
+
   @apply shadow-none;
 }
 
@@ -986,7 +986,7 @@ defineExpose({
   @apply px-1.5 py-0.5;
   @apply rounded-full;
   @apply bg-red-500 dark:bg-red-400;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary;
+  
   @apply shadow-sm dark:shadow-black/20;
 }
 
@@ -1012,7 +1012,7 @@ defineExpose({
 
   /* Tailwind dark mode ripple wave classes */
   @apply absolute rounded-full pointer-events-none;
-  @apply bg-glass-bg/40 dark:bg-glass-bg/30;
+  
 }
 
 @keyframes ripple {
@@ -1063,8 +1063,7 @@ defineExpose({
 
   /* Tailwind dark mode success state classes */
   @apply bg-green-500 dark:bg-green-400;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary;
-  @apply shadow-glass-lg shadow-green-500/30 dark:shadow-green-400/25;
+
 }
 
 .btn-error-state {
@@ -1074,8 +1073,7 @@ defineExpose({
 
   /* Tailwind dark mode error state classes */
   @apply bg-red-500 dark:bg-red-400;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary;
-  @apply shadow-glass-lg shadow-red-500/30 dark:shadow-red-400/25;
+
 }
 
 .btn-no-api-key {
@@ -1085,8 +1083,7 @@ defineExpose({
 
   /* Tailwind dark mode no-api-key state classes */
   @apply bg-yellow-500 dark:bg-yellow-400;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary;
-  @apply shadow-glass-lg shadow-yellow-500/30 dark:shadow-yellow-400/25;
+
 }
 
 .btn-no-api-key::after {
@@ -1140,13 +1137,11 @@ defineExpose({
   /* Tailwind dark mode tooltip classes */
   @apply absolute z-50;
   @apply px-3 py-2;
-  @apply bg-glass-bg dark:bg-glass-bg/90 dark:bg-glass-bg-hover/90;
-  @apply text-glass-primary dark:text-glass-primary dark:text-glass-primary;
+
   @apply text-sm font-medium;
   @apply rounded-md;
   @apply backdrop-blur-sm;
-  @apply shadow-glass-lg dark:shadow-black/30;
-  @apply border border-glass-border dark:border-glass-border/50 dark:border-glass-border-hover/50;
+
 }
 
 .btn-tooltip.top {

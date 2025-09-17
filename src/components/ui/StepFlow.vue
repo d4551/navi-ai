@@ -1,5 +1,5 @@
 <template>
-  <div class="step-flow" :class="[orientationClass, compact ? 'is-compact' : '']" class="font-sans">
+  <div class="step-flow font-sans" :class="[orientationClass, compact ? 'is-compact' : '']">
     <!-- Header / Stepper -->
     <div class="sf-header">
       <div class="sf-progress-track" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">

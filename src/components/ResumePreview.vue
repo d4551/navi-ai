@@ -1,5 +1,5 @@
 <template>
-  <v-card class="glass-card section-card resume-preview-card" elevation="0" class="font-sans">
+  <v-card class="glass-card section-card resume-preview-card font-sans" elevation="0">
     <v-card-title class="flex items-center pa-4">
       <span class="mr-2" aria-hidden="true"><AppIcon name="DocumentIcon" aria-hidden="true" /></span>
       <span>Resume Preview</span>
