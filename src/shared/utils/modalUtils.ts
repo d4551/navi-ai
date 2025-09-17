@@ -272,9 +272,9 @@ export function createGamingModal(config: ModalConfig): HTMLElement {
         const buttonElement =
           modal.querySelectorAll('.modal-footer .btn')[index]
         if (buttonElement) {
-          buttonElement.addEventListener('click', e => {
+          buttonElement.addEventListener('click', () => {
             try {
-              button.onclick!(e)
+              ;(button.onclick as () => void)()
             } catch (error) {
               console.error('Error executing button callback:', error)
             }

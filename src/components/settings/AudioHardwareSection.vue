@@ -345,10 +345,7 @@
               id="gemini-voice-preset"
               :value="selectedGeminiPreset"
               class="form-select form-select-sm w-auto"
-              @change="
-                selectedGeminiPreset = $event.target.value
-                applyGeminiPreset()
-              "
+              @change="onGeminiPresetChange($event)"
             >
               <option value="">Select a preset…</option>
               <option v-for="p in geminiVoicePresets" :key="p" :value="p">
@@ -531,6 +528,14 @@ export default {
         stopSpeaking()
       } catch {}
       this.isSpeakingTest = false
+    },
+    onGeminiPresetChange(event) {
+      try {
+        this.selectedGeminiPreset = event?.target?.value || ''
+      } catch {}
+      try {
+        this.applyGeminiPreset()
+      } catch {}
     },
 
     configurePTTKey() {

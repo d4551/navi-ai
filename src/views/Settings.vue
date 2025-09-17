@@ -1317,10 +1317,7 @@
               border-b: 1px solid var(--glass-border);
               cursor: pointer;
             "
-            @click="
-              activeTab = result.tab
-              showSearchModal = false
-            "
+            @click="handleSelectSearchResult(result)"
           >
             <div class="flex items-center gap-glass-md">
               <AppIcon :name="result.icon" />
@@ -1415,6 +1412,12 @@ const testing = ref(false)
 const connecting = ref(false)
 const loadingModels = ref(false)
 const apiTestResult = ref(null)
+function handleSelectSearchResult(result) {
+  try {
+    activeTab.value = result.tab
+    showSearchModal.value = false
+  } catch {}
+}
 
 // Settings Data (writable for v-model bindings)
 const settings = computed({

@@ -13,6 +13,8 @@
     "src/test/**",
     "src/tests",
     "src/tests/**",
+    "src/**/__tests__/**",
+    "src/**/tests/**",
     "src/composables/**",
     "src/shared/**",
     "src/utils/**",
