@@ -1,5 +1,5 @@
 <template>
-  <div class="empty-state-container" :class="stateClass" class="font-sans">
+  <div class="empty-state-container font-sans" :class="stateClass">
     <div class="empty-state-content glass-card" role="region" :aria-label="title">
       <!-- Icon Section -->
       <div class="empty-state-icon-wrapper">

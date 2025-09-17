@@ -1,5 +1,5 @@
 <template>
-  <div class="form-control-wrapper" class="font-sans">
+  <div class="form-control-wrapper font-sans">
     <!-- Radio Button -->
     <div v-if="type === 'radio'" class="form-radio" :class="{ 'form-radio-disabled': disabled }">
       <input

@@ -1,5 +1,5 @@
 <template>
-  <section class="modal-section ai-insights-section" class="font-sans">
+  <section class="modal-section ai-insights-section font-sans">
     <h3 class="section-title">
       <AppIcon name="CpuChipIcon" />
       AI Insights

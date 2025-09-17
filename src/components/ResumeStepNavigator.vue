@@ -1,5 +1,5 @@
 <template>
-  <div class="resume-step-navigator" class="font-sans">
+  <div class="resume-step-navigator font-sans">
     <div class="unified-grid g-2">
       <div
         v-for="section in sections"

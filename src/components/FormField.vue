@@ -1,5 +1,5 @@
 <template>
-  <div :class="['form-field', containerClass, { required: required }]" class="text-glass-primary" class="font-sans">
+  <div :class="['form-field', containerClass, { required: required }]" class="text-glass-primary font-sans">
     <label
       v-if="label"
       :for="fieldId"

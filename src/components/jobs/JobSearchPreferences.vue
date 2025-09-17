@@ -1,5 +1,5 @@
 <template>
-  <div class="job-search-preferences" class="font-sans">
+  <div class="job-search-preferences font-sans">
     <div class="flex flex-wrap g-4">
       <!-- Role Types Section -->
       <div class="flex-1-lg-6">

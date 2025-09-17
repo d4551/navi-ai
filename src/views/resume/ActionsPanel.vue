@@ -1,9 +1,8 @@
 <template>
   <div
-    class="action-panel glass-elevated"
+    class="action-panel glass-elevated font-sans"
     role="region"
     aria-label="Resume actions"
-    class="font-sans"
   >
     <!-- Action Panel Header (Mobile) -->
     <div

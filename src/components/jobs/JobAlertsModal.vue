@@ -4,8 +4,7 @@
     max-width="700" 
     scrollable
     persistent
-    class="job-alerts-modal"
-    class="font-sans"
+    class="job-alerts-modal font-sans"
   >
     <v-card class="glass-card">
       <!-- Modal Header -->

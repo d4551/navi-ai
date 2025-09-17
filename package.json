@@ -176,6 +176,7 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "@sentry/browser": "^10.9.0",
     "@sentry/node": "^10.9.0",
+    "@tailwindplus/elements": "^1.0.13",
     "@types/better-sqlite3": "^7.6.13",
     "@vueuse/core": "^11.3.0",
     "@vueuse/integrations": "^11.1.0",

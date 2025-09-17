@@ -1,5 +1,5 @@
 <template>
-  <header class="gaming-unified-header glass-gaming" :class="headerClasses" class="font-sans">
+  <header class="gaming-unified-header glass-gaming font-sans" :class="headerClasses">
     <!-- Main Navigation Bar -->
     <nav class="header-nav gaming-nav" role="navigation">
       <div class="nav-container">

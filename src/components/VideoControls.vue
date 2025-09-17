@@ -1,5 +1,5 @@
 <template>
-  <div class="video-controls glass-surface p-glass-md rounded-lg" role="region" aria-label="Video and Screen Sharing Controls" class="font-sans">
+  <div class="video-controls glass-surface p-glass-md rounded-lg font-sans" role="region" aria-label="Video and Screen Sharing Controls">
     <!-- Video Preview -->
     <div v-if="showPreview && (isCameraActive || isScreenActive)" class="video-preview mb-4">
       <div class="video-container position-relative">

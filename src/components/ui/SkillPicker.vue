@@ -1,5 +1,5 @@
 <template>
-  <div class="skill-picker" class="font-sans">
+  <div class="skill-picker font-sans">
     <div class="skill-input-container">
       <input
         ref="inputRef"

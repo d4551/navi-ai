@@ -1,5 +1,5 @@
 <template>
-  <div class="portfolio-filters" class="font-sans">
+  <div class="portfolio-filters font-sans">
     <!-- Main Filter Bar -->
     <div class="filter-bar">
       <!-- Search - Primary Action -->

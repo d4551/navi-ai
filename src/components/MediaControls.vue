@@ -1,5 +1,5 @@
 <template>
-  <div class="media-controls glass-surface" :class="{ 'streaming': isStreaming }" class="font-sans">
+  <div class="media-controls glass-surface font-sans" :class="{ 'streaming': isStreaming }">
     <div class="controls-header">
       <h3 class="controls-title">
         <AppIcon name="VideoCameraIcon-outline" class="rgb-icon" />

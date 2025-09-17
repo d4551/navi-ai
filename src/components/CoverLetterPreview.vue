@@ -1,5 +1,5 @@
 <template>
-  <v-card class="glass-card section-card cover-letter-preview-card" elevation="0" class="font-sans">
+  <v-card class="glass-card section-card cover-letter-preview-card font-sans" elevation="0">
     <v-card-title class="flex items-center pa-4">
       <AppIcon name="DocumentIcon" class="mr-2" />
       Cover Letter Preview

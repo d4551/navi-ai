@@ -1,5 +1,5 @@
 <template>
-  <div class="enhanced-portfolio-system" class="font-sans">
+  <div class="enhanced-portfolio-system font-sans">
     <!-- Header with Stats -->
     <div class="portfolio-header glass-panel mb-6">
       <div class="flex justify-between items-start">

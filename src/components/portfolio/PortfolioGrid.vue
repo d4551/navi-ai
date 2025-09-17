@@ -1,5 +1,5 @@
 <template>
-  <div class="portfolio-grid" :class="gridClass" class="font-sans">
+  <div class="portfolio-grid font-sans" :class="gridClass">
     <!-- Loading State -->
     <div v-if="loading" class="loading-grid portfolio-grid">
       <div 

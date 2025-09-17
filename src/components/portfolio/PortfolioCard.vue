@@ -1,10 +1,9 @@
 <template>
   <div 
-    class="portfolio-card" 
+    class="portfolio-card font-sans" 
     :class="[ `portfolio-card--${layout}`, 
               { 'portfolio-card--featured': item.featured }
     ]"
-    class="font-sans"
   >
     <!-- Featured Badge -->
     <div v-if="item.featured" class="featured-badge">

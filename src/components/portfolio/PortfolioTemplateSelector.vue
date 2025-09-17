@@ -1,5 +1,5 @@
 <template>
-  <div class="template-selector" class="font-sans">
+  <div class="template-selector font-sans">
     <!-- Header -->
     <div class="template-header">
       <h5 class="mb-0">Choose a Template</h5>

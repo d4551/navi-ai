@@ -1,5 +1,5 @@
 <template>
-  <nav class="resume-step-tabs mb-3" :aria-label="ariaLabel" class="font-sans">
+  <nav class="resume-step-tabs mb-3 font-sans" :aria-label="ariaLabel">
     <button
       v-for="(s, idx) in steps"
       :key="s.key || idx"

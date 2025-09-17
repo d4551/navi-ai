@@ -1,5 +1,5 @@
 <template>
-  <div :class="cardClasses" class="standard-card" class="font-sans">
+  <div :class="cardClasses" class="standard-card font-sans">
     <div v-if="$slots.title" class="card-title">
       <slot name="title" />
     </div>

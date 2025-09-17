@@ -1,5 +1,5 @@
 <template>
-  <header class="system-header v-app-bar" role="banner" class="font-sans">
+  <header class="system-header v-app-bar font-sans" role="banner">
     <!-- Top Status Bar -->
     <div class="status-bar">
       <div class="status-bar-content">

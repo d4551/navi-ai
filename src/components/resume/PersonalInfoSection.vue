@@ -1,5 +1,5 @@
 <template>
-  <div class="personal-info-section" class="font-sans">
+  <div class="personal-info-section font-sans">
     <div class="section-description">
       <p>Provide your basic contact information and professional details.</p>
     </div>

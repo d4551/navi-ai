@@ -691,6 +691,17 @@ onMounted(() => {
   <style scoped>
 /* ===== GAMING CAREER DASHBOARD STYLES ===== */
 
+/* Content Wrapper - Fix layout alignment */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6, 2rem);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}
+
 /* Dashboard Container */
 .dashboard-container {
   max-width: 1400px;
@@ -751,7 +762,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-md, 1rem);
-  border-b: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .panel-title-wrapper {
@@ -981,7 +992,7 @@ onMounted(() => {
   align-items: center;
   margin-bottom: var(--spacing-5);
   padding-bottom: var(--spacing-3);
-  border-b: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .modal-header h2 {
@@ -1194,7 +1205,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1.5rem;
-  border-b: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
   background: var(--surface-secondary);
 }
 

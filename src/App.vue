@@ -7,7 +7,7 @@
       <!-- Keep Vuetify theme synced with unified theme -->
       <ThemeBridge />
       <!-- Main Layout Container -->
-      <div class="flex flex-1 w-full">
+      <div class="d-flex flex-1 w-full">
         <!-- Sidebar Navigation -->
         <aside
           id="app-sidebar"
@@ -34,7 +34,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex flex-flex-1 flex-1 w-full">
+        <div class="d-flex flex-col flex-1 w-full">
           <!-- Header -->
           <header class="app-header glass-lg">
             <div class="header-inner">
@@ -64,12 +64,12 @@
                 <!-- Global AI Status Banner -->
                 <div
                   v-if="!store.settings?.geminiApiKey"
-                  class="ai-status-banner glass p-3 rounded-lg neon-blue bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800"
+                  class="ai-status-banner glass p-2 rounded-lg neon-blue bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800"
                   role="status"
                 >
-                  <div class="banner-content flex items-center gap-3">
+                  <div class="banner-content flex items-center gap-2">
                     <!-- Heroicon name: outline/key -->
-                    <svg class="w-5 h-5 text-gaming" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="w-4 h-4 text-gaming" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                     </svg>
                     <div class="banner-text">
@@ -89,7 +89,7 @@
                       variant="ghost"
                       size="sm"
                       :aria-label="'Achievements'"
-                      class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary-600 bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
+                      class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
                       @click="openGamificationModal"
                     >
                       <!-- Heroicon name: outline/trophy -->
@@ -107,7 +107,7 @@
                       variant="outline"
                       size="sm"
                       :aria-label="'Settings'"
-                      class="inline-flex items-center px-3 py-2 border border-glass text-sm leading-4 font-medium rounded-md text-primary-600 bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
+                      class="inline-flex items-center px-3 py-2 border border-glass text-sm leading-4 font-medium rounded-md text-primary bg-glass hover:bg-glass-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon transition-colors duration-200"
                       @click="$router.push('/settings')"
                     >
                       <!-- Heroicon name: outline/cog-6-tooth -->
@@ -124,7 +124,7 @@
           </header>
 
           <!-- Page Content -->
-          <main id="main" class="flex-1 overflow-y-auto p-6 main-content glass-bg-white dark:bg-gray-100" role="main">
+          <main id="main" class="flex-1 overflow-y-auto p-6 main-content glass-bg-light" role="main">
             <router-view v-slot="{ Component }">
               <transition name="page-transition" mode="out-in">
                 <component :is="Component" v-if="Component" />
@@ -492,7 +492,7 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--surface-base); /* Use design system variable */
-  color: var(--text-primary-600);
+  color: var(--text-primary);
 }
 
 /* Skip Link for Accessibility - Use design system utility class */
@@ -503,7 +503,7 @@ export default {
   width: var(--page-sidebar-width); /* Use design system variable */
   height: 100vh;
   background: var(--glass-surface-elevated); /* Use design system variable */
-  border-r: none; /* Remove sidebar border */
+  border-right: none; /* Remove sidebar border */
   backdrop-filter: var(--glass-backdrop-blur); /* Use design system variable */
   transition: all var(--duration-normal) var(--easing-ease-out); /* Use design system variables */
   z-index: var(--z-navigation); /* Use design system variable */
@@ -594,9 +594,11 @@ export default {
 /* ===== HEADER STYLES ===== */
 .app-header {
   background: var(--glass-surface-elevated); /* Use design system variable */
-  border-b: 1px solid var(--border-base); /* Use design system variable */
-  position: sticky;
+  border-bottom: 1px solid var(--border-base); /* Use design system variable */
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: var(--z-sticky); /* Use design system variable */
   backdrop-filter: var(--glass-backdrop-blur); /* Use design system variable */
   box-shadow: var(--shadow-sm); /* Default shadow from design system */
@@ -651,6 +653,8 @@ export default {
 
   .ai-status-banner {
     font-size: 0.875rem;
+    padding: var(--spacing-xs, 0.5rem); /* Even more compact on mobile */
+    max-width: 280px; /* Smaller width on mobile */
   }
 
   .ai-status-banner .banner-text {
@@ -658,7 +662,7 @@ export default {
   }
 
   .ai-status-banner p {
-    display: none;
+    display: none; /* Hide description on mobile to save space */
   }
 }
 
@@ -667,7 +671,9 @@ export default {
   background: var(--color-warning-50); /* Use design system variable */
   border: 1px solid var(--color-warning-200); /* Use design system variable */
   border-radius: var(--radius-md); /* Use design system variable */
-  margin: var(--spacing-sm) 0; /* Use design system variable */
+  margin: 0; /* Remove margin to reduce height */
+  padding: var(--spacing-xs, 0.5rem) var(--spacing-sm, 0.75rem); /* Reduce padding */
+  max-width: 400px; /* Limit width to prevent excessive expansion */
 }
 
 .banner-content i {
@@ -677,7 +683,7 @@ export default {
 }
 
 .banner-text strong {
-  color: var(--text-primary-600); /* Use design system variable */
+  color: var(--text-primary); /* Use design system variable */
   font-weight: var(--font-weight-semibold); /* Use design system variable */
 }
 
@@ -700,6 +706,11 @@ export default {
   background: var(--surface-base); /* Use design system variable */
 }
 
+/* Main content area compensates for fixed header */
+#main {
+  padding-top: calc(var(--header-height, 80px) + var(--spacing-md, 1rem));
+}
+
 /* Page Transition */
 .page-transition-enter-active,
 .page-transition-leave-active {
@@ -719,7 +730,7 @@ export default {
 /* ===== FOOTER STYLES ===== */
 .app-footer {
   background: var(--glass-surface-elevated); /* Use design system variable */
-  border-t: 1px solid var(--border-base); /* Use design system variable */
+  border-top: 1px solid var(--border-base); /* Use design system variable */
   box-shadow: var(--shadow-sm); /* Default shadow from design system */
 }
 
@@ -813,14 +824,14 @@ body[data-theme="dark"] .page-content {
 :root[data-theme="dark"] .hamburger-icon span,
 html[data-theme="dark"] .hamburger-icon span,
 body[data-theme="dark"] .hamburger-icon span {
-  background: var(--text-primary-600); /* Use design system variable */
+  background: var(--text-primary); /* Use design system variable */
 }
 
 /* Gaming theme enhancements */
 .theme-gaming .app-sidebar {
   background: linear-gradient(135deg, var(--color-gaming-500-10), transparent),
               var(--glass-surface-elevated); /* Use design system variable */
-  border-r-color: var(--glass-border-gaming); /* Use design system variable */
+  border-right-color: var(--glass-border-gaming); /* Use design system variable */
 }
 
 .theme-gaming .footer-brand i {
@@ -845,7 +856,7 @@ body[data-theme="dark"] .hamburger-icon span {
     border-width: 2px;
   }
   .skip-link {
-    border: 2px solid var(--text-primary-600);
+    border: 2px solid var(--text-primary);
   }
 }
 

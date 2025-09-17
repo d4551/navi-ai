@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="developer-settings-section" class="font-sans">
+  <div class="developer-settings-section font-sans">
     <div class="settings-card glass-card section-card">
       <div class="card-header section-header">
         <h5 class="card-title mb-0">

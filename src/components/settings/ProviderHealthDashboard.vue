@@ -1,5 +1,5 @@
 <template>
-  <div class="provider-health-dashboard" class="font-sans">
+  <div class="provider-health-dashboard font-sans">
     <div class="dashboard-header">
       <h3 class="dashboard-title">
         <AppIcon name="HeartIcon" class="title-icon" />

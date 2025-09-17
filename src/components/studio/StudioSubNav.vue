@@ -1,5 +1,5 @@
 <template>
-  <div class="unified-container studio-subnav" class="font-sans">
+  <div class="unified-container studio-subnav font-sans">
     <GlassNavTabs
       :tabs="tabs"
       :active-tab="activeKey"

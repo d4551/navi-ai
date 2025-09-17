@@ -42,6 +42,9 @@ initializeGamingFonts().then((allLoaded) => {
 // Unified global theme & styles (single entrypoint)
 import "@/styles/main.css";
 
+// TailwindPlus Elements for advanced UI components
+import "@tailwindplus/elements";
+
 
 
 import { samMaxEasterEggs } from "./utils/samMaxEasterEggs";

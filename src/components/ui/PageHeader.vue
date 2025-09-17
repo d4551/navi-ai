@@ -1,6 +1,6 @@
 <template>
   <header
-    class="unified-page-header glass-strong"
+    class="unified-page-header glass-strong font-sans"
     :class="[
       `header-${variant}`,
       `header-size-${size}`,
@@ -10,7 +10,6 @@
         'header-with-gradient': useGradient
       }
     ]"
-    class="font-sans"
   >
     <!-- Simplified glassmorphic background -->
     <div v-if="showParticles || enableModernEffects" class="header-effects" aria-hidden="true">
@@ -21,8 +20,8 @@
     <div
       class="container-xl p-glass-lg flex items-start justify-between gap-glass-lg"
       :class="{ 'flex-flex-1 items-center text-center': stacked }"
-      <!-- Main Title Section --
     >
+      <!-- Main Title Section -->
       <div class="header-title-section flex-1">
         <!-- Icon above title when stacked layout is used -->
         <div v-if="icon && stacked" class="flex justify-center mb-4">

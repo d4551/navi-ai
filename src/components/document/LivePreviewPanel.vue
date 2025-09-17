@@ -1,5 +1,5 @@
 <template>
-  <div class="live-preview-panel" :class="{ 'is-sticky': isSticky, 'is-floating': isFloating }" class="font-sans">
+  <div class="live-preview-panel font-sans" :class="{ 'is-sticky': isSticky, 'is-floating': isFloating }">
     <div class="preview-header">
       <div class="preview-title">
         <AppIcon name="EyeIcon-outline" />

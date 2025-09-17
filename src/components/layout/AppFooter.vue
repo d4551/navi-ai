@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-gray-800 text-glass-primary dark:text-glass-primary h-[var(--footer-height)] flex items-center px-6" class="font-sans">
+  <footer class="bg-gray-800 text-glass-primary dark:text-glass-primary h-[var(--footer-height)] flex items-center px-6 font-sans">
     <div class="container-lg flex justify-between items-center">
       <div>
         <p class="text-sm">&copy; {{ new Date().getFullYear() }} Your Company</p>

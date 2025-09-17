@@ -3,7 +3,7 @@
   Matches the design and functionality of Resume PreviewPanel
 -->
 <template>
-  <div class="cover-letter-preview-wrapper" class="font-sans">
+  <div class="cover-letter-preview-wrapper font-sans">
     <!-- Preview Controls Header -->
     <div class="preview-controls glass-elevated mb-3">
       <div class="flex items-center justify-between flex-wrap gap-glass-md">

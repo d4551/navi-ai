@@ -1,5 +1,5 @@
 <template>
-  <header class="unified-dashboard-header" :class="headerClasses" class="font-sans">
+  <header class="unified-dashboard-header font-sans" :class="headerClasses">
     <!-- Top Navigation Bar -->
     <nav class="header-nav" role="navigation">
       <div class="nav-container">

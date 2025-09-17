@@ -505,6 +505,7 @@
     <!-- Modals & Overlays -->
     <AIJobSearchInterface
       v-model:show="showSearchModal"
+      :search-form="searchForm"
       @search-submitted="handleAISearch"
     />
     
@@ -531,6 +532,7 @@
   </StandardPageLayout>
 </template>
 
+// Jobs View - Gaming Career Platform
 <script setup>
 import { AdjustmentsHorizontalIcon, ArrowPathIcon, BellIcon, BuildingOffice2Icon, CpuChipIcon, EyeIcon, MagnifyingGlassIcon, PuzzlePieceIcon, SparklesIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { CheckCircleIcon, StarIcon } from '@heroicons/vue/24/solid'
@@ -596,6 +598,17 @@ const filters = ref({
   jobType: '',
   remote: false
 })
+
+// Search form for AI interface
+const searchForm = ref({
+  query: '',
+  location: '',
+  type: 'full-time',
+  salaryMin: '',
+  salaryMax: '',
+  remote: false
+})
+
 const showAdvancedFilters = ref(false)
 const sortBy = ref('relevance')
 const viewMode = ref('cards')
@@ -669,17 +682,17 @@ const {
 } = useAIJobSearch()
 
 // Computed
-const totalJobs = computed(() => jobs.value.length)
+const totalJobs = computed(() => jobs.value?.length || 0)
 
 const jobBoardStats = computed(() => [
   { label: 'Active Jobs', value: totalJobs.value, icon: 'mdi-briefcase' },
-  { label: 'Gaming Studios', value: studioCount.value, icon: 'mdi-office-building' },
-  { label: 'Saved Jobs', value: savedJobs.value.length, icon: 'BookmarkIcon' },
-  { label: 'Job Alerts', value: jobAlerts.value.length, icon: 'mdi-bell' }
+  { label: 'Gaming Studios', value: studioCount?.value || 0, icon: 'mdi-office-building' },
+  { label: 'Saved Jobs', value: savedJobs.value?.length || 0, icon: 'BookmarkIcon' },
+  { label: 'Job Alerts', value: jobAlerts.value?.length || 0, icon: 'mdi-bell' }
 ])
 
 const filteredJobs = computed(() => {
-  let result = [...jobs.value]
+  let result = [...(jobs.value || [])]
 
   // Apply search filters
   if (searchFilters.value.keywords.trim()) {
@@ -732,7 +745,7 @@ const filteredJobs = computed(() => {
   }
 
   // Apply gaming-specific filters
-  if (gamingFilters.value.gameEngines.length > 0) {
+  if (gamingFilters.value?.gameEngines?.length > 0) {
     result = result.filter(job =>
       gamingFilters.value.gameEngines.some(engine =>
         job.requirements?.toLowerCase().includes(engine.toLowerCase()) ||
@@ -741,7 +754,7 @@ const filteredJobs = computed(() => {
     )
   }
 
-  if (gamingFilters.value.studioTypes.length > 0) {
+  if (gamingFilters.value?.studioTypes?.length > 0) {
     result = result.filter(job =>
       gamingFilters.value.studioTypes.some(type =>
         job.company?.type?.includes(type) ||
@@ -774,7 +787,7 @@ const filteredJobs = computed(() => {
   return result
 })
 
-const totalPages = computed(() => Math.ceil(filteredJobs.value.length / itemsPerPage.value))
+const totalPages = computed(() => Math.ceil((filteredJobs.value?.length || 0) / itemsPerPage.value))
 
 const paginatedJobs = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value

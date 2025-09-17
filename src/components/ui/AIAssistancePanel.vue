@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-assistance-panel section-card" class="font-sans">
+  <div class="ai-assistance-panel section-card font-sans">
     <div class="ai-panel-header">
       <div class="ai-title-group">
         <div class="ai-icon">

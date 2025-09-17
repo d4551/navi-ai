@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="version-history-overlay" class="font-sans" @click="handleOverlayClick">
+  <div v-if="show" class="version-history-overlay font-sans" @click="handleOverlayClick">
     <div class="version-history-panel">
       <div class="panel-header">
         <div class="header-content">

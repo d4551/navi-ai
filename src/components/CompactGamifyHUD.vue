@@ -1,5 +1,5 @@
 <template>
-  <div class="compact-gamify-hud glass-card section-card" role="region" aria-label="Gamification" class="font-sans">
+  <div class="compact-gamify-hud glass-card section-card font-sans" role="region" aria-label="Gamification">
     <div class="hud-flex flex-wrap">
       <div class="hud-level">
         <AppIcon name="TrophyIcon" />

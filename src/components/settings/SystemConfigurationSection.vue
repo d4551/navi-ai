@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="system-configuration" role="region" aria-labelledby="system-config-title" class="font-sans">
+  <div class="system-configuration font-sans" role="region" aria-labelledby="system-config-title">
     <!-- Header Section -->
     <div class="system-header glass-card section-card mb-6">
       <div class="system-header-content">

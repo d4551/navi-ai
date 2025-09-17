@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <div class="autocomplete-search" :class="{ 'focused': isFocused, 'has-results': hasResults }" class="font-sans">
+  <div class="autocomplete-search font-sans" :class="{ 'focused': isFocused, 'has-results': hasResults }">
     <div class="search-input-wrapper ui-input ui-size-md">
       <div class="search-input-container ui-input ui-size-md">
         <AppIcon name="MagnifyingGlassIcon" aria-hidden="true" />

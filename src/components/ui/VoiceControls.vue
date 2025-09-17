@@ -7,7 +7,7 @@ and device selection. Features WCAG 2.2 compliance and Material Design.
 -->
 
 <template>
-  <div class="voice-controls" :class="{ 'voice-controls--active': isActive }" class="font-sans">
+  <div class="voice-controls font-sans" :class="{ 'voice-controls--active': isActive }">
     <!-- Device Selection -->
     <div v-if="showDeviceSelector" class="voice-controls__devices">
       <v-select

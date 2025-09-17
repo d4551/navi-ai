@@ -1,5 +1,5 @@
 <template>
-  <div class="resume-workflow" class="font-sans">
+  <div class="resume-workflow font-sans">
     <!-- Unified Step Navigation -->
     <WorkflowSteps
       :steps="resumeSteps"

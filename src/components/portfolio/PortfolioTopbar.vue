@@ -1,5 +1,5 @@
 <template>
-  <nav class="portfolio-topbar" :data-theme="themeName" class="font-sans">
+  <nav class="portfolio-topbar font-sans" :data-theme="themeName">
     <!-- Header Section with Stats -->
     <div class="topbar-header">
       <!-- Results and Stats Bar -->

@@ -1,8 +1,7 @@
 <template>
   <div
     v-if="show && item"
-    class="modal-overlay"
-    class="font-sans"
+    class="modal-overlay font-sans"
     @click="handleOverlayClick"
   >
     <div class="portfolio-modal" @click.stop>

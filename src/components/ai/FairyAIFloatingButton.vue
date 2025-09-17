@@ -1,8 +1,7 @@
 <template>
   <div 
-    class="fairy-floating-button"
+    class="fairy-floating-button font-sans"
     :class="{ 'fairy-active': active, 'fairy-pulsing': !active }"
-    class="font-sans"
   >
     <button
       class="fairy-btn btn-rgb ui-btn ui-size-md"

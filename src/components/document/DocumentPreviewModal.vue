@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="modal-overlay" class="font-sans" @click="handleOverlayClick">
+  <div v-if="show" class="modal-overlay font-sans" @click="handleOverlayClick">
     <div class="preview-modal" @click.stop>
       <!-- Header -->
       <div class="modal-header">

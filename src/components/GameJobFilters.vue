@@ -3,7 +3,7 @@
   Advanced filtering specifically tailored for gaming industry job seekers
 -->
 <template>
-  <div class="game-job-filters" class="font-sans">
+  <div class="game-job-filters font-sans">
     <div class="filters-header flex items-center justify-between mb-3">
       <h5 class="filters-title mb-0">
         <AppIcon name="AdjustmentsHorizontalIcon" class="mr-2" />

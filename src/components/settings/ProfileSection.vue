@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div role="region" aria-labelledby="profile-heading" class="profile-section enhanced-glass-section" :class="{ 'is-tabbed': isTabbed }" class="font-sans">
+  <div role="region" aria-labelledby="profile-heading" class="profile-section enhanced-glass-section font-sans" :class="{ 'is-tabbed': isTabbed }">
     <!-- Enhanced Header -->
     <div v-if="!isTabbed" class="section-header">
       <div class="header-content">

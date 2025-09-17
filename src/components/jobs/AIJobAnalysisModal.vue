@@ -534,7 +534,7 @@
 </template>
 
 <script setup lang="ts">
-import { AcademicCapIcon, ArrowRightIcon, ArrowTrendingUpIcon, BuildingOfficeIcon, ChartBarIcon, CheckCircleIcon, CogIcon, CpuChipIcon, CurrencyDollarIcon, EyeIcon, LightBulbIcon, UsersIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { AcademicCapIcon, ArrowRightIcon, ArrowTrendingUpIcon, BuildingOfficeIcon, ChartBarIcon, CheckCircleIcon, CogIcon, CpuChipIcon, CurrencyDollarIcon, EyeIcon, UsersIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { HeartIcon, LightBulbIcon, MapPinIcon } from '@heroicons/vue/24/solid'
 
 import { ref, computed, watch } from 'vue'

@@ -1,5 +1,5 @@
 <template>
-  <div class="step-tabs" class="font-sans">
+  <div class="step-tabs font-sans">
     <GlassNavTabs
       :tabs="tabs"
       :active-tab="activeTabLocal"

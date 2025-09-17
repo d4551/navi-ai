@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="modal-overlay" class="font-sans" @click="closeModal">
+  <div v-if="visible" class="modal-overlay font-sans" @click="closeModal">
     <div class="modal-dialog glass-card" @click.stop>
       <div class="modal-header">
         <h3 class="modal-title">

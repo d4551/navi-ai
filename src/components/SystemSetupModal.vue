@@ -1,5 +1,5 @@
 <template>
-  <div v-if="open" class="modal show block" role="dialog" aria-modal="true" class="font-sans">
+  <div v-if="open" class="modal show block font-sans" role="dialog" aria-modal="true">
     <div class="modal-backdrop show"></div>
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content glass-surface">

@@ -1,5 +1,5 @@
 <template>
-  <v-card variant="outlined" class="mb-4 section-card section-card unified-card" class="font-sans">
+  <v-card variant="outlined" class="mb-4 section-card section-card unified-card font-sans">
     <v-card-title class="flex items-center justify-space-between pa-4">
       <div class="flex items-center gap-glass-sm">
         <AppIcon name="BriefcaseIcon" size="small" color="primary" />

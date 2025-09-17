@@ -1,5 +1,5 @@
 <template>
-  <div class="compact-gamification-dashboard" class="font-sans">
+  <div class="compact-gamification-dashboard font-sans">
     <!-- Achievements Overview -->
     <div class="unified-grid g-3 mb-4">
       <!-- Level Status -->

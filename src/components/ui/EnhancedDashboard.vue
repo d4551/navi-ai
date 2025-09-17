@@ -1,5 +1,5 @@
 <template>
-  <div class="enhanced-dashboard" :class="[`dashboard-variant-${variant}`]" class="font-sans">
+  <div class="enhanced-dashboard font-sans" :class="[`dashboard-variant-${variant}`]">
     <!-- Dashboard Header -->
     <div class="dashboard-header">
       <div class="header-content">

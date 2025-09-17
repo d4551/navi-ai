@@ -1,5 +1,5 @@
 <template>
-  <div class="resume-ai-analysis" class="font-sans">
+  <div class="resume-ai-analysis font-sans">
     <div class="analysis-options mb-4">
       <div class="flex gap-glass-md mb-3" role="group" aria-label="Analysis actions">
         <button

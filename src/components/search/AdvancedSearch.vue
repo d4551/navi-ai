@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <div class="advanced-search" class="font-sans">
+  <div class="advanced-search font-sans">
     <!-- Search Header -->
     <div class="search-header">
       <div class="container">

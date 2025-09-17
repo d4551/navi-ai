@@ -1,5 +1,5 @@
 <template>
-  <div class="unified-form-field text-glass-primary" :class="{ required, valid: isValid, error: hasError }" class="font-sans">
+  <div class="unified-form-field text-glass-primary font-sans" :class="{ required, valid: isValid, error: hasError }">
     <label v-if="label" class="field-label text-gray-700 dark:text-glass-secondary dark:text-glass-secondary">
       <AppIcon v-if="icon" :name="icon" size="16" class="field-icon" />
       {{ label }}

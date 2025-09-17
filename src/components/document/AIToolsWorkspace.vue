@@ -1,5 +1,5 @@
 <template>
-  <div class="ai-tools-workspace" class="font-sans">
+  <div class="ai-tools-workspace font-sans">
     <!-- Profile Integration Banner -->
     <div v-if="profileData" class="profile-integration-banner">
       <div class="banner-content">

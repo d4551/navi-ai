@@ -1,10 +1,9 @@
 <template>
   <article 
-    class="enhanced-job-card glass-card"
+    class="enhanced-job-card glass-card font-sans"
     :class="{ 'top-match': isTopMatch, 'has-insights': hasAIInsights }"
     tabindex="0"
     role="article"
-    class="font-sans"
     @click="$emit('select', job)"
     @keydown.enter="$emit('select', job)"
     @keydown.space.prevent="$emit('select', job)"

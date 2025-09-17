@@ -1,5 +1,5 @@
 <template>
-  <div class="easter-eggs-container" class="font-sans">
+  <div class="easter-eggs-container font-sans">
     <!-- Hidden Gaming References -->
     <div v-if="showSecretMenu" class="secret-menu">
       <div class="secret-menu-content">

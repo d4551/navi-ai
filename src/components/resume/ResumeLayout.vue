@@ -1,5 +1,5 @@
 <template>
-  <div class="resume-layout" class="font-sans">
+  <div class="resume-layout font-sans">
     <!-- Header Section -->
     <header class="resume-header">
       <div class="header-content">

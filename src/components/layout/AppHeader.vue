@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-glass-bg border-b border-glass-border h-[var(--header-height)] flex items-center px-6 shadow-sm" class="font-sans">
+  <header class="bg-glass-bg border-b border-glass-border h-[var(--header-height)] flex items-center px-6 shadow-sm font-sans">
     <div class="flex-1 flex justify-between items-center">
       <div class="flex-shrink-0">
         <h1 class="text-xl font-bold">App Name</h1>

@@ -1,5 +1,5 @@
 <template>
-  <div class="document-preview" class="font-sans">
+  <div class="document-preview font-sans">
     <div v-if="isLoading" class="preview-loading">
       <div class="loading-spinner">
         <AppIcon name="ArrowPathIcon" size="32" class="spinning" />

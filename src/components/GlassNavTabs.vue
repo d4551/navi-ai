@@ -1,14 +1,13 @@
 <template>
   <nav
     ref="navRef"
-    class="nav glass-nav glass-surface rounded-lg"
+    class="nav glass-nav glass-surface rounded-lg font-sans"
     :class="{ 'nav-tabs nav-fill': !gridLayout,
               'nav-grid': gridLayout,
               'is-dragging': isDragging
     }"
     role="tablist"
     :aria-label="ariaLabel"
-    class="font-sans"
     @keydown.left.prevent="onArrow(-1)"
     @keydown.right.prevent="onArrow(1)"
     @pointerdown="onPointerDown"

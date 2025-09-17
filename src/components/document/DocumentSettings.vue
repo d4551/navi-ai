@@ -1,5 +1,5 @@
 <template>
-  <div class="document-settings" class="font-sans">
+  <div class="document-settings font-sans">
     <div class="settings-header">
       <h3 class="section-title">
         <AppIcon name="CogIcon" />

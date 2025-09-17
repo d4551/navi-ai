@@ -11,7 +11,7 @@ It shows how profile data entered once is automatically synchronized across:
 - Settings and preferences
 -->
 <template>
-  <div class="unified-profile-manager" class="font-sans">
+  <div class="unified-profile-manager font-sans">
     <!-- Profile Status Header -->
     <div class="profile-status-header glass-card mb-4">
       <div class="flex items-center justify-between">

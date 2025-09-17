@@ -1,5 +1,5 @@
 <template>
-  <div class="mui-example-container" class="font-sans">
+  <div class="mui-example-container font-sans">
     <!-- Loading Overlay -->
     <MuiLoadingIndicator 
       v-if="isLoading"

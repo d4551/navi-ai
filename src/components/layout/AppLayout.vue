@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-flex-1" class="font-sans">
+  <div class="min-h-screen flex flex-flex-1 font-sans">
     <app-header />
     <main class="flex-grow p-glass-lg">
       <slot></slot>

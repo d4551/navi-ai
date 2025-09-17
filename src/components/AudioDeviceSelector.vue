@@ -3,7 +3,7 @@
   Provides device selection and permission handling for microphone and speakers
 -->
 <template>
-  <div class="audio-device-selector" class="font-sans">
+  <div class="audio-device-selector font-sans">
     <!-- Device Selection Controls -->
     <div class="device-controls">
       <div class="flex flex-wrap g-3">

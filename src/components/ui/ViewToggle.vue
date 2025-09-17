@@ -1,5 +1,5 @@
 <template>
-  <div class="view-toggle-group" role="group" :aria-label="ariaLabel" class="font-sans">
+  <div class="view-toggle-group font-sans" role="group" :aria-label="ariaLabel">
     <UnifiedButton
       v-for="opt in resolvedOptions"
       :key="opt.value"

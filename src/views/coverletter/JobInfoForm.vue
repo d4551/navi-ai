@@ -3,7 +3,7 @@
   Matches PersonalInfoForm structure and design patterns
 -->
 <template>
-  <section class="glass p-glass-md gap-glass-md rounded-lg unified-card" class="font-sans">
+  <section class="glass p-glass-md gap-glass-md rounded-lg unified-card font-sans">
     <div class="flex items-center justify-between mb-2">
       <h2 class="h6 mb-0 flex items-center gap-glass-sm text-primary-600">
         <AppIcon name="BriefcaseIcon" class="icon-md" aria-hidden="true" />

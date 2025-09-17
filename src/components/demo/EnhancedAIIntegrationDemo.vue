@@ -6,7 +6,7 @@
 -->
 
 <template>
-  <div class="ai-integration-demo" class="font-sans">
+  <div class="ai-integration-demo font-sans">
     <!-- Service Status Dashboard -->
     <div class="status-dashboard">
       <h2>AI Services Status</h2>

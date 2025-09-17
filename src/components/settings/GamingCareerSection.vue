@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card mb-4" role="region" aria-labelledby="gaming-career-title" class="font-sans">
+  <div class="settings-card mb-4 font-sans" role="region" aria-labelledby="gaming-career-title">
     <div class="card-header section-header card-header--dense">
       <h5 id="gaming-career-title" class="mb-0">
         <GameIconComponent class="mr-2 icon-sm" />Gaming Career Focus

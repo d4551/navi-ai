@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="multi-select" :class="{ open: isOpen }" class="font-sans">
+  <div ref="container" class="multi-select font-sans" :class="{ open: isOpen }">
     <div class="multi-select-trigger" @click="toggleDropdown">
       <div class="selected-items">
         <span v-if="selectedItems.length === 0" class="placeholder">

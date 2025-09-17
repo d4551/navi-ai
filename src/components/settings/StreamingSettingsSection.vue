@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="streaming-settings glass-card section-card" class="font-sans">
+  <div class="streaming-settings glass-card section-card font-sans">
     <div class="card-header section-header">
       <h5 class="mb-0 flex items-center gap-glass-sm">
         <AppIcon name="VideoCameraIcon-settings" class="text-primary-600" />

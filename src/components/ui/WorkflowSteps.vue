@@ -1,5 +1,5 @@
 <template>
-  <div class="workflow-steps section-card" class="font-sans">
+  <div class="workflow-steps section-card font-sans">
     <div class="steps-container" :class="{ mobile: isMobile }">
       <div
         v-for="step in steps"

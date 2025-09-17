@@ -1,5 +1,5 @@
 <template>
-  <div class="smart-form-grid" :class="{ 'has-suggestions': showSuggestions }" class="font-sans">
+  <div class="smart-form-grid font-sans" :class="{ 'has-suggestions': showSuggestions }">
     <!-- Personal Information Section -->
     <div v-if="section === 'personal'" class="form-grid">
       <!-- Full Name with Smart Detection -->

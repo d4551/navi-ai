@@ -9,7 +9,7 @@ Displays live jobs from multiple API sources with:
 - Auto-refresh and caching
 -->
 <template>
-  <div class="live-job-board" class="font-sans">
+  <div class="live-job-board font-sans">
     <!-- Header with Live Stats -->
     <div class="job-board-header glass-card section-card mb-4">
       <div class="section-header flex justify-between items-center">
@@ -1123,8 +1123,8 @@ const convertToCSV = (data) => {
   const headers = Object.keys(data[0])
   const csv = [
     headers.join(','),
-    ...data.map(flex flex-wrap => headers.map(header => 
-      JSON.stringify(flex flex-wrap[header] || '')
+    ...data.map(row => headers.map(header => 
+      JSON.stringify(row[header] || '')
     ).join(','))
   ].join('\n')
   
@@ -2810,13 +2810,15 @@ defineExpose({
   }
   
   .header-actions {
-    flex-direction: flex flex-wrap;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--spacing-2);
   }
   
   .action-group {
-    flex-direction: flex flex-wrap;
+    display: flex;
+    flex-wrap: wrap;
   }
   
   .job-metrics {
@@ -2880,7 +2882,8 @@ defineExpose({
   
   .action-group.secondary-actions {
     order: 2;
-    flex-direction: flex flex-wrap;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
   }
   

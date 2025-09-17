@@ -1,6 +1,6 @@
 <template>
   <article 
-    class="portfolio-item-card" 
+    class="portfolio-item-card font-sans" 
     :class="[
       `portfolio-item-card--${viewMode}`,
       { 
@@ -8,7 +8,6 @@
         'portfolio-item-card--selected': selected
       }
     ]"
-    class="font-sans"
     @click="handleClick"
   >
     <!-- Selection Overlay -->

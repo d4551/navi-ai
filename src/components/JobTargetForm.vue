@@ -1,5 +1,5 @@
 <template>
-  <div class="job-target-form" class="font-sans">
+  <div class="job-target-form font-sans">
     <div class="unified-card glass-card section-card">
       <div class="card-header section-header card-header--dense bg-gradient text-inverse">
         <h4 class="h5 mb-0">

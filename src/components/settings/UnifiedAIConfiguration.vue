@@ -1,5 +1,5 @@
 <template>
-  <div class="modern-ai-config" role="region" aria-labelledby="ai-config-title" class="font-sans">
+  <div class="modern-ai-config font-sans" role="region" aria-labelledby="ai-config-title">
     <!-- Main Header -->
     <div class="main-header">
       <h1>API Configuration</h1>

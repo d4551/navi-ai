@@ -4,7 +4,7 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
 -->
 
 <template>
-  <div class="navi-integration" class="font-sans">
+  <div class="navi-integration font-sans">
     <div class="service-status">
       <h3>NAVI Service Status</h3>
       <div class="status-grid">

@@ -1,5 +1,5 @@
 <template>
-  <div class="job-pagination" class="font-sans">
+  <div class="job-pagination font-sans">
     <!-- Results Info -->
     <div class="pagination-info">
       <span class="results-count">

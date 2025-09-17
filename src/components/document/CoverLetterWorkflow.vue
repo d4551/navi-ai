@@ -1,5 +1,5 @@
 <template>
-  <div class="cover-letter-workflow" class="font-sans">
+  <div class="cover-letter-workflow font-sans">
     <!-- Unified Step Navigation -->
     <WorkflowSteps
       :steps="coverLetterSteps"
