@@ -946,7 +946,7 @@
           <!-- Culture & Values -->
           <div v-if="selectedStudioForModal.culture" class="mb-6">
             <div class="flex items-center mb-4">
-              <AppIcon name="HeartIcon" color="primary" class="mr-2" />
+              <HeartIcon class="mr-2 w-6 h-6 text-primary-600" />
               <h3 class="text-lg font-semibold">Culture & Values</h3>
             </div>
             <v-flex flex-wrap>
@@ -976,7 +976,7 @@
           <!-- Games & Technologies -->
           <div class="mb-6">
             <div class="flex items-center mb-4">
-              <AppIcon name="PuzzlePieceIcon" color="primary" class="mr-2" />
+              <PuzzlePieceIcon class="mr-2 w-6 h-6 text-primary-600" />
               <h3 class="text-lg font-semibold">Games & Technologies</h3>
             </div>
             <v-flex flex-wrap>
