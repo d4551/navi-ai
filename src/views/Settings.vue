@@ -939,7 +939,7 @@
   </StandardPageLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ArrowDownTrayIcon, BriefcaseIcon, ChartBarIcon, ChartBarSquareIcon, CogIcon, CommandLineIcon, CpuChipIcon, InformationCircleIcon, MagnifyingGlassIcon, MicrophoneIcon, PuzzlePieceIcon, UserIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
 import { TrophyIcon } from '@heroicons/vue/24/solid'
 
@@ -1571,7 +1571,7 @@ const exportDebugInfo = () => {
   }
 }
 
-const showChangelog = () => {
+const showChangelog = async () => {
   // Create a modal or open a dialog showing the changelog
   const changelogContent = `
 # NAVI Changelog

@@ -15,7 +15,7 @@ export interface ModalConfig {
 export interface ModalButton {
   text: string;
   type?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
-  onclick: string | (() => void);
+  onclick: string | ((e: Event) => void);
   href?: string;
   target?: string;
 }
@@ -249,11 +249,12 @@ export function createGamingModal(config: ModalConfig): HTMLElement {
   if (config.buttons) {
     config.buttons.forEach((button, index) => {
       if (typeof button.onclick === 'function') {
+        const onClickHandler = button.onclick as (e: Event) => void;
         const buttonElement = modal.querySelectorAll('.modal-footer .btn')[index];
         if (buttonElement) {
-          buttonElement.addEventListener('click', (e) => {
+          buttonElement.addEventListener('click', (e: Event) => {
             try {
-              button.onclick!(e);
+              onClickHandler(e);
             } catch (error) {
               console.error('Error executing button callback:', error);
             }
@@ -269,43 +270,6 @@ export function createGamingModal(config: ModalConfig): HTMLElement {
     modal.style.opacity = '1';
     modal.style.transform = 'scale(1)';
   });
-
-  return modal;
-  const modal = createModal({
-    ...config,
-    className: `gaming-modal ${config.className || ''}`
-  });
-
-  // Add gaming-specific styles
-  const style = document.createElement('style');
-  style.textContent = `
-    .gaming-modal .modal-content {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-    }
-    
-    .gaming-modal .modal-header {
-      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-      background: rgba(59, 130, 246, 0.1);
-    }
-    
-    .gaming-modal .modal-title {
-      color: #e2e8f0;
-      text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-    }
-    
-    .gaming-modal .modal-body {
-      color: #cbd5e1;
-    }
-    
-    .gaming-modal .modal-footer {
-      border-top: 1px solid rgba(59, 130, 246, 0.2);
-      background: rgba(59, 130, 246, 0.05);
-    }
-  `;
-  document.head.appendChild(style);
 
   return modal;
 }
