@@ -357,7 +357,7 @@
               <!-- Normalized thumbnail system -->
               <img
                 v-if="getItemThumbnail(item)"
-                :src="getItemThumbnail(item)!"
+                :src="getItemThumbnail(item) || ''"
                 :alt="item.title || 'Portfolio item'"
                 class="media-image"
                 @error="onThumbnailError"
@@ -498,10 +498,7 @@
     <PortfolioViewModal
       :show="showViewModal"
       :item="selectedViewItem"
-      @close="
-        showViewModal = false
-        selectedViewItem = null
-      "
+      @close="handleCloseViewModal"
       @edit="handleEditItem"
       @duplicate="handleDuplicateItem"
     />
@@ -606,6 +603,11 @@ function handleDuplicateItem(item: any) {
   selectedViewItem.value = null
   // You can implement duplication functionality here
   console.log('Duplicate item:', item)
+}
+
+function handleCloseViewModal() {
+  showViewModal.value = false
+  selectedViewItem.value = null
 }
 
 function goManage() {

@@ -1131,10 +1131,7 @@
   <PortfolioViewModal
     :show="showViewModal"
     :item="selectedViewItem"
-    @close="
-      showViewModal = false
-      selectedViewItem = null
-    "
+    @close="handleCloseViewModal"
     @edit="handleEditProject"
     @duplicate="handleDuplicateProject"
   />
@@ -2143,6 +2140,11 @@ function handleDuplicateProject(item: any) {
   selectedViewItem.value = null
   // Implement duplication functionality
   console.log('Duplicate project:', item)
+}
+
+function handleCloseViewModal() {
+  showViewModal.value = false
+  selectedViewItem.value = null
 }
 
 async function shareProject(p: any) {

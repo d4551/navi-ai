@@ -29,7 +29,7 @@
         <!-- Media Thumbnail -->
         <img
           v-if="getMediaUrl()"
-          :src="getMediaUrl()!"
+          :src="getMediaUrl() || ''"
           :alt="item.title || 'Project thumbnail'"
           class="thumbnail-image"
           @error="handleImageError"
