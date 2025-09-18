@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card mb-4" role="region" aria-labelledby="gaming-career-title">
+  <div
+    class="settings-card mb-4"
+    role="region"
+    aria-labelledby="gaming-career-title"
+  >
     <div class="card-header section-header card-header--dense">
       <h5 id="gaming-career-title" class="mb-0">
         <GameIconComponent class="me-2 icon-sm" />Gaming Career Focus
@@ -9,7 +13,9 @@
     <div class="card-body section-body card-body--dense">
       <!-- Career Level -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="career-level" class="form-label fw-medium">Career Level</label>
+        <label for="career-level" class="form-label fw-medium"
+          >Career Level</label
+        >
         <select
           id="career-level"
           v-model="settings.gamingExperienceLevel"
@@ -24,7 +30,8 @@
           <option value="executive">Executive/C-Suite</option>
         </select>
         <div id="career-level-help" class="form-text">
-          This helps tailor interview questions and career advice to your experience level.
+          This helps tailor interview questions and career advice to your
+          experience level.
         </div>
       </div>
 
@@ -127,7 +134,9 @@
 
       <!-- Target Industry -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="target-industry" class="form-label fw-medium">Target Industry</label>
+        <label for="target-industry" class="form-label fw-medium"
+          >Target Industry</label
+        >
         <select
           id="target-industry"
           v-model="settings.targetIndustry"
@@ -151,7 +160,9 @@
 
       <!-- Career Timeline -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="career-timeline" class="form-label fw-medium">Career Timeline</label>
+        <label for="career-timeline" class="form-label fw-medium"
+          >Career Timeline</label
+        >
         <select
           id="career-timeline"
           v-model="settings.careerTimeline"
@@ -172,7 +183,9 @@
 
       <!-- Skills to Emphasize -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="skills-emphasize" class="form-label fw-medium">Skills to Emphasize</label>
+        <label for="skills-emphasize" class="form-label fw-medium"
+          >Skills to Emphasize</label
+        >
         <textarea
           id="skills-emphasize"
           v-model="settings.skillsToEmphasize"
@@ -188,7 +201,9 @@
 
       <!-- Content Tone -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="content-tone" class="form-label fw-medium">Content Tone</label>
+        <label for="content-tone" class="form-label fw-medium"
+          >Content Tone</label
+        >
         <select
           id="content-tone"
           v-model="settings.contentTone"
@@ -208,7 +223,9 @@
 
       <!-- AI Focus Level -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="ai-focus-level" class="form-label fw-medium">AI Assistance Level</label>
+        <label for="ai-focus-level" class="form-label fw-medium"
+          >AI Assistance Level</label
+        >
         <select
           id="ai-focus-level"
           v-model="settings.aiFocusLevel"
@@ -217,7 +234,9 @@
         >
           <option value="minimal">Minimal (basic suggestions)</option>
           <option value="intermediate">Intermediate (balanced)</option>
-          <option value="comprehensive">Comprehensive (detailed guidance)</option>
+          <option value="comprehensive">
+            Comprehensive (detailed guidance)
+          </option>
         </select>
         <div id="ai-focus-level-help" class="form-text">
           How much AI assistance you want in your career development.
@@ -226,7 +245,9 @@
 
       <!-- Technical Skills -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="technical-skills" class="form-label fw-medium">Technical Skills</label>
+        <label for="technical-skills" class="form-label fw-medium"
+          >Technical Skills</label
+        >
         <textarea
           id="technical-skills"
           v-model="settings.technicalSkills"
@@ -267,9 +288,7 @@
                 type="checkbox"
                 value="rpg"
               />
-              <label class="form-check-label" for="genre-rpg">
-                RPG
-              </label>
+              <label class="form-check-label" for="genre-rpg"> RPG </label>
             </div>
           </div>
           <div class="col-sm-6 col-md-4">
@@ -333,7 +352,9 @@
 
       <!-- Career Goals -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="career-goals" class="form-label fw-medium">Career Goals</label>
+        <label for="career-goals" class="form-label fw-medium"
+          >Career Goals</label
+        >
         <textarea
           id="career-goals"
           v-model="settings.careerGoals"
@@ -349,7 +370,9 @@
 
       <!-- Portfolio/Projects -->
       <div class="mb-3 p-3 border rounded-3 glass-input">
-        <label for="portfolio-links" class="form-label fw-medium">Portfolio & Projects</label>
+        <label for="portfolio-links" class="form-label fw-medium"
+          >Portfolio & Projects</label
+        >
         <textarea
           id="portfolio-links"
           v-model="settings.portfolioLinks"
@@ -372,17 +395,17 @@ import { GameIconComponent } from './SettingsIcons.js'
 export default {
   name: 'GamingCareerSection',
   components: {
-    GameIconComponent
+    GameIconComponent,
   },
   props: {
     careerProfile: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     saving: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['update:careerProfile', 'save'],
   computed: {
@@ -392,8 +415,8 @@ export default {
       },
       set(value) {
         this.$emit('update:careerProfile', value)
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>

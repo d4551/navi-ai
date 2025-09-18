@@ -27,7 +27,9 @@
       <div class="error-message">
         <AppIcon name="ExclamationCircleIcon" size="48" class="error-icon" />
         <h3>Unsupported Document Type</h3>
-        <p>The document type "{{ documentType }}" is not currently supported.</p>
+        <p>
+          The document type "{{ documentType }}" is not currently supported.
+        </p>
       </div>
     </div>
   </div>
@@ -40,7 +42,10 @@ import { computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import ResumeContentBuilder from './ResumeContentBuilder.vue'
 import CoverLetterContentBuilder from './CoverLetterContentBuilder.vue'
-import type { ResumeData, CoverLetterData } from '@/composables/useDocumentManager'
+import type {
+  ResumeData,
+  CoverLetterData,
+} from '@/composables/useDocumentManager'
 
 // Props
 const props = defineProps<{

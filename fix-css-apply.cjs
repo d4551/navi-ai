@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 const files = [
   '/workspaces/navi-ai/src/components/ui/UnifiedButton.vue',
-  '/workspaces/navi-ai/src/styles/enhanced-glass-utilities.css'
-];
+  '/workspaces/navi-ai/src/styles/enhanced-glass-utilities.css',
+]
 
 files.forEach(file => {
   try {
     if (!fs.existsSync(file)) {
-      console.log(`File not found: ${file}`);
-      return;
+      console.log(`File not found: ${file}`)
+      return
     }
-    
-    const content = fs.readFileSync(file, 'utf-8');
-    
+
+    const content = fs.readFileSync(file, 'utf-8')
+
     // Remove all @apply statements that use custom CSS variables/classes
     let fixed = content
       // Remove @apply statements with custom variables and classes
@@ -34,15 +34,15 @@ files.forEach(file => {
       .replace(/@apply[^;]*to-neon[^;]*;?/g, '')
       // Clean up empty lines and empty rulesets
       .replace(/\n\s*\n\s*\n/g, '\n\n')
-      .replace(/{\s*\n\s*}/g, '{ /* removed custom styles */ }');
-    
+      .replace(/{\s*\n\s*}/g, '{ /* removed custom styles */ }')
+
     if (fixed !== content) {
-      fs.writeFileSync(file, fixed);
-      console.log(`Fixed CSS @apply statements in ${path.basename(file)}`);
+      fs.writeFileSync(file, fixed)
+      console.log(`Fixed CSS @apply statements in ${path.basename(file)}`)
     } else {
-      console.log(`No changes needed in ${path.basename(file)}`);
+      console.log(`No changes needed in ${path.basename(file)}`)
     }
   } catch (error) {
-    console.error(`Error processing ${file}:`, error.message);
+    console.error(`Error processing ${file}:`, error.message)
   }
-});
+})

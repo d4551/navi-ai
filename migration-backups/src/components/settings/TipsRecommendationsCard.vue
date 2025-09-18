@@ -33,7 +33,9 @@
       </div>
 
       <!-- Tip Navigation -->
-      <div class="tip-navigation d-flex justify-content-between align-items-center mb-4">
+      <div
+        class="tip-navigation d-flex justify-content-between align-items-center mb-4"
+      >
         <IconButton
           type="button"
           :disabled="currentTipIndex === 0"
@@ -106,7 +108,9 @@
             </div>
             <div class="recommendation-content">
               <div class="recommendation-title">{{ rec.title }}</div>
-              <div class="recommendation-description">{{ rec.description }}</div>
+              <div class="recommendation-description">
+                {{ rec.description }}
+              </div>
             </div>
             <UnifiedButton
               v-if="!rec.completed"
@@ -126,14 +130,14 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 import {
   LightbulbIconComponent,
   ChevronLeftIconComponent,
   ChevronRightIconComponent,
   CheckCircleIconComponent,
-  CircleIconComponent
+  CircleIconComponent,
 } from './SettingsIcons.js'
 
 export default {
@@ -145,22 +149,22 @@ export default {
     CheckCircleIconComponent,
     CircleIconComponent,
     UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
-    IconButton: () => import('@/components/ui/IconButton.vue')
+    IconButton: () => import('@/components/ui/IconButton.vue'),
   },
   props: {
     tips: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     recommendations: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ['tip-action', 'complete-recommendation'],
   data() {
     return {
-      currentTipIndex: 0
+      currentTipIndex: 0,
     }
   },
   computed: {
@@ -170,7 +174,7 @@ export default {
     quickTips() {
       // Return first 3 tips as quick tips
       return this.tips.slice(0, 3)
-    }
+    },
   },
   methods: {
     previousTip() {
@@ -187,8 +191,8 @@ export default {
       if (index >= 0 && index < this.tips.length) {
         this.currentTipIndex = index
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

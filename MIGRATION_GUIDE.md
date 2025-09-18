@@ -5,6 +5,7 @@ This guide covers the automated migration tools built to modernize your NAVI app
 ## 🎯 What This Migration Does
 
 ### ✅ Completed Automatically
+
 - **Pinia Theme Store**: Centralized theme management with dark/light mode switching
 - **Tailwind Dark Mode**: Automatic addition of dark mode classes to existing components
 - **Heroicons Integration**: Replace emojis and text patterns with professional SVG icons
@@ -26,6 +27,7 @@ npm run migrate:ui
 ```
 
 ### Options:
+
 - `--dry-run`: Preview changes without modifying files
 - `--verbose`: Show detailed output and reports
 - `--skip-tailwind`: Skip Tailwind dark mode migration
@@ -47,6 +49,7 @@ npm run migrate:tailwind
 ```
 
 **What it migrates:**
+
 - `bg-white` → `bg-white dark:bg-gray-900`
 - `text-gray-900` → `text-gray-900 dark:text-gray-100`
 - `border-gray-200` → `border-gray-200 dark:border-gray-700`
@@ -65,6 +68,7 @@ npm run migrate:icons
 ```
 
 **What it migrates:**
+
 - `🎮` → `<DevicePhoneMobileIcon class="w-5 h-5" aria-label="gaming" />`
 - `⚡` → `<BoltIcon class="w-5 h-5" aria-label="energy" />`
 - Text patterns like "Settings" → `<CogIcon class="w-5 h-5" aria-label="settings" />`
@@ -75,20 +79,20 @@ npm run migrate:icons
 
 ```vue
 <script setup>
-import { useThemeStore } from '@/stores/theme';
+import { useThemeStore } from '@/stores/theme'
 
-const themeStore = useThemeStore();
+const themeStore = useThemeStore()
 
 // Toggle dark mode
-const toggleDark = () => themeStore.toggleDarkMode();
+const toggleDark = () => themeStore.toggleDarkMode()
 
 // Set specific mode
-const setLightMode = () => themeStore.setMode('light');
-const setDarkMode = () => themeStore.setMode('dark');
-const setAutoMode = () => themeStore.setMode('auto');
+const setLightMode = () => themeStore.setMode('light')
+const setDarkMode = () => themeStore.setMode('dark')
+const setAutoMode = () => themeStore.setMode('auto')
 
 // Change density
-const setDensity = (density) => themeStore.setDensity(density); // 'compact', 'comfortable', 'spacious'
+const setDensity = density => themeStore.setDensity(density) // 'compact', 'comfortable', 'spacious'
 </script>
 ```
 
@@ -105,13 +109,14 @@ A ready-to-use theme toggle component has been created at `src/components/ui/The
 </template>
 
 <script setup>
-import ThemeToggle from '@/components/ui/ThemeToggle.vue';
+import ThemeToggle from '@/components/ui/ThemeToggle.vue'
 </script>
 ```
 
 ### CSS Classes Applied
 
 The theme system automatically applies these classes to `<html>`:
+
 - `dark` / `light` - Current theme mode
 - `density-compact` / `density-comfortable` / `density-spacious` - UI density
 - `glass-enabled` - Enable glass morphism effects
@@ -130,29 +135,35 @@ After migration, icons are automatically imported in your Vue files:
 </template>
 
 <script setup>
-import { HomeIcon } from '@heroicons/vue/24/outline';
+import { HomeIcon } from '@heroicons/vue/24/outline'
 </script>
 ```
 
 ### Icon Types Available
+
 - **Outline**: `@heroicons/vue/24/outline` - Thin outline icons
 - **Solid**: `@heroicons/vue/24/solid` - Filled solid icons
 
 ## 🛡️ Safety Features
 
 ### Automatic Backups
+
 - Full project backup created before migration
 - Individual file backups for each modified file
 - Backups stored in `migration-backups/` or custom directory
 
 ### Dry Run Mode
+
 Always test migrations with `--dry-run` first:
+
 ```bash
 npm run migrate:ui:dry
 ```
 
 ### Detailed Reporting
+
 Use `--verbose` flag for detailed change reports:
+
 ```bash
 npm run migrate:ui:dry --verbose
 ```
@@ -180,6 +191,7 @@ scripts/
 ## 🔧 Manual Steps After Migration
 
 1. **Add Theme Toggle to Navigation**
+
    ```vue
    <template>
      <nav class="flex items-center justify-between p-4">
@@ -207,19 +219,22 @@ scripts/
 ## 🎨 Advanced Theme Customization
 
 ### Custom Colors
+
 ```javascript
 // In your theme store or Tailwind config
 const config = {
-  primaryColor: 'blue',     // blue, purple, green, etc.
-  accentColor: 'purple',    // accent color for highlights
-  borderRadius: 'md',       // none, sm, md, lg, xl
-  glassEffect: true,        // enable/disable glass morphism
-  animations: true          // enable/disable animations
-};
+  primaryColor: 'blue', // blue, purple, green, etc.
+  accentColor: 'purple', // accent color for highlights
+  borderRadius: 'md', // none, sm, md, lg, xl
+  glassEffect: true, // enable/disable glass morphism
+  animations: true, // enable/disable animations
+}
 ```
 
 ### CSS Custom Properties
+
 The theme system sets these CSS variables:
+
 ```css
 :root {
   --primary-color: /* your primary color */;
@@ -232,6 +247,7 @@ The theme system sets these CSS variables:
 ### Common Issues
 
 1. **Migration fails with permission errors**
+
    ```bash
    chmod +x scripts/migration-tools/*.js
    ```
@@ -271,6 +287,7 @@ Save these reports for documentation and troubleshooting.
 ---
 
 🎉 **Congratulations!** Your NAVI application is now modernized with:
+
 - ✅ Professional Heroicons instead of emojis
 - ✅ Full dark/light mode support
 - ✅ Centralized theme management with Pinia

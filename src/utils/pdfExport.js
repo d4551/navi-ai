@@ -10,16 +10,19 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
  * @returns {Promise<Blob>}
  */
 export async function pdfFromTallImage(dataUrl, options = {}) {
-  const pageWidthPt = options.pageWidthPt || 595.28;
-  const pageHeightPt = options.pageHeightPt || 841.89;
+  const pageWidthPt = options.pageWidthPt || 595.28
+  const pageHeightPt = options.pageHeightPt || 841.89
 
   // Create offscreen canvas to slice image for true pagination
   if (typeof Image === 'undefined') {
-    throw new Error('Image API not available in this environment');
+    throw new Error('Image API not available in this environment')
   }
-  const img = new Image();
-  img.src = dataUrl;
-  await new Promise((res, rej) => { img.onload = res; img.onerror = rej })
+  const img = new Image()
+  img.src = dataUrl
+  await new Promise((res, rej) => {
+    img.onload = res
+    img.onerror = rej
+  })
   const sliceCanvas = document.createElement('canvas')
   const ctx = sliceCanvas.getContext('2d')
 
@@ -31,19 +34,40 @@ export async function pdfFromTallImage(dataUrl, options = {}) {
   const pdfDoc = await PDFDocument.create()
   sliceCanvas.width = img.width
 
-  for (let y = 0, pageIndex = 0; y < img.height && pageIndex < 50; y += sliceHeightSource, pageIndex++) {
+  for (
+    let y = 0, pageIndex = 0;
+    y < img.height && pageIndex < 50;
+    y += sliceHeightSource, pageIndex++
+  ) {
     const remaining = img.height - y
     const currentSliceHeight = Math.min(sliceHeightSource, remaining)
     sliceCanvas.height = currentSliceHeight
-    ctx.clearRect(0,0,sliceCanvas.width,sliceCanvas.height)
-    ctx.drawImage(img, 0, y, img.width, currentSliceHeight, 0, 0, img.width, currentSliceHeight)
+    ctx.clearRect(0, 0, sliceCanvas.width, sliceCanvas.height)
+    ctx.drawImage(
+      img,
+      0,
+      y,
+      img.width,
+      currentSliceHeight,
+      0,
+      0,
+      img.width,
+      currentSliceHeight
+    )
     const sliceDataUrl = sliceCanvas.toDataURL('image/png')
     const pngBytes = sliceDataUrl.split(',')[1]
-  const pngBuffer = Uint8Array.from(window.atob(pngBytes), c => c.charCodeAt(0))
+    const pngBuffer = Uint8Array.from(window.atob(pngBytes), c =>
+      c.charCodeAt(0)
+    )
     const pngImage = await pdfDoc.embedPng(pngBuffer)
     const page = pdfDoc.addPage([pageWidthPt, pageHeightPt])
     const sliceScaledHeight = pngImage.height * scale
-    page.drawImage(pngImage, { x: 0, y: pageHeightPt - sliceScaledHeight, width: pageWidthPt, height: sliceScaledHeight })
+    page.drawImage(pngImage, {
+      x: 0,
+      y: pageHeightPt - sliceScaledHeight,
+      width: pageWidthPt,
+      height: sliceScaledHeight,
+    })
   }
 
   const pdfBytes = await pdfDoc.save()
@@ -89,8 +113,20 @@ export async function jobsTablePDF(headers, rows, meta = {}) {
   // Draw header
   headers.forEach((h, i) => {
     const x = 40 + i * colWidth
-    page.drawRectangle({ x, y: y - rowHeight + 2, width: colWidth, height: rowHeight, color: headerBg })
-    page.drawText(truncate(h, colWidth, 10, boldFont), { x: x + 2, y: y - rowHeight + 6, size: 10, font: boldFont, color: headerColor })
+    page.drawRectangle({
+      x,
+      y: y - rowHeight + 2,
+      width: colWidth,
+      height: rowHeight,
+      color: headerBg,
+    })
+    page.drawText(truncate(h, colWidth, 10, boldFont), {
+      x: x + 2,
+      y: y - rowHeight + 6,
+      size: 10,
+      font: boldFont,
+      color: headerColor,
+    })
   })
   y -= rowHeight + 6
 
@@ -101,14 +137,32 @@ export async function jobsTablePDF(headers, rows, meta = {}) {
       // repeat header on new page
       headers.forEach((h, i) => {
         const x = 40 + i * colWidth
-        page.drawRectangle({ x, y: y - rowHeight + 2, width: colWidth, height: rowHeight, color: headerBg })
-        page.drawText(truncate(h, colWidth, 10, boldFont), { x: x + 2, y: y - rowHeight + 6, size: 10, font: boldFont, color: headerColor })
+        page.drawRectangle({
+          x,
+          y: y - rowHeight + 2,
+          width: colWidth,
+          height: rowHeight,
+          color: headerBg,
+        })
+        page.drawText(truncate(h, colWidth, 10, boldFont), {
+          x: x + 2,
+          y: y - rowHeight + 6,
+          size: 10,
+          font: boldFont,
+          color: headerColor,
+        })
       })
       y -= rowHeight + 6
     }
     r.forEach((cell, i) => {
       const x = 40 + i * colWidth
-      page.drawText(truncate(String(cell), colWidth, 9, font), { x: x + 2, y: y - rowHeight + 4, size: 9, font, color: textColor })
+      page.drawText(truncate(String(cell), colWidth, 9, font), {
+        x: x + 2,
+        y: y - rowHeight + 4,
+        size: 9,
+        font,
+        color: textColor,
+      })
     })
     y -= rowHeight
   }
@@ -121,7 +175,9 @@ function truncate(text, maxWidth, size, font) {
   const ellipsis = '…'
   let current = text
   while (font.widthOfTextAtSize(current, size) > maxWidth - 6) {
-    if (current.length <= 1) {break}
+    if (current.length <= 1) {
+      break
+    }
     current = current.slice(0, -2) + ellipsis
   }
   return current

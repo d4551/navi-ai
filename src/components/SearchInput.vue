@@ -1,5 +1,8 @@
 <template>
-  <div ref="searchContainer" class="position-relative search-input-container ui-input ui-size-md font-sans">
+  <div
+    ref="searchContainer"
+    class="position-relative search-input-container ui-input ui-size-md font-sans"
+  >
     <!-- Main Search Input -->
     <div class="search-input-wrapper ui-input ui-size-md">
       <input
@@ -7,7 +10,13 @@
         :value="modelValue"
         :type="type"
         class="form-control glass-input enhanced-search-input ui-input ui-size-md"
-        :class="[inputClass, { 'with-tags': selectedTags.length > 0, 'with-suggestions': showSuggestions }]"
+        :class="[
+          inputClass,
+          {
+            'with-tags': selectedTags.length > 0,
+            'with-suggestions': showSuggestions,
+          },
+        ]"
         :placeholder="placeholder"
         :aria-label="ariaLabel"
         :disabled="disabled"
@@ -59,7 +68,10 @@
 
     <!-- Fuzzy Search Suggestions -->
     <div
-      v-if="showSuggestions && (fuzzySuggestions.length > 0 || tagSuggestions.length > 0)"
+      v-if="
+        showSuggestions &&
+        (fuzzySuggestions.length > 0 || tagSuggestions.length > 0)
+      "
       class="search-suggestions-enhanced"
       role="listbox"
       :aria-label="'Search suggestions'"
@@ -74,7 +86,7 @@
           v-for="(suggestion, index) in fuzzySuggestions.slice(0, 5)"
           :key="`fuzzy-${index}`"
           class="suggestion-item fuzzy-suggestion"
-          :class="{ 'highlighted': highlightedIndex === index }"
+          :class="{ highlighted: highlightedIndex === index }"
           type="button"
           role="option"
           :aria-selected="highlightedIndex === index"
@@ -83,10 +95,17 @@
         >
           <div class="suggestion-content">
             <!-- eslint-disable-next-line vue/no-v-html -->
-            <span class="suggestion-text" v-html="highlightMatch(suggestion.text, modelValue)"></span>
-            <span v-if="suggestion.category" class="suggestion-category">{{ suggestion.category }}</span>
+            <span
+              class="suggestion-text"
+              v-html="highlightMatch(suggestion.text, modelValue)"
+            ></span>
+            <span v-if="suggestion.category" class="suggestion-category">{{
+              suggestion.category
+            }}</span>
           </div>
-          <div class="suggestion-score">{{ Math.round(suggestion.score * 100) }}%</div>
+          <div class="suggestion-score">
+            {{ Math.round(suggestion.score * 100) }}%
+          </div>
         </button>
       </div>
 
@@ -100,7 +119,12 @@
           v-for="(tag, index) in tagSuggestions.slice(0, 4)"
           :key="`tag-${index}`"
           class="suggestion-item tag-suggestion"
-          :class="[tag.type, { 'highlighted': highlightedIndex === fuzzySuggestions.length + index }]"
+          :class="[
+            tag.type,
+            {
+              highlighted: highlightedIndex === fuzzySuggestions.length + index,
+            },
+          ]"
           type="button"
           role="option"
           :aria-selected="highlightedIndex === fuzzySuggestions.length + index"
@@ -119,74 +143,91 @@
 <script setup>
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 
-import { ref, onMounted, computed, onBeforeUnmount, nextTick, defineEmits, defineProps } from 'vue'
+import {
+  ref,
+  onMounted,
+  computed,
+  onBeforeUnmount,
+  nextTick,
+  defineEmits,
+  defineProps,
+} from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 const _props = defineProps({
   modelValue: {
     type: [String, Number],
-    default: ''
+    default: '',
   },
   type: {
     type: String,
-    default: 'text'
+    default: 'text',
   },
   placeholder: {
     type: String,
-    default: 'Search with fuzzy matching and tags...'
+    default: 'Search with fuzzy matching and tags...',
   },
   ariaLabel: {
     type: String,
-    default: 'Enhanced search input with fuzzy matching'
+    default: 'Enhanced search input with fuzzy matching',
   },
   icon: {
     type: String,
-    default: 'mdi mdi-magnify'
+    default: 'mdi mdi-magnify',
   },
   iconClass: {
     type: String,
-    default: 'text-secondary'
+    default: 'text-secondary',
   },
   iconStyle: {
     type: String,
-    default: 'right: 3rem;'
+    default: 'right: 3rem;',
   },
   inputClass: {
     type: String,
-    default: ''
+    default: '',
   },
   disabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   // Enhanced fuzzy search props
   searchData: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   searchKeys: {
     type: Array,
-    default: () => ['name', 'title', 'description', 'tags']
+    default: () => ['name', 'title', 'description', 'tags'],
   },
   enableFuzzy: {
     type: Boolean,
-    default: true
+    default: true,
   },
   enableTags: {
     type: Boolean,
-    default: true
+    default: true,
   },
   fuzzyThreshold: {
     type: Number,
-    default: 0.3
+    default: 0.3,
   },
   maxSuggestions: {
     type: Number,
-    default: 8
-  }
+    default: 8,
+  },
 })
 
-const emit = defineEmits(['update:modelValue', 'enter', 'focus', 'blur', 'search', 'tag-added', 'tag-removed', 'suggestion-selected'])
+const emit = defineEmits([
+  'update:modelValue',
+  'enter',
+  'focus',
+  'blur',
+  'search',
+  'tag-added',
+  'tag-removed',
+  'suggestion-selected',
+])
 
 // Reactive state
 const searchContainer = ref(null)
@@ -211,7 +252,11 @@ const fuzzyMatch = (pattern, str, threshold = props.fuzzyThreshold) => {
   const matches = []
   let patternIdx = 0
 
-  for (let i = 0; i < strLower.length && patternIdx < patternLower.length; i++) {
+  for (
+    let i = 0;
+    i < strLower.length && patternIdx < patternLower.length;
+    i++
+  ) {
     if (strLower[i] === patternLower[patternIdx]) {
       matches.push(i)
       patternIdx++
@@ -219,7 +264,9 @@ const fuzzyMatch = (pattern, str, threshold = props.fuzzyThreshold) => {
     }
   }
 
-  if (patternIdx !== patternLower.length) {return null}
+  if (patternIdx !== patternLower.length) {
+    return null
+  }
 
   // Calculate final score
   score = (score / pattern.length) * (patternIdx / strLower.length)
@@ -229,7 +276,9 @@ const fuzzyMatch = (pattern, str, threshold = props.fuzzyThreshold) => {
 
 // Computed suggestions
 const fuzzySuggestions = computed(() => {
-  if (!props.enableFuzzy || !props.modelValue || props.modelValue.length < 2) {return []}
+  if (!props.enableFuzzy || !props.modelValue || props.modelValue.length < 2) {
+    return []
+  }
 
   const results = []
   const query = props.modelValue.toString()
@@ -245,7 +294,7 @@ const fuzzySuggestions = computed(() => {
             score: match.score,
             matches: match.matches,
             searchKey: key,
-            category: item.category || key
+            category: item.category || key,
           })
         }
       }
@@ -259,15 +308,44 @@ const fuzzySuggestions = computed(() => {
 
 // Available tag suggestions based on current input
 const availableTagTypes = [
-  { type: 'role', icon: 'mdi-briefcase', suggestions: ['Developer', 'Designer', 'Producer', 'Artist', 'QA', 'Manager'] },
-  { type: 'skill', icon: 'StarIcon', suggestions: ['Unity', 'Unreal', 'C#', 'JavaScript', 'Python', 'Blender'] },
-  { type: 'location', icon: 'mdi-map-marker', suggestions: ['Remote', 'San Francisco', 'New York', 'London', 'Tokyo'] },
-  { type: 'experience', icon: 'mdi-trending-up', suggestions: ['Entry', 'Mid', 'Senior', 'Lead', 'Principal'] },
-  { type: 'company', icon: 'mdi-domain', suggestions: ['Indie', 'AAA', 'Startup', 'Enterprise'] }
+  {
+    type: 'role',
+    icon: 'mdi-briefcase',
+    suggestions: [
+      'Developer',
+      'Designer',
+      'Producer',
+      'Artist',
+      'QA',
+      'Manager',
+    ],
+  },
+  {
+    type: 'skill',
+    icon: 'StarIcon',
+    suggestions: ['Unity', 'Unreal', 'C#', 'JavaScript', 'Python', 'Blender'],
+  },
+  {
+    type: 'location',
+    icon: 'mdi-map-marker',
+    suggestions: ['Remote', 'San Francisco', 'New York', 'London', 'Tokyo'],
+  },
+  {
+    type: 'experience',
+    icon: 'mdi-trending-up',
+    suggestions: ['Entry', 'Mid', 'Senior', 'Lead', 'Principal'],
+  },
+  {
+    type: 'company',
+    icon: 'mdi-domain',
+    suggestions: ['Indie', 'AAA', 'Startup', 'Enterprise'],
+  },
 ]
 
 const tagSuggestions = computed(() => {
-  if (!props.enableTags || !props.modelValue || props.modelValue.length < 2) {return []}
+  if (!props.enableTags || !props.modelValue || props.modelValue.length < 2) {
+    return []
+  }
 
   const query = props.modelValue.toString().toLowerCase()
   const suggestions = []
@@ -284,7 +362,7 @@ const tagSuggestions = computed(() => {
           suggestions.push({
             type: tagType.type,
             label: suggestion,
-            icon: tagType.icon
+            icon: tagType.icon,
           })
         }
       }
@@ -295,7 +373,7 @@ const tagSuggestions = computed(() => {
 })
 
 // Methods
-const handleInput = (event) => {
+const handleInput = event => {
   const value = event.target.value
   emit('update:modelValue', value)
 
@@ -315,20 +393,26 @@ const handleInput = (event) => {
     emit('search', {
       query: value,
       tags: selectedTags.value,
-      suggestions: fuzzySuggestions.value
+      suggestions: fuzzySuggestions.value,
     })
   }, 300)
 }
 
-const handleKeyDown = (event) => {
-  if (!showSuggestions.value) {return}
+const handleKeyDown = event => {
+  if (!showSuggestions.value) {
+    return
+  }
 
-  const totalSuggestions = fuzzySuggestions.value.length + tagSuggestions.value.length
+  const totalSuggestions =
+    fuzzySuggestions.value.length + tagSuggestions.value.length
 
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
-      highlightedIndex.value = Math.min(highlightedIndex.value + 1, totalSuggestions - 1)
+      highlightedIndex.value = Math.min(
+        highlightedIndex.value + 1,
+        totalSuggestions - 1
+      )
       break
     case 'ArrowUp':
       event.preventDefault()
@@ -340,7 +424,8 @@ const handleKeyDown = (event) => {
         if (highlightedIndex.value < fuzzySuggestions.value.length) {
           selectFuzzySuggestion(fuzzySuggestions.value[highlightedIndex.value])
         } else {
-          const tagIndex = highlightedIndex.value - fuzzySuggestions.value.length
+          const tagIndex =
+            highlightedIndex.value - fuzzySuggestions.value.length
           addTag(tagSuggestions.value[tagIndex])
         }
       } else {
@@ -354,14 +439,14 @@ const handleKeyDown = (event) => {
   }
 }
 
-const handleFocus = (event) => {
+const handleFocus = event => {
   emit('focus', event)
   if (props.modelValue && props.modelValue.length >= 2) {
     showSuggestions.value = true
   }
 }
 
-const handleBlur = (event) => {
+const handleBlur = event => {
   // Delay hiding suggestions to allow clicking on them
   setTimeout(() => {
     showSuggestions.value = false
@@ -370,14 +455,14 @@ const handleBlur = (event) => {
   emit('blur', event)
 }
 
-const selectFuzzySuggestion = (suggestion) => {
+const selectFuzzySuggestion = suggestion => {
   emit('update:modelValue', suggestion.text)
   emit('suggestion-selected', suggestion)
   showSuggestions.value = false
   highlightedIndex.value = -1
 }
 
-const addTag = (tag) => {
+const addTag = tag => {
   selectedTags.value.push(tag)
   emit('tag-added', { tag, tags: selectedTags.value })
   emit('update:modelValue', '')
@@ -389,7 +474,7 @@ const addTag = (tag) => {
   })
 }
 
-const removeTag = (index) => {
+const removeTag = index => {
   const removedTag = selectedTags.value.splice(index, 1)[0]
   emit('tag-removed', { tag: removedTag, tags: selectedTags.value })
 
@@ -409,13 +494,15 @@ const clearAll = () => {
   })
 }
 
-const getTagIcon = (tagType) => {
+const getTagIcon = tagType => {
   const tagTypeMap = availableTagTypes.find(t => t.type === tagType)
   return tagTypeMap?.icon || 'TagIcon'
 }
 
 const highlightMatch = (text, query) => {
-  if (!query) {return text}
+  if (!query) {
+    return text
+  }
 
   const regex = new RegExp(`(${query})`, 'gi')
   return text.replace(regex, '<mark class="fuzzy-highlight">$1</mark>')
@@ -471,7 +558,8 @@ onBeforeUnmount(() => {
 .enhanced-search-input:focus {
   outline: none;
   border-color: var(--color-primary, #6366f1);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary, #6366f1) 20%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary, #6366f1) 20%, transparent);
   transform: translateY(-1px);
 }
 
@@ -725,7 +813,11 @@ onBeforeUnmount(() => {
 
 /* Fuzzy Highlighting */
 .fuzzy-highlight {
-  background: linear-gradient(135deg, var(--color-primary), color-mix(in srgb, var(--color-primary) 80%, white));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    color-mix(in srgb, var(--color-primary) 80%, white)
+  );
   color: white;
   padding: 0.1rem 0.2rem;
   border-radius: 3px;

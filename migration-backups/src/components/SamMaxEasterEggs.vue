@@ -2,7 +2,7 @@
   <div class="sam-max-easter-eggs">
     <!-- Sample Sam & Max Comment Bubbles (Hidden by default, shown by easter egg) -->
     <div
-      class="sam-max-comment-bubble sam-bubble" 
+      class="sam-max-comment-bubble sam-bubble"
       :style="{
         position: 'fixed',
         top: '20%',
@@ -17,12 +17,26 @@
         animation: 'bounce 2s infinite',
       }"
     >
-      <div :style="{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)', marginBottom: 'var(--spacing-2)' }">
+      <div
+        :style="{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--spacing-3)',
+          marginBottom: 'var(--spacing-2)',
+        }"
+      >
         <span :style="{ fontSize: '1.5rem' }">🐶</span>
         <strong :style="{ color: 'var(--color-gaming-500)' }">Sam:</strong>
       </div>
-      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary)' }">
-        "Nice settings page! Very... settingsy. I bet Max is already trying to hack into the AI configuration."
+      <p
+        :style="{
+          margin: 0,
+          fontSize: 'var(--font-size-sm)',
+          color: 'var(--text-primary)',
+        }"
+      >
+        "Nice settings page! Very... settingsy. I bet Max is already trying to
+        hack into the AI configuration."
       </p>
     </div>
 
@@ -42,12 +56,26 @@
         animation: 'wiggle 3s infinite',
       }"
     >
-      <div :style="{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)', marginBottom: 'var(--spacing-2)' }">
+      <div
+        :style="{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--spacing-3)',
+          marginBottom: 'var(--spacing-2)',
+        }"
+      >
         <span :style="{ fontSize: '1.5rem' }">🐰</span>
         <strong :style="{ color: 'var(--color-cyber-500)' }">Max:</strong>
       </div>
-      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary)' }">
-        "Ooh, shiny buttons! Can I break them? Please? I promise I'll only destroy the non-essential ones!"
+      <p
+        :style="{
+          margin: 0,
+          fontSize: 'var(--font-size-sm)',
+          color: 'var(--text-primary)',
+        }"
+      >
+        "Ooh, shiny buttons! Can I break them? Please? I promise I'll only
+        destroy the non-essential ones!"
       </p>
     </div>
 
@@ -67,26 +95,41 @@
         animation: 'float 4s ease-in-out infinite',
       }"
     >
-      <div :style="{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)', marginBottom: 'var(--spacing-2)' }">
+      <div
+        :style="{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--spacing-3)',
+          marginBottom: 'var(--spacing-2)',
+        }"
+      >
         <span :style="{ fontSize: '1.5rem' }">🐶</span>
         <strong :style="{ color: 'var(--color-gaming-500)' }">Sam:</strong>
       </div>
-      <p :style="{ margin: 0, fontSize: 'var(--font-size-sm)', color: 'var(--text-primary)' }">
-        "Dr. Donnelly sure knows his way around a design system. This unified styling is more organized than my desk!"
+      <p
+        :style="{
+          margin: 0,
+          fontSize: 'var(--font-size-sm)',
+          color: 'var(--text-primary)',
+        }"
+      >
+        "Dr. Donnelly sure knows his way around a design system. This unified
+        styling is more organized than my desk!"
       </p>
     </div>
     <!-- Sam Mode Activation -->
     <div v-if="samModeActive" class="sam-mode-overlay">
       <div class="sam-character">
         <div class="speech-bubble">
-          <p>"Well, I suppose we better help you find a job before Max breaks something else..."</p>
+          <p>
+            "Well, I suppose we better help you find a job before Max breaks
+            something else..."
+          </p>
           <div class="sam-typing-indicator">
             <span></span><span></span><span></span>
           </div>
         </div>
-        <div class="sam-avatar">
-          🐕‍🦺
-        </div>
+        <div class="sam-avatar">🐕‍🦺</div>
       </div>
     </div>
 
@@ -108,8 +151,8 @@
     <!-- Adventure Mode Interface -->
     <div v-if="adventureModeActive" class="adventure-interface">
       <div class="adventure-toolbar">
-        <button 
-          v-for="tool in adventureTools" 
+        <button
+          v-for="tool in adventureTools"
           :key="tool.name"
           class="adventure-tool"
           :class="{ active: selectedTool === tool.name }"
@@ -119,7 +162,7 @@
           <span>{{ tool.name }}</span>
         </button>
       </div>
-      
+
       <div v-if="currentDialog" class="adventure-dialog">
         <div class="dialog-portrait">
           {{ currentDialog.character }}
@@ -127,8 +170,8 @@
         <div class="dialog-text">
           <p>{{ currentDialog.text }}</p>
           <div class="dialog-options">
-            <button 
-              v-for="option in currentDialog.options" 
+            <button
+              v-for="option in currentDialog.options"
               :key="option.id"
               class="dialog-option"
               @click="selectDialogOption(option)"
@@ -143,28 +186,28 @@
     <!-- Hidden Click Zones -->
     <div class="hidden-click-zones">
       <!-- Sam's Desk -->
-      <div 
+      <div
         class="click-zone sam-desk"
         title="Sam's organized desk"
         @click="activateSamDialog"
       ></div>
-      
+
       <!-- Max's Chaos Corner -->
-      <div 
-        class="click-zone max-corner" 
+      <div
+        class="click-zone max-corner"
         title="Max's chaos corner"
         @click="activateMaxDialog"
       ></div>
-      
+
       <!-- The Office Phone -->
-      <div 
+      <div
         class="click-zone office-phone"
         title="The office phone"
         @click="playPhoneEasterEgg"
       ></div>
-      
+
       <!-- Soda Machine -->
-      <div 
+      <div
         class="click-zone soda-machine"
         title="Mysterious soda machine"
         @click="interactWithSodaMachine"
@@ -188,11 +231,15 @@
       </div>
       <div class="drawer-content">
         <div class="reference-categories">
-          <div v-for="category in gamingReferences" :key="category.name" class="reference-category">
+          <div
+            v-for="category in gamingReferences"
+            :key="category.name"
+            class="reference-category"
+          >
             <h4>{{ category.name }}</h4>
             <div class="reference-items">
-              <button 
-                v-for="ref in category.items" 
+              <button
+                v-for="ref in category.items"
                 :key="ref.name"
                 class="reference-item"
                 :class="{ discovered: ref.discovered }"
@@ -200,7 +247,9 @@
               >
                 <span class="ref-icon">{{ ref.icon }}</span>
                 <span class="ref-name">{{ ref.name }}</span>
-                <span v-if="!ref.discovered" class="ref-locked"><AppIcon name="mdi-lock" size="small" /></span>
+                <span v-if="!ref.discovered" class="ref-locked"
+                  ><AppIcon name="mdi-lock" size="small"
+                /></span>
               </button>
             </div>
           </div>
@@ -215,14 +264,19 @@
         <button @click="showConsole = false">×</button>
       </div>
       <div class="console-output">
-        <div v-for="line in consoleOutput" :key="line.id" class="console-line" :class="line.type">
+        <div
+          v-for="line in consoleOutput"
+          :key="line.id"
+          class="console-line"
+          :class="line.type"
+        >
           {{ line.text }}
         </div>
       </div>
       <div class="console-input">
         <span class="prompt">> </span>
-        <input 
-          ref="consoleInputRef" 
+        <input
+          ref="consoleInputRef"
           v-model="consoleCommand"
           placeholder="Enter command..."
           @keyup.enter="executeConsoleCommand"
@@ -238,8 +292,8 @@
 </template>
 
 <script setup lang="ts">
-import AppIcon from '@/components/ui/AppIcon.vue';
-import { logger } from '@/shared/utils/logger';
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { logger } from '@/shared/utils/logger'
 
 // @ts-nocheck
 import { ref, onMounted, reactive, onUnmounted, nextTick } from 'vue'
@@ -268,7 +322,7 @@ const adventureTools = [
   { name: 'Use', icon: 'mdi-hand-pointing-right' },
   { name: 'Pick Up', icon: 'mdi-hand-back-left' },
   { name: 'Walk', icon: 'mdi-walk' },
-  { name: 'Inventory', icon: 'mdi-bag-personal' }
+  { name: 'Inventory', icon: 'mdi-bag-personal' },
 ]
 
 // Gaming references data
@@ -276,30 +330,90 @@ const gamingReferences = reactive([
   {
     name: 'LucasArts Classics',
     items: [
-      { name: 'SCUMM Engine', icon: '🎮', discovered: false, description: 'The legendary adventure game engine' },
-      { name: 'Monkey Island', icon: '🏴‍☠️', discovered: false, description: 'Guybrush Threepwood was here' },
-      { name: 'Day of the Tentacle', icon: '🐙', discovered: false, description: 'Purple Tentacle\'s world domination plan' },
-      { name: 'Full Throttle', icon: '🏍️', discovered: false, description: 'Kick stand, kick ass' }
-    ]
+      {
+        name: 'SCUMM Engine',
+        icon: '🎮',
+        discovered: false,
+        description: 'The legendary adventure game engine',
+      },
+      {
+        name: 'Monkey Island',
+        icon: '🏴‍☠️',
+        discovered: false,
+        description: 'Guybrush Threepwood was here',
+      },
+      {
+        name: 'Day of the Tentacle',
+        icon: '🐙',
+        discovered: false,
+        description: "Purple Tentacle's world domination plan",
+      },
+      {
+        name: 'Full Throttle',
+        icon: '🏍️',
+        discovered: false,
+        description: 'Kick stand, kick ass',
+      },
+    ],
   },
   {
     name: 'Gaming Industry Icons',
     items: [
-      { name: 'Tim Schafer', icon: '👨‍💻', discovered: false, description: 'Master of adventure games' },
-      { name: 'Ron Gilbert', icon: '🧙‍♂️', discovered: false, description: 'Creator of Monkey Island' },
-      { name: 'Steve Purcell', icon: '🎨', discovered: false, description: 'Creator of Sam & Max' },
-      { name: 'Double Fine', icon: '🎭', discovered: false, description: 'Fine games, doubled' }
-    ]
+      {
+        name: 'Tim Schafer',
+        icon: '👨‍💻',
+        discovered: false,
+        description: 'Master of adventure games',
+      },
+      {
+        name: 'Ron Gilbert',
+        icon: '🧙‍♂️',
+        discovered: false,
+        description: 'Creator of Monkey Island',
+      },
+      {
+        name: 'Steve Purcell',
+        icon: '🎨',
+        discovered: false,
+        description: 'Creator of Sam & Max',
+      },
+      {
+        name: 'Double Fine',
+        icon: '🎭',
+        discovered: false,
+        description: 'Fine games, doubled',
+      },
+    ],
   },
   {
     name: 'Career References',
     items: [
-      { name: 'Freelance Police', icon: '🚔', discovered: true, description: 'Sam & Max\'s profession' },
-      { name: 'Game Developer', icon: '👩‍💻', discovered: false, description: 'Your dream job awaits' },
-      { name: 'QA Tester', icon: '🐛', discovered: false, description: 'Bug hunter extraordinaire' },
-      { name: 'Indie Studio', icon: '🏠', discovered: false, description: 'Start your own adventure' }
-    ]
-  }
+      {
+        name: 'Freelance Police',
+        icon: '🚔',
+        discovered: true,
+        description: "Sam & Max's profession",
+      },
+      {
+        name: 'Game Developer',
+        icon: '👩‍💻',
+        discovered: false,
+        description: 'Your dream job awaits',
+      },
+      {
+        name: 'QA Tester',
+        icon: '🐛',
+        discovered: false,
+        description: 'Bug hunter extraordinaire',
+      },
+      {
+        name: 'Indie Studio',
+        icon: '🏠',
+        discovered: false,
+        description: 'Start your own adventure',
+      },
+    ],
+  },
 ])
 
 // Dialog trees
@@ -309,17 +423,25 @@ const samDialogs = [
     text: 'Max, could you please stop clicking randomly on the job board?',
     options: [
       { id: 1, text: 'But I like the clicking sounds!', next: 'maxResponse1' },
-      { id: 2, text: 'Sorry Sam, I\'ll focus on the jobs', next: 'samApproval' }
-    ]
+      { id: 2, text: "Sorry Sam, I'll focus on the jobs", next: 'samApproval' },
+    ],
   },
   {
     character: '🐕‍🦺',
     text: 'You know, this career website reminds me of our cases. Methodical, organized...',
     options: [
-      { id: 1, text: 'Unlike Max\'s approach to everything', next: 'maxOffended' },
-      { id: 2, text: 'Should we investigate these job postings?', next: 'samInvestigation' }
-    ]
-  }
+      {
+        id: 1,
+        text: "Unlike Max's approach to everything",
+        next: 'maxOffended',
+      },
+      {
+        id: 2,
+        text: 'Should we investigate these job postings?',
+        next: 'samInvestigation',
+      },
+    ],
+  },
 ]
 
 const maxDialogs = [
@@ -327,34 +449,78 @@ const maxDialogs = [
     character: '🐰⚡',
     text: 'Sam! This job website is BORING! Where are the explosions?!',
     options: [
-      { id: 1, text: 'Max, jobs don\'t usually involve explosions', next: 'maxDisappointed' },
-      { id: 2, text: 'Maybe in game development they do!', next: 'maxExcited' }
-    ]
+      {
+        id: 1,
+        text: "Max, jobs don't usually involve explosions",
+        next: 'maxDisappointed',
+      },
+      { id: 2, text: 'Maybe in game development they do!', next: 'maxExcited' },
+    ],
   },
   {
     character: '🐰⚡',
     text: 'I bet I could get ANY job here! Watch me apply to everything!',
     options: [
-      { id: 1, text: 'Max, that\'s not how job applications work', next: 'maxConfused' },
-      { id: 2, text: 'Let me help you target the right ones', next: 'maxCooperation' }
-    ]
-  }
+      {
+        id: 1,
+        text: "Max, that's not how job applications work",
+        next: 'maxConfused',
+      },
+      {
+        id: 2,
+        text: 'Let me help you target the right ones',
+        next: 'maxCooperation',
+      },
+    ],
+  },
 ]
 
 // Console commands
 const consoleCommands = {
-  'help': () => 'Available commands: sam, max, adventure, references, konami, clear, quit',
-  'sam': () => { activateSamMode(); return 'Sam mode activated - Professional and organized'; },
-  'max': () => { activateMaxMode(); return 'Max mode activated - CHAOS ENGAGED!'; },
-  'adventure': () => { activateAdventureMode(); return 'Adventure mode activated - Point and click away!'; },
-  'references': () => { showGamingRefs.value = true; return 'Gaming references drawer opened'; },
-  'konami': () => { activateKonamiEasterEgg(); return '↑↑↓↓←→←→BA - Classic activated!'; },
-  'clear': () => { consoleOutput.value = []; return ''; },
-  'quit': () => { showConsole.value = false; return 'Console closed'; },
-  'inventory': () => 'You have: 1x Resume, 1x Cover Letter, 1x Portfolio, 1x Hope',
-  'easter': () => Math.random() > 0.5 ? 'You found a secret!' : 'Nothing here... or is there?',
-  'phone': () => { playPhoneEasterEgg(); return 'Calling the commissioner...'; },
-  'soda': () => { interactWithSodaMachine(); return '*CLUNK* Here\'s your carbonated career fuel!'; }
+  help: () =>
+    'Available commands: sam, max, adventure, references, konami, clear, quit',
+  sam: () => {
+    activateSamMode()
+    return 'Sam mode activated - Professional and organized'
+  },
+  max: () => {
+    activateMaxMode()
+    return 'Max mode activated - CHAOS ENGAGED!'
+  },
+  adventure: () => {
+    activateAdventureMode()
+    return 'Adventure mode activated - Point and click away!'
+  },
+  references: () => {
+    showGamingRefs.value = true
+    return 'Gaming references drawer opened'
+  },
+  konami: () => {
+    activateKonamiEasterEgg()
+    return '↑↑↓↓←→←→BA - Classic activated!'
+  },
+  clear: () => {
+    consoleOutput.value = []
+    return ''
+  },
+  quit: () => {
+    showConsole.value = false
+    return 'Console closed'
+  },
+  inventory: () =>
+    'You have: 1x Resume, 1x Cover Letter, 1x Portfolio, 1x Hope',
+  easter: () =>
+    Math.random() > 0.5
+      ? 'You found a secret!'
+      : 'Nothing here... or is there?',
+  phone: () => {
+    playPhoneEasterEgg()
+    return 'Calling the commissioner...'
+  },
+  soda: () => {
+    interactWithSodaMachine()
+    return "*CLUNK* Here's your carbonated career fuel!"
+  },
 }
 
 // Methods
@@ -374,7 +540,7 @@ const activateMaxMode = () => {
   const energyInterval = setInterval(() => {
     maxEnergy.value = Math.random() * 100
   }, 100)
-  
+
   setTimeout(() => {
     maxModeActive.value = false
     document.body.classList.remove('max-mode')
@@ -399,29 +565,31 @@ const selectTool = (toolName: string) => {
   selectedTool.value = toolName
   // Change cursor based on selected tool
   const cursors = {
-    'Talk': 'help',
-    'Look': 'zoom-in', 
-    'Use': 'pointer',
+    Talk: 'help',
+    Look: 'zoom-in',
+    Use: 'pointer',
     'Pick Up': 'grab',
-    'Walk': 'move',
-    'Inventory': 'copy'
+    Walk: 'move',
+    Inventory: 'copy',
   }
   document.body.style.cursor = cursors[toolName] || 'default'
 }
 
 const activateSamDialog = () => {
-  currentDialog.value = samDialogs[Math.floor(Math.random() * samDialogs.length)]
+  currentDialog.value =
+    samDialogs[Math.floor(Math.random() * samDialogs.length)]
 }
 
 const activateMaxDialog = () => {
-  currentDialog.value = maxDialogs[Math.floor(Math.random() * maxDialogs.length)]
+  currentDialog.value =
+    maxDialogs[Math.floor(Math.random() * maxDialogs.length)]
 }
 
 const selectDialogOption = (option: any) => {
   // Handle dialog tree navigation
   logger.debug('Selected dialog option:', option)
   currentDialog.value = null
-  
+
   // Trigger random response after delay
   setTimeout(() => {
     showRandomDialog()
@@ -432,12 +600,18 @@ const showRandomDialog = () => {
   const responses = [
     { character: '🐕‍🦺', text: 'Interesting choice. Very methodical.' },
     { character: '🐰⚡', text: 'That was AWESOME! Do it again!' },
-    { character: '🤖', text: 'NAVI here - need any assistance with that decision?' },
-    { character: '👮‍♂️', text: 'The Commissioner wants to know about your progress...' }
+    {
+      character: '🤖',
+      text: 'NAVI here - need any assistance with that decision?',
+    },
+    {
+      character: '👮‍♂️',
+      text: 'The Commissioner wants to know about your progress...',
+    },
   ]
-  
+
   randomDialog.value = responses[Math.floor(Math.random() * responses.length)]
-  
+
   setTimeout(() => {
     randomDialog.value = null
   }, 4000)
@@ -451,10 +625,10 @@ const activateReference = (ref: any) => {
   if (!ref.discovered) {
     ref.discovered = true
     showRandomDialog()
-    
+
     // Award points for discovering references
     const event = new CustomEvent('easter-egg-found', {
-      detail: { type: 'gaming-reference', name: ref.name, points: 50 }
+      detail: { type: 'gaming-reference', name: ref.name, points: 50 },
     })
     window.dispatchEvent(event)
   }
@@ -465,12 +639,13 @@ const playPhoneEasterEgg = () => {
     'Commissioner: "Sam, Max, we need you to investigate these job openings..."',
     'Wrong number: "Is this Pizza Palace? No? Well, got any jobs?"',
     'NAVI AI: "Incoming transmission - job match found!"',
-    'Mom: "Honey, have you found a nice job yet?"'
+    'Mom: "Honey, have you found a nice job yet?"',
   ]
-  
-  const message = phoneMessages[Math.floor(Math.random() * phoneMessages.length)]
+
+  const message =
+    phoneMessages[Math.floor(Math.random() * phoneMessages.length)]
   randomDialog.value = { character: '📞', text: message }
-  
+
   setTimeout(() => {
     randomDialog.value = null
   }, 5000)
@@ -481,12 +656,13 @@ const interactWithSodaMachine = () => {
     'CLUNK! You got a "Career Cola" - +10 motivation!',
     'BZZT! Machine ate your coins. Try debugging instead.',
     'WHIRR! Here\'s a "Networking Nectar" - social skills +5!',
-    'DING! You won the jackpot! ...of empty cans.'
+    'DING! You won the jackpot! ...of empty cans.',
   ]
-  
-  const response = sodaResponses[Math.floor(Math.random() * sodaResponses.length)]
+
+  const response =
+    sodaResponses[Math.floor(Math.random() * sodaResponses.length)]
   randomDialog.value = { character: '🥤', text: response }
-  
+
   setTimeout(() => {
     randomDialog.value = null
   }, 4000)
@@ -494,33 +670,33 @@ const interactWithSodaMachine = () => {
 
 const executeConsoleCommand = () => {
   const command = consoleCommand.value.toLowerCase().trim()
-  
+
   const outputLine = {
     id: Date.now(),
     type: 'command',
-    text: `> ${consoleCommand.value}`
+    text: `> ${consoleCommand.value}`,
   }
   consoleOutput.value.push(outputLine)
-  
+
   if (consoleCommands[command]) {
     const result = consoleCommands[command]()
     if (result) {
       consoleOutput.value.push({
         id: Date.now() + 1,
         type: 'output',
-        text: result
+        text: result,
       })
     }
   } else {
     consoleOutput.value.push({
       id: Date.now() + 1,
       type: 'error',
-      text: `Unknown command: ${command}. Type 'help' for available commands.`
+      text: `Unknown command: ${command}. Type 'help' for available commands.`,
     })
   }
-  
+
   consoleCommand.value = ''
-  
+
   // Scroll to bottom
   nextTick(() => {
     const output = document.querySelector('.console-output')
@@ -532,13 +708,13 @@ const executeConsoleCommand = () => {
 
 const activateKonamiEasterEgg = () => {
   document.body.classList.add('konami-sam-max-mode')
-  
+
   // Activate all modes simultaneously for chaos
   activateSamMode()
   setTimeout(() => activateMaxMode(), 1000)
   setTimeout(() => activateAdventureMode(), 2000)
   showGamingRefs.value = true
-  
+
   setTimeout(() => {
     document.body.classList.remove('konami-sam-max-mode')
     deactivateAdventureMode()
@@ -557,7 +733,7 @@ const handleKeyPress = (event: KeyboardEvent) => {
       })
     }
   }
-  
+
   // Escape to close console
   if (event.key === 'Escape') {
     showConsole.value = false
@@ -569,7 +745,7 @@ const handleKeyPress = (event: KeyboardEvent) => {
 // Check for easter egg activation from route
 onMounted(() => {
   document.addEventListener('keydown', handleKeyPress)
-  
+
   // Check URL parameters for easter egg activation
   const easter = route.query.easter
   if (easter === 'sam') {
@@ -579,14 +755,15 @@ onMounted(() => {
   } else if (easter === 'adventure') {
     activateAdventureMode()
   }
-  
+
   // Random dialog trigger
   const randomDialogTimer = setInterval(() => {
-    if (Math.random() < 0.1) { // 10% chance every 30 seconds
+    if (Math.random() < 0.1) {
+      // 10% chance every 30 seconds
       showRandomDialog()
     }
   }, 30000)
-  
+
   // Cleanup
   onUnmounted(() => {
     document.removeEventListener('keydown', handleKeyPress)
@@ -600,7 +777,9 @@ defineExpose({
   activateSamMode,
   activateMaxMode,
   activateAdventureMode,
-  showConsole: () => { showConsole.value = true }
+  showConsole: () => {
+    showConsole.value = true
+  },
 })
 </script>
 
@@ -642,7 +821,7 @@ defineExpose({
   transition: all var(--animation-normal) var(--easing-standard);
 }
 
-[data-theme="dark"] .speech-bubble {
+[data-theme='dark'] .speech-bubble {
   background: var(--glass-surface-elevated);
   border-color: var(--color-gaming-400);
   box-shadow: 0 8px 32px rgba(var(--color-gaming-400-rgb), 0.4);
@@ -673,7 +852,7 @@ defineExpose({
   border-top: 8px solid var(--color-gaming-500);
 }
 
-[data-theme="dark"] .speech-bubble::after {
+[data-theme='dark'] .speech-bubble::after {
   border-top-color: var(--color-gaming-400);
 }
 
@@ -683,8 +862,13 @@ defineExpose({
 }
 
 @keyframes samBob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .sam-typing-indicator {
@@ -701,7 +885,7 @@ defineExpose({
   animation: typingBounce 1.4s infinite;
 }
 
-[data-theme="dark"] .sam-typing-indicator span {
+[data-theme='dark'] .sam-typing-indicator span {
   background: var(--color-gaming-400);
 }
 
@@ -711,12 +895,22 @@ defineExpose({
   }
 }
 
-.sam-typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-.sam-typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+.sam-typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.sam-typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes typingBounce {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-10px); }
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
 }
 
 /* Max Mode Overlay */
@@ -740,14 +934,22 @@ defineExpose({
 .speech-bubble.max-style {
   border-color: var(--color-accent-500);
   box-shadow: 0 8px 32px rgba(var(--color-accent-500-rgb), 0.3);
-  background: linear-gradient(135deg, var(--glass-surface-elevated), rgba(var(--color-accent-500-rgb), 0.1));
+  background: linear-gradient(
+    135deg,
+    var(--glass-surface-elevated),
+    rgba(var(--color-accent-500-rgb), 0.1)
+  );
   animation: maxBubbleShake 0.5s ease-in-out infinite alternate;
 }
 
-[data-theme="dark"] .speech-bubble.max-style {
+[data-theme='dark'] .speech-bubble.max-style {
   border-color: var(--color-accent-400);
   box-shadow: 0 8px 32px rgba(var(--color-accent-400-rgb), 0.4);
-  background: linear-gradient(135deg, var(--glass-surface-elevated), rgba(var(--color-accent-400-rgb), 0.15));
+  background: linear-gradient(
+    135deg,
+    var(--glass-surface-elevated),
+    rgba(var(--color-accent-400-rgb), 0.15)
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -757,8 +959,12 @@ defineExpose({
 }
 
 @keyframes maxBubbleShake {
-  0% { transform: rotate(-1deg); }
-  100% { transform: rotate(1deg); }
+  0% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(1deg);
+  }
 }
 
 .max-avatar {
@@ -767,8 +973,12 @@ defineExpose({
 }
 
 @keyframes maxBounce {
-  0% { transform: scale(1) rotate(0deg); }
-  100% { transform: scale(1.1) rotate(5deg); }
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    transform: scale(1.1) rotate(5deg);
+  }
 }
 
 .max-energy-bar {
@@ -780,7 +990,7 @@ defineExpose({
   margin-top: 0.5rem;
 }
 
-[data-theme="dark"] .max-energy-bar {
+[data-theme='dark'] .max-energy-bar {
   background: rgba(var(--color-accent-400-rgb), 0.2);
 }
 
@@ -791,7 +1001,7 @@ defineExpose({
   transition: width 0.1s ease;
 }
 
-[data-theme="dark"] .energy-fill {
+[data-theme='dark'] .energy-fill {
   background: var(--color-accent-400);
 }
 
@@ -816,7 +1026,7 @@ defineExpose({
   box-shadow: 0 -8px 32px rgba(var(--color-shadow-rgb), 0.3);
 }
 
-[data-theme="dark"] .adventure-toolbar {
+[data-theme='dark'] .adventure-toolbar {
   border-top-color: var(--color-success-400);
 }
 
@@ -841,7 +1051,7 @@ defineExpose({
   transform: translateY(-2px);
 }
 
-[data-theme="dark"] .adventure-tool:hover {
+[data-theme='dark'] .adventure-tool:hover {
   border-color: var(--color-success-400);
 }
 
@@ -851,7 +1061,7 @@ defineExpose({
   box-shadow: 0 8px 32px rgba(var(--color-gaming-500-rgb), 0.3);
 }
 
-[data-theme="dark"] .adventure-tool.active {
+[data-theme='dark'] .adventure-tool.active {
   border-color: var(--color-gaming-400);
   box-shadow: 0 8px 32px rgba(var(--color-gaming-400-rgb), 0.4);
 }
@@ -877,7 +1087,7 @@ defineExpose({
   box-shadow: 0 8px 32px rgba(var(--color-brand-500-rgb), 0.3);
 }
 
-[data-theme="dark"] .adventure-dialog {
+[data-theme='dark'] .adventure-dialog {
   border-color: var(--color-brand-400);
   box-shadow: 0 8px 32px rgba(var(--color-brand-400-rgb), 0.4);
 }
@@ -915,7 +1125,7 @@ defineExpose({
   transform: translateX(8px);
 }
 
-[data-theme="dark"] .dialog-option:hover {
+[data-theme='dark'] .dialog-option:hover {
   border-color: var(--color-gaming-400);
 }
 
@@ -939,15 +1149,35 @@ defineExpose({
   border-radius: var(--radius-md);
 }
 
-[data-theme="dark"] .click-zone:hover {
+[data-theme='dark'] .click-zone:hover {
   background: rgba(var(--color-success-400-rgb), 0.15);
   border-color: var(--color-success-400);
 }
 
-.sam-desk { top: 20%; right: 15%; width: 100px; height: 80px; }
-.max-corner { top: 25%; left: 10%; width: 120px; height: 100px; }
-.office-phone { top: 10%; right: 25%; width: 60px; height: 60px; }
-.soda-machine { bottom: 30%; right: 5%; width: 80px; height: 120px; }
+.sam-desk {
+  top: 20%;
+  right: 15%;
+  width: 100px;
+  height: 80px;
+}
+.max-corner {
+  top: 25%;
+  left: 10%;
+  width: 120px;
+  height: 100px;
+}
+.office-phone {
+  top: 10%;
+  right: 25%;
+  width: 60px;
+  height: 60px;
+}
+.soda-machine {
+  bottom: 30%;
+  right: 5%;
+  width: 80px;
+  height: 120px;
+}
 
 /* Random Dialog Popup */
 .random-dialog-popup {
@@ -966,7 +1196,7 @@ defineExpose({
   z-index: 10001;
 }
 
-[data-theme="dark"] .random-dialog-popup {
+[data-theme='dark'] .random-dialog-popup {
   border-color: var(--color-warning-400);
   box-shadow: 0 8px 32px rgba(var(--color-warning-400-rgb), 0.4);
 }
@@ -1004,11 +1234,12 @@ defineExpose({
   background: rgba(var(--color-error-500-rgb), 0.2);
 }
 
-[data-theme="dark"] .popup-close:hover {
+[data-theme='dark'] .popup-close:hover {
   background: rgba(var(--color-error-400-rgb), 0.2);
 }
 
-.popup-slide-enter-active, .popup-slide-leave-active {
+.popup-slide-enter-active,
+.popup-slide-leave-active {
   transition: all 0.3s ease;
 }
 
@@ -1040,7 +1271,7 @@ defineExpose({
   overflow: hidden;
 }
 
-[data-theme="dark"] .gaming-references-drawer {
+[data-theme='dark'] .gaming-references-drawer {
   border-color: var(--color-brand-400);
 }
 
@@ -1071,7 +1302,7 @@ defineExpose({
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .drawer-handle {
+[data-theme='dark'] .drawer-handle {
   border-color: var(--color-brand-400);
 }
 
@@ -1080,7 +1311,7 @@ defineExpose({
   box-shadow: 0 8px 32px rgba(var(--color-brand-500-rgb), 0.3);
 }
 
-[data-theme="dark"] .drawer-handle:hover {
+[data-theme='dark'] .drawer-handle:hover {
   box-shadow: 0 8px 32px rgba(var(--color-brand-400-rgb), 0.4);
 }
 
@@ -1101,7 +1332,7 @@ defineExpose({
   font-weight: 700;
 }
 
-[data-theme="dark"] .reference-category h4 {
+[data-theme='dark'] .reference-category h4 {
   color: var(--color-brand-400);
 }
 
@@ -1132,7 +1363,7 @@ defineExpose({
   transform: translateX(4px);
 }
 
-[data-theme="dark"] .reference-item:hover {
+[data-theme='dark'] .reference-item:hover {
   border-color: var(--color-success-400);
 }
 
@@ -1141,7 +1372,7 @@ defineExpose({
   background: rgba(var(--color-success-500-rgb), 0.1);
 }
 
-[data-theme="dark"] .reference-item.discovered {
+[data-theme='dark'] .reference-item.discovered {
   border-color: var(--color-success-400);
   background: rgba(var(--color-success-400-rgb), 0.15);
 }
@@ -1180,7 +1411,7 @@ defineExpose({
   box-shadow: 0 8px 32px rgba(var(--color-success-500-rgb), 0.3);
 }
 
-[data-theme="dark"] .easter-console {
+[data-theme='dark'] .easter-console {
   border-color: var(--color-success-400);
   box-shadow: 0 8px 32px rgba(var(--color-success-400-rgb), 0.4);
   background: rgba(var(--color-background-primary-rgb), 0.95);
@@ -1196,7 +1427,7 @@ defineExpose({
   font-weight: bold;
 }
 
-[data-theme="dark"] .console-header {
+[data-theme='dark'] .console-header {
   background: var(--color-success-400);
   color: var(--color-background-secondary);
 }
@@ -1215,7 +1446,7 @@ defineExpose({
   transition: opacity var(--duration-fast) var(--easing-standard);
 }
 
-[data-theme="dark"] .console-header button {
+[data-theme='dark'] .console-header button {
   color: var(--color-background-secondary);
 }
 
@@ -1230,7 +1461,7 @@ defineExpose({
   background: rgba(var(--color-background-primary-rgb), 0.8);
 }
 
-[data-theme="dark"] .console-output {
+[data-theme='dark'] .console-output {
   background: rgba(var(--color-background-secondary-rgb), 0.8);
 }
 
@@ -1243,7 +1474,7 @@ defineExpose({
   color: var(--color-gaming-500);
 }
 
-[data-theme="dark"] .console-line.command {
+[data-theme='dark'] .console-line.command {
   color: var(--color-gaming-400);
 }
 
@@ -1251,7 +1482,7 @@ defineExpose({
   color: var(--color-success-500);
 }
 
-[data-theme="dark"] .console-line.output {
+[data-theme='dark'] .console-line.output {
   color: var(--color-success-400);
 }
 
@@ -1259,7 +1490,7 @@ defineExpose({
   color: var(--color-error-500);
 }
 
-[data-theme="dark"] .console-line.error {
+[data-theme='dark'] .console-line.error {
   color: var(--color-error-400);
 }
 
@@ -1271,7 +1502,7 @@ defineExpose({
   border-top: 1px solid var(--color-success-500);
 }
 
-[data-theme="dark"] .console-input {
+[data-theme='dark'] .console-input {
   background: rgba(var(--color-background-secondary-rgb), 0.9);
   border-top-color: var(--color-success-400);
 }
@@ -1282,7 +1513,7 @@ defineExpose({
   font-weight: bold;
 }
 
-[data-theme="dark"] .prompt {
+[data-theme='dark'] .prompt {
   color: var(--color-success-400);
 }
 
@@ -1311,8 +1542,12 @@ defineExpose({
 }
 
 @keyframes maxModeShake {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(1px); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(1px);
+  }
 }
 
 :global(.adventure-mode) {
@@ -1326,8 +1561,12 @@ defineExpose({
 }
 
 @keyframes konamiRainbow {
-  0% { filter: hue-rotate(0deg) saturate(150%); }
-  100% { filter: hue-rotate(360deg) saturate(150%); }
+  0% {
+    filter: hue-rotate(0deg) saturate(150%);
+  }
+  100% {
+    filter: hue-rotate(360deg) saturate(150%);
+  }
 }
 
 /* Responsive Design */
@@ -1340,11 +1579,11 @@ defineExpose({
     right: 1rem;
     justify-content: center;
   }
-  
+
   .speech-bubble {
     max-width: 250px;
   }
-  
+
   .gaming-references-drawer {
     width: 100vw;
     right: -100vw;
@@ -1353,27 +1592,27 @@ defineExpose({
     top: 0;
     transform: none;
   }
-  
+
   .gaming-references-drawer.open {
     right: 0;
   }
-  
+
   .drawer-handle {
     left: -50px;
     width: 50px;
     height: 100px;
   }
-  
+
   .easter-console {
     width: 95vw;
     height: 60vh;
   }
-  
+
   .adventure-toolbar {
     flex-wrap: wrap;
     gap: 0.25rem;
   }
-  
+
   .adventure-tool {
     min-width: 60px;
     padding: 0.5rem;
@@ -1382,7 +1621,11 @@ defineExpose({
 
 /* Sam & Max Comment Bubble Animations */
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0);
   }
   40% {
@@ -1394,7 +1637,8 @@ defineExpose({
 }
 
 @keyframes wiggle {
-  0%, 7% {
+  0%,
+  7% {
     transform: rotateZ(0);
   }
   15% {
@@ -1456,15 +1700,15 @@ defineExpose({
     max-width: calc(100vw - 20px) !important;
     font-size: var(--font-size-xs) !important;
   }
-  
+
   .sam-max-comment-bubble:nth-child(1) {
     top: 10% !important;
   }
-  
+
   .sam-max-comment-bubble:nth-child(2) {
     top: 30% !important;
   }
-  
+
   .sam-max-comment-bubble:nth-child(3) {
     bottom: 20% !important;
   }

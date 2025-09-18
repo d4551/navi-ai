@@ -1,11 +1,18 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl" class="font-sans ">
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="normal"
+    max-width="xl"
+    class="font-sans"
+  >
     <StudioSubNav :network-count="contacts.length" />
     <!-- Networking Dashboard -->
     <section class="networking-dashboard ultra-wide-content unified-container">
       <div class="dashboard-layout">
         <!-- Connection Map -->
-        <div class="networking-panel glass p-glass-md gap-glass-md rounded-lg connection-map-panel">
+        <div
+          class="networking-panel glass p-glass-md gap-glass-md rounded-lg connection-map-panel"
+        >
           <h3 class="panel-title">
             <AppIcon name="PresentationChartLineIconql" class="panel-icon" />
             CONNECTION MAP
@@ -32,18 +39,26 @@
         </div>
 
         <!-- Contact Management -->
-        <div class="networking-panel glass p-glass-md gap-glass-md rounded-lg contacts-panel">
+        <div
+          class="networking-panel glass p-glass-md gap-glass-md rounded-lg contacts-panel"
+        >
           <h3 class="panel-title">
             <AppIcon name="UserIcon-details" class="panel-icon" />
             CONTACT DATABASE
-            <UnifiedButton variant="glass" size="sm" leading-icon="PlusIcon" @click="showAddContact = true">Add Contact</UnifiedButton>
+            <UnifiedButton
+              variant="glass"
+              size="sm"
+              leading-icon="PlusIcon"
+              @click="showAddContact = true"
+              >Add Contact</UnifiedButton
+            >
           </h3>
-          
+
           <!-- Search and Filters -->
           <div class="contact-filters">
             <div class="search-bar">
               <AppIcon name="MagnifyingGlassIcon" />
-              <input 
+              <input
                 v-model="contactSearch"
                 type="text"
                 placeholder="Search contacts..."
@@ -67,26 +82,30 @@
 
           <!-- Contacts List -->
           <div class="contacts-list">
-            <div 
+            <div
               v-for="contact in filteredContacts"
               :key="contact.id"
               class="contact-item"
               @click="selectContact(contact)"
             >
               <div class="contact-avatar">
-                <img v-if="contact.avatar" :src="contact.avatar" :alt="contact.name" />
+                <img
+                  v-if="contact.avatar"
+                  :src="contact.avatar"
+                  :alt="contact.name"
+                />
                 <div v-else class="avatar-initials">
                   {{ getInitials(contact.name) }}
                 </div>
               </div>
-              
+
               <div class="contact-info">
                 <div class="contact-name">{{ contact.name }}</div>
                 <div class="contact-title">{{ contact.title }}</div>
                 <div class="contact-company">{{ contact.company }}</div>
                 <div class="contact-tags">
-                  <span 
-                    v-for="tag in contact.tags" 
+                  <span
+                    v-for="tag in contact.tags"
                     :key="tag"
                     class="contact-tag"
                   >
@@ -94,9 +113,12 @@
                   </span>
                 </div>
               </div>
-              
+
               <div class="contact-actions">
-                <div class="connection-strength" :class="`strength-${contact.strength}`">
+                <div
+                  class="connection-strength"
+                  :class="`strength-${contact.strength}`"
+                >
                   {{ contact.strength }}
                 </div>
                 <div class="contact-status" :class="`status-${contact.status}`">
@@ -108,13 +130,15 @@
         </div>
 
         <!-- Recent Activity -->
-        <div class="networking-panel glass p-glass-md gap-glass-md rounded-lg activity-panel">
+        <div
+          class="networking-panel glass p-glass-md gap-glass-md rounded-lg activity-panel"
+        >
           <h3 class="panel-title">
             <AppIcon name="ClockIcon" class="panel-icon" />
             RECENT ACTIVITY
           </h3>
           <div class="activity-feed">
-            <div 
+            <div
               v-for="activity in recentActivities"
               :key="activity.id"
               class="activity-item"
@@ -124,20 +148,24 @@
               </div>
               <div class="activity-content">
                 <div class="activity-text">{{ activity.description }}</div>
-                <div class="activity-time">{{ formatActivityTime(activity.timestamp) }}</div>
+                <div class="activity-time">
+                  {{ formatActivityTime(activity.timestamp) }}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Networking Opportunities -->
-        <div class="networking-panel glass p-glass-md gap-glass-md rounded-lg opportunities-panel">
+        <div
+          class="networking-panel glass p-glass-md gap-glass-md rounded-lg opportunities-panel"
+        >
           <h3 class="panel-title">
             <AppIcon name="EyeIcon" />
             NETWORKING OPPORTUNITIES
           </h3>
           <div class="opportunities-list">
-            <div 
+            <div
               v-for="opportunity in networkingOpportunities"
               :key="opportunity.id"
               class="opportunity-item"
@@ -147,13 +175,23 @@
               </div>
               <div class="opportunity-info">
                 <div class="opportunity-title">{{ opportunity.title }}</div>
-                <div class="opportunity-description">{{ opportunity.description }}</div>
+                <div class="opportunity-description">
+                  {{ opportunity.description }}
+                </div>
                 <div class="opportunity-meta">
                   <span class="opportunity-date">{{ opportunity.date }}</span>
-                  <span class="opportunity-attendees">{{ opportunity.attendees }} attendees</span>
+                  <span class="opportunity-attendees"
+                    >{{ opportunity.attendees }} attendees</span
+                  >
                 </div>
               </div>
-              <UnifiedButton class="opportunity-action" size="sm" variant="primary" @click="joinOpportunity(opportunity)">Join</UnifiedButton>
+              <UnifiedButton
+                class="opportunity-action"
+                size="sm"
+                variant="primary"
+                @click="joinOpportunity(opportunity)"
+                >Join</UnifiedButton
+              >
             </div>
           </div>
         </div>
@@ -161,7 +199,11 @@
     </section>
 
     <!-- Add Contact Modal -->
-    <div v-if="showAddContact" class="modal-overlay" @click="showAddContact = false">
+    <div
+      v-if="showAddContact"
+      class="modal-overlay"
+      @click="showAddContact = false"
+    >
       <div class="add-contact-modal noir-glass-modal" @click.stop>
         <div class="modal-header">
           <h3>Add New Contact</h3>
@@ -180,7 +222,11 @@
           </div>
           <div class="form-group">
             <label>Company</label>
-            <input v-model="newContact.company" type="text" class="form-input" />
+            <input
+              v-model="newContact.company"
+              type="text"
+              class="form-input"
+            />
           </div>
           <div class="form-group">
             <label>Connection Type</label>
@@ -192,8 +238,12 @@
           </div>
         </div>
         <div class="modal-actions">
-          <UnifiedButton variant="outline" @click="showAddContact = false">Cancel</UnifiedButton>
-          <UnifiedButton variant="primary" @click="addContact">Add Contact</UnifiedButton>
+          <UnifiedButton variant="outline" @click="showAddContact = false"
+            >Cancel</UnifiedButton
+          >
+          <UnifiedButton variant="primary" @click="addContact"
+            >Add Contact</UnifiedButton
+          >
         </div>
       </div>
     </div>
@@ -201,7 +251,13 @@
 </template>
 
 <script setup lang="ts">
-import { ClockIcon, EyeIcon, MagnifyingGlassIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ClockIcon,
+  EyeIcon,
+  MagnifyingGlassIcon,
+  PlusIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, onMounted, computed } from 'vue'
 import cytoscape from 'cytoscape'
@@ -225,7 +281,7 @@ const networkStats = ref({
   totalContacts: 0,
   newConnections: 0,
   activeChats: 0,
-  jobReferrals: 0
+  jobReferrals: 0,
 })
 
 const contactFilters = [
@@ -233,7 +289,7 @@ const contactFilters = [
   { key: 'strong', label: 'Strong' },
   { key: 'medium', label: 'Medium' },
   { key: 'weak', label: 'Weak' },
-  { key: 'recent', label: 'Recent' }
+  { key: 'recent', label: 'Recent' },
 ]
 
 const contacts = ref([
@@ -245,7 +301,7 @@ const contacts = ref([
     strength: 'strong',
     status: 'active',
     tags: ['Game Design', 'Unreal Engine', 'VR'],
-    avatar: 'https://i.pravatar.cc/150?img=47'
+    avatar: 'https://i.pravatar.cc/150?img=47',
   },
   {
     id: '2',
@@ -255,7 +311,7 @@ const contacts = ref([
     strength: 'medium',
     status: 'busy',
     tags: ['Technical Leadership', 'C++', 'Networking'],
-    avatar: 'https://i.pravatar.cc/150?img=12'
+    avatar: 'https://i.pravatar.cc/150?img=12',
   },
   {
     id: '3',
@@ -265,13 +321,13 @@ const contacts = ref([
     strength: 'strong',
     status: 'available',
     tags: ['Art Direction', '3D Modeling', 'Character Design'],
-    avatar: null
-  }
+    avatar: null,
+  },
 ])
 
 const connections = ref([
   { id: 'e1', source: '1', target: '2' },
-  { id: 'e2', source: '1', target: '3' }
+  { id: 'e2', source: '1', target: '3' },
 ])
 
 const getInitials = (name: string) =>
@@ -286,31 +342,33 @@ const recentActivities = ref([
     id: '1',
     type: 'connection',
     description: 'Connected with Alex Thompson from Unity Technologies',
-    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000)
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
   },
   {
     id: '2',
     type: 'message',
-    description: 'Received message from Sarah Chen about game design opportunity',
-    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000)
+    description:
+      'Received message from Sarah Chen about game design opportunity',
+    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
   },
   {
     id: '3',
     type: 'referral',
     description: 'Marcus Rodriguez referred you for Technical Director role',
-    timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
-  }
+    timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+  },
 ])
 
 const networkingOpportunities = ref([
   {
     id: '1',
     title: 'GDC 2024 Networking Mixer',
-    description: 'Connect with industry professionals at the Game Developers Conference',
+    description:
+      'Connect with industry professionals at the Game Developers Conference',
     type: 'event',
     icon: 'CalendarIcon-account',
     date: 'March 15, 2024',
-    attendees: 250
+    attendees: 250,
   },
   {
     id: '2',
@@ -319,7 +377,7 @@ const networkingOpportunities = ref([
     type: 'meetup',
     icon: 'UserIcon-group',
     date: 'February 28, 2024',
-    attendees: 85
+    attendees: 85,
   },
   {
     id: '3',
@@ -328,15 +386,15 @@ const networkingOpportunities = ref([
     type: 'online',
     icon: 'mdi-forum',
     date: 'Ongoing',
-    attendees: 1200
-  }
+    attendees: 1200,
+  },
 ])
 
 const newContact = ref({
   name: '',
   title: '',
   company: '',
-  strength: 'medium'
+  strength: 'medium',
 })
 
 // Computed
@@ -345,15 +403,18 @@ const filteredContacts = computed(() => {
 
   if (contactSearch.value) {
     const search = contactSearch.value.toLowerCase()
-    filtered = filtered.filter(contact => 
-      contact.name.toLowerCase().includes(search) ||
-      contact.company.toLowerCase().includes(search) ||
-      contact.title.toLowerCase().includes(search)
+    filtered = filtered.filter(
+      contact =>
+        contact.name.toLowerCase().includes(search) ||
+        contact.company.toLowerCase().includes(search) ||
+        contact.title.toLowerCase().includes(search)
     )
   }
 
   if (activeContactFilter.value !== 'all') {
-    filtered = filtered.filter(contact => contact.strength === activeContactFilter.value)
+    filtered = filtered.filter(
+      contact => contact.strength === activeContactFilter.value
+    )
   }
 
   return filtered
@@ -370,7 +431,11 @@ const selectContact = (contact: any) => {
 }
 
 const addContact = () => {
-  if (!newContact.value.name || !newContact.value.title || !newContact.value.company) {
+  if (
+    !newContact.value.name ||
+    !newContact.value.title ||
+    !newContact.value.company
+  ) {
     return
   }
 
@@ -379,15 +444,15 @@ const addContact = () => {
     ...newContact.value,
     status: 'new',
     tags: [] as string[],
-    avatar: null as null
+    avatar: null as null,
   }
 
   contacts.value.push(contact)
-  
+
   // Reset form
   newContact.value = { name: '', title: '', company: '', strength: 'medium' }
   showAddContact.value = false
-  
+
   // Update stats
   networkStats.value.totalContacts++
   networkStats.value.newConnections++
@@ -403,7 +468,7 @@ const getActivityIcon = (type: string) => {
     connection: 'UserIcon-plus',
     message: 'mdi-message',
     referral: 'mdi-handshake',
-    event: 'CalendarIcon'
+    event: 'CalendarIcon',
   }
   return icons[type] || 'InformationCircleIconrmation'
 }
@@ -412,7 +477,7 @@ const formatActivityTime = (timestamp: Date) => {
   const now = new Date()
   const diff = now.getTime() - timestamp.getTime()
   const hours = Math.floor(diff / (1000 * 60 * 60))
-  
+
   if (hours < 1) return 'Just now'
   if (hours < 24) return `${hours}h ago`
   return `${Math.floor(hours / 24)}d ago`
@@ -424,14 +489,14 @@ onMounted(() => {
     totalContacts: contacts.value.length,
     newConnections: 3,
     activeChats: 5,
-    jobReferrals: 2
+    jobReferrals: 2,
   }
 
   cytoscape({
     container: networkGraphEl.value,
     elements: [
       ...contacts.value.map(c => ({ data: { id: c.id, label: c.name } })),
-      ...connections.value.map(e => ({ data: e }))
+      ...connections.value.map(e => ({ data: e })),
     ],
     style: [
       {
@@ -442,18 +507,18 @@ onMounted(() => {
           color: 'var(--text-primary-600)',
           'text-valign': 'center',
           'text-halign': 'center',
-          'font-size': '12px'
-        }
+          'font-size': '12px',
+        },
       },
       {
         selector: 'edge',
         style: {
           width: 2,
-          'line-color': 'var(--color-cyber-500)'
-        }
-      }
+          'line-color': 'var(--color-cyber-500)',
+        },
+      },
     ],
-    layout: { name: 'cose' }
+    layout: { name: 'cose' },
   })
 })
 </script>
@@ -462,7 +527,14 @@ onMounted(() => {
 /* Studio Networking Noir Theme */
 .studio-networking.noir-theme {
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000 0%, #0a0a0a 25%, #1a1a1a 50%, #0a0a0a 75%, #000000 100%);
+  background: linear-gradient(
+    135deg,
+    #000000 0%,
+    #0a0a0a 25%,
+    #1a1a1a 50%,
+    #0a0a0a 75%,
+    #000000 100%
+  );
 }
 
 /* Header handled by PageHeader */
@@ -873,7 +945,8 @@ onMounted(() => {
   font-weight: var(--font-weight-semibold);
 }
 
-.form-input, .form-select {
+.form-input,
+.form-select {
   width: 100%;
   background: var(--glass-surface);
   border: 1px solid var(--glass-border);
@@ -890,7 +963,8 @@ onMounted(() => {
   border-t: 1px solid var(--border-base);
 }
 
-.btn-outline, .btn-primary {
+.btn-outline,
+.btn-primary {
   padding: var(--spacing-3) var(--spacing-6);
   border-radius: var(--radius-lg);
   font-weight: 600;
@@ -915,12 +989,12 @@ onMounted(() => {
   .dashboard-layout {
     grid-template-columns: 1fr;
   }
-  
+
   .networking-header.noir-glass-section {
     grid-template-columns: 1fr;
     text-align: center;
   }
-  
+
   .network-stats {
     grid-template-columns: repeat(2, 1fr);
     min-width: unset;
@@ -931,16 +1005,16 @@ onMounted(() => {
   .networking-title.noir-title-large {
     font-size: 2.5rem;
   }
-  
+
   .network-stats {
     grid-template-columns: 1fr;
   }
-  
+
   .contact-item {
     grid-template-columns: 50px 1fr;
     grid-template-rows: auto auto;
   }
-  
+
   .contact-actions {
     grid-column: 1 / -1;
     display: flex;

@@ -1,5 +1,5 @@
 /* eslint-env browser */
- 
+
 /**
  * Job Application Tracking API
  * Provides comprehensive CRUD operations for managing job applications
@@ -34,7 +34,7 @@ export interface JobApplication {
   updatedAt: Date
 }
 
-export type ApplicationStatus = 
+export type ApplicationStatus =
   | 'draft'
   | 'applied'
   | 'screening'
@@ -116,7 +116,8 @@ export class JobApplicationTrackingService {
 
   static getInstance(): JobApplicationTrackingService {
     if (!JobApplicationTrackingService.instance) {
-      JobApplicationTrackingService.instance = new JobApplicationTrackingService()
+      JobApplicationTrackingService.instance =
+        new JobApplicationTrackingService()
     }
     return JobApplicationTrackingService.instance
   }
@@ -135,7 +136,7 @@ export class JobApplicationTrackingService {
         resolve()
       }
 
-      request.onupgradeneeded = (event) => {
+      request.onupgradeneeded = event => {
         const db = (event.target as IDBOpenDBRequest).result
 
         // Applications store
@@ -157,7 +158,9 @@ export class JobApplicationTrackingService {
     })
   }
 
-  async createApplication(applicationData: Partial<JobApplication>): Promise<JobApplication> {
+  async createApplication(
+    applicationData: Partial<JobApplication>
+  ): Promise<JobApplication> {
     if (!this.db) await this.initializeDatabase()
 
     const application: JobApplication = {
@@ -173,7 +176,7 @@ export class JobApplicationTrackingService {
       archived: false,
       createdAt: new Date(),
       updatedAt: new Date(),
-      ...applicationData
+      ...applicationData,
     }
 
     return new Promise((resolve, reject) => {
@@ -186,7 +189,10 @@ export class JobApplicationTrackingService {
     })
   }
 
-  async createFromJob(job: Job, additionalData?: Partial<JobApplication>): Promise<JobApplication> {
+  async createFromJob(
+    job: Job,
+    additionalData?: Partial<JobApplication>
+  ): Promise<JobApplication> {
     const applicationData: Partial<JobApplication> = {
       jobId: job.id,
       title: job.title,
@@ -196,13 +202,19 @@ export class JobApplicationTrackingService {
       jobUrl: job.url,
       requirements: job.requirements,
       matchScore: job.matchScore,
-      salary: (job.salary && typeof job.salary !== 'string') ? {
-        min: job.salary.min,
-        max: job.salary.max,
-        currency: job.salary.currency ?? 'USD',
-        type: this.normalizeSalaryType(job.salary.type ?? job.salary.frequency, job.type)
-      } : undefined,
-      ...additionalData
+      salary:
+        job.salary && typeof job.salary !== 'string'
+          ? {
+              min: job.salary.min,
+              max: job.salary.max,
+              currency: job.salary.currency ?? 'USD',
+              type: this.normalizeSalaryType(
+                job.salary.type ?? job.salary.frequency,
+                job.type
+              ),
+            }
+          : undefined,
+      ...additionalData,
     }
 
     return this.createApplication(applicationData)
@@ -221,7 +233,10 @@ export class JobApplicationTrackingService {
     })
   }
 
-  async updateApplication(id: string, updates: Partial<JobApplication>): Promise<JobApplication> {
+  async updateApplication(
+    id: string,
+    updates: Partial<JobApplication>
+  ): Promise<JobApplication> {
     const existing = await this.getApplication(id)
     if (!existing) {
       throw new Error(`Application with ID ${id} not found`)
@@ -231,7 +246,7 @@ export class JobApplicationTrackingService {
       ...existing,
       ...updates,
       id,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     return new Promise((resolve, reject) => {
@@ -244,7 +259,11 @@ export class JobApplicationTrackingService {
     })
   }
 
-  async updateStatus(id: string, status: ApplicationStatus, notes?: string): Promise<JobApplication> {
+  async updateStatus(
+    id: string,
+    status: ApplicationStatus,
+    notes?: string
+  ): Promise<JobApplication> {
     const updates: Partial<JobApplication> = { status }
     if (notes) {
       updates.notes = notes
@@ -260,7 +279,10 @@ export class JobApplicationTrackingService {
     return this.updateApplication(id, updates)
   }
 
-  async addInterview(applicationId: string, interview: Omit<InterviewEvent, 'id'>): Promise<JobApplication> {
+  async addInterview(
+    applicationId: string,
+    interview: Omit<InterviewEvent, 'id'>
+  ): Promise<JobApplication> {
     const application = await this.getApplication(applicationId)
     if (!application) {
       throw new Error(`Application with ID ${applicationId} not found`)
@@ -268,7 +290,7 @@ export class JobApplicationTrackingService {
 
     const newInterview: InterviewEvent = {
       ...interview,
-      id: this.generateId()
+      id: this.generateId(),
     }
 
     const interviews = application.interviewDates || []
@@ -278,17 +300,22 @@ export class JobApplicationTrackingService {
     let status = application.status
     if (interview.type === 'phone' && status === 'applied') {
       status = 'phone_interview'
-    } else if (interview.type === 'technical' && !status.includes('interview')) {
+    } else if (
+      interview.type === 'technical' &&
+      !status.includes('interview')
+    ) {
       status = 'technical_interview'
     }
 
     return this.updateApplication(applicationId, {
       interviewDates: interviews,
-      status
+      status,
     })
   }
 
-  async searchApplications(options: ApplicationSearchOptions = {}): Promise<JobApplication[]> {
+  async searchApplications(
+    options: ApplicationSearchOptions = {}
+  ): Promise<JobApplication[]> {
     if (!this.db) await this.initializeDatabase()
 
     return new Promise((resolve, reject) => {
@@ -307,7 +334,9 @@ export class JobApplicationTrackingService {
 
         // Apply sorting
         if (options.sortBy) {
-          results.sort(this.createSortComparator(options.sortBy, options.sortOrder))
+          results.sort(
+            this.createSortComparator(options.sortBy, options.sortOrder)
+          )
         }
 
         // Apply pagination
@@ -345,7 +374,7 @@ export class JobApplicationTrackingService {
 
   async getStatistics(): Promise<ApplicationStats> {
     const applications = await this.searchApplications()
-    
+
     const stats: ApplicationStats = {
       total: applications.length,
       byStatus: {} as Record<ApplicationStatus, number>,
@@ -354,16 +383,26 @@ export class JobApplicationTrackingService {
       interviewRate: 0,
       monthlyApplications: {},
       topCompanies: [],
-      averageTimeToResponse: 0
+      averageTimeToResponse: 0,
     }
 
     // Initialize status counts
     const statuses: ApplicationStatus[] = [
-      'draft', 'applied', 'screening', 'phone_interview', 'technical_interview',
-      'onsite_interview', 'final_interview', 'offer_received', 'offer_accepted',
-      'offer_declined', 'rejected', 'withdrawn', 'on_hold'
+      'draft',
+      'applied',
+      'screening',
+      'phone_interview',
+      'technical_interview',
+      'onsite_interview',
+      'final_interview',
+      'offer_received',
+      'offer_accepted',
+      'offer_declined',
+      'rejected',
+      'withdrawn',
+      'on_hold',
     ]
-    
+
     statuses.forEach(status => {
       stats.byStatus[status] = 0
     })
@@ -383,7 +422,8 @@ export class JobApplicationTrackingService {
 
       // Monthly applications
       const monthKey = app.appliedDate.toISOString().substring(0, 7)
-      stats.monthlyApplications[monthKey] = (stats.monthlyApplications[monthKey] || 0) + 1
+      stats.monthlyApplications[monthKey] =
+        (stats.monthlyApplications[monthKey] || 0) + 1
 
       // Interview rate
       if (app.interviewDates && app.interviewDates.length > 0) {
@@ -400,35 +440,38 @@ export class JobApplicationTrackingService {
 
     // Calculate rates
     const appliedCount = applications.length - stats.byStatus.draft
-    stats.successRate = appliedCount > 0 
-      ? (stats.byStatus.offer_accepted / appliedCount) * 100 
-      : 0
-    stats.interviewRate = appliedCount > 0 
-      ? (interviewCount / appliedCount) * 100 
-      : 0
+    stats.successRate =
+      appliedCount > 0
+        ? (stats.byStatus.offer_accepted / appliedCount) * 100
+        : 0
+    stats.interviewRate =
+      appliedCount > 0 ? (interviewCount / appliedCount) * 100 : 0
 
     // Average response time in days
-    stats.averageResponseTime = responsesReceived > 0 
-      ? totalResponseTime / responsesReceived / (24 * 60 * 60 * 1000)
-      : 0
+    stats.averageResponseTime =
+      responsesReceived > 0
+        ? totalResponseTime / responsesReceived / (24 * 60 * 60 * 1000)
+        : 0
 
     // Top companies
     stats.topCompanies = Object.entries(companyCounts)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
       .map(([company, count]) => ({ company, count }))
 
     return stats
   }
 
-  async getUpcomingTasks(): Promise<Array<{
-    type: 'follow_up' | 'interview' | 'deadline'
-    application: JobApplication
-    date: Date
-    description: string
-  }>> {
+  async getUpcomingTasks(): Promise<
+    Array<{
+      type: 'follow_up' | 'interview' | 'deadline'
+      application: JobApplication
+      date: Date
+      description: string
+    }>
+  > {
     const applications = await this.searchApplications({
-      filters: { archived: false }
+      filters: { archived: false },
     })
 
     const tasks: Array<{
@@ -448,7 +491,7 @@ export class JobApplicationTrackingService {
           type: 'follow_up',
           application: app,
           date: app.followUpDate,
-          description: `Follow up on application to ${app.company}`
+          description: `Follow up on application to ${app.company}`,
         })
       }
 
@@ -460,7 +503,7 @@ export class JobApplicationTrackingService {
               type: 'interview',
               application: app,
               date: interview.date,
-              description: `${interview.type} interview with ${app.company}`
+              description: `${interview.type} interview with ${app.company}`,
             })
           }
         })
@@ -470,24 +513,46 @@ export class JobApplicationTrackingService {
     return tasks.sort((a, b) => a.date.getTime() - b.date.getTime())
   }
 
-  private applyFilters(applications: JobApplication[], filters: ApplicationFilters): JobApplication[] {
+  private applyFilters(
+    applications: JobApplication[],
+    filters: ApplicationFilters
+  ): JobApplication[] {
     return applications.filter(app => {
       if (filters.status && !filters.status.includes(app.status)) return false
-      if (filters.company && !app.company.toLowerCase().includes(filters.company.toLowerCase())) return false
-      if (filters.location && !app.location.toLowerCase().includes(filters.location.toLowerCase())) return false
-      if (filters.priority && !filters.priority.includes(app.priority)) return false
-      if (filters.archived !== undefined && app.archived !== filters.archived) return false
+      if (
+        filters.company &&
+        !app.company.toLowerCase().includes(filters.company.toLowerCase())
+      )
+        return false
+      if (
+        filters.location &&
+        !app.location.toLowerCase().includes(filters.location.toLowerCase())
+      )
+        return false
+      if (filters.priority && !filters.priority.includes(app.priority))
+        return false
+      if (filters.archived !== undefined && app.archived !== filters.archived)
+        return false
       if (filters.hasInterview !== undefined) {
         const hasInterview = app.interviewDates && app.interviewDates.length > 0
         if (hasInterview !== filters.hasInterview) return false
       }
-      if (filters.tags && !filters.tags.some(tag => app.tags.includes(tag))) return false
+      if (filters.tags && !filters.tags.some(tag => app.tags.includes(tag)))
+        return false
       if (filters.dateRange) {
-        if (app.appliedDate < filters.dateRange.start || app.appliedDate > filters.dateRange.end) return false
+        if (
+          app.appliedDate < filters.dateRange.start ||
+          app.appliedDate > filters.dateRange.end
+        )
+          return false
       }
       if (filters.salaryRange && app.salary) {
         const salary = app.salary.max || app.salary.min || 0
-        if (salary < filters.salaryRange.min || salary > filters.salaryRange.max) return false
+        if (
+          salary < filters.salaryRange.min ||
+          salary > filters.salaryRange.max
+        )
+          return false
       }
       return true
     })
@@ -498,7 +563,7 @@ export class JobApplicationTrackingService {
     order: ApplicationSearchOptions['sortOrder'] = 'desc'
   ) {
     const multiplier = order === 'asc' ? 1 : -1
-    
+
     return (a: JobApplication, b: JobApplication) => {
       let aValue: any = a[sortBy]
       let bValue: any = b[sortBy]
@@ -515,13 +580,21 @@ export class JobApplicationTrackingService {
     }
   }
 
-  private normalizeSalaryType(input?: string | null, jobType?: string): SalaryInfo['type'] {
-    const t = (input || '').toLowerCase();
-    if (t === 'yearly' || t === 'annual') return 'annual';
-    if (t === 'hourly') return 'hourly';
-    if (t === 'monthly') return (jobType === 'contract' || jobType === 'freelance') ? 'contract' : 'annual';
-    if (t === 'contract') return 'contract';
-    return (jobType === 'contract' || jobType === 'freelance') ? 'contract' : 'annual';
+  private normalizeSalaryType(
+    input?: string | null,
+    jobType?: string
+  ): SalaryInfo['type'] {
+    const t = (input || '').toLowerCase()
+    if (t === 'yearly' || t === 'annual') return 'annual'
+    if (t === 'hourly') return 'hourly'
+    if (t === 'monthly')
+      return jobType === 'contract' || jobType === 'freelance'
+        ? 'contract'
+        : 'annual'
+    if (t === 'contract') return 'contract'
+    return jobType === 'contract' || jobType === 'freelance'
+      ? 'contract'
+      : 'annual'
   }
 
   private generateId(): string {
@@ -530,4 +603,5 @@ export class JobApplicationTrackingService {
 }
 
 // Export singleton instance
-export const jobApplicationTrackingService = JobApplicationTrackingService.getInstance()
+export const jobApplicationTrackingService =
+  JobApplicationTrackingService.getInstance()

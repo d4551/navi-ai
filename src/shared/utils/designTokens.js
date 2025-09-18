@@ -2,7 +2,8 @@
 
 export function getCssVar(name, fallback = '') {
   try {
-    if (typeof window === 'undefined' || !window.getComputedStyle) return fallback
+    if (typeof window === 'undefined' || !window.getComputedStyle)
+      return fallback
     const css = getComputedStyle(document.documentElement)
     const val = (css.getPropertyValue(name) || '').trim()
     return val || fallback
@@ -58,4 +59,3 @@ export function toRgba(color, alpha = 1) {
   // Fallback: return color as-is; alpha not applied
   return color
 }
-

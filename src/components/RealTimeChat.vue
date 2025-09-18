@@ -1,9 +1,17 @@
 <template>
-  <div class="enhanced-realtime-chat font-sans" :class="{ 'session-active': isSessionActive }">
+  <div
+    class="enhanced-realtime-chat font-sans"
+    :class="{ 'session-active': isSessionActive }"
+  >
     <!-- Enhanced Control Panel -->
     <div class="control-panel" :class="{ collapsed: controlsCollapsed }">
-      <button class="controls-toggle" @click="controlsCollapsed = !controlsCollapsed">
-        <AppIcon :name="controlsCollapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'" />
+      <button
+        class="controls-toggle"
+        @click="controlsCollapsed = !controlsCollapsed"
+      >
+        <AppIcon
+          :name="controlsCollapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+        />
         <span v-if="!controlsCollapsed">Hide Controls</span>
         <span v-else>Show Controls</span>
       </button>
@@ -15,7 +23,9 @@
             <div class="status-dot" :class="getStatusClass()"></div>
             <div class="status-info">
               <div class="status-text">{{ getStatusText() }}</div>
-              <div v-if="isSessionActive" class="session-duration">{{ sessionDurationFormatted }}</div>
+              <div v-if="isSessionActive" class="session-duration">
+                {{ sessionDurationFormatted }}
+              </div>
             </div>
           </div>
         </div>
@@ -25,39 +35,82 @@
           <div class="device-grid">
             <div class="device-group">
               <label>Microphone</label>
-              <select v-model="selectedMicId" class="modern-select" @change="applyAudioInput">
-                <option v-for="d in micDevices" :key="d.deviceId" :value="d.deviceId">{{ d.label }}</option>
+              <select
+                v-model="selectedMicId"
+                class="modern-select"
+                @change="applyAudioInput"
+              >
+                <option
+                  v-for="d in micDevices"
+                  :key="d.deviceId"
+                  :value="d.deviceId"
+                >
+                  {{ d.label }}
+                </option>
               </select>
             </div>
             <div class="device-group">
               <label>Speaker</label>
-              <select v-model="selectedSpkId" class="modern-select" @change="applyAudioOutput">
-                <option v-for="d in speakerDevices" :key="d.deviceId" :value="d.deviceId">{{ d.label }}</option>
+              <select
+                v-model="selectedSpkId"
+                class="modern-select"
+                @change="applyAudioOutput"
+              >
+                <option
+                  v-for="d in speakerDevices"
+                  :key="d.deviceId"
+                  :value="d.deviceId"
+                >
+                  {{ d.label }}
+                </option>
               </select>
             </div>
-            <div v-if="selectedSessionType==='video' || selectedSessionType==='multimodal'" class="device-group">
+            <div
+              v-if="
+                selectedSessionType === 'video' ||
+                selectedSessionType === 'multimodal'
+              "
+              class="device-group"
+            >
               <label>Camera</label>
-              <select v-model="selectedCamId" class="modern-select" @change="applyCamera">
-                <option v-for="d in cameraDevices" :key="d.deviceId" :value="d.deviceId">{{ d.label }}</option>
+              <select
+                v-model="selectedCamId"
+                class="modern-select"
+                @change="applyCamera"
+              >
+                <option
+                  v-for="d in cameraDevices"
+                  :key="d.deviceId"
+                  :value="d.deviceId"
+                >
+                  {{ d.label }}
+                </option>
               </select>
             </div>
           </div>
-          
+
           <!-- Mic Test -->
           <div class="mic-test-section">
-            <UnifiedButton 
-              variant="ghost" 
-              size="sm" 
-              :leading-icon="micTestActive ? 'MicrophoneIcon-off' : 'MicrophoneIcon'" 
+            <UnifiedButton
+              variant="ghost"
+              size="sm"
+              :leading-icon="
+                micTestActive ? 'MicrophoneIcon-off' : 'MicrophoneIcon'
+              "
               @click="toggleMicTest"
             >
               {{ micTestActive ? 'Stop Test' : 'Test Mic' }}
             </UnifiedButton>
             <div v-if="micTestActive" class="volume-meter">
               <div class="volume-bar">
-                <div class="volume-fill" :style="{ width: `${Math.min(micTestLevel * 100, 100)}%` }"></div>
+                <div
+                  class="volume-fill"
+                  :style="{ width: `${Math.min(micTestLevel * 100, 100)}%` }"
+                ></div>
               </div>
-              <span class="volume-label">{{ Math.round(micTestLevel * 100) }}%</span>
+              <span class="volume-label"
+                >{{ Math.round(micTestLevel * 100) }}%</span
+              >
             </div>
           </div>
         </div>
@@ -89,7 +142,11 @@
             :loading="isProcessing"
             @click="handleStartSession"
           >
-            Start {{ selectedSessionType.charAt(0).toUpperCase() + selectedSessionType.slice(1) }}
+            Start
+            {{
+              selectedSessionType.charAt(0).toUpperCase() +
+              selectedSessionType.slice(1)
+            }}
           </UnifiedButton>
           <UnifiedButton
             v-else
@@ -108,7 +165,13 @@
     <!-- Enhanced Media Previews -->
     <div v-if="isSessionActive" class="media-section">
       <div class="media-previews">
-        <div v-if="selectedSessionType==='video' || selectedSessionType==='multimodal'" class="preview-card">
+        <div
+          v-if="
+            selectedSessionType === 'video' ||
+            selectedSessionType === 'multimodal'
+          "
+          class="preview-card"
+        >
           <div class="preview-header">
             <AppIcon name="VideoCameraIcon" />
             <span>Camera Feed</span>
@@ -118,10 +181,22 @@
               </button>
             </div>
           </div>
-          <video ref="localVideoEl" class="preview-video" autoplay muted playsinline></video>
+          <video
+            ref="localVideoEl"
+            class="preview-video"
+            autoplay
+            muted
+            playsinline
+          ></video>
         </div>
-        
-        <div v-if="selectedSessionType==='screen' || selectedSessionType==='multimodal'" class="preview-card">
+
+        <div
+          v-if="
+            selectedSessionType === 'screen' ||
+            selectedSessionType === 'multimodal'
+          "
+          class="preview-card"
+        >
           <div class="preview-header">
             <AppIcon name="mdi-monitor-share" />
             <span>Screen Share</span>
@@ -131,30 +206,51 @@
               </button>
             </div>
           </div>
-          <video ref="screenVideoEl" class="preview-video" autoplay muted playsinline></video>
+          <video
+            ref="screenVideoEl"
+            class="preview-video"
+            autoplay
+            muted
+            playsinline
+          ></video>
         </div>
       </div>
-      
+
       <!-- Audio Visualizer -->
-      <div v-if="selectedSessionType === 'audio' || selectedSessionType === 'video' || selectedSessionType === 'multimodal'" class="audio-section">
+      <div
+        v-if="
+          selectedSessionType === 'audio' ||
+          selectedSessionType === 'video' ||
+          selectedSessionType === 'multimodal'
+        "
+        class="audio-section"
+      >
         <div class="audio-visualizer">
           <div class="volume-display">
-            <AppIcon name="MicrophoneIcon" class="mic-icon" :class="{ active: isListening }" />
+            <AppIcon
+              name="MicrophoneIcon"
+              class="mic-icon"
+              :class="{ active: isListening }"
+            />
             <div class="volume-bars">
               <div
-                v-for="i in 20" :key="i" class="volume-bar" 
+                v-for="i in 20"
+                :key="i"
+                class="volume-bar"
                 :class="{ active: i <= volumeLevel * 20 }"
                 :style="{ animationDelay: `${i * 0.1}s` }"
               ></div>
             </div>
           </div>
           <div class="listening-status">
-            <span :class="{ active: isListening }">{{ isListening ? 'Listening...' : 'Ready to listen' }}</span>
+            <span :class="{ active: isListening }">{{
+              isListening ? 'Listening...' : 'Ready to listen'
+            }}</span>
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- Live Transcription -->
     <div v-if="transcription && isSessionActive" class="transcription-banner">
       <div class="transcription-content">
@@ -174,22 +270,31 @@
       >
         <div class="message-avatar">
           <div class="avatar" :class="message.role">
-            <AppIcon :name="message.role === 'user' ? 'UserIcon' : 'mdi-robot'" />
+            <AppIcon
+              :name="message.role === 'user' ? 'UserIcon' : 'mdi-robot'"
+            />
           </div>
         </div>
-        
+
         <div class="message-body">
           <div class="message-header">
-            <span class="message-sender">{{ message.role === 'user' ? 'You' : persona.name }}</span>
+            <span class="message-sender">{{
+              message.role === 'user' ? 'You' : persona.name
+            }}</span>
             <div class="message-meta">
               <span class="message-type">
-                <AppIcon :name="getMessageTypeIcon(message.type)" size="small" />
+                <AppIcon
+                  :name="getMessageTypeIcon(message.type)"
+                  size="small"
+                />
                 {{ message.type }}
               </span>
-              <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+              <span class="message-time">{{
+                formatTime(message.timestamp)
+              }}</span>
             </div>
           </div>
-          
+
           <div class="message-content">
             <div v-if="message.imageData" class="message-media">
               <img
@@ -202,21 +307,31 @@
                 <AppIcon name="MagnifyingGlassIcon" />
               </div>
             </div>
-            <div class="message-text" v-html="formatContent(message.content)"></div>
+            <div
+              class="message-text"
+              v-html="formatContent(message.content)"
+            ></div>
           </div>
-          
+
           <!-- Message Actions -->
           <div class="message-actions">
             <button class="action-btn" title="Copy message">
               <AppIcon name="DocumentDuplicateIcon" size="small" />
             </button>
-            <button v-if="message.role === 'assistant'" class="action-btn" title="Regenerate response">
+            <button
+              v-if="message.role === 'assistant'"
+              class="action-btn"
+              title="Regenerate response"
+            >
               <AppIcon name="ArrowPathIcon" size="small" />
             </button>
           </div>
         </div>
       </div>
-      <div v-if="isProcessing" class="enhanced-message message-assistant processing">
+      <div
+        v-if="isProcessing"
+        class="enhanced-message message-assistant processing"
+      >
         <div class="message-avatar">
           <div class="avatar assistant">
             <AppIcon name="CpuChipIcon" />
@@ -259,18 +374,18 @@
             @keydown="handleKeydown"
             @input="autoResizeTextarea"
           ></textarea>
-          
+
           <div class="input-actions">
-            <button 
-              class="input-action-btn" 
-              title="Attach file" 
+            <button
+              class="input-action-btn"
+              title="Attach file"
               :disabled="isProcessing"
             >
               <AppIcon name="PaperClipIcon" />
             </button>
-            <button 
-              class="input-action-btn" 
-              title="Voice message" 
+            <button
+              class="input-action-btn"
+              title="Voice message"
               :disabled="isProcessing"
             >
               <AppIcon name="MicrophoneIcon" />
@@ -287,11 +402,11 @@
             />
           </div>
         </div>
-        
+
         <!-- Quick Actions -->
         <div class="quick-actions">
-          <button 
-            v-for="action in quickActions" 
+          <button
+            v-for="action in quickActions"
             :key="action.id"
             class="quick-action"
             @click="insertQuickAction(action.text)"
@@ -306,23 +421,34 @@
       <button class="settings-toggle" @click="showConfig = !showConfig">
         <AppIcon name="mdi-tune" />
         <span>Advanced Settings</span>
-        <AppIcon :name="showConfig ? 'mdi-chevron-up' : 'mdi-chevron-down'" class="chevron" />
+        <AppIcon
+          :name="showConfig ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          class="chevron"
+        />
       </button>
-      
+
       <div class="settings-content">
         <div class="settings-grid">
           <!-- AI Model Selection -->
           <div class="setting-group">
             <h4>AI Model</h4>
-            <select v-model="chatConfig.model" class="modern-select" @change="updateConfig">
-              <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended)</option>
-              <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Experimental)</option>
+            <select
+              v-model="chatConfig.model"
+              class="modern-select"
+              @change="updateConfig"
+            >
+              <option value="gemini-2.5-flash">
+                Gemini 2.5 Flash (Recommended)
+              </option>
+              <option value="gemini-2.0-flash-exp">
+                Gemini 2.0 Flash (Experimental)
+              </option>
               <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
               <option value="gemini-1.5-flash-8b">Gemini 1.5 Flash 8B</option>
               <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
             </select>
           </div>
-          
+
           <!-- Voice Settings -->
           <div class="setting-group">
             <h4>Voice Controls</h4>
@@ -351,13 +477,16 @@
               </label>
             </div>
           </div>
-          
+
           <!-- Memory Settings -->
           <div class="setting-group">
             <h4>Memory</h4>
             <div class="setting-item">
-              <label>Conversation Memory: {{ chatConfig.conversationMemory }} messages</label>
-              <input 
+              <label
+                >Conversation Memory:
+                {{ chatConfig.conversationMemory }} messages</label
+              >
+              <input
                 v-model.number="chatConfig.conversationMemory"
                 type="range"
                 min="5"
@@ -380,11 +509,18 @@
         </button>
       </div>
     </div>
-    
+
     <!-- Image Modal -->
-    <div v-if="showImageModalState" class="image-modal" @click="closeImageModal">
+    <div
+      v-if="showImageModalState"
+      class="image-modal"
+      @click="closeImageModal"
+    >
       <div class="modal-content" @click.stop>
-        <img :src="`data:image/jpeg;base64,${currentModalImage}`" alt="Full size image" />
+        <img
+          :src="`data:image/jpeg;base64,${currentModalImage}`"
+          alt="Full size image"
+        />
         <button class="modal-close" @click="closeImageModal">
           <AppIcon name="XMarkIcon" />
         </button>
@@ -394,17 +530,37 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowPathIcon, CpuChipIcon, DocumentDuplicateIcon, ExclamationCircleIcon, MagnifyingGlassIcon, MicrophoneIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  CpuChipIcon,
+  DocumentDuplicateIcon,
+  ExclamationCircleIcon,
+  MagnifyingGlassIcon,
+  MicrophoneIcon,
+  VideoCameraIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import { StopIcon } from '@heroicons/vue/24/solid'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import { ref, onMounted, reactive, watch, nextTick, computed } from 'vue'
-import { useRealTimeChat, useRealTimeSupport } from '@/composables/useRealTimeChat';
-import { audioService, setPreferredInputDevice, setPreferredOutputDevice } from '@/shared/services/AudioService'
+import {
+  useRealTimeChat,
+  useRealTimeSupport,
+} from '@/composables/useRealTimeChat'
+import {
+  audioService,
+  setPreferredInputDevice,
+  setPreferredOutputDevice,
+} from '@/shared/services/AudioService'
 import { videoService } from '@/shared/services/VideoService'
-import { resolveGeminiApiKey } from '@/shared/utils/apiKeys';
-import type { MultiTurnSession, RealTimeMessage, RealTimeConfig } from '@/shared/services/RealTimeMultiTurnService'
+import { resolveGeminiApiKey } from '@/shared/utils/apiKeys'
+import type {
+  MultiTurnSession,
+  RealTimeMessage,
+  RealTimeConfig,
+} from '@/shared/services/RealTimeMultiTurnService'
 
 type SessionType = MultiTurnSession['type']
 interface Props {
@@ -419,14 +575,14 @@ const props = withDefaults(defineProps<Props>(), {
   apiKey: '',
   initialSessionType: 'audio',
   persona: 'navi',
-  config: null
+  config: null,
 })
 
 const emit = defineEmits<{
   'session-start': []
   'session-end': []
-  'message': [message: RealTimeMessage]
-  'error': [error: unknown]
+  message: [message: RealTimeMessage]
+  error: [error: unknown]
 }>()
 
 const {
@@ -445,29 +601,32 @@ const {
   startSession,
   stopSession,
   sendMessage,
-  updateConfig: updateServiceConfig
-} = useRealTimeChat();
+  updateConfig: updateServiceConfig,
+} = useRealTimeChat()
 
-useRealTimeSupport(); // ensure feature detection runs (values available if needed later)
+useRealTimeSupport() // ensure feature detection runs (values available if needed later)
 
-const selectedSessionType = ref<SessionType>(props.initialSessionType);
-const textInput = ref<string>('');
-const showConfig = ref<boolean>(false);
-const messagesContainer = ref<{ scrollTop: number; scrollHeight: number } | null>(null);
-const localVideoEl = ref<HTMLVideoElement | null>(null);
-const screenVideoEl = ref<HTMLVideoElement | null>(null);
-const messageInput = ref<HTMLElement | null>(null);
-const controlsCollapsed = ref(false);
-const showImageModalState = ref(false);
-const currentModalImage = ref('');
+const selectedSessionType = ref<SessionType>(props.initialSessionType)
+const textInput = ref<string>('')
+const showConfig = ref<boolean>(false)
+const messagesContainer = ref<{
+  scrollTop: number
+  scrollHeight: number
+} | null>(null)
+const localVideoEl = ref<HTMLVideoElement | null>(null)
+const screenVideoEl = ref<HTMLVideoElement | null>(null)
+const messageInput = ref<HTMLElement | null>(null)
+const controlsCollapsed = ref(false)
+const showImageModalState = ref(false)
+const currentModalImage = ref('')
 
 // Devices
-const micDevices = ref<{ deviceId: string; label: string }[]>([]);
-const speakerDevices = ref<{ deviceId: string; label: string }[]>([]);
-const cameraDevices = ref<{ deviceId: string; label: string }[]>([]);
-const selectedMicId = ref<string>('');
-const selectedSpkId = ref<string>('');
-const selectedCamId = ref<string>('');
+const micDevices = ref<{ deviceId: string; label: string }[]>([])
+const speakerDevices = ref<{ deviceId: string; label: string }[]>([])
+const cameraDevices = ref<{ deviceId: string; label: string }[]>([])
+const selectedMicId = ref<string>('')
+const selectedSpkId = ref<string>('')
+const selectedCamId = ref<string>('')
 // Mic test (out-of-session)
 const micTestActive = ref<boolean>(false)
 const micTestLevel = ref<number>(0)
@@ -477,7 +636,7 @@ const quickActions = [
   { id: 'help', label: 'Help me with...', text: 'Can you help me with ' },
   { id: 'explain', label: 'Explain this', text: 'Please explain ' },
   { id: 'summarize', label: 'Summarize', text: 'Can you summarize ' },
-  { id: 'analyze', label: 'Analyze', text: 'Please analyze ' }
+  { id: 'analyze', label: 'Analyze', text: 'Please analyze ' },
 ]
 
 const chatConfig = reactive<RealTimeConfig>({
@@ -486,34 +645,40 @@ const chatConfig = reactive<RealTimeConfig>({
   enableAudioOutput: true,
   pushToTalk: false,
   voiceActivation: { enabled: true, threshold: 0.1, silenceTimeout: 1500 },
-  conversationMemory: 10
-});
+  conversationMemory: 10,
+})
 
 // AI Personas
 const personas = {
   navi: {
     name: 'NAVI',
     description: 'Gaming Career Expert',
-    systemPrompt: 'You are NAVI, an AI assistant specializing in gaming career transitions. You provide expert guidance on breaking into the video game industry, portfolio building, and career development with a friendly but professional tone.'
+    systemPrompt:
+      'You are NAVI, an AI assistant specializing in gaming career transitions. You provide expert guidance on breaking into the video game industry, portfolio building, and career development with a friendly but professional tone.',
   },
   coach: {
     name: 'Career Coach',
     description: 'Professional Guide',
-    systemPrompt: 'You are a professional career coach with extensive experience across multiple industries. You provide structured, actionable advice with a supportive and encouraging approach.'
+    systemPrompt:
+      'You are a professional career coach with extensive experience across multiple industries. You provide structured, actionable advice with a supportive and encouraging approach.',
   },
   mentor: {
-    name: 'Tech Mentor', 
+    name: 'Tech Mentor',
     description: 'Industry Insider',
-    systemPrompt: 'You are a senior tech industry mentor with deep knowledge of software development, emerging technologies, and industry trends. You share insights with wisdom and practical experience.'
+    systemPrompt:
+      'You are a senior tech industry mentor with deep knowledge of software development, emerging technologies, and industry trends. You share insights with wisdom and practical experience.',
   },
   friend: {
     name: 'Casual Friend',
     description: 'Relaxed Chat',
-    systemPrompt: 'You are a casual, friendly companion for relaxed conversations. You communicate in a warm, approachable way while still being helpful and knowledgeable.'
-  }
-};
+    systemPrompt:
+      'You are a casual, friendly companion for relaxed conversations. You communicate in a warm, approachable way while still being helpful and knowledgeable.',
+  },
+}
 
-const persona = computed(() => personas[props.persona as keyof typeof personas] || personas.navi);
+const persona = computed(
+  () => personas[props.persona as keyof typeof personas] || personas.navi
+)
 
 const voiceActivationEnabled = computed<boolean>({
   get() {
@@ -521,11 +686,15 @@ const voiceActivationEnabled = computed<boolean>({
   },
   set(v: boolean) {
     if (!chatConfig.voiceActivation) {
-      chatConfig.voiceActivation = { enabled: v, threshold: 0.1, silenceTimeout: 1500 }
+      chatConfig.voiceActivation = {
+        enabled: v,
+        threshold: 0.1,
+        silenceTimeout: 1500,
+      }
     } else {
       chatConfig.voiceActivation.enabled = v
     }
-  }
+  },
 })
 
 // Enhanced status methods
@@ -546,7 +715,7 @@ const getStatusText = () => {
 // Merge parent-provided config if present
 function applyParentConfig() {
   if (props.config && typeof props.config === 'object') {
-    Object.assign(chatConfig, props.config);
+    Object.assign(chatConfig, props.config)
   }
 }
 
@@ -586,115 +755,136 @@ function closeImageModal() {
 async function initializeService() {
   try {
     // Avoid re-initialization
-    if (isInitialized.value) return;
+    if (isInitialized.value) return
     // Merge any parent-provided config before init
-    applyParentConfig();
+    applyParentConfig()
     // Prefer prop apiKey; otherwise resolve from unified sources
-    let key = props.apiKey;
+    let key = props.apiKey
     if (!key) {
-      key = await resolveGeminiApiKey() || '';
+      key = (await resolveGeminiApiKey()) || ''
     }
     if (!key) {
-      throw new Error('API key is required');
+      throw new Error('API key is required')
     }
-  await initialize(key, chatConfig);
+    await initialize(key, chatConfig)
   } catch (e) {
-    emit('error', e);
+    emit('error', e)
   }
 }
 
 async function enumerateDevices() {
   try {
-    const audio = await audioService.getAvailableDevices();
-    micDevices.value = audio.filter(d => d.kind === 'audioinput');
-    speakerDevices.value = audio.filter(d => d.kind === 'audiooutput');
-    const cams = await videoService.enumerateDevices();
-    cameraDevices.value = cams;
+    const audio = await audioService.getAvailableDevices()
+    micDevices.value = audio.filter(d => d.kind === 'audioinput')
+    speakerDevices.value = audio.filter(d => d.kind === 'audiooutput')
+    const cams = await videoService.enumerateDevices()
+    cameraDevices.value = cams
     // Set defaults if not chosen
-    if (!selectedMicId.value && micDevices.value[0]) selectedMicId.value = micDevices.value[0].deviceId;
-    if (!selectedSpkId.value && speakerDevices.value[0]) selectedSpkId.value = speakerDevices.value[0].deviceId;
-    if (!selectedCamId.value && cameraDevices.value[0]) selectedCamId.value = cameraDevices.value[0].deviceId;
-  } catch {/* ignore */}
+    if (!selectedMicId.value && micDevices.value[0])
+      selectedMicId.value = micDevices.value[0].deviceId
+    if (!selectedSpkId.value && speakerDevices.value[0])
+      selectedSpkId.value = speakerDevices.value[0].deviceId
+    if (!selectedCamId.value && cameraDevices.value[0])
+      selectedCamId.value = cameraDevices.value[0].deviceId
+  } catch {
+    /* ignore */
+  }
 }
 
 function applyAudioInput() {
-  try { setPreferredInputDevice(selectedMicId.value); } catch {}
+  try {
+    setPreferredInputDevice(selectedMicId.value)
+  } catch {}
   // If a session is active, restart input monitoring for the new device
   try {
     if (isSessionActive.value) {
-      audioService.stopMonitoring();
-      const id = selectedMicId.value || undefined;
-      audioService.startMonitoring(id as any, (lvl) => {
-        volumeLevel.value = lvl;
-      });
+      audioService.stopMonitoring()
+      const id = selectedMicId.value || undefined
+      audioService.startMonitoring(id as any, lvl => {
+        volumeLevel.value = lvl
+      })
     }
     // If mic test active, restart monitoring for the new device
     if (micTestActive.value) {
-      audioService.stopMonitoring();
-      const id2 = selectedMicId.value || undefined;
-      audioService.startMonitoring(id2 as any, (lvl) => { micTestLevel.value = lvl; });
+      audioService.stopMonitoring()
+      const id2 = selectedMicId.value || undefined
+      audioService.startMonitoring(id2 as any, lvl => {
+        micTestLevel.value = lvl
+      })
     }
-  } catch {/* ignore */}
+  } catch {
+    /* ignore */
+  }
 }
 
 async function applyAudioOutput() {
-  try { await setPreferredOutputDevice(selectedSpkId.value); } catch {}
+  try {
+    await setPreferredOutputDevice(selectedSpkId.value)
+  } catch {}
 }
 
 function applyCamera() {
-  try { videoService.setSelectedCamera(selectedCamId.value); } catch {}
+  try {
+    videoService.setSelectedCamera(selectedCamId.value)
+  } catch {}
 }
 
 async function handleStartSession() {
   try {
-  // Stop mic test monitoring if active
-  if (micTestActive.value) {
-    try { audioService.stopMonitoring(); } catch {}
-    micTestActive.value = false;
-    micTestLevel.value = 0;
-  }
-  await startSession(selectedSessionType.value);
-  emit('session-start');
+    // Stop mic test monitoring if active
+    if (micTestActive.value) {
+      try {
+        audioService.stopMonitoring()
+      } catch {}
+      micTestActive.value = false
+      micTestLevel.value = 0
+    }
+    await startSession(selectedSessionType.value)
+    emit('session-start')
   } catch (e) {
-    emit('error', e);
+    emit('error', e)
   }
 }
 
 async function handleStopSession() {
   try {
-    await stopSession();
-    emit('session-end');
+    await stopSession()
+    emit('session-end')
   } catch (e) {
-    emit('error', e);
+    emit('error', e)
   }
 }
 
 async function handleSendText() {
-  if (!textInput.value.trim()) return;
+  if (!textInput.value.trim()) return
   try {
-    await sendMessage(textInput.value);
-    textInput.value = '';
+    await sendMessage(textInput.value)
+    textInput.value = ''
   } catch (e) {
-    emit('error', e);
+    emit('error', e)
   }
 }
 
 function updateConfig() {
-  updateServiceConfig(chatConfig);
+  updateServiceConfig(chatConfig)
 }
 
 async function toggleMicTest() {
   try {
     if (micTestActive.value) {
-      audioService.stopMonitoring();
-      micTestActive.value = false;
-      micTestLevel.value = 0;
-      return;
+      audioService.stopMonitoring()
+      micTestActive.value = false
+      micTestLevel.value = 0
+      return
     }
-    const id = selectedMicId.value || undefined;
-    await audioService.startMonitoring(id as any, (lvl) => { micTestLevel.value = lvl; });
-    micTestActive.value = true;
-  } catch {/* ignore */}
+    const id = selectedMicId.value || undefined
+    await audioService.startMonitoring(id as any, lvl => {
+      micTestLevel.value = lvl
+    })
+    micTestActive.value = true
+  } catch {
+    /* ignore */
+  }
 }
 
 function getMessageTypeIcon(type: RealTimeMessage['type']): string {
@@ -702,25 +892,25 @@ function getMessageTypeIcon(type: RealTimeMessage['type']): string {
     text: 'mdi-text',
     audio: 'MicrophoneIcon',
     video: 'VideoCameraIcon',
-    screen: 'mdi-monitor-share'
-  };
-  return map[type] ?? 'QuestionMarkCircleIcon';
+    screen: 'mdi-monitor-share',
+  }
+  return map[type] ?? 'QuestionMarkCircleIcon'
 }
 
 function formatTime(ts: Date | string | number) {
-  return new Date(ts).toLocaleTimeString();
+  return new Date(ts).toLocaleTimeString()
 }
 
 function scrollToBottom() {
   nextTick(() => {
     if (messagesContainer.value) {
-      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
+      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
     }
-  });
+  })
 }
 
 function formatContent(val: unknown) {
-  if (val == null) return '';
+  if (val == null) return ''
   if (typeof val === 'string') {
     // Enhanced formatting with markdown-like support
     return val
@@ -730,47 +920,63 @@ function formatContent(val: unknown) {
       .replace(/\n/g, '<br>')
   }
   if (typeof val === 'object') {
-    const anyVal = val as any;
-    if (typeof anyVal.content === 'string') return formatContent(anyVal.content);
-    if (typeof anyVal.text === 'string') return formatContent(anyVal.text);
-    try { return JSON.stringify(val, null, 2); } catch { return String(val); }
+    const anyVal = val as any
+    if (typeof anyVal.content === 'string') return formatContent(anyVal.content)
+    if (typeof anyVal.text === 'string') return formatContent(anyVal.text)
+    try {
+      return JSON.stringify(val, null, 2)
+    } catch {
+      return String(val)
+    }
   }
-  return String(val);
+  return String(val)
 }
 
-watch(messages, scrollToBottom, { deep: true });
-watch(() => props.apiKey, async () => {
-  // If apiKey prop changes and service not yet initialized, try init
-  if (!isInitialized.value) {
-    await initializeService();
+watch(messages, scrollToBottom, { deep: true })
+watch(
+  () => props.apiKey,
+  async () => {
+    // If apiKey prop changes and service not yet initialized, try init
+    if (!isInitialized.value) {
+      await initializeService()
+    }
   }
-});
+)
 
-watch(() => props.config, () => {
-  // Re-apply config and propagate to service when parent config changes
-  applyParentConfig();
-  updateServiceConfig(chatConfig);
-});
+watch(
+  () => props.config,
+  () => {
+    // Re-apply config and propagate to service when parent config changes
+    applyParentConfig()
+    updateServiceConfig(chatConfig)
+  }
+)
 
-onMounted(() => { initializeService(); });
+onMounted(() => {
+  initializeService()
+})
 
 // Attach streams to previews when session active
 watch([isSessionActive, selectedSessionType], () => {
   try {
-    if (!isSessionActive.value) return;
-    const v = videoService.getVideoStream();
-    const s = videoService.getScreenStream();
+    if (!isSessionActive.value) return
+    const v = videoService.getVideoStream()
+    const s = videoService.getScreenStream()
     if (localVideoEl.value && v) {
-      (localVideoEl.value as any).srcObject = v;
+      ;(localVideoEl.value as any).srcObject = v
     }
     if (screenVideoEl.value && s) {
-      (screenVideoEl.value as any).srcObject = s;
+      ;(screenVideoEl.value as any).srcObject = s
     }
-  } catch {/* ignore */}
-});
+  } catch {
+    /* ignore */
+  }
+})
 
 // Enumerate devices initially
-onMounted(() => { enumerateDevices(); });
+onMounted(() => {
+  enumerateDevices()
+})
 </script>
 
 <style scoped>
@@ -779,7 +985,8 @@ onMounted(() => { enumerateDevices(); });
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(var(--glass-bg-rgb), 0.95) 0%,
     rgba(var(--surface-color-rgb), 0.9) 100%
   );
@@ -805,8 +1012,12 @@ onMounted(() => { enumerateDevices(); });
   z-index: 2;
 }
 
-.device-selectors { display: flex; gap: 0.5rem; align-items: center; }
-.device-select { 
+.device-selectors {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.device-select {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-color);
@@ -822,7 +1033,12 @@ onMounted(() => { enumerateDevices(); });
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary-500) 20%, transparent), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent),
+    transparent
+  );
   opacity: 0.28;
   pointer-events: none;
 }
@@ -862,8 +1078,13 @@ onMounted(() => { enumerateDevices(); });
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .session-stats {
@@ -1022,8 +1243,14 @@ onMounted(() => { enumerateDevices(); });
 }
 
 @keyframes typing {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-10px); }
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
 }
 
 .text-input-container {
@@ -1038,10 +1265,35 @@ onMounted(() => { enumerateDevices(); });
   -webkit-backdrop-filter: var(--glass-backdrop-blur-md);
 }
 
-.media-previews { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; padding: 0.5rem 1rem; border-b: 1px solid var(--glass-border); background: var(--surface-color); }
-.preview-tile { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; overflow: hidden; }
-.preview-title { padding: 0.5rem 0.75rem; font-size: 0.9rem; color: var(--text-color); border-b: 1px solid var(--glass-border); display: flex; align-items: center; gap: 0.5rem; }
-.preview-video { width: 100%; height: 160px; object-fit: cover; background: #000; }
+.media-previews {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-b: 1px solid var(--glass-border);
+  background: var(--surface-color);
+}
+.preview-tile {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.preview-title {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  border-b: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.preview-video {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background: #000;
+}
 
 .input-group {
   display: flex;
@@ -1098,7 +1350,8 @@ onMounted(() => { enumerateDevices(); });
   gap: 0.5rem;
 }
 
-.form-control, .form-check-input {
+.form-control,
+.form-check-input {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-color);
@@ -1207,8 +1460,15 @@ onMounted(() => { enumerateDevices(); });
 }
 
 @keyframes statusPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.1); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
 }
 
 .status-info {
@@ -1285,7 +1545,8 @@ onMounted(() => { enumerateDevices(); });
   flex: 1;
   overflow-y: auto;
   padding: 1.5rem;
-  background: linear-gradient(to bottom,
+  background: linear-gradient(
+    to bottom,
     rgba(var(--surface-color-rgb), 0.1) 0%,
     rgba(var(--surface-color-rgb), 0.05) 100%
   );
@@ -1334,7 +1595,8 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .message-user .message-body {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     var(--color-primary-100) 0%,
     var(--color-primary-50) 100%
   );
@@ -1371,7 +1633,8 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .avatar.user {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     var(--color-primary-500) 0%,
     var(--color-primary-400) 100%
   );
@@ -1379,7 +1642,8 @@ onMounted(() => { enumerateDevices(); });
 }
 
 .avatar.assistant {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     var(--color-secondary-500) 0%,
     var(--color-accent-500) 100%
   );
@@ -1449,11 +1713,13 @@ onMounted(() => { enumerateDevices(); });
 }
 
 @keyframes typingBounce {
-  0%, 60%, 100% { 
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.5;
   }
-  30% { 
+  30% {
     transform: translateY(-8px);
     opacity: 1;
   }
@@ -1468,7 +1734,8 @@ onMounted(() => { enumerateDevices(); });
 /* Enhanced Input Area */
 .enhanced-input-area {
   padding: 1.5rem;
-  background: linear-gradient(to top,
+  background: linear-gradient(
+    to top,
     rgba(var(--surface-color-rgb), 0.9) 0%,
     rgba(var(--surface-color-rgb), 0.7) 100%
   );
@@ -1566,7 +1833,8 @@ onMounted(() => { enumerateDevices(); });
 /* Live Transcription */
 .transcription-banner {
   position: relative;
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     var(--color-primary-100) 0%,
     var(--color-secondary-50) 100%
   );
@@ -1605,8 +1873,13 @@ onMounted(() => { enumerateDevices(); });
 }
 
 @keyframes iconPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .transcription-text {
@@ -1627,8 +1900,13 @@ onMounted(() => { enumerateDevices(); });
 }
 
 @keyframes liveBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* Media Previews */
@@ -1753,9 +2031,15 @@ onMounted(() => { enumerateDevices(); });
 }
 
 @keyframes volumePulse {
-  0% { height: 8px; }
-  50% { height: 30px; }
-  100% { height: 24px; }
+  0% {
+    height: 8px;
+  }
+  50% {
+    height: 30px;
+  }
+  100% {
+    height: 24px;
+  }
 }
 
 .listening-status {
@@ -1858,30 +2142,30 @@ onMounted(() => { enumerateDevices(); });
   .enhanced-realtime-chat {
     border-radius: 12px;
   }
-  
+
   .enhanced-messages-container {
     padding: 1rem;
   }
-  
+
   .enhanced-message {
     gap: 0.75rem;
   }
-  
+
   .message-body {
     max-width: 85%;
     padding: 0.75rem 1rem;
   }
-  
+
   .avatar {
     width: 32px;
     height: 32px;
     font-size: 1rem;
   }
-  
+
   .enhanced-input-area {
     padding: 1rem;
   }
-  
+
   .input-wrapper {
     padding: 0.75rem;
   }
@@ -1891,12 +2175,12 @@ onMounted(() => { enumerateDevices(); });
   .enhanced-message {
     gap: 0.5rem;
   }
-  
+
   .message-body {
     max-width: 90%;
     padding: 0.625rem 0.875rem;
   }
-  
+
   .avatar {
     width: 28px;
     height: 28px;

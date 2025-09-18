@@ -7,9 +7,16 @@
     @click.self="$emit('close')"
     @keydown.esc.prevent="$emit('close')"
   >
-    <div class="settings-modal ultra-glass-card section-card gamification-modal" tabindex="-1" @click.stop>
+    <div
+      class="settings-modal ultra-glass-card section-card gamification-modal"
+      tabindex="-1"
+      @click.stop
+    >
       <div class="settings-modal-header">
-        <h3 id="gamification-modal-title" class="flex items-center gap-glass-sm">
+        <h3
+          id="gamification-modal-title"
+          class="flex items-center gap-glass-sm"
+        >
           <AppIcon name="TrophyIcon" />
           Achievements & Challenges
         </h3>

@@ -11,7 +11,12 @@
           </div>
           <div v-if="activeFiltersCount > 0" class="filter-status">
             <AppIcon name="mdi-filter" />
-            <span>{{ activeFiltersCount }} filter{{ activeFiltersCount === 1 ? '' : 's' }} active</span>
+            <span
+              >{{ activeFiltersCount }} filter{{
+                activeFiltersCount === 1 ? '' : 's'
+              }}
+              active</span
+            >
           </div>
         </div>
         <div class="results-info">
@@ -26,25 +31,30 @@
       <div class="primary-controls">
         <!-- Enhanced Search Bar -->
         <div class="search-group">
-          <input 
+          <input
             v-model="searchQuery"
-            type="text" 
+            type="text"
             class="search-input glass-input"
             :placeholder="searchPlaceholder"
             :aria-label="searchPlaceholder"
             @input="updateSearch"
           />
           <AppIcon name="mdi-magnify" class="search-icon" />
-          <AppIcon 
-            v-if="searchQuery" 
-            name="mdi-close-circle" 
+          <AppIcon
+            v-if="searchQuery"
+            name="mdi-close-circle"
             class="search-clear"
             @click="clearSearch"
           />
         </div>
 
         <!-- Type Filter -->
-        <select v-model="selectedType" class="filter-select glass-input" aria-label="Filter by type" @change="updateFilters">
+        <select
+          v-model="selectedType"
+          class="filter-select glass-input"
+          aria-label="Filter by type"
+          @change="updateFilters"
+        >
           <option value="">All Types</option>
           <option value="project">Projects</option>
           <option value="game">Games</option>
@@ -54,7 +64,12 @@
         </select>
 
         <!-- Sort Options -->
-        <select v-model="sortBy" class="filter-select glass-input" aria-label="Sort portfolio" @change="updateSort">
+        <select
+          v-model="sortBy"
+          class="filter-select glass-input"
+          aria-label="Sort portfolio"
+          @change="updateSort"
+        >
           <option value="recent">Most Recent</option>
           <option value="popular">Most Popular</option>
           <option value="alphabetical">A to Z</option>
@@ -65,7 +80,11 @@
         <!-- Featured Toggle -->
         <div class="toggle-group glass-surface">
           <label class="toggle-switch">
-            <input v-model="featuredOnly" type="checkbox" @change="updateFilters" />
+            <input
+              v-model="featuredOnly"
+              type="checkbox"
+              @change="updateFilters"
+            />
             <span class="toggle-slider"></span>
           </label>
           <label class="toggle-label">Featured</label>
@@ -74,7 +93,11 @@
         <!-- Analytics Toggle -->
         <div class="toggle-group glass-surface">
           <label class="toggle-switch">
-            <input v-model="showAnalytics" type="checkbox" @change="toggleAnalytics" />
+            <input
+              v-model="showAnalytics"
+              type="checkbox"
+              @change="toggleAnalytics"
+            />
             <span class="toggle-slider"></span>
           </label>
           <label class="toggle-label">Analytics</label>
@@ -103,9 +126,9 @@
         </div>
 
         <!-- AI Tools -->
-        <UnifiedButton 
-          variant="primary" 
-          size="sm" 
+        <UnifiedButton
+          variant="primary"
+          size="sm"
           leading-icon="mdi-robot"
           class="ai-tools-btn"
           @click="openAITools"
@@ -132,10 +155,10 @@
         </div>
         <div class="skills-actions">
           <div class="skill-search">
-            <input 
+            <input
               v-model="skillSearchQuery"
-              type="text" 
-              class="skill-search-input glass-input" 
+              type="text"
+              class="skill-search-input glass-input"
               placeholder="Search skills..."
               @input="filterSkills"
             />
@@ -155,8 +178,8 @@
 
       <!-- Skill Categories -->
       <div class="skill-categories">
-        <button 
-          v-for="category in skillCategories" 
+        <button
+          v-for="category in skillCategories"
           :key="category.key"
           class="category-tab glass-surface"
           :class="{ active: activeSkillCategory === category.key }"
@@ -169,8 +192,8 @@
 
       <!-- Enhanced Skill Chips -->
       <div class="skill-chips">
-        <button 
-          v-for="skill in filteredSkills" 
+        <button
+          v-for="skill in filteredSkills"
           :key="skill.id"
           class="skill-chip glass-surface"
           :class="{ active: selectedSkills.includes(skill.id) }"
@@ -181,9 +204,9 @@
           </span>
           {{ skill.name }}
           <span class="chip-count">{{ skill.projectCount }}</span>
-          <AppIcon 
+          <AppIcon
             v-if="selectedSkills.includes(skill.id)"
-            name="mdi-close" 
+            name="mdi-close"
             class="skill-chip-remove"
             @click.stop="removeSkill(skill.id)"
           />
@@ -191,10 +214,13 @@
       </div>
 
       <!-- Skill Progress Visualization -->
-      <div v-if="showSkillProgress && selectedSkills.length > 0" class="skill-progress glass-surface">
-        <div 
-          v-for="skill in selectedSkillsData" 
-          :key="skill.id" 
+      <div
+        v-if="showSkillProgress && selectedSkills.length > 0"
+        class="skill-progress glass-surface"
+      >
+        <div
+          v-for="skill in selectedSkillsData"
+          :key="skill.id"
           class="skill-progress-item"
         >
           <div class="skill-progress-header">
@@ -202,8 +228,8 @@
             <span class="skill-progress-value">{{ skill.proficiency }}%</span>
           </div>
           <div class="skill-progress-bar">
-            <div 
-              class="skill-progress-fill" 
+            <div
+              class="skill-progress-fill"
               :style="{ width: skill.proficiency + '%' }"
             ></div>
           </div>
@@ -219,7 +245,11 @@
           class="expand-btn"
           @click="toggleShowAllSkills"
         >
-          {{ showAllSkills ? 'Show Less' : `Show ${remainingSkillsCount} More Skills` }}
+          {{
+            showAllSkills
+              ? 'Show Less'
+              : `Show ${remainingSkillsCount} More Skills`
+          }}
         </UnifiedButton>
       </div>
     </div>
@@ -236,30 +266,30 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 const props = defineProps({
   projects: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   skills: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   initialViewMode: {
     type: String,
-    default: 'grid'
+    default: 'grid',
   },
   showSkillsSection: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 })
 
 // Emits
 const emit = defineEmits([
   'update:search',
-  'update:filters', 
+  'update:filters',
   'update:sort',
   'update:view-mode',
   'toggle-analytics',
-  'open-ai-tools'
+  'open-ai-tools',
 ])
 
 // Store
@@ -286,7 +316,7 @@ const searchPlaceholder = computed(() => {
   const examples = [
     'Search projects, skills, or keywords...',
     'Find your gaming projects...',
-    'Search by technology or skill...'
+    'Search by technology or skill...',
   ]
   return examples[Math.floor(Math.random() * examples.length)]
 })
@@ -294,31 +324,32 @@ const searchPlaceholder = computed(() => {
 // Filtered projects
 const filteredProjects = computed(() => {
   let filtered = [...props.projects]
-  
+
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(project => 
-      project.title?.toLowerCase().includes(query) ||
-      project.description?.toLowerCase().includes(query) ||
-      project.skills?.some(skill => skill.toLowerCase().includes(query)) ||
-      project.tags?.some(tag => tag.toLowerCase().includes(query))
+    filtered = filtered.filter(
+      project =>
+        project.title?.toLowerCase().includes(query) ||
+        project.description?.toLowerCase().includes(query) ||
+        project.skills?.some(skill => skill.toLowerCase().includes(query)) ||
+        project.tags?.some(tag => tag.toLowerCase().includes(query))
     )
   }
-  
+
   if (selectedType.value) {
     filtered = filtered.filter(project => project.type === selectedType.value)
   }
-  
+
   if (featuredOnly.value) {
     filtered = filtered.filter(project => project.featured)
   }
-  
+
   if (selectedSkills.value.length > 0) {
-    filtered = filtered.filter(project => 
+    filtered = filtered.filter(project =>
       project.skillIds?.some(id => selectedSkills.value.includes(id))
     )
   }
-  
+
   return filtered
 })
 
@@ -343,50 +374,74 @@ const matchScore = computed(() => {
 // Skill categories
 const skillCategories = computed(() => [
   { key: 'all', label: 'All Skills', count: props.skills.length },
-  { key: 'technical', label: 'Technical', count: props.skills.filter(s => s.category === 'technical').length },
-  { key: 'gaming', label: 'Gaming', count: props.skills.filter(s => s.category === 'gaming').length },
-  { key: 'creative', label: 'Creative', count: props.skills.filter(s => s.category === 'creative').length },
-  { key: 'soft', label: 'Soft Skills', count: props.skills.filter(s => s.category === 'soft').length }
+  {
+    key: 'technical',
+    label: 'Technical',
+    count: props.skills.filter(s => s.category === 'technical').length,
+  },
+  {
+    key: 'gaming',
+    label: 'Gaming',
+    count: props.skills.filter(s => s.category === 'gaming').length,
+  },
+  {
+    key: 'creative',
+    label: 'Creative',
+    count: props.skills.filter(s => s.category === 'creative').length,
+  },
+  {
+    key: 'soft',
+    label: 'Soft Skills',
+    count: props.skills.filter(s => s.category === 'soft').length,
+  },
 ])
 
 // Filtered skills
 const filteredSkills = computed(() => {
   let filtered = [...props.skills]
-  
+
   if (activeSkillCategory.value !== 'all') {
-    filtered = filtered.filter(skill => skill.category === activeSkillCategory.value)
+    filtered = filtered.filter(
+      skill => skill.category === activeSkillCategory.value
+    )
   }
-  
+
   if (skillSearchQuery.value) {
     const query = skillSearchQuery.value.toLowerCase()
-    filtered = filtered.filter(skill => skill.name.toLowerCase().includes(query))
+    filtered = filtered.filter(skill =>
+      skill.name.toLowerCase().includes(query)
+    )
   }
-  
+
   if (!showAllSkills.value) {
     filtered = filtered.slice(0, 10)
   }
-  
+
   return filtered
 })
 
 // Skills state
 const activeSkillsCount = computed(() => selectedSkills.value.length)
 
-const selectedSkillsData = computed(() => 
+const selectedSkillsData = computed(() =>
   props.skills.filter(skill => selectedSkills.value.includes(skill.id))
 )
 
 const hasMoreSkills = computed(() => {
-  const totalSkills = activeSkillCategory.value === 'all' 
-    ? props.skills.length 
-    : props.skills.filter(s => s.category === activeSkillCategory.value).length
+  const totalSkills =
+    activeSkillCategory.value === 'all'
+      ? props.skills.length
+      : props.skills.filter(s => s.category === activeSkillCategory.value)
+          .length
   return totalSkills > 10
 })
 
 const remainingSkillsCount = computed(() => {
-  const totalSkills = activeSkillCategory.value === 'all' 
-    ? props.skills.length 
-    : props.skills.filter(s => s.category === activeSkillCategory.value).length
+  const totalSkills =
+    activeSkillCategory.value === 'all'
+      ? props.skills.length
+      : props.skills.filter(s => s.category === activeSkillCategory.value)
+          .length
   return Math.max(0, totalSkills - 10)
 })
 
@@ -404,7 +459,7 @@ const updateFilters = () => {
   emit('update:filters', {
     type: selectedType.value,
     featured: featuredOnly.value,
-    skills: selectedSkills.value
+    skills: selectedSkills.value,
   })
 }
 
@@ -412,7 +467,7 @@ const updateSort = () => {
   emit('update:sort', sortBy.value)
 }
 
-const setViewMode = (mode) => {
+const setViewMode = mode => {
   viewMode.value = mode
   emit('update:view-mode', mode)
 }
@@ -426,11 +481,11 @@ const openAITools = () => {
 }
 
 // Skills methods
-const setSkillCategory = (category) => {
+const setSkillCategory = category => {
   activeSkillCategory.value = category
 }
 
-const toggleSkill = (skillId) => {
+const toggleSkill = skillId => {
   const index = selectedSkills.value.indexOf(skillId)
   if (index === -1) {
     selectedSkills.value.push(skillId)
@@ -440,7 +495,7 @@ const toggleSkill = (skillId) => {
   updateFilters()
 }
 
-const removeSkill = (skillId) => {
+const removeSkill = skillId => {
   const index = selectedSkills.value.indexOf(skillId)
   if (index !== -1) {
     selectedSkills.value.splice(index, 1)
@@ -462,9 +517,12 @@ const toggleShowAllSkills = () => {
 }
 
 // Watchers
-watch(() => props.initialViewMode, (newMode) => {
-  viewMode.value = newMode
-})
+watch(
+  () => props.initialViewMode,
+  newMode => {
+    viewMode.value = newMode
+  }
+)
 
 // Initialize
 onMounted(() => {
@@ -491,9 +549,11 @@ onMounted(() => {
 /* Header Section */
 .topbar-header {
   padding: var(--spacing-6) var(--spacing-6) var(--spacing-5);
-  background: linear-gradient(135deg, 
-    rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.03) 0%, 
-    rgba(var(--color-gaming-500-rgb, 168, 85, 247), 0.03) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.03) 0%,
+    rgba(var(--color-gaming-500-rgb, 168, 85, 247), 0.03) 100%
+  );
   border-bottom: 1px solid var(--glass-border);
 }
 
@@ -521,9 +581,11 @@ onMounted(() => {
 .result-count {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  background: linear-gradient(135deg, 
-    var(--color-primary-500) 0%, 
-    var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -580,7 +642,7 @@ onMounted(() => {
 
 .search-input:focus {
   border-color: var(--color-primary-500);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 0 4px rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.1);
   transform: translateY(-2px);
@@ -687,7 +749,7 @@ onMounted(() => {
 
 .toggle-slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 20px;
   width: 20px;
   left: 3px;
@@ -699,7 +761,11 @@ onMounted(() => {
 }
 
 input:checked + .toggle-slider {
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
 }
 
 input:checked + .toggle-slider:before {
@@ -746,10 +812,12 @@ input:checked ~ .toggle-label {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(45deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.1), 
-    transparent);
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transform: rotate(45deg);
   transition: all var(--duration-slow);
   opacity: 0;
@@ -760,9 +828,17 @@ input:checked ~ .toggle-label {
 }
 
 @keyframes shine {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+    opacity: 0;
+  }
 }
 
 .ai-sparkle {
@@ -782,16 +858,23 @@ input:checked ~ .toggle-label {
 }
 
 @keyframes sparkle {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.2) rotate(180deg); }
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
 }
 
 /* Skills Section */
 .skills-section {
   padding: var(--spacing-6);
-  background: linear-gradient(to bottom, 
-    rgba(var(--glass-bg-rgb, 248, 249, 250), 0.5) 0%, 
-    rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--glass-bg-rgb, 248, 249, 250), 0.5) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 .skills-header {
@@ -818,7 +901,11 @@ input:checked ~ .toggle-label {
 }
 
 .active-filters-count {
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   color: white;
   padding: var(--spacing-1) var(--spacing-2-5);
   border-radius: var(--radius-lg);
@@ -828,8 +915,14 @@ input:checked ~ .toggle-label {
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(-10px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .skills-actions {
@@ -843,7 +936,8 @@ input:checked ~ .toggle-label {
 }
 
 .skill-search-input {
-  padding: var(--spacing-1-5) var(--spacing-8) var(--spacing-1-5) var(--spacing-3);
+  padding: var(--spacing-1-5) var(--spacing-8) var(--spacing-1-5)
+    var(--spacing-3);
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
   outline: none;
@@ -896,7 +990,11 @@ input:checked ~ .toggle-label {
 }
 
 .category-tab.active {
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   color: white;
   box-shadow: var(--shadow-glow-primary);
 }
@@ -938,10 +1036,12 @@ input:checked ~ .toggle-label {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.1), 
-    transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.1),
+    transparent
+  );
   transition: left var(--duration-slow) ease;
 }
 
@@ -956,7 +1056,11 @@ input:checked ~ .toggle-label {
 }
 
 .skill-chip.active {
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   color: white;
   border-color: transparent;
   box-shadow: var(--shadow-glow-primary);
@@ -964,9 +1068,15 @@ input:checked ~ .toggle-label {
 }
 
 @keyframes chipActivate {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .skill-chip-icon {
@@ -1055,7 +1165,11 @@ input:checked ~ .toggle-label {
 
 .skill-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary-500) 0%, var(--color-gaming-500) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500) 0%,
+    var(--color-gaming-500) 100%
+  );
   border-radius: var(--radius-sm);
   transition: width var(--duration-slow) ease;
   position: relative;
@@ -1069,13 +1183,22 @@ input:checked ~ .toggle-label {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* Expand Section */
@@ -1139,14 +1262,16 @@ input:checked ~ .toggle-label {
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .portfolio-topbar {
+[data-theme='dark'] .portfolio-topbar {
   background: var(--glass-bg);
   border-color: var(--glass-border);
 }
 
-[data-theme="dark"] .topbar-header {
-  background: linear-gradient(135deg, 
-    rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05) 0%, 
-    rgba(var(--color-gaming-500-rgb, 168, 85, 247), 0.05) 100%);
+[data-theme='dark'] .topbar-header {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.05) 0%,
+    rgba(var(--color-gaming-500-rgb, 168, 85, 247), 0.05) 100%
+  );
 }
 </style>

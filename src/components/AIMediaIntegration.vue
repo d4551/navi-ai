@@ -6,22 +6,49 @@
           <AppIcon name="CpuChipIcon" />
           AI-Powered Media Hub
         </h3>
-        <div class="connection-status" :class="{ 'connected': isAIConnected }">
+        <div class="connection-status" :class="{ connected: isAIConnected }">
           <div v-if="isAIConnected" class="pulse-ring"></div>
           <div class="status-dot"></div>
-          <span class="status-text">{{ isAIConnected ? 'AI Connected' : 'AI Disconnected' }}</span>
+          <span class="status-text">{{
+            isAIConnected ? 'AI Connected' : 'AI Disconnected'
+          }}</span>
         </div>
         <div class="status-badges flex justify-center gap-glass-sm mt-2">
-          <span class="badge" :class="streamStatus.isInitialized ? 'badge-success' : 'badge-warning'">
-            <AppIcon :name="streamStatus.isInitialized ? 'CheckIcon-circle-outline' : 'mdi-alert-circle-outline'" />
+          <span
+            class="badge"
+            :class="
+              streamStatus.isInitialized ? 'badge-success' : 'badge-warning'
+            "
+          >
+            <AppIcon
+              :name="
+                streamStatus.isInitialized
+                  ? 'CheckIcon-circle-outline'
+                  : 'mdi-alert-circle-outline'
+              "
+            />
             SDK {{ streamStatus.isInitialized ? 'Ready' : 'Not Ready' }}
           </span>
-          <span class="badge" :class="streamStatus.hasApiKey ? 'badge-success' : 'badge-error'">
-            <AppIcon :name="streamStatus.hasApiKey ? 'KeyIcon' : 'KeyIcon-remove'" />
+          <span
+            class="badge"
+            :class="streamStatus.hasApiKey ? 'badge-success' : 'badge-error'"
+          >
+            <AppIcon
+              :name="streamStatus.hasApiKey ? 'KeyIcon' : 'KeyIcon-remove'"
+            />
             {{ streamStatus.hasApiKey ? 'Key Loaded' : 'Key Missing' }}
           </span>
-          <span class="badge" :class="streamStatus.isStreaming ? 'badge-info' : 'badge-secondary'">
-            <AppIcon :name="streamStatus.isStreaming ? 'VideoCameraIcon' : 'VideoCameraIcon-off'" />
+          <span
+            class="badge"
+            :class="streamStatus.isStreaming ? 'badge-info' : 'badge-secondary'"
+          >
+            <AppIcon
+              :name="
+                streamStatus.isStreaming
+                  ? 'VideoCameraIcon'
+                  : 'VideoCameraIcon-off'
+              "
+            />
             {{ streamStatus.isStreaming ? 'Streaming' : 'Idle' }}
           </span>
         </div>
@@ -37,7 +64,7 @@
               Media Controls
             </h4>
           </div>
-          <MediaControls 
+          <MediaControls
             ref="mediaControls"
             @stream-started="handleStreamStarted"
             @stream-stopped="handleStreamStopped"
@@ -52,8 +79,14 @@
               <AppIcon name="CpuChipIcon" />
               AI Analysis & Chat
             </h4>
-            <div class="ai-status-badge" :class="{ 'processing': isProcessingAI }">
-              <AppIcon :name="isProcessingAI ? 'ArrowPathIcon' : 'CheckIcon-circle'" :class="{ 'mdi-spin': isProcessingAI }" />
+            <div
+              class="ai-status-badge"
+              :class="{ processing: isProcessingAI }"
+            >
+              <AppIcon
+                :name="isProcessingAI ? 'ArrowPathIcon' : 'CheckIcon-circle'"
+                :class="{ 'mdi-spin': isProcessingAI }"
+              />
               {{ isProcessingAI ? 'Processing...' : 'Ready' }}
             </div>
           </div>
@@ -74,7 +107,9 @@
               </label>
             </div>
             <div v-if="realtimeAnalysis" class="analysis-rate">
-              <label for="analysis-fps">Analysis Rate: {{ analysisFPS }} FPS</label>
+              <label for="analysis-fps"
+                >Analysis Rate: {{ analysisFPS }} FPS</label
+              >
               <input
                 id="analysis-fps"
                 v-model.number="analysisFPS"
@@ -88,30 +123,69 @@
             </div>
             <div class="auto-toggles">
               <div class="form-check form-switch">
-                <input id="auto-start-camera" v-model="autoStartCamera" class="form-check-input" type="checkbox" @change="onToggleAutoStart" />
-                <label class="form-check-label" for="auto-start-camera">Auto Start Camera</label>
+                <input
+                  id="auto-start-camera"
+                  v-model="autoStartCamera"
+                  class="form-check-input"
+                  type="checkbox"
+                  @change="onToggleAutoStart"
+                />
+                <label class="form-check-label" for="auto-start-camera"
+                  >Auto Start Camera</label
+                >
               </div>
               <div class="form-check form-switch">
-                <input id="auto-realtime" v-model="autoRealtime" class="form-check-input" type="checkbox" @change="onToggleAutoRealtime" />
-                <label class="form-check-label" for="auto-realtime">Auto Realtime</label>
+                <input
+                  id="auto-realtime"
+                  v-model="autoRealtime"
+                  class="form-check-input"
+                  type="checkbox"
+                  @change="onToggleAutoRealtime"
+                />
+                <label class="form-check-label" for="auto-realtime"
+                  >Auto Realtime</label
+                >
               </div>
               <div class="form-check form-switch">
-                <input id="auto-start-screen" v-model="autoStartScreen" class="form-check-input" type="checkbox" @change="onToggleAutoScreen" />
-                <label class="form-check-label" for="auto-start-screen">Auto Start Screen Share</label>
+                <input
+                  id="auto-start-screen"
+                  v-model="autoStartScreen"
+                  class="form-check-input"
+                  type="checkbox"
+                  @change="onToggleAutoScreen"
+                />
+                <label class="form-check-label" for="auto-start-screen"
+                  >Auto Start Screen Share</label
+                >
               </div>
               <div class="form-check form-switch">
-                <input id="realtime-on-screen-toggle" v-model="startRealtimeOnScreenStart" class="form-check-input" type="checkbox" @change="onToggleRealtimeOnScreen" />
-                <label class="form-check-label" for="realtime-on-screen-toggle">Realtime on Screen Start</label>
+                <input
+                  id="realtime-on-screen-toggle"
+                  v-model="startRealtimeOnScreenStart"
+                  class="form-check-input"
+                  type="checkbox"
+                  @change="onToggleRealtimeOnScreen"
+                />
+                <label class="form-check-label" for="realtime-on-screen-toggle"
+                  >Realtime on Screen Start</label
+                >
               </div>
             </div>
           </div>
 
           <!-- Quick Prompts -->
           <div class="quick-prompts">
-            <span v-for="p in quickPrompts" :key="p.text" class="prompt-chip" @click="applyQuickPrompt(p)">
+            <span
+              v-for="p in quickPrompts"
+              :key="p.text"
+              class="prompt-chip"
+              @click="applyQuickPrompt(p)"
+            >
               <AppIcon :name="p.icon" /> {{ p.text }}
             </span>
-            <span class="prompt-chip secondary"><AppIcon name="mdi-speedometer" /> {{ analysisFPS }} FPS</span>
+            <span class="prompt-chip secondary"
+              ><AppIcon name="mdi-speedometer" /> {{ analysisFPS }} FPS</span
+            >
           </div>
 
           <!-- AI Prompt Input -->
@@ -138,7 +212,7 @@
 
           <!-- AI Response Area -->
           <div class="ai-responses">
-            <div 
+            <div
               v-for="response in aiResponses"
               :key="response.id"
               class="ai-response-item"
@@ -146,7 +220,9 @@
               <div class="response-header">
                 <AppIcon name="CpuChipIcon" />
                 <span class="response-type">{{ response.type }}</span>
-                <span class="response-time">{{ formatTime(response.timestamp) }}</span>
+                <span class="response-time">{{
+                  formatTime(response.timestamp)
+                }}</span>
               </div>
               <div class="response-content">{{ response.content }}</div>
               <div v-if="response.confidence" class="response-confidence">
@@ -158,16 +234,35 @@
             </div>
           </div>
           <div class="transcript-actions">
-            <UnifiedButton variant="glass" leading-icon="DocumentDuplicateIcon" @click="copyTranscript">Copy Transcript</UnifiedButton>
-            <UnifiedButton variant="primary" leading-icon="mdi-tray-arrow-down" @click="exportLocalSession">Export JSON</UnifiedButton>
-            <UnifiedButton :variant="isRecording ? 'danger' : 'gaming'" :leading-icon="isRecording ? 'StopIcon' : 'mdi-record-rec'" @click="toggleRecording">
+            <UnifiedButton
+              variant="glass"
+              leading-icon="DocumentDuplicateIcon"
+              @click="copyTranscript"
+              >Copy Transcript</UnifiedButton
+            >
+            <UnifiedButton
+              variant="primary"
+              leading-icon="mdi-tray-arrow-down"
+              @click="exportLocalSession"
+              >Export JSON</UnifiedButton
+            >
+            <UnifiedButton
+              :variant="isRecording ? 'danger' : 'gaming'"
+              :leading-icon="isRecording ? 'StopIcon' : 'mdi-record-rec'"
+              @click="toggleRecording"
+            >
               {{ isRecording ? 'Stop Recording' : 'Start Recording' }}
             </UnifiedButton>
-            <UnifiedButton variant="outline" leading-icon="DocumentIcon-export-outline" @click="exportHtmlReport">Export HTML</UnifiedButton>
+            <UnifiedButton
+              variant="outline"
+              leading-icon="DocumentIcon-export-outline"
+              @click="exportHtmlReport"
+              >Export HTML</UnifiedButton
+            >
           </div>
         </div>
       </div>
-      
+
       <!-- Error Display -->
       <div v-if="error" class="error-section glass-surface border-error">
         <div class="error-header">
@@ -176,7 +271,13 @@
         </div>
         <p class="error-message">{{ _error }}</p>
         <div class="error-actions">
-          <UnifiedButton variant="glass" size="sm" leading-icon="XMarkIcon" @click="clearError">Dismiss</UnifiedButton>
+          <UnifiedButton
+            variant="glass"
+            size="sm"
+            leading-icon="XMarkIcon"
+            @click="clearError"
+            >Dismiss</UnifiedButton
+          >
         </div>
       </div>
     </div>
@@ -184,7 +285,14 @@
 </template>
 
 <script setup lang="ts">
-import { CpuChipIcon, DocumentDuplicateIcon, ExclamationCircleIcon, PaperAirplaneIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  CpuChipIcon,
+  DocumentDuplicateIcon,
+  ExclamationCircleIcon,
+  PaperAirplaneIcon,
+  VideoCameraIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import MediaControls from './MediaControls.vue'
@@ -202,12 +310,15 @@ const emit = defineEmits<{
   'integration-error': [message: string]
 }>()
 
-const props = withDefaults(defineProps<{
-  // Optional mode prompt to steer AI behavior (e.g., OCR, Safety, UI QA)
-  modePrompt?: string
-}>(), {
-  modePrompt: ''
-})
+const props = withDefaults(
+  defineProps<{
+    // Optional mode prompt to steer AI behavior (e.g., OCR, Safety, UI QA)
+    modePrompt?: string
+  }>(),
+  {
+    modePrompt: '',
+  }
+)
 
 interface AIResponse {
   id: string
@@ -223,7 +334,13 @@ const mediaStream = ref<MediaStream | null>(null)
 const isAIConnected = ref(false)
 const isProcessingAI = ref(false)
 const error = ref<string | null>(null)
-const streamStatus = ref({ isStreaming: false, isCameraActive: false, isScreenActive: false, isInitialized: false, hasApiKey: false })
+const streamStatus = ref({
+  isStreaming: false,
+  isCameraActive: false,
+  isScreenActive: false,
+  isInitialized: false,
+  hasApiKey: false,
+})
 const isRecording = ref(false)
 
 // Recording internals
@@ -250,7 +367,7 @@ const quickPrompts = [
   { text: 'Describe scene', icon: 'mdi-text-box-search' },
   { text: 'Detect UI text', icon: 'mdi-text-recognition' },
   { text: 'Find hazards', icon: 'mdi-alert' },
-  { text: 'Summarize content', icon: 'mdi-text-long' }
+  { text: 'Summarize content', icon: 'mdi-text-long' },
 ]
 
 function applyQuickPrompt(p: { text: string }) {
@@ -261,13 +378,13 @@ function applyQuickPrompt(p: { text: string }) {
 const checkAIConnection = async () => {
   try {
     isAIConnected.value = canonicalAI.isReady
-    
+
     if (!isAIConnected.value) {
       // Try to initialize AI
       await canonicalAI.initialize({
         primaryProvider: 'google',
         enableMultimodal: true,
-        enableRealTime: true
+        enableRealTime: true,
       })
       isAIConnected.value = true
     }
@@ -277,7 +394,9 @@ const checkAIConnection = async () => {
       const status = googleAIStreamingService.getStatus?.()
       const hasInit = status ? status.isInitialized : false
       if (status) streamStatus.value = status
-      const apiKey = store?.settings?.geminiApiKey || (import.meta as any)?.env?.VITE_GEMINI_API_KEY
+      const apiKey =
+        store?.settings?.geminiApiKey ||
+        (import.meta as any)?.env?.VITE_GEMINI_API_KEY
       if (!hasInit && apiKey) {
         await googleAIStreamingService.initialize(apiKey)
         const s2 = googleAIStreamingService.getStatus?.()
@@ -289,14 +408,21 @@ const checkAIConnection = async () => {
   } catch (err) {
     console.error('AI connection failed:', err)
     isAIConnected.value = false
-    error.value = 'Failed to connect to AI service. Please check your API configuration.'
+    error.value =
+      'Failed to connect to AI service. Please check your API configuration.'
   }
 }
 
 // Handle media stream events
-const handleStreamStarted = (stream: MediaStream, type?: 'webcam' | 'screen') => {
+const handleStreamStarted = (
+  stream: MediaStream,
+  type?: 'webcam' | 'screen'
+) => {
   mediaStream.value = stream
-  if (type === 'screen' && (store.settings?.streaming as any)?.aiStreaming?.startRealtimeOnScreenStart) {
+  if (
+    type === 'screen' &&
+    (store.settings?.streaming as any)?.aiStreaming?.startRealtimeOnScreenStart
+  ) {
     if (!realtimeAnalysis.value) {
       realtimeAnalysis.value = true
       startRealtimeAnalysis()
@@ -316,7 +442,9 @@ const handleStreamStopped = () => {
 const handleMediaError = (errorMessage: string) => {
   const msg = `Media Error: ${errorMessage}`
   error.value = msg
-  try { emit('integration-error', msg) } catch {}
+  try {
+    emit('integration-error', msg)
+  } catch {}
 }
 
 // AI interaction methods
@@ -335,10 +463,10 @@ const sendAIPrompt = async () => {
     if (mediaStream.value) {
       // Send frame data with prompt for visual analysis
       const frameData = await captureCurrentFrame()
-      
+
       response = await googleAIStreamingService.processVideoFrame(frameData, {
         prompt,
-        includeContext: true
+        includeContext: true,
       })
     } else {
       // Text-only interaction
@@ -348,9 +476,8 @@ const sendAIPrompt = async () => {
     addAIResponse({
       type: 'chat',
       content: response.content || response,
-      confidence: response.confidence
+      confidence: response.confidence,
     })
-
   } catch (err) {
     console.error('AI prompt error:', err)
     error.value = `AI Error: ${err instanceof Error ? err.message : 'Unknown error'}`
@@ -369,7 +496,9 @@ const toggleRealtimeAnalysis = () => {
 
 function onToggleAutoStart() {
   try {
-    store.updateSettings({ streaming: { video: { autoStart: autoStartCamera.value } } as any })
+    store.updateSettings({
+      streaming: { video: { autoStart: autoStartCamera.value } } as any,
+    })
     if (autoStartCamera.value && !mediaStream.value) {
       mediaControls.value?.startCamera?.()
       toastInfo('Auto-start camera enabled')
@@ -381,7 +510,9 @@ function onToggleAutoStart() {
 
 function onToggleAutoRealtime() {
   try {
-    store.updateSettings({ streaming: { aiStreaming: { enabled: autoRealtime.value } } as any })
+    store.updateSettings({
+      streaming: { aiStreaming: { enabled: autoRealtime.value } } as any,
+    })
     if (autoRealtime.value && mediaStream.value && !realtimeAnalysis.value) {
       realtimeAnalysis.value = true
       startRealtimeAnalysis()
@@ -397,7 +528,9 @@ function onToggleAutoRealtime() {
 
 function onToggleAutoScreen() {
   try {
-    store.updateSettings({ streaming: { screen: { autoStart: autoStartScreen.value } } as any })
+    store.updateSettings({
+      streaming: { screen: { autoStart: autoStartScreen.value } } as any,
+    })
     if (autoStartScreen.value && !mediaStream.value) {
       mediaControls.value?.shareScreen?.()
       toastInfo('Auto-start screen sharing enabled')
@@ -409,7 +542,13 @@ function onToggleAutoScreen() {
 
 function onToggleRealtimeOnScreen() {
   try {
-    store.updateSettings({ streaming: { aiStreaming: { startRealtimeOnScreenStart: startRealtimeOnScreenStart.value } } as any })
+    store.updateSettings({
+      streaming: {
+        aiStreaming: {
+          startRealtimeOnScreenStart: startRealtimeOnScreenStart.value,
+        },
+      } as any,
+    })
   } catch {
     toastError('Failed to update setting')
   }
@@ -419,24 +558,29 @@ const startRealtimeAnalysis = () => {
   if (analysisInterval.value) return
 
   const intervalMs = 1000 / analysisFPS.value
-  
+
   analysisInterval.value = window.setInterval(async () => {
     if (!mediaStream.value || !isAIConnected.value) return
 
     try {
       const frameData = await captureCurrentFrame()
       const basePrompt = 'Briefly describe what you see in this frame'
-      const prompt = props.modePrompt ? `${basePrompt}\n\nContext: ${props.modePrompt}` : basePrompt
-      const response = await googleAIStreamingService.processVideoFrame(frameData, {
-        prompt,
-        includeContext: false
-      })
+      const prompt = props.modePrompt
+        ? `${basePrompt}\n\nContext: ${props.modePrompt}`
+        : basePrompt
+      const response = await googleAIStreamingService.processVideoFrame(
+        frameData,
+        {
+          prompt,
+          includeContext: false,
+        }
+      )
 
       if (response && response.content) {
         addAIResponse({
           type: 'realtime',
           content: response.content,
-          confidence: response.confidence
+          confidence: response.confidence,
         })
       }
     } catch (err) {
@@ -479,7 +623,7 @@ const captureCurrentFrame = async (): Promise<string> => {
     video.addEventListener('loadedmetadata', () => {
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
-      
+
       if (ctx) {
         ctx.drawImage(video, 0, 0)
         const dataURL = canvas.toDataURL('image/jpeg', 0.8)
@@ -499,13 +643,15 @@ const addAIResponse = (responseData: Omit<AIResponse, 'id' | 'timestamp'>) => {
   const response: AIResponse = {
     id: `ai-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     timestamp: new Date(),
-    ...responseData
+    ...responseData,
   }
 
   aiResponses.value.push(response)
 
   // Emit for parent listeners (e.g., analytics/timeline)
-  try { emit('ai-response', response) } catch {}
+  try {
+    emit('ai-response', response)
+  } catch {}
 
   // Limit response history
   if (aiResponses.value.length > 10) {
@@ -514,7 +660,11 @@ const addAIResponse = (responseData: Omit<AIResponse, 'id' | 'timestamp'>) => {
 }
 
 const formatTime = (date: Date): string => {
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  return date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
 }
 
 const clearError = () => {
@@ -548,7 +698,10 @@ function toggleRecording() {
       }
       mediaRecorder.start()
       // Optional: start realtime when recording begins
-      if (!realtimeAnalysis.value && (store.settings?.streaming as any)?.aiStreaming?.startRealtimeOnRecord) {
+      if (
+        !realtimeAnalysis.value &&
+        (store.settings?.streaming as any)?.aiStreaming?.startRealtimeOnRecord
+      ) {
         realtimeAnalysis.value = true
         startRealtimeAnalysis()
       }
@@ -567,7 +720,9 @@ function toggleRecording() {
 
 // Transcript helpers
 function getTranscript(): string {
-  return aiResponses.value.map(r => `[${formatTime(r.timestamp)}][${r.type}] ${r.content}`).join('\n')
+  return aiResponses.value
+    .map(r => `[${formatTime(r.timestamp)}][${r.type}] ${r.content}`)
+    .join('\n')
 }
 
 async function copyTranscript() {
@@ -586,14 +741,16 @@ function getSessionData(): any {
     lastFramePreview: lastFramePreview.value,
     realtimeAnalysis: realtimeAnalysis.value,
     analysisFPS: analysisFPS.value,
-    exportedAt: new Date().toISOString()
+    exportedAt: new Date().toISOString(),
   }
 }
 
 function exportLocalSession() {
   try {
     const data = getSessionData()
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: 'application/json',
+    })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -607,15 +764,27 @@ function exportLocalSession() {
 
 function exportHtmlReport() {
   try {
-    const responsesHtml = aiResponses.value.map(r => `
+    const responsesHtml = aiResponses.value
+      .map(
+        r => `
       <div class="resp">
         <div class="meta">${formatTime(r.timestamp)} • ${r.type}</div>
-        <div class="content">${(r.content || '').replace(/</g,'&lt;')}</div>
+        <div class="content">${(r.content || '').replace(/</g, '&lt;')}</div>
       </div>
-    `).join('')
-    const imgHtml = lastFramePreview.value ? `<img src="${lastFramePreview.value}" alt="Frame" class="frame"/>` : ''
-    const confs = aiResponses.value.map(r => (typeof r.confidence === 'number' ? r.confidence : null)).filter(v => v !== null) as number[]
-    const avgConf = confs.length ? Math.round((confs.reduce((a,b)=>a+(b as number),0) / confs.length) * 100) : 0
+    `
+      )
+      .join('')
+    const imgHtml = lastFramePreview.value
+      ? `<img src="${lastFramePreview.value}" alt="Frame" class="frame"/>`
+      : ''
+    const confs = aiResponses.value
+      .map(r => (typeof r.confidence === 'number' ? r.confidence : null))
+      .filter(v => v !== null) as number[]
+    const avgConf = confs.length
+      ? Math.round(
+          (confs.reduce((a, b) => a + (b as number), 0) / confs.length) * 100
+        )
+      : 0
     const frames = aiResponses.value.filter(r => r.type === 'realtime').length
     const html = `<!DOCTYPE html>
     <html><head><meta charset="utf-8" />
@@ -672,9 +841,11 @@ onMounted(async () => {
   // Init toggles from settings
   try {
     autoStartCamera.value = !!store.settings?.streaming?.video?.autoStart
-    autoRealtime.value = !!(store.settings?.streaming as any)?.aiStreaming?.enabled
+    autoRealtime.value = !!(store.settings?.streaming as any)?.aiStreaming
+      ?.enabled
     autoStartScreen.value = !!store.settings?.streaming?.screen?.autoStart
-    startRealtimeOnScreenStart.value = !!(store.settings?.streaming as any)?.aiStreaming?.startRealtimeOnScreenStart
+    startRealtimeOnScreenStart.value = !!(store.settings?.streaming as any)
+      ?.aiStreaming?.startRealtimeOnScreenStart
     const fps = Number((store.settings?.streaming as any)?.aiStreaming?.fps)
     if (!Number.isNaN(fps) && fps >= 1 && fps <= 30) {
       analysisFPS.value = fps
@@ -687,13 +858,13 @@ onUnmounted(() => {
 })
 
 // Watch for AI connection changes
-watch(isAIConnected, (connected) => {
+watch(isAIConnected, connected => {
   if (!connected && realtimeAnalysis.value) {
     stopRealtimeAnalysis()
   }
 })
 
-watch(mediaStream, (s) => {
+watch(mediaStream, s => {
   if (s && autoRealtime.value && !realtimeAnalysis.value) {
     realtimeAnalysis.value = true
     startRealtimeAnalysis()
@@ -726,7 +897,7 @@ defineExpose({
   stopAll: () => mediaControls.value?.stopAll?.(),
   getSessionData,
   copyTranscript,
-  captureSnapshot
+  captureSnapshot,
 })
 </script>
 
@@ -798,7 +969,9 @@ defineExpose({
   border-b: 1px solid var(--border-glass);
 }
 
-.media-section, .ai-section, .error-section {
+.media-section,
+.ai-section,
+.error-section {
   padding: var(--spacing-lg);
   border-radius: var(--radius-card);
 }
@@ -843,11 +1016,11 @@ defineExpose({
   border-radius: var(--radius-md);
 }
 
-.auto-toggles { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-  gap: var(--spacing-3); 
-  margin-top: var(--spacing-md); 
+.auto-toggles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-md);
 }
 
 @media (max-width: 768px) {
@@ -856,23 +1029,23 @@ defineExpose({
   }
 }
 
-.quick-prompts { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: var(--spacing-2); 
-  margin-bottom: var(--spacing-md); 
+.quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-md);
 }
 
-.prompt-chip { 
-  display: inline-flex; 
-  align-items: center; 
-  gap: var(--spacing-1); 
-  padding: var(--spacing-2) var(--spacing-3); 
-  border-radius: var(--radius-full); 
-  background: var(--glass-bg); 
-  border: 1px solid var(--glass-border); 
-  cursor: pointer; 
-  font-size: 0.85rem; 
+.prompt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-full);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  font-size: 0.85rem;
   transition: all 0.2s ease;
 }
 
@@ -881,8 +1054,8 @@ defineExpose({
   transform: translateY(-1px);
 }
 
-.prompt-chip.secondary { 
-  opacity: 0.8; 
+.prompt-chip.secondary {
+  opacity: 0.8;
   cursor: default;
   background: var(--surface-glass);
 }
@@ -921,10 +1094,18 @@ defineExpose({
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
   background: var(--surface-elevated);
-  }
+}
 
-.frame-preview { margin-top: var(--spacing-md); display:flex; justify-content:flex-end; }
-.frame-preview img { max-height: 120px; border-radius: var(--radius-sm); border:1px solid var(--glass-border); }
+.frame-preview {
+  margin-top: var(--spacing-md);
+  display: flex;
+  justify-content: flex-end;
+}
+.frame-preview img {
+  max-height: 120px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+}
 
 .ai-response-item {
   margin-bottom: var(--spacing-md);
@@ -991,12 +1172,12 @@ defineExpose({
 }
 
 /* Dark mode adjustments */
-[data-theme="dark"] .ai-responses {
+[data-theme='dark'] .ai-responses {
   background: var(--surface-glass);
   border-color: var(--border-glass);
 }
 
-[data-theme="dark"] .ai-response-item {
+[data-theme='dark'] .ai-response-item {
   background: var(--surface-elevated);
   border-l-color: var(--color-primary-400);
 }
@@ -1006,17 +1187,17 @@ defineExpose({
   .ai-media-integration {
     padding: var(--spacing-sm);
   }
-  
+
   .media-section {
     position: static;
   }
-  
+
   .section-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-sm);
   }
-  
+
   .ai-status-badge {
     align-self: flex-start;
   }
@@ -1027,11 +1208,13 @@ defineExpose({
   transition: all 0.3s ease;
 }
 
-.media-section, .ai-section {
+.media-section,
+.ai-section {
   transition: all 0.2s ease;
 }
 
-.ai-section:hover, .media-section:hover {
+.ai-section:hover,
+.media-section:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-elevated);
 }

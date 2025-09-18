@@ -4,9 +4,18 @@ const require = createRequire(import.meta.url)
 
 // Attempt to include optional Tailwind plugins if installed
 const optionalPlugins = []
-try { optionalPlugins.push(require('@tailwindcss/forms')) } catch {}
-try { optionalPlugins.push(require('@tailwindcss/typography')) } catch {}
-try { optionalPlugins.push(require('@tailwindcss/aspect-ratio')) } catch {}
+try {
+  optionalPlugins.push(require('@tailwindcss/forms'))
+} catch {}
+try {
+  optionalPlugins.push(require('@tailwindcss/typography'))
+} catch {}
+try {
+  optionalPlugins.push(require('@tailwindcss/aspect-ratio'))
+} catch {}
+try {
+  optionalPlugins.push(require('@tailwindplus/elements/plugin'))
+} catch {}
 
 export default {
   important: true,
@@ -38,43 +47,24 @@ export default {
           'Arial',
           'sans-serif',
         ],
-        display: [
-          'Electrolize',
-          'Inter',
-          'system-ui',
-          'sans-serif',
-        ],
-        gaming: [
-          'Orbitron',
-          'Electrolize',
-          'Inter',
-          'system-ui',
-          'sans-serif',
-        ],
+        display: ['Electrolize', 'Inter', 'system-ui', 'sans-serif'],
+        gaming: ['Orbitron', 'Electrolize', 'Inter', 'system-ui', 'sans-serif'],
         mono: [
-          'Fira Code',
-          'JetBrains Mono',
-          'SF Mono',
+          "'Fira Code Variable'",
+          "'Fira Code'",
+          'ui-monospace',
+          'SFMono-Regular',
           'Monaco',
-          'Inconsolata',
-          'Roboto Mono',
-          'Menlo',
           'Consolas',
-          'Liberation Mono',
-          'Courier New',
           'monospace',
         ],
         code: [
-          'Fira Code',
-          'JetBrains Mono',
-          'SF Mono',
+          "'Fira Code Variable'",
+          "'Fira Code'",
+          'ui-monospace',
+          'SFMono-Regular',
           'Monaco',
-          'Inconsolata',
-          'Roboto Mono',
-          'Menlo',
           'Consolas',
-          'Liberation Mono',
-          'Courier New',
           'monospace',
         ],
       },
@@ -202,10 +192,10 @@ export default {
         '5xl': '2.5rem',
       },
       spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '100': '25rem',
-        '128': '32rem',
+        18: '4.5rem',
+        88: '22rem',
+        100: '25rem',
+        128: '32rem',
         // Enhanced glassmorphic spacing
         'glass-xs': '0.25rem',
         'glass-sm': '0.5rem',
@@ -251,19 +241,23 @@ export default {
         },
       },
       boxShadow: {
-        'glass': '0 8px 32px rgba(31, 38, 135, 0.37)',
+        glass: '0 8px 32px rgba(31, 38, 135, 0.37)',
         'glass-sm': '0 2px 8px rgba(0, 0, 0, 0.1)',
         'glass-md': '0 4px 16px rgba(0, 0, 0, 0.12)',
         'glass-lg': '0 8px 32px rgba(0, 0, 0, 0.15)',
         'glass-xl': '0 16px 64px rgba(0, 0, 0, 0.2)',
         'glass-inset': 'inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-        'glow': '0 0 20px rgba(59, 130, 246, 0.5)',
-        'glow-neon-blue': '0 0 20px rgba(var(--neon-blue), 0.3), 0 0 40px rgba(var(--neon-blue), 0.1)',
-        'glow-neon-red': '0 0 20px rgba(var(--neon-red), 0.3), 0 0 40px rgba(var(--neon-red), 0.1)',
-        'glow-neon-green': '0 0 20px rgba(var(--neon-green), 0.3), 0 0 40px rgba(var(--neon-green), 0.1)',
-        'glow-neon-purple': '0 0 20px rgba(var(--neon-purple), 0.3), 0 0 40px rgba(var(--neon-purple), 0.1)',
-        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        'modal': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        glow: '0 0 20px rgba(59, 130, 246, 0.5)',
+        'glow-neon-blue':
+          '0 0 20px rgba(var(--neon-blue), 0.3), 0 0 40px rgba(var(--neon-blue), 0.1)',
+        'glow-neon-red':
+          '0 0 20px rgba(var(--neon-red), 0.3), 0 0 40px rgba(var(--neon-red), 0.1)',
+        'glow-neon-green':
+          '0 0 20px rgba(var(--neon-green), 0.3), 0 0 40px rgba(var(--neon-green), 0.1)',
+        'glow-neon-purple':
+          '0 0 20px rgba(var(--neon-purple), 0.3), 0 0 40px rgba(var(--neon-purple), 0.1)',
+        soft: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        modal: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
       },
       screens: {
         xs: '480px',
@@ -272,7 +266,7 @@ export default {
   },
   plugins: [
     ...optionalPlugins,
-    function({ addUtilities, addComponents, theme }) {
+    function ({ addUtilities, addComponents, theme }) {
       // Glassmorphic utility classes
       addUtilities({
         '.glass': {
@@ -332,22 +326,28 @@ export default {
       // Neon glow utilities
       addUtilities({
         '.neon-glow-blue': {
-          boxShadow: '0 0 20px rgba(var(--neon-blue), 0.4), 0 0 40px rgba(var(--neon-blue), 0.2)',
+          boxShadow:
+            '0 0 20px rgba(var(--neon-blue), 0.4), 0 0 40px rgba(var(--neon-blue), 0.2)',
         },
         '.neon-glow-red': {
-          boxShadow: '0 0 20px rgba(var(--neon-red), 0.4), 0 0 40px rgba(var(--neon-red), 0.2)',
+          boxShadow:
+            '0 0 20px rgba(var(--neon-red), 0.4), 0 0 40px rgba(var(--neon-red), 0.2)',
         },
         '.neon-glow-green': {
-          boxShadow: '0 0 20px rgba(var(--neon-green), 0.4), 0 0 40px rgba(var(--neon-green), 0.2)',
+          boxShadow:
+            '0 0 20px rgba(var(--neon-green), 0.4), 0 0 40px rgba(var(--neon-green), 0.2)',
         },
         '.neon-glow-purple': {
-          boxShadow: '0 0 20px rgba(var(--neon-purple), 0.4), 0 0 40px rgba(var(--neon-purple), 0.2)',
+          boxShadow:
+            '0 0 20px rgba(var(--neon-purple), 0.4), 0 0 40px rgba(var(--neon-purple), 0.2)',
         },
         '.neon-glow-pink': {
-          boxShadow: '0 0 20px rgba(var(--neon-pink), 0.4), 0 0 40px rgba(var(--neon-pink), 0.2)',
+          boxShadow:
+            '0 0 20px rgba(var(--neon-pink), 0.4), 0 0 40px rgba(var(--neon-pink), 0.2)',
         },
         '.neon-glow-cyan': {
-          boxShadow: '0 0 20px rgba(var(--neon-cyan), 0.4), 0 0 40px rgba(var(--neon-cyan), 0.2)',
+          boxShadow:
+            '0 0 20px rgba(var(--neon-cyan), 0.4), 0 0 40px rgba(var(--neon-cyan), 0.2)',
         },
       })
 
@@ -396,11 +396,13 @@ export default {
       addUtilities({
         '.text-glass-primary': {
           color: 'var(--text-primary)',
-          textShadow: '0 1px 2px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2)',
+          textShadow:
+            '0 1px 2px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2)',
         },
         '.text-glass-secondary': {
           color: 'var(--text-secondary)',
-          textShadow: '0 1px 2px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2)',
+          textShadow:
+            '0 1px 2px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.2)',
         },
         '.text-glass-readable': {
           color: 'var(--text-primary)',
@@ -423,18 +425,22 @@ export default {
         },
         '.text-neon': {
           color: 'rgb(var(--neon-blue))',
-          textShadow: '0 0 5px rgba(var(--neon-blue), 0.5), 0 0 10px rgba(var(--neon-blue), 0.3)',
+          textShadow:
+            '0 0 5px rgba(var(--neon-blue), 0.5), 0 0 10px rgba(var(--neon-blue), 0.3)',
         },
         '.text-neon-green': {
           color: 'rgb(var(--neon-green))',
-          textShadow: '0 0 5px rgba(var(--neon-green), 0.5), 0 0 10px rgba(var(--neon-green), 0.3)',
+          textShadow:
+            '0 0 5px rgba(var(--neon-green), 0.5), 0 0 10px rgba(var(--neon-green), 0.3)',
         },
         '.text-neon-red': {
           color: 'rgb(var(--neon-red))',
-          textShadow: '0 0 5px rgba(var(--neon-red), 0.5), 0 0 10px rgba(var(--neon-red), 0.3)',
+          textShadow:
+            '0 0 5px rgba(var(--neon-red), 0.5), 0 0 10px rgba(var(--neon-red), 0.3)',
         },
         '.text-gradient': {
-          background: 'linear-gradient(135deg, rgb(var(--neon-blue)), rgb(var(--neon-purple)))',
+          background:
+            'linear-gradient(135deg, rgb(var(--neon-blue)), rgb(var(--neon-purple)))',
           '-webkit-background-clip': 'text',
           '-webkit-text-fill-color': 'transparent',
           'background-clip': 'text',
@@ -508,7 +514,7 @@ export default {
 
       // Legacy typography aliases mapped to Tailwind theme tokens
       // Ensures pages use Tailwind-driven sizes/weights/colors instead of legacy CSS
-      const fontSizeEntry = (key) => {
+      const fontSizeEntry = key => {
         const v = theme(`fontSize.${key}`)
         if (Array.isArray(v)) {
           return { fontSize: v[0], ...(v[1] || {}) }
@@ -518,24 +524,30 @@ export default {
       const titleStyles = (sizeKey, weight = '700') => ({
         ...fontSizeEntry(sizeKey),
         fontWeight: weight,
-        color: 'var(--text-primary)'
+        color: 'var(--text-primary)',
       })
       const textStyles = (sizeKey, weight = '400') => ({
         ...fontSizeEntry(sizeKey),
         fontWeight: weight,
-        color: 'var(--text-secondary)'
+        color: 'var(--text-secondary)',
       })
 
       const displayFonts = theme('fontFamily.display')
       const fontFamilyValue = Array.isArray(displayFonts)
         ? displayFonts.join(', ')
-        : (displayFonts || 'inherit')
+        : displayFonts || 'inherit'
 
       addComponents({
         '.section-title': titleStyles('2xl', '700'),
-        '.section-subtitle': { ...textStyles('sm', '500'), color: 'var(--text-secondary)' },
+        '.section-subtitle': {
+          ...textStyles('sm', '500'),
+          color: 'var(--text-secondary)',
+        },
         '.panel-title': titleStyles('lg', '600'),
-        '.panel-subtitle': { ...textStyles('sm', '400'), color: 'var(--text-secondary)' },
+        '.panel-subtitle': {
+          ...textStyles('sm', '400'),
+          color: 'var(--text-secondary)',
+        },
         '.card-title': titleStyles('lg', '600'),
         '.action-title': titleStyles('base', '600'),
         '.progress-title': titleStyles('base', '600'),
@@ -544,14 +556,20 @@ export default {
           letterSpacing: theme('letterSpacing.wide') || '0.025em',
           fontFamily: fontFamilyValue,
         },
-        '.logo-subtitle': { ...textStyles('sm', '500'), color: 'var(--text-muted)' },
+        '.logo-subtitle': {
+          ...textStyles('sm', '500'),
+          color: 'var(--text-muted)',
+        },
         '.body-text': textStyles('base', '400'),
-        '.muted-text': { ...textStyles('sm', '400'), color: 'var(--text-muted)' },
+        '.muted-text': {
+          ...textStyles('sm', '400'),
+          color: 'var(--text-muted)',
+        },
         '.text-primary': { color: 'var(--text-primary)' },
         '.text-secondary': { color: 'var(--text-secondary)' },
         '.text-tertiary': { color: 'var(--text-tertiary)' },
         '.text-muted': { color: 'var(--text-muted)' },
       })
-    }
+    },
   ],
 }

@@ -1,12 +1,12 @@
 <template>
-  <article 
-    class="portfolio-item-card font-sans" 
+  <article
+    class="portfolio-item-card font-sans"
     :class="[
       `portfolio-item-card--${viewMode}`,
-      { 
+      {
         'portfolio-item-card--featured': item.featured,
-        'portfolio-item-card--selected': selected
-      }
+        'portfolio-item-card--selected': selected,
+      },
     ]"
     @click="handleClick"
   >
@@ -27,27 +27,27 @@
     <div class="thumbnail-section">
       <div class="thumbnail-container">
         <!-- Media Thumbnail -->
-        <img 
+        <img
           v-if="getMediaUrl()"
-          :src="getMediaUrl()!"
+          :src="getMediaUrl() || ''"
           :alt="item.title || 'Project thumbnail'"
           class="thumbnail-image"
           @error="handleImageError"
           @load="onImageLoad"
         />
         <!-- Icon Fallback -->
-        <div 
+        <div
           v-else
           class="thumbnail-icon-container"
           :class="`thumbnail-type--${item.type || 'project'}`"
         >
           <Icon :name="getTypeIcon(item.type)" class="thumbnail-icon" />
         </div>
-        
+
         <!-- Hover Overlay -->
         <div class="thumbnail-overlay">
           <div class="overlay-actions">
-            <button 
+            <button
               v-if="item.liveUrl || item.links?.find(l => l.type === 'live')"
               class="overlay-btn"
               :title="'View live project'"
@@ -55,8 +55,10 @@
             >
               <Icon name="open-in-new" />
             </button>
-            <button 
-              v-if="item.githubUrl || item.links?.find(l => l.type === 'source')"
+            <button
+              v-if="
+                item.githubUrl || item.links?.find(l => l.type === 'source')
+              "
               class="overlay-btn"
               :title="'View source code'"
               @click.stop="openSourceLink"
@@ -84,9 +86,9 @@
             </span>
           </div>
         </div>
-        
+
         <div class="actions-menu">
-          <button 
+          <button
             class="actions-trigger"
             :aria-expanded="showActions"
             :aria-label="'Item actions'"
@@ -94,7 +96,7 @@
           >
             <Icon name="more-vertical" />
           </button>
-          
+
           <div v-if="showActions" class="actions-dropdown">
             <button class="action-item" @click.stop="$emit('view', item)">
               <Icon name="open-in-new" size="16" />
@@ -108,11 +110,17 @@
               <Icon name="copy" size="16" />
               <span>Duplicate</span>
             </button>
-            <button class="action-item" @click.stop="$emit('export-onepager', item)">
+            <button
+              class="action-item"
+              @click.stop="$emit('export-onepager', item)"
+            >
               <Icon name="file-text" size="16" />
               <span>Export One-Pager</span>
             </button>
-            <button class="action-item" @click.stop="$emit('toggle-featured', item)">
+            <button
+              class="action-item"
+              @click.stop="$emit('toggle-featured', item)"
+            >
               <Icon :name="item.featured ? 'star' : 'star-outline'" size="16" />
               <span>{{ item.featured ? 'Unfeature' : 'Feature' }}</span>
             </button>
@@ -121,7 +129,10 @@
               <span>Share</span>
             </button>
             <div class="action-divider"></div>
-            <button class="action-item danger" @click.stop="$emit('delete', item)">
+            <button
+              class="action-item danger"
+              @click.stop="$emit('delete', item)"
+            >
               <Icon name="trash" size="16" />
               <span>Delete</span>
             </button>
@@ -132,7 +143,7 @@
       <!-- Description -->
       <div v-if="item.description" class="item-description">
         <p>{{ truncateText(item.description, descriptionLength) }}</p>
-        <button 
+        <button
           v-if="item.description.length > descriptionLength"
           class="read-more-btn"
           @click.stop="toggleExpanded"
@@ -143,18 +154,24 @@
 
       <!-- Technologies/Skills -->
       <div v-if="item.technologies || item.skills" class="tech-tags">
-        <span 
-          v-for="tech in (item.technologies || item.skills || []).slice(0, maxTechTags)"
+        <span
+          v-for="tech in (item.technologies || item.skills || []).slice(
+            0,
+            maxTechTags
+          )"
           :key="tech"
           class="tech-tag"
         >
           {{ tech }}
         </span>
-        <span 
+        <span
           v-if="(item.technologies || item.skills || []).length > maxTechTags"
           class="tech-more"
         >
-          +{{ (item.technologies || item.skills || []).length - maxTechTags }} more
+          +{{
+            (item.technologies || item.skills || []).length - maxTechTags
+          }}
+          more
         </span>
       </div>
 
@@ -166,8 +183,8 @@
 
       <!-- Stats/Metrics -->
       <div v-if="item.metrics || item.stats" class="item-metrics compact-grid">
-        <div 
-          v-for="(value, key) in (item.metrics || item.stats || {})"
+        <div
+          v-for="(value, key) in item.metrics || item.stats || {}"
           :key="key"
           class="metric-item"
         >
@@ -179,7 +196,7 @@
       <!-- Footer Actions -->
       <footer class="item-footer">
         <div class="footer-links">
-          <a 
+          <a
             v-for="link in (item.links || []).slice(0, 3)"
             :key="link.url"
             :href="link.url"
@@ -192,7 +209,7 @@
             <span>{{ link.label || formatLinkType(link.type) }}</span>
           </a>
         </div>
-        
+
         <div class="footer-meta">
           <span v-if="item.role" class="item-role">{{ item.role }}</span>
           <span v-if="viewMode === 'list' && item.platforms" class="platforms">
@@ -245,7 +262,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   viewMode: 'grid',
   selectionMode: false,
-  selected: false
+  selected: false,
 })
 
 const emit = defineEmits<{
@@ -259,7 +276,12 @@ const emit = defineEmits<{
 }>()
 
 const slug = computed(() => {
-  const slugify = (s: string = '') => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60)
+  const slugify = (s: string = '') =>
+    s
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60)
   return slugify(props.item.title || 'project')
 })
 
@@ -270,17 +292,23 @@ const expanded = ref(false)
 // Computed properties
 const descriptionLength = computed(() => {
   switch (props.viewMode) {
-    case 'list': return 300
-    case 'timeline': return 200
-    default: return 150
+    case 'list':
+      return 300
+    case 'timeline':
+      return 200
+    default:
+      return 150
   }
 })
 
 const maxTechTags = computed(() => {
   switch (props.viewMode) {
-    case 'list': return 8
-    case 'timeline': return 5
-    default: return 4
+    case 'list':
+      return 8
+    case 'timeline':
+      return 5
+    default:
+      return 4
   }
 })
 
@@ -327,14 +355,17 @@ const getMediaUrl = (): string | null => {
 }
 
 const openLiveLink = () => {
-  const url = props.item.liveUrl || props.item.links?.find(l => l.type === 'live')?.url
+  const url =
+    props.item.liveUrl || props.item.links?.find(l => l.type === 'live')?.url
   if (url) {
     window.open(url, '_blank', 'noopener,noreferrer')
   }
 }
 
 const openSourceLink = () => {
-  const url = props.item.githubUrl || props.item.links?.find(l => l.type === 'source')?.url
+  const url =
+    props.item.githubUrl ||
+    props.item.links?.find(l => l.type === 'source')?.url
   if (url) {
     window.open(url, '_blank', 'noopener,noreferrer')
   }
@@ -345,7 +376,7 @@ const shareItem = () => {
     navigator.share({
       title: props.item.title,
       text: props.item.description,
-      url: window.location.href
+      url: window.location.href,
     })
   } else {
     // Fallback: copy to clipboard
@@ -362,9 +393,9 @@ const truncateText = (text: string, maxLength: number): string => {
 const formatDate = (dateStr: string): string => {
   try {
     const date = new Date(dateStr)
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
     })
   } catch {
     return dateStr
@@ -372,7 +403,8 @@ const formatDate = (dateStr: string): string => {
 }
 
 const formatMetricLabel = (key: string): string => {
-  return key.replace(/([A-Z])/g, ' $1')
+  return key
+    .replace(/([A-Z])/g, ' $1')
     .replace(/^./, str => str.toUpperCase())
     .replace(/_/g, ' ')
 }
@@ -391,7 +423,7 @@ const formatLinkType = (type?: string): string => {
     video: 'Video',
     article: 'Article',
     store: 'Store Page',
-    docs: 'Documentation'
+    docs: 'Documentation',
   }
   return types[type || ''] || 'Link'
 }
@@ -411,7 +443,7 @@ const getTypeIcon = (type?: string): string => {
     tool: 'wrench',
     demo: 'monitor',
     app: 'application',
-    website: 'earth'
+    website: 'earth',
   }
   return icons[type || ''] || 'folder'
 }
@@ -428,7 +460,7 @@ const getTypeLabel = (type?: string): string => {
     game: 'Game',
     web: 'Web App',
     mobile: 'Mobile App',
-    tool: 'Tool'
+    tool: 'Tool',
   }
   return labels[type || ''] || 'Portfolio Item'
 }
@@ -442,7 +474,7 @@ const getLinkIcon = (type?: string): string => {
     store: 'shopping-cart',
     docs: 'book',
     itch: 'gamepad',
-    steam: 'gamepad-2'
+    steam: 'gamepad-2',
   }
   return icons[type || ''] || 'link'
 }
@@ -466,9 +498,11 @@ onUnmounted(() => {
 
 <style scoped>
 .portfolio-item-card {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.08) 0%, 
-    rgba(255, 255, 255, 0.03) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -482,12 +516,14 @@ onUnmounted(() => {
 }
 
 .portfolio-item-card:hover {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.12) 0%, 
-    rgba(124, 58, 237, 0.08) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(124, 58, 237, 0.08) 100%
+  );
   border-color: rgba(124, 58, 237, 0.4);
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 20px 80px rgba(124, 58, 237, 0.25),
     0 8px 32px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -495,9 +531,11 @@ onUnmounted(() => {
 
 .portfolio-item-card--featured {
   border-color: rgba(251, 191, 36, 0.6);
-  background: linear-gradient(135deg, 
-    rgba(251, 191, 36, 0.08) 0%, 
-    rgba(255, 255, 255, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.08) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
   position: relative;
 }
 
@@ -507,11 +545,15 @@ onUnmounted(() => {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, 
-    rgba(251, 191, 36, 0.8) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.8) 0%,
     rgba(251, 191, 36, 0.3) 50%,
-    transparent 100%);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    transparent 100%
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: xor;
   -webkit-mask-composite: xor;
   pointer-events: none;
@@ -582,7 +624,7 @@ onUnmounted(() => {
   z-index: 5;
   text-transform: uppercase;
   letter-spacing: 0.75px;
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(251, 191, 36, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -590,15 +632,16 @@ onUnmounted(() => {
 }
 
 @keyframes featuredPulse {
-  0%, 100% { 
+  0%,
+  100% {
     transform: scale(1);
-    box-shadow: 
+    box-shadow:
       0 4px 16px rgba(251, 191, 36, 0.4),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
-  50% { 
+  50% {
     transform: scale(1.05);
-    box-shadow: 
+    box-shadow:
       0 6px 24px rgba(251, 191, 36, 0.6),
       inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
@@ -631,7 +674,11 @@ onUnmounted(() => {
 .media-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.1),
+    rgba(236, 72, 153, 0.1)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -703,9 +750,7 @@ onUnmounted(() => {
   color: var(--text-primary-600, #ffffff);
   margin: 0 0 0.75rem 0;
   line-height: 1.3;
-  background: linear-gradient(135deg, 
-    #ffffff 0%, 
-    rgba(124, 58, 237, 0.8) 100%);
+  background: linear-gradient(135deg, #ffffff 0%, rgba(124, 58, 237, 0.8) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -831,9 +876,11 @@ onUnmounted(() => {
 }
 
 .tech-tag {
-  background: linear-gradient(135deg, 
-    rgba(124, 58, 237, 0.15) 0%, 
-    rgba(255, 255, 255, 0.08) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
   border: 1px solid rgba(124, 58, 237, 0.3);
   border-radius: 0.875rem;
   padding: 0.375rem 0.875rem;
@@ -845,9 +892,11 @@ onUnmounted(() => {
 }
 
 .tech-tag:hover {
-  background: linear-gradient(135deg, 
-    rgba(124, 58, 237, 0.25) 0%, 
-    rgba(255, 255, 255, 0.12) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.25) 0%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
   border-color: rgba(124, 58, 237, 0.5);
   transform: translateY(-1px);
 }
@@ -969,61 +1018,61 @@ onUnmounted(() => {
   .portfolio-item-card {
     border-radius: 1rem;
   }
-  
+
   .portfolio-item-card:hover {
     transform: translateY(-4px) scale(1.01);
   }
-  
+
   .portfolio-item-card--list {
     flex-direction: column;
   }
-  
+
   .portfolio-item-card--list .thumbnail-section {
     flex: none;
     aspect-ratio: 16/9;
   }
-  
+
   .portfolio-item-card--list .thumbnail-icon {
     font-size: 1.75rem;
   }
-  
+
   .content-section {
     padding: 1rem;
   }
-  
+
   .item-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
-  
+
   .item-title {
     font-size: 1.125rem;
   }
-  
+
   .item-meta {
     gap: 0.5rem;
   }
-  
+
   .tech-tags {
     gap: 0.375rem;
   }
-  
+
   .tech-tag {
     padding: 0.25rem 0.625rem;
     font-size: 0.7rem;
   }
-  
+
   .item-footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
-  
+
   .footer-meta {
     align-items: flex-start;
   }
-  
+
   .featured-badge {
     padding: 0.25rem 0.75rem;
     font-size: 0.7rem;

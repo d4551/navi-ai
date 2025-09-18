@@ -1,37 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Gamification Service</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    .container { max-width: 800px; margin: 0 auto; }
-    .card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
-    h2 { border-bottom: 1px solid #eee; padding-bottom: 8px; }
-    pre { background-color: #f4f4f4; padding: 10px; border-radius: 4px; white-space: pre-wrap; }
-    button { padding: 8px 12px; border-radius: 4px; border: none; background-color: #28a745; color: white; cursor: pointer; margin-right: 10px; }
-    button:hover { background-color: #218838; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Gamification Service Test Page</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Gamification Service</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      h2 {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 8px;
+      }
+      pre {
+        background-color: #f4f4f4;
+        padding: 10px;
+        border-radius: 4px;
+        white-space: pre-wrap;
+      }
+      button {
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: none;
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gamification Service Test Page</h1>
 
-    <div class="card">
-      <h2>User Profile</h2>
-      <pre id="user-profile-result"></pre>
+      <div class="card">
+        <h2>User Profile</h2>
+        <pre id="user-profile-result"></pre>
+      </div>
+
+      <div class="card">
+        <h2>Actions</h2>
+        <button id="add-project-btn">Add Project (+50 XP)</button>
+        <button id="apply-job-btn">Apply for Job (+100 XP)</button>
+        <button id="complete-interview-btn">
+          Complete Interview Practice (+150 XP)
+        </button>
+        <button id="unlock-achievement-btn">
+          Unlock "First Steps" Achievement
+        </button>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>Actions</h2>
-      <button id="add-project-btn">Add Project (+50 XP)</button>
-      <button id="apply-job-btn">Apply for Job (+100 XP)</button>
-      <button id="complete-interview-btn">Complete Interview Practice (+150 XP)</button>
-      <button id="unlock-achievement-btn">Unlock "First Steps" Achievement</button>
-    </div>
-  </div>
-
-  <script type="module" src="./test-gamification.js"></script>
-</body>
+    <script type="module" src="./test-gamification.js"></script>
+  </body>
 </html>

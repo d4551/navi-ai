@@ -421,8 +421,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Enhanced Tooltip */
@@ -441,7 +445,7 @@
   word-wrap: break-word;
 }
 
-[data-theme="dark"] .tooltip-base {
+[data-theme='dark'] .tooltip-base {
   background: rgba(255, 255, 255, 0.9);
   color: var(--text-primary);
   border-color: rgba(0, 0, 0, 0.1);

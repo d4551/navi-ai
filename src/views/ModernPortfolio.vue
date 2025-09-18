@@ -3,21 +3,35 @@
     <StandardPageLayout
       page-type="gaming"
       max-width="xl"
-      :header-context="{ projects: stats.totalProjects, clips: stats.totalClips, achievements: stats.totalAchievements }"
+      :header-context="{
+        projects: stats.totalProjects,
+        clips: stats.totalClips,
+        achievements: stats.totalAchievements,
+      }"
     >
       <template #header-actions>
-        <UnifiedButton 
-          variant="gaming" 
-          leading-icon="CogIcon" 
+        <UnifiedButton
+          variant="gaming"
+          leading-icon="CogIcon"
           title="Open Portfolio Studio"
           @click="showPortfolioManager = true"
         >
           Open Portfolio Studio
         </UnifiedButton>
-        <UnifiedButton variant="glass" leading-icon="ShareIcon" title="Share Portfolio" @click="sharePortfolio">
+        <UnifiedButton
+          variant="glass"
+          leading-icon="ShareIcon"
+          title="Share Portfolio"
+          @click="sharePortfolio"
+        >
           Share
         </UnifiedButton>
-        <UnifiedButton variant="outline" leading-icon="ArrowUpTrayIcon" title="Export Portfolio" @click="showExportOptions = true">
+        <UnifiedButton
+          variant="outline"
+          leading-icon="ArrowUpTrayIcon"
+          title="Export Portfolio"
+          @click="showExportOptions = true"
+        >
           Export
         </UnifiedButton>
       </template>
@@ -36,17 +50,19 @@
               <div class="lbl">Featured</div>
             </div>
             <div class="stat">
-              <div class="val">{{ (portfolio.topSkills.value[0]?.count || 0) }}</div>
+              <div class="val">
+                {{ portfolio.topSkills.value[0]?.count || 0 }}
+              </div>
               <div class="lbl">Top Skill Uses</div>
             </div>
           </div>
-          
+
           <!-- Portfolio Management Controls -->
           <div class="portfolio-controls">
-            <UnifiedButton 
+            <UnifiedButton
               v-if="stats.totalProjects === 0"
-              variant="primary" 
-              leading-icon="PlusIcon" 
+              variant="primary"
+              leading-icon="PlusIcon"
               title="Add Your First Project"
               @click="showPortfolioManager = true"
             >
@@ -57,7 +73,9 @@
       </section>
 
       <!-- Sticky Top Navigation Bar -->
-      <nav class="portfolio-topbar unified-container unified-card is-interactive">
+      <nav
+        class="portfolio-topbar unified-container unified-card is-interactive"
+      >
         <div class="topbar-flex flex-wrap">
           <div class="topbar-group search-group">
             <AppIcon name="MagnifyingGlassIcon" />
@@ -71,7 +89,11 @@
           </div>
           <div class="topbar-group">
             <AppIcon name="AdjustmentsHorizontalIcon" />
-            <select v-model="portfolio.filterType.value" class="form-control" aria-label="Filter by type">
+            <select
+              v-model="portfolio.filterType.value"
+              class="form-control"
+              aria-label="Filter by type"
+            >
               <option value="">All</option>
               <option value="project">Project</option>
               <option value="game">Game</option>
@@ -81,7 +103,11 @@
           </div>
           <div class="topbar-group">
             <AppIcon name="Bars3BottomLeftIcon" />
-            <select v-model="portfolio.sortMode.value" class="form-control" aria-label="Sort portfolio">
+            <select
+              v-model="portfolio.sortMode.value"
+              class="form-control"
+              aria-label="Sort portfolio"
+            >
               <option value="recent">Recent</option>
               <option value="alphabetical">A–Z</option>
               <option value="type">Type</option>
@@ -90,7 +116,10 @@
           </div>
           <div class="topbar-group toggle">
             <label class="switch" title="Show only featured">
-              <input v-model="portfolio.showFeaturedOnly.value" type="checkbox" />
+              <input
+                v-model="portfolio.showFeaturedOnly.value"
+                type="checkbox"
+              />
               <span class="slider" />
             </label>
             <span class="toggle-label">Featured</span>
@@ -104,22 +133,33 @@
           </div>
           <div class="topbar-group view-toggle">
             <ViewToggle
-              v-model="portfolio.layout.value" :options="[
+              v-model="portfolio.layout.value"
+              :options="[
                 { value: 'grid', icon: 'mdi-view-grid', label: 'Grid view' },
-                { value: 'list', icon: 'mdi-view-list', label: 'List view' }
+                { value: 'list', icon: 'mdi-view-list', label: 'List view' },
               ]"
             />
           </div>
           <div class="topbar-group ai-tools">
-            <UnifiedButton variant="glass" icon-only leading-icon="CpuChipIcon" title="AI Tools" @click="showAITools = true" />
+            <UnifiedButton
+              variant="glass"
+              icon-only
+              leading-icon="CpuChipIcon"
+              title="AI Tools"
+              @click="showAITools = true"
+            />
           </div>
         </div>
         <div v-if="portfolio.topSkills.value.length" class="skill-chips">
           <UnifiedButton
-            v-for="s in portfolio.topSkills.value.slice(0,12)"
+            v-for="s in portfolio.topSkills.value.slice(0, 12)"
             :key="s.skill"
             size="sm"
-            :variant="portfolio.skillFilters.value.includes(s.skill) ? 'primary' : 'glass'"
+            :variant="
+              portfolio.skillFilters.value.includes(s.skill)
+                ? 'primary'
+                : 'glass'
+            "
             :title="`Filter by skill: ${s.skill}`"
             class="skill-chip-btn"
             @click="toggleSkill(s.skill)"
@@ -127,27 +167,56 @@
             {{ s.skill }}
             <span class="count">{{ s.count }}</span>
           </UnifiedButton>
-          <UnifiedButton v-if="portfolio.skillFilters.value.length" size="sm" variant="ghost" leading-icon="FunnelIcon" title="Clear Skill Filters" @click="portfolio.clearFilters()">
+          <UnifiedButton
+            v-if="portfolio.skillFilters.value.length"
+            size="sm"
+            variant="ghost"
+            leading-icon="FunnelIcon"
+            title="Clear Skill Filters"
+            @click="portfolio.clearFilters()"
+          >
             Clear Filters
           </UnifiedButton>
         </div>
       </nav>
       <!-- AI Tools Modal -->
-      <div v-if="showAITools" class="ai-tools-modal-overlay" @click.self="showAITools = false">
+      <div
+        v-if="showAITools"
+        class="ai-tools-modal-overlay"
+        @click.self="showAITools = false"
+      >
         <div class="ai-tools-modal unified-card">
           <div class="modal-header">
             <AppIcon name="CpuChipIcon" class="mr-2" />
             <span class="modal-title">AI Portfolio Tools</span>
-            <UnifiedButton variant="ghost" leading-icon="XMarkIcon" size="sm" title="Close" @click="showAITools = false" />
+            <UnifiedButton
+              variant="ghost"
+              leading-icon="XMarkIcon"
+              size="sm"
+              title="Close"
+              @click="showAITools = false"
+            />
           </div>
           <div class="modal-body">
-            <UnifiedButton variant="primary" leading-icon="LightBulbIcon" @click="suggestSkillsForAll()">
+            <UnifiedButton
+              variant="primary"
+              leading-icon="LightBulbIcon"
+              @click="suggestSkillsForAll()"
+            >
               Suggest Skills for Projects
             </UnifiedButton>
-            <UnifiedButton variant="glass" leading-icon="SparklesIcon" @click="portfolio.autoTagProjects()">
+            <UnifiedButton
+              variant="glass"
+              leading-icon="SparklesIcon"
+              @click="portfolio.autoTagProjects()"
+            >
               Auto-Tag Projects
             </UnifiedButton>
-            <UnifiedButton variant="outline" leading-icon="MagnifyingGlassIcon" @click="portfolio.generateSummaries()">
+            <UnifiedButton
+              variant="outline"
+              leading-icon="MagnifyingGlassIcon"
+              @click="portfolio.generateSummaries()"
+            >
               Generate Project Summaries
             </UnifiedButton>
           </div>
@@ -155,12 +224,22 @@
       </div>
 
       <!-- Portfolio Manager Modal -->
-      <div v-if="showPortfolioManager" class="portfolio-manager-modal-overlay" @click.self="showPortfolioManager = false">
+      <div
+        v-if="showPortfolioManager"
+        class="portfolio-manager-modal-overlay"
+        @click.self="showPortfolioManager = false"
+      >
         <div class="portfolio-manager-modal unified-card">
           <div class="modal-header">
             <AppIcon name="WrenchScrewdriverIcon" class="mr-2" />
             <span class="modal-title">Portfolio Studio</span>
-            <UnifiedButton variant="ghost" leading-icon="XMarkIcon" size="sm" title="Close" @click="showPortfolioManager = false" />
+            <UnifiedButton
+              variant="ghost"
+              leading-icon="XMarkIcon"
+              size="sm"
+              title="Close"
+              @click="showPortfolioManager = false"
+            />
           </div>
           <div class="modal-body">
             <div class="manager-options">
@@ -171,7 +250,9 @@
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Create New Project</h3>
-                  <p class="option-description">Add a new project to your portfolio</p>
+                  <p class="option-description">
+                    Add a new project to your portfolio
+                  </p>
                 </div>
                 <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
@@ -183,7 +264,9 @@
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Manage Projects</h3>
-                  <p class="option-description">Edit, organize, and update your projects</p>
+                  <p class="option-description">
+                    Edit, organize, and update your projects
+                  </p>
                 </div>
                 <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
@@ -195,7 +278,9 @@
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Bulk Operations</h3>
-                  <p class="option-description">Update multiple projects at once</p>
+                  <p class="option-description">
+                    Update multiple projects at once
+                  </p>
                 </div>
                 <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
@@ -207,7 +292,9 @@
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Import Projects</h3>
-                  <p class="option-description">Import from GitHub, LinkedIn, or files</p>
+                  <p class="option-description">
+                    Import from GitHub, LinkedIn, or files
+                  </p>
                 </div>
                 <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
@@ -219,7 +306,9 @@
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Portfolio Settings</h3>
-                  <p class="option-description">Configure display options and privacy</p>
+                  <p class="option-description">
+                    Configure display options and privacy
+                  </p>
                 </div>
                 <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
@@ -231,7 +320,9 @@
                 </div>
                 <div class="option-content">
                   <h3 class="option-title">Analytics & Insights</h3>
-                  <p class="option-description">View portfolio performance and metrics</p>
+                  <p class="option-description">
+                    View portfolio performance and metrics
+                  </p>
                 </div>
                 <AppIcon name="ChevronRightIcon" class="option-arrow" />
               </div>
@@ -250,7 +341,13 @@
           :show="true"
         />
 
-        <div v-else :class="[portfolio.layout.value === 'grid' ? 'portfolio-grid' : 'items', portfolio.layout.value]">
+        <div
+          v-else
+          :class="[
+            portfolio.layout.value === 'grid' ? 'portfolio-grid' : 'items',
+            portfolio.layout.value,
+          ]"
+        >
           <article
             v-for="item in visibleItems"
             :key="item.id"
@@ -258,54 +355,78 @@
           >
             <div class="media">
               <!-- Normalized thumbnail system -->
-              <img 
+              <img
                 v-if="getItemThumbnail(item)"
-                :src="getItemThumbnail(item)!"
+                :src="getItemThumbnail(item) || ''"
                 :alt="item.title || 'Portfolio item'"
                 class="media-image"
                 @error="onThumbnailError"
               />
               <div v-else class="media-fallback">
-                <AppIcon :name="getItemTypeIcon(item.type)" class="fallback-icon" />
+                <AppIcon
+                  :name="getItemTypeIcon(item.type)"
+                  class="fallback-icon"
+                />
               </div>
               <div class="badges">
-                <span v-if="item.featured" class="badge featured"><AppIcon name="StarIcon" /> Featured</span>
+                <span v-if="item.featured" class="badge featured"
+                  ><AppIcon name="StarIcon" /> Featured</span
+                >
               </div>
             </div>
             <div class="body">
               <div class="content">
                 <h3 class="title">{{ item.title }}</h3>
-                <div v-if="item.description" class="desc">{{ (item.description||'').slice(0,140) }}</div>
+                <div v-if="item.description" class="desc">
+                  {{ (item.description || '').slice(0, 140) }}
+                </div>
                 <div class="meta">
                   <span v-if="item.type" class="pill">{{ item.type }}</span>
-                  <span v-if="displayDate(item.date)" class="pill"><AppIcon name="CalendarIcon" /> {{ displayDate(item.date) }}</span>
+                  <span v-if="displayDate(item.date)" class="pill"
+                    ><AppIcon name="CalendarIcon" />
+                    {{ displayDate(item.date) }}</span
+                  >
                 </div>
-                <div v-if="(item.skills||item.tags)?.length" class="tags">
-                  <span v-for="t in (item.skills || item.tags || []).slice(0,6)" :key="t" class="tag">{{ t }}</span>
+                <div v-if="(item.skills || item.tags)?.length" class="tags">
+                  <span
+                    v-for="t in (item.skills || item.tags || []).slice(0, 6)"
+                    :key="t"
+                    class="tag"
+                    >{{ t }}</span
+                  >
                 </div>
               </div>
               <div class="actions">
                 <div class="primary-actions">
-                  <UnifiedButton size="sm" variant="primary" leading-icon="EyeIcon" @click="viewItem(item)">
+                  <UnifiedButton
+                    size="sm"
+                    variant="primary"
+                    leading-icon="EyeIcon"
+                    @click="viewItem(item)"
+                  >
                     View
                   </UnifiedButton>
-                  <UnifiedButton 
-                    v-if="primaryLink(item)" 
-                    size="sm" 
-                    variant="glass" 
-                    leading-icon="ArrowTopRightOnSquareIcon" 
-                    :href="primaryLink(item)" 
+                  <UnifiedButton
+                    v-if="primaryLink(item)"
+                    size="sm"
+                    variant="glass"
+                    leading-icon="ArrowTopRightOnSquareIcon"
+                    :href="primaryLink(item)"
                     target="_blank"
                   >
                     Open
                   </UnifiedButton>
                 </div>
                 <div class="secondary-actions">
-                  <UnifiedButton 
-                    size="sm" 
-                    variant="ghost" 
-                    :leading-icon="item.featured ? 'StarIcon' : 'StarIcon-outline'" 
-                    :title="item.featured ? 'Remove from featured' : 'Add to featured'"
+                  <UnifiedButton
+                    size="sm"
+                    variant="ghost"
+                    :leading-icon="
+                      item.featured ? 'StarIcon' : 'StarIcon-outline'
+                    "
+                    :title="
+                      item.featured ? 'Remove from featured' : 'Add to featured'
+                    "
                     @click="toggleFeatured(item)"
                   >
                     {{ item.featured ? 'Featured' : 'Feature' }}
@@ -317,31 +438,53 @@
         </div>
 
         <!-- Infinite loader -->
-        <div ref="loadMoreRef" class="load-more-sentinel" aria-hidden="true"></div>
+        <div
+          ref="loadMoreRef"
+          class="load-more-sentinel"
+          aria-hidden="true"
+        ></div>
 
         <!-- Empty state -->
-        <div v-if="!portfolio.filtered.value.length && !portfolio.loading.value" class="empty unified-card text-center">
+        <div
+          v-if="!portfolio.filtered.value.length && !portfolio.loading.value"
+          class="empty unified-card text-center"
+        >
           <p>No portfolio items yet.</p>
           <div class="mt-sm">
-            <UnifiedButton variant="primary" leading-icon="PlusIcon" @click="showPortfolioManager = true">Add Project</UnifiedButton>
+            <UnifiedButton
+              variant="primary"
+              leading-icon="PlusIcon"
+              @click="showPortfolioManager = true"
+              >Add Project</UnifiedButton
+            >
           </div>
         </div>
       </section>
 
       <!-- Analytics -->
-      <section v-if="portfolio.showAnalytics.value" class="analytics unified-container">
+      <section
+        v-if="portfolio.showAnalytics.value"
+        class="analytics unified-container"
+      >
         <!-- Additional analytics content can go here in the future -->
       </section>
 
       <template #footer-actions>
         <div class="footer-actions">
-          <UnifiedButton variant="outline" leading-icon="CogIcon" title="Open Portfolio Studio" @click="showPortfolioManager = true">
+          <UnifiedButton
+            variant="outline"
+            leading-icon="CogIcon"
+            title="Open Portfolio Studio"
+            @click="showPortfolioManager = true"
+          >
             Portfolio Studio
           </UnifiedButton>
-          <UnifiedButton 
-            v-if="portfolio.skillFilters.value.length || portfolio.searchQuery.value"
-            variant="ghost" 
-            leading-icon="FunnelIcon" 
+          <UnifiedButton
+            v-if="
+              portfolio.skillFilters.value.length || portfolio.searchQuery.value
+            "
+            variant="ghost"
+            leading-icon="FunnelIcon"
             title="Clear All Filters"
             @click="portfolio.clearFilters()"
           >
@@ -355,7 +498,7 @@
     <PortfolioViewModal
       :show="showViewModal"
       :item="selectedViewItem"
-      @close="showViewModal = false; selectedViewItem = null"
+      @close="handleCloseViewModal"
       @edit="handleEditItem"
       @duplicate="handleDuplicateItem"
     />
@@ -397,18 +540,39 @@ const showViewModal = ref(false)
 const showPortfolioManager = ref(false)
 const selectedViewItem = ref(null)
 
-const theme = (() => { try { return useUnifiedTheme() } catch { return undefined as any } })()
-const themeName = computed(() => { try { return theme?.colorScheme?.value || 'light' } catch { return 'light' } })
+const theme = (() => {
+  try {
+    return useUnifiedTheme()
+  } catch {
+    return undefined as any
+  }
+})()
+const themeName = computed(() => {
+  try {
+    return theme?.colorScheme?.value || 'light'
+  } catch {
+    return 'light'
+  }
+})
 
 // Visible items: prefer virtualized when threshold exceeded; otherwise infinite items
 const visibleItems = computed(() => {
-  return portfolio.shouldVirtualize() ? portfolio.virtualizedItems.value : portfolio.infiniteItems.value
+  return portfolio.shouldVirtualize()
+    ? portfolio.virtualizedItems.value
+    : portfolio.infiniteItems.value
 })
 
-function displayDate(d?: string) { return d ? String(d) : '' }
+function displayDate(d?: string) {
+  return d ? String(d) : ''
+}
 
 function primaryLink(item: any) {
-  return item.liveUrl || item.url || (item.links || []).find((l: any) => !!l?.url)?.url || ''
+  return (
+    item.liveUrl ||
+    item.url ||
+    (item.links || []).find((l: any) => !!l?.url)?.url ||
+    ''
+  )
 }
 
 function viewItem(item: any) {
@@ -418,7 +582,11 @@ function viewItem(item: any) {
   } catch {}
 }
 
-async function toggleFeatured(item: any) { try { await portfolio.toggleFeatured(item.id) } catch {} }
+async function toggleFeatured(item: any) {
+  try {
+    await portfolio.toggleFeatured(item.id)
+  } catch {}
+}
 
 function handleEditItem(item: any) {
   // Close the view modal and navigate to edit
@@ -437,7 +605,14 @@ function handleDuplicateItem(item: any) {
   console.log('Duplicate item:', item)
 }
 
-function goManage() { router.push('/portfolio/manage') }
+function handleCloseViewModal() {
+  showViewModal.value = false
+  selectedViewItem.value = null
+}
+
+function goManage() {
+  router.push('/portfolio/manage')
+}
 
 // Portfolio Manager Modal Functions
 function createNewProject() {
@@ -483,27 +658,34 @@ async function handleExport(format: string) {
   try {
     // Close the modal
     showExportOptions.value = false
-    
+
     // Import the portfolio export service
-    const { portfolioExportRoutes } = await import('@/modules/api/portfolio-export')
-    
+    const { portfolioExportRoutes } = await import(
+      '@/modules/api/portfolio-export'
+    )
+
     // Get portfolio data
     const portfolioData = portfolio.prepareExportData()
-    
+
     // Convert to the expected format for the export service
-    const projects = (Array.isArray(portfolioData) ? portfolioData : []).map((item: any) => ({
-      id: item.id,
-      title: item.title || '',
-      description: item.description || '',
-      image: item.image || item.thumbnail || '',
-      liveUrl: item.liveUrl || item.url || '',
-      githubUrl: item.githubUrl || (item.links || []).find((l: any) => l.type === 'github')?.url || '',
-      technologies: item.skills || item.tags || [],
-      featured: item.featured || false,
-      type: item.type || 'project',
-      date: item.date
-    }))
-    
+    const projects = (Array.isArray(portfolioData) ? portfolioData : []).map(
+      (item: any) => ({
+        id: item.id,
+        title: item.title || '',
+        description: item.description || '',
+        image: item.image || item.thumbnail || '',
+        liveUrl: item.liveUrl || item.url || '',
+        githubUrl:
+          item.githubUrl ||
+          (item.links || []).find((l: any) => l.type === 'github')?.url ||
+          '',
+        technologies: item.skills || item.tags || [],
+        featured: item.featured || false,
+        type: item.type || 'project',
+        date: item.date,
+      })
+    )
+
     // Export with the specified format
     await portfolioExportRoutes.downloadPortfolio(projects, format as any, {
       template: 'gaming',
@@ -512,16 +694,19 @@ async function handleExport(format: string) {
       metadata: {
         title: 'Gaming Portfolio',
         author: 'Portfolio Owner',
-        description: 'Professional gaming industry portfolio showcasing projects and skills',
-        website: `${window.location.origin}${window.location.pathname}#/portfolio`
-      }
+        description:
+          'Professional gaming industry portfolio showcasing projects and skills',
+        website: `${window.location.origin}${window.location.pathname}#/portfolio`,
+      },
     })
   } catch (error) {
     console.error('Portfolio export failed:', error)
     // Fallback to basic JSON export
     try {
       const data = portfolio.prepareExportData()
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: 'application/json',
+      })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -556,7 +741,7 @@ function getItemTypeIcon(type?: string): string {
     tool: 'mdi-wrench',
     demo: 'mdi-monitor',
     app: 'mdi-application',
-    website: 'mdi-earth'
+    website: 'mdi-earth',
   }
   return icons[type || ''] || 'FolderIcon'
 }
@@ -567,7 +752,8 @@ function onThumbnailError(event: Event) {
 }
 
 function toggleSkill(skill: string) {
-  if (portfolio.skillFilters.value.includes(skill)) portfolio.removeSkillFilter(skill)
+  if (portfolio.skillFilters.value.includes(skill))
+    portfolio.removeSkillFilter(skill)
   else portfolio.addSkillFilter(skill)
 }
 
@@ -589,31 +775,47 @@ let observer: any = null
 
 onMounted(() => {
   try {
-    observer = new (window as any).IntersectionObserver(async (entries: IntersectionObserverEntry[]) => {
-      for (const e of entries) {
-        if (e.isIntersecting) {
-          // For virtualization, expand range; else load next page
-          if (portfolio.shouldVirtualize()) {
-            const end = Math.min(portfolio.visibleRange.value.end + portfolio.itemsPerPage.value, portfolio.filtered.value.length)
-            portfolio.updateVisibleRange(portfolio.visibleRange.value.start, end)
-          } else {
-            await portfolio.loadMoreItems()
+    observer = new (window as any).IntersectionObserver(
+      async (entries: IntersectionObserverEntry[]) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            // For virtualization, expand range; else load next page
+            if (portfolio.shouldVirtualize()) {
+              const end = Math.min(
+                portfolio.visibleRange.value.end + portfolio.itemsPerPage.value,
+                portfolio.filtered.value.length
+              )
+              portfolio.updateVisibleRange(
+                portfolio.visibleRange.value.start,
+                end
+              )
+            } else {
+              await portfolio.loadMoreItems()
+            }
           }
         }
-      }
-    }, { root: null, rootMargin: '200px', threshold: 0 })
+      },
+      { root: null, rootMargin: '200px', threshold: 0 }
+    )
     if (loadMoreRef.value) observer.observe(loadMoreRef.value)
   } catch {}
 })
 
-onBeforeUnmount(() => { try { observer?.disconnect() } catch {} })
+onBeforeUnmount(() => {
+  try {
+    observer?.disconnect()
+  } catch {}
+})
 
 // Keep virtualized window aligned to current page size
-watch(() => portfolio.itemsPerPage.value, (n) => {
-  if (portfolio.shouldVirtualize()) {
-    portfolio.updateVisibleRange(0, n)
+watch(
+  () => portfolio.itemsPerPage.value,
+  n => {
+    if (portfolio.shouldVirtualize()) {
+      portfolio.updateVisibleRange(0, n)
+    }
   }
-})
+)
 
 const stats = computed(() => portfolio.stats.value)
 </script>
@@ -692,7 +894,10 @@ const stats = computed(() => portfolio.stats.value)
 /* AI Tools Modal Styles */
 .ai-tools-modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: var(--surface-overlay);
   z-index: var(--z-modal);
   display: flex;
@@ -730,76 +935,76 @@ const stats = computed(() => portfolio.stats.value)
 }
 
 /* Enhanced switch using design system tokens */
-.switch { 
-  position: relative; 
-  display: inline-block; 
-  width: 42px; 
-  height: 26px; 
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 26px;
 }
-.switch input { 
-  opacity: 0; 
-  width: 0; 
-  height: 0; 
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
-.switch .slider { 
-  position: absolute; 
-  cursor: pointer; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  bottom: 0; 
-  background: var(--glass-border); 
-  transition: var(--duration-fast) var(--easing-ease-out); 
-  border-radius: var(--radius-full); 
-  box-shadow: inset 0 0 0 1px var(--glass-border); 
+.switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glass-border);
+  transition: var(--duration-fast) var(--easing-ease-out);
+  border-radius: var(--radius-full);
+  box-shadow: inset 0 0 0 1px var(--glass-border);
 }
-.switch .slider:before { 
-  position: absolute; 
-  content: ""; 
-  height: 18px; 
-  width: 18px; 
-  left: 4px; 
-  bottom: 4px; 
-  background: var(--surface-elevated); 
-  border-radius: 50%; 
-  transition: var(--duration-fast) var(--easing-ease-out); 
-  box-shadow: var(--shadow-sm); 
+.switch .slider:before {
+  position: absolute;
+  content: '';
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background: var(--surface-elevated);
+  border-radius: 50%;
+  transition: var(--duration-fast) var(--easing-ease-out);
+  box-shadow: var(--shadow-sm);
 }
-.switch input:checked + .slider { 
-  background: var(--color-primary-500); 
-  box-shadow: inset 0 0 0 1px var(--color-primary-500); 
+.switch input:checked + .slider {
+  background: var(--color-primary-500);
+  box-shadow: inset 0 0 0 1px var(--color-primary-500);
 }
-.switch input:checked + .slider:before { 
-  transform: translateX(16px); 
-  background: white; 
+.switch input:checked + .slider:before {
+  transform: translateX(16px);
+  background: white;
 }
 
-.skill-chips { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: var(--spacing-2); 
-  margin-top: var(--spacing-2); 
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-2);
 }
 .skill-chip-btn {
   border-radius: var(--radius-full) !important;
   font-weight: var(--font-weight-medium) !important;
   transition: all var(--duration-fast) var(--easing-ease-out) !important;
 }
-.skill-chip-btn .count { 
-  opacity: 0.7; 
-  font-size: var(--font-size-xs); 
+.skill-chip-btn .count {
+  opacity: 0.7;
+  font-size: var(--font-size-xs);
   margin-left: var(--spacing-1);
 }
 
 /* Portfolio Grid/List Layout */
-.items { 
-  display: grid; 
-  grid-template-columns: 1fr; 
-  gap: var(--spacing-4); 
+.items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
 }
 
-.items.list { 
-  grid-template-columns: 1fr; 
+.items.list {
+  grid-template-columns: 1fr;
 }
 
 .portfolio-grid {
@@ -822,9 +1027,9 @@ const stats = computed(() => portfolio.stats.value)
     gap: var(--spacing-3);
   }
 }
-.item { 
-  display: grid; 
-  grid-template-rows: auto 1fr; 
+.item {
+  display: grid;
+  grid-template-rows: auto 1fr;
   height: 100%;
   overflow: hidden;
   transition: all var(--duration-normal) var(--easing-ease-out);
@@ -835,18 +1040,18 @@ const stats = computed(() => portfolio.stats.value)
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
 }
 
-.items.list .item { 
-  grid-template-columns: 240px 1fr; 
-  grid-template-rows: auto; 
+.items.list .item {
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto;
   height: auto;
 }
-.media { 
-  position: relative; 
-  border-radius: var(--radius-lg); 
-  background: var(--glass-bg); 
-  border: 1px solid var(--glass-border); 
-  display: flex; 
-  align-items: center; 
+.media {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
   justify-content: center;
   aspect-ratio: 16/9;
   overflow: hidden;
@@ -864,14 +1069,15 @@ const stats = computed(() => portfolio.stats.value)
   transform: scale(1.05);
 }
 
-.media-fallback { 
+.media-fallback {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, 
-    color-mix(in srgb, var(--color-primary-500) 5%, transparent), 
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 5%, transparent),
     color-mix(in srgb, var(--color-cyber-500) 5%, transparent)
   );
 }
@@ -886,17 +1092,17 @@ const stats = computed(() => portfolio.stats.value)
   color: var(--text-secondary);
   transform: scale(1.1);
 }
-.badges { 
-  position: absolute; 
-  top: var(--spacing-2); 
-  left: var(--spacing-2); 
-  display: flex; 
-  gap: var(--spacing-1-5); 
+.badges {
+  position: absolute;
+  top: var(--spacing-2);
+  left: var(--spacing-2);
+  display: flex;
+  gap: var(--spacing-1-5);
 }
-.body { 
-  padding: var(--spacing-4); 
-  display: flex; 
-  flex-direction: column; 
+.body {
+  padding: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-3);
   height: 100%;
 }
@@ -912,41 +1118,41 @@ const stats = computed(() => portfolio.stats.value)
   margin-top: auto;
   padding-top: var(--spacing-2);
 }
-.title { 
-  font-weight: var(--font-weight-bold); 
+.title {
+  font-weight: var(--font-weight-bold);
   font-size: var(--font-size-lg);
   color: var(--text-primary-600);
   line-height: var(--line-height-heading);
 }
-.desc { 
-  color: var(--text-secondary); 
+.desc {
+  color: var(--text-secondary);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-body);
 }
-.meta { 
-  display: flex; 
-  gap: var(--spacing-2); 
-  flex-wrap: wrap; 
+.meta {
+  display: flex;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
 }
-.pill { 
-  background: var(--glass-bg); 
-  border: 1px solid var(--glass-border); 
-  border-radius: var(--radius-full); 
-  padding: var(--spacing-1) var(--spacing-2); 
+.pill {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  padding: var(--spacing-1) var(--spacing-2);
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
 }
-.tags { 
-  display: flex; 
-  gap: var(--spacing-1-5); 
-  flex-wrap: wrap; 
+.tags {
+  display: flex;
+  gap: var(--spacing-1-5);
+  flex-wrap: wrap;
 }
-.tag { 
-  border: 1px solid var(--glass-border); 
-  background: var(--glass-bg); 
-  border-radius: var(--radius-full); 
-  padding: var(--spacing-1) var(--spacing-2); 
+.tag {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  border-radius: var(--radius-full);
+  padding: var(--spacing-1) var(--spacing-2);
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
@@ -986,38 +1192,38 @@ const stats = computed(() => portfolio.stats.value)
   backdrop-filter: var(--glass-backdrop-blur);
 }
 
-.load-more-sentinel { 
-  height: 1px; 
+.load-more-sentinel {
+  height: 1px;
 }
 
-.analytics { 
-  margin: var(--spacing-6) 0 var(--spacing-8); 
+.analytics {
+  margin: var(--spacing-6) 0 var(--spacing-8);
 }
-.stat-grid { 
-  gap: var(--spacing-4); 
+.stat-grid {
+  gap: var(--spacing-4);
 }
-.stat { 
-  padding: var(--spacing-4); 
-  border: 1px solid var(--glass-border); 
-  border-radius: var(--radius-lg); 
-  background: var(--glass-surface); 
+.stat {
+  padding: var(--spacing-4);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  background: var(--glass-surface);
   text-align: center;
   backdrop-filter: var(--glass-backdrop-blur);
 }
-.val { 
-  font-weight: var(--font-weight-bold); 
+.val {
+  font-weight: var(--font-weight-bold);
   font-size: var(--font-size-3xl);
   color: var(--text-primary-600);
 }
-.lbl { 
-  color: var(--text-secondary); 
+.lbl {
+  color: var(--text-secondary);
   font-size: var(--font-size-sm);
 }
 
 /* Responsive Design */
 @media (max-width: 880px) {
-  .items.list .item { 
-    grid-template-columns: 1fr; 
+  .items.list .item {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1219,12 +1425,12 @@ const stats = computed(() => portfolio.stats.value)
   .topbar-flex flex-wrap {
     gap: var(--spacing-2);
   }
-  
+
   .search-group {
     min-width: 180px;
     max-width: 280px;
   }
-  
+
   .topbar-group {
     min-width: auto;
   }
@@ -1236,12 +1442,12 @@ const stats = computed(() => portfolio.stats.value)
     align-items: stretch;
     gap: var(--spacing-4);
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-3);
   }
-  
+
   .portfolio-controls {
     justify-content: center;
   }
@@ -1272,21 +1478,21 @@ const stats = computed(() => portfolio.stats.value)
     flex-direction: flex flex-wrap-reverse;
     justify-content: flex-end;
   }
-  
+
   .portfolio-manager-modal {
     margin: var(--spacing-4);
     max-height: calc(100vh - 32px);
   }
-  
+
   .manager-options {
     grid-template-columns: 1fr;
     gap: var(--spacing-3);
   }
-  
+
   .modal-header {
     padding: var(--spacing-4);
   }
-  
+
   .modal-body {
     padding: var(--spacing-4);
   }
@@ -1297,21 +1503,21 @@ const stats = computed(() => portfolio.stats.value)
     grid-template-columns: 1fr;
     gap: var(--spacing-2);
   }
-  
+
   .stat {
     padding: var(--spacing-3);
   }
-  
+
   .val {
     font-size: var(--font-size-2xl);
   }
 }
 
 /* Theme-aware adjustments */
-[data-theme="dark"] .chip { 
-  background: var(--glass-bg); 
+[data-theme='dark'] .chip {
+  background: var(--glass-bg);
 }
-[data-theme="dark"] .tag { 
-  background: var(--glass-bg); 
+[data-theme='dark'] .tag {
+  background: var(--glass-bg);
 }
 </style>

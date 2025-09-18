@@ -55,10 +55,10 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
-[role="button"]:focus-visible,
-[role="link"]:focus-visible,
-[role="menuitem"]:focus-visible,
-[role="tab"]:focus-visible {
+[role='button']:focus-visible,
+[role='link']:focus-visible,
+[role='menuitem']:focus-visible,
+[role='tab']:focus-visible {
   outline: 2px solid rgb(var(--neon-blue));
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(var(--neon-blue), 0.2);
@@ -101,7 +101,7 @@ a:focus-visible {
     --glass-bg: rgba(255, 255, 255, 0.95);
   }
 
-  [data-theme="dark"] {
+  [data-theme='dark'] {
     --text-primary: #ffffff;
     --text-secondary: #cccccc;
     --bg-primary: #000000;
@@ -291,11 +291,11 @@ aside,
 header,
 footer,
 section[aria-labelledby],
-[role="main"],
-[role="navigation"],
-[role="complementary"],
-[role="banner"],
-[role="contentinfo"] {
+[role='main'],
+[role='navigation'],
+[role='complementary'],
+[role='banner'],
+[role='contentinfo'] {
   position: relative;
 }
 
@@ -364,7 +364,7 @@ footer::before {
 }
 
 /* Tab order indicators for development */
-.tab-debug [tabindex]:not([tabindex="-1"])::after {
+.tab-debug [tabindex]:not([tabindex='-1'])::after {
   content: attr(tabindex);
   position: absolute;
   top: -8px;
@@ -389,8 +389,8 @@ footer::before {
   button,
   input,
   select,
-  [role="button"],
-  [role="link"] {
+  [role='button'],
+  [role='link'] {
     min-height: 48px;
     min-width: 48px;
   }
@@ -501,8 +501,12 @@ h6 {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Loading skeletons accessibility */
@@ -519,8 +523,12 @@ h6 {
 }
 
 @keyframes skeleton-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

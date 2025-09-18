@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import { logger } from "@/shared/utils/logger";
-import { validateEmail, validateRequired } from "@/utils/validation";
-import { userProfileService } from "@/services/UserProfileService";
+import { defineStore } from 'pinia'
+import { logger } from '@/shared/utils/logger'
+import { validateEmail, validateRequired } from '@/utils/validation'
+import { userProfileService } from '@/services/UserProfileService'
 
 // Import types from main store for now, will move later
 import type {
@@ -16,34 +16,34 @@ import type {
   AIData,
   ProfileMeta,
   User,
-} from "./app";
+} from './app'
 
 export interface UserState {
-  user: User;
+  user: User
 }
 
-export const useUserStore = defineStore("user", {
+export const useUserStore = defineStore('user', {
   state: (): UserState => ({
     user: {
       // Legacy fields for compatibility
-      name: "",
-      email: "",
+      name: '',
+      email: '',
       portfolio: [],
 
       // New comprehensive profile structure
       personalInfo: {
-        name: "",
-        email: "",
-        phone: "",
-        location: "",
-        website: "",
-        linkedIn: "",
-        github: "",
-        portfolio: "",
-        summary: "",
+        name: '',
+        email: '',
+        phone: '',
+        location: '',
+        website: '',
+        linkedIn: '',
+        github: '',
+        portfolio: '',
+        summary: '',
         profilePicture: null,
-        currentRole: "",
-        currentCompany: "",
+        currentRole: '',
+        currentCompany: '',
         yearsExperience: null,
       },
 
@@ -79,7 +79,7 @@ export const useUserStore = defineStore("user", {
         salaryExpectations: {
           min: null,
           max: null,
-          currency: "USD",
+          currency: 'USD',
         },
         workPreferences: {
           remote: false,
@@ -87,7 +87,7 @@ export const useUserStore = defineStore("user", {
           onsite: false,
           relocationWillingness: false,
         },
-        timeframe: "",
+        timeframe: '',
       },
 
       aiData: {
@@ -103,7 +103,7 @@ export const useUserStore = defineStore("user", {
         profileCompleteness: 0,
         lastUpdated: null,
         createdAt: null,
-        version: "1.0",
+        version: '1.0',
         dataConsent: false,
         privacySettings: {
           publicProfile: false,
@@ -132,16 +132,16 @@ export const useUserStore = defineStore("user", {
 
   getters: {
     hasValidEmail: (state): boolean => {
-      const email = state.user.personalInfo?.email || state.user.email;
-      return validateEmail(email);
+      const email = state.user.personalInfo?.email || state.user.email
+      return validateEmail(email)
     },
 
     profileCompleteness: (state): number => {
-      const completeness = userProfileService.calculateCompleteness(state.user);
+      const completeness = userProfileService.calculateCompleteness(state.user)
       if (state.user.meta.profileCompleteness !== completeness) {
-        state.user.meta.profileCompleteness = completeness;
+        state.user.meta.profileCompleteness = completeness
       }
-      return completeness;
+      return completeness
     },
 
     userProfile: (state): User => state.user,
@@ -149,21 +149,21 @@ export const useUserStore = defineStore("user", {
     personalInfo: (state): PersonalInfo => {
       return (
         state.user.personalInfo || {
-          name: state.user.name || "",
-          email: state.user.email || "",
-          phone: "",
-          location: "",
-          website: "",
-          linkedIn: "",
-          github: "",
-          portfolio: "",
-          summary: "",
+          name: state.user.name || '',
+          email: state.user.email || '',
+          phone: '',
+          location: '',
+          website: '',
+          linkedIn: '',
+          github: '',
+          portfolio: '',
+          summary: '',
           profilePicture: null,
-          currentRole: "",
-          currentCompany: "",
+          currentRole: '',
+          currentCompany: '',
           yearsExperience: null,
         }
-      );
+      )
     },
 
     allSkills: (state): Skills => state.user.skills,
@@ -174,40 +174,40 @@ export const useUserStore = defineStore("user", {
 
     // Gamification getters
     userLevel: (state): number => {
-      const xp = state.user.xp || 0;
-      return Math.floor(xp / 100) + 1;
+      const xp = state.user.xp || 0
+      return Math.floor(xp / 100) + 1
     },
 
     xpForNextLevel: (state): number => {
-      const currentLevel = Math.floor((state.user.xp || 0) / 100) + 1;
-      return currentLevel * 100 - (state.user.xp || 0);
+      const currentLevel = Math.floor((state.user.xp || 0) / 100) + 1
+      return currentLevel * 100 - (state.user.xp || 0)
     },
 
     earnedAchievements: (state): number =>
       (state.user.achievements || []).length,
 
     currentStreak: (state): number => {
-      const dailyChallenges = state.user.dailyChallenges || {};
-      let streak = 0;
-      const currentDate = new Date();
+      const dailyChallenges = state.user.dailyChallenges || {}
+      let streak = 0
+      const currentDate = new Date()
 
       while (true) {
-        const dateString = currentDate.toDateString();
-        const challengesForDay = dailyChallenges[dateString] || [];
+        const dateString = currentDate.toDateString()
+        const challengesForDay = dailyChallenges[dateString] || []
 
         if (challengesForDay.length === 0) {
-          break;
+          break
         }
 
-        streak++;
-        currentDate.setDate(currentDate.getDate() - 1);
+        streak++
+        currentDate.setDate(currentDate.getDate() - 1)
       }
 
-      return streak;
+      return streak
     },
 
     // Interview statistics getter
-    getInterviewStats: (state) => ({
+    getInterviewStats: state => ({
       totalInterviews: state.user.interviewsCompleted || 0,
       totalSessions: state.user.interviewsCompleted || 0,
       completedInterviews: state.user.interviewsCompleted || 0,
@@ -223,34 +223,34 @@ export const useUserStore = defineStore("user", {
       try {
         // Handle both legacy and new profile structure
         const isLegacyUpdate =
-          userData.name !== undefined || userData.email !== undefined;
+          userData.name !== undefined || userData.email !== undefined
 
         if (isLegacyUpdate) {
-          return this.updateLegacyUser(userData);
+          return this.updateLegacyUser(userData)
         }
 
         // Use profile service for comprehensive updates
         const updatedProfile = userProfileService.mergeProfileData(
           this.user,
           userData,
-          "form",
-        );
+          'form'
+        )
 
         // Validate the merged profile
-        const validation = userProfileService.validateProfile(updatedProfile);
+        const validation = userProfileService.validateProfile(updatedProfile)
         if (!validation.isValid) {
-          logger.error("User profile validation failed:", validation.errors);
-          return false;
+          logger.error('User profile validation failed:', validation.errors)
+          return false
         }
 
-        this.user = updatedProfile;
-        userProfileService.notifyProfileSync(this.user, userData);
+        this.user = updatedProfile
+        userProfileService.notifyProfileSync(this.user, userData)
 
-        logger.info("User profile updated successfully");
-        return true;
+        logger.info('User profile updated successfully')
+        return true
       } catch (error: any) {
-        logger.error("Failed to update user:", error);
-        return false;
+        logger.error('Failed to update user:', error)
+        return false
       }
     },
 
@@ -258,94 +258,94 @@ export const useUserStore = defineStore("user", {
     updateLegacyUser(userData: Partial<User>): boolean {
       try {
         if (userData.email && !validateEmail(userData.email)) {
-          logger.error("Invalid email address");
-          return false;
+          logger.error('Invalid email address')
+          return false
         }
 
         if (userData.name !== undefined && !validateRequired(userData.name)) {
-          logger.error("Name is required");
-          return false;
+          logger.error('Name is required')
+          return false
         }
 
         if (userData.name !== undefined) {
-          this.user.name = userData.name;
-          this.user.personalInfo.name = userData.name;
+          this.user.name = userData.name
+          this.user.personalInfo.name = userData.name
         }
         if (userData.email !== undefined) {
-          this.user.email = userData.email;
-          this.user.personalInfo.email = userData.email;
+          this.user.email = userData.email
+          this.user.personalInfo.email = userData.email
         }
 
         if (userData.gamingExperience !== undefined) {
-          this.user.gamingExperience = userData.gamingExperience as any;
+          this.user.gamingExperience = userData.gamingExperience as any
         }
         if (userData.skills !== undefined) {
-          this.user.skills = userData.skills as any;
+          this.user.skills = userData.skills as any
         }
         if (userData.portfolio !== undefined) {
-          this.user.portfolio = userData.portfolio;
+          this.user.portfolio = userData.portfolio
         }
 
-        this.user.meta.lastUpdated = new Date().toISOString();
-        return true;
+        this.user.meta.lastUpdated = new Date().toISOString()
+        return true
       } catch (error: any) {
-        logger.error("Failed to update legacy user:", error);
-        return false;
+        logger.error('Failed to update legacy user:', error)
+        return false
       }
     },
 
     // New comprehensive profile update methods
     updatePersonalInfo(personalInfo: PersonalInfo): boolean {
-      const userData = { personalInfo };
-      return this.updateUser(userData);
+      const userData = { personalInfo }
+      return this.updateUser(userData)
     },
 
     updateProfessionalExperience(experience: Experience[]): boolean {
-      const userData = { experience };
-      return this.updateUser(userData);
+      const userData = { experience }
+      return this.updateUser(userData)
     },
 
     updateEducation(education: Education[]): boolean {
-      const userData = { education };
-      return this.updateUser(userData);
+      const userData = { education }
+      return this.updateUser(userData)
     },
 
     updateSkills(skills: Skills): boolean {
-      const userData = { skills };
-      return this.updateUser(userData);
+      const userData = { skills }
+      return this.updateUser(userData)
     },
 
     updateGamingExperience(gamingExperience: GamingExperience): boolean {
-      const userData = { gamingExperience };
-      return this.updateUser(userData);
+      const userData = { gamingExperience }
+      return this.updateUser(userData)
     },
 
     updateCareerGoals(careerGoals: CareerGoals): boolean {
-      const userData = { careerGoals };
-      return this.updateUser(userData);
+      const userData = { careerGoals }
+      return this.updateUser(userData)
     },
 
     updatePortfolioItems(portfolio: any[]): boolean {
-      const userData = { portfolio };
-      return this.updateUser(userData);
+      const userData = { portfolio }
+      return this.updateUser(userData)
     },
 
     updateAIData(aiData: AIData): boolean {
-      const userData = { aiData };
-      return this.updateUser(userData);
+      const userData = { aiData }
+      return this.updateUser(userData)
     },
 
     // Initialize complete profile for new users
     initializeUserProfile(basicInfo: any = {}): boolean {
       try {
-        const newProfile = userProfileService.initializeProfile(basicInfo);
-        this.user = newProfile;
-        logger.info("User profile initialized");
-        return true;
+        const newProfile = userProfileService.initializeProfile(basicInfo)
+        this.user = newProfile
+        logger.info('User profile initialized')
+        return true
       } catch (error: any) {
-        logger.error("Failed to initialize user profile:", error);
-        return false;
+        logger.error('Failed to initialize user profile:', error)
+        return false
       }
     },
   },
-});
+})

@@ -36,7 +36,7 @@
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] {
+[data-theme='dark'] {
   --surface-glass-rgb: 15, 23, 42;
   --surface-elevated-rgb: 30, 41, 59;
 
@@ -289,7 +289,7 @@ select:disabled {
 }
 
 .glass-panel::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -324,7 +324,7 @@ select:disabled {
 }
 
 .glass-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -364,7 +364,7 @@ select:disabled {
 }
 
 .interactive-element::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -492,7 +492,7 @@ select:disabled {
 }
 
 .focus-ring::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: -2px;
   border: 2px solid transparent;
@@ -575,7 +575,7 @@ select:disabled {
   }
 
   a[href]::after {
-    content: " (" attr(href) ")";
+    content: ' (' attr(href) ')';
     font-size: 0.8em;
     color: var(--text-secondary);
   }

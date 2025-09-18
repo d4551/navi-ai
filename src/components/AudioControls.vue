@@ -1,9 +1,7 @@
 <template>
   <div
     class="audio-controls noir-glass-surface p-glass-md rounded-lg"
-    :class="{ 'recording-active': isRecording,
-              'fairy-ai-active': fairyAIMode 
-    }"
+    :class="{ 'recording-active': isRecording, 'fairy-ai-active': fairyAIMode }"
     role="region"
     aria-label="NAVI Audio System - Voice Input and Output Controls"
     class="font-sans"
@@ -91,9 +89,18 @@
         @recording-start="$emit('recordingStart')"
         @recording-stop="handlePTTStop"
       >
-        <template #device-selector="{ microphoneDevices, selectedMicId, setSelectedMic }">
+        <template
+          #device-selector="{
+            microphoneDevices,
+            selectedMicId,
+            setSelectedMic,
+          }"
+        >
           <div class="ptt-device-select mt-2">
-            <label class="form-label small font-medium mb-1" for="ptt-mic-select">
+            <label
+              class="form-label small font-medium mb-1"
+              for="ptt-mic-select"
+            >
               <AppIcon name="MicrophoneIcon" />
               Microphone (PTT)
             </label>
@@ -102,7 +109,9 @@
               class="unified-input ui-input"
               :value="selectedMicId"
               :disabled="isRecording"
-              @change="setSelectedMic(($event.target && $event.target.value) || '')"
+              @change="
+                setSelectedMic(($event.target && $event.target.value) || '')
+              "
             >
               <option value="">System Default</option>
               <option
@@ -144,7 +153,10 @@
         </UnifiedButton>
 
         <!-- Playback Progress -->
-        <div v-if="isPlaying || playbackDuration > 0" class="playback-progress flex-grow-1">
+        <div
+          v-if="isPlaying || playbackDuration > 0"
+          class="playback-progress flex-grow-1"
+        >
           <div class="progress progress--xs">
             <div
               class="progress-bar"
@@ -155,7 +167,10 @@
               aria-valuemax="100"
             ></div>
           </div>
-          <small class="text-secondary">{{ formatTime(playbackCurrentTime) }} / {{ formatTime(playbackDuration) }}</small>
+          <small class="text-secondary"
+            >{{ formatTime(playbackCurrentTime) }} /
+            {{ formatTime(playbackDuration) }}</small
+          >
         </div>
       </div>
     </div>
@@ -166,9 +181,16 @@
         <AppIcon name="MicrophoneIcon-off" class="mr-2" />
         <div>
           <strong>Microphone access required</strong>
-          <p class="mb-0 small">Please grant microphone permission to use voice features.</p>
+          <p class="mb-0 small">
+            Please grant microphone permission to use voice features.
+          </p>
         </div>
-        <UnifiedButton variant="outline" size="sm" class="ms-auto" @click="requestPermission">
+        <UnifiedButton
+          variant="outline"
+          size="sm"
+          class="ms-auto"
+          @click="requestPermission"
+        >
           Grant Permission
         </UnifiedButton>
       </div>
@@ -181,41 +203,41 @@ import { MicrophoneIcon } from '@heroicons/vue/24/outline'
 import { PlayIcon, StopIcon } from '@heroicons/vue/24/solid'
 
 import { ref, onMounted, computed, onUnmounted } from 'vue'
-import { audioService as _audioService } from '@/shared/services/AudioService';
-import { logger } from '@/shared/utils/logger';
-import PushToTalkButton from '@/components/PushToTalkButton.vue';
-import AppIcon from '@/components/ui/AppIcon.vue';
-import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import { audioService as _audioService } from '@/shared/services/AudioService'
+import { logger } from '@/shared/utils/logger'
+import PushToTalkButton from '@/components/PushToTalkButton.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 export default {
   name: 'AudioControls',
-  components: { 
+  components: {
     PushToTalkButton,
     AppIcon,
-    UnifiedButton
+    UnifiedButton,
   },
   props: {
     showDeviceSelection: {
       type: Boolean,
-      default: true
+      default: true,
     },
     enablePushToTalk: {
       type: Boolean,
-      default: true
+      default: true,
     },
     maxRecordingDuration: {
       type: Number,
-      default: 300 // 5 minutes
+      default: 300, // 5 minutes
     },
     variant: {
       type: String,
       default: 'default',
-      validator: (value) => ['default', 'compact', 'enhanced'].includes(value)
+      validator: value => ['default', 'compact', 'enhanced'].includes(value),
     },
     continuousMode: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: [
     'recordingStart',
@@ -225,299 +247,335 @@ export default {
     'playbackEnd',
     'deviceChanged',
     'permissionChanged',
-    'modeChanged'
+    'modeChanged',
   ],
   setup(_props, { emit }) {
     // Device management
-    const audioInputs = ref([]);
-    const audioOutputs = ref([]);
-    const selectedMicId = ref('');
-    const selectedSpeakerId = ref('');
+    const audioInputs = ref([])
+    const audioOutputs = ref([])
+    const selectedMicId = ref('')
+    const selectedSpeakerId = ref('')
 
     // Permission state
-    const hasPermission = ref(false);
+    const hasPermission = ref(false)
 
     // Recording state
-    const isRecording = ref(false);
-    const recordingStatus = ref('');
-    const recordingDuration = ref(0);
-    const audioLevel = ref(0);
-    const audioData = ref(null);
+    const isRecording = ref(false)
+    const recordingStatus = ref('')
+    const recordingDuration = ref(0)
+    const audioLevel = ref(0)
+    const audioData = ref(null)
 
     // Playback state
-    const isPlaying = ref(false);
-    const playbackDuration = ref(0);
-    const playbackCurrentTime = ref(0);
+    const isPlaying = ref(false)
+    const playbackDuration = ref(0)
+    const playbackCurrentTime = ref(0)
     const playbackProgress = computed(() => {
-      if (playbackDuration.value === 0) {return 0;}
-      return (playbackCurrentTime.value / playbackDuration.value) * 100;
-    });
+      if (playbackDuration.value === 0) {
+        return 0
+      }
+      return (playbackCurrentTime.value / playbackDuration.value) * 100
+    })
 
     // Internal state
-    let currentAudio = null;
-    let recordingTimer = null;
-    const pushToTalkMode = ref(true);
+    let currentAudio = null
+    let recordingTimer = null
+    const pushToTalkMode = ref(true)
 
     // Initialize component
     onMounted(async () => {
-      await initializeAudioDevices();
+      await initializeAudioDevices()
       // Non-invasive permission check on mount (no prompts)
-      await checkPermissions();
-    });
+      await checkPermissions()
+    })
 
     onUnmounted(() => {
-      cleanup();
-    });
+      cleanup()
+    })
 
     // Device management
     async function initializeAudioDevices() {
       try {
-        let devices = [];
+        let devices = []
         if (navigator.mediaDevices?.enumerateDevices) {
-          devices = await navigator.mediaDevices.enumerateDevices();
+          devices = await navigator.mediaDevices.enumerateDevices()
         } else if (window.api?.media?.getDevices) {
           // Avoid prompting via main process; only call after permission is granted
-          const settings = await window.api?.app?.getSettings?.().catch(() => null);
-          const granted = hasPermission.value || Boolean(settings?.microphoneGranted);
+          const settings = await window.api?.app
+            ?.getSettings?.()
+            .catch(() => null)
+          const granted =
+            hasPermission.value || Boolean(settings?.microphoneGranted)
           if (granted) {
-            devices = await window.api.media.getDevices();
+            devices = await window.api.media.getDevices()
           }
         }
 
-        audioInputs.value = (devices || []).filter((d) => d.kind === 'audioinput');
-        audioOutputs.value = (devices || []).filter((d) => d.kind === 'audiooutput');
+        audioInputs.value = (devices || []).filter(d => d.kind === 'audioinput')
+        audioOutputs.value = (devices || []).filter(
+          d => d.kind === 'audiooutput'
+        )
 
         // Set default devices
-        const settings = await (window.api?.app?.getSettings?.() || Promise.resolve(null)).catch(() => null);
+        const settings = await (
+          window.api?.app?.getSettings?.() || Promise.resolve(null)
+        ).catch(() => null)
         if (settings) {
-          selectedMicId.value = settings.selectedMicId || '';
-          selectedSpeakerId.value = settings.selectedSpeakerId || '';
+          selectedMicId.value = settings.selectedMicId || ''
+          selectedSpeakerId.value = settings.selectedSpeakerId || ''
         }
       } catch (error) {
-        logger.error('Failed to get audio devices:', error);
+        logger.error('Failed to get audio devices:', error)
       }
     }
 
     async function checkPermissions() {
       try {
         // Non-invasive: use Permissions API or device labels heuristic; never prompt
-        let granted = false;
-        const permAPI = navigator.permissions;
+        let granted = false
+        const permAPI = navigator.permissions
         if (permAPI && typeof permAPI.query === 'function') {
           try {
-            const status = await permAPI.query({ name: 'microphone' });
-            granted = status.state === 'granted';
-          } catch {/* some browsers do not support querying microphone */}
+            const status = await permAPI.query({ name: 'microphone' })
+            granted = status.state === 'granted'
+          } catch {
+            /* some browsers do not support querying microphone */
+          }
         }
 
         if (!granted && navigator.mediaDevices?.enumerateDevices) {
-          const devices = await navigator.mediaDevices.enumerateDevices();
-          granted = devices.some(d => d.kind === 'audioinput' && typeof d.label === 'string' && d.label.trim().length > 0);
+          const devices = await navigator.mediaDevices.enumerateDevices()
+          granted = devices.some(
+            d =>
+              d.kind === 'audioinput' &&
+              typeof d.label === 'string' &&
+              d.label.trim().length > 0
+          )
         }
 
-        hasPermission.value = granted;
-        emit('permissionChanged', granted);
+        hasPermission.value = granted
+        emit('permissionChanged', granted)
       } catch (error) {
-        logger.error('Permission check failed:', error);
-        hasPermission.value = false;
+        logger.error('Permission check failed:', error)
+        hasPermission.value = false
       }
     }
 
     async function requestPermission() {
       try {
         // First try browser API for immediate feedback
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        stream.getTracks().forEach(track => track.stop());
-        hasPermission.value = true;
-        emit('permissionChanged', true);
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        })
+        stream.getTracks().forEach(track => track.stop())
+        hasPermission.value = true
+        emit('permissionChanged', true)
 
         // Also notify main process
         if (window.api?.media) {
-          await window.api.media.requestPermissions({ audio: true });
+          await window.api.media.requestPermissions({ audio: true })
         }
       } catch (error) {
-        logger.error('Permission request failed:', error);
-        hasPermission.value = false;
-        emit('permissionChanged', false);
+        logger.error('Permission request failed:', error)
+        hasPermission.value = false
+        emit('permissionChanged', false)
       }
     }
 
     async function updateDevicePreferences() {
       emit('deviceChanged', {
         micId: selectedMicId.value,
-        speakerId: selectedSpeakerId.value
-      });
+        speakerId: selectedSpeakerId.value,
+      })
 
       // Save to settings
       if (window.api?.app?.updateSettings) {
         await window.api.app.updateSettings({
           selectedMicId: selectedMicId.value,
-          selectedSpeakerId: selectedSpeakerId.value
-        });
+          selectedSpeakerId: selectedSpeakerId.value,
+        })
       }
     }
 
     // Enhanced recording mode management
-    const setPushToTalkMode = (enabled) => {
-      pushToTalkMode.value = enabled;
-      emit('modeChanged', { pushToTalk: enabled });
-    };
+    const setPushToTalkMode = enabled => {
+      pushToTalkMode.value = enabled
+      emit('modeChanged', { pushToTalk: enabled })
+    }
 
     const _getRecordingAriaLabel = () => {
-      if (!hasPermission.value) {return 'Microphone permission required';}
-      if (isRecording.value) {
-        return pushToTalkMode.value ? 'Recording - release to stop' : 'Recording - click to stop';
+      if (!hasPermission.value) {
+        return 'Microphone permission required'
       }
-      return pushToTalkMode.value ? 'Hold to record' : 'Click to start recording';
-    };
+      if (isRecording.value) {
+        return pushToTalkMode.value
+          ? 'Recording - release to stop'
+          : 'Recording - click to stop'
+      }
+      return pushToTalkMode.value
+        ? 'Hold to record'
+        : 'Click to start recording'
+    }
 
     const _getRecordingButtonText = () => {
-      if (!hasPermission.value) {return 'Permission Required';}
-      if (isRecording.value) {return 'Recording...';}
-      return pushToTalkMode.value ? 'Hold to Record' : 'Click to Record';
-    };
+      if (!hasPermission.value) {
+        return 'Permission Required'
+      }
+      if (isRecording.value) {
+        return 'Recording...'
+      }
+      return pushToTalkMode.value ? 'Hold to Record' : 'Click to Record'
+    }
 
     // Recording logic handled by canonical PushToTalkButton
 
     // Enhanced event handlers
     const handleRecordingStart = () => {
-      isRecording.value = true;
-      recordingStatus.value = 'Recording...';
-      startRecordingTimer();
-      emit('recordingStart');
-      logger.debug('AudioControls: Recording started');
-    };
+      isRecording.value = true
+      recordingStatus.value = 'Recording...'
+      startRecordingTimer()
+      emit('recordingStart')
+      logger.debug('AudioControls: Recording started')
+    }
 
     const handleRecordingStop = () => {
-      isRecording.value = false;
-      recordingStatus.value = 'Processing...';
-      stopRecordingTimer();
-      audioLevel.value = 0;
-      emit('recordingStop', { 
-        duration: recordingDuration.value, 
-        audioData: audioData.value 
-      });
-      logger.debug('AudioControls: Recording stopped', { duration: recordingDuration.value });
-    };
+      isRecording.value = false
+      recordingStatus.value = 'Processing...'
+      stopRecordingTimer()
+      audioLevel.value = 0
+      emit('recordingStop', {
+        duration: recordingDuration.value,
+        audioData: audioData.value,
+      })
+      logger.debug('AudioControls: Recording stopped', {
+        duration: recordingDuration.value,
+      })
+    }
 
     const _handleRecordingClick = async () => {
       if (!hasPermission.value) {
-        await requestPermission();
-        return;
+        await requestPermission()
+        return
       }
 
       if (pushToTalkMode.value) {
         // In push-to-talk mode, this is handled by the PTT button
-        return;
+        return
       }
 
       if (isRecording.value) {
-        handleRecordingStop();
+        handleRecordingStop()
       } else {
-        handleRecordingStart();
+        handleRecordingStart()
       }
-    };
+    }
 
     // Timer functions
     const startRecordingTimer = () => {
-      recordingDuration.value = 0;
+      recordingDuration.value = 0
       recordingTimer = setInterval(() => {
-        recordingDuration.value += 1;
+        recordingDuration.value += 1
         if (recordingDuration.value >= _props.maxRecordingDuration) {
-          handleRecordingStop();
+          handleRecordingStop()
         }
-      }, 1000);
-    };
+      }, 1000)
+    }
 
     const stopRecordingTimer = () => {
       if (recordingTimer) {
-        clearInterval(recordingTimer);
-        recordingTimer = null;
+        clearInterval(recordingTimer)
+        recordingTimer = null
       }
-    };
+    }
 
     // Handle Stop from canonical PTT to capture audio blob for playback
-    const handlePTTStop = async (blob) => {
+    const handlePTTStop = async blob => {
       try {
         if (blob) {
-          audioData.value = blob;
-          emit('recordingData', blob);
-          emit('recordingStop', { duration: recordingDuration.value, audioData: blob });
+          audioData.value = blob
+          emit('recordingData', blob)
+          emit('recordingStop', {
+            duration: recordingDuration.value,
+            audioData: blob,
+          })
         }
         // Reset timers/state maintained by legacy code
-        isRecording.value = false;
-        recordingDuration.value = 0;
-        audioLevel.value = 0;
-        recordingStatus.value = '';
+        isRecording.value = false
+        recordingDuration.value = 0
+        audioLevel.value = 0
+        recordingStatus.value = ''
       } catch (e) {
-        logger.error('handlePTTStop failed:', e);
+        logger.error('handlePTTStop failed:', e)
       }
-    };
+    }
 
     // --
 
     // Playback functions
     async function playAudio() {
-      if (!audioData.value || isPlaying.value) {return;}
+      if (!audioData.value || isPlaying.value) {
+        return
+      }
 
       try {
         // Stop current audio if playing
         if (currentAudio) {
-          currentAudio.pause();
-          currentAudio = null;
+          currentAudio.pause()
+          currentAudio = null
         }
 
-        const url = URL.createObjectURL(audioData.value);
-        currentAudio = new window.Audio(url);
+        const url = URL.createObjectURL(audioData.value)
+        currentAudio = new window.Audio(url)
         try {
-          const svc = await import('@/shared/services/AudioService');
-          await svc.applyOutputDevice(currentAudio);
-        } catch {/* ignore */}
+          const svc = await import('@/shared/services/AudioService')
+          await svc.applyOutputDevice(currentAudio)
+        } catch {
+          /* ignore */
+        }
 
         currentAudio.ontimeupdate = () => {
-          playbackCurrentTime.value = currentAudio.currentTime;
-        };
+          playbackCurrentTime.value = currentAudio.currentTime
+        }
 
         currentAudio.onloadedmetadata = () => {
-          playbackDuration.value = currentAudio.duration;
-        };
+          playbackDuration.value = currentAudio.duration
+        }
 
         currentAudio.onended = () => {
-          isPlaying.value = false;
-          playbackCurrentTime.value = 0;
-          emit('playbackEnd');
-          URL.revokeObjectURL(url);
-        };
+          isPlaying.value = false
+          playbackCurrentTime.value = 0
+          emit('playbackEnd')
+          URL.revokeObjectURL(url)
+        }
 
-        await currentAudio.play();
-        isPlaying.value = true;
-        emit('playbackStart');
-
+        await currentAudio.play()
+        isPlaying.value = true
+        emit('playbackStart')
       } catch (error) {
-        logger.error('Failed to play audio:', error);
+        logger.error('Failed to play audio:', error)
       }
     }
 
     function stopAudio() {
       if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-        isPlaying.value = false;
-        playbackCurrentTime.value = 0;
-        emit('playbackEnd');
+        currentAudio.pause()
+        currentAudio.currentTime = 0
+        isPlaying.value = false
+        playbackCurrentTime.value = 0
+        emit('playbackEnd')
       }
     }
 
     // Utility functions
     function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins}:${secs.toString().padStart(2, '0')}`;
+      const mins = Math.floor(seconds / 60)
+      const secs = Math.floor(seconds % 60)
+      return `${mins}:${secs.toString().padStart(2, '0')}`
     }
 
     function cleanup() {
       // AudioService handles stream/context lifecycle
-      audioLevel.value = 0;
+      audioLevel.value = 0
     }
 
     return {
@@ -555,10 +613,10 @@ export default {
       // removed legacy handlers
 
       // Utility
-      formatTime
-    };
-  }
-};
+      formatTime,
+    }
+  },
+}
 </script>
 
 <style scoped>
@@ -567,7 +625,7 @@ export default {
   backdrop-filter: blur(16px);
   border: 1px solid transparent;
   border-image: linear-gradient(135deg, #00ff87 0%, #60efff 50%, #ff0080 100%) 1;
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 255, 135, 0.1),
     0 2px 10px rgba(96, 239, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -577,7 +635,7 @@ export default {
 
 .audio-controls.fairy-ai-active {
   border-image: linear-gradient(135deg, #60efff 0%, #00ff87 50%, #60efff 100%) 1;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(96, 239, 255, 0.3),
     0 4px 16px rgba(0, 255, 135, 0.2),
     0 0 24px rgba(96, 239, 255, 0.4),
@@ -586,14 +644,14 @@ export default {
 }
 
 @keyframes fairyGlow {
-  0% { 
-    box-shadow: 
+  0% {
+    box-shadow:
       0 8px 32px rgba(96, 239, 255, 0.2),
       0 4px 16px rgba(0, 255, 135, 0.15),
       0 0 24px rgba(96, 239, 255, 0.3);
   }
   100% {
-    box-shadow: 
+    box-shadow:
       0 12px 40px rgba(96, 239, 255, 0.4),
       0 6px 20px rgba(0, 255, 135, 0.25),
       0 0 32px rgba(96, 239, 255, 0.5);

@@ -1,11 +1,11 @@
 <template>
-  <div class="media-controls glass-surface" :class="{ 'streaming': isStreaming }">
+  <div class="media-controls glass-surface" :class="{ streaming: isStreaming }">
     <div class="controls-header">
       <h3 class="controls-title">
         <AppIcon name="mdi-video-outline" class="rgb-icon" />
         Media Hub
       </h3>
-      <div class="status-indicator" :class="{ 'active': isStreaming }">
+      <div class="status-indicator" :class="{ active: isStreaming }">
         <div v-if="isStreaming" class="pulse-ring"></div>
         <div class="status-dot"></div>
         <span class="status-text">
@@ -19,19 +19,38 @@
       <div class="device-group">
         <label class="form-label">Camera</label>
         <select v-model="selectedCameraId" class="form-select glass-input">
-          <option v-for="d in videoInputs" :key="d.deviceId" :value="d.deviceId">{{ d.label || 'Camera' }}</option>
+          <option
+            v-for="d in videoInputs"
+            :key="d.deviceId"
+            :value="d.deviceId"
+          >
+            {{ d.label || 'Camera' }}
+          </option>
         </select>
       </div>
       <div class="device-group">
         <label class="form-label">Microphone</label>
         <select v-model="selectedMicId" class="form-select glass-input">
-          <option v-for="d in audioInputs" :key="d.deviceId" :value="d.deviceId">{{ d.label || 'Microphone' }}</option>
+          <option
+            v-for="d in audioInputs"
+            :key="d.deviceId"
+            :value="d.deviceId"
+          >
+            {{ d.label || 'Microphone' }}
+          </option>
         </select>
       </div>
       <div class="device-group">
         <label class="form-label">Quality</label>
         <div class="quality-chips">
-          <span v-for="p in qualityPresets" :key="p.key" class="quality-chip" :class="{ active: selectedQuality === p.key }" @click="selectedQuality = p.key">{{ p.label }}</span>
+          <span
+            v-for="p in qualityPresets"
+            :key="p.key"
+            class="quality-chip"
+            :class="{ active: selectedQuality === p.key }"
+            @click="selectedQuality = p.key"
+            >{{ p.label }}</span
+          >
         </div>
       </div>
     </div>
@@ -44,20 +63,30 @@
             <AppIcon name="mdi-camera" color="primary" />
             <span>Webcam</span>
           </div>
-          <div class="control-badge" :class="{ 'active': webcam.isStreaming.value }">
+          <div
+            class="control-badge"
+            :class="{ active: webcam.isStreaming.value }"
+          >
             {{ webcam.isStreaming.value ? 'Active' : 'Inactive' }}
           </div>
         </div>
         <UnifiedButton
           :variant="webcam.isStreaming.value ? 'danger' : 'gaming'"
           :loading="loading && loadingType === 'webcam'"
-          :leading-icon="webcam.isStreaming.value ? 'mdi-camera-off' : 'mdi-camera'"
+          :leading-icon="
+            webcam.isStreaming.value ? 'mdi-camera-off' : 'mdi-camera'
+          "
           @click="toggleWebcam"
         >
           {{ webcam.isStreaming.value ? 'Stop Webcam' : 'Start Webcam' }}
         </UnifiedButton>
         <div v-if="webcam.isStreaming.value" class="preview-area">
-          <video ref="webcamPreview" autoplay muted class="preview-video"></video>
+          <video
+            ref="webcamPreview"
+            autoplay
+            muted
+            class="preview-video"
+          ></video>
         </div>
       </div>
 
@@ -68,20 +97,32 @@
             <AppIcon name="mdi-monitor-screenshot" class="rgb-text-accent" />
             <span>Screen Share</span>
           </div>
-          <div class="control-badge" :class="{ 'active': screenCapture.isStreaming.value }">
+          <div
+            class="control-badge"
+            :class="{ active: screenCapture.isStreaming.value }"
+          >
             {{ screenCapture.isStreaming.value ? 'Active' : 'Inactive' }}
           </div>
         </div>
         <UnifiedButton
           :variant="screenCapture.isStreaming.value ? 'danger' : 'glass'"
           :loading="loading && loadingType === 'screen'"
-          :leading-icon="screenCapture.isStreaming.value ? 'mdi-monitor-off' : 'mdi-monitor-screenshot'"
+          :leading-icon="
+            screenCapture.isStreaming.value
+              ? 'mdi-monitor-off'
+              : 'mdi-monitor-screenshot'
+          "
           @click="toggleScreenCapture"
         >
           {{ screenCapture.isStreaming ? 'Stop Sharing' : 'Share Screen' }}
         </UnifiedButton>
         <div v-if="screenCapture.isStreaming" class="preview-area">
-          <video ref="screenPreview" autoplay muted class="preview-video"></video>
+          <video
+            ref="screenPreview"
+            autoplay
+            muted
+            class="preview-video"
+          ></video>
         </div>
       </div>
     </div>
@@ -96,7 +137,9 @@
         <UnifiedButton
           :variant="isMicrophoneEnabled ? 'warning' : 'glass'"
           :disabled="!isStreaming"
-          :leading-icon="isMicrophoneEnabled ? 'mdi-microphone' : 'mdi-microphone-off'"
+          :leading-icon="
+            isMicrophoneEnabled ? 'mdi-microphone' : 'mdi-microphone-off'
+          "
           @click="toggleMicrophone"
         >
           {{ isMicrophoneEnabled ? 'Mute' : 'Unmute' }}
@@ -104,7 +147,12 @@
       </div>
       <div v-if="isStreaming" class="audio-visualizer">
         <div class="visualizer-bars">
-          <div v-for="n in 12" :key="n" class="bar" :style="{ animationDelay: `${n * 0.1}s` }"></div>
+          <div
+            v-for="n in 12"
+            :key="n"
+            class="bar"
+            :style="{ animationDelay: `${n * 0.1}s` }"
+          ></div>
         </div>
       </div>
     </div>
@@ -116,7 +164,13 @@
         <span>Error</span>
       </div>
       <p class="error-message">{{ error }}</p>
-      <UnifiedButton variant="glass" size="sm" leading-icon="mdi-close" @click="clearError">Dismiss</UnifiedButton>
+      <UnifiedButton
+        variant="glass"
+        size="sm"
+        leading-icon="mdi-close"
+        @click="clearError"
+        >Dismiss</UnifiedButton
+      >
     </div>
   </div>
 </template>
@@ -132,7 +186,7 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 const emit = defineEmits<{
   'stream-started': [stream: MediaStream, type?: 'webcam' | 'screen']
   'stream-stopped': []
-  'error': [message: string]
+  error: [message: string]
 }>()
 
 const {
@@ -158,11 +212,31 @@ const audioInputs = ref<MediaDeviceInfo[]>([])
 const selectedCameraId = ref<string>('')
 const selectedMicId = ref<string>('')
 type QualityKey = 'sd' | 'hd' | 'fhd' | 'uhd'
-const qualityPresets: { key: QualityKey; label: string; constraints: MediaTrackConstraints }[] = [
-  { key: 'sd', label: '480p', constraints: { width: { ideal: 640 }, height: { ideal: 480 } } },
-  { key: 'hd', label: '720p', constraints: { width: { ideal: 1280 }, height: { ideal: 720 } } },
-  { key: 'fhd', label: '1080p', constraints: { width: { ideal: 1920 }, height: { ideal: 1080 } } },
-  { key: 'uhd', label: '4K', constraints: { width: { ideal: 3840 }, height: { ideal: 2160 } } },
+const qualityPresets: {
+  key: QualityKey
+  label: string
+  constraints: MediaTrackConstraints
+}[] = [
+  {
+    key: 'sd',
+    label: '480p',
+    constraints: { width: { ideal: 640 }, height: { ideal: 480 } },
+  },
+  {
+    key: 'hd',
+    label: '720p',
+    constraints: { width: { ideal: 1280 }, height: { ideal: 720 } },
+  },
+  {
+    key: 'fhd',
+    label: '1080p',
+    constraints: { width: { ideal: 1920 }, height: { ideal: 1080 } },
+  },
+  {
+    key: 'uhd',
+    label: '4K',
+    constraints: { width: { ideal: 3840 }, height: { ideal: 2160 } },
+  },
 ]
 const selectedQuality = ref<QualityKey>('hd')
 
@@ -173,8 +247,10 @@ async function enumerateDevices() {
     const devices = await navigator.mediaDevices.enumerateDevices()
     videoInputs.value = devices.filter(d => d.kind === 'videoinput')
     audioInputs.value = devices.filter(d => d.kind === 'audioinput')
-    if (!selectedCameraId.value && videoInputs.value[0]) selectedCameraId.value = videoInputs.value[0].deviceId
-    if (!selectedMicId.value && audioInputs.value[0]) selectedMicId.value = audioInputs.value[0].deviceId
+    if (!selectedCameraId.value && videoInputs.value[0])
+      selectedCameraId.value = videoInputs.value[0].deviceId
+    if (!selectedMicId.value && audioInputs.value[0])
+      selectedMicId.value = audioInputs.value[0].deviceId
   } catch (e) {
     // ignore
   }
@@ -193,16 +269,21 @@ const toggleWebcam = async () => {
       const preset = qualityPresets.find(p => p.key === selectedQuality.value)
       const video: MediaTrackConstraints = {
         ...(preset?.constraints || {}),
-        ...(selectedCameraId.value ? { deviceId: { exact: selectedCameraId.value } } : {})
+        ...(selectedCameraId.value
+          ? { deviceId: { exact: selectedCameraId.value } }
+          : {}),
       }
-      const audio: MediaTrackConstraints = selectedMicId.value ? { deviceId: { exact: selectedMicId.value } } : {}
+      const audio: MediaTrackConstraints = selectedMicId.value
+        ? { deviceId: { exact: selectedMicId.value } }
+        : {}
       await startWebcam({ video, audio })
       if (webcam.stream?.value) {
         emit('stream-started', webcam.stream.value as any, 'webcam')
       }
     }
   } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : 'Failed to access webcam'
+    const errorMessage =
+      err instanceof Error ? err.message : 'Failed to access webcam'
     error.value = errorMessage
     emit('error', errorMessage)
   } finally {
@@ -228,7 +309,8 @@ const toggleScreenCapture = async () => {
       }
     }
   } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : 'Failed to capture screen'
+    const errorMessage =
+      err instanceof Error ? err.message : 'Failed to capture screen'
     error.value = errorMessage
     emit('error', errorMessage)
   } finally {
@@ -242,59 +324,89 @@ const clearError = () => {
 }
 
 // Watch for stream changes and update video elements
-watch(() => webcam.stream.value, () => {
-  nextTick(() => {
-    if (webcamPreview.value && webcam.stream?.value) {
-      webcamPreview.value.srcObject = webcam.stream.value as any
-    }
-  })
-})
+watch(
+  () => webcam.stream.value,
+  () => {
+    nextTick(() => {
+      if (webcamPreview.value && webcam.stream?.value) {
+        webcamPreview.value.srcObject = webcam.stream.value as any
+      }
+    })
+  }
+)
 
-watch(() => screenCapture.stream.value, () => {
-  nextTick(() => {
-    if (screenPreview.value && screenCapture.stream?.value) {
-      screenPreview.value.srcObject = screenCapture.stream.value as any
-    }
-  })
-})
+watch(
+  () => screenCapture.stream.value,
+  () => {
+    nextTick(() => {
+      if (screenPreview.value && screenCapture.stream?.value) {
+        screenPreview.value.srcObject = screenCapture.stream.value as any
+      }
+    })
+  }
+)
 
 onMounted(() => {
   enumerateDevices()
-  try { navigator.mediaDevices.addEventListener?.('devicechange', enumerateDevices) } catch {}
+  try {
+    navigator.mediaDevices.addEventListener?.('devicechange', enumerateDevices)
+  } catch {}
   // Initialize selections from store
   try {
     const s = store.settings
     if (s?.selectedMicId) selectedMicId.value = s.selectedMicId
-    if (s?.streaming?.video?.selectedCameraId) selectedCameraId.value = s.streaming.video.selectedCameraId
+    if (s?.streaming?.video?.selectedCameraId)
+      selectedCameraId.value = s.streaming.video.selectedCameraId
     const res = s?.streaming?.video?.resolution || '720p'
-    selectedQuality.value = res === '1080p' ? 'fhd' : res === '4k' ? 'uhd' : 'hd'
+    selectedQuality.value =
+      res === '1080p' ? 'fhd' : res === '4k' ? 'uhd' : 'hd'
   } catch {}
 })
 
 onUnmounted(() => {
-  try { navigator.mediaDevices.removeEventListener?.('devicechange', enumerateDevices) } catch {}
+  try {
+    navigator.mediaDevices.removeEventListener?.(
+      'devicechange',
+      enumerateDevices
+    )
+  } catch {}
 })
 
 // Persist selections to store
-watch(selectedMicId, (v) => {
-  try { store.updateSettings({ selectedMicId: v }) } catch {}
+watch(selectedMicId, v => {
+  try {
+    store.updateSettings({ selectedMicId: v })
+  } catch {}
 })
-watch(selectedCameraId, (v) => {
-  try { store.updateSettings({ streaming: { video: { selectedCameraId: v } } as any }) } catch {}
+watch(selectedCameraId, v => {
+  try {
+    store.updateSettings({
+      streaming: { video: { selectedCameraId: v } } as any,
+    })
+  } catch {}
 })
-watch(selectedQuality, (v) => {
+watch(selectedQuality, v => {
   const resolution = v === 'fhd' ? '1080p' : v === 'uhd' ? '4k' : '720p'
-  try { store.updateSettings({ streaming: { video: { resolution } } as any }) } catch {}
+  try {
+    store.updateSettings({ streaming: { video: { resolution } } as any })
+  } catch {}
 })
 
 // Expose controls for parent usage
-function getCurrentConstraints(): { video: MediaTrackConstraints; audio: MediaTrackConstraints } {
+function getCurrentConstraints(): {
+  video: MediaTrackConstraints
+  audio: MediaTrackConstraints
+} {
   const preset = qualityPresets.find(p => p.key === selectedQuality.value)
   const video: MediaTrackConstraints = {
     ...(preset?.constraints || {}),
-    ...(selectedCameraId.value ? { deviceId: { exact: selectedCameraId.value } } : {})
+    ...(selectedCameraId.value
+      ? { deviceId: { exact: selectedCameraId.value } }
+      : {}),
   }
-  const audio: MediaTrackConstraints = selectedMicId.value ? { deviceId: { exact: selectedMicId.value } } : {}
+  const audio: MediaTrackConstraints = selectedMicId.value
+    ? { deviceId: { exact: selectedMicId.value } }
+    : {}
   return { video, audio }
 }
 
@@ -344,10 +456,28 @@ defineExpose({
   margin-bottom: var(--spacing-md);
 }
 
-.device-group .form-label { margin-bottom: 6px; display:block; color: var(--text-secondary); }
-.quality-chips { display:flex; gap: var(--spacing-2); flex-wrap: wrap; }
-.quality-chip { padding: 6px 10px; border-radius: 999px; background: var(--glass-bg); border: 1px solid var(--glass-border); cursor: pointer; font-size: 0.85rem; }
-.quality-chip.active { background: var(--glass-elevated); border-color: var(--color-primary-400); }
+.device-group .form-label {
+  margin-bottom: 6px;
+  display: block;
+  color: var(--text-secondary);
+}
+.quality-chips {
+  display: flex;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
+}
+.quality-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.quality-chip.active {
+  background: var(--glass-elevated);
+  border-color: var(--color-primary-400);
+}
 
 .media-controls.streaming::before {
   content: '';
@@ -356,7 +486,12 @@ defineExpose({
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--rgb-primary), var(--rgb-accent), var(--rgb-secondary));
+  background: linear-gradient(
+    90deg,
+    var(--rgb-primary),
+    var(--rgb-accent),
+    var(--rgb-secondary)
+  );
   animation: rgbFlow 3s linear infinite;
   z-index: 1;
 }
@@ -493,15 +628,22 @@ defineExpose({
 
 .control-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  filter: drop-shadow(0 2px 8px color-mix(in srgb, var(--color-primary-500) 18%, transparent));
+  filter: drop-shadow(
+    0 2px 8px color-mix(in srgb, var(--color-primary-500) 18%, transparent)
+  );
   border-color: var(--control-border);
 }
 
 .control-btn.active {
   background: var(--control-active-bg);
   color: var(--control-active-fg);
-  border-color: color-mix(in srgb, var(--color-primary-500) 40%, var(--control-border));
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 40%,
+    var(--control-border)
+  );
+  box-shadow: 0 6px 18px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
 }
 
 .control-btn:disabled {
@@ -615,7 +757,11 @@ defineExpose({
   border: 1px solid var(--glass-border);
   border-left: 4px solid var(--rgb-red);
   margin-top: var(--grid-gap);
-  background: linear-gradient(135deg, transparent, rgba(var(--rgb-red-raw), 0.05));
+  background: linear-gradient(
+    135deg,
+    transparent,
+    rgba(var(--rgb-red-raw), 0.05)
+  );
 }
 
 .error-header {
@@ -651,13 +797,20 @@ defineExpose({
 
 /* Animations */
 @keyframes rgbFlow {
-  0% { background-position: 0% 0%; }
-  50% { background-position: 100% 0%; }
-  100% { background-position: 0% 0%; }
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }
 
 @keyframes rgbPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.7;
   }
@@ -668,8 +821,12 @@ defineExpose({
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes audioVisualize {
@@ -683,46 +840,70 @@ defineExpose({
   }
 }
 
-.bar:nth-child(1) { --i: 3; }
-.bar:nth-child(2) { --i: 7; }
-.bar:nth-child(3) { --i: 2; }
-.bar:nth-child(4) { --i: 9; }
-.bar:nth-child(5) { --i: 5; }
-.bar:nth-child(6) { --i: 8; }
-.bar:nth-child(7) { --i: 4; }
-.bar:nth-child(8) { --i: 6; }
-.bar:nth-child(9) { --i: 1; }
-.bar:nth-child(10) { --i: 10; }
-.bar:nth-child(11) { --i: 3; }
-.bar:nth-child(12) { --i: 7; }
+.bar:nth-child(1) {
+  --i: 3;
+}
+.bar:nth-child(2) {
+  --i: 7;
+}
+.bar:nth-child(3) {
+  --i: 2;
+}
+.bar:nth-child(4) {
+  --i: 9;
+}
+.bar:nth-child(5) {
+  --i: 5;
+}
+.bar:nth-child(6) {
+  --i: 8;
+}
+.bar:nth-child(7) {
+  --i: 4;
+}
+.bar:nth-child(8) {
+  --i: 6;
+}
+.bar:nth-child(9) {
+  --i: 1;
+}
+.bar:nth-child(10) {
+  --i: 10;
+}
+.bar:nth-child(11) {
+  --i: 3;
+}
+.bar:nth-child(12) {
+  --i: 7;
+}
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .media-controls {
     padding: 1rem;
   }
-  
+
   .controls-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .control-section {
     padding: 1rem;
   }
-  
+
   .preview-video {
     height: 120px;
   }
-  
+
   .audio-controls {
     padding: 1rem;
   }
-  
+
   .visualizer-bars {
     height: 32px;
   }
-  
+
   .control-title {
     font-size: 1.25rem;
   }

@@ -5,280 +5,280 @@
  * Fixes common unused variable patterns in Vue.js/TypeScript code
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 class UnusedVariableCleaner {
   constructor() {
-    this.srcDir = path.join(process.cwd(), 'src');
-    this.fixCount = 0;
+    this.srcDir = path.join(process.cwd(), 'src')
+    this.fixCount = 0
   }
 
   // Get all relevant files
   getFiles(dir) {
-    const files = [];
-    const items = fs.readdirSync(dir);
-    
+    const files = []
+    const items = fs.readdirSync(dir)
+
     for (const item of items) {
-      const fullPath = path.join(dir, item);
-      const stat = fs.statSync(fullPath);
-      
+      const fullPath = path.join(dir, item)
+      const stat = fs.statSync(fullPath)
+
       if (stat.isDirectory() && !item.startsWith('.')) {
-        files.push(...this.getFiles(fullPath));
+        files.push(...this.getFiles(fullPath))
       } else if (item.match(/\.(vue|ts|js)$/)) {
-        files.push(fullPath);
+        files.push(fullPath)
       }
     }
-    
-    return files;
+
+    return files
   }
 
   // Fix unused variables and parameters
   fixUnusedVariables(content) {
-    let modified = false;
-    let newContent = content;
+    let modified = false
+    let newContent = content
 
     // Common unused variable patterns
     const patterns = [
       // Unused function parameters
-      { 
-        regex: /(\(\s*)error(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)error(\s*[,)])/g,
         replacement: '$1_error$2',
-        description: 'error parameter' 
+        description: 'error parameter',
       },
-      { 
-        regex: /(\(\s*)e(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)e(\s*[,)])/g,
         replacement: '$1_e$2',
-        description: 'e parameter' 
+        description: 'e parameter',
       },
-      { 
-        regex: /(\(\s*)props(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)props(\s*[,)])/g,
         replacement: '$1_props$2',
-        description: 'props parameter' 
+        description: 'props parameter',
       },
-      { 
-        regex: /(\(\s*)emit(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)emit(\s*[,)])/g,
         replacement: '$1_emit$2',
-        description: 'emit parameter' 
+        description: 'emit parameter',
       },
-      { 
-        regex: /(\(\s*)data(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)data(\s*[,)])/g,
         replacement: '$1_data$2',
-        description: 'data parameter' 
+        description: 'data parameter',
       },
-      { 
-        regex: /(\(\s*)chunk(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)chunk(\s*[,)])/g,
         replacement: '$1_chunk$2',
-        description: 'chunk parameter' 
+        description: 'chunk parameter',
       },
-      { 
-        regex: /(\(\s*)result(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)result(\s*[,)])/g,
         replacement: '$1_result$2',
-        description: 'result parameter' 
+        description: 'result parameter',
       },
-      { 
-        regex: /(\(\s*)response(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)response(\s*[,)])/g,
         replacement: '$1_response$2',
-        description: 'response parameter' 
+        description: 'response parameter',
       },
-      { 
-        regex: /(\(\s*)options(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)options(\s*[,)])/g,
         replacement: '$1_options$2',
-        description: 'options parameter' 
+        description: 'options parameter',
       },
-      { 
-        regex: /(\(\s*)context(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)context(\s*[,)])/g,
         replacement: '$1_context$2',
-        description: 'context parameter' 
+        description: 'context parameter',
       },
-      { 
-        regex: /(\(\s*)config(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)config(\s*[,)])/g,
         replacement: '$1_config$2',
-        description: 'config parameter' 
+        description: 'config parameter',
       },
-      { 
-        regex: /(\(\s*)params(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)params(\s*[,)])/g,
         replacement: '$1_params$2',
-        description: 'params parameter' 
+        description: 'params parameter',
       },
-      { 
-        regex: /(\(\s*)args(\s*[,)])/g, 
+      {
+        regex: /(\(\s*)args(\s*[,)])/g,
         replacement: '$1_args$2',
-        description: 'args parameter' 
+        description: 'args parameter',
       },
 
       // Unused variable declarations
-      { 
-        regex: /^(\s*const\s+)props(\s*=)/gm, 
+      {
+        regex: /^(\s*const\s+)props(\s*=)/gm,
         replacement: '$1_props$2',
-        description: 'props variable' 
+        description: 'props variable',
       },
-      { 
-        regex: /^(\s*const\s+)emit(\s*=)/gm, 
+      {
+        regex: /^(\s*const\s+)emit(\s*=)/gm,
         replacement: '$1_emit$2',
-        description: 'emit variable' 
+        description: 'emit variable',
       },
-      { 
-        regex: /^(\s*const\s+)error(\s*=)/gm, 
+      {
+        regex: /^(\s*const\s+)error(\s*=)/gm,
         replacement: '$1_error$2',
-        description: 'error variable' 
+        description: 'error variable',
       },
-      { 
-        regex: /^(\s*const\s+)router(\s*=)/gm, 
+      {
+        regex: /^(\s*const\s+)router(\s*=)/gm,
         replacement: '$1_router$2',
-        description: 'router variable' 
+        description: 'router variable',
       },
-      { 
-        regex: /^(\s*const\s+)theme(\s*=)/gm, 
+      {
+        regex: /^(\s*const\s+)theme(\s*=)/gm,
         replacement: '$1_theme$2',
-        description: 'theme variable' 
+        description: 'theme variable',
       },
 
       // Destructured unused variables
-      { 
-        regex: /(\{\s*)error(\s*\})/g, 
+      {
+        regex: /(\{\s*)error(\s*\})/g,
         replacement: '$1_error$2',
-        description: 'destructured error' 
+        description: 'destructured error',
       },
-      { 
-        regex: /(\{\s*)data(\s*\})/g, 
+      {
+        regex: /(\{\s*)data(\s*\})/g,
         replacement: '$1_data$2',
-        description: 'destructured data' 
+        description: 'destructured data',
       },
 
       // Try-catch blocks
-      { 
-        regex: /(catch\s*\(\s*)error(\s*\))/g, 
+      {
+        regex: /(catch\s*\(\s*)error(\s*\))/g,
         replacement: '$1_error$2',
-        description: 'catch error' 
+        description: 'catch error',
       },
-      { 
-        regex: /(catch\s*\(\s*)e(\s*\))/g, 
+      {
+        regex: /(catch\s*\(\s*)e(\s*\))/g,
         replacement: '$1_e$2',
-        description: 'catch e' 
+        description: 'catch e',
       },
-      { 
-        regex: /(catch\s*\(\s*)err(\s*\))/g, 
+      {
+        regex: /(catch\s*\(\s*)err(\s*\))/g,
         replacement: '$1_err$2',
-        description: 'catch err' 
+        description: 'catch err',
       },
-      { 
-        regex: /(catch\s*\(\s*)parseError(\s*\))/g, 
+      {
+        regex: /(catch\s*\(\s*)parseError(\s*\))/g,
         replacement: '$1_parseError$2',
-        description: 'catch parseError' 
-      }
-    ];
+        description: 'catch parseError',
+      },
+    ]
 
     for (const { regex, replacement, description } of patterns) {
-      const result = newContent.replace(regex, replacement);
+      const result = newContent.replace(regex, replacement)
       if (result !== newContent) {
-        newContent = result;
-        modified = true;
-        this.fixCount++;
-        console.log(`  ↳ Fixed ${description}`);
+        newContent = result
+        modified = true
+        this.fixCount++
+        console.log(`  ↳ Fixed ${description}`)
       }
     }
 
-    return { content: newContent, modified };
+    return { content: newContent, modified }
   }
 
   // Remove unused imports
   fixUnusedImports(content) {
-    let modified = false;
-    let newContent = content;
+    let modified = false
+    let newContent = content
 
     // Common unused imports to remove
-    const unusedImports = [
-      'ComputedRef',
-      'onMounted',
-      'computed',
-      'ref'
-    ];
+    const unusedImports = ['ComputedRef', 'onMounted', 'computed', 'ref']
 
     for (const importName of unusedImports) {
       // Remove from import statements if not used in code
-      const importRegex = new RegExp(`import\\s*\\{[^}]*\\b${importName}\\b[^}]*\\}\\s*from\\s*['"][^'"]*['"]`, 'g');
-      const matches = newContent.match(importRegex);
-      
+      const importRegex = new RegExp(
+        `import\\s*\\{[^}]*\\b${importName}\\b[^}]*\\}\\s*from\\s*['"][^'"]*['"]`,
+        'g'
+      )
+      const matches = newContent.match(importRegex)
+
       if (matches) {
         for (const match of matches) {
           // Check if the import is actually used
-          const usageRegex = new RegExp(`\\b${importName}\\b(?!\\s*[,}])`, 'g');
-          const usageMatches = newContent.match(usageRegex);
-          
+          const usageRegex = new RegExp(`\\b${importName}\\b(?!\\s*[,}])`, 'g')
+          const usageMatches = newContent.match(usageRegex)
+
           // If only found in import statement, remove it
           if (usageMatches && usageMatches.length === 1) {
             // Remove just this import from the destructured imports
-            const cleanedImport = match.replace(new RegExp(`\\s*,?\\s*\\b${importName}\\b,?\\s*`), '');
-            newContent = newContent.replace(match, cleanedImport);
-            modified = true;
-            this.fixCount++;
-            console.log(`  ↳ Removed unused import: ${importName}`);
+            const cleanedImport = match.replace(
+              new RegExp(`\\s*,?\\s*\\b${importName}\\b,?\\s*`),
+              ''
+            )
+            newContent = newContent.replace(match, cleanedImport)
+            modified = true
+            this.fixCount++
+            console.log(`  ↳ Removed unused import: ${importName}`)
           }
         }
       }
     }
 
-    return { content: newContent, modified };
+    return { content: newContent, modified }
   }
 
   // Process a single file
   processFile(filePath) {
     try {
-      let content = fs.readFileSync(filePath, 'utf8');
-      let totalModified = false;
+      let content = fs.readFileSync(filePath, 'utf8')
+      let totalModified = false
 
-      console.log(`Processing: ${path.relative(this.srcDir, filePath)}`);
+      console.log(`Processing: ${path.relative(this.srcDir, filePath)}`)
 
       // Apply fixes
-      const unusedVarResult = this.fixUnusedVariables(content);
-      content = unusedVarResult.content;
-      if (unusedVarResult.modified) totalModified = true;
+      const unusedVarResult = this.fixUnusedVariables(content)
+      content = unusedVarResult.content
+      if (unusedVarResult.modified) totalModified = true
 
-      const unusedImportResult = this.fixUnusedImports(content);
-      content = unusedImportResult.content;
-      if (unusedImportResult.modified) totalModified = true;
+      const unusedImportResult = this.fixUnusedImports(content)
+      content = unusedImportResult.content
+      if (unusedImportResult.modified) totalModified = true
 
       // Write back if modified
       if (totalModified) {
-        fs.writeFileSync(filePath, content, 'utf8');
-        console.log(`✅ Modified: ${path.relative(this.srcDir, filePath)}`);
-        return true;
+        fs.writeFileSync(filePath, content, 'utf8')
+        console.log(`✅ Modified: ${path.relative(this.srcDir, filePath)}`)
+        return true
       } else {
-        console.log(`⏭️  No changes: ${path.relative(this.srcDir, filePath)}`);
-        return false;
+        console.log(`⏭️  No changes: ${path.relative(this.srcDir, filePath)}`)
+        return false
       }
-
     } catch (error) {
-      console.error(`❌ Error processing ${filePath}:`, error.message);
-      return false;
+      console.error(`❌ Error processing ${filePath}:`, error.message)
+      return false
     }
   }
 
   // Main execution
   run() {
-    console.log('🧹 Cleaning unused variables and imports...\n');
-    
-    const files = this.getFiles(this.srcDir);
-    let processedFiles = 0;
+    console.log('🧹 Cleaning unused variables and imports...\n')
+
+    const files = this.getFiles(this.srcDir)
+    let processedFiles = 0
 
     for (const file of files) {
       if (this.processFile(file)) {
-        processedFiles++;
+        processedFiles++
       }
     }
 
-    console.log(`\n📊 Summary:`);
-    console.log(`• Total fixes applied: ${this.fixCount}`);
-    console.log(`• Files modified: ${processedFiles}/${files.length}`);
-    console.log('\n✨ Cleanup completed!');
+    console.log(`\n📊 Summary:`)
+    console.log(`• Total fixes applied: ${this.fixCount}`)
+    console.log(`• Files modified: ${processedFiles}/${files.length}`)
+    console.log('\n✨ Cleanup completed!')
   }
 }
 
 // Run if called directly
 if (require.main === module) {
-  const cleaner = new UnusedVariableCleaner();
-  cleaner.run();
+  const cleaner = new UnusedVariableCleaner()
+  cleaner.run()
 }
 
-module.exports = UnusedVariableCleaner;
+module.exports = UnusedVariableCleaner

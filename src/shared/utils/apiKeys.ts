@@ -16,63 +16,71 @@ export async function resolveGeminiApiKey(): Promise<string | null> {
       return direct.trim()
     }
 
-    const raw = localStorage.getItem('app-settings');
+    const raw = localStorage.getItem('app-settings')
     if (raw) {
-      const settings = JSON.parse(raw);
-      if (settings && typeof settings.geminiApiKey === 'string' && settings.geminiApiKey.trim().length > 0) {
-        return settings.geminiApiKey.trim();
+      const settings = JSON.parse(raw)
+      if (
+        settings &&
+        typeof settings.geminiApiKey === 'string' &&
+        settings.geminiApiKey.trim().length > 0
+      ) {
+        return settings.geminiApiKey.trim()
       }
     }
   } catch {}
 
   // 2) Unified preferences (IndexedDB) saved by the Settings store
   try {
-    const prefs = await unifiedStorage.getPreferences?.();
-    const key = (prefs && (prefs.geminiApiKey || (prefs.data?.geminiApiKey))) as string | undefined;
+    const prefs = await unifiedStorage.getPreferences?.()
+    const key = (prefs && (prefs.geminiApiKey || prefs.data?.geminiApiKey)) as
+      | string
+      | undefined
     if (typeof key === 'string' && key.trim().length > 0) {
-      return key.trim();
+      return key.trim()
     }
   } catch {}
 
   // 2b) Persisted app state (local secure storage) where Pinia saves full state
   try {
-    const saved = await unifiedStorage.get?.('navicv-data');
-    const key = saved?.settings?.geminiApiKey;
+    const saved = await unifiedStorage.get?.('navicv-data')
+    const key = saved?.settings?.geminiApiKey
     if (typeof key === 'string' && key.trim().length > 0) {
-      return key.trim();
+      return key.trim()
     }
   } catch {}
 
   // 3) Electron secure store (if available)
   try {
-    const secure = (window as any)?.api?.secureStore;
+    const secure = (window as any)?.api?.secureStore
     if (secure?.get) {
-      const res = await secure.get('geminiApiKey');
-      const key = (res && (res.data ?? res.value)) || null;
+      const res = await secure.get('geminiApiKey')
+      const key = (res && (res.data ?? res.value)) || null
       if (typeof key === 'string' && key.trim().length > 0) {
-        return key.trim();
+        return key.trim()
       }
     }
   } catch {}
 
   // 4) Env variables (Vite)
   try {
-    const envKey = (import.meta as any)?.env?.VITE_GEMINI_API_KEY || (globalThis as any)?.process?.env?.VITE_GEMINI_API_KEY;
+    const envKey =
+      (import.meta as any)?.env?.VITE_GEMINI_API_KEY ||
+      (globalThis as any)?.process?.env?.VITE_GEMINI_API_KEY
     if (typeof envKey === 'string' && envKey.trim().length > 0) {
-      return envKey.trim();
+      return envKey.trim()
     }
   } catch {}
 
-  return null;
+  return null
 }
 
 /**
  * Convenience guard to ensure a key exists. Throws with a friendly message otherwise.
  */
 export async function requireGeminiApiKey(): Promise<string> {
-  const key = await resolveGeminiApiKey();
-  if (!key) throw new Error('API key is required');
-  return key;
+  const key = await resolveGeminiApiKey()
+  if (!key) throw new Error('API key is required')
+  return key
 }
 
 /**
@@ -82,150 +90,181 @@ export async function requireGeminiApiKey(): Promise<string> {
 export async function resolveGoogleCloudApiKey(): Promise<string | null> {
   // For now, try to get Google Cloud specific key first, then fallback to Gemini key
   try {
-    const raw = localStorage.getItem('app-settings');
+    const raw = localStorage.getItem('app-settings')
     if (raw) {
-      const settings = JSON.parse(raw);
-      if (settings && typeof settings.googleCloudApiKey === 'string' && settings.googleCloudApiKey.trim().length > 0) {
-        return settings.googleCloudApiKey.trim();
+      const settings = JSON.parse(raw)
+      if (
+        settings &&
+        typeof settings.googleCloudApiKey === 'string' &&
+        settings.googleCloudApiKey.trim().length > 0
+      ) {
+        return settings.googleCloudApiKey.trim()
       }
     }
   } catch {}
 
   // Fallback to Gemini key resolution for backward compatibility
-  return resolveGeminiApiKey();
+  return resolveGeminiApiKey()
 }
 
 /**
  * Validate API key format and basic structure
  */
-export function validateApiKeyFormat(apiKey: string, service: 'gemini' | 'google-cloud'): { valid: boolean; message: string } {
+export function validateApiKeyFormat(
+  apiKey: string,
+  service: 'gemini' | 'google-cloud'
+): { valid: boolean; message: string } {
   if (!apiKey || typeof apiKey !== 'string') {
-    return { valid: false, message: 'API key is required' };
+    return { valid: false, message: 'API key is required' }
   }
 
-  const trimmed = apiKey.trim();
+  const trimmed = apiKey.trim()
   if (trimmed.length === 0) {
-    return { valid: false, message: 'API key cannot be empty' };
+    return { valid: false, message: 'API key cannot be empty' }
   }
 
   // Basic format validation for Google API keys
   if (!trimmed.startsWith('AIzaSy')) {
-    return { valid: false, message: 'Google API keys should start with "AIzaSy"' };
+    return {
+      valid: false,
+      message: 'Google API keys should start with "AIzaSy"',
+    }
   }
 
   if (trimmed.length < 30 || trimmed.length > 50) {
-    return { valid: false, message: 'API key length appears invalid' };
+    return { valid: false, message: 'API key length appears invalid' }
   }
 
   // Check for common issues
-  if (trimmed.includes(' ') || trimmed.includes('\n') || trimmed.includes('\t')) {
-    return { valid: false, message: 'API key contains invalid whitespace characters' };
+  if (
+    trimmed.includes(' ') ||
+    trimmed.includes('\n') ||
+    trimmed.includes('\t')
+  ) {
+    return {
+      valid: false,
+      message: 'API key contains invalid whitespace characters',
+    }
   }
 
-  return { valid: true, message: 'API key format appears valid' };
+  return { valid: true, message: 'API key format appears valid' }
 }
 
 /**
  * Test API key connectivity and permissions
  */
-export async function testApiKey(apiKey: string, service: 'gemini' | 'google-cloud'): Promise<{ success: boolean; message: string; details?: any }> {
-  const formatCheck = validateApiKeyFormat(apiKey, service);
+export async function testApiKey(
+  apiKey: string,
+  service: 'gemini' | 'google-cloud'
+): Promise<{ success: boolean; message: string; details?: any }> {
+  const formatCheck = validateApiKeyFormat(apiKey, service)
   if (!formatCheck.valid) {
-    return { success: false, message: formatCheck.message };
+    return { success: false, message: formatCheck.message }
   }
 
   try {
     if (service === 'gemini') {
-      return await testGeminiApiKey(apiKey);
+      return await testGeminiApiKey(apiKey)
     } else if (service === 'google-cloud') {
-      return await testGoogleCloudApiKey(apiKey);
+      return await testGoogleCloudApiKey(apiKey)
     }
-    
-    return { success: false, message: 'Unknown service type' };
+
+    return { success: false, message: 'Unknown service type' }
   } catch (error: any) {
-    return { 
-      success: false, 
+    return {
+      success: false,
       message: `API test failed: ${error.message}`,
-      details: error
-    };
+      details: error,
+    }
   }
 }
 
 /**
  * Test Gemini API key
  */
-async function testGeminiApiKey(apiKey: string): Promise<{ success: boolean; message: string; details?: any }> {
+async function testGeminiApiKey(
+  apiKey: string
+): Promise<{ success: boolean; message: string; details?: any }> {
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
 
     if (response.ok) {
-      const data = await response.json();
-      return { 
-        success: true, 
+      const data = await response.json()
+      return {
+        success: true,
         message: 'Gemini API key is valid and working',
-        details: { modelsCount: data.models?.length || 0 }
-      };
+        details: { modelsCount: data.models?.length || 0 },
+      }
     } else {
-      const errorText = await response.text();
-      return { 
-        success: false, 
+      const errorText = await response.text()
+      return {
+        success: false,
         message: `Gemini API error (${response.status}): ${response.statusText}`,
-        details: { status: response.status, error: errorText }
-      };
+        details: { status: response.status, error: errorText },
+      }
     }
   } catch (error: any) {
-    return { 
-      success: false, 
+    return {
+      success: false,
       message: `Network error testing Gemini API: ${error.message}`,
-      details: error
-    };
+      details: error,
+    }
   }
 }
 
 /**
  * Test Google Cloud TTS API key
  */
-async function testGoogleCloudApiKey(apiKey: string): Promise<{ success: boolean; message: string; details?: any }> {
+async function testGoogleCloudApiKey(
+  apiKey: string
+): Promise<{ success: boolean; message: string; details?: any }> {
   try {
     // Test with a simple voices list request
-    const response = await fetch(`https://texttospeech.googleapis.com/v1/voices?key=${apiKey}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(
+      `https://texttospeech.googleapis.com/v1/voices?key=${apiKey}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
 
     if (response.ok) {
-      const data = await response.json();
-      return { 
-        success: true, 
+      const data = await response.json()
+      return {
+        success: true,
         message: 'Google Cloud TTS API key is valid and working',
-        details: { voicesCount: data.voices?.length || 0 }
-      };
-    } else {
-      const errorText = await response.text();
-      let message = `Google Cloud TTS API error (${response.status}): ${response.statusText}`;
-      
-      if (response.status === 403) {
-        message += '\nPossible issues:\n• Text-to-Speech API not enabled\n• Insufficient permissions\n• Using wrong API key type';
+        details: { voicesCount: data.voices?.length || 0 },
       }
-      
-      return { 
-        success: false, 
+    } else {
+      const errorText = await response.text()
+      let message = `Google Cloud TTS API error (${response.status}): ${response.statusText}`
+
+      if (response.status === 403) {
+        message +=
+          '\nPossible issues:\n• Text-to-Speech API not enabled\n• Insufficient permissions\n• Using wrong API key type'
+      }
+
+      return {
+        success: false,
         message,
-        details: { status: response.status, error: errorText }
-      };
+        details: { status: response.status, error: errorText },
+      }
     }
   } catch (error: any) {
-    return { 
-      success: false, 
+    return {
+      success: false,
       message: `Network error testing Google Cloud TTS API: ${error.message}`,
-      details: error
-    };
+      details: error,
+    }
   }
 }

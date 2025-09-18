@@ -13,39 +13,50 @@ export class EasterEggManager {
     this.achievements = new Set()
     this.sequences = {
       konami: {
-        code: ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'],
+        code: [
+          'ArrowUp',
+          'ArrowUp',
+          'ArrowDown',
+          'ArrowDown',
+          'ArrowLeft',
+          'ArrowRight',
+          'ArrowLeft',
+          'ArrowRight',
+          'KeyB',
+          'KeyA',
+        ],
         current: [],
         triggered: false,
-        reward: 'Developer Mode Unlocked!'
+        reward: 'Developer Mode Unlocked!',
       },
       gamer: {
         code: ['KeyG', 'KeyA', 'KeyM', 'KeyE', 'KeyR'],
         current: [],
         triggered: false,
-        reward: 'Gamer Mode Activated!'
+        reward: 'Gamer Mode Activated!',
       },
       epic: {
         code: ['KeyE', 'KeyP', 'KeyI', 'KeyC'],
         current: [],
         triggered: false,
-        reward: 'Epic Achievement Unlocked!'
-      }
+        reward: 'Epic Achievement Unlocked!',
+      },
     }
     this.initialized = false
   }
 
   initialize() {
     if (this.initialized) return
-    
+
     // Keyboard listener for sequence detection
-    document.addEventListener('keydown', (event) => this.handleKeyDown(event))
-    
+    document.addEventListener('keydown', event => this.handleKeyDown(event))
+
     // Click counter for secret achievements
     this.setupClickCounters()
-    
+
     // Time-based achievements
     this.setupTimeBasedAchievements()
-    
+
     this.initialized = true
     logger.debug('Easter egg manager initialized')
   }
@@ -54,17 +65,17 @@ export class EasterEggManager {
     // Check each sequence
     Object.keys(this.sequences).forEach(seqName => {
       const sequence = this.sequences[seqName]
-      
+
       if (sequence.triggered) return
-      
+
       // Add key to current sequence
       sequence.current.push(event.code)
-      
+
       // Keep only the last N keys (length of the target sequence)
       if (sequence.current.length > sequence.code.length) {
         sequence.current.shift()
       }
-      
+
       // Check if sequence matches
       if (this.arraysEqual(sequence.current, sequence.code)) {
         this.triggerEasterEgg(seqName, sequence.reward)
@@ -79,7 +90,7 @@ export class EasterEggManager {
 
   triggerEasterEgg(type, reward) {
     logger.info(`Easter egg triggered: ${type}`)
-    
+
     switch (type) {
       case 'konami':
         this.activateKonamiCode()
@@ -91,25 +102,28 @@ export class EasterEggManager {
         this.showEpicEffect()
         break
     }
-    
+
     this.showAchievement(reward)
     this.achievements.add(type)
-    
+
     // Store in localStorage
-    localStorage.setItem('geminiacv_easter_eggs', JSON.stringify([...this.achievements]))
+    localStorage.setItem(
+      'geminiacv_easter_eggs',
+      JSON.stringify([...this.achievements])
+    )
   }
 
   activateKonamiCode() {
     // Rainbow border effect
     document.body.style.setProperty('--easter-egg-active', '1')
     document.body.classList.add('konami-mode')
-    
+
     // Add developer tools
     this.addDeveloperTools()
-    
+
     // Particle effect
     this.createParticleEffect('🚀', 30)
-    
+
     setTimeout(() => {
       document.body.classList.remove('konami-mode')
     }, 10000)
@@ -118,16 +132,16 @@ export class EasterEggManager {
   activateGamerMode() {
     // Gaming aesthetic enhancements
     document.body.classList.add('ultra-gamer-mode')
-    
+
     // RGB lighting effects
     this.addRGBLighting()
-    
+
     // Sound effects (if available)
     this.playSound('levelup')
-    
+
     // Gaming particles
     this.createParticleEffect('🎮', 25)
-    
+
     setTimeout(() => {
       document.body.classList.remove('ultra-gamer-mode')
     }, 15000)
@@ -136,7 +150,7 @@ export class EasterEggManager {
   showEpicEffect() {
     // Epic explosion effect
     this.createParticleEffect(['⭐', '✨', '🌟', '💫'], 50)
-    
+
     // Screen flash
     const flash = document.createElement('div')
     flash.className = 'epic-flash'
@@ -148,9 +162,9 @@ export class EasterEggManager {
       pointer-events: none;
       animation: epicFlash 1s ease-out forwards;
     `
-    
+
     document.body.appendChild(flash)
-    
+
     setTimeout(() => {
       document.body.removeChild(flash)
     }, 1000)
@@ -158,7 +172,7 @@ export class EasterEggManager {
 
   createParticleEffect(emoji, count = 20) {
     const emojis = Array.isArray(emoji) ? emoji : [emoji]
-    
+
     for (let i = 0; i < count; i++) {
       setTimeout(() => {
         const particle = document.createElement('div')
@@ -173,9 +187,9 @@ export class EasterEggManager {
           pointer-events: none;
           animation: particleFloat ${Math.random() * 3 + 2}s ease-out forwards;
         `
-        
+
         document.body.appendChild(particle)
-        
+
         setTimeout(() => {
           if (document.body.contains(particle)) {
             document.body.removeChild(particle)
@@ -211,9 +225,9 @@ export class EasterEggManager {
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255,255,255,0.2);
     `
-    
+
     document.body.appendChild(achievement)
-    
+
     setTimeout(() => {
       if (document.body.contains(achievement)) {
         document.body.removeChild(achievement)
@@ -224,7 +238,7 @@ export class EasterEggManager {
   setupClickCounters() {
     // Track logo clicks
     let logoClicks = 0
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', event => {
       if (event.target.closest('.logo, [class*="logo"]')) {
         logoClicks++
         if (logoClicks === 10) {
@@ -233,10 +247,10 @@ export class EasterEggManager {
         }
       }
     })
-    
+
     // Track AI fairy interactions
     let fairyClicks = 0
-    document.addEventListener('click', (event) => {
+    document.addEventListener('click', event => {
       if (event.target.closest('.ai-fairy, [class*="fairy"]')) {
         fairyClicks++
         if (fairyClicks === 5) {
@@ -256,22 +270,28 @@ export class EasterEggManager {
         this.createParticleEffect('🦉', 10)
       }, 30000) // After 30 seconds
     }
-    
+
     // Session length achievements
-    setTimeout(() => {
-      this.showAchievement('Dedicated User - 5 minutes of exploration!')
-      this.createParticleEffect('⏱️', 8)
-    }, 5 * 60 * 1000) // 5 minutes
-    
-    setTimeout(() => {
-      this.showAchievement('Career Explorer - 15 minutes of job hunting!')
-      this.createParticleEffect('💼', 15)
-    }, 15 * 60 * 1000) // 15 minutes
+    setTimeout(
+      () => {
+        this.showAchievement('Dedicated User - 5 minutes of exploration!')
+        this.createParticleEffect('⏱️', 8)
+      },
+      5 * 60 * 1000
+    ) // 5 minutes
+
+    setTimeout(
+      () => {
+        this.showAchievement('Career Explorer - 15 minutes of job hunting!')
+        this.createParticleEffect('💼', 15)
+      },
+      15 * 60 * 1000
+    ) // 15 minutes
   }
 
   addDeveloperTools() {
     if (document.getElementById('easter-dev-tools')) return
-    
+
     const devTools = document.createElement('div')
     devTools.id = 'easter-dev-tools'
     devTools.innerHTML = `
@@ -295,10 +315,10 @@ export class EasterEggManager {
         <div>Press 'Esc' to close</div>
       </div>
     `
-    
+
     document.body.appendChild(devTools)
-    
-    const handleDevKeys = (event) => {
+
+    const handleDevKeys = event => {
       if (event.key === 'i' || event.key === 'I') {
         console.log('[SEARCH] Inspect mode activated')
       } else if (event.key === 'c' || event.key === 'C') {
@@ -309,9 +329,9 @@ export class EasterEggManager {
         document.removeEventListener('keydown', handleDevKeys)
       }
     }
-    
+
     document.addEventListener('keydown', handleDevKeys)
-    
+
     setTimeout(() => {
       if (document.getElementById('easter-dev-tools')) {
         document.body.removeChild(devTools)
@@ -322,7 +342,7 @@ export class EasterEggManager {
 
   addRGBLighting() {
     if (document.getElementById('rgb-lighting')) return
-    
+
     const style = document.createElement('style')
     style.id = 'rgb-lighting'
     style.textContent = `
@@ -345,9 +365,9 @@ export class EasterEggManager {
         100% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; }
       }
     `
-    
+
     document.head.appendChild(style)
-    
+
     setTimeout(() => {
       if (document.getElementById('rgb-lighting')) {
         document.head.removeChild(style)
@@ -358,13 +378,14 @@ export class EasterEggManager {
   playSound(type) {
     // Simple sound synthesis using Web Audio API
     try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)()
       const oscillator = audioContext.createOscillator()
       const gainNode = audioContext.createGain()
-      
+
       oscillator.connect(gainNode)
       gainNode.connect(audioContext.destination)
-      
+
       if (type === 'levelup') {
         // Level up sound sequence
         const frequencies = [523.25, 659.25, 783.99] // C5, E5, G5
@@ -374,12 +395,15 @@ export class EasterEggManager {
             const gain = audioContext.createGain()
             osc.connect(gain)
             gain.connect(audioContext.destination)
-            
+
             osc.frequency.value = freq
             osc.type = 'triangle'
             gain.gain.setValueAtTime(0.1, audioContext.currentTime)
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3)
-            
+            gain.gain.exponentialRampToValueAtTime(
+              0.01,
+              audioContext.currentTime + 0.3
+            )
+
             osc.start(audioContext.currentTime)
             osc.stop(audioContext.currentTime + 0.3)
           }, index * 150)
@@ -401,7 +425,7 @@ export class EasterEggManager {
 
   addCustomCSS() {
     if (document.getElementById('easter-egg-styles')) return
-    
+
     const style = document.createElement('style')
     style.id = 'easter-egg-styles'
     style.textContent = `
@@ -476,19 +500,19 @@ export class EasterEggManager {
         100% { filter: hue-rotate(360deg); }
       }
     `
-    
+
     document.head.appendChild(style)
   }
 
   destroy() {
     this.initialized = false
-    
+
     // Remove custom CSS
     const styles = document.getElementById('easter-egg-styles')
     if (styles) {
       document.head.removeChild(styles)
     }
-    
+
     // Clear any active effects
     document.body.classList.remove('konami-mode', 'ultra-gamer-mode')
   }

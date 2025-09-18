@@ -46,4 +46,3 @@ class TypedEmitter<T extends Record<string, any>> {
 export const gamificationEvents = new TypedEmitter<GamificationEventsMap>()
 
 export default gamificationEvents
-

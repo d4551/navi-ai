@@ -348,15 +348,15 @@ docs/                   # Documentation
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start Vite development server |
-| `npm run build` | Build for production |
-| `npm run electron-dev` | Start Electron in development mode |
-| `npm run electron-build` | Build Electron installers |
-| `npm test` | Run test suite |
-| `npm run lint` | Lint and fix code |
-| `npm run clean` | Clean build artifacts |
+| Command                  | Description                        |
+| ------------------------ | ---------------------------------- |
+| `npm run dev`            | Start Vite development server      |
+| `npm run build`          | Build for production               |
+| `npm run electron-dev`   | Start Electron in development mode |
+| `npm run electron-build` | Build Electron installers          |
+| `npm test`               | Run test suite                     |
+| `npm run lint`           | Lint and fix code                  |
+| `npm run clean`          | Clean build artifacts              |
 
 ### Architecture
 

@@ -12,7 +12,11 @@
         >
           <AppIcon :name="category.icon" class="me-2" />
           {{ category.label }}
-          <span v-if="category.count > 0" class="badge badge-compact bg-primary ms-2">{{ category.count }}</span>
+          <span
+            v-if="category.count > 0"
+            class="badge badge-compact bg-primary ms-2"
+            >{{ category.count }}</span
+          >
         </button>
       </nav>
     </div>
@@ -24,7 +28,7 @@
           v-model="showOnlyRealTimeChat"
           class="form-check-input"
           type="checkbox"
-        >
+        />
         <label class="form-check-label" for="realTimeChatFilter">
           <AppIcon name="mdi-chat-processing" class="text-success me-1" />
           Show only Real-Time Chat capable models
@@ -37,9 +41,10 @@
         v-for="model in filteredModels"
         :key="model.id"
         class="model-card"
-        :class="{ 'selected': selectedModel === model.id,
-                  'recommended': model.isRecommended,
-                  'experimental': model.isExperimental
+        :class="{
+          selected: selectedModel === model.id,
+          recommended: model.isRecommended,
+          experimental: model.isExperimental,
         }"
         @click="selectModel(model)"
       >
@@ -48,23 +53,44 @@
           <div class="model-title">
             <h6 class="mb-1">{{ model.displayName }}</h6>
             <div class="model-badges">
-              <span v-if="model.isRecommended" class="badge badge-compact bg-success">Recommended</span>
-              <span v-if="model.isDefault" class="badge badge-compact bg-primary">Default</span>
-              <span v-if="model.isExperimental" class="badge badge-compact bg-warning">Experimental</span>
-              <span v-if="model.supportsRealTimeChat" class="badge badge-compact bg-info">
-                <AppIcon name="mdi-chat-processing" class="me-1" />Real-Time Chat
+              <span
+                v-if="model.isRecommended"
+                class="badge badge-compact bg-success"
+                >Recommended</span
+              >
+              <span
+                v-if="model.isDefault"
+                class="badge badge-compact bg-primary"
+                >Default</span
+              >
+              <span
+                v-if="model.isExperimental"
+                class="badge badge-compact bg-warning"
+                >Experimental</span
+              >
+              <span
+                v-if="model.supportsRealTimeChat"
+                class="badge badge-compact bg-info"
+              >
+                <AppIcon name="mdi-chat-processing" class="me-1" />Real-Time
+                Chat
               </span>
             </div>
           </div>
           <div v-if="model.capabilities?.score" class="model-score">
-            <div class="score-circle" :class="getScoreClass(model.capabilities.score)">
+            <div
+              class="score-circle"
+              :class="getScoreClass(model.capabilities.score)"
+            >
               {{ model.capabilities.score }}
             </div>
           </div>
         </div>
 
         <!-- Model Info -->
-        <p class="model-description text-muted small mb-2">{{ model.description }}</p>
+        <p class="model-description text-muted small mb-2">
+          {{ model.description }}
+        </p>
 
         <!-- Capabilities Grid -->
         <div class="capabilities-grid mb-3">
@@ -72,7 +98,10 @@
             <AppIcon name="mdi-flash" />
             <span>Streaming</span>
           </div>
-          <div class="capability" :class="{ active: model.supportsRealTimeChat }">
+          <div
+            class="capability"
+            :class="{ active: model.supportsRealTimeChat }"
+          >
             <AppIcon name="mdi-chat-processing" />
             <span>Real-Time</span>
           </div>
@@ -80,15 +109,24 @@
             <AppIcon name="mdi-image-multiple" />
             <span>Multimodal</span>
           </div>
-          <div class="capability" :class="{ active: model.capabilities?.codeGeneration }">
+          <div
+            class="capability"
+            :class="{ active: model.capabilities?.codeGeneration }"
+          >
             <AppIcon name="mdi-code-tags" />
             <span>Coding</span>
           </div>
-          <div class="capability" :class="{ active: model.capabilities?.reasoning }">
+          <div
+            class="capability"
+            :class="{ active: model.capabilities?.reasoning }"
+          >
             <AppIcon name="mdi-brain" />
             <span>Reasoning</span>
           </div>
-          <div class="capability" :class="{ active: model.capabilities?.complexAnalysis }">
+          <div
+            class="capability"
+            :class="{ active: model.capabilities?.complexAnalysis }"
+          >
             <AppIcon name="mdi-chart-tree" />
             <span>Analysis</span>
           </div>
@@ -110,7 +148,9 @@
           </div>
           <div class="metric">
             <span class="metric-label">Context:</span>
-            <span class="metric-value">{{ formatTokens(model.contextLength) }}</span>
+            <span class="metric-value">{{
+              formatTokens(model.contextLength)
+            }}</span>
           </div>
           <div class="metric">
             <span class="metric-label">Pricing:</span>
@@ -133,17 +173,24 @@
     </div>
 
     <!-- Real-Time Chat Information Panel -->
-    <div v-if="showOnlyRealTimeChat || activeCategory === 'realTimeChat'" class="info-panel mt-4">
+    <div
+      v-if="showOnlyRealTimeChat || activeCategory === 'realTimeChat'"
+      class="info-panel mt-4"
+    >
       <div class="alert alert-info">
-        <h6><AppIcon name="mdi-information" class="me-2" />Real-Time Chat Capabilities</h6>
-        <p class="mb-2">
-          Models with real-time chat support can:
-        </p>
+        <h6>
+          <AppIcon name="mdi-information" class="me-2" />Real-Time Chat
+          Capabilities
+        </h6>
+        <p class="mb-2">Models with real-time chat support can:</p>
         <ul class="mb-0">
           <li><strong>Stream responses</strong> as they're generated</li>
           <li><strong>Handle conversational context</strong> efficiently</li>
           <li><strong>Support interruption</strong> and continuation</li>
-          <li><strong>Provide low-latency responses</strong> for interactive experiences</li>
+          <li>
+            <strong>Provide low-latency responses</strong> for interactive
+            experiences
+          </li>
         </ul>
       </div>
     </div>
@@ -159,8 +206,8 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 const _props = defineProps({
   selectedModel: {
     type: String,
-    default: 'gemini-2.5-flash'
-  }
+    default: 'gemini-2.5-flash',
+  },
 })
 
 const emit = defineEmits(['model-selected', 'models-loaded'])
@@ -170,50 +217,52 @@ const activeCategory = ref('recommended')
 const showOnlyRealTimeChat = ref(false)
 const store = useAppStore()
 // Always derive models from global store (single source of truth)
-const models = computed(() => Array.isArray(store.availableModels) ? store.availableModels : [])
+const models = computed(() =>
+  Array.isArray(store.availableModels) ? store.availableModels : []
+)
 const _loading = ref(false) // retained for potential future use
 
 // Categories for organization
 const categories = computed(() => {
   const modelsByCategory = getModelsByCategory()
   return [
-    { 
-      key: 'recommended', 
-      label: 'Recommended', 
-      icon: 'mdi-star', 
-      count: modelsByCategory.recommended?.length || 0 
+    {
+      key: 'recommended',
+      label: 'Recommended',
+      icon: 'mdi-star',
+      count: modelsByCategory.recommended?.length || 0,
     },
-    { 
-      key: 'realTimeChat', 
-      label: 'Real-Time Chat', 
-      icon: 'mdi-chat-processing', 
-      count: modelsByCategory.realTimeChat?.length || 0 
+    {
+      key: 'realTimeChat',
+      label: 'Real-Time Chat',
+      icon: 'mdi-chat-processing',
+      count: modelsByCategory.realTimeChat?.length || 0,
     },
-    { 
-      key: 'fast', 
-      label: 'Fast', 
-      icon: 'mdi-lightning-bolt', 
-      count: modelsByCategory.fast?.length || 0 
+    {
+      key: 'fast',
+      label: 'Fast',
+      icon: 'mdi-lightning-bolt',
+      count: modelsByCategory.fast?.length || 0,
     },
-    { 
-      key: 'advanced', 
-      label: 'Advanced', 
-      icon: 'mdi-brain', 
-      count: modelsByCategory.advanced?.length || 0 
+    {
+      key: 'advanced',
+      label: 'Advanced',
+      icon: 'mdi-brain',
+      count: modelsByCategory.advanced?.length || 0,
     },
-    { 
-      key: 'experimental', 
-      label: 'Experimental', 
-      icon: 'mdi-test-tube', 
-      count: modelsByCategory.experimental?.length || 0 
-    }
+    {
+      key: 'experimental',
+      label: 'Experimental',
+      icon: 'mdi-test-tube',
+      count: modelsByCategory.experimental?.length || 0,
+    },
   ]
 })
 
 // Get models organized by category
 const getModelsByCategory = () => {
   if (!models.value.length) return {}
-  
+
   return {
     recommended: models.value.filter(m => m.isRecommended),
     realTimeChat: models.value.filter(m => m.supportsRealTimeChat),
@@ -223,7 +272,7 @@ const getModelsByCategory = () => {
     stable: models.value.filter(m => m.category === 'stable'),
     experimental: models.value.filter(m => m.category === 'experimental'),
     multimodal: models.value.filter(m => m.isMultimodal),
-    legacy: models.value.filter(m => m.category === 'legacy')
+    legacy: models.value.filter(m => m.category === 'legacy'),
   }
 }
 
@@ -250,33 +299,33 @@ const filteredModels = computed(() => {
 if (models.value.length) emit('models-loaded', models.value)
 
 // Select a model
-const selectModel = (model) => {
+const selectModel = model => {
   emit('model-selected', model.id, model)
 }
 
 // Utility methods for display
-const getScoreClass = (score) => {
+const getScoreClass = score => {
   if (score >= 95) return 'score-excellent'
-  if (score >= 85) return 'score-good' 
+  if (score >= 85) return 'score-good'
   if (score >= 70) return 'score-fair'
   return 'score-basic'
 }
 
-const getSpeedClass = (speed) => {
+const getSpeedClass = speed => {
   if (speed === 'extremely-fast') return 'text-success'
   if (speed === 'very-fast') return 'text-info'
   if (speed === 'fast') return 'text-primary'
   return 'text-muted'
 }
 
-const getQualityClass = (quality) => {
+const getQualityClass = quality => {
   if (quality === 'very-high') return 'text-success'
   if (quality === 'high') return 'text-info'
   if (quality === 'good') return 'text-primary'
   return 'text-muted'
 }
 
-const getPricingClass = (pricing) => {
+const getPricingClass = pricing => {
   if (pricing === 'free-preview') return 'text-success'
   if (pricing === 'very-low') return 'text-info'
   if (pricing === 'low') return 'text-primary'
@@ -284,40 +333,40 @@ const getPricingClass = (pricing) => {
   return 'text-danger'
 }
 
-const formatSpeed = (speed) => {
+const formatSpeed = speed => {
   const speedMap = {
     'extremely-fast': 'Extremely Fast',
     'very-fast': 'Very Fast',
-    'fast': 'Fast',
-    'medium': 'Medium',
-    'variable': 'Variable'
+    fast: 'Fast',
+    medium: 'Medium',
+    variable: 'Variable',
   }
   return speedMap[speed] || speed
 }
 
-const formatQuality = (quality) => {
+const formatQuality = quality => {
   const qualityMap = {
     'very-high': 'Very High',
-    'high': 'High', 
-    'good': 'Good',
-    'fair': 'Fair',
-    'experimental': 'Experimental'
+    high: 'High',
+    good: 'Good',
+    fair: 'Fair',
+    experimental: 'Experimental',
   }
   return qualityMap[quality] || quality
 }
 
-const formatPricing = (pricing) => {
+const formatPricing = pricing => {
   const pricingMap = {
     'free-preview': 'Free Preview',
     'very-low': 'Very Low',
-    'low': 'Low',
-    'medium': 'Medium',
-    'high': 'High'
+    low: 'Low',
+    medium: 'Medium',
+    high: 'High',
   }
   return pricingMap[pricing] || pricing
 }
 
-const formatTokens = (tokens) => {
+const formatTokens = tokens => {
   if (tokens >= 1000000) {
     return `${(tokens / 1000000).toFixed(1)}M`
   }
@@ -385,7 +434,9 @@ const formatTokens = (tokens) => {
 }
 
 /* Compact badge sizing only; base visuals come from design system */
-.badge { font-size: 0.7rem; }
+.badge {
+  font-size: 0.7rem;
+}
 
 .score-circle {
   width: 40px;
@@ -399,10 +450,18 @@ const formatTokens = (tokens) => {
   color: white;
 }
 
-.score-excellent { background: var(--color-success); }
-.score-good { background: var(--color-info); }
-.score-fair { background: var(--color-warning); }
-.score-basic { background: var(--color-secondary); }
+.score-excellent {
+  background: var(--color-success);
+}
+.score-good {
+  background: var(--color-info);
+}
+.score-fair {
+  background: var(--color-warning);
+}
+.score-basic {
+  background: var(--color-secondary);
+}
 
 .capabilities-grid {
   display: grid;
@@ -474,36 +533,36 @@ const formatTokens = (tokens) => {
   .models-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .capabilities-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .model-categories .nav {
     flex-direction: column;
   }
-  
+
   .nav-link {
     margin-bottom: 0.25rem;
   }
 }
 
 /* Dark theme adjustments */
-[data-theme="dark"] .model-card {
+[data-theme='dark'] .model-card {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .model-card.selected {
+[data-theme='dark'] .model-card.selected {
   background: var(--primary-gradient-bg-dark);
 }
 
-[data-theme="dark"] .capability {
+[data-theme='dark'] .capability {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .capability.active {
+[data-theme='dark'] .capability.active {
   background: var(--primary-gradient-bg-dark);
   border-color: var(--color-primary-dark);
   color: var(--color-primary-dark);

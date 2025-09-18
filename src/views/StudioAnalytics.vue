@@ -1,35 +1,35 @@
 <template>
-  <StandardPageLayout 
-    page-type="gaming" 
+  <StandardPageLayout
+    page-type="gaming"
     :title="'Studio Analytics'"
     :subtitle="'Intelligence dashboard for gaming industry insights'"
     :hero-stats="headerStats"
     max-width="xl"
-    class="font-sans "
+    class="font-sans"
   >
     <!-- Enhanced Header Actions -->
     <template #header-actions>
       <div class="header-controls">
-        <UnifiedButton 
-          variant="ghost" 
-          size="sm" 
-          leading-icon="AdjustmentsHorizontalIcon" 
+        <UnifiedButton
+          variant="ghost"
+          size="sm"
+          leading-icon="AdjustmentsHorizontalIcon"
           :class="{ 'is-active': showFilters }"
           @click="showFilters = !showFilters"
         >
           Filters
         </UnifiedButton>
-        <UnifiedButton 
-          variant="glass" 
-          leading-icon="ArrowPathIcon" 
+        <UnifiedButton
+          variant="glass"
+          leading-icon="ArrowPathIcon"
           :loading="isRefreshing"
           @click="refreshData"
         >
           Refresh
         </UnifiedButton>
-        <UnifiedButton 
-          variant="gaming" 
-          leading-icon="ArrowDownTrayIcon" 
+        <UnifiedButton
+          variant="gaming"
+          leading-icon="ArrowDownTrayIcon"
           @click="exportAnalytics"
         >
           Export
@@ -37,7 +37,7 @@
       </div>
     </template>
 
-    <StudioSubNav 
+    <StudioSubNav
       :database-count="analytics.totalStudios"
       :analytics-count="filteredStudios.length"
     />
@@ -51,7 +51,9 @@
               <AppIcon name="AdjustmentsHorizontalIcon" />
               Analytics Filters
             </h3>
-            <UnifiedButton variant="ghost" size="sm" @click="resetFilters">Reset</UnifiedButton>
+            <UnifiedButton variant="ghost" size="sm" @click="resetFilters"
+              >Reset</UnifiedButton
+            >
           </div>
           <div class="filters-grid">
             <div class="filter-group">
@@ -85,10 +87,10 @@
               <label class="filter-label">Search Studios</label>
               <div class="search-input-wrapper">
                 <AppIcon name="MagnifyingGlassIcon" class="search-icon" />
-                <input 
-                  v-model="searchQuery" 
-                  type="text" 
-                  class="glass-input search-input" 
+                <input
+                  v-model="searchQuery"
+                  type="text"
+                  class="glass-input search-input"
                   placeholder="Search by name..."
                 />
               </div>
@@ -102,15 +104,23 @@
     <section class="unified-container">
       <div class="analytics-stats-section">
         <div class="stats-grid">
-          <div class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive" @click="focusMetric('studios')">
+          <div
+            class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive"
+            @click="focusMetric('studios')"
+          >
             <div class="stat-header">
-              <AppIcon name="BuildingOfficeIcon" class="stat-icon rgb-text-primary-600" />
+              <AppIcon
+                name="BuildingOfficeIcon"
+                class="stat-icon rgb-text-primary-600"
+              />
               <div class="stat-info">
                 <span class="stat-label">Total Studios</span>
                 <span class="stat-subtitle">Active worldwide</span>
               </div>
             </div>
-            <div class="stat-value animated-counter">{{ animatedStudios.toLocaleString() }}</div>
+            <div class="stat-value animated-counter">
+              {{ animatedStudios.toLocaleString() }}
+            </div>
             <div class="stat-change positive">
               <div class="change-indicator">
                 <AppIcon name="ArrowTrendingUpIcon" />
@@ -119,19 +129,32 @@
               <span class="change-period">this year</span>
             </div>
             <div class="stat-sparkline">
-              <div v-for="n in 12" :key="n" class="sparkline-bar" :style="{ height: `${Math.random() * 60 + 20}%` }"></div>
+              <div
+                v-for="n in 12"
+                :key="n"
+                class="sparkline-bar"
+                :style="{ height: `${Math.random() * 60 + 20}%` }"
+              ></div>
             </div>
           </div>
 
-          <div class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive" @click="focusMetric('salary')">
+          <div
+            class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive"
+            @click="focusMetric('salary')"
+          >
             <div class="stat-header">
-              <AppIcon name="mdi-currency-usd" class="stat-icon rgb-text-success-600" />
+              <AppIcon
+                name="mdi-currency-usd"
+                class="stat-icon rgb-text-success-600"
+              />
               <div class="stat-info">
                 <span class="stat-label">Avg Salary</span>
                 <span class="stat-subtitle">Industry median</span>
               </div>
             </div>
-            <div class="stat-value animated-counter">${{ animatedSalary }}K</div>
+            <div class="stat-value animated-counter">
+              ${{ animatedSalary }}K
+            </div>
             <div class="stat-change positive">
               <div class="change-indicator">
                 <AppIcon name="ArrowTrendingUpIcon" />
@@ -146,15 +169,23 @@
             </div>
           </div>
 
-          <div class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive" @click="focusMetric('jobs')">
+          <div
+            class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive"
+            @click="focusMetric('jobs')"
+          >
             <div class="stat-header">
-              <AppIcon name="BriefcaseIcon" class="stat-icon rgb-text-warning-600" />
+              <AppIcon
+                name="BriefcaseIcon"
+                class="stat-icon rgb-text-warning-600"
+              />
               <div class="stat-info">
                 <span class="stat-label">Open Jobs</span>
                 <span class="stat-subtitle">Currently available</span>
               </div>
             </div>
-            <div class="stat-value animated-counter">{{ animatedJobs.toLocaleString() }}</div>
+            <div class="stat-value animated-counter">
+              {{ animatedJobs.toLocaleString() }}
+            </div>
             <div class="stat-change neutral">
               <div class="change-indicator">
                 <AppIcon name="mdi-trending-neutral" />
@@ -170,9 +201,15 @@
             </div>
           </div>
 
-          <div class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive" @click="focusMetric('market')">
+          <div
+            class="glass p-glass-md gap-glass-md rounded-lg stat-card neon-interactive"
+            @click="focusMetric('market')"
+          >
             <div class="stat-header">
-              <AppIcon name="ChartBarIcon" class="stat-icon rgb-text-blue-600" />
+              <AppIcon
+                name="ChartBarIcon"
+                class="stat-icon rgb-text-blue-600"
+              />
               <div class="stat-info">
                 <span class="stat-label">Market Cap</span>
                 <span class="stat-subtitle">Gaming industry</span>
@@ -225,15 +262,21 @@
             </div>
             <div class="section-body">
               <div class="salary-breakdown">
-                <div v-for="salary in salaryData" :key="salary.role" class="salary-item">
+                <div
+                  v-for="salary in salaryData"
+                  :key="salary.role"
+                  class="salary-item"
+                >
                   <div class="salary-info">
                     <span class="role-name">{{ salary.role }}</span>
-                    <span class="salary-range">${{ salary.min }}K - ${{ salary.max }}K</span>
+                    <span class="salary-range"
+                      >${{ salary.min }}K - ${{ salary.max }}K</span
+                    >
                   </div>
                   <div class="salary-progress">
                     <div class="progress-track">
-                      <div 
-                        class="progress-fill" 
+                      <div
+                        class="progress-fill"
                         :style="{ width: `${salary.percentage}%` }"
                       ></div>
                     </div>
@@ -245,12 +288,16 @@
           </div>
 
           <!-- Enhanced Studio Rankings -->
-          <div class="glass p-glass-md gap-glass-md rounded-lg analytics-panel full-width">
+          <div
+            class="glass p-glass-md gap-glass-md rounded-lg analytics-panel full-width"
+          >
             <div class="section-header">
               <h3 class="section-title">
                 <AppIcon name="TrophyIcon" />
                 Top Gaming Studios
-                <span class="results-count">({{ filteredStudios.length }} studios)</span>
+                <span class="results-count"
+                  >({{ filteredStudios.length }} studios)</span
+                >
               </h3>
               <div class="section-controls">
                 <select v-model="sortBy" class="sort-select glass-input">
@@ -259,9 +306,9 @@
                   <option value="jobs">Sort by Open Jobs</option>
                   <option value="games">Sort by Games</option>
                 </select>
-                <UnifiedButton 
-                  variant="ghost" 
-                  size="sm" 
+                <UnifiedButton
+                  variant="ghost"
+                  size="sm"
                   trailing-icon="ArrowRightIcon"
                   @click="expandStudios = !expandStudios"
                 >
@@ -283,11 +330,13 @@
                 </div>
                 <div v-else class="rankings-list">
                   <TransitionGroup name="studio-item" tag="div">
-                    <div 
-                      v-for="(studio, index) in displayedStudios" 
-                      :key="studio.id" 
+                    <div
+                      v-for="(studio, index) in displayedStudios"
+                      :key="studio.id"
                       class="ranking-item interactive-item"
-                      :class="{ 'is-selected': selectedStudio?.id === studio.id }"
+                      :class="{
+                        'is-selected': selectedStudio?.id === studio.id,
+                      }"
                       role="button"
                       tabindex="0"
                       :aria-label="`Select ${studio.name} studio details`"
@@ -297,58 +346,92 @@
                     >
                       <div class="rank-badge">
                         <span class="rank-number">{{ index + 1 }}</span>
-                        <div class="rank-change" :class="studio.rankChange > 0 ? 'positive' : 'negative'">
-                          <AppIcon :name="studio.rankChange > 0 ? 'mdi-trending-up' : 'mdi-trending-down'" />
+                        <div
+                          class="rank-change"
+                          :class="
+                            studio.rankChange > 0 ? 'positive' : 'negative'
+                          "
+                        >
+                          <AppIcon
+                            :name="
+                              studio.rankChange > 0
+                                ? 'mdi-trending-up'
+                                : 'mdi-trending-down'
+                            "
+                          />
                         </div>
                       </div>
                       <div class="studio-details">
                         <div class="studio-header">
                           <div class="studio-name">{{ studio.name }}</div>
-                          <div class="studio-location">{{ studio.location }}</div>
+                          <div class="studio-location">
+                            {{ studio.location }}
+                          </div>
                         </div>
                         <div class="studio-metrics">
                           <div class="metric-item">
                             <AppIcon name="UsersIcon" />
-                            <span class="metric-value">{{ studio.employeeCount.toLocaleString() }}+</span>
+                            <span class="metric-value"
+                              >{{
+                                studio.employeeCount.toLocaleString()
+                              }}+</span
+                            >
                             <span class="metric-label">employees</span>
                           </div>
                           <div class="metric-item">
                             <AppIcon name="PuzzlePieceIcon" />
-                            <span class="metric-value">{{ studio.gameCount }}</span>
+                            <span class="metric-value">{{
+                              studio.gameCount
+                            }}</span>
                             <span class="metric-label">games</span>
                           </div>
                           <div class="metric-item">
                             <AppIcon name="BriefcaseIcon" />
-                            <span class="metric-value">{{ studio.openJobs }}</span>
+                            <span class="metric-value">{{
+                              studio.openJobs
+                            }}</span>
                             <span class="metric-label">positions</span>
                           </div>
                         </div>
                         <div class="studio-progress">
                           <div class="progress-track">
-                            <div 
-                              class="progress-fill" 
+                            <div
+                              class="progress-fill"
                               :style="{ width: `${studio.marketShare}%` }"
                             ></div>
                           </div>
-                          <span class="progress-label">{{ studio.marketShare }}% market share</span>
+                          <span class="progress-label"
+                            >{{ studio.marketShare }}% market share</span
+                          >
                         </div>
                       </div>
                       <div class="studio-status">
-                        <div class="threat-indicator" :class="getThreatClass(studio.threatLevel)">
+                        <div
+                          class="threat-indicator"
+                          :class="getThreatClass(studio.threatLevel)"
+                        >
                           <AppIcon :name="getThreatIcon(studio.threatLevel)" />
                           {{ studio.threatLevel }}
                         </div>
                         <div class="studio-actions">
-                          <UnifiedButton variant="ghost" size="xs" leading-icon="EyeIcon">Details</UnifiedButton>
+                          <UnifiedButton
+                            variant="ghost"
+                            size="xs"
+                            leading-icon="EyeIcon"
+                            >Details</UnifiedButton
+                          >
                         </div>
                       </div>
                     </div>
                   </TransitionGroup>
-                
+
                   <!-- Show More Button -->
-                  <div v-if="!expandStudios && filteredStudios.length > 5" class="show-more-section">
-                    <UnifiedButton 
-                      variant="glass" 
+                  <div
+                    v-if="!expandStudios && filteredStudios.length > 5"
+                    class="show-more-section"
+                  >
+                    <UnifiedButton
+                      variant="glass"
                       trailing-icon="ChevronDownIcon"
                       @click="expandStudios = true"
                     >
@@ -370,15 +453,19 @@
             </div>
             <div class="section-body">
               <div class="tech-list">
-                <div v-for="tech in trendingTech" :key="tech.name" class="tech-item">
+                <div
+                  v-for="tech in trendingTech"
+                  :key="tech.name"
+                  class="tech-item"
+                >
                   <div class="tech-info">
                     <span class="tech-name">{{ tech.name }}</span>
                     <span class="tech-percentage">{{ tech.popularity }}%</span>
                   </div>
                   <div class="tech-progress">
                     <div class="progress-track">
-                      <div 
-                        class="progress-fill tech-progress-fill" 
+                      <div
+                        class="progress-fill tech-progress-fill"
                         :style="{ width: `${tech.popularity}%` }"
                       ></div>
                     </div>
@@ -398,12 +485,19 @@
             </div>
             <div class="section-body">
               <div class="region-list">
-                <div v-for="region in regionData" :key="region.name" class="region-item">
+                <div
+                  v-for="region in regionData"
+                  :key="region.name"
+                  class="region-item"
+                >
                   <div class="region-info">
                     <span class="region-name">{{ region.name }}</span>
                     <span class="studio-count">{{ region.count }} studios</span>
                   </div>
-                  <div class="region-indicator" :style="{ opacity: region.count / 150 }">
+                  <div
+                    class="region-indicator"
+                    :style="{ opacity: region.count / 150 }"
+                  >
                     <AppIcon name="mdi-circle" />
                   </div>
                 </div>
@@ -417,7 +511,22 @@
 </template>
 
 <script setup lang="ts">
-import { AdjustmentsHorizontalIcon, ArrowDownTrayIcon, ArrowPathIcon, ArrowRightIcon, ArrowTrendingUpIcon, BriefcaseIcon, BuildingOfficeIcon, ChartBarIcon, ChevronDownIcon, CommandLineIcon, EyeIcon, MagnifyingGlassIcon, PuzzlePieceIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import {
+  AdjustmentsHorizontalIcon,
+  ArrowDownTrayIcon,
+  ArrowPathIcon,
+  ArrowRightIcon,
+  ArrowTrendingUpIcon,
+  BriefcaseIcon,
+  BuildingOfficeIcon,
+  ChartBarIcon,
+  ChevronDownIcon,
+  CommandLineIcon,
+  EyeIcon,
+  MagnifyingGlassIcon,
+  PuzzlePieceIcon,
+  UsersIcon,
+} from '@heroicons/vue/24/outline'
 import { MapPinIcon, TrophyIcon } from '@heroicons/vue/24/solid'
 
 import { ref, onMounted, onUnmounted, computed } from 'vue'
@@ -431,7 +540,13 @@ import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import StudioSubNav from '@/components/studio/StudioSubNav.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
-const theme = (() => { try { return useUnifiedTheme() } catch { return undefined as any } })()
+const theme = (() => {
+  try {
+    return useUnifiedTheme()
+  } catch {
+    return undefined as any
+  }
+})()
 
 // Enhanced state management
 const isRefreshing = ref(false)
@@ -446,7 +561,7 @@ const searchQuery = ref('')
 const filters = ref({
   studioSize: '',
   threatLevel: '',
-  region: ''
+  region: '',
 })
 
 // Analytics data with animations
@@ -454,7 +569,7 @@ const analytics = ref({
   totalStudios: 1247,
   growthRate: 8.2,
   avgSalary: 98,
-  openJobs: 12890
+  openJobs: 12890,
 })
 
 // Animated counters
@@ -467,41 +582,63 @@ let marketChartInstance: ChartJS | null = null
 
 // Enhanced computed properties
 const headerStats = computed(() => [
-  { label: `${analytics.value.totalStudios} studios`, icon: 'mdi-domain', color: 'primary' },
-  { label: `$${analytics.value.avgSalary}K avg salary`, icon: 'mdi-currency-usd', color: 'success' },
-  { label: `${analytics.value.openJobs.toLocaleString()} open jobs`, icon: 'mdi-briefcase', color: 'warning' },
-  { label: `+${analytics.value.growthRate}% growth`, icon: 'mdi-trending-up', color: 'info' }
+  {
+    label: `${analytics.value.totalStudios} studios`,
+    icon: 'mdi-domain',
+    color: 'primary',
+  },
+  {
+    label: `$${analytics.value.avgSalary}K avg salary`,
+    icon: 'mdi-currency-usd',
+    color: 'success',
+  },
+  {
+    label: `${analytics.value.openJobs.toLocaleString()} open jobs`,
+    icon: 'mdi-briefcase',
+    color: 'warning',
+  },
+  {
+    label: `+${analytics.value.growthRate}% growth`,
+    icon: 'mdi-trending-up',
+    color: 'info',
+  },
 ])
 
 // Filtered and sorted studios
 const filteredStudios = computed(() => {
   let studios = [...topStudios.value]
-  
+
   // Apply search filter
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    studios = studios.filter(studio => 
+    studios = studios.filter(studio =>
       studio.name.toLowerCase().includes(query)
     )
   }
-  
+
   // Apply filters
   if (filters.value.studioSize) {
     studios = studios.filter(studio => {
       const size = studio.employeeCount
       switch (filters.value.studioSize) {
-        case 'small': return size <= 50
-        case 'medium': return size > 50 && size <= 500
-        case 'large': return size > 500
-        default: return true
+        case 'small':
+          return size <= 50
+        case 'medium':
+          return size > 50 && size <= 500
+        case 'large':
+          return size > 500
+        default:
+          return true
       }
     })
   }
-  
+
   if (filters.value.threatLevel) {
-    studios = studios.filter(studio => studio.threatLevel === filters.value.threatLevel)
+    studios = studios.filter(
+      studio => studio.threatLevel === filters.value.threatLevel
+    )
   }
-  
+
   // Apply sorting
   switch (sortBy.value) {
     case 'employees':
@@ -516,12 +653,14 @@ const filteredStudios = computed(() => {
     default: // rank
       break
   }
-  
+
   return studios
 })
 
 const displayedStudios = computed(() => {
-  return expandStudios.value ? filteredStudios.value : filteredStudios.value.slice(0, 5)
+  return expandStudios.value
+    ? filteredStudios.value
+    : filteredStudios.value.slice(0, 5)
 })
 
 // Salary data with proper structure
@@ -529,7 +668,7 @@ const salaryData = ref([
   { role: 'Game Developer', min: 75, max: 120, percentage: 75 },
   { role: 'Game Designer', min: 65, max: 105, percentage: 68 },
   { role: 'Technical Artist', min: 80, max: 130, percentage: 82 },
-  { role: 'Producer', min: 90, max: 150, percentage: 88 }
+  { role: 'Producer', min: 90, max: 150, percentage: 88 },
 ])
 
 const topStudios = ref([
@@ -542,10 +681,10 @@ const topStudios = ref([
     openJobs: 45,
     threatLevel: 'HIGH',
     marketShare: 12,
-    rankChange: 2
+    rankChange: 2,
   },
   {
-    id: '2', 
+    id: '2',
     name: 'Riot Games',
     location: 'Los Angeles, CA',
     employeeCount: 2500,
@@ -553,7 +692,7 @@ const topStudios = ref([
     openJobs: 67,
     threatLevel: 'HIGH',
     marketShare: 18,
-    rankChange: -1
+    rankChange: -1,
   },
   {
     id: '3',
@@ -564,7 +703,7 @@ const topStudios = ref([
     openJobs: 12,
     threatLevel: 'MEDIUM',
     marketShare: 8,
-    rankChange: 1
+    rankChange: 1,
   },
   {
     id: '4',
@@ -575,7 +714,7 @@ const topStudios = ref([
     openJobs: 89,
     threatLevel: 'HIGH',
     marketShare: 15,
-    rankChange: -2
+    rankChange: -2,
   },
   {
     id: '5',
@@ -586,7 +725,7 @@ const topStudios = ref([
     openJobs: 78,
     threatLevel: 'MEDIUM',
     marketShare: 10,
-    rankChange: 3
+    rankChange: 3,
   },
   {
     id: '6',
@@ -597,7 +736,7 @@ const topStudios = ref([
     openJobs: 54,
     threatLevel: 'HIGH',
     marketShare: 14,
-    rankChange: 0
+    rankChange: 0,
   },
   {
     id: '7',
@@ -608,7 +747,7 @@ const topStudios = ref([
     openJobs: 123,
     threatLevel: 'HIGH',
     marketShare: 22,
-    rankChange: 1
+    rankChange: 1,
   },
   {
     id: '8',
@@ -619,8 +758,8 @@ const topStudios = ref([
     openJobs: 34,
     threatLevel: 'MEDIUM',
     marketShare: 16,
-    rankChange: -1
-  }
+    rankChange: -1,
+  },
 ])
 
 const trendingTech = ref([
@@ -631,7 +770,7 @@ const trendingTech = ref([
   { name: 'Python', popularity: 67 },
   { name: 'JavaScript', popularity: 59 },
   { name: 'Blender', popularity: 72 },
-  { name: 'Maya', popularity: 65 }
+  { name: 'Maya', popularity: 65 },
 ])
 
 const regionData = ref([
@@ -640,7 +779,7 @@ const regionData = ref([
   { name: 'Seattle', count: 76 },
   { name: 'Austin', count: 54 },
   { name: 'Montreal', count: 43 },
-  { name: 'London', count: 38 }
+  { name: 'London', count: 38 },
 ])
 
 // Enhanced helper functions
@@ -650,10 +789,14 @@ const getThreatClass = (threatLevel: string) => {
 
 const getThreatIcon = (threatLevel: string) => {
   switch (threatLevel) {
-    case 'HIGH': return 'mdi-alert-circle'
-    case 'MEDIUM': return 'mdi-alert'
-    case 'LOW': return 'CheckIcon-circle'
-    default: return 'QuestionMarkCircleIcon-circle'
+    case 'HIGH':
+      return 'mdi-alert-circle'
+    case 'MEDIUM':
+      return 'mdi-alert'
+    case 'LOW':
+      return 'CheckIcon-circle'
+    default:
+      return 'QuestionMarkCircleIcon-circle'
   }
 }
 
@@ -665,7 +808,7 @@ const resetFilters = () => {
   filters.value = {
     studioSize: '',
     threatLevel: '',
-    region: ''
+    region: '',
   }
   searchQuery.value = ''
 }
@@ -676,14 +819,19 @@ const focusMetric = (metric: string) => {
 }
 
 // Animation functions
-const animateCounter = (from: number, to: number, setter: (_value: number) => void, duration = 1000) => {
+const animateCounter = (
+  from: number,
+  to: number,
+  setter: (_value: number) => void,
+  duration = 1000
+) => {
   const startTime = Date.now()
   const animate = () => {
     const elapsed = Date.now() - startTime
     const progress = Math.min(elapsed / duration, 1)
     const current = from + (to - from) * easeOutQuart(progress)
     setter(Math.floor(current))
-    
+
     if (progress < 1) {
       requestAnimationFrame(animate)
     }
@@ -696,26 +844,37 @@ const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4)
 const refreshData = async () => {
   isRefreshing.value = true
   isLoadingStudios.value = true
-  
+
   try {
     // Simulate loading delay
     await new Promise(resolve => setTimeout(resolve, 1500))
-    
+
     const studioService = GameStudioService.getInstance()
     const stats = await studioService.getStudioStats()
-    
+
     analytics.value = {
       totalStudios: stats.totalStudios,
       growthRate: Math.round(stats.growthRate * 10) / 10,
       avgSalary: Math.round(stats.averageSalary / 1000),
-      openJobs: stats.totalOpenPositions
+      openJobs: stats.totalOpenPositions,
     }
-    
+
     // Animate counters
-    animateCounter(0, analytics.value.totalStudios, (val) => animatedStudios.value = val)
-    animateCounter(0, analytics.value.avgSalary, (val) => animatedSalary.value = val)
-    animateCounter(0, analytics.value.openJobs, (val) => animatedJobs.value = val)
-    
+    animateCounter(
+      0,
+      analytics.value.totalStudios,
+      val => (animatedStudios.value = val)
+    )
+    animateCounter(
+      0,
+      analytics.value.avgSalary,
+      val => (animatedSalary.value = val)
+    )
+    animateCounter(
+      0,
+      analytics.value.openJobs,
+      val => (animatedJobs.value = val)
+    )
   } catch (error) {
     console.warn('Failed to refresh data:', error)
   } finally {
@@ -731,10 +890,12 @@ const exportAnalytics = () => {
     salaryData: salaryData.value,
     trendingTech: trendingTech.value,
     regionData: regionData.value,
-    exportedAt: new Date().toISOString()
+    exportedAt: new Date().toISOString(),
   }
-  
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: 'application/json',
+  })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -747,27 +908,45 @@ const exportAnalytics = () => {
 onMounted(async () => {
   // Initialize animated counters with staggered delays
   setTimeout(() => {
-    animateCounter(0, analytics.value.totalStudios, (val) => animatedStudios.value = val, 1200)
+    animateCounter(
+      0,
+      analytics.value.totalStudios,
+      val => (animatedStudios.value = val),
+      1200
+    )
   }, 200)
-  
+
   setTimeout(() => {
-    animateCounter(0, analytics.value.avgSalary, (val) => animatedSalary.value = val, 1000)
+    animateCounter(
+      0,
+      analytics.value.avgSalary,
+      val => (animatedSalary.value = val),
+      1000
+    )
   }, 400)
-  
+
   setTimeout(() => {
-    animateCounter(0, analytics.value.openJobs, (val) => animatedJobs.value = val, 1400)
+    animateCounter(
+      0,
+      analytics.value.openJobs,
+      val => (animatedJobs.value = val),
+      1400
+    )
   }, 600)
 
   try {
     // Load initial data without refresh animation
     const studioService = GameStudioService.getInstance()
     const stats = await studioService.getStudioStats()
-    
+
     analytics.value = {
       totalStudios: stats.totalStudios || analytics.value.totalStudios,
-      growthRate: Math.round((stats.growthRate || analytics.value.growthRate) * 10) / 10,
-      avgSalary: Math.round((stats.averageSalary || analytics.value.avgSalary * 1000) / 1000),
-      openJobs: stats.totalOpenPositions || analytics.value.openJobs
+      growthRate:
+        Math.round((stats.growthRate || analytics.value.growthRate) * 10) / 10,
+      avgSalary: Math.round(
+        (stats.averageSalary || analytics.value.avgSalary * 1000) / 1000
+      ),
+      openJobs: stats.totalOpenPositions || analytics.value.openJobs,
     }
   } catch (error) {
     console.warn('Failed to load analytics data:', error)
@@ -775,17 +954,25 @@ onMounted(async () => {
 
   // Enhanced chart initialization
   if (marketChart.value) {
-    const chartTheme = theme ? getChartTheme(theme.colorScheme?.value || 'dark') : {
-      backgroundColor: ['rgba(0, 255, 136, 0.2)'],
-      borderColor: ['rgba(0, 255, 136, 0.8)'],
-      textColor: 'var(--text-primary-600)',
-      gridColor: 'var(--glass-border)'
-    }
+    const chartTheme = theme
+      ? getChartTheme(theme.colorScheme?.value || 'dark')
+      : {
+          backgroundColor: ['rgba(0, 255, 136, 0.2)'],
+          borderColor: ['rgba(0, 255, 136, 0.8)'],
+          textColor: 'var(--text-primary-600)',
+          gridColor: 'var(--glass-border)',
+        }
 
     marketChartInstance = new Chart(marketChart.value, {
       type: 'doughnut',
       data: {
-        labels: ['AAA Studios', 'Indie Studios', 'Mobile Studios', 'VR Studios', 'AR Studios'],
+        labels: [
+          'AAA Studios',
+          'Indie Studios',
+          'Mobile Studios',
+          'VR Studios',
+          'AR Studios',
+        ],
         datasets: [
           {
             data: [42, 28, 18, 8, 4],
@@ -794,26 +981,26 @@ onMounted(async () => {
               'rgba(0, 217, 255, 0.8)',
               'rgba(255, 0, 204, 0.8)',
               'rgba(255, 195, 0, 0.8)',
-              'rgba(138, 43, 226, 0.8)'
+              'rgba(138, 43, 226, 0.8)',
             ],
             borderColor: [
               'rgba(0, 255, 136, 1)',
               'rgba(0, 217, 255, 1)',
               'rgba(255, 0, 204, 1)',
               'rgba(255, 195, 0, 1)',
-              'rgba(138, 43, 226, 1)'
+              'rgba(138, 43, 226, 1)',
             ],
             borderWidth: 2,
-            hoverOffset: 8
-          }
-        ]
+            hoverOffset: 8,
+          },
+        ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         interaction: {
           intersect: false,
-          mode: 'index'
+          mode: 'index',
         },
         plugins: {
           legend: {
@@ -824,18 +1011,18 @@ onMounted(async () => {
               padding: 20,
               font: {
                 size: 12,
-                weight: 'normal'
-              }
-            }
-          }
+                weight: 'normal',
+              },
+            },
+          },
         },
         animation: {
           animateRotate: true,
           animateScale: true,
           duration: 1500,
-          easing: 'easeOutQuart'
-        }
-      }
+          easing: 'easeOutQuart',
+        },
+      },
     })
   }
 })
@@ -978,7 +1165,7 @@ onUnmounted(() => {
 .interactive-card:hover {
   transform: translateY(-2px);
   border-color: var(--neon-primary);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow-elevated),
     0 0 24px color-mix(in srgb, var(--neon-primary) 20%, transparent);
 }
@@ -1019,9 +1206,15 @@ onUnmounted(() => {
   font-weight: var(--font-weight-medium);
 }
 
-.stat-change.positive { color: var(--color-success-400); }
-.stat-change.negative { color: var(--color-error-400); }
-.stat-change.neutral { color: var(--text-secondary); }
+.stat-change.positive {
+  color: var(--color-success-400);
+}
+.stat-change.negative {
+  color: var(--color-error-400);
+}
+.stat-change.neutral {
+  color: var(--text-secondary);
+}
 
 /* Dashboard Grid */
 .dashboard-section {
@@ -1054,9 +1247,11 @@ onUnmounted(() => {
   justify-content: space-between;
   padding: var(--spacing-6);
   border-b: 2px solid var(--glass-border);
-  background: linear-gradient(90deg, 
+  background: linear-gradient(
+    90deg,
     color-mix(in srgb, var(--glass-bg) 95%, transparent) 0%,
-    var(--glass-bg) 100%);
+    var(--glass-bg) 100%
+  );
   position: relative;
 }
 
@@ -1067,10 +1262,12 @@ onUnmounted(() => {
   left: var(--spacing-6);
   right: var(--spacing-6);
   height: 1px;
-  background: linear-gradient(90deg, 
+  background: linear-gradient(
+    90deg,
     transparent 0%,
     var(--neon-primary) 50%,
-    transparent 100%);
+    transparent 100%
+  );
   opacity: 0.3;
 }
 
@@ -1157,17 +1354,24 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, 
-    rgba(255, 255, 255, 0.2) 0%, 
-    transparent 50%, 
-    rgba(255, 255, 255, 0.1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
   border-radius: inherit;
   animation: progress-shine 2s ease-in-out infinite;
 }
 
 @keyframes progress-shine {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .percentage {
@@ -1269,13 +1473,15 @@ onUnmounted(() => {
 .threat-medium {
   background: color-mix(in srgb, var(--color-warning-500) 15%, transparent);
   color: var(--color-warning-400);
-  border: 1px solid color-mix(in srgb, var(--color-warning-500) 30%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-warning-500) 30%, transparent);
 }
 
 .threat-low {
   background: color-mix(in srgb, var(--color-success-500) 15%, transparent);
   color: var(--color-success-400);
-  border: 1px solid color-mix(in srgb, var(--color-success-500) 30%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-success-500) 30%, transparent);
 }
 
 /* Technology Trends */
@@ -1392,7 +1598,11 @@ onUnmounted(() => {
 }
 
 .range-segment.active {
-  background: linear-gradient(90deg, var(--neon-primary), var(--color-success-400));
+  background: linear-gradient(
+    90deg,
+    var(--neon-primary),
+    var(--color-success-400)
+  );
 }
 
 .job-categories {
@@ -1408,10 +1618,18 @@ onUnmounted(() => {
   transition: all var(--duration-fast) var(--easing-ease-out);
 }
 
-.category-dot:nth-child(1) { background: var(--neon-primary); }
-.category-dot:nth-child(2) { background: var(--neon-cyber); }
-.category-dot:nth-child(3) { background: var(--neon-magenta); }
-.category-dot:nth-child(4) { background: var(--color-warning-400); }
+.category-dot:nth-child(1) {
+  background: var(--neon-primary);
+}
+.category-dot:nth-child(2) {
+  background: var(--neon-cyber);
+}
+.category-dot:nth-child(3) {
+  background: var(--neon-magenta);
+}
+.category-dot:nth-child(4) {
+  background: var(--color-warning-400);
+}
 
 .market-segments {
   display: flex;
@@ -1427,9 +1645,18 @@ onUnmounted(() => {
   transition: all var(--duration-normal) var(--easing-ease-out);
 }
 
-.segment.mobile { flex: 45; background: var(--neon-primary); }
-.segment.pc { flex: 30; background: var(--neon-cyber); }
-.segment.console { flex: 25; background: var(--neon-magenta); }
+.segment.mobile {
+  flex: 45;
+  background: var(--neon-primary);
+}
+.segment.pc {
+  flex: 30;
+  background: var(--neon-cyber);
+}
+.segment.console {
+  flex: 25;
+  background: var(--neon-magenta);
+}
 
 /* Enhanced Section Headers */
 .results-count {
@@ -1487,10 +1714,12 @@ onUnmounted(() => {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(255, 255, 255, 0.1) 50%, 
-    transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
   animation: skeleton-shimmer 2s ease-in-out infinite;
 }
 
@@ -1531,13 +1760,22 @@ onUnmounted(() => {
 }
 
 @keyframes skeleton-pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes skeleton-shimmer {
-  0% { left: -100%; }
-  100% { left: 100%; }
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 /* Enhanced Studio Items */
@@ -1675,7 +1913,7 @@ onUnmounted(() => {
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
     gap: var(--spacing-5);
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
@@ -1686,16 +1924,16 @@ onUnmounted(() => {
     grid-template-columns: 1fr;
     gap: var(--spacing-5);
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: var(--spacing-4);
   }
-  
+
   .filters-grid {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
-  
+
   .analytics-panel {
     min-height: 350px;
   }
@@ -1707,60 +1945,60 @@ onUnmounted(() => {
     gap: var(--spacing-2);
     justify-content: center;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-4);
   }
-  
+
   .filters-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section-controls {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-3);
   }
-  
+
   .ranking-item {
     grid-template-columns: 48px 1fr;
     grid-template-rows: auto auto;
     gap: var(--spacing-4);
     padding: var(--spacing-4);
   }
-  
+
   .studio-status {
     grid-column: 1 / -1;
     justify-self: start;
     margin-top: var(--spacing-3);
   }
-  
+
   .studio-metrics {
     flex-direction: column;
     gap: var(--spacing-2);
   }
-  
+
   .section-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-4);
   }
-  
+
   .studio-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-2);
   }
-  
+
   .analytics-panel {
     min-height: 300px;
   }
-  
+
   .analytics-stats-section {
     margin-top: var(--spacing-4);
   }
-  
+
   .dashboard-section {
     margin-top: var(--spacing-6);
   }
@@ -1770,42 +2008,42 @@ onUnmounted(() => {
   .stat-value {
     font-size: var(--font-size-2xl);
   }
-  
+
   .section-body {
     padding: var(--spacing-4);
   }
-  
+
   .ranking-item {
     grid-template-columns: 1fr;
     text-align: left;
     padding: var(--spacing-4);
     min-height: auto;
   }
-  
+
   .rank-badge {
     justify-self: start;
     width: 36px;
     height: 36px;
     font-size: var(--font-size-lg);
   }
-  
+
   .filters-panel {
     padding: var(--spacing-4);
   }
-  
+
   .show-more-section {
     margin-top: var(--spacing-3);
   }
-  
+
   .stat-card {
     min-height: 140px;
     padding: var(--spacing-5);
   }
-  
+
   .analytics-stats-section {
     margin-top: var(--spacing-3);
   }
-  
+
   .dashboard-section {
     margin-top: var(--spacing-5);
   }
@@ -1816,7 +2054,7 @@ onUnmounted(() => {
   .skeleton-item {
     background: color-mix(in srgb, var(--glass-bg) 80%, transparent);
   }
-  
+
   .sparkline-bar {
     opacity: 0.8;
   }
@@ -1827,7 +2065,7 @@ onUnmounted(() => {
   .glass-input {
     border-width: 2px;
   }
-  
+
   .interactive-card:hover {
     border-width: 2px;
   }
@@ -1838,14 +2076,14 @@ onUnmounted(() => {
   .interactive-card:hover {
     transform: none;
   }
-  
+
   .studio-item-enter-active,
   .studio-item-leave-active,
   .filter-panel-enter-active,
   .filter-panel-leave-active {
     transition: none;
   }
-  
+
   .sparkline-bar,
   .range-segment,
   .category-dot,

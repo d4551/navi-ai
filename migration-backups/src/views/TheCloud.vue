@@ -12,7 +12,7 @@ Modern cloud intelligence and data syndication with unified design
       max-width="xl"
       :hero-stats="[
         { label: cloudStatus.connected ? 'Connected' : 'Disconnected' },
-        { label: cloudStatus.region || 'No Connection' }
+        { label: cloudStatus.region || 'No Connection' },
       ]"
     >
       <!-- Services Grid -->
@@ -22,11 +22,16 @@ Modern cloud intelligence and data syndication with unified design
             <AppIcon name="mdi-cloud" class="section-icon" />
             Azure Services
           </h2>
-          <p class="section-description">Manage and monitor your cloud services</p>
+          <p class="section-description">
+            Manage and monitor your cloud services
+          </p>
         </div>
         <div class="responsive-grid responsive-grid--cards-lg">
           <!-- OpenAI Service -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.openai.enabled }">
+          <div
+            class="service-card glass p-4 gap-4 rounded-lg neon-interactive"
+            :class="{ active: services.openai.enabled }"
+          >
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
@@ -39,50 +44,74 @@ Modern cloud intelligence and data syndication with unified design
               </div>
               <div class="service-toggle">
                 <label class="switch">
-                  <input v-model="services.openai.enabled" type="checkbox" @change="toggleService('openai')">
+                  <input
+                    v-model="services.openai.enabled"
+                    type="checkbox"
+                    @change="toggleService('openai')"
+                  />
                   <span class="slider"></span>
                 </label>
               </div>
             </div>
-          
+
             <div v-if="services.openai.enabled" class="service-metrics">
               <div class="stats-grid">
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Requests</span>
-                    <span class="metric-value">{{ services.openai?.metrics?.requests || 0 }}</span>
+                    <span class="metric-value">{{
+                      services.openai?.metrics?.requests || 0
+                    }}</span>
                   </div>
                   <AppIcon name="mdi-chart-line" class="metric-icon" />
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Tokens</span>
-                    <span class="metric-value">{{ formatNumber(services.openai?.metrics?.tokens) }}</span>
+                    <span class="metric-value">{{
+                      formatNumber(services.openai?.metrics?.tokens)
+                    }}</span>
                   </div>
                   <AppIcon name="mdi-database" class="metric-icon" />
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Uptime</span>
-                    <span class="metric-value">{{ services.openai?.metrics?.uptime || 0 }}%</span>
+                    <span class="metric-value"
+                      >{{ services.openai?.metrics?.uptime || 0 }}%</span
+                    >
                   </div>
                   <AppIcon name="mdi-check-circle" class="metric-icon" />
                 </div>
               </div>
             </div>
-          
+
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('openai')">
+              <UnifiedButton
+                variant="outline"
+                leading-icon="mdi-cog"
+                size="sm"
+                @click="configureService('openai')"
+              >
                 Configure
               </UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.openai.enabled" @click="testService('openai')">
+              <UnifiedButton
+                variant="gaming"
+                leading-icon="mdi-play"
+                size="sm"
+                :disabled="!services.openai.enabled"
+                @click="testService('openai')"
+              >
                 Test API
               </UnifiedButton>
             </div>
           </div>
 
           <!-- Cognitive Services -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.cognitive.enabled }">
+          <div
+            class="service-card glass p-4 gap-4 rounded-lg neon-interactive"
+            :class="{ active: services.cognitive.enabled }"
+          >
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
@@ -90,48 +119,76 @@ Modern cloud intelligence and data syndication with unified design
                 </div>
                 <div class="service-info">
                   <h3 class="card-title">Cognitive Services</h3>
-                  <p class="card-description">Text analysis, sentiment, entities</p>
+                  <p class="card-description">
+                    Text analysis, sentiment, entities
+                  </p>
                 </div>
               </div>
               <div class="service-toggle">
                 <label class="switch">
-                  <input v-model="services.cognitive.enabled" type="checkbox" @change="toggleService('cognitive')">
+                  <input
+                    v-model="services.cognitive.enabled"
+                    type="checkbox"
+                    @change="toggleService('cognitive')"
+                  />
                   <span class="slider"></span>
                 </label>
               </div>
             </div>
-          
+
             <div v-if="services.cognitive.enabled" class="service-metrics">
               <div class="stats-grid">
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Analyses</span>
-                    <span class="metric-value">{{ services.cognitive?.metrics?.analyses || 0 }}</span>
+                    <span class="metric-value">{{
+                      services.cognitive?.metrics?.analyses || 0
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Languages</span>
-                    <span class="metric-value">{{ services.cognitive?.metrics?.languages || 0 }}</span>
+                    <span class="metric-value">{{
+                      services.cognitive?.metrics?.languages || 0
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Accuracy</span>
-                    <span class="metric-value">{{ services.cognitive?.metrics?.accuracy || 0 }}%</span>
+                    <span class="metric-value"
+                      >{{ services.cognitive?.metrics?.accuracy || 0 }}%</span
+                    >
                   </div>
                 </div>
               </div>
             </div>
-          
+
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('cognitive')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.cognitive.enabled" @click="testService('cognitive')">Test API</UnifiedButton>
+              <UnifiedButton
+                variant="outline"
+                leading-icon="mdi-cog"
+                size="sm"
+                @click="configureService('cognitive')"
+                >Configure</UnifiedButton
+              >
+              <UnifiedButton
+                variant="gaming"
+                leading-icon="mdi-play"
+                size="sm"
+                :disabled="!services.cognitive.enabled"
+                @click="testService('cognitive')"
+                >Test API</UnifiedButton
+              >
             </div>
           </div>
 
           <!-- Storage Account -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.storage.enabled }">
+          <div
+            class="service-card glass p-4 gap-4 rounded-lg neon-interactive"
+            :class="{ active: services.storage.enabled }"
+          >
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
@@ -144,43 +201,71 @@ Modern cloud intelligence and data syndication with unified design
               </div>
               <div class="service-toggle">
                 <label class="switch">
-                  <input v-model="services.storage.enabled" type="checkbox" @change="toggleService('storage')">
+                  <input
+                    v-model="services.storage.enabled"
+                    type="checkbox"
+                    @change="toggleService('storage')"
+                  />
                   <span class="slider"></span>
                 </label>
               </div>
             </div>
-          
+
             <div v-if="services.storage.enabled" class="service-metrics">
               <div class="stats-grid">
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Files</span>
-                    <span class="metric-value">{{ services.storage?.metrics?.files || 0 }}</span>
+                    <span class="metric-value">{{
+                      services.storage?.metrics?.files || 0
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Storage</span>
-                    <span class="metric-value">{{ formatStorage(services.storage?.metrics?.size) }}</span>
+                    <span class="metric-value">{{
+                      formatStorage(services.storage?.metrics?.size)
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Bandwidth</span>
-                    <span class="metric-value">{{ formatStorage(services.storage?.metrics?.bandwidth) }}/mo</span>
+                    <span class="metric-value"
+                      >{{
+                        formatStorage(services.storage?.metrics?.bandwidth)
+                      }}/mo</span
+                    >
                   </div>
                 </div>
               </div>
             </div>
-          
+
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('storage')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.storage.enabled" @click="testService('storage')">Test API</UnifiedButton>
+              <UnifiedButton
+                variant="outline"
+                leading-icon="mdi-cog"
+                size="sm"
+                @click="configureService('storage')"
+                >Configure</UnifiedButton
+              >
+              <UnifiedButton
+                variant="gaming"
+                leading-icon="mdi-play"
+                size="sm"
+                :disabled="!services.storage.enabled"
+                @click="testService('storage')"
+                >Test API</UnifiedButton
+              >
             </div>
           </div>
 
           <!-- Event Hub -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.eventhub.enabled }">
+          <div
+            class="service-card glass p-4 gap-4 rounded-lg neon-interactive"
+            :class="{ active: services.eventhub.enabled }"
+          >
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
@@ -193,43 +278,69 @@ Modern cloud intelligence and data syndication with unified design
               </div>
               <div class="service-toggle">
                 <label class="switch">
-                  <input v-model="services.eventhub.enabled" type="checkbox" @change="toggleService('eventhub')">
+                  <input
+                    v-model="services.eventhub.enabled"
+                    type="checkbox"
+                    @change="toggleService('eventhub')"
+                  />
                   <span class="slider"></span>
                 </label>
               </div>
             </div>
-          
+
             <div v-if="services.eventhub.enabled" class="service-metrics">
               <div class="stats-grid">
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Events</span>
-                    <span class="metric-value">{{ formatNumber(services.eventhub?.metrics?.events) }}</span>
+                    <span class="metric-value">{{
+                      formatNumber(services.eventhub?.metrics?.events)
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Throughput</span>
-                    <span class="metric-value">{{ services.eventhub?.metrics?.throughput || 0 }}/s</span>
+                    <span class="metric-value"
+                      >{{ services.eventhub?.metrics?.throughput || 0 }}/s</span
+                    >
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Partitions</span>
-                    <span class="metric-value">{{ services.eventhub?.metrics?.partitions || 0 }}</span>
+                    <span class="metric-value">{{
+                      services.eventhub?.metrics?.partitions || 0
+                    }}</span>
                   </div>
                 </div>
               </div>
             </div>
-          
+
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('eventhub')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.eventhub.enabled" @click="testService('eventhub')">Test API</UnifiedButton>
+              <UnifiedButton
+                variant="outline"
+                leading-icon="mdi-cog"
+                size="sm"
+                @click="configureService('eventhub')"
+                >Configure</UnifiedButton
+              >
+              <UnifiedButton
+                variant="gaming"
+                leading-icon="mdi-play"
+                size="sm"
+                :disabled="!services.eventhub.enabled"
+                @click="testService('eventhub')"
+                >Test API</UnifiedButton
+              >
             </div>
           </div>
 
           <!-- Key Vault -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.keyvault.enabled }">
+          <div
+            class="service-card glass p-4 gap-4 rounded-lg neon-interactive"
+            :class="{ active: services.keyvault.enabled }"
+          >
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
@@ -237,48 +348,76 @@ Modern cloud intelligence and data syndication with unified design
                 </div>
                 <div class="service-info">
                   <h3 class="card-title">Key Vault</h3>
-                  <p class="card-description">Secure key and secret management</p>
+                  <p class="card-description">
+                    Secure key and secret management
+                  </p>
                 </div>
               </div>
               <div class="service-toggle">
                 <label class="switch">
-                  <input v-model="services.keyvault.enabled" type="checkbox" @change="toggleService('keyvault')">
+                  <input
+                    v-model="services.keyvault.enabled"
+                    type="checkbox"
+                    @change="toggleService('keyvault')"
+                  />
                   <span class="slider"></span>
                 </label>
               </div>
             </div>
-          
+
             <div v-if="services.keyvault.enabled" class="service-metrics">
               <div class="stats-grid">
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Secrets</span>
-                    <span class="metric-value">{{ services.keyvault?.metrics?.secrets || 0 }}</span>
+                    <span class="metric-value">{{
+                      services.keyvault?.metrics?.secrets || 0
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Keys</span>
-                    <span class="metric-value">{{ services.keyvault?.metrics?.keys || 0 }}</span>
+                    <span class="metric-value">{{
+                      services.keyvault?.metrics?.keys || 0
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Access</span>
-                    <span class="metric-value">{{ services.keyvault?.metrics?.access || 0 }}%</span>
+                    <span class="metric-value"
+                      >{{ services.keyvault?.metrics?.access || 0 }}%</span
+                    >
                   </div>
                 </div>
               </div>
             </div>
-          
+
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('keyvault')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.keyvault.enabled" @click="testService('keyvault')">Test API</UnifiedButton>
+              <UnifiedButton
+                variant="outline"
+                leading-icon="mdi-cog"
+                size="sm"
+                @click="configureService('keyvault')"
+                >Configure</UnifiedButton
+              >
+              <UnifiedButton
+                variant="gaming"
+                leading-icon="mdi-play"
+                size="sm"
+                :disabled="!services.keyvault.enabled"
+                @click="testService('keyvault')"
+                >Test API</UnifiedButton
+              >
             </div>
           </div>
 
           <!-- IoT Hub -->
-          <div class="service-card glass p-4 gap-4 rounded-lg neon-interactive" :class="{ active: services.iothub.enabled }">
+          <div
+            class="service-card glass p-4 gap-4 rounded-lg neon-interactive"
+            :class="{ active: services.iothub.enabled }"
+          >
             <div class="service-header">
               <div class="service-meta">
                 <div class="service-icon">
@@ -286,43 +425,68 @@ Modern cloud intelligence and data syndication with unified design
                 </div>
                 <div class="service-info">
                   <h3 class="card-title">IoT Hub</h3>
-                  <p class="card-description">Device connectivity and management</p>
+                  <p class="card-description">
+                    Device connectivity and management
+                  </p>
                 </div>
               </div>
               <div class="service-toggle">
                 <label class="switch">
-                  <input v-model="services.iothub.enabled" type="checkbox" @change="toggleService('iothub')">
+                  <input
+                    v-model="services.iothub.enabled"
+                    type="checkbox"
+                    @change="toggleService('iothub')"
+                  />
                   <span class="slider"></span>
                 </label>
               </div>
             </div>
-          
+
             <div v-if="services.iothub.enabled" class="service-metrics">
               <div class="stats-grid">
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Devices</span>
-                    <span class="metric-value">{{ services.iothub?.metrics?.devices || 0 }}</span>
+                    <span class="metric-value">{{
+                      services.iothub?.metrics?.devices || 0
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Messages</span>
-                    <span class="metric-value">{{ formatNumber(services.iothub?.metrics?.messages) }}</span>
+                    <span class="metric-value">{{
+                      formatNumber(services.iothub?.metrics?.messages)
+                    }}</span>
                   </div>
                 </div>
                 <div class="metric-item">
                   <div class="metric-content">
                     <span class="metric-label">Online</span>
-                    <span class="metric-value">{{ services.iothub?.metrics?.online || 0 }}%</span>
+                    <span class="metric-value"
+                      >{{ services.iothub?.metrics?.online || 0 }}%</span
+                    >
                   </div>
                 </div>
               </div>
             </div>
-          
+
             <div class="service-actions">
-              <UnifiedButton variant="outline" leading-icon="mdi-cog" size="sm" @click="configureService('iothub')">Configure</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-play" size="sm" :disabled="!services.iothub.enabled" @click="testService('iothub')">Test API</UnifiedButton>
+              <UnifiedButton
+                variant="outline"
+                leading-icon="mdi-cog"
+                size="sm"
+                @click="configureService('iothub')"
+                >Configure</UnifiedButton
+              >
+              <UnifiedButton
+                variant="gaming"
+                leading-icon="mdi-play"
+                size="sm"
+                :disabled="!services.iothub.enabled"
+                @click="testService('iothub')"
+                >Test API</UnifiedButton
+              >
             </div>
           </div>
         </div>
@@ -336,23 +500,34 @@ Modern cloud intelligence and data syndication with unified design
               <AppIcon name="mdi-chart-line" class="section-icon" />
               Cloud Analytics
             </h2>
-            <p class="section-description">Monitor performance and costs across your services</p>
+            <p class="section-description">
+              Monitor performance and costs across your services
+            </p>
           </div>
           <div class="header-actions">
             <div class="time-filter">
               <label class="filter-label">Time Range:</label>
-              <select v-model="analyticsTimeframe" class="glass-input" @change="updateAnalytics">
+              <select
+                v-model="analyticsTimeframe"
+                class="glass-input"
+                @change="updateAnalytics"
+              >
                 <option value="24h">Last 24 Hours</option>
                 <option value="7d">Last 7 Days</option>
                 <option value="30d">Last 30 Days</option>
               </select>
             </div>
-            <UnifiedButton variant="outline" leading-icon="mdi-refresh" size="sm" @click="updateAnalytics">
+            <UnifiedButton
+              variant="outline"
+              leading-icon="mdi-refresh"
+              size="sm"
+              @click="updateAnalytics"
+            >
               Refresh
             </UnifiedButton>
           </div>
         </div>
-      
+
         <div class="responsive-grid responsive-grid--cards-md">
           <!-- Cost Overview -->
           <div class="analytics-card glass p-4 gap-4 rounded-lg">
@@ -410,14 +585,20 @@ Modern cloud intelligence and data syndication with unified design
                 <div class="perf-label">Success Rate</div>
                 <div class="perf-value">99.2%</div>
                 <div class="progress progress--xs">
-                  <div class="progress-bar bg-success" :style="{ width: '99%' }"></div>
+                  <div
+                    class="progress-bar bg-success"
+                    :style="{ width: '99%' }"
+                  ></div>
                 </div>
               </div>
               <div class="perf-item">
                 <div class="perf-label">Availability</div>
                 <div class="perf-value">99.9%</div>
                 <div class="progress progress--xs">
-                  <div class="progress-bar bg-success" :style="{ width: '100%' }"></div>
+                  <div
+                    class="progress-bar bg-success"
+                    :style="{ width: '100%' }"
+                  ></div>
                 </div>
               </div>
             </div>
@@ -449,7 +630,10 @@ Modern cloud intelligence and data syndication with unified design
                 <span>Access Policies Active</span>
               </div>
               <div class="security-item">
-                <AppIcon name="mdi-alert-circle-outline" class="security-icon warning" />
+                <AppIcon
+                  name="mdi-alert-circle-outline"
+                  class="security-icon warning"
+                />
                 <span>MFA Recommended</span>
               </div>
             </div>
@@ -459,49 +643,64 @@ Modern cloud intelligence and data syndication with unified design
 
       <!-- Service Configuration Modal -->
       <Teleport to="body">
-        <div v-if="configModal.show" class="config-modal-overlay" @click="closeConfigModal">
+        <div
+          v-if="configModal.show"
+          class="config-modal-overlay"
+          @click="closeConfigModal"
+        >
           <div class="config-modal glass p-6 gap-4 rounded-xl" @click.stop>
             <div class="modal-header">
-              <h2 class="card-title">Configure {{ configModal.serviceName }}</h2>
-              <UnifiedButton variant="ghost" icon-only icon="mdi-close" aria-label="Close" @click="closeConfigModal" />
+              <h2 class="card-title">
+                Configure {{ configModal.serviceName }}
+              </h2>
+              <UnifiedButton
+                variant="ghost"
+                icon-only
+                icon="mdi-close"
+                aria-label="Close"
+                @click="closeConfigModal"
+              />
             </div>
-          
+
             <div class="modal-content">
               <div class="form-grid">
                 <!-- Dynamic configuration based on service type -->
                 <div class="form-group">
                   <label class="form-label">API Endpoint</label>
-                  <input 
-                    v-model="configModal.config.endpoint" 
+                  <input
+                    v-model="configModal.config.endpoint"
                     type="text"
                     class="glass-input"
                     placeholder="https://your-service.azure.com"
-                  >
+                  />
                 </div>
-              
+
                 <div class="form-group">
                   <label class="form-label">API Key</label>
-                  <input 
-                    v-model="configModal.config.apiKey" 
+                  <input
+                    v-model="configModal.config.apiKey"
                     type="password"
                     class="glass-input"
                     placeholder="••••••••••••••••"
-                  >
+                  />
                 </div>
-              
+
                 <div v-if="configModal.service === 'openai'" class="form-group">
                   <label class="form-label">Deployment Name</label>
-                  <input 
-                    v-model="configModal.config.deploymentName" 
+                  <input
+                    v-model="configModal.config.deploymentName"
                     type="text"
                     class="glass-input"
                     placeholder="gpt-35-turbo"
-                  >
+                  />
                 </div>
-              
+
                 <div class="form-group">
                   <label class="form-label">Region</label>
-                  <select v-model="configModal.config.region" class="glass-input">
+                  <select
+                    v-model="configModal.config.region"
+                    class="glass-input"
+                  >
                     <option value="">Select Region</option>
                     <option value="eastus">East US</option>
                     <option value="westus2">West US 2</option>
@@ -511,10 +710,17 @@ Modern cloud intelligence and data syndication with unified design
                 </div>
               </div>
             </div>
-          
+
             <div class="modal-actions">
-              <UnifiedButton variant="outline" @click="closeConfigModal">Cancel</UnifiedButton>
-              <UnifiedButton variant="gaming" leading-icon="mdi-content-save" @click="saveConfiguration">Save Configuration</UnifiedButton>
+              <UnifiedButton variant="outline" @click="closeConfigModal"
+                >Cancel</UnifiedButton
+              >
+              <UnifiedButton
+                variant="gaming"
+                leading-icon="mdi-content-save"
+                @click="saveConfiguration"
+                >Save Configuration</UnifiedButton
+              >
             </div>
           </div>
         </div>
@@ -565,7 +771,7 @@ const cloudStatus = reactive({
   connected: true,
   region: 'East US',
   lastCheck: new Date(),
-  health: 'healthy'
+  health: 'healthy',
 })
 
 // Services configuration
@@ -576,8 +782,8 @@ const services: Services = reactive({
     metrics: {
       requests: 1247,
       tokens: 892140,
-      uptime: 99.9
-    }
+      uptime: 99.9,
+    },
   },
   cognitive: {
     enabled: true,
@@ -585,8 +791,8 @@ const services: Services = reactive({
     metrics: {
       analyses: 324,
       languages: 12,
-      accuracy: 96.8
-    }
+      accuracy: 96.8,
+    },
   },
   storage: {
     enabled: true,
@@ -594,8 +800,8 @@ const services: Services = reactive({
     metrics: {
       files: 2856,
       size: 15728640, // bytes
-      bandwidth: 52428800 // bytes
-    }
+      bandwidth: 52428800, // bytes
+    },
   },
   eventhub: {
     enabled: false,
@@ -603,8 +809,8 @@ const services: Services = reactive({
     metrics: {
       events: 0,
       throughput: 0,
-      partitions: 4
-    }
+      partitions: 4,
+    },
   },
   keyvault: {
     enabled: true,
@@ -612,8 +818,8 @@ const services: Services = reactive({
     metrics: {
       secrets: 8,
       keys: 3,
-      access: 100
-    }
+      access: 100,
+    },
   },
   iothub: {
     enabled: false,
@@ -621,9 +827,9 @@ const services: Services = reactive({
     metrics: {
       devices: 0,
       messages: 0,
-      online: 0
-    }
-  }
+      online: 0,
+    },
+  },
 })
 
 // Configuration modal state
@@ -635,8 +841,8 @@ const configModal = reactive({
     endpoint: '',
     apiKey: '',
     region: '',
-    deploymentName: ''
-  }
+    deploymentName: '',
+  },
 })
 
 // Methods
@@ -661,16 +867,15 @@ const toggleService = async (serviceName: string) => {
       console.error(`Service ${serviceName} not found`)
       return
     }
-    
+
     console.log(`${service.enabled ? 'Enabling' : 'Disabling'} ${serviceName}`)
-    
+
     // In real implementation, would call Azure service
     // if (service.enabled) {
     //   await azureService.enableService(serviceName)
     // } else {
     //   await azureService.disableService(serviceName)
     // }
-    
   } catch (error) {
     console.error(`Failed to toggle ${serviceName}:`, error)
     // Revert the toggle on error
@@ -687,11 +892,11 @@ const configureService = (serviceName: string) => {
       console.error(`Service ${serviceName} not found`)
       return
     }
-    
+
     configModal.service = serviceName
     configModal.serviceName = formatServiceName(serviceName)
     configModal.show = true
-    
+
     // Load existing configuration if available
     if (service.configured) {
       // In real implementation, would load from Azure service
@@ -699,7 +904,7 @@ const configureService = (serviceName: string) => {
         endpoint: 'https://example.azure.com',
         apiKey: '••••••••••••••••',
         region: 'eastus',
-        deploymentName: serviceName === 'openai' ? 'gpt-35-turbo' : ''
+        deploymentName: serviceName === 'openai' ? 'gpt-35-turbo' : '',
       }
     } else {
       // Reset config for new services
@@ -707,7 +912,7 @@ const configureService = (serviceName: string) => {
         endpoint: '',
         apiKey: '',
         region: '',
-        deploymentName: ''
+        deploymentName: '',
       }
     }
   } catch (error) {
@@ -723,17 +928,21 @@ const closeConfigModal = () => {
     endpoint: '',
     apiKey: '',
     region: '',
-    deploymentName: ''
+    deploymentName: '',
   }
 }
 
 const saveConfiguration = async () => {
   try {
-    console.log('Saving configuration for', configModal.service, configModal.config)
-    
+    console.log(
+      'Saving configuration for',
+      configModal.service,
+      configModal.config
+    )
+
     // In real implementation, would save to Azure service
     // await azureService.configureService(configModal.service, configModal.config)
-    
+
     services[configModal.service].configured = true
     closeConfigModal()
   } catch (error) {
@@ -749,21 +958,23 @@ const testService = async (serviceName: string) => {
       alert(`Service ${serviceName} not found`)
       return
     }
-    
+
     if (!service.enabled) {
-      alert(`${formatServiceName(serviceName)} service is not enabled. Please enable it first.`)
+      alert(
+        `${formatServiceName(serviceName)} service is not enabled. Please enable it first.`
+      )
       return
     }
-    
+
     console.log('Testing service:', serviceName)
-    
+
     // Simulate a delay for testing
     await new Promise(resolve => setTimeout(resolve, 1000))
-    
+
     // In real implementation, would test Azure service
     // const result = await azureService.testService(serviceName)
     // console.log('Service test result:', result)
-    
+
     alert(`${formatServiceName(serviceName)} service is working correctly!`)
   } catch (error) {
     console.error('Service test failed:', error)
@@ -784,7 +995,7 @@ const formatServiceName = (serviceName: string) => {
     storage: 'Blob Storage',
     eventhub: 'Event Hub',
     keyvault: 'Key Vault',
-    iothub: 'IoT Hub'
+    iothub: 'IoT Hub',
   }
   return names[serviceName] || serviceName
 }
@@ -864,7 +1075,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   opacity: 1;
 }
 
@@ -931,7 +1146,7 @@ onMounted(() => {
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 20px;
   width: 20px;
   left: 4px;
@@ -943,7 +1158,11 @@ onMounted(() => {
 }
 
 input:checked + .slider {
-  background: linear-gradient(45deg, var(--color-primary-500), var(--color-gaming-500, #00ff88));
+  background: linear-gradient(
+    45deg,
+    var(--color-primary-500),
+    var(--color-gaming-500, #00ff88)
+  );
   border-color: var(--color-primary-500);
 }
 
@@ -1060,7 +1279,8 @@ input:checked + .slider:before {
 .trend-indicator.positive {
   background: color-mix(in srgb, var(--color-success-500) 20%, var(--glass-bg));
   color: var(--color-success-600);
-  border: 1px solid color-mix(in srgb, var(--color-success-500) 30%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-success-500) 30%, transparent);
 }
 
 .trend-indicator.neutral {
@@ -1193,21 +1413,21 @@ input:checked + .slider:before {
     align-items: stretch;
     gap: var(--spacing-4);
   }
-  
+
   .header-actions {
     justify-content: space-between;
   }
-  
+
   .service-actions,
   .modal-actions {
     flex-direction: column;
   }
-  
+
   .service-header {
     flex-direction: column;
     gap: var(--spacing-4);
   }
-  
+
   .service-toggle {
     align-self: flex-start;
   }

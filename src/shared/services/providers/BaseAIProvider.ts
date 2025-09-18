@@ -6,7 +6,7 @@ import {
   MultiModalResponse,
   HealthMetrics,
   ModelInfo,
-  StreamCallbacks
+  StreamCallbacks,
 } from '@/shared/types/ai'
 import { logger } from '@/shared/utils/logger'
 
@@ -41,7 +41,7 @@ export default abstract class BaseAIProvider {
       successRate: healthy ? 1 : 0,
       errorRate: healthy ? 0 : 1,
       lastCheck: Date.now(),
-      status: healthy ? 'healthy' : 'down'
+      status: healthy ? 'healthy' : 'down',
     }
   }
 
@@ -74,15 +74,15 @@ export default abstract class BaseAIProvider {
           imagesGenerated: 0,
           audioDuration: 0,
           videoDuration: 0,
-          cost: 0
+          cost: 0,
         },
         timing: {
           startedAt: start,
           completedAt: Date.now(),
           totalTime: Date.now() - start,
-          processingTime: Date.now() - start
+          processingTime: Date.now() - start,
         },
-        error
+        error,
       }
     }
 
@@ -109,15 +109,15 @@ export default abstract class BaseAIProvider {
           imagesGenerated: 0,
           audioDuration: 0,
           videoDuration: 0,
-          cost: 0
+          cost: 0,
         },
         timing: {
           startedAt: start,
           completedAt: Date.now(),
           totalTime: Date.now() - start,
-          processingTime: Date.now() - start
+          processingTime: Date.now() - start,
         },
-        error
+        error,
       }
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err))
@@ -135,33 +135,39 @@ export default abstract class BaseAIProvider {
           imagesGenerated: 0,
           audioDuration: 0,
           videoDuration: 0,
-          cost: 0
+          cost: 0,
         },
         timing: {
           startedAt: start,
           completedAt: Date.now(),
           totalTime: Date.now() - start,
-          processingTime: Date.now() - start
+          processingTime: Date.now() - start,
         },
-        error: error.message
+        error: error.message,
       }
     }
   }
 
-  private async executeOpenAI(request: MultiModalRequest, id: string, start: number): Promise<MultiModalResponse> {
-    const textInput = request.content.find(c => c.type === ModalityType.TEXT)?.data
+  private async executeOpenAI(
+    request: MultiModalRequest,
+    id: string,
+    start: number
+  ): Promise<MultiModalResponse> {
+    const textInput = request.content.find(
+      c => c.type === ModalityType.TEXT
+    )?.data
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.config!.apiKey}`
+        Authorization: `Bearer ${this.config!.apiKey}`,
       },
       body: JSON.stringify({
         model: this.currentModel || 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: String(textInput || '') }],
         temperature: request.options?.temperature ?? 0.7,
-        max_tokens: request.options?.maxTokens
-      })
+        max_tokens: request.options?.maxTokens,
+      }),
     })
 
     if (!response.ok) {
@@ -184,19 +190,19 @@ export default abstract class BaseAIProvider {
         imagesGenerated: 0,
         audioDuration: 0,
         videoDuration: 0,
-        cost: 0
+        cost: 0,
       },
       timing: {
         startedAt: start,
         completedAt: Date.now(),
         totalTime: Date.now() - start,
-        processingTime: Date.now() - start
-      }
+        processingTime: Date.now() - start,
+      },
     }
   }
 
   /**
-   * Stream responses from the provider. 
+   * Stream responses from the provider.
    * This method should be overridden by specific provider implementations.
    * The base implementation only supports OpenAI directly.
    */
@@ -206,7 +212,7 @@ export default abstract class BaseAIProvider {
       provider: this.provider,
       modality: ModalityType.TEXT,
       startTime: Date.now(),
-      chunkCount: 0
+      chunkCount: 0,
     }
 
     callbacks.onStart?.(session)
@@ -225,32 +231,43 @@ export default abstract class BaseAIProvider {
     }
 
     // This should not happen if providers properly override stream()
-    const error = new Error(`Provider ${this.provider} must override the stream() method`)
+    const error = new Error(
+      `Provider ${this.provider} must override the stream() method`
+    )
     logger.error(`[${this.provider}] ${error.message}`)
     callbacks.onError?.(error)
     return null
   }
 
-  private streamOpenAI(request: MultiModalRequest, callbacks: StreamCallbacks, session: any) {
+  private streamOpenAI(
+    request: MultiModalRequest,
+    callbacks: StreamCallbacks,
+    session: any
+  ) {
     const controller = new AbortController()
     ;(async () => {
       try {
-        const textInput = request.content.find(c => c.type === ModalityType.TEXT)?.data
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          signal: controller.signal,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.config!.apiKey}`
-          },
-          body: JSON.stringify({
-            model: this.currentModel || 'gpt-3.5-turbo',
-            messages: [{ role: 'user', content: String(textInput || '') }],
-            stream: true,
-            temperature: request.options?.temperature ?? 0.7,
-            max_tokens: request.options?.maxTokens
-          })
-        })
+        const textInput = request.content.find(
+          c => c.type === ModalityType.TEXT
+        )?.data
+        const response = await fetch(
+          'https://api.openai.com/v1/chat/completions',
+          {
+            method: 'POST',
+            signal: controller.signal,
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.config!.apiKey}`,
+            },
+            body: JSON.stringify({
+              model: this.currentModel || 'gpt-3.5-turbo',
+              messages: [{ role: 'user', content: String(textInput || '') }],
+              stream: true,
+              temperature: request.options?.temperature ?? 0.7,
+              max_tokens: request.options?.maxTokens,
+            }),
+          }
+        )
 
         if (!response.ok || !response.body) {
           throw new Error(await response.text())
@@ -302,14 +319,14 @@ export default abstract class BaseAIProvider {
             imagesGenerated: 0,
             audioDuration: 0,
             videoDuration: 0,
-            cost: 0
+            cost: 0,
           },
           timing: {
             startedAt: session.startTime,
             completedAt: Date.now(),
             totalTime: Date.now() - session.startTime,
-            processingTime: Date.now() - session.startTime
-          }
+            processingTime: Date.now() - session.startTime,
+          },
         })
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err))
@@ -332,6 +349,4 @@ export default abstract class BaseAIProvider {
     }
     return false
   }
-
 }
-

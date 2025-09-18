@@ -12,7 +12,7 @@
             class="search-input ui-input ui-size-md"
             placeholder="Search portfolio items..."
           />
-          <button 
+          <button
             v-if="hasActiveFilters"
             class="clear-filters-btn"
             title="Clear all filters"
@@ -27,15 +27,21 @@
       <div class="filter-controls">
         <!-- Quick Filters Dropdown -->
         <div class="filter-dropdown">
-          <button 
+          <button
             class="filter-trigger"
             :class="{ active: hasActiveFilters }"
             @click="showFilterMenu = !showFilterMenu"
           >
             <AppIcon name="AdjustmentsHorizontalIcon" />
             <span class="filter-label">Filters</span>
-            <span v-if="activeFilterCount > 0" class="filter-count">{{ activeFilterCount }}</span>
-            <AppIcon name="ChevronDownIcon" class="chevron" :class="{ rotated: showFilterMenu }" />
+            <span v-if="activeFilterCount > 0" class="filter-count">{{
+              activeFilterCount
+            }}</span>
+            <AppIcon
+              name="ChevronDownIcon"
+              class="chevron"
+              :class="{ rotated: showFilterMenu }"
+            />
           </button>
 
           <!-- Filter Dropdown Menu -->
@@ -46,8 +52,13 @@
                 <button
                   v-for="type in typeOptions"
                   :key="type.value"
-                  :class="['filter-option', { active: filterType === type.value }]"
-                  @click="filterType = filterType === type.value ? '' : type.value"
+                  :class="[
+                    'filter-option',
+                    { active: filterType === type.value },
+                  ]"
+                  @click="
+                    filterType = filterType === type.value ? '' : type.value
+                  "
                 >
                   <AppIcon :name="type.icon" />
                   <span>{{ type.label }}</span>
@@ -61,7 +72,10 @@
                 <button
                   v-for="sort in sortOptions"
                   :key="sort.value"
-                  :class="['filter-option', { active: sortMode === sort.value }]"
+                  :class="[
+                    'filter-option',
+                    { active: sortMode === sort.value },
+                  ]"
                   @click="sortMode = sort.value"
                 >
                   <AppIcon :name="sort.icon" />
@@ -118,25 +132,32 @@
 
     <!-- Skill Filters - Collapsible -->
     <div v-if="topSkills.length > 0" class="skill-filters-section">
-      <button 
+      <button
         class="skill-filters-toggle"
         @click="showSkillFilters = !showSkillFilters"
       >
         <AppIcon name="TagIcon-multiple-outline" />
         <span>Filter by Skills</span>
-        <AppIcon name="ChevronDownIcon" class="chevron" :class="{ rotated: showSkillFilters }" />
+        <AppIcon
+          name="ChevronDownIcon"
+          class="chevron"
+          :class="{ rotated: showSkillFilters }"
+        />
       </button>
-      
+
       <div v-show="showSkillFilters" class="skill-filters-grid">
         <button
           v-for="{ skill } in topSkills.slice(0, 12)"
           :key="skill"
-          :class="['skill-filter-btn', { active: skillFilters.includes(skill) }]"
+          :class="[
+            'skill-filter-btn',
+            { active: skillFilters.includes(skill) },
+          ]"
           @click="toggleSkillFilter(skill)"
         >
           {{ skill }}
         </button>
-        <button 
+        <button
           v-if="topSkills.length > 12"
           class="skill-filter-btn show-more"
           @click="showAllSkills = !showAllSkills"
@@ -149,7 +170,11 @@
 </template>
 
 <script setup>
-import { AdjustmentsHorizontalIcon, ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import {
+  AdjustmentsHorizontalIcon,
+  ChevronDownIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/vue/24/outline'
 import { StarIcon } from '@heroicons/vue/24/solid'
 
 import { computed, ref, defineEmits, defineProps } from 'vue'
@@ -158,33 +183,33 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 const _props = defineProps({
   searchQuery: {
     type: String,
-    default: ''
+    default: '',
   },
   filterType: {
     type: String,
-    default: ''
+    default: '',
   },
   sortMode: {
     type: String,
-    default: 'recent'
+    default: 'recent',
   },
   layout: {
     type: String,
-    default: 'grid'
+    default: 'grid',
   },
   showFeaturedOnly: {
     type: Boolean,
-    default: false
+    default: false,
   },
   skillFilters: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   topSkills: {
     type: Array,
-    default: () => []
-  }
-});
+    default: () => [],
+  },
+})
 
 const emit = defineEmits([
   'update:searchQuery',
@@ -192,8 +217,8 @@ const emit = defineEmits([
   'update:sortMode',
   'update:layout',
   'update:showFeaturedOnly',
-  'update:skillFilters'
-]);
+  'update:skillFilters',
+])
 
 // Local reactive state
 const showFilterMenu = ref(false)
@@ -207,59 +232,80 @@ const typeOptions = [
   { value: 'tournament', label: 'Tournaments', icon: 'mdi-tournament' },
   { value: 'leadership', label: 'Leadership', icon: 'UserIcon-group' },
   { value: 'content', label: 'Content', icon: 'VideoCameraIcon' },
-  { value: 'project', label: 'Projects', icon: 'RocketLaunchIcon-launch' }
+  { value: 'project', label: 'Projects', icon: 'RocketLaunchIcon-launch' },
 ]
 
 const sortOptions = [
   { value: 'recent', label: 'Most Recent', icon: 'ClockIcon-outline' },
-  { value: 'alphabetical', label: 'A-Z', icon: 'BarsArrowUpIcon-alphabetical-ascending' },
+  {
+    value: 'alphabetical',
+    label: 'A-Z',
+    icon: 'BarsArrowUpIcon-alphabetical-ascending',
+  },
   { value: 'type', label: 'By Type', icon: 'mdi-shape' },
-  { value: 'featured', label: 'Featured First', icon: 'StarIcon' }
+  { value: 'featured', label: 'Featured First', icon: 'StarIcon' },
 ]
 
 // Layout options for the button group
 const layoutOptions = [
-  { value: 'grid', label: 'Grid', icon: 'Squares2X2Icon', title: 'Grid Layout' },
-  { value: 'list', label: 'List', icon: 'mdi-format-list-bulleted', title: 'List Layout' },
-  { value: 'timeline', label: 'Timeline', icon: 'mdi-timeline', title: 'Timeline Layout' }
-];
+  {
+    value: 'grid',
+    label: 'Grid',
+    icon: 'Squares2X2Icon',
+    title: 'Grid Layout',
+  },
+  {
+    value: 'list',
+    label: 'List',
+    icon: 'mdi-format-list-bulleted',
+    title: 'List Layout',
+  },
+  {
+    value: 'timeline',
+    label: 'Timeline',
+    icon: 'mdi-timeline',
+    title: 'Timeline Layout',
+  },
+]
 
 const searchQuery = computed({
   get: () => props.searchQuery,
-  set: (value) => emit('update:searchQuery', value)
-});
+  set: value => emit('update:searchQuery', value),
+})
 
 const filterType = computed({
   get: () => props.filterType,
-  set: (value) => emit('update:filterType', value)
-});
+  set: value => emit('update:filterType', value),
+})
 
 const sortMode = computed({
   get: () => props.sortMode,
-  set: (value) => emit('update:sortMode', value)
-});
+  set: value => emit('update:sortMode', value),
+})
 
 const layout = computed({
   get: () => props.layout,
-  set: (value) => emit('update:layout', value)
-});
+  set: value => emit('update:layout', value),
+})
 
 const showFeaturedOnly = computed({
   get: () => props.showFeaturedOnly,
-  set: (value) => emit('update:showFeaturedOnly', value)
-});
+  set: value => emit('update:showFeaturedOnly', value),
+})
 
 const skillFilters = computed({
   get: () => props.skillFilters,
-  set: (value) => emit('update:skillFilters', value)
-});
+  set: value => emit('update:skillFilters', value),
+})
 
 // Computed properties for filter state
 const hasActiveFilters = computed(() => {
-  return !!searchQuery.value || 
-         !!filterType.value || 
-         showFeaturedOnly.value || 
-         skillFilters.value.length > 0
+  return (
+    !!searchQuery.value ||
+    !!filterType.value ||
+    showFeaturedOnly.value ||
+    skillFilters.value.length > 0
+  )
 })
 
 const activeFilterCount = computed(() => {
@@ -272,16 +318,16 @@ const activeFilterCount = computed(() => {
 
 // Methods
 function toggleSkillFilter(skill) {
-  const newFilters = [...skillFilters.value];
-  const index = newFilters.indexOf(skill);
+  const newFilters = [...skillFilters.value]
+  const index = newFilters.indexOf(skill)
 
   if (index > -1) {
-    newFilters.splice(index, 1);
+    newFilters.splice(index, 1)
   } else {
-    newFilters.push(skill);
+    newFilters.push(skill)
   }
 
-  emit('update:skillFilters', newFilters);
+  emit('update:skillFilters', newFilters)
 }
 
 function removeSkillFilter(skill) {
@@ -295,7 +341,7 @@ function clearAllFilters() {
   emit('update:showFeaturedOnly', false)
   emit('update:skillFilters', [])
   emit('update:sortMode', 'recent')
-  
+
   // Close dropdown
   showFilterMenu.value = false
 }
@@ -657,25 +703,25 @@ function clearAllFilters() {
     align-items: stretch;
     gap: 0.75rem;
   }
-  
+
   .search-section {
     min-width: unset;
   }
-  
+
   .filter-controls {
     justify-content: space-between;
   }
-  
+
   .filter-menu {
     left: 0;
     right: 0;
     min-width: unset;
   }
-  
+
   .layout-toggle {
     flex: 1;
   }
-  
+
   .layout-btn {
     flex: 1;
     justify-content: center;

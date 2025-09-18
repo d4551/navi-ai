@@ -7,22 +7,29 @@
         <div class="card gaming-card elevated h-100">
           <div class="card-body section-body text-center">
             <div class="flex items-center justify-center mb-3">
-              <div class="level-avatar-compact" :class="`level-${userLevel.level}`">
+              <div
+                class="level-avatar-compact"
+                :class="`level-${userLevel.level}`"
+              >
                 <span class="level-number">{{ userLevel.level }}</span>
               </div>
               <div class="ml-3 text-start">
                 <h6 class="mb-1 font-bold text-gradient">
                   Level {{ userLevel.level }} {{ userLevel.title }}
                 </h6>
-                <small class="text-secondary">{{ userLevel.currentXP }} XP</small>
+                <small class="text-secondary"
+                  >{{ userLevel.currentXP }} XP</small
+                >
               </div>
             </div>
-            
+
             <!-- XP Progress Bar - Compact -->
             <div class="xp-progress-container">
               <div class="flex justify-between items-center mb-1">
                 <small class="text-secondary">Next Level</small>
-                <small class="text-primary-600 font-bold">{{ userLevel.xpForNext }} XP needed</small>
+                <small class="text-primary-600 font-bold"
+                  >{{ userLevel.xpForNext }} XP needed</small
+                >
               </div>
               <div class="progress xp-progress-compact">
                 <div
@@ -48,13 +55,23 @@
             </h6>
             <div class="stats-grid split-layout">
               <div class="stat-item">
-                <div class="stat-value">{{ Math.round((earnedAchievements.length / totalAchievements) * 100) }}%</div>
+                <div class="stat-value">
+                  {{
+                    Math.round(
+                      (earnedAchievements.length / totalAchievements) * 100
+                    )
+                  }}%
+                </div>
                 <div class="stat-label">Achievement Progress</div>
               </div>
               <div class="stat-item">
                 <div class="stat-value">
                   {{ streak.current }}
-                  <AppIcon v-if="streak.current > 0" name="FireIcon" class="text-warning-600 ml-1" />
+                  <AppIcon
+                    v-if="streak.current > 0"
+                    name="FireIcon"
+                    class="text-warning-600 ml-1"
+                  />
                 </div>
                 <div class="stat-label">Day Streak</div>
               </div>
@@ -67,22 +84,37 @@
     <!-- Daily Challenges -->
     <div class="daily-challenges mb-4">
       <div class="card gaming-card elevated glass-surface">
-        <div class="card-header section-header bg-gradient text-inverse border-0">
+        <div
+          class="card-header section-header bg-gradient text-inverse border-0"
+        >
           <div class="flex justify-between items-center">
             <h6 id="daily-challenges-title" class="mb-0">
-              <AppIcon name="CalendarIcon-check-outline" class="mr-2" aria-hidden="true" />
+              <AppIcon
+                name="CalendarIcon-check-outline"
+                class="mr-2"
+                aria-hidden="true"
+              />
               Daily Challenges
             </h6>
             <div class="flex gap-glass-sm items-center">
-              <span class="badge badge-gaming">{{ completedChallenges }}/{{ dailyChallenges.length }} completed</span>
+              <span class="badge badge-gaming"
+                >{{ completedChallenges }}/{{
+                  dailyChallenges.length
+                }}
+                completed</span
+              >
             </div>
           </div>
         </div>
-        <div class="card-body section-body" role="region" aria-labelledby="daily-challenges-title">
+        <div
+          class="card-body section-body"
+          role="region"
+          aria-labelledby="daily-challenges-title"
+        >
           <!-- Challenges Grid - Compact -->
           <div class="flex flex-wrap g-2">
-            <div 
-              v-for="challenge in dailyChallenges.slice(0, 4)" 
+            <div
+              v-for="challenge in dailyChallenges.slice(0, 4)"
               :key="challenge.id"
               class="flex-1-md-6"
             >
@@ -101,14 +133,22 @@
                           : 'var(--color-primary)',
                       }"
                     />
-                    <div v-if="challenge.completed" class="completion-checkmark-compact">
+                    <div
+                      v-if="challenge.completed"
+                      class="completion-checkmark-compact"
+                    >
                       <AppIcon name="CheckIcon" />
                     </div>
                   </div>
                   <div class="flex-grow-1">
-                    <div class="challenge-name-compact font-semibold">{{ challenge.name }}</div>
+                    <div class="challenge-name-compact font-semibold">
+                      {{ challenge.name }}
+                    </div>
                     <div class="challenge-reward-compact">
-                      <AppIcon name="BoltIcon" class="mr-1" />{{ challenge.xp }} XP
+                      <AppIcon name="BoltIcon" class="mr-1" />{{
+                        challenge.xp
+                      }}
+                      XP
                     </div>
                   </div>
                   <button
@@ -129,11 +169,18 @@
             class="ai-suggestion-compact mt-3 p-glass-md glass-elevated"
           >
             <div class="flex items-center">
-              <AppIcon name="StarIcon-four-points" class="text-primary-600 mr-2" />
+              <AppIcon
+                name="StarIcon-four-points"
+                class="text-primary-600 mr-2"
+              />
               <div class="flex-grow-1">
                 <strong>AI Recommendation</strong>
-                <p class="mb-2 small text-secondary">{{ aiChallengeSuggestion.description }}</p>
-                <small class="text-secondary">Confidence Level: 87% match</small>
+                <p class="mb-2 small text-secondary">
+                  {{ aiChallengeSuggestion.description }}
+                </p>
+                <small class="text-secondary"
+                  >Confidence Level: 87% match</small
+                >
               </div>
             </div>
           </div>
@@ -143,12 +190,21 @@
             <div class="progress gaming-progress" style="height: 8px">
               <div
                 class="progress-bar bg-gradient"
-                :style="{ width: (completedChallenges / dailyChallenges.length) * 100 + '%' }"
+                :style="{
+                  width:
+                    (completedChallenges / dailyChallenges.length) * 100 + '%',
+                }"
               />
             </div>
             <div class="flex justify-between mt-1">
               <small class="text-secondary">Today's Progress</small>
-              <small class="text-primary-600">{{ Math.round((completedChallenges / dailyChallenges.length) * 100) }}% completed</small>
+              <small class="text-primary-600"
+                >{{
+                  Math.round(
+                    (completedChallenges / dailyChallenges.length) * 100
+                  )
+                }}% completed</small
+              >
             </div>
           </div>
         </div>
@@ -160,7 +216,9 @@
       <!-- Quick Achievement Overview -->
       <div class="flex-1-lg-8">
         <div class="card gaming-card elevated glass-surface h-100">
-          <div class="card-header section-header bg-gradient text-inverse border-0">
+          <div
+            class="card-header section-header bg-gradient text-inverse border-0"
+          >
             <h6 class="mb-0">
               <AppIcon name="TrophyIcon" class="mr-2" />
               Recent Achievements & Progress
@@ -170,39 +228,56 @@
             <!-- Achievement Progress -->
             <div class="flex justify-between items-center mb-3">
               <span>Achievement Progress</span>
-              <span class="badge badge-gaming">{{ earnedAchievements.length }}/{{ totalAchievements }}</span>
+              <span class="badge badge-gaming"
+                >{{ earnedAchievements.length }}/{{ totalAchievements }}</span
+              >
             </div>
             <div class="progress gaming-progress mb-3" style="height: 8px">
               <div
                 class="progress-bar bg-gradient"
-                :style="{ width: (earnedAchievements.length / totalAchievements) * 100 + '%' }"
+                :style="{
+                  width:
+                    (earnedAchievements.length / totalAchievements) * 100 + '%',
+                }"
               />
             </div>
-            
+
             <!-- Latest Achievements -->
             <div class="flex flex-wrap g-2">
-              <div 
+              <div
                 v-for="achievement in allAchievements.slice(0, 3)"
                 :key="achievement.id"
                 class="flex-1-md-4"
               >
-                <div 
+                <div
                   class="achievement-item-compact p-glass-sm glass-elevated"
-                  :class="{ 'earned': isAchievementEarned(achievement.id) }"
+                  :class="{ earned: isAchievementEarned(achievement.id) }"
                 >
                   <div class="text-center">
                     <div class="achievement-icon-compact mb-1">
-                      <i :class="achievement.icon" :style="{ color: getAchievementColor(achievement) }" />
+                      <i
+                        :class="achievement.icon"
+                        :style="{ color: getAchievementColor(achievement) }"
+                      />
                     </div>
-                    <div class="achievement-name-compact small font-semibold">{{ achievement.name }}</div>
-                    <div class="achievement-reward-compact small text-secondary">+{{ achievement.xp }} XP</div>
+                    <div class="achievement-name-compact small font-semibold">
+                      {{ achievement.name }}
+                    </div>
+                    <div
+                      class="achievement-reward-compact small text-secondary"
+                    >
+                      +{{ achievement.xp }} XP
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <div class="text-center mt-3">
-              <button class="btn btn-sm btn-outline-primary ui-btn ui-size-md" @click="showAllAchievements = !showAllAchievements">
+              <button
+                class="btn btn-sm btn-outline-primary ui-btn ui-size-md"
+                @click="showAllAchievements = !showAllAchievements"
+              >
                 View All Achievements
               </button>
             </div>
@@ -213,7 +288,9 @@
       <!-- Activity Summary -->
       <div class="flex-1-lg-4">
         <div class="card gaming-card elevated glass-surface h-100">
-          <div class="card-header section-header bg-gradient text-inverse border-0">
+          <div
+            class="card-header section-header bg-gradient text-inverse border-0"
+          >
             <h6 class="mb-0">
               <AppIcon name="SignalIcon" class="mr-2" />
               Activity Summary
@@ -233,14 +310,24 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- AI Insight -->
-            <div v-if="achievementInsights" class="ai-insight-compact p-glass-sm glass-elevated">
+            <div
+              v-if="achievementInsights"
+              class="ai-insight-compact p-glass-sm glass-elevated"
+            >
               <div class="flex items-start">
-                <AppIcon name="LightBulbIcon" class="text-warning-600 mr-2 mt-1" />
+                <AppIcon
+                  name="LightBulbIcon"
+                  class="text-warning-600 mr-2 mt-1"
+                />
                 <div>
-                  <strong class="small">Personalized for your career path</strong>
-                  <p class="small text-secondary mb-1">{{ achievementInsights.suggestion }}</p>
+                  <strong class="small"
+                    >Personalized for your career path</strong
+                  >
+                  <p class="small text-secondary mb-1">
+                    {{ achievementInsights.suggestion }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -248,7 +335,6 @@
         </div>
       </div>
     </div>
-
 
     <!-- Level Up Modal -->
     <div
@@ -284,7 +370,10 @@
                 </ul>
               </div>
 
-              <button class="btn btn-primary mt-3 v-btn ui-btn ui-size-md" @click="closeLevelUpModal">
+              <button
+                class="btn btn-primary mt-3 v-btn ui-btn ui-size-md"
+                @click="closeLevelUpModal"
+              >
                 Awesome!
               </button>
             </div>
@@ -318,19 +407,23 @@
               <div class="flex flex-wrap">
                 <div class="flex-1-6">
                   <strong>Reward:</strong><br />
-                  <span class="text-primary-600">+{{ selectedAchievement.xp }} XP</span>
+                  <span class="text-primary-600"
+                    >+{{ selectedAchievement.xp }} XP</span
+                  >
                 </div>
                 <div class="flex-1-6">
                   <strong>Status:</strong><br />
                   <span
-                    :class="isAchievementEarned(selectedAchievement.id)
-                      ? 'text-success-600'
-                      : 'text-warning-600'"
+                    :class="
+                      isAchievementEarned(selectedAchievement.id)
+                        ? 'text-success-600'
+                        : 'text-warning-600'
+                    "
                   >
                     {{
                       isAchievementEarned(selectedAchievement.id)
-                        ? "Earned"
-                        : "In Progress"
+                        ? 'Earned'
+                        : 'In Progress'
                     }}
                   </span>
                 </div>
@@ -374,73 +467,73 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useToast } from "@/composables/useToast";
-import { useAppStore } from "@/stores/app";
-import AppIcon from '@/components/ui/AppIcon.vue';
-import GamificationService, { ACHIEVEMENTS } from "@/utils/gamification";
-import { getBestAIClient } from "@/utils/aiClient";
+import { ref, computed, watch, onMounted } from 'vue'
+import { useToast } from '@/composables/useToast'
+import { useAppStore } from '@/stores/app'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import GamificationService, { ACHIEVEMENTS } from '@/utils/gamification'
+import { getBestAIClient } from '@/utils/aiClient'
 
 export default {
-  name: "GamificationDashboard",
+  name: 'GamificationDashboard',
   components: {
-    AppIcon
+    AppIcon,
   },
-  emits: ["start-challenge", "achievement-earned", "level-up", "navigate"],
+  emits: ['start-challenge', 'achievement-earned', 'level-up', 'navigate'],
   setup(_props, { emit }) {
-    const store = useAppStore();
-    const gamificationService = new GamificationService(store);
-    const { success: toastSuccess } = useToast();
+    const store = useAppStore()
+    const gamificationService = new GamificationService(store)
+    const { success: toastSuccess } = useToast()
 
     // State
-    const showAllAchievements = ref(false);
-    const showAllActivity = ref(false);
-    const showLevelUpModal = ref(false);
-    const selectedAchievement = ref(null);
-    const recentXPGains = ref([]);
-    const newLevel = ref(null);
-    const newFeatures = ref([]);
+    const showAllAchievements = ref(false)
+    const showAllActivity = ref(false)
+    const showLevelUpModal = ref(false)
+    const selectedAchievement = ref(null)
+    const recentXPGains = ref([])
+    const newLevel = ref(null)
+    const newFeatures = ref([])
 
     // AI Integration - Enhanced with deeper analysis
-    const aiChallengeSuggestion = ref(null);
-    const dynamicChallenges = ref([]);
-    const aiInsights = ref(null);
-    const achievementInsights = ref(null);
-    const activityInsights = ref(null);
-  let aiService;
-  try {
-    aiService = getBestAIClient();
-  } catch (error) {
-    console.warn('AI service not available:', error);
-    aiService = null;
-  }
+    const aiChallengeSuggestion = ref(null)
+    const dynamicChallenges = ref([])
+    const aiInsights = ref(null)
+    const achievementInsights = ref(null)
+    const activityInsights = ref(null)
+    let aiService
+    try {
+      aiService = getBestAIClient()
+    } catch (error) {
+      console.warn('AI service not available:', error)
+      aiService = null
+    }
 
     const generateAISuggestion = async () => {
       try {
         if (!store.settings.geminiApiKey) {
           // Provide basic suggestions without AI
           const incompleteChallenge = dailyChallenges.value.find(
-            (c) => !c.completed,
-          );
+            c => !c.completed
+          )
 
           if (incompleteChallenge) {
             aiChallengeSuggestion.value = {
               description: `Based on your current progress, "${incompleteChallenge.name}" could be your next step to advance your career.`,
               actions: [
                 {
-                  id: "start_challenge",
-                  text: "Start Challenge",
-                  icon: "RocketLaunchIcon-launch",
+                  id: 'start_challenge',
+                  text: 'Start Challenge',
+                  icon: 'RocketLaunchIcon-launch',
                   label: `Start the ${incompleteChallenge.name} challenge`,
                   challengeId: incompleteChallenge.id,
                 },
               ],
-            };
+            }
           }
-          return;
+          return
         }
 
-        const userStats = gamificationService.getUserStats();
+        const userStats = gamificationService.getUserStats()
         const userProfile = {
           level: userLevel.value.level,
           xp: store.user.xp || 0,
@@ -450,77 +543,77 @@ export default {
           skills: store.user.skills || [],
           gamingExperience: store.user.gamingExperience || {},
           recentActivity: recentActivity.value.slice(0, 3),
-        };
+        }
 
         // Generate AI-powered challenge recommendation
         if (!aiService) {
-          throw new Error('AI service not available');
+          throw new Error('AI service not available')
         }
-        
+
         const result = await aiService.getContextualSuggestions(
-          "daily-challenges",
+          'daily-challenges',
           {
             challenges: dailyChallenges.value,
             userProgress: userProfile,
             streak: streak.value,
           },
-          userProfile,
-        );
+          userProfile
+        )
 
         if (result.suggestions && result.suggestions.length > 0) {
-          const topSuggestion = result.suggestions[0];
+          const topSuggestion = result.suggestions[0]
 
           aiChallengeSuggestion.value = {
             description: topSuggestion.description,
             actions: [
               {
-                id: "ai_recommended",
+                id: 'ai_recommended',
                 text: topSuggestion.action,
-                icon: "StarIcons",
+                icon: 'StarIcons',
                 label: `AI Recommended: ${topSuggestion.title}`,
                 priority: topSuggestion.priority,
               },
             ],
-          };
+          }
 
           // Store insights for other components
           aiInsights.value = {
             insights: result.insights || [],
             nextSteps: result.nextSteps || [],
             timestamp: Date.now(),
-          };
+          }
         }
       } catch (error) {
-        console.warn("AI suggestion generation failed:", error);
+        console.warn('AI suggestion generation failed:', error)
         // Fallback to basic suggestion
         const incompleteChallenge = dailyChallenges.value.find(
-          (c) => !c.completed,
-        );
+          c => !c.completed
+        )
         if (incompleteChallenge) {
           aiChallengeSuggestion.value = {
             description: `Continue your progress with "${incompleteChallenge.name}" to advance your career development.`,
             actions: [
               {
-                id: "start_challenge",
-                text: "Continue Progress",
-                icon: "ArrowRightIcon-circle",
+                id: 'start_challenge',
+                text: 'Continue Progress',
+                icon: 'ArrowRightIcon-circle',
                 label: `Continue with ${incompleteChallenge.name}`,
                 challengeId: incompleteChallenge.id,
               },
             ],
-          };
+          }
         }
       }
-    };
+    }
 
     // Generate dynamic AI challenges based on user progress
     const generateDynamicChallenges = async () => {
       try {
         if (!store.settings.geminiApiKey) {
-          return;
+          return
         }
 
-        const userStats = gamificationService.getUserStats();
+        const userStats = gamificationService.getUserStats()
         const context = {
           profileCompleteness: userStats.profileComplete || 0,
           skillsCount: (store.user.skills || []).length,
@@ -528,94 +621,95 @@ export default {
           currentLevel: userLevel.value.level,
           completedChallengesCount: completedChallenges.value,
           streakDays: streak.value.current,
-        };
+        }
 
         if (!aiService) {
-          return;
+          return
         }
-        
+
         await aiService.generateSmartContent(
-          "dynamic_challenges",
-          "personalized daily challenges",
-          context,
-        );
+          'dynamic_challenges',
+          'personalized daily challenges',
+          context
+        )
 
         // Note: Actual result handling would need to be implemented based on aiService response
         // For now, providing fallback challenges
         dynamicChallenges.value = [
           {
             id: `ai_${Date.now()}_0`,
-            name: "Update LinkedIn Profile",
-            description: "Add gaming achievements and skills to your LinkedIn profile",
+            name: 'Update LinkedIn Profile',
+            description:
+              'Add gaming achievements and skills to your LinkedIn profile',
             xp: 20,
-            icon: "bi bi-linkedin",
-            category: "profile",
+            icon: 'bi bi-linkedin',
+            category: 'profile',
             completed: false,
             dynamic: true,
-          }
-        ];
+          },
+        ]
       } catch (error) {
-        console.warn("Dynamic challenge generation failed:", error);
+        console.warn('Dynamic challenge generation failed:', error)
       }
-    };
+    }
 
     // Generate AI-powered achievement insights
     const generateAchievementInsights = async () => {
       try {
         if (!store.settings.geminiApiKey) {
-          return;
+          return
         }
 
-        const _userStats = gamificationService.getUserStats();
+        const _userStats = gamificationService.getUserStats()
         const nearestAchievements = allAchievements.value
-          .filter((achievement) => !isAchievementEarned(achievement.id))
-          .map((achievement) => {
+          .filter(achievement => !isAchievementEarned(achievement.id))
+          .map(achievement => {
             const progress = Object.entries(achievement.requirements).map(
               ([key, value]) => {
-                const current = getUserStat(key);
+                const current = getUserStat(key)
                 return {
                   key,
                   current,
                   required: value,
                   percentage: Math.min((current / value) * 100, 100),
-                };
-              },
-            );
+                }
+              }
+            )
             const avgProgress =
               progress.reduce((sum, p) => sum + p.percentage, 0) /
-              progress.length;
-            return { ...achievement, progress, avgProgress };
+              progress.length
+            return { ...achievement, progress, avgProgress }
           })
           .sort((a, b) => b.avgProgress - a.avgProgress)
-          .slice(0, 5);
+          .slice(0, 5)
 
         const context = {
           earnedCount: earnedAchievements.value.length,
           totalCount: totalAchievements.value,
           completionRate: Math.round(
-            (earnedAchievements.value.length / totalAchievements.value) * 100,
+            (earnedAchievements.value.length / totalAchievements.value) * 100
           ),
-          nearestAchievements: nearestAchievements.map((a) => ({
+          nearestAchievements: nearestAchievements.map(a => ({
             name: a.name,
             progress: Math.round(a.avgProgress),
             requirements: a.requirements,
           })),
           userLevel: userLevel.value.level,
           recentActivity: recentActivity.value.length,
-        };
+        }
 
         if (!aiService) {
-          return;
+          return
         }
-        
+
         const result = await aiService.getContextualSuggestions(
-          "achievements",
+          'achievements',
           context,
-          { level: userLevel.value.level, xp: store.user.xp },
-        );
+          { level: userLevel.value.level, xp: store.user.xp }
+        )
 
         if (result.suggestions && result.suggestions.length > 0) {
-          const topSuggestion = result.suggestions[0];
+          const topSuggestion = result.suggestions[0]
 
           achievementInsights.value = {
             suggestion: topSuggestion.description,
@@ -623,121 +717,135 @@ export default {
             strategy: topSuggestion.action,
             priority: topSuggestion.priority,
             timestamp: Date.now(),
-          };
+          }
         }
       } catch (error) {
-        console.warn("Achievement insights generation failed:", error);
+        console.warn('Achievement insights generation failed:', error)
       }
-    };
+    }
 
     // Generate AI-powered activity insights
     const generateActivityInsights = async () => {
       try {
         if (!store.settings.geminiApiKey || recentActivity.value.length === 0) {
-          return;
+          return
         }
 
         const activityData = recentActivity.value
           .slice(0, 10)
-          .map((activity) => ({
-            type: activity.type || "general",
+          .map(activity => ({
+            type: activity.type || 'general',
             description: activity.description,
             xp: activity.xp || 0,
             timestamp: activity.timestamp,
-            category: activity.icon?.includes("trophy")
-              ? "achievement"
-              : activity.icon?.includes("star")
-                ? "xp-gain"
-                : activity.icon?.includes("check")
-                  ? "completion"
-                  : "other",
-          }));
+            category: activity.icon?.includes('trophy')
+              ? 'achievement'
+              : activity.icon?.includes('star')
+                ? 'xp-gain'
+                : activity.icon?.includes('check')
+                  ? 'completion'
+                  : 'other',
+          }))
 
         const context = {
           totalActivities: recentActivity.value.length,
           totalXPGained: activityData.reduce((sum, a) => sum + (a.xp || 0), 0),
-          activityTypes: [...new Set(activityData.map((a) => a.category))],
+          activityTypes: [...new Set(activityData.map(a => a.category))],
           recentTrends: activityData.slice(0, 5),
           userLevel: userLevel.value.level,
           streak: streak.value.current,
           completionRate: Math.round(
-            (completedChallenges.value / dailyChallenges.value.length) * 100,
+            (completedChallenges.value / dailyChallenges.value.length) * 100
           ),
-        };
+        }
 
         if (!aiService) {
-          return;
+          return
         }
-        
+
         const result = await aiService.getContextualSuggestions(
-          "activity-analysis",
+          'activity-analysis',
           context,
-          { level: userLevel.value.level, activities: activityData },
-        );
+          { level: userLevel.value.level, activities: activityData }
+        )
 
         if (result.insights && result.insights.length > 0) {
           activityInsights.value = {
             summary:
               result.insights[0] ||
-              "Your recent activity shows consistent engagement with career development.",
+              'Your recent activity shows consistent engagement with career development.',
             trends: result.insights.slice(1) || [],
-            nextActions: (result.suggestions || []).map((s) => ({
-              id: s.type || "general",
+            nextActions: (result.suggestions || []).map(s => ({
+              id: s.type || 'general',
               text: s.title || s.action,
               icon:
-                s.type === "add"
-                  ? "mdi PlusIcon-circle"
-                  : s.type === "improve"
-                    ? "mdi ArrowUpIcon-circle"
-                    : s.type === "optimize"
-                      ? "mdi mdi-cog-outline"
-                      : "mdi BoltIcon",
+                s.type === 'add'
+                  ? 'mdi PlusIcon-circle'
+                  : s.type === 'improve'
+                    ? 'mdi ArrowUpIcon-circle'
+                    : s.type === 'optimize'
+                      ? 'mdi mdi-cog-outline'
+                      : 'mdi BoltIcon',
               action: s.action,
               priority: s.priority,
             })),
             timestamp: Date.now(),
-          };
+          }
         }
       } catch (error) {
-        console.warn("Activity insights generation failed:", error);
+        console.warn('Activity insights generation failed:', error)
       }
-    };
+    }
 
     // Handle activity insights actions
-    const handleActivityAction = async (action) => {
+    const handleActivityAction = async action => {
       try {
         switch (action.id) {
-          case "add":
-            toastSuccess(`<AppIcon name="RocketLaunchIcon" /> Suggestion: ${action.action}`, { duration: 4000 });
-            break;
-          case "improve":
-            toastSuccess(`<AppIcon name="SparklesIcon" class="sparkles" /> Improvement: ${action.action}`, {
-              duration: 4000,
-            });
-            break;
-          case "optimize":
-            toastSuccess(`<AppIcon name="CogIcon" /> Optimization: ${action.action}`, {
-              duration: 4000,
-            });
-            break;
+          case 'add':
+            toastSuccess(
+              `<AppIcon name="RocketLaunchIcon" /> Suggestion: ${action.action}`,
+              { duration: 4000 }
+            )
+            break
+          case 'improve':
+            toastSuccess(
+              `<AppIcon name="SparklesIcon" class="sparkles" /> Improvement: ${action.action}`,
+              {
+                duration: 4000,
+              }
+            )
+            break
+          case 'optimize':
+            toastSuccess(
+              `<AppIcon name="CogIcon" /> Optimization: ${action.action}`,
+              {
+                duration: 4000,
+              }
+            )
+            break
           default:
-            toastSuccess(`<AppIcon name="LightBulbIcon" /> ${action.text}: ${action.action}`, {
-              duration: 4000,
-            });
+            toastSuccess(
+              `<AppIcon name="LightBulbIcon" /> ${action.text}: ${action.action}`,
+              {
+                duration: 4000,
+              }
+            )
         }
       } catch (error) {
-        console.warn("Activity action handling failed:", error);
-        toastSuccess('Action noted! Keep up the great work.', { duration: 3000 });
+        console.warn('Activity action handling failed:', error)
+        toastSuccess('Action noted! Keep up the great work.', {
+          duration: 3000,
+        })
       }
-    };
+    }
 
     // Computed properties
     const userLevel = computed(() => {
       try {
-        const xp = store?.user?.xp || 0;
-        return gamificationService.getLevelInfo(xp);
+        const xp = store?.user?.xp || 0
+        return gamificationService.getLevelInfo(xp)
       } catch (error) {
-        console.warn('Failed to get user level info:', error);
+        console.warn('Failed to get user level info:', error)
         return {
           level: 1,
           title: 'Rookie',
@@ -746,264 +854,269 @@ export default {
           xpInLevel: 0,
           xpRequiredForLevel: 100,
           progress: 0,
-        };
+        }
       }
-    });
+    })
 
     const dailyChallenges = computed(() => {
       try {
-        const baseChallenges = gamificationService.getTodaysChallenges() || [];
+        const baseChallenges = gamificationService.getTodaysChallenges() || []
         // Merge base challenges with AI-generated dynamic challenges
-        const dynamicChalls = Array.isArray(dynamicChallenges.value) ? dynamicChallenges.value : [];
-        return [...baseChallenges, ...dynamicChalls];
+        const dynamicChalls = Array.isArray(dynamicChallenges.value)
+          ? dynamicChallenges.value
+          : []
+        return [...baseChallenges, ...dynamicChalls]
       } catch (error) {
-        console.warn('Failed to get daily challenges:', error);
-        return [];
+        console.warn('Failed to get daily challenges:', error)
+        return []
       }
-    });
+    })
 
     // Toast on newly completed challenges
-    const knownCompleted = ref(new Set());
+    const knownCompleted = ref(new Set())
     watch(
       dailyChallenges,
-      (items) => {
-        const current = new Set(
-          items.filter((c) => c.completed).map((c) => c.id),
-        );
+      items => {
+        const current = new Set(items.filter(c => c.completed).map(c => c.id))
         if (knownCompleted.value.size === 0) {
           // Initialize without toasting existing completed
-          knownCompleted.value = current;
-          return;
+          knownCompleted.value = current
+          return
         }
-        items.forEach((c) => {
+        items.forEach(c => {
           if (c.completed && !knownCompleted.value.has(c.id)) {
             toastSuccess(`Challenge completed: ${c.name} (+${c.xp} XP)`, {
               duration: 4000,
-            });
+            })
           }
-        });
-        knownCompleted.value = current;
+        })
+        knownCompleted.value = current
       },
-      { deep: true, immediate: true },
-    );
+      { deep: true, immediate: true }
+    )
 
     const completedChallenges = computed(() => {
-      return dailyChallenges.value.filter((c) => c.completed).length;
-    });
+      return dailyChallenges.value.filter(c => c.completed).length
+    })
 
     const streak = computed(() => {
-      return gamificationService.getStreak();
-    });
+      return gamificationService.getStreak()
+    })
 
     const allAchievements = computed(() => {
-      return Object.values(ACHIEVEMENTS);
-    });
+      return Object.values(ACHIEVEMENTS)
+    })
 
     const earnedAchievements = computed(() => {
       try {
-        return Array.isArray(store?.user?.achievements) ? store.user.achievements : [];
+        return Array.isArray(store?.user?.achievements)
+          ? store.user.achievements
+          : []
       } catch (error) {
-        console.warn('Failed to get earned achievements:', error);
-        return [];
+        console.warn('Failed to get earned achievements:', error)
+        return []
       }
-    });
+    })
 
     const totalAchievements = computed(() => {
-      return allAchievements.value.length;
-    });
+      return allAchievements.value.length
+    })
 
     const displayedAchievements = computed(() => {
       if (showAllAchievements.value) {
-        return allAchievements.value;
+        return allAchievements.value
       }
-      return allAchievements.value.slice(0, 6);
-    });
+      return allAchievements.value.slice(0, 6)
+    })
 
     const recentActivity = computed(() => {
-      const activities = [];
+      const activities = []
 
       // Add recent achievements
       if (earnedAchievements.value.length > 0) {
-        earnedAchievements.value.slice(-3).forEach((achievementId) => {
+        earnedAchievements.value.slice(-3).forEach(achievementId => {
           const achievement = allAchievements.value.find(
-            (a) => a.id === achievementId,
-          );
+            a => a.id === achievementId
+          )
           if (achievement) {
             activities.push({
               id: `achievement-${achievementId}`,
-              icon: "TrophyIcon",
-              color: "var(--color-warning)",
+              icon: 'TrophyIcon',
+              color: 'var(--color-warning)',
               description: `Earned "${achievement.name}" achievement`,
               xp: achievement.xp,
               timestamp: Date.now() - Math.random() * 86400000, // Random time in last 24h
-            });
+            })
           }
-        });
+        })
       }
 
       // Add recent XP gains
-      recentXPGains.value.forEach((gain) => {
+      recentXPGains.value.forEach(gain => {
         activities.push({
           id: `xp-${gain.id}`,
-          icon: "StarIcon",
-          color: "var(--color-primary)",
+          icon: 'StarIcon',
+          color: 'var(--color-primary)',
           description: `Earned XP for ${gain.action}`,
           xp: gain.amount,
           timestamp: gain.timestamp,
-        });
-      });
+        })
+      })
 
-      return activities.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10);
-    });
+      return activities.sort((a, b) => b.timestamp - a.timestamp).slice(0, 10)
+    })
 
     // Methods
-    const handleStartChallenge = (challengeId) => {
-      emit("start-challenge", challengeId);
+    const handleStartChallenge = challengeId => {
+      emit('start-challenge', challengeId)
       // Clear AI suggestion after action
       if (
         aiChallengeSuggestion.value?.actions.some(
-          (a) => a.challengeId === challengeId,
+          a => a.challengeId === challengeId
         )
       ) {
-        aiChallengeSuggestion.value = null;
+        aiChallengeSuggestion.value = null
       }
-    };
+    }
 
-    const handleAISuggestion = async (action) => {
+    const handleAISuggestion = async action => {
       try {
         if (action.route) {
-          emit("navigate", action.route);
+          emit('navigate', action.route)
         } else if (action.challengeId) {
-          handleStartChallenge(action.challengeId);
-        } else if (action.id === "get_tips") {
+          handleStartChallenge(action.challengeId)
+        } else if (action.id === 'get_tips') {
           // Generate AI-powered contextual tips
           if (store.settings.geminiApiKey && aiService) {
-            const userStats = gamificationService.getUserStats();
+            const userStats = gamificationService.getUserStats()
             const tip = await aiService.generateSmartContent(
-              "career_tip",
-              "profile improvement advice",
-              { profileCompleteness: userStats.profileComplete },
-            );
-            toastSuccess(`AI Tip: ${tip}`, { duration: 6000 });
+              'career_tip',
+              'profile improvement advice',
+              { profileCompleteness: userStats.profileComplete }
+            )
+            toastSuccess(`AI Tip: ${tip}`, { duration: 6000 })
           } else {
-            toastSuccess('Tip: Complete your profile to unlock personalized job recommendations!', { duration: 5000 });
+            toastSuccess(
+              'Tip: Complete your profile to unlock personalized job recommendations!',
+              { duration: 5000 }
+            )
           }
-        } else if (action.id === "ai_recommended") {
+        } else if (action.id === 'ai_recommended') {
           // Handle AI-recommended actions
           if (aiInsights.value && aiInsights.value.nextSteps.length > 0) {
-            const nextStep = aiInsights.value.nextSteps[0];
-            toastSuccess(`Next Step: ${nextStep}`, { duration: 5000 });
+            const nextStep = aiInsights.value.nextSteps[0]
+            toastSuccess(`Next Step: ${nextStep}`, { duration: 5000 })
           }
         }
 
         // Clear suggestion after action
-        aiChallengeSuggestion.value = null;
+        aiChallengeSuggestion.value = null
       } catch (error) {
-        console.warn("AI suggestion handling failed:", error);
+        console.warn('AI suggestion handling failed:', error)
         toastSuccess(
-          "Action noted! Continue working on your career development.",
-          { duration: 3000 },
-        );
-        aiChallengeSuggestion.value = null;
+          'Action noted! Continue working on your career development.',
+          { duration: 3000 }
+        )
+        aiChallengeSuggestion.value = null
       }
-    };
+    }
 
-    const isAchievementEarned = (achievementId) => {
-      return earnedAchievements.value.includes(achievementId);
-    };
+    const isAchievementEarned = achievementId => {
+      return earnedAchievements.value.includes(achievementId)
+    }
 
-    const getAchievementColor = (achievement) => {
+    const getAchievementColor = achievement => {
       if (isAchievementEarned(achievement.id)) {
-        return "var(--color-warning)"; // Gold for earned
+        return 'var(--color-warning)' // Gold for earned
       } else if (isAchievementAvailable(achievement)) {
-        return "var(--color-primary)"; // Primary blue for available
+        return 'var(--color-primary)' // Primary blue for available
       } else {
-        return "var(--text-secondary)"; // Muted for locked
+        return 'var(--text-secondary)' // Muted for locked
       }
-    };
+    }
 
-    const getAchievementAriaLabel = (achievement) => {
+    const getAchievementAriaLabel = achievement => {
       const status = isAchievementEarned(achievement.id)
-        ? "earned"
+        ? 'earned'
         : isAchievementAvailable(achievement)
-          ? "available"
-          : "locked";
+          ? 'available'
+          : 'locked'
       const progress = !isAchievementEarned(achievement.id)
         ? Object.entries(achievement.requirements)
             .map(
               ([key, value]) =>
-                `${getUserStat(key)} of ${value} ${formatRequirement(key, value).toLowerCase()}`,
+                `${getUserStat(key)} of ${value} ${formatRequirement(key, value).toLowerCase()}`
             )
-            .join(", ")
-        : "";
-      return `Achievement ${achievement.name}, ${status}. ${achievement.description}. Reward: ${achievement.xp} XP. ${progress}`.trim();
-    };
+            .join(', ')
+        : ''
+      return `Achievement ${achievement.name}, ${status}. ${achievement.description}. Reward: ${achievement.xp} XP. ${progress}`.trim()
+    }
 
-    const getActivityAriaLabel = (activity) => {
-      const xpText = activity.xp ? ` Earned ${activity.xp} XP.` : "";
-      const typeText = activity.type ? ` Type: ${activity.type}.` : "";
-      return `${activity.description} ${formatTime(activity.timestamp)}.${xpText}${typeText}`;
-    };
+    const getActivityAriaLabel = activity => {
+      const xpText = activity.xp ? ` Earned ${activity.xp} XP.` : ''
+      const typeText = activity.type ? ` Type: ${activity.type}.` : ''
+      return `${activity.description} ${formatTime(activity.timestamp)}.${xpText}${typeText}`
+    }
 
-    const isAchievementAvailable = (achievement) => {
-      const userStats = gamificationService.getUserStats();
+    const isAchievementAvailable = achievement => {
+      const userStats = gamificationService.getUserStats()
       return Object.entries(achievement.requirements).some(([key, value]) => {
-        return userStats[key] >= value * 0.5; // Available when 50% progress
-      });
-    };
+        return userStats[key] >= value * 0.5 // Available when 50% progress
+      })
+    }
 
-    const getUserStat = (statKey) => {
-      const userStats = gamificationService.getUserStats();
-      return userStats[statKey] || 0;
-    };
+    const getUserStat = statKey => {
+      const userStats = gamificationService.getUserStats()
+      return userStats[statKey] || 0
+    }
 
     const formatRequirement = (key, value) => {
       const labels = {
-        profileComplete: "Profile completion",
-        skillsMapped: "Skills mapped",
-        portfolioItems: "Portfolio items",
-        jobApplications: "Job applications",
-        chatSessions: "Chat sessions",
-        resumesGenerated: "Resumes generated",
-        savedJobs: "Saved jobs",
-      };
+        profileComplete: 'Profile completion',
+        skillsMapped: 'Skills mapped',
+        portfolioItems: 'Portfolio items',
+        jobApplications: 'Job applications',
+        chatSessions: 'Chat sessions',
+        resumesGenerated: 'Resumes generated',
+        savedJobs: 'Saved jobs',
+      }
 
-      const label = labels[key] || key;
-      return `${label}: ${value}${key === "profileComplete" ? "%" : ""}`;
-    };
+      const label = labels[key] || key
+      return `${label}: ${value}${key === 'profileComplete' ? '%' : ''}`
+    }
 
-    const formatTime = (timestamp) => {
-      const now = Date.now();
-      const diff = now - timestamp;
-      const minutes = Math.floor(diff / 60000);
-      const hours = Math.floor(diff / 3600000);
-      const days = Math.floor(diff / 86400000);
+    const formatTime = timestamp => {
+      const now = Date.now()
+      const diff = now - timestamp
+      const minutes = Math.floor(diff / 60000)
+      const hours = Math.floor(diff / 3600000)
+      const days = Math.floor(diff / 86400000)
 
       if (days > 0) {
-        return `${days}d ago`;
+        return `${days}d ago`
       }
       if (hours > 0) {
-        return `${hours}h ago`;
+        return `${hours}h ago`
       }
       if (minutes > 0) {
-        return `${minutes}m ago`;
+        return `${minutes}m ago`
       }
-      return "Just now";
-    };
+      return 'Just now'
+    }
 
-    const showAchievementDetails = (achievement) => {
-      selectedAchievement.value = achievement;
-    };
+    const showAchievementDetails = achievement => {
+      selectedAchievement.value = achievement
+    }
 
     const closeAchievementModal = () => {
-      selectedAchievement.value = null;
-    };
+      selectedAchievement.value = null
+    }
 
     const closeLevelUpModal = () => {
-      showLevelUpModal.value = false;
-      newLevel.value = null;
-      newFeatures.value = [];
-    };
+      showLevelUpModal.value = false
+      newLevel.value = null
+      newFeatures.value = []
+    }
 
     const addXPGain = (amount, action) => {
       const gain = {
@@ -1011,137 +1124,137 @@ export default {
         amount,
         action,
         timestamp: Date.now(),
-      };
+      }
 
-      recentXPGains.value.unshift(gain);
+      recentXPGains.value.unshift(gain)
 
       // Keep only recent gains
       if (recentXPGains.value.length > 10) {
-        recentXPGains.value = recentXPGains.value.slice(0, 10);
+        recentXPGains.value = recentXPGains.value.slice(0, 10)
       }
 
       // Auto-remove after 30 seconds
       setTimeout(() => {
-        const index = recentXPGains.value.findIndex((g) => g.id === gain.id);
+        const index = recentXPGains.value.findIndex(g => g.id === gain.id)
         if (index !== -1) {
-          recentXPGains.value.splice(index, 1);
+          recentXPGains.value.splice(index, 1)
         }
-      }, 30000);
-    };
+      }, 30000)
+    }
 
     const checkForLevelUp = () => {
-      const currentXP = store.user.xp || 0;
-      const currentLevel = gamificationService.calculateLevel(currentXP);
-      const previousXP = store.user.previousXP || 0;
-      const previousLevel = gamificationService.calculateLevel(previousXP);
+      const currentXP = store.user.xp || 0
+      const currentLevel = gamificationService.calculateLevel(currentXP)
+      const previousXP = store.user.previousXP || 0
+      const previousLevel = gamificationService.calculateLevel(previousXP)
 
       if (currentLevel.level > previousLevel.level) {
-        newLevel.value = currentLevel;
+        newLevel.value = currentLevel
 
         // Add features unlocked at this level
-        const features = [];
+        const features = []
         if (currentLevel.level >= 3) {
-          features.push("Advanced skill mapping");
+          features.push('Advanced skill mapping')
         }
         if (currentLevel.level >= 5) {
-          features.push("Premium job recommendations");
+          features.push('Premium job recommendations')
         }
         if (currentLevel.level >= 7) {
-          features.push("Portfolio analytics");
+          features.push('Portfolio analytics')
         }
         if (currentLevel.level >= 10) {
-          features.push("Expert career coaching");
+          features.push('Expert career coaching')
         }
 
-        newFeatures.value = features;
-        showLevelUpModal.value = true;
+        newFeatures.value = features
+        showLevelUpModal.value = true
 
-        emit("level-up", currentLevel);
+        emit('level-up', currentLevel)
       }
 
       // Update previous XP for next comparison
-      store.updateUser({ previousXP: currentXP });
-    };
+      store.updateUser({ previousXP: currentXP })
+    }
 
     const processAchievements = () => {
-      const newAchievements = gamificationService.processAchievements();
-      newAchievements.forEach((achievement) => {
-        emit("achievement-earned", achievement);
-        addXPGain(achievement.xp, `achievement: ${achievement.name}`);
-      });
-    };
+      const newAchievements = gamificationService.processAchievements()
+      newAchievements.forEach(achievement => {
+        emit('achievement-earned', achievement)
+        addXPGain(achievement.xp, `achievement: ${achievement.name}`)
+      })
+    }
 
     // Watch for XP changes to trigger level up check
     watch(
       () => store.user.xp,
       () => {
-        checkForLevelUp();
-        processAchievements();
-      },
-    );
+        checkForLevelUp()
+        processAchievements()
+      }
+    )
 
     // Lifecycle
     onMounted(() => {
       // Process any achievements on component mount
-      processAchievements();
+      processAchievements()
       // Generate AI suggestions, dynamic challenges, achievement insights, and activity insights
-      generateAISuggestion();
-      generateDynamicChallenges();
-      generateAchievementInsights();
+      generateAISuggestion()
+      generateDynamicChallenges()
+      generateAchievementInsights()
       // Delay activity insights to allow activity data to load
-      setTimeout(generateActivityInsights, 1000);
-    });
+      setTimeout(generateActivityInsights, 1000)
+    })
 
     // Watch for changes to regenerate AI suggestions and challenges
     watch(
       () => [store.user.xp, store.profileCompleteness],
       () => {
         setTimeout(() => {
-          generateAISuggestion();
+          generateAISuggestion()
           // Regenerate dynamic challenges less frequently
           if (Math.random() < 0.3) {
             // 30% chance on profile/XP changes
-            generateDynamicChallenges();
+            generateDynamicChallenges()
           }
           // Regenerate achievement insights when significant progress is made
           if (Math.random() < 0.4) {
             // 40% chance
-            generateAchievementInsights();
+            generateAchievementInsights()
           }
           // Regenerate activity insights periodically
           if (Math.random() < 0.2) {
             // 20% chance
-            generateActivityInsights();
+            generateActivityInsights()
           }
-        }, 500); // Debounce
-      },
-    );
+        }, 500) // Debounce
+      }
+    )
 
     // Watch completed challenges to trigger new dynamic challenges
     watch(completedChallenges, (newCount, oldCount) => {
       if (newCount > oldCount && newCount % 3 === 0) {
         // Every 3 completed challenges
-        setTimeout(generateDynamicChallenges, 1000);
+        setTimeout(generateDynamicChallenges, 1000)
       }
-    });
+    })
 
     // Watch for new achievements to regenerate insights
     watch(earnedAchievements, (newAchievements, oldAchievements) => {
       if (newAchievements.length > (oldAchievements?.length || 0)) {
-        setTimeout(generateAchievementInsights, 1500);
+        setTimeout(generateAchievementInsights, 1500)
       }
-    });
+    })
 
     // Watch activity changes to regenerate insights
     watch(
       recentActivity,
       (newActivity, oldActivity) => {
         if (newActivity.length > (oldActivity?.length || 0)) {
-          setTimeout(generateActivityInsights, 2000);
+          setTimeout(generateActivityInsights, 2000)
         }
       },
-      { deep: true },
-    );
+      { deep: true }
+    )
 
     return {
       // State
@@ -1185,9 +1298,9 @@ export default {
       closeAchievementModal,
       closeLevelUpModal,
       addXPGain,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -1375,7 +1488,7 @@ export default {
 }
 
 /* Dark mode glass surface - handled by centralized theme system */
-[data-theme="dark"] .glass-surface {
+[data-theme='dark'] .glass-surface {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
@@ -1392,7 +1505,7 @@ export default {
 }
 
 /* Dark mode elevated glass effects - using centralized tokens */
-[data-theme="dark"] .glass-elevated {
+[data-theme='dark'] .glass-elevated {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
   box-shadow: var(--glass-shadow-dark);
@@ -1422,18 +1535,18 @@ export default {
   transform: translateY(-1px);
 }
 
-[data-theme="dark"] .glass-button:focus-visible {
+[data-theme='dark'] .glass-button:focus-visible {
   background: var(--glass-elevated-dark);
   border-color: var(--color-focus-ring);
 }
 
 /* Dark mode glass buttons - using centralized theme system */
-[data-theme="dark"] .glass-button {
+[data-theme='dark'] .glass-button {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .glass-button:hover {
+[data-theme='dark'] .glass-button:hover {
   background: var(--glass-elevated-dark);
   border-color: var(--primary-border-subtle-dark);
   box-shadow: var(--glass-shadow-dark);
@@ -1464,7 +1577,11 @@ export default {
 
 .level-avatar.level-1,
 .level-avatar.level-2 {
-  background: linear-gradient(135deg, var(--text-secondary), var(--text-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--text-secondary),
+    var(--text-secondary)
+  );
 }
 .level-avatar.level-3,
 .level-avatar.level-4 {
@@ -1520,7 +1637,7 @@ export default {
 }
 
 .xp-progress .progress-bar::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
@@ -1592,7 +1709,7 @@ export default {
 }
 
 /* Dark mode streak indicator - using centralized system */
-[data-theme="dark"] .streak-indicator {
+[data-theme='dark'] .streak-indicator {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
 }
@@ -1615,7 +1732,7 @@ export default {
 }
 
 /* Dark mode challenge items - using centralized theme */
-[data-theme="dark"] .challenge-item {
+[data-theme='dark'] .challenge-item {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
   color: var(--text-primary-600);
@@ -1635,12 +1752,12 @@ export default {
   transform: translateY(-1px);
 }
 
-[data-theme="dark"] .challenge-item:hover {
+[data-theme='dark'] .challenge-item:hover {
   background: var(--glass-bg);
   border-color: var(--border-subtle);
 }
 
-[data-theme="dark"] .challenge-item:focus-visible {
+[data-theme='dark'] .challenge-item:focus-visible {
   background: var(--glass-bg);
   border-color: var(--border-focus);
 }
@@ -1651,7 +1768,7 @@ export default {
 }
 
 /* Dark mode completed challenges */
-[data-theme="dark"] .challenge-item.completed {
+[data-theme='dark'] .challenge-item.completed {
   background: var(--glass-bg);
   border-color: var(--border-success);
 }
@@ -1763,23 +1880,23 @@ export default {
 }
 
 /* Dark mode support - using centralized theme system */
-[data-theme="dark"] .achievement-item {
+[data-theme='dark'] .achievement-item {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
   box-shadow: var(--glass-shadow-dark);
 }
 
-[data-theme="dark"] .achievement-item:hover {
+[data-theme='dark'] .achievement-item:hover {
   box-shadow: var(--glass-shadow-elevated-dark);
   border-color: var(--color-primary);
 }
 
-[data-theme="dark"] .achievement-item.available {
+[data-theme='dark'] .achievement-item.available {
   background: var(--glass-bg);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .achievement-item.locked {
+[data-theme='dark'] .achievement-item.locked {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
@@ -1809,16 +1926,16 @@ export default {
     border-color: var(--text-secondary) !important;
   }
 
-  [data-theme="dark"] .achievement-item {
+  [data-theme='dark'] .achievement-item {
     background: var(--bg-primary-500) !important;
     border-color: var(--text-primary-600) !important;
   }
 
-  [data-theme="dark"] .achievement-item.earned {
+  [data-theme='dark'] .achievement-item.earned {
     background: var(--color-success) !important;
   }
 
-  [data-theme="dark"] .achievement-item.available {
+  [data-theme='dark'] .achievement-item.available {
     background: var(--bg-secondary-500) !important;
   }
 }
@@ -1843,19 +1960,19 @@ export default {
     background: var(--bg-tertiary) !important;
   }
 
-  [data-theme="dark"] .achievement-item {
+  [data-theme='dark'] .achievement-item {
     background: var(--dark-bg-secondary-500) !important;
   }
 
-  [data-theme="dark"] .achievement-item.earned {
+  [data-theme='dark'] .achievement-item.earned {
     background: rgba(40, 167, 69, 0.3) !important;
   }
 
-  [data-theme="dark"] .achievement-item.available {
+  [data-theme='dark'] .achievement-item.available {
     background: rgba(102, 126, 234, 0.2) !important;
   }
 
-  [data-theme="dark"] .achievement-item.locked {
+  [data-theme='dark'] .achievement-item.locked {
     background: var(--dark-bg-tertiary) !important;
   }
 }
@@ -1952,7 +2069,7 @@ export default {
 }
 
 /* Dark mode activity items */
-[data-theme="dark"] .activity-item,
+[data-theme='dark'] .activity-item,
 :root:not([data-theme]) .activity-item {
   border-bottom-color: var(--border-subtle);
   color: var(--text-primary);
@@ -1978,7 +2095,7 @@ export default {
 }
 
 /* Dark mode activity icons - using centralized system */
-[data-theme="dark"] .activity-icon {
+[data-theme='dark'] .activity-icon {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
   box-shadow: var(--glass-shadow-dark);
@@ -2035,7 +2152,6 @@ export default {
 
 /* Enhanced mobile accessibility and WCAG compliance */
 @media (max-width: 768px) {
-
   .challenge-item,
   .achievement-item {
     flex-direction: column;
@@ -2081,8 +2197,8 @@ export default {
 /* Additional WCAG 2.2 compliance improvements */
 .btn,
 button,
-[role="button"],
-[tabindex="0"]:not(input):not(textarea) {
+[role='button'],
+[tabindex='0']:not(input):not(textarea) {
   min-height: var(--minimum-target);
   min-width: var(--minimum-target);
 }
@@ -2125,12 +2241,12 @@ button,
   background: rgba(102, 126, 234, 0.05);
 }
 
-[data-theme="dark"] .activity-item:hover,
+[data-theme='dark'] .activity-item:hover,
 :root:not([data-theme]) .activity-item:hover {
   background: rgba(102, 126, 234, 0.08);
 }
 
-[data-theme="dark"] .activity-item:focus-visible,
+[data-theme='dark'] .activity-item:focus-visible,
 :root:not([data-theme]) .activity-item:focus-visible {
   background: rgba(102, 126, 234, 0.1);
 }
@@ -2158,7 +2274,7 @@ button,
     font-weight: bold;
   }
 
-  [data-theme="dark"] .text-gradient {
+  [data-theme='dark'] .text-gradient {
     color: var(--text-primary-600) !important;
   }
 }
@@ -2206,24 +2322,24 @@ button,
   }
 
   /* Dark mode fallbacks for reduced transparency */
-  [data-theme="dark"] .glass-surface,
+  [data-theme='dark'] .glass-surface,
   :root:not([data-theme]) .glass-surface {
     background: var(--dark-bg-secondary-500) !important;
   }
 
-  [data-theme="dark"] .glass-elevated,
+  [data-theme='dark'] .glass-elevated,
   :root:not([data-theme]) .glass-elevated {
     background: var(--dark-bg-primary-500) !important;
     border-color: var(--dark-bg-tertiary) !important;
   }
 
-  [data-theme="dark"] .glass-button,
+  [data-theme='dark'] .glass-button,
   :root:not([data-theme]) .glass-button {
     background: var(--dark-bg-secondary-500) !important;
     border-color: var(--dark-bg-tertiary) !important;
   }
 
-  [data-theme="dark"] .activity-icon,
+  [data-theme='dark'] .activity-icon,
   :root:not([data-theme]) .activity-icon {
     background: var(--dark-bg-secondary-500) !important;
     border-color: var(--dark-bg-tertiary) !important;
@@ -2231,58 +2347,71 @@ button,
 }
 
 /* Dark Theme Support */
-[data-theme="dark"] .level-avatar {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-alt) 100%);
+[data-theme='dark'] .level-avatar {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-alt) 100%
+  );
   box-shadow: 0 8px 32px rgba(144, 180, 255, 0.3);
 }
 
-[data-theme="dark"] .level-glow {
-  background: radial-gradient(circle, rgba(144, 180, 255, 0.4) 0%, transparent 70%);
+[data-theme='dark'] .level-glow {
+  background: radial-gradient(
+    circle,
+    rgba(144, 180, 255, 0.4) 0%,
+    transparent 70%
+  );
 }
 
-[data-theme="dark"] .xp-gain-badge {
+[data-theme='dark'] .xp-gain-badge {
   background: var(--color-warning-dark);
   color: var(--text-primary-600);
 }
 
-[data-theme="dark"] .challenge-item.completed {
+[data-theme='dark'] .challenge-item.completed {
   background: rgba(52, 211, 153, 0.1);
   border-color: var(--color-success-dark);
 }
 
-[data-theme="dark"] .challenge-item.available {
+[data-theme='dark'] .challenge-item.available {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .challenge-item.available:hover {
+[data-theme='dark'] .challenge-item.available:hover {
   background: var(--glass-solid-dark);
   border-color: var(--glass-border-accent-dark);
   transform: translateY(-2px);
   box-shadow: var(--glass-shadow-elevated-dark);
 }
 
-[data-theme="dark"] .achievement-item .mdi.text-warning-600 {
+[data-theme='dark'] .achievement-item .mdi.text-warning-600 {
   color: var(--color-warning-dark) !important;
 }
 
-  [data-theme="dark"] .achievement-item .mdi.text-secondary {
-    color: var(--text-tertiary) !important;
-  }[data-theme="dark"] .progress.xp-progress .progress-bar {
-  background: linear-gradient(90deg, var(--color-warning) 0%, var(--color-warning-dark) 100%);
+[data-theme='dark'] .achievement-item .mdi.text-secondary {
+  color: var(--text-tertiary) !important;
+}
+[data-theme='dark'] .progress.xp-progress .progress-bar {
+  background: linear-gradient(
+    90deg,
+    var(--color-warning) 0%,
+    var(--color-warning-dark) 100%
+  );
 }
 
-[data-theme="dark"] .streak-indicator {
+[data-theme='dark'] .streak-indicator {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .gaming-card {
+[data-theme='dark'] .gaming-card {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .gaming-card:hover {
+[data-theme='dark'] .gaming-card:hover {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-accent-dark);
   transform: translateY(-2px);
@@ -2304,18 +2433,18 @@ button,
     background: var(--bg-secondary-500) !important;
   }
 
-  [data-theme="dark"] .glass-surface,
+  [data-theme='dark'] .glass-surface,
   :root:not([data-theme]) .glass-surface {
     background: var(--dark-bg-secondary-500) !important;
   }
 
-  [data-theme="dark"] .glass-elevated,
+  [data-theme='dark'] .glass-elevated,
   :root:not([data-theme]) .glass-elevated {
     background: var(--dark-bg-primary-500) !important;
     box-shadow: var(--dark-shadow-glass-lg) !important;
   }
 
-  [data-theme="dark"] .glass-button,
+  [data-theme='dark'] .glass-button,
   :root:not([data-theme]) .glass-button {
     background: var(--dark-bg-secondary-500) !important;
   }

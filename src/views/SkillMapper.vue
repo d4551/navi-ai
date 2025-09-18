@@ -6,18 +6,24 @@
       <div class="orb orb-2"></div>
       <div class="orb orb-3"></div>
     </div>
-    
+
     <div class="skill-mapper-scroll-view">
       <!-- Header Section -->
       <header class="mapper-header">
         <h1 class="main-title">Gaming Skill Mapper</h1>
-        <p class="main-subtitle">Transform your gaming achievements into professional skills that employers understand</p>
-        
+        <p class="main-subtitle">
+          Transform your gaming achievements into professional skills that
+          employers understand
+        </p>
+
         <!-- Progress Bar -->
         <div class="progress-bar">
-          <div class="progress-fill" :style="{ width: analysisProgress + '%' }"></div>
+          <div
+            class="progress-fill"
+            :style="{ width: analysisProgress + '%' }"
+          ></div>
         </div>
-        
+
         <!-- Stats Overview -->
         <div class="stats-overview">
           <div class="stat-card">
@@ -48,7 +54,6 @@
             <span class="header-title">Your Gaming Experience</span>
           </div>
 
-          
           <div class="form-group">
             <label class="form-label">Describe Your Gaming Background</label>
             <textarea
@@ -63,8 +68,8 @@
           <div class="form-group">
             <label class="form-label">Gaming Profiles</label>
             <div class="profiles-grid">
-              <div 
-                v-for="profile in gamingProfiles" 
+              <div
+                v-for="profile in gamingProfiles"
                 :key="profile.id"
                 class="profile-chip"
                 :class="{ active: profile.selected }"
@@ -79,8 +84,8 @@
           <div v-if="achievements.length > 0" class="form-group">
             <label class="form-label">Key Achievements</label>
             <div class="achievements">
-              <div 
-                v-for="achievement in achievements" 
+              <div
+                v-for="achievement in achievements"
                 :key="achievement.id"
                 class="achievement"
               >
@@ -109,22 +114,26 @@
             <div class="header-icon">🤖</div>
             <span class="header-title">AI-Powered Insights</span>
           </div>
-          
+
           <div class="translation-grid">
-            <div 
-              v-for="translation in gameTranslations" 
+            <div
+              v-for="translation in gameTranslations"
               :key="translation.id"
               class="translation-card"
               @click="selectTranslation(translation)"
             >
               <div class="translation-header">
-                <span class="translation-from">{{ translation.gameSkill }}</span>
+                <span class="translation-from">{{
+                  translation.gameSkill
+                }}</span>
                 <span class="translation-arrow">→</span>
               </div>
-              <div class="translation-to">Translates to Professional Skills:</div>
+              <div class="translation-to">
+                Translates to Professional Skills:
+              </div>
               <div class="translation-skills">
-                <span 
-                  v-for="skill in translation.professionalSkills" 
+                <span
+                  v-for="skill in translation.professionalSkills"
                   :key="skill"
                   class="skill-tag"
                 >
@@ -148,7 +157,10 @@
       <!-- Dynamic Tab Content -->
       <div v-if="mappedSkills.length > 0" class="tab-content">
         <!-- Overview -->
-        <section v-show="activeTab === 'overview'" class="overview-section glass-surface">
+        <section
+          v-show="activeTab === 'overview'"
+          class="overview-section glass-surface"
+        >
           <div class="section-header">
             <h2>
               <AppIcon name="ChartBarIcon" size="large" />
@@ -189,9 +201,15 @@
                 <div class="category-info">
                   <div class="category-header">
                     <span class="category-name">{{ category.category }}</span>
-                    <span class="category-count">{{ category.count }} skills</span>
+                    <span class="category-count"
+                      >{{ category.count }} skills</span
+                    >
                   </div>
-                  <div class="category-percentage">{{ Math.round((category.count / mappedSkills.length) * 100) }}%</div>
+                  <div class="category-percentage">
+                    {{
+                      Math.round((category.count / mappedSkills.length) * 100)
+                    }}%
+                  </div>
                 </div>
               </div>
             </div>
@@ -199,7 +217,10 @@
         </section>
 
         <!-- Detailed Skills -->
-        <section v-show="activeTab === 'skills'" class="skills-section glass-surface">
+        <section
+          v-show="activeTab === 'skills'"
+          class="skills-section glass-surface"
+        >
           <div class="section-header">
             <h2>
               <AppIcon name="ListBulletIcon" size="large" />
@@ -216,10 +237,15 @@
             >
               <div class="skill-header">
                 <h4>{{ skill.transferableSkill }}</h4>
-                <span class="skill-confidence">{{ skill.confidence || 0 }}%</span>
+                <span class="skill-confidence"
+                  >{{ skill.confidence || 0 }}%</span
+                >
               </div>
               <div class="skill-source">From: {{ skill.gameExpression }}</div>
-              <div v-if="skill.industryApplications?.length" class="skill-applications">
+              <div
+                v-if="skill.industryApplications?.length"
+                class="skill-applications"
+              >
                 <span
                   v-for="app in skill.industryApplications.slice(0, 3)"
                   :key="app"
@@ -233,29 +259,43 @@
         </section>
 
         <!-- Interactive Network -->
-        <section v-show="activeTab === 'network'" class="network-section glass-panel">
+        <section
+          v-show="activeTab === 'network'"
+          class="network-section glass-panel"
+        >
           <div class="panel-header">
             <div class="header-icon">📊</div>
             <span class="header-title">Interactive Skill Web</span>
           </div>
 
           <div class="skill-web-container">
-            <div v-if="skillWebData && skillWebData.nodes?.length" class="skill-network-visualization">
+            <div
+              v-if="skillWebData && skillWebData.nodes?.length"
+              class="skill-network-visualization"
+            >
               <AppIcon name="ChartBarIcon" size="4rem" />
               <p>Interactive skill network visualization</p>
-              <p class="network-stats">{{ skillWebData.nodes.length }} skills connected</p>
+              <p class="network-stats">
+                {{ skillWebData.nodes.length }} skills connected
+              </p>
             </div>
 
             <div v-else class="skill-web-placeholder">
               <div class="placeholder-icon">🕸️</div>
               <p>Your skill network will appear here after analysis</p>
-              <p class="placeholder-subtitle">Connect your gaming achievements to see how they map to professional competencies</p>
+              <p class="placeholder-subtitle">
+                Connect your gaming achievements to see how they map to
+                professional competencies
+              </p>
             </div>
           </div>
         </section>
 
         <!-- Career Recommendations -->
-        <section v-show="activeTab === 'careers'" class="careers-section glass-panel">
+        <section
+          v-show="activeTab === 'careers'"
+          class="careers-section glass-panel"
+        >
           <div class="panel-header">
             <div class="header-icon">RocketLaunchIcon</div>
             <span class="header-title">Recommended Career Paths</span>
@@ -269,16 +309,24 @@
               @click="selectedCareer = career as any"
             >
               <div class="career-title">{{ career.role }}</div>
-              <div class="career-match">{{ Math.round(career.match || 85) }}% Match</div>
+              <div class="career-match">
+                {{ Math.round(career.match || 85) }}% Match
+              </div>
               <div class="career-skills">
-                {{ career.pathway?.description || 'Your gaming experience aligns perfectly with this career path. Your skills in strategy, teamwork, and problem-solving make you an excellent fit.' }}
+                {{
+                  career.pathway?.description ||
+                  'Your gaming experience aligns perfectly with this career path. Your skills in strategy, teamwork, and problem-solving make you an excellent fit.'
+                }}
               </div>
             </div>
           </div>
         </section>
 
         <!-- Compare snapshots -->
-        <section v-show="activeTab === 'compare'" class="compare-section glass-surface">
+        <section
+          v-show="activeTab === 'compare'"
+          class="compare-section glass-surface"
+        >
           <div class="section-header">
             <h2>
               <AppIcon name="ScaleIcon" size="large" />
@@ -289,12 +337,38 @@
 
           <div class="snapshot-controls">
             <div class="snapshot-actions">
-              <UnifiedButton variant="primary" leading-icon="CameraIcon" @click="saveSnapshot">Save Current Results</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="ArrowUpTrayIcon" @click="exportSnapshots">Export All</UnifiedButton>
-              <UnifiedButton variant="glass" leading-icon="ArrowDownTrayIcon" @click="triggerImport">Import</UnifiedButton>
-              <input ref="snapImport" type="file" accept=".json" style="display: none" @change="onImportSnapshots">
+              <UnifiedButton
+                variant="primary"
+                leading-icon="CameraIcon"
+                @click="saveSnapshot"
+                >Save Current Results</UnifiedButton
+              >
+              <UnifiedButton
+                variant="glass"
+                leading-icon="ArrowUpTrayIcon"
+                @click="exportSnapshots"
+                >Export All</UnifiedButton
+              >
+              <UnifiedButton
+                variant="glass"
+                leading-icon="ArrowDownTrayIcon"
+                @click="triggerImport"
+                >Import</UnifiedButton
+              >
+              <input
+                ref="snapImport"
+                type="file"
+                accept=".json"
+                style="display: none"
+                @change="onImportSnapshots"
+              />
               <label class="form-check-label ml-2">
-                <input v-model="replaceSnapshots" type="checkbox" class="form-check-input"> Replace all on import
+                <input
+                  v-model="replaceSnapshots"
+                  type="checkbox"
+                  class="form-check-input"
+                />
+                Replace all on import
               </label>
             </div>
           </div>
@@ -304,12 +378,28 @@
               <h4>Left Snapshot</h4>
               <select v-model="leftSnapKey" class="form-select">
                 <option value="">Choose snapshot...</option>
-                <option v-for="s in snapshots" :key="s.key" :value="s.key">{{ s.name }} ({{ formatWhen(s.at) }})</option>
+                <option v-for="s in snapshots" :key="s.key" :value="s.key">
+                  {{ s.name }} ({{ formatWhen(s.at) }})
+                </option>
               </select>
               <div v-if="leftSnap" class="snapshot-info">
                 <div>{{ leftSnap.skills.length }} skills</div>
-                <UnifiedButton size="xs" variant="glass" leading-icon="PencilIcon" :disabled="!leftSnapKey" @click="renameLeftSnapshot">Rename</UnifiedButton>
-                <UnifiedButton size="xs" variant="outline" leading-icon="TrashIcon" :disabled="!leftSnapKey" @click="deleteSnapshot(leftSnapKey)">Delete</UnifiedButton>
+                <UnifiedButton
+                  size="xs"
+                  variant="glass"
+                  leading-icon="PencilIcon"
+                  :disabled="!leftSnapKey"
+                  @click="renameLeftSnapshot"
+                  >Rename</UnifiedButton
+                >
+                <UnifiedButton
+                  size="xs"
+                  variant="outline"
+                  leading-icon="TrashIcon"
+                  :disabled="!leftSnapKey"
+                  @click="deleteSnapshot(leftSnapKey)"
+                  >Delete</UnifiedButton
+                >
               </div>
             </div>
 
@@ -317,12 +407,28 @@
               <h4>Right Snapshot</h4>
               <select v-model="rightSnapKey" class="form-select">
                 <option value="">Choose snapshot...</option>
-                <option v-for="s in snapshots" :key="s.key" :value="s.key">{{ s.name }} ({{ formatWhen(s.at) }})</option>
+                <option v-for="s in snapshots" :key="s.key" :value="s.key">
+                  {{ s.name }} ({{ formatWhen(s.at) }})
+                </option>
               </select>
               <div v-if="rightSnap" class="snapshot-info">
                 <div>{{ rightSnap.skills.length }} skills</div>
-                <UnifiedButton size="xs" variant="glass" leading-icon="PencilIcon" :disabled="!rightSnapKey" @click="renameRightSnapshot">Rename</UnifiedButton>
-                <UnifiedButton size="xs" variant="outline" leading-icon="TrashIcon" :disabled="!rightSnapKey" @click="deleteSnapshot(rightSnapKey)">Delete</UnifiedButton>
+                <UnifiedButton
+                  size="xs"
+                  variant="glass"
+                  leading-icon="PencilIcon"
+                  :disabled="!rightSnapKey"
+                  @click="renameRightSnapshot"
+                  >Rename</UnifiedButton
+                >
+                <UnifiedButton
+                  size="xs"
+                  variant="outline"
+                  leading-icon="TrashIcon"
+                  :disabled="!rightSnapKey"
+                  @click="deleteSnapshot(rightSnapKey)"
+                  >Delete</UnifiedButton
+                >
               </div>
             </div>
           </div>
@@ -346,19 +452,37 @@
         </section>
 
         <!-- Career role detail modal -->
-        <div v-if="selectedRoleDetails" class="modal fade show block" tabindex="-1">
+        <div
+          v-if="selectedRoleDetails"
+          class="modal fade show block"
+          tabindex="-1"
+        >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Career Role Details</h5>
-                <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" @click="selectedRoleDetails = null" />
+                <UnifiedButton
+                  variant="ghost"
+                  size="sm"
+                  icon-only
+                  :icon="'XMarkIcon'"
+                  @click="selectedRoleDetails = null"
+                />
               </div>
               <div class="modal-body">
                 <p>Career role details would be displayed here.</p>
               </div>
               <div class="modal-footer">
-                <UnifiedButton variant="glass" @click="selectedRoleDetails = null">Close</UnifiedButton>
-                <UnifiedButton variant="primary" leading-icon="MagnifyingGlassIcon">Find Jobs</UnifiedButton>
+                <UnifiedButton
+                  variant="glass"
+                  @click="selectedRoleDetails = null"
+                  >Close</UnifiedButton
+                >
+                <UnifiedButton
+                  variant="primary"
+                  leading-icon="MagnifyingGlassIcon"
+                  >Find Jobs</UnifiedButton
+                >
               </div>
             </div>
           </div>
@@ -371,7 +495,13 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Export Your Skills</h5>
-              <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" @click="showExportModal = false" />
+              <UnifiedButton
+                variant="ghost"
+                size="sm"
+                icon-only
+                :icon="'XMarkIcon'"
+                @click="showExportModal = false"
+              />
             </div>
             <div class="modal-body">
               <p>Choose how you'd like to export your skill analysis:</p>
@@ -415,7 +545,20 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowDownTrayIcon, ArrowUpTrayIcon, CameraIcon, ChartBarIcon, ClipboardDocumentIcon, ListBulletIcon, MagnifyingGlassIcon, PencilIcon, PhotoIcon, ScaleIcon, SparklesIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowDownTrayIcon,
+  ArrowUpTrayIcon,
+  CameraIcon,
+  ChartBarIcon,
+  ClipboardDocumentIcon,
+  ListBulletIcon,
+  MagnifyingGlassIcon,
+  PencilIcon,
+  PhotoIcon,
+  ScaleIcon,
+  SparklesIcon,
+  TrashIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, onMounted } from 'vue'
 import GlassNavTabs from '@/components/GlassNavTabs.vue'
@@ -426,7 +569,10 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 // Global prompt declaration
-declare const prompt: (_message?: string, _defaultText?: string) => string | null
+declare const prompt: (
+  _message?: string,
+  _defaultText?: string
+) => string | null
 
 // Composable
 const {
@@ -459,11 +605,17 @@ const {
   updateSkill: _updateSkill,
   exportSkills: _exportSkills,
   getGameToIndustryTranslations: _getTranslations,
-  initialize
+  initialize,
 } = useEnhancedSkillMapping()
 
 // Unified theme and UI systems
-const _theme = (() => { try { return useUnifiedTheme() } catch { return undefined as any } })()
+const _theme = (() => {
+  try {
+    return useUnifiedTheme()
+  } catch {
+    return undefined as any
+  }
+})()
 const _ui = useUnifiedUI()
 
 // Local state
@@ -500,23 +652,39 @@ const gameTranslations = ref([
   {
     id: 1,
     gameSkill: 'Raid Leadership',
-    professionalSkills: ['Project Management', 'Team Coordination', 'Strategic Planning']
+    professionalSkills: [
+      'Project Management',
+      'Team Coordination',
+      'Strategic Planning',
+    ],
   },
   {
     id: 2,
     gameSkill: 'Speedrunning',
-    professionalSkills: ['Process Optimization', 'Problem Solving', 'Performance Analysis']
+    professionalSkills: [
+      'Process Optimization',
+      'Problem Solving',
+      'Performance Analysis',
+    ],
   },
   {
     id: 3,
     gameSkill: 'Meta Analysis',
-    professionalSkills: ['Data Analytics', 'Pattern Recognition', 'Strategic Thinking']
+    professionalSkills: [
+      'Data Analytics',
+      'Pattern Recognition',
+      'Strategic Thinking',
+    ],
   },
   {
     id: 4,
     gameSkill: 'Content Creation',
-    professionalSkills: ['Digital Marketing', 'Community Management', 'Brand Building']
-  }
+    professionalSkills: [
+      'Digital Marketing',
+      'Community Management',
+      'Brand Building',
+    ],
+  },
 ])
 
 // Snapshots
@@ -531,21 +699,31 @@ const navTabs = computed(() => [
   { id: 'skills', label: 'Skills', icon: 'mdi-view-list' },
   { id: 'network', label: 'Network', icon: 'PresentationChartLineIcon' },
   { id: 'careers', label: 'Careers', icon: 'mdi-briefcase' },
-  { id: 'compare', label: 'Compare', icon: 'mdi-compare' }
+  { id: 'compare', label: 'Compare', icon: 'mdi-compare' },
 ])
 
 // Computed values for snapshot comparison
-const leftSnap = computed(() => snapshots.value.find((s: any) => s.key === leftSnapKey.value))
-const rightSnap = computed(() => snapshots.value.find((s: any) => s.key === rightSnapKey.value))
+const leftSnap = computed(() =>
+  snapshots.value.find((s: any) => s.key === leftSnapKey.value)
+)
+const rightSnap = computed(() =>
+  snapshots.value.find((s: any) => s.key === rightSnapKey.value)
+)
 const diff = computed(() => {
   if (!leftSnap.value || !rightSnap.value) {
     return { onlyLeft: [], onlyRight: [], changed: [] }
   }
   // Simple diff logic
   return {
-    onlyLeft: leftSnap.value.skills?.filter((ls: any) => !rightSnap.value.skills?.find((rs: any) => rs.id === ls.id)) || [],
-    onlyRight: rightSnap.value.skills?.filter((rs: any) => !leftSnap.value.skills?.find((ls: any) => ls.id === rs.id)) || [],
-    changed: []
+    onlyLeft:
+      leftSnap.value.skills?.filter(
+        (ls: any) => !rightSnap.value.skills?.find((rs: any) => rs.id === ls.id)
+      ) || [],
+    onlyRight:
+      rightSnap.value.skills?.filter(
+        (rs: any) => !leftSnap.value.skills?.find((ls: any) => ls.id === rs.id)
+      ) || [],
+    changed: [],
   }
 })
 
@@ -569,7 +747,7 @@ const saveSnapshot = () => {
     key: Date.now().toString(),
     name: `Snapshot ${new Date().toLocaleDateString()}`,
     at: Date.now(),
-    skills: [...mappedSkills.value]
+    skills: [...mappedSkills.value],
   }
   snapshots.value.push(snapshot)
 }
@@ -596,9 +774,9 @@ const triggerImport = () => {
 const onImportSnapshots = (event: any) => {
   const file = event.target.files[0]
   if (!file) return
-  
+
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = e => {
     try {
       const importedSnapshots = JSON.parse(e.target?.result as string)
       if (replaceSnapshots.value) {
@@ -642,8 +820,10 @@ const renameRightSnapshot = () => {
   }
 }
 
-const pickSnap = (key: string) => snapshots.value.find((s: any) => s.key === key)
-const formatWhen = (timestamp: number) => new Date(timestamp).toLocaleDateString()
+const pickSnap = (key: string) =>
+  snapshots.value.find((s: any) => s.key === key)
+const formatWhen = (timestamp: number) =>
+  new Date(timestamp).toLocaleDateString()
 
 // New interactive methods
 const toggleProfile = (profile: any) => {
@@ -658,14 +838,14 @@ const selectTranslation = (translation: any) => {
 // Enhanced analyze function with progress tracking
 const enhancedAnalyzeGamingExperience = async () => {
   analysisProgress.value = 0
-  
+
   // Simulate progress updates
   const progressInterval = setInterval(() => {
     if (analysisProgress.value < 90) {
       analysisProgress.value += Math.random() * 10
     }
   }, 300)
-  
+
   try {
     await analyzeGamingExperience()
     analysisProgress.value = 100
@@ -711,7 +891,12 @@ onMounted(() => {
   font-size: 3.5rem;
   font-weight: 900;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--color-primary-400), var(--color-secondary-500), var(--color-accent-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-400),
+    var(--color-secondary-500),
+    var(--color-accent-500)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -720,9 +905,15 @@ onMounted(() => {
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .main-subtitle {
@@ -744,7 +935,11 @@ onMounted(() => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   border-radius: var(--radius-sm);
   width: 0%;
   transition: width var(--duration-normal) var(--easing-ease-out);
@@ -759,13 +954,22 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* Stats Overview */
@@ -777,7 +981,11 @@ onMounted(() => {
 }
 
 .stat-card {
-  background: linear-gradient(135deg, var(--glass-bg), color-mix(in srgb, var(--color-primary-500) 10%, transparent));
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg),
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent)
+  );
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-5);
@@ -800,8 +1008,12 @@ onMounted(() => {
 }
 
 @keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .stat-card:hover {
@@ -813,7 +1025,11 @@ onMounted(() => {
 .stat-value {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
-  background: linear-gradient(135deg, var(--color-primary-400), var(--color-secondary-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-400),
+    var(--color-secondary-500)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -856,7 +1072,12 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-primary-300), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary-300),
+    transparent
+  );
   opacity: 0;
   transition: opacity var(--duration-normal);
 }
@@ -884,7 +1105,11 @@ onMounted(() => {
 .header-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
@@ -956,7 +1181,9 @@ onMounted(() => {
   height: 0;
   background: radial-gradient(circle, var(--primary), transparent);
   transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s;
+  transition:
+    width 0.3s,
+    height 0.3s;
   border-radius: 50%;
 }
 
@@ -1011,8 +1238,15 @@ onMounted(() => {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.9; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
 }
 
 /* Translation Cards Grid */

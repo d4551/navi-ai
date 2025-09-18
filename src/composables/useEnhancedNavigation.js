@@ -38,7 +38,7 @@ export function useEnhancedNavigation() {
       path: '/resume',
       icon: 'mdi-file-document-edit-outline',
       description: 'Create and edit your professional resume',
-      keywords: ['resume', 'cv', 'build', 'create', 'edit', 'professional']
+      keywords: ['resume', 'cv', 'build', 'create', 'edit', 'professional'],
     },
     {
       id: 'cover-letter',
@@ -46,15 +46,16 @@ export function useEnhancedNavigation() {
       path: '/cover-letter',
       icon: 'mdi-email-edit',
       description: 'Generate personalized cover letters',
-      keywords: ['cover', 'letter', 'write', 'generate', 'personalized']
+      keywords: ['cover', 'letter', 'write', 'generate', 'personalized'],
     },
     {
       id: 'job-tailored-resume',
       title: 'Job-Tailored Resume',
       path: '/documents',
       icon: 'mdi-brain',
-      description: 'AI-powered resume tailoring for specific jobs (via Document Builder)',
-      keywords: ['ai', 'tailor', 'job', 'smart', 'optimize', 'ats', 'resume']
+      description:
+        'AI-powered resume tailoring for specific jobs (via Document Builder)',
+      keywords: ['ai', 'tailor', 'job', 'smart', 'optimize', 'ats', 'resume'],
     },
     {
       id: 'portfolio',
@@ -62,7 +63,14 @@ export function useEnhancedNavigation() {
       path: '/portfolio',
       icon: 'mdi-briefcase-variant',
       description: 'Showcase your work and projects',
-      keywords: ['portfolio', 'showcase', 'projects', 'work', 'gallery', 'gaming']
+      keywords: [
+        'portfolio',
+        'showcase',
+        'projects',
+        'work',
+        'gallery',
+        'gaming',
+      ],
     },
     {
       id: 'jobs',
@@ -70,7 +78,7 @@ export function useEnhancedNavigation() {
       path: '/jobs',
       icon: 'mdi-clipboard-text',
       description: 'Find and apply to gaming industry jobs',
-      keywords: ['jobs', 'search', 'apply', 'gaming', 'industry', 'board']
+      keywords: ['jobs', 'search', 'apply', 'gaming', 'industry', 'board'],
     },
     {
       id: 'gaming-gigs',
@@ -78,7 +86,7 @@ export function useEnhancedNavigation() {
       path: '/gaming-gigs',
       icon: 'mdi-gamepad-variant',
       description: 'Specialized gaming industry positions',
-      keywords: ['gaming', 'gigs', 'specialized', 'esports', 'game', 'dev']
+      keywords: ['gaming', 'gigs', 'specialized', 'esports', 'game', 'dev'],
     },
     {
       id: 'studios',
@@ -86,7 +94,7 @@ export function useEnhancedNavigation() {
       path: '/studios',
       icon: 'mdi-office-building',
       description: 'Gaming company and studio information',
-      keywords: ['studios', 'companies', 'gaming', 'directory', 'employers']
+      keywords: ['studios', 'companies', 'gaming', 'directory', 'employers'],
     },
     {
       id: 'analytics',
@@ -94,7 +102,7 @@ export function useEnhancedNavigation() {
       path: '/analytics',
       icon: 'mdi-chart-line',
       description: 'Career and application analytics',
-      keywords: ['analytics', 'stats', 'tracking', 'progress', 'data']
+      keywords: ['analytics', 'stats', 'tracking', 'progress', 'data'],
     },
     {
       id: 'networking',
@@ -102,7 +110,7 @@ export function useEnhancedNavigation() {
       path: '/networking',
       icon: 'mdi-account-multiple',
       description: 'Professional networking tools',
-      keywords: ['networking', 'contacts', 'connections', 'professional']
+      keywords: ['networking', 'contacts', 'connections', 'professional'],
     },
     {
       id: 'ai-chat',
@@ -110,7 +118,7 @@ export function useEnhancedNavigation() {
       path: '/demo/realtime',
       icon: 'mdi-robot',
       description: 'Chat with AI career assistant',
-      keywords: ['ai', 'chat', 'assistant', 'help', 'navi', 'realtime']
+      keywords: ['ai', 'chat', 'assistant', 'help', 'navi', 'realtime'],
     },
     {
       id: 'flow',
@@ -118,7 +126,7 @@ export function useEnhancedNavigation() {
       path: '/flow',
       icon: 'mdi-chart-sankey',
       description: 'Workflow automation and templates',
-      keywords: ['flow', 'automation', 'workflow', 'templates', 'process']
+      keywords: ['flow', 'automation', 'workflow', 'templates', 'process'],
     },
     {
       id: 'cloud',
@@ -126,7 +134,7 @@ export function useEnhancedNavigation() {
       path: '/cloud',
       icon: 'mdi-cloud',
       description: 'Cloud storage and document management',
-      keywords: ['cloud', 'storage', 'documents', 'files', 'sync']
+      keywords: ['cloud', 'storage', 'documents', 'files', 'sync'],
     },
     {
       id: 'system',
@@ -134,7 +142,7 @@ export function useEnhancedNavigation() {
       path: '/system',
       icon: 'mdi-monitor-dashboard',
       description: 'System monitoring and settings',
-      keywords: ['system', 'dashboard', 'monitor', 'settings', 'admin']
+      keywords: ['system', 'dashboard', 'monitor', 'settings', 'admin'],
     },
     {
       id: 'settings',
@@ -142,33 +150,34 @@ export function useEnhancedNavigation() {
       path: '/settings',
       icon: 'mdi-cog',
       description: 'Application settings and preferences',
-      keywords: ['settings', 'preferences', 'config', 'options', 'customize']
-    }
+      keywords: ['settings', 'preferences', 'config', 'options', 'customize'],
+    },
   ]
 
   // Computed properties
   const breadcrumbs = computed(() => {
     const pathSegments = route.path.split('/').filter(Boolean)
     const crumbs = []
-    
+
     let currentPath = ''
     pathSegments.forEach((segment, index) => {
       currentPath += '/' + segment
-      
+
       // Find matching page from searchable pages
-      const matchingPage = searchablePages.find(page => 
-        page.path === currentPath || 
-        page.path.includes(segment)
+      const matchingPage = searchablePages.find(
+        page => page.path === currentPath || page.path.includes(segment)
       )
-      
+
       crumbs.push({
-        text: matchingPage?.title || segment.charAt(0).toUpperCase() + segment.slice(1),
+        text:
+          matchingPage?.title ||
+          segment.charAt(0).toUpperCase() + segment.slice(1),
         path: currentPath,
         icon: matchingPage?.icon || 'mdi-folder',
-        isLast: index === pathSegments.length - 1
+        isLast: index === pathSegments.length - 1,
       })
     })
-    
+
     return crumbs
   })
 
@@ -176,44 +185,50 @@ export function useEnhancedNavigation() {
     if (!searchQuery.value.trim()) {
       return []
     }
-    
+
     const query = searchQuery.value.toLowerCase()
-    return searchablePages.filter(page => {
-      return (
-        page.title.toLowerCase().includes(query) ||
-        page.description.toLowerCase().includes(query) ||
-        page.keywords.some(keyword => keyword.includes(query))
-      )
-    }).slice(0, 8) // Limit to 8 results
+    return searchablePages
+      .filter(page => {
+        return (
+          page.title.toLowerCase().includes(query) ||
+          page.description.toLowerCase().includes(query) ||
+          page.keywords.some(keyword => keyword.includes(query))
+        )
+      })
+      .slice(0, 8) // Limit to 8 results
   })
 
   const quickAccessPages = computed(() => {
     const recent = recentPages.value.slice(0, 3)
     const favorites = favoritePages.value.slice(0, 3)
-    
+
     return {
-      recent: recent.map(path => searchablePages.find(p => p.path === path)).filter(Boolean),
-      favorites: favorites.map(path => searchablePages.find(p => p.path === path)).filter(Boolean)
+      recent: recent
+        .map(path => searchablePages.find(p => p.path === path))
+        .filter(Boolean),
+      favorites: favorites
+        .map(path => searchablePages.find(p => p.path === path))
+        .filter(Boolean),
     }
   })
 
   // Search methods
-  const performSearch = async (query) => {
+  const performSearch = async query => {
     if (!query.trim()) {
       searchResults.value = []
       return
     }
 
     searchLoading.value = true
-    
+
     // Simulate API delay for more realistic UX
     await new Promise(resolve => setTimeout(resolve, 150))
-    
+
     searchResults.value = filteredSearchResults.value
     searchLoading.value = false
   }
 
-  const navigateToResult = (result) => {
+  const navigateToResult = result => {
     router.push(result.path)
     addToRecentPages(result.path)
     closeSearch()
@@ -240,37 +255,37 @@ export function useEnhancedNavigation() {
   }
 
   // Navigation history
-  const addToRecentPages = (path) => {
+  const addToRecentPages = path => {
     const recentList = [...recentPages.value]
     const existingIndex = recentList.indexOf(path)
-    
+
     if (existingIndex !== -1) {
       recentList.splice(existingIndex, 1)
     }
-    
+
     recentList.unshift(path)
     recentPages.value = recentList.slice(0, 10) // Keep only 10 recent pages
   }
 
-  const toggleFavorite = (path) => {
+  const toggleFavorite = path => {
     const favorites = [...favoritePages.value]
     const existingIndex = favorites.indexOf(path)
-    
+
     if (existingIndex !== -1) {
       favorites.splice(existingIndex, 1)
     } else {
       favorites.push(path)
     }
-    
+
     favoritePages.value = favorites
   }
 
-  const isFavorite = (path) => {
+  const isFavorite = path => {
     return favoritePages.value.includes(path)
   }
 
   // Keyboard navigation
-  const handleGlobalKeydown = (event) => {
+  const handleGlobalKeydown = event => {
     // Global shortcuts
     if (event.metaKey || event.ctrlKey) {
       switch (event.key) {
@@ -293,12 +308,12 @@ export function useEnhancedNavigation() {
     }
   }
 
-  const navigateWithKeyboard = (direction) => {
+  const navigateWithKeyboard = direction => {
     const items = document.querySelectorAll('.nav-item-link')
     if (!items.length) return
 
-    let currentIndex = Array.from(items).findIndex(item => 
-      item === document.activeElement
+    let currentIndex = Array.from(items).findIndex(
+      item => item === document.activeElement
     )
 
     if (direction === 'down') {
@@ -310,7 +325,7 @@ export function useEnhancedNavigation() {
     items[currentIndex]?.focus()
   }
 
-  const handleNavKeydown = (event) => {
+  const handleNavKeydown = event => {
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault()
@@ -338,9 +353,9 @@ export function useEnhancedNavigation() {
     const state = {
       currentPath: route.path,
       timestamp: Date.now(),
-      scrollPosition: window.scrollY
+      scrollPosition: window.scrollY,
     }
-    
+
     navigationHistory.value.unshift(state)
     if (navigationHistory.value.length > 20) {
       navigationHistory.value = navigationHistory.value.slice(0, 20)
@@ -368,14 +383,17 @@ export function useEnhancedNavigation() {
   })
 
   // Watch route changes
-  watch(() => route.path, (newPath) => {
-    addToRecentPages(newPath)
-    saveNavigationState()
-    closeSearch()
-  })
+  watch(
+    () => route.path,
+    newPath => {
+      addToRecentPages(newPath)
+      saveNavigationState()
+      closeSearch()
+    }
+  )
 
   // Watch search query
-  watch(searchQuery, (newQuery) => {
+  watch(searchQuery, newQuery => {
     if (newQuery.trim()) {
       performSearch(newQuery)
     } else {
@@ -394,25 +412,25 @@ export function useEnhancedNavigation() {
     breadcrumbs,
     quickAccessPages,
     navigationHistory: computed(() => navigationHistory.value),
-    
+
     // Search methods
     performSearch,
     navigateToResult,
     toggleSearch,
     closeSearch,
-    
+
     // Navigation methods
     addToRecentPages,
     toggleFavorite,
     isFavorite,
     navigateWithKeyboard,
     handleNavKeydown,
-    
+
     // Navigation state
     saveNavigationState,
     restoreNavigationState,
-    
+
     // Data
-    searchablePages
+    searchablePages,
   }
 }

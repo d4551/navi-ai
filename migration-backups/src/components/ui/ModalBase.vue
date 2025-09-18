@@ -10,12 +10,13 @@
       <div
         ref="modalRef"
         class="modal-container"
-        :class="[ `modal-size-${size}`,
-                  {
-                    'modal-fullscreen': fullscreen,
-                    'modal-centered': centered,
-                    'modal-scrollable': scrollable
-                  }
+        :class="[
+          `modal-size-${size}`,
+          {
+            'modal-fullscreen': fullscreen,
+            'modal-centered': centered,
+            'modal-scrollable': scrollable,
+          },
         ]"
         role="dialog"
         :aria-modal="true"
@@ -28,7 +29,11 @@
         <div v-if="hasHeader" class="modal-header">
           <div class="modal-title-section">
             <h2 v-if="title" :id="titleId" class="modal-title">
-              <i v-if="icon" :class="['modal-icon', icon]" aria-hidden="true"></i>
+              <i
+                v-if="icon"
+                :class="['modal-icon', icon]"
+                aria-hidden="true"
+              ></i>
               {{ title }}
             </h2>
             <slot name="title"></slot>
@@ -51,12 +56,17 @@
         <!-- Modal Body -->
         <div
           class="modal-body"
-          :class="{ 'modal-body-scrollable': scrollable,
-                    'modal-body-no-header': !hasHeader,
-                    'modal-body-no-footer': !hasFooter
+          :class="{
+            'modal-body-scrollable': scrollable,
+            'modal-body-no-header': !hasHeader,
+            'modal-body-no-footer': !hasFooter,
           }"
         >
-          <div v-if="hasDescription" :id="descriptionId" class="modal-description">
+          <div
+            v-if="hasDescription"
+            :id="descriptionId"
+            class="modal-description"
+          >
             {{ description }}
           </div>
 
@@ -86,7 +96,11 @@
                 :class="{ 'btn-loading': confirmLoading }"
                 @click="handleConfirm"
               >
-                <span v-if="confirmLoading" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                <span
+                  v-if="confirmLoading"
+                  class="spinner-border spinner-border-sm me-2"
+                  aria-hidden="true"
+                ></span>
                 {{ confirmLabel }}
               </UnifiedButton>
             </div>
@@ -106,172 +120,187 @@ export default {
   name: 'ModalBase',
   components: {
     AppIcon,
-    UnifiedButton
+    UnifiedButton,
   },
   props: {
     modelValue: {
       type: Boolean,
-      default: false
+      default: false,
     },
     title: {
       type: String,
-      default: null
+      default: null,
     },
     description: {
       type: String,
-      default: null
+      default: null,
     },
     icon: {
       type: String,
-      default: null
+      default: null,
     },
     size: {
       type: String,
       default: 'md',
-      validator: (value) => ['xs', 'sm', 'md', 'lg', 'xl', '2xl'].includes(value)
+      validator: value => ['xs', 'sm', 'md', 'lg', 'xl', '2xl'].includes(value),
     },
     fullscreen: {
       type: Boolean,
-      default: false
+      default: false,
     },
     centered: {
       type: Boolean,
-      default: true
+      default: true,
     },
     scrollable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     closable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     closeOnBackdrop: {
       type: Boolean,
-      default: true
+      default: true,
     },
     closeOnEscape: {
       type: Boolean,
-      default: true
+      default: true,
     },
     cancelable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     confirmable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     cancelLabel: {
       type: String,
-      default: 'Cancel'
+      default: 'Cancel',
     },
     confirmLabel: {
       type: String,
-      default: 'Confirm'
+      default: 'Confirm',
     },
     confirmDisabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     confirmLoading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     closeLabel: {
       type: String,
-      default: 'Close modal'
+      default: 'Close modal',
     },
     preventBodyScroll: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
-  emits: ['update:modelValue', 'close', 'cancel', 'confirm', 'opened', 'closed'],
+  emits: [
+    'update:modelValue',
+    'close',
+    'cancel',
+    'confirm',
+    'opened',
+    'closed',
+  ],
   setup(props, { emit, slots }) {
-    const modalRef = ref(null);
-    let previousActiveElement = null;
+    const modalRef = ref(null)
+    let previousActiveElement = null
 
-    const titleId = computed(() => `modal-title-${Math.random().toString(36).substr(2, 9)}`);
-    const descriptionId = computed(() => `modal-desc-${Math.random().toString(36).substr(2, 9)}`);
+    const titleId = computed(
+      () => `modal-title-${Math.random().toString(36).substr(2, 9)}`
+    )
+    const descriptionId = computed(
+      () => `modal-desc-${Math.random().toString(36).substr(2, 9)}`
+    )
 
-    const hasHeader = computed(() =>
-      props.title || slots.title || props.closable || slots['header-actions']
-    );
+    const hasHeader = computed(
+      () =>
+        props.title || slots.title || props.closable || slots['header-actions']
+    )
 
-    const hasFooter = computed(() =>
-      slots.footer || props.cancelable || props.confirmable
-    );
+    const hasFooter = computed(
+      () => slots.footer || props.cancelable || props.confirmable
+    )
 
-    const hasDescription = computed(() => !!props.description);
+    const hasDescription = computed(() => !!props.description)
 
     // Focus management
     const focusModal = async () => {
-      await nextTick();
+      await nextTick()
       if (modalRef.value) {
-        previousActiveElement = document.activeElement;
-        modalRef.value.focus();
+        previousActiveElement = document.activeElement
+        modalRef.value.focus()
       }
-    };
+    }
 
     const restoreFocus = () => {
       if (previousActiveElement && previousActiveElement.focus) {
-        previousActiveElement.focus();
-        previousActiveElement = null;
+        previousActiveElement.focus()
+        previousActiveElement = null
       }
-    };
+    }
 
     // Modal state management
-    watch(() => props.modelValue, async (newValue) => {
-      if (newValue) {
-        await focusModal();
-        if (props.preventBodyScroll) {
-          document.body.style.overflow = 'hidden';
+    watch(
+      () => props.modelValue,
+      async newValue => {
+        if (newValue) {
+          await focusModal()
+          if (props.preventBodyScroll) {
+            document.body.style.overflow = 'hidden'
+          }
+          emit('opened')
+        } else {
+          restoreFocus()
+          if (props.preventBodyScroll) {
+            document.body.style.overflow = ''
+          }
+          emit('closed')
         }
-        emit('opened');
-      } else {
-        restoreFocus();
-        if (props.preventBodyScroll) {
-          document.body.style.overflow = '';
-        }
-        emit('closed');
       }
-    });
+    )
 
     // Event handlers
     const handleClose = () => {
-      emit('update:modelValue', false);
-      emit('close');
-    };
+      emit('update:modelValue', false)
+      emit('close')
+    }
 
     const handleCancel = () => {
-      emit('update:modelValue', false);
-      emit('cancel');
-    };
+      emit('update:modelValue', false)
+      emit('cancel')
+    }
 
     const handleConfirm = () => {
-      emit('confirm');
-    };
+      emit('confirm')
+    }
 
     const handleBackdropClick = () => {
       if (props.closeOnBackdrop) {
-        handleClose();
+        handleClose()
       }
-    };
+    }
 
-    const handleEscapeKey = (event) => {
+    const handleEscapeKey = event => {
       if (props.closeOnEscape && event.key === 'Escape') {
-        handleClose();
+        handleClose()
       }
-    };
+    }
 
     // Cleanup on unmount
     onUnmounted(() => {
       if (props.preventBodyScroll) {
-        document.body.style.overflow = '';
+        document.body.style.overflow = ''
       }
-      restoreFocus();
-    });
+      restoreFocus()
+    })
 
     return {
       modalRef,
@@ -284,10 +313,10 @@ export default {
       handleCancel,
       handleConfirm,
       handleBackdropClick,
-      handleEscapeKey
-    };
-  }
-};
+      handleEscapeKey,
+    }
+  },
+}
 </script>
 
 <style scoped>
@@ -340,12 +369,24 @@ export default {
 }
 
 /* Modal Sizes */
-.modal-size-xs { max-width: 300px; }
-.modal-size-sm { max-width: 400px; }
-.modal-size-md { max-width: 500px; }
-.modal-size-lg { max-width: 700px; }
-.modal-size-xl { max-width: 900px; }
-.modal-size-2xl { max-width: 1200px; }
+.modal-size-xs {
+  max-width: 300px;
+}
+.modal-size-sm {
+  max-width: 400px;
+}
+.modal-size-md {
+  max-width: 500px;
+}
+.modal-size-lg {
+  max-width: 700px;
+}
+.modal-size-xl {
+  max-width: 900px;
+}
+.modal-size-2xl {
+  max-width: 1200px;
+}
 
 .modal-fullscreen {
   max-width: none;

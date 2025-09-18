@@ -57,7 +57,7 @@ const _props = withDefaults(defineProps<Props>(), {
   busy: false,
   maxWidth: 820,
   orientation: 'horizontal',
-  primaryVariant: 'primary'
+  primaryVariant: 'primary',
 })
 
 const emit = defineEmits<{
@@ -66,10 +66,18 @@ const emit = defineEmits<{
   (e: 'finish'): void
 }>()
 
-const visible = computed({ get: () => props.show, set: (v) => emit('update:show', v) })
-const idx = computed({ get: () => props.modelValue, set: (v) => emit('update:modelValue', v) })
+const visible = computed({
+  get: () => props.show,
+  set: v => emit('update:show', v),
+})
+const idx = computed({
+  get: () => props.modelValue,
+  set: v => emit('update:modelValue', v),
+})
 
-function close() { visible.value = false }
+function close() {
+  visible.value = false
+}
 </script>
 
 <style scoped>

@@ -11,10 +11,10 @@
           <option value="technical">Technical Focus</option>
         </select>
       </div>
-      
+
       <div class="ai-tools-inline">
         <UnifiedButton
-          variant="outline" 
+          variant="outline"
           size="sm"
           leading-icon="mdi-lightbulb"
           :disabled="!aiReady"
@@ -23,7 +23,7 @@
           AI Suggestions
         </UnifiedButton>
         <UnifiedButton
-          variant="gaming" 
+          variant="gaming"
           size="sm"
           leading-icon="mdi-auto-fix"
           :disabled="!aiReady || !hasContent"
@@ -53,49 +53,49 @@
             </UnifiedButton>
           </div>
           <div class="form-grid">
-            <input 
+            <input
               :value="props.resumeData.personalInfo?.name || ''"
               placeholder="Full Name"
-              class="form-input" 
-              @input="updatePersonalInfo('name', $event.target.value)" 
+              class="form-input"
+              @input="updatePersonalInfo('name', $event.target.value)"
             />
-            <input 
+            <input
               :value="props.resumeData.personalInfo?.email || ''"
               placeholder="Email"
-              class="form-input" 
-              @input="updatePersonalInfo('email', $event.target.value)" 
+              class="form-input"
+              @input="updatePersonalInfo('email', $event.target.value)"
             />
-            <input 
+            <input
               :value="props.resumeData.personalInfo?.phone || ''"
               placeholder="Phone"
-              class="form-input" 
-              @input="updatePersonalInfo('phone', $event.target.value)" 
+              class="form-input"
+              @input="updatePersonalInfo('phone', $event.target.value)"
             />
-            <input 
+            <input
               :value="props.resumeData.personalInfo?.location || ''"
               placeholder="Location"
-              class="form-input" 
-              @input="updatePersonalInfo('location', $event.target.value)" 
+              class="form-input"
+              @input="updatePersonalInfo('location', $event.target.value)"
             />
-            <input 
+            <input
               :value="props.resumeData.personalInfo?.website || ''"
               placeholder="Website/Portfolio"
-              class="form-input" 
-              @input="updatePersonalInfo('website', $event.target.value)" 
+              class="form-input"
+              @input="updatePersonalInfo('website', $event.target.value)"
             />
-            <input 
+            <input
               :value="props.resumeData.personalInfo?.linkedin || ''"
               placeholder="LinkedIn"
-              class="form-input" 
-              @input="updatePersonalInfo('linkedin', $event.target.value)" 
+              class="form-input"
+              @input="updatePersonalInfo('linkedin', $event.target.value)"
             />
           </div>
-          <textarea 
+          <textarea
             :value="props.resumeData.summary || ''"
             placeholder="Professional summary - AI can help write this based on your profile..."
             class="form-textarea"
             rows="3"
-            @input="updateResumeData({summary: $event.target.value})"
+            @input="updateResumeData({ summary: $event.target.value })"
           ></textarea>
         </section>
 
@@ -123,20 +123,28 @@
               </UnifiedButton>
             </div>
           </div>
-          
-          <div v-for="(exp, index) in props.resumeData.experience || []" :key="index" class="experience-item">
+
+          <div
+            v-for="(exp, index) in props.resumeData.experience || []"
+            :key="index"
+            class="experience-item"
+          >
             <div class="item-header">
-              <input 
+              <input
                 :value="exp.company || ''"
                 placeholder="Company"
-                class="form-input company-input" 
-                @input="updateExperienceField(index, 'company', $event.target.value)" 
+                class="form-input company-input"
+                @input="
+                  updateExperienceField(index, 'company', $event.target.value)
+                "
               />
-              <input 
+              <input
                 :value="exp.title || ''"
                 placeholder="Job Title"
-                class="form-input title-input" 
-                @input="updateExperienceField(index, 'title', $event.target.value)" 
+                class="form-input title-input"
+                @input="
+                  updateExperienceField(index, 'title', $event.target.value)
+                "
               />
               <UnifiedButton
                 variant="ghost"
@@ -146,33 +154,45 @@
               />
             </div>
             <div class="date-range">
-              <input 
+              <input
                 :value="exp.startDate || ''"
                 placeholder="Start Date"
-                class="form-input date-input" 
-                @input="updateExperienceField(index, 'startDate', $event.target.value)" 
+                class="form-input date-input"
+                @input="
+                  updateExperienceField(index, 'startDate', $event.target.value)
+                "
               />
-              <input 
+              <input
                 :value="exp.endDate || ''"
                 placeholder="End Date"
-                class="form-input date-input" 
-                @input="updateExperienceField(index, 'endDate', $event.target.value)" 
+                class="form-input date-input"
+                @input="
+                  updateExperienceField(index, 'endDate', $event.target.value)
+                "
               />
               <label class="checkbox-label">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   :checked="exp.current || false"
-                  @change="updateExperienceField(index, 'current', $event.target.checked)"
+                  @change="
+                    updateExperienceField(
+                      index,
+                      'current',
+                      $event.target.checked
+                    )
+                  "
                 />
                 Current
               </label>
             </div>
-            <textarea 
+            <textarea
               :value="exp.description || ''"
               placeholder="Describe your role, achievements, and gaming industry experience..."
               class="form-textarea"
               rows="3"
-              @input="updateExperienceField(index, 'description', $event.target.value)"
+              @input="
+                updateExperienceField(index, 'description', $event.target.value)
+              "
             ></textarea>
           </div>
         </section>
@@ -192,14 +212,15 @@
             </UnifiedButton>
           </div>
           <div class="skills-section">
-            <textarea 
-              v-model="skillsText" 
+            <textarea
+              v-model="skillsText"
               placeholder="List your skills separated by commas (e.g. JavaScript, Unity, Team Leadership, C++, Game Design, Communication...)"
               class="skills-textarea"
               rows="4"
             ></textarea>
             <div class="skills-help">
-              Separate skills with commas. Include technical, gaming, and soft skills.
+              Separate skills with commas. Include technical, gaming, and soft
+              skills.
             </div>
           </div>
         </section>
@@ -217,11 +238,23 @@
               Add
             </UnifiedButton>
           </div>
-          
-          <div v-for="(edu, index) in resumeData.education" :key="index" class="education-item">
+
+          <div
+            v-for="(edu, index) in resumeData.education"
+            :key="index"
+            class="education-item"
+          >
             <div class="item-header">
-              <input v-model="edu.institution" placeholder="Institution" class="form-input" />
-              <input v-model="edu.degree" placeholder="Degree" class="form-input" />
+              <input
+                v-model="edu.institution"
+                placeholder="Institution"
+                class="form-input"
+              />
+              <input
+                v-model="edu.degree"
+                placeholder="Degree"
+                class="form-input"
+              />
               <UnifiedButton
                 variant="ghost"
                 size="sm"
@@ -230,8 +263,16 @@
               />
             </div>
             <div class="date-range">
-              <input v-model="edu.startDate" placeholder="Start Year" class="form-input date-input" />
-              <input v-model="edu.endDate" placeholder="End Year" class="form-input date-input" />
+              <input
+                v-model="edu.startDate"
+                placeholder="Start Year"
+                class="form-input date-input"
+              />
+              <input
+                v-model="edu.endDate"
+                placeholder="End Year"
+                class="form-input date-input"
+              />
             </div>
           </div>
         </section>
@@ -254,23 +295,23 @@
             </UnifiedButton>
           </div>
           <div class="form-grid">
-            <input 
+            <input
               :value="props.coverLetterData.jobInfo?.company || ''"
               placeholder="Company Name"
-              class="form-input" 
-              @input="updateJobInfo('company', $event.target.value)" 
+              class="form-input"
+              @input="updateJobInfo('company', $event.target.value)"
             />
-            <input 
+            <input
               :value="props.coverLetterData.jobInfo?.position || ''"
               placeholder="Position Title"
-              class="form-input" 
-              @input="updateJobInfo('position', $event.target.value)" 
+              class="form-input"
+              @input="updateJobInfo('position', $event.target.value)"
             />
-            <input 
+            <input
               :value="props.coverLetterData.jobInfo?.hiringManager || ''"
               placeholder="Hiring Manager (optional)"
-              class="form-input" 
-              @input="updateJobInfo('hiringManager', $event.target.value)" 
+              class="form-input"
+              @input="updateJobInfo('hiringManager', $event.target.value)"
             />
           </div>
         </section>
@@ -297,22 +338,24 @@
               </UnifiedButton>
             </div>
           </div>
-          
+
           <div class="letter-sections">
             <div class="letter-section">
               <label>Opening Paragraph</label>
-              <textarea 
+              <textarea
                 :value="props.coverLetterData.content?.opening || ''"
                 placeholder="Introduce yourself and express interest in the position..."
                 class="form-textarea"
                 rows="3"
-                @input="updateCoverLetterContent('opening', $event.target.value)"
+                @input="
+                  updateCoverLetterContent('opening', $event.target.value)
+                "
               ></textarea>
             </div>
-            
+
             <div class="letter-section">
               <label>Body Paragraphs</label>
-              <textarea 
+              <textarea
                 :value="props.coverLetterData.content?.body || ''"
                 placeholder="Highlight relevant experience and skills, especially gaming industry background..."
                 class="form-textarea"
@@ -320,15 +363,17 @@
                 @input="updateCoverLetterContent('body', $event.target.value)"
               ></textarea>
             </div>
-            
+
             <div class="letter-section">
               <label>Closing Paragraph</label>
-              <textarea 
+              <textarea
                 :value="props.coverLetterData.content?.closing || ''"
                 placeholder="Thank them and include call to action..."
                 class="form-textarea"
                 rows="2"
-                @input="updateCoverLetterContent('closing', $event.target.value)"
+                @input="
+                  updateCoverLetterContent('closing', $event.target.value)
+                "
               ></textarea>
             </div>
           </div>
@@ -348,7 +393,11 @@
         />
       </div>
       <div class="suggestions-list">
-        <div v-for="(suggestion, index) in aiSuggestions" :key="index" class="suggestion-item">
+        <div
+          v-for="(suggestion, index) in aiSuggestions"
+          :key="index"
+          class="suggestion-item"
+        >
           <div class="suggestion-text">{{ suggestion.text }}</div>
           <div class="suggestion-actions">
             <UnifiedButton
@@ -387,7 +436,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  aiReady: false
+  aiReady: false,
 })
 
 // Emits
@@ -407,24 +456,33 @@ const aiSuggestions = ref<any[]>([])
 // Computed for skills text areas (matching actual data structure: Array<{name: string}>)
 const skillsText = computed({
   get: () => {
-    if (!props.resumeData.skills || !Array.isArray(props.resumeData.skills)) return ''
+    if (!props.resumeData.skills || !Array.isArray(props.resumeData.skills))
+      return ''
     return props.resumeData.skills.map(skill => skill.name).join(', ')
   },
   set: (value: string) => {
-    const skills = value.split(',').map(s => s.trim()).filter(Boolean).map(name => ({ name }))
+    const skills = value
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(name => ({ name }))
     updateResumeData({ skills })
-  }
+  },
 })
 
 const hasContent = computed(() => {
   if (props.documentType === 'resume') {
-    return props.resumeData.personalInfo?.name || 
-           props.resumeData.experience?.length > 0 ||
-           props.resumeData.summary
+    return (
+      props.resumeData.personalInfo?.name ||
+      props.resumeData.experience?.length > 0 ||
+      props.resumeData.summary
+    )
   }
-  return props.coverLetterData.content?.opening ||
-         props.coverLetterData.content?.body ||
-         props.coverLetterData.jobInfo?.company
+  return (
+    props.coverLetterData.content?.opening ||
+    props.coverLetterData.content?.body ||
+    props.coverLetterData.jobInfo?.company
+  )
 })
 
 // Methods
@@ -460,10 +518,10 @@ const addExperience = () => {
     endDate: '',
     current: false,
     location: '',
-    description: ''
+    description: '',
   }
   updateResumeData({
-    experience: [...(props.resumeData.experience || []), newExp]
+    experience: [...(props.resumeData.experience || []), newExp],
   })
 }
 
@@ -481,10 +539,10 @@ const addEducation = () => {
     field: '',
     startDate: '',
     endDate: '',
-    achievements: []
+    achievements: [],
   }
   updateResumeData({
-    education: [...(props.resumeData.education || []), newEdu]
+    education: [...(props.resumeData.education || []), newEdu],
   })
 }
 
@@ -497,27 +555,33 @@ const removeEducation = (index: number) => {
 // AI Enhancement Methods
 const aiEnhanceSection = (section: string) => {
   if (!props.aiReady) return
-  
+
   emit('ai-request', {
     type: 'enhance-section',
     section,
     documentType: props.documentType,
-    currentData: props.documentType === 'resume' ? props.resumeData : props.coverLetterData,
-    profileData: props.profileData
+    currentData:
+      props.documentType === 'resume'
+        ? props.resumeData
+        : props.coverLetterData,
+    profileData: props.profileData,
   })
 }
 
 const getAISuggestions = async () => {
   if (!props.aiReady) return
-  
+
   try {
     const result = await emit('ai-request', {
       type: 'get-suggestions',
       documentType: props.documentType,
-      currentData: props.documentType === 'resume' ? props.resumeData : props.coverLetterData,
-      profileData: props.profileData
+      currentData:
+        props.documentType === 'resume'
+          ? props.resumeData
+          : props.coverLetterData,
+      profileData: props.profileData,
     })
-    
+
     // Real AI suggestions will be populated via the ai-request emit
     // The parent component handles the actual AI service call
     toast.success('AI suggestions requested successfully')
@@ -529,38 +593,44 @@ const getAISuggestions = async () => {
 
 const aiOptimize = () => {
   if (!props.aiReady || !hasContent.value) return
-  
+
   emit('ai-request', {
     type: 'optimize-full-document',
     documentType: props.documentType,
-    currentData: props.documentType === 'resume' ? props.resumeData : props.coverLetterData,
+    currentData:
+      props.documentType === 'resume'
+        ? props.resumeData
+        : props.coverLetterData,
     profileData: props.profileData,
-    template: selectedTemplate.value
+    template: selectedTemplate.value,
   })
 }
 
 const aiGenerateFullLetter = () => {
   if (!props.aiReady) return
-  
+
   emit('ai-request', {
     type: 'generate-cover-letter',
     jobInfo: props.coverLetterData.jobInfo,
     tone: props.coverLetterData.tone,
-    profileData: props.profileData
+    profileData: props.profileData,
   })
 }
 
 const applySuggestion = (suggestion: any) => {
   if (!suggestion.section || !suggestion.text) return
-  
+
   // Apply the suggestion based on its section
   emit('ai-request', {
     type: 'apply-suggestion',
     suggestion,
     documentType: props.documentType,
-    currentData: props.documentType === 'resume' ? props.resumeData : props.coverLetterData
+    currentData:
+      props.documentType === 'resume'
+        ? props.resumeData
+        : props.coverLetterData,
   })
-  
+
   toast.success(`Applied suggestion to ${suggestion.section} section`)
   dismissSuggestion(aiSuggestions.value.indexOf(suggestion))
 }
@@ -570,7 +640,7 @@ const dismissSuggestion = (index: number) => {
 }
 
 // Watch template changes
-watch(selectedTemplate, (newTemplate) => {
+watch(selectedTemplate, newTemplate => {
   emit('template-change', newTemplate)
 })
 </script>

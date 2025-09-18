@@ -8,7 +8,7 @@ export function mapIcon(name) {
     .replace(/^bi-/, '')
     .replace(/^mdi-/, '')
     .replace(/[_\s]+/g, '-')
-  .replace(/[^a-z0-9-]/g, '')
+    .replace(/[^a-z0-9-]/g, '')
 
   const m = {
     // navigation basics

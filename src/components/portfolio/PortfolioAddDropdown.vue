@@ -19,11 +19,7 @@
         </a>
       </li>
       <li>
-        <a
-          class="dropdown-item"
-          href="#"
-          @click="$emit('quickAdd', 'clip')"
-        >
+        <a class="dropdown-item" href="#" @click="$emit('quickAdd', 'clip')">
           <AppIcon name="PlayIcon-circle" class="mr-2" />Video Clip
         </a>
       </li>
@@ -46,21 +42,13 @@
         </a>
       </li>
       <li>
-        <a
-          class="dropdown-item"
-          href="#"
-          @click="$emit('quickAdd', 'content')"
-        >
+        <a class="dropdown-item" href="#" @click="$emit('quickAdd', 'content')">
           <AppIcon name="VideoCameraIcon" />Content Creation
         </a>
       </li>
       <li><hr class="dropdown-divider" /></li>
       <li>
-        <a
-          class="dropdown-item"
-          href="#"
-          @click="$emit('quickAdd', 'custom')"
-        >
+        <a class="dropdown-item" href="#" @click="$emit('quickAdd', 'custom')">
           <AppIcon name="mdi-cog-outline" class="mr-2" />Custom Item
         </a>
       </li>
@@ -69,7 +57,12 @@
 </template>
 
 <script setup>
-import { PlusIcon, TrophyIcon, UsersIcon, VideoCameraIcon } from '@heroicons/vue/24/outline'
+import {
+  PlusIcon,
+  TrophyIcon,
+  UsersIcon,
+  VideoCameraIcon,
+} from '@heroicons/vue/24/outline'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'

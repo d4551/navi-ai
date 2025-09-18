@@ -1,5 +1,8 @@
 <template>
-  <v-card class="glass-card section-card cover-letter-preview-card font-sans" elevation="0">
+  <v-card
+    class="glass-card section-card cover-letter-preview-card font-sans"
+    elevation="0"
+  >
     <v-card-title class="flex items-center pa-4">
       <AppIcon name="DocumentIcon" class="mr-2" />
       Cover Letter Preview
@@ -16,13 +19,22 @@
         </UnifiedButton>
       </div>
     </v-card-title>
-    
+
     <v-card-text class="pa-0">
-      <div ref="previewRef" class="cover-letter-preview-content" :class="templateClass">
+      <div
+        ref="previewRef"
+        class="cover-letter-preview-content"
+        :class="templateClass"
+      >
         <!-- Header Section -->
-        <div v-if="coverLetterData.personal" class="cover-letter-header pa-6-unified">
+        <div
+          v-if="coverLetterData.personal"
+          class="cover-letter-header pa-6-unified"
+        >
           <div class="header-main">
-            <h1 class="applicant-name">{{ coverLetterData.personal.fullName || 'Your Name' }}</h1>
+            <h1 class="applicant-name">
+              {{ coverLetterData.personal.fullName || 'Your Name' }}
+            </h1>
             <div class="contact-info">
               <div v-if="coverLetterData.personal.email" class="contact-item">
                 <AppIcon name="mdi-email-outline" size="16" />
@@ -32,11 +44,17 @@
                 <AppIcon name="PhoneIcon-outline" size="16" />
                 {{ coverLetterData.personal.phone }}
               </div>
-              <div v-if="coverLetterData.personal.location" class="contact-item">
+              <div
+                v-if="coverLetterData.personal.location"
+                class="contact-item"
+              >
                 <AppIcon name="mdi-map-marker-outline" size="16" />
                 {{ coverLetterData.personal.location }}
               </div>
-              <div v-if="coverLetterData.personal.linkedin" class="contact-item">
+              <div
+                v-if="coverLetterData.personal.linkedin"
+                class="contact-item"
+              >
                 <AppIcon name="LinkIconedin" size="16" />
                 {{ coverLetterData.personal.linkedin }}
               </div>
@@ -48,13 +66,19 @@
         <div class="letter-meta pa-6-unified">
           <div class="letter-date">{{ formatDate(new Date()) }}</div>
           <div v-if="coverLetterData.jobInfo" class="recipient-info mt-4">
-            <div v-if="coverLetterData.jobInfo.hiringManager" class="recipient-name">
+            <div
+              v-if="coverLetterData.jobInfo.hiringManager"
+              class="recipient-name"
+            >
               {{ coverLetterData.jobInfo.hiringManager }}
             </div>
             <div v-if="coverLetterData.jobInfo.company" class="company-name">
               {{ coverLetterData.jobInfo.company }}
             </div>
-            <div v-if="coverLetterData.jobInfo.location" class="company-location">
+            <div
+              v-if="coverLetterData.jobInfo.location"
+              class="company-location"
+            >
               {{ coverLetterData.jobInfo.location }}
             </div>
           </div>
@@ -71,33 +95,48 @@
               <span v-else-if="coverLetterData.jobInfo?.company">
                 Dear {{ coverLetterData.jobInfo.company }} Hiring Team,
               </span>
-              <span v-else>
-                Dear Hiring Manager,
-              </span>
+              <span v-else> Dear Hiring Manager, </span>
             </p>
           </div>
 
           <!-- Opening Paragraph -->
-          <div v-if="coverLetterData.content?.opening" class="letter-paragraph mb-4">
+          <div
+            v-if="coverLetterData.content?.opening"
+            class="letter-paragraph mb-4"
+          >
             <p>{{ coverLetterData.content.opening }}</p>
           </div>
 
           <!-- Body Paragraphs -->
-          <div v-if="coverLetterData.content?.body" class="letter-paragraph mb-4">
-            <p v-for="(paragraph, index) in getBodyParagraphs(coverLetterData.content.body)" :key="index" class="mb-3">
+          <div
+            v-if="coverLetterData.content?.body"
+            class="letter-paragraph mb-4"
+          >
+            <p
+              v-for="(paragraph, index) in getBodyParagraphs(
+                coverLetterData.content.body
+              )"
+              :key="index"
+              class="mb-3"
+            >
               {{ paragraph }}
             </p>
           </div>
 
           <!-- Closing Paragraph -->
-          <div v-if="coverLetterData.content?.closing" class="letter-paragraph mb-4">
+          <div
+            v-if="coverLetterData.content?.closing"
+            class="letter-paragraph mb-4"
+          >
             <p>{{ coverLetterData.content.closing }}</p>
           </div>
 
           <!-- Signature -->
           <div class="signature mt-5">
             <p class="mb-1">Sincerely,</p>
-            <p class="signature-name">{{ coverLetterData.personal?.fullName || 'Your Name' }}</p>
+            <p class="signature-name">
+              {{ coverLetterData.personal?.fullName || 'Your Name' }}
+            </p>
           </div>
         </div>
       </div>
@@ -140,18 +179,20 @@ interface Props {
 
 const _props = withDefaults(defineProps<Props>(), {
   coverLetterData: () => ({}),
-  template: 'classic'
+  template: 'classic',
 })
 
 const previewRef = ref<HTMLElement>()
 
-const templateClass = computed(() => `cover-letter-template-${(props.template || 'classic').toLowerCase()}`)
+const templateClass = computed(
+  () => `cover-letter-template-${(props.template || 'classic').toLowerCase()}`
+)
 
 const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 
@@ -295,7 +336,11 @@ const printCoverLetter = () => {
 }
 
 .cover-letter-template-modern .cover-letter-header {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--color-info-200) 60%, transparent), color-mix(in srgb, var(--color-info-100) 60%, transparent));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-info-200) 60%, transparent),
+    color-mix(in srgb, var(--color-info-100) 60%, transparent)
+  );
   border-b: 2px solid var(--color-info-300);
 }
 
@@ -306,7 +351,11 @@ const printCoverLetter = () => {
 }
 
 .cover-letter-template-elegant .cover-letter-header {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-100) 70%, transparent), color-mix(in srgb, var(--color-primary-50) 70%, transparent));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-100) 70%, transparent),
+    color-mix(in srgb, var(--color-primary-50) 70%, transparent)
+  );
   border-b: 1px solid var(--color-primary-200);
 }
 

@@ -24,30 +24,39 @@ class AIInterviewService {
         await aiService.initialize({
           primaryProvider: 'google',
           enableContextPersistence: true,
-          enableRealTime: false
+          enableRealTime: false,
         })
       } catch (error) {
-        throw new Error('AI service not initialized. Please configure your API key in settings.')
+        throw new Error(
+          'AI service not initialized. Please configure your API key in settings.'
+        )
       }
-      
+
       const sessionData = {
         id: `ai_interview_${Date.now()}`,
         config: {
           ...config,
           // Normalize persona structure
-          persona: config.persona ? {
-            id: config.persona.id || config.persona.name || 'custom',
-            name: config.persona.name || 'Gaming Interviewer',
-            archetype: config.persona.archetype || config.persona.name || 'AAA Interviewer',
-            tone: config.persona.tone || 'professional',
-            focusAreas: Array.isArray(config.persona.focusAreas) ? config.persona.focusAreas : [],
-          } : null,
+          persona: config.persona
+            ? {
+                id: config.persona.id || config.persona.name || 'custom',
+                name: config.persona.name || 'Gaming Interviewer',
+                archetype:
+                  config.persona.archetype ||
+                  config.persona.name ||
+                  'AAA Interviewer',
+                tone: config.persona.tone || 'professional',
+                focusAreas: Array.isArray(config.persona.focusAreas)
+                  ? config.persona.focusAreas
+                  : [],
+              }
+            : null,
         },
         startTime: Date.now(),
         questions: [],
         responses: [],
         currentQuestionIndex: 0,
-        status: 'active'
+        status: 'active',
       }
 
       // Generate initial question set with AI
@@ -60,13 +69,13 @@ class AIInterviewService {
 
       return {
         success: true,
-        session: sessionData
+        session: sessionData,
       }
     } catch (error) {
       logger.error('Failed to start AI interview session:', error)
       return {
         success: false,
-        error: error.message
+        error: error.message,
       }
     }
   }
@@ -115,12 +124,12 @@ Return JSON in this exact format:
   ]
 }`
 
-    const prompt = `Generate ${config.questionCount} interview questions for this configuration. Make them progressively challenging and relevant to ${config.studioName || 'gaming industry'} hiring practices. ${config.studioContext ? 'Incorporate the studio\'s specific technologies, games, and culture into the questions where appropriate.' : ''} Include a mix of question types as specified in the configuration. The questions should sound like they would realistically be asked by a ${config.persona?.archetype || 'gaming industry interviewer'} with a ${config.persona?.tone || 'professional'} communication style.`
+    const prompt = `Generate ${config.questionCount} interview questions for this configuration. Make them progressively challenging and relevant to ${config.studioName || 'gaming industry'} hiring practices. ${config.studioContext ? "Incorporate the studio's specific technologies, games, and culture into the questions where appropriate." : ''} Include a mix of question types as specified in the configuration. The questions should sound like they would realistically be asked by a ${config.persona?.archetype || 'gaming industry interviewer'} with a ${config.persona?.tone || 'professional'} communication style.`
 
     try {
       // Use enhanced chat method for better studio-specific generation
       const contextInfo = `Studio: ${config.studioName}\nRole: ${config.roleType}\nExperience: ${config.experienceLevel}\nPersona: ${config.persona?.archetype}\nTech Stack: ${config.studioContext?.technologies?.join(', ') || 'General'}\nGame Genres: ${config.studioContext?.gameGenres?.join(', ') || 'General'}`
-      
+
       const response = await aiService.chat({
         message: prompt,
         context: contextInfo,
@@ -129,8 +138,8 @@ Return JSON in this exact format:
           feature: 'interview-question-generation',
           studio: config.studioName,
           role: config.roleType,
-          persona: config.persona?.archetype
-        }
+          persona: config.persona?.archetype,
+        },
       })
 
       // Try to parse as JSON first, fallback to text parsing
@@ -144,13 +153,25 @@ Return JSON in this exact format:
         questions = lines.slice(0, config.questionCount).map((line, idx) => ({
           id: `q${idx + 1}`,
           question: line.replace(/^\d+\.\s*/, ''),
-          type: idx < 3 ? 'intro' : idx > config.questionCount - 3 ? 'closing' : 'behavioral',
-          difficulty: idx < 2 ? 'easy' : idx > config.questionCount - 3 ? 'medium' : 'hard',
-          expectedDuration: 120
+          type:
+            idx < 3
+              ? 'intro'
+              : idx > config.questionCount - 3
+                ? 'closing'
+                : 'behavioral',
+          difficulty:
+            idx < 2
+              ? 'easy'
+              : idx > config.questionCount - 3
+                ? 'medium'
+                : 'hard',
+          expectedDuration: 120,
         }))
       }
 
-      return questions.length > 0 ? questions : this.getFallbackQuestions(config)
+      return questions.length > 0
+        ? questions
+        : this.getFallbackQuestions(config)
     } catch (error) {
       logger.error('Failed to generate question set:', error)
       return this.getFallbackQuestions(config)
@@ -160,7 +181,11 @@ Return JSON in this exact format:
   /**
    * Generate a dynamic follow-up question based on the user's previous response
    */
-  async generateFollowUpQuestion(previousResponse, questionContext, sessionConfig) {
+  async generateFollowUpQuestion(
+    previousResponse,
+    questionContext,
+    sessionConfig
+  ) {
     const systemInstructions = `You are an expert gaming industry interviewer. Based on the candidate's previous response, generate an intelligent follow-up question that:
 
 1. Digs deeper into their answer
@@ -191,11 +216,11 @@ Return JSON:
 
     try {
       const contextInfo = `Previous Question: ${questionContext.question}\nCandidate Response: ${previousResponse}\nRole: ${sessionConfig.roleType}\nExperience: ${sessionConfig.experienceLevel}\nStudio: ${sessionConfig.studioName || sessionConfig.studioId}\nPersona: ${sessionConfig.persona?.archetype || ''} (${sessionConfig.persona?.tone || ''})\nFocus: ${(sessionConfig.persona?.focusAreas || []).join(', ')}`
-      
+
       const response = await aiService.chat({
         message: `Generate a follow-up interview question based on the candidate's response: "${previousResponse}"`,
         context: contextInfo,
-        type: 'analysis'
+        type: 'analysis',
       })
 
       // Try to parse as JSON, fallback to text
@@ -208,7 +233,7 @@ Return JSON:
           type: 'follow-up',
           difficulty: 'medium',
           expectedDuration: 90,
-          reasoning: 'Generated based on previous response'
+          reasoning: 'Generated based on previous response',
         }
       }
 
@@ -217,8 +242,8 @@ Return JSON:
         question: {
           id: `followup_${Date.now()}`,
           ...questionData,
-          isFollowUp: true
-        }
+          isFollowUp: true,
+        },
       }
     } catch (error) {
       logger.error('Failed to generate follow-up question:', error)
@@ -285,7 +310,7 @@ Analyze this interview response and provide scores (0-100) for: content quality,
       const response = await aiService.chat({
         message: `Analyze this interview response: "${responseData.transcript}"`,
         context: contextInfo,
-        type: 'analysis'
+        type: 'analysis',
       })
 
       // Try to parse as JSON, fallback to structured analysis
@@ -295,26 +320,26 @@ Analyze this interview response and provide scores (0-100) for: content quality,
       } catch {
         analysis = this.parseAnalysisFromText(response.content, responseData)
       }
-      
+
       // Store analysis for session tracking
       if (this.activeSession) {
         this.activeSession.responses.push({
           ...responseData,
           analysis,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         })
       }
 
       return {
         success: true,
-        analysis
+        analysis,
       }
     } catch (error) {
       logger.error('Failed to analyze response:', error)
       return {
         success: false,
         error: error.message,
-        analysis: this.getFallbackAnalysis(responseData)
+        analysis: this.getFallbackAnalysis(responseData),
       }
     }
   }
@@ -330,14 +355,14 @@ Analyze this interview response and provide scores (0-100) for: content quality,
         communication: 70,
         gamingKnowledge: 80,
         roleFit: 75,
-        growthMindset: 70
+        growthMindset: 70,
       },
       feedback: textContent.substring(0, 200) + '...',
       strengths: ['Clear communication', 'Gaming passion evident'],
       improvements: ['More specific examples', 'Better structure'],
       followUpSuggestions: ['Practice with concrete examples'],
       gamingInsights: 'Gaming skills show good problem-solving abilities',
-      confidence: 0.7
+      confidence: 0.7,
     }
   }
 
@@ -350,9 +375,12 @@ Analyze this interview response and provide scores (0-100) for: content quality,
     }
 
     const session = this.activeSession
-    
+
     // Check if we should generate a follow-up based on last response
-    if (lastResponseData && this.shouldGenerateFollowUp(lastResponseData, session)) {
+    if (
+      lastResponseData &&
+      this.shouldGenerateFollowUp(lastResponseData, session)
+    ) {
       const followUpResult = await this.generateFollowUpQuestion(
         lastResponseData.transcript,
         session.questions[session.currentQuestionIndex],
@@ -363,20 +391,20 @@ Analyze this interview response and provide scores (0-100) for: content quality,
         return {
           success: true,
           question: followUpResult.question,
-          isFollowUp: true
+          isFollowUp: true,
         }
       }
     }
 
     // Move to next prepared question
     session.currentQuestionIndex++
-    
+
     if (session.currentQuestionIndex >= session.questions.length) {
       // Interview complete
       return {
         success: true,
         completed: true,
-        summary: await this.generateInterviewSummary(session)
+        summary: await this.generateInterviewSummary(session),
       }
     }
 
@@ -385,7 +413,7 @@ Analyze this interview response and provide scores (0-100) for: content quality,
 
     return {
       success: true,
-      question: nextQuestion
+      question: nextQuestion,
     }
   }
 
@@ -398,10 +426,12 @@ Analyze this interview response and provide scores (0-100) for: content quality,
     // 2. Responses that mention interesting gaming experiences
     // 3. Technical questions that need more depth
     // 4. Random chance (20%) for variety
-    
+
     const wordCount = responseData.transcript.split(' ').length
     const isShort = wordCount < 30
-    const mentionsGaming = /game|gaming|play|guild|team|competition/i.test(responseData.transcript)
+    const mentionsGaming = /game|gaming|play|guild|team|competition/i.test(
+      responseData.transcript
+    )
     const isTechnical = session.currentQuestion?.type === 'technical'
     const randomChance = Math.random() < 0.2
 
@@ -437,7 +467,7 @@ Return JSON:
       const response = await aiService.chat({
         message: 'Generate comprehensive interview summary',
         type: 'analysis',
-        metadata: { session: this.sanitizeSessionForAI(session) }
+        metadata: { session: this.sanitizeSessionForAI(session) },
       })
 
       return JSON.parse(response.content || response)
@@ -450,7 +480,11 @@ Return JSON:
   /**
    * Get real-time coaching tips during the interview
    */
-  async getRealTimeCoaching(currentQuestion, responseInProgress, sessionConfig) {
+  async getRealTimeCoaching(
+    currentQuestion,
+    responseInProgress,
+    sessionConfig
+  ) {
     if (!responseInProgress || responseInProgress.length < 50) {
       return null // Wait for more content
     }
@@ -468,7 +502,7 @@ Return JSON:
       const response = await aiService.chat({
         message: `Provide coaching for this response in progress: "${responseInProgress}"`,
         type: 'analysis',
-        metadata: { currentQuestion, sessionConfig }
+        metadata: { currentQuestion, sessionConfig },
       })
 
       return JSON.parse(response.content || response)
@@ -485,16 +519,16 @@ Return JSON:
     if (this.activeSession && this.activeSession.id === sessionId) {
       this.activeSession.status = 'completed'
       this.activeSession.endTime = Date.now()
-      
+
       const sessionData = { ...this.activeSession }
       this.activeSession = null
-      
+
       return {
         success: true,
-        session: sessionData
+        session: sessionData,
       }
     }
-    
+
     return { success: false, error: 'Session not found' }
   }
 
@@ -506,84 +540,128 @@ Return JSON:
       intro: [
         {
           id: 'gaming_intro_1',
-          question: 'Tell me about yourself and what draws you to the gaming industry.',
+          question:
+            'Tell me about yourself and what draws you to the gaming industry.',
           type: 'intro',
           difficulty: 'easy',
           expectedDuration: 120,
           keywords: ['gaming passion', 'industry interest', 'background'],
-          scoringCriteria: ['Personal connection to gaming', 'Career motivation', 'Industry awareness']
+          scoringCriteria: [
+            'Personal connection to gaming',
+            'Career motivation',
+            'Industry awareness',
+          ],
         },
         {
           id: 'gaming_intro_2',
-          question: 'What gaming experiences have shaped your approach to problem-solving and teamwork?',
+          question:
+            'What gaming experiences have shaped your approach to problem-solving and teamwork?',
           type: 'intro',
           difficulty: 'easy',
           expectedDuration: 150,
           keywords: ['gaming experience', 'problem solving', 'teamwork'],
-          scoringCriteria: ['Specific gaming examples', 'Transferable skills', 'Team collaboration']
-        }
+          scoringCriteria: [
+            'Specific gaming examples',
+            'Transferable skills',
+            'Team collaboration',
+          ],
+        },
       ],
-      
+
       behavioral: [
         {
           id: 'gaming_behavioral_1',
-          question: 'Describe a time when you had to adapt quickly to changes in a gaming environment. How did you handle it?',
+          question:
+            'Describe a time when you had to adapt quickly to changes in a gaming environment. How did you handle it?',
           type: 'behavioral',
           difficulty: 'medium',
           expectedDuration: 180,
           keywords: ['adaptation', 'change management', 'gaming'],
-          scoringCriteria: ['Specific situation', 'Actions taken', 'Results achieved', 'Learning outcomes']
+          scoringCriteria: [
+            'Specific situation',
+            'Actions taken',
+            'Results achieved',
+            'Learning outcomes',
+          ],
         },
         {
           id: 'gaming_behavioral_2',
-          question: 'Tell me about a challenging raid, competition, or gaming project you led. What was your approach?',
+          question:
+            'Tell me about a challenging raid, competition, or gaming project you led. What was your approach?',
           type: 'behavioral',
           difficulty: 'medium',
           expectedDuration: 200,
           keywords: ['leadership', 'challenge', 'gaming project'],
-          scoringCriteria: ['Leadership style', 'Problem-solving approach', 'Team dynamics', 'Results']
+          scoringCriteria: [
+            'Leadership style',
+            'Problem-solving approach',
+            'Team dynamics',
+            'Results',
+          ],
         },
         {
           id: 'gaming_behavioral_3',
-          question: 'How have you used gaming communities or forums to learn new skills or solve problems?',
+          question:
+            'How have you used gaming communities or forums to learn new skills or solve problems?',
           type: 'behavioral',
           difficulty: 'medium',
           expectedDuration: 150,
           keywords: ['community', 'learning', 'problem solving'],
-          scoringCriteria: ['Initiative', 'Learning agility', 'Communication skills']
-        }
+          scoringCriteria: [
+            'Initiative',
+            'Learning agility',
+            'Communication skills',
+          ],
+        },
       ],
-      
+
       technical: [
         {
           id: 'gaming_technical_1',
-          question: 'If you were designing a matchmaking system for a multiplayer game, what factors would you consider?',
+          question:
+            'If you were designing a matchmaking system for a multiplayer game, what factors would you consider?',
           type: 'technical',
           difficulty: 'hard',
           expectedDuration: 300,
           keywords: ['system design', 'matchmaking', 'algorithms'],
-          scoringCriteria: ['System thinking', 'Scalability considerations', 'User experience', 'Technical depth']
+          scoringCriteria: [
+            'System thinking',
+            'Scalability considerations',
+            'User experience',
+            'Technical depth',
+          ],
         },
         {
           id: 'gaming_technical_2',
-          question: 'Explain how you would optimize game performance for different hardware configurations.',
+          question:
+            'Explain how you would optimize game performance for different hardware configurations.',
           type: 'technical',
           difficulty: 'hard',
           expectedDuration: 250,
           keywords: ['performance', 'optimization', 'hardware'],
-          scoringCriteria: ['Technical knowledge', 'Performance concepts', 'Practical solutions']
+          scoringCriteria: [
+            'Technical knowledge',
+            'Performance concepts',
+            'Practical solutions',
+          ],
         },
         {
           id: 'gaming_technical_3',
-          question: 'How would you implement a real-time leaderboard system that handles millions of players?',
+          question:
+            'How would you implement a real-time leaderboard system that handles millions of players?',
           type: 'technical',
           difficulty: 'hard',
           expectedDuration: 280,
           keywords: ['real-time', 'scalability', 'leaderboard'],
-          scoringCriteria: ['Architecture design', 'Database considerations', 'Scalability', 'Real-time processing']
-        }
+          scoringCriteria: [
+            'Architecture design',
+            'Database considerations',
+            'Scalability',
+            'Real-time processing',
+          ],
+        },
       ],
-      
+
       studioSpecific: [
         {
           id: 'studio_culture_1',
@@ -592,66 +670,91 @@ Return JSON:
           difficulty: 'medium',
           expectedDuration: 180,
           keywords: ['company research', 'games', 'culture'],
-          scoringCriteria: ['Research depth', 'Game knowledge', 'Culture alignment']
+          scoringCriteria: [
+            'Research depth',
+            'Game knowledge',
+            'Culture alignment',
+          ],
         },
         {
           id: 'studio_culture_2',
-          question: 'How would you contribute to maintaining our studio\'s creative and collaborative environment?',
+          question:
+            "How would you contribute to maintaining our studio's creative and collaborative environment?",
           type: 'studio-specific',
           difficulty: 'medium',
           expectedDuration: 160,
           keywords: ['collaboration', 'creativity', 'culture fit'],
-          scoringCriteria: ['Cultural understanding', 'Collaboration style', 'Creative thinking']
-        }
+          scoringCriteria: [
+            'Cultural understanding',
+            'Collaboration style',
+            'Creative thinking',
+          ],
+        },
       ],
-      
+
       closing: [
         {
           id: 'gaming_closing_1',
-          question: 'What questions do you have about working in the gaming industry or at our studio?',
+          question:
+            'What questions do you have about working in the gaming industry or at our studio?',
           type: 'closing',
           difficulty: 'easy',
           expectedDuration: 120,
           keywords: ['questions', 'curiosity', 'engagement'],
-          scoringCriteria: ['Thoughtful questions', 'Industry interest', 'Engagement level']
+          scoringCriteria: [
+            'Thoughtful questions',
+            'Industry interest',
+            'Engagement level',
+          ],
         },
         {
           id: 'gaming_closing_2',
-          question: 'Where do you see the gaming industry heading in the next 5 years, and how do you want to be part of that?',
+          question:
+            'Where do you see the gaming industry heading in the next 5 years, and how do you want to be part of that?',
           type: 'closing',
           difficulty: 'medium',
           expectedDuration: 180,
           keywords: ['industry trends', 'future vision', 'career goals'],
-          scoringCriteria: ['Industry awareness', 'Vision', 'Career alignment']
-        }
-      ]
+          scoringCriteria: ['Industry awareness', 'Vision', 'Career alignment'],
+        },
+      ],
     }
-    
+
     // Select questions based on config
     let selectedQuestions = []
     const questionCount = config.questionCount || 5
-    
+
     // Always include intro question
     selectedQuestions.push(gamingQuestionSets.intro[0])
-    
+
     // Add behavioral questions
     if (config.includeBehavioral !== false) {
-      selectedQuestions.push(...gamingQuestionSets.behavioral.slice(0, Math.max(1, Math.floor(questionCount * 0.4))))
+      selectedQuestions.push(
+        ...gamingQuestionSets.behavioral.slice(
+          0,
+          Math.max(1, Math.floor(questionCount * 0.4))
+        )
+      )
     }
-    
+
     // Add technical questions if requested
     if (config.includeTechnical) {
-      selectedQuestions.push(...gamingQuestionSets.technical.slice(0, Math.max(1, Math.floor(questionCount * 0.3))))
+      selectedQuestions.push(
+        ...gamingQuestionSets.technical.slice(
+          0,
+          Math.max(1, Math.floor(questionCount * 0.3))
+        )
+      )
     }
-    
+
     // Add studio-specific questions
     if (config.includeStudioSpecific) {
       selectedQuestions.push(...gamingQuestionSets.studioSpecific.slice(0, 1))
     }
-    
+
     // Add closing question
     selectedQuestions.push(gamingQuestionSets.closing[0])
-    
+
     // Trim to requested count
     return selectedQuestions.slice(0, questionCount)
   }
@@ -669,10 +772,11 @@ Return JSON:
 
     return {
       overallScore: score,
-      feedback: 'Your response shows good effort. Consider providing more specific examples and details.',
+      feedback:
+        'Your response shows good effort. Consider providing more specific examples and details.',
       strengths: ['Clear communication'],
       improvements: ['Add more specific examples', 'Elaborate on key points'],
-      confidence: 0.6
+      confidence: 0.6,
     }
   }
 
@@ -680,13 +784,26 @@ Return JSON:
    * Fallback summary if AI generation fails
    */
   getFallbackSummary(session) {
-    const avgScore = session.responses.reduce((sum, r) => sum + (r.analysis?.overallScore || 60), 0) / session.responses.length
-    
+    const avgScore =
+      session.responses.reduce(
+        (sum, r) => sum + (r.analysis?.overallScore || 60),
+        0
+      ) / session.responses.length
+
     return {
       overallScore: Math.round(avgScore),
-      strengths: ['Completed the interview', 'Shows interest in gaming industry'],
-      improvementAreas: ['Provide more detailed responses', 'Use specific examples'],
-      recommendations: ['Practice behavioral interview techniques', 'Research the gaming industry more deeply']
+      strengths: [
+        'Completed the interview',
+        'Shows interest in gaming industry',
+      ],
+      improvementAreas: [
+        'Provide more detailed responses',
+        'Use specific examples',
+      ],
+      recommendations: [
+        'Practice behavioral interview techniques',
+        'Research the gaming industry more deeply',
+      ],
     }
   }
 
@@ -698,7 +815,11 @@ Return JSON:
       config: session.config,
       questionCount: session.questions.length,
       responseCount: session.responses.length,
-      averageScore: session.responses.reduce((sum, r) => sum + (r.analysis?.overallScore || 0), 0) / session.responses.length
+      averageScore:
+        session.responses.reduce(
+          (sum, r) => sum + (r.analysis?.overallScore || 0),
+          0
+        ) / session.responses.length,
     }
   }
 
@@ -709,7 +830,9 @@ Return JSON:
     if (this.activeSession && this.activeSession.id === sessionId) {
       return {
         ...this.activeSession,
-        elapsedTime: Math.floor((Date.now() - this.activeSession.startTime) / 1000)
+        elapsedTime: Math.floor(
+          (Date.now() - this.activeSession.startTime) / 1000
+        ),
       }
     }
     return null
@@ -719,7 +842,11 @@ Return JSON:
     if (!this.activeSession || this.activeSession.id !== sessionId) {
       return { success: false, error: 'Invalid session' }
     }
-    const result = await this.analyzeResponse(response, this.activeSession.currentQuestion, this.activeSession.config)
+    const result = await this.analyzeResponse(
+      response,
+      this.activeSession.currentQuestion,
+      this.activeSession.config
+    )
     if (result.success) {
       return { success: true, feedback: result.analysis }
     }
@@ -729,7 +856,11 @@ Return JSON:
   async nextQuestion(sessionId) {
     const result = await this.getNextQuestion(sessionId)
     if (result?.success && !result.completed) {
-      return { success: true, question: result.question, index: this.activeSession?.currentQuestionIndex || 0 }
+      return {
+        success: true,
+        question: result.question,
+        index: this.activeSession?.currentQuestionIndex || 0,
+      }
     }
     return result
   }
@@ -742,10 +873,10 @@ Return JSON:
       return {
         success: true,
         session: this.activeSession,
-        isActive: this.activeSession.status === 'active'
+        isActive: this.activeSession.status === 'active',
       }
     }
-    
+
     return { success: false, error: 'Session not found' }
   }
 
@@ -754,7 +885,10 @@ Return JSON:
    */
   async getInterviewStats() {
     try {
-      if (typeof window !== 'undefined' && window.electronAPI?.interview?.getStats) {
+      if (
+        typeof window !== 'undefined' &&
+        window.electronAPI?.interview?.getStats
+      ) {
         const res = await window.electronAPI.interview.getStats()
         if (res?.success && res.data) {
           // Map to UI-friendly shape; preserve extra fields
@@ -772,7 +906,10 @@ Return JSON:
         }
       }
     } catch (e) {
-      console.warn('[Interview] getInterviewStats failed, using fallback:', e?.message || e)
+      console.warn(
+        '[Interview] getInterviewStats failed, using fallback:',
+        e?.message || e
+      )
     }
 
     // Fallback minimal stats
@@ -784,7 +921,7 @@ Return JSON:
       totalTime: 0,
       skillAreas: [],
       topPerformingAreas: [],
-      improvementAreas: []
+      improvementAreas: [],
     }
   }
 
@@ -793,14 +930,21 @@ Return JSON:
    */
   async getInterviewHistory(limit = 10) {
     try {
-      if (typeof window !== 'undefined' && window.electronAPI?.interview?.getHistory) {
-        const res = await window.electronAPI.interview.getHistory({ limit, offset: 0 })
+      if (
+        typeof window !== 'undefined' &&
+        window.electronAPI?.interview?.getHistory
+      ) {
+        const res = await window.electronAPI.interview.getHistory({
+          limit,
+          offset: 0,
+        })
         if (res?.success && Array.isArray(res.data)) {
           return res.data.map(item => ({
             id: item.id,
             type: 'studio',
             typeName: this.getSessionTypeName('studio'),
-            title: `${item.company || 'Interview'} - ${item.roleType || item.role || ''}`.trim(),
+            title:
+              `${item.company || 'Interview'} - ${item.roleType || item.role || ''}`.trim(),
             description: 'Interview session',
             score: item.score ?? null,
             duration: Math.round((item.duration || 0) / 60),
@@ -809,17 +953,20 @@ Return JSON:
             improvements: item.feedback?.improvements || [],
             studioName: item.company || 'Unknown',
             roleType: item.roleType || 'Interview',
-            status: item.status || 'completed'
+            status: item.status || 'completed',
           }))
         }
       }
     } catch (e) {
-      console.warn('[Interview] getInterviewHistory failed, using fallback:', e?.message || e)
+      console.warn(
+        '[Interview] getInterviewHistory failed, using fallback:',
+        e?.message || e
+      )
     }
 
     return []
   }
-  
+
   /**
    * Get session type display name
    */
@@ -831,7 +978,7 @@ Return JSON:
       technical: 'Technical',
       panel: 'Panel Interview',
       negotiation: 'Negotiation',
-      practice: 'Practice Session'
+      practice: 'Practice Session',
     }
     return names[type] || 'Interview Session'
   }

@@ -12,34 +12,57 @@ export const GAMING_TITLES = [
     developer: 'Epic Games',
     publisher: 'Epic Games',
     genre: ['Battle Royale', 'Shooter', 'Building'],
-    platforms: ['PC', 'PlayStation', 'Xbox', 'Nintendo Switch', 'Mobile', 'Mac'],
+    platforms: [
+      'PC',
+      'PlayStation',
+      'Xbox',
+      'Nintendo Switch',
+      'Mobile',
+      'Mac',
+    ],
     releaseYear: 2017,
     playerCount: '400M+',
     competitiveScene: {
       professional: true,
       esportsEvents: ['Fortnite World Cup', 'FNCS', 'Cash Cups'],
       prizePool: '$400M+',
-      skillLevel: 'High'
+      skillLevel: 'High',
     },
     careerSkills: [
       'Strategic Planning',
-      'Quick Decision Making', 
+      'Quick Decision Making',
       'Resource Management',
       'Adaptability',
       'Spatial Awareness',
       'Creative Problem Solving',
       'Time Management',
-      'Competitive Analysis'
+      'Competitive Analysis',
     ],
     jobMappings: [
-      { skill: 'Building Mechanics', maps_to: 'Architecture/Design', relevance: 'High' },
-      { skill: 'Resource Management', maps_to: 'Project Management', relevance: 'High' },
-      { skill: 'Quick Decision Making', maps_to: 'Executive Leadership', relevance: 'Medium' },
-      { skill: 'Creative Strategy', maps_to: 'Game Design', relevance: 'Very High' }
+      {
+        skill: 'Building Mechanics',
+        maps_to: 'Architecture/Design',
+        relevance: 'High',
+      },
+      {
+        skill: 'Resource Management',
+        maps_to: 'Project Management',
+        relevance: 'High',
+      },
+      {
+        skill: 'Quick Decision Making',
+        maps_to: 'Executive Leadership',
+        relevance: 'Medium',
+      },
+      {
+        skill: 'Creative Strategy',
+        maps_to: 'Game Design',
+        relevance: 'Very High',
+      },
     ],
     complexity: 'High',
     teamwork: 'Medium',
-    communication: 'High'
+    communication: 'High',
   },
 
   {
@@ -55,7 +78,7 @@ export const GAMING_TITLES = [
       professional: true,
       esportsEvents: ['VCT Champions', 'VCT Masters', 'VCT Game Changers'],
       prizePool: '$10M+',
-      skillLevel: 'Very High'
+      skillLevel: 'Very High',
     },
     careerSkills: [
       'Tactical Planning',
@@ -65,17 +88,33 @@ export const GAMING_TITLES = [
       'Communication',
       'Leadership',
       'Performance Under Pressure',
-      'Strategic Analysis'
+      'Strategic Analysis',
     ],
     jobMappings: [
-      { skill: 'Tactical Planning', maps_to: 'Strategic Consulting', relevance: 'Very High' },
-      { skill: 'Team Coordination', maps_to: 'Project Management', relevance: 'Very High' },
-      { skill: 'Risk Assessment', maps_to: 'Financial Analysis', relevance: 'High' },
-      { skill: 'Performance Under Pressure', maps_to: 'Emergency Management', relevance: 'High' }
+      {
+        skill: 'Tactical Planning',
+        maps_to: 'Strategic Consulting',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Team Coordination',
+        maps_to: 'Project Management',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Risk Assessment',
+        maps_to: 'Financial Analysis',
+        relevance: 'High',
+      },
+      {
+        skill: 'Performance Under Pressure',
+        maps_to: 'Emergency Management',
+        relevance: 'High',
+      },
     ],
     complexity: 'Very High',
     teamwork: 'Very High',
-    communication: 'Very High'
+    communication: 'Very High',
   },
 
   {
@@ -91,7 +130,7 @@ export const GAMING_TITLES = [
       professional: true,
       esportsEvents: ['ALGS Championship', 'ALGS Pro League'],
       prizePool: '$5M+',
-      skillLevel: 'High'
+      skillLevel: 'High',
     },
     careerSkills: [
       'Character Specialization',
@@ -101,17 +140,33 @@ export const GAMING_TITLES = [
       'Meta Understanding',
       'Positioning',
       'Team Communication',
-      'Adaptation'
+      'Adaptation',
     ],
     jobMappings: [
-      { skill: 'Character Specialization', maps_to: 'Role-based Consulting', relevance: 'High' },
-      { skill: 'Team Synergy', maps_to: 'Team Building', relevance: 'Very High' },
-      { skill: 'Meta Understanding', maps_to: 'Market Analysis', relevance: 'High' },
-      { skill: 'Movement Optimization', maps_to: 'Process Optimization', relevance: 'Medium' }
+      {
+        skill: 'Character Specialization',
+        maps_to: 'Role-based Consulting',
+        relevance: 'High',
+      },
+      {
+        skill: 'Team Synergy',
+        maps_to: 'Team Building',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Meta Understanding',
+        maps_to: 'Market Analysis',
+        relevance: 'High',
+      },
+      {
+        skill: 'Movement Optimization',
+        maps_to: 'Process Optimization',
+        relevance: 'Medium',
+      },
     ],
     complexity: 'High',
     teamwork: 'Very High',
-    communication: 'High'
+    communication: 'High',
   },
 
   // MOBA & Strategy
@@ -128,7 +183,7 @@ export const GAMING_TITLES = [
       professional: true,
       esportsEvents: ['World Championship', 'MSI', 'LCS', 'LEC', 'LCK', 'LPL'],
       prizePool: '$50M+',
-      skillLevel: 'Very High'
+      skillLevel: 'Very High',
     },
     careerSkills: [
       'Strategic Thinking',
@@ -140,18 +195,38 @@ export const GAMING_TITLES = [
       'Adaptability',
       'Objective Control',
       'Vision Management',
-      'Team Fighting'
+      'Team Fighting',
     ],
     jobMappings: [
-      { skill: 'Micro/Macro Management', maps_to: 'Operations Management', relevance: 'Very High' },
-      { skill: 'Resource Allocation', maps_to: 'Financial Planning', relevance: 'Very High' },
-      { skill: 'Vision Management', maps_to: 'Strategic Planning', relevance: 'High' },
-      { skill: 'Team Fighting', maps_to: 'Crisis Management', relevance: 'High' },
-      { skill: 'Meta Analysis', maps_to: 'Market Research', relevance: 'Very High' }
+      {
+        skill: 'Micro/Macro Management',
+        maps_to: 'Operations Management',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Resource Allocation',
+        maps_to: 'Financial Planning',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Vision Management',
+        maps_to: 'Strategic Planning',
+        relevance: 'High',
+      },
+      {
+        skill: 'Team Fighting',
+        maps_to: 'Crisis Management',
+        relevance: 'High',
+      },
+      {
+        skill: 'Meta Analysis',
+        maps_to: 'Market Research',
+        relevance: 'Very High',
+      },
     ],
     complexity: 'Very High',
     teamwork: 'Very High',
-    communication: 'Very High'
+    communication: 'Very High',
   },
 
   {
@@ -167,7 +242,7 @@ export const GAMING_TITLES = [
       professional: true,
       esportsEvents: ['The International', 'DPC Majors', 'Regional Leagues'],
       prizePool: '$100M+',
-      skillLevel: 'Extreme'
+      skillLevel: 'Extreme',
     },
     careerSkills: [
       'Complex Problem Solving',
@@ -177,17 +252,33 @@ export const GAMING_TITLES = [
       'Team Synergy',
       'Mechanical Skill',
       'Game Theory',
-      'Risk Management'
+      'Risk Management',
     ],
     jobMappings: [
-      { skill: 'Complex Problem Solving', maps_to: 'Systems Analysis', relevance: 'Very High' },
-      { skill: 'Economic Management', maps_to: 'Financial Analysis', relevance: 'Very High' },
-      { skill: 'Game Theory', maps_to: 'Strategic Consulting', relevance: 'Very High' },
-      { skill: 'Pattern Recognition', maps_to: 'Data Science', relevance: 'High' }
+      {
+        skill: 'Complex Problem Solving',
+        maps_to: 'Systems Analysis',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Economic Management',
+        maps_to: 'Financial Analysis',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Game Theory',
+        maps_to: 'Strategic Consulting',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Pattern Recognition',
+        maps_to: 'Data Science',
+        relevance: 'High',
+      },
     ],
     complexity: 'Extreme',
     teamwork: 'Very High',
-    communication: 'Very High'
+    communication: 'Very High',
   },
 
   // MMORPGs
@@ -202,9 +293,12 @@ export const GAMING_TITLES = [
     playerCount: '120M+',
     competitiveScene: {
       professional: true,
-      esportsEvents: ['Arena World Championship', 'Mythic Dungeon International'],
+      esportsEvents: [
+        'Arena World Championship',
+        'Mythic Dungeon International',
+      ],
       prizePool: '$1M+',
-      skillLevel: 'High'
+      skillLevel: 'High',
     },
     careerSkills: [
       'Guild Leadership',
@@ -214,17 +308,33 @@ export const GAMING_TITLES = [
       'Team Building',
       'Performance Optimization',
       'Community Management',
-      'Conflict Resolution'
+      'Conflict Resolution',
     ],
     jobMappings: [
-      { skill: 'Guild Leadership', maps_to: 'Team Leadership', relevance: 'Very High' },
-      { skill: 'Raid Coordination', maps_to: 'Event Management', relevance: 'Very High' },
-      { skill: 'Community Management', maps_to: 'Community Relations', relevance: 'Very High' },
-      { skill: 'Long-term Planning', maps_to: 'Strategic Planning', relevance: 'High' }
+      {
+        skill: 'Guild Leadership',
+        maps_to: 'Team Leadership',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Raid Coordination',
+        maps_to: 'Event Management',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Community Management',
+        maps_to: 'Community Relations',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Long-term Planning',
+        maps_to: 'Strategic Planning',
+        relevance: 'High',
+      },
     ],
     complexity: 'High',
     teamwork: 'Very High',
-    communication: 'Very High'
+    communication: 'Very High',
   },
 
   {
@@ -240,7 +350,7 @@ export const GAMING_TITLES = [
       professional: false,
       esportsEvents: [],
       prizePool: '0',
-      skillLevel: 'Medium'
+      skillLevel: 'Medium',
     },
     careerSkills: [
       'Role Specialization',
@@ -250,17 +360,33 @@ export const GAMING_TITLES = [
       'Community Building',
       'Creative Expression',
       'Problem Solving',
-      'Attention to Detail'
+      'Attention to Detail',
     ],
     jobMappings: [
-      { skill: 'Role Specialization', maps_to: 'Subject Matter Expert', relevance: 'High' },
-      { skill: 'Creative Expression', maps_to: 'Creative Design', relevance: 'High' },
-      { skill: 'Attention to Detail', maps_to: 'Quality Assurance', relevance: 'Very High' },
-      { skill: 'Community Building', maps_to: 'Community Management', relevance: 'Very High' }
+      {
+        skill: 'Role Specialization',
+        maps_to: 'Subject Matter Expert',
+        relevance: 'High',
+      },
+      {
+        skill: 'Creative Expression',
+        maps_to: 'Creative Design',
+        relevance: 'High',
+      },
+      {
+        skill: 'Attention to Detail',
+        maps_to: 'Quality Assurance',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Community Building',
+        maps_to: 'Community Management',
+        relevance: 'Very High',
+      },
     ],
     complexity: 'Medium',
     teamwork: 'High',
-    communication: 'High'
+    communication: 'High',
   },
 
   // Competitive FPS
@@ -277,7 +403,7 @@ export const GAMING_TITLES = [
       professional: true,
       esportsEvents: ['ESL Pro League', 'IEM', 'BLAST Premier', 'PGL Majors'],
       prizePool: '$15M+',
-      skillLevel: 'Very High'
+      skillLevel: 'Very High',
     },
     careerSkills: [
       'Precision',
@@ -287,17 +413,33 @@ export const GAMING_TITLES = [
       'Pressure Management',
       'Communication',
       'Map Knowledge',
-      'Tactical Execution'
+      'Tactical Execution',
     ],
     jobMappings: [
-      { skill: 'Precision', maps_to: 'Quality Control', relevance: 'Very High' },
-      { skill: 'Economic Management', maps_to: 'Budget Management', relevance: 'High' },
-      { skill: 'Tactical Execution', maps_to: 'Project Execution', relevance: 'Very High' },
-      { skill: 'Map Knowledge', maps_to: 'Domain Expertise', relevance: 'Medium' }
+      {
+        skill: 'Precision',
+        maps_to: 'Quality Control',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Economic Management',
+        maps_to: 'Budget Management',
+        relevance: 'High',
+      },
+      {
+        skill: 'Tactical Execution',
+        maps_to: 'Project Execution',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Map Knowledge',
+        maps_to: 'Domain Expertise',
+        relevance: 'Medium',
+      },
     ],
     complexity: 'Very High',
     teamwork: 'Very High',
-    communication: 'Very High'
+    communication: 'Very High',
   },
 
   // Fighting Games
@@ -314,7 +456,7 @@ export const GAMING_TITLES = [
       professional: true,
       esportsEvents: ['Capcom Cup', 'EVO', 'Street Fighter League'],
       prizePool: '$2M+',
-      skillLevel: 'Very High'
+      skillLevel: 'Very High',
     },
     careerSkills: [
       'Frame Data Analysis',
@@ -324,17 +466,33 @@ export const GAMING_TITLES = [
       'Precise Execution',
       'Mind Games',
       'Self-Improvement',
-      'Individual Performance'
+      'Individual Performance',
     ],
     jobMappings: [
-      { skill: 'Frame Data Analysis', maps_to: 'Data Analysis', relevance: 'High' },
-      { skill: 'Pattern Recognition', maps_to: 'Market Analysis', relevance: 'High' },
-      { skill: 'Mental Fortitude', maps_to: 'Stress Management', relevance: 'Very High' },
-      { skill: 'Self-Improvement', maps_to: 'Professional Development', relevance: 'Very High' }
+      {
+        skill: 'Frame Data Analysis',
+        maps_to: 'Data Analysis',
+        relevance: 'High',
+      },
+      {
+        skill: 'Pattern Recognition',
+        maps_to: 'Market Analysis',
+        relevance: 'High',
+      },
+      {
+        skill: 'Mental Fortitude',
+        maps_to: 'Stress Management',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Self-Improvement',
+        maps_to: 'Professional Development',
+        relevance: 'Very High',
+      },
     ],
     complexity: 'Very High',
     teamwork: 'Low',
-    communication: 'Low'
+    communication: 'Low',
   },
 
   // Real-Time Strategy
@@ -351,7 +509,7 @@ export const GAMING_TITLES = [
       professional: true,
       esportsEvents: ['GSL', 'IEM World Championship'],
       prizePool: '$500K+',
-      skillLevel: 'Extreme'
+      skillLevel: 'Extreme',
     },
     careerSkills: [
       'Multitasking',
@@ -361,17 +519,33 @@ export const GAMING_TITLES = [
       'Economic Optimization',
       'Risk Assessment',
       'Adaptation',
-      'Performance Under Pressure'
+      'Performance Under Pressure',
     ],
     jobMappings: [
-      { skill: 'Multitasking', maps_to: 'Executive Management', relevance: 'Very High' },
-      { skill: 'Economic Optimization', maps_to: 'Financial Optimization', relevance: 'Very High' },
-      { skill: 'Micro Management', maps_to: 'Operations Management', relevance: 'Very High' },
-      { skill: 'Risk Assessment', maps_to: 'Risk Analysis', relevance: 'Very High' }
+      {
+        skill: 'Multitasking',
+        maps_to: 'Executive Management',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Economic Optimization',
+        maps_to: 'Financial Optimization',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Micro Management',
+        maps_to: 'Operations Management',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Risk Assessment',
+        maps_to: 'Risk Analysis',
+        relevance: 'Very High',
+      },
     ],
     complexity: 'Extreme',
     teamwork: 'Low',
-    communication: 'Medium'
+    communication: 'Medium',
   },
 
   // Simulation & Management
@@ -388,7 +562,7 @@ export const GAMING_TITLES = [
       professional: false,
       esportsEvents: [],
       prizePool: '0',
-      skillLevel: 'Medium'
+      skillLevel: 'Medium',
     },
     careerSkills: [
       'Urban Planning',
@@ -398,17 +572,33 @@ export const GAMING_TITLES = [
       'Problem Solving',
       'Systems Thinking',
       'Creative Design',
-      'Optimization'
+      'Optimization',
     ],
     jobMappings: [
-      { skill: 'Urban Planning', maps_to: 'Urban Planning', relevance: 'Very High' },
-      { skill: 'Infrastructure Design', maps_to: 'Civil Engineering', relevance: 'Very High' },
-      { skill: 'Budget Management', maps_to: 'Financial Planning', relevance: 'Very High' },
-      { skill: 'Systems Thinking', maps_to: 'Systems Analysis', relevance: 'Very High' }
+      {
+        skill: 'Urban Planning',
+        maps_to: 'Urban Planning',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Infrastructure Design',
+        maps_to: 'Civil Engineering',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Budget Management',
+        maps_to: 'Financial Planning',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Systems Thinking',
+        maps_to: 'Systems Analysis',
+        relevance: 'Very High',
+      },
     ],
     complexity: 'Medium',
     teamwork: 'Low',
-    communication: 'Low'
+    communication: 'Low',
   },
 
   // Creative & Sandbox
@@ -425,7 +615,7 @@ export const GAMING_TITLES = [
       professional: false,
       esportsEvents: ['Minecraft Championships'],
       prizePool: '$100K+',
-      skillLevel: 'Medium'
+      skillLevel: 'Medium',
     },
     careerSkills: [
       'Creative Problem Solving',
@@ -435,17 +625,33 @@ export const GAMING_TITLES = [
       'Collaboration',
       'Innovation',
       'Spatial Reasoning',
-      'Documentation'
+      'Documentation',
     ],
     jobMappings: [
-      { skill: 'Architecture Design', maps_to: 'Architecture', relevance: 'Very High' },
-      { skill: 'Creative Problem Solving', maps_to: 'Innovation Consulting', relevance: 'Very High' },
-      { skill: 'Project Planning', maps_to: 'Project Management', relevance: 'High' },
-      { skill: 'Spatial Reasoning', maps_to: 'Engineering Design', relevance: 'High' }
+      {
+        skill: 'Architecture Design',
+        maps_to: 'Architecture',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Creative Problem Solving',
+        maps_to: 'Innovation Consulting',
+        relevance: 'Very High',
+      },
+      {
+        skill: 'Project Planning',
+        maps_to: 'Project Management',
+        relevance: 'High',
+      },
+      {
+        skill: 'Spatial Reasoning',
+        maps_to: 'Engineering Design',
+        relevance: 'High',
+      },
     ],
     complexity: 'Medium',
     teamwork: 'Medium',
-    communication: 'Medium'
+    communication: 'Medium',
   },
 
   // Sports & Racing
@@ -462,7 +668,7 @@ export const GAMING_TITLES = [
       professional: true,
       esportsEvents: ['RLCS World Championship', 'RLCS Majors'],
       prizePool: '$4M+',
-      skillLevel: 'High'
+      skillLevel: 'High',
     },
     careerSkills: [
       'Precision Control',
@@ -472,49 +678,108 @@ export const GAMING_TITLES = [
       'Mechanical Skill',
       'Quick Adaptation',
       'Spatial Awareness',
-      'Pressure Performance'
+      'Pressure Performance',
     ],
     jobMappings: [
-      { skill: 'Precision Control', maps_to: 'Quality Assurance', relevance: 'High' },
-      { skill: 'Team Coordination', maps_to: 'Team Management', relevance: 'Very High' },
+      {
+        skill: 'Precision Control',
+        maps_to: 'Quality Assurance',
+        relevance: 'High',
+      },
+      {
+        skill: 'Team Coordination',
+        maps_to: 'Team Management',
+        relevance: 'Very High',
+      },
       { skill: 'Timing', maps_to: 'Project Scheduling', relevance: 'High' },
-      { skill: 'Quick Adaptation', maps_to: 'Change Management', relevance: 'High' }
+      {
+        skill: 'Quick Adaptation',
+        maps_to: 'Change Management',
+        relevance: 'High',
+      },
     ],
     complexity: 'High',
     teamwork: 'Very High',
-    communication: 'High'
-  }
-];
+    communication: 'High',
+  },
+]
 
 export const GENRE_CATEGORIES = {
-  COMPETITIVE_MULTIPLAYER: ['Battle Royale', 'MOBA', 'Tactical Shooter', 'FPS', 'Fighting', 'RTS'],
+  COMPETITIVE_MULTIPLAYER: [
+    'Battle Royale',
+    'MOBA',
+    'Tactical Shooter',
+    'FPS',
+    'Fighting',
+    'RTS',
+  ],
   COOPERATIVE: ['MMORPG', 'Co-op Shooter', 'Team Strategy'],
   CREATIVE: ['Sandbox', 'City Builder', 'Simulation'],
   INDIVIDUAL_SKILL: ['Fighting', 'RTS', 'Racing', 'Puzzle'],
-  TEAM_BASED: ['MOBA', 'Tactical Shooter', 'Sports', 'Battle Royale']
-};
+  TEAM_BASED: ['MOBA', 'Tactical Shooter', 'Sports', 'Battle Royale'],
+}
 
 export const SKILL_MAPPINGS = {
-  LEADERSHIP: ['Guild Leadership', 'Team Coordination', 'Raid Coordination', 'Shot Calling'],
-  PROJECT_MANAGEMENT: ['Resource Management', 'Long-term Planning', 'Economic Management', 'Budget Management'],
-  ANALYTICAL: ['Meta Analysis', 'Frame Data Analysis', 'Pattern Recognition', 'Strategic Analysis'],
-  COMMUNICATION: ['Team Communication', 'Community Management', 'Conflict Resolution', 'Teaching'],
-  TECHNICAL: ['Precision Control', 'Mechanical Skill', 'Systems Thinking', 'Optimization'],
-  CREATIVE: ['Creative Problem Solving', 'Innovation', 'Architecture Design', 'Creative Design']
-};
+  LEADERSHIP: [
+    'Guild Leadership',
+    'Team Coordination',
+    'Raid Coordination',
+    'Shot Calling',
+  ],
+  PROJECT_MANAGEMENT: [
+    'Resource Management',
+    'Long-term Planning',
+    'Economic Management',
+    'Budget Management',
+  ],
+  ANALYTICAL: [
+    'Meta Analysis',
+    'Frame Data Analysis',
+    'Pattern Recognition',
+    'Strategic Analysis',
+  ],
+  COMMUNICATION: [
+    'Team Communication',
+    'Community Management',
+    'Conflict Resolution',
+    'Teaching',
+  ],
+  TECHNICAL: [
+    'Precision Control',
+    'Mechanical Skill',
+    'Systems Thinking',
+    'Optimization',
+  ],
+  CREATIVE: [
+    'Creative Problem Solving',
+    'Innovation',
+    'Architecture Design',
+    'Creative Design',
+  ],
+}
 
 export const CAREER_RELEVANCE_LEVELS = {
-  VERY_HIGH: ['Leadership roles', 'Management positions', 'Strategic consulting', 'Team coordination'],
-  HIGH: ['Analytical roles', 'Project management', 'Technical positions', 'Creative roles'],
+  VERY_HIGH: [
+    'Leadership roles',
+    'Management positions',
+    'Strategic consulting',
+    'Team coordination',
+  ],
+  HIGH: [
+    'Analytical roles',
+    'Project management',
+    'Technical positions',
+    'Creative roles',
+  ],
   MEDIUM: ['Individual contributor', 'Specialized roles', 'Support functions'],
-  LOW: ['Entry-level positions', 'General roles']
-};
+  LOW: ['Entry-level positions', 'General roles'],
+}
 
 export const PROFESSIONAL_GAMING_TIERS = {
   TIER_S: ['League of Legends', 'Dota 2', 'Counter-Strike 2', 'VALORANT'],
   TIER_A: ['Fortnite', 'Apex Legends', 'Rocket League', 'StarCraft II'],
   TIER_B: ['Street Fighter 6', 'World of Warcraft', 'Overwatch 2'],
-  TIER_C: ['Minecraft', 'Cities: Skylines', 'Final Fantasy XIV']
-};
+  TIER_C: ['Minecraft', 'Cities: Skylines', 'Final Fantasy XIV'],
+}
 
-export default GAMING_TITLES;
+export default GAMING_TITLES

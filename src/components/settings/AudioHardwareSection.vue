@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div role="region" aria-labelledby="audio-hardware-title" class="enhanced-hardware-section font-sans">
+  <div
+    role="region"
+    aria-labelledby="audio-hardware-title"
+    class="enhanced-hardware-section font-sans"
+  >
     <!-- Section Header -->
     <div class="section-header glass-section-header">
       <div class="header-content">
@@ -9,7 +13,9 @@
         </div>
         <div class="header-text">
           <h3 class="header-title">Audio Hardware Configuration</h3>
-          <p class="header-description">Configure audio devices, voice settings, and hardware preferences</p>
+          <p class="header-description">
+            Configure audio devices, voice settings, and hardware preferences
+          </p>
         </div>
       </div>
       <div class="header-actions">
@@ -21,7 +27,11 @@
           leading-icon="ArrowPathIcon"
           @click="$emit('load-audio-devices')"
         >
-          <span v-if="loadingDevices" class="spinner-border spinner-border-sm mr-2" aria-hidden="true"></span>
+          <span
+            v-if="loadingDevices"
+            class="spinner-border spinner-border-sm mr-2"
+            aria-hidden="true"
+          ></span>
           Refresh Devices
         </UnifiedButton>
       </div>
@@ -29,7 +39,9 @@
     <div>
       <div class="flex flex-wrap g-4">
         <div class="flex-1-lg-6">
-          <label for="microphone-device" class="form-label font-medium">Microphone</label>
+          <label for="microphone-device" class="form-label font-medium"
+            >Microphone</label
+          >
           <select
             id="microphone-device"
             :value="settings.selectedMicId"
@@ -44,7 +56,9 @@
               :key="device.deviceId"
               :value="device.deviceId"
             >
-              {{ device.label || `Microphone ${device.deviceId.slice(0, 8)}...` }}
+              {{
+                device.label || `Microphone ${device.deviceId.slice(0, 8)}...`
+              }}
             </option>
           </select>
           <div id="microphone-help" class="form-text">
@@ -60,14 +74,23 @@
             >
               {{ micTestActive ? 'Stop Mic Test' : 'Test Mic' }}
             </UnifiedButton>
-            <div v-if="micTestActive" class="mic-meter" aria-label="Microphone level">
-              <div class="mic-meter-fill" :style="{ width: `${Math.min(micTestLevel * 100, 100)}%` }"></div>
+            <div
+              v-if="micTestActive"
+              class="mic-meter"
+              aria-label="Microphone level"
+            >
+              <div
+                class="mic-meter-fill"
+                :style="{ width: `${Math.min(micTestLevel * 100, 100)}%` }"
+              ></div>
             </div>
           </div>
         </div>
 
         <div class="flex-1-lg-6">
-          <label for="voice-lang" class="form-label font-medium">Recognition Language</label>
+          <label for="voice-lang" class="form-label font-medium"
+            >Recognition Language</label
+          >
           <select
             id="voice-lang"
             :value="settings.voiceLang"
@@ -86,7 +109,9 @@
         </div>
 
         <div v-show="settings.ttsProvider === 'system'" class="flex-1-12">
-          <label for="tts-voice" class="form-label font-medium">System TTS Voice</label>
+          <label for="tts-voice" class="form-label font-medium"
+            >System TTS Voice</label
+          >
           <select
             id="tts-voice"
             :value="settings.ttsVoice"
@@ -96,11 +121,7 @@
             @change="updateSetting('ttsVoice', $event.target.value)"
           >
             <option value="">System Default</option>
-            <option
-              v-for="v in voices"
-              :key="v.name + v.lang"
-              :value="v.name"
-            >
+            <option v-for="v in voices" :key="v.name + v.lang" :value="v.name">
               {{ v.name }} ({{ v.lang }})
             </option>
           </select>
@@ -132,7 +153,9 @@
 
         <!-- Enhanced Audio Hardware Settings -->
         <div class="flex-1-lg-6">
-          <label for="speaker-device" class="form-label font-medium">Speaker/Headphones</label>
+          <label for="speaker-device" class="form-label font-medium"
+            >Speaker/Headphones</label
+          >
           <select
             id="speaker-device"
             :value="settings.selectedSpeakerId"
@@ -151,7 +174,9 @@
         </div>
 
         <div class="flex-1-lg-6">
-          <label for="audio-quality" class="form-label font-medium">Audio Quality</label>
+          <label for="audio-quality" class="form-label font-medium"
+            >Audio Quality</label
+          >
           <select
             id="audio-quality"
             :value="settings.audioQuality"
@@ -176,17 +201,21 @@
               <AppIcon name="AdjustmentsVerticalIcon" />
               Audio Processing
             </h4>
-            
+
             <div class="flex flex-wrap g-3">
               <div class="flex-1-md-6">
-                <label for="noise-suppression" class="form-label font-medium">Noise Suppression</label>
+                <label for="noise-suppression" class="form-label font-medium"
+                  >Noise Suppression</label
+                >
                 <div class="flex items-center gap-glass-md">
                   <input
                     id="noise-suppression"
                     type="checkbox"
                     :checked="settings.noiseSuppression"
                     class="glass-toggle"
-                    @change="updateSetting('noiseSuppression', $event.target.checked)"
+                    @change="
+                      updateSetting('noiseSuppression', $event.target.checked)
+                    "
                   />
                   <label for="noise-suppression" class="toggle-label">
                     Reduce background noise during voice input
@@ -195,14 +224,18 @@
               </div>
 
               <div class="flex-1-md-6">
-                <label for="echo-cancellation" class="form-label font-medium">Echo Cancellation</label>
+                <label for="echo-cancellation" class="form-label font-medium"
+                  >Echo Cancellation</label
+                >
                 <div class="flex items-center gap-glass-md">
                   <input
                     id="echo-cancellation"
                     type="checkbox"
                     :checked="settings.echoCancellation"
                     class="glass-toggle"
-                    @change="updateSetting('echoCancellation', $event.target.checked)"
+                    @change="
+                      updateSetting('echoCancellation', $event.target.checked)
+                    "
                   />
                   <label for="echo-cancellation" class="toggle-label">
                     Prevent audio feedback loops
@@ -211,14 +244,18 @@
               </div>
 
               <div class="flex-1-md-6">
-                <label for="auto-gain" class="form-label font-medium">Auto Gain Control</label>
+                <label for="auto-gain" class="form-label font-medium"
+                  >Auto Gain Control</label
+                >
                 <div class="flex items-center gap-glass-md">
                   <input
                     id="auto-gain"
                     type="checkbox"
                     :checked="settings.autoGainControl"
                     class="glass-toggle"
-                    @change="updateSetting('autoGainControl', $event.target.checked)"
+                    @change="
+                      updateSetting('autoGainControl', $event.target.checked)
+                    "
                   />
                   <label for="auto-gain" class="toggle-label">
                     Automatically adjust microphone volume
@@ -227,14 +264,18 @@
               </div>
 
               <div class="flex-1-md-6">
-                <label for="push-to-talk" class="form-label font-medium">Push-to-Talk Mode</label>
+                <label for="push-to-talk" class="form-label font-medium"
+                  >Push-to-Talk Mode</label
+                >
                 <div class="flex items-center gap-glass-md">
                   <input
                     id="push-to-talk"
                     type="checkbox"
                     :checked="settings.pushToTalkMode"
                     class="glass-toggle"
-                    @change="updateSetting('pushToTalkMode', $event.target.checked)"
+                    @change="
+                      updateSetting('pushToTalkMode', $event.target.checked)
+                    "
                   />
                   <label for="push-to-talk" class="toggle-label">
                     Require key press to activate microphone
@@ -244,8 +285,13 @@
             </div>
 
             <!-- Push-to-Talk Key Configuration -->
-            <div v-if="settings.pushToTalkMode" class="push-to-talk-config mt-3">
-              <label for="ptt-key" class="form-label font-medium">Push-to-Talk Key</label>
+            <div
+              v-if="settings.pushToTalkMode"
+              class="push-to-talk-config mt-3"
+            >
+              <label for="ptt-key" class="form-label font-medium"
+                >Push-to-Talk Key</label
+              >
               <div class="flex items-center gap-glass-sm">
                 <input
                   id="ptt-key"
@@ -253,7 +299,7 @@
                   type="text"
                   class="form-control glass-input"
                   readonly
-                  style="max-width: 120px;"
+                  style="max-width: 120px"
                 />
                 <UnifiedButton
                   variant="outline"
@@ -265,14 +311,17 @@
                 </UnifiedButton>
               </div>
               <div class="form-text">
-                Click "Set Key" then press the key you want to use for push-to-talk.
+                Click "Set Key" then press the key you want to use for
+                push-to-talk.
               </div>
             </div>
           </div>
         </div>
 
         <div v-show="settings.ttsProvider === 'gemini'" class="flex-1-12">
-          <label for="gemini-voice" class="form-label font-medium">Gemini Voice</label>
+          <label for="gemini-voice" class="form-label font-medium"
+            >Gemini Voice</label
+          >
           <input
             id="gemini-voice"
             :value="settings.geminiVoice"
@@ -283,18 +332,25 @@
             @input="updateSetting('geminiVoice', $event.target.value)"
           />
           <div id="gemini-voice-help" class="form-text">
-            Optional style or voice hint for Gemini TTS (not all voices available in all regions).
+            Optional style or voice hint for Gemini TTS (not all voices
+            available in all regions).
           </div>
           <div class="mt-2 flex items-center gap-glass-sm">
-            <label for="gemini-voice-preset" class="form-label mb-0 small text-secondary">Presets</label>
+            <label
+              for="gemini-voice-preset"
+              class="form-label mb-0 small text-secondary"
+              >Presets</label
+            >
             <select
               id="gemini-voice-preset"
               :value="selectedGeminiPreset"
               class="form-select form-select-sm w-auto"
-              @change="selectedGeminiPreset = $event.target.value; applyGeminiPreset()"
+              @change="onGeminiPresetChange($event)"
             >
               <option value="">Select a preset…</option>
-              <option v-for="p in geminiVoicePresets" :key="p" :value="p">{{ p }}</option>
+              <option v-for="p in geminiVoicePresets" :key="p" :value="p">
+                {{ p }}
+              </option>
             </select>
           </div>
           <div class="mt-2 flex items-center gap-glass-sm">
@@ -325,10 +381,14 @@
 </template>
 
 <script>
-import { AdjustmentsVerticalIcon, ArrowPathIcon, MicrophoneIcon } from '@heroicons/vue/24/outline'
+import {
+  AdjustmentsVerticalIcon,
+  ArrowPathIcon,
+  MicrophoneIcon,
+} from '@heroicons/vue/24/outline'
 import { StopIcon } from '@heroicons/vue/24/solid'
 
-import { watch } from 'vue';
+import { watch } from 'vue'
 
 // Removed unused icon components
 import { audioService } from '@/shared/services/AudioService'
@@ -338,25 +398,25 @@ export default {
   name: 'AudioHardwareSection',
   components: {
     UnifiedButton: () => import('@/components/ui/UnifiedButton.vue'),
-    AppIcon: () => import('@/components/ui/AppIcon.vue')
+    AppIcon: () => import('@/components/ui/AppIcon.vue'),
   },
   props: {
     settings: {
       type: Object,
-      required: true
+      required: true,
     },
     voices: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     audioDevices: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     loadingDevices: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['load-audio-devices', 'update:settings'],
   data() {
@@ -377,8 +437,8 @@ export default {
         'Upbeat',
         'Deep male',
         'Bright female',
-        'Newsreader'
-      ]
+        'Newsreader',
+      ],
     }
   },
   watch: {
@@ -388,7 +448,9 @@ export default {
         try {
           audioService.stopMonitoring()
           const id = newVal || undefined
-          audioService.startMonitoring(id, (level) => { this.micTestLevel = level })
+          audioService.startMonitoring(id, level => {
+            this.micTestLevel = level
+          })
         } catch {}
       }
     },
@@ -400,12 +462,16 @@ export default {
         } else {
           this.selectedGeminiPreset = ''
         }
-      }
-    }
+      },
+    },
   },
   beforeUnmount() {
-    try { audioService.stopMonitoring() } catch {}
-    try { stopSpeaking() } catch {}
+    try {
+      audioService.stopMonitoring()
+    } catch {}
+    try {
+      stopSpeaking()
+    } catch {}
   },
   methods: {
     async toggleMicTest() {
@@ -417,13 +483,14 @@ export default {
           return
         }
         const id = this.settings?.selectedMicId || undefined
-        await audioService.startMonitoring(id, (level) => { this.micTestLevel = level })
+        await audioService.startMonitoring(id, level => {
+          this.micTestLevel = level
+        })
         this.micTestActive = true
       } catch {
         // swallow errors to keep settings UX smooth
       }
-    }
-    ,
+    },
     updateSetting(key, value) {
       this.$emit('update:settings', { ...this.settings, [key]: value })
     },
@@ -435,42 +502,57 @@ export default {
     async testVoice() {
       try {
         this.isSpeakingTest = true
-        const text = 'This is your selected voice for Navi. Hello!';
+        const text = 'This is your selected voice for Navi. Hello!'
         const opts = {
           provider: this.settings.ttsProvider || 'system',
           language: this.settings.voiceLang || 'en-US',
           rate: this.settings.speechRate ?? 0.85,
           pitch: this.settings.speechPitch ?? 1.0,
-          volume: this.settings.speechVolume ?? 0.9
+          volume: this.settings.speechVolume ?? 0.9,
         }
-        if (opts.provider === 'system' && this.settings.ttsVoice) { opts.voice = this.settings.ttsVoice }
-        if (opts.provider === 'gemini' && this.settings.geminiVoice) { opts.voice = this.settings.geminiVoice }
+        if (opts.provider === 'system' && this.settings.ttsVoice) {
+          opts.voice = this.settings.ttsVoice
+        }
+        if (opts.provider === 'gemini' && this.settings.geminiVoice) {
+          opts.voice = this.settings.geminiVoice
+        }
         await speak(text, opts)
-      } catch {/* ignore */}
-      finally {
+      } catch {
+        /* ignore */
+      } finally {
         this.isSpeakingTest = false
       }
     },
     stopVoiceTest() {
-      try { stopSpeaking() } catch {}
+      try {
+        stopSpeaking()
+      } catch {}
       this.isSpeakingTest = false
     },
-    
+    onGeminiPresetChange(event) {
+      try {
+        this.selectedGeminiPreset = event?.target?.value || ''
+      } catch {}
+      try {
+        this.applyGeminiPreset()
+      } catch {}
+    },
+
     configurePTTKey() {
       if (this.configuringPTT) return
-      
+
       this.configuringPTT = true
-      
-      const handleKeyPress = (event) => {
+
+      const handleKeyPress = event => {
         event.preventDefault()
         const key = event.code || event.key
         this.updateSetting('pushToTalkKey', key)
         this.configuringPTT = false
         window.removeEventListener('keydown', handleKeyPress, true)
       }
-      
+
       window.addEventListener('keydown', handleKeyPress, true)
-      
+
       // Auto-cancel after 10 seconds
       setTimeout(() => {
         if (this.configuringPTT) {
@@ -478,8 +560,8 @@ export default {
           window.removeEventListener('keydown', handleKeyPress, true)
         }
       }, 10000)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -495,7 +577,12 @@ export default {
 }
 .mic-meter-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-success) 0%, var(--color-warning) 70%, var(--color-danger) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--color-success) 0%,
+    var(--color-warning) 70%,
+    var(--color-danger) 100%
+  );
   transition: width 0.1s ease;
 }
 
@@ -526,10 +613,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     color-mix(in srgb, var(--color-primary-500) 10%, transparent) 0%,
-    color-mix(in srgb, var(--color-primary-500) 5%, transparent) 100%);
-  border: 1px solid color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+    color-mix(in srgb, var(--color-primary-500) 5%, transparent) 100%
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   border-radius: var(--radius-xl);
   color: var(--color-primary-500);
   font-size: 1.25rem;
@@ -641,12 +731,12 @@ export default {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .section-header {
     flex-direction: column;
     gap: var(--spacing-3);
   }
-  
+
   .enhanced-audio-processing {
     padding: var(--spacing-4);
   }

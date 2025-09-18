@@ -1,6 +1,6 @@
 /* eslint-env browser */
 import { logger } from '@/shared/utils/logger'
- 
+
 /**
  * Unified Data Service
  * Single source of truth for all data persistence operations
@@ -74,7 +74,7 @@ export class UnifiedDataService {
     ai: 'gd_ai_',
     settings: 'gd_settings_',
     cache: 'gd_cache_',
-    analytics: 'gd_analytics_'
+    analytics: 'gd_analytics_',
   }
 
   static getInstance(config?: Partial<DataServiceConfig>): UnifiedDataService {
@@ -91,7 +91,7 @@ export class UnifiedDataService {
       compressionThreshold: 10000, // 10KB
       maxRetries: 3,
       retryDelay: 1000,
-      ...config
+      ...config,
     }
 
     this.initializeEncryption()
@@ -109,21 +109,29 @@ export class UnifiedDataService {
   ): Promise<void> {
     const fullKey = this.NAMESPACES[namespace] + key
     const storageType = options.storageType || this.config.defaultStorage
-    const shouldEncrypt = options.encrypt ?? (this.config.encryptSensitiveData && this.isSensitiveNamespace(namespace))
+    const shouldEncrypt =
+      options.encrypt ??
+      (this.config.encryptSensitiveData && this.isSensitiveNamespace(namespace))
     const shouldCompress = options.compress ?? this.shouldCompress(value)
 
-    const existing = await this.getStoredData<any>(namespace, key, { storageType }, false)
+    const existing = await this.getStoredData<any>(
+      namespace,
+      key,
+      { storageType },
+      false
+    )
 
     const storedData: StoredData<T> = {
       data: value,
       metadata: {
         createdAt: existing?.metadata.createdAt || Date.now(),
         updatedAt: Date.now(),
-        version: options.version ?? (existing ? existing.metadata.version + 1 : 1),
+        version:
+          options.version ?? (existing ? existing.metadata.version + 1 : 1),
         encrypted: shouldEncrypt,
         compressed: shouldCompress,
-        ttl: options.ttl
-      }
+        ttl: options.ttl,
+      },
     }
 
     // Process data
@@ -135,7 +143,9 @@ export class UnifiedDataService {
 
     if (shouldEncrypt) {
       processedData = await this.encrypt(processedData)
-      storedData.metadata.checksum = await this.generateChecksum(JSON.stringify(value))
+      storedData.metadata.checksum = await this.generateChecksum(
+        JSON.stringify(value)
+      )
     }
 
     // Store based on storage type
@@ -147,7 +157,12 @@ export class UnifiedDataService {
         await this.setSessionStorage(fullKey, processedData)
         break
       case 'indexedDB':
-        await this.setIndexedDB(namespace, key, processedData, storedData.metadata)
+        await this.setIndexedDB(
+          namespace,
+          key,
+          processedData,
+          storedData.metadata
+        )
         break
     }
   }
@@ -162,19 +177,26 @@ export class UnifiedDataService {
     if (!storedData) return null
 
     if (storedData.metadata.ttl) {
-      const expirationTime = storedData.metadata.createdAt + storedData.metadata.ttl
+      const expirationTime =
+        storedData.metadata.createdAt + storedData.metadata.ttl
       if (Date.now() > expirationTime) {
         await this.delete(namespace, key, options)
         return null
       }
     }
 
-      if (storedData.metadata.checksum) {
-        const currentChecksum = await this.generateChecksum(JSON.stringify(storedData.data))
-        if (currentChecksum !== storedData.metadata.checksum) {
-          logger.warn(`Data integrity check failed for ${fullKey}`, undefined, 'UnifiedDataService')
-        }
+    if (storedData.metadata.checksum) {
+      const currentChecksum = await this.generateChecksum(
+        JSON.stringify(storedData.data)
+      )
+      if (currentChecksum !== storedData.metadata.checksum) {
+        logger.warn(
+          `Data integrity check failed for ${fullKey}`,
+          undefined,
+          'UnifiedDataService'
+        )
       }
+    }
 
     return storedData.data
   }
@@ -192,7 +214,8 @@ export class UnifiedDataService {
         localStorage.removeItem(fullKey)
         break
       case 'sessionStorage': {
-        const s = (typeof globalThis !== 'undefined' && (globalThis as any).sessionStorage) as any
+        const s = (typeof globalThis !== 'undefined' &&
+          (globalThis as any).sessionStorage) as any
         if (s) s.removeItem(fullKey)
         break
       }
@@ -219,7 +242,10 @@ export class UnifiedDataService {
     globalOptions: StorageOptions = {}
   ): Promise<void> {
     const promises = entries.map(entry =>
-      this.set(namespace, entry.key, entry.value, { ...globalOptions, ...entry.options })
+      this.set(namespace, entry.key, entry.value, {
+        ...globalOptions,
+        ...entry.options,
+      })
     )
     await Promise.all(promises)
   }
@@ -231,7 +257,7 @@ export class UnifiedDataService {
   ): Promise<Array<{ key: string; value: T | null }>> {
     const promises = keys.map(async key => ({
       key,
-      value: await this.get<T>(namespace, key, options)
+      value: await this.get<T>(namespace, key, options),
     }))
     return Promise.all(promises)
   }
@@ -247,13 +273,19 @@ export class UnifiedDataService {
 
     switch (storageType) {
       case 'localStorage': {
-        const l = (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) as any
-        allKeys = l ? Object.keys(l).filter((key: string) => key.startsWith(prefix)) : []
+        const l = (typeof globalThis !== 'undefined' &&
+          (globalThis as any).localStorage) as any
+        allKeys = l
+          ? Object.keys(l).filter((key: string) => key.startsWith(prefix))
+          : []
         break
       }
       case 'sessionStorage': {
-        const s = (typeof globalThis !== 'undefined' && (globalThis as any).sessionStorage) as any
-        allKeys = s ? Object.keys(s).filter((key: string) => key.startsWith(prefix)) : []
+        const s = (typeof globalThis !== 'undefined' &&
+          (globalThis as any).sessionStorage) as any
+        allKeys = s
+          ? Object.keys(s).filter((key: string) => key.startsWith(prefix))
+          : []
         break
       }
       case 'indexedDB':
@@ -271,11 +303,15 @@ export class UnifiedDataService {
       })
     )
 
-    let filteredResults: Entry<T>[] = results.filter((result): result is Entry<T> => result !== null)
+    let filteredResults: Entry<T>[] = results.filter(
+      (result): result is Entry<T> => result !== null
+    )
 
     // Apply filter
     if (queryOptions.filter) {
-      filteredResults = filteredResults.filter(item => queryOptions.filter!(item.value))
+      filteredResults = filteredResults.filter(item =>
+        queryOptions.filter!(item.value)
+      )
     }
 
     // Apply sorting
@@ -283,7 +319,7 @@ export class UnifiedDataService {
       filteredResults.sort((a, b) => {
         const aVal = this.getNestedProperty(a.value, queryOptions.sortBy!)
         const bVal = this.getNestedProperty(b.value, queryOptions.sortBy!)
-        
+
         if (aVal < bVal) return queryOptions.sortOrder === 'desc' ? 1 : -1
         if (aVal > bVal) return queryOptions.sortOrder === 'desc' ? -1 : 1
         return 0
@@ -309,15 +345,19 @@ export class UnifiedDataService {
 
     switch (storageType) {
       case 'localStorage': {
-        const l = (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) as any
+        const l = (typeof globalThis !== 'undefined' &&
+          (globalThis as any).localStorage) as any
         if (l) {
-          const localKeys = Object.keys(l).filter((key: string) => key.startsWith(prefix))
+          const localKeys = Object.keys(l).filter((key: string) =>
+            key.startsWith(prefix)
+          )
           localKeys.forEach((key: string) => l.removeItem(key))
         }
         break
       }
       case 'sessionStorage': {
-        const s = (typeof globalThis !== 'undefined' && (globalThis as any).sessionStorage) as any
+        const s = (typeof globalThis !== 'undefined' &&
+          (globalThis as any).sessionStorage) as any
         if (s) {
           const sessionKeys: string[] = []
           for (let i = 0; i < s.length; i++) {
@@ -337,12 +377,20 @@ export class UnifiedDataService {
 
   // === UTILITY METHODS ===
 
-  async getStorageStats(namespace?: keyof typeof this.NAMESPACES): Promise<DataStats[]> {
+  async getStorageStats(
+    namespace?: keyof typeof this.NAMESPACES
+  ): Promise<DataStats[]> {
     const stats: DataStats[] = []
-    const namespacesToCheck = namespace ? [namespace] : Object.keys(this.NAMESPACES) as (keyof typeof this.NAMESPACES)[]
+    const namespacesToCheck = namespace
+      ? [namespace]
+      : (Object.keys(this.NAMESPACES) as (keyof typeof this.NAMESPACES)[])
 
     for (const ns of namespacesToCheck) {
-      for (const storageType of ['localStorage', 'sessionStorage', 'indexedDB'] as StorageType[]) {
+      for (const storageType of [
+        'localStorage',
+        'sessionStorage',
+        'indexedDB',
+      ] as StorageType[]) {
         const nsStats = await this.getNamespaceStats(ns, storageType)
         if (nsStats.totalKeys > 0) {
           stats.push(nsStats)
@@ -355,11 +403,17 @@ export class UnifiedDataService {
 
   async cleanupExpired(): Promise<number> {
     let cleanedCount = 0
-    
-    for (const namespace of Object.keys(this.NAMESPACES) as (keyof typeof this.NAMESPACES)[]) {
-      for (const storageType of ['localStorage', 'sessionStorage', 'indexedDB'] as StorageType[]) {
+
+    for (const namespace of Object.keys(
+      this.NAMESPACES
+    ) as (keyof typeof this.NAMESPACES)[]) {
+      for (const storageType of [
+        'localStorage',
+        'sessionStorage',
+        'indexedDB',
+      ] as StorageType[]) {
         const items = await this.query(namespace, { storageType })
-        
+
         for (const item of items) {
           const data = await this.get(namespace, item.key, { storageType })
           if (!data) {
@@ -424,8 +478,8 @@ export class UnifiedDataService {
             updatedAt: Date.now(),
             version: 1,
             encrypted: false,
-            compressed: false
-          }
+            compressed: false,
+          },
         }
         if (migrate) {
           const processedData = JSON.stringify(storedData)
@@ -437,7 +491,12 @@ export class UnifiedDataService {
               await this.setSessionStorage(fullKey, processedData)
               break
             case 'indexedDB':
-              await this.setIndexedDB(namespace, key, processedData, storedData.metadata)
+              await this.setIndexedDB(
+                namespace,
+                key,
+                processedData,
+                storedData.metadata
+              )
               break
           }
         }
@@ -454,7 +513,11 @@ export class UnifiedDataService {
 
       return storedData
     } catch (error) {
-      logger.error(`Failed to parse stored data for ${fullKey}:`, error, 'UnifiedDataService')
+      logger.error(
+        `Failed to parse stored data for ${fullKey}:`,
+        error,
+        'UnifiedDataService'
+      )
       return null
     }
   }
@@ -464,11 +527,13 @@ export class UnifiedDataService {
     toStorage: StorageType,
     namespace?: keyof typeof this.NAMESPACES
   ): Promise<void> {
-    const namespacesToMigrate = namespace ? [namespace] : Object.keys(this.NAMESPACES) as (keyof typeof this.NAMESPACES)[]
+    const namespacesToMigrate = namespace
+      ? [namespace]
+      : (Object.keys(this.NAMESPACES) as (keyof typeof this.NAMESPACES)[])
 
     for (const ns of namespacesToMigrate) {
       const items = await this.query(ns, { storageType: fromStorage })
-      
+
       for (const item of items) {
         await this.set(ns, item.key, item.value, { storageType: toStorage })
         await this.delete(ns, item.key, { storageType: fromStorage })
@@ -477,7 +542,9 @@ export class UnifiedDataService {
   }
 
   async backup(namespace?: keyof typeof this.NAMESPACES): Promise<string> {
-    const namespacesToBackup = namespace ? [namespace] : Object.keys(this.NAMESPACES) as (keyof typeof this.NAMESPACES)[]
+    const namespacesToBackup = namespace
+      ? [namespace]
+      : (Object.keys(this.NAMESPACES) as (keyof typeof this.NAMESPACES)[])
     const backup: Record<string, any> = {}
 
     for (const ns of namespacesToBackup) {
@@ -488,20 +555,24 @@ export class UnifiedDataService {
     return JSON.stringify({
       version: 1,
       timestamp: Date.now(),
-      data: backup
+      data: backup,
     })
   }
 
   async restore(backupData: string): Promise<void> {
     const backup = JSON.parse(backupData)
-    
+
     if (!backup.version || !backup.data) {
       throw new Error('Invalid backup format')
     }
 
     for (const [namespace, items] of Object.entries(backup.data)) {
       if (!this.NAMESPACES[namespace as keyof typeof this.NAMESPACES]) {
-        logger.warn(`Unknown namespace in backup: ${namespace}`, undefined, 'UnifiedDataService')
+        logger.warn(
+          `Unknown namespace in backup: ${namespace}`,
+          undefined,
+          'UnifiedDataService'
+        )
         continue
       }
 
@@ -522,7 +593,11 @@ export class UnifiedDataService {
           ['encrypt', 'decrypt']
         )
       } catch (error) {
-        logger.warn('Failed to initialize encryption:', error, 'UnifiedDataService')
+        logger.warn(
+          'Failed to initialize encryption:',
+          error,
+          'UnifiedDataService'
+        )
         this.config.encryptSensitiveData = false
       }
     }
@@ -532,14 +607,17 @@ export class UnifiedDataService {
     try {
       // Set up actual compression functionality using built-in browser APIs
       this.compressionEnabled = typeof CompressionStream !== 'undefined'
-      
+
       if (!this.compressionEnabled) {
         // Fallback to manual compression using LZ-string style algorithm
         this.compressionEnabled = true
         console.log('Using fallback compression algorithm')
       }
     } catch (error) {
-      console.warn('Compression setup failed, data will be stored uncompressed:', error)
+      console.warn(
+        'Compression setup failed, data will be stored uncompressed:',
+        error
+      )
       this.compressionEnabled = false
     }
   }
@@ -548,33 +626,35 @@ export class UnifiedDataService {
 
   private async compressData(data: string): Promise<string> {
     if (!this.compressionEnabled) return data
-    
+
     try {
       // Use modern browser compression if available
       if (typeof CompressionStream !== 'undefined') {
         const stream = new CompressionStream('gzip')
         const writer = stream.writable.getWriter()
         const reader = stream.readable.getReader()
-        
+
         writer.write(new TextEncoder().encode(data))
         writer.close()
-        
+
         const chunks: Uint8Array[] = []
         let done = false
-        
+
         while (!done) {
           const { value, done: streamDone } = await reader.read()
           done = streamDone
           if (value) chunks.push(value)
         }
-        
-        const compressed = new Uint8Array(chunks.reduce((acc, chunk) => acc + chunk.length, 0))
+
+        const compressed = new Uint8Array(
+          chunks.reduce((acc, chunk) => acc + chunk.length, 0)
+        )
         let offset = 0
         chunks.forEach(chunk => {
           compressed.set(chunk, offset)
           offset += chunk.length
         })
-        
+
         return btoa(String.fromCharCode(...compressed))
       } else {
         // Fallback simple compression
@@ -588,33 +668,37 @@ export class UnifiedDataService {
 
   private async decompressData(compressedData: string): Promise<string> {
     if (!this.compressionEnabled) return compressedData
-    
+
     try {
       if (typeof DecompressionStream !== 'undefined') {
-        const compressed = Uint8Array.from(atob(compressedData), c => c.charCodeAt(0))
+        const compressed = Uint8Array.from(atob(compressedData), c =>
+          c.charCodeAt(0)
+        )
         const stream = new DecompressionStream('gzip')
         const writer = stream.writable.getWriter()
         const reader = stream.readable.getReader()
-        
+
         writer.write(compressed)
         writer.close()
-        
+
         const chunks: Uint8Array[] = []
         let done = false
-        
+
         while (!done) {
           const { value, done: streamDone } = await reader.read()
           done = streamDone
           if (value) chunks.push(value)
         }
-        
-        const decompressed = new Uint8Array(chunks.reduce((acc, chunk) => acc + chunk.length, 0))
+
+        const decompressed = new Uint8Array(
+          chunks.reduce((acc, chunk) => acc + chunk.length, 0)
+        )
         let offset = 0
         chunks.forEach(chunk => {
           decompressed.set(chunk, offset)
           offset += chunk.length
         })
-        
+
         return new TextDecoder().decode(decompressed)
       } else {
         return this.simpleDecompress(compressedData)
@@ -630,11 +714,11 @@ export class UnifiedDataService {
     const dict: Record<string, string> = {}
     let compressed = ''
     let dictSize = 256
-    
+
     for (let i = 0; i < 256; i++) {
       dict[String.fromCharCode(i)] = String.fromCharCode(i)
     }
-    
+
     let w = ''
     for (const c of data) {
       const wc = w + c
@@ -646,7 +730,7 @@ export class UnifiedDataService {
         w = c
       }
     }
-    
+
     if (w) compressed += dict[w]
     return btoa(compressed)
   }
@@ -661,14 +745,19 @@ export class UnifiedDataService {
 
   private scheduleCleanup(): void {
     // Run cleanup every hour
-    setInterval(() => {
-      this.cleanupExpired().catch(error => 
-        logger.error('Cleanup failed:', error, 'UnifiedDataService')
-      )
-    }, 60 * 60 * 1000)
+    setInterval(
+      () => {
+        this.cleanupExpired().catch(error =>
+          logger.error('Cleanup failed:', error, 'UnifiedDataService')
+        )
+      },
+      60 * 60 * 1000
+    )
   }
 
-  private isSensitiveNamespace(namespace: keyof typeof this.NAMESPACES): boolean {
+  private isSensitiveNamespace(
+    namespace: keyof typeof this.NAMESPACES
+  ): boolean {
     return ['user', 'applications', 'ai', 'settings'].includes(namespace)
   }
 
@@ -683,102 +772,108 @@ export class UnifiedDataService {
       const stream = new CompressionStream('gzip')
       const writer = stream.writable.getWriter()
       const reader = stream.readable.getReader()
-      
+
       writer.write(new TextEncoder().encode(data))
       writer.close()
-      
+
       const chunks: Uint8Array[] = []
       let done = false
-      
+
       while (!done) {
         const { value, done: readerDone } = await reader.read()
         if (value) chunks.push(value)
         done = readerDone
       }
-      
-      const compressed = new Uint8Array(chunks.reduce((acc, chunk) => acc + chunk.length, 0))
+
+      const compressed = new Uint8Array(
+        chunks.reduce((acc, chunk) => acc + chunk.length, 0)
+      )
       let offset = 0
       for (const chunk of chunks) {
         compressed.set(chunk, offset)
         offset += chunk.length
       }
-      
+
       return 'compressed:' + btoa(String.fromCharCode(...compressed))
     }
-    
+
     return data // Fallback: no compression
   }
 
   private async decompress(data: string): Promise<string> {
     if (!data.startsWith('compressed:')) return data
-    
+
     const compressedData = data.slice(11)
-    
+
     if ('DecompressionStream' in window) {
-      const compressed = Uint8Array.from(atob(compressedData), c => c.charCodeAt(0))
+      const compressed = Uint8Array.from(atob(compressedData), c =>
+        c.charCodeAt(0)
+      )
       const stream = new DecompressionStream('gzip')
       const writer = stream.writable.getWriter()
       const reader = stream.readable.getReader()
-      
+
       writer.write(compressed)
       writer.close()
-      
+
       const chunks: Uint8Array[] = []
       let done = false
-      
+
       while (!done) {
         const { value, done: readerDone } = await reader.read()
         if (value) chunks.push(value)
         done = readerDone
       }
-      
-      const decompressed = new Uint8Array(chunks.reduce((acc, chunk) => acc + chunk.length, 0))
+
+      const decompressed = new Uint8Array(
+        chunks.reduce((acc, chunk) => acc + chunk.length, 0)
+      )
       let offset = 0
       for (const chunk of chunks) {
         decompressed.set(chunk, offset)
         offset += chunk.length
       }
-      
+
       return new TextDecoder().decode(decompressed)
     }
-    
+
     return compressedData // Fallback: return as-is
   }
 
   private async encrypt(data: string): Promise<string> {
     if (!this.encryptionKey) return data
-    
+
     const iv = crypto.getRandomValues(new Uint8Array(12))
     const encodedData = new TextEncoder().encode(data)
-    
+
     const encrypted = await crypto.subtle.encrypt(
       { name: 'AES-GCM', iv },
       this.encryptionKey,
       encodedData
     )
-    
+
     const combined = new Uint8Array(iv.length + encrypted.byteLength)
     combined.set(iv)
     combined.set(new Uint8Array(encrypted), iv.length)
-    
+
     return 'encrypted:' + btoa(String.fromCharCode(...combined))
   }
 
   private async decrypt(data: string): Promise<string> {
     if (!data.startsWith('encrypted:') || !this.encryptionKey) return data
-    
+
     const encryptedData = data.slice(10)
     const combined = Uint8Array.from(atob(encryptedData), c => c.charCodeAt(0))
-    
+
     const iv = combined.slice(0, 12)
     const encrypted = combined.slice(12)
-    
+
     const decrypted = await crypto.subtle.decrypt(
       { name: 'AES-GCM', iv },
       this.encryptionKey,
       encrypted
     )
-    
+
     return new TextDecoder().decode(decrypted)
   }
 
@@ -802,12 +897,16 @@ export class UnifiedDataService {
 
   // Storage-specific implementations
   private async setLocalStorage(key: string, value: string): Promise<void> {
-    const l = (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) as any
+    const l = (typeof globalThis !== 'undefined' &&
+      (globalThis as any).localStorage) as any
     if (!l) return
     try {
       l.setItem(key, value)
     } catch (error) {
-      if (error instanceof DOMException && error.code === DOMException.QUOTA_EXCEEDED_ERR) {
+      if (
+        error instanceof DOMException &&
+        error.code === DOMException.QUOTA_EXCEEDED_ERR
+      ) {
         // Try to free up space
         await this.cleanupExpired()
         l.setItem(key, value)
@@ -818,25 +917,33 @@ export class UnifiedDataService {
   }
 
   private async getLocalStorage(key: string): Promise<string | null> {
-    const l = (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) as any
+    const l = (typeof globalThis !== 'undefined' &&
+      (globalThis as any).localStorage) as any
     return l ? l.getItem(key) : null
   }
 
   private async setSessionStorage(key: string, value: string): Promise<void> {
-    const s = (typeof globalThis !== 'undefined' && (globalThis as any).sessionStorage) as any
+    const s = (typeof globalThis !== 'undefined' &&
+      (globalThis as any).sessionStorage) as any
     if (s) s.setItem(key, value)
   }
 
   private async getSessionStorage(key: string): Promise<string | null> {
-    const s = (typeof globalThis !== 'undefined' && (globalThis as any).sessionStorage) as any
+    const s = (typeof globalThis !== 'undefined' &&
+      (globalThis as any).sessionStorage) as any
     return s ? s.getItem(key) : null
   }
 
-  private async setIndexedDB(namespace: keyof typeof this.NAMESPACES, key: string, value: string, metadata: any): Promise<void> {
+  private async setIndexedDB(
+    namespace: keyof typeof this.NAMESPACES,
+    key: string,
+    value: string,
+    metadata: any
+  ): Promise<void> {
     const db = await this.getIndexedDBDatabase(namespace)
     const transaction = db.transaction([namespace], 'readwrite')
     const store = transaction.objectStore(namespace)
-    
+
     await new Promise<void>((resolve, reject) => {
       const request = store.put({ id: key, data: value, metadata })
       request.onsuccess = () => resolve()
@@ -844,7 +951,10 @@ export class UnifiedDataService {
     })
   }
 
-  private async getIndexedDBEntry(namespace: keyof typeof this.NAMESPACES, key: string): Promise<{ data: string; metadata: any } | null> {
+  private async getIndexedDBEntry(
+    namespace: keyof typeof this.NAMESPACES,
+    key: string
+  ): Promise<{ data: string; metadata: any } | null> {
     const db = await this.getIndexedDBDatabase(namespace)
     const transaction = db.transaction([namespace], 'readonly')
     const store = transaction.objectStore(namespace)
@@ -853,22 +963,30 @@ export class UnifiedDataService {
       const request = store.get(key)
       request.onsuccess = () => {
         const result = request.result
-        resolve(result ? { data: result.data, metadata: result.metadata } : null)
+        resolve(
+          result ? { data: result.data, metadata: result.metadata } : null
+        )
       }
       request.onerror = () => reject(request.error)
     })
   }
 
-  private async getIndexedDB(namespace: keyof typeof this.NAMESPACES, key: string): Promise<string | null> {
+  private async getIndexedDB(
+    namespace: keyof typeof this.NAMESPACES,
+    key: string
+  ): Promise<string | null> {
     const entry = await this.getIndexedDBEntry(namespace, key)
     return entry ? entry.data : null
   }
 
-  private async deleteIndexedDB(namespace: keyof typeof this.NAMESPACES, key: string): Promise<void> {
+  private async deleteIndexedDB(
+    namespace: keyof typeof this.NAMESPACES,
+    key: string
+  ): Promise<void> {
     const db = await this.getIndexedDBDatabase(namespace)
     const transaction = db.transaction([namespace], 'readwrite')
     const store = transaction.objectStore(namespace)
-    
+
     await new Promise<void>((resolve, reject) => {
       const request = store.delete(key)
       request.onsuccess = () => resolve()
@@ -876,11 +994,13 @@ export class UnifiedDataService {
     })
   }
 
-  private async getAllKeysIndexedDB(namespace: keyof typeof this.NAMESPACES): Promise<string[]> {
+  private async getAllKeysIndexedDB(
+    namespace: keyof typeof this.NAMESPACES
+  ): Promise<string[]> {
     const db = await this.getIndexedDBDatabase(namespace)
     const transaction = db.transaction([namespace], 'readonly')
     const store = transaction.objectStore(namespace)
-    
+
     return new Promise((resolve, reject) => {
       const request = store.getAllKeys()
       request.onsuccess = () => resolve(request.result as string[])
@@ -888,11 +1008,13 @@ export class UnifiedDataService {
     })
   }
 
-  private async clearIndexedDB(namespace: keyof typeof this.NAMESPACES): Promise<void> {
+  private async clearIndexedDB(
+    namespace: keyof typeof this.NAMESPACES
+  ): Promise<void> {
     const db = await this.getIndexedDBDatabase(namespace)
     const transaction = db.transaction([namespace], 'readwrite')
     const store = transaction.objectStore(namespace)
-    
+
     await new Promise<void>((resolve, reject) => {
       const request = store.clear()
       request.onsuccess = () => resolve()
@@ -900,24 +1022,26 @@ export class UnifiedDataService {
     })
   }
 
-  private async getIndexedDBDatabase(namespace: keyof typeof this.NAMESPACES): Promise<IDBDatabase> {
+  private async getIndexedDBDatabase(
+    namespace: keyof typeof this.NAMESPACES
+  ): Promise<IDBDatabase> {
     const dbName = `GameDev_${namespace}`
-    
+
     if (this.indexedDBCache.has(dbName)) {
       return this.indexedDBCache.get(dbName)!
     }
 
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(dbName, 1)
-      
+
       request.onerror = () => reject(request.error)
       request.onsuccess = () => {
         const db = request.result
         this.indexedDBCache.set(dbName, db)
         resolve(db)
       }
-      
-      request.onupgradeneeded = (event) => {
+
+      request.onupgradeneeded = event => {
         const db = (event.target as IDBOpenDBRequest).result
         if (!db.objectStoreNames.contains(namespace)) {
           db.createObjectStore(namespace, { keyPath: 'id' })
@@ -926,19 +1050,32 @@ export class UnifiedDataService {
     })
   }
 
-  private async getNamespaceStats(namespace: keyof typeof this.NAMESPACES, storageType: StorageType): Promise<DataStats> {
+  private async getNamespaceStats(
+    namespace: keyof typeof this.NAMESPACES,
+    storageType: StorageType
+  ): Promise<DataStats> {
     const prefix = this.NAMESPACES[namespace]
     let allKeys: string[] = []
 
     switch (storageType) {
       case 'localStorage': {
-        const l = (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) as any
-        allKeys = l ? Object.keys(l).filter((key: string) => key.startsWith(prefix)).map((k: string) => k.replace(prefix, '')) : []
+        const l = (typeof globalThis !== 'undefined' &&
+          (globalThis as any).localStorage) as any
+        allKeys = l
+          ? Object.keys(l)
+              .filter((key: string) => key.startsWith(prefix))
+              .map((k: string) => k.replace(prefix, ''))
+          : []
         break
       }
       case 'sessionStorage': {
-        const s = (typeof globalThis !== 'undefined' && (globalThis as any).sessionStorage) as any
-        allKeys = s ? Object.keys(s).filter((key: string) => key.startsWith(prefix)).map((k: string) => k.replace(prefix, '')) : []
+        const s = (typeof globalThis !== 'undefined' &&
+          (globalThis as any).sessionStorage) as any
+        allKeys = s
+          ? Object.keys(s)
+              .filter((key: string) => key.startsWith(prefix))
+              .map((k: string) => k.replace(prefix, ''))
+          : []
         break
       }
       case 'indexedDB':
@@ -954,7 +1091,9 @@ export class UnifiedDataService {
     let compressedEntries = 0
 
     for (const key of allKeys) {
-      const stored = await this.getStoredData<any>(namespace, key, { storageType })
+      const stored = await this.getStoredData<any>(namespace, key, {
+        storageType,
+      })
       if (!stored) continue
 
       const rawValue = JSON.stringify(stored.data)
@@ -964,7 +1103,8 @@ export class UnifiedDataService {
       oldestEntry = Math.min(oldestEntry, createdAt)
       newestEntry = Math.max(newestEntry, createdAt)
 
-      if (stored.metadata.ttl && Date.now() > createdAt + stored.metadata.ttl) expiredEntries++
+      if (stored.metadata.ttl && Date.now() > createdAt + stored.metadata.ttl)
+        expiredEntries++
       if (stored.metadata.encrypted) encryptedEntries++
       if (stored.metadata.compressed) compressedEntries++
     }
@@ -977,7 +1117,7 @@ export class UnifiedDataService {
       newestEntry,
       expiredEntries,
       encryptedEntries,
-      compressedEntries
+      compressedEntries,
     }
   }
 }
@@ -987,42 +1127,87 @@ export const unifiedDataService = UnifiedDataService.getInstance()
 
 // Export type-safe convenience methods for each namespace
 export const userData = {
-  set: <T>(key: string, value: T, options?: StorageOptions) => unifiedDataService.set('user', key, value, options),
-  get: <T>(key: string, options?: StorageOptions) => unifiedDataService.get<T>('user', key, options),
-  delete: (key: string, options?: StorageOptions) => unifiedDataService.delete('user', key, options),
-  exists: (key: string, options?: StorageOptions) => unifiedDataService.exists('user', key, options),
-  query: <T>(options?: QueryOptions & StorageOptions) => unifiedDataService.query<T>('user', options)
+  set: <T>(key: string, value: T, options?: StorageOptions) =>
+    unifiedDataService.set('user', key, value, options),
+  get: <T>(key: string, options?: StorageOptions) =>
+    unifiedDataService.get<T>('user', key, options),
+  delete: (key: string, options?: StorageOptions) =>
+    unifiedDataService.delete('user', key, options),
+  exists: (key: string, options?: StorageOptions) =>
+    unifiedDataService.exists('user', key, options),
+  query: <T>(options?: QueryOptions & StorageOptions) =>
+    unifiedDataService.query<T>('user', options),
 }
 
 export const jobsData = {
-  set: <T>(key: string, value: T, options?: StorageOptions) => unifiedDataService.set('jobs', key, value, options),
-  get: <T>(key: string, options?: StorageOptions) => unifiedDataService.get<T>('jobs', key, options),
-  delete: (key: string, options?: StorageOptions) => unifiedDataService.delete('jobs', key, options),
-  exists: (key: string, options?: StorageOptions) => unifiedDataService.exists('jobs', key, options),
-  query: <T>(options?: QueryOptions & StorageOptions) => unifiedDataService.query<T>('jobs', options)
+  set: <T>(key: string, value: T, options?: StorageOptions) =>
+    unifiedDataService.set('jobs', key, value, options),
+  get: <T>(key: string, options?: StorageOptions) =>
+    unifiedDataService.get<T>('jobs', key, options),
+  delete: (key: string, options?: StorageOptions) =>
+    unifiedDataService.delete('jobs', key, options),
+  exists: (key: string, options?: StorageOptions) =>
+    unifiedDataService.exists('jobs', key, options),
+  query: <T>(options?: QueryOptions & StorageOptions) =>
+    unifiedDataService.query<T>('jobs', options),
 }
 
 export const applicationsData = {
-  set: <T>(key: string, value: T, options?: StorageOptions) => unifiedDataService.set('applications', key, value, options),
-  get: <T>(key: string, options?: StorageOptions) => unifiedDataService.get<T>('applications', key, options),
-  delete: (key: string, options?: StorageOptions) => unifiedDataService.delete('applications', key, options),
-  exists: (key: string, options?: StorageOptions) => unifiedDataService.exists('applications', key, options),
-  query: <T>(options?: QueryOptions & StorageOptions) => unifiedDataService.query<T>('applications', options)
+  set: <T>(key: string, value: T, options?: StorageOptions) =>
+    unifiedDataService.set('applications', key, value, options),
+  get: <T>(key: string, options?: StorageOptions) =>
+    unifiedDataService.get<T>('applications', key, options),
+  delete: (key: string, options?: StorageOptions) =>
+    unifiedDataService.delete('applications', key, options),
+  exists: (key: string, options?: StorageOptions) =>
+    unifiedDataService.exists('applications', key, options),
+  query: <T>(options?: QueryOptions & StorageOptions) =>
+    unifiedDataService.query<T>('applications', options),
 }
 
 export const settingsData = {
-  set: <T>(key: string, value: T, options?: StorageOptions) => unifiedDataService.set('settings', key, value, { encrypt: true, ...options }),
-  get: <T>(key: string, options?: StorageOptions) => unifiedDataService.get<T>('settings', key, options),
-  delete: (key: string, options?: StorageOptions) => unifiedDataService.delete('settings', key, options),
-  exists: (key: string, options?: StorageOptions) => unifiedDataService.exists('settings', key, options),
-  query: <T>(options?: QueryOptions & StorageOptions) => unifiedDataService.query<T>('settings', options)
+  set: <T>(key: string, value: T, options?: StorageOptions) =>
+    unifiedDataService.set('settings', key, value, {
+      encrypt: true,
+      ...options,
+    }),
+  get: <T>(key: string, options?: StorageOptions) =>
+    unifiedDataService.get<T>('settings', key, options),
+  delete: (key: string, options?: StorageOptions) =>
+    unifiedDataService.delete('settings', key, options),
+  exists: (key: string, options?: StorageOptions) =>
+    unifiedDataService.exists('settings', key, options),
+  query: <T>(options?: QueryOptions & StorageOptions) =>
+    unifiedDataService.query<T>('settings', options),
 }
 
 export const cacheData = {
-  set: <T>(key: string, value: T, ttl: number = 24 * 60 * 60 * 1000, options?: StorageOptions) => 
-    unifiedDataService.set('cache', key, value, { ttl, storageType: 'sessionStorage', ...options }),
-  get: <T>(key: string, options?: StorageOptions) => unifiedDataService.get<T>('cache', key, { storageType: 'sessionStorage', ...options }),
-  delete: (key: string, options?: StorageOptions) => unifiedDataService.delete('cache', key, { storageType: 'sessionStorage', ...options }),
-  exists: (key: string, options?: StorageOptions) => unifiedDataService.exists('cache', key, { storageType: 'sessionStorage', ...options }),
-  clear: () => unifiedDataService.clear('cache', { storageType: 'sessionStorage' })
+  set: <T>(
+    key: string,
+    value: T,
+    ttl: number = 24 * 60 * 60 * 1000,
+    options?: StorageOptions
+  ) =>
+    unifiedDataService.set('cache', key, value, {
+      ttl,
+      storageType: 'sessionStorage',
+      ...options,
+    }),
+  get: <T>(key: string, options?: StorageOptions) =>
+    unifiedDataService.get<T>('cache', key, {
+      storageType: 'sessionStorage',
+      ...options,
+    }),
+  delete: (key: string, options?: StorageOptions) =>
+    unifiedDataService.delete('cache', key, {
+      storageType: 'sessionStorage',
+      ...options,
+    }),
+  exists: (key: string, options?: StorageOptions) =>
+    unifiedDataService.exists('cache', key, {
+      storageType: 'sessionStorage',
+      ...options,
+    }),
+  clear: () =>
+    unifiedDataService.clear('cache', { storageType: 'sessionStorage' }),
 }

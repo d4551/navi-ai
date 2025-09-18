@@ -1,7 +1,11 @@
 <template>
   <div class="ai-content-optimizer font-sans">
     <!-- AI Optimization Panel -->
-    <div v-if="showPanel" class="optimization-panel" :class="{ 'is-floating': isFloating }">
+    <div
+      v-if="showPanel"
+      class="optimization-panel"
+      :class="{ 'is-floating': isFloating }"
+    >
       <div class="panel-header">
         <div class="panel-title">
           <AppIcon name="CpuChipIcon" class="ai-icon" />
@@ -15,7 +19,9 @@
           <UnifiedButton
             variant="ghost"
             size="xs"
-            :leading-icon="isFloating ? 'mdi-dock-window' : 'mdi-window-open-variant'"
+            :leading-icon="
+              isFloating ? 'mdi-dock-window' : 'mdi-window-open-variant'
+            "
             @click="toggleFloating"
           />
           <UnifiedButton
@@ -44,7 +50,10 @@
         </div>
 
         <!-- Content Suggestions -->
-        <div v-if="activeOptimizationTab === 'suggestions'" class="optimization-content">
+        <div
+          v-if="activeOptimizationTab === 'suggestions'"
+          class="optimization-content"
+        >
           <div class="suggestions-header">
             <h4>AI Suggestions</h4>
             <UnifiedButton
@@ -57,7 +66,7 @@
               Refresh
             </UnifiedButton>
           </div>
-          
+
           <div class="suggestions-list">
             <div
               v-for="suggestion in contentSuggestions"
@@ -99,7 +108,10 @@
         </div>
 
         <!-- Keyword Analysis -->
-        <div v-else-if="activeOptimizationTab === 'keywords'" class="optimization-content">
+        <div
+          v-else-if="activeOptimizationTab === 'keywords'"
+          class="optimization-content"
+        >
           <div class="keywords-analysis">
             <h4>Keyword Analysis</h4>
             <div class="analysis-grid">
@@ -109,12 +121,15 @@
                   <span>Job Match Score</span>
                 </div>
                 <div class="score-display">
-                  <div class="score-circle" :class="getScoreClass(keywordMatchScore)">
+                  <div
+                    class="score-circle"
+                    :class="getScoreClass(keywordMatchScore)"
+                  >
                     <span class="score-value">{{ keywordMatchScore }}%</span>
                   </div>
                 </div>
               </div>
-              
+
               <div class="analysis-card">
                 <div class="card-header">
                   <AppIcon name="EyeIcon" />
@@ -127,7 +142,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="keywords-section">
               <h5>Missing Keywords</h5>
               <div class="keywords-list">
@@ -142,7 +157,7 @@
                 </span>
               </div>
             </div>
-            
+
             <div class="keywords-section">
               <h5>Optimized Keywords</h5>
               <div class="keywords-list">
@@ -160,30 +175,48 @@
         </div>
 
         <!-- Writing Analysis -->
-        <div v-else-if="activeOptimizationTab === 'writing'" class="optimization-content">
+        <div
+          v-else-if="activeOptimizationTab === 'writing'"
+          class="optimization-content"
+        >
           <div class="writing-analysis">
             <h4>Writing Analysis</h4>
-            
+
             <div class="metrics-grid">
               <div class="metric-item">
                 <div class="metric-label">Reading Level</div>
-                <div class="metric-value">{{ writingMetrics.readingLevel }}</div>
-                <div class="metric-indicator" :class="getReadingLevelClass()"></div>
+                <div class="metric-value">
+                  {{ writingMetrics.readingLevel }}
+                </div>
+                <div
+                  class="metric-indicator"
+                  :class="getReadingLevelClass()"
+                ></div>
               </div>
-              
+
               <div class="metric-item">
                 <div class="metric-label">Sentence Length</div>
-                <div class="metric-value">{{ writingMetrics.avgSentenceLength }} words</div>
-                <div class="metric-indicator" :class="getSentenceLengthClass()"></div>
+                <div class="metric-value">
+                  {{ writingMetrics.avgSentenceLength }} words
+                </div>
+                <div
+                  class="metric-indicator"
+                  :class="getSentenceLengthClass()"
+                ></div>
               </div>
-              
+
               <div class="metric-item">
                 <div class="metric-label">Passive Voice</div>
-                <div class="metric-value">{{ writingMetrics.passiveVoicePercent }}%</div>
-                <div class="metric-indicator" :class="getPassiveVoiceClass()"></div>
+                <div class="metric-value">
+                  {{ writingMetrics.passiveVoicePercent }}%
+                </div>
+                <div
+                  class="metric-indicator"
+                  :class="getPassiveVoiceClass()"
+                ></div>
               </div>
             </div>
-            
+
             <div class="writing-suggestions">
               <h5>Writing Improvements</h5>
               <div class="writing-suggestion-list">
@@ -197,7 +230,9 @@
                   </div>
                   <div class="suggestion-details">
                     <div class="suggestion-title">{{ suggestion.title }}</div>
-                    <div class="suggestion-description">{{ suggestion.description }}</div>
+                    <div class="suggestion-description">
+                      {{ suggestion.description }}
+                    </div>
                   </div>
                   <UnifiedButton
                     variant="ghost"
@@ -214,13 +249,19 @@
         </div>
 
         <!-- Performance Analysis -->
-        <div v-else-if="activeOptimizationTab === 'performance'" class="optimization-content">
+        <div
+          v-else-if="activeOptimizationTab === 'performance'"
+          class="optimization-content"
+        >
           <div class="performance-analysis">
             <h4>Document Performance</h4>
-            
+
             <!-- Overall Score -->
             <div class="overall-score">
-              <div class="score-circle large" :class="getScoreClass(overallScore)">
+              <div
+                class="score-circle large"
+                :class="getScoreClass(overallScore)"
+              >
                 <span class="score-value">{{ overallScore }}</span>
                 <span class="score-label">Overall Score</span>
               </div>
@@ -228,27 +269,40 @@
                 <div class="breakdown-item">
                   <span class="breakdown-label">Content Quality</span>
                   <div class="breakdown-bar">
-                    <div class="bar-fill" :style="{ width: contentQualityScore + '%' }"></div>
+                    <div
+                      class="bar-fill"
+                      :style="{ width: contentQualityScore + '%' }"
+                    ></div>
                   </div>
-                  <span class="breakdown-value">{{ contentQualityScore }}%</span>
+                  <span class="breakdown-value"
+                    >{{ contentQualityScore }}%</span
+                  >
                 </div>
                 <div class="breakdown-item">
                   <span class="breakdown-label">ATS Optimization</span>
                   <div class="breakdown-bar">
-                    <div class="bar-fill" :style="{ width: atsScore + '%' }"></div>
+                    <div
+                      class="bar-fill"
+                      :style="{ width: atsScore + '%' }"
+                    ></div>
                   </div>
                   <span class="breakdown-value">{{ atsScore }}%</span>
                 </div>
                 <div class="breakdown-item">
                   <span class="breakdown-label">Keyword Density</span>
                   <div class="breakdown-bar">
-                    <div class="bar-fill" :style="{ width: keywordDensityScore + '%' }"></div>
+                    <div
+                      class="bar-fill"
+                      :style="{ width: keywordDensityScore + '%' }"
+                    ></div>
                   </div>
-                  <span class="breakdown-value">{{ keywordDensityScore }}%</span>
+                  <span class="breakdown-value"
+                    >{{ keywordDensityScore }}%</span
+                  >
                 </div>
               </div>
             </div>
-            
+
             <!-- Performance Tips -->
             <div class="performance-tips">
               <h5>Quick Wins</h5>
@@ -294,7 +348,15 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowPathIcon, CheckIcon, CpuChipIcon, EyeIcon, PlusIcon, SparklesIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  CheckIcon,
+  CpuChipIcon,
+  EyeIcon,
+  PlusIcon,
+  SparklesIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
@@ -358,30 +420,33 @@ const contentSuggestions = ref<ContentSuggestion[]>([
     type: 'Impact Metric',
     priority: 'high',
     icon: 'mdi-trending-up',
-    description: 'Add quantifiable achievements to make your experience more compelling',
+    description:
+      'Add quantifiable achievements to make your experience more compelling',
     example: 'Increased team productivity by 25%',
     target: 'experience',
-    action: 'add-metrics'
+    action: 'add-metrics',
   },
   {
     id: '2',
     type: 'Action Verb',
     priority: 'medium',
     icon: 'BoltIcon',
-    description: 'Use stronger action verbs to make your accomplishments more impactful',
+    description:
+      'Use stronger action verbs to make your accomplishments more impactful',
     example: 'Spearheaded instead of Worked on',
     target: 'experience',
-    action: 'improve-verbs'
+    action: 'improve-verbs',
   },
   {
     id: '3',
     type: 'Industry Keywords',
     priority: 'high',
     icon: 'KeyIcon',
-    description: 'Include more relevant industry keywords from the job description',
+    description:
+      'Include more relevant industry keywords from the job description',
     target: 'summary',
-    action: 'add-keywords'
-  }
+    action: 'add-keywords',
+  },
 ])
 
 const writingSuggestions = ref<WritingSuggestion[]>([
@@ -392,7 +457,7 @@ const writingSuggestions = ref<WritingSuggestion[]>([
     title: 'Grammar Correction',
     description: 'Fix passive voice usage in experience descriptions',
     target: 'experience-2',
-    replacement: 'Led the implementation of...'
+    replacement: 'Led the implementation of...',
   },
   {
     id: '2',
@@ -401,8 +466,8 @@ const writingSuggestions = ref<WritingSuggestion[]>([
     title: 'Style Improvement',
     description: 'Use parallel structure in bullet points',
     target: 'experience-1',
-    replacement: 'Developed, Implemented, Managed'
-  }
+    replacement: 'Developed, Implemented, Managed',
+  },
 ])
 
 const performanceTips = ref<PerformanceTip[]>([
@@ -411,15 +476,16 @@ const performanceTips = ref<PerformanceTip[]>([
     impact: 'high',
     title: 'Add Skills Section',
     description: 'Include a dedicated skills section to improve ATS scanning',
-    action: 'add-skills-section'
+    action: 'add-skills-section',
   },
   {
     id: '2',
     impact: 'medium',
     title: 'Optimize Summary Length',
-    description: 'Expand your professional summary to 3-4 sentences for better impact',
-    action: 'expand-summary'
-  }
+    description:
+      'Expand your professional summary to 3-4 sentences for better impact',
+    action: 'expand-summary',
+  },
 ])
 
 // Computed properties
@@ -428,26 +494,26 @@ const optimizationTabs = computed(() => [
     id: 'suggestions',
     label: 'Suggestions',
     icon: 'LightBulbIcon',
-    count: contentSuggestions.value.length
+    count: contentSuggestions.value.length,
   },
   {
     id: 'keywords',
     label: 'Keywords',
     icon: 'KeyIcon',
-    count: missingKeywords.value.length
+    count: missingKeywords.value.length,
   },
   {
     id: 'writing',
     label: 'Writing',
     icon: 'mdi-pencil',
-    count: writingSuggestions.value.length
+    count: writingSuggestions.value.length,
   },
   {
     id: 'performance',
     label: 'Performance',
     icon: 'ChartBarIcon-line',
-    count: performanceTips.value.length
-  }
+    count: performanceTips.value.length,
+  },
 ])
 
 const aiStatusClass = computed(() => {
@@ -465,17 +531,30 @@ const keywordMatchScore = ref(72)
 const atsScore = ref(85)
 const contentQualityScore = ref(78)
 const keywordDensityScore = ref(68)
-const overallScore = computed(() => 
-  Math.round((keywordMatchScore.value + atsScore.value + contentQualityScore.value) / 3)
+const overallScore = computed(() =>
+  Math.round(
+    (keywordMatchScore.value + atsScore.value + contentQualityScore.value) / 3
+  )
 )
 
-const missingKeywords = ref(['JavaScript', 'React', 'TypeScript', 'Node.js', 'AWS'])
-const optimizedKeywords = ref(['Vue.js', 'Frontend', 'Web Development', 'UI/UX'])
+const missingKeywords = ref([
+  'JavaScript',
+  'React',
+  'TypeScript',
+  'Node.js',
+  'AWS',
+])
+const optimizedKeywords = ref([
+  'Vue.js',
+  'Frontend',
+  'Web Development',
+  'UI/UX',
+])
 
 const writingMetrics = ref({
   readingLevel: 'Professional',
   avgSentenceLength: 18,
-  passiveVoicePercent: 12
+  passiveVoicePercent: 12,
 })
 
 // Methods
@@ -494,11 +573,11 @@ function toggleFloating() {
 
 async function generateSuggestions() {
   isGeneratingSuggestions.value = true
-  
+
   try {
     // Simulate AI analysis
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
+
     // In real implementation, this would call your AI service
     toast.success('Content analysis complete')
   } catch (error) {
@@ -511,7 +590,7 @@ async function generateSuggestions() {
 function applySuggestion(suggestion: ContentSuggestion) {
   emit('apply-suggestion', suggestion)
   toast.success('Suggestion applied')
-  
+
   // Remove applied suggestion
   const index = contentSuggestions.value.findIndex(s => s.id === suggestion.id)
   if (index > -1) {
@@ -537,7 +616,9 @@ function applyTip(tip: PerformanceTip) {
 }
 
 function suggestKeywordPlacement(keyword: string) {
-  toast.info(`Consider adding "${keyword}" to your summary or experience sections`)
+  toast.info(
+    `Consider adding "${keyword}" to your summary or experience sections`
+  )
 }
 
 function getScoreClass(score: number): string {
@@ -566,11 +647,15 @@ function getPassiveVoiceClass(): string {
 }
 
 // Watch for content changes to trigger re-analysis
-watch(() => props.documentContent, () => {
-  if (showPanel.value) {
-    generateSuggestions()
-  }
-}, { deep: true })
+watch(
+  () => props.documentContent,
+  () => {
+    if (showPanel.value) {
+      generateSuggestions()
+    }
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped>
@@ -608,9 +693,11 @@ watch(() => props.documentContent, () => {
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  background: linear-gradient(135deg, 
-    rgba(var(--color-primary-500-rgb), 0.1), 
-    rgba(var(--color-gaming-500-rgb), 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-primary-500-rgb), 0.1),
+    rgba(var(--color-gaming-500-rgb), 0.1)
+  );
   border-b: 1px solid var(--glass-border);
 }
 
@@ -884,10 +971,34 @@ watch(() => props.documentContent, () => {
   opacity: 0.9;
 }
 
-.score-circle.excellent { background: linear-gradient(135deg, var(--color-success-500), var(--color-success-600)); }
-.score-circle.good { background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600)); }
-.score-circle.fair { background: linear-gradient(135deg, var(--color-warning-500), var(--color-warning-600)); }
-.score-circle.poor { background: linear-gradient(135deg, var(--color-error-500), var(--color-error-600)); }
+.score-circle.excellent {
+  background: linear-gradient(
+    135deg,
+    var(--color-success-500),
+    var(--color-success-600)
+  );
+}
+.score-circle.good {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-primary-600)
+  );
+}
+.score-circle.fair {
+  background: linear-gradient(
+    135deg,
+    var(--color-warning-500),
+    var(--color-warning-600)
+  );
+}
+.score-circle.poor {
+  background: linear-gradient(
+    135deg,
+    var(--color-error-500),
+    var(--color-error-600)
+  );
+}
 
 /* Keywords */
 .keywords-section {
@@ -973,10 +1084,18 @@ watch(() => props.documentContent, () => {
   border-radius: 2px;
 }
 
-.metric-indicator.excellent { background: #10b981; }
-.metric-indicator.good { background: #3b82f6; }
-.metric-indicator.fair { background: #f59e0b; }
-.metric-indicator.poor { background: #ef4444; }
+.metric-indicator.excellent {
+  background: #10b981;
+}
+.metric-indicator.good {
+  background: #3b82f6;
+}
+.metric-indicator.fair {
+  background: #f59e0b;
+}
+.metric-indicator.poor {
+  background: #ef4444;
+}
 
 /* Performance Analysis */
 .overall-score {
@@ -1018,7 +1137,11 @@ watch(() => props.documentContent, () => {
 
 .bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary-500), var(--color-gaming-500));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-gaming-500)
+  );
   transition: width 0.5s ease;
 }
 
@@ -1107,9 +1230,15 @@ watch(() => props.documentContent, () => {
 
 /* Animations */
 @keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Responsive */
@@ -1119,15 +1248,15 @@ watch(() => props.documentContent, () => {
     left: 16px;
     right: 16px;
   }
-  
+
   .analysis-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .metrics-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .overall-score {
     flex-direction: column;
     gap: 16px;

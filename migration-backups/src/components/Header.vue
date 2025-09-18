@@ -1,39 +1,55 @@
 <template>
-  <header
-    :class="headerClasses"
-    role="banner"
-    :aria-labelledby="titleId"
-  >
+  <header :class="headerClasses" role="banner" :aria-labelledby="titleId">
     <!-- Glass backdrop effect with improved glassmorphic styling -->
     <div class="glass-strong header-backdrop"></div>
-    
+
     <!-- Optional breadcrumbs with glassmorphic styling -->
-    <nav v-if="showBreadcrumbs && breadcrumbs.length" class="header-breadcrumbs glass p-2 rounded-lg mx-4" aria-label="Breadcrumb">
+    <nav
+      v-if="showBreadcrumbs && breadcrumbs.length"
+      class="header-breadcrumbs glass p-2 rounded-lg mx-4"
+      aria-label="Breadcrumb"
+    >
       <ol class="breadcrumb-list flex items-center gap-2">
         <li class="breadcrumb-item">
-          <router-link to="/" class="breadcrumb-link home-link neon-interactive p-1 rounded">
+          <router-link
+            to="/"
+            class="breadcrumb-link home-link neon-interactive p-1 rounded"
+          >
             <AppIcon name="mdi-home-outline" />
           </router-link>
         </li>
-        <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item flex items-center gap-2">
-          <AppIcon name="mdi-chevron-right" class="breadcrumb-separator text-glass-enhanced" />
-          <router-link v-if="crumb.route" :to="crumb.route" class="breadcrumb-link neon-interactive p-1 rounded text-glass-enhanced">
+        <li
+          v-for="(crumb, index) in breadcrumbs"
+          :key="index"
+          class="breadcrumb-item flex items-center gap-2"
+        >
+          <AppIcon
+            name="mdi-chevron-right"
+            class="breadcrumb-separator text-glass-enhanced"
+          />
+          <router-link
+            v-if="crumb.route"
+            :to="crumb.route"
+            class="breadcrumb-link neon-interactive p-1 rounded text-glass-enhanced"
+          >
             {{ crumb.title }}
           </router-link>
-          <span v-else class="breadcrumb-current font-medium text-glass-enhanced">{{ crumb.title }}</span>
+          <span
+            v-else
+            class="breadcrumb-current font-medium text-glass-enhanced"
+            >{{ crumb.title }}</span
+          >
         </li>
       </ol>
     </nav>
-    
-    <div class="header-container container-xl px-4 flex items-center justify-between gap-6">
+
+    <div
+      class="header-container container-xl px-4 flex items-center justify-between gap-6"
+    >
       <!-- Main Title Section -->
       <div class="header-title-section">
         <div class="header-title-wrapper">
-          <component
-            :is="titleTag"
-            :id="titleId"
-            :class="titleClasses"
-          >
+          <component :is="titleTag" :id="titleId" :class="titleClasses">
             <!-- Inline icon when not stacked -->
             <AppIcon
               v-if="icon"
@@ -56,23 +72,30 @@
 
       <!-- Enhanced AI Status Indicator -->
       <div v-if="showAiStatus" class="header-ai-status glass p-3 rounded-lg">
-        <div 
+        <div
           class="ai-status-indicator"
-          :class="{ 
+          :class="{
             'ai-ready': aiConnected,
             'ai-disconnected': !aiConnected,
-            'ai-loading': store.loading?.ai
+            'ai-loading': store.loading?.ai,
           }"
           :aria-label="getAIStatusLabel"
           :title="getAIStatusTitle"
         >
           <div class="ai-icon-wrapper">
-            <AppIcon :name="getAIIcon" class="ai-status-icon" aria-hidden="true" />
+            <AppIcon
+              :name="getAIIcon"
+              class="ai-status-icon"
+              aria-hidden="true"
+            />
             <div class="ai-glow" :class="{ active: aiConnected }"></div>
           </div>
           <div class="ai-status-content">
             <span class="ai-status-text">{{ getAIStatusText }}</span>
-            <span v-if="aiConnected && store.settings?.selectedModel" class="ai-model-text">
+            <span
+              v-if="aiConnected && store.settings?.selectedModel"
+              class="ai-model-text"
+            >
               {{ store.settings.selectedModel }}
             </span>
           </div>
@@ -81,14 +104,21 @@
       </div>
 
       <!-- Gamification Quick Access -->
-      <div v-if="showGamificationButton" class="header-gamify flex items-center gap-3">
+      <div
+        v-if="showGamificationButton"
+        class="header-gamify flex items-center gap-3"
+      >
         <Tooltip :text="''" position="bottom" :dark="isDark">
           <template #content>
             <div class="rich">
-              <span class="tooltip-title">Level {{ userLevel.level }} — {{ userLevel.title }}</span>
+              <span class="tooltip-title"
+                >Level {{ userLevel.level }} — {{ userLevel.title }}</span
+              >
               <div class="badges">
                 <span class="cap-badge">{{ userLevel.currentXP }} XP</span>
-                <span class="cap-badge">{{ achievementsCount }} Achievements</span>
+                <span class="cap-badge"
+                  >{{ achievementsCount }} Achievements</span
+                >
               </div>
             </div>
           </template>
@@ -133,7 +163,10 @@
     </div>
   </header>
   <teleport to="body">
-    <GamificationModal v-if="showGamifyModal" @close="showGamifyModal = false" />
+    <GamificationModal
+      v-if="showGamifyModal"
+      @close="showGamifyModal = false"
+    />
   </teleport>
 </template>
 
@@ -160,63 +193,63 @@ const emit = defineEmits(['detail-click'])
 const _props = defineProps({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   subtitle: {
     type: String,
-    default: null
+    default: null,
   },
   icon: {
     type: String,
-    default: null
+    default: null,
   },
   variant: {
     type: String,
     default: 'default',
-    validator: value => ['default', 'compact', 'hero', 'chat'].includes(value)
+    validator: value => ['default', 'compact', 'hero', 'chat'].includes(value),
   },
   titleTag: {
     type: String,
     default: 'h1',
-    validator: value => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
+    validator: value => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value),
   },
   actions: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   actionsAlign: {
     type: String,
     default: 'end',
-    validator: v => ['start','end','center','between'].includes(v)
+    validator: v => ['start', 'end', 'center', 'between'].includes(v),
   },
   showAiStatus: {
     type: Boolean,
-    default: false
+    default: false,
   },
   showGamificationButton: {
     type: Boolean,
-    default: true
+    default: true,
   },
   centered: {
     type: Boolean,
-    default: false
+    default: false,
   },
   stacked: {
     type: Boolean,
-    default: false
+    default: false,
   },
   details: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   detailsWithIcons: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   showBreadcrumbs: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 })
 
 // Store access and composables
@@ -229,14 +262,30 @@ const showGamifyModal = ref(false)
 
 // Gamification badge (achievements count)
 const achievementsCount = computed(() => {
-  try { return Array.isArray(store.user?.achievements) ? store.user.achievements.length : 0 } catch { return 0 }
+  try {
+    return Array.isArray(store.user?.achievements)
+      ? store.user.achievements.length
+      : 0
+  } catch {
+    return 0
+  }
 })
 
 // Header tooltip theme and level details
-const isDark = computed(() => { try { return Boolean(theme?.isDark?.value) } catch { return false } })
+const isDark = computed(() => {
+  try {
+    return Boolean(theme?.isDark?.value)
+  } catch {
+    return false
+  }
+})
 const g = new GamificationService(store)
 const userLevel = computed(() => {
-  try { return g.getLevelInfo(store.user?.xp || 0) } catch { return { level: 1, title: 'Rookie', currentXP: 0 } }
+  try {
+    return g.getLevelInfo(store.user?.xp || 0)
+  } catch {
+    return { level: 1, title: 'Rookie', currentXP: 0 }
+  }
 })
 
 // Responsive detection
@@ -246,13 +295,13 @@ const isMobile = computed(() => {
 })
 
 // Computed properties
-const titleId = computed(() =>
-  `${props.title.toLowerCase().replace(/\s+/g, '-')}-title`
+const titleId = computed(
+  () => `${props.title.toLowerCase().replace(/\s+/g, '-')}-title`
 )
 
 const slots = useSlots()
-const hasActions = computed(() =>
-  (props.actions?.length || 0) > 0 || !!slots.actions
+const hasActions = computed(
+  () => (props.actions?.length || 0) > 0 || !!slots.actions
 )
 
 // Enhanced AI status computation
@@ -260,7 +309,7 @@ const aiConnected = computed(() => {
   const hasApiKey = !!store?.settings?.geminiApiKey
   const isOnline = store?.isOnline
   const isInitialized = store?.aiStatus?.initialized || false
-  
+
   return hasApiKey && isOnline && isInitialized
 })
 
@@ -281,44 +330,48 @@ const getAIStatusText = computed(() => {
 })
 
 const getAIStatusLabel = computed(() => {
-  return aiConnected.value ? 'AI services are ready' : 'AI services not available'
+  return aiConnected.value
+    ? 'AI services are ready'
+    : 'AI services not available'
 })
 
 const getAIStatusTitle = computed(() => {
   if (aiConnected.value) return 'Connected - All systems operational'
   if (!store.isOnline) return 'Offline - Check your internet connection'
-  if (!store.settings?.geminiApiKey) return 'API Key Required - Add a key in settings'
+  if (!store.settings?.geminiApiKey)
+    return 'API Key Required - Add a key in settings'
   return 'Disconnected - Check API key and connection'
 })
 
 // Enhanced breadcrumb generation
-const showBreadcrumbs = computed(() => props.showBreadcrumbs !== false && route.path !== '/')
+const showBreadcrumbs = computed(
+  () => props.showBreadcrumbs !== false && route.path !== '/'
+)
 const breadcrumbs = computed(() => {
   if (!showBreadcrumbs.value) return []
-  
+
   const pathSegments = route.path.split('/').filter(Boolean)
   const breadcrumbItems = []
-  
+
   let currentPath = ''
   pathSegments.forEach((segment, index) => {
     currentPath += '/' + segment
     const isLast = index === pathSegments.length - 1
-    
+
     // Convert kebab-case to Title Case
-    const title = segment.split('-')
+    const title = segment
+      .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
-    
+
     breadcrumbItems.push({
       title,
-      route: isLast ? null : currentPath
+      route: isLast ? null : currentPath,
     })
   })
-  
+
   return breadcrumbItems
 })
-
-
 
 const headerClasses = computed(() => [
   'unified-header',
@@ -330,46 +383,48 @@ const headerClasses = computed(() => [
     'header--with-ai-status': props.showAiStatus,
     'header--with-breadcrumbs': showBreadcrumbs.value,
     'header--mobile': isMobile.value,
-    'header--loading': store.loading?.page
+    'header--loading': store.loading?.page,
   },
   {
     [`color-scheme-${theme.colorScheme.value}`]: true,
     [`theme-mode-${theme.themeMode.value}`]: true,
     'is-dark': theme.isDark.value,
-    'is-light': theme.isLight.value
-  }
+    'is-light': theme.isLight.value,
+  },
 ])
 
 const titleClasses = computed(() => [
   'header-title',
   {
-    'with-icon': !!props.icon
-  }
+    'with-icon': !!props.icon,
+  },
 ])
 
-const subtitleClasses = computed(() => [
-  'header-subtitle'
-])
+const subtitleClasses = computed(() => ['header-subtitle'])
 
 const actionsAlignClass = computed(() => {
   switch (props.actionsAlign) {
-    case 'start': return 'justify-start'
-    case 'center': return 'justify-center'
-    case 'between': return 'justify-between'
-    default: return 'justify-end'
+    case 'start':
+      return 'justify-start'
+    case 'center':
+      return 'justify-center'
+    case 'between':
+      return 'justify-between'
+    default:
+      return 'justify-end'
   }
 })
 
 // Back-compat: support both action.onClick and action.action
 function handleActionClick(action, evt) {
   try {
-    const fn = action?.onClick || action?.action;
+    const fn = action?.onClick || action?.action
     if (typeof fn === 'function') {
-      fn(evt);
+      fn(evt)
     }
   } catch (_e) {
     // Swallow; layout component should not throw
-    console.debug('Header action handler error:', e);
+    console.debug('Header action handler error:', e)
   }
 }
 
@@ -430,7 +485,12 @@ function handleActionClick(action, evt) {
   font-family: var(--font-primary, 'Electrolize', monospace);
   font-weight: var(--font-weight-bold, 700);
   font-size: var(--font-size-xl, 2rem);
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-gaming-500), var(--color-cyber-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-gaming-500),
+    var(--color-cyber-500)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -455,10 +515,16 @@ function handleActionClick(action, evt) {
   flex-shrink: 0;
 }
 
-
 @keyframes badgePulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
-  50% { transform: scale(1.07); box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.25); }
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: scale(1.07);
+    box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.25);
+  }
 }
 
 .header-subtitle {
@@ -474,9 +540,6 @@ function handleActionClick(action, evt) {
   overflow: hidden;
   transition: color var(--duration-normal) var(--easing-ease-out);
 }
-
-
-
 
 /* Actions Section */
 .header-actions {
@@ -495,10 +558,18 @@ function handleActionClick(action, evt) {
   justify-content: flex-end;
 }
 /* Alignment helpers (controlled by actionsAlign prop) */
-.header-actions-wrapper.justify-start { justify-content: flex-start; }
-.header-actions-wrapper.justify-end { justify-content: flex-end; }
-.header-actions-wrapper.justify-center { justify-content: center; }
-.header-actions-wrapper.justify-between { justify-content: space-between; }
+.header-actions-wrapper.justify-start {
+  justify-content: flex-start;
+}
+.header-actions-wrapper.justify-end {
+  justify-content: flex-end;
+}
+.header-actions-wrapper.justify-center {
+  justify-content: center;
+}
+.header-actions-wrapper.justify-between {
+  justify-content: space-between;
+}
 
 /* Variant Styles */
 .header--compact {
@@ -529,8 +600,12 @@ function handleActionClick(action, evt) {
 }
 
 @keyframes heroGlow {
-  0% { filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3)); }
-  100% { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5)); }
+  0% {
+    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5));
+  }
 }
 
 .header--hero .header-subtitle {
@@ -610,7 +685,11 @@ function handleActionClick(action, evt) {
 
 /* AI Ready State */
 .ai-status-indicator.ai-ready {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.1),
+    rgba(16, 185, 129, 0.15)
+  );
   border-color: rgba(34, 197, 94, 0.3);
   color: var(--color-success);
   box-shadow: 0 2px 8px rgba(34, 197, 94, 0.15);
@@ -622,14 +701,22 @@ function handleActionClick(action, evt) {
 }
 
 .ai-status-indicator.ai-ready:hover {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.2));
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.15),
+    rgba(16, 185, 129, 0.2)
+  );
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
 }
 
 /* AI Disconnected State */
 .ai-status-indicator.ai-disconnected {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1),
+    rgba(220, 38, 38, 0.15)
+  );
   border-color: rgba(239, 68, 68, 0.3);
   color: var(--color-error);
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
@@ -641,7 +728,11 @@ function handleActionClick(action, evt) {
 }
 
 .ai-status-indicator.ai-disconnected:hover {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.2));
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.15),
+    rgba(220, 38, 38, 0.2)
+  );
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
 }
@@ -667,13 +758,18 @@ function handleActionClick(action, evt) {
   position: absolute;
   inset: 0;
   border-radius: var(--border-radius-lg);
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.1) 0%,
+    transparent 70%
+  );
   animation: aiPulse 2s ease-in-out infinite;
   pointer-events: none;
 }
 
 @keyframes aiPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
     transform: scale(1);
   }
@@ -684,20 +780,32 @@ function handleActionClick(action, evt) {
 }
 
 /* Dark Theme Support for AI Status */
-[data-theme="dark"] .ai-status-indicator.ai-ready {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.2));
+[data-theme='dark'] .ai-status-indicator.ai-ready {
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.15),
+    rgba(16, 185, 129, 0.2)
+  );
   border-color: rgba(34, 197, 94, 0.4);
   box-shadow: 0 2px 8px rgba(34, 197, 94, 0.2);
 }
 
-[data-theme="dark"] .ai-status-indicator.ai-disconnected {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.2));
+[data-theme='dark'] .ai-status-indicator.ai-disconnected {
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.15),
+    rgba(220, 38, 38, 0.2)
+  );
   border-color: rgba(239, 68, 68, 0.4);
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
 }
 
-[data-theme="dark"] .ai-status-pulse {
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%);
+[data-theme='dark'] .ai-status-pulse {
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.15) 0%,
+    transparent 70%
+  );
 }
 
 /* Responsive AI Status */
@@ -705,16 +813,16 @@ function handleActionClick(action, evt) {
   .header-ai-status {
     margin-right: var(--spacing-sm);
   }
-  
+
   .ai-status-indicator {
     padding: var(--spacing-xs);
     gap: var(--spacing-xs);
   }
-  
+
   .ai-status-text {
     display: none; /* Hide text on mobile, show only icon */
   }
-  
+
   .ai-status-icon {
     font-size: 1.2em;
   }
@@ -731,7 +839,7 @@ function handleActionClick(action, evt) {
   .ai-status-pulse {
     animation: none;
   }
-  
+
   .ai-status-indicator,
   .ai-status-icon {
     transition: none;
@@ -741,8 +849,14 @@ function handleActionClick(action, evt) {
 /* Dark Theme Support - Unified Variables */
 
 /* Chat variant tweaks */
-.header--chat { margin-bottom: var(--spacing-md); }
-.header--chat .header-subtitle { font-size: 0.9rem; line-clamp: 1; -webkit-line-clamp: 1; }
+.header--chat {
+  margin-bottom: var(--spacing-md);
+}
+.header--chat .header-subtitle {
+  font-size: 0.9rem;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+}
 
 /* High Contrast Support */
 .high-contrast .header-title {
@@ -751,19 +865,18 @@ function handleActionClick(action, evt) {
   padding-bottom: var(--spacing-xs, 0.25rem);
 }
 
-
 /* Reduced Motion Support */
 
 /* === ENHANCED THEME SUPPORT === */
 /* Light Theme Specific Styles */
-:root[data-theme="light"] .unified-header,
+:root[data-theme='light'] .unified-header,
 .light-theme .unified-header {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-:root[data-theme="light"] .header-title,
+:root[data-theme='light'] .header-title,
 .light-theme .header-title {
   background: linear-gradient(135deg, #4f46e5, #00ff88, #00d9ff);
   -webkit-background-clip: text;
@@ -772,18 +885,18 @@ function handleActionClick(action, evt) {
 }
 
 /* Dark Theme Specific Styles */
-:root[data-theme="dark"] .unified-header,
+:root[data-theme='dark'] .unified-header,
 .dark-theme .unified-header,
-[data-theme="dark"] .unified-header {
+[data-theme='dark'] .unified-header {
   background: rgba(15, 15, 15, 0.95);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(20px) saturate(180%);
 }
 
-:root[data-theme="dark"] .header-title,
+:root[data-theme='dark'] .header-title,
 .dark-theme .header-title,
-[data-theme="dark"] .header-title {
+[data-theme='dark'] .header-title {
   background: linear-gradient(135deg, #6366f1, #00ff88, #00d9ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -791,29 +904,29 @@ function handleActionClick(action, evt) {
   filter: brightness(1.1);
 }
 
-:root[data-theme="dark"] .header-subtitle,
+:root[data-theme='dark'] .header-subtitle,
 .dark-theme .header-subtitle,
-[data-theme="dark"] .header-subtitle {
+[data-theme='dark'] .header-subtitle {
   color: var(--text-secondary);
   opacity: 0.9;
 }
 
-:root[data-theme="dark"] .ai-status-indicator,
+:root[data-theme='dark'] .ai-status-indicator,
 .dark-theme .ai-status-indicator,
-[data-theme="dark"] .ai-status-indicator {
+[data-theme='dark'] .ai-status-indicator {
   background: rgba(15, 15, 15, 0.8);
   border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* System Theme Support */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .unified-header {
+  :root:not([data-theme='light']) .unified-header {
     background: rgba(15, 15, 15, 0.95);
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
-  
-  :root:not([data-theme="light"]) .header-title {
+
+  :root:not([data-theme='light']) .header-title {
     background: linear-gradient(135deg, #6366f1, #00ff88, #00d9ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -828,16 +941,22 @@ function handleActionClick(action, evt) {
   box-shadow: var(--shadow-lg);
 }
 
-:root[data-theme="dark"] .unified-header:hover,
+:root[data-theme='dark'] .unified-header:hover,
 .dark-theme .unified-header:hover,
-[data-theme="dark"] .unified-header:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.1);
+[data-theme='dark'] .unified-header:hover {
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(99, 102, 241, 0.1);
 }
 
 /* Gaming theme enhancements */
 .theme-gaming .unified-header {
   border-color: var(--border-gaming);
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 217, 255, 0.03));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.05),
+    rgba(0, 217, 255, 0.03)
+  );
 }
 
 .theme-gaming .header-title {
@@ -938,11 +1057,12 @@ function handleActionClick(action, evt) {
 }
 
 @keyframes aiGlow {
-  0%, 100% { 
+  0%,
+  100% {
     opacity: 0.6;
     transform: scale(1);
   }
-  50% { 
+  50% {
     opacity: 1;
     transform: scale(1.1);
   }
@@ -961,9 +1081,10 @@ function handleActionClick(action, evt) {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, 
-    var(--color-primary-500), 
-    var(--color-secondary-500), 
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-secondary-500),
     var(--color-primary-500)
   );
   background-size: 200% 100%;
@@ -971,8 +1092,12 @@ function handleActionClick(action, evt) {
 }
 
 @keyframes loading-bar {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* Enhanced mobile responsiveness */
@@ -980,13 +1105,13 @@ function handleActionClick(action, evt) {
   .header-breadcrumbs {
     display: none;
   }
-  
+
   .ai-status-indicator {
     min-width: 44px;
     padding: var(--spacing-sm);
     border-radius: 50%;
   }
-  
+
   .ai-status-content {
     display: none;
   }
@@ -997,7 +1122,7 @@ function handleActionClick(action, evt) {
   .breadcrumb-link {
     border: 1px solid transparent;
   }
-  
+
   .breadcrumb-link:hover {
     border-color: var(--color-primary-500);
   }

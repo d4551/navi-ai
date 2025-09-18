@@ -4,11 +4,11 @@ import type {
   PortfolioStats,
   PortfolioExportData,
   PortfolioExportOptions,
-  PortfolioItemType
-} from '../types/portfolio';
-import { aiService } from './AIService';
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
-import { logger } from '@/shared/utils/logger';
+  PortfolioItemType,
+} from '../types/portfolio'
+import { aiService } from './AIService'
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { logger } from '@/shared/utils/logger'
 
 /**
  * Centralized portfolio service for all portfolio-related business logic
@@ -18,18 +18,20 @@ export class PortfolioService {
    * Parse a date string in various formats to a Date object
    */
   static parseItemDate(dateStr: string): Date | null {
-    if (!dateStr) return null;
-    
+    if (!dateStr) return null
+
     // Handle "Month YYYY" format
-    const monthYearMatch = /^(\w+)\s+(\d{4})$/.exec(dateStr.trim());
+    const monthYearMatch = /^(\w+)\s+(\d{4})$/.exec(dateStr.trim())
     if (monthYearMatch) {
-      const dateTime = Date.parse(`${monthYearMatch[1]} 1, ${monthYearMatch[2]}`);
-      return isNaN(dateTime) ? null : new Date(dateTime);
+      const dateTime = Date.parse(
+        `${monthYearMatch[1]} 1, ${monthYearMatch[2]}`
+      )
+      return isNaN(dateTime) ? null : new Date(dateTime)
     }
-    
+
     // Fallback to standard Date.parse
-    const timestamp = Date.parse(dateStr);
-    return isNaN(timestamp) ? null : new Date(timestamp);
+    const timestamp = Date.parse(dateStr)
+    return isNaN(timestamp) ? null : new Date(timestamp)
   }
 
   /**
@@ -45,7 +47,13 @@ export class PortfolioService {
     const margin = 50
     const lineHeight = 14
 
-    const drawWrappedText = (page: any, text: string, x: number, yStart: number, maxWidth: number) => {
+    const drawWrappedText = (
+      page: any,
+      text: string,
+      x: number,
+      yStart: number,
+      maxWidth: number
+    ) => {
       const words = text.split(/\s+/)
       let line = ''
       let y = yStart
@@ -53,7 +61,13 @@ export class PortfolioService {
         const test = line ? line + ' ' + w : w
         const width = font.widthOfTextAtSize(test, 11)
         if (width > maxWidth) {
-          page.drawText(line, { x, y, size: 11, font, color: rgb(0.2, 0.2, 0.2) })
+          page.drawText(line, {
+            x,
+            y,
+            size: 11,
+            font,
+            color: rgb(0.2, 0.2, 0.2),
+          })
           line = w
           y -= lineHeight
         } else {
@@ -74,22 +88,43 @@ export class PortfolioService {
 
       // Header
       const title = `${item.title || 'Project'}${item.date ? ' — ' + item.date : ''}`
-      page.drawText(title, { x: margin, y: height - margin, size: 18, font, color: rgb(0, 0, 0) })
+      page.drawText(title, {
+        x: margin,
+        y: height - margin,
+        size: 18,
+        font,
+        color: rgb(0, 0, 0),
+      })
       let cursor = height - margin - 24
       if (user?.name || user?.email) {
-        page.drawText(`${user?.name || ''} ${user?.email ? '<' + user.email + '>' : ''}`.trim(), { x: margin, y: cursor, size: 10, font, color: rgb(0.4, 0.4, 0.4) })
+        page.drawText(
+          `${user?.name || ''} ${user?.email ? '<' + user.email + '>' : ''}`.trim(),
+          { x: margin, y: cursor, size: 10, font, color: rgb(0.4, 0.4, 0.4) }
+        )
         cursor -= 18
       }
 
       // Sections
       const addSection = (heading: string) => {
-        page.drawText(heading, { x: margin, y: cursor, size: 12, font, color: rgb(0.1, 0.1, 0.1) })
+        page.drawText(heading, {
+          x: margin,
+          y: cursor,
+          size: 12,
+          font,
+          color: rgb(0.1, 0.1, 0.1),
+        })
         cursor -= 16
       }
 
       if (item.description) {
         addSection('Summary')
-        cursor = drawWrappedText(page, String(item.description), margin, cursor, contentWidth)
+        cursor = drawWrappedText(
+          page,
+          String(item.description),
+          margin,
+          cursor,
+          contentWidth
+        )
         cursor -= 6
       }
 
@@ -107,7 +142,13 @@ export class PortfolioService {
       listSection('Outcomes / Impact', (item as any).outcomes)
       if ((item as any).skills?.length) {
         addSection('Skills')
-        cursor = drawWrappedText(page, (item as any).skills.join(', '), margin, cursor, contentWidth)
+        cursor = drawWrappedText(
+          page,
+          (item as any).skills.join(', '),
+          margin,
+          cursor,
+          contentWidth
+        )
         cursor -= 6
       }
 
@@ -115,7 +156,13 @@ export class PortfolioService {
       if ((item as any).links?.length) {
         addSection('Links')
         for (const l of (item as any).links.slice(0, 5)) {
-          cursor = drawWrappedText(page, `${l.label || l.type || 'Link'}: ${l.url}`, margin, cursor, contentWidth)
+          cursor = drawWrappedText(
+            page,
+            `${l.label || l.type || 'Link'}: ${l.url}`,
+            margin,
+            cursor,
+            contentWidth
+          )
         }
       }
     }
@@ -125,7 +172,9 @@ export class PortfolioService {
   /**
    * Detect known platform from URL
    */
-  static detectPlatform(url: string): 'steam' | 'itch' | 'youtube' | 'github' | 'other' {
+  static detectPlatform(
+    url: string
+  ): 'steam' | 'itch' | 'youtube' | 'github' | 'other' {
     const u = (url || '').toLowerCase()
     if (u.includes('store.steampowered.com/app/')) return 'steam'
     if (u.includes('itch.io')) return 'itch'
@@ -168,9 +217,18 @@ export class PortfolioService {
   }
 
   /** Fetch minimal Steam app details (public endpoint) */
-  static async fetchSteamAppDetails(appId: string): Promise<{ title?: string; description?: string; image?: string; site?: string }> {
+  static async fetchSteamAppDetails(
+    appId: string
+  ): Promise<{
+    title?: string
+    description?: string
+    image?: string
+    site?: string
+  }> {
     try {
-      const resp = await fetch(`https://store.steampowered.com/api/appdetails?appids=${encodeURIComponent(appId)}`)
+      const resp = await fetch(
+        `https://store.steampowered.com/api/appdetails?appids=${encodeURIComponent(appId)}`
+      )
       const json = await resp.json()
       const entry = json?.[appId]
       const data = entry?.data
@@ -187,16 +245,27 @@ export class PortfolioService {
   /**
    * Fetch basic OpenGraph metadata for a URL (best-effort)
    */
-  static async fetchLinkMetadata(url: string): Promise<{ title?: string; description?: string; image?: string; site?: string }> {
+  static async fetchLinkMetadata(
+    url: string
+  ): Promise<{
+    title?: string
+    description?: string
+    image?: string
+    site?: string
+  }> {
     try {
       const resp = await fetch(url, { method: 'GET' })
       const html = await resp.text()
       const og = (prop: string) => {
-        const re = new RegExp(`<meta[^>]+property=["']${prop}["'][^>]+content=["']([^"']+)["']`, 'i')
+        const re = new RegExp(
+          `<meta[^>]+property=["']${prop}["'][^>]+content=["']([^"']+)["']`,
+          'i'
+        )
         const m = html.match(re)
         return m ? m[1] : undefined
       }
-      const title = og('og:title') || (html.match(/<title>([^<]+)<\/title>/i)?.[1])
+      const title =
+        og('og:title') || html.match(/<title>([^<]+)<\/title>/i)?.[1]
       const description = og('og:description')
       const image = og('og:image')
       const site = og('og:site_name')
@@ -204,7 +273,12 @@ export class PortfolioService {
       if (!image && this.detectPlatform(url) === 'youtube') {
         const id = this.parseYouTubeId(url)
         if (id) {
-          return { title, description, image: this.getYouTubeThumb(id), site: site || 'YouTube' }
+          return {
+            title,
+            description,
+            image: this.getYouTubeThumb(id),
+            site: site || 'YouTube',
+          }
         }
       }
       return { title, description, image, site }
@@ -216,76 +290,139 @@ export class PortfolioService {
   /**
    * Role templates for responsibilities/outcomes by common game roles
    */
-  static roleTemplates: Record<string, { responsibilities: string[]; outcomes: string[]; skills: string[] }> = {
+  static roleTemplates: Record<
+    string,
+    { responsibilities: string[]; outcomes: string[]; skills: string[] }
+  > = {
     Programmer: {
       responsibilities: [
         'Implemented gameplay systems and mechanics',
         'Optimized performance and memory usage',
         'Built tooling and pipelines for designers and artists',
-        'Integrated platform services (Steamworks, PSN, Xbox Live)'
+        'Integrated platform services (Steamworks, PSN, Xbox Live)',
       ],
       outcomes: [
         'Improved average FPS by 20% across target platforms',
         'Reduced load times by 30% via asset streaming',
-        'Shipped two content updates with zero regressions'
+        'Shipped two content updates with zero regressions',
       ],
-      skills: ['C#', 'C++', 'Unity', 'Unreal Engine', 'Profiling', 'Optimization']
+      skills: [
+        'C#',
+        'C++',
+        'Unity',
+        'Unreal Engine',
+        'Profiling',
+        'Optimization',
+      ],
     },
     Designer: {
       responsibilities: [
         'Designed levels, systems, and progression loops',
         'Authored gameplay specs and balanced economies',
-        'Iterated using telemetry and playtest feedback'
+        'Iterated using telemetry and playtest feedback',
       ],
       outcomes: [
         'Increased session length by 15% through progression tuning',
-        'Raised L7 retention by 8% via onboarding improvements'
+        'Raised L7 retention by 8% via onboarding improvements',
       ],
-      skills: ['Systems Design', 'Level Design', 'Scripting', 'Balancing']
+      skills: ['Systems Design', 'Level Design', 'Scripting', 'Balancing'],
     },
     Artist: {
-      responsibilities: ['Created production-ready art assets', 'Established style guides and pipelines', 'Optimized textures and materials'],
-      outcomes: ['Achieved target memory budgets', 'Delivered asset packs on schedule'],
-      skills: ['Photoshop', 'Blender/Maya', 'Substance', 'PBR']
+      responsibilities: [
+        'Created production-ready art assets',
+        'Established style guides and pipelines',
+        'Optimized textures and materials',
+      ],
+      outcomes: [
+        'Achieved target memory budgets',
+        'Delivered asset packs on schedule',
+      ],
+      skills: ['Photoshop', 'Blender/Maya', 'Substance', 'PBR'],
     },
     Audio: {
-      responsibilities: ['Composed adaptive music', 'Designed SFX', 'Integrated audio middleware (Wwise/FMOD)'],
-      outcomes: ['Reduced audio latency by 40ms', 'Shipped reactive music system'],
-      skills: ['Wwise', 'FMOD', 'Mixing', 'Implementation']
+      responsibilities: [
+        'Composed adaptive music',
+        'Designed SFX',
+        'Integrated audio middleware (Wwise/FMOD)',
+      ],
+      outcomes: [
+        'Reduced audio latency by 40ms',
+        'Shipped reactive music system',
+      ],
+      skills: ['Wwise', 'FMOD', 'Mixing', 'Implementation'],
     },
     Producer: {
-      responsibilities: ['Coordinated cross-discipline schedules', 'Managed sprint planning and risk tracking', 'Facilitated playtests and triage'],
-      outcomes: ['Delivered milestones on time', 'Reduced open bugs by 35% before alpha'],
-      skills: ['Agile', 'Scheduling', 'Communication']
-    }
+      responsibilities: [
+        'Coordinated cross-discipline schedules',
+        'Managed sprint planning and risk tracking',
+        'Facilitated playtests and triage',
+      ],
+      outcomes: [
+        'Delivered milestones on time',
+        'Reduced open bugs by 35% before alpha',
+      ],
+      skills: ['Agile', 'Scheduling', 'Communication'],
+    },
   }
 
   /** Engine templates (augmentations) */
-  static engineTemplates: Record<string, { responsibilities?: string[]; outcomes?: string[]; skills?: string[] }> = {
-    'Unity': {
-      responsibilities: ['Authored C# gameplay scripts', 'Implemented ScriptableObject-driven content', 'Optimized GC allocations and draw calls'],
-      outcomes: ['Reduced allocations by 40%', 'Stabilized frame pacing on mid-tier devices'],
-      skills: ['C#', 'Burst/Jobs', 'ScriptableObjects', 'URP']
+  static engineTemplates: Record<
+    string,
+    { responsibilities?: string[]; outcomes?: string[]; skills?: string[] }
+  > = {
+    Unity: {
+      responsibilities: [
+        'Authored C# gameplay scripts',
+        'Implemented ScriptableObject-driven content',
+        'Optimized GC allocations and draw calls',
+      ],
+      outcomes: [
+        'Reduced allocations by 40%',
+        'Stabilized frame pacing on mid-tier devices',
+      ],
+      skills: ['C#', 'Burst/Jobs', 'ScriptableObjects', 'URP'],
     },
     'Unreal Engine': {
-      responsibilities: ['Developed gameplay in C++ and Blueprints', 'Created tooling/editor utilities', 'Optimized replication/netcode'],
-      outcomes: ['Cut replication bandwidth by 25%', 'Shipped networked feature with deterministic behavior'],
-      skills: ['C++', 'Blueprints', 'Replication', 'Niagara']
-    }
+      responsibilities: [
+        'Developed gameplay in C++ and Blueprints',
+        'Created tooling/editor utilities',
+        'Optimized replication/netcode',
+      ],
+      outcomes: [
+        'Cut replication bandwidth by 25%',
+        'Shipped networked feature with deterministic behavior',
+      ],
+      skills: ['C++', 'Blueprints', 'Replication', 'Niagara'],
+    },
   }
 
   /** Build a static HTML page for a portfolio */
-  static prepareStaticSite(user: { name?: string; email?: string }, items: PortfolioItem[]): string {
-    const escape = (s: string = '') => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]!))
-    const cards = items.map(i => `
+  static prepareStaticSite(
+    user: { name?: string; email?: string },
+    items: PortfolioItem[]
+  ): string {
+    const escape = (s: string = '') =>
+      s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!)
+    const cards = items
+      .map(
+        i => `
       <article class="card">
         <h3>${escape(i.title || 'Untitled')}</h3>
         <p class="meta">${escape(i.type || '')}${i.date ? ' • ' + escape(i.date) : ''}</p>
         ${i.image ? `<img src="${escape(i.image)}" alt="${escape(i.title)}"/>` : ''}
         ${i.description ? `<p>${escape(i.description)}</p>` : ''}
-        ${i.skills?.length ? `<div class="tags">${i.skills.slice(0,8).map(s=>`<span>${escape(s)}</span>`).join('')}</div>` : ''}
+        ${
+          i.skills?.length
+            ? `<div class="tags">${i.skills
+                .slice(0, 8)
+                .map(s => `<span>${escape(s)}</span>`)
+                .join('')}</div>`
+            : ''
+        }
       </article>
-    `).join('\n')
+    `
+      )
+      .join('\n')
     return `<!doctype html>
 <html lang="en">
 <head>
@@ -321,14 +458,18 @@ export class PortfolioService {
   /**
    * Prepare a one-pager export (Markdown) for a portfolio project
    */
-  static prepareOnePager(item: PortfolioItem, user: { name: string; email?: string }): string {
+  static prepareOnePager(
+    item: PortfolioItem,
+    user: { name: string; email?: string }
+  ): string {
     const lines: string[] = []
     lines.push(`# ${item.title || 'Project'} — One-Pager`)
     lines.push('')
     lines.push(`Author: ${user.name}${user.email ? ` <${user.email}>` : ''}`)
     if (item.role) lines.push(`Role: ${item.role}`)
     if (item.engines?.length) lines.push(`Engines: ${item.engines.join(', ')}`)
-    if (item.platforms?.length) lines.push(`Platforms: ${item.platforms.join(', ')}`)
+    if (item.platforms?.length)
+      lines.push(`Platforms: ${item.platforms.join(', ')}`)
     lines.push('')
     if (item.description) {
       lines.push('## Summary')
@@ -352,7 +493,9 @@ export class PortfolioService {
     }
     if (item.links?.length) {
       lines.push('## Links')
-      item.links.forEach(l => lines.push(`- [${l.label || l.type || 'Link'}](${l.url})`))
+      item.links.forEach(l =>
+        lines.push(`- [${l.label || l.type || 'Link'}](${l.url})`)
+      )
       lines.push('')
     }
     return lines.join('\n')
@@ -361,94 +504,108 @@ export class PortfolioService {
   /**
    * Filter portfolio items based on provided criteria
    */
-  static filterItems(items: PortfolioItem[], filters: Partial<PortfolioFilters>): PortfolioItem[] {
-    let filtered = [...items];
+  static filterItems(
+    items: PortfolioItem[],
+    filters: Partial<PortfolioFilters>
+  ): PortfolioItem[] {
+    let filtered = [...items]
 
     // Featured filter
     if (filters.showFeaturedOnly) {
-      filtered = filtered.filter(item => item.featured);
+      filtered = filtered.filter(item => item.featured)
     }
 
     // Type filter
     if (filters.type && filters.type !== 'all') {
-      filtered = filtered.filter(item => item.type === filters.type);
+      filtered = filtered.filter(item => item.type === filters.type)
     }
 
     // Skill filters
     if (filters.skillFilters?.length) {
-      filtered = filtered.filter(item => 
-        filters.skillFilters!.every(skill => 
+      filtered = filtered.filter(item =>
+        filters.skillFilters!.every(skill =>
           (item.skills || []).includes(skill)
         )
-      );
+      )
     }
 
     // Date range filter
     if (filters.dateFrom || filters.dateTo) {
-      const fromDate = filters.dateFrom ? new Date(filters.dateFrom) : null;
-      const toDate = filters.dateTo ? new Date(filters.dateTo) : null;
-      
+      const fromDate = filters.dateFrom ? new Date(filters.dateFrom) : null
+      const toDate = filters.dateTo ? new Date(filters.dateTo) : null
+
       filtered = filtered.filter(item => {
-        const itemDate = this.parseItemDate(item.date);
-        if (!itemDate) return true;
-        
-        if (fromDate && itemDate < fromDate) return false;
+        const itemDate = this.parseItemDate(item.date)
+        if (!itemDate) return true
+
+        if (fromDate && itemDate < fromDate) return false
         if (toDate) {
-          const endOfMonth = new Date(toDate.getFullYear(), toDate.getMonth() + 1, 0);
-          if (itemDate > endOfMonth) return false;
+          const endOfMonth = new Date(
+            toDate.getFullYear(),
+            toDate.getMonth() + 1,
+            0
+          )
+          if (itemDate > endOfMonth) return false
         }
-        return true;
-      });
+        return true
+      })
     }
 
     // Search query filter
     if (filters.searchQuery?.trim()) {
-      const query = filters.searchQuery.toLowerCase();
-      filtered = filtered.filter(item =>
-        item.title?.toLowerCase().includes(query) ||
-        item.description?.toLowerCase().includes(query) ||
-        item.game?.toLowerCase().includes(query) ||
-        (item.skills || []).some(skill => skill.toLowerCase().includes(query))
-      );
+      const query = filters.searchQuery.toLowerCase()
+      filtered = filtered.filter(
+        item =>
+          item.title?.toLowerCase().includes(query) ||
+          item.description?.toLowerCase().includes(query) ||
+          item.game?.toLowerCase().includes(query) ||
+          (item.skills || []).some(skill => skill.toLowerCase().includes(query))
+      )
     }
 
-    return filtered;
+    return filtered
   }
 
   /**
    * Sort portfolio items by specified mode
    */
-  static sortItems(items: PortfolioItem[], sortMode: string = 'recent'): PortfolioItem[] {
-    const sorted = [...items];
+  static sortItems(
+    items: PortfolioItem[],
+    sortMode: string = 'recent'
+  ): PortfolioItem[] {
+    const sorted = [...items]
 
     switch (sortMode) {
       case 'alphabetical':
-        return sorted.sort((a, b) => 
+        return sorted.sort((a, b) =>
           (a.title || '').localeCompare(b.title || '')
-        );
-      
+        )
+
       case 'type':
         return sorted.sort((a, b) => {
-          const typeCompare = (a.type || '').localeCompare(b.type || '');
-          return typeCompare !== 0 ? typeCompare : 
-            (a.title || '').localeCompare(b.title || '');
-        });
-      
+          const typeCompare = (a.type || '').localeCompare(b.type || '')
+          return typeCompare !== 0
+            ? typeCompare
+            : (a.title || '').localeCompare(b.title || '')
+        })
+
       case 'featured':
         return sorted.sort((a, b) => {
-          if (a.featured && !b.featured) return -1;
-          if (!a.featured && b.featured) return 1;
-          return (this.parseItemDate(b.date)?.getTime() || 0) -
-                 (this.parseItemDate(a.date)?.getTime() || 0);
-        });
-      
+          if (a.featured && !b.featured) return -1
+          if (!a.featured && b.featured) return 1
+          return (
+            (this.parseItemDate(b.date)?.getTime() || 0) -
+            (this.parseItemDate(a.date)?.getTime() || 0)
+          )
+        })
+
       case 'recent':
       default:
         return sorted.sort((a, b) => {
-          const dateA = this.parseItemDate(a.date)?.getTime() || 0;
-          const dateB = this.parseItemDate(b.date)?.getTime() || 0;
-          return dateB - dateA;
-        });
+          const dateA = this.parseItemDate(a.date)?.getTime() || 0
+          const dateB = this.parseItemDate(b.date)?.getTime() || 0
+          return dateB - dateA
+        })
     }
   }
 
@@ -456,38 +613,40 @@ export class PortfolioService {
    * Generate portfolio statistics
    */
   static generateStats(items: PortfolioItem[]): PortfolioStats {
-    const skillCounts = new Map<string, number>();
-    const typeCounts: Record<string, number> = {};
-    const games = new Set<string>();
+    const skillCounts = new Map<string, number>()
+    const typeCounts: Record<string, number> = {}
+    const games = new Set<string>()
 
     items.forEach(item => {
       // Count skills
-      (item.skills || []).forEach(skill => {
-        skillCounts.set(skill, (skillCounts.get(skill) || 0) + 1);
-      });
+      ;(item.skills || []).forEach(skill => {
+        skillCounts.set(skill, (skillCounts.get(skill) || 0) + 1)
+      })
 
       // Count types
       if (item.type) {
-        typeCounts[item.type] = (typeCounts[item.type] || 0) + 1;
+        typeCounts[item.type] = (typeCounts[item.type] || 0) + 1
       }
 
       // Track games
       if (item.game) {
-        games.add(item.game);
+        games.add(item.game)
       }
-    });
+    })
 
     const topSkills = Array.from(skillCounts.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 15)
-      .map(([skill, count]) => ({ skill, count }));
+      .map(([skill, count]) => ({ skill, count }))
 
-    const recentActivity = this.sortItems(items, 'recent').slice(0, 5);
+    const recentActivity = this.sortItems(items, 'recent').slice(0, 5)
 
-    const featuredCount = items.filter(item => item.featured).length;
-    const totalProjects = items.filter(item => item.type === 'project').length;
-    const totalClips = items.filter(item => item.type === 'clip').length;
-    const totalAchievements = items.filter(item => item.type === 'achievement').length;
+    const featuredCount = items.filter(item => item.featured).length
+    const totalProjects = items.filter(item => item.type === 'project').length
+    const totalClips = items.filter(item => item.type === 'clip').length
+    const totalAchievements = items.filter(
+      item => item.type === 'achievement'
+    ).length
 
     return {
       totalItems: items.length,
@@ -503,43 +662,47 @@ export class PortfolioService {
       totalAchievements,
       featuredCount,
       recentItemsCount: recentActivity.length,
-      completionRate: items.length > 0 ? Math.round((featuredCount / items.length) * 100) : 0,
-      itemsByType: typeCounts
-    };
+      completionRate:
+        items.length > 0 ? Math.round((featuredCount / items.length) * 100) : 0,
+      itemsByType: typeCounts,
+    }
   }
 
   /**
    * Validate portfolio item data
    */
-  static validateItem(item: Partial<PortfolioItem>): { valid: boolean; errors: string[] } {
-    const errors: string[] = [];
+  static validateItem(item: Partial<PortfolioItem>): {
+    valid: boolean
+    errors: string[]
+  } {
+    const errors: string[] = []
 
     if (!item.title?.trim()) {
-      errors.push('Title is required');
+      errors.push('Title is required')
     }
 
     if (!item.description?.trim()) {
-      errors.push('Description is required');
+      errors.push('Description is required')
     }
 
     if (!item.type) {
-      errors.push('Type is required');
+      errors.push('Type is required')
     }
 
     if (!item.date?.trim()) {
-      errors.push('Date is required');
+      errors.push('Date is required')
     } else if (!this.parseItemDate(item.date)) {
-      errors.push('Invalid date format');
+      errors.push('Invalid date format')
     }
 
     if (item.url && !this.isValidUrl(item.url)) {
-      errors.push('Invalid URL format');
+      errors.push('Invalid URL format')
     }
 
     return {
       valid: errors.length === 0,
-      errors
-    };
+      errors,
+    }
   }
 
   /**
@@ -550,10 +713,10 @@ export class PortfolioService {
     user: { name: string; email?: string },
     options: PortfolioExportOptions
   ): PortfolioExportData {
-    let portfolioItems = [...items];
-    
+    let portfolioItems = [...items]
+
     if (options.includeFeaturedOnly) {
-      portfolioItems = portfolioItems.filter(item => item.featured);
+      portfolioItems = portfolioItems.filter(item => item.featured)
     }
 
     return {
@@ -564,24 +727,24 @@ export class PortfolioService {
       settings: {
         layout: 'grid',
         showAnalytics: options.includeAnalytics ?? true,
-        autoSave: true
-      }
-    };
+        autoSave: true,
+      },
+    }
   }
 
   /**
    * Generate unique ID for portfolio items
    */
   static generateId(): string {
-    return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    return Date.now().toString() + Math.random().toString(36).substr(2, 9)
   }
 
   /**
    * Create new portfolio item with defaults
    */
   static createItem(data: Partial<PortfolioItem>): PortfolioItem {
-    const now = new Date().toISOString();
-    
+    const now = new Date().toISOString()
+
     return {
       id: this.generateId(),
       title: data.title || '',
@@ -589,46 +752,52 @@ export class PortfolioService {
       type: data.type || 'achievement',
       game: data.game || '',
       skills: data.skills || [],
-      date: data.date || new Date().toLocaleDateString('en-US', { 
-        month: 'long', 
-        year: 'numeric' 
-      }),
+      date:
+        data.date ||
+        new Date().toLocaleDateString('en-US', {
+          month: 'long',
+          year: 'numeric',
+        }),
       featured: data.featured || false,
       url: data.url,
       thumbnail: data.thumbnail,
       metrics: data.metrics,
       createdAt: now,
       updatedAt: now,
-      ...data
-    };
+      ...data,
+    }
   }
 
   /**
    * Reorder items using drag and drop indices
    */
-  static reorderItems(items: PortfolioItem[], fromIndex: number, toIndex: number): PortfolioItem[] {
-    const reordered = [...items];
-    const [movedItem] = reordered.splice(fromIndex, 1);
-    reordered.splice(toIndex, 0, movedItem);
-    return reordered;
+  static reorderItems(
+    items: PortfolioItem[],
+    fromIndex: number,
+    toIndex: number
+  ): PortfolioItem[] {
+    const reordered = [...items]
+    const [movedItem] = reordered.splice(fromIndex, 1)
+    reordered.splice(toIndex, 0, movedItem)
+    return reordered
   }
 
   /**
    * Extract common skills across portfolio items
    */
   static extractCommonSkills(items: PortfolioItem[]): string[] {
-    const skillCounts = new Map<string, number>();
-    
+    const skillCounts = new Map<string, number>()
+
     items.forEach(item => {
-      (item.skills || []).forEach(skill => {
-        skillCounts.set(skill, (skillCounts.get(skill) || 0) + 1);
-      });
-    });
+      ;(item.skills || []).forEach(skill => {
+        skillCounts.set(skill, (skillCounts.get(skill) || 0) + 1)
+      })
+    })
 
     return Array.from(skillCounts.entries())
       .filter(([_, count]) => count >= Math.max(2, items.length * 0.3))
       .map(([skill]) => skill)
-      .slice(0, 20);
+      .slice(0, 20)
   }
 
   /**
@@ -636,10 +805,10 @@ export class PortfolioService {
    */
   private static isValidUrl(url: string): boolean {
     try {
-      new URL(url);
-      return true;
+      new URL(url)
+      return true
     } catch {
-      return false;
+      return false
     }
   }
 
@@ -652,26 +821,26 @@ export class PortfolioService {
     targetRole?: string
   ): Promise<{
     suggestions: Array<{
-      type: PortfolioItemType;
-      title: string;
-      description: string;
-      skills: string[];
-      reasoning: string;
-    }>;
+      type: PortfolioItemType
+      title: string
+      description: string
+      skills: string[]
+      reasoning: string
+    }>
     improvements: Array<{
-      itemId?: string;
-      suggestion: string;
-      priority: 'high' | 'medium' | 'low';
-    }>;
-    missingElements: string[];
+      itemId?: string
+      suggestion: string
+      priority: 'high' | 'medium' | 'low'
+    }>
+    missingElements: string[]
   }> {
     try {
       // Initialize AI service if needed
       await aiService.initialize({
         primaryProvider: 'google',
         enableContextPersistence: true,
-        enableRealTime: false
-      });
+        enableRealTime: false,
+      })
 
       const contextInfo = `USER PROFILE:
 ${JSON.stringify(userProfile, null, 2)}
@@ -681,20 +850,19 @@ ${JSON.stringify(currentPortfolio, null, 2)}
 
 TARGET ROLE: ${targetRole || 'Gaming Industry Professional'}
 
-Analyze the user's gaming background and current portfolio to suggest improvements and new portfolio items that would strengthen their application for gaming industry roles.`;
+Analyze the user's gaming background and current portfolio to suggest improvements and new portfolio items that would strengthen their application for gaming industry roles.`
 
       const response = await aiService.chat({
         message: `Analyze this gaming professional's portfolio and suggest improvements and new items that would showcase their gaming skills for ${targetRole || 'industry'} roles.`,
         context: contextInfo,
-        type: 'analysis'
-      });
+        type: 'analysis',
+      })
 
       // Parse AI response into structured recommendations
-      return this.parseAIRecommendations(response.content);
-
+      return this.parseAIRecommendations(response.content)
     } catch (error) {
-      logger.error('Failed to generate AI portfolio recommendations:', error);
-      return this.getFallbackRecommendations(currentPortfolio, targetRole);
+      logger.error('Failed to generate AI portfolio recommendations:', error)
+      return this.getFallbackRecommendations(currentPortfolio, targetRole)
     }
   }
 
@@ -704,28 +872,37 @@ Analyze the user's gaming background and current portfolio to suggest improvemen
   private static parseAIRecommendations(aiResponse: string): any {
     try {
       // Try to parse as JSON first
-      return JSON.parse(aiResponse);
+      return JSON.parse(aiResponse)
     } catch {
       // Fallback: extract recommendations from text
-      const lines = aiResponse.split('\n').filter(line => line.trim());
-      
-      const suggestions = [];
-      const improvements = [];
-      const missingElements = [];
+      const lines = aiResponse.split('\n').filter(line => line.trim())
 
-      let currentSection = '';
-      
+      const suggestions = []
+      const improvements = []
+      const missingElements = []
+
+      let currentSection = ''
+
       for (const line of lines) {
-        if (line.toLowerCase().includes('suggest') || line.toLowerCase().includes('add')) {
-          currentSection = 'suggestions';
-        } else if (line.toLowerCase().includes('improve') || line.toLowerCase().includes('enhance')) {
-          currentSection = 'improvements';
-        } else if (line.toLowerCase().includes('missing') || line.toLowerCase().includes('lack')) {
-          currentSection = 'missing';
+        if (
+          line.toLowerCase().includes('suggest') ||
+          line.toLowerCase().includes('add')
+        ) {
+          currentSection = 'suggestions'
+        } else if (
+          line.toLowerCase().includes('improve') ||
+          line.toLowerCase().includes('enhance')
+        ) {
+          currentSection = 'improvements'
+        } else if (
+          line.toLowerCase().includes('missing') ||
+          line.toLowerCase().includes('lack')
+        ) {
+          currentSection = 'missing'
         }
 
-        const trimmed = line.replace(/^[\d\-*+•]\s*/, '').trim();
-        
+        const trimmed = line.replace(/^[\d\-*+•]\s*/, '').trim()
+
         if (trimmed.length > 10) {
           switch (currentSection) {
             case 'suggestions':
@@ -734,73 +911,88 @@ Analyze the user's gaming background and current portfolio to suggest improvemen
                 title: trimmed.substring(0, 50),
                 description: trimmed,
                 skills: ['Gaming', 'Leadership'],
-                reasoning: 'AI suggested based on profile analysis'
-              });
-              break;
+                reasoning: 'AI suggested based on profile analysis',
+              })
+              break
             case 'improvements':
               improvements.push({
                 suggestion: trimmed,
-                priority: 'medium'
-              });
-              break;
+                priority: 'medium',
+              })
+              break
             case 'missing':
-              missingElements.push(trimmed);
-              break;
+              missingElements.push(trimmed)
+              break
           }
         }
       }
 
-      return { suggestions, improvements, missingElements };
+      return { suggestions, improvements, missingElements }
     }
   }
 
   /**
    * Get fallback recommendations when AI fails
    */
-  private static getFallbackRecommendations(currentPortfolio: PortfolioItem[], targetRole?: string): any {
-    const hasProjects = currentPortfolio.some(item => item.type === 'project');
-    const hasAchievements = currentPortfolio.some(item => item.type === 'achievement');
-    const hasLeadership = currentPortfolio.some(item => 
-      item.description?.toLowerCase().includes('lead') || 
-      item.description?.toLowerCase().includes('manage')
-    );
+  private static getFallbackRecommendations(
+    currentPortfolio: PortfolioItem[],
+    targetRole?: string
+  ): any {
+    const hasProjects = currentPortfolio.some(item => item.type === 'project')
+    const hasAchievements = currentPortfolio.some(
+      item => item.type === 'achievement'
+    )
+    const hasLeadership = currentPortfolio.some(
+      item =>
+        item.description?.toLowerCase().includes('lead') ||
+        item.description?.toLowerCase().includes('manage')
+    )
 
-    const suggestions = [];
-    const improvements = [];
-    const missingElements = [];
+    const suggestions = []
+    const improvements = []
+    const missingElements = []
 
     if (!hasProjects) {
       suggestions.push({
         type: 'project',
         title: 'Gaming Community Project',
-        description: 'Document a community building or moderation project that showcases leadership skills',
+        description:
+          'Document a community building or moderation project that showcases leadership skills',
         skills: ['Community Management', 'Leadership', 'Communication'],
-        reasoning: 'Projects demonstrate practical application of skills'
-      });
+        reasoning: 'Projects demonstrate practical application of skills',
+      })
     }
 
     if (!hasAchievements) {
       suggestions.push({
         type: 'achievement',
         title: 'Competitive Gaming Achievement',
-        description: 'Highlight your highest rank or tournament placement in competitive gaming',
-        skills: ['Competitive Gaming', 'Performance Under Pressure', 'Strategic Thinking'],
-        reasoning: 'Achievements show concrete results and dedication'
-      });
+        description:
+          'Highlight your highest rank or tournament placement in competitive gaming',
+        skills: [
+          'Competitive Gaming',
+          'Performance Under Pressure',
+          'Strategic Thinking',
+        ],
+        reasoning: 'Achievements show concrete results and dedication',
+      })
     }
 
     if (!hasLeadership) {
       improvements.push({
-        suggestion: 'Add examples of leadership or team coordination from gaming experiences',
-        priority: 'high'
-      });
+        suggestion:
+          'Add examples of leadership or team coordination from gaming experiences',
+        priority: 'high',
+      })
     }
 
     if (currentPortfolio.length < 3) {
-      missingElements.push('Portfolio needs more items to demonstrate range of experience');
+      missingElements.push(
+        'Portfolio needs more items to demonstrate range of experience'
+      )
     }
 
-    return { suggestions, improvements, missingElements };
+    return { suggestions, improvements, missingElements }
   }
 
   /**
@@ -815,8 +1007,8 @@ Analyze the user's gaming background and current portfolio to suggest improvemen
       await aiService.initialize({
         primaryProvider: 'google',
         enableContextPersistence: true,
-        enableRealTime: false
-      });
+        enableRealTime: false,
+      })
 
       const contextInfo = `PORTFOLIO ITEM:
 Title: ${item.title}
@@ -828,18 +1020,18 @@ Skills: ${item.skills?.join(', ')}
 USER PROFILE: ${JSON.stringify(userProfile)}
 TARGET ROLE: ${targetRole || 'Gaming Professional'}
 
-Enhance this portfolio item description to better showcase transferable skills and gaming industry relevance.`;
+Enhance this portfolio item description to better showcase transferable skills and gaming industry relevance.`
 
       const response = await aiService.chat({
         message: `Rewrite this portfolio item description to be more compelling and highlight transferable skills for ${targetRole || 'gaming industry'} roles. Focus on impact, skills, and professional growth.`,
         context: contextInfo,
-        type: 'generation'
-      });
+        type: 'generation',
+      })
 
-      return response.content || item.description || '';
+      return response.content || item.description || ''
     } catch (error) {
-      logger.error('Failed to enhance item description:', error);
-      return item.description || '';
+      logger.error('Failed to enhance item description:', error)
+      return item.description || ''
     }
   }
 }

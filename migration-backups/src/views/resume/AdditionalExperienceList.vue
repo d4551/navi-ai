@@ -32,7 +32,9 @@
     </div>
 
     <div class="mb-3">
-      <small class="text-muted">Choose experience type above, then add relevant entries below</small>
+      <small class="text-muted"
+        >Choose experience type above, then add relevant entries below</small
+      >
     </div>
 
     <div
@@ -49,7 +51,8 @@
         ).toString()
       "
       draggable="true"
-      :class="{ 'drag-over': dragOver.type === 'additional' && dragOver.index === index,
+      :class="{
+        'drag-over': dragOver.type === 'additional' && dragOver.index === index,
       }"
       @dragstart="startDrag('additional', index)"
       @dragover.prevent="onDragOver($event, 'additional', index)"
@@ -60,7 +63,8 @@
         <small
           :id="`additional-exp-${index}-title`"
           class="badge badge-secondary"
-        >{{ exp.type || "Experience" }} #{{ index + 1 }}</small>
+          >{{ exp.type || 'Experience' }} #{{ index + 1 }}</small
+        >
         <div class="d-flex align-items-center gap-1">
           <button
             class="btn btn-sm btn-outline-secondary drag-handle ui-btn ui-size-md"
@@ -159,39 +163,44 @@
     </div>
 
     <div v-if="localItems.length === 0" class="text-center py-4">
-      <AppIcon name="mdi-folder-outline" class="display-4 mb-3 opacity-50 text-muted" />
+      <AppIcon
+        name="mdi-folder-outline"
+        class="display-4 mb-3 opacity-50 text-muted"
+      />
       <p class="text-muted mb-2">No additional experience added yet</p>
-      <small class="text-muted">Click "Add" to showcase your projects, certifications, and more</small>
+      <small class="text-muted"
+        >Click "Add" to showcase your projects, certifications, and more</small
+      >
     </div>
   </section>
 </template>
 
 <script>
 import { reactive, watch } from 'vue'
-import { useDragReorderList } from "@/composables/useDragReorderList";
+import { useDragReorderList } from '@/composables/useDragReorderList'
 import AppIcon from '@/components/ui/AppIcon.vue'
 
 export default {
-  name: "AdditionalExperienceList",
+  name: 'AdditionalExperienceList',
   components: {
-    AppIcon
+    AppIcon,
   },
   props: {
     modelValue: { type: Array, default: () => [] },
-    typeSelection: { type: String, default: "projects" },
+    typeSelection: { type: String, default: 'projects' },
   },
-  emits: ["update:modelValue", "update:typeSelection"],
+  emits: ['update:modelValue', 'update:typeSelection'],
   setup(_props, { emit }) {
-    const localItems = reactive([...(props.modelValue || [])]);
+    const localItems = reactive([...(props.modelValue || [])])
 
     watch(
       () => props.modelValue,
-      (v) => {
-        localItems.splice(0, localItems.length, ...(v || []));
-      },
-    );
+      v => {
+        localItems.splice(0, localItems.length, ...(v || []))
+      }
+    )
 
-    const listResolver = () => localItems;
+    const listResolver = () => localItems
     const {
       dragState,
       dragOver,
@@ -200,80 +209,80 @@ export default {
       onDrop,
       endDrag,
       moveItem,
-    } = useDragReorderList(listResolver);
+    } = useDragReorderList(listResolver)
 
     const commit = () =>
       emit(
-        "update:modelValue",
-        localItems.map((i) => ({ ...i })),
-      );
+        'update:modelValue',
+        localItems.map(i => ({ ...i }))
+      )
 
     const add = () => {
       localItems.push({
         type: props.typeSelection,
-        title: "",
-        organization: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      });
-      commit();
-    };
-    const remove = (index) => {
-      localItems.splice(index, 1);
-      commit();
-    };
+        title: '',
+        organization: '',
+        startDate: '',
+        endDate: '',
+        description: '',
+      })
+      commit()
+    }
+    const remove = index => {
+      localItems.splice(index, 1)
+      commit()
+    }
     const move = (from, to) => {
-      moveItem("additional", from, to);
-      commit();
-    };
+      moveItem('additional', from, to)
+      commit()
+    }
 
     const placeholders = {
       projects: {
-        title: "Project Name",
-        organization: "Company/Organization",
-        startDate: "Start Date",
-        endDate: "End Date",
-        description: "Project description and your contributions...",
+        title: 'Project Name',
+        organization: 'Company/Organization',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+        description: 'Project description and your contributions...',
       },
       volunteer: {
-        title: "Role/Position",
-        organization: "Organization",
-        startDate: "Start Date",
-        endDate: "End Date",
-        description: "Your volunteer work and impact...",
+        title: 'Role/Position',
+        organization: 'Organization',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+        description: 'Your volunteer work and impact...',
       },
       certifications: {
-        title: "Certification Name",
-        organization: "Issuing Organization",
-        startDate: "Issue Date",
-        endDate: "Expiry Date (optional)",
-        description: "Certification details and relevance...",
+        title: 'Certification Name',
+        organization: 'Issuing Organization',
+        startDate: 'Issue Date',
+        endDate: 'Expiry Date (optional)',
+        description: 'Certification details and relevance...',
       },
       awards: {
-        title: "Award Name",
-        organization: "Issuing Organization",
-        startDate: "Date Received",
-        endDate: "N/A",
-        description: "Award details and significance...",
+        title: 'Award Name',
+        organization: 'Issuing Organization',
+        startDate: 'Date Received',
+        endDate: 'N/A',
+        description: 'Award details and significance...',
       },
       publications: {
-        title: "Publication Title",
-        organization: "Publisher/Venue",
-        startDate: "Publication Date",
-        endDate: "N/A",
-        description: "Publication summary and your contribution...",
+        title: 'Publication Title',
+        organization: 'Publisher/Venue',
+        startDate: 'Publication Date',
+        endDate: 'N/A',
+        description: 'Publication summary and your contribution...',
       },
       custom: {
-        title: "Entry Title",
-        organization: "Organization/Entity",
-        startDate: "Start Date",
-        endDate: "End Date",
-        description: "Description and details...",
+        title: 'Entry Title',
+        organization: 'Organization/Entity',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+        description: 'Description and details...',
       },
-    };
+    }
     const ph = (type, field) =>
-      (placeholders[type] || placeholders.custom)[field];
+      (placeholders[type] || placeholders.custom)[field]
 
     return {
       localItems,
@@ -287,7 +296,7 @@ export default {
       add,
       remove,
       ph,
-    };
+    }
   },
-};
+}
 </script>

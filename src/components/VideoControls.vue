@@ -1,7 +1,14 @@
 <template>
-  <div class="video-controls glass-surface p-glass-md rounded-lg font-sans" role="region" aria-label="Video and Screen Sharing Controls">
+  <div
+    class="video-controls glass-surface p-glass-md rounded-lg font-sans"
+    role="region"
+    aria-label="Video and Screen Sharing Controls"
+  >
     <!-- Video Preview -->
-    <div v-if="showPreview && (isCameraActive || isScreenActive)" class="video-preview mb-4">
+    <div
+      v-if="showPreview && (isCameraActive || isScreenActive)"
+      class="video-preview mb-4"
+    >
       <div class="video-container position-relative">
         <video
           ref="videoElement"
@@ -36,18 +43,20 @@
 
             <button
               class="control-btn-rgb ui-icon-btn"
-              :class="{ 'muted': isMuted }"
+              :class="{ muted: isMuted }"
               :title="isMuted ? 'Unmute' : 'Mute'"
               @click="toggleMute"
             >
-              <AppIcon :name="isMuted ? 'MicrophoneIcon-off' : 'MicrophoneIcon'" />
+              <AppIcon
+                :name="isMuted ? 'MicrophoneIcon-off' : 'MicrophoneIcon'"
+              />
               <div class="btn-glow"></div>
             </button>
 
             <button
               v-if="isCameraActive || isScreenActive"
               class="control-btn-rgb ai-control ui-icon-btn"
-              :class="{ 'active': isStreaming }"
+              :class="{ active: isStreaming }"
               :disabled="!apiKey"
               :title="isStreaming ? 'Stop AI Analysis' : 'Start AI Analysis'"
               @click="toggleAIStreaming"
@@ -107,8 +116,16 @@
           size="sm"
           :disabled="isStreaming || isVideoLocked"
           :aria-pressed="isCameraActive.toString()"
-          :title="isCameraActive ? (isVideoLocked ? 'Camera Locked' : 'Stop Camera') : 'Start Camera'"
-          :leading-icon="isCameraActive ? 'VideoCameraIcon-off' : 'VideoCameraIcon'"
+          :title="
+            isCameraActive
+              ? isVideoLocked
+                ? 'Camera Locked'
+                : 'Stop Camera'
+              : 'Start Camera'
+          "
+          :leading-icon="
+            isCameraActive ? 'VideoCameraIcon-off' : 'VideoCameraIcon'
+          "
           @click="toggleCamera"
         >
           {{ isCameraActive ? 'Stop Camera' : 'Start Camera' }}
@@ -120,7 +137,13 @@
           size="sm"
           :disabled="isStreaming || isScreenLocked"
           :aria-pressed="isScreenActive.toString()"
-          :title="isScreenActive ? (isScreenLocked ? 'Screen Share Locked' : 'Stop Screen Share') : 'Start Screen Share'"
+          :title="
+            isScreenActive
+              ? isScreenLocked
+                ? 'Screen Share Locked'
+                : 'Stop Screen Share'
+              : 'Start Screen Share'
+          "
           :leading-icon="isScreenActive ? 'mdi-monitor-off' : 'mdi-monitor'"
           @click="toggleScreenShare"
         >
@@ -154,7 +177,9 @@
         <IconButton
           variant="outline"
           size="sm"
-          :icon="isVideoLocked ? 'LockClosedIcon' : 'LockClosedIcon-open-outline'"
+          :icon="
+            isVideoLocked ? 'LockClosedIcon' : 'LockClosedIcon-open-outline'
+          "
           :title="isVideoLocked ? 'Unlock Camera' : 'Lock Camera'"
           @click="isVideoLocked ? unlockVideo() : lockVideo('User locked')"
         />
@@ -195,265 +220,283 @@
 import { CameraIcon, CogIcon, CpuChipIcon } from '@heroicons/vue/24/outline'
 
 import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
-import { videoService } from '@/shared/services/VideoService';
-import { googleAIStreamingService } from '@/shared/services/GoogleAIStreamingService';
-import { useAppStore } from '@/stores/app';
-import { logger } from '@/shared/utils/logger';
-import { useMediaLock } from '@/composables/useMediaLock';
-import AppIcon from '@/components/ui/AppIcon.vue';
-import UnifiedButton from '@/components/ui/UnifiedButton.vue';
-import IconButton from '@/components/ui/IconButton.vue';
+import { videoService } from '@/shared/services/VideoService'
+import { googleAIStreamingService } from '@/shared/services/GoogleAIStreamingService'
+import { useAppStore } from '@/stores/app'
+import { logger } from '@/shared/utils/logger'
+import { useMediaLock } from '@/composables/useMediaLock'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import IconButton from '@/components/ui/IconButton.vue'
 
 export default {
   name: 'VideoControls',
   components: {
-    AppIcon
+    AppIcon,
   },
   props: {
     apiKey: {
       type: String,
-      default: null
+      default: null,
     },
     showPreview: {
       type: Boolean,
-      default: true
+      default: true,
     },
     autoStart: {
       type: Boolean,
-      default: false
+      default: false,
     },
     streamingSettings: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   emits: ['stream-started', 'stream-stopped', 'ai-response', 'error'],
   setup(props, { emit }) {
-    const store = useAppStore();
+    const store = useAppStore()
 
     // Reactive state
-    const videoElement = ref(null);
-    const showDeviceSelection = ref(false);
-    const selectedCameraId = ref('');
-    const availableCameras = ref([]);
-    const isMuted = ref(false);
-    const statusMessage = ref('');
-    const statusType = ref('alert-info');
-    const statusIcon = ref('InformationCircleIconrmation');
-    const aiResponse = ref('');
+    const videoElement = ref(null)
+    const showDeviceSelection = ref(false)
+    const selectedCameraId = ref('')
+    const availableCameras = ref([])
+    const isMuted = ref(false)
+    const statusMessage = ref('')
+    const statusType = ref('alert-info')
+    const statusIcon = ref('InformationCircleIconrmation')
+    const aiResponse = ref('')
 
     // Computed properties
-    const isCameraActive = computed(() => videoService.isCameraActive());
-    const isScreenActive = computed(() => videoService.isScreenShareActive());
-    const isStreaming = computed(() => googleAIStreamingService.isActive());
+    const isCameraActive = computed(() => videoService.isCameraActive())
+    const isScreenActive = computed(() => videoService.isScreenShareActive())
+    const isStreaming = computed(() => googleAIStreamingService.isActive())
     const currentStream = computed(() => {
-      if (isScreenActive.value) return videoService.getScreenStream();
-      if (isCameraActive.value) return videoService.getVideoStream();
-      return null;
-    });
+      if (isScreenActive.value) return videoService.getScreenStream()
+      if (isCameraActive.value) return videoService.getVideoStream()
+      return null
+    })
 
     // Media lock state
-    const { videoLocked, screenLocked, lockVideo, unlockVideo, lockScreen, unlockScreen } = useMediaLock();
-    const isVideoLocked = computed(() => videoLocked.value);
-    const isScreenLocked = computed(() => screenLocked.value);
+    const {
+      videoLocked,
+      screenLocked,
+      lockVideo,
+      unlockVideo,
+      lockScreen,
+      unlockScreen,
+    } = useMediaLock()
+    const isVideoLocked = computed(() => videoLocked.value)
+    const isScreenLocked = computed(() => screenLocked.value)
 
     // Initialize on mount
     onMounted(async () => {
       try {
-        await videoService.initialize();
-        await refreshDevices();
+        await videoService.initialize()
+        await refreshDevices()
 
         if (props.apiKey) {
-          await googleAIStreamingService.initialize(props.apiKey);
+          await googleAIStreamingService.initialize(props.apiKey)
         }
 
         if (props.autoStart) {
-          await toggleCamera();
+          await toggleCamera()
         }
       } catch (error) {
-        handleError('Failed to initialize video controls', error);
+        handleError('Failed to initialize video controls', error)
       }
-    });
+    })
 
     // Cleanup on unmount
     onUnmounted(() => {
-      stopAllStreams();
-      videoService.cleanup();
-    });
+      stopAllStreams()
+      videoService.cleanup()
+    })
 
     // Watch for API key changes
-    watch(() => props.apiKey, async (newKey) => {
-      if (newKey) {
-        try {
-          await googleAIStreamingService.initialize(newKey);
-          showStatus('AI service initialized', 'success');
-        } catch (error) {
-          handleError('Failed to initialize AI service', error);
+    watch(
+      () => props.apiKey,
+      async newKey => {
+        if (newKey) {
+          try {
+            await googleAIStreamingService.initialize(newKey)
+            showStatus('AI service initialized', 'success')
+          } catch (error) {
+            handleError('Failed to initialize AI service', error)
+          }
         }
       }
-    });
+    )
 
     // Watch for streaming settings changes
-    watch(() => props.streamingSettings, (newSettings) => {
-      if (newSettings) {
-        googleAIStreamingService.updateSettings(newSettings);
-      }
-    }, { deep: true, immediate: true });
+    watch(
+      () => props.streamingSettings,
+      newSettings => {
+        if (newSettings) {
+          googleAIStreamingService.updateSettings(newSettings)
+        }
+      },
+      { deep: true, immediate: true }
+    )
 
     // Methods
     const refreshDevices = async () => {
       try {
-        availableCameras.value = await videoService.enumerateDevices();
+        availableCameras.value = await videoService.enumerateDevices()
       } catch (error) {
-        logger.error('Failed to refresh devices:', error);
+        logger.error('Failed to refresh devices:', error)
       }
-    };
+    }
 
     const updateCameraSelection = () => {
-      videoService.setSelectedCamera(selectedCameraId.value);
-    };
+      videoService.setSelectedCamera(selectedCameraId.value)
+    }
 
-  const toggleCamera = async () => {
+    const toggleCamera = async () => {
       try {
         if (isCameraActive.value) {
-          videoService.stopCamera();
-          showStatus('Camera stopped', 'info');
-      unlockVideo();
+          videoService.stopCamera()
+          showStatus('Camera stopped', 'info')
+          unlockVideo()
         } else {
           const stream = await videoService.startCamera({
-            deviceId: selectedCameraId.value || undefined
-          });
+            deviceId: selectedCameraId.value || undefined,
+          })
 
           if (videoElement.value) {
-            videoElement.value.srcObject = stream;
+            videoElement.value.srcObject = stream
           }
 
-          showStatus('Camera started', 'success');
-      lockVideo('Active session');
+          showStatus('Camera started', 'success')
+          lockVideo('Active session')
         }
       } catch (error) {
-        handleError('Failed to toggle camera', error);
+        handleError('Failed to toggle camera', error)
       }
-    };
+    }
 
-  const toggleScreenShare = async () => {
+    const toggleScreenShare = async () => {
       try {
         if (isScreenActive.value) {
-          videoService.stopScreenShare();
-          showStatus('Screen sharing stopped', 'info');
-      unlockScreen();
+          videoService.stopScreenShare()
+          showStatus('Screen sharing stopped', 'info')
+          unlockScreen()
         } else {
-          const stream = await videoService.startScreenShare();
+          const stream = await videoService.startScreenShare()
 
           if (videoElement.value) {
-            videoElement.value.srcObject = stream;
+            videoElement.value.srcObject = stream
           }
 
-          showStatus('Screen sharing started', 'success');
-      lockScreen('Active sharing');
+          showStatus('Screen sharing started', 'success')
+          lockScreen('Active sharing')
         }
       } catch (error) {
-        handleError('Failed to toggle screen sharing', error);
+        handleError('Failed to toggle screen sharing', error)
       }
-    };
+    }
 
     const toggleAIStreaming = async () => {
       try {
         if (isStreaming.value) {
-          googleAIStreamingService.stopStreaming();
-          emit('stream-stopped');
-          showStatus('AI streaming stopped', 'info');
+          googleAIStreamingService.stopStreaming()
+          emit('stream-stopped')
+          showStatus('AI streaming stopped', 'info')
         } else {
           const callbacks = {
             onStart: () => {
-              emit('stream-started');
-              showStatus('AI streaming started', 'success');
+              emit('stream-started')
+              showStatus('AI streaming started', 'success')
             },
-            onResponse: (_response) => {
-              aiResponse.value = response;
-              emit('ai-response', response);
+            onResponse: _response => {
+              aiResponse.value = response
+              emit('ai-response', response)
             },
-            onError: (error) => {
-              handleError('AI streaming error', error);
+            onError: error => {
+              handleError('AI streaming error', error)
             },
             onEnd: () => {
-              emit('stream-stopped');
-              showStatus('AI streaming ended', 'info');
-            }
-          };
+              emit('stream-stopped')
+              showStatus('AI streaming ended', 'info')
+            },
+          }
 
           if (isScreenActive.value) {
-            await googleAIStreamingService.startScreenStreaming({}, callbacks);
+            await googleAIStreamingService.startScreenStreaming({}, callbacks)
           } else if (isCameraActive.value) {
-            await googleAIStreamingService.startVideoStreaming({}, callbacks);
+            await googleAIStreamingService.startVideoStreaming({}, callbacks)
           } else {
-            throw new Error('No video source active');
+            throw new Error('No video source active')
           }
         }
       } catch (error) {
-        handleError('Failed to toggle AI streaming', error);
+        handleError('Failed to toggle AI streaming', error)
       }
-    };
+    }
 
     const switchCamera = async () => {
       // Find next camera
       const currentIndex = availableCameras.value.findIndex(
         camera => camera.deviceId === selectedCameraId.value
-      );
-      const nextIndex = (currentIndex + 1) % availableCameras.value.length;
-      const nextCamera = availableCameras.value[nextIndex];
+      )
+      const nextIndex = (currentIndex + 1) % availableCameras.value.length
+      const nextCamera = availableCameras.value[nextIndex]
 
-      selectedCameraId.value = nextCamera.deviceId;
-      updateCameraSelection();
+      selectedCameraId.value = nextCamera.deviceId
+      updateCameraSelection()
 
       // Restart camera with new device
       if (isCameraActive.value) {
-        videoService.stopCamera();
-        setTimeout(() => toggleCamera(), 100);
+        videoService.stopCamera()
+        setTimeout(() => toggleCamera(), 100)
       }
-    };
+    }
 
     const toggleMute = () => {
       if (currentStream.value) {
-        const audioTracks = currentStream.value.getAudioTracks();
+        const audioTracks = currentStream.value.getAudioTracks()
         audioTracks.forEach(track => {
-          track.enabled = isMuted.value;
-        });
-        isMuted.value = !isMuted.value;
+          track.enabled = isMuted.value
+        })
+        isMuted.value = !isMuted.value
       }
-    };
+    }
 
     const stopAllStreams = () => {
-      googleAIStreamingService.stopStreaming();
-      videoService.stopCamera();
-      videoService.stopScreenShare();
-    };
+      googleAIStreamingService.stopStreaming()
+      videoService.stopCamera()
+      videoService.stopScreenShare()
+    }
 
     const showStatus = (message, type = 'info') => {
-      statusMessage.value = message;
-      statusType.value = `alert-${type}`;
-      statusIcon.value = getStatusIcon(type);
+      statusMessage.value = message
+      statusType.value = `alert-${type}`
+      statusIcon.value = getStatusIcon(type)
 
       // Auto-clear status after 5 seconds
       setTimeout(() => {
-        statusMessage.value = '';
-      }, 5000);
-    };
+        statusMessage.value = ''
+      }, 5000)
+    }
 
-    const getStatusIcon = (type) => {
+    const getStatusIcon = type => {
       switch (type) {
-        case 'success': return 'mdi CheckIcon-circle-outline';
-        case 'warning': return 'mdi mdi-alert-circle-outline';
-        case 'error': return 'mdi mdi-alert-circle-outline';
-        default: return 'mdi InformationCircleIconrmation';
+        case 'success':
+          return 'mdi CheckIcon-circle-outline'
+        case 'warning':
+          return 'mdi mdi-alert-circle-outline'
+        case 'error':
+          return 'mdi mdi-alert-circle-outline'
+        default:
+          return 'mdi InformationCircleIconrmation'
       }
-    };
+    }
 
     const handleError = (message, error) => {
-      logger.error(message, error);
-      showStatus(`${message}: ${error.message}`, 'error');
-      emit('error', error);
-    };
+      logger.error(message, error)
+      showStatus(`${message}: ${error.message}`, 'error')
+      emit('error', error)
+    }
 
     return {
       videoElement,
@@ -480,10 +523,10 @@ export default {
       lockVideo,
       unlockVideo,
       lockScreen,
-      unlockScreen
-    };
-  }
-};
+      unlockScreen,
+    }
+  },
+}
 </script>
 
 <style scoped>
@@ -493,9 +536,17 @@ export default {
   object-fit: cover;
   border: 2px solid transparent;
   border-radius: 20px;
-  background: linear-gradient(145deg, var(--surface-elevated), var(--surface-base)) padding-box,
-              linear-gradient(45deg, var(--color-success-400), var(--color-info-400), var(--color-primary-400)) border-box;
-  box-shadow: 
+  background:
+    linear-gradient(145deg, var(--surface-elevated), var(--surface-base))
+      padding-box,
+    linear-gradient(
+        45deg,
+        var(--color-success-400),
+        var(--color-info-400),
+        var(--color-primary-400)
+      )
+      border-box;
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -522,7 +573,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(0, 255, 136, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
@@ -530,7 +581,11 @@ export default {
 .recording-dot-rgb {
   width: 10px;
   height: 10px;
-  background: linear-gradient(45deg, var(--color-danger-500), var(--color-danger-400));
+  background: linear-gradient(
+    45deg,
+    var(--color-danger-500),
+    var(--color-danger-400)
+  );
   border-radius: 50%;
   animation: rgbPulse 1.5s infinite;
   box-shadow: 0 0 10px rgba(255, 0, 110, 0.6);
@@ -560,22 +615,32 @@ export default {
 }
 
 @keyframes rgbPulse {
-  0%, 100% { 
-    opacity: 1; 
+  0%,
+  100% {
+    opacity: 1;
     transform: scale(1);
     box-shadow: 0 0 10px rgba(255, 0, 110, 0.6);
   }
-  50% { 
-    opacity: 0.7; 
+  50% {
+    opacity: 0.7;
     transform: scale(1.2);
     box-shadow: 0 0 20px rgba(255, 0, 110, 0.8);
   }
 }
 
 @keyframes streamWave {
-  0% { transform: scaleX(0.5); opacity: 0.5; }
-  50% { transform: scaleX(1.2); opacity: 1; }
-  100% { transform: scaleX(0.5); opacity: 0.5; }
+  0% {
+    transform: scaleX(0.5);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleX(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0.5);
+    opacity: 0.5;
+  }
 }
 
 /* Enhanced Glassmorphic Controls Overlay */
@@ -603,7 +668,7 @@ export default {
   display: flex;
   justify-content: center;
   gap: 12px;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
@@ -628,7 +693,7 @@ export default {
   cursor: pointer;
   overflow: hidden;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  box-shadow: 
+  box-shadow:
     0 4px 15px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
@@ -640,7 +705,7 @@ export default {
     rgba(0, 255, 136, 0.3) 0%,
     rgba(0, 217, 255, 0.2) 100%
   );
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(0, 255, 136, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
@@ -655,7 +720,7 @@ export default {
     rgba(255, 71, 87, 0.3) 0%,
     rgba(255, 0, 110, 0.2) 100%
   );
-  box-shadow: 
+  box-shadow:
     0 4px 15px rgba(255, 0, 110, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
@@ -667,7 +732,7 @@ export default {
     rgba(99, 102, 241, 0.3) 100%
   );
   animation: aiPulse 2s infinite;
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(184, 71, 255, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
@@ -702,25 +767,34 @@ export default {
 }
 
 @keyframes aiPulse {
-  0%, 100% { 
-    box-shadow: 
+  0%,
+  100% {
+    box-shadow:
       0 4px 20px rgba(184, 71, 255, 0.4),
       inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
-  50% { 
-    box-shadow: 
+  50% {
+    box-shadow:
       0 4px 30px rgba(184, 71, 255, 0.6),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 }
 
 @keyframes rgbRotate {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
-.btn .LockClosedIcon { color: var(--color-warning-600); }
-.btn .mdi-monitor-lock { color: var(--color-warning-600); }
+.btn .LockClosedIcon {
+  color: var(--color-warning-600);
+}
+.btn .mdi-monitor-lock {
+  color: var(--color-warning-600);
+}
 
 .video-container:hover .video-controls-overlay-rgb {
   opacity: 1;

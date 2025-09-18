@@ -1,5 +1,9 @@
 <template>
-  <div class="standard-page-layout" :class="layoutClasses" :data-page-type="finalPageType">
+  <div
+    class="standard-page-layout"
+    :class="layoutClasses"
+    :data-page-type="finalPageType"
+  >
     <!-- Unified Dashboard Header -->
     <UnifiedDashboardHeader
       v-if="!hideHeader"
@@ -30,7 +34,7 @@
     <footer v-if="$slots['footer-actions']" class="page-footer-actions">
       <slot name="footer-actions" />
     </footer>
-    
+
     <!-- Global page-aware assistant modal moved inside root to ensure single-element root for transitions -->
     <FairyChatModal
       v-model:open="assistantOpen"
@@ -44,7 +48,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { resolveHeaderFromRoute, getPageHeaderByRouteName } from '@/components/layout/pageHeaders'
+import {
+  resolveHeaderFromRoute,
+  getPageHeaderByRouteName,
+} from '@/components/layout/pageHeaders'
 import UnifiedDashboardHeader from '@/components/layout/UnifiedDashboardHeader.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import FairyChatModal from '@/components/FairyChatModal.vue'
@@ -97,7 +104,7 @@ const props = withDefaults(defineProps<Props>(), {
   titleIconColor: 'primary',
   autoResolveHeader: true,
   configKey: '',
-  breadcrumbs: () => []
+  breadcrumbs: () => [],
 })
 
 const route = useRoute()
@@ -112,12 +119,20 @@ const resolvedHeader = computed(() => {
   return resolveHeaderFromRoute(route, props.headerContext)
 })
 
-const finalTitle = computed(() => props.title || resolvedHeader.value?.title || '')
-const finalSubtitle = computed(() => props.subtitle || resolvedHeader.value?.subtitle || '')
-const finalTitleIcon = computed(() => props.titleIcon || resolvedHeader.value?.titleIcon || '')
+const finalTitle = computed(
+  () => props.title || resolvedHeader.value?.title || ''
+)
+const finalSubtitle = computed(
+  () => props.subtitle || resolvedHeader.value?.subtitle || ''
+)
+const finalTitleIcon = computed(
+  () => props.titleIcon || resolvedHeader.value?.titleIcon || ''
+)
 const finalHeroStats = computed<HeroStat[]>(() => {
   if (props.heroStats && props.heroStats.length) return props.heroStats
-  const stats = resolvedHeader.value?.heroStats ? resolvedHeader.value.heroStats?.(props.headerContext) : []
+  const stats = resolvedHeader.value?.heroStats
+    ? resolvedHeader.value.heroStats?.(props.headerContext)
+    : []
   return (stats || []) as HeroStat[]
 })
 
@@ -125,42 +140,50 @@ const layoutClasses = computed(() => [
   `page-type-${finalPageType.value}`,
   `header-align-${finalHeaderAlignment.value}`,
   `content-spacing-${props.contentSpacing}`,
-  `max-width-${props.maxWidth}`
+  `max-width-${props.maxWidth}`,
 ])
 
 const headerClasses = computed(() => [
   `header-${finalHeaderAlignment.value}`,
   finalPageType.value === 'hero' ? 'hero-header' : '',
   finalPageType.value === 'gaming' ? 'gaming-header' : '',
-  finalPageType.value === 'noir' ? 'noir-header' : ''
+  finalPageType.value === 'noir' ? 'noir-header' : '',
 ])
 
 const titleClasses = computed(() => [
   finalPageType.value === 'hero' ? 'hero-title' : '',
   finalPageType.value === 'gaming' ? 'gaming-title' : '',
-  finalPageType.value === 'noir' ? 'noir-title' : ''
+  finalPageType.value === 'noir' ? 'noir-title' : '',
 ])
 
 const subtitleClasses = computed(() => [
   finalPageType.value === 'hero' ? 'hero-subtitle' : '',
   finalPageType.value === 'gaming' ? 'gaming-subtitle' : '',
-  finalPageType.value === 'noir' ? 'noir-subtitle' : ''
+  finalPageType.value === 'noir' ? 'noir-subtitle' : '',
 ])
 
 const contentClasses = computed(() => [
   `spacing-${props.contentSpacing}`,
-  `width-${props.maxWidth}`
+  `width-${props.maxWidth}`,
 ])
 
 // Config-derived variants
-const finalPageType = computed(() => props.pageType || resolvedHeader.value?.pageType || 'default')
-const finalHeaderAlignment = computed(() => props.headerAlignment || resolvedHeader.value?.headerAlignment || 'left')
+const finalPageType = computed(
+  () => props.pageType || resolvedHeader.value?.pageType || 'default'
+)
+const finalHeaderAlignment = computed(
+  () => props.headerAlignment || resolvedHeader.value?.headerAlignment || 'left'
+)
 const headerVariant = computed(() => {
   switch (finalPageType.value) {
-    case 'gaming': return 'gaming'
-    case 'dashboard': return 'default'
-    case 'form': return 'compact'
-    default: return 'default'
+    case 'gaming':
+      return 'gaming'
+    case 'dashboard':
+      return 'default'
+    case 'form':
+      return 'compact'
+    default:
+      return 'default'
   }
 })
 
@@ -191,16 +214,38 @@ const handleLogout = () => {
 
 // ===== Page-aware Assistant Integration =====
 const assistantOpen = ref(false)
-const assistantMessages = ref<Array<{ id: string; type: 'ai' | 'user' | 'system'; content: string; timestamp: number }>>([])
+const assistantMessages = ref<
+  Array<{
+    id: string
+    type: 'ai' | 'user' | 'system'
+    content: string
+    timestamp: number
+  }>
+>([])
 const { buildContextString } = usePageAssistantContext()
 
-function buildPageContextMessage() { return buildContextString({ title: finalTitle.value, subtitle: finalSubtitle.value }) }
+function buildPageContextMessage() {
+  return buildContextString({
+    title: finalTitle.value,
+    subtitle: finalSubtitle.value,
+  })
+}
 
 function seedAssistantMessages() {
   const now = Date.now()
   assistantMessages.value = [
-    { id: 'ai-greet-' + now, type: 'ai', content: "Hi! I'm NAVI. I can help with this page — what do you need?", timestamp: now },
-    { id: 'sys-ctx-' + (now + 1), type: 'system', content: buildPageContextMessage(), timestamp: now + 1 },
+    {
+      id: 'ai-greet-' + now,
+      type: 'ai',
+      content: "Hi! I'm NAVI. I can help with this page — what do you need?",
+      timestamp: now,
+    },
+    {
+      id: 'sys-ctx-' + (now + 1),
+      type: 'system',
+      content: buildPageContextMessage(),
+      timestamp: now + 1,
+    },
   ]
 }
 
@@ -211,34 +256,48 @@ function openAssistant() {
 
 function handleAssistantSend(text: string) {
   const now = Date.now()
-  assistantMessages.value.push({ id: 'u-' + now, type: 'user', content: text, timestamp: now })
+  assistantMessages.value.push({
+    id: 'u-' + now,
+    type: 'user',
+    content: text,
+    timestamp: now,
+  })
   // Optional lightweight echo to confirm context
   setTimeout(() => {
-    assistantMessages.value.push({ id: 'a-' + (now + 1), type: 'ai', content: 'Thanks! I will use the current page context to help.', timestamp: now + 1 })
+    assistantMessages.value.push({
+      id: 'a-' + (now + 1),
+      type: 'ai',
+      content: 'Thanks! I will use the current page context to help.',
+      timestamp: now + 1,
+    })
   }, 400)
 }
 
 // Refresh context message when route changes
-watch(() => route.fullPath, () => {
-  if (!assistantOpen.value) {
-    // Re-seed so next open reflects the new page
-    assistantMessages.value = []
+watch(
+  () => route.fullPath,
+  () => {
+    if (!assistantOpen.value) {
+      // Re-seed so next open reflects the new page
+      assistantMessages.value = []
+    }
   }
-})
+)
 
 // Auto-generate breadcrumbs from route if not provided
 const breadcrumbs = computed(() => {
   if (props.breadcrumbs?.length) return props.breadcrumbs
-  
+
   const pathSegments = route.path.split('/').filter(Boolean)
   if (pathSegments.length <= 1) return []
-  
+
   return pathSegments.map((segment, index) => {
     const path = '/' + pathSegments.slice(0, index + 1).join('/')
-    const label = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')
+    const label =
+      segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')
     return {
       label,
-      to: index < pathSegments.length - 1 ? path : undefined
+      to: index < pathSegments.length - 1 ? path : undefined,
     }
   })
 })
@@ -401,7 +460,11 @@ const breadcrumbs = computed(() => {
 
 /* Gaming Page Type */
 .page-type-gaming {
-  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-darker) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-dark) 0%,
+    var(--color-darker) 100%
+  );
 }
 
 .page-type-gaming .gaming-header {
@@ -439,14 +502,15 @@ const breadcrumbs = computed(() => {
     color-mix(in srgb, var(--surface-elevated) 92%, transparent) 100%
   );
   border: 1px solid color-mix(in srgb, var(--color-gaming-500) 20%, transparent);
-  box-shadow: 0 25px 50px color-mix(in srgb, var(--text-primary) 8%, transparent);
+  box-shadow: 0 25px 50px
+    color-mix(in srgb, var(--text-primary) 8%, transparent);
 }
 
 .page-type-noir .noir-title {
   font-family: var(--font-primary);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wider);
-  text-shadow: 0 0 20px rgba(0,255,127,0.5);
+  text-shadow: 0 0 20px rgba(0, 255, 127, 0.5);
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -513,20 +577,20 @@ const breadcrumbs = computed(() => {
     margin: var(--spacing-3);
     padding: var(--spacing-6);
   }
-  
+
   .page-title {
     font-size: var(--font-size-2xl);
   }
-  
+
   .page-type-hero .hero-title {
     font-size: var(--font-size-3xl);
   }
-  
+
   .hero-stats,
   .header-actions {
     justify-content: center;
   }
-  
+
   .page-main-content {
     padding: 0 var(--spacing-3) var(--spacing-6);
   }
@@ -537,13 +601,13 @@ const breadcrumbs = computed(() => {
     margin: var(--spacing-2);
     padding: var(--spacing-4);
   }
-  
+
   .page-title {
     font-size: var(--font-size-xl);
     flex-direction: column;
     gap: var(--spacing-2);
   }
-  
+
   .title-icon {
     font-size: var(--font-size-2xl);
   }

@@ -20,7 +20,18 @@ import UnifiedButton from './UnifiedButton.vue'
 
 interface Props {
   icon: string
-  variant?: 'glass' | 'ghost' | 'primary' | 'secondary' | 'gaming' | 'cyber' | 'success' | 'warning' | 'danger' | 'info' | 'outline'
+  variant?:
+    | 'glass'
+    | 'ghost'
+    | 'primary'
+    | 'secondary'
+    | 'gaming'
+    | 'cyber'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'info'
+    | 'outline'
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   ariaLabel?: string
   disabled?: boolean
@@ -38,7 +49,9 @@ const props = withDefaults(defineProps<Props>(), {
 defineEmits<{ click: [event: MouseEvent] }>()
 
 const attrs = useAttrs()
-const labelFromIcon = computed(() => (props.icon || '').replace(/^mdi-/, '').replace(/-/g, ' '))
+const labelFromIcon = computed(() =>
+  (props.icon || '').replace(/^mdi-/, '').replace(/-/g, ' ')
+)
 </script>
 
 <style scoped>

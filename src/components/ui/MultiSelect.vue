@@ -6,13 +6,13 @@
           {{ placeholder }}
         </span>
         <div v-else class="selected-tags">
-          <span 
-            v-for="item in selectedItems.slice(0, maxDisplay)" 
-            :key="item.value" 
+          <span
+            v-for="item in selectedItems.slice(0, maxDisplay)"
+            :key="item.value"
             class="selected-tag"
           >
             {{ item.label }}
-            <button 
+            <button
               :aria-label="`Remove ${item.label}`"
               class="remove-btn"
               @click.stop="removeItem(item)"
@@ -58,9 +58,7 @@
         </div>
       </div>
       <div v-if="selectedItems.length > 0" class="dropdown-actions">
-        <button class="clear-all-btn" @click="clearAll">
-          Clear All
-        </button>
+        <button class="clear-all-btn" @click="clearAll">Clear All</button>
       </div>
     </div>
   </div>
@@ -86,7 +84,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   placeholder: 'Select options...',
   searchable: true,
-  maxDisplay: 3
+  maxDisplay: 3,
 })
 
 const emit = defineEmits<{
@@ -97,7 +95,7 @@ const isOpen = ref(false)
 const searchQuery = ref('')
 const container = ref<HTMLElement>()
 
-const selectedItems = computed(() => 
+const selectedItems = computed(() =>
   props.options.filter(option => props.modelValue.includes(option.value))
 )
 
@@ -124,13 +122,13 @@ const toggleDropdown = () => {
 const toggleOption = (option: Option) => {
   const newValue = [...props.modelValue]
   const index = newValue.indexOf(option.value)
-  
+
   if (index > -1) {
     newValue.splice(index, 1)
   } else {
     newValue.push(option.value)
   }
-  
+
   emit('update:modelValue', newValue)
 }
 

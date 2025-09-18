@@ -1,19 +1,17 @@
 <template>
   <div class="resume-step-navigator font-sans">
     <div class="unified-grid g-2">
-      <div
-        v-for="section in sections"
-        :key="section.key"
-        class="flex-1"
-      >
+      <div v-for="section in sections" :key="section.key" class="flex-1">
         <button
-          :class="[ 'step-nav-item',
-                    'unified-btn btn-sm w-100',
-                    {
-                      'btn-primary': activeSection === section.key,
-                      'btn-outline-secondary': activeSection !== section.key,
-                      'completed': completionStatus[section.key as keyof typeof completionStatus]
-                    }
+          :class="[
+            'step-nav-item',
+            'unified-btn btn-sm w-100',
+            {
+              'btn-primary': activeSection === section.key,
+              'btn-outline-secondary': activeSection !== section.key,
+              completed:
+                completionStatus[section.key as keyof typeof completionStatus],
+            },
           ]"
           :aria-label="`Navigate to ${section.label}`"
           @click="handleClick(section.key)"
@@ -21,8 +19,15 @@
           <div class="flex items-center gap-glass-sm">
             <AppIcon :name="section.icon" class="mdi-18px" />
             <div class="step-content">
-              <div class="step-title">{{ section.shortLabel || section.label }}</div>
-              <div v-if="completionStatus[section.key as keyof typeof completionStatus]" class="step-status">
+              <div class="step-title">
+                {{ section.shortLabel || section.label }}
+              </div>
+              <div
+                v-if="
+                  completionStatus[section.key as keyof typeof completionStatus]
+                "
+                class="step-status"
+              >
                 <AppIcon name="CheckCircleIcon" color="success" />
               </div>
             </div>
@@ -121,7 +126,7 @@ const handleClick = (value: string) => {
 }
 
 /* Theme support */
-[data-theme="dark"] .step-nav-item.completed {
+[data-theme='dark'] .step-nav-item.completed {
   border-color: var(--color-success);
 }
 

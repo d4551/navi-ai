@@ -376,7 +376,7 @@
 
 .btn-loading::after,
 .btn.btn-loading::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -488,20 +488,20 @@
 }
 
 /* === DARK MODE ADJUSTMENTS === */
-[data-theme="dark"] .btn,
-[data-theme="dark"] .btn-base {
+[data-theme='dark'] .btn,
+[data-theme='dark'] .btn-base {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.12);
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .btn:hover:not(:disabled),
-[data-theme="dark"] .btn-base:hover:not(:disabled) {
+[data-theme='dark'] .btn:hover:not(:disabled),
+[data-theme='dark'] .btn-base:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-[data-theme="dark"] .btn-primary {
+[data-theme='dark'] .btn-primary {
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--color-primary-400) 25%, rgba(255, 255, 255, 0.08)),
@@ -511,7 +511,7 @@
   border-color: color-mix(in srgb, var(--color-primary-400) 40%, transparent);
 }
 
-[data-theme="dark"] .btn-primary:hover:not(:disabled) {
+[data-theme='dark'] .btn-primary:hover:not(:disabled) {
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--color-primary-400) 35%, rgba(255, 255, 255, 0.12)),
@@ -756,7 +756,7 @@
 }
 
 .btn-ai::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -50%;
   left: -50%;
@@ -879,12 +879,12 @@
 }
 
 /* === THEME VARIANTS === */
-[data-theme="dark"] .btn-secondary {
+[data-theme='dark'] .btn-secondary {
   background: var(--surface-elevated);
   border-color: var(--border-elevated);
 }
 
-[data-theme="dark"] .btn-secondary:hover {
+[data-theme='dark'] .btn-secondary:hover {
   background: var(--surface-strong);
   border-color: var(--border-strong);
 }

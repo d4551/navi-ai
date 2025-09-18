@@ -9,7 +9,12 @@ import { logger } from '@/shared/utils/logger'
 
 // Types for job posting analysis
 export interface JobPostingRequirement {
-  category: 'skills' | 'experience' | 'education' | 'certification' | 'soft_skills'
+  category:
+    | 'skills'
+    | 'experience'
+    | 'education'
+    | 'certification'
+    | 'soft_skills'
   requirement: string
   priority: 'required' | 'preferred' | 'nice_to_have'
   keywords: string[]
@@ -21,24 +26,24 @@ export interface JobPostingAnalysis {
   location?: string
   salaryRange?: string
   jobType?: 'full-time' | 'part-time' | 'contract' | 'remote'
-  
+
   // Core analysis
   requirements: JobPostingRequirement[]
   keySkills: string[]
   experienceLevel: 'entry' | 'mid' | 'senior' | 'executive'
   industryFocus: string[]
-  
+
   // AI insights
   companyValues: string[]
   culturalKeywords: string[]
   growthOpportunities: string[]
   uniqueSellingPoints: string[]
-  
+
   // Matching insights
   atsKeywords: string[]
   missingKeywords?: string[]
   competitiveAdvantages?: string[]
-  
+
   // Metadata
   sourceUrl?: string
   extractedAt: string
@@ -98,31 +103,33 @@ class JobPostingAnalysisService {
   async analyzeFromUrl(url: string): Promise<JobPostingExtractionResult> {
     try {
       await this.initialize()
-      
+
       logger.info(`Analyzing job posting from URL: ${url}`)
-      
+
       // First, extract the job posting content
       const extractionResult = await this.extractJobPostingFromUrl(url)
       if (!extractionResult.success || !extractionResult.content) {
         return {
           success: false,
-          error: extractionResult.error || 'Failed to extract job posting content'
+          error:
+            extractionResult.error || 'Failed to extract job posting content',
         }
       }
-      
+
       // Then analyze the extracted content
-      const analysisResult = await this.analyzeJobPostingText(extractionResult.content)
+      const analysisResult = await this.analyzeJobPostingText(
+        extractionResult.content
+      )
       if (analysisResult.success && analysisResult.analysis) {
         analysisResult.analysis.sourceUrl = url
       }
-      
+
       return analysisResult
-      
     } catch (error) {
       logger.error('Job posting URL analysis failed:', error)
       return {
         success: false,
-        error: `URL analysis failed: ${(error as Error).message}`
+        error: `URL analysis failed: ${(error as Error).message}`,
       }
     }
   }
@@ -130,14 +137,16 @@ class JobPostingAnalysisService {
   /**
    * Analyze job posting from pasted text
    */
-  async analyzeJobPostingText(jobPostingText: string): Promise<JobPostingExtractionResult> {
+  async analyzeJobPostingText(
+    jobPostingText: string
+  ): Promise<JobPostingExtractionResult> {
     try {
       await this.initialize()
-      
+
       if (!jobPostingText?.trim()) {
         return {
           success: false,
-          error: 'Job posting text is required'
+          error: 'Job posting text is required',
         }
       }
 
@@ -197,7 +206,9 @@ Return only valid JSON.`
           throw new Error('No JSON found in response')
         }
       } catch {
-        logger.warn('Failed to parse AI response as JSON, using fallback analysis')
+        logger.warn(
+          'Failed to parse AI response as JSON, using fallback analysis'
+        )
         return this.createFallbackAnalysis(jobPostingText)
       }
 
@@ -208,29 +219,43 @@ Return only valid JSON.`
         location: analysisData.location,
         salaryRange: analysisData.salaryRange,
         jobType: analysisData.jobType || 'full-time',
-        
-        requirements: Array.isArray(analysisData.requirements) 
+
+        requirements: Array.isArray(analysisData.requirements)
           ? analysisData.requirements.map((req: any) => ({
               category: req.category || 'skills',
               requirement: req.requirement || '',
               priority: req.priority || 'required',
-              keywords: Array.isArray(req.keywords) ? req.keywords : []
+              keywords: Array.isArray(req.keywords) ? req.keywords : [],
             }))
           : [],
-          
-        keySkills: Array.isArray(analysisData.keySkills) ? analysisData.keySkills : [],
+
+        keySkills: Array.isArray(analysisData.keySkills)
+          ? analysisData.keySkills
+          : [],
         experienceLevel: analysisData.experienceLevel || 'mid',
-        industryFocus: Array.isArray(analysisData.industryFocus) ? analysisData.industryFocus : [],
-        
-        companyValues: Array.isArray(analysisData.companyValues) ? analysisData.companyValues : [],
-        culturalKeywords: Array.isArray(analysisData.culturalKeywords) ? analysisData.culturalKeywords : [],
-        growthOpportunities: Array.isArray(analysisData.growthOpportunities) ? analysisData.growthOpportunities : [],
-        uniqueSellingPoints: Array.isArray(analysisData.uniqueSellingPoints) ? analysisData.uniqueSellingPoints : [],
-        
-        atsKeywords: Array.isArray(analysisData.atsKeywords) ? analysisData.atsKeywords : [],
-        
+        industryFocus: Array.isArray(analysisData.industryFocus)
+          ? analysisData.industryFocus
+          : [],
+
+        companyValues: Array.isArray(analysisData.companyValues)
+          ? analysisData.companyValues
+          : [],
+        culturalKeywords: Array.isArray(analysisData.culturalKeywords)
+          ? analysisData.culturalKeywords
+          : [],
+        growthOpportunities: Array.isArray(analysisData.growthOpportunities)
+          ? analysisData.growthOpportunities
+          : [],
+        uniqueSellingPoints: Array.isArray(analysisData.uniqueSellingPoints)
+          ? analysisData.uniqueSellingPoints
+          : [],
+
+        atsKeywords: Array.isArray(analysisData.atsKeywords)
+          ? analysisData.atsKeywords
+          : [],
+
         extractedAt: new Date().toISOString(),
-        confidence: 0.85
+        confidence: 0.85,
       }
 
       logger.info('Job posting analysis completed successfully')
@@ -238,12 +263,11 @@ Return only valid JSON.`
       return {
         success: true,
         analysis,
-        rawText: jobPostingText
+        rawText: jobPostingText,
       }
-
     } catch (error) {
       logger.error('Job posting text analysis failed:', error)
-      
+
       // Return fallback analysis
       return this.createFallbackAnalysis(jobPostingText)
     }
@@ -322,42 +346,51 @@ Return only valid JSON.`
 
       return {
         resumeChanges: {
-          summary: Array.isArray(recommendations.resumeChanges?.summary) 
-            ? recommendations.resumeChanges.summary 
+          summary: Array.isArray(recommendations.resumeChanges?.summary)
+            ? recommendations.resumeChanges.summary
             : [],
-          skills: Array.isArray(recommendations.resumeChanges?.skills) 
-            ? recommendations.resumeChanges.skills 
+          skills: Array.isArray(recommendations.resumeChanges?.skills)
+            ? recommendations.resumeChanges.skills
             : [],
-          experience: Array.isArray(recommendations.resumeChanges?.experience) 
-            ? recommendations.resumeChanges.experience 
+          experience: Array.isArray(recommendations.resumeChanges?.experience)
+            ? recommendations.resumeChanges.experience
             : [],
-          keywords: Array.isArray(recommendations.resumeChanges?.keywords) 
-            ? recommendations.resumeChanges.keywords 
-            : []
+          keywords: Array.isArray(recommendations.resumeChanges?.keywords)
+            ? recommendations.resumeChanges.keywords
+            : [],
         },
         coverLetterFocus: {
           openingHook: recommendations.coverLetterFocus?.openingHook || '',
-          bodyPoints: Array.isArray(recommendations.coverLetterFocus?.bodyPoints) 
-            ? recommendations.coverLetterFocus.bodyPoints 
+          bodyPoints: Array.isArray(
+            recommendations.coverLetterFocus?.bodyPoints
+          )
+            ? recommendations.coverLetterFocus.bodyPoints
             : [],
           closingCta: recommendations.coverLetterFocus?.closingCta || '',
-          companyConnections: Array.isArray(recommendations.coverLetterFocus?.companyConnections) 
-            ? recommendations.coverLetterFocus.companyConnections 
-            : []
+          companyConnections: Array.isArray(
+            recommendations.coverLetterFocus?.companyConnections
+          )
+            ? recommendations.coverLetterFocus.companyConnections
+            : [],
         },
         interviewPrep: {
-          likelyQuestions: Array.isArray(recommendations.interviewPrep?.likelyQuestions) 
-            ? recommendations.interviewPrep.likelyQuestions 
+          likelyQuestions: Array.isArray(
+            recommendations.interviewPrep?.likelyQuestions
+          )
+            ? recommendations.interviewPrep.likelyQuestions
             : [],
-          keyTalkingPoints: Array.isArray(recommendations.interviewPrep?.keyTalkingPoints) 
-            ? recommendations.interviewPrep.keyTalkingPoints 
+          keyTalkingPoints: Array.isArray(
+            recommendations.interviewPrep?.keyTalkingPoints
+          )
+            ? recommendations.interviewPrep.keyTalkingPoints
             : [],
-          researchAreas: Array.isArray(recommendations.interviewPrep?.researchAreas) 
-            ? recommendations.interviewPrep.researchAreas 
-            : []
-        }
+          researchAreas: Array.isArray(
+            recommendations.interviewPrep?.researchAreas
+          )
+            ? recommendations.interviewPrep.researchAreas
+            : [],
+        },
       }
-
     } catch (error) {
       logger.error('Failed to generate tailoring recommendations:', error)
       return this.createFallbackRecommendations(jobAnalysis)
@@ -367,21 +400,24 @@ Return only valid JSON.`
   /**
    * Extract job posting content from URL using web scraping
    */
-  private async extractJobPostingFromUrl(url: string): Promise<{ success: boolean; content?: string; error?: string }> {
+  private async extractJobPostingFromUrl(
+    url: string
+  ): Promise<{ success: boolean; content?: string; error?: string }> {
     try {
       // Use WebFetch tool to get the content
       const response = await fetch(url, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        },
       })
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
-      
+
       const html = await response.text()
-      
+
       // Extract text content (basic implementation)
       const textContent = html
         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
@@ -389,17 +425,16 @@ Return only valid JSON.`
         .replace(/<[^>]*>/g, ' ')
         .replace(/\s+/g, ' ')
         .trim()
-      
+
       return {
         success: true,
-        content: textContent
+        content: textContent,
       }
-      
     } catch (error) {
       logger.error(`Failed to extract from URL ${url}:`, error)
       return {
         success: false,
-        error: `Failed to extract job posting: ${(error as Error).message}`
+        error: `Failed to extract job posting: ${(error as Error).message}`,
       }
     }
   }
@@ -407,12 +442,29 @@ Return only valid JSON.`
   /**
    * Create fallback analysis when AI parsing fails
    */
-  private createFallbackAnalysis(jobPostingText: string): JobPostingExtractionResult {
+  private createFallbackAnalysis(
+    jobPostingText: string
+  ): JobPostingExtractionResult {
     // Basic text analysis for fallback
     const _words = jobPostingText.toLowerCase().split(/\s+/)
-    const skillKeywords = ['javascript', 'python', 'react', 'vue', 'angular', 'node', 'java', 'c#', 'sql', 'aws', 'docker', 'kubernetes']
-    const foundSkills = skillKeywords.filter(skill => jobPostingText.toLowerCase().includes(skill))
-    
+    const skillKeywords = [
+      'javascript',
+      'python',
+      'react',
+      'vue',
+      'angular',
+      'node',
+      'java',
+      'c#',
+      'sql',
+      'aws',
+      'docker',
+      'kubernetes',
+    ]
+    const foundSkills = skillKeywords.filter(skill =>
+      jobPostingText.toLowerCase().includes(skill)
+    )
+
     const fallbackAnalysis: Partial<JobPostingAnalysis> = {
       company: 'Company Name',
       jobTitle: 'Software Developer',
@@ -424,50 +476,61 @@ Return only valid JSON.`
           category: 'skills',
           requirement: 'Programming experience required',
           priority: 'required',
-          keywords: foundSkills
-        }
+          keywords: foundSkills,
+        },
       ],
       extractedAt: new Date().toISOString(),
-      confidence: 0.3
+      confidence: 0.3,
     }
 
     return {
       success: true,
       analysis: fallbackAnalysis as JobPostingAnalysis,
       rawText: jobPostingText,
-      fallback: fallbackAnalysis
+      fallback: fallbackAnalysis,
     }
   }
 
   /**
    * Create fallback recommendations
    */
-  private createFallbackRecommendations(jobAnalysis: JobPostingAnalysis): TailoringRecommendations {
+  private createFallbackRecommendations(
+    jobAnalysis: JobPostingAnalysis
+  ): TailoringRecommendations {
     return {
       resumeChanges: {
-        summary: [`Experienced ${jobAnalysis.jobTitle.toLowerCase()} with expertise in ${jobAnalysis.keySkills.slice(0, 3).join(', ')}`],
+        summary: [
+          `Experienced ${jobAnalysis.jobTitle.toLowerCase()} with expertise in ${jobAnalysis.keySkills.slice(0, 3).join(', ')}`,
+        ],
         skills: jobAnalysis.keySkills.slice(0, 5),
-        experience: [`Demonstrated proficiency in ${jobAnalysis.keySkills[0] || 'relevant technologies'}`],
-        keywords: jobAnalysis.atsKeywords.slice(0, 10)
+        experience: [
+          `Demonstrated proficiency in ${jobAnalysis.keySkills[0] || 'relevant technologies'}`,
+        ],
+        keywords: jobAnalysis.atsKeywords.slice(0, 10),
       },
       coverLetterFocus: {
         openingHook: `I am excited to apply for the ${jobAnalysis.jobTitle} position at ${jobAnalysis.company}`,
         bodyPoints: [
           `My experience aligns well with your requirements for ${jobAnalysis.keySkills.slice(0, 2).join(' and ')}`,
-          `I am passionate about contributing to ${jobAnalysis.company}'s mission`
+          `I am passionate about contributing to ${jobAnalysis.company}'s mission`,
         ],
-        closingCta: 'I look forward to discussing how my skills can contribute to your team',
-        companyConnections: ['Share the company\'s values and mission']
+        closingCta:
+          'I look forward to discussing how my skills can contribute to your team',
+        companyConnections: ["Share the company's values and mission"],
       },
       interviewPrep: {
         likelyQuestions: [
           'Tell me about your experience with the technologies mentioned in the job posting',
           'Why do you want to work at our company?',
-          'Describe a challenging project you worked on'
+          'Describe a challenging project you worked on',
         ],
         keyTalkingPoints: jobAnalysis.keySkills.slice(0, 3),
-        researchAreas: ['Company history and values', 'Recent projects and initiatives', 'Team structure and culture']
-      }
+        researchAreas: [
+          'Company history and values',
+          'Recent projects and initiatives',
+          'Team structure and culture',
+        ],
+      },
     }
   }
 }

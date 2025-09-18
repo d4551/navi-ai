@@ -1,12 +1,10 @@
 <template>
-  <v-card 
-    variant="outlined" 
+  <v-card
+    variant="outlined"
     class="mb-4 section-card section-card unified-card"
     :class="theme.getThemeClasses('personal-info-form')"
   >
-    <v-card-title 
-      class="d-flex align-center justify-space-between pa-4"
-    >
+    <v-card-title class="d-flex align-center justify-space-between pa-4">
       <div class="d-flex align-center ga-2">
         <AppIcon name="mdi-badge-account-outline" size="small" />
         <span class="text-h6">Personal Information</span>
@@ -22,7 +20,7 @@
         @click="$emit('request-summary-suggestions')"
       />
     </v-card-title>
-    
+
     <div class="card-content-sm">
       <v-row>
         <v-col cols="12" md="6">
@@ -76,9 +74,13 @@
 
         <v-col cols="12">
           <div class="d-flex justify-space-between align-center mb-2">
-            <v-label class="text-subtitle-1 font-weight-medium">Professional Summary</v-label>
+            <v-label class="text-subtitle-1 font-weight-medium"
+              >Professional Summary</v-label
+            >
             <div class="d-flex align-center ga-2">
-              <UiChip :classes="`chip chip-${getSummaryStatusColor()} chip-compact`">
+              <UiChip
+                :classes="`chip chip-${getSummaryStatusColor()} chip-compact`"
+              >
                 {{ summaryWordCount }} words
               </UiChip>
               <UnifiedButton
@@ -123,7 +125,9 @@
                 :key="i"
                 @click="$emit('apply-summary-suggestion', suggestion)"
               >
-                <v-list-item-title class="text-wrap">{{ suggestion }}</v-list-item-title>
+                <v-list-item-title class="text-wrap">{{
+                  suggestion
+                }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -134,16 +138,16 @@
 </template>
 
 <script>
-import UnifiedButton from '@/components/ui/UnifiedButton.vue';
-import UiChip from '@/components/ui/UiChip.vue';
-import AppIcon from '@/components/ui/AppIcon.vue';
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
+import UiChip from '@/components/ui/UiChip.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 
 import { computed, reactive, watch } from 'vue'
-import { useUserProfile } from "@/composables/useUserProfile"
+import { useUserProfile } from '@/composables/useUserProfile'
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 
 export default {
-  name: "PersonalInfoForm",
+  name: 'PersonalInfoForm',
   components: { AppIcon, UnifiedButton, UiChip },
   props: {
     modelValue: { type: Object, default: () => ({}) },
@@ -153,10 +157,10 @@ export default {
     copying: { type: Boolean, default: false },
   },
   emits: [
-    "update:modelValue",
-    "request-summary-suggestions",
-    "apply-summary-suggestion",
-    "copy-summary",
+    'update:modelValue',
+    'request-summary-suggestions',
+    'apply-summary-suggestion',
+    'copy-summary',
   ],
   setup(props, { emit }) {
     const { personalInfo, updatePersonalInfo } = useUserProfile()
@@ -169,71 +173,82 @@ export default {
         phone: '',
         location: '',
         summary: '',
-        ...(props.modelValue || {})
-      }
-    });
+        ...(props.modelValue || {}),
+      },
+    })
 
     // Initialize with profile data if available
     if (personalInfo.value && Object.keys(personalInfo.value).length > 0) {
-      Object.assign(local.personalInfo, personalInfo.value);
+      Object.assign(local.personalInfo, personalInfo.value)
     }
 
     watch(
       () => props.modelValue,
-      (v) => {
+      v => {
         if (v && typeof v === 'object') {
-          Object.assign(local.personalInfo, v);
+          Object.assign(local.personalInfo, v)
         }
-      },
-    );
+      }
+    )
 
     // Watch for profile changes and sync with local state
     watch(
       personalInfo,
-      (newPersonalInfo) => {
+      newPersonalInfo => {
         if (newPersonalInfo && Object.keys(newPersonalInfo).length > 0) {
-          Object.assign(local.personalInfo, newPersonalInfo);
+          Object.assign(local.personalInfo, newPersonalInfo)
         }
       },
       { deep: true }
-    );
+    )
 
     const commit = async () => {
-      emit("update:modelValue", { ...local.personalInfo });
+      emit('update:modelValue', { ...local.personalInfo })
       // Also update the global profile
-      await updatePersonalInfo(local.personalInfo);
-    };
+      await updatePersonalInfo(local.personalInfo)
+    }
 
     const summaryWordCount = computed(
       () =>
-        (local.personalInfo.summary || "").trim().split(/\s+/).filter(Boolean)
-          .length,
-    );
+        (local.personalInfo.summary || '').trim().split(/\s+/).filter(Boolean)
+          .length
+    )
     const summaryStatus = computed(() => {
-      const wc = summaryWordCount.value;
+      const wc = summaryWordCount.value
       if (!wc) {
-        return "neutral";
+        return 'neutral'
       }
       if (wc < 30) {
-        return "short";
+        return 'short'
       }
       if (wc > 80) {
-        return "long";
+        return 'long'
       }
-      return "ok";
-    });
+      return 'ok'
+    })
 
     const getSummaryStatusColor = () => {
-      const status = summaryStatus.value;
+      const status = summaryStatus.value
       switch (status) {
-        case 'short': return 'warning';
-        case 'long': return 'error';
-        case 'ok': return 'success';
-        default: return 'default';
+        case 'short':
+          return 'warning'
+        case 'long':
+          return 'error'
+        case 'ok':
+          return 'success'
+        default:
+          return 'default'
       }
-    };
+    }
 
-    return { local, commit, summaryWordCount, summaryStatus, getSummaryStatusColor, theme };
+    return {
+      local,
+      commit,
+      summaryWordCount,
+      summaryStatus,
+      getSummaryStatusColor,
+      theme,
+    }
   },
-};
+}
 </script>

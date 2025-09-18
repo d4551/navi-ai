@@ -3,50 +3,50 @@
  * Ensures consistent, normalized, and complete studio database
  */
 
-import { unifiedStorage } from '@/utils/storage';
-import { GameStudioRepository } from '@/modules/db/repositories/gaming-studios';
-import { logger } from '@/shared/utils/logger';
-import { GAMING_STUDIOS } from '@/shared/constants/gaming-studios';
-import { TOP_100_GAMING_STUDIOS } from '@/data/top-100-gaming-studios';
-import type { GameStudio as _GameStudio } from '@/shared/types/jobs'; // Used for repository operations
+import { unifiedStorage } from '@/utils/storage'
+import { GameStudioRepository } from '@/modules/db/repositories/gaming-studios'
+import { logger } from '@/shared/utils/logger'
+import { GAMING_STUDIOS } from '@/shared/constants/gaming-studios'
+import { TOP_100_GAMING_STUDIOS } from '@/data/top-100-gaming-studios'
+import type { GameStudio as _GameStudio } from '@/shared/types/jobs' // Used for repository operations
 
 // Optional external data source that may be bundled at build-time
-declare const GAMING_STUDIOS_DATA: any[] | undefined;
+declare const GAMING_STUDIOS_DATA: any[] | undefined
 
 export interface StudioImportResult {
-  success: boolean;
-  imported: number;
-  updated: number;
+  success: boolean
+  imported: number
+  updated: number
   errors: Array<{
-    studio: string;
-    error: string;
-  }>;
+    studio: string
+    error: string
+  }>
   summary: {
-    totalAttempted: number;
-    totalSuccessful: number;
-    duplicatesFound: number;
-    dataQualityIssues: number;
-  };
+    totalAttempted: number
+    totalSuccessful: number
+    duplicatesFound: number
+    dataQualityIssues: number
+  }
 }
 
 export interface StudioValidationResult {
-  valid: boolean;
-  warnings: string[];
-  errors: string[];
-  suggestions: string[];
+  valid: boolean
+  warnings: string[]
+  errors: string[]
+  suggestions: string[]
 }
 
 export class StudioDataManager {
-  private static instance: StudioDataManager;
-  private readonly IMPORT_BATCH_SIZE = 10;
-  private readonly DATA_VERSION_KEY = 'studio_data_version';
-  private readonly LAST_IMPORT_KEY = 'studio_last_import';
+  private static instance: StudioDataManager
+  private readonly IMPORT_BATCH_SIZE = 10
+  private readonly DATA_VERSION_KEY = 'studio_data_version'
+  private readonly LAST_IMPORT_KEY = 'studio_last_import'
 
   static getInstance(): StudioDataManager {
     if (!StudioDataManager.instance) {
-      StudioDataManager.instance = new StudioDataManager();
+      StudioDataManager.instance = new StudioDataManager()
     }
-    return StudioDataManager.instance;
+    return StudioDataManager.instance
   }
 
   /**
@@ -62,65 +62,69 @@ export class StudioDataManager {
         totalAttempted: 0,
         totalSuccessful: 0,
         duplicatesFound: 0,
-        dataQualityIssues: 0
-      }
-    };
+        dataQualityIssues: 0,
+      },
+    }
 
     try {
-      logger.info('Starting studio data import process...');
+      logger.info('Starting studio data import process...')
 
       // Check if import is needed
-      if (!forceReimport && await this.isImportUpToDate()) {
-        logger.info('Studio data is up to date, skipping import');
-        result.success = true;
-        return result;
+      if (!forceReimport && (await this.isImportUpToDate())) {
+        logger.info('Studio data is up to date, skipping import')
+        result.success = true
+        return result
       }
 
       // Combine data from multiple sources
-      const allStudioData = await this.consolidateStudioData();
-      result.summary.totalAttempted = allStudioData.length;
+      const allStudioData = await this.consolidateStudioData()
+      result.summary.totalAttempted = allStudioData.length
 
-      logger.info(`Importing ${allStudioData.length} studios from consolidated sources`);
+      logger.info(
+        `Importing ${allStudioData.length} studios from consolidated sources`
+      )
 
       // Process studios in batches to prevent memory issues
       for (let i = 0; i < allStudioData.length; i += this.IMPORT_BATCH_SIZE) {
-        const batch = allStudioData.slice(i, i + this.IMPORT_BATCH_SIZE);
-        const batchResult = await this.processBatch(batch);
-        
-        result.imported += batchResult.imported;
-        result.updated += batchResult.updated;
-        result.errors.push(...batchResult.errors);
-        result.summary.duplicatesFound += batchResult.duplicates;
-        result.summary.dataQualityIssues += batchResult.qualityIssues;
+        const batch = allStudioData.slice(i, i + this.IMPORT_BATCH_SIZE)
+        const batchResult = await this.processBatch(batch)
+
+        result.imported += batchResult.imported
+        result.updated += batchResult.updated
+        result.errors.push(...batchResult.errors)
+        result.summary.duplicatesFound += batchResult.duplicates
+        result.summary.dataQualityIssues += batchResult.qualityIssues
       }
 
-      result.summary.totalSuccessful = result.imported + result.updated;
-      result.success = result.errors.length < (result.summary.totalAttempted * 0.1); // Allow up to 10% failures
+      result.summary.totalSuccessful = result.imported + result.updated
+      result.success =
+        result.errors.length < result.summary.totalAttempted * 0.1 // Allow up to 10% failures
 
       // Update import metadata
-      await this.updateImportMetadata();
+      await this.updateImportMetadata()
 
       // Generate import report
-      await this.generateImportReport(_result);
+      await this.generateImportReport(_result)
 
-      logger.info(`Studio import completed: ${result.summary.totalSuccessful}/${result.summary.totalAttempted} successful`);
-
+      logger.info(
+        `Studio import completed: ${result.summary.totalSuccessful}/${result.summary.totalAttempted} successful`
+      )
     } catch (error) {
-      logger.error('Studio import failed:', error);
+      logger.error('Studio import failed:', error)
       result.errors.push({
         studio: 'SYSTEM',
-        error: error instanceof Error ? error.message : String(error)
-      });
+        error: error instanceof Error ? error.message : String(error),
+      })
     }
 
-    return result;
+    return result
   }
 
   /**
    * Consolidate studio data from multiple sources
    */
   private async consolidateStudioData(): Promise<any[]> {
-    const consolidated = new Map<string, any>();
+    const consolidated = new Map<string, any>()
 
     try {
       // Source 1: TypeScript constants
@@ -130,62 +134,70 @@ export class StudioDataManager {
             consolidated.set(studio.id, {
               ...studio,
               dataSource: ['constants'],
-              priority: 1
-            });
+              priority: 1,
+            })
           }
-        });
+        })
       }
 
       // Source 2: JavaScript data file
-      if (typeof GAMING_STUDIOS_DATA !== 'undefined' && Array.isArray(GAMING_STUDIOS_DATA)) {
+      if (
+        typeof GAMING_STUDIOS_DATA !== 'undefined' &&
+        Array.isArray(GAMING_STUDIOS_DATA)
+      ) {
         GAMING_STUDIOS_DATA.forEach((studio: any) => {
           if (studio?.id) {
-            const existing = consolidated.get(studio.id);
+            const existing = consolidated.get(studio.id)
             if (existing) {
               // Merge data, preferring more complete information
-              consolidated.set(studio.id, this.mergeStudioData(existing, {
-                ...studio,
-                dataSource: [...(existing.dataSource || []), 'data-file'],
-                priority: Math.max(existing.priority || 0, 2)
-              }));
+              consolidated.set(
+                studio.id,
+                this.mergeStudioData(existing, {
+                  ...studio,
+                  dataSource: [...(existing.dataSource || []), 'data-file'],
+                  priority: Math.max(existing.priority || 0, 2),
+                })
+              )
             } else {
               consolidated.set(studio.id, {
                 ...studio,
                 dataSource: ['data-file'],
-                priority: 2
-              });
+                priority: 2,
+              })
             }
           }
-        });
+        })
       }
 
       // Source 3: Top 100 Gaming Studios data
       TOP_100_GAMING_STUDIOS.forEach(studio => {
-        const existing = consolidated.get(studio.id);
+        const existing = consolidated.get(studio.id)
         if (existing) {
           // Merge data, preferring more complete information
-          consolidated.set(studio.id, this.mergeStudioData(existing, {
-            ...studio,
-            dataSource: [...(existing.dataSource || []), 'top-100-studios'],
-            priority: Math.max(existing.priority || 0, 3)
-          }));
+          consolidated.set(
+            studio.id,
+            this.mergeStudioData(existing, {
+              ...studio,
+              dataSource: [...(existing.dataSource || []), 'top-100-studios'],
+              priority: Math.max(existing.priority || 0, 3),
+            })
+          )
         } else {
           consolidated.set(studio.id, {
             ...studio,
             dataSource: ['top-100-studios'],
-            priority: 3
-          });
+            priority: 3,
+          })
         }
-      });
+      })
 
       // Source 4: Any external APIs or cached data
-      await this.addExternalStudioData(consolidated);
-
+      await this.addExternalStudioData(consolidated)
     } catch (error) {
-      logger.error('Error consolidating studio data:', error);
+      logger.error('Error consolidating studio data:', error)
     }
 
-    return Array.from(consolidated.values());
+    return Array.from(consolidated.values())
   }
 
   /**
@@ -196,46 +208,70 @@ export class StudioDataManager {
       ...existing,
       ...incoming,
       // Merge arrays, removing duplicates
-      games: [...new Set([...(existing.games || []), ...(incoming.games || [])])],
-      technologies: [...new Set([...(existing.technologies || []), ...(incoming.technologies || [])])],
-      specialties: [...new Set([...(existing.specialties || []), ...(incoming.specialties || [])])],
-      aliases: [...new Set([...(existing.aliases || []), ...(incoming.aliases || [])])],
-      dataSource: [...new Set([...(existing.dataSource || []), ...(incoming.dataSource || [])])],
+      games: [
+        ...new Set([...(existing.games || []), ...(incoming.games || [])]),
+      ],
+      technologies: [
+        ...new Set([
+          ...(existing.technologies || []),
+          ...(incoming.technologies || []),
+        ]),
+      ],
+      specialties: [
+        ...new Set([
+          ...(existing.specialties || []),
+          ...(incoming.specialties || []),
+        ]),
+      ],
+      aliases: [
+        ...new Set([...(existing.aliases || []), ...(incoming.aliases || [])]),
+      ],
+      dataSource: [
+        ...new Set([
+          ...(existing.dataSource || []),
+          ...(incoming.dataSource || []),
+        ]),
+      ],
       // Use the most recent or higher priority data for scalars
       lastUpdated: new Date(),
-      priority: Math.max(existing.priority || 0, incoming.priority || 0)
-    };
+      priority: Math.max(existing.priority || 0, incoming.priority || 0),
+    }
   }
 
   /**
    * Add external studio data from APIs or other sources
    */
-  private async addExternalStudioData(consolidated: Map<string, any>): Promise<void> {
+  private async addExternalStudioData(
+    consolidated: Map<string, any>
+  ): Promise<void> {
     try {
       // Check for cached external data
-      const cachedExternal = await unifiedStorage.get('external_studio_data');
+      const cachedExternal = await unifiedStorage.get('external_studio_data')
       if (cachedExternal && Array.isArray(cachedExternal)) {
         cachedExternal.forEach(studio => {
           if (studio?.id) {
-            const existing = consolidated.get(studio.id);
+            const existing = consolidated.get(studio.id)
             if (existing) {
-              consolidated.set(studio.id, this.mergeStudioData(existing, {
-                ...studio,
-                dataSource: [...(existing.dataSource || []), 'external-api'],
-                priority: Math.max(existing.priority || 0, 3)
-              }));
+              consolidated.set(
+                studio.id,
+                this.mergeStudioData(existing, {
+                  ...studio,
+                  dataSource: [...(existing.dataSource || []), 'external-api'],
+                  priority: Math.max(existing.priority || 0, 3),
+                })
+              )
             } else {
               consolidated.set(studio.id, {
                 ...studio,
                 dataSource: ['external-api'],
-                priority: 3
-              });
+                priority: 3,
+              })
             }
           }
-        });
+        })
       }
     } catch (error) {
-      logger.warn('Failed to load external studio data:', error);
+      logger.warn('Failed to load external studio data:', error)
     }
   }
 
@@ -243,75 +279,83 @@ export class StudioDataManager {
    * Process a batch of studios for import
    */
   private async processBatch(batch: any[]): Promise<{
-    imported: number;
-    updated: number;
-    errors: Array<{ studio: string; error: string }>;
-    duplicates: number;
-    qualityIssues: number;
+    imported: number
+    updated: number
+    errors: Array<{ studio: string; error: string }>
+    duplicates: number
+    qualityIssues: number
   }> {
     const result: {
-      imported: number;
-      updated: number;
-      errors: Array<{ studio: string; error: string }>;
-      duplicates: number;
-      qualityIssues: number;
+      imported: number
+      updated: number
+      errors: Array<{ studio: string; error: string }>
+      duplicates: number
+      qualityIssues: number
     } = {
       imported: 0,
       updated: 0,
       errors: [],
       duplicates: 0,
-      qualityIssues: 0
-    };
+      qualityIssues: 0,
+    }
 
     for (const studioData of batch) {
       try {
         // Validate studio data
-        const validation = this.validateStudioData(studioData);
+        const validation = this.validateStudioData(studioData)
         if (!validation.valid) {
           result.errors.push({
             studio: studioData.name || studioData.id || 'Unknown',
-            error: `Validation failed: ${validation.errors.join(', ')}`
-          });
-          result.qualityIssues++;
-          continue;
+            error: `Validation failed: ${validation.errors.join(', ')}`,
+          })
+          result.qualityIssues++
+          continue
         }
 
         if (validation.warnings.length > 0) {
-          result.qualityIssues++;
-          logger.warn(`Studio ${studioData.name} has data quality issues:`, validation.warnings);
+          result.qualityIssues++
+          logger.warn(
+            `Studio ${studioData.name} has data quality issues:`,
+            validation.warnings
+          )
         }
 
         // Normalize studio data
-        const normalizedStudio = this.normalizeStudioData(studioData);
+        const normalizedStudio = this.normalizeStudioData(studioData)
 
         // Check if studio already exists
-        const existing = await GameStudioRepository.getById(normalizedStudio.id);
-        const allStudios = await GameStudioRepository.getAll();
-        
+        const existing = await GameStudioRepository.getById(normalizedStudio.id)
+        const allStudios = await GameStudioRepository.getAll()
+
         if (existing) {
           // Update existing studio with new data
-          const merged = this.mergeStudioData(existing, normalizedStudio);
-          allStudios[normalizedStudio.id] = merged;
-          await GameStudioRepository.importData({ studios: allStudios, favorites: [] });
-          result.updated++;
-          result.duplicates++;
+          const merged = this.mergeStudioData(existing, normalizedStudio)
+          allStudios[normalizedStudio.id] = merged
+          await GameStudioRepository.importData({
+            studios: allStudios,
+            favorites: [],
+          })
+          result.updated++
+          result.duplicates++
         } else {
           // Create new studio
-          allStudios[normalizedStudio.id] = normalizedStudio;
-          await GameStudioRepository.importData({ studios: allStudios, favorites: [] });
-          result.imported++;
+          allStudios[normalizedStudio.id] = normalizedStudio
+          await GameStudioRepository.importData({
+            studios: allStudios,
+            favorites: [],
+          })
+          result.imported++
         }
-
       } catch (error) {
         result.errors.push({
           studio: studioData.name || studioData.id || 'Unknown',
-          error: error instanceof Error ? error.message : String(error)
-        });
-        logger.error(`Failed to process studio ${studioData.name}:`, error);
+          error: error instanceof Error ? error.message : String(error),
+        })
+        logger.error(`Failed to process studio ${studioData.name}:`, error)
       }
     }
 
-    return result;
+    return result
   }
 
   /**
@@ -322,52 +366,52 @@ export class StudioDataManager {
       valid: true,
       warnings: [],
       errors: [],
-      suggestions: []
-    };
+      suggestions: [],
+    }
 
     // Required fields
     if (!studio.id) {
-      result.errors.push('Missing studio ID');
-      result.valid = false;
+      result.errors.push('Missing studio ID')
+      result.valid = false
     }
 
     if (!studio.name) {
-      result.errors.push('Missing studio name');
-      result.valid = false;
+      result.errors.push('Missing studio name')
+      result.valid = false
     }
 
     // Recommended fields
     if (!studio.description) {
-      result.warnings.push('Missing description');
+      result.warnings.push('Missing description')
     }
 
     if (!studio.location && !studio.headquarters) {
-      result.warnings.push('Missing location information');
+      result.warnings.push('Missing location information')
     }
 
     if (!studio.games || studio.games.length === 0) {
-      result.warnings.push('No games listed');
+      result.warnings.push('No games listed')
     }
 
     if (!studio.founded) {
-      result.warnings.push('Missing founding date');
+      result.warnings.push('Missing founding date')
     }
 
     // Data quality checks
     if (studio.name && studio.name.length < 2) {
-      result.errors.push('Studio name too short');
-      result.valid = false;
+      result.errors.push('Studio name too short')
+      result.valid = false
     }
 
     if (studio.employeeCount && !/\d+/.test(studio.employeeCount)) {
-      result.warnings.push('Employee count format unclear');
+      result.warnings.push('Employee count format unclear')
     }
 
     if (studio.website && !studio.website.startsWith('http')) {
-      result.suggestions.push('Website URL should include protocol (https://)');
+      result.suggestions.push('Website URL should include protocol (https://)')
     }
 
-    return result;
+    return result
   }
 
   /**
@@ -387,17 +431,25 @@ export class StudioDataManager {
       stockTicker: studio.stockTicker,
       parentCompany: studio.parentCompany,
       publiclyTraded: !!studio.stockTicker,
-      
+
       // Arrays
       games: Array.isArray(studio.games) ? studio.games.filter(Boolean) : [],
-      technologies: Array.isArray(studio.technologies) ? studio.technologies.filter(Boolean) : (studio.techStack || []),
-      specialties: Array.isArray(studio.specialties) ? studio.specialties.filter(Boolean) : [],
-      aliases: Array.isArray(studio.aliases) ? studio.aliases.filter(Boolean) : [],
-      
+      technologies: Array.isArray(studio.technologies)
+        ? studio.technologies.filter(Boolean)
+        : studio.techStack || [],
+      specialties: Array.isArray(studio.specialties)
+        ? studio.specialties.filter(Boolean)
+        : [],
+      aliases: Array.isArray(studio.aliases)
+        ? studio.aliases.filter(Boolean)
+        : [],
+
       // Metadata
-      dataSource: Array.isArray(studio.dataSource) ? studio.dataSource : ['import'],
+      dataSource: Array.isArray(studio.dataSource)
+        ? studio.dataSource
+        : ['import'],
       lastUpdated: new Date(),
-      
+
       // Additional fields
       logoPath: studio.logoPath || studio.logo,
       industry: studio.industry || 'Game Development',
@@ -406,132 +458,138 @@ export class StudioDataManager {
       benefits: studio.benefits,
       averageSalary: studio.averageSalary,
       glassdoorRating: studio.glassdoorRating,
-      
+
       // Computed fields
       category: this.computeStudioCategory(studio),
       genres: this.extractGenres(studio),
-      platforms: this.extractPlatforms(studio)
-    };
+      platforms: this.extractPlatforms(studio),
+    }
   }
 
   /**
    * Normalize studio size to consistent format
    */
   private normalizeStudioSize(sizeInput: string | number): string {
-    if (!sizeInput) return 'unknown';
-    
-    const sizeStr = sizeInput.toString().toLowerCase();
-    const num = parseInt(sizeStr.replace(/[^\d]/g, ''));
-    
-    if (num >= 5000) return 'enterprise';
-    if (num >= 1000) return 'large';
-    if (num >= 200) return 'medium';
-    if (num >= 50) return 'small';
-    if (num >= 1) return 'indie';
-    
+    if (!sizeInput) return 'unknown'
+
+    const sizeStr = sizeInput.toString().toLowerCase()
+    const num = parseInt(sizeStr.replace(/[^\d]/g, ''))
+
+    if (num >= 5000) return 'enterprise'
+    if (num >= 1000) return 'large'
+    if (num >= 200) return 'medium'
+    if (num >= 50) return 'small'
+    if (num >= 1) return 'indie'
+
     // Fallback to text analysis
-    if (sizeStr.includes('enterprise') || sizeStr.includes('5000')) return 'enterprise';
-    if (sizeStr.includes('large') || sizeStr.includes('1000')) return 'large';
-    if (sizeStr.includes('medium') || sizeStr.includes('200')) return 'medium';
-    if (sizeStr.includes('small') || sizeStr.includes('50')) return 'small';
-    if (sizeStr.includes('indie') || sizeStr.includes('independent')) return 'indie';
-    
-    return 'unknown';
+    if (sizeStr.includes('enterprise') || sizeStr.includes('5000'))
+      return 'enterprise'
+    if (sizeStr.includes('large') || sizeStr.includes('1000')) return 'large'
+    if (sizeStr.includes('medium') || sizeStr.includes('200')) return 'medium'
+    if (sizeStr.includes('small') || sizeStr.includes('50')) return 'small'
+    if (sizeStr.includes('indie') || sizeStr.includes('independent'))
+      return 'indie'
+
+    return 'unknown'
   }
 
   /**
    * Normalize website URL
    */
   private normalizeWebsite(url: string): string {
-    if (!url) return '';
-    
-    let normalized = url.trim();
+    if (!url) return ''
+
+    let normalized = url.trim()
     if (!normalized.startsWith('http')) {
-      normalized = 'https://' + normalized;
+      normalized = 'https://' + normalized
     }
-    
-    return normalized;
+
+    return normalized
   }
 
   /**
    * Compute studio category based on data
    */
   private computeStudioCategory(studio: any): string {
-    const size = this.normalizeStudioSize(studio.employeeCount || studio.size);
-    const hasPublisher = !!studio.parentCompany;
-    const gameCount = Array.isArray(studio.games) ? studio.games.length : 0;
-    
-    if (size === 'enterprise') return 'AAA Publisher';
-    if (size === 'large' && hasPublisher) return 'AAA Studio';
-    if (size === 'large') return 'Independent Large';
-    if (size === 'medium' && gameCount > 5) return 'Established Mid-size';
-    if (size === 'medium') return 'Growing Studio';
-    if (size === 'small') return 'Small Studio';
-    return 'Indie Developer';
+    const size = this.normalizeStudioSize(studio.employeeCount || studio.size)
+    const hasPublisher = !!studio.parentCompany
+    const gameCount = Array.isArray(studio.games) ? studio.games.length : 0
+
+    if (size === 'enterprise') return 'AAA Publisher'
+    if (size === 'large' && hasPublisher) return 'AAA Studio'
+    if (size === 'large') return 'Independent Large'
+    if (size === 'medium' && gameCount > 5) return 'Established Mid-size'
+    if (size === 'medium') return 'Growing Studio'
+    if (size === 'small') return 'Small Studio'
+    return 'Indie Developer'
   }
 
   /**
    * Extract genres from studio data
    */
   private extractGenres(studio: any): string[] {
-    const genres = new Set<string>();
+    const genres = new Set<string>()
     const content = [
       studio.description || '',
       studio.specialties?.join(' ') || '',
-      studio.games?.join(' ') || ''
-    ].join(' ').toLowerCase();
+      studio.games?.join(' ') || '',
+    ]
+      .join(' ')
+      .toLowerCase()
 
     const genrePatterns = {
-      'RPG': /rpg|role.?playing|dragon|fantasy|magic/,
-      'Action': /action|fighting|combat|shooter|fps/,
-      'Strategy': /strategy|rts|4x|civilization|tactics/,
-      'Simulation': /simulation|sim|life|city|farming/,
-      'Sports': /sports|fifa|nba|nfl|racing|tennis/,
-      'Puzzle': /puzzle|match|brain|logic|tetris/,
-      'Horror': /horror|scary|zombie|survival|resident/,
-      'Adventure': /adventure|exploration|journey/,
-      'Platform': /platform|mario|sonic|jump/,
-      'Racing': /racing|drive|car|need.?speed/,
-      'MOBA': /moba|league|dota|heroes/,
+      RPG: /rpg|role.?playing|dragon|fantasy|magic/,
+      Action: /action|fighting|combat|shooter|fps/,
+      Strategy: /strategy|rts|4x|civilization|tactics/,
+      Simulation: /simulation|sim|life|city|farming/,
+      Sports: /sports|fifa|nba|nfl|racing|tennis/,
+      Puzzle: /puzzle|match|brain|logic|tetris/,
+      Horror: /horror|scary|zombie|survival|resident/,
+      Adventure: /adventure|exploration|journey/,
+      Platform: /platform|mario|sonic|jump/,
+      Racing: /racing|drive|car|need.?speed/,
+      MOBA: /moba|league|dota|heroes/,
       'Battle Royale': /battle.?royale|fortnite|apex|pubg/,
-      'MMO': /mmo|massive|world.?warcraft|online/
-    };
+      MMO: /mmo|massive|world.?warcraft|online/,
+    }
 
     Object.entries(genrePatterns).forEach(([genre, pattern]) => {
       if (pattern.test(content)) {
-        genres.add(genre);
+        genres.add(genre)
       }
-    });
+    })
 
-    return Array.from(genres);
+    return Array.from(genres)
   }
 
   /**
    * Extract platforms from studio data
    */
   private extractPlatforms(studio: any): string[] {
-    const platforms = new Set<string>();
+    const platforms = new Set<string>()
     const content = [
       studio.description || '',
       studio.specialties?.join(' ') || '',
-      studio.games?.join(' ') || ''
-    ].join(' ').toLowerCase();
+      studio.games?.join(' ') || '',
+    ]
+      .join(' ')
+      .toLowerCase()
 
     const platformPatterns = {
-      'PC': /pc|steam|windows|linux|mac/,
-      'Console': /console|playstation|xbox|nintendo|switch|ps4|ps5/,
-      'Mobile': /mobile|ios|android|phone|tablet/,
-      'VR': /vr|virtual.?reality|oculus|vive/,
-      'Web': /web|browser|html5|webgl/
-    };
+      PC: /pc|steam|windows|linux|mac/,
+      Console: /console|playstation|xbox|nintendo|switch|ps4|ps5/,
+      Mobile: /mobile|ios|android|phone|tablet/,
+      VR: /vr|virtual.?reality|oculus|vive/,
+      Web: /web|browser|html5|webgl/,
+    }
 
     Object.entries(platformPatterns).forEach(([platform, pattern]) => {
       if (pattern.test(content)) {
-        platforms.add(platform);
+        platforms.add(platform)
       }
-    });
+    })
 
-    return Array.from(platforms);
+    return Array.from(platforms)
   }
 
   /**
@@ -539,15 +597,15 @@ export class StudioDataManager {
    */
   private async isImportUpToDate(): Promise<boolean> {
     try {
-      const lastImport = await unifiedStorage.get(this.LAST_IMPORT_KEY);
-      if (!lastImport) return false;
+      const lastImport = await unifiedStorage.get(this.LAST_IMPORT_KEY)
+      if (!lastImport) return false
 
-      const lastImportDate = new Date(lastImport);
-      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-      
-      return lastImportDate > oneDayAgo;
+      const lastImportDate = new Date(lastImport)
+      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
+
+      return lastImportDate > oneDayAgo
     } catch {
-      return false;
+      return false
     }
   }
 
@@ -556,39 +614,41 @@ export class StudioDataManager {
    */
   private async updateImportMetadata(): Promise<void> {
     try {
-      await unifiedStorage.set(this.LAST_IMPORT_KEY, new Date().toISOString());
+      await unifiedStorage.set(this.LAST_IMPORT_KEY, new Date().toISOString())
       await unifiedStorage.set(this.DATA_VERSION_KEY, {
         version: '1.0.0',
         importedAt: new Date().toISOString(),
-        source: 'StudioDataManager'
-      });
+        source: 'StudioDataManager',
+      })
     } catch (error) {
-      logger.warn('Failed to update import metadata:', error);
+      logger.warn('Failed to update import metadata:', error)
     }
   }
 
   /**
    * Generate import report
    */
-  private async generateImportReport(result: StudioImportResult): Promise<void> {
+  private async generateImportReport(
+    result: StudioImportResult
+  ): Promise<void> {
     const report = {
       timestamp: new Date().toISOString(),
       result,
       systemInfo: {
         userAgent: navigator.userAgent,
         platform: navigator.platform,
-        language: navigator.language
-      }
-    };
+        language: navigator.language,
+      },
+    }
 
     try {
-      const reports = await unifiedStorage.get('studio_import_reports') || [];
-      reports.unshift(report);
+      const reports = (await unifiedStorage.get('studio_import_reports')) || []
+      reports.unshift(report)
       // Keep only last 10 reports
-      reports.splice(10);
-      await unifiedStorage.set('studio_import_reports', reports);
+      reports.splice(10)
+      await unifiedStorage.set('studio_import_reports', reports)
     } catch (error) {
-      logger.warn('Failed to save import report:', error);
+      logger.warn('Failed to save import report:', error)
     }
   }
 
@@ -597,9 +657,9 @@ export class StudioDataManager {
    */
   async getImportHistory(): Promise<any[]> {
     try {
-      return await unifiedStorage.get('studio_import_reports') || [];
+      return (await unifiedStorage.get('studio_import_reports')) || []
     } catch {
-      return [];
+      return []
     }
   }
 
@@ -607,52 +667,52 @@ export class StudioDataManager {
    * Get studio statistics
    */
   async getStudioStatistics(): Promise<{
-    total: number;
-    bySize: Record<string, number>;
-    byRegion: Record<string, number>;
-    byCategory: Record<string, number>;
-    lastImport: string | null;
+    total: number
+    bySize: Record<string, number>
+    byRegion: Record<string, number>
+    byCategory: Record<string, number>
+    lastImport: string | null
   }> {
     try {
-      const studios = await GameStudioRepository.getAll();
-      const studioArray = Object.values(studios);
-      
-      const bySize: Record<string, number> = {};
-      const byRegion: Record<string, number> = {};
-      const byCategory: Record<string, number> = {};
+      const studios = await GameStudioRepository.getAll()
+      const studioArray = Object.values(studios)
+
+      const bySize: Record<string, number> = {}
+      const byRegion: Record<string, number> = {}
+      const byCategory: Record<string, number> = {}
 
       studioArray.forEach(studio => {
         // Size distribution
-        const size = studio.size || 'unknown';
-        bySize[size] = (bySize[size] || 0) + 1;
+        const size = studio.size || 'unknown'
+        bySize[size] = (bySize[size] || 0) + 1
 
         // Region distribution
-        const region = this.extractRegion(studio.location || '');
-        byRegion[region] = (byRegion[region] || 0) + 1;
+        const region = this.extractRegion(studio.location || '')
+        byRegion[region] = (byRegion[region] || 0) + 1
 
-        // Category distribution  
-        const category = (studio as any).category || 'unknown';
-        byCategory[category] = (byCategory[category] || 0) + 1;
-      });
+        // Category distribution
+        const category = (studio as any).category || 'unknown'
+        byCategory[category] = (byCategory[category] || 0) + 1
+      })
 
-      const lastImport = await unifiedStorage.get(this.LAST_IMPORT_KEY);
+      const lastImport = await unifiedStorage.get(this.LAST_IMPORT_KEY)
 
       return {
         total: studioArray.length,
         bySize,
         byRegion,
         byCategory,
-        lastImport
-      };
+        lastImport,
+      }
     } catch (error) {
-      logger.error('Failed to get studio statistics:', error);
+      logger.error('Failed to get studio statistics:', error)
       return {
         total: 0,
         bySize: {},
         byRegion: {},
         byCategory: {},
-        lastImport: null
-      };
+        lastImport: null,
+      }
     }
   }
 
@@ -660,145 +720,171 @@ export class StudioDataManager {
    * Extract region from location string
    */
   private extractRegion(location: string): string {
-    if (!location) return 'Unknown';
-    
-    const loc = location.toLowerCase();
-    
-    if (loc.includes('usa') || loc.includes('united states') || loc.includes(', ca') || 
-        loc.includes('california') || loc.includes('texas') || loc.includes('new york')) {
-      return 'North America';
+    if (!location) return 'Unknown'
+
+    const loc = location.toLowerCase()
+
+    if (
+      loc.includes('usa') ||
+      loc.includes('united states') ||
+      loc.includes(', ca') ||
+      loc.includes('california') ||
+      loc.includes('texas') ||
+      loc.includes('new york')
+    ) {
+      return 'North America'
     }
-    
-    if (loc.includes('canada') || loc.includes('toronto') || loc.includes('montreal')) {
-      return 'North America';
+
+    if (
+      loc.includes('canada') ||
+      loc.includes('toronto') ||
+      loc.includes('montreal')
+    ) {
+      return 'North America'
     }
-    
-    if (loc.includes('uk') || loc.includes('london') || loc.includes('france') || 
-        loc.includes('germany') || loc.includes('sweden') || loc.includes('finland')) {
-      return 'Europe';
+
+    if (
+      loc.includes('uk') ||
+      loc.includes('london') ||
+      loc.includes('france') ||
+      loc.includes('germany') ||
+      loc.includes('sweden') ||
+      loc.includes('finland')
+    ) {
+      return 'Europe'
     }
-    
-    if (loc.includes('japan') || loc.includes('tokyo') || loc.includes('china') || 
-        loc.includes('korea') || loc.includes('singapore')) {
-      return 'Asia';
+
+    if (
+      loc.includes('japan') ||
+      loc.includes('tokyo') ||
+      loc.includes('china') ||
+      loc.includes('korea') ||
+      loc.includes('singapore')
+    ) {
+      return 'Asia'
     }
-    
+
     if (loc.includes('australia') || loc.includes('new zealand')) {
-      return 'Oceania';
+      return 'Oceania'
     }
-    
-    return 'Other';
+
+    return 'Other'
   }
 
   /**
    * Validate database integrity
    */
   async validateDatabaseIntegrity(): Promise<{
-    valid: boolean;
-    issues: string[];
-    duplicates: Array<{ id: string; name: string; count: number }>;
-    missingData: Array<{ id: string; name: string; missing: string[] }>;
+    valid: boolean
+    issues: string[]
+    duplicates: Array<{ id: string; name: string; count: number }>
+    missingData: Array<{ id: string; name: string; missing: string[] }>
   }> {
     const result: {
-      valid: boolean;
-      issues: string[];
-      duplicates: Array<{ id: string; name: string; count: number }>;
-      missingData: Array<{ id: string; name: string; missing: string[] }>;
+      valid: boolean
+      issues: string[]
+      duplicates: Array<{ id: string; name: string; count: number }>
+      missingData: Array<{ id: string; name: string; missing: string[] }>
     } = {
       valid: true,
       issues: [],
       duplicates: [],
-      missingData: []
-    };
+      missingData: [],
+    }
 
     try {
-      const studios = await GameStudioRepository.getAll();
-      const studioArray = Object.values(studios);
-      
+      const studios = await GameStudioRepository.getAll()
+      const studioArray = Object.values(studios)
+
       // Check for duplicates
-      const nameMap = new Map<string, string[]>();
+      const nameMap = new Map<string, string[]>()
       studioArray.forEach(studio => {
-        const name = studio.name.toLowerCase();
+        const name = studio.name.toLowerCase()
         if (!nameMap.has(name)) {
-          nameMap.set(name, []);
+          nameMap.set(name, [])
         }
-        nameMap.get(name)!.push(studio.id);
-      });
+        nameMap.get(name)!.push(studio.id)
+      })
 
       nameMap.forEach((ids, name) => {
         if (ids.length > 1) {
           result.duplicates.push({
             id: ids.join(', '),
             name,
-            count: ids.length
-          });
-          result.valid = false;
+            count: ids.length,
+          })
+          result.valid = false
         }
-      });
+      })
 
       // Check for missing essential data
       studioArray.forEach(studio => {
-        const missing: string[] = [];
-        
-        if (!studio.description) missing.push('description');
-        if (!studio.location) missing.push('location');
-        if (!studio.games || studio.games.length === 0) missing.push('games');
-        if (!studio.founded) missing.push('founding date');
+        const missing: string[] = []
+
+        if (!studio.description) missing.push('description')
+        if (!studio.location) missing.push('location')
+        if (!studio.games || studio.games.length === 0) missing.push('games')
+        if (!studio.founded) missing.push('founding date')
 
         if (missing.length > 0) {
           result.missingData.push({
             id: studio.id,
             name: studio.name,
-            missing
-          });
+            missing,
+          })
         }
-      });
+      })
 
       if (result.duplicates.length > 0) {
-        result.issues.push(`Found ${result.duplicates.length} duplicate studio names`);
+        result.issues.push(
+          `Found ${result.duplicates.length} duplicate studio names`
+        )
       }
 
       if (result.missingData.length > 0) {
-        result.issues.push(`Found ${result.missingData.length} studios with missing data`);
+        result.issues.push(
+          `Found ${result.missingData.length} studios with missing data`
+        )
       }
-
     } catch (error) {
-      result.valid = false;
-      result.issues.push(`Database validation failed: ${error instanceof Error ? error.message : String(error)}`);
+      result.valid = false
+      result.issues.push(
+        `Database validation failed: ${error instanceof Error ? error.message : String(error)}`
+      )
     }
 
-    return result;
+    return result
   }
 
   /**
    * Export studio database for backup
    */
   async exportDatabase(): Promise<{
-    studios: any[];
+    studios: any[]
     metadata: {
-      exportedAt: string;
-      version: string;
-      count: number;
-    };
+      exportedAt: string
+      version: string
+      count: number
+    }
   }> {
     try {
-      const studios = await GameStudioRepository.getAll();
-      const studioArray = Object.values(studios);
+      const studios = await GameStudioRepository.getAll()
+      const studioArray = Object.values(studios)
 
       return {
         studios: studioArray,
         metadata: {
           exportedAt: new Date().toISOString(),
           version: '1.0.0',
-          count: studioArray.length
-        }
-      };
+          count: studioArray.length,
+        },
+      }
     } catch (error) {
-      logger.error('Failed to export database:', error);
-      throw error;
+      logger.error('Failed to export database:', error)
+      throw error
     }
   }
 }
 
 // Export singleton instance
-export const studioDataManager = StudioDataManager.getInstance();
+export const studioDataManager = StudioDataManager.getInstance()

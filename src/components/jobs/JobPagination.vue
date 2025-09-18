@@ -63,7 +63,7 @@
         :max="totalPages"
         class="jump-input"
         @keyup.enter="jumpToPageAction"
-      >
+      />
       <button
         class="jump-btn"
         :disabled="!isValidJumpPage"
@@ -84,27 +84,29 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 const _props = defineProps({
   currentPage: {
     type: Number,
-    default: 1
+    default: 1,
   },
   totalItems: {
     type: Number,
-    default: 0
+    default: 0,
   },
   itemsPerPage: {
     type: Number,
-    default: 25
+    default: 25,
   },
   perPageOptions: {
     type: Array,
-    default: () => [10, 25, 50, 100]
-  }
+    default: () => [10, 25, 50, 100],
+  },
 })
 
 const emit = defineEmits(['update:currentPage', 'update:itemsPerPage'])
 
 const jumpToPage = ref(props.currentPage)
 
-const totalPages = computed(() => Math.ceil(props.totalItems / props.itemsPerPage))
+const totalPages = computed(() =>
+  Math.ceil(props.totalItems / props.itemsPerPage)
+)
 
 const startItem = computed(() => {
   if (props.totalItems === 0) return 0
@@ -298,27 +300,27 @@ const jumpToPageAction = () => {
   .job-pagination {
     gap: var(--spacing-sm);
   }
-  
+
   .pagination-info {
     flex-direction: column;
     gap: var(--spacing-sm);
     text-align: center;
   }
-  
+
   .pagination-nav {
     flex-wrap: wrap;
   }
-  
+
   .nav-btn span {
     display: none;
   }
-  
+
   .page-btn {
     min-width: 32px;
     height: 32px;
     font-size: var(--font-size-xs);
   }
-  
+
   .quick-jump {
     flex-direction: column;
     text-align: center;
@@ -329,7 +331,7 @@ const jumpToPageAction = () => {
   .page-numbers {
     gap: 2px;
   }
-  
+
   .page-btn {
     min-width: 28px;
     height: 28px;

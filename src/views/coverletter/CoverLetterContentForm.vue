@@ -3,10 +3,16 @@
   Matches the design pattern of resume form components
 -->
 <template>
-  <section class="glass p-glass-md gap-glass-md rounded-lg unified-card font-sans">
+  <section
+    class="glass p-glass-md gap-glass-md rounded-lg unified-card font-sans"
+  >
     <div class="flex items-center justify-between mb-2">
       <h2 class="h6 mb-0 flex items-center gap-glass-sm text-primary-600">
-        <AppIcon name="mdi-text-box-outline" class="icon-md" aria-hidden="true" />
+        <AppIcon
+          name="mdi-text-box-outline"
+          class="icon-md"
+          aria-hidden="true"
+        />
         <span>Cover Letter Content</span>
       </h2>
       <div class="header-actions flex items-center gap-glass-sm">
@@ -73,7 +79,9 @@
 
         <!-- Experience Template -->
         <div class="flex-1-md-4">
-          <label for="experience-template" class="form-label">Experience Level</label>
+          <label for="experience-template" class="form-label"
+            >Experience Level</label
+          >
           <select
             id="experience-template"
             v-model="localContent.experienceTemplate"
@@ -105,8 +113,12 @@
         </UnifiedButton>
       </div>
 
-      <div v-if="localContent.keyPoints.length === 0" class="text-secondary small mb-3">
-        Add specific achievements or skills you want to emphasize in your cover letter.
+      <div
+        v-if="localContent.keyPoints.length === 0"
+        class="text-secondary small mb-3"
+      >
+        Add specific achievements or skills you want to emphasize in your cover
+        letter.
       </div>
 
       <div class="key-points-list">
@@ -150,10 +162,16 @@
           @blur="commitChanges"
           @input="onContentChange"
         ></textarea>
-        <label for="cover-letter-body" class="form-label">Cover Letter Body</label>
+        <label for="cover-letter-body" class="form-label"
+          >Cover Letter Body</label
+        >
       </div>
 
-      <div id="cover-body-help" class="form-text flex items-center justify-between" aria-live="polite">
+      <div
+        id="cover-body-help"
+        class="form-text flex items-center justify-between"
+        aria-live="polite"
+      >
         <div class="flex items-center gap-glass-md">
           <span>
             <AppIcon name="InformationCircleIcon" class="mr-1" />
@@ -181,16 +199,19 @@
           <i :class="getReviewIcon()" class="icon-lg" aria-hidden="true"></i>
           <div class="flex-grow-1">
             <h3 id="review-results-title" class="h6 mb-2">AI Review Results</h3>
-            
+
             <!-- Overall Score -->
             <div v-if="reviewResults.score" class="mb-3">
               <div class="flex items-center gap-glass-sm mb-1">
                 <strong>Overall Score:</strong>
-                <span class="badge" :class="getScoreBadgeClass(reviewResults.score)">
+                <span
+                  class="badge"
+                  :class="getScoreBadgeClass(reviewResults.score)"
+                >
                   {{ reviewResults.score }}/100
                 </span>
               </div>
-              <div class="progress" style="height: 6px;">
+              <div class="progress" style="height: 6px">
                 <div
                   class="progress-bar"
                   :class="getScoreProgressClass(reviewResults.score)"
@@ -208,7 +229,10 @@
                   :key="`issue-${issue.message}`"
                   class="mb-1"
                 >
-                  <span class="badge mr-1" :class="getIssueBadgeClass(issue.type)">
+                  <span
+                    class="badge mr-1"
+                    :class="getIssueBadgeClass(issue.type)"
+                  >
                     {{ formatIssueType(issue.type) }}
                   </span>
                   {{ issue.message }}
@@ -225,7 +249,11 @@
                   :key="`suggestion-${suggestion}`"
                   class="mb-1"
                 >
-                  <AppIcon name="LightBulbIcon" color="warning" aria-hidden="true" />
+                  <AppIcon
+                    name="LightBulbIcon"
+                    color="warning"
+                    aria-hidden="true"
+                  />
                   {{ suggestion }}
                 </li>
               </ul>
@@ -260,7 +288,10 @@
     </div>
 
     <!-- Template Suggestions -->
-    <div v-if="!localContent.body && !loading.generation" class="template-suggestions mt-3">
+    <div
+      v-if="!localContent.body && !loading.generation"
+      class="template-suggestions mt-3"
+    >
       <div class="card glass-elevated">
         <div class="card-body section-body">
           <h3 class="h6 mb-3">
@@ -270,15 +301,24 @@
           <div class="flex flex-wrap g-3">
             <div class="flex-1-md-4">
               <h4 class="h7 text-secondary mb-2">Opening Paragraph</h4>
-              <p class="small">State the position, how you found it, and a compelling reason why you're interested.</p>
+              <p class="small">
+                State the position, how you found it, and a compelling reason
+                why you're interested.
+              </p>
             </div>
             <div class="flex-1-md-4">
               <h4 class="h7 text-secondary mb-2">Body Paragraphs</h4>
-              <p class="small">Highlight 2-3 relevant achievements with specific examples and metrics.</p>
+              <p class="small">
+                Highlight 2-3 relevant achievements with specific examples and
+                metrics.
+              </p>
             </div>
             <div class="flex-1-md-4">
               <h4 class="h7 text-secondary mb-2">Closing Paragraph</h4>
-              <p class="small">Express enthusiasm, request an interview, and provide your contact information.</p>
+              <p class="small">
+                Express enthusiasm, request an interview, and provide your
+                contact information.
+              </p>
             </div>
           </div>
         </div>
@@ -288,7 +328,13 @@
 </template>
 
 <script setup lang="ts">
-import { InformationCircleIcon, LightBulbIcon, PlusIcon, SparklesIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import {
+  InformationCircleIcon,
+  LightBulbIcon,
+  PlusIcon,
+  SparklesIcon,
+  TrashIcon,
+} from '@heroicons/vue/24/outline'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
@@ -342,7 +388,10 @@ const localContent = ref<CoverLetterContent>({ ...props.content })
 // Computed
 const wordCount = computed(() => {
   if (!localContent.value.body) return 0
-  return localContent.value.body.trim().split(/\s+/).filter(word => word.length > 0).length
+  return localContent.value.body
+    .trim()
+    .split(/\s+/)
+    .filter(word => word.length > 0).length
 })
 
 const characterCount = computed(() => {
@@ -358,7 +407,7 @@ const readingTime = computed(() => {
 // Watch for external changes
 watch(
   () => props.content,
-  (newContent) => {
+  newContent => {
     localContent.value = { ...newContent }
   },
   { deep: true }
@@ -401,16 +450,17 @@ const dismissReview = () => {
 const getReviewAlertClass = () => {
   if (!props.reviewResults?.score) return 'alert-info'
   const score = props.reviewResults.score
-  
+
   if (score >= 85) return 'alert-success'
   if (score >= 70) return 'alert-warning'
   return 'alert-danger'
 }
 
 const getReviewIcon = () => {
-  if (!props.reviewResults?.score) return 'mdi InformationCircleIconrmation text-blue-600'
+  if (!props.reviewResults?.score)
+    return 'mdi InformationCircleIconrmation text-blue-600'
   const score = props.reviewResults.score
-  
+
   if (score >= 85) return 'mdi CheckIcon-circle-outline text-success-600'
   if (score >= 70) return 'mdi mdi-alert text-warning-600'
   return 'mdi mdi-alert-circle-outline text-error-600'
@@ -430,21 +480,31 @@ const getScoreProgressClass = (score: number) => {
 
 const getIssueBadgeClass = (type: string) => {
   switch (type) {
-    case 'cliche': return 'bg-warning-500 text-glass-primary'
-    case 'redundancy': return 'bg-blue-500'
-    case 'misalignment': return 'bg-error-500'
-    case 'clarity': return 'bg-secondary-500'
-    default: return 'bg-glass-bg dark:bg-glass-bg-hover text-glass-primary'
+    case 'cliche':
+      return 'bg-warning-500 text-glass-primary'
+    case 'redundancy':
+      return 'bg-blue-500'
+    case 'misalignment':
+      return 'bg-error-500'
+    case 'clarity':
+      return 'bg-secondary-500'
+    default:
+      return 'bg-glass-bg dark:bg-glass-bg-hover text-glass-primary'
   }
 }
 
 const formatIssueType = (type: string) => {
   switch (type) {
-    case 'cliche': return 'Cliché'
-    case 'redundancy': return 'Redundant'
-    case 'misalignment': return 'Misaligned'
-    case 'clarity': return 'Unclear'
-    default: return type
+    case 'cliche':
+      return 'Cliché'
+    case 'redundancy':
+      return 'Redundant'
+    case 'misalignment':
+      return 'Misaligned'
+    case 'clarity':
+      return 'Unclear'
+    default:
+      return type
   }
 }
 
@@ -468,13 +528,13 @@ const onContentChange = debounce(() => {
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  
+
   .key-point-item {
     .input-group {
       .form-control {
         border-r: none;
       }
-      
+
       .btn {
         border-l: none;
         border-color: var(--glass-border);
@@ -496,41 +556,61 @@ const onContentChange = debounce(() => {
     background: var(--glass-surface);
     backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
     -webkit-backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
-    
+
     &.alert-success {
       border-color: var(--color-success);
-      background: linear-gradient(135deg, rgba(var(--success-rgb), 0.1) 0%, var(--glass-surface) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--success-rgb), 0.1) 0%,
+        var(--glass-surface) 100%
+      );
     }
-    
+
     &.alert-warning {
       border-color: var(--color-warning);
-      background: linear-gradient(135deg, rgba(var(--warning-rgb), 0.1) 0%, var(--glass-surface) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--warning-rgb), 0.1) 0%,
+        var(--glass-surface) 100%
+      );
     }
-    
+
     &.alert-danger {
       border-color: var(--color-danger);
-      background: linear-gradient(135deg, rgba(var(--danger-rgb), 0.1) 0%, var(--glass-surface) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--danger-rgb), 0.1) 0%,
+        var(--glass-surface) 100%
+      );
     }
-    
+
     &.alert-info {
       border-color: var(--color-info);
-      background: linear-gradient(135deg, rgba(var(--info-rgb), 0.1) 0%, var(--glass-surface) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--info-rgb), 0.1) 0%,
+        var(--glass-surface) 100%
+      );
     }
   }
-  
+
   .h7 {
     font-size: var(--font-size-sm);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  
+
   .progress {
     border-radius: var(--border-radius-sm);
     background: var(--glass-border);
   }
-  
-  .badge { font-size: var(--font-size-xs); padding: var(--spacing-1-5) var(--spacing-2-5); font-weight: 500; }
+
+  .badge {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-1-5) var(--spacing-2-5);
+    font-weight: 500;
+  }
 }
 
 .template-suggestions {
@@ -540,7 +620,7 @@ const onContentChange = debounce(() => {
     backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
     -webkit-backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
   }
-  
+
   .h7 {
     font-size: var(--font-size-sm);
     font-weight: 600;
@@ -550,26 +630,42 @@ const onContentChange = debounce(() => {
 }
 
 // Dark theme support
-[data-theme="dark"] {
+[data-theme='dark'] {
   .review-results .alert,
   .template-suggestions .card {
     background: var(--glass-surface-dark);
     border-color: var(--glass-border-dark);
-    
+
     &.alert-success {
-      background: linear-gradient(135deg, rgba(var(--success-rgb), 0.15) 0%, var(--glass-surface-dark) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--success-rgb), 0.15) 0%,
+        var(--glass-surface-dark) 100%
+      );
     }
-    
+
     &.alert-warning {
-      background: linear-gradient(135deg, rgba(var(--warning-rgb), 0.15) 0%, var(--glass-surface-dark) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--warning-rgb), 0.15) 0%,
+        var(--glass-surface-dark) 100%
+      );
     }
-    
+
     &.alert-danger {
-      background: linear-gradient(135deg, rgba(var(--danger-rgb), 0.15) 0%, var(--glass-surface-dark) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--danger-rgb), 0.15) 0%,
+        var(--glass-surface-dark) 100%
+      );
     }
-    
+
     &.alert-info {
-      background: linear-gradient(135deg, rgba(var(--info-rgb), 0.15) 0%, var(--glass-surface-dark) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(var(--info-rgb), 0.15) 0%,
+        var(--glass-surface-dark) 100%
+      );
     }
   }
 }
@@ -579,25 +675,25 @@ const onContentChange = debounce(() => {
   .cover-letter-settings .flex flex-wrap {
     flex-direction: column;
   }
-  
+
   .header-actions {
     flex-direction: column;
     align-items: stretch;
-    
+
     .btn {
       width: 100%;
     }
   }
-  
+
   .review-results .flex {
     flex-direction: column;
     align-items: flex-start;
-    
+
     .btn {
       width: 100%;
     }
   }
-  
+
   .template-suggestions .flex flex-wrap {
     flex-direction: column;
   }

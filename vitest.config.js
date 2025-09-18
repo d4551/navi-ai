@@ -68,8 +68,10 @@ export default defineConfig({
       '@modules': fileURLToPath(new URL('./src/modules', import.meta.url)),
       // Test-specific aliases
       '@tests': fileURLToPath(new URL('./test', import.meta.url)),
-      '@testHelpers': fileURLToPath(new URL('./src/utils/testing', import.meta.url)),
-    }
+      '@testHelpers': fileURLToPath(
+        new URL('./src/utils/testing', import.meta.url)
+      ),
+    },
   },
   define: {
     // Define test environment variables

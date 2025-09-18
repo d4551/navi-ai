@@ -211,25 +211,39 @@
 
 /* Responsive typography */
 @media (max-width: 768px) {
-  .heading-1 { font-size: var(--font-size-3xl, 2rem); }
-  .heading-2 { font-size: var(--font-size-2xl, 1.5rem); }
-  .heading-3 { font-size: var(--font-size-xl, 1.25rem); }
+  .heading-1 {
+    font-size: var(--font-size-3xl, 2rem);
+  }
+  .heading-2 {
+    font-size: var(--font-size-2xl, 1.5rem);
+  }
+  .heading-3 {
+    font-size: var(--font-size-xl, 1.25rem);
+  }
 
-  .text-body-large { font-size: var(--font-size-md, 1rem); }
+  .text-body-large {
+    font-size: var(--font-size-md, 1rem);
+  }
 }
 
 @media (max-width: 480px) {
-  .heading-1 { font-size: var(--font-size-2xl, 1.5rem); }
-  .heading-2 { font-size: var(--font-size-xl, 1.25rem); }
-  .heading-3 { font-size: var(--font-size-lg, 1.125rem); }
+  .heading-1 {
+    font-size: var(--font-size-2xl, 1.5rem);
+  }
+  .heading-2 {
+    font-size: var(--font-size-xl, 1.25rem);
+  }
+  .heading-3 {
+    font-size: var(--font-size-lg, 1.125rem);
+  }
 }
 
 /* Dark mode enhancements */
-[data-theme="dark"] .text-glass-enhanced {
+[data-theme='dark'] .text-glass-enhanced {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-[data-theme="dark"] .text-glass-contrast {
+[data-theme='dark'] .text-glass-contrast {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -279,8 +293,13 @@
 .text-code,
 .font-mono,
 .font-code {
-  font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
-  font-feature-settings: 'calt' 1, 'liga' 1; /* Enable ligatures */
+  font-family:
+    'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata',
+    'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New',
+    monospace;
+  font-feature-settings:
+    'calt' 1,
+    'liga' 1; /* Enable ligatures */
   font-variant-ligatures: common-ligatures;
   font-size: 0.875em;
   background: rgba(var(--text-muted), 0.1);
@@ -290,8 +309,13 @@
 }
 
 .text-code-block {
-  font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
-  font-feature-settings: 'calt' 1, 'liga' 1; /* Enable ligatures */
+  font-family:
+    'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata',
+    'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New',
+    monospace;
+  font-feature-settings:
+    'calt' 1,
+    'liga' 1; /* Enable ligatures */
   font-variant-ligatures: common-ligatures;
   background: rgba(var(--text-muted), 0.05);
   padding: 1rem;
@@ -304,14 +328,21 @@
 /* Fira Code specific styling for both light and dark modes */
 .fira-code {
   font-family: 'Fira Code', monospace;
-  font-feature-settings: 'calt' 1, 'liga' 1, 'ss01' 1, 'ss02' 1, 'ss03' 1;
+  font-feature-settings:
+    'calt' 1,
+    'liga' 1,
+    'ss01' 1,
+    'ss02' 1,
+    'ss03' 1;
   font-variant-ligatures: common-ligatures;
 }
 
 /* Enhanced code styling for glassmorphic theme */
 .code-glass {
   font-family: 'Fira Code', monospace;
-  font-feature-settings: 'calt' 1, 'liga' 1;
+  font-feature-settings:
+    'calt' 1,
+    'liga' 1;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(10px);
@@ -323,19 +354,19 @@
 }
 
 /* Dark mode specific Fira Code enhancements */
-[data-theme="dark"] .text-code,
-[data-theme="dark"] .text-code-block,
-[data-theme="dark"] .fira-code,
-[data-theme="dark"] .code-glass {
+[data-theme='dark'] .text-code,
+[data-theme='dark'] .text-code-block,
+[data-theme='dark'] .fira-code,
+[data-theme='dark'] .code-glass {
   color: var(--text-primary);
   text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 /* Light mode specific Fira Code enhancements */
-[data-theme="light"] .text-code,
-[data-theme="light"] .text-code-block,
-[data-theme="light"] .fira-code,
-[data-theme="light"] .code-glass {
+[data-theme='light'] .text-code,
+[data-theme='light'] .text-code-block,
+[data-theme='light'] .fira-code,
+[data-theme='light'] .code-glass {
   color: var(--text-primary);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }

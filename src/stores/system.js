@@ -1,321 +1,315 @@
-import { defineStore } from "pinia";
-import { logger } from "@/shared/utils/logger";
+import { defineStore } from 'pinia'
+import { logger } from '@/shared/utils/logger'
 
-const STORAGE_KEY = "navi-system-state";
+const STORAGE_KEY = 'navi-system-state'
 
-export const useSystemStore = defineStore("system", {
+export const useSystemStore = defineStore('system', {
   state: () => ({
-    stationId: "GS-001",
+    stationId: 'GS-001',
     endpoints: {
-      webServer: "",
+      webServer: '',
     },
     azure: {
       connected: false,
     },
     services: {
-      lighting: "offline",
-      imager: "offline",
-      calibration: "offline",
-      footpedal: "offline",
-      azure: "offline",
+      lighting: 'offline',
+      imager: 'offline',
+      calibration: 'offline',
+      footpedal: 'offline',
+      azure: 'offline',
     },
     metrics: {
       lastUpdate: null,
-      cpu: "—",
-      memory: "—",
-      network: "—",
+      cpu: '—',
+      memory: '—',
+      network: '—',
     },
     calibration: {
-      status: "idle", // 'idle' | 'running' | 'complete' | 'error'
+      status: 'idle', // 'idle' | 'running' | 'complete' | 'error'
       progress: 0,
       accuracy: null,
       health: 0,
     },
     lighting: {
-      deviceType: "", // 'ring' | 'strip'
+      deviceType: '', // 'ring' | 'strip'
       scanning: false,
       connectedDevices: [],
       primaryDevice: null,
       power: false,
-      profile: "Default",
+      profile: 'Default',
     },
   }),
   getters: {
     overallHealth(state) {
-      const vals = Object.values(state.services);
-      if (!vals.length) return 0;
+      const vals = Object.values(state.services)
+      if (!vals.length) return 0
       const score =
-        vals.reduce((acc, s) => acc + (s === "online" ? 1 : 0), 0) /
-        vals.length;
-      return Math.round(score * 100);
+        vals.reduce((acc, s) => acc + (s === 'online' ? 1 : 0), 0) / vals.length
+      return Math.round(score * 100)
     },
   },
   actions: {
     load() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = localStorage.getItem(STORAGE_KEY)
         if (!raw) {
-          return;
+          return
         }
-        const data = JSON.parse(raw);
-        if (data && typeof data === "object") {
-          this.$patch(data);
+        const data = JSON.parse(raw)
+        if (data && typeof data === 'object') {
+          this.$patch(data)
         }
       } catch (_e) {
-        logger.warn("System store load failed", _e);
+        logger.warn('System store load failed', _e)
       }
     },
     save() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.$state));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.$state))
       } catch (_e) {
-        logger.warn("System store save failed", _e);
+        logger.warn('System store save failed', _e)
       }
     },
     updateSettings(patch) {
-      this.endpoints = { ...this.endpoints, ...(patch?.endpoints || {}) };
+      this.endpoints = { ...this.endpoints, ...(patch?.endpoints || {}) }
       if (patch?.stationId) {
-        this.stationId = (patch.stationId + "").trim();
+        this.stationId = (patch.stationId + '').trim()
       }
-      if (typeof patch?.azure?.connected === "boolean") {
-        this.azure.connected = patch.azure.connected;
+      if (typeof patch?.azure?.connected === 'boolean') {
+        this.azure.connected = patch.azure.connected
       }
-      this.save();
-      return true;
+      this.save()
+      return true
     },
     // Lighting config helpers
     setDeviceType(type) {
-      this.lighting.deviceType = type;
-      this.save();
+      this.lighting.deviceType = type
+      this.save()
     },
     toggleLightingPower() {
-      this.lighting.power = !this.lighting.power;
-      this.save();
+      this.lighting.power = !this.lighting.power
+      this.save()
     },
     setLightingProfile(name) {
-      this.lighting.profile = name || "Default";
-      this.save();
+      this.lighting.profile = name || 'Default'
+      this.save()
     },
     async startScanLighting(durationMs = 2000) {
       if (this.lighting.scanning) {
-        return;
+        return
       }
-      this.lighting.scanning = true;
-      this.lighting.connectedDevices = [];
-      this.lighting.primaryDevice = null;
-      this.save();
-      await new Promise((r) => setTimeout(r, durationMs));
+      this.lighting.scanning = true
+      this.lighting.connectedDevices = []
+      this.lighting.primaryDevice = null
+      this.save()
+      await new Promise(r => setTimeout(r, durationMs))
       // Simulated discovery result
-      const type = this.lighting.deviceType || "ring";
+      const type = this.lighting.deviceType || 'ring'
       const devices =
-        type === "ring"
-          ? [{ id: "ring-1", name: "Ring Light A", leds: 48 }]
-          : [{ id: "strip-1", name: "Strip Light A", leds: 60 }];
-      this.lighting.connectedDevices = devices;
-      this.lighting.primaryDevice = devices[0]?.id || null;
-      this.lighting.scanning = false;
-      this.save();
+        type === 'ring'
+          ? [{ id: 'ring-1', name: 'Ring Light A', leds: 48 }]
+          : [{ id: 'strip-1', name: 'Strip Light A', leds: 60 }]
+      this.lighting.connectedDevices = devices
+      this.lighting.primaryDevice = devices[0]?.id || null
+      this.lighting.scanning = false
+      this.save()
     },
     stopScanLighting() {
-      this.lighting.scanning = false;
-      this.save();
+      this.lighting.scanning = false
+      this.save()
     },
 
     setService(id, status) {
       if (!this.services[id]) {
-        return;
+        return
       }
-      this.services[id] = status;
-      this.metrics.lastUpdate = new Date().toISOString();
+      this.services[id] = status
+      this.metrics.lastUpdate = new Date().toISOString()
     },
     // Calibration with actual system checks
     async startCalibration() {
-      if (this.calibration.status === "running") {
-        return;
+      if (this.calibration.status === 'running') {
+        return
       }
 
       try {
-        this.calibration.status = "running";
-        this.calibration.progress = 0;
-        this.calibration.accuracy = null;
-        this.calibration.health = 0;
-        this.save();
+        this.calibration.status = 'running'
+        this.calibration.progress = 0
+        this.calibration.accuracy = null
+        this.calibration.health = 0
+        this.save()
 
-
-        await this.pingAll();
-        this.calibration.progress = 20;
-        this.save();
-
+        await this.pingAll()
+        this.calibration.progress = 20
+        this.save()
 
         const availableServices = Object.entries(this.services)
-          .filter(([_, status]) => status === "online")
-          .map(([name]) => name);
+          .filter(([_, status]) => status === 'online')
+          .map(([name]) => name)
 
         if (availableServices.length === 0) {
-          throw new Error("No services available for calibration");
+          throw new Error('No services available for calibration')
         }
 
-        this.calibration.progress = 40;
-        this.save();
+        this.calibration.progress = 40
+        this.save()
 
-
-        if (typeof window !== "undefined" && window.api) {
+        if (typeof window !== 'undefined' && window.api) {
           try {
-            await window.api.ai.status();
-            this.setService("azure", "online");
+            await window.api.ai.status()
+            this.setService('azure', 'online')
           } catch {
-            logger.warn("AI service not available during calibration");
+            logger.warn('AI service not available during calibration')
           }
         }
 
-        this.calibration.progress = 60;
-        this.save();
+        this.calibration.progress = 60
+        this.save()
 
+        await new Promise(r => setTimeout(r, 500)) // Allow UI update
 
-        await new Promise((r) => setTimeout(r, 500)); // Allow UI update
-
-
-        const serviceCount = Object.keys(this.services).length;
+        const serviceCount = Object.keys(this.services).length
         const onlineCount = Object.values(this.services).filter(
-          (s) => s === "online",
-        ).length;
-        const accuracy = Math.round((onlineCount / serviceCount) * 100);
+          s => s === 'online'
+        ).length
+        const accuracy = Math.round((onlineCount / serviceCount) * 100)
 
-        this.calibration.progress = 80;
-        this.save();
+        this.calibration.progress = 80
+        this.save()
 
         // Final validation
-        await new Promise((r) => setTimeout(r, 300));
+        await new Promise(r => setTimeout(r, 300))
 
-        if (this.calibration.status === "running") {
-          this.calibration.status = "complete";
-          this.calibration.progress = 100;
-          this.calibration.accuracy = `±${Math.max(0.1, (100 - accuracy) / 10).toFixed(1)}%`;
-          this.calibration.health = accuracy;
-          this.save();
+        if (this.calibration.status === 'running') {
+          this.calibration.status = 'complete'
+          this.calibration.progress = 100
+          this.calibration.accuracy = `±${Math.max(0.1, (100 - accuracy) / 10).toFixed(1)}%`
+          this.calibration.health = accuracy
+          this.save()
 
           logger.info(
-            `Calibration completed with ${onlineCount}/${serviceCount} services online`,
-          );
+            `Calibration completed with ${onlineCount}/${serviceCount} services online`
+          )
         }
       } catch (_error) {
-        this.calibration.status = "error";
-        this.calibration.progress = 0;
-        this.calibration.accuracy = null;
-        this.calibration.health = 0;
-        this.save();
+        this.calibration.status = 'error'
+        this.calibration.progress = 0
+        this.calibration.accuracy = null
+        this.calibration.health = 0
+        this.save()
 
-        logger.error("Calibration failed:", _error?.message || _error);
-        throw _error;
+        logger.error('Calibration failed:', _error?.message || _error)
+        throw _error
       }
     },
     stopCalibration() {
-      if (this.calibration.status === "running") {
-        this.calibration.status = "idle";
-        this.calibration.progress = 0;
-        this.calibration.accuracy = null;
-        this.calibration.health = 0;
-        this.save();
+      if (this.calibration.status === 'running') {
+        this.calibration.status = 'idle'
+        this.calibration.progress = 0
+        this.calibration.accuracy = null
+        this.calibration.health = 0
+        this.save()
       }
     },
     async pingAll() {
       try {
-        const results = {};
+        const results = {}
 
         // Check Azure/AI service connectivity
-        if (typeof window !== "undefined" && window.api) {
+        if (typeof window !== 'undefined' && window.api) {
           try {
-            const aiStatus = await window.api.ai.status();
-            results.azure = aiStatus?.initialized ? "online" : "offline";
-            this.azure.connected = aiStatus?.initialized || false;
+            const aiStatus = await window.api.ai.status()
+            results.azure = aiStatus?.initialized ? 'online' : 'offline'
+            this.azure.connected = aiStatus?.initialized || false
           } catch {
-            results.azure = "offline";
-            this.azure.connected = false;
+            results.azure = 'offline'
+            this.azure.connected = false
           }
         } else {
-          results.azure = "offline";
-          this.azure.connected = false;
+          results.azure = 'offline'
+          this.azure.connected = false
         }
 
         // Check web server connectivity
         try {
           const controller =
-            typeof AbortController !== "undefined"
+            typeof AbortController !== 'undefined'
               ? new AbortController()
-              : null;
+              : null
           const timeout = controller
             ? setTimeout(() => controller.abort(), 3000)
-            : null;
+            : null
 
           const fetchOptions = {
-            method: "GET",
-            cache: "no-cache",
-          };
+            method: 'GET',
+            cache: 'no-cache',
+          }
 
           if (controller) {
-            fetchOptions.signal = controller.signal;
+            fetchOptions.signal = controller.signal
           }
 
           const response = await fetch(
-            this.endpoints.webServer + "/health",
-            fetchOptions,
-          );
+            this.endpoints.webServer + '/health',
+            fetchOptions
+          )
 
           if (timeout) {
-            clearTimeout(timeout);
+            clearTimeout(timeout)
           }
-          results.webServer = response.ok ? "online" : "offline";
+          results.webServer = response.ok ? 'online' : 'offline'
         } catch {
-          results.webServer = "offline";
+          results.webServer = 'offline'
         }
 
         // Hardware services (simulated for now, but with proper logic)
         // In a real app, these would check actual hardware endpoints
         const hardwareServices = [
-          "lighting",
-          "imager",
-          "calibration",
-          "footpedal",
-        ];
+          'lighting',
+          'imager',
+          'calibration',
+          'footpedal',
+        ]
         for (const service of hardwareServices) {
           // For hardware services, check if they're expected to be available
           // This is application-specific logic
           if (
-            service === "lighting" &&
+            service === 'lighting' &&
             this.lighting.connectedDevices.length > 0
           ) {
-            results[service] = "online";
+            results[service] = 'online'
           } else {
             // Default to offline if no specific connection logic
-            results[service] = "offline";
+            results[service] = 'offline'
           }
         }
 
         // Update all service statuses
         Object.entries(results).forEach(([service, status]) => {
-          this.setService(service, status);
-        });
+          this.setService(service, status)
+        })
 
         // Update system metrics with real data when possible
-        if (typeof window !== "undefined" && window.performance) {
-          this.metrics.memory = `${Math.round(window.performance.memory?.usedJSHeapSize / 1024 / 1024) || "?"} MB`;
-          this.metrics.network = navigator.onLine ? "online" : "offline";
+        if (typeof window !== 'undefined' && window.performance) {
+          this.metrics.memory = `${Math.round(window.performance.memory?.usedJSHeapSize / 1024 / 1024) || '?'} MB`
+          this.metrics.network = navigator.onLine ? 'online' : 'offline'
         }
 
-        this.metrics.cpu = "—"; // Browser can't access CPU directly
-        this.metrics.lastUpdate = new Date().toISOString();
-        this.save();
+        this.metrics.cpu = '—' // Browser can't access CPU directly
+        this.metrics.lastUpdate = new Date().toISOString()
+        this.save()
 
-        logger.debug("Service connectivity check completed", results);
+        logger.debug('Service connectivity check completed', results)
       } catch (_e) {
-        logger.error("pingAll failed:", _e?.message || _e);
+        logger.error('pingAll failed:', _e?.message || _e)
         // Set all services to offline on error
-        Object.keys(this.services).forEach((service) => {
-          this.setService(service, "offline");
-        });
+        Object.keys(this.services).forEach(service => {
+          this.setService(service, 'offline')
+        })
       }
     },
   },
-});
+})
 
-export default useSystemStore;
+export default useSystemStore

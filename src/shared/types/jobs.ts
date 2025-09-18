@@ -27,7 +27,7 @@ export interface Job {
   tags?: string[]
   companyLogo?: string
   applicationUrl?: string
-  
+
   // Gaming-specific fields
   studioType?: StudioType
   gameGenres?: GameGenre[]
@@ -35,7 +35,7 @@ export interface Job {
   projectType?: ProjectType
   teamSize?: TeamSize
   cultureInfo?: CultureInfo
-  gamingRelevance?: number  // 0-1 score indicating gaming industry relevance
+  gamingRelevance?: number // 0-1 score indicating gaming industry relevance
 }
 
 export interface SalaryRange {
@@ -55,24 +55,73 @@ export interface CultureInfo {
   remoteFirst: boolean
 }
 
-export type ExperienceLevel = 'entry' | 'junior' | 'mid' | 'senior' | 'principal' | 'director'
+export type ExperienceLevel =
+  | 'entry'
+  | 'junior'
+  | 'mid'
+  | 'senior'
+  | 'principal'
+  | 'director'
 
-export type JobType = 'full-time' | 'part-time' | 'contract' | 'internship' | 'freelance'
+export type JobType =
+  | 'full-time'
+  | 'part-time'
+  | 'contract'
+  | 'internship'
+  | 'freelance'
 
-export type StudioType = 'AAA' | 'Indie' | 'Mobile' | 'VR/AR' | 'Platform' | 'Esports' | 'Unknown'
+export type StudioType =
+  | 'AAA'
+  | 'Indie'
+  | 'Mobile'
+  | 'VR/AR'
+  | 'Platform'
+  | 'Esports'
+  | 'Unknown'
 
-export type GameGenre = 
-  | 'Action' | 'RPG' | 'Strategy' | 'Puzzle' | 'Simulation' 
-  | 'Sports' | 'Racing' | 'Shooter' | 'Platformer' | 'Horror'
-  | 'MMORPG' | 'MOBA' | 'Battle Royale' | 'Roguelike' | 'Sandbox'
+export type GameGenre =
+  | 'Action'
+  | 'RPG'
+  | 'Strategy'
+  | 'Puzzle'
+  | 'Simulation'
+  | 'Sports'
+  | 'Racing'
+  | 'Shooter'
+  | 'Platformer'
+  | 'Horror'
+  | 'MMORPG'
+  | 'MOBA'
+  | 'Battle Royale'
+  | 'Roguelike'
+  | 'Sandbox'
 
-export type Platform = 
-  | 'PC' | 'Console' | 'Mobile' | 'VR' | 'AR' | 'Web'
-  | 'Switch' | 'PlayStation' | 'Xbox' | 'Steam'
+export type Platform =
+  | 'PC'
+  | 'Console'
+  | 'Mobile'
+  | 'VR'
+  | 'AR'
+  | 'Web'
+  | 'Switch'
+  | 'PlayStation'
+  | 'Xbox'
+  | 'Steam'
 
-export type ProjectType = 'New IP' | 'Sequel' | 'Remaster' | 'DLC' | 'Live Service' | 'Prototype'
+export type ProjectType =
+  | 'New IP'
+  | 'Sequel'
+  | 'Remaster'
+  | 'DLC'
+  | 'Live Service'
+  | 'Prototype'
 
-export type TeamSize = 'Solo' | 'Small (2-10)' | 'Medium (11-50)' | 'Large (51-200)' | 'AAA (200+)'
+export type TeamSize =
+  | 'Solo'
+  | 'Small (2-10)'
+  | 'Medium (11-50)'
+  | 'Large (51-200)'
+  | 'AAA (200+)'
 
 export interface JobFilters {
   title?: string
@@ -254,7 +303,13 @@ export interface JobAlert {
 export interface JobApplication {
   id: string
   jobId: string
-  status: 'applied' | 'reviewing' | 'interviewing' | 'offered' | 'rejected' | 'withdrawn'
+  status:
+    | 'applied'
+    | 'reviewing'
+    | 'interviewing'
+    | 'offered'
+    | 'rejected'
+    | 'withdrawn'
   appliedDate: string
   lastUpdate: string
   notes: string
@@ -263,7 +318,13 @@ export interface JobApplication {
 
 export interface ApplicationEvent {
   id: string
-  type: 'applied' | 'viewed' | 'responded' | 'interviewed' | 'feedback' | 'decision'
+  type:
+    | 'applied'
+    | 'viewed'
+    | 'responded'
+    | 'interviewed'
+    | 'feedback'
+    | 'decision'
   date: string
   description: string
   documents?: string[]
@@ -298,7 +359,15 @@ export interface CompensationPackage {
 }
 
 export interface Benefit {
-  type: 'health' | 'dental' | 'vision' | 'retirement' | 'vacation' | 'remote' | 'learning' | 'other'
+  type:
+    | 'health'
+    | 'dental'
+    | 'vision'
+    | 'retirement'
+    | 'vacation'
+    | 'remote'
+    | 'learning'
+    | 'other'
   name: string
   description?: string
   value?: number
@@ -360,22 +429,59 @@ export interface FilterGroup {
 
 // Gaming-specific constants
 export const GAMING_ROLES = {
-  DESIGN: ['Game Designer', 'Level Designer', 'Narrative Designer', 'UX Designer', 'Systems Designer'],
-  ENGINEERING: ['Gameplay Programmer', 'Engine Programmer', 'Graphics Programmer', 'Tools Programmer', 'Backend Developer'],
-  ART: ['Concept Artist', '3D Artist', '2D Artist', 'Technical Artist', 'Animator', 'VFX Artist'],
+  DESIGN: [
+    'Game Designer',
+    'Level Designer',
+    'Narrative Designer',
+    'UX Designer',
+    'Systems Designer',
+  ],
+  ENGINEERING: [
+    'Gameplay Programmer',
+    'Engine Programmer',
+    'Graphics Programmer',
+    'Tools Programmer',
+    'Backend Developer',
+  ],
+  ART: [
+    'Concept Artist',
+    '3D Artist',
+    '2D Artist',
+    'Technical Artist',
+    'Animator',
+    'VFX Artist',
+  ],
   AUDIO: ['Sound Designer', 'Audio Programmer', 'Composer', 'Voice Director'],
-  PRODUCTION: ['Producer', 'Project Manager', 'Scrum Master', 'Development Director'],
+  PRODUCTION: [
+    'Producer',
+    'Project Manager',
+    'Scrum Master',
+    'Development Director',
+  ],
   QA: ['QA Tester', 'QA Lead', 'Automation Engineer', 'Compliance Tester'],
-  BUSINESS: ['Business Development', 'Marketing Manager', 'Community Manager', 'Data Analyst']
+  BUSINESS: [
+    'Business Development',
+    'Marketing Manager',
+    'Community Manager',
+    'Data Analyst',
+  ],
 } as const
 
 export const GAMING_TECHNOLOGIES = {
   ENGINES: ['Unity', 'Unreal Engine', 'Godot', 'Custom Engine', 'CryEngine'],
   LANGUAGES: ['C++', 'C#', 'JavaScript', 'Python', 'Lua', 'Go', 'Rust'],
   GRAPHICS: ['DirectX', 'OpenGL', 'Vulkan', 'Metal', 'Shader Languages'],
-  TOOLS: ['Maya', 'Blender', '3ds Max', 'Photoshop', 'Substance', 'Perforce', 'Git'],
+  TOOLS: [
+    'Maya',
+    'Blender',
+    '3ds Max',
+    'Photoshop',
+    'Substance',
+    'Perforce',
+    'Git',
+  ],
   PLATFORMS: ['Steam', 'Epic Games Store', 'Console SDKs', 'Mobile SDKs'],
-  AUDIO: ['Wwise', 'FMOD', 'Unity Audio', 'Pro Tools']
+  AUDIO: ['Wwise', 'FMOD', 'Unity Audio', 'Pro Tools'],
 } as const
 
 export const SALARY_RANGES = {
@@ -384,7 +490,7 @@ export const SALARY_RANGES = {
   MID: { min: 75000, max: 110000 },
   SENIOR: { min: 100000, max: 150000 },
   PRINCIPAL: { min: 140000, max: 200000 },
-  DIRECTOR: { min: 180000, max: 300000 }
+  DIRECTOR: { min: 180000, max: 300000 },
 } as const
 
 // Utility Types

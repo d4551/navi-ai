@@ -29,4 +29,3 @@ declare module './jobService' {
 declare module './jobService.js' {
   export * from './jobService'
 }
-

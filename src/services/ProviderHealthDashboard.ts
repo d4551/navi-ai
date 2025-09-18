@@ -45,7 +45,7 @@ export class ProviderHealthDashboard {
 
       for (const [providerKey, metrics] of Object.entries(healthData)) {
         const [type, name] = providerKey.split(':')
-        
+
         reports.push({
           providerName: name || type,
           providerType: type,
@@ -58,17 +58,19 @@ export class ProviderHealthDashboard {
             averageResponseTime: metrics.averageResponseTime || 0,
             lastSuccessfulCheck: metrics.lastSuccessfulCheck || 0,
             errorCount: metrics.errorCount || 0,
-            totalChecks: metrics.totalChecks || 0
+            totalChecks: metrics.totalChecks || 0,
           },
           isEnabled: this.isProviderEnabled(providerKey),
-          lastError: metrics.lastError
+          lastError: metrics.lastError,
         })
       }
 
       // Sort by health status (failed first, then by last check time)
       return reports.sort((a, b) => {
-        if (a.metrics.status === 'failed' && b.metrics.status !== 'failed') return -1
-        if (b.metrics.status === 'failed' && a.metrics.status !== 'failed') return 1
+        if (a.metrics.status === 'failed' && b.metrics.status !== 'failed')
+          return -1
+        if (b.metrics.status === 'failed' && a.metrics.status !== 'failed')
+          return 1
         return b.metrics.lastCheck - a.metrics.lastCheck
       })
     } catch (error) {
@@ -80,11 +82,14 @@ export class ProviderHealthDashboard {
   /**
    * Update health metric for a provider
    */
-  updateProviderHealth(providerKey: string, result: {
-    success: boolean
-    responseTime: number
-    error?: string
-  }): void {
+  updateProviderHealth(
+    providerKey: string,
+    result: {
+      success: boolean
+      responseTime: number
+      error?: string
+    }
+  ): void {
     try {
       const healthData = this.loadHealthData()
       const current = healthData[providerKey] || this.createEmptyMetric()
@@ -97,16 +102,18 @@ export class ProviderHealthDashboard {
         current.consecutiveFailures = 0
         current.lastSuccessfulCheck = now
         current.status = result.responseTime > 5000 ? 'degraded' : 'healthy'
-        
+
         // Update average response time (rolling average)
-        current.averageResponseTime = current.averageResponseTime === 0 
-          ? result.responseTime
-          : (current.averageResponseTime * 0.8) + (result.responseTime * 0.2)
+        current.averageResponseTime =
+          current.averageResponseTime === 0
+            ? result.responseTime
+            : current.averageResponseTime * 0.8 + result.responseTime * 0.2
       } else {
         current.consecutiveFailures += 1
         current.errorCount += 1
-        current.status = current.consecutiveFailures >= 3 ? 'failed' : 'degraded'
-        
+        current.status =
+          current.consecutiveFailures >= 3 ? 'failed' : 'degraded'
+
         if (result.error) {
           current.lastError = result.error
         }
@@ -131,14 +138,19 @@ export class ProviderHealthDashboard {
     lastCheckTime: number
   } {
     const reports = this.getProviderHealthReport()
-    
+
     return {
       totalProviders: reports.length,
-      healthyProviders: reports.filter(r => r.metrics.status === 'healthy').length,
-      degradedProviders: reports.filter(r => r.metrics.status === 'degraded').length,
-      failedProviders: reports.filter(r => r.metrics.status === 'failed').length,
-      averageResponseTime: reports.reduce((sum, r) => sum + r.metrics.averageResponseTime, 0) / reports.length || 0,
-      lastCheckTime: Math.max(...reports.map(r => r.metrics.lastCheck), 0)
+      healthyProviders: reports.filter(r => r.metrics.status === 'healthy')
+        .length,
+      degradedProviders: reports.filter(r => r.metrics.status === 'degraded')
+        .length,
+      failedProviders: reports.filter(r => r.metrics.status === 'failed')
+        .length,
+      averageResponseTime:
+        reports.reduce((sum, r) => sum + r.metrics.averageResponseTime, 0) /
+          reports.length || 0,
+      lastCheckTime: Math.max(...reports.map(r => r.metrics.lastCheck), 0),
     }
   }
 
@@ -148,16 +160,20 @@ export class ProviderHealthDashboard {
   cleanupOldData(): void {
     try {
       const healthData = this.loadHealthData()
-      const cutoffTime = Date.now() - (this.MAX_HISTORY_DAYS * 24 * 60 * 60 * 1000)
-      
+      const cutoffTime =
+        Date.now() - this.MAX_HISTORY_DAYS * 24 * 60 * 60 * 1000
+
       let cleaned = false
       for (const [key, metrics] of Object.entries(healthData)) {
-        if (metrics.lastCheck < cutoffTime && metrics.consecutiveFailures === 0) {
+        if (
+          metrics.lastCheck < cutoffTime &&
+          metrics.consecutiveFailures === 0
+        ) {
           delete healthData[key]
           cleaned = true
         }
       }
-      
+
       if (cleaned) {
         this.saveHealthData(healthData)
         logger.info('Cleaned up old provider health data')
@@ -198,7 +214,10 @@ export class ProviderHealthDashboard {
   private saveHealthData(data: Record<string, ProviderHealthMetric>): void {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem(this.HEALTH_STORAGE_KEY, JSON.stringify(data))
+        window.localStorage.setItem(
+          this.HEALTH_STORAGE_KEY,
+          JSON.stringify(data)
+        )
       }
     } catch (error) {
       logger.warn('Failed to save health data:', error)
@@ -208,11 +227,15 @@ export class ProviderHealthDashboard {
   private isProviderEnabled(providerKey: string): boolean {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        const disabledData = window.localStorage.getItem('navi-disabled-company-boards')
+        const disabledData = window.localStorage.getItem(
+          'navi-disabled-company-boards'
+        )
         if (disabledData) {
           const disabled = JSON.parse(disabledData)
           const [type, token] = providerKey.split(':')
-          return !disabled.some((d: any) => d.type === type && d.token === token)
+          return !disabled.some(
+            (d: any) => d.type === type && d.token === token
+          )
         }
       }
     } catch (error) {
@@ -229,7 +252,7 @@ export class ProviderHealthDashboard {
       averageResponseTime: 0,
       lastSuccessfulCheck: 0,
       errorCount: 0,
-      totalChecks: 0
+      totalChecks: 0,
     }
   }
 }

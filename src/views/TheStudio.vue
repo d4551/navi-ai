@@ -11,4 +11,3 @@ import PortfolioStudio from '@/views/PortfolioStudio.vue'
 <style scoped>
 /* No additional styles; uses PortfolioStudio styles */
 </style>
-

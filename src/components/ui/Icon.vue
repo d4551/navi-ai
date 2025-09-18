@@ -1,5 +1,5 @@
 <template>
-  <i 
+  <i
     :class="iconClasses"
     :style="iconStyles"
     :aria-label="ariaLabel"
@@ -20,20 +20,20 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   size: '16',
   color: 'currentColor',
-  className: ''
+  className: '',
 })
 
 const iconClasses = computed(() => [
   'mdi',
   `mdi-${props.name}`,
-  props.className
+  props.className,
 ])
 
 const iconStyles = computed(() => ({
   fontSize: typeof props.size === 'number' ? `${props.size}px` : props.size,
   color: props.color,
   width: typeof props.size === 'number' ? `${props.size}px` : props.size,
-  height: typeof props.size === 'number' ? `${props.size}px` : props.size
+  height: typeof props.size === 'number' ? `${props.size}px` : props.size,
 }))
 
 const ariaLabel = computed(() => `${props.name} icon`)

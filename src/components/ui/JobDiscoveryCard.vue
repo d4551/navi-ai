@@ -1,13 +1,15 @@
 <template>
-  <div class="job-discovery-card ultra-glass-card section-card gaming-card font-sans">
+  <div
+    class="job-discovery-card ultra-glass-card section-card gaming-card font-sans"
+  >
     <!-- Job Header with Company Branding -->
     <div class="job-header">
       <div class="company-branding">
         <div class="company-logo-wrapper">
-          <img 
-            v-if="job.companyLogo" 
-            :src="job.companyLogo" 
-            :alt="`${job.company} logo`" 
+          <img
+            v-if="job.companyLogo"
+            :src="job.companyLogo"
+            :alt="`${job.company} logo`"
             class="company-logo"
             @error="onLogoError"
           />
@@ -22,13 +24,17 @@
             <span class="job-location">
               <AppIcon name="mdi-map-marker-outline" />
               {{ job.location }}
-              <span v-if="job.remote" class="glass-badge glass-badge-success">Remote</span>
-              <span v-if="job.hybrid" class="glass-badge glass-badge-info">Hybrid</span>
+              <span v-if="job.remote" class="glass-badge glass-badge-success"
+                >Remote</span
+              >
+              <span v-if="job.hybrid" class="glass-badge glass-badge-info"
+                >Hybrid</span
+              >
             </span>
           </div>
         </div>
       </div>
-      
+
       <!-- AI Match Score -->
       <div class="ai-match-score" :class="getMatchScoreClass(aiScore)">
         <div class="score-circle">
@@ -69,7 +75,10 @@
         <AppIcon name="mdi-cash-multiple" class="text-success-600" />
         <span>{{ formatSalary(job.salary) }}</span>
       </div>
-      <div class="experience-level" :class="getExperienceLevelClass(job.experienceLevel)">
+      <div
+        class="experience-level"
+        :class="getExperienceLevelClass(job.experienceLevel)"
+      >
         <AppIcon name="UserIcon-star" />
         <span>{{ job.experienceLevel }}</span>
       </div>
@@ -85,19 +94,29 @@
     </div>
 
     <!-- Technologies & Skills -->
-    <div v-if="job.technologies && job.technologies.length" class="job-technologies">
+    <div
+      v-if="job.technologies && job.technologies.length"
+      class="job-technologies"
+    >
       <h5 class="tech-section-title">Tech Stack</h5>
       <div class="tech-tags">
-        <span 
-          v-for="tech in job.technologies.slice(0, 5)" 
-          :key="tech" 
+        <span
+          v-for="tech in job.technologies.slice(0, 5)"
+          :key="tech"
           class="tech-tag"
           :class="getUserSkillClass(tech)"
         >
           {{ tech }}
-          <AppIcon v-if="isUserSkill(tech)" name="CheckCircleIcon" class="skill-match-icon" />
+          <AppIcon
+            v-if="isUserSkill(tech)"
+            name="CheckCircleIcon"
+            class="skill-match-icon"
+          />
         </span>
-        <span v-if="job.technologies.length > 5" class="tech-tag overflow-indicator">
+        <span
+          v-if="job.technologies.length > 5"
+          class="tech-tag overflow-indicator"
+        >
           +{{ job.technologies.length - 5 }} more
         </span>
       </div>
@@ -110,7 +129,11 @@
         Why This Matches You
       </h5>
       <ul class="match-reasons-list">
-        <li v-for="reason in matchReasons.slice(0, 3)" :key="reason" class="match-reason">
+        <li
+          v-for="reason in matchReasons.slice(0, 3)"
+          :key="reason"
+          class="match-reason"
+        >
           <AppIcon name="CheckCircleIcon" color="success" context="success" />
           {{ reason }}
         </li>
@@ -118,18 +141,27 @@
     </div>
 
     <!-- Gaming Skills Connection -->
-    <div v-if="job.gamingTitles && job.gamingTitles.length" class="gaming-skills-connection">
+    <div
+      v-if="job.gamingTitles && job.gamingTitles.length"
+      class="gaming-skills-connection"
+    >
       <h5 class="gaming-section-title">
         <AppIcon name="PuzzlePieceIcon" context="gaming" />
         Gaming Skills Applied
       </h5>
       <div class="gaming-titles">
-        <div 
-          v-for="titleId in job.gamingTitles.slice(0, 3)" 
+        <div
+          v-for="titleId in job.gamingTitles.slice(0, 3)"
           :key="titleId"
           class="gaming-title-chip"
         >
-          <span class="game-emoji"><AppIcon name="PuzzlePieceIcon" color="gaming" context="gaming" aria-hidden="true" /></span>
+          <span class="game-emoji"
+            ><AppIcon
+              name="PuzzlePieceIcon"
+              color="gaming"
+              context="gaming"
+              aria-hidden="true"
+          /></span>
           {{ getGameTitle(titleId) }}
         </div>
       </div>
@@ -137,28 +169,24 @@
 
     <!-- Job Actions -->
     <div class="job-actions">
-      <UnifiedButton 
-        variant="gaming" 
-        size="sm" 
+      <UnifiedButton
+        variant="gaming"
+        size="sm"
         :loading="applyingJob"
         @click="handleApply"
       >
         <AppIcon name="PaperAirplaneIcon" class="mr-2" />
         Quick Apply
       </UnifiedButton>
-      
-      <UnifiedButton 
-        variant="cyber" 
-        size="sm" 
-        @click="handleViewDetails"
-      >
+
+      <UnifiedButton variant="cyber" size="sm" @click="handleViewDetails">
         <AppIcon name="EyeIcon" class="mr-2" />
         View Details
       </UnifiedButton>
-      
-      <UnifiedButton 
-        variant="glass" 
-        size="sm" 
+
+      <UnifiedButton
+        variant="glass"
+        size="sm"
         icon-only
         :class="{ active: isSaved }"
         :title="isSaved ? 'Remove from saved' : 'Save job'"
@@ -166,10 +194,10 @@
       >
         <AppIcon :name="isSaved ? 'HeartIcon' : 'HeartIcon-outline'" />
       </UnifiedButton>
-      
-      <UnifiedButton 
-        variant="glass" 
-        size="sm" 
+
+      <UnifiedButton
+        variant="glass"
+        size="sm"
         icon-only
         title="AI Interview Prep"
         @click="handleInterviewPrep"
@@ -196,7 +224,16 @@
 </template>
 
 <script setup lang="ts">
-import { CheckCircleIcon, ClockIcon, CpuChipIcon, EyeIcon, PaperAirplaneIcon, PuzzlePieceIcon, SpeakerWaveIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckCircleIcon,
+  ClockIcon,
+  CpuChipIcon,
+  EyeIcon,
+  PaperAirplaneIcon,
+  PuzzlePieceIcon,
+  SpeakerWaveIcon,
+  UsersIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, defineEmits } from 'vue'
 import UnifiedButton from './UnifiedButton.vue'
@@ -233,11 +270,16 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  userSkills: () => []
+  userSkills: () => [],
 })
 
 // Emits
-const emit = defineEmits(['apply', 'save', 'view-details', 'request-interview-prep'])
+const emit = defineEmits([
+  'apply',
+  'save',
+  'view-details',
+  'request-interview-prep',
+])
 
 // Reactive state
 const applyingJob = ref(false)
@@ -245,12 +287,12 @@ const isSaved = ref(false)
 
 // Gaming titles mapping (simplified - would import from actual data)
 const gamingTitlesMap = {
-  'fortnite': 'Fortnite',
-  'valorant': 'VALORANT',
+  fortnite: 'Fortnite',
+  valorant: 'VALORANT',
   'apex-legends': 'Apex Legends',
   'league-of-legends': 'League of Legends',
   'counter-strike-2': 'Counter-Strike 2',
-  'dota-2': 'Dota 2'
+  'dota-2': 'Dota 2',
 }
 
 // Computed properties
@@ -289,23 +331,23 @@ const getScoreColor = (score: number) => {
 
 const formatSalary = (salary: any) => {
   if (!salary) return 'Salary not disclosed'
-  
+
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: salary.currency,
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   })
-  
+
   return `${formatter.format(salary.min)} - ${formatter.format(salary.max)}`
 }
 
 const getExperienceLevelClass = (level: string) => {
   return {
-    'entry': level.toLowerCase().includes('entry'),
-    'mid': level.toLowerCase().includes('mid'),
-    'senior': level.toLowerCase().includes('senior'),
-    'lead': level.toLowerCase().includes('lead')
+    entry: level.toLowerCase().includes('entry'),
+    mid: level.toLowerCase().includes('mid'),
+    senior: level.toLowerCase().includes('senior'),
+    lead: level.toLowerCase().includes('lead'),
   }
 }
 
@@ -315,8 +357,8 @@ const truncateDescription = (description: string) => {
 }
 
 const isUserSkill = (tech: string) => {
-  return props.userSkills.some(skill => 
-    skill.toLowerCase() === tech.toLowerCase()
+  return props.userSkills.some(
+    skill => skill.toLowerCase() === tech.toLowerCase()
   )
 }
 
@@ -331,14 +373,16 @@ const getGameTitle = (titleId: string) => {
 const getRelativeTime = (dateString: string) => {
   const date = new Date(dateString)
   const now = new Date()
-  const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
-  
+  const diffInHours = Math.floor(
+    (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+  )
+
   if (diffInHours < 1) return 'Less than an hour ago'
   if (diffInHours < 24) return `${diffInHours} hours ago`
-  
+
   const diffInDays = Math.floor(diffInHours / 24)
   if (diffInDays < 7) return `${diffInDays} days ago`
-  
+
   const diffInWeeks = Math.floor(diffInDays / 7)
   return `${diffInWeeks} weeks ago`
 }
@@ -381,7 +425,7 @@ const handleInterviewPrep = () => {
 
 .job-discovery-card:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow-strong),
     0 0 30px rgba(0, 217, 255, 0.3);
 }
@@ -393,7 +437,11 @@ const handleInterviewPrep = () => {
 .job-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 217, 255, 0.05) 0%,
+    rgba(168, 85, 247, 0.05) 100%
+  );
   opacity: 0;
   transition: opacity var(--animation-normal) ease;
   pointer-events: none;
@@ -487,8 +535,14 @@ const handleInterviewPrep = () => {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.glass-badge-success { border-color: color-mix(in srgb, var(--color-success) 60%, transparent); color: var(--color-success); }
-.glass-badge-info { border-color: color-mix(in srgb, var(--color-info) 60%, transparent); color: var(--color-info); }
+.glass-badge-success {
+  border-color: color-mix(in srgb, var(--color-success) 60%, transparent);
+  color: var(--color-success);
+}
+.glass-badge-info {
+  border-color: color-mix(in srgb, var(--color-info) 60%, transparent);
+  color: var(--color-info);
+}
 
 /* AI Match Score */
 .ai-match-score {
@@ -539,10 +593,18 @@ const handleInterviewPrep = () => {
   font-weight: 600;
 }
 
-.score-excellent .match-label { color: var(--razer-green); }
-.score-good .match-label { color: var(--razer-blue); }
-.score-fair .match-label { color: var(--razer-yellow); }
-.score-low .match-label { color: var(--razer-pink); }
+.score-excellent .match-label {
+  color: var(--razer-green);
+}
+.score-good .match-label {
+  color: var(--razer-blue);
+}
+.score-fair .match-label {
+  color: var(--razer-yellow);
+}
+.score-low .match-label {
+  color: var(--razer-pink);
+}
 
 /* Job Meta */
 .job-meta {
@@ -565,10 +627,18 @@ const handleInterviewPrep = () => {
   font-weight: 500;
 }
 
-.experience-level.entry { border-l: 3px solid var(--razer-green); }
-.experience-level.mid { border-l: 3px solid var(--razer-blue); }
-.experience-level.senior { border-l: 3px solid var(--razer-purple); }
-.experience-level.lead { border-l: 3px solid var(--razer-orange); }
+.experience-level.entry {
+  border-l: 3px solid var(--razer-green);
+}
+.experience-level.mid {
+  border-l: 3px solid var(--razer-blue);
+}
+.experience-level.senior {
+  border-l: 3px solid var(--razer-purple);
+}
+.experience-level.lead {
+  border-l: 3px solid var(--razer-orange);
+}
 
 /* Job Description */
 .job-description {
@@ -780,8 +850,12 @@ const handleInterviewPrep = () => {
 
 /* Animations */
 @keyframes scoreProgress {
-  from { stroke-dasharray: 0, 100; }
-  to { stroke-dasharray: var(--score), 100; }
+  from {
+    stroke-dasharray: 0, 100;
+  }
+  to {
+    stroke-dasharray: var(--score), 100;
+  }
 }
 
 .score-progress .score-bar {

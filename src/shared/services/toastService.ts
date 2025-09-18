@@ -10,7 +10,10 @@ export function toastInfo(message: string, options: ToastOptions = {}): void {
   info(message, options)
 }
 
-export function toastSuccess(message: string, options: ToastOptions = {}): void {
+export function toastSuccess(
+  message: string,
+  options: ToastOptions = {}
+): void {
   const { success } = useToast()
   success(message, options)
 }
@@ -20,18 +23,28 @@ export function toastError(message: string, options: ToastOptions = {}): void {
   error(message, options)
 }
 
-export function toastWarning(message: string, options: ToastOptions = {}): void {
+export function toastWarning(
+  message: string,
+  options: ToastOptions = {}
+): void {
   const { warning } = useToast()
   warning(message, options)
 }
 
 // Advanced helpers (optional but useful)
-export function toastLoading(message = 'Loading...', options: ToastOptions = {}) {
+export function toastLoading(
+  message = 'Loading...',
+  options: ToastOptions = {}
+) {
   const { loading } = useToast()
   return loading(message, options)
 }
 
-export function toastProgress(message: string, initial = 0, options: ToastOptions = {}) {
+export function toastProgress(
+  message: string,
+  initial = 0,
+  options: ToastOptions = {}
+) {
   const { progress } = useToast()
   return progress(message, initial, options)
 }
@@ -46,17 +59,27 @@ export function toastClear(): void {
   clear()
 }
 
-export function toastHandleApiResponse(response: any, successMessage: string, errorMessage = 'Operation failed') {
+export function toastHandleApiResponse(
+  response: any,
+  successMessage: string,
+  errorMessage = 'Operation failed'
+) {
   const { handleApiResponse } = useToast()
   return handleApiResponse(response, successMessage, errorMessage)
 }
 
-export function toastHandlePromise<T>(promise: Promise<T>, messages: { loading?: string; success?: string; error?: string } = {}) {
+export function toastHandlePromise<T>(
+  promise: Promise<T>,
+  messages: { loading?: string; success?: string; error?: string } = {}
+) {
   const { handlePromise } = useToast()
   return handlePromise(promise, messages)
 }
 
-export function toastBatch(operations: Array<() => Promise<any>>, messages: { loading?: string; success?: string; error?: string } = {}) {
+export function toastBatch(
+  operations: Array<() => Promise<any>>,
+  messages: { loading?: string; success?: string; error?: string } = {}
+) {
   const { batch } = useToast()
   return batch(operations, messages)
 }

@@ -1,316 +1,358 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fix Settings & CSP Issues - NAVI</title>
     <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f8f9fa;
-            line-height: 1.6;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        .status {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-        .status.success {
-            background: #d1edff;
-            border: 1px solid #0ea5e9;
-            color: #0c4a6e;
-        }
-        .status.warning {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            color: #92400e;
-        }
-        .status.error {
-            background: #fecaca;
-            border: 1px solid #ef4444;
-            color: #991b1b;
-        }
-        button {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px 5px;
-        }
-        button:hover {
-            background: #1d4ed8;
-        }
-        button.secondary {
-            background: #6b7280;
-        }
-        button.secondary:hover {
-            background: #4b5563;
-        }
-        pre {
-            background: #f3f4f6;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-size: 14px;
-        }
-        .issue {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-        .fix {
-            background: #d1f2eb;
-            border: 1px solid #52c41a;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f8f9fa;
+        line-height: 1.6;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      }
+      .status {
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .status.success {
+        background: #d1edff;
+        border: 1px solid #0ea5e9;
+        color: #0c4a6e;
+      }
+      .status.warning {
+        background: #fef3c7;
+        border: 1px solid #f59e0b;
+        color: #92400e;
+      }
+      .status.error {
+        background: #fecaca;
+        border: 1px solid #ef4444;
+        color: #991b1b;
+      }
+      button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px 5px;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      button.secondary {
+        background: #6b7280;
+      }
+      button.secondary:hover {
+        background: #4b5563;
+      }
+      pre {
+        background: #f3f4f6;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 14px;
+      }
+      .issue {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .fix {
+        background: #d1f2eb;
+        border: 1px solid #52c41a;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>🔧 Fix Settings & CSP Issues</h1>
-        <p>This tool fixes multiple issues in your NAVI application:</p>
-        
-        <div class="issue">
-            <h3>🚨 Issues Detected</h3>
-            <ul>
-                <li><strong>Settings Save Error:</strong> <code>store.saveSettings is not a function</code></li>
-                <li><strong>CSP Media Blocking:</strong> Blob URLs blocked by Content Security Policy</li>
-                <li><strong>WASM Compilation:</strong> WebAssembly blocked for Kokoro TTS</li>
-            </ul>
-        </div>
-        
-        <div id="status"></div>
-        
-        <button onclick="fixAllIssues()">🛠️ Fix All Issues</button>
-        <button onclick="checkIssues()">🔍 Check Current Status</button>
-        <button onclick="testFeatures()">🧪 Test Fixed Features</button>
-        
-        <div class="fix">
-            <h3>✅ What This Fixes</h3>
-            <ul>
-                <li><strong>Settings Save:</strong> Updates store method call from <code>saveSettings</code> to <code>updateSettings</code></li>
-                <li><strong>Media CSP:</strong> Adds <code>media-src 'self' blob: data:</code> to allow audio/video</li>
-                <li><strong>WASM CSP:</strong> Adds <code>'wasm-unsafe-eval'</code> for WebAssembly support</li>
-                <li><strong>Blob Support:</strong> Ensures blob URLs work for generated content</li>
-            </ul>
-        </div>
-        
-        <div id="details" style="display: none;">
-            <h3>📊 Technical Details</h3>
-            <pre id="issueData"></pre>
-        </div>
+      <h1>🔧 Fix Settings & CSP Issues</h1>
+      <p>This tool fixes multiple issues in your NAVI application:</p>
+
+      <div class="issue">
+        <h3>🚨 Issues Detected</h3>
+        <ul>
+          <li>
+            <strong>Settings Save Error:</strong>
+            <code>store.saveSettings is not a function</code>
+          </li>
+          <li>
+            <strong>CSP Media Blocking:</strong> Blob URLs blocked by Content
+            Security Policy
+          </li>
+          <li>
+            <strong>WASM Compilation:</strong> WebAssembly blocked for Kokoro
+            TTS
+          </li>
+        </ul>
+      </div>
+
+      <div id="status"></div>
+
+      <button onclick="fixAllIssues()">🛠️ Fix All Issues</button>
+      <button onclick="checkIssues()">🔍 Check Current Status</button>
+      <button onclick="testFeatures()">🧪 Test Fixed Features</button>
+
+      <div class="fix">
+        <h3>✅ What This Fixes</h3>
+        <ul>
+          <li>
+            <strong>Settings Save:</strong> Updates store method call from
+            <code>saveSettings</code> to <code>updateSettings</code>
+          </li>
+          <li>
+            <strong>Media CSP:</strong> Adds
+            <code>media-src 'self' blob: data:</code> to allow audio/video
+          </li>
+          <li>
+            <strong>WASM CSP:</strong> Adds <code>'wasm-unsafe-eval'</code> for
+            WebAssembly support
+          </li>
+          <li>
+            <strong>Blob Support:</strong> Ensures blob URLs work for generated
+            content
+          </li>
+        </ul>
+      </div>
+
+      <div id="details" style="display: none">
+        <h3>📊 Technical Details</h3>
+        <pre id="issueData"></pre>
+      </div>
     </div>
 
     <script>
-        function showStatus(message, type = 'success') {
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+      function showStatus(message, type = 'success') {
+        const statusDiv = document.getElementById('status')
+        statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`
+      }
+
+      function checkIssues() {
+        const detailsDiv = document.getElementById('details')
+        const issueDataPre = document.getElementById('issueData')
+
+        // Check CSP
+        const metaTags = document.querySelectorAll(
+          'meta[http-equiv="Content-Security-Policy"]'
+        )
+        const currentCSP =
+          metaTags.length > 0 ? metaTags[0].content : 'No CSP found'
+
+        const hasWasmSupport =
+          currentCSP.includes('wasm-unsafe-eval') ||
+          currentCSP.includes('unsafe-eval')
+        const hasMediaSupport = currentCSP.includes('media-src')
+        const hasBlobSupport = currentCSP.includes('blob:')
+
+        // Check if we can access localStorage
+        let localStorageWorks = false
+        try {
+          localStorage.setItem('test', 'test')
+          localStorage.removeItem('test')
+          localStorageWorks = true
+        } catch (e) {}
+
+        // Build status report
+        const issues = []
+        const fixes = []
+
+        if (!hasWasmSupport) {
+          issues.push('❌ WASM blocked by CSP')
+        } else {
+          fixes.push('✅ WASM support enabled')
         }
 
-        function checkIssues() {
-            const detailsDiv = document.getElementById('details');
-            const issueDataPre = document.getElementById('issueData');
-            
-            // Check CSP
-            const metaTags = document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]');
-            const currentCSP = metaTags.length > 0 ? metaTags[0].content : 'No CSP found';
-            
-            const hasWasmSupport = currentCSP.includes('wasm-unsafe-eval') || currentCSP.includes('unsafe-eval');
-            const hasMediaSupport = currentCSP.includes('media-src');
-            const hasBlobSupport = currentCSP.includes('blob:');
-            
-            // Check if we can access localStorage
-            let localStorageWorks = false;
-            try {
-                localStorage.setItem('test', 'test');
-                localStorage.removeItem('test');
-                localStorageWorks = true;
-            } catch (e) {}
-            
-            // Build status report
-            const issues = [];
-            const fixes = [];
-            
-            if (!hasWasmSupport) {
-                issues.push('❌ WASM blocked by CSP');
-            } else {
-                fixes.push('✅ WASM support enabled');
-            }
-            
-            if (!hasMediaSupport) {
-                issues.push('❌ Media sources blocked by CSP');
-            } else {
-                fixes.push('✅ Media sources allowed');
-            }
-            
-            if (!hasBlobSupport) {
-                issues.push('❌ Blob URLs blocked by CSP');
-            } else {
-                fixes.push('✅ Blob URLs allowed');
-            }
-            
-            if (!localStorageWorks) {
-                issues.push('❌ localStorage not accessible');
-            } else {
-                fixes.push('✅ localStorage working');
-            }
-            
-            const statusMessage = `
+        if (!hasMediaSupport) {
+          issues.push('❌ Media sources blocked by CSP')
+        } else {
+          fixes.push('✅ Media sources allowed')
+        }
+
+        if (!hasBlobSupport) {
+          issues.push('❌ Blob URLs blocked by CSP')
+        } else {
+          fixes.push('✅ Blob URLs allowed')
+        }
+
+        if (!localStorageWorks) {
+          issues.push('❌ localStorage not accessible')
+        } else {
+          fixes.push('✅ localStorage working')
+        }
+
+        const statusMessage = `
                 <strong>Issues Found:</strong> ${issues.length}<br>
                 <strong>Working Features:</strong> ${fixes.length}<br><br>
                 ${issues.join('<br>')}
                 ${fixes.length > 0 ? '<br>' + fixes.join('<br>') : ''}
-            `;
-            
-            if (issues.length > 0) {
-                showStatus(statusMessage, 'warning');
-            } else {
-                showStatus(statusMessage + '<br><br>🎉 All systems operational!', 'success');
-            }
-            
-            // Show technical details
-            const techData = {
-                environment: {
-                    hostname: window.location.hostname,
-                    port: window.location.port,
-                    protocol: window.location.protocol
-                },
-                csp: {
-                    metaTagsFound: metaTags.length,
-                    wasmSupport: hasWasmSupport,
-                    mediaSupport: hasMediaSupport,
-                    blobSupport: hasBlobSupport,
-                    fullCSP: currentCSP
-                },
-                features: {
-                    localStorage: localStorageWorks,
-                    webAssembly: typeof WebAssembly !== 'undefined',
-                    blobSupport: typeof Blob !== 'undefined'
-                },
-                issuesFound: issues.length,
-                workingFeatures: fixes.length
-            };
-            
-            issueDataPre.textContent = JSON.stringify(techData, null, 2);
-            detailsDiv.style.display = 'block';
+            `
+
+        if (issues.length > 0) {
+          showStatus(statusMessage, 'warning')
+        } else {
+          showStatus(
+            statusMessage + '<br><br>🎉 All systems operational!',
+            'success'
+          )
         }
 
-        function fixAllIssues() {
-            // Remove existing CSP meta tags
-            const existingCSP = document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]');
-            existingCSP.forEach(meta => meta.remove());
-            
-            // Add comprehensive CSP that supports all features
-            const newCSP = document.createElement('meta');
-            newCSP.setAttribute('http-equiv', 'Content-Security-Policy');
-            newCSP.setAttribute('content', 
-                "default-src 'self'; " +
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net; " +
-                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-                "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; " +
-                "img-src 'self' data: https: blob:; " +
-                "media-src 'self' blob: data:; " +
-                "connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net; " +
-                "object-src 'none'; " +
-                "base-uri 'self'; " +
-                "form-action 'self'; " +
-                "worker-src 'self' blob:;"
-            );
-            
-            document.head.appendChild(newCSP);
-            
-            showStatus(
-                '✅ <strong>All Issues Fixed!</strong><br><br>' +
-                '🔧 <strong>Applied Fixes:</strong><br>' +
-                '• Updated CSP to allow WASM compilation<br>' +
-                '• Enabled blob URLs for media and generated content<br>' +
-                '• Added media-src directive for audio/video<br>' +
-                '• Preserved security while enabling functionality<br><br>' +
-                '⚠️ <strong>Important:</strong> Please refresh your main NAVI application to apply these changes.',
-                'success'
-            );
+        // Show technical details
+        const techData = {
+          environment: {
+            hostname: window.location.hostname,
+            port: window.location.port,
+            protocol: window.location.protocol,
+          },
+          csp: {
+            metaTagsFound: metaTags.length,
+            wasmSupport: hasWasmSupport,
+            mediaSupport: hasMediaSupport,
+            blobSupport: hasBlobSupport,
+            fullCSP: currentCSP,
+          },
+          features: {
+            localStorage: localStorageWorks,
+            webAssembly: typeof WebAssembly !== 'undefined',
+            blobSupport: typeof Blob !== 'undefined',
+          },
+          issuesFound: issues.length,
+          workingFeatures: fixes.length,
         }
 
-        async function testFeatures() {
-            const results = [];
-            
-            // Test WASM
-            try {
-                const wasmCode = new Uint8Array([
-                    0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
-                    0x01, 0x07, 0x01, 0x60, 0x02, 0x7f, 0x7f, 0x01, 0x7f,
-                    0x03, 0x02, 0x01, 0x00, 0x07, 0x07, 0x01, 0x03, 0x61,
-                    0x64, 0x64, 0x00, 0x00, 0x0a, 0x09, 0x01, 0x07, 0x00,
-                    0x20, 0x00, 0x20, 0x01, 0x6a, 0x0b
-                ]);
-                
-                const module = await WebAssembly.compile(wasmCode);
-                const instance = await WebAssembly.instantiate(module);
-                const result = instance.exports.add(5, 3);
-                
-                results.push(`✅ WASM Test: Passed (5 + 3 = ${result})`);
-            } catch (error) {
-                results.push(`❌ WASM Test: Failed (${error.message})`);
-            }
-            
-            // Test Blob creation
-            try {
-                const blob = new Blob(['test data'], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                URL.revokeObjectURL(url);
-                results.push('✅ Blob Test: Passed');
-            } catch (error) {
-                results.push(`❌ Blob Test: Failed (${error.message})`);
-            }
-            
-            // Test localStorage
-            try {
-                localStorage.setItem('test-fix', 'success');
-                const value = localStorage.getItem('test-fix');
-                localStorage.removeItem('test-fix');
-                results.push(`✅ localStorage Test: Passed (${value})`);
-            } catch (error) {
-                results.push(`❌ localStorage Test: Failed (${error.message})`);
-            }
-            
-            // Test Media capabilities
-            try {
-                const audio = new Audio();
-                results.push('✅ Audio Test: Audio element created successfully');
-            } catch (error) {
-                results.push(`❌ Audio Test: Failed (${error.message})`);
-            }
-            
-            const statusMessage = `
+        issueDataPre.textContent = JSON.stringify(techData, null, 2)
+        detailsDiv.style.display = 'block'
+      }
+
+      function fixAllIssues() {
+        // Remove existing CSP meta tags
+        const existingCSP = document.querySelectorAll(
+          'meta[http-equiv="Content-Security-Policy"]'
+        )
+        existingCSP.forEach(meta => meta.remove())
+
+        // Add comprehensive CSP that supports all features
+        const newCSP = document.createElement('meta')
+        newCSP.setAttribute('http-equiv', 'Content-Security-Policy')
+        newCSP.setAttribute(
+          'content',
+          "default-src 'self'; " +
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net; " +
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+            "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; " +
+            "img-src 'self' data: https: blob:; " +
+            "media-src 'self' blob: data:; " +
+            "connect-src 'self' http: https: ws: wss: blob: https://cdn.jsdelivr.net; " +
+            "object-src 'none'; " +
+            "base-uri 'self'; " +
+            "form-action 'self'; " +
+            "worker-src 'self' blob:;"
+        )
+
+        document.head.appendChild(newCSP)
+
+        showStatus(
+          '✅ <strong>All Issues Fixed!</strong><br><br>' +
+            '🔧 <strong>Applied Fixes:</strong><br>' +
+            '• Updated CSP to allow WASM compilation<br>' +
+            '• Enabled blob URLs for media and generated content<br>' +
+            '• Added media-src directive for audio/video<br>' +
+            '• Preserved security while enabling functionality<br><br>' +
+            '⚠️ <strong>Important:</strong> Please refresh your main NAVI application to apply these changes.',
+          'success'
+        )
+      }
+
+      async function testFeatures() {
+        const results = []
+
+        // Test WASM
+        try {
+          const wasmCode = new Uint8Array([
+            0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x07, 0x01,
+            0x60, 0x02, 0x7f, 0x7f, 0x01, 0x7f, 0x03, 0x02, 0x01, 0x00, 0x07,
+            0x07, 0x01, 0x03, 0x61, 0x64, 0x64, 0x00, 0x00, 0x0a, 0x09, 0x01,
+            0x07, 0x00, 0x20, 0x00, 0x20, 0x01, 0x6a, 0x0b,
+          ])
+
+          const module = await WebAssembly.compile(wasmCode)
+          const instance = await WebAssembly.instantiate(module)
+          const result = instance.exports.add(5, 3)
+
+          results.push(`✅ WASM Test: Passed (5 + 3 = ${result})`)
+        } catch (error) {
+          results.push(`❌ WASM Test: Failed (${error.message})`)
+        }
+
+        // Test Blob creation
+        try {
+          const blob = new Blob(['test data'], { type: 'text/plain' })
+          const url = URL.createObjectURL(blob)
+          URL.revokeObjectURL(url)
+          results.push('✅ Blob Test: Passed')
+        } catch (error) {
+          results.push(`❌ Blob Test: Failed (${error.message})`)
+        }
+
+        // Test localStorage
+        try {
+          localStorage.setItem('test-fix', 'success')
+          const value = localStorage.getItem('test-fix')
+          localStorage.removeItem('test-fix')
+          results.push(`✅ localStorage Test: Passed (${value})`)
+        } catch (error) {
+          results.push(`❌ localStorage Test: Failed (${error.message})`)
+        }
+
+        // Test Media capabilities
+        try {
+          const audio = new Audio()
+          results.push('✅ Audio Test: Audio element created successfully')
+        } catch (error) {
+          results.push(`❌ Audio Test: Failed (${error.message})`)
+        }
+
+        const statusMessage = `
                 <strong>🧪 Feature Tests Completed:</strong><br><br>
                 ${results.join('<br>')}
                 <br><br>
-                ${results.filter(r => r.includes('✅')).length === results.length ? 
-                    '🎉 All tests passed! Your NAVI application should work properly.' :
-                    '⚠️ Some tests failed. You may need to refresh the main application.'}
-            `;
-            
-            showStatus(statusMessage, results.filter(r => r.includes('✅')).length === results.length ? 'success' : 'warning');
-        }
+                ${
+                  results.filter(r => r.includes('✅')).length ===
+                  results.length
+                    ? '🎉 All tests passed! Your NAVI application should work properly.'
+                    : '⚠️ Some tests failed. You may need to refresh the main application.'
+                }
+            `
 
-        // Auto-check on load
-        window.addEventListener('load', checkIssues);
+        showStatus(
+          statusMessage,
+          results.filter(r => r.includes('✅')).length === results.length
+            ? 'success'
+            : 'warning'
+        )
+      }
+
+      // Auto-check on load
+      window.addEventListener('load', checkIssues)
     </script>
-</body>
+  </body>
 </html>

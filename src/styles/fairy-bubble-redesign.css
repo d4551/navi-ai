@@ -90,7 +90,7 @@
  * Bubble Tail/Pointer - Design system aligned (no relative positioning required)
  */
 .fairy-bubble::before {
-  content: "";
+  content: '';
   display: block;
   width: 18px;
   height: 18px;
@@ -412,8 +412,8 @@
 /**
  * Dark theme adaptations
  */
-[data-theme="dark"] .fairy-bubble,
-[data-theme="dark"] .enhanced-gaming-card {
+[data-theme='dark'] .fairy-bubble,
+[data-theme='dark'] .enhanced-gaming-card {
   background: linear-gradient(
     135deg,
     rgba(var(--color-primary-500-rgb), 0.1) 0%,

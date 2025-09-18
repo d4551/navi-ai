@@ -10,59 +10,60 @@
  * - Push notifications
  */
 
-import { logger } from '@/shared/utils/logger';
+import { logger } from '@/shared/utils/logger'
 
 export interface ServiceWorkerStatus {
-  registered: boolean;
-  installing: boolean;
-  waiting: boolean;
-  active: boolean;
-  error: string | null;
+  registered: boolean
+  installing: boolean
+  waiting: boolean
+  active: boolean
+  error: string | null
 }
 
 export interface CacheStatus {
-  caches: Record<string, number>;
-  total: number;
+  caches: Record<string, number>
+  total: number
 }
 
 class ServiceWorkerManager {
-  private registration: ServiceWorkerRegistration | null = null;
+  private registration: ServiceWorkerRegistration | null = null
   private status: ServiceWorkerStatus = {
     registered: false,
     installing: false,
     waiting: false,
     active: false,
-    error: null
-  };
+    error: null,
+  }
 
   /**
    * Register service worker
    */
   async register(): Promise<boolean> {
     if (!('serviceWorker' in navigator)) {
-      logger.warn('Service Worker not supported');
-      return false;
+      logger.warn('Service Worker not supported')
+      return false
     }
 
     try {
-      logger.info('Registering service worker...');
+      logger.info('Registering service worker...')
 
       this.registration = await navigator.serviceWorker.register('/sw.js', {
         scope: '/',
-        updateViaCache: 'none' // Always check for updates
-      });
+        updateViaCache: 'none', // Always check for updates
+      })
 
-      this.status.registered = true;
+      this.status.registered = true
 
       // Listen for service worker events
-      this.setupEventListeners();
+      this.setupEventListeners()
 
-      logger.info('Service worker registered successfully');
-      return true;
+      logger.info('Service worker registered successfully')
+      return true
     } catch (error) {
-      logger.error('Service worker registration failed:', error);
-      this.status.error = error instanceof Error ? error.message : 'Unknown error';
-      return false;
+      logger.error('Service worker registration failed:', error)
+      this.status.error =
+        error instanceof Error ? error.message : 'Unknown error'
+      return false
     }
   }
 
@@ -71,15 +72,15 @@ class ServiceWorkerManager {
    */
   async checkForUpdates(): Promise<boolean> {
     if (!this.registration) {
-      return false;
+      return false
     }
 
     try {
-      const newRegistration = await this.registration.update();
-      return newRegistration.installing !== null;
+      const newRegistration = await this.registration.update()
+      return newRegistration.installing !== null
     } catch (error) {
-      logger.error('Failed to check for service worker updates:', error);
-      return false;
+      logger.error('Failed to check for service worker updates:', error)
+      return false
     }
   }
 
@@ -88,23 +89,26 @@ class ServiceWorkerManager {
    */
   async skipWaiting(): Promise<void> {
     if (!this.registration?.waiting) {
-      return;
+      return
     }
 
     // Send message to service worker to skip waiting
-    this.registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+    this.registration.waiting.postMessage({ type: 'SKIP_WAITING' })
 
     // Wait for new service worker to become active
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const onStateChange = () => {
         if (this.registration?.active) {
-          this.registration.active.removeEventListener('statechange', onStateChange);
-          resolve();
+          this.registration.active.removeEventListener(
+            'statechange',
+            onStateChange
+          )
+          resolve()
         }
-      };
+      }
 
-      this.registration.active?.addEventListener('statechange', onStateChange);
-    });
+      this.registration.active?.addEventListener('statechange', onStateChange)
+    })
   }
 
   /**
@@ -112,26 +116,25 @@ class ServiceWorkerManager {
    */
   async getCacheStatus(): Promise<CacheStatus> {
     if (!this.registration?.active) {
-      return { caches: {}, total: 0 };
+      return { caches: {}, total: 0 }
     }
 
-    return new Promise((resolve) => {
-      const messageChannel = new MessageChannel();
+    return new Promise(resolve => {
+      const messageChannel = new MessageChannel()
 
-      messageChannel.port1.onmessage = (event) => {
-        resolve(event.data);
-      };
+      messageChannel.port1.onmessage = event => {
+        resolve(event.data)
+      }
 
-      this.registration.active?.postMessage(
-        { type: 'GET_CACHE_STATUS' },
-        [messageChannel.port2]
-      );
+      this.registration.active?.postMessage({ type: 'GET_CACHE_STATUS' }, [
+        messageChannel.port2,
+      ])
 
       // Timeout after 5 seconds
       setTimeout(() => {
-        resolve({ caches: {}, total: 0 });
-      }, 5000);
-    });
+        resolve({ caches: {}, total: 0 })
+      }, 5000)
+    })
   }
 
   /**
@@ -139,26 +142,25 @@ class ServiceWorkerManager {
    */
   async clearCaches(): Promise<{ cleared: number }> {
     if (!this.registration?.active) {
-      return { cleared: 0 };
+      return { cleared: 0 }
     }
 
-    return new Promise((resolve) => {
-      const messageChannel = new MessageChannel();
+    return new Promise(resolve => {
+      const messageChannel = new MessageChannel()
 
-      messageChannel.port1.onmessage = (event) => {
-        resolve(event.data);
-      };
+      messageChannel.port1.onmessage = event => {
+        resolve(event.data)
+      }
 
-      this.registration.active?.postMessage(
-        { type: 'CLEAR_CACHE' },
-        [messageChannel.port2]
-      );
+      this.registration.active?.postMessage({ type: 'CLEAR_CACHE' }, [
+        messageChannel.port2,
+      ])
 
       // Timeout after 10 seconds
       setTimeout(() => {
-        resolve({ cleared: 0 });
-      }, 10000);
-    });
+        resolve({ cleared: 0 })
+      }, 10000)
+    })
   }
 
   /**
@@ -166,16 +168,16 @@ class ServiceWorkerManager {
    */
   async registerBackgroundSync(tag: string): Promise<boolean> {
     if (!this.registration) {
-      return false;
+      return false
     }
 
     try {
-      await (this.registration as any).sync.register(tag);
-      logger.info(`Background sync registered: ${tag}`);
-      return true;
+      await (this.registration as any).sync.register(tag)
+      logger.info(`Background sync registered: ${tag}`)
+      return true
     } catch (error) {
-      logger.error(`Failed to register background sync ${tag}:`, error);
-      return false;
+      logger.error(`Failed to register background sync ${tag}:`, error)
+      return false
     }
   }
 
@@ -184,21 +186,21 @@ class ServiceWorkerManager {
    */
   async enableNotifications(): Promise<boolean> {
     if (!('Notification' in window)) {
-      logger.warn('Notifications not supported');
-      return false;
+      logger.warn('Notifications not supported')
+      return false
     }
 
     if (!this.registration) {
-      logger.warn('Service worker not registered');
-      return false;
+      logger.warn('Service worker not registered')
+      return false
     }
 
     try {
       // Request permission
-      const permission = await Notification.requestPermission();
+      const permission = await Notification.requestPermission()
       if (permission !== 'granted') {
-        logger.info('Notification permission denied');
-        return false;
+        logger.info('Notification permission denied')
+        return false
       }
 
       // Subscribe to push notifications
@@ -207,14 +209,14 @@ class ServiceWorkerManager {
         applicationServerKey: this.urlBase64ToUint8Array(
           // Replace with your VAPID public key
           'BP3o-6KwVg5pD7w7DWx_z5k4Vq_JKKJJj8QYYQRhQGhQGhQGhQ'
-        )
-      });
+        ),
+      })
 
-      logger.info('Push subscription created:', subscription);
-      return true;
+      logger.info('Push subscription created:', subscription)
+      return true
     } catch (error) {
-      logger.error('Failed to enable notifications:', error);
-      return false;
+      logger.error('Failed to enable notifications:', error)
+      return false
     }
   }
 
@@ -222,69 +224,69 @@ class ServiceWorkerManager {
    * Get current status
    */
   getStatus(): ServiceWorkerStatus {
-    return { ...this.status };
+    return { ...this.status }
   }
 
   /**
    * Check if app is running offline
    */
   isOffline(): boolean {
-    return !navigator.onLine;
+    return !navigator.onLine
   }
 
   /**
    * Setup event listeners for service worker lifecycle
    */
   private setupEventListeners(): void {
-    if (!this.registration) return;
+    if (!this.registration) return
 
     // Handle service worker state changes
     if (this.registration.installing) {
-      this.status.installing = true;
-      this.registration.installing.addEventListener('statechange', (event) => {
-        const sw = event.target as ServiceWorker;
-        logger.info('Service worker state changed:', sw.state);
+      this.status.installing = true
+      this.registration.installing.addEventListener('statechange', event => {
+        const sw = event.target as ServiceWorker
+        logger.info('Service worker state changed:', sw.state)
 
         if (sw.state === 'installed') {
-          this.status.installing = false;
+          this.status.installing = false
           if (navigator.serviceWorker.controller) {
             // New service worker available
-            this.status.waiting = true;
-            this.notifyUpdate();
+            this.status.waiting = true
+            this.notifyUpdate()
           } else {
             // First time install
-            this.status.active = true;
-            this.notifyInstall();
+            this.status.active = true
+            this.notifyInstall()
           }
         }
-      });
+      })
     }
 
     if (this.registration.waiting) {
-      this.status.waiting = true;
-      this.notifyUpdate();
+      this.status.waiting = true
+      this.notifyUpdate()
     }
 
     if (this.registration.active) {
-      this.status.active = true;
+      this.status.active = true
     }
 
     // Listen for new service workers
     this.registration.addEventListener('updatefound', () => {
-      this.status.installing = true;
-      logger.info('New service worker found');
-    });
+      this.status.installing = true
+      logger.info('New service worker found')
+    })
 
     // Listen for online/offline events
     window.addEventListener('online', () => {
-      logger.info('App back online');
-      this.notifyOnline();
-    });
+      logger.info('App back online')
+      this.notifyOnline()
+    })
 
     window.addEventListener('offline', () => {
-      logger.info('App offline');
-      this.notifyOffline();
-    });
+      logger.info('App offline')
+      this.notifyOffline()
+    })
   }
 
   /**
@@ -292,7 +294,7 @@ class ServiceWorkerManager {
    */
   private notifyInstall(): void {
     // Dispatch custom event for UI to handle
-    window.dispatchEvent(new CustomEvent('sw-installed'));
+    window.dispatchEvent(new CustomEvent('sw-installed'))
   }
 
   /**
@@ -300,54 +302,54 @@ class ServiceWorkerManager {
    */
   private notifyUpdate(): void {
     // Dispatch custom event for UI to handle
-    window.dispatchEvent(new CustomEvent('sw-update-available'));
+    window.dispatchEvent(new CustomEvent('sw-update-available'))
   }
 
   /**
    * Notify about online status
    */
   private notifyOnline(): void {
-    window.dispatchEvent(new CustomEvent('app-online'));
+    window.dispatchEvent(new CustomEvent('app-online'))
   }
 
   /**
    * Notify about offline status
    */
   private notifyOffline(): void {
-    window.dispatchEvent(new CustomEvent('app-offline'));
+    window.dispatchEvent(new CustomEvent('app-offline'))
   }
 
   /**
    * Convert VAPID key to Uint8Array
    */
   private urlBase64ToUint8Array(base64String: string): Uint8Array {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
     const base64 = (base64String + padding)
       .replace(/-/g, '+')
-      .replace(/_/g, '/');
+      .replace(/_/g, '/')
 
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
+    const rawData = window.atob(base64)
+    const outputArray = new Uint8Array(rawData.length)
 
     for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
+      outputArray[i] = rawData.charCodeAt(i)
     }
-    return outputArray;
+    return outputArray
   }
 }
 
 // Export singleton instance
-export const serviceWorkerManager = new ServiceWorkerManager();
+export const serviceWorkerManager = new ServiceWorkerManager()
 
 // Auto-register service worker in production
 if (import.meta.env.PROD && typeof window !== 'undefined') {
   // Register after page load
   window.addEventListener('load', () => {
-    serviceWorkerManager.register();
-  });
+    serviceWorkerManager.register()
+  })
 
   // Check for updates every 60 seconds
   setInterval(() => {
-    serviceWorkerManager.checkForUpdates();
-  }, 60000);
+    serviceWorkerManager.checkForUpdates()
+  }, 60000)
 }

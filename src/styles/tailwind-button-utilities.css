@@ -67,11 +67,21 @@
   @apply flex items-center justify-center;
 }
 
-.btn-icon-only.btn-xs { @apply p-2 min-h-[32px] min-w-[32px]; }
-.btn-icon-only.btn-sm { @apply p-2.5 min-h-[36px] min-w-[36px]; }
-.btn-icon-only.btn-md { @apply p-3 min-h-[44px] min-w-[44px]; }
-.btn-icon-only.btn-lg { @apply p-4 min-h-[52px] min-w-[52px]; }
-.btn-icon-only.btn-xl { @apply p-5 min-h-[60px] min-w-[60px]; }
+.btn-icon-only.btn-xs {
+  @apply p-2 min-h-[32px] min-w-[32px];
+}
+.btn-icon-only.btn-sm {
+  @apply p-2.5 min-h-[36px] min-w-[36px];
+}
+.btn-icon-only.btn-md {
+  @apply p-3 min-h-[44px] min-w-[44px];
+}
+.btn-icon-only.btn-lg {
+  @apply p-4 min-h-[52px] min-w-[52px];
+}
+.btn-icon-only.btn-xl {
+  @apply p-5 min-h-[60px] min-w-[60px];
+}
 
 /* Variant Styles */
 .btn-primary {
@@ -250,11 +260,11 @@
   .btn-responsive:not(.btn-icon-only) .btn-content {
     @apply hidden;
   }
-  
+
   .btn-responsive {
     @apply aspect-square p-3;
   }
-  
+
   .btn-responsive .btn-icon {
     @apply m-0;
   }
@@ -276,7 +286,7 @@
   .btn-base {
     @apply border-2;
   }
-  
+
   .btn-glass {
     @apply bg-white dark:bg-black border-current;
   }

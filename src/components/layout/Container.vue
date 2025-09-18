@@ -11,12 +11,12 @@ export default {
     size: {
       type: String,
       default: 'lg',
-      validator: value => ['sm', 'md', 'lg', 'xl', 'full'].includes(value)
+      validator: value => ['sm', 'md', 'lg', 'xl', 'full'].includes(value),
     },
     padding: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   computed: {
     classes() {
@@ -24,7 +24,7 @@ export default {
         return this.padding ? 'w-full px-4' : 'w-full'
       }
       return `container-${this.size}`
-    }
-  }
+    },
+  },
 }
 </script>

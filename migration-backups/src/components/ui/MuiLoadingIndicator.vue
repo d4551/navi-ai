@@ -2,7 +2,7 @@
   <div :class="loadingClasses">
     <div class="mui-loading-container">
       <!-- Circular Progress -->
-      <svg 
+      <svg
         v-if="type === 'circular'"
         :class="['mui-circular-progress', `mui-circular-${color}`]"
         :width="size"
@@ -32,7 +32,7 @@
       </svg>
 
       <!-- Linear Progress -->
-      <div 
+      <div
         v-else-if="type === 'linear'"
         :class="['mui-linear-progress', `mui-linear-${color}`]"
         role="progressbar"
@@ -42,19 +42,30 @@
         :aria-valuemax="determinate ? 100 : undefined"
       >
         <div class="mui-linear-progress-bar">
-          <div class="mui-linear-progress-primary" :style="linearProgressStyle"></div>
+          <div
+            class="mui-linear-progress-primary"
+            :style="linearProgressStyle"
+          ></div>
           <div v-if="!determinate" class="mui-linear-progress-secondary"></div>
         </div>
       </div>
 
       <!-- Skeleton Loading -->
-      <div v-else-if="type === 'skeleton'" :class="['mui-skeleton', `mui-skeleton-${variant}`]">
+      <div
+        v-else-if="type === 'skeleton'"
+        :class="['mui-skeleton', `mui-skeleton-${variant}`]"
+      >
         <div class="mui-skeleton-wave"></div>
       </div>
 
       <!-- Dots Loading -->
       <div v-else-if="type === 'dots'" class="mui-dots-loading">
-        <div v-for="n in 3" :key="n" class="mui-dot" :style="{ animationDelay: `${(n - 1) * 0.2}s` }"></div>
+        <div
+          v-for="n in 3"
+          :key="n"
+          class="mui-dot"
+          :style="{ animationDelay: `${(n - 1) * 0.2}s` }"
+        ></div>
       </div>
 
       <!-- Pulse Loading -->
@@ -69,12 +80,16 @@
     </div>
 
     <!-- Backdrop for overlay loading -->
-    <div v-if="overlay" class="mui-loading-backdrop" @click="handleBackdropClick"></div>
+    <div
+      v-if="overlay"
+      class="mui-loading-backdrop"
+      @click="handleBackdropClick"
+    ></div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 export default {
   name: 'MuiLoadingIndicator',
@@ -82,55 +97,64 @@ export default {
     type: {
       type: String,
       default: 'circular',
-      validator: (value) => ['circular', 'linear', 'skeleton', 'dots', 'pulse'].includes(value)
+      validator: value =>
+        ['circular', 'linear', 'skeleton', 'dots', 'pulse'].includes(value),
     },
     variant: {
       type: String,
       default: 'text',
-      validator: (value) => ['text', 'rectangular', 'circular'].includes(value)
+      validator: value => ['text', 'rectangular', 'circular'].includes(value),
     },
     color: {
       type: String,
       default: 'primary',
-      validator: (value) => ['primary', 'secondary', 'success', 'warning', 'error', 'info'].includes(value)
+      validator: value =>
+        [
+          'primary',
+          'secondary',
+          'success',
+          'warning',
+          'error',
+          'info',
+        ].includes(value),
     },
     size: {
       type: [Number, String],
-      default: 40
+      default: 40,
     },
     thickness: {
       type: Number,
-      default: 3.6
+      default: 3.6,
     },
     progress: {
       type: Number,
       default: 0,
-      validator: (value) => value >= 0 && value <= 100
+      validator: value => value >= 0 && value <= 100,
     },
     determinate: {
       type: Boolean,
-      default: false
+      default: false,
     },
     text: {
       type: String,
-      default: ''
+      default: '',
     },
     overlay: {
       type: Boolean,
-      default: false
+      default: false,
     },
     center: {
       type: Boolean,
-      default: false
+      default: false,
     },
     fullscreen: {
       type: Boolean,
-      default: false
+      default: false,
     },
     ariaLabel: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['backdrop-click'],
   setup(props, { emit }) {
@@ -139,44 +163,44 @@ export default {
       {
         'mui-loading-overlay': props.overlay,
         'mui-loading-center': props.center,
-        'mui-loading-fullscreen': props.fullscreen
-      }
-    ]);
+        'mui-loading-fullscreen': props.fullscreen,
+      },
+    ])
 
     const progressStyle = computed(() => {
       if (props.determinate) {
-        const circumference = 2 * Math.PI * 20.2;
-        const offset = circumference - (props.progress / 100) * circumference;
+        const circumference = 2 * Math.PI * 20.2
+        const offset = circumference - (props.progress / 100) * circumference
         return {
           strokeDasharray: circumference,
           strokeDashoffset: offset,
-          transition: 'stroke-dashoffset 0.3s ease-in-out'
-        };
+          transition: 'stroke-dashoffset 0.3s ease-in-out',
+        }
       }
-      return {};
-    });
+      return {}
+    })
 
     const linearProgressStyle = computed(() => {
       if (props.determinate) {
         return {
-          transform: `translateX(-${100 - props.progress}%)`
-        };
+          transform: `translateX(-${100 - props.progress}%)`,
+        }
       }
-      return {};
-    });
+      return {}
+    })
 
     const handleBackdropClick = () => {
-      emit('backdrop-click');
-    };
+      emit('backdrop-click')
+    }
 
     return {
       loadingClasses,
       progressStyle,
       linearProgressStyle,
-      handleBackdropClick
-    };
-  }
-};
+      handleBackdropClick,
+    }
+  },
+}
 </script>
 
 <style scoped>
@@ -321,7 +345,8 @@ export default {
   right: 0;
   width: 100%;
   transform: translateX(-100%);
-  animation: mui-indeterminate1 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+  animation: mui-indeterminate1 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395)
+    infinite;
 }
 
 .mui-linear-progress-secondary {
@@ -372,11 +397,11 @@ export default {
   animation: mui-skeleton-wave 1.6s linear infinite;
 }
 
-[data-theme="dark"] .mui-skeleton {
+[data-theme='dark'] .mui-skeleton {
   background-color: var(--glass-surface, rgba(255, 255, 255, 0.13));
 }
 
-[data-theme="dark"] .mui-skeleton-wave {
+[data-theme='dark'] .mui-skeleton-wave {
   background: linear-gradient(
     90deg,
     transparent,
@@ -424,7 +449,7 @@ export default {
   letter-spacing: 0.5px;
 }
 
-[data-theme="dark"] .mui-loading-text {
+[data-theme='dark'] .mui-loading-text {
   color: var(--text-secondary, rgba(255, 255, 255, 0.7));
 }
 
@@ -496,7 +521,9 @@ export default {
 }
 
 @keyframes mui-dot-bounce {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
   }
   40% {
@@ -529,16 +556,16 @@ export default {
   .mui-pulse-circle {
     animation: none;
   }
-  
+
   .mui-circular-progress-bar {
     stroke-dasharray: 80px, 200px;
     stroke-dashoffset: -40px;
   }
-  
+
   .mui-linear-progress-primary {
     transform: translateX(-50%);
   }
-  
+
   .mui-skeleton-wave {
     display: none;
   }

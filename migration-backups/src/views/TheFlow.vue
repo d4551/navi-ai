@@ -20,7 +20,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
         <p>Start your automation workflow</p>
       </div>
       <div class="actions-grid tool-grid">
-        <button 
+        <button
           class="action-card glass p-4 gap-4 rounded-lg neon-interactive"
           @click="createNewFlow"
         >
@@ -32,8 +32,8 @@ RGB accents with ultra-wide layout and AI-powered job automation
             <p>Build new automation workflow</p>
           </div>
         </button>
-        
-        <button 
+
+        <button
           class="action-card glass p-4 gap-4 rounded-lg neon-interactive"
           @click="openTemplate"
         >
@@ -45,8 +45,8 @@ RGB accents with ultra-wide layout and AI-powered job automation
             <p>Use pre-built career flows</p>
           </div>
         </button>
-        
-        <button 
+
+        <button
           class="action-card glass p-4 gap-4 rounded-lg neon-interactive"
           @click="openNodeRedUI"
         >
@@ -58,8 +58,8 @@ RGB accents with ultra-wide layout and AI-powered job automation
             <p>Advanced flow editor</p>
           </div>
         </button>
-        
-        <button 
+
+        <button
           class="action-card glass p-4 gap-4 rounded-lg neon-interactive"
           @click="viewLogs"
         >
@@ -79,13 +79,16 @@ RGB accents with ultra-wide layout and AI-powered job automation
       <div class="section-header enhanced-header">
         <div class="header-content">
           <h2>Your Automation Flows</h2>
-          <p class="section-description">Manage and monitor your career automation workflows</p>
+          <p class="section-description">
+            Manage and monitor your career automation workflows
+          </p>
         </div>
         <div class="section-controls">
           <ViewToggle
-            v-model="viewMode" :options="[
+            v-model="viewMode"
+            :options="[
               { value: 'grid', icon: 'mdi-view-grid', label: 'Grid view' },
-              { value: 'list', icon: 'mdi-view-list', label: 'List view' }
+              { value: 'list', icon: 'mdi-view-list', label: 'List view' },
             ]"
           />
 
@@ -97,7 +100,11 @@ RGB accents with ultra-wide layout and AI-powered job automation
             aria-label="Search flows"
           />
 
-          <select v-model="sortBy" class="filter-select glass-input" aria-label="Sort flows">
+          <select
+            v-model="sortBy"
+            class="filter-select glass-input"
+            aria-label="Sort flows"
+          >
             <option value="recent">Recently run</option>
             <option value="status">Status</option>
             <option value="name">Name</option>
@@ -110,31 +117,52 @@ RGB accents with ultra-wide layout and AI-powered job automation
             <option value="networking">Networking</option>
             <option value="ai-assistance">AI Assistance</option>
           </select>
-          
-          <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-refresh" :class="{ spinning: loading }" @click="refreshFlows">Refresh</UnifiedButton>
+
+          <UnifiedButton
+            color="glass"
+            appearance="outlined"
+            leading-icon="mdi-refresh"
+            :class="{ spinning: loading }"
+            @click="refreshFlows"
+            >Refresh</UnifiedButton
+          >
         </div>
       </div>
-      
+
       <div class="category-section">
         <h3 class="category-title">Filter by Category</h3>
-        <div class="category-chips enhanced-chips" role="toolbar" aria-label="Filter by category">
+        <div
+          class="category-chips enhanced-chips"
+          role="toolbar"
+          aria-label="Filter by category"
+        >
           <button
             v-for="cat in categories"
             :key="cat.value"
             class="chip enhanced-chip"
             :class="{ active: filterCategory === cat.value }"
             :aria-pressed="(filterCategory === cat.value).toString()"
-            @click="filterCategory = (filterCategory === cat.value ? '' : cat.value)"
+            @click="
+              filterCategory = filterCategory === cat.value ? '' : cat.value
+            "
           >
             <AppIcon :name="cat.icon" class="chip-icon" />
             <span class="chip-label">{{ cat.label }}</span>
-            <span v-if="filterCategory === cat.value" class="chip-badge">{{ flows.filter(f => f.category === cat.value).length }}</span>
+            <span v-if="filterCategory === cat.value" class="chip-badge">{{
+              flows.filter(f => f.category === cat.value).length
+            }}</span>
           </button>
         </div>
       </div>
 
-      <div v-if="sortedFilteredFlows.length" class="flows-grid portfolio-grid" :class="`mode-${viewMode}`" role="list" aria-label="Flows list">
-        <div 
+      <div
+        v-if="sortedFilteredFlows.length"
+        class="flows-grid portfolio-grid"
+        :class="`mode-${viewMode}`"
+        role="list"
+        aria-label="Flows list"
+      >
+        <div
           v-for="flow in sortedFilteredFlows"
           :key="flow.id"
           class="flow-card glass p-4 gap-4 rounded-lg neon-interactive"
@@ -147,12 +175,15 @@ RGB accents with ultra-wide layout and AI-powered job automation
             <div class="flow-icon">
               <i :class="getFlowIcon(flow.category)" class="flow-type-icon"></i>
             </div>
-            
+
             <div class="flow-info">
               <h3 class="flow-name">{{ flow.name }}</h3>
               <p class="flow-description">{{ flow.description }}</p>
               <div class="flow-meta">
-                <span class="category-badge" :class="`category-${flow.category}`">
+                <span
+                  class="category-badge"
+                  :class="`category-${flow.category}`"
+                >
                   {{ formatCategory(flow.category) }}
                 </span>
                 <span class="status-badge" :class="`status-${flow.status}`">
@@ -160,35 +191,37 @@ RGB accents with ultra-wide layout and AI-powered job automation
                 </span>
               </div>
             </div>
-            
+
             <div class="flow-controls">
-              <button 
+              <button
                 class="control-btn ui-icon-btn"
                 :class="{ active: flow.status === 'running' }"
                 :title="flow.status === 'running' ? 'Stop Flow' : 'Start Flow'"
                 @click.stop="toggleFlow(flow)"
               >
-                <AppIcon :name="flow.status === 'running' ? 'mdi-stop' : 'mdi-play'" />
+                <AppIcon
+                  :name="flow.status === 'running' ? 'mdi-stop' : 'mdi-play'"
+                />
               </button>
-              
-              <button 
+
+              <button
                 class="control-btn ui-icon-btn"
                 title="Edit Flow"
                 @click.stop="editFlow(flow)"
               >
                 <AppIcon name="mdi-pencil" />
               </button>
-              <button 
-                class="control-btn ui-icon-btn" 
-                title="Duplicate Flow" 
+              <button
+                class="control-btn ui-icon-btn"
+                title="Duplicate Flow"
                 aria-label="Duplicate flow"
                 @click.stop="duplicateFlow(flow)"
               >
                 <AppIcon name="mdi-content-copy" />
               </button>
-              <button 
-                class="control-btn ui-icon-btn danger" 
-                title="Delete Flow" 
+              <button
+                class="control-btn ui-icon-btn danger"
+                title="Delete Flow"
                 aria-label="Delete flow"
                 @click.stop="deleteFlow(flow)"
               >
@@ -196,7 +229,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
               </button>
             </div>
           </div>
-          
+
           <!-- Flow Stats -->
           <div v-if="flow.stats" class="flow-stats">
             <div class="stat-item">
@@ -209,30 +242,44 @@ RGB accents with ultra-wide layout and AI-powered job automation
             </div>
             <div class="stat-item">
               <span class="stat-label">Last Run</span>
-              <span class="stat-value">{{ formatLastRun(flow.stats.lastRun) }}</span>
+              <span class="stat-value">{{
+                formatLastRun(flow.stats.lastRun)
+              }}</span>
             </div>
           </div>
-          
+
           <!-- Flow Actions -->
           <div class="flow-actions">
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-eye">View</UnifiedButton>
-            <UnifiedButton color="gaming" leading-icon="mdi-play">Run Now</UnifiedButton>
+            <UnifiedButton
+              color="glass"
+              appearance="outlined"
+              leading-icon="mdi-eye"
+              >View</UnifiedButton
+            >
+            <UnifiedButton color="gaming" leading-icon="mdi-play"
+              >Run Now</UnifiedButton
+            >
           </div>
         </div>
       </div>
-      
+
       <!-- Empty State -->
       <div v-else-if="!loading" class="empty-state glass p-6 gap-4 rounded-lg">
         <AppIcon name="mdi-lan-disconnect" class="empty-icon" />
         <h3>No Automation Flows</h3>
         <p>Create your first workflow to automate your career tasks</p>
-        <UnifiedButton color="gaming" leading-icon="mdi-plus" @click="createNewFlow">Create First Flow</UnifiedButton>
+        <UnifiedButton
+          color="gaming"
+          leading-icon="mdi-plus"
+          @click="createNewFlow"
+          >Create First Flow</UnifiedButton
+        >
       </div>
-      
+
       <!-- Loading State -->
       <div v-if="loading" class="loading-grid portfolio-grid">
-        <div 
-          v-for="i in 4" 
+        <div
+          v-for="i in 4"
           :key="i"
           class="flow-card-skeleton glass p-4 gap-4 rounded-lg"
         >
@@ -253,16 +300,27 @@ RGB accents with ultra-wide layout and AI-powered job automation
 
     <!-- Flow Templates Modal -->
     <Teleport to="body">
-      <div v-if="showTemplates" class="templates-modal-overlay" @click="closeTemplates">
+      <div
+        v-if="showTemplates"
+        class="templates-modal-overlay"
+        @click="closeTemplates"
+      >
         <div class="templates-modal glass-modal" @click.stop>
           <div class="modal-header">
             <h2>Flow Templates</h2>
-            <UnifiedButton color="ghost" appearance="text" icon-only icon="mdi-close" aria-label="Close" @click="closeTemplates" />
+            <UnifiedButton
+              color="ghost"
+              appearance="text"
+              icon-only
+              icon="mdi-close"
+              aria-label="Close"
+              @click="closeTemplates"
+            />
           </div>
-          
+
           <div class="modal-content">
             <div class="templates-grid settings-grid">
-              <div 
+              <div
                 v-for="template in flowTemplates"
                 :key="template.id"
                 class="template-card glass p-4 gap-4 rounded-lg neon-interactive"
@@ -275,7 +333,7 @@ RGB accents with ultra-wide layout and AI-powered job automation
                   <h4>{{ template.name }}</h4>
                   <p>{{ template.description }}</p>
                   <div class="template-tags">
-                    <span 
+                    <span
                       v-for="tag in template.tags"
                       :key="tag"
                       class="template-tag"
@@ -293,37 +351,89 @@ RGB accents with ultra-wide layout and AI-powered job automation
 
     <!-- Create Flow Wizard Modal -->
     <Teleport to="body">
-      <div v-if="showCreate" class="templates-modal-overlay" @click="closeCreate">
+      <div
+        v-if="showCreate"
+        class="templates-modal-overlay"
+        @click="closeCreate"
+      >
         <div class="templates-modal glass-modal" @click.stop>
           <div class="modal-header">
             <h2>Create Flow</h2>
-            <UnifiedButton color="ghost" appearance="text" icon-only icon="mdi-close" aria-label="Close" @click="closeCreate" />
+            <UnifiedButton
+              color="ghost"
+              appearance="text"
+              icon-only
+              icon="mdi-close"
+              aria-label="Close"
+              @click="closeCreate"
+            />
           </div>
           <div class="modal-content">
             <form class="create-form" @submit.prevent="submitCreateFlow">
               <div class="form-row">
                 <label class="form-label" for="cf-name">Name</label>
-                <input id="cf-name" v-model="newFlow.name" class="glass-input" type="text" placeholder="My New Flow" required />
+                <input
+                  id="cf-name"
+                  v-model="newFlow.name"
+                  class="glass-input"
+                  type="text"
+                  placeholder="My New Flow"
+                  required
+                />
               </div>
               <div class="form-row">
                 <label class="form-label" for="cf-desc">Description</label>
-                <textarea id="cf-desc" v-model="newFlow.description" class="glass-input" rows="3" placeholder="What does this flow do?"></textarea>
+                <textarea
+                  id="cf-desc"
+                  v-model="newFlow.description"
+                  class="glass-input"
+                  rows="3"
+                  placeholder="What does this flow do?"
+                ></textarea>
               </div>
               <div class="form-row">
                 <label class="form-label" for="cf-cat">Category</label>
-                <select id="cf-cat" v-model="newFlow.category" class="glass-input">
-                  <option v-for="c in categories" :key="c.value" :value="c.value">{{ c.label }}</option>
+                <select
+                  id="cf-cat"
+                  v-model="newFlow.category"
+                  class="glass-input"
+                >
+                  <option
+                    v-for="c in categories"
+                    :key="c.value"
+                    :value="c.value"
+                  >
+                    {{ c.label }}
+                  </option>
                 </select>
               </div>
               <div class="form-row">
-                <label class="form-label" for="cf-cron">Schedule (cron, optional)</label>
-                <input id="cf-cron" v-model="newFlow.scheduleCron" class="glass-input" type="text" placeholder="e.g. 0 9 * * *" />
+                <label class="form-label" for="cf-cron"
+                  >Schedule (cron, optional)</label
+                >
+                <input
+                  id="cf-cron"
+                  v-model="newFlow.scheduleCron"
+                  class="glass-input"
+                  type="text"
+                  placeholder="e.g. 0 9 * * *"
+                />
               </div>
             </form>
           </div>
           <div class="modal-actions">
-            <UnifiedButton color="glass" appearance="outlined" @click="closeCreate">Cancel</UnifiedButton>
-            <UnifiedButton color="gaming" leading-icon="mdi-plus" @click="submitCreateFlow">Create Flow</UnifiedButton>
+            <UnifiedButton
+              color="glass"
+              appearance="outlined"
+              @click="closeCreate"
+              >Cancel</UnifiedButton
+            >
+            <UnifiedButton
+              color="gaming"
+              leading-icon="mdi-plus"
+              @click="submitCreateFlow"
+              >Create Flow</UnifiedButton
+            >
           </div>
         </div>
       </div>
@@ -331,46 +441,68 @@ RGB accents with ultra-wide layout and AI-powered job automation
 
     <!-- Flow Details Modal -->
     <Teleport to="body">
-      <div v-if="selectedFlow" class="flow-modal-overlay" @click="closeFlowDetails">
+      <div
+        v-if="selectedFlow"
+        class="flow-modal-overlay"
+        @click="closeFlowDetails"
+      >
         <div class="flow-modal glass-modal" @click.stop>
           <div class="modal-header">
             <div class="modal-title">
-              <i :class="getFlowIcon(selectedFlow.category)" class="modal-icon"></i>
+              <i
+                :class="getFlowIcon(selectedFlow.category)"
+                class="modal-icon"
+              ></i>
               <h2>{{ selectedFlow.name }}</h2>
             </div>
-            <UnifiedButton color="ghost" appearance="text" icon-only icon="mdi-close" aria-label="Close details" @click="closeFlowDetails" />
+            <UnifiedButton
+              color="ghost"
+              appearance="text"
+              icon-only
+              icon="mdi-close"
+              aria-label="Close details"
+              @click="closeFlowDetails"
+            />
           </div>
-          
+
           <div class="modal-content">
             <div class="flow-details">
               <div class="detail-section">
                 <h3>Description</h3>
                 <p>{{ selectedFlow.description }}</p>
               </div>
-              
+
               <div v-if="selectedFlow.nodes?.length" class="detail-section">
                 <h3>Flow Nodes ({{ selectedFlow.nodes.length }})</h3>
                 <div class="nodes-list">
-                  <div 
+                  <div
                     v-for="node in selectedFlow.nodes"
                     :key="node.id"
                     class="node-item"
                   >
                     <i :class="getNodeIcon(node.type)" class="node-icon"></i>
-                    <span class="node-label">{{ node.label || node.type }}</span>
+                    <span class="node-label">{{
+                      node.label || node.type
+                    }}</span>
                   </div>
                 </div>
               </div>
-              
+
               <div v-if="selectedFlow.schedule" class="detail-section">
                 <h3>Schedule</h3>
                 <p class="mb-2">{{ formatSchedule(selectedFlow.schedule) }}</p>
                 <div class="d-flex align-items-center gap-3">
                   <label class="d-inline-flex align-items-center gap-2">
-                    <input v-model="scheduleEnabled" type="checkbox" @change="applyScheduleToggle" />
+                    <input
+                      v-model="scheduleEnabled"
+                      type="checkbox"
+                      @change="applyScheduleToggle"
+                    />
                     <span>Enable schedule</span>
                   </label>
-                  <span v-if="scheduleToggleBusy" class="text-muted small">Updating…</span>
+                  <span v-if="scheduleToggleBusy" class="text-muted small"
+                    >Updating…</span
+                  >
                 </div>
 
                 <div class="d-flex align-items-center gap-2 mt-2">
@@ -379,30 +511,82 @@ RGB accents with ultra-wide layout and AI-powered job automation
                     type="text"
                     class="glass-input"
                     placeholder="e.g., 0 9 * * *"
-                    style="min-width: 220px;"
+                    style="min-width: 220px"
                     :disabled="cronBusy"
                   />
-                  <UnifiedButton color="glass" appearance="outlined" :loading="cronBusy" @click="applyCronUpdate">Update</UnifiedButton>
-                  <select v-model="cronPreset" class="glass-input" aria-label="Cron preset" @change="onCronPresetChange">
+                  <UnifiedButton
+                    color="glass"
+                    appearance="outlined"
+                    :loading="cronBusy"
+                    @click="applyCronUpdate"
+                    >Update</UnifiedButton
+                  >
+                  <select
+                    v-model="cronPreset"
+                    class="glass-input"
+                    aria-label="Cron preset"
+                    @change="onCronPresetChange"
+                  >
                     <option value="">Preset…</option>
-                    <option v-for="p in cronPresets" :key="p.value" :value="p.value">{{ p.label }}</option>
+                    <option
+                      v-for="p in cronPresets"
+                      :key="p.value"
+                      :value="p.value"
+                    >
+                      {{ p.label }}
+                    </option>
                   </select>
                 </div>
-                <div v-if="cronError" class="text-danger small mt-1">{{ cronError }}</div>
+                <div v-if="cronError" class="text-danger small mt-1">
+                  {{ cronError }}
+                </div>
               </div>
             </div>
           </div>
-          
+
           <div class="modal-actions">
-            <UnifiedButton color="glass" appearance="outlined" @click="closeFlowDetails">Close</UnifiedButton>
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-pencil" @click="editFlow(selectedFlow)">Edit Flow</UnifiedButton>
+            <UnifiedButton
+              color="glass"
+              appearance="outlined"
+              @click="closeFlowDetails"
+              >Close</UnifiedButton
+            >
+            <UnifiedButton
+              color="glass"
+              appearance="outlined"
+              leading-icon="mdi-pencil"
+              @click="editFlow(selectedFlow)"
+              >Edit Flow</UnifiedButton
+            >
             <div class="d-flex align-items-center gap-2">
-              <select v-if="getInjectNodes(selectedFlow).length > 1" v-model="selectedInjectId" class="glass-input" aria-label="Select inject node">
-                <option v-for="n in getInjectNodes(selectedFlow)" :key="n.id" :value="n.id">{{ n.label || n.id }}</option>
+              <select
+                v-if="getInjectNodes(selectedFlow).length > 1"
+                v-model="selectedInjectId"
+                class="glass-input"
+                aria-label="Select inject node"
+              >
+                <option
+                  v-for="n in getInjectNodes(selectedFlow)"
+                  :key="n.id"
+                  :value="n.id"
+                >
+                  {{ n.label || n.id }}
+                </option>
               </select>
-              <UnifiedButton color="gaming" leading-icon="mdi-play" @click="runFlow(selectedFlow)">Run Now</UnifiedButton>
+              <UnifiedButton
+                color="gaming"
+                leading-icon="mdi-play"
+                @click="runFlow(selectedFlow)"
+                >Run Now</UnifiedButton
+              >
             </div>
-            <UnifiedButton color="glass" appearance="outlined" leading-icon="mdi-content-copy" @click="duplicateFlow(selectedFlow, true)">Duplicate as Draft</UnifiedButton>
+            <UnifiedButton
+              color="glass"
+              appearance="outlined"
+              leading-icon="mdi-content-copy"
+              @click="duplicateFlow(selectedFlow, true)"
+              >Duplicate as Draft</UnifiedButton
+            >
           </div>
         </div>
       </div>
@@ -446,7 +630,7 @@ const cronPreset = ref<string>('')
 const cronPresets = [
   { label: 'Hourly', value: '0 * * * *' },
   { label: 'Daily 9:00 AM', value: '0 9 * * *' },
-  { label: 'Weekly Mon 10:00 AM', value: '0 10 * * MON' }
+  { label: 'Weekly Mon 10:00 AM', value: '0 10 * * MON' },
 ]
 const filterCategory = ref('')
 const searchQuery = ref('')
@@ -454,13 +638,18 @@ const debouncedQuery = ref('')
 const sortBy = ref<'recent' | 'status' | 'name'>('recent')
 const viewMode = ref<'grid' | 'list'>('grid')
 const flows = ref<any[]>([])
-const newFlow = ref({ name: '', description: '', category: 'automation', scheduleCron: '' })
+const newFlow = ref({
+  name: '',
+  description: '',
+  category: 'automation',
+  scheduleCron: '',
+})
 
 // Flow stats
 const flowStats = computed(() => ({
   total: flows.value.length,
   active: flows.value.filter(f => f.status === 'running').length,
-  stopped: flows.value.filter(f => f.status === 'stopped').length
+  stopped: flows.value.filter(f => f.status === 'stopped').length,
 }))
 
 // Categories for chips
@@ -475,19 +664,52 @@ const categories = [
 
 // Header stats for PageHeader
 const headerStats = computed(() => [
-  { icon: 'mdi-lan', color: 'var(--color-primary-500)', value: flowStats.value.total, label: 'Flows' },
-  { icon: 'mdi-play', color: 'var(--color-success-500)', value: flowStats.value.active, label: 'Running' },
-  { icon: 'mdi-stop', color: 'var(--color-error-500)', value: flowStats.value.stopped, label: 'Stopped' },
-  { icon: nodeRedStatus.value === 'connected' ? 'mdi-power-plug' : 'mdi-power-plug-off', text: nodeRedStatus.value === 'connected' ? 'Node-RED Connected' : (nodeRedStatus.value === 'error' ? 'Node-RED Error' : 'Node-RED Offline'), success: nodeRedStatus.value === 'connected', warning: nodeRedStatus.value !== 'connected' }
+  {
+    icon: 'mdi-lan',
+    color: 'var(--color-primary-500)',
+    value: flowStats.value.total,
+    label: 'Flows',
+  },
+  {
+    icon: 'mdi-play',
+    color: 'var(--color-success-500)',
+    value: flowStats.value.active,
+    label: 'Running',
+  },
+  {
+    icon: 'mdi-stop',
+    color: 'var(--color-error-500)',
+    value: flowStats.value.stopped,
+    label: 'Stopped',
+  },
+  {
+    icon:
+      nodeRedStatus.value === 'connected'
+        ? 'mdi-power-plug'
+        : 'mdi-power-plug-off',
+    text:
+      nodeRedStatus.value === 'connected'
+        ? 'Node-RED Connected'
+        : nodeRedStatus.value === 'error'
+          ? 'Node-RED Error'
+          : 'Node-RED Offline',
+    success: nodeRedStatus.value === 'connected',
+    warning: nodeRedStatus.value !== 'connected',
+  },
 ])
 
 // Base filtered flows (category + search)
 const filteredFlows = computed(() => {
   let items = flows.value
-  if (filterCategory.value) items = items.filter(f => f.category === filterCategory.value)
+  if (filterCategory.value)
+    items = items.filter(f => f.category === filterCategory.value)
   if (debouncedQuery.value) {
     const q = debouncedQuery.value.toLowerCase()
-    items = items.filter(f => f.name.toLowerCase().includes(q) || f.description?.toLowerCase().includes(q))
+    items = items.filter(
+      f =>
+        f.name.toLowerCase().includes(q) ||
+        f.description?.toLowerCase().includes(q)
+    )
   }
   return items
 })
@@ -502,7 +724,11 @@ const sortedFilteredFlows = computed(() => {
       return items.sort((a, b) => a.name.localeCompare(b.name))
     case 'recent':
     default:
-      return items.sort((a, b) => (b.stats?.lastRun?.getTime?.() || 0) - (a.stats?.lastRun?.getTime?.() || 0))
+      return items.sort(
+        (a, b) =>
+          (b.stats?.lastRun?.getTime?.() || 0) -
+          (a.stats?.lastRun?.getTime?.() || 0)
+      )
   }
 })
 
@@ -514,7 +740,7 @@ const flowTemplates = [
     description: 'Automatically scan job boards for gaming industry positions',
     icon: 'mdi-briefcase-search',
     tags: ['Jobs', 'Automation', 'Alerts'],
-    category: 'job-search'
+    category: 'job-search',
   },
   {
     id: 'application-tracker',
@@ -522,15 +748,16 @@ const flowTemplates = [
     description: 'Track job applications and send follow-up reminders',
     icon: 'mdi-file-check',
     tags: ['Applications', 'Tracking', 'Reminders'],
-    category: 'application'
+    category: 'application',
   },
   {
     id: 'linkedin-connect',
     name: 'LinkedIn Networking',
-    description: 'Automate LinkedIn connections with gaming industry professionals',
+    description:
+      'Automate LinkedIn connections with gaming industry professionals',
     icon: 'mdi-account-network',
     tags: ['Networking', 'LinkedIn', 'Social'],
-    category: 'networking'
+    category: 'networking',
   },
   {
     id: 'portfolio-update',
@@ -538,7 +765,7 @@ const flowTemplates = [
     description: 'Automatically update portfolio with latest projects',
     icon: 'mdi-folder-sync',
     tags: ['Portfolio', 'Sync', 'Updates'],
-    category: 'automation'
+    category: 'automation',
   },
   {
     id: 'ai-resume',
@@ -546,7 +773,7 @@ const flowTemplates = [
     description: 'Use AI to optimize resume for specific job postings',
     icon: 'mdi-robot',
     tags: ['AI', 'Resume', 'Optimization'],
-    category: 'ai-assistance'
+    category: 'ai-assistance',
   },
   {
     id: 'skill-monitor',
@@ -554,8 +781,8 @@ const flowTemplates = [
     description: 'Monitor job market for emerging skills and trends',
     icon: 'mdi-trending-up',
     tags: ['Skills', 'Market', 'Trends'],
-    category: 'analysis'
-  }
+    category: 'analysis',
+  },
 ]
 
 // Methods
@@ -563,7 +790,9 @@ const initializeNodeRed = async () => {
   try {
     loading.value = true
     await nodeRedService.initialize()
-    nodeRedStatus.value = nodeRedService.isHealthy() ? 'connected' : 'disconnected'
+    nodeRedStatus.value = nodeRedService.isHealthy()
+      ? 'connected'
+      : 'disconnected'
     await loadFlows()
   } catch (error) {
     console.error('Failed to initialize Node-RED:', error)
@@ -578,7 +807,9 @@ const loadFlows = async () => {
     // Try actual Node-RED flows first
     if (nodeRedService.isHealthy()) {
       const nodeRedFlows: any[] = await nodeRedService.getFlows()
-      flows.value = (Array.isArray(nodeRedFlows) ? nodeRedFlows : []).map(mapNodeRedFlowToUI)
+      flows.value = (Array.isArray(nodeRedFlows) ? nodeRedFlows : []).map(
+        mapNodeRedFlowToUI
+      )
       toast.success('Flows loaded from Node-RED')
       return
     }
@@ -613,7 +844,9 @@ const createFromTemplate = async (template: any) => {
     if (nodeRedService.isHealthy()) {
       try {
         const id = await (nodeRedService as any).createFlow(flowDef)
-        try { await (nodeRedService as any).deployFlows() } catch {}
+        try {
+          await (nodeRedService as any).deployFlows()
+        } catch {}
         const uiFlow = mapNodeRedFlowToUI({ ...flowDef, id })
         flows.value = [uiFlow, ...flows.value]
         toast.success(`Created “${uiFlow.name}” from template`)
@@ -627,7 +860,7 @@ const createFromTemplate = async (template: any) => {
     const localId = 'local-' + Date.now()
     const uiFlow = mapNodeRedFlowToUI({ ...flowDef, id: localId })
     flows.value = [uiFlow, ...flows.value]
-    toast.success(`Created “${uiFlow.name}” (local)`) 
+    toast.success(`Created “${uiFlow.name}” (local)`)
     showTemplates.value = false
   } catch (e) {
     console.error('Template creation failed:', e)
@@ -639,53 +872,115 @@ function buildNodeRedFlowForTemplate(t: any) {
   const makeId = () => Math.random().toString(36).slice(2)
   const nodes: any[] = []
   const base = { label: t.name, type: 'tab', disabled: false, nodes }
-  const add = (node: any) => { nodes.push(node); return node }
+  const add = (node: any) => {
+    nodes.push(node)
+    return node
+  }
 
-  const addInject = (name: string, cron?: string) => add({
-    id: makeId(), type: 'inject', name, x: 100, y: 100, z: 'z', wires: [[]], crontab: cron || '', properties: { crontab: cron || '' }
-  })
-  const addFunction = (name: string, func: string) => add({
-    id: makeId(), type: 'function', name, x: 300, y: 100, z: 'z', wires: [[]], func
-  })
-  const addHttpRequest = (name: string, url: string) => add({
-    id: makeId(), type: 'http request', name, x: 300, y: 100, z: 'z', wires: [[]], url
-  })
-  const addDebug = (name = 'Debug') => add({ id: makeId(), type: 'debug', name, x: 520, y: 100, z: 'z', wires: [] })
+  const addInject = (name: string, cron?: string) =>
+    add({
+      id: makeId(),
+      type: 'inject',
+      name,
+      x: 100,
+      y: 100,
+      z: 'z',
+      wires: [[]],
+      crontab: cron || '',
+      properties: { crontab: cron || '' },
+    })
+  const addFunction = (name: string, func: string) =>
+    add({
+      id: makeId(),
+      type: 'function',
+      name,
+      x: 300,
+      y: 100,
+      z: 'z',
+      wires: [[]],
+      func,
+    })
+  const addHttpRequest = (name: string, url: string) =>
+    add({
+      id: makeId(),
+      type: 'http request',
+      name,
+      x: 300,
+      y: 100,
+      z: 'z',
+      wires: [[]],
+      url,
+    })
+  const addDebug = (name = 'Debug') =>
+    add({
+      id: makeId(),
+      type: 'debug',
+      name,
+      x: 520,
+      y: 100,
+      z: 'z',
+      wires: [],
+    })
 
   switch (t.id) {
     case 'job-alert': {
       const i = addInject('Daily 9am', '0 9 * * *')
-      const h = addHttpRequest('Fetch jobs', 'https://example.com/jobs?q=gaming')
-      const f = addFunction('Filter gaming', 'msg.payload = (msg.payload || []).filter(j => /game|unity|unreal/i.test(j.title || ""));\nreturn msg;')
+      const h = addHttpRequest(
+        'Fetch jobs',
+        'https://example.com/jobs?q=gaming'
+      )
+      const f = addFunction(
+        'Filter gaming',
+        'msg.payload = (msg.payload || []).filter(j => /game|unity|unreal/i.test(j.title || ""));\nreturn msg;'
+      )
       const d = addDebug('Alert output')
-      i.wires = [[h.id]]; h.wires = [[f.id]]; f.wires = [[d.id]]
+      i.wires = [[h.id]]
+      h.wires = [[f.id]]
+      f.wires = [[d.id]]
       break
     }
     case 'application-tracker': {
-      const f = addFunction('Track application', 'node.status({text:"received"});\nreturn msg;')
+      const f = addFunction(
+        'Track application',
+        'node.status({text:"received"});\nreturn msg;'
+      )
       const d = addDebug('Tracked')
       f.wires = [[d.id]]
       break
     }
     case 'linkedin-connect': {
       const i = addInject('Weekly Mon 10am', '0 10 * * MON')
-      const f = addFunction('Build outreach list', 'msg.payload = { prospects: [] }; return msg;')
+      const f = addFunction(
+        'Build outreach list',
+        'msg.payload = { prospects: [] }; return msg;'
+      )
       const d = addDebug('Outreach')
-      i.wires = [[f.id]]; f.wires = [[d.id]]
+      i.wires = [[f.id]]
+      f.wires = [[d.id]]
       break
     }
     case 'portfolio-update': {
       const i = addInject('Nightly 2am', '0 2 * * *')
       const f = addFunction('Sync portfolio', 'return msg;')
       const d = addDebug('Sync result')
-      i.wires = [[f.id]]; f.wires = [[d.id]]
+      i.wires = [[f.id]]
+      f.wires = [[d.id]]
       break
     }
     case 'ai-resume': {
       const i = addInject('Manual trigger')
-      const a = add({ id: makeId(), type: 'ai-resume-analyzer', name: 'AI Resume', x: 300, y: 100, z: 'z', wires: [[], []] })
+      const a = add({
+        id: makeId(),
+        type: 'ai-resume-analyzer',
+        name: 'AI Resume',
+        x: 300,
+        y: 100,
+        z: 'z',
+        wires: [[], []],
+      })
       const d = addDebug('Analysis')
-      i.wires = [[a.id]]; a.wires = [[d.id], []]
+      i.wires = [[a.id]]
+      a.wires = [[d.id], []]
       break
     }
     case 'skill-monitor':
@@ -693,7 +988,8 @@ function buildNodeRedFlowForTemplate(t: any) {
       const i = addInject('Hourly', '0 * * * *')
       const f = addFunction('Monitor skills', 'return msg;')
       const d = addDebug('Report')
-      i.wires = [[f.id]]; f.wires = [[d.id]]
+      i.wires = [[f.id]]
+      f.wires = [[d.id]]
       break
     }
   }
@@ -722,7 +1018,9 @@ const toggleFlow = async (flow: any) => {
       try {
         if (stopping) await (nodeRedService as any).stopFlow(flow.id)
         else await (nodeRedService as any).startFlow(flow.id)
-      } catch {/* non-fatal */}
+      } catch {
+        /* non-fatal */
+      }
     }
     flow.status = stopping ? 'stopped' : 'running'
     toast.success(stopping ? 'Flow stopped' : 'Flow started')
@@ -742,7 +1040,9 @@ const runFlow = async (flow: any) => {
     if (nodeRedService.isHealthy()) {
       let injectId = (selectedInjectId.value || '').trim()
       if (!injectId) {
-        const injectNode = (flow.nodes || []).find((n: any) => n.type === 'inject')
+        const injectNode = (flow.nodes || []).find(
+          (n: any) => n.type === 'inject'
+        )
         injectId = injectNode?.id || ''
       }
       if (injectId) {
@@ -766,7 +1066,9 @@ const openFlowDetails = (flow: any) => {
   try {
     const inject = (flow?.nodes || []).find((n: any) => n.type === 'inject')
     selectedInjectId.value = inject?.id || ''
-  } catch { selectedInjectId.value = '' }
+  } catch {
+    selectedInjectId.value = ''
+  }
 }
 
 const closeFlowDetails = () => {
@@ -783,15 +1085,28 @@ const duplicateFlow = async (flow: any, asDraft = false) => {
       const cloned: any = {
         label: cloneLabel,
         type: 'tab',
-        nodes: (original.nodes || []).map((n: any) => ({ ...n, id: undefined })),
-        disabled: asDraft ? true : original.status === 'stopped'
+        nodes: (original.nodes || []).map((n: any) => ({
+          ...n,
+          id: undefined,
+        })),
+        disabled: asDraft ? true : original.status === 'stopped',
       }
       try {
         const newId = await (nodeRedService as any).createFlow(cloned)
-        flows.value = [{ ...flow, id: newId, name: cloneLabel, status: (asDraft ? 'stopped' : flow.status) }, ...flows.value]
+        flows.value = [
+          {
+            ...flow,
+            id: newId,
+            name: cloneLabel,
+            status: asDraft ? 'stopped' : flow.status,
+          },
+          ...flows.value,
+        ]
         toast.success('Flow duplicated')
         return
-      } catch {/* fallthrough */}
+      } catch {
+        /* fallthrough */
+      }
     }
     // Local fallback
     const now = Date.now()
@@ -800,7 +1115,7 @@ const duplicateFlow = async (flow: any, asDraft = false) => {
       id: `${flow.id}-copy-${now}`,
       name: `${flow.name} (Copy)`,
       status: asDraft ? 'stopped' : flow.status,
-      stats: { ...(flow.stats || {}), lastRun: null }
+      stats: { ...(flow.stats || {}), lastRun: null },
     }
     flows.value = [copy, ...flows.value]
     toast.success('Flow duplicated (local)')
@@ -814,7 +1129,10 @@ const deleteFlow = async (flow: any) => {
   if (!confirm(`Delete flow "${flow.name}"? This cannot be undone.`)) return
   try {
     if (nodeRedService.isHealthy()) {
-      try { await (nodeRedService as any).deleteFlow(flow.id); await (nodeRedService as any).deployFlows() } catch {}
+      try {
+        await (nodeRedService as any).deleteFlow(flow.id)
+        await (nodeRedService as any).deployFlows()
+      } catch {}
     }
   } finally {
     flows.value = flows.value.filter(f => f.id !== flow.id)
@@ -832,13 +1150,32 @@ const submitCreateFlow = async () => {
     type: 'tab',
     disabled: false,
     nodes: [
-      { id: 'inject-1', type: 'inject', name: 'Trigger', x: 100, y: 100, z: 'z', wires: [['debug-1']], properties: { topic: 'start' } },
-      { id: 'debug-1', type: 'debug', name: 'Log', x: 300, y: 100, z: 'z', wires: [] }
-    ]
+      {
+        id: 'inject-1',
+        type: 'inject',
+        name: 'Trigger',
+        x: 100,
+        y: 100,
+        z: 'z',
+        wires: [['debug-1']],
+        properties: { topic: 'start' },
+      },
+      {
+        id: 'debug-1',
+        type: 'debug',
+        name: 'Log',
+        x: 300,
+        y: 100,
+        z: 'z',
+        wires: [],
+      },
+    ],
   }
   try {
     const id = await (nodeRedService as any).createFlow(baseFlow)
-    try { await (nodeRedService as any).deployFlows() } catch {}
+    try {
+      await (nodeRedService as any).deployFlows()
+    } catch {}
     flows.value = [
       {
         id,
@@ -848,12 +1185,19 @@ const submitCreateFlow = async () => {
         status: 'stopped',
         stats: { executions: 0, successRate: 100, lastRun: null },
         nodes: baseFlow.nodes,
-        schedule: newFlow.value.scheduleCron ? { cron: newFlow.value.scheduleCron, enabled: true } : null
+        schedule: newFlow.value.scheduleCron
+          ? { cron: newFlow.value.scheduleCron, enabled: true }
+          : null,
       },
-      ...flows.value
+      ...flows.value,
     ]
     showCreate.value = false
-    newFlow.value = { name: '', description: '', category: 'automation', scheduleCron: '' }
+    newFlow.value = {
+      name: '',
+      description: '',
+      category: 'automation',
+      scheduleCron: '',
+    }
   } catch (e) {
     console.info('Create in Node-RED failed; adding locally:', e)
     const id = 'local-' + Date.now()
@@ -866,12 +1210,19 @@ const submitCreateFlow = async () => {
         status: 'stopped',
         stats: { executions: 0, successRate: 100, lastRun: null },
         nodes: baseFlow.nodes,
-        schedule: newFlow.value.scheduleCron ? { cron: newFlow.value.scheduleCron, enabled: true } : null
+        schedule: newFlow.value.scheduleCron
+          ? { cron: newFlow.value.scheduleCron, enabled: true }
+          : null,
       },
-      ...flows.value
+      ...flows.value,
     ]
     showCreate.value = false
-    newFlow.value = { name: '', description: '', category: 'automation', scheduleCron: '' }
+    newFlow.value = {
+      name: '',
+      description: '',
+      category: 'automation',
+      scheduleCron: '',
+    }
   }
 }
 
@@ -879,11 +1230,11 @@ const submitCreateFlow = async () => {
 const getFlowIcon = (category: string) => {
   const icons = {
     'job-search': 'mdi-briefcase-search',
-    'application': 'mdi-file-check',
-    'networking': 'mdi-account-network',
+    application: 'mdi-file-check',
+    networking: 'mdi-account-network',
     'ai-assistance': 'mdi-robot',
-    'analysis': 'mdi-chart-line',
-    'automation': 'mdi-cog-sync'
+    analysis: 'mdi-chart-line',
+    automation: 'mdi-cog-sync',
   }
   return (icons as Record<string, string>)[category] || 'mdi-lan'
 }
@@ -891,16 +1242,18 @@ const getFlowIcon = (category: string) => {
 const getNodeIcon = (type: string) => {
   const icons = {
     'http-request': 'mdi-web',
-    'function': 'mdi-code-braces',
-    'email': 'mdi-email',
-    'database': 'mdi-database',
-    'schedule': 'mdi-clock'
+    function: 'mdi-code-braces',
+    email: 'mdi-email',
+    database: 'mdi-database',
+    schedule: 'mdi-clock',
   }
   return (icons as Record<string, string>)[type] || 'mdi-circle'
 }
 
 const formatCategory = (category: string) => {
-  return category.replace('-', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
+  return category
+    .replace('-', ' ')
+    .replace(/\b\w/g, (l: string) => l.toUpperCase())
 }
 
 const formatLastRun = (date: Date | null) => {
@@ -909,7 +1262,7 @@ const formatLastRun = (date: Date | null) => {
   const diff = now.getTime() - date.getTime()
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-  
+
   if (hours === 0) return `${minutes}m ago`
   if (hours < 24) return `${hours}h ago`
   return date.toLocaleDateString()
@@ -921,7 +1274,7 @@ const formatSchedule = (schedule: any) => {
   const cronMap = {
     '0 9 * * *': 'Daily at 9:00 AM',
     '0 10 * * MON': 'Every Monday at 10:00 AM',
-    '0 2 * * *': 'Daily at 2:00 AM'
+    '0 2 * * *': 'Daily at 2:00 AM',
   }
   return (cronMap as Record<string, string>)[schedule.cron] || 'Custom schedule'
 }
@@ -941,8 +1294,12 @@ try {
   if (saved && typeof saved === 'object') {
     if (saved.viewMode) viewMode.value = saved.viewMode
     if (saved.sortBy) sortBy.value = saved.sortBy
-    if (typeof saved.filterCategory === 'string') filterCategory.value = saved.filterCategory
-    if (typeof saved.searchQuery === 'string') { searchQuery.value = saved.searchQuery; debouncedQuery.value = saved.searchQuery }
+    if (typeof saved.filterCategory === 'string')
+      filterCategory.value = saved.filterCategory
+    if (typeof saved.searchQuery === 'string') {
+      searchQuery.value = saved.searchQuery
+      debouncedQuery.value = saved.searchQuery
+    }
   }
 } catch {}
 
@@ -953,7 +1310,15 @@ watch([viewMode, sortBy, filterCategory, searchQuery], ([v, s, f, q]) => {
   debounceTimer = setTimeout(() => {
     debouncedQuery.value = q || ''
     try {
-      localStorage.setItem(SETTINGS_KEY, JSON.stringify({ viewMode: v, sortBy: s, filterCategory: f, searchQuery: q }))
+      localStorage.setItem(
+        SETTINGS_KEY,
+        JSON.stringify({
+          viewMode: v,
+          sortBy: s,
+          filterCategory: f,
+          searchQuery: q,
+        })
+      )
     } catch {}
   }, 200)
 })
@@ -968,14 +1333,22 @@ const applyScheduleToggle = async () => {
         const all: any[] = await (nodeRedService as any).getFlows()
         const raw = (all || []).find((f: any) => f.id === selectedFlow.value.id)
         if (raw) {
-          const nodes: any[] = Array.isArray(raw.nodes) ? raw.nodes : (Array.isArray(raw.flow) ? raw.flow : [])
+          const nodes: any[] = Array.isArray(raw.nodes)
+            ? raw.nodes
+            : Array.isArray(raw.flow)
+              ? raw.flow
+              : []
           const idx = nodes.findIndex((n: any) => n?.type === 'inject')
           if (idx >= 0) {
             nodes[idx] = { ...nodes[idx], disabled: !scheduleEnabled.value }
-            await (nodeRedService as any).updateFlow(selectedFlow.value.id, { nodes })
+            await (nodeRedService as any).updateFlow(selectedFlow.value.id, {
+              nodes,
+            })
           }
         }
-      } catch {/* non-fatal */}
+      } catch {
+        /* non-fatal */
+      }
     }
     // Update local flag
     selectedFlow.value.schedule = selectedFlow.value.schedule || {}
@@ -988,10 +1361,14 @@ const applyScheduleToggle = async () => {
 
 // Map Node-RED flow to UI shape
 function mapNodeRedFlowToUI(f: any) {
-  const nodes: any[] = Array.isArray(f.nodes) ? f.nodes : (Array.isArray(f?.flow) ? f.flow : [])
+  const nodes: any[] = Array.isArray(f.nodes)
+    ? f.nodes
+    : Array.isArray(f?.flow)
+      ? f.flow
+      : []
   const inject = (nodes || []).find(n => n?.type === 'inject') || {}
   const cron = (inject as any).crontab || (inject as any)?.properties?.crontab
-  const disabled = !!(f.disabled)
+  const disabled = !!f.disabled
   return {
     id: f.id,
     name: f.label || f.name || 'Flow',
@@ -999,8 +1376,12 @@ function mapNodeRedFlowToUI(f: any) {
     category: 'automation',
     status: disabled ? 'stopped' : 'running',
     stats: { executions: 0, successRate: 100, lastRun: null as Date | null },
-    nodes: (nodes || []).map((n: any) => ({ id: n.id, type: n.type, label: n.name || n.type })),
-    schedule: cron ? { cron, enabled: !(inject as any).disabled } : null
+    nodes: (nodes || []).map((n: any) => ({
+      id: n.id,
+      type: n.type,
+      label: n.name || n.type,
+    })),
+    schedule: cron ? { cron, enabled: !(inject as any).disabled } : null,
   }
 }
 
@@ -1025,11 +1406,17 @@ const applyCronUpdate = async () => {
         const all: any[] = await (nodeRedService as any).getFlows()
         const raw = (all || []).find((f: any) => f.id === selectedFlow.value.id)
         if (raw) {
-          const nodes: any[] = Array.isArray(raw.nodes) ? raw.nodes : (Array.isArray(raw.flow) ? raw.flow : [])
+          const nodes: any[] = Array.isArray(raw.nodes)
+            ? raw.nodes
+            : Array.isArray(raw.flow)
+              ? raw.flow
+              : []
           const idx = nodes.findIndex((n: any) => n?.type === 'inject')
           if (idx >= 0) {
             nodes[idx] = { ...nodes[idx], crontab: cron }
-            await (nodeRedService as any).updateFlow(selectedFlow.value.id, { nodes })
+            await (nodeRedService as any).updateFlow(selectedFlow.value.id, {
+              nodes,
+            })
             selectedFlow.value.schedule = selectedFlow.value.schedule || {}
             ;(selectedFlow.value.schedule as any).cron = cron
             toast.success('Schedule updated')
@@ -1037,7 +1424,7 @@ const applyCronUpdate = async () => {
           }
         }
         toast.info('No inject node found to update cron')
-  } catch {
+      } catch {
         cronError.value = 'Failed to update schedule'
         toast.error('Failed to update schedule')
       }
@@ -1054,7 +1441,11 @@ const applyCronUpdate = async () => {
 
 // Helper to list inject nodes for a flow
 function getInjectNodes(flow: any) {
-  try { return (flow?.nodes || []).filter((n: any) => n.type === 'inject') } catch { return [] }
+  try {
+    return (flow?.nodes || []).filter((n: any) => n.type === 'inject')
+  } catch {
+    return []
+  }
 }
 
 // Preset handler
@@ -1101,7 +1492,11 @@ function onCronPresetChange() {
 }
 
 .text-gradient-rgb {
-  background: linear-gradient(45deg, var(--text-primary), var(--color-primary-400));
+  background: linear-gradient(
+    45deg,
+    var(--text-primary),
+    var(--color-primary-400)
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1165,7 +1560,12 @@ function onCronPresetChange() {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-primary-500), var(--color-secondary-500), var(--color-accent-500));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-secondary-500),
+    var(--color-accent-500)
+  );
   opacity: 0.8;
 }
 
@@ -1286,7 +1686,11 @@ function onCronPresetChange() {
 }
 
 .section-header.enhanced-header {
-  background: linear-gradient(135deg, var(--surface-glass), var(--surface-elevated));
+  background: linear-gradient(
+    135deg,
+    var(--surface-glass),
+    var(--surface-elevated)
+  );
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-xl);
   padding: var(--spacing-6);
@@ -1299,7 +1703,11 @@ function onCronPresetChange() {
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0 0 var(--spacing-2);
-  background: linear-gradient(135deg, var(--text-primary), var(--color-primary-500));
+  background: linear-gradient(
+    135deg,
+    var(--text-primary),
+    var(--color-primary-500)
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1364,7 +1772,11 @@ function onCronPresetChange() {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, var(--color-primary-500/10), var(--color-secondary-500/10));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500/10),
+    var(--color-secondary-500/10)
+  );
   opacity: 0;
   transition: opacity var(--duration-normal);
 }
@@ -1483,7 +1895,12 @@ function onCronPresetChange() {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-primary-500), var(--color-secondary-500), var(--color-accent-500));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-secondary-500),
+    var(--color-accent-500)
+  );
   opacity: 0;
   transition: opacity var(--duration-normal);
 }
@@ -1503,7 +1920,9 @@ function onCronPresetChange() {
 
 .flow-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow-2xl), 0 0 30px var(--color-primary-500/20);
+  box-shadow:
+    var(--shadow-2xl),
+    0 0 30px var(--color-primary-500/20);
   border-color: var(--color-primary-400);
 }
 
@@ -1569,19 +1988,55 @@ function onCronPresetChange() {
   font-weight: var(--font-weight-medium);
 }
 
-.category-job-search { background: var(--color-info-100); color: var(--color-info-900); }
-.category-application { background: var(--color-secondary-100); color: var(--color-secondary-900); }
-.category-networking { background: var(--color-success-100); color: var(--color-success-900); }
-.category-ai-assistance { background: var(--color-warning-100); color: var(--color-warning-900); }
-.category-analysis { background: var(--color-accent-100); color: var(--color-accent-900); }
-.category-automation { background: var(--color-primary-100); color: var(--color-primary-900); }
+.category-job-search {
+  background: var(--color-info-100);
+  color: var(--color-info-900);
+}
+.category-application {
+  background: var(--color-secondary-100);
+  color: var(--color-secondary-900);
+}
+.category-networking {
+  background: var(--color-success-100);
+  color: var(--color-success-900);
+}
+.category-ai-assistance {
+  background: var(--color-warning-100);
+  color: var(--color-warning-900);
+}
+.category-analysis {
+  background: var(--color-accent-100);
+  color: var(--color-accent-900);
+}
+.category-automation {
+  background: var(--color-primary-100);
+  color: var(--color-primary-900);
+}
 
-:global([data-theme="dark"]) .category-job-search { background: var(--color-info-800); color: var(--color-info-100); }
-:global([data-theme="dark"]) .category-application { background: var(--color-secondary-800); color: var(--color-secondary-100); }
-:global([data-theme="dark"]) .category-networking { background: var(--color-success-800); color: var(--color-success-100); }
-:global([data-theme="dark"]) .category-ai-assistance { background: var(--color-warning-800); color: var(--color-warning-100); }
-:global([data-theme="dark"]) .category-analysis { background: var(--color-accent-800); color: var(--color-accent-100); }
-:global([data-theme="dark"]) .category-automation { background: var(--color-primary-800); color: var(--color-primary-100); }
+:global([data-theme='dark']) .category-job-search {
+  background: var(--color-info-800);
+  color: var(--color-info-100);
+}
+:global([data-theme='dark']) .category-application {
+  background: var(--color-secondary-800);
+  color: var(--color-secondary-100);
+}
+:global([data-theme='dark']) .category-networking {
+  background: var(--color-success-800);
+  color: var(--color-success-100);
+}
+:global([data-theme='dark']) .category-ai-assistance {
+  background: var(--color-warning-800);
+  color: var(--color-warning-100);
+}
+:global([data-theme='dark']) .category-analysis {
+  background: var(--color-accent-800);
+  color: var(--color-accent-100);
+}
+:global([data-theme='dark']) .category-automation {
+  background: var(--color-primary-800);
+  color: var(--color-primary-100);
+}
 
 .status-running {
   background: var(--color-success-100);
@@ -1593,12 +2048,12 @@ function onCronPresetChange() {
   color: var(--color-error-900);
 }
 
-:global([data-theme="dark"]) .status-running {
+:global([data-theme='dark']) .status-running {
   background: var(--color-success-800);
   color: var(--color-success-100);
 }
 
-:global([data-theme="dark"]) .status-stopped {
+:global([data-theme='dark']) .status-stopped {
   background: var(--color-error-800);
   color: var(--color-error-100);
 }
@@ -1731,7 +2186,12 @@ function onCronPresetChange() {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, var(--color-primary-500/10), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-primary-500/10),
+    transparent
+  );
   animation: shimmer-wave 1.5s ease-in-out infinite;
 }
 
@@ -1796,7 +2256,11 @@ function onCronPresetChange() {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   opacity: 0.6;
 }
 
@@ -2041,7 +2505,8 @@ function onCronPresetChange() {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -2050,7 +2515,8 @@ function onCronPresetChange() {
 }
 
 @keyframes shimmer {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -2083,81 +2549,81 @@ function onCronPresetChange() {
     text-align: center;
     gap: var(--spacing-4);
   }
-  
+
   .actions-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-3);
   }
-  
+
   .action-card {
     padding: var(--spacing-4);
   }
-  
+
   .section-header.enhanced-header {
     padding: var(--spacing-4);
   }
-  
+
   .section-header {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-4);
   }
-  
+
   .section-controls {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-3);
   }
-  
+
   .enhanced-chips {
     gap: var(--spacing-2);
   }
-  
+
   .enhanced-chip {
     padding: var(--spacing-2) var(--spacing-3);
     font-size: var(--font-size-xs);
   }
-  
+
   .flows-grid,
   .loading-grid,
   .templates-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-4);
   }
-  
+
   .flow-card {
     min-height: auto;
     padding: var(--spacing-5);
   }
-  
+
   .flow-header {
     gap: var(--spacing-3);
   }
-  
+
   .flow-icon {
     width: 48px;
     height: 48px;
   }
-  
+
   .flow-stats {
     gap: var(--spacing-3);
     padding: var(--spacing-3);
   }
-  
+
   .flow-actions,
   .modal-actions {
     flex-direction: column;
     gap: var(--spacing-2);
   }
-  
+
   .quick-actions {
     padding: var(--spacing-6);
   }
-  
+
   .flows-section {
     padding: var(--spacing-6);
   }
-  
+
   .empty-state {
     padding: var(--spacing-12) var(--spacing-6);
   }
@@ -2167,19 +2633,19 @@ function onCronPresetChange() {
   .section-title h2 {
     font-size: var(--font-size-xl);
   }
-  
+
   .section-header .header-content h2 {
     font-size: var(--font-size-2xl);
   }
-  
+
   .action-icon {
     font-size: 2rem;
   }
-  
+
   .flow-name {
     font-size: var(--font-size-md);
   }
-  
+
   .enhanced-chip {
     padding: var(--spacing-1) var(--spacing-2);
   }

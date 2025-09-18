@@ -1,15 +1,32 @@
 import { defineEmits, defineProps } from 'vue'
 <template>
-  <div v-if="show" class="modal show block font-sans" style="background-color: rgba(0,0,0,0.5);">
+  <div
+    v-if="show"
+    class="modal show block font-sans"
+    style="background-color: rgba(0, 0, 0, 0.5)"
+  >
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title"><AppIcon name="ArrowDownTrayIcon-outline" class="mr-2" />Export Portfolio</h5>
-          <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="$emit('close')" />
+          <h5 class="modal-title">
+            <AppIcon name="ArrowDownTrayIcon-outline" class="mr-2" />Export
+            Portfolio
+          </h5>
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            :icon="'XMarkIcon'"
+            aria-label="Close"
+            @click="$emit('close')"
+          />
         </div>
         <div class="modal-body">
-          <p class="text-secondary mb-4">Choose an export format for {{ (portfolio && portfolio.length) || 0 }} portfolio items.</p>
-          
+          <p class="text-secondary mb-4">
+            Choose an export format for
+            {{ (portfolio && portfolio.length) || 0 }} portfolio items.
+          </p>
+
           <div class="export-options">
             <!-- HTML Standalone -->
             <div class="export-option" @click="emitExport('html')">
@@ -18,7 +35,10 @@ import { defineEmits, defineProps } from 'vue'
               </div>
               <div class="export-content">
                 <h6 class="export-title">Standalone HTML Site</h6>
-                <p class="export-description">Complete portfolio as a single HTML file with embedded CSS and JavaScript. Perfect for sharing or hosting.</p>
+                <p class="export-description">
+                  Complete portfolio as a single HTML file with embedded CSS and
+                  JavaScript. Perfect for sharing or hosting.
+                </p>
                 <div class="export-badges">
                   <span class="badge bg-primary-500">Recommended</span>
                   <span class="badge bg-success-500">Self-contained</span>
@@ -34,7 +54,10 @@ import { defineEmits, defineProps } from 'vue'
               </div>
               <div class="export-content">
                 <h6 class="export-title">Complete Website (ZIP)</h6>
-                <p class="export-description">Full website structure with separate CSS, JS, and image files. Ideal for hosting on web servers.</p>
+                <p class="export-description">
+                  Full website structure with separate CSS, JS, and image files.
+                  Ideal for hosting on web servers.
+                </p>
                 <div class="export-badges">
                   <span class="badge bg-blue-500">Pro</span>
                 </div>
@@ -49,7 +72,10 @@ import { defineEmits, defineProps } from 'vue'
               </div>
               <div class="export-content">
                 <h6 class="export-title">PDF Document</h6>
-                <p class="export-description">Professional PDF portfolio document for printing or email attachments.</p>
+                <p class="export-description">
+                  Professional PDF portfolio document for printing or email
+                  attachments.
+                </p>
               </div>
               <AppIcon name="ChevronRightIcon" class="export-arrow" />
             </div>
@@ -61,7 +87,10 @@ import { defineEmits, defineProps } from 'vue'
               </div>
               <div class="export-content">
                 <h6 class="export-title">JSON Data</h6>
-                <p class="export-description">Raw portfolio data for importing into other applications or custom processing.</p>
+                <p class="export-description">
+                  Raw portfolio data for importing into other applications or
+                  custom processing.
+                </p>
                 <div class="export-badges">
                   <span class="badge bg-secondary-500">Developer</span>
                 </div>
@@ -71,7 +100,9 @@ import { defineEmits, defineProps } from 'vue'
           </div>
         </div>
         <div class="modal-footer">
-          <UnifiedButton variant="secondary" @click="$emit('close')">Close</UnifiedButton>
+          <UnifiedButton variant="secondary" @click="$emit('close')"
+            >Close</UnifiedButton
+          >
         </div>
       </div>
     </div>
@@ -85,9 +116,9 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 const props = defineProps({
   show: { type: Boolean, default: false },
-  portfolio: { type: Array, default: () => [] }
+  portfolio: { type: Array, default: () => [] },
 })
-const emit = defineEmits(['export','close'])
+const emit = defineEmits(['export', 'close'])
 
 function emitExport(fmt) {
   emit('export', fmt)
@@ -95,8 +126,8 @@ function emitExport(fmt) {
 </script>
 
 <style scoped>
-.modal-content { 
-  border-radius: 12px; 
+.modal-content {
+  border-radius: 12px;
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
@@ -133,9 +164,9 @@ function emitExport(fmt) {
 
 .export-option:hover {
   border-color: var(--color-primary-500);
-  background: var(--glass-bg-glass-bg dark:bg-glass-bg-hover);
+  background: var(--glass-bg-glass-bg dark: bg-glass-bg-hover);
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .export-icon {
@@ -183,10 +214,22 @@ function emitExport(fmt) {
   font-weight: 500;
 }
 
-.bg-primary-500 { background: var(--color-primary-500); color: var(--text-primary-600); }
-.bg-success-500 { background: var(--color-success-500); color: var(--text-primary-600); }
-.bg-blue-500 { background: var(--color-info-500); color: var(--text-primary-600); }
-.bg-secondary-500 { background: var(--color-secondary-500); color: var(--text-primary-600); }
+.bg-primary-500 {
+  background: var(--color-primary-500);
+  color: var(--text-primary-600);
+}
+.bg-success-500 {
+  background: var(--color-success-500);
+  color: var(--text-primary-600);
+}
+.bg-blue-500 {
+  background: var(--color-info-500);
+  color: var(--text-primary-600);
+}
+.bg-secondary-500 {
+  background: var(--color-secondary-500);
+  color: var(--text-primary-600);
+}
 
 .export-arrow {
   color: var(--text-tertiary);

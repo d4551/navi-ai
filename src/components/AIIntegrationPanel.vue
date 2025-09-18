@@ -3,8 +3,8 @@
     <!-- AI Status Header -->
     <div class="ai-status-header">
       <div class="status-indicator">
-        <div 
-          class="status-dot" 
+        <div
+          class="status-dot"
           :class="[`status-${aiStatus.statusIndicator.color}`]"
           :title="aiStatus.statusMessage"
         >
@@ -15,7 +15,7 @@
           <p class="status-text">{{ aiStatus.statusMessage }}</p>
         </div>
       </div>
-      
+
       <div class="status-actions">
         <UnifiedButton
           variant="ghost"
@@ -26,7 +26,7 @@
         >
           Check Status
         </UnifiedButton>
-        
+
         <UnifiedButton
           v-if="!aiIntegration.isAIInitialized"
           variant="primary"
@@ -44,16 +44,21 @@
     <div v-if="aiIntegration.isAIInitialized" class="ai-capabilities">
       <h4 class="capabilities-title">Available Capabilities</h4>
       <div class="capabilities-grid">
-        <div 
-          v-for="(enabled, capability) in aiIntegration.aiCapabilities" 
+        <div
+          v-for="(enabled, capability) in aiIntegration.aiCapabilities"
           :key="capability"
           class="capability-item"
           :class="{ 'capability-enabled': enabled }"
         >
           <AppIcon :name="getCapabilityIcon(capability)" />
-          <span class="capability-name">{{ formatCapabilityName(capability) }}</span>
+          <span class="capability-name">{{
+            formatCapabilityName(capability)
+          }}</span>
           <span class="capability-status">
-            <AppIcon :name="enabled ? 'CheckIcon-circle' : 'XMarkIcon-circle'" size="sm" />
+            <AppIcon
+              :name="enabled ? 'CheckIcon-circle' : 'XMarkIcon-circle'"
+              size="sm"
+            />
           </span>
         </div>
       </div>
@@ -67,25 +72,24 @@
           v-for="(feature, featureName) in aiIntegration.aiFeatures"
           :key="featureName"
           class="feature-card"
-          :class="{ 
+          :class="{
             'feature-enabled': feature.enabled,
-            'feature-active': feature.active 
+            'feature-active': feature.active,
           }"
         >
           <div class="feature-header">
             <AppIcon :name="getFeatureIcon(featureName)" />
-            <span class="feature-name">{{ formatFeatureName(featureName) }}</span>
+            <span class="feature-name">{{
+              formatFeatureName(featureName)
+            }}</span>
           </div>
-          
+
           <div class="feature-status">
-            <span 
-              class="status-badge" 
-              :class="getFeatureStatusClass(feature)"
-            >
+            <span class="status-badge" :class="getFeatureStatusClass(feature)">
               {{ getFeatureStatusText(feature) }}
             </span>
           </div>
-          
+
           <div class="feature-actions">
             <UnifiedButton
               v-if="feature.enabled && !feature.active"
@@ -95,7 +99,7 @@
             >
               Open
             </UnifiedButton>
-            
+
             <UnifiedButton
               v-if="feature.enabled"
               variant="ghost"
@@ -131,7 +135,7 @@
     <!-- AI Configuration -->
     <div class="ai-configuration">
       <h4 class="config-title">Configuration</h4>
-      
+
       <div class="config-item">
         <label class="config-label">Primary Provider</label>
         <div class="config-value">
@@ -146,21 +150,21 @@
           </UnifiedButton>
         </div>
       </div>
-      
+
       <div class="config-item">
         <label class="config-label">Response Time</label>
         <div class="config-value">
           {{ aiStatus.responseTime ? `${aiStatus.responseTime}ms` : 'Unknown' }}
         </div>
       </div>
-      
+
       <div class="config-item">
         <label class="config-label">Health Score</label>
         <div class="config-value">
           <div class="health-score">
             <div class="health-bar">
-              <div 
-                class="health-fill" 
+              <div
+                class="health-fill"
                 :style="{ width: `${aiStatus.healthScore}%` }"
                 :class="getHealthScoreClass(aiStatus.healthScore)"
               ></div>
@@ -169,7 +173,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="config-item">
         <label class="config-label">Last Check</label>
         <div class="config-value">
@@ -195,11 +199,14 @@
           {{ showTroubleshooting ? 'Hide' : 'Show' }} Help
         </UnifiedButton>
       </div>
-      
+
       <div v-if="showTroubleshooting" class="troubleshooting">
         <h5>Troubleshooting Steps:</h5>
         <ul class="troubleshooting-list">
-          <li v-for="step in getTroubleshootingSteps(aiStatus.lastError)" :key="step">
+          <li
+            v-for="step in getTroubleshootingSteps(aiStatus.lastError)"
+            :key="step"
+          >
             {{ step }}
           </li>
         </ul>
@@ -209,7 +216,13 @@
 </template>
 
 <script setup>
-import { ArrowPathIcon, BeakerIcon, CogIcon, ExclamationCircleIcon, QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  BeakerIcon,
+  CogIcon,
+  ExclamationCircleIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -235,26 +248,26 @@ const quickActions = [
     id: 'test_connection',
     label: 'Test Connection',
     icon: 'mdi-connection',
-    variant: 'outline'
+    variant: 'outline',
   },
   {
     id: 'generate_sample',
     label: 'Generate Sample',
     icon: 'mdi-auto-fix',
-    variant: 'primary'
+    variant: 'primary',
   },
   {
     id: 'analyze_text',
     label: 'Analyze Text',
     icon: 'mdi-text-search',
-    variant: 'outline'
+    variant: 'outline',
   },
   {
     id: 'open_fairy_chat',
     label: 'Open Fairy Chat',
     icon: 'mdi-robot',
-    variant: 'gaming'
-  }
+    variant: 'gaming',
+  },
 ]
 
 // Methods
@@ -272,28 +285,31 @@ async function initializeAI() {
 async function executeQuickAction(action) {
   try {
     processingAction.value = action.id
-    
+
     switch (action.id) {
       case 'test_connection': {
         await aiStatus.checkHealth()
         toast.success('Connection test completed')
         break
       }
-        
+
       case 'generate_sample': {
-        const result = await aiIntegration.triggerAIAction('generate_resume_content', {
-          prompt: 'Generate a brief sample text to test AI functionality'
-        })
+        const result = await aiIntegration.triggerAIAction(
+          'generate_resume_content',
+          {
+            prompt: 'Generate a brief sample text to test AI functionality',
+          }
+        )
         if (result) {
           toast.success('Sample content generated successfully')
           logger.info('Sample generation result:', result)
         }
         break
       }
-        
+
       case 'analyze_text': {
         const analysis = await aiIntegration.triggerAIAction('analyze_resume', {
-          text: 'This is a sample text for analysis testing.'
+          text: 'This is a sample text for analysis testing.',
         })
         if (analysis) {
           toast.success('Text analysis completed')
@@ -301,7 +317,7 @@ async function executeQuickAction(action) {
         }
         break
       }
-        
+
       case 'open_fairy_chat': {
         // Trigger fairy chat opening
         window.dispatchEvent(new CustomEvent('open-fairy-chat'))
@@ -320,14 +336,26 @@ function testFeature(featureName) {
   try {
     // Navigate to feature or trigger test
     const testActions = {
-      resumeBuilder: () => aiIntegration.triggerAIAction('generate_resume_content', { test: true }),
-      coverLetterBuilder: () => aiIntegration.triggerAIAction('generate_cover_letter', { test: true }),
-      jobSearch: () => aiIntegration.triggerAIAction('search_jobs', { query: 'test' }),
-      skillsMapper: () => aiIntegration.triggerAIAction('map_skills', { text: 'JavaScript React Node.js' }),
-      interviewPrep: () => aiIntegration.triggerAIAction('conduct_interview', { role: 'Developer' }),
-      realtimeChat: () => aiIntegration.triggerAIAction('realtime_chat', { message: 'Hello' })
+      resumeBuilder: () =>
+        aiIntegration.triggerAIAction('generate_resume_content', {
+          test: true,
+        }),
+      coverLetterBuilder: () =>
+        aiIntegration.triggerAIAction('generate_cover_letter', { test: true }),
+      jobSearch: () =>
+        aiIntegration.triggerAIAction('search_jobs', { query: 'test' }),
+      skillsMapper: () =>
+        aiIntegration.triggerAIAction('map_skills', {
+          text: 'JavaScript React Node.js',
+        }),
+      interviewPrep: () =>
+        aiIntegration.triggerAIAction('conduct_interview', {
+          role: 'Developer',
+        }),
+      realtimeChat: () =>
+        aiIntegration.triggerAIAction('realtime_chat', { message: 'Hello' }),
     }
-    
+
     const testAction = testActions[featureName]
     if (testAction) {
       testAction()
@@ -355,13 +383,15 @@ function getCapabilityIcon(capability) {
     imageAnalysis: 'PhotoIcon-search',
     voiceInput: 'MicrophoneIcon',
     realtimeChat: 'mdi-chat',
-    documentAnalysis: 'DocumentIcon-document-outline'
+    documentAnalysis: 'DocumentIcon-document-outline',
   }
   return icons[capability] || 'QuestionMarkCircleIcon-circle'
 }
 
 function formatCapabilityName(capability) {
-  return capability.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())
+  return capability
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
 }
 
 function getFeatureIcon(featureName) {
@@ -373,7 +403,7 @@ function getFeatureIcon(featureName) {
     skillsMapper: 'mdi-map-marker',
     jobSearch: 'mdi-briefcase-search',
     interviewPrep: 'UserIcon-voice',
-    realtimeChat: 'mdi-chat'
+    realtimeChat: 'mdi-chat',
   }
   return icons[featureName] || 'mdi-cog'
 }
@@ -381,15 +411,20 @@ function getFeatureIcon(featureName) {
 function formatFeatureName(featureName) {
   const names = {
     resumeBuilder: 'Resume Builder',
-    coverLetterBuilder: 'Cover Letter Builder', 
+    coverLetterBuilder: 'Cover Letter Builder',
     portfolio: 'Portfolio',
     portfolioGenerator: 'Portfolio Generator',
     skillsMapper: 'Skills Mapper',
     jobSearch: 'Job Search',
     interviewPrep: 'Interview Prep',
-    realtimeChat: 'Realtime Chat'
+    realtimeChat: 'Realtime Chat',
   }
-  return names[featureName] || featureName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())
+  return (
+    names[featureName] ||
+    featureName
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, str => str.toUpperCase())
+  )
 }
 
 function getFeatureStatusClass(feature) {
@@ -421,34 +456,37 @@ function formatTime(date) {
 
 function getTroubleshootingSteps(error) {
   const errorLower = (error || '').toLowerCase()
-  
+
   if (errorLower.includes('api key')) {
     return [
       'Check that your API key is correctly configured in Settings',
       'Verify the API key is valid and has not expired',
       'Ensure you have sufficient API quota/credits',
-      'Try regenerating your API key from the provider'
+      'Try regenerating your API key from the provider',
     ]
-  } else if (errorLower.includes('network') || errorLower.includes('connection')) {
+  } else if (
+    errorLower.includes('network') ||
+    errorLower.includes('connection')
+  ) {
     return [
       'Check your internet connection',
       'Verify firewall settings allow AI service access',
       'Try again in a few moments',
-      'Check if the AI service provider is experiencing outages'
+      'Check if the AI service provider is experiencing outages',
     ]
   } else if (errorLower.includes('quota') || errorLower.includes('limit')) {
     return [
       'You have reached your API usage limit',
       'Wait for your quota to reset (usually monthly)',
       'Consider upgrading your API plan',
-      'Try using a different AI provider'
+      'Try using a different AI provider',
     ]
   } else {
     return [
       'Try refreshing the page',
       'Check your API key configuration',
       'Verify your internet connection',
-      'Contact support if the problem persists'
+      'Contact support if the problem persists',
     ]
   }
 }
@@ -831,8 +869,13 @@ onMounted(() => {
 
 /* Animations */
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 /* Responsive */
@@ -841,29 +884,29 @@ onMounted(() => {
     padding: var(--spacing-3);
     gap: var(--spacing-4);
   }
-  
+
   .ai-status-header {
     flex-direction: column;
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .status-actions {
     justify-content: center;
   }
-  
+
   .capabilities-grid,
   .features-grid,
   .actions-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .config-item {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-2);
   }
-  
+
   .error-content {
     flex-direction: column;
   }

@@ -3,7 +3,10 @@ import { ref, onUnmounted, getCurrentInstance } from 'vue'
 
 export interface UseMediaStreamResult {
   type: 'webcam' | 'screen'
-  start: (constraints?: { video?: MediaTrackConstraints | boolean; audio?: MediaTrackConstraints | boolean }) => Promise<MediaStream>
+  start: (constraints?: {
+    video?: MediaTrackConstraints | boolean
+    audio?: MediaTrackConstraints | boolean
+  }) => Promise<MediaStream>
   stop: () => void
   isStreaming: ReturnType<typeof ref<boolean>>
   stream: ReturnType<typeof ref<MediaStream | null>>
@@ -18,26 +21,32 @@ export function useWebcam(): UseMediaStreamResult {
     stream.value = null
   }
 
-  const start = async (constraints?: { video?: MediaTrackConstraints | boolean; audio?: MediaTrackConstraints | boolean }): Promise<MediaStream> => {
+  const start = async (constraints?: {
+    video?: MediaTrackConstraints | boolean
+    audio?: MediaTrackConstraints | boolean
+  }): Promise<MediaStream> => {
     try {
       const mediaConstraints = {
-        video: typeof constraints?.video !== 'undefined' ? constraints?.video : true,
-        audio: typeof constraints?.audio !== 'undefined' ? constraints?.audio : true
+        video:
+          typeof constraints?.video !== 'undefined' ? constraints?.video : true,
+        audio:
+          typeof constraints?.audio !== 'undefined' ? constraints?.audio : true,
       }
 
-      const mediaStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
-      
+      const mediaStream =
+        await navigator.mediaDevices.getUserMedia(mediaConstraints)
+
       // Add event listeners for stream end
-      mediaStream.getTracks().forEach((track) => 
-        track.addEventListener('ended', handleStreamEnded)
-      )
-      
+      mediaStream
+        .getTracks()
+        .forEach(track => track.addEventListener('ended', handleStreamEnded))
+
       stream.value = mediaStream
       isStreaming.value = true
       return mediaStream
     } catch (error) {
       console.error('Failed to access webcam:', error)
-      
+
       // Handle specific constraint errors and try fallback constraints
       if (error instanceof DOMException) {
         if (error.name === 'OverconstrainedError') {
@@ -46,13 +55,15 @@ export function useWebcam(): UseMediaStreamResult {
             // Try with minimal constraints
             const fallbackStream = await navigator.mediaDevices.getUserMedia({
               video: { facingMode: 'user' },
-              audio: false // Remove audio requirement for fallback
+              audio: false, // Remove audio requirement for fallback
             })
-            
-            fallbackStream.getTracks().forEach((track) => 
-              track.addEventListener('ended', handleStreamEnded)
-            )
-            
+
+            fallbackStream
+              .getTracks()
+              .forEach(track =>
+                track.addEventListener('ended', handleStreamEnded)
+              )
+
             stream.value = fallbackStream
             isStreaming.value = true
             return fallbackStream
@@ -60,15 +71,19 @@ export function useWebcam(): UseMediaStreamResult {
             console.error('Fallback camera access also failed:', fallbackError)
             // Try video-only as last resort
             try {
-              const videoOnlyStream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false
-              })
-              
-              videoOnlyStream.getTracks().forEach((track) => 
-                track.addEventListener('ended', handleStreamEnded)
+              const videoOnlyStream = await navigator.mediaDevices.getUserMedia(
+                {
+                  video: true,
+                  audio: false,
+                }
               )
-              
+
+              videoOnlyStream
+                .getTracks()
+                .forEach(track =>
+                  track.addEventListener('ended', handleStreamEnded)
+                )
+
               stream.value = videoOnlyStream
               isStreaming.value = true
               return videoOnlyStream
@@ -85,14 +100,14 @@ export function useWebcam(): UseMediaStreamResult {
           throw new Error('Camera is being used by another application')
         }
       }
-      
+
       throw error
     }
   }
 
   const stop = () => {
     if (stream.value) {
-      stream.value.getTracks().forEach((track) => {
+      stream.value.getTracks().forEach(track => {
         track.removeEventListener('ended', handleStreamEnded)
         track.stop()
       })

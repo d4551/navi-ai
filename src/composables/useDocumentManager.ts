@@ -117,7 +117,7 @@ export function useDocumentManager() {
       location: '',
       website: '',
       linkedin: '',
-      github: ''
+      github: '',
     },
     summary: '',
     experience: [],
@@ -125,22 +125,22 @@ export function useDocumentManager() {
     skills: [],
     projects: [],
     achievements: [],
-    certifications: []
+    certifications: [],
   })
 
   const coverLetterData = reactive<CoverLetterData>({
     jobInfo: {
       company: '',
       position: '',
-      hiringManager: ''
+      hiringManager: '',
     },
     content: {
       opening: '',
       body: '',
-      closing: ''
+      closing: '',
     },
     tone: 'professional',
-    focus: 'experience'
+    focus: 'experience',
   })
 
   const jobDescription = ref('')
@@ -152,14 +152,14 @@ export function useDocumentManager() {
   const aiConfig = reactive<AIConfig>({
     tone: 'professional',
     level: 'balanced',
-    focus: 'ats'
+    focus: 'ats',
   })
 
   const userPreferences = reactive<UserPreferences>({
     autoSave: true,
     showTokens: false,
     defaultTemplate: 'modern',
-    language: 'en'
+    language: 'en',
   })
 
   const documentVersions = ref<DocumentVersion[]>([])
@@ -174,7 +174,7 @@ export function useDocumentManager() {
         description: '',
         requirements: [],
         skills: [],
-        location: ''
+        location: '',
       }
     }
 
@@ -186,26 +186,29 @@ export function useDocumentManager() {
       description: jobDescription.value,
       requirements: extractRequirements(lines),
       skills: extractSkills(lines),
-      location: extractLocation(lines)
+      location: extractLocation(lines),
     }
   })
 
   // Database operations
-  const saveDocumentToDatabase = async (type: 'resume' | 'cover-letter', data: ResumeData | CoverLetterData) => {
+  const saveDocumentToDatabase = async (
+    type: 'resume' | 'cover-letter',
+    data: ResumeData | CoverLetterData
+  ) => {
     try {
       const timestamp = new Date().toISOString()
       const documentData = {
         ...data,
         id: data.id || generateId(),
         updatedAt: timestamp,
-        createdAt: data.createdAt || timestamp
+        createdAt: data.createdAt || timestamp,
       }
 
       await databaseService.saveDocument(type, documentData)
-      
+
       // Create version snapshot
       await createVersionSnapshot(type, documentData)
-      
+
       return documentData
     } catch (error) {
       console.error('Failed to save document to database:', error)
@@ -213,7 +216,10 @@ export function useDocumentManager() {
     }
   }
 
-  const loadDocumentFromDatabase = async (type: 'resume' | 'cover-letter', id?: string) => {
+  const loadDocumentFromDatabase = async (
+    type: 'resume' | 'cover-letter',
+    id?: string
+  ) => {
     try {
       const document = await databaseService.getDocument(type, id)
       if (document) {
@@ -230,7 +236,10 @@ export function useDocumentManager() {
     }
   }
 
-  const createVersionSnapshot = async (type: 'resume' | 'cover-letter', documentData: ResumeData | CoverLetterData) => {
+  const createVersionSnapshot = async (
+    type: 'resume' | 'cover-letter',
+    documentData: ResumeData | CoverLetterData
+  ) => {
     try {
       const version: DocumentVersion = {
         id: generateId(),
@@ -238,16 +247,18 @@ export function useDocumentManager() {
         documentType: type,
         timestamp: Date.now(),
         label: `Auto-save ${new Date().toLocaleTimeString()}`,
-        jobHash: jobDescription.value ? hashString(jobDescription.value) : undefined,
+        jobHash: jobDescription.value
+          ? hashString(jobDescription.value)
+          : undefined,
         data: JSON.parse(JSON.stringify(documentData)),
-        changes: calculateChanges(documentData)
+        changes: calculateChanges(documentData),
       }
 
       await databaseService.saveVersion(version)
-      
+
       // Update local versions array
       documentVersions.value.unshift(version)
-      
+
       // Keep only the last 50 versions
       if (documentVersions.value.length > 50) {
         const toRemove = documentVersions.value.slice(50)
@@ -256,7 +267,6 @@ export function useDocumentManager() {
         }
         documentVersions.value = documentVersions.value.slice(0, 50)
       }
-      
     } catch (error) {
       console.error('Failed to create version snapshot:', error)
     }
@@ -265,14 +275,19 @@ export function useDocumentManager() {
   const loadVersionHistory = async () => {
     try {
       const versions = await databaseService.getVersions()
-      documentVersions.value = versions.sort((a, b) => b.timestamp - a.timestamp)
+      documentVersions.value = versions.sort(
+        (a, b) => b.timestamp - a.timestamp
+      )
     } catch (error) {
       console.error('Failed to load version history:', error)
     }
   }
 
   // Methods
-  const updateDocumentData = async (type: 'resume' | 'cover-letter', data: any) => {
+  const updateDocumentData = async (
+    type: 'resume' | 'cover-letter',
+    data: any
+  ) => {
     try {
       if (type === 'resume') {
         Object.assign(resumeData, data)
@@ -310,7 +325,10 @@ export function useDocumentManager() {
   const updatePreferences = (preferences: Partial<UserPreferences>) => {
     Object.assign(userPreferences, preferences)
     try {
-      localStorage.setItem('navi-user-preferences', JSON.stringify(userPreferences))
+      localStorage.setItem(
+        'navi-user-preferences',
+        JSON.stringify(userPreferences)
+      )
     } catch {}
   }
 
@@ -321,7 +339,7 @@ export function useDocumentManager() {
       } else {
         Object.assign(coverLetterData, version.data)
       }
-      
+
       await saveToStorage()
       toast?.success('Document reverted to selected version')
     } catch (error) {
@@ -332,53 +350,96 @@ export function useDocumentManager() {
 
   // Enhanced helper functions
   function extractCompany(lines: string[]): string {
-    const companyKeywords = ['at', 'company', 'organization', 'firm', 'corporation', 'inc', 'llc']
+    const companyKeywords = [
+      'at',
+      'company',
+      'organization',
+      'firm',
+      'corporation',
+      'inc',
+      'llc',
+    ]
     for (const line of lines) {
       for (const keyword of companyKeywords) {
-        const regex = new RegExp(`\\b${keyword}\\s+([A-Z][A-Za-z\\s&,.-]+)`, 'i')
+        const regex = new RegExp(
+          `\\b${keyword}\\s+([A-Z][A-Za-z\\s&,.-]+)`,
+          'i'
+        )
         const match = line.match(regex)
         if (match && match[1]) {
-          return match[1].split(/[,\\.;]/ )[0].trim()
+          return match[1].split(/[,\\.;]/)[0].trim()
         }
       }
     }
-    
+
     // Try to extract from email domains or common patterns
-    const emailMatch = lines.join(' ').match(/@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+    const emailMatch = lines.join(' ').match(/@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/)
     if (emailMatch) {
-      const domain = emailMatch[1].replace(/\.(com|org|net|co|io)$/, '').replace(/\./g, ' ');
-      return domain.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      const domain = emailMatch[1]
+        .replace(/\.(com|org|net|co|io)$/, '')
+        .replace(/\./g, ' ')
+      return domain
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
     }
-    
+
     return ''
   }
 
   function extractPosition(lines: string[]): string {
-    const positionKeywords = ['position', 'role', 'job', 'title', 'seeking', 'looking for', 'hiring']
-    const commonTitles = [
-      'developer', 'engineer', 'designer', 'manager', 'director', 'lead', 'senior', 'junior',
-      'analyst', 'specialist', 'coordinator', 'assistant', 'executive', 'consultant'
+    const positionKeywords = [
+      'position',
+      'role',
+      'job',
+      'title',
+      'seeking',
+      'looking for',
+      'hiring',
     ]
-    
-    for (const line of lines.slice(0, 5)) { // Check first 5 lines for position
+    const commonTitles = [
+      'developer',
+      'engineer',
+      'designer',
+      'manager',
+      'director',
+      'lead',
+      'senior',
+      'junior',
+      'analyst',
+      'specialist',
+      'coordinator',
+      'assistant',
+      'executive',
+      'consultant',
+    ]
+
+    for (const line of lines.slice(0, 5)) {
+      // Check first 5 lines for position
       for (const keyword of positionKeywords) {
         const regex = new RegExp(`${keyword}:?\\s*([A-Za-z\\s/&-]+)`, 'i')
         const match = line.match(regex)
         if (match && match[1]) {
           const position = match[1].split(/[,\\.;]/)[0].trim()
-          if (commonTitles.some(title => position.toLowerCase().includes(title))) {
+          if (
+            commonTitles.some(title => position.toLowerCase().includes(title))
+          ) {
             return position
           }
         }
       }
-      
+
       // Check if line starts with a common job title pattern
       for (const title of commonTitles) {
         if (line.toLowerCase().includes(title)) {
           const words = line.split(' ')
-          const titleIndex = words.findIndex(word => word.toLowerCase().includes(title))
+          const titleIndex = words.findIndex(word =>
+            word.toLowerCase().includes(title)
+          )
           if (titleIndex >= 0) {
-            return words.slice(Math.max(0, titleIndex - 1), titleIndex + 2).join(' ')
+            return words
+              .slice(Math.max(0, titleIndex - 1), titleIndex + 2)
+              .join(' ')
           }
         }
       }
@@ -387,7 +448,14 @@ export function useDocumentManager() {
   }
 
   function extractHiringManager(lines: string[]): string {
-    const managerKeywords = ['hiring manager', 'recruiter', 'contact', 'hr manager', 'talent', 'recruitement']
+    const managerKeywords = [
+      'hiring manager',
+      'recruiter',
+      'contact',
+      'hr manager',
+      'talent',
+      'recruitement',
+    ]
     for (const line of lines) {
       for (const keyword of managerKeywords) {
         const index = line.toLowerCase().indexOf(keyword)
@@ -409,47 +477,83 @@ export function useDocumentManager() {
 
   function extractRequirements(lines: string[]): string[] {
     const requirements: string[] = []
-    const requirementKeywords = ['requirements', 'qualifications', 'must have', 'required', 'essential']
-    
+    const requirementKeywords = [
+      'requirements',
+      'qualifications',
+      'must have',
+      'required',
+      'essential',
+    ]
+
     let inRequirementsSection = false
     for (const line of lines) {
       const lowerLine = line.toLowerCase()
-      
+
       // Check if we're entering requirements section
       if (requirementKeywords.some(keyword => lowerLine.includes(keyword))) {
         inRequirementsSection = true
         continue
       }
-      
+
       // Extract requirements if we're in the section
       if (inRequirementsSection) {
-        if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*') || /^\d+\./.test(line)) {
+        if (
+          line.startsWith('•') ||
+          line.startsWith('-') ||
+          line.startsWith('*') ||
+          /^\d+\./.test(line)
+        ) {
           requirements.push(line.replace(/^[-•*\d.\s]+/, '').trim())
-        } else if (line.trim() === '' || lowerLine.includes('responsibilities') || lowerLine.includes('duties')) {
+        } else if (
+          line.trim() === '' ||
+          lowerLine.includes('responsibilities') ||
+          lowerLine.includes('duties')
+        ) {
           inRequirementsSection = false
         }
       }
     }
-    
+
     return requirements.slice(0, 10) // Limit to 10 requirements
   }
 
   function extractSkills(lines: string[]): string[] {
     const skills: string[] = []
-    const skillKeywords = ['skills', 'technologies', 'experience with', 'proficient in', 'knowledge of']
-    const commonSkills = [
-      'javascript', 'python', 'java', 'react', 'node.js', 'sql', 'html', 'css', 'git',
-      'aws', 'docker', 'kubernetes', 'typescript', 'vue', 'angular', 'mongodb', 'postgresql'
+    const skillKeywords = [
+      'skills',
+      'technologies',
+      'experience with',
+      'proficient in',
+      'knowledge of',
     ]
-    
+    const commonSkills = [
+      'javascript',
+      'python',
+      'java',
+      'react',
+      'node.js',
+      'sql',
+      'html',
+      'css',
+      'git',
+      'aws',
+      'docker',
+      'kubernetes',
+      'typescript',
+      'vue',
+      'angular',
+      'mongodb',
+      'postgresql',
+    ]
+
     let inSkillsSection = false
     for (const line of lines) {
       const lowerLine = line.toLowerCase()
-      
+
       // Check if we're entering skills section
       if (skillKeywords.some(keyword => lowerLine.includes(keyword))) {
         inSkillsSection = true
-        
+
         // Extract skills from the same line
         for (const skill of commonSkills) {
           if (lowerLine.includes(skill)) {
@@ -458,7 +562,7 @@ export function useDocumentManager() {
         }
         continue
       }
-      
+
       // Extract skills if we're in the section
       if (inSkillsSection) {
         for (const skill of commonSkills) {
@@ -466,25 +570,38 @@ export function useDocumentManager() {
             skills.push(skill)
           }
         }
-        
-        if (line.trim() === '' || lowerLine.includes('experience') || lowerLine.includes('responsibilities')) {
+
+        if (
+          line.trim() === '' ||
+          lowerLine.includes('experience') ||
+          lowerLine.includes('responsibilities')
+        ) {
           inSkillsSection = false
         }
       }
     }
-    
+
     return [...new Set(skills)].slice(0, 15) // Remove duplicates and limit to 15 skills
   }
 
   function extractLocation(lines: string[]): string {
-    const locationKeywords = ['location', 'based', 'office', 'remote', 'hybrid', 'city', 'state']
+    const locationKeywords = [
+      'location',
+      'based',
+      'office',
+      'remote',
+      'hybrid',
+      'city',
+      'state',
+    ]
     const locationPatterns = [
       /\b([A-Z][a-z]+,\s*[A-Z]{2})\b/, // City, State
       /\b([A-Z][a-z]+\s*,\s*[A-Z][a-z]+)\b/, // City, Country
-      /\b(Remote|Hybrid|On-site)\b/i
+      /\b(Remote|Hybrid|On-site)\b/i,
     ]
-    
-    for (const line of lines.slice(0, 10)) { // Check first 10 lines
+
+    for (const line of lines.slice(0, 10)) {
+      // Check first 10 lines
       // Check for location keywords
       for (const keyword of locationKeywords) {
         if (line.toLowerCase().includes(keyword)) {
@@ -496,7 +613,7 @@ export function useDocumentManager() {
           }
         }
       }
-      
+
       // Direct pattern matching
       for (const pattern of locationPatterns) {
         const match = line.match(pattern)
@@ -505,7 +622,7 @@ export function useDocumentManager() {
         }
       }
     }
-    
+
     return ''
   }
 
@@ -569,9 +686,12 @@ export function useDocumentManager() {
 
       // Also save to localStorage as backup
       localStorage.setItem('navi-resume-data', JSON.stringify(resumeData))
-      localStorage.setItem('navi-cover-letter-data', JSON.stringify(coverLetterData))
+      localStorage.setItem(
+        'navi-cover-letter-data',
+        JSON.stringify(coverLetterData)
+      )
       localStorage.setItem('navi-job-description', jobDescription.value)
-      
+
       return true
     } catch (error) {
       console.warn('Failed to save document data to storage:', error)
@@ -590,7 +710,7 @@ export function useDocumentManager() {
     let hash = 0
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i)
-      hash = ((hash << 5) - hash) + char
+      hash = (hash << 5) - hash + char
       hash = hash & hash // Convert to 32-bit integer
     }
     return hash
@@ -602,16 +722,20 @@ export function useDocumentManager() {
       additions: 0,
       modifications: 1,
       deletions: 0,
-      description: 'Document updated'
+      description: 'Document updated',
     }
   }
 
   // Auto-save functionality
-  watch([resumeData, coverLetterData, jobDescription], async () => {
-    if (userPreferences.autoSave && !isLoading.value) {
-      await saveToStorage()
-    }
-  }, { deep: true })
+  watch(
+    [resumeData, coverLetterData, jobDescription],
+    async () => {
+      if (userPreferences.autoSave && !isLoading.value) {
+        await saveToStorage()
+      }
+    },
+    { deep: true }
+  )
 
   // Load initial data
   onMounted(async () => {
@@ -638,6 +762,6 @@ export function useDocumentManager() {
     revertToVersion,
     saveToStorage,
     loadFromStorage,
-    loadVersionHistory
+    loadVersionHistory,
   }
 }

@@ -1,9 +1,14 @@
 <template>
   <div class="application-tracker font-sans">
     <div v-if="applications.length === 0" class="empty-state text-center py-5">
-      <AppIcon name="mdi-clipboard-text-outline" class="display-6 text-secondary block mb-3" />
+      <AppIcon
+        name="mdi-clipboard-text-outline"
+        class="display-6 text-secondary block mb-3"
+      />
       <h6 class="mb-2">No applications tracked yet</h6>
-      <p class="text-secondary small mb-0">Apply to jobs and they will appear here for progress tracking.</p>
+      <p class="text-secondary small mb-0">
+        Apply to jobs and they will appear here for progress tracking.
+      </p>
     </div>
 
     <div v-else class="table-container">
@@ -50,7 +55,12 @@
             </tr>
           </thead>
           <tbody class="table-body">
-            <tr v-for="(app, index) in applications" :key="app.id" class="table-flex flex-wrap" :class="`flex flex-wrap-${index % 2}`">
+            <tr
+              v-for="(app, index) in applications"
+              :key="app.id"
+              class="table-flex flex-wrap"
+              :class="`flex flex-wrap-${index % 2}`"
+            >
               <td class="td-glassmorphic role-cell">
                 <div class="cell-content">
                   <span class="role-title">{{ app.title }}</span>
@@ -63,12 +73,18 @@
               </td>
               <td class="td-glassmorphic date-cell">
                 <div class="cell-content">
-                  <span class="date-text">{{ formatDate(app.appliedDate) }}</span>
+                  <span class="date-text">{{
+                    formatDate(app.appliedDate)
+                  }}</span>
                 </div>
               </td>
               <td class="td-glassmorphic status-cell">
                 <div class="cell-content">
-                  <select v-model="app.status" class="status-select glassmorphic-select" @change="emitStatus(app)">
+                  <select
+                    v-model="app.status"
+                    class="status-select glassmorphic-select"
+                    @change="emitStatus(app)"
+                  >
                     <option value="applied">Applied</option>
                     <option value="interview">Interview</option>
                     <option value="offer">Offer</option>
@@ -80,12 +96,19 @@
                 <div class="cell-content">
                   <div class="notes-container">
                     <ul class="notes-list">
-                      <li v-for="note in app.notes" :key="note.id" class="note-item">
+                      <li
+                        v-for="note in app.notes"
+                        :key="note.id"
+                        class="note-item"
+                      >
                         <AppIcon name="ChevronRightIcon" class="note-bullet" />
                         {{ note.text }}
                       </li>
                     </ul>
-                    <button class="add-note-btn glassmorphic-btn" @click="openNoteModal(app)">
+                    <button
+                      class="add-note-btn glassmorphic-btn"
+                      @click="openNoteModal(app)"
+                    >
                       <AppIcon name="mdi-note-plus-outline" class="mr-1" />
                       Add Note
                     </button>
@@ -95,10 +118,18 @@
               <td class="td-glassmorphic actions-cell">
                 <div class="cell-content">
                   <div class="action-buttons">
-                    <button class="action-btn view-btn glassmorphic-btn" title="View details" @click="viewDetails(app)">
+                    <button
+                      class="action-btn view-btn glassmorphic-btn"
+                      title="View details"
+                      @click="viewDetails(app)"
+                    >
                       <AppIcon name="EyeIcon" />
                     </button>
-                    <button class="action-btn delete-btn glassmorphic-btn" title="Remove" @click="remove(app)">
+                    <button
+                      class="action-btn delete-btn glassmorphic-btn"
+                      title="Remove"
+                      @click="remove(app)"
+                    >
                       <AppIcon name="TrashIcon-outline" />
                     </button>
                   </div>
@@ -112,19 +143,46 @@
 
     <!-- Note Modal -->
     <Teleport to="body">
-      <div v-if="noteModalApp" class="modal fade show block" tabindex="-1" aria-modal="true" role="dialog">
+      <div
+        v-if="noteModalApp"
+        class="modal fade show block"
+        tabindex="-1"
+        aria-modal="true"
+        role="dialog"
+      >
         <div class="modal-dialog">
           <div class="modal-content glass-card section-card-subtle">
             <div class="modal-header">
               <h5 class="modal-title">Add Note - {{ noteModalApp.title }}</h5>
-              <UnifiedButton variant="ghost" size="sm" icon-only :icon="'XMarkIcon'" aria-label="Close" @click="closeNoteModal" />
+              <UnifiedButton
+                variant="ghost"
+                size="sm"
+                icon-only
+                :icon="'XMarkIcon'"
+                aria-label="Close"
+                @click="closeNoteModal"
+              />
             </div>
             <div class="modal-body">
-              <textarea v-model="noteInput" class="unified-input ui-input" rows="4" placeholder="Interview scheduled, recruiter feedback, etc."></textarea>
+              <textarea
+                v-model="noteInput"
+                class="unified-input ui-input"
+                rows="4"
+                placeholder="Interview scheduled, recruiter feedback, etc."
+              ></textarea>
             </div>
             <div class="modal-footer">
-              <button class="unified-btn btn-secondary ui-btn ui-size-md v-btn" @click="closeNoteModal">Cancel</button>
-              <button class="unified-btn btn-primary v-btn ui-btn ui-size-md" :disabled="!noteInput.trim()" @click="saveNote">
+              <button
+                class="unified-btn btn-secondary ui-btn ui-size-md v-btn"
+                @click="closeNoteModal"
+              >
+                Cancel
+              </button>
+              <button
+                class="unified-btn btn-primary v-btn ui-btn ui-size-md"
+                :disabled="!noteInput.trim()"
+                @click="saveNote"
+              >
                 <AppIcon name="mdi-content-save-outline" class="mr-1" />
                 Save Note
               </button>
@@ -137,28 +195,53 @@
 </template>
 
 <script setup>
-import { BuildingOfficeIcon, CalendarIcon, ChartBarSquareIcon, ChevronRightIcon, CogIcon, EyeIcon } from '@heroicons/vue/24/outline'
+import {
+  BuildingOfficeIcon,
+  CalendarIcon,
+  ChartBarSquareIcon,
+  ChevronRightIcon,
+  CogIcon,
+  EyeIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 const props = defineProps({
-  applications: { type: Array, default: () => [] }
+  applications: { type: Array, default: () => [] },
 })
 
-const emit = defineEmits(['update-status', 'add-note', 'view-details', 'remove-application'])
+const emit = defineEmits([
+  'update-status',
+  'add-note',
+  'view-details',
+  'remove-application',
+])
 
 const noteModalApp = ref(null)
 const noteInput = ref('')
 
 function formatDate(date) {
-  if (!date) {return '-'}
-  try { return new Date(date).toLocaleDateString() } catch { return '-' }
+  if (!date) {
+    return '-'
+  }
+  try {
+    return new Date(date).toLocaleDateString()
+  } catch {
+    return '-'
+  }
 }
-function emitStatus(app) { emit('update-status', app.id, app.status) }
-function openNoteModal(app) { noteModalApp.value = app; noteInput.value = '' }
-function closeNoteModal() { noteModalApp.value = null }
+function emitStatus(app) {
+  emit('update-status', app.id, app.status)
+}
+function openNoteModal(app) {
+  noteModalApp.value = app
+  noteInput.value = ''
+}
+function closeNoteModal() {
+  noteModalApp.value = null
+}
 function saveNote() {
   emit('add-note', noteModalApp.value.id, noteInput.value.trim())
   closeNoteModal()
@@ -169,7 +252,7 @@ function viewDetails(app) {
       console.error('ApplicationTracker: Invalid application for view details')
       return
     }
-    
+
     // Emit event to parent component for handling details view
     emit('view-details', {
       id: app.id,
@@ -181,10 +264,13 @@ function viewDetails(app) {
       jobUrl: app.jobUrl,
       salary: app.salary,
       location: app.location,
-      description: app.description
+      description: app.description,
     })
   } catch (error) {
-    console.error('ApplicationTracker: Failed to view application details', error)
+    console.error(
+      'ApplicationTracker: Failed to view application details',
+      error
+    )
   }
 }
 
@@ -194,13 +280,17 @@ function remove(app) {
       console.error('ApplicationTracker: Invalid application for removal')
       return
     }
-    
+
     // Confirm before removing
-    if (confirm(`Are you sure you want to remove the application for "${app.title}" at ${app.company}?`)) {
+    if (
+      confirm(
+        `Are you sure you want to remove the application for "${app.title}" at ${app.company}?`
+      )
+    ) {
       emit('remove-application', {
         id: app.id,
         title: app.title,
-        company: app.company
+        company: app.company,
       })
     }
   } catch (error) {
@@ -222,7 +312,7 @@ function remove(app) {
   backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.25),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   margin: 1rem 0;
@@ -244,7 +334,11 @@ function remove(app) {
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, rgba(0, 255, 136, 0.6), rgba(0, 217, 255, 0.6));
+  background: linear-gradient(
+    45deg,
+    rgba(0, 255, 136, 0.6),
+    rgba(0, 217, 255, 0.6)
+  );
   border-radius: 3px;
 }
 
@@ -306,7 +400,7 @@ function remove(app) {
     rgba(255, 255, 255, 0.02) 100%
   );
   transform: scale(1.01);
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 255, 136, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -452,7 +546,7 @@ function remove(app) {
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   cursor: pointer;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 
+  box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
@@ -465,7 +559,7 @@ function remove(app) {
     rgba(0, 217, 255, 0.15) 100%
   );
   border-color: rgba(0, 255, 136, 0.4);
-  box-shadow: 
+  box-shadow:
     0 4px 15px rgba(0, 255, 136, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
@@ -502,7 +596,7 @@ function remove(app) {
     rgba(99, 102, 241, 0.15) 100%
   );
   border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 
+  box-shadow:
     0 4px 15px rgba(59, 130, 246, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
@@ -514,7 +608,7 @@ function remove(app) {
     rgba(220, 38, 38, 0.15) 100%
   );
   border-color: rgba(239, 68, 68, 0.4);
-  box-shadow: 
+  box-shadow:
     0 4px 15px rgba(239, 68, 68, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
@@ -530,7 +624,7 @@ function remove(app) {
   -webkit-backdrop-filter: blur(25px) saturate(1.8);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
-  box-shadow: 
+  box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
@@ -572,9 +666,16 @@ function remove(app) {
 }
 
 @keyframes rgbShift {
-  0%, 100% { filter: hue-rotate(0deg); }
-  33% { filter: hue-rotate(120deg); }
-  66% { filter: hue-rotate(240deg); }
+  0%,
+  100% {
+    filter: hue-rotate(0deg);
+  }
+  33% {
+    filter: hue-rotate(120deg);
+  }
+  66% {
+    filter: hue-rotate(240deg);
+  }
 }
 
 /* Responsive Design */
@@ -583,20 +684,20 @@ function remove(app) {
   .td-glassmorphic {
     padding: 0.75rem 0.5rem;
   }
-  
+
   .header-content {
     font-size: 0.65rem;
   }
-  
+
   .notes-container {
     max-width: 150px;
   }
-  
+
   .action-buttons {
     flex-direction: column;
     gap: 0.25rem;
   }
-  
+
   .action-btn {
     width: 32px;
     height: 32px;

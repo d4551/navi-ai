@@ -7,7 +7,7 @@
         Video & Screen Streaming Settings
       </h5>
     </div>
-    
+
     <div class="card-body section-body">
       <!-- Video Settings Section -->
       <div class="settings-subsection mb-4">
@@ -15,7 +15,7 @@
           <AppIcon name="mdi-camera" />
           Video Settings
         </h6>
-        
+
         <div class="row g-3">
           <div class="col-12">
             <div class="form-check form-switch">
@@ -135,7 +135,7 @@
           <AppIcon name="mdi-monitor" />
           Screen Sharing Settings
         </h6>
-        
+
         <div class="row g-3">
           <div class="col-12">
             <div class="form-check form-switch">
@@ -235,7 +235,7 @@
           <AppIcon name="mdi-brain" />
           AI Streaming Settings
         </h6>
-        
+
         <div class="row g-3">
           <div class="col-12">
             <div class="form-check form-switch">
@@ -256,13 +256,14 @@
             </div>
           </div>
 
-          <div v-if="localSettings.streaming.aiStreaming.enabled && apiKey" class="col-12">
+          <div
+            v-if="localSettings.streaming.aiStreaming.enabled && apiKey"
+            class="col-12"
+          >
             <div class="row g-3">
               <!-- AI Model -->
               <div class="col-md-6">
-                <label class="form-label" for="ai-model">
-                  AI Model
-                </label>
+                <label class="form-label" for="ai-model"> AI Model </label>
                 <select
                   id="ai-model"
                   v-model="localSettings.streaming.aiStreaming.model"
@@ -299,7 +300,8 @@
               <!-- Analysis FPS -->
               <div class="col-md-4">
                 <label class="form-label" for="ai-fps">
-                  Analysis Rate: {{ localSettings.streaming.aiStreaming.fps }} FPS
+                  Analysis Rate:
+                  {{ localSettings.streaming.aiStreaming.fps }} FPS
                 </label>
                 <input
                   id="ai-fps"
@@ -318,13 +320,22 @@
               </div>
 
               <!-- Analysis Interval (for interval mode) -->
-              <div v-if="localSettings.streaming.aiStreaming.analysisType === 'interval'" class="col-md-4">
+              <div
+                v-if="
+                  localSettings.streaming.aiStreaming.analysisType ===
+                  'interval'
+                "
+                class="col-md-4"
+              >
                 <label class="form-label" for="analysis-interval">
-                  Interval: {{ localSettings.streaming.aiStreaming.analysisInterval }}s
+                  Interval:
+                  {{ localSettings.streaming.aiStreaming.analysisInterval }}s
                 </label>
                 <input
                   id="analysis-interval"
-                  v-model.number="localSettings.streaming.aiStreaming.analysisInterval"
+                  v-model.number="
+                    localSettings.streaming.aiStreaming.analysisInterval
+                  "
                   type="range"
                   class="form-range"
                   min="5"
@@ -341,11 +352,14 @@
               <!-- AI Temperature -->
               <div class="col-md-4">
                 <label class="form-label" for="ai-temperature">
-                  Creativity: {{ localSettings.streaming.aiStreaming.temperature }}
+                  Creativity:
+                  {{ localSettings.streaming.aiStreaming.temperature }}
                 </label>
                 <input
                   id="ai-temperature"
-                  v-model.number="localSettings.streaming.aiStreaming.temperature"
+                  v-model.number="
+                    localSettings.streaming.aiStreaming.temperature
+                  "
                   type="range"
                   class="form-range"
                   min="0"
@@ -399,7 +413,9 @@
                 <div class="form-check mt-4">
                   <input
                     id="realtime-on-record"
-                    v-model="localSettings.streaming.aiStreaming.startRealtimeOnRecord"
+                    v-model="
+                      localSettings.streaming.aiStreaming.startRealtimeOnRecord
+                    "
                     class="form-check-input"
                     type="checkbox"
                     @change="updateSettings"
@@ -415,7 +431,10 @@
                 <div class="form-check mt-4">
                   <input
                     id="realtime-on-screen"
-                    v-model="localSettings.streaming.aiStreaming.startRealtimeOnScreenStart"
+                    v-model="
+                      localSettings.streaming.aiStreaming
+                        .startRealtimeOnScreenStart
+                    "
                     class="form-check-input"
                     type="checkbox"
                     @change="updateSettings"
@@ -440,7 +459,8 @@
                   @input="debounceUpdateSettings"
                 ></textarea>
                 <div class="form-text">
-                  This prompt guides how the AI analyzes your video stream. Be specific about what you want it to focus on.
+                  This prompt guides how the AI analyzes your video stream. Be
+                  specific about what you want it to focus on.
                 </div>
               </div>
             </div>
@@ -450,7 +470,11 @@
 
       <!-- Action Buttons -->
       <div class="d-flex gap-2 justify-content-end">
-        <UnifiedButton variant="outline" leading-icon="mdi-restore" @click="resetToDefaults">
+        <UnifiedButton
+          variant="outline"
+          leading-icon="mdi-restore"
+          @click="resetToDefaults"
+        >
           Reset Defaults
         </UnifiedButton>
         <UnifiedButton
@@ -471,82 +495,90 @@
 <script>
 import { ref, onMounted, computed, watch } from 'vue'
 import { useAppStore } from '@/stores/app'
-import { DEFAULT_SETTINGS } from '@/shared/schemas/settingsSchema';
-import { videoService } from '@/shared/services/VideoService';
-import { logger } from '@/shared/utils/logger';
-import AppIcon from '@/components/ui/AppIcon.vue';
-import UnifiedButton from '@/components/ui/UnifiedButton.vue';
+import { DEFAULT_SETTINGS } from '@/shared/schemas/settingsSchema'
+import { videoService } from '@/shared/services/VideoService'
+import { logger } from '@/shared/utils/logger'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 export default {
   name: 'StreamingSettingsSection',
   components: {
     AppIcon,
-    UnifiedButton
+    UnifiedButton,
   },
   props: {
     settings: {
       type: Object,
-      required: true
+      required: true,
     },
     saving: {
       type: Boolean,
-      default: false
+      default: false,
     },
     apiKey: {
       type: String,
-      default: ''
+      default: '',
     },
   },
   emits: ['update:settings', 'save'],
   setup(props, { emit }) {
     const store = useAppStore()
     // Local reactive copy of settings
-    const localSettings = ref({ ...props.settings });
-    const videoDevices = ref([]);
-    
+    const localSettings = ref({ ...props.settings })
+    const videoDevices = ref([])
+
     // Computed properties
-    const autoSave = computed(() => props.settings.autoSave);
-    const availableModels = computed(() => store.availableModels);
+    const autoSave = computed(() => props.settings.autoSave)
+    const availableModels = computed(() => store.availableModels)
 
     // Initialize video devices
     onMounted(async () => {
       try {
-        await videoService.initialize();
-        videoDevices.value = await videoService.enumerateDevices();
+        await videoService.initialize()
+        videoDevices.value = await videoService.enumerateDevices()
       } catch (error) {
-        logger.error('Failed to initialize video devices:', error);
+        logger.error('Failed to initialize video devices:', error)
       }
-    });
+    })
 
     // Watch for external settings changes
-    watch(() => props.settings, (newSettings) => {
-      localSettings.value = { ...newSettings };
-    }, { deep: true });
+    watch(
+      () => props.settings,
+      newSettings => {
+        localSettings.value = { ...newSettings }
+      },
+      { deep: true }
+    )
 
     // Debounced update for text inputs
-    let updateTimeout;
+    let updateTimeout
     const debounceUpdateSettings = () => {
-      clearTimeout(updateTimeout);
-      updateTimeout = setTimeout(updateSettings, 500);
-    };
+      clearTimeout(updateTimeout)
+      updateTimeout = setTimeout(updateSettings, 500)
+    }
 
     // Update settings
     const updateSettings = () => {
-      emit('update:settings', { ...localSettings.value });
-    };
+      emit('update:settings', { ...localSettings.value })
+    }
 
     // Save settings manually
     const saveSettings = () => {
-      emit('save');
-    };
+      emit('save')
+    }
 
     // Reset to defaults
     const resetToDefaults = () => {
-      if (confirm('Reset all streaming settings to defaults? This cannot be undone.')) {
-        localSettings.value.streaming = { ...DEFAULT_SETTINGS.streaming };
-        updateSettings();
+      if (
+        confirm(
+          'Reset all streaming settings to defaults? This cannot be undone.'
+        )
+      ) {
+        localSettings.value.streaming = { ...DEFAULT_SETTINGS.streaming }
+        updateSettings()
       }
-    };
+    }
 
     return {
       localSettings,
@@ -556,10 +588,10 @@ export default {
       updateSettings,
       debounceUpdateSettings,
       saveSettings,
-      resetToDefaults
-    };
-  }
-};
+      resetToDefaults,
+    }
+  },
+}
 </script>
 
 <style scoped>
@@ -596,11 +628,11 @@ export default {
   .col-md-6 {
     margin-bottom: 1rem;
   }
-  
+
   .d-flex.gap-2.justify-content-end {
     flex-direction: column;
   }
-  
+
   .d-flex.gap-2.justify-content-end .btn {
     width: 100%;
   }

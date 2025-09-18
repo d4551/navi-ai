@@ -1,5 +1,5 @@
 <template>
-  <StandardPageLayout 
+  <StandardPageLayout
     title="Gaming Job Central"
     subtitle="Discover video game industry roles with AI‑powered matching and studio intelligence"
     title-icon="mdi-gamepad-variant"
@@ -9,7 +9,12 @@
     :hero-stats="jobBoardStats"
   >
     <template #header-actions>
-      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
+      <HeaderActions
+        layout="horizontal"
+        alignment="end"
+        gap="md"
+        priority="primary"
+      >
         <!-- Primary Action Buttons -->
         <UnifiedButton
           variant="primary"
@@ -19,7 +24,7 @@
         >
           Advanced Search
         </UnifiedButton>
-        
+
         <UnifiedButton
           variant="gaming"
           size="md"
@@ -63,11 +68,17 @@
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-3">
             <AppIcon name="mdi-brain" class="text-2xl text-neon-blue" />
-            <h2 class="text-xl font-bold text-glass-enhanced">AI Game Career Intelligence</h2>
+            <h2 class="text-xl font-bold text-glass-enhanced">
+              AI Game Career Intelligence
+            </h2>
           </div>
           <div class="flex items-center gap-4">
-            <div class="glass px-3 py-1 rounded-lg text-sm text-glass-enhanced">{{ totalJobs }} Active Positions</div>
-            <div class="glass px-3 py-1 rounded-lg text-sm text-glass-enhanced">{{ studioCount }}+ Studios</div>
+            <div class="glass px-3 py-1 rounded-lg text-sm text-glass-enhanced">
+              {{ totalJobs }} Active Positions
+            </div>
+            <div class="glass px-3 py-1 rounded-lg text-sm text-glass-enhanced">
+              {{ studioCount }}+ Studios
+            </div>
           </div>
         </div>
 
@@ -84,7 +95,7 @@
               <span class="action-subtitle">Search with filters</span>
             </div>
           </UnifiedButton>
-          
+
           <UnifiedButton
             variant="cyber"
             size="lg"
@@ -98,7 +109,7 @@
               <span class="action-subtitle">Personalized recommendations</span>
             </div>
           </UnifiedButton>
-          
+
           <UnifiedButton
             variant="glass"
             size="lg"
@@ -133,19 +144,26 @@
       <div class="glass p-6 rounded-lg">
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-3">
-            <AppIcon name="mdi-filter-variant" class="text-xl text-neon-green" />
-            <h2 class="text-lg font-semibold text-glass-enhanced">Search & Filter Gaming Jobs</h2>
+            <AppIcon
+              name="mdi-filter-variant"
+              class="text-xl text-neon-green"
+            />
+            <h2 class="text-lg font-semibold text-glass-enhanced">
+              Search & Filter Gaming Jobs
+            </h2>
           </div>
           <UnifiedButton
             variant="ghost"
             size="sm"
-            :leading-icon="showAdvancedFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+            :leading-icon="
+              showAdvancedFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'
+            "
             @click="showAdvancedFilters = !showAdvancedFilters"
           >
             {{ showAdvancedFilters ? 'Hide' : 'Show' }} Advanced
           </UnifiedButton>
         </div>
-        
+
         <div class="search-form">
           <!-- Primary Search Row -->
           <div class="search-row">
@@ -169,7 +187,10 @@
             </div>
 
             <div class="quick-filters">
-              <select v-model="searchFilters.location" class="filter-select glass-select">
+              <select
+                v-model="searchFilters.location"
+                class="filter-select glass-select"
+              >
                 <option value="">All Locations</option>
                 <option value="remote">Remote</option>
                 <option value="us">United States</option>
@@ -178,7 +199,10 @@
                 <option value="asia">Asia</option>
               </select>
 
-              <select v-model="searchFilters.jobType" class="filter-select glass-select">
+              <select
+                v-model="searchFilters.jobType"
+                class="filter-select glass-select"
+              >
                 <option value="">All Types</option>
                 <option value="full-time">Full Time</option>
                 <option value="part-time">Part Time</option>
@@ -186,7 +210,10 @@
                 <option value="internship">Internship</option>
               </select>
 
-              <select v-model="searchFilters.posted" class="filter-select glass-select">
+              <select
+                v-model="searchFilters.posted"
+                class="filter-select glass-select"
+              >
                 <option value="">All Time</option>
                 <option value="24h">Last 24 hours</option>
                 <option value="7d">Last 7 days</option>
@@ -220,39 +247,71 @@
                 <AppIcon name="mdi-gamepad-variant" />
                 Gaming Industry Filters
               </h4>
-              
+
               <div class="filter-grid">
                 <div class="filter-group">
                   <label>Game Engines</label>
-                  <select v-model="gamingFilters.gameEngines" multiple class="filter-select glass-select">
-                    <option v-for="engine in gameEngineOptions" :key="engine" :value="engine">
+                  <select
+                    v-model="gamingFilters.gameEngines"
+                    multiple
+                    class="filter-select glass-select"
+                  >
+                    <option
+                      v-for="engine in gameEngineOptions"
+                      :key="engine"
+                      :value="engine"
+                    >
                       {{ engine }}
                     </option>
                   </select>
                 </div>
-                
+
                 <div class="filter-group">
                   <label>Studio Types</label>
-                  <select v-model="gamingFilters.studioTypes" multiple class="filter-select glass-select">
-                    <option v-for="type in studioTypeOptions" :key="type" :value="type">
+                  <select
+                    v-model="gamingFilters.studioTypes"
+                    multiple
+                    class="filter-select glass-select"
+                  >
+                    <option
+                      v-for="type in studioTypeOptions"
+                      :key="type"
+                      :value="type"
+                    >
                       {{ type }}
                     </option>
                   </select>
                 </div>
-                
+
                 <div class="filter-group">
                   <label>Platforms</label>
-                  <select v-model="gamingFilters.platforms" multiple class="filter-select glass-select">
-                    <option v-for="platform in platformOptions" :key="platform" :value="platform">
+                  <select
+                    v-model="gamingFilters.platforms"
+                    multiple
+                    class="filter-select glass-select"
+                  >
+                    <option
+                      v-for="platform in platformOptions"
+                      :key="platform"
+                      :value="platform"
+                    >
                       {{ platform }}
                     </option>
                   </select>
                 </div>
-                
+
                 <div class="filter-group">
                   <label>Role Categories</label>
-                  <select v-model="gamingFilters.roleCategories" multiple class="filter-select glass-select">
-                    <option v-for="category in roleCategoryOptions" :key="category" :value="category">
+                  <select
+                    v-model="gamingFilters.roleCategories"
+                    multiple
+                    class="filter-select glass-select"
+                  >
+                    <option
+                      v-for="category in roleCategoryOptions"
+                      :key="category"
+                      :value="category"
+                    >
                       {{ category }}
                     </option>
                   </select>
@@ -273,7 +332,10 @@
               <AppIcon name="mdi-star" class="matches-icon" />
               <div class="matches-text">
                 <h3>Top AI Matches for You</h3>
-                <p>{{ topMatches.length }} high-match opportunities (60%+ compatibility)</p>
+                <p>
+                  {{ topMatches.length }} high-match opportunities (60%+
+                  compatibility)
+                </p>
               </div>
             </div>
           </div>
@@ -288,22 +350,31 @@
             Refresh Analysis
           </UnifiedButton>
         </div>
-        
+
         <div class="top-matches-grid">
-          <div v-for="job in topMatches.slice(0, 6)" :key="job.id" class="top-match-card">
+          <div
+            v-for="job in topMatches.slice(0, 6)"
+            :key="job.id"
+            class="top-match-card"
+          >
             <div class="match-card-header">
               <div class="job-info">
                 <h4>{{ job.title }}</h4>
                 <p>{{ job.company }} • {{ job.location }}</p>
               </div>
-              <div class="match-score" :class="`match-${getMatchScoreLevel(job.matchScore)}`">
+              <div
+                class="match-score"
+                :class="`match-${getMatchScoreLevel(job.matchScore)}`"
+              >
                 {{ job.matchScore }}%
               </div>
             </div>
             <div class="match-card-meta">
               <div class="job-tags">
                 <span class="job-tag">{{ formatJobType(job.type) }}</span>
-                <span v-if="job.salary" class="job-tag salary-tag">{{ formatSalary(job.salary) }}</span>
+                <span v-if="job.salary" class="job-tag salary-tag">{{
+                  formatSalary(job.salary)
+                }}</span>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -315,13 +386,9 @@
             </div>
           </div>
         </div>
-        
+
         <div v-if="topMatches.length > 6" class="view-all-matches">
-          <UnifiedButton
-            variant="outline"
-            size="md"
-            @click="scrollToJobsTable"
-          >
+          <UnifiedButton variant="outline" size="md" @click="scrollToJobsTable">
             View All {{ topMatches.length }} Top Matches
           </UnifiedButton>
         </div>
@@ -329,12 +396,19 @@
     </div>
 
     <!-- AI Analysis CTA (when no analysis has been run) -->
-    <div v-else-if="filteredJobs.length > 0 && !hasRunAIAnalysis" class="content-section">
+    <div
+      v-else-if="filteredJobs.length > 0 && !hasRunAIAnalysis"
+      class="content-section"
+    >
       <div class="ai-cta-card glass p-4 gap-4 m-4 rounded-lg">
         <div class="ai-cta-content">
           <AppIcon name="mdi-robot-excited" class="ai-cta-icon" />
           <h2>Get AI-Powered Job Recommendations</h2>
-          <p>Let our advanced AI analyze {{ filteredJobs.length }} jobs and find your best matches based on your skills, experience, and gaming industry preferences.</p>
+          <p>
+            Let our advanced AI analyze {{ filteredJobs.length }} jobs and find
+            your best matches based on your skills, experience, and gaming
+            industry preferences.
+          </p>
           <UnifiedButton
             variant="gaming"
             size="xl"
@@ -368,9 +442,7 @@
             <p>Curated from multiple gaming industry sources</p>
           </div>
           <div class="results-controls">
-            <div class="results-count">
-              {{ filteredJobs.length }} Results
-            </div>
+            <div class="results-count">{{ filteredJobs.length }} Results</div>
             <ViewToggle
               v-model="viewMode"
               :options="[
@@ -385,7 +457,11 @@
         <div class="sort-bar">
           <div class="sort-controls">
             <label>Sort by:</label>
-            <select v-model="sortBy" class="sort-select glass-select" @change="applySorting">
+            <select
+              v-model="sortBy"
+              class="sort-select glass-select"
+              @change="applySorting"
+            >
               <option value="relevance">Relevance</option>
               <option value="date">Date Posted</option>
               <option value="salary">Salary</option>
@@ -418,7 +494,7 @@
               @job-saved="handleJobSaved"
             />
           </div>
-          
+
           <!-- Cards View -->
           <div v-else class="job-cards-container">
             <JobResultsGrid
@@ -434,13 +510,12 @@
           <div v-if="!loading && filteredJobs.length === 0" class="empty-state">
             <AppIcon name="mdi-magnify" class="empty-icon" />
             <h3>No gaming jobs found</h3>
-            <p>Try adjusting your filters or check out our studio database for more opportunities.</p>
+            <p>
+              Try adjusting your filters or check out our studio database for
+              more opportunities.
+            </p>
             <div class="empty-actions">
-              <UnifiedButton
-                variant="primary"
-                size="md"
-                @click="clearFilters"
-              >
+              <UnifiedButton variant="primary" size="md" @click="clearFilters">
                 Clear Filters
               </UnifiedButton>
               <UnifiedButton
@@ -482,7 +557,11 @@
         </div>
 
         <div v-if="dataSourcesStatus" class="sources-grid">
-          <div v-for="source in dataSourcesStatus" :key="source.name" class="source-card">
+          <div
+            v-for="source in dataSourcesStatus"
+            :key="source.name"
+            class="source-card"
+          >
             <div class="source-header">
               <div class="source-info">
                 <AppIcon :name="source.icon" class="source-icon" />
@@ -494,7 +573,9 @@
             </div>
             <div class="source-stats">
               <span class="job-count">{{ source.jobCount }} jobs</span>
-              <span class="last-updated">{{ formatLastUpdated(source.lastUpdated) }}</span>
+              <span class="last-updated">{{
+                formatLastUpdated(source.lastUpdated)
+              }}</span>
             </div>
           </div>
         </div>
@@ -506,7 +587,7 @@
       v-model:show="showSearchModal"
       @search-submitted="handleAISearch"
     />
-    
+
     <JobDetailsModal
       v-model:show="showJobDetailsModal"
       :job="selectedJob"
@@ -555,7 +636,10 @@ import { useAIJobSearch } from '@/composables/useAIJobSearch.js'
 import { useAppStore } from '@/stores/app'
 
 // Services
-import { verifyAggregation, verifyDirectOpenEndpoints } from '@/services/IngestionVerifier'
+import {
+  verifyAggregation,
+  verifyDirectOpenEndpoints,
+} from '@/services/IngestionVerifier'
 import { toastService } from '@/shared/services/toastService'
 
 const router = useRouter()
@@ -580,7 +664,7 @@ const gamingFilters = ref({
   gameEngines: [],
   studioTypes: [],
   platforms: [],
-  roleCategories: []
+  roleCategories: [],
 })
 const filters = ref({
   gamingOnly: route.query.filter === 'gaming' || true,
@@ -590,7 +674,7 @@ const filters = ref({
   skills: [],
   company: '',
   jobType: '',
-  remote: false
+  remote: false,
 })
 const showAdvancedFilters = ref(false)
 const sortBy = ref('relevance')
@@ -608,27 +692,55 @@ const hasRunAIAnalysis = ref(false)
 
 // Gaming industry filter options
 const gameEngineOptions = ref([
-  'Unity', 'Unreal Engine', 'Godot', 'GameMaker Studio', 
-  'Construct 3', 'RPG Maker', 'CryEngine', 'Source Engine',
-  'Frostbite', 'id Tech', 'Custom Engine'
+  'Unity',
+  'Unreal Engine',
+  'Godot',
+  'GameMaker Studio',
+  'Construct 3',
+  'RPG Maker',
+  'CryEngine',
+  'Source Engine',
+  'Frostbite',
+  'id Tech',
+  'Custom Engine',
 ])
 
 const studioTypeOptions = ref([
-  'AAA Studio', 'Indie Developer', 'Mobile Games', 
-  'VR/AR Studio', 'Publishing House', 'Platform Holder',
-  'Middleware Provider', 'Game Services', 'Esports'
+  'AAA Studio',
+  'Indie Developer',
+  'Mobile Games',
+  'VR/AR Studio',
+  'Publishing House',
+  'Platform Holder',
+  'Middleware Provider',
+  'Game Services',
+  'Esports',
 ])
 
 const platformOptions = ref([
-  'PC', 'PlayStation', 'Xbox', 'Nintendo Switch',
-  'Mobile (iOS)', 'Mobile (Android)', 'VR', 'AR',
-  'Web/Browser', 'Cloud Gaming'
+  'PC',
+  'PlayStation',
+  'Xbox',
+  'Nintendo Switch',
+  'Mobile (iOS)',
+  'Mobile (Android)',
+  'VR',
+  'AR',
+  'Web/Browser',
+  'Cloud Gaming',
 ])
 
 const roleCategoryOptions = ref([
-  'Engineering', 'Design', 'Art & Animation', 'Production',
-  'Audio', 'QA & Testing', 'Data & Analytics', 'Marketing',
-  'Community Management', 'Business Development'
+  'Engineering',
+  'Design',
+  'Art & Animation',
+  'Production',
+  'Audio',
+  'QA & Testing',
+  'Data & Analytics',
+  'Marketing',
+  'Community Management',
+  'Business Development',
 ])
 
 // Pagination
@@ -650,28 +762,25 @@ const {
   jobs: composableJobs,
   loading: jobsLoading,
   searchJobs,
-  refreshJobs: refreshJobsData
+  refreshJobs: refreshJobsData,
 } = useJobs()
 
-const {
-  gamingJobs,
-  studioCount,
-  searchGamingJobs
-} = useGamingJobs()
+const { gamingJobs, studioCount, searchGamingJobs } = useGamingJobs()
 
-const {
-  performAISearch,
-  getAIRecommendations
-} = useAIJobSearch()
+const { performAISearch, getAIRecommendations } = useAIJobSearch()
 
 // Computed
 const totalJobs = computed(() => jobs.value.length)
 
 const jobBoardStats = computed(() => [
   { label: 'Active Jobs', value: totalJobs.value, icon: 'mdi-briefcase' },
-  { label: 'Gaming Studios', value: studioCount.value, icon: 'mdi-office-building' },
+  {
+    label: 'Gaming Studios',
+    value: studioCount.value,
+    icon: 'mdi-office-building',
+  },
   { label: 'Saved Jobs', value: savedJobs.value.length, icon: 'mdi-bookmark' },
-  { label: 'Job Alerts', value: jobAlerts.value.length, icon: 'mdi-bell' }
+  { label: 'Job Alerts', value: jobAlerts.value.length, icon: 'mdi-bell' },
 ])
 
 const filteredJobs = computed(() => {
@@ -680,11 +789,12 @@ const filteredJobs = computed(() => {
   // Apply search filters
   if (searchFilters.value.keywords.trim()) {
     const query = searchFilters.value.keywords.toLowerCase()
-    result = result.filter(job => 
-      job.title.toLowerCase().includes(query) ||
-      job.company?.name?.toLowerCase().includes(query) ||
-      job.description?.toLowerCase().includes(query) ||
-      job.skills?.some(skill => skill.toLowerCase().includes(query))
+    result = result.filter(
+      job =>
+        job.title.toLowerCase().includes(query) ||
+        job.company?.name?.toLowerCase().includes(query) ||
+        job.description?.toLowerCase().includes(query) ||
+        job.skills?.some(skill => skill.toLowerCase().includes(query))
     )
   }
 
@@ -694,14 +804,17 @@ const filteredJobs = computed(() => {
       if (searchFilters.value.location === 'remote') {
         return job.remote || job.location?.toLowerCase().includes('remote')
       }
-      return job.location?.toLowerCase().includes(searchFilters.value.location.toLowerCase())
+      return job.location
+        ?.toLowerCase()
+        .includes(searchFilters.value.location.toLowerCase())
     })
   }
 
   // Apply job type filter
   if (searchFilters.value.jobType) {
-    result = result.filter(job => 
-      job.type?.toLowerCase() === searchFilters.value.jobType.toLowerCase()
+    result = result.filter(
+      job =>
+        job.type?.toLowerCase() === searchFilters.value.jobType.toLowerCase()
     )
   }
 
@@ -709,7 +822,7 @@ const filteredJobs = computed(() => {
   if (searchFilters.value.posted) {
     const now = new Date()
     const cutoffDate = new Date()
-    
+
     switch (searchFilters.value.posted) {
       case '24h':
         cutoffDate.setDate(now.getDate() - 1)
@@ -721,27 +834,25 @@ const filteredJobs = computed(() => {
         cutoffDate.setDate(now.getDate() - 30)
         break
     }
-    
-    result = result.filter(job => 
-      new Date(job.datePosted) >= cutoffDate
-    )
+
+    result = result.filter(job => new Date(job.datePosted) >= cutoffDate)
   }
 
   // Apply gaming-specific filters
   if (gamingFilters.value.gameEngines.length > 0) {
     result = result.filter(job =>
-      gamingFilters.value.gameEngines.some(engine =>
-        job.requirements?.toLowerCase().includes(engine.toLowerCase()) ||
-        job.description?.toLowerCase().includes(engine.toLowerCase())
+      gamingFilters.value.gameEngines.some(
+        engine =>
+          job.requirements?.toLowerCase().includes(engine.toLowerCase()) ||
+          job.description?.toLowerCase().includes(engine.toLowerCase())
       )
     )
   }
 
   if (gamingFilters.value.studioTypes.length > 0) {
     result = result.filter(job =>
-      gamingFilters.value.studioTypes.some(type =>
-        job.company?.type?.includes(type) ||
-        job.tags?.includes(type)
+      gamingFilters.value.studioTypes.some(
+        type => job.company?.type?.includes(type) || job.tags?.includes(type)
       )
     )
   }
@@ -761,7 +872,9 @@ const filteredJobs = computed(() => {
       case 'company':
         return (a.company?.name || '').localeCompare(b.company?.name || '')
       case 'aiScore':
-        return (b.aiScore || b.matchScore || 0) - (a.aiScore || a.matchScore || 0)
+        return (
+          (b.aiScore || b.matchScore || 0) - (a.aiScore || a.matchScore || 0)
+        )
       default:
         return (b.relevanceScore || 0) - (a.relevanceScore || 0)
     }
@@ -770,7 +883,9 @@ const filteredJobs = computed(() => {
   return result
 })
 
-const totalPages = computed(() => Math.ceil(filteredJobs.value.length / itemsPerPage.value))
+const totalPages = computed(() =>
+  Math.ceil(filteredJobs.value.length / itemsPerPage.value)
+)
 
 const paginatedJobs = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
@@ -788,9 +903,9 @@ const performSearch = async () => {
       jobType: searchFilters.value.jobType,
       posted: searchFilters.value.posted,
       gamingFilters: gamingFilters.value,
-      gamingFocus: true
+      gamingFocus: true,
     }
-    
+
     const results = await searchJobs(searchParams)
     jobs.value = results
     jobResults.value = results
@@ -817,7 +932,7 @@ const clearFilters = () => {
     gameEngines: [],
     studioTypes: [],
     platforms: [],
-    roleCategories: []
+    roleCategories: [],
   }
   performSearch()
 }
@@ -856,17 +971,24 @@ const aiRecommendJobs = async () => {
       profile: appStore.profile,
       preferences: { ...filters.value, ...searchFilters.value },
       gamingFilters: gamingFilters.value,
-      gamingFocus: true
+      gamingFocus: true,
     })
-    
+
     // Separate high-match jobs (60%+) from regular results
-    const highMatches = recommendations.filter(job => (job.matchScore || job.aiScore || 0) >= 60)
-    topMatches.value = highMatches.sort((a, b) => (b.matchScore || b.aiScore || 0) - (a.matchScore || a.aiScore || 0))
-    
+    const highMatches = recommendations.filter(
+      job => (job.matchScore || job.aiScore || 0) >= 60
+    )
+    topMatches.value = highMatches.sort(
+      (a, b) =>
+        (b.matchScore || b.aiScore || 0) - (a.matchScore || a.aiScore || 0)
+    )
+
     jobs.value = recommendations
     jobResults.value = recommendations
     hasRunAIAnalysis.value = true
-    toastService.success(`Found ${recommendations.length} AI-matched positions (${highMatches.length} high matches)`)
+    toastService.success(
+      `Found ${recommendations.length} AI-matched positions (${highMatches.length} high matches)`
+    )
   } catch (error) {
     toastService.error('AI recommendations failed: ' + error.message)
   } finally {
@@ -874,7 +996,7 @@ const aiRecommendJobs = async () => {
   }
 }
 
-const handleAISearch = async (searchData) => {
+const handleAISearch = async searchData => {
   loading.value = true
   try {
     const results = await performAISearch(searchData)
@@ -889,25 +1011,25 @@ const handleAISearch = async (searchData) => {
   }
 }
 
-const showJobDetails = (job) => {
+const showJobDetails = job => {
   selectedJob.value = job
   showJobDetailsModal.value = true
 }
 
-const viewJobDetails = (job) => {
+const viewJobDetails = job => {
   showJobDetails(job)
 }
 
-const handleJobSelected = (job) => {
+const handleJobSelected = job => {
   showJobDetails(job)
 }
 
-const handleJobApplied = (job) => {
+const handleJobApplied = job => {
   toastService.success(`Application started for ${job.title}`)
   // Track application in analytics
 }
 
-const handleJobSaved = (job) => {
+const handleJobSaved = job => {
   const index = savedJobs.value.findIndex(saved => saved.id === job.id)
   if (index === -1) {
     savedJobs.value.push(job)
@@ -918,25 +1040,25 @@ const handleJobSaved = (job) => {
   }
 }
 
-const handleAddToCompare = (job) => {
+const handleAddToCompare = job => {
   toastService.info('Job added to comparison (feature coming soon)')
 }
 
-const handlePageChange = (page) => {
+const handlePageChange = page => {
   currentPage.value = page
   nextTick(() => {
-    document.querySelector('.job-display-container')?.scrollIntoView({ 
-      behavior: 'smooth', 
-      block: 'start' 
+    document.querySelector('.job-display-container')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
     })
   })
 }
 
 const scrollToJobsTable = () => {
   nextTick(() => {
-    document.querySelector('.results-card')?.scrollIntoView({ 
+    document.querySelector('.results-card')?.scrollIntoView({
       behavior: 'smooth',
-      block: 'start'
+      block: 'start',
     })
   })
 }
@@ -945,7 +1067,7 @@ const openStudioExplorer = () => {
   router.push('/studios')
 }
 
-const openStudioModal = (job) => {
+const openStudioModal = job => {
   // Open studio details modal for the job's company
   const studioInfo = getMatchingStudio(job.company)
   if (studioInfo) {
@@ -954,38 +1076,38 @@ const openStudioModal = (job) => {
   }
 }
 
-const getMatchingStudio = (companyName) => {
+const getMatchingStudio = companyName => {
   // This would integrate with the gaming studios database
   return null // Placeholder
 }
 
 // Utility methods
-const formatJobType = (type) => {
+const formatJobType = type => {
   if (!type) return 'Not specified'
   return type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')
 }
 
-const formatSalary = (salary) => {
+const formatSalary = salary => {
   if (!salary) return null
   if (typeof salary === 'number') {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     }).format(salary)
   }
   return salary
 }
 
-const getMatchScoreLevel = (score) => {
+const getMatchScoreLevel = score => {
   if (score >= 90) return 'excellent'
   if (score >= 75) return 'good'
   if (score >= 60) return 'fair'
   return 'low'
 }
 
-const getMatchChipColor = (score) => {
+const getMatchChipColor = score => {
   if (score >= 90) return 'success'
   if (score >= 75) return 'primary'
   if (score >= 60) return 'warning'
@@ -997,18 +1119,18 @@ const runDataVerification = async () => {
   try {
     const [sources, endpoints] = await Promise.all([
       verifyAggregation('game'),
-      verifyDirectOpenEndpoints('game')
+      verifyDirectOpenEndpoints('game'),
     ])
-    
+
     // Transform verification results into status objects
     dataSourcesStatus.value = endpoints.map(endpoint => ({
       name: endpoint.provider,
       icon: getProviderIcon(endpoint.provider),
       status: endpoint.ok ? 'active' : 'inactive',
       jobCount: endpoint.count || 0,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     }))
-    
+
     toastService.success('Data sources verified')
   } catch (error) {
     toastService.error('Verification failed: ' + error.message)
@@ -1017,35 +1139,35 @@ const runDataVerification = async () => {
   }
 }
 
-const getProviderIcon = (provider) => {
+const getProviderIcon = provider => {
   const iconMap = {
-    'Greenhouse': 'mdi-leaf',
-    'Lever': 'mdi-office-building',
-    'SmartRecruiters': 'mdi-brain',
-    'Workday': 'mdi-calendar',
-    'GitHub': 'mdi-github',
-    'AngelList': 'mdi-rocket'
+    Greenhouse: 'mdi-leaf',
+    Lever: 'mdi-office-building',
+    SmartRecruiters: 'mdi-brain',
+    Workday: 'mdi-calendar',
+    GitHub: 'mdi-github',
+    AngelList: 'mdi-rocket',
   }
   return iconMap[provider] || 'mdi-briefcase'
 }
 
-const formatLastUpdated = (date) => {
+const formatLastUpdated = date => {
   const now = new Date()
   const diff = now - new Date(date)
   const minutes = Math.floor(diff / 60000)
-  
+
   if (minutes < 1) return 'Just now'
   if (minutes < 60) return `${minutes}m ago`
   if (minutes < 1440) return `${Math.floor(minutes / 60)}h ago`
   return `${Math.floor(minutes / 1440)}d ago`
 }
 
-const handleAlertCreated = (alert) => {
+const handleAlertCreated = alert => {
   jobAlerts.value.push(alert)
   toastService.success('Job alert created')
 }
 
-const handleAlertDeleted = (alertId) => {
+const handleAlertDeleted = alertId => {
   const index = jobAlerts.value.findIndex(alert => alert.id === alertId)
   if (index !== -1) {
     jobAlerts.value.splice(index, 1)
@@ -1063,7 +1185,7 @@ onMounted(async () => {
     } else {
       jobs.value = composableJobs.value
     }
-    
+
     // Load saved jobs and alerts from storage
     const stored = localStorage.getItem('navi-job-data')
     if (stored) {
@@ -1079,20 +1201,30 @@ onMounted(async () => {
 })
 
 // Watch for route changes
-watch(() => route.query.filter, (newFilter) => {
-  if (newFilter === 'gaming') {
-    filters.value.gamingOnly = true
-    applyFilters()
+watch(
+  () => route.query.filter,
+  newFilter => {
+    if (newFilter === 'gaming') {
+      filters.value.gamingOnly = true
+      applyFilters()
+    }
   }
-})
+)
 
 // Save data on changes
-watch([savedJobs, jobAlerts], () => {
-  localStorage.setItem('navi-job-data', JSON.stringify({
-    savedJobs: savedJobs.value,
-    jobAlerts: jobAlerts.value
-  }))
-}, { deep: true })
+watch(
+  [savedJobs, jobAlerts],
+  () => {
+    localStorage.setItem(
+      'navi-job-data',
+      JSON.stringify({
+        savedJobs: savedJobs.value,
+        jobAlerts: jobAlerts.value,
+      })
+    )
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped>
@@ -1100,9 +1232,11 @@ watch([savedJobs, jobAlerts], () => {
 .search-hub-card {
   padding: var(--spacing-6);
   border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     var(--color-primary-50) 0%,
-    var(--color-gaming-50) 100%);
+    var(--color-gaming-50) 100%
+  );
   border: 1px solid var(--color-gaming-200);
   backdrop-filter: blur(20px);
 }
@@ -1122,7 +1256,11 @@ watch([savedJobs, jobAlerts], () => {
 
 .hub-title h3 {
   margin: 0;
-  background: linear-gradient(45deg, var(--color-gaming-400), var(--color-primary-400));
+  background: linear-gradient(
+    45deg,
+    var(--color-gaming-400),
+    var(--color-primary-400)
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1393,21 +1531,21 @@ watch([savedJobs, jobAlerts], () => {
   .search-actions-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .filter-controls {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .results-header {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .results-actions {
     justify-content: space-between;
   }
-  
+
   .sources-grid {
     grid-template-columns: 1fr;
   }
@@ -1450,8 +1588,15 @@ watch([savedJobs, jobAlerts], () => {
 
 /* Animation for active elements */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(var(--neon-primary-rgb), 0.3); }
-  50% { box-shadow: 0 0 20px rgba(var(--neon-primary-rgb), 0.6), 0 0 30px rgba(var(--neon-primary-rgb), 0.3); }
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(var(--neon-primary-rgb), 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(var(--neon-primary-rgb), 0.6),
+      0 0 30px rgba(var(--neon-primary-rgb), 0.3);
+  }
 }
 
 .ai-analyze-btn:hover {

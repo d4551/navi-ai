@@ -39,7 +39,7 @@ interface LegacyPortfolioItem {
  */
 export function usePortfolio() {
   const store = useAppStore()
-  
+
   // Ephemeral UI state
   const searchQuery = ref('')
   const filterType = ref('')
@@ -47,22 +47,24 @@ export function usePortfolio() {
   const skillFilters = ref<string[]>([])
   const dateFrom = ref('')
   const dateTo = ref('')
-  const sortMode = ref<'recent' | 'alphabetical' | 'type' | 'featured'>('recent')
-  
+  const sortMode = ref<'recent' | 'alphabetical' | 'type' | 'featured'>(
+    'recent'
+  )
+
   // Layout and display preferences
   const layout = computed({
     get: () => store.settings.portfolioLayout || 'grid',
-    set: (val: string) => store.updatePortfolioLayout(val)
+    set: (val: string) => store.updatePortfolioLayout(val),
   })
-  
+
   const showAnalytics = computed({
     get: () => !!store.settings.portfolioShowAnalytics,
-    set: () => store.togglePortfolioAnalytics()
+    set: () => store.togglePortfolioAnalytics(),
   })
-  
+
   // Portfolio items from store
   const items = computed(() => store.user.portfolio || [])
-  
+
   // Filtered and sorted items
   const filtered = computed(() => {
     const filters = {
@@ -72,20 +74,20 @@ export function usePortfolio() {
       skillFilters: skillFilters.value,
       dateFrom: dateFrom.value,
       dateTo: dateTo.value,
-      sortMode: sortMode.value
+      sortMode: sortMode.value,
     }
-    
+
     const filteredItems = PortfolioService.filterItems(items.value, filters)
     return PortfolioService.sortItems(filteredItems, sortMode.value)
   })
-  
+
   // Portfolio statistics
   const stats = computed(() => PortfolioService.generateStats(items.value))
   const topSkills = computed(() => stats.value.topSkills)
-  
+
   // Drag and drop state
   const dragIndex = ref<number | null>(null)
-  
+
   function onDragStart(e: DragEvent, index: number) {
     dragIndex.value = index
     if (e.dataTransfer) {
@@ -93,43 +95,53 @@ export function usePortfolio() {
       e.dataTransfer.setData('text/plain', String(index))
     }
   }
-  
+
   function onDragOver(e: DragEvent) {
     e.preventDefault()
     if (e.dataTransfer) {
       e.dataTransfer.dropEffect = 'move'
     }
   }
-  
+
   function onDrop(e: DragEvent, toIndex: number) {
     e.preventDefault()
     const from = dragIndex.value
     if (from === null || from === toIndex) return
-    
-    const reordered = PortfolioService.reorderItems(store.user.portfolio, from, toIndex)
+
+    const reordered = PortfolioService.reorderItems(
+      store.user.portfolio,
+      from,
+      toIndex
+    )
     store.user.portfolio = reordered
     store.saveToStorage()
     dragIndex.value = null
   }
-  
+
   function onDragEnd() {
     dragIndex.value = null
   }
-  
+
   function moveItem(from: number, delta: number) {
     const to = from + delta
     if (to < 0 || to >= store.user.portfolio.length) return
-    
-    const reordered = PortfolioService.reorderItems(store.user.portfolio, from, to)
+
+    const reordered = PortfolioService.reorderItems(
+      store.user.portfolio,
+      from,
+      to
+    )
     store.user.portfolio = reordered
     store.saveToStorage()
   }
-  
+
   // Portfolio item creation and validation
-  function createPortfolioItem(data: Partial<PortfolioProject | LegacyPortfolioItem>): LegacyPortfolioItem {
+  function createPortfolioItem(
+    data: Partial<PortfolioProject | LegacyPortfolioItem>
+  ): LegacyPortfolioItem {
     const id = PortfolioService.generateId()
     const now = new Date()
-    
+
     return {
       id,
       title: data.title || '',
@@ -137,10 +149,12 @@ export function usePortfolio() {
       type: (data as any).type || 'project',
       game: (data as any).game,
       skills: (data as any).skills || data.technologies || [],
-      date: (data as any).date || new Date().toLocaleDateString('en-US', { 
-        month: 'long', 
-        year: 'numeric' 
-      }),
+      date:
+        (data as any).date ||
+        new Date().toLocaleDateString('en-US', {
+          month: 'long',
+          year: 'numeric',
+        }),
       featured: data.featured || false,
       url: (data as any).url || (data as any).liveUrl,
       thumbnail: (data as any).thumbnail || (data as any).image,
@@ -158,79 +172,85 @@ export function usePortfolio() {
       media: (data as any).media,
       tags: (data as any).tags || [],
       createdAt: now.toISOString(),
-      updatedAt: now.toISOString()
+      updatedAt: now.toISOString(),
     }
   }
-  
+
   function validateItem(item: Partial<LegacyPortfolioItem>) {
     return PortfolioService.validateItem(item as any)
   }
-  
+
   // Enhanced item management
-  async function addItem(data: Partial<PortfolioProject | LegacyPortfolioItem>) {
+  async function addItem(
+    data: Partial<PortfolioProject | LegacyPortfolioItem>
+  ) {
     const newItem = createPortfolioItem(data)
     const validation = validateItem(newItem)
-    
+
     if (!validation.valid) {
       throw new Error(`Validation failed: ${validation.errors.join(', ')}`)
     }
-    
+
     store.user.portfolio = store.user.portfolio || []
     store.user.portfolio.unshift(newItem)
     await store.saveToStorage()
-    
+
     return newItem
   }
-  
+
   async function updateItem(id: string, updates: Partial<LegacyPortfolioItem>) {
     const index = store.user.portfolio.findIndex((item: any) => item.id === id)
     if (index === -1) {
       throw new Error('Portfolio item not found')
     }
-    
+
     const updatedItem: LegacyPortfolioItem = {
       ...store.user.portfolio[index],
       ...updates,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     }
-    
+
     const validation = validateItem(updatedItem)
     if (!validation.valid) {
       throw new Error(`Validation failed: ${validation.errors.join(', ')}`)
     }
-    
+
     store.user.portfolio[index] = updatedItem
     await store.saveToStorage()
-    
+
     return updatedItem
   }
-  
+
   async function removeItem(id: string) {
     const index = store.user.portfolio.findIndex((item: any) => item.id === id)
     if (index === -1) {
       throw new Error('Portfolio item not found')
     }
-    
+
     store.user.portfolio.splice(index, 1)
     await store.saveToStorage()
   }
-  
+
   async function toggleFeatured(id: string) {
-    const item = store.user.portfolio.find((portfolioItem: any) => portfolioItem.id === id)
+    const item = store.user.portfolio.find(
+      (portfolioItem: any) => portfolioItem.id === id
+    )
     if (item) {
       await updateItem(id, { featured: !item.featured })
     }
   }
-  
+
   // Export functionality
-  function prepareExportData(options: { includeFeaturedOnly?: boolean; includeAnalytics?: boolean } = {}) {
+  function prepareExportData(
+    options: { includeFeaturedOnly?: boolean; includeAnalytics?: boolean } = {}
+  ) {
     return PortfolioService.prepareExportData(
       items.value,
       { name: store.user.name, email: store.user.email },
       options as any
     )
   }
-  
+
   return {
     // State
     store,
@@ -238,7 +258,7 @@ export function usePortfolio() {
     filtered,
     stats,
     topSkills,
-    
+
     // Filters
     searchQuery,
     filterType,
@@ -247,18 +267,18 @@ export function usePortfolio() {
     dateFrom,
     dateTo,
     sortMode,
-    
+
     // Layout
     layout,
     showAnalytics,
-    
+
     // Drag & Drop
     onDragStart,
     onDragOver,
     onDrop,
     onDragEnd,
     moveItem,
-    
+
     // Item Management
     addItem,
     updateItem,
@@ -266,11 +286,11 @@ export function usePortfolio() {
     toggleFeatured,
     validateItem,
     createPortfolioItem,
-    
+
     // Utilities
     prepareExportData,
     generateStats: () => PortfolioService.generateStats(items.value),
-    parseItemDate: PortfolioService.parseItemDate
+    parseItemDate: PortfolioService.parseItemDate,
   }
 }
 

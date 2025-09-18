@@ -524,38 +524,38 @@
 }
 
 /* Dark Theme Support */
-[data-theme="dark"] .section-icon {
+[data-theme='dark'] .section-icon {
   background: rgba(var(--color-primary-rgb), 0.2);
   color: var(--color-primary-400);
 }
 
-[data-theme="dark"] .experience-card:hover,
-[data-theme="dark"] .education-card:hover {
+[data-theme='dark'] .experience-card:hover,
+[data-theme='dark'] .education-card:hover {
   border-color: var(--color-primary-400);
   background: rgba(var(--color-primary-rgb), 0.1);
 }
 
-[data-theme="dark"] .ai-proposal-card {
+[data-theme='dark'] .ai-proposal-card {
   background: rgba(var(--color-info-rgb), 0.1);
   border-color: rgba(var(--color-info-rgb), 0.3);
 }
 
-[data-theme="dark"] .tone-option.active,
-[data-theme="dark"] .focus-option.active {
+[data-theme='dark'] .tone-option.active,
+[data-theme='dark'] .focus-option.active {
   background: rgba(var(--color-primary-rgb), 0.2);
   border-color: var(--color-primary-400);
 }
 
-[data-theme="dark"] .skill-tag {
+[data-theme='dark'] .skill-tag {
   background: rgba(var(--color-success-rgb), 0.2);
   color: var(--color-success-300);
 }
 
-[data-theme="dark"] .skill-tag:hover {
+[data-theme='dark'] .skill-tag:hover {
   background: rgba(var(--color-success-rgb), 0.3);
 }
 
-[data-theme="dark"] .requirement-chip {
+[data-theme='dark'] .requirement-chip {
   background: rgba(var(--color-info-rgb), 0.2);
   color: var(--color-info-300);
 }

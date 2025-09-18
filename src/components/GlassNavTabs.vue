@@ -2,9 +2,10 @@
   <nav
     ref="navRef"
     class="nav glass-nav glass-surface rounded-lg font-sans"
-    :class="{ 'nav-tabs nav-fill': !gridLayout,
-              'nav-grid': gridLayout,
-              'is-dragging': isDragging
+    :class="{
+      'nav-tabs nav-fill': !gridLayout,
+      'nav-grid': gridLayout,
+      'is-dragging': isDragging,
     }"
     role="tablist"
     :aria-label="ariaLabel"
@@ -48,10 +49,21 @@
       <span v-if="gridLayout">{{ tab.label }}</span>
       <template v-else>
         <span class="hidden d-sm-inline">{{ tab.label }}</span>
-        <span v-if="tab.shortLabel" class="d-sm-none">{{ tab.shortLabel }}</span>
+        <span v-if="tab.shortLabel" class="d-sm-none">{{
+          tab.shortLabel
+        }}</span>
       </template>
-      <span v-if="tab.count !== undefined" class="tab-count badge bg-blue-500-subtle" aria-hidden="true">{{ tab.count }}</span>
-      <span v-else-if="tab.badge || tab.dirty" class="tab-dot" aria-hidden="true"></span>
+      <span
+        v-if="tab.count !== undefined"
+        class="tab-count badge bg-blue-500-subtle"
+        aria-hidden="true"
+        >{{ tab.count }}</span
+      >
+      <span
+        v-else-if="tab.badge || tab.dirty"
+        class="tab-dot"
+        aria-hidden="true"
+      ></span>
     </button>
 
     <!-- Right scroll arrow -->
@@ -80,25 +92,24 @@ const props = defineProps({
   tabs: {
     type: Array,
     required: true,
-    validator: (tabs) => {
-      return tabs.every(tab =>
-        typeof tab.key === 'string' &&
-        typeof tab.label === 'string'
+    validator: tabs => {
+      return tabs.every(
+        tab => typeof tab.key === 'string' && typeof tab.label === 'string'
       )
-    }
+    },
   },
   activeTab: {
     type: String,
-    required: true
+    required: true,
   },
   ariaLabel: {
     type: String,
-    default: 'Navigation tabs'
+    default: 'Navigation tabs',
   },
   gridLayout: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:activeTab'])
@@ -122,13 +133,19 @@ function updateArrows() {
 function onPointerDown(e: Event) {
   // Ignore if clicking an interactive child (a button already)
   const pointerEvent = e as any
-  if ((e.target as HTMLElement)?.closest('.nav-link') || (e.target as HTMLElement)?.closest('.nav-scroll-arrow')) return
+  if (
+    (e.target as HTMLElement)?.closest('.nav-link') ||
+    (e.target as HTMLElement)?.closest('.nav-scroll-arrow')
+  )
+    return
   const el = navRef.value
   if (!el) return
   isDragging.value = true
   startX = pointerEvent.clientX
   startScrollLeft = el.scrollLeft
-  try { el.setPointerCapture(pointerEvent.pointerId) } catch {}
+  try {
+    el.setPointerCapture(pointerEvent.pointerId)
+  } catch {}
 }
 
 function onPointerMove(e: Event) {
@@ -146,7 +163,9 @@ function onPointerUp(e?: Event) {
   const el = navRef.value
   isDragging.value = false
   const pointerEvent = e as any
-  try { if (el && e) el.releasePointerCapture(pointerEvent.pointerId) } catch {}
+  try {
+    if (el && e) el.releasePointerCapture(pointerEvent.pointerId)
+  } catch {}
 }
 
 function scrollBy(dir: number) {
@@ -158,7 +177,9 @@ function scrollBy(dir: number) {
   setTimeout(updateArrows, 50)
 }
 
-function onResize() { updateArrows() }
+function onResize() {
+  updateArrows()
+}
 
 onMounted(() => {
   updateArrows()
@@ -207,8 +228,12 @@ function onArrow(delta) {
   -webkit-overflow-scrolling: touch;
 }
 
-.glass-nav.is-dragging { cursor: grabbing; }
-.glass-nav.is-dragging .nav-link { pointer-events: none; }
+.glass-nav.is-dragging {
+  cursor: grabbing;
+}
+.glass-nav.is-dragging .nav-link {
+  pointer-events: none;
+}
 
 /* Subtle top glint for sticky bar */
 .glass-nav::before {
@@ -218,7 +243,12 @@ function onArrow(delta) {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary-500) 20%, transparent), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent),
+    transparent
+  );
   opacity: 0.28;
   pointer-events: none;
 }
@@ -227,7 +257,8 @@ function onArrow(delta) {
   background: transparent;
   border: none;
   color: var(--text-primary-600, #374151);
-  padding: var(--spacing-sm, 0.75rem) calc(var(--spacing-lg, 1.25rem) + 20px) var(--spacing-sm, 0.75rem) var(--spacing-lg, 1.25rem);
+  padding: var(--spacing-sm, 0.75rem) calc(var(--spacing-lg, 1.25rem) + 20px)
+    var(--spacing-sm, 0.75rem) var(--spacing-lg, 1.25rem);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 600;
   font-size: 0.95rem;
@@ -258,7 +289,9 @@ function onArrow(delta) {
   background: linear-gradient(135deg, var(--color-primary, #6366f1), #7c3aed);
   color: var(--text-on-primary, #ffffff);
   border-color: var(--color-primary, #6366f1);
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4), 0 2px 4px rgba(99, 102, 241, 0.3);
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.4),
+    0 2px 4px rgba(99, 102, 241, 0.3);
   font-weight: 700;
 }
 
@@ -281,15 +314,25 @@ function onArrow(delta) {
   background: color-mix(in srgb, var(--glass-bg) 85%, transparent);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   color: var(--text-primary-600);
   flex: 0 0 auto;
   z-index: 2;
 }
-.nav-scroll-arrow.left { left: 0; margin-right: var(--spacing-xs); }
-.nav-scroll-arrow.right { right: 0; margin-left: var(--spacing-xs); }
-.nav-scroll-arrow:hover { transform: scale(1.05); }
-.nav-scroll-arrow:active { transform: scale(0.98); }
+.nav-scroll-arrow.left {
+  left: 0;
+  margin-right: var(--spacing-xs);
+}
+.nav-scroll-arrow.right {
+  right: 0;
+  margin-left: var(--spacing-xs);
+}
+.nav-scroll-arrow:hover {
+  transform: scale(1.05);
+}
+.nav-scroll-arrow:active {
+  transform: scale(0.98);
+}
 
 /* Edge fade indicators */
 .edge-fade {
@@ -300,11 +343,21 @@ function onArrow(delta) {
   pointer-events: none;
   z-index: 1;
 }
-.edge-fade.left { left: 0; background: linear-gradient(90deg, rgba(0,0,0,0.08), transparent); }
-.edge-fade.right { right: 0; background: linear-gradient(270deg, rgba(0,0,0,0.08), transparent); }
+.edge-fade.left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.08), transparent);
+}
+.edge-fade.right {
+  right: 0;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.08), transparent);
+}
 
-[data-theme="dark"] .edge-fade.left { background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent); }
-[data-theme="dark"] .edge-fade.right { background: linear-gradient(270deg, rgba(255,255,255,0.06), transparent); }
+[data-theme='dark'] .edge-fade.left {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent);
+}
+[data-theme='dark'] .edge-fade.right {
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0.06), transparent);
+}
 
 /* Grid layout styles */
 .nav-grid {
@@ -349,7 +402,7 @@ function onArrow(delta) {
   height: 8px;
   border-radius: 50%;
   background: var(--color-warning-500, #f59e0b);
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.6);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6);
   z-index: 1;
 }
 
@@ -377,11 +430,11 @@ function onArrow(delta) {
   .glass-nav .nav-link:has(.tab-dot, .tab-count) {
     padding-right: calc(var(--spacing-md, 1rem) + 24px);
   }
-  
+
   .tab-dot {
     right: 6px;
   }
-  
+
   .tab-count {
     right: 4px;
   }
@@ -390,12 +443,12 @@ function onArrow(delta) {
 /* Enhanced badge visibility on active tabs */
 .glass-nav .nav-link.active .tab-dot {
   background: var(--color-success-500, #10b981);
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
 }
 
 .glass-nav .nav-link.active .tab-count {
   background: var(--color-primary-600, #4f46e5);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .icon-md {
@@ -404,14 +457,16 @@ function onArrow(delta) {
 
 /* Dark theme support */
 
-[data-theme="dark"] .glass-nav .nav-link {
+[data-theme='dark'] .glass-nav .nav-link {
   color: var(--text-primary-600, #f9fafb);
 }
 
-[data-theme="dark"] .glass-nav .nav-link.active {
+[data-theme='dark'] .glass-nav .nav-link.active {
   background: linear-gradient(135deg, var(--color-primary, #6366f1), #8b5cf6);
   border-color: var(--color-primary, #6366f1);
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5), 0 2px 4px rgba(99, 102, 241, 0.4);
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.5),
+    0 2px 4px rgba(99, 102, 241, 0.4);
 }
 
 /* Animation preferences */
@@ -433,7 +488,7 @@ function onArrow(delta) {
     background: var(--bg-secondary-500, #f4f4f5);
     border-color: var(--border-color, #e4e4e7);
   }
-  [data-theme="dark"] .glass-nav {
+  [data-theme='dark'] .glass-nav {
     background: var(--bg-secondary-500);
   }
 }

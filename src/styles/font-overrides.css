@@ -18,12 +18,12 @@ html .console,
 html .debug-info,
 html .v-code,
 html .hljs,
-html textarea[class*="code"],
-html input[class*="code"],
+html textarea[class*='code'],
+html input[class*='code'],
 html .monaco-editor,
 html .CodeMirror,
-html [class*="language-"],
-html [class*="token"],
+html [class*='language-'],
+html [class*='token'],
 code,
 pre,
 .font-mono,
@@ -38,33 +38,79 @@ pre,
 .debug-info,
 .v-code,
 .hljs,
-textarea[class*="code"],
-input[class*="code"],
+textarea[class*='code'],
+input[class*='code'],
 .monaco-editor,
 .CodeMirror,
-[class*="language-"],
-[class*="token"] {
-  font-family: var(--font-family-mono, 'Fira Code', 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace) !important;
-  font-feature-settings: 'calt' 1, 'liga' 1 !important;
+[class*='language-'],
+[class*='token'] {
+  font-family: var(
+    --font-family-mono,
+    'Fira Code',
+    'JetBrains Mono',
+    'SF Mono',
+    'Monaco',
+    'Inconsolata',
+    'Roboto Mono',
+    'Menlo',
+    'Consolas',
+    'Liberation Mono',
+    'Courier New',
+    monospace
+  ) !important;
+  font-feature-settings:
+    'calt' 1,
+    'liga' 1 !important;
   font-variant-ligatures: common-ligatures !important;
 }
 
 /* High priority overrides for Electrolize and Inter with maximum specificity */
-html h1, html h2, html h3, html h4, html h5, html h6,
-html .heading-1, html .heading-2, html .heading-3, html .heading-4, html .heading-5, html .heading-6,
+html h1,
+html h2,
+html h3,
+html h4,
+html h5,
+html h6,
+html .heading-1,
+html .heading-2,
+html .heading-3,
+html .heading-4,
+html .heading-5,
+html .heading-6,
 html .heading-display,
 html .text-gaming,
 html .font-display,
 html .font-primary,
 html .electrolize-font,
-h1, h2, h3, h4, h5, h6,
-.heading-1, .heading-2, .heading-3, .heading-4, .heading-5, .heading-6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.heading-1,
+.heading-2,
+.heading-3,
+.heading-4,
+.heading-5,
+.heading-6,
 .heading-display,
 .text-gaming,
 .font-display,
 .font-primary,
 .electrolize-font {
-  font-family: var(--font-family-primary, 'Electrolize', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif) !important;
+  font-family: var(
+    --font-family-primary,
+    'Electrolize',
+    'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Helvetica Neue',
+    Arial,
+    sans-serif
+  ) !important;
 }
 
 /* Secondary font for body text with maximum specificity */
@@ -84,7 +130,18 @@ div,
 .text-body-large,
 .text-body-small,
 .font-secondary {
-  font-family: var(--font-family-secondary, 'Inter', 'Electrolize', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif) !important;
+  font-family: var(
+    --font-family-secondary,
+    'Inter',
+    'Electrolize',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Helvetica Neue',
+    Arial,
+    sans-serif
+  ) !important;
 }
 
 /* Gaming font for special elements with maximum specificity */
@@ -102,7 +159,14 @@ html .gaming-nav,
 .achievement,
 .gaming-card,
 .gaming-nav {
-  font-family: var(--font-family-gaming, 'Orbitron', 'Electrolize', 'Inter', system-ui, sans-serif) !important;
+  font-family: var(
+    --font-family-gaming,
+    'Orbitron',
+    'Electrolize',
+    'Inter',
+    system-ui,
+    sans-serif
+  ) !important;
 }
 
 /* Ensure proper font loading states */
@@ -123,7 +187,18 @@ html .v-navigation-drawer,
 .v-card,
 .v-app-bar,
 .v-navigation-drawer {
-  font-family: var(--font-family-secondary, 'Inter', 'Electrolize', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif) !important;
+  font-family: var(
+    --font-family-secondary,
+    'Inter',
+    'Electrolize',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Helvetica Neue',
+    Arial,
+    sans-serif
+  ) !important;
 }
 
 /* Override any Material-UI fonts with maximum specificity */
@@ -135,7 +210,18 @@ html .MuiCard-root,
 .MuiButton-root,
 .MuiTextField-root,
 .MuiCard-root {
-  font-family: var(--font-family-secondary, 'Inter', 'Electrolize', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif) !important;
+  font-family: var(
+    --font-family-secondary,
+    'Inter',
+    'Electrolize',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Helvetica Neue',
+    Arial,
+    sans-serif
+  ) !important;
 }
 
 /* Remove any potential Bootstrap font conflicts with maximum specificity */
@@ -147,7 +233,18 @@ html .navbar,
 .form-control,
 .card,
 .navbar {
-  font-family: var(--font-family-secondary, 'Inter', 'Electrolize', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif) !important;
+  font-family: var(
+    --font-family-secondary,
+    'Inter',
+    'Electrolize',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Helvetica Neue',
+    Arial,
+    sans-serif
+  ) !important;
 }
 
 /* Global font weight adjustments for better readability */
@@ -155,11 +252,18 @@ body {
   font-weight: 400 !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600 !important;
 }
 
-strong, b, .font-bold {
+strong,
+b,
+.font-bold {
   font-weight: 700 !important;
 }
 
@@ -172,14 +276,30 @@ strong, b, .font-bold {
 }
 
 /* Text size system override */
-.text-xs { font-size: 0.75rem !important; }
-.text-sm { font-size: 0.875rem !important; }
-.text-base { font-size: 1rem !important; }
-.text-lg { font-size: 1.125rem !important; }
-.text-xl { font-size: 1.25rem !important; }
-.text-2xl { font-size: 1.5rem !important; }
-.text-3xl { font-size: 2rem !important; }
-.text-4xl { font-size: 2.5rem !important; }
+.text-xs {
+  font-size: 0.75rem !important;
+}
+.text-sm {
+  font-size: 0.875rem !important;
+}
+.text-base {
+  font-size: 1rem !important;
+}
+.text-lg {
+  font-size: 1.125rem !important;
+}
+.text-xl {
+  font-size: 1.25rem !important;
+}
+.text-2xl {
+  font-size: 1.5rem !important;
+}
+.text-3xl {
+  font-size: 2rem !important;
+}
+.text-4xl {
+  font-size: 2.5rem !important;
+}
 
 /* Performance optimizations for font rendering */
 * {

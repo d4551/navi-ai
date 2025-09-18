@@ -10,7 +10,11 @@
     >
       <div class="flex items-center justify-between">
         <h6 class="mb-0 font-semibold text-primary-600">
-          <AppIcon name="WrenchScrewdriverIcon" size="default" aria-hidden="true" />
+          <AppIcon
+            name="WrenchScrewdriverIcon"
+            size="default"
+            aria-hidden="true"
+          />
           AI Tools
         </h6>
         <UnifiedButton
@@ -36,7 +40,9 @@
         :disabled="!canUseAI"
         :loading="loading.ai"
         leading-icon="SparklesIcon"
-        :aria-label="loading.ai ? 'Generating AI content...' : 'Generate AI content'"
+        :aria-label="
+          loading.ai ? 'Generating AI content...' : 'Generate AI content'
+        "
         @click="$emit('ai-generate')"
       >
         <span class="action-text">
@@ -53,7 +59,11 @@
         :disabled="!canUseAI"
         :loading="loading.skillSuggestions"
         leading-icon="LightBulbIcon"
-        :aria-label="loading.skillSuggestions ? 'Suggesting skills...' : 'Get AI skill suggestions'"
+        :aria-label="
+          loading.skillSuggestions
+            ? 'Suggesting skills...'
+            : 'Get AI skill suggestions'
+        "
         @click="$emit('suggest-skills')"
       >
         <span class="action-text">
@@ -70,7 +80,9 @@
         :disabled="!canUseAI || !hasContent"
         :loading="loading.scoring"
         leading-icon="ChartBarSquareIcon"
-        :aria-label="loading.scoring ? 'Analyzing resume...' : 'Analyze resume score'"
+        :aria-label="
+          loading.scoring ? 'Analyzing resume...' : 'Analyze resume score'
+        "
         @click="$emit('score-resume')"
       >
         <span class="action-text">
@@ -99,7 +111,9 @@
         :disabled="!canUseAI || !hasContent"
         :loading="loading.ai"
         leading-icon="DocumentTextIcon"
-        :aria-label="loading.ai ? 'Creating summary...' : 'Create resume summary'"
+        :aria-label="
+          loading.ai ? 'Creating summary...' : 'Create resume summary'
+        "
         @click="$emit('summarize-resume')"
       >
         <span>Summarize</span>
@@ -116,10 +130,18 @@
         @click="showAdvanced = !showAdvanced"
       >
         <div class="flex items-center">
-          <AppIcon name="CogIcon" size="default" color="primary" aria-hidden="true" />
+          <AppIcon
+            name="CogIcon"
+            size="default"
+            color="primary"
+            aria-hidden="true"
+          />
           <span class="font-semibold">Advanced Tools</span>
         </div>
-        <AppIcon :name="showAdvanced ? 'mdi-chevron-up' : 'mdi-chevron-down'" class="transition-icon" />
+        <AppIcon
+          :name="showAdvanced ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          class="transition-icon"
+        />
       </summary>
 
       <div id="advanced-actions" class="collapsible-content">
@@ -201,7 +223,11 @@
             :disabled="!canUseAI"
             :loading="loading.templateGeneration"
             leading-icon="SparklesIcon"
-            :aria-label="loading.templateGeneration ? 'Generating template...' : 'Create AI-powered template'"
+            :aria-label="
+              loading.templateGeneration
+                ? 'Generating template...'
+                : 'Create AI-powered template'
+            "
             @click="$emit('smart-template')"
           >
             AI Smart Template
@@ -217,7 +243,9 @@
           <AppIcon name="ExclamationCircleIcon" class="mr-2" />
           <small>
             <strong>AI Offline:</strong> Configure API key in
-            <router-link to="/settings#ai-section" class="alert-link">Settings</router-link>
+            <router-link to="/settings#ai-section" class="alert-link"
+              >Settings</router-link
+            >
           </small>
         </div>
       </div>
@@ -231,11 +259,13 @@
           <small>Add content to your resume to enable AI tools</small>
         </div>
       </div>
-      <div
-        v-else
-        class="flex items-center justify-center text-success-600"
-      >
-        <AppIcon name="CheckCircleIcon" size="small" aria-hidden="true" context="success" />
+      <div v-else class="flex items-center justify-center text-success-600">
+        <AppIcon
+          name="CheckCircleIcon"
+          size="small"
+          aria-hidden="true"
+          context="success"
+        />
         <small class="font-medium">AI Tools Ready</small>
       </div>
     </div>
@@ -243,17 +273,33 @@
 </template>
 
 <script>
-import { AdjustmentsVerticalIcon, BriefcaseIcon, ChartBarSquareIcon, CheckCircleIcon, CogIcon, DocumentIcon, DocumentTextIcon, ExclamationCircleIcon, EyeIcon, FolderIcon, InformationCircleIcon, LightBulbIcon, SparklesIcon, UserPlusIcon, WrenchScrewdriverIcon } from '@heroicons/vue/24/outline'
+import {
+  AdjustmentsVerticalIcon,
+  BriefcaseIcon,
+  ChartBarSquareIcon,
+  CheckCircleIcon,
+  CogIcon,
+  DocumentIcon,
+  DocumentTextIcon,
+  ExclamationCircleIcon,
+  EyeIcon,
+  FolderIcon,
+  InformationCircleIcon,
+  LightBulbIcon,
+  SparklesIcon,
+  UserPlusIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 export default {
-  name: "ActionsPanel",
+  name: 'ActionsPanel',
   components: {
     AppIcon,
-    UnifiedButton
+    UnifiedButton,
   },
   props: {
     canUseAI: { type: Boolean, default: false },
@@ -262,26 +308,26 @@ export default {
     compact: { type: Boolean, default: false },
   },
   emits: [
-    "ai-generate",
-    "suggest-skills",
-    "score-resume",
-    "summarize-resume",
-    "tailor-job",
-    "optimize-section",
-    "smart-template",
-    "close-panel",
+    'ai-generate',
+    'suggest-skills',
+    'score-resume',
+    'summarize-resume',
+    'tailor-job',
+    'optimize-section',
+    'smart-template',
+    'close-panel',
   ],
   setup(_props) {
-    const showAdvanced = ref(false);
+    const showAdvanced = ref(false)
 
-    const isCompact = computed(() => props.compact);
+    const isCompact = computed(() => props.compact)
 
     return {
       showAdvanced,
       isCompact,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -344,7 +390,7 @@ export default {
   box-shadow: var(--shadow-glass-lg);
 }
 
-[data-theme="dark"] .dropdown-menu.glass-surface,
+[data-theme='dark'] .dropdown-menu.glass-surface,
 :root:not([data-theme]) .dropdown-menu.glass-surface {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
@@ -360,8 +406,8 @@ export default {
   color: var(--color-primary);
 }
 
-[data-theme="dark"] .dropdown-item:hover,
-[data-theme="dark"] .dropdown-item:focus,
+[data-theme='dark'] .dropdown-item:hover,
+[data-theme='dark'] .dropdown-item:focus,
 :root:not([data-theme]) .dropdown-item:hover,
 :root:not([data-theme]) .dropdown-item:focus {
   background: var(--glass-elevated-dark);

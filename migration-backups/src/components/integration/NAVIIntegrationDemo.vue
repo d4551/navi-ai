@@ -10,13 +10,20 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
       <div class="status-grid">
         <div class="status-item">
           <span class="label">Database:</span>
-          <span :class="['status', serviceStats.database.connected ? 'success' : 'error']">
+          <span
+            :class="[
+              'status',
+              serviceStats.database.connected ? 'success' : 'error',
+            ]"
+          >
             {{ serviceStats.database.connected ? 'Connected' : 'Disconnected' }}
           </span>
         </div>
         <div class="status-item">
           <span class="label">AI Service:</span>
-          <span :class="['status', serviceStats.ai.ready ? 'success' : 'warning']">
+          <span
+            :class="['status', serviceStats.ai.ready ? 'success' : 'warning']"
+          >
             {{ serviceStats.ai.ready ? 'Ready' : 'Not Configured' }}
           </span>
         </div>
@@ -35,24 +42,30 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
       <div class="demo-section">
         <h4>Job Search</h4>
         <div class="search-controls">
-          <input 
-            v-model="jobSearchQuery" 
+          <input
+            v-model="jobSearchQuery"
             placeholder="Search jobs (e.g., Unity developer)"
             @keyup.enter="searchJobs"
-          >
+          />
           <button :disabled="isSearching" @click="searchJobs">
             {{ isSearching ? 'Searching...' : 'Search' }}
           </button>
         </div>
-        
+
         <div v-if="jobResults.length > 0" class="results">
           <h5>Found {{ jobResults.length }} jobs:</h5>
-          <div v-for="job in jobResults.slice(0, 3)" :key="job.id" class="result-item">
+          <div
+            v-for="job in jobResults.slice(0, 3)"
+            :key="job.id"
+            class="result-item"
+          >
             <strong>{{ job.title }}</strong> at {{ job.company }}
             <div class="job-details">
               <span>📍 {{ job.location }}</span>
               <span v-if="job.remote">🏠 Remote</span>
-              <span v-if="job.aiScore">🤖 AI Score: {{ job.aiScore.toFixed(1) }}/100</span>
+              <span v-if="job.aiScore"
+                >🤖 AI Score: {{ job.aiScore.toFixed(1) }}/100</span
+              >
             </div>
           </div>
         </div>
@@ -61,24 +74,30 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
       <div class="demo-section">
         <h4>Studio Search</h4>
         <div class="search-controls">
-          <input 
-            v-model="studioSearchQuery" 
+          <input
+            v-model="studioSearchQuery"
             placeholder="Search studios (e.g., Indie)"
             @keyup.enter="searchStudios"
-          >
+          />
           <button :disabled="isSearchingStudios" @click="searchStudios">
             {{ isSearchingStudios ? 'Searching...' : 'Search' }}
           </button>
         </div>
-        
+
         <div v-if="studioResults.length > 0" class="results">
           <h5>Found {{ studioResults.length }} studios:</h5>
-          <div v-for="studio in studioResults.slice(0, 3)" :key="studio.id" class="result-item">
+          <div
+            v-for="studio in studioResults.slice(0, 3)"
+            :key="studio.id"
+            class="result-item"
+          >
             <strong>{{ studio.name }}</strong>
             <div class="studio-details">
               <span>📍 {{ studio.location }}</span>
               <span>🏢 {{ studio.size }}</span>
-              <span v-if="studio.aiInsights">🤖 Culture Fit: {{ studio.aiInsights.cultureFit }}/100</span>
+              <span v-if="studio.aiInsights"
+                >🤖 Culture Fit: {{ studio.aiInsights.cultureFit }}/100</span
+              >
             </div>
           </div>
         </div>
@@ -87,20 +106,34 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
       <div class="demo-section">
         <h4>AI Recommendations</h4>
         <button :disabled="isGettingRecs" @click="getRecommendations">
-          {{ isGettingRecs ? 'Getting Recommendations...' : 'Get AI Recommendations' }}
+          {{
+            isGettingRecs
+              ? 'Getting Recommendations...'
+              : 'Get AI Recommendations'
+          }}
         </button>
-        
+
         <div v-if="recommendations.jobs.length > 0" class="recommendations">
           <h5>AI Job Recommendations:</h5>
-          <div v-for="job in recommendations.jobs" :key="job.id" class="recommendation-item">
+          <div
+            v-for="job in recommendations.jobs"
+            :key="job.id"
+            class="recommendation-item"
+          >
             {{ job.title }} at {{ job.company }}
-            <span v-if="job.aiScore" class="ai-score">Score: {{ job.aiScore.toFixed(1) }}</span>
+            <span v-if="job.aiScore" class="ai-score"
+              >Score: {{ job.aiScore.toFixed(1) }}</span
+            >
           </div>
         </div>
 
         <div v-if="recommendations.studios.length > 0" class="recommendations">
           <h5>AI Studio Recommendations:</h5>
-          <div v-for="studio in recommendations.studios" :key="studio.id" class="recommendation-item">
+          <div
+            v-for="studio in recommendations.studios"
+            :key="studio.id"
+            class="recommendation-item"
+          >
             {{ studio.name }} ({{ studio.location }})
             <span v-if="studio.aiInsights" class="ai-score">
               Fit: {{ studio.aiInsights.cultureFit }}/100
@@ -113,30 +146,33 @@ Demonstrates how to use the unified AI, jobs, and studio functionality in Vue.js
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { unifiedService } from '@/shared/services/UnifiedService';
-import type { UnifiedJob, UnifiedStudio } from '@/shared/services/UnifiedService';
+import { ref, onMounted } from 'vue'
+import { unifiedService } from '@/shared/services/UnifiedService'
+import type {
+  UnifiedJob,
+  UnifiedStudio,
+} from '@/shared/services/UnifiedService'
 
 // Reactive state
 const serviceStats = ref({
   database: { connected: false, jobs: 0, studios: 0 },
   ai: { ready: false },
-  services: { initialized: false }
-});
+  services: { initialized: false },
+})
 
-const jobSearchQuery = ref('Unity developer');
-const studioSearchQuery = ref('Indie');
+const jobSearchQuery = ref('Unity developer')
+const studioSearchQuery = ref('Indie')
 
-const jobResults = ref<UnifiedJob[]>([]);
-const studioResults = ref<UnifiedStudio[]>([]);
+const jobResults = ref<UnifiedJob[]>([])
+const studioResults = ref<UnifiedStudio[]>([])
 const recommendations = ref({
   jobs: [] as UnifiedJob[],
-  studios: [] as UnifiedStudio[]
-});
+  studios: [] as UnifiedStudio[],
+})
 
-const isSearching = ref(false);
-const isSearchingStudios = ref(false);
-const isGettingRecs = ref(false);
+const isSearching = ref(false)
+const isSearchingStudios = ref(false)
+const isGettingRecs = ref(false)
 
 // Sample user profile for demo
 const demoUserProfile = {
@@ -148,105 +184,105 @@ const demoUserProfile = {
       title: 'Game Developer',
       company: 'Indie Studio',
       duration: '2 years',
-      technologies: ['Unity', 'C#']
-    }
+      technologies: ['Unity', 'C#'],
+    },
   ],
   skills: [
     { name: 'Unity', level: 'Advanced' },
     { name: 'C#', level: 'Advanced' },
-    { name: 'Game Design', level: 'Intermediate' }
+    { name: 'Game Design', level: 'Intermediate' },
   ],
   preferences: {
     remote: true,
     salaryRange: { min: 70000, max: 120000 },
-    companySize: ['Small', 'Medium']
-  }
-};
+    companySize: ['Small', 'Medium'],
+  },
+}
 
 // Methods
 const initializeService = async () => {
   try {
     await unifiedService.initialize({
       aiProvider: 'google',
-      enableBackgroundSync: false // Disable for demo
-    });
-    await updateServiceStats();
+      enableBackgroundSync: false, // Disable for demo
+    })
+    await updateServiceStats()
   } catch (error) {
-    console.error('Failed to initialize NAVI service:', error);
+    console.error('Failed to initialize NAVI service:', error)
   }
-};
+}
 
 const updateServiceStats = async () => {
   try {
-    const stats = await unifiedService.getServiceStats();
-    serviceStats.value = stats;
+    const stats = await unifiedService.getServiceStats()
+    serviceStats.value = stats
   } catch (error) {
-    console.error('Failed to get service stats:', error);
+    console.error('Failed to get service stats:', error)
   }
-};
+}
 
 const searchJobs = async () => {
-  if (isSearching.value || !jobSearchQuery.value.trim()) return;
-  
-  isSearching.value = true;
+  if (isSearching.value || !jobSearchQuery.value.trim()) return
+
+  isSearching.value = true
   try {
     const results = await unifiedService.searchJobs({
       keywords: jobSearchQuery.value,
       remote: true,
-      userProfile: demoUserProfile
-    });
-    jobResults.value = results;
+      userProfile: demoUserProfile,
+    })
+    jobResults.value = results
   } catch (error) {
-    console.error('Job search failed:', error);
-    jobResults.value = [];
+    console.error('Job search failed:', error)
+    jobResults.value = []
   } finally {
-    isSearching.value = false;
+    isSearching.value = false
   }
-};
+}
 
 const searchStudios = async () => {
-  if (isSearchingStudios.value || !studioSearchQuery.value.trim()) return;
-  
-  isSearchingStudios.value = true;
+  if (isSearchingStudios.value || !studioSearchQuery.value.trim()) return
+
+  isSearchingStudios.value = true
   try {
     const results = await unifiedService.searchStudios({
       name: studioSearchQuery.value,
-      userProfile: demoUserProfile
-    });
-    studioResults.value = results;
+      userProfile: demoUserProfile,
+    })
+    studioResults.value = results
   } catch (error) {
-    console.error('Studio search failed:', error);
-    studioResults.value = [];
+    console.error('Studio search failed:', error)
+    studioResults.value = []
   } finally {
-    isSearchingStudios.value = false;
+    isSearchingStudios.value = false
   }
-};
+}
 
 const getRecommendations = async () => {
-  if (isGettingRecs.value) return;
-  
-  isGettingRecs.value = true;
+  if (isGettingRecs.value) return
+
+  isGettingRecs.value = true
   try {
     const [jobRecs, studioRecs] = await Promise.all([
       unifiedService.getJobRecommendations(demoUserProfile, 3),
-      unifiedService.getStudioRecommendations(demoUserProfile, 3)
-    ]);
-    
+      unifiedService.getStudioRecommendations(demoUserProfile, 3),
+    ])
+
     recommendations.value = {
       jobs: jobRecs,
-      studios: studioRecs
-    };
+      studios: studioRecs,
+    }
   } catch (error) {
-    console.error('Failed to get recommendations:', error);
+    console.error('Failed to get recommendations:', error)
   } finally {
-    isGettingRecs.value = false;
+    isGettingRecs.value = false
   }
-};
+}
 
 // Lifecycle
 onMounted(() => {
-  initializeService();
-});
+  initializeService()
+})
 </script>
 
 <style scoped>
@@ -353,17 +389,20 @@ onMounted(() => {
   background: #0056b3;
 }
 
-.results, .recommendations {
+.results,
+.recommendations {
   margin-top: 15px;
 }
 
-.results h5, .recommendations h5 {
+.results h5,
+.recommendations h5 {
   margin: 0 0 10px 0;
   color: #495057;
   font-size: 16px;
 }
 
-.result-item, .recommendation-item {
+.result-item,
+.recommendation-item {
   padding: 12px;
   border: 1px solid #e9ecef;
   border-radius: 4px;
@@ -371,12 +410,14 @@ onMounted(() => {
   background: #f8f9fa;
 }
 
-.result-item strong, .recommendation-item {
+.result-item strong,
+.recommendation-item {
   color: #495057;
   font-weight: 600;
 }
 
-.job-details, .studio-details {
+.job-details,
+.studio-details {
   margin-top: 8px;
   display: flex;
   gap: 15px;
@@ -398,12 +439,13 @@ onMounted(() => {
   .search-controls {
     flex-direction: column;
   }
-  
-  .job-details, .studio-details {
+
+  .job-details,
+  .studio-details {
     flex-direction: column;
     gap: 5px;
   }
-  
+
   .status-grid {
     grid-template-columns: 1fr;
   }

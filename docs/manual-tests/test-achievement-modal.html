@@ -1,115 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Achievement Popup Test</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        .test-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .status {
-            margin-top: 20px;
-            padding: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .test-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .status {
+        margin-top: 20px;
+        padding: 10px;
+        background: #e9ecef;
+        border-radius: 5px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Achievement Popup Test</h1>
     <p>This page tests the achievement popup modal functionality.</p>
 
     <div class="test-buttons">
-        <button onclick="testAchievementPopup()">Test Achievement Popup</button>
-        <button onclick="testXPGainPopup()">Test XP Gain Popup</button>
-        <button onclick="testLevelUp()">Test Level Up</button>
-        <button onclick="testMultipleAchievements()">Test Multiple Achievements</button>
+      <button onclick="testAchievementPopup()">Test Achievement Popup</button>
+      <button onclick="testXPGainPopup()">Test XP Gain Popup</button>
+      <button onclick="testLevelUp()">Test Level Up</button>
+      <button onclick="testMultipleAchievements()">
+        Test Multiple Achievements
+      </button>
     </div>
 
-    <div class="status" id="status">
-        Status: Ready to test
-    </div>
+    <div class="status" id="status">Status: Ready to test</div>
 
     <script type="module">
-        // Import the test functions
-        import { testAchievementPopup, testXPGainPopup, testLevelUp } from './test-achievement-popup.js'
+      // Import the test functions
+      import {
+        testAchievementPopup,
+        testXPGainPopup,
+        testLevelUp,
+      } from './test-achievement-popup.js'
 
-        // Make functions available globally
-        window.testAchievementPopup = testAchievementPopup
-        window.testXPGainPopup = testXPGainPopup
-        window.testLevelUp = testLevelUp
+      // Make functions available globally
+      window.testAchievementPopup = testAchievementPopup
+      window.testXPGainPopup = testXPGainPopup
+      window.testLevelUp = testLevelUp
 
-        // Additional test function
-        window.testMultipleAchievements = function() {
-            console.log('Testing multiple achievements...')
-            document.getElementById('status').textContent = 'Status: Testing multiple achievements'
+      // Additional test function
+      window.testMultipleAchievements = function () {
+        console.log('Testing multiple achievements...')
+        document.getElementById('status').textContent =
+          'Status: Testing multiple achievements'
 
-            // Trigger multiple achievements with delays
-            setTimeout(() => {
-                testAchievementPopup()
-            }, 500)
+        // Trigger multiple achievements with delays
+        setTimeout(() => {
+          testAchievementPopup()
+        }, 500)
 
-            setTimeout(() => {
-                testXPGainPopup()
-            }, 2000)
+        setTimeout(() => {
+          testXPGainPopup()
+        }, 2000)
 
-            setTimeout(() => {
-                testLevelUp()
-            }, 4000)
+        setTimeout(() => {
+          testLevelUp()
+        }, 4000)
 
-            setTimeout(() => {
-                document.getElementById('status').textContent = 'Status: Multiple achievements test completed'
-            }, 6000)
-        }
+        setTimeout(() => {
+          document.getElementById('status').textContent =
+            'Status: Multiple achievements test completed'
+        }, 6000)
+      }
 
-        // Update status when functions are called
-        const originalTestAchievement = window.testAchievementPopup
-        window.testAchievementPopup = function() {
-            document.getElementById('status').textContent = 'Status: Testing achievement popup'
-            originalTestAchievement()
-            setTimeout(() => {
-                document.getElementById('status').textContent = 'Status: Achievement popup test completed'
-            }, 1000)
-        }
+      // Update status when functions are called
+      const originalTestAchievement = window.testAchievementPopup
+      window.testAchievementPopup = function () {
+        document.getElementById('status').textContent =
+          'Status: Testing achievement popup'
+        originalTestAchievement()
+        setTimeout(() => {
+          document.getElementById('status').textContent =
+            'Status: Achievement popup test completed'
+        }, 1000)
+      }
 
-        const originalTestXP = window.testXPGainPopup
-        window.testXPGainPopup = function() {
-            document.getElementById('status').textContent = 'Status: Testing XP gain popup'
-            originalTestXP()
-            setTimeout(() => {
-                document.getElementById('status').textContent = 'Status: XP gain popup test completed'
-            }, 1000)
-        }
+      const originalTestXP = window.testXPGainPopup
+      window.testXPGainPopup = function () {
+        document.getElementById('status').textContent =
+          'Status: Testing XP gain popup'
+        originalTestXP()
+        setTimeout(() => {
+          document.getElementById('status').textContent =
+            'Status: XP gain popup test completed'
+        }, 1000)
+      }
 
-        const originalTestLevel = window.testLevelUp
-        window.testLevelUp = function() {
-            document.getElementById('status').textContent = 'Status: Testing level up'
-            originalTestLevel()
-            setTimeout(() => {
-                document.getElementById('status').textContent = 'Status: Level up test completed'
-            }, 1000)
-        }
+      const originalTestLevel = window.testLevelUp
+      window.testLevelUp = function () {
+        document.getElementById('status').textContent =
+          'Status: Testing level up'
+        originalTestLevel()
+        setTimeout(() => {
+          document.getElementById('status').textContent =
+            'Status: Level up test completed'
+        }, 1000)
+      }
     </script>
-</body>
+  </body>
 </html>

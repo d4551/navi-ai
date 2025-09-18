@@ -9,13 +9,20 @@
   >
     <!-- Skip Navigation Links -->
     <div class="skip-links">
-      <a href="#gamification-section" class="skip-link">Skip to progress overview</a>
+      <a href="#gamification-section" class="skip-link"
+        >Skip to progress overview</a
+      >
       <a href="#quick-actions" class="skip-link">Skip to quick actions</a>
       <a href="#live-jobs" class="skip-link">Skip to job listings</a>
       <a href="#career-insights" class="skip-link">Skip to career insights</a>
     </div>
     <template #header-actions>
-      <HeaderActions layout="horizontal" alignment="end" gap="lg" priority="secondary">
+      <HeaderActions
+        layout="horizontal"
+        alignment="end"
+        gap="lg"
+        priority="secondary"
+      >
         <SearchInput
           placeholder="Search jobs, studios, skills..."
           class="header-search"
@@ -28,13 +35,13 @@
     <!-- Main Dashboard Content -->
     <div class="content-wrapper">
       <!-- Enhanced Gamification Section -->
-      <section id="gamification-section" class="section-glass gamification-hero" aria-labelledby="gamification-heading">
+      <section
+        id="gamification-section"
+        class="section-glass gamification-hero"
+        aria-labelledby="gamification-heading"
+      >
         <!-- Skeleton Loading for Gamification Section -->
-        <LoadingSkeletons
-          v-if="isLoading"
-          variant="document"
-          :show="true"
-        />
+        <LoadingSkeletons v-if="isLoading" variant="document" :show="true" />
 
         <div v-else class="card-gaming enhanced-gamification">
           <div class="gamification-header">
@@ -70,11 +77,16 @@
             <div class="progress-section">
               <div class="progress-header">
                 <span class="progress-label">Progress to Next Level</span>
-                <span class="progress-percentage">{{ Math.round(xpPercentage) }}%</span>
+                <span class="progress-percentage"
+                  >{{ Math.round(xpPercentage) }}%</span
+                >
               </div>
               <div class="xp-bar-container">
                 <div class="xp-bar-bg">
-                  <div class="xp-bar-fill" :style="{ width: xpPercentage + '%' }">
+                  <div
+                    class="xp-bar-fill"
+                    :style="{ width: xpPercentage + '%' }"
+                  >
                     <div class="xp-bar-shine"></div>
                   </div>
                 </div>
@@ -82,10 +94,20 @@
             </div>
 
             <div class="hud-actions">
-              <UnifiedButton variant="gaming" size="sm" leading-icon="EyeIcon" @click="showQuests = true">
+              <UnifiedButton
+                variant="gaming"
+                size="sm"
+                leading-icon="EyeIcon"
+                @click="showQuests = true"
+              >
                 Daily Quests
               </UnifiedButton>
-              <UnifiedButton variant="gaming" size="sm" leading-icon="TrophyIcon" @click="showAchievements = true">
+              <UnifiedButton
+                variant="gaming"
+                size="sm"
+                leading-icon="TrophyIcon"
+                @click="showAchievements = true"
+              >
                 Achievements
               </UnifiedButton>
             </div>
@@ -120,7 +142,10 @@
               </div>
               <div class="action-body">
                 <h3 class="action-title">Resume Builder</h3>
-                <p class="action-description">Create professional resumes tailored for gaming industry roles with AI assistance</p>
+                <p class="action-description">
+                  Create professional resumes tailored for gaming industry roles
+                  with AI assistance
+                </p>
                 <div class="action-features">
                   <span class="feature-tag">ATS-Optimized</span>
                   <span class="feature-tag">Gaming Focus</span>
@@ -151,7 +176,10 @@
               </div>
               <div class="action-body">
                 <h3 class="action-title">Job Search</h3>
-                <p class="action-description">Discover gaming industry opportunities from top studios worldwide</p>
+                <p class="action-description">
+                  Discover gaming industry opportunities from top studios
+                  worldwide
+                </p>
                 <div class="action-features">
                   <span class="feature-tag">{{ stats.totalJobs }}+ Jobs</span>
                   <span class="feature-tag">Real-time</span>
@@ -171,14 +199,19 @@
             </div>
           </UnifiedCard>
 
-          <UnifiedCard variant="glass" class="glass-card glass-interactive neon-purple focus:ring-neon">
+          <UnifiedCard
+            variant="glass"
+            class="glass-card glass-interactive neon-purple focus:ring-neon"
+          >
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="BuildingOfficeIcon" class="action-icon" />
               </div>
               <div class="action-text">
                 <h3 class="text-glass-primary">Studios Explorer</h3>
-                <p class="text-glass-secondary">Discover gaming companies and their culture</p>
+                <p class="text-glass-secondary">
+                  Discover gaming companies and their culture
+                </p>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -191,14 +224,19 @@
             </div>
           </UnifiedCard>
 
-          <UnifiedCard variant="glass" class="glass-card glass-interactive neon-orange focus:ring-neon">
+          <UnifiedCard
+            variant="glass"
+            class="glass-card glass-interactive neon-orange focus:ring-neon"
+          >
             <div class="action-content">
               <div class="action-icon-wrapper">
                 <AppIcon name="SpeakerWaveIcon" class="action-icon" />
               </div>
               <div class="action-text">
                 <h3 class="text-glass-primary">AI Interview</h3>
-                <p class="text-glass-secondary">Practice interviews with AI-powered scenarios</p>
+                <p class="text-glass-secondary">
+                  Practice interviews with AI-powered scenarios
+                </p>
               </div>
               <UnifiedButton
                 variant="primary"
@@ -217,13 +255,20 @@
       <section class="dashboard-grid-section">
         <div class="dashboard-grid">
           <!-- Real-Time Chat Panel -->
-          <UnifiedCard variant="glass" class="glass-card content-panel chat-panel">
+          <UnifiedCard
+            variant="glass"
+            class="glass-card content-panel chat-panel"
+          >
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="ChatBubbleLeftRightIcon" class="panel-icon" />
                 <div>
-                  <h3 class="text-base font-semibold text-glass-primary">AI Assistant</h3>
-                  <p class="text-sm text-glass-secondary">Get instant help and guidance</p>
+                  <h3 class="text-base font-semibold text-glass-primary">
+                    AI Assistant
+                  </h3>
+                  <p class="text-sm text-glass-secondary">
+                    Get instant help and guidance
+                  </p>
                 </div>
               </div>
               <UnifiedButton
@@ -237,20 +282,32 @@
             <div class="panel-content">
               <RealTimeChat v-if="RealTimeChat" />
               <div v-else class="chat-fallback">
-                <AppIcon name="mdi-chat-outline" class="text-gray-400 dark:text-glass-secondary" />
-                <span class="text-sm text-glass-secondary">Real-Time Chat unavailable</span>
+                <AppIcon
+                  name="mdi-chat-outline"
+                  class="text-gray-400 dark:text-glass-secondary"
+                />
+                <span class="text-sm text-glass-secondary"
+                  >Real-Time Chat unavailable</span
+                >
               </div>
             </div>
           </UnifiedCard>
 
           <!-- Skills Overview Panel -->
-          <UnifiedCard variant="glass" class="glass-card content-panel skills-panel">
+          <UnifiedCard
+            variant="glass"
+            class="glass-card content-panel skills-panel"
+          >
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="StarIcon" class="panel-icon" />
                 <div>
-                  <h3 class="text-base font-semibold text-glass-primary">Gaming Skills</h3>
-                  <p class="text-sm text-glass-secondary">Your technical expertise</p>
+                  <h3 class="text-base font-semibold text-glass-primary">
+                    Gaming Skills
+                  </h3>
+                  <p class="text-sm text-glass-secondary">
+                    Your technical expertise
+                  </p>
                 </div>
               </div>
               <UnifiedButton
@@ -283,13 +340,20 @@
           </UnifiedCard>
 
           <!-- Live Jobs Panel -->
-          <UnifiedCard variant="glass" class="glass-card content-panel jobs-panel">
+          <UnifiedCard
+            variant="glass"
+            class="glass-card content-panel jobs-panel"
+          >
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="ClockIcon" class="panel-icon" />
                 <div>
-                  <h3 class="text-base font-semibold text-glass-primary">Live Job Opportunities</h3>
-                  <p class="text-sm text-glass-secondary">Fresh gaming industry positions</p>
+                  <h3 class="text-base font-semibold text-glass-primary">
+                    Live Job Opportunities
+                  </h3>
+                  <p class="text-sm text-glass-secondary">
+                    Fresh gaming industry positions
+                  </p>
                 </div>
               </div>
               <UnifiedButton
@@ -309,17 +373,32 @@
                 :show="true"
               />
               <div v-else-if="liveJobs.length === 0" class="empty-state">
-                <AppIcon name="BriefcaseIcon" class="empty-icon text-gray-400 dark:text-glass-secondary" />
+                <AppIcon
+                  name="BriefcaseIcon"
+                  class="empty-icon text-gray-400 dark:text-glass-secondary"
+                />
                 <p class="text-sm text-glass-secondary">No live jobs found</p>
               </div>
               <div v-else class="jobs-list">
                 <div v-for="job in liveJobs" :key="job.id" class="job-item">
                   <div class="job-info">
-                    <h4 class="text-sm font-semibold text-glass-primary">{{ job.title }}</h4>
-                    <p class="text-xs text-glass-secondary">{{ job.company }}</p>
+                    <h4 class="text-sm font-semibold text-glass-primary">
+                      {{ job.title }}
+                    </h4>
+                    <p class="text-xs text-glass-secondary">
+                      {{ job.company }}
+                    </p>
                     <div class="job-meta">
-                      <UiBadge :label="job.location" variant="neutral" size="xs" />
-                      <UiBadge :label="job.remote ? 'Remote' : 'On-site'" variant="neutral" size="xs" />
+                      <UiBadge
+                        :label="job.location"
+                        variant="neutral"
+                        size="xs"
+                      />
+                      <UiBadge
+                        :label="job.remote ? 'Remote' : 'On-site'"
+                        variant="neutral"
+                        size="xs"
+                      />
                     </div>
                   </div>
                   <div class="job-actions">
@@ -345,13 +424,20 @@
           </UnifiedCard>
 
           <!-- AI Insights Panel -->
-          <UnifiedCard variant="glass" class="glass-card content-panel insights-panel">
+          <UnifiedCard
+            variant="glass"
+            class="glass-card content-panel insights-panel"
+          >
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="CpuChipIcon" class="panel-icon" />
                 <div>
-                  <h3 class="text-base font-semibold text-glass-primary">AI Career Insights</h3>
-                  <p class="text-sm text-glass-secondary">Personalized recommendations</p>
+                  <h3 class="text-base font-semibold text-glass-primary">
+                    AI Career Insights
+                  </h3>
+                  <p class="text-sm text-glass-secondary">
+                    Personalized recommendations
+                  </p>
                 </div>
               </div>
               <UnifiedButton
@@ -374,37 +460,58 @@
                 <div class="insight-item">
                   <AppIcon name="ArrowTrendingUpIcon" class="insight-icon" />
                   <div class="insight-details">
-                    <p class="text-sm text-glass-primary">{{ careerInsights.marketTrends }}</p>
+                    <p class="text-sm text-glass-primary">
+                      {{ careerInsights.marketTrends }}
+                    </p>
                   </div>
                 </div>
                 <div class="insight-item">
                   <AppIcon name="StarIcon" class="insight-icon" />
                   <div class="insight-details">
-                    <p class="text-sm text-glass-primary">Top skills: {{ careerInsights.inDemandSkills?.slice(0, 3).join(', ') }}</p>
+                    <p class="text-sm text-glass-primary">
+                      Top skills:
+                      {{
+                        careerInsights.inDemandSkills?.slice(0, 3).join(', ')
+                      }}
+                    </p>
                   </div>
                 </div>
                 <div class="insight-item">
                   <AppIcon name="CurrencyDollarIcon" class="insight-icon" />
                   <div class="insight-details">
-                    <p class="text-sm text-glass-primary">{{ careerInsights.salaryInsights }}</p>
+                    <p class="text-sm text-glass-primary">
+                      {{ careerInsights.salaryInsights }}
+                    </p>
                   </div>
                 </div>
               </div>
               <div v-else class="empty-state">
-                <AppIcon name="CpuChipIcon" class="empty-icon text-gray-400 dark:text-glass-secondary" />
-                <p class="text-glass-secondary">Get AI-powered career insights</p>
+                <AppIcon
+                  name="CpuChipIcon"
+                  class="empty-icon text-gray-400 dark:text-glass-secondary"
+                />
+                <p class="text-glass-secondary">
+                  Get AI-powered career insights
+                </p>
               </div>
             </div>
           </UnifiedCard>
 
           <!-- Activity Timeline Panel -->
-          <UnifiedCard variant="glass" class="glass-card content-panel activity-panel">
+          <UnifiedCard
+            variant="glass"
+            class="glass-card content-panel activity-panel"
+          >
             <div class="panel-header">
               <div class="panel-title-wrapper">
                 <AppIcon name="ClockIcon" class="panel-icon" />
                 <div>
-                  <h3 class="text-base font-semibold text-glass-primary">Recent Activity</h3>
-                  <p class="text-sm text-glass-secondary">Your latest career actions</p>
+                  <h3 class="text-base font-semibold text-glass-primary">
+                    Recent Activity
+                  </h3>
+                  <p class="text-sm text-glass-secondary">
+                    Your latest career actions
+                  </p>
                 </div>
               </div>
               <UnifiedButton
@@ -422,8 +529,12 @@
                     <AppIcon name="DocumentIcon" class="activity-icon" />
                   </div>
                   <div class="activity-details">
-                    <p class="text-sm text-glass-primary">Resume updated with new Unity experience</p>
-                    <span class="text-xs text-glass-secondary">2 hours ago</span>
+                    <p class="text-sm text-glass-primary">
+                      Resume updated with new Unity experience
+                    </p>
+                    <span class="text-xs text-glass-secondary"
+                      >2 hours ago</span
+                    >
                   </div>
                 </div>
                 <div class="activity-item">
@@ -431,7 +542,9 @@
                     <AppIcon name="mdi-send-outline" class="activity-icon" />
                   </div>
                   <div class="activity-details">
-                    <p class="text-sm text-glass-primary">Applied to 3 Game Developer positions</p>
+                    <p class="text-sm text-glass-primary">
+                      Applied to 3 Game Developer positions
+                    </p>
                     <span class="text-xs text-glass-secondary">1 day ago</span>
                   </div>
                 </div>
@@ -440,7 +553,9 @@
                     <AppIcon name="TrophyIcon" class="activity-icon" />
                   </div>
                   <div class="activity-details">
-                    <p class="text-sm text-glass-primary">Achievement unlocked: Portfolio Master</p>
+                    <p class="text-sm text-glass-primary">
+                      Achievement unlocked: Portfolio Master
+                    </p>
                     <span class="text-xs text-glass-secondary">3 days ago</span>
                   </div>
                 </div>
@@ -453,24 +568,45 @@
 
     <!-- Gaming Dashboard Modals -->
     <!-- Daily Quests Modal -->
-    <div v-if="showQuests" class="modal-overlay" @click.self="showQuests = false">
+    <div
+      v-if="showQuests"
+      class="modal-overlay"
+      @click.self="showQuests = false"
+    >
       <div class="quest-modal glass-modal">
         <div class="modal-header">
           <h2 class="heading-glass">Daily Quests</h2>
-          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="XMarkIcon" @click="showQuests = false" />
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            leading-icon="XMarkIcon"
+            @click="showQuests = false"
+          />
         </div>
         <div class="quest-list">
           <div v-for="quest in dailyQuests" :key="quest.id" class="quest-item">
             <div class="quest-info">
-              <div class="quest-title text-glass-primary">{{ quest.title }}</div>
-              <div class="quest-description text-glass-secondary">{{ quest.description }}</div>
-              <div class="quest-reward text-neon-blue">Reward: {{ quest.xpReward }} XP</div>
+              <div class="quest-title text-glass-primary">
+                {{ quest.title }}
+              </div>
+              <div class="quest-description text-glass-secondary">
+                {{ quest.description }}
+              </div>
+              <div class="quest-reward text-neon-blue">
+                Reward: {{ quest.xpReward }} XP
+              </div>
             </div>
             <div class="quest-progress">
               <div class="progress-bar">
-                <div class="progress-fill" :style="{ width: (quest.progress / quest.total * 100) + '%' }"></div>
+                <div
+                  class="progress-fill"
+                  :style="{ width: (quest.progress / quest.total) * 100 + '%' }"
+                ></div>
               </div>
-              <span class="progress-text">{{ quest.progress }}/{{ quest.total }}</span>
+              <span class="progress-text"
+                >{{ quest.progress }}/{{ quest.total }}</span
+              >
             </div>
           </div>
         </div>
@@ -478,18 +614,37 @@
     </div>
 
     <!-- Achievements Modal -->
-    <div v-if="showAchievements" class="modal-overlay" @click.self="showAchievements = false">
+    <div
+      v-if="showAchievements"
+      class="modal-overlay"
+      @click.self="showAchievements = false"
+    >
       <div class="achievements-modal glass-modal">
         <div class="modal-header">
           <h2 class="heading-glass">Achievements</h2>
-          <UnifiedButton variant="ghost" size="sm" icon-only leading-icon="XMarkIcon" @click="showAchievements = false" />
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            icon-only
+            leading-icon="XMarkIcon"
+            @click="showAchievements = false"
+          />
         </div>
         <div class="achievements-grid">
-          <div v-for="achievement in achievements" :key="achievement.id" class="achievement-item" :class="{ unlocked: achievement.unlocked }">
+          <div
+            v-for="achievement in achievements"
+            :key="achievement.id"
+            class="achievement-item"
+            :class="{ unlocked: achievement.unlocked }"
+          >
             <div class="achievement-icon">{{ achievement.icon }}</div>
             <div class="achievement-info">
-              <div class="achievement-title text-glass-primary">{{ achievement.title }}</div>
-              <div class="achievement-description text-glass-secondary">{{ achievement.description }}</div>
+              <div class="achievement-title text-glass-primary">
+                {{ achievement.title }}
+              </div>
+              <div class="achievement-description text-glass-secondary">
+                {{ achievement.description }}
+              </div>
             </div>
           </div>
         </div>
@@ -499,9 +654,8 @@
 </template>
 
 <script setup>
-
-import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 import StandardPageLayout from '@/components/layout/StandardPageLayout.vue'
 import HeaderActions from '@/components/ui/HeaderActions.vue'
@@ -514,7 +668,11 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import UiChip from '@/components/ui/UiChip.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import LoadingSkeletons from '@/components/LoadingSkeletons.vue'
-import { GAME_ENGINES, CONTENT_TOOLS, SKILL_CATEGORIES } from '@/shared/constants/skills'
+import {
+  GAME_ENGINES,
+  CONTENT_TOOLS,
+  SKILL_CATEGORIES,
+} from '@/shared/constants/skills'
 import { logger } from '@/shared/utils/logger'
 // import GAMING_STUDIOS from '@/data/gaming-studios' // Commented out for future use
 import { searchJobsRefactored } from '@/services/JobAPIService'
@@ -550,7 +708,7 @@ const dailyQuests = ref([
     description: 'Add skills and experience to your profile',
     progress: 2,
     total: 5,
-    xpReward: 50
+    xpReward: 50,
   },
   {
     id: '2',
@@ -558,7 +716,7 @@ const dailyQuests = ref([
     description: 'Submit applications to gaming positions',
     progress: 1,
     total: 3,
-    xpReward: 75
+    xpReward: 75,
   },
   {
     id: '3',
@@ -566,8 +724,8 @@ const dailyQuests = ref([
     description: 'Connect with industry professionals',
     progress: 0,
     total: 2,
-    xpReward: 100
-  }
+    xpReward: 100,
+  },
 ])
 
 // Achievements
@@ -577,47 +735,47 @@ const achievements = ref([
     title: 'First Steps',
     description: 'Created your first resume',
     icon: 'RocketLaunchIcon',
-    unlocked: true
+    unlocked: true,
   },
   {
     id: '2',
     title: 'Job Hunter',
     description: 'Applied to 10 positions',
     icon: '🎯',
-    unlocked: true
+    unlocked: true,
   },
   {
     id: '3',
     title: 'Portfolio Master',
     description: 'Completed your portfolio',
     icon: 'TrophyIcon',
-    unlocked: true
+    unlocked: true,
   },
   {
     id: '4',
     title: 'Network Builder',
     description: 'Connected with 25 professionals',
     icon: '🤝',
-    unlocked: false
+    unlocked: false,
   },
   {
     id: '5',
     title: 'Interview Ace',
     description: 'Completed 5 AI interview sessions',
     icon: 'StarIcon',
-    unlocked: false
-  }
+    unlocked: false,
+  },
 ])
 
 // Reactive data
 const topSkills = computed(() => [
   ...GAME_ENGINES.slice(0, 3),
   ...CONTENT_TOOLS.slice(0, 3),
-  ...SKILL_CATEGORIES.slice(0, 2)
+  ...SKILL_CATEGORIES.slice(0, 2),
 ])
 
 // Commented out for future use
-// const topStudios = computed(() => 
+// const topStudios = computed(() =>
 //   GAMING_STUDIOS.slice(0, 4).map(studio => ({
 //     id: studio.id,
 //     name: studio.name,
@@ -634,11 +792,11 @@ const isLoading = ref(true)
 const stats = ref({
   totalJobs: 0,
   newJobsToday: 0,
-  matchingJobs: 0
+  matchingJobs: 0,
 })
 
 // Navigation helper
-const navigateTo = (path) => {
+const navigateTo = path => {
   _router.push(path)
 }
 
@@ -646,24 +804,23 @@ const navigateTo = (path) => {
 const fetchLiveData = async () => {
   try {
     isLoading.value = true
-    
+
     // Fetch gaming jobs
     const jobResults = await searchJobsRefactored({
       title: 'game developer',
       remote: true,
-      limit: 5
+      limit: 5,
     })
-    
+
     liveJobs.value = jobResults.jobs.slice(0, 3)
     stats.value.totalJobs = jobResults.totalResults
     stats.value.matchingJobs = jobResults.jobs.length
 
     // Get AI insights
     careerInsights.value = await getCareerInsights()
-    
+
     // Simulate new jobs today (in real app, this would come from API)
     stats.value.newJobsToday = Math.floor(Math.random() * 50) + 10
-    
   } catch (_error) {
     logger.error('Failed to fetch live data:', _error)
   } finally {
@@ -680,15 +837,15 @@ const refreshData = () => {
 onMounted(() => {
   logger.info('Dashboard mounted - Gaming Career Platform')
   fetchLiveData()
-  
+
   // Set up periodic refresh every 5 minutes
   const refreshInterval = setInterval(fetchLiveData, 5 * 60 * 1000)
-  
+
   return () => clearInterval(refreshInterval)
 })
 </script>
 
-  <style scoped>
+<style scoped>
 /* ===== GAMING CAREER DASHBOARD STYLES ===== */
 
 /* Content Wrapper - Fix layout alignment */
@@ -1412,19 +1569,24 @@ onMounted(() => {
 
 /* Animations */
 @keyframes pulse-glow {
-  0%, 100% { 
+  0%,
+  100% {
     box-shadow: 0 0 5px rgba(var(--neon-primary-rgb), 0.3);
     transform: scale(1);
   }
-  50% { 
+  50% {
     box-shadow: 0 0 20px rgba(var(--neon-primary-rgb), 0.6);
     transform: scale(1.05);
   }
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive Design */
@@ -1434,7 +1596,7 @@ onMounted(() => {
     align-items: stretch;
     gap: var(--spacing-4);
   }
-  
+
   .content-grid {
     grid-template-columns: 1fr;
   }
@@ -1444,25 +1606,25 @@ onMounted(() => {
   .dashboard-content {
     padding: var(--spacing-4);
   }
-  
+
   .quick-actions-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .action-content {
     flex-direction: flex flex-wrap;
     text-align: left;
   }
-  
+
   .action-icon-wrapper {
     width: 48px;
     height: 48px;
   }
-  
+
   .hud-content {
     gap: var(--spacing-3);
   }
-  
+
   .level-badge {
     font-size: 1.5rem;
   }

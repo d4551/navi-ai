@@ -17,13 +17,12 @@ export {
   startRealTimeAI,
   stopRealTimeAI,
   realtimeChat,
-  initializeAI as initializeAIService
+  initializeAI as initializeAIService,
 } from '@/shared/services/AIService'
 
 // AI Service Layer - Centralized AI operations
-export * from './prompts';
-export * from './types';
+export * from './prompts'
+export * from './types'
 
 // Legacy compatibility - export local service as backup
-export { aiService as legacyAIService } from './services';
-
+export { aiService as legacyAIService } from './services'

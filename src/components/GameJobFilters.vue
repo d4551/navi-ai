@@ -51,7 +51,9 @@
     <!-- Quick Filters (Always Visible) -->
     <div class="quick-filters flex flex-wrap g-2 mb-3">
       <div class="flex-1-md-6">
-        <label for="role-category-select" class="form-label">Role Category</label>
+        <label for="role-category-select" class="form-label"
+          >Role Category</label
+        >
         <select
           id="role-category-select"
           v-model="filters.roleCategory"
@@ -59,14 +61,20 @@
           @change="updateFilters"
         >
           <option value="">All Categories</option>
-          <option v-for="category in roleCategories" :key="category" :value="category">
+          <option
+            v-for="category in roleCategories"
+            :key="category"
+            :value="category"
+          >
             {{ category }} ({{ getRoleCategoryCount(category) }} roles)
           </option>
         </select>
       </div>
 
       <div class="flex-1-md-6">
-        <label for="experience-level-select" class="form-label">Experience Level</label>
+        <label for="experience-level-select" class="form-label"
+          >Experience Level</label
+        >
         <select
           id="experience-level-select"
           v-model="filters.experienceLevel"
@@ -91,7 +99,11 @@
         <div class="flex-1-md-4">
           <label class="form-label">Studio Type</label>
           <div class="filter-checkboxes">
-            <div v-for="type in studioTypes" :key="type.value" class="form-check">
+            <div
+              v-for="type in studioTypes"
+              :key="type.value"
+              class="form-check"
+            >
               <input
                 :id="`studio-type-${type.value}`"
                 v-model="filters.studioTypes"
@@ -100,8 +112,12 @@
                 :value="type.value"
                 @change="updateFilters"
               />
-              <label :for="`studio-type-${type.value}`" class="form-check-label">
-                {{ type.label }} <span class="text-secondary">({{ type.count }})</span>
+              <label
+                :for="`studio-type-${type.value}`"
+                class="form-check-label"
+              >
+                {{ type.label }}
+                <span class="text-secondary">({{ type.count }})</span>
               </label>
             </div>
           </div>
@@ -111,7 +127,11 @@
         <div class="flex-1-md-4">
           <label class="form-label">Company Size</label>
           <div class="filter-checkboxes">
-            <div v-for="size in companySizes" :key="size.value" class="form-check">
+            <div
+              v-for="size in companySizes"
+              :key="size.value"
+              class="form-check"
+            >
               <input
                 :id="`company-size-${size.value}`"
                 v-model="filters.companySizes"
@@ -120,7 +140,10 @@
                 :value="size.value"
                 @change="updateFilters"
               />
-              <label :for="`company-size-${size.value}`" class="form-check-label">
+              <label
+                :for="`company-size-${size.value}`"
+                class="form-check-label"
+              >
                 {{ size.label }}
               </label>
             </div>
@@ -185,7 +208,11 @@
             />
             <div class="tech-tags-container">
               <div class="tech-categories">
-                <div v-for="(techs, category) in filteredTechnologies" :key="category" class="tech-category mb-2">
+                <div
+                  v-for="(techs, category) in filteredTechnologies"
+                  :key="category"
+                  class="tech-category mb-2"
+                >
                   <h6 class="tech-category-title">{{ category }}</h6>
                   <div class="tech-tags flex flex-wrap gap-glass-xs">
                     <label
@@ -261,7 +288,10 @@
                 :value="region"
                 @change="updateFilters"
               />
-              <label :for="`region-${region.toLowerCase().replace(/\s+/g, '-')}`" class="form-check-label">
+              <label
+                :for="`region-${region.toLowerCase().replace(/\s+/g, '-')}`"
+                class="form-check-label"
+              >
                 {{ region }}
               </label>
             </div>
@@ -269,7 +299,9 @@
         </div>
 
         <div class="flex-1-md-6">
-          <label for="specific-location" class="form-label">Specific Location</label>
+          <label for="specific-location" class="form-label"
+            >Specific Location</label
+          >
           <input
             id="specific-location"
             v-model="filters.specificLocation"
@@ -295,7 +327,11 @@
                 @change="updateFilters"
               />
               <label for="featured-only" class="form-check-label">
-                <AppIcon name="StarIcon" color="warning" context="achievement" />
+                <AppIcon
+                  name="StarIcon"
+                  color="warning"
+                  context="achievement"
+                />
                 Featured Jobs Only
               </label>
             </div>
@@ -354,7 +390,9 @@
           <span class="text-secondary">gaming jobs found</span>
         </div>
         <div class="sort-options">
-          <label for="sort-select" class="form-label visually-hidden">Sort by</label>
+          <label for="sort-select" class="form-label visually-hidden"
+            >Sort by</label
+          >
           <select
             id="sort-select"
             v-model="filters.sortBy"
@@ -375,7 +413,12 @@
 </template>
 
 <script setup>
-import { AcademicCapIcon, AdjustmentsHorizontalIcon, FunnelIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import {
+  AcademicCapIcon,
+  AdjustmentsHorizontalIcon,
+  FunnelIcon,
+  UsersIcon,
+} from '@heroicons/vue/24/outline'
 import { StarIcon } from '@heroicons/vue/24/solid'
 
 import { ref, reactive, computed, watch, defineEmits, defineProps } from 'vue'
@@ -386,27 +429,27 @@ import {
   STUDIO_CATEGORIES,
   TECHNOLOGY_TAGS,
   COMPANY_SIZES,
-  REGIONS
-} from '@/shared/constants/gaming-studios';
+  REGIONS,
+} from '@/shared/constants/gaming-studios'
 
 // Props
 const _props = defineProps({
   totalJobs: {
     type: Number,
-    default: 0
+    default: 0,
   },
   resultsCount: {
     type: Number,
-    default: 0
-  }
-});
+    default: 0,
+  },
+})
 
 // Emits
-const emit = defineEmits(['filters-changed']);
+const emit = defineEmits(['filters-changed'])
 
 // State
-const isExpanded = ref(false);
-const technologySearch = ref('');
+const isExpanded = ref(false)
+const technologySearch = ref('')
 
 const filters = reactive({
   roleCategory: '',
@@ -425,54 +468,121 @@ const filters = reactive({
   newGradFriendly: false,
   visaSponsorship: false,
   diversityFocused: false,
-  sortBy: 'relevance'
-});
+  sortBy: 'relevance',
+})
 
 // Computed
-const roleCategories = computed(() => Object.keys(ROLE_CATEGORIES));
+const roleCategories = computed(() => Object.keys(ROLE_CATEGORIES))
 
 const studioTypes = computed(() => [
   { value: 'AAA', label: 'AAA Studios', count: STUDIO_CATEGORIES.AAA.length },
-  { value: 'Indie', label: 'Indie Studios', count: STUDIO_CATEGORIES.Indie.length },
-  { value: 'Mobile', label: 'Mobile Games', count: STUDIO_CATEGORIES.Mobile.length },
-  { value: 'VR/AR', label: 'VR/AR Studios', count: STUDIO_CATEGORIES['VR/AR'].length },
-  { value: 'Platform', label: 'Platform Companies', count: STUDIO_CATEGORIES.Platform.length },
-  { value: 'Esports', label: 'Esports Organizations', count: STUDIO_CATEGORIES.Esports.length }
-]);
+  {
+    value: 'Indie',
+    label: 'Indie Studios',
+    count: STUDIO_CATEGORIES.Indie.length,
+  },
+  {
+    value: 'Mobile',
+    label: 'Mobile Games',
+    count: STUDIO_CATEGORIES.Mobile.length,
+  },
+  {
+    value: 'VR/AR',
+    label: 'VR/AR Studios',
+    count: STUDIO_CATEGORIES['VR/AR'].length,
+  },
+  {
+    value: 'Platform',
+    label: 'Platform Companies',
+    count: STUDIO_CATEGORIES.Platform.length,
+  },
+  {
+    value: 'Esports',
+    label: 'Esports Organizations',
+    count: STUDIO_CATEGORIES.Esports.length,
+  },
+])
 
-const companySizes = computed(() => COMPANY_SIZES.map(size => ({
-  value: size.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-  label: size
-})));
+const companySizes = computed(() =>
+  COMPANY_SIZES.map(size => ({
+    value: size.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+    label: size,
+  }))
+)
 
-const regions = computed(() => REGIONS);
+const regions = computed(() => REGIONS)
 
 const technologyCategories = computed(() => ({
-  'Programming Languages': ['C++', 'C#', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust', 'Java', 'Swift', 'Kotlin', 'Lua'],
-  'Game Engines': ['Unity', 'Unreal Engine', 'Godot', 'Custom Engine', 'Source Engine'],
+  'Programming Languages': [
+    'C++',
+    'C#',
+    'Python',
+    'JavaScript',
+    'TypeScript',
+    'Go',
+    'Rust',
+    'Java',
+    'Swift',
+    'Kotlin',
+    'Lua',
+  ],
+  'Game Engines': [
+    'Unity',
+    'Unreal Engine',
+    'Godot',
+    'Custom Engine',
+    'Source Engine',
+  ],
   'Graphics APIs': ['DirectX', 'Vulkan', 'OpenGL', 'Metal', 'WebGL'],
-  'Platforms': ['PC', 'Console', 'Mobile', 'VR', 'AR', 'Web', 'Switch', 'PlayStation', 'Xbox', 'Steam'],
-  'Cloud & DevOps': ['AWS', 'Azure', 'Google Cloud', 'Kubernetes', 'Docker', 'Git'],
-  'Specializations': ['Networking', 'Multiplayer', 'Live Services', 'AI', 'Machine Learning', 'Analytics']
-}));
+  Platforms: [
+    'PC',
+    'Console',
+    'Mobile',
+    'VR',
+    'AR',
+    'Web',
+    'Switch',
+    'PlayStation',
+    'Xbox',
+    'Steam',
+  ],
+  'Cloud & DevOps': [
+    'AWS',
+    'Azure',
+    'Google Cloud',
+    'Kubernetes',
+    'Docker',
+    'Git',
+  ],
+  Specializations: [
+    'Networking',
+    'Multiplayer',
+    'Live Services',
+    'AI',
+    'Machine Learning',
+    'Analytics',
+  ],
+}))
 
 const filteredTechnologies = computed(() => {
-  if (!technologySearch.value) {return technologyCategories.value;}
+  if (!technologySearch.value) {
+    return technologyCategories.value
+  }
 
-  const search = technologySearch.value.toLowerCase();
-  const filtered = {};
+  const search = technologySearch.value.toLowerCase()
+  const filtered = {}
 
   for (const [category, techs] of Object.entries(technologyCategories.value)) {
     const matchingTechs = techs.filter(tech =>
       tech.toLowerCase().includes(search)
-    );
+    )
     if (matchingTechs.length > 0) {
-      filtered[category] = matchingTechs;
+      filtered[category] = matchingTechs
     }
   }
 
-  return filtered;
-});
+  return filtered
+})
 
 const hasActiveFilters = computed(() => {
   return (
@@ -492,14 +602,18 @@ const hasActiveFilters = computed(() => {
     filters.newGradFriendly ||
     filters.visaSponsorship ||
     filters.diversityFocused
-  );
-});
+  )
+})
 
 const activeFilters = computed(() => {
-  const active = [];
+  const active = []
 
   if (filters.roleCategory) {
-    active.push({ key: 'roleCategory', value: filters.roleCategory, label: filters.roleCategory });
+    active.push({
+      key: 'roleCategory',
+      value: filters.roleCategory,
+      label: filters.roleCategory,
+    })
   }
 
   if (filters.experienceLevel) {
@@ -509,41 +623,41 @@ const activeFilters = computed(() => {
       mid: 'Mid-Level',
       senior: 'Senior',
       principal: 'Principal',
-      director: 'Director'
-    };
+      director: 'Director',
+    }
     active.push({
       key: 'experienceLevel',
       value: filters.experienceLevel,
-      label: levelLabels[filters.experienceLevel]
-    });
+      label: levelLabels[filters.experienceLevel],
+    })
   }
 
   filters.studioTypes.forEach(type => {
-    active.push({ key: 'studioTypes', value: type, label: `${type} Studios` });
-  });
+    active.push({ key: 'studioTypes', value: type, label: `${type} Studios` })
+  })
 
   filters.technologies.forEach(tech => {
-    active.push({ key: 'technologies', value: tech, label: tech });
-  });
+    active.push({ key: 'technologies', value: tech, label: tech })
+  })
 
   filters.regions.forEach(region => {
-    active.push({ key: 'regions', value: region, label: region });
-  });
+    active.push({ key: 'regions', value: region, label: region })
+  })
 
   if (filters.remoteWork) {
-    active.push({ key: 'remoteWork', value: true, label: 'Remote Work' });
+    active.push({ key: 'remoteWork', value: true, label: 'Remote Work' })
   }
 
   if (filters.featuredOnly) {
-    active.push({ key: 'featuredOnly', value: true, label: 'Featured Jobs' });
+    active.push({ key: 'featuredOnly', value: true, label: 'Featured Jobs' })
   }
 
-  return active;
-});
+  return active
+})
 
 // Methods
 function updateFilters() {
-  emit('filters-changed', { ...filters });
+  emit('filters-changed', { ...filters })
 }
 
 function resetFilters() {
@@ -564,31 +678,31 @@ function resetFilters() {
     newGradFriendly: false,
     visaSponsorship: false,
     diversityFocused: false,
-    sortBy: 'relevance'
-  });
-  updateFilters();
+    sortBy: 'relevance',
+  })
+  updateFilters()
 }
 
 function removeFilter(key, value) {
   if (Array.isArray(filters[key])) {
-    const index = filters[key].indexOf(value);
+    const index = filters[key].indexOf(value)
     if (index > -1) {
-      filters[key].splice(index, 1);
+      filters[key].splice(index, 1)
     }
   } else if (typeof filters[key] === 'boolean') {
-    filters[key] = false;
+    filters[key] = false
   } else {
-    filters[key] = '';
+    filters[key] = ''
   }
-  updateFilters();
+  updateFilters()
 }
 
 function toggleExpanded() {
-  isExpanded.value = !isExpanded.value;
+  isExpanded.value = !isExpanded.value
 }
 
 function getRoleCategoryCount(category) {
-  return ROLE_CATEGORIES[category]?.length || 0;
+  return ROLE_CATEGORIES[category]?.length || 0
 }
 
 function filterTechnologies() {
@@ -597,11 +711,11 @@ function filterTechnologies() {
 }
 
 // Watch for technology search changes
-watch(technologySearch, (newVal) => {
+watch(technologySearch, newVal => {
   if (newVal.length === 0) {
     // Reset technology search
   }
-});
+})
 </script>
 
 <style scoped>

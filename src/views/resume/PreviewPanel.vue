@@ -1,14 +1,12 @@
 <template>
-  <div 
+  <div
     class="preview-panel-wrapper"
     :class="theme?.getThemeClasses?.('resume-preview')"
     class="font-sans"
   >
     <!-- Preview Controls Header -->
     <div class="preview-controls glass-elevated mb-3">
-      <div
-        class="flex items-center justify-between flex-wrap gap-glass-md"
-      >
+      <div class="flex items-center justify-between flex-wrap gap-glass-md">
         <div class="flex items-center gap-glass-sm">
           <h2 class="h6 mb-0 text-primary-600">
             <AppIcon name="EyeIcon" size="default" aria-hidden="true" />
@@ -22,7 +20,9 @@
 
         <!-- Template Selector -->
         <div class="template-selector flex items-center gap-glass-sm">
-          <label class="form-label mb-0 text-secondary small hidden d-md-inline">Template:</label>
+          <label class="form-label mb-0 text-secondary small hidden d-md-inline"
+            >Template:</label
+          >
           <select
             class="form-select form-select-sm glass-input select-auto-width"
             :value="selectedTemplate"
@@ -35,9 +35,19 @@
             <option value="minimal">Minimal</option>
             <option v-if="canUseAI" value="ai-smart">AI Smart</option>
           </select>
-          <div class="form-check form-switch ml-2" title="Toggle cover page (hero sheet)">
-            <input id="toggleCoverPage" v-model="showCoverPage" class="form-check-input" type="checkbox">
-            <label class="form-check-label small" for="toggleCoverPage">Cover</label>
+          <div
+            class="form-check form-switch ml-2"
+            title="Toggle cover page (hero sheet)"
+          >
+            <input
+              id="toggleCoverPage"
+              v-model="showCoverPage"
+              class="form-check-input"
+              type="checkbox"
+            />
+            <label class="form-check-label small" for="toggleCoverPage"
+              >Cover</label
+            >
           </div>
         </div>
 
@@ -47,7 +57,11 @@
           variant="outline"
           :loading="loading.templateGeneration"
           leading-icon="CommandLineIcon"
-          :aria-label="loading.templateGeneration ? 'Generating smart template...' : 'Generate AI smart template'"
+          :aria-label="
+            loading.templateGeneration
+              ? 'Generating smart template...'
+              : 'Generate AI smart template'
+          "
           @click="$emit('generate-smart-template')"
         >
           <span class="hidden d-lg-inline">Smart Template</span>
@@ -55,33 +69,88 @@
         </UnifiedButton>
 
         <!-- Additional AI Enhancement Actions -->
-        <div v-if="canUseAI" class="ai-enhance-group flex flex-wrap gap-glass-sm">
-          <UnifiedButton variant="ghost" size="sm" :disabled="loading.ai" leading-icon="mdi-text-box-check" title="AI optimize summary for clarity & impact" @click="emitOptimizeSummary">Improve Summary</UnifiedButton>
-          <UnifiedButton variant="ghost" size="sm" :disabled="loading.ai" leading-icon="ChartBarSquareIcon" title="AI will try to add measurable impact to bullet points" @click="emitQuantifyExperience">Quantify</UnifiedButton>
-          <UnifiedButton variant="ghost" size="sm" :disabled="loading.ai" leading-icon="LightBulbIcon-on-outline" title="AI suggest missing relevant skills" @click="emitSuggestSkills">Skills</UnifiedButton>
+        <div
+          v-if="canUseAI"
+          class="ai-enhance-group flex flex-wrap gap-glass-sm"
+        >
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            :disabled="loading.ai"
+            leading-icon="mdi-text-box-check"
+            title="AI optimize summary for clarity & impact"
+            @click="emitOptimizeSummary"
+            >Improve Summary</UnifiedButton
+          >
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            :disabled="loading.ai"
+            leading-icon="ChartBarSquareIcon"
+            title="AI will try to add measurable impact to bullet points"
+            @click="emitQuantifyExperience"
+            >Quantify</UnifiedButton
+          >
+          <UnifiedButton
+            variant="ghost"
+            size="sm"
+            :disabled="loading.ai"
+            leading-icon="LightBulbIcon-on-outline"
+            title="AI suggest missing relevant skills"
+            @click="emitSuggestSkills"
+            >Skills</UnifiedButton
+          >
         </div>
       </div>
     </div>
 
     <!-- Export Actions Bar -->
     <div class="export-actions glass-elevated mb-3">
-      <div
-        class="flex items-center justify-between flex-wrap gap-glass-sm"
-      >
+      <div class="flex items-center justify-between flex-wrap gap-glass-sm">
         <div class="flex items-center gap-glass-sm">
           <small class="text-secondary font-medium">Export Options:</small>
         </div>
 
-        <div class="flex items-center gap-glass-sm" role="group" aria-label="Export and preview options">
-          <UnifiedButton variant="ghost" :disabled="!hasContent" leading-icon="LinkIcon-variant" aria-label="Open full preview in new window" @click="previewWindow">
+        <div
+          class="flex items-center gap-glass-sm"
+          role="group"
+          aria-label="Export and preview options"
+        >
+          <UnifiedButton
+            variant="ghost"
+            :disabled="!hasContent"
+            leading-icon="LinkIcon-variant"
+            aria-label="Open full preview in new window"
+            @click="previewWindow"
+          >
             <span class="hidden d-sm-inline">Full Preview</span>
             <span class="d-sm-none">Preview</span>
           </UnifiedButton>
-          <UnifiedButton variant="primary" :disabled="!hasContent || loading.export" :loading="loading.export" leading-icon="DocumentIcon-pdf-box" aria-label="Export resume as PDF" @click="exportPDF">PDF</UnifiedButton>
-          <UnifiedButton variant="secondary" :disabled="!hasContent || loading.export" leading-icon="mdi-language-html5" aria-label="Export resume as HTML" @click="exportHTML">
+          <UnifiedButton
+            variant="primary"
+            :disabled="!hasContent || loading.export"
+            :loading="loading.export"
+            leading-icon="DocumentIcon-pdf-box"
+            aria-label="Export resume as PDF"
+            @click="exportPDF"
+            >PDF</UnifiedButton
+          >
+          <UnifiedButton
+            variant="secondary"
+            :disabled="!hasContent || loading.export"
+            leading-icon="mdi-language-html5"
+            aria-label="Export resume as HTML"
+            @click="exportHTML"
+          >
             <span class="hidden d-lg-inline">HTML</span>
           </UnifiedButton>
-          <UnifiedButton variant="outline" :disabled="!hasContent" leading-icon="mdi-clipboard-text-outline" aria-label="Copy HTML to clipboard" @click="copyHTML">
+          <UnifiedButton
+            variant="outline"
+            :disabled="!hasContent"
+            leading-icon="mdi-clipboard-text-outline"
+            aria-label="Copy HTML to clipboard"
+            @click="copyHTML"
+          >
             <span class="hidden d-lg-inline">Copy</span>
           </UnifiedButton>
         </div>
@@ -93,9 +162,16 @@
         class="card-header section-header card-header--dense flex items-center justify-between"
       >
         <div class="flex items-center gap-glass-sm">
-          <AppIcon name="DocumentIcon" size="default" color="primary" aria-hidden="true" />
-          <span class="font-semibold">{{ resume?.personalInfo?.firstName || "Your" }}
-            {{ resume?.personalInfo?.lastName || "Resume" }}</span>
+          <AppIcon
+            name="DocumentIcon"
+            size="default"
+            color="primary"
+            aria-hidden="true"
+          />
+          <span class="font-semibold"
+            >{{ resume?.personalInfo?.firstName || 'Your' }}
+            {{ resume?.personalInfo?.lastName || 'Resume' }}</span
+          >
         </div>
 
         <!-- Completion Progress -->
@@ -116,7 +192,9 @@
               aria-valuemax="100"
             ></div>
           </div>
-          <small class="text-secondary font-medium">{{ completionPercentage }}%</small>
+          <small class="text-secondary font-medium"
+            >{{ completionPercentage }}%</small
+          >
         </div>
       </div>
       <div class="card-body section-body p-0">
@@ -134,7 +212,9 @@
             <p class="text-secondary mt-2 mb-0">
               <span v-if="loading.ai">Generating content...</span>
               <span v-else-if="loading.export">Preparing export...</span>
-              <span v-else-if="loading.templateGeneration">Creating template...</span>
+              <span v-else-if="loading.templateGeneration"
+                >Creating template...</span
+              >
             </p>
           </div>
           <ContentLoader
@@ -184,17 +264,53 @@
             <div v-if="showCoverPage" class="cover-page mb-5">
               <div class="cover-inner">
                 <h1 class="cover-name">{{ getFullName }}</h1>
-                <p v-if="primaryTitle" class="cover-title h5 font-semibold text-secondary mb-3">{{ primaryTitle }}</p>
-                <p v-if="resume?.personalInfo?.summary" class="lead cover-summary mb-4">{{ firstSummarySentence }}</p>
-                <div v-if="coverHighlights.length" class="cover-highlights flex flex-wrap gap-glass-sm mb-4">
-                  <span v-for="h in coverHighlights" :key="h" class="badge badge-compact rounded-pill bg-primary-500-subtle text-primary-600">{{ h }}</span>
+                <p
+                  v-if="primaryTitle"
+                  class="cover-title h5 font-semibold text-secondary mb-3"
+                >
+                  {{ primaryTitle }}
+                </p>
+                <p
+                  v-if="resume?.personalInfo?.summary"
+                  class="lead cover-summary mb-4"
+                >
+                  {{ firstSummarySentence }}
+                </p>
+                <div
+                  v-if="coverHighlights.length"
+                  class="cover-highlights flex flex-wrap gap-glass-sm mb-4"
+                >
+                  <span
+                    v-for="h in coverHighlights"
+                    :key="h"
+                    class="badge badge-compact rounded-pill bg-primary-500-subtle text-primary-600"
+                    >{{ h }}</span
+                  >
                 </div>
-                <div class="cover-contact small text-secondary flex flex-wrap gap-glass-md justify-center">
-                  <span v-if="resume?.personalInfo?.email"><AppIcon name="EnvelopeIcon" class="mr-1" />{{ resume.personalInfo.email }}</span>
-                  <span v-if="resume?.personalInfo?.phone"><AppIcon name="PhoneIcon" class="mr-1" />{{ resume.personalInfo.phone }}</span>
-                  <span v-if="resume?.personalInfo?.location"><AppIcon name="MapPinIcon" class="mr-1" />{{ resume.personalInfo.location }}</span>
-                  <span v-if="resume?.personalInfo?.linkedIn"><AppIcon name="LinkIconedin" class="mr-1" />LinkedIn</span>
-                  <span v-if="resume?.personalInfo?.portfolio"><AppIcon name="GlobeAltIcon" class="mr-1" />Portfolio</span>
+                <div
+                  class="cover-contact small text-secondary flex flex-wrap gap-glass-md justify-center"
+                >
+                  <span v-if="resume?.personalInfo?.email"
+                    ><AppIcon name="EnvelopeIcon" class="mr-1" />{{
+                      resume.personalInfo.email
+                    }}</span
+                  >
+                  <span v-if="resume?.personalInfo?.phone"
+                    ><AppIcon name="PhoneIcon" class="mr-1" />{{
+                      resume.personalInfo.phone
+                    }}</span
+                  >
+                  <span v-if="resume?.personalInfo?.location"
+                    ><AppIcon name="MapPinIcon" class="mr-1" />{{
+                      resume.personalInfo.location
+                    }}</span
+                  >
+                  <span v-if="resume?.personalInfo?.linkedIn"
+                    ><AppIcon name="LinkIconedin" class="mr-1" />LinkedIn</span
+                  >
+                  <span v-if="resume?.personalInfo?.portfolio"
+                    ><AppIcon name="GlobeAltIcon" class="mr-1" />Portfolio</span
+                  >
                 </div>
               </div>
               <hr class="cover-divider" />
@@ -234,7 +350,7 @@
                   <div
                     v-if="
                       resume?.personalInfo?.linkedIn ||
-                        resume?.personalInfo?.portfolio
+                      resume?.personalInfo?.portfolio
                     "
                     class="links-line flex flex-wrap justify-center gap-glass-md mt-2"
                   >
@@ -297,15 +413,17 @@
                   >
                     <div class="position-info">
                       <h3 class="position-title h6 font-bold mb-1">
-                        {{ exp.title || "Job Title" }}
+                        {{ exp.title || 'Job Title' }}
                       </h3>
                       <div class="company-name text-primary-600 font-semibold">
-                        {{ exp.company || "Company Name" }}
+                        {{ exp.company || 'Company Name' }}
                       </div>
                     </div>
                     <div class="date-range text-secondary text-end">
-                      <small class="font-medium">{{ exp.startDate }} -
-                        {{ exp.endDate || "Present" }}</small>
+                      <small class="font-medium"
+                        >{{ exp.startDate }} -
+                        {{ exp.endDate || 'Present' }}</small
+                      >
                     </div>
                   </div>
                   <div v-if="exp.description" class="experience-description">
@@ -335,15 +453,15 @@
                   >
                     <div class="degree-info">
                       <h3 class="degree-title h6 font-bold mb-1">
-                        {{ edu.degree || "Degree" }}
+                        {{ edu.degree || 'Degree' }}
                       </h3>
                       <div class="institution-name text-primary-600">
-                        {{ edu.institution || "Institution" }}
+                        {{ edu.institution || 'Institution' }}
                       </div>
                     </div>
                     <div class="graduation-date text-secondary text-end">
                       <small class="font-medium">{{
-                        edu.graduationDate || edu.year || "Year"
+                        edu.graduationDate || edu.year || 'Year'
                       }}</small>
                     </div>
                   </div>
@@ -372,25 +490,26 @@
                   :key="index"
                   class="additional-exp-item mb-3"
                 >
-                  <div
-                    class="exp-header flex justify-between items-start mb-1"
-                  >
+                  <div class="exp-header flex justify-between items-start mb-1">
                     <div class="title-info">
                       <h3 class="exp-title h6 font-bold mb-1">
-                        {{ exp.title || "Title" }}
+                        {{ exp.title || 'Title' }}
                       </h3>
                       <div class="organization-name text-primary-600">
-                        {{ exp.organization || "Organization" }}
+                        {{ exp.organization || 'Organization' }}
                       </div>
                     </div>
                     <div class="date-range text-secondary text-end">
-                      <small class="font-medium">{{ exp.startDate }} - {{ exp.endDate }}</small>
+                      <small class="font-medium"
+                        >{{ exp.startDate }} - {{ exp.endDate }}</small
+                      >
                     </div>
                   </div>
                   <div v-if="exp.type" class="exp-type mb-2">
-                    <span class="badge badge-compact bg-glass-bg dark:bg-glass-bg-hover text-glass-primary">{{
-                      exp.type
-                    }}</span>
+                    <span
+                      class="badge badge-compact bg-glass-bg dark:bg-glass-bg-hover text-glass-primary"
+                      >{{ exp.type }}</span
+                    >
                   </div>
                   <div v-if="exp.description" class="exp-description">
                     <p class="mb-0 small">{{ exp.description }}</p>
@@ -402,7 +521,8 @@
             <!-- Skills -->
             <div
               v-if="
-                resume?.skills?.technical?.length || resume?.skills?.soft?.length
+                resume?.skills?.technical?.length ||
+                resume?.skills?.soft?.length
               "
               class="resume-section skills-section mb-4"
             >
@@ -425,7 +545,8 @@
                       v-for="skill in resume?.skills.technical"
                       :key="skill"
                       class="badge badge-compact bg-primary-500-subtle text-primary-600"
-                    >{{ skill }}</span>
+                      >{{ skill }}</span
+                    >
                   </div>
                 </div>
                 <div
@@ -442,7 +563,8 @@
                       v-for="skill in resume?.skills.soft"
                       :key="skill"
                       class="badge badge-compact bg-secondary-500-subtle text-secondary"
-                    >{{ skill }}</span>
+                      >{{ skill }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -454,7 +576,10 @@
               class="resume-section portfolio-section mb-4"
             >
               <h2 class="section-title">
-                <AppIcon name="FolderIcon-multiple-outline-image" class="mr-2" />
+                <AppIcon
+                  name="FolderIcon-multiple-outline-image"
+                  class="mr-2"
+                />
                 Portfolio
               </h2>
               <div class="section-content">
@@ -468,12 +593,13 @@
                   >
                     <div class="project-info">
                       <h3 class="project-title h6 font-bold mb-1">
-                        {{ item.title || "Project Title" }}
+                        {{ item.title || 'Project Title' }}
                       </h3>
                       <span
                         v-if="item.type"
                         class="badge badge-compact bg-blue-500-subtle text-blue-600"
-                      >{{ item.type }}</span>
+                        >{{ item.type }}</span
+                      >
                     </div>
                     <div v-if="item.url" class="project-link">
                       <UnifiedButton
@@ -504,136 +630,170 @@
       <div class="qd-dialog section-card section-card">
         <header class="qd-header flex justify-between items-center mb-3">
           <h6 class="mb-0">Impact Enhancement Preview</h6>
-          <button class="btn btn-sm btn-outline-secondary" @click="closeQuantifyDiff">Close</button>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            @click="closeQuantifyDiff"
+          >
+            Close
+          </button>
         </header>
         <div class="qd-body">
           <div class="qd-columns">
             <div class="qd-flex-1">
               <h6 class="small text-secondary mb-2">Original</h6>
               <ul class="qd-list">
-                <li v-for="(line,i) in quantifyOriginal" :key="'o'+i">{{ line }}</li>
+                <li v-for="(line, i) in quantifyOriginal" :key="'o' + i">
+                  {{ line }}
+                </li>
               </ul>
             </div>
             <div class="qd-flex-1">
               <h6 class="small text-secondary mb-2">Enhanced</h6>
               <ul class="qd-list enhanced">
-                <li v-for="(line,i) in quantifyEnhanced" :key="'n'+i">{{ line }}</li>
+                <li v-for="(line, i) in quantifyEnhanced" :key="'n' + i">
+                  {{ line }}
+                </li>
               </ul>
             </div>
           </div>
         </div>
         <footer class="qd-footer flex justify-end gap-glass-sm mt-3">
-          <button class="btn btn-outline-secondary btn-sm" @click="closeQuantifyDiff">Dismiss</button>
-          <button class="btn btn-primary btn-sm" @click="$emit('apply-quantified', quantifyEnhanced)">Apply Changes</button>
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            @click="closeQuantifyDiff"
+          >
+            Dismiss
+          </button>
+          <button
+            class="btn btn-primary btn-sm"
+            @click="$emit('apply-quantified', quantifyEnhanced)"
+          >
+            Apply Changes
+          </button>
         </footer>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { AcademicCapIcon, BriefcaseIcon, ChartBarSquareIcon, CommandLineIcon, DocumentIcon, EnvelopeIcon, EyeIcon, GlobeAltIcon, LightBulbIcon, PhoneIcon } from '@heroicons/vue/24/outline'
+import {
+  AcademicCapIcon,
+  BriefcaseIcon,
+  ChartBarSquareIcon,
+  CommandLineIcon,
+  DocumentIcon,
+  EnvelopeIcon,
+  EyeIcon,
+  GlobeAltIcon,
+  LightBulbIcon,
+  PhoneIcon,
+} from '@heroicons/vue/24/outline'
 import { MapPinIcon, StarIcon } from '@heroicons/vue/24/solid'
 
 import { computed, watch, nextTick, ref } from 'vue'
 import { UserRepository } from '@/modules/db/repositories/user'
 import AppIcon from '@/components/ui/AppIcon.vue'
-import { ContentLoader } from "vue-content-loader";
+import { ContentLoader } from 'vue-content-loader'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 // Removed jsPDF (CSP concerns); using pdf-lib helper
 import { pdfFromTallImage } from '@/utils/pdfExport'
-import html2canvas from "html2canvas"
+import html2canvas from 'html2canvas'
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 
 export default {
-  name: "PreviewPanel",
+  name: 'PreviewPanel',
   components: { ContentLoader, AppIcon, UnifiedButton },
   props: {
-  // Made optional with safe default so template access like resume.personalInfo won't throw
-  resume: { type: Object, default: () => ({}) },
-    selectedTemplate: { type: String, default: "Professional" },
-    customTemplate: { type: String, default: "" },
+    // Made optional with safe default so template access like resume.personalInfo won't throw
+    resume: { type: Object, default: () => ({}) },
+    selectedTemplate: { type: String, default: 'Professional' },
+    customTemplate: { type: String, default: '' },
     canUseAI: { type: Boolean, default: false },
     loading: { type: Object, default: () => ({}) },
   },
   emits: [
-    "update:selectedTemplate",
-    "generate-smart-template",
-    "content-updated",
-    "template-changed",
-  "ai-optimize-summary",
-  "ai-quantify-experience",
-  "ai-suggest-skills",
-  "apply-quantified",
+    'update:selectedTemplate',
+    'generate-smart-template',
+    'content-updated',
+    'template-changed',
+    'ai-optimize-summary',
+    'ai-quantify-experience',
+    'ai-suggest-skills',
+    'apply-quantified',
   ],
   setup(props, { emit }) {
     let theme
-    try { theme = useUnifiedTheme() } catch { theme = null }
+    try {
+      theme = useUnifiedTheme()
+    } catch {
+      theme = null
+    }
     const hasContent = computed(() => {
-      const info = props.resume?.personalInfo;
-      return !!(info?.firstName || info?.lastName || info?.email);
-    });
+      const info = props.resume?.personalInfo
+      return !!(info?.firstName || info?.lastName || info?.email)
+    })
 
     const getFullName = computed(() => {
-      const info = props.resume?.personalInfo;
+      const info = props.resume?.personalInfo
       if (!info) {
-        return "Your Name";
+        return 'Your Name'
       }
-      const firstName = info.firstName || "";
-      const lastName = info.lastName || "";
-      return `${firstName} ${lastName}`.trim() || "Your Name";
-    });
+      const firstName = info.firstName || ''
+      const lastName = info.lastName || ''
+      return `${firstName} ${lastName}`.trim() || 'Your Name'
+    })
 
     const getTemplateClass = computed(() => {
-      const baseClasses = "resume-template";
+      const baseClasses = 'resume-template'
       switch (props.selectedTemplate?.toLowerCase()) {
-        case "creative":
-          return `${baseClasses} template-creative`;
-        case "technical":
-          return `${baseClasses} template-technical`;
-        case "modern":
-          return `${baseClasses} template-modern`;
-        case "minimal":
-          return `${baseClasses} template-minimal`;
-        case "ai-smart":
-        case "ai smart":
-          return `${baseClasses} template-ai-smart`;
+        case 'creative':
+          return `${baseClasses} template-creative`
+        case 'technical':
+          return `${baseClasses} template-technical`
+        case 'modern':
+          return `${baseClasses} template-modern`
+        case 'minimal':
+          return `${baseClasses} template-minimal`
+        case 'ai-smart':
+        case 'ai smart':
+          return `${baseClasses} template-ai-smart`
         default:
-          return `${baseClasses} template-professional`;
+          return `${baseClasses} template-professional`
       }
-    });
+    })
 
     const completionPercentage = computed(() => {
-      const resume = props.resume;
+      const resume = props.resume
       if (!resume) {
-        return 0;
+        return 0
       }
 
-      let completed = 0;
-      const total = 8; // Total sections to check
+      let completed = 0
+      const total = 8 // Total sections to check
 
       // Personal Info (40% weight - most important)
-      const info = resume.personalInfo;
+      const info = resume.personalInfo
       if (info?.firstName && info?.lastName) {
-        completed += 1;
+        completed += 1
       }
       if (info?.email) {
-        completed += 1;
+        completed += 1
       }
       if (info?.phone) {
-        completed += 0.5;
+        completed += 0.5
       }
       if (info?.summary) {
-        completed += 1;
+        completed += 1
       }
 
       // Experience (20% weight)
       if (resume.experience?.length > 0) {
-        completed += 1.5;
+        completed += 1.5
       }
 
       // Education (15% weight)
       if (resume.education?.length > 0) {
-        completed += 1;
+        completed += 1
       }
 
       // Skills (15% weight)
@@ -641,71 +801,101 @@ export default {
         resume.skills?.technical?.length > 0 ||
         resume.skills?.soft?.length > 0
       ) {
-        completed += 1;
+        completed += 1
       }
 
       // Portfolio/Additional (10% weight)
       if (resume.portfolio?.length > 0) {
-        completed += 0.5;
+        completed += 0.5
       }
       if (resume.additionalExperience?.length > 0) {
-        completed += 0.5;
+        completed += 0.5
       }
 
-      return Math.min(Math.round((completed / total) * 100), 100);
-    });
+      return Math.min(Math.round((completed / total) * 100), 100)
+    })
 
     const templateStyles = computed(() => {
       // Unify colors to design tokens; templates may still style layout via classes
       return {
-        "--primary-color": "var(--color-primary)",
-        "--accent-color": "var(--color-primary-alt)",
-        "--section-color": "var(--color-primary)",
-        color: "var(--text-primary-600)",
-      };
-    });
+        '--primary-color': 'var(--color-primary)',
+        '--accent-color': 'var(--color-primary-alt)',
+        '--section-color': 'var(--color-primary)',
+        color: 'var(--text-primary-600)',
+      }
+    })
 
     // Cover Page Enhancements
     const showCoverPage = computed({
-      get: () => props.resume?.__showCoverPage !== false && internalShowCover.value,
-      set: (v) => { internalShowCover.value = v }
+      get: () =>
+        props.resume?.__showCoverPage !== false && internalShowCover.value,
+      set: v => {
+        internalShowCover.value = v
+      },
     })
     const internalShowCover = ref(true)
     // Load persisted cover toggle
     ;(async () => {
       try {
-        const settings = await UserRepository.getSettings() || {}
-        if (settings && settings.resume && settings.resume.showCoverPage === false) internalShowCover.value = false
+        const settings = (await UserRepository.getSettings()) || {}
+        if (
+          settings &&
+          settings.resume &&
+          settings.resume.showCoverPage === false
+        )
+          internalShowCover.value = false
       } catch {}
     })()
-    const primaryTitle = computed(() => props.resume?.personalInfo?.title || props.resume?.personalInfo?.role || '')
+    const primaryTitle = computed(
+      () =>
+        props.resume?.personalInfo?.title ||
+        props.resume?.personalInfo?.role ||
+        ''
+    )
     const firstSummarySentence = computed(() => {
       const s = props.resume?.personalInfo?.summary || ''
       const match = s.match(/[^.!?]*[.!?]/)
       return match ? match[0].trim() : s.trim()
     })
     const coverHighlights = computed(() => {
-      const skills = Array.isArray(props.resume?.skills?.technical) ? props.resume.skills.technical.slice(0,6) : []
-      const companies = Array.isArray(props.resume?.experience) ? props.resume.experience.map((e)=> e.company).filter(Boolean).slice(0,3) : []
+      const skills = Array.isArray(props.resume?.skills?.technical)
+        ? props.resume.skills.technical.slice(0, 6)
+        : []
+      const companies = Array.isArray(props.resume?.experience)
+        ? props.resume.experience
+            .map(e => e.company)
+            .filter(Boolean)
+            .slice(0, 3)
+        : []
       const tags = [...skills, ...companies]
-      return Array.from(new Set(tags)).slice(0,8)
+      return Array.from(new Set(tags)).slice(0, 8)
     })
 
     // AI action emitters (parent handles actual AI work)
-    function emitOptimizeSummary() { emit('ai-optimize-summary') }
-    function emitQuantifyExperience() { emit('ai-quantify-experience') }
-    function emitSuggestSkills() { emit('ai-suggest-skills') }
+    function emitOptimizeSummary() {
+      emit('ai-optimize-summary')
+    }
+    function emitQuantifyExperience() {
+      emit('ai-quantify-experience')
+    }
+    function emitSuggestSkills() {
+      emit('ai-suggest-skills')
+    }
 
     // Persist cover toggle changes (debounced)
     let coverPersistTimer = null
-    watch(showCoverPage, (val) => {
+    watch(showCoverPage, val => {
       if (coverPersistTimer) clearTimeout(coverPersistTimer)
       coverPersistTimer = setTimeout(async () => {
         try {
-          const settings = await UserRepository.getSettings() || {}
-          const resumeSettings = Object.assign({}, (settings.resume || {}), { showCoverPage: val })
-          await UserRepository.updateSettings(Object.assign({}, settings, { resume: resumeSettings }))
-  } catch {}
+          const settings = (await UserRepository.getSettings()) || {}
+          const resumeSettings = Object.assign({}, settings.resume || {}, {
+            showCoverPage: val,
+          })
+          await UserRepository.updateSettings(
+            Object.assign({}, settings, { resume: resumeSettings })
+          )
+        } catch {}
       }, 400)
     })
 
@@ -718,17 +908,18 @@ export default {
       quantifyEnhanced.value = enhanced
       showQuantifyDiff.value = true
     }
-    function closeQuantifyDiff() { showQuantifyDiff.value = false }
+    function closeQuantifyDiff() {
+      showQuantifyDiff.value = false
+    }
 
     const previewWindow = () => {
-      const win = window.open("", "_blank");
-      const content =
-        document.getElementById("resume-preview")?.innerHTML || "";
+      const win = window.open('', '_blank')
+      const content = document.getElementById('resume-preview')?.innerHTML || ''
       win.document.write(
-        `<!DOCTYPE html><html><head><title>Resume Preview</title><style>body{font-family:var(--font-primary,'Electrolize','Inter',sans-serif);color:var(--text-primary-600);background:var(--bg-primary-500);max-width:800px;margin:40px auto;padding:0 20px;}@media print{body{margin:0;padding:20px;}}</style></head><body>${content}</body></html>`,
-      );
-      win.document.close();
-    };
+        `<!DOCTYPE html><html><head><title>Resume Preview</title><style>body{font-family:var(--font-primary,'Electrolize','Inter',sans-serif);color:var(--text-primary-600);background:var(--bg-primary-500);max-width:800px;margin:40px auto;padding:0 20px;}@media print{body{margin:0;padding:20px;}}</style></head><body>${content}</body></html>`
+      )
+      win.document.close()
+    }
 
     const exportPDF = async () => {
       if (!hasContent.value) return
@@ -738,7 +929,9 @@ export default {
       element.classList.add('exporting')
       try {
         const css = window.getComputedStyle(document.documentElement)
-        const bg = (css.getPropertyValue('--bg-primary-500') || '#ffffff').trim()
+        const bg = (
+          css.getPropertyValue('--bg-primary-500') || '#ffffff'
+        ).trim()
         const canvas = await html2canvas(element, {
           scale: 2,
           useCORS: true,
@@ -747,7 +940,7 @@ export default {
           height: element.offsetHeight,
           // Avoid scroll offset artifacts
           scrollX: 0,
-          scrollY: -window.scrollY
+          scrollY: -window.scrollY,
         })
         const imgData = canvas.toDataURL('image/png')
         const pdfBlob = await pdfFromTallImage(imgData)
@@ -762,34 +955,33 @@ export default {
       } finally {
         element.classList.remove('exporting')
       }
-    };
+    }
 
     const exportHTML = () => {
-      const content =
-        document.getElementById("resume-preview")?.innerHTML || "";
+      const content = document.getElementById('resume-preview')?.innerHTML || ''
       const blob = new Blob(
         [
-          `<!DOCTYPE html><html><head><meta charset='utf-8'><title>${props.resume?.personalInfo?.name || "Resume"}</title><style>:root{--bg-primary-500:var(--surface-base);--text-primary-600:var(--text-primary-600);--text-secondary:var(--text-secondary);--color-primary:var(--color-primary-500);--font-primary:var(--font-family-primary)}@media(prefers-color-scheme:dark){:root{--bg-primary-500:var(--surface-base);--text-primary-600:var(--text-primary-600);--text-secondary:var(--text-secondary)}}body{font-family:var(--font-primary);color:var(--text-primary-600);background:var(--bg-primary-500);max-width:800px;margin:0 auto;padding:40px 20px}</style></head><body>${content}</body></html>`,
+          `<!DOCTYPE html><html><head><meta charset='utf-8'><title>${props.resume?.personalInfo?.name || 'Resume'}</title><style>:root{--bg-primary-500:var(--surface-base);--text-primary-600:var(--text-primary-600);--text-secondary:var(--text-secondary);--color-primary:var(--color-primary-500);--font-primary:var(--font-family-primary)}@media(prefers-color-scheme:dark){:root{--bg-primary-500:var(--surface-base);--text-primary-600:var(--text-primary-600);--text-secondary:var(--text-secondary)}}body{font-family:var(--font-primary);color:var(--text-primary-600);background:var(--bg-primary-500);max-width:800px;margin:0 auto;padding:40px 20px}</style></head><body>${content}</body></html>`,
         ],
-        { type: "text/html" },
-      );
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-  a.download = `${props.resume?.personalInfo?.name || getFullName.value || "Resume"}.html`;
-      a.click();
-      URL.revokeObjectURL(url);
-    };
+        { type: 'text/html' }
+      )
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${props.resume?.personalInfo?.name || getFullName.value || 'Resume'}.html`
+      a.click()
+      URL.revokeObjectURL(url)
+    }
 
     const copyHTML = async () => {
       try {
         const content =
-          document.getElementById("resume-preview")?.innerHTML || "";
-        await navigator.clipboard.writeText(content);
+          document.getElementById('resume-preview')?.innerHTML || ''
+        await navigator.clipboard.writeText(content)
       } catch (_e) {
-        console.warn("Copy failed", e);
+        console.warn('Copy failed', e)
       }
-    };
+    }
 
     // Watch for resume changes to trigger live updates
     watch(
@@ -797,22 +989,22 @@ export default {
       () => {
         nextTick(() => {
           // Emit event to notify parent of content change
-          emit("content-updated", {
+          emit('content-updated', {
             hasContent: hasContent.value,
             completionPercentage: completionPercentage.value,
-          });
-        });
+          })
+        })
       },
-      { deep: true, immediate: true },
-    );
+      { deep: true, immediate: true }
+    )
 
     // Watch for template changes
     watch(
       () => props.selectedTemplate,
-      (newTemplate) => {
-        emit("template-changed", newTemplate);
-      },
-    );
+      newTemplate => {
+        emit('template-changed', newTemplate)
+      }
+    )
 
     return {
       hasContent,
@@ -825,49 +1017,91 @@ export default {
       exportHTML,
       copyHTML,
       theme,
-  showCoverPage,
-  coverHighlights,
-  primaryTitle,
-  firstSummarySentence,
-  emitOptimizeSummary,
-  emitQuantifyExperience,
-  emitSuggestSkills,
-  showQuantifyDiff,
-  quantifyOriginal,
-  quantifyEnhanced,
-  openQuantifyDiff,
-  closeQuantifyDiff,
-    };
+      showCoverPage,
+      coverHighlights,
+      primaryTitle,
+      firstSummarySentence,
+      emitOptimizeSummary,
+      emitQuantifyExperience,
+      emitSuggestSkills,
+      showQuantifyDiff,
+      quantifyOriginal,
+      quantifyEnhanced,
+      openQuantifyDiff,
+      closeQuantifyDiff,
+    }
   },
-};
+}
 </script>
 
 <style scoped>
 /* Cover Page */
-.cover-page { position: relative; text-align: center; padding: 2rem 1rem 1rem; background: var(--glass-surface-light); border:1px solid var(--glass-border); border-radius: var(--border-radius-lg); }
-[data-theme="dark"] .cover-page { background: var(--glass-surface-dark); }
-.cover-name { font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 800; letter-spacing: .5px; background: linear-gradient(90deg,var(--section-color),color-mix(in srgb,var(--section-color) 60%, var(--text-primary-600))); -webkit-background-clip:text; background-clip:text; color: transparent; }
-.cover-summary { max-width: var(--page-content-max-width); margin: 0 auto; line-height: 1.4; }
-.cover-highlights .badge { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border:1px solid var(--glass-border); }
-.cover-divider { margin: 2rem auto 0; max-width: calc(var(--page-narrow-width) * 0.33); border-t:2px solid var(--section-color); opacity: .4; }
-.ai-enhance-group .btn { --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .6rem; --bs-btn-font-size: .7rem; }
+.cover-page {
+  position: relative;
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  background: var(--glass-surface-light);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-lg);
+}
+[data-theme='dark'] .cover-page {
+  background: var(--glass-surface-dark);
+}
+.cover-name {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: linear-gradient(
+    90deg,
+    var(--section-color),
+    color-mix(in srgb, var(--section-color) 60%, var(--text-primary-600))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.cover-summary {
+  max-width: var(--page-content-max-width);
+  margin: 0 auto;
+  line-height: 1.4;
+}
+.cover-highlights .badge {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--glass-border);
+}
+.cover-divider {
+  margin: 2rem auto 0;
+  max-width: calc(var(--page-narrow-width) * 0.33);
+  border-t: 2px solid var(--section-color);
+  opacity: 0.4;
+}
+.ai-enhance-group .btn {
+  --bs-btn-padding-y: 0.25rem;
+  --bs-btn-padding-x: 0.6rem;
+  --bs-btn-font-size: 0.7rem;
+}
 
 /* Theme Integration */
 .preview-panel-wrapper {
-  transition: background-color var(--transition-normal), color var(--transition-normal);
+  transition:
+    background-color var(--transition-normal),
+    color var(--transition-normal);
 }
 
 .preview-controls {
-  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+  transition:
+    background-color var(--transition-normal),
+    border-color var(--transition-normal);
 }
 
 /* Dark theme overrides */
-[data-theme="dark"] .preview-controls {
+[data-theme='dark'] .preview-controls {
   background: var(--color-surface-variant);
   border-color: var(--color-gray-700);
 }
 
-[data-theme="dark"] .resume-content {
+[data-theme='dark'] .resume-content {
   background: var(--color-surface);
   color: var(--color-on-surface);
 }
@@ -947,13 +1181,21 @@ export default {
 }
 
 /* Template Variants */
-.template-professional { --section-color: var(--color-primary); }
+.template-professional {
+  --section-color: var(--color-primary);
+}
 
-.template-creative { --section-color: var(--color-primary); }
+.template-creative {
+  --section-color: var(--color-primary);
+}
 
-.template-technical { --section-color: var(--color-primary); }
+.template-technical {
+  --section-color: var(--color-primary);
+}
 
-.template-modern { --section-color: var(--color-primary); }
+.template-modern {
+  --section-color: var(--color-primary);
+}
 
 .template-minimal {
   --section-color: var(--color-primary);
@@ -962,7 +1204,7 @@ export default {
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .template-minimal,
+[data-theme='dark'] .template-minimal,
 :root:not([data-theme]) .template-minimal {
   --section-color: var(--color-primary);
   background: var(--bg-primary-500);
@@ -970,30 +1212,43 @@ export default {
   box-shadow: var(--glass-shadow-dark);
 }
 
-.template-ai-smart { --section-color: var(--color-primary); }
-
-/* Dark Theme Template Variants */
-[data-theme="dark"] .template-professional,
-:root:not([data-theme]) .template-professional { --section-color: var(--color-primary); }
-
-[data-theme="dark"] .template-creative,
-:root:not([data-theme]) .template-creative {
-  --section-color: var(--color-accent-500);
-  background: linear-gradient(135deg, var(--surface-strong) 0%, color-mix(in srgb, var(--color-accent-500) 15%, var(--surface-strong)) 100%);
+.template-ai-smart {
+  --section-color: var(--color-primary);
 }
 
-[data-theme="dark"] .template-technical,
+/* Dark Theme Template Variants */
+[data-theme='dark'] .template-professional,
+:root:not([data-theme]) .template-professional {
+  --section-color: var(--color-primary);
+}
+
+[data-theme='dark'] .template-creative,
+:root:not([data-theme]) .template-creative {
+  --section-color: var(--color-accent-500);
+  background: linear-gradient(
+    135deg,
+    var(--surface-strong) 0%,
+    color-mix(in srgb, var(--color-accent-500) 15%, var(--surface-strong)) 100%
+  );
+}
+
+[data-theme='dark'] .template-technical,
 :root:not([data-theme]) .template-technical {
   --section-color: var(--color-info-500);
 }
 
-[data-theme="dark"] .template-modern,
+[data-theme='dark'] .template-modern,
 :root:not([data-theme]) .template-modern {
   --section-color: var(--color-secondary-500);
-  background: linear-gradient(135deg, var(--surface-strong) 0%, color-mix(in srgb, var(--color-secondary-500) 15%, var(--surface-strong)) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--surface-strong) 0%,
+    color-mix(in srgb, var(--color-secondary-500) 15%, var(--surface-strong))
+      100%
+  );
 }
 
-[data-theme="dark"] .template-minimal,
+[data-theme='dark'] .template-minimal,
 :root:not([data-theme]) .template-minimal {
   --section-color: var(--color-info-400);
   background: var(--surface-base);
@@ -1001,11 +1256,16 @@ export default {
   box-shadow: var(--shadow-sm);
 }
 
-[data-theme="dark"] .template-ai-smart,
+[data-theme='dark'] .template-ai-smart,
 :root:not([data-theme]) .template-ai-smart {
   --section-color: var(--color-primary-400);
-  background: linear-gradient(135deg, var(--surface-container) 0%, var(--surface-strong) 100%);
-  border: 2px solid color-mix(in srgb, var(--color-primary-500) 15%, transparent);
+  background: linear-gradient(
+    135deg,
+    var(--surface-container) 0%,
+    var(--surface-strong) 100%
+  );
+  border: 2px solid
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent);
 }
 
 /* Resume Sections */
@@ -1017,7 +1277,7 @@ export default {
   border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
 }
 
-[data-theme="dark"] .resume-header,
+[data-theme='dark'] .resume-header,
 :root:not([data-theme]) .resume-header {
   background: var(--surface-glass);
   border-b-color: var(--section-color, var(--color-primary-400));
@@ -1032,7 +1292,11 @@ export default {
 
 /* Shimmer accent similar to fairy chat */
 .text-gradient {
-  background: linear-gradient(90deg, var(--text-primary-600), color-mix(in srgb, var(--color-primary-500) 40%, var(--text-primary-600)));
+  background: linear-gradient(
+    90deg,
+    var(--text-primary-600),
+    color-mix(in srgb, var(--color-primary-500) 40%, var(--text-primary-600))
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1040,8 +1304,17 @@ export default {
 }
 
 @keyframes shimmer {
-  0%, 100% { opacity: 1; filter: drop-shadow(0 0 0 transparent); }
-  50% { opacity: 0.9; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary-500) 35%, transparent)); }
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    opacity: 0.9;
+    filter: drop-shadow(
+      0 0 6px color-mix(in srgb, var(--color-primary-500) 35%, transparent)
+    );
+  }
 }
 
 .contact-info {
@@ -1059,14 +1332,14 @@ export default {
   color: var(--section-color, var(--color-primary-500));
 }
 
-[data-theme="dark"] .contact-item,
-[data-theme="dark"] .contact-info a,
+[data-theme='dark'] .contact-item,
+[data-theme='dark'] .contact-info a,
 :root:not([data-theme]) .contact-item,
 :root:not([data-theme]) .contact-info a {
   color: var(--text-secondary);
 }
 
-[data-theme="dark"] .contact-info a:hover,
+[data-theme='dark'] .contact-info a:hover,
 :root:not([data-theme]) .contact-info a:hover {
   color: var(--section-color, var(--color-primary-400));
 }
@@ -1082,7 +1355,7 @@ export default {
   align-items: center;
 }
 
-[data-theme="dark"] .section-title,
+[data-theme='dark'] .section-title,
 :root:not([data-theme]) .section-title {
   border-b-color: var(--section-color, var(--color-primary-400));
 }
@@ -1101,9 +1374,9 @@ export default {
   position: relative;
 }
 
-[data-theme="dark"] .experience-item,
-[data-theme="dark"] .education-item,
-[data-theme="dark"] .additional-exp-item,
+[data-theme='dark'] .experience-item,
+[data-theme='dark'] .education-item,
+[data-theme='dark'] .additional-exp-item,
 :root:not([data-theme]) .experience-item,
 :root:not([data-theme]) .education-item,
 :root:not([data-theme]) .additional-exp-item {
@@ -1112,7 +1385,16 @@ export default {
 
 .experience-item::before,
 .education-item::before,
-.additional-exp-item::before { content:""; position:absolute; left:-6px; top:0; width:8px; height:8px; background: var(--section-color, var(--color-primary-500)); border-radius:50%; }
+.additional-exp-item::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--section-color, var(--color-primary-500));
+  border-radius: 50%;
+}
 
 .position-title,
 .degree-title,
@@ -1121,9 +1403,9 @@ export default {
   margin-bottom: var(--spacing-1);
 }
 
-[data-theme="dark"] .position-title,
-[data-theme="dark"] .degree-title,
-[data-theme="dark"] .exp-title,
+[data-theme='dark'] .position-title,
+[data-theme='dark'] .degree-title,
+[data-theme='dark'] .exp-title,
 :root:not([data-theme]) .position-title,
 :root:not([data-theme]) .degree-title,
 :root:not([data-theme]) .exp-title {
@@ -1158,7 +1440,7 @@ export default {
   background: var(--bg-primary-500);
 }
 
-[data-theme="dark"] .portfolio-item,
+[data-theme='dark'] .portfolio-item,
 :root:not([data-theme]) .portfolio-item {
   background: var(--dark-bg-secondary-500);
   border-color: var(--glass-border-dark);
@@ -1169,7 +1451,7 @@ export default {
   box-shadow: var(--shadow-sm);
 }
 
-[data-theme="dark"] .portfolio-item:hover,
+[data-theme='dark'] .portfolio-item:hover,
 :root:not([data-theme]) .portfolio-item:hover {
   box-shadow: 0 2px 8px rgba(144, 180, 255, 0.15);
 }
@@ -1224,23 +1506,25 @@ export default {
 }
 
 /* Dark mode support using data-theme */
-[data-theme="dark"] .preview-content,
+[data-theme='dark'] .preview-content,
 :root:not([data-theme]) .preview-content {
   background: var(--bg-primary-500);
   color: var(--text-primary-600);
   border: 1px solid var(--glass-border-dark);
 }
 
-[data-theme="dark"] .contact-item,
-:root:not([data-theme]) .contact-item { color: var(--text-secondary); }
+[data-theme='dark'] .contact-item,
+:root:not([data-theme]) .contact-item {
+  color: var(--text-secondary);
+}
 
-[data-theme="dark"] .portfolio-item,
+[data-theme='dark'] .portfolio-item,
 :root:not([data-theme]) .portfolio-item {
   background: var(--surface-container);
   border-color: var(--border-strong);
 }
 
-[data-theme="dark"] .portfolio-item:hover,
+[data-theme='dark'] .portfolio-item:hover,
 :root:not([data-theme]) .portfolio-item:hover {
   background: var(--surface-elevated);
 }

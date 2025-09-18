@@ -92,4 +92,3 @@ Conventions
 - Place standalone developer scripts in `scripts/` under an appropriate domain folder.
 - Place one‑off demo pages and manual tests under `docs/`.
 - Avoid adding new files to the project root unless they are top‑level configs or docs.
-

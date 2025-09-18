@@ -3,7 +3,11 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { JobProviderRegistry, SimpleRateLimiter, BaseJobProvider } from '../JobProviderInterface'
+import {
+  JobProviderRegistry,
+  SimpleRateLimiter,
+  BaseJobProvider,
+} from '../JobProviderInterface'
 import type { JobFilters } from '@/shared/types/jobs'
 
 // Mock axios
@@ -13,17 +17,17 @@ vi.mock('axios', () => ({
       get: vi.fn(),
       interceptors: {
         request: { use: vi.fn() },
-        response: { use: vi.fn() }
-      }
-    }))
-  }
+        response: { use: vi.fn() },
+      },
+    })),
+  },
 }))
 
 // Mock XMLParser
 vi.mock('fast-xml-parser', () => ({
   XMLParser: vi.fn().mockImplementation(() => ({
-    parse: vi.fn()
-  }))
+    parse: vi.fn(),
+  })),
 }))
 
 describe('SimpleRateLimiter', () => {
@@ -74,9 +78,9 @@ describe('JobProviderRegistry', () => {
           experienceLevel: 'mid',
           type: 'full-time',
           postedDate: new Date().toISOString(),
-          source: 'TestProvider'
-        }
-      ])
+          source: 'TestProvider',
+        },
+      ]),
     }
   })
 
@@ -87,7 +91,10 @@ describe('JobProviderRegistry', () => {
 
   it('should fetch from provider successfully', async () => {
     registry.register(mockProvider)
-    const jobs = await registry.fetchFromProvider('TestProvider', {} as JobFilters)
+    const jobs = await registry.fetchFromProvider(
+      'TestProvider',
+      {} as JobFilters
+    )
     expect(jobs).toHaveLength(1)
     expect(jobs[0].title).toBe('Test Job')
   })
@@ -95,7 +102,10 @@ describe('JobProviderRegistry', () => {
   it('should return empty array for disabled provider', async () => {
     mockProvider.enabled = false
     registry.register(mockProvider)
-    const jobs = await registry.fetchFromProvider('TestProvider', {} as JobFilters)
+    const jobs = await registry.fetchFromProvider(
+      'TestProvider',
+      {} as JobFilters
+    )
     expect(jobs).toHaveLength(0)
   })
 
@@ -142,7 +152,8 @@ describe('BaseJobProvider', () => {
   })
 
   it('should extract requirements from description', () => {
-    const desc = 'Requirements: 3 years experience, React, Node.js. Must have...'
+    const desc =
+      'Requirements: 3 years experience, React, Node.js. Must have...'
     const reqs = provider.parseRequirements(desc)
     expect(reqs).toContain('3 years experience')
     expect(reqs).toContain('React')

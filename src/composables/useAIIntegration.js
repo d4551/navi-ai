@@ -28,7 +28,7 @@ export function useAIIntegration(ctx = {}) {
     imageAnalysis: false,
     voiceInput: false,
     realtimeChat: false,
-    documentAnalysis: false
+    documentAnalysis: false,
   })
 
   // AI Features State
@@ -39,7 +39,7 @@ export function useAIIntegration(ctx = {}) {
     skillsMapper: { enabled: false, active: false },
     jobSearch: { enabled: false, active: false },
     interviewPrep: { enabled: false, active: false },
-    realtimeChat: { enabled: false, active: false }
+    realtimeChat: { enabled: false, active: false },
   })
 
   // Computed Properties
@@ -52,7 +52,7 @@ export function useAIIntegration(ctx = {}) {
     return {
       isAIPowered: meta.aiPowered || false,
       isLiveFeature: meta.isLive || false,
-      hasAICapabilities: meta.aiPowered && hasAIKey.value
+      hasAICapabilities: meta.aiPowered && hasAIKey.value,
     }
   })
 
@@ -75,7 +75,7 @@ export function useAIIntegration(ctx = {}) {
   // Methods
   async function initializeAI(force = false) {
     if (aiInitializing.value && !force) return false
-    
+
     if (!hasAIKey.value) {
       logger.warn('Cannot initialize AI: No API key configured')
       aiError.value = 'API key required'
@@ -87,7 +87,7 @@ export function useAIIntegration(ctx = {}) {
       aiError.value = null
 
       logger.info('Initializing AI services...')
-      
+
       // Initialize AI service with user settings
       const geminiKey = store.settings.geminiApiKey
       const openaiKey = store.settings.openaiApiKey
@@ -96,7 +96,9 @@ export function useAIIntegration(ctx = {}) {
       const model = store.settings.selectedModel || 'gemini-2.5-flash'
 
       if (!apiKey) {
-        throw new Error('No valid API key found. Please configure your API key in settings.')
+        throw new Error(
+          'No valid API key found. Please configure your API key in settings.'
+        )
       }
 
       const result = await aiService.initialize({
@@ -107,45 +109,51 @@ export function useAIIntegration(ctx = {}) {
         enableRealTime: store.settings.enableRealtimeFeatures || false,
         enableMultimodal: true,
         maxTokens: store.settings.maxTokens || 8192,
-        temperature: store.settings.temperature || 0.7
+        temperature: store.settings.temperature || 0.7,
       })
 
       if (result.success) {
         isAIInitialized.value = true
-        
+
         // Update capabilities based on model
         aiCapabilities.value = {
           textGeneration: true,
           imageAnalysis: result.model?.capabilities?.imageInput || true,
           voiceInput: result.model?.capabilities?.audioInput || false,
           realtimeChat: result.model?.capabilities?.realtimeChat || false,
-          documentAnalysis: true
+          documentAnalysis: true,
         }
 
         // Enable AI features
         updateAIFeatureAvailability()
-        
+
         logger.info('AI services initialized successfully', result)
-        
+
         // Emit custom event for other components to listen
-        window.dispatchEvent(new CustomEvent('ai-initialized', { 
-          detail: { capabilities: aiCapabilities.value, provider } 
-        }))
-        
+        window.dispatchEvent(
+          new CustomEvent('ai-initialized', {
+            detail: { capabilities: aiCapabilities.value, provider },
+          })
+        )
+
         return true
       } else {
-        throw new Error(result.message || result.error || 'AI initialization failed')
+        throw new Error(
+          result.message || result.error || 'AI initialization failed'
+        )
       }
     } catch (error) {
       aiError.value = error.message || 'Unknown initialization error'
       isAIInitialized.value = false
       logger.error('AI initialization failed:', error)
-      
+
       // Emit error event
-      window.dispatchEvent(new CustomEvent('ai-error', { 
-        detail: { error: aiError.value } 
-      }))
-      
+      window.dispatchEvent(
+        new CustomEvent('ai-error', {
+          detail: { error: aiError.value },
+        })
+      )
+
       if (toast) {
         toast.error(`AI services failed to initialize: ${aiError.value}`)
       }
@@ -159,39 +167,42 @@ export function useAIIntegration(ctx = {}) {
     const baseAvailability = isAIInitialized.value && hasAIKey.value
 
     aiFeatures.value = {
-      resumeBuilder: { 
+      resumeBuilder: {
         enabled: baseAvailability && aiCapabilities.value.textGeneration,
-        active: route?.name === 'DocumentBuilder'
+        active: route?.name === 'DocumentBuilder',
       },
-      coverLetterBuilder: { 
+      coverLetterBuilder: {
         enabled: baseAvailability && aiCapabilities.value.textGeneration,
-        active: route?.name === 'DocumentBuilder'
+        active: route?.name === 'DocumentBuilder',
       },
-      portfolio: { 
+      portfolio: {
         enabled: baseAvailability && aiCapabilities.value.textGeneration,
-        active: route?.name === 'Portfolio'
+        active: route?.name === 'Portfolio',
       },
       // Backward-compatibility alias for legacy name
       portfolioGenerator: {
         enabled: baseAvailability && aiCapabilities.value.textGeneration,
-        active: route?.name === 'Portfolio'
+        active: route?.name === 'Portfolio',
       },
-      skillsMapper: { 
+      skillsMapper: {
         enabled: baseAvailability && aiCapabilities.value.textGeneration,
-        active: route.name === 'SkillMapper'
+        active: route.name === 'SkillMapper',
       },
-      jobSearch: { 
+      jobSearch: {
         enabled: baseAvailability && aiCapabilities.value.textGeneration,
-        active: route.name === 'JobSearch'
+        active: route.name === 'JobSearch',
       },
-      interviewPrep: { 
-        enabled: baseAvailability && (aiCapabilities.value.textGeneration || aiCapabilities.value.voiceInput),
-        active: route.name === 'GamingInterview'
+      interviewPrep: {
+        enabled:
+          baseAvailability &&
+          (aiCapabilities.value.textGeneration ||
+            aiCapabilities.value.voiceInput),
+        active: route.name === 'GamingInterview',
       },
-      realtimeChat: { 
+      realtimeChat: {
         enabled: baseAvailability && aiCapabilities.value.realtimeChat,
-        active: route.name === 'RealTimeDemo'
-      }
+        active: route.name === 'RealTimeDemo',
+      },
     }
   }
 
@@ -200,13 +211,15 @@ export function useAIIntegration(ctx = {}) {
     if (actionType === 'analyzematch') actionType = 'analyze_job_match'
     if (actionType === 'salaryinsights') actionType = 'salary_insights'
     if (actionType === 'aioptimize') actionType = 'enhance_content'
-    
+
     // Validate AI is ready
     if (!isAIInitialized.value) {
       // Try to initialize first
       const initialized = await initializeAI()
       if (!initialized) {
-        toast?.warning('AI services not available. Please check your API key in settings.')
+        toast?.warning(
+          'AI services not available. Please check your API key in settings.'
+        )
         return null
       }
     }
@@ -219,72 +232,73 @@ export function useAIIntegration(ctx = {}) {
         case 'generate_resume_content':
           result = await aiService.generateResumeContent(context)
           break
-        
+
         case 'analyze_job_match':
           result = await aiService.analyzeJobMatch(context)
           break
-          
+
         case 'generate_cover_letter':
           result = await aiService.generateCoverLetter(context)
           break
-          
+
         case 'extract_skills':
           result = await aiService.extractSkills(context)
           break
-        
+
         case 'analyze_resume':
           result = await aiService.analyzeResumeQuick(context)
           break
-        
+
         case 'optimize_portfolio':
           result = await aiService.optimizePortfolio(context)
           break
-        
+
         case 'search_jobs':
           result = await aiService.searchJobs(context)
           break
-        
+
         case 'map_skills':
           result = await aiService.mapSkills(context)
           break
-          
+
         case 'conduct_interview':
         case 'mock_interview':
           result = await aiService.conductMockInterview(context)
           break
-          
+
         case 'realtime_chat':
           result = await aiService.realtimeChat(context)
           break
-        
+
         case 'salary_insights':
           result = await aiService.salaryInsights(context)
           break
-        
+
         case 'enhance_content':
           // Generic enhancement: route to chat with context
           result = await aiService.chat({
-            message: 'Enhance the following content with clear, concise improvements.',
+            message:
+              'Enhance the following content with clear, concise improvements.',
             context: JSON.stringify(context || {}),
-            type: 'generation'
+            type: 'generation',
           })
           break
-          
+
         case 'analyze_studio_fit':
           // Analyze how well user profile fits with studio culture and requirements
           result = await aiService.analyzeStudioFit(context)
           break
-          
+
         case 'recommend_studios':
           // Get AI recommendations for studios based on user preferences
           result = await aiService.recommendStudios(context)
           break
-          
+
         case 'semantic_job_search':
           // Perform AI-powered semantic job search
           result = await aiService.performSemanticJobSearch(context)
           break
-          
+
         case 'enhance_job_matching':
           // Enhance job matching with AI insights
           result = await aiService.enhanceJobMatching(context)
@@ -298,44 +312,51 @@ export function useAIIntegration(ctx = {}) {
           result = await aiService.chat({
             message: `Help me with: ${actionType.replace(/_/g, ' ')}`,
             context: JSON.stringify(context || {}),
-            type: 'analysis'
+            type: 'analysis',
           })
           break
-          
+
         default:
           throw new Error(`Unknown AI action: ${actionType}`)
       }
 
       if (result) {
         logger.info(`AI action completed: ${actionType}`, result)
-        
+
         // Emit success event for other components
-        window.dispatchEvent(new CustomEvent('ai-action-completed', { 
-          detail: { actionType, result, context } 
-        }))
-        
+        window.dispatchEvent(
+          new CustomEvent('ai-action-completed', {
+            detail: { actionType, result, context },
+          })
+        )
+
         return result
       } else {
         throw new Error('AI action returned no result')
       }
     } catch (error) {
       logger.error(`AI action failed (${actionType}):`, error)
-      
+
       // Emit error event
-      window.dispatchEvent(new CustomEvent('ai-action-failed', { 
-        detail: { actionType, error: error.message, context } 
-      }))
-      
+      window.dispatchEvent(
+        new CustomEvent('ai-action-failed', {
+          detail: { actionType, error: error.message, context },
+        })
+      )
+
       // More user-friendly error messages
       let errorMessage = error.message
       if (error.message.includes('API key')) {
         errorMessage = 'Please configure your API key in settings'
       } else if (error.message.includes('network')) {
         errorMessage = 'Network error - please check your connection'
-      } else if (error.message.includes('quota') || error.message.includes('limit')) {
+      } else if (
+        error.message.includes('quota') ||
+        error.message.includes('limit')
+      ) {
         errorMessage = 'API usage limit reached - please try again later'
       }
-      
+
       toast?.error(`AI action failed: ${errorMessage}`)
       return null
     }
@@ -350,7 +371,7 @@ export function useAIIntegration(ctx = {}) {
       jobs: '/jobs',
       studios: '/studios',
       interview: '/interview',
-      realtimeChat: '/demo/realtime'
+      realtimeChat: '/demo/realtime',
     }
 
     const route = featureRoutes[featureName]
@@ -371,16 +392,22 @@ export function useAIIntegration(ctx = {}) {
   }
 
   // Watchers
-  watch(() => store.settings?.geminiApiKey, (newKey) => {
-    if (newKey && !isAIInitialized.value) {
-      initializeAI()
+  watch(
+    () => store.settings?.geminiApiKey,
+    newKey => {
+      if (newKey && !isAIInitialized.value) {
+        initializeAI()
+      }
     }
-  })
+  )
 
   if (routeRef || route) {
-    watch(() => (routeRef?.value?.name || route?.name), () => {
-      updateAIFeatureAvailability()
-    })
+    watch(
+      () => routeRef?.value?.name || route?.name,
+      () => {
+        updateAIFeatureAvailability()
+      }
+    )
   }
 
   // Auto-initialize on mount if key is available
@@ -408,7 +435,7 @@ export function useAIIntegration(ctx = {}) {
     triggerAIAction,
     navigateToAIFeature,
     getAIFeatureStatus,
-    showAISetupModal
+    showAISetupModal,
   }
 }
 
@@ -422,13 +449,13 @@ export function createAIIntegrationPlugin(deps = {}) {
           const r = deps.router || app.config.globalProperties.$router || null
           const routeRef = r && r.currentRoute ? r.currentRoute : null
           return useAIIntegration({ router: r, routeRef })
-        }
+        },
       })
       // Also provide a factory for injection-based usage
-      app.provide('useAIIntegration', (ctx) => useAIIntegration(ctx))
+      app.provide('useAIIntegration', ctx => useAIIntegration(ctx))
       // Remove the problematic global provide - let components inject as needed
       // app.provide('aiIntegration', useAIIntegration({ router: deps.router }))
-    }
+    },
   }
 }
 

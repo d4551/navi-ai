@@ -27,14 +27,14 @@ export class HitmarkerProvider extends BaseJobProvider {
     regions: ['global'],
     icon: 'mdi-bullseye',
     color: '#FF6B35',
-    gamingFocus: 1.0
+    gamingFocus: 1.0,
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       q: filters.title || 'game developer',
       location: filters.location || '',
-      remote: filters.remote || false
+      remote: filters.remote || false,
     }
   }
 
@@ -49,17 +49,28 @@ export class HitmarkerProvider extends BaseJobProvider {
     const esportsJobs = Array.from({ length: 15 }, (_, i) => ({
       id: `hitmarker-${i + 1}`,
       title: `${filters.title || 'Esports'} Manager`,
-      company: ['Team Liquid', 'FaZe Clan', 'Cloud9', 'TSM', 'G2 Esports'][i % 5],
-      location: ['Los Angeles, CA', 'London, UK', 'Berlin, DE', 'Tokyo, JP', 'Seoul, KR'][i % 5],
+      company: ['Team Liquid', 'FaZe Clan', 'Cloud9', 'TSM', 'G2 Esports'][
+        i % 5
+      ],
+      location: [
+        'Los Angeles, CA',
+        'London, UK',
+        'Berlin, DE',
+        'Tokyo, JP',
+        'Seoul, KR',
+      ][i % 5],
       type: 'full-time' as const,
       remote: Math.random() > 0.4,
-      description: 'Join our professional esports team and help shape the future of competitive gaming...',
+      description:
+        'Join our professional esports team and help shape the future of competitive gaming...',
       url: `https://hitmarker.net/jobs/${i + 1}`,
       salary: '$60,000 - $120,000',
       tags: ['esports', 'gaming', 'tournament', 'streaming'],
-      postedDate: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
+      postedDate: new Date(
+        Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+      ),
       source: 'Hitmarker',
-      gamingRelevance: 0.95
+      gamingRelevance: 0.95,
     }))
 
     return esportsJobs
@@ -69,13 +80,17 @@ export class HitmarkerProvider extends BaseJobProvider {
 
   private matchesFilters(job: any, filters: JobFilters): boolean {
     if (filters.title) {
-      const searchText = `${job.title} ${job.company} ${job.description}`.toLowerCase()
+      const searchText =
+        `${job.title} ${job.company} ${job.description}`.toLowerCase()
       if (!searchText.includes(filters.title.toLowerCase())) {
         return false
       }
     }
 
-    if (filters.location && !job.location.toLowerCase().includes(filters.location.toLowerCase())) {
+    if (
+      filters.location &&
+      !job.location.toLowerCase().includes(filters.location.toLowerCase())
+    ) {
       return false
     }
 
@@ -106,14 +121,14 @@ export class GameDevNetProvider extends BaseJobProvider {
     regions: ['global'],
     icon: 'mdi-controller-classic',
     color: '#4CAF50',
-    gamingFocus: 1.0
+    gamingFocus: 1.0,
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       q: filters.title || 'game developer',
       location: filters.location || '',
-      remote: filters.remote || false
+      remote: filters.remote || false,
     }
   }
 
@@ -131,13 +146,14 @@ export class GameDevNetProvider extends BaseJobProvider {
         location: 'Remote',
         type: 'full-time' as const,
         remote: true,
-        description: 'Join our indie game development team creating innovative mobile games.',
+        description:
+          'Join our indie game development team creating innovative mobile games.',
         url: 'https://gamedev.net/jobs/unity-developer',
         salary: '$70,000 - $100,000',
         tags: ['Unity', 'C#', 'Mobile', 'Indie'],
         postedDate: new Date(),
         source: this.displayName,
-        gamingRelevance: 0.98
+        gamingRelevance: 0.98,
       },
       {
         id: `gamedev-${Date.now()}-2`,
@@ -146,14 +162,15 @@ export class GameDevNetProvider extends BaseJobProvider {
         location: 'San Francisco, CA',
         type: 'full-time' as const,
         remote: true,
-        description: 'Bridge the gap between art and technology in our AAA game production.',
+        description:
+          'Bridge the gap between art and technology in our AAA game production.',
         url: 'https://gamedev.net/jobs/technical-artist',
         salary: '$85,000 - $125,000',
         tags: ['Technical Art', 'Maya', 'Scripting', 'AAA'],
         postedDate: new Date(),
         source: this.displayName,
-        gamingRelevance: 0.95
-      }
+        gamingRelevance: 0.95,
+      },
     ]
 
     return gameDevJobs.filter(job => this.matchesFilters(job, filters))
@@ -189,14 +206,14 @@ export class GamasutraJobsProvider extends BaseJobProvider {
     regions: ['global'],
     icon: 'mdi-newspaper-variant',
     color: '#FF9800',
-    gamingFocus: 1.0
+    gamingFocus: 1.0,
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       q: filters.title || 'game developer',
       location: filters.location || '',
-      remote: filters.remote || false
+      remote: filters.remote || false,
     }
   }
 
@@ -214,13 +231,14 @@ export class GamasutraJobsProvider extends BaseJobProvider {
         location: 'Cary, NC',
         type: 'full-time' as const,
         remote: false,
-        description: 'Design and implement gameplay systems for next-generation games.',
+        description:
+          'Design and implement gameplay systems for next-generation games.',
         url: 'https://gamedeveloper.com/jobs/game-designer',
         salary: '$120,000 - $180,000',
         tags: ['Game Design', 'AAA', 'Unreal Engine', 'Systems'],
         postedDate: new Date(),
         source: this.displayName,
-        gamingRelevance: 0.99
+        gamingRelevance: 0.99,
       },
       {
         id: `gamasutra-${Date.now()}-2`,
@@ -229,14 +247,15 @@ export class GamasutraJobsProvider extends BaseJobProvider {
         location: 'Los Angeles, CA',
         type: 'full-time' as const,
         remote: true,
-        description: 'Build and engage our gaming community across social platforms.',
+        description:
+          'Build and engage our gaming community across social platforms.',
         url: 'https://gamedeveloper.com/jobs/community-manager',
         salary: '$75,000 - $110,000',
         tags: ['Community', 'Social Media', 'Gaming', 'Content'],
         postedDate: new Date(),
         source: this.displayName,
-        gamingRelevance: 0.92
-      }
+        gamingRelevance: 0.92,
+      },
     ]
 
     return gamasutraJobs.filter(job => this.matchesFilters(job, filters))
@@ -272,14 +291,14 @@ export class GamesIndustryBizProvider extends BaseJobProvider {
     regions: ['eu', 'uk'],
     icon: 'mdi-gamepad-variant',
     color: '#2196F3',
-    gamingFocus: 1.0
+    gamingFocus: 1.0,
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       q: filters.title || 'game developer',
       location: filters.location || '',
-      remote: filters.remote || false
+      remote: filters.remote || false,
     }
   }
 
@@ -303,7 +322,7 @@ export class GamesIndustryBizProvider extends BaseJobProvider {
         tags: ['Programming', 'Leadership', 'AAA', 'Open World'],
         postedDate: new Date(),
         source: this.displayName,
-        gamingRelevance: 0.97
+        gamingRelevance: 0.97,
       },
       {
         id: `gamesindustry-${Date.now()}-2`,
@@ -312,14 +331,15 @@ export class GamesIndustryBizProvider extends BaseJobProvider {
         location: 'Stockholm, Sweden',
         type: 'full-time' as const,
         remote: true,
-        description: 'Produce casual mobile games for millions of players worldwide.',
+        description:
+          'Produce casual mobile games for millions of players worldwide.',
         url: 'https://gamesindustry.biz/jobs/mobile-producer',
         salary: '€70,000 - €100,000',
         tags: ['Mobile', 'Producer', 'Casual Games', 'F2P'],
         postedDate: new Date(),
         source: this.displayName,
-        gamingRelevance: 0.94
-      }
+        gamingRelevance: 0.94,
+      },
     ]
 
     return europeanGamingJobs.filter(job => this.matchesFilters(job, filters))
@@ -355,14 +375,14 @@ export class IndieGameJobsProvider extends BaseJobProvider {
     regions: ['global'],
     icon: 'mdi-account-group',
     color: '#9C27B0',
-    gamingFocus: 1.0
+    gamingFocus: 1.0,
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       q: filters.title || 'game developer',
       location: filters.location || '',
-      remote: filters.remote || false
+      remote: filters.remote || false,
     }
   }
 
@@ -380,13 +400,14 @@ export class IndieGameJobsProvider extends BaseJobProvider {
         location: 'Remote',
         type: 'contract' as const,
         remote: true,
-        description: 'Join our small indie team creating narrative-driven games.',
+        description:
+          'Join our small indie team creating narrative-driven games.',
         url: 'https://indiegamejobs.com/indie-developer',
         salary: '$40,000 - $70,000',
         tags: ['Indie', 'Narrative', 'Creative', 'Small Team'],
         postedDate: new Date(),
         source: this.displayName,
-        gamingRelevance: 0.96
+        gamingRelevance: 0.96,
       },
       {
         id: `indie-${Date.now()}-2`,
@@ -401,8 +422,8 @@ export class IndieGameJobsProvider extends BaseJobProvider {
         tags: ['Art', 'Pixel Art', 'Retro', 'Visual'],
         postedDate: new Date(),
         source: this.displayName,
-        gamingRelevance: 0.93
-      }
+        gamingRelevance: 0.93,
+      },
     ]
 
     return indieJobs.filter(job => this.matchesFilters(job, filters))
@@ -425,7 +446,7 @@ export const gamingProviders = [
   new GameDevNetProvider(),
   new GamasutraJobsProvider(),
   new GamesIndustryBizProvider(),
-  new IndieGameJobsProvider()
+  new IndieGameJobsProvider(),
 ]
 
 export function createGamingJobProviders() {

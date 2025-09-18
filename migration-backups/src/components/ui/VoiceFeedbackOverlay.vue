@@ -4,33 +4,30 @@
     <div class="voice-activity-indicator" :class="activityClasses">
       <div class="activity-visual">
         <div class="volume-bars">
-          <div 
-            v-for="bar in 5" 
+          <div
+            v-for="bar in 5"
             :key="bar"
             class="volume-bar"
-            :style="{ 
+            :style="{
               height: getBarHeight(bar),
-              animationDelay: `${bar * 0.1}s` 
+              animationDelay: `${bar * 0.1}s`,
             }"
           />
         </div>
         <div class="activity-icon">
-          <AppIcon 
-            :name="activityIcon" 
-            :class="{ 'pulse': enhancedAudio.isActive }"
+          <AppIcon
+            :name="activityIcon"
+            :class="{ pulse: enhancedAudio.isActive }"
           />
         </div>
       </div>
-      
+
       <!-- Status Text -->
       <div class="activity-status">
         <span class="status-text">{{ statusText }}</span>
         <div v-if="confidence" class="confidence-indicator">
           <div class="confidence-bar">
-            <div 
-              class="confidence-fill" 
-              :style="{ width: `${confidence}%` }"
-            />
+            <div class="confidence-fill" :style="{ width: `${confidence}%` }" />
           </div>
           <span class="confidence-text">{{ confidence }}% confidence</span>
         </div>
@@ -39,14 +36,14 @@
 
     <!-- Feedback Messages -->
     <Transition name="feedback-slide" appear>
-      <div 
-        v-if="currentFeedback" 
+      <div
+        v-if="currentFeedback"
         class="feedback-message"
         :class="`feedback-${currentFeedback.type}`"
       >
         <AppIcon :name="getFeedbackIcon(currentFeedback.type)" />
         <span>{{ currentFeedback.message }}</span>
-        <button 
+        <button
           class="feedback-dismiss"
           aria-label="Dismiss"
           @click="dismissFeedback"
@@ -57,17 +54,10 @@
     </Transition>
 
     <!-- Voice Commands Hint -->
-    <div 
-      v-if="showVoiceHints && enhancedAudio.isActive" 
-      class="voice-hints"
-    >
+    <div v-if="showVoiceHints && enhancedAudio.isActive" class="voice-hints">
       <div class="hints-title">Try saying:</div>
       <div class="hints-list">
-        <span 
-          v-for="hint in voiceHints" 
-          :key="hint"
-          class="voice-hint"
-        >
+        <span v-for="hint in voiceHints" :key="hint" class="voice-hint">
           "{{ hint }}"
         </span>
       </div>
@@ -83,7 +73,12 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 interface Props {
   showVoiceHints?: boolean
   enableVisualFeedback?: boolean
-  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'center'
+  position?:
+    | 'top-right'
+    | 'top-left'
+    | 'bottom-right'
+    | 'bottom-left'
+    | 'center'
   compact?: boolean
 }
 
@@ -91,7 +86,7 @@ const props = withDefaults(defineProps<Props>(), {
   showVoiceHints: false,
   enableVisualFeedback: true,
   position: 'top-right',
-  compact: false
+  compact: false,
 })
 
 const enhancedAudio = enhancedAudioService
@@ -100,18 +95,18 @@ const confidence = ref<number | undefined>()
 // Voice command hints based on current context
 const voiceHints = computed(() => [
   'Start recording',
-  'Stop listening', 
+  'Stop listening',
   'Search for jobs',
   'Open settings',
-  'Show my portfolio'
+  'Show my portfolio',
 ])
 
-const showFeedback = computed(() => 
-  props.enableVisualFeedback && (
-    enhancedAudio.isActive ||
-    currentFeedback.value ||
-    enhancedAudio.hasRecentActivity
-  )
+const showFeedback = computed(
+  () =>
+    props.enableVisualFeedback &&
+    (enhancedAudio.isActive ||
+      currentFeedback.value ||
+      enhancedAudio.hasRecentActivity)
 )
 
 const currentFeedback = computed(() => enhancedAudio.currentFeedback)
@@ -120,8 +115,8 @@ const activityClasses = computed(() => ({
   'is-listening': enhancedAudio.activity.value.isListening,
   'is-speaking': enhancedAudio.activity.value.isSpeaking,
   'has-activity': enhancedAudio.isActive,
-  'compact': props.compact,
-  [`position-${props.position}`]: true
+  compact: props.compact,
+  [`position-${props.position}`]: true,
 }))
 
 const activityIcon = computed(() => {
@@ -141,26 +136,31 @@ const statusText = computed(() => {
 function getBarHeight(barIndex: number): string {
   const volume = enhancedAudio.activity.value.volume
   const threshold = (barIndex - 1) / 5
-  
+
   if (!enhancedAudio.activity.value.isListening) {
     return '4px'
   }
-  
+
   if (volume > threshold) {
     const intensity = Math.min(1, (volume - threshold) * 5)
     return `${4 + intensity * 20}px`
   }
-  
+
   return '4px'
 }
 
 function getFeedbackIcon(type: string): string {
   switch (type) {
-    case 'success': return 'mdi-check-circle'
-    case 'error': return 'mdi-alert-circle'
-    case 'warning': return 'mdi-alert'
-    case 'info': return 'mdi-information'
-    default: return 'mdi-information'
+    case 'success':
+      return 'mdi-check-circle'
+    case 'error':
+      return 'mdi-alert-circle'
+    case 'warning':
+      return 'mdi-alert'
+    case 'info':
+      return 'mdi-information'
+    default:
+      return 'mdi-information'
   }
 }
 
@@ -175,10 +175,14 @@ function dismissFeedback() {
 }
 
 // Watch for changes in speech recognition confidence
-watch(() => enhancedAudio.activity.value, (activity) => {
-  // Update confidence from speech recognition if available
-  confidence.value = activity.confidence
-}, { deep: true })
+watch(
+  () => enhancedAudio.activity.value,
+  activity => {
+    // Update confidence from speech recognition if available
+    confidence.value = activity.confidence
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped>
@@ -236,7 +240,7 @@ watch(() => enhancedAudio.activity.value, (activity) => {
 
 .voice-activity-indicator.has-activity {
   border-color: rgb(var(--color-primary-rgb), 0.3);
-  box-shadow: 
+  box-shadow:
     var(--glass-shadow),
     0 0 20px rgba(var(--color-primary-rgb), 0.2);
 }
@@ -313,8 +317,9 @@ watch(() => enhancedAudio.activity.value, (activity) => {
 
 .confidence-fill {
   height: 100%;
-  background: linear-gradient(90deg, 
-    var(--color-warning-500), 
+  background: linear-gradient(
+    90deg,
+    var(--color-warning-500),
     var(--color-success-500)
   );
   transition: width 0.3s ease;
@@ -416,23 +421,52 @@ watch(() => enhancedAudio.activity.value, (activity) => {
 
 /* Animations */
 @keyframes pulse-listening {
-  0%, 100% { box-shadow: var(--glass-shadow), 0 0 0 0 rgba(var(--color-success-rgb), 0.7); }
-  50% { box-shadow: var(--glass-shadow), 0 0 0 8px rgba(var(--color-success-rgb), 0); }
+  0%,
+  100% {
+    box-shadow:
+      var(--glass-shadow),
+      0 0 0 0 rgba(var(--color-success-rgb), 0.7);
+  }
+  50% {
+    box-shadow:
+      var(--glass-shadow),
+      0 0 0 8px rgba(var(--color-success-rgb), 0);
+  }
 }
 
 @keyframes pulse-speaking {
-  0%, 100% { box-shadow: var(--glass-shadow), 0 0 0 0 rgba(var(--color-info-rgb), 0.7); }
-  50% { box-shadow: var(--glass-shadow), 0 0 0 6px rgba(var(--color-info-rgb), 0); }
+  0%,
+  100% {
+    box-shadow:
+      var(--glass-shadow),
+      0 0 0 0 rgba(var(--color-info-rgb), 0.7);
+  }
+  50% {
+    box-shadow:
+      var(--glass-shadow),
+      0 0 0 6px rgba(var(--color-info-rgb), 0);
+  }
 }
 
 @keyframes volume-pulse {
-  0% { opacity: 0.3; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes icon-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.8; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 /* Transitions */
@@ -457,13 +491,13 @@ watch(() => enhancedAudio.activity.value, (activity) => {
     padding: 8px 12px;
     font-size: 12px;
   }
-  
+
   .feedback-message {
     right: 10px;
     left: 10px;
     max-width: none;
   }
-  
+
   .voice-hints {
     right: 10px;
     left: 10px;

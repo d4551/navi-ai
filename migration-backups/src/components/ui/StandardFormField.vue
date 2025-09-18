@@ -9,7 +9,12 @@
     >
       <slot name="label">
         {{ label }}
-        <span v-if="required" class="standard-form-field__required" aria-label="required">*</span>
+        <span
+          v-if="required"
+          class="standard-form-field__required"
+          aria-label="required"
+          >*</span
+        >
       </slot>
     </label>
 
@@ -25,7 +30,10 @@
     <!-- Field Container -->
     <div class="standard-form-field__container" :class="containerClass">
       <!-- Prefix Icon/Content -->
-      <div v-if="prefixIcon || $slots.prefix" class="standard-form-field__prefix">
+      <div
+        v-if="prefixIcon || $slots.prefix"
+        class="standard-form-field__prefix"
+      >
         <slot name="prefix">
           <AppIcon v-if="prefixIcon" :name="prefixIcon" />
         </slot>
@@ -50,7 +58,9 @@
       >
         <!-- Options for select -->
         <template v-if="type === 'select'">
-          <option v-if="placeholder" value="" disabled>{{ placeholder }}</option>
+          <option v-if="placeholder" value="" disabled>
+            {{ placeholder }}
+          </option>
           <option
             v-for="option in options"
             :key="getOptionValue(option)"
@@ -66,7 +76,10 @@
       </component>
 
       <!-- Suffix Icon/Content -->
-      <div v-if="suffixIcon || $slots.suffix || showPasswordToggle" class="standard-form-field__suffix">
+      <div
+        v-if="suffixIcon || $slots.suffix || showPasswordToggle"
+        class="standard-form-field__suffix"
+      >
         <slot name="suffix">
           <!-- Password toggle -->
           <button
@@ -112,58 +125,67 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted } from 'vue';
-import { useId } from '@vueuse/core';
-import AppIcon from './AppIcon.vue';
+import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { useId } from '@vueuse/core'
+import AppIcon from './AppIcon.vue'
 
 interface SelectOption {
-  label: string;
-  value: any;
-  disabled?: boolean;
+  label: string
+  value: any
+  disabled?: boolean
 }
 
 interface Props {
   // Value
-  modelValue?: any;
+  modelValue?: any
 
   // Field config
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'textarea' | 'select';
-  label?: string;
-  placeholder?: string;
-  description?: string;
-  helpText?: string;
-  required?: boolean;
-  disabled?: boolean;
-  readonly?: boolean;
-  loading?: boolean;
-  autofocus?: boolean;
+  type?:
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'tel'
+    | 'url'
+    | 'search'
+    | 'textarea'
+    | 'select'
+  label?: string
+  placeholder?: string
+  description?: string
+  helpText?: string
+  required?: boolean
+  disabled?: boolean
+  readonly?: boolean
+  loading?: boolean
+  autofocus?: boolean
 
   // Validation
-  error?: string | boolean;
-  rules?: Array<(value: any) => string | boolean>;
-  validateOnBlur?: boolean;
-  validateOnInput?: boolean;
+  error?: string | boolean
+  rules?: Array<(value: any) => string | boolean>
+  validateOnBlur?: boolean
+  validateOnInput?: boolean
 
   // Styling
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'filled' | 'outlined' | 'minimal';
+  size?: 'sm' | 'md' | 'lg'
+  variant?: 'default' | 'filled' | 'outlined' | 'minimal'
 
   // Icons
-  prefixIcon?: string;
-  suffixIcon?: string;
+  prefixIcon?: string
+  suffixIcon?: string
 
   // Select specific
-  options?: Array<SelectOption | string | number>;
+  options?: Array<SelectOption | string | number>
 
   // Input attributes
-  min?: number | string;
-  max?: number | string;
-  step?: number | string;
-  maxlength?: number;
-  rows?: number;
-  cols?: number;
-  autocomplete?: string;
-  spellcheck?: boolean;
+  min?: number | string
+  max?: number | string
+  step?: number | string
+  maxlength?: number
+  rows?: number
+  cols?: number
+  autocomplete?: string
+  spellcheck?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -174,37 +196,40 @@ const props = withDefaults(defineProps<Props>(), {
   validateOnInput: false,
   spellcheck: true,
   rows: 3,
-});
+})
 
 const emit = defineEmits<{
-  'update:modelValue': [value: any];
-  blur: [event: Event];
-  focus: [event: Event];
-  input: [event: Event];
-  change: [event: Event];
-}>();
+  'update:modelValue': [value: any]
+  blur: [event: Event]
+  focus: [event: Event]
+  input: [event: Event]
+  change: [event: Event]
+}>()
 
 // Refs
-const inputRef = ref<HTMLElement>();
-const fieldId = useId();
-const isFocused = ref(false);
-const passwordVisible = ref(false);
-const internalError = ref<string>('');
+const inputRef = ref<HTMLElement>()
+const fieldId = useId()
+const isFocused = ref(false)
+const passwordVisible = ref(false)
+const internalError = ref<string>('')
 
 // Internal value handling
 const internalValue = computed({
   get: () => props.modelValue ?? '',
-  set: (value) => emit('update:modelValue', value)
-});
+  set: value => emit('update:modelValue', value),
+})
 
 // Computed properties
 const fieldComponent = computed(() => {
   switch (props.type) {
-    case 'textarea': return 'textarea';
-    case 'select': return 'select';
-    default: return 'input';
+    case 'textarea':
+      return 'textarea'
+    case 'select':
+      return 'select'
+    default:
+      return 'input'
   }
-});
+})
 
 const inputAttrs = computed(() => {
   const attrs: Record<string, any> = {
@@ -214,42 +239,43 @@ const inputAttrs = computed(() => {
     required: props.required,
     autocomplete: props.autocomplete,
     spellcheck: props.spellcheck,
-  };
+  }
 
   if (props.type !== 'textarea' && props.type !== 'select') {
-    attrs.type = props.type === 'password' && passwordVisible.value ? 'text' : props.type;
+    attrs.type =
+      props.type === 'password' && passwordVisible.value ? 'text' : props.type
   }
 
   if (props.type === 'number') {
-    if (props.min !== undefined) attrs.min = props.min;
-    if (props.max !== undefined) attrs.max = props.max;
-    if (props.step !== undefined) attrs.step = props.step;
+    if (props.min !== undefined) attrs.min = props.min
+    if (props.max !== undefined) attrs.max = props.max
+    if (props.step !== undefined) attrs.step = props.step
   }
 
-  if (props.maxlength) attrs.maxlength = props.maxlength;
+  if (props.maxlength) attrs.maxlength = props.maxlength
 
   if (props.type === 'textarea') {
-    attrs.rows = props.rows;
-    if (props.cols) attrs.cols = props.cols;
+    attrs.rows = props.rows
+    if (props.cols) attrs.cols = props.cols
   }
 
-  return attrs;
-});
+  return attrs
+})
 
-const hasError = computed(() => Boolean(props.error || internalError.value));
-const errorMessage = computed(() => props.error || internalError.value);
+const hasError = computed(() => Boolean(props.error || internalError.value))
+const errorMessage = computed(() => props.error || internalError.value)
 
-const showPasswordToggle = computed(() =>
-  props.type === 'password' && !props.readonly && !props.disabled
-);
+const showPasswordToggle = computed(
+  () => props.type === 'password' && !props.readonly && !props.disabled
+)
 
 const ariaDescribedby = computed(() => {
-  const ids = [];
-  if (props.description) ids.push(`${fieldId}-description`);
-  if (hasError.value) ids.push(`${fieldId}-error`);
-  if (props.helpText) ids.push(`${fieldId}-help`);
-  return ids.length > 0 ? ids.join(' ') : undefined;
-});
+  const ids = []
+  if (props.description) ids.push(`${fieldId}-description`)
+  if (hasError.value) ids.push(`${fieldId}-error`)
+  if (props.helpText) ids.push(`${fieldId}-help`)
+  return ids.length > 0 ? ids.join(' ') : undefined
+})
 
 // CSS classes
 const fieldClass = computed(() => [
@@ -262,115 +288,123 @@ const fieldClass = computed(() => [
     'standard-form-field--readonly': props.readonly,
     'standard-form-field--loading': props.loading,
     'standard-form-field--required': props.required,
-  }
-]);
+  },
+])
 
 const labelClass = computed(() => [
   {
-    'standard-form-field__label--floating': props.variant === 'filled' && (isFocused.value || internalValue.value),
-  }
-]);
+    'standard-form-field__label--floating':
+      props.variant === 'filled' && (isFocused.value || internalValue.value),
+  },
+])
 
 const containerClass = computed(() => [
   {
-    'standard-form-field__container--prefix': props.prefixIcon || Boolean(document.querySelector('[slot="prefix"]')),
-    'standard-form-field__container--suffix': props.suffixIcon || showPasswordToggle.value || Boolean(document.querySelector('[slot="suffix"]')),
-  }
-]);
+    'standard-form-field__container--prefix':
+      props.prefixIcon || Boolean(document.querySelector('[slot="prefix"]')),
+    'standard-form-field__container--suffix':
+      props.suffixIcon ||
+      showPasswordToggle.value ||
+      Boolean(document.querySelector('[slot="suffix"]')),
+  },
+])
 
 const inputClass = computed(() => [
   {
     'standard-form-field__input--no-border': props.variant === 'minimal',
-  }
-]);
+  },
+])
 
 // Select option helpers
 const getOptionValue = (option: SelectOption | string | number): any => {
-  return typeof option === 'object' ? option.value : option;
-};
+  return typeof option === 'object' ? option.value : option
+}
 
 const getOptionLabel = (option: SelectOption | string | number): string => {
-  return typeof option === 'object' ? option.label : String(option);
-};
+  return typeof option === 'object' ? option.label : String(option)
+}
 
 const getOptionDisabled = (option: SelectOption | string | number): boolean => {
-  return typeof option === 'object' ? Boolean(option.disabled) : false;
-};
+  return typeof option === 'object' ? Boolean(option.disabled) : false
+}
 
 // Validation
 const validate = () => {
   if (!props.rules) {
-    internalError.value = '';
-    return true;
+    internalError.value = ''
+    return true
   }
 
   for (const rule of props.rules) {
-    const result = rule(internalValue.value);
+    const result = rule(internalValue.value)
     if (typeof result === 'string') {
-      internalError.value = result;
-      return false;
+      internalError.value = result
+      return false
     }
   }
 
-  internalError.value = '';
-  return true;
-};
+  internalError.value = ''
+  return true
+}
 
 // Event handlers
 const handleFocus = (event: Event) => {
-  isFocused.value = true;
-  emit('focus', event);
-};
+  isFocused.value = true
+  emit('focus', event)
+}
 
 const handleBlur = (event: Event) => {
-  isFocused.value = false;
+  isFocused.value = false
   if (props.validateOnBlur) {
-    validate();
+    validate()
   }
-  emit('blur', event);
-};
+  emit('blur', event)
+}
 
 const handleInput = (event: Event) => {
   if (props.validateOnInput) {
-    validate();
+    validate()
   }
-  emit('input', event);
-};
+  emit('input', event)
+}
 
 const handleChange = (event: Event) => {
-  emit('change', event);
-};
+  emit('change', event)
+}
 
 const togglePasswordVisibility = () => {
-  passwordVisible.value = !passwordVisible.value;
-};
+  passwordVisible.value = !passwordVisible.value
+}
 
 // Public methods
 const focus = () => {
-  inputRef.value?.focus();
-};
+  inputRef.value?.focus()
+}
 
 const blur = () => {
-  inputRef.value?.blur();
-};
+  inputRef.value?.blur()
+}
 
 const validateField = () => {
-  return validate();
-};
+  return validate()
+}
 
 // Watch for external error changes
-watch(() => props.error, () => {
-  internalError.value = '';
-});
+watch(
+  () => props.error,
+  () => {
+    internalError.value = ''
+  }
+)
 
 // Autofocus
 onMounted(() => {
   if (props.autofocus) {
     nextTick(() => {
-      focus();
-    });
+      focus()
+    })
   }
-});
+})
 
 // Expose public methods
 defineExpose({
@@ -378,7 +412,7 @@ defineExpose({
   blur,
   validate: validateField,
   inputRef,
-});
+})
 </script>
 
 <style scoped>
@@ -516,7 +550,8 @@ defineExpose({
   border-bottom: 2px solid #d1d5db;
 }
 
-.standard-form-field--filled.standard-form-field--focused .standard-form-field__input {
+.standard-form-field--filled.standard-form-field--focused
+  .standard-form-field__input {
   background: #f9fafb;
   border-bottom-color: #3b82f6;
 }
@@ -525,7 +560,8 @@ defineExpose({
   border: 2px solid #d1d5db;
 }
 
-.standard-form-field--outlined.standard-form-field--focused .standard-form-field__input {
+.standard-form-field--outlined.standard-form-field--focused
+  .standard-form-field__input {
   border-color: #3b82f6;
   box-shadow: none;
 }
@@ -537,7 +573,8 @@ defineExpose({
   background: transparent;
 }
 
-.standard-form-field--minimal.standard-form-field--focused .standard-form-field__input {
+.standard-form-field--minimal.standard-form-field--focused
+  .standard-form-field__input {
   border-bottom-color: #3b82f6;
   box-shadow: 0 1px 0 0 #3b82f6;
 }
@@ -608,7 +645,8 @@ defineExpose({
     border-bottom-color: #4b5563;
   }
 
-  .standard-form-field--filled.standard-form-field--focused .standard-form-field__input {
+  .standard-form-field--filled.standard-form-field--focused
+    .standard-form-field__input {
     background: #1f2937;
   }
 }

@@ -29,7 +29,12 @@ export interface ResumeData {
   experience: ResumeExperienceItem[]
   education: any[]
   skills: ResumeSkills
-  portfolio: Array<{ title: string; description: string; url: string; type: string }>
+  portfolio: Array<{
+    title: string
+    description: string
+    url: string
+    type: string
+  }>
 }
 
 export interface UseResumeAIOptions {
@@ -41,10 +46,22 @@ export interface UseResumeAIReturn {
   skillSuggestions: Ref<string[]>
   resumeScore: Ref<any>
   autoFillSuggestions: Ref<Record<string, any>>
-  getSkillSuggestions: (_skills: ResumeSkills, _additionalExperience: any[], _targetRole?: string) => Promise<void>
+  getSkillSuggestions: (
+    _skills: ResumeSkills,
+    _additionalExperience: any[],
+    _targetRole?: string
+  ) => Promise<void>
   scoreResume: (_resumeData: any, _targetRole?: string) => Promise<void>
-  optimizeSection: (_sectionType: string, _sectionContent: any, _targetRole?: string) => Promise<string | null>
-  getAutoFill: (_fieldType: string, _userContext: any, _currentValue?: string) => Promise<void>
+  optimizeSection: (
+    _sectionType: string,
+    _sectionContent: any,
+    _targetRole?: string
+  ) => Promise<string | null>
+  getAutoFill: (
+    _fieldType: string,
+    _userContext: any,
+    _currentValue?: string
+  ) => Promise<void>
 }
 
 export function useResumeAI(_options: UseResumeAIOptions): UseResumeAIReturn

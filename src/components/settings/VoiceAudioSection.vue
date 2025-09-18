@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <div class="settings-card mb-4 font-sans" role="region" aria-labelledby="voice-audio-title">
+  <div
+    class="settings-card mb-4 font-sans"
+    role="region"
+    aria-labelledby="voice-audio-title"
+  >
     <div class="card-header section-header card-header--dense">
       <h5 id="voice-audio-title" class="mb-0">
         <SoundwaveIconComponent class="mr-2 icon-sm" />Voice & Audio Settings
@@ -26,8 +30,13 @@
         </div>
       </div>
       <!-- Gemini / Google AI API Key -->
-      <div id="gemini-api-key-section" class="mb-3 p-glass-md border rounded-3 glass-input">
-        <label for="gemini-api-key" class="form-label font-medium mb-2">Google AI (Gemini) API Key</label>
+      <div
+        id="gemini-api-key-section"
+        class="mb-3 p-glass-md border rounded-3 glass-input"
+      >
+        <label for="gemini-api-key" class="form-label font-medium mb-2"
+          >Google AI (Gemini) API Key</label
+        >
         <div class="input-group">
           <input
             id="gemini-api-key"
@@ -35,7 +44,11 @@
             :type="revealApiKey ? 'text' : 'password'"
             class="form-control glass-input"
             autocomplete="off"
-            :placeholder="settings.geminiApiKey ? '••••••••••••' : 'Enter your Gemini API key'"
+            :placeholder="
+              settings.geminiApiKey
+                ? '••••••••••••'
+                : 'Enter your Gemini API key'
+            "
             @change="persistVoiceSettings"
           />
           <button
@@ -47,11 +60,25 @@
             {{ revealApiKey ? 'Hide' : 'Show' }}
           </button>
         </div>
-        <div class="form-text api-key-hint" :class="settings.geminiApiKey ? 'text-success-600' : 'text-warning-600'">
-          <template v-if="settings.geminiApiKey">API key connected – Gemini real‑time features enabled.</template>
+        <div
+          class="form-text api-key-hint"
+          :class="
+            settings.geminiApiKey ? 'text-success-600' : 'text-warning-600'
+          "
+        >
+          <template v-if="settings.geminiApiKey"
+            >API key connected – Gemini real‑time features enabled.</template
+          >
           <template v-else>
-            Required to enable Navi AI real‑time voice (TTS / STT). Hot Tip: Get your FREE key at
-            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="link-primary">Google AI Studio</a>.
+            Required to enable Navi AI real‑time voice (TTS / STT). Hot Tip: Get
+            your FREE key at
+            <a
+              href="https://aistudio.google.com/app/apikey"
+              target="_blank"
+              rel="noopener"
+              class="link-primary"
+              >Google AI Studio</a
+            >.
           </template>
         </div>
       </div>
@@ -71,7 +98,9 @@
               />
               <label class="form-check-label" for="tts-system">
                 <strong>System TTS</strong>
-                <br /><small class="text-secondary">Fast, reliable browser voices</small>
+                <br /><small class="text-secondary"
+                  >Fast, reliable browser voices</small
+                >
               </label>
             </div>
           </div>
@@ -87,8 +116,20 @@
               />
               <label class="form-check-label" for="tts-gemini">
                 <strong>Navi AI Real-time</strong>
-                <br /><small :class="settings.geminiApiKey ? 'text-success-600' : 'text-secondary'">
-                  {{ settings.geminiApiKey ? (window.api?.audio?.ttsSpeak ? 'Natural AI voice (API key connected)' : 'Browser mode - falls back to system TTS') : 'Natural AI voice (requires API key)' }}
+                <br /><small
+                  :class="
+                    settings.geminiApiKey
+                      ? 'text-success-600'
+                      : 'text-secondary'
+                  "
+                >
+                  {{
+                    settings.geminiApiKey
+                      ? window.api?.audio?.ttsSpeak
+                        ? 'Natural AI voice (API key connected)'
+                        : 'Browser mode - falls back to system TTS'
+                      : 'Natural AI voice (requires API key)'
+                  }}
                 </small>
               </label>
             </div>
@@ -111,7 +152,9 @@
               />
               <label class="form-check-label" for="stt-system">
                 <strong>System STT</strong>
-                <br /><small class="text-secondary">Built‑in browser recognition</small>
+                <br /><small class="text-secondary"
+                  >Built‑in browser recognition</small
+                >
               </label>
             </div>
           </div>
@@ -127,8 +170,20 @@
               />
               <label class="form-check-label" for="stt-gemini">
                 <strong>Navi AI Realtime</strong>
-                <br /><small :class="settings.geminiApiKey ? 'text-success-600' : 'text-secondary'">
-                  {{ settings.geminiApiKey ? (window.api?.audio?.sttTranscribe ? 'Cloud transcription (API key connected)' : 'Browser mode - using system STT') : 'Cloud transcription (requires API key)' }}
+                <br /><small
+                  :class="
+                    settings.geminiApiKey
+                      ? 'text-success-600'
+                      : 'text-secondary'
+                  "
+                >
+                  {{
+                    settings.geminiApiKey
+                      ? window.api?.audio?.sttTranscribe
+                        ? 'Cloud transcription (API key connected)'
+                        : 'Browser mode - using system STT'
+                      : 'Cloud transcription (requires API key)'
+                  }}
                 </small>
               </label>
             </div>
@@ -139,7 +194,9 @@
       <!-- Audio Device Configuration -->
       <div class="flex flex-wrap g-3">
         <div class="flex-1-lg-6">
-          <label for="microphone-device" class="form-label font-medium">Microphone Device</label>
+          <label for="microphone-device" class="form-label font-medium"
+            >Microphone Device</label
+          >
           <div class="input-group">
             <select
               id="microphone-device"
@@ -155,8 +212,7 @@
                 :value="device.deviceId"
               >
                 {{
-                  device.label ||
-                    `Microphone ${device.deviceId.slice(0, 8)}...`
+                  device.label || `Microphone ${device.deviceId.slice(0, 8)}...`
                 }}
               </option>
             </select>
@@ -169,19 +225,19 @@
               @click="$emit('load-audio-devices')"
             />
           </div>
-          <div
-            id="microphone-help"
-            class="form-text hint-chip"
-            role="note"
-          >
+          <div id="microphone-help" class="form-text hint-chip" role="note">
             <MicIconComponent />
-            <span>Select your preferred microphone for voice input and
-              interview recordings.</span>
+            <span
+              >Select your preferred microphone for voice input and interview
+              recordings.</span
+            >
           </div>
         </div>
 
         <div class="flex-1-lg-6">
-          <label for="voice-lang" class="form-label font-medium">Speech Recognition Language</label>
+          <label for="voice-lang" class="form-label font-medium"
+            >Speech Recognition Language</label
+          >
           <select
             id="voice-lang"
             v-model="settings.voiceLang"
@@ -198,11 +254,10 @@
           </div>
         </div>
 
-        <div
-          v-show="settings.ttsProvider === 'system'"
-          class="flex-1-12"
-        >
-          <label for="tts-voice" class="form-label font-medium">System Voice</label>
+        <div v-show="settings.ttsProvider === 'system'" class="flex-1-12">
+          <label for="tts-voice" class="form-label font-medium"
+            >System Voice</label
+          >
           <select
             id="tts-voice"
             v-model="settings.ttsVoice"
@@ -211,17 +266,12 @@
             aria-describedby="voice-tts-help"
           >
             <option value="">System Default</option>
-            <option
-              v-for="v in voices"
-              :key="v.name + v.lang"
-              :value="v.name"
-            >
+            <option v-for="v in voices" :key="v.name + v.lang" :value="v.name">
               {{ v.name }} ({{ v.lang }})
             </option>
           </select>
           <div id="voice-tts-help" class="form-text">
-            Used for spoken responses. Populated from your system
-            voices.
+            Used for spoken responses. Populated from your system voices.
           </div>
         </div>
       </div>
@@ -242,7 +292,8 @@
               </label>
             </div>
             <div class="form-text">
-              Hold the Space bar to speak, release to stop. Works in fairy chat and live voice.
+              Hold the Space bar to speak, release to stop. Works in fairy chat
+              and live voice.
             </div>
           </div>
 
@@ -259,8 +310,8 @@
               </label>
             </div>
             <div class="form-text">
-              When enabled, chat will re‑arm the mic after NAVI
-              finishes speaking.
+              When enabled, chat will re‑arm the mic after NAVI finishes
+              speaking.
             </div>
           </div>
 
@@ -278,8 +329,10 @@
             </div>
             <div class="form-text hint-chip" role="note">
               <SlashIconComponent />
-              <span>Independent of notifications; respects reduced-motion
-                preference</span>
+              <span
+                >Independent of notifications; respects reduced-motion
+                preference</span
+              >
             </div>
           </div>
         </div>
@@ -291,12 +344,12 @@
 <script>
 import { ArrowPathIcon } from '@heroicons/vue/24/outline'
 
-import { watch } from 'vue';
+import { watch } from 'vue'
 
 import {
   SoundwaveIconComponent,
   MicIconComponent,
-  SlashIconComponent
+  SlashIconComponent,
 } from './SettingsIcons.js'
 
 export default {
@@ -304,52 +357,66 @@ export default {
   components: {
     SoundwaveIconComponent,
     MicIconComponent,
-  // RefreshIconComponent, // not used
+    // RefreshIconComponent, // not used
     SlashIconComponent,
-    IconButton: () => import('@/components/ui/IconButton.vue')
+    IconButton: () => import('@/components/ui/IconButton.vue'),
   },
   props: {
     settings: {
       type: Object,
-      required: true
+      required: true,
     },
     voices: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     audioDevices: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     loadingDevices: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  emits: ['load-audio-devices']
-  ,data() {
+  emits: ['load-audio-devices'],
+  data() {
     return { revealApiKey: false }
   },
   watch: {
-    'settings.geminiApiKey': function () { this._persistVoiceSettingsDebounced() },
-    'settings.ttsProvider': function () { this._persistVoiceSettingsDebounced() },
-    'settings.sttProvider': function () { this._persistVoiceSettingsDebounced() },
-    'settings.selectedMicId': function () { this._persistVoiceSettingsDebounced() },
-    'settings.voiceLang': function () { this._persistVoiceSettingsDebounced() },
-    'settings.ttsVoice': function () { this._persistVoiceSettingsDebounced() }
+    'settings.geminiApiKey': function () {
+      this._persistVoiceSettingsDebounced()
+    },
+    'settings.ttsProvider': function () {
+      this._persistVoiceSettingsDebounced()
+    },
+    'settings.sttProvider': function () {
+      this._persistVoiceSettingsDebounced()
+    },
+    'settings.selectedMicId': function () {
+      this._persistVoiceSettingsDebounced()
+    },
+    'settings.voiceLang': function () {
+      this._persistVoiceSettingsDebounced()
+    },
+    'settings.ttsVoice': function () {
+      this._persistVoiceSettingsDebounced()
+    },
   },
   methods: {
-    _persistVoiceSettingsDebounced: function() {
+    _persistVoiceSettingsDebounced: function () {
       if (!this._persistTimer) {
         this._persistTimer = setTimeout(() => {
-          this._persistTimer = null;
-          this.persistVoiceSettings();
-        }, 300); // 300ms debounce
+          this._persistTimer = null
+          this.persistVoiceSettings()
+        }, 300) // 300ms debounce
       }
     },
     persistVoiceSettings() {
       try {
-        const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}')
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
         appSettings.geminiApiKey = this.settings.geminiApiKey || ''
         appSettings.ttsProvider = this.settings.ttsProvider
         appSettings.sttProvider = this.settings.sttProvider
@@ -357,12 +424,18 @@ export default {
         appSettings.voiceLang = this.settings.voiceLang
         appSettings.ttsVoice = this.settings.ttsVoice
         localStorage.setItem('app-settings', JSON.stringify(appSettings))
-  // Notify rest of app (AI fairy, etc.)
-  try { window.dispatchEvent(new CustomEvent('app-settings-updated', { detail: { geminiApiKey: appSettings.geminiApiKey } })) } catch {}
-  } catch {
+        // Notify rest of app (AI fairy, etc.)
+        try {
+          window.dispatchEvent(
+            new CustomEvent('app-settings-updated', {
+              detail: { geminiApiKey: appSettings.geminiApiKey },
+            })
+          )
+        } catch {}
+      } catch {
         // silent
       }
-    }
-  }
+    },
+  },
 }
 </script>

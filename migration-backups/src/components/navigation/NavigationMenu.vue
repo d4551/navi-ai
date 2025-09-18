@@ -1,25 +1,60 @@
 <template>
-  <nav class="navigation-menu glass-surface text-glass-primary" :class="[{ collapsed: isCollapsed, 'ai-online': isAIOnline, 'ai-offline': !isAIOnline }, densityClass]" aria-label="Sidebar navigation">
+  <nav
+    class="navigation-menu glass-surface text-glass-primary"
+    :class="[
+      {
+        collapsed: isCollapsed,
+        'ai-online': isAIOnline,
+        'ai-offline': !isAIOnline,
+      },
+      densityClass,
+    ]"
+    aria-label="Sidebar navigation"
+  >
     <!-- Enhanced Brand Section with better visual hierarchy -->
-    <div class="nav-brand glass-strong p-4 rounded-lg glass-bg border border-glass-border">
-      <router-link to="/" class="brand-link text-glass-primary hover:text-neon-blue" aria-label="Navigate to NAVI home">
+    <div
+      class="nav-brand glass-strong p-4 rounded-lg glass-bg border border-glass-border"
+    >
+      <router-link
+        to="/"
+        class="brand-link text-glass-primary hover:text-neon-blue"
+        aria-label="Navigate to NAVI home"
+      >
         <!-- Brand logo switches automatically between light/dark -->
         <AppLogo class="brand-logo" alt-text="NAVI" />
         <transition name="brand-text-fade" mode="out-in">
           <div v-if="!isCollapsed" class="brand-text">
             <span class="brand-name">NAVI</span>
-            <span class="brand-subtitle">{{ connectionStatus === 'connected' ? 'AI Career Assistant' : 'Career Assistant' }}</span>
+            <span class="brand-subtitle">{{
+              connectionStatus === 'connected'
+                ? 'AI Career Assistant'
+                : 'Career Assistant'
+            }}</span>
             <div class="brand-status" :class="`status-${connectionStatus}`">
               <div class="status-dot"></div>
               <span class="status-text">{{ connectionText }}</span>
             </div>
             <!-- Hide duplicate AI model badge in brand area to reduce redundancy -->
-            <Tooltip v-if="false && selectedModelDisplay && connectionStatus === 'connected'" text="" position="right" :dark="isDark">
+            <Tooltip
+              v-if="
+                false &&
+                selectedModelDisplay &&
+                connectionStatus === 'connected'
+              "
+              text=""
+              position="right"
+              :dark="isDark"
+            >
               <template #content>
                 <div class="rich">
                   <span class="tooltip-title">{{ selectedModelDisplay }}</span>
                   <div class="badges">
-                    <span v-for="cap in modelCapabilityBadges" :key="cap" class="cap-badge">{{ cap }}</span>
+                    <span
+                      v-for="cap in modelCapabilityBadges"
+                      :key="cap"
+                      class="cap-badge"
+                      >{{ cap }}</span
+                    >
                   </div>
                 </div>
               </template>
@@ -34,14 +69,22 @@
               >
                 <AppIcon name="mdi-chip" size="inherit" />
                 <span class="model-text">{{ selectedModelDisplay }}</span>
-                <AppIcon name="mdi-cog-outline" size="inherit" class="model-gear" aria-hidden="true" />
+                <AppIcon
+                  name="mdi-cog-outline"
+                  size="inherit"
+                  class="model-gear"
+                  aria-hidden="true"
+                />
               </div>
             </Tooltip>
           </div>
         </transition>
       </router-link>
-      
-      <div class="nav-controls flex items-center gap-2 p-2" :class="{ collapsed: isCollapsed }">
+
+      <div
+        class="nav-controls flex items-center gap-2 p-2"
+        :class="{ collapsed: isCollapsed }"
+      >
         <!-- Navigation control buttons in a unified row -->
         <div class="nav-control-buttons">
           <!-- Search Toggle (opens overlay) -->
@@ -61,7 +104,11 @@
           <UnifiedButton
             variant="ghost"
             size="sm"
-            :icon="density === 'compact' ? 'mdi-format-line-weight' : 'mdi-format-line-spacing'"
+            :icon="
+              density === 'compact'
+                ? 'mdi-format-line-weight'
+                : 'mdi-format-line-spacing'
+            "
             :icon-only="true"
             :bare="true"
             :ripple="false"
@@ -70,7 +117,7 @@
             :title="`Density: ${density}`"
             @click="toggleDensity"
           />
-          
+
           <!-- Theme Toggle (cycles light → dark → system) -->
           <UnifiedButton
             variant="ghost"
@@ -84,15 +131,19 @@
             :title="`Theme: ${themeDisplayName} (Ctrl+T)`"
             @click="cycleTheme"
           />
-          
+
           <!-- Gamification (Achievements) -->
           <Tooltip :text="''" position="right" :dark="isDark">
             <template #content>
               <div class="rich">
-                <span class="tooltip-title">Level {{ userLevel.level }} — {{ userLevel.title }}</span>
+                <span class="tooltip-title"
+                  >Level {{ userLevel.level }} — {{ userLevel.title }}</span
+                >
                 <div class="badges">
                   <span class="cap-badge">{{ userLevel.currentXP }} XP</span>
-                  <span class="cap-badge">{{ achievementsCount }} Achievements</span>
+                  <span class="cap-badge"
+                    >{{ achievementsCount }} Achievements</span
+                  >
                 </div>
               </div>
             </template>
@@ -110,18 +161,28 @@
               @click="showGamifyModal = true"
             />
           </Tooltip>
-          
+
           <!-- Collapse Toggle -->
           <UnifiedButton
             variant="ghost"
             size="sm"
-            :icon="isCollapsed ? 'mdi-chevron-double-right' : 'mdi-chevron-double-left'"
+            :icon="
+              isCollapsed
+                ? 'mdi-chevron-double-right'
+                : 'mdi-chevron-double-left'
+            "
             :icon-only="true"
             :bare="true"
             :ripple="false"
             class="nav-control-btn collapse-toggle"
-            :aria-label="isCollapsed ? 'Expand navigation' : 'Collapse navigation'"
-            :title="isCollapsed ? 'Expand sidebar (Ctrl+B)' : 'Collapse sidebar (Ctrl+B)'"
+            :aria-label="
+              isCollapsed ? 'Expand navigation' : 'Collapse navigation'
+            "
+            :title="
+              isCollapsed
+                ? 'Expand sidebar (Ctrl+B)'
+                : 'Collapse sidebar (Ctrl+B)'
+            "
             @click="$emit('toggle-collapse')"
           />
 
@@ -133,7 +194,9 @@
           position="right"
           :dark="isDark"
         >
-          <div class="theme-mode-badge" role="status" aria-live="polite">System</div>
+          <div class="theme-mode-badge" role="status" aria-live="polite">
+            System
+          </div>
         </Tooltip>
       </div>
     </div>
@@ -154,7 +217,11 @@
           :is-collapsed="isCollapsed"
           @navigate="onItemNavigate"
         />
-        <div class="nav-divider border-gray-200 dark:border-gray-700" role="separator" aria-hidden="true"></div>
+        <div
+          class="nav-divider border-gray-200 dark:border-gray-700"
+          role="separator"
+          aria-hidden="true"
+        ></div>
         <NavigationItem
           v-for="item in filteredPlayground"
           :key="item.id"
@@ -162,7 +229,11 @@
           :is-collapsed="isCollapsed"
           @navigate="onItemNavigate"
         />
-        <div class="nav-divider border-gray-200 dark:border-gray-700" role="separator" aria-hidden="true"></div>
+        <div
+          class="nav-divider border-gray-200 dark:border-gray-700"
+          role="separator"
+          aria-hidden="true"
+        ></div>
         <NavigationItem
           v-for="item in filteredSettings"
           :key="item.id"
@@ -174,9 +245,16 @@
     </div>
 
     <!-- Redesigned Footer -->
-    <div class="nav-footer glass-footer bg-white/80 dark:bg-gray-800/80 border-t border-gray-200 dark:border-gray-700" :class="{ collapsed: isCollapsed }">
+    <div
+      class="nav-footer glass-footer bg-white/80 dark:bg-gray-800/80 border-t border-gray-200 dark:border-gray-700"
+      :class="{ collapsed: isCollapsed }"
+    >
       <!-- Expanded footer: rich status + quick actions -->
-      <div v-if="!isCollapsed" class="footer-content redesigned" aria-label="Navigation footer">
+      <div
+        v-if="!isCollapsed"
+        class="footer-content redesigned"
+        aria-label="Navigation footer"
+      >
         <div class="footer-row">
           <!-- Model + version -->
           <div class="footer-model" aria-label="AI model and version">
@@ -185,9 +263,16 @@
                 <div class="rich">
                   <span class="tooltip-title">{{ selectedModelDisplay }}</span>
                   <div class="badges">
-                    <span v-for="cap in modelCapabilityBadges" :key="cap" class="cap-badge">{{ cap }}</span>
+                    <span
+                      v-for="cap in modelCapabilityBadges"
+                      :key="cap"
+                      class="cap-badge"
+                      >{{ cap }}</span
+                    >
                   </div>
-                  <div class="tooltip-footer"><AppIcon name="mdi-cog-outline" /> Configure AI</div>
+                  <div class="tooltip-footer">
+                    <AppIcon name="mdi-cog-outline" /> Configure AI
+                  </div>
                 </div>
               </template>
               <span
@@ -200,11 +285,20 @@
                 @keydown.space.prevent="navigateToAISettings"
               >
                 <AppIcon name="mdi-chip" size="inherit" />
-                <span class="model-name" :title="selectedModelDisplay">{{ selectedModelDisplay }}</span>
-                <AppIcon name="mdi-cog-outline" size="inherit" class="model-gear" aria-hidden="true" />
+                <span class="model-name" :title="selectedModelDisplay">{{
+                  selectedModelDisplay
+                }}</span>
+                <AppIcon
+                  name="mdi-cog-outline"
+                  size="inherit"
+                  class="model-gear"
+                  aria-hidden="true"
+                />
               </span>
             </Tooltip>
-            <span class="version-chip" :title="`Version ${appVersion}`">v{{ appVersion }}</span>
+            <span class="version-chip" :title="`Version ${appVersion}`"
+              >v{{ appVersion }}</span
+            >
           </div>
         </div>
         <div class="footer-row">
@@ -218,7 +312,10 @@
             :title="`Profile ${profilePct}% complete`"
           >
             <div class="progress-track">
-              <div class="progress-bar" :style="{ width: profilePct + '%' }"></div>
+              <div
+                class="progress-bar"
+                :style="{ width: profilePct + '%' }"
+              ></div>
             </div>
             <span class="progress-label">Profile {{ profilePct }}%</span>
           </div>
@@ -226,16 +323,29 @@
       </div>
 
       <!-- Collapsed footer: minimal classes (no icon-pill/pill/glass-pill) -->
-      <div class="footer-collapsed redesigned" aria-label="Navigation footer (collapsed)">
+      <div
+        class="footer-collapsed redesigned"
+        aria-label="Navigation footer (collapsed)"
+      >
         <!-- Version chip removed; page footer shows version -->
       </div>
     </div>
   </nav>
-  
+
   <!-- Global Search Overlay -->
   <Teleport to="body">
-    <div v-if="searchOverlayOpen" class="nav-search-overlay" @keydown.esc.prevent.stop="closeSearchOverlay" @click.self="closeSearchOverlay">
-      <div class="nav-search-dialog glass-card section-card" role="dialog" aria-modal="true" aria-label="Global search">
+    <div
+      v-if="searchOverlayOpen"
+      class="nav-search-overlay"
+      @keydown.esc.prevent.stop="closeSearchOverlay"
+      @click.self="closeSearchOverlay"
+    >
+      <div
+        class="nav-search-dialog glass-card section-card"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Global search"
+      >
         <div class="nav-search-input">
           <AppIcon name="mdi-magnify" size="inherit" />
           <input
@@ -246,7 +356,12 @@
             aria-label="Search navigation"
             @keydown.enter.prevent="closeSearchOverlay"
           />
-          <button v-if="quickFilter" class="clear-btn" aria-label="Clear search" @click="quickFilter = ''">
+          <button
+            v-if="quickFilter"
+            class="clear-btn"
+            aria-label="Clear search"
+            @click="quickFilter = ''"
+          >
             <AppIcon name="mdi-close" />
           </button>
         </div>
@@ -264,19 +379,27 @@
             class="nav-search-result"
             @click="navigateFromOverlay(res)"
           >
-            <AppIcon :name="res.icon?.replace('mdi ', '') || 'mdi-menu-right'" size="inherit" />
+            <AppIcon
+              :name="res.icon?.replace('mdi ', '') || 'mdi-menu-right'"
+              size="inherit"
+            />
             <div class="res-main">
               <div class="res-title">{{ res.title }}</div>
               <div class="res-desc">{{ res.description }}</div>
             </div>
           </button>
-          <div v-if="overlayResults.length === 0" class="nav-search-empty">No matches</div>
+          <div v-if="overlayResults.length === 0" class="nav-search-empty">
+            No matches
+          </div>
         </div>
       </div>
     </div>
   </Teleport>
   <Teleport to="body">
-    <GamificationModal v-if="showGamifyModal" @close="showGamifyModal = false" />
+    <GamificationModal
+      v-if="showGamifyModal"
+      @close="showGamifyModal = false"
+    />
   </Teleport>
 </template>
 
@@ -299,8 +422,8 @@ import GamificationService from '@/utils/gamification'
 defineProps({
   isCollapsed: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 // Emits
@@ -318,32 +441,64 @@ const themeIcon = computed(() => {
   try {
     const mode = theme?.colorScheme?.value || 'system'
     // Use MDI icons for consistency
-    return mode === 'light' ? 'mdi-weather-sunny' : mode === 'dark' ? 'mdi-weather-night' : 'mdi-monitor'
-  } catch { return 'mdi-monitor' }
+    return mode === 'light'
+      ? 'mdi-weather-sunny'
+      : mode === 'dark'
+        ? 'mdi-weather-night'
+        : 'mdi-monitor'
+  } catch {
+    return 'mdi-monitor'
+  }
 })
 const themeDisplayName = computed(() => {
-  try { return theme?.getThemeDisplayName?.() || 'System' } catch { return 'System' }
+  try {
+    return theme?.getThemeDisplayName?.() || 'System'
+  } catch {
+    return 'System'
+  }
 })
 const isSystem = computed(() => {
-  try { return Boolean(theme?.isSystem?.value) } catch { return false }
+  try {
+    return Boolean(theme?.isSystem?.value)
+  } catch {
+    return false
+  }
 })
 const isDark = computed(() => {
-  try { return Boolean(theme?.isDark?.value) } catch { return false }
+  try {
+    return Boolean(theme?.isDark?.value)
+  } catch {
+    return false
+  }
 })
-const cycleTheme = () => { try { theme?.cycleTheme?.() } catch {} }
+const cycleTheme = () => {
+  try {
+    theme?.cycleTheme?.()
+  } catch {}
+}
 
 // Gamification state
 const showGamifyModal = ref(false)
 const g = new GamificationService(store)
 const achievementsCount = computed(() => {
-  try { return Array.isArray(store.user?.achievements) ? store.user.achievements.length : 0 } catch { return 0 }
+  try {
+    return Array.isArray(store.user?.achievements)
+      ? store.user.achievements.length
+      : 0
+  } catch {
+    return 0
+  }
 })
 const userLevel = computed(() => {
-  try { return g.getLevelInfo(store.user?.xp || 0) } catch { return { level: 1, title: 'Rookie', currentXP: 0, xpForNext: 0 } }
+  try {
+    return g.getLevelInfo(store.user?.xp || 0)
+  } catch {
+    return { level: 1, title: 'Rookie', currentXP: 0, xpForNext: 0 }
+  }
 })
 
 // Simple keyboard navigation handler
-const handleNavKeydown = (event) => {
+const handleNavKeydown = event => {
   // Basic keyboard navigation support
   if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     event.preventDefault()
@@ -362,7 +517,9 @@ const toggleSearch = () => {
   searchOverlayOpen.value = true
   // Autofocus after mount
   setTimeout(() => {
-    try { overlaySearchRef.value?.focus?.() } catch {}
+    try {
+      overlaySearchRef.value?.focus?.()
+    } catch {}
   }, 0)
 }
 
@@ -378,17 +535,22 @@ const appVersion = computed(() => store.meta?.version || '2.0.0')
 // Enhanced connection status based on actual app state
 const connectionStatus = computed(() => {
   if (!store.isOnline) return 'disconnected'
-  if (store.settings?.geminiApiKey && store.aiStatus?.initialized) return 'connected'
+  if (store.settings?.geminiApiKey && store.aiStatus?.initialized)
+    return 'connected'
   if (store.loading?.ai) return 'pending'
   return 'disconnected'
 })
 
 const connectionText = computed(() => {
   switch (connectionStatus.value) {
-    case 'connected': return 'Connected'
-    case 'disconnected': return 'Offline'
-    case 'pending': return 'Connecting...'
-    default: return 'Unknown'
+    case 'connected':
+      return 'Connected'
+    case 'disconnected':
+      return 'Offline'
+    case 'pending':
+      return 'Connecting...'
+    default:
+      return 'Unknown'
   }
 })
 
@@ -396,10 +558,13 @@ const connectionText = computed(() => {
 const isAIOnline = computed(() => connectionStatus.value === 'connected')
 
 // Footer enhancements
-const selectedModel = computed(() => store.settings?.selectedModel || 'gemini-2.5-flash')
+const selectedModel = computed(
+  () => store.settings?.selectedModel || 'gemini-2.5-flash'
+)
 const selectedModelInfo = computed(() => store.selectedModelInfo)
-const selectedModelDisplay = computed(() => selectedModelInfo.value?.displayName || selectedModel.value)
-
+const selectedModelDisplay = computed(
+  () => selectedModelInfo.value?.displayName || selectedModel.value
+)
 
 const modelCapabilityBadges = computed(() => {
   const caps = selectedModelInfo.value?.capabilities || {}
@@ -407,7 +572,14 @@ const modelCapabilityBadges = computed(() => {
   if (caps.multiTurn) out.push('Multi‑turn')
   if (caps.imageInput) out.push('Vision')
   if (caps.videoInput) out.push('Video')
-  if (caps.audioInput || caps.audioOutput) out.push(caps.audioInput && caps.audioOutput ? 'Audio I/O' : (caps.audioInput ? 'Audio In' : 'Audio Out'))
+  if (caps.audioInput || caps.audioOutput)
+    out.push(
+      caps.audioInput && caps.audioOutput
+        ? 'Audio I/O'
+        : caps.audioInput
+          ? 'Audio In'
+          : 'Audio Out'
+    )
   if (caps.realtimeChat) out.push('Real‑time')
   if (caps.liveChat) out.push('Live')
   if (caps.codeGeneration) out.push('Code')
@@ -426,7 +598,7 @@ const profilePct = computed(() => {
 // Helper methods
 
 // Keyboard shortcuts
-const handleKeydown = (event) => {
+const handleKeydown = event => {
   // Handle Ctrl+B for toggle collapse
   if (event.ctrlKey && event.key === 'b') {
     event.preventDefault()
@@ -457,7 +629,7 @@ onUnmounted(() => {
 
 // Enhanced navigation items with better organization
 // Helper to alias any potentially invalid icon names
-const icon = (n) => getMdiAlias(n) || n
+const icon = n => getMdiAlias(n) || n
 
 // Main navigation items (consolidating all essential features)
 const mainItems = [
@@ -467,7 +639,7 @@ const mainItems = [
     route: '/dashboard',
     icon: icon('mdi-view-dashboard-outline'),
     description: 'Your career progress overview',
-    isActive: computed(() => route.path === '/' || route.path === '/dashboard')
+    isActive: computed(() => route.path === '/' || route.path === '/dashboard'),
   },
   {
     id: 'jobs',
@@ -476,7 +648,7 @@ const mainItems = [
     icon: icon('mdi-briefcase-search-outline'),
     description: 'Video game industry roles and studios',
     badge: 'Live',
-    isActive: computed(() => route.path === '/jobs')
+    isActive: computed(() => route.path === '/jobs'),
   },
   {
     id: 'resume',
@@ -485,7 +657,9 @@ const mainItems = [
     icon: icon('mdi-file-document-multiple-outline'),
     description: 'Resume + Cover Letter builder',
     badge: 'Docs',
-    isActive: computed(() => route.path === '/resume' || route.path === '/documents')
+    isActive: computed(
+      () => route.path === '/resume' || route.path === '/documents'
+    ),
   },
   {
     id: 'portfolio',
@@ -493,7 +667,7 @@ const mainItems = [
     route: '/portfolio',
     icon: icon('mdi-briefcase-variant-outline'),
     description: 'Projects, clips, and achievements',
-    isActive: computed(() => route.path.startsWith('/portfolio'))
+    isActive: computed(() => route.path.startsWith('/portfolio')),
   },
   {
     id: 'studios',
@@ -501,7 +675,7 @@ const mainItems = [
     route: '/studios',
     icon: icon('mdi-account-search'),
     description: 'Research culture, games, roles, intel',
-    isActive: computed(() => route.path.startsWith('/studios'))
+    isActive: computed(() => route.path.startsWith('/studios')),
   },
   {
     id: 'interview-prep',
@@ -511,7 +685,7 @@ const mainItems = [
     description: 'Practice interviews with AI',
     badge: 'AI',
     requiresAI: true,
-    isActive: computed(() => route.path.startsWith('/interview'))
+    isActive: computed(() => route.path.startsWith('/interview')),
   },
   {
     id: 'skill-mapper',
@@ -521,7 +695,7 @@ const mainItems = [
     description: 'Map your skills to roles',
     badge: 'AI',
     requiresAI: true,
-    isActive: computed(() => route.path.startsWith('/skills'))
+    isActive: computed(() => route.path.startsWith('/skills')),
   },
   {
     id: 'ai-media',
@@ -531,8 +705,8 @@ const mainItems = [
     description: 'Live + file AI analysis',
     badge: 'Beta',
     requiresAI: true,
-    isActive: computed(() => route.path === '/demo/ai-media')
-  }
+    isActive: computed(() => route.path === '/demo/ai-media'),
+  },
 ]
 
 // Settings items
@@ -543,8 +717,8 @@ const settingsItems = [
     route: '/settings',
     icon: 'mdi-cog',
     description: 'Preferences, API keys, and configuration',
-    isActive: computed(() => route.path === '/settings')
-  }
+    isActive: computed(() => route.path === '/settings'),
+  },
 ]
 
 const playgroundItems = [
@@ -554,7 +728,7 @@ const playgroundItems = [
     route: '/cloud',
     icon: icon('mdi-cloud'),
     description: 'Cloud services and storage',
-    isActive: computed(() => route.path === '/cloud')
+    isActive: computed(() => route.path === '/cloud'),
   },
   {
     id: 'system',
@@ -562,7 +736,7 @@ const playgroundItems = [
     route: '/system',
     icon: icon('mdi-monitor-dashboard'),
     description: 'Performance and diagnostics',
-    isActive: computed(() => route.path === '/system')
+    isActive: computed(() => route.path === '/system'),
   },
   {
     id: 'flow',
@@ -570,7 +744,7 @@ const playgroundItems = [
     route: '/flow',
     icon: icon('mdi-vector-polyline'),
     description: 'Career workflow automation',
-    isActive: computed(() => route.path === '/flow')
+    isActive: computed(() => route.path === '/flow'),
   },
   {
     id: 'realtime-chat',
@@ -581,10 +755,9 @@ const playgroundItems = [
     description: 'Real-time AI conversation',
     badge: 'Live',
     requiresAI: true,
-    isActive: computed(() => route.path === '/demo/realtime')
-  }
+    isActive: computed(() => route.path === '/demo/realtime'),
+  },
 ]
-
 
 // (badge counts removed)
 
@@ -593,16 +766,20 @@ const density = ref(localStorage.getItem('nav-density') || 'compact')
 const densityClass = computed(() => `density-${density.value}`)
 function toggleDensity() {
   density.value = density.value === 'compact' ? 'comfortable' : 'compact'
-  try { localStorage.setItem('nav-density', density.value) } catch {}
+  try {
+    localStorage.setItem('nav-density', density.value)
+  } catch {}
 }
 
 // Quick filter
 const quickFilter = ref('')
-const filterItems = (items) => {
+const filterItems = items => {
   const q = (quickFilter.value || '').toLowerCase().trim()
   if (!q) return items
   return items.filter(
-    (it) => (it.title || '').toLowerCase().includes(q) || (it.description || '').toLowerCase().includes(q),
+    it =>
+      (it.title || '').toLowerCase().includes(q) ||
+      (it.description || '').toLowerCase().includes(q)
   )
 }
 const filteredMain = computed(() => filterItems(mainItems))
@@ -615,22 +792,35 @@ function onItemNavigate(item) {
 }
 
 // Overlay results (merge all)
-const allItems = computed(() => [...mainItems, ...settingsItems, ...playgroundItems])
+const allItems = computed(() => [
+  ...mainItems,
+  ...settingsItems,
+  ...playgroundItems,
+])
 const overlayResults = computed(() => {
   const q = (quickFilter.value || '').toLowerCase().trim()
   if (!q) return allItems.value.slice(0, 8)
-  return allItems.value.filter(it => (it.title || '').toLowerCase().includes(q) || (it.description || '').toLowerCase().includes(q)).slice(0, 8)
+  return allItems.value
+    .filter(
+      it =>
+        (it.title || '').toLowerCase().includes(q) ||
+        (it.description || '').toLowerCase().includes(q)
+    )
+    .slice(0, 8)
 })
 
 function navigateFromOverlay(res) {
-  try { router.push(res.route) } catch {}
+  try {
+    router.push(res.route)
+  } catch {}
   closeSearchOverlay()
 }
 
 function navigateToAISettings() {
-  try { router.push('/settings#ai-section') } catch {}
+  try {
+    router.push('/settings#ai-section')
+  } catch {}
 }
-
 </script>
 
 <style scoped>
@@ -649,7 +839,8 @@ function navigateToAISettings() {
   backdrop-filter: var(--glass-backdrop-blur) var(--glass-backdrop-saturate);
   font-family: var(--font-primary);
   transition: all var(--duration-normal) var(--easing-ease-out);
-  box-shadow: 0 0 24px color-mix(in srgb, var(--color-primary-500) 6%, transparent);
+  box-shadow: 0 0 24px
+    color-mix(in srgb, var(--color-primary-500) 6%, transparent);
   border-top-right-radius: var(--radius-lg);
   border-bottom-right-radius: var(--radius-lg);
   overflow: hidden;
@@ -662,7 +853,9 @@ function navigateToAISettings() {
   max-width: 72px;
 }
 
-.trophy-toggle-btn { position: relative; }
+.trophy-toggle-btn {
+  position: relative;
+}
 
 /* Comfortable density adjustments */
 .density-comfortable .navigation-menu .nav-item-link {
@@ -701,7 +894,11 @@ function navigateToAISettings() {
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--color-primary-500) 35%, transparent),
-    color-mix(in srgb, var(--color-secondary-500, var(--color-primary-400)) 20%, transparent)
+    color-mix(
+      in srgb,
+      var(--color-secondary-500, var(--color-primary-400)) 20%,
+      transparent
+    )
   );
   opacity: 0.5;
 }
@@ -716,10 +913,19 @@ function navigateToAISettings() {
   position: relative;
   /* Glass header treatment - Remove backdrop-filter to prevent nesting */
   background:
-    radial-gradient(120% 60% at 0% 0%, color-mix(in srgb, var(--color-primary-500) 6%, transparent), transparent 40%),
-    radial-gradient(120% 60% at 100% 0%, color-mix(in srgb, var(--color-cyber-500) 6%, transparent), transparent 40%),
+    radial-gradient(
+      120% 60% at 0% 0%,
+      color-mix(in srgb, var(--color-primary-500) 6%, transparent),
+      transparent 40%
+    ),
+    radial-gradient(
+      120% 60% at 100% 0%,
+      color-mix(in srgb, var(--color-cyber-500) 6%, transparent),
+      transparent 40%
+    ),
     rgba(var(--surface-elevated-rgb), 0.92);
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--text-secondary) 6%, transparent) inset;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--text-secondary) 6%, transparent)
+    inset;
 }
 
 /* Collapsed brand adjustments */
@@ -746,7 +952,12 @@ function navigateToAISettings() {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary-500) 20%, transparent), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent),
+    transparent
+  );
   opacity: 0.4;
   pointer-events: none;
 }
@@ -759,17 +970,30 @@ function navigateToAISettings() {
   right: 12px;
   bottom: -1px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-cyber-500) 16%, transparent), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-cyber-500) 16%, transparent),
+    transparent
+  );
   opacity: 0.25;
   pointer-events: none;
 }
 
 /* Dark theme: slightly stronger tint for glass header - no backdrop-filter */
-[data-theme="dark"] .nav-brand,
+[data-theme='dark'] .nav-brand,
 .dark-theme .nav-brand {
   background:
-    radial-gradient(120% 60% at 0% 0%, color-mix(in srgb, var(--color-primary-500) 10%, transparent), transparent 40%),
-    radial-gradient(120% 60% at 100% 0%, color-mix(in srgb, var(--color-cyber-500) 8%, transparent), transparent 40%),
+    radial-gradient(
+      120% 60% at 0% 0%,
+      color-mix(in srgb, var(--color-primary-500) 10%, transparent),
+      transparent 40%
+    ),
+    radial-gradient(
+      120% 60% at 100% 0%,
+      color-mix(in srgb, var(--color-cyber-500) 8%, transparent),
+      transparent 40%
+    ),
     rgba(var(--surface-elevated-rgb), 0.92);
 }
 
@@ -788,7 +1012,7 @@ function navigateToAISettings() {
   text-transform: uppercase;
 }
 
-[data-theme="dark"] .theme-mode-badge,
+[data-theme='dark'] .theme-mode-badge,
 .dark-theme .theme-mode-badge {
   color: var(--text-secondary);
   border-color: color-mix(in srgb, var(--text-secondary) 14%, transparent);
@@ -816,13 +1040,19 @@ function navigateToAISettings() {
   padding: var(--spacing-md) var(--spacing-sm) var(--spacing-lg);
 }
 
-.nav-content::-webkit-scrollbar { width: 8px; }
-.nav-content::-webkit-scrollbar-track { background: transparent; }
+.nav-content::-webkit-scrollbar {
+  width: 8px;
+}
+.nav-content::-webkit-scrollbar-track {
+  background: transparent;
+}
 .nav-content::-webkit-scrollbar-thumb {
   background: color-mix(in srgb, var(--text-secondary) 18%, transparent);
   border-radius: 999px;
 }
-.nav-content:hover::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--text-secondary) 28%, transparent); }
+.nav-content:hover::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text-secondary) 28%, transparent);
+}
 
 .nav-control-buttons {
   display: flex;
@@ -863,7 +1093,8 @@ function navigateToAISettings() {
 
 .nav-control-btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent);
 }
 
 .nav-control-btn :deep(.v-btn__content) {
@@ -889,7 +1120,11 @@ function navigateToAISettings() {
 /* Specific button styling using unified design system */
 .search-toggle-btn:hover {
   /* Replace undefined alpha tokens with color-mix using design tokens */
-  background: color-mix(in srgb, var(--color-primary-500) 12%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 12%,
+    transparent
+  ) !important;
 }
 
 .search-toggle-btn:hover :deep(i) {
@@ -897,7 +1132,11 @@ function navigateToAISettings() {
 }
 
 .theme-toggle-btn:hover {
-  background: color-mix(in srgb, var(--color-gaming-500) 12%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-gaming-500) 12%,
+    transparent
+  ) !important;
 }
 
 .theme-toggle-btn:hover :deep(i) {
@@ -905,7 +1144,11 @@ function navigateToAISettings() {
 }
 
 .settings-btn:hover {
-  background: color-mix(in srgb, var(--color-gray-500) 12%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-gray-500) 12%,
+    transparent
+  ) !important;
 }
 
 .settings-btn:hover :deep(i) {
@@ -913,7 +1156,11 @@ function navigateToAISettings() {
 }
 
 .collapse-toggle:hover {
-  background: color-mix(in srgb, var(--color-cyber-500) 12%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-cyber-500) 12%,
+    transparent
+  ) !important;
 }
 
 .collapse-toggle:hover :deep(i) {
@@ -953,7 +1200,12 @@ function navigateToAISettings() {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transform: translateX(-100%);
   transition: transform 0.6s;
 }
@@ -1028,7 +1280,9 @@ function navigateToAISettings() {
   align-items: center;
 }
 
-.nav-control-buttons { display: flex }
+.nav-control-buttons {
+  display: flex;
+}
 
 /* Search overlay */
 .nav-search-overlay {
@@ -1091,12 +1345,37 @@ function navigateToAISettings() {
 }
 
 /* Search overlay results */
-.nav-search-results { margin-top: var(--spacing-md); display: grid; gap: var(--spacing-sm) }
-.nav-search-result { display: flex; align-items: center; gap: var(--spacing-sm); background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: var(--spacing-sm) var(--spacing-md); text-align: left }
-.nav-search-result:hover { background: var(--glass-hover-bg) }
-.nav-search-result .res-title { font-weight: 600; color: var(--text-primary) }
-.nav-search-result .res-desc { font-size: 0.8rem; color: var(--text-secondary) }
-.nav-search-empty { text-align: center; color: var(--text-secondary); padding: var(--spacing-sm) }
+.nav-search-results {
+  margin-top: var(--spacing-md);
+  display: grid;
+  gap: var(--spacing-sm);
+}
+.nav-search-result {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+}
+.nav-search-result:hover {
+  background: var(--glass-hover-bg);
+}
+.nav-search-result .res-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.nav-search-result .res-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.nav-search-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: var(--spacing-sm);
+}
 
 /* Enhanced section headers for collapsed state */
 .nav-section-header.collapsed {
@@ -1128,7 +1407,9 @@ function navigateToAISettings() {
 }
 
 .navigation-menu.collapsed:hover .nav-section-header.collapsed .section-title,
-.navigation-menu.collapsed:hover .nav-section-header.collapsed .section-indicator,
+.navigation-menu.collapsed:hover
+  .nav-section-header.collapsed
+  .section-indicator,
 .navigation-menu.collapsed:hover .nav-section-header.collapsed .section-badge {
   opacity: 1;
   pointer-events: auto;
@@ -1153,13 +1434,42 @@ function navigateToAISettings() {
 }
 
 /* Model badge under brand text */
-.model-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; color: var(--text-secondary); font-size: 0.8rem; }
-.model-badge .model-text { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.model-badge[role="button"] { cursor: pointer; padding: 2px 6px; border-radius: 999px; border: 1px solid transparent; }
-.model-badge[role="button"]:hover { background: var(--glass-bg); border-color: var(--glass-border); }
-.model-badge[role="button"]:focus-visible { outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500) 40%, transparent); }
-.model-badge .model-gear { opacity: 0.7; font-size: 14px; }
-.model-badge[role="button"]:hover .model-gear { opacity: 1; }
+.model-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+.model-badge .model-text {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.model-badge[role='button'] {
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+.model-badge[role='button']:hover {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+}
+.model-badge[role='button']:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+}
+.model-badge .model-gear {
+  opacity: 0.7;
+  font-size: 14px;
+}
+.model-badge[role='button']:hover .model-gear {
+  opacity: 1;
+}
 
 .collapse-toggle {
   flex-shrink: 0;
@@ -1288,7 +1598,7 @@ function navigateToAISettings() {
   border-radius: var(--border-radius-lg);
 }
 
-[data-theme="dark"] .nav-section-header,
+[data-theme='dark'] .nav-section-header,
 .dark-theme .nav-section-header {
   background: color-mix(in srgb, var(--surface-elevated) 40%, transparent);
   border-color: var(--border-glass);
@@ -1297,12 +1607,24 @@ function navigateToAISettings() {
 /* Quick filter removed from header per request */
 
 /* Density variants */
-.density-compact .nav-item-link { padding: 8px 10px; min-height: 40px; gap: 10px; }
-.density-compact .nav-items { gap: 6px; }
-.density-compact .section-title { letter-spacing: 0.04em; }
-.density-compact .nav-control-buttons { gap: 4px; }
+.density-compact .nav-item-link {
+  padding: 8px 10px;
+  min-height: 40px;
+  gap: 10px;
+}
+.density-compact .nav-items {
+  gap: 6px;
+}
+.density-compact .section-title {
+  letter-spacing: 0.04em;
+}
+.density-compact .nav-control-buttons {
+  gap: 4px;
+}
 
-.section-icon.with-badge { position: relative; }
+.section-icon.with-badge {
+  position: relative;
+}
 .section-count-badge {
   position: absolute;
   top: -6px;
@@ -1320,13 +1642,17 @@ function navigateToAISettings() {
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 0 2px var(--surface-glass);
-  transition: transform var(--duration-fast) var(--easing-ease-out), box-shadow var(--duration-fast);
+  transition:
+    transform var(--duration-fast) var(--easing-ease-out),
+    box-shadow var(--duration-fast);
   animation: badgePop 420ms var(--easing-ease-out) 1;
 }
 
 .section-icon.with-badge:hover .section-count-badge {
   transform: scale(1.12);
-  box-shadow: 0 0 0 2px var(--surface-elevated), 0 0 12px rgba(var(--color-primary-500-rgb), 0.25);
+  box-shadow:
+    0 0 0 2px var(--surface-elevated),
+    0 0 12px rgba(var(--color-primary-500-rgb), 0.25);
 }
 
 /* Programmatic re-pop trigger */
@@ -1335,9 +1661,18 @@ function navigateToAISettings() {
 }
 
 @keyframes badgePop {
-  0% { transform: scale(0.8); opacity: 0.6; }
-  60% { transform: scale(1.18); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+  60% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Local section-badge replaced by unified alias */
@@ -1398,7 +1733,7 @@ function navigateToAISettings() {
 .nav-footer {
   padding: var(--spacing-md) var(--spacing-lg);
   border-top: 1px solid var(--border-subtle);
-  background: rgba(var(--surface-elevated-rgb, 255,255,255), 0.8);
+  background: rgba(var(--surface-elevated-rgb, 255, 255, 255), 0.8);
   margin-top: auto;
   transition: all var(--duration-normal) var(--easing-ease-out);
 }
@@ -1435,10 +1770,15 @@ function navigateToAISettings() {
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--color-primary-500) 8%, transparent) 0%,
-    color-mix(in srgb, var(--color-cyber-500, var(--color-secondary-500)) 6%, transparent) 100%
+    color-mix(
+        in srgb,
+        var(--color-cyber-500, var(--color-secondary-500)) 6%,
+        transparent
+      )
+      100%
   );
   border: 1px solid var(--glass-border);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
 }
 
 /* Prevent overflow and allow ellipsis where needed */
@@ -1453,21 +1793,34 @@ function navigateToAISettings() {
   height: 10px;
   border-radius: 50%;
   background: var(--color-gray-300);
-  box-shadow: 0 0 0 0 rgba(0,0,0,0);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 }
-.nav-footer .footer-glass-status .fgs-dot.connected { background: var(--color-success-500, var(--color-success)); }
-.nav-footer .footer-glass-status .fgs-dot.disconnected { background: var(--color-danger-500, var(--color-danger)); }
-.nav-footer .footer-glass-status .fgs-dot.pending { background: var(--color-warning-500, var(--color-warning)); }
+.nav-footer .footer-glass-status .fgs-dot.connected {
+  background: var(--color-success-500, var(--color-success));
+}
+.nav-footer .footer-glass-status .fgs-dot.disconnected {
+  background: var(--color-danger-500, var(--color-danger));
+}
+.nav-footer .footer-glass-status .fgs-dot.pending {
+  background: var(--color-warning-500, var(--color-warning));
+}
 
-.nav-footer .footer-glass-status .fgs-text { display: inline-flex; align-items: center; gap: 8px; }
-.nav-footer .footer-glass-status .fgs-label { font-size: 0.8rem; color: var(--text-primary); }
+.nav-footer .footer-glass-status .fgs-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-footer .footer-glass-status .fgs-label {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
 .nav-footer .footer-glass-status .fgs-env {
   font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 999px;
   border: 1px solid var(--glass-border);
   color: var(--text-secondary);
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.45);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.45);
 }
 
 .nav-footer .status-dot {
@@ -1475,14 +1828,23 @@ function navigateToAISettings() {
   height: 10px;
   border-radius: 50%;
   background: var(--color-gray-300);
-  box-shadow: 0 0 0 0 rgba(0,0,0,0);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 }
 
-.nav-footer .status-dot.connected { background: var(--color-success); }
-.nav-footer .status-dot.disconnected { background: var(--color-danger); }
-.nav-footer .status-dot.pending { background: var(--color-warning); }
+.nav-footer .status-dot.connected {
+  background: var(--color-success);
+}
+.nav-footer .status-dot.disconnected {
+  background: var(--color-danger);
+}
+.nav-footer .status-dot.pending {
+  background: var(--color-warning);
+}
 
-.nav-footer .status-label { font-size: 0.8rem; color: var(--text-secondary); }
+.nav-footer .status-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
 
 .nav-footer .env-chip,
 .nav-footer .version-chip {
@@ -1491,29 +1853,71 @@ function navigateToAISettings() {
   border-radius: 999px;
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.45);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.45);
   backdrop-filter: blur(10px);
 }
 
-.nav-footer .footer-model { display: flex; align-items: center; gap: var(--spacing-xs); justify-self: end; }
-.nav-footer .model-name { font-size: 0.85rem; color: var(--text-primary); max-width: clamp(120px, 18vw, 220px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-footer .footer-model {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  justify-self: end;
+}
+.nav-footer .model-name {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  max-width: clamp(120px, 18vw, 220px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-.nav-footer .footer-progress { display: flex; align-items: center; gap: var(--spacing-sm); min-width: 0; }
-.nav-footer .progress-track { position: relative; flex: 1; height: 8px; background: var(--surface-elevated); border-radius: 999px; overflow: hidden; border: 1px solid var(--border-subtle); }
-.nav-footer .progress-bar { position: absolute; inset: 0 auto 0 0; height: 100%; background: linear-gradient(90deg, var(--color-primary-400), var(--color-secondary-400)); box-shadow: var(--shadow-xs); }
-.nav-footer .progress-label { font-size: 0.75rem; color: var(--text-secondary); }
+.nav-footer .footer-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-width: 0;
+}
+.nav-footer .progress-track {
+  position: relative;
+  flex: 1;
+  height: 8px;
+  background: var(--surface-elevated);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+.nav-footer .progress-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-400),
+    var(--color-secondary-400)
+  );
+  box-shadow: var(--shadow-xs);
+}
+.nav-footer .progress-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
 
-.nav-footer .footer-actions { display: flex; align-items: center; gap: var(--spacing-xs); }
+.nav-footer .footer-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
 .nav-footer .footer-actions :deep(button),
 .nav-footer .footer-actions :deep(a) {
   border-radius: 10px;
   border: 1px solid var(--glass-border);
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.5);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.5);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
 }
 .nav-footer .footer-actions :deep(button:hover),
 .nav-footer .footer-actions :deep(a:hover) {
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.65);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.65);
 }
 
 /* Enhanced collapsed footer - Remove backdrop-filter to prevent nesting */
@@ -1523,7 +1927,7 @@ function navigateToAISettings() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(var(--surface-elevated-rgb, 255,255,255), 0.75);
+  background: rgba(var(--surface-elevated-rgb, 255, 255, 255), 0.75);
   gap: var(--spacing-xs);
 }
 
@@ -1549,30 +1953,54 @@ function navigateToAISettings() {
 
 /* Minimal collapsed footer controls */
 .nav-footer .footer-collapsed .footer-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
   border: 1px solid var(--glass-border);
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.5);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.5);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
 }
-.nav-footer .footer-collapsed .footer-btn:hover { background: rgba(var(--surface-glass-rgb, 255,255,255), 0.65); }
+.nav-footer .footer-collapsed .footer-btn:hover {
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.65);
+}
 
 .nav-footer .footer-collapsed .footer-status {
-  width: 14px; height: 14px; border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
   border: 1px solid var(--glass-border);
   background: var(--surface-elevated);
 }
-.nav-footer .footer-collapsed .footer-status[data-status="connected"] { background: var(--color-success); }
-.nav-footer .footer-collapsed .footer-status[data-status="disconnected"] { background: var(--color-danger); }
-.nav-footer .footer-collapsed .footer-status[data-status="pending"] { background: var(--color-warning); }
+.nav-footer .footer-collapsed .footer-status[data-status='connected'] {
+  background: var(--color-success);
+}
+.nav-footer .footer-collapsed .footer-status[data-status='disconnected'] {
+  background: var(--color-danger);
+}
+.nav-footer .footer-collapsed .footer-status[data-status='pending'] {
+  background: var(--color-warning);
+}
 
 .nav-footer .footer-collapsed .footer-version {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 40px; height: 28px; padding: 0 8px; border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 10px;
   border: 1px solid var(--glass-border);
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.5);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.5);
 }
-.nav-footer .footer-collapsed .version-text { font-size: 0.72rem; color: var(--text-primary); font-weight: 600; letter-spacing: .2px; }
+.nav-footer .footer-collapsed .version-text {
+  font-size: 0.72rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
 
 .footer-info {
   display: flex;
@@ -1588,10 +2016,9 @@ function navigateToAISettings() {
   color: var(--text-secondary);
 }
 
-
-
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -1616,7 +2043,7 @@ function navigateToAISettings() {
 
 /* === ENHANCED THEME SUPPORT === */
 /* Dark Theme Styles */
-[data-theme="dark"] .navigation-menu,
+[data-theme='dark'] .navigation-menu,
 .dark-theme .navigation-menu {
   background: var(--glass-elevated);
   border-right-color: var(--glass-border);
@@ -1624,50 +2051,66 @@ function navigateToAISettings() {
 }
 
 /* Dark theme button styling using unified design system */
-[data-theme="dark"] .nav-control-btn:hover,
+[data-theme='dark'] .nav-control-btn:hover,
 .dark-theme .nav-control-btn:hover {
   /* Use glass hover bg from design system; no separate -dark variable */
   background: var(--glass-hover-bg) !important;
   box-shadow: var(--shadow-sm-dark);
 }
 
-[data-theme="dark"] .search-toggle-btn:hover,
+[data-theme='dark'] .search-toggle-btn:hover,
 .dark-theme .search-toggle-btn:hover {
-  background: color-mix(in srgb, var(--color-primary-500) 20%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-primary-500) 20%,
+    transparent
+  ) !important;
 }
 
-[data-theme="dark"] .theme-toggle-btn:hover,
+[data-theme='dark'] .theme-toggle-btn:hover,
 .dark-theme .theme-toggle-btn:hover {
-  background: color-mix(in srgb, var(--color-gaming-500) 20%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-gaming-500) 20%,
+    transparent
+  ) !important;
 }
 
-[data-theme="dark"] .settings-btn:hover,
+[data-theme='dark'] .settings-btn:hover,
 .dark-theme .settings-btn:hover {
-  background: color-mix(in srgb, var(--color-gray-500) 20%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-gray-500) 20%,
+    transparent
+  ) !important;
 }
 
-[data-theme="dark"] .collapse-toggle:hover,
+[data-theme='dark'] .collapse-toggle:hover,
 .dark-theme .collapse-toggle:hover {
-  background: color-mix(in srgb, var(--color-cyber-500) 20%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--color-cyber-500) 20%,
+    transparent
+  ) !important;
 }
 
-[data-theme="dark"] .nav-brand,
+[data-theme='dark'] .nav-brand,
 .dark-theme .nav-brand {
   border-bottom-color: var(--glass-border);
 }
 
-[data-theme="dark"] .brand-name,
+[data-theme='dark'] .brand-name,
 .dark-theme .brand-name {
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .section-title,
+[data-theme='dark'] .section-title,
 .dark-theme .section-title {
   color: var(--text-secondary);
   opacity: 0.9;
 }
 
-[data-theme="dark"] .nav-footer,
+[data-theme='dark'] .nav-footer,
 .dark-theme .nav-footer {
   background: rgba(15, 15, 15, 0.8);
   border-top-color: var(--glass-border);
@@ -1675,13 +2118,18 @@ function navigateToAISettings() {
 
 /* System theme preference support */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .navigation-menu {
+  :root:not([data-theme='light']) .navigation-menu {
     background: rgba(15, 15, 15, 0.95);
     border-right-color: var(--glass-border);
   }
-  
-  :root:not([data-theme="light"]) .brand-name {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-gaming-500), var(--color-cyber-500));
+
+  :root:not([data-theme='light']) .brand-name {
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-500),
+      var(--color-gaming-500),
+      var(--color-cyber-500)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1702,7 +2150,8 @@ function navigateToAISettings() {
   right: 0;
   width: 1px;
   height: 100%;
-  background: linear-gradient(180deg, 
+  background: linear-gradient(
+    180deg,
     transparent,
     var(--color-primary-200),
     var(--color-secondary-200),
@@ -1718,12 +2167,17 @@ function navigateToAISettings() {
 
 /* Gaming theme enhancements for navigation */
 .theme-gaming .navigation-menu {
-  background: radial-gradient(ellipse at top, rgba(0, 255, 136, 0.02), transparent),
-              var(--glass-surface-elevated);
+  background:
+    radial-gradient(ellipse at top, rgba(0, 255, 136, 0.02), transparent),
+    var(--glass-surface-elevated);
 }
 
 .theme-gaming .brand-logo .logo-inner {
-  background: linear-gradient(135deg, var(--color-gaming-500), var(--color-cyber-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-gaming-500),
+    var(--color-cyber-500)
+  );
 }
 
 .theme-gaming .section-icon {
@@ -1752,13 +2206,17 @@ function navigateToAISettings() {
 }
 
 /* Loading states */
-.nav-section[data-loading="true"] .section-icon {
+.nav-section[data-loading='true'] .section-icon {
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Accessibility improvements */
@@ -1770,7 +2228,7 @@ function navigateToAISettings() {
   .footer-content {
     transition: none;
   }
-  
+
   .ring,
   .indicator-pulse,
   .status-dot {
@@ -1794,9 +2252,11 @@ function navigateToAISettings() {
   }
 }
 
-[data-theme="dark"] .navigation-menu:hover,
+[data-theme='dark'] .navigation-menu:hover,
 .dark-theme .navigation-menu:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.05);
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(99, 102, 241, 0.05);
 }
 
 /* Brand logo enhancements */
@@ -1805,7 +2265,7 @@ function navigateToAISettings() {
   box-shadow: var(--shadow-glow-primary);
 }
 
-[data-theme="dark"] :deep(.brand-logo):hover,
+[data-theme='dark'] :deep(.brand-logo):hover,
 .dark-theme :deep(.brand-logo):hover {
   box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
 }
@@ -1817,7 +2277,7 @@ function navigateToAISettings() {
   border-radius: var(--radius-md);
 }
 
-[data-theme="dark"] .nav-items .nav-item:hover,
+[data-theme='dark'] .nav-items .nav-item:hover,
 .dark-theme .nav-items .nav-item:hover {
   background: var(--glass-bg);
 }
@@ -1828,20 +2288,20 @@ function navigateToAISettings() {
     width: 100%;
     max-width: 280px;
   }
-  
+
   .navigation-menu.collapsed {
     width: 64px;
     min-width: 64px;
     max-width: 64px;
   }
-  
+
   /* Smaller buttons on mobile */
   .navigation-menu.collapsed .nav-control-btn {
     width: 28px !important;
     height: 28px !important;
     min-width: 28px !important;
   }
-  
+
   /* Smaller logo on mobile collapsed */
   .navigation-menu.collapsed .nav-brand {
     --nav-brand-logo-size: 32px;
@@ -1854,7 +2314,11 @@ function navigateToAISettings() {
   .nav-footer .footer-row {
     grid-template-columns: 1fr;
   }
-  .nav-footer .footer-model { justify-self: start; }
-  .nav-footer .progress-label { white-space: nowrap; }
+  .nav-footer .footer-model {
+    justify-self: start;
+  }
+  .nav-footer .progress-label {
+    white-space: nowrap;
+  }
 }
 </style>

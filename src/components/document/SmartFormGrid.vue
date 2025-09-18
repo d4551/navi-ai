@@ -1,5 +1,8 @@
 <template>
-  <div class="smart-form-grid font-sans" :class="{ 'has-suggestions': showSuggestions }">
+  <div
+    class="smart-form-grid font-sans"
+    :class="{ 'has-suggestions': showSuggestions }"
+  >
     <!-- Personal Information Section -->
     <div v-if="section === 'personal'" class="form-grid">
       <!-- Full Name with Smart Detection -->
@@ -20,7 +23,10 @@
             @focus="focusedField = 'name'"
             @blur="handleBlur"
           />
-          <div v-if="nameSuggestions.length > 0 && focusedField === 'name'" class="suggestions-dropdown">
+          <div
+            v-if="nameSuggestions.length > 0 && focusedField === 'name'"
+            class="suggestions-dropdown"
+          >
             <div
               v-for="suggestion in nameSuggestions"
               :key="suggestion"
@@ -61,7 +67,10 @@
             AI Suggest
           </UnifiedButton>
         </div>
-        <div v-if="titleSuggestions.length > 0 && focusedField === 'title'" class="suggestions-dropdown">
+        <div
+          v-if="titleSuggestions.length > 0 && focusedField === 'title'"
+          class="suggestions-dropdown"
+        >
           <div class="suggestion-header">
             <AppIcon name="CpuChipIcon" />
             AI Suggestions
@@ -89,12 +98,18 @@
           type="email"
           class="field-input"
           placeholder="john.doe@example.com"
-          :class="{ 'is-valid': isValidEmail, 'is-invalid': localData.email && !isValidEmail }"
+          :class="{
+            'is-valid': isValidEmail,
+            'is-invalid': localData.email && !isValidEmail,
+          }"
           @input="validateEmail"
         />
         <div v-if="emailSuggestion" class="inline-suggestion">
           <AppIcon name="LightBulbIcon-outline" />
-          Did you mean: <button class="suggestion-link" @click="applyEmailSuggestion">{{ emailSuggestion }}</button>?
+          Did you mean:
+          <button class="suggestion-link" @click="applyEmailSuggestion">
+            {{ emailSuggestion }}</button
+          >?
         </div>
       </div>
 
@@ -129,7 +144,10 @@
             @focus="focusedField = 'location'"
             @blur="handleBlur"
           />
-          <div v-if="locationSuggestions.length > 0 && focusedField === 'location'" class="suggestions-dropdown">
+          <div
+            v-if="locationSuggestions.length > 0 && focusedField === 'location'"
+            class="suggestions-dropdown"
+          >
             <div
               v-for="suggestion in locationSuggestions"
               :key="suggestion.place_id || suggestion"
@@ -138,8 +156,12 @@
             >
               <AppIcon name="MapPinIcon" />
               <div>
-                <div class="location-name">{{ suggestion.main_text || suggestion }}</div>
-                <div v-if="suggestion.secondary_text" class="location-detail">{{ suggestion.secondary_text }}</div>
+                <div class="location-name">
+                  {{ suggestion.main_text || suggestion }}
+                </div>
+                <div v-if="suggestion.secondary_text" class="location-detail">
+                  {{ suggestion.secondary_text }}
+                </div>
               </div>
             </div>
           </div>
@@ -237,7 +259,10 @@
     </div>
 
     <!-- Import Profile Data Helper -->
-    <div v-if="section === 'personal' && showProfileImport" class="profile-import-card">
+    <div
+      v-if="section === 'personal' && showProfileImport"
+      class="profile-import-card"
+    >
       <div class="import-header">
         <AppIcon name="UserIcon-import" />
         <span>Import from Profile</span>
@@ -256,7 +281,14 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowDownTrayIcon, BriefcaseIcon, CpuChipIcon, GlobeAmericasIcon, LightBulbIcon, UserIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowDownTrayIcon,
+  BriefcaseIcon,
+  CpuChipIcon,
+  GlobeAmericasIcon,
+  LightBulbIcon,
+  UserIcon,
+} from '@heroicons/vue/24/outline'
 import { MapPinIcon } from '@heroicons/vue/24/solid'
 
 import { ref, computed, watch, nextTick } from 'vue'
@@ -301,7 +333,7 @@ const nameSuggestions = ref<string[]>([])
 const titleSuggestions = ref<string[]>([])
 const locationSuggestions = ref<any[]>([])
 const emailSuggestion = ref<string>('')
-const summaryTips = ref<Array<{id: string, icon: string, text: string}>>([])
+const summaryTips = ref<Array<{ id: string; icon: string; text: string }>>([])
 
 // Loading states
 const generatingSummary = ref(false)
@@ -313,24 +345,35 @@ const isValidEmail = computed(() => {
 })
 
 const summaryWordCount = computed(() => {
-  return (localData.value.summary || '').trim().split(/\s+/).filter(Boolean).length
+  return (localData.value.summary || '').trim().split(/\s+/).filter(Boolean)
+    .length
 })
 
 const showSuggestions = computed(() => {
-  return nameSuggestions.value.length > 0 || 
-         titleSuggestions.value.length > 0 || 
-         locationSuggestions.value.length > 0
+  return (
+    nameSuggestions.value.length > 0 ||
+    titleSuggestions.value.length > 0 ||
+    locationSuggestions.value.length > 0
+  )
 })
 
 // Watch for changes and emit
-watch(localData, (newValue) => {
-  emit('update:modelValue', newValue)
-}, { deep: true })
+watch(
+  localData,
+  newValue => {
+    emit('update:modelValue', newValue)
+  },
+  { deep: true }
+)
 
 // Watch for prop changes
-watch(() => props.modelValue, (newValue) => {
-  localData.value = { ...newValue }
-}, { deep: true })
+watch(
+  () => props.modelValue,
+  newValue => {
+    localData.value = { ...newValue }
+  },
+  { deep: true }
+)
 
 // Smart input handlers
 const handleNameInput = debounce(() => {
@@ -418,7 +461,8 @@ const applyTitleSuggestion = (suggestion: string) => {
 }
 
 const applyLocationSuggestion = (suggestion: any) => {
-  localData.value.location = typeof suggestion === 'string' ? suggestion : suggestion.description
+  localData.value.location =
+    typeof suggestion === 'string' ? suggestion : suggestion.description
   locationSuggestions.value = []
 }
 
@@ -430,14 +474,14 @@ const applyEmailSuggestion = () => {
 // AI Generation
 const generateTitleSuggestions = async () => {
   if (!props.aiEnabled) return
-  
+
   try {
     // This would integrate with your AI service
     titleSuggestions.value = [
       'Senior Software Engineer',
       'Full-Stack Developer',
       'Frontend Engineer',
-      'Software Development Manager'
+      'Software Development Manager',
     ]
   } catch (error) {
     console.warn('Failed to generate title suggestions:', error)
@@ -446,7 +490,7 @@ const generateTitleSuggestions = async () => {
 
 const generateSummary = async () => {
   if (!props.aiEnabled) return
-  
+
   generatingSummary.value = true
   try {
     emit('ai-generate', 'summary', localData.value)
@@ -459,12 +503,22 @@ const generateSummary = async () => {
 const generateNameSuggestions = (name: string): string[] => {
   // Mock implementation - would typically use a names database
   const commonNames = [
-    'John Doe', 'Jane Smith', 'Michael Johnson', 'Sarah Wilson',
-    'David Brown', 'Lisa Davis', 'Robert Miller', 'Emily Garcia'
+    'John Doe',
+    'Jane Smith',
+    'Michael Johnson',
+    'Sarah Wilson',
+    'David Brown',
+    'Lisa Davis',
+    'Robert Miller',
+    'Emily Garcia',
   ]
-  return commonNames.filter(n => 
-    n.toLowerCase().includes(name) || name.split(' ').some(part => n.toLowerCase().includes(part))
-  ).slice(0, 5)
+  return commonNames
+    .filter(
+      n =>
+        n.toLowerCase().includes(name) ||
+        name.split(' ').some(part => n.toLowerCase().includes(part))
+    )
+    .slice(0, 5)
 }
 
 const mockLocationSearch = async (query: string) => {
@@ -474,13 +528,16 @@ const mockLocationSearch = async (query: string) => {
     { main_text: 'New York', secondary_text: 'NY, USA', place_id: 'ny' },
     { main_text: 'Los Angeles', secondary_text: 'CA, USA', place_id: 'la' },
     { main_text: 'Chicago', secondary_text: 'IL, USA', place_id: 'chi' },
-    { main_text: 'Seattle', secondary_text: 'WA, USA', place_id: 'sea' }
+    { main_text: 'Seattle', secondary_text: 'WA, USA', place_id: 'sea' },
   ]
-  
-  return locations.filter(loc => 
-    loc.main_text.toLowerCase().includes(query.toLowerCase()) ||
-    loc.secondary_text.toLowerCase().includes(query.toLowerCase())
-  ).slice(0, 5)
+
+  return locations
+    .filter(
+      loc =>
+        loc.main_text.toLowerCase().includes(query.toLowerCase()) ||
+        loc.secondary_text.toLowerCase().includes(query.toLowerCase())
+    )
+    .slice(0, 5)
 }
 
 const suggestEmailCorrection = (email: string): string => {
@@ -489,8 +546,8 @@ const suggestEmailCorrection = (email: string): string => {
   const parts = email.split('@')
   if (parts.length === 2) {
     const domain = parts[1]
-    const suggestion = domains.find(d => 
-      d.includes(domain) || domain.includes(d.split('.')[0])
+    const suggestion = domains.find(
+      d => d.includes(domain) || domain.includes(d.split('.')[0])
     )
     if (suggestion && suggestion !== domain) {
       return `${parts[0]}@${suggestion}`
@@ -502,31 +559,31 @@ const suggestEmailCorrection = (email: string): string => {
 const updateSummaryTips = () => {
   const summary = localData.value.summary || ''
   const tips = []
-  
+
   if (summary.length < 50) {
     tips.push({
       id: 'length',
       icon: 'mdi-text-short',
-      text: 'Consider expanding your summary to 2-3 sentences for better impact'
+      text: 'Consider expanding your summary to 2-3 sentences for better impact',
     })
   }
-  
+
   if (!summary.includes('experience') && !summary.includes('skilled')) {
     tips.push({
       id: 'keywords',
       icon: 'KeyIcon',
-      text: 'Include relevant keywords like "experience", "skilled", or industry terms'
+      text: 'Include relevant keywords like "experience", "skilled", or industry terms',
     })
   }
-  
+
   if (summaryWordCount.value > 100) {
     tips.push({
       id: 'concise',
       icon: 'mdi-scissors-cutting',
-      text: 'Keep your summary concise - aim for 80-100 words for optimal impact'
+      text: 'Keep your summary concise - aim for 80-100 words for optimal impact',
     })
   }
-  
+
   summaryTips.value = tips
 }
 
@@ -763,9 +820,11 @@ const importFromProfile = () => {
 .profile-import-card {
   grid-column: span 2;
   padding: 20px;
-  background: linear-gradient(135deg, 
-    rgba(var(--color-primary-500-rgb), 0.05), 
-    rgba(var(--color-gaming-500-rgb), 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--color-primary-500-rgb), 0.05),
+    rgba(var(--color-gaming-500-rgb), 0.05)
+  );
   border: 1px solid rgba(var(--color-primary-500-rgb), 0.2);
   border-radius: 12px;
   text-align: center;
@@ -793,11 +852,11 @@ const importFromProfile = () => {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .form-field.full-width {
     grid-column: span 1;
   }
-  
+
   .profile-import-card {
     grid-column: span 1;
   }

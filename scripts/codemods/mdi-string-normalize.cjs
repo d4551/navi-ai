@@ -38,16 +38,20 @@ function walk(dir) {
 
 // Regex patterns
 // 1) HTML attributes (unbound): icon="mdi mdi-foo"
-const rxHtmlAttr = /(\b(?:icon|leading-icon|trailing-icon|start-icon|end-icon|prepend-icon|append-icon)\s*=\s*["'])mdi\s+mdi-([a-z0-9-]+)(["'])/gi
+const rxHtmlAttr =
+  /(\b(?:icon|leading-icon|trailing-icon|start-icon|end-icon|prepend-icon|append-icon)\s*=\s*["'])mdi\s+mdi-([a-z0-9-]+)(["'])/gi
 
 // 2) HTML bound attributes: :icon="'mdi mdi-foo'" or :icon="\"mdi mdi-foo\""
-const rxHtmlBoundAttr = /(\b:?(?:icon|leading-icon|trailing-icon|start-icon|end-icon|prepend-icon|append-icon)\s*=\s*"[^"']*)(['"])mdi\s+mdi-([a-z0-9-]+)\2([^"']*")/gi
+const rxHtmlBoundAttr =
+  /(\b:?(?:icon|leading-icon|trailing-icon|start-icon|end-icon|prepend-icon|append-icon)\s*=\s*"[^"']*)(['"])mdi\s+mdi-([a-z0-9-]+)\2([^"']*")/gi
 
 // 3) JS object fields: icon: 'mdi mdi-foo' or "icon": "mdi mdi-foo"
-const rxJsField = /(\b(?:icon|leadingIcon|trailingIcon|startIcon|endIcon)\s*:\s*["'])mdi\s+mdi-([a-z0-9-]+)(["'])/g
+const rxJsField =
+  /(\b(?:icon|leadingIcon|trailingIcon|startIcon|endIcon)\s*:\s*["'])mdi\s+mdi-([a-z0-9-]+)(["'])/g
 
 // 4) Generic assignments in Vue SFC script blocks for kebab-case keys in objects (e.g., { 'leading-icon': 'mdi mdi-foo' })
-const rxJsKebabField = /(\b['"](?:icon|leading-icon|trailing-icon|start-icon|end-icon|prepend-icon|append-icon)['"]\s*:\s*["'])mdi\s+mdi-([a-z0-9-]+)(["'])/g
+const rxJsKebabField =
+  /(\b['"](?:icon|leading-icon|trailing-icon|start-icon|end-icon|prepend-icon|append-icon)['"]\s*:\s*["'])mdi\s+mdi-([a-z0-9-]+)(["'])/g
 
 function transform(source) {
   let out = source
@@ -93,4 +97,6 @@ for (const file of files) {
   }
 }
 
-console.log(`\nMDI string normalization complete. Files scanned: ${files.length}. Files with changes: ${updated}. Mode: ${apply ? 'APPLY' : 'DRY'}`)
+console.log(
+  `\nMDI string normalization complete. Files scanned: ${files.length}. Files with changes: ${updated}. Mode: ${apply ? 'APPLY' : 'DRY'}`
+)

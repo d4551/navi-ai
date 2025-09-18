@@ -1,5 +1,11 @@
 import BaseAIProvider from './BaseAIProvider'
-import { AIProvider, ModalityType, MultiModalRequest, MultiModalResponse, StreamCallbacks } from '@/shared/types/ai'
+import {
+  AIProvider,
+  ModalityType,
+  MultiModalRequest,
+  MultiModalResponse,
+  StreamCallbacks,
+} from '@/shared/types/ai'
 import { logger } from '@/shared/utils/logger'
 
 export default class ClaudeProvider extends BaseAIProvider {
@@ -12,7 +18,7 @@ export default class ClaudeProvider extends BaseAIProvider {
 
   async initialize(config: any): Promise<void> {
     await super.initialize(config)
-    
+
     if (!config.apiKey) {
       throw new Error('Claude API key is required')
     }
@@ -30,7 +36,9 @@ export default class ClaudeProvider extends BaseAIProvider {
 
     try {
       // Extract text content
-      const textContent = request.content.find(c => c.type === ModalityType.TEXT)
+      const textContent = request.content.find(
+        c => c.type === ModalityType.TEXT
+      )
       const prompt = textContent?.data || ''
 
       if (!prompt) {
@@ -41,8 +49,8 @@ export default class ClaudeProvider extends BaseAIProvider {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
-          'anthropic-version': '2023-06-01'
+          Authorization: `Bearer ${this.apiKey}`,
+          'anthropic-version': '2023-06-01',
         },
         body: JSON.stringify({
           model: this.currentModel || 'claude-3-haiku-20240307',
@@ -51,10 +59,10 @@ export default class ClaudeProvider extends BaseAIProvider {
           messages: [
             {
               role: 'user',
-              content: prompt
-            }
-          ]
-        })
+              content: prompt,
+            },
+          ],
+        }),
       })
 
       if (!response.ok) {
@@ -78,14 +86,14 @@ export default class ClaudeProvider extends BaseAIProvider {
           imagesGenerated: 0,
           audioDuration: 0,
           videoDuration: 0,
-          cost: 0 // Calculate based on pricing if needed
+          cost: 0, // Calculate based on pricing if needed
         },
         timing: {
           startedAt: start,
           completedAt: Date.now(),
           totalTime: Date.now() - start,
-          processingTime: Date.now() - start
-        }
+          processingTime: Date.now() - start,
+        },
       }
     } catch (error) {
       logger.error('Claude execution error:', error)
@@ -102,15 +110,16 @@ export default class ClaudeProvider extends BaseAIProvider {
           imagesGenerated: 0,
           audioDuration: 0,
           videoDuration: 0,
-          cost: 0
+          cost: 0,
         },
         timing: {
           startedAt: start,
           completedAt: Date.now(),
           totalTime: Date.now() - start,
-          processingTime: Date.now() - start
+          processingTime: Date.now() - start,
         },
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
       }
     }
   }
@@ -121,7 +130,7 @@ export default class ClaudeProvider extends BaseAIProvider {
       provider: this.provider,
       modality: ModalityType.TEXT,
       startTime: Date.now(),
-      chunkCount: 0
+      chunkCount: 0,
     }
 
     callbacks.onStart?.(session)
@@ -136,7 +145,9 @@ export default class ClaudeProvider extends BaseAIProvider {
     ;(async () => {
       try {
         // Extract text content
-        const textContent = request.content.find(c => c.type === ModalityType.TEXT)
+        const textContent = request.content.find(
+          c => c.type === ModalityType.TEXT
+        )
         const prompt = textContent?.data || ''
 
         if (!prompt) {
@@ -148,8 +159,8 @@ export default class ClaudeProvider extends BaseAIProvider {
           signal: controller.signal,
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.apiKey}`,
-            'anthropic-version': '2023-06-01'
+            Authorization: `Bearer ${this.apiKey}`,
+            'anthropic-version': '2023-06-01',
           },
           body: JSON.stringify({
             model: this.currentModel || 'claude-3-haiku-20240307',
@@ -159,14 +170,16 @@ export default class ClaudeProvider extends BaseAIProvider {
             messages: [
               {
                 role: 'user',
-                content: prompt
-              }
-            ]
-          })
+                content: prompt,
+              },
+            ],
+          }),
         })
 
         if (!response.ok || !response.body) {
-          throw new Error(`Claude API error: ${response.status} - ${await response.text()}`)
+          throw new Error(
+            `Claude API error: ${response.status} - ${await response.text()}`
+          )
         }
 
         const reader = response.body.getReader()
@@ -185,7 +198,7 @@ export default class ClaudeProvider extends BaseAIProvider {
           for (const line of lines) {
             const trimmed = line.trim()
             if (!trimmed || !trimmed.startsWith('data:')) continue
-            
+
             const data = trimmed.replace(/^data:\s*/, '')
             if (data === '[DONE]') {
               reader.cancel()
@@ -219,22 +232,23 @@ export default class ClaudeProvider extends BaseAIProvider {
             imagesGenerated: 0,
             audioDuration: 0,
             videoDuration: 0,
-            cost: 0
+            cost: 0,
           },
           timing: {
             startedAt: session.startTime,
             completedAt: Date.now(),
             totalTime: Date.now() - session.startTime,
-            processingTime: Date.now() - session.startTime
-          }
+            processingTime: Date.now() - session.startTime,
+          },
         })
       } catch (error) {
         logger.error('Claude streaming error:', error)
-        callbacks.onError?.(error instanceof Error ? error : new Error(String(error)))
+        callbacks.onError?.(
+          error instanceof Error ? error : new Error(String(error))
+        )
       }
     })()
 
     return controller
   }
 }
-

@@ -19,7 +19,10 @@ export function useAIIntegration(
   const aiReady = computed(() => {
     try {
       const status = ai.getStatus()
-      const hasApiKey = !!(localStorage.getItem('gemini_api_key') || localStorage.getItem('openai_api_key'))
+      const hasApiKey = !!(
+        localStorage.getItem('gemini_api_key') ||
+        localStorage.getItem('openai_api_key')
+      )
       return Boolean(status.initialized && hasApiKey)
     } catch (error) {
       console.warn('AI status check failed:', error)
@@ -34,13 +37,15 @@ export function useAIIntegration(
   // Methods
   const handleAIRequest = async (payload: any) => {
     if (!aiReady.value) {
-      toast.warning('AI service is not available. Please configure your API key in settings.')
+      toast.warning(
+        'AI service is not available. Please configure your API key in settings.'
+      )
       return
     }
 
     aiProcessing.value = true
     aiError.value = null
-    
+
     try {
       await ai.init() // Ensure AI service is initialized
 
@@ -72,13 +77,15 @@ export function useAIIntegration(
     }
 
     if (!aiReady.value) {
-      toast.warning('AI service is not available. Please configure your API key in settings.')
+      toast.warning(
+        'AI service is not available. Please configure your API key in settings.'
+      )
       return
     }
 
     aiProcessing.value = true
     aiError.value = null
-    
+
     try {
       await ai.init()
 
@@ -117,19 +124,21 @@ export function useAIIntegration(
         console.warn(`Failed to apply suggestion ${index + 1}:`, error)
       }
     })
-    
+
     toast.success(`Applied ${suggestions.length} AI suggestions`)
   }
 
   const optimizeContent = async () => {
     if (!aiReady.value) {
-      toast.warning('AI service is not available. Please configure your API key in settings.')
+      toast.warning(
+        'AI service is not available. Please configure your API key in settings.'
+      )
       return
     }
 
     aiProcessing.value = true
     aiError.value = null
-    
+
     try {
       await ai.init()
 
@@ -154,7 +163,7 @@ export function useAIIntegration(
     }
 
     aiProcessing.value = true
-    
+
     try {
       await ai.init()
 
@@ -191,10 +200,13 @@ Document: ${JSON.stringify({ resume: resumeData, coverLetter: coverLetterData },
 
 Return scores as JSON: {"atsScore": 85, "keywordMatch": 70, "contentQuality": 90}`
 
-      const response = await ai.generateText(analysisPrompt, { temperature: 0.3 })
-      
+      const response = await ai.generateText(analysisPrompt, {
+        temperature: 0.3,
+      })
+
       try {
-        const responseText = typeof response === 'string' ? response : response.content
+        const responseText =
+          typeof response === 'string' ? response : response.content
         const analysis = JSON.parse(responseText)
         lastAnalysis.value = analysis
         return analysis
@@ -203,7 +215,7 @@ Return scores as JSON: {"atsScore": 85, "keywordMatch": 70, "contentQuality": 90
         const fallbackAnalysis = {
           atsScore: Math.floor(Math.random() * 30) + 70,
           keywordMatch: Math.floor(Math.random() * 25) + 65,
-          contentQuality: Math.floor(Math.random() * 20) + 75
+          contentQuality: Math.floor(Math.random() * 20) + 75,
         }
         lastAnalysis.value = fallbackAnalysis
         return fallbackAnalysis
@@ -217,47 +229,65 @@ Return scores as JSON: {"atsScore": 85, "keywordMatch": 70, "contentQuality": 90
   // Private methods
   const generateSummary = async () => {
     const prompt = `Generate a professional 2-3 sentence summary for this resume. Focus on key strengths and most relevant experience:\n\n${JSON.stringify(resumeData, null, 2)}`
-    
-    const response = await ai.generateText(prompt, { temperature: 0.7, maxTokens: 200 })
-    
+
+    const response = await ai.generateText(prompt, {
+      temperature: 0.7,
+      maxTokens: 200,
+    })
+
     // Update resume data
-    const responseText = typeof response === 'string' ? response : response.content
+    const responseText =
+      typeof response === 'string' ? response : response.content
     resumeData.summary = responseText
     toast.success('AI summary generated')
   }
 
   const enhanceExperience = async (experience: any, index?: number) => {
     const prompt = `Rewrite this work experience into 3-5 impactful bullet points using strong action verbs and quantifiable results. Make it ATS-friendly:\n\n${JSON.stringify(experience, null, 2)}`
-    
-    const response = await ai.generateText(prompt, { temperature: 0.6, maxTokens: 300 })
-    
+
+    const response = await ai.generateText(prompt, {
+      temperature: 0.6,
+      maxTokens: 300,
+    })
+
     if (typeof index === 'number' && resumeData.experience[index]) {
-      const responseText = typeof response === 'string' ? response : response.content
+      const responseText =
+        typeof response === 'string' ? response : response.content
       resumeData.experience[index].description = responseText
     }
     toast.success('Experience enhanced with AI')
   }
 
   const suggestSkills = async () => {
-    const context = jobDescription ? `Job Description: ${jobDescription}\n\n` : ''
+    const context = jobDescription
+      ? `Job Description: ${jobDescription}\n\n`
+      : ''
     const prompt = `${context}Suggest 10 relevant technical and professional skills for this resume. Return as a comma-separated list:\n\n${JSON.stringify(resumeData, null, 2)}`
-    
-    const response = await ai.generateText(prompt, { temperature: 0.5, maxTokens: 200 })
-    
-    const responseText = typeof response === 'string' ? response : response.content
+
+    const response = await ai.generateText(prompt, {
+      temperature: 0.5,
+      maxTokens: 200,
+    })
+
+    const responseText =
+      typeof response === 'string' ? response : response.content
     const suggestedSkills = responseText
       .split(',')
       .map((s: string) => s.trim())
       .filter((s: string) => s.length > 0)
       .slice(0, 10)
-    
+
     // Add skills that don't already exist
     suggestedSkills.forEach((skill: string) => {
-      if (!resumeData.skills.find(s => s.name.toLowerCase() === skill.toLowerCase())) {
+      if (
+        !resumeData.skills.find(
+          s => s.name.toLowerCase() === skill.toLowerCase()
+        )
+      ) {
         resumeData.skills.push({ name: skill })
       }
     })
-    
+
     toast.success(`Added ${suggestedSkills.length} AI-suggested skills`)
   }
 
@@ -270,17 +300,25 @@ Return scores as JSON: {"atsScore": 85, "keywordMatch": 70, "contentQuality": 90
         }
         break
       case 'experience':
-        if (suggestion.field && suggestion.replacement && typeof suggestion.index === 'number') {
+        if (
+          suggestion.field &&
+          suggestion.replacement &&
+          typeof suggestion.index === 'number'
+        ) {
           const experience = resumeData.experience[suggestion.index]
           if (experience) {
-            (experience as any)[suggestion.field] = suggestion.replacement
+            ;(experience as any)[suggestion.field] = suggestion.replacement
           }
         }
         break
       case 'skills':
         if (suggestion.additions) {
           suggestion.additions.forEach((skill: string) => {
-            if (!resumeData.skills.find(s => s.name.toLowerCase() === skill.toLowerCase())) {
+            if (
+              !resumeData.skills.find(
+                s => s.name.toLowerCase() === skill.toLowerCase()
+              )
+            ) {
               resumeData.skills.push({ name: skill })
             }
           })
@@ -292,14 +330,17 @@ Return scores as JSON: {"atsScore": 85, "keywordMatch": 70, "contentQuality": 90
   }
 
   // Auto-analyze document when job description changes
-  watch(() => jobDescription, async (newJobDescription) => {
-    if (newJobDescription && aiReady.value) {
-      // Debounce analysis to avoid too many API calls
-      setTimeout(() => {
-        analyzeDocument()
-      }, 2000)
+  watch(
+    () => jobDescription,
+    async newJobDescription => {
+      if (newJobDescription && aiReady.value) {
+        // Debounce analysis to avoid too many API calls
+        setTimeout(() => {
+          analyzeDocument()
+        }, 2000)
+      }
     }
-  })
+  )
 
   return {
     aiReady,
@@ -312,6 +353,6 @@ Return scores as JSON: {"atsScore": 85, "keywordMatch": 70, "contentQuality": 90
     handleAISuggestions,
     optimizeContent,
     showAISuggestions,
-    analyzeDocument
+    analyzeDocument,
   }
 }

@@ -1,7 +1,11 @@
 <template>
   <div class="resume-ai-analysis font-sans">
     <div class="analysis-options mb-4">
-      <div class="flex gap-glass-md mb-3" role="group" aria-label="Analysis actions">
+      <div
+        class="flex gap-glass-md mb-3"
+        role="group"
+        aria-label="Analysis actions"
+      >
         <button
           class="unified-btn btn-primary btn-sm v-btn ui-btn ui-size-md"
           :disabled="!resumeData || loading"
@@ -28,8 +32,13 @@
         <div class="flex-1-md-4">
           <div class="unified-card glass-card section-card text-center">
             <div class="card-body section-body">
-              <div class="score-circle" :class="getScoreClass(analysisResults.overallScore)">
-                <div class="score-number">{{ analysisResults.overallScore }}</div>
+              <div
+                class="score-circle"
+                :class="getScoreClass(analysisResults.overallScore)"
+              >
+                <div class="score-number">
+                  {{ analysisResults.overallScore }}
+                </div>
                 <div class="score-label">Score</div>
               </div>
               <h6 class="mt-3 mb-3">Resume Quality</h6>
@@ -45,7 +54,11 @@
           <div class="unified-card glass-card section-card">
             <div class="card-header section-header card-header--dense">
               <h6 class="mb-0">
-                <AppIcon name="CheckCircleIcon" color="success" context="success" />
+                <AppIcon
+                  name="CheckCircleIcon"
+                  color="success"
+                  context="success"
+                />
                 Strengths ({{ analysisResults.strengths?.length || 0 }})
               </h6>
             </div>
@@ -56,11 +69,17 @@
                   :key="index"
                   class="mb-2"
                 >
-                  <AppIcon name="PlusCircleIcon" class="text-success-600 mr-1" />
+                  <AppIcon
+                    name="PlusCircleIcon"
+                    class="text-success-600 mr-1"
+                  />
                   <small>{{ strength }}</small>
                 </li>
               </ul>
-              <div v-if="!analysisResults.strengths?.length" class="text-secondary small">
+              <div
+                v-if="!analysisResults.strengths?.length"
+                class="text-secondary small"
+              >
                 <AppIcon name="InformationCircleIcon" class="mr-1" />
                 Analysis will identify key strengths
               </div>
@@ -89,13 +108,22 @@
                   <button
                     v-if="canUseAi"
                     class="btn btn-link btn-sm ml-2 p-0 ui-btn ui-size-md"
-                    @click="$emit('apply-suggestion', { type: 'improvement', data: improvement, index })"
+                    @click="
+                      $emit('apply-suggestion', {
+                        type: 'improvement',
+                        data: improvement,
+                        index,
+                      })
+                    "
                   >
                     <AppIcon name="SparklesIcon" class="text-primary-600" />
                   </button>
                 </li>
               </ul>
-              <div v-if="!analysisResults.improvements?.length" class="text-secondary small">
+              <div
+                v-if="!analysisResults.improvements?.length"
+                class="text-secondary small"
+              >
                 <AppIcon name="InformationCircleIcon" class="mr-1" />
                 No improvements suggested
               </div>
@@ -119,7 +147,8 @@
                 <h6 class="text-success-600 mb-2">Missing Keywords</h6>
                 <div class="keyword-tags">
                   <span
-                    v-for="keyword in analysisResults.keywordOptimization.missing"
+                    v-for="keyword in analysisResults.keywordOptimization
+                      .missing"
                     :key="keyword"
                     class="badge bg-error-500-subtle text-error-600 mr-1 mb-1"
                   >
@@ -131,7 +160,8 @@
                 <h6 class="text-warning-600 mb-2">Omitted Keywords</h6>
                 <div class="keyword-tags">
                   <span
-                    v-for="keyword in analysisResults.keywordOptimization.overused"
+                    v-for="keyword in analysisResults.keywordOptimization
+                      .overused"
                     :key="keyword"
                     class="badge bg-warning-500-subtle text-warning-600 mr-1 mb-1"
                   >
@@ -142,7 +172,9 @@
               <div class="flex-1-md-4">
                 <h6 class="text-blue-600 mb-2">Recommended Density</h6>
                 <div class="text-center">
-                  <div class="h4 text-blue-600 mb-1">{{ analysisResults.keywordOptimization.recommendedDensity }}</div>
+                  <div class="h4 text-blue-600 mb-1">
+                    {{ analysisResults.keywordOptimization.recommendedDensity }}
+                  </div>
                   <small class="text-secondary">Optimal keyword usage</small>
                 </div>
               </div>
@@ -156,7 +188,9 @@
     <div v-else-if="!loading" class="text-center text-secondary py-5">
       <AppIcon name="CpuChipIcon" class="mdi-48px mb-3" />
       <h6 class="mb-2">Ready for AI Analysis</h6>
-      <p class="mb-3">Click "Analyze Resume" to get AI-powered insights and recommendations</p>
+      <p class="mb-3">
+        Click "Analyze Resume" to get AI-powered insights and recommendations
+      </p>
       <button
         class="unified-btn btn-primary v-btn ui-btn ui-size-md"
         :disabled="!resumeData"
@@ -169,18 +203,34 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="text-center py-5">
-      <AppIcon name="CpuChipIcon" class="mdi-48px mb-3 text-primary-600 mdi-spin" />
+      <AppIcon
+        name="CpuChipIcon"
+        class="mdi-48px mb-3 text-primary-600 mdi-spin"
+      />
       <h6 class="mb-2">Analyzing Your Resume</h6>
-      <p class="text-secondary">AI is evaluating your content and generating personalized recommendations...</p>
-      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto;">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
+      <p class="text-secondary">
+        AI is evaluating your content and generating personalized
+        recommendations...
+      </p>
+      <div class="progress mt-3" style="max-width: 300px; margin: 0 auto">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          style="width: 75%"
+        ></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { CheckCircleIcon, CpuChipIcon, InformationCircleIcon, LightBulbIcon, PlusCircleIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckCircleIcon,
+  CpuChipIcon,
+  InformationCircleIcon,
+  LightBulbIcon,
+  PlusCircleIcon,
+  SparklesIcon,
+} from '@heroicons/vue/24/outline'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
 interface AnalysisResults {
@@ -238,7 +288,7 @@ const runATSCheck = async () => {
   emit('apply-suggestion', {
     type: 'ats-check',
     data: 'Check ATS compatibility',
-    action: 'run-ats-analysis'
+    action: 'run-ats-analysis',
   })
 }
 </script>
@@ -288,27 +338,47 @@ const runATSCheck = async () => {
 
 /* Score color classes */
 .score-excellent {
-  background: linear-gradient(135deg, var(--color-success), var(--color-success));
+  background: linear-gradient(
+    135deg,
+    var(--color-success),
+    var(--color-success)
+  );
   color: white;
 }
 
 .score-good {
-  background: linear-gradient(135deg, var(--color-success-500), var(--color-success-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-success-500),
+    var(--color-success-600)
+  );
   color: white;
 }
 
 .score-average {
-  background: linear-gradient(135deg, var(--color-warning-500), var(--color-warning-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-warning-500),
+    var(--color-warning-600)
+  );
   color: white;
 }
 
 .score-fair {
-  background: linear-gradient(135deg, var(--color-warning-400), var(--color-warning-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-warning-400),
+    var(--color-warning-500)
+  );
   color: white;
 }
 
 .score-poor {
-  background: linear-gradient(135deg, var(--color-error-500), var(--color-error-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-error-500),
+    var(--color-error-600)
+  );
   color: white;
 }
 
@@ -326,8 +396,12 @@ const runATSCheck = async () => {
 
 /* Spin animation for loading icon */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {
@@ -366,12 +440,12 @@ const runATSCheck = async () => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .score-circle {
+[data-theme='dark'] .score-circle {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] .badge.bg-error-500-subtle,
-[data-theme="dark"] .badge.bg-warning-500-subtle {
+[data-theme='dark'] .badge.bg-error-500-subtle,
+[data-theme='dark'] .badge.bg-warning-500-subtle {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 

@@ -3,11 +3,17 @@
     <div class="glass-card section-card">
       <div class="analyzer-header">
         <h3 class="section-title d-flex align-center gap-sm">
-          <AppIcon name="mdi-file-video" /> 
+          <AppIcon name="mdi-file-video" />
           File Analyzer
         </h3>
         <div class="mode-chips">
-          <span v-for="m in modes" :key="m.key" class="chip" :class="{ active: m.key === activeMode }" @click="setMode(m.key)">
+          <span
+            v-for="m in modes"
+            :key="m.key"
+            class="chip"
+            :class="{ active: m.key === activeMode }"
+            @click="setMode(m.key)"
+          >
             <AppIcon :name="m.icon" /> {{ m.label }}
           </span>
         </div>
@@ -15,44 +21,91 @@
 
       <div class="uploader glass-surface">
         <label class="form-label">Upload image or video</label>
-        <input class="form-control glass-input" type="file" accept="image/*,video/*" @change="onFileChange" />
+        <input
+          class="form-control glass-input"
+          type="file"
+          accept="image/*,video/*"
+          @change="onFileChange"
+        />
         <div v-if="error" class="error">{{ error }}</div>
       </div>
 
       <div v-if="previewUrl" class="preview glass-surface">
         <div class="preview-media">
-          <img v-if="!isVideo" ref="imgEl" :src="previewUrl" class="media" alt="Preview" />
-          <video v-else ref="videoEl" :src="previewUrl" class="media" controls @loadedmetadata="onVideoReady"></video>
+          <img
+            v-if="!isVideo"
+            ref="imgEl"
+            :src="previewUrl"
+            class="media"
+            alt="Preview"
+          />
+          <video
+            v-else
+            ref="videoEl"
+            :src="previewUrl"
+            class="media"
+            controls
+            @loadedmetadata="onVideoReady"
+          ></video>
         </div>
 
         <div class="actions">
           <div class="left">
-            <UnifiedButton variant="gaming" leading-icon="mdi-image-search" :disabled="busy" @click="analyzeOnce">
+            <UnifiedButton
+              variant="gaming"
+              leading-icon="mdi-image-search"
+              :disabled="busy"
+              @click="analyzeOnce"
+            >
               {{ isVideo ? 'Analyze Current Frame' : 'Analyze Image' }}
             </UnifiedButton>
-            <UnifiedButton variant="glass" leading-icon="mdi-camera" :disabled="busy" @click="snapshot">
+            <UnifiedButton
+              variant="glass"
+              leading-icon="mdi-camera"
+              :disabled="busy"
+              @click="snapshot"
+            >
               Snapshot to Gallery
             </UnifiedButton>
           </div>
           <div v-if="isVideo" class="right auto">
             <div class="form-check form-switch me-3">
-              <input id="auto-analyze" v-model="autoAnalyze" class="form-check-input" type="checkbox" @change="toggleAuto" />
-              <label class="form-check-label" for="auto-analyze">Auto Analyze</label>
+              <input
+                id="auto-analyze"
+                v-model="autoAnalyze"
+                class="form-check-input"
+                type="checkbox"
+                @change="toggleAuto"
+              />
+              <label class="form-check-label" for="auto-analyze"
+                >Auto Analyze</label
+              >
             </div>
             <label class="me-2">Every {{ intervalSec }}s</label>
-            <input v-model.number="intervalSec" type="range" min="1" max="10" step="1" @input="onIntervalChange" />
+            <input
+              v-model.number="intervalSec"
+              type="range"
+              min="1"
+              max="10"
+              step="1"
+              @input="onIntervalChange"
+            />
           </div>
         </div>
       </div>
 
       <div v-if="responses.length" class="responses glass-surface">
-        <h4 class="mb-2"><AppIcon name="mdi-chat-processing" /> File Insights</h4>
+        <h4 class="mb-2">
+          <AppIcon name="mdi-chat-processing" /> File Insights
+        </h4>
         <div class="list">
           <div v-for="r in responses" :key="r.id" class="item">
             <div class="meta">
               <span class="type">{{ r.type }}</span>
               <span class="time">{{ formatTime(r.timestamp) }}</span>
-              <span v-if="r.confidence !== undefined" class="conf">{{ Math.round(r.confidence * 100) }}%</span>
+              <span v-if="r.confidence !== undefined" class="conf"
+                >{{ Math.round(r.confidence * 100) }}%</span
+              >
             </div>
             <div class="content">{{ r.content }}</div>
           </div>
@@ -79,12 +132,15 @@ interface AIResponseItem {
 const emit = defineEmits<{
   'ai-response': [response: AIResponseItem]
   'frame-captured': [dataUrl: string]
-  'error': [message: string]
+  error: [message: string]
 }>()
 
-const props = withDefaults(defineProps<{
-  modePrompt?: string
-}>(), { modePrompt: '' })
+const props = withDefaults(
+  defineProps<{
+    modePrompt?: string
+  }>(),
+  { modePrompt: '' }
+)
 
 const file = ref<File | null>(null)
 const previewUrl = ref<string>('')
@@ -108,17 +164,20 @@ const activeMode = ref<'describe' | 'ocr' | 'safety' | 'uiqa'>('describe')
 
 function modeSuffix(): string {
   const base = props.modePrompt?.trim() || ''
-  const preset = activeMode.value === 'ocr'
-    ? 'Extract visible text precisely.'
-    : activeMode.value === 'safety'
-      ? 'Identify any unsafe, sensitive, or hazardous content.'
-      : activeMode.value === 'uiqa'
-        ? 'Assess UI layout, readability, and potential UX issues.'
-        : 'Provide a concise scene description.'
+  const preset =
+    activeMode.value === 'ocr'
+      ? 'Extract visible text precisely.'
+      : activeMode.value === 'safety'
+        ? 'Identify any unsafe, sensitive, or hazardous content.'
+        : activeMode.value === 'uiqa'
+          ? 'Assess UI layout, readability, and potential UX issues.'
+          : 'Provide a concise scene description.'
   return [base, preset].filter(Boolean).join(' ')
 }
 
-function setMode(key: 'describe' | 'ocr' | 'safety' | 'uiqa') { activeMode.value = key }
+function setMode(key: 'describe' | 'ocr' | 'safety' | 'uiqa') {
+  activeMode.value = key
+}
 
 function onFileChange(e: Event) {
   const input = e.target as HTMLInputElement
@@ -139,7 +198,9 @@ function cleanupPreview() {
 }
 
 function onVideoReady() {
-  try { videoEl.value?.pause?.() } catch {}
+  try {
+    videoEl.value?.pause?.()
+  } catch {}
 }
 
 async function analyzeOnce() {
@@ -148,16 +209,21 @@ async function analyzeOnce() {
   try {
     const base64 = await captureCurrent()
     const prompt = `Analyze this frame. ${modeSuffix()}`.trim()
-    const res = await googleAIStreamingService.processVideoFrame(base64, { prompt, includeContext: false })
+    const res = await googleAIStreamingService.processVideoFrame(base64, {
+      prompt,
+      includeContext: false,
+    })
     const item: AIResponseItem = {
-      id: `file-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
+      id: `file-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       type: isVideo.value ? 'video' : 'image',
       content: res.content,
       timestamp: new Date(),
-      confidence: res.confidence
+      confidence: res.confidence,
     }
     responses.value.push(item)
-    try { emit('ai-response', item) } catch {}
+    try {
+      emit('ai-response', item)
+    } catch {}
   } catch (e: any) {
     const msg = e?.message || 'File analysis failed'
     error.value = msg
@@ -180,7 +246,10 @@ async function captureCurrent(): Promise<string> {
   return dataUrl.split(',')[1]
 }
 
-async function captureDataUrl(mime: string = 'image/jpeg', quality = 0.9): Promise<string> {
+async function captureDataUrl(
+  mime: string = 'image/jpeg',
+  quality = 0.9
+): Promise<string> {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
   if (!ctx) throw new Error('Canvas context unavailable')
@@ -209,11 +278,16 @@ function toggleAuto() {
 function startAuto() {
   stopAuto()
   const ms = Math.max(1, intervalSec.value) * 1000
-  timer = window.setInterval(() => { analyzeOnce() }, ms)
+  timer = window.setInterval(() => {
+    analyzeOnce()
+  }, ms)
 }
 
 function stopAuto() {
-  if (timer) { window.clearInterval(timer); timer = null }
+  if (timer) {
+    window.clearInterval(timer)
+    timer = null
+  }
 }
 
 function onIntervalChange() {
@@ -221,11 +295,16 @@ function onIntervalChange() {
 }
 
 function formatTime(d: Date): string {
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  return d.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
 }
 
 onUnmounted(() => {
-  stopAuto(); cleanupPreview()
+  stopAuto()
+  cleanupPreview()
 })
 </script>
 
@@ -277,25 +356,81 @@ onUnmounted(() => {
   border-color: var(--color-primary-500);
 }
 
-.uploader { padding: var(--spacing-lg); border-radius: var(--radius-lg); margin-bottom: var(--spacing-lg); }
-.error { color: var(--rgb-red); margin-top: 8px; }
+.uploader {
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-lg);
+}
+.error {
+  color: var(--rgb-red);
+  margin-top: 8px;
+}
 
-.preview { padding: var(--spacing-lg); border-radius: var(--radius-lg); margin-bottom: var(--spacing-lg); }
-.preview-media { display:flex; justify-content:center; }
-.media { max-width: 100%; max-height: 420px; border-radius: var(--radius-md); border: 1px solid var(--glass-border); background: var(--surface-base); }
+.preview {
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-lg);
+}
+.preview-media {
+  display: flex;
+  justify-content: center;
+}
+.media {
+  max-width: 100%;
+  max-height: 420px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: var(--surface-base);
+}
 
-.actions { display:flex; align-items:center; justify-content:space-between; margin-top: var(--spacing-md); gap: 12px; flex-wrap: wrap; }
-.actions .left { display:flex; gap: 10px; align-items:center; }
-.actions .right { display:flex; align-items:center; gap: 10px; }
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-md);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.actions .left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.actions .right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-.responses { padding: var(--spacing-lg); border-radius: var(--radius-lg); }
-.list { max-height: 360px; overflow-y: auto; }
-.item { padding: var(--spacing-md); background: var(--surface-elevated); border: 1px solid var(--glass-border); border-radius: var(--radius-md); margin-bottom: var(--spacing-sm); }
-.item .meta { display:flex; gap: 10px; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 6px; }
-.item .content { line-height: 1.5; }
+.responses {
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+}
+.list {
+  max-height: 360px;
+  overflow-y: auto;
+}
+.item {
+  padding: var(--spacing-md);
+  background: var(--surface-elevated);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-sm);
+}
+.item .meta {
+  display: flex;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+.item .content {
+  line-height: 1.5;
+}
 
 @media (max-width: 768px) {
-  .file-analyzer { padding: var(--spacing-lg); }
+  .file-analyzer {
+    padding: var(--spacing-lg);
+  }
 }
 </style>
-

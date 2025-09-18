@@ -1,190 +1,230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fix TTS Settings - NAVI</title>
     <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f8f9fa;
-            line-height: 1.6;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        .status {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-        .status.success {
-            background: #d1edff;
-            border: 1px solid #0ea5e9;
-            color: #0c4a6e;
-        }
-        .status.warning {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            color: #92400e;
-        }
-        .status.error {
-            background: #fecaca;
-            border: 1px solid #ef4444;
-            color: #991b1b;
-        }
-        button {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px 5px;
-        }
-        button:hover {
-            background: #1d4ed8;
-        }
-        button.secondary {
-            background: #6b7280;
-        }
-        button.secondary:hover {
-            background: #4b5563;
-        }
-        pre {
-            background: #f3f4f6;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-size: 14px;
-        }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f8f9fa;
+        line-height: 1.6;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      }
+      .status {
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+      .status.success {
+        background: #d1edff;
+        border: 1px solid #0ea5e9;
+        color: #0c4a6e;
+      }
+      .status.warning {
+        background: #fef3c7;
+        border: 1px solid #f59e0b;
+        color: #92400e;
+      }
+      .status.error {
+        background: #fecaca;
+        border: 1px solid #ef4444;
+        color: #991b1b;
+      }
+      button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px 5px;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      button.secondary {
+        background: #6b7280;
+      }
+      button.secondary:hover {
+        background: #4b5563;
+      }
+      pre {
+        background: #f3f4f6;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 14px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>🔧 Fix TTS Settings</h1>
-        <p>This tool helps resolve the Gemini TTS warning by checking and fixing your voice settings.</p>
-        
-        <div id="status"></div>
-        
-        <button onclick="checkSettings()">🔍 Check Current Settings</button>
-        <button onclick="fixSettings()">🛠️ Fix TTS Settings</button>
-        <button onclick="clearAllSettings()" class="secondary">🗑️ Reset All Settings</button>
-        
-        <h3>📋 Instructions</h3>
-        <ol>
-            <li><strong>Check Current Settings</strong> - Shows what TTS provider is currently configured</li>
-            <li><strong>Fix TTS Settings</strong> - Automatically resets Gemini TTS to System TTS if no API key is found</li>
-            <li><strong>Reset All Settings</strong> - Clears all stored settings (use if needed)</li>
-        </ol>
-        
-        <div id="details" style="display: none;">
-            <h3>📊 Current Settings Data</h3>
-            <pre id="settingsData"></pre>
-        </div>
+      <h1>🔧 Fix TTS Settings</h1>
+      <p>
+        This tool helps resolve the Gemini TTS warning by checking and fixing
+        your voice settings.
+      </p>
+
+      <div id="status"></div>
+
+      <button onclick="checkSettings()">🔍 Check Current Settings</button>
+      <button onclick="fixSettings()">🛠️ Fix TTS Settings</button>
+      <button onclick="clearAllSettings()" class="secondary">
+        🗑️ Reset All Settings
+      </button>
+
+      <h3>📋 Instructions</h3>
+      <ol>
+        <li>
+          <strong>Check Current Settings</strong> - Shows what TTS provider is
+          currently configured
+        </li>
+        <li>
+          <strong>Fix TTS Settings</strong> - Automatically resets Gemini TTS to
+          System TTS if no API key is found
+        </li>
+        <li>
+          <strong>Reset All Settings</strong> - Clears all stored settings (use
+          if needed)
+        </li>
+      </ol>
+
+      <div id="details" style="display: none">
+        <h3>📊 Current Settings Data</h3>
+        <pre id="settingsData"></pre>
+      </div>
     </div>
 
     <script>
-        function showStatus(message, type = 'success') {
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+      function showStatus(message, type = 'success') {
+        const statusDiv = document.getElementById('status')
+        statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`
+      }
+
+      function checkSettings() {
+        const statusDiv = document.getElementById('status')
+        const detailsDiv = document.getElementById('details')
+        const settingsDataPre = document.getElementById('settingsData')
+
+        // Check app-settings
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+
+        // Check navicv-data
+        let navicvData = {}
+        try {
+          navicvData = JSON.parse(localStorage.getItem('navicv-data') || '{}')
+        } catch (e) {}
+
+        const currentTTSProvider =
+          appSettings.ttsProvider ||
+          navicvData.settings?.ttsProvider ||
+          'system'
+        const hasGeminiKey = !!(
+          appSettings.geminiApiKey || navicvData.settings?.geminiApiKey
+        )
+
+        let statusMessage = `<strong>Current TTS Provider:</strong> ${currentTTSProvider}<br>`
+        statusMessage += `<strong>Gemini API Key:</strong> ${hasGeminiKey ? '✅ Configured' : '❌ Not found'}<br>`
+
+        if (currentTTSProvider === 'gemini' && !hasGeminiKey) {
+          statusMessage += `<br><strong>⚠️ Issue Found:</strong> Gemini TTS is selected but no API key is configured. This causes the warning message.`
+          showStatus(statusMessage, 'warning')
+        } else if (currentTTSProvider === 'gemini' && hasGeminiKey) {
+          statusMessage += `<br><strong>✅ Configuration OK:</strong> Gemini TTS is properly configured.`
+          showStatus(statusMessage, 'success')
+        } else {
+          statusMessage += `<br><strong>✅ No Issues:</strong> System TTS is being used.`
+          showStatus(statusMessage, 'success')
         }
 
-        function checkSettings() {
-            const statusDiv = document.getElementById('status');
-            const detailsDiv = document.getElementById('details');
-            const settingsDataPre = document.getElementById('settingsData');
-            
-            // Check app-settings
-            const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-            
-            // Check navicv-data
-            let navicvData = {};
-            try {
-                navicvData = JSON.parse(localStorage.getItem('navicv-data') || '{}');
-            } catch (e) {}
-            
-            const currentTTSProvider = appSettings.ttsProvider || navicvData.settings?.ttsProvider || 'system';
-            const hasGeminiKey = !!(appSettings.geminiApiKey || navicvData.settings?.geminiApiKey);
-            
-            let statusMessage = `<strong>Current TTS Provider:</strong> ${currentTTSProvider}<br>`;
-            statusMessage += `<strong>Gemini API Key:</strong> ${hasGeminiKey ? '✅ Configured' : '❌ Not found'}<br>`;
-            
-            if (currentTTSProvider === 'gemini' && !hasGeminiKey) {
-                statusMessage += `<br><strong>⚠️ Issue Found:</strong> Gemini TTS is selected but no API key is configured. This causes the warning message.`;
-                showStatus(statusMessage, 'warning');
-            } else if (currentTTSProvider === 'gemini' && hasGeminiKey) {
-                statusMessage += `<br><strong>✅ Configuration OK:</strong> Gemini TTS is properly configured.`;
-                showStatus(statusMessage, 'success');
-            } else {
-                statusMessage += `<br><strong>✅ No Issues:</strong> System TTS is being used.`;
-                showStatus(statusMessage, 'success');
-            }
-            
-            // Show details
-            const allSettings = {
-                'app-settings': appSettings,
-                'navicv-data': navicvData
-            };
-            settingsDataPre.textContent = JSON.stringify(allSettings, null, 2);
-            detailsDiv.style.display = 'block';
+        // Show details
+        const allSettings = {
+          'app-settings': appSettings,
+          'navicv-data': navicvData,
+        }
+        settingsDataPre.textContent = JSON.stringify(allSettings, null, 2)
+        detailsDiv.style.display = 'block'
+      }
+
+      function fixSettings() {
+        let fixed = false
+
+        // Fix app-settings
+        const appSettings = JSON.parse(
+          localStorage.getItem('app-settings') || '{}'
+        )
+        if (appSettings.ttsProvider === 'gemini' && !appSettings.geminiApiKey) {
+          appSettings.ttsProvider = 'system'
+          localStorage.setItem('app-settings', JSON.stringify(appSettings))
+          fixed = true
         }
 
-        function fixSettings() {
-            let fixed = false;
-            
-            // Fix app-settings
-            const appSettings = JSON.parse(localStorage.getItem('app-settings') || '{}');
-            if (appSettings.ttsProvider === 'gemini' && !appSettings.geminiApiKey) {
-                appSettings.ttsProvider = 'system';
-                localStorage.setItem('app-settings', JSON.stringify(appSettings));
-                fixed = true;
-            }
-            
-            // Fix navicv-data
-            try {
-                const navicvData = JSON.parse(localStorage.getItem('navicv-data') || '{}');
-                if (navicvData.settings?.ttsProvider === 'gemini' && !navicvData.settings?.geminiApiKey) {
-                    navicvData.settings.ttsProvider = 'system';
-                    localStorage.setItem('navicv-data', JSON.stringify(navicvData));
-                    fixed = true;
-                }
-            } catch (e) {}
-            
-            if (fixed) {
-                showStatus('✅ <strong>Fixed!</strong> TTS provider has been reset to System TTS. Please refresh your NAVI application to apply the changes.', 'success');
-            } else {
-                showStatus('✅ <strong>No issues found</strong> - TTS settings are already correct.', 'success');
-            }
-        }
+        // Fix navicv-data
+        try {
+          const navicvData = JSON.parse(
+            localStorage.getItem('navicv-data') || '{}'
+          )
+          if (
+            navicvData.settings?.ttsProvider === 'gemini' &&
+            !navicvData.settings?.geminiApiKey
+          ) {
+            navicvData.settings.ttsProvider = 'system'
+            localStorage.setItem('navicv-data', JSON.stringify(navicvData))
+            fixed = true
+          }
+        } catch (e) {}
 
-        function clearAllSettings() {
-            if (confirm('This will clear ALL stored settings. Are you sure?')) {
-                localStorage.removeItem('app-settings');
-                localStorage.removeItem('navicv-data');
-                // Clear other potential storage keys
-                const keysToRemove = [];
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key && (key.includes('navi') || key.includes('setting'))) {
-                        keysToRemove.push(key);
-                    }
-                }
-                keysToRemove.forEach(key => localStorage.removeItem(key));
-                
-                showStatus('✅ <strong>All settings cleared!</strong> Please refresh your NAVI application. It will start with default settings.', 'success');
-            }
+        if (fixed) {
+          showStatus(
+            '✅ <strong>Fixed!</strong> TTS provider has been reset to System TTS. Please refresh your NAVI application to apply the changes.',
+            'success'
+          )
+        } else {
+          showStatus(
+            '✅ <strong>No issues found</strong> - TTS settings are already correct.',
+            'success'
+          )
         }
+      }
 
-        // Auto-check on load
-        window.addEventListener('load', checkSettings);
+      function clearAllSettings() {
+        if (confirm('This will clear ALL stored settings. Are you sure?')) {
+          localStorage.removeItem('app-settings')
+          localStorage.removeItem('navicv-data')
+          // Clear other potential storage keys
+          const keysToRemove = []
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i)
+            if (key && (key.includes('navi') || key.includes('setting'))) {
+              keysToRemove.push(key)
+            }
+          }
+          keysToRemove.forEach(key => localStorage.removeItem(key))
+
+          showStatus(
+            '✅ <strong>All settings cleared!</strong> Please refresh your NAVI application. It will start with default settings.',
+            'success'
+          )
+        }
+      }
+
+      // Auto-check on load
+      window.addEventListener('load', checkSettings)
     </script>
-</body>
+  </body>
 </html>

@@ -27,15 +27,16 @@
                   john.doe@email.com | (555) 123-4567 | City, State
                 </div>
               </div>
-              
+
               <div class="preview-section">
                 <h2 class="section-title">Professional Summary</h2>
                 <p class="preview-text">
-                  Dynamic software engineer with 5+ years of experience developing scalable web applications.
-                  Proven track record of delivering high-quality solutions using modern technologies.
+                  Dynamic software engineer with 5+ years of experience
+                  developing scalable web applications. Proven track record of
+                  delivering high-quality solutions using modern technologies.
                 </p>
               </div>
-              
+
               <div class="preview-section">
                 <h2 class="section-title">Experience</h2>
                 <div class="preview-experience">
@@ -45,12 +46,17 @@
                   </div>
                   <div class="experience-company">Tech Company Inc.</div>
                   <ul class="experience-bullets">
-                    <li>Developed and maintained web applications using React and Node.js</li>
-                    <li>Led team of 3 developers on critical product features</li>
+                    <li>
+                      Developed and maintained web applications using React and
+                      Node.js
+                    </li>
+                    <li>
+                      Led team of 3 developers on critical product features
+                    </li>
                   </ul>
                 </div>
               </div>
-              
+
               <div class="preview-section">
                 <h2 class="section-title">Skills</h2>
                 <div class="preview-skills">
@@ -79,18 +85,10 @@
           </div>
         </div>
         <div class="footer-actions">
-          <UnifiedButton
-            variant="outline"
-            size="sm"
-            @click="$emit('close')"
-          >
+          <UnifiedButton variant="outline" size="sm" @click="$emit('close')">
             Cancel
           </UnifiedButton>
-          <UnifiedButton
-            variant="primary"
-            size="sm"
-            @click="selectTemplate"
-          >
+          <UnifiedButton variant="primary" size="sm" @click="selectTemplate">
             Use This Template
           </UnifiedButton>
         </div>
@@ -112,8 +110,8 @@ const props = defineProps<{
 
 // Emits
 const emit = defineEmits<{
-  'close': []
-  'select': [string]
+  close: []
+  select: [string]
 }>()
 
 // Methods
@@ -163,7 +161,11 @@ const selectTemplate = () => {
   justify-content: space-between;
   padding: var(--spacing-5);
   border-bottom: 1px solid var(--glass-border);
-  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--surface-base) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-50) 0%,
+    var(--surface-base) 100%
+  );
 }
 
 .header-content {
@@ -394,21 +396,21 @@ const selectTemplate = () => {
   .modal-overlay {
     padding: var(--spacing-2);
   }
-  
+
   .preview-modal {
     max-height: 95vh;
   }
-  
+
   .document-preview {
     padding: var(--spacing-4);
   }
-  
+
   .modal-footer {
     flex-direction: column;
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .footer-actions {
     justify-content: space-between;
   }

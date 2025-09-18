@@ -9,19 +9,14 @@ import LayoutGrid from './LayoutGrid.vue'
 import LayoutInline from './LayoutInline.vue'
 
 // Export individual components
-export {
-  LayoutContainer,
-  LayoutStack,
-  LayoutGrid,
-  LayoutInline
-}
+export { LayoutContainer, LayoutStack, LayoutGrid, LayoutInline }
 
 // Export as a collection for plugin registration
 export const LayoutComponents = {
   LayoutContainer,
   LayoutStack,
   LayoutGrid,
-  LayoutInline
+  LayoutInline,
 }
 
 // Type definitions for component props
@@ -73,5 +68,5 @@ export default {
     Object.entries(LayoutComponents).forEach(([name, component]) => {
       app.component(name, component)
     })
-  }
+  },
 }

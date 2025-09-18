@@ -30,10 +30,10 @@
 
   /* Enhanced Typography System */
   --font-family-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono:
-    "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", monospace;
-  --font-family-gaming: "Orbitron", "Exo 2", sans-serif;
+    'JetBrains Mono', 'Fira Code', Consolas, 'Liberation Mono', monospace;
+  --font-family-gaming: 'Orbitron', 'Exo 2', sans-serif;
   --font-family-ui: var(--font-family-sans);
 
   --font-size-xs: 0.75rem; /* 12px */
@@ -177,7 +177,7 @@
 
 /* === LIGHT THEME === */
 :root,
-:root[data-theme="light"] {
+:root[data-theme='light'] {
   /* Surface System */
   --surface-base: #ffffff;
   --surface-container: #f7f8fa;
@@ -222,7 +222,7 @@
 }
 
 /* === DARK THEME === */
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   /* Surface System (Pure black base) */
   --surface-base: #000000;
   --surface-container: #000000;
@@ -324,7 +324,7 @@
 }
 
 .enhanced-glass-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -358,7 +358,11 @@
 .btn-glass:hover,
 .btn-glass:focus {
   background: var(--glass-hover-bg);
-  border-color: color-mix(in srgb, var(--glass-border) 80%, var(--text-primary));
+  border-color: color-mix(
+    in srgb,
+    var(--glass-border) 80%,
+    var(--text-primary)
+  );
   box-shadow:
     var(--glass-shadow),
     0 0 15px rgba(255, 255, 255, 0.1);
@@ -432,7 +436,7 @@
 }
 
 .glass-toggle::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 2px;
   left: 2px;
@@ -785,7 +789,7 @@
   border-radius: 16px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -871,7 +875,8 @@
 .gaming-btn:focus-visible {
   outline: 2px solid var(--color-primary-500);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent);
 }
 
 .gaming-btn.btn-primary {
@@ -933,18 +938,18 @@
     margin: var(--spacing-4);
     border-radius: 12px;
   }
-  
+
   .gaming-modal-header,
   .gaming-modal-body,
   .gaming-modal-footer {
     padding: var(--spacing-4);
   }
-  
+
   .gaming-modal-footer {
     flex-direction: column;
     gap: var(--spacing-2);
   }
-  
+
   .gaming-btn {
     width: 100%;
     justify-content: center;
@@ -976,8 +981,12 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Gaming-themed pulse animation */
@@ -986,7 +995,8 @@
 }
 
 @keyframes pulseGaming {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
     filter: brightness(1);
@@ -1014,7 +1024,9 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
+  transition:
+    width 0.6s ease,
+    height 0.6s ease;
   z-index: 0;
 }
 
@@ -1057,7 +1069,9 @@
     box-shadow: 0 0 4px var(--color-primary-500);
   }
   to {
-    box-shadow: 0 0 8px var(--color-primary-400), 0 0 16px var(--color-primary-500);
+    box-shadow:
+      0 0 8px var(--color-primary-400),
+      0 0 16px var(--color-primary-500);
   }
 }
 
@@ -1067,16 +1081,21 @@
 }
 
 @keyframes shake {
-  10%, 90% {
+  10%,
+  90% {
     transform: translate3d(-1px, 0, 0);
   }
-  20%, 80% {
+  20%,
+  80% {
     transform: translate3d(2px, 0, 0);
   }
-  30%, 50%, 70% {
+  30%,
+  50%,
+  70% {
     transform: translate3d(-4px, 0, 0);
   }
-  40%, 60% {
+  40%,
+  60% {
     transform: translate3d(4px, 0, 0);
   }
 }

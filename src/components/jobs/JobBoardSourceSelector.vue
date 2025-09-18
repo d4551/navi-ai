@@ -3,11 +3,19 @@
     <!-- Overview Section -->
     <div class="flex flex-wrap mb-4">
       <div class="flex-1-12">
-        <div class="selection-overview glass-card section-card-subtle p-glass-md">
+        <div
+          class="selection-overview glass-card section-card-subtle p-glass-md"
+        >
           <div class="flex items-center justify-between">
             <div>
-              <h6 class="mb-1">Selected Sources: {{ selectedSources.length }}/{{ sources.length }}</h6>
-              <p class="text-secondary small mb-0">Configure job board APIs to expand your search reach</p>
+              <h6 class="mb-1">
+                Selected Sources: {{ selectedSources.length }}/{{
+                  sources.length
+                }}
+              </h6>
+              <p class="text-secondary small mb-0">
+                Configure job board APIs to expand your search reach
+              </p>
             </div>
             <div class="source-status-indicators flex gap-glass-sm">
               <div
@@ -29,20 +37,33 @@
         v-for="source in sources"
         :key="source.id"
         class="source-card glass-card section-card"
-        :class="{ 'source-selected': selectedSources.includes(source.id),
-                  'source-disabled': !source.enabled,
-                  'source-degraded': source.status === 'degraded'
+        :class="{
+          'source-selected': selectedSources.includes(source.id),
+          'source-disabled': !source.enabled,
+          'source-degraded': source.status === 'degraded',
         }"
       >
         <!-- Header with toggle -->
         <div class="source-header flex items-start justify-between">
           <div class="source-info flex items-center">
-            <div class="source-icon-wrapper" :style="{ backgroundColor: source.color + '20', borderColor: source.color }">
-              <AppIcon :name="source.icon" class="source-icon" :style="{ color: source.color }" />
+            <div
+              class="source-icon-wrapper"
+              :style="{
+                backgroundColor: source.color + '20',
+                borderColor: source.color,
+              }"
+            >
+              <AppIcon
+                :name="source.icon"
+                class="source-icon"
+                :style="{ color: source.color }"
+              />
             </div>
             <div class="ml-3">
               <h6 class="source-name mb-1">{{ source.name }}</h6>
-              <p class="source-description text-secondary small mb-0">{{ source.description }}</p>
+              <p class="source-description text-secondary small mb-0">
+                {{ source.description }}
+              </p>
             </div>
           </div>
           <div class="source-toggle">
@@ -55,8 +76,11 @@
                 :value="source.id"
                 :disabled="!source.enabled"
                 @change="updateSelection"
+              />
+              <label
+                :for="`source-${source.id}`"
+                class="form-check-label visually-hidden"
               >
-              <label :for="`source-${source.id}`" class="form-check-label visually-hidden">
                 Toggle {{ source.name }}
               </label>
             </div>
@@ -66,10 +90,7 @@
         <!-- Status and Rate Limit -->
         <div class="source-meta flex items-center justify-between mb-3">
           <div class="status-badge">
-            <span
-              class="badge"
-              :class="getStatusBadgeClass(source.status)"
-            >
+            <span class="badge" :class="getStatusBadgeClass(source.status)">
               <AppIcon name="mdi-circle-small" class="mr-1" />
               {{ source.status }}
             </span>
@@ -107,19 +128,32 @@
               :key="feature"
               class="feature-item flex items-center small text-secondary mb-1"
             >
-              <AppIcon name="CheckCircleIcon" color="success" context="success" />
+              <AppIcon
+                name="CheckCircleIcon"
+                color="success"
+                context="success"
+              />
               {{ feature }}
             </div>
           </div>
         </div>
 
         <!-- API Configuration (shown when selected) -->
-        <div v-if="selectedSources.includes(source.id) && source.enabled" class="api-config">
+        <div
+          v-if="selectedSources.includes(source.id) && source.enabled"
+          class="api-config"
+        >
           <div class="config-divider mb-3"></div>
 
           <!-- API Key Section (only for APIs that require keys) -->
-          <div v-if="source.apiKey !== 'Not required'" class="api-key-field mb-3">
-            <label :for="`api-key-${source.id}`" class="form-label small font-medium">
+          <div
+            v-if="source.apiKey !== 'Not required'"
+            class="api-key-field mb-3"
+          >
+            <label
+              :for="`api-key-${source.id}`"
+              class="form-label small font-medium"
+            >
               <AppIcon name="KeyIcon-variant" class="mr-1" />
               API Key
             </label>
@@ -131,7 +165,7 @@
                 class="form-control"
                 :placeholder="`Enter ${source.name} API key`"
                 @input="updateApiKey(source.id, $event.target.value)"
-              >
+              />
               <IconButton
                 variant="outline"
                 size="sm"
@@ -141,7 +175,11 @@
               />
             </div>
             <div class="form-text">
-              <a href="#" class="text-decoration-none" @click.prevent="openApiDocumentation(source.id)">
+              <a
+                href="#"
+                class="text-decoration-none"
+                @click.prevent="openApiDocumentation(source.id)"
+              >
                 <AppIcon name="QuestionMarkCircleIcon" />
                 Get API key
               </a>
@@ -149,24 +187,35 @@
           </div>
 
           <!-- Public API Notice -->
-          <div v-else class="public-api-notice mb-3 p-glass-sm bg-success-500-subtle text-success-600 rounded">
+          <div
+            v-else
+            class="public-api-notice mb-3 p-glass-sm bg-success-500-subtle text-success-600 rounded"
+          >
             <AppIcon name="CheckCircleIcon" context="success" />
             <strong>Public API</strong> - No authentication required
           </div>
         </div>
 
         <!-- Action buttons for selected sources -->
-        <div v-if="selectedSources.includes(source.id) && source.enabled" class="source-actions mt-3">
+        <div
+          v-if="selectedSources.includes(source.id) && source.enabled"
+          class="source-actions mt-3"
+        >
           <div class="flex gap-glass-sm">
             <UnifiedButton
               variant="outline"
               size="sm"
               class="flex-fill"
-              :disabled="(source.apiKey !== 'Not required' && !source.apiKey) || testingConnections.includes(source.id)"
+              :disabled="
+                (source.apiKey !== 'Not required' && !source.apiKey) ||
+                testingConnections.includes(source.id)
+              "
               leading-icon="BoltIcon-bolt"
               @click="testConnection(source.id)"
             >
-              <span v-if="testingConnections.includes(source.id)">Testing...</span>
+              <span v-if="testingConnections.includes(source.id)"
+                >Testing...</span
+              >
               <span v-else>Test API</span>
             </UnifiedButton>
             <IconButton
@@ -179,12 +228,29 @@
 
           <!-- Test Results -->
           <div
-            v-if="testResults[source.id]" class="test-result mt-2 p-glass-sm rounded small"
-            :class="testResults[source.id].success ? 'bg-success-500-subtle text-success-600' : 'bg-error-500-subtle text-error-600'"
+            v-if="testResults[source.id]"
+            class="test-result mt-2 p-glass-sm rounded small"
+            :class="
+              testResults[source.id].success
+                ? 'bg-success-500-subtle text-success-600'
+                : 'bg-error-500-subtle text-error-600'
+            "
           >
-            <AppIcon :name="testResults[source.id].success ? 'CheckIcon-circle-outline' : 'mdi-alert-circle-outline'" class="mr-1" />
+            <AppIcon
+              :name="
+                testResults[source.id].success
+                  ? 'CheckIcon-circle-outline'
+                  : 'mdi-alert-circle-outline'
+              "
+              class="mr-1"
+            />
             {{ testResults[source.id].message }}
-            <span v-if="testResults[source.id].success && testResults[source.id].jobCount !== undefined">
+            <span
+              v-if="
+                testResults[source.id].success &&
+                testResults[source.id].jobCount !== undefined
+              "
+            >
               ({{ testResults[source.id].jobCount }} jobs available)
             </span>
           </div>
@@ -195,7 +261,9 @@
     <!-- Configuration Summary -->
     <div v-if="selectedSources.length > 0" class="flex flex-wrap mt-4">
       <div class="flex-1-12">
-        <div class="configuration-summary glass-card section-card-subtle p-glass-md">
+        <div
+          class="configuration-summary glass-card section-card-subtle p-glass-md"
+        >
           <h6 class="mb-3">
             <AppIcon name="CogIcon" />
             Configuration Summary
@@ -203,25 +271,35 @@
           <div class="summary-stats flex flex-wrap g-3">
             <div class="flex-1-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-primary-600">{{ selectedSources.length }}</div>
-                <div class="stat-label small text-secondary">Active Sources</div>
+                <div class="stat-value h5 mb-1 text-primary-600">
+                  {{ selectedSources.length }}
+                </div>
+                <div class="stat-label small text-secondary">
+                  Active Sources
+                </div>
               </div>
             </div>
             <div class="flex-1-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-success-600">{{ operationalSources }}</div>
+                <div class="stat-value h5 mb-1 text-success-600">
+                  {{ operationalSources }}
+                </div>
                 <div class="stat-label small text-secondary">Operational</div>
               </div>
             </div>
             <div class="flex-1-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-blue-600">{{ totalRateLimit }}</div>
+                <div class="stat-value h5 mb-1 text-blue-600">
+                  {{ totalRateLimit }}
+                </div>
                 <div class="stat-label small text-secondary">Total/Hour</div>
               </div>
             </div>
             <div class="flex-1-md-3">
               <div class="stat-item text-center">
-                <div class="stat-value h5 mb-1 text-warning-600">{{ configuredSources }}</div>
+                <div class="stat-value h5 mb-1 text-warning-600">
+                  {{ configuredSources }}
+                </div>
                 <div class="stat-label small text-secondary">Configured</div>
               </div>
             </div>
@@ -233,7 +311,12 @@
 </template>
 
 <script setup>
-import { CheckCircleIcon, CogIcon, EyeIcon, QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckCircleIcon,
+  CogIcon,
+  EyeIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, watch, defineEmits, defineProps } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -244,12 +327,12 @@ import { jobSourceManager } from '@/services/JobSourceManager'
 const _props = defineProps({
   sources: {
     type: Array,
-    required: true
+    required: true,
   },
   selectedSources: {
     type: Array,
-    default: () => []
-  }
+    default: () => [],
+  },
 })
 
 const emit = defineEmits(['update:selected'])
@@ -264,12 +347,18 @@ const selectedSourceDetails = computed(() =>
   props.sources.filter(source => localSelectedSources.value.includes(source.id))
 )
 
-const operationalSources = computed(() =>
-  selectedSourceDetails.value.filter(source => source.status === 'operational').length
+const operationalSources = computed(
+  () =>
+    selectedSourceDetails.value.filter(
+      source => source.status === 'operational'
+    ).length
 )
 
-const configuredSources = computed(() =>
-  selectedSourceDetails.value.filter(source => source.apiKey && source.apiKey.length > 0).length
+const configuredSources = computed(
+  () =>
+    selectedSourceDetails.value.filter(
+      source => source.apiKey && source.apiKey.length > 0
+    ).length
 )
 
 const totalRateLimit = computed(() => {
@@ -279,9 +368,13 @@ const totalRateLimit = computed(() => {
 })
 
 // Watch for prop changes
-watch(() => props.selectedSources, (newVal) => {
-  localSelectedSources.value = [...newVal]
-}, { deep: true })
+watch(
+  () => props.selectedSources,
+  newVal => {
+    localSelectedSources.value = [...newVal]
+  },
+  { deep: true }
+)
 
 // Methods
 const updateSelection = () => {
@@ -295,27 +388,33 @@ const updateApiKey = (sourceId, apiKey) => {
   }
 }
 
-const getStatusClass = (status) => {
+const getStatusClass = status => {
   return {
     'status-operational': status === 'operational',
     'status-degraded': status === 'degraded',
     'status-down': status === 'down',
-    'status-unknown': status === 'unknown'
+    'status-unknown': status === 'unknown',
   }
 }
 
-const getStatusBadgeClass = (status) => {
+const getStatusBadgeClass = status => {
   switch (status) {
-    case 'operational': return 'badge-success'
-    case 'degraded': return 'badge-warning'
-    case 'down': return 'badge-danger'
-    default: return 'badge-secondary'
+    case 'operational':
+      return 'badge-success'
+    case 'degraded':
+      return 'badge-warning'
+    case 'down':
+      return 'badge-danger'
+    default:
+      return 'badge-secondary'
   }
 }
 
-const testConnection = async (sourceId) => {
+const testConnection = async sourceId => {
   const source = props.sources.find(s => s.id === sourceId)
-  if (!source) {return}
+  if (!source) {
+    return
+  }
 
   // Testing connection for source
   testingConnections.value.push(sourceId)
@@ -330,19 +429,21 @@ const testConnection = async (sourceId) => {
     testResults.value[sourceId] = {
       success: result.success,
       message: result.message,
-      jobCount: result.jobCount
+      jobCount: result.jobCount,
     }
   } catch (error) {
     testResults.value[sourceId] = {
       success: false,
-      message: `Connection failed: ${error?.message || 'Unknown error'}`
+      message: `Connection failed: ${error?.message || 'Unknown error'}`,
     }
   } finally {
-    testingConnections.value = testingConnections.value.filter(id => id !== sourceId)
+    testingConnections.value = testingConnections.value.filter(
+      id => id !== sourceId
+    )
   }
 }
 
-const togglePasswordVisibility = (sourceId) => {
+const togglePasswordVisibility = sourceId => {
   // Toggle password visibility logic
   const input = document.getElementById(`api-key-${sourceId}`)
   if (input) {
@@ -350,13 +451,13 @@ const togglePasswordVisibility = (sourceId) => {
   }
 }
 
-const openApiDocumentation = (sourceId) => {
+const openApiDocumentation = sourceId => {
   // Open API documentation in new tab
   const source = props.sources.find(s => s.id === sourceId)
   // Opening API documentation
 }
 
-const viewDocumentation = (sourceId) => {
+const viewDocumentation = sourceId => {
   // View source documentation
   openApiDocumentation(sourceId)
 }
@@ -442,14 +543,29 @@ const viewDocumentation = (sourceId) => {
   display: inline-block;
 }
 
-.status-operational { background-color: var(--color-success-500); }
-.status-degraded { background-color: var(--color-warning-500); }
-.status-down { background-color: var(--color-danger-500); }
-.status-unknown { background-color: var(--color-muted-500); }
+.status-operational {
+  background-color: var(--color-success-500);
+}
+.status-degraded {
+  background-color: var(--color-warning-500);
+}
+.status-down {
+  background-color: var(--color-danger-500);
+}
+.status-unknown {
+  background-color: var(--color-muted-500);
+}
 
-.badge-success { background-color: var(--color-success-500) !important; }
-.badge-warning { background-color: var(--color-warning-500) !important; color: var(--text-on-warning, #000) !important; }
-.badge-danger { background-color: var(--color-danger-500) !important; }
+.badge-success {
+  background-color: var(--color-success-500) !important;
+}
+.badge-warning {
+  background-color: var(--color-warning-500) !important;
+  color: var(--text-on-warning, #000) !important;
+}
+.badge-danger {
+  background-color: var(--color-danger-500) !important;
+}
 
 .category-tag {
   font-size: 0.75rem;
@@ -462,7 +578,12 @@ const viewDocumentation = (sourceId) => {
 
 .config-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--glass-border),
+    transparent
+  );
 }
 
 .api-config {
@@ -507,13 +628,13 @@ const viewDocumentation = (sourceId) => {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .glass-card-subtle,
-[data-theme="dark"] .api-config {
+[data-theme='dark'] .glass-card-subtle,
+[data-theme='dark'] .api-config {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
 }
 
-[data-theme="dark"] .category-tag {
+[data-theme='dark'] .category-tag {
   background-color: var(--glass-surface-dark) !important;
   color: var(--text-primary-600) !important;
   border: 1px solid var(--glass-border-dark);
@@ -521,8 +642,12 @@ const viewDocumentation = (sourceId) => {
 
 /* Loading animation */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {

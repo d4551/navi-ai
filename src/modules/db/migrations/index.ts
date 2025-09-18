@@ -36,7 +36,10 @@ export class MigrationManager {
     if (targetVersion > currentVersion) {
       // Upgrade
       for (const migration of this.migrations) {
-        if (migration.version > currentVersion && migration.version <= targetVersion) {
+        if (
+          migration.version > currentVersion &&
+          migration.version <= targetVersion
+        ) {
           // Running database migration
           console.info(`Running migration: ${migration.name}`)
           await migration.up()
@@ -46,7 +49,10 @@ export class MigrationManager {
     } else if (targetVersion < currentVersion) {
       // Downgrade
       for (const migration of this.migrations.slice().reverse()) {
-        if (migration.version <= currentVersion && migration.version > targetVersion) {
+        if (
+          migration.version <= currentVersion &&
+          migration.version > targetVersion
+        ) {
           if (migration.down) {
             // Rolling back database migration
             console.info(`Rolling back migration: ${migration.name}`)
@@ -84,7 +90,7 @@ export class MigrationManager {
       await (unifiedStorage as any).set?.(this.STORAGE_KEY, {
         id: this.STORAGE_KEY,
         version,
-        migratedAt: new Date().toISOString()
+        migratedAt: new Date().toISOString(),
       })
     } catch {
       // noop — persistence optional
@@ -98,11 +104,12 @@ export const migrations: Migration[] = [
     id: '001-initial-schema',
     name: 'Initial Schema Setup',
     version: 1,
-    description: 'Create initial database schema for users, resumes, and portfolios',
+    description:
+      'Create initial database schema for users, resumes, and portfolios',
     up: async () => {
       // Migration logic would go here
       // Creating initial schema
-    }
+    },
   },
   {
     id: '002-add-cover-letters',
@@ -114,7 +121,7 @@ export const migrations: Migration[] = [
     },
     down: async () => {
       // Removing cover letter schema
-    }
+    },
   },
   {
     id: '003-add-job-search',
@@ -123,7 +130,7 @@ export const migrations: Migration[] = [
     description: 'Add job search and application tracking',
     up: async () => {
       // Adding job search schema
-    }
+    },
   },
   {
     id: '004-add-interviews',
@@ -132,7 +139,7 @@ export const migrations: Migration[] = [
     description: 'Add interview session tracking and feedback',
     up: async () => {
       // Adding interview schema
-    }
+    },
   },
   {
     id: '005-add-preferences',
@@ -141,23 +148,24 @@ export const migrations: Migration[] = [
     description: 'Add user preferences and settings',
     up: async () => {
       // Adding preferences schema
-    }
-  }
+    },
+  },
 ]
 
 // Import studio data migration
-import { studioDataMigration } from './006-studio-data';
-import { runEnhancedPortfolioMigration } from './enhancedPortfolio';
+import { studioDataMigration } from './006-studio-data'
+import { runEnhancedPortfolioMigration } from './enhancedPortfolio'
 
 // Enhanced portfolio migration
 const enhancedPortfolioMigration: Migration = {
   id: '007-enhanced-portfolio',
   name: 'Enhanced Portfolio System',
   version: 7,
-  description: 'Upgrade portfolio system with templates, sharing, analytics, and AI features',
+  description:
+    'Upgrade portfolio system with templates, sharing, analytics, and AI features',
   up: async () => {
     await runEnhancedPortfolioMigration()
-  }
+  },
 }
 
 // Register all migrations

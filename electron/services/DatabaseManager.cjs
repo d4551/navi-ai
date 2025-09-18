@@ -5,68 +5,76 @@
 
 // Guard against browser environment
 if (typeof window !== 'undefined') {
-  console.warn('DatabaseManager is not supported in browser environments');
+  console.warn('DatabaseManager is not supported in browser environments')
 }
 
-const path = require('path');
-const fs = require('fs');
-const Database = require('better-sqlite3');
-const { logger } = require('../shared/utils/logger.cjs');
+const path = require('path')
+const fs = require('fs')
+const Database = require('better-sqlite3')
+const { logger } = require('../shared/utils/logger.cjs')
 
 class DatabaseManager {
   constructor() {
-    this.db = null;
-    this.dbPath = null;
+    this.db = null
+    this.dbPath = null
   }
 
   async _ensureDbPath() {
     if (!this.dbPath) {
-      this.dbPath = await this.resolveDbPath();
+      this.dbPath = await this.resolveDbPath()
     }
-    return this.dbPath;
+    return this.dbPath
   }
 
   _getMetaPath() {
-    const dbPath = this.dbPath || path.join(process.env.NODE_ENV === 'test' ? './test-data' : './data', 'navi.db');
-    const dir = path.dirname(dbPath);
-    return path.join(dir, 'navi-backup-meta.json');
+    const dbPath =
+      this.dbPath ||
+      path.join(
+        process.env.NODE_ENV === 'test' ? './test-data' : './data',
+        'navi.db'
+      )
+    const dir = path.dirname(dbPath)
+    return path.join(dir, 'navi-backup-meta.json')
   }
 
   async getBackupInfo() {
     try {
-      await this._ensureDbPath();
-      const metaPath = this._getMetaPath();
+      await this._ensureDbPath()
+      const metaPath = this._getMetaPath()
       if (fs.existsSync(metaPath)) {
-        const raw = fs.readFileSync(metaPath, 'utf8');
-        const json = JSON.parse(raw || '{}');
+        const raw = fs.readFileSync(metaPath, 'utf8')
+        const json = JSON.parse(raw || '{}')
         if (json && typeof json.lastBackup === 'string') {
-          return { lastBackup: json.lastBackup, lastBackupPath: json.lastBackupPath };
+          return {
+            lastBackup: json.lastBackup,
+            lastBackupPath: json.lastBackupPath,
+          }
         }
       }
     } catch (e) {
-      logger.warn('Failed to read backup meta:', e);
+      logger.warn('Failed to read backup meta:', e)
     }
-    return { lastBackup: 'Never' };
+    return { lastBackup: 'Never' }
   }
 
   _writeBackupMeta(meta) {
     try {
-      const metaPath = this._getMetaPath();
-      fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf8');
+      const metaPath = this._getMetaPath()
+      fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf8')
     } catch (e) {
-      logger.warn('Failed to write backup meta:', e);
+      logger.warn('Failed to write backup meta:', e)
     }
   }
 
   async resolveDbPath() {
     try {
-      const { app } = require('electron');
-      const userDataPath = app.getPath('userData');
-      return path.join(userDataPath, 'navi.db');
+      const { app } = require('electron')
+      const userDataPath = app.getPath('userData')
+      return path.join(userDataPath, 'navi.db')
     } catch (error) {
       // Fallback for non-Electron environments
-      const base = process.env.NODE_ENV === 'test' ? './test-data' : './data';
-      return path.join(base, 'navi.db');
+      const base = process.env.NODE_ENV === 'test' ? './test-data' : './data'
+      return path.join(base, 'navi.db')
     }
   }
 
@@ -75,28 +83,28 @@ class DatabaseManager {
    */
   async init() {
     try {
-      this.dbPath = await this.resolveDbPath();
-      logger.info(`Initializing SQLite database at: ${this.dbPath}`);
+      this.dbPath = await this.resolveDbPath()
+      logger.info(`Initializing SQLite database at: ${this.dbPath}`)
 
       // Ensure directory exists
-      const dir = path.dirname(this.dbPath);
+      const dir = path.dirname(this.dbPath)
 
       if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-        logger.info(`Created database directory: ${dir}`);
+        fs.mkdirSync(dir, { recursive: true })
+        logger.info(`Created database directory: ${dir}`)
       }
 
-      this.db = new Database(this.dbPath);
-      this.db.pragma('journal_mode = WAL');
-      this.db.pragma('foreign_keys = ON');
+      this.db = new Database(this.dbPath)
+      this.db.pragma('journal_mode = WAL')
+      this.db.pragma('foreign_keys = ON')
 
-      await this.createTables();
-      await this.runMigrations();
+      await this.createTables()
+      await this.runMigrations()
 
-      logger.info('Database initialized successfully');
+      logger.info('Database initialized successfully')
     } catch (error) {
-      logger.error('Failed to initialize database:', error);
-      throw error;
+      logger.error('Failed to initialize database:', error)
+      throw error
     }
   }
 
@@ -122,7 +130,7 @@ class DatabaseManager {
         created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         updated_at TEXT DEFAULT CURRENT_TIMESTAMP
       );
-    `;
+    `
 
     const createJobsTable = `
       CREATE TABLE IF NOT EXISTS jobs (
@@ -142,7 +150,7 @@ class DatabaseManager {
         created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         updated_at TEXT DEFAULT CURRENT_TIMESTAMP
       );
-    `;
+    `
 
     const createUsersTable = `
       CREATE TABLE IF NOT EXISTS users (
@@ -159,7 +167,7 @@ class DatabaseManager {
         created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         updated_at TEXT DEFAULT CURRENT_TIMESTAMP
       );
-    `;
+    `
 
     const createIndexes = `
       CREATE INDEX IF NOT EXISTS idx_studios_name ON studios(name);
@@ -171,23 +179,23 @@ class DatabaseManager {
       CREATE INDEX IF NOT EXISTS idx_jobs_type ON jobs(type);
       CREATE INDEX IF NOT EXISTS idx_jobs_remote ON jobs(remote);
       CREATE INDEX IF NOT EXISTS idx_users_id ON users(id);
-    `;
+    `
 
-    if (!this.db) throw new Error('Database not initialized');
+    if (!this.db) throw new Error('Database not initialized')
 
-    this.db.exec(createStudiosTable);
-    this.db.exec(createJobsTable);
-    this.db.exec(createUsersTable);
-    this.db.exec(createIndexes);
+    this.db.exec(createStudiosTable)
+    this.db.exec(createJobsTable)
+    this.db.exec(createUsersTable)
+    this.db.exec(createIndexes)
 
-    logger.info('Database tables created');
+    logger.info('Database tables created')
   }
 
   /**
    * Run database migrations
    */
   async runMigrations() {
-    if (!this.db) throw new Error('Database not initialized');
+    if (!this.db) throw new Error('Database not initialized')
 
     // Create migrations table
     this.db.exec(`
@@ -196,38 +204,41 @@ class DatabaseManager {
         name TEXT UNIQUE NOT NULL,
         executed_at TEXT DEFAULT CURRENT_TIMESTAMP
       );
-    `);
+    `)
 
     // Check and run migrations
     const migrations = [
       {
         name: '001_initial_schema',
-        sql: '' // Already handled in createTables
+        sql: '', // Already handled in createTables
       },
       {
         name: '002_add_studio_confidence',
         sql: `
           ALTER TABLE studios ADD COLUMN confidence REAL DEFAULT 1.0;
           ALTER TABLE studios ADD COLUMN priority INTEGER DEFAULT 1;
-        `
-      }
-    ];
+        `,
+      },
+    ]
 
-    const executedMigrations = this.db.prepare(
-      'SELECT name FROM migrations'
-    ).all().map((row) => row.name);
+    const executedMigrations = this.db
+      .prepare('SELECT name FROM migrations')
+      .all()
+      .map(row => row.name)
 
     for (const migration of migrations) {
       if (!executedMigrations.includes(migration.name)) {
         try {
           if (migration.sql.trim()) {
-            this.db.exec(migration.sql);
+            this.db.exec(migration.sql)
           }
-          this.db.prepare('INSERT INTO migrations (name) VALUES (?)').run(migration.name);
-          logger.info(`Executed migration: ${migration.name}`);
+          this.db
+            .prepare('INSERT INTO migrations (name) VALUES (?)')
+            .run(migration.name)
+          logger.info(`Executed migration: ${migration.name}`)
         } catch (error) {
           // Some migrations might fail if columns already exist, that's ok
-          logger.warn(`Migration ${migration.name} failed:`, error);
+          logger.warn(`Migration ${migration.name} failed:`, error)
         }
       }
     }
@@ -238,9 +249,9 @@ class DatabaseManager {
    */
   getDb() {
     if (!this.db) {
-      throw new Error('Database not initialized. Call init() first.');
+      throw new Error('Database not initialized. Call init() first.')
     }
-    return this.db;
+    return this.db
   }
 
   /**
@@ -248,9 +259,9 @@ class DatabaseManager {
    */
   close() {
     if (this.db) {
-      this.db.close();
-      this.db = null;
-      logger.info('Database connection closed');
+      this.db.close()
+      this.db = null
+      logger.info('Database connection closed')
     }
   }
 
@@ -258,38 +269,45 @@ class DatabaseManager {
    * Get database statistics
    */
   async getStats() {
-    if (!this.db) throw new Error('Database not initialized');
+    if (!this.db) throw new Error('Database not initialized')
 
-    const studioCount = this.db.prepare('SELECT COUNT(*) as count FROM studios').get();
-    const jobCount = this.db.prepare('SELECT COUNT(*) as count FROM jobs').get();
+    const studioCount = this.db
+      .prepare('SELECT COUNT(*) as count FROM studios')
+      .get()
+    const jobCount = this.db.prepare('SELECT COUNT(*) as count FROM jobs').get()
 
     // Get database file size
-    let dbSize = '0 MB';
+    let dbSize = '0 MB'
     try {
-      const stats = fs.statSync(this.dbPath);
-      dbSize = `${(stats.size / 1024 / 1024).toFixed(2)} MB`;
+      const stats = fs.statSync(this.dbPath)
+      dbSize = `${(stats.size / 1024 / 1024).toFixed(2)} MB`
     } catch (error) {
-      logger.warn('Could not get database size:', error);
+      logger.warn('Could not get database size:', error)
     }
 
-    const lastStudioUpdate = this.db.prepare('SELECT MAX(updated_at) as last_updated FROM studios').get();
+    const lastStudioUpdate = this.db
+      .prepare('SELECT MAX(updated_at) as last_updated FROM studios')
+      .get()
 
     return {
       studios: studioCount.count,
       jobs: jobCount.count,
       dbSize,
-      lastUpdated: lastStudioUpdate.last_updated || 'Never'
-    };
+      lastUpdated: lastStudioUpdate.last_updated || 'Never',
+    }
   }
 
   async backup(backupPath) {
-    if (!this.db) throw new Error('Database not initialized');
-    fs.copyFileSync(this.dbPath, backupPath);
-    logger.info(`Database backed up to: ${backupPath}`);
-    this._writeBackupMeta({ lastBackup: new Date().toISOString(), lastBackupPath: backupPath });
+    if (!this.db) throw new Error('Database not initialized')
+    fs.copyFileSync(this.dbPath, backupPath)
+    logger.info(`Database backed up to: ${backupPath}`)
+    this._writeBackupMeta({
+      lastBackup: new Date().toISOString(),
+      lastBackupPath: backupPath,
+    })
   }
 }
 
-const databaseManager = new DatabaseManager();
+const databaseManager = new DatabaseManager()
 
-module.exports = { databaseManager };
+module.exports = { databaseManager }

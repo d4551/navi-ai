@@ -24,7 +24,7 @@ const _props = withDefaults(defineProps<Props>(), {
   variant: 'default',
   minItemWidth: '250px',
   align: 'stretch',
-  justify: 'start'
+  justify: 'start',
 })
 
 const gridClasses = computed(() => {
@@ -66,7 +66,7 @@ const gridClasses = computed(() => {
 const gridStyle = computed(() => {
   if (props.cols === 'auto' && props.minItemWidth !== '250px') {
     return {
-      gridTemplateColumns: `repeat(auto-fit, minmax(${props.minItemWidth}, 1fr))`
+      gridTemplateColumns: `repeat(auto-fit, minmax(${props.minItemWidth}, 1fr))`,
     }
   }
   return {}
@@ -81,15 +81,31 @@ const gridStyle = computed(() => {
 
 <style scoped>
 /* Alignment utilities for grid */
-.layout-grid--align-start { align-items: start; }
-.layout-grid--items-center { align-items: center; }
-.layout-grid--align-end { align-items: end; }
-.layout-grid--align-stretch { align-items: stretch; }
+.layout-grid--align-start {
+  align-items: start;
+}
+.layout-grid--items-center {
+  align-items: center;
+}
+.layout-grid--align-end {
+  align-items: end;
+}
+.layout-grid--align-stretch {
+  align-items: stretch;
+}
 
-.layout-grid--justify-start { justify-items: start; }
-.layout-grid--justify-center { justify-items: center; }
-.layout-grid--justify-end { justify-items: end; }
-.layout-grid--justify-stretch { justify-items: stretch; }
+.layout-grid--justify-start {
+  justify-items: start;
+}
+.layout-grid--justify-center {
+  justify-items: center;
+}
+.layout-grid--justify-end {
+  justify-items: end;
+}
+.layout-grid--justify-stretch {
+  justify-items: stretch;
+}
 
 /* Variant styling */
 .layout-grid--card-grid {
@@ -132,12 +148,12 @@ const gridStyle = computed(() => {
   .layout-grid--responsive.layout-grid--6col {
     grid-template-columns: 1fr;
   }
-  
+
   .layout-grid--responsive.layout-grid--card-grid {
     padding: var(--spacing-md);
     gap: var(--spacing-sm);
   }
-  
+
   .layout-grid--responsive.layout-grid--card-grid > :deep(*) {
     padding: var(--spacing-md);
   }
@@ -161,25 +177,23 @@ const gridStyle = computed(() => {
 }
 
 /* Dark theme optimizations */
-[data-theme="dark"] .layout-grid--card-grid > :deep(*) {
+[data-theme='dark'] .layout-grid--card-grid > :deep(*) {
   background: var(--surface-elevated);
   border-color: var(--border-base);
 }
 
 /* Gaming theme enhancements */
 .theme-gaming .layout-grid--card-grid > :deep(*) {
-  background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.05), 
-    rgba(0, 255, 136, 0.02)
-  ), var(--surface-elevated);
+  background:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(0, 255, 136, 0.02)),
+    var(--surface-elevated);
   border-color: var(--color-gaming-200);
 }
 
-[data-theme="dark"].theme-gaming .layout-grid--card-grid > :deep(*) {
-  background: linear-gradient(135deg, 
-    rgba(99, 102, 241, 0.1), 
-    rgba(0, 255, 136, 0.05)
-  ), var(--surface-elevated);
+[data-theme='dark'].theme-gaming .layout-grid--card-grid > :deep(*) {
+  background:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(0, 255, 136, 0.05)),
+    var(--surface-elevated);
   border-color: var(--color-gaming-300);
 }
 
@@ -196,7 +210,11 @@ const gridStyle = computed(() => {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-primary-500), var(--color-gaming-500));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-gaming-500)
+  );
   opacity: 0;
   transition: opacity var(--duration-normal) var(--easing-ease-out);
 }

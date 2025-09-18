@@ -19,45 +19,47 @@ export class RemoteOKProvider implements JobProvider {
   priority = 85
   requiresAuth = false
   apiKey?: string
-  baseUrl = (import.meta as any).env?.DEV ? '/proxy/remoteok/api' : 'https://remoteok.io/api'
+  baseUrl = (import.meta as any).env?.DEV
+    ? '/proxy/remoteok/api'
+    : 'https://remoteok.io/api'
   rateLimit = { requests: 100, period: 3600000 } // 100 per hour
-  
+
   config = {
     maxResults: 50,
     categories: ['tech', 'design', 'marketing', 'sales', 'customer'],
     regions: ['global', 'remote'],
     icon: 'mdi-home-outline',
-    color: '#FF6B6B'
+    color: '#FF6B6B',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
-      limit: filters.limit || this.config.maxResults
+      limit: filters.limit || this.config.maxResults,
     }
   }
 
   parseResponse(data: any): Job[] {
     if (!Array.isArray(data)) return []
-    
+
     // RemoteOK returns array with first item being metadata
     const jobs = data.slice(1)
-    
+
     return jobs.map(job => this.normalizeJob(job))
   }
 
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     try {
       const response = await fetch(`${this.baseUrl}`)
-      
+
       if (!response.ok) {
         throw new Error(`RemoteOK API error: ${response.status}`)
       }
-      
+
       const data = await response.json()
-      
+
       // RemoteOK returns array with first item being metadata
       const jobs = Array.isArray(data) ? data.slice(1) : []
-      
+
       return jobs
         .filter(job => this.matchesFilters(job, filters))
         .slice(0, filters.limit || this.config.maxResults)
@@ -70,13 +72,14 @@ export class RemoteOKProvider implements JobProvider {
 
   private matchesFilters(job: any, filters: JobFilters): boolean {
     if (filters.query || filters.title) {
-      const searchText = `${job.position} ${job.description || ''} ${job.company}`.toLowerCase()
+      const searchText =
+        `${job.position} ${job.description || ''} ${job.company}`.toLowerCase()
       const queryText = (filters.query || filters.title || '').toLowerCase()
       if (!searchText.includes(queryText)) {
         return false
       }
     }
-    
+
     if (filters.location && filters.location !== 'remote') {
       const jobLocation = (job.location || '').toLowerCase()
       if (!jobLocation.includes(filters.location.toLowerCase())) {
@@ -96,14 +99,16 @@ export class RemoteOKProvider implements JobProvider {
       type: 'full-time' as const,
       remote: true,
       description: job.description || '',
-      url: job.url || job.apply_url || `https://remoteok.io/remote-jobs/${job.id}`,
-      salary: job.salary_min && job.salary_max 
-        ? `$${job.salary_min} - $${job.salary_max}`
-        : undefined,
+      url:
+        job.url || job.apply_url || `https://remoteok.io/remote-jobs/${job.id}`,
+      salary:
+        job.salary_min && job.salary_max
+          ? `$${job.salary_min} - $${job.salary_max}`
+          : undefined,
       tags: job.tags || [],
       postedDate: job.date ? new Date(job.date) : new Date(),
       source: this.displayName,
-      companyLogo: job.company_logo || undefined
+      companyLogo: job.company_logo || undefined,
     }
   }
 }
@@ -128,12 +133,13 @@ export class RemotiveProvider implements JobProvider {
     categories: ['software-dev', 'design', 'product', 'marketing'],
     regions: ['global', 'remote'],
     icon: 'mdi-domain',
-    color: '#2E86AB'
+    color: '#2E86AB',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     const params: Record<string, any> = {}
-    if (filters.query || filters.title) params['search'] = filters.query || filters.title
+    if (filters.query || filters.title)
+      params['search'] = filters.query || filters.title
     // Prefer software-dev for tech/gaming roles
     params['category'] = 'software-dev'
     return params
@@ -148,7 +154,9 @@ export class RemotiveProvider implements JobProvider {
     try {
       const params = new URLSearchParams()
       const built = this.buildParams(filters)
-      Object.entries(built).forEach(([k, v]) => v != null && params.append(k, String(v)))
+      Object.entries(built).forEach(
+        ([k, v]) => v != null && params.append(k, String(v))
+      )
       const url = params.toString() ? `${this.baseUrl}?${params}` : this.baseUrl
       const res = await fetch(url)
       if (!res.ok) throw new Error(`Remotive API error: ${res.status}`)
@@ -167,7 +175,8 @@ export class RemotiveProvider implements JobProvider {
   private matchesFilters(job: any, filters: JobFilters): boolean {
     if (filters.query || filters.title) {
       const q = (filters.query || filters.title || '').toLowerCase()
-      const text = `${job.title} ${job.company_name} ${job.description}`.toLowerCase()
+      const text =
+        `${job.title} ${job.company_name} ${job.description}`.toLowerCase()
       if (!text.includes(q)) return false
     }
     if (filters.location && filters.location !== 'remote') {
@@ -190,17 +199,30 @@ export class RemotiveProvider implements JobProvider {
       url: job.url || job.job_url || '',
       salary: job.salary || undefined,
       tags: Array.isArray(job.tags) ? job.tags : [],
-      postedDate: job.publication_date ? new Date(job.publication_date) : new Date(),
+      postedDate: job.publication_date
+        ? new Date(job.publication_date)
+        : new Date(),
       source: this.displayName,
-      gamingRelevance: this.calculateGamingRelevance(job.title, desc)
+      gamingRelevance: this.calculateGamingRelevance(job.title, desc),
     }
   }
 
   private calculateGamingRelevance(title: string, description: string): number {
     const text = `${title}\n${description}`.toLowerCase()
-    const keywords = ['game', 'unity', 'unreal', 'godot', 'blender', 'shader', 'level design', 'ue5']
+    const keywords = [
+      'game',
+      'unity',
+      'unreal',
+      'godot',
+      'blender',
+      'shader',
+      'level design',
+      'ue5',
+    ]
     let score = 0
-    keywords.forEach(k => { if (text.includes(k)) score += 0.15 })
+    keywords.forEach(k => {
+      if (text.includes(k)) score += 0.15
+    })
     return Math.min(score, 1)
   }
 }
@@ -225,7 +247,7 @@ export class WeWorkRemotelyProvider implements JobProvider {
     categories: ['programming'],
     regions: ['global', 'remote'],
     icon: 'mdi-briefcase',
-    color: '#54a3a3'
+    color: '#54a3a3',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
@@ -247,17 +269,23 @@ export class WeWorkRemotelyProvider implements JobProvider {
       // Lightweight RSS parse
       const items = this.extractRssItems(xml)
       const jobs = items
-        .map((item) => this.normalizeJob(item))
+        .map(item => this.normalizeJob(item))
         .filter(Boolean) as Job[]
 
       // Apply simple filters
       let out = jobs
       const q = (filters.query || filters.title || '').toLowerCase()
       if (q) {
-        out = out.filter(j => `${j.title} ${j.company} ${j.description}`.toLowerCase().includes(q))
+        out = out.filter(j =>
+          `${j.title} ${j.company} ${j.description}`.toLowerCase().includes(q)
+        )
       }
       if (filters.location && filters.location !== 'remote') {
-        out = out.filter(j => (j.location || '').toLowerCase().includes(filters.location!.toLowerCase()))
+        out = out.filter(j =>
+          (j.location || '')
+            .toLowerCase()
+            .includes(filters.location!.toLowerCase())
+        )
       }
 
       return out.slice(0, filters.limit || this.config.maxResults)
@@ -300,15 +328,21 @@ export class WeWorkRemotelyProvider implements JobProvider {
     let title = raw
     if (raw.includes('–')) {
       const [c, t] = raw.split('–').map((s: string) => s.trim())
-      if (c && t) { company = c; title = t }
+      if (c && t) {
+        company = c
+        title = t
+      }
     } else if (raw.toLowerCase().includes(' at ')) {
       const [t, c] = raw.split(/\s+at\s+/i)
-      if (c && t) { company = c.trim(); title = t.trim() }
+      if (c && t) {
+        company = c.trim()
+        title = t.trim()
+      }
     }
 
     const desc = item.description || ''
     return {
-      id: `wwr-${btoa(item.link).replace(/=+$/,'')}`,
+      id: `wwr-${btoa(item.link).replace(/=+$/, '')}`,
       title,
       company,
       location: 'Remote',
@@ -319,13 +353,22 @@ export class WeWorkRemotelyProvider implements JobProvider {
       salary: undefined,
       tags: this.extractTags(title, desc),
       postedDate: item.pubDate ? new Date(item.pubDate) : new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 
   private extractTags(title: string, description: string): string[] {
     const text = `${title}\n${description}`.toLowerCase()
-    const tags = ['unity', 'unreal', 'godot', 'javascript', 'typescript', 'react', 'c#', 'c++']
+    const tags = [
+      'unity',
+      'unreal',
+      'godot',
+      'javascript',
+      'typescript',
+      'react',
+      'c#',
+      'c++',
+    ]
     return tags.filter(t => text.includes(t))
   }
 }
@@ -350,13 +393,13 @@ export class WellfoundProvider implements JobProvider {
     categories: ['tech', 'startup', 'engineering', 'design'],
     regions: ['us', 'global'],
     icon: 'mdi-rocket-launch',
-    color: '#000000'
+    color: '#000000',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       limit: filters.limit || this.config.maxResults,
-      query: filters.query || filters.title
+      query: filters.query || filters.title,
     }
   }
 
@@ -385,12 +428,13 @@ export class WellfoundProvider implements JobProvider {
         location: 'San Francisco, CA',
         type: 'full-time' as const,
         remote: true,
-        description: 'Join our growing startup to build the future of technology.',
+        description:
+          'Join our growing startup to build the future of technology.',
         url: 'https://wellfound.com/company/techstartup/jobs',
         salary: '$120,000 - $180,000',
         tags: ['React', 'Node.js', 'TypeScript'],
         postedDate: new Date(),
-        source: this.displayName
+        source: this.displayName,
       },
       {
         id: `wellfound-${Date.now()}-2`,
@@ -399,13 +443,14 @@ export class WellfoundProvider implements JobProvider {
         location: 'Remote',
         type: 'full-time' as const,
         remote: true,
-        description: 'Design beautiful user experiences for our innovative platform.',
+        description:
+          'Design beautiful user experiences for our innovative platform.',
         url: 'https://wellfound.com/company/designco/jobs',
         salary: '$100,000 - $150,000',
         tags: ['Figma', 'React', 'Design Systems'],
         postedDate: new Date(),
-        source: this.displayName
-      }
+        source: this.displayName,
+      },
     ]
 
     return mockJobs.slice(0, filters.limit || this.config.maxResults)
@@ -417,14 +462,14 @@ export class WellfoundProvider implements JobProvider {
       title: job.title || 'Unknown Position',
       company: job.company || 'Unknown Company',
       location: job.location || 'Unknown',
-      type: job.type as JobType || 'full-time',
+      type: (job.type as JobType) || 'full-time',
       remote: job.remote || false,
       description: job.description || '',
       url: job.url || '',
       salary: job.salary,
       tags: job.tags || [],
       postedDate: job.postedDate || new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 }
@@ -449,14 +494,14 @@ export class GitHubJobsProvider implements JobProvider {
     categories: ['programming', 'development', 'engineering'],
     regions: ['global'],
     icon: 'mdi-github',
-    color: '#333333'
+    color: '#333333',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       limit: filters.limit || this.config.maxResults,
       query: filters.query || filters.title,
-      location: filters.location
+      location: filters.location,
     }
   }
 
@@ -489,7 +534,7 @@ export class GitHubJobsProvider implements JobProvider {
         salary: '$90,000 - $130,000',
         tags: ['Unity', 'C#', 'Game Development'],
         postedDate: new Date(),
-        source: this.displayName
+        source: this.displayName,
       },
       {
         id: `github-${Date.now()}-2`,
@@ -503,8 +548,8 @@ export class GitHubJobsProvider implements JobProvider {
         salary: '$85,000 - $125,000',
         tags: ['Unity', 'VR', 'C#'],
         postedDate: new Date(),
-        source: this.displayName
-      }
+        source: this.displayName,
+      },
     ]
 
     return gamingTechJobs.slice(0, filters.limit || this.config.maxResults)
@@ -516,14 +561,14 @@ export class GitHubJobsProvider implements JobProvider {
       title: job.title || 'Unknown Position',
       company: job.company || 'Unknown Company',
       location: job.location || 'Unknown',
-      type: job.type as JobType || 'full-time',
+      type: (job.type as JobType) || 'full-time',
       remote: job.remote || false,
       description: job.description || '',
       url: job.url || '',
       salary: job.salary,
       tags: job.tags || [],
       postedDate: job.postedDate || new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 }
@@ -548,16 +593,16 @@ export class ArbeitsNowProvider implements JobProvider {
     categories: ['tech', 'engineering', 'design', 'marketing'],
     regions: ['europe', 'germany', 'netherlands'],
     icon: 'mdi-briefcase',
-    color: '#2196F3'
+    color: '#2196F3',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     const params = new URLSearchParams()
-    
+
     if (filters.query || filters.title) {
       params.append('search', filters.query || filters.title || '')
     }
-    
+
     return Object.fromEntries(params)
   }
 
@@ -569,20 +614,20 @@ export class ArbeitsNowProvider implements JobProvider {
   async fetchJobs(filters: JobFilters): Promise<Job[]> {
     try {
       const params = new URLSearchParams()
-      
+
       if (filters.query || filters.title) {
         params.append('search', filters.query || filters.title || '')
       }
-      
+
       const url = params.toString() ? `${this.baseUrl}?${params}` : this.baseUrl
       const response = await fetch(url)
-      
+
       if (!response.ok) {
         throw new Error(`ArbeitsNow API error: ${response.status}`)
       }
-      
+
       const data = await response.json()
-      
+
       return (data.data || [])
         .filter((job: any) => job && typeof job === 'object')
         .slice(0, filters.limit || this.config.maxResults)
@@ -605,7 +650,7 @@ export class ArbeitsNowProvider implements JobProvider {
       url: job.url,
       tags: job.tags,
       postedDate: new Date(job.created_at),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 
@@ -638,14 +683,14 @@ export class DiceProvider implements JobProvider {
     categories: ['tech', 'programming', 'engineering'],
     regions: ['us', 'canada'],
     icon: 'mdi-dice-multiple',
-    color: '#FF6900'
+    color: '#FF6900',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       limit: filters.limit || this.config.maxResults,
       query: filters.query || filters.title,
-      location: filters.location
+      location: filters.location,
     }
   }
 
@@ -673,12 +718,13 @@ export class DiceProvider implements JobProvider {
         location: 'Austin, TX',
         type: 'full-time' as const,
         remote: false,
-        description: 'Lead game development projects using cutting-edge technology.',
+        description:
+          'Lead game development projects using cutting-edge technology.',
         url: 'https://dice.com/jobs/unity-developer',
         salary: '$110,000 - $160,000',
         tags: ['Unity', 'C#', 'Game Development'],
         postedDate: new Date(),
-        source: this.displayName
+        source: this.displayName,
       },
       {
         id: `dice-${Date.now()}-2`,
@@ -692,8 +738,8 @@ export class DiceProvider implements JobProvider {
         salary: '$130,000 - $180,000',
         tags: ['C++', 'Game Engine', 'Graphics'],
         postedDate: new Date(),
-        source: this.displayName
-      }
+        source: this.displayName,
+      },
     ]
 
     return techGamingJobs.slice(0, filters.limit || this.config.maxResults)
@@ -705,14 +751,14 @@ export class DiceProvider implements JobProvider {
       title: job.title || 'Unknown Position',
       company: job.company || 'Unknown Company',
       location: job.location || 'Unknown',
-      type: job.type as JobType || 'full-time',
+      type: (job.type as JobType) || 'full-time',
       remote: job.remote || false,
       description: job.description || '',
       url: job.url || '',
       salary: job.salary,
       tags: job.tags || [],
       postedDate: job.postedDate || new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 }
@@ -737,13 +783,13 @@ export class StackOverflowJobsProvider implements JobProvider {
     categories: ['programming', 'development'],
     regions: ['global'],
     icon: 'mdi-stack-overflow',
-    color: '#F48024'
+    color: '#F48024',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       limit: filters.limit || this.config.maxResults,
-      query: filters.query || filters.title
+      query: filters.query || filters.title,
     }
   }
 
@@ -757,7 +803,11 @@ export class StackOverflowJobsProvider implements JobProvider {
       // Mock implementation since Stack Overflow Jobs is discontinued
       return this.generateMockJobs(filters)
     } catch (error) {
-      logger.error('Stack Overflow Jobs fetch failed:', error, 'OpenSourceJobProviders')
+      logger.error(
+        'Stack Overflow Jobs fetch failed:',
+        error,
+        'OpenSourceJobProviders'
+      )
       return []
     }
   }
@@ -776,8 +826,8 @@ export class StackOverflowJobsProvider implements JobProvider {
         salary: '$95,000 - $140,000',
         tags: ['JavaScript', 'React', 'Node.js'],
         postedDate: new Date(),
-        source: this.displayName
-      }
+        source: this.displayName,
+      },
     ]
 
     return devGamingJobs.slice(0, filters.limit || this.config.maxResults)
@@ -789,14 +839,14 @@ export class StackOverflowJobsProvider implements JobProvider {
       title: job.title || 'Unknown Position',
       company: job.company || 'Unknown Company',
       location: job.location || 'Unknown',
-      type: job.type as JobType || 'full-time',
+      type: (job.type as JobType) || 'full-time',
       remote: job.remote || false,
       description: job.description || '',
       url: job.url || '',
       salary: job.salary,
       tags: job.tags || [],
       postedDate: job.postedDate || new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 }
@@ -821,13 +871,13 @@ export class FlexJobsProvider implements JobProvider {
     categories: ['remote', 'freelance', 'part-time'],
     regions: ['global'],
     icon: 'mdi-clock-outline',
-    color: '#00A651'
+    color: '#00A651',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       limit: filters.limit || this.config.maxResults,
-      query: filters.query || filters.title
+      query: filters.query || filters.title,
     }
   }
 
@@ -860,7 +910,7 @@ export class FlexJobsProvider implements JobProvider {
         salary: '$35 - $55/hour',
         tags: ['Game Design', 'Remote', 'Flexible'],
         postedDate: new Date(),
-        source: this.displayName
+        source: this.displayName,
       },
       {
         id: `flexjobs-${Date.now()}-2`,
@@ -874,8 +924,8 @@ export class FlexJobsProvider implements JobProvider {
         salary: '$40 - $60/hour',
         tags: ['Art', 'Game Development', 'Freelance'],
         postedDate: new Date(),
-        source: this.displayName
-      }
+        source: this.displayName,
+      },
     ]
 
     return flexJobs.slice(0, filters.limit || this.config.maxResults)
@@ -887,14 +937,14 @@ export class FlexJobsProvider implements JobProvider {
       title: job.title || 'Unknown Position',
       company: job.company || 'Unknown Company',
       location: job.location || 'Unknown',
-      type: job.type as JobType || 'part-time',
+      type: (job.type as JobType) || 'part-time',
       remote: job.remote || false,
       description: job.description || '',
       url: job.url || '',
       salary: job.salary,
       tags: job.tags || [],
       postedDate: job.postedDate || new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 }
@@ -919,13 +969,13 @@ export class ZipRecruiterProvider implements JobProvider {
     categories: ['general', 'tech', 'gaming'],
     regions: ['us'],
     icon: 'mdi-briefcase-search',
-    color: '#1565C0'
+    color: '#1565C0',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       limit: filters.limit || this.config.maxResults,
-      query: filters.query || filters.title
+      query: filters.query || filters.title,
     }
   }
 
@@ -958,7 +1008,7 @@ export class ZipRecruiterProvider implements JobProvider {
         salary: '$45,000 - $65,000',
         tags: ['QA', 'Testing', 'Gaming'],
         postedDate: new Date(),
-        source: this.displayName
+        source: this.displayName,
       },
       {
         id: `ziprecruiter-${Date.now()}-2`,
@@ -972,8 +1022,8 @@ export class ZipRecruiterProvider implements JobProvider {
         salary: '$50,000 - $70,000',
         tags: ['Community', 'Social Media', 'Gaming'],
         postedDate: new Date(),
-        source: this.displayName
-      }
+        source: this.displayName,
+      },
     ]
 
     return zipJobs.slice(0, filters.limit || this.config.maxResults)
@@ -985,14 +1035,14 @@ export class ZipRecruiterProvider implements JobProvider {
       title: job.title || 'Unknown Position',
       company: job.company || 'Unknown Company',
       location: job.location || 'Unknown',
-      type: job.type as JobType || 'full-time',
+      type: (job.type as JobType) || 'full-time',
       remote: job.remote || false,
       description: job.description || '',
       url: job.url || '',
       salary: job.salary,
       tags: job.tags || [],
       postedDate: job.postedDate || new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 }
@@ -1017,13 +1067,13 @@ export class SimplyHiredProvider implements JobProvider {
     categories: ['general', 'tech'],
     regions: ['us', 'canada'],
     icon: 'mdi-magnify',
-    color: '#2E7D32'
+    color: '#2E7D32',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       limit: filters.limit || this.config.maxResults,
-      query: filters.query || filters.title
+      query: filters.query || filters.title,
     }
   }
 
@@ -1056,8 +1106,8 @@ export class SimplyHiredProvider implements JobProvider {
         salary: '$70,000 - $95,000',
         tags: ['Audio', 'Sound Design', 'Gaming'],
         postedDate: new Date(),
-        source: this.displayName
-      }
+        source: this.displayName,
+      },
     ]
 
     return simplyJobs.slice(0, filters.limit || this.config.maxResults)
@@ -1069,14 +1119,14 @@ export class SimplyHiredProvider implements JobProvider {
       title: job.title || 'Unknown Position',
       company: job.company || 'Unknown Company',
       location: job.location || 'Unknown',
-      type: job.type as JobType || 'full-time',
+      type: (job.type as JobType) || 'full-time',
       remote: job.remote || false,
       description: job.description || '',
       url: job.url || '',
       salary: job.salary,
       tags: job.tags || [],
       postedDate: job.postedDate || new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 }
@@ -1101,13 +1151,13 @@ export class MonsterProvider implements JobProvider {
     categories: ['general', 'tech', 'gaming'],
     regions: ['us', 'global'],
     icon: 'mdi-briefcase',
-    color: '#6633CC'
+    color: '#6633CC',
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       limit: filters.limit || this.config.maxResults,
-      query: filters.query || filters.title
+      query: filters.query || filters.title,
     }
   }
 
@@ -1140,8 +1190,8 @@ export class MonsterProvider implements JobProvider {
         salary: '$100,000 - $140,000',
         tags: ['Project Management', 'Gaming', 'Production'],
         postedDate: new Date(),
-        source: this.displayName
-      }
+        source: this.displayName,
+      },
     ]
 
     return monsterJobs.slice(0, filters.limit || this.config.maxResults)
@@ -1153,14 +1203,14 @@ export class MonsterProvider implements JobProvider {
       title: job.title || 'Unknown Position',
       company: job.company || 'Unknown Company',
       location: job.location || 'Unknown',
-      type: job.type as JobType || 'full-time',
+      type: (job.type as JobType) || 'full-time',
       remote: job.remote || false,
       description: job.description || '',
       url: job.url || '',
       salary: job.salary,
       tags: job.tags || [],
       postedDate: job.postedDate || new Date(),
-      source: this.displayName
+      source: this.displayName,
     }
   }
 }

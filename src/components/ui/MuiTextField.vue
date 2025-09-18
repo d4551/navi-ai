@@ -4,15 +4,18 @@
       {{ label }}
       <span v-if="required" class="mui-input-required">*</span>
     </label>
-    
+
     <div class="mui-input-container">
       <div v-if="startAdornment" class="mui-input-adornment mui-input-start">
         <slot name="startAdornment">
-          <i v-if="typeof startAdornment === 'string'" :class="normalizeIcon(startAdornment)" />
+          <i
+            v-if="typeof startAdornment === 'string'"
+            :class="normalizeIcon(startAdornment)"
+          />
           <span v-else>{{ startAdornment }}</span>
         </slot>
       </div>
-      
+
       <input
         :id="inputId"
         ref="inputRef"
@@ -31,16 +34,23 @@
         @focus="handleFocus"
         @keydown="handleKeydown"
       />
-      
+
       <div v-if="endAdornment" class="mui-input-adornment mui-input-end">
         <slot name="endAdornment">
-          <i v-if="typeof endAdornment === 'string'" :class="normalizeIcon(endAdornment)" />
+          <i
+            v-if="typeof endAdornment === 'string'"
+            :class="normalizeIcon(endAdornment)"
+          />
           <span v-else>{{ endAdornment }}</span>
         </slot>
       </div>
     </div>
-    
-    <div v-if="helperText || error" class="mui-input-helper-text" :class="{ 'mui-input-error': error }">
+
+    <div
+      v-if="helperText || error"
+      class="mui-input-helper-text"
+      :class="{ 'mui-input-error': error }"
+    >
       {{ error || helperText }}
     </div>
   </div>
@@ -48,104 +58,107 @@
 
 <script>
 import { computed, ref, nextTick } from 'vue'
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from '@paralleldrive/cuid2'
 
 export default {
-  name: "MuiTextField",
+  name: 'MuiTextField',
   props: {
-    modelValue: { type: [String, Number], default: "" },
-    label: { type: String, default: "" },
-    placeholder: { type: String, default: "" },
-    type: { type: String, default: "text" },
+    modelValue: { type: [String, Number], default: '' },
+    label: { type: String, default: '' },
+    placeholder: { type: String, default: '' },
+    type: { type: String, default: 'text' },
     variant: {
       type: String,
-      default: "outlined",
-      validator: (value) => ["outlined", "filled", "standard"].includes(value),
+      default: 'outlined',
+      validator: value => ['outlined', 'filled', 'standard'].includes(value),
     },
     size: {
       type: String,
-      default: "medium",
-      validator: (value) => ["small", "medium", "large"].includes(value),
+      default: 'medium',
+      validator: value => ['small', 'medium', 'large'].includes(value),
     },
     disabled: { type: Boolean, default: false },
     readonly: { type: Boolean, default: false },
     required: { type: Boolean, default: false },
-    error: { type: String, default: "" },
-    helperText: { type: String, default: "" },
-    autocomplete: { type: String, default: "" },
+    error: { type: String, default: '' },
+    helperText: { type: String, default: '' },
+    autocomplete: { type: String, default: '' },
     startAdornment: { type: [String, Number], default: null },
     endAdornment: { type: [String, Number], default: null },
     fullWidth: { type: Boolean, default: false },
-    ariaDescribedby: { type: String, default: "" },
+    ariaDescribedby: { type: String, default: '' },
   },
-  emits: ["update:modelValue", "blur", "focus", "keydown"],
+  emits: ['update:modelValue', 'blur', 'focus', 'keydown'],
   setup(props, { emit }) {
-  const inputRef = ref(null);
-  const isFocused = ref(false);
-  const inputId = `mui-input-${createId()}`;
+    const inputRef = ref(null)
+    const isFocused = ref(false)
+    const inputId = `mui-input-${createId()}`
 
     const textFieldClasses = computed(() => [
-      "mui-textfield",
+      'mui-textfield',
       `mui-textfield-${props.variant}`,
       `mui-textfield-size-${props.size}`,
       {
-        "mui-textfield-disabled": props.disabled,
-        "mui-textfield-error": props.error,
-        "mui-textfield-focused": isFocused.value,
-        "mui-textfield-full-width": props.fullWidth,
-        "mui-textfield-has-value": props.modelValue !== "" && props.modelValue != null,
+        'mui-textfield-disabled': props.disabled,
+        'mui-textfield-error': props.error,
+        'mui-textfield-focused': isFocused.value,
+        'mui-textfield-full-width': props.fullWidth,
+        'mui-textfield-has-value':
+          props.modelValue !== '' && props.modelValue != null,
       },
-    ]);
+    ])
 
     const labelClasses = computed(() => [
-      "mui-input-label",
+      'mui-input-label',
       {
-        "mui-input-label-shrink": isFocused.value || props.modelValue !== "" && props.modelValue != null,
-        "mui-input-label-error": props.error,
-        "mui-input-label-disabled": props.disabled,
+        'mui-input-label-shrink':
+          isFocused.value ||
+          (props.modelValue !== '' && props.modelValue != null),
+        'mui-input-label-error': props.error,
+        'mui-input-label-disabled': props.disabled,
       },
-    ]);
+    ])
 
     const inputClasses = computed(() => [
-      "mui-input",
+      'mui-input',
       {
-        "mui-input-with-start": props.startAdornment,
-        "mui-input-with-end": props.endAdornment,
+        'mui-input-with-start': props.startAdornment,
+        'mui-input-with-end': props.endAdornment,
       },
-    ]);
+    ])
 
-    const normalizeIcon = (cls) => {
-      if (!cls) return null;
-      const c = String(cls).trim();
-      if (c.startsWith("mdi-")) return ["mdi", c];
-      if (c === "mdi" || c.startsWith("mdi ")) return c;
+    const normalizeIcon = cls => {
+      if (!cls) return null
+      const c = String(cls).trim()
+      if (c.startsWith('mdi-')) return ['mdi', c]
+      if (c === 'mdi' || c.startsWith('mdi ')) return c
       // Bootstrap icons (bi-) are no longer supported - use Heroicons instead
-      return c;
-    };
+      return c
+    }
 
-    const handleInput = (event) => {
-      emit("update:modelValue", event.target.value);
-    };
+    const handleInput = event => {
+      emit('update:modelValue', event.target.value)
+    }
 
-    const handleFocus = (event) => {
-      isFocused.value = true;
-      emit("focus", event);
-    };
+    const handleFocus = event => {
+      isFocused.value = true
+      emit('focus', event)
+    }
 
-    const handleBlur = (event) => {
-      isFocused.value = false;
-      emit("blur", event);
-    };
+    const handleBlur = event => {
+      isFocused.value = false
+      emit('blur', event)
+    }
 
-    const handleKeydown = (event) => {
-      emit("keydown", event);
-    };
+    const handleKeydown = event => {
+      emit('keydown', event)
+    }
 
     const focus = () => {
       nextTick(() => {
-        inputRef.value?.focus();
-      });
-    };
+        inputRef.value?.focus()
+      })
+    }
 
     return {
       inputRef,
@@ -159,9 +172,9 @@ export default {
       handleBlur,
       handleKeydown,
       focus,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -187,9 +200,10 @@ export default {
   top: 0;
   transform: translate(14px, 16px) scale(1);
   transform-origin: top left;
-  transition: color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,
-              transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,
-              max-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+  transition:
+    color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+    transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms,
+    max-width 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
   pointer-events: none;
   z-index: 1;
   max-width: calc(100% - 24px);
@@ -208,11 +222,11 @@ export default {
   color: rgba(0, 0, 0, 0.38);
 }
 
-[data-theme="dark"] .mui-input-label {
+[data-theme='dark'] .mui-input-label {
   color: var(--text-secondary, rgba(255, 255, 255, 0.7));
 }
 
-[data-theme="dark"] .mui-input-label-disabled {
+[data-theme='dark'] .mui-input-label-disabled {
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -256,11 +270,11 @@ export default {
   opacity: 1;
 }
 
-[data-theme="dark"] .mui-input {
+[data-theme='dark'] .mui-input {
   color: var(--text-primary-600, rgba(255, 255, 255, 0.87));
 }
 
-[data-theme="dark"] .mui-input::placeholder {
+[data-theme='dark'] .mui-input::placeholder {
   color: var(--text-secondary, rgba(255, 255, 255, 0.5));
 }
 
@@ -281,7 +295,7 @@ export default {
   border: 1px solid var(--glass-border, rgba(0, 0, 0, 0.23));
   border-radius: 4px;
   pointer-events: none;
-  transition: border-color 200ms cubic-bezier(0.0, 0, 0.2, 1);
+  transition: border-color 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .mui-textfield-outlined.mui-textfield-focused .mui-input-container::before {
@@ -297,11 +311,13 @@ export default {
   border-color: rgba(0, 0, 0, 0.26);
 }
 
-[data-theme="dark"] .mui-textfield-outlined .mui-input-container::before {
+[data-theme='dark'] .mui-textfield-outlined .mui-input-container::before {
   border-color: var(--glass-border, rgba(255, 255, 255, 0.23));
 }
 
-[data-theme="dark"] .mui-textfield-outlined.mui-textfield-disabled .mui-input-container::before {
+[data-theme='dark']
+  .mui-textfield-outlined.mui-textfield-disabled
+  .mui-input-container::before {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -322,7 +338,7 @@ export default {
   background-color: var(--bg-secondary-500, rgba(0, 0, 0, 0.06));
   border-radius: 4px 4px 0 0;
   position: relative;
-  transition: background-color 200ms cubic-bezier(0.0, 0, 0.2, 1);
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .mui-textfield-filled .mui-input-container::after {
@@ -334,7 +350,7 @@ export default {
   height: 2px;
   background-color: var(--color-primary, #1976d2);
   transform: scaleX(0);
-  transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .mui-textfield-filled.mui-textfield-focused .mui-input-container::after {
@@ -349,7 +365,7 @@ export default {
   right: 0;
   height: 1px;
   background-color: var(--glass-border, rgba(0, 0, 0, 0.42));
-  transition: border-b-color 200ms cubic-bezier(0.0, 0, 0.2, 1);
+  transition: border-b-color 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .mui-textfield-filled .mui-input {
@@ -364,7 +380,7 @@ export default {
   transform: translate(12px, 7px) scale(0.75);
 }
 
-[data-theme="dark"] .mui-textfield-filled .mui-input-container {
+[data-theme='dark'] .mui-textfield-filled .mui-input-container {
   background-color: var(--bg-secondary-500, rgba(255, 255, 255, 0.09));
 }
 
@@ -378,7 +394,7 @@ export default {
   height: 2px;
   background-color: var(--color-primary, #1976d2);
   transform: scaleX(0);
-  transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .mui-textfield-standard.mui-textfield-focused .mui-input-container::after {
@@ -456,7 +472,7 @@ export default {
   padding-right: 14px;
 }
 
-[data-theme="dark"] .mui-input-adornment {
+[data-theme='dark'] .mui-input-adornment {
   color: var(--text-secondary, rgba(255, 255, 255, 0.7));
 }
 
@@ -473,7 +489,7 @@ export default {
   color: var(--color-danger, #d32f2f);
 }
 
-[data-theme="dark"] .mui-input-helper-text {
+[data-theme='dark'] .mui-input-helper-text {
   color: var(--text-secondary, rgba(255, 255, 255, 0.7));
 }
 
@@ -483,7 +499,7 @@ export default {
   cursor: default;
 }
 
-[data-theme="dark"] .mui-textfield-disabled .mui-input {
+[data-theme='dark'] .mui-textfield-disabled .mui-input {
   color: rgba(255, 255, 255, 0.5);
 }
 

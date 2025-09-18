@@ -7,7 +7,9 @@
             <AppIcon name="mdi-robot" class="me-3" color="info" />
             AI-Powered Tools
           </h4>
-          <p class="text-muted mb-0">Advanced AI features for document enhancement and tailoring</p>
+          <p class="text-muted mb-0">
+            Advanced AI features for document enhancement and tailoring
+          </p>
         </div>
         <div class="ai-status-badge" :class="{ active: aiReady }">
           <AppIcon name="mdi-brain" class="me-1" />
@@ -27,11 +29,13 @@
             </div>
             <div class="ms-3">
               <h6 class="fw-semibold mb-1">Job Description Analyzer</h6>
-              <p class="text-muted text-sm mb-0">Extract key requirements and skills from job postings</p>
+              <p class="text-muted text-sm mb-0">
+                Extract key requirements and skills from job postings
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div class="tool-content p-4">
           <textarea
             v-model="jobDescriptionModel"
@@ -39,10 +43,12 @@
             rows="4"
             placeholder="Paste the job description here..."
           ></textarea>
-          
+
           <div class="d-flex justify-content-between align-items-center">
             <div v-if="analysisResults.keywords" class="analysis-stats">
-              <small class="text-muted">{{ analysisResults.keywords.length }} keywords found</small>
+              <small class="text-muted"
+                >{{ analysisResults.keywords.length }} keywords found</small
+              >
             </div>
             <UnifiedButton
               variant="primary"
@@ -66,17 +72,20 @@
                 {{ keyword }}
               </span>
             </div>
-            
+
             <div v-if="analysisResults.matchScore" class="match-score">
               <div class="d-flex justify-content-between mb-1">
                 <span class="text-sm fw-medium">Resume Match Score</span>
-                <span class="text-sm fw-bold" :class="getScoreColor(analysisResults.matchScore)">
+                <span
+                  class="text-sm fw-bold"
+                  :class="getScoreColor(analysisResults.matchScore)"
+                >
                   {{ analysisResults.matchScore }}%
                 </span>
               </div>
               <div class="progress progress--xs">
-                <div 
-                  class="progress-bar" 
+                <div
+                  class="progress-bar"
                   :class="getScoreColor(analysisResults.matchScore)"
                   :style="{ width: analysisResults.matchScore + '%' }"
                 ></div>
@@ -95,11 +104,13 @@
             </div>
             <div class="ms-3">
               <h6 class="fw-semibold mb-1">Resume Parser</h6>
-              <p class="text-muted text-sm mb-0">Upload or paste your resume to extract structured data</p>
+              <p class="text-muted text-sm mb-0">
+                Upload or paste your resume to extract structured data
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div class="tool-content p-4">
           <div class="upload-area mb-3">
             <div class="d-flex flex-column gap-2 mb-3">
@@ -111,12 +122,19 @@
                 accept=".pdf,.doc,.docx,.txt,.md,.rtf"
                 @change="onFileChange"
               />
-              <div class="p-3 border-subtle rounded d-flex align-items-center justify-content-between">
+              <div
+                class="p-3 border-subtle rounded d-flex align-items-center justify-content-between"
+              >
                 <div class="d-flex align-items-center gap-2">
                   <AppIcon name="mdi-upload" class="text-muted" />
                   <span class="text-sm text-muted">Upload PDF/DOCX/TXT</span>
                 </div>
-                <UnifiedButton variant="ghost" size="xs" @click="() => fileInput?.click()">Choose File</UnifiedButton>
+                <UnifiedButton
+                  variant="ghost"
+                  size="xs"
+                  @click="() => fileInput?.click()"
+                  >Choose File</UnifiedButton
+                >
               </div>
             </div>
             <textarea
@@ -126,7 +144,7 @@
               placeholder="Paste your existing resume content here..."
             ></textarea>
           </div>
-          
+
           <div class="d-flex justify-content-end">
             <UnifiedButton
               variant="success"
@@ -159,7 +177,10 @@
                   >
                     {{ skill }}
                   </span>
-                  <span v-if="parseResults.skills.length > 5" class="text-muted">
+                  <span
+                    v-if="parseResults.skills.length > 5"
+                    class="text-muted"
+                  >
                     +{{ parseResults.skills.length - 5 }} more
                   </span>
                 </div>
@@ -178,11 +199,13 @@
             </div>
             <div class="ms-3">
               <h6 class="fw-semibold mb-1">Document Tailor</h6>
-              <p class="text-muted text-sm mb-0">Customize documents for specific job applications</p>
+              <p class="text-muted text-sm mb-0">
+                Customize documents for specific job applications
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div class="tool-content p-4">
           <div class="tailor-options mb-3">
             <div class="form-check mb-2">
@@ -203,7 +226,10 @@
                 class="form-check-input"
                 type="checkbox"
               />
-              <label for="tailor-cover-letter" class="form-check-label fw-medium">
+              <label
+                for="tailor-cover-letter"
+                class="form-check-label fw-medium"
+              >
                 Tailor Cover Letter
               </label>
             </div>
@@ -214,7 +240,10 @@
                 class="form-check-input"
                 type="checkbox"
               />
-              <label for="suggest-improvements" class="form-check-label fw-medium">
+              <label
+                for="suggest-improvements"
+                class="form-check-label fw-medium"
+              >
                 Provide Improvement Suggestions
               </label>
             </div>
@@ -226,7 +255,9 @@
               size="sm"
               leading-icon="mdi-auto-fix"
               :loading="tailoring"
-              :disabled="!hasDocumentsToTailor || !jobDescriptionModel.trim() || !aiReady"
+              :disabled="
+                !hasDocumentsToTailor || !jobDescriptionModel.trim() || !aiReady
+              "
               @click="tailorDocuments"
             >
               Tailor Documents
@@ -244,15 +275,20 @@
             </div>
             <div class="ms-3">
               <h6 class="fw-semibold mb-1">Skill Enhancement</h6>
-              <p class="text-muted text-sm mb-0">Get AI-powered skill recommendations</p>
+              <p class="text-muted text-sm mb-0">
+                Get AI-powered skill recommendations
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div class="tool-content p-4">
           <div class="current-skills mb-3">
             <label class="form-label fw-medium">Current Skills</label>
-            <div v-if="resumeData.skills && resumeData.skills.length > 0" class="skills-display">
+            <div
+              v-if="resumeData.skills && resumeData.skills.length > 0"
+              class="skills-display"
+            >
               <span
                 v-for="skill in resumeData.skills"
                 :key="skill.name"
@@ -261,7 +297,9 @@
                 {{ skill.name }}
               </span>
             </div>
-            <p v-else class="text-muted text-sm">No skills added to resume yet</p>
+            <p v-else class="text-muted text-sm">
+              No skills added to resume yet
+            </p>
           </div>
 
           <div class="d-flex justify-content-end">
@@ -277,7 +315,10 @@
             </UnifiedButton>
           </div>
 
-          <div v-if="skillSuggestions.length > 0" class="skill-suggestions mt-3">
+          <div
+            v-if="skillSuggestions.length > 0"
+            class="skill-suggestions mt-3"
+          >
             <h6 class="fw-semibold mb-2">Suggested Skills</h6>
             <div class="suggestions-list">
               <div
@@ -288,7 +329,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
                     <div class="fw-medium">{{ suggestion.name }}</div>
-                    <div class="text-sm text-muted">{{ suggestion.category }}</div>
+                    <div class="text-sm text-muted">
+                      {{ suggestion.category }}
+                    </div>
                   </div>
                   <UnifiedButton
                     variant="ghost"
@@ -312,11 +355,13 @@
             </div>
             <div class="ms-3">
               <h6 class="fw-semibold mb-1">Writing Assistant</h6>
-              <p class="text-muted text-sm mb-0">Improve clarity and impact of your content</p>
+              <p class="text-muted text-sm mb-0">
+                Improve clarity and impact of your content
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div class="tool-content p-4">
           <div class="writing-tools">
             <div class="tool-section mb-3">
@@ -338,7 +383,11 @@
                   class="btn-check"
                   value="clarity"
                 />
-                <label for="improve-clarity" class="btn btn-outline-primary btn-sm">Clarity</label>
+                <label
+                  for="improve-clarity"
+                  class="btn btn-outline-primary btn-sm"
+                  >Clarity</label
+                >
 
                 <input
                   id="improve-impact"
@@ -347,7 +396,11 @@
                   class="btn-check"
                   value="impact"
                 />
-                <label for="improve-impact" class="btn btn-outline-primary btn-sm">Impact</label>
+                <label
+                  for="improve-impact"
+                  class="btn btn-outline-primary btn-sm"
+                  >Impact</label
+                >
 
                 <input
                   id="improve-concise"
@@ -356,7 +409,11 @@
                   class="btn-check"
                   value="concise"
                 />
-                <label for="improve-concise" class="btn btn-outline-primary btn-sm">Concise</label>
+                <label
+                  for="improve-concise"
+                  class="btn btn-outline-primary btn-sm"
+                  >Concise</label
+                >
               </div>
             </div>
 
@@ -366,7 +423,9 @@
                 size="sm"
                 leading-icon="mdi-pencil"
                 :loading="improving"
-                :disabled="!textToImprove.trim() || !improvementType || !aiReady"
+                :disabled="
+                  !textToImprove.trim() || !improvementType || !aiReady
+                "
                 @click="improveText"
               >
                 Improve Text
@@ -401,14 +460,24 @@
             </div>
             <div class="ms-3">
               <h6 class="fw-semibold mb-1">Smart Suggestions</h6>
-              <p class="text-muted text-sm mb-0">Personalized recommendations for your documents</p>
+              <p class="text-muted text-sm mb-0">
+                Personalized recommendations for your documents
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div class="tool-content p-4">
-          <div v-if="suggestions.length === 0" class="empty-suggestions text-center py-4">
-            <AppIcon name="mdi-target" size="48" class="mb-3 text-muted" color="primary" />
+          <div
+            v-if="suggestions.length === 0"
+            class="empty-suggestions text-center py-4"
+          >
+            <AppIcon
+              name="mdi-target"
+              size="48"
+              class="mb-3 text-muted"
+              color="primary"
+            />
             <p class="text-muted mb-3">No suggestions yet</p>
             <UnifiedButton
               variant="outline"
@@ -430,7 +499,9 @@
               <div class="d-flex justify-content-between align-items-start">
                 <div class="flex-grow-1">
                   <div class="fw-medium mb-1">{{ suggestion.title }}</div>
-                  <p class="text-sm text-muted mb-2">{{ suggestion.description }}</p>
+                  <p class="text-sm text-muted mb-2">
+                    {{ suggestion.description }}
+                  </p>
                   <div class="suggestion-tags">
                     <span class="tag">{{ suggestion.category }}</span>
                     <span class="tag">{{ suggestion.priority }}</span>
@@ -480,20 +551,26 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 const _props = defineProps({
   resumeData: {
     type: Object,
-    required: true
+    required: true,
   },
   coverLetterData: {
     type: Object,
-    required: true
+    required: true,
   },
   jobDescription: {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 })
 
 // Emits
-const emit = defineEmits(['update:jobDescription', 'apply-suggestions', 'parse-resume', 'tailor-documents', 'add-skill'])
+const emit = defineEmits([
+  'update:jobDescription',
+  'apply-suggestions',
+  'parse-resume',
+  'tailor-documents',
+  'add-skill',
+])
 
 // State
 const analyzing = ref(false)
@@ -517,13 +594,13 @@ const suggestions = ref([])
 const tailorOptions = ref({
   resume: true,
   coverLetter: true,
-  suggestions: true
+  suggestions: true,
 })
 
 // Model proxy for parent-provided jobDescription
 const jobDescriptionModel = computed({
   get: () => props.jobDescription,
-  set: (val) => emit('update:jobDescription', val)
+  set: val => emit('update:jobDescription', val),
 })
 
 const toast = useToast()
@@ -533,7 +610,10 @@ const aiReady = computed(() => {
   try {
     // Use the canonical AI service status check
     const status = ai.getStatus()
-    const hasApiKey = !!(localStorage.getItem('gemini_api_key') || localStorage.getItem('openai_api_key'))
+    const hasApiKey = !!(
+      localStorage.getItem('gemini_api_key') ||
+      localStorage.getItem('openai_api_key')
+    )
     return Boolean(status.initialized && hasApiKey)
   } catch (error) {
     console.warn('AI status check failed in AIToolsPanel:', error)
@@ -546,7 +626,7 @@ const hasDocumentsToTailor = computed(() => {
 })
 
 // Methods
-const getScoreColor = (score) => {
+const getScoreColor = score => {
   if (score >= 80) return 'text-success'
   if (score >= 60) return 'text-warning'
   return 'text-danger'
@@ -557,13 +637,25 @@ const analyzeJobDescription = async () => {
   try {
     // Simulate AI analysis
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
+
     analysisResults.value = {
-      keywords: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'API Development', 'Agile', 'Git', 'Testing'],
+      keywords: [
+        'JavaScript',
+        'React',
+        'Node.js',
+        'TypeScript',
+        'API Development',
+        'Agile',
+        'Git',
+        'Testing',
+      ],
       matchScore: 78,
-      recommendations: ['Add more TypeScript experience', 'Highlight API development skills']
+      recommendations: [
+        'Add more TypeScript experience',
+        'Highlight API development skills',
+      ],
     }
-    
+
     toast.success('Job description analyzed successfully')
   } catch (error) {
     toast.error('Analysis failed: ' + error.message)
@@ -580,17 +672,26 @@ const parseResume = async () => {
     emit('parse-resume', text)
 
     // Quick local preview of basic fields for immediate feedback
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean)
+    const lines = text
+      .split('\n')
+      .map(l => l.trim())
+      .filter(Boolean)
     const nameGuess = lines[0] || ''
     const emailMatch = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)
-    const skillsGuess = Array.from(new Set((text.match(/\b(JavaScript|TypeScript|Python|Java|C\+\+|C#|SQL|React|Vue|Angular|Node|AWS|Docker|Kubernetes)\b/gi) || [])))
+    const skillsGuess = Array.from(
+      new Set(
+        text.match(
+          /\b(JavaScript|TypeScript|Python|Java|C\+\+|C#|SQL|React|Vue|Angular|Node|AWS|Docker|Kubernetes)\b/gi
+        ) || []
+      )
+    )
 
     parseResults.value = {
       extracted: true,
       name: nameGuess,
       email: emailMatch ? emailMatch[0] : '',
       skills: skillsGuess,
-      experience: []
+      experience: [],
     }
     toast.success('Sent resume to AI for parsing')
   } catch (error) {
@@ -616,7 +717,7 @@ const tailorDocuments = async () => {
 // File handling and extraction
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl
 
-const onFileChange = async (e) => {
+const onFileChange = async e => {
   const file = e?.target?.files?.[0]
   if (!file) return
   try {
@@ -645,7 +746,8 @@ async function extractTextFromPdf(file) {
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i)
     const content = await page.getTextContent()
-    out += content.items.map(it => (it && it.str) ? it.str : '').join(' ') + '\n'
+    out +=
+      content.items.map(it => (it && it.str ? it.str : '')).join(' ') + '\n'
   }
   return out
 }
@@ -660,7 +762,7 @@ async function extractTextFromDocx(file) {
   const json = parser.parse(xml)
   const doc = json?.['w:document']?.['w:body']
   if (!doc) return ''
-  const walk = (node) => {
+  const walk = node => {
     if (!node || typeof node !== 'object') return ''
     let s = ''
     const t = node['w:t']
@@ -683,14 +785,14 @@ const suggestSkills = async () => {
   try {
     // Simulate skill suggestions
     await new Promise(resolve => setTimeout(resolve, 1000))
-    
+
     skillSuggestions.value = [
       { name: 'TypeScript', category: 'Programming Language' },
       { name: 'Docker', category: 'DevOps' },
       { name: 'AWS', category: 'Cloud Platform' },
-      { name: 'GraphQL', category: 'API Technology' }
+      { name: 'GraphQL', category: 'API Technology' },
     ]
-    
+
     toast.success('Skill suggestions generated')
   } catch (error) {
     toast.error('Skill suggestion failed: ' + error.message)
@@ -699,10 +801,12 @@ const suggestSkills = async () => {
   }
 }
 
-const addSkill = (skill) => {
+const addSkill = skill => {
   // Emit event to parent to add skill instead of mutating prop directly
   emit('add-skill', skill)
-  skillSuggestions.value = skillSuggestions.value.filter(s => s.name !== skill.name)
+  skillSuggestions.value = skillSuggestions.value.filter(
+    s => s.name !== skill.name
+  )
   toast.success(`Added ${skill.name} to skills`)
 }
 
@@ -711,8 +815,9 @@ const improveText = async () => {
   try {
     // Simulate text improvement
     await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    improvedText.value = "This is an improved version of your text with better clarity and impact."
+
+    improvedText.value =
+      'This is an improved version of your text with better clarity and impact.'
     toast.success('Text improved successfully')
   } catch (error) {
     toast.error('Text improvement failed: ' + error.message)
@@ -731,31 +836,33 @@ const generateSuggestions = async () => {
   try {
     // Simulate suggestion generation
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
+
     suggestions.value = [
       {
         id: 1,
         title: 'Add quantifiable achievements',
-        description: 'Include specific numbers and metrics in your experience descriptions',
+        description:
+          'Include specific numbers and metrics in your experience descriptions',
         category: 'Resume',
-        priority: 'High'
+        priority: 'High',
       },
       {
         id: 2,
         title: 'Tailor your summary',
-        description: 'Customize your professional summary for this specific role',
+        description:
+          'Customize your professional summary for this specific role',
         category: 'Resume',
-        priority: 'Medium'
+        priority: 'Medium',
       },
       {
         id: 3,
         title: 'Strengthen your opening',
         description: 'Make your cover letter opening more compelling',
         category: 'Cover Letter',
-        priority: 'High'
-      }
+        priority: 'High',
+      },
     ]
-    
+
     toast.success('Suggestions generated')
   } catch (error) {
     toast.error('Failed to generate suggestions: ' + error.message)
@@ -764,7 +871,7 @@ const generateSuggestions = async () => {
   }
 }
 
-const applySuggestion = (suggestion) => {
+const applySuggestion = suggestion => {
   emit('apply-suggestions', [suggestion])
   toast.success('Suggestion applied')
 }
@@ -927,7 +1034,7 @@ const showAllSuggestions = () => {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .tool-card {
     margin-bottom: 1rem;
   }

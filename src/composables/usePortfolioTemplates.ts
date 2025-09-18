@@ -26,15 +26,22 @@ export function usePortfolioTemplates() {
   // State
   const templates = ref<PortfolioTemplate[]>([])
   const categories = ref<TemplateCategory[]>([])
-  const customTemplates = useStorage('custom-portfolio-templates', [] as PortfolioTemplate[])
-  const templateUsage = useStorage('template-usage-stats', {} as Record<string, number>)
+  const customTemplates = useStorage(
+    'custom-portfolio-templates',
+    [] as PortfolioTemplate[]
+  )
+  const templateUsage = useStorage(
+    'template-usage-stats',
+    {} as Record<string, number>
+  )
 
   // Built-in Templates
   const builtInTemplates: PortfolioTemplate[] = [
     {
       id: 'game-dev-showcase',
       name: 'Game Development Showcase',
-      description: 'Complete game project presentation with technical details and gameplay features',
+      description:
+        'Complete game project presentation with technical details and gameplay features',
       category: 'gaming',
       type: 'project',
       structure: {
@@ -48,10 +55,10 @@ export function usePortfolioTemplates() {
               title: '',
               subtitle: '',
               heroImage: '',
-              callToAction: 'Play Game'
+              callToAction: 'Play Game',
             },
             order: 1,
-            required: true
+            required: true,
           },
           {
             id: 'overview',
@@ -62,10 +69,10 @@ export function usePortfolioTemplates() {
               genre: '',
               platform: '',
               playerCount: '',
-              ageRating: ''
+              ageRating: '',
             },
             order: 2,
-            required: true
+            required: true,
           },
           {
             id: 'gameplay',
@@ -74,10 +81,10 @@ export function usePortfolioTemplates() {
             content: {
               features: [],
               mechanics: [],
-              uniqueElements: []
+              uniqueElements: [],
             },
             order: 3,
-            required: true
+            required: true,
           },
           {
             id: 'technical',
@@ -89,10 +96,10 @@ export function usePortfolioTemplates() {
               frameworks: [],
               tools: [],
               challenges: [],
-              solutions: []
+              solutions: [],
             },
             order: 4,
-            required: false
+            required: false,
           },
           {
             id: 'media-gallery',
@@ -102,10 +109,10 @@ export function usePortfolioTemplates() {
               screenshots: [],
               videos: [],
               gifs: [],
-              conceptArt: []
+              conceptArt: [],
             },
             order: 5,
-            required: false
+            required: false,
           },
           {
             id: 'development-timeline',
@@ -115,10 +122,10 @@ export function usePortfolioTemplates() {
               milestones: [],
               duration: '',
               teamSize: '',
-              role: ''
+              role: '',
             },
             order: 6,
-            required: false
+            required: false,
           },
           {
             id: 'achievements',
@@ -128,40 +135,50 @@ export function usePortfolioTemplates() {
               downloads: 0,
               ratings: 0,
               awards: [],
-              recognition: []
+              recognition: [],
             },
             order: 7,
-            required: false
-          }
+            required: false,
+          },
         ],
         suggestedMedia: [
           'gameplay-trailer',
           'feature-screenshots',
           'behind-scenes-video',
           'concept-art-gallery',
-          'technical-diagrams'
+          'technical-diagrams',
         ],
-        requiredFields: ['title', 'description', 'genre', 'platform', 'technologies']
+        requiredFields: [
+          'title',
+          'description',
+          'genre',
+          'platform',
+          'technologies',
+        ],
       },
       aiPrompts: {
-        description: 'Create an engaging description for a {genre} game called {title} built with {engine}. Highlight innovative gameplay mechanics and technical achievements.',
-        achievements: 'List impressive achievements and metrics for this game project including downloads, ratings, awards, and player feedback.',
-        technologies: 'Explain the technical implementation of {title}, including {engine} features used, programming challenges solved, and architecture decisions.'
+        description:
+          'Create an engaging description for a {genre} game called {title} built with {engine}. Highlight innovative gameplay mechanics and technical achievements.',
+        achievements:
+          'List impressive achievements and metrics for this game project including downloads, ratings, awards, and player feedback.',
+        technologies:
+          'Explain the technical implementation of {title}, including {engine} features used, programming challenges solved, and architecture decisions.',
       },
       preview: {
         thumbnail: '/templates/previews/game-dev-showcase.jpg',
-        demoUrl: '/templates/demos/game-dev-showcase'
+        demoUrl: '/templates/demos/game-dev-showcase',
       },
       tags: ['game-development', 'technical', 'creative', 'showcase'],
       difficulty: 'intermediate',
       estimatedTime: 60,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 'esports-achievement',
       name: 'Esports Achievement',
-      description: 'Professional esports accomplishment with tournament results and statistics',
+      description:
+        'Professional esports accomplishment with tournament results and statistics',
       category: 'gaming',
       type: 'achievement',
       structure: {
@@ -177,10 +194,10 @@ export function usePortfolioTemplates() {
               achievement: '',
               date: '',
               placement: '',
-              prize: ''
+              prize: '',
             },
             order: 1,
-            required: true
+            required: true,
           },
           {
             id: 'tournament-details',
@@ -191,10 +208,10 @@ export function usePortfolioTemplates() {
               organizer: '',
               participants: 0,
               format: '',
-              duration: ''
+              duration: '',
             },
             order: 2,
-            required: true
+            required: true,
           },
           {
             id: 'performance-stats',
@@ -205,10 +222,10 @@ export function usePortfolioTemplates() {
               kda: '',
               averageScore: 0,
               bestPerformance: '',
-              consistency: ''
+              consistency: '',
             },
             order: 3,
-            required: false
+            required: false,
           },
           {
             id: 'tournament-journey',
@@ -218,10 +235,10 @@ export function usePortfolioTemplates() {
               matches: [],
               keyMoments: [],
               challenges: [],
-              strategy: ''
+              strategy: '',
             },
             order: 4,
-            required: false
+            required: false,
           },
           {
             id: 'team-composition',
@@ -231,34 +248,43 @@ export function usePortfolioTemplates() {
               teammates: [],
               roles: [],
               strategy: [],
-              preparation: []
+              preparation: [],
             },
             order: 5,
-            required: false
-          }
+            required: false,
+          },
         ],
         suggestedMedia: [
           'tournament-highlights',
           'victory-celebration',
           'team-photos',
           'match-screenshots',
-          'statistics-graphs'
+          'statistics-graphs',
         ],
-        requiredFields: ['game', 'tournament', 'achievement', 'date', 'placement']
+        requiredFields: [
+          'game',
+          'tournament',
+          'achievement',
+          'date',
+          'placement',
+        ],
       },
       aiPrompts: {
-        description: 'Write a compelling narrative about achieving {placement} place in {tournament} for {game}. Include the competitive journey and significance.',
-        achievements: 'Detail the statistical achievements and performance metrics that led to this competitive success in {game}.',
-        technologies: 'Describe the skills, strategies, and mental preparation techniques used to achieve this competitive result.'
+        description:
+          'Write a compelling narrative about achieving {placement} place in {tournament} for {game}. Include the competitive journey and significance.',
+        achievements:
+          'Detail the statistical achievements and performance metrics that led to this competitive success in {game}.',
+        technologies:
+          'Describe the skills, strategies, and mental preparation techniques used to achieve this competitive result.',
       },
       preview: {
-        thumbnail: '/templates/previews/esports-achievement.jpg'
+        thumbnail: '/templates/previews/esports-achievement.jpg',
       },
       tags: ['esports', 'competitive', 'achievement', 'gaming'],
       difficulty: 'beginner',
       estimatedTime: 30,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 'web-app-portfolio',
@@ -278,10 +304,10 @@ export function usePortfolioTemplates() {
               tagline: '',
               liveUrl: '',
               githubUrl: '',
-              description: ''
+              description: '',
             },
             order: 1,
-            required: true
+            required: true,
           },
           {
             id: 'problem-solution',
@@ -291,10 +317,10 @@ export function usePortfolioTemplates() {
               problemStatement: '',
               targetAudience: '',
               solution: '',
-              impact: ''
+              impact: '',
             },
             order: 2,
-            required: true
+            required: true,
           },
           {
             id: 'key-features',
@@ -304,10 +330,10 @@ export function usePortfolioTemplates() {
               coreFeatures: [],
               userExperience: [],
               accessibility: [],
-              performance: []
+              performance: [],
             },
             order: 3,
-            required: true
+            required: true,
           },
           {
             id: 'tech-stack',
@@ -319,10 +345,10 @@ export function usePortfolioTemplates() {
               database: [],
               deployment: [],
               testing: [],
-              monitoring: []
+              monitoring: [],
             },
             order: 4,
-            required: true
+            required: true,
           },
           {
             id: 'architecture',
@@ -332,10 +358,10 @@ export function usePortfolioTemplates() {
               overview: '',
               patterns: [],
               scalability: '',
-              security: ''
+              security: '',
             },
             order: 5,
-            required: false
+            required: false,
           },
           {
             id: 'responsive-demo',
@@ -345,10 +371,10 @@ export function usePortfolioTemplates() {
               desktopScreenshots: [],
               mobileScreenshots: [],
               tabletScreenshots: [],
-              interactionVideos: []
+              interactionVideos: [],
             },
             order: 6,
-            required: false
+            required: false,
           },
           {
             id: 'performance-metrics',
@@ -358,35 +384,44 @@ export function usePortfolioTemplates() {
               lighthouse: {},
               loadTime: '',
               userMetrics: {},
-              businessMetrics: {}
+              businessMetrics: {},
             },
             order: 7,
-            required: false
-          }
+            required: false,
+          },
         ],
         suggestedMedia: [
           'application-screenshots',
           'user-flow-videos',
           'mobile-responsive-demo',
           'code-quality-reports',
-          'performance-graphs'
+          'performance-graphs',
         ],
-        requiredFields: ['title', 'description', 'technologies', 'liveUrl', 'problemStatement']
+        requiredFields: [
+          'title',
+          'description',
+          'technologies',
+          'liveUrl',
+          'problemStatement',
+        ],
       },
       aiPrompts: {
-        description: 'Create a professional description for a {appType} web application built with {technologies}. Emphasize user value and technical innovation.',
-        achievements: 'Highlight the technical achievements, performance optimizations, and user experience improvements in this web application.',
-        technologies: 'Explain the technology stack choices for {title}, including architecture decisions, scalability considerations, and development best practices.'
+        description:
+          'Create a professional description for a {appType} web application built with {technologies}. Emphasize user value and technical innovation.',
+        achievements:
+          'Highlight the technical achievements, performance optimizations, and user experience improvements in this web application.',
+        technologies:
+          'Explain the technology stack choices for {title}, including architecture decisions, scalability considerations, and development best practices.',
       },
       preview: {
         thumbnail: '/templates/previews/web-app-portfolio.jpg',
-        demoUrl: '/templates/demos/web-app-portfolio'
+        demoUrl: '/templates/demos/web-app-portfolio',
       },
       tags: ['web-development', 'full-stack', 'technical', 'professional'],
       difficulty: 'advanced',
       estimatedTime: 90,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     },
     {
       id: 'creative-showcase',
@@ -406,10 +441,10 @@ export function usePortfolioTemplates() {
               artistStatement: '',
               featuredImage: '',
               medium: '',
-              year: ''
+              year: '',
             },
             order: 1,
-            required: true
+            required: true,
           },
           {
             id: 'concept-inspiration',
@@ -419,10 +454,10 @@ export function usePortfolioTemplates() {
               concept: '',
               inspiration: '',
               research: '',
-              references: []
+              references: [],
             },
             order: 2,
-            required: true
+            required: true,
           },
           {
             id: 'creative-process',
@@ -432,10 +467,10 @@ export function usePortfolioTemplates() {
               stages: [],
               techniques: [],
               iterations: [],
-              challenges: []
+              challenges: [],
             },
             order: 3,
-            required: false
+            required: false,
           },
           {
             id: 'portfolio-gallery',
@@ -445,10 +480,10 @@ export function usePortfolioTemplates() {
               finalArtwork: [],
               processImages: [],
               detailShots: [],
-              alternativeVersions: []
+              alternativeVersions: [],
             },
             order: 4,
-            required: true
+            required: true,
           },
           {
             id: 'technical-details',
@@ -459,35 +494,38 @@ export function usePortfolioTemplates() {
               techniques: [],
               materials: [],
               dimensions: '',
-              duration: ''
+              duration: '',
             },
             order: 5,
-            required: false
-          }
+            required: false,
+          },
         ],
         suggestedMedia: [
           'high-res-artwork',
           'process-videos',
           'detail-photographs',
           'concept-sketches',
-          'technique-demonstrations'
+          'technique-demonstrations',
         ],
-        requiredFields: ['title', 'medium', 'concept', 'year']
+        requiredFields: ['title', 'medium', 'concept', 'year'],
       },
       aiPrompts: {
-        description: 'Write an artistic description for a {medium} piece titled {title}. Include the creative vision and artistic significance.',
-        achievements: 'Describe the artistic achievements, techniques mastered, and creative innovations in this {medium} work.',
-        technologies: 'Detail the tools, software, and techniques used to create this {medium} artwork, including any innovative approaches.'
+        description:
+          'Write an artistic description for a {medium} piece titled {title}. Include the creative vision and artistic significance.',
+        achievements:
+          'Describe the artistic achievements, techniques mastered, and creative innovations in this {medium} work.',
+        technologies:
+          'Detail the tools, software, and techniques used to create this {medium} artwork, including any innovative approaches.',
       },
       preview: {
-        thumbnail: '/templates/previews/creative-showcase.jpg'
+        thumbnail: '/templates/previews/creative-showcase.jpg',
       },
       tags: ['creative', 'artistic', 'visual', 'portfolio'],
       difficulty: 'beginner',
       estimatedTime: 45,
       createdAt: new Date(),
-      updatedAt: new Date()
-    }
+      updatedAt: new Date(),
+    },
   ]
 
   // Template Categories
@@ -495,62 +533,75 @@ export function usePortfolioTemplates() {
     {
       id: 'gaming',
       name: 'Gaming & Esports',
-      description: 'Templates for game development projects and competitive gaming achievements',
+      description:
+        'Templates for game development projects and competitive gaming achievements',
       icon: 'mdi-gamepad-variant',
-      templates: []
+      templates: [],
     },
     {
       id: 'web',
       name: 'Web Development',
-      description: 'Professional web application and website portfolio templates',
+      description:
+        'Professional web application and website portfolio templates',
       icon: 'mdi-web',
-      templates: []
+      templates: [],
     },
     {
       id: 'mobile',
       name: 'Mobile Development',
       description: 'Mobile app development showcase templates',
       icon: 'mdi-cellphone',
-      templates: []
+      templates: [],
     },
     {
       id: 'creative',
       name: 'Creative & Design',
       description: 'Artistic work and creative project presentation templates',
       icon: 'mdi-palette',
-      templates: []
+      templates: [],
     },
     {
       id: 'technical',
       name: 'Technical Projects',
       description: 'Technical implementation and engineering project templates',
       icon: 'mdi-cog',
-      templates: []
-    }
+      templates: [],
+    },
   ]
 
   // Computed
-  const allTemplates = computed(() => [...builtInTemplates, ...customTemplates.value])
-  
+  const allTemplates = computed(() => [
+    ...builtInTemplates,
+    ...customTemplates.value,
+  ])
+
   const categorizedTemplates = computed(() => {
     const cats = [...templateCategories]
-    
+
     cats.forEach(category => {
-      category.templates = allTemplates.value.filter(t => t.category === category.id)
+      category.templates = allTemplates.value.filter(
+        t => t.category === category.id
+      )
     })
-    
+
     return cats
   })
 
   const popularTemplates = computed(() => {
     return allTemplates.value
-      .sort((a, b) => (templateUsage.value[b.id] || 0) - (templateUsage.value[a.id] || 0))
+      .sort(
+        (a, b) =>
+          (templateUsage.value[b.id] || 0) - (templateUsage.value[a.id] || 0)
+      )
       .slice(0, 6)
   })
 
   const recentTemplates = computed(() => {
     return allTemplates.value
-      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      )
       .slice(0, 4)
   })
 
@@ -573,10 +624,11 @@ export function usePortfolioTemplates() {
 
   function searchTemplates(query: string): PortfolioTemplate[] {
     const lowercaseQuery = query.toLowerCase()
-    return allTemplates.value.filter(template => 
-      template.name.toLowerCase().includes(lowercaseQuery) ||
-      template.description.toLowerCase().includes(lowercaseQuery) ||
-      template.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
+    return allTemplates.value.filter(
+      template =>
+        template.name.toLowerCase().includes(lowercaseQuery) ||
+        template.description.toLowerCase().includes(lowercaseQuery) ||
+        template.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
     )
   }
 
@@ -607,7 +659,9 @@ export function usePortfolioTemplates() {
 
     // AI prompts validation
     if (!template.aiPrompts.description) {
-      warnings.push('Adding an AI description prompt will improve user experience')
+      warnings.push(
+        'Adding an AI description prompt will improve user experience'
+      )
     }
 
     // Tags validation
@@ -621,47 +675,58 @@ export function usePortfolioTemplates() {
     }
 
     if (!template.preview.thumbnail) {
-      suggestions.push('Adding a preview thumbnail will improve template appeal')
+      suggestions.push(
+        'Adding a preview thumbnail will improve template appeal'
+      )
     }
 
     return {
       isValid: errors.length === 0,
       errors,
       warnings,
-      suggestions
+      suggestions,
     }
   }
 
-  function createCustomTemplate(templateData: Omit<PortfolioTemplate, 'id' | 'createdAt' | 'updatedAt'>): PortfolioTemplate {
+  function createCustomTemplate(
+    templateData: Omit<PortfolioTemplate, 'id' | 'createdAt' | 'updatedAt'>
+  ): PortfolioTemplate {
     const template: PortfolioTemplate = {
       ...templateData,
       id: crypto.randomUUID(),
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     const validation = validateTemplate(template)
     if (!validation.isValid) {
-      throw new Error(`Template validation failed: ${validation.errors.join(', ')}`)
+      throw new Error(
+        `Template validation failed: ${validation.errors.join(', ')}`
+      )
     }
 
     customTemplates.value.push(template)
     return template
   }
 
-  function updateCustomTemplate(id: string, updates: Partial<PortfolioTemplate>): PortfolioTemplate | null {
+  function updateCustomTemplate(
+    id: string,
+    updates: Partial<PortfolioTemplate>
+  ): PortfolioTemplate | null {
     const index = customTemplates.value.findIndex(t => t.id === id)
     if (index === -1) return null
 
     const updatedTemplate = {
       ...customTemplates.value[index],
       ...updates,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     const validation = validateTemplate(updatedTemplate)
     if (!validation.isValid) {
-      throw new Error(`Template validation failed: ${validation.errors.join(', ')}`)
+      throw new Error(
+        `Template validation failed: ${validation.errors.join(', ')}`
+      )
     }
 
     customTemplates.value[index] = updatedTemplate
@@ -676,7 +741,10 @@ export function usePortfolioTemplates() {
     return true
   }
 
-  function duplicateTemplate(id: string, newName?: string): PortfolioTemplate | null {
+  function duplicateTemplate(
+    id: string,
+    newName?: string
+  ): PortfolioTemplate | null {
     const original = getTemplate(id)
     if (!original) return null
 
@@ -685,7 +753,7 @@ export function usePortfolioTemplates() {
       name: newName || `${original.name} (Copy)`,
       id: undefined,
       createdAt: undefined,
-      updatedAt: undefined
+      updatedAt: undefined,
     }
 
     return createCustomTemplate(duplicate as any)
@@ -701,12 +769,12 @@ export function usePortfolioTemplates() {
   function importTemplate(templateJson: string): PortfolioTemplate {
     try {
       const templateData = JSON.parse(templateJson)
-      
+
       // Remove ID to create new template
       delete templateData.id
       delete templateData.createdAt
       delete templateData.updatedAt
-      
+
       return createCustomTemplate(templateData)
     } catch {
       throw new Error('Invalid template format')
@@ -727,7 +795,7 @@ export function usePortfolioTemplates() {
     recentTemplates,
     customTemplates,
     templateUsage,
-    
+
     // Functions
     getTemplate,
     getTemplatesByCategory,
@@ -742,6 +810,6 @@ export function usePortfolioTemplates() {
     duplicateTemplate,
     exportTemplate,
     importTemplate,
-    initialize
+    initialize,
   }
 }

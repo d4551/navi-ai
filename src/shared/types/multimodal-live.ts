@@ -1,174 +1,176 @@
 /**
  * MULTIMODAL LIVE API TYPES
  * =========================
- * 
+ *
  * Complete TypeScript definitions for Google's Multimodal Live API
  * Ported from React implementation and optimized for Vue 3 + Electron
  */
 
-import { Content, GenerativeContentBlob, Part } from "@google/generative-ai";
+import { Content, GenerativeContentBlob, Part } from '@google/generative-ai'
 
 // Core streaming log entry
 export interface StreamingLog {
-  date: Date;
-  type: string;
-  message: any;
-  count?: number;
+  date: Date
+  type: string
+  message: any
+  count?: number
 }
 
 // Voice configuration for speech synthesis
 export interface VoiceConfig {
   prebuiltVoiceConfig?: {
-    voiceName?: string;
-  };
+    voiceName?: string
+  }
 }
 
 export interface SpeechConfig {
-  voiceConfig?: VoiceConfig;
+  voiceConfig?: VoiceConfig
 }
 
 // Main configuration for multimodal live sessions
 export interface LiveConfig {
-  model: string;
-  systemInstruction?: Content;
+  model: string
+  systemInstruction?: Content
   generationConfig?: {
-    temperature?: number | null;
-    topP?: number | null;
-    topK?: number | null;
-    candidateCount?: number | null;
-    maxOutputTokens?: number | null;
-    stopSequences?: string[] | null;
-    responseModalities?: ("TEXT" | "AUDIO")[];
-    speechConfig?: SpeechConfig;
-  };
-  tools?: any[];
+    temperature?: number | null
+    topP?: number | null
+    topK?: number | null
+    candidateCount?: number | null
+    maxOutputTokens?: number | null
+    stopSequences?: string[] | null
+    responseModalities?: ('TEXT' | 'AUDIO')[]
+    speechConfig?: SpeechConfig
+  }
+  tools?: any[]
 }
 
 // WebSocket message types - Outgoing
 export interface SetupMessage {
-  setup: LiveConfig;
+  setup: LiveConfig
 }
 
 export interface SetupCompleteMessage {
-  setupComplete: {};
+  setupComplete: {}
 }
 
 export interface BidiGenerateContentClientContent {
   clientContent: {
-    turns: Content[];
-    turnComplete?: boolean;
-  };
+    turns: Content[]
+    turnComplete?: boolean
+  }
 }
 
-export type ClientContentMessage = BidiGenerateContentClientContent;
+export type ClientContentMessage = BidiGenerateContentClientContent
 
 export interface RealtimeInputMessage {
   realtimeInput: {
     mediaChunks: {
-      mimeType: string;
-      data: string; // Base64-encoded
-    }[];
-  };
+      mimeType: string
+      data: string // Base64-encoded
+    }[]
+  }
 }
 
 export interface ToolResponseMessage {
-  toolResponse: any;
+  toolResponse: any
 }
 
 export type LiveOutgoingMessage =
   | SetupMessage
   | ClientContentMessage
   | RealtimeInputMessage
-  | ToolResponseMessage;
+  | ToolResponseMessage
 
 // WebSocket message types - Incoming
 export interface ServerContentMessage {
-  serverContent: ServerContent;
+  serverContent: ServerContent
 }
 
 export interface ToolCallMessage {
   toolCall: {
     functionCalls: Array<{
-      name: string;
-      id: string;
-      args: any;
-    }>;
-  };
+      name: string
+      id: string
+      args: any
+    }>
+  }
 }
 
 export interface ToolCallCancellationMessage {
   toolCallCancellation: {
-    ids: string[];
-  };
+    ids: string[]
+  }
 }
 
 export type LiveIncomingMessage =
   | ServerContentMessage
   | ToolCallMessage
   | ToolCallCancellationMessage
-  | SetupCompleteMessage;
+  | SetupCompleteMessage
 
 // Server content types
 export interface Interrupted {
-  interrupted: {};
+  interrupted: {}
 }
 
 export interface TurnComplete {
-  turnComplete: {};
+  turnComplete: {}
 }
 
 export interface ModelTurn {
   modelTurn: {
-    parts: Part[];
-  };
+    parts: Part[]
+  }
 }
 
-export type ServerContent = Interrupted | TurnComplete | ModelTurn;
+export type ServerContent = Interrupted | TurnComplete | ModelTurn
 
 // Audio processing types
 export interface AudioProcessingConfig {
-  sampleRate: number;
-  bufferSize: number;
-  channels: number;
-  mimeType: string;
+  sampleRate: number
+  bufferSize: number
+  channels: number
+  mimeType: string
 }
 
 export interface AudioStreamConfig {
-  sampleRate: number;
-  bufferSize: number;
-  initialBufferTime: number;
-  maxQueueSize: number;
+  sampleRate: number
+  bufferSize: number
+  initialBufferTime: number
+  maxQueueSize: number
 }
 
 // Event types for the multimodal client
 export interface MultimodalClientEvents {
-  open: () => void;
-  close: (code: number, reason: string) => void;
-  content: (content: ServerContent) => void;
-  toolcall: (toolCall: ToolCallMessage['toolCall']) => void;
-  toolcallcancellation: (cancellation: ToolCallCancellationMessage['toolCallCancellation']) => void;
-  interrupted: () => void;
-  setupcomplete: () => void;
-  turncomplete: () => void;
-  log: (log: StreamingLog) => void;
-  error: (error: Error) => void;
+  open: () => void
+  close: (code: number, reason: string) => void
+  content: (content: ServerContent) => void
+  toolcall: (toolCall: ToolCallMessage['toolCall']) => void
+  toolcallcancellation: (
+    cancellation: ToolCallCancellationMessage['toolCallCancellation']
+  ) => void
+  interrupted: () => void
+  setupcomplete: () => void
+  turncomplete: () => void
+  log: (log: StreamingLog) => void
+  error: (error: Error) => void
   // Additional events used by the service
-  volume: (volume: number) => void;
-  connected: () => void;
-  disconnect: () => void;
-  textContent: (content: ServerContent) => void;
-  audioinput: (data: Float32Array) => void;
-  audiooutput: (data: Float32Array) => void;
-  volumechange: (volume: number) => void;
+  volume: (volume: number) => void
+  connected: () => void
+  disconnect: () => void
+  textContent: (content: ServerContent) => void
+  audioinput: (data: Float32Array) => void
+  audiooutput: (data: Float32Array) => void
+  volumechange: (volume: number) => void
 }
 
 // Client configuration for Vue composable
 export interface MultimodalClientConfig {
-  apiKey: string;
-  baseUrl?: string;
-  debug?: boolean;
-  autoReconnect?: boolean;
-  maxReconnectAttempts?: number;
-  audioConfig?: AudioProcessingConfig;
-  streamConfig?: AudioStreamConfig;
+  apiKey: string
+  baseUrl?: string
+  debug?: boolean
+  autoReconnect?: boolean
+  maxReconnectAttempts?: number
+  audioConfig?: AudioProcessingConfig
+  streamConfig?: AudioStreamConfig
 }

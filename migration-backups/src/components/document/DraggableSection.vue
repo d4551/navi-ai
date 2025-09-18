@@ -4,7 +4,7 @@
     :class="{
       'is-dragging': isDragging,
       'is-drag-over': isDragOver,
-      'is-disabled': disabled
+      'is-disabled': disabled,
     }"
     :draggable="!disabled"
     @dragstart="handleDragStart"
@@ -33,7 +33,7 @@
         <h3 class="section-title">{{ sectionTitle }}</h3>
         <div v-if="itemCount > 0" class="item-count">{{ itemCount }}</div>
       </div>
-      
+
       <div class="section-actions">
         <!-- AI Optimize Button -->
         <UnifiedButton
@@ -46,7 +46,7 @@
         >
           AI Optimize
         </UnifiedButton>
-        
+
         <!-- Add Item Button -->
         <UnifiedButton
           v-if="canAddItem"
@@ -57,7 +57,7 @@
         >
           Add {{ itemTypeName }}
         </UnifiedButton>
-        
+
         <!-- Section Options -->
         <div class="section-options">
           <UnifiedButton
@@ -72,10 +72,16 @@
               Duplicate Section
             </button>
             <button class="option-item" @click="toggleCollapse">
-              <AppIcon :name="isCollapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'" />
+              <AppIcon
+                :name="isCollapsed ? 'mdi-chevron-down' : 'mdi-chevron-up'"
+              />
               {{ isCollapsed ? 'Expand' : 'Collapse' }}
             </button>
-            <button v-if="canDelete" class="option-item danger" @click="confirmDelete">
+            <button
+              v-if="canDelete"
+              class="option-item danger"
+              @click="confirmDelete"
+            >
               <AppIcon name="mdi-delete" />
               Delete Section
             </button>
@@ -87,7 +93,7 @@
     <!-- Section Content -->
     <div v-if="!isCollapsed" class="section-content">
       <slot></slot>
-      
+
       <!-- Empty State -->
       <div v-if="itemCount === 0 && showEmptyState" class="empty-state">
         <AppIcon :name="sectionIcon" />
@@ -150,11 +156,11 @@ const props = defineProps<{
 const emit = defineEmits<{
   'drag-start': [sectionId: string, data: SectionData]
   'drag-end': []
-  'drop': [targetSectionId: string, sourceData: SectionData]
+  drop: [targetSectionId: string, sourceData: SectionData]
   'add-item': [sectionId: string]
-  'optimize': [sectionId: string]
-  'duplicate': [sectionId: string]
-  'delete': [sectionId: string]
+  optimize: [sectionId: string]
+  duplicate: [sectionId: string]
+  delete: [sectionId: string]
   'toggle-collapse': [sectionId: string]
 }>()
 
@@ -173,19 +179,22 @@ const sectionId = computed(() => props.sectionData.id)
 // Drag and Drop Handlers
 function handleDragStart(event: DragEvent) {
   if (props.disabled) return
-  
+
   isDragging.value = true
-  
+
   // Set drag data
   if (event.dataTransfer) {
     event.dataTransfer.effectAllowed = 'move'
-    event.dataTransfer.setData('application/json', JSON.stringify(props.sectionData))
-    
+    event.dataTransfer.setData(
+      'application/json',
+      JSON.stringify(props.sectionData)
+    )
+
     // Create custom drag image
     const dragImage = createDragImage()
     event.dataTransfer.setDragImage(dragImage, 0, 0)
   }
-  
+
   emit('drag-start', sectionId.value, props.sectionData)
 }
 
@@ -196,10 +205,10 @@ function handleDragEnd() {
 
 function handleDragOver(event: DragEvent) {
   if (props.disabled) return
-  
+
   event.preventDefault()
   event.stopPropagation()
-  
+
   if (event.dataTransfer) {
     event.dataTransfer.dropEffect = 'move'
   }
@@ -207,19 +216,19 @@ function handleDragOver(event: DragEvent) {
 
 function handleDragEnter(event: DragEvent) {
   if (props.disabled) return
-  
+
   event.preventDefault()
   isDragOver.value = true
 }
 
 function handleDragLeave(event: DragEvent) {
   if (props.disabled) return
-  
+
   // Only hide indicator if leaving the entire section
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
   const x = event.clientX
   const y = event.clientY
-  
+
   if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
     isDragOver.value = false
   }
@@ -227,15 +236,17 @@ function handleDragLeave(event: DragEvent) {
 
 function handleDrop(event: DragEvent) {
   if (props.disabled) return
-  
+
   event.preventDefault()
   event.stopPropagation()
-  
+
   isDragOver.value = false
-  
+
   try {
-    const draggedData = JSON.parse(event.dataTransfer?.getData('application/json') || '{}')
-    
+    const draggedData = JSON.parse(
+      event.dataTransfer?.getData('application/json') || '{}'
+    )
+
     if (draggedData.id && draggedData.id !== sectionId.value) {
       emit('drop', sectionId.value, draggedData)
       toast.success('Section reordered successfully')
@@ -267,10 +278,10 @@ function createDragImage(): HTMLElement {
       <span>${props.sectionTitle}</span>
     </div>
   `
-  
+
   document.body.appendChild(dragImage)
   setTimeout(() => document.body.removeChild(dragImage), 0)
-  
+
   return dragImage
 }
 
@@ -315,7 +326,11 @@ function toggleCollapse() {
 }
 
 function confirmDelete() {
-  if (confirm('Are you sure you want to delete this section? This action cannot be undone.')) {
+  if (
+    confirm(
+      'Are you sure you want to delete this section? This action cannot be undone.'
+    )
+  ) {
     emit('delete', sectionId.value)
     toast.success('Section deleted')
   }
@@ -571,9 +586,15 @@ document.addEventListener('click', handleClickOutside)
 
 /* Animations */
 @keyframes pulse-glow {
-  0% { box-shadow: 0 0 0 0 rgba(var(--color-primary-500-rgb), 0.4); }
-  50% { box-shadow: 0 0 0 10px rgba(var(--color-primary-500-rgb), 0); }
-  100% { box-shadow: 0 0 0 0 rgba(var(--color-primary-500-rgb), 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--color-primary-500-rgb), 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(var(--color-primary-500-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--color-primary-500-rgb), 0);
+  }
 }
 
 .draggable-section.is-drag-over {
@@ -585,15 +606,15 @@ document.addEventListener('click', handleClickOutside)
   .section-header {
     padding: 16px 20px 12px;
   }
-  
+
   .section-content {
     padding: 16px 20px;
   }
-  
+
   .section-actions {
     gap: 4px;
   }
-  
+
   .drag-handle {
     display: none; /* Hide on mobile, use touch drag instead */
   }

@@ -11,7 +11,7 @@
         @keydown="handleKeydown"
         @focus="showSuggestions = true"
       />
-      <button 
+      <button
         v-if="inputValue"
         :aria-label="'Clear input'"
         class="clear-input-btn"
@@ -23,11 +23,7 @@
 
     <!-- Selected Skills -->
     <div v-if="selectedSkills.length > 0" class="selected-skills">
-      <span
-        v-for="skill in selectedSkills"
-        :key="skill"
-        class="skill-tag"
-      >
+      <span v-for="skill in selectedSkills" :key="skill" class="skill-tag">
         {{ skill }}
         <button
           :aria-label="`Remove ${skill}`"
@@ -40,7 +36,7 @@
     </div>
 
     <!-- Suggestions Dropdown -->
-    <div 
+    <div
       v-if="showSuggestions && (filteredSuggestions.length > 0 || canAddCustom)"
       class="suggestions-dropdown"
     >
@@ -50,7 +46,10 @@
           v-for="skill in filteredSuggestions"
           :key="skill"
           class="suggestion-item"
-          :class="{ highlighted: highlightedIndex === filteredSuggestions.indexOf(skill) }"
+          :class="{
+            highlighted:
+              highlightedIndex === filteredSuggestions.indexOf(skill),
+          }"
           @click="selectSkill(skill)"
         >
           <Icon name="tag" size="14" />
@@ -62,7 +61,9 @@
         <button
           v-if="canAddCustom"
           class="suggestion-item custom-skill"
-          :class="{ highlighted: highlightedIndex === filteredSuggestions.length }"
+          :class="{
+            highlighted: highlightedIndex === filteredSuggestions.length,
+          }"
           @click="selectSkill(inputValue.trim())"
         >
           <Icon name="plus" size="14" />
@@ -71,19 +72,28 @@
         </button>
       </div>
 
-      <div v-if="maxSelections && selectedSkills.length >= maxSelections" class="max-reached">
+      <div
+        v-if="maxSelections && selectedSkills.length >= maxSelections"
+        class="max-reached"
+      >
         Maximum {{ maxSelections }} skills allowed
       </div>
     </div>
 
     <!-- Popular Skills (when no input) -->
-    <div v-if="!inputValue && !showSuggestions && popularSkills.length > 0" class="popular-skills">
+    <div
+      v-if="!inputValue && !showSuggestions && popularSkills.length > 0"
+      class="popular-skills"
+    >
       <div class="popular-skills-label">Popular skills:</div>
       <div class="popular-skills-list">
         <button
           v-for="skill in popularSkills.slice(0, 8)"
           :key="skill"
-          :disabled="selectedSkills.includes(skill) || Boolean(maxSelections && selectedSkills.length >= maxSelections)"
+          :disabled="
+            selectedSkills.includes(skill) ||
+            Boolean(maxSelections && selectedSkills.length >= maxSelections)
+          "
           class="popular-skill-btn"
           @click="selectSkill(skill)"
         >
@@ -113,9 +123,17 @@ const _props = withDefaults(defineProps<Props>(), {
   maxSelections: undefined,
   allowCustom: true,
   popularSkills: () => [
-    'JavaScript', 'TypeScript', 'Python', 'React', 'Vue.js', 
-    'Node.js', 'Unity', 'C#', 'Game Design', 'UI/UX'
-  ]
+    'JavaScript',
+    'TypeScript',
+    'Python',
+    'React',
+    'Vue.js',
+    'Node.js',
+    'Unity',
+    'C#',
+    'Game Design',
+    'UI/UX',
+  ],
 })
 
 const emit = defineEmits<{
@@ -131,23 +149,26 @@ const selectedSkills = computed(() => props.modelValue)
 
 const filteredSuggestions = computed(() => {
   if (!inputValue.value.trim()) return []
-  
+
   const query = inputValue.value.toLowerCase().trim()
   return props.availableSkills
-    .filter(skill => 
-      skill.toLowerCase().includes(query) && 
-      !selectedSkills.value.includes(skill)
+    .filter(
+      skill =>
+        skill.toLowerCase().includes(query) &&
+        !selectedSkills.value.includes(skill)
     )
     .slice(0, 5)
 })
 
 const canAddCustom = computed(() => {
   if (!props.allowCustom || !inputValue.value.trim()) return false
-  
+
   const trimmedValue = inputValue.value.trim()
-  return !selectedSkills.value.includes(trimmedValue) && 
-         !props.availableSkills.includes(trimmedValue) &&
-         (!props.maxSelections || selectedSkills.value.length < props.maxSelections)
+  return (
+    !selectedSkills.value.includes(trimmedValue) &&
+    !props.availableSkills.includes(trimmedValue) &&
+    (!props.maxSelections || selectedSkills.value.length < props.maxSelections)
+  )
 })
 
 const totalSuggestions = computed(() => {
@@ -163,7 +184,10 @@ const handleKeydown = (event: KeyboardEvent) => {
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
-      highlightedIndex.value = Math.min(highlightedIndex.value + 1, totalSuggestions.value - 1)
+      highlightedIndex.value = Math.min(
+        highlightedIndex.value + 1,
+        totalSuggestions.value - 1
+      )
       break
     case 'ArrowUp':
       event.preventDefault()
@@ -195,15 +219,16 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 const selectSkill = (skill: string) => {
   if (!skill || selectedSkills.value.includes(skill)) return
-  if (props.maxSelections && selectedSkills.value.length >= props.maxSelections) return
-  
+  if (props.maxSelections && selectedSkills.value.length >= props.maxSelections)
+    return
+
   const newSkills = [...selectedSkills.value, skill]
   emit('update:modelValue', newSkills)
-  
+
   inputValue.value = ''
   showSuggestions.value = false
   highlightedIndex.value = -1
-  
+
   nextTick(() => {
     inputRef.value?.focus()
   })

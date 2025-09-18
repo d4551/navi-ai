@@ -4,8 +4,16 @@
  */
 
 import { ref, computed, type ComputedRef } from 'vue'
-import { jobPostingAnalysisService, type JobPostingAnalysis, type JobPostingExtractionResult } from '@/services/JobPostingAnalysisService'
-import { aiResumeTargetingService, type ResumeTailoringResult, type ResumeOptimizationOptions } from '@/services/AIResumeTargetingService'
+import {
+  jobPostingAnalysisService,
+  type JobPostingAnalysis,
+  type JobPostingExtractionResult,
+} from '@/services/JobPostingAnalysisService'
+import {
+  aiResumeTargetingService,
+  type ResumeTailoringResult,
+  type ResumeOptimizationOptions,
+} from '@/services/AIResumeTargetingService'
 import { useAICoverLetter } from './useAICoverLetter'
 import { useToast } from './useToast'
 import { logger } from '@/shared/utils/logger'
@@ -22,38 +30,68 @@ export interface JobTailoringState {
 export interface UseJobTailoredResumeReturn {
   // State
   state: ComputedRef<JobTailoringState>
-  
+
   // Job Analysis
   jobAnalysis: ComputedRef<JobPostingAnalysis | null>
   hasJobAnalysis: ComputedRef<boolean>
-  
+
   // Resume Tailoring
   tailoredResume: ComputedRef<ResumeTailoringResult | null>
   hasTailoredResume: ComputedRef<boolean>
-  
+
   // Loading States
   isAnalyzingJob: ComputedRef<boolean>
   isTailoringResume: ComputedRef<boolean>
   isProcessing: ComputedRef<boolean>
-  
+
   // Error State
   error: ComputedRef<string | null>
-  
+
   // Computed Insights
   matchScore: ComputedRef<number>
   keywordCoverage: ComputedRef<number>
   atsScore: ComputedRef<number>
   improvementAreas: ComputedRef<string[]>
-  
+
   // Methods
-  analyzeJobFromText: (jobText: string) => Promise<{ success: boolean; analysis?: JobPostingAnalysis; error?: string }>
-  analyzeJobFromUrl: (url: string) => Promise<{ success: boolean; analysis?: JobPostingAnalysis; error?: string }>
-  tailorResumeToJob: (resume: any, options?: Partial<ResumeOptimizationOptions>) => Promise<{ success: boolean; tailoring?: ResumeTailoringResult; error?: string }>
-  generateTailoredCoverLetter: (userProfile?: any, options?: any) => Promise<{ success: boolean; coverLetter?: string; error?: string }>
-  getJobRequirements: () => { required: string[]; preferred: string[]; skills: string[] }
+  analyzeJobFromText: (
+    jobText: string
+  ) => Promise<{
+    success: boolean
+    analysis?: JobPostingAnalysis
+    error?: string
+  }>
+  analyzeJobFromUrl: (
+    url: string
+  ) => Promise<{
+    success: boolean
+    analysis?: JobPostingAnalysis
+    error?: string
+  }>
+  tailorResumeToJob: (
+    resume: any,
+    options?: Partial<ResumeOptimizationOptions>
+  ) => Promise<{
+    success: boolean
+    tailoring?: ResumeTailoringResult
+    error?: string
+  }>
+  generateTailoredCoverLetter: (
+    userProfile?: any,
+    options?: any
+  ) => Promise<{ success: boolean; coverLetter?: string; error?: string }>
+  getJobRequirements: () => {
+    required: string[]
+    preferred: string[]
+    skills: string[]
+  }
   getMissingKeywords: (currentResume: any) => string[]
-  exportTailoredDocuments: () => Promise<{ resume: any; coverLetter: string; analysis: any }>
-  
+  exportTailoredDocuments: () => Promise<{
+    resume: any
+    coverLetter: string
+    analysis: any
+  }>
+
   // Actions
   clearAnalysis: () => void
   clearTailoring: () => void
@@ -80,12 +118,17 @@ export function useJobTailoredResume(): UseJobTailoredResumeReturn {
     recommendations: recommendations.value,
     isAnalyzingJob: isAnalyzingJob.value,
     isTailoringResume: isTailoringResume.value,
-    error: error.value
+    error: error.value,
   }))
 
   const hasJobAnalysis = computed(() => !!jobAnalysis.value)
-  const hasTailoredResume = computed(() => !!resumeTailoring.value?.success && !!resumeTailoring.value.tailoredResume)
-  const isProcessing = computed(() => isAnalyzingJob.value || isTailoringResume.value)
+  const hasTailoredResume = computed(
+    () =>
+      !!resumeTailoring.value?.success && !!resumeTailoring.value.tailoredResume
+  )
+  const isProcessing = computed(
+    () => isAnalyzingJob.value || isTailoringResume.value
+  )
 
   // Computed insights
   const matchScore = computed(() => {
@@ -117,24 +160,26 @@ export function useJobTailoredResume(): UseJobTailoredResumeReturn {
 
       logger.info('Starting job posting analysis from text')
 
-      const result = await jobPostingAnalysisService.analyzeJobPostingText(jobText)
+      const result =
+        await jobPostingAnalysisService.analyzeJobPostingText(jobText)
 
       if (result.success && result.analysis) {
         jobAnalysis.value = result.analysis
-        
-        toast.success(`Job analysis completed for ${result.analysis.jobTitle} at ${result.analysis.company}`)
+
+        toast.success(
+          `Job analysis completed for ${result.analysis.jobTitle} at ${result.analysis.company}`
+        )
         logger.info('Job posting analysis completed successfully')
 
         return {
           success: true,
-          analysis: result.analysis
+          analysis: result.analysis,
         }
       } else {
         error.value = result.error || 'Failed to analyze job posting'
         toast.error(`Job analysis failed: ${result.error}`)
         return { success: false, error: result.error }
       }
-
     } catch (err: any) {
       error.value = err.message
       logger.error('Job posting analysis failed:', err)
@@ -160,20 +205,20 @@ export function useJobTailoredResume(): UseJobTailoredResumeReturn {
 
       if (result.success && result.analysis) {
         jobAnalysis.value = result.analysis
-        
+
         toast.success(`Job analysis completed for ${result.analysis.jobTitle}`)
         logger.info('Job posting URL analysis completed successfully')
 
         return {
           success: true,
-          analysis: result.analysis
+          analysis: result.analysis,
         }
       } else {
-        error.value = result.error || 'Failed to extract and analyze job posting from URL'
+        error.value =
+          result.error || 'Failed to extract and analyze job posting from URL'
         toast.error(`URL analysis failed: ${result.error}`)
         return { success: false, error: result.error }
       }
-
     } catch (err: any) {
       error.value = err.message
       logger.error('Job posting URL analysis failed:', err)
@@ -189,7 +234,10 @@ export function useJobTailoredResume(): UseJobTailoredResumeReturn {
     options: Partial<ResumeOptimizationOptions> = {}
   ) {
     if (!jobAnalysis.value) {
-      return { success: false, error: 'Job analysis is required before tailoring resume' }
+      return {
+        success: false,
+        error: 'Job analysis is required before tailoring resume',
+      }
     }
 
     if (!resume) {
@@ -210,32 +258,34 @@ export function useJobTailoredResume(): UseJobTailoredResumeReturn {
 
       if (result.success) {
         resumeTailoring.value = result
-        
+
         const score = result.tailoredResume?.overallScore || 0
         const coverage = result.tailoredResume?.keywordCoverage || 0
-        
-        toast.success(`Resume tailored successfully! Score: ${score}%, Keyword Coverage: ${coverage}%`)
+
+        toast.success(
+          `Resume tailored successfully! Score: ${score}%, Keyword Coverage: ${coverage}%`
+        )
         logger.info('Resume tailoring completed successfully')
 
         // Generate additional recommendations if needed
         if (jobAnalysis.value && resume) {
-          recommendations.value = await jobPostingAnalysisService.generateTailoringRecommendations(
-            jobAnalysis.value,
-            { resume },
-            resume
-          )
+          recommendations.value =
+            await jobPostingAnalysisService.generateTailoringRecommendations(
+              jobAnalysis.value,
+              { resume },
+              resume
+            )
         }
 
         return {
           success: true,
-          tailoring: result
+          tailoring: result,
         }
       } else {
         error.value = result.error || 'Failed to tailor resume'
         toast.error(`Resume tailoring failed: ${result.error}`)
         return { success: false, error: result.error }
       }
-
     } catch (err: any) {
       error.value = err.message
       logger.error('Resume tailoring failed:', err)
@@ -246,9 +296,15 @@ export function useJobTailoredResume(): UseJobTailoredResumeReturn {
     }
   }
 
-  async function generateTailoredCoverLetter(userProfile: any = {}, options: any = {}) {
+  async function generateTailoredCoverLetter(
+    userProfile: any = {},
+    options: any = {}
+  ) {
     if (!jobAnalysis.value) {
-      return { success: false, error: 'Job analysis is required before generating cover letter' }
+      return {
+        success: false,
+        error: 'Job analysis is required before generating cover letter',
+      }
     }
 
     try {
@@ -276,23 +332,26 @@ Growth Opportunities: ${jobAnalysis.value.growthOpportunities.join(', ')}
         {
           tone: options.tone || 'professional',
           length: options.length || 'medium',
-          focusAreas: options.focusAreas || ['skills_match', 'experience_relevance', 'company_culture'],
+          focusAreas: options.focusAreas || [
+            'skills_match',
+            'experience_relevance',
+            'company_culture',
+          ],
           companyInfo: `${jobAnalysis.value.company} - ${jobAnalysis.value.companyValues.join(', ')}`,
-          ...options
+          ...options,
         }
       )
 
       return {
         success: result.success,
         coverLetter: result.content,
-        error: result.error
+        error: result.error,
       }
-
     } catch (err: any) {
       logger.error('Tailored cover letter generation failed:', err)
       return {
         success: false,
-        error: err.message
+        error: err.message,
       }
     }
   }
@@ -304,9 +363,13 @@ Growth Opportunities: ${jobAnalysis.value.growthOpportunities.join(', ')}
 
     const requirements = jobAnalysis.value.requirements
     return {
-      required: requirements.filter(req => req.priority === 'required').map(req => req.requirement),
-      preferred: requirements.filter(req => req.priority === 'preferred').map(req => req.requirement),
-      skills: jobAnalysis.value.keySkills
+      required: requirements
+        .filter(req => req.priority === 'required')
+        .map(req => req.requirement),
+      preferred: requirements
+        .filter(req => req.priority === 'preferred')
+        .map(req => req.requirement),
+      skills: jobAnalysis.value.keySkills,
     }
   }
 
@@ -314,8 +377,8 @@ Growth Opportunities: ${jobAnalysis.value.growthOpportunities.join(', ')}
     if (!jobAnalysis.value || !currentResume) return []
 
     const resumeText = JSON.stringify(currentResume).toLowerCase()
-    return jobAnalysis.value.atsKeywords.filter(keyword => 
-      !resumeText.includes(keyword.toLowerCase())
+    return jobAnalysis.value.atsKeywords.filter(
+      keyword => !resumeText.includes(keyword.toLowerCase())
     )
   }
 
@@ -334,9 +397,9 @@ Growth Opportunities: ${jobAnalysis.value.growthOpportunities.join(', ')}
         scores: {
           overallMatch: matchScore.value,
           keywordCoverage: keywordCoverage.value,
-          atsCompliance: atsScore.value
-        }
-      }
+          atsCompliance: atsScore.value,
+        },
+      },
     }
 
     return exportData
@@ -365,21 +428,21 @@ Growth Opportunities: ${jobAnalysis.value.growthOpportunities.join(', ')}
     hasJobAnalysis,
     tailoredResume: computed(() => resumeTailoring.value),
     hasTailoredResume,
-    
+
     // Loading
     isAnalyzingJob: computed(() => isAnalyzingJob.value),
     isTailoringResume: computed(() => isTailoringResume.value),
     isProcessing,
-    
+
     // Error
     error: computed(() => error.value),
-    
+
     // Insights
     matchScore,
     keywordCoverage,
     atsScore,
     improvementAreas,
-    
+
     // Methods
     analyzeJobFromText,
     analyzeJobFromUrl,
@@ -388,10 +451,10 @@ Growth Opportunities: ${jobAnalysis.value.growthOpportunities.join(', ')}
     getJobRequirements,
     getMissingKeywords,
     exportTailoredDocuments,
-    
+
     // Actions
     clearAnalysis,
     clearTailoring,
-    clearAll
+    clearAll,
   }
 }

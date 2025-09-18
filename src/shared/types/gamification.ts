@@ -12,7 +12,7 @@ export interface GamificationStats {
   chatSessions: number
   resumesGenerated: number
   savedJobs: number
-  
+
   // Enhanced metrics
   totalTimeSpent: number
   featuresUsed: number
@@ -20,7 +20,7 @@ export interface GamificationStats {
   weeklyProgress: number
   interviewsCompleted: number
   skillAssessmentsCompleted: number
-  
+
   // Social metrics
   networkingContacts: number
   referralsRequested: number
@@ -49,7 +49,12 @@ export interface DailyChallenge {
   icon: string
   iconType: 'mdi' | 'emoji' | 'custom'
   xpReward: number
-  category: 'profile' | 'job_search' | 'skill_building' | 'social' | 'engagement'
+  category:
+    | 'profile'
+    | 'job_search'
+    | 'skill_building'
+    | 'social'
+    | 'engagement'
   completed: boolean
   requirements?: Record<string, number>
   validUntil?: string
@@ -68,7 +73,13 @@ export interface XPAction {
   id: string
   name: string
   xpReward: number
-  category: 'profile' | 'job_search' | 'skill_building' | 'social' | 'engagement' | 'milestone'
+  category:
+    | 'profile'
+    | 'job_search'
+    | 'skill_building'
+    | 'social'
+    | 'engagement'
+    | 'milestone'
   description?: string
 }
 
@@ -116,7 +127,13 @@ export interface DailyChallengeResult {
 
 export interface GamificationNotification {
   id: string
-  type: 'xp_gain' | 'level_up' | 'achievement' | 'challenge_complete' | 'streak' | 'milestone'
+  type:
+    | 'xp_gain'
+    | 'level_up'
+    | 'achievement'
+    | 'challenge_complete'
+    | 'streak'
+    | 'milestone'
   title: string
   message: string
   icon: string
@@ -187,7 +204,12 @@ export interface ProgressSummary {
 }
 
 export interface GamificationEvent {
-  type: 'action_completed' | 'achievement_unlocked' | 'level_up' | 'challenge_completed' | 'streak_updated'
+  type:
+    | 'action_completed'
+    | 'achievement_unlocked'
+    | 'level_up'
+    | 'challenge_completed'
+    | 'streak_updated'
   data: Record<string, any>
   timestamp: string
   userId?: string
@@ -196,16 +218,26 @@ export interface GamificationEvent {
 // Service interfaces
 export interface IGamificationService {
   // Core methods
-  awardXP(action: string, amount?: number, context?: Record<string, any>): Promise<LevelUpResult | null>
-  checkAchievements(stats?: GamificationStats): Promise<AchievementUnlockResult[]>
-  completeDailyChallenge(challengeId: string): Promise<DailyChallengeResult | null>
-  
+  awardXP(
+    action: string,
+    amount?: number,
+    context?: Record<string, any>
+  ): Promise<LevelUpResult | null>
+  checkAchievements(
+    stats?: GamificationStats
+  ): Promise<AchievementUnlockResult[]>
+  completeDailyChallenge(
+    challengeId: string
+  ): Promise<DailyChallengeResult | null>
+
   // Data access
   getUserStats(): Promise<GamificationStats>
   getProgressSummary(): Promise<ProgressSummary>
-  getAchievements(filter?: 'all' | 'unlocked' | 'locked'): Promise<Achievement[]>
+  getAchievements(
+    filter?: 'all' | 'unlocked' | 'locked'
+  ): Promise<Achievement[]>
   getDailyChallenges(): Promise<DailyChallenge[]>
-  
+
   // Utility methods
   calculateLevel(xp: number): XPLevel
   getStreak(): Promise<StreakInfo>

@@ -1,11 +1,17 @@
 <template>
-  <div class="unified-form-field text-glass-primary font-sans" :class="{ required, valid: isValid, error: hasError }">
-    <label v-if="label" class="field-label text-gray-700 dark:text-glass-secondary dark:text-glass-secondary">
+  <div
+    class="unified-form-field text-glass-primary font-sans"
+    :class="{ required, valid: isValid, error: hasError }"
+  >
+    <label
+      v-if="label"
+      class="field-label text-gray-700 dark:text-glass-secondary dark:text-glass-secondary"
+    >
       <AppIcon v-if="icon" :name="icon" size="16" class="field-icon" />
       {{ label }}
       <span v-if="required" class="required-indicator">*</span>
     </label>
-    
+
     <div class="field-container">
       <!-- Input Field -->
       <input
@@ -21,7 +27,7 @@
         @blur="$emit('blur', $event)"
         @focus="$emit('focus', $event)"
       />
-      
+
       <!-- Textarea Field -->
       <textarea
         v-else-if="type === 'textarea'"
@@ -36,7 +42,7 @@
         @blur="$emit('blur', $event)"
         @focus="$emit('focus', $event)"
       ></textarea>
-      
+
       <!-- Select Field -->
       <select
         v-else-if="type === 'select'"
@@ -56,15 +62,18 @@
           {{ option.label }}
         </option>
       </select>
-      
+
       <!-- Field Actions (optional) -->
       <div v-if="$slots.actions" class="field-actions">
         <slot name="actions"></slot>
       </div>
     </div>
-    
+
     <!-- Helper Text / Validation -->
-    <div v-if="helperText || validationMessage || hasError" class="field-feedback">
+    <div
+      v-if="helperText || validationMessage || hasError"
+      class="field-feedback"
+    >
       <div v-if="hasError" class="field-error">
         <AppIcon name="ExclamationCircleIcon" size="14" />
         <span>{{ validationMessage || 'This field has an error' }}</span>
@@ -77,7 +86,7 @@
         {{ helperText }}
       </div>
     </div>
-    
+
     <!-- Word/Character Counter -->
     <div v-if="showCounter && type === 'textarea'" class="field-counter">
       <span :class="{ 'counter-ideal': isCounterIdeal }">
@@ -91,7 +100,10 @@
 </template>
 
 <script setup>
-import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+} from '@heroicons/vue/24/outline'
 
 import { computed, useId } from 'vue'
 import AppIcon from './AppIcon.vue'
@@ -99,70 +111,70 @@ import AppIcon from './AppIcon.vue'
 const _props = defineProps({
   modelValue: {
     type: [String, Number],
-    default: ''
+    default: '',
   },
   type: {
     type: String,
-    default: 'text'
+    default: 'text',
   },
   label: {
     type: String,
-    default: ''
+    default: '',
   },
   icon: {
     type: String,
-    default: ''
+    default: '',
   },
   placeholder: {
     type: String,
-    default: ''
+    default: '',
   },
   helperText: {
     type: String,
-    default: ''
+    default: '',
   },
   required: {
     type: Boolean,
-    default: false
+    default: false,
   },
   disabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   validationMessage: {
     type: String,
-    default: ''
+    default: '',
   },
   hasError: {
     type: Boolean,
-    default: false
+    default: false,
   },
   rows: {
     type: Number,
-    default: 4
+    default: 4,
   },
   options: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   showCounter: {
     type: Boolean,
-    default: false
+    default: false,
   },
   counterType: {
     type: String,
     default: 'words',
-    validator: value => ['words', 'characters'].includes(value)
+    validator: value => ['words', 'characters'].includes(value),
   },
   counterRange: {
     type: String,
-    default: ''
+    default: '',
   },
   size: {
     type: String,
     default: 'md',
-    validator: value => ['sm', 'md', 'lg'].includes(value)
-  }
+    validator: value => ['sm', 'md', 'lg'].includes(value),
+  },
 })
 
 defineEmits(['update:modelValue', 'blur', 'focus'])
@@ -201,8 +213,8 @@ const fieldClasses = computed(() => [
   {
     'field-input--valid': isValid.value && props.modelValue,
     'field-input--error': props.hasError,
-    'field-input--disabled': props.disabled
-  }
+    'field-input--disabled': props.disabled,
+  },
 ])
 </script>
 

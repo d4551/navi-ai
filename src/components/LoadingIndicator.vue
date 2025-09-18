@@ -1,12 +1,19 @@
 <template>
-  <div v-if="show" class="loading-overlay font-sans" :class="{ fullscreen: fullscreen }">
+  <div
+    v-if="show"
+    class="loading-overlay font-sans"
+    :class="{ fullscreen: fullscreen }"
+  >
     <div class="loading-content glass-strong p-glass-lg rounded-xl text-center">
       <div class="spinner-container">
         <div class="spinner" :class="size" />
         <div class="spinner-glow" :class="size" />
       </div>
 
-      <div v-if="message" class="loading-message text-glass-enhanced font-medium mt-4">
+      <div
+        v-if="message"
+        class="loading-message text-glass-enhanced font-medium mt-4"
+      >
         {{ message }}
       </div>
 
@@ -25,7 +32,9 @@
       </div>
 
       <div v-if="showCancel" class="mt-3">
-        <UnifiedButton variant="outline" size="sm" @click="$emit('cancel')">Cancel</UnifiedButton>
+        <UnifiedButton variant="outline" size="sm" @click="$emit('cancel')"
+          >Cancel</UnifiedButton
+        >
       </div>
     </div>
   </div>
@@ -34,7 +43,7 @@
 <script>
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 export default {
-  name: "LoadingIndicator",
+  name: 'LoadingIndicator',
   components: { UnifiedButton },
   props: {
     show: {
@@ -43,7 +52,7 @@ export default {
     },
     message: {
       type: String,
-      default: "Loading...",
+      default: 'Loading...',
     },
     fullscreen: {
       type: Boolean,
@@ -51,8 +60,8 @@ export default {
     },
     size: {
       type: String,
-      default: "medium",
-      validator: (value) => ["small", "medium", "large"].includes(value),
+      default: 'medium',
+      validator: value => ['small', 'medium', 'large'].includes(value),
     },
     progress: {
       type: Number,
@@ -63,8 +72,8 @@ export default {
       default: false,
     },
   },
-  emits: ["cancel"],
-};
+  emits: ['cancel'],
+}
 </script>
 
 <style scoped>

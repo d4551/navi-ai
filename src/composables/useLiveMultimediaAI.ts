@@ -1,41 +1,41 @@
 /**
  * Composable for Live Multimedia AI Integration
- * 
+ *
  * Provides reactive interface to the LiveMultimediaAIService
  * for use in Vue components like AI Fairy Assistant
  */
 
-import { ref, reactive, onUnmounted } from 'vue';
-import LiveMultimediaAIService, { 
-  type MultimediaAIConfig, 
-  type MediaAnalysisResult, 
-  type LiveCallbacks 
-} from '@/shared/services/LiveMultimediaAIService';
-import { useToast } from '@/composables/useToast';
-import { logger } from '@/shared/utils/logger';
+import { ref, reactive, onUnmounted } from 'vue'
+import LiveMultimediaAIService, {
+  type MultimediaAIConfig,
+  type MediaAnalysisResult,
+  type LiveCallbacks,
+} from '@/shared/services/LiveMultimediaAIService'
+import { useToast } from '@/composables/useToast'
+import { logger } from '@/shared/utils/logger'
 
 export interface MultimediaState {
-  isConnected: boolean;
-  isAudioStreaming: boolean;
-  isVideoStreaming: boolean;
-  isProcessing: boolean;
-  lastError: string | null;
+  isConnected: boolean
+  isAudioStreaming: boolean
+  isVideoStreaming: boolean
+  isProcessing: boolean
+  lastError: string | null
 }
 
 export interface ConversationMessage {
-  id: string;
-  timestamp: Date;
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-  type: 'text' | 'audio' | 'video' | 'image';
-  hasMedia: boolean;
-  mediaType?: string;
-  metadata?: Record<string, any>;
+  id: string
+  timestamp: Date
+  role: 'user' | 'assistant' | 'system'
+  content: string
+  type: 'text' | 'audio' | 'video' | 'image'
+  hasMedia: boolean
+  mediaType?: string
+  metadata?: Record<string, any>
 }
 
 export function useLiveMultimediaAI() {
-  const toast = useToast();
-  const service = LiveMultimediaAIService.getInstance();
+  const toast = useToast()
+  const service = LiveMultimediaAIService.getInstance()
 
   // Reactive state
   const state = reactive<MultimediaState>({
@@ -44,80 +44,85 @@ export function useLiveMultimediaAI() {
     isVideoStreaming: false,
     isProcessing: false,
     lastError: null,
-  });
+  })
 
-  const conversationHistory = ref<ConversationMessage[]>([]);
-  const currentTranscription = ref('');
-  const currentVideoAnalysis = ref('');
-  const isInitialized = ref(false);
+  const conversationHistory = ref<ConversationMessage[]>([])
+  const currentTranscription = ref('')
+  const currentVideoAnalysis = ref('')
+  const isInitialized = ref(false)
 
   /**
    * Initialize the multimedia AI service
    */
   async function initialize(config: MultimediaAIConfig): Promise<boolean> {
     try {
-      state.isProcessing = true;
-      state.lastError = null;
+      state.isProcessing = true
+      state.lastError = null
 
       // Set up callbacks
       const callbacks: LiveCallbacks = {
-        onConnectionChange: (connected) => {
-          state.isConnected = connected;
+        onConnectionChange: connected => {
+          state.isConnected = connected
           if (connected) {
-            toast.success('🤖 AI Fairy connected to multimodal services');
-            addSystemMessage('Multimodal AI services connected. Voice, video, and screenshot analysis ready!');
+            toast.success('🤖 AI Fairy connected to multimodal services')
+            addSystemMessage(
+              'Multimodal AI services connected. Voice, video, and screenshot analysis ready!'
+            )
           } else {
-            toast.warning('🔌 AI connection lost');
-            addSystemMessage('Connection to AI services lost. Retrying...');
+            toast.warning('🔌 AI connection lost')
+            addSystemMessage('Connection to AI services lost. Retrying...')
           }
         },
 
         onAudioTranscription: (text, isFinal) => {
-          currentTranscription.value = text;
+          currentTranscription.value = text
           if (isFinal && text.trim()) {
-            addUserMessage(text, 'audio');
-            currentTranscription.value = '';
+            addUserMessage(text, 'audio')
+            currentTranscription.value = ''
           }
         },
 
-        onVideoAnalysis: (analysis) => {
-          currentVideoAnalysis.value = analysis;
+        onVideoAnalysis: analysis => {
+          currentVideoAnalysis.value = analysis
           // Only add significant video analysis to conversation
           if (analysis && analysis.length > 50) {
-            addSystemMessage(`Video AI: ${analysis}`, 'video');
+            addSystemMessage(`Video AI: ${analysis}`, 'video')
           }
         },
 
         onScreenshotAnalysis: (analysis, screenshot) => {
-          addUserMessage('📸 Screenshot captured', 'image', { screenshot });
-          addAssistantMessage(analysis);
-          toast.success('Screenshot analyzed successfully');
+          addUserMessage('📸 Screenshot captured', 'image', { screenshot })
+          addAssistantMessage(analysis)
+          toast.success('Screenshot analyzed successfully')
         },
 
         onResponse: (result: MediaAnalysisResult) => {
-          addAssistantMessage(result.content, result.type as any, result.metadata);
+          addAssistantMessage(
+            result.content,
+            result.type as any,
+            result.metadata
+          )
         },
 
-        onError: (_error) => {
-          state.lastError = error.message;
-          logger.error('Multimedia AI error:', error);
-          toast.error(`AI Error: ${error.message}`);
-        }
-      };
+        onError: _error => {
+          state.lastError = error.message
+          logger.error('Multimedia AI error:', error)
+          toast.error(`AI Error: ${error.message}`)
+        },
+      }
 
-      service.setCallbacks(callbacks);
-      await service.initialize(_config);
+      service.setCallbacks(callbacks)
+      await service.initialize(_config)
 
-      isInitialized.value = true;
-      state.isProcessing = false;
-      return true;
-
+      isInitialized.value = true
+      state.isProcessing = false
+      return true
     } catch (error) {
-      state.lastError = error instanceof Error ? error.message : 'Unknown error';
-      state.isProcessing = false;
-      logger.error('Failed to initialize multimedia AI:', error);
-      toast.error('Failed to initialize AI services. Check your API key.');
-      return false;
+      state.lastError = error instanceof Error ? error.message : 'Unknown error'
+      state.isProcessing = false
+      logger.error('Failed to initialize multimedia AI:', error)
+      toast.error('Failed to initialize AI services. Check your API key.')
+      return false
     }
   }
 
@@ -126,20 +131,20 @@ export function useLiveMultimediaAI() {
    */
   async function startAudioStreaming(): Promise<boolean> {
     if (!isInitialized.value) {
-      toast.warning('AI services not initialized');
-      return false;
+      toast.warning('AI services not initialized')
+      return false
     }
 
     try {
-      await service.startAudioStreaming();
-      state.isAudioStreaming = true;
-      toast.info('🎤 Voice input activated - speak now!');
-      addSystemMessage('🎤 Voice input activated. Start speaking...');
-      return true;
+      await service.startAudioStreaming()
+      state.isAudioStreaming = true
+      toast.info('🎤 Voice input activated - speak now!')
+      addSystemMessage('🎤 Voice input activated. Start speaking...')
+      return true
     } catch (error) {
-      logger.error('Failed to start audio streaming:', error);
-      toast.error('Failed to start voice input. Check microphone permissions.');
-      return false;
+      logger.error('Failed to start audio streaming:', error)
+      toast.error('Failed to start voice input. Check microphone permissions.')
+      return false
     }
   }
 
@@ -147,10 +152,10 @@ export function useLiveMultimediaAI() {
    * Stop audio streaming
    */
   function stopAudioStreaming(): void {
-    service.stopAudioStreaming();
-    state.isAudioStreaming = false;
-    toast.info('🎤 Voice input stopped');
-    addSystemMessage('Voice input stopped');
+    service.stopAudioStreaming()
+    state.isAudioStreaming = false
+    toast.info('🎤 Voice input stopped')
+    addSystemMessage('Voice input stopped')
   }
 
   /**
@@ -158,10 +163,10 @@ export function useLiveMultimediaAI() {
    */
   async function toggleAudioStreaming(): Promise<boolean> {
     if (state.isAudioStreaming) {
-      stopAudioStreaming();
-      return true;
+      stopAudioStreaming()
+      return true
     } else {
-      return await startAudioStreaming();
+      return await startAudioStreaming()
     }
   }
 
@@ -169,25 +174,25 @@ export function useLiveMultimediaAI() {
    * Start live video streaming and analysis
    */
   async function startVideoStreaming(options?: {
-    width?: number;
-    height?: number;
-    frameRate?: number;
+    width?: number
+    height?: number
+    frameRate?: number
   }): Promise<boolean> {
     if (!isInitialized.value) {
-      toast.warning('AI services not initialized');
-      return false;
+      toast.warning('AI services not initialized')
+      return false
     }
 
     try {
-      await service.startVideoStreaming(_options);
-      state.isVideoStreaming = true;
-      toast.info('📹 Video AI analysis activated');
-      addSystemMessage('📹 Camera activated. AI is analyzing your video...');
-      return true;
+      await service.startVideoStreaming(_options)
+      state.isVideoStreaming = true
+      toast.info('📹 Video AI analysis activated')
+      addSystemMessage('📹 Camera activated. AI is analyzing your video...')
+      return true
     } catch (error) {
-      logger.error('Failed to start video streaming:', error);
-      toast.error('Failed to start camera. Check camera permissions.');
-      return false;
+      logger.error('Failed to start video streaming:', error)
+      toast.error('Failed to start camera. Check camera permissions.')
+      return false
     }
   }
 
@@ -195,11 +200,11 @@ export function useLiveMultimediaAI() {
    * Stop video streaming
    */
   function stopVideoStreaming(): void {
-    service.stopVideoStreaming();
-    state.isVideoStreaming = false;
-    currentVideoAnalysis.value = '';
-    toast.info('📹 Video analysis stopped');
-    addSystemMessage('Video analysis stopped');
+    service.stopVideoStreaming()
+    state.isVideoStreaming = false
+    currentVideoAnalysis.value = ''
+    toast.info('📹 Video analysis stopped')
+    addSystemMessage('Video analysis stopped')
   }
 
   /**
@@ -207,34 +212,38 @@ export function useLiveMultimediaAI() {
    */
   async function toggleVideoStreaming(): Promise<void> {
     if (state.isVideoStreaming) {
-      stopVideoStreaming();
+      stopVideoStreaming()
     } else {
-      await startVideoStreaming();
+      await startVideoStreaming()
     }
   }
 
   /**
    * Capture and analyze screenshot
    */
-  async function captureScreenshot(prompt?: string): Promise<MediaAnalysisResult | null> {
+  async function captureScreenshot(
+    prompt?: string
+  ): Promise<MediaAnalysisResult | null> {
     if (!isInitialized.value) {
-      toast.warning('AI services not initialized');
-      return null;
+      toast.warning('AI services not initialized')
+      return null
     }
 
     try {
-      state.isProcessing = true;
-      toast.info('📸 Capturing screenshot...');
-      
-      const result = await service.captureAndAnalyzeScreen(prompt);
-      state.isProcessing = false;
-      
-      return result;
+      state.isProcessing = true
+      toast.info('📸 Capturing screenshot...')
+
+      const result = await service.captureAndAnalyzeScreen(prompt)
+      state.isProcessing = false
+
+      return result
     } catch (_error) {
-      state.isProcessing = false;
-      logger.error('Failed to capture screenshot:', error);
-      toast.error('Screenshot capture failed. Check screen sharing permissions.');
-      return null;
+      state.isProcessing = false
+      logger.error('Failed to capture screenshot:', error)
+      toast.error(
+        'Screenshot capture failed. Check screen sharing permissions.'
+      )
+      return null
     }
   }
 
@@ -243,23 +252,23 @@ export function useLiveMultimediaAI() {
    */
   async function sendMessage(message: string): Promise<void> {
     if (!isInitialized.value) {
-      toast.warning('AI services not initialized');
-      return;
+      toast.warning('AI services not initialized')
+      return
     }
 
     try {
-      state.isProcessing = true;
-      addUserMessage(message);
-      
-      const result = await service.sendMessage(message);
-      state.isProcessing = false;
-      
+      state.isProcessing = true
+      addUserMessage(message)
+
+      const result = await service.sendMessage(message)
+      state.isProcessing = false
+
       // Response is automatically added via callback
     } catch (_error) {
-      state.isProcessing = false;
-      logger.error('Failed to send message:', error);
-      toast.error('Failed to send message to AI');
-      addSystemMessage('❌ Failed to send message. Please try again.');
+      state.isProcessing = false
+      logger.error('Failed to send message:', error)
+      toast.error('Failed to send message to AI')
+      addSystemMessage('❌ Failed to send message. Please try again.')
     }
   }
 
@@ -267,7 +276,7 @@ export function useLiveMultimediaAI() {
    * Add user message to conversation
    */
   function addUserMessage(
-    content: string, 
+    content: string,
     type: 'text' | 'audio' | 'video' | 'image' = 'text',
     metadata?: Record<string, any>
   ): void {
@@ -280,8 +289,8 @@ export function useLiveMultimediaAI() {
       hasMedia: type !== 'text',
       mediaType: type,
       metadata,
-    };
-    conversationHistory.value.push(message);
+    }
+    conversationHistory.value.push(message)
   }
 
   /**
@@ -301,8 +310,8 @@ export function useLiveMultimediaAI() {
       hasMedia: type !== 'text',
       mediaType: type,
       metadata,
-    };
-    conversationHistory.value.push(message);
+    }
+    conversationHistory.value.push(message)
   }
 
   /**
@@ -322,31 +331,31 @@ export function useLiveMultimediaAI() {
       hasMedia: type !== 'text',
       mediaType: type,
       metadata,
-    };
-    conversationHistory.value.push(message);
+    }
+    conversationHistory.value.push(message)
   }
 
   /**
    * Clear conversation history
    */
   function clearConversation(): void {
-    conversationHistory.value = [];
-    service.clearHistory();
-    toast.info('Conversation cleared');
+    conversationHistory.value = []
+    service.clearHistory()
+    toast.info('Conversation cleared')
   }
 
   /**
    * Get streaming states
    */
   function getStreamingState() {
-    return service.getStreamingState();
+    return service.getStreamingState()
   }
 
   /**
    * Check if service is ready for multimedia
    */
   function isMultimediaReady(): boolean {
-    return isInitialized.value && state.isConnected;
+    return isInitialized.value && state.isConnected
   }
 
   /**
@@ -354,14 +363,14 @@ export function useLiveMultimediaAI() {
    */
   async function cleanup(): Promise<void> {
     try {
-      await service.cleanup();
+      await service.cleanup()
     } catch (error) {
-      logger.error('Cleanup error:', error);
+      logger.error('Cleanup error:', error)
     }
   }
 
   // Cleanup when component unmounts
-  onUnmounted(cleanup);
+  onUnmounted(cleanup)
 
   return {
     // State
@@ -388,5 +397,5 @@ export function useLiveMultimediaAI() {
     getStreamingState,
     isMultimediaReady,
     cleanup,
-  };
+  }
 }

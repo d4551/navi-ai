@@ -6,72 +6,123 @@
 /* stylelint-disable custom-property-pattern, property-no-vendor-prefix, media-feature-name-value-no-unknown */
 
 /* Glass Morphism Utilities */
-.glass-surface { /* removed custom styles */ }
+.glass-surface {
+  /* removed custom styles */
+}
 
-.glass-surface-hover { /* removed custom styles */ }
+.glass-surface-hover {
+  /* removed custom styles */
+}
 
-.glass-surface-active { /* removed custom styles */ }
+.glass-surface-active {
+  /* removed custom styles */
+}
 
 /* Neon Interactive States */
-.neon-focus { /* removed custom styles */ }
+.neon-focus {
+  /* removed custom styles */
+}
 
-.neon-hover-blue { /* removed custom styles */ }
+.neon-hover-blue {
+  /* removed custom styles */
+}
 
-.neon-hover-green { /* removed custom styles */ }
+.neon-hover-green {
+  /* removed custom styles */
+}
 
-.neon-hover-red { /* removed custom styles */ }
+.neon-hover-red {
+  /* removed custom styles */
+}
 
-.neon-hover-purple { /* removed custom styles */ }
+.neon-hover-purple {
+  /* removed custom styles */
+}
 
 /* Typography Utilities */
-.text-display { /* removed custom styles */ }
+.text-display {
+  /* removed custom styles */
+}
 
-.text-body { /* removed custom styles */ }
+.text-body {
+  /* removed custom styles */
+}
 
-.text-code { /* removed custom styles */ }
+.text-code {
+  /* removed custom styles */
+}
 
-.text-neon-gradient { /* removed custom styles */ }
+.text-neon-gradient {
+  /* removed custom styles */
+}
 
 /* Layout Utilities */
 .container-glass {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-.section-glass { /* removed custom styles */ }
+.section-glass {
+  /* removed custom styles */
+}
 
-.grid-responsive { /* removed custom styles */ }
+.grid-responsive {
+  /* removed custom styles */
+}
 
-.flex-center-glass { /* removed custom styles */ }
+.flex-center-glass {
+  /* removed custom styles */
+}
 
 /* Button Variants */
 .btn-glass {
-  
   @apply px-4 py-2 rounded-md font-medium transition-all duration-200;
 }
 
-.btn-glass-primary { /* removed custom styles */ }
+.btn-glass-primary {
+  /* removed custom styles */
+}
 
-.btn-glass-secondary { /* removed custom styles */ }
+.btn-glass-secondary {
+  /* removed custom styles */
+}
 
-.btn-glass-danger { /* removed custom styles */ }
+.btn-glass-danger {
+  /* removed custom styles */
+}
 
-.btn-glass-success { /* removed custom styles */ }
+.btn-glass-success {
+  /* removed custom styles */
+}
 
 /* Form Utilities */
-.input-glass { /* removed custom styles */ }
+.input-glass {
+  /* removed custom styles */
+}
 
-.label-glass { /* removed custom styles */ }
+.label-glass {
+  /* removed custom styles */
+}
 
-.fieldset-glass { /* removed custom styles */ }
+.fieldset-glass {
+  /* removed custom styles */
+}
 
 /* Card Utilities */
-.card-glass { /* removed custom styles */ }
+.card-glass {
+  /* removed custom styles */
+}
 
-.card-glass-header { /* removed custom styles */ }
+.card-glass-header {
+  /* removed custom styles */
+}
 
-.card-glass-body { /* removed custom styles */ }
+.card-glass-body {
+  /* removed custom styles */
+}
 
-.card-glass-footer { /* removed custom styles */ }
+.card-glass-footer {
+  /* removed custom styles */
+}
 
 /* Animation Utilities */
 .animate-glass-in {
@@ -87,11 +138,16 @@
 }
 
 @keyframes neonPulse {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(0, 204, 255, 0.3), 0 0 10px rgba(0, 204, 255, 0.1);
+  0%,
+  100% {
+    box-shadow:
+      0 0 5px rgba(0, 204, 255, 0.3),
+      0 0 10px rgba(0, 204, 255, 0.1);
   }
   50% {
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.6), 0 0 20px rgba(0, 204, 255, 0.3);
+    box-shadow:
+      0 0 10px rgba(0, 204, 255, 0.6),
+      0 0 20px rgba(0, 204, 255, 0.3);
   }
 }
 
@@ -118,7 +174,9 @@
   @apply focus:outline-none;
 }
 
-.focus-visible-only:focus-visible { /* removed custom styles */ }
+.focus-visible-only:focus-visible {
+  /* removed custom styles */
+}
 
 /* High Contrast Mode Support */
 @media (prefers-contrast: more) {

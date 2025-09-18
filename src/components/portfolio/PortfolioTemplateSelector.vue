@@ -3,21 +3,28 @@
     <!-- Header -->
     <div class="template-header">
       <h5 class="mb-0">Choose a Template</h5>
-      <p class="text-secondary mb-4">Select a professional template to get started quickly</p>
+      <p class="text-secondary mb-4">
+        Select a professional template to get started quickly
+      </p>
     </div>
 
     <!-- Template Grid -->
     <div class="template-grid settings-grid">
-      <div 
-        v-for="template in templates" 
+      <div
+        v-for="template in templates"
         :key="template.id"
         class="template-card"
-        :class="{ 'template-card--selected': selectedTemplate?.id === template.id }"
+        :class="{
+          'template-card--selected': selectedTemplate?.id === template.id,
+        }"
         @click="selectTemplate(template)"
       >
         <!-- Template Preview -->
         <div class="template-preview">
-          <div class="preview-header" :style="{ background: template.primaryColor }">
+          <div
+            class="preview-header"
+            :style="{ background: template.primaryColor }"
+          >
             <div class="preview-avatar"></div>
             <div class="preview-info">
               <div class="preview-name"></div>
@@ -27,7 +34,10 @@
           <div class="preview-content">
             <div v-for="i in 3" :key="i" class="preview-section">
               <div class="preview-item">
-                <div class="item-badge" :style="{ background: template.accentColor }"></div>
+                <div
+                  class="item-badge"
+                  :style="{ background: template.accentColor }"
+                ></div>
                 <div class="item-content">
                   <div class="item-title"></div>
                   <div class="item-description"></div>
@@ -45,8 +55,8 @@
           <div class="template-name">{{ template.name }}</div>
           <div class="template-description">{{ template.description }}</div>
           <div class="template-features">
-            <span 
-              v-for="feature in template.features.slice(0, 3)" 
+            <span
+              v-for="feature in template.features.slice(0, 3)"
               :key="feature"
               class="feature-badge"
             >
@@ -56,7 +66,10 @@
         </div>
 
         <!-- Selection Indicator -->
-        <div v-if="selectedTemplate?.id === template.id" class="selection-indicator">
+        <div
+          v-if="selectedTemplate?.id === template.id"
+          class="selection-indicator"
+        >
           <AppIcon name="CheckCircleIcon" />
         </div>
       </div>
@@ -64,8 +77,15 @@
 
     <!-- Action Buttons -->
     <div class="template-actions">
-      <UnifiedButton variant="outline" @click="$emit('close')">Cancel</UnifiedButton>
-      <UnifiedButton variant="primary" :disabled="!selectedTemplate" leading-icon="CheckIcon" @click="applyTemplate">
+      <UnifiedButton variant="outline" @click="$emit('close')"
+        >Cancel</UnifiedButton
+      >
+      <UnifiedButton
+        variant="primary"
+        :disabled="!selectedTemplate"
+        leading-icon="CheckIcon"
+        @click="applyTemplate"
+      >
         Apply Template
       </UnifiedButton>
     </div>
@@ -90,31 +110,38 @@ const templates = ref([
     description: 'Perfect for esports players and competitive gamers',
     primaryColor: '#667eea',
     accentColor: '#764ba2',
-    features: ['Tournament Focus', 'Stat Highlights', 'Team History', 'Achievement Timeline'],
+    features: [
+      'Tournament Focus',
+      'Stat Highlights',
+      'Team History',
+      'Achievement Timeline',
+    ],
     items: [
       {
         type: 'tournament',
         title: 'Regional Championship Winner',
-        description: 'First place in the Spring Regional Tournament with Team Phoenix.',
+        description:
+          'First place in the Spring Regional Tournament with Team Phoenix.',
         game: 'Valorant',
         skills: ['Team Leadership', 'Strategic Planning', 'Communication'],
-        achievement: { rank: '1st Place', event: 'Spring Regional' }
+        achievement: { rank: '1st Place', event: 'Spring Regional' },
       },
       {
         type: 'achievement',
         title: 'Rank Achievement',
         description: 'Reached Radiant rank in competitive matchmaking.',
         game: 'Valorant',
-        skills: ['Aim', 'Game Sense', 'Consistency']
+        skills: ['Aim', 'Game Sense', 'Consistency'],
       },
       {
         type: 'leadership',
         title: 'Team Captain',
-        description: 'Led team to multiple tournament victories as In-Game Leader.',
+        description:
+          'Led team to multiple tournament victories as In-Game Leader.',
         game: 'Valorant',
-        skills: ['Leadership', 'Strategy', 'Communication']
-      }
-    ]
+        skills: ['Leadership', 'Strategy', 'Communication'],
+      },
+    ],
   },
   {
     id: 'content-creator',
@@ -122,58 +149,76 @@ const templates = ref([
     description: 'Showcase your content creation and streaming achievements',
     primaryColor: '#f093fb',
     accentColor: '#f5576c',
-    features: ['View Analytics', 'Platform Integration', 'Content Showcase', 'Growth Metrics'],
+    features: [
+      'View Analytics',
+      'Platform Integration',
+      'Content Showcase',
+      'Growth Metrics',
+    ],
     items: [
       {
         type: 'content',
         title: 'YouTube Gaming Channel',
-        description: 'Gaming content channel with focus on tutorials and gameplay.',
+        description:
+          'Gaming content channel with focus on tutorials and gameplay.',
         stats: { subscribers: '50K', views: '2.5M', videos: '200+' },
-        skills: ['Video Editing', 'Content Strategy', 'Community Management']
+        skills: ['Video Editing', 'Content Strategy', 'Community Management'],
       },
       {
         type: 'stream',
         title: 'Twitch Partner',
-        description: 'Achieved Twitch Partner status with consistent streaming schedule.',
-        stats: { followers: '15K', 'avg_viewers': '500', hours: '1200+' },
-        skills: ['Live Streaming', 'Audience Engagement', 'Entertainment']
+        description:
+          'Achieved Twitch Partner status with consistent streaming schedule.',
+        stats: { followers: '15K', avg_viewers: '500', hours: '1200+' },
+        skills: ['Live Streaming', 'Audience Engagement', 'Entertainment'],
       },
       {
         type: 'collaboration',
         title: 'Brand Partnerships',
-        description: 'Worked with gaming brands on sponsored content and reviews.',
-        skills: ['Marketing', 'Brand Relations', 'Content Creation']
-      }
-    ]
+        description:
+          'Worked with gaming brands on sponsored content and reviews.',
+        skills: ['Marketing', 'Brand Relations', 'Content Creation'],
+      },
+    ],
   },
   {
     id: 'game-dev',
     name: 'Game Developer',
-    description: 'Perfect for showcasing development projects and technical skills',
+    description:
+      'Perfect for showcasing development projects and technical skills',
     primaryColor: '#4facfe',
     accentColor: '#00f2fe',
-    features: ['Project Showcase', 'Technical Skills', 'Code Samples', 'Development Process'],
+    features: [
+      'Project Showcase',
+      'Technical Skills',
+      'Code Samples',
+      'Development Process',
+    ],
     items: [
       {
         type: 'project',
         title: 'Indie Game Release',
         description: 'Solo-developed platformer game released on Steam.',
-        stats: { downloads: '10K+', rating: '4.8/5', 'dev_time': '18 months' },
-        skills: ['Unity', 'C#', 'Game Design', 'Art Direction']
+        stats: { downloads: '10K+', rating: '4.8/5', dev_time: '18 months' },
+        skills: ['Unity', 'C#', 'Game Design', 'Art Direction'],
       },
       {
         type: 'project',
         title: 'Game Jam Winner',
         description: 'First place in 48-hour game development competition.',
-        skills: ['Rapid Prototyping', 'Team Collaboration', 'Creative Problem Solving']
+        skills: [
+          'Rapid Prototyping',
+          'Team Collaboration',
+          'Creative Problem Solving',
+        ],
       },
       {
         type: 'project',
         title: 'Open Source Contribution',
         description: 'Contributed features to popular game engine plugins.',
-        skills: ['Version Control', 'Documentation', 'Community Collaboration']
-      }
-    ]
+        skills: ['Version Control', 'Documentation', 'Community Collaboration'],
+      },
+    ],
   },
   {
     id: 'industry-pro',
@@ -181,30 +226,37 @@ const templates = ref([
     description: 'For gaming industry professionals and business roles',
     primaryColor: '#fa709a',
     accentColor: '#fee140',
-    features: ['Career Timeline', 'Company Highlights', 'Project Impact', 'Leadership Experience'],
+    features: [
+      'Career Timeline',
+      'Company Highlights',
+      'Project Impact',
+      'Leadership Experience',
+    ],
     items: [
       {
         type: 'leadership',
         title: 'Product Manager - AAA Studio',
         description: 'Led development team of 50+ on blockbuster action game.',
-        stats: { 'team_size': '50+', budget: '$10M+', 'release_date': '2023' },
-        skills: ['Project Management', 'Team Leadership', 'Strategic Planning']
+        stats: { team_size: '50+', budget: '$10M+', release_date: '2023' },
+        skills: ['Project Management', 'Team Leadership', 'Strategic Planning'],
       },
       {
         type: 'project',
         title: 'Game Launch Success',
-        description: 'Coordinated successful launch reaching 1M+ players in first month.',
+        description:
+          'Coordinated successful launch reaching 1M+ players in first month.',
         stats: { players: '1M+', revenue: '$5M+', metacritic: '85/100' },
-        skills: ['Launch Strategy', 'Marketing Coordination', 'Analytics']
+        skills: ['Launch Strategy', 'Marketing Coordination', 'Analytics'],
       },
       {
         type: 'achievement',
         title: 'Industry Recognition',
-        description: 'Received Game Developer Award for Excellence in Production.',
-        skills: ['Industry Leadership', 'Innovation', 'Quality Delivery']
-      }
-    ]
-  }
+        description:
+          'Received Game Developer Award for Excellence in Production.',
+        skills: ['Industry Leadership', 'Innovation', 'Quality Delivery'],
+      },
+    ],
+  },
 ])
 
 function selectTemplate(template) {
@@ -279,7 +331,11 @@ function applyTemplate() {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
 }
 
 .preview-avatar {
@@ -437,27 +493,27 @@ function applyTemplate() {
   .template-grid {
     gap: 1rem;
   }
-  
+
   .template-selector {
     padding: 1rem;
   }
-  
+
   .template-actions {
     flex-direction: column-reverse;
   }
-  
+
   .template-actions .btn {
     width: 100%;
   }
 }
 
 /* Dark theme */
-[data-theme="dark"] .selection-indicator {
+[data-theme='dark'] .selection-indicator {
   background: var(--glass-surface);
   border: 1px solid var(--glass-border);
 }
 
-[data-theme="dark"] .preview-content {
+[data-theme='dark'] .preview-content {
   background: rgba(255, 255, 255, 0.02);
 }
 </style>

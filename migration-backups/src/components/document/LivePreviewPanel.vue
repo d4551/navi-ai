@@ -1,10 +1,16 @@
 <template>
-  <div class="live-preview-panel" :class="{ 'is-sticky': isSticky, 'is-floating': isFloating }">
+  <div
+    class="live-preview-panel"
+    :class="{ 'is-sticky': isSticky, 'is-floating': isFloating }"
+  >
     <div class="preview-header">
       <div class="preview-title">
         <AppIcon name="mdi-eye-outline" />
         <span>Live Preview</span>
-        <div class="preview-sync-indicator" :class="{ 'is-syncing': isSyncing }">
+        <div
+          class="preview-sync-indicator"
+          :class="{ 'is-syncing': isSyncing }"
+        >
           <div class="sync-dot"></div>
         </div>
       </div>
@@ -12,7 +18,9 @@
         <UnifiedButton
           variant="ghost"
           size="xs"
-          :leading-icon="isFloating ? 'mdi-dock-window' : 'mdi-window-open-variant'"
+          :leading-icon="
+            isFloating ? 'mdi-dock-window' : 'mdi-window-open-variant'
+          "
           @click="toggleFloating"
         />
         <UnifiedButton
@@ -73,16 +81,33 @@
                   {{ resumeData.location }}
                 </span>
               </div>
-              <div v-if="resumeData.linkedin || resumeData.github || resumeData.website" class="preview-links">
-                <a v-if="resumeData.linkedin" class="preview-link" target="_blank">
+              <div
+                v-if="
+                  resumeData.linkedin || resumeData.github || resumeData.website
+                "
+                class="preview-links"
+              >
+                <a
+                  v-if="resumeData.linkedin"
+                  class="preview-link"
+                  target="_blank"
+                >
                   <AppIcon name="mdi-linkedin" />
                   LinkedIn
                 </a>
-                <a v-if="resumeData.github" class="preview-link" target="_blank">
+                <a
+                  v-if="resumeData.github"
+                  class="preview-link"
+                  target="_blank"
+                >
                   <AppIcon name="mdi-github" />
                   GitHub
                 </a>
-                <a v-if="resumeData.website" class="preview-link" target="_blank">
+                <a
+                  v-if="resumeData.website"
+                  class="preview-link"
+                  target="_blank"
+                >
                   <AppIcon name="mdi-web" />
                   Portfolio
                 </a>
@@ -98,7 +123,10 @@
             </div>
 
             <!-- Experience Section -->
-            <div v-if="resumeData.experience && resumeData.experience.length > 0" class="preview-section">
+            <div
+              v-if="resumeData.experience && resumeData.experience.length > 0"
+              class="preview-section"
+            >
               <h2 class="preview-section-title">Experience</h2>
               <div class="preview-section-content">
                 <div
@@ -108,11 +136,17 @@
                 >
                   <div class="experience-header">
                     <div class="experience-title-company">
-                      <h3 class="experience-title">{{ exp.title || 'Job Title' }}</h3>
-                      <div class="experience-company">{{ exp.company || 'Company Name' }}</div>
+                      <h3 class="experience-title">
+                        {{ exp.title || 'Job Title' }}
+                      </h3>
+                      <div class="experience-company">
+                        {{ exp.company || 'Company Name' }}
+                      </div>
                     </div>
                     <div class="experience-dates">
-                      {{ formatDateRange(exp.startDate, exp.endDate, exp.current) }}
+                      {{
+                        formatDateRange(exp.startDate, exp.endDate, exp.current)
+                      }}
                     </div>
                   </div>
                   <div v-if="exp.description" class="experience-description">
@@ -123,7 +157,10 @@
             </div>
 
             <!-- Skills Section -->
-            <div v-if="resumeData.skills && resumeData.skills.length > 0" class="preview-section">
+            <div
+              v-if="resumeData.skills && resumeData.skills.length > 0"
+              class="preview-section"
+            >
               <h2 class="preview-section-title">Skills</h2>
               <div class="preview-section-content">
                 <div class="skills-grid">
@@ -139,7 +176,10 @@
             </div>
 
             <!-- Education Section -->
-            <div v-if="resumeData.education && resumeData.education.length > 0" class="preview-section">
+            <div
+              v-if="resumeData.education && resumeData.education.length > 0"
+              class="preview-section"
+            >
               <h2 class="preview-section-title">Education</h2>
               <div class="preview-section-content">
                 <div
@@ -148,9 +188,15 @@
                   class="preview-education-item"
                 >
                   <div class="education-header">
-                    <div class="education-degree">{{ edu.degree || 'Degree' }}</div>
-                    <div class="education-school">{{ edu.institution || edu.school || 'Institution' }}</div>
-                    <div class="education-date">{{ edu.year || edu.endDate || 'Year' }}</div>
+                    <div class="education-degree">
+                      {{ edu.degree || 'Degree' }}
+                    </div>
+                    <div class="education-school">
+                      {{ edu.institution || edu.school || 'Institution' }}
+                    </div>
+                    <div class="education-date">
+                      {{ edu.year || edu.endDate || 'Year' }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -165,44 +211,71 @@
         </div>
 
         <!-- Cover Letter Preview -->
-        <div v-else-if="documentType === 'cover-letter'" class="cover-letter-preview">
+        <div
+          v-else-if="documentType === 'cover-letter'"
+          class="cover-letter-preview"
+        >
           <div class="preview-page">
             <div class="letter-header">
               <div class="letter-contact">
                 <div class="sender-info">
-                  <div class="sender-name">{{ resumeData.name || 'Your Name' }}</div>
-                  <div class="sender-email">{{ resumeData.email || 'your.email@example.com' }}</div>
-                  <div class="sender-phone">{{ resumeData.phone || '(555) 123-4567' }}</div>
+                  <div class="sender-name">
+                    {{ resumeData.name || 'Your Name' }}
+                  </div>
+                  <div class="sender-email">
+                    {{ resumeData.email || 'your.email@example.com' }}
+                  </div>
+                  <div class="sender-phone">
+                    {{ resumeData.phone || '(555) 123-4567' }}
+                  </div>
                 </div>
                 <div class="letter-date">{{ currentDate }}</div>
               </div>
-              <div v-if="coverLetterData?.jobInfo?.company" class="recipient-info">
-                <div class="company-name">{{ coverLetterData.jobInfo.company }}</div>
-                <div v-if="coverLetterData.jobInfo.hiringManager" class="hiring-manager">
+              <div
+                v-if="coverLetterData?.jobInfo?.company"
+                class="recipient-info"
+              >
+                <div class="company-name">
+                  {{ coverLetterData.jobInfo.company }}
+                </div>
+                <div
+                  v-if="coverLetterData.jobInfo.hiringManager"
+                  class="hiring-manager"
+                >
                   {{ coverLetterData.jobInfo.hiringManager }}
                 </div>
               </div>
             </div>
 
             <div class="letter-content">
-              <div v-if="coverLetterData?.content?.opening" class="letter-section">
+              <div
+                v-if="coverLetterData?.content?.opening"
+                class="letter-section"
+              >
                 {{ coverLetterData.content.opening }}
               </div>
               <div v-if="coverLetterData?.content?.body" class="letter-section">
                 {{ coverLetterData.content.body }}
               </div>
-              <div v-if="coverLetterData?.content?.closing" class="letter-section">
+              <div
+                v-if="coverLetterData?.content?.closing"
+                class="letter-section"
+              >
                 {{ coverLetterData.content.closing }}
               </div>
               <div class="letter-signature">
                 <div class="signature-line">Sincerely,</div>
-                <div class="signature-name">{{ resumeData.name || 'Your Name' }}</div>
+                <div class="signature-name">
+                  {{ resumeData.name || 'Your Name' }}
+                </div>
               </div>
             </div>
 
             <div v-if="isCoverLetterEmpty" class="empty-state">
               <AppIcon name="mdi-email-edit-outline" />
-              <p>Add job information and content to see your cover letter preview</p>
+              <p>
+                Add job information and content to see your cover letter preview
+              </p>
             </div>
           </div>
         </div>
@@ -297,7 +370,7 @@ const availableTemplates = ref([
   { id: 'modern', name: 'Modern' },
   { id: 'classic', name: 'Classic' },
   { id: 'elegant', name: 'Elegant' },
-  { id: 'compact', name: 'Compact' }
+  { id: 'compact', name: 'Compact' },
 ])
 
 // Computed properties
@@ -305,28 +378,36 @@ const currentDate = computed(() => {
   return new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   })
 })
 
 const isEmptyState = computed(() => {
   const data = props.resumeData
-  return !data.name && !data.email && !data.summary && 
-         (!data.experience || data.experience.length === 0)
+  return (
+    !data.name &&
+    !data.email &&
+    !data.summary &&
+    (!data.experience || data.experience.length === 0)
+  )
 })
 
 const isCoverLetterEmpty = computed(() => {
   const data = props.coverLetterData
-  return !data?.jobInfo?.company && !data?.content?.opening && 
-         !data?.content?.body && !data?.content?.closing
+  return (
+    !data?.jobInfo?.company &&
+    !data?.content?.opening &&
+    !data?.content?.body &&
+    !data?.content?.closing
+  )
 })
 
 const totalWords = computed(() => {
   let count = 0
   const data = props.resumeData
-  
+
   if (data.summary) count += data.summary.split(/\s+/).filter(Boolean).length
-  
+
   if (data.experience) {
     data.experience.forEach(exp => {
       if (exp.description) {
@@ -334,27 +415,29 @@ const totalWords = computed(() => {
       }
     })
   }
-  
+
   if (props.documentType === 'cover-letter' && props.coverLetterData?.content) {
     const content = props.coverLetterData.content
-    if (content.opening) count += content.opening.split(/\s+/).filter(Boolean).length
+    if (content.opening)
+      count += content.opening.split(/\s+/).filter(Boolean).length
     if (content.body) count += content.body.split(/\s+/).filter(Boolean).length
-    if (content.closing) count += content.closing.split(/\s+/).filter(Boolean).length
+    if (content.closing)
+      count += content.closing.split(/\s+/).filter(Boolean).length
   }
-  
+
   return count
 })
 
 const completedSections = computed(() => {
   let count = 0
   const data = props.resumeData
-  
+
   if (data.name && data.email) count++ // Personal Info
   if (data.summary) count++ // Summary
   if (data.experience && data.experience.length > 0) count++ // Experience
   if (data.skills && data.skills.length > 0) count++ // Skills
   if (data.education && data.education.length > 0) count++ // Education
-  
+
   return count
 })
 
@@ -362,35 +445,48 @@ const atsScore = computed(() => {
   // Simple ATS score calculation based on completeness and keywords
   let score = 0
   const data = props.resumeData
-  
+
   // Basic completeness (40 points)
   if (data.name && data.email) score += 10
   if (data.summary) score += 10
   if (data.experience && data.experience.length > 0) score += 10
   if (data.skills && data.skills.length >= 3) score += 10
-  
+
   // Content quality (30 points)
   if (data.summary && data.summary.length > 50) score += 15
-  if (data.experience && data.experience.some(exp => exp.description && exp.description.length > 100)) {
+  if (
+    data.experience &&
+    data.experience.some(exp => exp.description && exp.description.length > 100)
+  ) {
     score += 15
   }
-  
+
   // Keyword matching with job description (30 points)
   if (props.jobDescription) {
-    const jobKeywords = props.jobDescription.toLowerCase().split(/\W+/).filter(Boolean)
+    const jobKeywords = props.jobDescription
+      .toLowerCase()
+      .split(/\W+/)
+      .filter(Boolean)
     const resumeText = [
       data.summary || '',
       ...(data.experience?.map(exp => exp.description || '') || []),
-      ...(data.skills?.map(skill => typeof skill === 'string' ? skill : skill.name) || [])
-    ].join(' ').toLowerCase()
-    
-    const matches = jobKeywords.filter(keyword => 
-      keyword.length > 3 && resumeText.includes(keyword)
+      ...(data.skills?.map(skill =>
+        typeof skill === 'string' ? skill : skill.name
+      ) || []),
+    ]
+      .join(' ')
+      .toLowerCase()
+
+    const matches = jobKeywords.filter(
+      keyword => keyword.length > 3 && resumeText.includes(keyword)
     ).length
-    
-    score += Math.min(30, (matches / Math.max(jobKeywords.length * 0.3, 1)) * 30)
+
+    score += Math.min(
+      30,
+      (matches / Math.max(jobKeywords.length * 0.3, 1)) * 30
+    )
   }
-  
+
   return Math.round(Math.min(100, score))
 })
 
@@ -422,7 +518,11 @@ function switchTemplate(templateId: string) {
   emit('template-change', templateId)
 }
 
-function formatDateRange(startDate?: string, endDate?: string, current?: boolean): string {
+function formatDateRange(
+  startDate?: string,
+  endDate?: string,
+  current?: boolean
+): string {
   if (current) {
     return `${startDate || 'Start'} - Present`
   }
@@ -439,12 +539,16 @@ function formatDescription(description: string): string {
 }
 
 // Watch for data changes to trigger sync indicator
-watch([() => props.resumeData, () => props.coverLetterData], () => {
-  isSyncing.value = true
-  setTimeout(() => {
-    isSyncing.value = false
-  }, 300)
-}, { deep: true })
+watch(
+  [() => props.resumeData, () => props.coverLetterData],
+  () => {
+    isSyncing.value = true
+    setTimeout(() => {
+      isSyncing.value = false
+    }, 300)
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped>
@@ -826,15 +930,29 @@ watch([() => props.resumeData, () => props.coverLetterData], () => {
   color: var(--text-primary);
 }
 
-.stat-value.score-excellent { color: #10b981; }
-.stat-value.score-good { color: #3b82f6; }
-.stat-value.score-fair { color: #f59e0b; }
-.stat-value.score-poor { color: #ef4444; }
+.stat-value.score-excellent {
+  color: #10b981;
+}
+.stat-value.score-good {
+  color: #3b82f6;
+}
+.stat-value.score-fair {
+  color: #f59e0b;
+}
+.stat-value.score-poor {
+  color: #ef4444;
+}
 
 @keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Template Variations */

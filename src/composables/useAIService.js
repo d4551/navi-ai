@@ -25,13 +25,16 @@ export function useAIService() {
         // Check if AI service is properly initialized
         response = await ai.generateText(prompt, {
           maxTokens: options.maxTokens || 500,
-          temperature: options.temperature || 0.7
+          temperature: options.temperature || 0.7,
         })
 
         return response.content || response
       } catch (aiError) {
         // Check if it's an API key error
-        if (aiError.message?.includes('API key') || aiError.message?.includes('No Gemini API key found')) {
+        if (
+          aiError.message?.includes('API key') ||
+          aiError.message?.includes('No Gemini API key found')
+        ) {
           logger.warn('AI service unavailable: API key not configured')
           // Don't throw error, just return null to allow graceful fallback
           return null
@@ -42,11 +45,14 @@ export function useAIService() {
           response = await generateContent(prompt, '', {
             maxTokens: 500,
             temperature: 0.7,
-            ...options
+            ...options,
           })
           return response
         } catch (fallbackError) {
-          logger.warn('Both AI service and fallback failed:', { aiError: aiError.message, fallbackError: fallbackError.message })
+          logger.warn('Both AI service and fallback failed:', {
+            aiError: aiError.message,
+            fallbackError: fallbackError.message,
+          })
           return null
         }
       }
@@ -95,6 +101,6 @@ export function useAIService() {
     error,
     analyzeWithAI,
     summarizeWithAI,
-    generateCareerInsights
+    generateCareerInsights,
   }
 }

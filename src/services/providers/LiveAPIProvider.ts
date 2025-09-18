@@ -26,7 +26,7 @@ export class LiveAPIMetaProvider implements JobProvider {
     icon: 'mdi-rocket-launch',
     color: '#38BDF8',
     gamingFocus: 0.4,
-    maxResults: 50
+    maxResults: 50,
   }
 
   buildParams(filters: JobFilters): Record<string, any> {
@@ -50,4 +50,3 @@ export class LiveAPIMetaProvider implements JobProvider {
 export function createLiveAPIProvider() {
   return new LiveAPIMetaProvider()
 }
-

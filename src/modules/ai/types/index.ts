@@ -100,7 +100,10 @@ export class AIError extends Error {
 }
 
 export class AIRetryError extends AIError {
-  constructor(message: string, public attempts: number) {
+  constructor(
+    message: string,
+    public attempts: number
+  ) {
     super(message, 'RETRY_EXHAUSTED', { attempts })
     this.name = 'AIRetryError'
   }
@@ -114,15 +117,17 @@ export class AIInitializationError extends AIError {
 }
 
 // Utility types
-export type AIResult<T = any> = {
-  success: true
-  data: T
-  metadata: AIResponse['metadata']
-} | {
-  success: false
-  error: string
-  metadata: AIResponse['metadata']
-}
+export type AIResult<T = any> =
+  | {
+      success: true
+      data: T
+      metadata: AIResponse['metadata']
+    }
+  | {
+      success: false
+      error: string
+      metadata: AIResponse['metadata']
+    }
 
 export type AIStreamResult = AsyncIterable<AIStreamChunk>
 

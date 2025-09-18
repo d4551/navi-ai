@@ -1,6 +1,6 @@
 /**
  * AI-Powered Job Matching Service
- * Provides semantic job search, intelligent matching, and market analysis 
+ * Provides semantic job search, intelligent matching, and market analysis
  * for gaming industry positions using advanced AI algorithms.
  * Integrates with studio data for comprehensive job-studio matching.
  */
@@ -27,12 +27,14 @@ class AIJobMatchingService {
         await aiService.initialize({
           primaryProvider: 'google',
           enableContextPersistence: true,
-          enableRealTime: false
+          enableRealTime: false,
         })
       } catch (error) {
-        throw new Error('AI service not initialized. Please configure your API key in settings.')
+        throw new Error(
+          'AI service not initialized. Please configure your API key in settings.'
+        )
       }
-      
+
       const systemInstructions = `You are an expert gaming industry recruiter and job matching specialist. Analyze the user's search intent and provide intelligent job search insights.
 
 Your task is to:
@@ -107,7 +109,7 @@ Search Parameters:
 - Remote: ${options.remote ? 'Yes' : 'No'}
 - Salary Range: $${options.salaryMin || 0} - $${options.salaryMax || 'unlimited'}`,
         context: contextInfo,
-        type: 'analysis'
+        type: 'analysis',
       })
 
       // Try to parse as JSON, fallback to structured analysis
@@ -115,14 +117,18 @@ Search Parameters:
       try {
         analysis = JSON.parse(response.content)
       } catch {
-        analysis = this.parseSearchAnalysisFromText(response.content, searchQuery, options)
+        analysis = this.parseSearchAnalysisFromText(
+          response.content,
+          searchQuery,
+          options
+        )
       }
-      
+
       // Cache the results
       const cacheKey = this.createCacheKey('search', searchQuery, options)
       this.matchingCache.set(cacheKey, {
         data: analysis,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       })
 
       logger.info('Semantic job search analysis completed')
@@ -130,14 +136,14 @@ Search Parameters:
         success: true,
         analysis,
         suggestions: this.generateSearchSuggestions(analysis),
-        insights: this.generateJobInsights(analysis)
+        insights: this.generateJobInsights(analysis),
       }
     } catch (error) {
       logger.error('Semantic search analysis failed:', error)
       return {
         success: false,
         error: error.message,
-        fallback: this.getFallbackSearchAnalysis(searchQuery, options)
+        fallback: this.getFallbackSearchAnalysis(searchQuery, options),
       }
     }
   }
@@ -150,7 +156,9 @@ Search Parameters:
       // Check if AI service is ready
       let initialized = await aiService.isReady()
       if (!initialized) {
-        throw new Error('AI service not initialized. Please configure your API key in settings.')
+        throw new Error(
+          'AI service not initialized. Please configure your API key in settings.'
+        )
       }
 
       const systemInstructions = `You are an AI career matching specialist focused on gaming industry placements. Score and rank job opportunities based on fit with the candidate's profile.
@@ -203,7 +211,7 @@ Return JSON with scored and ranked jobs:
         requirements: job.requirements,
         location: job.location,
         remote: job.remote,
-        salary: job.salary
+        salary: job.salary,
       }))
 
       const prompt = `Match these ${jobListings.length} gaming industry jobs to the candidate profile:
@@ -219,28 +227,33 @@ Provide detailed matching scores and explanations for optimal job recommendation
       const response = await aiService.chat({
         message: prompt,
         type: 'analysis',
-        metadata: { jobData, userProfile, searchContext }
+        metadata: { jobData, userProfile, searchContext },
       })
 
       const matchResults = JSON.parse(response.content || response)
-      
+
       // Enrich results with studio data for enhanced matching
-      const enrichedJobs = await this.enrichJobsWithStudioData(jobListings, userProfile)
-      
-      logger.info(`AI job matching completed for ${jobListings.length} positions with studio data integration`)
+      const enrichedJobs = await this.enrichJobsWithStudioData(
+        jobListings,
+        userProfile
+      )
+
+      logger.info(
+        `AI job matching completed for ${jobListings.length} positions with studio data integration`
+      )
       return {
         success: true,
         matches: matchResults.rankedJobs,
         enrichedJobs,
         summary: matchResults.summary,
-        recommendations: this.generateMatchingRecommendations(matchResults)
+        recommendations: this.generateMatchingRecommendations(matchResults),
       }
     } catch (error) {
       logger.error('AI job matching failed:', error)
       return {
         success: false,
         error: error.message,
-        fallback: this.getFallbackMatching(jobListings, userProfile)
+        fallback: this.getFallbackMatching(jobListings, userProfile),
       }
     }
   }
@@ -248,12 +261,18 @@ Provide detailed matching scores and explanations for optimal job recommendation
   /**
    * Generate personalized job search insights using market data
    */
-  async generateJobSearchInsights(searchQuery, userProfile = {}, marketData = {}) {
+  async generateJobSearchInsights(
+    searchQuery,
+    userProfile = {},
+    marketData = {}
+  ) {
     try {
       // Check if AI service is ready
       let initialized = await aiService.isReady()
       if (!initialized) {
-        throw new Error('AI service not initialized. Please configure your API key in settings.')
+        throw new Error(
+          'AI service not initialized. Please configure your API key in settings.'
+        )
       }
 
       const systemInstructions = `You are a gaming industry career advisor providing personalized job search insights. Analyze market trends, salary data, and career opportunities.
@@ -306,16 +325,16 @@ Provide strategic insights to optimize their job search success.`
       const response = await aiService.chat({
         message: prompt,
         type: 'analysis',
-        metadata: { userProfile, marketData }
+        metadata: { userProfile, marketData },
       })
 
       const insights = JSON.parse(response.content || response)
-      
+
       // Cache insights
       const cacheKey = this.createCacheKey('insights', searchQuery, userProfile)
       this.insightsCache.set(cacheKey, {
         data: insights,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       })
 
       logger.info('Job search insights generated successfully')
@@ -323,14 +342,14 @@ Provide strategic insights to optimize their job search success.`
         success: true,
         insights: insights.insights,
         marketSummary: insights.marketSummary,
-        recommendations: insights.recommendations
+        recommendations: insights.recommendations,
       }
     } catch (error) {
       logger.error('Failed to generate job search insights:', error)
       return {
         success: false,
         error: error.message,
-        fallback: this.getFallbackInsights(searchQuery, userProfile)
+        fallback: this.getFallbackInsights(searchQuery, userProfile),
       }
     }
   }
@@ -338,12 +357,19 @@ Provide strategic insights to optimize their job search success.`
   /**
    * Analyze salary competitiveness using market data
    */
-  async analyzeSalaryCompetitiveness(jobTitle, location, salaryRange, userProfile = {}) {
+  async analyzeSalaryCompetitiveness(
+    jobTitle,
+    location,
+    salaryRange,
+    userProfile = {}
+  ) {
     try {
       // Check if AI service is ready
       let initialized = await aiService.isReady()
       if (!initialized) {
-        throw new Error('AI service not initialized. Please configure your API key in settings.')
+        throw new Error(
+          'AI service not initialized. Please configure your API key in settings.'
+        )
       }
 
       const systemInstructions = `You are a gaming industry compensation expert. Analyze salary competitiveness and provide negotiation insights.
@@ -390,25 +416,25 @@ Provide comprehensive salary analysis and negotiation guidance.`
       const response = await aiService.chat({
         message: prompt,
         type: 'analysis',
-        metadata: { jobTitle, location, salaryRange, userProfile }
+        metadata: { jobTitle, location, salaryRange, userProfile },
       })
 
       const analysis = JSON.parse(response.content || response)
-      
+
       logger.info('Salary competitiveness analysis completed')
       return {
         success: true,
         analysis: analysis.salaryAnalysis,
         insights: analysis.insights,
         negotiationTips: analysis.negotiationTips,
-        benchmarkData: analysis.benchmarkData
+        benchmarkData: analysis.benchmarkData,
       }
     } catch (error) {
       logger.error('Salary analysis failed:', error)
       return {
         success: false,
         error: error.message,
-        fallback: this.getFallbackSalaryAnalysis(salaryRange, location)
+        fallback: this.getFallbackSalaryAnalysis(salaryRange, location),
       }
     }
   }
@@ -416,12 +442,18 @@ Provide comprehensive salary analysis and negotiation guidance.`
   /**
    * Generate personalized job search recommendations
    */
-  async getPersonalizedRecommendations(userProfile, searchHistory = [], currentSearch = {}) {
+  async getPersonalizedRecommendations(
+    userProfile,
+    searchHistory = [],
+    currentSearch = {}
+  ) {
     try {
       // Check if AI service is ready
       let initialized = await aiService.isReady()
       if (!initialized) {
-        throw new Error('AI service not initialized. Please configure your API key in settings.')
+        throw new Error(
+          'AI service not initialized. Please configure your API key in settings.'
+        )
       }
 
       const systemInstructions = `You are a personalized gaming career advisor. Based on the user's profile and search history, provide tailored job search recommendations.
@@ -461,11 +493,11 @@ Focus on gaming industry career advancement and optimization strategies.`
       const response = await aiService.chat({
         message: prompt,
         type: 'analysis',
-        metadata: { userProfile, searchHistory, currentSearch }
+        metadata: { userProfile, searchHistory, currentSearch },
       })
 
       const recommendations = JSON.parse(response.content || response)
-      
+
       logger.info('Personalized recommendations generated')
       return {
         success: true,
@@ -473,14 +505,14 @@ Focus on gaming industry career advancement and optimization strategies.`
         strengths: recommendations.profileStrengths,
         improvements: recommendations.improvementAreas,
         skillGaps: recommendations.skillGaps,
-        trends: recommendations.opportunityTrends
+        trends: recommendations.opportunityTrends,
       }
     } catch (error) {
       logger.error('Failed to generate personalized recommendations:', error)
       return {
         success: false,
         error: error.message,
-        fallback: this.getFallbackRecommendations(userProfile)
+        fallback: this.getFallbackRecommendations(userProfile),
       }
     }
   }
@@ -488,8 +520,8 @@ Focus on gaming industry career advancement and optimization strategies.`
   // Helper method to parse search analysis from text when JSON parsing fails
   parseSearchAnalysisFromText(responseText, searchQuery, options) {
     // Extract relevant information from text response
-    const lines = responseText.split('\n').filter(line => line.trim());
-    
+    const lines = responseText.split('\n').filter(line => line.trim())
+
     // Basic fallback structure
     return {
       searchAnalysis: {
@@ -497,41 +529,59 @@ Focus on gaming industry career advancement and optimization strategies.`
         keySkills: this.extractSkillsFromText(responseText),
         experienceLevel: options.experience || 'mid',
         preferredLocations: options.location ? [options.location] : ['Remote'],
-        workType: options.remote ? 'remote' : 'hybrid'
+        workType: options.remote ? 'remote' : 'hybrid',
       },
       enhancedSearchTerms: {
         primary: [searchQuery],
         secondary: [],
-        exclude: []
+        exclude: [],
       },
       matchingScore: 0.75,
       recommendations: {
-        queryImprovements: ['Be more specific about role level', 'Add preferred technologies'],
+        queryImprovements: [
+          'Be more specific about role level',
+          'Add preferred technologies',
+        ],
         additionalFilters: ['Location', 'Company size'],
-        expandedSearch: ['Related gaming roles']
+        expandedSearch: ['Related gaming roles'],
       },
       marketInsights: {
         demandLevel: 'medium',
         trendingSkills: ['Unity', 'Unreal Engine', 'Community Management'],
         salaryBenchmark: 'at market',
         competitionLevel: 'medium',
-        tips: ['Highlight gaming experience', 'Show portfolio projects']
-      }
+        tips: ['Highlight gaming experience', 'Show portfolio projects'],
+      },
     }
   }
 
   extractRolesFromText(text) {
-    const commonRoles = ['Game Developer', 'Game Designer', 'Community Manager', 'QA Tester', 'Producer'];
-    return commonRoles.filter(role => 
-      text.toLowerCase().includes(role.toLowerCase().replace(' ', ''))
-    ).slice(0, 3);
+    const commonRoles = [
+      'Game Developer',
+      'Game Designer',
+      'Community Manager',
+      'QA Tester',
+      'Producer',
+    ]
+    return commonRoles
+      .filter(role =>
+        text.toLowerCase().includes(role.toLowerCase().replace(' ', ''))
+      )
+      .slice(0, 3)
   }
 
   extractSkillsFromText(text) {
-    const commonSkills = ['Unity', 'Unreal Engine', 'C#', 'JavaScript', 'Leadership', 'Communication'];
-    return commonSkills.filter(skill => 
-      text.toLowerCase().includes(skill.toLowerCase())
-    ).slice(0, 5);
+    const commonSkills = [
+      'Unity',
+      'Unreal Engine',
+      'C#',
+      'JavaScript',
+      'Leadership',
+      'Communication',
+    ]
+    return commonSkills
+      .filter(skill => text.toLowerCase().includes(skill.toLowerCase()))
+      .slice(0, 5)
   }
 
   // Utility methods
@@ -551,65 +601,69 @@ Focus on gaming industry career advancement and optimization strategies.`
 
   generateSearchSuggestions(analysis) {
     const suggestions = []
-    
+
     if (analysis.searchAnalysis?.extractedRoles) {
       suggestions.push(...analysis.searchAnalysis.extractedRoles.slice(0, 3))
     }
-    
+
     if (analysis.enhancedSearchTerms?.primary) {
       suggestions.push(...analysis.enhancedSearchTerms.primary.slice(0, 2))
     }
-    
+
     return suggestions.filter(Boolean).slice(0, 8)
   }
 
   generateJobInsights(analysis) {
     const insights = []
-    
+
     if (analysis.marketInsights?.demandLevel === 'high') {
       insights.push({
         id: 'high_demand',
         icon: 'mdi-trending-up',
         title: 'High Market Demand',
         description: `${analysis.searchAnalysis?.extractedRoles?.[0] || 'These roles'} are seeing increased demand`,
-        action: { label: 'View Details', type: 'trend' }
+        action: { label: 'View Details', type: 'trend' },
       })
     }
-    
+
     if (analysis.marketInsights?.salaryBenchmark === 'below') {
       insights.push({
         id: 'salary_opt',
         icon: 'mdi-cash',
         title: 'Salary Optimization',
         description: 'Consider expanding range for more opportunities',
-        action: { label: 'Adjust Range', type: 'salary' }
+        action: { label: 'Adjust Range', type: 'salary' },
       })
     }
-    
+
     if (analysis.searchAnalysis?.workType === 'remote') {
       insights.push({
         id: 'remote_insight',
         icon: 'mdi-home',
         title: 'Remote Opportunities',
         description: 'Strong remote job market in gaming industry',
-        action: { label: 'Expand Search', type: 'location' }
+        action: { label: 'Expand Search', type: 'location' },
       })
     }
-    
+
     return insights.slice(0, 3)
   }
 
   generateMatchingRecommendations(matchResults) {
     const recommendations = []
-    
+
     if (matchResults.summary.highMatches > 0) {
-      recommendations.push('Focus on high-match positions for best success rate')
+      recommendations.push(
+        'Focus on high-match positions for best success rate'
+      )
     }
-    
+
     if (matchResults.summary.averageScore < 0.7) {
-      recommendations.push('Consider expanding search criteria or enhancing profile')
+      recommendations.push(
+        'Consider expanding search criteria or enhancing profile'
+      )
     }
-    
+
     return recommendations
   }
 
@@ -619,29 +673,37 @@ Focus on gaming industry career advancement and optimization strategies.`
   async enrichJobsWithStudioData(jobs, userProfile = {}) {
     try {
       logger.info('Enriching jobs with studio data for enhanced matching')
-      
+
       // Get all unique studio/company names from jobs
-      const companyNames = [...new Set(jobs.map(job => job.company).filter(Boolean))]
-      
+      const companyNames = [
+        ...new Set(jobs.map(job => job.company).filter(Boolean)),
+      ]
+
       // Fetch studio data for these companies
-      const studioPromises = companyNames.map(async (companyName) => {
+      const studioPromises = companyNames.map(async companyName => {
         try {
-          const studios = await this.studioService.searchStudios({ query: companyName })
-          return studios.length > 0 ? { company: companyName, studio: studios[0] } : null
+          const studios = await this.studioService.searchStudios({
+            query: companyName,
+          })
+          return studios.length > 0
+            ? { company: companyName, studio: studios[0] }
+            : null
         } catch (error) {
           logger.debug(`Could not fetch studio data for ${companyName}:`, error)
           return null
         }
       })
-      
+
       const studioData = (await Promise.all(studioPromises)).filter(Boolean)
-      const studioMap = new Map(studioData.map(item => [item.company, item.studio]))
-      
+      const studioMap = new Map(
+        studioData.map(item => [item.company, item.studio])
+      )
+
       // Enrich jobs with studio information
       const enrichedJobs = jobs.map(job => {
         const studioInfo = studioMap.get(job.company)
         if (!studioInfo) return job
-        
+
         return {
           ...job,
           studioData: {
@@ -653,19 +715,26 @@ Focus on gaming industry career advancement and optimization strategies.`
             benefits: studioInfo.benefits || [],
             culture: studioInfo.culture,
             gameGenres: studioInfo.gameGenres || [],
-            platforms: studioInfo.platforms || []
+            platforms: studioInfo.platforms || [],
           },
           enhancedMatching: {
-            studioCultureFit: this.calculateStudioCultureFit(userProfile, studioInfo),
-            technologyAlignment: this.calculateTechnologyAlignment(userProfile, studioInfo),
-            genreInterest: this.calculateGenreInterest(userProfile, studioInfo)
-          }
+            studioCultureFit: this.calculateStudioCultureFit(
+              userProfile,
+              studioInfo
+            ),
+            technologyAlignment: this.calculateTechnologyAlignment(
+              userProfile,
+              studioInfo
+            ),
+            genreInterest: this.calculateGenreInterest(userProfile, studioInfo),
+          },
         }
       })
-      
-      logger.info(`Enriched ${enrichedJobs.filter(j => j.studioData).length}/${jobs.length} jobs with studio data`)
+
+      logger.info(
+        `Enriched ${enrichedJobs.filter(j => j.studioData).length}/${jobs.length} jobs with studio data`
+      )
       return enrichedJobs
-      
     } catch (error) {
       logger.error('Failed to enrich jobs with studio data:', error)
       return jobs
@@ -677,21 +746,21 @@ Focus on gaming industry career advancement and optimization strategies.`
    */
   calculateStudioCultureFit(userProfile, studioInfo) {
     let score = 0.5 // base score
-    
+
     // Match work style preferences
     if (userProfile.workStyle && studioInfo.workEnvironment) {
       if (userProfile.workStyle === studioInfo.workEnvironment) {
         score += 0.3
       }
     }
-    
+
     // Match company size preference
     if (userProfile.companySize && studioInfo.size) {
       if (userProfile.companySize === studioInfo.size) {
         score += 0.2
       }
     }
-    
+
     return Math.min(1.0, score)
   }
 
@@ -701,16 +770,17 @@ Focus on gaming industry career advancement and optimization strategies.`
   calculateTechnologyAlignment(userProfile, studioInfo) {
     const userTech = userProfile.technologies || []
     const studioTech = studioInfo.technologies || []
-    
+
     if (userTech.length === 0 || studioTech.length === 0) return 0.5
-    
-    const matches = userTech.filter(tech => 
-      studioTech.some(sTech => 
-        sTech.toLowerCase().includes(tech.toLowerCase()) ||
-        tech.toLowerCase().includes(sTech.toLowerCase())
+
+    const matches = userTech.filter(tech =>
+      studioTech.some(
+        sTech =>
+          sTech.toLowerCase().includes(tech.toLowerCase()) ||
+          tech.toLowerCase().includes(sTech.toLowerCase())
       )
     ).length
-    
+
     return Math.min(1.0, matches / Math.max(userTech.length, studioTech.length))
   }
 
@@ -720,16 +790,17 @@ Focus on gaming industry career advancement and optimization strategies.`
   calculateGenreInterest(userProfile, studioInfo) {
     const userInterests = userProfile.gameGenres || userProfile.interests || []
     const studioGenres = studioInfo.gameGenres || []
-    
+
     if (userInterests.length === 0 || studioGenres.length === 0) return 0.5
-    
-    const matches = userInterests.filter(interest => 
-      studioGenres.some(genre => 
-        genre.toLowerCase().includes(interest.toLowerCase()) ||
-        interest.toLowerCase().includes(genre.toLowerCase())
+
+    const matches = userInterests.filter(interest =>
+      studioGenres.some(
+        genre =>
+          genre.toLowerCase().includes(interest.toLowerCase()) ||
+          interest.toLowerCase().includes(genre.toLowerCase())
       )
     ).length
-    
+
     return Math.min(1.0, matches / userInterests.length)
   }
 
@@ -740,15 +811,18 @@ Focus on gaming industry career advancement and optimization strategies.`
       searchAnalysis: {
         extractedRoles: this.extractBasicRoles(searchQuery),
         keySkills: this.extractBasicSkills(searchQuery),
-        experienceLevel: options.experience || 'mid'
+        experienceLevel: options.experience || 'mid',
       },
       enhancedSearchTerms: {
         primary: [searchQuery],
-        secondary: []
+        secondary: [],
       },
       recommendations: {
-        queryImprovements: ['Add specific skills', 'Include preferred location']
-      }
+        queryImprovements: [
+          'Add specific skills',
+          'Include preferred location',
+        ],
+      },
     }
   }
 
@@ -757,12 +831,12 @@ Focus on gaming industry career advancement and optimization strategies.`
       matches: jobListings.map((job, index) => ({
         jobId: job.id,
         overallScore: Math.max(0.5, Math.random() * 0.5),
-        matchReasons: ['Basic keyword match']
+        matchReasons: ['Basic keyword match'],
       })),
       summary: {
         totalMatches: jobListings.length,
-        averageScore: 0.65
-      }
+        averageScore: 0.65,
+      },
     }
   }
 
@@ -775,12 +849,12 @@ Focus on gaming industry career advancement and optimization strategies.`
           priority: 'medium',
           title: 'Expand Your Search',
           description: 'Consider related roles and companies',
-          action: { label: 'View Tips', type: 'expand' }
-        }
+          action: { label: 'View Tips', type: 'expand' },
+        },
       ],
       recommendations: {
-        immediate: ['Review and update your profile']
-      }
+        immediate: ['Review and update your profile'],
+      },
     }
   }
 
@@ -789,10 +863,13 @@ Focus on gaming industry career advancement and optimization strategies.`
       analysis: {
         competitiveness: 'at',
         marketPercentile: 50,
-        confidenceLevel: 0.6
+        confidenceLevel: 0.6,
       },
       insights: ['Salary appears competitive for the market'],
-      negotiationTips: ['Research industry standards', 'Highlight unique skills']
+      negotiationTips: [
+        'Research industry standards',
+        'Highlight unique skills',
+      ],
     }
   }
 
@@ -804,26 +881,40 @@ Focus on gaming industry career advancement and optimization strategies.`
           priority: 'high',
           title: 'Complete Your Profile',
           description: 'Add more details about your gaming experience',
-          action: 'Update profile sections'
-        }
+          action: 'Update profile sections',
+        },
       ],
       strengths: ['Gaming passion'],
-      improvements: ['Add specific examples']
+      improvements: ['Add specific examples'],
     }
   }
 
   extractBasicRoles(query) {
-    const roleKeywords = ['designer', 'developer', 'producer', 'artist', 'manager', 'coordinator']
-    return roleKeywords.filter(role => 
-      query.toLowerCase().includes(role)
-    ).slice(0, 3)
+    const roleKeywords = [
+      'designer',
+      'developer',
+      'producer',
+      'artist',
+      'manager',
+      'coordinator',
+    ]
+    return roleKeywords
+      .filter(role => query.toLowerCase().includes(role))
+      .slice(0, 3)
   }
 
   extractBasicSkills(query) {
-    const skillKeywords = ['unity', 'unreal', 'c#', 'javascript', 'leadership', 'teamwork']
-    return skillKeywords.filter(skill => 
-      query.toLowerCase().includes(skill)
-    ).slice(0, 5)
+    const skillKeywords = [
+      'unity',
+      'unreal',
+      'c#',
+      'javascript',
+      'leadership',
+      'teamwork',
+    ]
+    return skillKeywords
+      .filter(skill => query.toLowerCase().includes(skill))
+      .slice(0, 5)
   }
 }
 

@@ -10,149 +10,166 @@
  * - Enhanced cleanup and resource management
  */
 
-import { GoogleGenerativeAI, ChatSession } from '@google/generative-ai';
-import { logger } from '@/shared/utils/logger';
-import { MultimodalLiveClient } from './MultimodalLiveClient';
-import { AudioStreamingService } from './AudioStreamingService';
-import { RealTimeMultiTurnService } from './RealTimeMultiTurnService';
-import { MultimodalLiveService } from './MultimodalLiveService';
-import type { MultimodalClientConfig, StreamingLog, AudioProcessingConfig } from '@/shared/types/multimodal-live';
+import { GoogleGenerativeAI, ChatSession } from '@google/generative-ai'
+import { logger } from '@/shared/utils/logger'
+import { MultimodalLiveClient } from './MultimodalLiveClient'
+import { AudioStreamingService } from './AudioStreamingService'
+import { RealTimeMultiTurnService } from './RealTimeMultiTurnService'
+import { MultimodalLiveService } from './MultimodalLiveService'
+import type {
+  MultimodalClientConfig,
+  StreamingLog,
+  AudioProcessingConfig,
+} from '@/shared/types/multimodal-live'
 
 export interface AIClientConfig {
-  apiKey: string;
-  model: string;
-  temperature?: number;
-  maxTokens?: number;
-  generationConfig?: any;
-  safetySettings?: any;
-  systemInstructions?: string;
+  apiKey: string
+  model: string
+  temperature?: number
+  maxTokens?: number
+  generationConfig?: any
+  safetySettings?: any
+  systemInstructions?: string
   // Multimodal options
-  enableMultimodal?: boolean;
-  multimodalConfig?: Partial<MultimodalClientConfig>;
-  audioConfig?: Partial<AudioProcessingConfig>;
+  enableMultimodal?: boolean
+  multimodalConfig?: Partial<MultimodalClientConfig>
+  audioConfig?: Partial<AudioProcessingConfig>
 }
 
 export interface AIRequest {
-  prompt: string;
-  systemInstructions?: string;
+  prompt: string
+  systemInstructions?: string
   options?: {
-    temperature?: number;
-    maxTokens?: number;
-    stream?: boolean;
-    generationConfig?: any;
-    multimodal?: boolean;
-    audio?: boolean;
-  };
+    temperature?: number
+    maxTokens?: number
+    stream?: boolean
+    generationConfig?: any
+    multimodal?: boolean
+    audio?: boolean
+  }
 }
 
 export interface StreamingAIRequest extends AIRequest {
-  onChunk?: (_chunk: string) => void;
-  onComplete?: (_fullResponse: string) => void;
-  onError?: (_error: Error) => void;
-  onAudioData?: (_audioData: Float32Array) => void;
+  onChunk?: (_chunk: string) => void
+  onComplete?: (_fullResponse: string) => void
+  onError?: (_error: Error) => void
+  onAudioData?: (_audioData: Float32Array) => void
 }
 
 export interface AIResponse {
-  text: string;
-  usageMetadata?: any;
-  latencyMs?: number;
-  stream?: boolean;
-  audioData?: Float32Array[];
-  conversationId?: string;
+  text: string
+  usageMetadata?: any
+  latencyMs?: number
+  stream?: boolean
+  audioData?: Float32Array[]
+  conversationId?: string
 }
 
 export interface StreamingAIResponse extends AIResponse {
-  chunks: string[];
-  audioChunks?: Float32Array[];
-  logs?: StreamingLog[];
+  chunks: string[]
+  audioChunks?: Float32Array[]
+  logs?: StreamingLog[]
 }
 
 export class CanonicalAIClient {
-  private static instance: CanonicalAIClient;
-  private genAI: GoogleGenerativeAI | null = null;
-  private currentModel: string = 'gemini-2.5-flash';
-  private currentSession: ChatSession | null = null;
-  private initialized: boolean = false;
-  
+  private static instance: CanonicalAIClient
+  private genAI: GoogleGenerativeAI | null = null
+  private currentModel: string = 'gemini-2.5-flash'
+  private currentSession: ChatSession | null = null
+  private initialized: boolean = false
+
   // Multimodal capabilities
-  private multimodalClient: MultimodalLiveClient | null = null;
-  private audioService: AudioStreamingService | null = null;
-  private isMultimodalEnabled: boolean = false;
-  private currentConfig: AIClientConfig | null = null;
+  private multimodalClient: MultimodalLiveClient | null = null
+  private audioService: AudioStreamingService | null = null
+  private isMultimodalEnabled: boolean = false
+  private currentConfig: AIClientConfig | null = null
 
   private constructor() {}
 
   static getInstance(): CanonicalAIClient {
     if (!CanonicalAIClient.instance) {
-      CanonicalAIClient.instance = new CanonicalAIClient();
+      CanonicalAIClient.instance = new CanonicalAIClient()
     }
-    return CanonicalAIClient.instance;
+    return CanonicalAIClient.instance
   }
 
   /**
    * Initialize the AI client with comprehensive configuration
    */
-  async initialize(_config: AIClientConfig): Promise<boolean>;
-  async initialize(_apiKey: string, _model?: string): Promise<boolean>;
+  async initialize(_config: AIClientConfig): Promise<boolean>
+  async initialize(_apiKey: string, _model?: string): Promise<boolean>
   async initialize(
     configOrApiKey: AIClientConfig | string,
     model: string = 'gemini-2.5-flash'
   ): Promise<boolean> {
     try {
       // Support both (apiKey, model) and ({ apiKey, model, ... }) signatures
-      const apiKey = typeof configOrApiKey === 'string' ? configOrApiKey : configOrApiKey.apiKey;
-      const modelToUse = typeof configOrApiKey === 'string' ? model : (configOrApiKey.model || model);
+      const apiKey =
+        typeof configOrApiKey === 'string'
+          ? configOrApiKey
+          : configOrApiKey.apiKey
+      const modelToUse =
+        typeof configOrApiKey === 'string'
+          ? model
+          : configOrApiKey.model || model
 
-      this.genAI = new GoogleGenerativeAI(apiKey);
-      this.currentModel = modelToUse;
-      this.currentSession = null;
-      this.currentConfig = typeof configOrApiKey === 'string' ? { apiKey, model: modelToUse } : configOrApiKey;
+      this.genAI = new GoogleGenerativeAI(apiKey)
+      this.currentModel = modelToUse
+      this.currentSession = null
+      this.currentConfig =
+        typeof configOrApiKey === 'string'
+          ? { apiKey, model: modelToUse }
+          : configOrApiKey
 
       // Test the configuration by preparing a model
-      const testModel = this.genAI.getGenerativeModel({ model: modelToUse });
+      const testModel = this.genAI.getGenerativeModel({ model: modelToUse })
       if (!testModel) {
-        throw new Error(`Failed to initialize model: ${modelToUse}`);
+        throw new Error(`Failed to initialize model: ${modelToUse}`)
       }
 
-      this.initialized = true;
-      logger.info(`CanonicalAIClient initialized with model: ${modelToUse}`);
-      return true;
+      this.initialized = true
+      logger.info(`CanonicalAIClient initialized with model: ${modelToUse}`)
+      return true
     } catch (error: any) {
-      this.genAI = null;
-      this.initialized = false;
-      const readableError = this.parseError(error);
-      logger.error('Failed to initialize CanonicalAIClient:', readableError);
-      throw new Error(`AI initialization failed: ${readableError.message}`);
+      this.genAI = null
+      this.initialized = false
+      const readableError = this.parseError(error)
+      logger.error('Failed to initialize CanonicalAIClient:', readableError)
+      throw new Error(`AI initialization failed: ${readableError.message}`)
     }
   }
 
   /**
    * Generate text using configured model
    */
-  async generateText(_request: AIRequest): Promise<string>;
-  async generateText(_prompt: string, _systemInstructions?: string, _options?: any): Promise<string>;
+  async generateText(_request: AIRequest): Promise<string>
+  async generateText(
+    _prompt: string,
+    _systemInstructions?: string,
+    _options?: any
+  ): Promise<string>
   async generateText(
     requestOrPrompt: AIRequest | string,
     systemInstructions?: string,
     options?: any
   ): Promise<string> {
     if (!this.initialized || !this.genAI) {
-      throw new Error('AI client not initialized. Call initialize() first.');
+      throw new Error('AI client not initialized. Call initialize() first.')
     }
 
-    const startTime = Date.now();
+    const startTime = Date.now()
 
     try {
       // Handle overloaded parameters
-      let request: AIRequest;
+      let request: AIRequest
       if (typeof requestOrPrompt === 'string') {
         request = {
           prompt: requestOrPrompt,
           systemInstructions,
-          options
-        };
+          options,
+        }
       } else {
-        request = requestOrPrompt;
+        request = requestOrPrompt
       }
 
       const model = this.genAI.getGenerativeModel({
@@ -160,27 +177,30 @@ export class CanonicalAIClient {
         generationConfig: {
           temperature: request.options?.temperature ?? 0.7,
           maxOutputTokens: request.options?.maxTokens ?? 4000,
-          ...request.options?.generationConfig
-        }
-      });
+          ...request.options?.generationConfig,
+        },
+      })
 
-      let prompt = request.prompt;
+      let prompt = request.prompt
       if (request.systemInstructions) {
-        prompt = `${request.systemInstructions}\n\n${request.prompt}`;
+        prompt = `${request.systemInstructions}\n\n${request.prompt}`
       }
 
-      const result = await model.generateContent(prompt);
-      const response = result.response;
-      const text = response.text();
+      const result = await model.generateContent(prompt)
+      const response = result.response
+      const text = response.text()
 
-      const latencyMs = Date.now() - startTime;
-      logger.debug('Text generation completed', { latencyMs, model: this.currentModel });
+      const latencyMs = Date.now() - startTime
+      logger.debug('Text generation completed', {
+        latencyMs,
+        model: this.currentModel,
+      })
 
-      return text;
+      return text
     } catch (error: any) {
-      const readableError = this.parseError(error);
-      logger.error('Text generation failed:', readableError);
-      throw new Error(`AI generation failed: ${readableError.message}`);
+      const readableError = this.parseError(error)
+      logger.error('Text generation failed:', readableError)
+      throw new Error(`AI generation failed: ${readableError.message}`)
     }
   }
 
@@ -190,17 +210,17 @@ export class CanonicalAIClient {
   async streamText(
     request: StreamingAIRequest,
     callbacks?: {
-      onChunk?: (_chunk: string) => void;
-      onComplete?: (_response: string) => void;
-      onError?: (_error: Error) => void;
+      onChunk?: (_chunk: string) => void
+      onComplete?: (_response: string) => void
+      onError?: (_error: Error) => void
     }
   ): Promise<string> {
     if (!this.initialized || !this.genAI) {
-      throw new Error('AI client not initialized. Call initialize() first.');
+      throw new Error('AI client not initialized. Call initialize() first.')
     }
 
-    const startTime = Date.now();
-    let fullResponse = '';
+    const startTime = Date.now()
+    let fullResponse = ''
 
     try {
       const model = this.genAI.getGenerativeModel({
@@ -208,37 +228,41 @@ export class CanonicalAIClient {
         generationConfig: {
           temperature: request.options?.temperature ?? 0.7,
           maxOutputTokens: request.options?.maxTokens ?? 4000,
-          ...request.options?.generationConfig
-        }
-      });
+          ...request.options?.generationConfig,
+        },
+      })
 
-      let prompt = request.prompt;
+      let prompt = request.prompt
       if (request.systemInstructions) {
-        prompt = `${request.systemInstructions}\n\n${request.prompt}`;
+        prompt = `${request.systemInstructions}\n\n${request.prompt}`
       }
 
-      const result = await model.generateContentStream(prompt);
+      const result = await model.generateContentStream(prompt)
 
       for await (const chunk of result.stream) {
-        const chunkText = chunk.text();
-        fullResponse += chunkText;
-        callbacks?.onChunk?.(chunkText);
-        request.onChunk?.(chunkText);
+        const chunkText = chunk.text()
+        fullResponse += chunkText
+        callbacks?.onChunk?.(chunkText)
+        request.onChunk?.(chunkText)
       }
 
-      const latencyMs = Date.now() - startTime;
-      logger.debug('Streaming completed', { latencyMs, chunks: fullResponse.split('').length, model: this.currentModel });
+      const latencyMs = Date.now() - startTime
+      logger.debug('Streaming completed', {
+        latencyMs,
+        chunks: fullResponse.split('').length,
+        model: this.currentModel,
+      })
 
-      callbacks?.onComplete?.(fullResponse);
-      request.onComplete?.(fullResponse);
+      callbacks?.onComplete?.(fullResponse)
+      request.onComplete?.(fullResponse)
 
-      return fullResponse;
+      return fullResponse
     } catch (error: any) {
-      const readableError = this.parseError(error);
-      logger.error('Streaming failed:', readableError);
-      callbacks?.onError?.(readableError);
-      request.onError?.(readableError);
-      throw readableError;
+      const readableError = this.parseError(error)
+      logger.error('Streaming failed:', readableError)
+      callbacks?.onError?.(readableError)
+      request.onError?.(readableError)
+      throw readableError
     }
   }
 
@@ -250,25 +274,25 @@ export class CanonicalAIClient {
     history: any[] = []
   ): Promise<ChatSession> {
     if (!this.initialized || !this.genAI) {
-      throw new Error('AI client not initialized. Call initialize() first.');
+      throw new Error('AI client not initialized. Call initialize() first.')
     }
 
     try {
       const model = this.genAI.getGenerativeModel({
         model: this.currentModel,
-        systemInstruction: systemInstructions
-      });
+        systemInstruction: systemInstructions,
+      })
 
       this.currentSession = model.startChat({
-        history: history
-      });
+        history: history,
+      })
 
-      logger.info('Chat session started');
-      return this.currentSession;
+      logger.info('Chat session started')
+      return this.currentSession
     } catch (error: any) {
-      const readableError = this.parseError(error);
-      logger.error('Failed to start chat session:', readableError);
-      throw readableError;
+      const readableError = this.parseError(error)
+      logger.error('Failed to start chat session:', readableError)
+      throw readableError
     }
   }
 
@@ -277,18 +301,18 @@ export class CanonicalAIClient {
    */
   async sendMessageInChat(message: string): Promise<string> {
     if (!this.currentSession) {
-      throw new Error('No active chat session. Call startChat() first.');
+      throw new Error('No active chat session. Call startChat() first.')
     }
 
     try {
-      const result = await this.currentSession.sendMessage(message);
-      const response = result.response.text();
-      logger.debug('Chat message sent and responded');
-      return response;
+      const result = await this.currentSession.sendMessage(message)
+      const response = result.response.text()
+      logger.debug('Chat message sent and responded')
+      return response
     } catch (error: any) {
-      const readableError = this.parseError(error);
-      logger.error('Chat message failed:', readableError);
-      throw readableError;
+      const readableError = this.parseError(error)
+      logger.error('Chat message failed:', readableError)
+      throw readableError
     }
   }
 
@@ -301,8 +325,8 @@ export class CanonicalAIClient {
     context: Record<string, any> = {},
     options?: any
   ): Promise<string> {
-    const systemPrompt = this.buildSmartPrompt(contentType, context);
-    return this.generateText(userInput, systemPrompt, options);
+    const systemPrompt = this.buildSmartPrompt(contentType, context)
+    return this.generateText(userInput, systemPrompt, options)
   }
 
   /**
@@ -319,15 +343,18 @@ export class CanonicalAIClient {
 Current Data: ${JSON.stringify(currentData, null, 2)}
 User Profile: ${JSON.stringify(userProfile, null, 2)}
 
-Return suggestions as a JSON array of strings, each suggestion being specific and actionable.`;
+Return suggestions as a JSON array of strings, each suggestion being specific and actionable.`
 
-    const response = await this.generateText(prompt, '', options);
+    const response = await this.generateText(prompt, '', options)
 
     try {
-      return JSON.parse(_response);
+      return JSON.parse(_response)
     } catch {
       // Fallback: parse as text and split by lines
-      return response.split('\n').filter(line => line.trim()).slice(0, 5);
+      return response
+        .split('\n')
+        .filter(line => line.trim())
+        .slice(0, 5)
     }
   }
 
@@ -335,39 +362,39 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
    * Transcribe audio using Gemini's multimodal capabilities
    */
   async transcribeAudio(options: {
-    base64: string;
-    mimeType: string;
-    language?: string;
+    base64: string
+    mimeType: string
+    language?: string
   }): Promise<{ text: string; confidence?: number }> {
     if (!this.initialized || !this.genAI) {
-      throw new Error('AI client not initialized. Call initialize() first.');
+      throw new Error('AI client not initialized. Call initialize() first.')
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
-      const prompt = `Please transcribe this audio. ${options.language ? `Language: ${options.language}` : ''}`;
+      const prompt = `Please transcribe this audio. ${options.language ? `Language: ${options.language}` : ''}`
 
       const result = await model.generateContent([
         prompt,
         {
           inlineData: {
             mimeType: options.mimeType,
-            data: options.base64
-          }
-        }
-      ]);
+            data: options.base64,
+          },
+        },
+      ])
 
-      const transcript = result.response.text();
+      const transcript = result.response.text()
 
       return {
         text: transcript,
-        confidence: 0.95 // Gemini doesn't provide confidence scores
-      };
+        confidence: 0.95, // Gemini doesn't provide confidence scores
+      }
     } catch (error: any) {
-      const readableError = this.parseError(error);
-      logger.error('Audio transcription failed:', readableError);
-      throw readableError;
+      const readableError = this.parseError(error)
+      logger.error('Audio transcription failed:', readableError)
+      throw readableError
     }
   }
 
@@ -375,34 +402,34 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
    * Analyze image using multimodal capabilities
    */
   async analyzeImage(options: {
-    base64: string;
-    mimeType: string;
-    prompt?: string;
+    base64: string
+    mimeType: string
+    prompt?: string
   }): Promise<string> {
     if (!this.initialized || !this.genAI) {
-      throw new Error('AI client not initialized. Call initialize() first.');
+      throw new Error('AI client not initialized. Call initialize() first.')
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
-      const prompt = options.prompt || 'Describe this image in detail.';
+      const prompt = options.prompt || 'Describe this image in detail.'
 
       const result = await model.generateContent([
         prompt,
         {
           inlineData: {
             mimeType: options.mimeType,
-            data: options.base64
-          }
-        }
-      ]);
+            data: options.base64,
+          },
+        },
+      ])
 
-      return result.response.text();
+      return result.response.text()
     } catch (error: any) {
-      const readableError = this.parseError(error);
-      logger.error('Image analysis failed:', readableError);
-      throw readableError;
+      const readableError = this.parseError(error)
+      logger.error('Image analysis failed:', readableError)
+      throw readableError
     }
   }
 
@@ -410,7 +437,7 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
    * Get current model
    */
   getCurrentModel(): string {
-    return this.currentModel;
+    return this.currentModel
   }
 
   /**
@@ -418,35 +445,42 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
    */
   setModel(model: string): void {
     if (!this.genAI) {
-      throw new Error('AI client not initialized. Call initialize() first.');
+      throw new Error('AI client not initialized. Call initialize() first.')
     }
 
     // Validate model exists
-    const validModels = ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+    const validModels = [
+      'gemini-2.5-flash',
+      'gemini-2.5-pro',
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+    ]
     if (!validModels.includes(model)) {
-      throw new Error(`Invalid model: ${model}. Valid models: ${validModels.join(', ')}`);
+      throw new Error(
+        `Invalid model: ${model}. Valid models: ${validModels.join(', ')}`
+      )
     }
 
-    this.currentModel = model;
-    this.currentSession = null; // Reset session when changing model
-    logger.info(`Model changed to: ${model}`);
+    this.currentModel = model
+    this.currentSession = null // Reset session when changing model
+    logger.info(`Model changed to: ${model}`)
   }
 
   /**
    * Check if client is initialized and ready
    */
   isReady(): boolean {
-    return this.initialized && !!this.genAI;
+    return this.initialized && !!this.genAI
   }
 
   /**
    * Clean up resources
    */
   cleanup(): void {
-    this.currentSession = null;
-    this.genAI = null;
-    this.initialized = false;
-    logger.info('CanonicalAIClient cleaned up');
+    this.currentSession = null
+    this.genAI = null
+    this.initialized = false
+    logger.info('CanonicalAIClient cleaned up')
   }
 
   /**
@@ -458,43 +492,45 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
   /**
    * Initialize with real-time capabilities using enhanced services
    */
-  async initializeWithRealTime(config: AIClientConfig & {
-    enableRealTime?: boolean;
-    realTimeConfig?: any;
-  }): Promise<boolean> {
+  async initializeWithRealTime(
+    config: AIClientConfig & {
+      enableRealTime?: boolean
+      realTimeConfig?: any
+    }
+  ): Promise<boolean> {
     // Initialize core client
-    const success = await this.initialize(config);
-    
+    const success = await this.initialize(config)
+
     if (!success || !config.enableRealTime) {
-      return success;
+      return success
     }
 
     try {
       // Initialize real-time multi-turn service if enabled
-      const realTimeService = RealTimeMultiTurnService.getInstance();
+      const realTimeService = RealTimeMultiTurnService.getInstance()
       await realTimeService.initialize(config.apiKey, {
         model: this.currentModel,
         enableAudioInput: true,
         enableAudioOutput: true,
         enableVideo: false,
         systemPrompt: config.systemInstructions,
-        ...config.realTimeConfig
-      });
+        ...config.realTimeConfig,
+      })
 
       // Initialize multimodal live service for advanced real-time features
-      const multimodalService = MultimodalLiveService.getInstance();
+      const multimodalService = MultimodalLiveService.getInstance()
       await multimodalService.initialize({
-        apiKey: config.apiKey
-      });
+        apiKey: config.apiKey,
+      })
 
-      this.isMultimodalEnabled = true;
-      logger.info('Real-time capabilities initialized successfully');
-      
-      return true;
+      this.isMultimodalEnabled = true
+      logger.info('Real-time capabilities initialized successfully')
+
+      return true
     } catch (error) {
-      logger.error('Failed to initialize real-time capabilities:', error);
+      logger.error('Failed to initialize real-time capabilities:', error)
       // Continue with basic functionality even if real-time fails
-      return success;
+      return success
     }
   }
 
@@ -504,159 +540,185 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
   async generateEnhancedResponse(
     prompt: string,
     options: {
-      type?: 'resume' | 'cover_letter' | 'job_analysis' | 'interview_prep' | 'portfolio' | 'general';
-      context?: Record<string, any>;
-      useSmartPrompting?: boolean;
-      maxRetries?: number;
-      fallbackModel?: string;
+      type?:
+        | 'resume'
+        | 'cover_letter'
+        | 'job_analysis'
+        | 'interview_prep'
+        | 'portfolio'
+        | 'general'
+      context?: Record<string, any>
+      useSmartPrompting?: boolean
+      maxRetries?: number
+      fallbackModel?: string
     } = {}
   ): Promise<AIResponse> {
-    const startTime = Date.now();
-    const retries = options.maxRetries || 2;
-    let lastError: Error | null = null;
+    const startTime = Date.now()
+    const retries = options.maxRetries || 2
+    let lastError: Error | null = null
 
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        let enhancedPrompt = prompt;
-        
+        let enhancedPrompt = prompt
+
         if (options.useSmartPrompting && options.type) {
-          const systemPrompt = this.buildSmartPrompt(options.type, options.context || {});
-          enhancedPrompt = `${systemPrompt}\n\n${prompt}`;
+          const systemPrompt = this.buildSmartPrompt(
+            options.type,
+            options.context || {}
+          )
+          enhancedPrompt = `${systemPrompt}\n\n${prompt}`
         }
 
-        const model = attempt > 0 && options.fallbackModel 
-          ? options.fallbackModel 
-          : this.currentModel;
+        const model =
+          attempt > 0 && options.fallbackModel
+            ? options.fallbackModel
+            : this.currentModel
 
         // Temporarily switch model for fallback
-        const originalModel = this.currentModel;
+        const originalModel = this.currentModel
         if (model !== originalModel) {
-          this.currentModel = model;
+          this.currentModel = model
         }
 
         const response = await this.generateText({
           prompt: enhancedPrompt,
           options: {
             temperature: 0.7,
-            maxTokens: 4000
-          }
-        });
+            maxTokens: 4000,
+          },
+        })
 
         // Restore original model
         if (model !== originalModel) {
-          this.currentModel = originalModel;
+          this.currentModel = originalModel
         }
 
         return {
           text: response,
           latencyMs: Date.now() - startTime,
           stream: false,
-          conversationId: this.currentSession ? `chat-${Date.now()}` : undefined
-        };
-
+          conversationId: this.currentSession
+            ? `chat-${Date.now()}`
+            : undefined,
+        }
       } catch (error) {
-        lastError = error as Error;
-        logger.warn(`Enhanced generation attempt ${attempt + 1} failed:`, error);
-        
+        lastError = error as Error
+        logger.warn(`Enhanced generation attempt ${attempt + 1} failed:`, error)
+
         if (attempt < retries) {
           // Wait before retry with exponential backoff
-          await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+          await new Promise(resolve =>
+            setTimeout(resolve, Math.pow(2, attempt) * 1000)
+          )
         }
       }
     }
 
-    throw lastError || new Error('Enhanced generation failed after all retries');
+    throw lastError || new Error('Enhanced generation failed after all retries')
   }
 
   /**
    * Process multimodal input with real-time capabilities
    */
-  async processMultimodal(input: {
-    text?: string;
-    image?: string; // base64
-    audio?: ArrayBuffer;
-    video?: MediaStream;
-  }, options: {
-    onProgress?: (stage: string, progress: number) => void;
-    enableRealTimeResponse?: boolean;
-    context?: string;
-  } = {}): Promise<AIResponse & {
-    processedInputs: string[];
-    capabilities: string[];
-  }> {
+  async processMultimodal(
+    input: {
+      text?: string
+      image?: string // base64
+      audio?: ArrayBuffer
+      video?: MediaStream
+    },
+    options: {
+      onProgress?: (stage: string, progress: number) => void
+      enableRealTimeResponse?: boolean
+      context?: string
+    } = {}
+  ): Promise<
+    AIResponse & {
+      processedInputs: string[]
+      capabilities: string[]
+    }
+  > {
     if (!this.initialized) {
-      throw new Error('AI client not initialized');
+      throw new Error('AI client not initialized')
     }
 
-    const results: string[] = [];
-    const processedInputs: string[] = [];
-    const capabilities: string[] = ['text'];
+    const results: string[] = []
+    const processedInputs: string[] = []
+    const capabilities: string[] = ['text']
 
     try {
-      options.onProgress?.('Processing inputs', 10);
+      options.onProgress?.('Processing inputs', 10)
 
       // Process text input
       if (input.text) {
-        processedInputs.push('text');
-        results.push(`Text: ${input.text}`);
+        processedInputs.push('text')
+        results.push(`Text: ${input.text}`)
       }
 
       // Process image input
       if (input.image) {
-        options.onProgress?.('Analyzing image', 30);
-        const imageResponse = await this.analyzeImage(input.image, input.text || 'Analyze this image');
-        results.push(`Image Analysis: ${imageResponse}`);
-        processedInputs.push('image');
-        capabilities.push('vision');
+        options.onProgress?.('Analyzing image', 30)
+        const imageResponse = await this.analyzeImage(
+          input.image,
+          input.text || 'Analyze this image'
+        )
+        results.push(`Image Analysis: ${imageResponse}`)
+        processedInputs.push('image')
+        capabilities.push('vision')
       }
 
       // Process audio input using real-time service
       if (input.audio && this.isMultimodalEnabled) {
-        options.onProgress?.('Processing audio', 50);
+        options.onProgress?.('Processing audio', 50)
         try {
-          const realTimeService = RealTimeMultiTurnService.getInstance();
-          await realTimeService.sendAudioData(input.audio);
-          processedInputs.push('audio');
-          capabilities.push('audio');
+          const realTimeService = RealTimeMultiTurnService.getInstance()
+          await realTimeService.sendAudioData(input.audio)
+          processedInputs.push('audio')
+          capabilities.push('audio')
         } catch (error) {
-          logger.warn('Audio processing failed, continuing without audio:', error);
+          logger.warn(
+            'Audio processing failed, continuing without audio:',
+            error
+          )
         }
       }
 
       // Process video stream using multimodal service
       if (input.video && this.isMultimodalEnabled) {
-        options.onProgress?.('Processing video', 70);
+        options.onProgress?.('Processing video', 70)
         try {
-          const multimodalService = MultimodalLiveService.getInstance();
+          const multimodalService = MultimodalLiveService.getInstance()
           // This would need additional implementation for video frame capture
-          processedInputs.push('video');
-          capabilities.push('video');
+          processedInputs.push('video')
+          capabilities.push('video')
         } catch (error) {
-          logger.warn('Video processing failed, continuing without video:', error);
+          logger.warn(
+            'Video processing failed, continuing without video:',
+            error
+          )
         }
       }
 
-      options.onProgress?.('Generating response', 90);
+      options.onProgress?.('Generating response', 90)
 
       // Generate final response with all processed inputs
-      const combinedInput = results.join('\n\n');
+      const combinedInput = results.join('\n\n')
       const finalResponse = await this.generateEnhancedResponse(combinedInput, {
         type: 'general',
         context: { multimodal: true, inputs: processedInputs },
-        useSmartPrompting: true
-      });
+        useSmartPrompting: true,
+      })
 
-      options.onProgress?.('Complete', 100);
+      options.onProgress?.('Complete', 100)
 
       return {
         ...finalResponse,
         processedInputs,
-        capabilities
-      };
-
+        capabilities,
+      }
     } catch (error) {
-      logger.error('Multimodal processing failed:', error);
-      throw error;
+      logger.error('Multimodal processing failed:', error)
+      throw error
     }
   }
 
@@ -666,52 +728,51 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
   async startEnhancedStreaming(
     prompt: string,
     callbacks: {
-      onChunk?: (chunk: string) => void;
-      onComplete?: (response: string) => void;
-      onError?: (error: Error) => void;
-      onAudioResponse?: (audioData: ArrayBuffer) => void;
-      onTranscription?: (text: string, isFinal: boolean) => void;
+      onChunk?: (chunk: string) => void
+      onComplete?: (response: string) => void
+      onError?: (error: Error) => void
+      onAudioResponse?: (audioData: ArrayBuffer) => void
+      onTranscription?: (text: string, isFinal: boolean) => void
     }
   ): Promise<string> {
     if (!this.initialized) {
-      throw new Error('AI client not initialized');
+      throw new Error('AI client not initialized')
     }
 
     try {
       // If real-time is enabled, use enhanced streaming
       if (this.isMultimodalEnabled) {
-        const realTimeService = RealTimeMultiTurnService.getInstance();
-        
+        const realTimeService = RealTimeMultiTurnService.getInstance()
+
         // Set up real-time callbacks
         const session = await realTimeService.startSession('multimodal', {
-          onMessage: (message) => {
+          onMessage: message => {
             if (message.role === 'assistant') {
-              callbacks.onChunk?.(message.content);
+              callbacks.onChunk?.(message.content)
             }
           },
           onTranscription: callbacks.onTranscription,
           onAudioResponse: callbacks.onAudioResponse,
-          onError: callbacks.onError
-        });
+          onError: callbacks.onError,
+        })
 
         // Send the message through real-time service
-        await realTimeService.sendMessage(prompt);
-        
-        return session.id;
+        await realTimeService.sendMessage(prompt)
+
+        return session.id
       } else {
         // Fallback to regular streaming
         return await this.streamText({
           prompt,
           onChunk: callbacks.onChunk,
           onComplete: callbacks.onComplete,
-          onError: callbacks.onError
-        });
+          onError: callbacks.onError,
+        })
       }
-
     } catch (error) {
-      logger.error('Enhanced streaming failed:', error);
-      callbacks.onError?.(error as Error);
-      throw error;
+      logger.error('Enhanced streaming failed:', error)
+      callbacks.onError?.(error as Error)
+      throw error
     }
   }
 
@@ -719,28 +780,28 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
    * Get enhanced status including real-time capabilities
    */
   getEnhancedStatus(): {
-    initialized: boolean;
-    model: string;
-    hasSession: boolean;
-    realTimeEnabled: boolean;
-    multimodalEnabled: boolean;
-    capabilities: string[];
-    lastActivity?: Date;
+    initialized: boolean
+    model: string
+    hasSession: boolean
+    realTimeEnabled: boolean
+    multimodalEnabled: boolean
+    capabilities: string[]
+    lastActivity?: Date
   } {
-    const capabilities = ['text'];
-    
+    const capabilities = ['text']
+
     if (this.isMultimodalEnabled) {
-      capabilities.push('multimodal', 'real-time');
-      
-      const realTimeService = RealTimeMultiTurnService.getInstance();
+      capabilities.push('multimodal', 'real-time')
+
+      const realTimeService = RealTimeMultiTurnService.getInstance()
       if (realTimeService.isReady()) {
-        capabilities.push('audio', 'streaming');
+        capabilities.push('audio', 'streaming')
       }
 
-      const multimodalService = MultimodalLiveService.getInstance();
-      const status = multimodalService.getStatus();
+      const multimodalService = MultimodalLiveService.getInstance()
+      const status = multimodalService.getStatus()
       if (status.isConnected) {
-        capabilities.push('live-connection');
+        capabilities.push('live-connection')
       }
     }
 
@@ -751,8 +812,8 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
       realTimeEnabled: this.isMultimodalEnabled,
       multimodalEnabled: this.isMultimodalEnabled,
       capabilities,
-      lastActivity: new Date()
-    };
+      lastActivity: new Date(),
+    }
   }
 
   /**
@@ -762,24 +823,24 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
     try {
       // Cleanup real-time services
       if (this.isMultimodalEnabled) {
-        const realTimeService = RealTimeMultiTurnService.getInstance();
-        await realTimeService.cleanup();
+        const realTimeService = RealTimeMultiTurnService.getInstance()
+        await realTimeService.cleanup()
 
-        const multimodalService = MultimodalLiveService.getInstance();
-        await multimodalService.cleanup();
+        const multimodalService = MultimodalLiveService.getInstance()
+        await multimodalService.cleanup()
       }
 
       // Cleanup core client
-      this.cleanup();
-      
-      this.isMultimodalEnabled = false;
-      this.currentConfig = null;
-      
-      logger.info('Enhanced cleanup completed');
+      this.cleanup()
+
+      this.isMultimodalEnabled = false
+      this.currentConfig = null
+
+      logger.info('Enhanced cleanup completed')
     } catch (error) {
-      logger.error('Enhanced cleanup error:', error);
+      logger.error('Enhanced cleanup error:', error)
       // Continue with basic cleanup even if enhanced cleanup fails
-      this.cleanup();
+      this.cleanup()
     }
   }
 
@@ -788,49 +849,60 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
    */
   private parseError(error: any): Error {
     if (error instanceof Error) {
-      return error;
+      return error
     }
 
     if (typeof error === 'string') {
-      return new Error(error);
+      return new Error(error)
     }
 
     // Handle Google AI API specific errors
     if (error?.response?.data?.error) {
-      const apiError = error.response.data.error;
-      return new Error(`Google AI API Error: ${apiError.message || apiError.code || 'Unknown error'}`);
+      const apiError = error.response.data.error
+      return new Error(
+        `Google AI API Error: ${apiError.message || apiError.code || 'Unknown error'}`
+      )
     }
 
     if (error?.statusText) {
-      return new Error(`HTTP Error: ${error.status} ${error.statusText}`);
+      return new Error(`HTTP Error: ${error.status} ${error.statusText}`)
     }
 
-    return new Error('Unknown AI error occurred');
+    return new Error('Unknown AI error occurred')
   }
 
   /**
    * Build smart prompts based on content type and context
    */
-  private buildSmartPrompt(contentType: string, context: Record<string, any>): string {
+  private buildSmartPrompt(
+    contentType: string,
+    context: Record<string, any>
+  ): string {
     const basePrompts: Record<string, string> = {
-      resume: 'You are an expert resume writer specializing in game development careers. Create professional, ATS-friendly content.',
-      cover_letter: 'You are a professional cover letter writer with expertise in game industry applications. Write compelling, personalized content.',
-      job_analysis: 'You are a career advisor specializing in game development roles. Provide insightful analysis and actionable advice.',
-      interview_prep: 'You are an interview coach for game development positions. Provide practical, role-specific preparation advice.',
-      portfolio: 'You are a portfolio consultant for game developers. Help create compelling project descriptions and presentations.',
-      general: 'You are a helpful AI assistant specializing in game development career guidance.'
-    };
+      resume:
+        'You are an expert resume writer specializing in game development careers. Create professional, ATS-friendly content.',
+      cover_letter:
+        'You are a professional cover letter writer with expertise in game industry applications. Write compelling, personalized content.',
+      job_analysis:
+        'You are a career advisor specializing in game development roles. Provide insightful analysis and actionable advice.',
+      interview_prep:
+        'You are an interview coach for game development positions. Provide practical, role-specific preparation advice.',
+      portfolio:
+        'You are a portfolio consultant for game developers. Help create compelling project descriptions and presentations.',
+      general:
+        'You are a helpful AI assistant specializing in game development career guidance.',
+    }
 
-    const basePrompt = basePrompts[contentType] || basePrompts.general;
+    const basePrompt = basePrompts[contentType] || basePrompts.general
 
     if (Object.keys(context).length > 0) {
       const contextStr = Object.entries(context)
         .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
-        .join('\n');
-      return `${basePrompt}\n\nContext:\n${contextStr}`;
+        .join('\n')
+      return `${basePrompt}\n\nContext:\n${contextStr}`
     }
 
-    return basePrompt;
+    return basePrompt
   }
 
   /**
@@ -841,43 +913,53 @@ Return suggestions as a JSON array of strings, each suggestion being specific an
       'gemini-2.5-flash',
       'gemini-2.5-pro',
       'gemini-1.5-flash',
-      'gemini-1.5-pro'
-    ];
+      'gemini-1.5-pro',
+    ]
   }
 }
 
 // Export singleton instance
-export const canonicalAIClient = CanonicalAIClient.getInstance();
+export const canonicalAIClient = CanonicalAIClient.getInstance()
 
 // Convenience functions for backward compatibility
 export async function getAIClient(): Promise<CanonicalAIClient> {
-  return canonicalAIClient;
+  return canonicalAIClient
 }
 
-export async function ensureApiKey(apiKey: string): Promise<{ success: boolean; error?: string }> {
+export async function ensureApiKey(
+  apiKey: string
+): Promise<{ success: boolean; error?: string }> {
   try {
-    await canonicalAIClient.initialize(apiKey);
-    return { success: true };
+    await canonicalAIClient.initialize(apiKey)
+    return { success: true }
   } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
   }
 }
 
 export async function resetAIService(): Promise<void> {
-  canonicalAIClient.cleanup();
+  canonicalAIClient.cleanup()
 }
 
-export async function reinitializeIfModelChanged(newModel: string): Promise<boolean> {
-  if (canonicalAIClient.getCurrentModel() !== newModel && canonicalAIClient.isReady()) {
-    canonicalAIClient.setModel(newModel);
-    return true;
+export async function reinitializeIfModelChanged(
+  newModel: string
+): Promise<boolean> {
+  if (
+    canonicalAIClient.getCurrentModel() !== newModel &&
+    canonicalAIClient.isReady()
+  ) {
+    canonicalAIClient.setModel(newModel)
+    return true
   }
-  return canonicalAIClient.isReady();
+  return canonicalAIClient.isReady()
 }
 
 export async function getStreamClient(): Promise<CanonicalAIClient> {
-  return canonicalAIClient;
+  return canonicalAIClient
 }
 
 // Default export
-export default canonicalAIClient;
+export default canonicalAIClient

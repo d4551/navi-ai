@@ -5,49 +5,58 @@
     title-icon="mdi-folder-multiple-image"
     page-type="gaming"
     :hero-stats="headerStats"
-    :header-context="{ projects: projectsCount, clips: clipsCount, achievements: achievementsCount }"
+    :header-context="{
+      projects: projectsCount,
+      clips: clipsCount,
+      achievements: achievementsCount,
+    }"
     max-width="xl"
     :data-theme="themeName"
   >
     <template #header-actions>
-      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="primary">
-        <UnifiedButton 
-          variant="gaming" 
-          size="md" 
-          leading-icon="mdi-plus" 
+      <HeaderActions
+        layout="horizontal"
+        alignment="end"
+        gap="md"
+        priority="primary"
+      >
+        <UnifiedButton
+          variant="gaming"
+          size="md"
+          leading-icon="mdi-plus"
           @click="addProject"
         >
           Add Project
         </UnifiedButton>
-        <UnifiedButton 
-          variant="glass" 
-          size="md" 
-          leading-icon="mdi-github" 
+        <UnifiedButton
+          variant="glass"
+          size="md"
+          leading-icon="mdi-github"
           @click="importGithub"
         >
           Import from GitHub
         </UnifiedButton>
-        <UnifiedButton 
-          variant="outline" 
-          size="md" 
-          leading-icon="mdi-robot" 
+        <UnifiedButton
+          variant="outline"
+          size="md"
+          leading-icon="mdi-robot"
           @click="generateShowcase"
         >
           AI Showcase
         </UnifiedButton>
-        <UnifiedButton 
-          variant="ghost" 
-          size="md" 
-          icon-only 
-          icon="mdi-share-variant" 
+        <UnifiedButton
+          variant="ghost"
+          size="md"
+          icon-only
+          icon="mdi-share-variant"
           aria-label="Share portfolio"
           @click="sharePortfolio"
         />
-        <UnifiedButton 
-          variant="ghost" 
-          size="md" 
-          icon-only 
-          icon="mdi-cog" 
+        <UnifiedButton
+          variant="ghost"
+          size="md"
+          icon-only
+          icon="mdi-cog"
           aria-label="Portfolio settings"
           @click="openSettings"
         />
@@ -59,7 +68,7 @@
     <div class="enhanced-navigation-section unified-container">
       <div class="navigation-header">
         <div class="breadcrumb-section">
-          <NavigationBreadcrumbs 
+          <NavigationBreadcrumbs
             :compact="false"
             :show-actions="true"
             home-icon="mdi-gamepad-variant"
@@ -78,7 +87,7 @@
             </div>
           </div>
         </div>
-          
+
         <!-- Quick Navigation Actions -->
         <div class="quick-nav-actions">
           <UnifiedButton
@@ -110,7 +119,7 @@
           aria-label="Portfolio sections"
           :grid-layout="true"
         />
-          
+
         <!-- Tab Content Summary -->
         <div class="tab-summary">
           <div class="summary-item">
@@ -138,16 +147,26 @@
     </div>
 
     <!-- Improved Layout Structure -->
-    <section class="portfolio-layout unified-container" :class="{ 'filters-open': filtersOpen }">
+    <section
+      class="portfolio-layout unified-container"
+      :class="{ 'filters-open': filtersOpen }"
+    >
       <!-- Enhanced Filter Sidebar -->
-      <aside id="portfolio-filters" class="enhanced-filter-sidebar glass p-4 gap-4 rounded-lg" role="region" aria-label="Portfolio Filters">
+      <aside
+        id="portfolio-filters"
+        class="enhanced-filter-sidebar glass p-4 gap-4 rounded-lg"
+        role="region"
+        aria-label="Portfolio Filters"
+      >
         <div class="sidebar-header">
           <h3 class="sidebar-main-title">
             <AppIcon name="mdi-tune" />
             Portfolio Filters
           </h3>
           <div class="filter-summary">
-            <span v-if="hasActiveFilters" class="active-count">{{ activeFiltersCount }} active</span>
+            <span v-if="hasActiveFilters" class="active-count"
+              >{{ activeFiltersCount }} active</span
+            >
             <UnifiedButton
               v-if="hasActiveFilters"
               variant="ghost"
@@ -165,16 +184,18 @@
           <div class="sidebar-title">
             <AppIcon name="mdi-magnify" />
             <span>Search Projects</span>
-            <span v-if="query" class="search-count">({{ searchResultsCount }})</span>
+            <span v-if="query" class="search-count"
+              >({{ searchResultsCount }})</span
+            >
           </div>
           <div class="enhanced-search-wrapper">
             <div class="search-section">
               <div class="search-input-container">
                 <AppIcon name="mdi-magnify" class="search-icon" />
-                <input 
-                  v-model="query" 
+                <input
+                  v-model="query"
                   type="search"
-                  class="enhanced-search-input glass-input" 
+                  class="enhanced-search-input glass-input"
                   placeholder="Search projects, skills, tags..."
                   :aria-describedby="query ? 'search-results' : undefined"
                   @keydown.escape="query = ''"
@@ -195,7 +216,7 @@
 
               <!-- Quick Filter Tabs -->
               <div class="quick-filter-tabs">
-                <button 
+                <button
                   class="filter-tab"
                   :class="{ active: !activeQuickFilter }"
                   @click="activeQuickFilter = null"
@@ -204,7 +225,7 @@
                   <span>All</span>
                   <span class="tab-count">{{ projects.length }}</span>
                 </button>
-                <button 
+                <button
                   class="filter-tab"
                   :class="{ active: activeQuickFilter === 'recent' }"
                   @click="activeQuickFilter = 'recent'"
@@ -213,7 +234,7 @@
                   <span>Recent</span>
                   <span class="tab-count">{{ recentProjects.length }}</span>
                 </button>
-                <button 
+                <button
                   class="filter-tab"
                   :class="{ active: activeQuickFilter === 'featured' }"
                   @click="activeQuickFilter = 'featured'"
@@ -224,9 +245,12 @@
                 </button>
               </div>
             </div>
-              
+
             <!-- Search Suggestions -->
-            <div v-if="searchSuggestions.length > 0 && searchFocused" class="search-suggestions">
+            <div
+              v-if="searchSuggestions.length > 0 && searchFocused"
+              class="search-suggestions"
+            >
               <div class="suggestions-header">Quick Searches:</div>
               <div class="suggestions-list">
                 <button
@@ -241,39 +265,42 @@
               </div>
             </div>
           </div>
-            
+
           <!-- Search Results Summary -->
           <div v-if="query" class="search-results-summary">
             <div v-if="filteredProjects.length === 0" class="search-no-results">
               <AppIcon name="mdi-magnify-close" />
               <span>No projects found for "{{ query }}"</span>
-              <UnifiedButton
-                variant="ghost"
-                size="sm"
-                @click="clearSearch"
-              >
+              <UnifiedButton variant="ghost" size="sm" @click="clearSearch">
                 Clear search
               </UnifiedButton>
             </div>
             <div v-else class="search-success">
               <AppIcon name="mdi-check-circle" />
-              <span>Found {{ filteredProjects.length }} {{ filteredProjects.length === 1 ? 'project' : 'projects' }}</span>
+              <span
+                >Found {{ filteredProjects.length }}
+                {{
+                  filteredProjects.length === 1 ? 'project' : 'projects'
+                }}</span
+              >
             </div>
           </div>
         </div>
 
         <div class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-engine" /> 
+            <AppIcon name="mdi-engine" />
             <span>Engine</span>
-            <span v-if="engine.values().length" class="filter-count">({{ engine.values().length }})</span>
+            <span v-if="engine.values().length" class="filter-count"
+              >({{ engine.values().length }})</span
+            >
           </div>
           <div class="chips">
-            <button 
-              v-for="eng in engines" 
-              :key="eng" 
-              class="chip filter-chip" 
-              :class="{ active: engine.has(eng) }" 
+            <button
+              v-for="eng in engines"
+              :key="eng"
+              class="chip filter-chip"
+              :class="{ active: engine.has(eng) }"
               :aria-pressed="engine.has(eng)"
               @click="toggle(engine, eng)"
             >
@@ -284,16 +311,18 @@
 
         <div class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-monitor" /> 
+            <AppIcon name="mdi-monitor" />
             <span>Platform</span>
-            <span v-if="platform.values().length" class="filter-count">({{ platform.values().length }})</span>
+            <span v-if="platform.values().length" class="filter-count"
+              >({{ platform.values().length }})</span
+            >
           </div>
           <div class="chips">
-            <button 
-              v-for="p in platforms" 
-              :key="p" 
-              class="chip filter-chip" 
-              :class="{ active: platform.has(p) }" 
+            <button
+              v-for="p in platforms"
+              :key="p"
+              class="chip filter-chip"
+              :class="{ active: platform.has(p) }"
               :aria-pressed="platform.has(p)"
               @click="toggle(platform, p)"
             >
@@ -304,16 +333,18 @@
 
         <div class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-account" /> 
+            <AppIcon name="mdi-account" />
             <span>Role</span>
-            <span v-if="role.values().length" class="filter-count">({{ role.values().length }})</span>
+            <span v-if="role.values().length" class="filter-count"
+              >({{ role.values().length }})</span
+            >
           </div>
           <div class="chips">
-            <button 
-              v-for="r in roles" 
-              :key="r" 
-              class="chip filter-chip" 
-              :class="{ active: role.has(r) }" 
+            <button
+              v-for="r in roles"
+              :key="r"
+              class="chip filter-chip"
+              :class="{ active: role.has(r) }"
               :aria-pressed="role.has(r)"
               @click="toggle(role, r)"
             >
@@ -324,20 +355,22 @@
 
         <div class="sidebar-section skills-tags-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-tag-multiple" /> 
+            <AppIcon name="mdi-tag-multiple" />
             <span>Skills & Tags</span>
-            <span v-if="tags.values().length" class="filter-count">({{ tags.values().length }})</span>
+            <span v-if="tags.values().length" class="filter-count"
+              >({{ tags.values().length }})</span
+            >
           </div>
           <div class="tags-search-wrapper">
-            <input 
-              v-model="tagSearch" 
+            <input
+              v-model="tagSearch"
               type="search"
-              class="form-control glass-input tag-search" 
+              class="form-control glass-input tag-search"
               placeholder="Search skills, tags..."
               @keydown.escape="tagSearch = ''"
             />
           </div>
-          
+
           <!-- Skill Categories -->
           <div class="skill-categories">
             <div class="skill-category">
@@ -348,15 +381,23 @@
               </h4>
               <div class="skill-chips">
                 <button
-                  v-for="skill in ['Game Sense', 'Strategic Thinking', 'Performance Analysis', 'Data Analysis']" 
-                  :key="skill" class="chip skill-chip" :class="{ active: tags.has(skill) }" @click="toggle(tags, skill)"
+                  v-for="skill in [
+                    'Game Sense',
+                    'Strategic Thinking',
+                    'Performance Analysis',
+                    'Data Analysis',
+                  ]"
+                  :key="skill"
+                  class="chip skill-chip"
+                  :class="{ active: tags.has(skill) }"
+                  @click="toggle(tags, skill)"
                 >
                   {{ skill }}
                   <span class="skill-level">{{ getSkillLevel(skill) }}</span>
                 </button>
               </div>
             </div>
-            
+
             <div class="skill-category">
               <h4 class="category-title">
                 <AppIcon name="mdi-account-group" />
@@ -365,15 +406,24 @@
               </h4>
               <div class="skill-chips">
                 <button
-                  v-for="skill in ['Consistency', 'Teamwork', 'Pressure Management', 'Communication', 'Adaptability']" 
-                  :key="skill" class="chip skill-chip" :class="{ active: tags.has(skill) }" @click="toggle(tags, skill)"
+                  v-for="skill in [
+                    'Consistency',
+                    'Teamwork',
+                    'Pressure Management',
+                    'Communication',
+                    'Adaptability',
+                  ]"
+                  :key="skill"
+                  class="chip skill-chip"
+                  :class="{ active: tags.has(skill) }"
+                  @click="toggle(tags, skill)"
                 >
                   {{ skill }}
                   <span class="skill-level">{{ getSkillLevel(skill) }}</span>
                 </button>
               </div>
             </div>
-            
+
             <div class="skill-category">
               <h4 class="category-title">
                 <AppIcon name="mdi-camera" />
@@ -382,8 +432,16 @@
               </h4>
               <div class="skill-chips">
                 <button
-                  v-for="skill in ['Content Creation', 'Video Editing', 'Community Management', 'Social Media']" 
-                  :key="skill" class="chip skill-chip" :class="{ active: tags.has(skill) }" @click="toggle(tags, skill)"
+                  v-for="skill in [
+                    'Content Creation',
+                    'Video Editing',
+                    'Community Management',
+                    'Social Media',
+                  ]"
+                  :key="skill"
+                  class="chip skill-chip"
+                  :class="{ active: tags.has(skill) }"
+                  @click="toggle(tags, skill)"
                 >
                   {{ skill }}
                   <span class="skill-level">{{ getSkillLevel(skill) }}</span>
@@ -391,7 +449,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- All Tags Section -->
           <div class="all-tags-section">
             <h4 class="category-title">
@@ -400,25 +458,30 @@
               <span class="category-count">{{ filteredTags.length }}</span>
             </h4>
             <div class="chips chips-scrollable">
-              <button 
-                v-for="t in filteredTags" 
+              <button
+                v-for="t in filteredTags"
                 :key="t"
-                class="chip filter-chip" 
-                :class="{ active: tags.has(t) }" 
+                class="chip filter-chip"
+                :class="{ active: tags.has(t) }"
                 :aria-pressed="tags.has(t)"
                 @click="toggle(tags, t)"
               >
                 {{ t }}
               </button>
             </div>
-            <div v-if="tagSearch && filteredTags.length === 0" class="no-tags-found">
+            <div
+              v-if="tagSearch && filteredTags.length === 0"
+              class="no-tags-found"
+            >
               No matching tags
             </div>
           </div>
         </div>
 
         <div class="sidebar-section">
-          <div class="sidebar-title"><AppIcon name="mdi-calendar-range" /> Year Range</div>
+          <div class="sidebar-title">
+            <AppIcon name="mdi-calendar-range" /> Year Range
+          </div>
           <div class="year-slider">
             <div class="slider-values">
               <span>{{ yearFromRange }}</span>
@@ -426,8 +489,20 @@
               <span>{{ yearToRange }}</span>
             </div>
             <div class="slider-wrapper">
-              <input v-model.number="yearFromRange" type="range" :min="yearMin" :max="yearMax" @input="syncYearRange" />
-              <input v-model.number="yearToRange" type="range" :min="yearMin" :max="yearMax" @input="syncYearRange" />
+              <input
+                v-model.number="yearFromRange"
+                type="range"
+                :min="yearMin"
+                :max="yearMax"
+                @input="syncYearRange"
+              />
+              <input
+                v-model.number="yearToRange"
+                type="range"
+                :min="yearMin"
+                :max="yearMax"
+                @input="syncYearRange"
+              />
             </div>
           </div>
         </div>
@@ -435,7 +510,7 @@
         <!-- Smart Filters Section -->
         <div v-if="smartFilters.length > 0" class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-lightbulb-outline" /> 
+            <AppIcon name="mdi-lightbulb-outline" />
             <span>Smart Filters</span>
           </div>
           <div class="smart-filters">
@@ -456,7 +531,7 @@
         <!-- Saved Presets Section -->
         <div v-if="filterPresets.length > 0" class="sidebar-section">
           <div class="sidebar-title">
-            <AppIcon name="mdi-bookmark-multiple" /> 
+            <AppIcon name="mdi-bookmark-multiple" />
             <span>Saved Presets</span>
           </div>
           <div class="saved-presets">
@@ -487,20 +562,20 @@
         </div>
 
         <div class="sidebar-section filter-actions">
-          <UnifiedButton 
-            size="sm" 
-            variant="outline" 
-            leading-icon="mdi-filter-remove" 
+          <UnifiedButton
+            size="sm"
+            variant="outline"
+            leading-icon="mdi-filter-remove"
             :disabled="!hasActiveFilters"
             @click="clearAllFilters"
           >
             Clear All Filters
           </UnifiedButton>
-          <UnifiedButton 
+          <UnifiedButton
             v-if="hasActiveFilters"
-            size="sm" 
-            variant="ghost" 
-            leading-icon="mdi-bookmark-outline" 
+            size="sm"
+            variant="ghost"
+            leading-icon="mdi-bookmark-outline"
             @click="saveFilterPreset"
           >
             Save Preset
@@ -512,11 +587,11 @@
         <!-- Mobile quick filter (tags) -->
         <div class="quick-filter-bar d-md-none">
           <div class="chips-scroll">
-            <button 
-              v-for="t in allTags.slice(0, 12)" 
-              :key="`qt-${t}`" 
-              class="chip" 
-              :class="{ active: tags.has(t) }" 
+            <button
+              v-for="t in allTags.slice(0, 12)"
+              :key="`qt-${t}`"
+              class="chip"
+              :class="{ active: tags.has(t) }"
               @click="toggle(tags, t)"
             >
               {{ t }}
@@ -534,14 +609,18 @@
                 size="sm"
                 variant="glass"
                 leading-icon="mdi-filter-variant"
-                :trailing-icon="filtersOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+                :trailing-icon="
+                  filtersOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'
+                "
                 :aria-pressed="filtersOpen ? 'true' : 'false'"
                 aria-controls="portfolio-filters"
                 aria-label="Toggle filters"
                 @click="filtersOpen = !filtersOpen"
               >
                 Filters
-                <span v-if="activeFiltersCount > 0" class="filter-badge">{{ activeFiltersCount }}</span>
+                <span v-if="activeFiltersCount > 0" class="filter-badge">{{
+                  activeFiltersCount
+                }}</span>
               </UnifiedButton>
 
               <!-- Results Summary -->
@@ -549,7 +628,9 @@
                 <div class="result-count">
                   <strong>{{ filteredProjects.length }}</strong>
                   <span class="of-total">of {{ projects.length }}</span>
-                  <span class="item-type">{{ filteredProjects.length === 1 ? 'project' : 'projects' }}</span>
+                  <span class="item-type">{{
+                    filteredProjects.length === 1 ? 'project' : 'projects'
+                  }}</span>
                 </div>
                 <div v-if="hasActiveFilters" class="active-filters-summary">
                   <AppIcon name="mdi-filter-check" />
@@ -611,7 +692,11 @@
                 </div>
 
                 <!-- Mobile Sort Dropdown -->
-                <select v-model="sortBy" class="enhanced-sort-select d-inline d-md-none" aria-label="Sort projects">
+                <select
+                  v-model="sortBy"
+                  class="enhanced-sort-select d-inline d-md-none"
+                  aria-label="Sort projects"
+                >
                   <option value="recent">📅 Recent</option>
                   <option value="title">🔤 Name</option>
                   <option value="engine">🎮 Engine</option>
@@ -623,11 +708,23 @@
               <div class="view-controls-enhanced">
                 <div class="view-toggle-wrapper">
                   <ViewToggle
-                    v-model="viewMode" 
+                    v-model="viewMode"
                     :options="[
-                      { value: 'grid', icon: 'mdi-view-grid', label: 'Grid view' },
-                      { value: 'list', icon: 'mdi-view-list', label: 'List view' },
-                      { value: 'masonry', icon: 'mdi-view-masonry', label: 'Masonry view' }
+                      {
+                        value: 'grid',
+                        icon: 'mdi-view-grid',
+                        label: 'Grid view',
+                      },
+                      {
+                        value: 'list',
+                        icon: 'mdi-view-list',
+                        label: 'List view',
+                      },
+                      {
+                        value: 'masonry',
+                        icon: 'mdi-view-masonry',
+                        label: 'Masonry view',
+                      },
                     ]"
                     size="sm"
                     active-variant="primary"
@@ -642,7 +739,11 @@
           <div class="toolbar-secondary">
             <div class="advanced-options">
               <label class="feature-toggle">
-                <input v-model="autoFeature" type="checkbox" @change="autoFeatureUpdate" />
+                <input
+                  v-model="autoFeature"
+                  type="checkbox"
+                  @change="autoFeatureUpdate"
+                />
                 <span class="checkmark"></span>
                 <span class="toggle-text">
                   <AppIcon name="mdi-star-outline" />
@@ -672,7 +773,10 @@
         </div>
 
         <!-- Enhanced Showcase Section -->
-        <section v-show="activeTab === 'showcase'" class="panel unified-container">
+        <section
+          v-show="activeTab === 'showcase'"
+          class="panel unified-container"
+        >
           <!-- Showcase Header -->
           <div class="section-header glass p-4 gap-4 rounded-lg mb-4">
             <div class="d-flex align-items-center justify-content-between">
@@ -686,19 +790,19 @@
                 </p>
               </div>
               <div class="showcase-actions d-flex gap-2">
-                <UnifiedButton 
-                  variant="glass" 
-                  size="sm" 
-                  leading-icon="mdi-auto-fix" 
+                <UnifiedButton
+                  variant="glass"
+                  size="sm"
+                  leading-icon="mdi-auto-fix"
                   :loading="generatingShowcase"
                   @click="generateShowcase"
                 >
                   AI Curate
                 </UnifiedButton>
-                <UnifiedButton 
-                  variant="outline" 
-                  size="sm" 
-                  leading-icon="mdi-eye-outline" 
+                <UnifiedButton
+                  variant="outline"
+                  size="sm"
+                  leading-icon="mdi-eye-outline"
                   @click="previewShowcase"
                 >
                   Preview
@@ -707,43 +811,98 @@
             </div>
           </div>
 
-          <div v-if="showcaseProjects.length === 0" class="empty-state enhanced-empty">
+          <div
+            v-if="showcaseProjects.length === 0"
+            class="empty-state enhanced-empty"
+          >
             <div class="empty-state-content">
               <div class="empty-icon-stack">
-                <AppIcon name="mdi-star-circle-outline" class="empty-icon primary" />
+                <AppIcon
+                  name="mdi-star-circle-outline"
+                  class="empty-icon primary"
+                />
                 <AppIcon name="mdi-plus" class="empty-icon-overlay" />
               </div>
               <h3>No Featured Projects Yet</h3>
-              <p>Create an impressive showcase by featuring your best projects, or let our AI automatically curate your top work based on engagement and quality metrics.</p>
+              <p>
+                Create an impressive showcase by featuring your best projects,
+                or let our AI automatically curate your top work based on
+                engagement and quality metrics.
+              </p>
               <div class="empty-actions-enhanced">
-                <UnifiedButton variant="gaming" leading-icon="mdi-auto-fix" @click="generateShowcase">
+                <UnifiedButton
+                  variant="gaming"
+                  leading-icon="mdi-auto-fix"
+                  @click="generateShowcase"
+                >
                   Auto-Generate Showcase
                 </UnifiedButton>
-                <UnifiedButton variant="glass" leading-icon="mdi-star-outline" @click="manuallyFeature">
+                <UnifiedButton
+                  variant="glass"
+                  leading-icon="mdi-star-outline"
+                  @click="manuallyFeature"
+                >
                   Feature Projects Manually
                 </UnifiedButton>
               </div>
             </div>
           </div>
-          <div v-else class="responsive-grid responsive-grid--cards-sm showcase-grid">
-            <div v-for="p in showcaseProjects" :key="p.id || p.title" class="showcase-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
-              <div class="thumb" :style="{ backgroundImage: p.cover ? `url(${p.cover})` : '' }">
-                <div v-if="!p.cover" class="thumb-fallback">{{ (p.title || 'Project').slice(0,1) }}</div>
+          <div
+            v-else
+            class="responsive-grid responsive-grid--cards-sm showcase-grid"
+          >
+            <div
+              v-for="p in showcaseProjects"
+              :key="p.id || p.title"
+              class="showcase-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft"
+            >
+              <div
+                class="thumb"
+                :style="{ backgroundImage: p.cover ? `url(${p.cover})` : '' }"
+              >
+                <div v-if="!p.cover" class="thumb-fallback">
+                  {{ (p.title || 'Project').slice(0, 1) }}
+                </div>
                 <div class="badges">
-                  <span v-if="p.featured" class="badge featured"><AppIcon name="mdi-star" /> Featured</span>
-                  <span v-if="p.engine" class="badge"><AppIcon name="mdi-engine" /> {{ p.engine }}</span>
-                  <span v-if="p.platform" class="badge"><AppIcon name="mdi-monitor" /> {{ p.platform }}</span>
+                  <span v-if="p.featured" class="badge featured"
+                    ><AppIcon name="mdi-star" /> Featured</span
+                  >
+                  <span v-if="p.engine" class="badge"
+                    ><AppIcon name="mdi-engine" /> {{ p.engine }}</span
+                  >
+                  <span v-if="p.platform" class="badge"
+                    ><AppIcon name="mdi-monitor" /> {{ p.platform }}</span
+                  >
                 </div>
               </div>
               <div class="body">
                 <div class="title">{{ p.title || 'Untitled Project' }}</div>
-                <div class="meta">{{ p.role || 'Contributor' }} • {{ displayYear(p.year) }}</div>
-                <div v-if="(p.tags||[]).length" class="tags">
-                  <span v-for="t in (p.tags||[]).slice(0,4)" :key="t" class="tag">{{ t }}</span>
+                <div class="meta">
+                  {{ p.role || 'Contributor' }} • {{ displayYear(p.year) }}
+                </div>
+                <div v-if="(p.tags || []).length" class="tags">
+                  <span
+                    v-for="t in (p.tags || []).slice(0, 4)"
+                    :key="t"
+                    class="tag"
+                    >{{ t }}</span
+                  >
                 </div>
                 <div class="actions">
-                  <UnifiedButton size="sm" variant="glass" leading-icon="mdi-eye" @click="viewProject(p)">View</UnifiedButton>
-                  <UnifiedButton size="sm" variant="outline" leading-icon="mdi-share-variant" @click="shareProject(p)">Share</UnifiedButton>
+                  <UnifiedButton
+                    size="sm"
+                    variant="glass"
+                    leading-icon="mdi-eye"
+                    @click="viewProject(p)"
+                    >View</UnifiedButton
+                  >
+                  <UnifiedButton
+                    size="sm"
+                    variant="outline"
+                    leading-icon="mdi-share-variant"
+                    @click="shareProject(p)"
+                    >Share</UnifiedButton
+                  >
                 </div>
               </div>
             </div>
@@ -751,56 +910,131 @@
         </section>
 
         <!-- Enhanced Projects Section -->
-        <section v-show="activeTab === 'projects'" class="panel unified-container">
+        <section
+          v-show="activeTab === 'projects'"
+          class="panel unified-container"
+        >
           <div v-if="filteredProjects.length === 0" class="empty-state">
             <div class="empty-state-content">
               <AppIcon name="mdi-briefcase-outline" class="empty-icon" />
-              <h3>{{ projects.length === 0 ? 'No Projects Yet' : 'No Matching Projects' }}</h3>
-              <p v-if="projects.length === 0">Start building your portfolio by adding your first project.</p>
-              <p v-else>Try adjusting your filters or search terms to find projects.</p>
+              <h3>
+                {{
+                  projects.length === 0
+                    ? 'No Projects Yet'
+                    : 'No Matching Projects'
+                }}
+              </h3>
+              <p v-if="projects.length === 0">
+                Start building your portfolio by adding your first project.
+              </p>
+              <p v-else>
+                Try adjusting your filters or search terms to find projects.
+              </p>
               <div class="empty-actions">
-                <UnifiedButton v-if="projects.length === 0" variant="primary" leading-icon="mdi-plus" @click="addProject">
+                <UnifiedButton
+                  v-if="projects.length === 0"
+                  variant="primary"
+                  leading-icon="mdi-plus"
+                  @click="addProject"
+                >
                   Add Your First Project
                 </UnifiedButton>
-                <UnifiedButton v-else variant="outline" leading-icon="mdi-filter-remove" @click="clearAllFilters">
+                <UnifiedButton
+                  v-else
+                  variant="outline"
+                  leading-icon="mdi-filter-remove"
+                  @click="clearAllFilters"
+                >
                   Clear All Filters
                 </UnifiedButton>
               </div>
             </div>
           </div>
           <div v-else :class="['responsive-grid', 'projects-grid', viewMode]">
-            <div v-for="p in filteredProjects" :key="p.id || p.title" class="project-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+            <div
+              v-for="p in filteredProjects"
+              :key="p.id || p.title"
+              class="project-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft"
+            >
               <div class="row">
-                <div class="cover" :style="{ backgroundImage: p.cover ? `url(${p.cover})` : '' }"></div>
+                <div
+                  class="cover"
+                  :style="{ backgroundImage: p.cover ? `url(${p.cover})` : '' }"
+                ></div>
                 <div class="info">
                   <div class="title">
-                    <AppIcon name="mdi-gamepad-variant" /> {{ p.title || 'Untitled Project' }}
+                    <AppIcon name="mdi-gamepad-variant" />
+                    {{ p.title || 'Untitled Project' }}
                   </div>
-                  <div class="sub">{{ p.role || 'Contributor' }} • {{ p.engine || 'Engine' }} • {{ p.platform || 'Platform' }}</div>
-                  <div class="desc">{{ (p.description || '').slice(0,160) }}</div>
+                  <div class="sub">
+                    {{ p.role || 'Contributor' }} • {{ p.engine || 'Engine' }} •
+                    {{ p.platform || 'Platform' }}
+                  </div>
+                  <div class="desc">
+                    {{ (p.description || '').slice(0, 160) }}
+                  </div>
                   <div class="tags">
-                    <span v-for="t in (p.tags||[]).slice(0,6)" :key="t" class="tag">{{ t }}</span>
+                    <span
+                      v-for="t in (p.tags || []).slice(0, 6)"
+                      :key="t"
+                      class="tag"
+                      >{{ t }}</span
+                    >
                   </div>
                   <div class="actions">
-                    <UnifiedButton v-if="p.demoUrl" size="sm" variant="glass" leading-icon="mdi-play" :href="p.demoUrl" target="_blank">Play</UnifiedButton>
-                    <UnifiedButton v-if="p.link" size="sm" variant="glass" leading-icon="mdi-open-in-new" :href="p.link" target="_blank">Open</UnifiedButton>
-                    <UnifiedButton size="sm" variant="outline" leading-icon="mdi-pencil" @click="editProject(p)">Edit</UnifiedButton>
-                    <UnifiedButton size="sm" :variant="p.featured ? 'primary' : 'ghost'" :leading-icon="p.featured ? 'mdi-star' : 'mdi-star-outline'" @click="toggleFeatured(p)">
+                    <UnifiedButton
+                      v-if="p.demoUrl"
+                      size="sm"
+                      variant="glass"
+                      leading-icon="mdi-play"
+                      :href="p.demoUrl"
+                      target="_blank"
+                      >Play</UnifiedButton
+                    >
+                    <UnifiedButton
+                      v-if="p.link"
+                      size="sm"
+                      variant="glass"
+                      leading-icon="mdi-open-in-new"
+                      :href="p.link"
+                      target="_blank"
+                      >Open</UnifiedButton
+                    >
+                    <UnifiedButton
+                      size="sm"
+                      variant="outline"
+                      leading-icon="mdi-pencil"
+                      @click="editProject(p)"
+                      >Edit</UnifiedButton
+                    >
+                    <UnifiedButton
+                      size="sm"
+                      :variant="p.featured ? 'primary' : 'ghost'"
+                      :leading-icon="
+                        p.featured ? 'mdi-star' : 'mdi-star-outline'
+                      "
+                      @click="toggleFeatured(p)"
+                    >
                       {{ p.featured ? 'Featured' : 'Pin' }}
                     </UnifiedButton>
                   </div>
 
                   <!-- Inline tag editor toggle -->
                   <div class="tag-editor">
-                    <button class="chip" @click="toggleTagEditor(p)"><AppIcon name="mdi-tag-plus" /> Edit Tags</button>
+                    <button class="chip" @click="toggleTagEditor(p)">
+                      <AppIcon name="mdi-tag-plus" /> Edit Tags
+                    </button>
                   </div>
-                  <div v-if="editingTagsFor === (p.id || p.title)" class="tag-editor-panel">
+                  <div
+                    v-if="editingTagsFor === (p.id || p.title)"
+                    class="tag-editor-panel"
+                  >
                     <div class="chips">
                       <button
                         v-for="t in allTags"
                         :key="t"
                         class="chip"
-                        :class="{ active: (p.tags||[]).includes(t) }"
+                        :class="{ active: (p.tags || []).includes(t) }"
                         @click="toggleProjectTag(p, t)"
                       >
                         {{ t }}
@@ -818,24 +1052,44 @@
     <!-- Clips -->
     <section v-show="activeTab === 'clips'" class="panel unified-container">
       <div class="responsive-grid responsive-grid--cards-sm clips-grid">
-        <div v-for="c in clips" :key="c.id || c.url" class="clip glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+        <div
+          v-for="c in clips"
+          :key="c.id || c.url"
+          class="clip glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft"
+        >
           <div class="embed">
-            <iframe v-if="c.url" :src="toEmbedUrl(c.url)" frameborder="0" allowfullscreen></iframe>
+            <iframe
+              v-if="c.url"
+              :src="toEmbedUrl(c.url)"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
           </div>
           <div class="caption">
             <div class="title">{{ c.title || 'Gameplay Clip' }}</div>
-            <div class="meta">{{ c.game || 'Game' }} • {{ c.platform || 'Platform' }}</div>
+            <div class="meta">
+              {{ c.game || 'Game' }} • {{ c.platform || 'Platform' }}
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Achievements -->
-    <section v-show="activeTab === 'achievements'" class="panel unified-container">
+    <section
+      v-show="activeTab === 'achievements'"
+      class="panel unified-container"
+    >
       <div class="responsive-grid responsive-grid--cards-sm achievements-grid">
-        <div v-for="a in achievements" :key="a.id || a.title" class="ach-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft">
+        <div
+          v-for="a in achievements"
+          :key="a.id || a.title"
+          class="ach-card glass p-4 gap-4 rounded-lg unified-card is-interactive neon-hover ripple-soft"
+        >
           <div class="title"><AppIcon name="mdi-trophy" /> {{ a.title }}</div>
-          <div class="meta">{{ a.date || a.year }} • {{ a.category || 'Achievement' }}</div>
+          <div class="meta">
+            {{ a.date || a.year }} • {{ a.category || 'Achievement' }}
+          </div>
           <div class="desc">{{ a.description }}</div>
         </div>
       </div>
@@ -868,7 +1122,10 @@
   <PortfolioViewModal
     :show="showViewModal"
     :item="selectedViewItem"
-    @close="showViewModal = false; selectedViewItem = null"
+    @close="
+      showViewModal = false
+      selectedViewItem = null
+    "
     @edit="handleEditProject"
     @duplicate="handleDuplicateProject"
   />
@@ -905,8 +1162,20 @@ import { PortfolioService } from '@/shared/services/PortfolioService'
 
 const store = useAppStore()
 const router = useRouter()
-const theme = (() => { try { return useUnifiedTheme() } catch { return undefined as any } })()
-const themeName = computed(() => { try { return theme?.colorScheme?.value || 'light' } catch { return 'light' } })
+const theme = (() => {
+  try {
+    return useUnifiedTheme()
+  } catch {
+    return undefined as any
+  }
+})()
+const themeName = computed(() => {
+  try {
+    return theme?.colorScheme?.value || 'light'
+  } catch {
+    return 'light'
+  }
+})
 const { addItem } = usePortfolio()
 const { success: toastSuccess, info: toastInfo, error: toastError } = useToast()
 
@@ -917,99 +1186,120 @@ const showExportModal = ref(false)
 
 // Tab definitions
 const portfolioTabs = computed(() => [
-  { 
-    key: 'showcase', 
-    label: 'Featured Showcase', 
-    icon: 'mdi-star-circle-outline', 
-    shortLabel: 'Featured', 
+  {
+    key: 'showcase',
+    label: 'Featured Showcase',
+    icon: 'mdi-star-circle-outline',
+    shortLabel: 'Featured',
     count: showcaseProjects.value.length,
-    description: 'Your best work, prominently displayed'
+    description: 'Your best work, prominently displayed',
   },
-  { 
-    key: 'projects', 
-    label: 'All Projects', 
-    icon: 'mdi-briefcase-outline', 
-    shortLabel: 'Projects', 
+  {
+    key: 'projects',
+    label: 'All Projects',
+    icon: 'mdi-briefcase-outline',
+    shortLabel: 'Projects',
     count: filteredProjects.value.length,
-    description: 'Complete portfolio collection'
+    description: 'Complete portfolio collection',
   },
-  { 
-    key: 'clips', 
-    label: 'Media Gallery', 
-    icon: 'mdi-play-circle-outline', 
-    shortLabel: 'Media', 
+  {
+    key: 'clips',
+    label: 'Media Gallery',
+    icon: 'mdi-play-circle-outline',
+    shortLabel: 'Media',
     count: clips.value.length,
-    description: 'Gameplay clips and videos'
+    description: 'Gameplay clips and videos',
   },
-  { 
-    key: 'achievements', 
-    label: 'Achievements', 
-    icon: 'mdi-trophy-outline', 
-    shortLabel: 'Awards', 
+  {
+    key: 'achievements',
+    label: 'Achievements',
+    icon: 'mdi-trophy-outline',
+    shortLabel: 'Awards',
     count: achievements.value.length,
-    description: 'Recognition and accomplishments'
+    description: 'Recognition and accomplishments',
   },
-  { 
-    key: 'analytics', 
-    label: 'Portfolio Analytics', 
-    icon: 'mdi-chart-line-variant', 
+  {
+    key: 'analytics',
+    label: 'Portfolio Analytics',
+    icon: 'mdi-chart-line-variant',
     shortLabel: 'Analytics',
-    description: 'Portfolio performance insights'
-  }
+    description: 'Portfolio performance insights',
+  },
 ])
-const activeTab = ref<'showcase' | 'projects' | 'clips' | 'achievements' | 'analytics'>('showcase')
+const activeTab = ref<
+  'showcase' | 'projects' | 'clips' | 'achievements' | 'analytics'
+>('showcase')
 
 // New search and filter state
 const activeQuickFilter = ref<string | null>(null)
 
 // Source data (tolerant of missing fields)
-const projects = computed<any[]>(() => (store.user?.portfolio || []).map((p:any) => ({
-  title: p.title || p.name,
-  id: p.id,
-  cover: p.cover || p.image || '',
-  description: p.description || p.summary || '',
-  tags: p.tags || p.stack || [],
-  engine: p.engine || inferEngine(p),
-  platform: p.platform || inferPlatform(p),
-  role: p.role || p.position || '',
-  year: p.year || p.date || '',
-  demoUrl: p.demoUrl || p.playUrl || '',
-  link: p.link || p.url || ''
-})))
+const projects = computed<any[]>(() =>
+  (store.user?.portfolio || []).map((p: any) => ({
+    title: p.title || p.name,
+    id: p.id,
+    cover: p.cover || p.image || '',
+    description: p.description || p.summary || '',
+    tags: p.tags || p.stack || [],
+    engine: p.engine || inferEngine(p),
+    platform: p.platform || inferPlatform(p),
+    role: p.role || p.position || '',
+    year: p.year || p.date || '',
+    demoUrl: p.demoUrl || p.playUrl || '',
+    link: p.link || p.url || '',
+  }))
+)
 
-function inferEngine(p:any) {
+function inferEngine(p: any) {
   const t = JSON.stringify(p).toLowerCase()
-  if (t.includes('unity') || (p.stack||[]).some((s:string)=>/unity/i.test(s))) return 'Unity'
-  if (t.includes('unreal') || (p.stack||[]).some((s:string)=>/unreal/i.test(s))) return 'Unreal'
+  if (
+    t.includes('unity') ||
+    (p.stack || []).some((s: string) => /unity/i.test(s))
+  )
+    return 'Unity'
+  if (
+    t.includes('unreal') ||
+    (p.stack || []).some((s: string) => /unreal/i.test(s))
+  )
+    return 'Unreal'
   if (t.includes('godot')) return 'Godot'
   return ''
 }
-function inferPlatform(p:any) {
+function inferPlatform(p: any) {
   const t = JSON.stringify(p).toLowerCase()
   if (t.includes('xbox')) return 'Xbox'
   if (t.includes('playstation') || t.includes('ps5')) return 'PlayStation'
   if (t.includes('switch')) return 'Switch'
-  if (t.includes('mobile') || t.includes('android') || t.includes('ios')) return 'Mobile'
+  if (t.includes('mobile') || t.includes('android') || t.includes('ios'))
+    return 'Mobile'
   if (t.includes('pc') || t.includes('steam')) return 'PC'
   return ''
 }
 
-const clips = computed<any[]>(() => (store.user?.gamingExperience?.contentCreation || []).map((c:any)=>({
-  id: c.id,
-  url: c.url || c.link,
-  title: c.title || c.description || '',
-  platform: c.platform || '',
-  game: c.game || ''
-})))
+const clips = computed<any[]>(() =>
+  (store.user?.gamingExperience?.contentCreation || []).map((c: any) => ({
+    id: c.id,
+    url: c.url || c.link,
+    title: c.title || c.description || '',
+    platform: c.platform || '',
+    game: c.game || '',
+  }))
+)
 
-const achievements = computed<any[]>(() => (store.user?.gamingExperience?.achievements || store.user?.achievements || []).map((a:any)=>({
-  id: a.id,
-  title: a.title || a.name,
-  date: a.date,
-  year: a.year,
-  category: a.category || 'Achievement',
-  description: a.description || ''
-})))
+const achievements = computed<any[]>(() =>
+  (
+    store.user?.gamingExperience?.achievements ||
+    store.user?.achievements ||
+    []
+  ).map((a: any) => ({
+    id: a.id,
+    title: a.title || a.name,
+    date: a.date,
+    year: a.year,
+    category: a.category || 'Achievement',
+    description: a.description || '',
+  }))
+)
 
 const engines = ['Unity', 'Unreal', 'Godot']
 const platforms = ['PC', 'Console', 'Mobile']
@@ -1028,7 +1318,12 @@ const isMobile = ref(false)
 // Enhanced search and navigation state
 const searchFocused = ref(false)
 const lastUpdated = ref('2 hours ago')
-const searchSuggestions = ref(['Unity Projects', 'Mobile Games', '2023 Projects', 'Featured Work'])
+const searchSuggestions = ref([
+  'Unity Projects',
+  'Mobile Games',
+  '2023 Projects',
+  'Featured Work',
+])
 const engine = reactiveSet()
 const platform = reactiveSet()
 const role = reactiveSet()
@@ -1040,11 +1335,15 @@ const yearToRange = ref<number>(new Date().getFullYear())
 const yearFrom = ref<number | null>(2000)
 const yearTo = ref<number | null>(new Date().getFullYear())
 const yearMin = computed(() => {
-  const ys = projects.value.map(p => extractYear(p.year)).filter((y: any) => y !== null) as number[]
+  const ys = projects.value
+    .map(p => extractYear(p.year))
+    .filter((y: any) => y !== null) as number[]
   return ys.length ? Math.min(...ys) : 2000
 })
 const yearMax = computed(() => {
-  const ys = projects.value.map(p => extractYear(p.year)).filter((y: any) => y !== null) as number[]
+  const ys = projects.value
+    .map(p => extractYear(p.year))
+    .filter((y: any) => y !== null) as number[]
   return ys.length ? Math.max(...ys) : new Date().getFullYear()
 })
 watch([yearMin, yearMax], () => {
@@ -1067,46 +1366,59 @@ function syncYearRange() {
 function reactiveSet() {
   const s = ref<Set<string>>(new Set())
   return {
-    has: (v:string) => s.value.has(v),
-    add: (v:string) => s.value.add(v),
-    delete: (v:string) => s.value.delete(v),
-    toggle: (v:string) => s.value.has(v) ? s.value.delete(v) : s.value.add(v),
+    has: (v: string) => s.value.has(v),
+    add: (v: string) => s.value.add(v),
+    delete: (v: string) => s.value.delete(v),
+    toggle: (v: string) =>
+      s.value.has(v) ? s.value.delete(v) : s.value.add(v),
     values: () => Array.from(s.value),
-    _raw: s
+    _raw: s,
   }
 }
 
-function toggle(set:any, v:string) { set.toggle(v) }
+function toggle(set: any, v: string) {
+  set.toggle(v)
+}
 
 // Tag universe (sorted by frequency desc)
 const allTags = computed(() => {
   const counts: Record<string, number> = {}
   for (const p of projects.value) {
-    for (const t of (p.tags || [])) {
+    for (const t of p.tags || []) {
       const k = String(t)
       counts[k] = (counts[k] || 0) + 1
     }
   }
-  return Object.keys(counts).sort((a,b)=>counts[b]-counts[a]).slice(0, 50)
+  return Object.keys(counts)
+    .sort((a, b) => counts[b] - counts[a])
+    .slice(0, 50)
 })
 
 // Filtered tags based on search
 const filteredTags = computed(() => {
   if (!tagSearch.value.trim()) return allTags.value
   const searchTerm = tagSearch.value.toLowerCase().trim()
-  return allTags.value.filter(tag => 
-    tag.toLowerCase().includes(searchTerm)
-  )
+  return allTags.value.filter(tag => tag.toLowerCase().includes(searchTerm))
 })
 
 // New computed properties for quick filters
 const recentProjects = computed(() => {
   const now = new Date()
-  const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate())
-  return projects.value.filter(p => {
-    const projectDate = new Date(p.year || p.date || now)
-    return projectDate >= sixMonthsAgo
-  }).sort((a, b) => new Date(b.year || b.date || 0).getTime() - new Date(a.year || a.date || 0).getTime())
+  const sixMonthsAgo = new Date(
+    now.getFullYear(),
+    now.getMonth() - 6,
+    now.getDate()
+  )
+  return projects.value
+    .filter(p => {
+      const projectDate = new Date(p.year || p.date || now)
+      return projectDate >= sixMonthsAgo
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.year || b.date || 0).getTime() -
+        new Date(a.year || a.date || 0).getTime()
+    )
 })
 
 const featuredProjects = computed(() => {
@@ -1116,18 +1428,18 @@ const featuredProjects = computed(() => {
 // Skill level mapping
 const skillLevels: Record<string, number> = {
   'Game Sense': 1,
-  'Strategic Thinking': 1, 
+  'Strategic Thinking': 1,
   'Performance Analysis': 1,
   'Data Analysis': 1,
-  'Consistency': 1,
-  'Teamwork': 1,
+  Consistency: 1,
+  Teamwork: 1,
   'Pressure Management': 1,
-  'Communication': 1,
-  'Adaptability': 1,
+  Communication: 1,
+  Adaptability: 1,
   'Content Creation': 1,
   'Video Editing': 1,
   'Community Management': 1,
-  'Social Media': 1
+  'Social Media': 1,
 }
 
 // Methods for new functionality
@@ -1145,7 +1457,9 @@ function extractYear(input: any): number | null {
     const d = Date.parse(str)
     if (!Number.isNaN(d)) return new Date(d).getFullYear()
     return null
-  } catch { return null }
+  } catch {
+    return null
+  }
 }
 
 const filteredProjects = computed(() => {
@@ -1161,7 +1475,8 @@ const filteredProjects = computed(() => {
     const eOk = !e.length || (pr.engine && e.includes(pr.engine))
     const pOk = !p.length || (pr.platform && p.includes(pr.platform))
     const rOk = !r.length || (pr.role && r.includes(pr.role))
-    const tOk = !t.length || (pr.tags || []).some((tg:string)=> t.includes(String(tg)))
+    const tOk =
+      !t.length || (pr.tags || []).some((tg: string) => t.includes(String(tg)))
     let yOk = true
     if (yFrom || yTo) {
       const y = extractYear(pr.year)
@@ -1171,36 +1486,60 @@ const filteredProjects = computed(() => {
     }
     return qOk && eOk && pOk && rOk && tOk && yOk
   })
-  if (sortBy.value === 'title') list = list.slice().sort((a,b)=>String(a.title||'').localeCompare(String(b.title||'')))
-  else if (sortBy.value === 'engine') list = list.slice().sort((a,b)=>String(a.engine||'').localeCompare(String(b.engine||'')))
-  else if (sortBy.value === 'featured') list = list.slice().sort((a,b)=>(b.featured ? 1 : 0) - (a.featured ? 1 : 0))
-  else list = list.slice().sort((a,b)=>new Date(b.year||0).getTime() - new Date(a.year||0).getTime())
+  if (sortBy.value === 'title')
+    list = list
+      .slice()
+      .sort((a, b) =>
+        String(a.title || '').localeCompare(String(b.title || ''))
+      )
+  else if (sortBy.value === 'engine')
+    list = list
+      .slice()
+      .sort((a, b) =>
+        String(a.engine || '').localeCompare(String(b.engine || ''))
+      )
+  else if (sortBy.value === 'featured')
+    list = list
+      .slice()
+      .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+  else
+    list = list
+      .slice()
+      .sort(
+        (a, b) =>
+          new Date(b.year || 0).getTime() - new Date(a.year || 0).getTime()
+      )
   return list
 })
 
 // Enhanced computed properties for navigation
-const enhancedTabsComputed = computed(() => portfolioTabs.value.map(tab => ({
-  ...tab,
-  count: getTabCount(tab.value)
-})))
+const enhancedTabsComputed = computed(() =>
+  portfolioTabs.value.map(tab => ({
+    ...tab,
+    count: getTabCount(tab.value),
+  }))
+)
 
-const searchResultsCount = computed(() => query.value ? filteredProjects.value.length : 0)
+const searchResultsCount = computed(() =>
+  query.value ? filteredProjects.value.length : 0
+)
 
-const hasActiveFilters = computed(() => 
-  query.value.trim() !== '' || 
-  engine.values().length > 0 || 
-  platform.values().length > 0 || 
-  role.values().length > 0 || 
-  tags.values().length > 0 ||
-  (yearFrom.value !== null && yearFrom.value !== yearMin.value) ||
-  (yearTo.value !== null && yearTo.value !== yearMax.value)
+const hasActiveFilters = computed(
+  () =>
+    query.value.trim() !== '' ||
+    engine.values().length > 0 ||
+    platform.values().length > 0 ||
+    role.values().length > 0 ||
+    tags.values().length > 0 ||
+    (yearFrom.value !== null && yearFrom.value !== yearMin.value) ||
+    (yearTo.value !== null && yearTo.value !== yearMax.value)
 )
 
 const activeFiltersCount = computed(() => {
   let count = 0
   if (query.value.trim()) count++
   count += engine.values().length
-  count += platform.values().length 
+  count += platform.values().length
   count += role.values().length
   count += tags.values().length
   if (yearFrom.value !== null && yearFrom.value !== yearMin.value) count++
@@ -1211,15 +1550,17 @@ const activeFiltersCount = computed(() => {
 function clearAllFilters() {
   query.value = ''
   tagSearch.value = ''
-  ;[engine, platform, role, tags].forEach(s => s._raw.value = new Set())
+  ;[engine, platform, role, tags].forEach(s => (s._raw.value = new Set()))
   yearFromRange.value = yearMin.value
   yearToRange.value = yearMax.value
   yearFrom.value = null
   yearTo.value = null
-  
+
   // Focus the search input after clearing
   setTimeout(() => {
-    const searchInput = document.querySelector('.enhanced-search-input') as HTMLInputElement
+    const searchInput = document.querySelector(
+      '.enhanced-search-input'
+    ) as HTMLInputElement
     if (searchInput) searchInput.focus()
   }, 100)
 }
@@ -1278,12 +1619,14 @@ function exportPortfolio() {
 }
 
 // Portfolio export handler
-async function handlePortfolioExport(format: 'html' | 'pdf' | 'json' | 'website' | 'zip') {
+async function handlePortfolioExport(
+  format: 'html' | 'pdf' | 'json' | 'website' | 'zip'
+) {
   showExportModal.value = false
-  
+
   try {
     toastInfo(`Preparing ${format.toUpperCase()} export...`)
-    
+
     // Get user metadata for export
     const userProfile = store.profile || {}
     const exportOptions = {
@@ -1301,11 +1644,11 @@ async function handlePortfolioExport(format: 'html' | 'pdf' | 'json' | 'website'
           github: userProfile.github,
           linkedin: userProfile.linkedin,
           twitter: userProfile.twitter,
-          ...(userProfile.social || {})
-        }
-      }
+          ...(userProfile.social || {}),
+        },
+      },
     }
-    
+
     // Convert projects to the expected format
     const portfolioProjects = projects.value.map(project => ({
       title: project.title || 'Untitled Project',
@@ -1316,13 +1659,16 @@ async function handlePortfolioExport(format: 'html' | 'pdf' | 'json' | 'website'
       githubUrl: project.githubUrl || project.sourceUrl,
       role: project.role,
       platform: project.platform,
-      engine: project.engine
+      engine: project.engine,
     }))
-    
-    await portfolioExportRoutes.downloadPortfolio(portfolioProjects, format, exportOptions)
-    
+
+    await portfolioExportRoutes.downloadPortfolio(
+      portfolioProjects,
+      format,
+      exportOptions
+    )
+
     toastSuccess(`${format.toUpperCase()} export completed successfully!`)
-    
   } catch (error) {
     console.error('Export failed:', error)
     toastError(`Export failed: ${error.message || 'Unknown error'}`)
@@ -1339,12 +1685,14 @@ function toggleMobileFilters() {
 }
 
 // Advanced Filtering Features
-const filterPresets = ref<Array<{
-  id: string
-  name: string
-  filters: any
-  createdAt: Date
-}>>([])
+const filterPresets = ref<
+  Array<{
+    id: string
+    name: string
+    filters: any
+    createdAt: Date
+  }>
+>([])
 
 // Persistent last-session filter snapshot + quick restore
 interface PortfolioFilterState {
@@ -1368,7 +1716,7 @@ function snapshotCurrentFilters(): PortfolioFilterState {
     role: role.values(),
     tags: tags.values(),
     yearFrom: yearFromRange.value ?? null,
-    yearTo: yearToRange.value ?? null
+    yearTo: yearToRange.value ?? null,
   }
 }
 
@@ -1413,7 +1761,15 @@ function loadLastSessionFilters() {
 // Auto-persist filters (debounced)
 let _persistTimer: any = null
 watch(
-  [query, engine._raw, platform._raw, role._raw, tags._raw, yearFromRange, yearToRange],
+  [
+    query,
+    engine._raw,
+    platform._raw,
+    role._raw,
+    tags._raw,
+    yearFromRange,
+    yearToRange,
+  ],
   () => {
     clearTimeout(_persistTimer)
     _persistTimer = setTimeout(() => {
@@ -1437,7 +1793,7 @@ const _filterStateAPI = {
   snapshotCurrentFilters,
   saveTemporaryFilters,
   restoreTemporaryFilters,
-  loadLastSessionFilters
+  loadLastSessionFilters,
 }
 
 function saveFilterPreset() {
@@ -1454,35 +1810,41 @@ function saveFilterPreset() {
       role: Array.from(role.values()),
       tags: Array.from(tags.values()),
       yearFrom: yearFromRange.value,
-      yearTo: yearToRange.value
+      yearTo: yearToRange.value,
     },
-    createdAt: new Date()
+    createdAt: new Date(),
   }
 
   filterPresets.value.push(preset)
   // Save to localStorage for persistence
-  localStorage.setItem('portfolio-filter-presets', JSON.stringify(filterPresets.value))
+  localStorage.setItem(
+    'portfolio-filter-presets',
+    JSON.stringify(filterPresets.value)
+  )
   toastSuccess(`Filter preset "${presetName}" saved`)
 }
 
 function loadFilterPreset(preset: any) {
   query.value = preset.filters.query || ''
-  
+
   // Clear existing filters
   engine._raw.value = new Set(preset.filters.engine || [])
   platform._raw.value = new Set(preset.filters.platform || [])
   role._raw.value = new Set(preset.filters.role || [])
   tags._raw.value = new Set(preset.filters.tags || [])
-  
+
   yearFromRange.value = preset.filters.yearFrom || yearMin.value
   yearToRange.value = preset.filters.yearTo || yearMax.value
-  
+
   toastInfo(`Applied preset "${preset.name}"`)
 }
 
 function deleteFilterPreset(presetId: string) {
   filterPresets.value = filterPresets.value.filter(p => p.id !== presetId)
-  localStorage.setItem('portfolio-filter-presets', JSON.stringify(filterPresets.value))
+  localStorage.setItem(
+    'portfolio-filter-presets',
+    JSON.stringify(filterPresets.value)
+  )
   toastInfo('Filter preset deleted')
 }
 
@@ -1490,15 +1852,15 @@ function deleteFilterPreset(presetId: string) {
 const smartFilters = computed(() => {
   const list = store.user?.portfolio || []
   if (!list.length) return []
-  
+
   const suggestions = []
-  
+
   // Recent projects (last 2 years)
   const recentCount = list.filter((p: any) => {
     const year = new Date(p.createdAt || Date.now()).getFullYear()
     return year >= new Date().getFullYear() - 2
   }).length
-  
+
   if (recentCount > 0) {
     suggestions.push({
       name: 'Recent Projects',
@@ -1508,10 +1870,10 @@ const smartFilters = computed(() => {
         const currentYear = new Date().getFullYear()
         yearFromRange.value = currentYear - 2
         yearToRange.value = currentYear
-      }
+      },
     })
   }
-  
+
   // Projects with demo/live links
   const withDemoCount = list.filter((p: any) => p.demoUrl || p.url).length
   if (withDemoCount > 0) {
@@ -1521,10 +1883,10 @@ const smartFilters = computed(() => {
       action: () => {
         clearAllFilters()
         query.value = 'demo OR live OR url'
-      }
+      },
     })
   }
-  
+
   // GitHub projects
   const githubCount = list.filter((p: any) => p.githubUrl).length
   if (githubCount > 0) {
@@ -1534,10 +1896,10 @@ const smartFilters = computed(() => {
       action: () => {
         clearAllFilters()
         tags._raw.value = new Set(['GitHub', 'Open Source'])
-      }
+      },
     })
   }
-  
+
   return suggestions
 })
 
@@ -1548,7 +1910,7 @@ function loadSavedPresets() {
     if (saved) {
       filterPresets.value = JSON.parse(saved).map((p: any) => ({
         ...p,
-        createdAt: new Date(p.createdAt)
+        createdAt: new Date(p.createdAt),
       }))
     }
   } catch (error) {
@@ -1557,10 +1919,26 @@ function loadSavedPresets() {
 }
 
 const headerStats = computed(() => [
-  { label: `${projects.value.length} projects`, icon: 'mdi-briefcase', color: 'primary' },
-  { label: `${clips.value.length} clips`, icon: 'mdi-movie-open-outline', color: 'info' },
-  { label: `${achievements.value.length} achievements`, icon: 'mdi-trophy', color: 'success' },
-  { label: `${uniqueTags.value} tags`, icon: 'mdi-tag-multiple', color: 'warning' }
+  {
+    label: `${projects.value.length} projects`,
+    icon: 'mdi-briefcase',
+    color: 'primary',
+  },
+  {
+    label: `${clips.value.length} clips`,
+    icon: 'mdi-movie-open-outline',
+    color: 'info',
+  },
+  {
+    label: `${achievements.value.length} achievements`,
+    icon: 'mdi-trophy',
+    color: 'success',
+  },
+  {
+    label: `${uniqueTags.value} tags`,
+    icon: 'mdi-tag-multiple',
+    color: 'warning',
+  },
 ])
 
 // Showcase list: featured first, then recent fill-up to 6
@@ -1575,11 +1953,11 @@ const showcaseProjects = computed(() => {
 
 const uniqueTags = computed(() => {
   const s = new Set<string>()
-  projects.value.forEach(p => (p.tags||[]).forEach((t:string)=>s.add(t)))
+  projects.value.forEach(p => (p.tags || []).forEach((t: string) => s.add(t)))
   return s.size
 })
 
-function toEmbedUrl(url:string) {
+function toEmbedUrl(url: string) {
   try {
     if (url.includes('youtube.com/watch')) {
       const id = new URL(url).searchParams.get('v')
@@ -1590,27 +1968,37 @@ function toEmbedUrl(url:string) {
       return `https://www.youtube.com/embed/${id}`
     }
     return url
-  } catch { return url }
+  } catch {
+    return url
+  }
 }
 
-function displayYear(y:any) { try { return String(y).slice(0,4) } catch { return '' } }
+function displayYear(y: any) {
+  try {
+    return String(y).slice(0, 4)
+  } catch {
+    return ''
+  }
+}
 
 // Actions (stubs: integrate with existing flows as needed)
 async function addProject() {
   try {
     const title = window.prompt('Project title')?.trim()
     if (!title) return
-    const link = window.prompt('Optional link (Steam/itch/YouTube/GitHub)')?.trim() || ''
+    const link =
+      window.prompt('Optional link (Steam/itch/YouTube/GitHub)')?.trim() || ''
     const meta = link ? await PortfolioService.fetchLinkMetadata(link) : {}
-  await addItem({
+    await addItem({
       title,
       description: meta.description || '',
       image: meta.image || '',
       url: link,
-      githubUrl: PortfolioService.detectPlatform(link) === 'github' ? link : undefined,
+      githubUrl:
+        PortfolioService.detectPlatform(link) === 'github' ? link : undefined,
       tags: [],
       engines: [],
-      platforms: []
+      platforms: [],
     } as any)
     toastSuccess('Project added')
     // navigate to edit in legacy if desired
@@ -1621,7 +2009,9 @@ async function addProject() {
 
 async function importGithub() {
   try {
-    const url = window.prompt('GitHub repository URL (https://github.com/owner/repo)')?.trim()
+    const url = window
+      .prompt('GitHub repository URL (https://github.com/owner/repo)')
+      ?.trim()
     if (!url) return
     const meta = await PortfolioService.fetchLinkMetadata(url)
     const title = meta.title || url.split('/').slice(-1)[0]
@@ -1631,7 +2021,7 @@ async function importGithub() {
       githubUrl: url,
       url,
       image: meta.image || '',
-      tags: ['GitHub', 'Source']
+      tags: ['GitHub', 'Source'],
     } as any)
     toastSuccess('GitHub project imported')
   } catch {
@@ -1643,21 +2033,45 @@ async function generateShowcase() {
   try {
     // Simple heuristic: mark up to 6 items as featured: those with media/demoUrl first, otherwise newest
     const list = store.user.portfolio || []
-    if (!list.length) { toastInfo('No projects to showcase'); return }
+    if (!list.length) {
+      toastInfo('No projects to showcase')
+      return
+    }
     // clone
-    const items = list.map((x:any) => ({...x}))
-    const score = (p:any) => {
+    const items = list.map((x: any) => ({ ...x }))
+    const score = (p: any) => {
       let s = 0
-      if (p.demoUrl || p.liveUrl || (p.links||[]).some((l:any)=>/play|live|demo/i.test(l?.label||l?.type||''))) s += 5
-      if (p.image || p.thumbnail || (p.media||[]).some((m:any)=>/image|video/.test(m?.type||''))) s += 3
-      if ((p.engines||p.tags||[]).some((t:string)=>/unity|unreal|godot/i.test(String(t)))) s += 2
+      if (
+        p.demoUrl ||
+        p.liveUrl ||
+        (p.links || []).some((l: any) =>
+          /play|live|demo/i.test(l?.label || l?.type || '')
+        )
+      )
+        s += 5
+      if (
+        p.image ||
+        p.thumbnail ||
+        (p.media || []).some((m: any) => /image|video/.test(m?.type || ''))
+      )
+        s += 3
+      if (
+        (p.engines || p.tags || []).some((t: string) =>
+          /unity|unreal|godot/i.test(String(t))
+        )
+      )
+        s += 2
       const d = Date.parse(p.updatedAt || p.createdAt || p.date || '')
-      if (!isNaN(d)) s += Math.max(0, Math.floor((Date.now() - d) / (1000*60*60*24*365)) * -1) // newer is better
+      if (!isNaN(d))
+        s += Math.max(
+          0,
+          Math.floor((Date.now() - d) / (1000 * 60 * 60 * 24 * 365)) * -1
+        ) // newer is better
       return s
     }
-    items.sort((a:any,b:any)=>score(b)-score(a))
-    const top = new Set(items.slice(0,6).map((i:any)=>i.id))
-    const updated = list.map((p:any)=> ({...p, featured: top.has(p.id)}))
+    items.sort((a: any, b: any) => score(b) - score(a))
+    const top = new Set(items.slice(0, 6).map((i: any) => i.id))
+    const updated = list.map((p: any) => ({ ...p, featured: top.has(p.id) }))
     store.user.portfolio = updated
     await store.saveToStorage()
     toastSuccess('Showcase generated: marked featured projects')
@@ -1687,9 +2101,13 @@ function handleDuplicateProject(item: any) {
   console.log('Duplicate project:', item)
 }
 
-async function shareProject(p:any) {
+async function shareProject(p: any) {
   try {
-    const slug = String(p?.title || '').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60)
+    const slug = String(p?.title || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60)
     const url = `${window.location.origin}${window.location.pathname}#/portfolio/project/${slug}`
     if (navigator.share) {
       await navigator.share({ title: p?.title || 'Project', url })
@@ -1708,10 +2126,10 @@ async function sharePortfolio() {
   try {
     const url = `${window.location.origin}/portfolio/${store.user?.id || 'anonymous'}`
     if (navigator.share) {
-      await navigator.share({ 
-        title: 'My Gaming Portfolio', 
+      await navigator.share({
+        title: 'My Gaming Portfolio',
         text: 'Check out my gaming portfolio and projects',
-        url 
+        url,
       })
       toastSuccess('Portfolio shared')
     } else {
@@ -1759,20 +2177,25 @@ function handleResize() {
   }
 }
 
-function editProject(p:any) {
+function editProject(p: any) {
   try {
     const id = p?.id
-    router.push({ path: '/portfolio-legacy', query: { edit: id || '', focus: (p?.title||'').slice(0,60) } })
+    router.push({
+      path: '/portfolio-legacy',
+      query: { edit: id || '', focus: (p?.title || '').slice(0, 60) },
+    })
   } catch {}
 }
 
 // Featured toggle and tag editing
-function updateProject(p:any, updater:(_copy:any)=>void) {
+function updateProject(p: any, updater: (_copy: any) => void) {
   try {
-    const list = (store.user.portfolio || []).map((x:any) => ({...x}))
-    const idx = list.findIndex((x:any) => (x.id && x.id === p.id) || x.title === p.title)
+    const list = (store.user.portfolio || []).map((x: any) => ({ ...x }))
+    const idx = list.findIndex(
+      (x: any) => (x.id && x.id === p.id) || x.title === p.title
+    )
     if (idx !== -1) {
-      const copy = {...list[idx]}
+      const copy = { ...list[idx] }
       updater(copy)
       list[idx] = copy
       store.user.portfolio = list
@@ -1781,17 +2204,19 @@ function updateProject(p:any, updater:(_copy:any)=>void) {
   } catch {}
 }
 
-function toggleFeatured(p:any) {
-  updateProject(p, (c:any) => { c.featured = !c.featured })
+function toggleFeatured(p: any) {
+  updateProject(p, (c: any) => {
+    c.featured = !c.featured
+  })
 }
 
 const editingTagsFor = ref<any>(null)
 const autoFeature = ref(false)
 const tagSearch = ref('')
 
-function toggleTagEditor(p:any) {
+function toggleTagEditor(p: any) {
   const key = p.id || p.title
-  editingTagsFor.value = (editingTagsFor.value === key) ? null : key
+  editingTagsFor.value = editingTagsFor.value === key ? null : key
 }
 
 function autoFeatureUpdate() {
@@ -1804,10 +2229,10 @@ function autoFeatureUpdate() {
 
 // Enhanced filter management
 // Duplicate saveFilterPreset and unused _loadFilterPreset removed; original implementation earlier manages presets.
-function toggleProjectTag(p:any, tag:string) {
-  updateProject(p, (c:any) => {
+function toggleProjectTag(p: any, tag: string) {
+  updateProject(p, (c: any) => {
     const arr = Array.isArray(c.tags) ? [...c.tags] : []
-    const i = arr.findIndex((t:string) => String(t) === String(tag))
+    const i = arr.findIndex((t: string) => String(t) === String(tag))
     if (i >= 0) {
       arr.splice(i, 1)
     } else {
@@ -1818,21 +2243,27 @@ function toggleProjectTag(p:any, tag:string) {
 }
 
 // Safe counts to avoid undefined length access during early renders
-const projectsCount = computed(() => Array.isArray(projects.value) ? projects.value.length : 0)
-const clipsCount = computed(() => Array.isArray(clips.value) ? clips.value.length : 0)
-const achievementsCount = computed(() => Array.isArray(achievements.value) ? achievements.value.length : 0)
+const projectsCount = computed(() =>
+  Array.isArray(projects.value) ? projects.value.length : 0
+)
+const clipsCount = computed(() =>
+  Array.isArray(clips.value) ? clips.value.length : 0
+)
+const achievementsCount = computed(() =>
+  Array.isArray(achievements.value) ? achievements.value.length : 0
+)
 
 // Available skills computed from projects
 const availableSkills = computed(() => {
   const skillsMap = new Map()
-  
+
   // Extract skills from all projects
-  projects.value.forEach((project) => {
+  projects.value.forEach(project => {
     const projectSkills = project.skills || project.tech || project.tags || []
-    projectSkills.forEach((skill) => {
+    projectSkills.forEach(skill => {
       const skillName = typeof skill === 'string' ? skill : skill.name
       const skillId = skillName.toLowerCase().replace(/[^a-z0-9]/g, '-')
-      
+
       if (skillsMap.has(skillId)) {
         skillsMap.get(skillId).projectCount++
       } else {
@@ -1842,13 +2273,15 @@ const availableSkills = computed(() => {
           category: categorizeSkill(skillName),
           icon: getSkillIcon(skillName),
           projectCount: 1,
-          proficiency: Math.floor(Math.random() * 40) + 60 // Mock proficiency
+          proficiency: Math.floor(Math.random() * 40) + 60, // Mock proficiency
         })
       }
     })
   })
-  
-  return Array.from(skillsMap.values()).sort((a, b) => b.projectCount - a.projectCount)
+
+  return Array.from(skillsMap.values()).sort(
+    (a, b) => b.projectCount - a.projectCount
+  )
 })
 
 // Enhanced Portfolio Topbar Handlers
@@ -1861,7 +2294,7 @@ function handleFiltersUpdate(filters) {
     selectedType.value = filters.type
   }
   if (filters.featured !== undefined) {
-    featuredOnly.value = filters.featured  
+    featuredOnly.value = filters.featured
   }
   if (filters.skills !== undefined) {
     // Handle skill filtering if needed
@@ -1890,18 +2323,35 @@ function handleOpenAITools() {
 // Helper functions for skills
 function categorizeSkill(skillName) {
   const skill = skillName.toLowerCase()
-  if (skill.includes('game') || skill.includes('unity') || skill.includes('unreal')) return 'gaming'
-  if (skill.includes('design') || skill.includes('art') || skill.includes('creative')) return 'creative'  
-  if (skill.includes('lead') || skill.includes('manage') || skill.includes('team')) return 'soft'
+  if (
+    skill.includes('game') ||
+    skill.includes('unity') ||
+    skill.includes('unreal')
+  )
+    return 'gaming'
+  if (
+    skill.includes('design') ||
+    skill.includes('art') ||
+    skill.includes('creative')
+  )
+    return 'creative'
+  if (
+    skill.includes('lead') ||
+    skill.includes('manage') ||
+    skill.includes('team')
+  )
+    return 'soft'
   return 'technical'
 }
 
 function getSkillIcon(skillName) {
   const skill = skillName.toLowerCase()
   if (skill.includes('game')) return 'mdi-gamepad-variant'
-  if (skill.includes('code') || skill.includes('program')) return 'mdi-code-tags'
+  if (skill.includes('code') || skill.includes('program'))
+    return 'mdi-code-tags'
   if (skill.includes('design')) return 'mdi-palette'
-  if (skill.includes('team') || skill.includes('lead')) return 'mdi-account-group'
+  if (skill.includes('team') || skill.includes('lead'))
+    return 'mdi-account-group'
   if (skill.includes('analysis')) return 'mdi-chart-line'
   return 'mdi-tag'
 }
@@ -1927,15 +2377,17 @@ function handleOutsideClick(event: Event) {
   if (!filtersOpen.value) return
   const target = event.target as HTMLElement
   const sidebar = document.getElementById('portfolio-filters')
-  const toggleButton = document.querySelector('[aria-controls="portfolio-filters"]')
-  
+  const toggleButton = document.querySelector(
+    '[aria-controls="portfolio-filters"]'
+  )
+
   if (sidebar && !sidebar.contains(target) && !toggleButton?.contains(target)) {
     filtersOpen.value = false
   }
 }
 
 // Watch for escape key and outside clicks
-watch(filtersOpen, (isOpen) => {
+watch(filtersOpen, isOpen => {
   if (isOpen) {
     document.addEventListener('keydown', handleKeyboardNavigation)
     document.addEventListener('click', handleOutsideClick)
@@ -2356,7 +2808,7 @@ onUnmounted(() => {
   font-size: var(--font-size-sm);
 }
 
-.feature-toggle input[type="checkbox"] {
+.feature-toggle input[type='checkbox'] {
   display: none;
 }
 
@@ -2369,12 +2821,12 @@ onUnmounted(() => {
   transition: all var(--duration-fast);
 }
 
-.feature-toggle input[type="checkbox"]:checked + .checkmark {
+.feature-toggle input[type='checkbox']:checked + .checkmark {
   background: var(--color-primary-500);
   border-color: var(--color-primary-500);
 }
 
-.feature-toggle input[type="checkbox"]:checked + .checkmark::after {
+.feature-toggle input[type='checkbox']:checked + .checkmark::after {
   content: '✓';
   position: absolute;
   top: -2px;
@@ -2398,33 +2850,33 @@ onUnmounted(() => {
     align-items: stretch;
     gap: var(--spacing-3);
   }
-  
+
   .page-meta {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-2);
   }
-  
+
   .toolbar-main {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-3);
   }
-  
+
   .left-section,
   .right-section {
     justify-content: space-between;
   }
-  
+
   .sort-group {
     display: none;
   }
-  
+
   .toolbar-secondary {
     margin-top: var(--spacing-3);
     padding-top: var(--spacing-3);
   }
-  
+
   .advanced-options {
     flex-direction: column;
     align-items: stretch;
@@ -2543,7 +2995,7 @@ onUnmounted(() => {
     grid-template-columns: 260px 1fr;
     gap: var(--spacing-4);
   }
-  
+
   .filter-sidebar {
     padding: var(--spacing-4);
   }
@@ -2554,12 +3006,12 @@ onUnmounted(() => {
     grid-template-columns: 240px 1fr;
     gap: var(--spacing-3);
   }
-  
+
   .filter-sidebar {
     padding: var(--spacing-3);
     max-height: calc(100vh - var(--spacing-12));
   }
-  
+
   .content-toolbar {
     padding: var(--spacing-3) var(--spacing-4);
   }
@@ -2574,32 +3026,32 @@ onUnmounted(() => {
     min-height: var(--btn-min-h);
     padding: var(--spacing-2) var(--spacing-3);
   }
-  
+
   .mobile-nav-toggle {
     min-width: var(--spacing-12);
     height: var(--spacing-12);
   }
-  
+
   /* Better spacing for mobile */
   .sidebar-section {
     margin-bottom: var(--spacing-4);
     padding-bottom: var(--spacing-3);
   }
-  
+
   .smart-filters {
     gap: var(--spacing-3);
   }
-  
+
   .saved-presets {
     gap: var(--spacing-2);
   }
-  
+
   /* Improve mobile search experience */
   .search-input {
     font-size: 16px; /* Prevents zoom on iOS */
     min-height: 44px;
   }
-  
+
   .search-clear-btn {
     min-width: 44px;
     height: 44px;
@@ -2612,21 +3064,21 @@ onUnmounted(() => {
     width: 95%;
     padding: var(--spacing-2);
   }
-  
+
   .sidebar-section {
     margin-bottom: var(--spacing-3);
     padding-bottom: var(--spacing-2);
   }
-  
+
   .sidebar-title {
     font-size: var(--font-size-sm);
     margin-bottom: var(--spacing-2);
   }
-  
+
   .chips {
     gap: var(--spacing-1);
   }
-  
+
   .chip.filter-chip {
     font-size: var(--font-size-xs);
     padding: var(--spacing-1) var(--spacing-2);
@@ -2641,7 +3093,7 @@ onUnmounted(() => {
   .mobile-nav-toggle {
     transition: none;
   }
-  
+
   .smart-filter-btn:hover,
   .mobile-nav-toggle:hover {
     transform: none;
@@ -2653,12 +3105,12 @@ onUnmounted(() => {
   .preset-item {
     border-width: 2px;
   }
-  
+
   .smart-filter-btn:hover,
   .preset-item:hover {
     border-color: var(--color-primary-500);
   }
-  
+
   .mobile-nav-toggle {
     border-width: 2px;
     border-color: var(--color-primary-500);
@@ -2666,63 +3118,75 @@ onUnmounted(() => {
 }
 
 /* Dark theme enhancements for new components */
-[data-theme="dark"] .smart-filter-btn,
-[data-theme="dark"] .preset-item {
+[data-theme='dark'] .smart-filter-btn,
+[data-theme='dark'] .preset-item {
   background: rgba(15, 15, 15, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .smart-filter-btn:hover,
-[data-theme="dark"] .preset-item:hover {
+[data-theme='dark'] .smart-filter-btn:hover,
+[data-theme='dark'] .preset-item:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-[data-theme="dark"] .mobile-nav-toggle {
+[data-theme='dark'] .mobile-nav-toggle {
   background: rgba(15, 15, 15, 0.95);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Gaming theme enhancements */
 .theme-gaming .smart-filter-btn:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 217, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.1),
+    rgba(0, 217, 255, 0.05)
+  );
   border-color: rgba(0, 255, 136, 0.2);
   transform: translateY(-2px);
 }
 
 .theme-gaming .preset-item:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 217, 255, 0.03));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.08),
+    rgba(0, 217, 255, 0.03)
+  );
   border-color: rgba(0, 255, 136, 0.15);
 }
 
 .theme-gaming .mobile-nav-toggle:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 217, 255, 0.08));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.15),
+    rgba(0, 217, 255, 0.08)
+  );
   border-color: rgba(0, 255, 136, 0.3);
   transform: scale(1.1);
 }
 
-.portfolio-studio { 
-  min-height: 100vh; 
-  background: var(--surface-base); 
+.portfolio-studio {
+  min-height: 100vh;
+  background: var(--surface-base);
   color: var(--text-primary);
 }
 
-.portfolio-layout { 
-  display: grid; 
-  grid-template-columns: var(--grid-card-min-sm) 1fr; 
-  gap: var(--spacing-6); 
-  margin-top: var(--spacing-4); 
+.portfolio-layout {
+  display: grid;
+  grid-template-columns: var(--grid-card-min-sm) 1fr;
+  gap: var(--spacing-6);
+  margin-top: var(--spacing-4);
   padding: 0 var(--spacing-4);
   max-width: var(--page-container-max-width);
   margin-left: auto;
   margin-right: auto;
 }
 
-.filter-sidebar { 
-  position: sticky; 
-  top: var(--spacing-8); 
-  align-self: start; 
-  padding: var(--spacing-5); 
+.filter-sidebar {
+  position: sticky;
+  top: var(--spacing-8);
+  align-self: start;
+  padding: var(--spacing-5);
   border-radius: var(--radius-xl);
   backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
@@ -2807,23 +3271,24 @@ onUnmounted(() => {
   opacity: 0.8;
 }
 
-.sidebar-section { 
-  margin-bottom: var(--spacing-5); 
+.sidebar-section {
+  margin-bottom: var(--spacing-5);
   padding-bottom: var(--spacing-4);
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-border) 50%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--glass-border) 50%, transparent);
 }
 
 .sidebar-section:last-child {
   border-bottom: none;
 }
 
-.sidebar-title { 
-  font-weight: 600; 
-  opacity: 0.9; 
-  display: flex; 
-  align-items: center; 
-  gap: var(--spacing-2); 
-  margin-bottom: var(--spacing-3); 
+.sidebar-title {
+  font-weight: 600;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
   font-size: var(--font-size-sm);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
@@ -2857,7 +3322,8 @@ onUnmounted(() => {
 
 .search-input:focus {
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   outline: none;
 }
 
@@ -2918,7 +3384,11 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-500) 10%, transparent), color-mix(in srgb, var(--color-secondary-500) 5%, transparent));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent),
+    color-mix(in srgb, var(--color-secondary-500) 5%, transparent)
+  );
   opacity: 0;
   transition: opacity var(--duration-fast) var(--easing-ease);
 }
@@ -2936,7 +3406,8 @@ onUnmounted(() => {
 .filter-tab.active {
   background: var(--color-primary-500);
   color: var(--color-primary-contrast);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  box-shadow: 0 0 12px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
 .filter-tab.active::before {
@@ -3032,7 +3503,11 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-500) 8%, transparent), color-mix(in srgb, var(--color-secondary-500) 4%, transparent));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary-500) 8%, transparent),
+    color-mix(in srgb, var(--color-secondary-500) 4%, transparent)
+  );
   opacity: 0;
   border-radius: var(--radius-full);
   transition: opacity var(--duration-fast) var(--easing-ease);
@@ -3053,7 +3528,8 @@ onUnmounted(() => {
   background: var(--color-primary-500);
   border-color: var(--color-primary-500);
   color: var(--color-primary-contrast);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
+  box-shadow: 0 0 16px
+    color-mix(in srgb, var(--color-primary-500) 25%, transparent);
 }
 
 .skill-chip.active::before {
@@ -3101,11 +3577,11 @@ onUnmounted(() => {
 }
 
 /* Enhanced Filter Chips */
-.chips { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: var(--spacing-2); 
-  margin-top: var(--spacing-2); 
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-2);
 }
 
 .chips-scrollable {
@@ -3128,12 +3604,12 @@ onUnmounted(() => {
   border-radius: var(--radius-full);
 }
 
-.filter-chip { 
-  padding: var(--spacing-2) var(--spacing-3); 
-  border: 1px solid var(--glass-border); 
-  border-radius: var(--radius-full); 
-  background: var(--glass-bg-light); 
-  cursor: pointer; 
+.filter-chip {
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  background: var(--glass-bg-light);
+  cursor: pointer;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   transition: all var(--duration-fast) var(--easing-ease-out);
@@ -3146,8 +3622,8 @@ onUnmounted(() => {
   transform: translateY(-1px);
 }
 
-.filter-chip.active { 
-  border-color: var(--color-primary-500); 
+.filter-chip.active {
+  border-color: var(--color-primary-500);
   background: var(--color-primary-500);
   color: var(--text-on-primary);
   box-shadow: var(--shadow-sm);
@@ -3174,12 +3650,16 @@ onUnmounted(() => {
   gap: var(--spacing-2);
   padding-top: var(--spacing-2);
 }
-.content-area { display: flex; flex-direction: column; gap: var(--spacing-4); }
-.content-toolbar { 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  padding: var(--spacing-4); 
+.content-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+.content-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4);
   border-radius: var(--radius-lg);
   backdrop-filter: var(--glass-backdrop-blur);
   border: 1px solid var(--glass-border);
@@ -3192,8 +3672,8 @@ onUnmounted(() => {
   gap: var(--spacing-1);
 }
 
-.result-count { 
-  font-weight: 600; 
+.result-count {
+  font-weight: 600;
   opacity: 0.9;
   font-size: var(--font-size-sm);
 }
@@ -3206,10 +3686,10 @@ onUnmounted(() => {
   color: var(--color-primary-600);
   opacity: 0.8;
 }
-.sort-view-group { 
-  display: flex; 
-  align-items: center; 
-  gap: var(--spacing-3); 
+.sort-view-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
   flex-wrap: wrap;
 }
 
@@ -3228,13 +3708,13 @@ onUnmounted(() => {
   border: 1px solid var(--glass-border);
 }
 
-.sort-group :deep(.btn-unified) { 
-  border-radius: var(--radius-full); 
+.sort-group :deep(.btn-unified) {
+  border-radius: var(--radius-full);
   border: none;
   padding: var(--spacing-2) var(--spacing-3);
 }
 
-.sort-group :deep(.btn-unified.active) { 
+.sort-group :deep(.btn-unified.active) {
   background: var(--color-primary-500);
   color: var(--text-on-primary);
   box-shadow: var(--shadow-md);
@@ -3268,9 +3748,9 @@ onUnmounted(() => {
   user-select: none;
 }
 
-.view-toggle { 
-  display: flex; 
-  gap: var(--spacing-1); 
+.view-toggle {
+  display: flex;
+  gap: var(--spacing-1);
 }
 
 .view-toggle :deep(.view-toggle-group) {
@@ -3281,28 +3761,64 @@ onUnmounted(() => {
 }
 
 /* Year slider */
-.year-slider { display: flex; flex-direction: column; gap: var(--spacing-2); }
-.year-slider .slider-values { display: flex; align-items: center; gap: var(--spacing-2); font-weight: 600; opacity: 0.9; }
-.slider-wrapper { position: relative; height: 28px; }
-.slider-wrapper input[type=range] { position: absolute; left: 0; right: 0; top: 6px; width: 100%; pointer-events: none; -webkit-appearance: none; appearance: none; background: none; }
-.slider-wrapper input[type=range]::-webkit-slider-thumb { pointer-events: auto; -webkit-appearance: none; width: 14px; height: 14px; border-radius: 999px; background: var(--color-primary-500); border: 2px solid #fff; box-shadow: 0 0 0 2px var(--color-primary-500); }
-.slider-wrapper input[type=range]::-webkit-slider-runnable-track { height: 4px; background: var(--glass-border); border-radius: 999px; }
+.year-slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+.year-slider .slider-values {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-weight: 600;
+  opacity: 0.9;
+}
+.slider-wrapper {
+  position: relative;
+  height: 28px;
+}
+.slider-wrapper input[type='range'] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  width: 100%;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+}
+.slider-wrapper input[type='range']::-webkit-slider-thumb {
+  pointer-events: auto;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--color-primary-500);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px var(--color-primary-500);
+}
+.slider-wrapper input[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--glass-border);
+  border-radius: 999px;
+}
 
 /* Enhanced Mobile Quick Filter */
-.quick-filter-bar { 
-  padding: var(--spacing-3); 
+.quick-filter-bar {
+  padding: var(--spacing-3);
   background: var(--glass-bg-light);
   border-radius: var(--radius-lg);
   margin-bottom: var(--spacing-3);
   border: 1px solid var(--glass-border);
 }
 
-.chips-scroll { 
-  display: flex; 
-  gap: var(--spacing-2); 
-  overflow-x: auto; 
-  -webkit-overflow-scrolling: touch; 
-  padding-bottom: var(--spacing-1); 
+.chips-scroll {
+  display: flex;
+  gap: var(--spacing-2);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--spacing-1);
   scrollbar-width: none;
 }
 
@@ -3310,13 +3826,15 @@ onUnmounted(() => {
   display: none;
 }
 
-.chips-scroll .chip { 
-  white-space: nowrap; 
+.chips-scroll .chip {
+  white-space: nowrap;
   font-size: var(--font-size-xs);
   padding: var(--spacing-1-5) var(--spacing-3);
 }
 
-.panel { margin: var(--spacing-md) 0 var(--spacing-xl); }
+.panel {
+  margin: var(--spacing-md) 0 var(--spacing-xl);
+}
 
 /* Enhanced Grid Layouts with Width Consistency */
 .projects-grid,
@@ -3326,7 +3844,10 @@ onUnmounted(() => {
   display: grid;
   gap: var(--spacing-6);
   width: 100%;
-  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-lg), 1fr)
+  );
   padding: var(--spacing-4) 0;
 }
 
@@ -3364,7 +3885,10 @@ onUnmounted(() => {
 
 /* Enhanced grid view modes */
 .projects-grid.grid {
-  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-lg), 1fr)
+  );
 }
 
 .projects-grid.list {
@@ -3389,8 +3913,8 @@ onUnmounted(() => {
   }
 }
 
-.showcase-grid { 
-  gap: var(--spacing-6); 
+.showcase-grid {
+  gap: var(--spacing-6);
   padding: var(--spacing-4) 0;
 }
 
@@ -3451,24 +3975,73 @@ onUnmounted(() => {
   justify-content: center;
   flex-wrap: wrap;
 }
-.card .thumb { position:relative; height: 140px; border-radius: var(--radius-md); background: var(--glass-bg); background-size: cover; background-position: center; border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; }
-.thumb-fallback { font-weight: 800; font-size: 2rem; color: var(--text-secondary); }
-.badges { position:absolute; top: var(--spacing-2); left: var(--spacing-2); display:flex; gap: var(--spacing-1-5); }
+.card .thumb {
+  position: relative;
+  height: 140px;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.thumb-fallback {
+  font-weight: 800;
+  font-size: 2rem;
+  color: var(--text-secondary);
+}
+.badges {
+  position: absolute;
+  top: var(--spacing-2);
+  left: var(--spacing-2);
+  display: flex;
+  gap: var(--spacing-1-5);
+}
 /* Local badge replaced by unified .badge */
-.card .body { padding: var(--spacing-2-5); }
-.title { font-weight: 700; display:flex; align-items:center; gap: var(--spacing-1-5); }
-.meta { color: var(--text-secondary); font-size: 0.85rem; margin-top: 2px; }
-.tags { display:flex; gap: var(--spacing-1-5); flex-wrap: wrap; margin: var(--spacing-2) 0; }
-.tag { border:1px solid var(--glass-border); background: var(--glass-bg); border-radius:999px; padding: var(--spacing-0-5) var(--spacing-2); font-size: 0.75rem; }
-.actions { display:flex; gap: var(--spacing-2); }
+.card .body {
+  padding: var(--spacing-2-5);
+}
+.title {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1-5);
+}
+.meta {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+.tags {
+  display: flex;
+  gap: var(--spacing-1-5);
+  flex-wrap: wrap;
+  margin: var(--spacing-2) 0;
+}
+.tag {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  border-radius: 999px;
+  padding: var(--spacing-0-5) var(--spacing-2);
+  font-size: 0.75rem;
+}
+.actions {
+  display: flex;
+  gap: var(--spacing-2);
+}
 
-.projects-grid { 
-  gap: var(--spacing-4); 
+.projects-grid {
+  gap: var(--spacing-4);
   padding: var(--spacing-4) 0;
 }
 
 .projects-grid.grid {
-  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--grid-card-min-lg), 1fr)
+  );
 }
 
 .projects-grid.list {
@@ -3487,36 +4060,99 @@ onUnmounted(() => {
   box-shadow: var(--shadow-lg);
 }
 
-.projects-grid.grid .project-card .row { 
+.projects-grid.grid .project-card .row {
   display: flex;
   flex-direction: column;
 }
 
-.projects-grid.list .project-card .row { 
-  display: grid; 
-  grid-template-columns: var(--grid-card-min-xs) 1fr; 
+.projects-grid.list .project-card .row {
+  display: grid;
+  grid-template-columns: var(--grid-card-min-xs) 1fr;
   gap: var(--spacing-4);
   align-items: start;
 }
-.cover { height: 140px; border-radius: var(--radius-md); background: var(--glass-bg); background-size: cover; background-position: center; border:1px solid var(--glass-border); }
-.projects-grid.list .cover { height: 100%; min-height: 160px; }
-.info .sub { color: var(--text-secondary); font-size: 0.9rem; margin: var(--spacing-1) 0; }
-.info .desc { color: var(--text-primary); opacity: 0.9; font-size: 0.95rem; margin-bottom: 6px; }
+.cover {
+  height: 140px;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--glass-border);
+}
+.projects-grid.list .cover {
+  height: 100%;
+  min-height: 160px;
+}
+.info .sub {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: var(--spacing-1) 0;
+}
+.info .desc {
+  color: var(--text-primary);
+  opacity: 0.9;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
 
-.clips-grid { gap: var(--spacing-3); }
-.clip .embed { position:relative; padding-top: 56.25%; border-radius: var(--radius-md); overflow:hidden; border:1px solid var(--glass-border); background: var(--glass-bg); }
-.clip iframe { position:absolute; inset:0; width:100%; height:100%; }
-.clip .caption { padding: var(--spacing-2-5); }
+.clips-grid {
+  gap: var(--spacing-3);
+}
+.clip .embed {
+  position: relative;
+  padding-top: 56.25%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+}
+.clip iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.clip .caption {
+  padding: var(--spacing-2-5);
+}
 
-.achievements-grid { gap: var(--spacing-3); }
-.ach-card { padding: var(--spacing-3); }
-.ach-card .title { font-weight:700; margin-bottom: var(--spacing-1); display:flex; align-items:center; gap: var(--spacing-1-5); }
-.ach-card .meta { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 6px; }
+.achievements-grid {
+  gap: var(--spacing-3);
+}
+.ach-card {
+  padding: var(--spacing-3);
+}
+.ach-card .title {
+  font-weight: 700;
+  margin-bottom: var(--spacing-1);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1-5);
+}
+.ach-card .meta {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
 
-.stat-grid { gap: var(--spacing-3); }
-.stat { padding: 14px; border:1px solid var(--glass-border); border-radius: var(--radius-md); background: var(--surface-elevated); text-align:center; }
-.val { font-weight: 800; font-size: 1.6rem; }
-.lbl { color: var(--text-secondary); font-size: 0.85rem; }
+.stat-grid {
+  gap: var(--spacing-3);
+}
+.stat {
+  padding: 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated);
+  text-align: center;
+}
+.val {
+  font-weight: 800;
+  font-size: 1.6rem;
+}
+.lbl {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
 
 /* Enhanced Responsive Design */
 @media (max-width: var(--breakpoint-lg)) {
@@ -3525,13 +4161,13 @@ onUnmounted(() => {
     padding: 0 var(--spacing-3);
     gap: var(--spacing-4);
   }
-  
+
   .filter-sidebar {
     position: fixed;
-    left: 0; 
-    top: 0; 
+    left: 0;
+    top: 0;
     bottom: 0;
-    width: 85%; 
+    width: 85%;
     max-width: calc(var(--page-narrow-width) * 0.5);
     z-index: var(--z-overlay, 1000);
     transform: translateX(-100%);
@@ -3540,11 +4176,11 @@ onUnmounted(() => {
     border-left: none;
     max-height: 100vh;
   }
-  
-  .portfolio-layout.filters-open .filter-sidebar { 
-    transform: translateX(0); 
+
+  .portfolio-layout.filters-open .filter-sidebar {
+    transform: translateX(0);
   }
-  
+
   .portfolio-layout::after {
     content: '';
     position: fixed;
@@ -3556,10 +4192,10 @@ onUnmounted(() => {
     transition: opacity var(--duration-normal) var(--easing-ease-out);
     backdrop-filter: blur(4px);
   }
-  
-  .portfolio-layout.filters-open::after { 
-    opacity: 1; 
-    pointer-events: auto; 
+
+  .portfolio-layout.filters-open::after {
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
@@ -3568,25 +4204,25 @@ onUnmounted(() => {
     grid-template-columns: 1fr;
     gap: var(--spacing-4);
   }
-  
+
   .projects-grid.grid {
     grid-template-columns: 1fr;
   }
-  
+
   .projects-grid.list .project-card .row {
     grid-template-columns: 1fr;
   }
-  
+
   .content-toolbar {
     flex-direction: column;
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .sort-view-group {
     justify-content: center;
   }
-  
+
   .advanced-controls {
     justify-content: center;
     flex-wrap: wrap;
@@ -3597,16 +4233,16 @@ onUnmounted(() => {
   .portfolio-layout {
     padding: 0 var(--spacing-2);
   }
-  
+
   .filter-sidebar {
     width: 90%;
     padding: var(--spacing-4);
   }
-  
+
   .content-toolbar {
     padding: var(--spacing-3);
   }
-  
+
   .sort-group {
     flex-direction: column;
     width: 100%;
@@ -3614,30 +4250,30 @@ onUnmounted(() => {
 }
 
 /* Enhanced Dark Theme Support */
-[data-theme="dark"] .chip { 
-  background: var(--surface-glass); 
+[data-theme='dark'] .chip {
+  background: var(--surface-glass);
   border-color: color-mix(in srgb, var(--glass-border) 80%, transparent);
 }
 
-[data-theme="dark"] .tag { 
-  background: var(--surface-glass); 
+[data-theme='dark'] .tag {
+  background: var(--surface-glass);
   border-color: color-mix(in srgb, var(--glass-border) 80%, transparent);
 }
 
-[data-theme="dark"] .filter-sidebar {
+[data-theme='dark'] .filter-sidebar {
   background: color-mix(in srgb, var(--surface-elevated) 95%, transparent);
   border-color: color-mix(in srgb, var(--glass-border) 60%, transparent);
 }
 
-[data-theme="dark"] .content-toolbar {
+[data-theme='dark'] .content-toolbar {
   background: color-mix(in srgb, var(--surface-elevated) 90%, transparent);
 }
 
-[data-theme="dark"] .empty-state {
+[data-theme='dark'] .empty-state {
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .result-summary {
+[data-theme='dark'] .result-summary {
   color: var(--text-primary);
 }
 
@@ -3649,7 +4285,7 @@ onUnmounted(() => {
   .portfolio-layout::after {
     transition: none;
   }
-  
+
   .showcase-card:hover,
   .project-card:hover {
     transform: none;
@@ -3661,7 +4297,7 @@ onUnmounted(() => {
   .content-toolbar {
     border-width: 2px;
   }
-  
+
   .chip.active,
   .sort-group :deep(.btn-unified.active) {
     border: 2px solid var(--color-primary-500);
@@ -3703,12 +4339,12 @@ onUnmounted(() => {
     gap: var(--spacing-2);
     width: 100%;
   }
-  
+
   .primary-actions {
     width: 100%;
     justify-content: center;
   }
-  
+
   .secondary-actions {
     justify-content: center;
   }
@@ -3767,8 +4403,12 @@ onUnmounted(() => {
 }
 
 @keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 /* Skeleton loading for better perceived performance */
@@ -3844,7 +4484,11 @@ onUnmounted(() => {
 
 /* Enhanced Empty State */
 .enhanced-empty {
-  background: linear-gradient(135deg, var(--glass-bg-light) 0%, var(--glass-bg) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--glass-bg-light) 0%,
+    var(--glass-bg) 100%
+  );
   border-radius: var(--radius-xl);
   border: 2px dashed var(--glass-border);
   min-height: 500px;
@@ -4111,4 +4755,3 @@ onUnmounted(() => {
   background: var(--color-primary-400);
 }
 </style>
-

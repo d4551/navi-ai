@@ -17,7 +17,7 @@ const apiClient = {
       if (v !== undefined && v !== null) qs.append(k, String(v))
     })
     const full = qs.toString() ? `${endpoint}?${qs.toString()}` : endpoint
-    
+
     const data = await APIClient.get(full)
     return { data }
   },
@@ -25,7 +25,7 @@ const apiClient = {
     logger.info(`[API] POST ${endpoint}`, payload, 'ApiService')
     const data = await APIClient.post(endpoint, payload)
     return { data }
-  }
+  },
 }
 
 /**
@@ -34,26 +34,26 @@ const apiClient = {
  */
 export const getDashboardData = async () => {
   try {
-    const response = await apiClient.get('/dashboard/main');
-    return response.data;
+    const response = await apiClient.get('/dashboard/main')
+    return response.data
   } catch (error) {
-    logger.error('Error fetching dashboard data:', error, 'ApiService');
-    throw error;
+    logger.error('Error fetching dashboard data:', error, 'ApiService')
+    throw error
   }
-};
+}
 
 /**
  * Fetches a list of featured gaming studios.
  * @returns {Promise<Array>} A list of gaming studios.
  */
 export const getFeaturedStudios = async () => {
-    try {
-    const response = await apiClient.get('/gaming/studios');
-        return response.data;
-    } catch (error) {
-        logger.error('Error fetching featured studios:', error, 'ApiService');
-        throw error;
-    }
+  try {
+    const response = await apiClient.get('/gaming/studios')
+    return response.data
+  } catch (error) {
+    logger.error('Error fetching featured studios:', error, 'ApiService')
+    throw error
+  }
 }
 
 /**
@@ -61,13 +61,13 @@ export const getFeaturedStudios = async () => {
  * @returns {Promise<Array>} A list of daily challenges.
  */
 export const getDailyChallenges = async () => {
-    try {
-    const response = await apiClient.get('/challenges/daily');
-        return response.data;
-    } catch (error) {
-        logger.error('Error fetching daily challenges:', error, 'ApiService');
-        throw error;
-    }
+  try {
+    const response = await apiClient.get('/challenges/daily')
+    return response.data
+  } catch (error) {
+    logger.error('Error fetching daily challenges:', error, 'ApiService')
+    throw error
+  }
 }
 
 /**
@@ -75,11 +75,11 @@ export const getDailyChallenges = async () => {
  * @returns {Promise<Object>} The result of the AI analysis.
  */
 export const performAIAnalysis = async () => {
-    try {
-        const response = await apiClient.post('/ai/analyze-profile');
-        return response.data;
-    } catch (error) {
-        logger.error('Error performing AI analysis:', error, 'ApiService');
-        throw error;
-    }
+  try {
+    const response = await apiClient.post('/ai/analyze-profile')
+    return response.data
+  } catch (error) {
+    logger.error('Error performing AI analysis:', error, 'ApiService')
+    throw error
+  }
 }

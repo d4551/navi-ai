@@ -11,29 +11,17 @@
     </UnifiedButton>
     <ul class="dropdown-menu">
       <li>
-        <a
-          class="dropdown-item"
-          href="#"
-          @click="$emit('export', 'html')"
-        >
+        <a class="dropdown-item" href="#" @click="$emit('export', 'html')">
           <AppIcon name="mdi-web" class="me-2" />HTML Portfolio
         </a>
       </li>
       <li>
-        <a
-          class="dropdown-item"
-          href="#"
-          @click="$emit('export', 'json')"
-        >
+        <a class="dropdown-item" href="#" @click="$emit('export', 'json')">
           <AppIcon name="mdi-code-json" class="me-2" />JSON Data
         </a>
       </li>
       <li>
-        <a
-          class="dropdown-item"
-          href="#"
-          @click="$emit('export', 'pdf')"
-        >
+        <a class="dropdown-item" href="#" @click="$emit('export', 'pdf')">
           <AppIcon name="mdi-file-document-outline" />PDF Document
         </a>
       </li>
@@ -48,8 +36,8 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 defineProps({
   disabled: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 defineEmits(['export'])

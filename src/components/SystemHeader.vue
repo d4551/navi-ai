@@ -4,7 +4,10 @@
     <div class="status-bar">
       <div class="status-bar-content">
         <div class="station-info">
-          <AppIcon :name="icon || 'mdi-application-brackets'" class="station-icon" />
+          <AppIcon
+            :name="icon || 'mdi-application-brackets'"
+            class="station-icon"
+          />
           <span class="station-label">{{ title }}</span>
           <span class="station-id">{{ stationId }}</span>
         </div>
@@ -18,8 +21,8 @@
 
         <div class="quick-actions">
           <!-- Provider Health Status Pill -->
-          <div 
-            v-if="providerHealth" 
+          <div
+            v-if="providerHealth"
             class="provider-health-pill"
             :class="providerHealthStatusClass"
             :title="providerHealthStatusText"
@@ -27,13 +30,31 @@
           >
             <AppIcon :name="providerHealthIcon" />
             <span class="provider-status-text">
-              {{ Object.values(providerHealth).filter(Boolean).length }}/{{ Object.keys(providerHealth).length }}
+              {{ Object.values(providerHealth).filter(Boolean).length }}/{{
+                Object.keys(providerHealth).length
+              }}
             </span>
           </div>
 
           <!-- Theme toggle removed by guideline; managed in Settings -->
-          <IconButton class="quick-btn" variant="glass" size="sm" icon="ArrowPathIcon" title="Refresh System" aria-label="Refresh System" @click="refreshSystem" />
-          <IconButton class="quick-btn" variant="glass" size="sm" icon="mdi-cog-outline" title="System Settings" aria-label="System Settings" @click="openSettings" />
+          <IconButton
+            class="quick-btn"
+            variant="glass"
+            size="sm"
+            icon="ArrowPathIcon"
+            title="Refresh System"
+            aria-label="Refresh System"
+            @click="refreshSystem"
+          />
+          <IconButton
+            class="quick-btn"
+            variant="glass"
+            size="sm"
+            icon="mdi-cog-outline"
+            title="System Settings"
+            aria-label="System Settings"
+            @click="openSettings"
+          />
         </div>
       </div>
     </div>
@@ -49,8 +70,8 @@
           <p v-if="subtitle" class="system-subtitle">{{ subtitle }}</p>
         </div>
         <div class="center">
-          <div 
-            v-if="providerHealth" 
+          <div
+            v-if="providerHealth"
             class="provider-health-pill"
             :class="providerHealthStatusClass"
             :title="providerHealthStatusText"
@@ -58,7 +79,9 @@
           >
             <AppIcon :name="providerHealthIcon" />
             <span class="provider-status-text">
-              {{ Object.values(providerHealth).filter(Boolean).length }}/{{ Object.keys(providerHealth).length }}
+              {{ Object.values(providerHealth).filter(Boolean).length }}/{{
+                Object.keys(providerHealth).length
+              }}
             </span>
           </div>
         </div>
@@ -67,8 +90,24 @@
             <AppIcon :name="systemStatusIcon" class="status-icon" />
             <span class="status-text">{{ systemStatusText }}</span>
           </div>
-          <IconButton class="quick-btn" variant="glass" size="sm" icon="ArrowPathIcon" title="Refresh System" aria-label="Refresh System" @click="refreshSystem" />
-          <IconButton class="quick-btn" variant="glass" size="sm" icon="mdi-cog-outline" title="System Settings" aria-label="System Settings" @click="openSettings" />
+          <IconButton
+            class="quick-btn"
+            variant="glass"
+            size="sm"
+            icon="ArrowPathIcon"
+            title="Refresh System"
+            aria-label="Refresh System"
+            @click="refreshSystem"
+          />
+          <IconButton
+            class="quick-btn"
+            variant="glass"
+            size="sm"
+            icon="mdi-cog-outline"
+            title="System Settings"
+            aria-label="System Settings"
+            @click="openSettings"
+          />
         </div>
       </div>
     </div>
@@ -92,11 +131,11 @@ const props = defineProps({
   online: { type: Boolean, default: false },
   actions: { type: Array, default: () => [] },
   icon: { type: String, default: 'mdi-cog' },
-  providerHealth: { type: Object, default: null } // Provider health status from JobSearch
+  providerHealth: { type: Object, default: null }, // Provider health status from JobSearch
 })
 
 // Define emits for parent communication
-const emit = defineEmits(['refresh','settings-open'])
+const emit = defineEmits(['refresh', 'settings-open'])
 
 // Setup router and store
 const router = useRouter()
@@ -121,11 +160,14 @@ const systemStatusText = computed(() => {
 // Provider health status computeds
 const providerHealthStatusClass = computed(() => {
   if (!props.providerHealth) return 'provider-status-unknown'
-  
+
   const totalProviders = Object.keys(props.providerHealth).length
-  const activeProviders = Object.values(props.providerHealth).filter(Boolean).length
-  const healthPercentage = totalProviders > 0 ? (activeProviders / totalProviders) * 100 : 0
-  
+  const activeProviders = Object.values(props.providerHealth).filter(
+    Boolean
+  ).length
+  const healthPercentage =
+    totalProviders > 0 ? (activeProviders / totalProviders) * 100 : 0
+
   if (healthPercentage === 100) return 'provider-status-healthy'
   if (healthPercentage >= 50) return 'provider-status-degraded'
   return 'provider-status-down'
@@ -133,23 +175,30 @@ const providerHealthStatusClass = computed(() => {
 
 const providerHealthStatusText = computed(() => {
   if (!props.providerHealth) return 'Provider status unknown'
-  
+
   const totalProviders = Object.keys(props.providerHealth).length
-  const activeProviders = Object.values(props.providerHealth).filter(Boolean).length
-  const healthPercentage = totalProviders > 0 ? (activeProviders / totalProviders) * 100 : 0
-  
+  const activeProviders = Object.values(props.providerHealth).filter(
+    Boolean
+  ).length
+  const healthPercentage =
+    totalProviders > 0 ? (activeProviders / totalProviders) * 100 : 0
+
   if (healthPercentage === 100) return 'All providers operational'
-  if (healthPercentage >= 50) return `${activeProviders}/${totalProviders} providers up`
+  if (healthPercentage >= 50)
+    return `${activeProviders}/${totalProviders} providers up`
   return 'Providers experiencing issues'
 })
 
 const providerHealthIcon = computed(() => {
   if (!props.providerHealth) return 'QuestionMarkCircleIcon-circle'
-  
+
   const totalProviders = Object.keys(props.providerHealth).length
-  const activeProviders = Object.values(props.providerHealth).filter(Boolean).length
-  const healthPercentage = totalProviders > 0 ? (activeProviders / totalProviders) * 100 : 0
-  
+  const activeProviders = Object.values(props.providerHealth).filter(
+    Boolean
+  ).length
+  const healthPercentage =
+    totalProviders > 0 ? (activeProviders / totalProviders) * 100 : 0
+
   if (healthPercentage === 100) return 'CheckIcon-circle-outline'
   if (healthPercentage >= 50) return 'mdi-alert-circle-outline'
   return 'XMarkIcon-circle-outline'
@@ -161,12 +210,12 @@ const refreshSystem = async () => {
   try {
     logger.info('SystemHeader: Refreshing system...')
     emit('refresh')
-    
+
     // Refresh services status
     if (store.refreshSystemStatus) {
       await store.refreshSystemStatus()
     }
-    
+
     // Force page reload can be handled by parent if needed
   } catch (error) {
     logger.error('SystemHeader: Failed to refresh system', error)
@@ -177,7 +226,7 @@ const openSettings = () => {
   try {
     logger.info('SystemHeader: Opening settings')
     emit('settings-open')
-    
+
     // Navigate to settings route if available
     if (router.hasRoute('settings')) {
       router.push('/settings')
@@ -197,7 +246,7 @@ const openSettings = () => {
 .status-bar {
   padding: var(--spacing-sm) var(--spacing-md);
   border-b: 1px solid var(--glass-border);
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.6);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.6);
   backdrop-filter: blur(12px) saturate(1.2);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);
 }
@@ -209,10 +258,23 @@ const openSettings = () => {
   gap: var(--spacing-md);
 }
 
-.station-info { display: inline-flex; align-items: center; gap: var(--spacing-sm); }
-.station-icon { font-size: 1.1rem; color: var(--color-primary-500); }
-.station-label { font-weight: 600; color: var(--text-primary-600); }
-.station-id { font-size: 0.8rem; color: var(--text-secondary); }
+.station-info {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+.station-icon {
+  font-size: 1.1rem;
+  color: var(--color-primary-500);
+}
+.station-label {
+  font-weight: 600;
+  color: var(--text-primary-600);
+}
+.station-id {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
 
 .system-status .status-indicator {
   display: inline-flex;
@@ -221,31 +283,62 @@ const openSettings = () => {
   padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid var(--glass-border);
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.45);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.45);
   color: var(--text-primary-600);
 }
-.status-indicator.online { border-color: color-mix(in srgb, var(--color-success) 35%, transparent); }
-.status-indicator.offline { border-color: color-mix(in srgb, var(--color-danger) 35%, transparent); }
-.status-icon { opacity: 0.9; }
+.status-indicator.online {
+  border-color: color-mix(in srgb, var(--color-success) 35%, transparent);
+}
+.status-indicator.offline {
+  border-color: color-mix(in srgb, var(--color-danger) 35%, transparent);
+}
+.status-icon {
+  opacity: 0.9;
+}
 
-.quick-actions { display: inline-flex; align-items: center; gap: var(--spacing-sm); }
+.quick-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
 .quick-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px; height: 28px;
+  width: 28px;
+  height: 28px;
   border-radius: 10px;
   border: 1px solid var(--glass-border);
-  background: rgba(var(--surface-glass-rgb, 255,255,255), 0.5);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.5);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
 }
-.quick-btn:hover { background: rgba(var(--surface-glass-rgb, 255,255,255), 0.65); }
+.quick-btn:hover {
+  background: rgba(var(--surface-glass-rgb, 255, 255, 255), 0.65);
+}
 
-.main-header.simple { padding: var(--spacing-md); }
-.main-header .header-flex flex-wrap { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: var(--spacing-md); }
-.system-title { display: flex; align-items: center; gap: var(--spacing-sm); margin: 0; }
-.title-icon { color: var(--color-primary-500); }
-.system-subtitle { margin: 4px 0 0; color: var(--text-secondary); font-size: 0.9rem; }
+.main-header.simple {
+  padding: var(--spacing-md);
+}
+.main-header .header-flex flex-wrap {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+.system-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0;
+}
+.title-icon {
+  color: var(--color-primary-500);
+}
+.system-subtitle {
+  margin: 4px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
 .system-header {
   background: var(--surface-elevated);
   border: 1px solid var(--border-base);
@@ -260,7 +353,7 @@ const openSettings = () => {
 }
 
 /* Enhanced Dark Theme Support */
-[data-theme="dark"] .system-header,
+[data-theme='dark'] .system-header,
 .dark-theme .system-header {
   background: rgba(15, 15, 15, 0.95);
   border-color: rgba(255, 255, 255, 0.1);
@@ -270,7 +363,7 @@ const openSettings = () => {
 
 /* System preference support */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .system-header {
+  :root:not([data-theme='light']) .system-header {
     background: rgba(15, 15, 15, 0.95);
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -328,7 +421,7 @@ const openSettings = () => {
   box-shadow: var(--shadow-sm);
 }
 
-[data-theme="dark"] .status-panel,
+[data-theme='dark'] .status-panel,
 :root:not([data-theme]) .status-panel {
   background: var(--dark-bg-secondary-500);
   border-color: var(--glass-border-dark);
@@ -388,7 +481,7 @@ const openSettings = () => {
   border: 1px solid var(--glass-border);
 }
 
-[data-theme="dark"] .status-item,
+[data-theme='dark'] .status-item,
 :root:not([data-theme]) .status-item {
   background: var(--dark-bg-primary-500);
   border-color: var(--glass-border-dark);
@@ -538,28 +631,28 @@ const openSettings = () => {
 }
 
 /* Dark theme support for provider health pill */
-[data-theme="dark"] .provider-status-healthy,
+[data-theme='dark'] .provider-status-healthy,
 :root:not([data-theme]) .provider-status-healthy {
   background: rgba(34, 197, 94, 0.2);
   border-color: rgba(34, 197, 94, 0.4);
   color: #22c55e;
 }
 
-[data-theme="dark"] .provider-status-degraded,
+[data-theme='dark'] .provider-status-degraded,
 :root:not([data-theme]) .provider-status-degraded {
   background: rgba(245, 158, 11, 0.2);
   border-color: rgba(245, 158, 11, 0.4);
   color: #f59e0b;
 }
 
-[data-theme="dark"] .provider-status-down,
+[data-theme='dark'] .provider-status-down,
 :root:not([data-theme]) .provider-status-down {
   background: rgba(239, 68, 68, 0.2);
   border-color: rgba(239, 68, 68, 0.4);
   color: #ef4444;
 }
 
-[data-theme="dark"] .provider-status-unknown,
+[data-theme='dark'] .provider-status-unknown,
 :root:not([data-theme]) .provider-status-unknown {
   background: rgba(156, 163, 175, 0.2);
   border-color: rgba(156, 163, 175, 0.4);

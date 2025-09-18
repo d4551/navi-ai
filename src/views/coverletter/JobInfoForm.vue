@@ -3,7 +3,9 @@
   Matches PersonalInfoForm structure and design patterns
 -->
 <template>
-  <section class="glass p-glass-md gap-glass-md rounded-lg unified-card font-sans">
+  <section
+    class="glass p-glass-md gap-glass-md rounded-lg unified-card font-sans"
+  >
     <div class="flex items-center justify-between mb-2">
       <h2 class="h6 mb-0 flex items-center gap-glass-sm text-primary-600">
         <AppIcon name="BriefcaseIcon" class="icon-md" aria-hidden="true" />
@@ -50,7 +52,9 @@
           @blur="commitChanges"
           @input="onCompanyChange"
         />
-        <label for="company-name" class="form-label required">Company Name</label>
+        <label for="company-name" class="form-label required"
+          >Company Name</label
+        >
       </div>
 
       <!-- Position Title -->
@@ -65,7 +69,9 @@
           autocomplete="organization-title"
           @blur="commitChanges"
         />
-        <label for="position-title" class="form-label required">Position Title</label>
+        <label for="position-title" class="form-label required"
+          >Position Title</label
+        >
       </div>
 
       <!-- Hiring Manager -->
@@ -114,7 +120,7 @@
           class="form-control glass-input"
           placeholder="Paste the job description here to get better AI suggestions..."
           rows="6"
-          style="min-height: 120px; resize: vertical;"
+          style="min-height: 120px; resize: vertical"
           @blur="commitChanges"
           @input="onDescriptionChange"
         ></textarea>
@@ -122,7 +128,11 @@
       </div>
       <div class="form-text flex items-center justify-between">
         <span>
-          <AppIcon name="InformationCircleIcon" class="mr-1" aria-hidden="true" />
+          <AppIcon
+            name="InformationCircleIcon"
+            class="mr-1"
+            aria-hidden="true"
+          />
           Adding the job description helps AI generate better cover letters
         </span>
         <small v-if="localJobInfo.description" class="text-secondary">
@@ -140,8 +150,15 @@
     >
       <div class="card glass-elevated">
         <div class="card-header section-header">
-          <h3 id="company-research-title" class="h6 mb-0 flex items-center gap-glass-sm">
-            <AppIcon name="BuildingOfficeIcon" class="text-primary-600" aria-hidden="true" />
+          <h3
+            id="company-research-title"
+            class="h6 mb-0 flex items-center gap-glass-sm"
+          >
+            <AppIcon
+              name="BuildingOfficeIcon"
+              class="text-primary-600"
+              aria-hidden="true"
+            />
             Company Research: {{ localJobInfo.company }}
           </h3>
         </div>
@@ -220,12 +237,22 @@
     >
       <div class="alert alert-light border">
         <div class="flex items-start gap-glass-md">
-          <AppIcon name="CheckCircleIcon" size="large" color="success" aria-hidden="true" />
+          <AppIcon
+            name="CheckCircleIcon"
+            size="large"
+            color="success"
+            aria-hidden="true"
+          />
           <div>
-            <h3 id="job-summary-title" class="h6 mb-1">Ready to Generate Cover Letter</h3>
+            <h3 id="job-summary-title" class="h6 mb-1">
+              Ready to Generate Cover Letter
+            </h3>
             <p class="mb-2 small">
-              <strong>{{ localJobInfo.position }}</strong> at <strong>{{ localJobInfo.company }}</strong>
-              <span v-if="localJobInfo.hiringManager"> • {{ localJobInfo.hiringManager }}</span>
+              <strong>{{ localJobInfo.position }}</strong> at
+              <strong>{{ localJobInfo.company }}</strong>
+              <span v-if="localJobInfo.hiringManager">
+                • {{ localJobInfo.hiringManager }}</span
+              >
             </p>
             <div class="flex gap-glass-sm">
               <UnifiedButton
@@ -253,19 +280,19 @@
     </div>
 
     <!-- Job Analysis Modal -->
-    <div 
-      v-if="showJobAnalysisModal" 
-      class="modal fade show block" 
-      style="background-color: rgba(0,0,0,0.5);"
+    <div
+      v-if="showJobAnalysisModal"
+      class="modal fade show block"
+      style="background-color: rgba(0, 0, 0, 0.5)"
       @click.self="showJobAnalysisModal = false"
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Smart Fill from Job Posting</h5>
-            <button 
-              type="button" 
-              class="btn-close" 
+            <button
+              type="button"
+              class="btn-close"
               @click="showJobAnalysisModal = false"
             ></button>
           </div>
@@ -273,8 +300,8 @@
             <div class="mb-3">
               <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button 
-                    class="nav-link" 
+                  <button
+                    class="nav-link"
                     :class="{ active: jobAnalysisTab === 'text' }"
                     @click="jobAnalysisTab = 'text'"
                   >
@@ -282,8 +309,8 @@
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button 
-                    class="nav-link" 
+                  <button
+                    class="nav-link"
                     :class="{ active: jobAnalysisTab === 'url' }"
                     @click="jobAnalysisTab = 'url'"
                   >
@@ -303,7 +330,7 @@
                 ></textarea>
                 <label>Job Posting Text</label>
               </div>
-              <button 
+              <button
                 class="btn btn-primary"
                 :disabled="!jobPostingText.trim() || loading.jobAnalysis"
                 @click="analyzeJobText"
@@ -327,7 +354,7 @@
                 />
                 <label>Job Posting URL</label>
               </div>
-              <button 
+              <button
                 class="btn btn-primary"
                 :disabled="!jobPostingUrl.trim() || loading.jobAnalysis"
                 @click="analyzeJobUrl"
@@ -345,16 +372,26 @@
             <div v-if="jobAnalysisResults" class="mt-4">
               <div class="alert alert-success">
                 <AppIcon name="CheckCircleIcon" />
-                Job analysis completed! The form will be auto-filled with extracted information.
+                Job analysis completed! The form will be auto-filled with
+                extracted information.
               </div>
-              
+
               <div class="analysis-preview">
                 <h6>Extracted Information:</h6>
                 <ul class="list-unstyled">
-                  <li><strong>Company:</strong> {{ jobAnalysisResults.company }}</li>
-                  <li><strong>Position:</strong> {{ jobAnalysisResults.jobTitle }}</li>
-                  <li v-if="jobAnalysisResults.location"><strong>Location:</strong> {{ jobAnalysisResults.location }}</li>
-                  <li><strong>Key Skills:</strong> {{ jobAnalysisResults.keySkills.slice(0, 5).join(', ') }}</li>
+                  <li>
+                    <strong>Company:</strong> {{ jobAnalysisResults.company }}
+                  </li>
+                  <li>
+                    <strong>Position:</strong> {{ jobAnalysisResults.jobTitle }}
+                  </li>
+                  <li v-if="jobAnalysisResults.location">
+                    <strong>Location:</strong> {{ jobAnalysisResults.location }}
+                  </li>
+                  <li>
+                    <strong>Key Skills:</strong>
+                    {{ jobAnalysisResults.keySkills.slice(0, 5).join(', ') }}
+                  </li>
                 </ul>
               </div>
             </div>
@@ -367,17 +404,17 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button 
-              type="button" 
-              class="btn btn-secondary" 
+            <button
+              type="button"
+              class="btn btn-secondary"
               @click="showJobAnalysisModal = false"
             >
               Cancel
             </button>
-            <button 
+            <button
               v-if="jobAnalysisResults"
-              type="button" 
-              class="btn btn-primary" 
+              type="button"
+              class="btn btn-primary"
               @click="applyJobAnalysis"
             >
               Apply Information
@@ -390,7 +427,19 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowRightIcon, BriefcaseIcon, BuildingOfficeIcon, CheckCircleIcon, CpuChipIcon, ExclamationCircleIcon, GlobeAltIcon, InformationCircleIcon, LightBulbIcon, MagnifyingGlassIcon, SparklesIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowRightIcon,
+  BriefcaseIcon,
+  BuildingOfficeIcon,
+  CheckCircleIcon,
+  CpuChipIcon,
+  ExclamationCircleIcon,
+  GlobeAltIcon,
+  InformationCircleIcon,
+  LightBulbIcon,
+  MagnifyingGlassIcon,
+  SparklesIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, watch } from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
@@ -435,7 +484,8 @@ const emit = defineEmits<{
 }>()
 
 // Job Analysis Composable
-const { analyzeJobFromText, analyzeJobFromUrl, jobAnalysis } = useJobTailoredResume()
+const { analyzeJobFromText, analyzeJobFromUrl, jobAnalysis } =
+  useJobTailoredResume()
 
 // Local state
 const localJobInfo = ref<JobInfo>({ ...props.jobInfo })
@@ -456,7 +506,7 @@ const hasRequiredInfo = computed(() => {
 // Watch for external changes
 watch(
   () => props.jobInfo,
-  (newJobInfo) => {
+  newJobInfo => {
     localJobInfo.value = { ...newJobInfo }
   },
   { deep: true }
@@ -484,7 +534,7 @@ const analyzeJobText = async () => {
   try {
     jobAnalysisError.value = ''
     const result = await analyzeJobFromText(jobPostingText.value)
-    
+
     if (result.success && result.analysis) {
       jobAnalysisResults.value = result.analysis
     } else {
@@ -499,11 +549,12 @@ const analyzeJobUrl = async () => {
   try {
     jobAnalysisError.value = ''
     const result = await analyzeJobFromUrl(jobPostingUrl.value)
-    
+
     if (result.success && result.analysis) {
       jobAnalysisResults.value = result.analysis
     } else {
-      jobAnalysisError.value = result.error || 'Failed to extract and analyze job posting'
+      jobAnalysisError.value =
+        result.error || 'Failed to extract and analyze job posting'
     }
   } catch (error) {
     jobAnalysisError.value = error.message || 'Analysis failed'
@@ -512,18 +563,24 @@ const analyzeJobUrl = async () => {
 
 const applyJobAnalysis = () => {
   if (jobAnalysisResults.value) {
-    localJobInfo.value.company = jobAnalysisResults.value.company || localJobInfo.value.company
-    localJobInfo.value.position = jobAnalysisResults.value.jobTitle || localJobInfo.value.position
-    
+    localJobInfo.value.company =
+      jobAnalysisResults.value.company || localJobInfo.value.company
+    localJobInfo.value.position =
+      jobAnalysisResults.value.jobTitle || localJobInfo.value.position
+
     // Add key skills or other extracted information to description
     if (jobAnalysisResults.value.keySkills?.length) {
       const skillsText = `Key Skills: ${jobAnalysisResults.value.keySkills.slice(0, 10).join(', ')}`
-      localJobInfo.value.description = skillsText + (localJobInfo.value.description ? '\n\n' + localJobInfo.value.description : '')
+      localJobInfo.value.description =
+        skillsText +
+        (localJobInfo.value.description
+          ? '\n\n' + localJobInfo.value.description
+          : '')
     }
-    
+
     commitChanges()
     showJobAnalysisModal.value = false
-    
+
     // Reset modal state
     jobPostingText.value = ''
     jobPostingUrl.value = ''
@@ -552,18 +609,27 @@ const onDescriptionChange = debounce(() => {
     backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
     -webkit-backdrop-filter: blur(var(--glass-backdrop-blur)) saturate(140%);
   }
-  
+
   .card-header {
     background: var(--glass-elevated);
     border-b: 1px solid var(--glass-border);
   }
-  
-  .badge { font-size: 0.7rem; padding: 0.3rem 0.6rem; font-weight: 500; border-radius: var(--border-radius-sm); }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+    font-weight: 500;
+    border-radius: var(--border-radius-sm);
+  }
 }
 
 .job-summary-card {
   .alert {
-    background: linear-gradient(135deg, rgba(var(--success-rgb), 0.05) 0%, rgba(var(--primary-rgb), 0.05) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(var(--success-rgb), 0.05) 0%,
+      rgba(var(--primary-rgb), 0.05) 100%
+    );
     border-color: rgba(var(--success-rgb), 0.2);
   }
 }
@@ -576,22 +642,26 @@ const onDescriptionChange = debounce(() => {
 }
 
 // Dark theme support
-[data-theme="dark"] {
+[data-theme='dark'] {
   .company-research-card,
   .job-summary-card {
     .card {
       background: var(--glass-surface-dark);
       border-color: var(--glass-border-dark);
     }
-    
+
     .card-header {
       background: var(--glass-elevated-dark);
       border-b-color: var(--glass-border-dark);
     }
   }
-  
+
   .job-summary-card .alert {
-    background: linear-gradient(135deg, rgba(var(--success-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.1) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(var(--success-rgb), 0.1) 0%,
+      rgba(var(--primary-rgb), 0.1) 100%
+    );
     border-color: rgba(var(--success-rgb), 0.3);
   }
 }
@@ -601,15 +671,15 @@ const onDescriptionChange = debounce(() => {
   .responsive-grid {
     --card-min-width: 100%;
   }
-  
+
   .company-research-card .flex flex-wrap {
     flex-direction: column;
   }
-  
+
   .job-summary-card .flex {
     flex-direction: column;
     align-items: flex-start;
-    
+
     .btn {
       width: 100%;
     }

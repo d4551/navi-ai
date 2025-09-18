@@ -36,7 +36,9 @@
         :disabled="!canUseAI"
         :loading="loading.ai"
         leading-icon="mdi-auto-fix"
-        :aria-label="loading.ai ? 'Generating AI content...' : 'Generate AI content'"
+        :aria-label="
+          loading.ai ? 'Generating AI content...' : 'Generate AI content'
+        "
         @click="$emit('ai-generate')"
       >
         <span class="action-text">
@@ -53,7 +55,11 @@
         :disabled="!canUseAI"
         :loading="loading.skillSuggestions"
         leading-icon="mdi-lightbulb"
-        :aria-label="loading.skillSuggestions ? 'Suggesting skills...' : 'Get AI skill suggestions'"
+        :aria-label="
+          loading.skillSuggestions
+            ? 'Suggesting skills...'
+            : 'Get AI skill suggestions'
+        "
         @click="$emit('suggest-skills')"
       >
         <span class="action-text">
@@ -70,7 +76,9 @@
         :disabled="!canUseAI || !hasContent"
         :loading="loading.scoring"
         leading-icon="mdi-chart-bar"
-        :aria-label="loading.scoring ? 'Analyzing resume...' : 'Analyze resume score'"
+        :aria-label="
+          loading.scoring ? 'Analyzing resume...' : 'Analyze resume score'
+        "
         @click="$emit('score-resume')"
       >
         <span class="action-text">
@@ -99,7 +107,9 @@
         :disabled="!canUseAI || !hasContent"
         :loading="loading.ai"
         leading-icon="mdi-text-short"
-        :aria-label="loading.ai ? 'Creating summary...' : 'Create resume summary'"
+        :aria-label="
+          loading.ai ? 'Creating summary...' : 'Create resume summary'
+        "
         @click="$emit('summarize-resume')"
       >
         <span>Summarize</span>
@@ -116,10 +126,18 @@
         @click="showAdvanced = !showAdvanced"
       >
         <div class="d-flex align-items-center">
-          <AppIcon name="mdi-cog" size="default" color="primary" aria-hidden="true" />
+          <AppIcon
+            name="mdi-cog"
+            size="default"
+            color="primary"
+            aria-hidden="true"
+          />
           <span class="fw-semibold">Advanced Tools</span>
         </div>
-        <AppIcon :name="showAdvanced ? 'mdi-chevron-up' : 'mdi-chevron-down'" class="transition-icon" />
+        <AppIcon
+          :name="showAdvanced ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          class="transition-icon"
+        />
       </summary>
 
       <div id="advanced-actions" class="collapsible-content">
@@ -187,7 +205,10 @@
                   type="button"
                   @click="$emit('optimize-section', 'portfolio')"
                 >
-                  <AppIcon name="mdi-folder-multiple-image-outline" class="me-2" />
+                  <AppIcon
+                    name="mdi-folder-multiple-image-outline"
+                    class="me-2"
+                  />
                   Portfolio
                 </button>
               </li>
@@ -201,7 +222,11 @@
             :disabled="!canUseAI"
             :loading="loading.templateGeneration"
             leading-icon="mdi-auto-fix"
-            :aria-label="loading.templateGeneration ? 'Generating template...' : 'Create AI-powered template'"
+            :aria-label="
+              loading.templateGeneration
+                ? 'Generating template...'
+                : 'Create AI-powered template'
+            "
             @click="$emit('smart-template')"
           >
             AI Smart Template
@@ -217,7 +242,9 @@
           <AppIcon name="mdi-alert-circle-outline" class="me-2" />
           <small>
             <strong>AI Offline:</strong> Configure API key in
-            <router-link to="/settings#ai-section" class="alert-link">Settings</router-link>
+            <router-link to="/settings#ai-section" class="alert-link"
+              >Settings</router-link
+            >
           </small>
         </div>
       </div>
@@ -235,7 +262,12 @@
         v-else
         class="d-flex align-items-center justify-content-center text-success"
       >
-        <AppIcon name="mdi-check-circle-outline" size="small" aria-hidden="true" context="success" />
+        <AppIcon
+          name="mdi-check-circle-outline"
+          size="small"
+          aria-hidden="true"
+          context="success"
+        />
         <small class="fw-medium">AI Tools Ready</small>
       </div>
     </div>
@@ -248,10 +280,10 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 
 export default {
-  name: "ActionsPanel",
+  name: 'ActionsPanel',
   components: {
     AppIcon,
-    UnifiedButton
+    UnifiedButton,
   },
   props: {
     canUseAI: { type: Boolean, default: false },
@@ -260,26 +292,26 @@ export default {
     compact: { type: Boolean, default: false },
   },
   emits: [
-    "ai-generate",
-    "suggest-skills",
-    "score-resume",
-    "summarize-resume",
-    "tailor-job",
-    "optimize-section",
-    "smart-template",
-    "close-panel",
+    'ai-generate',
+    'suggest-skills',
+    'score-resume',
+    'summarize-resume',
+    'tailor-job',
+    'optimize-section',
+    'smart-template',
+    'close-panel',
   ],
   setup(_props) {
-    const showAdvanced = ref(false);
+    const showAdvanced = ref(false)
 
-    const isCompact = computed(() => props.compact);
+    const isCompact = computed(() => props.compact)
 
     return {
       showAdvanced,
       isCompact,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -342,7 +374,7 @@ export default {
   box-shadow: var(--shadow-lg);
 }
 
-[data-theme="dark"] .dropdown-menu.glass-surface,
+[data-theme='dark'] .dropdown-menu.glass-surface,
 :root:not([data-theme]) .dropdown-menu.glass-surface {
   background: var(--glass-surface-dark);
   border-color: var(--glass-border-dark);
@@ -358,8 +390,8 @@ export default {
   color: var(--color-primary);
 }
 
-[data-theme="dark"] .dropdown-item:hover,
-[data-theme="dark"] .dropdown-item:focus,
+[data-theme='dark'] .dropdown-item:hover,
+[data-theme='dark'] .dropdown-item:focus,
 :root:not([data-theme]) .dropdown-item:hover,
 :root:not([data-theme]) .dropdown-item:focus {
   background: var(--glass-elevated-dark);

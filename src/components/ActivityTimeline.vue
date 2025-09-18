@@ -25,23 +25,62 @@
 import { ClockIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 
 import AppIcon from '@/components/ui/AppIcon.vue'
-const props = withDefaults(defineProps<{ activities?: any[] }>(), { activities: () => [] })
+const props = withDefaults(defineProps<{ activities?: any[] }>(), {
+  activities: () => [],
+})
 const items = props.activities || []
 </script>
 
 <style scoped>
-.activity-timeline { 
+.activity-timeline {
   background: var(--glass-surface);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 1rem;
 }
-.timeline-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; }
-.empty { display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); }
-.timeline-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
-.timeline-item { display: grid; grid-template-columns: 16px 1fr; gap: 0.75rem; align-items: start; }
-.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-primary-500); margin-top: 6px; }
-.content .title { font-weight: 600; }
-.content .meta { font-size: 0.75rem; color: var(--text-secondary); }
-.content .desc { font-size: 0.875rem; color: var(--text-secondary); }
+.timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.empty {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+.timeline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.timeline-item {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary-500);
+  margin-top: 6px;
+}
+.content .title {
+  font-weight: 600;
+}
+.content .meta {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.content .desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
 </style>

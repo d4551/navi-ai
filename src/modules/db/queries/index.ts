@@ -9,7 +9,7 @@ import type {
   Portfolio,
   JobSearch,
   InterviewSession,
-  UserPreferences
+  UserPreferences,
 } from '../models/index.ts'
 
 // Generic query builders
@@ -26,9 +26,7 @@ export class QueryBuilder {
 
   async findAll(): Promise<any[]> {
     const keys = await db.keys(`${this.collection}:*`)
-    const items = await Promise.all(
-      keys.map((key: string) => db.get(key))
-    )
+    const items = await Promise.all(keys.map((key: string) => db.get(key)))
     return items.filter(item => item !== null)
   }
 
@@ -40,27 +38,28 @@ export class QueryBuilder {
   async create(data: any): Promise<any> {
     const getCrypto = () => {
       if (typeof crypto !== 'undefined') {
-        return crypto;
+        return crypto
       }
       if (typeof window !== 'undefined' && window.crypto) {
-        return window.crypto;
+        return window.crypto
       }
       // Fallback for environments without crypto
       return {
-        randomUUID: () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-          const r = Math.random() * 16 | 0;
-          const v = c === 'x' ? r : (r & 0x3 | 0x8);
-          return v.toString(16);
-        })
-      };
-    };
-    
+        randomUUID: () =>
+          'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+            const r = (Math.random() * 16) | 0
+            const v = c === 'x' ? r : (r & 0x3) | 0x8
+            return v.toString(16)
+          }),
+      }
+    }
+
     const id = data.id || getCrypto().randomUUID()
     const item = {
       ...data,
       id,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
     await db.set(`${this.collection}:${id}`, item)
     return item
@@ -73,7 +72,7 @@ export class QueryBuilder {
     const updated = {
       ...existing,
       ...updates,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
     await db.set(`${this.collection}:${id}`, updated)
     return updated
@@ -101,7 +100,10 @@ export class UserQueries extends QueryBuilder {
     return users.find(user => user.email === email) || null
   }
 
-  async updateProfile(userId: string, updates: Partial<UserProfile>): Promise<UserProfile | null> {
+  async updateProfile(
+    userId: string,
+    updates: Partial<UserProfile>
+  ): Promise<UserProfile | null> {
     return await this.update(userId, updates)
   }
 }
@@ -119,7 +121,10 @@ export class ResumeQueries extends QueryBuilder {
     return await this.findWhere(resume => resume.isPublic)
   }
 
-  async createForUser(userId: string, resumeData: Omit<Resume, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<Resume> {
+  async createForUser(
+    userId: string,
+    resumeData: Omit<Resume, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+  ): Promise<Resume> {
     return await this.create({ ...resumeData, userId })
   }
 }
@@ -137,7 +142,10 @@ export class CoverLetterQueries extends QueryBuilder {
     return await this.findWhere(letter => letter.jobId === jobId)
   }
 
-  async createForUser(userId: string, letterData: Omit<CoverLetter, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<CoverLetter> {
+  async createForUser(
+    userId: string,
+    letterData: Omit<CoverLetter, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+  ): Promise<CoverLetter> {
     return await this.create({ ...letterData, userId })
   }
 }
@@ -155,7 +163,10 @@ export class PortfolioQueries extends QueryBuilder {
     return await this.findWhere(portfolio => portfolio.isPublic)
   }
 
-  async createForUser(userId: string, portfolioData: Omit<Portfolio, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<Portfolio> {
+  async createForUser(
+    userId: string,
+    portfolioData: Omit<Portfolio, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+  ): Promise<Portfolio> {
     return await this.create({ ...portfolioData, userId })
   }
 }
@@ -170,15 +181,20 @@ export class JobSearchQueries extends QueryBuilder {
   }
 
   async findActive(userId: string): Promise<JobSearch[]> {
-    return await this.findWhere(search => search.userId === userId && search.isActive)
+    return await this.findWhere(
+      search => search.userId === userId && search.isActive
+    )
   }
 
-  async createForUser(userId: string, criteria: JobSearch['criteria']): Promise<JobSearch> {
+  async createForUser(
+    userId: string,
+    criteria: JobSearch['criteria']
+  ): Promise<JobSearch> {
     return await this.create({
       userId,
       criteria,
       results: [],
-      isActive: true
+      isActive: true,
     })
   }
 }
@@ -194,22 +210,28 @@ export class InterviewQueries extends QueryBuilder {
 
   async findUpcoming(userId: string): Promise<InterviewSession[]> {
     const now = new Date()
-    return await this.findWhere(session =>
-      session.userId === userId &&
-      session.status === 'scheduled' &&
-      session.scheduledAt &&
-      session.scheduledAt > now
+    return await this.findWhere(
+      session =>
+        session.userId === userId &&
+        session.status === 'scheduled' &&
+        session.scheduledAt &&
+        session.scheduledAt > now
     )
   }
 
   async findCompleted(userId: string): Promise<InterviewSession[]> {
-    return await this.findWhere(session =>
-      session.userId === userId &&
-      session.status === 'completed'
+    return await this.findWhere(
+      session => session.userId === userId && session.status === 'completed'
     )
   }
 
-  async createForUser(userId: string, sessionData: Omit<InterviewSession, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<InterviewSession> {
+  async createForUser(
+    userId: string,
+    sessionData: Omit<
+      InterviewSession,
+      'id' | 'userId' | 'createdAt' | 'updatedAt'
+    >
+  ): Promise<InterviewSession> {
     return await this.create({ ...sessionData, userId })
   }
 }
@@ -224,7 +246,13 @@ export class PreferencesQueries extends QueryBuilder {
     return prefs.find(pref => pref.userId === userId) || null
   }
 
-  async createForUser(userId: string, preferences: Omit<UserPreferences, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<UserPreferences> {
+  async createForUser(
+    userId: string,
+    preferences: Omit<
+      UserPreferences,
+      'id' | 'userId' | 'createdAt' | 'updatedAt'
+    >
+  ): Promise<UserPreferences> {
     return await this.create({ ...preferences, userId })
   }
 }

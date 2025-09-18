@@ -19,11 +19,11 @@
           <div class="template-preview-thumb">
             <div class="thumb-image" :class="`preview-${template?.id}`"></div>
           </div>
-          
+
           <div class="template-info">
             <h2 class="template-title">{{ template?.name }}</h2>
             <p class="template-description">{{ template?.description }}</p>
-            
+
             <div class="template-stats">
               <div class="stat-item">
                 <div class="stat-label">Rating</div>
@@ -33,22 +33,33 @@
                       v-for="star in 5"
                       :key="star"
                       name="StarIcon"
-                      :class="star <= (template?.rating || 5) ? 'filled' : 'empty'"
+                      :class="
+                        star <= (template?.rating || 5) ? 'filled' : 'empty'
+                      "
                       size="14"
                     />
                   </div>
-                  <span class="rating-text">{{ template?.rating || 5 }}/5 ({{ template?.reviewCount || 0 }} reviews)</span>
+                  <span class="rating-text"
+                    >{{ template?.rating || 5 }}/5 ({{
+                      template?.reviewCount || 0
+                    }}
+                    reviews)</span
+                  >
                 </div>
               </div>
-              
+
               <div class="stat-item">
                 <div class="stat-label">Downloads</div>
-                <div class="stat-value">{{ template?.downloads || '1.2k' }}</div>
+                <div class="stat-value">
+                  {{ template?.downloads || '1.2k' }}
+                </div>
               </div>
-              
+
               <div class="stat-item">
                 <div class="stat-label">Setup Time</div>
-                <div class="stat-value">{{ template?.estimatedTime || '15 min' }}</div>
+                <div class="stat-value">
+                  {{ template?.estimatedTime || '15 min' }}
+                </div>
               </div>
             </div>
           </div>
@@ -57,7 +68,11 @@
         <div class="template-features">
           <h4 class="features-title">Features & Benefits</h4>
           <div class="features-grid">
-            <div v-for="feature in templateFeatures" :key="feature.id" class="feature-item">
+            <div
+              v-for="feature in templateFeatures"
+              :key="feature.id"
+              class="feature-item"
+            >
               <AppIcon :name="feature.icon" size="20" />
               <div class="feature-content">
                 <div class="feature-name">{{ feature.name }}</div>
@@ -72,11 +87,15 @@
           <div class="specs-grid">
             <div class="spec-item">
               <div class="spec-label">Industry Focus</div>
-              <div class="spec-value">{{ template?.industry || 'General' }}</div>
+              <div class="spec-value">
+                {{ template?.industry || 'General' }}
+              </div>
             </div>
             <div class="spec-item">
               <div class="spec-label">Experience Level</div>
-              <div class="spec-value">{{ template?.level || 'All levels' }}</div>
+              <div class="spec-value">
+                {{ template?.level || 'All levels' }}
+              </div>
             </div>
             <div class="spec-item">
               <div class="spec-label">Style</div>
@@ -114,7 +133,12 @@
             </button>
           </div>
           <div class="sample-content">
-            <div v-for="sample in sampleContent" v-show="activeSample === sample.type" :key="sample.type" class="sample-section">
+            <div
+              v-for="sample in sampleContent"
+              v-show="activeSample === sample.type"
+              :key="sample.type"
+              class="sample-section"
+            >
               <h5 class="sample-section-title">{{ sample.label }}</h5>
               <div class="sample-text">{{ sample.content }}</div>
             </div>
@@ -127,7 +151,8 @@
             <div class="premium-content">
               <h5 class="premium-title">Premium Template</h5>
               <p class="premium-description">
-                This template includes premium features and enhanced customization options.
+                This template includes premium features and enhanced
+                customization options.
               </p>
             </div>
           </div>
@@ -166,7 +191,12 @@
 </template>
 
 <script setup lang="ts">
-import { CheckIcon, EyeIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckIcon,
+  EyeIcon,
+  InformationCircleIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import { CheckCircleIcon, StarIcon } from '@heroicons/vue/24/solid'
 
 import { ref } from 'vue'
@@ -181,8 +211,8 @@ const props = defineProps<{
 
 // Emits
 const emit = defineEmits<{
-  'close': []
-  'select': [string]
+  close: []
+  select: [string]
 }>()
 
 // State
@@ -194,26 +224,26 @@ const templateFeatures = [
     id: 'ats',
     name: 'ATS Optimized',
     description: 'Designed to pass through applicant tracking systems',
-    icon: 'CursorArrowRaysIcon'
+    icon: 'CursorArrowRaysIcon',
   },
   {
     id: 'responsive',
     name: 'Responsive Design',
     description: 'Looks great on all devices and screen sizes',
-    icon: 'mdi-responsive'
+    icon: 'mdi-responsive',
   },
   {
     id: 'customizable',
     name: 'Highly Customizable',
     description: 'Easy to modify colors, fonts, and layout',
-    icon: 'SwatchIcon'
+    icon: 'SwatchIcon',
   },
   {
     id: 'professional',
     name: 'Professional Layout',
     description: 'Clean, modern design that impresses recruiters',
-    icon: 'TrophyIcon'
-  }
+    icon: 'TrophyIcon',
+  },
 ]
 
 // Sample content
@@ -221,18 +251,21 @@ const sampleContent = [
   {
     type: 'summary',
     label: 'Professional Summary',
-    content: 'Dynamic software engineer with 5+ years of experience developing scalable web applications and leading cross-functional teams. Proven track record of delivering high-quality solutions that drive business value and improve user experience.'
+    content:
+      'Dynamic software engineer with 5+ years of experience developing scalable web applications and leading cross-functional teams. Proven track record of delivering high-quality solutions that drive business value and improve user experience.',
   },
   {
     type: 'experience',
     label: 'Work Experience',
-    content: 'Senior Software Engineer at Tech Company Inc. (2020 - Present)\n• Led development of microservices architecture serving 1M+ users\n• Implemented CI/CD pipelines reducing deployment time by 60%\n• Mentored team of 4 junior developers on best practices'
+    content:
+      'Senior Software Engineer at Tech Company Inc. (2020 - Present)\n• Led development of microservices architecture serving 1M+ users\n• Implemented CI/CD pipelines reducing deployment time by 60%\n• Mentored team of 4 junior developers on best practices',
   },
   {
     type: 'skills',
     label: 'Technical Skills',
-    content: 'Programming: JavaScript, TypeScript, Python, Java\nFrameworks: React, Node.js, Express, Django\nDatabases: PostgreSQL, MongoDB, Redis\nCloud: AWS, Docker, Kubernetes\nTools: Git, Jenkins, JIRA, Figma'
-  }
+    content:
+      'Programming: JavaScript, TypeScript, Python, Java\nFrameworks: React, Node.js, Express, Django\nDatabases: PostgreSQL, MongoDB, Redis\nCloud: AWS, Docker, Kubernetes\nTools: Git, Jenkins, JIRA, Figma',
+  },
 ]
 
 // Methods
@@ -287,7 +320,11 @@ const previewTemplate = () => {
   justify-content: space-between;
   padding: var(--spacing-5);
   border-b: 1px solid var(--glass-border);
-  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--surface-base) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-50) 0%,
+    var(--surface-base) 100%
+  );
 }
 
 .header-content {
@@ -330,7 +367,11 @@ const previewTemplate = () => {
 .thumb-image {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, var(--surface-secondary) 0%, var(--surface-tertiary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--surface-secondary) 0%,
+    var(--surface-tertiary) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -570,7 +611,11 @@ const previewTemplate = () => {
 }
 
 .premium-info {
-  background: linear-gradient(135deg, var(--color-gaming-50) 0%, var(--color-primary-50) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-gaming-50) 0%,
+    var(--color-primary-50) 100%
+  );
   border: 1px solid var(--color-gaming-200);
   border-radius: var(--radius-lg);
   padding: var(--spacing-4);
@@ -639,40 +684,40 @@ const previewTemplate = () => {
   .modal-overlay {
     padding: var(--spacing-2);
   }
-  
+
   .details-modal {
     max-height: 95vh;
   }
-  
+
   .template-overview {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-  
+
   .template-preview-thumb {
     width: 120px;
     height: 160px;
   }
-  
+
   .features-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .specs-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .samples-tabs {
     flex-wrap: wrap;
   }
-  
+
   .modal-footer {
     flex-direction: column;
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .footer-actions {
     justify-content: space-between;
   }

@@ -36,10 +36,10 @@ export default [
         URL: 'readonly',
         Blob: 'readonly',
         console: 'readonly',
-  fetch: 'readonly',
-  Headers: 'readonly',
-  Request: 'readonly',
-  Response: 'readonly',
+        fetch: 'readonly',
+        Headers: 'readonly',
+        Request: 'readonly',
+        Response: 'readonly',
         // Common browser APIs used across views/components
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
@@ -99,35 +99,38 @@ export default [
         // Additional browser APIs
         MediaQueryListEvent: 'readonly',
         EventListener: 'readonly',
-  Notification: 'readonly',
-  File: 'readonly',
-  URLSearchParams: 'readonly',
-  Audio: 'readonly',
-  crypto: 'readonly',
-  process: 'readonly',
-  ReadableStream: 'readonly',
-  WritableStream: 'readonly',
-  TransformStream: 'readonly',
-  RequestInit: 'readonly',
-  NotificationPermission: 'readonly',
-  FocusOptions: 'readonly',
-  PropertiesService: 'readonly',
-  DocumentApp: 'readonly',
-  SpeechSynthesis: 'readonly',
-  SpeechSynthesisVoice: 'readonly',
-  MediaStreamConstraints: 'readonly',
-  MediaStreamAudioSourceNode: 'readonly',
-  AudioWorkletNode: 'readonly',
-  IDBDatabase: 'readonly',
-  indexedDB: 'readonly',
-  IDBOpenDBRequest: 'readonly',
-  IDBKeyRange: 'readonly',
-  IDBRequest: 'readonly',
-  NodeJS: 'readonly'
+        Notification: 'readonly',
+        File: 'readonly',
+        URLSearchParams: 'readonly',
+        Audio: 'readonly',
+        crypto: 'readonly',
+        process: 'readonly',
+        ReadableStream: 'readonly',
+        WritableStream: 'readonly',
+        TransformStream: 'readonly',
+        RequestInit: 'readonly',
+        NotificationPermission: 'readonly',
+        FocusOptions: 'readonly',
+        PropertiesService: 'readonly',
+        DocumentApp: 'readonly',
+        SpeechSynthesis: 'readonly',
+        SpeechSynthesisVoice: 'readonly',
+        MediaStreamConstraints: 'readonly',
+        MediaStreamAudioSourceNode: 'readonly',
+        AudioWorkletNode: 'readonly',
+        IDBDatabase: 'readonly',
+        indexedDB: 'readonly',
+        IDBOpenDBRequest: 'readonly',
+        IDBKeyRange: 'readonly',
+        IDBRequest: 'readonly',
+        NodeJS: 'readonly',
       },
     },
     rules: {
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       'no-useless-escape': 'warn',
       'no-empty': 'off',
       // Disallow direct use of 3rd-party toast lib in app code
@@ -137,11 +140,13 @@ export default [
           paths: [
             {
               name: 'vue-toast-notification',
-              message: 'Use @/composables/useToast instead to ensure consistent styling and logging.',
+              message:
+                'Use @/composables/useToast instead to ensure consistent styling and logging.',
             },
             {
               name: '@/components/ai/FairyAIFloatingButton.vue',
-              message: 'Deprecated. Use AIFairyAssistant.vue (globally mounted in App.vue).',
+              message:
+                'Deprecated. Use AIFairyAssistant.vue (globally mounted in App.vue).',
             },
           ],
         },
@@ -151,9 +156,12 @@ export default [
       'vue/no-mutating-props': 'warn', // Allow prop mutations with warning for now
       'vue/multi-word-component-names': 'off', // Allow single-word component names
       'vue/no-v-html': 'warn', // Allow v-html with warning for controlled content
-      'vue/valid-v-slot': ['error', { 
-        allowModifiers: true // Allow Vuetify slot naming like #item.title
-      }],
+      'vue/valid-v-slot': [
+        'error',
+        {
+          allowModifiers: true, // Allow Vuetify slot naming like #item.title
+        },
+      ],
       // Tame noisy style-only rules for now
       'vue/max-attributes-per-line': 'off',
       'vue/singleline-html-element-content-newline': 'off',
@@ -192,10 +200,7 @@ export default [
   },
   // Scripts directory configuration
   {
-    files: [
-      'scripts/**/*.js',
-      'scripts/**/*.cjs'
-    ],
+    files: ['scripts/**/*.js', 'scripts/**/*.cjs'],
     languageOptions: {
       globals: {
         // Node.js globals
@@ -210,12 +215,12 @@ export default [
         Buffer: 'readonly',
         setImmediate: 'readonly',
         clearImmediate: 'readonly',
-        globalThis: 'readonly'
-      }
+        globalThis: 'readonly',
+      },
     },
     rules: {
-      'no-console': 'off'
-    }
+      'no-console': 'off',
+    },
   },
   // Environment-specific overrides
   {
@@ -231,18 +236,15 @@ export default [
         afterEach: 'readonly',
         beforeAll: 'readonly',
         afterAll: 'readonly',
-        jest: 'readonly'
-      }
+        jest: 'readonly',
+      },
     },
     rules: {
-      'no-undef': 'off'
-    }
+      'no-undef': 'off',
+    },
   },
   {
-    files: [
-      'electron/**/*.cjs',
-      'electron/**/*.js'
-    ],
+    files: ['electron/**/*.cjs', 'electron/**/*.js'],
     languageOptions: {
       globals: {
         // Node.js/Electron main process globals
@@ -257,9 +259,9 @@ export default [
         Buffer: 'readonly',
         setImmediate: 'readonly',
         clearImmediate: 'readonly',
-        globalThis: 'readonly'
-      }
-    }
+        globalThis: 'readonly',
+      },
+    },
   },
   {
     files: [
@@ -267,7 +269,7 @@ export default [
       'src/services/**/*.ts',
       'src/services/**/*.js',
       'src/utils/logger.*',
-      'src/utils/gamification.js'
+      'src/utils/gamification.js',
     ],
     languageOptions: {
       globals: {
@@ -276,8 +278,8 @@ export default [
         module: 'readonly',
         __dirname: 'readonly',
         NodeJS: 'readonly',
-        GeminiProvider: 'readonly'
-      }
-    }
-  }
+        GeminiProvider: 'readonly',
+      },
+    },
+  },
 ]

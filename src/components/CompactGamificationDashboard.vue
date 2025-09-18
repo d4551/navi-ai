@@ -4,9 +4,9 @@
     <div class="unified-grid g-3 mb-4">
       <!-- Level Status -->
       <div class="flex-1-md-6">
-        <UnifiedCard 
-          variant="glass" 
-          size="medium" 
+        <UnifiedCard
+          variant="glass"
+          size="medium"
           elevated
           :title="`Level ${userLevel.level}`"
           :subtitle="userLevel.title"
@@ -19,13 +19,15 @@
             </div>
             <p class="text-secondary small">{{ userLevel.currentXP }} XP</p>
             <div class="progress progress--sm mt-2">
-              <div 
-                class="progress-bar bg-primary-500" 
+              <div
+                class="progress-bar bg-primary-500"
                 :style="{ width: userLevel.progress + '%' }"
                 role="progressbar"
               />
             </div>
-            <small class="text-secondary mt-1 block">{{ userLevel.xpForNext }} XP to next level</small>
+            <small class="text-secondary mt-1 block"
+              >{{ userLevel.xpForNext }} XP to next level</small
+            >
           </div>
         </UnifiedCard>
       </div>
@@ -41,12 +43,19 @@
             <div class="stats-list">
               <div class="stat-flex flex-wrap">
                 <span class="stat-label">Achievements</span>
-                <span class="stat-value">{{ earnedAchievements.length }}/{{ totalAchievements }}</span>
+                <span class="stat-value"
+                  >{{ earnedAchievements.length }}/{{ totalAchievements }}</span
+                >
                 <div class="stat-progress">
                   <div class="progress progress--xs">
-                    <div 
-                      class="progress-bar bg-success-500" 
-                      :style="{ width: (earnedAchievements.length / totalAchievements) * 100 + '%' }"
+                    <div
+                      class="progress-bar bg-success-500"
+                      :style="{
+                        width:
+                          (earnedAchievements.length / totalAchievements) *
+                            100 +
+                          '%',
+                      }"
                     />
                   </div>
                 </div>
@@ -55,16 +64,22 @@
                 <span class="stat-label">Daily Streak</span>
                 <span class="stat-value">
                   {{ streak.current }}
-                  <AppIcon name="FireIcon" :size="getIconSize('small')" :color="getIconColor('warning')" />
+                  <AppIcon
+                    name="FireIcon"
+                    :size="getIconSize('small')"
+                    :color="getIconColor('warning')"
+                  />
                 </span>
               </div>
               <div class="stat-flex flex-wrap">
                 <span class="stat-label">Challenges</span>
-                <span class="stat-value">{{ completedChallenges }}/{{ dailyChallenges.length }}</span>
+                <span class="stat-value"
+                  >{{ completedChallenges }}/{{ dailyChallenges.length }}</span
+                >
                 <div class="stat-progress">
                   <div class="progress progress--xs">
-                    <div 
-                      class="progress-bar bg-warning-500" 
+                    <div
+                      class="progress-bar bg-warning-500"
                       :style="{ width: challengeProgress + '%' }"
                     />
                   </div>
@@ -83,20 +98,32 @@
           <AppIcon name="CalendarIcon-check" class="mr-2" />
           Daily Challenges
         </h6>
-        <UiChip classes="chip chip-primary chip-compact">{{ completedChallenges }}/{{ dailyChallenges.length }}</UiChip>
+        <UiChip classes="chip chip-primary chip-compact"
+          >{{ completedChallenges }}/{{ dailyChallenges.length }}</UiChip
+        >
       </div>
       <div class="card-body section-body">
         <div class="challenges-grid">
-          <div 
-            v-for="challenge in dailyChallenges.slice(0, 4)" 
+          <div
+            v-for="challenge in dailyChallenges.slice(0, 4)"
             :key="challenge.id"
             class="challenge-item"
-            :class="{ 'completed': challenge.completed }"
+            :class="{ completed: challenge.completed }"
           >
             <div class="challenge-icon">
-              <AppIcon :name="getIcon(challenge.icon, 'CursorArrowRaysIcon')" :size="getIconSize('small')" :color="challenge.completed ? getIconColor('success') : undefined" />
+              <AppIcon
+                :name="getIcon(challenge.icon, 'CursorArrowRaysIcon')"
+                :size="getIconSize('small')"
+                :color="
+                  challenge.completed ? getIconColor('success') : undefined
+                "
+              />
               <div v-if="challenge.completed" class="completion-check">
-                <AppIcon name="CheckIcon" :size="getIconSize('small')" color="white" />
+                <AppIcon
+                  name="CheckIcon"
+                  :size="getIconSize('small')"
+                  color="white"
+                />
               </div>
             </div>
             <div class="challenge-content">
@@ -123,9 +150,9 @@
           <AppIcon name="TrophyIcon" class="mr-2" />
           Recent Achievements
         </h6>
-        <UnifiedButton 
-          size="sm" 
-          variant="ghost" 
+        <UnifiedButton
+          size="sm"
+          variant="ghost"
           @click="$emit('view-all-achievements')"
         >
           View All
@@ -134,21 +161,32 @@
       <div class="card-body section-body">
         <div v-if="recentAchievements.length === 0" class="text-center py-4">
           <AppIcon name="TrophyIcon" />
-          <p class="text-secondary mt-2 mb-0">Start completing challenges to earn achievements!</p>
+          <p class="text-secondary mt-2 mb-0">
+            Start completing challenges to earn achievements!
+          </p>
         </div>
         <div v-else class="achievements-list">
-          <div 
+          <div
             v-for="achievement in recentAchievements.slice(0, 3)"
             :key="achievement.id"
             class="achievement-item"
-            :class="{ 'earned': isAchievementEarned(achievement.id) }"
+            :class="{ earned: isAchievementEarned(achievement.id) }"
           >
             <div class="achievement-icon">
-              <AppIcon :name="getIcon(achievement.icon, 'StarIcon')" :color="isAchievementEarned(achievement.id) ? getIconColor('success') : undefined" />
+              <AppIcon
+                :name="getIcon(achievement.icon, 'StarIcon')"
+                :color="
+                  isAchievementEarned(achievement.id)
+                    ? getIconColor('success')
+                    : undefined
+                "
+              />
             </div>
             <div class="achievement-info">
               <div class="achievement-name">{{ achievement.name }}</div>
-              <div class="achievement-description">{{ achievement.description }}</div>
+              <div class="achievement-description">
+                {{ achievement.description }}
+              </div>
               <div class="achievement-xp">+{{ achievement.xp }} XP</div>
             </div>
           </div>
@@ -159,7 +197,11 @@
 </template>
 
 <script>
-import { ChartBarSquareIcon, CheckIcon, TrophyIcon } from '@heroicons/vue/24/outline'
+import {
+  ChartBarSquareIcon,
+  CheckIcon,
+  TrophyIcon,
+} from '@heroicons/vue/24/outline'
 import { TrophyIcon } from '@heroicons/vue/24/solid'
 
 import { computed } from 'vue'
@@ -176,7 +218,7 @@ export default {
   components: {
     AppIcon,
     UnifiedButton,
-    UiChip
+    UiChip,
   },
   emits: ['start-challenge', 'view-all-achievements', 'achievement-clicked'],
   setup(props, { emit }) {
@@ -199,8 +241,8 @@ export default {
     })
 
     const challengeProgress = computed(() => {
-      return dailyChallenges.value.length > 0 
-        ? (completedChallenges.value / dailyChallenges.value.length) * 100 
+      return dailyChallenges.value.length > 0
+        ? (completedChallenges.value / dailyChallenges.value.length) * 100
         : 0
     })
 
@@ -237,23 +279,26 @@ export default {
     })
 
     // Methods
-    const isAchievementEarned = (achievementId) => {
+    const isAchievementEarned = achievementId => {
       return earnedAchievements.value.includes(achievementId)
     }
 
-    const getAchievementProgress = (achievement) => {
+    const getAchievementProgress = achievement => {
       if (isAchievementEarned(achievement.id)) return 100
-      
+
       const userStats = gamificationService.getUserStats()
       const requirements = achievement.requirements || {}
-      
-      const progressValues = Object.entries(requirements).map(([key, value]) => {
-        const current = userStats[key] || 0
-        return Math.min((current / value) * 100, 100)
-      })
-      
-      return progressValues.length > 0 
-        ? progressValues.reduce((sum, val) => sum + val, 0) / progressValues.length 
+
+      const progressValues = Object.entries(requirements).map(
+        ([key, value]) => {
+          const current = userStats[key] || 0
+          return Math.min((current / value) * 100, 100)
+        }
+      )
+
+      return progressValues.length > 0
+        ? progressValues.reduce((sum, val) => sum + val, 0) /
+            progressValues.length
         : 0
     }
 
@@ -271,9 +316,9 @@ export default {
       getAchievementProgress,
       getIcon,
       getIconSize,
-      getIconColor
+      getIconColor,
     }
-  }
+  },
 }
 </script>
 
@@ -289,7 +334,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-700) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-primary-700) 100%
+  );
   color: var(--text-on-primary);
   font-weight: var(--font-weight-bold);
   margin: 0 auto;
@@ -297,20 +346,45 @@ export default {
   box-shadow: var(--shadow-glass);
 }
 
-.level-avatar.level-1, .level-avatar.level-2 {
-  background: linear-gradient(135deg, var(--color-gray-400) 0%, var(--color-gray-600) 100%);
+.level-avatar.level-1,
+.level-avatar.level-2 {
+  background: linear-gradient(
+    135deg,
+    var(--color-gray-400) 0%,
+    var(--color-gray-600) 100%
+  );
 }
-.level-avatar.level-3, .level-avatar.level-4 {
-  background: linear-gradient(135deg, var(--color-success-500) 0%, var(--color-success-600) 100%);
+.level-avatar.level-3,
+.level-avatar.level-4 {
+  background: linear-gradient(
+    135deg,
+    var(--color-success-500) 0%,
+    var(--color-success-600) 100%
+  );
 }
-.level-avatar.level-5, .level-avatar.level-6 {
-  background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-700) 100%);
+.level-avatar.level-5,
+.level-avatar.level-6 {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-400) 0%,
+    var(--color-primary-700) 100%
+  );
 }
-.level-avatar.level-7, .level-avatar.level-8 {
-  background: linear-gradient(135deg, var(--color-warning-500) 0%, var(--color-warning-600) 100%);
+.level-avatar.level-7,
+.level-avatar.level-8 {
+  background: linear-gradient(
+    135deg,
+    var(--color-warning-500) 0%,
+    var(--color-warning-600) 100%
+  );
 }
-.level-avatar.level-9, .level-avatar.level-10 {
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-800) 100%);
+.level-avatar.level-9,
+.level-avatar.level-10 {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500) 0%,
+    var(--color-primary-800) 100%
+  );
 }
 
 .stats-list {
@@ -474,19 +548,19 @@ export default {
 }
 
 /* Dark theme support */
-[data-theme="dark"] .challenge-item,
-[data-theme="dark"] .achievement-item {
+[data-theme='dark'] .challenge-item,
+[data-theme='dark'] .achievement-item {
   background: var(--glass-surface);
   border-color: var(--border-base);
 }
 
-[data-theme="dark"] .challenge-item:hover,
-[data-theme="dark"] .achievement-item:hover {
+[data-theme='dark'] .challenge-item:hover,
+[data-theme='dark'] .achievement-item:hover {
   background: var(--glass-hover-bg);
 }
 
-[data-theme="dark"] .challenge-icon,
-[data-theme="dark"] .achievement-icon {
+[data-theme='dark'] .challenge-icon,
+[data-theme='dark'] .achievement-icon {
   background: var(--glass-surface);
 }
 
@@ -496,12 +570,12 @@ export default {
     width: 50px;
     height: 50px;
   }
-  
+
   .challenge-item,
   .achievement-item {
     padding: var(--spacing-2);
   }
-  
+
   .challenge-icon,
   .achievement-icon {
     width: 32px;

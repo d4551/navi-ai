@@ -17,7 +17,9 @@
       <div class="modal-body">
         <form @submit.prevent="handleSubmit">
           <div class="form-group">
-            <label for="github-url" class="form-label required">GitHub Repository URL</label>
+            <label for="github-url" class="form-label required"
+              >GitHub Repository URL</label
+            >
             <input
               id="github-url"
               v-model="githubUrl"
@@ -26,8 +28,11 @@
               placeholder="https://github.com/username/repository"
               required
               autofocus
+            />
+            <small class="form-hint"
+              >Enter the full GitHub repository URL to import project
+              details</small
             >
-            <small class="form-hint">Enter the full GitHub repository URL to import project details</small>
           </div>
 
           <div v-if="isValidUrl" class="preview-info">
@@ -42,10 +47,7 @@
       </div>
 
       <div class="modal-footer">
-        <UnifiedButton
-          variant="ghost"
-          @click="closeModal"
-        >
+        <UnifiedButton variant="ghost" @click="closeModal">
           Cancel
         </UnifiedButton>
         <UnifiedButton
@@ -97,13 +99,13 @@ const isValidUrl = computed(() => {
 
 const repoInfo = computed(() => {
   if (!isValidUrl.value) return { name: '', owner: '' }
-  
+
   try {
     const url = new URL(githubUrl.value)
     const pathParts = url.pathname.split('/').filter(Boolean)
     return {
       owner: pathParts[0],
-      name: pathParts[1]
+      name: pathParts[1],
     }
   } catch {
     return { name: '', owner: '' }
@@ -137,12 +139,15 @@ const handleSubmit = async () => {
 }
 
 // Reset form when modal closes
-watch(() => props.visible, (visible) => {
-  if (!visible) {
-    githubUrl.value = ''
-    isSubmitting.value = false
+watch(
+  () => props.visible,
+  visible => {
+    if (!visible) {
+      githubUrl.value = ''
+      isSubmitting.value = false
+    }
   }
-})
+)
 </script>
 
 <style scoped>
@@ -233,7 +238,8 @@ watch(() => props.visible, (visible) => {
 .form-control:focus {
   outline: none;
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   background: var(--glass-elevated);
 }
 
@@ -271,7 +277,7 @@ watch(() => props.visible, (visible) => {
   .modal-overlay {
     padding: var(--spacing-2);
   }
-  
+
   .modal-header,
   .modal-body,
   .modal-footer {

@@ -1,6 +1,11 @@
 <template>
-  <teleport to="body" class="font-sans ">
-    <transition-group name="toast" tag="div" class="toast-container fixed top-4 right-4 z-50" appear>
+  <teleport to="body" class="font-sans">
+    <transition-group
+      name="toast"
+      tag="div"
+      class="toast-container fixed top-4 right-4 z-50"
+      appear
+    >
       <div
         v-for="toast in toasts"
         :key="toast.id"
@@ -66,55 +71,55 @@
 <script>
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-import { ref } from "vue";
-import AppIcon from '@/components/ui/AppIcon.vue';
-import { reportError } from "@/utils/error";
-import { useToast } from "@/composables/useToast";
+import { ref } from 'vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
+import { reportError } from '@/utils/error'
+import { useToast } from '@/composables/useToast'
 
 export default {
-  name: "ToastNotification",
+  name: 'ToastNotification',
   components: { AppIcon },
   setup() {
     // Use the canonical toast system for UI-level operations
-    const { raw: toastInstance } = useToast();
-    const toasts = ref([]);
+    const { raw: toastInstance } = useToast()
+    const toasts = ref([])
 
-    const dismissToast = (id) => {
-      toastInstance.dismiss(id);
-    };
+    const dismissToast = id => {
+      toastInstance.dismiss(id)
+    }
 
-    const pauseToast = (id) => {
-      toastInstance.pauseToast?.(id);
-      const toast = toasts.value.find((t) => t.id === id);
-      if (toast) toast.paused = true;
-    };
+    const pauseToast = id => {
+      toastInstance.pauseToast?.(id)
+      const toast = toasts.value.find(t => t.id === id)
+      if (toast) toast.paused = true
+    }
 
-    const resumeToast = (id) => {
-      toastInstance.resumeToast?.(id);
-      const toast = toasts.value.find((t) => t.id === id);
-      if (toast) toast.paused = false;
-    };
+    const resumeToast = id => {
+      toastInstance.resumeToast?.(id)
+      const toast = toasts.value.find(t => t.id === id)
+      if (toast) toast.paused = false
+    }
 
     const runAction = (toast, action) => {
       try {
-        action?.handler?.();
+        action?.handler?.()
       } catch (_e) {
-        reportError("toast.action", e, { level: "warn" });
+        reportError('toast.action', e, { level: 'warn' })
       }
       if (action?.dismiss !== false) {
-        dismissToast(toast.id);
+        dismissToast(toast.id)
       }
-    };
+    }
 
-    const getIcon = (type) => {
+    const getIcon = type => {
       const icons = {
-        success: "mdi CheckIcon-circle-outline",
-        error: "mdi mdi-alert-circle-outline",
-        warning: "mdi mdi-alert",
-        info: "mdi InformationCircleIconrmation",
-      };
-      return icons[type] || icons.info;
-    };
+        success: 'mdi CheckIcon-circle-outline',
+        error: 'mdi mdi-alert-circle-outline',
+        warning: 'mdi mdi-alert',
+        info: 'mdi InformationCircleIconrmation',
+      }
+      return icons[type] || icons.info
+    }
 
     return {
       toasts,
@@ -123,9 +128,9 @@ export default {
       resumeToast,
       getIcon,
       runAction,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -156,7 +161,7 @@ export default {
   position: relative;
 }
 .toast-item::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background:
@@ -281,7 +286,7 @@ export default {
 }
 
 /* Dark theme glass look */
-[data-theme="dark"] :deep(.toast-item),
+[data-theme='dark'] :deep(.toast-item),
 :root:not([data-theme]) :deep(.toast-item) {
   background: var(--glass-elevated-dark);
   border-color: var(--glass-border-dark);
@@ -311,7 +316,7 @@ export default {
     -webkit-backdrop-filter: none !important;
   }
 
-  [data-theme="dark"] .toast-item {
+  [data-theme='dark'] .toast-item {
     background: var(--dark-bg-primary-500) !important;
   }
 
@@ -366,28 +371,28 @@ export default {
 }
 
 /* Dark mode support (explicit and system) */
-[data-theme="dark"] .toast-item,
+[data-theme='dark'] .toast-item,
 :root:not([data-theme]) .toast-item {
   background: var(--bg-primary-500);
   border-color: currentColor;
 }
 
-[data-theme="dark"] .toast-title,
+[data-theme='dark'] .toast-title,
 :root:not([data-theme]) .toast-title {
   color: var(--text-primary-600);
 }
 
-[data-theme="dark"] .toast-text,
+[data-theme='dark'] .toast-text,
 :root:not([data-theme]) .toast-text {
   color: var(--text-secondary);
 }
 
-[data-theme="dark"] .toast-close,
+[data-theme='dark'] .toast-close,
 :root:not([data-theme]) .toast-close {
   color: var(--text-secondary);
 }
 
-[data-theme="dark"] .toast-close:hover,
+[data-theme='dark'] .toast-close:hover,
 :root:not([data-theme]) .toast-close:hover {
   background-color: var(--bg-tertiary);
   color: var(--text-primary-600);

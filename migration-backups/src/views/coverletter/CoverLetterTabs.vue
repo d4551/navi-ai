@@ -6,7 +6,7 @@
   <nav
     ref="navRef"
     class="nav nav-tabs nav-fill glass-nav cover-letter-tabs"
-    role="tablist" 
+    role="tablist"
     aria-label="Cover letter builder sections"
     @scroll="updateArrows"
     @pointerdown="onPointerDown"
@@ -38,14 +38,10 @@
       @click="setActiveTab(tab.id)"
       @keydown="onTabKeydown($event, tab.id)"
     >
-      <i 
-        :class="tab.icon" 
-        class="me-2 icon-md" 
-        aria-hidden="true"
-      ></i>
+      <i :class="tab.icon" class="me-2 icon-md" aria-hidden="true"></i>
       <span class="d-none d-sm-inline">{{ tab.label }}</span>
       <span class="d-sm-none">{{ tab.shortLabel }}</span>
-      <span 
+      <span
         v-if="tab.badge"
         class="badge badge-compact ms-2"
         :class="getBadgeClass(tab.id)"
@@ -73,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 
 /// <reference lib="dom" />
 import { onMounted, onBeforeUnmount, ref } from 'vue'
@@ -105,9 +101,9 @@ const setActiveTab = (tabId: string) => {
 
 const getBadgeClass = (tabId: string) => {
   const completion = props.completionData?.[tabId] || 0
-  
+
   if (completion >= 100) return 'bg-success'
-  if (completion >= 75) return 'bg-warning' 
+  if (completion >= 75) return 'bg-warning'
   if (completion >= 50) return 'bg-info'
   return 'bg-secondary'
 }
@@ -115,7 +111,7 @@ const getBadgeClass = (tabId: string) => {
 const onTabKeydown = (event: KeyboardEvent, tabId: string) => {
   const currentIndex = props.tabs.findIndex(tab => tab.id === tabId)
   let targetIndex = currentIndex
-  
+
   switch (event.key) {
     case 'ArrowLeft':
       event.preventDefault()
@@ -136,15 +132,15 @@ const onTabKeydown = (event: KeyboardEvent, tabId: string) => {
     default:
       return
   }
-  
+
   if (targetIndex !== currentIndex) {
     setActiveTab(props.tabs[targetIndex].id)
-    
+
     // Focus the new tab
     const targetEl = event.target as HTMLElement | null
     const container = targetEl?.closest('.nav')
     const links = container?.querySelectorAll('.nav-link')
-    const newTab = links && links[targetIndex] as HTMLElement | undefined
+    const newTab = links && (links[targetIndex] as HTMLElement | undefined)
     newTab?.focus()
   }
 }
@@ -167,13 +163,19 @@ function updateArrows() {
 
 function onPointerDown(e: Event) {
   const pointerE = e as any // Cast to access pointer properties
-  if ((e.target as HTMLElement)?.closest('.nav-link') || (e.target as HTMLElement)?.closest('.nav-scroll-arrow')) return
+  if (
+    (e.target as HTMLElement)?.closest('.nav-link') ||
+    (e.target as HTMLElement)?.closest('.nav-scroll-arrow')
+  )
+    return
   const el = navRef.value
   if (!el) return
   isDragging.value = true
   startX = pointerE.clientX
   startScrollLeft = el.scrollLeft
-  try { el.setPointerCapture(pointerE.pointerId) } catch {}
+  try {
+    el.setPointerCapture(pointerE.pointerId)
+  } catch {}
 }
 
 function onPointerMove(e: Event) {
@@ -191,7 +193,9 @@ function onPointerUp(e?: Event) {
   if (!isDragging.value) return
   const el = navRef.value
   isDragging.value = false
-  try { if (el && e) el.releasePointerCapture(pointerE.pointerId) } catch {}
+  try {
+    if (el && e) el.releasePointerCapture(pointerE.pointerId)
+  } catch {}
 }
 
 function scrollBy(dir: number) {
@@ -202,7 +206,9 @@ function scrollBy(dir: number) {
   setTimeout(updateArrows, 50)
 }
 
-function onResize() { updateArrows() }
+function onResize() {
+  updateArrows()
+}
 
 onMounted(() => {
   updateArrows()
@@ -225,7 +231,7 @@ onBeforeUnmount(() => {
   padding: 0;
   position: relative;
   overflow-x: auto;
-  
+
   .nav-link {
     border: none;
     border-bottom: 3px solid transparent;
@@ -240,43 +246,48 @@ onBeforeUnmount(() => {
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
-    
+
     &:hover {
       background: rgba(var(--primary-rgb), 0.05);
       color: var(--color-primary);
       border-bottom-color: rgba(var(--primary-rgb), 0.3);
     }
-    
+
     &.active {
       background: rgba(var(--primary-rgb), 0.08);
       color: var(--color-primary);
       border-bottom-color: var(--color-primary);
       font-weight: 600;
     }
-    
+
     &:focus-visible {
       outline: var(--focus-ring-size) solid var(--color-focus-ring);
       outline-offset: -2px;
       z-index: 1;
     }
-    
-    .badge { font-size: var(--font-size-xs); padding: var(--spacing-1) var(--spacing-2); border-radius: var(--border-radius-sm); font-weight: 600; }
+
+    .badge {
+      font-size: var(--font-size-xs);
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+    }
   }
 }
 
 // Dark theme support
-[data-theme="dark"] .cover-letter-tabs {
+[data-theme='dark'] .cover-letter-tabs {
   background: var(--glass-elevated-dark);
   border-bottom-color: var(--glass-border-dark);
-  
+
   .nav-link {
     color: var(--text-secondary);
-    
+
     &:hover {
       background: rgba(var(--primary-rgb), 0.1);
       color: var(--color-primary);
     }
-    
+
     &.active {
       background: rgba(var(--primary-rgb), 0.15);
       color: var(--color-primary);
@@ -290,7 +301,7 @@ onBeforeUnmount(() => {
     .nav-link {
       padding: var(--spacing-sm) var(--spacing-md);
       font-size: var(--font-size-sm);
-      
+
       .icon-md {
         font-size: var(--font-size-lg);
       }
@@ -311,7 +322,7 @@ onBeforeUnmount(() => {
     transform: scaleX(0);
     transition: transform var(--transition-smooth);
   }
-  
+
   &.active::before {
     transform: scaleX(1);
   }
@@ -332,15 +343,25 @@ onBeforeUnmount(() => {
   background: color-mix(in srgb, var(--glass-bg) 85%, transparent);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   color: var(--text-primary);
   flex: 0 0 auto;
   z-index: 2;
 }
-.nav-scroll-arrow.left { left: 0; margin-right: var(--spacing-xs); }
-.nav-scroll-arrow.right { right: 0; margin-left: var(--spacing-xs); }
-.nav-scroll-arrow:hover { transform: scale(1.05); }
-.nav-scroll-arrow:active { transform: scale(0.98); }
+.nav-scroll-arrow.left {
+  left: 0;
+  margin-right: var(--spacing-xs);
+}
+.nav-scroll-arrow.right {
+  right: 0;
+  margin-left: var(--spacing-xs);
+}
+.nav-scroll-arrow:hover {
+  transform: scale(1.05);
+}
+.nav-scroll-arrow:active {
+  transform: scale(0.98);
+}
 
 .edge-fade {
   position: sticky;
@@ -350,8 +371,18 @@ onBeforeUnmount(() => {
   pointer-events: none;
   z-index: 1;
 }
-.edge-fade.left { left: 0; background: linear-gradient(90deg, rgba(0,0,0,0.08), transparent); }
-.edge-fade.right { right: 0; background: linear-gradient(270deg, rgba(0,0,0,0.08), transparent); }
-[data-theme="dark"] .edge-fade.left { background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent); }
-[data-theme="dark"] .edge-fade.right { background: linear-gradient(270deg, rgba(255,255,255,0.06), transparent); }
+.edge-fade.left {
+  left: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.08), transparent);
+}
+.edge-fade.right {
+  right: 0;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.08), transparent);
+}
+[data-theme='dark'] .edge-fade.left {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent);
+}
+[data-theme='dark'] .edge-fade.right {
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0.06), transparent);
+}
 </style>

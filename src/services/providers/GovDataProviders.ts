@@ -21,7 +21,7 @@ export class CareerOneStopProvider extends BaseJobProvider {
       keyword: filters.title || 'developer',
       location: filters.location || '',
       radius: 50,
-      sort: 'relevance'
+      sort: 'relevance',
     }
   }
 
@@ -42,7 +42,7 @@ export class CareerOneStopProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.PostedDate || new Date().toISOString(),
       featured: false,
-      source: 'CareerOneStop'
+      source: 'CareerOneStop',
     }))
   }
 }
@@ -58,14 +58,14 @@ export class NHSJobsProvider extends BaseJobProvider {
     return {
       keyword: filters.title || '',
       location: filters.location || '',
-      distance: 50
+      distance: 50,
     }
   }
 
   async makeRequest(params: Record<string, any>): Promise<any> {
     const response = await this.httpClient.get(this.baseUrl, {
       params,
-      responseType: 'text'
+      responseType: 'text',
     })
     return { data: this.xmlParser.parse(response.data) }
   }
@@ -93,7 +93,7 @@ export class NHSJobsProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.PostedDate || new Date().toISOString(),
       featured: false,
-      source: 'NHS Jobs'
+      source: 'NHS Jobs',
     }
   }
 }
@@ -109,7 +109,7 @@ export class UKApprenticeshipsProvider extends BaseJobProvider {
     return {
       page: 1,
       pageSize: 50,
-      searchTerm: filters.title || ''
+      searchTerm: filters.title || '',
     }
   }
 
@@ -130,7 +130,7 @@ export class UKApprenticeshipsProvider extends BaseJobProvider {
       type: 'apprenticeship',
       postedDate: job.postedDate || new Date().toISOString(),
       featured: false,
-      source: 'UK Apprenticeships'
+      source: 'UK Apprenticeships',
     }))
   }
 }
@@ -145,7 +145,9 @@ export class NYCJobsProvider extends BaseJobProvider {
   buildParams(filters: JobFilters): Record<string, any> {
     return {
       $limit: 50,
-      $where: filters.title ? `business_title like '%${filters.title}%'` : undefined
+      $where: filters.title
+        ? `business_title like '%${filters.title}%'`
+        : undefined,
     }
   }
 
@@ -158,10 +160,13 @@ export class NYCJobsProvider extends BaseJobProvider {
       company: 'City of New York',
       location: 'New York, NY',
       remote: job.work_location?.toLowerCase().includes('remote') || false,
-      salary: job.salary_range_from && job.salary_range_to ? {
-        min: Number(job.salary_range_from),
-        max: Number(job.salary_range_to)
-      } : undefined,
+      salary:
+        job.salary_range_from && job.salary_range_to
+          ? {
+              min: Number(job.salary_range_from),
+              max: Number(job.salary_range_to),
+            }
+          : undefined,
       description: job.job_description || '',
       requirements: this.parseRequirements(job.job_description || ''),
       technologies: this.extractTechnologies(job.job_description || ''),
@@ -169,7 +174,7 @@ export class NYCJobsProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.posting_date || new Date().toISOString(),
       featured: false,
-      source: 'NYC Government Jobs'
+      source: 'NYC Government Jobs',
     }))
   }
 }
@@ -188,7 +193,7 @@ export class DOLSeasonalJobsProvider extends BaseJobProvider {
   async makeRequest(_params: Record<string, any>): Promise<any> {
     // This is a feed endpoint, might need different handling
     const response = await this.httpClient.get(`${this.baseUrl}/h2a_jobs.xml`, {
-      responseType: 'text'
+      responseType: 'text',
     })
     return { data: this.xmlParser.parse(response.data) }
   }
@@ -208,10 +213,13 @@ export class DOLSeasonalJobsProvider extends BaseJobProvider {
       company: job.EmployerName || 'Not specified',
       location: job.WorksiteAddress || 'USA',
       remote: false,
-      salary: job.BasicRateFrom && job.BasicRateTo ? {
-        min: Number(job.BasicRateFrom),
-        max: Number(job.BasicRateTo)
-      } : undefined,
+      salary:
+        job.BasicRateFrom && job.BasicRateTo
+          ? {
+              min: Number(job.BasicRateFrom),
+              max: Number(job.BasicRateTo),
+            }
+          : undefined,
       description: job.JobDescription || '',
       requirements: this.parseRequirements(job.JobDescription || ''),
       technologies: this.extractTechnologies(job.JobDescription || ''),
@@ -219,14 +227,15 @@ export class DOLSeasonalJobsProvider extends BaseJobProvider {
       type: 'contract',
       postedDate: job.DatePosted || new Date().toISOString(),
       featured: false,
-      source: 'DOL Seasonal Jobs'
+      source: 'DOL Seasonal Jobs',
     }
   }
 }
 
 export class BundesagenturProvider extends BaseJobProvider {
   name = 'Bundesagentur für Arbeit (DE)'
-  baseUrl = 'https://rest.arbeitsagentur.de/jobboerse/jobsuche-service/pc/v4/jobs'
+  baseUrl =
+    'https://rest.arbeitsagentur.de/jobboerse/jobsuche-service/pc/v4/jobs'
   rateLimit = 300
   enabled = false // Disabled due to CORS restrictions
   priority = 20
@@ -235,8 +244,8 @@ export class BundesagenturProvider extends BaseJobProvider {
     timeout: 30000,
     headers: {
       'User-Agent': 'NAVI Gaming Jobs Aggregator 1.0',
-      'X-API-Key': 'jobboerse-jobsuche'
-    }
+      'X-API-Key': 'jobboerse-jobsuche',
+    },
   })
 
   buildParams(filters: JobFilters): Record<string, any> {
@@ -244,12 +253,13 @@ export class BundesagenturProvider extends BaseJobProvider {
       page: 1,
       size: 50,
       was: filters.title || '',
-      wo: filters.location || ''
+      wo: filters.location || '',
     }
   }
 
   parseResponse(data: any): Job[] {
-    if (!data?.stellenangebote || !Array.isArray(data.stellenangebote)) return []
+    if (!data?.stellenangebote || !Array.isArray(data.stellenangebote))
+      return []
 
     return data.stellenangebote.map((job: any) => ({
       id: `bundesagentur-${job.stellenangebotsId}`,
@@ -257,10 +267,13 @@ export class BundesagenturProvider extends BaseJobProvider {
       company: job.arbeitgeberName || 'Not specified',
       location: job.arbeitsort?.ort || 'Germany',
       remote: job.homeoffice || false,
-      salary: job.gehalt?.von && job.gehalt?.bis ? {
-        min: job.gehalt.von,
-        max: job.gehalt.bis
-      } : undefined,
+      salary:
+        job.gehalt?.von && job.gehalt?.bis
+          ? {
+              min: job.gehalt.von,
+              max: job.gehalt.bis,
+            }
+          : undefined,
       description: job.beschreibung || '',
       requirements: this.parseRequirements(job.beschreibung || ''),
       technologies: this.extractTechnologies(job.beschreibung || ''),
@@ -268,7 +281,7 @@ export class BundesagenturProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.angebotsdatum || new Date().toISOString(),
       featured: false,
-      source: 'Bundesagentur für Arbeit'
+      source: 'Bundesagentur für Arbeit',
     }))
   }
 }
@@ -288,14 +301,14 @@ export class WorkNetProvider extends BaseJobProvider {
       callTp: 'L',
       srchType: 'job',
       keyword: filters.title || '',
-      region: filters.location || ''
+      region: filters.location || '',
     }
   }
 
   async makeRequest(params: Record<string, any>): Promise<any> {
     const response = await this.httpClient.get(this.baseUrl, {
       params,
-      responseType: 'text'
+      responseType: 'text',
     })
     return { data: this.xmlParser.parse(response.data) }
   }
@@ -323,7 +336,7 @@ export class WorkNetProvider extends BaseJobProvider {
       type: 'full-time',
       postedDate: job.regDt || new Date().toISOString(),
       featured: false,
-      source: 'WorkNet'
+      source: 'WorkNet',
     }
   }
 }

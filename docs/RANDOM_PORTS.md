@@ -30,12 +30,13 @@ The system uses `scripts/get-random-port.js` to find available ports:
 
 ```javascript
 // Get a random port in range 3000-9999
-const port = await getVitePort();
+const port = await getVitePort()
 ```
 
 ### 2. Vite Configuration
 
 `vite.config.js` is configured to:
+
 - Use port 0 (random) by default
 - Allow fallback to next available port if random port fails
 - Support environment variable override with `VITE_PORT`
@@ -52,6 +53,7 @@ server: {
 ### 3. Electron Integration
 
 The Electron main process (`electron/main.cjs`) automatically:
+
 - Detects the Vite dev server port from `VITE_PORT` environment variable
 - Falls back to common ports if environment variable is not set
 - Provides helpful error messages if no dev server is found
@@ -94,6 +96,7 @@ VITE_PORT=5173 npm run electron
 ## Port Range
 
 The random port system uses ports in the range **3000-9999** to:
+
 - Avoid system ports (0-1023)
 - Avoid well-known ports (1024-2999)
 - Stay within reasonable development ranges
@@ -106,19 +109,21 @@ The random port system uses ports in the range **3000-9999** to:
 If you get "port in use" errors:
 
 1. **Check what's using the port:**
+
    ```bash
    # Windows
    netstat -ano | findstr :5173
-   
+
    # macOS/Linux
    lsof -i :5173
    ```
 
 2. **Kill the process:**
+
    ```bash
    # Windows
    taskkill /PID <PID> /F
-   
+
    # macOS/Linux
    kill -9 <PID>
    ```
@@ -133,11 +138,13 @@ If you get "port in use" errors:
 If Electron shows "Dev server not running":
 
 1. **Check Vite is running:**
+
    ```bash
    curl http://localhost:5173
    ```
 
 2. **Check the correct port:**
+
    ```bash
    # Look for the port in Vite output
    npm run dev:random
@@ -153,10 +160,11 @@ If Electron shows "Dev server not running":
 When working with multiple projects:
 
 1. **Use different port ranges:**
+
    ```bash
    # Project 1
    VITE_PORT=3000 npm run dev:random
-   
+
    # Project 2
    VITE_PORT=4000 npm run dev:random
    ```

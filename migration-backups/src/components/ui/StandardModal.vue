@@ -21,7 +21,11 @@
           <slot name="header">
             <div class="standard-modal__title-section">
               <h2 :id="ariaLabelledby" class="standard-modal__title">
-                <AppIcon v-if="icon" :name="icon" class="standard-modal__title-icon" />
+                <AppIcon
+                  v-if="icon"
+                  :name="icon"
+                  class="standard-modal__title-icon"
+                />
                 {{ title }}
               </h2>
               <p v-if="subtitle" class="standard-modal__subtitle">
@@ -47,7 +51,10 @@
         </main>
 
         <!-- Modal Footer -->
-        <footer v-if="$slots.footer || showDefaultActions" class="standard-modal__footer">
+        <footer
+          v-if="$slots.footer || showDefaultActions"
+          class="standard-modal__footer"
+        >
           <slot name="footer">
             <div v-if="showDefaultActions" class="standard-modal__actions">
               <UnifiedButton
@@ -74,37 +81,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
-import AppIcon from './AppIcon.vue';
-import UnifiedButton from './UnifiedButton.vue';
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import AppIcon from './AppIcon.vue'
+import UnifiedButton from './UnifiedButton.vue'
 
 interface Props {
-  modelValue: boolean;
-  title?: string;
-  subtitle?: string;
-  icon?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  closable?: boolean;
-  closeOnOverlay?: boolean;
-  persistent?: boolean;
-  loading?: boolean;
+  modelValue: boolean
+  title?: string
+  subtitle?: string
+  icon?: string
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  closable?: boolean
+  closeOnOverlay?: boolean
+  persistent?: boolean
+  loading?: boolean
 
   // Action buttons
-  showDefaultActions?: boolean;
-  showCancel?: boolean;
-  showConfirm?: boolean;
-  cancelText?: string;
-  confirmText?: string;
-  confirmVariant?: string;
+  showDefaultActions?: boolean
+  showCancel?: boolean
+  showConfirm?: boolean
+  cancelText?: string
+  confirmText?: string
+  confirmVariant?: string
 
   // Styling
-  variant?: 'default' | 'glass' | 'minimal' | 'elevated';
-  centered?: boolean;
-  scrollable?: boolean;
+  variant?: 'default' | 'glass' | 'minimal' | 'elevated'
+  centered?: boolean
+  scrollable?: boolean
 
   // Accessibility
-  ariaLabelledby?: string;
-  ariaDescribedby?: string;
+  ariaLabelledby?: string
+  ariaDescribedby?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -123,19 +130,19 @@ const props = withDefaults(defineProps<Props>(), {
   centered: true,
   scrollable: true,
   ariaLabelledby: 'modal-title',
-  ariaDescribedby: 'modal-body'
-});
+  ariaDescribedby: 'modal-body',
+})
 
 const emit = defineEmits<{
-  'update:modelValue': [value: boolean];
-  close: [];
-  cancel: [];
-  confirm: [];
-  opened: [];
-  closed: [];
-}>();
+  'update:modelValue': [value: boolean]
+  close: []
+  cancel: []
+  confirm: []
+  opened: []
+  closed: []
+}>()
 
-const modalRef = ref<HTMLElement>();
+const modalRef = ref<HTMLElement>()
 
 // Computed classes
 const overlayClass = computed(() => [
@@ -143,8 +150,8 @@ const overlayClass = computed(() => [
   `standard-modal-overlay--${props.variant}`,
   {
     'standard-modal-overlay--centered': props.centered,
-  }
-]);
+  },
+])
 
 const modalClass = computed(() => [
   'standard-modal',
@@ -152,109 +159,114 @@ const modalClass = computed(() => [
   `standard-modal--${props.variant}`,
   {
     'standard-modal--scrollable': props.scrollable,
-  }
-]);
+  },
+])
 
 const bodyClass = computed(() => [
   'standard-modal__body',
   {
     'standard-modal__body--scrollable': props.scrollable,
-  }
-]);
+  },
+])
 
 // Modal actions
 const close = () => {
-  if (props.persistent && props.loading) return;
-  emit('update:modelValue', false);
-  emit('close');
-};
+  if (props.persistent && props.loading) return
+  emit('update:modelValue', false)
+  emit('close')
+}
 
 const cancel = () => {
-  if (props.loading) return;
-  emit('cancel');
-  close();
-};
+  if (props.loading) return
+  emit('cancel')
+  close()
+}
 
 const confirm = () => {
-  if (props.loading) return;
-  emit('confirm');
-};
+  if (props.loading) return
+  emit('confirm')
+}
 
 const onOverlayClick = () => {
   if (props.closeOnOverlay && !props.persistent) {
-    close();
+    close()
   }
-};
+}
 
 // Keyboard handling
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape' && props.closable && !props.persistent) {
-    close();
+    close()
   }
-};
+}
 
 // Focus management
 const focusModal = () => {
   nextTick(() => {
-    modalRef.value?.focus();
-  });
-};
+    modalRef.value?.focus()
+  })
+}
 
 const trapFocus = (event: KeyboardEvent) => {
-  if (event.key !== 'Tab') return;
+  if (event.key !== 'Tab') return
 
   const focusableElements = modalRef.value?.querySelectorAll(
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  );
+  )
 
-  if (!focusableElements || focusableElements.length === 0) return;
+  if (!focusableElements || focusableElements.length === 0) return
 
-  const firstElement = focusableElements[0] as HTMLElement;
-  const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+  const firstElement = focusableElements[0] as HTMLElement
+  const lastElement = focusableElements[
+    focusableElements.length - 1
+  ] as HTMLElement
 
   if (event.shiftKey) {
     if (document.activeElement === firstElement) {
-      event.preventDefault();
-      lastElement.focus();
+      event.preventDefault()
+      lastElement.focus()
     }
   } else {
     if (document.activeElement === lastElement) {
-      event.preventDefault();
-      firstElement.focus();
+      event.preventDefault()
+      firstElement.focus()
     }
   }
-};
+}
 
 // Watchers and lifecycle
-watch(() => props.modelValue, (newValue) => {
-  if (newValue) {
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', handleKeydown);
-    document.addEventListener('keydown', trapFocus);
-    focusModal();
-    emit('opened');
-  } else {
-    document.body.style.overflow = '';
-    document.removeEventListener('keydown', handleKeydown);
-    document.removeEventListener('keydown', trapFocus);
-    emit('closed');
+watch(
+  () => props.modelValue,
+  newValue => {
+    if (newValue) {
+      document.body.style.overflow = 'hidden'
+      document.addEventListener('keydown', handleKeydown)
+      document.addEventListener('keydown', trapFocus)
+      focusModal()
+      emit('opened')
+    } else {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', handleKeydown)
+      document.removeEventListener('keydown', trapFocus)
+      emit('closed')
+    }
   }
-});
+)
 
 onMounted(() => {
   if (props.modelValue) {
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', handleKeydown);
-    document.addEventListener('keydown', trapFocus);
-    focusModal();
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('keydown', handleKeydown)
+    document.addEventListener('keydown', trapFocus)
+    focusModal()
   }
-});
+})
 
 onUnmounted(() => {
-  document.body.style.overflow = '';
-  document.removeEventListener('keydown', handleKeydown);
-  document.removeEventListener('keydown', trapFocus);
-});
+  document.body.style.overflow = ''
+  document.removeEventListener('keydown', handleKeydown)
+  document.removeEventListener('keydown', trapFocus)
+})
 </script>
 
 <style scoped>
@@ -283,17 +295,34 @@ onUnmounted(() => {
   flex-direction: column;
   max-height: 100%;
   border-radius: 8px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   animation: modal-enter 0.2s ease-out;
   outline: none;
 }
 
 /* Size variants */
-.standard-modal--xs { max-width: 320px; width: 100%; }
-.standard-modal--sm { max-width: 384px; width: 100%; }
-.standard-modal--md { max-width: 512px; width: 100%; }
-.standard-modal--lg { max-width: 768px; width: 100%; }
-.standard-modal--xl { max-width: 1024px; width: 100%; }
+.standard-modal--xs {
+  max-width: 320px;
+  width: 100%;
+}
+.standard-modal--sm {
+  max-width: 384px;
+  width: 100%;
+}
+.standard-modal--md {
+  max-width: 512px;
+  width: 100%;
+}
+.standard-modal--lg {
+  max-width: 768px;
+  width: 100%;
+}
+.standard-modal--xl {
+  max-width: 1024px;
+  width: 100%;
+}
 .standard-modal--full {
   width: calc(100% - 2rem);
   height: calc(100% - 2rem);

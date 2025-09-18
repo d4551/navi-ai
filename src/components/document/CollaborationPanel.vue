@@ -1,5 +1,8 @@
 <template>
-  <div class="collaboration-panel font-sans" :class="{ 'is-expanded': isExpanded }">
+  <div
+    class="collaboration-panel font-sans"
+    :class="{ 'is-expanded': isExpanded }"
+  >
     <!-- Collaboration Header -->
     <div class="panel-header">
       <div class="header-content">
@@ -7,11 +10,12 @@
         <div class="panel-info">
           <h3 class="panel-title">Collaboration</h3>
           <div class="collaborators-count">
-            {{ activeCollaborators }} {{ activeCollaborators === 1 ? 'person' : 'people' }} editing
+            {{ activeCollaborators }}
+            {{ activeCollaborators === 1 ? 'person' : 'people' }} editing
           </div>
         </div>
       </div>
-      
+
       <div class="header-actions">
         <UnifiedButton
           variant="ghost"
@@ -42,18 +46,26 @@
             class="collaborator-item"
             :class="{ 'is-owner': collaborator.role === 'owner' }"
           >
-            <div class="collaborator-avatar" :style="{ background: collaborator.color }">
+            <div
+              class="collaborator-avatar"
+              :style="{ background: collaborator.color }"
+            >
               <span>{{ getInitials(collaborator.name) }}</span>
             </div>
             <div class="collaborator-info">
               <div class="collaborator-name">
                 {{ collaborator.name }}
-                <span v-if="collaborator.role === 'owner'" class="owner-badge">Owner</span>
+                <span v-if="collaborator.role === 'owner'" class="owner-badge"
+                  >Owner</span
+                >
               </div>
               <div class="collaborator-status" :class="collaborator.status">
                 <div class="status-dot"></div>
                 {{ getStatusText(collaborator.status) }}
-                <span v-if="collaborator.currentSection" class="editing-section">
+                <span
+                  v-if="collaborator.currentSection"
+                  class="editing-section"
+                >
                   - {{ collaborator.currentSection }}
                 </span>
               </div>
@@ -80,14 +92,19 @@
             :key="activity.id"
             class="activity-item"
           >
-            <div class="activity-avatar" :style="{ background: activity.userColor }">
+            <div
+              class="activity-avatar"
+              :style="{ background: activity.userColor }"
+            >
               <span>{{ getInitials(activity.userName) }}</span>
             </div>
             <div class="activity-content">
               <div class="activity-text">
                 <strong>{{ activity.userName }}</strong> {{ activity.action }}
               </div>
-              <div class="activity-time">{{ formatTime(activity.timestamp) }}</div>
+              <div class="activity-time">
+                {{ formatTime(activity.timestamp) }}
+              </div>
             </div>
             <div v-if="activity.hasChanges" class="activity-changes">
               <UnifiedButton
@@ -116,7 +133,7 @@
             Add Comment
           </UnifiedButton>
         </div>
-        
+
         <div class="comments-list">
           <div
             v-for="comment in comments"
@@ -124,14 +141,19 @@
             class="comment-item"
             :class="{ 'is-resolved': comment.resolved }"
           >
-            <div class="comment-avatar" :style="{ background: comment.userColor }">
+            <div
+              class="comment-avatar"
+              :style="{ background: comment.userColor }"
+            >
               <span>{{ getInitials(comment.userName) }}</span>
             </div>
             <div class="comment-content">
               <div class="comment-header">
                 <div class="comment-meta">
                   <strong>{{ comment.userName }}</strong>
-                  <span class="comment-time">{{ formatTime(comment.timestamp) }}</span>
+                  <span class="comment-time">{{
+                    formatTime(comment.timestamp)
+                  }}</span>
                 </div>
                 <div class="comment-actions">
                   <UnifiedButton
@@ -158,7 +180,7 @@
                 <AppIcon name="EyeIcon" />
                 <span>{{ comment.target }}</span>
               </div>
-              
+
               <!-- Replies -->
               <div v-if="comment.replies?.length" class="comment-replies">
                 <div
@@ -166,13 +188,18 @@
                   :key="reply.id"
                   class="reply-item"
                 >
-                  <div class="reply-avatar" :style="{ background: reply.userColor }">
+                  <div
+                    class="reply-avatar"
+                    :style="{ background: reply.userColor }"
+                  >
                     <span>{{ getInitials(reply.userName) }}</span>
                   </div>
                   <div class="reply-content">
                     <div class="reply-meta">
                       <strong>{{ reply.userName }}</strong>
-                      <span class="reply-time">{{ formatTime(reply.timestamp) }}</span>
+                      <span class="reply-time">{{
+                        formatTime(reply.timestamp)
+                      }}</span>
                     </div>
                     <div class="reply-text">{{ reply.text }}</div>
                   </div>
@@ -197,7 +224,9 @@
               <div class="version-name">{{ version.name }}</div>
               <div class="version-meta">
                 <span class="version-author">{{ version.author }}</span>
-                <span class="version-time">{{ formatTime(version.timestamp) }}</span>
+                <span class="version-time">{{
+                  formatTime(version.timestamp)
+                }}</span>
               </div>
             </div>
             <div class="version-actions">
@@ -225,7 +254,11 @@
     </div>
 
     <!-- Share Modal -->
-    <div v-if="showShareModal" class="share-modal-overlay" @click="closeShareModal">
+    <div
+      v-if="showShareModal"
+      class="share-modal-overlay"
+      @click="closeShareModal"
+    >
       <div class="share-modal" @click.stop>
         <div class="modal-header">
           <h3>Share Document</h3>
@@ -236,7 +269,7 @@
             @click="closeShareModal"
           />
         </div>
-        
+
         <div class="modal-content">
           <div class="share-section">
             <label class="share-label">Share Link</label>
@@ -257,7 +290,7 @@
               </UnifiedButton>
             </div>
           </div>
-          
+
           <div class="share-section">
             <label class="share-label">Access Level</label>
             <div class="access-controls">
@@ -275,7 +308,7 @@
                   </div>
                 </div>
               </label>
-              
+
               <label class="access-option">
                 <input
                   v-model="shareSettings.accessLevel"
@@ -286,11 +319,13 @@
                   <AppIcon name="mdi-comment" />
                   <div>
                     <div class="option-title">Can Comment</div>
-                    <div class="option-description">Can view and add comments</div>
+                    <div class="option-description">
+                      Can view and add comments
+                    </div>
                   </div>
                 </div>
               </label>
-              
+
               <label class="access-option">
                 <input
                   v-model="shareSettings.accessLevel"
@@ -307,29 +342,20 @@
               </label>
             </div>
           </div>
-          
+
           <div class="share-section">
             <label class="share-label">
-              <input
-                v-model="shareSettings.requireAuth"
-                type="checkbox"
-              />
+              <input v-model="shareSettings.requireAuth" type="checkbox" />
               Require authentication
             </label>
           </div>
         </div>
-        
+
         <div class="modal-actions">
-          <UnifiedButton
-            variant="ghost"
-            @click="closeShareModal"
-          >
+          <UnifiedButton variant="ghost" @click="closeShareModal">
             Cancel
           </UnifiedButton>
-          <UnifiedButton
-            variant="primary"
-            @click="updateShareSettings"
-          >
+          <UnifiedButton variant="primary" @click="updateShareSettings">
             Update Settings
           </UnifiedButton>
         </div>
@@ -337,7 +363,11 @@
     </div>
 
     <!-- Comment Modal -->
-    <div v-if="showCommentModal" class="comment-modal-overlay" @click="closeCommentModal">
+    <div
+      v-if="showCommentModal"
+      class="comment-modal-overlay"
+      @click="closeCommentModal"
+    >
       <div class="comment-modal" @click.stop>
         <div class="modal-header">
           <h3>Add Comment</h3>
@@ -348,7 +378,7 @@
             @click="closeCommentModal"
           />
         </div>
-        
+
         <div class="modal-content">
           <textarea
             v-model="newComment.text"
@@ -356,7 +386,7 @@
             placeholder="Add your comment..."
             rows="4"
           ></textarea>
-          
+
           <div class="comment-target-section">
             <label class="share-label">Target Section (Optional)</label>
             <select v-model="newComment.target" class="target-select">
@@ -368,12 +398,9 @@
             </select>
           </div>
         </div>
-        
+
         <div class="modal-actions">
-          <UnifiedButton
-            variant="ghost"
-            @click="closeCommentModal"
-          >
+          <UnifiedButton variant="ghost" @click="closeCommentModal">
             Cancel
           </UnifiedButton>
           <UnifiedButton
@@ -390,7 +417,14 @@
 </template>
 
 <script setup lang="ts">
-import { CheckIcon, DocumentDuplicateIcon, EyeIcon, PencilIcon, ShareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckIcon,
+  DocumentDuplicateIcon,
+  EyeIcon,
+  PencilIcon,
+  ShareIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 
 import { ref, computed, nextTick } from 'vue'
 import { useToast } from '@/composables/useToast'
@@ -468,7 +502,7 @@ const collaborators = ref<Collaborator[]>([
     role: 'owner',
     status: 'online',
     color: '#3b82f6',
-    currentSection: 'Professional Summary'
+    currentSection: 'Professional Summary',
   },
   {
     id: '2',
@@ -477,7 +511,7 @@ const collaborators = ref<Collaborator[]>([
     role: 'editor',
     status: 'online',
     color: '#10b981',
-    currentSection: 'Work Experience'
+    currentSection: 'Work Experience',
   },
   {
     id: '3',
@@ -485,8 +519,8 @@ const collaborators = ref<Collaborator[]>([
     email: 'mike@example.com',
     role: 'viewer',
     status: 'idle',
-    color: '#f59e0b'
-  }
+    color: '#f59e0b',
+  },
 ])
 
 const recentActivities = ref<Activity[]>([
@@ -497,7 +531,7 @@ const recentActivities = ref<Activity[]>([
     userColor: '#10b981',
     action: 'updated Work Experience section',
     timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
-    hasChanges: true
+    hasChanges: true,
   },
   {
     id: '2',
@@ -505,7 +539,7 @@ const recentActivities = ref<Activity[]>([
     userName: 'Mike Chen',
     userColor: '#f59e0b',
     action: 'added a comment on Skills section',
-    timestamp: new Date(Date.now() - 1000 * 60 * 15) // 15 minutes ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 15), // 15 minutes ago
   },
   {
     id: '3',
@@ -514,8 +548,8 @@ const recentActivities = ref<Activity[]>([
     userColor: '#3b82f6',
     action: 'updated Professional Summary',
     timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-    hasChanges: true
-  }
+    hasChanges: true,
+  },
 ])
 
 const comments = ref<Comment[]>([
@@ -534,10 +568,10 @@ const comments = ref<Comment[]>([
         userId: '1',
         userName: 'You',
         userColor: '#3b82f6',
-        text: 'Good point! I\'ll add some metrics.',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30)
-      }
-    ]
+        text: "Good point! I'll add some metrics.",
+        timestamp: new Date(Date.now() - 1000 * 60 * 30),
+      },
+    ],
   },
   {
     id: '2',
@@ -547,8 +581,8 @@ const comments = ref<Comment[]>([
     text: 'The skills list looks comprehensive. Maybe group them by category?',
     target: 'Skills',
     timestamp: new Date(Date.now() - 1000 * 60 * 60),
-    resolved: true
-  }
+    resolved: true,
+  },
 ])
 
 const versionHistory = ref<Version[]>([
@@ -558,7 +592,7 @@ const versionHistory = ref<Version[]>([
     author: 'You',
     timestamp: new Date(),
     isCurrent: true,
-    changes: ['Updated summary', 'Added new experience']
+    changes: ['Updated summary', 'Added new experience'],
   },
   {
     id: '2',
@@ -566,7 +600,7 @@ const versionHistory = ref<Version[]>([
     author: 'You',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
     isCurrent: false,
-    changes: ['Added skills section', 'Updated formatting']
+    changes: ['Added skills section', 'Updated formatting'],
   },
   {
     id: '3',
@@ -574,14 +608,14 @@ const versionHistory = ref<Version[]>([
     author: 'You',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
     isCurrent: false,
-    changes: ['Created document', 'Added basic information']
-  }
+    changes: ['Created document', 'Added basic information'],
+  },
 ])
 
 // Share settings
 const shareSettings = ref({
   accessLevel: 'view',
-  requireAuth: true
+  requireAuth: true,
 })
 
 const shareLink = computed(() => {
@@ -591,7 +625,7 @@ const shareLink = computed(() => {
 // New comment
 const newComment = ref({
   text: '',
-  target: ''
+  target: '',
 })
 
 // Computed
@@ -615,10 +649,14 @@ function getInitials(name: string): string {
 
 function getStatusText(status: string): string {
   switch (status) {
-    case 'online': return 'Active now'
-    case 'idle': return 'Away'
-    case 'offline': return 'Offline'
-    default: return status
+    case 'online':
+      return 'Active now'
+    case 'idle':
+      return 'Away'
+    case 'offline':
+      return 'Offline'
+    default:
+      return status
   }
 }
 
@@ -628,7 +666,7 @@ function formatTime(date: Date): string {
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  
+
   if (minutes < 1) return 'Just now'
   if (minutes < 60) return `${minutes}m ago`
   if (hours < 24) return `${hours}h ago`
@@ -684,9 +722,9 @@ function submitComment() {
     text: newComment.value.text,
     target: newComment.value.target || undefined,
     timestamp: new Date(),
-    resolved: false
+    resolved: false,
   }
-  
+
   comments.value.unshift(comment)
   toast.success('Comment added')
   closeCommentModal()
@@ -720,7 +758,11 @@ function viewChanges(activity: Activity) {
 
 // Version history
 function restoreVersion(versionId: string) {
-  if (confirm('Are you sure you want to restore this version? Current changes will be saved as a new version.')) {
+  if (
+    confirm(
+      'Are you sure you want to restore this version? Current changes will be saved as a new version.'
+    )
+  ) {
     emit('restore-version', versionId)
     toast.success('Version restored')
   }
@@ -1215,7 +1257,7 @@ function compareVersion(versionId: string) {
   border-color: rgba(var(--color-primary-500-rgb), 0.3);
 }
 
-.access-option input[type="radio"] {
+.access-option input[type='radio'] {
   margin: 0;
 }
 
@@ -1265,19 +1307,19 @@ function compareVersion(versionId: string) {
   .collaborator-item {
     padding: 10px;
   }
-  
+
   .collaborator-avatar {
     width: 32px;
     height: 32px;
     font-size: 12px;
   }
-  
+
   .share-modal,
   .comment-modal {
     width: calc(100vw - 32px);
     margin: 16px;
   }
-  
+
   .modal-content {
     padding: 20px;
   }

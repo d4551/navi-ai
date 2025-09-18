@@ -3,11 +3,16 @@
     class="loading-state-manager"
     :class="[
       `loading-variant-${variant}`,
-      { 'loading-fullscreen': fullscreen }
+      { 'loading-fullscreen': fullscreen },
     ]"
   >
     <!-- Skeleton Loading States -->
-    <div v-if="isLoading" class="skeleton-container" role="status" aria-live="polite">
+    <div
+      v-if="isLoading"
+      class="skeleton-container"
+      role="status"
+      aria-live="polite"
+    >
       <span class="sr-only">{{ loadingText }}</span>
 
       <!-- Dashboard Stats Skeleton -->
@@ -24,7 +29,11 @@
       <!-- Dashboard Cards Skeleton -->
       <template v-if="variant === 'dashboard-cards'">
         <div class="grid-actions">
-          <div v-for="n in cardCount" :key="`card-${n}`" class="skeleton-action-card">
+          <div
+            v-for="n in cardCount"
+            :key="`card-${n}`"
+            class="skeleton-action-card"
+          >
             <div class="skeleton-card-header">
               <div class="skeleton skeleton-icon"></div>
               <div class="skeleton-card-text">
@@ -40,7 +49,11 @@
       <!-- Job List Skeleton -->
       <template v-if="variant === 'job-list'">
         <div class="skeleton-job-list">
-          <div v-for="n in itemCount" :key="`job-${n}`" class="skeleton-job-item">
+          <div
+            v-for="n in itemCount"
+            :key="`job-${n}`"
+            class="skeleton-job-item"
+          >
             <div class="skeleton-job-header">
               <div class="skeleton skeleton-text-lg"></div>
               <div class="skeleton skeleton-badge"></div>
@@ -55,10 +68,22 @@
       <template v-if="variant === 'table'">
         <div class="skeleton-table">
           <div class="skeleton-table-header">
-            <div v-for="n in columnCount" :key="`header-${n}`" class="skeleton skeleton-text-sm"></div>
+            <div
+              v-for="n in columnCount"
+              :key="`header-${n}`"
+              class="skeleton skeleton-text-sm"
+            ></div>
           </div>
-          <div v-for="n in rowCount" :key="`row-${n}`" class="skeleton-table-row">
-            <div v-for="c in columnCount" :key="`cell-${n}-${c}`" class="skeleton skeleton-text-xs"></div>
+          <div
+            v-for="n in rowCount"
+            :key="`row-${n}`"
+            class="skeleton-table-row"
+          >
+            <div
+              v-for="c in columnCount"
+              :key="`cell-${n}-${c}`"
+              class="skeleton skeleton-text-xs"
+            ></div>
           </div>
         </div>
       </template>
@@ -66,7 +91,11 @@
       <!-- Form Skeleton -->
       <template v-if="variant === 'form'">
         <div class="skeleton-form">
-          <div v-for="n in fieldCount" :key="`field-${n}`" class="skeleton-form-field">
+          <div
+            v-for="n in fieldCount"
+            :key="`field-${n}`"
+            class="skeleton-form-field"
+          >
             <div class="skeleton skeleton-label"></div>
             <div class="skeleton skeleton-input"></div>
           </div>
@@ -95,7 +124,12 @@
           </div>
           <div class="skeleton-chart-body">
             <div class="skeleton-chart-bars">
-              <div v-for="n in 6" :key="`bar-${n}`" class="skeleton-chart-bar" :style="{ height: `${Math.random() * 60 + 20}%` }"></div>
+              <div
+                v-for="n in 6"
+                :key="`bar-${n}`"
+                class="skeleton-chart-bar"
+                :style="{ height: `${Math.random() * 60 + 20}%` }"
+              ></div>
             </div>
           </div>
         </div>
@@ -123,7 +157,9 @@
       </div>
       <div class="error-content">
         <h3 class="error-title">{{ errorTitle || 'Something went wrong' }}</h3>
-        <p class="error-message">{{ errorMessage || 'Please try again later.' }}</p>
+        <p class="error-message">
+          {{ errorMessage || 'Please try again later.' }}
+        </p>
         <div v-if="retryable" class="error-actions">
           <UnifiedButton variant="primary" size="sm" @click="$emit('retry')">
             Try Again
@@ -139,9 +175,15 @@
       </div>
       <div class="empty-content">
         <h3 class="empty-title">{{ emptyTitle || 'No data available' }}</h3>
-        <p class="empty-message">{{ emptyMessage || 'There\'s nothing to show here yet.' }}</p>
+        <p class="empty-message">
+          {{ emptyMessage || "There's nothing to show here yet." }}
+        </p>
         <div v-if="emptyAction" class="empty-actions">
-          <UnifiedButton variant="primary" size="sm" @click="$emit('empty-action')">
+          <UnifiedButton
+            variant="primary"
+            size="sm"
+            @click="$emit('empty-action')"
+          >
             {{ emptyActionText || 'Get Started' }}
           </UnifiedButton>
         </div>
@@ -158,7 +200,15 @@ import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 interface Props {
   // Loading state
   isLoading?: boolean
-  variant?: 'dashboard-stats' | 'dashboard-cards' | 'job-list' | 'table' | 'form' | 'progress' | 'chart' | 'content'
+  variant?:
+    | 'dashboard-stats'
+    | 'dashboard-cards'
+    | 'job-list'
+    | 'table'
+    | 'form'
+    | 'progress'
+    | 'chart'
+    | 'content'
   loadingText?: string
   animate?: boolean
   fullscreen?: boolean
@@ -199,7 +249,7 @@ const props = withDefaults(defineProps<Props>(), {
   hasError: false,
   retryable: true,
   isEmpty: false,
-  emptyAction: false
+  emptyAction: false,
 })
 
 const emit = defineEmits<{
@@ -248,18 +298,50 @@ const emit = defineEmits<{
 }
 
 @keyframes skeleton-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* Skeleton sizes */
-.skeleton-text-xs { height: 12px; width: 60%; margin-bottom: var(--space-1); }
-.skeleton-text-sm { height: 14px; width: 80%; margin-bottom: var(--space-2); }
-.skeleton-text-md { height: 16px; width: 70%; margin-bottom: var(--space-2); }
-.skeleton-text-lg { height: 20px; width: 60%; margin-bottom: var(--space-3); }
-.skeleton-heading { height: 24px; width: 50%; margin-bottom: var(--space-4); }
-.skeleton-paragraph { height: 14px; width: 100%; margin-bottom: var(--space-2); }
-.skeleton-paragraph-short { height: 14px; width: 75%; margin-bottom: var(--space-2); }
+.skeleton-text-xs {
+  height: 12px;
+  width: 60%;
+  margin-bottom: var(--space-1);
+}
+.skeleton-text-sm {
+  height: 14px;
+  width: 80%;
+  margin-bottom: var(--space-2);
+}
+.skeleton-text-md {
+  height: 16px;
+  width: 70%;
+  margin-bottom: var(--space-2);
+}
+.skeleton-text-lg {
+  height: 20px;
+  width: 60%;
+  margin-bottom: var(--space-3);
+}
+.skeleton-heading {
+  height: 24px;
+  width: 50%;
+  margin-bottom: var(--space-4);
+}
+.skeleton-paragraph {
+  height: 14px;
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+.skeleton-paragraph-short {
+  height: 14px;
+  width: 75%;
+  margin-bottom: var(--space-2);
+}
 
 .skeleton-circle {
   width: 48px;
@@ -531,8 +613,14 @@ const emit = defineEmits<{
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

@@ -5,7 +5,9 @@
       <div class="header-content">
         <div class="title-section">
           <h1 class="cover-letter-title">Cover Letter Builder</h1>
-          <p class="cover-letter-subtitle">Create personalized cover letters that stand out</p>
+          <p class="cover-letter-subtitle">
+            Create personalized cover letters that stand out
+          </p>
         </div>
         <div class="header-actions">
           <button class="action-btn secondary" @click="saveDraft">
@@ -22,7 +24,7 @@
           </button>
         </div>
       </div>
-      
+
       <!-- Job Information Strip -->
       <div v-if="jobInfo" class="job-info-strip">
         <div class="job-details">
@@ -87,13 +89,17 @@
         <div class="progress-tracker">
           <h3 class="panel-title">Completion Progress</h3>
           <div class="progress-items">
-            <div 
+            <div
               v-for="item in progressItems"
               :key="item.id"
               class="progress-item"
               :class="{ completed: item.completed }"
             >
-              <AppIcon v-if="item.completed" name="mdi-check-circle-outline" class="progress-icon" />
+              <AppIcon
+                v-if="item.completed"
+                name="mdi-check-circle-outline"
+                class="progress-icon"
+              />
               <AppIcon v-else name="mdi-circle-outline" class="progress-icon" />
               <span class="progress-text">{{ item.label }}</span>
             </div>
@@ -106,36 +112,57 @@
         <!-- Content Toolbar -->
         <div class="content-toolbar">
           <div class="toolbar-section">
-            <button class="toolbar-btn" :class="{ active: editorMode === 'write' }" @click="setEditorMode('write')">
+            <button
+              class="toolbar-btn"
+              :class="{ active: editorMode === 'write' }"
+              @click="setEditorMode('write')"
+            >
               <AppIcon name="mdi-pencil" />
               Write
             </button>
-            <button class="toolbar-btn" :class="{ active: editorMode === 'format' }" @click="setEditorMode('format')">
+            <button
+              class="toolbar-btn"
+              :class="{ active: editorMode === 'format' }"
+              @click="setEditorMode('format')"
+            >
               <AppIcon name="mdi-format-text" />
               Format
             </button>
-            <button class="toolbar-btn" :class="{ active: editorMode === 'review' }" @click="setEditorMode('review')">
+            <button
+              class="toolbar-btn"
+              :class="{ active: editorMode === 'review' }"
+              @click="setEditorMode('review')"
+            >
               <AppIcon name="mdi-clipboard-text" />
               Review
             </button>
           </div>
-          
+
           <div class="toolbar-actions">
-            <button class="toolbar-btn" :disabled="!canUndo" @click="undoChange">
+            <button
+              class="toolbar-btn"
+              :disabled="!canUndo"
+              @click="undoChange"
+            >
               <AppIcon name="mdi-undo" />
             </button>
-            <button class="toolbar-btn" :disabled="!canRedo" @click="redoChange">
+            <button
+              class="toolbar-btn"
+              :disabled="!canRedo"
+              @click="redoChange"
+            >
               <AppIcon name="mdi-redo" />
             </button>
-            <div class="word-count">
-              {{ wordCount }} words
-            </div>
+            <div class="word-count">{{ wordCount }} words</div>
           </div>
         </div>
 
         <!-- Editor Content -->
         <div class="editor-container">
-          <div class="letter-editor" :class="{ 'review-mode': editorMode === 'review' }">
+          <div
+            class="letter-editor"
+            :class="{ 'review-mode': editorMode === 'review' }"
+          >
             <slot :mode="editorMode" :letter-data="letterData"></slot>
           </div>
         </div>
@@ -147,7 +174,10 @@
           <h3>Live Preview</h3>
           <div class="preview-actions">
             <button class="icon-btn" @click="togglePreviewMode">
-              <AppIcon v-if="previewMode === 'letter'" name="mdi-file-document-outline" />
+              <AppIcon
+                v-if="previewMode === 'letter'"
+                name="mdi-file-document-outline"
+              />
               <AppIcon v-else name="mdi-email" />
             </button>
             <button class="icon-btn" @click="closePreview">
@@ -172,64 +202,64 @@ import AppIcon from '@/components/ui/AppIcon.vue'
 export default {
   name: 'CoverLetterLayout',
   components: {
-    AppIcon
+    AppIcon,
   },
   props: {
     letterData: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     jobInfo: {
       type: Object,
-      default: null
+      default: null,
     },
     showPreview: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: [
-    'save-draft', 
-    'preview', 
-    'export', 
-    'generate-ai', 
-    'improve-ai', 
+    'save-draft',
+    'preview',
+    'export',
+    'generate-ai',
+    'improve-ai',
     'use-template',
     'change-job',
     'preview-toggle',
-    'check-tone'
+    'check-tone',
   ],
   setup(props, { emit }) {
     const editorMode = ref('write')
     const previewMode = ref('letter')
     const canUndo = ref(false)
     const canRedo = ref(false)
-    
+
     const writingTips = ref([
       {
         id: 1,
         icon: 'mdi-target',
         title: 'Be Specific',
-        description: 'Tailor your letter to the specific job and company'
+        description: 'Tailor your letter to the specific job and company',
       },
       {
         id: 2,
         icon: 'mdi-book-open-outline',
         title: 'Tell a Story',
-        description: 'Use specific examples to demonstrate your skills'
+        description: 'Use specific examples to demonstrate your skills',
       },
       {
         id: 3,
         icon: 'mdi-chart-line',
         title: 'Show Impact',
-        description: 'Quantify your achievements with numbers and results'
+        description: 'Quantify your achievements with numbers and results',
       },
       {
         id: 4,
         icon: 'mdi-account-heart',
         title: 'Show Enthusiasm',
-        description: 'Express genuine interest in the role and company'
-      }
+        description: 'Express genuine interest in the role and company',
+      },
     ])
 
     const progressItems = ref([
@@ -237,7 +267,7 @@ export default {
       { id: 2, label: 'Opening paragraph written', completed: false },
       { id: 3, label: 'Body paragraphs completed', completed: false },
       { id: 4, label: 'Closing paragraph written', completed: false },
-      { id: 5, label: 'Proofread and reviewed', completed: false }
+      { id: 5, label: 'Proofread and reviewed', completed: false },
     ])
 
     const wordCount = computed(() => {
@@ -245,7 +275,7 @@ export default {
       return content.split(/\s+/).filter(word => word.length > 0).length
     })
 
-    const setEditorMode = (mode) => {
+    const setEditorMode = mode => {
       editorMode.value = mode
     }
 
@@ -268,14 +298,14 @@ export default {
     const generateWithAI = () => {
       emit('generate-ai', {
         jobInfo: props.jobInfo,
-        letterData: props.letterData
+        letterData: props.letterData,
       })
     }
 
     const improveWithAI = () => {
       emit('improve-ai', {
         content: props.letterData.content,
-        jobInfo: props.jobInfo
+        jobInfo: props.jobInfo,
       })
     }
 
@@ -308,7 +338,7 @@ export default {
       // This would be implemented based on actual content analysis
       const content = props.letterData.content || ''
       const hasJobInfo = Boolean(props.jobInfo)
-      
+
       progressItems.value[0].completed = hasJobInfo
       progressItems.value[1].completed = content.length > 100
       progressItems.value[2].completed = content.length > 300
@@ -340,9 +370,9 @@ export default {
       checkTone,
       closePreview,
       undoChange,
-      redoChange
+      redoChange,
     }
-  }
+  },
 }
 </script>
 
@@ -408,7 +438,7 @@ export default {
 
 .action-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .job-info-strip {
@@ -444,7 +474,8 @@ export default {
   gap: 4px;
 }
 
-.job-type, .job-location {
+.job-type,
+.job-location {
   font: var(--md-sys-typescale-body-small-font);
   color: var(--md-sys-color-on-primary-container);
   opacity: 0.8;
@@ -732,7 +763,7 @@ export default {
   background: white;
   min-height: 100%;
   padding: 40px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 
@@ -741,7 +772,7 @@ export default {
   .cover-letter-sidebar {
     width: 260px;
   }
-  
+
   .preview-panel {
     width: 350px;
   }
@@ -753,31 +784,31 @@ export default {
     gap: 16px;
     align-items: stretch;
   }
-  
+
   .header-actions {
     justify-content: center;
   }
-  
+
   .job-details {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .cover-letter-main {
     flex-direction: column;
   }
-  
+
   .cover-letter-sidebar {
     width: 100%;
     height: auto;
     max-height: 200px;
     padding: 16px;
   }
-  
+
   .action-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-  
+
   .preview-panel {
     display: none; /* Hide preview on mobile by default */
   }

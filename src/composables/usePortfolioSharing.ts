@@ -5,7 +5,10 @@
 
 import { ref, computed } from 'vue'
 import { useStorage } from '@vueuse/core'
-import type { Portfolio, PortfolioProject } from '@/modules/db/repositories/portfolio'
+import type {
+  Portfolio,
+  PortfolioProject,
+} from '@/modules/db/repositories/portfolio'
 import { logger } from '@/shared/utils/logger'
 
 export interface ShareSettings {
@@ -79,7 +82,10 @@ export interface SharedPortfolioLink {
 
 export function usePortfolioSharing() {
   // State
-  const sharedPortfolios = useStorage('shared-portfolios', [] as SharedPortfolioLink[])
+  const sharedPortfolios = useStorage(
+    'shared-portfolios',
+    [] as SharedPortfolioLink[]
+  )
   const shareSettings = ref<ShareSettings>({
     isPublic: false,
     allowDownload: true,
@@ -88,31 +94,34 @@ export function usePortfolioSharing() {
     seoSettings: {
       title: '',
       description: '',
-      keywords: []
+      keywords: [],
     },
     branding: {
-      showWatermark: true
+      showWatermark: true,
     },
     analytics: {
       enableTracking: true,
       trackDownloads: true,
-      trackViewTime: true
-    }
+      trackViewTime: true,
+    },
   })
 
   const loading = ref(false)
   const error = ref<string | null>(null)
 
   // Computed
-  const activeShares = computed(() => 
+  const activeShares = computed(() =>
     sharedPortfolios.value.filter(share => share.isActive)
   )
 
-  const totalViews = computed(() => 
-    sharedPortfolios.value.reduce((total, share) => total + share.analytics.views.total, 0)
+  const totalViews = computed(() =>
+    sharedPortfolios.value.reduce(
+      (total, share) => total + share.analytics.views.total,
+      0
+    )
   )
 
-  const popularShares = computed(() => 
+  const popularShares = computed(() =>
     sharedPortfolios.value
       .sort((a, b) => b.analytics.views.total - a.analytics.views.total)
       .slice(0, 5)
@@ -135,7 +144,7 @@ export function usePortfolioSharing() {
       // Create filtered portfolio data
       const portfolioData = { ...portfolio }
       if (selectedProjectIds) {
-        portfolioData.projects = portfolio.projects.filter(p => 
+        portfolioData.projects = portfolio.projects.filter(p =>
           selectedProjectIds.includes(p.id)
         )
       }
@@ -146,16 +155,16 @@ export function usePortfolioSharing() {
         ...settings,
         seoSettings: {
           ...shareSettings.value.seoSettings,
-          ...settings.seoSettings
+          ...settings.seoSettings,
         },
         branding: {
           ...shareSettings.value.branding,
-          ...settings.branding
+          ...settings.branding,
         },
         analytics: {
           ...shareSettings.value.analytics,
-          ...settings.analytics
-        }
+          ...settings.analytics,
+        },
       }
 
       // Create share link
@@ -163,11 +172,12 @@ export function usePortfolioSharing() {
         id: shareId,
         url: shareUrl,
         title: mergedSettings.seoSettings.title || portfolio.personalInfo.title,
-        description: mergedSettings.seoSettings.description || portfolio.personalInfo.bio,
+        description:
+          mergedSettings.seoSettings.description || portfolio.personalInfo.bio,
         shareSettings: mergedSettings,
         analytics: initializeAnalytics(),
         createdAt: new Date(),
-        isActive: true
+        isActive: true,
       }
 
       // Save portfolio data to public storage
@@ -178,9 +188,9 @@ export function usePortfolioSharing() {
 
       logger.info('Portfolio share created:', shareUrl)
       return shareLink
-
     } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to create share'
+      error.value =
+        err instanceof Error ? err.message : 'Failed to create share'
       logger.error('Failed to create portfolio share:', err)
       throw err
     } finally {
@@ -190,7 +200,7 @@ export function usePortfolioSharing() {
 
   // Share Management
   async function updateShare(
-    shareId: string, 
+    shareId: string,
     updates: Partial<ShareSettings>
   ): Promise<void> {
     const shareIndex = sharedPortfolios.value.findIndex(s => s.id === shareId)
@@ -200,10 +210,10 @@ export function usePortfolioSharing() {
 
     const share = sharedPortfolios.value[shareIndex]
     share.shareSettings = { ...share.shareSettings, ...updates }
-    
+
     // Update stored portfolio data if needed
     await updateSharedPortfolioData(shareId, updates)
-    
+
     logger.info('Portfolio share updated:', shareId)
   }
 
@@ -215,7 +225,7 @@ export function usePortfolioSharing() {
 
     share.isActive = false
     await removeSharedPortfolioData(shareId)
-    
+
     logger.info('Portfolio share deactivated:', shareId)
   }
 
@@ -227,17 +237,20 @@ export function usePortfolioSharing() {
 
     sharedPortfolios.value.splice(shareIndex, 1)
     await removeSharedPortfolioData(shareId)
-    
+
     logger.info('Portfolio share deleted:', shareId)
   }
 
   // Analytics
-  function trackView(shareId: string, viewerInfo: {
-    country?: string
-    device?: string
-    browser?: string
-    referrer?: string
-  } = {}) {
+  function trackView(
+    shareId: string,
+    viewerInfo: {
+      country?: string
+      device?: string
+      browser?: string
+      referrer?: string
+    } = {}
+  ) {
     const share = sharedPortfolios.value.find(s => s.id === shareId)
     if (!share) return
 
@@ -246,27 +259,29 @@ export function usePortfolioSharing() {
 
     // Update view counts
     share.analytics.views.total++
-    share.analytics.views.daily[today] = (share.analytics.views.daily[today] || 0) + 1
-    share.analytics.views.monthly[month] = (share.analytics.views.monthly[month] || 0) + 1
+    share.analytics.views.daily[today] =
+      (share.analytics.views.daily[today] || 0) + 1
+    share.analytics.views.monthly[month] =
+      (share.analytics.views.monthly[month] || 0) + 1
 
     // Update demographics
     if (viewerInfo.country) {
-      share.analytics.demographics.countries[viewerInfo.country] = 
+      share.analytics.demographics.countries[viewerInfo.country] =
         (share.analytics.demographics.countries[viewerInfo.country] || 0) + 1
     }
-    
+
     if (viewerInfo.device) {
-      share.analytics.demographics.devices[viewerInfo.device] = 
+      share.analytics.demographics.devices[viewerInfo.device] =
         (share.analytics.demographics.devices[viewerInfo.device] || 0) + 1
     }
-    
+
     if (viewerInfo.browser) {
-      share.analytics.demographics.browsers[viewerInfo.browser] = 
+      share.analytics.demographics.browsers[viewerInfo.browser] =
         (share.analytics.demographics.browsers[viewerInfo.browser] || 0) + 1
     }
-    
+
     if (viewerInfo.referrer) {
-      share.analytics.demographics.referrers[viewerInfo.referrer] = 
+      share.analytics.demographics.referrers[viewerInfo.referrer] =
         (share.analytics.demographics.referrers[viewerInfo.referrer] || 0) + 1
     }
 
@@ -277,20 +292,23 @@ export function usePortfolioSharing() {
     const share = sharedPortfolios.value.find(s => s.id === shareId)
     if (!share) return
 
-    const existingProject = share.analytics.engagement.mostViewedProjects
-      .find(p => p.projectId === projectId)
-    
+    const existingProject = share.analytics.engagement.mostViewedProjects.find(
+      p => p.projectId === projectId
+    )
+
     if (existingProject) {
       existingProject.views++
     } else {
       share.analytics.engagement.mostViewedProjects.push({
         projectId,
-        views: 1
+        views: 1,
       })
     }
 
     // Sort by views
-    share.analytics.engagement.mostViewedProjects.sort((a, b) => b.views - a.views)
+    share.analytics.engagement.mostViewedProjects.sort(
+      (a, b) => b.views - a.views
+    )
   }
 
   function trackDownload(shareId: string) {
@@ -313,7 +331,7 @@ export function usePortfolioSharing() {
     settings: ShareSettings,
     selectedProjectIds?: string[]
   ): Promise<string> {
-    const filteredProjects = selectedProjectIds 
+    const filteredProjects = selectedProjectIds
       ? portfolio.projects.filter(p => selectedProjectIds.includes(p.id))
       : portfolio.projects
 
@@ -347,7 +365,8 @@ export function usePortfolioSharing() {
 
   function generatePortfolioCSS(settings: ShareSettings): string {
     const primaryColor = settings.branding.customColors?.primary || '#6366f1'
-    const secondaryColor = settings.branding.customColors?.secondary || '#8b5cf6'
+    const secondaryColor =
+      settings.branding.customColors?.secondary || '#8b5cf6'
 
     return `<style>
       :root {
@@ -550,7 +569,10 @@ export function usePortfolioSharing() {
     </style>`
   }
 
-  function generatePortfolioHeader(personalInfo: Portfolio['personalInfo'], settings: ShareSettings): string {
+  function generatePortfolioHeader(
+    personalInfo: Portfolio['personalInfo'],
+    settings: ShareSettings
+  ): string {
     return `
     <header class="portfolio-header">
       ${settings.branding.customLogo ? `<img src="${settings.branding.customLogo}" alt="Logo" style="height: 60px; margin-bottom: 1rem;">` : ''}
@@ -560,22 +582,33 @@ export function usePortfolioSharing() {
     </header>`
   }
 
-  function generateProjectsSection(projects: PortfolioProject[], _settings: ShareSettings): string {
-    const projectCards = projects.map(project => `
+  function generateProjectsSection(
+    projects: PortfolioProject[],
+    _settings: ShareSettings
+  ): string {
+    const projectCards = projects
+      .map(
+        project => `
       <article class="project-card" data-project-id="${project.id}">
         <h3 class="project-title">${project.title}</h3>
         <p class="project-description">${project.description}</p>
-        ${project.technologies.length ? `
+        ${
+          project.technologies.length
+            ? `
           <div class="project-tech">
             ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
           </div>
-        ` : ''}
+        `
+            : ''
+        }
         <div class="project-links">
           ${project.links.live ? `<a href="${project.links.live}" class="project-link" target="_blank">View Live</a>` : ''}
           ${project.links.github ? `<a href="${project.links.github}" class="project-link" target="_blank">Source Code</a>` : ''}
         </div>
       </article>
-    `).join('')
+    `
+      )
+      .join('')
 
     return `
     <section class="projects-section">
@@ -585,47 +618,68 @@ export function usePortfolioSharing() {
     </section>`
   }
 
-  function generateSkillsSection(skills: Portfolio['skills'], _settings: ShareSettings): string {
+  function generateSkillsSection(
+    skills: Portfolio['skills'],
+    _settings: ShareSettings
+  ): string {
     return `
     <section class="skills-section">
       <h2 class="skills-title">Skills & Technologies</h2>
       <div class="skills-grid">
-        ${skills.primary.length ? `
+        ${
+          skills.primary.length
+            ? `
           <div class="skill-category">
             <h3>Primary Skills</h3>
             <div class="skill-list">
               ${skills.primary.map(skill => `<span class="skill-item">${skill}</span>`).join('')}
             </div>
           </div>
-        ` : ''}
-        ${skills.secondary.length ? `
+        `
+            : ''
+        }
+        ${
+          skills.secondary.length
+            ? `
           <div class="skill-category">
             <h3>Secondary Skills</h3>
             <div class="skill-list">
               ${skills.secondary.map(skill => `<span class="skill-item">${skill}</span>`).join('')}
             </div>
           </div>
-        ` : ''}
-        ${skills.tools.length ? `
+        `
+            : ''
+        }
+        ${
+          skills.tools.length
+            ? `
           <div class="skill-category">
             <h3>Tools & Software</h3>
             <div class="skill-list">
               ${skills.tools.map(tool => `<span class="skill-item">${tool}</span>`).join('')}
             </div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
     </section>`
   }
 
-  function generateContactSection(personalInfo: Portfolio['personalInfo'], _settings: ShareSettings): string {
+  function generateContactSection(
+    personalInfo: Portfolio['personalInfo'],
+    _settings: ShareSettings
+  ): string {
     const socialLinks = Object.entries(personalInfo.social)
       .filter(([_, url]) => url)
-      .map(([platform, url]) => `
+      .map(
+        ([platform, url]) => `
         <a href="${url}" class="contact-link" target="_blank" onclick="trackContactClick()">
           ${platform.charAt(0).toUpperCase() + platform.slice(1)}
         </a>
-      `).join('')
+      `
+      )
+      .join('')
 
     return `
     <section class="contact-section">
@@ -724,26 +778,39 @@ export function usePortfolioSharing() {
   }
 
   // Storage functions
-  async function saveSharedPortfolioData(shareId: string, portfolio: Portfolio, settings: ShareSettings) {
+  async function saveSharedPortfolioData(
+    shareId: string,
+    portfolio: Portfolio,
+    settings: ShareSettings
+  ) {
     // In a real application, this would save to a backend service
     const shareData = {
       portfolio,
       settings,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     }
-    
-    localStorage.setItem(`shared-portfolio-${shareId}`, JSON.stringify(shareData))
+
+    localStorage.setItem(
+      `shared-portfolio-${shareId}`,
+      JSON.stringify(shareData)
+    )
   }
 
-  async function updateSharedPortfolioData(shareId: string, updates: Partial<ShareSettings>) {
+  async function updateSharedPortfolioData(
+    shareId: string,
+    updates: Partial<ShareSettings>
+  ) {
     const existingData = localStorage.getItem(`shared-portfolio-${shareId}`)
     if (!existingData) return
 
     const shareData = JSON.parse(existingData)
     shareData.settings = { ...shareData.settings, ...updates }
     shareData.updatedAt = new Date().toISOString()
-    
-    localStorage.setItem(`shared-portfolio-${shareId}`, JSON.stringify(shareData))
+
+    localStorage.setItem(
+      `shared-portfolio-${shareId}`,
+      JSON.stringify(shareData)
+    )
   }
 
   async function removeSharedPortfolioData(shareId: string) {
@@ -756,27 +823,27 @@ export function usePortfolioSharing() {
         total: 0,
         unique: 0,
         daily: {},
-        monthly: {}
+        monthly: {},
       },
       demographics: {
         countries: {},
         devices: {},
         browsers: {},
-        referrers: {}
+        referrers: {},
       },
       engagement: {
         averageViewTime: 0,
         bounceRate: 0,
         mostViewedProjects: [],
         downloadCount: 0,
-        contactClicks: 0
+        contactClicks: 0,
       },
       performance: {
         loadTime: 0,
         mobileScore: 0,
         seoScore: 0,
-        accessibilityScore: 0
-      }
+        accessibilityScore: 0,
+      },
     }
   }
 
@@ -786,25 +853,25 @@ export function usePortfolioSharing() {
     shareSettings,
     loading,
     error,
-    
+
     // Computed
     activeShares,
     totalViews,
     popularShares,
-    
+
     // Functions
     createShare,
     updateShare,
     deactivateShare,
     deleteShare,
-    
+
     // Analytics
     trackView,
     trackProjectView,
     trackDownload,
     trackContactClick,
-    
+
     // Export
-    generateShareableHTML
+    generateShareableHTML,
   }
 }

@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
   gap: 'sm',
   responsive: true,
   compact: false,
-  priority: 'secondary'
+  priority: 'secondary',
 })
 
 const emit = defineEmits<{
@@ -66,10 +66,10 @@ const containerClasses = computed(() => [
   `align-${props.alignment}`,
   `gap-${props.gap}`,
   {
-    'responsive': props.responsive,
-    'compact': props.compact,
-    [`priority-${props.priority}`]: props.priority
-  }
+    responsive: props.responsive,
+    compact: props.compact,
+    [`priority-${props.priority}`]: props.priority,
+  },
 ])
 
 // Get the component for an action
@@ -80,12 +80,13 @@ const getActionComponent = (action: HeaderAction) => {
 // Get props for an action
 const getActionProps = (action: HeaderAction) => {
   const baseProps = {
-    variant: action.variant || (props.priority === 'primary' ? 'primary' : 'outline'),
+    variant:
+      action.variant || (props.priority === 'primary' ? 'primary' : 'outline'),
     size: action.size || (props.compact ? 'sm' : 'md'),
     disabled: action.disabled || false,
     loading: action.loading || false,
     leadingIcon: action.leadingIcon || action.icon,
-    trailingIcon: action.trailingIcon
+    trailingIcon: action.trailingIcon,
   }
 
   // Merge with custom props
@@ -205,12 +206,12 @@ const handleActionClick = (action: HeaderAction, index: number) => {
     align-items: stretch;
     gap: var(--spacing-2);
   }
-  
+
   .responsive :deep(.btn-unified) {
     width: 100%;
     justify-content: center;
   }
-  
+
   .responsive.compact :deep(.btn-unified) {
     min-height: 40px;
     padding: var(--spacing-2) var(--spacing-3);
@@ -221,12 +222,12 @@ const handleActionClick = (action: HeaderAction, index: number) => {
   .responsive :deep(.btn-unified:not(.btn-icon-only)) {
     font-size: var(--font-size-sm);
   }
-  
+
   /* Hide text on very small screens, show only icons */
   .responsive :deep(.btn-unified:not(.btn-icon-only) .button-content) {
     display: none;
   }
-  
+
   .responsive :deep(.btn-unified) {
     aspect-ratio: 1;
     padding: var(--spacing-2);
@@ -255,7 +256,8 @@ const handleActionClick = (action: HeaderAction, index: number) => {
   gap: var(--spacing-1);
   padding: var(--spacing-1-5) var(--spacing-2);
   background: color-mix(in srgb, var(--color-warning-500) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-warning-500) 20%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-warning-500) 20%, transparent);
   border-radius: var(--radius-md);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);

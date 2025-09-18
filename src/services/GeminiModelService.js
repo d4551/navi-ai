@@ -1,6 +1,6 @@
 /**
  * Gemini Model Service - Fetches available models and their capabilities
- * 
+ *
  * Uses updated Google Gen AI SDK v1.16+ to get real-time model information
  * Supports voice, video, audio, real-time multi-turn, and standard chat
  */
@@ -25,8 +25,10 @@ class GeminiModelService {
     // Check cache first
     const cacheKey = `gemini_models_${apiKey.slice(-8)}`
     const cached = this.cache.get(cacheKey)
-    if (cached && (Date.now() - cached.timestamp) < this.cacheExpiry) {
-      logger.info(`Using cached Gemini models (${cached.data.models.length} models)`)
+    if (cached && Date.now() - cached.timestamp < this.cacheExpiry) {
+      logger.info(
+        `Using cached Gemini models (${cached.data.models.length} models)`
+      )
       return cached.data
     }
 
@@ -44,11 +46,17 @@ class GeminiModelService {
 
       if (!response.ok) {
         if (response.status === 401 || response.status === 400) {
-          throw new Error('Invalid API key. Please check your Google AI Studio API key.')
+          throw new Error(
+            'Invalid API key. Please check your Google AI Studio API key.'
+          )
         } else if (response.status === 403) {
-          throw new Error('API key lacks permissions. Please ensure your key has access to Generative AI.')
+          throw new Error(
+            'API key lacks permissions. Please ensure your key has access to Generative AI.'
+          )
         }
-        throw new Error(`API request failed: ${response.status} ${response.statusText}`)
+        throw new Error(
+          `API request failed: ${response.status} ${response.statusText}`
+        )
       }
 
       const data = await response.json()
@@ -64,24 +72,28 @@ class GeminiModelService {
       const result = {
         models: geminiModels || [],
         lastUpdated: new Date().toISOString(),
-        source: 'google-ai-api'
+        source: 'google-ai-api',
       }
 
-      logger.info(`Successfully fetched ${result.models.length} Gemini models from Google AI API`)
+      logger.info(
+        `Successfully fetched ${result.models.length} Gemini models from Google AI API`
+      )
 
       // Cache the results
       this.cache.set(cacheKey, {
         data: result,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       })
 
       return result
-
     } catch (error) {
       logger.error('Failed to fetch Gemini models from API:', error)
 
       // If API key is invalid, don't fall back to cached data
-      if (error.message.includes('API key') || error.message.includes('Invalid')) {
+      if (
+        error.message.includes('API key') ||
+        error.message.includes('Invalid')
+      ) {
         throw error // Re-throw API key errors
       }
 
@@ -108,27 +120,36 @@ class GeminiModelService {
           const response = await result.response
           if (response && response.text()) {
             success = true
-            return { success: true, message: `API key valid (tested with ${m})` }
+            return {
+              success: true,
+              message: `API key valid (tested with ${m})`,
+            }
           }
         } catch (err) {
           lastError = err
           const msg = err?.message || ''
-          if (msg.includes('API_KEY_INVALID') || msg.toLowerCase().includes('expired') || msg.includes('PERMISSION_DENIED')) {
+          if (
+            msg.includes('API_KEY_INVALID') ||
+            msg.toLowerCase().includes('expired') ||
+            msg.includes('PERMISSION_DENIED')
+          ) {
             break
           }
         }
       }
       if (!success) {
-        throw lastError || new Error('API key test failed - no response received')
+        throw (
+          lastError || new Error('API key test failed - no response received')
+        )
       }
     } catch (error) {
       const errorMessage = error.message?.includes('API_KEY_INVALID')
         ? 'Invalid API key. Please check your Google AI Studio API key.'
         : error.message?.includes('PERMISSION_DENIED')
-        ? 'API key lacks permissions. Please ensure your key has access to Generative AI.'
-        : error.message?.toLowerCase().includes('expired')
-        ? 'API key expired. Generate a new key in Google AI Studio and update your settings.'
-        : `API key test failed: ${error.message}`
+          ? 'API key lacks permissions. Please ensure your key has access to Generative AI.'
+          : error.message?.toLowerCase().includes('expired')
+            ? 'API key expired. Generate a new key in Google AI Studio and update your settings.'
+            : `API key test failed: ${error.message}`
 
       throw new Error(errorMessage)
     }
@@ -147,7 +168,7 @@ class GeminiModelService {
     return {
       models: geminiModels || [],
       lastUpdated: new Date().toISOString(),
-      source: 'fallback-curated'
+      source: 'fallback-curated',
     }
   }
 
@@ -160,10 +181,11 @@ class GeminiModelService {
       {
         name: 'models/gemini-2.0-flash-exp',
         displayName: 'Gemini 2.0 Flash (Exp)',
-        description: 'Latest experimental Flash model with advanced capabilities',
+        description:
+          'Latest experimental Flash model with advanced capabilities',
         inputTokenLimit: 1048576,
         outputTokenLimit: 8192,
-        supportedGenerationMethods: ['generateContent']
+        supportedGenerationMethods: ['generateContent'],
       },
       {
         name: 'models/gemini-1.5-flash',
@@ -171,7 +193,7 @@ class GeminiModelService {
         description: 'Fast and versatile multimodal model with 1M context',
         inputTokenLimit: 1048576,
         outputTokenLimit: 8192,
-        supportedGenerationMethods: ['generateContent']
+        supportedGenerationMethods: ['generateContent'],
       },
       {
         name: 'models/gemini-1.5-flash-8b',
@@ -179,25 +201,27 @@ class GeminiModelService {
         description: 'Optimized Flash model with reduced resource requirements',
         inputTokenLimit: 1048576,
         outputTokenLimit: 8192,
-        supportedGenerationMethods: ['generateContent']
+        supportedGenerationMethods: ['generateContent'],
       },
       {
         name: 'models/gemini-1.5-pro',
         displayName: 'Gemini 1.5 Pro',
-        description: 'High-capability model for complex reasoning and multimodal tasks',
+        description:
+          'High-capability model for complex reasoning and multimodal tasks',
         inputTokenLimit: 2097152,
         outputTokenLimit: 8192,
-        supportedGenerationMethods: ['generateContent']
+        supportedGenerationMethods: ['generateContent'],
       },
       {
         name: 'models/gemini-pro',
         displayName: 'Gemini Pro (Legacy)',
-        description: 'Legacy model - consider upgrading to Gemini 1.5 Flash for better performance',
+        description:
+          'Legacy model - consider upgrading to Gemini 1.5 Flash for better performance',
         inputTokenLimit: 32768,
         outputTokenLimit: 2048,
         supportedGenerationMethods: ['generateContent'],
-        deprecated: true
-      }
+        deprecated: true,
+      },
     ]
   }
 
@@ -208,14 +232,15 @@ class GeminiModelService {
     const name = model.name.replace('models/', '') // Extract model name from full path
     const displayName = model.displayName || name
     const description = model.description || ''
-    
+
     // Determine capabilities based on model name and supported generation methods
     const capabilities = this.determineCapabilities(model)
-    
+
     // Parse version and release info
     const version = this.extractVersion(name)
-    const isExperimental = name.includes('exp') || description.toLowerCase().includes('experimental')
-    
+    const isExperimental =
+      name.includes('exp') || description.toLowerCase().includes('experimental')
+
     return {
       id: name,
       name: name,
@@ -226,10 +251,12 @@ class GeminiModelService {
       capabilities: capabilities,
       inputTokenLimit: model.inputTokenLimit || 32768, // Default for most Gemini models
       outputTokenLimit: model.outputTokenLimit || 2048, // Default for most Gemini models
-      supportedGenerationMethods: model.supportedGenerationMethods || ['generateContent'],
+      supportedGenerationMethods: model.supportedGenerationMethods || [
+        'generateContent',
+      ],
       temperature: model.temperature || { min: 0, max: 2, default: 0.7 },
       topP: model.topP || { min: 0, max: 1, default: 0.95 },
-      topK: model.topK || { min: 1, max: 100, default: 40 }
+      topK: model.topK || { min: 1, max: 100, default: 40 },
     }
   }
 
@@ -251,25 +278,34 @@ class GeminiModelService {
       jsonMode: false,
       functionCalling: false,
       streaming: false,
-      multimodal: false
+      multimodal: false,
     }
 
     const methods = model.supportedGenerationMethods || []
     const name = model.name.toLowerCase()
     const description = (model.description || '').toLowerCase()
-    
+
     // Check for Gemini 2.0 models which have enhanced capabilities
     const isGemini2 = name.includes('2.0') || name.includes('gemini-2')
 
     // Text generation (all Gemini models support this)
-    if (methods.includes('generateContent') || methods.includes('generateText') || methods.length === 0) {
+    if (
+      methods.includes('generateContent') ||
+      methods.includes('generateText') ||
+      methods.length === 0
+    ) {
       capabilities.textGeneration = true
       capabilities.multiTurn = true // All modern Gemini models support multi-turn
       capabilities.streaming = true // All support streaming
     }
 
     // Vision capabilities (Pro Vision, Flash, 2.0 models)
-    if (name.includes('vision') || name.includes('pro') || name.includes('flash') || isGemini2) {
+    if (
+      name.includes('vision') ||
+      name.includes('pro') ||
+      name.includes('flash') ||
+      isGemini2
+    ) {
       capabilities.imageInput = true
       capabilities.multimodal = true
     }
@@ -281,7 +317,12 @@ class GeminiModelService {
     }
 
     // Audio capabilities (2.0 models have native audio support)
-    if (isGemini2 || name.includes('audio') || description.includes('audio') || name.includes('live')) {
+    if (
+      isGemini2 ||
+      name.includes('audio') ||
+      description.includes('audio') ||
+      name.includes('live')
+    ) {
       capabilities.audioInput = true
       capabilities.audioOutput = true
       capabilities.multimodal = true
@@ -313,7 +354,7 @@ class GeminiModelService {
    */
   extractVersion(name) {
     // Extract version like "1.5" from "gemini-1.5-flash"
-    const versionMatch = name.match(/(\d+\.?\d*)/);
+    const versionMatch = name.match(/(\d+\.?\d*)/)
     return versionMatch ? versionMatch[1] : '1.0'
   }
 
@@ -326,32 +367,40 @@ class GeminiModelService {
       fastResponse: null,
       vision: null,
       audio: null,
-      coding: null
+      coding: null,
     }
 
     for (const model of models) {
       // General purpose - Pro models
-      if (!recommendations.general && model.name.includes('pro') && !model.isExperimental) {
+      if (
+        !recommendations.general &&
+        model.name.includes('pro') &&
+        !model.isExperimental
+      ) {
         recommendations.general = model
       }
-      
+
       // Fast response - Flash models
       if (!recommendations.fastResponse && model.name.includes('flash')) {
         recommendations.fastResponse = model
       }
-      
+
       // Vision - models with image capabilities
       if (!recommendations.vision && model.capabilities.imageInput) {
         recommendations.vision = model
       }
-      
+
       // Audio - models with audio capabilities
       if (!recommendations.audio && model.capabilities.audioInput) {
         recommendations.audio = model
       }
-      
+
       // Coding - Pro models (best for code)
-      if (!recommendations.coding && model.name.includes('pro') && model.capabilities.codeGeneration) {
+      if (
+        !recommendations.coding &&
+        model.name.includes('pro') &&
+        model.capabilities.codeGeneration
+      ) {
         recommendations.coding = model
       }
     }
@@ -384,7 +433,7 @@ class GeminiModelService {
       jsonMode: 'Structured JSON output',
       functionCalling: 'Call external functions',
       streaming: 'Real-time streaming responses',
-      multimodal: 'Handle multiple input types simultaneously'
+      multimodal: 'Handle multiple input types simultaneously',
     }
     return descriptions[capability] || capability
   }
@@ -406,7 +455,7 @@ class GeminiModelService {
       jsonMode: 'mdi-code-json',
       functionCalling: 'mdi-function',
       streaming: 'mdi-lightning-bolt',
-      multimodal: 'mdi-grid'
+      multimodal: 'mdi-grid',
     }
     return icons[capability] || 'mdi-check-circle-outline'
   }

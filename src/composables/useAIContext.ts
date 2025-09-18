@@ -1,4 +1,10 @@
-import { reactive, readonly, computed, onUnmounted, getCurrentInstance } from 'vue'
+import {
+  reactive,
+  readonly,
+  computed,
+  onUnmounted,
+  getCurrentInstance,
+} from 'vue'
 import { logger } from '@/shared/utils/logger'
 
 // Types for AI Context System
@@ -16,7 +22,13 @@ interface AIContextAction {
 }
 
 interface AITargetEntity {
-  type: 'resume' | 'cover-letter' | 'job' | 'profile' | 'interview' | 'portfolio'
+  type:
+    | 'resume'
+    | 'cover-letter'
+    | 'job'
+    | 'profile'
+    | 'interview'
+    | 'portfolio'
   id: string
   data: Record<string, any>
   metadata: Record<string, any>
@@ -24,7 +36,13 @@ interface AITargetEntity {
 
 interface AIProcessingContext {
   entityId: string
-  entityType: 'resume' | 'cover-letter' | 'job' | 'profile' | 'interview' | 'portfolio'
+  entityType:
+    | 'resume'
+    | 'cover-letter'
+    | 'job'
+    | 'profile'
+    | 'interview'
+    | 'portfolio'
   userId: string | null
   sessionId: string
   targetJob?: {
@@ -74,8 +92,8 @@ const state = reactive<AIContextState>({
     totalActions: 0,
     appliedActions: 0,
     dismissedActions: 0,
-    averageResponseTime: 0
-  }
+    averageResponseTime: 0,
+  },
 })
 
 // Context observers - components can subscribe to changes
@@ -88,25 +106,31 @@ export function useAIContext(options: AIContextOptions = {}) {
     contextAware: _contextAware = true,
     realTimeUpdates = false,
     cacheSuggestions: _cacheSuggestions = true,
-    enableNotifications = false
+    enableNotifications = false,
   } = options
 
   // Initialize context for an entity
-  const initializeContext = async (entityType: string, entityId: string, targetJob?: any): Promise<void> => {
+  const initializeContext = async (
+    entityType: string,
+    entityId: string,
+    targetJob?: any
+  ): Promise<void> => {
     try {
       const context: AIProcessingContext = {
         entityId,
         entityType: entityType as any,
         userId: null, // Would be set from auth
         sessionId: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        targetJob: targetJob ? {
-          title: targetJob.title,
-          company: targetJob.company,
-          description: targetJob.description
-        } : undefined,
+        targetJob: targetJob
+          ? {
+              title: targetJob.title,
+              company: targetJob.company,
+              description: targetJob.description,
+            }
+          : undefined,
         entities: [],
         previousActions: [],
-        timestamp: new Date()
+        timestamp: new Date(),
       }
 
       state.currentContext = context
@@ -132,13 +156,18 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Update context data
-  const updateContextData = async (data: Partial<Record<string, any>>, entityId?: string): Promise<void> => {
+  const updateContextData = async (
+    data: Partial<Record<string, any>>,
+    entityId?: string
+  ): Promise<void> => {
     if (!state.currentContext) {
       throw new Error('No active AI context')
     }
 
     const targetEntityId = entityId || state.currentContext.entityId
-    const targetEntity = state.currentContext.entities.find(e => e.id === targetEntityId)
+    const targetEntity = state.currentContext.entities.find(
+      e => e.id === targetEntityId
+    )
 
     if (targetEntity) {
       Object.assign(targetEntity.data, data)
@@ -153,7 +182,9 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Generate contextually relevant AI suggestions
-  const generateContextActions = async (context: AIProcessingContext): Promise<AIContextAction[]> => {
+  const generateContextActions = async (
+    context: AIProcessingContext
+  ): Promise<AIContextAction[]> => {
     const startTime = Date.now()
 
     try {
@@ -162,33 +193,34 @@ export function useAIContext(options: AIContextOptions = {}) {
 
       // Resume-specific suggestions
       if (context.entityType === 'resume') {
-        newActions.push(...await generateResumeSuggestions(context))
+        newActions.push(...(await generateResumeSuggestions(context)))
       }
 
       // Cover letter suggestions
       else if (context.entityType === 'cover-letter') {
-        newActions.push(...await generateCoverLetterSuggestions(context))
+        newActions.push(...(await generateCoverLetterSuggestions(context)))
       }
 
       // Job-specific suggestions
       else if (context.entityType === 'job') {
-        newActions.push(...await generateJobSuggestions(context))
+        newActions.push(...(await generateJobSuggestions(context)))
       }
 
       // Interview preparation suggestions
       else if (context.entityType === 'interview') {
-        newActions.push(...await generateInterviewSuggestions(context))
+        newActions.push(...(await generateInterviewSuggestions(context)))
       }
 
       // Add to state and calculate response time
       const responseTime = Date.now() - startTime
-      const filteredActions = newActions.filter(action =>
-        !state.actions.some(existing => existing.id === action.id)
+      const filteredActions = newActions.filter(
+        action => !state.actions.some(existing => existing.id === action.id)
       )
 
       state.actions.push(...filteredActions)
       state.sessionStats.totalActions += filteredActions.length
-      state.sessionStats.averageResponseTime = calculateAverageResponseTime(responseTime)
+      state.sessionStats.averageResponseTime =
+        calculateAverageResponseTime(responseTime)
 
       if (enableNotifications && filteredActions.length > 0) {
         notifyNewActions(filteredActions)
@@ -204,7 +236,9 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Generate resume-specific suggestions
-  const generateResumeSuggestions = async (context: AIProcessingContext): Promise<AIContextAction[]> => {
+  const generateResumeSuggestions = async (
+    context: AIProcessingContext
+  ): Promise<AIContextAction[]> => {
     const actions: AIContextAction[] = []
     const resumeData = context.entities.find(e => e.type === 'resume')?.data
 
@@ -212,7 +246,10 @@ export function useAIContext(options: AIContextOptions = {}) {
 
     // Keyword optimization suggestion
     if (context.targetJob?.description) {
-      const missingKeywords = await analyzeKeywordGaps(resumeData, context.targetJob.description)
+      const missingKeywords = await analyzeKeywordGaps(
+        resumeData,
+        context.targetJob.description
+      )
       if (missingKeywords.length > 0) {
         actions.push({
           id: `keyword_opt_${Date.now()}`,
@@ -222,7 +259,7 @@ export function useAIContext(options: AIContextOptions = {}) {
           priority: 'high',
           context: { missingKeywords },
           suggested: true,
-          createdAt: new Date()
+          createdAt: new Date(),
         })
       }
     }
@@ -238,7 +275,7 @@ export function useAIContext(options: AIContextOptions = {}) {
         priority: 'medium',
         context: { unquantifiedExperience },
         suggested: true,
-        createdAt: new Date()
+        createdAt: new Date(),
       })
     }
 
@@ -253,7 +290,7 @@ export function useAIContext(options: AIContextOptions = {}) {
         priority: 'high',
         context: { atsScore },
         suggested: true,
-        createdAt: new Date()
+        createdAt: new Date(),
       })
     }
 
@@ -269,7 +306,7 @@ export function useAIContext(options: AIContextOptions = {}) {
           priority: 'medium',
           context: { skillGaps },
           suggested: true,
-          createdAt: new Date()
+          createdAt: new Date(),
         })
       }
     }
@@ -278,24 +315,32 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Generate cover letter suggestions
-  const generateCoverLetterSuggestions = async (context: AIProcessingContext): Promise<AIContextAction[]> => {
+  const generateCoverLetterSuggestions = async (
+    context: AIProcessingContext
+  ): Promise<AIContextAction[]> => {
     const actions: AIContextAction[] = []
-    const coverLetterData = context.entities.find(e => e.type === 'cover-letter')?.data
+    const coverLetterData = context.entities.find(
+      e => e.type === 'cover-letter'
+    )?.data
 
     if (!coverLetterData || !context.targetJob) return actions
 
     // Personalization suggestion
-    const personalizationScore = await analyzePersonalization(coverLetterData, context.targetJob)
+    const personalizationScore = await analyzePersonalization(
+      coverLetterData,
+      context.targetJob
+    )
     if (personalizationScore < 60) {
       actions.push({
         id: `personalize_${Date.now()}`,
         type: 'enhancement',
         title: 'Personalize Letter',
-        description: 'Add more specific references to the company and role to increase impact.',
+        description:
+          'Add more specific references to the company and role to increase impact.',
         priority: 'high',
         context: { personalizationScore },
         suggested: true,
-        createdAt: new Date()
+        createdAt: new Date(),
       })
     }
 
@@ -305,11 +350,12 @@ export function useAIContext(options: AIContextOptions = {}) {
         id: `story_telling_${Date.now()}`,
         type: 'enhancement',
         title: 'Tell Your Story',
-        description: 'Consider adding a compelling narrative that connects your experience to this role.',
+        description:
+          'Consider adding a compelling narrative that connects your experience to this role.',
         priority: 'medium',
         context: {},
         suggested: true,
-        createdAt: new Date()
+        createdAt: new Date(),
       })
     }
 
@@ -317,7 +363,9 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Generate job-specific suggestions
-  const generateJobSuggestions = async (context: AIProcessingContext): Promise<AIContextAction[]> => {
+  const generateJobSuggestions = async (
+    context: AIProcessingContext
+  ): Promise<AIContextAction[]> => {
     const actions: AIContextAction[] = []
     const jobData = context.entities.find(e => e.type === 'job')?.data
 
@@ -329,11 +377,12 @@ export function useAIContext(options: AIContextOptions = {}) {
         id: `salary_research_${Date.now()}`,
         type: 'analysis',
         title: 'Research Salary Range',
-        description: 'Consider researching typical salary ranges for this role and location.',
+        description:
+          'Consider researching typical salary ranges for this role and location.',
         priority: 'low',
         context: {},
         suggested: true,
-        createdAt: new Date()
+        createdAt: new Date(),
       })
     }
 
@@ -343,11 +392,12 @@ export function useAIContext(options: AIContextOptions = {}) {
         id: `company_culture_${Date.now()}`,
         type: 'analysis',
         title: 'Analyze Company Culture',
-        description: 'Review company LinkedIn, Glassdoor, and website to understand culture.',
+        description:
+          'Review company LinkedIn, Glassdoor, and website to understand culture.',
         priority: 'medium',
         context: {},
         suggested: true,
-        createdAt: new Date()
+        createdAt: new Date(),
       })
     }
 
@@ -355,16 +405,23 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Generate interview suggestions
-  const generateInterviewSuggestions = async (context: AIProcessingContext): Promise<AIContextAction[]> => {
+  const generateInterviewSuggestions = async (
+    context: AIProcessingContext
+  ): Promise<AIContextAction[]> => {
     const actions: AIContextAction[] = []
-    const interviewData = context.entities.find(e => e.type === 'interview')?.data
+    const interviewData = context.entities.find(
+      e => e.type === 'interview'
+    )?.data
     const jobData = context.entities.find(e => e.type === 'job')?.data
 
     if (!interviewData || !jobData) return actions
 
     // Preparation suggestion based on job
     if (jobData.description) {
-      const preparationGaps = await analyzeInterviewPreparation(interviewData, jobData)
+      const preparationGaps = await analyzeInterviewPreparation(
+        interviewData,
+        jobData
+      )
       if (preparationGaps.length > 0) {
         actions.push({
           id: `interview_prep_${Date.now()}`,
@@ -374,7 +431,7 @@ export function useAIContext(options: AIContextOptions = {}) {
           priority: 'high',
           context: { preparationGaps },
           suggested: true,
-          createdAt: new Date()
+          createdAt: new Date(),
         })
       }
     }
@@ -383,7 +440,9 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Generate initial suggestions on context initialization
-  const generateInitialSuggestions = async (context: AIProcessingContext): Promise<void> => {
+  const generateInitialSuggestions = async (
+    context: AIProcessingContext
+  ): Promise<void> => {
     try {
       const initialActions = await generateContextActions(context)
       state.suggestions = initialActions.filter(action => action.suggested)
@@ -393,7 +452,10 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Apply an AI suggestion
-  const applySuggestion = async (actionId: string, data?: any): Promise<void> => {
+  const applySuggestion = async (
+    actionId: string,
+    data?: any
+  ): Promise<void> => {
     const action = state.actions.find(a => a.id === actionId)
     if (!action) {
       throw new Error('Action not found')
@@ -427,7 +489,6 @@ export function useAIContext(options: AIContextOptions = {}) {
       if (state.currentContext && autoGenerate) {
         await generateContextActions(state.currentContext)
       }
-
     } catch (error) {
       logger.error('Failed to apply suggestion:', error)
       throw error
@@ -447,42 +508,71 @@ export function useAIContext(options: AIContextOptions = {}) {
   }
 
   // Execute enhancement action
-  const executeEnhancement = async (action: AIContextAction, data?: any): Promise<void> => {
+  const executeEnhancement = async (
+    action: AIContextAction,
+    data?: any
+  ): Promise<void> => {
     // Implement enhancement logic based on action context
     logger.info('Executing enhancement:', action.id, data)
   }
 
   // Execute correction action
-  const executeCorrection = async (action: AIContextAction, data?: any): Promise<void> => {
+  const executeCorrection = async (
+    action: AIContextAction,
+    data?: any
+  ): Promise<void> => {
     // Implement correction logic based on action context
     logger.info('Executing correction:', action.id, data)
   }
 
   // Execute analysis action
-  const executeAnalysis = async (action: AIContextAction, data?: any): Promise<void> => {
+  const executeAnalysis = async (
+    action: AIContextAction,
+    data?: any
+  ): Promise<void> => {
     // Implement analysis logic based on action context
     logger.info('Executing analysis:', action.id, data)
   }
 
   // Analysis helper functions
-  const analyzeKeywordGaps = async (resumeData: any, jobDescription: string): Promise<string[]> => {
+  const analyzeKeywordGaps = async (
+    resumeData: any,
+    jobDescription: string
+  ): Promise<string[]> => {
     // Simple keyword analysis implementation
     const resumeText = JSON.stringify(resumeData).toLowerCase()
     const jobText = jobDescription.toLowerCase()
 
     // Basic keyword extraction from job description
-    const commonKeywords = ['javascript', 'python', 'react', 'vue', 'node', 'typescript', 'unity', 'game', 'developer']
-    return commonKeywords.filter(keyword => jobText.includes(keyword) && !resumeText.includes(keyword))
+    const commonKeywords = [
+      'javascript',
+      'python',
+      'react',
+      'vue',
+      'node',
+      'typescript',
+      'unity',
+      'game',
+      'developer',
+    ]
+    return commonKeywords.filter(
+      keyword => jobText.includes(keyword) && !resumeText.includes(keyword)
+    )
   }
 
   const analyzeExperienceQuantification = (resumeData: any): string[] => {
     // Check for quantified achievements
     if (resumeData.experience) {
-      const experiences = resumeData.experience.map((exp: any) =>
-        Array.isArray(exp.achievements) ? exp.achievements : []
-      ).flat() as string[]
+      const experiences = resumeData.experience
+        .map((exp: any) =>
+          Array.isArray(exp.achievements) ? exp.achievements : []
+        )
+        .flat() as string[]
 
-      return experiences.filter((achievement: string) => !/\d+%|\d+ \w+|\$\d+|\d+ users|\d+ projects/i.test(achievement))
+      return experiences.filter(
+        (achievement: string) =>
+          !/\d+%|\d+ \w+|\$\d+|\d+ users|\d+ projects/i.test(achievement)
+      )
     }
     return []
   }
@@ -499,32 +589,50 @@ export function useAIContext(options: AIContextOptions = {}) {
 
     // Check for keywords
     const resumeText = JSON.stringify(resumeData).toLowerCase()
-    const standardKeywords = ['experience', 'skills', 'education', 'projects', 'summary']
-    const keywordMatches = standardKeywords.filter(kw => resumeText.includes(kw)).length
+    const standardKeywords = [
+      'experience',
+      'skills',
+      'education',
+      'projects',
+      'summary',
+    ]
+    const keywordMatches = standardKeywords.filter(kw =>
+      resumeText.includes(kw)
+    ).length
     score += keywordMatches * 4
 
     return Math.min(score, 100)
   }
 
-  const identifySkillGaps = async (resumeData: any, jobData: any): Promise<string[]> => {
+  const identifySkillGaps = async (
+    resumeData: any,
+    jobData: any
+  ): Promise<string[]> => {
     if (!jobData.required_skills) return []
 
     const resumeSkills = new Set<string>(
       ((resumeData.skills || []) as any[])
-        .map((s: any) => (typeof s === 'string' ? s.toLowerCase() : s?.name?.toLowerCase()))
+        .map((s: any) =>
+          typeof s === 'string' ? s.toLowerCase() : s?.name?.toLowerCase()
+        )
         .filter(Boolean) as string[]
     )
 
     const requiredSkills = new Set<string>(
       ((jobData.required_skills || []) as any[])
-        .map((s: any) => (typeof s === 'string' ? s.toLowerCase() : s?.name?.toLowerCase()))
+        .map((s: any) =>
+          typeof s === 'string' ? s.toLowerCase() : s?.name?.toLowerCase()
+        )
         .filter(Boolean) as string[]
     )
 
     return Array.from(requiredSkills).filter(skill => !resumeSkills.has(skill))
   }
 
-  const analyzePersonalization = async (coverLetter: any, jobData: any): Promise<number> => {
+  const analyzePersonalization = async (
+    coverLetter: any,
+    jobData: any
+  ): Promise<number> => {
     const letterText = JSON.stringify(coverLetter).toLowerCase()
     const companyName = jobData.company?.toLowerCase() || ''
     const jobTitle = jobData.title?.toLowerCase() || ''
@@ -532,24 +640,32 @@ export function useAIContext(options: AIContextOptions = {}) {
     let score = 0
     if (letterText.includes(companyName)) score += 30
     if (letterText.includes(jobTitle)) score += 30
-    if (letterText.includes(companyName) && letterText.includes(jobTitle)) score += 40
+    if (letterText.includes(companyName) && letterText.includes(jobTitle))
+      score += 40
 
     return score
   }
 
   const analyzeStorytelling = (coverLetter: any): boolean => {
     const letterText = JSON.stringify(coverLetter).toLowerCase()
-    return /\bwhen\b|\bthrough\b|\blearned\b|\bachieved\b|\bgrew\b/i.test(letterText)
+    return /\bwhen\b|\bthrough\b|\blearned\b|\bachieved\b|\bgrew\b/i.test(
+      letterText
+    )
   }
 
-  const analyzeInterviewPreparation = async (interviewData: any, jobData: any): Promise<string[]> => {
+  const analyzeInterviewPreparation = async (
+    interviewData: any,
+    jobData: any
+  ): Promise<string[]> => {
     const gaps: string[] = []
     const interviewQuestions = interviewData.questions || []
     const jobSkills = jobData.required_skills || []
 
     jobSkills.forEach((skill: string) => {
-      const hasRelevantQuestion = interviewQuestions.some((q: any) =>
-        typeof q.question === 'string' && q.question.toLowerCase().includes(skill.toLowerCase())
+      const hasRelevantQuestion = interviewQuestions.some(
+        (q: any) =>
+          typeof q.question === 'string' &&
+          q.question.toLowerCase().includes(skill.toLowerCase())
       )
       if (!hasRelevantQuestion) {
         gaps.push(`Preparation needed for ${skill}`)
@@ -563,11 +679,18 @@ export function useAIContext(options: AIContextOptions = {}) {
     if (state.sessionStats.totalActions === 1) {
       return responseTime
     }
-    return (state.sessionStats.averageResponseTime * (state.sessionStats.totalActions - 1) + responseTime) / state.sessionStats.totalActions
+    return (
+      (state.sessionStats.averageResponseTime *
+        (state.sessionStats.totalActions - 1) +
+        responseTime) /
+      state.sessionStats.totalActions
+    )
   }
 
   // Observer management
-  const subscribe = (observer: (context: AIProcessingContext) => void): (() => void) => {
+  const subscribe = (
+    observer: (context: AIProcessingContext) => void
+  ): (() => void) => {
     observers.add(observer)
     return () => observers.delete(observer)
   }
@@ -592,9 +715,11 @@ export function useAIContext(options: AIContextOptions = {}) {
 
       // Check for context updates every 30 seconds
       const now = new Date()
-      const timeSinceLastUpdate = now.getTime() - state.currentContext.timestamp.getTime()
+      const timeSinceLastUpdate =
+        now.getTime() - state.currentContext.timestamp.getTime()
 
-      if (timeSinceLastUpdate > 30000) { // 30 seconds
+      if (timeSinceLastUpdate > 30000) {
+        // 30 seconds
         state.currentContext.timestamp = now
         if (autoGenerate) {
           generateContextActions(state.currentContext).catch(error =>
@@ -627,18 +752,23 @@ export function useAIContext(options: AIContextOptions = {}) {
   )
 
   const recentActions = computed(() =>
-    state.actions.filter(a => a.appliedAt).sort((a, b) =>
-      (b.appliedAt?.getTime() || 0) - (a.appliedAt?.getTime() || 0)
-    )
+    state.actions
+      .filter(a => a.appliedAt)
+      .sort(
+        (a, b) => (b.appliedAt?.getTime() || 0) - (a.appliedAt?.getTime() || 0)
+      )
   )
 
   const contextStats = computed(() => ({
     totalSuggestions: state.suggestions.length,
     appliedActions: state.sessionStats.appliedActions,
     dismissedActions: state.sessionStats.dismissedActions,
-    engagementRate: state.sessionStats.totalActions > 0
-      ? (state.sessionStats.appliedActions / state.sessionStats.totalActions) * 100
-      : 0
+    engagementRate:
+      state.sessionStats.totalActions > 0
+        ? (state.sessionStats.appliedActions /
+            state.sessionStats.totalActions) *
+          100
+        : 0,
   }))
 
   return {
@@ -666,10 +796,15 @@ export function useAIContext(options: AIContextOptions = {}) {
         totalActions: 0,
         appliedActions: 0,
         dismissedActions: 0,
-        averageResponseTime: 0
+        averageResponseTime: 0,
       }
-    }
+    },
   }
 }
 
-export type { AIContextAction, AITargetEntity, AIProcessingContext, AIContextState }
+export type {
+  AIContextAction,
+  AITargetEntity,
+  AIProcessingContext,
+  AIContextState,
+}

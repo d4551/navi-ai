@@ -10,7 +10,13 @@ import { JobPostingAnalysis } from './JobPostingAnalysisService'
 
 // Types for resume tailoring
 export interface ResumeSection {
-  type: 'summary' | 'experience' | 'skills' | 'education' | 'projects' | 'certifications'
+  type:
+    | 'summary'
+    | 'experience'
+    | 'skills'
+    | 'education'
+    | 'projects'
+    | 'certifications'
   content: any
   priority: number
 }
@@ -50,7 +56,12 @@ export interface ResumeTailoringResult {
 }
 
 export interface ResumeOptimizationOptions {
-  focusAreas: ('ats_optimization' | 'keyword_density' | 'skill_highlighting' | 'experience_relevance')[]
+  focusAreas: (
+    | 'ats_optimization'
+    | 'keyword_density'
+    | 'skill_highlighting'
+    | 'experience_relevance'
+  )[]
   aggressiveness: 'conservative' | 'moderate' | 'aggressive'
   preserveOriginal: boolean
   targetScore: number
@@ -85,21 +96,34 @@ class AIResumeTargetingService {
     try {
       await this.initialize()
 
-      logger.info(`Tailoring resume for ${jobAnalysis.jobTitle} at ${jobAnalysis.company}`)
+      logger.info(
+        `Tailoring resume for ${jobAnalysis.jobTitle} at ${jobAnalysis.company}`
+      )
 
       const opts: ResumeOptimizationOptions = {
-        focusAreas: options.focusAreas || ['ats_optimization', 'keyword_density', 'skill_highlighting'],
+        focusAreas: options.focusAreas || [
+          'ats_optimization',
+          'keyword_density',
+          'skill_highlighting',
+        ],
         aggressiveness: options.aggressiveness || 'moderate',
         preserveOriginal: options.preserveOriginal !== false,
-        targetScore: options.targetScore || 85
+        targetScore: options.targetScore || 85,
       }
 
       // First, analyze current resume against job requirements
-      const matchAnalysis = await this.analyzeResumeJobMatch(currentResume, jobAnalysis)
-      
+      const matchAnalysis = await this.analyzeResumeJobMatch(
+        currentResume,
+        jobAnalysis
+      )
+
       // Then tailor each section of the resume
-      const tailoredSections = await this.tailorResumeSections(currentResume, jobAnalysis, opts)
-      
+      const tailoredSections = await this.tailorResumeSections(
+        currentResume,
+        jobAnalysis,
+        opts
+      )
+
       // Generate overall recommendations
       const recommendations = await this.generateOptimizationRecommendations(
         currentResume,
@@ -109,28 +133,35 @@ class AIResumeTargetingService {
       )
 
       // Calculate scores
-      const overallScore = this.calculateOverallScore(tailoredSections, matchAnalysis)
-      const keywordCoverage = this.calculateKeywordCoverage(tailoredSections, jobAnalysis.atsKeywords)
+      const overallScore = this.calculateOverallScore(
+        tailoredSections,
+        matchAnalysis
+      )
+      const keywordCoverage = this.calculateKeywordCoverage(
+        tailoredSections,
+        jobAnalysis.atsKeywords
+      )
       const atsCompliance = this.calculateATSCompliance(tailoredSections)
 
       return {
         success: true,
         tailoredResume: {
           sections: tailoredSections,
-          summary: tailoredSections.find(s => s.type === 'summary') || tailoredSections[0],
+          summary:
+            tailoredSections.find(s => s.type === 'summary') ||
+            tailoredSections[0],
           overallScore,
           keywordCoverage,
-          atsCompliance
+          atsCompliance,
         },
         matchAnalysis,
-        recommendations
+        recommendations,
       }
-
     } catch (error) {
       logger.error('Resume tailoring failed:', error)
       return {
         success: false,
-        error: `Resume tailoring failed: ${(error as Error).message}`
+        error: `Resume tailoring failed: ${(error as Error).message}`,
       }
     }
   }
@@ -185,8 +216,12 @@ Be specific about gaps and strengths. Return only valid JSON.`
           experienceMatch: analysis.experienceMatch || 50,
           keywordMatch: analysis.keywordMatch || 50,
           overallMatch: analysis.overallMatch || 50,
-          gapAnalysis: Array.isArray(analysis.gapAnalysis) ? analysis.gapAnalysis : [],
-          strengthAreas: Array.isArray(analysis.strengthAreas) ? analysis.strengthAreas : []
+          gapAnalysis: Array.isArray(analysis.gapAnalysis)
+            ? analysis.gapAnalysis
+            : [],
+          strengthAreas: Array.isArray(analysis.strengthAreas)
+            ? analysis.strengthAreas
+            : [],
         }
       }
     } catch (error) {
@@ -200,7 +235,10 @@ Be specific about gaps and strengths. Return only valid JSON.`
       keywordMatch: 45,
       overallMatch: 57,
       gapAnalysis: ['Limited keyword presence', 'Some skill gaps identified'],
-      strengthAreas: ['Relevant experience present', 'Good foundation of skills']
+      strengthAreas: [
+        'Relevant experience present',
+        'Good foundation of skills',
+      ],
     }
   }
 
@@ -227,7 +265,11 @@ Be specific about gaps and strengths. Return only valid JSON.`
 
       // Tailor skills section
       if (resume.skills) {
-        const skillsSection = await this.tailorSkillsSection(resume.skills, jobAnalysis, options)
+        const skillsSection = await this.tailorSkillsSection(
+          resume.skills,
+          jobAnalysis,
+          options
+        )
         sections.push(skillsSection)
       }
 
@@ -250,7 +292,6 @@ Be specific about gaps and strengths. Return only valid JSON.`
         )
         sections.push(projectsSection)
       }
-
     } catch (error) {
       logger.error('Failed to tailor resume sections:', error)
     }
@@ -288,14 +329,19 @@ Requirements:
 3. Highlight experiences that match job requirements
 4. Keep to 3-4 sentences
 5. Start with strong action words
-${_options.preserveOriginal ? '6. Preserve the candidate\'s unique voice and key achievements' : ''}
+${_options.preserveOriginal ? "6. Preserve the candidate's unique voice and key achievements" : ''}
 
 Return only the optimized summary text, no additional commentary.`
 
       const response = await ai.generateText(tailoringPrompt)
 
-      const tailoredContent = response.content.trim().replace(/^["']|["']$/g, '')
-      const keywordMatches = this.findKeywordMatches(tailoredContent, jobAnalysis.atsKeywords)
+      const tailoredContent = response.content
+        .trim()
+        .replace(/^["']|["']$/g, '')
+      const keywordMatches = this.findKeywordMatches(
+        tailoredContent,
+        jobAnalysis.atsKeywords
+      )
 
       return {
         type: 'summary',
@@ -305,9 +351,8 @@ Return only the optimized summary text, no additional commentary.`
         changes: this.identifyChanges(originalSummary, tailoredContent),
         keywordMatches,
         atsScore: Math.min(90, 60 + keywordMatches.length * 5),
-        priority: 1
+        priority: 1,
       }
-
     } catch (error) {
       logger.warn('Failed to tailor summary section:', error)
       return this.createFallbackSection('summary', originalSummary, jobAnalysis)
@@ -323,8 +368,8 @@ Return only the optimized summary text, no additional commentary.`
     _options: ResumeOptimizationOptions
   ): Promise<TailoredResumeSection> {
     try {
-      const skillsArray = Array.isArray(originalSkills) 
-        ? originalSkills 
+      const skillsArray = Array.isArray(originalSkills)
+        ? originalSkills
         : Object.values(originalSkills).flat()
 
       const tailoringPrompt = `
@@ -336,9 +381,9 @@ Job Requirements:
 - Key Skills: ${jobAnalysis.keySkills.join(', ')}
 - ATS Keywords: ${jobAnalysis.atsKeywords.join(', ')}
 - Required Skills: ${jobAnalysis.requirements
-  .filter(req => req.category === 'skills' && req.priority === 'required')
-  .map(req => req.requirement)
-  .join(', ')}
+        .filter(req => req.category === 'skills' && req.priority === 'required')
+        .map(req => req.requirement)
+        .join(', ')}
 
 Instructions:
 1. Prioritize skills that match job requirements
@@ -368,7 +413,10 @@ Return a JSON array of optimized skills: ["skill1", "skill2", "skill3"]`
           .slice(0, 20)
       }
 
-      const keywordMatches = this.findKeywordMatches(tailoredSkills.join(' '), jobAnalysis.atsKeywords)
+      const keywordMatches = this.findKeywordMatches(
+        tailoredSkills.join(' '),
+        jobAnalysis.atsKeywords
+      )
 
       return {
         type: 'skills',
@@ -378,9 +426,8 @@ Return a JSON array of optimized skills: ["skill1", "skill2", "skill3"]`
         changes: this.identifyArrayChanges(skillsArray, tailoredSkills),
         keywordMatches,
         atsScore: Math.min(95, 50 + keywordMatches.length * 3),
-        priority: 2
+        priority: 2,
       }
-
     } catch (error) {
       logger.warn('Failed to tailor skills section:', error)
       return this.createFallbackSection('skills', originalSkills, jobAnalysis)
@@ -398,7 +445,8 @@ Return a JSON array of optimized skills: ["skill1", "skill2", "skill3"]`
     try {
       const tailoredExperience = []
 
-      for (const job of originalExperience.slice(0, 4)) { // Limit to top 4 jobs
+      for (const job of originalExperience.slice(0, 4)) {
+        // Limit to top 4 jobs
         const tailoringPrompt = `
 Optimize this work experience entry to better match the target job requirements.
 
@@ -438,7 +486,7 @@ Return JSON format:
             tailoredExperience.push({
               ...job,
               ...tailoredJob,
-              originalResponsibilities: job.responsibilities || []
+              originalResponsibilities: job.responsibilities || [],
             })
           } else {
             tailoredExperience.push(job)
@@ -451,22 +499,31 @@ Return JSON format:
       const experienceText = tailoredExperience
         .map(job => job.responsibilities?.join(' ') || '')
         .join(' ')
-      const keywordMatches = this.findKeywordMatches(experienceText, jobAnalysis.atsKeywords)
+      const keywordMatches = this.findKeywordMatches(
+        experienceText,
+        jobAnalysis.atsKeywords
+      )
 
       return {
         type: 'experience',
         content: tailoredExperience,
         originalContent: originalExperience,
         tailoredContent: tailoredExperience,
-        changes: [`Optimized ${tailoredExperience.length} job descriptions`, 'Enhanced keyword presence'],
+        changes: [
+          `Optimized ${tailoredExperience.length} job descriptions`,
+          'Enhanced keyword presence',
+        ],
         keywordMatches,
         atsScore: Math.min(88, 40 + keywordMatches.length * 4),
-        priority: 3
+        priority: 3,
       }
-
     } catch (error) {
       logger.warn('Failed to tailor experience section:', error)
-      return this.createFallbackSection('experience', originalExperience, jobAnalysis)
+      return this.createFallbackSection(
+        'experience',
+        originalExperience,
+        jobAnalysis
+      )
     }
   }
 
@@ -493,7 +550,7 @@ Return JSON format:
       changes: ['Projects section optimized'],
       keywordMatches,
       atsScore: 70,
-      priority: 4
+      priority: 4,
     }
   }
 
@@ -519,9 +576,15 @@ Current Match Analysis:
 
 Job Requirements:
 - Target Position: ${jobAnalysis.jobTitle}
-- Missing Keywords: ${jobAnalysis.atsKeywords.filter(keyword => 
-  !JSON.stringify(resume).toLowerCase().includes(keyword.toLowerCase())
-).slice(0, 10).join(', ')}
+- Missing Keywords: ${jobAnalysis.atsKeywords
+        .filter(
+          keyword =>
+            !JSON.stringify(resume)
+              .toLowerCase()
+              .includes(keyword.toLowerCase())
+        )
+        .slice(0, 10)
+        .join(', ')}
 
 Target Score: ${options.targetScore}%
 
@@ -541,10 +604,18 @@ Be specific and actionable. Return only valid JSON.`
       if (jsonMatch) {
         const recs = JSON.parse(jsonMatch[0])
         return {
-          criticalChanges: Array.isArray(recs.criticalChanges) ? recs.criticalChanges : [],
-          suggestedImprovements: Array.isArray(recs.suggestedImprovements) ? recs.suggestedImprovements : [],
-          missingKeywords: Array.isArray(recs.missingKeywords) ? recs.missingKeywords : [],
-          priorityAdjustments: Array.isArray(recs.priorityAdjustments) ? recs.priorityAdjustments : []
+          criticalChanges: Array.isArray(recs.criticalChanges)
+            ? recs.criticalChanges
+            : [],
+          suggestedImprovements: Array.isArray(recs.suggestedImprovements)
+            ? recs.suggestedImprovements
+            : [],
+          missingKeywords: Array.isArray(recs.missingKeywords)
+            ? recs.missingKeywords
+            : [],
+          priorityAdjustments: Array.isArray(recs.priorityAdjustments)
+            ? recs.priorityAdjustments
+            : [],
         }
       }
     } catch (error) {
@@ -553,26 +624,42 @@ Be specific and actionable. Return only valid JSON.`
 
     // Fallback recommendations
     return {
-      criticalChanges: ['Increase keyword density', 'Strengthen skills section'],
-      suggestedImprovements: ['Quantify achievements', 'Improve summary statement'],
+      criticalChanges: [
+        'Increase keyword density',
+        'Strengthen skills section',
+      ],
+      suggestedImprovements: [
+        'Quantify achievements',
+        'Improve summary statement',
+      ],
       missingKeywords: jobAnalysis.atsKeywords.slice(0, 5),
-      priorityAdjustments: ['Move skills section higher', 'Expand relevant experience']
+      priorityAdjustments: [
+        'Move skills section higher',
+        'Expand relevant experience',
+      ],
     }
   }
 
   /**
    * Calculate overall resume score
    */
-  private calculateOverallScore(sections: TailoredResumeSection[], matchAnalysis: any): number {
+  private calculateOverallScore(
+    sections: TailoredResumeSection[],
+    matchAnalysis: any
+  ): number {
     const sectionScores = sections.map(s => s.atsScore)
-    const avgSectionScore = sectionScores.reduce((a, b) => a + b, 0) / sectionScores.length
+    const avgSectionScore =
+      sectionScores.reduce((a, b) => a + b, 0) / sectionScores.length
     return Math.round((avgSectionScore + matchAnalysis.overallMatch) / 2)
   }
 
   /**
    * Calculate keyword coverage
    */
-  private calculateKeywordCoverage(sections: TailoredResumeSection[], keywords: string[]): number {
+  private calculateKeywordCoverage(
+    sections: TailoredResumeSection[],
+    keywords: string[]
+  ): number {
     const allMatches = sections.flatMap(s => s.keywordMatches)
     const uniqueMatches = [...new Set(allMatches)]
     return Math.round((uniqueMatches.length / keywords.length) * 100)
@@ -582,7 +669,8 @@ Be specific and actionable. Return only valid JSON.`
    * Calculate ATS compliance score
    */
   private calculateATSCompliance(sections: TailoredResumeSection[]): number {
-    const avgScore = sections.reduce((sum, s) => sum + s.atsScore, 0) / sections.length
+    const avgScore =
+      sections.reduce((sum, s) => sum + s.atsScore, 0) / sections.length
     return Math.round(avgScore)
   }
 
@@ -599,38 +687,43 @@ Be specific and actionable. Return only valid JSON.`
    */
   private identifyChanges(original: string, tailored: string): string[] {
     const changes: string[] = []
-    
+
     if (original !== tailored) {
       if (tailored.length > original.length) {
         changes.push('Content expanded and enhanced')
       } else {
         changes.push('Content refined and optimized')
       }
-      
-      const newWords = tailored.split(' ').filter(word => !original.includes(word))
+
+      const newWords = tailored
+        .split(' ')
+        .filter(word => !original.includes(word))
       if (newWords.length > 0) {
         changes.push(`Added ${newWords.length} new relevant terms`)
       }
     }
-    
+
     return changes
   }
 
   /**
    * Identify changes in arrays
    */
-  private identifyArrayChanges(original: string[], tailored: string[]): string[] {
+  private identifyArrayChanges(
+    original: string[],
+    tailored: string[]
+  ): string[] {
     const added = tailored.filter(item => !original.includes(item))
     const removed = original.filter(item => !tailored.includes(item))
     const changes: string[] = []
-    
+
     if (added.length > 0) {
       changes.push(`Added ${added.length} relevant items`)
     }
     if (removed.length > 0) {
       changes.push(`Removed ${removed.length} less relevant items`)
     }
-    
+
     return changes
   }
 
@@ -650,7 +743,7 @@ Be specific and actionable. Return only valid JSON.`
       changes: ['Original content preserved'],
       keywordMatches: [],
       atsScore: 50,
-      priority: 5
+      priority: 5,
     }
   }
 }

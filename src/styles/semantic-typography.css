@@ -261,16 +261,32 @@
 /* ===== ACCESSIBILITY ENHANCEMENTS ===== */
 
 /* Ensure headings have proper contrast */
-h1, h2, h3, h4, h5, h6,
-.page-title, .section-title, .subsection-title,
-.component-title, .card-title {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.page-title,
+.section-title,
+.subsection-title,
+.component-title,
+.card-title {
   position: relative;
 }
 
 /* Add focus indicators for headings that are also links */
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
-.page-title a, .section-title a, .subsection-title a,
-.component-title a, .card-title a {
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a,
+.page-title a,
+.section-title a,
+.subsection-title a,
+.component-title a,
+.card-title a {
   text-decoration: none;
   color: inherit;
   border-radius: var(--radius-sm);
@@ -278,10 +294,16 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
   margin: calc(-1 * var(--space-1));
 }
 
-h1 a:focus-visible, h2 a:focus-visible, h3 a:focus-visible,
-h4 a:focus-visible, h5 a:focus-visible, h6 a:focus-visible,
-.page-title a:focus-visible, .section-title a:focus-visible,
-.subsection-title a:focus-visible, .component-title a:focus-visible,
+h1 a:focus-visible,
+h2 a:focus-visible,
+h3 a:focus-visible,
+h4 a:focus-visible,
+h5 a:focus-visible,
+h6 a:focus-visible,
+.page-title a:focus-visible,
+.section-title a:focus-visible,
+.subsection-title a:focus-visible,
+.component-title a:focus-visible,
 .card-title a:focus-visible {
   outline: 2px solid rgb(var(--neon-blue));
   outline-offset: 2px;
@@ -318,17 +340,39 @@ h4 a:focus-visible, h5 a:focus-visible, h6 a:focus-visible,
 /* ===== LEGACY HEADING MIGRATION ===== */
 /* Map old classes to new semantic system */
 
-.heading-1 { @apply page-title; }
-.heading-2 { @apply section-title; }
-.heading-3 { @apply subsection-title; }
-.heading-4 { @apply component-title; }
-.heading-5 { @apply card-title; }
-.heading-6 { @apply subtitle; }
+.heading-1 {
+  @apply page-title;
+}
+.heading-2 {
+  @apply section-title;
+}
+.heading-3 {
+  @apply subsection-title;
+}
+.heading-4 {
+  @apply component-title;
+}
+.heading-5 {
+  @apply card-title;
+}
+.heading-6 {
+  @apply subtitle;
+}
 
-.heading-glass { @apply glass-title; }
-.heading-gaming { @apply gaming-title; }
+.heading-glass {
+  @apply glass-title;
+}
+.heading-gaming {
+  @apply gaming-title;
+}
 
 /* Specific legacy classes */
-.dashboard-title { @apply page-title; }
-.section-header { @apply section-title; }
-.card-header { @apply component-title; }
+.dashboard-title {
+  @apply page-title;
+}
+.section-header {
+  @apply section-title;
+}
+.card-header {
+  @apply component-title;
+}

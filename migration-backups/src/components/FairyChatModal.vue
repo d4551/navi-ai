@@ -1,16 +1,26 @@
 <template>
   <Teleport to="body">
-    <div v-if="open" class="fairy-modal-overlay bg-gray-900/50 dark:bg-gray-900/70" @click.self="close">
+    <div
+      v-if="open"
+      class="fairy-modal-overlay bg-gray-900/50 dark:bg-gray-900/70"
+      @click.self="close"
+    >
       <div
         :class="[
           'fairy-bubble bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-glass-primary',
           sizeClass || 'fairy-lg',
           'enhanced-gaming-card',
           'bubble-elevated',
-          { 'compact-ui': isCompact }
-        ]" role="dialog" aria-modal="true" aria-label="NAVI Assistant Chat"
+          { 'compact-ui': isCompact },
+        ]"
+        role="dialog"
+        aria-modal="true"
+        aria-label="NAVI Assistant Chat"
       >
-        <div class="fairy-chat-interface glass-panel glass-panel--compact bg-white/95 dark:bg-gray-800/95" :class="{ 'compact-ui': isCompact }">
+        <div
+          class="fairy-chat-interface glass-panel glass-panel--compact bg-white/95 dark:bg-gray-800/95"
+          :class="{ 'compact-ui': isCompact }"
+        >
           <!-- Welcome Animation -->
           <transition name="welcome-fade">
             <div v-if="showWelcome" class="welcome-animation">
@@ -19,7 +29,11 @@
             </div>
           </transition>
           <!-- Header -->
-          <div class="chat-header modern-header glass-bg-light/50 border-b border-gray-200 dark:border-gray-700" role="heading" aria-level="2">
+          <div
+            class="chat-header modern-header glass-bg-light/50 border-b border-gray-200 dark:border-gray-700"
+            role="heading"
+            aria-level="2"
+          >
             <div class="header-shimmer"></div>
             <div class="header-info">
               <div class="header-avatar">
@@ -29,8 +43,13 @@
               <div class="header-details">
                 <h3 class="title-text text-glass-primary">NAVI Assistant</h3>
                 <div class="header-status">
-                  <span class="status-dot animated-dot" aria-hidden="true"></span>
-                  <span class="status-text text-glass-secondary">{{ statusText }} • AI Powered</span>
+                  <span
+                    class="status-dot animated-dot"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="status-text text-glass-secondary"
+                    >{{ statusText }} • AI Powered</span
+                  >
                 </div>
               </div>
             </div>
@@ -57,37 +76,66 @@
           </div>
 
           <!-- Messages -->
-          <div ref="logRef" class="chat-messages enhanced-messages" role="log" aria-live="polite" aria-relevant="additions">
-            <a href="#fairy-chat-input" class="visually-hidden-focusable skip-to-input">Skip to message input</a>
-            
+          <div
+            ref="logRef"
+            class="chat-messages enhanced-messages"
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions"
+          >
+            <a
+              href="#fairy-chat-input"
+              class="visually-hidden-focusable skip-to-input"
+              >Skip to message input</a
+            >
+
             <!-- Animated Message Bubbles -->
-            <transition-group name="message-slide" tag="div" class="messages-container">
-              <div 
-                v-for="(msg, index) in normalizedMessages" 
-                :key="msg.id" 
-                class="chat-message enhanced-message" 
-                :class="{ 
-                  'message-ai': msg.type === 'ai', 
-                  'message-user': msg.type === 'user', 
+            <transition-group
+              name="message-slide"
+              tag="div"
+              class="messages-container"
+            >
+              <div
+                v-for="(msg, index) in normalizedMessages"
+                :key="msg.id"
+                class="chat-message enhanced-message"
+                :class="{
+                  'message-ai': msg.type === 'ai',
+                  'message-user': msg.type === 'user',
                   'message-system': msg.type === 'system',
-                  'message-latest': index === normalizedMessages.length - 1
-                }" 
-                role="article" 
+                  'message-latest': index === normalizedMessages.length - 1,
+                }"
+                role="article"
                 :aria-label="msgLabel(msg)"
                 :style="{ '--message-index': index }"
               >
                 <div class="message-container">
-                  <div class="message-avatar enhanced-avatar" :class="`avatar-${msg.type}`">
+                  <div
+                    class="message-avatar enhanced-avatar"
+                    :class="`avatar-${msg.type}`"
+                  >
                     <div class="avatar-glow"></div>
-                    <AppIcon :name="msg.type === 'user' ? 'mdi-account' : msg.type === 'ai' ? 'mdi-robot' : 'mdi-information'" />
-                    <div v-if="msg.type === 'ai'" class="avatar-sparkle">✨</div>
+                    <AppIcon
+                      :name="
+                        msg.type === 'user'
+                          ? 'mdi-account'
+                          : msg.type === 'ai'
+                            ? 'mdi-robot'
+                            : 'mdi-information'
+                      "
+                    />
+                    <div v-if="msg.type === 'ai'" class="avatar-sparkle">
+                      ✨
+                    </div>
                   </div>
-                  
+
                   <div class="message-bubble" :class="`bubble-${msg.type}`">
                     <div class="bubble-content">
                       <div class="message-text">{{ msg.content }}</div>
                       <div class="message-footer">
-                        <div class="message-timestamp">{{ formatTime(msg.timestamp) }}</div>
+                        <div class="message-timestamp">
+                          {{ formatTime(msg.timestamp) }}
+                        </div>
                         <div class="message-actions">
                           <IconButton
                             variant="ghost"
@@ -106,7 +154,7 @@
                 </div>
               </div>
             </transition-group>
-            
+
             <!-- Typing Indicator -->
             <transition name="typing-fade">
               <div v-if="isThinking" class="typing-indicator">
@@ -116,7 +164,7 @@
                     <AppIcon name="mdi-robot" />
                     <div class="avatar-sparkle">✨</div>
                   </div>
-                  
+
                   <div class="message-bubble bubble-ai typing-bubble">
                     <div class="bubble-content">
                       <div class="typing-dots">
@@ -131,9 +179,14 @@
                 </div>
               </div>
             </transition>
-            
+
             <!-- Quick Replies -->
-            <div v-if="shouldShowSuggestions && quickReplies.length > 0" class="quick-replies modern-suggestions" role="group" aria-label="Quick suggestions">
+            <div
+              v-if="shouldShowSuggestions && quickReplies.length > 0"
+              class="quick-replies modern-suggestions"
+              role="group"
+              aria-label="Quick suggestions"
+            >
               <button
                 v-for="reply in quickReplies"
                 :key="reply.id"
@@ -145,9 +198,14 @@
                 <span class="reply-text">{{ reply.text }}</span>
               </button>
             </div>
-            
+
             <!-- AI Suggestion Chips -->
-            <div v-if="shouldShowSuggestions && aiSuggestions.length > 0" class="ai-suggestions-container" role="group" aria-label="AI suggestions">
+            <div
+              v-if="shouldShowSuggestions && aiSuggestions.length > 0"
+              class="ai-suggestions-container"
+              role="group"
+              aria-label="AI suggestions"
+            >
               <div class="suggestions-header text-glass-secondary">
                 <AppIcon name="mdi-lightbulb-outline" />
                 <span class="suggestions-title">Suggested follow-ups</span>
@@ -168,7 +226,11 @@
           </div>
 
           <!-- Input -->
-          <div class="chat-input-container enhanced-input-container glass-footer glass-bg-light/50 border-t border-gray-200 dark:border-gray-700" role="group" aria-label="Chat input controls">
+          <div
+            class="chat-input-container enhanced-input-container glass-footer glass-bg-light/50 border-t border-gray-200 dark:border-gray-700"
+            role="group"
+            aria-label="Chat input controls"
+          >
             <!-- Floating Multimodal Controls -->
             <div class="multimodal-controls enhanced-controls">
               <div class="control-group voice-controls">
@@ -184,14 +246,16 @@
                 <IconButton
                   :variant="listening ? 'gaming' : 'ghost'"
                   size="sm"
-                  :icon="listening ? 'mdi-microphone' : 'mdi-microphone-outline'"
+                  :icon="
+                    listening ? 'mdi-microphone' : 'mdi-microphone-outline'
+                  "
                   :aria-pressed="listening ? 'true' : 'false'"
                   title="Voice input"
                   class="enhanced-control-btn pulse-on-active"
                   @click="toggleListening"
                 />
               </div>
-              
+
               <div class="control-group media-controls">
                 <IconButton
                   :variant="video ? 'primary' : 'ghost'"
@@ -219,7 +283,7 @@
                   @click="uploadFile"
                 />
               </div>
-              
+
               <div class="control-group ai-controls">
                 <IconButton
                   variant="outline"
@@ -235,25 +299,27 @@
             <!-- Enhanced Text Input -->
             <div class="text-input-group enhanced-input-group">
               <div class="input-wrapper">
-                <textarea 
-                  id="fairy-chat-input" 
-                  ref="inputRef" 
-                  v-model.trim="draft" 
-                  class="fairy-input enhanced-textarea glass-input fairy-textarea" 
-                  rows="1" 
-                  placeholder="Ask NAVI anything..." 
-                  aria-label="Message input" 
-                  autocomplete="off" 
-                  enterkeyhint="send" 
-                  @input="autoResize" 
+                <textarea
+                  id="fairy-chat-input"
+                  ref="inputRef"
+                  v-model.trim="draft"
+                  class="fairy-input enhanced-textarea glass-input fairy-textarea"
+                  rows="1"
+                  placeholder="Ask NAVI anything..."
+                  aria-label="Message input"
+                  autocomplete="off"
+                  enterkeyhint="send"
+                  @input="autoResize"
                   @keydown.enter.prevent="send"
                   @focus="onInputFocus"
-                  @blur="onInputBlur" 
+                  @blur="onInputBlur"
                 />
                 <div class="input-glow"></div>
-                <div v-if="draft.length > 0" class="character-count">{{ draft.length }}/1000</div>
+                <div v-if="draft.length > 0" class="character-count">
+                  {{ draft.length }}/1000
+                </div>
               </div>
-              
+
               <UnifiedButton
                 variant="gaming"
                 icon-only
@@ -269,7 +335,12 @@
             </div>
 
             <!-- Quick Actions Menu -->
-            <div v-if="showQuickActionsMenu" class="quick-actions-menu glass-surface" role="menu" aria-label="Quick AI actions">
+            <div
+              v-if="showQuickActionsMenu"
+              class="quick-actions-menu glass-surface"
+              role="menu"
+              aria-label="Quick AI actions"
+            >
               <div class="quick-actions-grid">
                 <button
                   v-for="quickAction in quickActions"
@@ -292,8 +363,17 @@
 
   <!-- TTS/Voice Settings Modal -->
   <Teleport to="body">
-    <div v-if="showTTSModal" class="fairy-modal-overlay" @click.self="showTTSModal = false">
-      <div class="fairy-bubble enhanced-gaming-card" role="dialog" aria-modal="true" aria-label="Voice & TTS Settings">
+    <div
+      v-if="showTTSModal"
+      class="fairy-modal-overlay"
+      @click.self="showTTSModal = false"
+    >
+      <div
+        class="fairy-bubble enhanced-gaming-card"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Voice & TTS Settings"
+      >
         <div class="chat-header" role="heading" aria-level="2">
           <div class="chat-title">
             <AppIcon name="mdi-cog" />
@@ -315,7 +395,11 @@
         <div class="tts-settings-content" style="padding: 16px">
           <div class="settings-row">
             <label for="tts-provider-select-modal">TTS Provider</label>
-            <select id="tts-provider-select-modal" v-model="ttsProvider" class="tts-provider-select">
+            <select
+              id="tts-provider-select-modal"
+              v-model="ttsProvider"
+              class="tts-provider-select"
+            >
               <option value="system">System TTS</option>
               <option value="gemini">Google AI (Gemini)</option>
               <option value="kokoro">Kokoro TTS</option>
@@ -323,19 +407,34 @@
           </div>
           <div class="settings-row">
             <label>Speech Rate</label>
-            <input v-model.number="ttsRate" type="range" min="0.5" max="2" step="0.1" class="tts-slider" aria-label="Speech rate" />
+            <input
+              v-model.number="ttsRate"
+              type="range"
+              min="0.5"
+              max="2"
+              step="0.1"
+              class="tts-slider"
+              aria-label="Speech rate"
+            />
             <span class="setting-value">{{ ttsRate }}x</span>
           </div>
           <div class="settings-row">
             <label>Voice Volume</label>
-            <input v-model.number="ttsVolume" type="range" min="0" max="1" step="0.1" class="tts-slider" aria-label="Voice volume" />
-            <span class="setting-value">{{ Math.round(ttsVolume * 100) }}%</span>
+            <input
+              v-model.number="ttsVolume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.1"
+              class="tts-slider"
+              aria-label="Voice volume"
+            />
+            <span class="setting-value"
+              >{{ Math.round(ttsVolume * 100) }}%</span
+            >
           </div>
           <div class="settings-row" style="justify-content: flex-end">
-            <UnifiedButton
-              variant="primary"
-              @click="showTTSModal = false"
-            >
+            <UnifiedButton variant="primary" @click="showTTSModal = false">
               Done
             </UnifiedButton>
           </div>
@@ -346,7 +445,15 @@
 </template>
 
 <script setup>
-import { Teleport, computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import {
+  Teleport,
+  computed,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from 'vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
 import UnifiedButton from '@/components/ui/UnifiedButton.vue'
 import IconButton from '@/components/ui/IconButton.vue'
@@ -386,33 +493,45 @@ const quickReplies = ref([
   { id: 1, emoji: '📝', text: 'Build Resume' },
   { id: 2, emoji: '🔍', text: 'Find Jobs' },
   { id: 3, emoji: '💼', text: 'Interview Tips' },
-  { id: 4, emoji: '🎮', text: 'Gaming Skills' }
+  { id: 4, emoji: '🎮', text: 'Gaming Skills' },
 ])
 
 const open = computed(() => props.open)
-const sizeClass = computed(() => props.size && ['md','lg','xl'].includes(props.size) ? `fairy-${props.size}` : 'fairy-lg')
+const sizeClass = computed(() =>
+  props.size && ['md', 'lg', 'xl'].includes(props.size)
+    ? `fairy-${props.size}`
+    : 'fairy-lg'
+)
 const status = computed(() => 'idle')
 const statusText = computed(() => 'Ready')
 const ui = useUnifiedUI()
 const isCompact = computed(() => ui.density.value === 'compact')
 const { success: toastSuccess, error: toastError, info: toastInfo } = useToast()
 
-const normalizedMessages = computed(() => props.messages.map(m => ({
-  id: m.id ?? `${m.type}-${m.timestamp ?? Date.now()}`,
-  type: m.type ?? 'ai',
-  content: String(m.content ?? ''),
-  timestamp: m.timestamp ?? Date.now(),
-})))
+const normalizedMessages = computed(() =>
+  props.messages.map(m => ({
+    id: m.id ?? `${m.type}-${m.timestamp ?? Date.now()}`,
+    type: m.type ?? 'ai',
+    content: String(m.content ?? ''),
+    timestamp: m.timestamp ?? Date.now(),
+  }))
+)
 
 function msgLabel(msg) {
-  return msg.type === 'user' ? 'User message' : msg.type === 'ai' ? 'Assistant message' : 'System message'
+  return msg.type === 'user'
+    ? 'User message'
+    : msg.type === 'ai'
+      ? 'Assistant message'
+      : 'System message'
 }
 
 function formatTime(ts) {
   try {
     const d = new Date(ts)
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  } catch { return '' }
+  } catch {
+    return ''
+  }
 }
 
 function autoResize() {
@@ -424,17 +543,17 @@ function autoResize() {
 
 async function send() {
   if (!draft.value) return
-  
+
   // Show thinking indicator
   isThinking.value = true
-  
+
   emit('send', draft.value)
   draft.value = ''
-  
+
   await nextTick()
   autoResize()
   scrollToBottom()
-  
+
   // Hide thinking indicator after a delay (this would normally be controlled by AI response)
   setTimeout(() => {
     isThinking.value = false
@@ -442,7 +561,7 @@ async function send() {
 }
 
 function copy(text) {
-  try { 
+  try {
     navigator.clipboard?.writeText?.(text)
     toastSuccess('Message copied to clipboard')
   } catch {
@@ -462,7 +581,9 @@ function onInputBlur() {
 // Enhanced multimodal control functions
 function toggleTTS() {
   ttsEnabled.value = !ttsEnabled.value
-  toastInfo(ttsEnabled.value ? 'Text-to-speech enabled' : 'Text-to-speech disabled')
+  toastInfo(
+    ttsEnabled.value ? 'Text-to-speech enabled' : 'Text-to-speech disabled'
+  )
 }
 
 // Voice recognition state
@@ -472,22 +593,23 @@ const isRecognitionSupported = ref(false)
 // Initialize speech recognition on mount
 onMounted(() => {
   if (window.webkitSpeechRecognition || window.SpeechRecognition) {
-    const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
+    const SpeechRecognition =
+      window.webkitSpeechRecognition || window.SpeechRecognition
     recognition.value = new SpeechRecognition()
     isRecognitionSupported.value = true
-    
+
     recognition.value.continuous = false
     recognition.value.interimResults = false
     recognition.value.lang = 'en-US'
-    
-    recognition.value.onresult = (event) => {
+
+    recognition.value.onresult = event => {
       const transcript = event.results[0][0].transcript
       draft.value = transcript
       toastSuccess(`Voice input: "${transcript}"`)
       autoResize()
     }
-    
-    recognition.value.onerror = (event) => {
+
+    recognition.value.onerror = event => {
       logger.error('Speech recognition error:', event.error)
       listening.value = false
       if (event.error === 'no-speech') {
@@ -498,7 +620,7 @@ onMounted(() => {
         toastError('Voice recognition failed. Please try again.')
       }
     }
-    
+
     recognition.value.onend = () => {
       listening.value = false
     }
@@ -510,9 +632,9 @@ function toggleListening() {
     toastError('Voice recognition is not supported in this browser')
     return
   }
-  
+
   listening.value = !listening.value
-  
+
   if (listening.value) {
     try {
       recognition.value.start()
@@ -538,7 +660,7 @@ const isVideoSupported = ref(true)
 
 function toggleVideo() {
   video.value = !video.value
-  
+
   if (video.value) {
     startVideoStream()
   } else {
@@ -548,25 +670,24 @@ function toggleVideo() {
 
 async function startVideoStream() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ 
-      video: { 
-        width: { ideal: 640 }, 
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        width: { ideal: 640 },
         height: { ideal: 480 },
-        facingMode: 'user'
-      }, 
-      audio: false 
+        facingMode: 'user',
+      },
+      audio: false,
     })
-    
+
     videoStream.value = stream
     toastSuccess('Video streaming enabled')
-    
+
     // Note: In a real implementation, you would send this stream to your AI service
     // For now, we just capture the stream for potential screenshot functionality
-    
   } catch (error) {
     logger.error('Failed to start video stream:', error)
     video.value = false
-    
+
     if (error.name === 'NotAllowedError') {
       toastError('Camera access denied. Please allow camera permissions.')
     } else if (error.name === 'NotFoundError') {
@@ -601,22 +722,22 @@ async function captureScreenshot() {
       const video = document.createElement('video')
       video.srcObject = videoStream.value
       video.play()
-      
+
       // Wait for video to be ready
-      await new Promise((resolve) => {
+      await new Promise(resolve => {
         video.addEventListener('loadedmetadata', resolve, { once: true })
       })
-      
+
       // Create canvas to capture frame
       const canvas = document.createElement('canvas')
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
-      
+
       const ctx = canvas.getContext('2d')
       ctx.drawImage(video, 0, 0)
-      
+
       // Convert to blob and create download link
-      canvas.toBlob((blob) => {
+      canvas.toBlob(blob => {
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
@@ -625,7 +746,6 @@ async function captureScreenshot() {
         URL.revokeObjectURL(url)
         toastSuccess('Screenshot captured and saved')
       }, 'image/png')
-      
     } catch (error) {
       logger.error('Screenshot capture failed:', error)
       toastError('Failed to capture screenshot')
@@ -633,23 +753,25 @@ async function captureScreenshot() {
   } else {
     // Fallback: use screen capture API if available
     try {
-      const stream = await navigator.mediaDevices.getDisplayMedia({ video: true })
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      })
       const video = document.createElement('video')
       video.srcObject = stream
       video.play()
-      
-      await new Promise((resolve) => {
+
+      await new Promise(resolve => {
         video.addEventListener('loadedmetadata', resolve, { once: true })
       })
-      
+
       const canvas = document.createElement('canvas')
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
-      
+
       const ctx = canvas.getContext('2d')
       ctx.drawImage(video, 0, 0)
-      
-      canvas.toBlob((blob) => {
+
+      canvas.toBlob(blob => {
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
@@ -658,10 +780,9 @@ async function captureScreenshot() {
         URL.revokeObjectURL(url)
         toastSuccess('Screen capture saved')
       }, 'image/png')
-      
+
       // Stop the screen capture stream
       stream.getTracks().forEach(track => track.stop())
-      
     } catch (error) {
       logger.error('Screen capture failed:', error)
       toastError('Screen capture not available or denied')
@@ -674,25 +795,25 @@ function uploadFile() {
   input.type = 'file'
   input.accept = 'image/*,text/*,.pdf,.doc,.docx,.txt,.md'
   input.multiple = false
-  
-  input.onchange = async (event) => {
+
+  input.onchange = async event => {
     const file = event.target.files[0]
     if (!file) return
-    
+
     // Validate file size (max 10MB)
     const maxSize = 10 * 1024 * 1024
     if (file.size > maxSize) {
       toastError('File size must be less than 10MB')
       return
     }
-    
+
     try {
       toastInfo(`Uploading ${file.name}...`)
-      
+
       // For images, show preview and analyze
       if (file.type.startsWith('image/')) {
         const reader = new FileReader()
-        reader.onload = (e) => {
+        reader.onload = e => {
           const imageData = e.target.result
           // In a real implementation, you would send this to your AI service for analysis
           emit('send', `[Uploaded image: ${file.name}]`)
@@ -700,32 +821,39 @@ function uploadFile() {
         }
         reader.readAsDataURL(file)
       }
-      
+
       // For text files, read content
-      else if (file.type.startsWith('text/') || file.name.endsWith('.md') || file.name.endsWith('.txt')) {
+      else if (
+        file.type.startsWith('text/') ||
+        file.name.endsWith('.md') ||
+        file.name.endsWith('.txt')
+      ) {
         const reader = new FileReader()
-        reader.onload = (e) => {
+        reader.onload = e => {
           const content = e.target.result
           // Truncate long content for display
-          const truncatedContent = content.length > 500 ? content.substring(0, 500) + '...' : content
-          emit('send', `[Uploaded text file: ${file.name}]\n\nContent:\n${truncatedContent}`)
+          const truncatedContent =
+            content.length > 500 ? content.substring(0, 500) + '...' : content
+          emit(
+            'send',
+            `[Uploaded text file: ${file.name}]\n\nContent:\n${truncatedContent}`
+          )
           toastSuccess(`Text file uploaded: ${file.name}`)
         }
         reader.readAsText(file)
       }
-      
+
       // For other files, just show name and type
       else {
         emit('send', `[Uploaded file: ${file.name} (${file.type})]`)
         toastSuccess(`File uploaded: ${file.name}`)
       }
-      
     } catch (error) {
       logger.error('File upload failed:', error)
       toastError(`Failed to upload ${file.name}`)
     }
   }
-  
+
   input.click()
 }
 
@@ -733,12 +861,51 @@ function uploadFile() {
 const showQuickActionsMenu = ref(false)
 
 const quickActions = [
-  { icon: 'mdi-briefcase-search', label: 'Find Jobs', action: () => emit('send', 'Help me find gaming jobs that match my profile') },
-  { icon: 'mdi-file-document-edit', label: 'Review Resume', action: () => emit('send', 'Please review my resume and suggest improvements') },
-  { icon: 'mdi-school', label: 'Skill Analysis', action: () => emit('send', 'Analyze my skills and suggest areas for growth in game development') },
-  { icon: 'mdi-lightbulb', label: 'Career Advice', action: () => emit('send', 'Give me career advice for advancing in the gaming industry') },
-  { icon: 'mdi-chat-question', label: 'Interview Prep', action: () => emit('send', 'Help me prepare for a game developer interview') },
-  { icon: 'mdi-rocket', label: 'Project Ideas', action: () => emit('send', 'Suggest some game development project ideas to build my portfolio') }
+  {
+    icon: 'mdi-briefcase-search',
+    label: 'Find Jobs',
+    action: () =>
+      emit('send', 'Help me find gaming jobs that match my profile'),
+  },
+  {
+    icon: 'mdi-file-document-edit',
+    label: 'Review Resume',
+    action: () =>
+      emit('send', 'Please review my resume and suggest improvements'),
+  },
+  {
+    icon: 'mdi-school',
+    label: 'Skill Analysis',
+    action: () =>
+      emit(
+        'send',
+        'Analyze my skills and suggest areas for growth in game development'
+      ),
+  },
+  {
+    icon: 'mdi-lightbulb',
+    label: 'Career Advice',
+    action: () =>
+      emit(
+        'send',
+        'Give me career advice for advancing in the gaming industry'
+      ),
+  },
+  {
+    icon: 'mdi-chat-question',
+    label: 'Interview Prep',
+    action: () =>
+      emit('send', 'Help me prepare for a game developer interview'),
+  },
+  {
+    icon: 'mdi-rocket',
+    label: 'Project Ideas',
+    action: () =>
+      emit(
+        'send',
+        'Suggest some game development project ideas to build my portfolio'
+      ),
+  },
 ]
 
 function showQuickActions() {
@@ -754,61 +921,101 @@ function executeQuickAction(action) {
 // AI Suggestion functions
 function generateContextualSuggestions(lastMessage) {
   const suggestions = []
-  
+
   if (!lastMessage || lastMessage.type !== 'ai') return []
-  
+
   const content = lastMessage.content.toLowerCase()
-  
+
   // Context-based suggestions based on AI response content
   if (content.includes('resume') || content.includes('cv')) {
     suggestions.push(
-      { id: 'resume-review', text: 'Review my resume', icon: 'mdi-file-document-edit' },
-      { id: 'resume-tailor', text: 'Tailor for specific job', icon: 'mdi-target' },
-      { id: 'resume-skills', text: 'Improve skills section', icon: 'mdi-star-plus' }
+      {
+        id: 'resume-review',
+        text: 'Review my resume',
+        icon: 'mdi-file-document-edit',
+      },
+      {
+        id: 'resume-tailor',
+        text: 'Tailor for specific job',
+        icon: 'mdi-target',
+      },
+      {
+        id: 'resume-skills',
+        text: 'Improve skills section',
+        icon: 'mdi-star-plus',
+      }
     )
   }
-  
-  if (content.includes('job') || content.includes('career') || content.includes('position')) {
+
+  if (
+    content.includes('job') ||
+    content.includes('career') ||
+    content.includes('position')
+  ) {
     suggestions.push(
-      { id: 'job-search', text: 'Find similar jobs', icon: 'mdi-briefcase-search' },
+      {
+        id: 'job-search',
+        text: 'Find similar jobs',
+        icon: 'mdi-briefcase-search',
+      },
       { id: 'job-match', text: 'Check job match', icon: 'mdi-percent' },
       { id: 'salary-info', text: 'Salary information', icon: 'mdi-cash' }
     )
   }
-  
-  if (content.includes('skill') || content.includes('learn') || content.includes('improve')) {
+
+  if (
+    content.includes('skill') ||
+    content.includes('learn') ||
+    content.includes('improve')
+  ) {
     suggestions.push(
       { id: 'skill-gap', text: 'Analyze skill gaps', icon: 'mdi-chart-line' },
       { id: 'learning-path', text: 'Create learning path', icon: 'mdi-school' },
       { id: 'project-ideas', text: 'Suggest projects', icon: 'mdi-lightbulb' }
     )
   }
-  
+
   if (content.includes('interview') || content.includes('preparation')) {
     suggestions.push(
-      { id: 'practice-questions', text: 'Practice questions', icon: 'mdi-help-circle' },
-      { id: 'mock-interview', text: 'Start mock interview', icon: 'mdi-account-voice' },
+      {
+        id: 'practice-questions',
+        text: 'Practice questions',
+        icon: 'mdi-help-circle',
+      },
+      {
+        id: 'mock-interview',
+        text: 'Start mock interview',
+        icon: 'mdi-account-voice',
+      },
       { id: 'company-research', text: 'Research company', icon: 'mdi-magnify' }
     )
   }
-  
+
   if (content.includes('portfolio') || content.includes('project')) {
     suggestions.push(
-      { id: 'portfolio-review', text: 'Review portfolio', icon: 'mdi-folder-open' },
+      {
+        id: 'portfolio-review',
+        text: 'Review portfolio',
+        icon: 'mdi-folder-open',
+      },
       { id: 'showcase-tips', text: 'Showcase tips', icon: 'mdi-star' },
       { id: 'github-optimize', text: 'Optimize GitHub', icon: 'mdi-github' }
     )
   }
-  
+
   // Default suggestions if no specific context
   if (suggestions.length === 0) {
     suggestions.push(
       { id: 'explore-more', text: 'Tell me more', icon: 'mdi-information' },
       { id: 'ask-different', text: 'Ask differently', icon: 'mdi-refresh' },
-      { id: 'get-examples', text: 'Show examples', icon: 'mdi-format-list-bulleted' }
+      {
+        id: 'get-examples',
+        text: 'Show examples',
+        icon: 'mdi-format-list-bulleted',
+      }
     )
   }
-  
+
   return suggestions.slice(0, 4) // Limit to 4 suggestions
 }
 
@@ -820,8 +1027,9 @@ function sendSuggestion(suggestionText) {
 
 function updateSuggestionsBasedOnLastMessage() {
   if (normalizedMessages.value.length === 0) return
-  
-  const lastMessage = normalizedMessages.value[normalizedMessages.value.length - 1]
+
+  const lastMessage =
+    normalizedMessages.value[normalizedMessages.value.length - 1]
   if (lastMessage.type === 'ai') {
     // Generate suggestions after a short delay to allow message to render
     setTimeout(() => {
@@ -840,19 +1048,32 @@ function scrollToBottom() {
   } catch {}
 }
 
-function close() { emit('update:open', false) }
+function close() {
+  emit('update:open', false)
+}
 
-watch(() => props.open, (v) => { if (v) nextTick(scrollToBottom) })
-watch(() => props.messages, () => {
-  nextTick(() => {
-    updateSuggestionsBasedOnLastMessage()
-    scrollToBottom()
-  })
-}, { deep: true })
+watch(
+  () => props.open,
+  v => {
+    if (v) nextTick(scrollToBottom)
+  }
+)
+watch(
+  () => props.messages,
+  () => {
+    nextTick(() => {
+      updateSuggestionsBasedOnLastMessage()
+      scrollToBottom()
+    })
+  },
+  { deep: true }
+)
 onMounted(() => nextTick(scrollToBottom))
 // Close on Escape
 onMounted(() => {
-  const onKey = (e) => { if (e.key === 'Escape') close() }
+  const onKey = e => {
+    if (e.key === 'Escape') close()
+  }
   window.addEventListener('keydown', onKey)
   onUnmounted(() => window.removeEventListener('keydown', onKey))
 })
@@ -879,7 +1100,7 @@ watch([ttsProvider, ttsRate, ttsVolume], ([p, r, v]) => {
 })
 
 // Welcome animation when chat opens
-watch(open, (newVal) => {
+watch(open, newVal => {
   if (newVal) {
     // Show welcome animation for new or empty sessions
     if (normalizedMessages.value.length === 0) {
@@ -888,7 +1109,7 @@ watch(open, (newVal) => {
         showWelcome.value = false
       }, 2000)
     }
-    
+
     nextTick(() => {
       if (inputRef.value) {
         inputRef.value.focus()
@@ -916,15 +1137,23 @@ watch(open, (newVal) => {
 }
 
 @keyframes overlayFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ===== ENHANCED FAIRY CHAT STYLING ===== */
 
 /* Modern Header Design */
 .modern-header {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-primary-700)
+  );
   padding: var(--spacing-5);
   position: relative;
   overflow: hidden;
@@ -940,13 +1169,22 @@ watch(open, (newVal) => {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
   animation: shimmer 3s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .header-info {
@@ -958,7 +1196,11 @@ watch(open, (newVal) => {
 .header-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--color-gaming-500), var(--color-secondary-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-gaming-500),
+    var(--color-secondary-500)
+  );
   border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
@@ -970,22 +1212,38 @@ watch(open, (newVal) => {
 }
 
 @keyframes headerPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .header-avatar .avatar-glow {
   position: absolute;
   inset: -4px;
-  background: linear-gradient(135deg, var(--color-gaming-400), var(--color-secondary-400));
+  background: linear-gradient(
+    135deg,
+    var(--color-gaming-400),
+    var(--color-secondary-400)
+  );
   border-radius: var(--radius-xl);
   opacity: 0.3;
   animation: glowPulse 2s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.1); }
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
 }
 
 .header-details h3 {
@@ -1012,13 +1270,15 @@ watch(open, (newVal) => {
 }
 
 @keyframes statusPulse {
-  0%, 100% { 
-    opacity: 1; 
-    box-shadow: 0 0 0 0 var(--color-success-500); 
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 var(--color-success-500);
   }
-  50% { 
-    opacity: 0.7; 
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-success-500) 30%, transparent); 
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 4px
+      color-mix(in srgb, var(--color-success-500) 30%, transparent);
   }
 }
 
@@ -1069,7 +1329,11 @@ watch(open, (newVal) => {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-gaming-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-gaming-500)
+  );
   opacity: 0;
   transition: opacity var(--duration-fast);
 }
@@ -1078,7 +1342,8 @@ watch(open, (newVal) => {
   background: var(--color-primary-500);
   color: var(--text-inverse);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  box-shadow: 0 5px 15px
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent);
 }
 
 .modern-chip:hover::before {
@@ -1096,15 +1361,21 @@ watch(open, (newVal) => {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
-  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
+  box-shadow: 0 8px 32px
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent);
   border-radius: var(--radius-xl);
 }
 
 .bubble-user {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-primary-700)
+  );
   border: none;
   color: var(--text-inverse);
-  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
+  box-shadow: 0 8px 32px
+    color-mix(in srgb, var(--color-primary-500) 25%, transparent);
   border-radius: var(--radius-xl);
 }
 
@@ -1157,15 +1428,26 @@ watch(open, (newVal) => {
 }
 
 @keyframes controlGlow {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.1); }
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
 }
 
 /* Enhanced Send Button */
 .enhanced-send-btn {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700)) !important;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-primary-700)
+  ) !important;
   border: none !important;
   border-radius: var(--radius-full) !important;
   color: var(--text-inverse) !important;
@@ -1175,7 +1457,8 @@ watch(open, (newVal) => {
 
 .enhanced-send-btn:hover {
   transform: scale(1.1) rotate(15deg);
-  box-shadow: 0 5px 20px color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  box-shadow: 0 5px 20px
+    color-mix(in srgb, var(--color-primary-500) 40%, transparent);
 }
 
 .enhanced-send-btn:disabled {
@@ -1214,8 +1497,15 @@ watch(open, (newVal) => {
   inset: -1px;
   border-radius: var(--radius-2xl);
   padding: 1px;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500), var(--color-gaming-500));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-secondary-500),
+    var(--color-gaming-500)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0.5;
@@ -1224,15 +1514,24 @@ watch(open, (newVal) => {
 }
 
 @keyframes borderGlow {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* Welcome Animation */
 .welcome-animation {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1255,19 +1554,24 @@ watch(open, (newVal) => {
 }
 
 @keyframes welcomeGlow {
-  0%, 100% { 
+  0%,
+  100% {
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
     transform: scale(1);
   }
-  50% { 
+  50% {
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
     transform: scale(1.05);
   }
 }
 
 @keyframes sparkleRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .welcome-fade-enter-active,
@@ -1368,23 +1672,41 @@ watch(open, (newVal) => {
 }
 
 .avatar-ai {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-gaming-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-gaming-500)
+  );
   color: var(--text-inverse);
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+  box-shadow: 0 4px 16px
+    color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
 .avatar-ai .avatar-glow {
-  background: linear-gradient(135deg, var(--color-primary-400), var(--color-gaming-400));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-400),
+    var(--color-gaming-400)
+  );
 }
 
 .avatar-user {
-  background: linear-gradient(135deg, var(--color-secondary-500), var(--color-accent-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-500),
+    var(--color-accent-500)
+  );
   color: var(--text-inverse);
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-secondary-500) 30%, transparent);
+  box-shadow: 0 4px 16px
+    color-mix(in srgb, var(--color-secondary-500) 30%, transparent);
 }
 
 .avatar-user .avatar-glow {
-  background: linear-gradient(135deg, var(--color-secondary-400), var(--color-accent-400));
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-400),
+    var(--color-accent-400)
+  );
 }
 
 .avatar-sparkle {
@@ -1396,8 +1718,15 @@ watch(open, (newVal) => {
 }
 
 @keyframes sparkle {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
-  50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
 }
 
 /* Enhanced Message Bubbles */
@@ -1426,14 +1755,20 @@ watch(open, (newVal) => {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
-  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
+  box-shadow: 0 8px 32px
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent);
 }
 
 .bubble-user {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-gaming-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-gaming-500)
+  );
   border: 1px solid var(--color-primary-400);
   color: var(--text-inverse);
-  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
+  box-shadow: 0 8px 32px
+    color-mix(in srgb, var(--color-primary-500) 25%, transparent);
 }
 
 .bubble-content {
@@ -1525,8 +1860,16 @@ watch(open, (newVal) => {
 }
 
 @keyframes typingDot {
-  0%, 60%, 100% { transform: scale(1); opacity: 0.5; }
-  30% { transform: scale(1.2); opacity: 1; }
+  0%,
+  60%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  30% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
 }
 
 .typing-text {
@@ -1605,7 +1948,8 @@ watch(open, (newVal) => {
 }
 
 .ai-glow {
-  box-shadow: 0 0 20px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 0 20px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
 }
 
 /* Enhanced Input Group */
@@ -1633,7 +1977,8 @@ watch(open, (newVal) => {
 
 .enhanced-textarea:focus {
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   outline: none;
 }
 
@@ -1641,7 +1986,11 @@ watch(open, (newVal) => {
   position: absolute;
   inset: 0;
   border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-gaming-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-gaming-500)
+  );
   opacity: 0;
   transition: opacity var(--duration-fast);
   pointer-events: none;
@@ -1673,7 +2022,11 @@ watch(open, (newVal) => {
 .send-ripple {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
@@ -1688,12 +2041,12 @@ watch(open, (newVal) => {
   .message-bubble {
     max-width: 85%;
   }
-  
+
   .enhanced-controls {
     flex-direction: column;
     gap: var(--spacing-2);
   }
-  
+
   .control-group {
     justify-content: center;
   }
@@ -1704,11 +2057,11 @@ watch(open, (newVal) => {
     width: 32px;
     height: 32px;
   }
-  
+
   .message-bubble {
     max-width: 90%;
   }
-  
+
   .bubble-content {
     padding: var(--spacing-2) var(--spacing-3);
   }
@@ -1836,8 +2189,13 @@ watch(open, (newVal) => {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 /* Enhanced Messages Area */
@@ -1959,21 +2317,29 @@ watch(open, (newVal) => {
 /* Enhanced Input Container */
 .chat-input-container {
   /* expose input offset for message list */
-  --chat-input-offset: calc(var(--spacing-4) * 2 + 56px + env(safe-area-inset-bottom, 0px));
+  --chat-input-offset: calc(
+    var(--spacing-4) * 2 + 56px + env(safe-area-inset-bottom, 0px)
+  );
   background: var(--glass-surface);
   border-top: 1px solid var(--glass-border);
   border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
   backdrop-filter: var(--glass-backdrop-blur);
   -webkit-backdrop-filter: var(--glass-backdrop-blur);
-  padding: var(--spacing-4) var(--spacing-4) calc(var(--spacing-4) + env(safe-area-inset-bottom, 0px));
+  padding: var(--spacing-4) var(--spacing-4)
+    calc(var(--spacing-4) + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
   position: relative;
 }
 .chat-input-container:focus-within {
-  border-top-color: color-mix(in srgb, var(--color-primary-500) 35%, var(--glass-border));
-  box-shadow: 0 -6px 20px color-mix(in srgb, var(--color-primary-500) 10%, transparent) inset;
+  border-top-color: color-mix(
+    in srgb,
+    var(--color-primary-500) 35%,
+    var(--glass-border)
+  );
+  box-shadow: 0 -6px 20px
+    color-mix(in srgb, var(--color-primary-500) 10%, transparent) inset;
 }
 .chat-input-container::before {
   content: '';
@@ -1983,9 +2349,15 @@ watch(open, (newVal) => {
   top: -8px;
   height: 8px;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.08), transparent);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08), transparent);
 }
-[data-theme="dark"] .chat-input-container::before { background: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent); }
+[data-theme='dark'] .chat-input-container::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+}
 
 /* Multimodal Controls */
 .multimodal-controls {
@@ -2092,45 +2464,46 @@ watch(open, (newVal) => {
     max-height: 100vh;
     border-radius: 0;
   }
-  
+
   .fairy-bubble::before {
     border-radius: 0;
   }
-  
+
   .fairy-chat-interface {
     border-radius: 0;
   }
-  
+
   .chat-header {
     border-radius: 0;
     padding: var(--spacing-3);
   }
-  
+
   .chat-messages {
     padding: var(--spacing-3);
   }
-  
+
   .chat-input-container {
     border-radius: 0;
-    padding: var(--spacing-3) var(--spacing-3) calc(var(--spacing-3) + env(safe-area-inset-bottom, 0px));
+    padding: var(--spacing-3) var(--spacing-3)
+      calc(var(--spacing-3) + env(safe-area-inset-bottom, 0px));
   }
-  
+
   .multimodal-controls {
     gap: var(--spacing-1);
   }
-  
+
   .text-input-group {
     gap: var(--spacing-2);
   }
-  
+
   .message-content {
     padding: var(--spacing-2);
   }
-  
+
   .message-user .message-content {
     margin-left: var(--spacing-4);
   }
-  
+
   .message-ai .message-content {
     margin-right: var(--spacing-4);
   }
@@ -2140,72 +2513,76 @@ watch(open, (newVal) => {
   .chat-header {
     padding: var(--spacing-2);
   }
-  
+
   .chat-messages {
     padding: var(--spacing-2);
     gap: var(--spacing-2);
   }
-  
+
   .chat-input-container {
-    padding: var(--spacing-2) var(--spacing-2) calc(var(--spacing-2) + env(safe-area-inset-bottom, 0px));
+    padding: var(--spacing-2) var(--spacing-2)
+      calc(var(--spacing-2) + env(safe-area-inset-bottom, 0px));
     gap: var(--spacing-2);
   }
-  
+
   .multimodal-controls {
     justify-content: center;
   }
-  
+
   .settings-row {
     flex-direction: column;
     align-items: stretch;
     gap: var(--spacing-2);
   }
-  
+
   .settings-row label {
     flex: none;
   }
 }
 
 /* Dark theme enhancements */
-[data-theme="dark"] .fairy-bubble {
+[data-theme='dark'] .fairy-bubble {
   background: rgba(15, 15, 15, 0.95);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .chat-header {
+[data-theme='dark'] .chat-header {
   background: rgba(20, 20, 20, 0.8);
   border-color: rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="dark"] .chat-messages {
+[data-theme='dark'] .chat-messages {
   background: rgba(10, 10, 10, 0.6);
 }
 
-[data-theme="dark"] .message-content {
+[data-theme='dark'] .message-content {
   background: rgba(25, 25, 25, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Gaming theme enhancements */
 .theme-gaming .fairy-bubble {
-  background: linear-gradient(135deg, 
-    rgba(15, 15, 15, 0.95) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(15, 15, 15, 0.95) 0%,
     rgba(20, 35, 25, 0.95) 100%
   );
   border-color: rgba(0, 255, 136, 0.2);
 }
 
 .theme-gaming .chat-header {
-  background: linear-gradient(135deg, 
-    rgba(0, 255, 136, 0.1) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.1) 0%,
     rgba(0, 217, 255, 0.05) 100%
   );
   border-color: rgba(0, 255, 136, 0.15);
 }
 
 .theme-gaming .message-ai .message-content {
-  background: linear-gradient(135deg, 
-    rgba(0, 255, 136, 0.08) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.08) 0%,
     rgba(0, 217, 255, 0.03) 100%
   );
   border-color: rgba(0, 255, 136, 0.2);
@@ -2226,11 +2603,11 @@ watch(open, (newVal) => {
   .fairy-textarea {
     border-width: 2px;
   }
-  
+
   .chat-status {
     border-width: 2px;
   }
-  
+
   .status-dot {
     border: 2px solid var(--color-success);
   }
@@ -2365,16 +2742,18 @@ watch(open, (newVal) => {
 
 /* Gaming theme enhancements for suggestions */
 .theme-gaming .ai-suggestions-container {
-  background: linear-gradient(135deg, 
-    rgba(0, 255, 136, 0.05) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.05) 0%,
     rgba(0, 217, 255, 0.02) 100%
   );
   border-color: rgba(0, 255, 136, 0.15);
 }
 
 .theme-gaming .suggestion-chip:hover {
-  background: linear-gradient(135deg, 
-    rgba(0, 255, 136, 0.1) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 136, 0.1) 0%,
     rgba(0, 217, 255, 0.05) 100%
   );
   border-color: rgba(0, 255, 136, 0.3);
@@ -2383,18 +2762,18 @@ watch(open, (newVal) => {
 }
 
 /* Dark theme adjustments for suggestions */
-[data-theme="dark"] .ai-suggestions-container {
+[data-theme='dark'] .ai-suggestions-container {
   background: rgba(25, 25, 25, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .suggestion-chip {
+[data-theme='dark'] .suggestion-chip {
   background: rgba(35, 35, 35, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.9);
 }
 
-[data-theme="dark"] .suggestion-chip:hover {
+[data-theme='dark'] .suggestion-chip:hover {
   background: rgba(45, 45, 45, 0.9);
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 1);
@@ -2405,27 +2784,27 @@ watch(open, (newVal) => {
   .suggestions-chips {
     gap: var(--spacing-1);
   }
-  
+
   .suggestion-chip {
     padding: var(--spacing-1) var(--spacing-2);
     font-size: var(--font-size-xs);
     gap: var(--spacing-1);
   }
-  
+
   .suggestion-icon {
     width: 14px;
     height: 14px;
   }
-  
+
   .suggestion-text {
     max-width: 100px;
   }
-  
+
   .ai-suggestions-container {
     padding: var(--spacing-2);
     margin-top: var(--spacing-2);
   }
-  
+
   .suggestions-header {
     margin-bottom: var(--spacing-2);
   }
@@ -2436,7 +2815,7 @@ watch(open, (newVal) => {
   .suggestion-chip {
     border-width: 2px;
   }
-  
+
   .ai-suggestions-container {
     border-width: 2px;
   }
@@ -2447,7 +2826,7 @@ watch(open, (newVal) => {
   .ai-suggestions-container {
     animation: none;
   }
-  
+
   .suggestion-chip:hover {
     transform: none;
   }

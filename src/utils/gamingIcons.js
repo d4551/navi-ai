@@ -13,7 +13,7 @@ export const GAMING_ICONS = {
   SKILLS: 'mdi-sword',
   THE_PROFILE: 'mdi-account-cog',
   INTERVIEW: 'mdi-microphone-variant',
-  
+
   // Gaming Job Types
   PROGRAMMER: 'mdi-code-braces',
   GAME_DESIGNER: 'mdi-puzzle-edit',
@@ -21,35 +21,35 @@ export const GAMING_ICONS = {
   PRODUCER: 'mdi-clipboard-list',
   QA_TESTER: 'mdi-bug',
   COMMUNITY: 'mdi-account-group',
-  
+
   // Gaming Companies
   STUDIOS: {
     'riot-games': 'mdi-sword-cross',
     'epic-games': 'mdi-rocket-launch',
     'electronic-arts': 'mdi-gamepad-square',
     'valve-corporation': 'mdi-steam',
-    'ubisoft': 'mdi-tower',
+    ubisoft: 'mdi-tower',
     'naughty-dog': 'mdi-dog',
     'cd-projekt-red': 'mdi-city-variant',
     'unity-technologies': 'mdi-unity',
-    'supercell': 'mdi-cellphone',
-    'mihoyo': 'mdi-star-shooting'
+    supercell: 'mdi-cellphone',
+    mihoyo: 'mdi-star-shooting',
   },
-  
+
   // Game Genres
   GENRES: {
     'battle-royale': 'mdi-target-variant',
-    'moba': 'mdi-tournament',
-    'fps': 'mdi-crosshairs-gps',
-    'rpg': 'mdi-wizard-hat',
-    'strategy': 'mdi-chess-king',
-    'simulation': 'mdi-city',
-    'sandbox': 'mdi-cube-outline',
-    'fighting': 'mdi-boxing-glove',
-    'racing': 'mdi-car-sports',
-    'puzzle': 'mdi-puzzle'
+    moba: 'mdi-tournament',
+    fps: 'mdi-crosshairs-gps',
+    rpg: 'mdi-wizard-hat',
+    strategy: 'mdi-chess-king',
+    simulation: 'mdi-city',
+    sandbox: 'mdi-cube-outline',
+    fighting: 'mdi-boxing-glove',
+    racing: 'mdi-car-sports',
+    puzzle: 'mdi-puzzle',
   },
-  
+
   // Achievement & XP Icons
   ACHIEVEMENTS: {
     'first-steps': 'mdi-baby-face',
@@ -60,18 +60,18 @@ export const GAMING_ICONS = {
     'interview-master': 'mdi-microphone-variant',
     'networking-ninja': 'mdi-ninja',
     'career-champion': 'mdi-trophy',
-    'gaming-legend': 'mdi-crown'
+    'gaming-legend': 'mdi-crown',
   },
-  
+
   // Status Icons
   STATUS: {
     online: 'mdi-circle',
     offline: 'mdi-circle-outline',
     busy: 'mdi-minus-circle',
     away: 'mdi-clock-outline',
-    invisible: 'mdi-ghost'
+    invisible: 'mdi-ghost',
   },
-  
+
   // Fun Easter Egg Icons
   EASTER_EGGS: {
     konami: 'mdi-gamepad-up',
@@ -80,32 +80,35 @@ export const GAMING_ICONS = {
     bonus: 'mdi-gift',
     hidden: 'mdi-treasure-chest',
     rare: 'mdi-diamond-stone',
-    legendary: 'mdi-star-circle'
-  }
+    legendary: 'mdi-star-circle',
+  },
 }
 
 // Gaming-specific icon animations
 export const ICON_ANIMATIONS = {
   PULSE: 'gaming-icon-pulse',
-  BOUNCE: 'gaming-icon-bounce', 
+  BOUNCE: 'gaming-icon-bounce',
   GLOW: 'gaming-icon-glow',
   ROTATE: 'gaming-icon-rotate',
   SHAKE: 'gaming-icon-shake',
-  FLOAT: 'gaming-icon-float'
+  FLOAT: 'gaming-icon-float',
 }
 
 // Easter egg icon sequences
 export const ICON_SEQUENCES = {
   KONAMI: [
-    'mdi-chevron-up', 'mdi-chevron-up', 
-    'mdi-chevron-down', 'mdi-chevron-down',
-    'mdi-chevron-left', 'mdi-chevron-right',
-    'mdi-chevron-left', 'mdi-chevron-right',
-    'mdi-alpha-b', 'mdi-alpha-a'
+    'mdi-chevron-up',
+    'mdi-chevron-up',
+    'mdi-chevron-down',
+    'mdi-chevron-down',
+    'mdi-chevron-left',
+    'mdi-chevron-right',
+    'mdi-chevron-left',
+    'mdi-chevron-right',
+    'mdi-alpha-b',
+    'mdi-alpha-a',
   ],
-  LEVEL_UP: [
-    'mdi-star', 'mdi-star-shooting', 'mdi-trophy', 'mdi-crown'
-  ]
+  LEVEL_UP: ['mdi-star', 'mdi-star-shooting', 'mdi-trophy', 'mdi-crown'],
 }
 
 // Dynamic icon getter with context awareness
@@ -113,19 +116,21 @@ export function getContextualIcon(context, item) {
   switch (context) {
     case 'navigation':
       return GAMING_ICONS[item.toUpperCase().replace('-', '_')] || 'mdi-gamepad'
-      
+
     case 'studio':
       return GAMING_ICONS.STUDIOS[item] || 'mdi-office-building'
-      
+
     case 'genre':
       return GAMING_ICONS.GENRES[item] || 'mdi-gamepad-variant'
-      
+
     case 'job-type':
-      return GAMING_ICONS[item.toUpperCase().replace('-', '_')] || 'mdi-briefcase'
-      
+      return (
+        GAMING_ICONS[item.toUpperCase().replace('-', '_')] || 'mdi-briefcase'
+      )
+
     case 'achievement':
       return GAMING_ICONS.ACHIEVEMENTS[item] || 'mdi-trophy'
-      
+
     default:
       return 'mdi-gamepad'
   }
@@ -134,10 +139,19 @@ export function getContextualIcon(context, item) {
 // Gaming-themed icon randomizer for easter eggs
 export function getRandomGamingIcon() {
   const iconSets = [
-    'mdi-controller-classic', 'mdi-gamepad-variant', 'mdi-keyboard-variant',
-    'mdi-mouse-variant', 'mdi-headset-dock', 'mdi-monitor-speaker',
-    'mdi-dice-multiple', 'mdi-cards-playing', 'mdi-rocket',
-    'mdi-sword', 'mdi-shield', 'mdi-magic-staff', 'mdi-bow-arrow'
+    'mdi-controller-classic',
+    'mdi-gamepad-variant',
+    'mdi-keyboard-variant',
+    'mdi-mouse-variant',
+    'mdi-headset-dock',
+    'mdi-monitor-speaker',
+    'mdi-dice-multiple',
+    'mdi-cards-playing',
+    'mdi-rocket',
+    'mdi-sword',
+    'mdi-shield',
+    'mdi-magic-staff',
+    'mdi-bow-arrow',
   ]
   return iconSets[Math.floor(Math.random() * iconSets.length)]
 }
@@ -145,9 +159,9 @@ export function getRandomGamingIcon() {
 // Special effects for gaming icons
 export function addIconEffect(element, effect, duration = 2000) {
   if (!element) return
-  
+
   element.classList.add(effect)
-  
+
   setTimeout(() => {
     if (element.classList) {
       element.classList.remove(effect)
@@ -160,33 +174,33 @@ export const ICON_RARITY = {
   COMMON: {
     color: '#8e8e8e',
     glow: 'none',
-    chance: 70
+    chance: 70,
   },
   UNCOMMON: {
     color: '#1eff00',
     glow: '0 0 10px #1eff00',
-    chance: 20
+    chance: 20,
   },
   RARE: {
     color: '#0070dd',
     glow: '0 0 15px #0070dd',
-    chance: 7
+    chance: 7,
   },
   EPIC: {
     color: '#a335ee',
     glow: '0 0 20px #a335ee',
-    chance: 2.5
+    chance: 2.5,
   },
   LEGENDARY: {
     color: '#ff8000',
     glow: '0 0 25px #ff8000',
-    chance: 0.5
-  }
+    chance: 0.5,
+  },
 }
 
 export function getIconRarity() {
   const roll = Math.random() * 100
-  
+
   if (roll < 0.5) return 'LEGENDARY'
   if (roll < 3) return 'EPIC'
   if (roll < 10) return 'RARE'
@@ -198,7 +212,7 @@ export function getIconRarity() {
 export function initializeGamingIcons() {
   // Add CSS for icon animations
   if (document.getElementById('gaming-icons-styles')) return
-  
+
   const style = document.createElement('style')
   style.id = 'gaming-icons-styles'
   style.textContent = `
@@ -273,7 +287,7 @@ export function initializeGamingIcons() {
       opacity: 1;
     }
   `
-  
+
   document.head.appendChild(style)
 }
 
@@ -281,20 +295,21 @@ export function initializeGamingIcons() {
 export function findSecretIcons() {
   const icons = document.querySelectorAll('.mdi')
   let secretCount = 0
-  
+
   icons.forEach((icon, _index) => {
-    if (Math.random() < 0.05) { // 5% chance
+    if (Math.random() < 0.05) {
+      // 5% chance
       icon.classList.add('gaming-icon-secret')
       icon.title = `Secret Icon #${secretCount + 1} - Click for bonus XP!`
       icon.addEventListener('click', () => {
         icon.classList.remove('gaming-icon-secret')
         icon.classList.add('gaming-icon-bounce')
-        
+
         // Award XP or trigger achievement
         if (window.xpSystem) {
           window.xpSystem.awardXP('secret_icon_found', 10)
         }
-        
+
         setTimeout(() => {
           icon.classList.remove('gaming-icon-bounce')
         }, 1500)
@@ -302,9 +317,11 @@ export function findSecretIcons() {
       secretCount++
     }
   })
-  
+
   if (secretCount > 0) {
-    console.log(`[GAME] Found ${secretCount} secret icons! Click them for bonus XP!`)
+    console.log(
+      `[GAME] Found ${secretCount} secret icons! Click them for bonus XP!`
+    )
   }
 }
 
@@ -312,7 +329,7 @@ export function findSecretIcons() {
 if (typeof window !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
     initializeGamingIcons()
-    
+
     // Add secret icon finder after page loads
     setTimeout(findSecretIcons, 2000)
   })

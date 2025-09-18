@@ -7,6 +7,7 @@ The NAVI theme system provides a unified glassmorphic design with pure black/whi
 ## 🔧 Core Architecture
 
 ### Theme Structure
+
 ```
 src/styles/
 ├── index.css                    # Main entry point
@@ -16,6 +17,7 @@ src/styles/
 ```
 
 ### Key Features
+
 - ✅ Pure black (#000000) / white (#ffffff) glassmorphic design
 - ✅ RGB neon highlights for interactive states
 - ✅ WCAG 2.1 AA accessibility compliance
@@ -27,6 +29,7 @@ src/styles/
 ## 🚀 Quick Start
 
 ### 1. Basic Glass Card
+
 ```vue
 <template>
   <div class="glass-card">
@@ -38,10 +41,14 @@ src/styles/
 ```
 
 ### 2. Interactive Navigation
+
 ```vue
 <template>
   <nav class="nav-glass">
-    <a href="#" class="nav-item-link glass-interactive neon-blue focus:ring-neon">
+    <a
+      href="#"
+      class="nav-item-link glass-interactive neon-blue focus:ring-neon"
+    >
       <span class="text-glass-primary">Dashboard</span>
     </a>
   </nav>
@@ -49,6 +56,7 @@ src/styles/
 ```
 
 ### 3. Dense Data Grid
+
 ```vue
 <template>
   <div class="layout-dense-auto">
@@ -65,6 +73,7 @@ src/styles/
 ## 🎯 Design Tokens
 
 ### Colors
+
 ```css
 /* Base Theme */
 --color-white: #ffffff;
@@ -80,6 +89,7 @@ src/styles/
 ```
 
 ### Glassmorphic Properties
+
 ```css
 --glass-bg: rgba(255, 255, 255, 0.05);
 --glass-border: rgba(255, 255, 255, 0.1);
@@ -88,26 +98,29 @@ src/styles/
 ```
 
 ### Spacing & Sizing
+
 ```css
---space-1: 0.25rem;   /* 4px */
---space-2: 0.5rem;    /* 8px */
---space-3: 0.75rem;   /* 12px */
---space-4: 1rem;      /* 16px */
---space-6: 1.5rem;    /* 24px */
---space-8: 2rem;      /* 32px */
+--space-1: 0.25rem; /* 4px */
+--space-2: 0.5rem; /* 8px */
+--space-3: 0.75rem; /* 12px */
+--space-4: 1rem; /* 16px */
+--space-6: 1.5rem; /* 24px */
+--space-8: 2rem; /* 32px */
 ```
 
 ### Border Radius (Slight)
+
 ```css
---radius-sm: 0.25rem;   /* 4px */
---radius-md: 0.375rem;  /* 6px */
---radius-lg: 0.5rem;    /* 8px */
---radius-xl: 0.625rem;  /* 10px */
+--radius-sm: 0.25rem; /* 4px */
+--radius-md: 0.375rem; /* 6px */
+--radius-lg: 0.5rem; /* 8px */
+--radius-xl: 0.625rem; /* 10px */
 ```
 
 ## 📱 Layout System
 
 ### Responsive Grid Classes
+
 ```css
 .layout-dense-auto     /* Auto-responsive grid */
 .layout-dense-2        /* 2 columns */
@@ -118,6 +131,7 @@ src/styles/
 ```
 
 ### Breakpoint Behavior
+
 - **Desktop (1400px+)**: 4 columns
 - **Large (1200-1400px)**: 3 columns
 - **Medium (1024-1200px)**: 2 columns
@@ -127,6 +141,7 @@ src/styles/
 ## 🎨 Component Classes
 
 ### Glass Elements
+
 ```css
 .glass-card            /* Basic glass card */
 .glass-panel           /* Larger glass panel */
@@ -136,6 +151,7 @@ src/styles/
 ```
 
 ### Text Styles
+
 ```css
 .text-glass-primary    /* Primary text on glass */
 .text-glass-secondary  /* Secondary text on glass */
@@ -145,6 +161,7 @@ src/styles/
 ```
 
 ### Interactive States
+
 ```css
 .neon-blue            /* Blue neon highlights */
 .neon-red             /* Red neon highlights */
@@ -156,12 +173,14 @@ src/styles/
 ## ♿ Accessibility Features
 
 ### Text Contrast
+
 - **Primary text**: 21:1 ratio (AAA)
 - **Secondary text**: 16.8:1 ratio (AAA)
 - **Tertiary text**: 12.6:1 ratio (AAA)
 - **Muted text**: 8.4:1 ratio (AA)
 
 ### Interactive Elements
+
 ```css
 .focus\:ring-neon:focus-visible {
   box-shadow: 0 0 0 3px rgba(var(--neon-blue), 0.3);
@@ -179,6 +198,7 @@ src/styles/
 ```
 
 ### Screen Reader Support
+
 - Proper ARIA labels and descriptions
 - Semantic HTML structure
 - Focus management
@@ -187,8 +207,11 @@ src/styles/
 ## 📱 Mobile Optimization
 
 ### Touch Targets
+
 ```css
-.btn, .nav-item-link, .interactive-element {
+.btn,
+.nav-item-link,
+.interactive-element {
   min-height: 44px;
   min-width: 44px;
   padding: var(--space-3) var(--space-4);
@@ -196,6 +219,7 @@ src/styles/
 ```
 
 ### Mobile Adjustments
+
 ```css
 @media (max-width: 768px) {
   .glass-card {
@@ -213,6 +237,7 @@ src/styles/
 ## 🔄 Theme Integration
 
 ### Vue Component Usage
+
 ```vue
 <script setup>
 import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
@@ -232,6 +257,7 @@ const theme = useUnifiedTheme()
 ```
 
 ### CSS Custom Properties
+
 ```css
 .custom-component {
   background: var(--glass-bg);
@@ -246,6 +272,7 @@ const theme = useUnifiedTheme()
 ## ⚡ Performance Optimization
 
 ### CSS Containment
+
 ```css
 .layout-dense-auto {
   contain: layout style;
@@ -253,6 +280,7 @@ const theme = useUnifiedTheme()
 ```
 
 ### GPU Acceleration
+
 ```css
 .neon-blue:hover {
   transform: translateZ(0) translateY(-1px);
@@ -261,6 +289,7 @@ const theme = useUnifiedTheme()
 ```
 
 ### Reduced Motion
+
 ```css
 @media (prefers-reduced-motion: reduce) {
   .neon-pulse,
@@ -277,6 +306,7 @@ const theme = useUnifiedTheme()
 ## 🌟 Advanced Patterns
 
 ### Status Components
+
 ```vue
 <template>
   <div class="status-card status-success">
@@ -290,6 +320,7 @@ const theme = useUnifiedTheme()
 ```
 
 ### Interactive Dashboard
+
 ```vue
 <template>
   <div class="dashboard-grid">
@@ -305,6 +336,7 @@ const theme = useUnifiedTheme()
 ```
 
 ### Data Visualization
+
 ```vue
 <template>
   <div class="stats-grid">
@@ -322,26 +354,29 @@ const theme = useUnifiedTheme()
 ## 🚀 Production Deployment
 
 ### Build Configuration
+
 ```javascript
 // vite.config.js
 export default {
   css: {
     preprocessorOptions: {
       css: {
-        additionalData: `@import "@/styles/index.css";`
-      }
-    }
-  }
+        additionalData: `@import "@/styles/index.css";`,
+      },
+    },
+  },
 }
 ```
 
 ### Bundle Optimization
+
 - CSS is tree-shaken for unused utilities
 - Critical styles are inlined
 - Non-critical styles are lazy-loaded
 - Glassmorphic effects are GPU-accelerated
 
 ### Browser Support
+
 - ✅ Chrome 90+: Full support
 - ✅ Firefox 88+: Full support
 - ✅ Safari 14+: Full support
@@ -352,21 +387,25 @@ export default {
 ### Common Issues
 
 **Glass effects not visible**
+
 - Ensure backdrop-filter is supported
 - Check for proper z-index stacking
 - Verify glass background opacity
 
 **Text not readable on glass**
+
 - Use `.text-readable` class
 - Increase text-shadow values
 - Apply `.text-contrast-high` for critical content
 
 **Layout breaking on mobile**
+
 - Use responsive grid classes
 - Test touch target sizes (min 44px)
 - Verify mobile-specific media queries
 
 **Accessibility violations**
+
 - Run axe-core automated tests
 - Test with screen readers
 - Verify keyboard navigation

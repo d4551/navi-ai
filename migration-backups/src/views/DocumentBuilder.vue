@@ -1,7 +1,16 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="normal"
+    max-width="xl"
+  >
     <template #header-actions>
-      <HeaderActions layout="horizontal" alignment="end" gap="md" priority="secondary">
+      <HeaderActions
+        layout="horizontal"
+        alignment="end"
+        gap="md"
+        priority="secondary"
+      >
         <!-- AI Status (only show if offline) -->
         <div v-if="!aiReady" class="ai-status-warning">
           <AppIcon name="mdi-alert-circle-outline" size="14" />
@@ -31,18 +40,22 @@
     <!-- Document Type Selector -->
     <div class="document-type-selector">
       <div class="document-tabs">
-        <button 
-          v-for="docType in ['resume', 'cover-letter']" 
+        <button
+          v-for="docType in ['resume', 'cover-letter']"
           :key="docType"
           :class="{ active: activeDocumentType === docType }"
           class="doc-tab"
           @click="activeDocumentType = docType"
         >
-          <AppIcon :name="docType === 'resume' ? 'mdi-account-box' : 'mdi-email-outline'" />
+          <AppIcon
+            :name="
+              docType === 'resume' ? 'mdi-account-box' : 'mdi-email-outline'
+            "
+          />
           {{ docType === 'resume' ? 'Resume' : 'Cover Letter' }}
         </button>
       </div>
-      
+
       <UnifiedButton
         variant="outline"
         size="sm"
@@ -61,7 +74,11 @@
       <div v-if="jobDescription" class="job-context-banner">
         <div class="job-info">
           <AppIcon name="mdi-briefcase-outline" />
-          <span>{{ jobInfo.company ? `${jobInfo.company} - ${jobInfo.position}` : 'Job Context Active' }}</span>
+          <span>{{
+            jobInfo.company
+              ? `${jobInfo.company} - ${jobInfo.position}`
+              : 'Job Context Active'
+          }}</span>
           <div v-if="atsScore > 0" class="ats-score">
             {{ atsScore }}% ATS Match
           </div>
@@ -157,15 +174,15 @@ const {
   selectTemplate,
   updateAIConfig: _updateAIConfig,
   updatePreferences: _updatePreferences,
-  revertToVersion
+  revertToVersion,
 } = useDocumentManager()
 
 // AI Integration
-const {
-  aiReady,
-  atsScore,
-  handleAIRequest
-} = useAIIntegration(resumeData, coverLetterData, jobDescription)
+const { aiReady, atsScore, handleAIRequest } = useAIIntegration(
+  resumeData,
+  coverLetterData,
+  jobDescription
+)
 
 // State
 const showPreviewModal = ref(false)
@@ -186,16 +203,18 @@ const togglePreview = () => {
   showPreviewModal.value = true
 }
 
-
 const handleAIModalResult = (result: any) => {
   if (!result) return
-  
+
   try {
     if (result.type === 'content-update') {
       if (activeDocumentType.value === 'resume') {
         updateDocumentData('resume', { ...resumeData, ...result.data })
       } else {
-        updateDocumentData('cover-letter', { ...coverLetterData, ...result.data })
+        updateDocumentData('cover-letter', {
+          ...coverLetterData,
+          ...result.data,
+        })
       }
       toast.success('AI suggestions applied successfully')
     } else if (result.type === 'optimization') {
@@ -230,11 +249,11 @@ const importFromProfile = async () => {
 
   try {
     profileImporting.value = true
-    
+
     // Import data for both resume and cover letter
     const resumeProfileData = unifiedProfile.getContextualProfile('resume')
     const coverLetterProfileData = unifiedProfile.getContextualProfile('jobs')
-    
+
     if (resumeProfileData) {
       // Map profile data to resume format
       updateDocumentData('resume', {
@@ -242,20 +261,20 @@ const importFromProfile = async () => {
         experience: resumeProfileData.experience || [],
         education: resumeProfileData.education || [],
         skills: resumeProfileData.skills || [],
-        achievements: resumeProfileData.achievements || []
+        achievements: resumeProfileData.achievements || [],
       })
     }
-    
+
     if (coverLetterProfileData) {
       // Map profile data to cover letter format - basic structure
       updateDocumentData('cover-letter', {
         ...coverLetterData,
-        personalInfo: resumeProfileData?.personalInfo || coverLetterData.personalInfo
+        personalInfo:
+          resumeProfileData?.personalInfo || coverLetterData.personalInfo,
       })
     }
-    
+
     toast.success('Profile data imported successfully')
-    
   } catch (error) {
     console.error('Profile import failed:', error)
     toast.error('Failed to import profile data')
@@ -265,19 +284,26 @@ const importFromProfile = async () => {
 }
 
 const handleExport = async (format: string = 'pdf') => {
-  if (!currentDocumentData.value || Object.keys(currentDocumentData.value).length === 0) {
+  if (
+    !currentDocumentData.value ||
+    Object.keys(currentDocumentData.value).length === 0
+  ) {
     toast.error('No document data to export')
     return
   }
-  
+
   try {
     const documentData = currentDocumentData.value
     const documentType = activeDocumentType.value
-    
+
     if (format === 'pdf') {
       // Create a formatted document for PDF export
-      const documentContent = formatDocumentForExport(documentData, documentType, selectedTemplate)
-      
+      const documentContent = formatDocumentForExport(
+        documentData,
+        documentType,
+        selectedTemplate
+      )
+
       // Use the browser's print functionality to generate PDF
       const printWindow = window.open('', '_blank')
       if (printWindow) {
@@ -316,15 +342,21 @@ const handleExport = async (format: string = 'pdf') => {
       link.click()
       URL.revokeObjectURL(url)
     }
-    
-    toast.success(`${documentType} exported successfully as ${format.toUpperCase()}`)
+
+    toast.success(
+      `${documentType} exported successfully as ${format.toUpperCase()}`
+    )
   } catch (error) {
     console.error('Export failed:', error)
     toast.error('Failed to export document')
   }
 }
 
-const formatDocumentForExport = (data: any, type: 'resume' | 'cover-letter', _template: string) => {
+const formatDocumentForExport = (
+  data: any,
+  type: 'resume' | 'cover-letter',
+  _template: string
+) => {
   if (type === 'resume') {
     return `
       <div class="header">
@@ -335,36 +367,60 @@ const formatDocumentForExport = (data: any, type: 'resume' | 'cover-letter', _te
         ${data.personalInfo?.linkedin ? `<p>LinkedIn: ${data.personalInfo.linkedin}</p>` : ''}
       </div>
       
-      ${data.summary ? `<div class="section">
+      ${
+        data.summary
+          ? `<div class="section">
         <div class="section-title">Professional Summary</div>
         <p>${data.summary}</p>
-      </div>` : ''}
+      </div>`
+          : ''
+      }
       
-      ${data.experience?.length ? `<div class="section">
+      ${
+        data.experience?.length
+          ? `<div class="section">
         <div class="section-title">Experience</div>
-        ${data.experience.map(exp => `
+        ${data.experience
+          .map(
+            exp => `
           <div class="experience-item">
             <h3>${exp.title} at ${exp.company}</h3>
             <p><strong>${exp.startDate} - ${exp.endDate || 'Present'}</strong> | ${exp.location || ''}</p>
             <p>${exp.description || ''}</p>
           </div>
-        `).join('')}
-      </div>` : ''}
+        `
+          )
+          .join('')}
+      </div>`
+          : ''
+      }
       
-      ${data.education?.length ? `<div class="section">
+      ${
+        data.education?.length
+          ? `<div class="section">
         <div class="section-title">Education</div>
-        ${data.education.map(edu => `
+        ${data.education
+          .map(
+            edu => `
           <div class="education-item">
             <h3>${edu.degree} in ${edu.field || ''}</h3>
             <p>${edu.institution} | ${edu.startDate} - ${edu.endDate}</p>
           </div>
-        `).join('')}
-      </div>` : ''}
+        `
+          )
+          .join('')}
+      </div>`
+          : ''
+      }
       
-      ${data.skills?.length ? `<div class="section">
+      ${
+        data.skills?.length
+          ? `<div class="section">
         <div class="section-title">Skills</div>
         <p>${data.skills.map(skill => skill.name).join(', ')}</p>
-      </div>` : ''}
+      </div>`
+          : ''
+      }
     `
   } else {
     return `
@@ -375,11 +431,15 @@ const formatDocumentForExport = (data: any, type: 'resume' | 'cover-letter', _te
         <p>${data.personalInfo?.location || ''}</p>
       </div>
       
-      ${data.jobInfo?.company ? `<div class="section">
+      ${
+        data.jobInfo?.company
+          ? `<div class="section">
         <p><strong>To:</strong> ${data.jobInfo.hiringManager || 'Hiring Manager'}<br>
         <strong>Company:</strong> ${data.jobInfo.company}<br>
         <strong>Position:</strong> ${data.jobInfo.position}</p>
-      </div>` : ''}
+      </div>`
+          : ''
+      }
       
       <div class="section">
         ${data.content?.opening ? `<p>${data.content.opening}</p>` : ''}
@@ -411,28 +471,40 @@ onMounted(async () => {
         updateDocumentData('resume', parsed)
       }
     }
-    
+
     if (coverLetterData && Object.keys(coverLetterData).length === 0) {
-      const savedCoverLetterData = localStorage.getItem('navi-cover-letter-draft')
+      const savedCoverLetterData = localStorage.getItem(
+        'navi-cover-letter-draft'
+      )
       if (savedCoverLetterData) {
         const parsed = JSON.parse(savedCoverLetterData)
         updateDocumentData('cover-letter', parsed)
       }
     }
-    
+
     // Auto-save drafts when data changes
-    watch(resumeData, (newData) => {
-      if (newData && Object.keys(newData).length > 0) {
-        localStorage.setItem('navi-resume-draft', JSON.stringify(newData))
-      }
-    }, { deep: true })
-    
-    watch(coverLetterData, (newData) => {
-      if (newData && Object.keys(newData).length > 0) {
-        localStorage.setItem('navi-cover-letter-draft', JSON.stringify(newData))
-      }
-    }, { deep: true })
-    
+    watch(
+      resumeData,
+      newData => {
+        if (newData && Object.keys(newData).length > 0) {
+          localStorage.setItem('navi-resume-draft', JSON.stringify(newData))
+        }
+      },
+      { deep: true }
+    )
+
+    watch(
+      coverLetterData,
+      newData => {
+        if (newData && Object.keys(newData).length > 0) {
+          localStorage.setItem(
+            'navi-cover-letter-draft',
+            JSON.stringify(newData)
+          )
+        }
+      },
+      { deep: true }
+    )
   } catch (error) {
     console.error('Failed to load document versions:', error)
   }
@@ -494,7 +566,11 @@ onMounted(async () => {
 }
 
 .job-context-banner {
-  background: linear-gradient(135deg, var(--color-primary-50), var(--color-success-50));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-50),
+    var(--color-success-50)
+  );
   border: 1px solid var(--color-primary-200);
   border-radius: var(--radius-lg);
   padding: var(--spacing-3) var(--spacing-4);

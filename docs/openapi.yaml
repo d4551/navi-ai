@@ -176,8 +176,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  format: { type: string, enum: [pdf, json, markdown, html, docx] }
-                  data: { type: string, description: base64 payload or JSON string }
+                  format:
+                    { type: string, enum: [pdf, json, markdown, html, docx] }
+                  data:
+                    { type: string, description: base64 payload or JSON string }
         '400': { $ref: '#/components/responses/BadRequest' }
   /export/portfolio:
     post:

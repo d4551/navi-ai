@@ -4,13 +4,13 @@
  * Script to complete the resume builder conversion to tabbed interface
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
-const resumeBuilderPath = '/workspaces/navi2/src/views/ResumeBuilder.vue';
+const resumeBuilderPath = '/workspaces/navi2/src/views/ResumeBuilder.vue'
 
 // Read the current file
-let content = fs.readFileSync(resumeBuilderPath, 'utf8');
+let content = fs.readFileSync(resumeBuilderPath, 'utf8')
 
 // Update the experience section header
 content = content.replace(
@@ -27,20 +27,20 @@ content = content.replace(
                               </v-btn>
                               $2
                             $3`
-);
+)
 
 // Complete window items structure by finding and replacing template structure
 content = content.replace(
   /<\/v-card>\s*<\/template>/g,
   '</v-card>\n                        </v-window-item>'
-);
+)
 
 content = content.replace(
   /<template #item\.(\d+)>/g,
   '<v-window-item value="$1">'
-);
+)
 
 // Write back the file
-fs.writeFileSync(resumeBuilderPath, content);
+fs.writeFileSync(resumeBuilderPath, content)
 
-console.log('Resume builder conversion completed!');
+console.log('Resume builder conversion completed!')

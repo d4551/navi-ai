@@ -2,7 +2,7 @@
 
 /**
  * Vuetify Migration Script
- * 
+ *
  * This script helps migrate custom components to Vuetify components
  * while maintaining backward compatibility.
  */
@@ -10,12 +10,12 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { 
-  COMPONENT_MAPPINGS, 
-  PROP_MAPPINGS, 
+import {
+  COMPONENT_MAPPINGS,
+  PROP_MAPPINGS,
   VARIANT_MAPPINGS,
   generateMigrationReport,
-  getMigrationSuggestions 
+  getMigrationSuggestions,
 } from '../src/utils/componentMigration.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -28,7 +28,7 @@ const CONFIG = {
   fileExtensions: ['.vue', '.js', '.ts'],
   dryRun: process.argv.includes('--dry-run'),
   verbose: process.argv.includes('--verbose'),
-  help: process.argv.includes('--help')
+  help: process.argv.includes('--help'),
 }
 
 // Help text
@@ -56,7 +56,7 @@ async function migrateToVuetify() {
 
   console.log('🚀 Starting Vuetify migration...')
   console.log(`📁 Scanning directory: ${CONFIG.srcDir}`)
-  
+
   if (CONFIG.dryRun) {
     console.log('🔍 DRY RUN MODE - No files will be modified')
   }
@@ -68,7 +68,7 @@ async function migrateToVuetify() {
   const migrationReport = {
     files: [],
     totalComponents: 0,
-    totalChanges: 0
+    totalChanges: 0,
   }
 
   for (const file of files) {
@@ -91,22 +91,28 @@ async function migrateToVuetify() {
   if (CONFIG.dryRun && totalChanges > 0) {
     console.log('\n💡 To apply these changes, run without --dry-run')
   } else if (totalChanges > 0) {
-    console.log(`\n✅ Migration completed! ${totalChanges} changes made across ${migrationReport.files.length} files`)
+    console.log(
+      `\n✅ Migration completed! ${totalChanges} changes made across ${migrationReport.files.length} files`
+    )
   } else {
-    console.log('\n✨ No migration needed - all components are already using Vuetify!')
+    console.log(
+      '\n✨ No migration needed - all components are already using Vuetify!'
+    )
   }
 }
 
 // Find all files to process
 async function findFiles(dir) {
   const files = []
-  
+
   async function scanDirectory(currentDir) {
-    const entries = await fs.promises.readdir(currentDir, { withFileTypes: true })
-    
+    const entries = await fs.promises.readdir(currentDir, {
+      withFileTypes: true,
+    })
+
     for (const entry of entries) {
       const fullPath = path.join(currentDir, entry.name)
-      
+
       if (entry.isDirectory()) {
         if (!CONFIG.excludeDirs.includes(entry.name)) {
           await scanDirectory(fullPath)
@@ -119,7 +125,7 @@ async function findFiles(dir) {
       }
     }
   }
-  
+
   await scanDirectory(dir)
   return files
 }
@@ -128,7 +134,7 @@ async function findFiles(dir) {
 async function processFile(filePath) {
   const content = await fs.promises.readFile(filePath, 'utf8')
   const report = generateMigrationReport(content)
-  
+
   if (!report.needsMigration) {
     return { file: filePath, changes: 0, components: [] }
   }
@@ -140,38 +146,49 @@ async function processFile(filePath) {
   // Process each component that needs migration
   for (const component of report.components) {
     const suggestions = getMigrationSuggestions(component.name, {})
-    
+
     // Update component usage
     const componentRegex = new RegExp(`<${component.name}\\b`, 'g')
     const componentMatches = newContent.match(componentRegex)
-    
+
     if (componentMatches) {
-      newContent = newContent.replace(componentRegex, `<${suggestions.component}`)
+      newContent = newContent.replace(
+        componentRegex,
+        `<${suggestions.component}`
+      )
       changes += componentMatches.length
-      
+
       components.push({
         name: component.name,
         vuetifyComponent: suggestions.component,
-        count: componentMatches.length
+        count: componentMatches.length,
       })
-      
+
       if (CONFIG.verbose) {
-        console.log(`  📝 ${component.name} → ${suggestions.component} (${componentMatches.length} occurrences)`)
+        console.log(
+          `  📝 ${component.name} → ${suggestions.component} (${componentMatches.length} occurrences)`
+        )
       }
     }
   }
 
   // Update import statements
   for (const importPath of report.imports) {
-    if (importPath.includes('@/components/ui/') || importPath.includes('@/components/Card')) {
+    if (
+      importPath.includes('@/components/ui/') ||
+      importPath.includes('@/components/Card')
+    ) {
       // Update import to use Vuetify components
       const newImportPath = '@/components/vuetify'
-      const importRegex = new RegExp(`from\\s+['"]${importPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`, 'g')
-      
+      const importRegex = new RegExp(
+        `from\\s+['"]${importPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`,
+        'g'
+      )
+
       if (newContent.match(importRegex)) {
         newContent = newContent.replace(importRegex, `from '${newImportPath}'`)
         changes++
-        
+
         if (CONFIG.verbose) {
           console.log(`  📦 Updated import: ${importPath} → ${newImportPath}`)
         }
@@ -189,7 +206,7 @@ async function processFile(filePath) {
     changes,
     components,
     originalContent: content,
-    newContent: changes > 0 ? newContent : null
+    newContent: changes > 0 ? newContent : null,
   }
 }
 
@@ -200,17 +217,19 @@ function generateSummaryReport(report) {
   console.log(`Files processed: ${report.files.length}`)
   console.log(`Total components migrated: ${report.totalComponents}`)
   console.log(`Total changes made: ${report.totalChanges}`)
-  
+
   if (report.files.length > 0) {
     console.log('\n📋 Files with changes:')
     report.files.forEach(file => {
       console.log(`  ${file.file}`)
       file.components.forEach(comp => {
-        console.log(`    - ${comp.name} → ${comp.vuetifyComponent} (${comp.count} occurrences)`)
+        console.log(
+          `    - ${comp.name} → ${comp.vuetifyComponent} (${comp.count} occurrences)`
+        )
       })
     })
   }
-  
+
   console.log('\n🎯 Next Steps:')
   console.log('1. Test the migrated components')
   console.log('2. Update any custom styling if needed')

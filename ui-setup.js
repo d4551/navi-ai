@@ -13,132 +13,134 @@
  * - Safe to run multiple times (idempotent)
  */
 
-const { execSync } = require('node:child_process');
-const fs = require('node:fs');
-const path = require('node:path');
+const { execSync } = require('node:child_process')
+const fs = require('node:fs')
+const path = require('node:path')
 
 // ============== Utility Functions ==============
 
 function run(cmd, options = {}) {
-  console.log(`$ ${cmd}`);
+  console.log(`$ ${cmd}`)
   try {
-    execSync(cmd, { stdio: 'inherit', ...options });
+    execSync(cmd, { stdio: 'inherit', ...options })
   } catch (error) {
     if (!options.ignoreError) {
-      console.error(`❌ Command failed: ${cmd}`);
-      throw error;
+      console.error(`❌ Command failed: ${cmd}`)
+      throw error
     }
   }
 }
 
 function fileExists(p) {
   try {
-    fs.accessSync(p);
-    return true;
+    fs.accessSync(p)
+    return true
   } catch {
-    return false;
+    return false
   }
 }
 
 function dirExists(p) {
   try {
-    return fs.statSync(p).isDirectory();
+    return fs.statSync(p).isDirectory()
   } catch {
-    return false;
+    return false
   }
 }
 
 function ensureDir(dir) {
   if (!dirExists(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-    console.log(`📁 Created directory: ${dir}`);
+    fs.mkdirSync(dir, { recursive: true })
+    console.log(`📁 Created directory: ${dir}`)
   }
 }
 
 function writeFileIfNotExists(filePath, content) {
   if (!fileExists(filePath)) {
-    ensureDir(path.dirname(filePath));
-    fs.writeFileSync(filePath, content);
-    console.log(`✅ Created file: ${filePath}`);
-    return true;
+    ensureDir(path.dirname(filePath))
+    fs.writeFileSync(filePath, content)
+    console.log(`✅ Created file: ${filePath}`)
+    return true
   }
-  return false;
+  return false
 }
 
 function isTypeScriptProject() {
-  return fileExists('tsconfig.json') || fileExists('tsconfig.app.json');
+  return fileExists('tsconfig.json') || fileExists('tsconfig.app.json')
 }
 
 function isViteProject() {
-  return fileExists('vite.config.js') || fileExists('vite.config.ts');
+  return fileExists('vite.config.js') || fileExists('vite.config.ts')
 }
 
 // ============== Package Manager Detection ==============
 
 function detectPackageManager() {
   // Check for lockfiles
-  if (fileExists('pnpm-lock.yaml')) return 'pnpm';
-  if (fileExists('yarn.lock')) return 'yarn';
-  if (fileExists('bun.lockb')) return 'bun';
-  if (fileExists('package-lock.json')) return 'npm';
-  
+  if (fileExists('pnpm-lock.yaml')) return 'pnpm'
+  if (fileExists('yarn.lock')) return 'yarn'
+  if (fileExists('bun.lockb')) return 'bun'
+  if (fileExists('package-lock.json')) return 'npm'
+
   // Check environment variables
-  const userAgent = process.env.npm_config_user_agent || '';
-  if (userAgent.includes('pnpm')) return 'pnpm';
-  if (userAgent.includes('yarn')) return 'yarn';
-  if (userAgent.includes('bun')) return 'bun';
-  
-  return 'npm';
+  const userAgent = process.env.npm_config_user_agent || ''
+  if (userAgent.includes('pnpm')) return 'pnpm'
+  if (userAgent.includes('yarn')) return 'yarn'
+  if (userAgent.includes('bun')) return 'bun'
+
+  return 'npm'
 }
 
 function pmInstall(packages, isDev = false) {
-  const pm = detectPackageManager();
-  const devFlag = isDev ? (pm === 'bun' ? '-d' : '-D') : '';
-  
+  const pm = detectPackageManager()
+  const devFlag = isDev ? (pm === 'bun' ? '-d' : '-D') : ''
+
   const commands = {
     pnpm: `pnpm add ${devFlag} ${packages}`,
     yarn: `yarn add ${devFlag} ${packages}`,
     bun: `bun add ${devFlag} ${packages}`,
-    npm: `npm install ${isDev ? '--save-dev' : '--save'} ${packages}`
-  };
-  
-  return run(commands[pm]);
+    npm: `npm install ${isDev ? '--save-dev' : '--save'} ${packages}`,
+  }
+
+  return run(commands[pm])
 }
 
 function pmExec(command) {
-  const pm = detectPackageManager();
+  const pm = detectPackageManager()
   const executors = {
     pnpm: 'pnpm dlx',
     yarn: 'yarn dlx',
     bun: 'bunx',
-    npm: 'npx --yes'
-  };
-  
-  return `${executors[pm]} ${command}`;
+    npm: 'npx --yes',
+  }
+
+  return `${executors[pm]} ${command}`
 }
 
 // ============== Dependency Management ==============
 
 function ensureDeps() {
-  console.log('🔄 Checking and installing dependencies...');
-  
-  const pkgPath = path.resolve(process.cwd(), 'package.json');
+  console.log('🔄 Checking and installing dependencies...')
+
+  const pkgPath = path.resolve(process.cwd(), 'package.json')
   if (!fileExists(pkgPath)) {
-    console.error('❌ package.json not found. Please run this script in your project root.');
-    process.exit(1);
+    console.error(
+      '❌ package.json not found. Please run this script in your project root.'
+    )
+    process.exit(1)
   }
-  
-  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-  const isTS = isTypeScriptProject();
-  
+
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
+  const isTS = isTypeScriptProject()
+
   // Runtime dependencies
   const runtime = [
     'pinia',
     '@heroicons/vue',
     '@fontsource/fira-code',
-    '@vueuse/core'
-  ];
-  
+    '@vueuse/core',
+  ]
+
   // Development dependencies
   const dev = [
     'tailwindcss',
@@ -147,51 +149,55 @@ function ensureDeps() {
     '@tailwindcss/forms',
     '@tailwindcss/typography',
     '@tailwindcss/aspect-ratio',
-    '@tailwindcss/container-queries'
-  ];
-  
+    '@tailwindcss/container-queries',
+  ]
+
   // Add TypeScript types if needed
   if (isTS) {
-    dev.push('@types/node');
+    dev.push('@types/node')
   }
-  
-  const installed = { ...pkg.dependencies, ...pkg.devDependencies };
-  const needRuntime = runtime.filter(d => !installed[d]);
-  const needDev = dev.filter(d => !installed[d]);
-  
+
+  const installed = { ...pkg.dependencies, ...pkg.devDependencies }
+  const needRuntime = runtime.filter(d => !installed[d])
+  const needDev = dev.filter(d => !installed[d])
+
   if (needRuntime.length) {
-    console.log(`📦 Installing runtime dependencies: ${needRuntime.join(', ')}`);
-    pmInstall(needRuntime.join(' '), false);
+    console.log(`📦 Installing runtime dependencies: ${needRuntime.join(', ')}`)
+    pmInstall(needRuntime.join(' '), false)
   }
-  
+
   if (needDev.length) {
-    console.log(`🛠️ Installing dev dependencies: ${needDev.join(', ')}`);
-    pmInstall(needDev.join(' '), true);
+    console.log(`🛠️ Installing dev dependencies: ${needDev.join(', ')}`)
+    pmInstall(needDev.join(' '), true)
   }
 }
 
 // ============== Tailwind Configuration ==============
 
 function ensureTailwindInit() {
-  console.log('🔄 Checking Tailwind configuration...');
-  
-  const configs = ['tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs'];
-  const existingConfig = configs.find(c => fileExists(c));
-  
+  console.log('🔄 Checking Tailwind configuration...')
+
+  const configs = [
+    'tailwind.config.js',
+    'tailwind.config.cjs',
+    'tailwind.config.mjs',
+  ]
+  const existingConfig = configs.find(c => fileExists(c))
+
   if (!existingConfig) {
-    console.log('🔧 Initializing Tailwind configuration');
-    
+    console.log('🔧 Initializing Tailwind configuration')
+
     try {
-      run(pmExec('tailwindcss init -p'));
+      run(pmExec('tailwindcss init -p'))
     } catch (err) {
-      console.log('⚠️ Failed to run tailwindcss init, creating fallback config');
-      createFallbackTailwindConfig();
+      console.log('⚠️ Failed to run tailwindcss init, creating fallback config')
+      createFallbackTailwindConfig()
     }
   }
 }
 
 function createFallbackTailwindConfig() {
-  const isVite = isViteProject();
+  const isVite = isViteProject()
   const configContent = `/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -246,64 +252,72 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/container-queries'),
   ],
-}`;
-  
-  fs.writeFileSync('tailwind.config.cjs', configContent);
-  console.log('✅ Created fallback tailwind.config.cjs');
+}`
+
+  fs.writeFileSync('tailwind.config.cjs', configContent)
+  console.log('✅ Created fallback tailwind.config.cjs')
 }
 
 function enhanceTailwindConfig() {
-  const configs = ['tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs'];
-  const configPath = configs.find(c => fileExists(c));
-  
-  if (!configPath) return;
-  
-  console.log(`🔧 Enhancing Tailwind config: ${configPath}`);
-  let content = fs.readFileSync(configPath, 'utf8');
-  let modified = false;
-  
+  const configs = [
+    'tailwind.config.js',
+    'tailwind.config.cjs',
+    'tailwind.config.mjs',
+  ]
+  const configPath = configs.find(c => fileExists(c))
+
+  if (!configPath) return
+
+  console.log(`🔧 Enhancing Tailwind config: ${configPath}`)
+  let content = fs.readFileSync(configPath, 'utf8')
+  let modified = false
+
   // Ensure darkMode is properly configured
   if (!content.includes('darkMode')) {
     content = content.replace(
       /(module\.exports\s*=\s*\{|export\s+default\s*\{)/,
       `$1\n  darkMode: ['class', '[data-theme="dark"]'],`
-    );
-    modified = true;
+    )
+    modified = true
   }
-  
+
   // Ensure plugins are included
-  const plugins = ['@tailwindcss/typography', '@tailwindcss/forms'];
+  const plugins = ['@tailwindcss/typography', '@tailwindcss/forms']
   plugins.forEach(plugin => {
     if (!content.includes(plugin)) {
       if (content.includes('plugins:')) {
         content = content.replace(
           /plugins:\s*\[([^\]]*)\]/,
           `plugins: [$1${$1 ? ',' : ''} require('${plugin}')]`
-        );
+        )
       } else {
         content = content.replace(
           /(module\.exports\s*=\s*\{|export\s+default\s*\{)/,
           `$1\n  plugins: [require('${plugin}')],`
-        );
+        )
       }
-      modified = true;
+      modified = true
     }
-  });
-  
+  })
+
   if (modified) {
-    fs.writeFileSync(configPath, content);
-    console.log('✅ Enhanced Tailwind configuration');
+    fs.writeFileSync(configPath, content)
+    console.log('✅ Enhanced Tailwind configuration')
   }
 }
 
 // ============== PostCSS Configuration ==============
 
 function ensurePostcss() {
-  console.log('🔄 Checking PostCSS configuration...');
-  
-  const configs = ['postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs'];
-  const existingConfig = configs.find(c => fileExists(c));
-  
+  console.log('🔄 Checking PostCSS configuration...')
+
+  const configs = [
+    'postcss.config.js',
+    'postcss.config.cjs',
+    'postcss.config.mjs',
+  ]
+  const existingConfig = configs.find(c => fileExists(c))
+
   if (!existingConfig) {
     const content = `module.exports = {
   plugins: {
@@ -311,23 +325,23 @@ function ensurePostcss() {
     tailwindcss: {},
     autoprefixer: {},
   },
-}`;
-    
-    fs.writeFileSync('postcss.config.cjs', content);
-    console.log('✅ Created PostCSS configuration');
+}`
+
+    fs.writeFileSync('postcss.config.cjs', content)
+    console.log('✅ Created PostCSS configuration')
   }
 }
 
 // ============== Global CSS Setup ==============
 
 function ensureGlobalCss() {
-  console.log('🔄 Setting up global CSS...');
-  
-  const srcDir = path.resolve('src');
-  const stylesDir = path.join(srcDir, 'styles');
-  ensureDir(stylesDir);
-  
-  const globalCss = path.join(stylesDir, 'global.css');
+  console.log('🔄 Setting up global CSS...')
+
+  const srcDir = path.resolve('src')
+  const stylesDir = path.join(srcDir, 'styles')
+  ensureDir(stylesDir)
+
+  const globalCss = path.join(stylesDir, 'global.css')
   const cssContent = `/* Tailwind Directives */
 @tailwind base;
 @tailwind components;
@@ -566,23 +580,23 @@ function ensureGlobalCss() {
   .focus-visible-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
   }
-}`;
-  
-  writeFileIfNotExists(globalCss, cssContent);
-  console.log('✅ Created comprehensive global CSS');
+}`
+
+  writeFileIfNotExists(globalCss, cssContent)
+  console.log('✅ Created comprehensive global CSS')
 }
 
 // ============== Icon Components ==============
 
 function ensureIconComponents() {
-  console.log('🔄 Setting up icon components...');
-  
-  const componentsDir = path.resolve('src/components');
-  ensureDir(componentsDir);
-  
-  const isTS = isTypeScriptProject();
-  const ext = isTS ? '.vue' : '.vue'; // Could use .tsx for TS
-  
+  console.log('🔄 Setting up icon components...')
+
+  const componentsDir = path.resolve('src/components')
+  ensureDir(componentsDir)
+
+  const isTS = isTypeScriptProject()
+  const ext = isTS ? '.vue' : '.vue' // Could use .tsx for TS
+
   // Enhanced HeroIcon component
   const heroIconContent = `<template>
   <component 
@@ -651,17 +665,17 @@ export default defineComponent({
     }
   }
 })
-</script>`;
-  
+</script>`
+
   writeFileIfNotExists(
     path.join(componentsDir, `HeroIcon${ext}`),
     heroIconContent
-  );
-  
+  )
+
   // Icon utilities
-  const utilsDir = path.resolve('src/utils');
-  ensureDir(utilsDir);
-  
+  const utilsDir = path.resolve('src/utils')
+  ensureDir(utilsDir)
+
   const iconMapContent = `/**
  * Icon name mapping utilities
  */
@@ -779,24 +793,24 @@ export function getIconList()${isTS ? ': string[]' : ''} {
   return Object.keys(iconMap)
 }
 
-export default mapIconName`;
-  
+export default mapIconName`
+
   writeFileIfNotExists(
     path.join(utilsDir, isTS ? 'iconMap.ts' : 'iconMap.js'),
     iconMapContent
-  );
+  )
 }
 
 // ============== Layout Components ==============
 
 function ensureLayoutComponents() {
-  console.log('🔄 Setting up layout components...');
-  
-  const layoutDir = path.resolve('src/components/layout');
-  ensureDir(layoutDir);
-  
-  const isTS = isTypeScriptProject();
-  
+  console.log('🔄 Setting up layout components...')
+
+  const layoutDir = path.resolve('src/components/layout')
+  ensureDir(layoutDir)
+
+  const isTS = isTypeScriptProject()
+
   // Main Layout
   writeFileIfNotExists(
     path.join(layoutDir, 'AppLayout.vue'),
@@ -883,8 +897,8 @@ export default defineComponent({
   }
 })
 </script>`
-  );
-  
+  )
+
   // Header Component
   writeFileIfNotExists(
     path.join(layoutDir, 'AppHeader.vue'),
@@ -1033,8 +1047,8 @@ export default defineComponent({
   }
 })
 </script>`
-  );
-  
+  )
+
   // Sidebar Component
   writeFileIfNotExists(
     path.join(layoutDir, 'AppSidebar.vue'),
@@ -1145,8 +1159,8 @@ export default defineComponent({
   }
 })
 </script>`
-  );
-  
+  )
+
   // Footer Component
   writeFileIfNotExists(
     path.join(layoutDir, 'AppFooter.vue'),
@@ -1200,20 +1214,20 @@ export default defineComponent({
   }
 })
 </script>`
-  );
+  )
 }
 
 // ============== Pinia Store Setup ==============
 
 function ensurePiniaSetup() {
-  console.log('🔄 Setting up Pinia stores...');
-  
-  const storesDir = path.resolve('src/stores');
-  ensureDir(storesDir);
-  
-  const isTS = isTypeScriptProject();
-  const ext = isTS ? '.ts' : '.js';
-  
+  console.log('🔄 Setting up Pinia stores...')
+
+  const storesDir = path.resolve('src/stores')
+  ensureDir(storesDir)
+
+  const isTS = isTypeScriptProject()
+  const ext = isTS ? '.ts' : '.js'
+
   // Main store index
   writeFileIfNotExists(
     path.join(storesDir, `index${ext}`),
@@ -1231,8 +1245,8 @@ export function setupPinia(app${isTS ? ': App' : ''})${isTS ? ': Pinia' : ''} {
 export { useUserStore } from './user'
 export { useSettingsStore } from './settings'
 export { useNotificationStore } from './notification'`
-  );
-  
+  )
+
   // User store
   writeFileIfNotExists(
     path.join(storesDir, `user${ext}`),
@@ -1240,13 +1254,17 @@ export { useNotificationStore } from './notification'`
 ${isTS ? "import type { Ref } from 'vue'" : ''}
 import { ref, computed } from 'vue'
 
-${isTS ? `interface User {
+${
+  isTS
+    ? `interface User {
   id: number
   email: string
   name: string
   avatar?: string
   role: 'admin' | 'user'
-}` : ''}
+}`
+    : ''
+}
 
 export const useUserStore = defineStore('user', () => {
   // State
@@ -1351,8 +1369,8 @@ function mockFetchProfile() {
     }, 500)
   })
 }`
-  );
-  
+  )
+
   // Settings store
   writeFileIfNotExists(
     path.join(storesDir, `settings${ext}`),
@@ -1456,22 +1474,26 @@ export const useSettingsStore = defineStore('settings', () => {
     initializeTheme
   }
 })`
-  );
-  
+  )
+
   // Notification store
   writeFileIfNotExists(
     path.join(storesDir, `notification${ext}`),
     `import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-${isTS ? `export interface Notification {
+${
+  isTS
+    ? `export interface Notification {
   id: string
   type: 'success' | 'error' | 'warning' | 'info'
   title: string
   message?: string
   duration?: number
   persistent?: boolean
-}` : ''}
+}`
+    : ''
+}
 
 export const useNotificationStore = defineStore('notification', () => {
   // State
@@ -1542,20 +1564,20 @@ export const useNotificationStore = defineStore('notification', () => {
     info
   }
 })`
-  );
+  )
 }
 
 // ============== Composables ==============
 
 function ensureComposables() {
-  console.log('🔄 Setting up Vue composables...');
-  
-  const composablesDir = path.resolve('src/composables');
-  ensureDir(composablesDir);
-  
-  const isTS = isTypeScriptProject();
-  const ext = isTS ? '.ts' : '.js';
-  
+  console.log('🔄 Setting up Vue composables...')
+
+  const composablesDir = path.resolve('src/composables')
+  ensureDir(composablesDir)
+
+  const isTS = isTypeScriptProject()
+  const ext = isTS ? '.ts' : '.js'
+
   // Dark mode composable
   writeFileIfNotExists(
     path.join(composablesDir, `useDarkMode${ext}`),
@@ -1571,8 +1593,8 @@ export function useDarkMode() {
     setDark: (value${isTS ? ': boolean' : ''}) => settings.setTheme(value ? 'dark' : 'light')
   }
 }`
-  );
-  
+  )
+
   // Breakpoint composable
   writeFileIfNotExists(
     path.join(composablesDir, `useBreakpoint${ext}`),
@@ -1627,88 +1649,91 @@ export function useBreakpoint() {
     isLarger
   }
 }`
-  );
+  )
 }
 
 // ============== Package Scripts ==============
 
 function ensurePackageScripts() {
-  console.log('🔄 Setting up package.json scripts...');
-  
-  const pkgPath = path.resolve('package.json');
-  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-  
-  pkg.scripts = pkg.scripts || {};
-  
-  let modified = false;
-  const tailwindConfig = ['tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs']
-    .find(c => fileExists(c)) || 'tailwind.config.cjs';
-  
+  console.log('🔄 Setting up package.json scripts...')
+
+  const pkgPath = path.resolve('package.json')
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
+
+  pkg.scripts = pkg.scripts || {}
+
+  let modified = false
+  const tailwindConfig =
+    ['tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs'].find(
+      c => fileExists(c)
+    ) || 'tailwind.config.cjs'
+
   const scripts = {
     'css:build': `tailwindcss -c ${tailwindConfig} -i ./src/styles/global.css -o ./dist/styles/global.css --minify`,
     'css:watch': `tailwindcss -c ${tailwindConfig} -i ./src/styles/global.css -o ./dist/styles/global.css --watch`,
-    'css:dev': `tailwindcss -c ${tailwindConfig} -i ./src/styles/global.css -o ./dist/styles/global.css --watch`
-  };
-  
+    'css:dev': `tailwindcss -c ${tailwindConfig} -i ./src/styles/global.css -o ./dist/styles/global.css --watch`,
+  }
+
   for (const [name, command] of Object.entries(scripts)) {
     if (!pkg.scripts[name]) {
-      pkg.scripts[name] = command;
-      modified = true;
+      pkg.scripts[name] = command
+      modified = true
     }
   }
-  
+
   // Ensure dist directory exists
-  ensureDir(path.resolve('dist/styles'));
-  
+  ensureDir(path.resolve('dist/styles'))
+
   if (modified) {
-    fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-    console.log('✅ Updated package.json scripts');
+    fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
+    console.log('✅ Updated package.json scripts')
   }
 }
 
 // ============== Main Function ==============
 
 function main() {
-  console.log('🚀 Starting enhanced UI setup...\n');
-  
+  console.log('🚀 Starting enhanced UI setup...\n')
+
   try {
     // Check if we're in a valid project
     if (!fileExists('package.json')) {
-      console.error('❌ No package.json found. Please run this script in your project root.');
-      process.exit(1);
+      console.error(
+        '❌ No package.json found. Please run this script in your project root.'
+      )
+      process.exit(1)
     }
-    
+
     // Run setup steps
-    ensureDeps();
-    ensureTailwindInit();
-    enhanceTailwindConfig();
-    ensurePostcss();
-    ensureGlobalCss();
-    ensureIconComponents();
-    ensureLayoutComponents();
-    ensurePiniaSetup();
-    ensureComposables();
-    ensurePackageScripts();
-    
-    console.log('\n✨ UI setup completed successfully!');
-    console.log('\n📝 Next steps:');
-    console.log('  1. Import global CSS in your main.js/main.ts:');
-    console.log('     import "./styles/global.css"');
-    console.log('  2. Set up Pinia in your main.js/main.ts:');
-    console.log('     import { setupPinia } from "./stores"');
-    console.log('     setupPinia(app)');
-    console.log('  3. Run CSS build:');
-    console.log(`     ${detectPackageManager()} run css:watch`);
-    console.log('  4. Use the layout components in your App.vue');
-    console.log('\n🎉 Happy coding!');
-    
+    ensureDeps()
+    ensureTailwindInit()
+    enhanceTailwindConfig()
+    ensurePostcss()
+    ensureGlobalCss()
+    ensureIconComponents()
+    ensureLayoutComponents()
+    ensurePiniaSetup()
+    ensureComposables()
+    ensurePackageScripts()
+
+    console.log('\n✨ UI setup completed successfully!')
+    console.log('\n📝 Next steps:')
+    console.log('  1. Import global CSS in your main.js/main.ts:')
+    console.log('     import "./styles/global.css"')
+    console.log('  2. Set up Pinia in your main.js/main.ts:')
+    console.log('     import { setupPinia } from "./stores"')
+    console.log('     setupPinia(app)')
+    console.log('  3. Run CSS build:')
+    console.log(`     ${detectPackageManager()} run css:watch`)
+    console.log('  4. Use the layout components in your App.vue')
+    console.log('\n🎉 Happy coding!')
   } catch (error) {
-    console.error('\n❌ Setup failed:', error.message);
-    process.exit(1);
+    console.error('\n❌ Setup failed:', error.message)
+    process.exit(1)
   }
 }
 
 // Run the script
 if (require.main === module) {
-  main();
+  main()
 }

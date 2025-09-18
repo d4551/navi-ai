@@ -155,7 +155,7 @@
 }
 
 .the-suspects.noir-theme::before {
-  content: "";
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
@@ -265,7 +265,7 @@
 }
 
 .investigation-header::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -734,7 +734,7 @@
 }
 
 .studio-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -1189,7 +1189,7 @@
 }
 
 .ai-suggestions-section::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -1249,7 +1249,7 @@
 }
 
 .ai-studio-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -1425,7 +1425,7 @@
   color: var(--text-primary);
 }
 
-.checkbox-wrapper input[type="checkbox"] {
+.checkbox-wrapper input[type='checkbox'] {
   appearance: none;
   width: 20px;
   height: 20px;
@@ -1437,13 +1437,13 @@
   transition: all var(--duration-fast);
 }
 
-.checkbox-wrapper input[type="checkbox"]:checked {
+.checkbox-wrapper input[type='checkbox']:checked {
   background: var(--color-primary-500);
   border-color: var(--color-primary-500);
 }
 
-.checkbox-wrapper input[type="checkbox"]:checked::after {
-  content: "✓";
+.checkbox-wrapper input[type='checkbox']:checked::after {
+  content: '✓';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1475,64 +1475,64 @@
 /* Enhanced Light/Dark Mode Integration with Master Theme */
 
 /* Dark Theme Enhancements */
-[data-theme="dark"] .studio-card,
-[data-theme="dark"] .enhanced-glass-card {
+[data-theme='dark'] .studio-card,
+[data-theme='dark'] .enhanced-glass-card {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .enhanced-glass-panel {
+[data-theme='dark'] .enhanced-glass-panel {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .enhanced-input {
+[data-theme='dark'] .enhanced-input {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .filter-chip {
+[data-theme='dark'] .filter-chip {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   color: var(--text-secondary);
 }
 
-[data-theme="dark"] .filter-chip:hover {
+[data-theme='dark'] .filter-chip:hover {
   background: var(--glass-hover-bg);
   border-color: rgba(var(--color-primary-500-rgb, 99, 102, 241), 0.4);
   color: var(--text-primary);
 }
 
-[data-theme="dark"] .noir-stat-card {
+[data-theme='dark'] .noir-stat-card {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="dark"] .ai-studio-card {
+[data-theme='dark'] .ai-studio-card {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
 /* Light Theme Enhancements */
-[data-theme="light"] .studio-card,
-[data-theme="light"] .enhanced-glass-card {
+[data-theme='light'] .studio-card,
+[data-theme='light'] .enhanced-glass-card {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
-[data-theme="light"] .enhanced-glass-panel {
+[data-theme='light'] .enhanced-glass-panel {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-backdrop-filter);
   border-color: var(--glass-border);
 }
 
-[data-theme="light"] .enhanced-input:focus {
+[data-theme='light'] .enhanced-input:focus {
   background: var(--glass-hover-bg);
   border-color: var(--color-primary-500);
   box-shadow:

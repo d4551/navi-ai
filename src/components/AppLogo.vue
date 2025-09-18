@@ -1,10 +1,10 @@
 <template>
-  <img :src="logoSrc" :alt="altText" class="app-logo font-sans">
+  <img :src="logoSrc" :alt="altText" class="app-logo font-sans" />
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme';
+import { computed } from 'vue'
+import { useUnifiedTheme } from '@/shared/composables/useUnifiedTheme'
 
 const props = defineProps({
   altText: {
@@ -25,17 +25,17 @@ const props = defineProps({
     type: String,
     default: '/logoDark.svg',
   },
-});
+})
 
 // Use the reactive color scheme from the unified theme
-const { colorScheme } = useUnifiedTheme();
+const { colorScheme } = useUnifiedTheme()
 
 const logoSrc = computed(() => {
   // If a specific src is provided, always use it
-  if (props.src) return props.src;
+  if (props.src) return props.src
   // Otherwise, switch by theme using provided light/dark sources
-  return colorScheme.value === 'dark' ? props.darkSrc : props.lightSrc;
-});
+  return colorScheme.value === 'dark' ? props.darkSrc : props.lightSrc
+})
 </script>
 
 <style scoped>
@@ -46,7 +46,9 @@ const logoSrc = computed(() => {
 }
 
 /* Optional: Add specific styling for different themes if needed */
-[data-theme="dark"] .app-logo {
-  filter: brightness(1.2); /* Example: make logo slightly brighter in dark mode */
+[data-theme='dark'] .app-logo {
+  filter: brightness(
+    1.2
+  ); /* Example: make logo slightly brighter in dark mode */
 }
 </style>

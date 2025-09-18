@@ -25,7 +25,7 @@ export function useDocumentActions(kind, ctx) {
           variant: 'glass',
           onClick: ctx?.save || (() => logger.warn('Save action not provided')),
           disabled: false,
-          requiresApiKey: false
+          requiresApiKey: false,
         })
 
         base.push({
@@ -33,10 +33,13 @@ export function useDocumentActions(kind, ctx) {
           icon: 'mdi-auto-fix',
           text: 'AI Enhance',
           variant: 'primary',
-          onClick: ctx?.enhance || (() => logger.warn('Enhance action not provided')),
+          onClick:
+            ctx?.enhance || (() => logger.warn('Enhance action not provided')),
           disabled: !canAI,
           requiresApiKey: true,
-          tooltip: !canAI ? 'Configure API key in Settings to use AI features' : 'Enhance resume with AI'
+          tooltip: !canAI
+            ? 'Configure API key in Settings to use AI features'
+            : 'Enhance resume with AI',
         })
 
         base.push({
@@ -44,9 +47,10 @@ export function useDocumentActions(kind, ctx) {
           icon: 'mdi-file-export-outline',
           text: 'Export PDF',
           variant: 'secondary',
-          onClick: ctx?.export || (() => logger.warn('Export action not provided')),
+          onClick:
+            ctx?.export || (() => logger.warn('Export action not provided')),
           disabled: false,
-          requiresApiKey: false
+          requiresApiKey: false,
         })
 
         // Add preview action if supported
@@ -58,10 +62,9 @@ export function useDocumentActions(kind, ctx) {
             variant: 'outline-secondary',
             onClick: ctx.preview,
             disabled: false,
-            requiresApiKey: false
+            requiresApiKey: false,
           })
         }
-
       } else if (kind === 'coverLetter') {
         base.push({
           key: 'save',
@@ -70,7 +73,7 @@ export function useDocumentActions(kind, ctx) {
           variant: 'glass',
           onClick: ctx?.save || (() => logger.warn('Save action not provided')),
           disabled: false,
-          requiresApiKey: false
+          requiresApiKey: false,
         })
 
         base.push({
@@ -78,10 +81,14 @@ export function useDocumentActions(kind, ctx) {
           icon: 'mdi-robot-outline',
           text: 'Generate',
           variant: 'primary',
-          onClick: ctx?.generate || (() => logger.warn('Generate action not provided')),
+          onClick:
+            ctx?.generate ||
+            (() => logger.warn('Generate action not provided')),
           disabled: !canAI,
           requiresApiKey: true,
-          tooltip: !canAI ? 'Configure API key in Settings to use AI features' : 'Generate cover letter with AI'
+          tooltip: !canAI
+            ? 'Configure API key in Settings to use AI features'
+            : 'Generate cover letter with AI',
         })
 
         base.push({
@@ -89,10 +96,13 @@ export function useDocumentActions(kind, ctx) {
           icon: 'mdi-auto-fix',
           text: 'AI Improve',
           variant: 'secondary',
-          onClick: ctx?.improve || (() => logger.warn('Improve action not provided')),
+          onClick:
+            ctx?.improve || (() => logger.warn('Improve action not provided')),
           disabled: !canAI,
           requiresApiKey: true,
-          tooltip: !canAI ? 'Configure API key in Settings to use AI features' : 'Improve letter with AI suggestions'
+          tooltip: !canAI
+            ? 'Configure API key in Settings to use AI features'
+            : 'Improve letter with AI suggestions',
         })
 
         base.push({
@@ -100,9 +110,10 @@ export function useDocumentActions(kind, ctx) {
           icon: 'mdi-file-export-outline',
           text: 'Export',
           variant: 'outline-secondary',
-          onClick: ctx?.export || (() => logger.warn('Export action not provided')),
+          onClick:
+            ctx?.export || (() => logger.warn('Export action not provided')),
           disabled: false,
-          requiresApiKey: false
+          requiresApiKey: false,
         })
 
         // Add customize action if supported
@@ -114,7 +125,7 @@ export function useDocumentActions(kind, ctx) {
             variant: 'outline-primary',
             onClick: ctx.customize,
             disabled: false,
-            requiresApiKey: false
+            requiresApiKey: false,
           })
         }
       } else if (kind === 'portfolio') {
@@ -125,7 +136,7 @@ export function useDocumentActions(kind, ctx) {
           variant: 'glass',
           onClick: ctx?.save || (() => logger.warn('Save action not provided')),
           disabled: false,
-          requiresApiKey: false
+          requiresApiKey: false,
         })
 
         base.push({
@@ -133,9 +144,10 @@ export function useDocumentActions(kind, ctx) {
           icon: 'mdi-file-export-outline',
           text: 'Export Portfolio',
           variant: 'secondary',
-          onClick: ctx?.export || (() => logger.warn('Export action not provided')),
+          onClick:
+            ctx?.export || (() => logger.warn('Export action not provided')),
           disabled: false,
-          requiresApiKey: false
+          requiresApiKey: false,
         })
 
         // Add publish action if supported
@@ -147,32 +159,37 @@ export function useDocumentActions(kind, ctx) {
             variant: 'primary',
             onClick: ctx.publish,
             disabled: false,
-            requiresApiKey: false
+            requiresApiKey: false,
           })
         }
       }
     } catch (error) {
       logger.error('Error generating document actions:', error)
       // Return minimal fallback actions
-      return [{
-        key: 'error',
-        icon: 'mdi-alert-circle-outline-outline',
-        text: 'Error',
-        variant: 'danger',
-        disabled: true,
-        requiresApiKey: false
-      }]
+      return [
+        {
+          key: 'error',
+          icon: 'mdi-alert-circle-outline-outline',
+          text: 'Error',
+          variant: 'danger',
+          disabled: true,
+          requiresApiKey: false,
+        },
+      ]
     }
 
     return base
   })
 
   // Provide reactive state for external components
-  const hasAIKey = computed(() => !!(
-    store.settings?.geminiApiKey ||
-    store.settings?.apiKey ||
-    store.settings?.ai?.apiKey
-  ))
+  const hasAIKey = computed(
+    () =>
+      !!(
+        store.settings?.geminiApiKey ||
+        store.settings?.apiKey ||
+        store.settings?.ai?.apiKey
+      )
+  )
 
   const aiActionCount = computed(() => {
     return actions.value.filter(action => action.requiresApiKey).length
@@ -183,10 +200,11 @@ export function useDocumentActions(kind, ctx) {
     hasAIKey,
     aiActionCount,
     // Helper functions for components
-    isAIAction: (key) => actions.value.find(a => a.key === key)?.requiresApiKey || false,
-    getActionByKey: (key) => actions.value.find(a => a.key === key) || null,
+    isAIAction: key =>
+      actions.value.find(a => a.key === key)?.requiresApiKey || false,
+    getActionByKey: key => actions.value.find(a => a.key === key) || null,
     getDisabledActions: () => actions.value.filter(a => a.disabled),
-    getEnabledActions: () => actions.value.filter(a => !a.disabled)
+    getEnabledActions: () => actions.value.filter(a => !a.disabled),
   }
 }
 
@@ -194,5 +212,5 @@ export function useDocumentActions(kind, ctx) {
 export const DOCUMENT_TYPES = {
   RESUME: 'resume',
   COVER_LETTER: 'coverLetter',
-  PORTFOLIO: 'portfolio'
+  PORTFOLIO: 'portfolio',
 }

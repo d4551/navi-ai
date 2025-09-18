@@ -5,7 +5,7 @@
     icon="mdi-hammer-wrench"
     :confirmable="true"
     :cancelable="true"
-    class="font-sans "
+    class="font-sans"
     @cancel="close"
     @confirm="handleSave"
   >
@@ -29,7 +29,7 @@ import { ref, watch, defineEmits, defineProps } from 'vue'
 import ModalBase from '@/components/ui/ModalBase.vue'
 
 const props = defineProps({
-  modelValue: { type: Boolean, default: false }
+  modelValue: { type: Boolean, default: false },
 })
 const emit = defineEmits(['update:modelValue', 'save'])
 
@@ -37,13 +37,16 @@ const internalOpen = ref(props.modelValue)
 const toolName = ref('')
 const firstInput = ref(null)
 
-watch(() => props.modelValue, (val) => {
-  internalOpen.value = val
-})
+watch(
+  () => props.modelValue,
+  val => {
+    internalOpen.value = val
+  }
+)
 
 watch(
   internalOpen,
-  (val) => {
+  val => {
     emit('update:modelValue', val)
     if (val) {
       requestAnimationFrame(() => {
@@ -75,4 +78,3 @@ function handleSave() {
   flex-direction: column;
 }
 </style>
-

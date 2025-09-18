@@ -21,7 +21,10 @@ function delay(ms: number) {
  * Generate images from text prompts using external providers.
  * Currently supports OpenAI's DALL·E endpoint.
  */
-export async function callImageGenerator(prompt: string, options: ImageGenOptions = {}): Promise<string[]> {
+export async function callImageGenerator(
+  prompt: string,
+  options: ImageGenOptions = {}
+): Promise<string[]> {
   const {
     size = '512x512',
     n = 1,
@@ -73,8 +76,8 @@ export async function callImageGenerator(prompt: string, options: ImageGenOption
       }
 
       const data = await res.json()
-      const images: string[] = data.data.map((item: any) =>
-        item.url || `data:image/png;base64,${item.b64_json}`
+      const images: string[] = data.data.map(
+        (item: any) => item.url || `data:image/png;base64,${item.b64_json}`
       )
 
       if (cache) {

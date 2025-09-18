@@ -1,8 +1,12 @@
 <template>
-  <StandardPageLayout page-type="gaming" content-spacing="normal" max-width="xl">
+  <StandardPageLayout
+    page-type="gaming"
+    content-spacing="normal"
+    max-width="xl"
+  >
     <template #header-actions>
-      <UnifiedButton 
-        variant="ghost" 
+      <UnifiedButton
+        variant="ghost"
         size="sm"
         leading-icon="mdi-pause"
         :disabled="isSubmitting"
@@ -10,8 +14,8 @@
       >
         {{ isPaused ? 'Resume' : 'Pause' }}
       </UnifiedButton>
-      <UnifiedButton 
-        variant="danger" 
+      <UnifiedButton
+        variant="danger"
         size="sm"
         leading-icon="mdi-stop"
         @click="confirmEndSession"
@@ -25,7 +29,10 @@
       <!-- Progress Bar -->
       <div class="progress-container">
         <div class="progress progress--sm">
-          <div class="progress-bar" :style="{ width: `${progressPercentage}%` }"></div>
+          <div
+            class="progress-bar"
+            :style="{ width: `${progressPercentage}%` }"
+          ></div>
         </div>
         <span class="progress-text">{{ progressPercentage }}% Complete</span>
       </div>
@@ -35,18 +42,29 @@
           <!-- Current Question -->
           <UnifiedCard variant="primary" class="question-card">
             <div class="question-header">
-              <div class="question-type" :class="`type-${currentQuestion?.type}`">
+              <div
+                class="question-type"
+                :class="`type-${currentQuestion?.type}`"
+              >
                 <i :class="getQuestionIcon(currentQuestion?.type)"></i>
                 {{ getQuestionTypeLabel(currentQuestion?.type) }}
               </div>
-              <div v-if="currentQuestion?.difficulty" class="question-difficulty">
-                <span class="difficulty-label">{{ currentQuestion.difficulty.toUpperCase() }}</span>
+              <div
+                v-if="currentQuestion?.difficulty"
+                class="question-difficulty"
+              >
+                <span class="difficulty-label">{{
+                  currentQuestion.difficulty.toUpperCase()
+                }}</span>
                 <div class="difficulty-dots">
-                  <div 
-                    v-for="i in 3" 
+                  <div
+                    v-for="i in 3"
                     :key="i"
                     class="difficulty-dot"
-                    :class="{ active: getDifficultyLevel(currentQuestion.difficulty) >= i }"
+                    :class="{
+                      active:
+                        getDifficultyLevel(currentQuestion.difficulty) >= i,
+                    }"
                   ></div>
                 </div>
               </div>
@@ -54,17 +72,27 @@
 
             <div class="question-content">
               <h2 class="question-text">{{ currentQuestion?.question }}</h2>
-          
-              <div v-if="currentQuestion?.followUps?.length" class="hints-toggle">
+
+              <div
+                v-if="currentQuestion?.followUps?.length"
+                class="hints-toggle"
+              >
                 <label class="toggle-label">
-                  <input v-model="showHints" type="checkbox" /> Show interviewer hints
+                  <input v-model="showHints" type="checkbox" /> Show interviewer
+                  hints
                 </label>
               </div>
 
-              <div v-if="showHints && currentQuestion?.followUps?.length" class="follow-ups">
+              <div
+                v-if="showHints && currentQuestion?.followUps?.length"
+                class="follow-ups"
+              >
                 <p class="follow-ups-label">Consider these follow-up points:</p>
                 <ul class="follow-ups-list">
-                  <li v-for="followUp in currentQuestion.followUps" :key="followUp">
+                  <li
+                    v-for="followUp in currentQuestion.followUps"
+                    :key="followUp"
+                  >
                     {{ followUp }}
                   </li>
                 </ul>
@@ -80,7 +108,7 @@
                 </span>
               </div>
               <div class="progress progress--xs">
-                <div 
+                <div
                   class="progress-bar"
                   :class="getTimerClass()"
                   :style="{ width: `${getTimerPercentage()}%` }"
@@ -92,7 +120,11 @@
           <!-- Response Interface -->
           <div class="response-section">
             <!-- Voice Controls (if enabled) -->
-            <UnifiedCard v-if="session?.enableVoiceMode" variant="glass" class="voice-controls">
+            <UnifiedCard
+              v-if="session?.enableVoiceMode"
+              variant="glass"
+              class="voice-controls"
+            >
               <div class="voice-header">
                 <h3>
                   <AppIcon name="mdi-microphone" />
@@ -113,7 +145,7 @@
                   @recording-stop="onRecordingStop"
                   @error="onRecordingError"
                 />
-            
+
                 <div v-if="isRecording" class="recording-info">
                   <div class="recording-animation">
                     <div class="pulse"></div>
@@ -124,7 +156,11 @@
             </UnifiedCard>
 
             <!-- Text Response -->
-            <UnifiedCard variant="glass" class="text-response" :aria-busy="isSubmitting ? 'true' : 'false'">
+            <UnifiedCard
+              variant="glass"
+              class="text-response"
+              :aria-busy="isSubmitting ? 'true' : 'false'"
+            >
               <div class="response-header">
                 <h3>
                   <AppIcon name="mdi-pencil" />
@@ -147,7 +183,10 @@
               ></textarea>
 
               <!-- Real-time feedback -->
-              <div v-if="responseText.trim() && session?.enableRealTimeAnalysis" class="response-feedback">
+              <div
+                v-if="responseText.trim() && session?.enableRealTimeAnalysis"
+                class="response-feedback"
+              >
                 <div class="feedback-item">
                   <AppIcon name="mdi-chart-bar" />
                   <span>Confidence: {{ getConfidenceLevel() }}</span>
@@ -162,7 +201,7 @@
 
           <!-- Action Buttons -->
           <div class="session-actions">
-            <UnifiedButton 
+            <UnifiedButton
               variant="secondary"
               :disabled="isSubmitting"
               @click="skipQuestion"
@@ -170,19 +209,21 @@
               Skip Question (S)
             </UnifiedButton>
 
-            <UnifiedButton 
+            <UnifiedButton
               variant="primary"
               :disabled="!responseText.trim() || isSubmitting"
               :loading="isSubmitting"
               @click="submitResponse"
             >
-              {{ isSubmitting ? 'Analyzing...' : 'Submit Response (⌘/Ctrl+Enter)' }}
+              {{
+                isSubmitting ? 'Analyzing...' : 'Submit Response (⌘/Ctrl+Enter)'
+              }}
             </UnifiedButton>
           </div>
 
           <!-- AI Feedback (if available) -->
-          <UnifiedCard 
-            v-if="currentFeedback && session?.enableRealTimeAnalysis" 
+          <UnifiedCard
+            v-if="currentFeedback && session?.enableRealTimeAnalysis"
             variant="success"
             class="feedback-card"
           >
@@ -191,34 +232,49 @@
                 <AppIcon name="mdi-brain" />
                 AI Feedback
               </h3>
-              <div class="feedback-score" :class="getScoreClass(currentFeedback.score)">
+              <div
+                class="feedback-score"
+                :class="getScoreClass(currentFeedback.score)"
+              >
                 {{ currentFeedback.score }}/100
               </div>
             </div>
 
             <div class="feedback-content">
               <p class="feedback-summary">{{ currentFeedback.feedback }}</p>
-          
+
               <div class="feedback-details">
-                <div v-if="currentFeedback.strengths?.length" class="feedback-section">
+                <div
+                  v-if="currentFeedback.strengths?.length"
+                  class="feedback-section"
+                >
                   <h4>
                     <AppIcon name="mdi-thumb-up" />
                     Strengths
                   </h4>
                   <ul>
-                    <li v-for="strength in currentFeedback.strengths" :key="strength">
+                    <li
+                      v-for="strength in currentFeedback.strengths"
+                      :key="strength"
+                    >
                       {{ strength }}
                     </li>
                   </ul>
                 </div>
 
-                <div v-if="currentFeedback.improvements?.length" class="feedback-section">
+                <div
+                  v-if="currentFeedback.improvements?.length"
+                  class="feedback-section"
+                >
                   <h4>
                     <AppIcon name="mdi-lightbulb-on" />
                     Improvements
                   </h4>
                   <ul>
-                    <li v-for="improvement in currentFeedback.improvements" :key="improvement">
+                    <li
+                      v-for="improvement in currentFeedback.improvements"
+                      :key="improvement"
+                    >
                       {{ improvement }}
                     </li>
                   </ul>
@@ -227,7 +283,11 @@
             </div>
 
             <div class="feedback-actions">
-              <UnifiedButton variant="ghost" size="sm" @click="currentFeedback = null">
+              <UnifiedButton
+                variant="ghost"
+                size="sm"
+                @click="currentFeedback = null"
+              >
                 <AppIcon name="mdi-close-circle-outline" />
                 Dismiss
               </UnifiedButton>
@@ -237,7 +297,10 @@
 
         <!-- Side Column: sticky session info and shortcuts -->
         <aside class="side-column" aria-label="Session information">
-          <UnifiedCard variant="glass" class="side-card sticky glass p-4 gap-4 rounded-lg">
+          <UnifiedCard
+            variant="glass"
+            class="side-card sticky glass p-4 gap-4 rounded-lg"
+          >
             <div class="side-title">{{ sessionTitle }}</div>
             <div class="side-meta">
               <div class="meta-row">
@@ -246,19 +309,41 @@
               </div>
               <div class="meta-row">
                 <AppIcon name="mdi-progress-clock" />
-                <span>Question {{ currentQuestionIndex + 1 }} / {{ totalQuestions }}</span>
+                <span
+                  >Question {{ currentQuestionIndex + 1 }} /
+                  {{ totalQuestions }}</span
+                >
               </div>
-              <div v-for="item in headerStats" :key="item.text" class="meta-row">
-                <AppIcon :name="item.icon?.startsWith('mdi-') ? item.icon : 'mdi-shape'" />
+              <div
+                v-for="item in headerStats"
+                :key="item.text"
+                class="meta-row"
+              >
+                <AppIcon
+                  :name="
+                    item.icon?.startsWith('mdi-') ? item.icon : 'mdi-shape'
+                  "
+                />
                 <span>{{ item.text }}</span>
               </div>
             </div>
 
             <div class="side-controls">
-              <UnifiedButton variant="ghost" size="sm" leading-icon="mdi-pause" :disabled="isSubmitting" @click="togglePause">
+              <UnifiedButton
+                variant="ghost"
+                size="sm"
+                leading-icon="mdi-pause"
+                :disabled="isSubmitting"
+                @click="togglePause"
+              >
                 {{ isPaused ? 'Resume (P)' : 'Pause (P)' }}
               </UnifiedButton>
-              <UnifiedButton variant="danger" size="sm" leading-icon="mdi-stop" @click="confirmEndSession">
+              <UnifiedButton
+                variant="danger"
+                size="sm"
+                leading-icon="mdi-stop"
+                @click="confirmEndSession"
+              >
                 End Session
               </UnifiedButton>
             </div>
@@ -279,15 +364,21 @@
     </div>
 
     <!-- Confirmation Modal -->
-    <ModalBase 
-      v-model="showEndConfirmation" 
+    <ModalBase
+      v-model="showEndConfirmation"
       title="End Interview Session"
       size="sm"
     >
       <div class="modal-content">
-        <p>Are you sure you want to end this interview session? Your progress will be saved.</p>
+        <p>
+          Are you sure you want to end this interview session? Your progress
+          will be saved.
+        </p>
         <div class="modal-actions">
-          <UnifiedButton variant="secondary" @click="showEndConfirmation = false">
+          <UnifiedButton
+            variant="secondary"
+            @click="showEndConfirmation = false"
+          >
             Continue Session
           </UnifiedButton>
           <UnifiedButton variant="danger" @click="endSession">
@@ -364,10 +455,12 @@ const sessionTitle = computed(() => {
 
 const headerStats = computed(() => {
   const stats = []
-  const personaName = session.value?.persona?.name || session.value?.config?.persona?.name
+  const personaName =
+    session.value?.persona?.name || session.value?.config?.persona?.name
   const studio = session.value?.studioName || session.value?.config?.studioName
   const role = session.value?.roleType || session.value?.config?.roleType
-  if (personaName) stats.push({ text: `Persona: ${personaName}`, icon: 'mdi-account-tie' })
+  if (personaName)
+    stats.push({ text: `Persona: ${personaName}`, icon: 'mdi-account-tie' })
   if (studio) stats.push({ text: studio, icon: 'mdi-office-building' })
   if (role) stats.push({ text: role, icon: 'mdi-briefcase-outline' })
   return stats
@@ -375,11 +468,16 @@ const headerStats = computed(() => {
 
 const progressPercentage = computed(() => {
   if (totalQuestions.value === 0) return 0
-  return Math.round(((currentQuestionIndex.value + 1) / totalQuestions.value) * 100)
+  return Math.round(
+    ((currentQuestionIndex.value + 1) / totalQuestions.value) * 100
+  )
 })
 
 const wordCount = computed(() => {
-  return responseText.value.trim().split(/\s+/).filter(word => word.length > 0).length
+  return responseText.value
+    .trim()
+    .split(/\s+/)
+    .filter(word => word.length > 0).length
 })
 
 const estimatedTime = computed(() => {
@@ -391,7 +489,7 @@ async function loadSession() {
   try {
     const sessionId = route.params.sessionId
     const sessionData = await aiInterviewService.getSession(sessionId)
-    
+
     if (!sessionData) {
       router.push('/interview-prep')
       return
@@ -434,13 +532,20 @@ function pushAssistantContext() {
     currentQuestionIndex: currentQuestionIndex.value,
     totalQuestions: totalQuestions.value,
     elapsedTime: elapsedTime.value,
-    currentQuestion: currentQuestion.value ? { id: currentQuestion.value.id, type: currentQuestion.value.type } : null,
+    currentQuestion: currentQuestion.value
+      ? { id: currentQuestion.value.id, type: currentQuestion.value.type }
+      : null,
     responseLength: (responseText?.value || '').length,
   })
 }
 onMounted(pushAssistantContext)
-watch([isPaused, currentQuestionIndex, totalQuestions, elapsedTime], pushAssistantContext)
-onUnmounted(() => { clearPageContext() })
+watch(
+  [isPaused, currentQuestionIndex, totalQuestions, elapsedTime],
+  pushAssistantContext
+)
+onUnmounted(() => {
+  clearPageContext()
+})
 
 function stopTimers() {
   if (elapsedTimer) {
@@ -486,11 +591,14 @@ async function submitResponse() {
       questionId: currentQuestion.value.id,
       transcript: responseText.value.trim(),
       duration: responseTime.value,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     }
 
-    const result = await aiInterviewService.submitResponse(session.value.id, response)
-    
+    const result = await aiInterviewService.submitResponse(
+      session.value.id,
+      response
+    )
+
     if (result.feedback && session.value.enableRealTimeAnalysis) {
       currentFeedback.value = result.feedback
     }
@@ -499,7 +607,6 @@ async function submitResponse() {
     setTimeout(() => {
       nextQuestion()
     }, 2000)
-
   } catch (error) {
     console.error('Failed to submit response:', error)
   } finally {
@@ -520,7 +627,7 @@ function restoreDraft() {
 }
 
 let draftTimer = null
-watch(responseText, (val) => {
+watch(responseText, val => {
   try {
     clearTimeout(draftTimer)
     draftTimer = setTimeout(() => {
@@ -536,7 +643,8 @@ watch(currentQuestionIndex, () => {
 
 // Keyboard shortcuts
 function onKeydown(e) {
-  const tag = (e.target && e.target.tagName) ? String(e.target.tagName).toLowerCase() : ''
+  const tag =
+    e.target && e.target.tagName ? String(e.target.tagName).toLowerCase() : ''
   const typing = tag === 'input' || tag === 'textarea'
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
     e.preventDefault()
@@ -545,14 +653,25 @@ function onKeydown(e) {
   }
   if (typing) return
   const k = e.key?.toLowerCase()
-  if (k === 'f') { e.preventDefault(); focusEditor() }
-  else if (k === 's') { e.preventDefault(); if (!isSubmitting.value) skipQuestion() }
-  else if (k === 'p') { e.preventDefault(); togglePause() }
-  else if (k === 'h') { e.preventDefault(); showHints.value = !showHints.value }
+  if (k === 'f') {
+    e.preventDefault()
+    focusEditor()
+  } else if (k === 's') {
+    e.preventDefault()
+    if (!isSubmitting.value) skipQuestion()
+  } else if (k === 'p') {
+    e.preventDefault()
+    togglePause()
+  } else if (k === 'h') {
+    e.preventDefault()
+    showHints.value = !showHints.value
+  }
 }
 
 function focusEditor() {
-  try { responseTextarea.value?.focus?.() } catch {}
+  try {
+    responseTextarea.value?.focus?.()
+  } catch {}
 }
 
 function _clearResponse() {
@@ -561,8 +680,10 @@ function _clearResponse() {
 
 async function nextQuestion() {
   try {
-    const nextQuestionData = await aiInterviewService.nextQuestion(session.value.id)
-    
+    const nextQuestionData = await aiInterviewService.nextQuestion(
+      session.value.id
+    )
+
     if (nextQuestionData.completed) {
       // Interview completed
       try {
@@ -582,7 +703,6 @@ async function nextQuestion() {
     responseText.value = ''
     responseTime.value = 0
     currentFeedback.value = null
-    
   } catch (error) {
     console.error('Failed to get next question:', error)
   }
@@ -621,22 +741,22 @@ function formatTime(seconds) {
 
 function getQuestionIcon(type) {
   const icons = {
-    'behavioral': 'mdi-account-group',
-    'technical': 'mdi-code-braces',
+    behavioral: 'mdi-account-group',
+    technical: 'mdi-code-braces',
     'studio-specific': 'mdi-gamepad-variant',
-    'intro': 'mdi-hand-wave',
-    'closing': 'mdi-check-circle-outline'
+    intro: 'mdi-hand-wave',
+    closing: 'mdi-check-circle-outline',
   }
   return icons[type] || 'mdi-comment-question'
 }
 
 function getQuestionTypeLabel(type) {
   const labels = {
-    'behavioral': 'Behavioral',
-    'technical': 'Technical',
+    behavioral: 'Behavioral',
+    technical: 'Technical',
     'studio-specific': 'Studio Specific',
-    'intro': 'Introduction',
-    'closing': 'Closing'
+    intro: 'Introduction',
+    closing: 'Closing',
   }
   return labels[type] || 'Question'
 }
@@ -649,7 +769,7 @@ function getDifficultyLevel(difficulty) {
 function getTimerClass() {
   const expectedDuration = currentQuestion.value?.expectedDuration || 120
   const ratio = responseTime.value / expectedDuration
-  
+
   if (ratio < 0.5) return 'timer-good'
   if (ratio < 1.2) return 'timer-okay'
   return 'timer-warning'
@@ -675,7 +795,7 @@ function getResponsePace() {
 
 function getScoreClass(score) {
   if (score >= 85) return 'score-excellent'
-  if (score >= 75) return 'score-good' 
+  if (score >= 75) return 'score-good'
   if (score >= 65) return 'score-average'
   return 'score-needs-work'
 }
@@ -692,11 +812,14 @@ onUnmounted(() => {
 })
 
 // Watchers
-watch(() => route.params.sessionId, () => {
-  if (route.params.sessionId) {
-    loadSession()
+watch(
+  () => route.params.sessionId,
+  () => {
+    if (route.params.sessionId) {
+      loadSession()
+    }
   }
-})
+)
 </script>
 
 <style scoped>
@@ -727,7 +850,11 @@ watch(() => route.params.sessionId, () => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-success));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-success)
+  );
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -799,13 +926,15 @@ watch(() => route.params.sessionId, () => {
   padding-top: var(--spacing-md);
 }
 
-.shortcuts-title { 
-  font-weight: 600; 
-  margin-bottom: var(--spacing-sm); 
+.shortcuts-title {
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
 }
 
-.shortcuts ul { 
-  margin: 0; padding-left: var(--spacing-md); color: var(--text-secondary); 
+.shortcuts ul {
+  margin: 0;
+  padding-left: var(--spacing-md);
+  color: var(--text-secondary);
 }
 
 .shortcuts kbd {
@@ -963,9 +1092,15 @@ watch(() => route.params.sessionId, () => {
 }
 
 /* Timer color mapping for progress utility */
-.progress .timer-good { background: var(--color-success); }
-.progress .timer-okay { background: var(--color-warning); }
-.progress .timer-warning { background: var(--color-danger); }
+.progress .timer-good {
+  background: var(--color-success);
+}
+.progress .timer-okay {
+  background: var(--color-warning);
+}
+.progress .timer-warning {
+  background: var(--color-danger);
+}
 
 /* Response Section */
 .response-section {
@@ -1233,8 +1368,13 @@ watch(() => route.params.sessionId, () => {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .session-layout { grid-template-columns: 1fr; padding: var(--spacing-md); }
-  .side-column { order: -1; }
+  .session-layout {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-md);
+  }
+  .side-column {
+    order: -1;
+  }
 
   .question-card,
   .voice-controls,

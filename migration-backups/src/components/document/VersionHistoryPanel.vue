@@ -47,15 +47,18 @@
             v-for="version in filteredVersions"
             :key="version.id"
             class="version-item"
-            :class="{ 
+            :class="{
               selected: selectedVersion?.id === version.id,
-              current: version.id === 'current'
+              current: version.id === 'current',
             }"
             @click="selectVersion(version)"
           >
             <div class="version-marker">
               <div class="marker-dot" :class="getVersionType(version)"></div>
-              <div v-if="version !== filteredVersions[filteredVersions.length - 1]" class="marker-line"></div>
+              <div
+                v-if="version !== filteredVersions[filteredVersions.length - 1]"
+                class="marker-line"
+              ></div>
             </div>
 
             <div class="version-content">
@@ -63,7 +66,9 @@
                 <div class="version-info">
                   <h4 class="version-title">{{ getVersionTitle(version) }}</h4>
                   <div class="version-meta">
-                    <span class="version-time">{{ formatTime(version.timestamp) }}</span>
+                    <span class="version-time">{{
+                      formatTime(version.timestamp)
+                    }}</span>
                     <span class="version-type" :class="getVersionType(version)">
                       {{ getVersionTypeLabel(version) }}
                     </span>
@@ -97,7 +102,10 @@
                     <AppIcon name="mdi-plus" size="12" />
                     {{ version.changes.additions }} additions
                   </span>
-                  <span v-if="version.changes.modifications" class="change-stat">
+                  <span
+                    v-if="version.changes.modifications"
+                    class="change-stat"
+                  >
                     <AppIcon name="mdi-pencil" size="12" />
                     {{ version.changes.modifications }} modifications
                   </span>
@@ -106,13 +114,19 @@
                     {{ version.changes.deletions }} deletions
                   </span>
                 </div>
-                <div v-if="version.changes.description" class="change-description">
+                <div
+                  v-if="version.changes.description"
+                  class="change-description"
+                >
                   {{ version.changes.description }}
                 </div>
               </div>
 
               <!-- Version Preview -->
-              <div v-if="version.preview && expandedVersion === version.id" class="version-preview">
+              <div
+                v-if="version.preview && expandedVersion === version.id"
+                class="version-preview"
+              >
                 <div class="preview-header">
                   <span class="preview-label">Content Preview:</span>
                   <UnifiedButton
@@ -125,15 +139,24 @@
                 <div class="preview-content">
                   <div v-if="version.preview.summary" class="preview-section">
                     <strong>Summary:</strong>
-                    <p class="preview-text">{{ truncateText(version.preview.summary, 100) }}</p>
+                    <p class="preview-text">
+                      {{ truncateText(version.preview.summary, 100) }}
+                    </p>
                   </div>
-                  <div v-if="version.preview.experience" class="preview-section">
+                  <div
+                    v-if="version.preview.experience"
+                    class="preview-section"
+                  >
                     <strong>Experience:</strong>
-                    <p class="preview-text">{{ version.preview.experience.length }} positions</p>
+                    <p class="preview-text">
+                      {{ version.preview.experience.length }} positions
+                    </p>
                   </div>
                   <div v-if="version.preview.skills" class="preview-section">
                     <strong>Skills:</strong>
-                    <p class="preview-text">{{ version.preview.skills.length }} skills listed</p>
+                    <p class="preview-text">
+                      {{ version.preview.skills.length }} skills listed
+                    </p>
                   </div>
                 </div>
               </div>
@@ -145,18 +168,17 @@
             <AppIcon name="mdi-history" size="48" />
             <h4>No versions found</h4>
             <p>No versions match your current filter criteria.</p>
-            <UnifiedButton
-              variant="outline"
-              size="sm"
-              @click="clearFilters"
-            >
+            <UnifiedButton variant="outline" size="sm" @click="clearFilters">
               Clear Filters
             </UnifiedButton>
           </div>
         </div>
 
         <!-- Version Comparison -->
-        <div v-if="selectedVersion && compareVersion" class="version-comparison">
+        <div
+          v-if="selectedVersion && compareVersion"
+          class="version-comparison"
+        >
           <div class="comparison-header">
             <h4 class="comparison-title">
               <AppIcon name="mdi-compare" />
@@ -171,36 +193,58 @@
               Close Comparison
             </UnifiedButton>
           </div>
-          
+
           <div v-if="comparison" class="comparison-content">
             <div class="comparison-side">
               <h5 class="side-title">{{ getVersionTitle(selectedVersion) }}</h5>
               <div class="side-content">
                 <div class="preview-section">
                   <strong>Summary:</strong>
-                  <p class="preview-text">{{ comparison.summary.after || '(none)' }}</p>
+                  <p class="preview-text">
+                    {{ comparison.summary.after || '(none)' }}
+                  </p>
                 </div>
                 <div class="preview-section">
                   <strong>Experience items:</strong>
-                  <p class="preview-text">{{ comparison.experience.after }} positions</p>
-                  <span v-if="comparison.experience.delta > 0" class="change-positive">
+                  <p class="preview-text">
+                    {{ comparison.experience.after }} positions
+                  </p>
+                  <span
+                    v-if="comparison.experience.delta > 0"
+                    class="change-positive"
+                  >
                     +{{ comparison.experience.delta }}
                   </span>
-                  <span v-else-if="comparison.experience.delta < 0" class="change-negative">
+                  <span
+                    v-else-if="comparison.experience.delta < 0"
+                    class="change-negative"
+                  >
                     {{ comparison.experience.delta }}
                   </span>
                 </div>
-                <div v-if="comparison.skills.added.length" class="preview-section">
+                <div
+                  v-if="comparison.skills.added.length"
+                  class="preview-section"
+                >
                   <strong>Skills added:</strong>
                   <div class="skill-tags">
-                    <span v-for="skill in comparison.skills.added" :key="skill" class="skill-tag added">
+                    <span
+                      v-for="skill in comparison.skills.added"
+                      :key="skill"
+                      class="skill-tag added"
+                    >
                       {{ skill }}
                     </span>
                   </div>
                 </div>
-                <div v-if="comparison.sections.added.length" class="preview-section">
+                <div
+                  v-if="comparison.sections.added.length"
+                  class="preview-section"
+                >
                   <strong>Sections added:</strong>
-                  <p class="preview-text">{{ comparison.sections.added.join(', ') }}</p>
+                  <p class="preview-text">
+                    {{ comparison.sections.added.join(', ') }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -210,23 +254,39 @@
               <div class="side-content">
                 <div class="preview-section">
                   <strong>Summary:</strong>
-                  <p class="preview-text">{{ comparison.summary.before || '(none)' }}</p>
+                  <p class="preview-text">
+                    {{ comparison.summary.before || '(none)' }}
+                  </p>
                 </div>
                 <div class="preview-section">
                   <strong>Experience items:</strong>
-                  <p class="preview-text">{{ comparison.experience.before }} positions</p>
+                  <p class="preview-text">
+                    {{ comparison.experience.before }} positions
+                  </p>
                 </div>
-                <div v-if="comparison.skills.removed.length" class="preview-section">
+                <div
+                  v-if="comparison.skills.removed.length"
+                  class="preview-section"
+                >
                   <strong>Skills removed:</strong>
                   <div class="skill-tags">
-                    <span v-for="skill in comparison.skills.removed" :key="skill" class="skill-tag removed">
+                    <span
+                      v-for="skill in comparison.skills.removed"
+                      :key="skill"
+                      class="skill-tag removed"
+                    >
                       {{ skill }}
                     </span>
                   </div>
                 </div>
-                <div v-if="comparison.sections.removed.length" class="preview-section">
+                <div
+                  v-if="comparison.sections.removed.length"
+                  class="preview-section"
+                >
                   <strong>Sections removed:</strong>
-                  <p class="preview-text">{{ comparison.sections.removed.join(', ') }}</p>
+                  <p class="preview-text">
+                    {{ comparison.sections.removed.join(', ') }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -258,18 +318,18 @@
           >
             Cleanup Old Versions
           </UnifiedButton>
-          <UnifiedButton
-            variant="primary"
-            size="sm"
-            @click="$emit('close')"
-          >
+          <UnifiedButton variant="primary" size="sm" @click="$emit('close')">
             Close
           </UnifiedButton>
         </div>
       </div>
 
       <!-- Confirmation Modal -->
-      <div v-if="showRevertConfirm" class="confirm-overlay" @click="showRevertConfirm = false">
+      <div
+        v-if="showRevertConfirm"
+        class="confirm-overlay"
+        @click="showRevertConfirm = false"
+      >
         <div class="confirm-modal" @click.stop>
           <div class="confirm-header">
             <AppIcon name="mdi-restore" size="20" />
@@ -277,7 +337,9 @@
           </div>
           <div class="confirm-content">
             <p>
-              Are you sure you want to restore to "{{ getVersionTitle(revertTarget) }}"?
+              Are you sure you want to restore to "{{
+                getVersionTitle(revertTarget)
+              }}"?
             </p>
             <p class="confirm-warning">
               This will replace your current document with the selected version.
@@ -292,11 +354,7 @@
             >
               Cancel
             </UnifiedButton>
-            <UnifiedButton
-              variant="primary"
-              size="sm"
-              @click="handleRevert"
-            >
+            <UnifiedButton variant="primary" size="sm" @click="handleRevert">
               Restore Version
             </UnifiedButton>
           </div>
@@ -321,8 +379,8 @@ const props = defineProps<{
 
 // Emits
 const emit = defineEmits<{
-  'close': []
-  'revert': [any]
+  close: []
+  revert: [any]
 }>()
 
 const toast = useToast()
@@ -344,7 +402,7 @@ const sampleVersions = [
     timestamp: Date.now(),
     type: 'current',
     changes: null,
-    preview: null
+    preview: null,
   },
   {
     id: 'v1',
@@ -355,13 +413,14 @@ const sampleVersions = [
       additions: 3,
       modifications: 5,
       deletions: 1,
-      description: 'AI enhanced summary and experience descriptions'
+      description: 'AI enhanced summary and experience descriptions',
     },
     preview: {
-      summary: 'Dynamic software engineer with 5+ years of experience in full-stack development...',
+      summary:
+        'Dynamic software engineer with 5+ years of experience in full-stack development...',
       experience: [{ title: 'Senior Developer' }],
-      skills: ['JavaScript', 'React', 'Node.js']
-    }
+      skills: ['JavaScript', 'React', 'Node.js'],
+    },
   },
   {
     id: 'v2',
@@ -372,13 +431,13 @@ const sampleVersions = [
       additions: 1,
       modifications: 2,
       deletions: 0,
-      description: 'Added new project and updated skills'
+      description: 'Added new project and updated skills',
     },
     preview: {
       summary: 'Software engineer with experience in web development...',
       experience: [{ title: 'Developer' }],
-      skills: ['JavaScript', 'React']
-    }
+      skills: ['JavaScript', 'React'],
+    },
   },
   {
     id: 'v3',
@@ -389,26 +448,26 @@ const sampleVersions = [
       additions: 2,
       modifications: 1,
       deletions: 0,
-      description: 'Auto-saved while editing experience section'
+      description: 'Auto-saved while editing experience section',
     },
     preview: {
       summary: 'Software engineer with web development experience...',
       experience: [{ title: 'Junior Developer' }],
-      skills: ['JavaScript']
-    }
-  }
+      skills: ['JavaScript'],
+    },
+  },
 ]
 
 // Computed
 const allVersions = computed(() => {
   // Merge actual versions with current document state and add auto-saved versions from localStorage
   const baseVersions = props.versions.length ? props.versions : sampleVersions
-  
+
   // Add any auto-saved versions from localStorage
   const autoSavedVersions = loadAutoSavedVersions()
-  
-  return [...baseVersions, ...autoSavedVersions].sort((a, b) => 
-    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+
+  return [...baseVersions, ...autoSavedVersions].sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   )
 })
 
@@ -424,7 +483,7 @@ const filteredVersions = computed(() => {
         case 'auto':
           return v.type === 'auto'
         case 'major':
-          return v.changes && (v.changes.additions + v.changes.modifications) >= 5
+          return v.changes && v.changes.additions + v.changes.modifications >= 5
         default:
           return true
       }
@@ -437,7 +496,7 @@ const filteredVersions = computed(() => {
     const timeRanges = {
       today: 24 * 60 * 60 * 1000,
       week: 7 * 24 * 60 * 60 * 1000,
-      month: 30 * 24 * 60 * 60 * 1000
+      month: 30 * 24 * 60 * 60 * 1000,
     }
     const range = timeRanges[timeFilter.value as keyof typeof timeRanges]
     filtered = filtered.filter(v => now - v.timestamp <= range)
@@ -463,7 +522,8 @@ const selectVersion = (version: any) => {
     expandedVersion.value = version.id
     // Auto-pick compare target as the next (older) version in the filtered list
     const idx = filteredVersions.value.findIndex(v => v.id === version.id)
-    compareVersion.value = idx >= 0 ? (filteredVersions.value[idx + 1] || null) : null
+    compareVersion.value =
+      idx >= 0 ? filteredVersions.value[idx + 1] || null : null
   }
 }
 
@@ -473,13 +533,16 @@ const previewVersion = (version: any) => {
     if (version.data) {
       // Create a preview of the version data
       const previewContent = JSON.stringify(version.data, null, 2)
-      
+
       // Use a simple alert for now, could be enhanced with a modal
-      const shortPreview = previewContent.length > 500 
-        ? previewContent.substring(0, 500) + '...' 
-        : previewContent
-        
-      alert(`Version Preview: ${getVersionTitle(version)}\n\nContent:\n${shortPreview}`)
+      const shortPreview =
+        previewContent.length > 500
+          ? previewContent.substring(0, 500) + '...'
+          : previewContent
+
+      alert(
+        `Version Preview: ${getVersionTitle(version)}\n\nContent:\n${shortPreview}`
+      )
     } else {
       toast.warning('No preview data available for this version')
     }
@@ -513,7 +576,7 @@ const getVersionTypeLabel = (version: any) => {
     manual: 'Manual Save',
     auto: 'Auto Save',
     ai: 'AI Enhancement',
-    import: 'Import'
+    import: 'Import',
   }
   return labels[version.type as keyof typeof labels] || 'Manual'
 }
@@ -528,22 +591,22 @@ const formatTime = (timestamp: number) => {
   const date = new Date(timestamp)
   const now = new Date()
   const diff = now.getTime() - date.getTime()
-  
+
   const minutes = Math.floor(diff / 60000)
   const hours = Math.floor(diff / 3600000)
   const days = Math.floor(diff / 86400000)
-  
+
   if (minutes < 1) return 'Just now'
   if (minutes < 60) return `${minutes} minutes ago`
   if (hours < 24) return `${hours} hours ago`
   if (days < 7) return `${days} days ago`
-  
+
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 
@@ -566,17 +629,21 @@ const calculateStorageUsed = () => {
   // Simulate storage calculation
   const totalVersions = allVersions.value.length
   const estimatedSize = totalVersions * 2.5 // KB per version
-  return estimatedSize > 1024 ? `${(estimatedSize / 1024).toFixed(1)} MB` : `${estimatedSize.toFixed(0)} KB`
+  return estimatedSize > 1024
+    ? `${(estimatedSize / 1024).toFixed(1)} MB`
+    : `${estimatedSize.toFixed(0)} KB`
 }
 
 const exportVersionHistory = () => {
   const data = {
     document: props.currentDocument,
     exportedAt: new Date().toISOString(),
-    versions: allVersions.value
+    versions: allVersions.value,
   }
-  
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: 'application/json',
+  })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -585,7 +652,7 @@ const exportVersionHistory = () => {
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
-  
+
   toast.success('Version history exported successfully')
 }
 
@@ -593,12 +660,12 @@ const loadAutoSavedVersions = () => {
   try {
     const savedVersionsKey = `navi-versions-${props.currentDocument}`
     const savedVersionsData = localStorage.getItem(savedVersionsKey)
-    
+
     if (savedVersionsData) {
       const parsed = JSON.parse(savedVersionsData)
       return Array.isArray(parsed) ? parsed : []
     }
-    
+
     return []
   } catch (error) {
     console.error('Failed to load auto-saved versions:', error)
@@ -606,26 +673,28 @@ const loadAutoSavedVersions = () => {
   }
 }
 
-
 const confirmCleanup = () => {
-  if (confirm('Remove old auto-save versions older than 30 days? This cannot be undone.')) {
+  if (
+    confirm(
+      'Remove old auto-save versions older than 30 days? This cannot be undone.'
+    )
+  ) {
     try {
       const cutoffDate = new Date()
       cutoffDate.setDate(cutoffDate.getDate() - 30)
-      
+
       const savedVersionsKey = `navi-versions-${props.currentDocument}`
       const existingVersions = loadAutoSavedVersions()
-      
+
       const filteredVersions = existingVersions.filter(version => {
         const versionDate = new Date(version.timestamp)
         return versionDate > cutoffDate
       })
-      
+
       localStorage.setItem(savedVersionsKey, JSON.stringify(filteredVersions))
-      
+
       const removedCount = existingVersions.length - filteredVersions.length
       toast.success(`Cleaned up ${removedCount} old versions`)
-      
     } catch (error) {
       console.error('Cleanup failed:', error)
       toast.error('Failed to cleanup old versions')
@@ -637,17 +706,25 @@ const confirmCleanup = () => {
 function normalizeSkills(input: any): string[] {
   if (!input) return []
   if (Array.isArray(input)) {
-    return input.map((s: any) => (typeof s === 'string' ? s : (s?.name || ''))).filter(Boolean)
+    return input
+      .map((s: any) => (typeof s === 'string' ? s : s?.name || ''))
+      .filter(Boolean)
   }
   return []
 }
 
-function getPreviewData(v: any): { summary: string; experienceCount: number; skills: string[] } {
+function getPreviewData(v: any): {
+  summary: string
+  experienceCount: number
+  skills: string[]
+} {
   const p = v?.preview || v || {}
   const summary = String(p.summary || v?.summary || '').trim()
   const experience = Array.isArray(p.experience)
     ? p.experience
-    : (Array.isArray(v?.experience) ? v.experience : [])
+    : Array.isArray(v?.experience)
+      ? v.experience
+      : []
   const skills = normalizeSkills(p.skills ?? v?.skills ?? [])
   return { summary, experienceCount: experience.length || 0, skills }
 }
@@ -659,13 +736,16 @@ const comparison = computed(() => {
   const added = newer.skills.filter(s => !older.skills.includes(s))
   const removed = older.skills.filter(s => !newer.skills.includes(s))
   return {
-    summary: { before: older.summary || '(none)', after: newer.summary || '(none)' },
+    summary: {
+      before: older.summary || '(none)',
+      after: newer.summary || '(none)',
+    },
     experience: {
       before: older.experienceCount,
       after: newer.experienceCount,
-      delta: newer.experienceCount - older.experienceCount
+      delta: newer.experienceCount - older.experienceCount,
     },
-    skills: { added, removed }
+    skills: { added, removed },
   }
 })
 </script>
@@ -705,7 +785,11 @@ const comparison = computed(() => {
   justify-content: space-between;
   padding: var(--spacing-5);
   border-bottom: 1px solid var(--glass-border);
-  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--surface-base) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-50) 0%,
+    var(--surface-base) 100%
+  );
 }
 
 .header-content {
@@ -808,7 +892,11 @@ const comparison = computed(() => {
 }
 
 .version-item.current {
-  background: linear-gradient(135deg, var(--color-success-50) 0%, var(--surface-base) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-success-50) 0%,
+    var(--surface-base) 100%
+  );
   border-color: var(--color-success-200);
 }
 
@@ -1186,48 +1274,48 @@ const comparison = computed(() => {
   .version-history-overlay {
     padding: var(--spacing-2);
   }
-  
+
   .version-history-panel {
     max-height: 95vh;
   }
-  
+
   .version-filters {
     flex-direction: column;
     gap: var(--spacing-2);
   }
-  
+
   .filter-group {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-1);
   }
-  
+
   .version-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-2);
   }
-  
+
   .version-actions {
     opacity: 1;
     align-self: flex-end;
   }
-  
+
   .panel-footer {
     flex-direction: column;
     gap: var(--spacing-3);
     align-items: stretch;
   }
-  
+
   .footer-actions {
     justify-content: space-between;
   }
-  
+
   .comparison-content {
     grid-template-columns: 1fr;
     gap: var(--spacing-4);
   }
-  
+
   .comparison-divider {
     display: none;
   }

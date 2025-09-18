@@ -23,7 +23,7 @@
 <script setup>
 import { ref, computed, defineProps } from 'vue'
 
-defineOptions({ name: "AppTooltip" });
+defineOptions({ name: 'AppTooltip' })
 
 const _props = defineProps({
   text: {
@@ -32,8 +32,8 @@ const _props = defineProps({
   },
   position: {
     type: String,
-    default: "top",
-    validator: (value) => ["top", "bottom", "left", "right"].includes(value),
+    default: 'top',
+    validator: value => ['top', 'bottom', 'left', 'right'].includes(value),
   },
   dark: {
     type: Boolean,
@@ -43,26 +43,26 @@ const _props = defineProps({
     type: Number,
     default: 300,
   },
-});
+})
 
-const visible = ref(false);
-const timeoutId = ref(null);
+const visible = ref(false)
+const timeoutId = ref(null)
 
 const tooltipId = computed(
-  () => `tooltip-${Math.random().toString(36).substr(2, 9)}`,
-);
+  () => `tooltip-${Math.random().toString(36).substr(2, 9)}`
+)
 
 const showTooltip = () => {
-  clearTimeout(timeoutId.value);
+  clearTimeout(timeoutId.value)
   timeoutId.value = setTimeout(() => {
-    visible.value = true;
-  }, _props.delay);
-};
+    visible.value = true
+  }, _props.delay)
+}
 
 const hideTooltip = () => {
-  clearTimeout(timeoutId.value);
-  visible.value = false;
-};
+  clearTimeout(timeoutId.value)
+  visible.value = false
+}
 </script>
 
 <style scoped>

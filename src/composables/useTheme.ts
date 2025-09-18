@@ -1,10 +1,10 @@
 /**
  * LEGACY THEME COMPOSABLE - REDIRECTED TO UNIFIED SYSTEM
  * ====================================================
- * 
+ *
  * This file now delegates to useUnifiedTheme to ensure a single source of truth.
  * Provides backward compatibility for components using the old API.
- * 
+ *
  * @deprecated Use useUnifiedTheme directly for new components
  */
 
@@ -26,15 +26,15 @@ export function useTheme() {
     isDark: unified.isDark,
     isLight: unified.isLight,
     isSystemMode: unified.isSystem,
-    
+
     // Legacy action mappings
     setTheme: unified.setThemeMode,
     toggleTheme: unified.toggleTheme,
     applyTheme: (theme: ActiveTheme) => {
       unified.setThemeMode(theme)
     },
-    
+
     // Additional legacy methods that may be expected
-    initializeTheme: unified.initializeTheme
+    initializeTheme: unified.initializeTheme,
   }
 }

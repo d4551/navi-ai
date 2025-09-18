@@ -3,65 +3,65 @@
  * Manages user statistics, analytics, and progress tracking
  */
 
-import { createModal, type ModalButton } from '../utils/modalUtils';
-import { getAppVersion } from '@/utils/version';
+import { createModal, type ModalButton } from '../utils/modalUtils'
+import { getAppVersion } from '@/utils/version'
 
 export interface UserStatistics {
   // Usage Statistics
-  sessionsToday: number;
-  totalSessions: number;
-  avgSessionDuration: string;
-  streakDays: number;
-  lastActive: Date;
+  sessionsToday: number
+  totalSessions: number
+  avgSessionDuration: string
+  streakDays: number
+  lastActive: Date
 
   // Communication
-  messagesSent: number;
-  aiResponses: number;
-  apiCallsThisMonth: number;
-  
+  messagesSent: number
+  aiResponses: number
+  apiCallsThisMonth: number
+
   // Content Creation
-  portfolioItems: number;
-  totalDocuments: number;
-  resumesCreated: number;
-  favoriteTemplate: string;
-  
+  portfolioItems: number
+  totalDocuments: number
+  resumesCreated: number
+  favoriteTemplate: string
+
   // Features Used
-  mostUsedFeature: string;
-  interviewHours: number;
-  interviewSessions: number;
-  
+  mostUsedFeature: string
+  interviewHours: number
+  interviewSessions: number
+
   // Job Applications
-  applicationsSubmitted: number;
-  savedJobs: number;
-  
+  applicationsSubmitted: number
+  savedJobs: number
+
   // Progress Metrics
-  profileCompletion: number;
-  skillsAssessment: number;
-  interviewReadiness: number;
-  careerReadiness: number;
-  
+  profileCompletion: number
+  skillsAssessment: number
+  interviewReadiness: number
+  careerReadiness: number
+
   // Resume-specific metrics
-  resumeSectionsCompleted?: number;
-  skillsMapped?: number;
-  currentLevel?: number;
-  currentXP?: number;
-  achievementsUnlocked?: number;
+  resumeSectionsCompleted?: number
+  skillsMapped?: number
+  currentLevel?: number
+  currentXP?: number
+  achievementsUnlocked?: number
 }
 
 export interface StatisticsConfig {
-  showExportButton?: boolean;
-  showResetButton?: boolean;
-  categories?: ('usage' | 'communication' | 'content' | 'jobs' | 'progress')[];
+  showExportButton?: boolean
+  showResetButton?: boolean
+  categories?: ('usage' | 'communication' | 'content' | 'jobs' | 'progress')[]
 }
 
 class StatisticsService {
-  private storageKey = 'navi_user_statistics';
+  private storageKey = 'navi_user_statistics'
 
   /**
    * Gets current user statistics
    */
   getStatistics(): UserStatistics {
-    const stored = localStorage.getItem(this.storageKey);
+    const stored = localStorage.getItem(this.storageKey)
     const defaultStats: UserStatistics = {
       sessionsToday: 1,
       totalSessions: 1,
@@ -89,24 +89,24 @@ class StatisticsService {
       skillsMapped: 0,
       currentLevel: 1,
       currentXP: 0,
-      achievementsUnlocked: 0
-    };
+      achievementsUnlocked: 0,
+    }
 
     if (!stored) {
-      this.saveStatistics(defaultStats);
-      return defaultStats;
+      this.saveStatistics(defaultStats)
+      return defaultStats
     }
 
     try {
-      const parsed = JSON.parse(stored);
+      const parsed = JSON.parse(stored)
       // Ensure lastActive is a Date object
       if (parsed.lastActive) {
-        parsed.lastActive = new Date(parsed.lastActive);
+        parsed.lastActive = new Date(parsed.lastActive)
       }
-      return { ...defaultStats, ...parsed };
+      return { ...defaultStats, ...parsed }
     } catch (error) {
-      console.warn('Failed to parse stored statistics, using defaults');
-      return defaultStats;
+      console.warn('Failed to parse stored statistics, using defaults')
+      return defaultStats
     }
   }
 
@@ -114,25 +114,27 @@ class StatisticsService {
    * Updates statistics
    */
   updateStatistics(updates: Partial<UserStatistics>): void {
-    const current = this.getStatistics();
-    const updated = { ...current, ...updates, lastActive: new Date() };
-    this.saveStatistics(updated);
+    const current = this.getStatistics()
+    const updated = { ...current, ...updates, lastActive: new Date() }
+    this.saveStatistics(updated)
   }
 
   /**
    * Saves statistics to localStorage
    */
   private saveStatistics(stats: UserStatistics): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(stats));
+    localStorage.setItem(this.storageKey, JSON.stringify(stats))
   }
 
   /**
    * Increments a statistic by a given amount
    */
   incrementStat(key: keyof UserStatistics, amount: number = 1): void {
-    const current = this.getStatistics();
+    const current = this.getStatistics()
     if (typeof current[key] === 'number') {
-      this.updateStatistics({ [key]: (current[key] as number) + amount } as Partial<UserStatistics>);
+      this.updateStatistics({
+        [key]: (current[key] as number) + amount,
+      } as Partial<UserStatistics>)
     }
   }
 
@@ -140,112 +142,123 @@ class StatisticsService {
    * Records a new session
    */
   recordSession(): void {
-    const stats = this.getStatistics();
-    const now = new Date();
-    const today = now.toDateString();
-    const lastActiveDate = stats.lastActive?.toDateString();
+    const stats = this.getStatistics()
+    const now = new Date()
+    const today = now.toDateString()
+    const lastActiveDate = stats.lastActive?.toDateString()
 
     const updates: Partial<UserStatistics> = {
       totalSessions: stats.totalSessions + 1,
-      lastActive: now
-    };
+      lastActive: now,
+    }
 
     // Update today's session count and streak
     if (lastActiveDate === today) {
-      updates.sessionsToday = stats.sessionsToday + 1;
+      updates.sessionsToday = stats.sessionsToday + 1
     } else {
-      updates.sessionsToday = 1;
+      updates.sessionsToday = 1
       // Update streak logic
-      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toDateString();
+      const yesterday = new Date(
+        now.getTime() - 24 * 60 * 60 * 1000
+      ).toDateString()
       if (lastActiveDate === yesterday) {
-        updates.streakDays = stats.streakDays + 1;
+        updates.streakDays = stats.streakDays + 1
       } else {
-        updates.streakDays = 1;
+        updates.streakDays = 1
       }
     }
 
-    this.updateStatistics(updates);
+    this.updateStatistics(updates)
   }
 
   /**
    * Records feature usage
    */
   recordFeatureUsage(feature: string): void {
-    this.updateStatistics({ mostUsedFeature: feature });
-    this.incrementStat('totalSessions', 0); // Just updates lastActive
+    this.updateStatistics({ mostUsedFeature: feature })
+    this.incrementStat('totalSessions', 0) // Just updates lastActive
   }
 
   /**
    * Records AI feature usage
    */
   recordAIUsage(): void {
-    this.incrementStat('apiCallsThisMonth', 1);
-    this.incrementStat('aiResponses', 1);
+    this.incrementStat('apiCallsThisMonth', 1)
+    this.incrementStat('aiResponses', 1)
   }
 
   /**
    * Records resume activity
    */
   recordResumeActivity(): void {
-    this.recordFeatureUsage('Resume Builder');
-    this.incrementStat('totalDocuments', 0); // Updates lastActive and tracks usage
+    this.recordFeatureUsage('Resume Builder')
+    this.incrementStat('totalDocuments', 0) // Updates lastActive and tracks usage
   }
 
   /**
    * Records interview session
    */
   recordInterviewSession(): void {
-    this.incrementStat('interviewSessions', 1);
-    this.incrementStat('interviewHours', 0.25); // Approximate session duration
-    this.recordFeatureUsage('Mock Interview');
+    this.incrementStat('interviewSessions', 1)
+    this.incrementStat('interviewHours', 0.25) // Approximate session duration
+    this.recordFeatureUsage('Mock Interview')
   }
 
   /**
    * Shows detailed statistics modal
    */
   showDetailedStatistics(config: StatisticsConfig = {}): void {
-    const stats = this.getStatistics();
-    const categories = config.categories || ['usage', 'communication', 'content', 'jobs', 'progress'];
-    
-    const modalContent = this.generateStatisticsHTML(stats, categories);
-    
+    const stats = this.getStatistics()
+    const categories = config.categories || [
+      'usage',
+      'communication',
+      'content',
+      'jobs',
+      'progress',
+    ]
+
+    const modalContent = this.generateStatisticsHTML(stats, categories)
+
     const buttons: ModalButton[] = [
       {
         text: 'Close',
         type: 'secondary',
-        onclick: 'this.closest(\'.modal\').remove()'
-      }
-    ];
+        onclick: "this.closest('.modal').remove()",
+      },
+    ]
 
     if (config.showExportButton) {
       buttons.push({
         text: 'Export Stats',
         type: 'primary',
-        onclick: () => this.exportStatistics(stats)
-      });
+        onclick: () => this.exportStatistics(stats),
+      })
     }
 
     if (config.showResetButton) {
       buttons.push({
         text: 'Reset Stats',
         type: 'danger',
-        onclick: () => this.resetStatistics()
-      });
+        onclick: () => this.resetStatistics(),
+      })
     }
 
     createModal({
       title: '[STATS] Detailed Statistics',
       content: modalContent,
       size: 'lg',
-      buttons
-    });
+      buttons,
+    })
   }
 
   /**
    * Generates statistics HTML content
    */
-  private generateStatisticsHTML(stats: UserStatistics, categories: string[]): string {
-    let content = '<div class="detailed-stats-modal"><div class="row g-3">';
+  private generateStatisticsHTML(
+    stats: UserStatistics,
+    categories: string[]
+  ): string {
+    let content = '<div class="detailed-stats-modal"><div class="row g-3">'
 
     if (categories.includes('usage')) {
       content += `
@@ -260,7 +273,7 @@ class StatisticsService {
             </ul>
           </div>
         </div>
-      `;
+      `
     }
 
     if (categories.includes('communication')) {
@@ -276,7 +289,7 @@ class StatisticsService {
             </ul>
           </div>
         </div>
-      `;
+      `
     }
 
     if (categories.includes('content')) {
@@ -292,7 +305,7 @@ class StatisticsService {
             </ul>
           </div>
         </div>
-      `;
+      `
     }
 
     if (categories.includes('jobs')) {
@@ -303,12 +316,12 @@ class StatisticsService {
             <ul class="list-unstyled mb-0">
               <li class="d-flex justify-content-between"><span>Applications Submitted:</span> <strong>${stats.applicationsSubmitted}</strong></li>
               <li class="d-flex justify-content-between"><span>Jobs Saved:</span> <strong>${stats.savedJobs}</strong></li>
-              <li class="d-flex justify-content-between"><span>Success Rate:</span> <strong>${stats.applicationsSubmitted > 0 ? Math.round((stats.applicationsSubmitted * 0.15) * 100) / 100 : 0}%</strong></li>
+              <li class="d-flex justify-content-between"><span>Success Rate:</span> <strong>${stats.applicationsSubmitted > 0 ? Math.round(stats.applicationsSubmitted * 0.15 * 100) / 100 : 0}%</strong></li>
               <li class="d-flex justify-content-between"><span>Active Applications:</span> <strong>${Math.max(0, stats.applicationsSubmitted - Math.floor(stats.applicationsSubmitted * 0.3))}</strong></li>
             </ul>
           </div>
         </div>
-      `;
+      `
     }
 
     if (categories.includes('progress')) {
@@ -348,7 +361,7 @@ class StatisticsService {
             </ul>
           </div>
         </div>
-      `;
+      `
     }
 
     content += `
@@ -356,9 +369,9 @@ class StatisticsService {
       <div class="mt-3 text-center">
         <small class="text-muted">Last active: ${stats.lastActive?.toLocaleString() || 'Unknown'}</small>
       </div>
-    </div>`;
+    </div>`
 
-    return content;
+    return content
   }
 
   /**
@@ -368,20 +381,20 @@ class StatisticsService {
     const exportData = {
       statistics: stats,
       exportedAt: new Date().toISOString(),
-      version: getAppVersion()
-    };
+      version: getAppVersion(),
+    }
 
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: 'application/json'
-    });
+      type: 'application/json',
+    })
 
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `navi-statistics-${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `navi-statistics-${new Date().toISOString().split('T')[0]}.json`
+    link.click()
 
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url)
   }
 
   /**
@@ -389,19 +402,19 @@ class StatisticsService {
    */
   resetStatistics(): void {
     if (confirm('Reset all statistics? This cannot be undone.')) {
-      localStorage.removeItem(this.storageKey);
+      localStorage.removeItem(this.storageKey)
       // Reinitialize with defaults
-      this.getStatistics();
-      
+      this.getStatistics()
+
       // Close modal and show success
-      const modal = document.querySelector('.modal.show');
-      modal?.remove();
-      
+      const modal = document.querySelector('.modal.show')
+      modal?.remove()
+
       // Show toast if available
       const event = new CustomEvent('show-toast', {
-        detail: { message: 'Statistics reset successfully', type: 'success' }
-      });
-      window.dispatchEvent(event);
+        detail: { message: 'Statistics reset successfully', type: 'success' },
+      })
+      window.dispatchEvent(event)
     }
   }
 
@@ -409,47 +422,59 @@ class StatisticsService {
    * Syncs job application statistics from store data
    */
   syncJobApplicationStats(jobSearchData: any): void {
-    const applicationsCount = jobSearchData?.applications?.length || 0;
-    const savedJobsCount = jobSearchData?.savedJobs?.length || 0;
-    
+    const applicationsCount = jobSearchData?.applications?.length || 0
+    const savedJobsCount = jobSearchData?.savedJobs?.length || 0
+
     this.updateStatistics({
       applicationsSubmitted: applicationsCount,
-      savedJobs: savedJobsCount
-    });
+      savedJobs: savedJobsCount,
+    })
   }
 
   /**
    * Syncs resume statistics from store data
    */
   syncResumeStats(resumeData: any, user: any): void {
-    const completedSections = this.calculateResumeCompletedSections(resumeData);
-    const profileCompletion = this.calculateProfileCompleteness(user);
-    const hasResumeContent = this.hasResumeContent(resumeData);
+    const completedSections = this.calculateResumeCompletedSections(resumeData)
+    const profileCompletion = this.calculateProfileCompleteness(user)
+    const hasResumeContent = this.hasResumeContent(resumeData)
 
     // Handle both legacy array format and new object format for skills
-    let skillsMapped = 0;
+    let skillsMapped = 0
     if (user?.skills) {
       if (Array.isArray(user.skills)) {
         // Legacy format: skills is an array
-        skillsMapped = user.skills.filter((skill: any) => skill && skill.realWorldMapping)?.length || 0;
+        skillsMapped =
+          user.skills.filter((skill: any) => skill && skill.realWorldMapping)
+            ?.length || 0
       } else if (typeof user.skills === 'object') {
         // New format: skills is an object with categories
-        const technical = Array.isArray(user.skills.technical) ? user.skills.technical : [];
-        const soft = Array.isArray(user.skills.soft) ? user.skills.soft : [];
-        const languages = Array.isArray(user.skills.languages) ? user.skills.languages : [];
-        const tools = Array.isArray(user.skills.tools) ? user.skills.tools : [];
-        const frameworks = Array.isArray(user.skills.frameworks) ? user.skills.frameworks : [];
-        const gaming = Array.isArray(user.skills.gaming) ? user.skills.gaming : [];
-        
+        const technical = Array.isArray(user.skills.technical)
+          ? user.skills.technical
+          : []
+        const soft = Array.isArray(user.skills.soft) ? user.skills.soft : []
+        const languages = Array.isArray(user.skills.languages)
+          ? user.skills.languages
+          : []
+        const tools = Array.isArray(user.skills.tools) ? user.skills.tools : []
+        const frameworks = Array.isArray(user.skills.frameworks)
+          ? user.skills.frameworks
+          : []
+        const gaming = Array.isArray(user.skills.gaming)
+          ? user.skills.gaming
+          : []
+
         const allSkills = [
           ...technical,
           ...soft,
           ...languages,
           ...tools,
           ...frameworks,
-          ...gaming
-        ];
-        skillsMapped = allSkills.filter((skill: any) => skill && skill.realWorldMapping)?.length || 0;
+          ...gaming,
+        ]
+        skillsMapped =
+          allSkills.filter((skill: any) => skill && skill.realWorldMapping)
+            ?.length || 0
       }
     }
 
@@ -461,143 +486,157 @@ class StatisticsService {
       skillsMapped: skillsMapped,
       currentLevel: user?.level || 1,
       currentXP: user?.xp || 0,
-      achievementsUnlocked: user?.achievements?.length || 0
-    });
+      achievementsUnlocked: user?.achievements?.length || 0,
+    })
   }
 
   /**
    * Calculates how many resume sections are completed
    */
   private calculateResumeCompletedSections(resumeData: any): number {
-    if (!resumeData) return 0;
-    
-    let completed = 0;
-    
+    if (!resumeData) return 0
+
+    let completed = 0
+
     // Personal info section
     if (resumeData.personalInfo?.name && resumeData.personalInfo?.email) {
-      completed++;
+      completed++
     }
-    
+
     // Experience section
     if (resumeData.experience && resumeData.experience.length > 0) {
-      completed++;
+      completed++
     }
-    
+
     // Education section
     if (resumeData.education && resumeData.education.length > 0) {
-      completed++;
+      completed++
     }
-    
+
     // Skills section
-    if (resumeData.skills && (
-      (resumeData.skills.technical && resumeData.skills.technical.length > 0) ||
-      (resumeData.skills.soft && resumeData.skills.soft.length > 0)
-    )) {
-      completed++;
+    if (
+      resumeData.skills &&
+      ((resumeData.skills.technical &&
+        resumeData.skills.technical.length > 0) ||
+        (resumeData.skills.soft && resumeData.skills.soft.length > 0))
+    ) {
+      completed++
     }
-    
+
     // Additional experience section
-    if (resumeData.additionalExperience && resumeData.additionalExperience.length > 0) {
-      completed++;
+    if (
+      resumeData.additionalExperience &&
+      resumeData.additionalExperience.length > 0
+    ) {
+      completed++
     }
-    
-    return completed;
+
+    return completed
   }
 
   /**
    * Calculates profile completeness percentage
    */
   private calculateProfileCompleteness(user: any): number {
-    if (!user) return 0;
-    
-    let score = 0;
-    if (user.name) score += 20;
-    if (user.email) score += 20;
-    if (user.gamingExperience && user.gamingExperience.length > 0) score += 20;
-    if (user.skills && user.skills.length > 0) score += 20;
-    if (user.portfolio && user.portfolio.length > 0) score += 20;
-    
-    return score;
+    if (!user) return 0
+
+    let score = 0
+    if (user.name) score += 20
+    if (user.email) score += 20
+    if (user.gamingExperience && user.gamingExperience.length > 0) score += 20
+    if (user.skills && user.skills.length > 0) score += 20
+    if (user.portfolio && user.portfolio.length > 0) score += 20
+
+    return score
   }
 
   /**
    * Checks if resume has meaningful content
    */
   private hasResumeContent(resumeData: any): boolean {
-    if (!resumeData) return false;
-    
+    if (!resumeData) return false
+
     return !!(
       (resumeData.personalInfo?.name && resumeData.personalInfo?.email) ||
       (resumeData.experience && resumeData.experience.length > 0) ||
       (resumeData.education && resumeData.education.length > 0) ||
-      (resumeData.skills && (
-        (resumeData.skills.technical && resumeData.skills.technical.length > 0) ||
-        (resumeData.skills.soft && resumeData.skills.soft.length > 0)
-      ))
-    );
+      (resumeData.skills &&
+        ((resumeData.skills.technical &&
+          resumeData.skills.technical.length > 0) ||
+          (resumeData.skills.soft && resumeData.skills.soft.length > 0)))
+    )
   }
 
   /**
    * Records portfolio statistics sync
    */
   syncPortfolioStats(portfolioItems: any[]): void {
-    const portfolioCount = portfolioItems?.length || 0;
-    
+    const portfolioCount = portfolioItems?.length || 0
+
     this.updateStatistics({
-      portfolioItems: portfolioCount
-    });
+      portfolioItems: portfolioCount,
+    })
   }
 
   /**
    * Records skills mapping statistics sync
    */
   syncSkillsStats(skills: any): void {
-    let mappedSkillsCount = 0;
+    let mappedSkillsCount = 0
 
     if (skills) {
       if (Array.isArray(skills)) {
         // Legacy format: skills is an array
-        mappedSkillsCount = skills.filter(skill => skill && skill.realWorldMapping)?.length || 0;
+        mappedSkillsCount =
+          skills.filter(skill => skill && skill.realWorldMapping)?.length || 0
       } else if (typeof skills === 'object' && skills !== null) {
         // New format: skills is an object with categories
-        const technical = Array.isArray(skills.technical) ? skills.technical : [];
-        const soft = Array.isArray(skills.soft) ? skills.soft : [];
-        const languages = Array.isArray(skills.languages) ? skills.languages : [];
-        const tools = Array.isArray(skills.tools) ? skills.tools : [];
-        const frameworks = Array.isArray(skills.frameworks) ? skills.frameworks : [];
-        const gaming = Array.isArray(skills.gaming) ? skills.gaming : [];
-        
+        const technical = Array.isArray(skills.technical)
+          ? skills.technical
+          : []
+        const soft = Array.isArray(skills.soft) ? skills.soft : []
+        const languages = Array.isArray(skills.languages)
+          ? skills.languages
+          : []
+        const tools = Array.isArray(skills.tools) ? skills.tools : []
+        const frameworks = Array.isArray(skills.frameworks)
+          ? skills.frameworks
+          : []
+        const gaming = Array.isArray(skills.gaming) ? skills.gaming : []
+
         const allSkills = [
           ...technical,
           ...soft,
           ...languages,
           ...tools,
           ...frameworks,
-          ...gaming
-        ];
-        
+          ...gaming,
+        ]
+
         // Ensure allSkills is actually an array before calling filter
         if (Array.isArray(allSkills)) {
-          mappedSkillsCount = allSkills.filter(skill => skill && skill.realWorldMapping)?.length || 0;
+          mappedSkillsCount =
+            allSkills.filter(skill => skill && skill.realWorldMapping)
+              ?.length || 0
         } else {
-          mappedSkillsCount = 0;
+          mappedSkillsCount = 0
         }
       } else {
         // Handle edge case where skills is neither array nor object (e.g., null, string, number)
-        mappedSkillsCount = 0;
+        mappedSkillsCount = 0
       }
     }
 
     this.updateStatistics({
-      skillsAssessment: Math.min((mappedSkillsCount / 10) * 100, 100)
-    });
+      skillsAssessment: Math.min((mappedSkillsCount / 10) * 100, 100),
+    })
   }
 
   /**
    * Records a job application submission
    */
   recordJobApplication(_jobTitle?: string): void {
-    this.incrementStat('applicationsSubmitted', 1);
+    this.incrementStat('applicationsSubmitted', 1)
     // Could also track specific job details in the future
   }
 
@@ -605,40 +644,44 @@ class StatisticsService {
    * Records saving a job
    */
   recordSavedJob(): void {
-    this.incrementStat('savedJobs', 1);
+    this.incrementStat('savedJobs', 1)
   }
 
   /**
    * Gets basic stats for dashboard display
    */
-  getDashboardStats(): { label: string; value: string | number; icon?: string }[] {
-    const stats = this.getStatistics();
-    
+  getDashboardStats(): {
+    label: string
+    value: string | number
+    icon?: string
+  }[] {
+    const stats = this.getStatistics()
+
     return [
       {
         label: 'Applications Submitted',
         value: stats.applicationsSubmitted,
-        icon: 'mdi-briefcase-upload'
+        icon: 'mdi-briefcase-upload',
       },
       {
         label: 'Current Streak',
         value: `${stats.streakDays} days`,
-        icon: 'mdi-fire'
+        icon: 'mdi-fire',
       },
       {
         label: 'Interview Hours',
         value: stats.interviewHours,
-        icon: 'mdi-microphone'
+        icon: 'mdi-microphone',
       },
       {
         label: 'Portfolio Items',
         value: stats.portfolioItems,
-        icon: 'mdi-folder-multiple-outline'
-      }
-    ];
+        icon: 'mdi-folder-multiple-outline',
+      },
+    ]
   }
 }
 
 // Export singleton instance
-export const statisticsService = new StatisticsService();
-export default statisticsService;
+export const statisticsService = new StatisticsService()
+export default statisticsService
