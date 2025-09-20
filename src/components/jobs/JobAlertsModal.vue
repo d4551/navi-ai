@@ -412,7 +412,7 @@ const newAlert = ref({
 
 // Computed
 const internalShow = computed({
-  get: () => props.show,
+  get: () => _props.show,
   set: (value) => emit('update:show', value)
 })
 

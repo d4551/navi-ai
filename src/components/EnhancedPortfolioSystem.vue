@@ -788,7 +788,9 @@ const {
 /* Local badge replaced by unified .badge; use .bg-primary as needed */
 
 .projects-grid {
-  @apply portfolio-grid;
+  display: grid;
+  gap: var(--spacing-5);
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg, 320px), 1fr));
   gap: 1.5rem;
 }
 
@@ -911,7 +913,9 @@ const {
 }
 
 .templates-grid {
-  @apply portfolio-grid;
+  display: grid;
+  gap: var(--spacing-5);
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg, 320px), 1fr));
   gap: 1.5rem;
 }
 

@@ -500,12 +500,12 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
   padding: var(--spacing-lg);
 }
 
-.gallery .grid { 
-  @apply media-grid; 
-  gap: var(--spacing-lg); 
-}
-
-.gallery .muted {
+.gallery .grid {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-sm, 220px), 1fr));
+  gap: var(--spacing-lg);
+}.gallery .muted {
   text-align: center;
   color: var(--text-secondary);
   padding: var(--spacing-xl);

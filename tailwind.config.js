@@ -207,4 +207,15 @@ export default {
     },
   },
   plugins: optionalPlugins,
+  safelist: [
+    'tool-grid',
+    'actions-grid',
+    'benefits-grid',
+    'recommendations-grid',
+    'responsive-grid',
+    'stat-grid',
+    'portfolio-grid',
+    'media-grid',
+    'settings-grid'
+  ]
 }

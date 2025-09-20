@@ -797,7 +797,9 @@ const showAllSuggestions = () => {
 }
 
 .tools-grid {
-  @apply portfolio-grid;
+  display: grid;
+  gap: var(--spacing-5);
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg, 320px), 1fr));
   gap: 1.5rem;
 }
 
@@ -918,7 +920,9 @@ const showAllSuggestions = () => {
 
 @media (max-width: 1200px) {
   .tools-grid {
-    @apply portfolio-grid;
+    display: grid;
+    gap: var(--spacing-5);
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg, 320px), 1fr));
   }
 }
 

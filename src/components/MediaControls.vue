@@ -338,7 +338,9 @@ defineExpose({
 }
 
 .device-row {
-  @apply tool-grid;
+  display: grid;
+  gap: var(--spacing-3);
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-card-min-xs, 140px), 1fr));
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-md);
 }
@@ -422,7 +424,9 @@ defineExpose({
 
 /* Controls Grid */
 .controls-grid {
-  @apply portfolio-grid;
+  display: grid;
+  gap: var(--spacing-5);
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-min-lg, 320px), 1fr));
   gap: var(--grid-gap);
   margin-bottom: var(--grid-gap);
 }

@@ -364,7 +364,16 @@ const {
 const { success: toastSuccess, error: toastError, warning: toastWarning } = useToast()
 
 // Local state
-const localSearchForm = ref({ ...props.searchForm })
+const localSearchForm = ref({ 
+  ...(_props.searchForm || {}),
+  query: _props.searchForm?.query || '',
+  location: _props.searchForm?.location || '',
+  experience: _props.searchForm?.experience || '',
+  type: _props.searchForm?.type || 'full-time',
+  salaryMin: _props.searchForm?.salaryMin || '',
+  salaryMax: _props.searchForm?.salaryMax || '',
+  remote: _props.searchForm?.remote || false
+})
 const searchTimer = ref(0)
 const searchProgress = ref(0)
 const currentStep = ref(1)
@@ -407,8 +416,19 @@ const hasValidSearch = computed(() =>
 )
 
 // Watch for external form changes
-watch(() => props.searchForm, (newForm) => {
-  localSearchForm.value = { ...newForm }
+watch(() => _props.searchForm, (newForm) => {
+  if (newForm) {
+    localSearchForm.value = { 
+      ...newForm,
+      query: newForm.query || localSearchForm.value.query || '',
+      location: newForm.location || localSearchForm.value.location || '',
+      experience: newForm.experience || localSearchForm.value.experience || '',
+      type: newForm.type || localSearchForm.value.type || 'full-time',
+      salaryMin: newForm.salaryMin || localSearchForm.value.salaryMin || '',
+      salaryMax: newForm.salaryMax || localSearchForm.value.salaryMax || '',
+      remote: newForm.remote !== undefined ? newForm.remote : localSearchForm.value.remote
+    }
+  }
 }, { deep: true })
 
 // Auto-fill form fields from unified profile when available
@@ -455,7 +475,7 @@ watch(jobSearchProfile, (profile) => {
 }, { immediate: true })
 
 // Watch loading state to manage search progress  
-watch(() => props.loading || isSearching.value, (isLoading) => {
+watch(() => _props.loading || isSearching.value, (isLoading) => {
   if (isLoading) {
     startSearchProgress()
   } else {
